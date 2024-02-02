@@ -1,227 +1,381 @@
-Return-Path: <linux-acpi+bounces-3167-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3168-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3387846344
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 23:13:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12425846A38
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 09:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BFF428C5D2
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Feb 2024 22:12:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92FBA2917EF
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 08:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732B846B91;
-	Thu,  1 Feb 2024 22:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="v+2hUSGQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFFE17C77;
+	Fri,  2 Feb 2024 08:08:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2089.outbound.protection.outlook.com [40.107.212.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911D845C08;
-	Thu,  1 Feb 2024 22:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706825507; cv=fail; b=ZQpfoNs/kud+CZBfhr5sP7+bklDT6MzNnWeB46Y65Js/e/k75VHx0ARYXhExSyBXLaTKJQ2Ai1Yvh+/JMHWGnGsrlbvfZXjrrlp96eS+BIgzQc37RxkDAXd4UF8IApKpQRNJTeVR8mDtqEW8pE/PGAfazMh1XDgDg7jWtfQDaPw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706825507; c=relaxed/simple;
-	bh=+rPn0AJ7bD3vu8vabFcCWz0+PsOIVBBugK9xiB6vLyQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZeidsSURKa9JS53MF1IgGvE5q9/eemx6KeYId5ir/tfJXZ8KN8onqaH1CQnJp647Du9f4v2HdTjeuzVo7bR04MqAHmTFudXNkF+6zsyuV40lHn3D0vzHso85PQlvHSQG8JJH2dERk1hI63DZMRItk8t8A9mfTy7mp3FIx26hgQ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=v+2hUSGQ; arc=fail smtp.client-ip=40.107.212.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nJiHFaVyTf2kX32RRQDiqNPDjCVRQ/rwTX26g4qu9O0mVAb+utBh8g3riD4OSj+oeHgIyQlvOHKl4YUuGrKdfMXp8cVY8/RZtmoyedj61D+KxOcbU8stah1qxCzIl3RIdCUgmB7+eOMUsf06xMt4UIPiEq9AonxHKt5ih31ZdR3WGy0ex3fbCMnB2tXLev7kSeVFb7pvlK/mUJaLEc8379qDdcKqKFICssHm5P3q/UL6V3KnTuptedziMmIPtuHI7iJFBFJ8GWsw4rDPwJhzyZi5HVqfoTQph2MRfafhfHsuRrYedyLo70/EhQwJVgJ+BJaYHBmwAQ3cb2LisBkJEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=74dNLM/t9huEm0pVQr58RF1E6RXQcgyu/W4MGe1qImA=;
- b=WsaipvpdJf+tIvC7vTncZcz3P+arB91UqSEE0Fl2U6SpD3yG0+D5gvxZHN5+AZIrVO4FLTJ21rINmIInk2Q3Sya7gvB08iY0Ao7KN5eOepdOCL6ac37Dij0LGJIA0WLbhWalzRGPPCGXUvFeOiILmmQX7RmgCnxVg4a/KdCXlIQmluYgU3ogtV+G409PAjvH/sW8J/3vHTrXs9FMZJEgyAcNiYXuRcesFxiztc+0Ac6FCcDlTOSbuQcy/lIlwPt/W07gNFPCF+Ijb2dIzEKX17weOYC+7OXNkzDK2bDyl83QwFvCdspZgkwYeDWOt/0rEB5LXl3Tlu2vGT4x0MFyWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=74dNLM/t9huEm0pVQr58RF1E6RXQcgyu/W4MGe1qImA=;
- b=v+2hUSGQu26IBUCMfs2YSCzRA3TjmppOY2J1tsQDymH/XqSHiWAR2ZVp0cZycXXppP308JxIby4JCh6qd6ZP4aSjv15ml7PurbR6UIVpvSH3fxrLPh7S+3nQIs/3VOEOD01yty1/pUwiTX1BUZZxR0/+K0T8lEL9f/LQtvCddKM=
-Received: from DM6PR10CA0022.namprd10.prod.outlook.com (2603:10b6:5:60::35) by
- DM4PR12MB6541.namprd12.prod.outlook.com (2603:10b6:8:88::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7249.22; Thu, 1 Feb 2024 22:11:42 +0000
-Received: from DS1PEPF0001708F.namprd03.prod.outlook.com
- (2603:10b6:5:60:cafe::32) by DM6PR10CA0022.outlook.office365.com
- (2603:10b6:5:60::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.22 via Frontend
- Transport; Thu, 1 Feb 2024 22:11:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF0001708F.mail.protection.outlook.com (10.167.17.139) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7249.19 via Frontend Transport; Thu, 1 Feb 2024 22:11:42 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 1 Feb
- 2024 16:11:41 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: <amd-gfx@lists.freedesktop.org>, Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>
-CC: "open list:ACPI" <linux-acpi@vger.kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, "open list:DRM DRIVERS"
-	<dri-devel@lists.freedesktop.org>, Melissa Wen <mwen@igalia.com>, "Mark
- Pearson" <mpearson-lenovo@squebb.ca>, Mario Limonciello
-	<mario.limonciello@amd.com>
-Subject: [PATCH v3 5/5] drm: Drop unneeded selects in DRM drivers
-Date: Thu, 1 Feb 2024 16:11:19 -0600
-Message-ID: <20240201221119.42564-6-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240201221119.42564-1-mario.limonciello@amd.com>
-References: <20240201221119.42564-1-mario.limonciello@amd.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007E947F75;
+	Fri,  2 Feb 2024 08:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706861334; cv=none; b=cwFdrLmWAlsOl+jXXWu131ESAtCYHzJgHvFP8WIQ094vBwQwDZeDJGOHa7upqC0Xg1/iPoWAq2o1VRRMeGD0/1JnoAGiNuZR6OPPXpjejCEkEYUSmO55sNGYubbSl98ktgoFh+5X1naXNbAucBWhUVMcDlEPJBP/qijWxfbSUg0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706861334; c=relaxed/simple;
+	bh=bcHMD7ZcJ+zp0NWUHUEVpwvoEI+I2VryixUAYyJmGN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pwUIQHxGQxOVHlucL95YGhoXZ/hqjhWWWwrGv0wKpyKStr/wAW7SdGU0EDFdYBytgvesfega/T3cXYh6evKp9inq7JORghpJFHyofNRW8A68TL56Fj6+cWN2LXWdX8gicRIUmbQVdXXA9+znGEaOOreEm71s9hgfmVYjQIeTU90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B32EC1A00;
+	Fri,  2 Feb 2024 00:09:33 -0800 (PST)
+Received: from e129154.nice.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2FDE3F8A4;
+	Fri,  2 Feb 2024 00:08:45 -0800 (PST)
+Date: Fri, 2 Feb 2024 09:08:03 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: "lihuisong (C)" <lihuisong@huawei.com>
+Cc: Ionela Voinescu <ionela.voinescu@arm.com>,
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+	sumitg@nvidia.com, zengheng4@huawei.com,
+	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
+	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] cpufreq: CPPC: Resolve the large frequency discrepancy
+ from cpuinfo_cur_freq
+Message-ID: <Zbyi40XtqbqXm0CL@e129154.nice.arm.com>
+References: <20231212072617.14756-1-lihuisong@huawei.com>
+ <ZZWfJOsDlEXWYHA5@arm.com>
+ <9428a1ed-ba4d-1fe6-63e8-11e152bf1f09@huawei.com>
+ <lnocwcitdbmgcyhd2dlczgdlhtfw4pfot2br2i3hqscnvr3xgq@nuxlauxum3nr>
+ <d0f47e9d-6a58-8b46-89be-b3182abb69f0@huawei.com>
+ <ZZwAmqp6hcmMF8aN@arm.com>
+ <6505bdcb-5a5f-cba6-483b-75c51414a9c6@huawei.com>
+ <ZaaOQzCpBjmW71xf@e129154.nice.arm.com>
+ <a84a9749-97a5-a207-dfd3-8322a5a992d9@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001708F:EE_|DM4PR12MB6541:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c398e72-7c82-43c1-f362-08dc2372c54f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	2FVzbcEsd1yUeGIvua647CrVswhqVmvI88zb+/+P/iWlLAC4PQ6n0ldlwhA3EWMsdrJpJuomeQMciLyrk7h2d7T2j2NZBF6jpGyUKdUorE0JKDeZ/h12U9fz8hUK+n4ECTSv//FGOCjgd42/MoTD8oOvX5RInA4i+TwctblDUMM1oCf2mTOyHOSO7RnPlD698KQFwepsBi9kOBAfEUHkwUZiCDVbQy8WtlcZtwoxxnSaTaDG1ab8jO4OyiKJ/Hjplw7g4QPNU3nsuMmNWYYWql4HLLzPHI9Wxy7hYNhv/ox3x+Hr+gyi8G8eeFOH0cMdx/qXuzSfDvVq9WQsFNl4F+dYKVzcsZARGMTvUW3oliTvjV5tqOtS7LyCCp3rwG1f73F+J6NljjbUjJaJodgyTajL04nDGqotWmf/tHFf3gU1TDU/h1PS5BmODPVF2ZFrohxx49LcIeIm232wp13CB01rdnr+/jeD4vDOQYYGi6AOd2764Ytn9SEuvlSpk7nQyCipFEqCKuJJsvO6Og+wnx9qdItaIuOCQ4kaPHlfhplfJHvntjkiyEQWzReqRAJnfj0TmFo4zB0K1RO4n17buP55d0Q/CyqKbul7h+7ZS0mKpcITjKgKHY/L3iiXb1VAZNLYaOyOMyKtbHdCpLSEjdich3ix7odC1X84KqsdhEwEc0tduWtodfN9AeS1U4rC1j5lY+3hw8l02kfmvYBDVbQGio1Z0dKCX4HEMZg6lCdQCuIcvvQkTdUfdw18wqCxtqw8ajzwcPDbgzJPKmAcsw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(376002)(39860400002)(346002)(230922051799003)(186009)(451199024)(1800799012)(82310400011)(64100799003)(40470700004)(46966006)(36840700001)(26005)(41300700001)(316002)(36860700001)(8676002)(4326008)(5660300002)(44832011)(86362001)(8936002)(2906002)(110136005)(70586007)(70206006)(478600001)(36756003)(356005)(54906003)(81166007)(7696005)(83380400001)(82740400003)(47076005)(6666004)(2616005)(426003)(1076003)(336012)(16526019)(40480700001)(40460700003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2024 22:11:42.2581
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c398e72-7c82-43c1-f362-08dc2372c54f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001708F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6541
+In-Reply-To: <a84a9749-97a5-a207-dfd3-8322a5a992d9@huawei.com>
 
-All of the selects on ACPI_VIDEO are unnecessary when DRM does the
-select for ACPI_VIDEO as it provides a helper for acpi based EDID.
+On Wed, Jan 17, 2024 at 05:18:40PM +0800, lihuisong (C) wrote:
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Hi ,
+
+Again, apologies for delay,
+
+> Hi,
+> 
+> 在 2024/1/16 22:10, Beata Michalska 写道:
+> > Hi,
+> > 
+> > Apologies for jumping in so late....
+> > 
+> > On Wed, Jan 10, 2024 at 03:09:48PM +0800, lihuisong (C) wrote:
+> > > Hi Ionela,
+> > > 
+> > > 在 2024/1/8 22:03, Ionela Voinescu 写道:
+> > > > Hi,
+> > > > 
+> > > > On Friday 05 Jan 2024 at 15:04:47 (+0800), lihuisong (C) wrote:
+> > > > > Hi Vanshi,
+> > > > > 
+> > > > > 在 2024/1/5 8:48, Vanshidhar Konda 写道:
+> > > > > > On Thu, Jan 04, 2024 at 05:36:51PM +0800, lihuisong (C) wrote:
+> > > > > > > 在 2024/1/4 1:53, Ionela Voinescu 写道:
+> > > > > > > > Hi,
+> > > > > > > > 
+> > > > > > > > On Tuesday 12 Dec 2023 at 15:26:17 (+0800), Huisong Li wrote:
+> > > > > > > > > Many developers found that the cpu current frequency is greater than
+> > > > > > > > > the maximum frequency of the platform, please see [1], [2] and [3].
+> > > > > > > > > 
+> > > > > > > > > In the scenarios with high memory access pressure, the patch [1] has
+> > > > > > > > > proved the significant latency of cpc_read() which is used to obtain
+> > > > > > > > > delivered and reference performance counter cause an absurd frequency.
+> > > > > > > > > The sampling interval for this counters is very critical and
+> > > > > > > > > is expected
+> > > > > > > > > to be equal. However, the different latency of cpc_read() has a direct
+> > > > > > > > > impact on their sampling interval.
+> > > > > > > > > 
+> > > > > > > > Would this [1] alternative solution work for you?
+> > > > > > > It would work for me AFAICS.
+> > > > > > > Because the "arch_freq_scale" is also from AMU core and constant
+> > > > > > > counter, and read together.
+> > > > > > > But, from their discuss line, it seems that there are some tricky
+> > > > > > > points to clarify or consider.
+> > > > > > I think the changes in [1] would work better when CPUs may be idle. With
+> > > > > > this
+> > > > > > patch we would have to wake any core that is in idle state to read the
+> > > > > > AMU
+> > > > > > counters. Worst case, if core 0 is trying to read the CPU frequency of
+> > > > > > all
+> > > > > > cores, it may need to wake up all the other cores to read the AMU
+> > > > > > counters.
+> > > > >   From the approach in [1], if all CPUs (one or more cores) under one policy
+> > > > > are idle, they still cannot be obtained the CPU frequency, right?
+> > > > > In this case, the [1] API will return 0 and have to back to call
+> > > > > cpufreq_driver->get() for cpuinfo_cur_freq.
+> > > > > Then we still need to face the issue this patch mentioned.
+> > > > With the implementation at [1], arch_freq_get_on_cpu() will not return 0
+> > > > for idle CPUs and the get() callback will not be called to wake up the
+> > > > CPUs.
+> > > Right, arch_freq_get_on_cpu() will not return 0 for idle CPUs.
+> > > However, for no-housekeeping CPUs, it will return 0 and have to call get()
+> > > callback, right?
+> > > > Worst case, arch_freq_get_on_cpu() will return a frequency based on the
+> > > > AMU counter values obtained on the last tick on that CPU. But if that CPU
+> > > > is not a housekeeping CPU, a housekeeping CPU in the same policy will be
+> > > > selected, as it would have had a more recent tick, and therefore a more
+> > > > recent frequency value for the domain.
+> > > But this frequency is from the last tick,
+> > > this last tick is probably a long time ago and it doesn't update
+> > > 'arch_freq_scale' for some reasons like CPU dile.
+> > > In addition, I'm not sure if there is possible that amu_scale_freq_tick() is
+> > > executed delayed under high stress case.
+> > > It also have an impact on the accuracy of the cpu frequency we query.
+> > > > I understand that the frequency returned here will not be up to date,
+> > > > but there's no proper frequency feedback for an idle CPU. If one only
+> > > > wakes up a CPU to sample counters, before the CPU goes back to sleep,
+> > > > the obtained frequency feedback is meaningless.
+> > > > 
+> > > > > > For systems with 128 cores or more, this could be very expensive and
+> > > > > > happen
+> > > > > > very frequently.
+> > > > > > 
+> > > > > > AFAICS, the approach in [1] would avoid this cost.
+> > > > > But the CPU frequency is just an average value for the last tick period
+> > > > > instead of the current one the CPU actually runs at.
+> > > > > In addition, there are some conditions to use 'arch_freq_scale' in this
+> > > > > approach.
+> > > > What are the conditions you are referring to?
+> > > It depends on the housekeeping CPUs.
+> > > > > So I'm not sure if this approach can entirely cover the frequency
+> > > > > discrepancy issue.
+> > > > Unfortunately there is no perfect frequency feedback. By the time you
+> > > > observe/use the value of scaling_cur_freq/cpuinfo_cur_freq, the frequency
+> > > > of the CPU might have already changed. Therefore, an average value might
+> > > > be a better indication of the recent performance level of a CPU.
+> > > An average value for CPU frequency is ok. It may be better if it has not any
+> > > delaying.
+> > > 
+> > > The original implementation for cpuinfo_cur_freq can more reflect their
+> > > meaning in the user-guide [1]. The user-guide said:
+> > > "cpuinfo_cur_freq : Current frequency of the CPU as obtained from the
+> > > hardware, in KHz.
+> > > This is the frequency the CPU actually runs at."
+> > > 
+> > > 
+> > > [1]https://www.kernel.org/doc/Documentation/cpu-freq/user-guide.txt
+> > > 
+> > > > Would you be able to test [1] on your platform and usecase?
+> > > I has tested it on my platform (CPU number: 64, SMT: off and CPU base
+> > > frequency: 2.7GHz).
+> > > Accoding to the testing result,
+> > > 1> I found that patch [1] and [2] cannot cover the no housekeeping CPUs.
+> > > They still have to face the large frequency discrepancy issue my patch
+> > > mentioned.
+> > > 2> Additionally, the frequency value of all CPUs are almost the same by
+> > > using the 'arch_freq_scale' factor way. I'm not sure if it is ok.
+> > > 
+> > > The patch [1] has been modified silightly as below:
+> > > -->
+> > > @@ -1756,7 +1756,10 @@ static unsigned int
+> > > cpufreq_verify_current_freq(struct cpufreq_policy *policy, b
+> > >   {
+> > >          unsigned int new_freq;
+> > > 
+> > > -       new_freq = cpufreq_driver->get(policy->cpu);
+> > > +       new_freq = arch_freq_get_on_cpu(policy->cpu);
+> > > +       if (!new_freq)
+> > > +               new_freq = cpufreq_driver->get(policy->cpu);
+> > > +
+> > As pointed out this change will not make it to the next version of the patch.
+> > So I'd say you can safely ignore it and assume that arch_freq_get_on_cpu will
+> > only be wired for sysfs nodes for scaling_cur_freq/cpuinfo_cur_freq
+> > >          if (!new_freq)
+> > >                  return 0;
+> > > 
+> > > And the result is as follows:
+> > > *case 1:**No setting the nohz_full and cpufreq use performance governor*
+> > > *--> Step1: *read 'cpuinfo_cur_freq' in no pressure
+> > >    0: 2699264     2: 2699264     4: 2699264     6: 2699264
+> > >    8: 2696628    10: 2696628    12: 2696628    14: 2699264
+> > >   16: 2699264    18: 2696628    20: 2699264    22: 2696628
+> > >   24: 2699264    26: 2696628    28: 2699264    30: 2696628
+> > >   32: 2696628    34: 2696628    36: 2696628    38: 2696628
+> > >   40: 2699264    42: 2699264    44: 2696628    46: 2696628
+> > >   48: 2696628    50: 2699264    52: 2699264    54: 2696628
+> > >   56: 2696628    58: 2696628    60: 2696628    62: 2696628
+> > >   64: 2696628    66: 2699264    68: 2696628    70: 2696628
+> > >   72: 2699264    74: 2696628    76: 2696628    78: 2699264
+> > >   80: 2696628    82: 2696628    84: 2699264    86: 2696628
+> > >   88: 2696628    90: 2696628    92: 2696628    94: 2699264
+> > >   96: 2696628    98: 2699264   100: 2699264   102: 2696628
+> > > 104: 2699264   106: 2699264   108: 2699264   110: 2696628
+> > > 112: 2699264   114: 2699264   116: 2699264   118: 2699264
+> > > 120: 2696628   122: 2699264   124: 2696628   126: 2699264
+> > > Note: the frequency of all CPUs are almost the same.
+> > Were you expecting smth else ?
+> The frequency of each CPU might have a different value.
+> All value of all CPUs is the same under high pressure.
+> I don't know what the phenomenon is on other platform.
+> Do you know who else tested it?
+So I might have rushed a bit with my previous comment/question: apologies for
+that.
+The numbers above: those are on a fairly idle/lightly loaded system right?
+Would you mind having another go with just the arch_freq_get_on_cpu
+implementation beign added and dropping the changes in the cpufreq and
+then read 'scaling_cur_freq', doing several reads in some intervals ?
+The change has been tested on RD-N2 model (Neoverse N2 ref platform),
+it has also been discussed here [1]
+
+> > > *--> Step 2: *read 'cpuinfo_cur_freq' in the high memory access pressure.
+> > >    0: 2696628     2: 2696628     4: 2696628     6: 2696628
+> > >    8: 2696628    10: 2696628    12: 2696628    14: 2696628
+> > >   16: 2696628    18: 2696628    20: 2696628    22: 2696628
+> > >   24: 2696628    26: 2696628    28: 2696628    30: 2696628
+> > >   32: 2696628    34: 2696628    36: 2696628    38: 2696628
+> > >   40: 2696628    42: 2696628    44: 2696628    46: 2696628
+> > >   48: 2696628    50: 2696628    52: 2696628    54: 2696628
+> > >   56: 2696628    58: 2696628    60: 2696628    62: 2696628
+> > >   64: 2696628    66: 2696628    68: 2696628    70: 2696628
+> > >   72: 2696628    74: 2696628    76: 2696628    78: 2696628
+> > >   80: 2696628    82: 2696628    84: 2696628    86: 2696628
+> > >   88: 2696628    90: 2696628    92: 2696628    94: 2696628
+> > >   96: 2696628    98: 2696628   100: 2696628   102: 2696628
+> > > 104: 2696628   106: 2696628   108: 2696628   110: 2696628
+> > > 112: 2696628   114: 2696628   116: 2696628   118: 2696628
+> > > 120: 2696628   122: 2696628   124: 2696628   126: 2696628
+> > > 
+> > > *Case 2: setting nohz_full and cpufreq use ondemand governor*
+> > > There is "isolcpus=1-10,41-50 nohz_full=1-10,41-50 rcu_nocbs=1-10,41-50" in
+> > > /proc/cmdline.
+> > Right, so if I remember correctly nohz_full implies rcu_nocbs, so no need to
+> > set that one.
+> > Now, afair, isolcpus will make the selected CPUs to disappear from the
+> > schedulers view (no balancing, no migrating), so unless you affine smth
+> > explicitly to those CPUs, you will not see much of an activity there.
+> Correct.
+> > Need to double check though as it has been a while ...
+> > > *--> Step 1: *setting ondemand governor to all policy and query
+> > > 'cpuinfo_cur_freq' in no pressure case.
+> > > And the frequency of CPUs all are about 400MHz.
+> > > *--> Step 2:* read 'cpuinfo_cur_freq' in the high memory access pressure.
+> > > The high memory access pressure is from the command: "stress-ng -c 64
+> > > --cpu-load 100% --taskset 0-63"
+> > I'm not entirely convinced that this will affine to isolated cpus, especially
+> > that the affinity mask spans all available cpus. If that is the case, no wonder
+> > your isolated cpus are getting wasted being idle. But I would have to double
+> > check how this is being handled.
+> > > The result:
+> > >   0: 2696628     1:  400000     2:  400000     3:  400909
+> > >   4:  400000     5:  400000     6:  400000     7:  400000
+> > >   8:  400000     9:  400000    10:  400600    11: 2696628
+> > > 12: 2696628    13: 2696628    14: 2696628    15: 2696628
+> > > 16: 2696628    17: 2696628    18: 2696628    19: 2696628
+> > > 20: 2696628    21: 2696628    22: 2696628    23: 2696628
+> > > 24: 2696628    25: 2696628    26: 2696628    27: 2696628
+> > > 28: 2696628    29: 2696628    30: 2696628    31: 2696628
+> > > 32: 2696628    33: 2696628    34: 2696628    35: 2696628
+> > > 36: 2696628    37: 2696628    38: 2696628    39: 2696628
+> > > 40: 2696628    41:  400000    42:  400000    43:  400000
+> > > 44:  400000    45:  398847    46:  400000    47:  400000
+> > > 48:  400000    49:  400000    50:  400000    51: 2696628
+> > > 52: 2696628    53: 2696628    54: 2696628    55: 2696628
+> > > 56: 2696628    57: 2696628    58: 2696628    59: 2696628
+> > > 60: 2696628    61: 2696628    62: 2696628    63: 2699264
+> > > 
+> > > Note:
+> > > (1) The frequency of 1-10 and 41-50 CPUs work on the lowest frequency.
+> > >       It turned out that nohz full was already work.
+> > >       I guess that stress-ng cannot use the CPU in the range of nohz full.
+> > >       Because the CPU frequency will be increased to 2.7G by binding CPU to
+> > > other application.
+> > > (2) The frequency of the nohz full core is calculated by get() callback
+> > > according to ftrace.
+> > It is as there is no sched tick on those, and apparently there is nothing
+> > running on them either.
+> Yes.
+> If we select your approach and the above phenomenon is normal,
+> the large frequency discrepancy issue can be resolved for CPUs with sched
+> tick by the way.
+> But the nohz full cores still have to face this issue. So this patch is also
+> needed.
+> 
+Yes, nohz cores full have to be handled by the cpufreq driver.
+
 ---
-v2->v3:
- * new patch
+[1] https://lore.kernel.org/lkml/ZIHpd6unkOtYVEqP@e120325.cambridge.arm.com/T/#m4e74cb5a0aaa353c60fedc6cfb95ab7a6e381e3c
 ---
- drivers/gpu/drm/amd/amdgpu/Kconfig | 7 -------
- drivers/gpu/drm/gma500/Kconfig     | 6 ------
- drivers/gpu/drm/i915/Kconfig       | 7 -------
- drivers/gpu/drm/radeon/Kconfig     | 7 -------
- drivers/gpu/drm/xe/Kconfig         | 6 ------
- 5 files changed, 33 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/Kconfig b/drivers/gpu/drm/amd/amdgpu/Kconfig
-index 22d88f8ef527..b2178a5a947c 100644
---- a/drivers/gpu/drm/amd/amdgpu/Kconfig
-+++ b/drivers/gpu/drm/amd/amdgpu/Kconfig
-@@ -22,13 +22,6 @@ config DRM_AMDGPU
- 	select DRM_BUDDY
- 	select DRM_SUBALLOC_HELPER
- 	select DRM_EXEC
--	# amdgpu depends on ACPI_VIDEO when ACPI is enabled, for select to work
--	# ACPI_VIDEO's dependencies must also be selected.
--	select INPUT if ACPI
--	select ACPI_VIDEO if ACPI
--	# On x86 ACPI_VIDEO also needs ACPI_WMI
--	select X86_PLATFORM_DEVICES if ACPI && X86
--	select ACPI_WMI if ACPI && X86
- 	help
- 	  Choose this option if you have a recent AMD Radeon graphics card.
- 
-diff --git a/drivers/gpu/drm/gma500/Kconfig b/drivers/gpu/drm/gma500/Kconfig
-index efb4a2dd2f80..6921ef67b256 100644
---- a/drivers/gpu/drm/gma500/Kconfig
-+++ b/drivers/gpu/drm/gma500/Kconfig
-@@ -6,12 +6,6 @@ config DRM_GMA500
- 	select FB_IOMEM_HELPERS if DRM_FBDEV_EMULATION
- 	select I2C
- 	select I2C_ALGOBIT
--	# GMA500 depends on ACPI_VIDEO when ACPI is enabled, just like i915
--	select ACPI_VIDEO if ACPI
--	select BACKLIGHT_CLASS_DEVICE if ACPI
--	select INPUT if ACPI
--	select X86_PLATFORM_DEVICES if ACPI
--	select ACPI_WMI if ACPI
- 	help
- 	  Say yes for an experimental 2D KMS framebuffer driver for the
- 	  Intel GMA500 (Poulsbo), Intel GMA600 (Moorestown/Oak Trail) and
-diff --git a/drivers/gpu/drm/i915/Kconfig b/drivers/gpu/drm/i915/Kconfig
-index b5d6e3352071..476da09433bb 100644
---- a/drivers/gpu/drm/i915/Kconfig
-+++ b/drivers/gpu/drm/i915/Kconfig
-@@ -22,13 +22,6 @@ config DRM_I915
- 	select I2C
- 	select I2C_ALGOBIT
- 	select IRQ_WORK
--	# i915 depends on ACPI_VIDEO when ACPI is enabled
--	# but for select to work, need to select ACPI_VIDEO's dependencies, ick
--	select BACKLIGHT_CLASS_DEVICE if ACPI
--	select INPUT if ACPI
--	select X86_PLATFORM_DEVICES if ACPI
--	select ACPI_WMI if ACPI
--	select ACPI_VIDEO if ACPI
- 	select ACPI_BUTTON if ACPI
- 	select SYNC_FILE
- 	select IOSF_MBI if X86
-diff --git a/drivers/gpu/drm/radeon/Kconfig b/drivers/gpu/drm/radeon/Kconfig
-index f98356be0af2..12149d594100 100644
---- a/drivers/gpu/drm/radeon/Kconfig
-+++ b/drivers/gpu/drm/radeon/Kconfig
-@@ -19,13 +19,6 @@ config DRM_RADEON
- 	select INTERVAL_TREE
- 	select I2C
- 	select I2C_ALGOBIT
--	# radeon depends on ACPI_VIDEO when ACPI is enabled, for select to work
--	# ACPI_VIDEO's dependencies must also be selected.
--	select INPUT if ACPI
--	select ACPI_VIDEO if ACPI
--	# On x86 ACPI_VIDEO also needs ACPI_WMI
--	select X86_PLATFORM_DEVICES if ACPI && X86
--	select ACPI_WMI if ACPI && X86
- 	help
- 	  Choose this option if you have an ATI Radeon graphics card.  There
- 	  are both PCI and AGP versions.  You don't need to choose this to
-diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
-index e36ae1f0d885..cf60bdcafb0c 100644
---- a/drivers/gpu/drm/xe/Kconfig
-+++ b/drivers/gpu/drm/xe/Kconfig
-@@ -19,13 +19,7 @@ config DRM_XE
- 	select DRM_MIPI_DSI
- 	select RELAY
- 	select IRQ_WORK
--	# xe depends on ACPI_VIDEO when ACPI is enabled
--	# but for select to work, need to select ACPI_VIDEO's dependencies, ick
--	select BACKLIGHT_CLASS_DEVICE if ACPI
--	select INPUT if ACPI
--	select ACPI_VIDEO if X86 && ACPI
- 	select ACPI_BUTTON if ACPI
--	select ACPI_WMI if X86 && ACPI
- 	select SYNC_FILE
- 	select IOSF_MBI
- 	select CRC32
--- 
-2.34.1
-
+BR
+Beata
+> BR
+> /huisong
+> > 
+> > Unless I am missing smth.
+> > 
+> > ---
+> > BR
+> > Beata
+> > 
+> > > [1] https://lore.kernel.org/lkml/20230418113459.12860-7-sumitg@nvidia.com/
+> > > [2] https://lore.kernel.org/lkml/20231127160838.1403404-3-beata.michalska@arm.com/
+> > > > Many thanks,
+> > > > Ionela.
+> > > > 
+> > > > > /Huisong
+> > > > > 
+> > > > > > > > [1] https://lore.kernel.org/lkml/20231127160838.1403404-1-beata.michalska@arm.com/
+> > > > > > > > 
+> > > > > > > > Thanks,
+> > > > > > > > Ionela.
+> > > > > > > > 
+> > > > > > > > > This patch adds a interface, cpc_read_arch_counters_on_cpu, to read
+> > > > > > > > > delivered and reference performance counter together. According to my
+> > > > > > > > > test[4], the discrepancy of cpu current frequency in the
+> > > > > > > > > scenarios with
+> > > > > > > > > high memory access pressure is lower than 0.2% by stress-ng
+> > > > > > > > > application.
+> > > > > > > > > 
+> > > > > > > > > [1] https://lore.kernel.org/all/20231025093847.3740104-4-zengheng4@huawei.com/
+> > > > > > > > > [2] https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomputing.com/
+> > > > > > > > > [3]
+> > > > > > > > > https://lore.kernel.org/all/20230418113459.12860-7-sumitg@nvidia.com/
+> > > > > > > > > 
+> > > > > > > > > [4] My local test:
+> > > > > > > > > The testing platform enable SMT and include 128 logical CPU in total,
+> > > > > > > > > and CPU base frequency is 2.7GHz. Reading "cpuinfo_cur_freq" for each
+> > > > > > > > > physical core on platform during the high memory access pressure from
+> > > > > > > > > stress-ng, and the output is as follows:
+> > > > > > > > >     0: 2699133     2: 2699942     4: 2698189     6: 2704347
+> > > > > > > > >     8: 2704009    10: 2696277    12: 2702016    14: 2701388
+> > > > > > > > >    16: 2700358    18: 2696741    20: 2700091    22: 2700122
+> > > > > > > > >    24: 2701713    26: 2702025    28: 2699816    30: 2700121
+> > > > > > > > >    32: 2700000    34: 2699788    36: 2698884    38: 2699109
+> > > > > > > > >    40: 2704494    42: 2698350    44: 2699997    46: 2701023
+> > > > > > > > >    48: 2703448    50: 2699501    52: 2700000    54: 2699999
+> > > > > > > > >    56: 2702645    58: 2696923    60: 2697718    62: 2700547
+> > > > > > > > >    64: 2700313    66: 2700000    68: 2699904    70: 2699259
+> > > > > > > > >    72: 2699511    74: 2700644    76: 2702201    78: 2700000
+> > > > > > > > >    80: 2700776    82: 2700364    84: 2702674    86: 2700255
+> > > > > > > > >    88: 2699886    90: 2700359    92: 2699662    94: 2696188
+> > > > > > > > >    96: 2705454    98: 2699260   100: 2701097   102: 2699630
+> > > > > > > > > 104: 2700463   106: 2698408   108: 2697766   110: 2701181
+> > > > > > > > > 112: 2699166   114: 2701804   116: 2701907   118: 2701973
+> > > > > > > > > 120: 2699584   122: 2700474   124: 2700768   126: 2701963
+> > > > > > > > > 
+> > > > > > > > > Signed-off-by: Huisong Li <lihuisong@huawei.com>
+> > > > > > > > > ---
+> > > [snip]
+> > > > .
+> > .
 
