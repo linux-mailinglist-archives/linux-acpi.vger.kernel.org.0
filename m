@@ -1,167 +1,113 @@
-Return-Path: <linux-acpi+bounces-3170-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3171-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28056846B2F
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 09:49:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D779846D76
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 11:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A857D28BC41
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 08:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10C821F20FB7
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Feb 2024 10:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B20960255;
-	Fri,  2 Feb 2024 08:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D23A77F2F;
+	Fri,  2 Feb 2024 10:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="lpOw8qrT"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M/8tfW5t"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB960243
-	for <linux-acpi@vger.kernel.org>; Fri,  2 Feb 2024 08:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EBDF9C6;
+	Fri,  2 Feb 2024 10:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706863722; cv=none; b=sNA98vOoEjUQ5RLmVFdcJWm3spFj0NaRe2jryAv4tbILb9tTkg8r22y2PJ1FVeu95B5d6IPhsHVejzxmJ35H0zg5TiLkbM0clx+DMMzD12l4THdxeeObA8ZPF/YtfZH5Zgk7Y8TFTn+Shai6u4LpZGOr/IJ/qPTJrbynlzOvZk0=
+	t=1706868786; cv=none; b=hqu3IK/mHgb3AfivkoZPBpmgRJRDG0D6Td3/73199SXO24B1RRfch/ABHMSazmz1vZIIvSAzBQcQZmIQrthk3b0MuOZlUKq31nBjHGU21065BaE5kavgmF81Ygez0nhiDBvWE3WMVkxodZHwNaWaEYghC05dX8zBy+RlWDcTNSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706863722; c=relaxed/simple;
-	bh=sxX6A1jY2QUTnGziquDNeweaFL0CvM8/+UjRl9k6dKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EVR/14fGmEwE9Y6Wciz5auFgp1I+b215Mw/hD/bC4Oj/JcDuDa5h9Ot8/S9BnWEa96bBsr39tp/ITNZU7VbgWBelcSTxRdPZXJ+Xp4/E3vv5EqN9SiKUxI+K1SNByvdPtOtyAHLpHUcNKHlZE3UiMmFFaC2zvuvOn0mCE1+/g0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=lpOw8qrT; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d7354ba334so15708755ad.1
-        for <linux-acpi@vger.kernel.org>; Fri, 02 Feb 2024 00:48:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1706863720; x=1707468520; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TItsROaQHyjEbJFLwPA4KC7BHoQVWA8FloUjcj8REgk=;
-        b=lpOw8qrT/7eEPoth7zOhVcLEX9OJWruHy4yfIfIdqquPCOvj67p5PV4ysnSJnTnSEW
-         qCwxnCOsE7nfCHNbgbIJwaz0M47byGNvhfWcaP0XNotebjeCXZcy9+zH09oTXXgunGO6
-         Nq/kYlqIz+ZHMwJlGCFVp7Wn0NFGLegQQdCbIkR1Dw2NlA2p8oXAuFSlyxzFUwq976c8
-         M5MpsXewjGUnFOrvBLuMfQVErU35kcW6O+bEIOHzvAmiA0ytXdAnV96XTQIr+j9pXjsI
-         nwicTAbaFkyI3IAfO2vAvHLlB0i5yud7pRqT/hW5SwIb3sjjWDc2eEVe3u3Tc2VOmZpD
-         aJ8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706863720; x=1707468520;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TItsROaQHyjEbJFLwPA4KC7BHoQVWA8FloUjcj8REgk=;
-        b=rLAG3rGcBTE+ZSo7XWKsgZVtR5675jShz30cR5HL/MQG4cfJ53cS4mLXd4VWDXPcic
-         igS3z8BYpULDlzIydISs2VlNiM1wbbF3h5HThVrkZ759alz6Av/cU0Zh4ct92RdAYHD8
-         n8Lx7TBB2kqK1dABHk03tX0VZv6eE7CwbGdR8GpNkh8oTrz8Dr8jTkDvqBSJuIHyanOH
-         7MNDZe/TgyfttH2C8OELJN1EMgxSsv5l69Z5FBk6Tk01PLsPIQKAp1Ukje94PvcDdrDK
-         8XuwAbAbevawUJt9k+3zk5oWFfUZN3y+BQfffhMxGdjz45kXm1exP1Npu2vFjSbVTp7K
-         DCvQ==
-X-Gm-Message-State: AOJu0YxSKH7i9ZHiiLV9/EUoUb3IN3P1yP77T8Njvs6V22DONpj2Hvf5
-	KifuNG/dl6kf9YrlFr8hTbhfgsB10EkORIyy5kIVWREYOg5uCbc6tr1zG2KlevM=
-X-Google-Smtp-Source: AGHT+IFKJTKBJ1qZaEdzHRI6R3ULv7nSG6aIb1erLw8eof4kdB83jJqiV5IsTHm9r+TtHnCR1jZmWQ==
-X-Received: by 2002:a17:90a:9415:b0:293:eaec:fd67 with SMTP id r21-20020a17090a941500b00293eaecfd67mr7058447pjo.14.1706863719736;
-        Fri, 02 Feb 2024 00:48:39 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXTEwJbtE+hsf4fe9iCtFquFGaddaPiWZ6SnyAr0Einu4dhTiJbRdR7UsVh3wDijhbLCJy4cgq+WMa32kNB4DVIJ2CTvjvXu0QA+jepl2n5oU047rQfjh9yHEHsiiZ+3aZVPN2LIIzPHR59vKArcMIcOGJnWSGcxBhqXb0TN0G04w4wTYfPowAIDmztFuw3hXmNVpH/zvuBW4p/QvlVMswA4AJlDPiFke0+cJC8VBOZEPAQgzm4hnXEjuGRTNbSYioOI/Q++uuarI9wkhlxcl5I/iYC8zOTF+O5BAWMOKXF8GJmHwEOCoeUxQ21aQ/KeZpdSNG+68oMJ51E2GniW1hMaJrxApOTFBMSMCQGwlT0ne8wRSNvA2p5z5j4f9Y1MkgOUW/sdryWa5PgJxIHDqPHSheCrCT7xbEOIL8mNdusCKQpve8UzaMbCRG6fEz3HztBo4io4GCsbdgYf/1hEo6jY7yscTM4euX7ng586XMYFPY4lUWHwAeHZb1XYtHyRIKmbQ43J31dY25rJbxYBSi2SXlZTf1I+etr5v6pZjLBurjzWF9YzWmS602pOBZV+Th8SH99xW9a0+HO/D+WYHwmaRpdLRXX+xGrUGyJKI4iS992HPL5L2yc2C19Aiu/pkxxCLNMOjjMh6SewbZHG5CEqgva9cPnS9GJGjqgxTvbudduv7QTe0cO9p6r6VSsC1kZ
-Received: from sunil-laptop ([106.51.184.12])
-        by smtp.gmail.com with ESMTPSA id kb3-20020a17090ae7c300b0029647c140ddsm564007pjb.17.2024.02.02.00.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Feb 2024 00:48:39 -0800 (PST)
-Date: Fri, 2 Feb 2024 14:18:31 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-serial@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Haibo Xu <haibo1.xu@intel.com>
-Subject: Re: [RFC PATCH v2 05/21] pnp.h: Return -EPROBE_DEFER for disabled
- IRQ resource in pnp_irq()
-Message-ID: <ZbysXzWX6FH5e6AH@sunil-laptop>
-References: <20231025202344.581132-1-sunilvl@ventanamicro.com>
- <20231025202344.581132-6-sunilvl@ventanamicro.com>
- <CAJZ5v0hHYa4c2U-tegdBtoTak=MirXwyBXbN9yrWPx_x-+yMzg@mail.gmail.com>
+	s=arc-20240116; t=1706868786; c=relaxed/simple;
+	bh=dHJGRlevi/QAVq8fajBfMOVi2PTkZsb3r4E3Fh7Ef0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hPgBQTa46jkpoRKqEXAOuOG3jtyPSvsP8aoWBfCXr2DGe26jaBwhnmb6jhk2ZDThHOQ2kaK4zGy6bnakVfUNG9g+FOJRGVHbqGngOYKyq54IvBgBgNev+lmjWsJC0C+MCMtxk0wY5wt22pvjZuwg7RnWWzQl3Wu4DZ/8gW+XQXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M/8tfW5t; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4121X6mY020285;
+	Fri, 2 Feb 2024 10:12:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=dHJGRlevi/QAVq8fajBfMOVi2PTkZsb3r4E3Fh7Ef0I=; b=M/
+	8tfW5tDycQFiPA/rmt1Z6KUkmzypEUGE70Kw4PNiHHYiWCed4rU3mPOSvat7JQDb
+	/ZjXdLFMKhQkTuF6EikqdLCQa/7byMRD+0EWffHnmIO1SwQ74Uq0rcTuKq8up1QR
+	54ooWBueOv8ReKl1IZOrM7VDZE0w0cBYonZMSDkidd7Bz7L4vBSWiPLiRKeblVCz
+	ro9oNt5UgHaYhzKdyZLlN7YleULGOfEFLTzrKN4JEJKLygY5n5Xb3pZ6rd1JTNu5
+	SanNju7BDB975ASnLD4EB5kQzCRW5uY9HQ6r8sgKSFb6XcpyjFnygMtaUPbE9nBm
+	tfTdkrZEaM99jbuzi8Qg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w0ptxh3r4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 Feb 2024 10:12:37 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 412ACaAt001367
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 2 Feb 2024 10:12:36 GMT
+Received: from [10.50.50.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Fri, 2 Feb
+ 2024 02:12:32 -0800
+Message-ID: <1fc07430-40bf-42ce-b6f3-316c4d3ced87@quicinc.com>
+Date: Fri, 2 Feb 2024 15:42:29 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hHYa4c2U-tegdBtoTak=MirXwyBXbN9yrWPx_x-+yMzg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/5] drm: Drop unneeded selects in DRM drivers
+Content-Language: en-US
+To: Mario Limonciello <mario.limonciello@amd.com>,
+        <amd-gfx@lists.freedesktop.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        "Rafael J . Wysocki"
+	<rafael@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>
+CC: "open list:ACPI" <linux-acpi@vger.kernel.org>,
+        open list
+	<linux-kernel@vger.kernel.org>,
+        "open list:DRM DRIVERS"
+	<dri-devel@lists.freedesktop.org>,
+        Melissa Wen <mwen@igalia.com>,
+        Mark
+ Pearson <mpearson-lenovo@squebb.ca>
+References: <20240201221119.42564-1-mario.limonciello@amd.com>
+ <20240201221119.42564-6-mario.limonciello@amd.com>
+From: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
+In-Reply-To: <20240201221119.42564-6-mario.limonciello@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: LtARww-F6AFB766SHH_-hrgefCFa-wVI
+X-Proofpoint-GUID: LtARww-F6AFB766SHH_-hrgefCFa-wVI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-02_04,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ spamscore=0 suspectscore=0 mlxlogscore=515 mlxscore=0 phishscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402020074
 
-On Thu, Feb 01, 2024 at 07:00:51PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Oct 25, 2023 at 10:24 PM Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >
-> > To support deferred PNP driver probe, pnp_irq() must return -EPROBE_DEFER
-> > so that the device driver can do deferred probe if the interrupt controller
-> > is not probed early.
-> >
-> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  include/linux/pnp.h | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> > index c2a7cfbca713..21cf833789fb 100644
-> > --- a/include/linux/pnp.h
-> > +++ b/include/linux/pnp.h
-> > @@ -147,12 +147,18 @@ static inline resource_size_t pnp_mem_len(struct pnp_dev *dev,
-> >  }
-> >
-> >
-> > -static inline resource_size_t pnp_irq(struct pnp_dev *dev, unsigned int bar)
-> > +static inline int pnp_irq(struct pnp_dev *dev, unsigned int bar)
-> >  {
-> >         struct resource *res = pnp_get_resource(dev, IORESOURCE_IRQ, bar);
-> >
-> > -       if (pnp_resource_valid(res))
-> > +       if (pnp_resource_valid(res)) {
-> > +#if IS_ENABLED(CONFIG_ARCH_ACPI_DEFERRED_GSI)
-> > +               if (!pnp_resource_enabled(res))
-> > +                       return -EPROBE_DEFER;
-> > +#endif
-> 
-> What would be wrong with
-> 
-> if (IS_ENABLED(CONFIG_ARCH_ACPI_DEFERRED_GSI) && !pnp_resource_enabled(res))
->         return -EPROBE_DEFER;
-> 
-> ?
-Hi Rafael,
 
-Actually, this is v2 version of the patch and there is recent v3. Please
-take a look at [1] for the latest version.
-
-However, your comment is still valid for v3. I will update as you
-mentioned.
-
-[1] - https://lore.kernel.org/linux-arm-kernel/20231219174526.2235150-7-sunilvl@ventanamicro.com/
-
-Thanks,
-Sunil
-> 
-> > +
-> >                 return res->start;
-> > +       }
-> >         return -1;
-> >  }
-> >
-> > --
-> > 2.39.2
-> >
+On 2/2/2024 3:41 AM, Mario Limonciello wrote:
+> All of the selects on ACPI_VIDEO are unnecessary when DRM does the
+> select for ACPI_VIDEO as it provides a helper for acpi based EDID.
+>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Pranjal Ramajor Asha Kanojiya <quic_pkanojiy@quicinc.com>
 
