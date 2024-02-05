@@ -1,131 +1,132 @@
-Return-Path: <linux-acpi+bounces-3225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A98B8499D7
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F9F849A7E
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B3CFB2A732
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 12:16:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB583B27230
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 12:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6051BF32;
-	Mon,  5 Feb 2024 12:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE5A1BDCB;
+	Mon,  5 Feb 2024 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeEkOPAo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XQOtvsZf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEB61BDD9;
-	Mon,  5 Feb 2024 12:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF51D2C84C;
+	Mon,  5 Feb 2024 12:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707134974; cv=none; b=OhS4X3pp3w7TsXsPc8DVVxNNq9wSZmniK6KCFi4navZyLtKTxLTEJnD8Glqyj0YdpTUgfji4W2/70xX40rKW/lNYMODHHoHcbQ4eI5RbWdLbgBoHCNY3daundtn9NO0HpUYBV669xs2HIEKWZ4VTpKAreF4FTTrSoiC5kZyh+rM=
+	t=1707136588; cv=none; b=GURVY4eUpirlt/Y7+FNHqBZ3WMcoOPeARr623sJiWk/2jDVkZx5OZrilMRqjfitXxwoBZxLTvEojfZwueVenKCiniZNZYR4FksHuG0mNDE5+tSn/F6m3edcDFKpKoqHvlNW7IEZU/wMxkhS+AmgPWmmT8vK/ozyCHjbbvkgYeVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707134974; c=relaxed/simple;
-	bh=76bLnTFW8hOss6IF1pWTx33Eugtw/u1ls0YA9hmCWJA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ca8Dkl/FhF3QKsk7zml+ZdrALFX534sntgNGbhR3zrqEjCzwDesYjMEFuBQ17CIMvAB6xl5MNic3thf+cUwE+JGVIi++6LOFc/Scua/Sy5XPvqF7mDoyOOWNua4MyXdpMiUGcEHNtq5fAZ6GnDLx17mitDNBnuRJwzNv8v4u5Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeEkOPAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 45979C433B1;
-	Mon,  5 Feb 2024 12:09:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707134974;
-	bh=76bLnTFW8hOss6IF1pWTx33Eugtw/u1ls0YA9hmCWJA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BeEkOPAoDv3chM+cAnfF5sgZRJD+P+xxeL/K+BBHS5at2/1Gi2+l1bWs8aaYvPucf
-	 XcoXBie0Jn+6ZWjon2DIURx5TZvYoGVQSG8d13zNY9HdU+rMJyAUDOehijidCe08s7
-	 goBwyQh8IlalNMRGy8mubR47Se4m+W4BD1MEyxRrI6DG861k4xIiI0xyIZwCsHI+aC
-	 kSYsjcquM/yFejppnINsiPz6ImRnpzE1JMqfdcoCZricpEO84Uuc7ePwsSH/UzpNtx
-	 4Op3VGcVQO+8mpnEQ4CW0rNdz8ZZuvZOOtKxYPhSiXZSV0MpDrETq5mibcvy7wQAE7
-	 s09GZ1V+VXGGg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2518FC4828D;
-	Mon,  5 Feb 2024 12:09:34 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 05 Feb 2024 13:09:33 +0100
-Subject: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+	s=arc-20240116; t=1707136588; c=relaxed/simple;
+	bh=dA7t09iSTZBR9qJHJtb0Kd3uzZQ9x94EEo0iVVGv9CQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aWuGtPGnwibQUUK6WDkLlyfoyq7tlHM1wPFpEVg46tdsIgBRqMFvtjEdVu8aJ36jf493dW23A0uy+9FCZSWAdMimnAe7iASNuqRIPFrsuS9MYnPfSY+ec7Rm3+KCR/24Ap0HXwec20kydL0+NPBL8aTa1aGTXpx0KXQv56krh+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XQOtvsZf; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707136587; x=1738672587;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dA7t09iSTZBR9qJHJtb0Kd3uzZQ9x94EEo0iVVGv9CQ=;
+  b=XQOtvsZfDcCHaNEEwcjg/9ht4M9H7yys5U5r8WW/hm2/anlNXoUQDZh1
+   fP2PisfvwxkWkuItOgIkfW3YqSLL6L1kCIV/qvZ8ibJDrYnVdGBJjCg0O
+   AOheK7vUSxLwBviprztBpcFPTC+bixqO+yIBHsqKwXeJW83+rnXicBBrV
+   7K5a3TqNL0zXtsvU7QLIix6xgsNgEW7vvDFHoLPiPvuCobDpVj/ZXDsxZ
+   BLrTYr+7qQzmZ7HX106RFn97MIb+B9oLqHcjn1J70On1HbggfMsjKPrg+
+   aXIZt4OBjST9znbWIKbfMW435rYenLHVE3dCb3L/de/kx3Vsq2O39zMUt
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="11883184"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="11883184"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 04:36:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="909285570"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="909285570"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 04:36:23 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rWyCy-0000000248J-0zC9;
+	Mon, 05 Feb 2024 14:36:20 +0200
+Date: Mon, 5 Feb 2024 14:36:19 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: nuno.sa@analog.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
  destroying the changeset
+Message-ID: <ZcDWQ52BGix3ocUC@smile.fi.intel.com>
+References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
+ <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
-References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
-In-Reply-To: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1707134972; l=1506;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=YDuksPxVzpgUXsXtMiptrKAHNtqa9E4wT61h67KKExU=;
- b=+pR9xIxPkbxkT8MxATu4NfCBUJ+zzK6rP+cyMoqKYeDDvSxTJi8Gd3uvMlCO1CEC8rqyBMLCI
- WWMLTeb8A1LDHRH9Rh6EZ0RqMEszqHesQn9jA8kbQP8zEix/vgTjyD3
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Mon, Feb 05, 2024 at 01:09:33PM +0100, Nuno Sa via B4 Relay wrote:
+> From: Nuno Sa <nuno.sa@analog.com>
+> 
+> Device links will drop their supplier + consumer refcounts
+> asynchronously. That means that the refcount of the of_node attached to
+> these devices will also be dropped asynchronously and so we cannot
+> guarantee the DT overlay assumption that the of_node refcount must be 1 in
+> __of_changeset_entry_destroy().
+> 
+> Given the above, call the new fwnode_links_flush_queue() helper to flush
+> the devlink workqueue so we can be sure that all links are dropped before
+> doing the proper checks.
 
-Device links will drop their supplier + consumer refcounts
-asynchronously. That means that the refcount of the of_node attached to
-these devices will also be dropped asynchronously and so we cannot
-guarantee the DT overlay assumption that the of_node refcount must be 1 in
-__of_changeset_entry_destroy().
+Have you seen my comments against v1?
 
-Given the above, call the new fwnode_links_flush_queue() helper to flush
-the devlink workqueue so we can be sure that all links are dropped before
-doing the proper checks.
+> +++ b/drivers/of/dynamic.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/string.h>
+>  #include <linux/proc_fs.h>
+> +#include <linux/fwnode.h>
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/of/dynamic.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Try to squeeze this to make it ordered (with given context it may go before
+linux/s* ones, but maybe you may find a better spot).
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 3bf27052832f..b7153c72c9c9 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -14,6 +14,7 @@
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/proc_fs.h>
-+#include <linux/fwnode.h>
- 
- #include "of_private.h"
- 
-@@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
- 
- static void __of_changeset_entry_destroy(struct of_changeset_entry *ce)
- {
-+	/*
-+	 * device links drop their device references (and hence their of_node
-+	 * references) asynchronously on a dedicated workqueue. Hence we need
-+	 * to flush it to make sure everything is done before doing the below
-+	 * checks.
-+	 */
-+	fwnode_links_flush_queue();
- 	if (ce->action == OF_RECONFIG_ATTACH_NODE &&
- 	    of_node_check_flag(ce->np, OF_OVERLAY)) {
- 		if (kref_read(&ce->np->kobj.kref) > 1) {
+...
+
+> +	/*
+> +	 * device links drop their device references (and hence their of_node
+
+Device links...
+
+> +	 * references) asynchronously on a dedicated workqueue. Hence we need
+> +	 * to flush it to make sure everything is done before doing the below
+> +	 * checks.
+> +	 */
 
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 
