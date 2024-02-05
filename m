@@ -1,144 +1,230 @@
-Return-Path: <linux-acpi+bounces-3220-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3221-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE948493A8
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 07:04:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB379849562
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 09:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85DF2825E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 06:04:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D641F21C8C
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 08:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A66BA34;
-	Mon,  5 Feb 2024 06:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AB2111A4;
+	Mon,  5 Feb 2024 08:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kei2qE6/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hvl26cQ0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2083.outbound.protection.outlook.com [40.107.237.83])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B8010A09;
-	Mon,  5 Feb 2024 06:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.83
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707113058; cv=fail; b=S3mKy2hEXp8agIBPj3xnse6KXnPL/SaaU/mkmwJuhN16OHBxz01w7fETqbCdi+XJt6nb6lc1qtMLndNRIvoYBj2ef/aWKWDrqpnkr5oN8SkMaXlRANSbkMojgmDXPOzMMazLuuKc6Kf8veUT/CL6Q0k+ZcRclhHnrRHR/dYfdSM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707113058; c=relaxed/simple;
-	bh=5bdAiRAk/l152HqTBwD2uoe7FkXNh1INEkyYl9QjsRU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mDE/cW4b15vKew3qnPGdVv+U6/PNuonU07TKTRLbX+d1+Z2ri2/7Nm2fz41tq2hGGOWF+UGO5daJEbJNX43Begtvu1jEPcG04+fBWdRZ/J1hjYRd7R/ZdS4jIeJJiOiYvb9o1ZJYaSH638PxzH+5NJbeSYcfaX4btC0WPjKYaOw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kei2qE6/; arc=fail smtp.client-ip=40.107.237.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O4GAC7QkUJBTtRcf5bCRibqxTeUp4JB5RfT49vk1EPgKD8t8zZKXQC2VIF95NziuUmeR0m7Hg09vnmu+v04lNt9ntwcN3NvEW0kK+KtKYegF/NdXylP4Zv8rCa/p8L4U80wSUmmwRikMFkkWxp94vw4NgdzIRd2nVB2ZleTL5wqxvmTSEJMM4UNRNTOl1aU1wUjrR+Tpc+jEq3MtOZ2YjUk258w8Bw061y7jm8Fly1IRU+C9UnR+0BFWMRh6E42FpXzhCP/F52194/zBWyL8XhArH3p1IoFJuj592cfux7UOykVEvIkeM+6goheAYvlpCS1v8FItCR5gSfwq0R/YVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t8/TJOxeoX5B1QWRHui5UbGv+vdgRdbntv/9SDefCE0=;
- b=QpDsaKjAZMclU3aXUbfpNIgRXZF6fmg/saJddRsBRmIuc4DG7zQSF7chtYqkifZYlSLALmPZWGFImu5k5Dlv7Vt2G21onuSdhNAD/59MbzO8xAPfkIqiga7Xq4+Es51bzX3ipChQx974rAysKw2/+ZOyPtPtMGCriXNaYglVywrA+OCDUZWuEJK1mgW64J3iB53urK/+rYMHfkr/2OtuGzVUsZp+ckBJG9XOUSmbUznP9gmnwxpS2tSecXpX/5iG0C+gndsS1FY9CENS/t/WSFB0xOpSUz1qV2ACT0ccJdC5jiTeV87avOeK/enQ7/7mRP5oQm+p623OPw4jQCvJ/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t8/TJOxeoX5B1QWRHui5UbGv+vdgRdbntv/9SDefCE0=;
- b=kei2qE6/y4zujNZW59lKTqs5Z3Z0k78RSy02RN4KaXSTh1gAjpREnTYS4XBP4dgJ/9Pr4eZVp/fjJPD7+3mpw1KCCX7f/au3RD5CU4xLo76sIlmoicdDPNcyRlp90RkpopWAmB/SRPoiOg1VdiILm3TLteNUBlZIx0IWi/VJNfg=
-Received: from MN2PR13CA0019.namprd13.prod.outlook.com (2603:10b6:208:160::32)
- by MN2PR12MB4359.namprd12.prod.outlook.com (2603:10b6:208:265::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.14; Mon, 5 Feb
- 2024 06:04:14 +0000
-Received: from BL02EPF0001A0FC.namprd03.prod.outlook.com
- (2603:10b6:208:160:cafe::15) by MN2PR13CA0019.outlook.office365.com
- (2603:10b6:208:160::32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.26 via Frontend
- Transport; Mon, 5 Feb 2024 06:04:13 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A0FC.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7249.19 via Frontend Transport; Mon, 5 Feb 2024 06:04:13 +0000
-Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 5 Feb
- 2024 00:04:07 -0600
-From: Meng Li <li.meng@amd.com>
-To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Borislav Petkov
-	<bpetkov@amd.com>, Huang Rui <ray.huang@amd.com>
-CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
-	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
- Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
- Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, "Oleksandr
- Natalenko" <oleksandr@natalenko.name>, Meng Li <li.meng@amd.com>
-Subject: [PATCH] Fix the warning of amd-pstate.rst.
-Date: Mon, 5 Feb 2024 14:03:05 +0800
-Message-ID: <20240205060305.3594942-1-li.meng@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688C511C84;
+	Mon,  5 Feb 2024 08:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707121789; cv=none; b=JGeJU5yHmZa1iPESWtqA6P7xLZ30hyR3n98roOhB0+VeTjGb8Xrtnsmoch4zBc2u01RsdDkDDPdt7QYaneW1fCvjvdVv3ao3tP5ZTiP/95aGzL6z9//BRVOCEkS088XrUKhCDrwmtZNoOZrj/jiiQP2W3Te31Kue50zeFOUN1F4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707121789; c=relaxed/simple;
+	bh=p/ylGTSPNvK1bKWPE19+VRoe5D5yOHh/N6a9RKvsL/Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dx3Th1yXnKW/PDIgdeTLD9YwwVPX4+u8sQc9VdI49SDAEpYwKljP53tiGqUP5hwjeZBfdqTE6kekSxgDs+o1UtAmCUZ4v+9VOewyYp6Q4gSV1fNfH0sTff+hXrlMZTLsQPOtvuHVBnxu7NAJ5TleuB8ezLuE5DbQtwP3LR5Ps9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hvl26cQ0; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-51137c8088dso3719288e87.1;
+        Mon, 05 Feb 2024 00:29:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707121785; x=1707726585; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p/ylGTSPNvK1bKWPE19+VRoe5D5yOHh/N6a9RKvsL/Q=;
+        b=hvl26cQ0yssJL7Oiq9c5Vw1mVtO+/0soXfsiM/Kba5YviGn9zeMXavR/E2d7Q2DBdF
+         hFTLJJu5iNZUX2jw99ZLUtnwpD6Y18aybdRxBlLXCxWUXq4Ewe98eINYA7maWAPXxEyM
+         oCXwDU5/N008Popf4tV/5mX/TNjIPKHO2J4V1LatU+soPC0m+56Yo6FDp6TLSx7DZ0JO
+         CeJGYUlwmMrKDylxuS9HUztwFz/fNJMwNMzhZDjvA/GX9grb5Xjy9NT8ZGdrzOYfOu2f
+         MDobW7uV6Aaa4zAKBSuiDp3XDunnc3VRDaFQQDLUiTWBccJUEkMD/N2ipwsskd0fo7+l
+         2wRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707121785; x=1707726585;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p/ylGTSPNvK1bKWPE19+VRoe5D5yOHh/N6a9RKvsL/Q=;
+        b=IicnNVgmnZ1tqxIpFDVuoYVuZs4LnlVR/EL3JCtWtKth1wJF0+xGiLE9A3txgb8n5i
+         nBMtFXFgr8TKkuQKZtnJyUoujSD941PFyA9AqlobkNrQ6tvmJXPjjzRoJxyLvwaixyxz
+         8CnQy6y+TEVPW7El2I+RPYbRYSS2J77G8HEPeGZYQOttNcYdHp701A8uTOKhUxTk6XgT
+         w53n2EbJWJfSIN7oO5g1oLL1lVMBRn63Ia2z7ByzsUua9QPBKUSrn/06WZhqxyIGrWv+
+         MmBTNIFxVpHKHSQyZ79sseq/2b75N3K9DSyVR3nTVUxFQWqZptCoIl42lMUu2QWMS4yP
+         4oFg==
+X-Gm-Message-State: AOJu0YzGr7r+6sWvVGlkeFtYqzXIX5K7sMuVNxMiJ4SJsbDjajg1JuYr
+	7ls12ft4+oNhmxy7/4RLPweC+qmOPxXLgu+vZMsTL2T5CwRRA9G2krn9j/ZpL1MceA==
+X-Google-Smtp-Source: AGHT+IGW5tH6lWt4Hegawu7l8ZmAdhcQMuzNG9xIvDepbxUAlR1/aIKANS7hVNAFKj2tE4w6OPbqiA==
+X-Received: by 2002:ac2:4985:0:b0:511:e7e:b2d7 with SMTP id f5-20020ac24985000000b005110e7eb2d7mr8008751lfl.5.1707121785196;
+        Mon, 05 Feb 2024 00:29:45 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCViMd5Jbo9VclBzdiZPbF2vhJLVPoOWlUqTAdbXNoHLz+c3Zw/jrg+6vVfNnEJt8lLTVxdeYOwm6zovC42fNKXiroTSMdj+DCmmQoSm52d49XHHhsCdHay2E+H+4kC+hq4Tyohlo3xL33ezL22cwgZO6XhkXIH0xLUaBjLc9EoaBdr8SUd4DldCKO1x59smC/hyNcvSM+IaJPhvctaGgHvmuN8UbbjO02e9mxAxa2IX08zC5MzAceMo08ZStUDHziVSVkfvjbrSte+qghrEiK7SqJh5katpQbkMHoTgjF2v510bPTs8xQ+8JjsQlFg/GYAc+MCIwHiXpPSdbPOPA4qN8i053N3ZryrgW03WUS6EJMAuFfCuxF4YjPL2UbRvPl2NEIQ2ZYhPU2sLZ2g91ey5H2UVbquLv4DEQ7NGoSsiDC/YSa74EieeEPNUIQ==
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id j17-20020a05600c1c1100b0040fbdd6f69bsm7879914wms.33.2024.02.05.00.29.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 00:29:44 -0800 (PST)
+Message-ID: <c4a6f0aba84c328dc31d7ec40fe3d4c2b35c6c14.camel@gmail.com>
+Subject: Re: [PATCH 1/2] driver: core: add dedicated workqueue for devlink
+ removal
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, nuno.sa@analog.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Frank Rowand
+ <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Date: Mon, 05 Feb 2024 09:29:44 +0100
+In-Reply-To: <CAJZ5v0g5JbstLhCaXcY1kawP8etB5Z4TBuGXHz8_wsrXm3CaQA@mail.gmail.com>
+References: 
+	<20240202-fix-device-links-overlays-v1-0-f9fd1404c8e2@analog.com>
+	 <20240202-fix-device-links-overlays-v1-1-f9fd1404c8e2@analog.com>
+	 <CAJZ5v0g5JbstLhCaXcY1kawP8etB5Z4TBuGXHz8_wsrXm3CaQA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FC:EE_|MN2PR12MB4359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 61b640e8-5d4c-405f-8206-08dc2610476e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	AFxNiy0LW1mFXxpkKr+hHM+0lryalU3nxP54abietZc4XXzblZhhHXif3p+M1UDIs89FmC3D4k5gdllA7+JR/3mgM8azi98SAIbIAcyrsOaScUPT43dcQPtRjzogui+3vLvZb083ekDwMLZkfLRL44EXUzJIByhFakr4Fz6BPXwwL+PEfCe5sS0sjVVLW0ZXGymEH6Y4QD9wFl3hmyzzUiYAOjpbPBhQmgoVKfoITqkWsOgzyx14ptBWvXr355m24PJyMzKLLKuf1wQUxKJZ1DKUBqzWLv5/P/WpY0AfYU6BtoEYa+I7sXURfrPZKartXm1tPd8Nj2o+PWSaGfux5+l/WTXgcyRNkshdhKvG+i411rn9Pcrmb40H4YRNhieHM/nfNGVyqz2TT7cJZBZJlt/Y2krIp4mq4h8e1oMYbOqyUBQ5JbTWu5vWEQ2JXvq17Ya0xa+T4hKkq3YA7yFm1bd+G0uQOByYqX1EmBNMQrTHqtZtxpLVTLVCZlU1Sacsmbjl5Us09UYXCtSkSNGPtNk6qloiw5j80PXQ1JjMzG6yBMTB6lyD9AX5lN2LRGLn3AvZkuLUoOu8UXRYrd//WUrFnz9jG1qjQ+yfjm+KWoEBKFyRl7dUrHBPtsLFCCU5D2t10AOzxlP5tc7tivxZBH4ezd+uA2l9FlEhjqc5JMC+Xu/WQjgUubUj0pmTmwfqB4R//V4+Lh0ijUmYRryM1eDPmgYPxm2EW08VUlYmoZVyYhkh1qEmI0ghCFaMpMq/rTK6GSVa4vJMkXwvkLBf+Q==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(396003)(136003)(230922051799003)(64100799003)(1800799012)(82310400011)(186009)(451199024)(36840700001)(46966006)(40470700004)(110136005)(316002)(6636002)(83380400001)(54906003)(81166007)(82740400003)(356005)(2616005)(26005)(70206006)(7696005)(4326008)(86362001)(2906002)(5660300002)(4744005)(7416002)(70586007)(478600001)(426003)(47076005)(16526019)(1076003)(336012)(8676002)(8936002)(36756003)(40480700001)(40460700003)(36860700001)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2024 06:04:13.9055
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 61b640e8-5d4c-405f-8206-08dc2610476e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A0FC.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4359
 
-Title under line too short
+On Fri, 2024-02-02 at 16:59 +0100, Rafael J. Wysocki wrote:
+> On Fri, Feb 2, 2024 at 1:18=E2=80=AFPM Nuno Sa via B4 Relay
+> <devnull+nuno.sa.analog.com@kernel.org> wrote:
+> >=20
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Let's use a dedicated queue for devlinks since releasing a link happens
+> > asynchronously but some code paths, like DT overlays, have some
+> > expectations regarding the of_node when being removed (the refcount mus=
+t
+> > be 1). Given how devlinks are released that cannot be assured. Hence, a=
+dd a
+> > dedicated queue so that it's easy to sync against devlinks removal.
+>=20
+> Thanks for following my suggestion!
+>=20
+> > While at it, make sure to explicitly include <linux/workqueue.h>.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 33 ++++++++++++++++++++++=
++++++++----
+> > =C2=A0include/linux/fwnode.h |=C2=A0 1 +
+> > =C2=A02 files changed, 30 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 14d46af40f9a..06e7766b5227 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -31,6 +31,7 @@
+> > =C2=A0#include <linux/swiotlb.h>
+> > =C2=A0#include <linux/sysfs.h>
+> > =C2=A0#include <linux/dma-map-ops.h> /* for dma_default_coherent */
+> > +#include <linux/workqueue.h>
+> >=20
+> > =C2=A0#include "base.h"
+> > =C2=A0#include "physical_location.h"
+> > @@ -44,6 +45,7 @@ static bool fw_devlink_is_permissive(void);
+> > =C2=A0static void __fw_devlink_link_to_consumers(struct device *dev);
+> > =C2=A0static bool fw_devlink_drv_reg_done;
+> > =C2=A0static bool fw_devlink_best_effort;
+> > +static struct workqueue_struct *devlink_release_queue __ro_after_init;
+> >=20
+> > =C2=A0/**
+> > =C2=A0 * __fwnode_link_add - Create a link between two fwnode_handles.
+> > @@ -235,6 +237,11 @@ static void __fw_devlink_pickup_dangling_consumers=
+(struct
+> > fwnode_handle *fwnode,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 __fw_devlink_pickup_dangling_consumers(child, new_sup=
+);
+> > =C2=A0}
+> >=20
+> > +void fwnode_links_flush_queue(void)
+> > +{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_workqueue(devlink_release_q=
+ueue);
+> > +}
+> > +
+> > =C2=A0static DEFINE_MUTEX(device_links_lock);
+> > =C2=A0DEFINE_STATIC_SRCU(device_links_srcu);
+> >=20
+> > @@ -531,9 +538,10 @@ static void devlink_dev_release(struct device *dev=
+)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * It may take a while =
+to complete this work because of the SRCU
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * synchronization in d=
+evice_link_release_fn() and if the consumer or
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * supplier devices get=
+ deleted when it runs, so put it into the "long"
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * workqueue.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devlink workqueue.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(system_long_wq, &link-=
+>rm_work);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 queue_work(devlink_release_queue,=
+ &link->rm_work);
+> > =C2=A0}
+> >=20
+> > =C2=A0static struct class devlink_class =3D {
+> > @@ -636,10 +644,27 @@ static int __init devlink_class_init(void)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 return ret;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D class_interface_regi=
+ster(&devlink_class_intf);
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 class_unregister(&devlink_class);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 return ret;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Using a dedicated queue f=
+or devlinks since releasing a link happens
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * asynchronously but some c=
+ode paths, like DT overlays, have some
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * expectations regarding th=
+e of_node when being removed (the refcount
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * must be 1). Given how dev=
+links are released that cannot be assured.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Hence, add a dedicated qu=
+eue so that it's easy to sync against
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * devlinks removal.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 devlink_release_queue =3D alloc_w=
+orkqueue("devlink_release", 0, 0);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!devlink_release_queue) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 class_interface_unregister(&devlink_class_intf);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 class_unregister(&devlink_class);
+>=20
+> This is a bit drastic.
+>=20
+> I think that device links can still work if devlink_release_queue is
+> NULL, just devlink_dev_release() needs to check it and release
+> synchronously if it is NULL.
+>=20
 
-Signed-off-by: Meng Li <li.meng@amd.com>
----
- Documentation/admin-guide/pm/amd-pstate.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Agreed, I'll do that way. It will always synchronously remove the links (wh=
+ich is
+different than before) but I guess that failing in allocating the queue is =
+rather
+unlikely.
 
-diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-index 0a3aa6b8ffd5..1e0d101b020a 100644
---- a/Documentation/admin-guide/pm/amd-pstate.rst
-+++ b/Documentation/admin-guide/pm/amd-pstate.rst
-@@ -381,7 +381,7 @@ driver receives a message with the highest performance change, it will
- update the core ranking and set the cpu's priority.
- 
- ``amd-pstate`` Preferred Core Switch
--=================================
-+=====================================
- Kernel Parameters
- -----------------
- 
--- 
-2.34.1
+- Nuno S=C3=A1
+
 
 
