@@ -1,132 +1,244 @@
-Return-Path: <linux-acpi+bounces-3226-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3227-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F9F849A7E
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:38:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872CF849B91
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 14:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB583B27230
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 12:38:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0269DB25C4B
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE5A1BDCB;
-	Mon,  5 Feb 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E1F1CA88;
+	Mon,  5 Feb 2024 13:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XQOtvsZf"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="P0jfeNNH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF51D2C84C;
-	Mon,  5 Feb 2024 12:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707136588; cv=none; b=GURVY4eUpirlt/Y7+FNHqBZ3WMcoOPeARr623sJiWk/2jDVkZx5OZrilMRqjfitXxwoBZxLTvEojfZwueVenKCiniZNZYR4FksHuG0mNDE5+tSn/F6m3edcDFKpKoqHvlNW7IEZU/wMxkhS+AmgPWmmT8vK/ozyCHjbbvkgYeVU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707136588; c=relaxed/simple;
-	bh=dA7t09iSTZBR9qJHJtb0Kd3uzZQ9x94EEo0iVVGv9CQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aWuGtPGnwibQUUK6WDkLlyfoyq7tlHM1wPFpEVg46tdsIgBRqMFvtjEdVu8aJ36jf493dW23A0uy+9FCZSWAdMimnAe7iASNuqRIPFrsuS9MYnPfSY+ec7Rm3+KCR/24Ap0HXwec20kydL0+NPBL8aTa1aGTXpx0KXQv56krh+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XQOtvsZf; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707136587; x=1738672587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dA7t09iSTZBR9qJHJtb0Kd3uzZQ9x94EEo0iVVGv9CQ=;
-  b=XQOtvsZfDcCHaNEEwcjg/9ht4M9H7yys5U5r8WW/hm2/anlNXoUQDZh1
-   fP2PisfvwxkWkuItOgIkfW3YqSLL6L1kCIV/qvZ8ibJDrYnVdGBJjCg0O
-   AOheK7vUSxLwBviprztBpcFPTC+bixqO+yIBHsqKwXeJW83+rnXicBBrV
-   7K5a3TqNL0zXtsvU7QLIix6xgsNgEW7vvDFHoLPiPvuCobDpVj/ZXDsxZ
-   BLrTYr+7qQzmZ7HX106RFn97MIb+B9oLqHcjn1J70On1HbggfMsjKPrg+
-   aXIZt4OBjST9znbWIKbfMW435rYenLHVE3dCb3L/de/kx3Vsq2O39zMUt
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="11883184"
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="11883184"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 04:36:26 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="909285570"
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="909285570"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 04:36:23 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rWyCy-0000000248J-0zC9;
-	Mon, 05 Feb 2024 14:36:20 +0200
-Date: Mon, 5 Feb 2024 14:36:19 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: nuno.sa@analog.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A247420DCB;
+	Mon,  5 Feb 2024 13:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707138654; cv=fail; b=eKjUhbwTuQvaGy3mYoZMU3wO7+9FV+p+tEDKAXgjspmmDcVl70tAZ0vh5gNnoJe2NLwDRK8AQWsYrZui4M2QE2IKnKaIZ5sWpVAmCOX0cdCgP8tlWxTtbZJPdQhuZRLHjL8+x8UoyEqinm224CSMYavPSwqo69d47uOHy4eGLO4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707138654; c=relaxed/simple;
+	bh=kg//VybSfPmP5WtikwnBxEcYSL52Ol8YlnC3pu1OEUU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LiJQGQeljPpyAbxILfE0SVkLenl1g7pSMagAoJ88dCitaBP1/k4Ty+fdIuyalHjezEmoJtisLNz4i5/1geCknhVFWVM3kRyU+K86PusUWG4r7Js+YTBslWqxoQgGPymjhjP6mLHvoDLrr2mzZnfz7eX3bsX+hY4PofeFYRz0TJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=P0jfeNNH; arc=fail smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4157xoXv026238;
+	Mon, 5 Feb 2024 08:10:36 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:references:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=DKIM;
+	 bh=kg//VybSfPmP5WtikwnBxEcYSL52Ol8YlnC3pu1OEUU=; b=P0jfeNNHWkdU
+	9/uKLlsZwKIXIhZl/VsMjKhv6Bm88nSFtyjdcNZ6o3EKz5EZY51FCJ8ZlANANug5
+	DLCxZ1MOk9onceEJsWfm2YmPKm8BpzjCdHK0y9vU/GfonGq6HxJiJkYDmvKPflFv
+	YoSEv5E9rWf6PA7UFYcgoQ2T9ehhraopRqf2QmwG0w/LwSwWs6OO5L3Wsb1tPgdT
+	zjrVQtwVwV8xSZobZOke71kZtlfiyk2jywP/4vdXFhWpYadJ7jsmew/RDWwqiV88
+	7a3yvut08mHjvpQG29Uat/01x//y6qrUhTJNhtp/r67KE5B6DQPVIonXiliyv8Td
+	P4UA6dNNGg==
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3w2usc8wr6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Feb 2024 08:10:35 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D7EagWaChb/OopXfcar7PkLLbNhfbUowVXnJ6jNvAcENBHUq5DQlw/GoMO/xRpY8rG9/eIpxM7yh+GacfuB31QNul4ldUMkBtmSlaX5tQRpXdICie+YBNW38Mm83WG1v8GmqQXRhuJQ94/8gmQ6ZDirfB+0rCtaEuozzGnv5WyL3BGRZqlYRQUNMv92ACjG/K58UcG0z3PC5ohJcR1fagTkQKZhJdRxxuDSwYerzaOKH/bVCIABkhrAbB5iZpAM1WqbKtbQIWPodgBYQ/k4vTZk+KPhLaCTSlkA4wsUlwah7nNtZosKyq9nXyphup2yeX/X4pPQrLKEnKfT4NObi9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kg//VybSfPmP5WtikwnBxEcYSL52Ol8YlnC3pu1OEUU=;
+ b=hakvwyc65Pc76SnqwWUAFIjdyBEwr+tQd/qPMBvlxHKTLSA539bQc92HQebwAUzmLPzNj86cpguitu5dsCPIfPqXA2b2lF3pqR1OdiFGi6EmbVcDLXqxzDYBil7JeVsczlPmo4wegcFQYtKfuZGyvcIWogM/TV38zZsA81+vXLZTVZYUVNsBHOw3O6A15C9OPQDfhMlun2MxLJZ0Wso4PLEtb7npP4I2kkG9zkKYXE+/hRMc5v/PNKFWntvFED5VvpMgijMGEyZCqM7Bd0ZW3z096nXfMjJGDDsx/x1DCT4RiDZtqr2vAgUydUyqRzk+nkERa1floYFizm8iyEuqTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from SJ0PR03MB6778.namprd03.prod.outlook.com (2603:10b6:a03:40d::22)
+ by SJ0PR03MB5630.namprd03.prod.outlook.com (2603:10b6:a03:28b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Mon, 5 Feb
+ 2024 13:10:34 +0000
+Received: from SJ0PR03MB6778.namprd03.prod.outlook.com
+ ([fe80::1238:63d5:647e:4838]) by SJ0PR03MB6778.namprd03.prod.outlook.com
+ ([fe80::1238:63d5:647e:4838%3]) with mapi id 15.20.7249.035; Mon, 5 Feb 2024
+ 13:10:33 +0000
+From: "Sa, Nuno" <Nuno.Sa@analog.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki"
+	<rafael@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        Rob Herring
+	<robh+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus
+	<heikki.krogerus@linux.intel.com>,
+        Sakari Ailus
+	<sakari.ailus@linux.intel.com>,
+        Len Brown <lenb@kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
  destroying the changeset
-Message-ID: <ZcDWQ52BGix3ocUC@smile.fi.intel.com>
+Thread-Topic: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+ destroying the changeset
+Thread-Index: AQHaWC/za6qNUilHpEGYd1mFVIhg5LD7t9JA
+Date: Mon, 5 Feb 2024 13:10:33 +0000
+Message-ID: 
+ <SJ0PR03MB677807F5ABCD412E94EA1BBF99472@SJ0PR03MB6778.namprd03.prod.outlook.com>
 References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
  <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
+ <ZcDWQ52BGix3ocUC@smile.fi.intel.com>
+In-Reply-To: <ZcDWQ52BGix3ocUC@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: 
+ =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctZjAyNzI5YzUtYzQyNy0xMWVlLWI3ODgtYmNmMT?=
+ =?iso-8859-1?Q?cxYzQ1ODgyXGFtZS10ZXN0XGYwMjcyOWM2LWM0MjctMTFlZS1iNzg4LWJj?=
+ =?iso-8859-1?Q?ZjE3MWM0NTg4MmJvZHkudHh0IiBzej0iMzU3MCIgdD0iMTMzNTE2MTIyMz?=
+ =?iso-8859-1?Q?E4MTk2NTk4IiBoPSI2a2E3czdEMlRZamFlbGlIa2hidDlrbnRZcUk9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FFb0NBQUIyVDVDeU5GamFBV0VRMUhnT0tUU1VZUkRVZUE0cE5KUURBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQWxHVEdWZ0FBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6778:EE_|SJ0PR03MB5630:EE_
+x-ms-office365-filtering-correlation-id: dc54c6ab-80e3-439e-cbf1-08dc264bd63f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ z3qc7fIPvXN0yVzoR87QUVroY0s5G3INwBYwbrrPEekMn4elyQEW5ee8xwOIKgVUn+1auX3P0EXQIJGUOeOKU79F0m00y3L4Sx4ZiM8SzBHI8QJhJ1lwGILW2SEjD2WL9QZK7wKVDAAFXISuIxk2hDCN+ULQlj5Q9SN4wclZc91nFhgOk+0KaQKa0A4ZWNthSS64tQHXd+SDroSVvprxjdCVvTVTVIUyZxyQ+tdXvaGuahHs+z5gIMsu7kDougHV1hQJPkkB0kkIOiIfHRnwO+/QG36Gg52BZlyY6yY211J8/WdGfaxUklHwJWlEshhXX5EPLl+69PsLkGwyjoNR/3cIsc/1mO7VeXOivRHXE2VzqOnmKmKBzu9U2AeKwwJhqm6kuKDKUksxNh/2T5iNtwWT23O842L5dNZnjqi+wHz2/xt7mJeueMp3x314OYEbZJFElDjIZCM+oz7+F5/wmUYy2mfu7+zjH0V964jlo9etJczMEYmKqR7SrKuKsmt7yACxp7p6kj4Op2SHoGgnzDiOCuyhtr9F9MhYsABlgILCiueXiTLoxcdvhFiC4XHWZVbaX1h4oqRgOA8RQtiM1A1ZMAy94k8yaFQ+WGbwwQxUm5OatCM277qkMrmyjptP
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6778.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(136003)(376002)(346002)(366004)(230273577357003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(26005)(86362001)(41300700001)(7416002)(5660300002)(2906002)(478600001)(38070700009)(64756008)(66476007)(316002)(6916009)(54906003)(66556008)(66946007)(76116006)(66446008)(8936002)(8676002)(4326008)(52536014)(9686003)(71200400001)(6506007)(7696005)(53546011)(33656002)(38100700002)(55016003)(122000001)(83380400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?shJeO29wWuVDcHCXBFhvlFcV1MuBjZH8QzIOLqQeHOtLl+3bOq59v4ZYTP?=
+ =?iso-8859-1?Q?U/ZYDaK5BPkao5HizXeROL4bmcUbYyrxveFP/yRqn+2kFyZoWkS6A+T+Md?=
+ =?iso-8859-1?Q?n0Nddm+bFK2PSy44WN9ZsN2AKNwMh+4YOGELILnZuRL8mwRuKmC//4Pfjg?=
+ =?iso-8859-1?Q?ld095w6TICIgM+f0+e/3tP5i0UQRqiQZw0YST/LIp+tc9iyRmEhs1sFEOU?=
+ =?iso-8859-1?Q?/5IHs9bVCoNLe6Abc4uEtx2kSV33n+i+/09mCUQCjXBR3K15B8WQI1NVca?=
+ =?iso-8859-1?Q?RhysF1p7DDMh3wuoc32dll88XHfbXxMl8hH/P4FJZ6dJ0GJO65pe2yOOZG?=
+ =?iso-8859-1?Q?7wGVDXFCNvJ7YANgHNNs9dECGiUgekufK/UEt4Pbf5l1+uMrzzrQBua7Ot?=
+ =?iso-8859-1?Q?maVg40QRO6nc2pZvwn8AVbPW6cOg3mTQdnysohWbXlYcT1qvLYqB9nyXIx?=
+ =?iso-8859-1?Q?h+pzpEH6lg95UZze1aineArKcmIdeQXeLv+HvLES+IVeXVurbhQXm4SOqS?=
+ =?iso-8859-1?Q?BMswtt9DB0sokZ6S84ZQVjUgcvmbEroJguJifS53+5W+tXeE07OPN4+Nnl?=
+ =?iso-8859-1?Q?AZ+e3Qz9zwtCzdqXDl9NsuUfH6G5zs5L9wxyV0CRVRJyH1F7+SvH8/t+8B?=
+ =?iso-8859-1?Q?2van1AhkfnP/+bK9USfPuxw6+sknH8F2jnZWVCMXzDEa6iQuvfLj6sM6BW?=
+ =?iso-8859-1?Q?oNy0zO3aoSaawBttrQT+61ToDTLZvpc0K7hxXUFdV5R0XwISl1OQALwlpp?=
+ =?iso-8859-1?Q?KzWLKCwFsVhhRbBHcVF2IxGyI2wjro8/t3m/QFdjmsotNrWTaOUC+9fhzU?=
+ =?iso-8859-1?Q?rVuq4DuXqUJ3z6Z4rLyKwK6UbVrLTJrQQKA6w6EAYF7qDZvaDs7AXfAI89?=
+ =?iso-8859-1?Q?agV7NQA7RP3/q5mBs5dDp8n4734ap9Ihsy5DuPl6EAtj5aCpBDQuDJtyXx?=
+ =?iso-8859-1?Q?ZmovupHtfo1qz2Pft+Bm7pGCVR6jqUX75qfdCki8vjtM4xNGx44pSnm+OZ?=
+ =?iso-8859-1?Q?K3MZ6ptBH9tjEisws4gh5BmMK4Q/E38Ej7yWwV7xF1DRA00A1TyMXCP/JF?=
+ =?iso-8859-1?Q?FMWjyRkH8UmiFwHMkKPkRtUSPHAc/+bMcyNr+q0WO4b4JaXRqY30neN6U/?=
+ =?iso-8859-1?Q?scHjv2mf0aiRaUnxiDYuCzg7ut0SMhz7tzb8BFiEBzy3R+WFarSh3ESoj9?=
+ =?iso-8859-1?Q?L2dEwPQeqQBfRgY4IL/iIOT23O1xUlK3cXdijDDo1WjsfTNh97/cnUdA/5?=
+ =?iso-8859-1?Q?52HUWgqx6vdVbMgZmY8jaIQIe4THGcejSteaUReKC8nPGihRllahXZ213U?=
+ =?iso-8859-1?Q?P3oZjBZaSkyLVbNb7NxG93dttem7joMcaMNLakJSQ5jKQ57aRL7Dy0IHnB?=
+ =?iso-8859-1?Q?EQcmUHK1aL8H4iiHmFGtf9+WnSv+U0jPTBCffsAxv7wHleKznP57/U3O1o?=
+ =?iso-8859-1?Q?zG4o3sgf6VQLN1tvWLNmP6BXxpjme5V0GfnAscJF0a1TaNIxvWTrWNXNcc?=
+ =?iso-8859-1?Q?hUOd5IUY8oKk/zVLjZf5KU7QFszNKdQngFEhJYAHL8Qs2uDwi2b6JA8rwF?=
+ =?iso-8859-1?Q?Ip6sGKvk3OP+EOniirGlbw+8TtUhEQ/LJagQRvTReIF2ty5/WwlsescUGB?=
+ =?iso-8859-1?Q?+cqLivsB9PI9k=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6778.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc54c6ab-80e3-439e-cbf1-08dc264bd63f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Feb 2024 13:10:33.8318
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: sNhJyulKyDmdpGTeXBbCmOGNA/Xu3n8QPEyylIPUbBIpj0NfuSxYRhstd8BToCSlNGHUh9B0ifN5OnF7ffl2wQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB5630
+X-Proofpoint-GUID: 5bedthlHUmf7refX-5s4NIZhwVA7RVIf
+X-Proofpoint-ORIG-GUID: 5bedthlHUmf7refX-5s4NIZhwVA7RVIf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-05_08,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 mlxscore=0 mlxlogscore=593
+ bulkscore=0 impostorscore=0 phishscore=0 adultscore=0 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402050099
 
-On Mon, Feb 05, 2024 at 01:09:33PM +0100, Nuno Sa via B4 Relay wrote:
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> Device links will drop their supplier + consumer refcounts
-> asynchronously. That means that the refcount of the of_node attached to
-> these devices will also be dropped asynchronously and so we cannot
-> guarantee the DT overlay assumption that the of_node refcount must be 1 in
-> __of_changeset_entry_destroy().
-> 
-> Given the above, call the new fwnode_links_flush_queue() helper to flush
-> the devlink workqueue so we can be sure that all links are dropped before
-> doing the proper checks.
 
-Have you seen my comments against v1?
 
-> +++ b/drivers/of/dynamic.c
-> @@ -14,6 +14,7 @@
->  #include <linux/slab.h>
->  #include <linux/string.h>
->  #include <linux/proc_fs.h>
-> +#include <linux/fwnode.h>
+> -----Original Message-----
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Sent: Monday, February 5, 2024 1:36 PM
+> To: Sa, Nuno <Nuno.Sa@analog.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>; Rafael J. Wysocki
+> <rafael@kernel.org>; Frank Rowand <frowand.list@gmail.com>; Rob Herring
+> <robh+dt@kernel.org>; Daniel Scally <djrscally@gmail.com>; Heikki Krogeru=
+s
+> <heikki.krogerus@linux.intel.com>; Sakari Ailus <sakari.ailus@linux.intel=
+.com>;
+> Len Brown <lenb@kernel.org>; linux-acpi@vger.kernel.org;
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+> destroying the changeset
+>=20
+> [External]
+>=20
+> On Mon, Feb 05, 2024 at 01:09:33PM +0100, Nuno Sa via B4 Relay wrote:
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >
+> > Device links will drop their supplier + consumer refcounts
+> > asynchronously. That means that the refcount of the of_node attached to
+> > these devices will also be dropped asynchronously and so we cannot
+> > guarantee the DT overlay assumption that the of_node refcount must be 1=
+ in
+> > __of_changeset_entry_destroy().
+> >
+> > Given the above, call the new fwnode_links_flush_queue() helper to flus=
+h
+> > the devlink workqueue so we can be sure that all links are dropped befo=
+re
+> > doing the proper checks.
+>=20
+> Have you seen my comments against v1?
 
-Try to squeeze this to make it ordered (with given context it may go before
-linux/s* ones, but maybe you may find a better spot).
+Hmm, not really. lei is not fetching any email (even this one - that's why =
+I'm using my work email + awesome
+email client to reply).
+And looking directly in lore... I'm also not seeing any reply from you. May=
+be there's an issue.
 
-...
-
-> +	/*
-> +	 * device links drop their device references (and hence their of_node
-
-Device links...
-
-> +	 * references) asynchronously on a dedicated workqueue. Hence we need
-> +	 * to flush it to make sure everything is done before doing the below
-> +	 * checks.
-> +	 */
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+- Nuno S=E1
 
 
