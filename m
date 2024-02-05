@@ -1,124 +1,138 @@
-Return-Path: <linux-acpi+bounces-3231-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3232-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB6849C56
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 14:56:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72399849D18
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 15:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FDA11F257D4
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:56:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D8D6281AC0
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 14:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F06210F0;
-	Mon,  5 Feb 2024 13:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2297028E2E;
+	Mon,  5 Feb 2024 14:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SRo/3YVC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DguGEhfh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1DF2D042;
-	Mon,  5 Feb 2024 13:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598CC1F602;
+	Mon,  5 Feb 2024 14:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707141331; cv=none; b=g1YIZPAG8V8WcFbkFzMlpbbNNc5FbKXVWgwJMskx4H1Ltkedb9Hp2qnodO9nsW66rTul/TPJKxgJxM1BySVasuya36gDjbRwBShC7lChA2mAtf8sdZogpxaJuSc/LVEpjysaWQk9UjfcE7OMn4GEJ5TkdUEXslWEH6KEP/K4Zjk=
+	t=1707143530; cv=none; b=E87seTCp4Ld6EjL8hN8vF6xCaNlyjesVRFWQ2gqcL+XDBnvFC1QGiTjjPm7fubcL26NcZA+g+srd1Hk2IyN88hR1Aa8DLtkuhexNoDyCSJqtFEljJllTfWNEeZK0AFd1b1m5BTJNNZU9TU6eX1vCpH38l7yEXi87pCMPWdHIIQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707141331; c=relaxed/simple;
-	bh=lcZLONYVrndWga+bH1977BM0C3a0z6Uk4Z/ZxsrYK+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=t9UAsvkAcw3v7UVTbHfZREt4pE4jHP+oW50v3VFHo0BqrtbgykDyz/Ro02Bvs5I7C7SrNkUFNiAqwOPU5iOlEEZvW5Gwk1TrqYJDI/3T9yNX9ZFrBN+PKGnHZ9DIR8A8qAGErUJhk+D1CVcQFojvprxGJyZqNF0+Kfap27MtoiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SRo/3YVC; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707141330; x=1738677330;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=lcZLONYVrndWga+bH1977BM0C3a0z6Uk4Z/ZxsrYK+Y=;
-  b=SRo/3YVCx4yl2dFo8nq/NRAZOJK/7AR+uFX8HpEfIobOvLDtfwWBlS+K
-   x1ynTj7RyFKEfgmfz4K7nMqNITH1Wg2sedFtU49NXLrfmTMqTEiglehNL
-   mrjIUnRaewiLxXEF/ZgBuOYTAdz2O6Un9qcwWtfLQG/9b0m8ilzuOg6JX
-   pM68Mult5nB2Px/doeTYfK+swxHzaw6vq2Ffn5dZoszkvvy7PL+3v8uia
-   7sVMv5uvDZAbBsXLOcs/tAIG16TgCT7eQrTBjtjbbyc3woqNLPOXoxgL9
-   NHTohV/CxOD6nipD1By8+7hNEfzEqvdnkImAUWt6LDE/NflIxnLuBsArx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="431916"
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="431916"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:55:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="909301134"
-X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
-   d="scan'208";a="909301134"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:55:25 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rWzRT-000000025wU-02ax;
-	Mon, 05 Feb 2024 15:55:23 +0200
-Date: Mon, 5 Feb 2024 15:55:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: nuno.sa@analog.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] driver: core: add dedicated workqueue for devlink
- removal
-Message-ID: <ZcDoyvAEGr6jsCdj@smile.fi.intel.com>
+	s=arc-20240116; t=1707143530; c=relaxed/simple;
+	bh=aq2Ahj8o6guk3NeDyYxvkEpgJfVVNXFcxeqlZGg2Tjs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RuXNHPNApaNUnAWWyE3DbOHZbHXoQTh97Ptlt57qMTTC5jYoWJWYIEQgMJ7YT/dgQKY3fkpUaWHvS8TatlWPoz9kQa5LB6W2eM9TJtgZaySFsvk9qEZDhMoR4KzDHYi/80fQTOEHI9H4xTzO5726SirRiDarufdDNK4vZEZKASA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DguGEhfh; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-511538be947so756905e87.3;
+        Mon, 05 Feb 2024 06:32:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707143526; x=1707748326; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aq2Ahj8o6guk3NeDyYxvkEpgJfVVNXFcxeqlZGg2Tjs=;
+        b=DguGEhfhNZiU+Cgw8eFd/+kj9QIYnVq1M5PJoFl7H6sufb+HMISKYUU7Ax7RxoulnB
+         1An0XeQmw2ZyMvlA9YMQZdLkSLETNFtETUqdlgF/1WmJ6fVoleYEiWGhMtXsdRlYqrhD
+         2GfX2rrOetIlX9bivaLc7Z2oKGMnQHOGSWECkO7rUDkH+hZXOx2rxpFofbMXPLlbvzH8
+         ekUUcyxiOXq0mH1pmPpvpAm6a2rIH261gEKRBBsnd1FPVQg2ELJzmZ7xSJdTiV+3UD/G
+         g5qrCtDAzW6YhgK5XDy8lHzVnd/dvBzstfdZV1QPgCmapeDPEvZ3P/HQoGPA/QY2vjSU
+         Xnjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707143526; x=1707748326;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aq2Ahj8o6guk3NeDyYxvkEpgJfVVNXFcxeqlZGg2Tjs=;
+        b=r3aGfXAIR4tmycThLWIxm6ft0mOIKnwvtn6ZVYTOSuFvXO+1YflssDNBCIvNx0KAdR
+         N9mMVqOU4BOHqXNPFxyGq/GKwRyS7D2vMTOQjPFc+9hBUVzyjmw7fKwJwtQcgNj4/ORv
+         krjfbMFIBH8FDXEm8tcwKbKugkZiENBX2IRaBcW4HXx1VRk+5VSjoxu8QCoQWtcV4a2l
+         SNkGg006CgtalVRVSwflxTw/WnWv7hrmBR1iFgUam7KJiK9Csv62lOKAFVA3dUorOTkU
+         FzIQGqdULxUJk2uQlPwOjTpBIXPdckD879+KHGMqiQWCq2n7A4A7ChUMWekt7SQpohy9
+         UHag==
+X-Gm-Message-State: AOJu0Yxv8o4YDf+99RNeQxEcc1S7G3YphUl3d5T55PRQDEQRxsoQ9Uge
+	UEk4M/bcRKPunPqZ3eByVkCtcDF2WlnzD9H67tTI2n/VKKWXQncT
+X-Google-Smtp-Source: AGHT+IGOFxLMMGfTYawVAKjkwNalqGesYkIVBKX1p9mzhohT3vL5VDcd/7MNG121tkuWp3H/O9ecvA==
+X-Received: by 2002:ac2:505c:0:b0:511:4684:2719 with SMTP id a28-20020ac2505c000000b0051146842719mr3729738lfm.34.1707143525949;
+        Mon, 05 Feb 2024 06:32:05 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXemqaaq2BVyn/jK5oeSqt8QgXdqQDufwHZcd2H6yipgTsNFhHHSxsceU2tybFd+R1TF+dfIwk377+ihPANl4HW35aeP+qDNtUFv6wSuXq5opD8gtDEMJnb7T4+EB9NKYC6LF9dYs0FsUN3lsHrhn8EB9Jd/R+fqfK4AO9zacS8J/3jsD+ZM2ssq9un+77/1pPFxzFF3dMIBQOu94TWqhlcxqqaTfsLbJP7D7/nq/l57sLgzmq7x2mp0MUMIXwP7rG+Ri1mOVWdN7iJHIzrwo1YBUorraz2s3m1Ocvgw1mIynoTnhg7o/zQ/4G2UwWV9tnWDCNr86iVBo8tmp5KEflq77wBPCFrNes7lzCOGdqvwYD6IZjO9PsT8x7Ckyc8DxLBBobFDp6zg2YLJLmlA4NVSRl4lPKkumQypP6X
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id v11-20020a05600c470b00b0040fdd7cbc8dsm1749050wmo.47.2024.02.05.06.32.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 06:32:05 -0800 (PST)
+Message-ID: <31f7c989e9ee1eae49976466543f7192865775ff.camel@gmail.com>
+Subject: Re: [PATCH v2 1/2] driver: core: add dedicated workqueue for
+ devlink removal
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, nuno.sa@analog.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Rob Herring
+ <robh+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>,  Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Date: Mon, 05 Feb 2024 15:32:04 +0100
+In-Reply-To: <ZcDV9epWJf_oTCMK@smile.fi.intel.com>
+References: 
+	<20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
+	 <20240205-fix-device-links-overlays-v2-1-5344f8c79d57@analog.com>
+	 <ZcDV9epWJf_oTCMK@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Mon, 2024-02-05 at 14:35 +0200, Andy Shevchenko wrote:
+> On Mon, Feb 05, 2024 at 01:09:32PM +0100, Nuno Sa via B4 Relay wrote:
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Let's use a dedicated queue for devlinks since releasing a link happens
+> > asynchronously but some code paths, like DT overlays, have some
+> > expectations regarding the of_node when being removed (the refcount mus=
+t
+> > be 1). Given how devlinks are released that cannot be assured. Hence, a=
+dd a
+> > dedicated queue so that it's easy to sync against devlinks removal.
+> >=20
+> > While at it, make sure to explicitly include <linux/workqueue.h>.
+>=20
+> ...
+>=20
+> > +++ b/include/linux/fwnode.h
+> > @@ -213,5 +213,6 @@ extern bool fw_devlink_is_strict(void);
+> > =C2=A0int fwnode_link_add(struct fwnode_handle *con, struct fwnode_hand=
+le *sup);
+> > =C2=A0void fwnode_links_purge(struct fwnode_handle *fwnode);
+> > =C2=A0void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwno=
+de);
+> > +void fwnode_links_flush_queue(void);
+>=20
+> I am not sure if you have seen my comment against v1.
+>=20
 
-On Fri, Feb 02, 2024 at 01:18:16PM +0100, Nuno Sa via B4 Relay wrote:
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> Let's use a dedicated queue for devlinks since releasing a link happens
-> asynchronously but some code paths, like DT overlays, have some
-> expectations regarding the of_node when being removed (the refcount must
-> be 1). Given how devlinks are released that cannot be assured. Hence, add a
-> dedicated queue so that it's easy to sync against devlinks removal.
-> 
-> While at it, make sure to explicitly include <linux/workqueue.h>.
+I did received it like 30min ago...
 
-...
+> I find the namespace a bit messy for devlinks. And to me seems the best p=
+lace
+> for this line is to be before fwnode_links_purge().
+>=20
 
-> --- a/include/linux/fwnode.h
-> +++ b/include/linux/fwnode.h
-> @@ -213,5 +213,6 @@ extern bool fw_devlink_is_strict(void);
->  int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
->  void fwnode_links_purge(struct fwnode_handle *fwnode);
->  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-> +void fwnode_links_flush_queue(void);
+TBH, I'm not really keen on sending a v3 just for that (unless I'm asked ot=
+herwise).
+But If I have (still missing DT guys feedback), I'll do as you suggested.
 
-Can it be grouped like
-
-  void fwnode_links_flush_queue(void);
-  void fwnode_links_purge(struct fwnode_handle *fwnode);
-  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-
-?
-
-(devlinks namespaces seems a bit messy to me, but I'm not familiar with that
- code at all)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+- Nuno S=C3=A1
 
