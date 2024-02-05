@@ -1,198 +1,124 @@
-Return-Path: <linux-acpi+bounces-3230-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3231-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2AA849C09
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 14:38:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB6849C56
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 14:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4856B26930
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:38:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FDA11F257D4
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Feb 2024 13:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A3D1EB56;
-	Mon,  5 Feb 2024 13:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F06210F0;
+	Mon,  5 Feb 2024 13:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SRo/3YVC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1846C28E02;
-	Mon,  5 Feb 2024 13:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1DF2D042;
+	Mon,  5 Feb 2024 13:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707140279; cv=none; b=bSyUlZJtD1r/xwfaUgAibIk7aiqPQuh5KCN0FnNWAFD9UUKC729jeTrugazrbTU+qafx4LljW9PK27FR82W5/2Nsdh+DemFdTZ9NLaQPRtAHYk+qPqIwujNMptp0EEW2/GgheCJcmtjQ+CalL3+J9R8MxXh3BIHfcnDjYtoCfWU=
+	t=1707141331; cv=none; b=g1YIZPAG8V8WcFbkFzMlpbbNNc5FbKXVWgwJMskx4H1Ltkedb9Hp2qnodO9nsW66rTul/TPJKxgJxM1BySVasuya36gDjbRwBShC7lChA2mAtf8sdZogpxaJuSc/LVEpjysaWQk9UjfcE7OMn4GEJ5TkdUEXslWEH6KEP/K4Zjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707140279; c=relaxed/simple;
-	bh=bjy2cTKIG5MIwS71BFpPmwz9u0IgB3fRcGxLN2GaGCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tO8eAjPOqLzSm5ZLypVt/GIUHK6G235+yGm8LBT5lgsSL570XkylSi9s7D5hbK4gtYXzztv5SJZxV/d8Vdph1LzKf2V7PauI/KLn0wQOEPseZrsPYLlYvzx77p6p1zAri1ZBNj+4VMoLLpU4VSFqVNDgt1pG7T7kYSn0Y3F8w8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3bc21303a35so1562726b6e.0;
-        Mon, 05 Feb 2024 05:37:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707140277; x=1707745077;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WHzeDjcpRLRmLjdC/W3BzMsilNLy88EgDleTTO6CSOU=;
-        b=NGjZ4J13VqHB717T4OW+9SQ6SW4LJUjYqBwrjCVf1YzWXFqwHO0egS3nj1nPho5mPf
-         LWxfczXr6c2bx6vb/74ivlSABd1bEibJ8atOxL9tUj7LmTCgUf+Y8cW5csavWwh88EK+
-         oaySxPLi/i18vFen2h/cfJ5DgWj7xDMP3zalwmWWvDYek4lDvPEUGMzpHHYyAcmIj7o8
-         C7H6PsAudaF2nnoJmvdHu3d8O7l/wlEw0W7QPdlmhmwZZD+9cFxbJAM8JWNq7HOSsiGc
-         dMzY7/g98WGef3fxJ8Hy0qlIfTMhs8Kqy/7Yhcpv8kRXF253+4MuFVcL8y+HFZiGymdM
-         ypyQ==
-X-Forwarded-Encrypted: i=0; AJvYcCWk7T9nWH445sSNlVwWhDCNcci7/W1WXNkpSOadc31geN9d7CJ4CDv7xBQsIjhJTQLZ8BWUy0Jm3j3crOyBsqIZr6ksZs9mmHkCpo2OkwMl9Wi0eELmKKY9+AINJkSW8lvScChAFcFhF/e7cFiz5yv8qAfRWi1e3njxPgLXli1I2UV87XI=
-X-Gm-Message-State: AOJu0YwiO32fwTnIiX4P6KVNz2qkMKrRI4FzcKFjVwvhbO1BRedxvWAq
-	2TzMuCxjcpW98zoe4s88zMShTvb34EnKknSUVfIQOufqik8tOdjpGjM9lFpTcKzjkwi06/bghBB
-	x9QQIGsfOTdPEus/V8P8OfP040jg=
-X-Google-Smtp-Source: AGHT+IHtvU5AWKH2/sbbZ4kcP66v4YuviTYjq8anzvhlvzNs6vRyDKtMqAmd/SnDra/TKGp99EHkhtHNQbVrdqac57w=
-X-Received: by 2002:a05:6870:598:b0:218:c0c1:a091 with SMTP id
- m24-20020a056870059800b00218c0c1a091mr16246651oap.2.1707140277106; Mon, 05
- Feb 2024 05:37:57 -0800 (PST)
+	s=arc-20240116; t=1707141331; c=relaxed/simple;
+	bh=lcZLONYVrndWga+bH1977BM0C3a0z6Uk4Z/ZxsrYK+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=t9UAsvkAcw3v7UVTbHfZREt4pE4jHP+oW50v3VFHo0BqrtbgykDyz/Ro02Bvs5I7C7SrNkUFNiAqwOPU5iOlEEZvW5Gwk1TrqYJDI/3T9yNX9ZFrBN+PKGnHZ9DIR8A8qAGErUJhk+D1CVcQFojvprxGJyZqNF0+Kfap27MtoiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SRo/3YVC; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707141330; x=1738677330;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=lcZLONYVrndWga+bH1977BM0C3a0z6Uk4Z/ZxsrYK+Y=;
+  b=SRo/3YVCx4yl2dFo8nq/NRAZOJK/7AR+uFX8HpEfIobOvLDtfwWBlS+K
+   x1ynTj7RyFKEfgmfz4K7nMqNITH1Wg2sedFtU49NXLrfmTMqTEiglehNL
+   mrjIUnRaewiLxXEF/ZgBuOYTAdz2O6Un9qcwWtfLQG/9b0m8ilzuOg6JX
+   pM68Mult5nB2Px/doeTYfK+swxHzaw6vq2Ffn5dZoszkvvy7PL+3v8uia
+   7sVMv5uvDZAbBsXLOcs/tAIG16TgCT7eQrTBjtjbbyc3woqNLPOXoxgL9
+   NHTohV/CxOD6nipD1By8+7hNEfzEqvdnkImAUWt6LDE/NflIxnLuBsArx
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="431916"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="431916"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:55:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10974"; a="909301134"
+X-IronPort-AV: E=Sophos;i="6.05,245,1701158400"; 
+   d="scan'208";a="909301134"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2024 05:55:25 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rWzRT-000000025wU-02ax;
+	Mon, 05 Feb 2024 15:55:23 +0200
+Date: Mon, 5 Feb 2024 15:55:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: nuno.sa@analog.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] driver: core: add dedicated workqueue for devlink
+ removal
+Message-ID: <ZcDoyvAEGr6jsCdj@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com> <20240205-fix-device-links-overlays-v2-1-5344f8c79d57@analog.com>
-In-Reply-To: <20240205-fix-device-links-overlays-v2-1-5344f8c79d57@analog.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 5 Feb 2024 14:37:46 +0100
-Message-ID: <CAJZ5v0hNtTg+tJZSP_tZUrxQcYa9fp7LZXNG3bGVEbxX1W1Eqg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] driver: core: add dedicated workqueue for devlink removal
-To: nuno.sa@analog.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Feb 5, 2024 at 1:09=E2=80=AFPM Nuno Sa via B4 Relay
-<devnull+nuno.sa.analog.com@kernel.org> wrote:
->
+
+On Fri, Feb 02, 2024 at 01:18:16PM +0100, Nuno Sa via B4 Relay wrote:
 > From: Nuno Sa <nuno.sa@analog.com>
->
+> 
 > Let's use a dedicated queue for devlinks since releasing a link happens
 > asynchronously but some code paths, like DT overlays, have some
 > expectations regarding the of_node when being removed (the refcount must
-> be 1). Given how devlinks are released that cannot be assured. Hence, add=
- a
+> be 1). Given how devlinks are released that cannot be assured. Hence, add a
 > dedicated queue so that it's easy to sync against devlinks removal.
->
+> 
 > While at it, make sure to explicitly include <linux/workqueue.h>.
->
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+...
 
-> ---
->  drivers/base/core.c    | 32 ++++++++++++++++++++++++++++----
->  include/linux/fwnode.h |  1 +
->  2 files changed, 29 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 14d46af40f9a..4bb9c10489ed 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -31,6 +31,7 @@
->  #include <linux/swiotlb.h>
->  #include <linux/sysfs.h>
->  #include <linux/dma-map-ops.h> /* for dma_default_coherent */
-> +#include <linux/workqueue.h>
->
->  #include "base.h"
->  #include "physical_location.h"
-> @@ -44,6 +45,7 @@ static bool fw_devlink_is_permissive(void);
->  static void __fw_devlink_link_to_consumers(struct device *dev);
->  static bool fw_devlink_drv_reg_done;
->  static bool fw_devlink_best_effort;
-> +static struct workqueue_struct *devlink_release_queue __ro_after_init;
->
->  /**
->   * __fwnode_link_add - Create a link between two fwnode_handles.
-> @@ -235,6 +237,12 @@ static void __fw_devlink_pickup_dangling_consumers(s=
-truct fwnode_handle *fwnode,
->                 __fw_devlink_pickup_dangling_consumers(child, new_sup);
->  }
->
-> +void fwnode_links_flush_queue(void)
-> +{
-> +       if (devlink_release_queue)
-> +               flush_workqueue(devlink_release_queue);
-> +}
-> +
->  static DEFINE_MUTEX(device_links_lock);
->  DEFINE_STATIC_SRCU(device_links_srcu);
->
-> @@ -531,9 +539,13 @@ static void devlink_dev_release(struct device *dev)
->          * It may take a while to complete this work because of the SRCU
->          * synchronization in device_link_release_fn() and if the consume=
-r or
->          * supplier devices get deleted when it runs, so put it into the =
-"long"
-> -        * workqueue.
-> +        * devlink workqueue (in case we could allocate one).
-> +        *
->          */
-> -       queue_work(system_long_wq, &link->rm_work);
-> +       if (devlink_release_queue)
-> +               queue_work(devlink_release_queue, &link->rm_work);
-> +       else
-> +               device_link_release_fn(&link->rm_work);
->  }
->
->  static struct class devlink_class =3D {
-> @@ -636,10 +648,22 @@ static int __init devlink_class_init(void)
->                 return ret;
->
->         ret =3D class_interface_register(&devlink_class_intf);
-> -       if (ret)
-> +       if (ret) {
->                 class_unregister(&devlink_class);
-> +               return ret;
-> +       }
->
-> -       return ret;
-> +       /*
-> +        * Using a dedicated queue for devlinks since releasing a link ha=
-ppens
-> +        * asynchronously but some code paths, like DT overlays, have som=
-e
-> +        * expectations regarding the of_node when being removed (the ref=
-count
-> +        * must be 1). Given how devlinks are released that cannot be ass=
-ured.
-> +        * Hence, add a dedicated queue so that it's easy to sync against
-> +        * devlinks removal.
-> +        */
-> +       devlink_release_queue =3D alloc_workqueue("devlink_release", 0, 0=
-);
-> +
-> +       return 0;
->  }
->  postcore_initcall(devlink_class_init);
->
-> diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-> index 2a72f55d26eb..017b170e9903 100644
 > --- a/include/linux/fwnode.h
 > +++ b/include/linux/fwnode.h
 > @@ -213,5 +213,6 @@ extern bool fw_devlink_is_strict(void);
->  int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup=
-);
+>  int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup);
 >  void fwnode_links_purge(struct fwnode_handle *fwnode);
 >  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
 > +void fwnode_links_flush_queue(void);
->
->  #endif
->
-> --
-> 2.43.0
->
+
+Can it be grouped like
+
+  void fwnode_links_flush_queue(void);
+  void fwnode_links_purge(struct fwnode_handle *fwnode);
+  void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
+
+?
+
+(devlinks namespaces seems a bit messy to me, but I'm not familiar with that
+ code at all)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
