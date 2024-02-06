@@ -1,130 +1,166 @@
-Return-Path: <linux-acpi+bounces-3253-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3254-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B116484BBC1
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 18:23:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C432F84BE23
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 20:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 650541F25701
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 17:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D12D282566
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 19:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C538F7D;
-	Tue,  6 Feb 2024 17:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VbH/xjJY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A929017555;
+	Tue,  6 Feb 2024 19:33:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E4CCA4A;
-	Tue,  6 Feb 2024 17:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EDC17588;
+	Tue,  6 Feb 2024 19:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707240217; cv=none; b=W+NRZ+NbhvI6LkVxj25VuVzbT6bhH9pEyLGEyYuHKp8kyj0CisKCFo3AfoSS34wZtBlDHyTkollysPsYrt66B6rULPmCtx4BO2wsJ5XVIy8DiM9YRN34EW6q3ZiDFJqUG0njBOHACavmpRRg9whkJEW+vs5ebUcJ3iT9F5L3A1k=
+	t=1707248031; cv=none; b=devFnr7DNUCofOG9W1jXVJ4H2FGwHZXpHd6T1u3w1DLuuATOr64EQrzHluRKB/SYDwpoPckHh2/qN4DmtPb8d40aeB+0eHeio+bkeJwoouyuqy2fn+DCRveIZhe+I5A/+VHyuiSF9o7MIJkRxZYoxlOCRpDi0iv9Q/NQBhW913I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707240217; c=relaxed/simple;
-	bh=po8vFxWrgnIMI30IcGK3wKjOx+diDmMTZZJBoYh+eQs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ptp/Ub1Vh+vRM3vexZNK4ipHEDE4MBnoiODARqM4nuUtT/wjZ76mPTUIrQIrF+NnmC6p2iZs6KhXvKQInMbbFWjvX9gXMgBQ/zzosX3e0m+o4wVJzj3LBZJ2llRSs9BwTTv91vEvUg1DrR7Ikdkklf/tDOvTariT/aj0KJcAzu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VbH/xjJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C145DC433F1;
-	Tue,  6 Feb 2024 17:23:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707240217;
-	bh=po8vFxWrgnIMI30IcGK3wKjOx+diDmMTZZJBoYh+eQs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VbH/xjJYNUgcSHYX8q6R3XOgMBMYdLFz0wwh7u9in+aDxvfieDaQsfcKyvc8IJljm
-	 b4KjHmApQTFpV3dO3iDbgzIq452iChe4Hlh+NbWkOfvbUZAwcqMJKOmdrdWJDvx820
-	 yGKAU6o3UzpUqJtxSEDdVVdgjfhrjOOzt539Zz72GbRfzqXZni2RnBmRWm0weRDqIa
-	 abarX5VsT/PfIoUpx71JSSklbKAA2HtBv69vFwRwxqV13L9xCWMblKCxtAmGpAIqwi
-	 8sqKs24ZwA9C+e3TEvivW9S6Jps4z6qQAk8w70V+oieQDehciCMb6nvmk5plKPIwiL
-	 i1EveBd1FnZ6A==
-Date: Tue, 6 Feb 2024 11:23:35 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-acpi@vger.kernel.org, chao.p.peng@linux.intel.com,
-	erwin.tsaur@intel.com, feiting.wanyan@intel.com,
-	qingshun.wang@intel.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Adam Preble <adam.c.preble@intel.com>, Li Yang <leoyang.li@nxp.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Robert Richter <rrichter@amd.com>, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] PCI/AER: Store more information in aer_err_info
-Message-ID: <20240206172335.GA872811@bhelgaas>
+	s=arc-20240116; t=1707248031; c=relaxed/simple;
+	bh=hPCr97Z9WyFkP6rn0WJSREQ0TMUx4xLjks+aVxQlXd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e36PzRZCZL+1JxqSIJr7lCHtpUCtyv9IGXrdCtd/BW+HZAqlm7M46hw57W2BWyt7+lmzi5ZAcveyt6rISFt1l6JRnR+khXh2tKFzrSBXvtY2Lx6TCawtZCCp1KWgmwk3FiYv0c3sv3S3vjmsyXq93a0YwmhP6tHKrbmDcf0u1U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 2129a190197e812a; Tue, 6 Feb 2024 20:33:46 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C2DB7669A9F;
+	Tue,  6 Feb 2024 20:33:45 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+ David Box <david.e.box@linux.intel.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Subject:
+ [PATCH v1] ACPI: PM: s2idle: Enable Low-Power S0 Idle MSFT UUID for non-AMD
+ systems
+Date: Tue, 06 Feb 2024 20:33:45 +0100
+Message-ID: <12388452.O9o76ZdvQC@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2rfnevhnhylik4r6smr56uunsxweo7s5elo65sjhiztvxnr6bq@5fcyv22zxyyp>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrtddtgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrhhinhhivhgr
+ shdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepshhtrghnihhslhgrfidrghhruhhsiihkrgeslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
 
-On Wed, Feb 07, 2024 at 12:41:41AM +0800, Wang, Qingshun wrote:
-> On Mon, Feb 05, 2024 at 05:12:31PM -0600, Bjorn Helgaas wrote:
-> > On Thu, Jan 25, 2024 at 02:27:59PM +0800, Wang, Qingshun wrote:
-> > > When Advisory Non-Fatal errors are raised, both correctable and
-> > > uncorrectable error statuses will be set. The current kernel code cannot
-> > > store both statuses at the same time, thus failing to handle ANFE properly.
-> > > In addition, to avoid clearing UEs that are not ANFE by accident, UE
-> > > severity and Device Status also need to be recorded: any fatal UE cannot
-> > > be ANFE, and if Fatal/Non-Fatal Error Detected is set in Device Status, do
-> > > not take any assumption and let UE handler to clear UE status.
-> > > 
-> > > Store status and mask of both correctable and uncorrectable errors in
-> > > aer_err_info. The severity of UEs and the values of the Device Status
-> > > register are also recorded, which will be used to determine UEs that should
-> > > be handled by the ANFE handler. Refactor the rest of the code to use
-> > > cor/uncor_status and cor/uncor_mask fields instead of status and mask
-> > > fields.
-> > 
-> > There's a lot going on in this patch.  Could it possibly be split up a
-> > bit, e.g., first tease apart aer_err_info.status/.mask into
-> > .cor_status/mask and .uncor_status/mask, then add .uncor_severity,
-> > then add the device_status bit separately?  If it could be split up, I
-> > think the ANFE case would be easier to see.
-> 
-> Thanks for the feedback! Will split it up into two pacthes in the next
-> version.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Or even three:
+Systems based on Intel platforms that use the MSFT UUID for Low-Power S0
+Idle (LPS0) have started to ship, so allow the kernel to use the MSFT
+UUID in the non-AMD case too, but in that case make it avoid evaluating
+the same _DSM function for two different UUIDs and prioritize the MSFT
+one.
 
-  1) tease apart aer_err_info.status/.mask into .cor_status/mask and
-     .uncor_status/mask
+While at it, combine two MSFT _DSM function mask checks in
+acpi_s2idle_restore_early() so as to make it reflect the
+acpi_s2idle_prepare_late() flow more closely and adjust the
+Modern Standby entry and exit comments slightly.
 
-  2) add .uncor_severity
+Non-AMD systems that do not support MSFT UUID for Low-power S0 Idle are
+not expected to be affected by this change in any way.
 
-  3) add device_status
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/x86/s2idle.c |   37 +++++++++++++++++++++++++++----------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-Looking at this again, I'm a little confused about 2) and 3).  I see
-the new read of PCI_ERR_UNCOR_SEVER into .uncor_severity, but there's
-no actual *use* of it.
+Index: linux-pm/drivers/acpi/x86/s2idle.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/x86/s2idle.c
++++ linux-pm/drivers/acpi/x86/s2idle.c
+@@ -488,7 +488,21 @@ static int lps0_device_attach(struct acp
+ 		rev_id = 1;
+ 		lps0_dsm_func_mask = validate_dsm(adev->handle,
+ 					ACPI_LPS0_DSM_UUID, rev_id, &lps0_dsm_guid);
+-		lps0_dsm_func_mask_microsoft = -EINVAL;
++		if (lps0_dsm_func_mask > 0 && lps0_dsm_func_mask_microsoft > 0) {
++			unsigned int func_mask;
++
++			/*
++			 * Avoid evaluating the same _DSM function for two
++			 * different UUIDs and prioritize the MSFT one.
++			 */
++			func_mask = lps0_dsm_func_mask & lps0_dsm_func_mask_microsoft;
++			if (func_mask) {
++				acpi_handle_info(adev->handle,
++						 "Duplicate LPS0 _DSM functions (mask: 0x%x)\n",
++						 func_mask);
++				lps0_dsm_func_mask &= ~func_mask;
++			}
++		}
+ 	}
+ 
+ 	if (lps0_dsm_func_mask < 0 && lps0_dsm_func_mask_microsoft < 0)
+@@ -549,19 +563,22 @@ int acpi_s2idle_prepare_late(void)
+ 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+ 
+ 	/* LPS0 entry */
+-	if (lps0_dsm_func_mask > 0)
+-		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
+-					ACPI_LPS0_ENTRY_AMD :
+-					ACPI_LPS0_ENTRY,
++	if (lps0_dsm_func_mask > 0 && acpi_s2idle_vendor_amd())
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
+ 					lps0_dsm_func_mask, lps0_dsm_guid);
++
+ 	if (lps0_dsm_func_mask_microsoft > 0) {
+-		/* modern standby entry */
++		/* Modern Standby entry */
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
+ 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
+ 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+ 	}
+ 
++	if (lps0_dsm_func_mask > 0 && !acpi_s2idle_vendor_amd())
++		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
++					lps0_dsm_func_mask, lps0_dsm_guid);
++
+ 	list_for_each_entry(handler, &lps0_s2idle_devops_head, list_node) {
+ 		if (handler->prepare)
+ 			handler->prepare();
+@@ -600,14 +617,14 @@ void acpi_s2idle_restore_early(void)
+ 					ACPI_LPS0_EXIT_AMD :
+ 					ACPI_LPS0_EXIT,
+ 					lps0_dsm_func_mask, lps0_dsm_guid);
+-	if (lps0_dsm_func_mask_microsoft > 0)
++
++	if (lps0_dsm_func_mask_microsoft > 0) {
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
+ 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
+-
+-	/* Modern standby exit */
+-	if (lps0_dsm_func_mask_microsoft > 0)
++		/* Modern Standby exit */
+ 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
+ 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
++	}
+ 
+ 	/* Screen on */
+ 	if (lps0_dsm_func_mask_microsoft > 0)
 
-Same for 3), I see the new read of PCI_EXP_DEVSTA, but AFAICS there's
-no use of that value.
 
-We should have the addition of these new values in the same patch
-that *uses* them.
 
-Bjorn
 
