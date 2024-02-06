@@ -1,166 +1,114 @@
-Return-Path: <linux-acpi+bounces-3254-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3255-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C432F84BE23
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 20:33:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D350884BE3A
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 20:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D12D282566
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 19:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1B81C22F38
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Feb 2024 19:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A929017555;
-	Tue,  6 Feb 2024 19:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901B1756B;
+	Tue,  6 Feb 2024 19:43:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EDC17588;
-	Tue,  6 Feb 2024 19:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3371B270;
+	Tue,  6 Feb 2024 19:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707248031; cv=none; b=devFnr7DNUCofOG9W1jXVJ4H2FGwHZXpHd6T1u3w1DLuuATOr64EQrzHluRKB/SYDwpoPckHh2/qN4DmtPb8d40aeB+0eHeio+bkeJwoouyuqy2fn+DCRveIZhe+I5A/+VHyuiSF9o7MIJkRxZYoxlOCRpDi0iv9Q/NQBhW913I=
+	t=1707248630; cv=none; b=mdxd0dvrp6zFo57cFPIYTOISFrTfkRsX05Rq0jJXTkc9UTkH1Gd69NFpB+0BzF4rFGSyqB0Ep2f5ICn4rEVxGqGpxh8hJ7oL4nr4P4eEdGjp74mZSyOHgsyLbLEVf5NqUmt/LhKkQlQWr2ss72YQ1v0//l7DH/gx0R7uX30i5rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707248031; c=relaxed/simple;
-	bh=hPCr97Z9WyFkP6rn0WJSREQ0TMUx4xLjks+aVxQlXd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e36PzRZCZL+1JxqSIJr7lCHtpUCtyv9IGXrdCtd/BW+HZAqlm7M46hw57W2BWyt7+lmzi5ZAcveyt6rISFt1l6JRnR+khXh2tKFzrSBXvtY2Lx6TCawtZCCp1KWgmwk3FiYv0c3sv3S3vjmsyXq93a0YwmhP6tHKrbmDcf0u1U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id 2129a190197e812a; Tue, 6 Feb 2024 20:33:46 +0100
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C2DB7669A9F;
-	Tue,  6 Feb 2024 20:33:45 +0100 (CET)
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
- David Box <david.e.box@linux.intel.com>,
- Mario Limonciello <mario.limonciello@amd.com>
-Subject:
- [PATCH v1] ACPI: PM: s2idle: Enable Low-Power S0 Idle MSFT UUID for non-AMD
- systems
-Date: Tue, 06 Feb 2024 20:33:45 +0100
-Message-ID: <12388452.O9o76ZdvQC@kreacher>
+	s=arc-20240116; t=1707248630; c=relaxed/simple;
+	bh=6Lirs0Mnt0IWEIAldTBBLf0MeJqsDrL6eFamlNgJG4Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rdt485AIQ2vy8z2Me2Jdnlv4SMXLTcIozU54g3XutmdDoR32xKQhPY6xWcwvLVrh74b9dDH3B9c2CZ1J0E7OEqB76Z8wrrwe+2UxXm6Gm2tcPE2290F4aXIzbytst5qu46A9SHG6QR1iKuDFy9Wkxr5F3GdM68EJtX+ie4nrR78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-59584f41f1eso1982213eaf.1;
+        Tue, 06 Feb 2024 11:43:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707248627; x=1707853427;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Lb5wcqeRy+vlaNArKIwVtaEfEgOoKp4cUFbNlHx3fM8=;
+        b=gU1KlcifgxBV+kZ+4bVG83NOw4ew5JxhvUKY/8BDbdXDQq3GJskBJvTK6G1o7YIs9l
+         Y50as5NpKh+aoPpaH7LOmGisAMuIda91z70sxxY2lyXzKkjT1KWxkuU74k+rM8R8JZkR
+         dgi8KYovpmfiB/D1kiA4/5x6dRL34HonXw3+WDqR2Xatg6p12bmU0z4IckAxZkMG2TTH
+         H9h90LaWvacaC5ADwARrM+OWyS9J3sscoZX+Utx7drN7SpHS2k0r5ifz2V4sUV2s1UAr
+         KXIHEN0bH89yKhihGb5dt0Ec15Dlrm/+vlhfvN7Ru0F318qgFKSmIbWaK9mpmNDc2uYz
+         ftlg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4YDb8Ba8QEKuIn320yuPVcLzwKrhnKAhBKNiedg72k+3VYuOnYh9xm20UmO3L4HV+0QYuO2yL1pm38GdXHazjoT7LhauZDOhNP2d7VKRqFMcVHJRtwDMT0cN70HlSayXvYuT1z5bfUg==
+X-Gm-Message-State: AOJu0YxwnpZXVLXl98p5lu7fIrDlBSP044vuIxv8geCAG5y/FjKLXsFZ
+	ge4KH9kbqxsZ0UUnMJq2BvPKv2owkqtjCHNhu+76/OyUh6KzqVXSCNzuX2kPscv3Ua8clPFHvqV
+	Z0MMfjNLFeaz8OLo0ig7CcvnFpqQ=
+X-Google-Smtp-Source: AGHT+IFYpomoi6DqiLfOdnXUy18la5AUhPIE1vXch0R4vJYU9EvwTF3nTdcympXAvGk/V9053cees/3tktHeg9wZtyk=
+X-Received: by 2002:a05:6820:82b:b0:59c:eb7b:c04e with SMTP id
+ bg43-20020a056820082b00b0059ceb7bc04emr2573848oob.1.1707248627613; Tue, 06
+ Feb 2024 11:43:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+References: <20240201221119.42564-1-mario.limonciello@amd.com>
+ <20240201221119.42564-2-mario.limonciello@amd.com> <CAJZ5v0iw3PLB4W0QNmRCgK2AWxe5A7wxnWSz-Jm--Mb=fnugEw@mail.gmail.com>
+ <c96de797-39c4-4c83-96e2-d4579504e88e@amd.com>
+In-Reply-To: <c96de797-39c4-4c83-96e2-d4579504e88e@amd.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 6 Feb 2024 20:43:36 +0100
+Message-ID: <CAJZ5v0iZTJtMwZLGFovoLbFTP=OG=L6ZLgBbLU2ob5_X6OLB0A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/5] ACPI: video: Handle fetching EDID that is longer
+ than 256 bytes
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, amd-gfx@lists.freedesktop.org, 
+	Alex Deucher <alexander.deucher@amd.com>, Harry Wentland <harry.wentland@amd.com>, 
+	Hans de Goede <hdegoede@redhat.com>, "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, Melissa Wen <mwen@igalia.com>, 
+	Mark Pearson <mpearson-lenovo@squebb.ca>
 Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrtddtgdeljecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeffffffkefgheehffelteeiveeffeevhfelteejvddvieejjeelvdeiheeuveeuffenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrhhinhhivhgr
- shdrphgrnhgurhhuvhgruggrsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepshhtrghnihhslhgrfidrghhruhhsiihkrgeslhhinhhugidrihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
+Content-Transfer-Encoding: quoted-printable
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Feb 2, 2024 at 5:09=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> On 2/2/2024 10:07, Rafael J. Wysocki wrote:
+> > On Thu, Feb 1, 2024 at 11:11=E2=80=AFPM Mario Limonciello
+> > <mario.limonciello@amd.com> wrote:
+> >>
+> >> The ACPI specification allows for an EDID to be up to 512 bytes but
+> >> the _DDC EDID fetching code will only try up to 256 bytes.
+> >>
+> >> Modify the code to instead start at 512 bytes and work it's way
+> >> down instead.
+> >>
+> >> As _DDC is now called up to 4 times on a machine debugging messages
+> >> are noisier than necessary.  Decrease from info to debug.
+> >>
+> >> Link: https://uefi.org/htmlspecs/ACPI_Spec_6_4_html/Apx_B_Video_Extens=
+ions/output-device-specific-methods.html#ddc-return-the-edid-for-this-devic=
+e
+> >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >
+> > Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > or I can apply it if that's preferred.
+>
+> Thanks!
+>
+> I think go ahead and apply this one to your -next tree.
 
-Systems based on Intel platforms that use the MSFT UUID for Low-Power S0
-Idle (LPS0) have started to ship, so allow the kernel to use the MSFT
-UUID in the non-AMD case too, but in that case make it avoid evaluating
-the same _DSM function for two different UUIDs and prioritize the MSFT
-one.
+Applied now.
 
-While at it, combine two MSFT _DSM function mask checks in
-acpi_s2idle_restore_early() so as to make it reflect the
-acpi_s2idle_prepare_late() flow more closely and adjust the
-Modern Standby entry and exit comments slightly.
+Barring any issues with it, It will get into linux-next in a couple of days=
+.
 
-Non-AMD systems that do not support MSFT UUID for Low-power S0 Idle are
-not expected to be affected by this change in any way.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/x86/s2idle.c |   37 +++++++++++++++++++++++++++----------
- 1 file changed, 27 insertions(+), 10 deletions(-)
-
-Index: linux-pm/drivers/acpi/x86/s2idle.c
-===================================================================
---- linux-pm.orig/drivers/acpi/x86/s2idle.c
-+++ linux-pm/drivers/acpi/x86/s2idle.c
-@@ -488,7 +488,21 @@ static int lps0_device_attach(struct acp
- 		rev_id = 1;
- 		lps0_dsm_func_mask = validate_dsm(adev->handle,
- 					ACPI_LPS0_DSM_UUID, rev_id, &lps0_dsm_guid);
--		lps0_dsm_func_mask_microsoft = -EINVAL;
-+		if (lps0_dsm_func_mask > 0 && lps0_dsm_func_mask_microsoft > 0) {
-+			unsigned int func_mask;
-+
-+			/*
-+			 * Avoid evaluating the same _DSM function for two
-+			 * different UUIDs and prioritize the MSFT one.
-+			 */
-+			func_mask = lps0_dsm_func_mask & lps0_dsm_func_mask_microsoft;
-+			if (func_mask) {
-+				acpi_handle_info(adev->handle,
-+						 "Duplicate LPS0 _DSM functions (mask: 0x%x)\n",
-+						 func_mask);
-+				lps0_dsm_func_mask &= ~func_mask;
-+			}
-+		}
- 	}
- 
- 	if (lps0_dsm_func_mask < 0 && lps0_dsm_func_mask_microsoft < 0)
-@@ -549,19 +563,22 @@ int acpi_s2idle_prepare_late(void)
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 
- 	/* LPS0 entry */
--	if (lps0_dsm_func_mask > 0)
--		acpi_sleep_run_lps0_dsm(acpi_s2idle_vendor_amd() ?
--					ACPI_LPS0_ENTRY_AMD :
--					ACPI_LPS0_ENTRY,
-+	if (lps0_dsm_func_mask > 0 && acpi_s2idle_vendor_amd())
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY_AMD,
- 					lps0_dsm_func_mask, lps0_dsm_guid);
-+
- 	if (lps0_dsm_func_mask_microsoft > 0) {
--		/* modern standby entry */
-+		/* Modern Standby entry */
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_ENTRY,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
- 	}
- 
-+	if (lps0_dsm_func_mask > 0 && !acpi_s2idle_vendor_amd())
-+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY,
-+					lps0_dsm_func_mask, lps0_dsm_guid);
-+
- 	list_for_each_entry(handler, &lps0_s2idle_devops_head, list_node) {
- 		if (handler->prepare)
- 			handler->prepare();
-@@ -600,14 +617,14 @@ void acpi_s2idle_restore_early(void)
- 					ACPI_LPS0_EXIT_AMD :
- 					ACPI_LPS0_EXIT,
- 					lps0_dsm_func_mask, lps0_dsm_guid);
--	if (lps0_dsm_func_mask_microsoft > 0)
-+
-+	if (lps0_dsm_func_mask_microsoft > 0) {
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
--
--	/* Modern standby exit */
--	if (lps0_dsm_func_mask_microsoft > 0)
-+		/* Modern Standby exit */
- 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_MS_EXIT,
- 				lps0_dsm_func_mask_microsoft, lps0_dsm_guid_microsoft);
-+	}
- 
- 	/* Screen on */
- 	if (lps0_dsm_func_mask_microsoft > 0)
-
-
-
+Thanks!
 
