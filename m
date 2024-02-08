@@ -1,260 +1,145 @@
-Return-Path: <linux-acpi+bounces-3294-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3295-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CAD84DC0F
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 09:55:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9436784DD49
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 10:52:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA371C24F13
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 08:55:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5106E282900
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 09:52:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984B66BB2F;
-	Thu,  8 Feb 2024 08:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BA36A8BB;
+	Thu,  8 Feb 2024 09:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OqDrmenk"
+	dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b="tudDLVEs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8BB6BB2C;
-	Thu,  8 Feb 2024 08:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E8B6BFC9
+	for <linux-acpi@vger.kernel.org>; Thu,  8 Feb 2024 09:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707382332; cv=none; b=Gj/kRlYL/tfFtWW2z9AeQzCs1kdW4yf5SnIDcXc6Uyn9e0MzavRa98ypHMnSrHA17epCogFa4ChpG1S9Z4fWhZG7drEWaF3SoNY/2VrnpiguZ1v8LGo1NEXGfz6Nc/W/lu1my7syglt9rstW9EKEuLwSQMQgVBRay3ShzRO6CzE=
+	t=1707385974; cv=none; b=jHZ4zWAIYx5J14e+QPNjbCzmIPai+dPK9XfQg6/9EpjjIwevuRhoER1Rxba66o3tFAlnxvePwPJJA3o6ERbM+xfvvknVrQSu2Eg0qG9cGKCqI7eE0yMrXAHTVqe+mEuFrL1ouBNPqKufO/53G5rtjrpPMi677SEqvBskYSr+C4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707382332; c=relaxed/simple;
-	bh=XBQ/LHCWFF2ciAgalCoUU0twHFrN7kN9P2TDY0SaCGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3jT8noSGLy77kOdUnZ4Yblg5BBx1qTgaLwcnW9cd5EbE5StGFSxodCCu8s86uPE2Ijx2ln9zzv44bfo6dQLx6uY+pUSYMBSw0aICmgFYoBT3aEw2Nvxew0JPm0j+L95+KeSp932LlJWlDRinnz8ejcI9ZvV5lILl6uy6KNIPDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OqDrmenk; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707382331; x=1738918331;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XBQ/LHCWFF2ciAgalCoUU0twHFrN7kN9P2TDY0SaCGw=;
-  b=OqDrmenk5gYg6K6LFt/OEHhMjU5Brnp42ZB61rDxsfRoTXzGxb+XaaVC
-   3kOtq2Fmrvt+4IVicFK67I7x9NDGYcVvaT95LQ8OQsXL2wsxE6pvBNwgt
-   TfwtW/TdxwReoomczxCCPfjUhnFkBSb+em0vDraELPjC5hiZFKHPg/vEn
-   3qcjYgXxGzo9bk1Pp2RKYoIyzsocf23RoNI6s9sVK+4Ac0HR1wDc5buAU
-   lKeqpSC88qAs/EX51TK5WAWtk8CAA/yIFBr3Y/8CJAAoyhfxm18d3VFMc
-   lOY8B9ZM1i49NzMkUrcd4uA5aqEVubkHMl+GZek+AIetlKCXHh6uIJ/eQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1470873"
-X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="1470873"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:52:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
-   d="scan'208";a="32669107"
-Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.252.43.105])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:52:00 -0800
-Date: Thu, 8 Feb 2024 09:51:58 +0100
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Linux PM <linux-pm@vger.kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH v1 6/6] thermal: intel: Adjust ops handling during
- thermal zone registration
-Message-ID: <ZcSWLvqza+P7q3uF@linux.intel.com>
-References: <2728491.mvXUDI8C0e@kreacher>
- <3284830.aeNJFYEL58@kreacher>
+	s=arc-20240116; t=1707385974; c=relaxed/simple;
+	bh=HHlgklhEHH9O7ta3u1cLYxPyu4OGTsMH97Y+4IfEOao=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZnTl94ndbmDtvMunhQpUeQdcadADLkJlUxQXfdggln7JBud4G3okSh3m4A9ehfIE9bkB0dnXMUb+3LwlRtUxMMM8n8CYVwgZf3IyF9/ElGK/zPhNz2Yzze59LT+2A7z2ZpMYYWMGpQYWCfjVge9wt+s2hU0Qtnsn4Q5nl/fsGM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org; spf=pass smtp.mailfrom=endlessos.org; dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b=tudDLVEs; arc=none smtp.client-ip=209.85.219.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endlessos.org
+Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dc26698a5bfso656412276.0
+        for <linux-acpi@vger.kernel.org>; Thu, 08 Feb 2024 01:52:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos.org; s=google; t=1707385971; x=1707990771; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FVZrDw08jx/+WS3cBHZbP06Mv/MXnXO3+N5Y9WPwJKc=;
+        b=tudDLVEsisWPpzROJ05zczqStpTC8X0SOAFddSbSaxuZFzK1SN/PbP/b0CuNcjcure
+         z/SOjMtL7nbtokwWJvW3aEWZm5fynOYSJ59tSRxrLZo569vUaljHRd7XCi+Kn/OK6KEQ
+         nUmxS6bdU1/lYN/Bl4uHc50YKB35J5aOERL+Y4zfVXdI0npdohoCRQXXcI2AY9tk5EUG
+         feuH5oNF/rVaPZ3w3TAkbEpC7CjkcuNvfvWES33iVXe+cKKmu04wVQ6HPulxAoYi+LEg
+         uHDEandfUYdKuu87QdwCPM/rEBYNNMNWncjl9r5SZg83warV24aZ7mYoEknN43qnvSHh
+         Kcrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707385971; x=1707990771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FVZrDw08jx/+WS3cBHZbP06Mv/MXnXO3+N5Y9WPwJKc=;
+        b=mx4W5rEq1GD4+uWRttJb0De7ZiiQ/D0HUY1Z8AK6uaQtBHSjOz+/ZFsW+Xq0r4n1zs
+         X7EPa+tO7NQZgRAtZIr2Kbr8dJvJqvsIS9qIckK2FuwW5QY8FS8h8D0555YtvwrnJxm5
+         Ikyk7uxpovTbzNnrotjqtCSDfiZeN25pdJ3tHN3NcLX33jiqnCAmJRLVnVu5BjebMtP6
+         VQGoLLqWEPEhXE5mk0NhgF2xUqgV3H5KJV/rX6SEBmw3ueJ5xbB4/P28lb1RbCSuQGYk
+         ex146Z1R/LR2a4d9x18T/EmfaanPfonnMkLS6FCEK+NLE34a3P9DM8ofqN4Ri0y7hQVO
+         AuXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRudD70TyCNFDrd4s82VeSKEGD1Zkh1QQ817xiVeKIadv2xXeY1/6cDXY+9iKGLNIi5pq4/5WiT3FsdVzewXEuVjxwCIZnQ+cXJQ==
+X-Gm-Message-State: AOJu0YxXnpA9zYZmbfTSsffQNhBBV8x9KbPvWbvFZoz9yk4UwxAvPEqC
+	azwfo0ZRQvRm+HQQ3XbWavoHcVnvyC+8bEvRn/5nCIgWAMOqVolUwgRDOycHBrib3GOGVne84DU
+	yWZBPvkMdfDppRGGdxv2yYECkqCgjn1I5xRZAUg==
+X-Google-Smtp-Source: AGHT+IHznbxnmQ2a9sE2uljICDUHwGrSmpOZeuPsWRerpchjYqZKcjzMU9+eJU7z/zz7WRh/gKnst+hmhjZTufwjTUc=
+X-Received: by 2002:a25:8002:0:b0:dbc:b927:c5f9 with SMTP id
+ m2-20020a258002000000b00dbcb927c5f9mr7187786ybk.6.1707385971607; Thu, 08 Feb
+ 2024 01:52:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3284830.aeNJFYEL58@kreacher>
+References: <20240207084452.9597-1-drake@endlessos.org> <20240207200538.GA912749@bhelgaas>
+ <CAD8Lp47DjuAAxqwt+yKD22UNMyvqE00x0u+JeM74KO2OC+Otrg@mail.gmail.com>
+In-Reply-To: <CAD8Lp47DjuAAxqwt+yKD22UNMyvqE00x0u+JeM74KO2OC+Otrg@mail.gmail.com>
+From: Daniel Drake <drake@endlessos.org>
+Date: Thu, 8 Feb 2024 10:52:15 +0100
+Message-ID: <CAD8Lp44-8WhPyOrd2dCWyG3rRuCqzJ-aZCH6b1r0kyhfcXJ8xg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, bhelgaas@google.com, 
+	david.e.box@linux.intel.com, mario.limonciello@amd.com, rafael@kernel.org, 
+	lenb@kernel.org, linux-acpi@vger.kernel.org, linux@endlessos.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 05, 2024 at 10:20:32PM +0100, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> Because thermal zone operations are now stored directly in struct
-> thermal_zone_device, thermal zone creators can discard the operations
-> structure after the zone registration is complete, or it can be made
-> read-only.
-> 
-> Accordingly, make int340x_thermal_zone_add() use a local variable to
-> represent thermal zone operations, so it is freed automatically upon the
-> function exit, and make the other Intel thermal drivers use const zone
-> operations structures.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+On Thu, Feb 8, 2024 at 9:37=E2=80=AFAM Daniel Drake <drake@endlessos.org> w=
+rote:
+> > What would be the downside of skipping the DMI table and calling
+> > pci_d3cold_disable() always?  If this truly is a Root Port defect, it
+> > should affect all platforms with this device, and what's the benefit
+> > of relying on BIOS to use StorageD3Enable to avoid the defect?
+>
+> I had more assumed that it was a platform-specific DSDT bug, in that
+> PEG0.PXP._OFF is doing something that PEG0.PXP._ON is unable to
+> recover from, and that other platforms might handle the suspend/resume
+> of this root port more correctly. Not sure if it is reasonable to
+> assume that all other platforms on the same chipset have the same bug
+> (if that's what this is).
 
-> ---
->  drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c         |   26 ++--------
->  drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h         |    1 
->  drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c |    2 
->  drivers/thermal/intel/intel_pch_thermal.c                            |    2 
->  drivers/thermal/intel/intel_quark_dts_thermal.c                      |    2 
->  drivers/thermal/intel/intel_soc_dts_iosf.c                           |    2 
->  drivers/thermal/intel/x86_pkg_temp_thermal.c                         |    2 
->  7 files changed, 11 insertions(+), 26 deletions(-)
-> 
-> Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> +++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
-> @@ -61,12 +61,6 @@ static void int340x_thermal_critical(str
->  	dev_dbg(&zone->device, "%s: critical temperature reached\n", zone->type);
->  }
->  
-> -static struct thermal_zone_device_ops int340x_thermal_zone_ops = {
-> -	.get_temp       = int340x_thermal_get_zone_temp,
-> -	.set_trip_temp	= int340x_thermal_set_trip_temp,
-> -	.critical	= int340x_thermal_critical,
-> -};
-> -
->  static inline void *int_to_trip_priv(int i)
->  {
->  	return (void *)(long)i;
-> @@ -126,6 +120,11 @@ static struct thermal_zone_params int340
->  struct int34x_thermal_zone *int340x_thermal_zone_add(struct acpi_device *adev,
->  						     int (*get_temp) (struct thermal_zone_device *, int *))
->  {
-> +	const struct thermal_zone_device_ops zone_ops = {
-> +		.set_trip_temp = int340x_thermal_set_trip_temp,
-> +		.critical = int340x_thermal_critical,
-> +		.get_temp = get_temp ? get_temp : int340x_thermal_get_zone_temp,
-> +	};
->  	struct int34x_thermal_zone *int34x_zone;
->  	struct thermal_trip *zone_trips;
->  	unsigned long long trip_cnt = 0;
-> @@ -140,16 +139,6 @@ struct int34x_thermal_zone *int340x_ther
->  
->  	int34x_zone->adev = adev;
->  
-> -	int34x_zone->ops = kmemdup(&int340x_thermal_zone_ops,
-> -				   sizeof(int340x_thermal_zone_ops), GFP_KERNEL);
-> -	if (!int34x_zone->ops) {
-> -		ret = -ENOMEM;
-> -		goto err_ops_alloc;
-> -	}
-> -
-> -	if (get_temp)
-> -		int34x_zone->ops->get_temp = get_temp;
-> -
->  	status = acpi_evaluate_integer(adev->handle, "PATC", NULL, &trip_cnt);
->  	if (ACPI_SUCCESS(status)) {
->  		int34x_zone->aux_trip_nr = trip_cnt;
-> @@ -185,7 +174,7 @@ struct int34x_thermal_zone *int340x_ther
->  							acpi_device_bid(adev),
->  							zone_trips, trip_cnt,
->  							trip_mask, int34x_zone,
-> -							int34x_zone->ops,
-> +							&zone_ops,
->  							&int340x_thermal_params,
->  							0, 0);
->  	kfree(zone_trips);
-> @@ -205,8 +194,6 @@ err_enable:
->  err_thermal_zone:
->  	acpi_lpat_free_conversion_table(int34x_zone->lpat_table);
->  err_trips_alloc:
-> -	kfree(int34x_zone->ops);
-> -err_ops_alloc:
->  	kfree(int34x_zone);
->  	return ERR_PTR(ret);
->  }
-> @@ -216,7 +203,6 @@ void int340x_thermal_zone_remove(struct
->  {
->  	thermal_zone_device_unregister(int34x_zone->zone);
->  	acpi_lpat_free_conversion_table(int34x_zone->lpat_table);
-> -	kfree(int34x_zone->ops);
->  	kfree(int34x_zone);
->  }
->  EXPORT_SYMBOL_GPL(int340x_thermal_zone_remove);
-> Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-> +++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
-> @@ -22,7 +22,6 @@ struct int34x_thermal_zone {
->  	struct acpi_device *adev;
->  	int aux_trip_nr;
->  	struct thermal_zone_device *zone;
-> -	struct thermal_zone_device_ops *ops;
->  	void *priv_data;
->  	struct acpi_lpat_conversion_table *lpat_table;
->  };
-> Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
-> +++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
-> @@ -131,7 +131,7 @@ static void pch_critical(struct thermal_
->  		thermal_zone_device_type(tzd));
->  }
->  
-> -static struct thermal_zone_device_ops tzd_ops = {
-> +static const struct thermal_zone_device_ops tzd_ops = {
->  	.get_temp = pch_thermal_get_temp,
->  	.critical = pch_critical,
->  };
-> Index: linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/intel_quark_dts_thermal.c
-> +++ linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
-> @@ -292,7 +292,7 @@ static int sys_change_mode(struct therma
->  	return ret;
->  }
->  
-> -static struct thermal_zone_device_ops tzone_ops = {
-> +static const struct thermal_zone_device_ops tzone_ops = {
->  	.get_temp = sys_get_curr_temp,
->  	.set_trip_temp = sys_set_trip_temp,
->  	.change_mode = sys_change_mode,
-> Index: linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-> +++ linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-> @@ -233,7 +233,7 @@ static int get_trip_temp(struct proc_the
->  	return temp;
->  }
->  
-> -static struct thermal_zone_device_ops tzone_ops = {
-> +static const struct thermal_zone_device_ops tzone_ops = {
->  	.get_temp = sys_get_curr_temp,
->  	.set_trip_temp	= sys_set_trip_temp,
->  };
-> Index: linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/intel_soc_dts_iosf.c
-> +++ linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
-> @@ -168,7 +168,7 @@ static int sys_get_curr_temp(struct ther
->  	return 0;
->  }
->  
-> -static struct thermal_zone_device_ops tzone_ops = {
-> +static const struct thermal_zone_device_ops tzone_ops = {
->  	.get_temp = sys_get_curr_temp,
->  	.set_trip_temp = sys_set_trip_temp,
->  };
-> Index: linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> ===================================================================
-> --- linux-pm.orig/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> +++ linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
-> @@ -166,7 +166,7 @@ sys_set_trip_temp(struct thermal_zone_de
->  }
->  
->  /* Thermal zone callback registry */
-> -static struct thermal_zone_device_ops tzone_ops = {
-> +static const struct thermal_zone_device_ops tzone_ops = {
->  	.get_temp = sys_get_curr_temp,
->  	.set_trip_temp = sys_set_trip_temp,
->  };
-> 
-> 
-> 
+Just realised my main workstation (Dell XPS) has the same chipset.
+
+The Dell ACPI table has the exact same suspect-buggy function, which
+the affected Asus system calls from PEG0.PXP._OFF:
+
+        Method (DL23, 0, Serialized)
+        {
+            L23E =3D One
+            Sleep (0x10)
+            Local0 =3D Zero
+            While (L23E)
+            {
+                If ((Local0 > 0x04))
+                {
+                    Break
+                }
+
+                Sleep (0x10)
+                Local0++
+            }
+
+            SCB0 =3D One
+        }
+
+(the "L23E =3D One" line is the one that writes a value to config offset
+0xe2, if you comment out this line then everything works)
+
+However, on the Dell XPS system, nothing calls DL23() i.e. it is dead code.
+
+Comparing side by side:
+Asus root port (PC00.PEG0) has the PXP power resource which gets
+powered down during D3cold transition as it becomes unused. Dell root
+port has no power resources (no _PR0).
+Asus NVM device sitting under that root port (PC00.PEG0.PEGP) has
+no-op _PS3 method, but Dell does not have _PS3. This means that Dell
+doesn't attempt D3cold on NVMe nor the parent root port during suspend
+(both go to D3hot only).
+
+Let me know if you have any ideas for other useful comparative experiments.
+
+Daniel
 
