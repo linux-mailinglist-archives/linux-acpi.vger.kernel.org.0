@@ -1,121 +1,222 @@
-Return-Path: <linux-acpi+bounces-3287-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3288-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341BE84D917
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 04:45:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6A484DB42
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 09:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC6261F22896
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 03:45:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917CF1C21859
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 08:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6512C194;
-	Thu,  8 Feb 2024 03:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7322A6A03F;
+	Thu,  8 Feb 2024 08:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ZF/FY+Wj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mXdm7Kpr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A422E83F
-	for <linux-acpi@vger.kernel.org>; Thu,  8 Feb 2024 03:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C16A327;
+	Thu,  8 Feb 2024 08:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707363884; cv=none; b=rpc2wMtt9HVBReiOhKESmdUfpAGtBQBM859L0tAj5zkIKpe827FpKTAQAGUNUSUm3af6tp0GfkbG2qIO3q9l7cStFwYBPQtY+NOjrlxC+IjofTkj/v/79dSZjPcWmncY0igNo+gQyRHdqbKU7n6v88MbfxBISlm9errEEbav5YU=
+	t=1707380538; cv=none; b=AcM23LdPdGbK9xG+rFKbCyPUdQAT7k6zbZOVjv6R7fA2vlCXeGVs/0xAj2mmTHK/DqShMkqSEwGzsdPtpcyLonV1mJFBlRTOHAyTieQGDn0Ep61EQDdy2qqgLNRkkUN9oa5rOn9jQE8AxYpecYdbugDDBVX4G5ei0kt/8psQ2nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707363884; c=relaxed/simple;
-	bh=k//nL0O52r0Pst+dMnarHtp2qW40QOxuRpgoBz8kxz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qtw1q1BIaPwMAwBIhDLH9llUOm3gt1M0yIZKB2Hi4Slwzy0e2ldLSMsPnWX0ei8ccs+8V2kt9kjFDmcT7gBL7b2yx8MxZIknTtgiSH9NbAyV8lwE2+e2oDZTJW06snIO1ZCbtcjMek3rCarmUxmdotBuKPvh9sZxVetDICT2h5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ZF/FY+Wj; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-218eea4f1a7so751938fac.3
-        for <linux-acpi@vger.kernel.org>; Wed, 07 Feb 2024 19:44:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1707363882; x=1707968682; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pHHbaCQ0poyIlU4NNDp8/EJ+oDcSBjCEciZfSlQAroE=;
-        b=ZF/FY+WjnT3ygBMUPf6UDktNH+t5dSGZi617TrWm/5EmMUQmaKakp99wR7Q2hyZRtu
-         oNgrqOifXttQaI9RzNJ4ay3MKfYrflfpcR8bPsr5FLeMANJ4wJ8JxQ3Xl/qVzykjgQKN
-         04f00ErSBBM+FGGlrI6lQAzdw3OeFgxsIR/bTfEBZeYSOJcORX2T2oH+1OQDlP8z+Alf
-         V7pqgocVhcsh9WjCkyaK4tZ+u8Cofbnse0SuuTD4GaW4nwkQLQQbWyJ1CG7sNDEjdUns
-         8A5GmRHlsGd/FNQgqkBZbJQCzaved9w090gzAsUmHy7YqGRNF+mfYrsvldB48sC2HreU
-         98wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707363882; x=1707968682;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pHHbaCQ0poyIlU4NNDp8/EJ+oDcSBjCEciZfSlQAroE=;
-        b=lpSAiAhyuQC9unzEdF+bHOqHCn7VxzvtJ2f6az7Crj+VGeN6ak1GBS1YWq8SF8V56f
-         Hj9iUwpXogzvGDYYekL2ajougbvssCJGrS4oenbu5e3JDf6klG76uxSiapJrHbqGCEgV
-         BdMQnYGM7oNkJuaiykR4wZybTv9Fc/tK9GY/+SC62V1LGbBVQoWahPMVMeHQft6EQvu2
-         PzqmuAjofnZI7uuDo344w+be18mgD1maUTts4gPKflQeOv5K4sKtPfVhkxCd75iEpM9L
-         CqHjsavnhMSmwj/JcFOxtrfC2gvlHbv2/fY6SawN+PvEZ6L+CMCw/RGDiLS9vt+1urJx
-         pVog==
-X-Gm-Message-State: AOJu0YzrVRq3rUMQCUt++du0f0TM+A3qAYVLxpiWKsVgQKK/jFCfDhjY
-	a+a8vL8CVyOU0DxjUkUeFKuikN3h4uszd8sFzbuHEXFCSNJRWyp+qwb8STNhV/I=
-X-Google-Smtp-Source: AGHT+IF8S/sWdD2/t/IehosLthOGcp9RQPnzkTr2qd4mbuxfbLO4HkNLnW4usy2ZbfgHlv8pV/ejiA==
-X-Received: by 2002:a05:6870:5aa6:b0:219:efcf:4566 with SMTP id dt38-20020a0568705aa600b00219efcf4566mr608603oab.13.1707363882197;
-        Wed, 07 Feb 2024 19:44:42 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVh/Tfazr2HX3H9HLVSgqn2h5sWZF5zZ5Zu3TylAEJBkg6WlJX4/E7mdRNyYeqRzmewuTn9VXmXv1FtoOtXhtlcOre2zou7FFXQUDmY6pI/9p/FsbwVr0+8GGlVgHQ9AYdz6tBzr5/i8hIFf+7EspTg8jBmrbfhdhTP3qiwyFvjpwO2in0n4qTOitGh8nK7brPcNu/Kvh21nlOV/qTSz2Rnp1Gbk49vPosP7AWKXM6PoV/qytusk6FagZIAGKefqaqZynnwmgekry/tFV+XDLPJWXhLi4W2ycmDpIRCad/Huk1Yjxqhm2F7DjWvdLC3aIgaUNaY9EbYeOBLtVswBA3q71Sj1eHrmp9KORNCA/U8M8UAnDOI4Yp334RzlA1isNR7FePtaKlAYAN/Vo8T3HErx+2vd6HLGUiyszV6wXoj9Hcm2pveNgVjS2wxW6nYATvDx94n
-Received: from sunil-laptop.dc1.ventanamicro.com ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id g10-20020a056830160a00b006ddbfc37c87sm443595otr.49.2024.02.07.19.44.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 19:44:41 -0800 (PST)
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: linux-riscv@lists.infradead.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v1 -next 3/3] RISC-V: defconfig: Enable CONFIG_ACPI_CPPC_CPUFREQ
-Date: Thu,  8 Feb 2024 09:14:14 +0530
-Message-Id: <20240208034414.22579-4-sunilvl@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240208034414.22579-1-sunilvl@ventanamicro.com>
-References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
+	s=arc-20240116; t=1707380538; c=relaxed/simple;
+	bh=SE/s3lYJpb9Q+n9pVf/ojtKtqy8zqqmwKN+tZ8ySURE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ArCNjTKBDyk6KwLa1qedSVVCOrU+cjH6OMASOHJP9p11uMT0jxkcf24fmhS9zOqYktuFQ7jxGkbyzSIt7HmqXalrVReH+o1nbLw5qAm8rqc8bK2T0nAszBwTvWz8wHbEJ5PbiOg4qEpn7HCT9GPXf2fsaVr7Hjf867xkZ1LbqoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mXdm7Kpr; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707380536; x=1738916536;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SE/s3lYJpb9Q+n9pVf/ojtKtqy8zqqmwKN+tZ8ySURE=;
+  b=mXdm7KprdbcG7Pi4CYJBAujOFoQYrwuB54H3xliX4sH9i8E40crKwk0j
+   Pihaw1wgIjlKJ7bCpH6ccd6rbUcrJsAjFhtxo8kc+c2/Hs0aG0ionxlmZ
+   AnE6NKwTMuAj6tSxbrQ/iLs1fJgGHbVZCRPKXb/FFMfG+f0HIhoFzvTTJ
+   +tDDks+EwvjwxWSTncD29SyETAoG6k9YT83O9damAwywL7SznjaU6qeY/
+   K8FbWG6AL0ouvVZMiMHUtP4cU5zR5Abpz4eNyRRbLgbqvgWvBRynr8cOK
+   3/a8ZSp5HA2DvE8+gSwwDy5FSfWWteVDvbjzrtZVJQzl/al6lzMEI46RB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="4953284"
+X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
+   d="scan'208";a="4953284"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:22:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
+   d="scan'208";a="39014851"
+Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.252.43.105])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:22:12 -0800
+Date: Thu, 8 Feb 2024 09:22:09 +0100
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH v1 1/6] thermal: core: Store zone trips table in struct
+ thermal_zone_device
+Message-ID: <ZcSPMRH34M5yG/IU@linux.intel.com>
+References: <2728491.mvXUDI8C0e@kreacher>
+ <5762433.DvuYhMxLoT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5762433.DvuYhMxLoT@kreacher>
 
-CONFIG_ACPI_CPPC_CPUFREQ is required to enable CPPC for RISC-V.
+On Mon, Feb 05, 2024 at 10:14:31PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The current code requires thermal zone creators to pass a pointer to a
+> writable trips table to thermal_zone_device_register_with_trips() and
+> that trips table is then used by the thermal core going forward.
+> 
+> Consequently, the callers of thermal_zone_device_register_with_trips()
+> are required to hold on to the trips table passed to it until the given
+> thermal zone is unregistered, at which point the trips table can be
+> freed, but at the same time they are not allowed to access the cells in
+> that table directly.  This is both error prone and confusing.
+> 
+> To address it, turn the trips table pointer in struct thermal_zone_device
+> into a flex array (counted by its num_trips field), allocate it during
+> thermal zone device allocation and copy the contents of the trips table
+> supplied by the zone creator (which can be const now) into it.
+> 
+> This allows the callers of thermal_zone_device_register_with_trips() to
+> drop their trip tables right after the zone registration.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
----
- arch/riscv/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-index eaf34e871e30..2988ecd3eb4d 100644
---- a/arch/riscv/configs/defconfig
-+++ b/arch/riscv/configs/defconfig
-@@ -44,6 +44,7 @@ CONFIG_CPU_FREQ_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=m
- CONFIG_CPUFREQ_DT=y
-+CONFIG_ACPI_CPPC_CPUFREQ=m
- CONFIG_VIRTUALIZATION=y
- CONFIG_KVM=m
- CONFIG_ACPI=y
--- 
-2.34.1
-
+> ---
+>  drivers/thermal/thermal_core.c |   16 +++++++++-------
+>  include/linux/thermal.h        |   10 +++++-----
+>  2 files changed, 14 insertions(+), 12 deletions(-)
+> 
+> Index: linux-pm/include/linux/thermal.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/thermal.h
+> +++ linux-pm/include/linux/thermal.h
+> @@ -130,7 +130,6 @@ struct thermal_cooling_device {
+>   * @trip_hyst_attrs:	attributes for trip points for sysfs: trip hysteresis
+>   * @mode:		current mode of this thermal zone
+>   * @devdata:	private pointer for device private data
+> - * @trips:	an array of struct thermal_trip
+>   * @num_trips:	number of trip points the thermal zone supports
+>   * @passive_delay_jiffies: number of jiffies to wait between polls when
+>   *			performing passive cooling.
+> @@ -160,6 +159,7 @@ struct thermal_cooling_device {
+>   * @poll_queue:	delayed work for polling
+>   * @notify_event: Last notification event
+>   * @suspended: thermal zone suspend indicator
+> + * @trips:	array of struct thermal_trip objects
+>   */
+>  struct thermal_zone_device {
+>  	int id;
+> @@ -172,7 +172,6 @@ struct thermal_zone_device {
+>  	struct thermal_attr *trip_hyst_attrs;
+>  	enum thermal_device_mode mode;
+>  	void *devdata;
+> -	struct thermal_trip *trips;
+>  	int num_trips;
+>  	unsigned long passive_delay_jiffies;
+>  	unsigned long polling_delay_jiffies;
+> @@ -193,10 +192,11 @@ struct thermal_zone_device {
+>  	struct list_head node;
+>  	struct delayed_work poll_queue;
+>  	enum thermal_notify_event notify_event;
+> +	bool suspended;
+>  #ifdef CONFIG_THERMAL_DEBUGFS
+>  	struct thermal_debugfs *debugfs;
+>  #endif
+> -	bool suspended;
+> +	struct thermal_trip trips[] __counted_by(num_trips);
+>  };
+>  
+>  /**
+> @@ -315,7 +315,7 @@ int thermal_zone_get_crit_temp(struct th
+>  #ifdef CONFIG_THERMAL
+>  struct thermal_zone_device *thermal_zone_device_register_with_trips(
+>  					const char *type,
+> -					struct thermal_trip *trips,
+> +					const struct thermal_trip *trips,
+>  					int num_trips, int mask,
+>  					void *devdata,
+>  					struct thermal_zone_device_ops *ops,
+> @@ -375,7 +375,7 @@ void thermal_zone_device_critical(struct
+>  #else
+>  static inline struct thermal_zone_device *thermal_zone_device_register_with_trips(
+>  					const char *type,
+> -					struct thermal_trip *trips,
+> +					const struct thermal_trip *trips,
+>  					int num_trips, int mask,
+>  					void *devdata,
+>  					struct thermal_zone_device_ops *ops,
+> Index: linux-pm/drivers/thermal/thermal_core.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_core.c
+> +++ linux-pm/drivers/thermal/thermal_core.c
+> @@ -1272,10 +1272,13 @@ EXPORT_SYMBOL_GPL(thermal_zone_get_crit_
+>   * IS_ERR*() helpers.
+>   */
+>  struct thermal_zone_device *
+> -thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *trips, int num_trips, int mask,
+> -					void *devdata, struct thermal_zone_device_ops *ops,
+> -					const struct thermal_zone_params *tzp, int passive_delay,
+> -					int polling_delay)
+> +thermal_zone_device_register_with_trips(const char *type,
+> +					const struct thermal_trip *trips,
+> +					int num_trips, int mask,
+> +					void *devdata,
+> +					struct thermal_zone_device_ops *ops,
+> +					const struct thermal_zone_params *tzp,
+> +					int passive_delay, int polling_delay)
+>  {
+>  	struct thermal_zone_device *tz;
+>  	int id;
+> @@ -1322,7 +1325,7 @@ thermal_zone_device_register_with_trips(
+>  	if (!thermal_class)
+>  		return ERR_PTR(-ENODEV);
+>  
+> -	tz = kzalloc(sizeof(*tz), GFP_KERNEL);
+> +	tz = kzalloc(struct_size(tz, trips, num_trips), GFP_KERNEL);
+>  	if (!tz)
+>  		return ERR_PTR(-ENOMEM);
+>  
+> @@ -1344,7 +1347,6 @@ thermal_zone_device_register_with_trips(
+>  		result = id;
+>  		goto free_tzp;
+>  	}
+> -
+>  	tz->id = id;
+>  	strscpy(tz->type, type, sizeof(tz->type));
+>  
+> @@ -1354,7 +1356,7 @@ thermal_zone_device_register_with_trips(
+>  	tz->ops = ops;
+>  	tz->device.class = thermal_class;
+>  	tz->devdata = devdata;
+> -	tz->trips = trips;
+> +	memcpy(tz->trips, trips, num_trips * sizeof(trips[0]));
+>  	tz->num_trips = num_trips;
+>  
+>  	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
+> 
+> 
+> 
+> 
 
