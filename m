@@ -1,150 +1,391 @@
-Return-Path: <linux-acpi+bounces-3291-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3292-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D97E84DB8E
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 09:38:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFD884DBE2
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 09:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AB6287CF8
-	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 08:38:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43372B22795
+	for <lists+linux-acpi@lfdr.de>; Thu,  8 Feb 2024 08:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2B56A358;
-	Thu,  8 Feb 2024 08:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688B76BB59;
+	Thu,  8 Feb 2024 08:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b="ZIdG1OOD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XVc7MMkU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F47356778
-	for <linux-acpi@vger.kernel.org>; Thu,  8 Feb 2024 08:38:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCC36BFA1;
+	Thu,  8 Feb 2024 08:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707381495; cv=none; b=t/pcROJEudgbMIG8BgwzZMdZxihexW5iTQ3u88FXJ2gGsTRcf2YWdzjdrKM+JBDrEC/CPSaWjkCACOych2zyFoRfKjloOTKEiJy5anCaR2LUA4sGPbqbwHjzrqhtLYW9DZr8xm3OxIoPF54YX0GwqXE8765z5LrSeCq7f2wfl3w=
+	t=1707382140; cv=none; b=GVxbr5cgakMOTWzoEuazmM/8pZQyte5BJk/sepuNMEQGRf0l1O1Rl1oTmvAii676espUBDERlhRh64YPQhrH1VpzCgbetNBAHIOzG78SWWDAj3ZmQaQ8hj5Ni5Lvhmoq/S1pM6+Je1Jz+ACgHwwvE89dLSA9LMVdggHN2Gd/Ozk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707381495; c=relaxed/simple;
-	bh=lF1qmuDwtNui8X0ZFYNVt/ucazJB6+zf68wnH6w0jUc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KyQzJnjO4q3PkWGJ6pxWiCl0Nsqe79vN6CCvBG3OEUCDI2cneIzBJnujBNlH4CIR8WXZWfx2E0e2YqedXYr87LlUzouaiBOUNkeiLhKtnzbHI19OmfLneY09onOG/iJoUab7L+wsw0UQR2DjrLJI+DatM2Z92cX+e+Vage8bYHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org; spf=pass smtp.mailfrom=endlessos.org; dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b=ZIdG1OOD; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endlessos.org
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dc26698a5bfso633799276.0
-        for <linux-acpi@vger.kernel.org>; Thu, 08 Feb 2024 00:38:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google; t=1707381493; x=1707986293; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xJjgK/86oIYgDKE/vpWS6pEJ65u/gCjBzOy2n9k26uo=;
-        b=ZIdG1OODqGuJaJXs8H41EmQ0bNAavyQGcaIO+8Qw0ubArxDacqPV2K9ahfrmZM35m4
-         O/tRdNIj/GHDwrRkzGrbi24C5qIau/sIxruXhf/mXZbsAOJKBlW7n0F1qr3/cE8L/wfn
-         cg+WN0PKcmG3qXzOXr+q6ok6ax6azW04qVBG8pINMcELfSA3Z+z0cADJ/htA87f9cB38
-         ZsQFFKmwk91yyATi4Py53ZWsBcrlE4YyRFPnA6zluRsAYXnHfwE9Q2mxRj2BKUCu1KuR
-         s0m40emk0w8GW3tuEH+zTmDEpYupavmdN1hf2rgfQI78vMH4gZFeaRlcpcv6JDERp9uS
-         ze6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707381493; x=1707986293;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xJjgK/86oIYgDKE/vpWS6pEJ65u/gCjBzOy2n9k26uo=;
-        b=hSBm09g0Qqtx5uv+yHJBV25p6Es+ytk+10fpwVDPE/tAXiM6rmJ1Eh6yjBDs/B3l3V
-         3T/+lGhIvjjNs3R0zC76LfYHuMbb8muiRCQdMOTagF7hz8XAKuXgiGi79DovlYbe8i6V
-         OBfFPZ3crREfoxUCvXkJQ/fzihAqWocr8rHc1NkZhmtCewOWMRtEO5DGgG6V1b8DaY4N
-         OjQFEfRx/csX/Ln9PT3KAENS9SS/VjqS/5ExuFqUaoMRYkMRZkFdSaU7o8NOT4bCGjBT
-         dRB5YMYDLPyYHpQ6E0NxygyNJWe0zILOXz7ZMJviBIaczLMVDWGGEaSMU5fNkDkYxYcQ
-         hbBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVYCIW1+fBY7QXDxRZ5I52cG/gDyJK5upGBB9COSomK78NRYiX+MzuNvJfZBfnKRiNcLrnX8WEkbH5hgHNlDXSvoKQTRjNNwd7rtw==
-X-Gm-Message-State: AOJu0YwKfrPJsjZ/6wtY0ly16NIi4h0BsP2s3zV9lR8NsfgPUHxOFcA2
-	uEIV5yce9Q+cdExOJDCTnRp9pf0NVyWK0a8pcP14pdti3hggqxQ+48eCs7E7nBepNJSMPhBbJMb
-	c9qGM7Vv9H82ahOYh/VFFGIn7Rs1waetYLCC27A==
-X-Google-Smtp-Source: AGHT+IGMvfAD5Dwy5xHDpbIKVVXYXtthlZowYoNKU2j4hr05mPhNntdO2N44+cfCiLv/dgkt+wBOwO1Wtk1t6IMtHLg=
-X-Received: by 2002:a25:8002:0:b0:dbc:b927:c5f9 with SMTP id
- m2-20020a258002000000b00dbcb927c5f9mr7087610ybk.6.1707381492892; Thu, 08 Feb
- 2024 00:38:12 -0800 (PST)
+	s=arc-20240116; t=1707382140; c=relaxed/simple;
+	bh=A8risXt2YQC/LWIdp/0fHWzodspwG8pM44llSrUmEYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tV5GexdDd44JSGBqD3UWVNuGy1CUY2hsEanyKxgXQLaRbYLTLAssB+5l9p1EAY31Ca8iQ+QCcT/okGiaOtx9TgMhdFWPC5XtjbNP182neH1p0/5QlfdHFlTTSISK+NlZXTrCofDdAW1LhH4QvkQPlrRjDxplmQR9uT2nUXVxXu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XVc7MMkU; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707382138; x=1738918138;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=A8risXt2YQC/LWIdp/0fHWzodspwG8pM44llSrUmEYs=;
+  b=XVc7MMkUm6VqXzRnoq7xBtXcLK3KTWp27WZnbcSM6ZQPxo+fkJ+/1xyN
+   bZKTG8gd+hBsIikasx3802kydMl7Gv3qWnAj82ekgXmTcuU/QYVK0o/FI
+   HEnSdeu3WzSZlw8Ji9LoeSS5vtffntk0y2vyggBEfVo4wYW1ewpvIkd+q
+   B9FycHaRzQOouQIUxZxBYMQigJvYxfF5MaED2ifVCsbjrH2L9uWupoblz
+   xw9NRpYIdTLV67vgY9s4nIbaMT1VPijABerwtM2gzZg6Sc3EejAMsM+U3
+   Z/peoyxlbDqsHh3ICnVw02AJYYPTvl5/fUJiyTXqTKlTGzB0zaVxY1lLz
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1328231"
+X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
+   d="scan'208";a="1328231"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:48:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,253,1701158400"; 
+   d="scan'208";a="1588143"
+Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.252.43.105])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 00:48:54 -0800
+Date: Thu, 8 Feb 2024 09:48:51 +0100
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Linux ACPI <linux-acpi@vger.kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH v1 4/6] thermal: core: Store zone ops in struct
+ thermal_zone_device
+Message-ID: <ZcSVc4WiS0TkUEmu@linux.intel.com>
+References: <2728491.mvXUDI8C0e@kreacher>
+ <1888343.tdWV9SEqCh@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240207084452.9597-1-drake@endlessos.org> <20240207200538.GA912749@bhelgaas>
-In-Reply-To: <20240207200538.GA912749@bhelgaas>
-From: Daniel Drake <drake@endlessos.org>
-Date: Thu, 8 Feb 2024 09:37:36 +0100
-Message-ID: <CAD8Lp47DjuAAxqwt+yKD22UNMyvqE00x0u+JeM74KO2OC+Otrg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, bhelgaas@google.com, 
-	david.e.box@linux.intel.com, mario.limonciello@amd.com, rafael@kernel.org, 
-	lenb@kernel.org, linux-acpi@vger.kernel.org, linux@endlessos.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1888343.tdWV9SEqCh@kreacher>
 
-On Wed, Feb 7, 2024 at 9:05=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> w=
-rote:
-> Can you run "sudo lspci -vvxxxx -s00:06.0" before putting the Root
-> Port in D3hot, and then again after putting it back in D0 (when NVMe
-> is inaccessible), and attach both outputs to the bugzilla?
+On Mon, Feb 05, 2024 at 10:18:02PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The current code requires thermal zone creators to pass pointers to
+> writable ops to thermal_zone_device_register_with_trips() which needs
+> to modify the target struct thermal_zone_device_ops object if the
+> "critical" operation in it is NULL.
+> 
+> Moreover, the callers of thermal_zone_device_register_with_trips() are
+> required to hold on to the struct thermal_zone_device_ops object passed
+> to it until the given thermal zone is unregistered.
+> 
+> Both of these requirements are quite inconvenient, so modify struct
+> thermal_zone_device to contain struct thermal_zone_device_ops as field and
+> make thermal_zone_device_register_with_trips() copy the contents of the
+> struct thermal_zone_device_ops passed to it via a pointer (which can be
+> const now) to that field.  Also adjust the code using thermal zone ops
+> accordingly.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-Done: https://bugzilla.kernel.org/show_bug.cgi?id=3D215742#c21
-
-> Given that D3cold is just "main power off," and obviously the Root
-> Port *can* transition from D3cold to D0 (at initial platform power-up
-> if nothing else), this seems kind of strange and makes me think we may
-> not completely understand the root cause, e.g., maybe some config
-> didn't get restored.
->
-> But the fact that Windows doesn't use D3cold in this case suggests
-> that either (1) Windows has a similar quirk to work around this, or
-> (2) Windows decides whether to use D3cold differently than Linux does.
->
-> I have no data, but (1) seems sort of unlikely.  In case it turns out
-> to be (2) and we figure out how to fix it that way someday, can you
-> add the output of "sudo lspci -vvxxxx" of the system to the bugzilla?
-
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215742#c27
-
-Some other interesting observations from Windows, observed via socwatch & V=
-Tune:
-
-On affected BIOS versions:
-CPU does not go into the lowest power state PC10 during suspend - it
-only reaches PC8.
-SLP_S0# signal is not asserted (which follows from it not reaching PC10).
-NVMe device in D0 and the HDD LED briefly blinks every 1-2 seconds
-(can't recall if it a regular or irregular blink)
-
-On latest BIOS version:
-PC10 reached and SLP_S0# asserted during suspend, but only for about
-25% of the suspend time
-NVMe device in D0 and the HDD LED briefly blinks every 1-2 seconds
-(can't recall if it a regular or irregular blink)
-
-The LED blinking leaves me wondering if there is something "using" the
-disk during suspend in Windows, so that's why it doesn't try to power
-it down even on the original version with StorageD3Enable=3D1. This HDD
-LED blinking during suspend does not happen on Linux, not even when
-NVMe device is left in D0 over suspend with the regular nvme_suspend()
-path putting the NVMe device into lower power mode at the NVMe
-protocol level.
-
-> What would be the downside of skipping the DMI table and calling
-> pci_d3cold_disable() always?  If this truly is a Root Port defect, it
-> should affect all platforms with this device, and what's the benefit
-> of relying on BIOS to use StorageD3Enable to avoid the defect?
-
-I had more assumed that it was a platform-specific DSDT bug, in that
-PEG0.PXP._OFF is doing something that PEG0.PXP._ON is unable to
-recover from, and that other platforms might handle the suspend/resume
-of this root port more correctly. Not sure if it is reasonable to
-assume that all other platforms on the same chipset have the same bug
-(if that's what this is).
-
-Daniel
+> ---
+>  drivers/thermal/thermal_core.c    |   40 +++++++++++++++++++-------------------
+>  drivers/thermal/thermal_helpers.c |   10 ++++-----
+>  drivers/thermal/thermal_hwmon.c   |    4 +--
+>  drivers/thermal/thermal_sysfs.c   |   12 +++++------
+>  drivers/thermal/thermal_trip.c    |    4 +--
+>  include/linux/thermal.h           |    6 ++---
+>  6 files changed, 38 insertions(+), 38 deletions(-)
+> 
+> Index: linux-pm/include/linux/thermal.h
+> ===================================================================
+> --- linux-pm.orig/include/linux/thermal.h
+> +++ linux-pm/include/linux/thermal.h
+> @@ -182,7 +182,7 @@ struct thermal_zone_device {
+>  	int prev_low_trip;
+>  	int prev_high_trip;
+>  	atomic_t need_update;
+> -	struct thermal_zone_device_ops *ops;
+> +	struct thermal_zone_device_ops ops;
+>  	struct thermal_zone_params *tzp;
+>  	struct thermal_governor *governor;
+>  	void *governor_data;
+> @@ -318,14 +318,14 @@ struct thermal_zone_device *thermal_zone
+>  					const struct thermal_trip *trips,
+>  					int num_trips, int mask,
+>  					void *devdata,
+> -					struct thermal_zone_device_ops *ops,
+> +					const struct thermal_zone_device_ops *ops,
+>  					const struct thermal_zone_params *tzp,
+>  					int passive_delay, int polling_delay);
+>  
+>  struct thermal_zone_device *thermal_tripless_zone_device_register(
+>  					const char *type,
+>  					void *devdata,
+> -					struct thermal_zone_device_ops *ops,
+> +					const struct thermal_zone_device_ops *ops,
+>  					const struct thermal_zone_params *tzp);
+>  
+>  void thermal_zone_device_unregister(struct thermal_zone_device *tz);
+> Index: linux-pm/drivers/thermal/thermal_core.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_core.c
+> +++ linux-pm/drivers/thermal/thermal_core.c
+> @@ -356,9 +356,9 @@ static void handle_critical_trips(struct
+>  	trace_thermal_zone_trip(tz, thermal_zone_trip_id(tz, trip), trip->type);
+>  
+>  	if (trip->type == THERMAL_TRIP_CRITICAL)
+> -		tz->ops->critical(tz);
+> -	else if (tz->ops->hot)
+> -		tz->ops->hot(tz);
+> +		tz->ops.critical(tz);
+> +	else if (tz->ops.hot)
+> +		tz->ops.hot(tz);
+>  }
+>  
+>  static void handle_thermal_trip(struct thermal_zone_device *tz,
+> @@ -493,8 +493,8 @@ static int thermal_zone_device_set_mode(
+>  		return ret;
+>  	}
+>  
+> -	if (tz->ops->change_mode)
+> -		ret = tz->ops->change_mode(tz, mode);
+> +	if (tz->ops.change_mode)
+> +		ret = tz->ops.change_mode(tz, mode);
+>  
+>  	if (!ret)
+>  		tz->mode = mode;
+> @@ -867,8 +867,8 @@ static void bind_cdev(struct thermal_coo
+>  	struct thermal_zone_device *pos = NULL;
+>  
+>  	list_for_each_entry(pos, &thermal_tz_list, node) {
+> -		if (pos->ops->bind) {
+> -			ret = pos->ops->bind(pos, cdev);
+> +		if (pos->ops.bind) {
+> +			ret = pos->ops.bind(pos, cdev);
+>  			if (ret)
+>  				print_bind_err_msg(pos, cdev, ret);
+>  		}
+> @@ -1184,8 +1184,8 @@ void thermal_cooling_device_unregister(s
+>  
+>  	/* Unbind all thermal zones associated with 'this' cdev */
+>  	list_for_each_entry(tz, &thermal_tz_list, node) {
+> -		if (tz->ops->unbind)
+> -			tz->ops->unbind(tz, cdev);
+> +		if (tz->ops.unbind)
+> +			tz->ops.unbind(tz, cdev);
+>  	}
+>  
+>  	mutex_unlock(&thermal_list_lock);
+> @@ -1199,13 +1199,13 @@ static void bind_tz(struct thermal_zone_
+>  	int ret;
+>  	struct thermal_cooling_device *pos = NULL;
+>  
+> -	if (!tz->ops->bind)
+> +	if (!tz->ops.bind)
+>  		return;
+>  
+>  	mutex_lock(&thermal_list_lock);
+>  
+>  	list_for_each_entry(pos, &thermal_cdev_list, node) {
+> -		ret = tz->ops->bind(tz, pos);
+> +		ret = tz->ops.bind(tz, pos);
+>  		if (ret)
+>  			print_bind_err_msg(tz, pos, ret);
+>  	}
+> @@ -1224,8 +1224,8 @@ int thermal_zone_get_crit_temp(struct th
+>  {
+>  	int i, ret = -EINVAL;
+>  
+> -	if (tz->ops->get_crit_temp)
+> -		return tz->ops->get_crit_temp(tz, temp);
+> +	if (tz->ops.get_crit_temp)
+> +		return tz->ops.get_crit_temp(tz, temp);
+>  
+>  	if (!tz->trips)
+>  		return -EINVAL;
+> @@ -1276,7 +1276,7 @@ thermal_zone_device_register_with_trips(
+>  					const struct thermal_trip *trips,
+>  					int num_trips, int mask,
+>  					void *devdata,
+> -					struct thermal_zone_device_ops *ops,
+> +					const struct thermal_zone_device_ops *ops,
+>  					const struct thermal_zone_params *tzp,
+>  					int passive_delay, int polling_delay)
+>  {
+> @@ -1350,10 +1350,10 @@ thermal_zone_device_register_with_trips(
+>  	tz->id = id;
+>  	strscpy(tz->type, type, sizeof(tz->type));
+>  
+> -	if (!ops->critical)
+> -		ops->critical = thermal_zone_device_critical;
+> +	tz->ops = *ops;
+> +	if (!tz->ops.critical)
+> +		tz->ops.critical = thermal_zone_device_critical;
+>  
+> -	tz->ops = ops;
+>  	tz->device.class = thermal_class;
+>  	tz->devdata = devdata;
+>  	memcpy(tz->trips, trips, num_trips * sizeof(trips[0]));
+> @@ -1439,7 +1439,7 @@ EXPORT_SYMBOL_GPL(thermal_zone_device_re
+>  struct thermal_zone_device *thermal_tripless_zone_device_register(
+>  					const char *type,
+>  					void *devdata,
+> -					struct thermal_zone_device_ops *ops,
+> +					const struct thermal_zone_device_ops *ops,
+>  					const struct thermal_zone_params *tzp)
+>  {
+>  	return thermal_zone_device_register_with_trips(type, NULL, 0, 0, devdata,
+> @@ -1501,8 +1501,8 @@ void thermal_zone_device_unregister(stru
+>  
+>  	/* Unbind all cdevs associated with 'this' thermal zone */
+>  	list_for_each_entry(cdev, &thermal_cdev_list, node)
+> -		if (tz->ops->unbind)
+> -			tz->ops->unbind(tz, cdev);
+> +		if (tz->ops.unbind)
+> +			tz->ops.unbind(tz, cdev);
+>  
+>  	mutex_unlock(&thermal_list_lock);
+>  
+> Index: linux-pm/drivers/thermal/thermal_sysfs.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_sysfs.c
+> +++ linux-pm/drivers/thermal/thermal_sysfs.c
+> @@ -123,8 +123,8 @@ trip_point_temp_store(struct device *dev
+>  	trip = &tz->trips[trip_id];
+>  
+>  	if (temp != trip->temperature) {
+> -		if (tz->ops->set_trip_temp) {
+> -			ret = tz->ops->set_trip_temp(tz, trip_id, temp);
+> +		if (tz->ops.set_trip_temp) {
+> +			ret = tz->ops.set_trip_temp(tz, trip_id, temp);
+>  			if (ret)
+>  				goto unlock;
+>  		}
+> @@ -174,8 +174,8 @@ trip_point_hyst_store(struct device *dev
+>  	trip = &tz->trips[trip_id];
+>  
+>  	if (hyst != trip->hysteresis) {
+> -		if (tz->ops->set_trip_hyst) {
+> -			ret = tz->ops->set_trip_hyst(tz, trip_id, hyst);
+> +		if (tz->ops.set_trip_hyst) {
+> +			ret = tz->ops.set_trip_hyst(tz, trip_id, hyst);
+>  			if (ret)
+>  				goto unlock;
+>  		}
+> @@ -250,10 +250,10 @@ emul_temp_store(struct device *dev, stru
+>  
+>  	mutex_lock(&tz->lock);
+>  
+> -	if (!tz->ops->set_emul_temp)
+> +	if (!tz->ops.set_emul_temp)
+>  		tz->emul_temperature = temperature;
+>  	else
+> -		ret = tz->ops->set_emul_temp(tz, temperature);
+> +		ret = tz->ops.set_emul_temp(tz, temperature);
+>  
+>  	if (!ret)
+>  		__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
+> Index: linux-pm/drivers/thermal/thermal_helpers.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_helpers.c
+> +++ linux-pm/drivers/thermal/thermal_helpers.c
+> @@ -26,8 +26,8 @@ int get_tz_trend(struct thermal_zone_dev
+>  {
+>  	enum thermal_trend trend;
+>  
+> -	if (tz->emul_temperature || !tz->ops->get_trend ||
+> -	    tz->ops->get_trend(tz, trip, &trend)) {
+> +	if (tz->emul_temperature || !tz->ops.get_trend ||
+> +	    tz->ops.get_trend(tz, trip, &trend)) {
+>  		if (tz->temperature > tz->last_temperature)
+>  			trend = THERMAL_TREND_RAISING;
+>  		else if (tz->temperature < tz->last_temperature)
+> @@ -75,7 +75,7 @@ EXPORT_SYMBOL(get_thermal_instance);
+>   * temperature and fill @temp.
+>   *
+>   * Both tz and tz->ops must be valid pointers when calling this function,
+> - * and the tz->ops->get_temp callback must be provided.
+> + * and the tz->ops.get_temp callback must be provided.
+>   * The function must be called under tz->lock.
+>   *
+>   * Return: On success returns 0, an error code otherwise
+> @@ -88,7 +88,7 @@ int __thermal_zone_get_temp(struct therm
+>  
+>  	lockdep_assert_held(&tz->lock);
+>  
+> -	ret = tz->ops->get_temp(tz, temp);
+> +	ret = tz->ops.get_temp(tz, temp);
+>  
+>  	if (IS_ENABLED(CONFIG_THERMAL_EMULATION) && tz->emul_temperature) {
+>  		for_each_trip(tz, trip) {
+> @@ -132,7 +132,7 @@ int thermal_zone_get_temp(struct thermal
+>  
+>  	mutex_lock(&tz->lock);
+>  
+> -	if (!tz->ops->get_temp) {
+> +	if (!tz->ops.get_temp) {
+>  		ret = -EINVAL;
+>  		goto unlock;
+>  	}
+> Index: linux-pm/drivers/thermal/thermal_trip.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_trip.c
+> +++ linux-pm/drivers/thermal/thermal_trip.c
+> @@ -70,7 +70,7 @@ void __thermal_zone_set_trips(struct the
+>  
+>  	lockdep_assert_held(&tz->lock);
+>  
+> -	if (!tz->ops->set_trips)
+> +	if (!tz->ops.set_trips)
+>  		return;
+>  
+>  	for_each_trip(tz, trip) {
+> @@ -114,7 +114,7 @@ void __thermal_zone_set_trips(struct the
+>  	 * Set a temperature window. When this window is left the driver
+>  	 * must inform the thermal core via thermal_zone_device_update.
+>  	 */
+> -	ret = tz->ops->set_trips(tz, low, high);
+> +	ret = tz->ops.set_trips(tz, low, high);
+>  	if (ret)
+>  		dev_err(&tz->device, "Failed to set trips: %d\n", ret);
+>  }
+> Index: linux-pm/drivers/thermal/thermal_hwmon.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_hwmon.c
+> +++ linux-pm/drivers/thermal/thermal_hwmon.c
+> @@ -80,7 +80,7 @@ temp_crit_show(struct device *dev, struc
+>  
+>  	mutex_lock(&tz->lock);
+>  
+> -	ret = tz->ops->get_crit_temp(tz, &temperature);
+> +	ret = tz->ops.get_crit_temp(tz, &temperature);
+>  
+>  	mutex_unlock(&tz->lock);
+>  
+> @@ -132,7 +132,7 @@ thermal_hwmon_lookup_temp(const struct t
+>  static bool thermal_zone_crit_temp_valid(struct thermal_zone_device *tz)
+>  {
+>  	int temp;
+> -	return tz->ops->get_crit_temp && !tz->ops->get_crit_temp(tz, &temp);
+> +	return tz->ops.get_crit_temp && !tz->ops.get_crit_temp(tz, &temp);
+>  }
+>  
+>  int thermal_add_hwmon_sysfs(struct thermal_zone_device *tz)
+> 
+> 
+> 
 
