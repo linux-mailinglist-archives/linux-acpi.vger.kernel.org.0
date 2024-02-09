@@ -1,75 +1,72 @@
-Return-Path: <linux-acpi+bounces-3320-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3321-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D17484F681
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 15:07:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0DF84F8A3
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 16:33:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC595283D34
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 14:07:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EA3EB24FFC
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 15:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE675A11D;
-	Fri,  9 Feb 2024 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495DE76036;
+	Fri,  9 Feb 2024 15:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NH+/2XYT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="azHGWNjl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD58657B5;
-	Fri,  9 Feb 2024 14:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAA66F06C;
+	Fri,  9 Feb 2024 15:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707487636; cv=none; b=n+mbV/qZHhL+jacW9a486nu8NcJMaOu696XB1SggzMs+/MmNZ02Oe7qso0gIsHSVo8D4IlkF+ShFEf/FO4IEItxlrBzgwg55xij5nHMC3vqUy5rhGPaUHgUDCKsghujcn3tpxgQUtcFinqDV6EsR3edp77H91Op5/Z3J0SjPq84=
+	t=1707492817; cv=none; b=iczNdy8DnLImbVzMmPOnvg5pnBAIHqCzjGn4T30OoNHoy/5YnFlsz6ok4daRkaRiN5aVZwLVEhNd9MSYBLpKCOiwDHoqhjcrOYqZMkExh0GxAdmGxIbrkPlmuLC+zmLzPuH9RgLe8nvk7oGKIGAkeKTwnsDLZ0B6/jMglkRtY6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707487636; c=relaxed/simple;
-	bh=UppTMuPvFgBB9f8XupQc3wIwMSfTH3V3GTIflUXlFXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TikhDKc8g9bNiCtmf6zqRlVjKASFKVAx5Cp4owmvHKlJMDZmKNIbuELg3nzxkmjSB6Je0x+8umT9H9ApYfncfU38fgkZm4QwXhOkB1kTwMGrIRnjr8Y++E2mxfnPHTXhHGi1Wyp9BV8XrfVUkBsbor4pp7iVj5bWYv9TY4BYCHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NH+/2XYT; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1707492817; c=relaxed/simple;
+	bh=/uOgL0L6lHM/X3uPQJuyG37nIHjtd74huS+zuipAY6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PzxC1j+z4JqJo7xFNCxZ4L1CgyPeqGilaKE5EC6JCdLW9r2bvj0bZi1eb/GzDmgqNbVAtwX3FWiOvQKEixQBQL5shRJOjxWyWmG2WqCiniUZwBn2sS7PpzL70lzwQFGOY4Fez0Yr+Tlf0nFZenxu7EgktcHBMEJuw1tFZXtd/ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=azHGWNjl; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707487635; x=1739023635;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UppTMuPvFgBB9f8XupQc3wIwMSfTH3V3GTIflUXlFXA=;
-  b=NH+/2XYTfz5K2IxQ6nWL6ztT2PxGu8CkkN81U5qrVFaw0lGIaGn+AFr5
-   c8KId0oAMiz2/sk3KSXQLdDhHyr95BEZ4H5/emszgQj5q6DkSixyTj0+d
-   pZS3eiWMCqgu/OK8EKu/dEln2VRpRhoLdZATwh0Z+Pn0fMXUo9ajQg9Uu
-   FC+RBjOgA536xzT9S5R/Of4KZ9PSIE3zOvpvZ8m9pv1wIJUsQAc3LgS3Q
-   NBh5nHAk94Y2Was1Y99Mbgt5+R/7syYBdag1KA7dIW1e++j75t8dYd0SF
-   Xl+ZzZMTQRVZJMJtlmXP/x18Lu7e4fDhiBsTF/JIXLsDggREvyOpnU4Cg
+  t=1707492814; x=1739028814;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=/uOgL0L6lHM/X3uPQJuyG37nIHjtd74huS+zuipAY6Q=;
+  b=azHGWNjlD1dowvcJa7reAXZh14KdaSGOENE79tip/pgDDhU9HTAQSOjl
+   BwPN8sP+wuCVEB18HSkRePL9DZwRBwoLp8Fxr/vT6e46EZtQEb4fVixK8
+   p3vnrPnyKBcOe0SUxFCyvYheGVAZUQ8mNXRElZXnvW7bhFCCBB6rwqH11
+   d/uYN+ppKCnDtHs3MRdqWgO9VPYosWljS4ZIkGArPkYaFDSx0KA+S0zMe
+   Q+cyhw0Ym0dLDW4qsxNZVK4S2wpG/Hf7HWlmk2e13rhKQ2Z03BKb6INDl
+   mX+JdjA+PYZq0il9hPlM4Y8mYM5xmGRpg8xg03W+Hw6elq0mUtBGUJtl9
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="23912329"
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="5296851"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="23912329"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 06:07:14 -0800
+   d="scan'208";a="5296851"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 07:33:31 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="910717772"
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="825170553"
 X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="910717772"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 06:07:11 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rYRX3-00000003AQI-1FAE;
-	Fri, 09 Feb 2024 16:07:09 +0200
-Date: Fri, 9 Feb 2024 16:07:09 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gpio: constify opaque pointer in gpio_device_find()
- match function
-Message-ID: <ZcYxjSWahbSWQM6g@smile.fi.intel.com>
-References: <20240208202704.631203-1-krzysztof.kozlowski@linaro.org>
+   d="scan'208";a="825170553"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 09 Feb 2024 07:33:29 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYSsZ-0004pt-17;
+	Fri, 09 Feb 2024 15:33:27 +0000
+Date: Fri, 9 Feb 2024 23:33:09 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 65/77]
+ drivers/thermal/intel/intel_quark_dts_thermal.c:353:17: error: 'trips'
+ undeclared
+Message-ID: <202402092329.W4VIvzU0-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,25 +75,103 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240208202704.631203-1-krzysztof.kozlowski@linaro.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Feb 08, 2024 at 09:27:04PM +0100, Krzysztof Kozlowski wrote:
-> The match function used in gpio_device_find() should not modify the
-> contents of passed opaque pointer, because such modification would not
-> be necessary for actual matching and it could lead to quite unreadable,
-> spaghetti code.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   2bc44535ed4f6a6013ec53b505c4c381e166f0ce
+commit: fdb07e113a91652cc3adf07a8e1ca7da3445f493 [65/77] thermal: intel: Set THERMAL_TRIP_WRITABLE_TEMP directly
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240209/202402092329.W4VIvzU0-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240209/202402092329.W4VIvzU0-lkp@intel.com/reproduce)
 
-IIRC I also asked Bart about this in his series where something similar
-was used.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402092329.W4VIvzU0-lkp@intel.com/
 
-Good it's not only me who sees the benefits from this.
-FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+All errors (new ones prefixed by >>):
+
+   drivers/thermal/intel/intel_quark_dts_thermal.c: In function 'alloc_soc_dts':
+>> drivers/thermal/intel/intel_quark_dts_thermal.c:353:17: error: 'trips' undeclared (first use in this function)
+     353 |                 trips[QRK_DTS_ID_TP_CRITICAL].flags |= THERMAL_TRIP_WRITABLE_TEMP;
+         |                 ^~~~~
+   drivers/thermal/intel/intel_quark_dts_thermal.c:353:17: note: each undeclared identifier is reported only once for each function it appears in
+
+
+vim +/trips +353 drivers/thermal/intel/intel_quark_dts_thermal.c
+
+   316	
+   317	static struct soc_sensor_entry *alloc_soc_dts(void)
+   318	{
+   319		struct soc_sensor_entry *aux_entry;
+   320		int err;
+   321		u32 out;
+   322	
+   323		aux_entry = kzalloc(sizeof(*aux_entry), GFP_KERNEL);
+   324		if (!aux_entry) {
+   325			err = -ENOMEM;
+   326			return ERR_PTR(-ENOMEM);
+   327		}
+   328	
+   329		/* Check if DTS register is locked */
+   330		err = iosf_mbi_read(QRK_MBI_UNIT_RMU, MBI_REG_READ,
+   331				    QRK_DTS_REG_OFFSET_LOCK, &out);
+   332		if (err)
+   333			goto err_ret;
+   334	
+   335		aux_entry->locked = !!(out & QRK_DTS_LOCK_BIT);
+   336	
+   337		/* Store DTS default state if DTS registers are not locked */
+   338		if (!aux_entry->locked) {
+   339			/* Store DTS default enable for restore on exit */
+   340			err = iosf_mbi_read(QRK_MBI_UNIT_RMU, MBI_REG_READ,
+   341					    QRK_DTS_REG_OFFSET_ENABLE,
+   342					    &aux_entry->store_dts_enable);
+   343			if (err)
+   344				goto err_ret;
+   345	
+   346			/* Store DTS default PTPS register for restore on exit */
+   347			err = iosf_mbi_read(QRK_MBI_UNIT_RMU, MBI_REG_READ,
+   348					    QRK_DTS_REG_OFFSET_PTPS,
+   349					    &aux_entry->store_ptps);
+   350			if (err)
+   351				goto err_ret;
+   352	
+ > 353			trips[QRK_DTS_ID_TP_CRITICAL].flags |= THERMAL_TRIP_WRITABLE_TEMP;
+   354			trips[QRK_DTS_ID_TP_HOT].flags |= THERMAL_TRIP_WRITABLE_TEMP;
+   355		}
+   356	
+   357		aux_entry->trips[QRK_DTS_ID_TP_CRITICAL].temperature = get_trip_temp(QRK_DTS_ID_TP_CRITICAL);
+   358		aux_entry->trips[QRK_DTS_ID_TP_CRITICAL].type = THERMAL_TRIP_CRITICAL;
+   359	
+   360		aux_entry->trips[QRK_DTS_ID_TP_HOT].temperature = get_trip_temp(QRK_DTS_ID_TP_HOT);
+   361		aux_entry->trips[QRK_DTS_ID_TP_HOT].type = THERMAL_TRIP_HOT;
+   362	
+   363		aux_entry->tzone = thermal_zone_device_register_with_trips("quark_dts",
+   364									   aux_entry->trips,
+   365									   QRK_MAX_DTS_TRIPS,
+   366									   0, aux_entry,
+   367									   &tzone_ops,
+   368									   NULL, 0, polling_delay);
+   369		if (IS_ERR(aux_entry->tzone)) {
+   370			err = PTR_ERR(aux_entry->tzone);
+   371			goto err_ret;
+   372		}
+   373	
+   374		err = thermal_zone_device_enable(aux_entry->tzone);
+   375		if (err)
+   376			goto err_aux_status;
+   377	
+   378		return aux_entry;
+   379	
+   380	err_aux_status:
+   381		thermal_zone_device_unregister(aux_entry->tzone);
+   382	err_ret:
+   383		kfree(aux_entry);
+   384		return ERR_PTR(err);
+   385	}
+   386	
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
