@@ -1,276 +1,406 @@
-Return-Path: <linux-acpi+bounces-3333-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3334-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D16F84FCD0
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 20:28:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0356C84FCF8
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 20:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FED71C243C9
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 19:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863D31F2A386
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 19:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B1686AF7;
-	Fri,  9 Feb 2024 19:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4D684A32;
+	Fri,  9 Feb 2024 19:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1ctFUt6r"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Ymq76vmT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2049.outbound.protection.outlook.com [40.107.101.49])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2104.outbound.protection.outlook.com [40.92.21.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5383126F09;
-	Fri,  9 Feb 2024 19:27:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090AC8287F;
+	Fri,  9 Feb 2024 19:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.104
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707506855; cv=fail; b=nDYTMkjKbf6yO5dxbz6d0SWRnEqG1wvPw7A/XkEtwvySxdfs56K1NrsoOcsdf9yJ23JFBL0pxADUur9yHuouCRJgwo7VLeEJhgOlFGBmz6FRD/vKlPrRQzz/3lMd6HFupa3zSNPpVkohEoBQNM14RbXoaqciofScQ+IlouszFSQ=
+	t=1707507449; cv=fail; b=jv1R4T8/5CydUV5cp5U5AONvFufEkJaiTASn+wGbzZQAGfH7PDoeYQMlqBM99RFtKnxw0D7pYunGXpxQtUdVSy2V+0tZQPsX4aLdIqq1sXeFJI2PLuM2pt32ZdzgtLI3ekKTF9tTCK3TxwGlLT4Ol52yc0G/TOqn4hkO3mLnUdE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707506855; c=relaxed/simple;
-	bh=GP8RjQUzWsTHHTke4Ulq1CtElF7zYObKI6JHgSf4bik=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d7sR1DpyCkw/hZ6swOlrKyQ4R5IBWm1lpIgkjW6dBaqrB6ItJuj/T07C5wbxRyXSrAdkSL7Xb+eibpw666cRrG8LXamkPXkjjKJlNbbbUAI/Md4oC13nUZnDA1lhg2UQngRAJB9GUytimYYw18OrmkqXxdmK5zAAdY1e66LvgHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1ctFUt6r; arc=fail smtp.client-ip=40.107.101.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1707507449; c=relaxed/simple;
+	bh=ILXwQyG2LEL9vuCpZwpy/ZQXduGu7XWnwrIwy42Igig=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cDpZUjOoCPuLGmu6lh91KQkQyVl9VNw4dhdwakJZeIBqivZmcGso4BgPb0kAljGWtofRCkC33gwGuuugK5cg7+DtASXjeVeKTkb+89KSzvWMGTUTHheYgcnvgVYL3zVfp5mFQCizLROMA8bKQScz60SYcR8ol5VUafpXHvzAdH4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Ymq76vmT; arc=fail smtp.client-ip=40.92.21.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aM9ODBz4xKQIFqZuwHhu1DMgcgHmnuxAHCBd0S7r8pHeMd0UTKFz2A+L5ryl+MIzNl3gbqGb/Z+hVPrZULWAncCpPbupw58j+fXTMgMrCC0NWL+oTlryzdjZ2tJjPuFpJbLGWy92osa1OZrutZmbHvm1qoT3V1uAeK5jVzEUjIXw98N/BwIeBJvSC39RocincDUCvyGlJpwWtTMzng7VZmjTQsJrwtKNTPwGSGH282duLC3ukyZeNW0WQENcxcQgc28mdFd7reo0oH6WZmloGmVfHtMwW1LmUf7Dq69x4K0l5o+dOVFzA/KXIZ0089GHnLPa3iqKIJgy5NyNANqqLQ==
+ b=MiMIdpVqwfRBaRVfOsq7v8EEERVp3VRu4EUdjmcjYLSr2zD7zDfqQ+pUTS3YiSSfrrNbBQfGgHIKDvF5YAK9DiNyln3EBwfiXUjbZ+OR5o+2j6FLjkvRkE6CZidkeHQ8JDzfE1yQWEDUZzqU07FwOIC4vTrvkgo5uVWhOPqKvQWmsUPVmuHykVTONk79PiqbWC1fF3vKp8xXMKbroVAXXIEOFzIOjYuZlQyyq+iTUmRSUcgOH84fjtUclPF/6YLR1muN6QeV+75CDlDys5Io+1MUd/b3QK/hG2TlmDbJBtFJYromQQ6+XHZNawNlSVCfv+AxNcuMSZgZoRF7xg8x6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bZKlitmFJxu3x8KY8YchJkGX1dGvT5hOJ5xvyUd6zCE=;
- b=fjZU3aTzZH1ZI/1g20dyHV0CEm0gZYT0Nlovjh3/sUfkEri4xlhEXvq3cHFPECBmzdGRhTIecB3wNWm01yHW4pmZJmEIrZMD3Fdc+u6ktECkl2lOP0J4LYaNO9fRS2LzzvVwDPrpEJE8SaOImHJwMyXod4LnJJzX6kIeODfaPWP1gQKQgPajxZmHW6WK6CfHLSm4QjCoutcuAaoCuyeZT07sEHjREr2DgYnetAe+GQNNVkh5EbY3sID+gY53xrLzI4vR/Tx0WfiJVHUPOYROUMgvZSlkKJpfo/rDB5ItemufEsb+zndhyta4rkW/5G+rzC0o9GZtz2Pi5WvTn1X4Cg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=3nSXYHI9uB8RyxtoRjJOdWU6I4BSCXsmsEAt5aYWvOg=;
+ b=OMinebCIVSjJa44nAQomiH6Hv2jpOuk6FyD7nb80VI/BzlOd4lQ+4uwbha8gKCfU7pcvUxXszMnIAmO/17YhV6d5rc6yHOKKhPGpvOUHhFqLmyUNWiRLPQRcZILhEoQpIhx4ruajnoJ0z507T1vsnhD48PEHTXgTuwJlCbUeylPZfeZvpX5M3Wo6Ysvy3bBfFHwpt8M0SFH/v9R6OriDLpUyYaVCxM5HWq2ZVMXgMtbs/uEvG4Tz0r+v+faJhqZqOr0No6cYJg8Y6l1WpV/mRi6qiCQNTvHEKmzux3xdRXsJ0c1jWSbyM6U6FtOMu3qobGOaeR2KbC9HWP5l91U4sQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bZKlitmFJxu3x8KY8YchJkGX1dGvT5hOJ5xvyUd6zCE=;
- b=1ctFUt6rBnMsGZT0O3g5HHXzpL9iJLpYC9qIcUhTxcYwSYkeLeCGZflMn6TXfu0PCwrAgpv42hIIke7FjtuMBTm+LFFEYcA8ZgtyF2yHsqfLRWwUWgVC3p8W1Ik1FF0CAuGrJn+03fbBucgsZbGj9TFlFj3mTAwjMGYnWSxDk/A=
-Received: from DS7PR06CA0051.namprd06.prod.outlook.com (2603:10b6:8:54::21) by
- DM4PR12MB5231.namprd12.prod.outlook.com (2603:10b6:5:39b::19) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.14; Fri, 9 Feb 2024 19:27:31 +0000
-Received: from DS2PEPF00003448.namprd04.prod.outlook.com
- (2603:10b6:8:54:cafe::53) by DS7PR06CA0051.outlook.office365.com
- (2603:10b6:8:54::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.39 via Frontend
- Transport; Fri, 9 Feb 2024 19:27:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003448.mail.protection.outlook.com (10.167.17.75) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7249.19 via Frontend Transport; Fri, 9 Feb 2024 19:27:31 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 9 Feb
- 2024 13:27:27 -0600
-From: Robert Richter <rrichter@amd.com>
-To: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Len Brown
-	<lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
-	<linux-acpi@vger.kernel.org>
-Subject: [PATCH v3 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
-Date: Fri, 9 Feb 2024 20:26:47 +0100
-Message-ID: <20240209192647.163042-4-rrichter@amd.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240209192647.163042-1-rrichter@amd.com>
-References: <20240209192647.163042-1-rrichter@amd.com>
+ bh=3nSXYHI9uB8RyxtoRjJOdWU6I4BSCXsmsEAt5aYWvOg=;
+ b=Ymq76vmTmy6oG+DUF+YO0wb+NqLd6THcpgazb9FHiIJfY2ajo+SZbJp0WBDn6T9QcrRMryYRwBQT6GJKk0pDYJnEIC+pAv8zBvL2J4XHUN7mdHD+Qy7k8dn1da8CQsMnbxGjY+Td5lj8BcZo/LEa60O4tsvYMMFo7Do0XgQiB8WYRvVIY+KIZoKlBrSxl2YTCENqc9Z81n3Zzj+XPeLlUbKapi/vc2T3YuFDDKlgiyQQZfpnBOyv63cyMcM8ghw6KCunC/pdMNegpr61jZOt86z0JSoXbMPyNNOffEjhcKthqS/ZRnokDukhHL3BvNwB3lg76Q6JP4twChFkCuMw0A==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by PH7PR02MB9317.namprd02.prod.outlook.com (2603:10b6:510:27b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.27; Fri, 9 Feb
+ 2024 19:37:20 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::67a9:f3c0:f57b:86dd%5]) with mapi id 15.20.7249.027; Fri, 9 Feb 2024
+ 19:37:20 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Robin Murphy <robin.murphy@arm.com>
+CC: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun
+ Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, "K. Y.
+ Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei
+ Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Suravee
+ Suthikulpanit <suravee.suthikulpanit@amd.com>, David Woodhouse
+	<dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, Niklas Schnelle
+	<schnelle@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Gerald
+ Schaefer <gerald.schaefer@linux.ibm.com>, Jean-Philippe Brucker
+	<jean-philippe@linaro.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
+	<frowand.list@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>, Christoph
+ Hellwig <hch@lst.de>
+Subject: RE: [PATCH v3 7/7] dma-mapping: Simplify arch_setup_dma_ops()
+Thread-Topic: [PATCH v3 7/7] dma-mapping: Simplify arch_setup_dma_ops()
+Thread-Index: AQHaW3j+UG9ZZrqvj0qLa4F9lupB4LECZ1uQ
+Date: Fri, 9 Feb 2024 19:37:19 +0000
+Message-ID:
+ <SN6PR02MB4157B73801B450853E04369BD44B2@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <cover.1707493264.git.robin.murphy@arm.com>
+ <f0ea76846c89a65dfe42933d78d770004bb3de01.1707493264.git.robin.murphy@arm.com>
+In-Reply-To:
+ <f0ea76846c89a65dfe42933d78d770004bb3de01.1707493264.git.robin.murphy@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [B9A1mUvZtHVPxvEJ2o4GSk9CmJ2HmRuI]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|PH7PR02MB9317:EE_
+x-ms-office365-filtering-correlation-id: 337a2f12-2bd4-49cd-8873-08dc29a687ce
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 3US/y0l0Y6LjjIkvOY1GX59DGad2BufVh89UZvnpLW1miZPBJUGYVPJvZH7Mn7dhLWXtK7A8R4aRb+J5oZI4Uv24cUdAef2fVN8ZgQeSUNt/oQ4Z2Tk4eR82PRyiMD07yyQzKsjF47QSDEilLGTNApdBGUpaPTlL5pDEp2FV/9nqTZ6FSy1j03x69SeP9556ceOmbcxOvHiEFx54D0bZAP4ODhoajKmaoYIKkiMR1Y+5lTgreWDWROnb8Rt339z6HRSjKnhPjn1bLJNk1FaqeAI6VS1EsXu0gwCc+j9nSlT2Y4Nfxa1/jmxkaesYRAD6ZqAwtbZSpXL+016MrqJgFyQGWndkE7xs2QYMOtsqjKTcFXO3w/P2TWMVR0GaVr1NpsqCmHFlqNrrKnsBmAszeBvWQrOPRvrZeVnftCt7jfE7jafImfSJZ6GRN2wY8XaKxolNoRaASvnbvUr8jKXEnsywmZ0kfc2+F28Ti1GiO6Z1DNMWsWNwiI343x1L0XnWFoVUWqgI+WHmCCZzMg1BrgUmwc7VEBvE+YvAEigl9Yv7G2r2+/l5P+iekFhbVM44
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?ggLJBwvvy7Eh208xoKdtolYsvRVJR8ikHxkmk7bqq9nbVoDIukjyvCiDKoJM?=
+ =?us-ascii?Q?RLsZZnTCjPztyM3iNrD2zIqgZ9u5oauWddtJo6an3NB/QKIk0RQXFPu5KJv4?=
+ =?us-ascii?Q?3iueYj4Eov1YpZnZ6cNvvsU8gQuUwI9kFho43PiGT/qxdaRD5OPWulbVm3p/?=
+ =?us-ascii?Q?xGZ99W34HmkWg3JTZhOaIOUbLCaUoAyZyxrKG39GHF9ZWDQ7oT9CGAHiAXki?=
+ =?us-ascii?Q?sWevt/w8e6zk/JfCf68tRhIGnNRRgzPLDhxS72tDGXq2PjLkFctQGdDjgOTp?=
+ =?us-ascii?Q?0aEvS4qXzWoVACVV68UgzEKyetS9AuxYRquOzn7C6mHu+mQ5Vn9G20/SWfH6?=
+ =?us-ascii?Q?ElAtdjutEgrclXvfT8SbgqGUba6ul6oqqUGMD6khozO3kR0nAFbP1ycmOg3z?=
+ =?us-ascii?Q?6Y/l7mj7MBZSTVY92ZLlmH7rsCVbx2Wg42c3GNDd35N8RvBa1HVuISx31wjW?=
+ =?us-ascii?Q?XNFbGZ5xtekseBRNjPoFQFxrHLEVVUadvWL87K750WwjcPwL4FC7JVU6c/Jg?=
+ =?us-ascii?Q?5BzXxaYWcEWOoOL9LSnPtommXS/6GI3CoOHMlqSstYZWx6iaOYiOSb8oLo+I?=
+ =?us-ascii?Q?wFG7jTe5XszHgHI4c1OV96GjQG+aARafwjVnog68WsKFzj7Xz0sLQj0pauiD?=
+ =?us-ascii?Q?O1iu7DmaIaqYUZ5GdaqG7n2sGE9QkOE+SgYzqvkYq4EkRxg9F38+Du4ScAPb?=
+ =?us-ascii?Q?21t5O5zjjfN2EDBtLkwxtTG53JXLtgjMtMUgczhyxe//Rcs+9uhHmKaVxNnq?=
+ =?us-ascii?Q?FenwovcmmhQrY0RStpsCDmReGejznjkCOBia15qEjIeYVRZoEK2XEhTMGrFa?=
+ =?us-ascii?Q?wYYTQ1bOubZZQ2v0lgfgEE0Vb+/KaPnH5IQZbEd46SrN01shCWVB3k3rWJv9?=
+ =?us-ascii?Q?pyQAHP/4PVUY2Ivxpa7SXRWlxPEE7l+idrUOOUdvFov54gaV5WJX1HJ3m9E4?=
+ =?us-ascii?Q?KGtSqp7C0ydWxWeOAftC12aGliSIZ5LbyBppH/c1M4tNabMIQg/wuClAzjIM?=
+ =?us-ascii?Q?BUec4B7Ljl4SC15RndrQhqnn1Q0VDC1BuQFDOkTTD7iUaMroiS6E9Mt/stbc?=
+ =?us-ascii?Q?kllYhT0P8GuEp9fiHhrGHedOYL6YI9NaQ+4MAEFFHKu1fTQ7xBKlDNOTne9i?=
+ =?us-ascii?Q?JtBJ2PSsh2JStTSYPLZMfItHryZPqRU9t9e3nJ+AWF8cdxjQEqd7JgL5o84S?=
+ =?us-ascii?Q?/yvgPoUfZHPI3FjpsFteY4MAM1hzv+z7i91cJtsUKZrC/7k8pVcmng+LPyM?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003448:EE_|DM4PR12MB5231:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9558c154-14e2-4b5a-9574-08dc29a528e9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	u+eEQ14q9D69IA50hEefnpzyks5bpZvXcEiJIHETSHS77GUfrAVSOHWOfwsY9Z/jItTYAknUHWsjP55X4Ssq3FyJPSIsFkWFUNw/Vpgt5m9RAYQ2ltMFXnISSoWeXBLKcOaOk2EpcpJlUDS36SW1sYqZazboNK7NYWb1fUaT+71HmzrisjE+Hoew4+fuknWllODHWPMV+IuB0GG2xOLu7rQr8re2U3YV39advxIBnCcReDCmd6fx5hczEglhhvMraZeVE5X2pvJkY+JE5/WnNFubVYsWHJlzTcwKxoISeeV+xN6wujVCBSCDIOLY+KYzr4eQWXmzDTSdXRAbQRa7qzwArAo4jqf6AlZjO38FjysjAu3qxgkOTdy9LdFi5XBZ80Vx/EhM5S/odkMiUo+azXbdE5u3uQXKQ+NAsSdY1Dgfby/u4b9xHe0w9dpFk9TvFtNW5P0bj5S84fFsbDhQOALQQ4hdb1IVuSH5Ezz2N+esVc6eByoG3il7OgVIOHZNz7CAsKJVkoDvsuzAb8GE1u/OBcwhjVHP80Uo0yZk0kigSvn9b6NkRhcMZqdToBQyTtrMpVsmdMO1NfaZtbIF45o2PQefpPYm2Il+zYkdB4verrELHqiOKX7fbrM9FsOHnqUL0FZSD/8RSrk7tjfr3A==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(396003)(346002)(39860400002)(230922051799003)(451199024)(1800799012)(82310400011)(64100799003)(186009)(46966006)(36840700001)(40470700004)(81166007)(356005)(82740400003)(41300700001)(2616005)(2906002)(26005)(16526019)(1076003)(6666004)(110136005)(478600001)(70206006)(316002)(54906003)(70586007)(83380400001)(336012)(426003)(7416002)(36756003)(921011)(5660300002)(8676002)(8936002)(4326008);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2024 19:27:31.1726
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 337a2f12-2bd4-49cd-8873-08dc29a687ce
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Feb 2024 19:37:19.9209
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9558c154-14e2-4b5a-9574-08dc29a528e9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003448.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5231
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR02MB9317
 
-There exists card implementations with a CDAT table using a fix
-buffer, but with entries filled in that do not fill the whole table
-length size. Then, the last entry in the CDAT table may not mark the
-end of the CDAT table buffer specified by the length field in the CDAT
-header. It can be shorter with trailing unused (zero'ed) data. The
-actual table length is determined while reading all CDAT entries of
-the table with DOE.
+From: Robin Murphy <robin.murphy@arm.com> Sent: Friday, February 9, 2024 8:=
+50 AM
+>=20
+> The dma_base, size and iommu arguments are only used by ARM, and can
+> now easily be deduced from the device itself, so there's no need to pass
+> them through the callchain as well.
+>=20
+> Acked-by: Rob Herring <robh@kernel.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> v2: Make sure the ARM changes actually build (oops...)
+> ---
+>  arch/arc/mm/dma.c               |  3 +--
+>  arch/arm/mm/dma-mapping-nommu.c |  3 +--
+>  arch/arm/mm/dma-mapping.c       | 16 +++++++++-------
+>  arch/arm64/mm/dma-mapping.c     |  3 +--
+>  arch/mips/mm/dma-noncoherent.c  |  3 +--
+>  arch/riscv/mm/dma-noncoherent.c |  3 +--
+>  drivers/acpi/scan.c             |  7 +------
+>  drivers/hv/hv_common.c          |  6 +-----
+>  drivers/of/device.c             |  4 +---
+>  include/linux/dma-map-ops.h     |  6 ++----
+>  10 files changed, 19 insertions(+), 35 deletions(-)
+>=20
 
-If the table is greater than expected (containing zero'ed trailing
-data), the CDAT parser fails with:
+For the Hyper-V related change in drivers/hv/hv_common.c,
 
- [   48.691717] Malformed DSMAS table length: (24:0)
- [   48.702084] [CDAT:0x00] Invalid zero length
- [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
 
-In addition, a check of the table buffer length is missing to prevent
-an out-of-bound access then parsing the CDAT table.
-
-Hardening code against device returning borked table. Fix that by
-providing an optional buffer length argument to
-acpi_parse_entries_array() that can be used by cdat_table_parse() to
-propagate the buffer size down to its users to check the buffer
-length. This also prevents a possible out-of-bound access mentioned.
-
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
----
- drivers/acpi/tables.c    |  2 +-
- drivers/cxl/core/cdat.c  |  6 +++---
- include/linux/fw_table.h |  4 +++-
- lib/fw_table.c           | 15 ++++++++++-----
- 4 files changed, 17 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index b07f7d091d13..b976e5fc3fbc 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
- 
- 	count = acpi_parse_entries_array(id, table_size,
- 					 (union fw_table_header *)table_header,
--					 proc, proc_num, max_entries);
-+					 0, proc, proc_num, max_entries);
- 
- 	acpi_put_table(table_header);
- 	return count;
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index 6fe11546889f..012d8f2a7945 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
- 	int rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		return rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	return cdat_table_parse_output(rc);
- }
- 
-@@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
- 		return;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
--			      port, port->cdat.table);
-+			      port, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
-diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-index 95421860397a..3ff4c277296f 100644
---- a/include/linux/fw_table.h
-+++ b/include/linux/fw_table.h
-@@ -40,12 +40,14 @@ union acpi_subtable_headers {
- 
- int acpi_parse_entries_array(char *id, unsigned long table_size,
- 			     union fw_table_header *table_header,
-+			     unsigned long max_length,
- 			     struct acpi_subtable_proc *proc,
- 			     int proc_num, unsigned int max_entries);
- 
- int cdat_table_parse(enum acpi_cdat_type type,
- 		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
--		     struct acpi_table_cdat *table_header);
-+		     struct acpi_table_cdat *table_header,
-+		     unsigned long length);
- 
- /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
- #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
-diff --git a/lib/fw_table.c b/lib/fw_table.c
-index c3569d2ba503..16291814450e 100644
---- a/lib/fw_table.c
-+++ b/lib/fw_table.c
-@@ -127,6 +127,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-  *
-  * @id: table id (for debugging purposes)
-  * @table_size: size of the root table
-+ * @max_length: maximum size of the table (ignore if 0)
-  * @table_header: where does the table start?
-  * @proc: array of acpi_subtable_proc struct containing entry id
-  *        and associated handler with it
-@@ -148,18 +149,21 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
- int __init_or_fwtbl_lib
- acpi_parse_entries_array(char *id, unsigned long table_size,
- 			 union fw_table_header *table_header,
-+			 unsigned long max_length,
- 			 struct acpi_subtable_proc *proc,
- 			 int proc_num, unsigned int max_entries)
- {
--	unsigned long table_end, subtable_len, entry_len;
-+	unsigned long table_len, table_end, subtable_len, entry_len;
- 	struct acpi_subtable_entry entry;
- 	enum acpi_subtable_type type;
- 	int count = 0;
- 	int i;
- 
- 	type = acpi_get_subtable_type(id);
--	table_end = (unsigned long)table_header +
--		    acpi_table_get_length(type, table_header);
-+	table_len = acpi_table_get_length(type, table_header);
-+	if (max_length && max_length < table_len)
-+		table_len = max_length;
-+	table_end = (unsigned long)table_header + table_len;
- 
- 	/* Parse all entries looking for a match. */
- 
-@@ -208,7 +212,8 @@ int __init_or_fwtbl_lib
- cdat_table_parse(enum acpi_cdat_type type,
- 		 acpi_tbl_entry_handler_arg handler_arg,
- 		 void *arg,
--		 struct acpi_table_cdat *table_header)
-+		 struct acpi_table_cdat *table_header,
-+		 unsigned long length)
- {
- 	struct acpi_subtable_proc proc = {
- 		.id		= type,
-@@ -222,6 +227,6 @@ cdat_table_parse(enum acpi_cdat_type type,
- 	return acpi_parse_entries_array(ACPI_SIG_CDAT,
- 					sizeof(struct acpi_table_cdat),
- 					(union fw_table_header *)table_header,
--					&proc, 1, 0);
-+					length, &proc, 1, 0);
- }
- EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);
--- 
-2.39.2
+> diff --git a/arch/arc/mm/dma.c b/arch/arc/mm/dma.c
+> index 197707bc7658..6b85e94f3275 100644
+> --- a/arch/arc/mm/dma.c
+> +++ b/arch/arc/mm/dma.c
+> @@ -90,8 +90,7 @@ void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t
+> size,
+>  /*
+>   * Plug in direct dma map ops.
+>   */
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -			bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	/*
+>  	 * IOC hardware snoops all DMA traffic keeping the caches consistent
+> diff --git a/arch/arm/mm/dma-mapping-nommu.c b/arch/arm/mm/dma-
+> mapping-nommu.c
+> index b94850b57995..97db5397c320 100644
+> --- a/arch/arm/mm/dma-mapping-nommu.c
+> +++ b/arch/arm/mm/dma-mapping-nommu.c
+> @@ -33,8 +33,7 @@ void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t
+> size,
+>  	}
+>  }
+>=20
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -			bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	if (IS_ENABLED(CONFIG_CPU_V7M)) {
+>  		/*
+> diff --git a/arch/arm/mm/dma-mapping.c b/arch/arm/mm/dma-mapping.c
+> index f68db05eba29..5adf1769eee4 100644
+> --- a/arch/arm/mm/dma-mapping.c
+> +++ b/arch/arm/mm/dma-mapping.c
+> @@ -1709,11 +1709,15 @@ void arm_iommu_detach_device(struct device
+> *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(arm_iommu_detach_device);
+>=20
+> -static void arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base,
+> u64 size,
+> -				    bool coherent)
+> +static void arm_setup_iommu_dma_ops(struct device *dev)
+>  {
+>  	struct dma_iommu_mapping *mapping;
+> +	u64 dma_base =3D 0, size =3D 1ULL << 32;
+>=20
+> +	if (dev->dma_range_map) {
+> +		dma_base =3D dma_range_map_min(dev->dma_range_map);
+> +		size =3D dma_range_map_max(dev->dma_range_map) -
+> dma_base;
+> +	}
+>  	mapping =3D arm_iommu_create_mapping(dev->bus, dma_base, size);
+>  	if (IS_ERR(mapping)) {
+>  		pr_warn("Failed to create %llu-byte IOMMU mapping for
+> device %s\n",
+> @@ -1744,8 +1748,7 @@ static void
+> arm_teardown_iommu_dma_ops(struct device *dev)
+>=20
+>  #else
+>=20
+> -static void arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base,
+> u64 size,
+> -				    bool coherent)
+> +static void arm_setup_iommu_dma_ops(struct device *dev)
+>  {
+>  }
+>=20
+> @@ -1753,8 +1756,7 @@ static void
+> arm_teardown_iommu_dma_ops(struct device *dev) { }
+>=20
+>  #endif	/* CONFIG_ARM_DMA_USE_IOMMU */
+>=20
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -			bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	/*
+>  	 * Due to legacy code that sets the ->dma_coherent flag from a bus
+> @@ -1774,7 +1776,7 @@ void arch_setup_dma_ops(struct device *dev, u64
+> dma_base, u64 size,
+>  		return;
+>=20
+>  	if (device_iommu_mapped(dev))
+> -		arm_setup_iommu_dma_ops(dev, dma_base, size, coherent);
+> +		arm_setup_iommu_dma_ops(dev);
+>=20
+>  	xen_setup_dma_ops(dev);
+>  	dev->archdata.dma_ops_setup =3D true;
+> diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-
+> mapping.c
+> index 313d8938a2f0..0b320a25a471 100644
+> --- a/arch/arm64/mm/dma-mapping.c
+> +++ b/arch/arm64/mm/dma-mapping.c
+> @@ -46,8 +46,7 @@ void arch_teardown_dma_ops(struct device *dev)
+>  }
+>  #endif
+>=20
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -			bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	int cls =3D cache_line_size_of_cpu();
+>=20
+> diff --git a/arch/mips/mm/dma-noncoherent.c b/arch/mips/mm/dma-
+> noncoherent.c
+> index 0f3cec663a12..ab4f2a75a7d0 100644
+> --- a/arch/mips/mm/dma-noncoherent.c
+> +++ b/arch/mips/mm/dma-noncoherent.c
+> @@ -137,8 +137,7 @@ void arch_sync_dma_for_cpu(phys_addr_t paddr,
+> size_t size,
+>  #endif
+>=20
+>  #ifdef CONFIG_ARCH_HAS_SETUP_DMA_OPS
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -		bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	dev->dma_coherent =3D coherent;
+>  }
+> diff --git a/arch/riscv/mm/dma-noncoherent.c b/arch/riscv/mm/dma-
+> noncoherent.c
+> index 843107f834b2..cb89d7e0ba88 100644
+> --- a/arch/riscv/mm/dma-noncoherent.c
+> +++ b/arch/riscv/mm/dma-noncoherent.c
+> @@ -128,8 +128,7 @@ void arch_dma_prep_coherent(struct page *page,
+> size_t size)
+>  	ALT_CMO_OP(FLUSH, flush_addr, size, riscv_cbom_block_size);
+>  }
+>=20
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -			bool coherent)
+> +void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  	WARN_TAINT(!coherent && riscv_cbom_block_size >
+> ARCH_DMA_MINALIGN,
+>  		   TAINT_CPU_OUT_OF_SPEC,
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index e6ed1ba91e5c..f5df17d11717 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1640,12 +1640,7 @@ int acpi_dma_configure_id(struct device *dev,
+> enum dev_dma_attr attr,
+>  	if (ret =3D=3D -EPROBE_DEFER)
+>  		return -EPROBE_DEFER;
+>=20
+> -	/*
+> -	 * Historically this routine doesn't fail driver probing due to errors
+> -	 * in acpi_iommu_configure_id()
+> -	 */
+> -
+> -	arch_setup_dma_ops(dev, 0, U64_MAX, attr =3D=3D
+> DEV_DMA_COHERENT);
+> +	arch_setup_dma_ops(dev, attr =3D=3D DEV_DMA_COHERENT);
+>=20
+>  	return 0;
+>  }
+> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+> index 0285a74363b3..0e2decd1167a 100644
+> --- a/drivers/hv/hv_common.c
+> +++ b/drivers/hv/hv_common.c
+> @@ -484,11 +484,7 @@ EXPORT_SYMBOL_GPL(hv_query_ext_cap);
+>=20
+>  void hv_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+> -	/*
+> -	 * Hyper-V does not offer a vIOMMU in the guest
+> -	 * VM, so pass 0/NULL for the IOMMU settings
+> -	 */
+> -	arch_setup_dma_ops(dev, 0, 0, coherent);
+> +	arch_setup_dma_ops(dev, coherent);
+>  }
+>  EXPORT_SYMBOL_GPL(hv_setup_dma_ops);
+>=20
+> diff --git a/drivers/of/device.c b/drivers/of/device.c
+> index 9e7963972fa7..312c63361211 100644
+> --- a/drivers/of/device.c
+> +++ b/drivers/of/device.c
+> @@ -95,7 +95,6 @@ int of_dma_configure_id(struct device *dev, struct
+> device_node *np,
+>  {
+>  	const struct bus_dma_region *map =3D NULL;
+>  	struct device_node *bus_np;
+> -	u64 dma_start =3D 0;
+>  	u64 mask, end =3D 0;
+>  	bool coherent;
+>  	int iommu_ret;
+> @@ -118,7 +117,6 @@ int of_dma_configure_id(struct device *dev, struct
+> device_node *np,
+>  			return ret =3D=3D -ENODEV ? 0 : ret;
+>  	} else {
+>  		/* Determine the overall bounds of all DMA regions */
+> -		dma_start =3D dma_range_map_min(map);
+>  		end =3D dma_range_map_max(map);
+>  	}
+>=20
+> @@ -175,7 +173,7 @@ int of_dma_configure_id(struct device *dev, struct
+> device_node *np,
+>  	} else
+>  		dev_dbg(dev, "device is behind an iommu\n");
+>=20
+> -	arch_setup_dma_ops(dev, dma_start, end - dma_start + 1, coherent);
+> +	arch_setup_dma_ops(dev, coherent);
+>=20
+>  	if (iommu_ret)
+>  		of_dma_set_restricted_buffer(dev, np);
+> diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+> index 4abc60f04209..ed89e1ce0114 100644
+> --- a/include/linux/dma-map-ops.h
+> +++ b/include/linux/dma-map-ops.h
+> @@ -426,11 +426,9 @@ bool arch_dma_unmap_sg_direct(struct device
+> *dev, struct scatterlist *sg,
+>  #endif
+>=20
+>  #ifdef CONFIG_ARCH_HAS_SETUP_DMA_OPS
+> -void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
+> -		bool coherent);
+> +void arch_setup_dma_ops(struct device *dev, bool coherent);
+>  #else
+> -static inline void arch_setup_dma_ops(struct device *dev, u64 dma_base,
+> -		u64 size, bool coherent)
+> +static inline void arch_setup_dma_ops(struct device *dev, bool coherent)
+>  {
+>  }
+>  #endif /* CONFIG_ARCH_HAS_SETUP_DMA_OPS */
+> --
+> 2.39.2.101.g768bb238c484.dirty
+>=20
 
 
