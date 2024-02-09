@@ -1,90 +1,124 @@
-Return-Path: <linux-acpi+bounces-3312-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3313-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA2684EFFB
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 06:44:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB86484F16B
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 09:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94C1283BD7
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 05:44:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01D81C21FB4
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Feb 2024 08:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E5456B77;
-	Fri,  9 Feb 2024 05:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9622456B90;
+	Fri,  9 Feb 2024 08:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kPpd5fdU"
+	dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b="V8Y5ZyTG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF50857300;
-	Fri,  9 Feb 2024 05:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFBA4176F
+	for <linux-acpi@vger.kernel.org>; Fri,  9 Feb 2024 08:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707457489; cv=none; b=jQauBLtoMeLzKXkmstqcp7G3g0XeD5A5io4iTqOdYotfyPzbPHGlBiLP3UKTTn/KggwHmJKxRdCY2yb5Oz6OD0mS784zEi8ZR+0ca7EKUFv3SUA7yUTkMHs1SHT2JMIB7txxXq15mKIrBOgVwmhkB1UMTfXjuVAZWazsFh6Yses=
+	t=1707467820; cv=none; b=qjXPu4NqloREXjMyEt0sZnoRnl1g2RoXrHdGoM5B7FZtWbGkfyDduFo43nUPkVRRCE7Xq9ZT7fzUWeVbvB8oziilxP7ZJvLEeaVoRAUr4Ilz8yOD2kXoBrPIU8tnyXGLOC8MeCFQi05mLAPXQOy5MjlT9ERJ7w8xWDUtu3bDyjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707457489; c=relaxed/simple;
-	bh=8sFBjJKkaT738fMSKfGFk4q0gebR79K+EYwCD+8CU1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fij/E1DSv3s9jk35uc7bqPRI5mF6fJSmkq3DoYyNVX+o5ETrffoTWbrrQ+qRYuWMuHRYZsPmGdAUdzIJdpQpXLVIBz3yB8CgIbDgdKmJSFaEDHFXl1Y8NYTOiDMmiWCPVbapUr01/htQPsdLzWwFgL8LXKkgnAe1Nwu+GRhNWj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kPpd5fdU; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707457489; x=1738993489;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8sFBjJKkaT738fMSKfGFk4q0gebR79K+EYwCD+8CU1o=;
-  b=kPpd5fdUMaeAcJsO8h/jcJXYUHAJt7Sf9/HjUJs/daTZxI9RqV85qZFw
-   aw1PqolFq8VpAitRS4sMTJ0TrUOGOHFJDxVoTuH5aMlHiyIG6ht2FnvbE
-   GWQKWWOIF+C1wP2GMFpeclI5f/pQi01dHzxnLR3x5k8ZeCCi20Mg/TFME
-   yHk/NMT80N7T4frSbTc56hkPNchz6JsG+wfFntsvO4gTL77/5ZEJuE1Lu
-   KM1X9g9TC1PIVgWDf9c2Ug7EVO4slNZ78yGqdY/9oTaTrf8qmk24HAU7C
-   eZ1XtmWDUvAl1prGMQfKTzNpbx+UGnh6jkGM6t1t+LrBJKWFBIH1Aj716
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1259601"
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="1259601"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 21:44:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="934343636"
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="934343636"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 08 Feb 2024 21:44:45 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 0CBD2159; Fri,  9 Feb 2024 07:44:43 +0200 (EET)
-Date: Fri, 9 Feb 2024 07:44:43 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] gpio: constify opaque pointer in gpio_device_find()
- match function
-Message-ID: <20240209054443.GU8454@black.fi.intel.com>
-References: <20240208202704.631203-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1707467820; c=relaxed/simple;
+	bh=YkM7XkxxQUU4wgsaFp1Ru4C8Ad/DXfHja7UGPQFATmQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nayokqbEi1ptQfKTUg6tlaT5TEDuw9Qq2lYYhaih/Kftso/wnAyiFi1B5+YUe+Q8Al9V8MONh1Db0VKHJ5FciK2m9iaQFAswqKXQwExuIlsYGhZ2BY5DE2PtlRfoTWWaPVvBSF2huTVKdMNUVnnX1RzITnmudHfduO1jI/kf6ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org; spf=pass smtp.mailfrom=endlessos.org; dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b=V8Y5ZyTG; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endlessos.org
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dc6dbac5fd1so216841276.0
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Feb 2024 00:36:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessos.org; s=google; t=1707467818; x=1708072618; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eI47/fx9ow1vC1sUGCcwJnyIBfBKB89h23AbwyigvjY=;
+        b=V8Y5ZyTGngd55bfog0hktxEPh9oEPGQy0kp/Q5AxWUdMj0/NKugetNdm4Mlo8i81qS
+         xFrBaYG52Q6RI4Dc3j32DbobQ0q1Nf44oMOa3sUwAUrV7aN65jA2mQpck8rtMCsWbqU9
+         UOGeAb7dtcXp5+n4HoxREeQV0+vUjagM57MdWS4Mrgt9Y6jGtkbqWm9B0TLYAyhNPwzP
+         6/2UhuQ0FN9I5rgxyudPxOQ6xejMVFKu6FBF23lFGNngO09KeZ2DqEf9K502WzFq10+T
+         VjGgRQ27ylefUS2YyvEbPfaZA86ct++ZDqrG+kyeiHHT1N6LsluXGDvJc7L8lUUT0GdX
+         UOEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707467818; x=1708072618;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eI47/fx9ow1vC1sUGCcwJnyIBfBKB89h23AbwyigvjY=;
+        b=NLw8i9TBbGic9f8BUgIQVpONzfVDx7MZmVUsadWTmziwJeDSr5B1a8aHNWOOimYyZL
+         ueTPN3PT6Atdh/yYy/m5o8R66Tf/ml+mQ5xRlIWLePYkjo5oDEqKy662/dxEF9/DxH5g
+         Tkbl49bvJUg24ehysiFWZpG5qThoMBLG64WzTwcGn+afGr/7tQ3Csf5kjs3u5xJ5s8Fb
+         f5jxbNaeWJk3rKh03qBLYDYdzSn/q4fVtSshGMuoBoh5tOmGzvV9nxqnli94zkr9DhMx
+         AI94FdWbz3ZrOxHn111sOWOmxrurpM5wVky1I6uBKdJptChFKz1JT01re6kF6QJHqF9D
+         AbJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWU4hAqpWtyj1NevCUmEqX420yWPp7WPwW2uiPlmxqbrF4RlES5lZCB0Fk3WVpIixC5Ar3ymEMMPidWgnLWo9CEVXcFXHZCVg7HzQ==
+X-Gm-Message-State: AOJu0YyO5w9JMpKq82xz3u9T0aTvYYXsOwCcu3oOZQJ6yjblj4SKuvvs
+	wu2sT1fC3XUYpPV3BrXfgFx+krMjBg6sB9EYFRBgEoebdsm6QrtXBB3guop7L6HwYyKUo7/gQR4
+	3Nq4l0pcr7LkzxWh9eY+nlMIGi8DiLgoZVmp0xA==
+X-Google-Smtp-Source: AGHT+IFyzQdG9DistRjnRvwz4WLIag+2m19rvMlQ6GWG2QGZED5XnuwRnnltFokP5TWQssO8STo4ErN60HN0TZ0xZhg=
+X-Received: by 2002:a25:680f:0:b0:dbc:d44e:4ba5 with SMTP id
+ d15-20020a25680f000000b00dbcd44e4ba5mr425283ybc.3.1707467817808; Fri, 09 Feb
+ 2024 00:36:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240208202704.631203-1-krzysztof.kozlowski@linaro.org>
+References: <20240207084452.9597-1-drake@endlessos.org> <20240207200538.GA912749@bhelgaas>
+ <CAD8Lp47DjuAAxqwt+yKD22UNMyvqE00x0u+JeM74KO2OC+Otrg@mail.gmail.com>
+ <CAD8Lp44-8WhPyOrd2dCWyG3rRuCqzJ-aZCH6b1r0kyhfcXJ8xg@mail.gmail.com> <9654146ac849bb00faf2fe963d3da94ad65003b8.camel@linux.intel.com>
+In-Reply-To: <9654146ac849bb00faf2fe963d3da94ad65003b8.camel@linux.intel.com>
+From: Daniel Drake <drake@endlessos.org>
+Date: Fri, 9 Feb 2024 09:36:21 +0100
+Message-ID: <CAD8Lp44tO_pz_HZmPOKUQ-LEQT=c856eH52xWL9nBtAtJwjL1g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge
+To: david.e.box@linux.intel.com
+Cc: Bjorn Helgaas <helgaas@kernel.org>, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, bhelgaas@google.com, 
+	mario.limonciello@amd.com, rafael@kernel.org, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, linux@endlessos.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 08, 2024 at 09:27:04PM +0100, Krzysztof Kozlowski wrote:
-> The match function used in gpio_device_find() should not modify the
-> contents of passed opaque pointer, because such modification would not
-> be necessary for actual matching and it could lead to quite unreadable,
-> spaghetti code.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Thu, Feb 8, 2024 at 5:57=E2=80=AFPM David E. Box <david.e.box@linux.inte=
+l.com> wrote:
+> This does look like a firmware bug. We've had reports of D3cold support m=
+issing
+> when running in non-VMD mode on systems that were designed with VMD for W=
+indows.
+> These issues have been caught and addressed by OEMs during enabling of Li=
+nux
+> systems. Does D3cold work in VMD mode?
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+On Windows for the VMD=3Don case, we only tested this on a BIOS with
+StorageD3Enable=3D0. The NVMe device and parent bridge stayed in D0 over
+suspend, but that's exactly what the BIOS asked for, so it doesn't
+really answer your question.
+
+On Linux with VMD=3Don and StorageD3Enable=3D1, the NVMe storage device
+and the VMD parent bridge are staying in D0 over suspend. I don't know
+why this is, I would have expected at least D3hot.  However, given
+that the NVMe device has no firmware_node under the VMD=3Don setup, I
+believe there is no way it would enter D3cold because there's no
+linkage to an ACPI device, so no available _PS3 or _PR0 or whatever is
+the precise definition of D3cold.
+
+I also realise I may have made a bad assumption in my previous mail
+when looking at the Dell device: I was assuming that a parent PCI
+bridge cannot go into D3cold if its child devices only got as far as
+D3hot, but I now realise I'm not sure if that constraint actually
+exists.
+
+Not sure if these questions are relevant for the consideration of this
+patch, but I'll try to find some time to answer them next week.
+
+Daniel
 
