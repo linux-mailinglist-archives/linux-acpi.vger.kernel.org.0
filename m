@@ -1,278 +1,295 @@
-Return-Path: <linux-acpi+bounces-3347-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3348-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552D285030D
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 08:12:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A53850422
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 12:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3ECA1F2674F
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 07:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 744FE1F22187
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 11:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847F039AC2;
-	Sat, 10 Feb 2024 07:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE8B3CF42;
+	Sat, 10 Feb 2024 11:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jz/ArCb7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uS3WTuqW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FE138F96
-	for <linux-acpi@vger.kernel.org>; Sat, 10 Feb 2024 07:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6302D3C099;
+	Sat, 10 Feb 2024 11:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707548995; cv=none; b=Gto57MwTy3zJoYIgKZpkyE7IXDZlBXI0BT1pIg//hC6Y85rYvx4HsXg4r5lMYWXyiBt7CrH0DZoEQUQ8XFdJwo2HJq6dZjCkWHhXSvK3pWn/w/P1KFtTxU+PRv3TRhvzIrgFhc5EG1Qu180dHUBHj7EGZX1Kj6qdRRxHmmaxGY4=
+	t=1707564387; cv=none; b=KEmkINylO/VN+rEJwzJnwfb5iSUYT1+8CK0Yy8QtZzywXa4PFSeRW1i+6u1SnD+N3wi48YTL3wIT7hK04+KviWqdbvdEMj+7VBscBh7SgPAspWsbuMZL0wS5/NjP4/8vp2oFMBxMe579SB3WhpX8eEWfwb1zrQ95hu49ZIapDHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707548995; c=relaxed/simple;
-	bh=Mzv0e8b5maH+R5VJl6DotCRRWAOOTWYpXPhTaIdR8Cs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPa+xCSmQxmRwYtOrjVeNK2kgiFX3ytv5PL0c6LDJ7ZBjqgE6KzxA6TYMww0Rc1j0DsQwOrBWkrizRGY3R9sQdjnVjx7A/CmmeTUEECTmNwVpZ6ZLChO+k7xMhCy6ib+WyPZWy1LEc/4q7Kf3DvgFNTxlaykQMzzKKzvOUdeBzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jz/ArCb7; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e2d49ec431so338098a34.2
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Feb 2024 23:09:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1707548992; x=1708153792; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3zER2Ilw0QhxMBzy8PRis9D7e+HIgnB5hYCQzM4YYso=;
-        b=jz/ArCb7aEf0XnTaxG1zjmhkLoFwyxZZaMLIe+xtmyAQQnbAY24szJImOrWBYYXqYQ
-         s2fWTnNfG1703YCto5g2pF4m5/7itmj/NfS1smC/ix2iJ008hcD/8TM2hqOmKGEIhwLU
-         e9tJQTKxexhottbvJNZsp8nD7CmBkB87TuaME=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707548992; x=1708153792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3zER2Ilw0QhxMBzy8PRis9D7e+HIgnB5hYCQzM4YYso=;
-        b=h7khazywjDyZSREw1PjNAFG5U1uhrIctReCEGMyaPhlR2+3jjwcVXq3iMe9Wp6uJdG
-         KORIkWS3A16SeYSelpPpYnWXW8NE3W9Khs4Z8ypTTDPxBrd2SJYO44jrl8NKPYIY6N8e
-         +lUYpAv8dAFlcepFPQ0MPqHoJgiEgmY5efM5BcvL/U0n+UzjVd7whwJYc9DqpZOIXIVd
-         heTMNQI0SPePjZX/AHlaNzv9c2FgM+AXAbgT38r7zwWKj6V7eC8DfxS99Fs+hIylEmlG
-         B2vnAa97cQ0ArK0RNyk5JxgRcnc2lnY6AN28jRyiZnUt7sLfufY0BbamtHbusjedtKhu
-         /jBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuHhKZTfZ+3jclWHOCCUm5y9kemZ1Pc7TY1hVZ+Yt7nC8a/ZTccq9ljute3URJPPkm7i3KIbz2FtRmlkXySxkKwzymC0PZIlfkzA==
-X-Gm-Message-State: AOJu0YwYlzP2+kthei//U/MwwsJ1pqjaRKJbYnxR4hS3TgMTAinYFTjP
-	8Lt7dPkgCT+aNePYipdW40oaphE3OB8P1BRwU+iekgx+uCQwOAM8zYiibSZ9Uw==
-X-Google-Smtp-Source: AGHT+IGycCUB3DMpwmXjgXOSlrrSzr1olN6zo2Ub4XCvqi0LH8LyLdUzUKkoFY+1tflxHElqI+m7OA==
-X-Received: by 2002:a9d:76d6:0:b0:6dd:dd86:ad81 with SMTP id p22-20020a9d76d6000000b006dddd86ad81mr1490798otl.14.1707548992033;
-        Fri, 09 Feb 2024 23:09:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWItJfkduQ4ZlMb/4WI7wMAHcsdDlwLJlkD/syq6yJf1sHeXjYYBIe/frbmiy2XGR50jAWFjh9GanqxX17f+9vt7lUWBccaf/pksRS1ZUnaOkGP4dsQwnsx4zPGeqe43Z6C2X4iWLb/Q42Ko20wMp5+d7KTL4cQ0T9VPc0Z0x02Q6Dx+CIG4ziunVGuwntKCgGgDiMcyfUKwU01vEtnRrfZLHGsZYtXzK1umwuiFrXDznvJZnpN1VFqnk5qw9F5CIHJXQ1cNUpESF9mPy5SkuKua+aAdxO81ycYVQ5ClhPOQzHr0mfcZyUwh1ey7EDduqAuq8v/zJkwd3HDl1vSknkzlzPO7ws3fFF/Y2v5CZTUXwtR5EqYwwhLJWXoBzwaCdlC/28MFNSXvMPPPRS7GI0YN9O/JgHHx4MIJV0YthaE583CCVMKPD+5cQolzSPifOhy/9eGQxmb6hzwiZvi6CIRfuQj0SobOxZPh36DEJ68I7dl368YlcYb8kCiQAG7fmsAbs7ru8zRdnRsnNg1IU3FltumjwDbfwJBAj2zz0JksLQHKZL5Co94BVGmDzEL63lWOxFLaBnGEPWOW3aYiRUfa8JGVlNmH2cAikNC+tptaFMse3Aqg5sDg8eq1nQur7Ss0h+xuFfTmw3DIvxVR35+3g983eWVTucCBMlQeVx9fuGCIEgJ4+4zhcPsG3j/oVi1hhfegECRwMJ0NePewQjjHsJnyBsiGvmWFdp4RQfFg/wj6T7sZdPV0KdSPX93F2ZbOok58pOGEzxthPwChtL+GP4mm0ENWmjuf8+xS6KNk/rlaETSsg3C5saKLtn8j9epQEnkJQ==
-Received: from localhost (175.199.125.34.bc.googleusercontent.com. [34.125.199.175])
-        by smtp.gmail.com with UTF8SMTPSA id y30-20020a63b51e000000b005dc5289c4edsm2717207pge.64.2024.02.09.23.09.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 23:09:51 -0800 (PST)
-From: Stephen Boyd <swboyd@chromium.org>
-To: chrome-platform@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-usb@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH 07/22] device property: Add remote endpoint to devcon matcher
-Date: Fri,  9 Feb 2024 23:09:18 -0800
-Message-ID: <20240210070934.2549994-8-swboyd@chromium.org>
-X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
-In-Reply-To: <20240210070934.2549994-1-swboyd@chromium.org>
-References: <20240210070934.2549994-1-swboyd@chromium.org>
+	s=arc-20240116; t=1707564387; c=relaxed/simple;
+	bh=L0ci31G0jYzl6VBiXaBLl3DHMQtouFJCjuDEsEbmM1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZchU8M1j21yJInIKqNDEGWgwR+Inktm8k6WseqM88hjd6MXU7WVjdTSqJKJDZn5b0QXrtbpKk5dlEbxYmtDqrZOAMhBV556P2Z+jOF0K5vjwB9Xt40+MjuFvR4aGmKy98RA7Xa2lMP9tCc3EAvnj8oaUIDv4PUrNwOAoY6fMkRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uS3WTuqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D428DC43390;
+	Sat, 10 Feb 2024 11:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707564386;
+	bh=L0ci31G0jYzl6VBiXaBLl3DHMQtouFJCjuDEsEbmM1I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uS3WTuqWK5m//0XlZlfvv4zylVUZ6S1WBcNbg5UoupukNn7eZbc2MMVolo7OqWUpl
+	 lMdcqn9VeaW4OqVX9JHgcPcc0E8UvhSukGP/eM5Wk78n1x9gCwj3785IwZhrHFAJcd
+	 cEPGa2K+WqwxWmzsMBhdoabMcGMLtlHQPf/uqsCxTq5C1FlDBA43WXzzAA46RtBXRr
+	 csMkRCZXqW+rDPhoFwiqFoLe7EFau/A76vVSvfSYpT8f3aVWbtLn7IKaF7UTdGXDd0
+	 aAwYQFc8t6FnBzwlfV5+P/zQSq88iLWPS1Vus1t9O0ic2HoWYzWPXVRPPYPHn5hVgd
+	 9QtYeMTEFMZqw==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d0cdbd67f0so22921821fa.3;
+        Sat, 10 Feb 2024 03:26:26 -0800 (PST)
+X-Gm-Message-State: AOJu0YzzhXhCSBwgmoNB2tBFMzEYkUCxPuqAATgGAfagxORAcYSyt0yR
+	Ms1en/TkTaEv/kJkH8wXHRIr0ijNb1DEwMgGOkjOtj2ap0jYBfiGCyVE3e525/7i1HpwFluLrGH
+	teAUIWFFKQ+fdB+gEspZdhkUqmA==
+X-Google-Smtp-Source: AGHT+IGm5CAQFu2k6EUAvZ+8eqM1TlsDaGcpTUrthNslat/7K4fnyWnRVvu9hHQ3c+CErN8WYacAoVSbXGiF8UUqelU=
+X-Received: by 2002:a2e:3806:0:b0:2d0:a71f:5eab with SMTP id
+ f6-20020a2e3806000000b002d0a71f5eabmr1287112lja.23.1707564384958; Sat, 10 Feb
+ 2024 03:26:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240210030549.4048795-1-saravanak@google.com> <20240210030549.4048795-4-saravanak@google.com>
+In-Reply-To: <20240210030549.4048795-4-saravanak@google.com>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Sat, 10 Feb 2024 11:26:13 +0000
+X-Gmail-Original-Message-ID: <CAL_Jsq+tMK6myLtvD2EYEE2juev+wMvWoVMnYpT8JPy2eD9hKA@mail.gmail.com>
+Message-ID: <CAL_Jsq+tMK6myLtvD2EYEE2juev+wMvWoVMnYpT8JPy2eD9hKA@mail.gmail.com>
+Subject: Re: [PATCH v1 3/4] dt-bindings: Add post-init-supplier property
+To: Saravana Kannan <saravanak@google.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, kernel-team@android.com, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When a single DT node has a graph connected to more than one
-usb-c-connector node we can't differentiate which typec switch
-registered for the device is associated with the USB connector because
-the devcon matcher code assumes a 1:1 relationship between remote node
-and typec switch. Furthermore, we don't have a #typec-switch-cells
-property so there can only be one node per typec switch.
+On Sat, Feb 10, 2024 at 3:06=E2=80=AFAM Saravana Kannan <saravanak@google.c=
+om> wrote:
+>
+> The post-init-supplier property can be used to break a dependency cycle b=
+y
+> marking some supplier(s) as a post device initialization supplier(s). Thi=
+s
+> allows the kernel to do a better job at ordering initialization and
 
-Support multiple USB typec switches exposed by one node by passing the
-remote endpoint node in addition to the remote node to the devcon
-matcher function (devcon_match_fn_t). With this change, typec switch
-drivers can register switches with the device node pointer for a graph
-endpoint so that they can support more than one typec switch if
-necessary. Either way, a DT property like 'mode-switch' is always in the
-graph's parent node and not in the endpoint node.
+s/the kernel/an OS/
 
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Daniel Scally <djrscally@gmail.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: <devicetree@vger.kernel.org>
-Cc: <linux-usb@vger.kernel.org>
-Cc: <linux-acpi@vger.kernel.org>
-Cc: Pin-yen Lin <treapking@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/base/property.c     | 7 +++++--
- drivers/usb/roles/class.c   | 4 ++--
- drivers/usb/typec/mux.c     | 8 ++++++++
- drivers/usb/typec/retimer.c | 7 ++++++-
- include/linux/property.h    | 5 +++--
- 5 files changed, 24 insertions(+), 7 deletions(-)
+> suspend/resume of the devices in a dependency cycle.
+>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  .../bindings/post-init-supplier.yaml          | 99 +++++++++++++++++++
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index 8c40abed7852..cae81ed4e298 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -1289,6 +1289,7 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
- {
- 	struct fwnode_handle *node;
- 	struct fwnode_handle *ep;
-+	struct fwnode_handle *remote_ep;
- 	unsigned int count = 0;
- 	void *ret;
- 
-@@ -1304,7 +1305,9 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
- 			continue;
- 		}
- 
--		ret = match(node, con_id, data);
-+		remote_ep = fwnode_graph_get_remote_endpoint(ep);
-+		ret = match(node, remote_ep, con_id, data);
-+		fwnode_handle_put(remote_ep);
- 		fwnode_handle_put(node);
- 		if (ret) {
- 			if (matches)
-@@ -1334,7 +1337,7 @@ static unsigned int fwnode_devcon_matches(const struct fwnode_handle *fwnode,
- 		if (IS_ERR(node))
- 			break;
- 
--		ret = match(node, NULL, data);
-+		ret = match(node, NULL, NULL, data);
- 		fwnode_handle_put(node);
- 		if (ret) {
- 			if (matches)
-diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index ae41578bd014..9a0ef5fa0a19 100644
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -89,8 +89,8 @@ enum usb_role usb_role_switch_get_role(struct usb_role_switch *sw)
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_get_role);
- 
--static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const char *id,
--				   void *data)
-+static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const struct fwnode_handle *endpoint,
-+				   const char *id, void *data)
- {
- 	struct device *dev;
- 
-diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
-index 80dd91938d96..3eabd0d62f47 100644
---- a/drivers/usb/typec/mux.c
-+++ b/drivers/usb/typec/mux.c
-@@ -33,6 +33,7 @@ static int switch_fwnode_match(struct device *dev, const void *fwnode)
- }
- 
- static void *typec_switch_match(const struct fwnode_handle *fwnode,
-+				const struct fwnode_handle *endpoint,
- 				const char *id, void *data)
- {
- 	struct device *dev;
-@@ -55,6 +56,9 @@ static void *typec_switch_match(const struct fwnode_handle *fwnode,
- 	 */
- 	dev = class_find_device(&typec_mux_class, NULL, fwnode,
- 				switch_fwnode_match);
-+	if (!dev)
-+		dev = class_find_device(&typec_mux_class, NULL, endpoint,
-+				switch_fwnode_match);
- 
- 	return dev ? to_typec_switch_dev(dev) : ERR_PTR(-EPROBE_DEFER);
- }
-@@ -263,6 +267,7 @@ static int mux_fwnode_match(struct device *dev, const void *fwnode)
- }
- 
- static void *typec_mux_match(const struct fwnode_handle *fwnode,
-+			     const struct fwnode_handle *endpoint,
- 			     const char *id, void *data)
- {
- 	struct device *dev;
-@@ -280,6 +285,9 @@ static void *typec_mux_match(const struct fwnode_handle *fwnode,
- 
- 	dev = class_find_device(&typec_mux_class, NULL, fwnode,
- 				mux_fwnode_match);
-+	if (!dev)
-+		dev = class_find_device(&typec_mux_class, NULL, endpoint,
-+					mux_fwnode_match);
- 
- 	return dev ? to_typec_mux_dev(dev) : ERR_PTR(-EPROBE_DEFER);
- }
-diff --git a/drivers/usb/typec/retimer.c b/drivers/usb/typec/retimer.c
-index 4a7d1b5c4d86..eb74abee6619 100644
---- a/drivers/usb/typec/retimer.c
-+++ b/drivers/usb/typec/retimer.c
-@@ -22,7 +22,9 @@ static int retimer_fwnode_match(struct device *dev, const void *fwnode)
- 	return is_typec_retimer(dev) && device_match_fwnode(dev, fwnode);
- }
- 
--static void *typec_retimer_match(const struct fwnode_handle *fwnode, const char *id, void *data)
-+static void *typec_retimer_match(const struct fwnode_handle *fwnode,
-+				 const struct fwnode_handle *endpoint,
-+				 const char *id, void *data)
- {
- 	struct device *dev;
- 
-@@ -31,6 +33,9 @@ static void *typec_retimer_match(const struct fwnode_handle *fwnode, const char
- 
- 	dev = class_find_device(&retimer_class, NULL, fwnode,
- 				retimer_fwnode_match);
-+	if (!dev)
-+		dev = class_find_device(&retimer_class, NULL, endpoint,
-+					retimer_fwnode_match);
- 
- 	return dev ? to_typec_retimer(dev) : ERR_PTR(-EPROBE_DEFER);
- }
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 9f2585d705a8..0f20df1f0a49 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -455,8 +455,9 @@ unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
- int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
- 				struct fwnode_endpoint *endpoint);
- 
--typedef void *(*devcon_match_fn_t)(const struct fwnode_handle *fwnode, const char *id,
--				   void *data);
-+typedef void *(*devcon_match_fn_t)(const struct fwnode_handle *fwnode,
-+				   const struct fwnode_handle *endpoint,
-+				   const char *id, void *data);
- 
- void *fwnode_connection_find_match(const struct fwnode_handle *fwnode,
- 				   const char *con_id, void *data,
--- 
-https://chromeos.dev
+This should probably go into dtschema instead, but fine here now for review=
+ing.
 
+We have to consider if this property should be automatically allowed
+on any node or nodes with specific suppliers, or if it should be
+explicit for users. The former needs tool support. I'm leaning towards
+the latter as I want to know when this is needed.
+
+>  MAINTAINERS                                   |  3 +-
+>  2 files changed, 101 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/devicetree/bindings/post-init-supplier.=
+yaml
+>
+> diff --git a/Documentation/devicetree/bindings/post-init-supplier.yaml b/=
+Documentation/devicetree/bindings/post-init-supplier.yaml
+> new file mode 100644
+> index 000000000000..cf9071ecd06e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/post-init-supplier.yaml
+> @@ -0,0 +1,99 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2018 Linaro Ltd.
+
+?
+
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/post-init-supplier.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Post device initialization supplier
+> +
+> +maintainers:
+> +  - Saravana Kannan <saravanak@google.com>
+> +
+> +description: |
+> +  This property is used to indicate that the device(s) pointed to by the
+> +  property are not needed for the initialization of the device that list=
+s this
+> +  property.
+> +
+> +  A device can list its suppliers in devicetree using one or more of the
+> +  standard devicetree bindings. By default, it would be safe to assume t=
+he
+> +  supplier device can be initialized before the consumer device is initi=
+alized.
+> +
+> +  However, that assumption cannot be made when there are cyclic dependec=
+ies
+
+typo
+
+> +  between devices. Since each device is a supplier (directly or indirect=
+ly) of
+> +  the others in the cycle, there is no guaranteed safe order for initali=
+zing
+
+typo
+
+> +  the devices in a cycle. We can try to initialize them in an arbitrary =
+order
+> +  and eventually successfully initialize all of them, but that doesn't a=
+lways
+> +  work well.
+> +
+> +  For example, say,
+> +  * The device tree has the following cyclic dependency X -> Y -> Z -> X=
+ (where
+> +    -> denotes "depends on").
+> +  * But X is not needed to fully initialize Z (X might be needed only wh=
+en a
+> +    specific functionality if requested post initialization).
+> +
+> +  If all the other -> are mandatory initialization dependencies, then tr=
+ying to
+> +  initialize the devices in a loop (or arbitrarily) will always eventual=
+ly end
+> +  up with the devices being initialized in the order Z, Y and X.
+> +
+> +  However, if Y is an optional supplier for X (where X provides limited
+> +  functionality when Y is not initialized and providing its services), t=
+hen
+> +  trying to initialize the devices in a loop (or arbitrarily) could end =
+up with
+> +  the devices being initialized in the following order:
+> +
+> +  * Z, Y and X - All devices provide full functionality
+> +  * Z, X and Y - X provides partial functionality
+> +  * X, Z and Y - X provides partial functionality
+> +
+> +  However, we always want to initialize the devices in the order Z, Y an=
+d X
+> +  since that provides the full functionality without interruptions.
+> +
+> +  One alternate option that might be suggested is to have the driver for=
+ X
+> +  notice that Y became available at a later point and adjust the functio=
+nality
+> +  it provides. However, other userspace applications could have started =
+using X
+> +  with the limited functionality before Y was available and it might not=
+ be
+> +  possible to transparently transition X or the users of X to full
+> +  functionality while X is in use.
+> +
+> +  Similarly, when it comes to suspend (resume) ordering, it's unclear wh=
+ich
+> +  device in a dependency cycle needs to be suspended/resumed first and t=
+rying
+> +  arbitrary orders can result in system crashes or instability.
+> +
+> +  Explicitly calling out which link in a cycle needs to be broken when
+> +  determining the order, simplifies things a lot, improves efficiency, m=
+akes
+> +  the behavior more deterministic and maximizes the functionality that c=
+an be
+> +  provided without interruption.
+> +
+> +  This property is used to provide this additional information between d=
+evices
+> +  in a cycle by telling which supplier(s) is not needed for initializing=
+ the
+> +  device that lists this property.
+> +
+> +  In the example above, Z would list X as a post-init-supplier and the
+> +  initialization dependency would become X -> Y -> Z -/-> X. So the best=
+ order
+> +  to initialize them become clear: Z, Y and then X.
+> +
+
+select: true
+
+Otherwise, this is never applied.
+
+> +properties:
+> +  # A dictionary of DT properties for this binding schema
+
+Drop
+
+> +  post-init-supplier:
+> +    # One or more suppliers can be marked as post initialization supplie=
+r
+> +    minItems: 1
+
+That's the default.
+
+> +    description:
+> +      List of phandles to suppliers that are not needed for initializing=
+ or
+> +      resuming this device.
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+
+Should be phandle-array plus:
+
+items:
+  maxItems: 1
+
+(as each entry is a single phandle)
+
+> +
+> +examples:
+> +  - |
+> +    gcc: general-clock-controller@1000 {
+
+clock-controller@1000
+
+> +        compatible =3D "vendor,soc4-gcc", "vendor,soc1-gcc";
+> +        reg =3D <0x1000 0x80>;> +        clocks =3D <&dispcc 0x1>
+> +        #clock-cells =3D <1>;
+> +        post-init-supplier =3D <&dispcc>;
+> +    };
+> +    dispcc: display-clock-controller@2000 {
+
+clock-controller@2000
+
+> +        compatible =3D "vendor,soc4-dispcc", "vendor,soc1-dispcc";
+> +        reg =3D <0x2000 0x80>;
+> +        clocks =3D <&gcc 0xdd>
+> +        #clock-cells =3D <1>;
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3dfe7ea25320..40fd498543a5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6055,10 +6055,11 @@ S:      Maintained
+>  F:     drivers/base/devcoredump.c
+>  F:     include/linux/devcoredump.h
+>
+> -DEVICE DEPENDENCY HELPER SCRIPT
+> +FIRMWARE DEVICE LINK (fw_devlink)
+>  M:     Saravana Kannan <saravanak@google.com>
+>  L:     linux-kernel@vger.kernel.org
+>  S:     Maintained
+> +F:     Documentation/devicetree/bindings/post-init-supplier.yaml
+>  F:     scripts/dev-needs.sh
+>
+>  DEVICE DIRECT ACCESS (DAX)
+> --
+> 2.43.0.687.g38aa6559b0-goog
+>
 
