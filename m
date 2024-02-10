@@ -1,207 +1,118 @@
-Return-Path: <linux-acpi+bounces-3339-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3340-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C6385023B
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 03:43:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3058185024F
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 04:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE031F25ACC
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 02:43:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F0FEB238F9
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 03:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0794417;
-	Sat, 10 Feb 2024 02:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5AB566B;
+	Sat, 10 Feb 2024 03:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Id47leOp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZUzekhGW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E9663C;
-	Sat, 10 Feb 2024 02:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C37546B7
+	for <linux-acpi@vger.kernel.org>; Sat, 10 Feb 2024 03:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707532984; cv=none; b=Ope5bOZfeTesZkNHe8yJzCdsaiLMGoDsffO2SN8Ns3ktL2S4uBY9GdmmwvBjrFeJAlaCWL3/55KfY/5+6shCByHqn666C88dRIZLeHsYKVVoV2G1gKlxV/QZM711FrSCys6m9BzCB+e76dlNSaES8M2pW+v/9jQSSFT98q7OQpI=
+	t=1707534356; cv=none; b=sE8RvWwOBhV0AVV8W+EbURSy+6B/JdYLTOl92fSWHyIhkFeu/XTiHsERXP/9QVEYT6VJQdU1Lmi7EpJrNLflRPedmUTlZ9w/W8YrNMA84++3F6kZTKwkpT/rptRF0f+ST0/0E+qt9b5ajr7/7lukJsZzgrXGbakKQliTUNTGhZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707532984; c=relaxed/simple;
-	bh=iJCdJqeAzOIYB4a07TrvzCEDXKz6pJdlBnBiGLbV8ew=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=cI/gKYFDGFrwFr3kbgtEpqhlGygqnLMW4v0fAAT3WoBrQC20RL5XYazYX0jTdjzPWKg4T7hskGd/l4KJ8HhvuOl+3CB1/q/kIhK14di5vqId8/ctOQRbBi7N2QLark4EK174PA/KU4tb8ELINOK2mH1EDLno0A+tkNP8vUeRINI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Id47leOp; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707532982; x=1739068982;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=iJCdJqeAzOIYB4a07TrvzCEDXKz6pJdlBnBiGLbV8ew=;
-  b=Id47leOpOZkNvr8fKC+rqjay1b1iZm+IeBQvqBC+Bk3YbM1OWSVuixv8
-   jXAiFseVUGb9auZihSHCiMBX7TMfOnFciHtZoPQvnKGkR3aFUKT0XvHd+
-   mMX17LScuFQiOdKn/PVEK2sF1vfto6o70lSbT/nIH4jKkSPFsGb8XXLWC
-   TQrmD9x/RtubGm3JsapSQb/TGjd3HEXLF5K0lJNMy6DP1lmkihpsKlO1u
-   Zxnov3LNPnuytFLPbwCzdCwCdbQFTWmS0ZeBOrd6ioypBQPjgPuz1v/We
-   H8chUv4QYAxz7EKtFgNx3BouYZ/0TZWnZUPO6G4rxDl+HfRli5OYhNbse
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1679419"
-X-IronPort-AV: E=Sophos;i="6.05,258,1701158400"; 
-   d="scan'208";a="1679419"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 18:43:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,258,1701158400"; 
-   d="scan'208";a="2402902"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 09 Feb 2024 18:42:59 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rYdKT-0005I0-07;
-	Sat, 10 Feb 2024 02:42:57 +0000
-Date: Sat, 10 Feb 2024 10:42:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, devel@acpica.org,
-	linux-pm@vger.kernel.org,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [rafael-pm:bleeding-edge 71/77] drivers/thermal/thermal_of.c:536:8:
- error: passing 'struct thermal_zone_device_ops' to parameter of incompatible
- type 'const void *'
-Message-ID: <202402101037.cQIOnsH8-lkp@intel.com>
+	s=arc-20240116; t=1707534356; c=relaxed/simple;
+	bh=H9Reg8b+jS8TkwjOMN95FrdB7sOlVzGGwIlyR7QTdJA=;
+	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=Oakvh6teLCZw8WycYohDxggOJsWUqfsY2ruEPYwFD3wD9+tDE9aLJaiInQDSOBiLfDVw2nlPgfsZwflI6EPOBpjfOjQ2VoixxXtTK9ot7qGZaEkJTzjEIVbHw4odtHQFY/+0NKwqYQVDem75sJaqd1oYRVwVPSxhrLHP7pGg7tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZUzekhGW; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-604a1a44b56so24653867b3.2
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Feb 2024 19:05:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707534352; x=1708139152; darn=vger.kernel.org;
+        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Lk+GB+kHbk4tJmAHLH1aR/cCxbbVSiuBX2AWpDuc13M=;
+        b=ZUzekhGW6kTW1J+jsmslEXjeEImuNOv27L1c+OnjlkhfQWf0Ln93kGZ3KRf+KvM2eg
+         I35b+9lz6tq37+AX6GChsK4emqmAfTc3CdnEHG8zBpY4ROi4YB1ALKgkypN4LuW7Q5nM
+         yXbq155Ps8CaL0miP6toTluQ87RoLUTW5PuqviVzBNqpj6EI54drEl6QAsvncl6337rQ
+         JHil91EgHpcOFJoqnN2xUh1nEoAnDeLv//ud6JpfCKvyzfyyLVfawK6Z+5/TgWzNMy5g
+         BG5pIoewdxyhCGClmqX8J1flow3h6LKmYkXBWmU/nP+rqMi5yibKjgrMOC2GXPiF14gG
+         5L/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707534352; x=1708139152;
+        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Lk+GB+kHbk4tJmAHLH1aR/cCxbbVSiuBX2AWpDuc13M=;
+        b=HAqyRI1PXTfYrf4F60LdS9TAJpItGGyGeUQTZCfP8GOE++p6p2I55Sco2pjudEv4s9
+         0NinmjwS5j66BD949+8ObbYQb/ubIut+yDbTi6RMs2buE0uej1bqaXbncxkCIa2bW5iQ
+         fk0uBKXyeLuSheB36PI2T8VJK45pL7cQyfpNkbKY1w/ANJz/HEstbTGQdFAzlTt7UX/1
+         dX15XfgnnBy7ne7PfudZFhbsMW7/Y1Hw4sCF4ONF5CceEZ1RIsEJPQkg2mcsYCAeRPv7
+         2Z862XBGcsP9kqyQpbd1wWhylGA2IGQfDf2/wHQPVvKKsx7AZwJ+hmmZI3jFrMIfyQlV
+         +oNA==
+X-Gm-Message-State: AOJu0YxXMUrk2W6LQz5X0cS3jd8E0AjJ8bpraiOKbz5/bAkhWhfVe9GW
+	oSfDgSmq/mBlVXRiWrZeHS8SVju9xNJM2qW79uTamF8wdsHXK3k/OSDMIZjfPf4RwY3CoNNtaHQ
+	89GOQjwemPgsdiQ==
+X-Google-Smtp-Source: AGHT+IE/uuWDxdol9sXaEnPCB66yNsPa4nWES8Tyh05rnMrvZgyjUNND+XZgyBWyRqOpm/3fC76p14pGakwp1i8=
+X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:6b44:91e7:13e1:5d92])
+ (user=saravanak job=sendgmr) by 2002:a05:690c:a98:b0:5ee:d5ed:5f70 with SMTP
+ id ci24-20020a05690c0a9800b005eed5ed5f70mr243749ywb.9.1707534352400; Fri, 09
+ Feb 2024 19:05:52 -0800 (PST)
+Date: Fri,  9 Feb 2024 19:05:43 -0800
+Message-Id: <20240210030549.4048795-1-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+Subject: [PATCH v1 0/4] Add post-init-supplier binding to improve
+ suspend/resume stability
+From: Saravana Kannan <saravanak@google.com>
+To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   2bc44535ed4f6a6013ec53b505c4c381e166f0ce
-commit: fe0ea8a4d293acaf02031aaaaeb3dcf7f262e5b3 [71/77] thermal: core: Store zone ops in struct thermal_zone_device
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20240210/202402101037.cQIOnsH8-lkp@intel.com/config)
-compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402101037.cQIOnsH8-lkp@intel.com/reproduce)
+This patch series adds a "post-init-supplier" device tree binding that
+can be used to break dependency cycles in device tree and enforce a more
+determinstic probe/suspend/resume order. This will also improve the
+stability of global async probing and async suspend/resume and allow us
+to enable them more easily. Yet another step away from playing initcall
+chicken with probing and step towards fully async probing and
+suspend/resume.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402101037.cQIOnsH8-lkp@intel.com/
+Patch 3 (the binding docunentation) provide a lot more details and examples.
 
-All errors (new ones prefixed by >>):
+Saravana Kannan (4):
+  driver core: Adds flags param to fwnode_link_add()
+  driver core: Add FWLINK_FLAG_IGNORE to completely ignore a fwnode link
+  dt-bindings: Add post-init-supplier property
+  of: property: fw_devlink: Add support for "post-init-supplier"
+    property
 
->> drivers/thermal/thermal_of.c:536:8: error: passing 'struct thermal_zone_device_ops' to parameter of incompatible type 'const void *'
-           kfree(of_ops);
-                 ^~~~~~
-   include/linux/slab.h:227:24: note: passing argument to parameter 'objp' here
-   void kfree(const void *objp);
-                          ^
-   1 error generated.
-
-
-vim +536 drivers/thermal/thermal_of.c
-
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  449  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  450  /**
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  451   * thermal_of_zone_register - Register a thermal zone with device node
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  452   * sensor
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  453   *
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  454   * The thermal_of_zone_register() parses a device tree given a device
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  455   * node sensor and identifier. It searches for the thermal zone
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  456   * associated to the couple sensor/id and retrieves all the thermal
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  457   * zone properties and registers new thermal zone with those
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  458   * properties.
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  459   *
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  460   * @sensor: A device node pointer corresponding to the sensor in the device tree
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  461   * @id: An integer as sensor identifier
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  462   * @data: A private data to be stored in the thermal zone dedicated private area
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  463   * @ops: A set of thermal sensor ops
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  464   *
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  465   * Return: a valid thermal zone structure pointer on success.
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  466   * 	- EINVAL: if the device tree thermal description is malformed
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  467   *	- ENOMEM: if one structure can not be allocated
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  468   *	- Other negative errors are returned by the underlying called functions
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  469   */
-ac614a9b4c35bf Daniel Lezcano    2023-04-04  470  static struct thermal_zone_device *thermal_of_zone_register(struct device_node *sensor, int id, void *data,
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  471  							    const struct thermal_zone_device_ops *ops)
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  472  {
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  473  	struct thermal_zone_device_ops of_ops = *ops;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  474  	struct thermal_zone_device *tz;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  475  	struct thermal_trip *trips;
-ac4436a5b20e0e Ahmad Fatoum      2023-07-08  476  	struct thermal_zone_params tzp = {};
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  477  	struct device_node *np;
-62e79e38b257a5 Fabio Estevam     2023-11-29  478  	const char *action;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  479  	int delay, pdelay;
-990efe2b4813ff Rafael J. Wysocki 2024-02-08  480  	int ntrips;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  481  	int ret;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  482  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  483  	np = of_thermal_zone_find(sensor, id);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  484  	if (IS_ERR(np)) {
-9d6792df07367a Daniel Lezcano    2022-08-09  485  		if (PTR_ERR(np) != -ENODEV)
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  486  			pr_err("Failed to find thermal zone for %pOFn id=%d\n", sensor, id);
-7ef2f023c2c77a Ido Schimmel      2022-10-20  487  		ret = PTR_ERR(np);
-7ef2f023c2c77a Ido Schimmel      2022-10-20  488  		goto out_kfree_of_ops;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  489  	}
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  490  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  491  	trips = thermal_of_trips_init(np, &ntrips);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  492  	if (IS_ERR(trips)) {
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  493  		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
-7ef2f023c2c77a Ido Schimmel      2022-10-20  494  		ret = PTR_ERR(trips);
-7ef2f023c2c77a Ido Schimmel      2022-10-20  495  		goto out_kfree_of_ops;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  496  	}
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  497  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  498  	ret = thermal_of_monitor_init(np, &delay, &pdelay);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  499  	if (ret) {
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  500  		pr_err("Failed to initialize monitoring delays from %pOFn\n", np);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  501  		goto out_kfree_trips;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  502  	}
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  503  
-ac4436a5b20e0e Ahmad Fatoum      2023-07-08  504  	thermal_of_parameters_init(np, &tzp);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  505  
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  506  	of_ops.bind = thermal_of_bind;
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  507  	of_ops.unbind = thermal_of_unbind;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  508  
-62e79e38b257a5 Fabio Estevam     2023-11-29  509  	ret = of_property_read_string(np, "critical-action", &action);
-62e79e38b257a5 Fabio Estevam     2023-11-29  510  	if (!ret)
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  511  		if (!of_ops.critical && !strcasecmp(action, "reboot"))
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  512  			of_ops.critical = thermal_zone_device_critical_reboot;
-62e79e38b257a5 Fabio Estevam     2023-11-29  513  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  514  	tz = thermal_zone_device_register_with_trips(np->name, trips, ntrips,
-fe0ea8a4d293ac Rafael J. Wysocki 2024-02-09  515  						     data, &of_ops, &tzp,
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  516  						     pdelay, delay);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  517  	if (IS_ERR(tz)) {
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  518  		ret = PTR_ERR(tz);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  519  		pr_err("Failed to register thermal zone %pOFn: %d\n", np, ret);
-ac4436a5b20e0e Ahmad Fatoum      2023-07-08  520  		goto out_kfree_trips;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  521  	}
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  522  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  523  	ret = thermal_zone_device_enable(tz);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  524  	if (ret) {
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  525  		pr_err("Failed to enabled thermal zone '%s', id=%d: %d\n",
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  526  		       tz->type, tz->id, ret);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  527  		thermal_of_zone_unregister(tz);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  528  		return ERR_PTR(ret);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  529  	}
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  530  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  531  	return tz;
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  532  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  533  out_kfree_trips:
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  534  	kfree(trips);
-7ef2f023c2c77a Ido Schimmel      2022-10-20  535  out_kfree_of_ops:
-7ef2f023c2c77a Ido Schimmel      2022-10-20 @536  	kfree(of_ops);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  537  
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  538  	return ERR_PTR(ret);
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  539  }
-3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  540  
-
-:::::: The code at line 536 was first introduced by commit
-:::::: 7ef2f023c2c77a452ba5d0c9b1ad04a5a895d553 thermal/of: Fix memory leak on thermal_of_zone_register() failure
-
-:::::: TO: Ido Schimmel <idosch@nvidia.com>
-:::::: CC: Daniel Lezcano <daniel.lezcano@kernel.org>
+ .../bindings/post-init-supplier.yaml          | 99 +++++++++++++++++++
+ MAINTAINERS                                   |  3 +-
+ drivers/base/core.c                           | 14 ++-
+ drivers/firmware/efi/sysfb_efi.c              |  2 +-
+ drivers/of/property.c                         | 17 +++-
+ include/linux/fwnode.h                        |  5 +-
+ 6 files changed, 131 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/post-init-supplier.yaml
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0.687.g38aa6559b0-goog
+
 
