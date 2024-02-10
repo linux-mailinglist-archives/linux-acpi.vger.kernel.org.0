@@ -1,126 +1,394 @@
-Return-Path: <linux-acpi+bounces-3350-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3351-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D7A85042A
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 12:30:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0842850461
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 13:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85D01C22972
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 11:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FBD41C20E70
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 12:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0E33D55E;
-	Sat, 10 Feb 2024 11:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C974B3DBBA;
+	Sat, 10 Feb 2024 12:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qucSb+pY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Utj0kcwV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00623D55A;
-	Sat, 10 Feb 2024 11:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A1F3DBB2;
+	Sat, 10 Feb 2024 12:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707564593; cv=none; b=AAv9pnU8JM4ShVIETa8X+npszwiFm3d/XNPlS/3scXoMyk+vYsxpnaDbJsGu+9wsLhQ3U1da/vyqwKNioJfwV5gS+qWTwrd7J2D2ZD/W4LGy+xXlplD2ghzYQAYW1HjSk45qhQSBohb7oXZk+bAld3fRyWubZwvVAp7H0Sp6YeI=
+	t=1707568164; cv=none; b=An+/pErcJGeNokdOtzF1c78QqxMGg9qZ+a/jIAZQs/EzWgGRvzXaSHJtgYeRseA534wOLPznj8RGbJt28nx8iwRKn7WPufvIEpgewT9SNEduzD9I/qoV0qv/Y8lVAd7+iqHizxLFVmZmv9MIgB+c/6jLTPzZCoqTDO6qme9XGSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707564593; c=relaxed/simple;
-	bh=V7/xsHrNll/p9LOmntS6P/UbHtp6CG2rRaw2C+prrh0=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=JxC/PdRxpr2YHMvDpRmWJTHLT5Oq04jBPUqgi1jCe17RLYN25WFqsJAyyvKKqXqXz/VdMD6RuarAdZImrJxWrwY7cTddIOb/vTXgkT0RQJWqUQKEl/V5KzhiKYVk2TF8+PH1Ut3virheFvlNv3NiFw1cowxegq5C2aG1oBl0DFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qucSb+pY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20CA6C43390;
-	Sat, 10 Feb 2024 11:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707564593;
-	bh=V7/xsHrNll/p9LOmntS6P/UbHtp6CG2rRaw2C+prrh0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=qucSb+pYrPD+oUekwIxOw7002LPguyTtJw/W1gs9klHgzi7x2S0R4V8TjwIzbuQxV
-	 af7X9OEnajY6vCYpzRaJtXPg8KPq6wliQAPxXpKXss2ZKbODHkyGTMrAXOZQ0R8H2u
-	 oSDMHNG4yl7DSnJLqDHp9v/+5Y9KxGAXHPxDjo1bLwkx9Pu30AAoiJ4qE8trTqWryB
-	 XmQYte+10z267NpeMaLrYIExhXl3ciaf7F3rLexW71skPue1KMFOd6GYlsVIpNjaM+
-	 szHoLpwkgdJ9OQt9+CK/Eju56alfmlP87IR6l5Xk8XEylOD3Be6Bm7oG2fu0gNc7JP
-	 Tn6N5fUdUH8sg==
-Date: Sat, 10 Feb 2024 11:29:51 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1707568164; c=relaxed/simple;
+	bh=Hd1+wd5WnJX46yEwmD9CpuyvK+iJv2KUOnUZ+dhdMfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=qZt9baJjhQjTpXPKpI76jCzDSKlDL07nCrrOUryKayZTAA0kpcJBK6aBjVI/1A/0iedx6KSN+2/IQtd+s9YHge+OUjkV121Uc60LDNPoxqHfMeP6Eo4MUVbQssY2/Xo5XEBivMMNTCg72qzDm6fU9S3zDZrajJtFbM8+oRYORjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Utj0kcwV; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707568162; x=1739104162;
+  h=date:from:to:cc:subject:message-id;
+  bh=Hd1+wd5WnJX46yEwmD9CpuyvK+iJv2KUOnUZ+dhdMfQ=;
+  b=Utj0kcwVPn/EhSDw1FwdhYRwJR97uFkRXDfhaiMjyYTD6D8nt5bWYv/D
+   PDYFNcRzx/5VgG3sGOcfApgKgiSpWmpC18IX3mMcHg3r+XGGZUZusXoSa
+   1LE4ANDjUmQVjtWp6gaIwSEs43OmQJhViC6UiWOaHyXgQnJVJxCbp14s5
+   Z2ySaUlch+lW2jiyT+yTTISXQYmgLMIKMrx4aa4AgokkEcAi04ZIuglAe
+   BEksFwv1FJy3a/Smg5XG7uUHRO3Y5uwp708mJlwEe5XnzHwKAZ+8G/tGr
+   3pYVd+Ra2Zumrhf2mZVoKRRmCod8p8yu0oTkkUvJ0dOs3Z9WjgVFKQLCA
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1708565"
+X-IronPort-AV: E=Sophos;i="6.05,259,1701158400"; 
+   d="scan'208";a="1708565"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2024 04:29:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,259,1701158400"; 
+   d="scan'208";a="6815068"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 10 Feb 2024 04:29:19 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYmTs-0005dw-2P;
+	Sat, 10 Feb 2024 12:29:16 +0000
+Date: Sat, 10 Feb 2024 20:28:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD REGRESSION
+ 2bc44535ed4f6a6013ec53b505c4c381e166f0ce
+Message-ID: <202402102032.dc9RFTdT-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Saravana Kannan <saravanak@google.com>
-Cc: linux-kernel@vger.kernel.org, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Len Brown <lenb@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
- Daniel Scally <djrscally@gmail.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, 
- devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
- Frank Rowand <frowand.list@gmail.com>, kernel-team@android.com, 
- linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Conor Dooley <conor+dt@kernel.org>
-In-Reply-To: <20240210030549.4048795-4-saravanak@google.com>
-References: <20240210030549.4048795-1-saravanak@google.com>
- <20240210030549.4048795-4-saravanak@google.com>
-Message-Id: <170756458599.4188768.15835380781477026047.robh@kernel.org>
-Subject: Re: [PATCH v1 3/4] dt-bindings: Add post-init-supplier property
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 2bc44535ed4f6a6013ec53b505c4c381e166f0ce  Merge branch 'thermal-core-testing' into bleeding-edge
 
-On Fri, 09 Feb 2024 19:05:46 -0800, Saravana Kannan wrote:
-> The post-init-supplier property can be used to break a dependency cycle by
-> marking some supplier(s) as a post device initialization supplier(s). This
-> allows the kernel to do a better job at ordering initialization and
-> suspend/resume of the devices in a dependency cycle.
-> 
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  .../bindings/post-init-supplier.yaml          | 99 +++++++++++++++++++
->  MAINTAINERS                                   |  3 +-
->  2 files changed, 101 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/devicetree/bindings/post-init-supplier.yaml
-> 
+Error/Warning reports:
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+https://lore.kernel.org/oe-kbuild-all/202402092329.W4VIvzU0-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202402100947.E7EZyIMp-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202402101037.cQIOnsH8-lkp@intel.com
 
-yamllint warnings/errors:
+Error/Warning: (recently discovered and may have been fixed)
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/post-init-supplier.yaml: properties:post-init-supplier:minItems: False schema does not allow 1
-	hint: Scalar properties should not have array keywords
-	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/post-init-supplier.yaml: 'oneOf' conditional failed, one must be fixed:
-	'unevaluatedProperties' is a required property
-	'additionalProperties' is a required property
-	hint: Either unevaluatedProperties or additionalProperties must be present
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-Error: Documentation/devicetree/bindings/post-init-supplier.example.dts:22.13-14 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.lib:419: Documentation/devicetree/bindings/post-init-supplier.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1428: dt_binding_check] Error 2
-make: *** [Makefile:240: __sub-make] Error 2
+drivers/thermal/intel/intel_quark_dts_thermal.c:353:17: error: 'trips' undeclared (first use in this function)
+drivers/thermal/thermal_of.c:536:15: error: incompatible type for argument 1 of 'kfree'
+drivers/thermal/thermal_of.c:536:8: error: passing 'struct thermal_zone_device_ops' to parameter of incompatible type 'const void *'
 
-doc reference errors (make refcheckdocs):
+Error/Warning ids grouped by kconfigs:
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240210030549.4048795-4-saravanak@google.com
+gcc_recent_errors
+|-- arm-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- arm-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- arm64-defconfig
+|   |-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- i386-allmodconfig
+|   |-- drivers-thermal-intel-intel_quark_dts_thermal.c:error:trips-undeclared-(first-use-in-this-function)
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-thermal-intel-intel_quark_dts_thermal.c:error:trips-undeclared-(first-use-in-this-function)
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- i386-randconfig-141-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- loongarch-randconfig-001-20240210
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- mips-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- mips-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- nios2-randconfig-002-20240210
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- powerpc-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- powerpc-randconfig-001-20240210
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- s390-allyesconfig
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- s390-randconfig-002-20240210
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- sh-allmodconfig
+|   `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|-- sparc-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- sparc-allyesconfig
+|   |-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- sparc64-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- sparc64-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- sparc64-randconfig-002-20240210
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- sparc64-randconfig-r064-20240210
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- x86_64-buildonly-randconfig-001-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- x86_64-randconfig-161-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+`-- xtensa-allyesconfig
+    `-- drivers-thermal-thermal_of.c:error:incompatible-type-for-argument-of-kfree
+clang_recent_errors
+|-- arm-defconfig
+|   `-- drivers-thermal-thermal_of.c:error:passing-struct-thermal_zone_device_ops-to-parameter-of-incompatible-type-const-void
+|-- arm64-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- arm64-randconfig-001-20240210
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- i386-randconfig-001-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- i386-randconfig-004-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- powerpc-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- powerpc-randconfig-002-20240210
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- powerpc64-randconfig-001-20240210
+|   `-- drivers-thermal-thermal_of.c:error:passing-struct-thermal_zone_device_ops-to-parameter-of-incompatible-type-const-void
+|-- powerpc64-randconfig-002-20240210
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- riscv-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- riscv-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- x86_64-allmodconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- x86_64-allyesconfig
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+|-- x86_64-randconfig-011-20240209
+|   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+|   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
+`-- x86_64-randconfig-101-20240210
+    |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
+    `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
+elapsed time: 1446m
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+configs tested: 178
+configs skipped: 3
 
-pip3 install dtschema --upgrade
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240210   gcc  
+arc                   randconfig-002-20240210   gcc  
+arc                    vdk_hs38_smp_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                      jornada720_defconfig   clang
+arm                         lpc32xx_defconfig   clang
+arm                             mxs_defconfig   clang
+arm                   randconfig-001-20240210   gcc  
+arm                   randconfig-002-20240210   gcc  
+arm                   randconfig-003-20240210   gcc  
+arm                   randconfig-004-20240210   gcc  
+arm                        shmobile_defconfig   gcc  
+arm                           stm32_defconfig   gcc  
+arm64                            alldefconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240210   clang
+arm64                 randconfig-002-20240210   gcc  
+arm64                 randconfig-003-20240210   gcc  
+arm64                 randconfig-004-20240210   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240210   gcc  
+csky                  randconfig-002-20240210   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240210   clang
+hexagon               randconfig-002-20240210   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240209   clang
+i386         buildonly-randconfig-002-20240209   clang
+i386         buildonly-randconfig-003-20240209   gcc  
+i386         buildonly-randconfig-004-20240209   clang
+i386         buildonly-randconfig-005-20240209   clang
+i386         buildonly-randconfig-006-20240209   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240209   clang
+i386                  randconfig-002-20240209   gcc  
+i386                  randconfig-003-20240209   clang
+i386                  randconfig-004-20240209   clang
+i386                  randconfig-005-20240209   clang
+i386                  randconfig-006-20240209   gcc  
+i386                  randconfig-011-20240209   gcc  
+i386                  randconfig-012-20240209   gcc  
+i386                  randconfig-013-20240209   clang
+i386                  randconfig-014-20240209   gcc  
+i386                  randconfig-015-20240209   gcc  
+i386                  randconfig-016-20240209   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240210   gcc  
+loongarch             randconfig-002-20240210   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                          hp300_defconfig   gcc  
+m68k                        m5307c3_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           xway_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240210   gcc  
+nios2                 randconfig-002-20240210   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240210   gcc  
+parisc                randconfig-002-20240210   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      bamboo_defconfig   clang
+powerpc                      cm5200_defconfig   clang
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                 mpc836x_rdk_defconfig   clang
+powerpc                      obs600_defconfig   clang
+powerpc               randconfig-001-20240210   gcc  
+powerpc               randconfig-002-20240210   clang
+powerpc               randconfig-003-20240210   gcc  
+powerpc64             randconfig-001-20240210   clang
+powerpc64             randconfig-002-20240210   clang
+powerpc64             randconfig-003-20240210   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240210   gcc  
+riscv                 randconfig-002-20240210   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240210   gcc  
+s390                  randconfig-002-20240210   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                            hp6xx_defconfig   gcc  
+sh                    randconfig-001-20240210   gcc  
+sh                    randconfig-002-20240210   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240210   gcc  
+sparc64               randconfig-002-20240210   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                    randconfig-001-20240210   gcc  
+um                    randconfig-002-20240210   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240209   gcc  
+x86_64       buildonly-randconfig-002-20240209   gcc  
+x86_64       buildonly-randconfig-003-20240209   clang
+x86_64       buildonly-randconfig-004-20240209   gcc  
+x86_64       buildonly-randconfig-005-20240209   clang
+x86_64       buildonly-randconfig-006-20240209   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240209   clang
+x86_64                randconfig-002-20240209   gcc  
+x86_64                randconfig-003-20240209   gcc  
+x86_64                randconfig-004-20240209   clang
+x86_64                randconfig-005-20240209   gcc  
+x86_64                randconfig-006-20240209   gcc  
+x86_64                randconfig-011-20240209   clang
+x86_64                randconfig-012-20240209   clang
+x86_64                randconfig-013-20240209   gcc  
+x86_64                randconfig-014-20240209   clang
+x86_64                randconfig-015-20240209   gcc  
+x86_64                randconfig-016-20240209   clang
+x86_64                randconfig-071-20240209   gcc  
+x86_64                randconfig-072-20240209   clang
+x86_64                randconfig-073-20240209   clang
+x86_64                randconfig-074-20240209   gcc  
+x86_64                randconfig-075-20240209   gcc  
+x86_64                randconfig-076-20240209   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240210   gcc  
+xtensa                randconfig-002-20240210   gcc  
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
