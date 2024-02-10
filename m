@@ -1,68 +1,70 @@
-Return-Path: <linux-acpi+bounces-3346-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3347-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A918502F0
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 08:09:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552D285030D
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 08:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C8FD1C223BB
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 07:09:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3ECA1F2674F
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 07:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF93C28DB5;
-	Sat, 10 Feb 2024 07:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847F039AC2;
+	Sat, 10 Feb 2024 07:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="M7AYcW0o"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jz/ArCb7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2548200DC
-	for <linux-acpi@vger.kernel.org>; Sat, 10 Feb 2024 07:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FE138F96
+	for <linux-acpi@vger.kernel.org>; Sat, 10 Feb 2024 07:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707548982; cv=none; b=O1KluYKUelbRb83hzeUn/1Rnu+Expzws64c3vBvMV09BAgYQYp7RHzDsdAEvus8KMYjG2+spK1LbXvZQL8sqCq+xQZH/Zoo36YiL7zLa7h6Fw5WeSj1RnSk1FQYX836EDawdvNgwFq/JexKwV41FBZ//WSIFbS2pj0IuwSrJ/IA=
+	t=1707548995; cv=none; b=Gto57MwTy3zJoYIgKZpkyE7IXDZlBXI0BT1pIg//hC6Y85rYvx4HsXg4r5lMYWXyiBt7CrH0DZoEQUQ8XFdJwo2HJq6dZjCkWHhXSvK3pWn/w/P1KFtTxU+PRv3TRhvzIrgFhc5EG1Qu180dHUBHj7EGZX1Kj6qdRRxHmmaxGY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707548982; c=relaxed/simple;
-	bh=mbC0DB1VSkueSEIQOEMgbsEihDdd9hh6PSWoWxt8Hnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P+OUj9cMTVRQxTt/wZR+nrXLHuJWGOgrPD2ndvbfzbtNsziVRKu4hzEeWw1KSgxE5rWj4GzUET606X/HvRwTz6EXxoT4GvE97me3fViz4OsxUOU9vHaeH6Y28QPzyig9MySNcBA2Qv4RQC4UqlfPonj/pJrcP7H4WqLNzeA9eUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=M7AYcW0o; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1707548995; c=relaxed/simple;
+	bh=Mzv0e8b5maH+R5VJl6DotCRRWAOOTWYpXPhTaIdR8Cs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bPa+xCSmQxmRwYtOrjVeNK2kgiFX3ytv5PL0c6LDJ7ZBjqgE6KzxA6TYMww0Rc1j0DsQwOrBWkrizRGY3R9sQdjnVjx7A/CmmeTUEECTmNwVpZ6ZLChO+k7xMhCy6ib+WyPZWy1LEc/4q7Kf3DvgFNTxlaykQMzzKKzvOUdeBzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jz/ArCb7; arc=none smtp.client-ip=209.85.210.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e06c06c0f6so1724647b3a.0
-        for <linux-acpi@vger.kernel.org>; Fri, 09 Feb 2024 23:09:39 -0800 (PST)
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e2d49ec431so338098a34.2
+        for <linux-acpi@vger.kernel.org>; Fri, 09 Feb 2024 23:09:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1707548979; x=1708153779; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9ybKrfRhqeTAtLZZp91eR3wd0aV+0gDZsFZ2lmBVz4=;
-        b=M7AYcW0owUafXlSINTxSwXRVOvKMlq1eUfzM53hxC9gDoNcvNYGfZ3plR+P7mXdfuH
-         osdgd4sa88rYqBoEA+pNbTLSZx6wXfWug9kRdgMWdAmVM0QV2CF8CuWTcUwxLolQvQY3
-         /41hu6R3rEvLxiiYK3ibnJO1YFlCnWQa6AK+E=
+        d=chromium.org; s=google; t=1707548992; x=1708153792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3zER2Ilw0QhxMBzy8PRis9D7e+HIgnB5hYCQzM4YYso=;
+        b=jz/ArCb7aEf0XnTaxG1zjmhkLoFwyxZZaMLIe+xtmyAQQnbAY24szJImOrWBYYXqYQ
+         s2fWTnNfG1703YCto5g2pF4m5/7itmj/NfS1smC/ix2iJ008hcD/8TM2hqOmKGEIhwLU
+         e9tJQTKxexhottbvJNZsp8nD7CmBkB87TuaME=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707548979; x=1708153779;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b9ybKrfRhqeTAtLZZp91eR3wd0aV+0gDZsFZ2lmBVz4=;
-        b=tJHxatwgiznXriATOQzC7MJEf0b1uXrGUoMzo++9czSg9VBDSvPhwl8ZgTt+0H7AlP
-         bikynFcOXIhrzGPlLNZIQl5QIUPRKb0ypg4a3znrfA1CFuky8f3dcq0rjU30idZpvroI
-         y+OzR2uB6aSdZPZGkiz+0I+beaO8jd9NM9P0wrOsnEV4NVpbfj0fMWUIT4b4tYukEk6u
-         GYuhNI69Ke/pu3qQrP9MqTVff/bshANXtDMI4k/BFVofGdp3TH84YKDBPxDVphUxVRQs
-         AdSwaFLm0MbV3FKxHouXTf8OmvBI4Ckj7/7EgDnyf+xcCkOgbsemxedvNw7leRgIJSEv
-         T0aQ==
-X-Gm-Message-State: AOJu0YwoDbDrLobuDMwyrivZfDqSlfc16OB+iMveEnFpMlK7BYIiehkL
-	dGWxjm736F9MwteNOGffuzxu+HGescSM90ifAUczpzL24sJDBAiDHwXWUHZ4sg==
-X-Google-Smtp-Source: AGHT+IHHFtmTz4F6HkKCsABtdOtMPEvj2ixjc3Xu597pI5qeBktFMLaxG/9FeC2ZBzrgjmMIjMeamQ==
-X-Received: by 2002:a05:6a20:2d11:b0:19e:8a29:5e81 with SMTP id g17-20020a056a202d1100b0019e8a295e81mr2125042pzl.20.1707548979163;
-        Fri, 09 Feb 2024 23:09:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXukExwyisG683fg4h7pCl9rSIdxSMepDxpCM5dZ1O3HwsoS+nhng0ZD5rEZzlXs9GCVBcrtR2ahVrw9Tq+G75+AcxYBu6xzpYBwlSgTvre9uLLLINyC1uDx8QMFg/Uwvh/rDuEY6zof6+m901UXuFLunQ6MEYVEz1MqrsyoJUCTA5RP9w4WcwgUljdNy8efAMFoQ3lk332aFb0Aij/BoEM568msE7RR61tbj4Fm1ppOvvk28c/NG+kX2C5FvqrVZHFNH7SEc6+30VdeVE1i1DCaFPL1xa6vRJuKsNMvRTI1y/HM+Ggrp9HxUfaz3znu1b8St9e7okrMQovFcoDIZtjECCVRm9AsuDVMftg7VRs02tsnYOuyIs+qclbP7wPH9CqTe4Mienk8CICB7cqX7bWbOb7bV0TYRqo58lHQmWoY6RYVjENzX+rKP2mDr6fi0KedWE0ZIz+eRJF1chQWDHwWeUYN6AY9CndeAYz/Onb+wIvtNbOZmRidiilc8mQ55QRLsxnRMofAz2lzhdElSVJQxfET9ygcLKUE/qdRMnCAhgc3y3ZSdUJN4FsA203B6Q924VAQqVZmi+no22dFJaG5PRF8Y6idsNMD6wss+zhCYywwCmyMpxp/i1irUam42Cps33RK49GIGC4XGkFu/UI6Bg/C4pi7vaHwMcK40bmBHFtLheoVGghflGzfTmaKDKjKS8bPS9LZW0QkIpHysEK0ijpRhaUAP9OeGgWDwZyqEciZQPAZjYPHER2AEQa8jFV+4brprEP/zRKa6EsBOjtSDjia+33bkj+LSgZ/fge9XnptZN7snWBopOstR8OAUxdvjHP1bh7w9BzOu9tYQW7qh5DcS5kNqszUtb61B0GyTd9jWX4QB9W3aRvRk7BBbcqeJhc5zzBnK9FmFtyE4QVWxtfVJPc01IidMb9NDIZKNvox38te7RJ6caZ8R8nIjIstp
- 4lGz0SjfgHZwjWvR2r9qWWj8HnjqDNj1y46zO15w2RjzLoQ0s/7gVZf+XqC5fea2YnxjCsFQO340QTn5W4+MFayh2Az1o4vV/QSz6cxraHru/ru5sePzI8qWlLfG5zUGPjko4maXtW8PMN7gihFpXWcbgPZ0FQrr5ceC74vIWunIVHs0Am6nU6ozeW19l0665suTVqD7L1WolrlSpKKiRjpp/lHwyyxVJB7QMPkcN5ZnKjv0ET2uvp60Ls246xA9kNT3qcmRuqqNoarBUMlI+A5l1EUu2CY6L9wJDH8y83qCg/8OvSVs3CTBz5pzF7Q1r+kO1qm+DPnUl2nTlhUSxZZxgFiIqAYDfECac0aalVi9KxfYb6VyjfCFgH/ui5zqs5WNFCWCvxexV+SAWxhW4qfMH6ALqq3t8PQIGuKvpzWFiOKOZdMoJiSQ3canXFCdRyNHh1R04AXBwPQaW95JZK0Nrrzix11McAxOdnbXFfmWycBbh2dK5W3GPdiShdLqa3MsarkGA0lGvSp7oDN+225ESySKGvIap3lLcCdHyh4m/eDAupHMH+0hUv/Zx2HiBF5/gR3EVjbKaqASOP71qFbazz5BGUGh4p1TgaSLJPm2yIxKpCgyxE/C5ja6PnOLTjlx2LDh7ss4pKSWoOnPKpzqP7dfzaNWJvw8O0STC36DwN
+        d=1e100.net; s=20230601; t=1707548992; x=1708153792;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3zER2Ilw0QhxMBzy8PRis9D7e+HIgnB5hYCQzM4YYso=;
+        b=h7khazywjDyZSREw1PjNAFG5U1uhrIctReCEGMyaPhlR2+3jjwcVXq3iMe9Wp6uJdG
+         KORIkWS3A16SeYSelpPpYnWXW8NE3W9Khs4Z8ypTTDPxBrd2SJYO44jrl8NKPYIY6N8e
+         +lUYpAv8dAFlcepFPQ0MPqHoJgiEgmY5efM5BcvL/U0n+UzjVd7whwJYc9DqpZOIXIVd
+         heTMNQI0SPePjZX/AHlaNzv9c2FgM+AXAbgT38r7zwWKj6V7eC8DfxS99Fs+hIylEmlG
+         B2vnAa97cQ0ArK0RNyk5JxgRcnc2lnY6AN28jRyiZnUt7sLfufY0BbamtHbusjedtKhu
+         /jBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuHhKZTfZ+3jclWHOCCUm5y9kemZ1Pc7TY1hVZ+Yt7nC8a/ZTccq9ljute3URJPPkm7i3KIbz2FtRmlkXySxkKwzymC0PZIlfkzA==
+X-Gm-Message-State: AOJu0YwYlzP2+kthei//U/MwwsJ1pqjaRKJbYnxR4hS3TgMTAinYFTjP
+	8Lt7dPkgCT+aNePYipdW40oaphE3OB8P1BRwU+iekgx+uCQwOAM8zYiibSZ9Uw==
+X-Google-Smtp-Source: AGHT+IGycCUB3DMpwmXjgXOSlrrSzr1olN6zo2Ub4XCvqi0LH8LyLdUzUKkoFY+1tflxHElqI+m7OA==
+X-Received: by 2002:a9d:76d6:0:b0:6dd:dd86:ad81 with SMTP id p22-20020a9d76d6000000b006dddd86ad81mr1490798otl.14.1707548992033;
+        Fri, 09 Feb 2024 23:09:52 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWItJfkduQ4ZlMb/4WI7wMAHcsdDlwLJlkD/syq6yJf1sHeXjYYBIe/frbmiy2XGR50jAWFjh9GanqxX17f+9vt7lUWBccaf/pksRS1ZUnaOkGP4dsQwnsx4zPGeqe43Z6C2X4iWLb/Q42Ko20wMp5+d7KTL4cQ0T9VPc0Z0x02Q6Dx+CIG4ziunVGuwntKCgGgDiMcyfUKwU01vEtnRrfZLHGsZYtXzK1umwuiFrXDznvJZnpN1VFqnk5qw9F5CIHJXQ1cNUpESF9mPy5SkuKua+aAdxO81ycYVQ5ClhPOQzHr0mfcZyUwh1ey7EDduqAuq8v/zJkwd3HDl1vSknkzlzPO7ws3fFF/Y2v5CZTUXwtR5EqYwwhLJWXoBzwaCdlC/28MFNSXvMPPPRS7GI0YN9O/JgHHx4MIJV0YthaE583CCVMKPD+5cQolzSPifOhy/9eGQxmb6hzwiZvi6CIRfuQj0SobOxZPh36DEJ68I7dl368YlcYb8kCiQAG7fmsAbs7ru8zRdnRsnNg1IU3FltumjwDbfwJBAj2zz0JksLQHKZL5Co94BVGmDzEL63lWOxFLaBnGEPWOW3aYiRUfa8JGVlNmH2cAikNC+tptaFMse3Aqg5sDg8eq1nQur7Ss0h+xuFfTmw3DIvxVR35+3g983eWVTucCBMlQeVx9fuGCIEgJ4+4zhcPsG3j/oVi1hhfegECRwMJ0NePewQjjHsJnyBsiGvmWFdp4RQfFg/wj6T7sZdPV0KdSPX93F2ZbOok58pOGEzxthPwChtL+GP4mm0ENWmjuf8+xS6KNk/rlaETSsg3C5saKLtn8j9epQEnkJQ==
 Received: from localhost (175.199.125.34.bc.googleusercontent.com. [34.125.199.175])
-        by smtp.gmail.com with UTF8SMTPSA id y26-20020a63495a000000b005ce998b9391sm2846522pgk.67.2024.02.09.23.09.36
+        by smtp.gmail.com with UTF8SMTPSA id y30-20020a63b51e000000b005dc5289c4edsm2717207pge.64.2024.02.09.23.09.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 23:09:38 -0800 (PST)
+        Fri, 09 Feb 2024 23:09:51 -0800 (PST)
 From: Stephen Boyd <swboyd@chromium.org>
 To: chrome-platform@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org,
@@ -72,51 +74,27 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	Douglas Anderson <dianders@chromium.org>,
 	Pin-yen Lin <treapking@chromium.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Andy Gross <agross@kernel.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Benson Leung <bleung@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
 	Daniel Scally <djrscally@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Guenter Roeck <groeck@chromium.org>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Lee Jones <lee@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-acpi@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	maciek swiech <drmasquatch@google.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 00/22] platform/chrome: Add DT USB/DP muxing/topology to Trogdor
-Date: Fri,  9 Feb 2024 23:09:11 -0800
-Message-ID: <20240210070934.2549994-1-swboyd@chromium.org>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-usb@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH 07/22] device property: Add remote endpoint to devcon matcher
+Date: Fri,  9 Feb 2024 23:09:18 -0800
+Message-ID: <20240210070934.2549994-8-swboyd@chromium.org>
 X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+In-Reply-To: <20240210070934.2549994-1-swboyd@chromium.org>
+References: <20240210070934.2549994-1-swboyd@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -125,190 +103,176 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds support for fully describing the USB/DP topology on
-ChromeOS Trogdor devices in DT. Trogdor devices have a single DP phy in
-the AP that is muxed to one of two usb type-c connectors depending on
-which port asserts HPD first to the EC. We'd like to know which port is
-connected to an external monitor to provide a better experience to the
-user about things like which type-c port is displaying DP or which
-type-c hub is acting up, etc. Describing the connection all the way from
-the source to the connector will allow us to do this. There will be some
-more work to do after this to wire up sysfs connections, but that work
-has already started or finished so it should be mostly minor changes to
-support DT there.
+When a single DT node has a graph connected to more than one
+usb-c-connector node we can't differentiate which typec switch
+registered for the device is associated with the USB connector because
+the devcon matcher code assumes a 1:1 relationship between remote node
+and typec switch. Furthermore, we don't have a #typec-switch-cells
+property so there can only be one node per typec switch.
 
-This patch series is large, unfortunately, and is ordered in logical
-groups: gpio, USB, DRM, typec, and finally dts to put it all together.
-There's more that could be put in here, e.g. supporting ChromeOS Corsola
-devices, but I wanted to get something out there early instead of
-waiting to make this work with everything that exists today and posting
-it then.
+Support multiple USB typec switches exposed by one node by passing the
+remote endpoint node in addition to the remote node to the devcon
+matcher function (devcon_match_fn_t). With this change, typec switch
+drivers can register switches with the device node pointer for a graph
+endpoint so that they can support more than one typec switch if
+necessary. Either way, a DT property like 'mode-switch' is always in the
+graph's parent node and not in the endpoint node.
 
-Onto the patches: 
-
-First is the EC GPIO driver, which is dependency free and can be merged
-at any time. It's only needed to provide information about which port
-the EC is steering DP to, because the EC had a bug where it never told
-the AP about which port has HPD asserted or not.
-
-Second is the USB binding and hub patches. These are used to describe
-how the USB hub is wired up on all the Trogdor devices, and make the
-connect_type be something besides "unknown" on DT devices. ACPI has
-supported setting a proper connect_type for some time now. These can
-also be merged pretty much dependency free, except that the dt binding
-will be needed to avoid DT binding check failures. I don't think those
-checks are fatal though, so probably also fine to take this part
-independently.
-
-Third is the DRM bridge patches. These are used to implement lane
-assignment for DP altmode configurations through the drm_bridge code.
-The typec code will use this to tell the DP phy how many lanes of DP to
-drive and which lanes to drive out to the USB type-c connector. Adding
-support for lane assignment allows us to implement DP muxing as well,
-physically splitting the DP lanes on the DP phy so that hardware doesn't
-have to use an analog mux to steer two DP lanes to one or the other
-type-c port. These are a hard dependency for the typec code.
-
-Fourth is the typec patches, that ties together everything that comes
-before it in this series. The EC typec switch driver implements a
-drm_bridge that can signal HPD from the type-c connector through the
-bridge chain, mux the DP phy in software so that we don't have to use an
-analog mux, and implement orientation control for boards like Kukui that
-directly connect the DP phy to the type-c port, necessitating lane
-assignment to flip the lanes to match the cable orientation.
-
-Finally, the dts patches wire everything up to fully describe the USB/DT
-topology on Trogdor. This includes the USB hub, the EC gpios, the DP
-controller, and the external connectors like the usb-c and usb-a
-connectors.
-
-After this initial version I will probably split this series and send
-parts in pieces to more rapidly send new versions. Those parts will
-refer back to this version in the cover letter so we can all get the
-full context. I don't expect to merge this through one maintainer tree
-immediately, so I set the 'To' line to chrome-platform to reflect the
-overall target audience.
-
-Prashant Malani (1):
-  platform/chrome: cros_ec_typec: Purge blocking switch devlinks
-
-Stephen Boyd (21):
-  dt-bindings: gpio: Add binding for ChromeOS EC GPIO controller
-  gpio: Add ChromeOS EC GPIO driver
-  dt-bindings: usb: Add downstream facing ports to realtek binding
-  usb: core: Set connect_type of ports based on DT node
-  drm/atomic-helper: Introduce lane remapping support to bridges
-  drm/bridge: Verify lane assignment is going to work during
-    atomic_check
-  device property: Add remote endpoint to devcon matcher
-  platform/chrome: cros_typec_switch: Use read_poll_timeout helper
-  platform/chrome: cros_typec_switch: Move port creation code to
-    sub-function
-  platform/chrome: cros_typec_switch: Use fwnode instead of ACPI APIs
-  platform/chrome: cros_typec_switch: Use dev_err_probe()
-  dt-bindings: chrome: Add google,cros-ec-typec-switch binding
-  platform/chrome: cros_typec_switch: Add support for signaling HPD to
-    drm_bridge
-  platform/chrome: cros_typec_switch: Support DP muxing via DRM lane
-    assignment
-  platform/chrome: cros_typec_switch: Support orientation-switch
-  platform/chrome: cros_typec_switch: Handle lack of HPD information
-  dt-bindings: chrome: Add binding for ChromeOS Pogo pin connector
-  arm64: dts: qcom: sc7180: quackingstick: Disable instead of delete
-    usb_c1
-  arm64: dts: qcom: sc7180: pazquel: Add missing comment header
-  arm64: dts: qcom: sc7180-trogdor: Make clamshell/detachable fragments
-  arm64: dts: qcom: sc7180-trogdor: Wire up USB and DP to
-    usb-c-connectors
-
- .../chrome/google,cros-ec-typec-switch.yaml   | 365 ++++++++++++
- .../chrome/google,pogo-pin-connector.yaml     |  61 ++
- .../bindings/gpio/google,cros-ec-gpio.yaml    |  49 ++
- .../bindings/mfd/google,cros-ec.yaml          |   8 +
- .../bindings/usb/realtek,rts5411.yaml         |  50 ++
- .../dts/qcom/sc7180-trogdor-clamshell.dtsi    |  30 +
- .../boot/dts/qcom/sc7180-trogdor-coachz.dtsi  |  52 +-
- .../dts/qcom/sc7180-trogdor-detachable.dtsi   |  25 +
- .../dts/qcom/sc7180-trogdor-homestar.dtsi     |  54 +-
- .../dts/qcom/sc7180-trogdor-kingoftown.dts    |  57 +-
- .../boot/dts/qcom/sc7180-trogdor-lazor.dtsi   |  58 +-
- .../boot/dts/qcom/sc7180-trogdor-pazquel.dtsi |  59 +-
- .../boot/dts/qcom/sc7180-trogdor-pompom.dtsi  |  46 +-
- .../qcom/sc7180-trogdor-quackingstick.dtsi    |  46 +-
- .../arm64/boot/dts/qcom/sc7180-trogdor-r1.dts |   2 +-
- .../dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  52 +-
- arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  | 175 ++++++
- drivers/base/property.c                       |   7 +-
- drivers/gpio/Kconfig                          |  10 +
- drivers/gpio/Makefile                         |   1 +
- drivers/gpio/gpio-cros-ec.c                   | 218 +++++++
- drivers/gpu/drm/drm_atomic_state_helper.c     |   2 +
- drivers/gpu/drm/drm_bridge.c                  |  50 ++
- drivers/platform/chrome/Kconfig               |   3 +-
- drivers/platform/chrome/cros_ec_typec.c       |  10 +
- drivers/platform/chrome/cros_typec_switch.c   | 555 +++++++++++++++---
- drivers/usb/core/port.c                       |  37 ++
- drivers/usb/roles/class.c                     |   4 +-
- drivers/usb/typec/mux.c                       |   8 +
- drivers/usb/typec/retimer.c                   |   7 +-
- include/drm/drm_atomic.h                      |  31 +
- include/drm/drm_bridge.h                      |   4 +
- include/linux/property.h                      |   5 +-
- 33 files changed, 2026 insertions(+), 115 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/chrome/google,cros-ec-typec-switch.yaml
- create mode 100644 Documentation/devicetree/bindings/chrome/google,pogo-pin-connector.yaml
- create mode 100644 Documentation/devicetree/bindings/gpio/google,cros-ec-gpio.yaml
- create mode 100644 arch/arm64/boot/dts/qcom/sc7180-trogdor-clamshell.dtsi
- create mode 100644 arch/arm64/boot/dts/qcom/sc7180-trogdor-detachable.dtsi
- create mode 100644 drivers/gpio/gpio-cros-ec.c
-
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Andy Gross <agross@kernel.org>
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Benson Leung <bleung@chromium.org>
-Cc: Bjorn Andersson <andersson@kernel.org>
-Cc: <chrome-platform@lists.linux.dev>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: <cros-qcom-dts-watchers@chromium.org>
 Cc: Daniel Scally <djrscally@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: David Airlie <airlied@gmail.com>
-Cc: <devicetree@vger.kernel.org>
-Cc: <dri-devel@lists.freedesktop.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Guenter Roeck <groeck@chromium.org>
 Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: <linux-acpi@vger.kernel.org>
-Cc: <linux-arm-msm@vger.kernel.org>
-Cc: <linux-gpio@vger.kernel.org>
-Cc: <linux-usb@vger.kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: maciek swiech <drmasquatch@google.com>
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Pin-yen Lin <treapking@chromium.org>
-Cc: Prashant Malani <pmalani@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>
 Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Vinod Koul <vkoul@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: Ivan Orlov <ivan.orlov0322@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: <devicetree@vger.kernel.org>
+Cc: <linux-usb@vger.kernel.org>
+Cc: <linux-acpi@vger.kernel.org>
+Cc: Pin-yen Lin <treapking@chromium.org>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+---
+ drivers/base/property.c     | 7 +++++--
+ drivers/usb/roles/class.c   | 4 ++--
+ drivers/usb/typec/mux.c     | 8 ++++++++
+ drivers/usb/typec/retimer.c | 7 ++++++-
+ include/linux/property.h    | 5 +++--
+ 5 files changed, 24 insertions(+), 7 deletions(-)
 
-base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 8c40abed7852..cae81ed4e298 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -1289,6 +1289,7 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
+ {
+ 	struct fwnode_handle *node;
+ 	struct fwnode_handle *ep;
++	struct fwnode_handle *remote_ep;
+ 	unsigned int count = 0;
+ 	void *ret;
+ 
+@@ -1304,7 +1305,9 @@ static unsigned int fwnode_graph_devcon_matches(const struct fwnode_handle *fwno
+ 			continue;
+ 		}
+ 
+-		ret = match(node, con_id, data);
++		remote_ep = fwnode_graph_get_remote_endpoint(ep);
++		ret = match(node, remote_ep, con_id, data);
++		fwnode_handle_put(remote_ep);
+ 		fwnode_handle_put(node);
+ 		if (ret) {
+ 			if (matches)
+@@ -1334,7 +1337,7 @@ static unsigned int fwnode_devcon_matches(const struct fwnode_handle *fwnode,
+ 		if (IS_ERR(node))
+ 			break;
+ 
+-		ret = match(node, NULL, data);
++		ret = match(node, NULL, NULL, data);
+ 		fwnode_handle_put(node);
+ 		if (ret) {
+ 			if (matches)
+diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
+index ae41578bd014..9a0ef5fa0a19 100644
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -89,8 +89,8 @@ enum usb_role usb_role_switch_get_role(struct usb_role_switch *sw)
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_get_role);
+ 
+-static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const char *id,
+-				   void *data)
++static void *usb_role_switch_match(const struct fwnode_handle *fwnode, const struct fwnode_handle *endpoint,
++				   const char *id, void *data)
+ {
+ 	struct device *dev;
+ 
+diff --git a/drivers/usb/typec/mux.c b/drivers/usb/typec/mux.c
+index 80dd91938d96..3eabd0d62f47 100644
+--- a/drivers/usb/typec/mux.c
++++ b/drivers/usb/typec/mux.c
+@@ -33,6 +33,7 @@ static int switch_fwnode_match(struct device *dev, const void *fwnode)
+ }
+ 
+ static void *typec_switch_match(const struct fwnode_handle *fwnode,
++				const struct fwnode_handle *endpoint,
+ 				const char *id, void *data)
+ {
+ 	struct device *dev;
+@@ -55,6 +56,9 @@ static void *typec_switch_match(const struct fwnode_handle *fwnode,
+ 	 */
+ 	dev = class_find_device(&typec_mux_class, NULL, fwnode,
+ 				switch_fwnode_match);
++	if (!dev)
++		dev = class_find_device(&typec_mux_class, NULL, endpoint,
++				switch_fwnode_match);
+ 
+ 	return dev ? to_typec_switch_dev(dev) : ERR_PTR(-EPROBE_DEFER);
+ }
+@@ -263,6 +267,7 @@ static int mux_fwnode_match(struct device *dev, const void *fwnode)
+ }
+ 
+ static void *typec_mux_match(const struct fwnode_handle *fwnode,
++			     const struct fwnode_handle *endpoint,
+ 			     const char *id, void *data)
+ {
+ 	struct device *dev;
+@@ -280,6 +285,9 @@ static void *typec_mux_match(const struct fwnode_handle *fwnode,
+ 
+ 	dev = class_find_device(&typec_mux_class, NULL, fwnode,
+ 				mux_fwnode_match);
++	if (!dev)
++		dev = class_find_device(&typec_mux_class, NULL, endpoint,
++					mux_fwnode_match);
+ 
+ 	return dev ? to_typec_mux_dev(dev) : ERR_PTR(-EPROBE_DEFER);
+ }
+diff --git a/drivers/usb/typec/retimer.c b/drivers/usb/typec/retimer.c
+index 4a7d1b5c4d86..eb74abee6619 100644
+--- a/drivers/usb/typec/retimer.c
++++ b/drivers/usb/typec/retimer.c
+@@ -22,7 +22,9 @@ static int retimer_fwnode_match(struct device *dev, const void *fwnode)
+ 	return is_typec_retimer(dev) && device_match_fwnode(dev, fwnode);
+ }
+ 
+-static void *typec_retimer_match(const struct fwnode_handle *fwnode, const char *id, void *data)
++static void *typec_retimer_match(const struct fwnode_handle *fwnode,
++				 const struct fwnode_handle *endpoint,
++				 const char *id, void *data)
+ {
+ 	struct device *dev;
+ 
+@@ -31,6 +33,9 @@ static void *typec_retimer_match(const struct fwnode_handle *fwnode, const char
+ 
+ 	dev = class_find_device(&retimer_class, NULL, fwnode,
+ 				retimer_fwnode_match);
++	if (!dev)
++		dev = class_find_device(&retimer_class, NULL, endpoint,
++					retimer_fwnode_match);
+ 
+ 	return dev ? to_typec_retimer(dev) : ERR_PTR(-EPROBE_DEFER);
+ }
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 9f2585d705a8..0f20df1f0a49 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -455,8 +455,9 @@ unsigned int fwnode_graph_get_endpoint_count(const struct fwnode_handle *fwnode,
+ int fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 				struct fwnode_endpoint *endpoint);
+ 
+-typedef void *(*devcon_match_fn_t)(const struct fwnode_handle *fwnode, const char *id,
+-				   void *data);
++typedef void *(*devcon_match_fn_t)(const struct fwnode_handle *fwnode,
++				   const struct fwnode_handle *endpoint,
++				   const char *id, void *data);
+ 
+ void *fwnode_connection_find_match(const struct fwnode_handle *fwnode,
+ 				   const char *con_id, void *data,
 -- 
 https://chromeos.dev
+
 
