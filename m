@@ -1,71 +1,73 @@
-Return-Path: <linux-acpi+bounces-3338-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3339-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2780850185
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 02:21:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C6385023B
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 03:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D42328AFC4
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 01:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CE031F25ACC
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Feb 2024 02:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3158B20E4;
-	Sat, 10 Feb 2024 01:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0794417;
+	Sat, 10 Feb 2024 02:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QNek9FCQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Id47leOp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EC15692;
-	Sat, 10 Feb 2024 01:21:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E9663C;
+	Sat, 10 Feb 2024 02:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707528063; cv=none; b=AjSZPFIFkVagXIBeO1/9SyFlApvr7+0J1DwBAkdENSH0Z40aHiQmOu04XI0Ztk2MTlXd40fHizqX+nHQouxuKA1a+7gqbOX9zU120eP/OFfvDh/MSVU3QsK7A4/KT4rWN8kCPOZa56/4R5NabKZk8j8gNOZgpGRg+6uiiXXsrdc=
+	t=1707532984; cv=none; b=Ope5bOZfeTesZkNHe8yJzCdsaiLMGoDsffO2SN8Ns3ktL2S4uBY9GdmmwvBjrFeJAlaCWL3/55KfY/5+6shCByHqn666C88dRIZLeHsYKVVoV2G1gKlxV/QZM711FrSCys6m9BzCB+e76dlNSaES8M2pW+v/9jQSSFT98q7OQpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707528063; c=relaxed/simple;
-	bh=XJrQ27eV9oGF61BlR9w7dQbMAxDrcmleDee2HtbIcAU=;
+	s=arc-20240116; t=1707532984; c=relaxed/simple;
+	bh=iJCdJqeAzOIYB4a07TrvzCEDXKz6pJdlBnBiGLbV8ew=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=puDCC58fUoiich5uBAqi5nkUARk4PY7L/aBkAMoCNzEvPUY3XDHqEpDFic7CwiLl5V3jHth9vX+bou2i0+sfET6C9eiEkKkSxbFdA7dc7JcGlAXQXGWg1CRBXuKmWFGxEmFuc9/y31HwUTbGcz/tn/0jZ24lt8oUIsfsiKJli4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QNek9FCQ; arc=none smtp.client-ip=192.198.163.14
+	 Content-Disposition; b=cI/gKYFDGFrwFr3kbgtEpqhlGygqnLMW4v0fAAT3WoBrQC20RL5XYazYX0jTdjzPWKg4T7hskGd/l4KJ8HhvuOl+3CB1/q/kIhK14di5vqId8/ctOQRbBi7N2QLark4EK174PA/KU4tb8ELINOK2mH1EDLno0A+tkNP8vUeRINI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Id47leOp; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707528060; x=1739064060;
+  t=1707532982; x=1739068982;
   h=date:from:to:cc:subject:message-id:mime-version;
-  bh=XJrQ27eV9oGF61BlR9w7dQbMAxDrcmleDee2HtbIcAU=;
-  b=QNek9FCQrN6GKHYgBry+A2x6wtUs53dt8k/smrq39ghS1I6GkpGqxiJG
-   ahpt3gYr+yFOJrEBVqCXj3YvXehHMZ8S8kZUbZUJ/05+xi/CaNZLqa6qu
-   TZWNoZkF/TrC/irU4T0WvUHHHmSVEk2rI7xX+QLYLNLoqYr/rltEvXl0E
-   X5zSEc2kackR9gZDRViNGfp1sSTFxqj003EoPdItvWIQndz6cKBr6shMz
-   Wc7cVhRoO7BhJ9qWoer3o3MULL2L1S8p6yaZE1GY/D/yVvOpCCFNTW6UR
-   tfel08kdmgUeAml1Yn8iwl/TRdOTfmKk1Nlq0wUZ9qNxqX1Xi5CFNNYVa
+  bh=iJCdJqeAzOIYB4a07TrvzCEDXKz6pJdlBnBiGLbV8ew=;
+  b=Id47leOpOZkNvr8fKC+rqjay1b1iZm+IeBQvqBC+Bk3YbM1OWSVuixv8
+   jXAiFseVUGb9auZihSHCiMBX7TMfOnFciHtZoPQvnKGkR3aFUKT0XvHd+
+   mMX17LScuFQiOdKn/PVEK2sF1vfto6o70lSbT/nIH4jKkSPFsGb8XXLWC
+   TQrmD9x/RtubGm3JsapSQb/TGjd3HEXLF5K0lJNMy6DP1lmkihpsKlO1u
+   Zxnov3LNPnuytFLPbwCzdCwCdbQFTWmS0ZeBOrd6ioypBQPjgPuz1v/We
+   H8chUv4QYAxz7EKtFgNx3BouYZ/0TZWnZUPO6G4rxDl+HfRli5OYhNbse
    w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1680839"
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="1679419"
 X-IronPort-AV: E=Sophos;i="6.05,258,1701158400"; 
-   d="scan'208";a="1680839"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 17:20:59 -0800
+   d="scan'208";a="1679419"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 18:43:01 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.05,258,1701158400"; 
-   d="scan'208";a="25314037"
+   d="scan'208";a="2402902"
 Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Feb 2024 17:20:58 -0800
+  by fmviesa006.fm.intel.com with ESMTP; 09 Feb 2024 18:42:59 -0800
 Received: from kbuild by 01f0647817ea with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1rYc35-0005FK-1S;
-	Sat, 10 Feb 2024 01:20:55 +0000
-Date: Sat, 10 Feb 2024 09:19:58 +0800
+	id 1rYdKT-0005I0-07;
+	Sat, 10 Feb 2024 02:42:57 +0000
+Date: Sat, 10 Feb 2024 10:42:44 +0800
 From: kernel test robot <lkp@intel.com>
 To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org,
 	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [rafael-pm:bleeding-edge 71/77] drivers/thermal/thermal_of.c:536:15:
- error: incompatible type for argument 1 of 'kfree'
-Message-ID: <202402100947.E7EZyIMp-lkp@intel.com>
+Subject: [rafael-pm:bleeding-edge 71/77] drivers/thermal/thermal_of.c:536:8:
+ error: passing 'struct thermal_zone_device_ops' to parameter of incompatible
+ type 'const void *'
+Message-ID: <202402101037.cQIOnsH8-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,30 +80,27 @@ Content-Disposition: inline
 tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
 head:   2bc44535ed4f6a6013ec53b505c4c381e166f0ce
 commit: fe0ea8a4d293acaf02031aaaaeb3dcf7f262e5b3 [71/77] thermal: core: Store zone ops in struct thermal_zone_device
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20240210/202402100947.E7EZyIMp-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402100947.E7EZyIMp-lkp@intel.com/reproduce)
+config: arm-defconfig (https://download.01.org/0day-ci/archive/20240210/202402101037.cQIOnsH8-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402101037.cQIOnsH8-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402100947.E7EZyIMp-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402101037.cQIOnsH8-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   drivers/thermal/thermal_of.c: In function 'thermal_of_zone_register':
->> drivers/thermal/thermal_of.c:536:15: error: incompatible type for argument 1 of 'kfree'
-     536 |         kfree(of_ops);
-         |               ^~~~~~
-         |               |
-         |               struct thermal_zone_device_ops
-   In file included from drivers/thermal/thermal_of.c:14:
-   include/linux/slab.h:227:24: note: expected 'const void *' but argument is of type 'struct thermal_zone_device_ops'
-     227 | void kfree(const void *objp);
-         |            ~~~~~~~~~~~~^~~~
+>> drivers/thermal/thermal_of.c:536:8: error: passing 'struct thermal_zone_device_ops' to parameter of incompatible type 'const void *'
+           kfree(of_ops);
+                 ^~~~~~
+   include/linux/slab.h:227:24: note: passing argument to parameter 'objp' here
+   void kfree(const void *objp);
+                          ^
+   1 error generated.
 
 
-vim +/kfree +536 drivers/thermal/thermal_of.c
+vim +536 drivers/thermal/thermal_of.c
 
 3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  449  
 3fd6d6e2b4e80f Daniel Lezcano    2022-08-05  450  /**
