@@ -1,175 +1,120 @@
-Return-Path: <linux-acpi+bounces-3435-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3436-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B56E851FA3
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 22:33:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80EF852148
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 23:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 855B5B223F8
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 21:33:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A701C21F01
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 22:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303EF4E1D1;
-	Mon, 12 Feb 2024 21:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13F84D9FA;
+	Mon, 12 Feb 2024 22:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OHBx6F9b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GC6faghg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B234CE1B
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 21:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CB14D5BA;
+	Mon, 12 Feb 2024 22:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707773527; cv=none; b=eEFs45Qi5i+/fYRgkqHhzyFuj4HykfRKeX4Ha5ho1yOIL/cRACOuyiJiUnL8N1/5iqQRWNK262xofBJ0xRi63WnA/iH4qZ9rLxyFwKiy7m4gGJKfL2EuFTqyDpcAyA96gpce8AJNjWeXpUPYycC9WjZO9WjM1uC1agDdlLlXtTk=
+	t=1707776238; cv=none; b=s7QMwkGjidk5OdUyADbFYaZfU+3FKJymHC6LqWhqrwr6BKSzWhHCboEdFDcd6ia+IciBNoOoPljgMe8QcYBxYcQt73vfOZdZqxT8muc7uFBr2LIlbvL100z4VdAKlUtGgZFTTXRmtwEz0E8ifLJoONbsga6RLeKqkZsHACWG+Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707773527; c=relaxed/simple;
-	bh=09nOuvy1xCjK1iYqCopDQXrnPVKpNm2a5rJaJXsm9lU=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=gPTObIHDc3YOxhcWmHFVs4isG0eS0Idwf1jxzziL218mtx/JUjF2VR2sZsYbi3QYnpkK+3Myuw/AZiavasZrYZrElQEXdE3K5Dgh0GsR0vpC+Hzhu1I4NHwEji2Q+oX+wVE7rb+yzQ3aHve8K71RQO3jvqvxrjGOnm1fflxAyg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OHBx6F9b; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc3645a6790so6750749276.0
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 13:32:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707773524; x=1708378324; darn=vger.kernel.org;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F5s7UC2LI5606ztlkySRh4zEDw9ZNIX2+7Suzh+XsVU=;
-        b=OHBx6F9bhwsJvj9SRIzninQd62CTd0mat67Ry0G4dzfpMXC9lLLH/2cqAtkPZBKWOs
-         rCJlNGFOdzUHHSyx00VaV5roKpsat69I49vXVWf9nM10D5g6AdFuX3akbE1MiBcmwf/3
-         U//fWlNw92ilZqOqSovV9mdpvdT5dJ202Xq3Gnl5XmSg5+K/5u0KYaPEpqu1aRUQ7I8R
-         bMzmPnomy8vPKmO1iyBgm0mVL9Emn4B+OM9TotHLWNPRZjnhPKrNz83/FOQvMN7JijYp
-         UeCGftAtQwFbnm3brtQMnWqc1osOv0HsjGW9FkVb887vW7Th/2S/CTchqaHupDFuZYjz
-         CGjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707773524; x=1708378324;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F5s7UC2LI5606ztlkySRh4zEDw9ZNIX2+7Suzh+XsVU=;
-        b=eYhiEeSg+wJEt5qf+iBlwPnhLFd+eto0UlJOSLIs5U3brcfv+QHjO65AQ4YtEHDLhe
-         WHxpxMQYM60aTFoiUOnE6880yVyKkXj75bhf0mIvLaWp53g51rrkcsMbSluWGeHh9T8y
-         b3K7vjdjKzL7WIXSDrlTiFHGroy3n49W9aQvQlMhT2a2MPd3rM6xwX4S7TKcMje22xe9
-         3k+yKdLlgfbZiBB5WixyGRo8Lt9fFNnu3iDc90TpNu+R/VocZmttXznDnOQ15hQjVgkx
-         bY8tiXGX1uUXX8+4ATkVfYk0g/ELDo5+bXGPQNx9RQZBQK6I8lqhhBLpliMg3994qXF+
-         yYag==
-X-Forwarded-Encrypted: i=1; AJvYcCVDUeOalKUTcoG4i5yirY/hi+VxtmEy5KyuwV9AqnRVEsrUcHgpT3loBF63bEs81aXjK6GtMHLFOJAePk4rYCT2akQ/AzKiram8jg==
-X-Gm-Message-State: AOJu0YwLJywuBxrEyXCHObowNApRxmbDrURgDB/vUTTqeu1cMTA79ssn
-	sXUJE91qeMZs43Vy2PYf4d4Vm/+V4I46TqkixS1UVMk2ZgJKG+fPrNrv9VsZAeciP3mK5/n1fp5
-	UmExmbqkKZK2hFQ==
-X-Google-Smtp-Source: AGHT+IHiNYw+GukjhfLl9L/fVI79H8vPnI8fJB4kfhzgTN7MWnsY3Vn7qmvxy/2wW9UUYOelc46oL3dxnDIBR8A=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:496d:5de1:a404:8bee])
- (user=saravanak job=sendgmr) by 2002:a05:6902:120b:b0:dc7:6efe:1aab with SMTP
- id s11-20020a056902120b00b00dc76efe1aabmr1793262ybu.6.1707773524580; Mon, 12
- Feb 2024 13:32:04 -0800 (PST)
-Date: Mon, 12 Feb 2024 13:31:45 -0800
-In-Reply-To: <20240212213147.489377-1-saravanak@google.com>
-Message-Id: <20240212213147.489377-5-saravanak@google.com>
+	s=arc-20240116; t=1707776238; c=relaxed/simple;
+	bh=a6uWx2pOU/OPfI6mfvFI1nNygrviHWQu38BsJoU3WL8=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=uiUCeyIIqZnwnOnCyUbG0hfCZBlb0WByi7P+X4GphNatEbxjh23FGkzq0TG7BIQl8p21qgxiWvAAQIgcIcszxXMlVBrsoTgpEYNu4ova0tcUbtz+NNikWPGl8eLzL1L9jrbGQbb7w7/1Pkomew1ziuM9W9h5UIe31Z4cpuQbdx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GC6faghg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE775C433C7;
+	Mon, 12 Feb 2024 22:17:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707776238;
+	bh=a6uWx2pOU/OPfI6mfvFI1nNygrviHWQu38BsJoU3WL8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=GC6faghgqHlSd4t9ygiawwHv2PtJIEyp5bcSzDkCUjNl+Mm+vDKsDm+RO36BsT5tm
+	 fQSWTsqALLFm4j4iC4IlNx8ofx/vLe+xUhHFGjCKUJwXVej8+hqmqGwDGBwpwOeQLz
+	 gnADzL7yp1nZnfpwMh+7z8ey1AWKn1YkzRaZIf4HX4b9J05rBLG/tXOndFc01RsRGx
+	 FNbiKz260xUKaoEOMsh2LKG8RiVvG5aSfAf68JSQTz+sFdURAIC0pPR5b5sqOzwr2j
+	 8Vx9x4n6KsrsiyeVjdwbhqXJKjvBHTYfa7o6oC9Ikk5fVm8m4+mNWCXZbxF6OunRNC
+	 HxaoUMrUlKILg==
+Date: Mon, 12 Feb 2024 16:17:16 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+From: Rob Herring <robh@kernel.org>
+To: Saravana Kannan <saravanak@google.com>
+Cc: linux-efi@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, Frank Rowand <frowand.list@gmail.com>, 
+ linux-kernel@vger.kernel.org, kernel-team@android.com, 
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+ linux-acpi@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+In-Reply-To: <20240212213147.489377-4-saravanak@google.com>
 References: <20240212213147.489377-1-saravanak@google.com>
-X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
-Subject: [PATCH v2 4/4] of: property: fw_devlink: Add support for
- "post-init-supplier" property
-From: Saravana Kannan <saravanak@google.com>
-To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+ <20240212213147.489377-4-saravanak@google.com>
+Message-Id: <170777623558.2654155.17686339859837179281.robh@kernel.org>
+Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
 
-Add support for this property so that dependency cycles can be broken and
-fw_devlink can do better probe/suspend/resume ordering between devices in a
-dependency cycle.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/of/property.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+On Mon, 12 Feb 2024 13:31:44 -0800, Saravana Kannan wrote:
+> The post-init-supplier property can be used to break a dependency cycle by
+> marking some supplier(s) as a post device initialization supplier(s). This
+> allows an OS to do a better job at ordering initialization and
+> suspend/resume of the devices in a dependency cycle.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  .../bindings/post-init-supplier.yaml          | 101 ++++++++++++++++++
+>  MAINTAINERS                                   |  13 +--
+>  2 files changed, 108 insertions(+), 6 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/post-init-supplier.yaml
+> 
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index 751c11a28f33..dce451161c99 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1066,7 +1066,8 @@ of_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
- }
- 
- static void of_link_to_phandle(struct device_node *con_np,
--			      struct device_node *sup_np)
-+			      struct device_node *sup_np,
-+			      u8 flags)
- {
- 	struct device_node *tmp_np = of_node_get(sup_np);
- 
-@@ -1085,7 +1086,8 @@ static void of_link_to_phandle(struct device_node *con_np,
- 		tmp_np = of_get_next_parent(tmp_np);
- 	}
- 
--	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), 0);
-+	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np),
-+			flags);
- }
- 
- /**
-@@ -1198,6 +1200,8 @@ static struct device_node *parse_##fname(struct device_node *np,	     \
-  *		 to a struct device, implement this ops so fw_devlink can use it
-  *		 to find the true consumer.
-  * @optional: Describes whether a supplier is mandatory or not
-+ * @fwlink_flags: Optional fwnode link flags to use when creating a fwnode link
-+ *		  for this property.
-  *
-  * Returns:
-  * parse_prop() return values are
-@@ -1210,6 +1214,7 @@ struct supplier_bindings {
- 					  const char *prop_name, int index);
- 	struct device_node *(*get_con_dev)(struct device_node *np);
- 	bool optional;
-+	u8 fwlink_flags;
- };
- 
- DEFINE_SIMPLE_PROP(clocks, "clocks", "#clock-cells")
-@@ -1240,6 +1245,7 @@ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
- DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
- DEFINE_SIMPLE_PROP(panel, "panel", NULL)
- DEFINE_SIMPLE_PROP(msi_parent, "msi-parent", "#msi-cells")
-+DEFINE_SIMPLE_PROP(post_init_supplier, "post-init-supplier", NULL)
- DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
- DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
- 
-@@ -1349,6 +1355,10 @@ static const struct supplier_bindings of_supplier_bindings[] = {
- 	{ .parse_prop = parse_regulators, },
- 	{ .parse_prop = parse_gpio, },
- 	{ .parse_prop = parse_gpios, },
-+	{
-+		.parse_prop = parse_post_init_supplier,
-+		.fwlink_flags = FWLINK_FLAG_IGNORE,
-+	},
- 	{}
- };
- 
-@@ -1393,7 +1403,8 @@ static int of_link_property(struct device_node *con_np, const char *prop_name)
- 					: of_node_get(con_np);
- 			matched = true;
- 			i++;
--			of_link_to_phandle(con_dev_np, phandle);
-+			of_link_to_phandle(con_dev_np, phandle,
-+					   s->fwlink_flags);
- 			of_node_put(phandle);
- 			of_node_put(con_dev_np);
- 		}
--- 
-2.43.0.687.g38aa6559b0-goog
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: [error] syntax error: mapping values are not allowed here (syntax)
+
+dtschema/dtc warnings/errors:
+make[2]: *** Deleting file 'Documentation/devicetree/bindings/post-init-supplier.example.dts'
+Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: mapping values are not allowed in this context
+make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/post-init-supplier.example.dts] Error 1
+make[2]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: mapping values are not allowed in this context
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/post-init-supplier.yaml: ignoring, error parsing file
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1428: dt_binding_check] Error 2
+make: *** [Makefile:240: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240212213147.489377-4-saravanak@google.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 
