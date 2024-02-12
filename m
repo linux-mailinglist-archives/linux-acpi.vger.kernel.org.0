@@ -1,122 +1,149 @@
-Return-Path: <linux-acpi+bounces-3414-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3415-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9368513E5
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B475851576
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 14:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A4391F2366C
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 12:58:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4B01F220B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF139FF8;
-	Mon, 12 Feb 2024 12:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WANky/7H"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A443A8E3;
+	Mon, 12 Feb 2024 13:31:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FD13A8DE;
-	Mon, 12 Feb 2024 12:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65C83A29F;
+	Mon, 12 Feb 2024 13:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707742693; cv=none; b=rTurBFl7UUS7/wO0jbM7LofR5Pin49o2QzQkvaujd3Sn312V8fMDtFV0a0ExhzzFG/ccvS2sDSdJ2K6ldBoZx3DeqElsZV2OSAq0A5Sf4spOBzuesSuseop2dd4uxb+6eoA69/hBruiSh0+K2MFRwticHjwOcg0HqgZfEITbaDg=
+	t=1707744683; cv=none; b=EKPoJ9IypEbalNHXNfVPc1Bs5Pb4UliJ44Wfq+miyuDIae5G7wPetGDgA+B5N8DFvi1DWQDJVCUDdNs9ZbYy2wPKegKVU9fw0YhCnj/aYeoq20eVsq12hakVzUs5SSiK1vabWTt6cX4TFRP5jqhA/Pj2pz+KdVEU7rrZZsaZQ/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707742693; c=relaxed/simple;
-	bh=FvedEkhfe/YYw5lZDojjwZOL9fqgcPLkDtzkDe3OXJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=smCvPpYn4czacfS0WBbYUsUlPITRk2fuETqNLB2FCPUMXMmzFAO+vknCZqPqeJEmYs25jZTwjJ+vfhJyPoDASFdLbFd7b3XpkRx2Y15hVl3OG92KaTu0tJRIkBKainZl7uZqy1lZVWnqbq4NvsVIFvQCxo8YGtT5kjUl7xC8OPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WANky/7H; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707742692; x=1739278692;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FvedEkhfe/YYw5lZDojjwZOL9fqgcPLkDtzkDe3OXJ4=;
-  b=WANky/7HMoKiTGUqCohc3qbyyFWtsFu/i4Qj6SXVeYkYUujI+YEWWn/5
-   9d72p/X1zQ2fUxb8fsxOM82VDC/CmvwG7NoqTu8LI4Z0lG4iJuA83MIKs
-   TFR3jv+H8w9ai/p1hIzNv6dz1VoIVaMBJozVT3USDljU2cUk5zDenOK2q
-   fTsFDddbMb7LpCV+Kz1N1jt9/BPcwfAVVm9qE4uWrZDNHGe32aQ7dpA7d
-   vKgDbwrlMUSGWdUaTrxZQteLzpo3AtshulXoghfxu+Out25aZ7YZEvSkF
-   cGStNPi8gDBZ4ilWV3optcuEZJqeJ+dJCQdgFNQdNZD7yn2Ry4paOXDGu
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="13098932"
-X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
-   d="scan'208";a="13098932"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:58:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="911474474"
-X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
-   d="scan'208";a="911474474"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:58:05 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 16A5411F86A;
-	Mon, 12 Feb 2024 14:58:03 +0200 (EET)
-Date: Mon, 12 Feb 2024 12:58:03 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 01/14] device property: Add cleanup.h based
- fwnode_handle_put() scope based cleanup.
-Message-ID: <ZcoV2xfcCOYKZicY@kekkonen.localdomain>
-References: <20240211192540.340682-1-jic23@kernel.org>
- <20240211192540.340682-2-jic23@kernel.org>
- <Zcnbk6_9BU_trU9P@kekkonen.localdomain>
- <20240212114206.00005b9f@Huawei.com>
- <ZcoQ3sOcVYbwoHO7@kekkonen.localdomain>
- <ZcoTOZzJ3ZhSD0oi@smile.fi.intel.com>
+	s=arc-20240116; t=1707744683; c=relaxed/simple;
+	bh=hmHWArXdSRm8lzxAU2DSg7y55ObF8/5Uyi8EajxtD5g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=olZxGK79dWSxPq3+N1UWa2xceyQIYMD8TZ1b+RE7Ljy1Y5bhV5OLxpZtVsCb9URA4a5l4JWNiKOtW8rWhJigt54ytUei/1q0RrAX4QMymIHKGIieYytEf8GXj6WQY6d2ZU4LMiaM4JXfu4GO5s0Je4CSG2+em7go9Be7+RrnNOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-59ceb5a0593so231761eaf.0;
+        Mon, 12 Feb 2024 05:31:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707744681; x=1708349481;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VSLFuMbhZo80/vA+2tLJsi3KFlBp1PmoUoosHnk2JEU=;
+        b=k2OxwSsBA65q3frQ19p/JEL34hZJkNfWf/I4pB2LjpT+zyvRnIeuGST09E43IlOszk
+         y0wb4PLOpRQG136zmrL1V2dB+gxarzzsCTMaqjetxMFPSpHiOVCYgz2yE6QHzdGoJudP
+         YunXS5+UxwSRdeK6a0DAXJ2eb6AAZ+uxMU37JYgko8tqjfq/WysBLkoFBj792OWH0TvG
+         /EbMwqZ8ElJdRu2/7YV0J+m2JlqvrjG3x3etrzACN87K+J7hZs1Hn0a8UNQVBl9eGY5O
+         MU1ttieLf7qoa6fi4maDjjug2+AUEcv0ErqPF+44V2cjQ0Ktuj3ZvEiBMAqNL9tq6LTJ
+         ewpg==
+X-Gm-Message-State: AOJu0YwrS1XT/NcimRIDsm+Bpp57rX0WWT7UepnAL1b/dJJJg5y+AZ0D
+	RnWcFsoj/Cnt+P6vbSVI58wj9/49lECWFmRhEWIYYGwPi2csL/DQKL1SPBsbuSijiv6eCmQRtzd
+	LDUROwk4r2cCvzOiqLhOG3+dccUY=
+X-Google-Smtp-Source: AGHT+IHHpZHr/EW3Ix32BZGoEiN9Cir64v4CICrnzC68lWclc4B701GZMfD08kwttgpi43EZD+xjbebNgNWXp66eI8c=
+X-Received: by 2002:a4a:a6cd:0:b0:59c:d8cd:ecee with SMTP id
+ i13-20020a4aa6cd000000b0059cd8cdeceemr5502224oom.1.1707744680881; Mon, 12 Feb
+ 2024 05:31:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZcoTOZzJ3ZhSD0oi@smile.fi.intel.com>
+References: <cover.1706603678.git.haibo1.xu@intel.com> <6473e0bb42524e4f29112290a92539d1a800eb69.1706603678.git.haibo1.xu@intel.com>
+In-Reply-To: <6473e0bb42524e4f29112290a92539d1a800eb69.1706603678.git.haibo1.xu@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 12 Feb 2024 14:31:09 +0100
+Message-ID: <CAJZ5v0hC7gxoJK0kszw9GgRjxjrKgh7q0sC1L1FdVfOb-TCSRw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] ACPICA: SRAT: Add RISC-V RINTC affinity structure
+To: Haibo Xu <haibo1.xu@intel.com>
+Cc: xiaobo55x@gmail.com, ajones@ventanamicro.com, sunilvl@ventanamicro.com, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Guo Ren <guoren@kernel.org>, Anup Patel <apatel@ventanamicro.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, Greentime Hu <greentime.hu@sifive.com>, 
+	Jisheng Zhang <jszhang@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Baoquan He <bhe@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Chen Jiahao <chenjiahao16@huawei.com>, Arnd Bergmann <arnd@arndb.de>, 
+	James Morse <james.morse@arm.com>, Evan Green <evan@rivosinc.com>, 
+	Samuel Holland <samuel.holland@sifive.com>, Marc Zyngier <maz@kernel.org>, 
+	Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 02:46:49PM +0200, Andy Shevchenko wrote:
-> On Mon, Feb 12, 2024 at 12:36:46PM +0000, Sakari Ailus wrote:
-> > On Mon, Feb 12, 2024 at 11:42:06AM +0000, Jonathan Cameron wrote:
-> 
-> ...
-> 
-> > Hmm. In that case I'd rather make fwnode_handle_put() and similar trivial
-> > functions macros.
-> 
-> This will kill the type-checking opportunity, so I'm against this move.
+On Wed, Jan 31, 2024 at 3:18=E2=80=AFAM Haibo Xu <haibo1.xu@intel.com> wrot=
+e:
+>
+> ACPICA commit 93caddbf2f620769052c59ec471f018281dc3a24
 
-Then it could be made static inline and moved to the header. I suppose for
-modern compilers there should be no difference in between the two
-optimisation-wise.
+Not really.
 
--- 
-Sakari Ailus
+> Add definition of RISC-V Interrupt Controller(RINTC)
+> affinity structure which was approved by UEFI forum
+> and will be part of next ACPI spec version(6.6).
+>
+> Link: https://github.com/acpica/acpica/commit/93caddbf
+
+And this doesn't point to an upstream ACPICA PR.
+
+> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> ---
+>  include/acpi/actbl3.h | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
+> index c080d579a546..5202e3fc9b41 100644
+> --- a/include/acpi/actbl3.h
+> +++ b/include/acpi/actbl3.h
+> @@ -192,7 +192,8 @@ enum acpi_srat_type {
+>         ACPI_SRAT_TYPE_GIC_ITS_AFFINITY =3D 4,    /* ACPI 6.2 */
+>         ACPI_SRAT_TYPE_GENERIC_AFFINITY =3D 5,    /* ACPI 6.3 */
+>         ACPI_SRAT_TYPE_GENERIC_PORT_AFFINITY =3D 6,       /* ACPI 6.4 */
+> -       ACPI_SRAT_TYPE_RESERVED =3D 7     /* 7 and greater are reserved *=
+/
+> +       ACPI_SRAT_TYPE_RINTC_AFFINITY =3D 7,      /* ACPI 6.6 */
+> +       ACPI_SRAT_TYPE_RESERVED =3D 8     /* 8 and greater are reserved *=
+/
+>  };
+>
+>  /*
+> @@ -296,6 +297,21 @@ struct acpi_srat_generic_affinity {
+>  #define ACPI_SRAT_GENERIC_AFFINITY_ENABLED     (1)     /* 00: Use affini=
+ty structure */
+>  #define ACPI_SRAT_ARCHITECTURAL_TRANSACTIONS   (1<<1)  /* ACPI 6.4 */
+>
+> +/* 7: RINTC Affinity (ACPI 6.6) */
+> +
+> +struct acpi_srat_rintc_affinity {
+> +       struct acpi_subtable_header header;
+> +       u16 reserved;           /* Reserved, must be zero */
+> +       u32 proximity_domain;
+> +       u32 acpi_processor_uid;
+> +       u32 flags;
+> +       u32 clock_domain;
+> +};
+> +
+> +/* Flags for struct acpi_srat_rintc_affinity */
+> +
+> +#define ACPI_SRAT_RINTC_ENABLED     (1)        /* 00: Use affinity struc=
+ture */
+> +
+>  /***********************************************************************=
+********
+>   *
+>   * STAO - Status Override Table (_STA override) - ACPI 6.0
+> --
+> 2.34.1
+>
 
