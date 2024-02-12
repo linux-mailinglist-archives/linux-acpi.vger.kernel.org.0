@@ -1,149 +1,112 @@
-Return-Path: <linux-acpi+bounces-3415-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3416-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B475851576
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 14:40:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB05B8515A1
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 14:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4B01F220B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663E6288595
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A443A8E3;
-	Mon, 12 Feb 2024 13:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C8C4439E;
+	Mon, 12 Feb 2024 13:38:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65C83A29F;
-	Mon, 12 Feb 2024 13:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B912E446C6
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 13:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707744683; cv=none; b=EKPoJ9IypEbalNHXNfVPc1Bs5Pb4UliJ44Wfq+miyuDIae5G7wPetGDgA+B5N8DFvi1DWQDJVCUDdNs9ZbYy2wPKegKVU9fw0YhCnj/aYeoq20eVsq12hakVzUs5SSiK1vabWTt6cX4TFRP5jqhA/Pj2pz+KdVEU7rrZZsaZQ/s=
+	t=1707745121; cv=none; b=R2df4NONTZB8c+UpPAOirkknpx1HRIq9UfaR8HuqYX0GTas5E/J65tXpDDAYCHxWbpSdNtH/9oIdsqUiILEfsBLEh8HBJ/4+8txX9HPgLtLkx9MIVkvbjiM2sDJC+7sH426yZ3NDDxsA8YhH+uku5etDgiZ1Gndr/1a6u/qy5Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707744683; c=relaxed/simple;
-	bh=hmHWArXdSRm8lzxAU2DSg7y55ObF8/5Uyi8EajxtD5g=;
+	s=arc-20240116; t=1707745121; c=relaxed/simple;
+	bh=Tv+rZN3c0yAaCzNpEQ39WIKdzCZsc4gnkhqK36Aj9V8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=olZxGK79dWSxPq3+N1UWa2xceyQIYMD8TZ1b+RE7Ljy1Y5bhV5OLxpZtVsCb9URA4a5l4JWNiKOtW8rWhJigt54ytUei/1q0RrAX4QMymIHKGIieYytEf8GXj6WQY6d2ZU4LMiaM4JXfu4GO5s0Je4CSG2+em7go9Be7+RrnNOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.42
+	 To:Cc:Content-Type; b=Hcq1fMFqukZByOh2DeUi2Ipx7mjNcEW7YxK8mUbQBNTPAaJ4lpbRZjiZv0TPtT3nUBJRHPivKMmi4givZEG3sCzi8sT2384htc4LXRwMEBROspRAwU89YoM+snRUuhSt9qdAOdbCou0LyUQ6HBX0nWAT5MyY/suzl9IppBOyNi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-59ceb5a0593so231761eaf.0;
-        Mon, 12 Feb 2024 05:31:21 -0800 (PST)
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-59584f41f1eso1347504eaf.1
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 05:38:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707744681; x=1708349481;
+        d=1e100.net; s=20230601; t=1707745119; x=1708349919;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VSLFuMbhZo80/vA+2tLJsi3KFlBp1PmoUoosHnk2JEU=;
-        b=k2OxwSsBA65q3frQ19p/JEL34hZJkNfWf/I4pB2LjpT+zyvRnIeuGST09E43IlOszk
-         y0wb4PLOpRQG136zmrL1V2dB+gxarzzsCTMaqjetxMFPSpHiOVCYgz2yE6QHzdGoJudP
-         YunXS5+UxwSRdeK6a0DAXJ2eb6AAZ+uxMU37JYgko8tqjfq/WysBLkoFBj792OWH0TvG
-         /EbMwqZ8ElJdRu2/7YV0J+m2JlqvrjG3x3etrzACN87K+J7hZs1Hn0a8UNQVBl9eGY5O
-         MU1ttieLf7qoa6fi4maDjjug2+AUEcv0ErqPF+44V2cjQ0Ktuj3ZvEiBMAqNL9tq6LTJ
-         ewpg==
-X-Gm-Message-State: AOJu0YwrS1XT/NcimRIDsm+Bpp57rX0WWT7UepnAL1b/dJJJg5y+AZ0D
-	RnWcFsoj/Cnt+P6vbSVI58wj9/49lECWFmRhEWIYYGwPi2csL/DQKL1SPBsbuSijiv6eCmQRtzd
-	LDUROwk4r2cCvzOiqLhOG3+dccUY=
-X-Google-Smtp-Source: AGHT+IHHpZHr/EW3Ix32BZGoEiN9Cir64v4CICrnzC68lWclc4B701GZMfD08kwttgpi43EZD+xjbebNgNWXp66eI8c=
-X-Received: by 2002:a4a:a6cd:0:b0:59c:d8cd:ecee with SMTP id
- i13-20020a4aa6cd000000b0059cd8cdeceemr5502224oom.1.1707744680881; Mon, 12 Feb
- 2024 05:31:20 -0800 (PST)
+        bh=cTsyxjARW0EsskB7PhCXr+hS0dPV5PwVgeA2725p3vI=;
+        b=XKEooWPjbWtaKLpaEHo1qjtl+2g2971/6rdVyAM3CditlJlzwHDtbEbhU4YTH4FbbG
+         qMKZf0EUtnpkxgS7JKN5tBGXLUCt7xm3o+wZ/zlS16+zOAfB6+zu/4DLKFbnJUY6islT
+         3uBKX2bTV0aUYNIe51keUoj63rdt5d2PHny3DS61bz2gaePSDEfMFPUxu2FOpq+D+HUV
+         3+5iqLY6dmyMjr51bjOQ1vN/HJza4LTyXtgHcuJqPssIFEFNvMUX5lPQeV+9QtcDyYUc
+         TX+UziZUA6KKjhYLwcAd3PnqZBncZasR0yYE6rTeAFYNDkFWn4QPMnhWyhEASU2tT0df
+         s3sg==
+X-Gm-Message-State: AOJu0Yx+lDPr6hxQOmhsFP0wdBa19XVqxNbiLUCpL3PVQUZ6u9DTt07I
+	USdLio5ii+SM8d2V3wva5lAnVra/LjyELRF5BYfRbCa6AimFbYJ46OreEyXOTIapwtfPENRFrzv
+	Rv7neHR3YsdEbNpTGjZ5I3ib6dw9ofAGR
+X-Google-Smtp-Source: AGHT+IGk3dXHbg9oGc4qo2LOM2yo+NvkIrYllYCwWkU9Tn8AiZgKOgFS/ehUjMXrCaXAO7zGv5VpIwzGdoHroid2Fiw=
+X-Received: by 2002:a05:6820:2b12:b0:59a:bf5:a0da with SMTP id
+ dt18-20020a0568202b1200b0059a0bf5a0damr4757504oob.0.1707745118683; Mon, 12
+ Feb 2024 05:38:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1706603678.git.haibo1.xu@intel.com> <6473e0bb42524e4f29112290a92539d1a800eb69.1706603678.git.haibo1.xu@intel.com>
-In-Reply-To: <6473e0bb42524e4f29112290a92539d1a800eb69.1706603678.git.haibo1.xu@intel.com>
+References: <20240130095700.165544-1-nicolas.haye@proton.me>
+In-Reply-To: <20240130095700.165544-1-nicolas.haye@proton.me>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 12 Feb 2024 14:31:09 +0100
-Message-ID: <CAJZ5v0hC7gxoJK0kszw9GgRjxjrKgh7q0sC1L1FdVfOb-TCSRw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ACPICA: SRAT: Add RISC-V RINTC affinity structure
-To: Haibo Xu <haibo1.xu@intel.com>
-Cc: xiaobo55x@gmail.com, ajones@ventanamicro.com, sunilvl@ventanamicro.com, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Conor Dooley <conor.dooley@microchip.com>, 
-	Guo Ren <guoren@kernel.org>, Anup Patel <apatel@ventanamicro.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>, Greentime Hu <greentime.hu@sifive.com>, 
-	Jisheng Zhang <jszhang@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	Baoquan He <bhe@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Chen Jiahao <chenjiahao16@huawei.com>, Arnd Bergmann <arnd@arndb.de>, 
-	James Morse <james.morse@arm.com>, Evan Green <evan@rivosinc.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Marc Zyngier <maz@kernel.org>, 
-	Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+Date: Mon, 12 Feb 2024 14:38:27 +0100
+Message-ID: <CAJZ5v0i9XbtC92BCZYazEUOVrYm_Bd_82NBjvTu399ko7eyi4Q@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CVA
+To: Nicolas Haye <nicolas.haye@proton.me>
+Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, 
+	n1coh <nicolas.haye@groupegaillard.fr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 31, 2024 at 3:18=E2=80=AFAM Haibo Xu <haibo1.xu@intel.com> wrot=
-e:
+On Tue, Jan 30, 2024 at 10:57=E2=80=AFAM Nicolas Haye <nicolas.haye@proton.=
+me> wrote:
 >
-> ACPICA commit 93caddbf2f620769052c59ec471f018281dc3a24
+> From: n1coh <nicolas.haye@groupegaillard.fr>
 
-Not really.
+Why did you add this line?  It is actively confusing, because the
+From: field in your message header matches the S-o-b below.
 
-> Add definition of RISC-V Interrupt Controller(RINTC)
-> affinity structure which was approved by UEFI forum
-> and will be part of next ACPI spec version(6.6).
+> Like many b1502 models,
+> the b1502CVA keyboard doesn't work because of an ACPI DSDT table that des=
+cribes IRQ 1
+> as ActiveLow while the kernel overrides it to Edge_High.
 >
-> Link: https://github.com/acpica/acpica/commit/93caddbf
-
-And this doesn't point to an upstream ACPICA PR.
-
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> Signed-off-by: Nicolas Haye <nicolas.haye@proton.me>
 > ---
->  include/acpi/actbl3.h | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-> index c080d579a546..5202e3fc9b41 100644
-> --- a/include/acpi/actbl3.h
-> +++ b/include/acpi/actbl3.h
-> @@ -192,7 +192,8 @@ enum acpi_srat_type {
->         ACPI_SRAT_TYPE_GIC_ITS_AFFINITY =3D 4,    /* ACPI 6.2 */
->         ACPI_SRAT_TYPE_GENERIC_AFFINITY =3D 5,    /* ACPI 6.3 */
->         ACPI_SRAT_TYPE_GENERIC_PORT_AFFINITY =3D 6,       /* ACPI 6.4 */
-> -       ACPI_SRAT_TYPE_RESERVED =3D 7     /* 7 and greater are reserved *=
-/
-> +       ACPI_SRAT_TYPE_RINTC_AFFINITY =3D 7,      /* ACPI 6.6 */
-> +       ACPI_SRAT_TYPE_RESERVED =3D 8     /* 8 and greater are reserved *=
-/
->  };
->
->  /*
-> @@ -296,6 +297,21 @@ struct acpi_srat_generic_affinity {
->  #define ACPI_SRAT_GENERIC_AFFINITY_ENABLED     (1)     /* 00: Use affini=
-ty structure */
->  #define ACPI_SRAT_ARCHITECTURAL_TRANSACTIONS   (1<<1)  /* ACPI 6.4 */
->
-> +/* 7: RINTC Affinity (ACPI 6.6) */
-> +
-> +struct acpi_srat_rintc_affinity {
-> +       struct acpi_subtable_header header;
-> +       u16 reserved;           /* Reserved, must be zero */
-> +       u32 proximity_domain;
-> +       u32 acpi_processor_uid;
-> +       u32 flags;
-> +       u32 clock_domain;
-> +};
-> +
-> +/* Flags for struct acpi_srat_rintc_affinity */
-> +
-> +#define ACPI_SRAT_RINTC_ENABLED     (1)        /* 00: Use affinity struc=
-ture */
-> +
->  /***********************************************************************=
-********
->   *
->   * STAO - Status Override Table (_STA override) - ACPI 6.0
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index dacad1d846c0..65ce43ecfa8c 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -468,6 +468,13 @@ static const struct dmi_system_id irq1_level_low_ski=
+p_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "B1502CGA"),
+>                 },
+>         },
+> +        {
+> +                /* Asus ExpertBook B1502CVA */
+> +                .matches =3D {
+> +                        DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC.=
+"),
+> +                        DMI_MATCH(DMI_BOARD_NAME, "B1502CVA"),
+> +                },
+> +        },
+>         {
+>                 /* Asus ExpertBook B2402CBA */
+>                 .matches =3D {
 > --
-> 2.34.1
->
+
+Applied as 6.9 material, thanks!
 
