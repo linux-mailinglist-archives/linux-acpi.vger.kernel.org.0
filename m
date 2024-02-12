@@ -1,112 +1,89 @@
-Return-Path: <linux-acpi+bounces-3416-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3417-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB05B8515A1
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 14:46:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9A18515DE
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 14:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663E6288595
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:46:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDC22B22ED9
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C8C4439E;
-	Mon, 12 Feb 2024 13:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBFB3D544;
+	Mon, 12 Feb 2024 13:44:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B912E446C6
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 13:38:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EBA3B298;
+	Mon, 12 Feb 2024 13:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707745121; cv=none; b=R2df4NONTZB8c+UpPAOirkknpx1HRIq9UfaR8HuqYX0GTas5E/J65tXpDDAYCHxWbpSdNtH/9oIdsqUiILEfsBLEh8HBJ/4+8txX9HPgLtLkx9MIVkvbjiM2sDJC+7sH426yZ3NDDxsA8YhH+uku5etDgiZ1Gndr/1a6u/qy5Z8=
+	t=1707745468; cv=none; b=h1rnITC7C8KJoFtwQycOI+O4VYVGFfGCMmU6wNzC97EoGAs7CS9NywyLTmdOPpbHeMTmyzzMKOcuCj4wcFwTFEtvvyV8IzkOoVkeeHRBAcXCKyqEa2P/kuY4gK6MDlcx/aXC7nbekETDpmMS03O0+iCMoQmYHD4Dg5EaAD/qTl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707745121; c=relaxed/simple;
-	bh=Tv+rZN3c0yAaCzNpEQ39WIKdzCZsc4gnkhqK36Aj9V8=;
+	s=arc-20240116; t=1707745468; c=relaxed/simple;
+	bh=ppWjXqvOz7E5NKyhtw98QvPMgUwleYBISgwi5Vq2qHk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hcq1fMFqukZByOh2DeUi2Ipx7mjNcEW7YxK8mUbQBNTPAaJ4lpbRZjiZv0TPtT3nUBJRHPivKMmi4givZEG3sCzi8sT2384htc4LXRwMEBROspRAwU89YoM+snRUuhSt9qdAOdbCou0LyUQ6HBX0nWAT5MyY/suzl9IppBOyNi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.52
+	 To:Cc:Content-Type; b=Wt/c01UIRgr7NtbdXHHjaoUEN4slpNrPgwip3Z586+zILPZW04SlRkcEVzzlRq7sXeUflr/YwJmGq/TaGKSZByQBceRgJnU8x3/UlNhtke3kdeYpz/epX46iwcMiE6wlmgQ1jmn3Jz7f4/J4q1vJlqVyT9OqB7rYn37ZvrOtZAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-59584f41f1eso1347504eaf.1
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 05:38:39 -0800 (PST)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-59d249f8e57so172827eaf.1;
+        Mon, 12 Feb 2024 05:44:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707745119; x=1708349919;
+        d=1e100.net; s=20230601; t=1707745465; x=1708350265;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cTsyxjARW0EsskB7PhCXr+hS0dPV5PwVgeA2725p3vI=;
-        b=XKEooWPjbWtaKLpaEHo1qjtl+2g2971/6rdVyAM3CditlJlzwHDtbEbhU4YTH4FbbG
-         qMKZf0EUtnpkxgS7JKN5tBGXLUCt7xm3o+wZ/zlS16+zOAfB6+zu/4DLKFbnJUY6islT
-         3uBKX2bTV0aUYNIe51keUoj63rdt5d2PHny3DS61bz2gaePSDEfMFPUxu2FOpq+D+HUV
-         3+5iqLY6dmyMjr51bjOQ1vN/HJza4LTyXtgHcuJqPssIFEFNvMUX5lPQeV+9QtcDyYUc
-         TX+UziZUA6KKjhYLwcAd3PnqZBncZasR0yYE6rTeAFYNDkFWn4QPMnhWyhEASU2tT0df
-         s3sg==
-X-Gm-Message-State: AOJu0Yx+lDPr6hxQOmhsFP0wdBa19XVqxNbiLUCpL3PVQUZ6u9DTt07I
-	USdLio5ii+SM8d2V3wva5lAnVra/LjyELRF5BYfRbCa6AimFbYJ46OreEyXOTIapwtfPENRFrzv
-	Rv7neHR3YsdEbNpTGjZ5I3ib6dw9ofAGR
-X-Google-Smtp-Source: AGHT+IGk3dXHbg9oGc4qo2LOM2yo+NvkIrYllYCwWkU9Tn8AiZgKOgFS/ehUjMXrCaXAO7zGv5VpIwzGdoHroid2Fiw=
-X-Received: by 2002:a05:6820:2b12:b0:59a:bf5:a0da with SMTP id
- dt18-20020a0568202b1200b0059a0bf5a0damr4757504oob.0.1707745118683; Mon, 12
- Feb 2024 05:38:38 -0800 (PST)
+        bh=ppWjXqvOz7E5NKyhtw98QvPMgUwleYBISgwi5Vq2qHk=;
+        b=BXRMTHD0goX/tczpRb8GGH9W+cmgCwzYYcxU/Qop1Skb+mcvgHWnpShbFtk3s8w+I9
+         ghVDVc9Ot1cUnbMWtDOVZEzgeS74YNHvpjh1qQVlpO3elR+U+0OXB8EirihZZwa8+QWg
+         GtvVk/I0DLVjszP7NrslKiNaYvYdPEozptw1bNQUCCKg659LlRkxLWtmpEWfDKks+/YZ
+         Zh5fVCXWr8rGtG1f60Io2k0k9lsFrBY0ByG+4NyGOF/mdyCEG7MZnU6eF3PY81oFJeo/
+         eCZ3+5Z+s5NG29cXXvm/QvrgJjd+LpZ5Z5VEwhO3dTGphfbyf819XVLY1eXccgpDe6XR
+         a8xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWVh6H8F9PGCXksjGlnKzV+iOwsq7HKUF5BGKwDTIuQyWGKwi6Icu0jXtxrI2I8oFn7VGdTJrx7UeMgfFHTvOCNwY1pZN/VL3EmXQW5JRWXmteVIY1p+rg1rwHT/YYGpqzViu5yiMhdBA==
+X-Gm-Message-State: AOJu0YwNc5ejTJaxh40tkhOPKb1VTyz7RDWOqS1oVNeCDIURzBLoqnxt
+	48sxdTtP2XKtCVOmy6gCnKZ9+1G9TBX9b5MDxwpvkHw2+/4Z7nCaeBVaIiklrIzsu9atuggjwpS
+	znynUYBIvDgZ3zoy7pHaOxGk1ZXtXhz66
+X-Google-Smtp-Source: AGHT+IFt5zZFUHvxaPO9xM2x/WE9iUUFA8RIXi0YERKym3ViZ6pXarboaXioZcO82blmx8jq0lZVwjFNXcBjvAMgJE8=
+X-Received: by 2002:a4a:ee91:0:b0:59c:7c63:928f with SMTP id
+ dk17-20020a4aee91000000b0059c7c63928fmr4934727oob.0.1707745465516; Mon, 12
+ Feb 2024 05:44:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240130095700.165544-1-nicolas.haye@proton.me>
-In-Reply-To: <20240130095700.165544-1-nicolas.haye@proton.me>
+References: <20240211-bus_cleanup-acpi-v1-1-08540c6e9458@marliere.net> <2024021222-overhead-kudos-3565@gregkh>
+In-Reply-To: <2024021222-overhead-kudos-3565@gregkh>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 12 Feb 2024 14:38:27 +0100
-Message-ID: <CAJZ5v0i9XbtC92BCZYazEUOVrYm_Bd_82NBjvTu399ko7eyi4Q@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CVA
-To: Nicolas Haye <nicolas.haye@proton.me>
-Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, 
-	n1coh <nicolas.haye@groupegaillard.fr>
+Date: Mon, 12 Feb 2024 14:44:14 +0100
+Message-ID: <CAJZ5v0i3Qa+i2jx_G-0B3dYuD5av2NbCpXe=pGfrSFtSch3f-g@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: bus: make acpi_bus_type const
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Ricardo B. Marliere" <ricardo@marliere.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 10:57=E2=80=AFAM Nicolas Haye <nicolas.haye@proton.=
-me> wrote:
+On Mon, Feb 12, 2024 at 11:44=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> From: n1coh <nicolas.haye@groupegaillard.fr>
-
-Why did you add this line?  It is actively confusing, because the
-From: field in your message header matches the S-o-b below.
-
-> Like many b1502 models,
-> the b1502CVA keyboard doesn't work because of an ACPI DSDT table that des=
-cribes IRQ 1
-> as ActiveLow while the kernel overrides it to Edge_High.
+> On Sun, Feb 11, 2024 at 12:37:11PM -0300, Ricardo B. Marliere wrote:
+> > Now that the driver core can properly handle constant struct bus_type,
+> > move the acpi_bus_type variable to be a constant structure as well,
+> > placing it into read-only memory which can not be modified at runtime.
+> >
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
 >
-> Signed-off-by: Nicolas Haye <nicolas.haye@proton.me>
-> ---
->  drivers/acpi/resource.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index dacad1d846c0..65ce43ecfa8c 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -468,6 +468,13 @@ static const struct dmi_system_id irq1_level_low_ski=
-p_override[] =3D {
->                         DMI_MATCH(DMI_BOARD_NAME, "B1502CGA"),
->                 },
->         },
-> +        {
-> +                /* Asus ExpertBook B1502CVA */
-> +                .matches =3D {
-> +                        DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC.=
-"),
-> +                        DMI_MATCH(DMI_BOARD_NAME, "B1502CVA"),
-> +                },
-> +        },
->         {
->                 /* Asus ExpertBook B2402CBA */
->                 .matches =3D {
-> --
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 Applied as 6.9 material, thanks!
 
