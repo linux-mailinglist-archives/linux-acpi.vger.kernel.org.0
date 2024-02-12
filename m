@@ -1,118 +1,99 @@
-Return-Path: <linux-acpi+bounces-3424-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3425-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610F8851C64
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 19:03:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF60C851CE5
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 19:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F82B2C02A
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 18:00:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7446A2828FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 18:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C38C46436;
-	Mon, 12 Feb 2024 17:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F2D3EA69;
+	Mon, 12 Feb 2024 18:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HY6Eee5p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167CA46549
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 17:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7182B45958
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 18:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707760678; cv=none; b=J5MVtAzDHf9Zl7KJ4LBZV5PuUZVGpRl5qIb/vjZEaQPB5HQG51ngYUt6WeduTiQhAXR8wAkwqm5KRmWKRyqc4sysbEGnhzet0vmoNAqmtmnMIzm59OGjp60IdpsMICYtKpH9Escj94SUbe2sjagJsnjEPPMMiMh4rodxfAa+Lyw=
+	t=1707763024; cv=none; b=hReuoPcv3KIctSRG487UibG993pjgdEuB52S3MeaPr7N7WPp/xqsTwth29opXRrNBev+RQ3XLWS3SgLdqLMcPG7KUE/NApOpAdgojCFgMeZCqhydZkQ5gyY4OtRwDFJPMf52GqZG7LppETUwcGuof9y+Onm+A1mby7LKuc7YeEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707760678; c=relaxed/simple;
-	bh=JcjbV8Lwuc0w5tnT8E/LK/fVQw9FbVoIT6pWIaNXvJg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VcGTHO0jAJqsYUAfRJkXRRdHJBO5JFXMPaEWt7+y+q4zF9miYZi97rX+uDhVK4ialGmKSLg/oNb9fcRCHOtQkRFZhMFOmcjIdeSyduy1mvtC3MPnn+zt+o25V6wjM82qhKFm561Vvuh5mBHwQlTBMrk2SqBX2fRkh5IurbmOVwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6e1242f8500so160913a34.0
-        for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 09:57:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707760676; x=1708365476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rHW5Bcs5iq62Iv4N6QSf+LgTAxMiQAUQcIezbXgtk/w=;
-        b=DQWqBp0M3vP4tBVlvls1NvR5J2RShtF2K2K/LLD70MStQe/1+V6krBPkNufINjVYWg
-         j5wkXdhRsLoqhvrQTnyhUIYBz7l5Ol2oyFMmo15pWvwVHjteJAbDiMW1XkAeGaXiTz4z
-         4zhftZ/mtETt5icWSWMGg0sj6A3oI08lC1krs741BH6eJbvKkk9oYQKHYcB2VMK0HzXF
-         FmEFjjI9KtE3eMmmReM805mKC24V8NHMsr99yZl4lNSaWLajm9Yg5IjfS+BALHHLXAst
-         GTXAtFYnf9EnT+U/bVZy+lzLRo7puLkI4uPM08DlKbtHFC9iIkZ6Wi26vheOUsXXKxNK
-         7itA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvNY0pPGRN//Keh8ayscjM2Wot/bz49f8F07ndzcj5wNexQdc0V8YFQUEpnOOlrzRd4orcQp3r8SUuHLRk0jVtPJAfxOTYBPcIDg==
-X-Gm-Message-State: AOJu0YwaPM/PkwcZFtM2Wfha4TP4qvTrI3+nOFio+tfMFwVlXqzxEUBj
-	+uN9w0/iBEzpm1YDZlssOGUJyWaCYAKMc0j5m2AgujE8SuuOOVRf/wY8ofMvYhweDyY+9m6lAD2
-	BYBW0ROpMpI1N4Lnb19Wx03iqNK1rx9yD
-X-Google-Smtp-Source: AGHT+IGIqoy8gJXLhdR4ZuANh5lx/ItptVJhTDwSyPlbkkbjWpEkVNHtjBktWT+bLJNImTATnK/gwmaw3q/t7OaPbPk=
-X-Received: by 2002:a4a:ca0d:0:b0:599:e8ff:66d9 with SMTP id
- w13-20020a4aca0d000000b00599e8ff66d9mr5588216ooq.1.1707760676080; Mon, 12 Feb
- 2024 09:57:56 -0800 (PST)
+	s=arc-20240116; t=1707763024; c=relaxed/simple;
+	bh=XFI7cim6GhCpVatFogkN3NywIuXjo4gVDqZQCc+v6aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D7ejVflkG5eTHTZC2KQ7MMpBn3OH7ZuWtzZ7o5LCJI+i2yXisdyHK0NI10FHuQCZsfoWD2xa6CuzZQXvbUw7oKTYw6FK2UBQHeDiinYnmwV7dQoNJC0S1C2v9mv6GgiKSLjt+CT+h3ban7dsGRy+X4U+1XQHQ8VQtxaTaAtG3Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HY6Eee5p; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707763023; x=1739299023;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XFI7cim6GhCpVatFogkN3NywIuXjo4gVDqZQCc+v6aw=;
+  b=HY6Eee5pRteCt4KYOiYmzEARqUomQMrC9kCnTPhs5tOl2Ci79oM/p2q5
+   wdK94Bl9YLfMjD6RVV20KrZ+UXYQRvlfMOXdy0rNx92VFy3HqgfO/KMwV
+   bDDkvosMGwKLwwSXuCKzBB3+JD/2xn4cDCNsguEwhhOVc1XyqYjf045jU
+   CDgX7g8Q+NFvY67Ek5+5Whh26PHG9yD7KhIU1lKIWsNCvdBOGUSQYdmiF
+   EmzXFT23r7H5NqWEci1xRYtltxb4tjYYSOY5mU5J4APhzg6BZkxo1qnGr
+   rRd73C+pgbihRNikWYBhDe24QOkaAXv1q0mbDiZBKPW9w4aSWdeBH+vRl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="19165680"
+X-IronPort-AV: E=Sophos;i="6.06,155,1705392000"; 
+   d="scan'208";a="19165680"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 10:37:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="935138217"
+X-IronPort-AV: E=Sophos;i="6.06,155,1705392000"; 
+   d="scan'208";a="935138217"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 10:37:01 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 0C1A911F9DB;
+	Mon, 12 Feb 2024 20:36:59 +0200 (EET)
+Date: Mon, 12 Feb 2024 18:36:59 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi@vger.kernel.org, Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH 2/2] ACPI: property: Ignore bad data nodes
+Message-ID: <ZcplS6p4CfvmF6uX@kekkonen.localdomain>
+References: <20240212100032.346422-1-sakari.ailus@linux.intel.com>
+ <20240212100032.346422-3-sakari.ailus@linux.intel.com>
+ <CAJZ5v0jOZJDJ=zqY09gYM7SrN0AB+SzdoGpF3i4F2YQiTtd8Og@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240207005908.32598-1-wentong.wu@intel.com>
-In-Reply-To: <20240207005908.32598-1-wentong.wu@intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 12 Feb 2024 18:57:44 +0100
-Message-ID: <CAJZ5v0g+bQd_KyDDTGxR3BiN4WidfNi319qhuDzOT=NaDKZV=A@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: scan: Defer enumeration of devices with a _DEP
- pointing to IVSC device
-To: Wentong Wu <wentong.wu@intel.com>
-Cc: rafael@kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0jOZJDJ=zqY09gYM7SrN0AB+SzdoGpF3i4F2YQiTtd8Og@mail.gmail.com>
 
-On Wed, Feb 7, 2024 at 2:01=E2=80=AFAM Wentong Wu <wentong.wu@intel.com> wr=
-ote:
->
-> Inside IVSC, switching ownership requires an interface with two
-> different hardware modules, ACE and CSI. The software interface
-> to these modules is based on Intel MEI framework. Usually mei
-> client devices are dynamically created, so the info of consumers
-> depending on mei client devices is not present in the firmware
-> tables.
->
-> This causes problems with the probe ordering with respect to
-> drivers for consumers of these MEI client devices. But on these
-> camera sensor devices, the ACPI nodes describing the sensors all
-> have a _DEP dependency on the matching MEI bus ACPI device, so
-> adding IVSC MEI bus ACPI device to acpi_honor_dep_ids allows
-> solving the probe-ordering problem by deferring the enumeration of
-> ACPI-devices which have a _DEP dependency on an IVSC mei bus ACPI
-> device.
->
-> Add INTC10CF, the HID of IVSC MEI bus ACPI device on MTL platform,
-> to acpi_honor_dep_ids.
->
-> Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-> ---
->  drivers/acpi/scan.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index e6ed1ba91e5c..f32a2c738c8b 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -798,6 +798,7 @@ static const char * const acpi_honor_dep_ids[] =3D {
->         "INTC1059", /* IVSC (TGL) driver must be loaded to allow i2c acce=
-ss to camera sensors */
->         "INTC1095", /* IVSC (ADL) driver must be loaded to allow i2c acce=
-ss to camera sensors */
->         "INTC100A", /* IVSC (RPL) driver must be loaded to allow i2c acce=
-ss to camera sensors */
-> +       "INTC10CF", /* IVSC (MTL) driver must be loaded to allow i2c acce=
-ss to camera sensors */
->         NULL
->  };
->
-> --
+Hi Rafael,
 
-Applied as 6.9 material, thanks!
+Thanks for the review.
+
+On Mon, Feb 12, 2024 at 02:53:12PM +0100, Rafael J. Wysocki wrote:
+> There is a bit too little information in the subject, it may as well
+> be the same as the series title.
+> 
+
+...
+
+> > +       static bool dmi_tested = false, ignore_port;
+> 
+> It is not necessary to initialize static variables to false.
+
+I'll address these in v2.
+
+-- 
+Sakari Ailus
 
