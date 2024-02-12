@@ -1,153 +1,143 @@
-Return-Path: <linux-acpi+bounces-3409-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3410-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFB8851340
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:14:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3239A851343
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 106F11C2083E
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 12:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55FC21C220C6
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 12:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C4539863;
-	Mon, 12 Feb 2024 12:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0199D39FCC;
+	Mon, 12 Feb 2024 12:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIWaC6hk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wrr36wia"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830A93CF46;
-	Mon, 12 Feb 2024 12:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6927D3D0D0;
+	Mon, 12 Feb 2024 12:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707739833; cv=none; b=EVb5a/gVtTkJZOVkgnZXQeGwIUh9oTo/YywbzF2tQu9pFEATnG0QZZ9E8zvC848iCwMjoGut1a9UmZY4SbhNQjpp6HW5WSVN5p2kEoLTPmAmQVd4iMvkJqIhLTZ0hhO7hU2gwczw1qeo8tPXQW4sxssna6pLQfDgtL153kd6jWI=
+	t=1707739869; cv=none; b=NhK2PKmnEPnbOWztR96BStmV9WyFD+mt5lBabiQ6dhuwd3TX4yPsrDbjoKYe3KxiWzknAtSIEQINTTJteI2d5m18Ub5BuGioEi3A8doRl1XhqsUbLSKwLdPy8s20Za4kEc5ueBrAmPiU5NrwmQMlnrsVUjcBFArO6n8X/Glvm3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707739833; c=relaxed/simple;
-	bh=GnFWVmemu8BYOERdtyu9t5OJb87P5SyNHTwrEQ06Lag=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RyxFDudod86AFfcj0xp3nnZPlP6D0gxHxdKGSgDegf1hmbEGWnLpFvQoUeVuEb2YqcG3SlzOLodU0hMsNhgr887My/lkhk+fY6FoJHFgL5cf1BQHnl4jbKO2f8ige6T9KHp+vkfwMPnUTfZ/c6GLeD2OfOw87ExeMfR7Xct8Xx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SIWaC6hk; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-410ed9f8621so3217335e9.1;
-        Mon, 12 Feb 2024 04:10:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707739829; x=1708344629; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WeckcWDXsxVoLYVhObU8PR+O3C3HC/cGcTfcIbOzKU4=;
-        b=SIWaC6hkuI3DOMX9cG3AIPy0eppa/aOJ1KIcTfjM7yaATRu/OXmEdwDM0fqw5RsP34
-         1Wqj+9X6C5mqgNOzmiAP/Je66N03OpwQLXNc9sAmtjjyhShILKGKPWekF8fW50ZrevXR
-         9JNTOpdHQMYzNMxtTTV6HlPv2Ne7XOVM9zpsU5Vxrx31kXPtqTtdKJixMNbd4oYehono
-         DHsuXC3jWP5m3Z4B6XWLU+FXB9lt4O+Jf+mceU7jS8N151QlFns4eOHRBbFf6DxC17RF
-         gN0AzqTuUzRTeiyXMo3M+dNOC+swqJgIO0cxPYDAlRhXbaNwCx1SDLIEa7eewrNP8iAp
-         HbkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707739829; x=1708344629;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WeckcWDXsxVoLYVhObU8PR+O3C3HC/cGcTfcIbOzKU4=;
-        b=O0NP/CNugCeRVs/Qq6O8ywEeRbuz5iXWvGjkSncd1AIDUU5/2Ip6v+QyYaCVvSBcY8
-         lGxoM4n9Ux4iLKYeEXbaVGdDP2w9j+i6u1UbB3nj2YkPAbNq9fcjccTP4+XZsH+JqhJm
-         qblxJzqgQWNso4x1+bpKP1n4UxVFfDrtrqKSStqsxkA74zDMJ9zu2JvR5jeYRopq8QJz
-         1uhQjhlA6Ul50yqPHdPT1oqEMAfJ4dIDMWxgvQimt0j1dovnrwDuLBLJ2ElPlYsNPuO+
-         v9Qhu1yEtEpuJ6yMAe4bK3kR/vRsIJNzOlpmW/J4I9IVIAabQGUpLyIhDgKmOa+v+qYp
-         DCZw==
-X-Gm-Message-State: AOJu0Yyigv5t0M4qTbU7u2giIZMxboh1MabTzOblWlQgmncLFyxFjkXn
-	ehPiLlbBwh7uMIcugzmQg+sGS1kKgugJZ+YcFi6Bg/GGQL0Llf6Z
-X-Google-Smtp-Source: AGHT+IGvQg/g6I11lMMUumpri0F9ohGfTFja0F7niRerM9cRNs8Z1IFkDAlbxyXQsM834xhCbprjoA==
-X-Received: by 2002:adf:cf01:0:b0:33b:7134:7ec4 with SMTP id o1-20020adfcf01000000b0033b71347ec4mr4951109wrj.14.1707739829158;
-        Mon, 12 Feb 2024 04:10:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVzJR8YqEfUQzbusCbrs8gl5tQ4i/j/FaGviqmtKb6z+PIaGf9yjKkxlrSve1bDq5u0w/3fBRG8mjgNXeJaMUGNbItlSNvLWCX0WjAyKIK5TRyhBhBvcGDGJsN+p2soDhKp68SmJjLM20mJh/AT7fOA1Y4sbuHgDbmpdV8HmpUevOWHpjemwa1hp5gXjgrLv8UxT5Uw8JMMsy+BchiuymnPsS3IIRiQLq7FWvo1OyK90WS53fXMir9wWsZrNv8RUvxgY/PW0Z2dtH48RxNxzbcWm9r9iM3mI0AFzmgmspocJMPpjYeekwlJA3/mb3SGwB4ApiwVBB3bNUxZnjZz4Qr91ug+4S0hBlGQCGWVxHLaLVMOis6qgKR9uYpNw9UFOprzOLIb32qi4BeYqhvFQ3Ssp5qNYCrHGcrWy8slTzhKlQf+mU4KP8zAcYLJ
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id s8-20020adfecc8000000b0033b671f079dsm6586921wro.115.2024.02.12.04.10.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Feb 2024 04:10:28 -0800 (PST)
-Message-ID: <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
- destroying the changeset
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Nuno Sa <nuno.sa@analog.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
- <djrscally@gmail.com>,  Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Mon, 12 Feb 2024 13:10:27 +0100
-In-Reply-To: <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
-References: 
-	<20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
-	 <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707739869; c=relaxed/simple;
+	bh=Y0fJhdwmwmI+cdi90OiPn+Q2ddp+yq27qdmkohFb8qU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gRlAgr8Jt2W6Fe/rGLVdzU0la5xsE9ySgTeAZUIfv3fgSr/BadaS2F3p+sk7nbQIihT1CI8nbg5i8HKc4CWMMLDSZg0yzM/gIm22KF0ynVwiUiOhO1fdxQhU6RzSmLVy3DvgYGHZpQPxzVvrEgs0luLv79WmZr7+4PDPMUBSLMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wrr36wia; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707739868; x=1739275868;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y0fJhdwmwmI+cdi90OiPn+Q2ddp+yq27qdmkohFb8qU=;
+  b=Wrr36wiaQeS8fwJABRuXr1DBTcFcsUicy+eX/fJQkTuWDNHU6ZQet3X4
+   C7bKuzbLEKUHGul4XTFAx+4vVTNeRkkPZySyzHDDQhkn3ikBbxpYSc1Jz
+   9owrwdfLaTLM/T3QuI/pgYadmge/yd3+aYw32sqxudWKLV4K96lMefJG1
+   qNyNpsA2vXbmjkvYAVK8YAgkC2bLzJeYnxZOPzZJmi65d5fsJsJgcZyMK
+   S6fPNsfm66VyzmTtNpqSElpOf5vDdQb1aNyKfaJTOSfbZGPYeBFxDXZds
+   Dzp4EgpXy6E5FPEx4RdMZ6k+nfkqni+wjPe15KLjcuvMFW7Zg38dpUBVq
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="1590534"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="1590534"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:11:07 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="911464911"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="911464911"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:11:01 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rZV9F-00000003t9Q-2AlT;
+	Mon, 12 Feb 2024 14:10:57 +0200
+Date: Mon, 12 Feb 2024 14:10:57 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 03/14] device property: Introduce
+ device_for_each_child_node_scoped()
+Message-ID: <ZcoK0Q8NgxolNeD8@smile.fi.intel.com>
+References: <20240211192540.340682-1-jic23@kernel.org>
+ <20240211192540.340682-4-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240211192540.340682-4-jic23@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 2024-02-05 at 13:09 +0100, Nuno Sa wrote:
-> Device links will drop their supplier + consumer refcounts
-> asynchronously. That means that the refcount of the of_node attached to
-> these devices will also be dropped asynchronously and so we cannot
-> guarantee the DT overlay assumption that the of_node refcount must be 1 i=
-n
-> __of_changeset_entry_destroy().
->=20
-> Given the above, call the new fwnode_links_flush_queue() helper to flush
-> the devlink workqueue so we can be sure that all links are dropped before
-> doing the proper checks.
->=20
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
-> =C2=A0drivers/of/dynamic.c | 8 ++++++++
-> =C2=A01 file changed, 8 insertions(+)
->=20
-> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> index 3bf27052832f..b7153c72c9c9 100644
-> --- a/drivers/of/dynamic.c
-> +++ b/drivers/of/dynamic.c
-> @@ -14,6 +14,7 @@
-> =C2=A0#include <linux/slab.h>
-> =C2=A0#include <linux/string.h>
-> =C2=A0#include <linux/proc_fs.h>
-> +#include <linux/fwnode.h>
-> =C2=A0
-> =C2=A0#include "of_private.h"
-> =C2=A0
-> @@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
-> =C2=A0
-> =C2=A0static void __of_changeset_entry_destroy(struct of_changeset_entry =
-*ce)
-> =C2=A0{
-> +	/*
-> +	 * device links drop their device references (and hence their of_node
-> +	 * references) asynchronously on a dedicated workqueue. Hence we need
-> +	 * to flush it to make sure everything is done before doing the below
-> +	 * checks.
-> +	 */
-> +	fwnode_links_flush_queue();
-> =C2=A0	if (ce->action =3D=3D OF_RECONFIG_ATTACH_NODE &&
-> =C2=A0	=C2=A0=C2=A0=C2=A0 of_node_check_flag(ce->np, OF_OVERLAY)) {
-> =C2=A0		if (kref_read(&ce->np->kobj.kref) > 1) {
->=20
+On Sun, Feb 11, 2024 at 07:25:29PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Similar to recently propose for_each_child_of_node_scoped() this
+> new version of the loop macro instantiates a new local
+> struct fwnode_handle * that uses the __free(fwnode_handle) auto
+> cleanup handling so that if a reference to a node is held on early
+> exit from the loop the reference will be released. If the loop
+> runs to completion, the child pointer will be NULL and no action will
+> be taken.
+> 
+> The reason this is useful is that it removes the need for
+> fwnode_handle_put() on early loop exits.  If there is a need
+> to retain the reference, then return_ptr(child) or no_free_ptr(child)
+> may be used to safely disable the auto cleanup.
 
-Hi Rob and Frank,
+...
 
-Any way you could take a look at this and see if you're ok with the change =
-in the
-overlay code?=20
+> +#define device_for_each_child_node_scoped(dev, child)\
 
-On the devlink side , we already got the ok from Rafael.
+Missing space before backslash, but I would rather to make them to be TABed to
+the same column.
 
-Thanks!
-- Nuno S=C3=A1
+> +	for (struct fwnode_handle *child __free(fwnode_handle) = \
+> +	     device_get_next_child_node(dev, NULL); child; \
+
+Please, move child to a separate line, so we will easily see the all three
+parameters of the for-loop. That said, indent the assignment to the right as
+well.
+
+> +	     child = device_get_next_child_node(dev, child))
+
+With the above addressed,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
