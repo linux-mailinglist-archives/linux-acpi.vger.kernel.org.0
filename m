@@ -1,143 +1,163 @@
-Return-Path: <linux-acpi+bounces-3411-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3412-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311D685134E
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:15:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC728513A3
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 13:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6465B1C229D9
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 12:15:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E021C20A68
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 12:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060663A8E6;
-	Mon, 12 Feb 2024 12:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19B01E4BE;
+	Mon, 12 Feb 2024 12:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cwh7pJ+X"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16EE3A8DD;
-	Mon, 12 Feb 2024 12:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEDE179B8;
+	Mon, 12 Feb 2024 12:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707739985; cv=none; b=K4uWSUuHowLcB4xpnVGpCxbaUrR8iH6837NcUG7BWPOvv5hEJ/8eK+orPbqVNXehky8zP99ho5ltkIYF27+UJNwomUPJG+jAqQ0glBQWIVHXaAit/Stx2+NoxkV99awaLJoQ7kXOGRyHd3GJw/Y7mRw/nKPC0RNPC54xHyh95xo=
+	t=1707741417; cv=none; b=D7usG+Yl64AlyknVgwCD96Ffqdi/pNKjsXCNnkQ0+FumIcxI5s9BPxvH9vfeTg9w1hzPUq6VTbSF+BvrpJWQ4kulFlCQz5pzTsE1NQaIRO+KaQk+XYUf4afPmBC66nIIRZ8n8FFCddvAcd3iW/dtCqtzTr8aURhU7tqkAIpa0Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707739985; c=relaxed/simple;
-	bh=h0Qj55goct6MBaVRkw88CxVyaIdkbG/vw09bMzZ0028=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D0P2FXEA8Z4oCVrSv0wIH7ypAEKbsMoQfude9tMhe5IEa7sNtNOO7n9oAIS5SLz1MeUHzblhh9FsUWUSCVg2zverrzhKbNLJ2spextsJRjPX4Nn2AdKMlyzRkhT1mezqr+ZQVU3idRWpAapeX2DSNg2EnwFM63rK+pnaZA6Izes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A3EADA7;
-	Mon, 12 Feb 2024 04:13:44 -0800 (PST)
-Received: from [10.57.47.180] (unknown [10.57.47.180])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6ED6F3F7BD;
-	Mon, 12 Feb 2024 04:13:01 -0800 (PST)
-Message-ID: <44597c9a-79bd-40f8-87a7-b53582132583@arm.com>
-Date: Mon, 12 Feb 2024 12:13:00 +0000
+	s=arc-20240116; t=1707741417; c=relaxed/simple;
+	bh=SzgQzJ4w8NXyvJfwBKVu7SwOE3XBJB0VeBqVOoeNTq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y49TnUwP+/0cPuOm/Knb7k4n06WuTFfD0u1SSH6xSTgBDUEyU2laHEI173TtEaopiYstpThiuO5adRI/kzV8nmqWWbjmDOkDWn5Lf7i386dT62l1Y7TM2OhrRTA9YU8aeA2Tjml3NaEzBvyH2uIAzvCUWfVmHe0AoIh84aXBgs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cwh7pJ+X; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707741416; x=1739277416;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SzgQzJ4w8NXyvJfwBKVu7SwOE3XBJB0VeBqVOoeNTq0=;
+  b=Cwh7pJ+X3+7iYDKwifZF15jIzgxceySI6foHQJliOVA+/Bc7U4h4RKwo
+   pfNrjKxmLj1mrh99ypF83hkb3anKEcr50mRWJOA0FjJGuGv2cLiBUza2V
+   NhuLpFHwtmm5GbYlHL6ja1xA889qePyocsl6M9+phXc37HcQbUCXhpYT4
+   2iNBo0MZoPQEaJvOWpRc9xKaxIadN/TLud11+M3hIi8PwejLqHXKCnhUC
+   gFbDbn+DF0XjHdvDJQj9rbp1doyZBy5wfspAKv+J44wgcSETns7WUMBnC
+   +oMrmxgqkplUBlffGBkY/JNfqBd6EZ1Dz7rfwDwWhDMjYYVgWXBUTjVS5
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="1592912"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="1592912"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:36:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10981"; a="911471024"
+X-IronPort-AV: E=Sophos;i="6.06,263,1705392000"; 
+   d="scan'208";a="911471024"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 04:36:49 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id C75BD11F86A;
+	Mon, 12 Feb 2024 14:36:46 +0200 (EET)
+Date: Mon, 12 Feb 2024 12:36:46 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	Marek Vasut <marex@denx.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Marius Cristea <marius.cristea@microchip.com>,
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 01/14] device property: Add cleanup.h based
+ fwnode_handle_put() scope based cleanup.
+Message-ID: <ZcoQ3sOcVYbwoHO7@kekkonen.localdomain>
+References: <20240211192540.340682-1-jic23@kernel.org>
+ <20240211192540.340682-2-jic23@kernel.org>
+ <Zcnbk6_9BU_trU9P@kekkonen.localdomain>
+ <20240212114206.00005b9f@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 03/11] coresight: tmc: Extract device properties from
- AMBA pid based table lookup
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
- <20240123054608.1790189-4-anshuman.khandual@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240123054608.1790189-4-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240212114206.00005b9f@Huawei.com>
 
-On 23/01/2024 05:46, Anshuman Khandual wrote:
-> This extracts device properties from AMBA pid based table lookup. This also
-> defers tmc_etr_setup_caps() after the coresight device has been initialized
-> so that PID value can be read.
+Hi Jonathan,
+
+On Mon, Feb 12, 2024 at 11:42:06AM +0000, Jonathan Cameron wrote:
+> On Mon, 12 Feb 2024 08:49:23 +0000
+> Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
 > 
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: James Clark <james.clark@arm.com>
-> Cc: coresight@lists.linaro.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->   .../hwtracing/coresight/coresight-tmc-core.c  | 19 +++++++++++++------
->   1 file changed, 13 insertions(+), 6 deletions(-)
+> > Hi Jonathan,
+> > 
+> > On Sun, Feb 11, 2024 at 07:25:27PM +0000, Jonathan Cameron wrote:
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > 
+> > > Useful where the fwnode_handle was obtained from a call such as
+> > > fwnode_find_reference() as it will safely do nothing if IS_ERR() is true
+> > > and will automatically release the reference on the variable leaving
+> > > scope.
+> > > 
+> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  include/linux/property.h | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/include/linux/property.h b/include/linux/property.h
+> > > index e6516d0b7d52..bcda028f1a33 100644
+> > > --- a/include/linux/property.h
+> > > +++ b/include/linux/property.h
+> > > @@ -12,6 +12,7 @@
+> > >  
+> > >  #include <linux/args.h>
+> > >  #include <linux/bits.h>
+> > > +#include <linux/cleanup.h>
+> > >  #include <linux/fwnode.h>
+> > >  #include <linux/stddef.h>
+> > >  #include <linux/types.h>
+> > > @@ -188,6 +189,8 @@ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+> > >  
+> > >  struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
+> > >  void fwnode_handle_put(struct fwnode_handle *fwnode);
+> > > +DEFINE_FREE(fwnode_handle, struct fwnode_handle *,
+> > > +	    if (!IS_ERR_OR_NULL(_T)) fwnode_handle_put(_T))  
+> > 
+> > fwnode_handle_put() can be safely called on NULL or error pointer fwnode so
+> > you can remove the check.
 > 
-> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
-> index 7ec5365e2b64..e71db3099a29 100644
-> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
-> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-> @@ -370,16 +370,24 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
->   	return (auth & TMC_AUTH_NSID_MASK) == 0x3;
->   }
->   
-> +#define TMC_AMBA_MASK 0xfffff
-> +
-> +static const struct amba_id tmc_ids[];
-> +
->   /* Detect and initialise the capabilities of a TMC ETR */
-> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
-> +static int tmc_etr_setup_caps(struct device *parent, u32 devid)
->   {
->   	int rc;
-> -	u32 dma_mask = 0;
-> +	u32 tmc_pid, dma_mask = 0;
->   	struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
-> +	void *dev_caps;
->   
->   	if (!tmc_etr_has_non_secure_access(drvdata))
->   		return -EACCES;
->   
-> +	tmc_pid = coresight_get_pid(&drvdata->csdev->access) & TMC_AMBA_MASK;
-> +	dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
-> +
->   	/* Set the unadvertised capabilities */
->   	tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
->   
-> @@ -497,10 +505,6 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->   		desc.type = CORESIGHT_DEV_TYPE_SINK;
->   		desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
->   		desc.ops = &tmc_etr_cs_ops;
-> -		ret = tmc_etr_setup_caps(dev, devid,
-> -					 coresight_get_uci_data(id));
-> -		if (ret)
-> -			goto out;
->   		idr_init(&drvdata->idr);
->   		mutex_init(&drvdata->idr_mutex);
->   		dev_list = &etr_devs;
-> @@ -539,6 +543,9 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->   		goto out;
->   	}
->   
-> +	if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
-> +		ret = tmc_etr_setup_caps(dev, devid);
-> +
+> Was discussed in the RFC thread (where i didn't have this protection)
+> 
+> https://lore.kernel.org/linux-iio/20240108125117.000010fb@Huawei.com/
+> includes a reference to Linus Torvald's view on this.
+> 
+> All comes down to compiler visibility and optimization opportunities, which are improved
+> if the check is in the macro definition.
 
-With this change, we silently accept an ETR that may only have "SECURE" 
-access only and crash later while we try to enable tracing. You could
-pass in the "access" (which is already in 'desc.access' in the original
-call site and deal with it ?
+Hmm. In that case I'd rather make fwnode_handle_put() and similar trivial
+functions macros.
 
-Suzuki
+There's no need to add cruft here and about a 100-fold number of callers
+will get the same benefit.
 
-
-
->   	drvdata->miscdev.name = desc.name;
->   	drvdata->miscdev.minor = MISC_DYNAMIC_MINOR;
->   	drvdata->miscdev.fops = &tmc_fops;
-
+-- 
+Sakari Ailus
 
