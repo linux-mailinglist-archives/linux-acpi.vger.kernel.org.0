@@ -1,129 +1,164 @@
-Return-Path: <linux-acpi+bounces-3448-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3449-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDBC852DD0
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 11:25:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0CC852DEC
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 11:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 421111C20D49
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 10:25:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D48791F24DBA
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 10:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6430A22616;
-	Tue, 13 Feb 2024 10:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AAC1EEF7;
+	Tue, 13 Feb 2024 10:32:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99EFD225DA;
-	Tue, 13 Feb 2024 10:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7DB28E3C;
+	Tue, 13 Feb 2024 10:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707819936; cv=none; b=hFKrSj/QUzAdZo5nTZr2v6Bmd4JSz9/71CAnYdwB6BqSHVQbDwwZyccVoE8ag4AQVKmrxgGoPFfKxH/FqdaUygE9z08lJgU+Y8+83Ynz51y9ff0HomiAmrIXze7WP3I76rJRv449Kg4Fpxk1TGMhJ9x7poA3BadH3yRxPmPzQDk=
+	t=1707820328; cv=none; b=skavwo3GiT4L3d61nSOSMHjk2lCQqLdi3I4X3RHH5EEM5FtbSUK3NK/gMAqwflGIU9nLJ1US3/ffjcwC2ZtQEGHyQ9G9YrnrvLsSMZ5Jv2hcEk/bcZjcIErx6Kwr9xoL2LCBhqYfb9oVgn+IJeALvbb/OdxCzyNm64JUKy9x4vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707819936; c=relaxed/simple;
-	bh=+XtzId9m0katE1bX/fV/aC/LwyQ0Y6TQgq6b1bfmyKo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nGWGmDkGW8efTUNOvPgVv/mbHXw3eWW/yWs5nGnGHwiDB6OO2WNQeuCZGg3YGv1aZ6psTSWQs+qzZGEZuTfWvLoOZiw0BbctMeTjFPEwzMO+3P9ZVAi9pIJKEFo55Uoogr/Z5bkRJkAAwxKBAEFDgYTnlFaT14y+6rdDVjNlefA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TYy726SGSz6D92Z;
-	Tue, 13 Feb 2024 18:22:06 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7D98C140519;
-	Tue, 13 Feb 2024 18:25:31 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 13 Feb
- 2024 10:25:30 +0000
-Date: Tue, 13 Feb 2024 10:25:29 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rafael
- J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
-	<cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
-	<tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
-	<olivier.moysan@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
-	<dmitry.baryshkov@linaro.org>, Marijn Suijten
-	<marijn.suijten@somainline.org>, Marius Cristea
-	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 03/14] device property: Introduce
- device_for_each_child_node_scoped()
-Message-ID: <20240213102529.00003bf2@Huawei.com>
-In-Reply-To: <ZcoK0Q8NgxolNeD8@smile.fi.intel.com>
-References: <20240211192540.340682-1-jic23@kernel.org>
-	<20240211192540.340682-4-jic23@kernel.org>
-	<ZcoK0Q8NgxolNeD8@smile.fi.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707820328; c=relaxed/simple;
+	bh=cR8wz3zzvoCe1ztWtuPDRbzYlQX9EO4ihc+W26Xu7jI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=psYkR2PK1j8AO2sdz0rF4NssyFCv4j/wqAT0psiXYNy9B7meJC7aJV7Rl2e9wVMqnPk/W6NwpXQiAZlB9JWHzGK7oRiYBWZJ8cZwGgHf5sCXB/4L/czSrdThzAEs8HD6vBOTC+ydPNZ8xSKVOa+xCSH6tbHK2L4gR0YigeUR2WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CFBAADA7;
+	Tue, 13 Feb 2024 02:32:46 -0800 (PST)
+Received: from [10.57.50.4] (unknown [10.57.50.4])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 111193F5A1;
+	Tue, 13 Feb 2024 02:32:03 -0800 (PST)
+Message-ID: <39c01eae-049b-4f5b-b86e-4af22c8246c1@arm.com>
+Date: Tue, 13 Feb 2024 10:32:02 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 03/11] coresight: tmc: Extract device properties from
+ AMBA pid based table lookup
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
+ <20240123054608.1790189-4-anshuman.khandual@arm.com>
+ <44597c9a-79bd-40f8-87a7-b53582132583@arm.com>
+ <0c65f3b0-a879-444c-b0a4-4af485e72166@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <0c65f3b0-a879-444c-b0a4-4af485e72166@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 12 Feb 2024 14:10:57 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 13/02/2024 03:13, Anshuman Khandual wrote:
+> 
+> 
+> On 2/12/24 17:43, Suzuki K Poulose wrote:
+>> On 23/01/2024 05:46, Anshuman Khandual wrote:
+>>> This extracts device properties from AMBA pid based table lookup. This also
+>>> defers tmc_etr_setup_caps() after the coresight device has been initialized
+>>> so that PID value can be read.
+>>>
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>> Cc: James Clark <james.clark@arm.com>
+>>> Cc: coresight@lists.linaro.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>    .../hwtracing/coresight/coresight-tmc-core.c  | 19 +++++++++++++------
+>>>    1 file changed, 13 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+>>> index 7ec5365e2b64..e71db3099a29 100644
+>>> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+>>> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+>>> @@ -370,16 +370,24 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
+>>>        return (auth & TMC_AUTH_NSID_MASK) == 0x3;
+>>>    }
+>>>    +#define TMC_AMBA_MASK 0xfffff
+>>> +
+>>> +static const struct amba_id tmc_ids[];
+>>> +
+>>>    /* Detect and initialise the capabilities of a TMC ETR */
+>>> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
+>>> +static int tmc_etr_setup_caps(struct device *parent, u32 devid)
+>>>    {
+>>>        int rc;
+>>> -    u32 dma_mask = 0;
+>>> +    u32 tmc_pid, dma_mask = 0;
+>>>        struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
+>>> +    void *dev_caps;
+>>>          if (!tmc_etr_has_non_secure_access(drvdata))
+>>>            return -EACCES;
+>>>    +    tmc_pid = coresight_get_pid(&drvdata->csdev->access) & TMC_AMBA_MASK;
+>>> +    dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
+>>> +
+>>>        /* Set the unadvertised capabilities */
+>>>        tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
+>>>    @@ -497,10 +505,6 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
+>>>            desc.type = CORESIGHT_DEV_TYPE_SINK;
+>>>            desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
+>>>            desc.ops = &tmc_etr_cs_ops;
+>>> -        ret = tmc_etr_setup_caps(dev, devid,
+>>> -                     coresight_get_uci_data(id));
+>>> -        if (ret)
+>>> -            goto out;
+>>>            idr_init(&drvdata->idr);
+>>>            mutex_init(&drvdata->idr_mutex);
+>>>            dev_list = &etr_devs;
+>>> @@ -539,6 +543,9 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
+>>>            goto out;
+>>>        }
+>>>    +    if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
+>>> +        ret = tmc_etr_setup_caps(dev, devid);
+>>> +
+>>
+>> With this change, we silently accept an ETR that may only have "SECURE" access only and crash later while we try to enable tracing. You could
+>> pass in the "access" (which is already in 'desc.access' in the original
+>> call site and deal with it ?
+> 
+> Just wondering, if something like the following will help ? A failed tmc_etr_setup_caps()
+> because of failed tmc_etr_has_non_secure_access(), will unregister the coresight device
+> before returning.
+> 
+> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> @@ -538,8 +538,13 @@ static int __tmc_probe(struct device *dev, struct resource *res)
+>                  goto out;
+>          }
+>   
+> -       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
+> +       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR) {
+>                  ret = tmc_etr_setup_caps(dev, devid);
+> +               if (ret) {
+> +                       coresight_unregister(drvdata->csdev);
+> +                       goto out;
+> +               }
+> +       }
 
-> On Sun, Feb 11, 2024 at 07:25:29PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Similar to recently propose for_each_child_of_node_scoped() this
-> > new version of the loop macro instantiates a new local
-> > struct fwnode_handle * that uses the __free(fwnode_handle) auto
-> > cleanup handling so that if a reference to a node is held on early
-> > exit from the loop the reference will be released. If the loop
-> > runs to completion, the child pointer will be NULL and no action will
-> > be taken.
-> > 
-> > The reason this is useful is that it removes the need for
-> > fwnode_handle_put() on early loop exits.  If there is a need
-> > to retain the reference, then return_ptr(child) or no_free_ptr(child)
-> > may be used to safely disable the auto cleanup.  
-> 
-> ...
-> 
-> > +#define device_for_each_child_node_scoped(dev, child)\  
-> 
-> Missing space before backslash, but I would rather to make them to be TABed to
-> the same column.
+Why do we move the tmc_etr_setup_caps() in the first place ? We could 
+retain where that was and pass "desc.access" parameter rather than 
+registering the csdev and then relying csdev->access ?
 
-Oops. I spotted I messed this up bug clearly failed to fix it before sending out.
+Suzuki
 
-> 
-> > +	for (struct fwnode_handle *child __free(fwnode_handle) = \
-> > +	     device_get_next_child_node(dev, NULL); child; \  
-> 
-> Please, move child to a separate line, so we will easily see the all three
-> parameters of the for-loop. That said, indent the assignment to the right as
-> well.
-Indent makes sense - but (to save another respin) how far?
-Next tab stop will be a bit random looking but I guess nothing else
-makes more sense.
-
-> 
-> > +	     child = device_get_next_child_node(dev, child))  
-> 
-> With the above addressed,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-Thanks,
-> 
+>   
+>          drvdata->miscdev.name = desc.name;
+>          drvdata->miscdev.minor = MISC_DYNAMIC_MINOR;
 
 
