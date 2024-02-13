@@ -1,138 +1,134 @@
-Return-Path: <linux-acpi+bounces-3437-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3438-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F3C852170
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 23:31:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B79D785257C
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 02:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8011C20619
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Feb 2024 22:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BDC71F24FF8
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 01:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566624E1CF;
-	Mon, 12 Feb 2024 22:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001A8101F1;
+	Tue, 13 Feb 2024 00:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FuvVXgRC"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="EN44tbkX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297F151018;
-	Mon, 12 Feb 2024 22:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64644BE49;
+	Tue, 13 Feb 2024 00:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707776997; cv=none; b=puzdX4qwum549V6ghzY8bXNW26hFGXhHX6vH7sZEbL08Ex3pJugtfAox13sDpzfPyngrFPV5CM/vbJHfr4OmSap3E4oXigN8b3JVT+Zdjap6EfuhILLxSGN+gxuCHIE1ffvGEhebc2pfG1Lz7/ZNE1rJIMbr3odz8JvhxMzesv0=
+	t=1707784934; cv=none; b=GWz3aaNYTzMdrOGnolhZopuV+rqeMsKJ5eFZbJCnLIBOo/KmV5ult/Bq13u+DHo5n71wCEVoIbMmEGLVKJF7GXhhs9h2x4lKUSpcdCS5nEnQiuNFAv9YHA2OvfZ4gTvSrHh6IUbRf75OwGHjqfIFd5Ee9eeVYzm9lETGwKGIWrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707776997; c=relaxed/simple;
-	bh=QDgu/1IR84IYGTUzhIMywCT+Q6GZ4y2glQv4TC3lWus=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=s3v9+ojjn272ZhK+Y1ZnJylljSxqB0Cs4LBObQcDlcnmzecJ3WyHTox2PRB9u9bRixPaTjGS/98aEn5lzi6G7aM8wm49I41jsThRgMxOidSMq0Mblr0ocyHSRkrlgeKlgLucSmlzh4/ny/gQOyeBpERMCVPd0MFfo4B9HV99BY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FuvVXgRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AD0C433F1;
-	Mon, 12 Feb 2024 22:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707776996;
-	bh=QDgu/1IR84IYGTUzhIMywCT+Q6GZ4y2glQv4TC3lWus=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FuvVXgRCPRyIMfFHMSJ+2Cmm1oTlCRV7ezVO8bIeFWzeJSjx/4DOVf9E0EaEqD2F4
-	 JEkZQbq1nrnU/pYho0SOQrnBcfDrBDviAEwVcRPee8cZ4eR7QyVunltqa+8N+dAixY
-	 yh0PECZ+PON8TNQxjZfXavms69iJ/CGTqAPLD/y07aI5aNaMWylh/hlpbgNdgAn6mL
-	 Ki3EffaiR4XwlkaTjNDBtmIQ+11tgiOGUilxA/mZyGti2mP/52TTvOQ1YBizeyKwVZ
-	 tOuKvfqf4elyNtIvBfcrNfwPcOu4jiLgmx8H/dcE2y5luqk1vzDQUCb3XeiTSU3hbn
-	 2ekfW2iLSOQxw==
-Date: Mon, 12 Feb 2024 16:29:55 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ivan Hu <ivan.hu@canonical.com>
-Subject: Re: [PATCH v2] x86/pci: Stop requiring ECAM to be declared in E820,
- ACPI or EFI
-Message-ID: <20240212222955.GA1147798@bhelgaas>
+	s=arc-20240116; t=1707784934; c=relaxed/simple;
+	bh=UfhGyuSgD1Vwy9T7LqkIR0IJQBem4hE+uypmbddgxmo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qvTsV8rLifieof8ENGYophv/faq7q+F8MfpjvEXOQErcEN+60nV7hSulau4LoavuJuBTd8Y+mNb9NCmPTJwukiwdB027y5cGyg+Upg8qYtUlneEYIICyoS3T941V/gt5O5LsihZM9+7+Afxr69nZ6bOUHikG0aHi20QyIwCt7EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=EN44tbkX; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1707784925; x=1708389725; i=w_armin@gmx.de;
+	bh=UfhGyuSgD1Vwy9T7LqkIR0IJQBem4hE+uypmbddgxmo=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=EN44tbkXgslJoN7Gj9PmMBA9aqGKXgJIWbP2TTP1fnulwYbXgruW2lqBbjs+avfp
+	 +j7d24x1R5dSZUj6e7jn5vW0TyuTqGQ0GJDM1XC0SulK/IdsSwAuP3A49lDmUyLf2
+	 uoHKYOuJwnbRQYMPdO3oF5iS8zDsGoY8na2TI12GicFCao83nBsCBp9+gaI2la9t0
+	 jRhrjB22wf+iRGN/MfA+6vBIYK78zTAuc2W66LAjYBguqJlQdyFdwfFkvHpAVUE6B
+	 OE8AGYXHRd1JrizO5HmOZG/WK8G7HkhDCNzRd/vdUCZVkdcypPEIPUfLecC6UKbZP
+	 aZPCJ+qQfvJ8PYG3yw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1Mf078-1r1ybv2WD4-00gZLh; Tue, 13 Feb 2024 01:42:05 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: processor_idle: Fix memory leak in acpi_processor_power_exit()
+Date: Tue, 13 Feb 2024 01:41:58 +0100
+Message-Id: <20240213004158.3623-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7caefe4b-bf05-49a3-bfb8-75e7fd73343b@amd.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:w4T+Xb8F8M55zcrM+ojZL6fOe4erjAQZ72EXMTzDt6DVWKxzuSd
+ BAIJJIihvA/EPPN3vJPWg/bkD1jSoxLf0BHnTpiXrg+xmkp73QL5qXB0s8vjXMSE6/LaG0j
+ lyCstU7g29duqaWVyg7ASktOMu3oQoWi0aNaVqZh0/kjWHhTV7dA9j+5i1qO3PEdrqbUWtw
+ /YSxio7/2sJm6SuPD6CJA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:TVkxfA66A2s=;qeVHllrP6T7eVIEMvB02Gsm683J
+ ReRVPNPNTufbA3KYX1JtMQ4AnmGKiMS9Ujg25xl7hdxafUl5jnOhlKF94Dk0WdhTd3zS5//rB
+ 9BX+XADt6ZAYZndFt+I7+gpT1cKp2iroALMT2QpmJleCDcTx6l7nJWWlFyRI1AiFbNJZXG6zq
+ KMYkHLbt9UVukWcesQiksqLf9GtjhmUefKF9q/X5JWuNMfVweXRYZ1b28EvLdHbayDIWSFow7
+ KYQDNF0iXaQNP2DF4x1Ottj/RnjB8BI1PCrdalPLjI33xNPsR3Ph6ml5T2+3rHV4o677dIkSx
+ IWMicHHg5lKMUraGCeMBZnINWy5WToFFrqa3BpuiLD3KHDacULCGyo94PHpRyUEurUOj53zmi
+ bF/unPFSroJLR7HygJEFFkaMZJIJsWGKgO3r7eERzhs6gznyZj8axTLgHYzevaiQD80oXaz/w
+ n5IQQMQcrivcMFV1XgSnQdL6w0lEZJyj58pbGtZVIra3ytpfoxUcrVwtTjVG0CTCaMWu9pD/I
+ zM6Uwsin+pUIrSnxtz7xdrNLpgtvfiIRity1OUaN7MN/dQ65QlnRPuguNxUg6W3B8S/JceMDn
+ Wem2UHC66xsCls/2IeAlBbkFnybD6pDsBM/L9ZjKcVVXgY5BF9xC1Rcxy1CbY9QAPb1ANqs7H
+ 9bw48ob0hg6tXtq87rMii5vD9ZfHrXfq2CGXtPz7OvNw7la/KslltHLPNpEuhRsUH5nutUdI9
+ ZnpWBedY5Mi1YrvH3E+SUBMvW9DbQ3R2nZNE9F6R9wJwPwFbUBw0bGExH2JkEuLrksbodosXI
+ 4H9eSCn9GRF8Z0NY3jx3GPe8Dyye3ctEwmVa6VtslsAOs=
 
-[+cc Ivan in case there's opportunity to improve FWTS]
+After unregistering the CPU idle device, the memory associated with
+it is not freed, leading to a memory leak:
 
-On Wed, Jan 17, 2024 at 11:53:50AM -0600, Mario Limonciello wrote:
-> On 12/15/2023 16:03, Mario Limonciello wrote:
-> > commit 7752d5cfe3d1 ("x86: validate against acpi motherboard resources")
-> > introduced checks for ensuring that MCFG table also has memory region
-> > reservations to ensure no conflicts were introduced from a buggy BIOS.
-> > 
-> > This has proceeded over time to add other types of reservation checks
-> > for ACPI PNP resources and EFI MMIO memory type.  The PCI firmware spec
-> > does say that these checks are only required when the operating system
-> > doesn't comprehend the firmware region:
-> > 
-> > ```
-> > If the operating system does not natively comprehend reserving the MMCFG
-> > region, the MMCFG region must be reserved by firmware. The address range
-> > reported in the MCFG table or by _CBA method (see Section 4.1.3) must be
-> > reserved by declaring a motherboard resource. For most systems, the
-> > motherboard resource would appear at the root of the ACPI namespace
-> > (under \_SB) in a node with a _HID of EISAID (PNP0C02), and the resources
-> > in this case should not be claimed in the root PCI bus’s _CRS. The
-> > resources can optionally be returned in Int15 E820h or EFIGetMemoryMap
-> > as reserved memory but must always be reported through ACPI as a
-> > motherboard resource.
-> > ```
-> > 
-> > Running this check causes problems with accessing extended PCI
-> > configuration space on OEM laptops that don't specify the region in PNP
-> > resources or in the EFI memory map. That later manifests as problems with
-> > dGPU and accessing resizable BAR. Similar problems don't exist in Windows
-> > 11 with exact same laptop/firmware stack.
-> > 
-> > Due to the stability of the Windows ecosystem that x86 machines participate
-> > it is unlikely that using the region specified in the MCFG table as
-> > a reservation will cause a problem. The possible worst circumstance could
-> > be that a buggy BIOS causes a larger hole in the memory map that is
-> > unusable for devices than intended.
-> > 
-> > Change the default behavior to keep the region specified in MCFG even if
-> > it's not specified in another source. This is expected to improve
-> > machines that otherwise couldn't access PCI extended configuration space.
-> > 
-> > In case this change causes problems, add a kernel command line parameter
-> > that can restore the previous behavior.
-> > 
-> > Link: https://members.pcisig.com/wg/PCI-SIG/document/15350
-> >        PCI Firmware Specification 3.3
-> >        Section 4.1.2 MCFG Table Description Note 2
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > ---
-> 
-> Bjorn,
-> 
-> Any thoughts on this version since our last conversation on V1?
+unreferenced object 0xffff896282f6c000 (size 1024):
+  comm "swapper/0", pid 1, jiffies 4294893170
+  hex dump (first 32 bytes):
+    00 00 00 00 0b 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 8836a742):
+    [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
+    [<ffffffff9972f3b3>] acpi_processor_power_init+0xf3/0x1c0
+    [<ffffffff9972d263>] __acpi_processor_start+0xd3/0xf0
+    [<ffffffff9972d2bc>] acpi_processor_start+0x2c/0x50
+    [<ffffffff99805872>] really_probe+0xe2/0x480
+    [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
+    [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
+    [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
+    [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
+    [<ffffffff99804822>] bus_add_driver+0x112/0x210
+    [<ffffffff99807245>] driver_register+0x55/0x100
+    [<ffffffff9aee4acb>] acpi_processor_driver_init+0x3b/0xc0
+    [<ffffffff990012d1>] do_one_initcall+0x41/0x300
+    [<ffffffff9ae7c4b0>] kernel_init_freeable+0x320/0x470
+    [<ffffffff99b231f6>] kernel_init+0x16/0x1b0
+    [<ffffffff99042e6d>] ret_from_fork+0x2d/0x50
 
-I really want to clarify the dmesg logging such that it's clear that
-PNP0C02 reservation is the only valid way to reserve the space
-described by MCFG.  Obviously we have to retain the fallbacks, but I
-think there should be FW_BUG logging in that case.  We currently only
-do FW_INFO for missing PNP0C02 reservations.
+Fix this by freeing the CPU idle device after unregistering it.
 
-I think we should try to change FWTS so it validates MCFG addresses
-against the PNP0C02 reservations required by spec, instead of
-searching E820 for them.  The spec doesn't require MCFG regions to be
-in E820, and I think searching there encourages the wrong behavior.
-It probably also doesn't work at all on arm64, since it doesn't have
-E820 at all.
+Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of th=
+e acpi_processor_power structure")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/processor_idle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The /sys/devices/pnp0/00:xx/resources files and "system 00:xx: [mem
-...] has been reserved" lines in dmesg would be much better places to
-check.
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index 55437f5e0c3a..bd6a7857ce05 100644
+=2D-- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -1430,6 +1430,8 @@ int acpi_processor_power_exit(struct acpi_processor =
+*pr)
+ 		acpi_processor_registered--;
+ 		if (acpi_processor_registered =3D=3D 0)
+ 			cpuidle_unregister_driver(&acpi_idle_driver);
++
++		kfree(dev);
+ 	}
 
-Bjorn
+ 	pr->flags.power_setup_done =3D 0;
+=2D-
+2.39.2
+
 
