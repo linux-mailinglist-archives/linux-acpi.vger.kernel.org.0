@@ -1,200 +1,90 @@
-Return-Path: <linux-acpi+bounces-3458-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3459-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACF5853D58
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 22:40:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBE2853E63
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 23:16:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA97DB28BD5
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 21:40:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF92A1C26104
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 22:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D4D61679;
-	Tue, 13 Feb 2024 21:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A597863064;
+	Tue, 13 Feb 2024 22:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CG5OjAY8";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3eI7Vgg9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Jh56rXSt";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="T7+nWStY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dMpBcMB0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9776E61669;
-	Tue, 13 Feb 2024 21:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7549D62170;
+	Tue, 13 Feb 2024 22:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707860358; cv=none; b=R/YMmEqRPKduJNw9KNt1Vv4+Nhke45vICGMrJ2b8rOHZ39ulA4tu/1K/L0rZCTwPAUJ6E7oK858UEQhX2Md+9eJvjqWddbiAmWjZPVy87Dl91Y18wmNIDXte9x0yWL34y4lhtSna7C5pL2wJDI1JyFLvPtDMD+zq/pQkI7hADpo=
+	t=1707862447; cv=none; b=CXt8fXaevsUSPR9UmdLaj6CrWBUDGPX9pV/FIJJSvYnW6XVEU/ej0DfRwr8hmyjezoweUVmccFVRtkzrHQADAoIG5QKTZ1MoGq8bfr0OCXKpq72Hu2TdkNuWoVYxfZOnXSeU4xTF/yyrNhZmZPtw6hRVgfYA5xYCbSM59HSdhaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707860358; c=relaxed/simple;
-	bh=BUAr3sBqzq/mIhmYqhWP/6DEipOWW5FMJ0P2Le+dOos=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DHxK3Mud+qpha+MB+/9IOWR8mr/ra3OrewXWRV7Zxv3lUSSLJ2WMWbpYKTSn32B+bI63SAwS03SVic4TeoR9SMnCdKQbkyR2Qgzr4MXi1shSZ6OmkfjNdgtsD5t+FqQQojydUfd0lQinmQyTJrUppg1hRbkBSRdjr8Ex0rbqo9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=CG5OjAY8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3eI7Vgg9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Jh56rXSt; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=T7+nWStY; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7A9E92212F;
-	Tue, 13 Feb 2024 21:39:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707860354; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTiPPmHDw2aZAXgldAitJ1VDBOydclpHipfi4Efd+uU=;
-	b=CG5OjAY81AO9CnJJAtnesw5zPIc79sj4Fe8+R8Yo3Gwe95bWPbcOvTWooQvAG3Gw7283f6
-	AD8LWr1cjrfySghnGvLknGePBFgx1GXwquDVFWWw3KzV1UexbmAzFAqsG9ag3NmfvBDas/
-	z66wPZHaN7MVRuPEy7js0VPAGRKa2f8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707860354;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTiPPmHDw2aZAXgldAitJ1VDBOydclpHipfi4Efd+uU=;
-	b=3eI7Vgg9TOCwpoU123vWAup+/YF9/lGDVBVSiMJHXH7SC/KLKaASnd/2cr5V1zKJpRg+iK
-	02gjDHGZ8qCE5dBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707860353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTiPPmHDw2aZAXgldAitJ1VDBOydclpHipfi4Efd+uU=;
-	b=Jh56rXStMSm4uiLr+Ly4+66CE77knqnOzeFbyC6SfD5CDcfRODrUN6GeXDfJcQUXcB2U74
-	Pz20djMRl7FeoWBMgx+xU8ETDu3Sxr7NNu13J5dsbpa2+R4G7+Spm3oFo0IyXhBDL+7gz8
-	Y/adp1HkkIBKm+ZBefiHXUMNXj9EZMM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707860353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dTiPPmHDw2aZAXgldAitJ1VDBOydclpHipfi4Efd+uU=;
-	b=T7+nWStY/NnsxwQHVTBCTEU5mF/3aKc/5vfsfvbZNkdUdXrFF/dQ/qLkV06/c6+y9mCVwA
-	m419U2pMxk64p3Dw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 352E3136F5;
-	Tue, 13 Feb 2024 21:39:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 8Ao0BoDhy2XzGwAAD6G6ig
-	(envelope-from <jdelvare@suse.de>); Tue, 13 Feb 2024 21:39:12 +0000
-Date: Tue, 13 Feb 2024 22:39:08 +0100
-From: Jean Delvare <jdelvare@suse.de>
-To: Mateusz =?UTF-8?B?Sm/FhGN6eWs=?= <mat.jonczyk@o2.pl>
-Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org, Bjorn Helgaas
- <bhelgaas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
- <lenb@kernel.org>, Borislav Petkov <bp@suse.de>
-Subject: Re: [PATCH v4] acpi,pci: warn about duplicate IRQ routing entries
- returned from _PRT
-Message-ID: <20240213223908.435aec7b@endymion.delvare>
-In-Reply-To: <20231226124254.66102-1-mat.jonczyk@o2.pl>
-References: <20231226124254.66102-1-mat.jonczyk@o2.pl>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1707862447; c=relaxed/simple;
+	bh=ENAzlVwIn8iATwoFyUwcJu/H29SD7Tn0lylWDcYosr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=b3Vl7MokJVK+UD6fSQ+3xIxIsqjRzTMK9uY1+6knEpiohr45LSCYAtnhjWsWWYBLN/YtoX/qlwVhOpTjVzJknEJPPDK336OEzU/NQr9hJE43swB6tSWivsRPh44xdt6t6EvpDvAHzKHxQoVItAAeEWR86qFLfXm/2BoOkA0cEYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dMpBcMB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6C5C433C7;
+	Tue, 13 Feb 2024 22:14:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707862447;
+	bh=ENAzlVwIn8iATwoFyUwcJu/H29SD7Tn0lylWDcYosr8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=dMpBcMB0bqcExy+SMPIE6oNVejB8baAtAjplWDwOD2B6k8kGwjuI0/NQl+O8tzRF7
+	 QujJNg/mpCJHqHhYHSQTUfuMjJda8qKGQ8Kf1ExJ2q8RrPgMXWnIy94zy/afn/87cX
+	 OR9JP308n6DDYd9RTjclQSqM0ktukBbp6gJPyYLrahIaMBVqcjsAwptVqOrhKRTkeF
+	 QyH63FRx3olmW3W/RRvgx0pHw1k2NG/bgQYU9RTz1eZA+P/7f3SasoNgw8NzXbjf6x
+	 q3emff/jhAkt5aWFIVpSwNYt0BtCT0zaRNHd3Tacp84EUAAy4R3UK3cYUDCaDWbaKe
+	 jWs5VIvX3/4rw==
+Date: Tue, 13 Feb 2024 16:14:05 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Onkarnarth <onkarnath.1@samsung.com>
+Cc: rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	viresh.kumar@linaro.org, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	r.thapliyal@samsung.com, maninder1.s@samsung.com,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Subject: Re: [PATCH v3 1/2] ACPI: use %pe for better readability of errors
+ while printing
+Message-ID: <20240213221405.GA1230483@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Jh56rXSt;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=T7+nWStY
-X-Spamd-Result: default: False [-3.31 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 HAS_ORG_HEADER(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 TO_MATCH_ENVRCPT_SOME(0.00)[];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[9];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:url,suse.de:dkim,suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 7A9E92212F
-X-Spam-Level: 
-X-Spam-Score: -3.31
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240213074416.2169929-1-onkarnath.1@samsung.com>
 
-Hi Mateusz,
+On Tue, Feb 13, 2024 at 01:14:15PM +0530, Onkarnarth wrote:
+> From: Onkarnath <onkarnath.1@samsung.com>
+> 
+> As %pe is already introduced, it's better to use it in place of (%ld) for
+> printing errors in logs. It would enhance readability of logs.
 
-On Tue, 26 Dec 2023 13:42:54 +0100, Mateusz Jo=C5=84czyk wrote:
-> On some platforms, the ACPI _PRT function returns duplicate interrupt
-> routing entries. Linux uses the first matching entry, but sometimes the
-> second matching entry contains the correct interrupt vector.
->=20
-> As a debugging aid, print a warning to dmesg if duplicate interrupt
-> routing entries are present. This way, we could check how many models
-> are affected.
->=20
-> This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
-> SMBus controller. This controller is nonfunctional unless its interrupt
-> usage is disabled (using the "disable_features=3D0x10" module parameter).
->=20
-> After investigation, it turned out that the driver was using an
-> incorrect interrupt vector: in lspci output for this device there was:
->         Interrupt: pin B routed to IRQ 19
-> but after running i2cdetect (without using any i2c-i801 module
-> parameters) the following was logged to dmesg:
->=20
->         [...]
->         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->         i801_smbus 0000:00:1f.3: Transaction timeout
->         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->         i801_smbus 0000:00:1f.3: Transaction timeout
->         irq 17: nobody cared (try booting with the "irqpoll" option)
->=20
-> Existence of duplicate entries in a table returned by the _PRT method
-> was confirmed by disassembling the ACPI DSDT table.
->=20
-> Windows XP is using IRQ3 (as reported by HWiNFO32 and in the Device
-> Manager), which is neither of the two vectors returned by _PRT.
-> As HWiNFO32 decoded contents of the SPD EEPROMs, the i2c-i801 device is
-> working under Windows. It appears that Windows has reconfigured the
-> chipset independently to use another interrupt vector for the device.
-> This is possible, according to the chipset datasheet [1], page 436 for
-> example (PIRQ[n]_ROUT=E2=80=94PIRQ[A,B,C,D] Routing Control Register).
->=20
-> [1] https://www.intel.com/content/dam/doc/datasheet/io-controller-hub-9-d=
-atasheet.pdf
->=20
-> Signed-off-by: Mateusz Jo=C5=84czyk <mat.jonczyk@o2.pl>
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Borislav Petkov <bp@suse.de>
-> Cc: Jean Delvare <jdelvare@suse.de>
-> Previously-reviewed-by: Jean Delvare <jdelvare@suse.de>
-> Previously-tested-by: Jean Delvare <jdelvare@suse.de>
+Here are some more candidates that I see regularly:
 
-I'm still happy with this patch, so you can change that back to:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/base/dd.c?id=v6.7#n590
 
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Tested-by: Jean Delvare <jdelvare@suse.de>
+Something like:
 
-Thanks,
---=20
-Jean Delvare
-SUSE L3 Support
+  git grep "\(_info(\|_warn(\).*%d"
+
+finds a ton of them (plus a lot of unrelated hits, of course).  If you
+were to do this for drivers/pci/, I would want them all for the whole
+directory in a single patch, and I would take the opportunity to make
+minor changes so the style is more consistent, e.g.,
+"... failed (%pe)" or something.
+
+Bjorn
 
