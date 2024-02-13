@@ -1,208 +1,131 @@
-Return-Path: <linux-acpi+bounces-3452-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3453-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928B4853231
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 14:46:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 053E4853397
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC3F28180F
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 13:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7AE1F28923
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C39356468;
-	Tue, 13 Feb 2024 13:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE065DF26;
+	Tue, 13 Feb 2024 14:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nclP84Ux"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLOvO8N+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8985655C1D
-	for <linux-acpi@vger.kernel.org>; Tue, 13 Feb 2024 13:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20405DF1F;
+	Tue, 13 Feb 2024 14:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707831976; cv=none; b=gSeJ9HFRGvvwpIEo2+vyCDPQ0EZ1mZMbN3ti29fASWULjIFUDirrHtIxOzIGqd7gtFMQ94pg03Iwr/ilsUCDP5CZool6uZ0qx/OX9BeSPKqnrGbqLv3h+lePkC3xAw4IU81lese5Jj0Q4LUTDzxiSI7eb51+hmSwdvAcem9HeH4=
+	t=1707835894; cv=none; b=ItV0Cit+4p+1AbO/5MH14mqMIEdM6nrPCO3c56KCh2HVvbfvpFC5Zit8PYGgoZ+3ZPbdSq4n5IRv6Vbx41NkK/XNF77NTOgu82KZxyQdV5Lv93IbHU8v3dmX699o1W7SLUEGaSKAWvEmMC5Vw32HcO4uiMbWS5zgaJmI+AhSMBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707831976; c=relaxed/simple;
-	bh=8rzeWomKjFDbpxN+10h1iEcLWtkTj9WveWna+xoInh8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VssCENQ8wPFLnnu+pZSZeM1ahb9F3rwDCs5j1xDGPJ5ojDjqhWDN3BmH1r17DUNj2SIGMub52uZvEYwTTxmRSqCjt9Knnn3lt75WZvawN/j0ptnWPimjEwOgIrEXTGUqsSYPNQhNiyBG/GCvy5FqKZmgi3zCXp9zDzADgN1sYxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nclP84Ux; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707831975; x=1739367975;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8rzeWomKjFDbpxN+10h1iEcLWtkTj9WveWna+xoInh8=;
-  b=nclP84UxoLapnaBLTXt2RQSza61tPTnK/sIgaMUYT5AE242FhQOe+mws
-   kjtU7nMclPfQGDmJZxmXdzZu+wrmlhYhd8oPqIjynbs8qIORcg78dkzgf
-   z9niucSVN+tqfaN2l+vFKem7tZoHKLVnG0C6ignZdjfxrNKLKLWcFGZg3
-   HsXO4bAbELR4LvX9xM0N+GGXZVDftY/MMQgjwO4Hu9T5H142tmUtwSs+B
-   kdOT3PWxuyxS9ag4tKLh2UgPDlELfYlKZez/+YC2gsGjrXzNE5xqRDWWS
-   qsCQMFZKGCRHyKcjLOV/4xzZRsRODfZvLaAgxiIwJikHH203lZ4ITu92x
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1743675"
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="1743675"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 05:46:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,157,1705392000"; 
-   d="scan'208";a="3207230"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 05:46:11 -0800
-Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 5A7E211F9DB;
-	Tue, 13 Feb 2024 15:46:08 +0200 (EET)
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: linux-acpi@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Subject: [PATCH v2 2/2] ACPI: property: Ignore bad graph port nodes on Dell XPS 9315
-Date: Tue, 13 Feb 2024 15:46:06 +0200
-Message-Id: <20240213134606.383817-3-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240213134606.383817-1-sakari.ailus@linux.intel.com>
-References: <20240213134606.383817-1-sakari.ailus@linux.intel.com>
+	s=arc-20240116; t=1707835894; c=relaxed/simple;
+	bh=DA7XyugR56rHmd6lff3TrQPIS1ykFC2LcDFfHg0VqqM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gKwnjnzKJ0l+JPL8D1A6bDCE2v/A1uXaM1oZlZDnTz9WZEkpTSPoq4gZNTdGP3qdYHrf2YqFXUt5IhA7NJ4KYy9hLbjuV/2JjQDsaFp2a9HITaa4b3sV+Vitdxx8TxZ20sjYp/Xtqnlo/fm9RW4fzTOa0Jk6wOfq2uF5YdKTzKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLOvO8N+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C57EC43399;
+	Tue, 13 Feb 2024 14:51:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707835894;
+	bh=DA7XyugR56rHmd6lff3TrQPIS1ykFC2LcDFfHg0VqqM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YLOvO8N+mj5s1gLoQ4l8kWQPX94KxNmu1vXJXLq2m+fVEaUb25XDWhvAjQ5vuX0QE
+	 ps5rf3S0cxBRShYe9DGQa1uaPGk/2LKPA8VOUd4fzyqwNgdXcU9mmGB1bujJ/1RleC
+	 zhTmt+MoWeGPVJTpFVezCaYdnzoIiNyXSlXgFbe26nw+wZMDLHGRwtJnkenU+Qnp9X
+	 ZwiFWpwKtHsNB23prNGZjopxtxhxyBE4+0WQ6dNrJ/QLbcJHw57mE877diGmLsKrzQ
+	 3vfHBGFKCT74PeHpf/g4XzLTNFfroEXK48lpQ+tgmo+KwjfMtW676GtguxyipYddy7
+	 FHqJ6qdcjHGuw==
+Date: Tue, 13 Feb 2024 08:51:31 -0600
+From: Rob Herring <robh@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Saravana Kannan <saravanak@google.com>
+Cc: Nuno Sa <nuno.sa@analog.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+ destroying the changeset
+Message-ID: <20240213145131.GA1180152-robh@kernel.org>
+References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
+ <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
+ <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
 
-Some systems were shipped with both Windows and Linux camera descriptions.
-In general, if Linux description exist, they will be used and Windows
-description ignored.
+On Mon, Feb 12, 2024 at 01:10:27PM +0100, Nuno Sá wrote:
+> On Mon, 2024-02-05 at 13:09 +0100, Nuno Sa wrote:
+> > Device links will drop their supplier + consumer refcounts
+> > asynchronously. That means that the refcount of the of_node attached to
+> > these devices will also be dropped asynchronously and so we cannot
+> > guarantee the DT overlay assumption that the of_node refcount must be 1 in
+> > __of_changeset_entry_destroy().
+> > 
+> > Given the above, call the new fwnode_links_flush_queue() helper to flush
+> > the devlink workqueue so we can be sure that all links are dropped before
+> > doing the proper checks.
+> > 
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> >  drivers/of/dynamic.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > index 3bf27052832f..b7153c72c9c9 100644
+> > --- a/drivers/of/dynamic.c
+> > +++ b/drivers/of/dynamic.c
+> > @@ -14,6 +14,7 @@
+> >  #include <linux/slab.h>
+> >  #include <linux/string.h>
+> >  #include <linux/proc_fs.h>
+> > +#include <linux/fwnode.h>
+> >  
+> >  #include "of_private.h"
+> >  
+> > @@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
+> >  
+> >  static void __of_changeset_entry_destroy(struct of_changeset_entry *ce)
+> >  {
+> > +	/*
+> > +	 * device links drop their device references (and hence their of_node
+> > +	 * references) asynchronously on a dedicated workqueue. Hence we need
+> > +	 * to flush it to make sure everything is done before doing the below
+> > +	 * checks.
+> > +	 */
+> > +	fwnode_links_flush_queue();
+> >  	if (ce->action == OF_RECONFIG_ATTACH_NODE &&
+> >  	    of_node_check_flag(ce->np, OF_OVERLAY)) {
+> >  		if (kref_read(&ce->np->kobj.kref) > 1) {
+> > 
+> 
+> Hi Rob and Frank,
+> 
+> Any way you could take a look at this and see if you're ok with the change in the
+> overlay code? 
+> 
+> On the devlink side , we already got the ok from Rafael.
 
-In this case the Linux descriptions were buggy so use Windows definition
-instead. This patch ignores the bad graph port nodes on Dell XPS 9315 and
-there are likely other such systems, too. The corresponding information
-has been added to ipu-bridge to cover the missing bits.
+Didn't Saravana say he was going to look at this? As of yesterday, he's 
+also a DT maintainer so deferring to him.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/acpi/internal.h       |  1 +
- drivers/acpi/mipi-disco-img.c | 71 +++++++++++++++++++++++++++++++++++
- drivers/acpi/property.c       |  3 ++
- 3 files changed, 75 insertions(+)
-
-diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 6588525c45ef..e0145df519bd 100644
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -301,5 +301,6 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
- void acpi_mipi_scan_crs_csi2(void);
- void acpi_mipi_init_crs_csi2_swnodes(void);
- void acpi_mipi_crs_csi2_cleanup(void);
-+bool acpi_graph_ignore_port(acpi_handle handle);
- 
- #endif /* _ACPI_INTERNAL_H_ */
-diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.c
-index 7286cf4579bc..da71eb4bf6a6 100644
---- a/drivers/acpi/mipi-disco-img.c
-+++ b/drivers/acpi/mipi-disco-img.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/dmi.h>
- #include <linux/limits.h>
- #include <linux/list.h>
- #include <linux/module.h>
-@@ -723,3 +724,73 @@ void acpi_mipi_crs_csi2_cleanup(void)
- 	list_for_each_entry_safe(csi2, csi2_tmp, &acpi_mipi_crs_csi2_list, entry)
- 		acpi_mipi_del_crs_csi2(csi2);
- }
-+
-+static const struct dmi_system_id dmi_ignore_port_nodes[] = {
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
-+		},
-+	},
-+	{ 0 }
-+};
-+
-+static const char *strnext(const char *s1, const char *s2)
-+{
-+	s1 = strstr(s1, s2);
-+
-+	if (!s1)
-+		return NULL;
-+
-+	return s1 + strlen(s2);
-+}
-+
-+/**
-+ * acpi_graph_ignore_port - Tell whether a port node should be ignored
-+ * @handle: The ACPI handle of the node (which may be a port node)
-+ *
-+ * Returns true if a port node should be ignored and the data to that should
-+ * come from other sources instead (Windows ACPI definitions and
-+ * ipu-bridge). This is currently used to ignore bad port nodes related to IPU6
-+ * ("IPU?") and camera sensor devices ("LNK?") in certain Dell systems with
-+ * Intel VSC.
-+ */
-+bool acpi_graph_ignore_port(acpi_handle handle)
-+{
-+	const char *path = NULL, *orig_path;
-+	static bool dmi_tested, ignore_port;
-+
-+	if (!dmi_tested) {
-+		ignore_port = dmi_first_match(dmi_ignore_port_nodes);
-+		dmi_tested = true;
-+	}
-+
-+	if (!ignore_port)
-+		return false;
-+
-+	/* Check if the device is either "IPU" or "LNK" (sensor). */
-+	orig_path = acpi_handle_path(handle);
-+	if (!orig_path)
-+		return false;
-+	path = strnext(orig_path, "IPU");
-+	if (!path)
-+		path = strnext(orig_path, "LNK");
-+	if (!path)
-+		goto out_free;
-+
-+	if (!(path[0] >= '0' && path[0] <= '9' && path[1] == '.'))
-+		goto out_free;
-+
-+	/* Check if the node has a "PRT" prefix. */
-+	path = strnext(path, "PRT");
-+	if (path && path[0] >= '0' && path[0] <= '9' && !path[1]) {
-+		acpi_handle_debug(handle, "ignoring data node\n");
-+
-+		kfree(orig_path);
-+		return true;
-+	}
-+
-+out_free:
-+	kfree(orig_path);
-+	return false;
-+}
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index a6ead5204046..2b73580c9f36 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -80,6 +80,9 @@ static bool acpi_nondev_subnode_extract(union acpi_object *desc,
- 	struct acpi_data_node *dn;
- 	bool result;
- 
-+	if (acpi_graph_ignore_port(handle))
-+		return false;
-+
- 	dn = kzalloc(sizeof(*dn), GFP_KERNEL);
- 	if (!dn)
- 		return false;
--- 
-2.39.2
-
+Rob
 
