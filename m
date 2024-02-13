@@ -1,154 +1,216 @@
-Return-Path: <linux-acpi+bounces-3439-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3440-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F157A8527A8
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 04:13:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09FBC852817
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 06:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6481285425
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 03:13:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC5F1C23224
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 05:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE968C0A;
-	Tue, 13 Feb 2024 03:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853461171D;
+	Tue, 13 Feb 2024 05:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPzOyK8W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6C7A923;
-	Tue, 13 Feb 2024 03:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B43C9479;
+	Tue, 13 Feb 2024 05:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707794030; cv=none; b=kSITJzlVInch9Rp8MN9WL0InEX0mr9H7VfTcxvk5fx46PypfLvDcG2UlOkEhGZoWFypOJSzqnG+Qbyus8Kxno59skxslFuU5jqd+P0kZM4856eTM66dIKaIz528NAFe9nY2zAu922YH3CMrzPea1Rb8ZTpRTYMjtHO92WDNXzas=
+	t=1707800543; cv=none; b=iMEnYWPmgwNHq/upJ7Dmac56T0t/lvc6nlj3sIGVw7imCjv/28W7s70oh2A9JY2S4718PwdtA+P76SQaaw2UP3tsEYY0VFHN+qPWP2SFMIi3ufvONfArCij5q2TgGTbjUffKDW/PNYIv0o2GUxOb/QZTkfVJK79+UFohiQXP2VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707794030; c=relaxed/simple;
-	bh=qfdeYX1WSeI67xsYjil953V5Odinn00bOIHp83J4Uys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eUarYANwm30R9EuGFYZzev+j4V0364a5fM5DujDgSfPBPC2/Pv1Uuhd1saMqb2M01DwMMxMt+OOxr5np9+uYJppMPrNsO7nWIlm9mkFHzO700XOJmKntKTGeVad2RmgWryBv5s2UCR74cSZP3F4jJY4OigDGXrIvvwxrF45M6pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B30DDA7;
-	Mon, 12 Feb 2024 19:14:28 -0800 (PST)
-Received: from [10.162.41.8] (a077893.blr.arm.com [10.162.41.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 164D33F5A1;
-	Mon, 12 Feb 2024 19:13:42 -0800 (PST)
-Message-ID: <0c65f3b0-a879-444c-b0a4-4af485e72166@arm.com>
-Date: Tue, 13 Feb 2024 08:43:39 +0530
+	s=arc-20240116; t=1707800543; c=relaxed/simple;
+	bh=BXxsbJthbAePU6FxYljhSfyNi4QFVAtjFZAvf/EgFsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LIsQihIjimBV0b0AggxQB/ES/6sJQf9SC98wU/OwfCTaqrIxm4h4uIpZKDYwdsJ2O/cWOmoKkOL3784GJ5t1nXggs+crxwRFNmQPgTlPXahngDIzo7ROPr0kCM1SzIdo3dgVDylFqoAkcFhNCam+SsJnlXNuH3Qt43AmsAjVnZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPzOyK8W; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707800541; x=1739336541;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=BXxsbJthbAePU6FxYljhSfyNi4QFVAtjFZAvf/EgFsc=;
+  b=mPzOyK8Wocb0OTVM1hvIY/kq20kT5MBnedIcwIsTkEEI+K/NpFuatzSL
+   UhbXacQN+PW3kp2xcRfePiMLTdpsH4SldKafWEZhBUfB2+ZP7OlHolW5N
+   iwhqWybiDADzyW5VpCnExenFbygbXJ/H2APhHtv69z/+ReRS04HI9sfeP
+   v+trnQO4vpRjaC9ySKmIbLczQ8cdth1ZU6VUBe7iNQ6nkTM6KRMsjsNDC
+   2iWLPEhmiBO/5oG4jai5Ficu0pBs9fUkp9RguFTjMlITFiUkWPkKe86dt
+   O0jfVud+x41BdBoZv8JQtjEBzeQGVh2JEziNLIrKXlXuzEAcSfOq+NBcq
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1949744"
+X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
+   d="scan'208";a="1949744"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 21:02:20 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
+   d="scan'208";a="3087885"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 12 Feb 2024 21:02:18 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rZkvw-0007Wi-1G;
+	Tue, 13 Feb 2024 05:02:16 +0000
+Date: Tue, 13 Feb 2024 13:02:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge 76/104]
+ drivers/thermal/intel/intel_pch_thermal.c:235:45: error: incompatible
+ pointer to integer conversion passing 'struct thermal_trip *' to parameter
+ of type 'int'
+Message-ID: <202402131207.MEDK8odK-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 03/11] coresight: tmc: Extract device properties from
- AMBA pid based table lookup
-Content-Language: en-US
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
- <20240123054608.1790189-4-anshuman.khandual@arm.com>
- <44597c9a-79bd-40f8-87a7-b53582132583@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <44597c9a-79bd-40f8-87a7-b53582132583@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   536723ad19c051cec0b5fa9793100f26c70b28d0
+commit: 8c6e2196a852052fa1696cfe86d1da366f725b19 [76/104] thermal: intel: Discard trip tables after zone registration
+config: i386-buildonly-randconfig-001-20240213 (https://download.01.org/0day-ci/archive/20240213/202402131207.MEDK8odK-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240213/202402131207.MEDK8odK-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402131207.MEDK8odK-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/thermal/intel/intel_pch_thermal.c:235:45: error: incompatible pointer to integer conversion passing 'struct thermal_trip *' to parameter of type 'int' [-Wint-conversion]
+     235 |         nr_trips += pch_wpt_add_acpi_psv_trip(ptd, &ptd_trips[nr_trips]);
+         |                                                    ^~~~~~~~~~~~~~~~~~~~
+   drivers/thermal/intel/intel_pch_thermal.c:114:74: note: passing argument to parameter 'trip' here
+     114 | static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd, int trip)
+         |                                                                          ^
+   1 error generated.
 
 
+vim +235 drivers/thermal/intel/intel_pch_thermal.c
 
-On 2/12/24 17:43, Suzuki K Poulose wrote:
-> On 23/01/2024 05:46, Anshuman Khandual wrote:
->> This extracts device properties from AMBA pid based table lookup. This also
->> defers tmc_etr_setup_caps() after the coresight device has been initialized
->> so that PID value can be read.
->>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: James Clark <james.clark@arm.com>
->> Cc: coresight@lists.linaro.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   .../hwtracing/coresight/coresight-tmc-core.c  | 19 +++++++++++++------
->>   1 file changed, 13 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
->> index 7ec5365e2b64..e71db3099a29 100644
->> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
->> @@ -370,16 +370,24 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
->>       return (auth & TMC_AUTH_NSID_MASK) == 0x3;
->>   }
->>   +#define TMC_AMBA_MASK 0xfffff
->> +
->> +static const struct amba_id tmc_ids[];
->> +
->>   /* Detect and initialise the capabilities of a TMC ETR */
->> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
->> +static int tmc_etr_setup_caps(struct device *parent, u32 devid)
->>   {
->>       int rc;
->> -    u32 dma_mask = 0;
->> +    u32 tmc_pid, dma_mask = 0;
->>       struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
->> +    void *dev_caps;
->>         if (!tmc_etr_has_non_secure_access(drvdata))
->>           return -EACCES;
->>   +    tmc_pid = coresight_get_pid(&drvdata->csdev->access) & TMC_AMBA_MASK;
->> +    dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
->> +
->>       /* Set the unadvertised capabilities */
->>       tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
->>   @@ -497,10 +505,6 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->>           desc.type = CORESIGHT_DEV_TYPE_SINK;
->>           desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
->>           desc.ops = &tmc_etr_cs_ops;
->> -        ret = tmc_etr_setup_caps(dev, devid,
->> -                     coresight_get_uci_data(id));
->> -        if (ret)
->> -            goto out;
->>           idr_init(&drvdata->idr);
->>           mutex_init(&drvdata->idr_mutex);
->>           dev_list = &etr_devs;
->> @@ -539,6 +543,9 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->>           goto out;
->>       }
->>   +    if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
->> +        ret = tmc_etr_setup_caps(dev, devid);
->> +
-> 
-> With this change, we silently accept an ETR that may only have "SECURE" access only and crash later while we try to enable tracing. You could
-> pass in the "access" (which is already in 'desc.access' in the original
-> call site and deal with it ?
+   158	
+   159	static int intel_pch_thermal_probe(struct pci_dev *pdev,
+   160					   const struct pci_device_id *id)
+   161	{
+   162		struct thermal_trip ptd_trips[PCH_MAX_TRIPS] = { 0 };
+   163		enum pch_board_ids board_id = id->driver_data;
+   164		struct pch_thermal_device *ptd;
+   165		int nr_trips = 0;
+   166		u16 trip_temp;
+   167		u8 tsel;
+   168		int err;
+   169	
+   170		ptd = devm_kzalloc(&pdev->dev, sizeof(*ptd), GFP_KERNEL);
+   171		if (!ptd)
+   172			return -ENOMEM;
+   173	
+   174		pci_set_drvdata(pdev, ptd);
+   175		ptd->pdev = pdev;
+   176	
+   177		err = pci_enable_device(pdev);
+   178		if (err) {
+   179			dev_err(&pdev->dev, "failed to enable pci device\n");
+   180			return err;
+   181		}
+   182	
+   183		err = pci_request_regions(pdev, driver_name);
+   184		if (err) {
+   185			dev_err(&pdev->dev, "failed to request pci region\n");
+   186			goto error_disable;
+   187		}
+   188	
+   189		ptd->hw_base = pci_ioremap_bar(pdev, 0);
+   190		if (!ptd->hw_base) {
+   191			err = -ENOMEM;
+   192			dev_err(&pdev->dev, "failed to map mem base\n");
+   193			goto error_release;
+   194		}
+   195	
+   196		/* Check if BIOS has already enabled thermal sensor */
+   197		if (WPT_TSEL_ETS & readb(ptd->hw_base + WPT_TSEL)) {
+   198			ptd->bios_enabled = true;
+   199			goto read_trips;
+   200		}
+   201	
+   202		tsel = readb(ptd->hw_base + WPT_TSEL);
+   203		/*
+   204		 * When TSEL's Policy Lock-Down bit is 1, TSEL become RO.
+   205		 * If so, thermal sensor cannot enable. Bail out.
+   206		 */
+   207		if (tsel & WPT_TSEL_PLDB) {
+   208			dev_err(&ptd->pdev->dev, "Sensor can't be enabled\n");
+   209			err = -ENODEV;
+   210			goto error_cleanup;
+   211		}
+   212	
+   213		writeb(tsel|WPT_TSEL_ETS, ptd->hw_base + WPT_TSEL);
+   214		if (!(WPT_TSEL_ETS & readb(ptd->hw_base + WPT_TSEL))) {
+   215			dev_err(&ptd->pdev->dev, "Sensor can't be enabled\n");
+   216			err = -ENODEV;
+   217			goto error_cleanup;
+   218		}
+   219	
+   220	read_trips:
+   221		trip_temp = readw(ptd->hw_base + WPT_CTT);
+   222		trip_temp &= 0x1FF;
+   223		if (trip_temp) {
+   224			ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
+   225			ptd_trips[nr_trips++].type = THERMAL_TRIP_CRITICAL;
+   226		}
+   227	
+   228		trip_temp = readw(ptd->hw_base + WPT_PHL);
+   229		trip_temp &= 0x1FF;
+   230		if (trip_temp) {
+   231			ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
+   232			ptd_trips[nr_trips++].type = THERMAL_TRIP_HOT;
+   233		}
+   234	
+ > 235		nr_trips += pch_wpt_add_acpi_psv_trip(ptd, &ptd_trips[nr_trips]);
+   236	
+   237		ptd->tzd = thermal_zone_device_register_with_trips(board_names[board_id],
+   238								   ptd_trips, nr_trips,
+   239								   ptd, &tzd_ops,
+   240								   NULL, 0, 0);
+   241		if (IS_ERR(ptd->tzd)) {
+   242			dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
+   243				board_names[board_id]);
+   244			err = PTR_ERR(ptd->tzd);
+   245			goto error_cleanup;
+   246		}
+   247		err = thermal_zone_device_enable(ptd->tzd);
+   248		if (err)
+   249			goto err_unregister;
+   250	
+   251		return 0;
+   252	
+   253	err_unregister:
+   254		thermal_zone_device_unregister(ptd->tzd);
+   255	error_cleanup:
+   256		iounmap(ptd->hw_base);
+   257	error_release:
+   258		pci_release_regions(pdev);
+   259	error_disable:
+   260		pci_disable_device(pdev);
+   261		dev_err(&pdev->dev, "pci device failed to probe\n");
+   262		return err;
+   263	}
+   264	
 
-Just wondering, if something like the following will help ? A failed tmc_etr_setup_caps()
-because of failed tmc_etr_has_non_secure_access(), will unregister the coresight device
-before returning.
-
---- a/drivers/hwtracing/coresight/coresight-tmc-core.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-@@ -538,8 +538,13 @@ static int __tmc_probe(struct device *dev, struct resource *res)
-                goto out;
-        }
- 
--       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
-+       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR) {
-                ret = tmc_etr_setup_caps(dev, devid);
-+               if (ret) {
-+                       coresight_unregister(drvdata->csdev);
-+                       goto out;
-+               }
-+       }
- 
-        drvdata->miscdev.name = desc.name;
-        drvdata->miscdev.minor = MISC_DYNAMIC_MINOR;
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
