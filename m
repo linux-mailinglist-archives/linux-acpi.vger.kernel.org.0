@@ -1,73 +1,91 @@
-Return-Path: <linux-acpi+bounces-3440-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3441-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FBC852817
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 06:02:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90D78528A1
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 07:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EC5F1C23224
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 05:02:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39DE21F22B87
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Feb 2024 06:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853461171D;
-	Tue, 13 Feb 2024 05:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9235212E40;
+	Tue, 13 Feb 2024 06:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPzOyK8W"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RkRlrIVt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B43C9479;
-	Tue, 13 Feb 2024 05:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4619171A5
+	for <linux-acpi@vger.kernel.org>; Tue, 13 Feb 2024 06:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707800543; cv=none; b=iMEnYWPmgwNHq/upJ7Dmac56T0t/lvc6nlj3sIGVw7imCjv/28W7s70oh2A9JY2S4718PwdtA+P76SQaaw2UP3tsEYY0VFHN+qPWP2SFMIi3ufvONfArCij5q2TgGTbjUffKDW/PNYIv0o2GUxOb/QZTkfVJK79+UFohiQXP2VE=
+	t=1707804850; cv=none; b=auMyKZmX4N5yEGfzFcSy5/JIUh8rRsrgl9EVQ6ii07MgFOHhwkbQvfoZpv24ompzrMaTxFDDhhXkV0pVBHiAfXF08SJkvXupB7g9Hx4U1tj8wcMA+Q7NjnDTnb1HhkVvAyEEHnBjWDHcdBkEnZUGM/r5/n+jLafYd1ncB9kn+sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707800543; c=relaxed/simple;
-	bh=BXxsbJthbAePU6FxYljhSfyNi4QFVAtjFZAvf/EgFsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=LIsQihIjimBV0b0AggxQB/ES/6sJQf9SC98wU/OwfCTaqrIxm4h4uIpZKDYwdsJ2O/cWOmoKkOL3784GJ5t1nXggs+crxwRFNmQPgTlPXahngDIzo7ROPr0kCM1SzIdo3dgVDylFqoAkcFhNCam+SsJnlXNuH3Qt43AmsAjVnZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPzOyK8W; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707800541; x=1739336541;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=BXxsbJthbAePU6FxYljhSfyNi4QFVAtjFZAvf/EgFsc=;
-  b=mPzOyK8Wocb0OTVM1hvIY/kq20kT5MBnedIcwIsTkEEI+K/NpFuatzSL
-   UhbXacQN+PW3kp2xcRfePiMLTdpsH4SldKafWEZhBUfB2+ZP7OlHolW5N
-   iwhqWybiDADzyW5VpCnExenFbygbXJ/H2APhHtv69z/+ReRS04HI9sfeP
-   v+trnQO4vpRjaC9ySKmIbLczQ8cdth1ZU6VUBe7iNQ6nkTM6KRMsjsNDC
-   2iWLPEhmiBO/5oG4jai5Ficu0pBs9fUkp9RguFTjMlITFiUkWPkKe86dt
-   O0jfVud+x41BdBoZv8JQtjEBzeQGVh2JEziNLIrKXlXuzEAcSfOq+NBcq
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10982"; a="1949744"
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="1949744"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2024 21:02:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,156,1705392000"; 
-   d="scan'208";a="3087885"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 12 Feb 2024 21:02:18 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rZkvw-0007Wi-1G;
-	Tue, 13 Feb 2024 05:02:16 +0000
-Date: Tue, 13 Feb 2024 13:02:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, devel@acpica.org,
-	linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge 76/104]
- drivers/thermal/intel/intel_pch_thermal.c:235:45: error: incompatible
- pointer to integer conversion passing 'struct thermal_trip *' to parameter
- of type 'int'
-Message-ID: <202402131207.MEDK8odK-lkp@intel.com>
+	s=arc-20240116; t=1707804850; c=relaxed/simple;
+	bh=WSI8jGoehl7pEfJRdnqy5FfnvloMDdkYnJeeNSAa+7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SwAmUd5y1+bDYmrD9Lfb4I3XkTVxxFx3n4cgxmNoyalhEkL8PgtvZmgLO0iQTovWeAbeawdt/WZEzbtHlMXx1ZyzGM54rW58utug+kYBHnfktq8Jb9K1ZHBrucCAKls28z26gDi4Cp2M/YbbakU8qhsaDv/XmBAxFhFQTU9H97U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RkRlrIVt; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3be9e11ee59so1972833b6e.1
+        for <linux-acpi@vger.kernel.org>; Mon, 12 Feb 2024 22:14:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707804848; x=1708409648; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ur4VuvuIiaAwMddxcZFRFhOdWSxGyrzbMVOGTTJmylk=;
+        b=RkRlrIVtvFWaV6M3Zrjmr2Yqi+eA3QjqrqIDa5SzepyDiu8svTjWicqxRhrGTfdrA0
+         kAgqBAYLe3ZgD09cgCkZ2BX/N3c7r12KzBTPhH/cQ4THfetcozNILefdVh/aAiTQXg4d
+         hsAm9eDx98G4nd3Em1WaRefzJlB3doq/vrSwQ4X40+xWa2F2A2SYaWMFqBAI8fsIvtz1
+         InTlagq/GOtAUe5gGrOK0XMnPn6NdaEF9FAri3tfyPkDzb0TolPA6KTUtHbene5ONIBp
+         X/6k5JZPH6t71SoY0Nw0nUVn+45WVt+QG7HKv24AFlTE0M3b+V+Vv0pzhGKvDHn0F1/u
+         gugw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707804848; x=1708409648;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ur4VuvuIiaAwMddxcZFRFhOdWSxGyrzbMVOGTTJmylk=;
+        b=RPCe96T9A82TYXj0+OZ9Cejxwuf+h7N0RrWk27BW0rekyvRZQzCKTjSsUXxqhiMVww
+         ximAJpA1+BNzIpUN4+2W+Z3hrambCYvn+UJcNCpkkSwz8b9K8rbLZbzXcpi3w5LNOEdI
+         AcurSyQJtBqx8ACI3s9vXyRCUx0lW/aSmWhMQEOJjbuf9Gcv1VXpoCDkVsW4hTwI5f0l
+         0+ksmSFMsOZutsyFuqnujOaHfg4k0m4ASj1ORYxZtgaUOIM+ICxpMB2Jg1Y/mtKQ4ADs
+         YyTivNZpJokuhHuw0hQfICJD8Jd2jAFMb94tRlZGgFhh7YmhPwhj9MRTK7S0/TpFKJml
+         wdFA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnZHLPOoCZ0P2vosM6St5UYyPEopYkZ0nGPQYFafoLR0Qm5mZ1IjUfIQRE8MS2fXWoYn5/UoO2EC2ajo/A/uowpnFDyY/edaBXoA==
+X-Gm-Message-State: AOJu0Yw4j9ZjRk6uys75tNRsHTDBQmgX7yoasmIvLQ6PjQlDRKlPO+Ap
+	UCmmoj1mlhYY5ckatE6wIZJZYrw3YhtVww7IztmsBzuYh+/nS31AgxGWUIchwIk=
+X-Google-Smtp-Source: AGHT+IEGOmUGwnD8hUfKM+YyablrKp+JD65rIInkFFmTHlzSJeYRJ9LrnF0X/VGLS3YQf1mZMIo1eg==
+X-Received: by 2002:a05:6808:1642:b0:3bf:f547:dc80 with SMTP id az2-20020a056808164200b003bff547dc80mr8593440oib.21.1707804847757;
+        Mon, 12 Feb 2024 22:14:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUzzeuHzK+n1FavnH8wYNScOfOgLIWwbXOsVQE7ANP8BrcNTf11Q+pyalY0v/Oty8c6ah34H8wUDPjZfrjBH4eSlhaElW7Sov+6egABvS0m/18JR4xAx7R2638x6XniDFKNR2EtX36qwlS6fRMPXSbRL/ZYm9RnIonaKf8FiwkLK6181n+Uof1teKm7pyhuDtasyWDl+XbVJ4rF55SLQdYmIocszKHZ2HZfFEZjy9ZK9RyQFeZpPHOsQxDhxbe3dgpsiLdOockOnNmPdHeyeBSjg1GwEVdWDdurEeC6UPaeyRLxyWyy6o7P8bFTTo6Vjd7EbUHx+XPu3Ek+OYOtSpePxQZdjO84f4vSfZB8s+AGbJr0BmZLtwk4Sd5XAUgo6EcMz3MFdaB+Rb456LGnCvou4Cbc8WXaRmfA7j1zFViZ+wMn3IUBqY1p80ogkg8=
+Received: from localhost ([122.172.83.95])
+        by smtp.gmail.com with ESMTPSA id du17-20020a056a002b5100b006ddcf5d5b0bsm6521173pfb.153.2024.02.12.22.14.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Feb 2024 22:14:07 -0800 (PST)
+Date: Tue, 13 Feb 2024 11:44:05 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [PATCH v1 -next 2/3] cpufreq: Move CPPC configs to common
+ Kconfig and add RISC-V
+Message-ID: <20240213061405.ictoxql2oh5jtg5b@vireshk-i7>
+References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
+ <20240208034414.22579-3-sunilvl@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,141 +94,22 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240208034414.22579-3-sunilvl@ventanamicro.com>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-head:   536723ad19c051cec0b5fa9793100f26c70b28d0
-commit: 8c6e2196a852052fa1696cfe86d1da366f725b19 [76/104] thermal: intel: Discard trip tables after zone registration
-config: i386-buildonly-randconfig-001-20240213 (https://download.01.org/0day-ci/archive/20240213/202402131207.MEDK8odK-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240213/202402131207.MEDK8odK-lkp@intel.com/reproduce)
+On 08-02-24, 09:14, Sunil V L wrote:
+> CPPC related config options are currently defined only in ARM specific
+> file. However, they are required for RISC-V as well. Instead of creating
+> a new Kconfig.riscv file and duplicating them, move them to the common
+> Kconfig file and enable RISC-V too.
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  drivers/cpufreq/Kconfig     | 29 +++++++++++++++++++++++++++++
+>  drivers/cpufreq/Kconfig.arm | 26 --------------------------
+>  2 files changed, 29 insertions(+), 26 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402131207.MEDK8odK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/thermal/intel/intel_pch_thermal.c:235:45: error: incompatible pointer to integer conversion passing 'struct thermal_trip *' to parameter of type 'int' [-Wint-conversion]
-     235 |         nr_trips += pch_wpt_add_acpi_psv_trip(ptd, &ptd_trips[nr_trips]);
-         |                                                    ^~~~~~~~~~~~~~~~~~~~
-   drivers/thermal/intel/intel_pch_thermal.c:114:74: note: passing argument to parameter 'trip' here
-     114 | static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd, int trip)
-         |                                                                          ^
-   1 error generated.
-
-
-vim +235 drivers/thermal/intel/intel_pch_thermal.c
-
-   158	
-   159	static int intel_pch_thermal_probe(struct pci_dev *pdev,
-   160					   const struct pci_device_id *id)
-   161	{
-   162		struct thermal_trip ptd_trips[PCH_MAX_TRIPS] = { 0 };
-   163		enum pch_board_ids board_id = id->driver_data;
-   164		struct pch_thermal_device *ptd;
-   165		int nr_trips = 0;
-   166		u16 trip_temp;
-   167		u8 tsel;
-   168		int err;
-   169	
-   170		ptd = devm_kzalloc(&pdev->dev, sizeof(*ptd), GFP_KERNEL);
-   171		if (!ptd)
-   172			return -ENOMEM;
-   173	
-   174		pci_set_drvdata(pdev, ptd);
-   175		ptd->pdev = pdev;
-   176	
-   177		err = pci_enable_device(pdev);
-   178		if (err) {
-   179			dev_err(&pdev->dev, "failed to enable pci device\n");
-   180			return err;
-   181		}
-   182	
-   183		err = pci_request_regions(pdev, driver_name);
-   184		if (err) {
-   185			dev_err(&pdev->dev, "failed to request pci region\n");
-   186			goto error_disable;
-   187		}
-   188	
-   189		ptd->hw_base = pci_ioremap_bar(pdev, 0);
-   190		if (!ptd->hw_base) {
-   191			err = -ENOMEM;
-   192			dev_err(&pdev->dev, "failed to map mem base\n");
-   193			goto error_release;
-   194		}
-   195	
-   196		/* Check if BIOS has already enabled thermal sensor */
-   197		if (WPT_TSEL_ETS & readb(ptd->hw_base + WPT_TSEL)) {
-   198			ptd->bios_enabled = true;
-   199			goto read_trips;
-   200		}
-   201	
-   202		tsel = readb(ptd->hw_base + WPT_TSEL);
-   203		/*
-   204		 * When TSEL's Policy Lock-Down bit is 1, TSEL become RO.
-   205		 * If so, thermal sensor cannot enable. Bail out.
-   206		 */
-   207		if (tsel & WPT_TSEL_PLDB) {
-   208			dev_err(&ptd->pdev->dev, "Sensor can't be enabled\n");
-   209			err = -ENODEV;
-   210			goto error_cleanup;
-   211		}
-   212	
-   213		writeb(tsel|WPT_TSEL_ETS, ptd->hw_base + WPT_TSEL);
-   214		if (!(WPT_TSEL_ETS & readb(ptd->hw_base + WPT_TSEL))) {
-   215			dev_err(&ptd->pdev->dev, "Sensor can't be enabled\n");
-   216			err = -ENODEV;
-   217			goto error_cleanup;
-   218		}
-   219	
-   220	read_trips:
-   221		trip_temp = readw(ptd->hw_base + WPT_CTT);
-   222		trip_temp &= 0x1FF;
-   223		if (trip_temp) {
-   224			ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
-   225			ptd_trips[nr_trips++].type = THERMAL_TRIP_CRITICAL;
-   226		}
-   227	
-   228		trip_temp = readw(ptd->hw_base + WPT_PHL);
-   229		trip_temp &= 0x1FF;
-   230		if (trip_temp) {
-   231			ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
-   232			ptd_trips[nr_trips++].type = THERMAL_TRIP_HOT;
-   233		}
-   234	
- > 235		nr_trips += pch_wpt_add_acpi_psv_trip(ptd, &ptd_trips[nr_trips]);
-   236	
-   237		ptd->tzd = thermal_zone_device_register_with_trips(board_names[board_id],
-   238								   ptd_trips, nr_trips,
-   239								   ptd, &tzd_ops,
-   240								   NULL, 0, 0);
-   241		if (IS_ERR(ptd->tzd)) {
-   242			dev_err(&pdev->dev, "Failed to register thermal zone %s\n",
-   243				board_names[board_id]);
-   244			err = PTR_ERR(ptd->tzd);
-   245			goto error_cleanup;
-   246		}
-   247		err = thermal_zone_device_enable(ptd->tzd);
-   248		if (err)
-   249			goto err_unregister;
-   250	
-   251		return 0;
-   252	
-   253	err_unregister:
-   254		thermal_zone_device_unregister(ptd->tzd);
-   255	error_cleanup:
-   256		iounmap(ptd->hw_base);
-   257	error_release:
-   258		pci_release_regions(pdev);
-   259	error_disable:
-   260		pci_disable_device(pdev);
-   261		dev_err(&pdev->dev, "pci device failed to probe\n");
-   262		return err;
-   263	}
-   264	
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+viresh
 
