@@ -1,341 +1,341 @@
-Return-Path: <linux-acpi+bounces-3508-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3509-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280968556E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 00:13:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F7E85574C
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 00:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 864371F2154F
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 23:13:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5775B288CAF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 23:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB55C13DB90;
-	Wed, 14 Feb 2024 23:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E681419AE;
+	Wed, 14 Feb 2024 23:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hCw1MKmv"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JT9ibqn5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B7E24B33;
-	Wed, 14 Feb 2024 23:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3F114198B
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Feb 2024 23:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707952411; cv=none; b=NYfJabZ3RdJbAVLSXKC0IPmOUiRauT1ygXXx5uwbtm5ktFrPP4qwflgJifPRQT2faVx03FfhPOY37/lqu1/UMN4jv73ibIt1KVz1QsUO9Cm1P4xZs5BkyEe+4P4mJrdmjj0PLQilwMs8JG7iM4ocIruRXzSBJ3TUvXnapxIkLd4=
+	t=1707953600; cv=none; b=EYjJ9wG8dLCsPB68ZZ4RQ0fB445P8Y8eNt6EHw0NamBl1XEKeCmBCVDLxcr4UNgR/3XOZ3uwJRQmud7DVRc8tinlO3fyzBT5Xf2dQqFxALVLl2WC0vJXpb5kK+cgyTxqt1CD3wcJYcnw1ct4kicPOTQbVAh3dSeGqjnzubSZd4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707952411; c=relaxed/simple;
-	bh=Z1/yl5RJ77QqCCp71GxnprkzPjJyVEnw3bnTqBlUQMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IhjrkkQSvwiV5VJT8pnI/F3PDXpoPGUjkLBULkeWVuIdsjIBQZXnBBmyjrVQU+fNOwn3GBwbnaf57WdpkSi38TO3hSCmpxuupymtwVm4uWWI8K5OzFi4SLuEc4170eptWuEgYfsnkUz9UCXSWi+FNpF8ofophs1/imkTTlUFwAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hCw1MKmv; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707952410; x=1739488410;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Z1/yl5RJ77QqCCp71GxnprkzPjJyVEnw3bnTqBlUQMY=;
-  b=hCw1MKmvNqiDO7/1L/9VPDy6alVhEDrY7mK+AXV5JxG95XwyGYLqL7OH
-   l+z2TcQ8uPpgkrVAfwJhJCRt4zsYf6GdUm4qIncp7dGbl8gY6+99hz6mH
-   SvoSkIYlr3LXkPQgWdt9lHaRKq0TEEGnKrGnZ1Ju65oIDtQmclNgCq8Ug
-   iCYzktPoSYuEkLKXIdpTEqDgcT48Bn5nLHdZHAQXszir1t9XakAUkJK12
-   voQQ6jjM2iIOtBU7tNlMkfv4yMmyxdC/i6Zgu84ZcqegOPbbqOuUNjBMR
-   eL4bBtrpJfTHCnlfc/0xFG6WubCVSnuy0oZNaCZC/iRrE15q1oEd8mYfw
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="13422004"
-X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
-   d="scan'208";a="13422004"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 15:13:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="826369893"
-X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
-   d="scan'208";a="826369893"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga001.jf.intel.com with SMTP; 14 Feb 2024 15:13:23 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 15 Feb 2024 01:13:22 +0200
-Date: Thu, 15 Feb 2024 01:13:22 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
-	amd-gfx@lists.freedesktop.org,
-	"open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
-	linux-fbdev@vger.kernel.org, nouveau@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, intel-xe@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Melissa Wen <mwen@igalia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>
-Subject: Re: [PATCH v6 3/5] drm: Add support to get EDID from ACPI
-Message-ID: <Zc1JEg5mC0ww_BeU@intel.com>
-References: <20240214215756.6530-1-mario.limonciello@amd.com>
- <20240214215756.6530-4-mario.limonciello@amd.com>
+	s=arc-20240116; t=1707953600; c=relaxed/simple;
+	bh=lNniGJRWqs5vkdggTeOdCVtP1zQiJDAGENzRNbCCrRQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gf0moQFefb6C28EqrzzJIYcKN47D9PuGu11I2d9P60fgnxHO7x3NMMsDnMn4cPWsU/c+xqmVx7MOkBDdhIE9BD0h+7EcSvjzMwo7tQJVGfqSyLtl9mxcaEhs1+tEnXuPMA7SemqGEML16/fxZK8gzxp1r+YELTx9bLSk4t0HLyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JT9ibqn5; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-42c70247923so41111cf.1
+        for <linux-acpi@vger.kernel.org>; Wed, 14 Feb 2024 15:33:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707953597; x=1708558397; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oWVOuj4rMvhSLFWAyEWK0L/EZU9RsmUUAUz5wQ+DXOg=;
+        b=JT9ibqn53dRKfmOEdnKPGH2NnhgyEfSS2aQVKMgSqfgZLAhy0ws2l4S5e9gR+MuEso
+         8VXT0OdaNXjtjFp1rv7vmu1/NPW3zNbvOwSXUwYatjR3wGgrTOgqHRhyj7OPspd7pXdS
+         fJVRYl69wHV7p5UJaa5tcAC97HUtHpR4GhHd9wCD5eHgNuXXOAHWB001RDpFqsNEbLr5
+         R8/nikApEf80NAAtvxzKN3qPK29TRtl2ak+z8Q4oFsAMFkXWQb8V/uXR7Cer39pcmFif
+         SkcdlzKmr7PEojp1YxdRdoUA/eg/h6IIFN3tiTNK2MC5hT6mkBL1i2nGusmrZihL3jG+
+         y+AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707953597; x=1708558397;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oWVOuj4rMvhSLFWAyEWK0L/EZU9RsmUUAUz5wQ+DXOg=;
+        b=VaZKI2nvfIPWiZ51qTDkb6RWlnZRSubav1HRkbuqFxu2Ol7S9mfiuRJ2PNJxe6M4n/
+         LPvQpyKuWQGZ/9tUEGkOCxWkjA7oIAySw/to8Kih88O/I2YEaA+gEmozlaPZWbn59UQH
+         C1ioi+Exg1r9diiWNDQyky9Tp6HAVvbh6giRaTk/2l4QSc/Gfdeh4IHvjDGR7irHzvH8
+         bkhTuof8sK3VjUXVGpqCp9j9L+GjOfY6DZ/xpr/pjb71qTdn4CcCaiDztN51YBgaYjAT
+         nzX+/WF7o7YxGG+GvXWK5X6/LPpvJTDKuf56UxmgWtK9sxCgpeXZjog40utYUHGoL/ED
+         wu7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWCm7x0SPNO8/ZZn4HhJXzffeMtOelebpkCemgbJANqZhY7viVXzPrJrM2Wv97zsH7vT2xv7z4NwJ7HQAckuH5i2oc/x2BPfY6zfg==
+X-Gm-Message-State: AOJu0YwkuaPD5lGM0Cgryt6hQsqttL/w0Z48oguz+DhezPudeUNIk9mK
+	AqD53ZypwbbpYkiGkPGbfVlIJuOaHN6QJPr0Iteh9iPZaSRndKRVwiQu7SaYsy74jnHPCxOsnaI
+	SgwLp1odL+mXFmCt6e5EqaRli/GHRgnvI8xIm
+X-Google-Smtp-Source: AGHT+IECnRFS3Tun1wI7WB58zzwXAljD8tU5Rk8kG3Biy3kLhdVu7WmMzEwtevTLy/jxlgfm7mjMfgk9rNK0K90YwDw=
+X-Received: by 2002:ac8:5916:0:b0:42c:59b3:31d5 with SMTP id
+ 22-20020ac85916000000b0042c59b331d5mr515930qty.17.1707953596990; Wed, 14 Feb
+ 2024 15:33:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240214215756.6530-4-mario.limonciello@amd.com>
-X-Patchwork-Hint: comment
+References: <20240212213147.489377-1-saravanak@google.com> <20240212213147.489377-4-saravanak@google.com>
+ <20240214-stable-anytime-b51b898d87af@spud>
+In-Reply-To: <20240214-stable-anytime-b51b898d87af@spud>
+From: Saravana Kannan <saravanak@google.com>
+Date: Wed, 14 Feb 2024 15:32:31 -0800
+Message-ID: <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
+To: Conor Dooley <conor@kernel.org>
+Cc: Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 14, 2024 at 03:57:54PM -0600, Mario Limonciello wrote:
-> Some manufacturers have intentionally put an EDID that differs from
-> the EDID on the internal panel on laptops.  Drivers that prefer to
-> fetch this EDID can set a bit on the drm_connector to indicate that
-> the DRM EDID helpers should try to fetch it and it is preferred if
-> it's present.
-> 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->  drivers/gpu/drm/Kconfig     |   1 +
->  drivers/gpu/drm/drm_edid.c  | 109 +++++++++++++++++++++++++++++++++---
->  include/drm/drm_connector.h |   6 ++
->  include/drm/drm_edid.h      |   1 +
->  4 files changed, 109 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-> index 872edb47bb53..3db89e6af01d 100644
-> --- a/drivers/gpu/drm/Kconfig
-> +++ b/drivers/gpu/drm/Kconfig
-> @@ -8,6 +8,7 @@
->  menuconfig DRM
->  	tristate "Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)"
->  	depends on (AGP || AGP=n) && !EMULATED_CMPXCHG && HAS_DMA
-> +	depends on (ACPI_VIDEO || ACPI_VIDEO=n)
->  	select DRM_PANEL_ORIENTATION_QUIRKS
->  	select DRM_KMS_HELPER if DRM_FBDEV_EMULATION
->  	select FB_CORE if DRM_FBDEV_EMULATION
-> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> index 923c4423151c..cdc30c6d05d5 100644
-> --- a/drivers/gpu/drm/drm_edid.c
-> +++ b/drivers/gpu/drm/drm_edid.c
-> @@ -28,6 +28,7 @@
->   * DEALINGS IN THE SOFTWARE.
->   */
->  
-> +#include <acpi/video.h>
->  #include <linux/bitfield.h>
->  #include <linux/cec.h>
->  #include <linux/hdmi.h>
-> @@ -2188,6 +2189,58 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
->  	return ret == xfers ? 0 : -1;
->  }
->  
-> +/**
-> + * drm_do_probe_acpi_edid() - get EDID information via ACPI _DDC
-> + * @data: struct drm_connector
-> + * @buf: EDID data buffer to be filled
-> + * @block: 128 byte EDID block to start fetching from
-> + * @len: EDID data buffer length to fetch
-> + *
-> + * Try to fetch EDID information by calling acpi_video_get_edid() function.
-> + *
-> + * Return: 0 on success or error code on failure.
-> + */
-> +static int
-> +drm_do_probe_acpi_edid(void *data, u8 *buf, unsigned int block, size_t len)
-> +{
-> +	struct drm_connector *connector = data;
-> +	struct drm_device *ddev = connector->dev;
-> +	struct acpi_device *acpidev = ACPI_COMPANION(ddev->dev);
-> +	unsigned char start = block * EDID_LENGTH;
-> +	void *edid;
-> +	int r;
-> +
-> +	if (!acpidev)
-> +		return -ENODEV;
-> +
-> +	switch (connector->connector_type) {
-> +	case DRM_MODE_CONNECTOR_LVDS:
-> +	case DRM_MODE_CONNECTOR_eDP:
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
+Hi Conon,
 
-We could have other types of connectors that want this too.
-I don't see any real benefit in having this check tbh. Drivers
-should simply notset the flag on connectors where it won't work,
-and only the driver can really know that.
+On Wed, Feb 14, 2024 at 10:49=E2=80=AFAM Conor Dooley <conor@kernel.org> wr=
+ote:
+>
+> On Mon, Feb 12, 2024 at 01:31:44PM -0800, Saravana Kannan wrote:
+> > The post-init-supplier property can be used to break a dependency cycle=
+ by
+> > marking some supplier(s) as a post device initialization supplier(s). T=
+his
+> > allows an OS to do a better job at ordering initialization and
+> > suspend/resume of the devices in a dependency cycle.
+> >
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> >  .../bindings/post-init-supplier.yaml          | 101 ++++++++++++++++++
+> >  MAINTAINERS                                   |  13 +--
+> >  2 files changed, 108 insertions(+), 6 deletions(-)
+> >  create mode 100644 Documentation/devicetree/bindings/post-init-supplie=
+r.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/post-init-supplier.yaml =
+b/Documentation/devicetree/bindings/post-init-supplier.yaml
+> > new file mode 100644
+> > index 000000000000..aab75b667259
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/post-init-supplier.yaml
+> > @@ -0,0 +1,101 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright (c) 2020, Google LLC. All rights reserved.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/post-init-supplier.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Post device initialization supplier
+> > +
+> > +maintainers:
+> > +  - Saravana Kannan <saravanak@google.com>
+> > +
+> > +description: |
+> > +  This property is used to indicate that the device(s) pointed to by t=
+he
+> > +  property are not needed for the initialization of the device that li=
+sts this
+> > +  property.
+>
+> > This property is meaningful only when pointing to direct suppliers
+> > +  of a device that are pointed to by other properties in the device.
+>
+> I don't think this sentence makes sense, or at least it is not easy to
+> parse. It implies that it can "point to" other properties too
 
-> +	/* fetch the entire edid from BIOS */
-> +	r = acpi_video_get_edid(acpidev, ACPI_VIDEO_DISPLAY_LCD, -1, &edid);
-> +	if (r < 0) {
-> +		DRM_DEBUG_KMS("Failed to get EDID from ACPI: %d\n", r);
-> +		return r;
-> +	}
-> +	if (len > r || start > r || start + len > r) {
-> +		r = -EINVAL;
-> +		goto cleanup;
-> +	}
-> +
-> +	memcpy(buf, edid + start, len);
-> +	r = 0;
-> +
-> +cleanup:
-> +	kfree(edid);
-> +
-> +	return r;
-> +}
-> +
->  static void connector_bad_edid(struct drm_connector *connector,
->  			       const struct edid *edid, int num_blocks)
->  {
-> @@ -2621,7 +2674,8 @@ EXPORT_SYMBOL(drm_probe_ddc);
->   * @connector: connector we're probing
->   * @adapter: I2C adapter to use for DDC
->   *
-> - * Poke the given I2C channel to grab EDID data if possible.  If found,
-> + * If the connector allows it, try to fetch EDID data using ACPI. If not found
-> + * poke the given I2C channel to grab EDID data if possible.  If found,
->   * attach it to the connector.
->   *
->   * Return: Pointer to valid EDID or NULL if we couldn't find any.
-> @@ -2629,20 +2683,50 @@ EXPORT_SYMBOL(drm_probe_ddc);
->  struct edid *drm_get_edid(struct drm_connector *connector,
->  			  struct i2c_adapter *adapter)
->  {
-> -	struct edid *edid;
-> +	struct edid *edid = NULL;
->  
->  	if (connector->force == DRM_FORCE_OFF)
->  		return NULL;
->  
-> -	if (connector->force == DRM_FORCE_UNSPECIFIED && !drm_probe_ddc(adapter))
-> -		return NULL;
-> +	if (connector->acpi_edid_allowed)
-> +		edid = _drm_do_get_edid(connector, drm_do_probe_acpi_edid, connector, NULL);
-> +
-> +	if (!edid) {
-> +		if (connector->force == DRM_FORCE_UNSPECIFIED && !drm_probe_ddc(adapter))
-> +			return NULL;
-> +		edid = _drm_do_get_edid(connector, drm_do_probe_ddc_edid, adapter, NULL);
-> +	}
->  
-> -	edid = _drm_do_get_edid(connector, drm_do_probe_ddc_edid, adapter, NULL);
->  	drm_connector_update_edid_property(connector, edid);
->  	return edid;
->  }
->  EXPORT_SYMBOL(drm_get_edid);
->  
-> +/**
-> + * drm_edid_read_acpi - get EDID data, if available
-> + * @connector: connector we're probing
-> + *
-> + * Use the BIOS to attempt to grab EDID data if possible.
-> + *
-> + * The returned pointer must be freed using drm_edid_free().
-> + *
-> + * Return: Pointer to valid EDID or NULL if we couldn't find any.
-> + */
-> +const struct drm_edid *drm_edid_read_acpi(struct drm_connector *connector)
-> +{
-> +	const struct drm_edid *drm_edid;
-> +
-> +	if (connector->force == DRM_FORCE_OFF)
-> +		return NULL;
-> +
-> +	drm_edid = drm_edid_read_custom(connector, drm_do_probe_acpi_edid, connector);
-> +
-> +	/* Note: Do *not* call connector updates here. */
-> +
-> +	return drm_edid;
-> +}
-> +EXPORT_SYMBOL(drm_edid_read_acpi);
-> +
->  /**
->   * drm_edid_read_custom - Read EDID data using given EDID block read function
->   * @connector: Connector to use
-> @@ -2727,10 +2811,11 @@ const struct drm_edid *drm_edid_read_ddc(struct drm_connector *connector,
->  EXPORT_SYMBOL(drm_edid_read_ddc);
->  
->  /**
-> - * drm_edid_read - Read EDID data using connector's I2C adapter
-> + * drm_edid_read - Read EDID data using BIOS or connector's I2C adapter
->   * @connector: Connector to use
->   *
-> - * Read EDID using the connector's I2C adapter.
-> + * Read EDID from BIOS if allowed by connector or by using the connector's
-> + * I2C adapter.
->   *
->   * The EDID may be overridden using debugfs override_edid or firmware EDID
->   * (drm_edid_load_firmware() and drm.edid_firmware parameter), in this priority
-> @@ -2742,10 +2827,18 @@ EXPORT_SYMBOL(drm_edid_read_ddc);
->   */
->  const struct drm_edid *drm_edid_read(struct drm_connector *connector)
->  {
-> +	const struct drm_edid *drm_edid = NULL;
-> +
->  	if (drm_WARN_ON(connector->dev, !connector->ddc))
->  		return NULL;
->  
-> -	return drm_edid_read_ddc(connector, connector->ddc);
-> +	if (connector->acpi_edid_allowed)
+I don't see how this sentence implies this. But open to suggestions on
+how to reword it. I don't want to drop this line entirely though
+because I'm trying to make it clear that this doesn't make a device
+(that's not previously a supplier) into a supplier. It only down
+grades an existing supplier to a post device initialization supplier.
 
-That should probably be called 'prefer_acpi_edid' or something
-since it's the first choice when the flag is set.
+> - but
+> that's not the case. It is only valid to "point to" these suppliers.
+> I'd drop this entirely.
 
-But I'm not so sure there's any real benefit in having this
-flag at all. You anyway have to modify the driver to use this,
-so why not just have the driver do the call directly instead of
-adding this extra detour via the flag?
+>
+> > +
+> > +  A device can list its suppliers in devicetree using one or more of t=
+he
+> > +  standard devicetree bindings. By default, it would be safe to assume=
+ the
+> > +  supplier device can be initialized before the consumer device is ini=
+tialized.
+>
+> "it would be safe to assume" seems odd wording to me - I feel like the
+> default is stronger than "safe to assume". I'd just drop the "would be
+> safe to assume and replace with "is assumed".
 
-> +		drm_edid = drm_edid_read_acpi(connector);
-> +
-> +	if (!drm_edid)
-> +		drm_edid = drm_edid_read_ddc(connector, connector->ddc);
-> +
-> +	return drm_edid;
->  }
->  EXPORT_SYMBOL(drm_edid_read);
->  
-> diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-> index fe88d7fc6b8f..74ed47f37a69 100644
-> --- a/include/drm/drm_connector.h
-> +++ b/include/drm/drm_connector.h
-> @@ -1886,6 +1886,12 @@ struct drm_connector {
->  
->  	/** @hdr_sink_metadata: HDR Metadata Information read from sink */
->  	struct hdr_sink_metadata hdr_sink_metadata;
-> +
-> +	/**
-> +	 * @acpi_edid_allowed: Get the EDID from the BIOS, if available.
-> +	 * This is only applicable to eDP and LVDS displays.
-> +	 */
-> +	bool acpi_edid_allowed;
+Sounds good.
 
-Aren't there other bools/small stuff in there for tighter packing?
+>
+> > +
+> > +  However, that assumption cannot be made when there are cyclic depend=
+encies
+> > +  between devices. Since each device is a supplier (directly or indire=
+ctly) of
+> > +  the others in the cycle, there is no guaranteed safe order for initi=
+alizing
+> > +  the devices in a cycle. We can try to initialize them in an arbitrar=
+y order
+> > +  and eventually successfully initialize all of them, but that doesn't=
+ always
+> > +  work well.
+> > +
+> > +  For example, say,
+> > +  * The device tree has the following cyclic dependency X -> Y -> Z ->=
+ X (where
+> > +    -> denotes "depends on").
+> > +  * But X is not needed to fully initialize Z (X might be needed only =
+when a
+> > +    specific functionality is requested post initialization).
+> > +
+> > +  If all the other -> are mandatory initialization dependencies, then =
+trying to
+> > +  initialize the devices in a loop (or arbitrarily) will always eventu=
+ally end
+> > +  up with the devices being initialized in the order Z, Y and X.
+> > +
+> > +  However, if Y is an optional supplier for X (where X provides limite=
+d
+> > +  functionality when Y is not initialized and providing its services),=
+ then
+> > +  trying to initialize the devices in a loop (or arbitrarily) could en=
+d up with
+> > +  the devices being initialized in the following order:
+> > +
+> > +  * Z, Y and X - All devices provide full functionality
+> > +  * Z, X and Y - X provides partial functionality
+> > +  * X, Z and Y - X provides partial functionality
+> > +
+> > +  However, we always want to initialize the devices in the order Z, Y =
+and X
+> > +  since that provides the full functionality without interruptions.
+> > +
+> > +  One alternate option that might be suggested is to have the driver f=
+or X
+> > +  notice that Y became available at a later point and adjust the funct=
+ionality
+> > +  it provides. However, other userspace applications could have starte=
+d using X
+> > +  with the limited functionality before Y was available and it might n=
+ot be
+> > +  possible to transparently transition X or the users of X to full
+> > +  functionality while X is in use.
+> > +
+> > +  Similarly, when it comes to suspend (resume) ordering, it's unclear =
+which
+> > +  device in a dependency cycle needs to be suspended/resumed first and=
+ trying
+> > +  arbitrary orders can result in system crashes or instability.
+> > +
+> > +  Explicitly calling out which link in a cycle needs to be broken when
+> > +  determining the order, simplifies things a lot, improves efficiency,=
+ makes
+> > +  the behavior more deterministic and maximizes the functionality that=
+ can be
+> > +  provided without interruption.
+> > +
+> > +  This property is used to provide this additional information between=
+ devices
+> > +  in a cycle by telling which supplier(s) is not needed for initializi=
+ng the
+> > +  device that lists this property.
+> > +
+> > +  In the example above, Z would list X as a post-init-supplier and the
+> > +  initialization dependency would become X -> Y -> Z -/-> X. So the be=
+st order
+> > +  to initialize them become clear: Z, Y and then X.
+>
+> Otherwise, I think this is a great description, describing the use case
+> well :)
 
->  };
->  
->  #define obj_to_connector(x) container_of(x, struct drm_connector, base)
-> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-> index 7923bc00dc7a..1c1ee927de9c 100644
-> --- a/include/drm/drm_edid.h
-> +++ b/include/drm/drm_edid.h
-> @@ -459,5 +459,6 @@ bool drm_edid_is_digital(const struct drm_edid *drm_edid);
->  
->  const u8 *drm_find_edid_extension(const struct drm_edid *drm_edid,
->  				  int ext_id, int *ext_index);
-> +const struct drm_edid *drm_edid_read_acpi(struct drm_connector *connector);
->  
->  #endif /* __DRM_EDID_H__ */
-> -- 
-> 2.34.1
+Thanks! I always spend more time writing documentation and commit text
+than the time I spend writing code.
 
--- 
-Ville Syrjälä
-Intel
+>
+> > +
+> > +select: true
+> > +properties:
+> > +  post-init-supplier:
+
+[Merging your other email here]
+
+> Also, this should likely be pluralised, to match "clocks" "resets"
+> "interrupts" etc.
+
+Good point. Done.
+
+> > +    # One or more suppliers can be marked as post initialization suppl=
+ier
+> > +    description:
+> > +      List of phandles to suppliers that are not needed for initializi=
+ng or
+> > +      resuming this device.
+> > +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> > +      items:
+> > +        maxItems: 1
+>
+> Rob's bot rightfully complains here about invalid syntax.
+
+I added these two lines based on Rob's feedback. Is the indentation
+that's wrong?
+
+Yeah, I'm trying to run the dts checker, but I haven't be able to get
+it to work on my end. See my email to Rob on the v1 series about this.
+
+$ make DT_CHECKER_FLAGS=3D-m dt_binding_check
+
+The best I could get out of it is a bunch of error reports on other
+files and then:
+...
+<snip>/Documentation/devicetree/bindings/post-init-suppliers.yaml:
+ignoring, error parsing file
+...
+
+I also tried to use DT_SCHEMA_FILES so I can only test this one file,
+but that wasn't working either:
+
+$ make DT_CHECKER_FLAGS=3D-m dt_binding_check
+DT_SCHEMA_FILES=3DDocumentation/devicetree/bindings/post-init-suppliers.yam=
+l
+or
+$ make DT_CHECKER_FLAGS=3D-m dt_binding_check DT_SCHEMA_FILES=3D<path to
+the .patch file>
+
+Results in this error early on in the output:
+...
+usage: yamllint [-h] [-] [-c CONFIG_FILE | -d CONFIG_DATA]
+[--list-files] [-f {parsable,standard,colored,github,auto}] [-s]
+[--no-warnings] [-v] [FILE_OR_DIR ...]
+yamllint: error: one of the arguments FILE_OR_DIR - is required
+...
+/mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-supplie=
+rs.yaml:
+ignoring, error parsing file
+...
+
+> What you
+> actually want to enforce here is any number of device phandles, but
+> these phandles all contain only the label and no indices etc, right?
+
+Correct.
+
+>
+> > +
+> > +examples:
+> > +  - |
+> > +    gcc: clock-controller@1000 {
+> > +        compatible =3D "vendor,soc4-gcc", "vendor,soc1-gcc";
+> > +        reg =3D <0x1000 0x80>;
+> > +        clocks =3D <&dispcc 0x1>
+>
+> This clearly was never tested, Rob's bot warnings aside. You're missing
+> a ; at EOL here and with the other clock below.
+
+Yup. I'm unable to get the test to run.
+
+Thanks,
+Saravana
 
