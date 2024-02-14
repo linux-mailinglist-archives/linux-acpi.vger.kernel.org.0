@@ -1,275 +1,216 @@
-Return-Path: <linux-acpi+bounces-3503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3506-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7CD85555F
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 22:59:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636198555A3
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 23:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EC391C223DD
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 21:59:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2ADD289890
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 22:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2571420C9;
-	Wed, 14 Feb 2024 21:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6637D126F3B;
+	Wed, 14 Feb 2024 22:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wJYsqY42"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dAbUCx54"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2084.outbound.protection.outlook.com [40.107.220.84])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D49141997;
-	Wed, 14 Feb 2024 21:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786C913B7BB;
+	Wed, 14 Feb 2024 22:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707947914; cv=fail; b=RivKu2byIfNyMQPG0qJinankpMdXq8shdL0B5lx0f3vb2aDg/90lB21sDBKhLL6izn2DyPdgP/vp87r9iTjGSpu4unfxG4rh+7W9cxt+we44vLDOkbXCCuNtWTRqkd6JI/iKkBkmghXL+XY9WDBNCgu4cOt9Ea8WqrrrpYCd7uA=
+	t=1707949169; cv=fail; b=mq4mOknzSSWxOGz9zvOx3n1dEvXr5cA1xrfXY6sqLxoRc+81FaMnitRKc1f8WPbiS1lYeDtQz9hR+QfP/SYCzEE5tX+HBtB02GN8TG9jgWNyy1Ymqy/51/PDOgXuvK5Y/Gw8htqPZIhQnkUDKGP/mHTFDKE926xVGfTMJZSqzyQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707947914; c=relaxed/simple;
-	bh=VM5DK3a5DkYNLuL518lf+jCXrbZRw4nA/ki/l996tJw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aKzOkPLap/O8tCUzoDAs75BdqoYiL4PM886teStB8NGFLIQ0pa9Ylussr7gvn9zBjotWEQEjcg88ZdW+ZT5T9jZ+4ye3E4KgKdrHt8bmz/DlN9CeDIHtExNIbdyvzjK6RAT+tkbVniJaDSHBzyKRF/bETF6z1PMz/H/pzsymwcA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wJYsqY42; arc=fail smtp.client-ip=40.107.220.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1707949169; c=relaxed/simple;
+	bh=5/Zpypogn1QVqfSfuduY2EWQZaGnryLqL5DqX/C6wgM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=F5TjkEWcLm0FrohBlukIZE+pLY+I9UJrHBVYIbLgug0FP6gJAMyFkELUPPbtfDB3XxaQBcV437rAbvqJQ/BEQ+HeMEgdgPesMCjRxslcdmA4moI6XX20wNmEIxmUsrLw6ymHNIKZqI9TLHhCHB/SziBGCwJYzkd2qDHYk2x57xk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dAbUCx54; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707949167; x=1739485167;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=5/Zpypogn1QVqfSfuduY2EWQZaGnryLqL5DqX/C6wgM=;
+  b=dAbUCx549BpSU8hH0AL1/HvUVgYBdZGUmmYCgqnx3pcakXdcnB02O9zz
+   eoN5oqp9kHvVFrF+gWFYXec7I48cnEPrMckb+8pgYZiAzBTFWnm9p50dW
+   1Ig6sXhB27OpBWvxQgj+a9VrCQlkr3gCac/rIYZjbr538AvQCWPkfi96a
+   DRzYFWSaR8fTxg5iX0EQMv7AXu5SXNjRLvNPZBWHJ7EvLZvDCQU0sSjUj
+   fiHd1K/gBdEJC29p66rrpF6bmguBBbi1KlV5TFiAxcb0YPokGmYfqEY55
+   108JCDreKqazMhUCuroyRXjFQOug3Z1far7eBJSvdDu8dsgQEQHKPfm1b
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="19535884"
+X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
+   d="scan'208";a="19535884"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 14:19:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
+   d="scan'208";a="3704598"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Feb 2024 14:19:26 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 14 Feb 2024 14:19:25 -0800
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 14 Feb 2024 14:19:25 -0800
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 14 Feb 2024 14:19:24 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wk3+d/A8Wpzme7kQAJIO+XoLG7Xu3be19ezWQr6xK9a7gg/5AZ84w3wSCEpGxG1VKf1sJLrFZzruS1oB7A0Cccd8YdT1R5JcpkJO/HqfgQo2RntgBwGEPkBpKVzecHhj66dxo80WkJm3w9/5MC4hsWGRnrjJfIMIsRH/PYlZMnU1/JRRZdx9a8z5SqB07IZY8hYgJ5kEfRZQrwHFejHOXyycjmGrEriHhVhDbLDWJQK1moMSRv33bHcRIIlnXVq0tXEMIPzTK4gyB2LW/0CDLewxnh6YSrYHqAnFgWLZqWgkBVOl//TLYJYwj38YuLS/eXdE/aYWL+OIp7Lzdq23Cg==
+ b=X7TycAFC6FKfFAVu9VqRK0FHWO4HCWRGkw3/fFS1CKNKIhL47uT7qDMjtRck9xELsr6EtxCgm0/tUqTdWP1TqUbuArqxLqPIkVTSwA49HtD0oYqg5grBuF9mi/TsR9SUvsucet3OWH7pYl5soYBmaggounDK7wly+IJ91Ufe1Oe48xkehLtDrRz7BHZzoOgNF03heJ4HMXiWNmyFT7pikWhR2GC5i36BSKEvGTD5HNRPrperL+0npYnbyZNXP64gYX83ENfx4Z3X1QjjZkCNlnRRxefzROpCP9bp8wYplagzElbEKSFcvyKIwRlL1gxB/CdftoNR7VHfoU+kiwoMAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Mp0M3qgQ+UH8u3Fzym1meKBbPuuWeEsx8opzMEJNl3A=;
- b=h6NR39qTZrSjQdTvQ8tn/KxEY0340XSggVn4vJXB+BHm2DXZ7Tir1h0IEcY0eQJv0U3CBVH3+lzzEH/zwTwwJp/du1U4dDkEdbw0O9+xF9PY7BrY2w4joHmOxvX55rEmUOyJJHxolJ3QgOaQnAKXyc/bFPvnQ5IsEQerUljs+O0r0VSz+abLQyFnx9bS6OrW9v2j2AJuLJIORMUyLVLTKxBBAayGxsUdsADlh1fBjvo6iRo4Mni1e6oSGNFLDTZtqy0dNMIBN/wgHxbM+czABdker/9tZiAewi+bsCxopWXesjfl90875TbhGU1P37PQlSYZQbvuSqtsqsLLp3QQCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ffwll.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Mp0M3qgQ+UH8u3Fzym1meKBbPuuWeEsx8opzMEJNl3A=;
- b=wJYsqY42uITuR/fGmS0zCq8F6a1uzcLZiZ6vDBtRpfupBrtAlo3LNtqHE6COaQmS4GpfV4JldplrhTHTekqjerj22TANaMqLliedo7JKmSqtgjLZbzjDOPA0SWCEV53yFntUHZwoXftBex4ZrRGj0KIAuXISq4r9lYWT1ftzBR0=
-Received: from BL0PR1501CA0017.namprd15.prod.outlook.com
- (2603:10b6:207:17::30) by DS0PR12MB7511.namprd12.prod.outlook.com
- (2603:10b6:8:139::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26; Wed, 14 Feb
- 2024 21:58:30 +0000
-Received: from MN1PEPF0000ECD9.namprd02.prod.outlook.com
- (2603:10b6:207:17:cafe::b3) by BL0PR1501CA0017.outlook.office365.com
- (2603:10b6:207:17::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26 via Frontend
- Transport; Wed, 14 Feb 2024 21:58:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000ECD9.mail.protection.outlook.com (10.167.242.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Wed, 14 Feb 2024 21:58:30 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 15:58:29 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Daniel Vetter <daniel@ffwll.ch>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Alex Deucher <alexander.deucher@amd.com>,
-	"Hans de Goede" <hdegoede@redhat.com>, "open list:DRM DRIVERS"
-	<dri-devel@lists.freedesktop.org>
-CC: <amd-gfx@lists.freedesktop.org>, "open list:USB SUBSYSTEM"
-	<linux-usb@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-	<nouveau@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
-	<platform-driver-x86@vger.kernel.org>, <intel-xe@lists.freedesktop.org>,
-	<linux-renesas-soc@vger.kernel.org>, "open list:ACPI"
-	<linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	Melissa Wen <mwen@igalia.com>, Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v6 5/5] drm/nouveau: Use drm_edid_read_acpi() helper
-Date: Wed, 14 Feb 2024 15:57:56 -0600
-Message-ID: <20240214215756.6530-6-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240214215756.6530-1-mario.limonciello@amd.com>
-References: <20240214215756.6530-1-mario.limonciello@amd.com>
+ bh=N3ps54ZfmrQe92FLyKwqoYmoYI1TIZyL/o4jmOGrkls=;
+ b=nxo1NljUr0fNfXdv5Pnv2dkIcSgd6v2pptLlvYRc70cXR8LtgYxhnClxbk80zXaNIM/e85hrxrUdHbNQNY9VNTEz27Ns0Zjd3Yw66ksZFPqXU1o2bbFzLSz2ThbhGRZA4sHTHFEjjX1MeOEU0UHddIU6bSENsAc/OsM0obwodUIrvqrToVEUXigNo7OJXk5nL/p8pC6I5Zw7jnEMlSOITIdiQ9uDx8gX47MdKhOKYEuJbvy0fkMIiyEOCE2k6pTelYDuowoc/qk90uW1LQTdfdgAkysyXJ/90+R103rjiQbEsiXEmzeK8vPW6McNgxj/zJ0OPcijM2YdoAStcCE85w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by SA2PR11MB4921.namprd11.prod.outlook.com (2603:10b6:806:115::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Wed, 14 Feb
+ 2024 22:19:22 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::9f17:e1f3:d6f0:3d59]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::9f17:e1f3:d6f0:3d59%4]) with mapi id 15.20.7270.036; Wed, 14 Feb 2024
+ 22:19:22 +0000
+Date: Wed, 14 Feb 2024 14:19:19 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Steven Rostedt
+	<rostedt@goodmis.org>
+CC: Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, <linux-acpi@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Dan Carpenter
+	<dan.carpenter@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>,
+	<linux-trace-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] acpi/ghes: Prevent sleeping with spinlock held
+Message-ID: <65cd3c671cf86_d552e294dd@iweiny-mobl.notmuch>
+References: <20240206-cxl-cper-smatch-v2-1-84ed07563c31@intel.com>
+ <20240214121153.00005c97@huawei.com>
+ <20240214102310.7ba53f3a@gandalf.local.home>
+ <20240214181200.0000500b@Huawei.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240214181200.0000500b@Huawei.com>
+X-ClientProxiedBy: BYAPR21CA0013.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::23) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECD9:EE_|DS0PR12MB7511:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f03c3d6-49f2-45bd-1b22-08dc2da814ef
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|SA2PR11MB4921:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4810070c-7b8c-4861-938f-08dc2daafee1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	aU4Dnc+/pdRyBBJP93PgXymR5ZU2ZAhQZDmRLaklig1bH1Z1TyOiaTXREm6SVLi7VeBcUeoyzQU49oQ0Y/E/2avYtqGA1gwq7bJwaWHkehrAj38yY+5dfEi+br+GjqQzZweNcY5is6iEJz0WEy/WXo1Bvoz/cD37H+6a/px+ROWwcBCG2DdbHvAahGtobeocZnJiDjwm6g5zSCSW+3QfaM73/5S2gjRbSpV2xYCBaqUf63ORUDgYrQwnJKKDZUVm037yMtGBdbzDKuH+cqMr8gpPeDrElAM6A8e8mL0HEuKw1koomSab+EtzYAFnhxT6lGk4HTw3tmM0x5F6xN8R8alwi75rTZkWgGLPUbmVQuv1YyoEKlLhw2B3UN0AXgTJJe7WHVPTkiACOrm7jYH5fdPyy/2LN7sLP2xxYQOjs5gi/8EZJP8doJZrh3F1OvkoL6id9xiNYM8JoR+kex1VnWr1Bvotmx1kGB0nxU/S73ooCa1vMBt0AwuduI9czFFBnOb+e9vjM6pkmeL55LwWphJyZXouqjJLJqSv+Zzw5RRzadtPvITv8p/YMjBQtv1JEmxIF5F01yDmJ/bHPZ+0rGhHXc3x85IhBYTFpUv0OwrlIUllbd252eB/6sF63H8J11SJ6MxjP3cXuGzKZFQpAFmoYarx1iU3o9kwuxRfC5Q=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(376002)(136003)(346002)(230922051799003)(82310400011)(36860700004)(451199024)(1800799012)(64100799003)(186009)(40470700004)(46966006)(8936002)(8676002)(81166007)(5660300002)(83380400001)(82740400003)(2906002)(4326008)(356005)(44832011)(70206006)(70586007)(7416002)(41300700001)(1076003)(426003)(336012)(16526019)(26005)(2616005)(6666004)(54906003)(478600001)(7696005)(316002)(110136005)(86362001)(36756003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 21:58:30.8269
+X-Microsoft-Antispam-Message-Info: 5vnl6UjdO2lf7/NY4lieLLZkw+l5AWNxuyyl3z2jJD/bslE2sWrkmEvzrt3I8aR/kGl5wTlgCLjrkdbuyjoRovSoQAaN4OHs86N/VP/SnnwacQTEbEZhjvxUWVncfOVTMv5tpfdd6oj8JW/dTOtVHOEpYINgbjZgDQ+JHpsg3OvE9yMBEHUEr0yijZ9VbYpIl1+atFbIznKaTkCzYy9I/URTsThZD/Mu6WuWcrhhhDOHMhWHY1Os2+wmxJ4D5xArM9qmM/+qPjsqWi71o5Lgq+YT4jqIOaH3e66YDLGHvNOcEqfpwm7pVfVsWuJ3BOA9JlnprSR+rNYG23tOuL6XEp48SQl4YA3NnYh8o3ltxYpLOSZ2t/0ryxojESfHPSONz5Hy92TwFbSyc/xYzodkmEujfV5K/dLXhFPwNJ4esXJRSRUuIbVsoZTF3fTyoMzdNfhrYk09vOTLNnt0d0YN6WKBTbkdlT/Kg0GW26btVGFDhYhCtJ8NmLqVZ5ASWVVyqjB1m491g8N/8OJ9WIprv6kzfLOyiTvhgp30cyMpoCviHOsm28IotRxl3KLrEZ5D
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(346002)(39860400002)(396003)(366004)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(8676002)(8936002)(4326008)(44832011)(2906002)(66476007)(66946007)(38100700002)(5660300002)(66556008)(54906003)(26005)(83380400001)(9686003)(110136005)(6666004)(478600001)(6506007)(6486002)(316002)(6512007)(41300700001)(86362001)(82960400001)(7416002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0gcQRnnE9lL3yWwMH5MfwC3LniXA9vM5qtWY7lJxxmDiimFDuQi2bNVFw5L1?=
+ =?us-ascii?Q?wr4BfhP8KZa+Ih9WKZFOUfcIucOlj6lxHyKFk8hNWw4JhQ6LTj6aLa+5ldU7?=
+ =?us-ascii?Q?FuYR+RjRbzdqzXDzSg+ghOaDjzlFwkYY5xuVWQGhtwmGSivnxH6iAJmTu8Fl?=
+ =?us-ascii?Q?C3HwQmI4WKGxmN7bmgj5XOOoDaIzMuIslAxVfTJ3y1WZn0ds7n39vxlYut+j?=
+ =?us-ascii?Q?5pCp9WrM3J3A3DeGAfC/nKZC0QB4YsnUNFPRb7ZR6Nl2EJwnJ//dBfLhCy4c?=
+ =?us-ascii?Q?VuEYmAzguMJXmLkb1YJwTBx4o/9uj1A/IM/6LkKI1MeKbzGZTrY0Ya53TlBg?=
+ =?us-ascii?Q?7hnKlnlhbDdhHXQY5rBdXU4mEEbwOZgVCdU77WdxD4H1T3bGrOf404lj9gyh?=
+ =?us-ascii?Q?zLadmc4MRxH7Pnq/rum9ACSwwOctNSdFQ8hMX8FwS0WEx0YN8nhC0FMCZom1?=
+ =?us-ascii?Q?beYJbf9NDvzrGnQTK+48aAmvCQwWcXV7udymdM3Xp4hMttUmMRHnT27kruIU?=
+ =?us-ascii?Q?+Dci9pdT0hfGsqSeIGI94DyyaR193du7hemDQLeA6LHO4RQri9UBB4ghFylj?=
+ =?us-ascii?Q?/20z0OBMYr2sWW7rv1fMY6Hw+6cGFyfYZMMc6GvU9abV9LhjNZ8eZXumuQJ0?=
+ =?us-ascii?Q?TaHkcji/7UFQGYlaaq5Y5GhdYHb0SKLsBQYmIiI/nNI1X7NSB1HrsBoQW9QS?=
+ =?us-ascii?Q?OeZZ3ajGQ5Y419BOK3f1zkjUmf+vbkRWBJU1pSPnreV91FJXM6sJXc3BZ7bJ?=
+ =?us-ascii?Q?9xwJYmWIJeQ+8zj+xkj7rsEHeqC8YTolWLDPS5xs76s0msZBoNAejmZfIwcE?=
+ =?us-ascii?Q?yr2RR8hsl8jkcmKDha7PZfu9JUIUGzX/t43N7vN2X5sLxWYgcQl37NSz1Hnh?=
+ =?us-ascii?Q?ZDwSGEnSQoolrHlr3n63PWf0UzKSLiJKEJ5aiCYqsRRmA5znoJZmSlGr/888?=
+ =?us-ascii?Q?JUgsZTf7IaktcFGljrswnBj48duyQ5ubPKI/VyShdh1Xdqr3L0wc724Xnmnm?=
+ =?us-ascii?Q?O1aLfdqbMklxcxUlRIAFH+/Lvu4xB1fGGJzYiZy++NS/kkVK5Oqrrh5vWZk6?=
+ =?us-ascii?Q?ru+/rtnl1o8vD5QBxHliK0VpiZD/Ff6vKwD4XpVpAYOe+7rQePGxrhzCqLS9?=
+ =?us-ascii?Q?jdPGL6TQabaJk0Rt9h3a3OfyUWCv/dAris0IUx38+XfrP3TeW4yOSOtgHwhl?=
+ =?us-ascii?Q?jXWXhgIY86F6+rP1QtEF8I6b9IJlwyzYVfeXWaEMc4HIHxF0UQdyLrZeOo8/?=
+ =?us-ascii?Q?dSMqVWwPJB6w/Z1aP4p5CIJAtoqmFnROQH6kLCfWCeuZ456yhu5FHCqFBDRQ?=
+ =?us-ascii?Q?CYBzgidM0m/xqJhV1NY5J/++5AilA1yclT5DQidjQppdr5xbvuj8lnaR0ume?=
+ =?us-ascii?Q?tfXi3LGEk2K1KdxuQp9JlHc5XCNmpsdG8XA4buNNHUpY4x2Mz9K+71qUlI4F?=
+ =?us-ascii?Q?oL8oI8JcG72T7VcpzfYm2Ok3yZXMUBDHHJm7uJO+1CcS3ztnSIFPSBGvv4CB?=
+ =?us-ascii?Q?P4R60zpEpIZ0Q789yuQ3xP1XheN4VQaVF3V61enVG02ItfUQ15vKUpRqEZ8p?=
+ =?us-ascii?Q?iO5mdOkYN6nIBP8x6W4vaWFgTQf7v22pyq3qXT7C?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4810070c-7b8c-4861-938f-08dc2daafee1
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 22:19:22.6147
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f03c3d6-49f2-45bd-1b22-08dc2da814ef
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000ECD9.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7511
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3j/rPannRDQdXKk/6cUotM1fdj06fF1XNEMfrHT3MzjGYqFGAK7gTa+/MqcvpuuW/6F3znh2mR1cXvBpq6ldfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4921
+X-OriginatorOrg: intel.com
 
-Rather than inventing a wrapper to acpi_video_get_edid() use the
-one provided by drm. This fixes two problems:
-1. A memory leak that the memory provided by the ACPI call was
-   never freed.
-2. Validation of the BIOS provided blob.
+Jonathan Cameron wrote:
+> On Wed, 14 Feb 2024 10:23:10 -0500
+> Steven Rostedt <rostedt@goodmis.org> wrote:
+> 
+> > On Wed, 14 Feb 2024 12:11:53 +0000
+> > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> > 
+> > > So I'm thinking this is a won't fix - wait for the printk rework to land and
+> > > assume this will be resolved as well?  
+> > 
+> > That pretty much sums up what I was about to say ;-)
+> > 
+> > tp_printk is more of a hack and not to be used sparingly. With the right
+> > trace events it can hang the machine.
+> > 
+> > So, you can use your internal patch locally, but I would recommend waiting
+> > for the new printk changes to land.
 
-Convert the usage in nouveau_connector_detect_lvds() to use
-struct drm_edid at the same time.
+Steven, Do you think that will land in 6.9?
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpu/drm/nouveau/nouveau_acpi.c      | 27 ----------------
- drivers/gpu/drm/nouveau/nouveau_acpi.h      |  2 --
- drivers/gpu/drm/nouveau/nouveau_connector.c | 35 +++++++++------------
- 3 files changed, 14 insertions(+), 50 deletions(-)
+> >
+> > I'm really hoping that will be soon!
+> > 
+> > -- Steve
+> 
+> Thanks Steve,
+> 
+> Ira's fix is needed for other valid locking reasons - this was 'just another'
+> lock debugging report that came up whilst testing it.
+> 
+> For this patch (not a potential additional one that we aren't going to do ;)
+> 
+> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-index 8f0c69aad248..de9daafb3fbb 100644
---- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-@@ -360,33 +360,6 @@ void nouveau_unregister_dsm_handler(void) {}
- void nouveau_switcheroo_optimus_dsm(void) {}
- #endif
- 
--void *
--nouveau_acpi_edid(struct drm_device *dev, struct drm_connector *connector)
--{
--	struct acpi_device *acpidev;
--	int type, ret;
--	void *edid;
--
--	switch (connector->connector_type) {
--	case DRM_MODE_CONNECTOR_LVDS:
--	case DRM_MODE_CONNECTOR_eDP:
--		type = ACPI_VIDEO_DISPLAY_LCD;
--		break;
--	default:
--		return NULL;
--	}
--
--	acpidev = ACPI_COMPANION(dev->dev);
--	if (!acpidev)
--		return NULL;
--
--	ret = acpi_video_get_edid(acpidev, type, -1, &edid);
--	if (ret < 0)
--		return NULL;
--
--	return kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
--}
--
- bool nouveau_acpi_video_backlight_use_native(void)
- {
- 	return acpi_video_backlight_use_native();
-diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.h b/drivers/gpu/drm/nouveau/nouveau_acpi.h
-index e39dd8b94b8b..6a3def8e6cca 100644
---- a/drivers/gpu/drm/nouveau/nouveau_acpi.h
-+++ b/drivers/gpu/drm/nouveau/nouveau_acpi.h
-@@ -10,7 +10,6 @@ bool nouveau_is_v1_dsm(void);
- void nouveau_register_dsm_handler(void);
- void nouveau_unregister_dsm_handler(void);
- void nouveau_switcheroo_optimus_dsm(void);
--void *nouveau_acpi_edid(struct drm_device *, struct drm_connector *);
- bool nouveau_acpi_video_backlight_use_native(void);
- void nouveau_acpi_video_register_backlight(void);
- #else
-@@ -19,7 +18,6 @@ static inline bool nouveau_is_v1_dsm(void) { return false; };
- static inline void nouveau_register_dsm_handler(void) {}
- static inline void nouveau_unregister_dsm_handler(void) {}
- static inline void nouveau_switcheroo_optimus_dsm(void) {}
--static inline void *nouveau_acpi_edid(struct drm_device *dev, struct drm_connector *connector) { return NULL; }
- static inline bool nouveau_acpi_video_backlight_use_native(void) { return true; }
- static inline void nouveau_acpi_video_register_backlight(void) {}
- #endif
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 856b3ef5edb8..492035dc8453 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -687,22 +687,13 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	struct nouveau_drm *drm = nouveau_drm(dev);
- 	struct nouveau_connector *nv_connector = nouveau_connector(connector);
- 	struct nouveau_encoder *nv_encoder = NULL;
--	struct edid *edid = NULL;
-+	const struct drm_edid *drm_edid = NULL;
- 	enum drm_connector_status status = connector_status_disconnected;
- 
- 	nv_encoder = find_encoder(connector, DCB_OUTPUT_LVDS);
- 	if (!nv_encoder)
- 		goto out;
- 
--	/* Try retrieving EDID via DDC */
--	if (!drm->vbios.fp_no_ddc) {
--		status = nouveau_connector_detect(connector, force);
--		if (status == connector_status_connected) {
--			edid = nv_connector->edid;
--			goto out;
--		}
--	}
--
- 	/* On some laptops (Sony, i'm looking at you) there appears to
- 	 * be no direct way of accessing the panel's EDID.  The only
- 	 * option available to us appears to be to ask ACPI for help..
-@@ -712,10 +703,14 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	 * the nouveau decides an entry in the VBIOS FP mode table is
- 	 * valid - it's not (rh#613284)
- 	 */
--	if (nv_encoder->dcb->lvdsconf.use_acpi_for_edid) {
--		edid = nouveau_acpi_edid(dev, connector);
--		if (edid) {
--			status = connector_status_connected;
-+	if (nv_encoder->dcb->lvdsconf.use_acpi_for_edid)
-+		connector->acpi_edid_allowed = true;
-+
-+	/* Try retrieving EDID via BIOS or DDC */
-+	if (!drm->vbios.fp_no_ddc || nv_encoder->dcb->lvdsconf.use_acpi_for_edid) {
-+		status = nouveau_connector_detect(connector, force);
-+		if (status == connector_status_connected) {
-+			drm_edid = drm_edid_alloc(nv_connector->edid, EDID_LENGTH);
- 			goto out;
- 		}
- 	}
-@@ -734,12 +729,9 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	 * stored for the panel stored in them.
- 	 */
- 	if (!drm->vbios.fp_no_ddc) {
--		edid = (struct edid *)nouveau_bios_embedded_edid(dev);
--		if (edid) {
--			edid = kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
--			if (edid)
--				status = connector_status_connected;
--		}
-+		drm_edid = drm_edid_alloc(nouveau_bios_embedded_edid(dev), EDID_LENGTH);
-+		if (drm_edid)
-+			status = connector_status_connected;
- 	}
- 
- out:
-@@ -750,7 +742,8 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 		status = connector_status_unknown;
- #endif
- 
--	nouveau_connector_set_edid(nv_connector, edid);
-+	drm_edid_connector_update(connector, drm_edid);
-+	drm_edid_free(drm_edid);
- 	if (nv_encoder)
- 		nouveau_connector_set_encoder(connector, nv_encoder);
- 	return status;
--- 
-2.34.1
+Jonathan,
 
+Again thanks for the testing!  However, Dan and I just discussed this and
+he has an uneasy feeling about going forward with this for 6.8 final.
+
+If we revert the following patch I can squash this fix and wait for the
+tp_printk() fix to land in 6.9 and resubmit.
+
+Dan here is the patch which backs out the actual bug:
+
+	Fixes: 671a794c33c6 ("acpi/ghes: Process CXL Component Events") 
+
+Thanks everyone,
+Ira
 
