@@ -1,203 +1,178 @@
-Return-Path: <linux-acpi+bounces-3461-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3462-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198098541CE
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 04:36:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFD38541DD
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 04:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE63A1C2687F
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 03:36:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EFF11F24761
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 03:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2DD107B6;
-	Wed, 14 Feb 2024 03:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE185B654;
+	Wed, 14 Feb 2024 03:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U3YcoCss"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E120BBA34;
-	Wed, 14 Feb 2024 03:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA2110A01
+	for <linux-acpi@vger.kernel.org>; Wed, 14 Feb 2024 03:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707881739; cv=none; b=fCBZhzUJK8p/iEZef3CBS4fqWSdFtADuvBGXNY8biyfOmxUBIkb6Dc0tEHXfj1H0a0oQN8hNglME/sk0SB2LUvIhsG5qvE+pQTXLtfWUdV8MZsjCu/bDYfD9xywf557H3ugvpQSUlvmE6ns+7DIjVHFokxdbqakMyvEWBSK9IwE=
+	t=1707882297; cv=none; b=nTiO6f/BNVPRPJ5NUtcWoyQ+astqX6rwcNdDLPy8vIDv53Ac4j6EdA2synDKzHJoPVY1QAfvE/Hx68ilOLwwb4UOTDmr5fhmmfBl5SDoIgZwBQTcv1Oi3Q4rXs+Txz2r7vkhM0bY8y+GVAs/gQ7VMtwpZ0cCnB1M20tJ+dVj80g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707881739; c=relaxed/simple;
-	bh=Hf6t1LPYrWEdt9NaGFq3eOAA1Dp0luJvXpWYZmF/tx0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MR8pZr6+3XkuZ62rXfvzeeJoqMUMGLnyM7ZNDBUsDNbraAKbciZeK6mhXa26oNVf1Hp0PVo+ripyDv4B44clk9mRjkqysQ3FGuxfgpKh1L5/huzxd1vOk45HZ69xesR3lOOp1kVfCiOXiqzPkYZL1T++gszS9OUGnt0uoyrpKak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF43F1FB;
-	Tue, 13 Feb 2024 19:36:15 -0800 (PST)
-Received: from [10.163.45.99] (unknown [10.163.45.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 546EE3F766;
-	Tue, 13 Feb 2024 19:35:31 -0800 (PST)
-Message-ID: <14d4c862-0880-408c-bc4e-5047c7eace87@arm.com>
-Date: Wed, 14 Feb 2024 09:05:29 +0530
+	s=arc-20240116; t=1707882297; c=relaxed/simple;
+	bh=UUnUEzJ5jjH8ByEMpB5TAcY1gR1nRdoCWKhMnfRZjTA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SyXo5lYFkOwcNERsX1tlA6/8j0AgwXBvEoJZjE32laL7eTpOEvDbDDYk2j3t+FeLnO958fG+J3fsjnei51MQ1R22VSDhoqpkjtUSzQhquoP/ZeThx2DMamPaECgAg3kLLPyUZZy6/q9QwPihXKNUWVn3y1/BrfakURSvmU+c9UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U3YcoCss; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-428405a0205so577551cf.1
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Feb 2024 19:44:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707882295; x=1708487095; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xdTms2KNxEQNoDVfOlewboipZEhREK6jYFWALQnd5FA=;
+        b=U3YcoCss3f7/3PmjPae7nfgc799BQ8PwWHJeoQ1vQ/7amakQUxevj4Ht0mYjYbFUDk
+         HEIVsy5UfvRD6j0SdV9kZSuV4SvRm7zx5eRcJ5lYf7+FQjBwAufRuVCP4wFzPrUSBQ6K
+         uBGZmLYfBgwiHcuxTMalYiZfKaDhJCNtvkYV/+iBTmjaAe5R+DBVX3Px2PlUYlu8u+ur
+         RKtPyjH5G8By6TwQt4g+JnbtTu/ibrDk0aXGWG8EYOYi0eZC1M2hiLLYBeqgcKwwQ15c
+         ekJ6GhMK3BQmTtAzULAMXp8t1HagJK2KHoKLZsk7ab4dOrcmv/yeYUJmxRgfTL+0+6OQ
+         96QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707882295; x=1708487095;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xdTms2KNxEQNoDVfOlewboipZEhREK6jYFWALQnd5FA=;
+        b=WQ8VRo5fvRKhEZT3nJ8pkMonxAhohTW8M52a5JLN+CR2RFTohJGQoD3Y6/uHOM3etm
+         PSjeb+P/fePpeQaxLH+ZWc82ZL3ZV06WDMuykzvavN+nBlOoijhFEu7ZmjgDBulz5LvO
+         jp+tM98E4yb1MprlkexhKANU5XQCUBVZc4h0MvWBgWhLj5b3KRUVAnqWpg34ZgT2V43U
+         TrRVT+yiAEU2MQ/A+rK28w0g0jUQrmGZl8kPtEI61/zWWZa2JPuocyM55HaJAIlsfvgf
+         IozaBZm+gUAxlQ1KlO4t5ByO+2cBfDvSJjtzkoN+QlgRf6Vg12F1DPLyuBqw2E6oAqyI
+         5XBw==
+X-Forwarded-Encrypted: i=1; AJvYcCX339wHsoURYiOJscluMjtD2Et+Fg7BluywgjRSbIr/sp/qKXZ2G//iX4JuN8T8vgaZWEhPgcWpOJ77vgsJakjsSm4TLLQo8s48GA==
+X-Gm-Message-State: AOJu0YwZuyuipr38hR8+USyjpa64tdfktTyo3scy+COSk+LPnTQYE6xo
+	KaPIt12Zi1Q7zwwnmMxKeERSClsgjpMf6wKM6/0RfkIilNtH+OCrAKNhFsrqBImLJU6fWoZwAZK
+	0eLtCLEe0EcPk/nem4QX2OGWNaM+tSNNWQc8s
+X-Google-Smtp-Source: AGHT+IEtlCu0eM580Furc3rmgyMklSoe0aIdEca8lCSagMVKVqwdNppeUF13e/3urtg3bOPhQwYFfvnJjJyd9TaboDU=
+X-Received: by 2002:ac8:4f49:0:b0:42b:f8ef:9d60 with SMTP id
+ i9-20020ac84f49000000b0042bf8ef9d60mr137168qtw.19.1707882294841; Tue, 13 Feb
+ 2024 19:44:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 03/11] coresight: tmc: Extract device properties from
- AMBA pid based table lookup
-Content-Language: en-US
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
- <20240123054608.1790189-4-anshuman.khandual@arm.com>
- <44597c9a-79bd-40f8-87a7-b53582132583@arm.com>
- <0c65f3b0-a879-444c-b0a4-4af485e72166@arm.com>
- <39c01eae-049b-4f5b-b86e-4af22c8246c1@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <39c01eae-049b-4f5b-b86e-4af22c8246c1@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
+ <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
+ <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
+ <20240213145131.GA1180152-robh@kernel.org> <48a86fa6908a2a7a38a45dc6dbb5574c4a9d7400.camel@gmail.com>
+In-Reply-To: <48a86fa6908a2a7a38a45dc6dbb5574c4a9d7400.camel@gmail.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Tue, 13 Feb 2024 19:44:16 -0800
+Message-ID: <CAGETcx9xgLykm7Ti-A4+sYxQkn=KTUptW9fbFxgTcceihutwRQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+ destroying the changeset
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Android Kernel Team <kernel-team@android.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Feb 13, 2024 at 6:57=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
+>
+> On Tue, 2024-02-13 at 08:51 -0600, Rob Herring wrote:
+> > On Mon, Feb 12, 2024 at 01:10:27PM +0100, Nuno S=C3=A1 wrote:
+> > > On Mon, 2024-02-05 at 13:09 +0100, Nuno Sa wrote:
+> > > > Device links will drop their supplier + consumer refcounts
+> > > > asynchronously. That means that the refcount of the of_node attache=
+d to
+> > > > these devices will also be dropped asynchronously and so we cannot
+> > > > guarantee the DT overlay assumption that the of_node refcount must =
+be 1 in
+> > > > __of_changeset_entry_destroy().
+> > > >
+> > > > Given the above, call the new fwnode_links_flush_queue() helper to =
+flush
+> > > > the devlink workqueue so we can be sure that all links are dropped =
+before
+> > > > doing the proper checks.
+> > > >
+> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > > ---
+> > > >  drivers/of/dynamic.c | 8 ++++++++
+> > > >  1 file changed, 8 insertions(+)
+> > > >
+> > > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > > > index 3bf27052832f..b7153c72c9c9 100644
+> > > > --- a/drivers/of/dynamic.c
+> > > > +++ b/drivers/of/dynamic.c
+> > > > @@ -14,6 +14,7 @@
+> > > >  #include <linux/slab.h>
+> > > >  #include <linux/string.h>
+> > > >  #include <linux/proc_fs.h>
+> > > > +#include <linux/fwnode.h>
+> > > >
+> > > >  #include "of_private.h"
+> > > >
+> > > > @@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
+> > > >
+> > > >  static void __of_changeset_entry_destroy(struct of_changeset_entry=
+ *ce)
+> > > >  {
+> > > > + /*
+> > > > +  * device links drop their device references (and hence their
+> > > > of_node
+> > > > +  * references) asynchronously on a dedicated workqueue. Hence we
+> > > > need
+> > > > +  * to flush it to make sure everything is done before doing the
+> > > > below
+> > > > +  * checks.
+> > > > +  */
+> > > > + fwnode_links_flush_queue();
+> > > >   if (ce->action =3D=3D OF_RECONFIG_ATTACH_NODE &&
+> > > >       of_node_check_flag(ce->np, OF_OVERLAY)) {
+> > > >           if (kref_read(&ce->np->kobj.kref) > 1) {
+> > > >
+> > >
+> > > Hi Rob and Frank,
+> > >
+> > > Any way you could take a look at this and see if you're ok with the c=
+hange
+> > > in the
+> > > overlay code?
+> > >
+> > > On the devlink side , we already got the ok from Rafael.
+> >
+> > Didn't Saravana say he was going to look at this? As of yesterday, he's
+> > also a DT maintainer so deferring to him.
+> >
+>
+> Yeah, I did asked him but I guess he never had the time for it... Saravan=
+a,
+> could you please give some feedback on this? I think the most sensible pa=
+rt is
+> on the devlink side but I assume this is not going to be merged without a=
+n ack
+> from a DT maintainer...
 
+Sorry for the delay Nuno. I'll get to this. I promise. This week is a bit b=
+usy.
 
-On 2/13/24 16:02, Suzuki K Poulose wrote:
-> On 13/02/2024 03:13, Anshuman Khandual wrote:
->>
->>
->> On 2/12/24 17:43, Suzuki K Poulose wrote:
->>> On 23/01/2024 05:46, Anshuman Khandual wrote:
->>>> This extracts device properties from AMBA pid based table lookup. This also
->>>> defers tmc_etr_setup_caps() after the coresight device has been initialized
->>>> so that PID value can be read.
->>>>
->>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>> Cc: Mike Leach <mike.leach@linaro.org>
->>>> Cc: James Clark <james.clark@arm.com>
->>>> Cc: coresight@lists.linaro.org
->>>> Cc: linux-arm-kernel@lists.infradead.org
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>>> ---
->>>>    .../hwtracing/coresight/coresight-tmc-core.c  | 19 +++++++++++++------
->>>>    1 file changed, 13 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
->>>> index 7ec5365e2b64..e71db3099a29 100644
->>>> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
->>>> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
->>>> @@ -370,16 +370,24 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
->>>>        return (auth & TMC_AUTH_NSID_MASK) == 0x3;
->>>>    }
->>>>    +#define TMC_AMBA_MASK 0xfffff
->>>> +
->>>> +static const struct amba_id tmc_ids[];
->>>> +
->>>>    /* Detect and initialise the capabilities of a TMC ETR */
->>>> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
->>>> +static int tmc_etr_setup_caps(struct device *parent, u32 devid)
->>>>    {
->>>>        int rc;
->>>> -    u32 dma_mask = 0;
->>>> +    u32 tmc_pid, dma_mask = 0;
->>>>        struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
->>>> +    void *dev_caps;
->>>>          if (!tmc_etr_has_non_secure_access(drvdata))
->>>>            return -EACCES;
->>>>    +    tmc_pid = coresight_get_pid(&drvdata->csdev->access) & TMC_AMBA_MASK;
->>>> +    dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
->>>> +
->>>>        /* Set the unadvertised capabilities */
->>>>        tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
->>>>    @@ -497,10 +505,6 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->>>>            desc.type = CORESIGHT_DEV_TYPE_SINK;
->>>>            desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
->>>>            desc.ops = &tmc_etr_cs_ops;
->>>> -        ret = tmc_etr_setup_caps(dev, devid,
->>>> -                     coresight_get_uci_data(id));
->>>> -        if (ret)
->>>> -            goto out;
->>>>            idr_init(&drvdata->idr);
->>>>            mutex_init(&drvdata->idr_mutex);
->>>>            dev_list = &etr_devs;
->>>> @@ -539,6 +543,9 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
->>>>            goto out;
->>>>        }
->>>>    +    if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
->>>> +        ret = tmc_etr_setup_caps(dev, devid);
->>>> +
->>>
->>> With this change, we silently accept an ETR that may only have "SECURE" access only and crash later while we try to enable tracing. You could
->>> pass in the "access" (which is already in 'desc.access' in the original
->>> call site and deal with it ?
->>
->> Just wondering, if something like the following will help ? A failed tmc_etr_setup_caps()
->> because of failed tmc_etr_has_non_secure_access(), will unregister the coresight device
->> before returning.
->>
->> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
->> @@ -538,8 +538,13 @@ static int __tmc_probe(struct device *dev, struct resource *res)
->>                  goto out;
->>          }
->>   -       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR)
->> +       if (drvdata->config_type == TMC_CONFIG_TYPE_ETR) {
->>                  ret = tmc_etr_setup_caps(dev, devid);
->> +               if (ret) {
->> +                       coresight_unregister(drvdata->csdev);
->> +                       goto out;
->> +               }
->> +       }
-> 
-> Why do we move the tmc_etr_setup_caps() in the first place ? We could retain where that was and pass "desc.access" parameter rather than registering the csdev and then relying csdev->access ?
-
-Agreed, and after implementing the changes suggested above, the entire patch
-will look something like the following. Please do confirm if this looks good
-enough.
-
---- a/drivers/hwtracing/coresight/coresight-tmc-core.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
-@@ -370,16 +370,25 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
-        return (auth & TMC_AUTH_NSID_MASK) == 0x3;
- }
- 
-+#define TMC_AMBA_MASK 0xfffff
-+
-+static const struct amba_id tmc_ids[];
-+
- /* Detect and initialise the capabilities of a TMC ETR */
--static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
-+static int tmc_etr_setup_caps(struct device *parent, u32 devid,
-+                             struct csdev_access *access)
- {
-        int rc;
--       u32 dma_mask = 0;
-+       u32 tmc_pid, dma_mask = 0;
-        struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
-+       void *dev_caps;
- 
-        if (!tmc_etr_has_non_secure_access(drvdata))
-                return -EACCES;
- 
-+       tmc_pid = coresight_get_pid(access) & TMC_AMBA_MASK;
-+       dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
-+
-        /* Set the unadvertised capabilities */
-        tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
- 
-@@ -497,8 +506,7 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
-                desc.type = CORESIGHT_DEV_TYPE_SINK;
-                desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
-                desc.ops = &tmc_etr_cs_ops;
--               ret = tmc_etr_setup_caps(dev, devid,
--                                        coresight_get_uci_data(id));
-+               ret = tmc_etr_setup_caps(dev, devid, &desc.access);
-                if (ret)
-                        goto out;
-                idr_init(&drvdata->idr);
-
+-Saravana
 
