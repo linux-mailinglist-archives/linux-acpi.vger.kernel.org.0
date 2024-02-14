@@ -1,290 +1,466 @@
-Return-Path: <linux-acpi+bounces-3465-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3470-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F04854947
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 13:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A269854994
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 13:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6041C212AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 12:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1511C21ECF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 12:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63753524C3;
-	Wed, 14 Feb 2024 12:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA51A537FC;
+	Wed, 14 Feb 2024 12:50:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F25524C2;
-	Wed, 14 Feb 2024 12:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EAF52F75;
+	Wed, 14 Feb 2024 12:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707914187; cv=none; b=b3Lr40oC1RJqziBqgNfeAoCE9gTQdCQTc/H4YjR7bDldSQ6mM5ZpL8v4ZuyNKm4QK28EBkUaL01Pma929M/1X0dGY718Nrnxv6HQMRcFKpvIGALh4+ZAq8YGHYgcziIQeXXBLygI50NSgnOZfV0aG7D6Iz5Qy+UeLehd31C/8E4=
+	t=1707915007; cv=none; b=TC1WJ84n2PqO9cfybVbxF4Jpw6bxqHr0JUU949+fp6jIVSrCp2aR6I8ENvQ4IW/FzTUyyt2ckPbucZbzjQ4n3+m2E1fDzESUzhFTk63lNWcvqS0h7LkMaIVJWbnzI1CARkK5ya06+d79HFgMjKqIVDRK0Jswrj8+4dzA3GDG69k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707914187; c=relaxed/simple;
-	bh=u/VJoNipza+0O4SI6cwJgedCwXKb+w+2SL1NxYQ59zk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SUFR/F2YhYcBbV0emxuAgVsizD57nX/+zPBNBaNg0olNCZxG/x6TH+iK6nFvO1+bKkHj11r8Ef+J4JC78XFCQEle11hv8rRrkxlFjsQ+2Z1lPuyciBNNsdZsHlu+3jqQu4lDCtktOlNiiwLm1IhUdQca449FoJA35cyuV71z+ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZczC0H5Hz6F97w;
-	Wed, 14 Feb 2024 20:32:39 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 05603140F37;
-	Wed, 14 Feb 2024 20:36:20 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 12:36:19 +0000
-Date: Wed, 14 Feb 2024 12:36:18 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Richter <rrichter@amd.com>
-CC: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Davidlohr
- Bueso" <dave@stgolabs.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v2 3/3] lib/firmware_table: Provide buffer length
- argument to cdat_table_parse()
-Message-ID: <20240214123618.00001dd6@Huawei.com>
-In-Reply-To: <ZcYLOzd0KUX9ckYo@rric.localdomain>
-References: <20240108114833.241710-1-rrichter@amd.com>
-	<20240108114833.241710-4-rrichter@amd.com>
-	<20240126164603.000040fd@Huawei.com>
-	<ZcYLOzd0KUX9ckYo@rric.localdomain>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707915007; c=relaxed/simple;
+	bh=lUNv/tfay4+UPX4NQWW8UfT46uIeCjBkeJxKoJms+qc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tJPJzsxNf/8GB2TkwyuNFKAHY/cf4Ilw1doQ/f4Ri+kzhoO1+Dprkafw3eSGLqFLFqcL7omH2IJ7acEDLwe+leBFFiMPQ/BoJ+shWIvUPItVeaSai9dxUYkSOW/Vy1SYIPoN0GfTOlS6akfLy4e2SDCNg53Nu+/ZlyZ5ZnwB6B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 048c35c836d11194; Wed, 14 Feb 2024 13:49:56 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 22C38669DCC;
+	Wed, 14 Feb 2024 13:49:56 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
+Subject:
+ [PATCH v2 3/6] thermal: intel: Discard trip tables after zone registration
+Date: Wed, 14 Feb 2024 13:42:16 +0100
+Message-ID: <3287354.44csPzL39Z@kreacher>
+In-Reply-To: <4551531.LvFx2qVVIh@kreacher>
+References: <4551531.LvFx2qVVIh@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudejgdeghecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopedugedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=14 Fuz1=14 Fuz2=14
 
-On Fri, 9 Feb 2024 12:23:39 +0100
-Robert Richter <rrichter@amd.com> wrote:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> On 26.01.24 16:46:03, Jonathan Cameron wrote:
-> > On Mon, 8 Jan 2024 12:48:33 +0100
-> > Robert Richter <rrichter@amd.com> wrote:
-> >   
-> > > The last entry in the CDAT table may not mark the end of the CDAT
-> > > table buffer specified by the length field in the CDAT header. It can
-> > > be shorter with trailing unused (zero'ed) data. The actual table
-> > > length is determined when reading all CDAT entries of the table with
-> > > DOE.  
-> > 
-> > Can you give some reasons why this would occur?  
-> 
-> I have seen card implementations where the CDAT table is some sort of
-> fix buffer, but with entries filled in that do not fill the whole
-> table length size. Which means that the last DOE ends earlier than the
-> table end that then contains padding bytes. Spec is not entierly clear
-> here. It could be interpreted as a spec violation, but DOE is the card
-> vendor's firmware there is not much that can be done to fix that
-> there...
+Because the thermal core creates and uses its own copy of the trips
+table passed to thermal_zone_device_register_with_trips(), it is not
+necessary to hold on to a local copy of it any more after the given
+thermal zone has been registered.
 
-We can fall back on the usual kernel developer nudge solution.
-Print a rude message and hope their customers tell them to fix it ;)
+Accordingly, modify Intel thermal drivers to discard the trips tables
+passed to thermal_zone_device_register_with_trips() after thermal zone
+registration, for example by storing them in local variables which are
+automatically discarded when the zone registration is complete.
 
-> 
-> > 
-> > Need to be clear if this is:
-> > 1) Hardening against device returning borked table.  
-> 
-> So this was the main motivation. It will be likely there are more
-> cards with that issue.
-> 
-> > 2) Hardening against in flight update of CDAT racing with the readout
-> >    (not sure table can change size, but maybe.. I haven't checked).  
-> 
-> That is a side effect I realized while implementing this patch. To
-> prevent an out of bound buffer access, either the buffer needs a
-> length argument or the length field in the header needs to be checked.
-> The earlier is more reasonable and natural to me as no buffer insight
-> is needed for that.
-> 
-> > 3) DW read back vs packed structures?  
-> 
-> Good point. But that was not the reason. IIR the PCI DOE code
-> correctly, there is a DW access but only the missing bytes are written
-> to the buffer. The CDAT structures are all DW aligned, but the DOE
-> header isn't.
+Also make some additional code simplifications unlocked by the above
+changes.
 
-Yes. I hoped that was still working :)
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-> 
-> > 
-> > Patch seems reasonable to me, I'd just like a clear statement of why
-> > it happens!  
-> 
-> So regardless of padding bytes or not, a length check is required in
-> any case, one or the other way.
-> 
-> Will update the patch description.
+v1 -> v2: Rebase.
 
-Great.
-> 
-> Thanks,
-> 
-> -Robert
-> 
-> > 
-> > Jonathan
-> >   
-> > > 
-> > > If the table is greater than expected (containing zero'ed trailing
-> > > data), the CDAT parser fails with:
-> > > 
-> > >  [   48.691717] Malformed DSMAS table length: (24:0)
-> > >  [   48.702084] [CDAT:0x00] Invalid zero length
-> > >  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
-> > > 
-> > > In addition, the table buffer size can be different from the size
-> > > specified in the length field. This may cause out-of-bound access then
-> > > parsing the CDAT table.
-> > > 
-> > > Fix that by providing an optonal buffer length argument to
-> > > acpi_parse_entries_array() that can be used by cdat_table_parse() to
-> > > propagate the buffer size down to its users.
-> > > 
-> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Signed-off-by: Robert Richter <rrichter@amd.com>
-> > > ---
-> > >  drivers/acpi/tables.c    |  2 +-
-> > >  drivers/cxl/core/cdat.c  |  6 +++---
-> > >  include/linux/fw_table.h |  4 +++-
-> > >  lib/fw_table.c           | 15 ++++++++++-----
-> > >  4 files changed, 17 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> > > index b07f7d091d13..b976e5fc3fbc 100644
-> > > --- a/drivers/acpi/tables.c
-> > > +++ b/drivers/acpi/tables.c
-> > > @@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
-> > >  
-> > >  	count = acpi_parse_entries_array(id, table_size,
-> > >  					 (union fw_table_header *)table_header,
-> > > -					 proc, proc_num, max_entries);
-> > > +					 0, proc, proc_num, max_entries);
-> > >  
-> > >  	acpi_put_table(table_header);
-> > >  	return count;
-> > > diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-> > > index 6fe11546889f..012d8f2a7945 100644
-> > > --- a/drivers/cxl/core/cdat.c
-> > > +++ b/drivers/cxl/core/cdat.c
-> > > @@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
-> > >  	int rc;
-> > >  
-> > >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
-> > > -			      dsmas_xa, port->cdat.table);
-> > > +			      dsmas_xa, port->cdat.table, port->cdat.length);
-> > >  	rc = cdat_table_parse_output(rc);
-> > >  	if (rc)
-> > >  		return rc;
-> > >  
-> > >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
-> > > -			      dsmas_xa, port->cdat.table);
-> > > +			      dsmas_xa, port->cdat.table, port->cdat.length);
-> > >  	return cdat_table_parse_output(rc);
-> > >  }
-> > >  
-> > > @@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
-> > >  		return;
-> > >  
-> > >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
-> > > -			      port, port->cdat.table);
-> > > +			      port, port->cdat.table, port->cdat.length);
-> > >  	rc = cdat_table_parse_output(rc);
-> > >  	if (rc)
-> > >  		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
-> > > diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-> > > index 95421860397a..3ff4c277296f 100644
-> > > --- a/include/linux/fw_table.h
-> > > +++ b/include/linux/fw_table.h
-> > > @@ -40,12 +40,14 @@ union acpi_subtable_headers {
-> > >  
-> > >  int acpi_parse_entries_array(char *id, unsigned long table_size,
-> > >  			     union fw_table_header *table_header,
-> > > +			     unsigned long max_length,
-> > >  			     struct acpi_subtable_proc *proc,
-> > >  			     int proc_num, unsigned int max_entries);
-> > >  
-> > >  int cdat_table_parse(enum acpi_cdat_type type,
-> > >  		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
-> > > -		     struct acpi_table_cdat *table_header);
-> > > +		     struct acpi_table_cdat *table_header,
-> > > +		     unsigned long length);
-> > >  
-> > >  /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
-> > >  #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
-> > > diff --git a/lib/fw_table.c b/lib/fw_table.c
-> > > index 1e5e0b2f7012..ddb67853b7ac 100644
-> > > --- a/lib/fw_table.c
-> > > +++ b/lib/fw_table.c
-> > > @@ -132,6 +132,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-> > >   *
-> > >   * @id: table id (for debugging purposes)
-> > >   * @table_size: size of the root table
-> > > + * @max_length: maximum size of the table (ignore if 0)
-> > >   * @table_header: where does the table start?
-> > >   * @proc: array of acpi_subtable_proc struct containing entry id
-> > >   *        and associated handler with it
-> > > @@ -153,10 +154,11 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-> > >  int __init_or_fwtbl_lib
-> > >  acpi_parse_entries_array(char *id, unsigned long table_size,
-> > >  			 union fw_table_header *table_header,
-> > > +			 unsigned long max_length,
-> > >  			 struct acpi_subtable_proc *proc,
-> > >  			 int proc_num, unsigned int max_entries)
-> > >  {
-> > > -	unsigned long table_end, subtable_len, entry_len;
-> > > +	unsigned long table_len, table_end, subtable_len, entry_len;
-> > >  	struct acpi_subtable_entry entry;
-> > >  	enum acpi_subtable_type type;
-> > >  	int count = 0;
-> > > @@ -164,8 +166,10 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
-> > >  	int i;
-> > >  
-> > >  	type = acpi_get_subtable_type(id);
-> > > -	table_end = (unsigned long)table_header +
-> > > -		    acpi_table_get_length(type, table_header);
-> > > +	table_len = acpi_table_get_length(type, table_header);
-> > > +	if (max_length && max_length < table_len)
-> > > +		table_len = max_length;
-> > > +	table_end = (unsigned long)table_header + table_len;
-> > >  
-> > >  	/* Parse all entries looking for a match. */
-> > >  
-> > > @@ -220,7 +224,8 @@ int __init_or_fwtbl_lib
-> > >  cdat_table_parse(enum acpi_cdat_type type,
-> > >  		 acpi_tbl_entry_handler_arg handler_arg,
-> > >  		 void *arg,
-> > > -		 struct acpi_table_cdat *table_header)
-> > > +		 struct acpi_table_cdat *table_header,
-> > > +		 unsigned long length)
-> > >  {
-> > >  	struct acpi_subtable_proc proc = {
-> > >  		.id		= type,
-> > > @@ -234,6 +239,6 @@ cdat_table_parse(enum acpi_cdat_type type,
-> > >  	return acpi_parse_entries_array(ACPI_SIG_CDAT,
-> > >  					sizeof(struct acpi_table_cdat),
-> > >  					(union fw_table_header *)table_header,
-> > > -					&proc, 1, 0);
-> > > +					length, &proc, 1, 0);
-> > >  }
-> > >  EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);  
-> >   
+---
+ drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c         |    6 -
+ drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h         |    1 
+ drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c |    9 +-
+ drivers/thermal/intel/intel_pch_thermal.c                            |   24 +++---
+ drivers/thermal/intel/intel_quark_dts_thermal.c                      |    4 -
+ drivers/thermal/intel/intel_soc_dts_iosf.c                           |   14 ++--
+ drivers/thermal/intel/intel_soc_dts_iosf.h                           |    1 
+ drivers/thermal/intel/x86_pkg_temp_thermal.c                         |   35 +++-------
+ 8 files changed, 40 insertions(+), 54 deletions(-)
+
+Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
++++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+@@ -177,8 +177,6 @@ struct int34x_thermal_zone *int340x_ther
+ 	for (i = 0; i < trip_cnt; ++i)
+ 		zone_trips[i].hysteresis = hyst;
+ 
+-	int34x_zone->trips = zone_trips;
+-
+ 	int34x_zone->lpat_table = acpi_lpat_get_conversion_table(adev->handle);
+ 
+ 	int34x_zone->zone = thermal_zone_device_register_with_trips(
+@@ -188,6 +186,8 @@ struct int34x_thermal_zone *int340x_ther
+ 							int34x_zone->ops,
+ 							&int340x_thermal_params,
+ 							0, 0);
++	kfree(zone_trips);
++
+ 	if (IS_ERR(int34x_zone->zone)) {
+ 		ret = PTR_ERR(int34x_zone->zone);
+ 		goto err_thermal_zone;
+@@ -201,7 +201,6 @@ struct int34x_thermal_zone *int340x_ther
+ err_enable:
+ 	thermal_zone_device_unregister(int34x_zone->zone);
+ err_thermal_zone:
+-	kfree(int34x_zone->trips);
+ 	acpi_lpat_free_conversion_table(int34x_zone->lpat_table);
+ err_trips_alloc:
+ 	kfree(int34x_zone->ops);
+@@ -215,7 +214,6 @@ void int340x_thermal_zone_remove(struct
+ {
+ 	thermal_zone_device_unregister(int34x_zone->zone);
+ 	acpi_lpat_free_conversion_table(int34x_zone->lpat_table);
+-	kfree(int34x_zone->trips);
+ 	kfree(int34x_zone->ops);
+ 	kfree(int34x_zone);
+ }
+Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
++++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.h
+@@ -20,7 +20,6 @@ struct active_trip {
+ 
+ struct int34x_thermal_zone {
+ 	struct acpi_device *adev;
+-	struct thermal_trip *trips;
+ 	int aux_trip_nr;
+ 	struct thermal_zone_device *zone;
+ 	struct thermal_zone_device_ops *ops;
+Index: linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
++++ linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+@@ -233,11 +233,6 @@ static int get_trip_temp(struct proc_the
+ 	return temp;
+ }
+ 
+-static struct thermal_trip psv_trip = {
+-	.type = THERMAL_TRIP_PASSIVE,
+-	.flags = THERMAL_TRIP_FLAG_RW_TEMP,
+-};
+-
+ static struct thermal_zone_device_ops tzone_ops = {
+ 	.get_temp = sys_get_curr_temp,
+ 	.set_trip_temp	= sys_set_trip_temp,
+@@ -252,6 +247,10 @@ static int proc_thermal_pci_probe(struct
+ {
+ 	struct proc_thermal_device *proc_priv;
+ 	struct proc_thermal_pci *pci_info;
++	struct thermal_trip psv_trip = {
++		.type = THERMAL_TRIP_PASSIVE,
++		.flags = THERMAL_TRIP_FLAG_RW_TEMP,
++	};
+ 	int irq_flag = 0, irq, ret;
+ 	bool msi_irq = false;
+ 
+Index: linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_pch_thermal.c
++++ linux-pm/drivers/thermal/intel/intel_pch_thermal.c
+@@ -84,7 +84,6 @@ struct pch_thermal_device {
+ 	void __iomem *hw_base;
+ 	struct pci_dev *pdev;
+ 	struct thermal_zone_device *tzd;
+-	struct thermal_trip trips[PCH_MAX_TRIPS];
+ 	bool bios_enabled;
+ };
+ 
+@@ -94,7 +93,8 @@ struct pch_thermal_device {
+  * passive trip temperature using _PSV method. There is no specific
+  * passive temperature setting in MMIO interface of this PCI device.
+  */
+-static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd, int trip)
++static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd,
++				     struct thermal_trip *trip)
+ {
+ 	struct acpi_device *adev;
+ 	int temp;
+@@ -106,12 +106,13 @@ static int pch_wpt_add_acpi_psv_trip(str
+ 	if (thermal_acpi_passive_trip_temp(adev, &temp) || temp <= 0)
+ 		return 0;
+ 
+-	ptd->trips[trip].type = THERMAL_TRIP_PASSIVE;
+-	ptd->trips[trip].temperature = temp;
++	trip->type = THERMAL_TRIP_PASSIVE;
++	trip->temperature = temp;
+ 	return 1;
+ }
+ #else
+-static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd, int trip)
++static int pch_wpt_add_acpi_psv_trip(struct pch_thermal_device *ptd,
++				     struct thermal_trip *trip)
+ {
+ 	return 0;
+ }
+@@ -159,6 +160,7 @@ static const char *board_names[] = {
+ static int intel_pch_thermal_probe(struct pci_dev *pdev,
+ 				   const struct pci_device_id *id)
+ {
++	struct thermal_trip ptd_trips[PCH_MAX_TRIPS] = { 0 };
+ 	enum pch_board_ids board_id = id->driver_data;
+ 	struct pch_thermal_device *ptd;
+ 	int nr_trips = 0;
+@@ -220,21 +222,21 @@ read_trips:
+ 	trip_temp = readw(ptd->hw_base + WPT_CTT);
+ 	trip_temp &= 0x1FF;
+ 	if (trip_temp) {
+-		ptd->trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
+-		ptd->trips[nr_trips++].type = THERMAL_TRIP_CRITICAL;
++		ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
++		ptd_trips[nr_trips++].type = THERMAL_TRIP_CRITICAL;
+ 	}
+ 
+ 	trip_temp = readw(ptd->hw_base + WPT_PHL);
+ 	trip_temp &= 0x1FF;
+ 	if (trip_temp) {
+-		ptd->trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
+-		ptd->trips[nr_trips++].type = THERMAL_TRIP_HOT;
++		ptd_trips[nr_trips].temperature = GET_WPT_TEMP(trip_temp);
++		ptd_trips[nr_trips++].type = THERMAL_TRIP_HOT;
+ 	}
+ 
+-	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, nr_trips);
++	nr_trips += pch_wpt_add_acpi_psv_trip(ptd, &ptd_trips[nr_trips]);
+ 
+ 	ptd->tzd = thermal_zone_device_register_with_trips(board_names[board_id],
+-							   ptd->trips, nr_trips,
++							   ptd_trips, nr_trips,
+ 							   ptd, &tzd_ops,
+ 							   NULL, 0, 0);
+ 	if (IS_ERR(ptd->tzd)) {
+Index: linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_quark_dts_thermal.c
++++ linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
+@@ -101,7 +101,6 @@ struct soc_sensor_entry {
+ 	u32 store_ptps;
+ 	u32 store_dts_enable;
+ 	struct thermal_zone_device *tzone;
+-	struct thermal_trip trips[QRK_MAX_DTS_TRIPS];
+ };
+ 
+ static struct soc_sensor_entry *soc_dts;
+@@ -316,8 +315,8 @@ static void free_soc_dts(struct soc_sens
+ 
+ static struct soc_sensor_entry *alloc_soc_dts(void)
+ {
++	struct thermal_trip trips[QRK_MAX_DTS_TRIPS];
+ 	struct soc_sensor_entry *aux_entry;
+-	struct thermal_trip *trips;
+ 	int err;
+ 	u32 out;
+ 
+@@ -326,7 +325,6 @@ static struct soc_sensor_entry *alloc_so
+ 		err = -ENOMEM;
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+-	trips = aux_entry->trips;
+ 
+ 	/* Check if DTS register is locked */
+ 	err = iosf_mbi_read(QRK_MBI_UNIT_RMU, MBI_REG_READ,
+Index: linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_soc_dts_iosf.c
++++ linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
+@@ -201,7 +201,8 @@ static void remove_dts_thermal_zone(stru
+ 	thermal_zone_device_unregister(dts->tzone);
+ }
+ 
+-static int add_dts_thermal_zone(int id, struct intel_soc_dts_sensor_entry *dts)
++static int add_dts_thermal_zone(int id, struct intel_soc_dts_sensor_entry *dts,
++				struct thermal_trip *trips)
+ {
+ 	char name[10];
+ 	u32 store_ptps;
+@@ -223,11 +224,11 @@ static int add_dts_thermal_zone(int id,
+ 
+ 		for (i = 0; i <= 1; i++) {
+ 			if (store_ptps & (0xFFU << i * 8))
+-				dts->trips[i].flags &= ~THERMAL_TRIP_FLAG_RW_TEMP;
++				trips[i].flags &= ~THERMAL_TRIP_FLAG_RW_TEMP;
+ 		}
+ 	}
+ 	snprintf(name, sizeof(name), "soc_dts%d", id);
+-	dts->tzone = thermal_zone_device_register_with_trips(name, dts->trips,
++	dts->tzone = thermal_zone_device_register_with_trips(name, trips,
+ 							     SOC_MAX_DTS_TRIPS,
+ 							     dts, &tzone_ops,
+ 							     NULL, 0, 0);
+@@ -303,6 +304,7 @@ struct intel_soc_dts_sensors *
+ intel_soc_dts_iosf_init(enum intel_soc_dts_interrupt_type intr_type,
+ 			bool critical_trip, int crit_offset)
+ {
++	struct thermal_trip trips[SOC_MAX_DTS_SENSORS][SOC_MAX_DTS_TRIPS] = { 0 };
+ 	struct intel_soc_dts_sensors *sensors;
+ 	int tj_max;
+ 	int ret;
+@@ -335,7 +337,7 @@ intel_soc_dts_iosf_init(enum intel_soc_d
+ 		if (ret)
+ 			goto err_reset_trips;
+ 
+-		set_trip(&sensors->soc_dts[i].trips[0], THERMAL_TRIP_PASSIVE,
++		set_trip(&trips[i][0], THERMAL_TRIP_PASSIVE,
+ 			 THERMAL_TRIP_FLAG_RW_TEMP, 0);
+ 
+ 		if (critical_trip) {
+@@ -351,11 +353,11 @@ intel_soc_dts_iosf_init(enum intel_soc_d
+ 		if (ret)
+ 			goto err_reset_trips;
+ 
+-		set_trip(&sensors->soc_dts[i].trips[1], trip_type, trip_flags, temp);
++		set_trip(&trips[i][1], trip_type, trip_flags, temp);
+ 	}
+ 
+ 	for (i = 0; i < SOC_MAX_DTS_SENSORS; ++i) {
+-		ret = add_dts_thermal_zone(i, &sensors->soc_dts[i]);
++		ret = add_dts_thermal_zone(i, &sensors->soc_dts[i], trips[i]);
+ 		if (ret)
+ 			goto err_remove_zone;
+ 	}
+Index: linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.h
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_soc_dts_iosf.h
++++ linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.h
+@@ -28,7 +28,6 @@ struct intel_soc_dts_sensors;
+ struct intel_soc_dts_sensor_entry {
+ 	int id;
+ 	u32 store_status;
+-	struct thermal_trip trips[SOC_MAX_DTS_TRIPS];
+ 	struct thermal_zone_device *tzone;
+ 	struct intel_soc_dts_sensors *sensors;
+ };
+Index: linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/x86_pkg_temp_thermal.c
++++ linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
+@@ -53,7 +53,6 @@ struct zone_device {
+ 	u32				msr_pkg_therm_high;
+ 	struct delayed_work		work;
+ 	struct thermal_zone_device	*tzone;
+-	struct thermal_trip		*trips;
+ 	struct cpumask			cpumask;
+ };
+ 
+@@ -268,17 +267,13 @@ static int pkg_thermal_notify(u64 msr_va
+ 	return 0;
+ }
+ 
+-static struct thermal_trip *pkg_temp_thermal_trips_init(int cpu, int tj_max, int num_trips)
++static int pkg_temp_thermal_trips_init(int cpu, int tj_max,
++				       struct thermal_trip *trips, int num_trips)
+ {
+-	struct thermal_trip *trips;
+ 	unsigned long thres_reg_value;
+ 	u32 mask, shift, eax, edx;
+ 	int ret, i;
+ 
+-	trips = kzalloc(sizeof(*trips) * num_trips, GFP_KERNEL);
+-	if (!trips)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	for (i = 0; i < num_trips; i++) {
+ 
+ 		if (i) {
+@@ -291,10 +286,8 @@ static struct thermal_trip *pkg_temp_the
+ 
+ 		ret = rdmsr_on_cpu(cpu, MSR_IA32_PACKAGE_THERM_INTERRUPT,
+ 				   &eax, &edx);
+-		if (ret < 0) {
+-			kfree(trips);
+-			return ERR_PTR(ret);
+-		}
++		if (ret < 0)
++			return ret;
+ 
+ 		thres_reg_value = (eax & mask) >> shift;
+ 
+@@ -308,11 +301,12 @@ static struct thermal_trip *pkg_temp_the
+ 			 __func__, cpu, i, trips[i].temperature);
+ 	}
+ 
+-	return trips;
++	return 0;
+ }
+ 
+ static int pkg_temp_thermal_device_add(unsigned int cpu)
+ {
++	struct thermal_trip trips[MAX_NUMBER_OF_TRIPS] = { 0 };
+ 	int id = topology_logical_die_id(cpu);
+ 	u32 eax, ebx, ecx, edx;
+ 	struct zone_device *zonedev;
+@@ -337,20 +331,18 @@ static int pkg_temp_thermal_device_add(u
+ 	if (!zonedev)
+ 		return -ENOMEM;
+ 
+-	zonedev->trips = pkg_temp_thermal_trips_init(cpu, tj_max, thres_count);
+-	if (IS_ERR(zonedev->trips)) {
+-		err = PTR_ERR(zonedev->trips);
++	err = pkg_temp_thermal_trips_init(cpu, tj_max, trips, thres_count);
++	if (err)
+ 		goto out_kfree_zonedev;
+-	}
+ 
+ 	INIT_DELAYED_WORK(&zonedev->work, pkg_temp_thermal_threshold_work_fn);
+ 	zonedev->cpu = cpu;
+ 	zonedev->tzone = thermal_zone_device_register_with_trips("x86_pkg_temp",
+-			zonedev->trips, thres_count,
++			trips, thres_count,
+ 			zonedev, &tzone_ops, &pkg_temp_tz_params, 0, 0);
+ 	if (IS_ERR(zonedev->tzone)) {
+ 		err = PTR_ERR(zonedev->tzone);
+-		goto out_kfree_trips;
++		goto out_kfree_zonedev;
+ 	}
+ 	err = thermal_zone_device_enable(zonedev->tzone);
+ 	if (err)
+@@ -369,8 +361,6 @@ static int pkg_temp_thermal_device_add(u
+ 
+ out_unregister_tz:
+ 	thermal_zone_device_unregister(zonedev->tzone);
+-out_kfree_trips:
+-	kfree(zonedev->trips);
+ out_kfree_zonedev:
+ 	kfree(zonedev);
+ 	return err;
+@@ -457,10 +447,9 @@ static int pkg_thermal_cpu_offline(unsig
+ 	raw_spin_unlock_irq(&pkg_temp_lock);
+ 
+ 	/* Final cleanup if this is the last cpu */
+-	if (lastcpu) {
+-		kfree(zonedev->trips);
++	if (lastcpu)
+ 		kfree(zonedev);
+-	}
++
+ 	return 0;
+ }
+ 
+
+
 
 
