@@ -1,61 +1,59 @@
-Return-Path: <linux-acpi+bounces-3486-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3487-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EDB8550B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 18:47:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE83C8550AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 18:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2C56B2492A
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 17:44:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B73BB27157
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 17:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE28B86623;
-	Wed, 14 Feb 2024 17:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8F48662C;
+	Wed, 14 Feb 2024 17:46:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01477E0EA;
-	Wed, 14 Feb 2024 17:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C787C086;
+	Wed, 14 Feb 2024 17:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707932691; cv=none; b=GaBNsc4km9GXG2wMPAM3DW0lLv63Yg3G0VE5fOwcJo/mpyzLLU7M5d/OWQprqhHFRfnrE0q2P8tFTPF0nGzBLA/fw5u8f6d3jEfEo9gJKdVR/EVGqRBeSN9tOubzorEEjlxX+mrZJObyuoAI+obQE1kWgen2n5JIVESy5FfhNAo=
+	t=1707932809; cv=none; b=LQKJFNiiaT58UWrkaWaQ2a6VCvGYNGggyeUcmtpDXID1ck+1lJBbBHUG/aVlZELBVkpkSMowIr1K7qdHo1uuioIP7Gh5FPpROAOVkRgF0QJ08cMwEbqX5eouv+st3+yZTmXFzWktquwzstd0PsRWkFtcyDQZoZ825og5uP2ay7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707932691; c=relaxed/simple;
-	bh=x0pZy0YC1v0L4GBpZjCOiC6M7l8F0yAQyQ5cny4upp8=;
+	s=arc-20240116; t=1707932809; c=relaxed/simple;
+	bh=S4hCFjijhtZg2TSPM1wryhLLA6baKq9lg+OqRu1GsM8=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SA4NM6D9vAerMtAWak+KSI/D9Z1gE8y9jzzEqFqV5GDWHy+HUTngomTvL+mGXMbuuhdxDm4zi/EiqS+0CaEYy9LORmTbY68qOzpryszSOS1jvjTFKhkq4iKb95cGQ4jWoY9l4dffkRCkOWcaDwmj55U3tRcYQrYOKyb94Q4WXtM=
+	 MIME-Version:Content-Type; b=jurhtFsUWPDB4XFf0Us84laTitEzF1Y4fjfm1OQa/wHb7SVb24UNEB+28wIzG+O9zex2A2BtUdBBzGw9lUGkkyC1bNqWhboXDGhxWCBd7Zd1QWkhrFk0cTbyjVKS4a4IN/ssaV+T6GqngwabxH24EqXKkD8/zew894UlaiZW77U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZlq43Nkdz67SWX;
-	Thu, 15 Feb 2024 01:41:04 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZls06LZHz6JB0Y;
+	Thu, 15 Feb 2024 01:42:44 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 23EB41400D9;
-	Thu, 15 Feb 2024 01:44:46 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 04679141194;
+	Thu, 15 Feb 2024 01:46:45 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 17:44:45 +0000
-Date: Wed, 14 Feb 2024 17:44:44 +0000
+ 2024 17:46:44 +0000
+Date: Wed, 14 Feb 2024 17:46:43 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Richter <rrichter@amd.com>
-CC: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Davidlohr
- Bueso" <dave@stgolabs.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew
- Morton <akpm@linux-foundation.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+To: Ben Cheatham <benjamin.cheatham@amd.com>
+CC: <dan.j.williams@intel.com>, <dave@stogolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <rafael@kernel.org>, <linux-cxl@vger.kernel.org>,
 	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3 3/3] lib/firmware_table: Provide buffer length
- argument to cdat_table_parse()
-Message-ID: <20240214174444.00006c9f@Huawei.com>
-In-Reply-To: <20240214173927.00002d20@Huawei.com>
-References: <20240209192647.163042-1-rrichter@amd.com>
-	<20240209192647.163042-4-rrichter@amd.com>
-	<20240214173927.00002d20@Huawei.com>
+Subject: Re: [PATCH v11 3/4] cxl/core, EINJ: Add EINJ CXL debugfs files and
+ EINJ helper functions
+Message-ID: <20240214174643.00004caf@Huawei.com>
+In-Reply-To: <dd996549-dd52-4181-ba62-a1a8a2a18a35@amd.com>
+References: <20240208200042.432958-1-Benjamin.Cheatham@amd.com>
+	<20240208200042.432958-4-Benjamin.Cheatham@amd.com>
+	<20240214152759.000076ec@Huawei.com>
+	<dd996549-dd52-4181-ba62-a1a8a2a18a35@amd.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -69,198 +67,189 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 14 Feb 2024 17:39:27 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Wed, 14 Feb 2024 10:41:00 -0600
+Ben Cheatham <benjamin.cheatham@amd.com> wrote:
 
-> On Fri, 9 Feb 2024 20:26:47 +0100
-> Robert Richter <rrichter@amd.com> wrote:
-> 
-> > There exists card implementations with a CDAT table using a fix  
-> There exist ... fixed size buffer,
-> > buffer, but with entries filled in that do not fill the whole table
-> > length size. Then, the last entry in the CDAT table may not mark the
-> > end of the CDAT table buffer specified by the length field in the CDAT
-> > header. It can be shorter with trailing unused (zero'ed) data. The
-> > actual table length is determined while reading all CDAT entries of
-> > the table with DOE.
+> On 2/14/24 9:27 AM, Jonathan Cameron wrote:
+> > On Thu, 8 Feb 2024 14:00:41 -0600
+> > Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
+> >   
+> >> Implement CXL helper functions in the EINJ module for getting/injecting
+> >> available CXL protocol error types and export them to sysfs under
+> >> kernel/debug/cxl.
+> >>
+> >> The kernel/debug/cxl/einj_types file will print the available CXL
+> >> protocol errors in the same format as the available_error_types
+> >> file provided by the EINJ module. The
+> >> kernel/debug/cxl/$dport_dev/einj_inject is functionally the same as the
+> >> error_type and error_inject files provided by the EINJ module, i.e.:
+> >> writing an error type into $dport_dev/einj_inject will inject said error
+> >> type into the CXL dport represented by $dport_dev.
+> >>
+> >> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> >> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>  
+> > Hi Ben,
 > > 
-> > If the table is greater than expected (containing zero'ed trailing
-> > data), the CDAT parser fails with:
+> > Sorry I've not looked at this sooner.
 > > 
-> >  [   48.691717] Malformed DSMAS table length: (24:0)
-> >  [   48.702084] [CDAT:0x00] Invalid zero length
-> >  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
+> > Anyhow, some comments inline. Mostly looks good to me.
 > > 
-> > In addition, a check of the table buffer length is missing to prevent
-> > an out-of-bound access then parsing the CDAT table.
+> > Jonathan
+> >   
+> >> ---
+> >>  Documentation/ABI/testing/debugfs-cxl |  22 ++++
+> >>  MAINTAINERS                           |   1 +
+> >>  drivers/acpi/apei/einj.c              | 158 ++++++++++++++++++++++++--
+> >>  drivers/cxl/core/port.c               |  39 +++++++
+> >>  include/linux/einj-cxl.h              |  45 ++++++++
+> >>  5 files changed, 255 insertions(+), 10 deletions(-)
+> >>  create mode 100644 include/linux/einj-cxl.h
+> >>
+> >> diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
+> >> index fe61d372e3fa..bcd985cca66a 100644
+> >> --- a/Documentation/ABI/testing/debugfs-cxl
+> >> +++ b/Documentation/ABI/testing/debugfs-cxl
+> >> @@ -33,3 +33,25 @@ Description:
+> >>  		device cannot clear poison from the address, -ENXIO is returned.
+> >>  		The clear_poison attribute is only visible for devices
+> >>  		supporting the capability.
+> >> +
+> >> +What:		/sys/kernel/debug/cxl/einj_types
+> >> +Date:		January, 2024
+> >> +KernelVersion:	v6.9
+> >> +Contact:	linux-cxl@vger.kernel.org
+> >> +Description:
+> >> +		(RO) Prints the CXL protocol error types made available by
+> >> +		the platform in the format "0x<error number>	<error type>".
+> >> +		The <error number> can be written to einj_inject to inject
+> >> +		<error type> into a chosen dport.  
 > > 
-> > Hardening code against device returning borked table. Fix that by
-> > providing an optional buffer length argument to
-> > acpi_parse_entries_array() that can be used by cdat_table_parse() to
-> > propagate the buffer size down to its users to check the buffer
-> > length. This also prevents a possible out-of-bound access mentioned.
-> > 
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Signed-off-by: Robert Richter <rrichter@amd.com>
-> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>  
+> > I think it's a limited set, so docs could include what the error_type values can
+> > be?  From this description it's not obvious they are human readable strings.
+> >   
 > 
-> I think we should scream a bit about this if we see it
-> as I'm unconvinced the spec allows for an implementation like this.
-> 
-> If the spec is unclear, lets seek a clarification.
-> 
-> I'm fine with this as a defensive measure, I just don't want
-> device vendors to keep doing it! 
-> 
-Scrub that - I got around to checking the CDAT spec. It can
-change length whilst we are reading it due to DSEMTS entry
-counts being allowed to change.
-https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.03.pdf
-(it's in the description of the Sequence field)
+> It is a limited set, but that set has 6 variants. It may make the description
+> a bit long to include all of them, but I could include an example string instead?
+> If length isn't an issue then I can add them all in.
 
-Sure we'll notice that the checksum fails and the sequence number
-has updated but that doesn't help us if we went out of bounds
-before we knew that.
+Example works.
 
-Definitely good to check this as I think we can hit it even
-if we don't have a potentially buggy device.
-I'd still like to moan if we get inconsistent sizes and it
-isn't a race though. Can we find a clean way to detect this
-at a point where we know we have a valid complete table?
-
-Jonathan
-
-> Jonathan
 > 
-> 
-> > ---
-> >  drivers/acpi/tables.c    |  2 +-
-> >  drivers/cxl/core/cdat.c  |  6 +++---
-> >  include/linux/fw_table.h |  4 +++-
-> >  lib/fw_table.c           | 15 ++++++++++-----
-> >  4 files changed, 17 insertions(+), 10 deletions(-)
+> >> +
+> >> +What:		/sys/kernel/debug/cxl/$dport_dev/einj_inject
+> >> +Date:		January, 2024
+> >> +KernelVersion:	v6.9
+> >> +Contact:	linux-cxl@vger.kernel.org
+> >> +Description:
+> >> +		(WO) Writing an integer to this file injects the corresponding
+> >> +		CXL protocol error into $dport_dev ($dport_dev will be a device
+> >> +		name from /sys/bus/pci/devices). The integer to type mapping for
+> >> +		injection can be found by reading from einj_types. If the dport
+> >> +		was enumerated in RCH mode, a CXL 1.1 error is injected, otherwise
+> >> +		a CXL 2.0 error is injected.
+> >> diff --git a/MAINTAINERS b/MAINTAINERS
+> >> index 9104430e148e..02d7feb2ed1f 100644
+> >> --- a/MAINTAINERS
+> >> +++ b/MAINTAINERS
+> >> @@ -5246,6 +5246,7 @@ L:	linux-cxl@vger.kernel.org
+> >>  S:	Maintained
+> >>  F:	drivers/cxl/
+> >>  F:	include/uapi/linux/cxl_mem.h
+> >> +F:  include/linux/einj-cxl.h
+> >>  F:	tools/testing/cxl/
+> >>  
+> >>  COMPUTE EXPRESS LINK PMU (CPMU)
+> >> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
+> >> index 73dde21d3e89..9137cc01f791 100644
+> >> --- a/drivers/acpi/apei/einj.c
+> >> +++ b/drivers/acpi/apei/einj.c
+> >> @@ -21,6 +21,7 @@
+> >>  #include <linux/nmi.h>
+> >>  #include <linux/delay.h>
+> >>  #include <linux/mm.h>
+> >> +#include <linux/einj-cxl.h>
+> >>  #include <linux/platform_device.h>
+> >>  #include <asm/unaligned.h>
+> >>  
+> >> @@ -37,6 +38,20 @@
+> >>  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
+> >>  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
+> >>  				ACPI_EINJ_MEMORY_FATAL)
+> >> +#ifndef ACPI_EINJ_CXL_CACHE_CORRECTABLE
+> >> +#define ACPI_EINJ_CXL_CACHE_CORRECTABLE     BIT(12)
+> >> +#define ACPI_EINJ_CXL_CACHE_UNCORRECTABLE   BIT(13)
+> >> +#define ACPI_EINJ_CXL_CACHE_FATAL           BIT(14)
+> >> +#define ACPI_EINJ_CXL_MEM_CORRECTABLE       BIT(15)
+> >> +#define ACPI_EINJ_CXL_MEM_UNCORRECTABLE     BIT(16)
+> >> +#define ACPI_EINJ_CXL_MEM_FATAL             BIT(17)
+> >> +#endif
+> >> +#define CXL_ERROR_MASK		(ACPI_EINJ_CXL_CACHE_CORRECTABLE | \
+> >> +				ACPI_EINJ_CXL_CACHE_UNCORRECTABLE | \
+> >> +				ACPI_EINJ_CXL_CACHE_FATAL | \
+> >> +				ACPI_EINJ_CXL_MEM_CORRECTABLE | \
+> >> +				ACPI_EINJ_CXL_MEM_UNCORRECTABLE | \
+> >> +				ACPI_EINJ_CXL_MEM_FATAL)
+> >>  
+> >>  /*
+> >>   * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
+> >> @@ -543,8 +558,11 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
+> >>  	if (type & ACPI5_VENDOR_BIT) {
+> >>  		if (vendor_flags != SETWA_FLAGS_MEM)
+> >>  			goto inject;
+> >> -	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM))
+> >> +	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM)) {
+> >>  		goto inject;
+> >> +	} else if ((type & CXL_ERROR_MASK) && (flags & SETWA_FLAGS_MEM)) {
+> >> +		goto inject;
+> >> +	}
+> >>  
+> >>  	/*
+> >>  	 * Disallow crazy address masks that give BIOS leeway to pick
+> >> @@ -596,6 +614,9 @@ static const char * const einj_error_type_string[] = {
+> >>  	"0x00000200\tPlatform Correctable\n",
+> >>  	"0x00000400\tPlatform Uncorrectable non-fatal\n",
+> >>  	"0x00000800\tPlatform Uncorrectable fatal\n",
+> >> +};
+> >> +
+> >> +static const char * const einj_cxl_error_type_string[] = {
+> >>  	"0x00001000\tCXL.cache Protocol Correctable\n",
+> >>  	"0x00002000\tCXL.cache Protocol Uncorrectable non-fatal\n",
+> >>  	"0x00004000\tCXL.cache Protocol Uncorrectable fatal\n",
+> >> @@ -621,29 +642,44 @@ static int available_error_type_show(struct seq_file *m, void *v)
+> >>  
+> >>  DEFINE_SHOW_ATTRIBUTE(available_error_type);
+> >>  
+> >> -static int error_type_get(void *data, u64 *val)
+> >> +int einj_cxl_available_error_type_show(struct seq_file *m, void *v)
+> >>  {
+> >> -	*val = error_type;
+> >> +	int cxl_err, rc;
+> >> +	u32 available_error_type = 0;
+> >> +
+> >> +	if (!einj_initialized)
+> >> +		return -ENXIO;
+> >> +
+> >> +	rc = einj_get_available_error_type(&available_error_type);
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	for (int pos = 0; pos < ARRAY_SIZE(einj_cxl_error_type_string); pos++) {  
 > > 
-> > diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-> > index b07f7d091d13..b976e5fc3fbc 100644
-> > --- a/drivers/acpi/tables.c
-> > +++ b/drivers/acpi/tables.c
-> > @@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
-> >  
-> >  	count = acpi_parse_entries_array(id, table_size,
-> >  					 (union fw_table_header *)table_header,
-> > -					 proc, proc_num, max_entries);
-> > +					 0, proc, proc_num, max_entries);
-> >  
-> >  	acpi_put_table(table_header);
-> >  	return count;
-> > diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-> > index 6fe11546889f..012d8f2a7945 100644
-> > --- a/drivers/cxl/core/cdat.c
-> > +++ b/drivers/cxl/core/cdat.c
-> > @@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
-> >  	int rc;
-> >  
-> >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
-> > -			      dsmas_xa, port->cdat.table);
-> > +			      dsmas_xa, port->cdat.table, port->cdat.length);
-> >  	rc = cdat_table_parse_output(rc);
-> >  	if (rc)
-> >  		return rc;
-> >  
-> >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
-> > -			      dsmas_xa, port->cdat.table);
-> > +			      dsmas_xa, port->cdat.table, port->cdat.length);
-> >  	return cdat_table_parse_output(rc);
-> >  }
-> >  
-> > @@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
-> >  		return;
-> >  
-> >  	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
-> > -			      port, port->cdat.table);
-> > +			      port, port->cdat.table, port->cdat.length);
-> >  	rc = cdat_table_parse_output(rc);
-> >  	if (rc)
-> >  		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
-> > diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-> > index 95421860397a..3ff4c277296f 100644
-> > --- a/include/linux/fw_table.h
-> > +++ b/include/linux/fw_table.h
-> > @@ -40,12 +40,14 @@ union acpi_subtable_headers {
-> >  
-> >  int acpi_parse_entries_array(char *id, unsigned long table_size,
-> >  			     union fw_table_header *table_header,
-> > +			     unsigned long max_length,
-> >  			     struct acpi_subtable_proc *proc,
-> >  			     int proc_num, unsigned int max_entries);
-> >  
-> >  int cdat_table_parse(enum acpi_cdat_type type,
-> >  		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
-> > -		     struct acpi_table_cdat *table_header);
-> > +		     struct acpi_table_cdat *table_header,
-> > +		     unsigned long length);
-> >  
-> >  /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
-> >  #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
-> > diff --git a/lib/fw_table.c b/lib/fw_table.c
-> > index c3569d2ba503..16291814450e 100644
-> > --- a/lib/fw_table.c
-> > +++ b/lib/fw_table.c
-> > @@ -127,6 +127,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-> >   *
-> >   * @id: table id (for debugging purposes)
-> >   * @table_size: size of the root table
-> > + * @max_length: maximum size of the table (ignore if 0)
-> >   * @table_header: where does the table start?
-> >   * @proc: array of acpi_subtable_proc struct containing entry id
-> >   *        and associated handler with it
-> > @@ -148,18 +149,21 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-> >  int __init_or_fwtbl_lib
-> >  acpi_parse_entries_array(char *id, unsigned long table_size,
-> >  			 union fw_table_header *table_header,
-> > +			 unsigned long max_length,
-> >  			 struct acpi_subtable_proc *proc,
-> >  			 int proc_num, unsigned int max_entries)
-> >  {
-> > -	unsigned long table_end, subtable_len, entry_len;
-> > +	unsigned long table_len, table_end, subtable_len, entry_len;
-> >  	struct acpi_subtable_entry entry;
-> >  	enum acpi_subtable_type type;
-> >  	int count = 0;
-> >  	int i;
-> >  
-> >  	type = acpi_get_subtable_type(id);
-> > -	table_end = (unsigned long)table_header +
-> > -		    acpi_table_get_length(type, table_header);
-> > +	table_len = acpi_table_get_length(type, table_header);
-> > +	if (max_length && max_length < table_len)
-> > +		table_len = max_length;  
-> 	if (max_length)
-> 		table_len = min(max_length, table_len);
+> > Trivial so feel free to ignore but, I'd stick to local styles and have pos
+> > declared in more traditional c style.
+> >   
 > 
-> > +	table_end = (unsigned long)table_header + table_len;
-> >  
-> >  	/* Parse all entries looking for a match. */
-> >  
-> > @@ -208,7 +212,8 @@ int __init_or_fwtbl_lib
-> >  cdat_table_parse(enum acpi_cdat_type type,
-> >  		 acpi_tbl_entry_handler_arg handler_arg,
-> >  		 void *arg,
-> > -		 struct acpi_table_cdat *table_header)
-> > +		 struct acpi_table_cdat *table_header,
-> > +		 unsigned long length)
-> >  {
-> >  	struct acpi_subtable_proc proc = {
-> >  		.id		= type,
-> > @@ -222,6 +227,6 @@ cdat_table_parse(enum acpi_cdat_type type,
-> >  	return acpi_parse_entries_array(ACPI_SIG_CDAT,
-> >  					sizeof(struct acpi_table_cdat),
-> >  					(union fw_table_header *)table_header,
-> > -					&proc, 1, 0);
-> > +					length, &proc, 1, 0);
-> >  }
-> >  EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);  
+> Will do.
 > 
+> >> +		cxl_err = ACPI_EINJ_CXL_CACHE_CORRECTABLE << pos;  
+> > 
+> > Maybe clearer as
+> > 		cxl_err = FIELD_PREP(CXL_ERROR_MASK, BIT(pos));
+> >   
+> 
+> I'll think about it. I think I agree with you, but I've seen a good amount of
+> people who aren't familiar with the FIELD_* macros in which case it isn't much clearer.
+
+Lets teach them ;)
 
 
