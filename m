@@ -1,232 +1,243 @@
-Return-Path: <linux-acpi+bounces-3484-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3485-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A4E854F8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 18:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AEC85507D
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 18:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574ED1F2A90A
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 17:12:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00AC1F2AF5E
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 17:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45ED460DD4;
-	Wed, 14 Feb 2024 17:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ceGeNUEf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5CC82885;
+	Wed, 14 Feb 2024 17:39:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B74D5C913;
-	Wed, 14 Feb 2024 17:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707930700; cv=fail; b=CpKq2HLPV+ff3d74VvzleWEo1lYdcbICDH0PfFiV/vdhexnLAt67prNKi5D86pv1UOxuowQiMWSyhtEf0JqhPJCgiSI6HcfVyAOp7SKVAY4zRCfQMPBFkrilg14LmpgMKtE382V9H6o/ytHVg/n5SthcslXMcelv95j50l949Ms=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707930700; c=relaxed/simple;
-	bh=B2h5KlcHLlO+QG71/BYVx1o+rus5RJ5/MT3yCTIpj9Q=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WuCI/yl7EsAH1SzRPgTNbcE/o9R5sljaIP2L1LUW5NC6RE3Cs75ZtMnmqeIaVPUIOYLRiCZ09SOu6nfbHjdDxVbSaIWy2prmCLgJ79fXnhCQI4I+0yG5MBSbQnAUHeKP4RnEGdDTegvKuNl+pkWPU5iHBC/1UHqiHEzIjQ0N4hI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ceGeNUEf; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707930698; x=1739466698;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=B2h5KlcHLlO+QG71/BYVx1o+rus5RJ5/MT3yCTIpj9Q=;
-  b=ceGeNUEf9Kn7sxFtFUtIYPgJASNdt9vCjrmBpdMY5i7vCgYUNTj/rI0k
-   IjrQkBNewSSKpdA8t5+egH/CnmBIxF6oyKauY0vOa1/V9KS5IabCBreC7
-   32SGNGtv3w3/exHTVax9SLwpGvcw/HpIoo3rThfu3ck6BG0pg/lR4RdTz
-   LHtFE+B7ZOXOaXFosbrgKIMltBSmg1XzNyfoO8YBAiWsUlNoqsXJ+XTV6
-   0dxCg5b9MBYBYyhRLJhw6T56mE1Jns4cqPUcgUA7tOdGlwBVMnt4cHddv
-   jAbKRwCeZKig7GwW2OUt4/u+2y1WvMEkeVFteyIgi+jTcHwl0wGfBhuvz
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10984"; a="1861054"
-X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
-   d="scan'208";a="1861054"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2024 09:11:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,160,1705392000"; 
-   d="scan'208";a="3161278"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Feb 2024 09:11:37 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 14 Feb 2024 09:11:37 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 14 Feb 2024 09:11:36 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 14 Feb 2024 09:11:35 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 14 Feb 2024 09:11:32 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AfyJvWcdMsKq6zGP1UWIpAb/nbTBwCyLgff1YIxZHw1BQmjlCnp1KnyHohfXPLuCZdsdw8QonlwZv8PWdW4G5ni+lRUaBZYe01LSIYB+DQ/wxhf1Fgdq0Zzeqro7Amgk2tzNt8DuiDWhhC5o9uhA82DOj9kuuDEZvoo2g1lyKN58JLjZ74V/8Zuy5zveEyDLKWhC2AcwgPB3bvq31Y3pQjlxeAxaNjwLgOHnd5qzZ2WgbyLTegLWHCj2JiukT3yIftH+epK6k8v27rBpNlwnEmg3M0JwnjQcFTncm8qwxXgBBvNUfCWTHUAK75Pr5GTKm6RYyYMIqOdKGvOVY/NigA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vZv/+H4741po0gguWZoNqCEgbioG5DJxO2ePC/PtPD8=;
- b=XjiCCl2l86DeEPtC95fr4qtWd7vPqywwE45pqkCFzo0cF4fFzQNgUrzb9SmXX+vBhUmGhCqADdFmHjYVvdoPNYDJtbZAvcILVx4W7DM0gcEXUhvrj/+rirkmUjgCqaWD0Kwp1AFNow71UDASzm9iE9dgtFInbCmoZUoxG6YhOiMhJ3vXS0otQ3EV2/5skM/+D9fA0CH5GsluqyiUzbpG+HYbz+MaHN3BfUEaPsaEksePirKuRjom8gb9gYTEc68Y+XV+EbEVB6sHYB+yy/S4rPX2j9CWpYx7P82cAohanCSK2ZeRzS8DWNa3760d3jZG+Z494WDwtNfdZXaESEkxOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
- by CY8PR11MB6889.namprd11.prod.outlook.com (2603:10b6:930:5e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.27; Wed, 14 Feb
- 2024 17:11:30 +0000
-Received: from SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::9f17:e1f3:d6f0:3d59]) by SA1PR11MB6733.namprd11.prod.outlook.com
- ([fe80::9f17:e1f3:d6f0:3d59%4]) with mapi id 15.20.7270.036; Wed, 14 Feb 2024
- 17:11:30 +0000
-Date: Wed, 14 Feb 2024 09:11:19 -0800
-From: Ira Weiny <ira.weiny@intel.com>
-To: Ira Weiny <ira.weiny@intel.com>, Jonathan Cameron
-	<Jonathan.Cameron@huawei.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Dan Williams
-	<dan.j.williams@intel.com>, Smita Koralahalli
-	<Smita.KoralahalliChannabasappa@amd.com>, <linux-acpi@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Dan Carpenter
-	<dan.carpenter@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, "Masami
- Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
-	<mathieu.desnoyers@efficios.com>, <linux-trace-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] acpi/ghes: Prevent sleeping with spinlock held
-Message-ID: <65ccf437ec4ee_cc44c29485@iweiny-mobl.notmuch>
-References: <20240206-cxl-cper-smatch-v2-1-84ed07563c31@intel.com>
- <20240214121153.00005c97@huawei.com>
- <65cced1753256_cbc9b29490@iweiny-mobl.notmuch>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <65cced1753256_cbc9b29490@iweiny-mobl.notmuch>
-X-ClientProxiedBy: BYAPR03CA0004.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::17) To SA1PR11MB6733.namprd11.prod.outlook.com
- (2603:10b6:806:25c::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D39B5F865;
+	Wed, 14 Feb 2024 17:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707932374; cv=none; b=eotmnIxJQR3nhGVi+0bq81r0mb6v+0pMY1Fu4cfg9nsSYHuE/0Q/v3Vv2VYcl8C30LCqF7oz2bhksCLwuXn7mRPkQnzxbUKBKG1qiRcIB99Tpy6sOTIlDdiy0rXCF6lABtEuo41k7yJretIn+HI2krTigNMdlnHdAUL9eK2Gmmk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707932374; c=relaxed/simple;
+	bh=UTIGxETWJu6d/cfXmgvLgow1Z8x2OMe9r3azT5e3i1w=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WIfEik5QR5B3XKq/ai+0v2qROyObenBVFBzubVXJodmIfB8WcU5xEll5/mA9TQ9UQ/yQb1iWeC3efW8dbgyiZTFWXHYEm2uag+POvMkwon3C1xHml/HNJNjYV2mL/yFirqNV/YN4nKquDz/eo5/XOetDfgxYHgzEoNGDpQnaaw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZlhc2g5yz67j6n;
+	Thu, 15 Feb 2024 01:35:28 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 68D2A1400CA;
+	Thu, 15 Feb 2024 01:39:28 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
+ 2024 17:39:27 +0000
+Date: Wed, 14 Feb 2024 17:39:27 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Robert Richter <rrichter@amd.com>
+CC: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Davidlohr
+ Bueso" <dave@stgolabs.net>, "Rafael J. Wysocki" <rafael@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v3 3/3] lib/firmware_table: Provide buffer length
+ argument to cdat_table_parse()
+Message-ID: <20240214173927.00002d20@Huawei.com>
+In-Reply-To: <20240209192647.163042-4-rrichter@amd.com>
+References: <20240209192647.163042-1-rrichter@amd.com>
+	<20240209192647.163042-4-rrichter@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|CY8PR11MB6889:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ccada1c-7831-46e2-c474-08dc2d7ffcc6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: PS0KiD59zz1ldt0DqUxx8QWdoNf1r5U1ab+vkaICBq5fqW0LGHwyyMCL8LQ95j0Lbm3eHNfYGAhLcDVb8ilSIreiQPVqw9M+BBt1Vl2F1m8TYMxgM0bvOPwfW0uaiQz7IQriKa3Q+IBYSvbL4eiQ7kCKKD9C9Yt932WiAXehJA2ziHJlw1Uklfngy0uIZzxX35cbGJDu2SUVTMHrriP+btxhhhMe+f0ahZ4RdfI9cjNE476pW4U7S1a7wxSfGRffqFKqsPKl8WrcT1fhhaF232GNd9atnOig9YwdfNYgmZmPx5ZYe7Y6utVUKC8t/Qa/omW7Pb8IX1Z06hSx/a7jYGEuDdBOGj0mLJ5JrpgCuLu9+zOEch4cn1+bgHtHjbRrWosbDaAw69eu36/993kwPq86sU66iq7T4n6L+d5I8K3+BHRnPGSkAmC/C0jiMiUGlJbLscBp9+MojorDOvIxztO7aTGWiIMVEC2O1YxmTlzQ1VS1Jwq8qOI9KaK9bpdn7TodywGCjPUQg1XnGHh8Vp+xEg7CaG26RdLDdI7ALFQIhkYod1UCyWzsVrtfigRlE8mk50MWuEDjUC8huwRUNQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(396003)(376002)(136003)(346002)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(5660300002)(4326008)(7416002)(41300700001)(8936002)(66476007)(44832011)(8676002)(66556008)(66946007)(2906002)(86362001)(82960400001)(83380400001)(110136005)(54906003)(316002)(6666004)(6506007)(966005)(6486002)(38100700002)(478600001)(26005)(9686003)(6512007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SP6La1u3r8rZNUk6ItuBXhmXzJiYMWkha/Otzyj73VLSF5Jz+alKsZk20PAe?=
- =?us-ascii?Q?CGVOY2T3JT2ZdF1Jit644hToYp6Dt1tSl/CZ5jTImXrhbq7983Fon/sxIQWT?=
- =?us-ascii?Q?pGrVsBFEfsN+ttl1wxNddiL+IAr71+ediM8+nXMY9OsuYuXaGpV8Spp32e/n?=
- =?us-ascii?Q?OfNFfi5mhTGvXJIj/rXHYYk3F1TMnVsb1U22T2Hf+Zwse2vDaB65rzC72HP8?=
- =?us-ascii?Q?4gKsSv3GxFLRMrWZynAK35hJXr+ie9raiA5684PMoYkfScfVR24FK/XGWLuK?=
- =?us-ascii?Q?b9jPJ12jRgm8LsdjPJW2fhDuoeYsRgFbwSQnAGkjKJudnf3cRhd7oc6be8yh?=
- =?us-ascii?Q?AizyJfq3wIBnEoZxmoPiy4QJcuW0UeX2sQFYnb0xfgPg2trgRNG3u9VUPjVF?=
- =?us-ascii?Q?INIOQzoXjRrtfdQbfbtSepHak7paCDWzWVTijIJFgtQGDuSHmNPw74pyQZ5B?=
- =?us-ascii?Q?spyIFQcHSux/SkkymsZb8VbmyJGVzt5ZiUq8byY49vtQ0hE9ouY2YnJtqqK8?=
- =?us-ascii?Q?Xg9lTjjovRuE1/b6gaRqSDIO95vU3uGdFAHKitDBanEAq2ZZkEBozOLfOEtm?=
- =?us-ascii?Q?zd2aL1Uj60TWDu1g28jSC/n6kKnjTopqyyU6SNY53qjdO+iRrjnY69FredQU?=
- =?us-ascii?Q?uu+dpL22mgzRy4BrVc2pVU6q4XiPQhW/B0VzLEq1KCpC9pow/AGdgWly+Fiv?=
- =?us-ascii?Q?z56LuL3l5s7DVseUt8i3WmLOJmh8RBXqz7FtOTXEBmKNEYg4b/Sw6L+cCxxc?=
- =?us-ascii?Q?LHM9F1M5Y5NnmbTcLvR7UUEgwFPRcPpcgtpeUrLYJ42WJmBrPUcUJ1TJDsOx?=
- =?us-ascii?Q?cRJyrwd02KDMcx6Y+U1F+LUrcXpZheJ0FzdMvaucxsbXdF3/nBDaFA1ajuUt?=
- =?us-ascii?Q?dnf6HWg0P2xnMzpOZUbLOOalgsr9R7wkUIZ74wUf3yCvKi6LZxH1DTkgXPMR?=
- =?us-ascii?Q?WULMMt8Wrs1MelExjVaT1MkrXjt5By64CK2O49Lpiky/oZ5zTesh1ErBTsKP?=
- =?us-ascii?Q?92AqDf4dzrdEhf0kdsaRVXzQujafbtBcpNTiV5PeVOxSelUZ/I0TVlEqf1+s?=
- =?us-ascii?Q?VQPjML9ek1wq5395qKvaiLyoOctMe22BgkaBv6zbX93WyXvpYqpibIvCTaRL?=
- =?us-ascii?Q?nQkzuGWfd8J/Pz3oIvY735olyKEdvV9W7rOqwcfwVVSFoRSUZihN5Ht6vLYp?=
- =?us-ascii?Q?gi/oiWSPUbGdVydB3YHsGHW6W1fyN/UtMIXUJAA2/v/eAvJ0TlYgLAHhqb29?=
- =?us-ascii?Q?OCrQla1veG2hW0X53AM/tUb2AeNexsrearVYKN+ZXTOgQOO5rmrsUhWVLX8y?=
- =?us-ascii?Q?3DY7NR/oft7lX1XPboTE/km0ZDPZ8alM2mwgAU5P515IARrm7ovbk3PgrU4E?=
- =?us-ascii?Q?L3v1W6+1VVNCO3+sa26wxvgH0ToBsMLZezcmvgz/zJuTbRIfUibMBtpCsR84?=
- =?us-ascii?Q?DjGJficPdBEwOZD6JzRL+GZlKWCU/Ipbp93S9BAcj8mHcqWc3UIv1RrxZov5?=
- =?us-ascii?Q?LfHh7Cxho4xsY7H0TE23nLZdcuXd7OH1+LTAlU/+jiu2WF0m+W93U3KUC1a+?=
- =?us-ascii?Q?f564ld3ijGze9NsIpl/KveQ6m90W3oodhs3w1PsV?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ccada1c-7831-46e2-c474-08dc2d7ffcc6
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2024 17:11:30.6461
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AX6uVSvMSJPL51DxuO6PtOWaTC5IiGWUCKNfrvJCpYNtzv7AIYmPxTnTtVURRbeFZ1HUa4SCq8kKGhtJ5yryzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6889
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Ira Weiny wrote:
-> Jonathan Cameron wrote:
-> > On Tue, 06 Feb 2024 14:15:32 -0800
-> > Ira Weiny <ira.weiny@intel.com> wrote:
-> > 
-> >
+On Fri, 9 Feb 2024 20:26:47 +0100
+Robert Richter <rrichter@amd.com> wrote:
 
-[snip]
-
-> > 
-> > diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> > index 9ff8a439d674..7ee45f22f56f 100644
-> > --- a/kernel/trace/trace.c
-> > +++ b/kernel/trace/trace.c
-> > @@ -2957,7 +2957,7 @@ static void output_printk(struct trace_event_buffer *fbuffer)
-> >         iter->ent = fbuffer->entry;
-> >         event_call->event.funcs->trace(iter, 0, event);
-> >         trace_seq_putc(&iter->seq, 0);
-> > -       printk("%s", iter->seq.buffer);
-> > +       printk_deferred("%s", iter->seq.buffer);
-> > 
-> >         raw_spin_unlock_irqrestore(&tracepoint_iter_lock, flags);
-> >  }
-> > 
-> > My assumption is similar views will apply here to Peter Zijlstra's comment on
-> > not using printk_deferred.
-> > 
-> > https://lore.kernel.org/all/20231010141244.GM377@noisy.programming.kicks-ass.net/
-> > 
-> > Note I also tried the hacks Peter links to from there. They trip issues in the initial
-> > CPER print - so I assume not appropriate here.
-> > 
-> > So I'm thinking this is a won't fix - wait for the printk rework to land and
-> > assume this will be resolved as well?
-> > 
+> There exists card implementations with a CDAT table using a fix
+There exist ... fixed size buffer,
+> buffer, but with entries filled in that do not fill the whole table
+> length size. Then, the last entry in the CDAT table may not mark the
+> end of the CDAT table buffer specified by the length field in the CDAT
+> header. It can be shorter with trailing unused (zero'ed) data. The
+> actual table length is determined while reading all CDAT entries of
+> the table with DOE.
 > 
-> Or could we avoid the situation entirely by using a static call?
+> If the table is greater than expected (containing zero'ed trailing
+> data), the CDAT parser fails with:
 > 
-> The work queue still needs to be created because of the atomicness of
-> ghes_do_proc() but it avoids cxl_cper_rw_sem.
+>  [   48.691717] Malformed DSMAS table length: (24:0)
+>  [   48.702084] [CDAT:0x00] Invalid zero length
+>  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
 > 
-> I think the hardest thing may be writing the commit message to explain all
-> this.  :-(
+> In addition, a check of the table buffer length is missing to prevent
+> an out-of-bound access then parsing the CDAT table.
 > 
+> Hardening code against device returning borked table. Fix that by
+> providing an optional buffer length argument to
+> acpi_parse_entries_array() that can be used by cdat_table_parse() to
+> propagate the buffer size down to its users to check the buffer
+> length. This also prevents a possible out-of-bound access mentioned.
+> 
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-Never mind, I already went down that path.  I was surprised I did not
-mention it in this commit message.  I did in V1.  :-(
+I think we should scream a bit about this if we see it
+as I'm unconvinced the spec allows for an implementation like this.
 
-"A static call was considered but ARM does not select HAVE_STATIC_CALL
-and in that case setting the function pointer uses a RW semaphore."
-	-- https://lore.kernel.org/all/20240202-cxl-cper-smatch-v1-1-7a4103c7f5a0@intel.com/
+If the spec is unclear, lets seek a clarification.
 
-Should have carried that through.
+I'm fine with this as a defensive measure, I just don't want
+device vendors to keep doing it! 
 
-So should we revert ...
+Jonathan
 
-	Fixes: 671a794c33c6 ("acpi/ghes: Process CXL Component Events") 
 
-... and wait for the printk fix or just move forward with this patch?
+> ---
+>  drivers/acpi/tables.c    |  2 +-
+>  drivers/cxl/core/cdat.c  |  6 +++---
+>  include/linux/fw_table.h |  4 +++-
+>  lib/fw_table.c           | 15 ++++++++++-----
+>  4 files changed, 17 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+> index b07f7d091d13..b976e5fc3fbc 100644
+> --- a/drivers/acpi/tables.c
+> +++ b/drivers/acpi/tables.c
+> @@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
+>  
+>  	count = acpi_parse_entries_array(id, table_size,
+>  					 (union fw_table_header *)table_header,
+> -					 proc, proc_num, max_entries);
+> +					 0, proc, proc_num, max_entries);
+>  
+>  	acpi_put_table(table_header);
+>  	return count;
+> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+> index 6fe11546889f..012d8f2a7945 100644
+> --- a/drivers/cxl/core/cdat.c
+> +++ b/drivers/cxl/core/cdat.c
+> @@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
+>  	int rc;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
+> -			      dsmas_xa, port->cdat.table);
+> +			      dsmas_xa, port->cdat.table, port->cdat.length);
+>  	rc = cdat_table_parse_output(rc);
+>  	if (rc)
+>  		return rc;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
+> -			      dsmas_xa, port->cdat.table);
+> +			      dsmas_xa, port->cdat.table, port->cdat.length);
+>  	return cdat_table_parse_output(rc);
+>  }
+>  
+> @@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
+>  		return;
+>  
+>  	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
+> -			      port, port->cdat.table);
+> +			      port, port->cdat.table, port->cdat.length);
+>  	rc = cdat_table_parse_output(rc);
+>  	if (rc)
+>  		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
+> diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
+> index 95421860397a..3ff4c277296f 100644
+> --- a/include/linux/fw_table.h
+> +++ b/include/linux/fw_table.h
+> @@ -40,12 +40,14 @@ union acpi_subtable_headers {
+>  
+>  int acpi_parse_entries_array(char *id, unsigned long table_size,
+>  			     union fw_table_header *table_header,
+> +			     unsigned long max_length,
+>  			     struct acpi_subtable_proc *proc,
+>  			     int proc_num, unsigned int max_entries);
+>  
+>  int cdat_table_parse(enum acpi_cdat_type type,
+>  		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
+> -		     struct acpi_table_cdat *table_header);
+> +		     struct acpi_table_cdat *table_header,
+> +		     unsigned long length);
+>  
+>  /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
+>  #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
+> diff --git a/lib/fw_table.c b/lib/fw_table.c
+> index c3569d2ba503..16291814450e 100644
+> --- a/lib/fw_table.c
+> +++ b/lib/fw_table.c
+> @@ -127,6 +127,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
+>   *
+>   * @id: table id (for debugging purposes)
+>   * @table_size: size of the root table
+> + * @max_length: maximum size of the table (ignore if 0)
+>   * @table_header: where does the table start?
+>   * @proc: array of acpi_subtable_proc struct containing entry id
+>   *        and associated handler with it
+> @@ -148,18 +149,21 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
+>  int __init_or_fwtbl_lib
+>  acpi_parse_entries_array(char *id, unsigned long table_size,
+>  			 union fw_table_header *table_header,
+> +			 unsigned long max_length,
+>  			 struct acpi_subtable_proc *proc,
+>  			 int proc_num, unsigned int max_entries)
+>  {
+> -	unsigned long table_end, subtable_len, entry_len;
+> +	unsigned long table_len, table_end, subtable_len, entry_len;
+>  	struct acpi_subtable_entry entry;
+>  	enum acpi_subtable_type type;
+>  	int count = 0;
+>  	int i;
+>  
+>  	type = acpi_get_subtable_type(id);
+> -	table_end = (unsigned long)table_header +
+> -		    acpi_table_get_length(type, table_header);
+> +	table_len = acpi_table_get_length(type, table_header);
+> +	if (max_length && max_length < table_len)
+> +		table_len = max_length;
+	if (max_length)
+		table_len = min(max_length, table_len);
 
-Sorry for the noise,
-Ira
+> +	table_end = (unsigned long)table_header + table_len;
+>  
+>  	/* Parse all entries looking for a match. */
+>  
+> @@ -208,7 +212,8 @@ int __init_or_fwtbl_lib
+>  cdat_table_parse(enum acpi_cdat_type type,
+>  		 acpi_tbl_entry_handler_arg handler_arg,
+>  		 void *arg,
+> -		 struct acpi_table_cdat *table_header)
+> +		 struct acpi_table_cdat *table_header,
+> +		 unsigned long length)
+>  {
+>  	struct acpi_subtable_proc proc = {
+>  		.id		= type,
+> @@ -222,6 +227,6 @@ cdat_table_parse(enum acpi_cdat_type type,
+>  	return acpi_parse_entries_array(ACPI_SIG_CDAT,
+>  					sizeof(struct acpi_table_cdat),
+>  					(union fw_table_header *)table_header,
+> -					&proc, 1, 0);
+> +					length, &proc, 1, 0);
+>  }
+>  EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);
+
 
