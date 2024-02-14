@@ -1,149 +1,72 @@
-Return-Path: <linux-acpi+bounces-3477-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3478-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A0D854BA5
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 15:38:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE03854C8E
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 16:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 148231C221DF
-	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 14:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8461F2A075
+	for <lists+linux-acpi@lfdr.de>; Wed, 14 Feb 2024 15:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FF85C90D;
-	Wed, 14 Feb 2024 14:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA7F5C905;
+	Wed, 14 Feb 2024 15:21:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54C055C2B;
-	Wed, 14 Feb 2024 14:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258845D8F5;
+	Wed, 14 Feb 2024 15:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707921459; cv=none; b=QDLLwDBvW6gOrkK0d7apk1usYNBTRshmFsy0T3Faqcbln2S/L1aQezTbBLBtfzux/PVQEBCk57R+G5cAJMZOsBF2osczXol5J/VbhfhETJR4VGGv2alUe8UbV3R+vaaZKX7Mcq9seEBMocSjBllf5jice3aj5NiNGUr0XcDQC/8=
+	t=1707924101; cv=none; b=lDrNm5QmHH0PIrNLekuOSkGsKgIS+iPX2Vj3WB3uAoH3uIhvDAjuJK/ZHwmjdETxs6KC6dXjP1kV4Ir4vD+ueR138fNblnkzKg56Y+xTLVzYJ0RRWUA61SXGQHwTlKiCZLrNgaNB2M2SLDq8cDCZzKOmIg66QYYFbc9doOuH57o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707921459; c=relaxed/simple;
-	bh=ZNfdoSdf/MHhb+FrmDp/v26fcivX0hWS3WAneNQnGR4=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KKRtAWteLepu8d4bBJTQZisnv7D1N7BndpK+YI0aZZ820SvjuZthRyUPqSXVCbIG7c7AuSX0WEQEicN9dlctC1sPbmdiH9okujPlXL6+b6JgOm37ZN63tUeLR/LBOU1Gqco+hr+4bkthluzGdtGfXfQtlJq5rhVlDdaa258gZ3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TZgg40VpXz688jJ;
-	Wed, 14 Feb 2024 22:33:52 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 51B1C1420F3;
-	Wed, 14 Feb 2024 22:37:33 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 14 Feb
- 2024 14:37:32 +0000
-Date: Wed, 14 Feb 2024 14:37:32 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>
-CC: <dan.j.williams@intel.com>, <dave@stogolabs.net>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <rafael@kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v11 2/4] EINJ: Migrate to a platform driver
-Message-ID: <20240214143732.000068b5@Huawei.com>
-In-Reply-To: <20240208200042.432958-3-Benjamin.Cheatham@amd.com>
-References: <20240208200042.432958-1-Benjamin.Cheatham@amd.com>
-	<20240208200042.432958-3-Benjamin.Cheatham@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707924101; c=relaxed/simple;
+	bh=Y5qNsyPZ7LB9EL5+p5aaf86e06gBU3/WclTD7Z63ijk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VCFQXSHxs/2cM9wjN/TWrd8Su+8BcrKX/sG+Bubdy2fo/WklPFBK2OOvMCIfcRo33tWwARrdptjEe07yVJVlrRzwWs50Vjj2KzfMBa9ktJpDFTlE9+GtK5Dn0ts8kwK1FNy8rSrTYj5Byoc84fk+Smgj0IkJHJP0W3ZFacHx3EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5770BC433C7;
+	Wed, 14 Feb 2024 15:21:39 +0000 (UTC)
+Date: Wed, 14 Feb 2024 10:23:10 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Ira Weiny <ira.weiny@intel.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Smita
+ Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
+ <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, <linux-trace-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] acpi/ghes: Prevent sleeping with spinlock held
+Message-ID: <20240214102310.7ba53f3a@gandalf.local.home>
+In-Reply-To: <20240214121153.00005c97@huawei.com>
+References: <20240206-cxl-cper-smatch-v2-1-84ed07563c31@intel.com>
+	<20240214121153.00005c97@huawei.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, 8 Feb 2024 14:00:40 -0600
-Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
+On Wed, 14 Feb 2024 12:11:53 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> Change the EINJ module to install a platform device/driver on module
-> init and move the module init() and exit() functions to driver probe and
-> remove. This change allows the EINJ module to load regardless of whether
-> setting up EINJ succeeds, which allows dependent modules to still load
-> (i.e. the CXL core).
-> 
-> Since EINJ may no longer be initialized when the module loads, any
-> functions that are called from dependent/external modules should check
-> the einj_initialized variable before calling any EINJ functions.
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+> So I'm thinking this is a won't fix - wait for the printk rework to land and
+> assume this will be resolved as well?
 
-As there is not a platform device about, could reduce the number of globals
-in here, but job for another day.
+That pretty much sums up what I was about to say ;-)
 
-Also devm fun might be useful to reduce the need for manual error handling
-and remove().
+tp_printk is more of a hack and not to be used sparingly. With the right
+trace events it can hang the machine.
 
-So generally this enables some potential tidying up, but what you have
-here LGTM and would be first step in that process anyway.
-If I run out of other stuff to do (unlikely ;) then I might take a stab
-at such a cleanup sometime.
+So, you can use your internal patch locally, but I would recommend waiting
+for the new printk changes to land. I'm really hoping that will be soon!
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
-
-> ---
->  drivers/acpi/apei/einj.c | 44 ++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 42 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/einj.c b/drivers/acpi/apei/einj.c
-> index 013eb621dc92..73dde21d3e89 100644
-> --- a/drivers/acpi/apei/einj.c
-> +++ b/drivers/acpi/apei/einj.c
-> @@ -21,6 +21,7 @@
->  #include <linux/nmi.h>
->  #include <linux/delay.h>
->  #include <linux/mm.h>
-> +#include <linux/platform_device.h>
->  #include <asm/unaligned.h>
->  
->  #include "apei-internal.h"
-> @@ -136,6 +137,11 @@ static struct apei_exec_ins_type einj_ins_type[] = {
->   */
->  static DEFINE_MUTEX(einj_mutex);
->  
-> +/*
-> + * Exported APIs use this flag to exit early if einj_probe() failed.
-> + */
-> +static bool einj_initialized __ro_after_init;
-> +
->  static void *einj_param;
->  
->  static void einj_exec_ctx_init(struct apei_exec_context *ctx)
-> @@ -684,7 +690,7 @@ static int einj_check_table(struct acpi_table_einj *einj_tab)
->  	return 0;
->  }
->  
-> -static int __init einj_init(void)
-> +static int __init einj_probe(struct platform_device *pdev)
->  {
->  	int rc;
->  	acpi_status status;
-> @@ -782,7 +788,7 @@ static int __init einj_init(void)
->  	return rc;
->  }
->  
-> -static void __exit einj_exit(void)
-> +static void __exit einj_remove(struct platform_device *pdev)
->  {
->  	struct apei_exec_context ctx;
->  
-> @@ -801,6 +807,40 @@ static void __exit einj_exit(void)
->  	acpi_put_table((struct acpi_table_header *)einj_tab);
->  }
-
-
+-- Steve
 
