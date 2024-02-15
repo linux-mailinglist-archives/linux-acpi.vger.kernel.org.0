@@ -1,127 +1,115 @@
-Return-Path: <linux-acpi+bounces-3563-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3564-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8E856DB9
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 20:30:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A11856E0F
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 20:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4CB9B2642F
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 19:30:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34731F21E8C
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 19:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC74E139583;
-	Thu, 15 Feb 2024 19:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A045D13A86C;
+	Thu, 15 Feb 2024 19:52:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3E913699A;
-	Thu, 15 Feb 2024 19:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282B612BF1E;
+	Thu, 15 Feb 2024 19:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708025445; cv=none; b=nOVp9t9pnq/vMxh3y6sb9HUQZZ+BQt1flDhNzoi9ghfql0GZgi5ziX/xemGPRN317W0GSWztANE6myaUlbQKAFTaqrV9Qka2zOO74aWkuhmgGSpMEe6cA7fCbS9LBBp+PCkqLZcrBLdue9YbuxxQPj/ecVyuMmAL2VR3+3YGFPo=
+	t=1708026761; cv=none; b=YCwuNZU2eWEUZ1CGhcLGJ35EOo2v8WTkAaP2vVPPBAnJF/arxja9wGYW0FIGVyC0IxDDU3HjMaMcdCdyTDD4ynvuzeYEsDA0inpumJ4EHSQrrHjY0TtbgBg72LieTDXfUcjTAeo9qu971n1qirMeek5Ra29PR+lAnowbLqNatfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708025445; c=relaxed/simple;
-	bh=oCv4f4ACVuvSOw45WLUA2xxK4k32v0l+qhRxfxHiIp8=;
+	s=arc-20240116; t=1708026761; c=relaxed/simple;
+	bh=HFKcFyvW4sPTCSrx6Kmc7KZ0WwpPVFK4hWtVZSJM1R0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O0/r7P5WsOSkOnOZ+Ifhe9xuj1iyItpFo3JXRmd6AZXm9o4ANDY3kcJMgOp8QTaJpEpx61dEQqDuJzWpFT+cogyUHsq4GQXWtO95tAnwfv2qznvg4nmFnpuEwjYbZUgMaCu+y7o0IzXUQvjoRnb4e49acEFX0lfyDEpGuVDivCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.53
+	 To:Cc:Content-Type; b=Bcc3XojfoAWIPlvvRLzmzoyWRsURCBDw3/gTfAV+81tN1iQC8UsKalYRdyMPCb1dPeiZ715E/TChYHTVAC48qLjoD8c+j7gexSjes1f2xvytAb4AgYWEE1aHlHpf2U3ba5Co2UnyQRXUObVwfZ5/KXe8ImvbJ1fUcO2GfgnL7vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6e2b466d213so195771a34.0;
-        Thu, 15 Feb 2024 11:30:44 -0800 (PST)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-214309bbbf0so153773fac.1;
+        Thu, 15 Feb 2024 11:52:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708025443; x=1708630243;
+        d=1e100.net; s=20230601; t=1708026759; x=1708631559;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lAGm+/vBtwzeK+oDxlR+J5tNXXqT73qA5onO/IgiQLo=;
-        b=j37edpGaQMoFS/PVy7P0HZsMj1C8mNfiAEaEsEWl3ndA5UEcrIZV5iRLOPfZXAvu0S
-         nwqqsH5CW0MDy2DVCeObjLY71ufMTjRF32hxw243CAPHpF383tD/c+Zdh8fy4hzFgx/e
-         5ABN5f9TYwwUc99Uap9MYtFweV6Go4ROUIRUFGvTfHYCW7x5ZLxeqeth9rTrlsOj3E0j
-         nJMZfdU1oZBNt7En4fhIe9oSz2LeB1TXLTUkBFMavS2LK/nIxaeXJMkNSGfo5Wd8V2We
-         xsfNEIR2iLxoHUUKIXpyYrPfL4RyLAr62DlWVI7oUJg6K3WocPFyuOd/Y1D8T8HMPrVQ
-         4XjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVBNB3eDd+gnCpls3K7t9fA8MbX9/GzJloA4kc+KtnSHUW/pGZBSSTjwdMVY//R4aEjhRuaElYPo70cNiEly4OfPwuJiN/ibeSrktTZTHNXDtYGpjSd1wQxqlzOSTq3/29daGSqKN+Ytw==
-X-Gm-Message-State: AOJu0YzjHphfVu6kEASKs9f+KuuzmMi2qGY4o8MOKIViPpxIhkXk756P
-	DUf5TJHx9pOnuVJgpzGqpn1J59sD99Y5nQ6vHr+ycCuhmV2BNLYdwaMjywylr41dAAHY8j3Mz2y
-	AgwUJCAS7lJdDyywN/PC9Zw2LbRw=
-X-Google-Smtp-Source: AGHT+IFUnS7ARXKLLgJpaySewqZ0U2GEw+Oxi13AQvXeRwm/mPoSx4tZ6/cxwvJnis/483fpzCG15PZokiWEdxsJraQ=
+        bh=isRTNv4OHZOkLMBzStzx/NL9+OwNxPNX48FNAMKoAGQ=;
+        b=loksQ0MSkzqufIavgnSrG1wakdbzEjd6CXBsOy3jCYBZyVlGBDlIre5mVvh3k/Qc0W
+         CfTBq6vZbXi25xSNphWh5vMslr62NkGRta45YhGCPYyi9lJvcdm87CuvDWwhvcAvbQDH
+         mTwtefgGoeIBwNRyZPgFnP0fk03cts6nKydYP6atNkH+hH7J6Z4dgdM7vM6dWNcvs1Y5
+         L3FCN3xeoxtyeUmKRolvgZdbkE8NTgxZBQMdnS8DsqVkSafFdlS/X3o4uKbB8CncrVXF
+         +JCMr8mIzdiTaCL7AawHS0zhuj3avTHmBMCmGY+wlii/j08FyhXVgNhW/MB6uzMoFtst
+         iMNA==
+X-Forwarded-Encrypted: i=1; AJvYcCWkLuZYRcv75UaEft/i+nVgF+Xuk8YUdEpNKKYUdEwuRO3anw3NDup2Jgsyjeus26cxE5HE0bY7Ma1CBDQUrHYfIBkQTl/gtfoK7sBU3D2tpf+Uhm1sRRuDFMwf+N77HUNNjPwNSYFk1A==
+X-Gm-Message-State: AOJu0YyrVQCXRRR7r9ys1R5YnWydUDnMztY8p3SWjG7YWm89HAhHN3ca
+	4UmwxN1SLh2FWrWeMVbTsQezmHiIJCgDKZUqsyJ9z4aq/5Trsti9nLJXhdp7Pd8mCLk4t4oO5mj
+	ARsnRIJDiPzmKLlUCldRUQYysyTY=
+X-Google-Smtp-Source: AGHT+IGgeFXmuc9BaiFv7Y2D9C02UVAGPHRoglZQav+UEKZvUc4R4Kp77gwoBmGYHdKm9l1BGZ59wZfoZGQg85Yf690=
 X-Received: by 2002:a4a:3803:0:b0:59a:bfb:f556 with SMTP id
- c3-20020a4a3803000000b0059a0bfbf556mr213211ooa.0.1708025443280; Thu, 15 Feb
- 2024 11:30:43 -0800 (PST)
+ c3-20020a4a3803000000b0059a0bfbf556mr270551ooa.0.1708026759039; Thu, 15 Feb
+ 2024 11:52:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213004158.3623-1-W_Armin@gmx.de>
-In-Reply-To: <20240213004158.3623-1-W_Armin@gmx.de>
+References: <52cf0eab-dbbd-4f12-b100-c7db1daea442@gmail.com>
+In-Reply-To: <52cf0eab-dbbd-4f12-b100-c7db1daea442@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 15 Feb 2024 20:30:32 +0100
-Message-ID: <CAJZ5v0jJZ5U0F66wKD9-aEuHyUnVFm6rxqi87QU1PXFvTsJ_ag@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor_idle: Fix memory leak in acpi_processor_power_exit()
-To: Armin Wolf <W_Armin@gmx.de>
+Date: Thu, 15 Feb 2024 20:52:27 +0100
+Message-ID: <CAJZ5v0hHEWEvo83kuvn9=UnW3wpVQ_Eg8bKHNVCMCbvJEA535g@mail.gmail.com>
+Subject: Re: [PATCH] Fix keyboard on ASUS EXPERTBOOK B2502FBA, see bug:217323
+To: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
 Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 13, 2024 at 1:42=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+On Sun, Feb 11, 2024 at 1:08=E2=80=AFAM Sviatoslav Harasymchuk
+<sviatoslav.harasymchuk@gmail.com> wrote:
 >
-> After unregistering the CPU idle device, the memory associated with
-> it is not freed, leading to a memory leak:
+> For: ASUS ExpertBook B2502FBA
+> Similar to patch:
+> https://lore.kernel.org/linux-acpi/20230411183144.6932-1-pmenzel@molgen.m=
+pg.de/
+> For the bug:
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D217323
 >
-> unreferenced object 0xffff896282f6c000 (size 1024):
->   comm "swapper/0", pid 1, jiffies 4294893170
->   hex dump (first 32 bytes):
->     00 00 00 00 0b 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace (crc 8836a742):
->     [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
->     [<ffffffff9972f3b3>] acpi_processor_power_init+0xf3/0x1c0
->     [<ffffffff9972d263>] __acpi_processor_start+0xd3/0xf0
->     [<ffffffff9972d2bc>] acpi_processor_start+0x2c/0x50
->     [<ffffffff99805872>] really_probe+0xe2/0x480
->     [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
->     [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
->     [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
->     [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
->     [<ffffffff99804822>] bus_add_driver+0x112/0x210
->     [<ffffffff99807245>] driver_register+0x55/0x100
->     [<ffffffff9aee4acb>] acpi_processor_driver_init+0x3b/0xc0
->     [<ffffffff990012d1>] do_one_initcall+0x41/0x300
->     [<ffffffff9ae7c4b0>] kernel_init_freeable+0x320/0x470
->     [<ffffffff99b231f6>] kernel_init+0x16/0x1b0
->     [<ffffffff99042e6d>] ret_from_fork+0x2d/0x50
->
-> Fix this by freeing the CPU idle device after unregistering it.
->
-> Fixes: 3d339dcbb56d ("cpuidle / ACPI : move cpuidle_device field out of t=
-he acpi_processor_power structure")
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217323
+> Signed-off-by: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
+> Tested-by: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
 > ---
->  drivers/acpi/processor_idle.c | 2 ++
->  1 file changed, 2 insertions(+)
+>   drivers/acpi/resource.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
-c
-> index 55437f5e0c3a..bd6a7857ce05 100644
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -1430,6 +1430,8 @@ int acpi_processor_power_exit(struct acpi_processor=
- *pr)
->                 acpi_processor_registered--;
->                 if (acpi_processor_registered =3D=3D 0)
->                         cpuidle_unregister_driver(&acpi_idle_driver);
-> +
-> +               kfree(dev);
->         }
->
->         pr->flags.power_setup_done =3D 0;
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index dacad1d846c0..41fe6f2d4fa8 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -489,6 +489,13 @@ static const struct dmi_system_id
+> irq1_level_low_skip_override[] =3D {
+>               DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+>           },
+>       },
+> +    {
+> +        /* Asus ExpertBook B2502FBA */
+> +        .matches =3D {
+> +            DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> +            DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
+> +        },
+> +    },
+>       {
+>           /* Asus Vivobook E1504GA */
+>           .matches =3D {
 > --
 
-Applied as 6.9 material, thanks!
+Applied as 6.9 material, but I rewrote the subject and changelog and
+had to fix up white space (presumably broken by your email client or
+similar).
+
+I would appreciate being more careful next time.
 
