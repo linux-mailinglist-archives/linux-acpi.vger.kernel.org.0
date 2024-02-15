@@ -1,40 +1,40 @@
-Return-Path: <linux-acpi+bounces-3518-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3519-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B983E8560A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 12:04:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED9B8560D6
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 12:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C51280DA9
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 11:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28A71C208E3
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 11:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68D6130E5F;
-	Thu, 15 Feb 2024 10:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E75712F380;
+	Thu, 15 Feb 2024 11:04:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00423131724;
-	Thu, 15 Feb 2024 10:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6180712EBEF;
+	Thu, 15 Feb 2024 11:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707994537; cv=none; b=EqHYBCkYC9FoXMWnlGfRQRKoYq0aA6P3Uuubh/EeINkQho0xWfcesiGbrXYkwjexCkzm73qq5fRp1lgH1wjXXu+ah9db1s8SpJhL3L9olBPwgLmrVLVCkq4kMTjB7IDNWZ8TkGEhOtnHNM2Wp5wdEcy8CaA9g5FVXkim6jbk4Q0=
+	t=1707995050; cv=none; b=WNZJ0YEIv3gfjfXHiSZpDMHnpNhks6SPPLZ0de6ZJ5bY6xbxFsXV7TFQN7zYH6/k0d0nbT33tTfWoFqUZInH9S4fQDRF9Eguwdy1ErYiIEEzW9CJn4ugcv/aAzrqe7Nmms9rV32Tp/I0+5Y3X/SQ7gq+1/Kc6toOuB2O293smEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707994537; c=relaxed/simple;
-	bh=LoA5sWoZO8pD3VB5bo+8CWwWCpCXLeSRWHC2fiM65fI=;
+	s=arc-20240116; t=1707995050; c=relaxed/simple;
+	bh=MyzTrVGiM5zowB9EEdnskgg9bJSOjLv5uQVVIRr+/Lo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GHrzApZdQ5WN1tU9h9doGauw6eMYZE8DEJyJMNlKC6D4vX3l/eTLBUitNVYC9xc1JfqCESJ9Xt6lu/h0ncUvU+VOK/HiZqnWHMa4h1aZE3tteKe3Rzedmpppsq1TAOu/MLLkJvvnUMEsgke0X6X2/8XU45LdaGklTcTWqP2UoFQ=
+	 In-Reply-To:Content-Type; b=MPRCPQ7nQVPUou0n966A3RYSeH2nQAUCXgkE5N3O16hCtTUFIPEB694Q6VAqLvSIIOtgp4gYozFDSku45bka3XPiIDC3YJOJ7v5f1axX7v0MD4Vk2qDtuY/zowZazizcwD8cRW/aN+bBh7gW4zqmcxMJOsw8GXETEXMrxhWo0eo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2108D1FB;
-	Thu, 15 Feb 2024 02:56:16 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 96E301FB;
+	Thu, 15 Feb 2024 03:04:48 -0800 (PST)
 Received: from [10.57.49.250] (unknown [10.57.49.250])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AABD83F7B4;
-	Thu, 15 Feb 2024 02:55:33 -0800 (PST)
-Message-ID: <56d56f85-6172-4fb1-a002-fe82ffc8a66a@arm.com>
-Date: Thu, 15 Feb 2024 10:55:32 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A86443F7B4;
+	Thu, 15 Feb 2024 03:04:05 -0800 (PST)
+Message-ID: <68eb9e4e-de77-4854-8212-816c66d5f657@arm.com>
+Date: Thu, 15 Feb 2024 11:04:04 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 02/11] coresight: stm: Extract device name from AMBA
- pid based table lookup
+Subject: Re: [PATCH V4 01/11] coresight: etm4x: Fix unbalanced
+ pm_runtime_enable()
 Content-Language: en-GB
 To: Anshuman Khandual <anshuman.khandual@arm.com>,
  linux-arm-kernel@lists.infradead.org
@@ -53,108 +53,79 @@ Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
  Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
  linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
+ linux-stm32@st-md-mailman.stormreply.com, Hanjun Guo <guohanjun@huawei.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Leo Yan <leo.yan@linaro.org>
 References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
- <20240123054608.1790189-3-anshuman.khandual@arm.com>
+ <20240123054608.1790189-2-anshuman.khandual@arm.com>
 From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240123054608.1790189-3-anshuman.khandual@arm.com>
+In-Reply-To: <20240123054608.1790189-2-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 23/01/2024 05:45, Anshuman Khandual wrote:
-> Instead of using AMBA private data field, extract the device name from AMBA
-> pid based table lookup using new coresight_get_uci_data_from_amba() helper.
+> There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
+> when etm4_probe() fails. This problem can be observed via the coresight
+> etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
+> in etm4_probe_platform_dev().
 > 
+> [   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
+> [   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
+> [   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
+> [   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
+> [   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
+> [   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
+> [   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
+> [   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
+> 
+> This fixes the above problem - with an explicit pm_runtime_disable() call
+> when etm4_probe() fails during etm4_probe_platform_dev().
+
+Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices"
+
+> 
+> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Cc: Hanjun Guo <guohanjun@huawei.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Len Brown <lenb@kernel.org>
 > Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
 > Cc: Mike Leach <mike.leach@linaro.org>
 > Cc: James Clark <james.clark@arm.com>
-> Cc: coresight@lists.linaro.org
+> Cc: Leo Yan <leo.yan@linaro.org>
+> Cc: linux-acpi@vger.kernel.org
 > Cc: linux-arm-kernel@lists.infradead.org
 > Cc: linux-kernel@vger.kernel.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
+> Cc: coresight@lists.linaro.org
 > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->   drivers/hwtracing/coresight/coresight-priv.h | 10 ++++++++++
->   drivers/hwtracing/coresight/coresight-stm.c  | 14 +++++++++++++-
->   2 files changed, 23 insertions(+), 1 deletion(-)
+> Changes in V4:
 > 
-> diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
-> index 767076e07970..68cbb036cec8 100644
-> --- a/drivers/hwtracing/coresight/coresight-priv.h
-> +++ b/drivers/hwtracing/coresight/coresight-priv.h
-> @@ -221,6 +221,16 @@ static inline void *coresight_get_uci_data(const struct amba_id *id)
->   	return uci_id->data;
+> - New patch in the series
+> 
+>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> index ce1995a2827f..7c693b45ac05 100644
+> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+> @@ -2217,6 +2217,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
+>   	ret = etm4_probe(&pdev->dev);
+>   
+>   	pm_runtime_put(&pdev->dev);
+> +	if (ret)
+> +		pm_runtime_disable(&pdev->dev);
+> +
+>   	return ret;
 >   }
 >   
-> +static inline void *coresight_get_uci_data_from_amba(const struct amba_id *table, u32 pid)
-> +{
-> +	while (table->mask) {
-> +		if ((table->id & table->mask) == pid)
 
-Why are we masking table->id ? table->id is a static value that the
-driver wants to check for "variants" of a given device. The table->mask
-is there to filter out the "irrelevant" bits of the PID that we read
-from the device. So this should instead be:
-
-		if ((table->mask & pid) == table->id)
-
-> +			return coresight_get_uci_data(table);
-> +		table++;
-> +	};
-> +	return NULL;
-> +}
-> +
->   void coresight_release_platform_data(struct coresight_device *csdev,
->   				     struct device *dev,
->   				     struct coresight_platform_data *pdata);
-> diff --git a/drivers/hwtracing/coresight/coresight-stm.c b/drivers/hwtracing/coresight/coresight-stm.c
-> index a1c27c901ad1..9cdca4f86cab 100644
-> --- a/drivers/hwtracing/coresight/coresight-stm.c
-> +++ b/drivers/hwtracing/coresight/coresight-stm.c
-> @@ -804,6 +804,18 @@ static void stm_init_generic_data(struct stm_drvdata *drvdata,
->   	drvdata->stm.set_options = stm_generic_set_options;
->   }
->   
-> +#define STM_AMBA_MASK 0xfffff
-> +
-> +static const struct amba_id stm_ids[];
-> +
-> +static char *stm_csdev_name(struct coresight_device *csdev)
-> +{
-> +	u32 stm_pid = coresight_get_pid(&csdev->access) & STM_AMBA_MASK;
-
-Similar to above:
-
-Why do we apply a "custom" mask to the PID and later check the PID with
-that of the table->pid.
-
-The way it is supposed work is :
-
-	(table->mask & dev_pid) == table->pid
-
-the table->mask is there for a reason: i.e., to get the relevant bits 
-from the device_pid and compare it against "the" expected value 
-(table->pid).
-
+Looks good to me. I have glanced through the other platform device 
+driver code in coresight subsystem and they all seem to be safe, except
+for Ultrasoc-smb, which doesn't do any power managment. It may be, 
+because it is only supported on an ACPI system.
 
 Suzuki
-
-> +	void *uci_data = coresight_get_uci_data_from_amba(stm_ids, stm_pid);
-> +
-> +	return uci_data ? (char *)uci_data : "STM";
-> +}
-> +
->   static int stm_probe(struct amba_device *adev, const struct amba_id *id)
->   {
->   	int ret, trace_id;
-> @@ -900,7 +912,7 @@ static int stm_probe(struct amba_device *adev, const struct amba_id *id)
->   	pm_runtime_put(&adev->dev);
->   
->   	dev_info(&drvdata->csdev->dev, "%s initialized\n",
-> -		 (char *)coresight_get_uci_data(id));
-> +		 stm_csdev_name(drvdata->csdev));
->   	return 0;
->   
->   cs_unregister:
 
 
