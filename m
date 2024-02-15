@@ -1,190 +1,415 @@
-Return-Path: <linux-acpi+bounces-3558-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3559-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10553856C41
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 19:15:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BBA856C56
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 19:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC5FC280D0C
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 18:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35C2C1C218FA
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 18:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5B084FC2;
-	Thu, 15 Feb 2024 18:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D951386A6;
+	Thu, 15 Feb 2024 18:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jHEVLVz6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cMgRwyI8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2075.outbound.protection.outlook.com [40.107.94.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C53135A40;
-	Thu, 15 Feb 2024 18:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC221384AF;
+	Thu, 15 Feb 2024 18:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.75
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708020940; cv=fail; b=BMHVPMyTprakIWosl/rjI0FX3u14t3OqfTTftty3K78f/FvlMn72SMiY28PqS8pNoPV0Kn1uaZI7BwyS/2HLTDcQ8VEGLNKodj8a0s+b9h9NDEUyAZdBjGkoXIkdDNM9zY5MTqIAYk4dXKpcaYgkKHTWpSu1KVawBobR1IKmxSo=
+	t=1708021264; cv=fail; b=fcNG9uIXlLehOY4VSdQHTOtSoiXe+HpI0EUItaFp7BJ3sGyLAutFk9cO3OfsFHjVMt5/4zBQOVrN303EvJ9tBkkiNssGdIeAlc4HrmMqK39ioOSbGOMK17k7V0NN+6EC4qVsUwgTf5sfM4QI65FJSejvrmIx5NHlrYTWFus0xNU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708020940; c=relaxed/simple;
-	bh=lhI6ui3T2I7Pq2IXX7cA68iwbpROAr75qcChFQ6WYfA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=cjdvvW0tlS83jaWU/F3Kn5aOhe/N6EEu6iWmK1yaufm+TFrZRo/ZIN+BloU0X6nHneSXhW4IdWC0Agpd1tbpttGxpaQvI7u7WRqzh1ckhNyUw8yo01N8lZP4vNu48Wyu4wqZI6qFFEGuO4QNgvl63diW9PfbTFFwOTzL4nGDEik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jHEVLVz6; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708020938; x=1739556938;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=lhI6ui3T2I7Pq2IXX7cA68iwbpROAr75qcChFQ6WYfA=;
-  b=jHEVLVz6oUCG7K/IvEoqM6yxuA4632b11yBcChw/gBiSAZlmz0N9jlu/
-   Pr9MKTghmrOXR7Gl3L5m3iXfwfmPNRnAukMyNvzymi0qDeeEKGNGcYAEb
-   CsEbzWfPnDy0pToTSH7ttHFHwW76Oc7OUDFNqI6225zmWbfnkGn4PWYd9
-   mAFJMxFyNvYB8dUnNuyQZdqH07soYNOH0PeV6Ozf+7hKPNMfJ0gv7qnMz
-   n3d415pWXQmFC7IKnEwn38A5AQ9ztmCj7EJAptfFVIKEFX6nAEdsBkgWY
-   Vs6MvF21Lu0azrZxti939PqDftslAXQFmM8/KmPFACMrXWJT41Z7m0vsi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="5095602"
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="5095602"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 10:15:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,162,1705392000"; 
-   d="scan'208";a="3937357"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Feb 2024 10:15:37 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 15 Feb 2024 10:15:36 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 15 Feb 2024 10:15:36 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.40) by
- edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 15 Feb 2024 10:15:35 -0800
+	s=arc-20240116; t=1708021264; c=relaxed/simple;
+	bh=1Rqfi9tHAdizRNt0wD54ZVkKaACrqB/hj8GKJnlASnA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=PURRqtrNYzgZ2DZ6vrUdEOwhRMMBfaOGqISz6Tx+UZpYNTQWqsglJqZMvSzK08SZ4YcYC4sA0MDxqYbbIcCIzbc8bmk5e+t5w2MMxgO26xZPDq3p+HMcT1M8t0x1/SfxOxnT/S/TaHhh2natbggrOyTj2XONV6SXEhbaMKhNFpg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cMgRwyI8; arc=fail smtp.client-ip=40.107.94.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TqZCB87owswMx4VeS/vHjJEHg+eI/ndQCCmsjHki8F2TIavOdcQ4Vi7roiItWQ4lmG7Y06hExH2t2zJNbBCeUJjR9G9OIZo5qQfzfvBLXdc64ou05FKCO23KTw/yrnIGte2Nt36W00qRajITarlWkrNfRu2ENYAJKJFxDPU0H6dJIe3fKxOykrP5D5hAdWABAdV92bvGGa2NYBiC9QQQP3PPzUJ0v3luPYTrXqK7EOeVqON2PgDdAR78KMcsyBiBySvH0FCcOxCXpdrpGK0uM9eI+FxQfvggLN3WcnJZ2epVArZeguNfyRWuEyJRs4YDzW0OMfrT7h5hOGGKhrmZGg==
+ b=kMpDUPtpt0WGTZwZ9S9IVc2M693FP+GqMXSGJHLz6m9NwfeK02cUZbQCRNZ2o4AE0TvOXCWUQuxGtFK4TSaUY9x0F029619OdDzu4fCOgkBhkLmcoaJ9yCi4fCOt4TJNptjeijGR49SpdRCKy+lwB00s49lLabTAVECxA020XSsB78BdPsfP0UTHkT55V/AK2QLTg6elu5xFaw2FRnk90lmQBZPxeFs19ooQDM8YSX9zoDixKgYn6jDDQmoLnOPnslL0fvmHaxdfowi+yesyMN7Kr2gSRZ/NTJDEKjN39a4Fxfo9CRWk4tp/LcBWHTDxxEOUmXBNBlW4vAwfu3MKaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+h5Jz9/7roGc/50PZ3/KP+ELk0x/YnBO6pgu+UYAppw=;
- b=DXh798nimCCh69bMphaBKOoUowhy+5H7AqarnutZVvupeAlqVZMLJDBTxf9I/MhzgZ+jEVAnjO7JR0CBdb71wr+pM7pqwrQ2UJGTPzj00eFDlOe0ZaVSehctXZxzfad/+9/94UvMO4Z/kr5Pem8aeoeR0IuaNC59qZdFNMX6+uFgiJt5nhCdUItErMbIjuxQ/gAhOkLMRHmX592yKA7Ek/ucZ0cebN4sWJO8PV4LEnV++UipYNdy16/YOUDQ5ix27ZmfIXRgFP2JrEmrG5hCxnwdESfgcQTr2qRjVrxf3fUumd+i7ozbOop7swEHxyiR8vNXHkcaRGc0B2WcK6iE1w==
+ bh=1r6gLBZefAC96kU3hPSZuqgTeztWnPCUBD3QWEyHtv4=;
+ b=IAVsg4+1EEPHliyLtK48pO+85YM8w1MZdCvaRrYMnYf9Ak/TSwXnBPfO7VVXjpwo9FDfyUQRTkoOSGNJUigiCbHAQCE18YJ3kHCQ3PNYYEJQ5BA16fbRMreaI9GNoNwUENUHDrgH4kW02cs3n/BXWWjgD/1JFY0ohHzR9HbU++pEMkPMEg8c3qrDo1qMttvfZ4fE99EtBk//xlZf8LOjiTYBGAUJCiFHaL9McvAArxjh6iKRHO8Y9RQuwesquUn5HnyhC1xJuNWc8+VqE3QupfJMyoZlqMNj28O6HGg3v7IBaJEf/0Mfy0pgkB4FCZxiVOCp07GX/bAtzukb3LrGfQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by PH7PR11MB6498.namprd11.prod.outlook.com (2603:10b6:510:1f1::21) with
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1r6gLBZefAC96kU3hPSZuqgTeztWnPCUBD3QWEyHtv4=;
+ b=cMgRwyI88rkJYm3d4ymXMBY/4HbR+lPZXtfglmfHMaiQklhgWp/7iKJ9/g5emkGKraWFwuLWAA62MTqebeaRaWcg6iGd6EYGBhR64xPxe3YFeM7aNiAErb0o5nyB/sBytEvHDkWKh8vix/efvj8dmq/Pf6KDH4xdrEGyw8OGgyw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by CH3PR12MB8459.namprd12.prod.outlook.com (2603:10b6:610:139::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Thu, 15 Feb
- 2024 18:15:33 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::7103:9cf7:fcc0:e802]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::7103:9cf7:fcc0:e802%3]) with mapi id 15.20.7292.027; Thu, 15 Feb 2024
- 18:15:33 +0000
-From: "Luck, Tony" <tony.luck@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, Ben Cheatham
-	<Benjamin.Cheatham@amd.com>
-CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "james.morse@arm.com"
-	<james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>, "dave@stogolabs.net"
-	<dave@stogolabs.net>, "Jiang, Dave" <dave.jiang@intel.com>, "Schofield,
- Alison" <alison.schofield@intel.com>, "Verma, Vishal L"
-	<vishal.l.verma@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH v12 0/3] cxl, EINJ: Update EINJ for CXL error types
-Thread-Topic: [PATCH v12 0/3] cxl, EINJ: Update EINJ for CXL error types
-Thread-Index: AQHaX4F7SfMply+qm0W3UknoqcSar7EKtVW6gADvtqCAABDhoA==
-Date: Thu, 15 Feb 2024 18:15:33 +0000
-Message-ID: <SJ1PR11MB6083F423C85A96FB89F0F4F5FC4D2@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20240214200709.777166-1-Benjamin.Cheatham@amd.com>
- <Zc1kwWupeN9WagFj@agluck-desk3>
- <65cd7cac71377_5c76294ad@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <SJ1PR11MB60832AFF7D2F9FBD2670CBBEFC4D2@SJ1PR11MB6083.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB60832AFF7D2F9FBD2670CBBEFC4D2@SJ1PR11MB6083.namprd11.prod.outlook.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.25; Thu, 15 Feb
+ 2024 18:20:59 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dd00:9ab5:4d11:2d1a]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dd00:9ab5:4d11:2d1a%7]) with mapi id 15.20.7316.012; Thu, 15 Feb 2024
+ 18:20:59 +0000
+Message-ID: <9831e9bc-d55f-4a72-950a-684a757af59c@amd.com>
+Date: Thu, 15 Feb 2024 12:20:56 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/5] drm: Add support to get EDID from ACPI
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|PH7PR11MB6498:EE_
-x-ms-office365-filtering-correlation-id: be6aa1c8-2303-433e-bf3b-08dc2e5219c1
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: dbuTsOSGJfJaG/aWnNX8vk4kG0VoeBom6Rwf3nOg0oiIrZzZEkfwcQ2flYq2zAlQPzQNMvBMMwW7loULmOHeNaIEpK2OHfy+41Vifjw1SlaQW86L1WxxtFAVQhNhCmHMLZA37M/2aLjRj+FdtWqA0AroEUmI+u1x00OumAMnuFUxCQpurVVwYVDkWV2N74ZKJEBb3Xbpq5fcM/uT5SgdD6XID1tMNcb9I70EfLxITtOeI2iUF56HjoSYlUjVKBRZ0wtfW0rSNuKZfih/qtHbqji5ATYz2dl2do3LPy9EhGbDyxZBcI5rt0wEwBJKIgJOkqUPNA7Oprml3Yv4LzONpotlfJj0JdFEKlInRR8hE4zfDnvAbqz4AmHvVBPhzaOeXlNnjS3IAHJkWFIOOE6o+RLmnYAvBzwlMdv8XQAKyF4PM9FLUHnOwQfK0tZM07TzOXI+H1dbh67Ha9vpXBU8LdbgbSM6jJsMOsegtsQfVQcMTFc98sW5sW1bC2TYVd7u0tnnyIWyu0TeRAY7LiBYRdd+vobE/RBSsktxhr1EaypcUTCRbQbLNdvd/Fo+4E0ow0ML47gkiPlWPphipq+WNGiFClOLS0oOS+SZgCm1IeFeHYbglQO9wTrkAPTHYO4r
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(136003)(366004)(346002)(396003)(230922051799003)(230273577357003)(64100799003)(1800799012)(186009)(451199024)(55016003)(2906002)(5660300002)(41300700001)(4744005)(110136005)(8676002)(66556008)(66476007)(83380400001)(4326008)(8936002)(9686003)(6506007)(64756008)(66446008)(66946007)(52536014)(54906003)(316002)(76116006)(7696005)(71200400001)(38070700009)(478600001)(26005)(86362001)(38100700002)(33656002)(122000001)(82960400001)(2940100002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zEkov4M2AH4BXNfLFSjl9r+qFsGC9oBho6D0fB7icva7h4YgzlJp8256alaW?=
- =?us-ascii?Q?21XXJYAqhtyqrZdOB+EGZa+TVM41qoPb2XZrmwQiMgOCl2ug7UzMR63JlBox?=
- =?us-ascii?Q?j87GXo0bTGzY254vIRR4+Hy41UPCmO9ruLmauSy/npu9K8Io6Z9uwoWjKa9j?=
- =?us-ascii?Q?BUhlHsuefNftBVpeZsDnsOrsSinOOyw3fsxiZk+tRBNKdRFRdK0KusogwrI8?=
- =?us-ascii?Q?Cvpkxpz2gRljXMvbAMEgkVbdwA4AnkkzBsz3nUY8Jd73zRh7bR+iIbvF2OYt?=
- =?us-ascii?Q?vESprNOis4/Aj8kD1NOcZooX8voJ+/LYH/QpbFGCBUOCsllcRzbSezz4tORa?=
- =?us-ascii?Q?/aESWu7lKuhR/fBnXIt00eLB79QRR4Rpe5yXvzUYlU6wRgk/odE8oJ6Ybe09?=
- =?us-ascii?Q?cd3bcocXGNznSKZaMNF5+jQE6rJQQeFjLB2Dg+aXOa1TFyEejyHxQD7FWF49?=
- =?us-ascii?Q?6assnMWzdgmSUj8TzOJBPNI1R3x65OIkwzX6oW/dOd7Kit+fbZdMqmaSgfe/?=
- =?us-ascii?Q?FFZBc4csv/JJhEpwQ1oG8hLuqBh7yJrzhtcW2sIosgf4Yi4gDQfd4hV2fARL?=
- =?us-ascii?Q?nT79bR6SerkRHpcQZtZ2qk0Octg25o2o+BR+BPMlW60+R7iDfBIdsEM1rXoV?=
- =?us-ascii?Q?3gGLsaKGXAZHcfVL3f6jpaKURdEWkt2ZIB6NSBncTLNTBp0qN1fuWoOwX60v?=
- =?us-ascii?Q?r+89tuWcxTev6tl9v//pcbmQL3RU9XA+Uk+nVHp/j9MjT0FbOfII3Ve0heBc?=
- =?us-ascii?Q?Tzvd+k7nX5OejMBpfK97Xr7PuZ4OllCIiAw1Vq3faVvDcS33MGlgAkXAGd1V?=
- =?us-ascii?Q?rb0DKCjikuiGnd9u13FUtkkE1vVNrYA1sTPIpf1ZLCQxzzehu1jv5dwTF6fS?=
- =?us-ascii?Q?QXg+vJtfB67Ad5k7A1bFl6XshB+JkQEL/6PgqQJM54Gt7UxKv5TE8WoNL2sP?=
- =?us-ascii?Q?ypn1z5UGMzTAimBsVongqhfuIHZRM7/pUKgmcJ0GnFKH8s/F3GZGVOAZgo1k?=
- =?us-ascii?Q?/6P3PO/KTa0uJfESGX+mwSrAqt8QW3cnz8HLE7NmLx7b2iAVwPg8t2Mns7OB?=
- =?us-ascii?Q?FvjsL7LurYAzIuWTT6lnNEWZqQjq/vAzlFQrZX1CQbpuxe2CA2WN4d2C+L9V?=
- =?us-ascii?Q?nrgoAILu38p1IG5l/542yWrJNsNeCLXvsTETNCVaJC7SpLUR5JfVxr0t7hUy?=
- =?us-ascii?Q?g1DOrQw/p27HcPzsw+HZiGVqWb5HwMbZ8OEMg4vpVxefhxHTfhAQBV7fyPIm?=
- =?us-ascii?Q?muPss2kg7dPB9ea/LqcYsxWgjxTd72i6fD6rNXC+QAM1Pv00GTXdYR8Y5nTz?=
- =?us-ascii?Q?mflvDG8f6nxVqlzewBGGPzKxkcZqYVxQXMN/aX6PvKjFEau2OYaXIMIF8Gaa?=
- =?us-ascii?Q?Z/AhlQmKMqigNVcWJhzWSkhnNQPyCZrWpizaGEM2PAlv1PEGMDzlFoSuIO0j?=
- =?us-ascii?Q?qYr86knbzkoJIS+EDFm9+SUE3yxklrEk5cP6ETCxSAzJQM6gBE1F9RGXiHDk?=
- =?us-ascii?Q?5gHYpDReBuc2kHMvqJGbNLe4v4OCqxEL3za2HD5DCNWN0hYbM0lpiW7DEsli?=
- =?us-ascii?Q?UInaay8Prhytnc0LfN1jkXspR6u7cMchGwDGVKqG?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>, Jani Nikula
+ <jani.nikula@linux.intel.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ "open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+ amd-gfx@lists.freedesktop.org,
+ "open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+ linux-fbdev@vger.kernel.org, nouveau@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, platform-driver-x86@vger.kernel.org,
+ intel-xe@lists.freedesktop.org, linux-renesas-soc@vger.kernel.org,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, Melissa Wen <mwen@igalia.com>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>
+References: <20240214215756.6530-1-mario.limonciello@amd.com>
+ <20240214215756.6530-4-mario.limonciello@amd.com>
+ <Zc1JEg5mC0ww_BeU@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <Zc1JEg5mC0ww_BeU@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SN7PR04CA0227.namprd04.prod.outlook.com
+ (2603:10b6:806:127::22) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|CH3PR12MB8459:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1c45bc0-72d5-41d3-4f3b-08dc2e52dbf7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	R5sNtKshCleh/IeS5tewx7heFcTqJ1vMwDGT3JpqZrblq2IbZfspWcRvqmJX2kWqgjjTKF5CeCuXKKKoFKH3rLshY8fut2Mo9Y+4g32LjOvDEdLZAAAUKvtxQd+wblBNIsGIS0sDQcxieQ+uWjImMdfoCSWR3qJbzC7QMD8Be6i8QaPmSTtrZA688WIS4sZis7YDBYD67FBV17cRWSBDqCZUDDFl4PUjCHAn5JJPfZRe5PmRj42r2kevZ597nCBRaePjDs64Lhrtv4zHKHz64n6yJPfgcXKXQeq7kThXVk1MFb2inDdSHMVkmEmYwtL/RMUzmNsbEVMk8U05PAAr+RNIaBDqpKipOQ6JAN1J5WjEO4v7m8q6quSB9+U7hAmHoquyQBuU5XlAxbwKjfebprkmZgyQr/SvYZkq2i1CwWVVkUWoBc4O6Za2yKQwnRX+2Ql8cuKTriyNwBZBRmPzq9HMUBQosCXZAe/RTPWENXTb5vR1cCQb6LaNKeyYQ8yLIEQNGHki1LjpB9OCEFr8VR895kmPnJgNbKB8OEKQNs0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(39860400002)(366004)(136003)(396003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(83380400001)(66899024)(31696002)(86362001)(66476007)(6916009)(316002)(66946007)(66556008)(2616005)(6506007)(6512007)(54906003)(53546011)(966005)(6486002)(44832011)(478600001)(66574015)(5660300002)(7416002)(2906002)(6666004)(8676002)(8936002)(4326008)(31686004)(36756003)(38100700002)(26005)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bHdkamxOYTgxd1B2Kzg0OU9jSkkvY3hEVktRTHZYSk8vbUc1UWp4U0VwdUVp?=
+ =?utf-8?B?OXhZQUFiQlhXNVBFVVhZOXZEeWpuTkRPNk0zSmkwU0dYN2M3dEl2R3RRK0o1?=
+ =?utf-8?B?dGsyb211anVrK3J2R3hOZnlvQWVSRE1IVG9hbkpRcFJhMWpURTRFcmpLc2Ja?=
+ =?utf-8?B?cmtIVzJTM0d4NVZodmdQZVViMW1rR2g4MHpVcXNaczBoVzRuajhKckZLOVE1?=
+ =?utf-8?B?SzJDWm1WTTMwUGhScEVIQyt3NzQraEpWUllPVk42RkUzRE5OOGU2VzZtbFdY?=
+ =?utf-8?B?dFdwMkxpMHBTYzhzc2FyeE9Hbzl5YzJ4dFFzUW1mOFFtZjlvYnJiaGJzemJS?=
+ =?utf-8?B?TlkwckFkUlp1ZFhnR1FxcEEyVmhJYjdoR1ZZdytjaVJRZlNwbk9weUdkdk9q?=
+ =?utf-8?B?aExwWi93TDUrd0VERzBtcTdLMkZoa2NzQVJzY2hjTEpDSTVtMGticjhyK05Z?=
+ =?utf-8?B?SXlzSVBrNXBadm51bXJLL3dITWVwMTQrN3l4bUhyQ1ZRN2pPK1NYTGpPeVVC?=
+ =?utf-8?B?QU5oNW5TM1dURGczbE5hWDhNa0V6blUwb0VyU0hKNWlJaWJPTEhTUWRaOVhB?=
+ =?utf-8?B?NXZadTQ1dVVMYWlGT2ZPNFBNNUcvcWFNTFpQSzJtMFBjUFRQa0tNOXpiQTZU?=
+ =?utf-8?B?N0pGNG5hMzJQNExPQVNFbXlqR2g1MUErbnhocHY4WDMyMVFwb0VseVNpQit1?=
+ =?utf-8?B?Mmx4Y0g5OExDandqVnJ3QldHaGZqQnd2UFNUK3k0aHFGT2ROdzAvMmJTaEs2?=
+ =?utf-8?B?cDBBWjZ0U0d0WXg3R3R1akk1RG1yY2FzVks1aXJxTDdIMDZBQjY2eDhiOGE2?=
+ =?utf-8?B?RmNRZU5Wd1FCZmxVSVBuTVhON1hjOG50M20wMlAxeEVaOXVoZGkxVW94by9q?=
+ =?utf-8?B?czNxbHNXMkYvV1d2VG8xWmtSNUZhZDNIeXFMNHd5Q0VBNVBPSTlYRklWTC8v?=
+ =?utf-8?B?NmtBMTJRV0t5cjl2Nzc1OG9ra21QeVhMdHg1LzNpa3NPV2c0bkhQbm9YcGps?=
+ =?utf-8?B?REVaMy9wTjBWTVJIc2RmMDhwOUVYRnlnWHd0WUpvbVdrdVFFTlVoek84MjhS?=
+ =?utf-8?B?bkYxRlVyOUFUNUpYYktWd2RDUWFTRTA4MlZNdEJ2THNnYU5udTBKbGNpR2Vr?=
+ =?utf-8?B?ZXNra1VzT2lsemVhZEd0WkRTQ2xNUGEyMk9QNkQ4bkhpV2FYT3AwUEI1bWFW?=
+ =?utf-8?B?TC85VUNrb2xqZjJhL2ozV01Tc2NsNlFEdXdzaWZSM1pSd3I2YTJWREZzUnV5?=
+ =?utf-8?B?MzcvK1lHbWlRUnloUnhRd1g2SDdHUm1pbnNVVURGSjdmc0pzano5WWxJT1RW?=
+ =?utf-8?B?TVE4Vm9IYVFpcXZyT3k3dE9LZFVxdUY1TjhBYzl6TkxncGhTVkxBUkttNERl?=
+ =?utf-8?B?ODZ0dGhiYnRjeEhTQ3BiYWp3aVIvV3VEdW0wbXdKSTF6ZnMyLzVIWENZUXB6?=
+ =?utf-8?B?Q3d0R2lDRlkrQzhIMFlIL2JpNU93c1VkSWZDWWdHdWdLUmtpVjJFaHNGVzJR?=
+ =?utf-8?B?U3h2UGFTbXJ6U2thK3ZTcE4rNGRBbkJOazFKMU11Zy9oVG5OcUs1N0F5M3R2?=
+ =?utf-8?B?WnpXSzg3elF0UC9HQk5SYnFFajlGemhsYzBXdk1oOHpub3ZPM21FTGM4TE9D?=
+ =?utf-8?B?SDE0OEhRNWh4a1A1VENoMTlIU2RBMzRtY0pkUFI3NjJjeU5PRlEwYVNuQ0Fh?=
+ =?utf-8?B?SkJZWEF4TVNKWUF4b0NpUFQ2dTVrN3BqUCtWZ3U1enRyaUk0SEp3NzFnOGV0?=
+ =?utf-8?B?WjI3VDQvYW1Cak5qNENEeGppcnVTNEFxVXB1UlZvMFQvdlVRZ2VacFVjdmZT?=
+ =?utf-8?B?Z2xNWTZCNDVaSWE0Q2F2aVFVNERRWnFWUFdsd0FoUjVGdVprQ0hmSy85OUR6?=
+ =?utf-8?B?eVB1bVNmWHljeUNjZnU0WlBMckdjbmV4ay9PUlBHOUx5SDZiNDlxazdZZGNw?=
+ =?utf-8?B?c1dmaTVZSkplaU5pN0lUWVRnU3EydHo0dTlJUjVyclpOWmxmOWMyYytqYXE0?=
+ =?utf-8?B?eVNwVHM1NUpNTzllQWRucCs4M1RUNGhTWUZxVk5WeHVudFQ1d1R3UnJUdkNp?=
+ =?utf-8?B?czZjOHJvMDZzbXZ2TGVKcEdyNHZDNXBBSEU1cC9WaGRYUzNLRUx2Q213cnN0?=
+ =?utf-8?Q?H8p77uOsl0/mGGjNSY10kR8ua?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1c45bc0-72d5-41d3-4f3b-08dc2e52dbf7
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be6aa1c8-2303-433e-bf3b-08dc2e5219c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Feb 2024 18:15:33.3787
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Feb 2024 18:20:59.4610
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HBoiTOP7OVxifuJxrw+qxlrAUwCpd7B+BfjRwTF7aUPzrBynr7v0bcAQthIu0G2s/XXF96f6aQ7+fCgRCPTEGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6498
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nOsqDl9/LArWFLEdw5E7GBmm76U6jDHZ6RMfHO1wFDSZc/Txyx7TbryelGDC3TV7c9YFe8E2tAprR8tKHEu5Qw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8459
 
-> But perhaps there will be a pr_warn() or pr_err() during boot. One of the=
-se will likely trip:
+On 2/14/2024 17:13, Ville Syrjälä wrote:
+> On Wed, Feb 14, 2024 at 03:57:54PM -0600, Mario Limonciello wrote:
+>> Some manufacturers have intentionally put an EDID that differs from
+>> the EDID on the internal panel on laptops.  Drivers that prefer to
+>> fetch this EDID can set a bit on the drm_connector to indicate that
+>> the DRM EDID helpers should try to fetch it and it is preferred if
+>> it's present.
+>>
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>> ---
+>>   drivers/gpu/drm/Kconfig     |   1 +
+>>   drivers/gpu/drm/drm_edid.c  | 109 +++++++++++++++++++++++++++++++++---
+>>   include/drm/drm_connector.h |   6 ++
+>>   include/drm/drm_edid.h      |   1 +
+>>   4 files changed, 109 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+>> index 872edb47bb53..3db89e6af01d 100644
+>> --- a/drivers/gpu/drm/Kconfig
+>> +++ b/drivers/gpu/drm/Kconfig
+>> @@ -8,6 +8,7 @@
+>>   menuconfig DRM
+>>   	tristate "Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)"
+>>   	depends on (AGP || AGP=n) && !EMULATED_CMPXCHG && HAS_DMA
+>> +	depends on (ACPI_VIDEO || ACPI_VIDEO=n)
+>>   	select DRM_PANEL_ORIENTATION_QUIRKS
+>>   	select DRM_KMS_HELPER if DRM_FBDEV_EMULATION
+>>   	select FB_CORE if DRM_FBDEV_EMULATION
+>> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+>> index 923c4423151c..cdc30c6d05d5 100644
+>> --- a/drivers/gpu/drm/drm_edid.c
+>> +++ b/drivers/gpu/drm/drm_edid.c
+>> @@ -28,6 +28,7 @@
+>>    * DEALINGS IN THE SOFTWARE.
+>>    */
+>>   
+>> +#include <acpi/video.h>
+>>   #include <linux/bitfield.h>
+>>   #include <linux/cec.h>
+>>   #include <linux/hdmi.h>
+>> @@ -2188,6 +2189,58 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
+>>   	return ret == xfers ? 0 : -1;
+>>   }
+>>   
+>> +/**
+>> + * drm_do_probe_acpi_edid() - get EDID information via ACPI _DDC
+>> + * @data: struct drm_connector
+>> + * @buf: EDID data buffer to be filled
+>> + * @block: 128 byte EDID block to start fetching from
+>> + * @len: EDID data buffer length to fetch
+>> + *
+>> + * Try to fetch EDID information by calling acpi_video_get_edid() function.
+>> + *
+>> + * Return: 0 on success or error code on failure.
+>> + */
+>> +static int
+>> +drm_do_probe_acpi_edid(void *data, u8 *buf, unsigned int block, size_t len)
+>> +{
+>> +	struct drm_connector *connector = data;
+>> +	struct drm_device *ddev = connector->dev;
+>> +	struct acpi_device *acpidev = ACPI_COMPANION(ddev->dev);
+>> +	unsigned char start = block * EDID_LENGTH;
+>> +	void *edid;
+>> +	int r;
+>> +
+>> +	if (!acpidev)
+>> +		return -ENODEV;
+>> +
+>> +	switch (connector->connector_type) {
+>> +	case DRM_MODE_CONNECTOR_LVDS:
+>> +	case DRM_MODE_CONNECTOR_eDP:
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+> 
+> We could have other types of connectors that want this too.
+> I don't see any real benefit in having this check tbh. Drivers
+> should simply notset the flag on connectors where it won't work,
+> and only the driver can really know that.
 
->	pr_warn("EINJ table not found.\n");
->	pr_err("Failed to get EINJ table: %s\n", acpi_format_exception(status));
->	pr_warn(FW_BUG "Invalid EINJ table.\n");
->	pr_err("Error collecting EINJ resources.\n");
+Ack.
 
-Just tried on my system. The winner (for me) is:
+> 
+>> +	/* fetch the entire edid from BIOS */
+>> +	r = acpi_video_get_edid(acpidev, ACPI_VIDEO_DISPLAY_LCD, -1, &edid);
+>> +	if (r < 0) {
+>> +		DRM_DEBUG_KMS("Failed to get EDID from ACPI: %d\n", r);
+>> +		return r;
+>> +	}
+>> +	if (len > r || start > r || start + len > r) {
+>> +		r = -EINVAL;
+>> +		goto cleanup;
+>> +	}
+>> +
+>> +	memcpy(buf, edid + start, len);
+>> +	r = 0;
+>> +
+>> +cleanup:
+>> +	kfree(edid);
+>> +
+>> +	return r;
+>> +}
+>> +
+>>   static void connector_bad_edid(struct drm_connector *connector,
+>>   			       const struct edid *edid, int num_blocks)
+>>   {
+>> @@ -2621,7 +2674,8 @@ EXPORT_SYMBOL(drm_probe_ddc);
+>>    * @connector: connector we're probing
+>>    * @adapter: I2C adapter to use for DDC
+>>    *
+>> - * Poke the given I2C channel to grab EDID data if possible.  If found,
+>> + * If the connector allows it, try to fetch EDID data using ACPI. If not found
+>> + * poke the given I2C channel to grab EDID data if possible.  If found,
+>>    * attach it to the connector.
+>>    *
+>>    * Return: Pointer to valid EDID or NULL if we couldn't find any.
+>> @@ -2629,20 +2683,50 @@ EXPORT_SYMBOL(drm_probe_ddc);
+>>   struct edid *drm_get_edid(struct drm_connector *connector,
+>>   			  struct i2c_adapter *adapter)
+>>   {
+>> -	struct edid *edid;
+>> +	struct edid *edid = NULL;
+>>   
+>>   	if (connector->force == DRM_FORCE_OFF)
+>>   		return NULL;
+>>   
+>> -	if (connector->force == DRM_FORCE_UNSPECIFIED && !drm_probe_ddc(adapter))
+>> -		return NULL;
+>> +	if (connector->acpi_edid_allowed)
+>> +		edid = _drm_do_get_edid(connector, drm_do_probe_acpi_edid, connector, NULL);
+>> +
+>> +	if (!edid) {
+>> +		if (connector->force == DRM_FORCE_UNSPECIFIED && !drm_probe_ddc(adapter))
+>> +			return NULL;
+>> +		edid = _drm_do_get_edid(connector, drm_do_probe_ddc_edid, adapter, NULL);
+>> +	}
+>>   
+>> -	edid = _drm_do_get_edid(connector, drm_do_probe_ddc_edid, adapter, NULL);
+>>   	drm_connector_update_edid_property(connector, edid);
+>>   	return edid;
+>>   }
+>>   EXPORT_SYMBOL(drm_get_edid);
+>>   
+>> +/**
+>> + * drm_edid_read_acpi - get EDID data, if available
+>> + * @connector: connector we're probing
+>> + *
+>> + * Use the BIOS to attempt to grab EDID data if possible.
+>> + *
+>> + * The returned pointer must be freed using drm_edid_free().
+>> + *
+>> + * Return: Pointer to valid EDID or NULL if we couldn't find any.
+>> + */
+>> +const struct drm_edid *drm_edid_read_acpi(struct drm_connector *connector)
+>> +{
+>> +	const struct drm_edid *drm_edid;
+>> +
+>> +	if (connector->force == DRM_FORCE_OFF)
+>> +		return NULL;
+>> +
+>> +	drm_edid = drm_edid_read_custom(connector, drm_do_probe_acpi_edid, connector);
+>> +
+>> +	/* Note: Do *not* call connector updates here. */
+>> +
+>> +	return drm_edid;
+>> +}
+>> +EXPORT_SYMBOL(drm_edid_read_acpi);
+>> +
+>>   /**
+>>    * drm_edid_read_custom - Read EDID data using given EDID block read function
+>>    * @connector: Connector to use
+>> @@ -2727,10 +2811,11 @@ const struct drm_edid *drm_edid_read_ddc(struct drm_connector *connector,
+>>   EXPORT_SYMBOL(drm_edid_read_ddc);
+>>   
+>>   /**
+>> - * drm_edid_read - Read EDID data using connector's I2C adapter
+>> + * drm_edid_read - Read EDID data using BIOS or connector's I2C adapter
+>>    * @connector: Connector to use
+>>    *
+>> - * Read EDID using the connector's I2C adapter.
+>> + * Read EDID from BIOS if allowed by connector or by using the connector's
+>> + * I2C adapter.
+>>    *
+>>    * The EDID may be overridden using debugfs override_edid or firmware EDID
+>>    * (drm_edid_load_firmware() and drm.edid_firmware parameter), in this priority
+>> @@ -2742,10 +2827,18 @@ EXPORT_SYMBOL(drm_edid_read_ddc);
+>>    */
+>>   const struct drm_edid *drm_edid_read(struct drm_connector *connector)
+>>   {
+>> +	const struct drm_edid *drm_edid = NULL;
+>> +
+>>   	if (drm_WARN_ON(connector->dev, !connector->ddc))
+>>   		return NULL;
+>>   
+>> -	return drm_edid_read_ddc(connector, connector->ddc);
+>> +	if (connector->acpi_edid_allowed)
+> 
+> That should probably be called 'prefer_acpi_edid' or something
+> since it's the first choice when the flag is set.
 
-[   27.989081] EINJ: EINJ table not found.
+OK.
 
-If you decide that it is OK to auto-load, I think that needs severity downg=
-raded to pr_info().
+> 
+> But I'm not so sure there's any real benefit in having this
+> flag at all. You anyway have to modify the driver to use this,
+> so why not just have the driver do the call directly instead of
+> adding this extra detour via the flag?
 
-Users ask questions when they see warnings.
+This was proposed by Maxime Ripard during v4.
 
--Tony
+https://lore.kernel.org/dri-devel/ysm2e3vczov7z7vezmexe35fjnkhsakud3elsgggedhk2lknlz@cx7j44y354db/
+
+> 
+>> +		drm_edid = drm_edid_read_acpi(connector);
+>> +
+>> +	if (!drm_edid)
+>> +		drm_edid = drm_edid_read_ddc(connector, connector->ddc);
+>> +
+>> +	return drm_edid;
+>>   }
+>>   EXPORT_SYMBOL(drm_edid_read);
+>>   
+>> diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
+>> index fe88d7fc6b8f..74ed47f37a69 100644
+>> --- a/include/drm/drm_connector.h
+>> +++ b/include/drm/drm_connector.h
+>> @@ -1886,6 +1886,12 @@ struct drm_connector {
+>>   
+>>   	/** @hdr_sink_metadata: HDR Metadata Information read from sink */
+>>   	struct hdr_sink_metadata hdr_sink_metadata;
+>> +
+>> +	/**
+>> +	 * @acpi_edid_allowed: Get the EDID from the BIOS, if available.
+>> +	 * This is only applicable to eDP and LVDS displays.
+>> +	 */
+>> +	bool acpi_edid_allowed;
+> 
+> Aren't there other bools/small stuff in there for tighter packing?
+
+Does the compiler automatically do the packing if you put bools nearby 
+in a struct?  If so; TIL.
+
+> 
+>>   };
+>>   
+>>   #define obj_to_connector(x) container_of(x, struct drm_connector, base)
+>> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
+>> index 7923bc00dc7a..1c1ee927de9c 100644
+>> --- a/include/drm/drm_edid.h
+>> +++ b/include/drm/drm_edid.h
+>> @@ -459,5 +459,6 @@ bool drm_edid_is_digital(const struct drm_edid *drm_edid);
+>>   
+>>   const u8 *drm_find_edid_extension(const struct drm_edid *drm_edid,
+>>   				  int ext_id, int *ext_index);
+>> +const struct drm_edid *drm_edid_read_acpi(struct drm_connector *connector);
+>>   
+>>   #endif /* __DRM_EDID_H__ */
+>> -- 
+>> 2.34.1
+> 
+
 
