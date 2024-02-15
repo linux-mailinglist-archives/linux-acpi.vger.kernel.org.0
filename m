@@ -1,146 +1,160 @@
-Return-Path: <linux-acpi+bounces-3517-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3518-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE8F855E48
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 10:35:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B983E8560A3
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 12:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2E7B31EB9
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 09:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C51280DA9
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 11:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AB514002;
-	Thu, 15 Feb 2024 09:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68D6130E5F;
+	Thu, 15 Feb 2024 10:55:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD8E1C290;
-	Thu, 15 Feb 2024 09:33:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00423131724;
+	Thu, 15 Feb 2024 10:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707989609; cv=none; b=Hh9nBZ9hsKcRjdMyXq9NxPyyHwVYGDyy9JB7XW6wWLbJkrCj7qlcVf80Lz6Ea1JNI1/6nJl+0oPlgxqKTw0OgFlmQHwAQK0QBJVTM86Xl/z70b24/lVn+uDNDv0O+K3JpGf2LgWD3AYsJRX5Zk//6DMLmdPSrJaRhtmi1da+Qe0=
+	t=1707994537; cv=none; b=EqHYBCkYC9FoXMWnlGfRQRKoYq0aA6P3Uuubh/EeINkQho0xWfcesiGbrXYkwjexCkzm73qq5fRp1lgH1wjXXu+ah9db1s8SpJhL3L9olBPwgLmrVLVCkq4kMTjB7IDNWZ8TkGEhOtnHNM2Wp5wdEcy8CaA9g5FVXkim6jbk4Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707989609; c=relaxed/simple;
-	bh=XcY6l45QO6lnI+tAYMdjp2gDS/JA/wkhgyzDiGZTQoQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MY+FfZNhJMzrm+/mMaujIAr4n3bDQTkJ6qCNAdWDLHaZLZ5St8Sv2N2HrgZmAaPfu/LGBUnX4wm057QLlDI9+F+9zydH3XUv4KDyHQHIvzGs5uEZdZqaWXo8lceD1BPg7Jga6zHphJ//rjepuL/MXRvRNVq5Do5FOkppuwCi3nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tb8sG2JCXz6JB39;
-	Thu, 15 Feb 2024 17:29:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4AD321400D4;
-	Thu, 15 Feb 2024 17:33:24 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 15 Feb
- 2024 09:33:23 +0000
-Date: Thu, 15 Feb 2024 09:33:22 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>
-CC: <dan.j.williams@intel.com>, <rafael@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <dave@stogolabs.net>,
-	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v12 2/3] cxl/core, EINJ: Add EINJ CXL debugfs files and
- EINJ helper functions
-Message-ID: <20240215093322.00000a5e@Huawei.com>
-In-Reply-To: <20240214200709.777166-3-Benjamin.Cheatham@amd.com>
-References: <20240214200709.777166-1-Benjamin.Cheatham@amd.com>
-	<20240214200709.777166-3-Benjamin.Cheatham@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1707994537; c=relaxed/simple;
+	bh=LoA5sWoZO8pD3VB5bo+8CWwWCpCXLeSRWHC2fiM65fI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GHrzApZdQ5WN1tU9h9doGauw6eMYZE8DEJyJMNlKC6D4vX3l/eTLBUitNVYC9xc1JfqCESJ9Xt6lu/h0ncUvU+VOK/HiZqnWHMa4h1aZE3tteKe3Rzedmpppsq1TAOu/MLLkJvvnUMEsgke0X6X2/8XU45LdaGklTcTWqP2UoFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2108D1FB;
+	Thu, 15 Feb 2024 02:56:16 -0800 (PST)
+Received: from [10.57.49.250] (unknown [10.57.49.250])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AABD83F7B4;
+	Thu, 15 Feb 2024 02:55:33 -0800 (PST)
+Message-ID: <56d56f85-6172-4fb1-a002-fe82ffc8a66a@arm.com>
+Date: Thu, 15 Feb 2024 10:55:32 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 02/11] coresight: stm: Extract device name from AMBA
+ pid based table lookup
+Content-Language: en-GB
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
+ <20240123054608.1790189-3-anshuman.khandual@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20240123054608.1790189-3-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 14 Feb 2024 14:07:08 -0600
-Ben Cheatham <Benjamin.Cheatham@amd.com> wrote:
-
-> Implement CXL helper functions in the EINJ module for getting/injecting
-> available CXL protocol error types and export them to sysfs under
-> kernel/debug/cxl.
+On 23/01/2024 05:45, Anshuman Khandual wrote:
+> Instead of using AMBA private data field, extract the device name from AMBA
+> pid based table lookup using new coresight_get_uci_data_from_amba() helper.
 > 
-> The kernel/debug/cxl/einj_types file will print the available CXL
-> protocol errors in the same format as the available_error_types
-> file provided by the EINJ module. The
-> kernel/debug/cxl/$dport_dev/einj_inject is functionally the same as the
-> error_type and error_inject files provided by the EINJ module, i.e.:
-> writing an error type into $dport_dev/einj_inject will inject said error
-> type into the CXL dport represented by $dport_dev.
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: James Clark <james.clark@arm.com>
+> Cc: coresight@lists.linaro.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-stm32@st-md-mailman.stormreply.com
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>   drivers/hwtracing/coresight/coresight-priv.h | 10 ++++++++++
+>   drivers/hwtracing/coresight/coresight-stm.c  | 14 +++++++++++++-
+>   2 files changed, 23 insertions(+), 1 deletion(-)
 > 
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
-
-Hi Ben,
-
-Just one trivial thing to add to Dan's comments.
-
-> diff --git a/include/linux/einj-cxl.h b/include/linux/einj-cxl.h
-> new file mode 100644
-> index 000000000000..92c0e2e37ad9
-> --- /dev/null
-> +++ b/include/linux/einj-cxl.h
-> @@ -0,0 +1,40 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * CXL protocol Error INJection support.
-> + *
-> + * Copyright (c) 2023 Advanced Micro Devices, Inc.
-> + * All Rights Reserved.
-> + *
-> + * Author: Ben Cheatham <benjamin.cheatham@amd.com>
-> + */
-> +#ifndef CXL_EINJ_H
-> +#define CXL_EINJ_H
-> +
-> +#include <linux/pci.h>
-> +
-> +#if IS_ENABLED(CONFIG_ACPI_APEI_EINJ)
-> +int einj_cxl_available_error_type_show(struct seq_file *m, void *v);
-> +int einj_cxl_inject_error(struct pci_dev *dport_dev, u64 type);
-> +int einj_cxl_inject_rch_error(u64 rcrb, u64 type);
-> +bool einj_is_initialized(void);
-> +#else // !IS_ENABLED(CONFIG_ACPI_APEI_EINJ)
-Whilst C++ Style comments are allowed for a few specific case, you should stick
-to local style. In the include directory a quick grep gave me loads of
-#else /*  */
-lines and only 2
-#else //
-
-So C style comments preferred.
-
-
-> +static inline int einj_cxl_available_error_type_show(struct seq_file *m,
-> +						     void *v)
+> diff --git a/drivers/hwtracing/coresight/coresight-priv.h b/drivers/hwtracing/coresight/coresight-priv.h
+> index 767076e07970..68cbb036cec8 100644
+> --- a/drivers/hwtracing/coresight/coresight-priv.h
+> +++ b/drivers/hwtracing/coresight/coresight-priv.h
+> @@ -221,6 +221,16 @@ static inline void *coresight_get_uci_data(const struct amba_id *id)
+>   	return uci_id->data;
+>   }
+>   
+> +static inline void *coresight_get_uci_data_from_amba(const struct amba_id *table, u32 pid)
 > +{
-> +	return -ENXIO;
+> +	while (table->mask) {
+> +		if ((table->id & table->mask) == pid)
+
+Why are we masking table->id ? table->id is a static value that the
+driver wants to check for "variants" of a given device. The table->mask
+is there to filter out the "irrelevant" bits of the PID that we read
+from the device. So this should instead be:
+
+		if ((table->mask & pid) == table->id)
+
+> +			return coresight_get_uci_data(table);
+> +		table++;
+> +	};
+> +	return NULL;
 > +}
 > +
-> +static inline int einj_cxl_inject_error(struct pci_dev *dport_dev, u64 type)
+>   void coresight_release_platform_data(struct coresight_device *csdev,
+>   				     struct device *dev,
+>   				     struct coresight_platform_data *pdata);
+> diff --git a/drivers/hwtracing/coresight/coresight-stm.c b/drivers/hwtracing/coresight/coresight-stm.c
+> index a1c27c901ad1..9cdca4f86cab 100644
+> --- a/drivers/hwtracing/coresight/coresight-stm.c
+> +++ b/drivers/hwtracing/coresight/coresight-stm.c
+> @@ -804,6 +804,18 @@ static void stm_init_generic_data(struct stm_drvdata *drvdata,
+>   	drvdata->stm.set_options = stm_generic_set_options;
+>   }
+>   
+> +#define STM_AMBA_MASK 0xfffff
+> +
+> +static const struct amba_id stm_ids[];
+> +
+> +static char *stm_csdev_name(struct coresight_device *csdev)
 > +{
-> +	return -ENXIO;
+> +	u32 stm_pid = coresight_get_pid(&csdev->access) & STM_AMBA_MASK;
+
+Similar to above:
+
+Why do we apply a "custom" mask to the PID and later check the PID with
+that of the table->pid.
+
+The way it is supposed work is :
+
+	(table->mask & dev_pid) == table->pid
+
+the table->mask is there for a reason: i.e., to get the relevant bits 
+from the device_pid and compare it against "the" expected value 
+(table->pid).
+
+
+Suzuki
+
+> +	void *uci_data = coresight_get_uci_data_from_amba(stm_ids, stm_pid);
+> +
+> +	return uci_data ? (char *)uci_data : "STM";
 > +}
 > +
-> +static inline int einj_cxl_inject_rch_error(u64 rcrb, u64 type)
-> +{
-> +	return -ENXIO;
-> +}
-> +
-> +static inline bool einj_is_initialized(void) { return false; }
-> +#endif // CONFIG_ACPI_APEI_EINJ
-> +
-> +#endif // CXL_EINJ_H
+>   static int stm_probe(struct amba_device *adev, const struct amba_id *id)
+>   {
+>   	int ret, trace_id;
+> @@ -900,7 +912,7 @@ static int stm_probe(struct amba_device *adev, const struct amba_id *id)
+>   	pm_runtime_put(&adev->dev);
+>   
+>   	dev_info(&drvdata->csdev->dev, "%s initialized\n",
+> -		 (char *)coresight_get_uci_data(id));
+> +		 stm_csdev_name(drvdata->csdev));
+>   	return 0;
+>   
+>   cs_unregister:
 
 
