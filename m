@@ -1,211 +1,485 @@
-Return-Path: <linux-acpi+bounces-3574-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3575-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86280857256
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 01:15:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65D18572C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 01:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9BF1C216D5
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 00:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BAFA1F2378D
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 00:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D17263D;
-	Fri, 16 Feb 2024 00:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659B12F43;
+	Fri, 16 Feb 2024 00:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dOlOn9mK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nHK+jTrB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0F738F;
-	Fri, 16 Feb 2024 00:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708042529; cv=fail; b=TsKdmFfW9jCT95HSp3WI+zUZV2UDNddPJNkpXrbaHoWq+dsvGUXNnst//eLtmThctWaxoJu1SxCr16kteqAvtB5gibxFve9sMYBtykTXoxV5q+slPuhzxQGRQt9wVbb8lpjlChnLQOmYEGkeXGsC3gK2MGRf7d6AZTwGA/TL3oU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708042529; c=relaxed/simple;
-	bh=ng7J1V/9PRS6X838jKr83jaE56E6hU1hdO/raViqlB0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=S+g8TzPB05vx9AtzxAhx0sV9wczwBbx/+0ZejqLiyCCJRYa7rnKccl10YkfoA8aR6wh6BOrGcbP3XbFnxqaCCVJqVu+jAjtMGXXb3qsrBsq5ABOgdDqsjokq7qVx+v2wLkgELqqudb8qtK9aL9i5dIOpbvx2gM+arOJBgcZ60vg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dOlOn9mK; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708042528; x=1739578528;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ng7J1V/9PRS6X838jKr83jaE56E6hU1hdO/raViqlB0=;
-  b=dOlOn9mKKpQ9g8q0DRXtPRcmGTyFosXIOWleFmm6kmfqw4egkSw+l0ZM
-   oTw3ElxnL3pZCjws17ufyltsTk3UhrBAHSmu3RFS0dW40PrBRD7iCl5eh
-   K9xRrNemo9qweu2NE0s1cwSep7fEMaDwfdtZWgY3BNyuR7nXpilC76kT0
-   JrFneg9Dvgwi68EISZLL0UTJH+6ujDG/E9q8EmVN5WnQSzyOxxwIc6yl7
-   YVsgu704t/ft/KEtvzv457N41sm5gbHkis1TNyGAKziBkyxhx3SBVFsHq
-   Tb31D/Ou1PbE3Xzi/Ex6zuYLVXfz9wTI/yogsm5kNYVjEH1/XLyJcSR1O
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2281640"
-X-IronPort-AV: E=Sophos;i="6.06,163,1705392000"; 
-   d="scan'208";a="2281640"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 16:15:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,163,1705392000"; 
-   d="scan'208";a="3613510"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Feb 2024 16:15:26 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 15 Feb 2024 16:15:25 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 15 Feb 2024 16:15:24 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 15 Feb 2024 16:15:24 -0800
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 15 Feb 2024 16:15:24 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PWQp8Vkc/rYGWx+uPMoycht0g1HbfP6QNtP+TDj9XjIYqmEOIQgm7YBLOIXQMPl8+YOpkeA653bP7p3NSM4VRjur+rnxKgOx51JcMADDeeAwIwVJQk7XHABhu3FX1y2ovAlag0z/AJIhIFgBIP3WZbyixAxphvIv+bpnNZeDwWZe8A2hL0mZVIhu1At8Vpl3wS7qLMvIC4IXpwz5Nu3Z4eIHyLAeskIuKNv28QBR+4Cg01x6R28aWTGO3xpyoJTQC9EI7OTxAWSehm7TK4fSYxS4JHDQzaON5MY9i54o0EgLUTYnsbZbPrNUBdL4Kf2t3LnJS9tN2nH3B0+wKJ+e8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w6X+6FcQOAFwcVtoQaiOzPA1KNRxTdpYThJ2AydD/Wo=;
- b=T/oBf3k2X3x+ua5yZLKVoO8BcjLJxhAOQZyUarx48lwn93uhMzTBUqmeEJdgCuC1zrlXRhuIdLtvTG/GvfDuYQ/UF2WW42IZV72ubbbRbr6ledihkSkDslHWnUchq8M+t0mVVQcce1UXLh2G4sbs7s4lIGUbHuLPZptAL57I7ku7HIPiO26eFqPg+lIlMU3n5b7fX1ghrL2+OAZmF1a/C2aCAuLZ3daObPY0ybEGDbR2kr9z20Cdps9HiWk4rHBAnvlXJHZAvLf81RHmWph5tnN+Tl4o1ySfdB7MJ3M6Wgpfsr8A8lJFexe1FRGyu6AhUdfYrPGBkNfSNsCQpLGoLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SJ2PR11MB8567.namprd11.prod.outlook.com (2603:10b6:a03:568::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39; Fri, 16 Feb
- 2024 00:15:22 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7270.036; Fri, 16 Feb 2024
- 00:15:22 +0000
-Date: Thu, 15 Feb 2024 16:15:20 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Ben Cheatham <benjamin.cheatham@amd.com>, Dan Williams
-	<dan.j.williams@intel.com>, <jonathan.cameron@huawei.com>,
-	<rafael@kernel.org>, <james.morse@arm.com>, <tony.luck@intel.com>,
-	<bp@alien8.de>
-CC: <dave@stogolabs.net>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v12 2/3] cxl/core, EINJ: Add EINJ CXL debugfs files and
- EINJ helper functions
-Message-ID: <65cea917f29b9_5c7629473@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <20240214200709.777166-1-Benjamin.Cheatham@amd.com>
- <20240214200709.777166-3-Benjamin.Cheatham@amd.com>
- <65cd76286de08_29b129412@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <e1c652aa-830f-48c8-85ed-b00a7c153efe@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <e1c652aa-830f-48c8-85ed-b00a7c153efe@amd.com>
-X-ClientProxiedBy: MW4PR03CA0219.namprd03.prod.outlook.com
- (2603:10b6:303:b9::14) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6065CF4E2;
+	Fri, 16 Feb 2024 00:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708044491; cv=none; b=CFdfFv0KL2n9I6Fem9IOZU78rImYkXnShAGPcsIEIcC6Ix5bXbWNPGqy67l2FI61kZXgqy3Hj3OXBTxcxj3ggRSA6TcoPYPkchoYnCEiqDTJP+Wj1vuqGgJdX2WlkO6N1pfeHGuZJI4+A3gNEvCEsl3IMvzGS9IaId5nFBYInqU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708044491; c=relaxed/simple;
+	bh=sTzWFkwqRE0Ns+D43WT0XBj1vGM9x6rJ6NrQsi4pEIg=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rY9FivSsmTFKeqinl7VEjAhGUP6ovi9C23/27nk/Ih+qMPbNUnyz08kVCON/MnGAjqR5MZ+pxVrVmsrt+Y+nXp4q0JGUngkvnDTirbEcBO+P/n5K/sgyfjJpcqhOZkOjKWf2masffjQJunfqoRRt1QJMuWmxQBcT3E3qZe+/2iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nHK+jTrB; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-204235d0913so124420fac.1;
+        Thu, 15 Feb 2024 16:48:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708044488; x=1708649288; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=odKlKurQmi864EQ3RlaudQFSdJJM8huA+WjbrbV5X8k=;
+        b=nHK+jTrBkpy5Di037VfXx/kNXfxSBtlvnWa0HS5jxJgWnBCOYkL7Fy9Ticp3HRtRLL
+         ZPoBTW0nGIACR/T2kkjjlOSSPQEPu3FMtJeGtU0Tc6bsdU58uTIymgiFDJywcIa1pwc7
+         e53xfayqKT1LLLsp/oEC9U2dU5QVR/iobdUJcYv8uUYfCvF2yGzgQzEKi5mUVBRQ8ZfS
+         oZBXlyfb8t4LDKP77gyS+GjVBaeUawD6ZD009+J2zOMxM/yfIN0DdPemIkyQR4LS/QL/
+         TSOS+C/bx3RlGdScBsU6KVf8zlx0e3RVxB9iNyt7+kFgmMCT0xYoOZV7r1ftMak2b7/z
+         HGbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708044488; x=1708649288;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=odKlKurQmi864EQ3RlaudQFSdJJM8huA+WjbrbV5X8k=;
+        b=MFEUAE106k90VbnitIB7Crj4zKHM1bbchdpLm0IUcVKzviJ2QGd+UeImJbofoQsMqc
+         uQrlszw5A3/5Vn8gGYmFjBSPQDtbN1DupEi03U2B0yqYyWsHZhlM/1OcBS4fotVyL604
+         TFWMdM4+dg5WpE6tzyM2+zwzBzkJBCh9DST9A5ABgjw7U0DP18GjMHhgad4n3kx4p0IR
+         RS+B3/3IxNOKXUk5CucLlv1Nxgrrv3DicSMF+k4j+GDKruEQjrgJeRgzF+c7WR4fJe1i
+         lgh8wfUdUbHDGAFelwiM4sHk1dU7C7+phX7EnG97IJ7PTvjjjQBZIlforgvy3CTVOvcj
+         ZZ6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWd+EcYrDjAUXsAKKL6x0k/3jNycaqA28XjfCgp8hLA2etIZQPe/Km/xX18MhU2C3ad0VU3ELk7ULGH2CrNHnxBkyOuZRTBs65H7lfFFq9pKT85OVy6kczXdE0HlhI5UwgyCPnkZzMgPpIDf5BGLYJmBCpta4BzJb3k4m7mjTyqFPXXDPQ=
+X-Gm-Message-State: AOJu0YwlkNJwb7VSgqty9J7xLH0APQ/HurNpNUqldLi8FrvxddIV0Jnq
+	n2KxhUWyr6S6EkPtIia3pXO6iaAhVpWdDoFSGWOwoKvE8oLsAHwM
+X-Google-Smtp-Source: AGHT+IFyvXdqWlNUzpfnTBbd5bU+mcNvEJ3YMBEZP6ojXh2NpCe0CNNlyfUaWIQYg6QDzVV5e3W0/g==
+X-Received: by 2002:a05:6870:391f:b0:218:d739:31f0 with SMTP id b31-20020a056870391f00b00218d73931f0mr3885081oap.3.1708044488277;
+        Thu, 15 Feb 2024 16:48:08 -0800 (PST)
+Received: from debian ([2601:641:300:14de:9300:f75a:dfb6:7562])
+        by smtp.gmail.com with ESMTPSA id s27-20020a63525b000000b005dc89957e06sm2004991pgl.71.2024.02.15.16.48.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Feb 2024 16:48:07 -0800 (PST)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Thu, 15 Feb 2024 16:47:43 -0800
+To: shiju.jose@huawei.com
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	dan.j.williams@intel.com, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
+	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
+	jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com, fan.ni@samsung.com
+Subject: Re: [RFC PATCH v5 04/12] cxl/memscrub: Add CXL device patrol scrub
+ control feature
+Message-ID: <Zc6wr2mh7Ie1-QnC@debian>
+References: <20240111131741.1356-1-shiju.jose@huawei.com>
+ <20240111131741.1356-5-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ2PR11MB8567:EE_
-X-MS-Office365-Filtering-Correlation-Id: 38374236-0de3-495d-5a65-08dc2e845dca
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +GwJupLkZAg+xEKrpkC1QtZQySE3qNC2bi89jZUR6+1aBlunH9Du3z+PECNcVV9ZfcpsSzOB2hIfartvwv+2u+IGBWSa+Ize6CgNKBVeW4IAWeUjxEkVTR1DY22Ad2xUCRQqEArrZRiWXCxlQEQaD++r+bho04Dl0V6rjRv1JL7zGuvQ1bgQ7mUMV7Eksp2R+h+AmrIW5j9c1lL4oJoxIhCotU25NIDt3RzTH0BxM465s6+llCaDQGmBcjHSk5mXlQNu5q0p4EWxg6htZGq1KYbaKUbze5s6c7W4uVKkBSwYCKAVlCVOPU05FK/iE9BvTFoZX48UlEBvTUVOYvl29JNqg+iHDirEigGmwZt9SExv64o4JVQ/1bkUYqpHSDojyOAqoDl3M50QOA5iXYGrZNJdJG+hrLp9NMflrfxWw797bUIP/kh3rhagf2c4C8YwyN62rUcl6MoNbjfw8E2MPuLcVb9gM41x7ZnEIwxgvmOPMk/F8n8FzZAk+flMJcp0GvIZNgJPRRuWLb4b3C23xtVX5kbHLdH9jVZi0JIy8sylwcKFupAskvAjI18BXvT6
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(346002)(376002)(366004)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(2906002)(26005)(9686003)(41300700001)(6486002)(478600001)(6506007)(86362001)(66476007)(66556008)(316002)(6512007)(66946007)(8936002)(82960400001)(8676002)(5660300002)(4326008)(110136005)(83380400001)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?+PyeAayEmiVHoOemhOSpiE9hEd3l7NLPvKm9Cg/E87VAHcs4s1O9Sz6zE/QI?=
- =?us-ascii?Q?MBWvb4vcuIqvnBzjirw327yBG6GoCAJKAdaPt866aLXuCiEiLGCXwNd/7f+I?=
- =?us-ascii?Q?qMYx6XtdS6UkIuWCOxAYCI/13NWgU5LQBumE2X3KD6awXrGYunU+16BCe7db?=
- =?us-ascii?Q?P0RtXqljTRxe3DdaWCLSTPQdGjVh6/2Fn0pToTnVIND/CyWXdEgV06LHaYwy?=
- =?us-ascii?Q?1XH8c/mOd1cABuWEJb9gHjhx2cC3LjpqcumAgZYNsxgDoKTvL2qhJDG7b9+V?=
- =?us-ascii?Q?1xnUTuXNAkRKdNgI4Dc+aONG7ANF2l+xO23/ghqLbuYPu1iDwZ7mlxX1kF31?=
- =?us-ascii?Q?If2305eqnkio3nqZSv35mJgTTvsFItpRyKcdvxovmhGKqD2FGWgfa/35MalM?=
- =?us-ascii?Q?ONn/iaK8sgJKMsV8kVsjU1ilRdYgMpmScR9e0TnLstYQDn5SMJgw/hZxQiW/?=
- =?us-ascii?Q?8CnYlL8yOBXEdmLKOb1qLgyjSgcmhelCJZ3xxUJPtuvd/CGnXnBlVz1xGJPw?=
- =?us-ascii?Q?bShBe3jNISJo7SC+4FLn+3GSjI+xZD9KvSEfmNWcyJ3HJQ/mOFB05zzUfoO9?=
- =?us-ascii?Q?X2avCGQI1GEFvomOTLU/0shwtxInCWRMgshgA8j46N9VUsRarHjTbEr/pV3a?=
- =?us-ascii?Q?uJt3qBOsaDWGQ55I5nA2LTUmGSRH+N5LpSVVKoBdfx9RbNLgF2pZHhi26EMC?=
- =?us-ascii?Q?e3m2soFzOehA4eU9L+u0wZO56Q9CrDgr1ZukDRlqLW3fMv09828UrGS8KSHL?=
- =?us-ascii?Q?8UMcDJOx8iGFYFCY2pgP2iMEuN4/1P9fP3RZyGaDCflvhO15Xgh4oNE17YHo?=
- =?us-ascii?Q?As05BgpxcUfSLTUoid9EkkH8M3BO6OkeogmGy2PPXc9W7+Y9N7nqNdf+Sd56?=
- =?us-ascii?Q?zhuxLoQm8hpQXqKwuGlv4TWu6uZlL36lkBjuaPq4VIfpRml8T5gm20KebsEa?=
- =?us-ascii?Q?fafI9HhDEG+R8NTuE7qjs/TFs4yu70S8HIiNidpFIS3f6Dhz4fL1WvEM1IRn?=
- =?us-ascii?Q?ArL37ICk5yalRvLkAxIuIJMNh6Shr2JpV2JAl1IobBliD0IE0nURV+NNzFt7?=
- =?us-ascii?Q?WI3NXS09DyrnJYa/cOoLJv8HVrlzY8gyRnawGCY9s33XYVhJYlfS+NrxkQZb?=
- =?us-ascii?Q?HHGpdmgmhlujlkOGFa1Azr1DSKoqSMXeMhWgARcIKeZH8h34OFY/P+8GiSae?=
- =?us-ascii?Q?eR31Cdmc9ZqvQYPjDTdhMn2oaDn2yC4VXJMBiGyYo6S1adU05yyHvpvYoEui?=
- =?us-ascii?Q?z6vQMbH2OO5iAeuTK86YaleXFga7W3QSTh4yGSfSYNpz+Xc/dBy/JPYbrXK8?=
- =?us-ascii?Q?Jg0ffOb600zD/msPwxy3poR+2/jPs5sjWEDy2OVXAARtu+GGaEt4jOn/DmGD?=
- =?us-ascii?Q?x2D7Qv4B39Mr75KGfEpde0kyDiTyvXTtfL3bgTQZilb1s0vky1/bRyA2VJTx?=
- =?us-ascii?Q?OWE4ysB7MaVbyoEctPjMyzHsf6Z8ff5N3GB9HGLBYxo9ObG/LExuipo+DZ3/?=
- =?us-ascii?Q?iwyy/g48KrVBtIRwbsnO2MHvDtBYf25msO1x8/t66GnZaChH5wT5TwZHl7R3?=
- =?us-ascii?Q?EDa5zklo/nxLaPqzQpA2rmPuqphLCVEZYosrddAfixI7wTwnJHmP3TACwacb?=
- =?us-ascii?Q?Zw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 38374236-0de3-495d-5a65-08dc2e845dca
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 00:15:22.5996
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: b+w0EuylCUWoQ9j1PyWkTVeaAonO3guePJ/h+nkIp6VQhhwsJF4N5b85Q7HltneMZ/byoXlIgJimWsOoaGjS2P7zfF96WdTreJfMZ+9JohE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8567
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240111131741.1356-5-shiju.jose@huawei.com>
 
-Ben Cheatham wrote:
-[..]
-> >> diff --git a/include/linux/einj-cxl.h b/include/linux/einj-cxl.h
-> >> new file mode 100644
-> >> index 000000000000..92c0e2e37ad9
-> >> --- /dev/null
-> >> +++ b/include/linux/einj-cxl.h
-> >> @@ -0,0 +1,40 @@
-> >> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> >> +/*
-> >> + * CXL protocol Error INJection support.
-> >> + *
-> >> + * Copyright (c) 2023 Advanced Micro Devices, Inc.
-> >> + * All Rights Reserved.
-> >> + *
-> >> + * Author: Ben Cheatham <benjamin.cheatham@amd.com>
-> >> + */
-> >> +#ifndef CXL_EINJ_H
-> >> +#define CXL_EINJ_H
-> >> +
-> >> +#include <linux/pci.h>
-> >> +
-> >> +#if IS_ENABLED(CONFIG_ACPI_APEI_EINJ)
-> > 
-> > Per above this needs to be IS_ENABLED(CONFIG_CXL_EINJ), otherwise what's
-> > the point of the config symbol?
-> > 
+On Thu, Jan 11, 2024 at 09:17:33PM +0800, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-[..]
-> I think the solution here is to move the einj_cxl functions into a new
-> file, gate that file by CONFIG_CXL_EINJ (or change the name to
-> CONFIG_EINJ_CXL to match einj-cxl.h), and add declarations of the
-> functions in the EINJ module used by said functions to
-> drivers/acpi/apei/apei-internal.h. I'm not sure of another approach at
-> this point, but if you have suggestions I'd be very happy to hear
-> them!
+> CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub control
+> feature. The device patrol scrub proactively locates and makes corrections
+> to errors in regular cycle. The patrol scrub control allows the request to
+> configure patrol scrub input configurations.
+> 
+> The patrol scrub control allows the requester to specify the number of
+> hours for which the patrol scrub cycles must be completed, provided that
+> the requested number is not less than the minimum number of hours for the
+> patrol scrub cycle that the device is capable of. In addition, the patrol
+> scrub controls allow the host to disable and enable the feature in case
+> disabling of the feature is needed for other purposes such as
+> performance-aware operations which require the background operations to be
+> turned off.
+> 
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/cxl/Kconfig         |  17 +++
+>  drivers/cxl/core/Makefile   |   1 +
+>  drivers/cxl/core/memscrub.c | 266 ++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxlmem.h        |   8 ++
+>  drivers/cxl/pci.c           |   5 +
+>  5 files changed, 297 insertions(+)
+>  create mode 100644 drivers/cxl/core/memscrub.c
+> 
+> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
+> index 8ea1d340e438..67d88f9bf52b 100644
+> --- a/drivers/cxl/Kconfig
+> +++ b/drivers/cxl/Kconfig
+> @@ -154,4 +154,21 @@ config CXL_PMU
+>  	  monitoring units and provide standard perf based interfaces.
+>  
+>  	  If unsure say 'm'.
+> +
+> +config CXL_SCRUB
+> +	bool "CXL: Memory scrub feature"
+> +	depends on CXL_PCI
+> +	depends on CXL_MEM
+> +	help
+> +	  The CXL memory scrub control is an optional feature allows host to
+> +	  control the scrub configurations of CXL Type 3 devices, which
+> +	  support patrol scrub and/or DDR5 ECS(Error Check Scrub).
+> +
+> +	  Say 'y/n' to enable/disable the CXL memory scrub driver that will
+> +	  attach to CXL.mem devices for memory scrub control feature. See
+> +	  sections 8.2.9.9.11.1 and 8.2.9.9.11.2 in the CXL 3.1 specification
+> +	  for a detailed description of CXL memory scrub control features.
+> +
+> +	  If unsure say 'n'.
+> +
+>  endif
+> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
+> index 1f66b5d4d935..99e3202f868f 100644
+> --- a/drivers/cxl/core/Makefile
+> +++ b/drivers/cxl/core/Makefile
+> @@ -15,3 +15,4 @@ cxl_core-y += hdm.o
+>  cxl_core-y += pmu.o
+>  cxl_core-$(CONFIG_TRACING) += trace.o
+>  cxl_core-$(CONFIG_CXL_REGION) += region.o
+> +cxl_core-$(CONFIG_CXL_SCRUB) += memscrub.o
+> diff --git a/drivers/cxl/core/memscrub.c b/drivers/cxl/core/memscrub.c
+> new file mode 100644
+> index 000000000000..e0d482b0bf3a
+> --- /dev/null
+> +++ b/drivers/cxl/core/memscrub.c
+> @@ -0,0 +1,266 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * cxl_memscrub.c - CXL memory scrub driver
+> + *
+> + * Copyright (c) 2023 HiSilicon Limited.
+> + *
+> + *  - Provides functions to configure patrol scrub
+> + *    feature of the CXL memory devices.
+> + */
+> +
+> +#define pr_fmt(fmt)	"CXL_MEM_SCRUB: " fmt
+> +
+> +#include <cxlmem.h>
+> +
+> +/* CXL memory scrub feature common definitions */
+> +#define CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH	128
+> +
+> +static int cxl_mem_get_supported_feature_entry(struct cxl_memdev *cxlmd, const uuid_t *feat_uuid,
+> +					       struct cxl_mbox_supp_feat_entry *feat_entry_out)
+> +{
+> +	struct cxl_mbox_get_supp_feats_out *feats_out __free(kvfree) = NULL;
+> +	struct cxl_mbox_supp_feat_entry *feat_entry;
+> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
+> +	struct cxl_mbox_get_supp_feats_in pi;
+> +	int feat_index, count;
+> +	int nentries;
+> +	int ret;
+> +
+> +	feat_index = 0;
+> +	pi.count = sizeof(struct cxl_mbox_get_supp_feats_out) +
+> +			  sizeof(struct cxl_mbox_supp_feat_entry);
+> +	feats_out = kvmalloc(pi.count, GFP_KERNEL);
+> +	if (!feats_out)
+> +		return -ENOMEM;
+> +
+> +	do {
+> +		pi.start_index = feat_index;
+> +		memset(feats_out, 0, pi.count);
+> +		ret = cxl_get_supported_features(mds, &pi, feats_out);
+> +		if (ret)
+> +			return ret;
+> +
+> +		nentries = feats_out->entries;
+> +		if (!nentries)
+> +			break;
+> +
+> +		/* Check CXL memdev supports the feature */
+> +		feat_entry = (void *)feats_out->feat_entries;
+> +		for (count = 0; count < nentries; count++, feat_entry++) {
+> +			if (uuid_equal(&feat_entry->uuid, feat_uuid)) {
+> +				memcpy(feat_entry_out, feat_entry, sizeof(*feat_entry_out));
+> +				return 0;
+> +			}
+> +		}
+> +		feat_index += nentries;
+> +	} while (nentries);
+> +
+> +	return -ENOTSUPP;
+> +}
+> +
+> +/* CXL memory patrol scrub control definitions */
+> +#define CXL_MEMDEV_PS_GET_FEAT_VERSION	0x01
+> +#define CXL_MEMDEV_PS_SET_FEAT_VERSION	0x01
+> +
+> +static const uuid_t cxl_patrol_scrub_uuid =
+> +	UUID_INIT(0x96dad7d6, 0xfde8, 0x482b, 0xa7, 0x33, 0x75, 0x77, 0x4e,     \
+> +		  0x06, 0xdb, 0x8a);
+> +
+> +/* CXL memory patrol scrub control functions */
+> +struct cxl_patrol_scrub_context {
+> +	struct device *dev;
+> +	u16 get_feat_size;
+> +	u16 set_feat_size;
+> +	bool scrub_cycle_changeable;
+> +};
+> +
+> +/**
+> + * struct cxl_memdev_ps_params - CXL memory patrol scrub parameter data structure.
+> + * @enable:     [IN] enable(1)/disable(0) patrol scrub.
+> + * @scrub_cycle_changeable: [OUT] scrub cycle attribute of patrol scrub is changeable.
+> + * @rate:       [IN] Requested patrol scrub cycle in hours.
+> + *              [OUT] Current patrol scrub cycle in hours.
+> + * @min_rate:[OUT] minimum patrol scrub cycle, in hours, supported.
+> + * @rate_avail:[OUT] Supported patrol scrub cycle in hours.
+> + */
+> +struct cxl_memdev_ps_params {
+> +	bool enable;
+> +	bool scrub_cycle_changeable;
+> +	u16 rate;
+> +	u16 min_rate;
+> +	char rate_avail[CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH];
+> +};
+> +
+> +enum {
+> +	CXL_MEMDEV_PS_PARAM_ENABLE = 0,
+> +	CXL_MEMDEV_PS_PARAM_RATE,
+> +};
+> +
+> +#define	CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK	BIT(0)
+> +#define	CXL_MEMDEV_PS_SCRUB_CYCLE_REALTIME_REPORT_CAP_MASK	BIT(1)
+> +#define	CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK	GENMASK(7, 0)
+> +#define	CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK	GENMASK(15, 8)
+> +#define	CXL_MEMDEV_PS_FLAG_ENABLED_MASK	BIT(0)
+> +
+> +struct cxl_memdev_ps_feat_read_attrbs {
+> +	u8 scrub_cycle_cap;
+> +	__le16 scrub_cycle;
+> +	u8 scrub_flags;
+> +}  __packed;
+> +
+> +struct cxl_memdev_ps_set_feat_pi {
+> +	struct cxl_mbox_set_feat_in pi;
+> +	u8 scrub_cycle_hr;
+> +	u8 scrub_flags;
+> +}  __packed;
+> +
+> +static int cxl_mem_ps_get_attrbs(struct device *dev,
+> +				 struct cxl_memdev_ps_params *params)
+> +{
+> +	struct cxl_memdev_ps_feat_read_attrbs *rd_attrbs __free(kvfree) = NULL;
+> +	struct cxl_mbox_get_feat_in pi = {
+> +		.uuid = cxl_patrol_scrub_uuid,
+> +		.offset = 0,
+> +		.count = sizeof(struct cxl_memdev_ps_feat_read_attrbs),
+> +		.selection = CXL_GET_FEAT_SEL_CURRENT_VALUE,
+> +	};
+> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
+> +	int ret;
+> +
+> +	if (!mds)
+> +		return -EFAULT;
+> +
+> +	rd_attrbs = kvmalloc(pi.count, GFP_KERNEL);
+> +	if (!rd_attrbs)
+> +		return -ENOMEM;
+> +
+> +	ret = cxl_get_feature(mds, &pi, rd_attrbs);
+> +	if (ret) {
+> +		params->enable = 0;
+> +		params->rate = 0;
+> +		snprintf(params->rate_avail, CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH,
+> +			"Unavailable");
+> +		return ret;
+> +	}
+> +	params->scrub_cycle_changeable = FIELD_GET(CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK,
+> +						   rd_attrbs->scrub_cycle_cap);
+> +	params->enable = FIELD_GET(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+> +				   rd_attrbs->scrub_flags);
+> +	params->rate = FIELD_GET(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+> +				 rd_attrbs->scrub_cycle);
+> +	params->min_rate  = FIELD_GET(CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK,
+> +				      rd_attrbs->scrub_cycle);
+> +	snprintf(params->rate_avail, CXL_SCRUB_MAX_ATTRB_RANGE_LENGTH,
+> +		 "Minimum scrub cycle = %d hour", params->min_rate);
+> +
+> +	return 0;
+> +}
+> +
+> +static int __maybe_unused
+> +cxl_mem_ps_set_attrbs(struct device *dev, struct cxl_memdev_ps_params *params,
+> +		      u8 param_type)
+> +{
+> +	struct cxl_memdev_ps_set_feat_pi set_pi = {
+> +		.pi.uuid = cxl_patrol_scrub_uuid,
+> +		.pi.flags = CXL_SET_FEAT_FLAG_MOD_VALUE_SAVED_ACROSS_RESET |
+> +			    CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
+> +		.pi.offset = 0,
+> +		.pi.version = CXL_MEMDEV_PS_SET_FEAT_VERSION,
+> +	};
+> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
+> +	struct cxl_memdev_ps_params rd_params;
+> +	int ret;
+> +
+> +	if (!mds)
+> +		return -EFAULT;
+> +
+> +	ret = cxl_mem_ps_get_attrbs(dev, &rd_params);
+> +	if (ret) {
+> +		dev_err(dev, "Get cxlmemdev patrol scrub params fail ret=%d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+> +	switch (param_type) {
+> +	case CXL_MEMDEV_PS_PARAM_ENABLE:
+> +		set_pi.scrub_flags = FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+> +						   params->enable);
+> +		set_pi.scrub_cycle_hr = FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+> +						      rd_params.rate);
+> +		break;
+> +	case CXL_MEMDEV_PS_PARAM_RATE:
+> +		if (params->rate < rd_params.min_rate) {
+> +			dev_err(dev, "Invalid CXL patrol scrub cycle(%d) to set\n",
+> +				params->rate);
+> +			dev_err(dev, "Minimum supported CXL patrol scrub cycle in hour %d\n",
+> +			       params->min_rate);
+> +			return -EINVAL;
+> +		}
+> +		set_pi.scrub_cycle_hr = FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
+> +						      params->rate);
+> +		set_pi.scrub_flags = FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
+> +						   rd_params.enable);
+> +		break;
+> +	default:
+> +		dev_err(dev, "Invalid CXL patrol scrub parameter to set\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = cxl_set_feature(mds, &set_pi, sizeof(set_pi));
+> +	if (ret) {
+> +		dev_err(dev, "CXL patrol scrub set feature fail ret=%d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+> +	/* Verify attribute set successfully */
+> +	if (param_type == CXL_MEMDEV_PS_PARAM_RATE) {
+> +		ret = cxl_mem_ps_get_attrbs(dev, &rd_params);
+> +		if (ret) {
+> +			dev_err(dev, "Get cxlmemdev patrol scrub params fail ret=%d\n", ret);
+> +			return ret;
+> +		}
+> +		if (rd_params.rate != params->rate)
+> +			return -EFAULT;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
+> +{
+> +	struct cxl_patrol_scrub_context *cxl_ps_ctx;
+> +	struct cxl_mbox_supp_feat_entry feat_entry;
+> +	struct cxl_memdev_ps_params params;
+> +	int ret;
+> +
+> +	ret = cxl_mem_get_supported_feature_entry(cxlmd, &cxl_patrol_scrub_uuid,
+> +						  &feat_entry);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (!(feat_entry.attrb_flags & CXL_FEAT_ENTRY_FLAG_CHANGABLE))
+> +		return -ENOTSUPP;
+> +
+> +	cxl_ps_ctx = devm_kzalloc(&cxlmd->dev, sizeof(*cxl_ps_ctx), GFP_KERNEL);
+> +	if (!cxl_ps_ctx)
+> +		return -ENOMEM;
+> +
+> +	cxl_ps_ctx->get_feat_size = feat_entry.get_feat_size;
+> +	cxl_ps_ctx->set_feat_size = feat_entry.set_feat_size;
+> +	ret = cxl_mem_ps_get_attrbs(&cxlmd->dev, &params);
+> +	if (ret) {
+> +		dev_err(&cxlmd->dev, "Get CXL patrol scrub params fail ret=%d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +	cxl_ps_ctx->scrub_cycle_changeable =  params.scrub_cycle_changeable;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_mem_patrol_scrub_init, CXL);
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index 46131dcd0900..25c46e72af16 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -983,6 +983,14 @@ int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
+>  int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
+>  int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
+>  
+> +/* cxl memory scrub functions */
+> +#ifdef CONFIG_CXL_SCRUB
+> +int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd);
+> +#else
+> +static inline int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
+> +{ return -ENOTSUPP; }
+> +#endif
+> +
+>  #ifdef CONFIG_CXL_SUSPEND
+>  void cxl_mem_active_inc(void);
+>  void cxl_mem_active_dec(void);
+> diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+> index 0155fb66b580..acc337b8c365 100644
+> --- a/drivers/cxl/pci.c
+> +++ b/drivers/cxl/pci.c
+> @@ -881,6 +881,11 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+>  	if (rc)
+>  		return rc;
+>  
+> +	/*
+> +	 * Initialize optional CXL scrub features
+> +	 */
+> +	cxl_mem_patrol_scrub_init(cxlmd);
 
-Yes, this is the way.
+It will return a value but never be captured. The return value may
+indicate an error other than the fact it is optional, maybe we want to
+capture it and handle it properly?
+
+Fan
+
+
+> +
+>  	rc = devm_cxl_sanitize_setup_notifier(&pdev->dev, cxlmd);
+>  	if (rc)
+>  		return rc;
+> -- 
+> 2.34.1
+> 
 
