@@ -1,219 +1,127 @@
-Return-Path: <linux-acpi+bounces-3625-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3626-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B0D8585B5
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 19:49:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B3785861F
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 20:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0999E1F248C4
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 18:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5487C1C21B9A
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 19:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AA31339B1;
-	Fri, 16 Feb 2024 18:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEB813664E;
+	Fri, 16 Feb 2024 19:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzGRNdsx"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="n7mnsXJO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41312C688;
-	Fri, 16 Feb 2024 18:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AAD135A62
+	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 19:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708109389; cv=none; b=WINHoyd+6amuO2KIwC0GMQmLOVBa7g78Dh1/F2iPPgsM85u1I9obB94hIb+g/iGWXWcUXP7hPcshBvOeMsIcPSB2qy93iGxGd0ekEmAOsbQ1nP9IcHv8Vwc/3pThEH5EHPGK2PfQhR5BHee7P9UfBBf+piPtCjRPhtlgQqVa0HQ=
+	t=1708111577; cv=none; b=Gy6a4AJXAuNNZ6N5ViY6LC4TDQvF/JL446gTYB5yifCbwm391LTcfs/RBRNzHOYq6T5/7HZf7P6z5doBQ2ujU6ewVIfeMcs0AhzG8G4kGj9O4U/DxH1WD2CFrKrCY0eyMFqNA1tl4KX6SX1OOFce+xBeVLG1x5G/0Y4PsZ4Oq+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708109389; c=relaxed/simple;
-	bh=2MZZwgYXsEOWk7BAQ+XbZ9JkDsdKEkwKD9JcUkQvF+E=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZoFKO3zATIVsgGl5ly0Vr6rNAhmaQWpCD5UYC6osFMQS8LKHMh/cxECgYfcpDjBU3YoyBP8pBxl+COf5oFR9cROtqoeIt760kU6U6AvyhqymCuLDKk7tnWgkluPMPdaQtARf15wHnP0udrLRiSJUo1O4PKGy/Ghx/A5a+c9gl9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzGRNdsx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2832CC433F1;
-	Fri, 16 Feb 2024 18:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708109388;
-	bh=2MZZwgYXsEOWk7BAQ+XbZ9JkDsdKEkwKD9JcUkQvF+E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=DzGRNdsxXYRHWPtmoiqK9SY4Bq0mtIqFSkEghcGQlJjZAJsHj1WlmCsOOGdcDjfgN
-	 P3YOwPbAIFZo7MkKOwy/gmrk5U7PzEJ99HrFxrpn2/FImWzco4m31uMOkwktE5CFf+
-	 gVkbhH0XjJCimIwkR7wxre+2UmsxaYuxls/jqXCs1bhEJs4sXoVJ6gSYWLYgOB7SLt
-	 ojnmnIiWRL+foL5JR8/EIf/jI5dmWxoRbR1ATglpMqaYHFGIPSQJoBzH4qkQfJVc0M
-	 1hYutf93F+z6GM96jbhf3NFiKRToR2Ns+/i/BTt0weLpQStxTs8+shHCy6yBiw0/Ly
-	 BIssNZA8rCtow==
-Date: Fri, 16 Feb 2024 12:49:46 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-i2c@vger.kernel.org, Len Brown <lenb@kernel.org>,
-	Borislav Petkov <bp@suse.de>, Jean Delvare <jdelvare@suse.de>
-Subject: Re: [PATCH v4] acpi,pci: warn about duplicate IRQ routing entries
- returned from _PRT
-Message-ID: <20240216184946.GA1349514@bhelgaas>
+	s=arc-20240116; t=1708111577; c=relaxed/simple;
+	bh=LsvxoTWbv1FOQ6yeqUkTxLA2CYVatFOQbOmKjCYI7gE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F+1puecJ3FSyWIYXCv57gM2sETPvcpi6ZknawGcqnkjnLMt0vUC8e+3tARjpOUicCEOcagp4DFnkdyfBH74zleeQdLbge+d7DWRBgd+ElKcqbM2cEAt7+zYYV+D8+Ml1RX4KzAjafvkbb8Dc1ETwGz5dHYe60uOxC8hCcE5ZZHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=n7mnsXJO; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6e0a479a6cbso1612258b3a.0
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 11:26:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1708111575; x=1708716375; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lMMkZTgH5T6zo3tRiYf2BJqtbx13TZfD9EFoNoWqc8A=;
+        b=n7mnsXJO4powZmo7NyEPz3Ta9n6GlO5c48+tKb/gpwNwXtrny/k1tSpTpWGz8N/tBh
+         3FW8nyfoEk0zkuV4Fe03gvFPO6vr6FwblqcVozpxEPCqodQoZG9DvFeNs2pnM8hAHe/T
+         OvogMTAZWUqm1sP/9kpmUOenrueK+F4dXgiAw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708111575; x=1708716375;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMMkZTgH5T6zo3tRiYf2BJqtbx13TZfD9EFoNoWqc8A=;
+        b=kRkwyHHwta+lznjRQODNGMGiDxmrI35zwl1TC4zSWoRlx2000EGDUaXOwBwYRInpoO
+         0GQbTP90XHsOeoZ6IEcGvs4wCooWTyQG41hJtJL4Z+niLV6vJ2md6xAzW6pRQT1XpRq/
+         ya43/JNacq0f/7TG0UWgJqRVhT+PcJGA0Rb6Ooe4AD5YklMER+x/ItySViJgYBKMESBl
+         zswFQn+CbhjDp4+TF/i9vK3VnhMITTaBb+Aq4pDJoDWHQV4nLyXJgpAb/Ww1UoAjxoDK
+         b4a5v4ggw1x9hsTBDBW3S0J0RnOMjIwSKWoBnnBQLYeHo2dBt2Wrr0qDdGgcpzgVmypy
+         5gxw==
+X-Gm-Message-State: AOJu0YxXf1VKQ5ukUgmfwdaU6j8+wnm+R2HzeLlSd1V5blZ2Z6Fzt5DJ
+	MlawMPzdk/wBxrPHlSFFpxZrqF9rvHDSDtv5aeb922AnMAiCZSPK8rIH/8SoLA==
+X-Google-Smtp-Source: AGHT+IE69VSNMJD9kM9C504pkifAwls4YW3/VU2rwA45AEvTvswD3teyNtF9R0mL5GmqRlttBrTH4w==
+X-Received: by 2002:a05:6a00:2b47:b0:6d9:b941:dbf5 with SMTP id du7-20020a056a002b4700b006d9b941dbf5mr5169563pfb.11.1708111575368;
+        Fri, 16 Feb 2024 11:26:15 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d2-20020aa78682000000b006e04082ad5esm308202pfo.142.2024.02.16.11.26.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Feb 2024 11:26:14 -0800 (PST)
+Date: Fri, 16 Feb 2024 11:26:14 -0800
+From: Kees Cook <keescook@chromium.org>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>, Kees Cook <kees@kernel.org>,
+	"shiqiang.deng" <shiqiang.deng213@gmail.com>,
+	Sebastian Grzywna <swiftgeek@gmail.com>,
+	Hang Zhang <zh.nvgt@gmail.com>
+Subject: Re: [PATCH v3] ACPI: Drop the custom_method debugfs interface
+Message-ID: <202402161125.3137F917DC@keescook>
+References: <6029478.lOV4Wx5bFT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0iHokxYJU0Nx5gT+ay=18uhmnha-bSYk=YUKPROQGZrmw@mail.gmail.com>
+In-Reply-To: <6029478.lOV4Wx5bFT@kreacher>
 
-On Fri, Feb 16, 2024 at 07:26:06PM +0100, Rafael J. Wysocki wrote:
-> On Tue, Dec 26, 2023 at 1:50 PM Mateusz Jończyk <mat.jonczyk@o2.pl> wrote:
-> >
-> > On some platforms, the ACPI _PRT function returns duplicate interrupt
-> > routing entries. Linux uses the first matching entry, but sometimes the
-> > second matching entry contains the correct interrupt vector.
-> >
-> > As a debugging aid, print a warning to dmesg if duplicate interrupt
-> > routing entries are present. This way, we could check how many models
-> > are affected.
-> >
-> > This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
-> > SMBus controller. This controller is nonfunctional unless its interrupt
-> > usage is disabled (using the "disable_features=0x10" module parameter).
-> >
-> > After investigation, it turned out that the driver was using an
-> > incorrect interrupt vector: in lspci output for this device there was:
-> >         Interrupt: pin B routed to IRQ 19
-> > but after running i2cdetect (without using any i2c-i801 module
-> > parameters) the following was logged to dmesg:
-> >
-> >         [...]
-> >         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
-> >         i801_smbus 0000:00:1f.3: Transaction timeout
-> >         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
-> >         i801_smbus 0000:00:1f.3: Transaction timeout
-> >         irq 17: nobody cared (try booting with the "irqpoll" option)
-> >
-> > Existence of duplicate entries in a table returned by the _PRT method
-> > was confirmed by disassembling the ACPI DSDT table.
-> >
-> > Windows XP is using IRQ3 (as reported by HWiNFO32 and in the Device
-> > Manager), which is neither of the two vectors returned by _PRT.
-> > As HWiNFO32 decoded contents of the SPD EEPROMs, the i2c-i801 device is
-> > working under Windows. It appears that Windows has reconfigured the
-> > chipset independently to use another interrupt vector for the device.
-> > This is possible, according to the chipset datasheet [1], page 436 for
-> > example (PIRQ[n]_ROUT—PIRQ[A,B,C,D] Routing Control Register).
-> >
-> > [1] https://www.intel.com/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
-> >
-> > Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-> > Cc: Bjorn Helgaas <bhelgaas@google.com>
-> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Cc: Len Brown <lenb@kernel.org>
-> > Cc: Borislav Petkov <bp@suse.de>
-> > Cc: Jean Delvare <jdelvare@suse.de>
-> > Previously-reviewed-by: Jean Delvare <jdelvare@suse.de>
-> > Previously-tested-by: Jean Delvare <jdelvare@suse.de>
-> >
-> > ---
-> > Hello,
-> >
-> > I'm resurrecting an older patch that was discussed back in January:
-> >
-> > https://lore.kernel.org/lkml/20230121153314.6109-1-mat.jonczyk@o2.pl/T/#u
-> >
-> > To consider: should we print a warning or an error in case of duplicate
-> > entries? This may not be serious enough to disturb the user with an
-> > error message at boot.
-> >
-> > I'm also looking into modifying the i2c-i801 driver to disable its usage
-> > of interrupts if one did not fire.
-> >
-> > v2: - add a newline at the end of the kernel log message,
-> >     - replace: "if (match == NULL)" -> "if (!match)"
-> >     - patch description tweaks.
-> > v3: - fix C style issues pointed by Jean Delvare,
-> >     - switch severity from warning to error.
-> > v3 RESEND: retested on top of v6.2-rc4
-> > v4: - rebase and retest on top of v6.7-rc7
-> >     - switch severity back to warning,
-> >     - change pr_err() to dev_warn() and simplify the code,
-> >     - modify patch description (describe Windows behaviour etc.)
-> > ---
-> >  drivers/acpi/pci_irq.c | 25 ++++++++++++++++++++++---
-> >  1 file changed, 22 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-> > index ff30ceca2203..1fcf72e335b0 100644
-> > --- a/drivers/acpi/pci_irq.c
-> > +++ b/drivers/acpi/pci_irq.c
-> > @@ -203,6 +203,8 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
-> >         struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-> >         struct acpi_pci_routing_table *entry;
-> >         acpi_handle handle = NULL;
-> > +       struct acpi_prt_entry *match = NULL;
-> > +       const char *match_int_source = NULL;
-> >
-> >         if (dev->bus->bridge)
-> >                 handle = ACPI_HANDLE(dev->bus->bridge);
-> > @@ -219,13 +221,30 @@ static int acpi_pci_irq_find_prt_entry(struct pci_dev *dev,
-> >
-> >         entry = buffer.pointer;
-> >         while (entry && (entry->length > 0)) {
-> > -               if (!acpi_pci_irq_check_entry(handle, dev, pin,
-> > -                                                entry, entry_ptr))
-> > -                       break;
-> > +               struct acpi_prt_entry *curr;
-> > +
-> > +               if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
-> > +                       if (!match) {
-> > +                               match = curr;
-> > +                               match_int_source = entry->source;
-> > +                        } else {
-> > +                               dev_warn(&dev->dev, FW_BUG
+On Fri, Feb 16, 2024 at 05:38:55PM +0100, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> dev_info() would be sufficient here IMV.
+> The ACPI custom_method debugfs interface is security-sensitive and
+> concurrent access to it is broken [1].
 > 
-> > +                                      "ACPI _PRT returned duplicate IRQ routing entries for INT%c: %s[%d] and %s[%d]\n",
-> > +                                      pin_name(curr->pin),
-> > +                                      match_int_source, match->index,
-> > +                                      entry->source, curr->index);
-> > +                               /* We use the first matching entry nonetheless,
-> > +                                * for compatibility with older kernels.
-
-The usual comment style in this file is:
-
-  /*
-   * We use ...
-   */
-
-> > +                                */
-> > +                       }
-> > +               }
-> > +
-> >                 entry = (struct acpi_pci_routing_table *)
-> >                     ((unsigned long)entry + entry->length);
-> >         }
-> >
-> > +       *entry_ptr = match;
-> > +
-> >         kfree(buffer.pointer);
-> >         return 0;
-> >  }
-> >
-> > base-commit: 861deac3b092f37b2c5e6871732f3e11486f7082
-> > --
+> Moreover, the recipe for preparing a customized version of a given
+> control method has changed at one point due to ACPICA changes, which
+> has not been reflected in its documentation, so whoever used it before
+> has had to adapt and it had gone unnoticed for a long time.
 > 
-> Bjorn, any concerns regarding this one?
+> This interface was a bad idea to start with and its implementation is
+> fragile at the design level.  It's been always conceptually questionable,
+> problematic from the security standpoint and implemented poorly.
+> 
+> Patches fixing its most apparent functional issues (for example, [2]) don't
+> actually address much of the above.
+> 
+> Granted, at the time it was introduced, there was no alternative, but
+> there is the AML debugger in the kernel now and there is the configfs
+> interface allowing custom ACPI tables to be loaded.  The former can be
+> used for extensive AML debugging and the latter can be use for testing
+> new AML. [3]
+> 
+> Accordingly, drop custom_method along with its (outdated anyway)
+> documentation.
+> 
+> Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
+> https://lore.kernel.org/linux-acpi/20231111132402.4142-1-shiqiang.deng213@gmail.com/ [2]
+> https://stackoverflow.com/questions/62849113/how-to-unload-an-overlay-loaded-using-acpi-config-sysfs # [3]
+> Reported-by: Hang Zhang <zh.nvgt@gmail.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-No concerns from me.  
+Yay! Happy to see this removed. :)
 
-I guess this only adds a message, right?  It doesn't actually fix
-anything or change any behavior?
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-This talks about "duplicate" entries, which suggests to me that they
-are identical, but I don't think they are.  It sounds like it's two
-"matching" entries, i.e., two entries for the same (device, pin)?
-
-And neither of the two _PRT entries yields a working i801 device?
-
-Bjorn
+-- 
+Kees Cook
 
