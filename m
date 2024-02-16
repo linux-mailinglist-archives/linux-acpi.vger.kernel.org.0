@@ -1,311 +1,368 @@
-Return-Path: <linux-acpi+bounces-3596-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3597-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6298B85820C
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 17:00:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B138582BF
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 17:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190892860A8
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 16:00:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32312B209DD
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 16:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DE5130E39;
-	Fri, 16 Feb 2024 15:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2wlDKT0W"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BE312FF83;
+	Fri, 16 Feb 2024 16:39:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2047.outbound.protection.outlook.com [40.107.212.47])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D83130E35;
-	Fri, 16 Feb 2024 15:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708099173; cv=fail; b=i3ccNHk3uTrP+VFgm1lgxS6JCpVTzRyi8K1wjsiBsGyfEtwFh4HqJduaHHwf35CFtWEzO+B3Cjkvkk4GpWkGguOKxB49z1AAl0YebyZimXynXqbHzZtUgIdiaZyTmPFsQsrXAO/uO/KriXTw87MCTz8/iOzXuJWmN5eRncYi3fE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708099173; c=relaxed/simple;
-	bh=xT8NlFVtOGFcr79QF3zrrDavvwpKSOU3P5vVmCACa0I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NlDyrSA8kAZTHRsr9fgmJBBPXMivtd6SB5X/uFUeS+UKmqTf4fnSOfiFyZPaBuql4bmL0T7XUZE1qhHGgwBsREj3ihbcVsQ7iWJQ789pO3eD2YD5IUkJOjzyb6ovOoiUIV4uFSmkQawdBv8X0wOzkXE601drtjuEsp8snu7wp7g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2wlDKT0W; arc=fail smtp.client-ip=40.107.212.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V5YHX7qVK0hYLmS6QeYhwetABhLtIODUG1/wZxwAsZihL6p/jqu71hUUgI2qcoohAB/JXEFBvOPZBzBYtMsD69ZmqEGJdq1Qpt7dDqZ0opx6SKrKvwiCQW+cz5Y1n6+FkCl5S1U8neLcbQu+F1fUwWQIEgjhu+ShuVYYkyvYbNoks9szGhSBQxN46/KSV4IjZjPd0zGvYDKwPsmf9rBWP9H2bR3S0ti09BpiAUVDbbRTpbSOW5DhqaiCkl/po/nroNXIY4yRRlQRI6Zqt1cJ+6dRm0R71olmlSNkO2e2+XifYGMHiNqrDX/N+K2tp6KVEb8bgqIcob/sVUt0/lig9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MMA5ww+Vthzpaafo/2MpAeQwyh9GXBcUrwCXzLoyik0=;
- b=De5eDxM9q4ana0e1v7ISiWJf6ate0Ni4Y9jMEEJymGdCHpKRDBlLckZgU8/K9TtYXjxlX3RwFQTaJrjKpAJv0rXstj2A4xTZ9RCeJR8gPt1jlAYYQA+zt2cITE1hDZkyTGaAmjsTAF1IgBsZUY5C/A1Gih/LHdkpvWVf/DldVnKYVGouSESeXn9MpAudNsY3/4/TQZfKc9911VxxhPSTf+Y//M2BwrQa9URppjLIfXFM256KQ6LsqylqKwk7Y0SpWM3mk9WgrsqfV2j4Vzz+ZHfL9Xw+L3djJ4iCiQOL1Rah+jaa+oyaoY2KYuacJxTTwUEQDF+9e1f11QWx/jb30g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MMA5ww+Vthzpaafo/2MpAeQwyh9GXBcUrwCXzLoyik0=;
- b=2wlDKT0W7HEKuADNTtJ5Pm6zs/Ew8D7qpQwVlXRGho0IzZZK8M8C6IGR88vXhmZy/qGkxde1ZeSBRIfiLslaw/19Hlg2i+jpGuSCeUIvTOxREbA55A96oDkwjxTnM41Uw/tGANqD/WkmIvALogh8f26+JBKUcDRhmvwEeCyC/qo=
-Received: from DM6PR12CA0025.namprd12.prod.outlook.com (2603:10b6:5:1c0::38)
- by IA1PR12MB7709.namprd12.prod.outlook.com (2603:10b6:208:423::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.12; Fri, 16 Feb
- 2024 15:59:28 +0000
-Received: from SN1PEPF0002529E.namprd05.prod.outlook.com
- (2603:10b6:5:1c0:cafe::80) by DM6PR12CA0025.outlook.office365.com
- (2603:10b6:5:1c0::38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.26 via Frontend
- Transport; Fri, 16 Feb 2024 15:59:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF0002529E.mail.protection.outlook.com (10.167.242.5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Fri, 16 Feb 2024 15:59:27 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 16 Feb
- 2024 09:59:24 -0600
-From: Robert Richter <rrichter@amd.com>
-To: Alison Schofield <alison.schofield@intel.com>, Vishal Verma
-	<vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>, Andrew Morton <akpm@linux-foundation.org>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Len Brown
-	<lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
-	<linux-acpi@vger.kernel.org>
-Subject: [PATCH v4 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
-Date: Fri, 16 Feb 2024 16:58:44 +0100
-Message-ID: <20240216155844.406996-4-rrichter@amd.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240216155844.406996-1-rrichter@amd.com>
-References: <20240216155844.406996-1-rrichter@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E3912F39F;
+	Fri, 16 Feb 2024 16:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708101546; cv=none; b=ei3GV/wuSyCINruwAfcpvFPkL7xSzKioG8Y3N8i8sglJuFhyYn6WF4PosFEVZK5F1ABzG4BjbgYHer+39AGpFl9urNr1Y110WLVyG/mxWnFhyu+8VWZ+1oPcNF2kPuFdAZXjyj1x65GS8LVDxzKm6lxCeEwBjVEPkHsoaW5bVsg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708101546; c=relaxed/simple;
+	bh=+KTMLkdPFJiKDVrsuATH5yBercsEKRSKg8auKDtRABE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NQmIq3ihcFZhdCOJQsEwniZGp3vK0L447fgX1vYOq4LDOcyhuG0xevaJGvOAFMsrPVwo9xOLd6Bxa+3nYC0vQkVb2Odz4c+fBBUe1a24Rs+dwOxwYfKm0xPvLJZEkwOcNR6KfkIQLUc5hF0AF6apGQThuZALqKN3tH+kezSBSJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 0c0b260f4d501061; Fri, 16 Feb 2024 17:38:56 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id A316F669F8B;
+	Fri, 16 Feb 2024 17:38:55 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Kees Cook <kees@kernel.org>,
+ "shiqiang.deng" <shiqiang.deng213@gmail.com>,
+ Sebastian Grzywna <swiftgeek@gmail.com>, Swift Geek <swiftgeek@gmail.com>,
+ Hang Zhang <zh.nvgt@gmail.com>
+Subject: [PATCH v3] ACPI: Drop the custom_method debugfs interface
+Date: Fri, 16 Feb 2024 17:38:55 +0100
+Message-ID: <6029478.lOV4Wx5bFT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002529E:EE_|IA1PR12MB7709:EE_
-X-MS-Office365-Filtering-Correlation-Id: 970c60b1-5c60-4b0e-bc1b-08dc2f0840fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	oukcXJ7rE765rDhO/io7mOLTRB5N7f1J2JRQKoTDZfSdSn1PxIXCZWKkqQJTgSiVzRsdqdeCAVY3udxckZHtlDxeykBHmLP1w02VXCfUdvbmbuoXsi9YBne1D6TfYqO6D5IEt4XfO76j4Lh6pdkicWHjibD+gNZaeebb6FC8ZVsBcFOklYDgi54V6D3DN8IAa5/aID4AS1C6ilwcLaGXSFHj6nHPq9/pZIzXm3L5UPaKs9sUJBlLCfDv7YbDIihflj4WmlIsjL7JbrnEuYOeoNBRovhddLqFCvXYzXkLOuwa1amiSJ5I0UJ8KD2goVlUBTFATGFehkUIgSyfWzjEqn7ko2HHzuOCPWZ1ugz5ZhxYiyD3MqKleUi2W0oAHCJy7bXqUuShpqP42Qk1ijzFjuEuNs5WnWcWowP++AO4onH+sZ9EtgSfsSEL3kUcrYg7ptewenlgozp2cK6vpDdl/NjLaPMLR0HNTMwXluYXz51kwVlAH5qMt8QZj2KByNO/M17CYQHfoSa9hxahRcWZXB1i3ayAU0PzgmWuJnA6779QrycxvrkKHSgFzrldg6anyYqwG0pZtKt63j7bhLu88ysKxt5CIVNZlO6aLaeGbQ7thjcHP9NTOJ0rg7L98lfhuYSFD9LmuK8IZpkhLaI0msmqfYyPcxfLL2FVz1A2NMo=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(346002)(136003)(376002)(230922051799003)(451199024)(1800799012)(82310400011)(186009)(64100799003)(36860700004)(46966006)(40470700004)(356005)(81166007)(36756003)(82740400003)(83380400001)(8676002)(5660300002)(2906002)(7416002)(70586007)(70206006)(316002)(8936002)(6666004)(110136005)(4326008)(41300700001)(921011)(336012)(478600001)(426003)(54906003)(2616005)(1076003)(16526019)(26005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 15:59:27.5691
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 970c60b1-5c60-4b0e-bc1b-08dc2f0840fc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002529E.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7709
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvddvgdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeetgedvffethfeuteeigfefheeghfevhfduueekfeeutdfggfdttefgffetgfehvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhsthgrtghkohhvvghrfhhlohifrdgtohhmnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepledprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhht
+ vghlrdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhihhqihgrnhhgrdguvghnghdvudefsehgmhgrihhlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
 
-There exist card implementations with a CDAT table using a fixed size
-buffer, but with entries filled in that do not fill the whole table
-length size. Then, the last entry in the CDAT table may not mark the
-end of the CDAT table buffer specified by the length field in the CDAT
-header. It can be shorter with trailing unused (zero'ed) data. The
-actual table length is determined while reading all CDAT entries of
-the table with DOE.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-If the table is greater than expected (containing zero'ed trailing
-data), the CDAT parser fails with:
+The ACPI custom_method debugfs interface is security-sensitive and
+concurrent access to it is broken [1].
 
- [   48.691717] Malformed DSMAS table length: (24:0)
- [   48.702084] [CDAT:0x00] Invalid zero length
- [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
+Moreover, the recipe for preparing a customized version of a given
+control method has changed at one point due to ACPICA changes, which
+has not been reflected in its documentation, so whoever used it before
+has had to adapt and it had gone unnoticed for a long time.
 
-In addition, a check of the table buffer length is missing to prevent
-an out-of-bound access then parsing the CDAT table.
+This interface was a bad idea to start with and its implementation is
+fragile at the design level.  It's been always conceptually questionable,
+problematic from the security standpoint and implemented poorly.
 
-Hardening code against device returning borked table. Fix that by
-providing an optional buffer length argument to
-acpi_parse_entries_array() that can be used by cdat_table_parse() to
-propagate the buffer size down to its users to check the buffer
-length. This also prevents a possible out-of-bound access mentioned.
+Patches fixing its most apparent functional issues (for example, [2]) don't
+actually address much of the above.
 
-Add a check to warn about a malformed CDAT table length.
+Granted, at the time it was introduced, there was no alternative, but
+there is the AML debugger in the kernel now and there is the configfs
+interface allowing custom ACPI tables to be loaded.  The former can be
+used for extensive AML debugging and the latter can be use for testing
+new AML. [3]
 
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Robert Richter <rrichter@amd.com>
+Accordingly, drop custom_method along with its (outdated anyway)
+documentation.
+
+Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
+https://lore.kernel.org/linux-acpi/20231111132402.4142-1-shiqiang.deng213@gmail.com/ [2]
+https://stackoverflow.com/questions/62849113/how-to-unload-an-overlay-loaded-using-acpi-config-sysfs # [3]
+Reported-by: Hang Zhang <zh.nvgt@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
 ---
- drivers/acpi/tables.c    |  2 +-
- drivers/cxl/core/cdat.c  |  6 +++---
- drivers/cxl/core/pci.c   |  8 +++++++-
- include/linux/fw_table.h |  4 +++-
- lib/fw_table.c           | 15 ++++++++++-----
- 5 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
-index b07f7d091d13..b976e5fc3fbc 100644
---- a/drivers/acpi/tables.c
-+++ b/drivers/acpi/tables.c
-@@ -253,7 +253,7 @@ int __init_or_acpilib acpi_table_parse_entries_array(
+v2 -> v3:
+   * Update changelog.
+   * Add R-by from Rui.
+
+v1 -> v2: Update index.rst too.
+
+---
+ Documentation/firmware-guide/acpi/index.rst              |    1 
+ Documentation/firmware-guide/acpi/method-customizing.rst |   89 ------------
+ drivers/acpi/Kconfig                                     |   14 --
+ drivers/acpi/Makefile                                    |    1 
+ drivers/acpi/custom_method.c                             |  103 ---------------
+ 5 files changed, 208 deletions(-)
+
+Index: linux-pm/drivers/acpi/Kconfig
+===================================================================
+--- linux-pm.orig/drivers/acpi/Kconfig
++++ linux-pm/drivers/acpi/Kconfig
+@@ -449,20 +449,6 @@ config ACPI_HED
+ 	  which is used to report some hardware errors notified via
+ 	  SCI, mainly the corrected errors.
  
- 	count = acpi_parse_entries_array(id, table_size,
- 					 (union fw_table_header *)table_header,
--					 proc, proc_num, max_entries);
-+					 0, proc, proc_num, max_entries);
- 
- 	acpi_put_table(table_header);
- 	return count;
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index 6fe11546889f..012d8f2a7945 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -149,13 +149,13 @@ static int cxl_cdat_endpoint_process(struct cxl_port *port,
- 	int rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSMAS, cdat_dsmas_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		return rc;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_DSLBIS, cdat_dslbis_handler,
--			      dsmas_xa, port->cdat.table);
-+			      dsmas_xa, port->cdat.table, port->cdat.length);
- 	return cdat_table_parse_output(rc);
- }
- 
-@@ -511,7 +511,7 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
- 		return;
- 
- 	rc = cdat_table_parse(ACPI_CDAT_TYPE_SSLBIS, cdat_sslbis_handler,
--			      port, port->cdat.table);
-+			      port, port->cdat.table, port->cdat.length);
- 	rc = cdat_table_parse_output(rc);
- 	if (rc)
- 		dev_dbg(&port->dev, "Failed to parse SSLBIS: %d\n", rc);
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 763c39456228..a0e7ed5ae25f 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -623,7 +623,7 @@ void read_cdat_data(struct cxl_port *port)
- 	struct pci_dev *pdev = NULL;
- 	struct cxl_memdev *cxlmd;
- 	struct cdat_doe_rsp *buf;
--	size_t length;
-+	size_t table_length, length;
- 	int rc;
- 
- 	if (is_cxl_memdev(uport)) {
-@@ -662,10 +662,16 @@ void read_cdat_data(struct cxl_port *port)
- 	if (!buf)
- 		goto err;
- 
-+	table_length = length;
-+
- 	rc = cxl_cdat_read_table(dev, doe_mb, buf, &length);
- 	if (rc)
- 		goto err;
- 
-+	if (table_length != length)
-+		dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
-+			table_length, length);
-+
- 	if (cdat_checksum(buf->data, length))
- 		goto err;
- 
-diff --git a/include/linux/fw_table.h b/include/linux/fw_table.h
-index 95421860397a..3ff4c277296f 100644
---- a/include/linux/fw_table.h
-+++ b/include/linux/fw_table.h
-@@ -40,12 +40,14 @@ union acpi_subtable_headers {
- 
- int acpi_parse_entries_array(char *id, unsigned long table_size,
- 			     union fw_table_header *table_header,
-+			     unsigned long max_length,
- 			     struct acpi_subtable_proc *proc,
- 			     int proc_num, unsigned int max_entries);
- 
- int cdat_table_parse(enum acpi_cdat_type type,
- 		     acpi_tbl_entry_handler_arg handler_arg, void *arg,
--		     struct acpi_table_cdat *table_header);
-+		     struct acpi_table_cdat *table_header,
-+		     unsigned long length);
- 
- /* CXL is the only non-ACPI consumer of the FIRMWARE_TABLE library */
- #if IS_ENABLED(CONFIG_ACPI) && !IS_ENABLED(CONFIG_CXL_BUS)
-diff --git a/lib/fw_table.c b/lib/fw_table.c
-index c3569d2ba503..16291814450e 100644
---- a/lib/fw_table.c
-+++ b/lib/fw_table.c
-@@ -127,6 +127,7 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
-  *
-  * @id: table id (for debugging purposes)
-  * @table_size: size of the root table
-+ * @max_length: maximum size of the table (ignore if 0)
-  * @table_header: where does the table start?
-  * @proc: array of acpi_subtable_proc struct containing entry id
-  *        and associated handler with it
-@@ -148,18 +149,21 @@ static __init_or_fwtbl_lib int call_handler(struct acpi_subtable_proc *proc,
- int __init_or_fwtbl_lib
- acpi_parse_entries_array(char *id, unsigned long table_size,
- 			 union fw_table_header *table_header,
-+			 unsigned long max_length,
- 			 struct acpi_subtable_proc *proc,
- 			 int proc_num, unsigned int max_entries)
- {
--	unsigned long table_end, subtable_len, entry_len;
-+	unsigned long table_len, table_end, subtable_len, entry_len;
- 	struct acpi_subtable_entry entry;
- 	enum acpi_subtable_type type;
- 	int count = 0;
- 	int i;
- 
- 	type = acpi_get_subtable_type(id);
--	table_end = (unsigned long)table_header +
--		    acpi_table_get_length(type, table_header);
-+	table_len = acpi_table_get_length(type, table_header);
-+	if (max_length && max_length < table_len)
-+		table_len = max_length;
-+	table_end = (unsigned long)table_header + table_len;
- 
- 	/* Parse all entries looking for a match. */
- 
-@@ -208,7 +212,8 @@ int __init_or_fwtbl_lib
- cdat_table_parse(enum acpi_cdat_type type,
- 		 acpi_tbl_entry_handler_arg handler_arg,
- 		 void *arg,
--		 struct acpi_table_cdat *table_header)
-+		 struct acpi_table_cdat *table_header,
-+		 unsigned long length)
- {
- 	struct acpi_subtable_proc proc = {
- 		.id		= type,
-@@ -222,6 +227,6 @@ cdat_table_parse(enum acpi_cdat_type type,
- 	return acpi_parse_entries_array(ACPI_SIG_CDAT,
- 					sizeof(struct acpi_table_cdat),
- 					(union fw_table_header *)table_header,
--					&proc, 1, 0);
-+					length, &proc, 1, 0);
- }
- EXPORT_SYMBOL_FWTBL_LIB(cdat_table_parse);
--- 
-2.39.2
+-config ACPI_CUSTOM_METHOD
+-	tristate "Allow ACPI methods to be inserted/replaced at run time"
+-	depends on DEBUG_FS
+-	help
+-	  This debug facility allows ACPI AML methods to be inserted and/or
+-	  replaced without rebooting the system. For details refer to:
+-	  Documentation/firmware-guide/acpi/method-customizing.rst.
+-
+-	  NOTE: This option is security sensitive, because it allows arbitrary
+-	  kernel memory to be written to by root (uid=0) users, allowing them
+-	  to bypass certain security measures (e.g. if root is not allowed to
+-	  load additional kernel modules after boot, this feature may be used
+-	  to override that restriction).
+-
+ config ACPI_BGRT
+ 	bool "Boottime Graphics Resource Table support"
+ 	depends on EFI && (X86 || ARM64)
+Index: linux-pm/drivers/acpi/Makefile
+===================================================================
+--- linux-pm.orig/drivers/acpi/Makefile
++++ linux-pm/drivers/acpi/Makefile
+@@ -101,7 +101,6 @@ obj-$(CONFIG_ACPI_SBS)		+= sbshc.o
+ obj-$(CONFIG_ACPI_SBS)		+= sbs.o
+ obj-$(CONFIG_ACPI_HED)		+= hed.o
+ obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
+-obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
+ obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
+ obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
+Index: linux-pm/drivers/acpi/custom_method.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/custom_method.c
++++ /dev/null
+@@ -1,103 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * custom_method.c - debugfs interface for customizing ACPI control method
+- */
+-
+-#include <linux/init.h>
+-#include <linux/module.h>
+-#include <linux/kernel.h>
+-#include <linux/uaccess.h>
+-#include <linux/debugfs.h>
+-#include <linux/acpi.h>
+-#include <linux/security.h>
+-
+-#include "internal.h"
+-
+-MODULE_LICENSE("GPL");
+-
+-static struct dentry *cm_dentry;
+-
+-/* /sys/kernel/debug/acpi/custom_method */
+-
+-static ssize_t cm_write(struct file *file, const char __user *user_buf,
+-			size_t count, loff_t *ppos)
+-{
+-	static char *buf;
+-	static u32 max_size;
+-	static u32 uncopied_bytes;
+-
+-	struct acpi_table_header table;
+-	acpi_status status;
+-	int ret;
+-
+-	ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
+-	if (ret)
+-		return ret;
+-
+-	if (!(*ppos)) {
+-		/* parse the table header to get the table length */
+-		if (count <= sizeof(struct acpi_table_header))
+-			return -EINVAL;
+-		if (copy_from_user(&table, user_buf,
+-				   sizeof(struct acpi_table_header)))
+-			return -EFAULT;
+-		uncopied_bytes = max_size = table.length;
+-		/* make sure the buf is not allocated */
+-		kfree(buf);
+-		buf = kzalloc(max_size, GFP_KERNEL);
+-		if (!buf)
+-			return -ENOMEM;
+-	}
+-
+-	if (buf == NULL)
+-		return -EINVAL;
+-
+-	if ((*ppos > max_size) ||
+-	    (*ppos + count > max_size) ||
+-	    (*ppos + count < count) ||
+-	    (count > uncopied_bytes)) {
+-		kfree(buf);
+-		buf = NULL;
+-		return -EINVAL;
+-	}
+-
+-	if (copy_from_user(buf + (*ppos), user_buf, count)) {
+-		kfree(buf);
+-		buf = NULL;
+-		return -EFAULT;
+-	}
+-
+-	uncopied_bytes -= count;
+-	*ppos += count;
+-
+-	if (!uncopied_bytes) {
+-		status = acpi_install_method(buf);
+-		kfree(buf);
+-		buf = NULL;
+-		if (ACPI_FAILURE(status))
+-			return -EINVAL;
+-		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
+-	}
+-
+-	return count;
+-}
+-
+-static const struct file_operations cm_fops = {
+-	.write = cm_write,
+-	.llseek = default_llseek,
+-};
+-
+-static int __init acpi_custom_method_init(void)
+-{
+-	cm_dentry = debugfs_create_file("custom_method", S_IWUSR,
+-					acpi_debugfs_dir, NULL, &cm_fops);
+-	return 0;
+-}
+-
+-static void __exit acpi_custom_method_exit(void)
+-{
+-	debugfs_remove(cm_dentry);
+-}
+-
+-module_init(acpi_custom_method_init);
+-module_exit(acpi_custom_method_exit);
+Index: linux-pm/Documentation/firmware-guide/acpi/method-customizing.rst
+===================================================================
+--- linux-pm.orig/Documentation/firmware-guide/acpi/method-customizing.rst
++++ /dev/null
+@@ -1,89 +0,0 @@
+-.. SPDX-License-Identifier: GPL-2.0
+-
+-=======================================
+-Linux ACPI Custom Control Method How To
+-=======================================
+-
+-:Author: Zhang Rui <rui.zhang@intel.com>
+-
+-
+-Linux supports customizing ACPI control methods at runtime.
+-
+-Users can use this to:
+-
+-1. override an existing method which may not work correctly,
+-   or just for debugging purposes.
+-2. insert a completely new method in order to create a missing
+-   method such as _OFF, _ON, _STA, _INI, etc.
+-
+-For these cases, it is far simpler to dynamically install a single
+-control method rather than override the entire DSDT, because kernel
+-rebuild/reboot is not needed and test result can be got in minutes.
+-
+-.. note::
+-
+-  - Only ACPI METHOD can be overridden, any other object types like
+-    "Device", "OperationRegion", are not recognized. Methods
+-    declared inside scope operators are also not supported.
+-
+-  - The same ACPI control method can be overridden for many times,
+-    and it's always the latest one that used by Linux/kernel.
+-
+-  - To get the ACPI debug object output (Store (AAAA, Debug)),
+-    please run::
+-
+-      echo 1 > /sys/module/acpi/parameters/aml_debug_output
+-
+-
+-1. override an existing method
+-==============================
+-a) get the ACPI table via ACPI sysfs I/F. e.g. to get the DSDT,
+-   just run "cat /sys/firmware/acpi/tables/DSDT > /tmp/dsdt.dat"
+-b) disassemble the table by running "iasl -d dsdt.dat".
+-c) rewrite the ASL code of the method and save it in a new file,
+-d) package the new file (psr.asl) to an ACPI table format.
+-   Here is an example of a customized \_SB._AC._PSR method::
+-
+-      DefinitionBlock ("", "SSDT", 1, "", "", 0x20080715)
+-      {
+-         Method (\_SB_.AC._PSR, 0, NotSerialized)
+-         {
+-            Store ("In AC _PSR", Debug)
+-            Return (ACON)
+-         }
+-      }
+-
+-   Note that the full pathname of the method in ACPI namespace
+-   should be used.
+-e) assemble the file to generate the AML code of the method.
+-   e.g. "iasl -vw 6084 psr.asl" (psr.aml is generated as a result)
+-   If parameter "-vw 6084" is not supported by your iASL compiler,
+-   please try a newer version.
+-f) mount debugfs by "mount -t debugfs none /sys/kernel/debug"
+-g) override the old method via the debugfs by running
+-   "cat /tmp/psr.aml > /sys/kernel/debug/acpi/custom_method"
+-
+-2. insert a new method
+-======================
+-This is easier than overriding an existing method.
+-We just need to create the ASL code of the method we want to
+-insert and then follow the step c) ~ g) in section 1.
+-
+-3. undo your changes
+-====================
+-The "undo" operation is not supported for a new inserted method
+-right now, i.e. we can not remove a method currently.
+-For an overridden method, in order to undo your changes, please
+-save a copy of the method original ASL code in step c) section 1,
+-and redo step c) ~ g) to override the method with the original one.
+-
+-
+-.. note:: We can use a kernel with multiple custom ACPI method running,
+-   But each individual write to debugfs can implement a SINGLE
+-   method override. i.e. if we want to insert/override multiple
+-   ACPI methods, we need to redo step c) ~ g) for multiple times.
+-
+-.. note:: Be aware that root can mis-use this driver to modify arbitrary
+-   memory and gain additional rights, if root's privileges got
+-   restricted (for example if root is not allowed to load additional
+-   modules after boot).
+Index: linux-pm/Documentation/firmware-guide/acpi/index.rst
+===================================================================
+--- linux-pm.orig/Documentation/firmware-guide/acpi/index.rst
++++ linux-pm/Documentation/firmware-guide/acpi/index.rst
+@@ -14,7 +14,6 @@ ACPI Support
+    dsd/phy
+    enumeration
+    osi
+-   method-customizing
+    method-tracing
+    DSD-properties-rules
+    debug
+
+
 
 
