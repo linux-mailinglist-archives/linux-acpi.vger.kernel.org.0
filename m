@@ -1,49 +1,61 @@
-Return-Path: <linux-acpi+bounces-3630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CDE85880C
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 22:32:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7328858805
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 22:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6537B2B5ED
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 21:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F082282991
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 21:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9704145FE1;
-	Fri, 16 Feb 2024 21:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2B8145B18;
+	Fri, 16 Feb 2024 21:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="fEoOZrRJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="brGsL+M/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.145])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07990145328
-	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 21:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB58145328;
+	Fri, 16 Feb 2024 21:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708118802; cv=none; b=bTRd/CaMnqniWWYjyafcZHyewfEcZ3XJXLPUhBXDJe5FMl0NxkliA0JuEiVDLwv6l5CZI0r0bDuH0E/oGnnRgAQYcY1LNiA1DG7czzSoSJPj02irxSAitw1/wVoxbH7CRbVnwNWhzw50ptHMl8GRY0iH7T3k0czjsVMj4j0ZEyQ=
+	t=1708118942; cv=none; b=pAJAEs04pE9kaTO884m/oPlTr3SJC/iebekFyLe11O0ieAZjph1xCryg8a4QVmn2eSZa63Xgc/wy7Ys3w2nrGW+HFPICspGU5QZ3R6jx2HyKgqcY/8ThoO/i4yPZXIWaoS5LBXPvU0qTkdUvZaHpxuhVEy5vNAQ9fslPMmL/t5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708118802; c=relaxed/simple;
-	bh=vIJEL7CbUVuJ5NoMQt5ManfshOXEdBki/VegX3TJQpU=;
+	s=arc-20240116; t=1708118942; c=relaxed/simple;
+	bh=z5aMfbXyqV84KC8Z/t4aLEv9U3SbaKx+axyNiFZiCXk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JxH4ufoMTk0vUn11ynu5o1HC6ZfLN5nQDhTCEwVSD7GL5VdyQnxuFOlYlpzJOFXEGDOws31zffmbizVty3E/NlCPd0WrcDrMOiZYtH+pVt0xQENN+aOXIBbSuXJRKhyj69o+g+6olQm16JZyDEDel979VBe5nZgJu+nzBix4Moc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=fEoOZrRJ; arc=none smtp.client-ip=193.222.135.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 25088 invoked from network); 16 Feb 2024 22:19:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1708118399; bh=Q4cvTn+OjHbTSfCP4AlHayDKYqdCAA/rUJ5rdOEe5JM=;
-          h=Subject:To:Cc:From;
-          b=fEoOZrRJCm8hpDYWqN63H+W2PX06WhO4aNnT1YxO6f2skyISAJpj7/17SR7a4ff+O
-           HtUwtc3HACHKpsDF1U2yEUBvh716w+R4i0eSrlgqInARw1j0wOuCEDMcUKjNP1PdE6
-           YmBu7oEuDA4aaLvAnQVI53mIdvI2lnxkuhVitWTE=
-Received: from aafh184.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.137.184])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <rafael@kernel.org>; 16 Feb 2024 22:19:58 +0100
-Message-ID: <041e0f89-ad58-4df0-aa1e-e0d92065e5a9@o2.pl>
-Date: Fri, 16 Feb 2024 22:19:56 +0100
+	 In-Reply-To:Content-Type; b=O3772oFhv+WTVk7DiKhAFvSgnbCceSgkB6Gvb7zVGEe+0cR+1B0VdlgTn0I5xYTuEV3kDoI7DgrdvVKZvWMkEJucwKumGZzhBwi5RIB2TD7Fx1VgzrI6saM/8tB14JKAOOje8aIYjNv0pLuyGHaPu84KGttFFkP0ygJzxyi4GBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=brGsL+M/; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708118940; x=1739654940;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=z5aMfbXyqV84KC8Z/t4aLEv9U3SbaKx+axyNiFZiCXk=;
+  b=brGsL+M/JSRKT+gs3hn/ZMFVTO1+Sj3vWfjZioN0F6Yvwh5bbKGLgqli
+   cd9evD7aENTtSsO2zeyy68TbRyxD37phZoX2zqcLLbRL6jhhTSjMv2E9b
+   kqEkZk/kko+N+N0uFk/Tcb40mdjnCwc0/d/ss32vU7j+Qp1CnYoAcfcjk
+   kdPuldoVuK+1pW35/c6t4aOkE7OLtJGYACelhoiRCkMnyh35i+jP8Kqgy
+   R3pK6ynrqrtP1dvbliFHCgk/UZNbeFXO+dBE5TUf8obHFjWFuweXGIrbG
+   KQXD/zpjhW96911E2BfSW8aHYv7MxbfVQm3Q80jqBUhWwXHt5GEzfxfmn
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="2130562"
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="2130562"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 13:28:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,165,1705392000"; 
+   d="scan'208";a="34987573"
+Received: from djiang5-mobl3.amr.corp.intel.com (HELO [10.246.112.39]) ([10.246.112.39])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 13:28:58 -0800
+Message-ID: <12006877-65d2-4599-b931-823e2458a69f@intel.com>
+Date: Fri, 16 Feb 2024 14:28:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -51,117 +63,175 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] acpi,pci: warn about duplicate IRQ routing entries
- returned from _PRT
-Content-Language: en-GB
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
- Len Brown <lenb@kernel.org>, Jean Delvare <jdelvare@suse.de>,
- Borislav Petkov <bp@alien8.de>
-References: <20240216184946.GA1349514@bhelgaas>
- <520eaafc-e723-49d4-8a6b-375fc64dd511@o2.pl>
- <CAJZ5v0iVTAg+tmuVQJwN0pv77arUsF5fGF2CYaug7xgqiYC_vA@mail.gmail.com>
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <CAJZ5v0iVTAg+tmuVQJwN0pv77arUsF5fGF2CYaug7xgqiYC_vA@mail.gmail.com>
+Subject: Re: [PATCH v5 05/12] cxl: Split out combine_coordinates() for common
+ shared usage
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+ dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com,
+ alison.schofield@intel.com, dave@stgolabs.net, rafael@kernel.org,
+ gregkh@linuxfoundation.org
+References: <20240206222951.1833098-1-dave.jiang@intel.com>
+ <20240206222951.1833098-6-dave.jiang@intel.com>
+ <20240215165129.00001e01@Huawei.com>
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20240215165129.00001e01@Huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 69a51b667a1284e92c04d63a45060fe1
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [ITPA]                               
+Content-Transfer-Encoding: 7bit
 
-W dniu 16.02.2024 o 21:51, Rafael J. Wysocki pisze:
 
-> On Fri, Feb 16, 2024 at 9:20 PM Mateusz Jończyk <mat.jonczyk@o2.pl> wrote:
->> W dniu 16.02.2024 o 19:49, Bjorn Helgaas pisze:
->>> On Fri, Feb 16, 2024 at 07:26:06PM +0100, Rafael J. Wysocki wrote:
->>>> On Tue, Dec 26, 2023 at 1:50 PM Mateusz Jończyk <mat.jonczyk@o2.pl> wrote:
->>>>> On some platforms, the ACPI _PRT function returns duplicate interrupt
->>>>> routing entries. Linux uses the first matching entry, but sometimes the
->>>>> second matching entry contains the correct interrupt vector.
->>>>>
->>>>> As a debugging aid, print a warning to dmesg if duplicate interrupt
->>>>> routing entries are present. This way, we could check how many models
->>>>> are affected.
->>>>>
->>>>> This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
->>>>> SMBus controller. This controller is nonfunctional unless its interrupt
->>>>> usage is disabled (using the "disable_features=0x10" module parameter).
->>>>>
->>>>> After investigation, it turned out that the driver was using an
->>>>> incorrect interrupt vector: in lspci output for this device there was:
->>>>>         Interrupt: pin B routed to IRQ 19
->>>>> but after running i2cdetect (without using any i2c-i801 module
->>>>> parameters) the following was logged to dmesg:
->>>>>
->>>>>         [...]
->>>>>         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->>>>>         i801_smbus 0000:00:1f.3: Transaction timeout
->>>>>         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->>>>>         i801_smbus 0000:00:1f.3: Transaction timeout
->>>>>         irq 17: nobody cared (try booting with the "irqpoll" option)
->>>>>
->>>>> Existence of duplicate entries in a table returned by the _PRT method
->>>>> was confirmed by disassembling the ACPI DSDT table.
 
-[snip]
-
->>> And neither of the two _PRT entries yields a working i801 device?
->> Unpatched Linux uses the first matching entry, but the second one gives
->> a working i801 device. The point is to print a warning message to see
->> how many devices are affected and whether it is safe to switch the code
->> to use the last matching entry in all instances.
+On 2/15/24 9:51 AM, Jonathan Cameron wrote:
+> On Tue, 6 Feb 2024 15:28:33 -0700
+> Dave Jiang <dave.jiang@intel.com> wrote:
+> 
+>> Refactor the common code of combining coordinates in order to reduce code.
+>> Create a new function cxl_cooordinates_combine() it combine two 'struct
+>> access_coordinate'.
 >>
->> Therefore I used dev_warn().
-> I don't quite see a connection between the above and the log level.
+>> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+>> ---
+>> v5:
+>> - Fix comment header (0-day)
+>> - Remove EXPORT_SYMBOL (Dan)
+>> ---
+>>  drivers/cxl/core/cdat.c | 32 +++++++++++++++++++++++---------
+>>  drivers/cxl/core/port.c | 18 ++----------------
+>>  drivers/cxl/cxl.h       |  4 ++++
+>>  3 files changed, 29 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
+>> index 08fd0baea7a0..096320390ad9 100644
+>> --- a/drivers/cxl/core/cdat.c
+>> +++ b/drivers/cxl/core/cdat.c
+>> @@ -185,15 +185,7 @@ static int cxl_port_perf_data_calculate(struct cxl_port *port,
+>>  	xa_for_each(dsmas_xa, index, dent) {
+>>  		int qos_class;
+>>  
+>> -		dent->coord.read_latency = dent->coord.read_latency +
+>> -					   c.read_latency;
+>> -		dent->coord.write_latency = dent->coord.write_latency +
+>> -					    c.write_latency;
+>> -		dent->coord.read_bandwidth = min_t(int, c.read_bandwidth,
+>> -						   dent->coord.read_bandwidth);
+>> -		dent->coord.write_bandwidth = min_t(int, c.write_bandwidth,
+>> -						    dent->coord.write_bandwidth);
+>> -
+>> +		cxl_coordinates_combine(&dent->coord, &dent->coord, &c);
+>>  		dent->entries = 1;
+>>  		rc = cxl_root->ops->qos_class(cxl_root, &dent->coord, 1,
+>>  					      &qos_class);
+>> @@ -484,4 +476,26 @@ void cxl_switch_parse_cdat(struct cxl_port *port)
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(cxl_switch_parse_cdat, CXL);
+>>  
+>> +/**
+>> + * cxl_coordinates_combine - Combine the two input coordinates
+>> + *
+>> + * @out: Output coordinate of c1 and c2 combined
+>> + * @c1: first coordinate, to be written to
+> 
+> When you say to be written to, what do you mean?
+> Left over from adding out?
 
-OK, so I'll use dev_info() then.
+Yeah I'm not sure why it says that. Seems like half a sentence I left dangling. Going to change the block to below:
 
-Greetings,
-Mateusz
+/**
+ * cxl_coordinates_combine - Combine the two input coordinates
+ *
+ * @out: Output coordinate of c1 and c2 combined
+ * @c1: input coordinates
+ * @c2: input coordinates
+ */
 
+
+> 
+> No obvious reason for this to have any idea that c1 and c2 are
+> ordered.  
+> 
+>> + * @c2: second coordinate
+>> + */
+>> +void cxl_coordinates_combine(struct access_coordinate *out,
+>> +			     struct access_coordinate *c1,
+>> +			     struct access_coordinate *c2)
+>> +{
+>> +		if (c2->write_bandwidth)
+>> +			out->write_bandwidth = min(c1->write_bandwidth,
+>> +						   c2->write_bandwidth);
+> 
+> Why check c2->write_bandwidth?
+> Code already does it, but I'm not sure why + I don't think you should
+> treat c1 and c2 differently.
+
+I think I need to check both and make sure that neither are 0 since we are taking the min of the two and both need to be valid.
+
+> 
+>> +		out->write_latency = c1->write_latency + c2->write_latency;
+>> +
+>> +		if (c2->read_bandwidth)
+>> +			out->read_bandwidth = min(c1->read_bandwidth,
+>> +						  c2->read_bandwidth);
+>> +		out->read_latency = c1->read_latency + c2->read_latency;
+>> +}
+>> +
+>>  MODULE_IMPORT_NS(CXL);
+>> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+>> index 612bf7e1e847..af9458b2678c 100644
+>> --- a/drivers/cxl/core/port.c
+>> +++ b/drivers/cxl/core/port.c
+>> @@ -2096,20 +2096,6 @@ bool schedule_cxl_memdev_detach(struct cxl_memdev *cxlmd)
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(schedule_cxl_memdev_detach, CXL);
+>>  
+>> -static void combine_coordinates(struct access_coordinate *c1,
+>> -				struct access_coordinate *c2)
+>> -{
+>> -		if (c2->write_bandwidth)
+>> -			c1->write_bandwidth = min(c1->write_bandwidth,
+>> -						  c2->write_bandwidth);
+>> -		c1->write_latency += c2->write_latency;
+>> -
+>> -		if (c2->read_bandwidth)
+>> -			c1->read_bandwidth = min(c1->read_bandwidth,
+>> -						 c2->read_bandwidth);
+>> -		c1->read_latency += c2->read_latency;
+>> -}
+>> -
+>>  /**
+>>   * cxl_endpoint_get_perf_coordinates - Retrieve performance numbers stored in dports
+>>   *				   of CXL path
+>> @@ -2143,7 +2129,7 @@ int cxl_endpoint_get_perf_coordinates(struct cxl_port *port,
+>>  	 * nothing to gather.
+>>  	 */
+>>  	while (iter && !is_cxl_root(to_cxl_port(iter->dev.parent))) {
+>> -		combine_coordinates(&c, &dport->sw_coord);
+>> +		cxl_coordinates_combine(&c, &c, &dport->sw_coord);
+>>  		c.write_latency += dport->link_latency;
+>>  		c.read_latency += dport->link_latency;
+>>  
+>> @@ -2152,7 +2138,7 @@ int cxl_endpoint_get_perf_coordinates(struct cxl_port *port,
+>>  	}
+>>  
+>>  	/* Augment with the generic port (host bridge) perf data */
+>> -	combine_coordinates(&c, &dport->hb_coord[ACCESS_COORDINATE_LOCAL]);
+>> +	cxl_coordinates_combine(&c, &c, &dport->hb_coord[ACCESS_COORDINATE_LOCAL]);
+>>  
+>>  	/* Get the calculated PCI paths bandwidth */
+>>  	pdev = to_pci_dev(port->uport_dev->parent);
+>> diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
+>> index fe7448f2745e..fab2da4b1f04 100644
+>> --- a/drivers/cxl/cxl.h
+>> +++ b/drivers/cxl/cxl.h
+>> @@ -882,6 +882,10 @@ int cxl_endpoint_get_perf_coordinates(struct cxl_port *port,
+>>  
+>>  void cxl_memdev_update_perf(struct cxl_memdev *cxlmd);
+>>  
+>> +void cxl_coordinates_combine(struct access_coordinate *out,
+>> +			     struct access_coordinate *c1,
+>> +			     struct access_coordinate *c2);
+>> +
+>>  /*
+>>   * Unit test builds overrides this to __weak, find the 'strong' version
+>>   * of these symbols in tools/testing/cxl/.
+> 
 
