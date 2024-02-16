@@ -1,149 +1,116 @@
-Return-Path: <linux-acpi+bounces-3623-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3624-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CA8858551
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 19:34:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A514A85855E
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 19:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3516D1F24FB0
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 18:34:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6956F2822A5
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 18:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3197D1292C2;
-	Fri, 16 Feb 2024 18:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9C41350E3;
+	Fri, 16 Feb 2024 18:39:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905241EB24;
-	Fri, 16 Feb 2024 18:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41678132472;
+	Fri, 16 Feb 2024 18:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708108361; cv=none; b=nlc6tbJ06rqc60UqmEBuvBMQFMnUx2SxthUOdR3w+AMtLMHBPyLDPYTzdoW5a9LhnMRED+jVXx9hQPyo3lKCeJJACMEBxkpNZB8Cgd1DLF8jD85/cyvfHP90XtHwqcygOapKZampcRVMI466zVHkJG+a85pmSrkbs7mBAqIv5hs=
+	t=1708108768; cv=none; b=A1vNRZGfIB3QhCbhBOpirQINSp4zjKqfxNMEnTg2CeFyD8wId4acczDVP06VzmKnluQaZZd+SqDrTYJvMvAIirQ3PPAf/NR9dt/DST0zg7KXg1wIXo/cogXN465fCysjK7ZWvZZrosNNDLLGWh1Lh2R/UbwbTCKuz4x/lyfgxiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708108361; c=relaxed/simple;
-	bh=jHtIusC8u2VsKQ0wY60VTcAHVOsfPaNM70dyO1WvRaM=;
+	s=arc-20240116; t=1708108768; c=relaxed/simple;
+	bh=gXvmd4u6S1j4zmau92N9xY3+n48hIWCmkw374m2LDII=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RouXkDeRks1brhTlhgP/irKu0aZ5BAR2kITlxJF13UadMSKZShLibVRxuSi+qWwBZh4Q4vtj4y/r7uQoegt87bf8jJoKhrGMj+i979W6unnUClIhOoA8syy67tyAGQuKyMigfMqM0pe7hGcG8bWY6ja7AJHWkPldr/eGZiRBpsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.45
+	 To:Cc:Content-Type; b=BH+1OazqR2VZizT1k8NSSRcp6kp1zZkVNugmWpZklvrbqsDp8dRvzluunmyQLbNcsTGYTkC+GQIjpkm15JVNJj+iQddnuRek3HEVMnrIxBrEFtkTlao/bZq3RilGwFxnrs4i1vW0nzordYzxvZ+TSXwrZGk/O1iccmCedgDPJfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6e2f6c7e623so256649a34.1;
-        Fri, 16 Feb 2024 10:32:39 -0800 (PST)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-59f9f9701f6so121175eaf.1;
+        Fri, 16 Feb 2024 10:39:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708108358; x=1708713158;
+        d=1e100.net; s=20230601; t=1708108766; x=1708713566;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3lHn76WTrbLX7hdeSbLZzSHNfz0r3+6mxZ3noqX4GjE=;
-        b=bvULrn/0dcv6NP0EDsm3ZCuZLU+QHm9AeTs+qauaUK9L0muJ7Ror6E2saLzv6ePq3d
-         9/gPuAaVKa9eyMScSOOtJhFM+yXi8DZfxzqo4pcIndk9sG1gyZvdXtyEZIMWrTx3flDt
-         BuJq41MIJj+Qnauo+WhGBhBeI0z+MSwOYoGouk5Fg9YccVu1R8fmMPEcObZotUoVLmJE
-         WLEBcmVyrxhIn0QwYWgiywCYFXdVFUY+8YijcR6DmN+UhAAc2NEKj8LDV+6q4AlJBcw2
-         kzgkOiEHdisksnVqVBv9NW78jYaZoTbYIeLxkN4d2kFJdPV5mWEb4dOP/yd6qaV7V5Bd
-         0LbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWna9LUUOO+6Sw1dFdI01A4UjqCazv9jiWLm2YwelRWEaJIDHkxZvXg8I1AFjZ8bhGzfRXuuN9mg2Vu+gitm4TCNsb101c38YKEL6PXx6wn+Cge9rWY/epI6bcoanQ+pOUnm9zywGeVqvy0bixbJGX8p8rsGk0svopvm7UezPSAYpuAvTRqgy/BeCl5VBPvS5woTJQ10C/09MJzJIsG
-X-Gm-Message-State: AOJu0YwiwaN7oAx1DulTjNamlxi0FsKya7+x7QTC66CynJBso7opG7MZ
-	GLE9swe37bazSETyTvJABeUEAoUvNOAuoHb5n/sT/WXzP/7j9hUGb1cKpyE8dau4ltMvFVMo47q
-	jdWVGIdGKe3lcRUkJGCavxIhEArI=
-X-Google-Smtp-Source: AGHT+IFdoQQLtZ3cQx4MmyqGlde59pY0g87onhQCSxAZLVJreS86OzI3OnIAIMwdqJ9b8pBwIrWW3E1n8X5s2FYqjw8=
-X-Received: by 2002:a05:6820:1f8d:b0:59c:d8cd:ecee with SMTP id
- eq13-20020a0568201f8d00b0059cd8cdeceemr2838635oob.1.1708108358603; Fri, 16
- Feb 2024 10:32:38 -0800 (PST)
+        bh=YWPnmj/LdKe3Uawh5Iayj+Gh5MbkrBOfFGQpz8gSZkA=;
+        b=Q1JgmCvN697NA1mioOuKsd6fvzmwxxb3ajt2reh7XQa56BHbySXTfpVB10c2z1Xo5N
+         hOScqw1QYW/p247i175WGhfAnqcdD35SyhvpJ27LJG3iaxBabw0aqGuRJzo0FFr3OYuJ
+         4DqzUDjtHPiURHtLm2E9fNoSPriXnRFWBnYULeR2N2hMUN8dK+QFO7xm9DsxWhElRz6x
+         8WU6vEw8YGcQagkDd1D8sJ9dHg/gJw32DhFGxnE2cLh6JBBBrlczLF54lk6nRZVOyPVc
+         LQNmQQ+TcYDR+4d1A71c/xmav2cMVaFCTiGilhtcsej3/VjMHpCeuR/yf6MC2f2ljEI/
+         cP2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXsZvAFZ6+JUaovPD5tC0Kt26cDmbqAgn6Lq/1q/hjwd1zwL4xIdqh2x/vMgy/xvX8F3YtdIlUhziR2uo7Xgw/xd0qUoUbZOxxrqCcHDahY8g73mkbQLH8kSyOlif12nbOg22nzFLsZug==
+X-Gm-Message-State: AOJu0YyVIuY218lQ8zxR1wmR/ugJf0cxfKS+rWJm/qQJiKYaa+t0wjzH
+	v+tEy/k2bksntyKa7UwbDMmvWGU4Z4Ue0PjTG1WM5vYFTl4BCn73YnMpTp9iWfBC/iRVY30n7Yt
+	Yvftrl/hiKipR+5/kttmXKFGD74o=
+X-Google-Smtp-Source: AGHT+IEWmmUvbZ48dKNHLJOKC/sVXLnlJsXyjMxNfSgPv9uxGEnKwXe6D3hhg3JHKQ+DwwQlc9UuPDIVmzeJl4Y8oX8=
+X-Received: by 2002:a4a:d12d:0:b0:59f:8466:16d6 with SMTP id
+ n13-20020a4ad12d000000b0059f846616d6mr3300825oor.0.1708108766254; Fri, 16 Feb
+ 2024 10:39:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20240213074430epcas5p4c520bf2cce121cf5fa970eed429231a8@epcas5p4.samsung.com>
- <20240213074416.2169929-1-onkarnath.1@samsung.com>
-In-Reply-To: <20240213074416.2169929-1-onkarnath.1@samsung.com>
+References: <CGME20240216072906epcas2p407a2f85aca1b9b8677fb8aa458c53aa6@epcas2p4.samsung.com>
+ <20240216072931.34305-1-hj96.nam@samsung.com>
+In-Reply-To: <20240216072931.34305-1-hj96.nam@samsung.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 16 Feb 2024 19:32:27 +0100
-Message-ID: <CAJZ5v0gAaNd6dZaJ0sDTgJSAkG7+u2Fgc0C=m2RSBKM1gTHe9g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] ACPI: use %pe for better readability of errors
- while printing
-To: Onkarnarth <onkarnath.1@samsung.com>
-Cc: rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, 
-	viresh.kumar@linaro.org, mingo@redhat.com, peterz@infradead.org, 
-	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
-	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, bristot@redhat.com, 
-	vschneid@redhat.com, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, 
-	r.thapliyal@samsung.com, maninder1.s@samsung.com, helgaas@kernel.org, 
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Date: Fri, 16 Feb 2024 19:39:15 +0100
+Message-ID: <CAJZ5v0gusbAKRQVCgbvK7A6G8KQ5piNdUS=Sm3H2tWiSp-beGQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Fix CXL 3.0 structure (RDPAS) in the CEDT table
+To: hj96.nam@samsung.com
+Cc: Robert Moore <robert.moore@intel.com>, 
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	ks0204.kim@samsung.com, wj28.lee@samsung.com, alison.schofield@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 13, 2024 at 9:20=E2=80=AFAM Onkarnarth <onkarnath.1@samsung.com=
-> wrote:
+On Fri, Feb 16, 2024 at 8:29=E2=80=AFAM <hj96.nam@samsung.com> wrote:
 >
-> From: Onkarnath <onkarnath.1@samsung.com>
+> From: Hojin Nam <hj96.nam@samsung.com>
 >
-> As %pe is already introduced, it's better to use it in place of (%ld) for
-> printing errors in logs. It would enhance readability of logs.
+> struct acpi_cedt_rdpas does not match with CXL r3.0 9.17.1.5
+> Table 9-24. reserved1 and length fields are already added by
+> struct acpi_cedt_header.
 >
-> Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
-> Signed-off-by: Onkarnath <onkarnath.1@samsung.com>
-> Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+> Signed-off-by: Hojin Nam <hj96.nam@samsung.com>
 > ---
-> v1 -> v2: Updated subject line as per file history & corrected spellings
-> in description.
-> v2 -> v3: Updated Reviewed-by tag.
->
->  drivers/acpi/acpi_processor.c | 2 +-
->  drivers/acpi/acpi_watchdog.c  | 2 +-
->  drivers/acpi/pci_slot.c       | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 4fe2ef54088c..2ddd36a21850 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -161,7 +161,7 @@ static void cpufreq_add_device(const char *name)
->
->         pdev =3D platform_device_register_simple(name, PLATFORM_DEVID_NON=
-E, NULL, 0);
->         if (IS_ERR(pdev))
-> -               pr_info("%s device creation failed: %ld\n", name, PTR_ERR=
-(pdev));
-> +               pr_info("%s device creation failed: %pe\n", name, pdev);
->  }
->
->  #ifdef CONFIG_X86
-> diff --git a/drivers/acpi/acpi_watchdog.c b/drivers/acpi/acpi_watchdog.c
-> index 8e9e001da38f..14b24157799c 100644
-> --- a/drivers/acpi/acpi_watchdog.c
-> +++ b/drivers/acpi/acpi_watchdog.c
-> @@ -179,7 +179,7 @@ void __init acpi_watchdog_init(void)
->         pdev =3D platform_device_register_simple("wdat_wdt", PLATFORM_DEV=
-ID_NONE,
->                                                resources, nresources);
->         if (IS_ERR(pdev))
-> -               pr_err("Device creation failed: %ld\n", PTR_ERR(pdev));
-> +               pr_err("Device creation failed: %pe\n", pdev);
->
->         kfree(resources);
->
-> diff --git a/drivers/acpi/pci_slot.c b/drivers/acpi/pci_slot.c
-> index d6cb2c27a23b..741bcc9d6d6a 100644
-> --- a/drivers/acpi/pci_slot.c
-> +++ b/drivers/acpi/pci_slot.c
-> @@ -111,7 +111,7 @@ register_slot(acpi_handle handle, u32 lvl, void *cont=
-ext, void **rv)
->         snprintf(name, sizeof(name), "%llu", sun);
->         pci_slot =3D pci_create_slot(pci_bus, device, name, NULL);
->         if (IS_ERR(pci_slot)) {
-> -               pr_err("pci_create_slot returned %ld\n", PTR_ERR(pci_slot=
-));
-> +               pr_err("pci_create_slot returned %pe\n", pci_slot);
->                 kfree(slot);
->                 return AE_OK;
->         }
-> --
+>  include/acpi/actbl1.h | 2 --
 
-Applied as 6.9 material, thanks!
+This file is part of ACPICA which is a separate project whose code is
+used by the Linux kernel.  In order to make changes in the ACPICA
+code, please submit a pull request to the upstream ACPICA project on
+GitHub.  Once this pull request is merged, you can send a
+corresponding Linux patch with a Link: tag pointing to it.  However,
+it is not necessary to do so, as the changes will be automatically
+included into the ACPICA code in the kernel once a new version of
+ACPICA is out.
+
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index a33375e055ad..7aff8c39dbd6 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -571,8 +571,6 @@ struct acpi_cedt_cxims {
+>
+>  struct acpi_cedt_rdpas {
+>         struct acpi_cedt_header header;
+> -       u8 reserved1;
+> -       u16 length;
+>         u16 segment;
+>         u16 bdf;
+>         u8 protocol;
+>
+> base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
+> --
+> 2.34.1
+>
 
