@@ -1,368 +1,394 @@
-Return-Path: <linux-acpi+bounces-3597-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3598-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B138582BF
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 17:39:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B34338582DA
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 17:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32312B209DD
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 16:39:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AF04283399
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 16:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BE312FF83;
-	Fri, 16 Feb 2024 16:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D57130AD9;
+	Fri, 16 Feb 2024 16:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="cEjpeyFS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E3912F39F;
-	Fri, 16 Feb 2024 16:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1351212FF9B
+	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 16:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708101546; cv=none; b=ei3GV/wuSyCINruwAfcpvFPkL7xSzKioG8Y3N8i8sglJuFhyYn6WF4PosFEVZK5F1ABzG4BjbgYHer+39AGpFl9urNr1Y110WLVyG/mxWnFhyu+8VWZ+1oPcNF2kPuFdAZXjyj1x65GS8LVDxzKm6lxCeEwBjVEPkHsoaW5bVsg=
+	t=1708101879; cv=none; b=tTAJnoc52m0LnkfXVPGuLntx0KZG4uqpHg1WNFs+/t5Div00mNXievvvIvKbw7iS+sCkRt9tdZqwsrPuIlLg9sclLK1zNyyuLaDruMdu1HVVY3U595hvxBPoTW+hw/fD0OsyxtiL1Ofz+EklVpSfX0GKkYoJ97/UbBTg08MgVFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708101546; c=relaxed/simple;
-	bh=+KTMLkdPFJiKDVrsuATH5yBercsEKRSKg8auKDtRABE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NQmIq3ihcFZhdCOJQsEwniZGp3vK0L447fgX1vYOq4LDOcyhuG0xevaJGvOAFMsrPVwo9xOLd6Bxa+3nYC0vQkVb2Odz4c+fBBUe1a24Rs+dwOxwYfKm0xPvLJZEkwOcNR6KfkIQLUc5hF0AF6apGQThuZALqKN3tH+kezSBSJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id 0c0b260f4d501061; Fri, 16 Feb 2024 17:38:56 +0100
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id A316F669F8B;
-	Fri, 16 Feb 2024 17:38:55 +0100 (CET)
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>, Kees Cook <kees@kernel.org>,
- "shiqiang.deng" <shiqiang.deng213@gmail.com>,
- Sebastian Grzywna <swiftgeek@gmail.com>, Swift Geek <swiftgeek@gmail.com>,
- Hang Zhang <zh.nvgt@gmail.com>
-Subject: [PATCH v3] ACPI: Drop the custom_method debugfs interface
-Date: Fri, 16 Feb 2024 17:38:55 +0100
-Message-ID: <6029478.lOV4Wx5bFT@kreacher>
+	s=arc-20240116; t=1708101879; c=relaxed/simple;
+	bh=MsdgmZ5Drh3S5d2siye8gmy/YW6Lz3bGzj8pyYi4rB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WySnM+X45Vqg9UtIxZhxFUM6a8F9XQ3KFi77Pc7rrFpnlReF3igD/UEdDbC+S/YZcTlpuwDxqOa/Exc2pMa24LX02LBng9LhSDC5bKJpPaTQMKYuH5WI8pEKtmPmroIBHzpH6SrqTpBJ1dt2berLqI7dA/AmEJudJ+Tw1ByKr8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=cEjpeyFS; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51149a45fd0so533437e87.0
+        for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 08:44:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google; t=1708101874; x=1708706674; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=76wOtguCiFQWboTMzhB4hnS3UP+WhC0vzMoeMQ3V+XQ=;
+        b=cEjpeyFS+iXFzXFVEXLxHGu3SMD0HruK3eZJfGXx8XRyHJcrhfwT1BaVpEuzJZ9vn1
+         DWM9PpqdTlFAkl8iHBhr86P9gruDzI8NiRm2UYaztRvd/198+Goavo0teBCD8kThxJus
+         kCz912iN3ui0QbJrJ8BsGkUL855cuiPBYIyIE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708101874; x=1708706674;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=76wOtguCiFQWboTMzhB4hnS3UP+WhC0vzMoeMQ3V+XQ=;
+        b=JiEzHjtHmgYSki6xjzCKgpDMgCyxAAlRNxm1pjwUK2RsjnimeE1pLSgG0bOuVsS7JZ
+         ntWY79pv1CNDzIgpMsjoNKf5xv8bG820r7jjHsRdEC/f/IwiFIglQGWdqpoGP3Od9yjb
+         hkPQLwmJ1NNphFGVHzl/4TqXNRzMYtUkSdsyMEJn3FlSjJfXAmgzMhdFh2RQvKlSS+Fv
+         LMbZbtvptin6MmsCTeGHRxxnqAsrrXM55OGfbdwuEc5z9TXErXL1gGYxbH2ktOpN48Db
+         UH93Z/HRaWFRs7ygsACWOGnZfd2Whmpjy68v0W1f7PFWGDDtPzeSgqaI6dI+xFqHQXer
+         PfKA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeCAk+ekOd/W7w5sBAPEJi8J5GcN43CRgInha0NWcGmt9dxXeH0EMbXhsZMzvaKLkQ0oj5sewCNbiY9pKraK9VTOnZojaGY6UdEw==
+X-Gm-Message-State: AOJu0Yzj4UF5WIwGcTPKJAd98t1FlISzL10vdUJA0qc1yRVOCcyM/kfT
+	w5q/3Mndk8PliTMP3ON+9k29OQO1nEqC6J4d8Um/7gZ6hAiD+Xzn593K1GXnbBA=
+X-Google-Smtp-Source: AGHT+IEuloFhVFC2o5Kh7YQza+RJRv4NnWpfLQKn44MYcnzGH2WMyJG+wXU911TQAAApZBNb+DUWPw==
+X-Received: by 2002:a19:9156:0:b0:511:5b35:d11c with SMTP id y22-20020a199156000000b005115b35d11cmr3508815lfj.2.1708101873965;
+        Fri, 16 Feb 2024 08:44:33 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id v17-20020a05600c445100b00411fdf85d44sm2910563wmn.37.2024.02.16.08.44.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Feb 2024 08:44:33 -0800 (PST)
+Date: Fri, 16 Feb 2024 17:44:31 +0100
+From: Daniel Vetter <daniel@ffwll.ch>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Melissa Wen <mwen@igalia.com>, Dave Airlie <airlied@redhat.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Subject: Re: [PATCH v4 1/3] drm: Add drm_get_acpi_edid() helper
+Message-ID: <Zc-Q73e7Z3ErVC67@phenom.ffwll.local>
+Mail-Followup-To: Jani Nikula <jani.nikula@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Melissa Wen <mwen@igalia.com>, Dave Airlie <airlied@redhat.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+References: <20240207224429.104625-1-mario.limonciello@amd.com>
+ <20240207224429.104625-2-mario.limonciello@amd.com>
+ <87y1bvb7ns.fsf@intel.com>
+ <ZcYHaXNJ8IqbLIra@phenom.ffwll.local>
+ <9fa0c1ad-dd7d-4350-aad1-4723450850bd@amd.com>
+ <ZcZ1tdXqH90RabvV@phenom.ffwll.local>
+ <350ee747-c1bf-4513-aad3-f43b11fcdf0f@amd.com>
+ <874jedapmq.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvddvgdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeetgedvffethfeuteeigfefheeghfevhfduueekfeeutdfggfdttefgffetgfehvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhsthgrtghkohhvvghrfhhlohifrdgtohhmnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepledprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhht
- vghlrdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomhdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhihhqihgrnhhgrdguvghnghdvudefsehgmhgrihhlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=9 Fuz1=9 Fuz2=9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874jedapmq.fsf@intel.com>
+X-Operating-System: Linux phenom 6.6.11-amd64 
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Mon, Feb 12, 2024 at 01:27:57PM +0200, Jani Nikula wrote:
+> On Sat, 10 Feb 2024, Mario Limonciello <mario.limonciello@amd.com> wrote:
+> > On 2/9/2024 12:57, Daniel Vetter wrote:
+> >> On Fri, Feb 09, 2024 at 09:34:13AM -0600, Mario Limonciello wrote:
+> >>> On 2/9/2024 05:07, Daniel Vetter wrote:
+> >>>> On Thu, Feb 08, 2024 at 11:57:11AM +0200, Jani Nikula wrote:
+> >>>>> On Wed, 07 Feb 2024, Mario Limonciello <mario.limonciello@amd.com> wrote:
+> >>>>>> Some manufacturers have intentionally put an EDID that differs from
+> >>>>>> the EDID on the internal panel on laptops.  Drivers can call this
+> >>>>>> helper to attempt to fetch the EDID from the BIOS's ACPI _DDC method.
+> >>>>>>
+> >>>>>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >>>>>> ---
+> >>>>>>    drivers/gpu/drm/Kconfig    |  5 +++
+> >>>>>>    drivers/gpu/drm/drm_edid.c | 77 ++++++++++++++++++++++++++++++++++++++
+> >>>>>>    include/drm/drm_edid.h     |  1 +
+> >>>>>>    3 files changed, 83 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> >>>>>> index 6ec33d36f3a4..ec2bb71e8b36 100644
+> >>>>>> --- a/drivers/gpu/drm/Kconfig
+> >>>>>> +++ b/drivers/gpu/drm/Kconfig
+> >>>>>> @@ -21,6 +21,11 @@ menuconfig DRM
+> >>>>>>    	select KCMP
+> >>>>>>    	select VIDEO_CMDLINE
+> >>>>>>    	select VIDEO_NOMODESET
+> >>>>>> +	select ACPI_VIDEO if ACPI
+> >>>>>> +	select BACKLIGHT_CLASS_DEVICE if ACPI
+> >>>>>> +	select INPUT if ACPI
+> >>>>>> +	select X86_PLATFORM_DEVICES if ACPI && X86
+> >>>>>> +	select ACPI_WMI if ACPI && X86
+> >>>>>
+> >>>>> I think I'll defer to drm maintainers on whether this is okay or
+> >>>>> something to be avoided.
+> >>>>
+> >>>> Uh yeah this is a bit much, and select just messes with everything. Just
+> >>>> #ifdef this in the code with a dummy alternative, if users configure their
+> >>>> kernel without acpi but need it, they get to keep all the pieces.
+> >>>>
+> >>>> Alternatively make a DRM_ACPI_HELPERS symbol, but imo a Kconfig for every
+> >>>> function is also not great. And just using #ifdef in the code also works
+> >>>> for CONFIG_OF, which is exactly the same thing for platforms using dt to
+> >>>> describe hw.
+> >>>>
+> >>>> Also I'd expect ACPI code to already provide dummy functions if ACPI is
+> >>>> provided, so you probably dont even need all that much #ifdef in the code.
+> >>>>
+> >>>> What we defo cant do is select platform/hw stuff just because you enable
+> >>>> CONFIG_DRM.
+> >>>> -Sima
+> >>>
+> >>> The problem was with linking.  I'll experiment with #ifdef for the next
+> >>> version.
+> >> 
+> >> Ah yes, if e.g. acpi is a module but drm is built-in then it will compile,
+> >> but not link.
+> >> 
+> >> You need
+> >> 
+> >> 	depends on (ACPI || ACPI=n)
+> >> 
+> >> for this. Looks a bit funny but works for all combinations.
+> >
+> > Nope; this fails at link time with this combination:
+> >
+> > CONFIG_ACPI=y
+> > CONFIG_ACPI_VIDEO=m
+> > CONFIG_DRM=y
+> >
+> > ld: drivers/gpu/drm/drm_edid.o: in function `drm_do_probe_acpi_edid':
+> > drm_edid.c:(.text+0xd34): undefined reference to `acpi_video_get_edid'
+> > make[5]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
+> >
+> > So the logical solution is to try
+> > 	depends on (ACPI_VIDEO || ACPI_VIDEO=n)
+> >
+> > But that leads me back to the rabbit hole of why I had the selects moved 
+> > to drm instead of drivers in the first place:
+> >
+> > drivers/gpu/drm/Kconfig:8:error: recursive dependency detected!
+> > drivers/gpu/drm/Kconfig:8:      symbol DRM depends on ACPI_VIDEO
+> > drivers/acpi/Kconfig:213:       symbol ACPI_VIDEO depends on 
+> > BACKLIGHT_CLASS_DEVICE
+> > drivers/video/backlight/Kconfig:136:    symbol BACKLIGHT_CLASS_DEVICE is 
+> > selected by DRM_RADEON
+> > drivers/gpu/drm/radeon/Kconfig:3:       symbol DRM_RADEON depends on DRM
+> 
+> Generally speaking the root cause is using "select" instead of "depends
+> on" in the first place. The excessive selects are just band-aid over
+> that root cause. And if you try to convert some but not all the selects
+> to depends ons, you'll get recursive dependencies.
+> 
+> Quoting Documentation/kbuild/kconfig-language.rst:
+> 
+>   Note:
+> 	select should be used with care. select will force
+> 	a symbol to a value without visiting the dependencies.
+> 	By abusing select you are able to select a symbol FOO even
+> 	if FOO depends on BAR that is not set.
+> 	In general use select only for non-visible symbols
+> 	(no prompts anywhere) and for symbols with no dependencies.
+> 	That will limit the usefulness but on the other hand avoid
+> 	the illegal configurations all over.
+> 
+> Yeah, we ignore that, and get to keep all the pieces.
 
-The ACPI custom_method debugfs interface is security-sensitive and
-concurrent access to it is broken [1].
+Yeah we need radically fewer select and replace them with depends. The
+idea is that people just magically get the correct kernel config because
+even menuconfig sucks at showing you why you cannot enable a driver.
 
-Moreover, the recipe for preparing a customized version of a given
-control method has changed at one point due to ACPICA changes, which
-has not been reflected in its documentation, so whoever used it before
-has had to adapt and it had gone unnoticed for a long time.
+But it's really not a good solution to that issue, and we need to stop
+suffering. Reality is that enabling a correct config for complex drivers
+like we have in drm is a bit a black belt art :-/
+-Sima
 
-This interface was a bad idea to start with and its implementation is
-fragile at the design level.  It's been always conceptually questionable,
-problematic from the security standpoint and implemented poorly.
+> 
+> 
+> BR,
+> Jani.
+> 
+> 
+> >
+> >
+> >> 
+> >> Since this gets mess it might be useful to have a DRM_ACPI_HELPERS Kconfig
+> >> that controls all this.
+> >
+> > How about all those selects that I had in this patch moved to 
+> > DRM_ACPI_HELPERS and keep the patch that drops from all the drivers then?
+> >
+> >> -Sima
+> >> 
+> >>>
+> >>>>
+> >>>>>
+> >>>>>
+> >>>>>>    	help
+> >>>>>>    	  Kernel-level support for the Direct Rendering Infrastructure (DRI)
+> >>>>>>    	  introduced in XFree86 4.0. If you say Y here, you need to select
+> >>>>>> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> >>>>>> index 923c4423151c..c649b4f9fd8e 100644
+> >>>>>> --- a/drivers/gpu/drm/drm_edid.c
+> >>>>>> +++ b/drivers/gpu/drm/drm_edid.c
+> >>>>>> @@ -28,6 +28,7 @@
+> >>>>>>     * DEALINGS IN THE SOFTWARE.
+> >>>>>>     */
+> >>>>>> +#include <acpi/video.h>
+> >>>>>>    #include <linux/bitfield.h>
+> >>>>>>    #include <linux/cec.h>
+> >>>>>>    #include <linux/hdmi.h>
+> >>>>>> @@ -2188,6 +2189,49 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
+> >>>>>>    	return ret == xfers ? 0 : -1;
+> >>>>>>    }
+> >>>>>> +/**
+> >>>>>> + * drm_do_probe_acpi_edid() - get EDID information via ACPI _DDC
+> >>>>>> + * @data: struct drm_device
+> >>>>>> + * @buf: EDID data buffer to be filled
+> >>>>>> + * @block: 128 byte EDID block to start fetching from
+> >>>>>> + * @len: EDID data buffer length to fetch
+> >>>>>> + *
+> >>>>>> + * Try to fetch EDID information by calling acpi_video_get_edid() function.
+> >>>>>> + *
+> >>>>>> + * Return: 0 on success or error code on failure.
+> >>>>>> + */
+> >>>>>> +static int
+> >>>>>> +drm_do_probe_acpi_edid(void *data, u8 *buf, unsigned int block, size_t len)
+> >>>>>> +{
+> >>>>>> +	struct drm_device *ddev = data;
+> >>>>>> +	struct acpi_device *acpidev = ACPI_COMPANION(ddev->dev);
+> >>>>>> +	unsigned char start = block * EDID_LENGTH;
+> >>>>>> +	void *edid;
+> >>>>>> +	int r;
+> >>>>>> +
+> >>>>>> +	if (!acpidev)
+> >>>>>> +		return -ENODEV;
+> >>>>>> +
+> >>>>>> +	/* fetch the entire edid from BIOS */
+> >>>>>> +	r = acpi_video_get_edid(acpidev, ACPI_VIDEO_DISPLAY_LCD, -1, &edid);
+> >>>>>> +	if (r < 0) {
+> >>>>>> +		DRM_DEBUG_KMS("Failed to get EDID from ACPI: %d\n", r);
+> >>>>>> +		return -EINVAL;
+> >>>>>> +	}
+> >>>>>> +	if (len > r || start > r || start + len > r) {
+> >>>>>> +		r = -EINVAL;
+> >>>>>> +		goto cleanup;
+> >>>>>> +	}
+> >>>>>> +
+> >>>>>> +	memcpy(buf, edid + start, len);
+> >>>>>> +	r = 0;
+> >>>>>> +
+> >>>>>> +cleanup:
+> >>>>>> +	kfree(edid);
+> >>>>>> +
+> >>>>>> +	return r;
+> >>>>>> +}
+> >>>>>> +
+> >>>>>>    static void connector_bad_edid(struct drm_connector *connector,
+> >>>>>>    			       const struct edid *edid, int num_blocks)
+> >>>>>>    {
+> >>>>>> @@ -2643,6 +2687,39 @@ struct edid *drm_get_edid(struct drm_connector *connector,
+> >>>>>>    }
+> >>>>>>    EXPORT_SYMBOL(drm_get_edid);
+> >>>>>> +/**
+> >>>>>> + * drm_get_acpi_edid - get EDID data, if available
+> >>>>>
+> >>>>> I'd prefer all the new EDID API to be named drm_edid_*. Makes a clean
+> >>>>> break from the old API, and is more consistent.
+> >>>>>
+> >>>>> So perhaps drm_edid_read_acpi() to be in line with all the other struct
+> >>>>> drm_edid based EDID reading functions.
+> >>>>>
+> >>>>>> + * @connector: connector we're probing
+> >>>>>> + *
+> >>>>>> + * Use the BIOS to attempt to grab EDID data if possible.
+> >>>>>> + *
+> >>>>>> + * The returned pointer must be freed using drm_edid_free().
+> >>>>>> + *
+> >>>>>> + * Return: Pointer to valid EDID or NULL if we couldn't find any.
+> >>>>>> + */
+> >>>>>> +const struct drm_edid *drm_get_acpi_edid(struct drm_connector *connector)
+> >>>>>> +{
+> >>>>>> +	const struct drm_edid *drm_edid;
+> >>>>>> +
+> >>>>>> +	switch (connector->connector_type) {
+> >>>>>> +	case DRM_MODE_CONNECTOR_LVDS:
+> >>>>>> +	case DRM_MODE_CONNECTOR_eDP:
+> >>>>>> +		break;
+> >>>>>> +	default:
+> >>>>>> +		return NULL;
+> >>>>>> +	}
+> >>>>>> +
+> >>>>>> +	if (connector->force == DRM_FORCE_OFF)
+> >>>>>> +		return NULL;
+> >>>>>> +
+> >>>>>> +	drm_edid = drm_edid_read_custom(connector, drm_do_probe_acpi_edid, connector->dev);
+> >>>>>> +
+> >>>>>> +	/* Note: Do *not* call connector updates here. */
+> >>>>>> +
+> >>>>>> +	return drm_edid;
+> >>>>>> +}
+> >>>>>> +EXPORT_SYMBOL(drm_get_acpi_edid);
+> >>>>>> +
+> >>>>>>    /**
+> >>>>>>     * drm_edid_read_custom - Read EDID data using given EDID block read function
+> >>>>>>     * @connector: Connector to use
+> >>>>>> diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
+> >>>>>> index 7923bc00dc7a..ca41be289fc6 100644
+> >>>>>> --- a/include/drm/drm_edid.h
+> >>>>>> +++ b/include/drm/drm_edid.h
+> >>>>>> @@ -410,6 +410,7 @@ struct edid *drm_do_get_edid(struct drm_connector *connector,
+> >>>>>>    	void *data);
+> >>>>>>    struct edid *drm_get_edid(struct drm_connector *connector,
+> >>>>>>    			  struct i2c_adapter *adapter);
+> >>>>>> +const struct drm_edid *drm_get_acpi_edid(struct drm_connector *connector);
+> >>>>>
+> >>>>> There's a comment
+> >>>>>
+> >>>>> /* Interface based on struct drm_edid */
+> >>>>>
+> >>>>> towards the end of the file, gathering all the new API under it.
+> >>>>>
+> >>>>> Other than that, LGTM,
+> >>>>>
+> >>>>> BR,
+> >>>>> Jani.
+> >>>>>
+> >>>>>>    u32 drm_edid_get_panel_id(struct i2c_adapter *adapter);
+> >>>>>>    struct edid *drm_get_edid_switcheroo(struct drm_connector *connector,
+> >>>>>>    				     struct i2c_adapter *adapter);
+> >>>>>
+> >>>>> -- 
+> >>>>> Jani Nikula, Intel
+> >>>>
+> >>>
+> >> 
+> >
+> 
+> -- 
+> Jani Nikula, Intel
 
-Patches fixing its most apparent functional issues (for example, [2]) don't
-actually address much of the above.
-
-Granted, at the time it was introduced, there was no alternative, but
-there is the AML debugger in the kernel now and there is the configfs
-interface allowing custom ACPI tables to be loaded.  The former can be
-used for extensive AML debugging and the latter can be use for testing
-new AML. [3]
-
-Accordingly, drop custom_method along with its (outdated anyway)
-documentation.
-
-Link: https://lore.kernel.org/linux-acpi/20221227063335.61474-1-zh.nvgt@gmail.com/ # [1]
-https://lore.kernel.org/linux-acpi/20231111132402.4142-1-shiqiang.deng213@gmail.com/ [2]
-https://stackoverflow.com/questions/62849113/how-to-unload-an-overlay-loaded-using-acpi-config-sysfs # [3]
-Reported-by: Hang Zhang <zh.nvgt@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
----
-
-v2 -> v3:
-   * Update changelog.
-   * Add R-by from Rui.
-
-v1 -> v2: Update index.rst too.
-
----
- Documentation/firmware-guide/acpi/index.rst              |    1 
- Documentation/firmware-guide/acpi/method-customizing.rst |   89 ------------
- drivers/acpi/Kconfig                                     |   14 --
- drivers/acpi/Makefile                                    |    1 
- drivers/acpi/custom_method.c                             |  103 ---------------
- 5 files changed, 208 deletions(-)
-
-Index: linux-pm/drivers/acpi/Kconfig
-===================================================================
---- linux-pm.orig/drivers/acpi/Kconfig
-+++ linux-pm/drivers/acpi/Kconfig
-@@ -449,20 +449,6 @@ config ACPI_HED
- 	  which is used to report some hardware errors notified via
- 	  SCI, mainly the corrected errors.
- 
--config ACPI_CUSTOM_METHOD
--	tristate "Allow ACPI methods to be inserted/replaced at run time"
--	depends on DEBUG_FS
--	help
--	  This debug facility allows ACPI AML methods to be inserted and/or
--	  replaced without rebooting the system. For details refer to:
--	  Documentation/firmware-guide/acpi/method-customizing.rst.
--
--	  NOTE: This option is security sensitive, because it allows arbitrary
--	  kernel memory to be written to by root (uid=0) users, allowing them
--	  to bypass certain security measures (e.g. if root is not allowed to
--	  load additional kernel modules after boot, this feature may be used
--	  to override that restriction).
--
- config ACPI_BGRT
- 	bool "Boottime Graphics Resource Table support"
- 	depends on EFI && (X86 || ARM64)
-Index: linux-pm/drivers/acpi/Makefile
-===================================================================
---- linux-pm.orig/drivers/acpi/Makefile
-+++ linux-pm/drivers/acpi/Makefile
-@@ -101,7 +101,6 @@ obj-$(CONFIG_ACPI_SBS)		+= sbshc.o
- obj-$(CONFIG_ACPI_SBS)		+= sbs.o
- obj-$(CONFIG_ACPI_HED)		+= hed.o
- obj-$(CONFIG_ACPI_EC_DEBUGFS)	+= ec_sys.o
--obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
- obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
- obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
- obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
-Index: linux-pm/drivers/acpi/custom_method.c
-===================================================================
---- linux-pm.orig/drivers/acpi/custom_method.c
-+++ /dev/null
-@@ -1,103 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * custom_method.c - debugfs interface for customizing ACPI control method
-- */
--
--#include <linux/init.h>
--#include <linux/module.h>
--#include <linux/kernel.h>
--#include <linux/uaccess.h>
--#include <linux/debugfs.h>
--#include <linux/acpi.h>
--#include <linux/security.h>
--
--#include "internal.h"
--
--MODULE_LICENSE("GPL");
--
--static struct dentry *cm_dentry;
--
--/* /sys/kernel/debug/acpi/custom_method */
--
--static ssize_t cm_write(struct file *file, const char __user *user_buf,
--			size_t count, loff_t *ppos)
--{
--	static char *buf;
--	static u32 max_size;
--	static u32 uncopied_bytes;
--
--	struct acpi_table_header table;
--	acpi_status status;
--	int ret;
--
--	ret = security_locked_down(LOCKDOWN_ACPI_TABLES);
--	if (ret)
--		return ret;
--
--	if (!(*ppos)) {
--		/* parse the table header to get the table length */
--		if (count <= sizeof(struct acpi_table_header))
--			return -EINVAL;
--		if (copy_from_user(&table, user_buf,
--				   sizeof(struct acpi_table_header)))
--			return -EFAULT;
--		uncopied_bytes = max_size = table.length;
--		/* make sure the buf is not allocated */
--		kfree(buf);
--		buf = kzalloc(max_size, GFP_KERNEL);
--		if (!buf)
--			return -ENOMEM;
--	}
--
--	if (buf == NULL)
--		return -EINVAL;
--
--	if ((*ppos > max_size) ||
--	    (*ppos + count > max_size) ||
--	    (*ppos + count < count) ||
--	    (count > uncopied_bytes)) {
--		kfree(buf);
--		buf = NULL;
--		return -EINVAL;
--	}
--
--	if (copy_from_user(buf + (*ppos), user_buf, count)) {
--		kfree(buf);
--		buf = NULL;
--		return -EFAULT;
--	}
--
--	uncopied_bytes -= count;
--	*ppos += count;
--
--	if (!uncopied_bytes) {
--		status = acpi_install_method(buf);
--		kfree(buf);
--		buf = NULL;
--		if (ACPI_FAILURE(status))
--			return -EINVAL;
--		add_taint(TAINT_OVERRIDDEN_ACPI_TABLE, LOCKDEP_NOW_UNRELIABLE);
--	}
--
--	return count;
--}
--
--static const struct file_operations cm_fops = {
--	.write = cm_write,
--	.llseek = default_llseek,
--};
--
--static int __init acpi_custom_method_init(void)
--{
--	cm_dentry = debugfs_create_file("custom_method", S_IWUSR,
--					acpi_debugfs_dir, NULL, &cm_fops);
--	return 0;
--}
--
--static void __exit acpi_custom_method_exit(void)
--{
--	debugfs_remove(cm_dentry);
--}
--
--module_init(acpi_custom_method_init);
--module_exit(acpi_custom_method_exit);
-Index: linux-pm/Documentation/firmware-guide/acpi/method-customizing.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/method-customizing.rst
-+++ /dev/null
-@@ -1,89 +0,0 @@
--.. SPDX-License-Identifier: GPL-2.0
--
--=======================================
--Linux ACPI Custom Control Method How To
--=======================================
--
--:Author: Zhang Rui <rui.zhang@intel.com>
--
--
--Linux supports customizing ACPI control methods at runtime.
--
--Users can use this to:
--
--1. override an existing method which may not work correctly,
--   or just for debugging purposes.
--2. insert a completely new method in order to create a missing
--   method such as _OFF, _ON, _STA, _INI, etc.
--
--For these cases, it is far simpler to dynamically install a single
--control method rather than override the entire DSDT, because kernel
--rebuild/reboot is not needed and test result can be got in minutes.
--
--.. note::
--
--  - Only ACPI METHOD can be overridden, any other object types like
--    "Device", "OperationRegion", are not recognized. Methods
--    declared inside scope operators are also not supported.
--
--  - The same ACPI control method can be overridden for many times,
--    and it's always the latest one that used by Linux/kernel.
--
--  - To get the ACPI debug object output (Store (AAAA, Debug)),
--    please run::
--
--      echo 1 > /sys/module/acpi/parameters/aml_debug_output
--
--
--1. override an existing method
--==============================
--a) get the ACPI table via ACPI sysfs I/F. e.g. to get the DSDT,
--   just run "cat /sys/firmware/acpi/tables/DSDT > /tmp/dsdt.dat"
--b) disassemble the table by running "iasl -d dsdt.dat".
--c) rewrite the ASL code of the method and save it in a new file,
--d) package the new file (psr.asl) to an ACPI table format.
--   Here is an example of a customized \_SB._AC._PSR method::
--
--      DefinitionBlock ("", "SSDT", 1, "", "", 0x20080715)
--      {
--         Method (\_SB_.AC._PSR, 0, NotSerialized)
--         {
--            Store ("In AC _PSR", Debug)
--            Return (ACON)
--         }
--      }
--
--   Note that the full pathname of the method in ACPI namespace
--   should be used.
--e) assemble the file to generate the AML code of the method.
--   e.g. "iasl -vw 6084 psr.asl" (psr.aml is generated as a result)
--   If parameter "-vw 6084" is not supported by your iASL compiler,
--   please try a newer version.
--f) mount debugfs by "mount -t debugfs none /sys/kernel/debug"
--g) override the old method via the debugfs by running
--   "cat /tmp/psr.aml > /sys/kernel/debug/acpi/custom_method"
--
--2. insert a new method
--======================
--This is easier than overriding an existing method.
--We just need to create the ASL code of the method we want to
--insert and then follow the step c) ~ g) in section 1.
--
--3. undo your changes
--====================
--The "undo" operation is not supported for a new inserted method
--right now, i.e. we can not remove a method currently.
--For an overridden method, in order to undo your changes, please
--save a copy of the method original ASL code in step c) section 1,
--and redo step c) ~ g) to override the method with the original one.
--
--
--.. note:: We can use a kernel with multiple custom ACPI method running,
--   But each individual write to debugfs can implement a SINGLE
--   method override. i.e. if we want to insert/override multiple
--   ACPI methods, we need to redo step c) ~ g) for multiple times.
--
--.. note:: Be aware that root can mis-use this driver to modify arbitrary
--   memory and gain additional rights, if root's privileges got
--   restricted (for example if root is not allowed to load additional
--   modules after boot).
-Index: linux-pm/Documentation/firmware-guide/acpi/index.rst
-===================================================================
---- linux-pm.orig/Documentation/firmware-guide/acpi/index.rst
-+++ linux-pm/Documentation/firmware-guide/acpi/index.rst
-@@ -14,7 +14,6 @@ ACPI Support
-    dsd/phy
-    enumeration
-    osi
--   method-customizing
-    method-tracing
-    DSD-properties-rules
-    debug
-
-
-
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
 
