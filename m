@@ -1,223 +1,189 @@
-Return-Path: <linux-acpi+bounces-3584-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3585-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF07A8578C9
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 10:26:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD9F857BB0
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 12:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B878B2851EA
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 09:26:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E371C22154
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 11:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BB01B969;
-	Fri, 16 Feb 2024 09:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE3777F07;
+	Fri, 16 Feb 2024 11:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QfSKeX26"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Li7BNrv4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47CE1B953;
-	Fri, 16 Feb 2024 09:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E6177A0F;
+	Fri, 16 Feb 2024 11:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708075558; cv=none; b=KzZ6RwSWHC0w48ar9jIs38bvFQEqy7i0B06DDk+sJIq5RuT/A68A03D5dLoaQVNVSKYw3ZN7nuyeBOPWyPwbb6Paf6U/VFYHeqOlFfalqLN9bCM9IeSce9iYhmZCNpYNxpasjrz3oEir1vW8L1IYluZi6qImet4NYDgxem7uYA8=
+	t=1708083069; cv=none; b=oezQtxR0uD9jH3JvskO0g/NdQmdBYAN29IXuBQnMxHlVv+qSqpA22LhYKH5MgRFOPlOF6Il6dCwXTOnmC2KEpVEVSvk8EerCW0CAiisR/OchWYLEiaQC04HyZLc6IbyO42lQrTTts7AapyGW5YpMQe/RByo3W3l2yZaSQcOC8dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708075558; c=relaxed/simple;
-	bh=Jb6VOAald6OjrfksneH8UVezoPqu8frcJgTS0+7mp64=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MowsCla7A9zbhEE7fNAqEm2geWyDtp06p97NLubsHSoE8u9ru9os/Eb8LZMSL++aPE05QjAp56v4dAM6mlU7biqJHG9194sSTVrEAXseYAE530YZSxGo4EDEk6U34QNgnhXH5Xr+aHUBW/mJcPKxz4bXHbRFGNusVzso7f2cwug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QfSKeX26; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708075555; x=1739611555;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Jb6VOAald6OjrfksneH8UVezoPqu8frcJgTS0+7mp64=;
-  b=QfSKeX26fY+3r3VxPufV2zR9BPFWjmBRyoKrwSnYk98A24MDrRQlv8eR
-   Rssu6WqalnNuvEwbup0yFoZdm2L/HAYUhehUWgIPTOk8fUi7W07RbEF6i
-   MbpOyl0w6VUNH6BS9roNqEj78TWImBdBxuAx2cnHqF3PwfH2nhK/TE9NV
-   nXPT3+O3jiyfaTAmoDI7hCk/9sX4PgHSoKuIyLrSA8rEnLD+UN5zseWd2
-   ZPXKPwh0kja3B2xdKqYfE2ZGqqNiThUgtGzgWIbXH7MMsmLYNE9TNlyQW
-   NWao24WNGS+qmi6x91z5l9VfqQRNdunaSeBWwjTfa8BSOFrCf22qDVFHT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="27652291"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="27652291"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 01:25:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="3715529"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 16 Feb 2024 01:25:49 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rauTb-00018m-1N;
-	Fri, 16 Feb 2024 09:25:47 +0000
-Date: Fri, 16 Feb 2024 17:24:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, amd-gfx@lists.freedesktop.org,
-	"open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
-	linux-fbdev@vger.kernel.org, nouveau@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, intel-xe@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Melissa Wen <mwen@igalia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-Message-ID: <202402161747.TXWr5bw4-lkp@intel.com>
-References: <20240214215756.6530-2-mario.limonciello@amd.com>
+	s=arc-20240116; t=1708083069; c=relaxed/simple;
+	bh=TJamkMeETVXAU6QkC7A8Ognn1K46paOc5DcsQ8n28aw=;
+	h=Content-Type:Mime-Version:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=XzmrKjQRZOec6rh2gb7oBdGCxZ38GWR2zMLQ2SIde2jwNqNCs8uzNKGNo2Edk3zJdJPcP7KMA1Qu9oc73atmjQ0+hZ9ZS2Odz76Wb9F7oxTarZa3+jVHDEhzc363mvWWEfznw0AFQPsVx1mA4DxtBVfY1h/omUq5R20vyNZimXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Li7BNrv4; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a3d0d26182dso206566966b.1;
+        Fri, 16 Feb 2024 03:31:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708083066; x=1708687866; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CeAZhE7j4dRyX+kzFFWa3n1YxsCqKudIIvx3LQHUXoE=;
+        b=Li7BNrv4q2VI1du3vLMHylWl+JrA2qipZETw4SN4+vUVBuNPKSjd5z6/lNiR7wheSv
+         iO5qUaI2J7kr4hmtwe8j8OkuuJGtv3tLEFj5SFWioRpD87ZA1clL04MS3TdGNAqONT3d
+         pYCPOIGg4pRCAkmAb0YYu4VVzy5OnOuoFvfRXOFxvFhWs6IIu0ZRETsMvGatD2TO5WVm
+         EV0y5U+5oM2BIKR5BBy4GOa0p5pKiD+8zEozt9i6zgvYhJcZhB/fE6uw29W1+ChmVqSS
+         9RwAlIF5sXrMf3+9AjhkPhTxGIC+rOq52q5xkdcTojQTj+3pPJ4Qc5JWrwfwRHzEWfry
+         urlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708083066; x=1708687866;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CeAZhE7j4dRyX+kzFFWa3n1YxsCqKudIIvx3LQHUXoE=;
+        b=HB4uwJy2GXndECz0I5tr6hWmOGszGILrMRVQvvddr3SlEoVo88S+ONhqldcXRcWrD/
+         PpQwpu/RhiZGgdjVn6qhuHINrHcd3GajlD4Yn7PyrACG1q/SB1OaNGsBxmdLz+7dT5rw
+         CwBuWFB9x833vKQy+wclCdZjse1crIBA7tUBU0+XVmtM73WuyA7wnfIKOmurxdrew4jg
+         28oQwn92UNnxWILAdF+89dvbIKRUJhHJAMVbigCVNJgNm+6yBWoV0DgtV3U0QouS6svl
+         jUbaJ8CKiow3nOVcn2br9qTp6LJxiIEbnCRO+qe/kbxzyLqk1br23eec0YAvRPsjdzOR
+         CtWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWmtOjIKyEoPepZk5Th/qwGodhpfIaHIvqUXNXUSZafs26h/Eju4Xmzxep9kWIZ8SXiFMYnHpQ7jXlCpPhBD1xwR77HU1aegOlljShBrgQ4EFvpt2TMWQytq18nE7BFoyjxmhXjMZa2FLN5RiqJq0++3M0BUNZRfLdWesCZokCorhavWVJ76AFQGpWdz4xUtfHtx3ozyNdflu0wGjIRW2BVZ2qyhbqzY2pPLupo7Q5sInLOKhHJTRapC4hiYE7RFqhKrbHU4Jh+xMm89ejTI72yr29KusSFqhdno3hJTWE6gtFy2jhOzxi+7ct/ITKnlR/2FVagnoqIWZr9oB0fEtLdMHFftUkyHsMqd3qpF8Z6yaDEfrHBegWRbGI=
+X-Gm-Message-State: AOJu0YySID0z82NQ5rnZS7KVunKsbfhiRr/4cV0TIGR/CVwvf2RfkHdP
+	/ruX/beMCmxrvfWMVVvO2if7sSHazbvFZH9mArmmWE5VmT7bueM3
+X-Google-Smtp-Source: AGHT+IGXWz97gD5gN+VSAVL7iY1zPTDMUokWZgtmUOJLcJDV64j1IaqQ0abnS0651OrxU9XfbwlwlQ==
+X-Received: by 2002:a17:906:11cc:b0:a3d:2cd0:c17a with SMTP id o12-20020a17090611cc00b00a3d2cd0c17amr3351354eja.58.1708083065855;
+        Fri, 16 Feb 2024 03:31:05 -0800 (PST)
+Received: from localhost (p200300e41f147f00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f14:7f00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ts4-20020a170907c5c400b00a3df003b6a9sm242282ejc.119.2024.02.16.03.31.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Feb 2024 03:31:05 -0800 (PST)
+Content-Type: multipart/signed;
+ boundary=b7223a00e4ef0df93c47d9276017bbb483a03ab38a891db7b003e5591ffa;
+ micalg=pgp-sha256; protocol="application/pgp-signature"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214215756.6530-2-mario.limonciello@amd.com>
+Mime-Version: 1.0
+Date: Fri, 16 Feb 2024 12:31:03 +0100
+Message-Id: <CZ6GWUQ73SSL.6HP29PU9Q7R@gmail.com>
+To: "Mark Hasemeyer" <markhas@chromium.org>, "LKML"
+ <linux-kernel@vger.kernel.org>
+Cc: "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Rob Herring"
+ <robh@kernel.org>, "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, "Andy Shevchenko"
+ <andriy.shevchenko@intel.com>, "Raul Rangel" <rrangel@chromium.org>,
+ "Tzung-Bi Shih" <tzungbi@kernel.org>, "AKASHI Takahiro"
+ <takahiro.akashi@linaro.org>, "Alexandre TORGUE" <alexandre.torgue@st.com>,
+ "Alim Akhtar" <alim.akhtar@samsung.com>, "Andre Przywara"
+ <andre.przywara@arm.com>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>, "Baoquan He"
+ <bhe@redhat.com>, "Bartosz Golaszewski" <brgl@bgdev.pl>, "Benson Leung"
+ <bleung@chromium.org>, "Bhanu Prakash Maiya" <bhanumaiya@chromium.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Chen-Yu Tsai"
+ <wenst@chromium.org>, "Conor Dooley" <conor+dt@kernel.org>, "Daniel Scally"
+ <djrscally@gmail.com>, "David Gow" <davidgow@google.com>, "Enric Balletbo i
+ Serra" <eballetbo@gmail.com>, "Frank Rowand" <frowand.list@gmail.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Guenter Roeck"
+ <groeck@chromium.org>, "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
+ "Heiko Stuebner" <heiko@sntech.de>, "Jonathan Hunter"
+ <jonathanh@nvidia.com>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Lee Jones" <lee@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, "Linus Walleij" <linus.walleij@linaro.org>,
+ "Manivannan Sadhasivam" <mani@kernel.org>, "Mark Brown"
+ <broonie@kernel.org>, "Matthias Brugger" <matthias.bgg@gmail.com>, "Michal
+ Simek" <michal.simek@amd.com>, "Mika Westerberg"
+ <mika.westerberg@linux.intel.com>, "Nick Hawkins" <nick.hawkins@hpe.com>,
+ "Prashant Malani" <pmalani@chromium.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Rob Barnes" <robbarnes@google.com>, "Rob Herring"
+ <robh+dt@kernel.org>, "Sakari Ailus" <sakari.ailus@linux.intel.com>,
+ "Stephen Boyd" <swboyd@chromium.org>, "Takashi Iwai" <tiwai@suse.de>, "Tony
+ Lindgren" <tony@atomide.com>, =?utf-8?q?Uwe_Kleine-K=C3=B6nig?=
+ <u.kleine-koenig@pengutronix.de>, "Wolfram Sang" <wsa@kernel.org>,
+ <chrome-platform@lists.linux.dev>, <cros-qcom-dts-watchers@chromium.org>,
+ <devicetree@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-gpio@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-tegra@vger.kernel.org>
+Subject: Re: [PATCH v3 00/24] Improve IRQ wake capability reporting and
+ update the cros_ec driver to use it
+From: "Thierry Reding" <thierry.reding@gmail.com>
+X-Mailer: aerc 0.16.0-1-0-g560d6168f0ed-dirty
+References: <20231226192149.1830592-1-markhas@chromium.org>
+In-Reply-To: <20231226192149.1830592-1-markhas@chromium.org>
 
-Hi Mario,
+--b7223a00e4ef0df93c47d9276017bbb483a03ab38a891db7b003e5591ffa
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-kernel test robot noticed the following build warnings:
+On Tue Dec 26, 2023 at 8:21 PM CET, Mark Hasemeyer wrote:
+> Currently the cros_ec driver assumes that its associated interrupt is
+> wake capable. This is an incorrect assumption as some Chromebooks use a
+> separate wake pin, while others overload the interrupt for wake and IO.
+> This patch train updates the driver to query the underlying ACPI/DT data
+> to determine whether or not the IRQ should be enabled for wake.
+>
+> Both the device tree and ACPI systems have methods for reporting IRQ
+> wake capability. In device tree based systems, a node can advertise
+> itself as a 'wakeup-source'. In ACPI based systems, GpioInt and
+> Interrupt resource descriptors can use the 'SharedAndWake' or
+> 'ExclusiveAndWake' share types.
+>
+> Some logic is added to the platform, ACPI, and DT subsystems to more
+> easily pipe wakeirq information up to the driver.
+>
+> Changes in v3:
+> -Rebase on linux-next
+> -See each patch for patch specific changes
+>
+> Changes in v2:
+> -Rebase on linux-next
+> -Add cover letter
+> -See each patch for patch specific changes
+>
+> Mark Hasemeyer (24):
+[...]
+>   ARM: dts: tegra: Enable cros-ec-spi as wake source
+[...]
+>   arm64: dts: tegra: Enable cros-ec-spi as wake source
+[...]
 
-[auto build test WARNING on drm-misc/drm-misc-next]
-[also build test WARNING on drm-intel/for-linux-next-fixes drm-tip/drm-tip linus/master v6.8-rc4 next-20240216]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Both patches applied, thanks.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/drm-Stop-using-select-ACPI_VIDEO-in-all-drivers/20240215-055936
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20240214215756.6530-2-mario.limonciello%40amd.com
-patch subject: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-config: powerpc-kismet-CONFIG_FB_BACKLIGHT-CONFIG_PMAC_BACKLIGHT-0-0 (https://download.01.org/0day-ci/archive/20240216/202402161747.TXWr5bw4-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20240216/202402161747.TXWr5bw4-lkp@intel.com/reproduce)
+Thierry
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402161747.TXWr5bw4-lkp@intel.com/
+--b7223a00e4ef0df93c47d9276017bbb483a03ab38a891db7b003e5591ffa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for FB_BACKLIGHT when selected by PMAC_BACKLIGHT
-   .config:247:warning: symbol value 'n' invalid for AIC79XX_DEBUG_MASK
-   .config:251:warning: symbol value 'n' invalid for PANEL_LCD_PIN_E
-   .config:262:warning: symbol value 'n' invalid for SATA_MOBILE_LPM_POLICY
-   .config:356:warning: symbol value 'n' invalid for PSTORE_BLK_MAX_REASON
-   .config:407:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_16550_PHYSADDR
-   .config:462:warning: symbol value 'n' invalid for KFENCE_SAMPLE_INTERVAL
-   .config:563:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_HVSI_VTERMNO
-   .config:663:warning: symbol value 'n' invalid for DRM_XE_JOB_TIMEOUT_MIN
-   .config:677:warning: symbol value 'n' invalid for CRYPTO_DEV_QCE_SW_MAX_LEN
-   .config:710:warning: symbol value 'n' invalid for AIC79XX_CMDS_PER_DEVICE
-   .config:725:warning: symbol value 'n' invalid for DATA_SHIFT
-   .config:765:warning: symbol value 'n' invalid for PANEL_LCD_PIN_SDA
-   .config:793:warning: symbol value 'n' invalid for PANEL_LCD_CHARSET
-   .config:854:warning: symbol value 'n' invalid for SND_AC97_POWER_SAVE_DEFAULT
-   .config:904:warning: symbol value 'n' invalid for MAGIC_SYSRQ_DEFAULT_ENABLE
-   .config:922:warning: symbol value 'n' invalid for DRM_I915_MAX_REQUEST_BUSYWAIT
-   .config:958:warning: symbol value 'n' invalid for SND_AT73C213_TARGET_BITRATE
-   .config:974:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MIN
-   .config:986:warning: symbol value 'n' invalid for VMCP_CMA_SIZE
-   .config:1270:warning: symbol value 'n' invalid for MTDRAM_ERASE_SIZE
-   .config:1365:warning: symbol value 'n' invalid for SERIAL_UARTLITE_NR_UARTS
-   .config:1398:warning: symbol value 'n' invalid for AIC79XX_RESET_DELAY_MS
-   .config:1548:warning: symbol value 'n' invalid for LEGACY_PTY_COUNT
-   .config:1673:warning: symbol value 'n' invalid for LOWMEM_CAM_NUM
-   .config:1723:warning: symbol value 'n' invalid for AIC7XXX_RESET_DELAY_MS
-   .config:1805:warning: symbol value 'n' invalid for PPC_MEMCONS_OUTPUT_SIZE
-   .config:1874:warning: symbol value 'n' invalid for LOWMEM_SIZE
-   .config:1899:warning: symbol value 'n' invalid for IBM_EMAC_POLL_WEIGHT
-   .config:2030:warning: symbol value 'n' invalid for PANEL_PROFILE
-   .config:2042:warning: symbol value 'n' invalid for DRM_I915_STOP_TIMEOUT
-   .config:2054:warning: symbol value 'n' invalid for MTD_REDBOOT_DIRECTORY_BLOCK
-   .config:2180:warning: symbol value 'n' invalid for KCOV_IRQ_AREA_SIZE
-   .config:2304:warning: symbol value 'n' invalid for SND_HDA_PREALLOC_SIZE
-   .config:2510:warning: symbol value 'n' invalid for PANEL_LCD_BWIDTH
-   .config:2523:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MAX
-   .config:2770:warning: symbol value 'n' invalid for PANEL_PARPORT
-   .config:2864:warning: symbol value 'n' invalid for SND_SOC_SOF_DEBUG_IPC_FLOOD_TEST_NUM
-   .config:2868:warning: symbol value 'n' invalid for NOUVEAU_DEBUG_DEFAULT
-   .config:3081:warning: symbol value 'n' invalid for KCSAN_REPORT_ONCE_IN_MS
-   .config:3189:warning: symbol value 'n' invalid for KCSAN_UDELAY_INTERRUPT
-   .config:3214:warning: symbol value 'n' invalid for PANEL_LCD_PIN_BL
-   .config:3227:warning: symbol value 'n' invalid for PSTORE_BLK_CONSOLE_SIZE
-   .config:3237:warning: symbol value 'n' invalid for DEBUG_OBJECTS_ENABLE_DEFAULT
-   .config:3244:warning: symbol value 'n' invalid for INITRAMFS_ROOT_GID
-   .config:3335:warning: symbol value 'n' invalid for FTRACE_RECORD_RECURSION_SIZE
-   .config:3362:warning: symbol value 'n' invalid for ATM_FORE200E_TX_RETRY
-   .config:3402:warning: symbol value 'n' invalid for FB_OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:3439:warning: symbol value 'n' invalid for BOOKE_WDT_DEFAULT_TIMEOUT
-   .config:3677:warning: symbol value 'n' invalid for KCSAN_UDELAY_TASK
-   .config:3778:warning: symbol value 'n' invalid for MMC_BLOCK_MINORS
-   .config:3782:warning: symbol value 'n' invalid for INET_TABLE_PERTURB_ORDER
-   .config:3825:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_SYNC
-   .config:3919:warning: symbol value 'n' invalid for SERIAL_AR933X_NR_UARTS
-   .config:3954:warning: symbol value 'n' invalid for UCLAMP_BUCKETS_COUNT
-   .config:3993:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_16550_STRIDE
-   .config:4070:warning: symbol value 'n' invalid for SERIAL_MCF_BAUDRATE
-   .config:4112:warning: symbol value 'n' invalid for STACK_MAX_DEFAULT_SIZE_MB
-   .config:4120:warning: symbol value 'n' invalid for PPC_MEMCONS_INPUT_SIZE
-   .config:4130:warning: symbol value 'n' invalid for IP_VS_MH_TAB_INDEX
-   .config:4143:warning: symbol value 'n' invalid for DE2104X_DSL
-   .config:4155:warning: symbol value 'n' invalid for BLK_DEV_RAM_COUNT
-   .config:4293:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_CPM_ADDR
-   .config:4419:warning: symbol value 'n' invalid for IP_VS_SH_TAB_BITS
-   .config:4574:warning: symbol value 'n' invalid for USBIP_VHCI_HC_PORTS
-   .config:4575:warning: symbol value 'n' invalid for INPUT_MOUSEDEV_SCREEN_X
-   .config:4662:warning: symbol value 'n' invalid for PANEL_LCD_PIN_RW
-   .config:4698:warning: symbol value 'n' invalid for RIONET_RX_SIZE
-   .config:4935:warning: symbol value 'n' invalid for RADIO_TYPHOON_PORT
-   .config:5036:warning: symbol value 'n' invalid for IBM_EMAC_TXB
-   .config:5067:warning: symbol value 'n' invalid for SERIAL_TXX9_NR_UARTS
-   .config:5356:warning: symbol value 'n' invalid for SND_MAX_CARDS
-   .config:5536:warning: symbol value 'n' invalid for DRM_I915_FENCE_TIMEOUT
-   .config:5559:warning: symbol value 'n' invalid for TTY_PRINTK_LEVEL
-   .config:5599:warning: symbol value 'n' invalid for RCU_BOOST_DELAY
-   .config:5728:warning: symbol value 'n' invalid for MIPS_EJTAG_FDC_KGDB_CHAN
-   .config:5827:warning: symbol value 'n' invalid for KDB_DEFAULT_ENABLE
-   .config:5847:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_MAXPORTS
-   .config:6021:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_EHV_BC_HANDLE
-   .config:6123:warning: symbol value 'n' invalid for PANEL_LCD_HWIDTH
-   .config:6125:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MAX
-   .config:6200:warning: symbol value 'n' invalid for SCSI_MESH_RESET_DELAY_MS
-   .config:6259:warning: symbol value 'n' invalid for DRM_I915_HEARTBEAT_INTERVAL
-   .config:6266:warning: symbol value 'n' invalid for KCSAN_SKIP_WATCH
-   .config:6290:warning: symbol value 'n' invalid for PSTORE_BLK_KMSG_SIZE
-   .config:6350:warning: symbol value 'n' invalid for CRYPTO_DEV_FSL_CAAM_INTC_TIME_THLD
-   .config:6510:warning: symbol value 'n' invalid for SERIAL_8250_RUNTIME_UARTS
-   .config:6615:warning: symbol value 'n' invalid for ARCH_MMAP_RND_COMPAT_BITS
-   .config:6677:warning: symbol value 'n' invalid for XEN_MEMORY_HOTPLUG_LIMIT
-   .config:6721:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_MAX_TAGS
-   .config:6793:warning: symbol value 'n' invalid for RADIO_TRUST_PORT
-   .config:6835:warning: symbol value 'n' invalid for MTD_UBI_WL_THRESHOLD
-   .config:6860:warning: symbol value 'n' invalid for RIONET_TX_SIZE
-   .config:6892:warning: symbol value 'n' invalid for SERIAL_SH_SCI_NR_UARTS
-   .config:6940:warning: symbol value 'n' invalid for VIDEO_VIVID_MAX_DEVS
-   .config:7211:warning: symbol value 'n' invalid for CMA_SIZE_PERCENTAGE
-   .config:7249:warning: symbol value 'n' invalid for OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:7375:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MIN
-   .config:7466:warning: symbol value 'n' invalid for DVB_MAX_ADAPTERS
-   .config:7471:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_MAX_TAGS
-   .config:7482:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
+-----BEGIN PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmXPR3kACgkQ3SOs138+
+s6FXyA//QEgOaLPJMLtFwzEUNlO0/8MF3SAbMW7kCkEt3S3OMXQ3wtyOeIC3nlyN
+zwxSqhOzC1I/qdbqdnc5ejbrPWB/9d6ohPyc45vT19QAS79mc9nB2ZQm3AoVlPaA
+HGQhrtMEx6KRBu+GjS9Sz9YQjBftSWl/kr8oAwXOs6wtg2m06tfm00LF3bVFLQEu
+aTZ1Jal4+fIpK0OK/yz/yhczCMQCbVnKBClkwuoKQWJpxh7z/xYCY2Gm50VD4sN7
+F60KcEQzW8DfY5dGd1eT9oY7UqqA+yoRDGNN7KNYYurFPoEL6jZqvSts1J26pp4u
+MjFQS2jY6bjbQFR0RRUwwjPRRmUXRcGpW3qHN/+ajof0pXgRa/rWnthIB2boTs4Q
+uApu3k81kwLXVgZZh9YRXCwcYf8sgMo7Qj849I8e5vRi/MuL6jwKyU7P8SwRrWRd
+xIY0v+EKupY6iDvxPApV4b5Mw8gyxbRO6Kcm5Ep7Z8DBCeCr+g3iZFHVUXpG3vll
+PjwZW9bC+U9kcn/W5qoJrdKqGFAsaqks7fzWoIBIX5rVNbNSNZpG7Dwi/EeNUmak
+T5tJqIr3VbtsNd0ni6f42Efs9z/m0vsUKL6H5mGZoX3oTGXvzO91XF2gfFMEqOO9
+8cxE1rJREy1F73S7VZWOE46nyNPlsD6qm5+fApxvV3eKGRO5wfU=
+=fOyD
+-----END PGP SIGNATURE-----
+
+--b7223a00e4ef0df93c47d9276017bbb483a03ab38a891db7b003e5591ffa--
 
