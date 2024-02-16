@@ -1,137 +1,158 @@
-Return-Path: <linux-acpi+bounces-3580-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3581-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2BB8575C3
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 06:54:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543918576CF
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 08:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83DE71C22599
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 05:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA5F2836FC
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 07:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2A210A14;
-	Fri, 16 Feb 2024 05:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E518D16427;
+	Fri, 16 Feb 2024 07:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="FIk2/7ny"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="YxaKVr5v"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADA0134A0
-	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 05:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B0814F64
+	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 07:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708062872; cv=none; b=PGD2dc3n+NmTPG6w2x7WHRjysynsRKXyBehsVMExul4ZFb05S+p3+BIRefcs5Uoscly1lXBXJupkNO4P7tsjSYuHw+h8wLD5AY8afHELZSp1AjUN5bojh/j/NORPgeHm3WJjTlh5BoA5we1UtvG5vyTQbFOVHvyGNQUCXkyJNZk=
+	t=1708068552; cv=none; b=pF0LRvIsOV6xfaWTB0JqTitagkF7CLGIljrz23ct8sInTeTJLrY+md2NJ9LtvPmU/TBNtSIZaMS3VnOQIw7UZJVHowVkZzrmNBBOzIBuKozqklPsLIir5SzOMKJAgF6OKzdipWV8xaXzf/vKYR6/t31nTWKGAvveBpALwTZi/II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708062872; c=relaxed/simple;
-	bh=q1gtVAj3lvEe8b98I0528UWfo/5v+mmHvNmP7iA02S0=;
-	h=Mime-Version:Subject:From:To:CC:In-Reply-To:Message-ID:Date:
-	 Content-Type:References; b=XDf+Dmj0iKhK+AJh7zxdKBasx4EFIx25SkGfgS5AcKyIcvFKmNxcLIc75Q+Kyi9Uyd6qB1m/9tDI0Y8ITw7b6yBjojXBz52R2HVEpkKFaYqYOqoGZXaJojZhpL18EjUQtFiRsN3L/fzZCzmUIox0nepfbRFib3tHDdu7jDkHEI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=FIk2/7ny; arc=none smtp.client-ip=203.254.224.33
+	s=arc-20240116; t=1708068552; c=relaxed/simple;
+	bh=Gyfbx0vJDrJRctepHsWeG3nVg/PbK0xYzWTC8y15jck=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 References; b=Dum6vlkaTUrS9/f0z+jsG2hQUpUXG/yr/Sqh7PXxQ1egHRvWy2P1yZu2Lo0iPy0tokT5oAEGY3g0Js/Z5N+7ChbbtZ3+pAf2oNQBncYZoz8894FA7adJmM+BwiNNCGL+VOr7KCZUbrEPAzcZPDnGLecsRiS7SEm5dcUzuM7HSxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=YxaKVr5v; arc=none smtp.client-ip=203.254.224.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20240216055428epoutp0399c7bf3debfba476df4028f9c501357d~0QiEL3SZT2098720987epoutp035
-	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 05:54:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20240216055428epoutp0399c7bf3debfba476df4028f9c501357d~0QiEL3SZT2098720987epoutp035
+Received: from epcas2p2.samsung.com (unknown [182.195.41.54])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20240216072907epoutp03faadf2620274391669c5480c3781153c~0R0tJ1dqH1596715967epoutp038
+	for <linux-acpi@vger.kernel.org>; Fri, 16 Feb 2024 07:29:07 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20240216072907epoutp03faadf2620274391669c5480c3781153c~0R0tJ1dqH1596715967epoutp038
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1708062868;
-	bh=q1gtVAj3lvEe8b98I0528UWfo/5v+mmHvNmP7iA02S0=;
-	h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
-	b=FIk2/7nyuWDMu3XQTesMOFOnCujZ5BveQZ5JTKA5lvjijnPI1i1au2OmHTqGrWORV
-	 fc0+Kr5gqsKMgG+paStP78XKRs8qMtikRo0AK47f0zYA4maf5WCXp58/TBi9OYhQ36
-	 ohNZEvynIRpZOBQWosfRr6lziRKUKmdLdhRcWNq8=
-Received: from epsmges5p3new.samsung.com (unknown [182.195.42.75]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTP id
-	20240216055427epcas5p34f65ef318a454c13df99df12149e1aa7~0QiDdT30g0434004340epcas5p3V;
-	Fri, 16 Feb 2024 05:54:27 +0000 (GMT)
-X-AuditID: b6c32a4b-39fff700000025c8-38-65cef89375a1
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-	epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	3B.F9.09672.398FEC56; Fri, 16 Feb 2024 14:54:27 +0900 (KST)
+	s=mail20170921; t=1708068547;
+	bh=MbuHav9JQYc5yrQ5w1uGOfUVsUIb3wto/dHFe133xdQ=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=YxaKVr5vYi3pPUiFD7yLab6Lycgg6ySv6Lwi73F36fR7JJsBX1Pf0+qcLGNcSQss/
+	 APvcPpdZhPZPD/nuIjB7WZm8t9YuDoLspJTTEZfpfporDaW1o0ebeEjBeT9AtkcEE+
+	 nHAUjY6+irysdaNJ4z+RDCovvA1d7k4HOD5af6+w=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas2p4.samsung.com (KnoxPortal) with ESMTP id
+	20240216072906epcas2p429351aecb79c103108615d3f94162507~0R0sodnx92576025760epcas2p4A;
+	Fri, 16 Feb 2024 07:29:06 +0000 (GMT)
+Received: from epsmgec2p1-new.samsung.com (unknown [182.195.36.92]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4Tbk823Rmkz4x9QD; Fri, 16 Feb
+	2024 07:29:06 +0000 (GMT)
+Received: from epcas2p2.samsung.com ( [182.195.41.54]) by
+	epsmgec2p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	C4.64.18994.2CE0FC56; Fri, 16 Feb 2024 16:29:06 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas2p4.samsung.com (KnoxPortal) with ESMTPA id
+	20240216072906epcas2p407a2f85aca1b9b8677fb8aa458c53aa6~0R0r40ub23018130181epcas2p4N;
+	Fri, 16 Feb 2024 07:29:06 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240216072905epsmtrp22bafd0f9a0fbdd9e9cb97213c5c090b7~0R0r37XOZ2723827238epsmtrp2f;
+	Fri, 16 Feb 2024 07:29:05 +0000 (GMT)
+X-AuditID: b6c32a4d-00bd8a8000004a32-3e-65cf0ec2f91b
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	80.5C.08817.1CE0FC56; Fri, 16 Feb 2024 16:29:05 +0900 (KST)
+Received: from calab-Precision-7920-Tower.dsn.sec.samsung.com (unknown
+	[10.229.83.132]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240216072905epsmtip29f0e68ea65f5f8ccb9dd8a9b7d119bf4~0R0rrUuSq2728527285epsmtip25;
+	Fri, 16 Feb 2024 07:29:05 +0000 (GMT)
+From: hj96.nam@samsung.com
+To: Robert Moore <robert.moore@intel.com>, "Rafael J . Wysocki"
+	<rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org, ks0204.kim@samsung.com, wj28.lee@samsung.com,
+	alison.schofield@intel.com, Hojin Nam <hj96.nam@samsung.com>
+Subject: [PATCH] ACPI: Fix CXL 3.0 structure (RDPAS) in the CEDT table
+Date: Fri, 16 Feb 2024 16:29:31 +0900
+Message-Id: <20240216072931.34305-1-hj96.nam@samsung.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Subject: Re: [PATCH v3 1/2] ACPI: use %pe for better readability of errors
- while printing
-Reply-To: onkarnath.1@samsung.com
-Sender: Onkarnath <onkarnath.1@samsung.com>
-From: Onkarnath <onkarnath.1@samsung.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: "lenb@kernel.org" <lenb@kernel.org>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-	"mingo@redhat.com" <mingo@redhat.com>, "peterz@infradead.org"
-	<peterz@infradead.org>, "juri.lelli@redhat.com" <juri.lelli@redhat.com>,
-	"vincent.guittot@linaro.org" <vincent.guittot@linaro.org>,
-	"dietmar.eggemann@arm.com" <dietmar.eggemann@arm.com>, "rostedt@goodmis.org"
-	<rostedt@goodmis.org>, "bsegall@google.com" <bsegall@google.com>,
-	"mgorman@suse.de" <mgorman@suse.de>, "bristot@redhat.com"
-	<bristot@redhat.com>, "vschneid@redhat.com" <vschneid@redhat.com>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, Rohit Thapliyal
-	<r.thapliyal@samsung.com>, Maninder Singh <maninder1.s@samsung.com>,
-	"helgaas@kernel.org" <helgaas@kernel.org>, Stanislaw Gruszka
-	<stanislaw.gruszka@linux.intel.com>
-X-Priority: 3
-X-Content-Kind-Code: NORMAL
-In-Reply-To: <CAJZ5v0gBrc0FctEswQj_JMcZRqoswRgXvBRzT++tseUWBgYJWA@mail.gmail.com>
-X-Drm-Type: N,general
-X-Msg-Generator: Mail
-X-Msg-Type: PERSONAL
-X-Reply-Demand: N
-Message-ID: <20240216054540epcms5p3b0b3f97fe4ec4a8126549a579e596910@epcms5p3>
-Date: Fri, 16 Feb 2024 11:15:40 +0530
-X-CMS-MailID: 20240216054540epcms5p3b0b3f97fe4ec4a8126549a579e596910
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFuplk+LIzCtJLcpLzFFi42LZdljTTPcQ3/lUgy2/JSyezX3HYnH38QU2
+	iw9v/rFYHN3DYbHz4Vs2i+X7+hktLu+aw2bxeMVbdouVn6awWGy8/47Ngctj8Z6XTB6bVnWy
+	ebzYPJPRo2/LKkaPz5vkAlijsm0yUhNTUosUUvOS81My89JtlbyD453jTc0MDHUNLS3MlRTy
+	EnNTbZVcfAJ03TJzgI5SUihLzCkFCgUkFhcr6dvZFOWXlqQqZOQXl9gqpRak5BSYF+gVJ+YW
+	l+al6+WlllgZGhgYmQIVJmRn9L11LbjFWrFzwkLGBsa7LF2MnBwSAiYSZ/8/Y+xi5OIQEtjD
+	KLFg1xtmCOcTo8TqT4eZIJxvjBIth7YDZTjAWr4cqoGI72WUuDz/AVRRD5PEr0n32EDmsglI
+	SUz+cogdxBYRqJZYvvUWC0gRs8ApRokJt9cygySEBdwkWpqb2UCmsgioSrzqZAIxeQUsJZrm
+	6kCcJy+x/+BZsGpeAUGJkzOfgJ3NDBRv3job7FIJgZfsEoduX2KEaHCROLG7lQnCFpZ4dXwL
+	O4QtJfH53V42iAfyJT7thHq/QGJWz1qocmOJdzefs4KUMAtoSqzfpQ9RrSxx5BbUVj6JjsN/
+	2SHCvBIdbUIQjUoS+ztamSFsCYk7Jy5D3eIhceDPUbD9QgKxEvtWdTBNYJSfheSXWUh+mYWw
+	dwEj8ypGqdSC4tz01GSjAkPdvNRyeKQm5+duYgSnSy3fHYyv1//VO8TIxMF4iFGCg1lJhHdS
+	75lUId6UxMqq1KL8+KLSnNTiQ4ymwPCdyCwlmpwPTNh5JfGGJpYGJmZmhuZGpgbmSuK891rn
+	pggJpCeWpGanphakFsH0MXFwSjUwiTA+r7q7946Qm/WEjXGRrArXI0Kt1Q9mKLPO+dPmVN2i
+	8aboyNMb8imm04/0THp2rv2ASthihqvM9V7Hgtj1Vu/dfU5x6cVpd2YHLrvh7Lng55KoDd4d
+	5Zknnad9n9+0itNBuyvaU2eP1mvt8+vMHb+dfi3dq3r7c/qHAy+W/X/2NCB6bYSV50K/X5M3
+	Pt7L+G7z3rNHfyra7jd1sC9skNHWNWLgK3uw++jTgEyud9b3XsXI+J9/I9XzfMvvv/EpuzWF
+	dW6/1g08mXoye39O5cy55/9n6Oz8vj4oKPona692kXXY5fQrN+ZpZG4y0OKc4anzVbSpwP31
+	n0v7n9/vf7VEu0jl1wmJJf4ZF9n765VYijMSDbWYi4oTAUYSq0kgBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFLMWRmVeSWpSXmKPExsWy7bCSvO5BvvOpBodPW1g8m/uOxeLu4wts
+	Fh/e/GOxOLqHw2Lnw7dsFsv39TNaXN41h83i8Yq37BYrP01hsdh4/x2bA5fH4j0vmTw2repk
+	83ixeSajR9+WVYwenzfJBbBGcdmkpOZklqUW6dslcGX0vXUtuMVasXPCQsYGxrssXYwcHBIC
+	JhJfDtV0MXJxCAnsZpTYvaGTqYuREyguIbH48U4oW1jifssRVoiiLiaJU4d+MIMk2ASkJCZ/
+	OcQOYosI1Eo8WdjACFLELHCJUeLvr8tsIAlhATeJluZmNpBtLAKqEq9AFnBw8ApYSjTN1YGY
+	Ly+x/+BZsJG8AoISJ2c+YQGxmYHizVtnM09g5JuFJDULSWoBI9MqRsnUguLc9NxiwwKjvNRy
+	veLE3OLSvHS95PzcTYzg4NXS2sG4Z9UHvUOMTByMhxglOJiVRHgn9Z5JFeJNSaysSi3Kjy8q
+	zUktPsQozcGiJM777XVvipBAemJJanZqakFqEUyWiYNTqoEpz+dCbVXmicP8Vz9sPt1Qd2qV
+	2/TXPxJqlW2r3tr++5P+vebo0cAExTeiARxbp36eX5B6nNVLV0bPMbR74+rDOzh+s/xMFjgf
+	+TOd8/MlAwNhd0NX7fnLuLQlPwUkCJ14KXm+YMm5oqzwMLGsP2VLpWr0Mq4FXp/ykuvrrtwJ
+	TFvsj2xk3Pd6S8OjhUdfRGiaeO6I+d5aIemjzTR7t66IhvTvo3IL9L36GpP2xvcXmPFvDSq4
+	xrWkccG3WyqMLZUXF6+TydHMO7qruefBsZSqnWr/e86d9ekr2cahf1qNs8Ys/pnIgc33vHu+
+	vy9K3apw1Cmpa9e2BQ+/mF1/k9wl+Gb1GRn/lA9BdieeXe5UYinOSDTUYi4qTgQA3K79xc0C
+	AAA=
+X-CMS-MailID: 20240216072906epcas2p407a2f85aca1b9b8677fb8aa458c53aa6
+X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrPKsWRmVeSWpSXmKPExsWy7bCmhu7kH+dSDVr3SlssacqwuPT4KpvF
-	9JeNLBZPJ2xltnh1Zi2bxd3+qSwWOx++ZbNYvq+f0eLyrjlsFmfnHWez+Nx7hNHi8Pw2FovJ
-	754xWlw6sIDJ4njvASaLjfeyLeZ+mcpssa/jAZPFxz0bGC06jnxjttj41cNi69Hv7A5iHmvm
-	rWH0aNl3i91jwaZSj80rtDw2repk87hzbQ+bx7yTgR7v911l8+jbsorRY/Ppao/Pm+QCuKO4
-	bFJSczLLUov07RK4Mra9ky+Yy10xu2caewPjR64uRk4OCQETiX/9C1m7GLk4hAR2M0qc7NjI
-	1MXIwcErICjxd4cwSI2wQLTEtAuHmEFsIQFFif2LJ7JDxLUlDk64DRZnE9CU+LP8KVhcBCi+
-	ZNFVsDizwDQOiebvZhC7eCVmtD9lgbClJbYv38oIYnMKBEp8m9cNFReVuLn6LTuM/f7YfEYI
-	W0Si9d5ZZghbUOLBz92MMHPmfFjHCmEXS8w8cgqqpkbi/t25TBC2ucT6JavAZvIK+Eo83H2H
-	HeRFFgFViQt/nCFKXCQeLj7CBHGytsSyha+ZQUqYgd5av0sfokRWYuqpdVAlfBK9v58wwXy1
-	Yx6MrSrxa8pUuA/v/57LBmF7SHw4vpUdEspnGSVeXVvMOIFRYRYioGch2TwLYfMCRuZVjJKp
-	BcW56anFpgXGeanlesWJucWleel6yfm5mxjBaVLLewfjowcf9A4xMnEwHmKU4GBWEuGd1Hsm
-	VYg3JbGyKrUoP76oNCe1+BCjNAeLkjjv69a5KUIC6YklqdmpqQWpRTBZJg5OqQYmQ8Pzn99e
-	ebtc9MLOmD+/dpzzlbo+r888hpUhniln8SF7d96H3oa6O2d8WcfWdTKhJ2DJ1djJdgUHK765
-	zFlz8edb45sZT55fdhC9cftHNFd/wm7H9Uw6Ns+Yn644FCZ9hd9Aa18j1zmhH886t0+aMzXR
-	0eu4V9LTwyd8f3j6OKwxCd0sJd2m94uVefHNBKmZf8Qcas34hZy3b68Je+/9hK1vWsp7t/0/
-	HwZ85bPj5rG+Z5e0Z9K2PYtnazGL33M96Z6/RnvtGaHbcx+xbWL1m9r6dopB4DRhzv0sVR0z
-	jnHeW2N1e8ftmSUBipNj+Sce7V2isjC/tS3QTFH3drer++MlU5Xba5OlDpce4feuV2Ipzkg0
-	1GIuKk4EAC5E5x4CBAAA
-X-CMS-RootMailID: 20240213074430epcas5p4c520bf2cce121cf5fa970eed429231a8
-References: <CAJZ5v0gBrc0FctEswQj_JMcZRqoswRgXvBRzT++tseUWBgYJWA@mail.gmail.com>
-	<20240213074416.2169929-1-onkarnath.1@samsung.com>
-	<CGME20240213074430epcas5p4c520bf2cce121cf5fa970eed429231a8@epcms5p3>
+X-Sendblock-Type: AUTO_CONFIDENTIAL
+CMS-TYPE: 102P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240216072906epcas2p407a2f85aca1b9b8677fb8aa458c53aa6
+References: <CGME20240216072906epcas2p407a2f85aca1b9b8677fb8aa458c53aa6@epcas2p4.samsung.com>
 
->On Tue, Feb 13, 2024 at 9:20=E2=80=AFAM=20Onkarnarth=20<onkarnath.1=40sams=
-ung.com>=20wrote:=0D=0A>>=0D=0A>>=20From:=20Onkarnath=20<onkarnath.1=40sams=
-ung.com>=0D=0A>>=0D=0A>>=20As=20%pe=20is=20already=20introduced,=20it's=20b=
-etter=20to=20use=20it=20in=20place=20of=20(%ld)=20for=0D=0A>>=20printing=20=
-errors=20in=20logs.=20It=20would=20enhance=20readability=20of=20logs.=0D=0A=
->>=0D=0A>>=20Signed-off-by:=20Maninder=20Singh=20<maninder1.s=40samsung.com=
->=0D=0A>=0D=0A>What=20exactly=20is=20the=20role=20of=20this=20S-o-b?=20=20H=
-as=20the=20person=20helped=20you=20to=0D=0A>develop=20the=20patch=20or=20so=
-mething=20else?=0D=0A>=0D=0A=0D=0AYes=20It=20was=20meant=20for=20Co-develop=
-ed=20tag,=20Because=20We=20are=20working=20collectively=20for=20making=20er=
-rors=20more=20readable=20for=20our=20product=20kernel.(5.4)=0D=0AAnd=20some=
-=20part=20of=20this=20patch=20was=20made=20by=20him.=0D=0A=0D=0AThen=20we=
-=20checked=20that=20it=20is=20also=20suggested=20by=20open=20source=20to=20=
-have=20%pe=20for=20printing=20errors:=0D=0Ahttps://lore.kernel.org/all/9297=
-2476-0b1f-4d0a-9951-af3fc8bc6e65=40suswa.mountain/=0D=0A=0D=0ASo=20I=20prep=
-ared=20same=20changes=20for=20open=20source=20kernel,=20and=20because=20of=
-=20smaller=20patch=20I=20kept=20it=20as=20normal=20signed-off=20tag=20only.=
-=0D=0AIf=20it=20is=20needed=20I=20can=20resend=20with=20Co-developed=20tag.=
-=0D=0A=0D=0AThanks,=0D=0AOnkarnath
+From: Hojin Nam <hj96.nam@samsung.com>
+
+struct acpi_cedt_rdpas does not match with CXL r3.0 9.17.1.5
+Table 9-24. reserved1 and length fields are already added by
+struct acpi_cedt_header.
+
+Signed-off-by: Hojin Nam <hj96.nam@samsung.com>
+---
+ include/acpi/actbl1.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index a33375e055ad..7aff8c39dbd6 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -571,8 +571,6 @@ struct acpi_cedt_cxims {
+ 
+ struct acpi_cedt_rdpas {
+ 	struct acpi_cedt_header header;
+-	u8 reserved1;
+-	u16 length;
+ 	u16 segment;
+ 	u16 bdf;
+ 	u8 protocol;
+
+base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
+-- 
+2.34.1
 
