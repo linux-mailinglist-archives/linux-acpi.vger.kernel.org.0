@@ -1,169 +1,199 @@
-Return-Path: <linux-acpi+bounces-3571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3572-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB1D856F44
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 22:25:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEFB857247
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 01:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945A81C21254
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Feb 2024 21:25:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59D4286C74
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 00:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7077F13B7A2;
-	Thu, 15 Feb 2024 21:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4367663D;
+	Fri, 16 Feb 2024 00:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="II/d0amq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCCD13B797
-	for <linux-acpi@vger.kernel.org>; Thu, 15 Feb 2024 21:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708032315; cv=none; b=eAbqvJLeVgN6virUtk8CpENUN7ZAYGeGMmVXvq1+us7mz50TBwE58TzyQNXuzrqz/X8dpNCJsjtcK5s3voFj/S9d8+mqprpta9tZ7pb/gkco23LrwkPr1+RyfvhJJo37Y2Sav4FswneZRYRcAeELB/tA0g/lucguU4aFQRLKCvw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708032315; c=relaxed/simple;
-	bh=Q0fRnR0fNqx7Qw23/ycfcACqJobP4hyl7RTBSUQXzTY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TvvrT6eibc3WNxTUTuOyoQUBp+jEcCFIgYjS5DSLwi/Ibf71Pz6DkBdeEalJukUjpMzLnwEEwiVpAJboU2pvRFsf/W1OvS76vDnZTSNF4Y7lYpXzXAaTT8lvLnGXZucgskQh7Er77Et7SeiJFulhZFxl5QHYHbNJ4GSJYjfALn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5958d3f2d8aso509017eaf.1
-        for <linux-acpi@vger.kernel.org>; Thu, 15 Feb 2024 13:25:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708032313; x=1708637113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GLa/S1Wb9J6eJCLE4O2B2bhAgdaLdRV4q5iagqxJ9IM=;
-        b=UggT12gfpdPdNYVSE6HZGRiaUvJ86F70Jr/m8SxjWgJt/jE6CbSn7/4fap6asdPPNU
-         YvuWNFc1EpB5tJgBW1NRNf2gy0s39I4djxQhkoDi9+d2ZHDh4q5aV9kmlzAMxokT61Kj
-         UxwFvpEv4x1ZmWghMxcDCQrfSZqXuiQjPxnDxAh8Al6dEW56qA5mSqxCCO7R4j2NA39a
-         XzuKIt2ZXpKsl/fq8Kw3lJ6XUGxSmWmnrUbt2za5NWgtQtfP0ZWuWsOrJme3eEpDlq3z
-         cQ9JGoRzJ6hv/7En9w7QxzxICCRFbohBBYfvr3g2eV/bw0N9ZNzbIg9kBS6OQHwZb5Gn
-         F9BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMoYgmB0PxYNYKqwkzdLFVof3Whkz/87tlM9Idn7lQ5M/BRRHLEAIBck2pIeGUj5FvZOBx0R2yS+Tn5qdXHp/YYKMhmObqGqpLlw==
-X-Gm-Message-State: AOJu0YxLMyYM6asUgHiY9phuDEh2SPIuWQqEqVK0k3FqdwvZndzh95X5
-	qqyAIgucbcOWOY94uDNkpXkjIGlgCUZWwceBwTnj6yGCAAhAFTg6yBhZCttiOeSy61EewwRJpO8
-	bRtjq0pFJqyG+JRTuO6Xk/RnAwmc=
-X-Google-Smtp-Source: AGHT+IHK1PNL3d5Le1DEKgpQk6T+RwEvN4e5R3toPQs5w4RSMLSxGjOXI8gWlbO4bJPCKP3OZ4r9HbgOE38Ftc8sdsg=
-X-Received: by 2002:a4a:e749:0:b0:59f:8e0f:8a34 with SMTP id
- n9-20020a4ae749000000b0059f8e0f8a34mr448713oov.1.1708032312705; Thu, 15 Feb
- 2024 13:25:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300EE7EF;
+	Fri, 16 Feb 2024 00:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708042202; cv=fail; b=fzAlirVkTe9eC+AITQCWA17GiEfa2pHJixPYMvNcSXhkTmXaF4PDnMgc/84Q69B21ymSPMjqJgNgDfBFhn6CP8WXIcBrpQStwHBj0fUZv4fDx/MQ2z0MLTPxbwtc1OP9pLL44k13ABoRR0EWRK+urOYsofMkiUVYECPHAETwWk0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708042202; c=relaxed/simple;
+	bh=nCvFNkYAMMfcW2GF+1ToMt5k/R7uj5Lm1SoX65X9jqs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NWQC2V707VDHgbURSthodtPZNumudv6TSp1laJNKUmKamwkmbLnlBHxu9UOnkzuJh4/3+kNDdtJQAxiovMQ785i/TGdTeIw1gHcNCyvY7aAspC49gAR+f7hbELEzwL5lc6/Ikz1elQ0FjpA8+QCbu2Th0foMLcOKnJebH2fQZ28=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=II/d0amq; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708042201; x=1739578201;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=nCvFNkYAMMfcW2GF+1ToMt5k/R7uj5Lm1SoX65X9jqs=;
+  b=II/d0amq8Mu3rF8ISWGSz/b4ywt8an/z5Aq1T6hEuGLo9YpSY7tPGrt+
+   vXNXJLe4dTRpeQdJZ0npFykP9YwLlbmXjXw0s4d17CXY9ZtzFXdjYou9c
+   y5F9ZBKRq/+6T3aoZdL0TK5rz6M8uiPxvS02QYpDWFmmq+mKV4rJ3xbBu
+   8L2dxtLe+5SkFDYUL/u+HOZZ4/ZxaCzXARj7/FtYHyHGQj/B77X2agVqv
+   hyTCrpkLY7RvGcV7rN+q/iDqcFlQtRkFrU8Jks5lknz2UfrkYbg10JB78
+   aPV9nU4Bc4qT3Hvki55orjZWDPh8eV11aTxk/vfwgrN/nzsd3AadY3IZ+
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="5974328"
+X-IronPort-AV: E=Sophos;i="6.06,163,1705392000"; 
+   d="scan'208";a="5974328"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2024 16:10:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,163,1705392000"; 
+   d="scan'208";a="8306936"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Feb 2024 16:09:57 -0800
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 15 Feb 2024 16:09:56 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Thu, 15 Feb 2024 16:09:56 -0800
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 15 Feb 2024 16:09:56 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ESG3v9jKfvd3pZlkkzgzPhGorLLfw6yj06q8We4LssCOU2AFHuXhoIHY3OfXhBb6AqyELflhzIWUkIhnLp3mpYtnUtdaygFmmhTgauDkJk90EptB6SjQOCKQ4jRDnapmF8a03y9OSfxXlu4jZnOXo2d/rhbPTXDUrh1YMea4fy+5fWofNUGhI65D96AXJ55PR9bUhY4Lf1pqSH9hTQyNgTzt61ks7OZh2+cSd6E8pnRGwXn2Syx3uST+VzW6jwoweoPz6U36W2u592sEqfYV7lKSwMYvMbFM2jAWhC2JCMGHzGliGz+ZcCHt9IxTv5MgPe0NvkVFQV6/+9Gn3qc1ZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=McLRFjU66KWFNMmNFsbRXymvJ0vAzs/SMpagr/1+w08=;
+ b=a/CLVcpA0fwlaME3nVfhQx1eesgneppTlyeasPEX1OKCi2s0uzDqTTFpBpSPcFDaQVBuiZQ+ZIrixeNpf23qng9MtdnDAKT1RmXanGagwVZ/OT5+i1QuhRQmVstyFS1ApgjX3KP2W+iieARV4m7X8ukZ+ezl//q84BokzoABk8j5FjBXoRIjHIG5+OfdbjbjechV0YRbAYsVwEH03Vrm5eAvYGOHx2m8OM1skfl8wV/9Tse4sYXp8TK9bjIUX+BmbMc+6Zj9x6IvkqN53Nvjj4l+9cd1kme8AsrKjW3EzVcuvkbSqZIrBcagHWRSrVIU5G4aFWxvYaU5yblIU6qZMw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM4PR11MB7326.namprd11.prod.outlook.com (2603:10b6:8:106::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.40; Fri, 16 Feb
+ 2024 00:09:47 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6257:f90:c7dd:f0b2%4]) with mapi id 15.20.7270.036; Fri, 16 Feb 2024
+ 00:09:47 +0000
+Date: Thu, 15 Feb 2024 16:09:45 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: "Luck, Tony" <tony.luck@intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>
+CC: "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "james.morse@arm.com"
+	<james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>, "dave@stogolabs.net"
+	<dave@stogolabs.net>, "Jiang, Dave" <dave.jiang@intel.com>, "Schofield,
+ Alison" <alison.schofield@intel.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v12 0/3] cxl, EINJ: Update EINJ for CXL error types
+Message-ID: <65cea7c922f57_5c762946f@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20240214200709.777166-1-Benjamin.Cheatham@amd.com>
+ <Zc1kwWupeN9WagFj@agluck-desk3>
+ <65cd7cac71377_5c76294ad@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <SJ1PR11MB60832AFF7D2F9FBD2670CBBEFC4D2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <SJ1PR11MB60832AFF7D2F9FBD2670CBBEFC4D2@SJ1PR11MB6083.namprd11.prod.outlook.com>
+X-ClientProxiedBy: MW4PR04CA0314.namprd04.prod.outlook.com
+ (2603:10b6:303:82::19) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231120173053.49597-1-u.kleine-koenig@pengutronix.de>
- <CAJZ5v0iW_B72o8EMbZaH_x2SOHOvqnieP8EsK2A6d93GRDYtBA@mail.gmail.com>
- <20231122174913.GFZV4/GUKci24sp1oj@fat_crate.local> <ix7bttqx32bv4hajg7szijtosi5vn43nxduun3fwevccjqrjhh@qrbjvcsuddoi>
- <tfmuzubr5p57qyv2pye72yzs6fjdyxubcqkmhih7ndddqcifgu@y4psjmr4rbz6> <r2cobeovsufkoryiszm56gu2pwgevjxcoceg5am6j7va4r7su3@7arj7wav2d5q>
-In-Reply-To: <r2cobeovsufkoryiszm56gu2pwgevjxcoceg5am6j7va4r7su3@7arj7wav2d5q>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 15 Feb 2024 22:25:01 +0100
-Message-ID: <CAJZ5v0jJX-6L9f_TLe-cv2MNnZVK7au=drbKCn-tEWEagY-9ZA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: APEI: GHES: Convert to platform remove callback
- returning void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: James Morse <james.morse@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org, 
-	Borislav Petkov <bp@alien8.de>, kernel@pengutronix.de, linux-arm-kernel@lists.infradead.org, 
-	Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB7326:EE_
+X-MS-Office365-Filtering-Correlation-Id: bcba6276-50c6-4e71-036f-08dc2e839617
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: W3OqPX2yxoSBP0G8ZvVfRGamQmmRoJ0XpwEXHgs42KtgnDx5sFpiVI8t8buswj3eRCKw9Tn+yjCQod+kB7HpWMwc/gU4vokDPjpfLTIE4tN31oHgyIjFaU/DIK2PCLG84DNTqlck1mXfAkQfD6/hUXavipuZZhsVybfku5fs0nvHHgHxSHOsSTZJux0/0kr4FFhRH1JqDTeJwOhR0+RwacO7Jgjc56NvX3Z3eLcIgEaDTQ3KzS5vyskUxddBjfBnXbmUWIZ+CKKIQWE/REHXLjIZyItz3n1AFc/sPPr13eUeCGB5FlAnj9inXTY9qlBRyKuaugdYUQf9MW9E5AxztMMOD8oXYLOFMEoiwQRXsGbRljgx/y6T494Q9oAhEgE1DPjBakO07bcGaWjfElQkOZwtUyMIwXxULaIkRZ5tmeih96KD0izPswbfUucMavivtrX45wodrw3g9Y2eWag2hcgAhV5UN6T3E8xlhZzJye6N0tUs7NpEcQW3mnN5/cCg4KLd+i8JA3oj0WrzSodkssHVW4/ENAewgh8gW1degHUI8wC0HNzdRNfJz6LrwMW3
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(366004)(396003)(136003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(4326008)(8936002)(2906002)(5660300002)(8676002)(38100700002)(83380400001)(26005)(82960400001)(86362001)(6506007)(110136005)(316002)(66946007)(66476007)(54906003)(66556008)(9686003)(478600001)(6512007)(41300700001)(6486002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Z+BN06oSrtJcvFNK8XIHXM2v4eFqUyj+L9SaqxJs3TSt+OETd1I4SZVrsVix?=
+ =?us-ascii?Q?wJFfBiPyU8lqwloQ6qfESMrouv587nl7oIt/pbnO+QwauZ6Qt6boC/ZnkYeo?=
+ =?us-ascii?Q?C5XZj5vHNhfGBanWtOljX1rAa3ub3zfLBXTehJ5T4t84Tjm9v1/OaIva0gDK?=
+ =?us-ascii?Q?B4FiRGPpoIBYtiTf7DEg5VBS3UyUbGobS8Jmn4XXA9iaHUdPrHT7KprpmA8C?=
+ =?us-ascii?Q?dkJAUhxw4x9BXapTknvuaTSlOQiBMoWS08oT51v27RRm0GlsHs/Dr18L6ErI?=
+ =?us-ascii?Q?7sLCneNvsUwhyf5JYuC0MckL7PxfFZVRLcVWaJj6aokpOAmvdUVkHQa2Df2N?=
+ =?us-ascii?Q?qNHOY+WtEzRNQsOKdp2DxIEpSzKz9pUTnTM/WmRBu/eM34JjSpFO3wqQ/dp2?=
+ =?us-ascii?Q?i/wQ74mdzEyP5Jffus0JjX09s6a7oJIq9LQGgfajaQD9+AudqJbV9w0NO2UL?=
+ =?us-ascii?Q?6zqWiNs0Z2HyuEwgmfsyyZpFRYEEFWpQaK/YArpEUlNLIUqQc+8qdOb6zng6?=
+ =?us-ascii?Q?+7uI+dBdRTjhz4B9IeYQcE9f8dltuSlXVt9bhPr/3C6yHUG9G0fhf90ZFh/y?=
+ =?us-ascii?Q?yWqiBQ9mguXy41G2WLvMS20LwV6L+se7NLkmds+TBpFU4jkUHN2dDxvVyZ+1?=
+ =?us-ascii?Q?eDeH3ua3nGYORfD4HYEmh+G2VFEerWaa35q+zuTHvPQh1+SyNo+4OKQFVl38?=
+ =?us-ascii?Q?HmWNq+rzHOk6e8NIYzsnATjxmJhg/yhJ3F2q7k47oi4Q0FkEyjNg6ZUL5Y/c?=
+ =?us-ascii?Q?9qwHju/5vM4clGucZOLhvJ+zwo3HafKPFO3DoSd/lSUz0m+8PeVCwqgImIeo?=
+ =?us-ascii?Q?Z8oJfU5HPaEF1mdL6rvI7YBrn0yNE2xWjLkrDKeuIs7371hAVjzx1ulVcam7?=
+ =?us-ascii?Q?4q87V8xzt4k7DvOXezIL3uVRUPglPCamGZmSIILKLjVcmeSv6wzK8qL+AT6R?=
+ =?us-ascii?Q?lhNRwz+Xu3sxzkQHLjwO44rIqK/zy/4zP80aQcWj68d3n3zpJedRgXrll/CS?=
+ =?us-ascii?Q?D2pqfers8wbvVYX9bmBdSRB4+09CYXTyGZUbot2OO/d+FVTcC9Nphtvu4GjB?=
+ =?us-ascii?Q?Ari6I9YoIA0/dyHX+x2PAj+87P5+2JaK9ZH47pN09dBjCNHEmnJ55paFEzpX?=
+ =?us-ascii?Q?YBDHNJNcLlSeB90ShNxpT+cj3Q/MaDf28cHjRRrF19HVMHsCMr/lFUSEFYdt?=
+ =?us-ascii?Q?fEG/fsET2iGp4tPiIYMaUYQ/I6KyGVt3tk0H65wB+L0mnjiNW5YUjIejlwnX?=
+ =?us-ascii?Q?zacQnUD3jWheoFA0lw2U6Bm+MXvogiR3Eau9z0ujqt2tuLrEGqs6EgiXA+cb?=
+ =?us-ascii?Q?AMn4Sdnt+V/ChRSRZ+qV5y7X0fcd83Tsc0cp0GWXubwPwmaBsXP2Rrwbjsjv?=
+ =?us-ascii?Q?AI43JuBTYywWYcTUjd044PUHOlqBn2YkwF8MB/RNrfpbrCa+vBx6WIM9CI2C?=
+ =?us-ascii?Q?xJhPSp5K0L5q7GyX80Sc3QEmMV24vQNSo685aBTY+47ahowcp+kIysSVOIyV?=
+ =?us-ascii?Q?eHzqDCn7fPglQ70qqhE5b25kQuIaC60ifigyhDJWkiBh98/MNjHVV+erB3Nj?=
+ =?us-ascii?Q?86uT97++H4gjF+1oSAR7IkWULkgP6wJ2iamrNideqClVLdMRaV53HNkRNZPI?=
+ =?us-ascii?Q?0A=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bcba6276-50c6-4e71-036f-08dc2e839617
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 00:09:47.5545
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Guc/mg5S0QRB4qqqr73OsbjsbVeQs+zrC0yW1VWF3hv9mBH9GCQD09F8dJCZAXgp9ZxQ1kBZc6CD0kv1c2ZZYACjkLc4bCjT0nGiKXHQRzw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7326
+X-OriginatorOrg: intel.com
 
-On Thu, Feb 15, 2024 at 10:11=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> Hello,
->
-> On Wed, Jan 10, 2024 at 09:34:53AM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > On Mon, Dec 18, 2023 at 09:47:10PM +0100, Uwe Kleine-K=C3=B6nig wrote:
-> > > On Wed, Nov 22, 2023 at 06:49:13PM +0100, Borislav Petkov wrote:
-> > > > On Wed, Nov 22, 2023 at 04:25:30PM +0100, Rafael J. Wysocki wrote:
-> > > > > On Mon, Nov 20, 2023 at 6:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > > > > <u.kleine-koenig@pengutronix.de> wrote:
-> > > > > >
-> > > > > > The .remove() callback for a platform driver returns an int whi=
-ch makes
-> > > > > > many driver authors wrongly assume it's possible to do error ha=
-ndling by
-> > > > > > returning an error code. However the value returned is ignored =
-(apart
-> > > > > > from emitting a warning) and this typically results in resource=
- leaks.
-> > > > > >
-> > > > > > To improve here there is a quest to make the remove callback re=
-turn
-> > > > > > void. In the first step of this quest all drivers are converted=
- to
-> > > > > > .remove_new(), which already returns void. Eventually after all=
- drivers
-> > > > > > are converted, .remove_new() will be renamed to .remove().
-> > > > > >
-> > > > > > Instead of returning an error code, emit a better error message=
- than the
-> > > > > > core. Apart from the improved error message this patch has no e=
-ffects
-> > > > > > for the driver.
-> > > > > >
-> > > > > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutron=
-ix.de>
-> > > > > > ---
-> > > > > > Hello,
-> > > > > >
-> > > > > > I tried to improve this driver before, see
-> > > > > >
-> > > > > >         https://lore.kernel.org/linux-acpi/CAJZ5v0ifb-wvyp0JRq_=
-4c1L6vTi_qEeXJ6P=3DPmmq_56xRL74_A@mail.gmail.com
-> > > > > >         https://lore.kernel.org/linux-arm-kernel/20221219221439=
-.1681770-1-u.kleine-koenig@pengutronix.de
-> > > > > >         https://lore.kernel.org/linux-arm-kernel/20221220154447=
-.12341-1-u.kleine-koenig@pengutronix.de
-> > > > > >
-> > > > > > but this didn't result in any patch being applied.
-> > > > > >
-> > > > > > I think it's inarguable that there is a problem that wants to b=
-e fixed.
-> > > > > > My tries to fix this problem fixxled out, so here comes a minim=
-al change
-> > > > > > that just points out the problem and otherwise makes ghes_remov=
-e()
-> > > > > > return void without further side effects to allow me to continu=
-e my
-> > > > > > quest to make platform_driver remove callbacks return no error.
-> > > > >
-> > > > > Tony, Boris, any objections against this patch?
-> > > >
-> > > > SDEI is James. Moving him to To:
-> > >
-> > > I wonder if you had a chance to look at this patch.
-> > >
-> > > It doesn't change anything for the SDEI driver, the only effect is to
-> > > have one driver less using platform_driver's remove function.
-> > >
-> > > Would be great if that patch made it in.
-> >
-> > I guess it's to late for 6.8-rc1, but I wonder if this patch is still o=
-n
-> > your radar?
->
-> I'm a frustrated about this patch. It already missed two merge windows
-> while it's (IMHO) easy to understand that it doesn't change anything
-> relevant for the driver. (There is a resource leak in this driver, the
-> only difference my patch makes here is that it's more visible than
-> before that the leak is there.)
->
-> What must happen to make this patch go in?
+Luck, Tony wrote:
+> > I would save that work for a clear description of why einj.ko should not
+> > be resident.
+> 
+> Personally, it would save me having to type "modprobe einj" to run tests (and
+> answer e-mails from validation folks telling they missed this step).
 
-Well, I will just have to take it without an ACK.
+It would only autoload with cxl_core.ko though.
 
-However, the lack of a (responsive) ARM reviewer for APEI/GHES needs
-to be sorted out.
+> 
+> But others might feels this is unwanted. It looks like some distros build kernels
+> with CONFIG_ACPI_APEI_EINJ=m.
+> 
+> On the other hand, EINJ should be under control of a BIOS option that
+> defaults to "off". So production systems won't enable it.
+> 
+> But perhaps there will be a pr_warn() or pr_err() during boot. One of these will likely trip:
+> 
+> 	pr_warn("EINJ table not found.\n");
+> 	pr_err("Failed to get EINJ table: %s\n", acpi_format_exception(status));
+> 	pr_warn(FW_BUG "Invalid EINJ table.\n");
+> 	pr_err("Error collecting EINJ resources.\n");
 
-Thanks!
+Oh, good point. However, should a debug module really be throwing
+pr_err() or pr_warn()? I.e. should those all move to pr_info() or
+pr_debug() since the error case is detected by the lack of debugfs files
+being published.
+
+At least that would be my preference over creating cxl_einj.ko.
 
