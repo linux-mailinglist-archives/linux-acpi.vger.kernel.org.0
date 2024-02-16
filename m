@@ -1,223 +1,208 @@
-Return-Path: <linux-acpi+bounces-3589-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3590-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD76857D17
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 14:01:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEE0857D35
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 14:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3639C2881BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 13:01:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61D52285199
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 13:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4001292E1;
-	Fri, 16 Feb 2024 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33361292D0;
+	Fri, 16 Feb 2024 13:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dX8+fWiy"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tKaHWARr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF1D1292DA;
-	Fri, 16 Feb 2024 13:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708088507; cv=none; b=G3boO8OISO5ZbZP7MChBAuX7UyccA/VCI7MO2ijy47kUjdoq54UDMvWZXdw4h1qD50SYVEeyOleBxrCfpYx4E0SNDo6wkTosNB8B+qnj1WrhApLCawUq9msue05uA9GmXg/5kjtbhMQTNtosNUjVZ/ooMNxnRZPtoghQ7tpS/14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708088507; c=relaxed/simple;
-	bh=3oDy60zjdhTLSBPxSAfy1GIJx1bPsmJfTGaygN2Eg4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8h6qkXE+c40XVPs8XfzaJq5uDNxlwtzvRmVih2Co99rDa5zqWoSV7EeqVijbPmH3+t4XRw1qKmjemol/wVpsZT9QleKZyscs2z1ag9aMERBws0bvXTTXG3DbbZGEMDoc4ukcI/k6TJ8Xgv/AH5BK3ZMCuES9hPxUUHKmSjjg68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dX8+fWiy; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708088505; x=1739624505;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3oDy60zjdhTLSBPxSAfy1GIJx1bPsmJfTGaygN2Eg4w=;
-  b=dX8+fWiyZ1jcxkou8mZfgpOouqxZWRTu/G1ASp3uGvO2xP8DoRzoWIoi
-   aj57FtsS3NV4wVn6IuFEOrA3dOnZHTvhRLbkTVGBLOQ6P2AlD+S7NPGMQ
-   sXP7ei4hB0Y5ytYt6bAgnLYfWGyulQ2ZWTnbxM0SDZtbAIv2SnunmwXmy
-   ZdA6bTYl0jEkdroZG92yvx08B8m+X1tTToSUJdJLYJy4Aib+C/ToSVlYB
-   ABVhc5G4xVaRfwk/GUEHXVIk+LECr8g4o1VhcZmqAmqCClO7+oqjrHiMC
-   Gc8GwlqEvENWYbL0ahcdTUWuef5EGJ+1kEbaC63gwB4wY/ahTEko+Rh+V
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2348182"
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="2348182"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 05:01:44 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
-   d="scan'208";a="3859933"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 16 Feb 2024 05:01:39 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1raxqR-0001Hi-2T;
-	Fri, 16 Feb 2024 13:01:35 +0000
-Date: Fri, 16 Feb 2024 21:01:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, amd-gfx@lists.freedesktop.org,
-	"open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
-	linux-fbdev@vger.kernel.org, nouveau@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org,
-	platform-driver-x86@vger.kernel.org, intel-xe@lists.freedesktop.org,
-	linux-renesas-soc@vger.kernel.org,
-	"open list:ACPI" <linux-acpi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Melissa Wen <mwen@igalia.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-Message-ID: <202402162046.Jr7HgB8P-lkp@intel.com>
-References: <20240214215756.6530-2-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78F7869A;
+	Fri, 16 Feb 2024 13:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708088883; cv=fail; b=F0Lhic7ML5Toqmacocpzlh/eSQ5X4wmfmgvPyhmXUILPIy9wsHS88CX+8LbHXaT5Tg0koXuIDTtcvrkrWHvKa0GhvdOE48v4UrNkn8TP3I4q1kbflv+hG5b9R+oGKh0moxGRRS+B6iBZ6JjmFR1Di8UFy3OhTQ5/kyQZtGns9mM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708088883; c=relaxed/simple;
+	bh=7B3r5JDwmwWB7THZMaKWzb2Lnvg5DdFnueEC9vEtN8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pXjHyXfKYiZSHHxV7uXPYPcsiD1zQG/BrS0/YvD48H/Y2c2utcK4RtIOvY19fRqyr9wINKYWqThzcl2BuLmFkSTNsoRiugRWcq69vq/v7c4OukPKLLIrvZY2xsfutdtd9LIcz+AlDbzdHuog3jZRliyddkROqoLDV+RQQznGbK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tKaHWARr; arc=fail smtp.client-ip=40.107.220.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h5OrL28HTi7SL06ANn1glVq88gpn80NUKLPt6jh1ZzHcTOePaCbZLxhJvermo8Py1ZtfmT1+1V6LaoPLCguZ/FtNhsBTXXRZEF10WFLAIoDx1gQ74u5sioo0aS7zEnbI3fR5YxPFVrrtFgGXCzpfqGl5lFq3R1wjVNy8cflaeuhT+2xfujKlgDFvMBgbparIMwsGF3ivBu+wOQPJdtmHWfzWMY9g2MSUqzEkR5qVsFSpph+fyhOJSCHQBN2WrretH498RdFgPi+GGhxl87iCLe9qD2mhjHGBK7TGLw9ja9NITOwSWieMyseFZzyKl4CqQAn5FxqAVwTyC+yCPDJd3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6kWcGsv5KWBLzWKub0KgtxdiKf7sTl06c+cZt7U9KN8=;
+ b=aqlodmJEU/Xe+UCxEr/yUbImF9eFfwVBbs7HCV1xdmaEZkJP2dNWtIV+1xHeZtQfhL80xs4/rPKxvdFT0wrNwf+wBdYvs3MfKrHu7sPnVAvtJ/LPkuAWK9JKXUcI9oJouQ6ibA1P0aTyJwT5KiJ+oDEZqhsAfjDJw0sa3ZRwa0Rc23v/Q5K1disCOF7EuemlhkH6kwaCIgEGXTahLY+gc8V50jomwwn5k01qF3Od8G7GGR0wfWaKiF8b7L+BXbt9RSIjAQvFjM94oxVzIsWqL1XxYQ+erRuMm6Sdd2Ie7BraE1Xu4/9mIZKPkw3i/A6Sm5OvrjyIbwAient4XM6GFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6kWcGsv5KWBLzWKub0KgtxdiKf7sTl06c+cZt7U9KN8=;
+ b=tKaHWARr2BroKQ+uufRj00GvI3m8vFokYpfEIfpIgoCgu77EPNdgBlYPFPwvHaT+vmJeqSCnkOWQwSrNkBxGffsunLi062cvlYRbCP5QVm8gbmtE0d8+1TEoHiEahs81p2bOe7KGSYEzFBFOgBrOvm+IVl+3uuxEqROZPbwuaZM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
+ by MN0PR12MB6344.namprd12.prod.outlook.com (2603:10b6:208:3d3::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.15; Fri, 16 Feb
+ 2024 13:07:57 +0000
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::9d:17f1:8b3b:1958]) by CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::9d:17f1:8b3b:1958%4]) with mapi id 15.20.7316.012; Fri, 16 Feb 2024
+ 13:07:57 +0000
+Date: Fri, 16 Feb 2024 14:07:51 +0100
+From: Robert Richter <rrichter@amd.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] lib/firmware_table: Provide buffer length
+ argument to cdat_table_parse()
+Message-ID: <Zc9eJ4-WZZo5-a8O@rric.localdomain>
+References: <20240209192647.163042-1-rrichter@amd.com>
+ <20240209192647.163042-4-rrichter@amd.com>
+ <20240214173927.00002d20@Huawei.com>
+ <20240214174444.00006c9f@Huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214174444.00006c9f@Huawei.com>
+X-ClientProxiedBy: FR3P281CA0159.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::19) To CYYPR12MB8750.namprd12.prod.outlook.com
+ (2603:10b6:930:be::18)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214215756.6530-2-mario.limonciello@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|MN0PR12MB6344:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97155de4-5a2e-4a2f-85de-08dc2ef04ba1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	iWqJzeJo3WSnsI5R6q0v1w17OVvqNZspxlOza4j1smsgYz9T4qr8D2nqKOyfA8CR2FjFUNVxCa/2jEAbdq6tNS144P31RCS93V0e/QgFyPykIjoFRmFYIBmOApo0VH+V8TSFMiIyjz1Y5cEkMz4zIb4QUXbU2mr/oMXLTBUctWXnM4t9nRBfKOiVjtV+QEcNCz2ahs8da8z+gGrkXHmbp4+YuenfwuXuW5VH7cF+vobuj1XDTxccd/kRjOOXdSFPcgNBWglaClbCNJlebD4bGvocsRQT6a141KePZaLO1+T/qnQwg9s9h/govg6mtlSuDsT6zLZ5KxmYdZujjzIY6tSe/bzV/iPgeBaaEFsYZ2plZKs+4sx8rbPsNfwOO2p9u2mXf/yr9BOODc0A9FjyxXFT/VWO2O5uQUeFhZqiY6BHSi8ZRWz1uvm1Qv5CvlUZxvEqBVMSbH1eqgwqyhwCkm8vGS0PLHM9DrdwfDHHIba+togQrAtRWDoqPjuV2Kn812qDCU0kXvlx/iTAjKCWSXx9SFKoKblTaQc9yfln7FjKYkqK4h6TSFdnji4XlH90
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(346002)(39850400004)(376002)(230922051799003)(230273577357003)(64100799003)(1800799012)(186009)(451199024)(83380400001)(26005)(41300700001)(4326008)(6666004)(316002)(8676002)(8936002)(54906003)(6916009)(66476007)(66556008)(66946007)(6486002)(6506007)(6512007)(966005)(9686003)(53546011)(478600001)(38100700002)(5660300002)(7416002)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WNDbrFwWq99xNnQqQESyhCYtEwJBprzfEs8+eG1OzV4QZrf9WBUGfIOjJmja?=
+ =?us-ascii?Q?R9WbTpfGI3R73KDqIJVODdzOEjm4ETIhG72yFCZmVQ6nYMT+oJVVRyAYDvgM?=
+ =?us-ascii?Q?6NLNtwSeI6eBAWhEGm68n+cstRnM2y1prhRrSn4cg79k6naJN25XqPDleJpI?=
+ =?us-ascii?Q?ngJaIgKqUgl2A2OE8HfOsWcnCynmOdBGB3J9VvJ3JgbdbUnlwBqNunAFfehY?=
+ =?us-ascii?Q?xfCqblv+AjWPLjXXM4XDuIdxOj6i7kjSt2YiF678rNBiFCAHe+4nByMoWVio?=
+ =?us-ascii?Q?wCzKl++XP5+nM4vyT4urzzArm3wzmO/u0z2Brx0s9u0UZMc9kaecGq5vN8Hj?=
+ =?us-ascii?Q?H0LEEl/3xXCCt/+MtM07T8G6zQ4a6yN7vxBZkOuMQs8L1lO7XtvBnqNOJ8Ir?=
+ =?us-ascii?Q?kLsRoLPlS52S1sSan3VWn1KktBdKksz62LO4QJ+K0Rcm6QOz9E8igthTjWD7?=
+ =?us-ascii?Q?EwCXA1pBYus+I+ag2Svq5F7lVAm3t2ME80pc8fjvFSy1BDKz1e0D2tgztyDc?=
+ =?us-ascii?Q?gN/8v4/z4CO0PMb6rNcC0Eocz5ymi7fXfba51ClbUTnNdoODPQYMs+eMqQFC?=
+ =?us-ascii?Q?mbI6UR+GaAQTbsr7AvNhLV+7Z+7N8jIKG/xVcOOizdQ/rNn/qy21Bu1Q25kA?=
+ =?us-ascii?Q?5tRdDUGHKrB+xkp0oQ821M2CsyallLJ4l1zglyoKuPbzw+P3WKvdcZ1xe7DO?=
+ =?us-ascii?Q?UbCXSgXGXDLdp2S1Sasz/8gDvoc2WrFda0oOWEQOf3GyyMkOacTa69yTyc7l?=
+ =?us-ascii?Q?qQU7lNNazmFBpMDVX/DyLWnnaUt8jHc3jLCHPJViilsl3JKnJZiLse9fYkkU?=
+ =?us-ascii?Q?CUOOLIFlVdiNz1SJVnHtQI+xbxnloZx6zo7wJGQvSDlXlRARB/nuKpNb2t8L?=
+ =?us-ascii?Q?mvtNgc5QYbgENLkgBDxgKFWO2ZEr3KNj6r/AP/fUtWPBmkQSut6V5CWK2iPv?=
+ =?us-ascii?Q?/m4NFvTf9qAKU5gcQ8DxkBRB24bRGiVl5TB3EadmVS3mkL4BMiAO7yEPWSgS?=
+ =?us-ascii?Q?9LwBZZC4gVypVOYxk1C6vEaO+1uH1I1STy4YcO7Djh2BA3hxR2HYv/TFvSaE?=
+ =?us-ascii?Q?7A4E8f+sZdY8WKYsO11TxcCiAFhYDyxSmr73t+uJ7urOGtiNo9Z7EByjyNmj?=
+ =?us-ascii?Q?ACwiUY1Mnzy5dtgm4MBm1eUeE4M+uhjqcxiktCKoIWQXvIpX1MIaCWp+a1xS?=
+ =?us-ascii?Q?QT8Vwx1piUMDvdkNqMRKdI8OLdjD3CYIVL1j5UYpxPeBTlKK+Ou/eTE6ZkJo?=
+ =?us-ascii?Q?tjmbINiHUxRhYfepCS1ITxnjgvoGmVOIvIIveakuiDj8Dkbj6ekUXaRaS4ng?=
+ =?us-ascii?Q?0Ntt7gozwnmos1Bfuyn756uTwoKVKS2P1Wacjj9T6CV226vW1lKRjQcHhW35?=
+ =?us-ascii?Q?uB76d3v7XL8vGLreLjUH9h+pazyk+69/Q5sw8liYUtPI6bZCrxhk82ANKXu5?=
+ =?us-ascii?Q?l1tTyCEdXM+XplUq6fYrI+WopNgBk0JpOOzJOyDNYj0rgjdeTwjuL82wiyM5?=
+ =?us-ascii?Q?ZYc64Ry//8vZFRc7BBh0lBZihdlYBS9N7e5Shrz3D3uOlNKnzYW3un8kBvfu?=
+ =?us-ascii?Q?FQooXFpdRLSNdk/inpJiADpWB63FwMWX21d6GWFc?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97155de4-5a2e-4a2f-85de-08dc2ef04ba1
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 13:07:57.7157
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PX3ife/oCyPDsU0c/2oXNO0lnqkW8gNEi7ggUwnhr296qP3QPnpnPYM3+jbbPWiArTpTeMhAzcZObF//XHcmVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6344
 
-Hi Mario,
+On 14.02.24 17:44:44, Jonathan Cameron wrote:
+> On Wed, 14 Feb 2024 17:39:27 +0000
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Fri, 9 Feb 2024 20:26:47 +0100
+> > Robert Richter <rrichter@amd.com> wrote:
+> > 
+> > > There exists card implementations with a CDAT table using a fix  
+> > There exist ... fixed size buffer,
+> > > buffer, but with entries filled in that do not fill the whole table
+> > > length size. Then, the last entry in the CDAT table may not mark the
+> > > end of the CDAT table buffer specified by the length field in the CDAT
+> > > header. It can be shorter with trailing unused (zero'ed) data. The
+> > > actual table length is determined while reading all CDAT entries of
+> > > the table with DOE.
+> > > 
+> > > If the table is greater than expected (containing zero'ed trailing
+> > > data), the CDAT parser fails with:
+> > > 
+> > >  [   48.691717] Malformed DSMAS table length: (24:0)
+> > >  [   48.702084] [CDAT:0x00] Invalid zero length
+> > >  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
+> > > 
+> > > In addition, a check of the table buffer length is missing to prevent
+> > > an out-of-bound access then parsing the CDAT table.
+> > > 
+> > > Hardening code against device returning borked table. Fix that by
+> > > providing an optional buffer length argument to
+> > > acpi_parse_entries_array() that can be used by cdat_table_parse() to
+> > > propagate the buffer size down to its users to check the buffer
+> > > length. This also prevents a possible out-of-bound access mentioned.
+> > > 
+> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > > Cc: Len Brown <lenb@kernel.org>
+> > > Signed-off-by: Robert Richter <rrichter@amd.com>
+> > > Reviewed-by: Dave Jiang <dave.jiang@intel.com>  
+> > 
+> > I think we should scream a bit about this if we see it
+> > as I'm unconvinced the spec allows for an implementation like this.
+> > 
+> > If the spec is unclear, lets seek a clarification.
+> > 
+> > I'm fine with this as a defensive measure, I just don't want
+> > device vendors to keep doing it! 
+> > 
+> Scrub that - I got around to checking the CDAT spec. It can
+> change length whilst we are reading it due to DSEMTS entry
+> counts being allowed to change.
+> https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.03.pdf
+> (it's in the description of the Sequence field)
+> 
+> Sure we'll notice that the checksum fails and the sequence number
+> has updated but that doesn't help us if we went out of bounds
+> before we knew that.
+> 
+> Definitely good to check this as I think we can hit it even
+> if we don't have a potentially buggy device.
+> I'd still like to moan if we get inconsistent sizes and it
+> isn't a race though. Can we find a clean way to detect this
+> at a point where we know we have a valid complete table?
 
-kernel test robot noticed the following build warnings:
+I will add a warning about a length mismatch.
 
-[auto build test WARNING on drm-misc/drm-misc-next]
-[also build test WARNING on drm-intel/for-linux-next-fixes drm-tip/drm-tip linus/master v6.8-rc4 next-20240216]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/drm-Stop-using-select-ACPI_VIDEO-in-all-drivers/20240215-055936
-base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
-patch link:    https://lore.kernel.org/r/20240214215756.6530-2-mario.limonciello%40amd.com
-patch subject: [PATCH v6 1/5] drm: Stop using `select ACPI_VIDEO` in all drivers
-config: alpha-kismet-CONFIG_FB_BACKLIGHT-CONFIG_FB_RADEON-0-0 (https://download.01.org/0day-ci/archive/20240216/202402162046.Jr7HgB8P-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20240216/202402162046.Jr7HgB8P-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402162046.Jr7HgB8P-lkp@intel.com/
-
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for FB_BACKLIGHT when selected by FB_RADEON
-   .config:171:warning: symbol value 'n' invalid for PANEL_LCD_PIN_E
-   .config:253:warning: symbol value 'n' invalid for SATA_MOBILE_LPM_POLICY
-   .config:358:warning: symbol value 'n' invalid for PSTORE_BLK_MAX_REASON
-   .config:438:warning: symbol value 'n' invalid for KFENCE_SAMPLE_INTERVAL
-   .config:623:warning: symbol value 'n' invalid for DRM_XE_JOB_TIMEOUT_MIN
-   .config:662:warning: symbol value 'n' invalid for CRYPTO_DEV_QCE_SW_MAX_LEN
-   .config:677:warning: symbol value 'n' invalid for AIC79XX_DEBUG_MASK
-   .config:773:warning: symbol value 'n' invalid for PANEL_LCD_CHARSET
-   .config:804:warning: symbol value 'n' invalid for SND_AC97_POWER_SAVE_DEFAULT
-   .config:870:warning: symbol value 'n' invalid for MAGIC_SYSRQ_DEFAULT_ENABLE
-   .config:891:warning: symbol value 'n' invalid for DRM_I915_MAX_REQUEST_BUSYWAIT
-   .config:918:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MIN
-   .config:928:warning: symbol value 'n' invalid for NET_EMATCH_STACK
-   .config:930:warning: symbol value 'n' invalid for VMCP_CMA_SIZE
-   .config:935:warning: symbol value 'n' invalid for SND_AT73C213_TARGET_BITRATE
-   .config:1064:warning: symbol value 'n' invalid for AIC79XX_CMDS_PER_DEVICE
-   .config:1162:warning: symbol value 'n' invalid for RCU_CPU_STALL_TIMEOUT
-   .config:1182:warning: symbol value 'n' invalid for PANEL_LCD_PIN_SDA
-   .config:1190:warning: symbol value 'n' invalid for MTDRAM_ERASE_SIZE
-   .config:1220:warning: symbol value 'n' invalid for AIC79XX_RESET_DELAY_MS
-   .config:1312:warning: symbol value 'n' invalid for SERIAL_UARTLITE_NR_UARTS
-   .config:1493:warning: symbol value 'n' invalid for LEGACY_PTY_COUNT
-   .config:1636:warning: symbol value 'n' invalid for AIC7XXX_RESET_DELAY_MS
-   .config:1637:warning: symbol value 'n' invalid for WATCHDOG_OPEN_TIMEOUT
-   .config:1782:warning: symbol value 'n' invalid for IBM_EMAC_POLL_WEIGHT
-   .config:1788:warning: symbol value 'n' invalid for MTD_REDBOOT_DIRECTORY_BLOCK
-   .config:1939:warning: symbol value 'n' invalid for DRM_I915_STOP_TIMEOUT
-   .config:2157:warning: symbol value 'n' invalid for SND_HDA_PREALLOC_SIZE
-   .config:2205:warning: symbol value 'n' invalid for RCU_FANOUT_LEAF
-   .config:2353:warning: symbol value 'n' invalid for PANEL_LCD_BWIDTH
-   .config:2384:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MAX
-   .config:2400:warning: symbol value 'n' invalid for SERIAL_AR933X_NR_UARTS
-   .config:2594:warning: symbol value 'n' invalid for PANEL_PARPORT
-   .config:2634:warning: symbol value 'n' invalid for KCOV_IRQ_AREA_SIZE
-   .config:2681:warning: symbol value 'n' invalid for NOUVEAU_DEBUG_DEFAULT
-   .config:2872:warning: symbol value 'n' invalid for KCSAN_REPORT_ONCE_IN_MS
-   .config:2971:warning: symbol value 'n' invalid for KCSAN_UDELAY_INTERRUPT
-   .config:2994:warning: symbol value 'n' invalid for PANEL_LCD_PIN_BL
-   .config:3020:warning: symbol value 'n' invalid for INITRAMFS_ROOT_GID
-   .config:3048:warning: symbol value 'n' invalid for FTRACE_RECORD_RECURSION_SIZE
-   .config:3128:warning: symbol value 'n' invalid for ATM_FORE200E_TX_RETRY
-   .config:3165:warning: symbol value 'n' invalid for FB_OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:3203:warning: symbol value 'n' invalid for SND_SOC_SOF_DEBUG_IPC_FLOOD_TEST_NUM
-   .config:3465:warning: symbol value 'n' invalid for PSTORE_BLK_CONSOLE_SIZE
-   .config:3493:warning: symbol value 'n' invalid for KCSAN_UDELAY_TASK
-   .config:3514:warning: symbol value 'n' invalid for MMC_BLOCK_MINORS
-   .config:3518:warning: symbol value 'n' invalid for INET_TABLE_PERTURB_ORDER
-   .config:3561:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_SYNC
-   .config:3619:warning: symbol value 'n' invalid for BOOKE_WDT_DEFAULT_TIMEOUT
-   .config:3682:warning: symbol value 'n' invalid for UCLAMP_BUCKETS_COUNT
-   .config:3810:warning: symbol value 'n' invalid for IP_VS_MH_TAB_INDEX
-   .config:3844:warning: symbol value 'n' invalid for SERIAL_MCF_BAUDRATE
-   .config:3914:warning: symbol value 'n' invalid for DE2104X_DSL
-   .config:3931:warning: symbol value 'n' invalid for BLK_DEV_RAM_COUNT
-   .config:4194:warning: symbol value 'n' invalid for IP_VS_SH_TAB_BITS
-   .config:4224:warning: symbol value 'n' invalid for STACK_MAX_DEFAULT_SIZE_MB
-   .config:4276:warning: symbol value 'n' invalid for INPUT_MOUSEDEV_SCREEN_X
-   .config:4306:warning: symbol value 'n' invalid for PANEL_LCD_PIN_RW
-   .config:4349:warning: symbol value 'n' invalid for USBIP_VHCI_HC_PORTS
-   .config:4393:warning: symbol value 'n' invalid for RIONET_RX_SIZE
-   .config:4668:warning: symbol value 'n' invalid for RADIO_TYPHOON_PORT
-   .config:4705:warning: symbol value 'n' invalid for IBM_EMAC_TXB
-   .config:4799:warning: symbol value 'n' invalid for SERIAL_TXX9_NR_UARTS
-   .config:4937:warning: symbol value 'n' invalid for SND_MAX_CARDS
-   .config:5092:warning: symbol value 'n' invalid for ARCH_MMAP_RND_BITS
-   .config:5174:warning: symbol value 'n' invalid for DRM_I915_FENCE_TIMEOUT
-   .config:5180:warning: symbol value 'n' invalid for RCU_BOOST_DELAY
-   .config:5196:warning: symbol value 'n' invalid for TTY_PRINTK_LEVEL
-   .config:5355:warning: symbol value 'n' invalid for MIPS_EJTAG_FDC_KGDB_CHAN
-   .config:5368:warning: symbol value 'n' invalid for XEN_MEMORY_HOTPLUG_LIMIT
-   .config:5453:warning: symbol value 'n' invalid for KDB_DEFAULT_ENABLE
-   .config:5471:warning: symbol value 'n' invalid for SERIAL_ALTERA_UART_MAXPORTS
-   .config:5680:warning: symbol value 'n' invalid for DRM_XE_PREEMPT_TIMEOUT_MAX
-   .config:5681:warning: symbol value 'n' invalid for PPC_EARLY_DEBUG_EHV_BC_HANDLE
-   .config:5733:warning: symbol value 'n' invalid for PANEL_LCD_HWIDTH
-   .config:5766:warning: symbol value 'n' invalid for LOCKDEP_CHAINS_BITS
-   .config:5861:warning: symbol value 'n' invalid for DRM_I915_HEARTBEAT_INTERVAL
-   .config:5867:warning: symbol value 'n' invalid for KCSAN_SKIP_WATCH
-   .config:5891:warning: symbol value 'n' invalid for PSTORE_BLK_KMSG_SIZE
-   .config:6093:warning: symbol value 'n' invalid for SERIAL_8250_RUNTIME_UARTS
-   .config:6189:warning: symbol value 'n' invalid for ARCH_MMAP_RND_COMPAT_BITS
-   .config:6272:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_MAX_TAGS
-   .config:6289:warning: symbol value 'n' invalid for CRYPTO_DEV_FSL_CAAM_INTC_TIME_THLD
-   .config:6359:warning: symbol value 'n' invalid for RADIO_TRUST_PORT
-   .config:6399:warning: symbol value 'n' invalid for MTD_UBI_WL_THRESHOLD
-   .config:6420:warning: symbol value 'n' invalid for RIONET_TX_SIZE
-   .config:6526:warning: symbol value 'n' invalid for SERIAL_SH_SCI_NR_UARTS
-   .config:6547:warning: symbol value 'n' invalid for VIDEO_VIVID_MAX_DEVS
-   .config:6739:warning: symbol value 'n' invalid for CMA_SIZE_PERCENTAGE
-   .config:6801:warning: symbol value 'n' invalid for OMAP2_DSS_MIN_FCK_PER_PCK
-   .config:6887:warning: symbol value 'n' invalid for DRM_XE_TIMESLICE_MIN
-   .config:7085:warning: symbol value 'n' invalid for SCSI_NCR53C8XX_MAX_TAGS
-   .config:7089:warning: symbol value 'n' invalid for DVB_MAX_ADAPTERS
-   .config:7106:warning: symbol value 'n' invalid for SCSI_SYM53C8XX_DMA_ADDRESSING_MODE
-   .config:7367:warning: symbol value 'n' invalid for SERIAL_ARC_NR_PORTS
-   .config:7411:warning: symbol value 'n' invalid for KDB_CONTINUE_CATASTROPHIC
-   .config:7483:warning: symbol value 'n' invalid for IBM_EMAC_RXB
-   .config:7545:warning: symbol value 'n' invalid for SCSI_MPT3SAS_MAX_SGE
-   .config:7675:warning: symbol value 'n' invalid for PSTORE_DEFAULT_KMSG_BYTES
-   .config:7720:warning: symbol value 'n' invalid for RCU_FANOUT
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-Robert
 
