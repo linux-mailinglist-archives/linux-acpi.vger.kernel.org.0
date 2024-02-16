@@ -1,208 +1,295 @@
-Return-Path: <linux-acpi+bounces-3590-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3591-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEE0857D35
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 14:08:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8158857DEC
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 14:45:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61D52285199
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 13:08:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0119284638
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Feb 2024 13:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33361292D0;
-	Fri, 16 Feb 2024 13:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2173112B175;
+	Fri, 16 Feb 2024 13:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tKaHWARr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i6yCXIDB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2072.outbound.protection.outlook.com [40.107.220.72])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC78F7869A;
-	Fri, 16 Feb 2024 13:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708088883; cv=fail; b=F0Lhic7ML5Toqmacocpzlh/eSQ5X4wmfmgvPyhmXUILPIy9wsHS88CX+8LbHXaT5Tg0koXuIDTtcvrkrWHvKa0GhvdOE48v4UrNkn8TP3I4q1kbflv+hG5b9R+oGKh0moxGRRS+B6iBZ6JjmFR1Di8UFy3OhTQ5/kyQZtGns9mM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708088883; c=relaxed/simple;
-	bh=7B3r5JDwmwWB7THZMaKWzb2Lnvg5DdFnueEC9vEtN8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=pXjHyXfKYiZSHHxV7uXPYPcsiD1zQG/BrS0/YvD48H/Y2c2utcK4RtIOvY19fRqyr9wINKYWqThzcl2BuLmFkSTNsoRiugRWcq69vq/v7c4OukPKLLIrvZY2xsfutdtd9LIcz+AlDbzdHuog3jZRliyddkROqoLDV+RQQznGbK4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tKaHWARr; arc=fail smtp.client-ip=40.107.220.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h5OrL28HTi7SL06ANn1glVq88gpn80NUKLPt6jh1ZzHcTOePaCbZLxhJvermo8Py1ZtfmT1+1V6LaoPLCguZ/FtNhsBTXXRZEF10WFLAIoDx1gQ74u5sioo0aS7zEnbI3fR5YxPFVrrtFgGXCzpfqGl5lFq3R1wjVNy8cflaeuhT+2xfujKlgDFvMBgbparIMwsGF3ivBu+wOQPJdtmHWfzWMY9g2MSUqzEkR5qVsFSpph+fyhOJSCHQBN2WrretH498RdFgPi+GGhxl87iCLe9qD2mhjHGBK7TGLw9ja9NITOwSWieMyseFZzyKl4CqQAn5FxqAVwTyC+yCPDJd3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6kWcGsv5KWBLzWKub0KgtxdiKf7sTl06c+cZt7U9KN8=;
- b=aqlodmJEU/Xe+UCxEr/yUbImF9eFfwVBbs7HCV1xdmaEZkJP2dNWtIV+1xHeZtQfhL80xs4/rPKxvdFT0wrNwf+wBdYvs3MfKrHu7sPnVAvtJ/LPkuAWK9JKXUcI9oJouQ6ibA1P0aTyJwT5KiJ+oDEZqhsAfjDJw0sa3ZRwa0Rc23v/Q5K1disCOF7EuemlhkH6kwaCIgEGXTahLY+gc8V50jomwwn5k01qF3Od8G7GGR0wfWaKiF8b7L+BXbt9RSIjAQvFjM94oxVzIsWqL1XxYQ+erRuMm6Sdd2Ie7BraE1Xu4/9mIZKPkw3i/A6Sm5OvrjyIbwAient4XM6GFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6kWcGsv5KWBLzWKub0KgtxdiKf7sTl06c+cZt7U9KN8=;
- b=tKaHWARr2BroKQ+uufRj00GvI3m8vFokYpfEIfpIgoCgu77EPNdgBlYPFPwvHaT+vmJeqSCnkOWQwSrNkBxGffsunLi062cvlYRbCP5QVm8gbmtE0d8+1TEoHiEahs81p2bOe7KGSYEzFBFOgBrOvm+IVl+3uuxEqROZPbwuaZM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
- by MN0PR12MB6344.namprd12.prod.outlook.com (2603:10b6:208:3d3::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.15; Fri, 16 Feb
- 2024 13:07:57 +0000
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::9d:17f1:8b3b:1958]) by CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::9d:17f1:8b3b:1958%4]) with mapi id 15.20.7316.012; Fri, 16 Feb 2024
- 13:07:57 +0000
-Date: Fri, 16 Feb 2024 14:07:51 +0100
-From: Robert Richter <rrichter@amd.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] lib/firmware_table: Provide buffer length
- argument to cdat_table_parse()
-Message-ID: <Zc9eJ4-WZZo5-a8O@rric.localdomain>
-References: <20240209192647.163042-1-rrichter@amd.com>
- <20240209192647.163042-4-rrichter@amd.com>
- <20240214173927.00002d20@Huawei.com>
- <20240214174444.00006c9f@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240214174444.00006c9f@Huawei.com>
-X-ClientProxiedBy: FR3P281CA0159.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a2::19) To CYYPR12MB8750.namprd12.prod.outlook.com
- (2603:10b6:930:be::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706E51292E1;
+	Fri, 16 Feb 2024 13:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708091099; cv=none; b=YgGK/beM28XEfbF2ebgG8JZZN1vxF5J0weHzWwZX9o/yxl/1ciqQhWlHbbR/eayUkM3l41PBaq6X59RhSPmsPLe2XPDe2Og6X3LN1KbYpFNejmOkCOariAV8pDZjnJb8UEHqv8lZmwQDw/V3+dCYR4ggypXb0stX9Q4Ut7vAFYM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708091099; c=relaxed/simple;
+	bh=8pF4PgIdUhtgmQ5Ea6PVGdWy0r0h3BhEyg2W1sBoKDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tjoF6y25OWvCKoSuMkHzANtCj9UyEsVHxL0DzNYYEaYJad01jkFQ8kL8UGPgiZWw14nClY597YCMEHqiXxcwD/Lc2hP+2y1ZQSsIsqUty255N20HfolI3ps4B+iiJXgfPc+vHkjwTuYOUwxpvvgiNYopg9PwejpINLk5aZvVszM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i6yCXIDB; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708091096; x=1739627096;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8pF4PgIdUhtgmQ5Ea6PVGdWy0r0h3BhEyg2W1sBoKDU=;
+  b=i6yCXIDBDsK8ZqCnyEy4W8PAHDAK9xnuriEd3anzZtNN33XftMouu8Qj
+   8i3Unf2Kz4/NZTr1hmbpbod5U+2j8hp7Ir+vKaH6Suo/R7xUd52rU5Hx8
+   iJ9L/r3bQ7QhvXAL0WoaX3ubZ5d9dIxyaHKGnEgpQE29xSmY4akMT6QQk
+   lTM2Sp1zXLEvV0jxXHhMOXlLFyYRe7DU1A+k2urnA40pWL2UErbb94mMK
+   yus8oPYNe9Rn7nWHkdgwepugDJUXFtfTHC0qABDQ/vJU8ADuhadtgF7xu
+   DspeK7s2q/QwvBNs2239zcUJmpaF2p9YnMJr+QXp5xbL6IieaI2W2+5/6
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10985"; a="2124468"
+X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
+   d="scan'208";a="2124468"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2024 05:44:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,164,1705392000"; 
+   d="scan'208";a="3809981"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 16 Feb 2024 05:44:51 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rayWG-0001JE-0f;
+	Fri, 16 Feb 2024 13:44:48 +0000
+Date: Fri, 16 Feb 2024 21:43:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ben Cheatham <Benjamin.Cheatham@amd.com>, dan.j.williams@intel.com,
+	jonathan.cameron@huawei.com, rafael@kernel.org, james.morse@arm.com,
+	tony.luck@intel.com, bp@alien8.de
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, dave@stogolabs.net,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com,
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	benjamin.cheatham@amd.com
+Subject: Re: [PATCH v12 1/3] EINJ: Migrate to a platform driver
+Message-ID: <202402162148.vGukSly8-lkp@intel.com>
+References: <20240214200709.777166-2-Benjamin.Cheatham@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|MN0PR12MB6344:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97155de4-5a2e-4a2f-85de-08dc2ef04ba1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	iWqJzeJo3WSnsI5R6q0v1w17OVvqNZspxlOza4j1smsgYz9T4qr8D2nqKOyfA8CR2FjFUNVxCa/2jEAbdq6tNS144P31RCS93V0e/QgFyPykIjoFRmFYIBmOApo0VH+V8TSFMiIyjz1Y5cEkMz4zIb4QUXbU2mr/oMXLTBUctWXnM4t9nRBfKOiVjtV+QEcNCz2ahs8da8z+gGrkXHmbp4+YuenfwuXuW5VH7cF+vobuj1XDTxccd/kRjOOXdSFPcgNBWglaClbCNJlebD4bGvocsRQT6a141KePZaLO1+T/qnQwg9s9h/govg6mtlSuDsT6zLZ5KxmYdZujjzIY6tSe/bzV/iPgeBaaEFsYZ2plZKs+4sx8rbPsNfwOO2p9u2mXf/yr9BOODc0A9FjyxXFT/VWO2O5uQUeFhZqiY6BHSi8ZRWz1uvm1Qv5CvlUZxvEqBVMSbH1eqgwqyhwCkm8vGS0PLHM9DrdwfDHHIba+togQrAtRWDoqPjuV2Kn812qDCU0kXvlx/iTAjKCWSXx9SFKoKblTaQc9yfln7FjKYkqK4h6TSFdnji4XlH90
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(136003)(366004)(346002)(39850400004)(376002)(230922051799003)(230273577357003)(64100799003)(1800799012)(186009)(451199024)(83380400001)(26005)(41300700001)(4326008)(6666004)(316002)(8676002)(8936002)(54906003)(6916009)(66476007)(66556008)(66946007)(6486002)(6506007)(6512007)(966005)(9686003)(53546011)(478600001)(38100700002)(5660300002)(7416002)(2906002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WNDbrFwWq99xNnQqQESyhCYtEwJBprzfEs8+eG1OzV4QZrf9WBUGfIOjJmja?=
- =?us-ascii?Q?R9WbTpfGI3R73KDqIJVODdzOEjm4ETIhG72yFCZmVQ6nYMT+oJVVRyAYDvgM?=
- =?us-ascii?Q?6NLNtwSeI6eBAWhEGm68n+cstRnM2y1prhRrSn4cg79k6naJN25XqPDleJpI?=
- =?us-ascii?Q?ngJaIgKqUgl2A2OE8HfOsWcnCynmOdBGB3J9VvJ3JgbdbUnlwBqNunAFfehY?=
- =?us-ascii?Q?xfCqblv+AjWPLjXXM4XDuIdxOj6i7kjSt2YiF678rNBiFCAHe+4nByMoWVio?=
- =?us-ascii?Q?wCzKl++XP5+nM4vyT4urzzArm3wzmO/u0z2Brx0s9u0UZMc9kaecGq5vN8Hj?=
- =?us-ascii?Q?H0LEEl/3xXCCt/+MtM07T8G6zQ4a6yN7vxBZkOuMQs8L1lO7XtvBnqNOJ8Ir?=
- =?us-ascii?Q?kLsRoLPlS52S1sSan3VWn1KktBdKksz62LO4QJ+K0Rcm6QOz9E8igthTjWD7?=
- =?us-ascii?Q?EwCXA1pBYus+I+ag2Svq5F7lVAm3t2ME80pc8fjvFSy1BDKz1e0D2tgztyDc?=
- =?us-ascii?Q?gN/8v4/z4CO0PMb6rNcC0Eocz5ymi7fXfba51ClbUTnNdoODPQYMs+eMqQFC?=
- =?us-ascii?Q?mbI6UR+GaAQTbsr7AvNhLV+7Z+7N8jIKG/xVcOOizdQ/rNn/qy21Bu1Q25kA?=
- =?us-ascii?Q?5tRdDUGHKrB+xkp0oQ821M2CsyallLJ4l1zglyoKuPbzw+P3WKvdcZ1xe7DO?=
- =?us-ascii?Q?UbCXSgXGXDLdp2S1Sasz/8gDvoc2WrFda0oOWEQOf3GyyMkOacTa69yTyc7l?=
- =?us-ascii?Q?qQU7lNNazmFBpMDVX/DyLWnnaUt8jHc3jLCHPJViilsl3JKnJZiLse9fYkkU?=
- =?us-ascii?Q?CUOOLIFlVdiNz1SJVnHtQI+xbxnloZx6zo7wJGQvSDlXlRARB/nuKpNb2t8L?=
- =?us-ascii?Q?mvtNgc5QYbgENLkgBDxgKFWO2ZEr3KNj6r/AP/fUtWPBmkQSut6V5CWK2iPv?=
- =?us-ascii?Q?/m4NFvTf9qAKU5gcQ8DxkBRB24bRGiVl5TB3EadmVS3mkL4BMiAO7yEPWSgS?=
- =?us-ascii?Q?9LwBZZC4gVypVOYxk1C6vEaO+1uH1I1STy4YcO7Djh2BA3hxR2HYv/TFvSaE?=
- =?us-ascii?Q?7A4E8f+sZdY8WKYsO11TxcCiAFhYDyxSmr73t+uJ7urOGtiNo9Z7EByjyNmj?=
- =?us-ascii?Q?ACwiUY1Mnzy5dtgm4MBm1eUeE4M+uhjqcxiktCKoIWQXvIpX1MIaCWp+a1xS?=
- =?us-ascii?Q?QT8Vwx1piUMDvdkNqMRKdI8OLdjD3CYIVL1j5UYpxPeBTlKK+Ou/eTE6ZkJo?=
- =?us-ascii?Q?tjmbINiHUxRhYfepCS1ITxnjgvoGmVOIvIIveakuiDj8Dkbj6ekUXaRaS4ng?=
- =?us-ascii?Q?0Ntt7gozwnmos1Bfuyn756uTwoKVKS2P1Wacjj9T6CV226vW1lKRjQcHhW35?=
- =?us-ascii?Q?uB76d3v7XL8vGLreLjUH9h+pazyk+69/Q5sw8liYUtPI6bZCrxhk82ANKXu5?=
- =?us-ascii?Q?l1tTyCEdXM+XplUq6fYrI+WopNgBk0JpOOzJOyDNYj0rgjdeTwjuL82wiyM5?=
- =?us-ascii?Q?ZYc64Ry//8vZFRc7BBh0lBZihdlYBS9N7e5Shrz3D3uOlNKnzYW3un8kBvfu?=
- =?us-ascii?Q?FQooXFpdRLSNdk/inpJiADpWB63FwMWX21d6GWFc?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97155de4-5a2e-4a2f-85de-08dc2ef04ba1
-X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2024 13:07:57.7157
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PX3ife/oCyPDsU0c/2oXNO0lnqkW8gNEi7ggUwnhr296qP3QPnpnPYM3+jbbPWiArTpTeMhAzcZObF//XHcmVQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6344
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240214200709.777166-2-Benjamin.Cheatham@amd.com>
 
-On 14.02.24 17:44:44, Jonathan Cameron wrote:
-> On Wed, 14 Feb 2024 17:39:27 +0000
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> 
-> > On Fri, 9 Feb 2024 20:26:47 +0100
-> > Robert Richter <rrichter@amd.com> wrote:
-> > 
-> > > There exists card implementations with a CDAT table using a fix  
-> > There exist ... fixed size buffer,
-> > > buffer, but with entries filled in that do not fill the whole table
-> > > length size. Then, the last entry in the CDAT table may not mark the
-> > > end of the CDAT table buffer specified by the length field in the CDAT
-> > > header. It can be shorter with trailing unused (zero'ed) data. The
-> > > actual table length is determined while reading all CDAT entries of
-> > > the table with DOE.
-> > > 
-> > > If the table is greater than expected (containing zero'ed trailing
-> > > data), the CDAT parser fails with:
-> > > 
-> > >  [   48.691717] Malformed DSMAS table length: (24:0)
-> > >  [   48.702084] [CDAT:0x00] Invalid zero length
-> > >  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
-> > > 
-> > > In addition, a check of the table buffer length is missing to prevent
-> > > an out-of-bound access then parsing the CDAT table.
-> > > 
-> > > Hardening code against device returning borked table. Fix that by
-> > > providing an optional buffer length argument to
-> > > acpi_parse_entries_array() that can be used by cdat_table_parse() to
-> > > propagate the buffer size down to its users to check the buffer
-> > > length. This also prevents a possible out-of-bound access mentioned.
-> > > 
-> > > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> > > Cc: Len Brown <lenb@kernel.org>
-> > > Signed-off-by: Robert Richter <rrichter@amd.com>
-> > > Reviewed-by: Dave Jiang <dave.jiang@intel.com>  
-> > 
-> > I think we should scream a bit about this if we see it
-> > as I'm unconvinced the spec allows for an implementation like this.
-> > 
-> > If the spec is unclear, lets seek a clarification.
-> > 
-> > I'm fine with this as a defensive measure, I just don't want
-> > device vendors to keep doing it! 
-> > 
-> Scrub that - I got around to checking the CDAT spec. It can
-> change length whilst we are reading it due to DSEMTS entry
-> counts being allowed to change.
-> https://uefi.org/sites/default/files/resources/Coherent%20Device%20Attribute%20Table_1.03.pdf
-> (it's in the description of the Sequence field)
-> 
-> Sure we'll notice that the checksum fails and the sequence number
-> has updated but that doesn't help us if we went out of bounds
-> before we knew that.
-> 
-> Definitely good to check this as I think we can hit it even
-> if we don't have a potentially buggy device.
-> I'd still like to moan if we get inconsistent sizes and it
-> isn't a race though. Can we find a clean way to detect this
-> at a point where we know we have a valid complete table?
+Hi Ben,
 
-I will add a warning about a length mismatch.
+kernel test robot noticed the following build warnings:
 
-Thanks,
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on linus/master rafael-pm/acpi-bus v6.8-rc4 next-20240216]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
--Robert
+url:    https://github.com/intel-lab-lkp/linux/commits/Ben-Cheatham/EINJ-Migrate-to-a-platform-driver/20240215-041027
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240214200709.777166-2-Benjamin.Cheatham%40amd.com
+patch subject: [PATCH v12 1/3] EINJ: Migrate to a platform driver
+config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240216/202402162148.vGukSly8-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240216/202402162148.vGukSly8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402162148.vGukSly8-lkp@intel.com/
+
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
+
+WARNING: modpost: missing MODULE_DESCRIPTION() in vmlinux.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/events/intel/intel-uncore.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/events/intel/intel-cstate.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/events/rapl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/kernel/cpu/mce/mce-inject.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/crypto/crc32-pclmul.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/kvm/kvm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/kvm/kvm-intel.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in arch/x86/kvm/kvm-amd.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in mm/hwpoison-inject.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nfs/nfsv4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp737.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp775.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp850.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp852.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp855.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp857.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp860.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp861.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp862.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp863.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp864.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp865.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp866.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp869.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp874.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp932.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_euc-jp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp936.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp949.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp950.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp1250.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp1251.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-1.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-2.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-3.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-5.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-6.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-7.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_cp1255.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-9.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-13.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-14.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_iso8859-15.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-r.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-u.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_koi8-ru.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_utf8.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-celtic.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-centeuro.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-croatian.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-cyrillic.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-gaelic.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-greek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-iceland.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-inuit.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-romanian.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-roman.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-turkish.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/nls_ucs2_utils.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/binfmt_misc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/cramfs/cramfs.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/fat/fat.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/isofs/isofs.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/smb/common/cifs_arc4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/smb/common/cifs_md4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/btrfs/btrfs.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/cast_common.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/ecc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/xor.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in block/t10-pi.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/crypto/libchacha.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/crypto/libarc4.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/crypto/libdes.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/crypto/libpoly1305.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/ts_kmp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/ts_bm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/ts_fsm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pci/pci-pf-stub.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/backlight/platform_lcd.o
+>> WARNING: modpost: drivers/acpi/apei/einj: section mismatch in reference: einj_driver+0x10 (section: .data) -> einj_remove (section: .exit.text)
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/acpi_tad.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/platform_profile.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/nfit/nfit.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/dmatest.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dma/ioat/ioatdma.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/virtio/virtio_dma_buf.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/xen/xen-evtchn.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/xen/xen-privcmd.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/n_hdlc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/n_gsm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/intel-gtt.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/lp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ppdev.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/tlclk.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/tiny/bochs.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/tiny/cirrus.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/i915/kvmgt.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-i2c.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-spi.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/block/brd.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/block/loop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/block/null_blk/null_blk.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dax/hmem/dax_hmem.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dax/device_dax.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dax/kmem.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dax/dax_pmem.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/scsi/isci/isci.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/cdrom/cdrom.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/usb_debug.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/tuners/tda9887.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/rc/rc-core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/dvb-frontends/au8522_decoder.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/dvb-frontends/mb86a16.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/v4l2-core/v4l2-async.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/v4l2-core/v4l2-fwnode.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwmon/asus_atk0110.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/intel_soc_dts_iosf.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_rapl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_mbox.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_wt_hint.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/thermal/intel/int340x_thermal/processor_thermal_power_floor.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/mmc_core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/sdio_uart.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-a4tech.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-apple.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-aureal.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-belkin.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-cherry.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-chicony.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-cypress.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-dr.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-elecom.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ezkey.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-gyration.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ite.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-kensington.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-keytouch.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-kye.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lcpower.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lenovo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-lg-g15.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech-dj.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-logitech-hidpp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-microsoft.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-monterey.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-ortek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-pl.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-petalynx.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-primax.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-saitek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-samsung.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-sjoy.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-speedlink.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-steelseries.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-sunplus.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-gaff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-tmff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-tivo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-topseed.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-twinhan.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-xinmo.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-zpff.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-zydacron.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/hid-waltop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hid/intel-ish-hid/intel-ishtp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-hid.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-vbtn.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/intel/intel-rst.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/amilo-rfkill.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/platform/x86/classmate-laptop.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/hwtracing/intel_th/intel_th_msu_sink.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/libnvdimm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_pmem.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_btt.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvdimm/nd_e820.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/uio/uio.o
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
