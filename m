@@ -1,217 +1,252 @@
-Return-Path: <linux-acpi+bounces-3637-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3638-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6DA858EB4
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Feb 2024 11:27:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA24858ECB
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Feb 2024 11:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AE4DB20B47
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Feb 2024 10:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5A71C20C10
+	for <lists+linux-acpi@lfdr.de>; Sat, 17 Feb 2024 10:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F722C87A;
-	Sat, 17 Feb 2024 10:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754314E1BE;
+	Sat, 17 Feb 2024 10:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o0Ek3M1m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fl809rY3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0D92C6B0
-	for <linux-acpi@vger.kernel.org>; Sat, 17 Feb 2024 10:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D11487AB;
+	Sat, 17 Feb 2024 10:44:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708165668; cv=none; b=ZCz4hnFL9E+PtbajWR/+o7HKbZmlPwJqlnFAvz3iKiopF4dMxmiuH74Z9MNGmL+vwKOtg7LbM00dKT735P0txlBBigi95ynyvFlwfCYZiFHKutzJw7n3Aum8M3OmIxVWfbOshBhb7/ywEqDrUBluLMYVl2XG5YNWcCc++XfkDuM=
+	t=1708166679; cv=none; b=tZScvtX/ZU5jgrwySYj994XWYMo0CezVsyFAGXJI3Tqd7kuYx9Y7j50mFmGECxIUTspC/IvN0FZhz9IGAg93IVdTiqJAtEQ0nA/v+wZ4L+sGIFoTVQfWYkH1ptKKeuO9aULaoB10z7A7Phx9tTFJWNubiDHaDOT2dlHpe/sgVu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708165668; c=relaxed/simple;
-	bh=ITgI8wtXqvIXeUHgFXHCH7Z/ODX/Zp0/cZW85LaK3GI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NDWxIUjhjmDsV6s19yKqEbYcG85pFzwbIBYCGkP7mWnSqet2oaGfyta2jB/wUCVqVQZj1DPbZE+GdE/HuRxUXmZcluP4KV+hn6iy6QV9HjYMuTrpC2GIZXaWsrJLdDa2zJCxkMXq4uvnP8QLixHhQPBrHi6WwkTO/oqXLL1rNvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o0Ek3M1m; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-55f0b2c79cdso4559411a12.3
-        for <linux-acpi@vger.kernel.org>; Sat, 17 Feb 2024 02:27:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708165665; x=1708770465; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J6wGmVKMUMPFGBDWK1cKr8wVY2QYEjHS28FhJFBjkZo=;
-        b=o0Ek3M1m68etsdzvk9nT6q76Gygz7bD1sFX8TBbLf/OQrmFDrUMYH7GYlrDSzHJ396
-         3kHr86Hxt7lU+1qyI3rWdOrhl6LTf+uU/Qx0SHGUFePhGgRMkUy29D3cMNH7EAdDKj3h
-         DihlqJzYIT56uXcZoXBM8dPXOEs28SEtWwOhufLqzaC1bPZSyQLHftgoY9jGNO+KLAOZ
-         jdyqPeQm4upNhiz1LNnt0TUlJCU4V/zaZJd8GTrZ8OiFePknW7edfQhrIE5Y768wz/W+
-         akjvtsEv6Oip4D5AyRmshu51QU/+l+wOjRPY7mONPx3KMkrPxfmNLi4ICkK3bSWVKetg
-         z4VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708165665; x=1708770465;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J6wGmVKMUMPFGBDWK1cKr8wVY2QYEjHS28FhJFBjkZo=;
-        b=i/LJMu0EEDAeo0OLpupKUkaERoIeTYTvP0mImdKPCNOSFUxB94ihmq0k/ObrRAcN9v
-         aWrP0EKwgm+KhQyUNdfnaj6rNYY35zK1Uaim9laXHfT9FkiIzkNl3rLOy4KfOHfcEEis
-         mmZdn06JqT99LCflmgAqmLNQEdAjejeyRydgmBjOoHQSk8zr+KdfJiriqmwoH73nlEJ8
-         Hs6wqjyHEYD93i/NfC/4o39dRe3S+qDiOMb2eR2kyfVP0UMvOaLfpC7sm06JLHEQ+TSJ
-         AAiCPhhR4CZwhudQ95kOURq8z8yAOFp/rqbdrDUMHXrD8dj9ClSWJrV5YRQvCLolBsqG
-         oxxw==
-X-Forwarded-Encrypted: i=1; AJvYcCX72eOlzgy9KNJdQSnsrD1+u1XFBy45o7ertCrLirETp3dmIfJURNW3kbp3fv97exD+zGcH66f09Ds5lFhO3rUhwixsDIB16cMYPg==
-X-Gm-Message-State: AOJu0Yxhwglcr2X/q6wf+a1ZNkYZX3VwtrSyCrIQvWz9jpOJdxAfrasm
-	CjsrlzBmsCx0QogZvivSAzaJNKA1JSIEW3EAPphSqwfBZ46aC+fXEjyr54xfRqw=
-X-Google-Smtp-Source: AGHT+IHUeBCCNfOTMT200Z74Cnghv39yumCat7MUHrvWHRWyM9YqqunSXXsBmoxV7HCdaoMCmKKnOg==
-X-Received: by 2002:aa7:d0d6:0:b0:564:1884:76be with SMTP id u22-20020aa7d0d6000000b00564188476bemr994258edo.39.1708165665403;
-        Sat, 17 Feb 2024 02:27:45 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.207.130])
-        by smtp.gmail.com with ESMTPSA id y5-20020aa7d505000000b0056200715130sm777637edq.54.2024.02.17.02.27.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Feb 2024 02:27:44 -0800 (PST)
-Message-ID: <b7fcb71a-e3bf-4f50-89d6-caff9f3303dc@linaro.org>
-Date: Sat, 17 Feb 2024 11:27:43 +0100
+	s=arc-20240116; t=1708166679; c=relaxed/simple;
+	bh=UW55rgsealtfBDuAKlBBXNYCymhoMGrmgrz1zNjUoQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l5XG3JCPu5PaVjMyDS1OZlJ1/esLVhPjNeF6iJ0zAbdeOqL9uh4GT0xvnCHeDLqxB9xdUrJSexhQYD8gdKo/TOiGMxqCZ821Krco8CpsX0OSDY37xfLTUjidzgyCXBMM5PqfAk4FpgcaSw8COFe8j7pZBqcTVvQxtAjtXAUght0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fl809rY3; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708166678; x=1739702678;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UW55rgsealtfBDuAKlBBXNYCymhoMGrmgrz1zNjUoQ8=;
+  b=Fl809rY3pFMFAA3JSTxd8ha8UzTAEyUlLO11bbU3DOKyECA8HQuPMgM6
+   CgCAodTiZ5Hgq8nzErbLkZPt6jE2cLKvO6gz5b9wNhdbiyMJHe5C/l8Gl
+   ZYhJGGs1wYd+KcSUww85psIWbC/qTGdLnDubUXoJ3mZZog3N5HYdC6kyZ
+   5l73nRxIa4D9RQ+FvL6JcF83ZFyPKfyvlemam5dymZ0bqhRxfB//NU/PD
+   vEPfIkvMeWjAytq3mKn8JhacNr6JX4rSVg7MXmxvejTBPRk+DexkrDIpR
+   JFIMeTPcnKNSN8stABD37OO+DR1N2BORPOCflG6EIGShTD52GNGNL5zny
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10986"; a="2200104"
+X-IronPort-AV: E=Sophos;i="6.06,166,1705392000"; 
+   d="scan'208";a="2200104"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2024 02:44:37 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,166,1705392000"; 
+   d="scan'208";a="8676121"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 17 Feb 2024 02:44:33 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rbIBE-00023A-05;
+	Sat, 17 Feb 2024 10:44:26 +0000
+Date: Sat, 17 Feb 2024 18:43:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Robert Richter <rrichter@amd.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] lib/firmware_table: Provide buffer length
+ argument to cdat_table_parse()
+Message-ID: <202402171817.i0WShbft-lkp@intel.com>
+References: <20240216155844.406996-4-rrichter@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
-Content-Language: en-US
-To: Saravana Kannan <saravanak@google.com>, Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
-References: <20240212213147.489377-1-saravanak@google.com>
- <20240212213147.489377-4-saravanak@google.com>
- <20240214-stable-anytime-b51b898d87af@spud>
- <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240216155844.406996-4-rrichter@amd.com>
 
-On 15/02/2024 00:32, Saravana Kannan wrote:
-> 
-> Good point. Done.
-> 
->>> +    # One or more suppliers can be marked as post initialization supplier
->>> +    description:
->>> +      List of phandles to suppliers that are not needed for initializing or
->>> +      resuming this device.
->>> +    $ref: /schemas/types.yaml#/definitions/phandle-array
->>> +      items:
->>> +        maxItems: 1
->>
->> Rob's bot rightfully complains here about invalid syntax.
-> 
-> I added these two lines based on Rob's feedback. Is the indentation
-> that's wrong?
-> 
-> Yeah, I'm trying to run the dts checker, but I haven't be able to get
-> it to work on my end. See my email to Rob on the v1 series about this.
-> 
-> $ make DT_CHECKER_FLAGS=-m dt_binding_check
-> 
-> The best I could get out of it is a bunch of error reports on other
-> files and then:
-> ...
-> <snip>/Documentation/devicetree/bindings/post-init-suppliers.yaml:
-> ignoring, error parsing file
-> ...
-> 
-> I also tried to use DT_SCHEMA_FILES so I can only test this one file,
-> but that wasn't working either:
+Hi Robert,
 
-I see the errors immediately during testing, no special arguments needed:
+kernel test robot noticed the following build warnings:
 
-crosc64_dt_binding_check post-init-supplier.yaml
-make[1]: Entering directory '/home/krzk/dev/linux/linux/out'
-  LINT    Documentation/devicetree/bindings
-  DTEX    Documentation/devicetree/bindings/post-init-supplier.example.dts
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-[error] syntax error: mapping values are not allowed here (syntax)
-  CHKDT   Documentation/devicetree/bindings/processed-schema.json
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-mapping values are not allowed in this context
-make[3]: *** [../Documentation/devicetree/bindings/Makefile:26:
-Documentation/devicetree/bindings/post-init-supplier.example.dts] Error 1
-make[3]: *** Deleting file
-'Documentation/devicetree/bindings/post-init-supplier.example.dts'
-make[3]: *** Waiting for unfinished jobs....
-../Documentation/devicetree/bindings/post-init-supplier.yaml:84:12:
-mapping values are not allowed in this context
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-/home/krzk/dev/linux/linux/Documentation/devicetree/bindings/post-init-supplier.yaml:
-ignoring, error parsing file
-make[2]: *** [/home/krzk/dev/linux/linux/Makefile:1424:
-dt_binding_check] Error 2
-make[1]: *** [/home/krzk/dev/linux/linux/Makefile:240: __sub-make] Error 2
-make[1]: Leaving directory '/home/krzk/dev/linux/linux/out'
-make: *** [Makefile:240: __sub-make] Error 2
+[auto build test WARNING on 6be99530c92c6b8ff7a01903edc42393575ad63b]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/cxl-pci-Rename-DOE-mailbox-handle-to-doe_mb/20240217-000206
+base:   6be99530c92c6b8ff7a01903edc42393575ad63b
+patch link:    https://lore.kernel.org/r/20240216155844.406996-4-rrichter%40amd.com
+patch subject: [PATCH v4 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
+config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20240217/202402171817.i0WShbft-lkp@intel.com/config)
+compiler: arceb-elf-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240217/202402171817.i0WShbft-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402171817.i0WShbft-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/device.h:15,
+                    from drivers/cxl/core/pci.c:5:
+   drivers/cxl/core/pci.c: In function 'read_cdat_data':
+>> drivers/cxl/core/pci.c:672:31: warning: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ^~~
+   include/linux/dev_printk.h:146:61: note: in expansion of macro 'dev_fmt'
+     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                             ^~~~~~~
+   drivers/cxl/core/pci.c:672:17: note: in expansion of macro 'dev_warn'
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                 ^~~~~~~~
+   drivers/cxl/core/pci.c:672:63: note: format string is defined here
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                                                             ~~^
+         |                                                               |
+         |                                                               long unsigned int
+         |                                                             %u
+   drivers/cxl/core/pci.c:672:31: warning: format '%lu' expects argument of type 'long unsigned int', but argument 4 has type 'size_t' {aka 'unsigned int'} [-Wformat=]
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ^~~
+   include/linux/dev_printk.h:146:61: note: in expansion of macro 'dev_fmt'
+     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                             ^~~~~~~
+   drivers/cxl/core/pci.c:672:17: note: in expansion of macro 'dev_warn'
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                 ^~~~~~~~
+   drivers/cxl/core/pci.c:672:67: note: format string is defined here
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                                                                 ~~^
+         |                                                                   |
+         |                                                                   long unsigned int
+         |                                                                 %u
+   during RTL pass: mach
+   drivers/cxl/core/pci.c: In function 'match_add_dports':
+   drivers/cxl/core/pci.c:68:1: internal compiler error: in arc_ifcvt, at config/arc/arc.cc:9703
+      68 | }
+         | ^
+   0x5b78c1 arc_ifcvt
+   	/tmp/build-crosstools-gcc-13.2.0-binutils-2.41/gcc/gcc-13.2.0/gcc/config/arc/arc.cc:9703
+   0xe431b4 arc_reorg
+   	/tmp/build-crosstools-gcc-13.2.0-binutils-2.41/gcc/gcc-13.2.0/gcc/config/arc/arc.cc:8552
+   0xaed299 execute
+   	/tmp/build-crosstools-gcc-13.2.0-binutils-2.41/gcc/gcc-13.2.0/gcc/reorg.cc:3927
+   Please submit a full bug report, with preprocessed source (by using -freport-bug).
+   Please include the complete backtrace with any bug report.
+   See <https://gcc.gnu.org/bugs/> for instructions.
 
 
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+vim +672 drivers/cxl/core/pci.c
 
-I assume you develop on some older trees, because both next and v6.8-rc1
-work... or standard issues: old dtschema, old yamllint.
+   611	
+   612	/**
+   613	 * read_cdat_data - Read the CDAT data on this port
+   614	 * @port: Port to read data from
+   615	 *
+   616	 * This call will sleep waiting for responses from the DOE mailbox.
+   617	 */
+   618	void read_cdat_data(struct cxl_port *port)
+   619	{
+   620		struct device *uport = port->uport_dev;
+   621		struct device *dev = &port->dev;
+   622		struct pci_doe_mb *doe_mb;
+   623		struct pci_dev *pdev = NULL;
+   624		struct cxl_memdev *cxlmd;
+   625		struct cdat_doe_rsp *buf;
+   626		size_t table_length, length;
+   627		int rc;
+   628	
+   629		if (is_cxl_memdev(uport)) {
+   630			struct device *host;
+   631	
+   632			cxlmd = to_cxl_memdev(uport);
+   633			host = cxlmd->dev.parent;
+   634			if (dev_is_pci(host))
+   635				pdev = to_pci_dev(host);
+   636		} else if (dev_is_pci(uport)) {
+   637			pdev = to_pci_dev(uport);
+   638		}
+   639	
+   640		if (!pdev)
+   641			return;
+   642	
+   643		doe_mb = pci_find_doe_mailbox(pdev, PCI_DVSEC_VENDOR_ID_CXL,
+   644					      CXL_DOE_PROTOCOL_TABLE_ACCESS);
+   645		if (!doe_mb) {
+   646			dev_dbg(dev, "No CDAT mailbox\n");
+   647			return;
+   648		}
+   649	
+   650		port->cdat_available = true;
+   651	
+   652		if (cxl_cdat_get_length(dev, doe_mb, &length)) {
+   653			dev_dbg(dev, "No CDAT length\n");
+   654			return;
+   655		}
+   656	
+   657		/*
+   658		 * The begin of the CDAT buffer needs space for additional 4
+   659		 * bytes for the DOE header. Table data starts afterwards.
+   660		 */
+   661		buf = devm_kzalloc(dev, sizeof(*buf) + length, GFP_KERNEL);
+   662		if (!buf)
+   663			goto err;
+   664	
+   665		table_length = length;
+   666	
+   667		rc = cxl_cdat_read_table(dev, doe_mb, buf, &length);
+   668		if (rc)
+   669			goto err;
+   670	
+   671		if (table_length != length)
+ > 672			dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+   673				table_length, length);
+   674	
+   675		if (cdat_checksum(buf->data, length))
+   676			goto err;
+   677	
+   678		port->cdat.table = buf->data;
+   679		port->cdat.length = length;
+   680	
+   681		return;
+   682	err:
+   683		/* Don't leave table data allocated on error */
+   684		devm_kfree(dev, buf);
+   685		dev_err(dev, "Failed to read/validate CDAT.\n");
+   686	}
+   687	EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+   688	
 
-I am afraid you do it for some old Android kernel... :(
-
-Best regards,
-Krzysztof
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
