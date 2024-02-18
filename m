@@ -1,134 +1,220 @@
-Return-Path: <linux-acpi+bounces-3668-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3669-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A1585989C
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 19:40:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06D58599A2
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 22:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E92A028107B
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 18:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C741F2127D
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 21:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F036F081;
-	Sun, 18 Feb 2024 18:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB5E7319A;
+	Sun, 18 Feb 2024 21:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DsM4EXwQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iUt8/AXp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C5A2FC29
-	for <linux-acpi@vger.kernel.org>; Sun, 18 Feb 2024 18:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708281605; cv=none; b=mkz8JU/z6DA7HYcTl2pr0KDWNBIH/hn2zxbD8rHAF8LpXDw4P8CT3W6flRESFR33gUrnOX6woC2HnvNLcHd+cMruhaDOzyy35h7yDtj1m2FkPKWd0ygTqO4xY1nDnO6hKajpIJOtqIBSL2cVjxkXLpP/Wyz6KZcVTmyfSX2MOIc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708281605; c=relaxed/simple;
-	bh=sf4/d0ybzoBbuEy9of/GVPz9grv9+sZnw+0n24l2WXo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kArwjQDuo8+4ZEOr74C4niewOk2FYDXSlX9BSmEdfJgOnZXaCpGzihG03DbzLnfxMAwWjhv8soX8XJp6O36noxupqiaEZ410zMraQ/md8WAUELZxPDLlp0sn0HDv3HxJ0x4Zn8TAHwOq3GMq6R88e3AEfEthV0a5RG5pnbXcJ14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DsM4EXwQ; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a34c5ca2537so452643666b.0
-        for <linux-acpi@vger.kernel.org>; Sun, 18 Feb 2024 10:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708281602; x=1708886402; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9PJFkaYuItggSIIKWCb0ID9Nlc++2M+Rk+UPIQcaoqY=;
-        b=DsM4EXwQ0LKNlEstMweMbubB69UQ8kGN2n7j578B12tlQL7Ly4uRZn8nYWVEiTC+2O
-         ZZbaCvna8NNzAm+7AFTnHfJUcSUpiypQSYmsBmu/9t1c+xvY19upDvl9svBV4+k3ZUbd
-         RniGUKyWifW6QWQjlxv6wErWAXs3VyK06dMKwLchy6oj9ulQhwsKoSJQA2ReDP4fQ2J9
-         IwHCvAOV/fgxOAeR6yw7hYjKnqzRrnnZb7nXC94k+hqiqllbx5bk9ruDv2GHpiNTPECR
-         VfHIMaHPOOh6jhSZ79ZBst0QNWcyN+r1UsDHQ8ByjCSLx6kXREJu1n1gQxQQ8psHQDKr
-         lBsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708281602; x=1708886402;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9PJFkaYuItggSIIKWCb0ID9Nlc++2M+Rk+UPIQcaoqY=;
-        b=n/yfEpv+pAiJsyE/WXT19ftVMAB7DGShCgKFDBxzNGmQTW5khAfm43Zjj8Gt0m35q8
-         KaK7hjKaXHbgFqnftIcWFdBT8SOVRqBM5uEv1HAySLj6Dd6i79dxblIslHBoI1tYt153
-         lolY8u8UbLzwp+Q8gCUKEOS6wk+UQlZI3uUXp2f9RY6WcF0xkwarYq2bdXzqb1l4wFgC
-         V3ozIPVPw79oUCal6CddpUL61ewbXD4cPMYRIwzPWPrjRl6zmDxOjXMVFraIZx6QOEzd
-         ABLm+gOXsLhh7EOf1dUyQUmjaHimUIhLNc/n8nfvW4hOuX+L9WkeSI4XH5b9mpjesCoJ
-         9f/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlskBBdEVfsstJzpQbJbA1W0UX/rRMkThKXei3HnffzjnqUEV5OVHPLIZWk6xAOiEd4LjssznzHg/8i/LLPRLn/OfkaxBfNBkDKQ==
-X-Gm-Message-State: AOJu0Yw3pnTQC1ZJ5JRYhvGKMqXBfKzNixKa/iHAZ0iFK5p/42ItFJ4F
-	aHW8CmUhVKrHGVcSB550LmgBadSgbAGtfs9HFIqaHgrqI+6EuXLpSmCHW+krqieMflmFoCOd/vU
-	B6TNSrMg23KI1RncfNdzgHQM7hbma+z4jnbE=
-X-Google-Smtp-Source: AGHT+IH5goi+bd1rWKnMMvSItIAe0EhU2uQLx8gt/Iej7M+Uv9/wzdsQvOwJtK/wiKrKCFgriq/4hT4uP5aCNO/pZG4=
-X-Received: by 2002:a17:906:af09:b0:a3d:2af0:f59 with SMTP id
- lx9-20020a170906af0900b00a3d2af00f59mr7346585ejb.47.1708281601782; Sun, 18
- Feb 2024 10:40:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9475265BC0;
+	Sun, 18 Feb 2024 21:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708293269; cv=fail; b=trpuA+PM+dkCoRM7hfO1/A3AfbUEKszBpBmzbbEssNfjQa6hbmFQ4urRezt6hUpn7qntCfXYjNpvDGrhOSmwoxnujQHVfQ8poD8flDewtnGn4hJcdLjEPWmX+F7CeDDbsPXzkrG3v9c6w/XS6swRPFWrzAvXACrt64Pa/WisAxI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708293269; c=relaxed/simple;
+	bh=W7mk/A54267/2qupu7IYDfHqTILN1g8A9+tbElEJChs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S2JramypFPPPswBYPHPJBobRq4aa+xzVanaWJxuZbjixyLl3oxk2OpO3JhISZgN35ys2ZHBictsPzJpPTKOTS9cM3L25eY2C0mmckroc9XI+7VOA2N3EKEzoN0Wxu+HGb5wMrZv7FVKiQJOaqM/hySdB8XvLZItM1dfGEUCQybc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iUt8/AXp; arc=fail smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708293268; x=1739829268;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=W7mk/A54267/2qupu7IYDfHqTILN1g8A9+tbElEJChs=;
+  b=iUt8/AXpfySVSqT/MjLynPCDntjexL6WxvfCshVT1YxN/Xpc921Y30LZ
+   5UDccLG5Ip2kvsykBWLYYEfw/AhssUd0Tu/H1n9W53l3ZY/LXVxrMCVgR
+   74nUjXYm3n5e7NL8AYYI9E1xIhkrbbxM5ylx1pVJvnzcrW3Z1He/EXAzD
+   OAZXClIcdnZHZ+arfDQ+gycnWZ+Lc+pdFm4zQ61S1Ht4VbMxfhCYUt4+Z
+   VclVwRDjTnkaOQOWmR1jxfS7oAeyOGKKHCnivIgyJptKjxzxihb8VGOqA
+   fEVSXw29PwvaTDNTcCFBdFICee8Ay2FfvqVAMgBlUEtk84Q9k3Jjow3Fc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="2226397"
+X-IronPort-AV: E=Sophos;i="6.06,169,1705392000"; 
+   d="scan'208";a="2226397"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 13:54:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,169,1705392000"; 
+   d="scan'208";a="9007320"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Feb 2024 13:54:27 -0800
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sun, 18 Feb 2024 13:54:25 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Sun, 18 Feb 2024 13:54:25 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.41) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sun, 18 Feb 2024 13:54:25 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e6ZFxZ7/m2CdTb0efleMizT1ldtOWHzuMHuaV88BDtQzP5OZbtBy2mDV42nmRfQ2JWBygJZWe/oldInjXfTo/Rl0Mx2gHi9tt8O9+dGGmAtVC5SGmCR/4SyxNOpskpqW3gOItHc7a+0jPw0M3YuajhPZnOrJE+yGMJJPUFAvhXmPCH/jCfgB8vYLg/KdCapdTgo8jqseJQmCWiQobH8LxSFB8QcVKmc3859HMm9PR28x2MeTPGzNk+mh6M/Aut426Bx3XQT4pYunXxtuITAjpv3XqedveaRrLJ17YoN9e1teyXtVqiDPPIwEilMOdO0yOQhO9K2nhkOoxOhpGkMqvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sXcrc50Sd1BfbH683VuotXvo78RQ2VQB/W2j4Au2rPk=;
+ b=CndJeX7vq7n84Xq7D16ze5Vv6tKpW/NCBS0l+JSrMc69JgZYKnTVu+xhfQJ0szFbIw+CRN+6KjrlCQevydlMKPEJtFB0ElJHXgS1WfQZDcxuxq+hYA8TrGxJQrxYVxJ9cvl3Fz3PNlX/jKPMpzniLwsy9l7cFmX+5Q7JBMR95fUVicLir2Y7BDtPaGKBxAqS+BmEoAk0e5vTj60AVsIfOmRSPEXfAVPc6Se4xcPP17qB1UGkQnvGiML1plQU3Dr6MEuRZBpORWKWSc+PRTKU4cZUYiIvSekzrGcjwMVGXQpE3QltRj/mhopJZt5jXuVvT+PBPT8/pOhDM+H2eaeidg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by DM4PR11MB5328.namprd11.prod.outlook.com (2603:10b6:5:393::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.34; Sun, 18 Feb
+ 2024 21:54:23 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::5c74:8206:b635:e10e]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::5c74:8206:b635:e10e%7]) with mapi id 15.20.7292.029; Sun, 18 Feb 2024
+ 21:54:23 +0000
+Date: Sun, 18 Feb 2024 13:54:18 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, <linux-cxl@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Ira Weiny <ira.weiny@intel.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, <vishal.l.verma@intel.com>,
+	<alison.schofield@intel.com>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] acpi/ghes: Remove CXL CPER notifications
+Message-ID: <65d27c8a8cb95_16949a2943e@iweiny-mobl.notmuch>
+References: <170820177849.631006.8893584762602010898.stgit@dwillia2-xfh.jf.intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <170820177849.631006.8893584762602010898.stgit@dwillia2-xfh.jf.intel.com>
+X-ClientProxiedBy: BYAPR07CA0010.namprd07.prod.outlook.com
+ (2603:10b6:a02:bc::23) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240218151533.5720-1-hdegoede@redhat.com> <20240218151533.5720-2-hdegoede@redhat.com>
-In-Reply-To: <20240218151533.5720-2-hdegoede@redhat.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 18 Feb 2024 20:39:25 +0200
-Message-ID: <CAHp75VeSHZ3xMr7uD1H+hQgd0RAqE5uSw8M=b46q_Y7NEAGQuA@mail.gmail.com>
-Subject: Re: [RFC 1/2] ACPI: x86: Move acpi_quirk_skip_serdev_enumeration()
- out of CONFIG_X86_ANDROID_TABLETS
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|DM4PR11MB5328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 50230196-2edb-4bde-65ed-08dc30cc2ae4
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: npL7ps8ibboDSYcG7xIjgmN8/Bpk5yKRVX41aoFFxnTHEdAV1vnmgaQnP25zm3FO01S0hckESG8tVz/9Gy0CSoRiKR+V+guujEsUkvIQw8S/boCApgmYIiL7x6kBjPrPIyhhgmt1LCOBFv/4xRpfiy3aJZSr7bhkCfMLgUI6q1gRZO++EGhR8qVppmgzaasuBVFG7TYZqK43ZgQGHJ7MsvF2INEl5U+igdnrHFVX78nY+sScLAPGCHbNzEpaSHV+T6mnD4bRCRiijFpAqllEiEJSIIxXgwbwbcwOSk402GJqKOqXebZqELV+LVatmLYEHo3PVEx3otW/tYb8q/Kn/YtccAr/xrYIckkf6CNVWT+nKcZIRpH0HSDEBDQeyAZoVTs8Yt2KOt0AT63LNrIxKA0iv6XtEXPpmaPGdb3bP8oKlH7CM6Uf93ICEROEtkIda2mUrYy7TVPGasGpXwftapCcSdrVxIeY+Svgolj16wJsYMDYhP9JmRnFFb2qOIZMip9Q8z0J/j0ncreKegwmgNTEhPXiXI2flxhzRvjO8Yg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(366004)(396003)(376002)(136003)(346002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(2906002)(86362001)(44832011)(26005)(41300700001)(6666004)(316002)(54906003)(83380400001)(478600001)(6486002)(9686003)(6506007)(6512007)(966005)(5660300002)(15650500001)(8676002)(4326008)(8936002)(66556008)(66476007)(66946007)(38100700002)(82960400001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?f6squCaccIEBVZcfbP9j+uRB5BCOD5M7hp/T/+DklGBxcEaXWG2CkiBuk90h?=
+ =?us-ascii?Q?E7QWTidFDb5+dW/p39GFGpxKv6IPztsz8n5MZVVIu019T03HvULIW5qOK3bT?=
+ =?us-ascii?Q?qNtmMltitv0n0iJGK8vaiWxSm1Lqq6Qrng+iG9PNuPDx/Huxbkkc5c91CaZA?=
+ =?us-ascii?Q?029oMNlQWNKJEtCH/zJkLIAXTso+gkDrM8Q7tfwa0QjFWsvie/pXsFz/D+kE?=
+ =?us-ascii?Q?8v2ekcf9Lx+9vmHQmKalSzwGA28IcjCyWhAy/5vjjzXsaa2uQAlmAslCL26A?=
+ =?us-ascii?Q?3s1wWfLEli8JbLjLUBW02Gu0x/EZyz8vkcSBrkSSk55pdZGX/VdVhEPPzcko?=
+ =?us-ascii?Q?rrgB2vu5J9DQeNsoMJoCzNbYvtFcodSGqXQF8OxKBTdSFI9Kbo0og+jgEOpE?=
+ =?us-ascii?Q?oywBlZMOfvFLaEuRSnABR2LJlJdZHR3Yvkf8lxrfavZLhgN7Kr5Oi/alKnVc?=
+ =?us-ascii?Q?FK2hMhh6IzqNzBCmUUHJRAqN569Kjz3kB43o8RMsb7HTkAxVDJw+bm1/uO9C?=
+ =?us-ascii?Q?EJgvBboJdrZzOFJbmuPQkWElvIYOER+ygdwcFkkPgA+Zebs5CjOv+LHYvggZ?=
+ =?us-ascii?Q?vLDqxXqN/wrPsK48WHEPMolnmdvVblPy20z3/9YNh3OIuVgO5VzRbh0uZ4S1?=
+ =?us-ascii?Q?RYi1ovCA1LBmUXiVUSAK6N7HP0nWYQUjSLv36DBrcRh8iItF5frJM8zuhG7L?=
+ =?us-ascii?Q?Z8CJvyObjoAroeHtxaVL+esihCO1+RJeNgF4M1oYC6E0I3vDLSLEn0TJwY7O?=
+ =?us-ascii?Q?9kMHUeI9Ze+f7Mt3ITI9OAPAh+Fu0AWIRaMimFA1ve30ZuBg65x/N4htUTX8?=
+ =?us-ascii?Q?+Qduzq5fLekCyqxqIFSkuFfuUvJwvdXrLWFtOgYrcVWYwsyEknTCWQQcTo35?=
+ =?us-ascii?Q?l7ioScqruTPOAR4R/Ky2uTMTfHrxzeWnMPz2X6mq2RkQn7mED2bFjUkneDIu?=
+ =?us-ascii?Q?Hn0GUMVJWFXqCCTyJNvP5uWbnsSmQuSdjWuPzpHCQWGylCtvSvoBMj3z5WmJ?=
+ =?us-ascii?Q?IcwNSPjrJrZJTHNiIhRSfYdyC8ArK2gkqorZpaXGumVg4oWQ0Ee1+ziz849f?=
+ =?us-ascii?Q?p3DRoJmKjLHggce4h324AF5nc4JwrMGpqZkguD0eZNFgHFX94YR6gSVUrnPb?=
+ =?us-ascii?Q?mCXdl3p+r1XE+h3Siwqqq4Aqy2I9D0pR9dhJrbCBQH1Y6N3TLweG0bOVuATi?=
+ =?us-ascii?Q?IUz4pyJUOjp58RsES+3kgDobwvVYp6NTFP6/CQvYIJs6TC43pTu2eRxkG244?=
+ =?us-ascii?Q?1h7m7rlBSdD8dDLJ8RSRp0REH7r8SVhoqTMJHwHVZBJm27CXRn95W4BLGlgi?=
+ =?us-ascii?Q?Mclt7DMbw0QSlLc5oFlQES225Gf+cfSnUADhhy0a2tLw4fYVXHIawDDAlKP1?=
+ =?us-ascii?Q?UKTQ7VaFNNbWXicEE+sx5gs24wmzmrZPzLsGXX17v1DDt/K9cpY/bLCdj7AO?=
+ =?us-ascii?Q?pkSsXazyamG0iq1cBNhhJVdPTciEKohUwQcfF81JLmsY2JiAjbVnSx50hoKJ?=
+ =?us-ascii?Q?WbM8KbADCUZASCUcyJ54K4h+a6OShqDDAvoQ6SH6c/ws2UqVq3mKijPqVJr9?=
+ =?us-ascii?Q?J9703z4pjgY23olv0hX8VrFrl12wn4DQZeqfuSIZ?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 50230196-2edb-4bde-65ed-08dc30cc2ae4
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2024 21:54:23.2250
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SiADx6rfD2q/ktCeeRrKAbM206SeGt6qRziZ/3hTD13J1Y7btpkM2k0vpZBCYYB1BwstiOINyWasTpaDf+wzVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5328
+X-OriginatorOrg: intel.com
 
-On Sun, Feb 18, 2024 at 5:15=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
- wrote:
->
-> Some recent(ish) Dell AIO devices have a backlight controller board
-> connected to an UART.
->
-> This UART has a DELL0501 HID with CID set to PNP0501 so that the UART is
-> still handled by 8250_pnp.c. Unfortunately there is no separate ACPI devi=
-ce
-> with an UartSerialBusV2() resource to model the backlight-controller.
->
-> The next patch in this series will use acpi_quirk_skip_serdev_enumeration=
-()
-> to still create a serdev for this for a backlight driver to bind to
-> instead of creating a /dev/ttyS0.
->
-> This new acpi_quirk_skip_serdev_enumeration() use is not limited to Andro=
-id
-> X86 tablets, so move it out of the ifdef CONFIG_X86_ANDROID_TABLETS block=
-.
+Dan Williams wrote:
+> Initial tests with the CXL CPER implementation identified that error
+> reports were being duplicated in the log and the trace event [1].  Then
+> it was discovered that the notification handler took sleeping locks
+> while the GHES event handling runs in spin_lock_irqsave() context [2]
+> 
+> Given multiple bugs to fix and how late it is in the development cycle,
+> remove the CXL hookup for now and try again during the next merge
+> window.
+> 
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Link: http://lore.kernel.org/r/20240108165855.00002f5a@Huawei.com [1]
+> Closes: http://lore.kernel.org/r/b963c490-2c13-4b79-bbe7-34c6568423c7@moroto.mountain [2]
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-...
+Dan should we add the following hunk to remove that dead code for now?
 
-> +#else
-> +static int acpi_dmi_skip_serdev_enumeration(struct device *controller_pa=
-rent, bool *skip)
-> +{
-> +       return 0;
-> +}
->  #endif
+With or without this hunk.
 
-...
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
->  static inline int
->  acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, boo=
-l *skip)
->  {
->         *skip =3D false;
->         return 0;
->  }
-> +#endif
-
-Now you have basically two identical blocks in two files. I believe
-you may reorganize the code to have only one of these.
-
---=20
-With Best Regards,
-Andy Shevchenko
+diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
+index 03fa6d50d46f..f4934d0d1fb2 100644
+--- a/include/linux/cxl-event.h
++++ b/include/linux/cxl-event.h
+@@ -114,30 +114,4 @@ enum cxl_event_type {
+        CXL_CPER_EVENT_MEM_MODULE,
+ };
+ 
+-#define CPER_CXL_DEVICE_ID_VALID               BIT(0)
+-#define CPER_CXL_DEVICE_SN_VALID               BIT(1)
+-#define CPER_CXL_COMP_EVENT_LOG_VALID          BIT(2)
+-struct cxl_cper_event_rec {
+-       struct {
+-               u32 length;
+-               u64 validation_bits;
+-               struct cper_cxl_event_devid {
+-                       u16 vendor_id;
+-                       u16 device_id;
+-                       u8 func_num;
+-                       u8 device_num;
+-                       u8 bus_num;
+-                       u16 segment_num;
+-                       u16 slot_num; /* bits 2:0 reserved */
+-                       u8 reserved;
+-               } __packed device_id;
+-               struct cper_cxl_event_sn {
+-                       u32 lower_dw;
+-                       u32 upper_dw;
+-               } __packed dev_serial_num;
+-       } __packed hdr;
+-
+-       union cxl_event event;
+-} __packed;
+-
+ #endif /* _LINUX_CXL_EVENT_H */
 
