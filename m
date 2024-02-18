@@ -1,224 +1,200 @@
-Return-Path: <linux-acpi+bounces-3662-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3663-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B188C859707
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 14:02:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D4B859790
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 16:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257CA1F2193F
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 13:02:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D87F11F2114E
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 15:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCEA6BB53;
-	Sun, 18 Feb 2024 13:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29DB63126;
+	Sun, 18 Feb 2024 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNs1Dh4A"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M4emYOoq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4123037140;
-	Sun, 18 Feb 2024 13:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867D12E61
+	for <linux-acpi@vger.kernel.org>; Sun, 18 Feb 2024 15:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708261345; cv=none; b=WB3MBJQ3pPZM/69LUOTEaWosamQSCwIZoXJkz+osdxodlZBWn/V86rynSVso5i+h7lkfbFILTqquRbs3M1bsGA/xq/e0shOnfYC/SPR1apHkxdyfXdAyec+iud2cg9JjSttAabdJlrBh/7ahi2xuvhFARKqiCQ7OfjNOhlXI3uk=
+	t=1708269341; cv=none; b=aVigeQrgS63W9YGRFouh2vDBqKCB+8CTFu2GdAAH7HhvcvYpOQfnIQTbW+AmqUTKvux5m1F3+RudVHjfESGManDPqyz3Kcs/3t4fL8hdlxTysDk7zprQEJee+5o1F+9iuhUSEETJQImyZHdPBf/Qd5pdrf5mvIiObQ9R1rCTut4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708261345; c=relaxed/simple;
-	bh=dVY8BMPtchDOweysfrajkGdjXqnmHGF53GbnihHyl/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A/8PLPdIgs+kgqgotVNbhxXsgVepbGCtqxMQBiihs9hMT1k+0iwUcusFruhvEgb+8kC160J6ZMLRMfFyBUjZP7m5Gi2OCz4KELetoAOPTzX2ikenWBVVPuOhkoOrhiIH1jnOMDRJwCa46s3pMCLCLRDxpW2zztMDOkcvbb+wwuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNs1Dh4A; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708261343; x=1739797343;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dVY8BMPtchDOweysfrajkGdjXqnmHGF53GbnihHyl/8=;
-  b=ZNs1Dh4AugRT7qpSPRFVWo8Ui0tYrXEoE+GqKufJAqnCVQrjgn4KbeCC
-   NvTy18+zQbt1LmOFyjBl6y4SaBU5l5LEJN0yGZ7hfZli0mjYXLq4414Wf
-   kAotmcCheCUhiB0ABd0WdCSqGPVZ8TVhfe4wd3Wmo7wbXHwFjqLO7UsJ+
-   AObQkjp1XPzi0E3kyDJ3bLx8qhyjwgbQqhgCdfdqnnId8JCe/n37/lC/m
-   c2QoXQgtmaaI3S2xC9wp6TDmT5NnVYFYTNMfYwtgDnlQlwyQs23IlRIQq
-   3MmCGbstzcdeZHnhKoJlvX6R0tJ+gyBEW6nImC+MR4CfdIuIruRCKeGlb
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10987"; a="2207210"
-X-IronPort-AV: E=Sophos;i="6.06,168,1705392000"; 
-   d="scan'208";a="2207210"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 05:02:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,168,1705392000"; 
-   d="scan'208";a="8850629"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmviesa003.fm.intel.com with ESMTP; 18 Feb 2024 05:02:18 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rbgnS-00031w-2W;
-	Sun, 18 Feb 2024 13:01:49 +0000
-Date: Sun, 18 Feb 2024 20:58:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robert Richter <rrichter@amd.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
+	s=arc-20240116; t=1708269341; c=relaxed/simple;
+	bh=AT/4g82+z0A4bq4QKsiFhkfA1eqtI8Zo/JoEEPjswI0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=alhzrcRkGOVPIIEnsL3ti+Z5enaYbjPIeU1pW+oN1DNVfFV5h5EDNFg5tyRiY4T/XYQcUmWHwutPXrvQmaFo2wCrH9aA6Q6vagO4tCNmnCoIdttefzZ6xf2PqQ0XS0UmRC+wOo0POgaVpZGbk5Hsn44FJQimglPRX6ImDhlTMms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M4emYOoq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1708269337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8N2cRJoNBGbsGMJL8la6bvhc7MCFnUApJ/hAJY4LAYs=;
+	b=M4emYOoq4hFlKx3Ct7eDVIxqGHl4S89yclW2VwMRj/kf1wNVQXiA4jLfy8bHnqrhaaopUk
+	aY6MhDiphvdLk7BGW5B/sXcomEe9zXxuqsfNx/ED4C6LdG5xZtIAFLzU8c15SvBNYVCIPx
+	1ezMZfkJzz4vxXq3J9CUtz8iDFIVPfY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-azT1nFxDPoGryrhEUiKOeg-1; Sun,
+ 18 Feb 2024 10:15:35 -0500
+X-MC-Unique: azT1nFxDPoGryrhEUiKOeg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25C1629AC016;
+	Sun, 18 Feb 2024 15:15:35 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.50])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7651B2026D06;
+	Sun, 18 Feb 2024 15:15:34 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
 	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] lib/firmware_table: Provide buffer length
- argument to cdat_table_parse()
-Message-ID: <202402182055.zfTIyfls-lkp@intel.com>
-References: <20240216155844.406996-4-rrichter@amd.com>
+Subject: [RFC 0/2] ACPI: Adding new acpi_driver type drivers ?
+Date: Sun, 18 Feb 2024 16:15:31 +0100
+Message-ID: <20240218151533.5720-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240216155844.406996-4-rrichter@amd.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Hi Robert,
+Hi Rafael,
 
-kernel test robot noticed the following build warnings:
+I recently learned that some Dell AIOs (1) use a backlight controller board
+connected to an UART. Canonical even submitted a driver for this in 2017:
+https://lkml.org/lkml/2017/10/26/78
 
-[auto build test WARNING on 6be99530c92c6b8ff7a01903edc42393575ad63b]
+This UART has a DELL0501 HID with CID set to PNP0501 so that the UART is
+still handled by 8250_pnp.c. Unfortunately there is no separate ACPI device
+with an UartSerialBusV2() resource to model the backlight-controller.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/cxl-pci-Rename-DOE-mailbox-handle-to-doe_mb/20240217-000206
-base:   6be99530c92c6b8ff7a01903edc42393575ad63b
-patch link:    https://lore.kernel.org/r/20240216155844.406996-4-rrichter%40amd.com
-patch subject: [PATCH v4 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
-config: i386-randconfig-006-20240217 (https://download.01.org/0day-ci/archive/20240218/202402182055.zfTIyfls-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240218/202402182055.zfTIyfls-lkp@intel.com/reproduce)
+The RFC patch 2/2 in this series uses acpi_quirk_skip_serdev_enumeration()
+to still create a serdev for this for a backlight driver to bind to
+instead of creating a /dev/ttyS0.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402182055.zfTIyfls-lkp@intel.com/
+Like other cases where the UartSerialBusV2() resource is missing or broken
+this will only create the serdev-controller device and the serdev-device
+itself will need to be instantiated by the consumer (the backlight driver).
 
-All warnings (new ones prefixed by >>):
+Unlike existing other cases which use DMI modaliases to load on a specific
+board to work around brokeness of that board's specific ACPI tables, the
+intend here is to have a single driver for all Dell AIOs using the DELL0501
+HID for their UART, without needing to maintain a list of DMI matches.
 
->> drivers/cxl/core/pci.c:673:4: warning: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
-     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
-         |                                                             ~~~
-         |                                                             %zu
-     673 |                         table_length, length);
-         |                         ^~~~~~~~~~~~
-   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
-     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                                     ~~~     ^~~~~~~~~~~
-   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ~~~    ^~~~~~~~~~~
-   drivers/cxl/core/pci.c:673:18: warning: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
-     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
-         |                                                                 ~~~
-         |                                                                 %zu
-     673 |                         table_length, length);
-         |                                       ^~~~~~
-   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
-     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |                                                                     ~~~     ^~~~~~~~~~~
-   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                              ~~~    ^~~~~~~~~~~
-   2 warnings generated.
+This means that the dell-uart-backlight driver will need something to bind
+to. The original driver from 2017 used an acpi_driver for this matching on
+and binding to the DELL0501 acpi_device.
+
+AFAIK you are trying to get rid of having drivers bind directly to
+acpi_device-s so I assume that you don't want me to introduce a new one.
+So to get a device to bind to without introducing a new acpi_driver
+patch 2/2 if this series creates a platform_device for this.
+
+The creation of this platform_device is why this is marked as RFC,
+if you are ok with this solution I guess you can merge this series
+already as is. With the caveat that the matching dell-uart-backlight
+driver is still under development (its progressing nicely and the
+serdev-device instantation + binding a serdev driver to it already
+works).
+
+If you have a different idea how to handle this I'm certainly open
+to suggestions.
+
+Regards,
+
+Hans
+
+1) All In One a monitor with a PC builtin
 
 
-vim +673 drivers/cxl/core/pci.c
+p.s.
 
-   611	
-   612	/**
-   613	 * read_cdat_data - Read the CDAT data on this port
-   614	 * @port: Port to read data from
-   615	 *
-   616	 * This call will sleep waiting for responses from the DOE mailbox.
-   617	 */
-   618	void read_cdat_data(struct cxl_port *port)
-   619	{
-   620		struct device *uport = port->uport_dev;
-   621		struct device *dev = &port->dev;
-   622		struct pci_doe_mb *doe_mb;
-   623		struct pci_dev *pdev = NULL;
-   624		struct cxl_memdev *cxlmd;
-   625		struct cdat_doe_rsp *buf;
-   626		size_t table_length, length;
-   627		int rc;
-   628	
-   629		if (is_cxl_memdev(uport)) {
-   630			struct device *host;
-   631	
-   632			cxlmd = to_cxl_memdev(uport);
-   633			host = cxlmd->dev.parent;
-   634			if (dev_is_pci(host))
-   635				pdev = to_pci_dev(host);
-   636		} else if (dev_is_pci(uport)) {
-   637			pdev = to_pci_dev(uport);
-   638		}
-   639	
-   640		if (!pdev)
-   641			return;
-   642	
-   643		doe_mb = pci_find_doe_mailbox(pdev, PCI_DVSEC_VENDOR_ID_CXL,
-   644					      CXL_DOE_PROTOCOL_TABLE_ACCESS);
-   645		if (!doe_mb) {
-   646			dev_dbg(dev, "No CDAT mailbox\n");
-   647			return;
-   648		}
-   649	
-   650		port->cdat_available = true;
-   651	
-   652		if (cxl_cdat_get_length(dev, doe_mb, &length)) {
-   653			dev_dbg(dev, "No CDAT length\n");
-   654			return;
-   655		}
-   656	
-   657		/*
-   658		 * The begin of the CDAT buffer needs space for additional 4
-   659		 * bytes for the DOE header. Table data starts afterwards.
-   660		 */
-   661		buf = devm_kzalloc(dev, sizeof(*buf) + length, GFP_KERNEL);
-   662		if (!buf)
-   663			goto err;
-   664	
-   665		table_length = length;
-   666	
-   667		rc = cxl_cdat_read_table(dev, doe_mb, buf, &length);
-   668		if (rc)
-   669			goto err;
-   670	
-   671		if (table_length != length)
-   672			dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
- > 673				table_length, length);
-   674	
-   675		if (cdat_checksum(buf->data, length))
-   676			goto err;
-   677	
-   678		port->cdat.table = buf->data;
-   679		port->cdat.length = length;
-   680	
-   681		return;
-   682	err:
-   683		/* Don't leave table data allocated on error */
-   684		devm_kfree(dev, buf);
-   685		dev_err(dev, "Failed to read/validate CDAT.\n");
-   686	}
-   687	EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
-   688	
+I also tried this approach, but that did not work:
+
+This was an attempt to create both a pdev from acpi_default_enumeration()
+by making the PNP scan handler attach() method return 0 rather then 1;
+and get a pnp_device created for the UART driver as well by
+making acpi_is_pnp_device() return true.
+
+This approach does not work due to the following code in pnpacpi_add_device():
+
+	/* Skip devices that are already bound */
+	if (device->physical_node_count)
+		return 0;
+
+diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
+index 01abf26764b0..847c08deea7b 100644
+--- a/drivers/acpi/acpi_pnp.c
++++ b/drivers/acpi/acpi_pnp.c
+@@ -353,10 +353,17 @@ static bool acpi_pnp_match(const char *idstr, const struct acpi_device_id **matc
+  * given ACPI device object, the PNP scan handler will not attach to that
+  * object, because there is a proper non-PNP driver in the kernel for the
+  * device represented by it.
++ *
++ * The DELL0501 ACPI HID represents an UART (CID is set to PNP0501) with
++ * a backlight-controller attached. There is no separate ACPI device with
++ * an UartSerialBusV2() resource to model the backlight-controller.
++ * This setup requires instantiating both a pnp_device for the UART as well
++ * as a platform_device for the backlight-controller driver to bind too.
+  */
+ static const struct acpi_device_id acpi_nonpnp_device_ids[] = {
+ 	{"INTC1080"},
+ 	{"INTC1081"},
++	{"DELL0501"},
+ 	{""},
+ };
+ 
+@@ -376,13 +383,16 @@ static struct acpi_scan_handler acpi_pnp_handler = {
+  * For CMOS RTC devices, the PNP ACPI scan handler does not work, because
+  * there is a CMOS RTC ACPI scan handler installed already, so we need to
+  * check those devices and enumerate them to the PNP bus directly.
++ * For DELL0501 devices the PNP ACPI scan handler is skipped to create
++ * a platform_device, see the acpi_nonpnp_device_ids[] comment.
+  */
+-static int is_cmos_rtc_device(struct acpi_device *adev)
++static int is_special_pnp_device(struct acpi_device *adev)
+ {
+ 	static const struct acpi_device_id ids[] = {
+ 		{ "PNP0B00" },
+ 		{ "PNP0B01" },
+ 		{ "PNP0B02" },
++		{ "DELL0501" },
+ 		{""},
+ 	};
+ 	return !acpi_match_device_ids(adev, ids);
+@@ -390,7 +400,7 @@ static int is_cmos_rtc_device(struct acpi_device *adev)
+ 
+ bool acpi_is_pnp_device(struct acpi_device *adev)
+ {
+-	return adev->handler == &acpi_pnp_handler || is_cmos_rtc_device(adev);
++	return adev->handler == &acpi_pnp_handler || is_special_pnp_device(adev);
+ }
+ EXPORT_SYMBOL_GPL(acpi_is_pnp_device);
+
+ 
+Hans de Goede (2):
+  ACPI: x86: Move acpi_quirk_skip_serdev_enumeration() out of
+    CONFIG_X86_ANDROID_TABLETS
+  ACPI: x86: Add DELL0501 handling to
+    acpi_quirk_skip_serdev_enumeration()
+
+ drivers/acpi/x86/utils.c | 38 ++++++++++++++++++++++++++++++++++----
+ include/acpi/acpi_bus.h  | 22 +++++++++++-----------
+ 2 files changed, 45 insertions(+), 15 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
