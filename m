@@ -1,186 +1,224 @@
-Return-Path: <linux-acpi+bounces-3661-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3662-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DBB85953C
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 08:18:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B188C859707
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 14:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67714282F94
-	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 07:18:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257CA1F2193F
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Feb 2024 13:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFA66FC6;
-	Sun, 18 Feb 2024 07:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCEA6BB53;
+	Sun, 18 Feb 2024 13:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZzxHJio"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZNs1Dh4A"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C30538A;
-	Sun, 18 Feb 2024 07:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4123037140;
+	Sun, 18 Feb 2024 13:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708240735; cv=none; b=lTBRP+ttjmPvaB4STjWVxuDvf2t9smqRz9cAZG9sZurcedlC3LdHtFJXpmLkRnGMkqWQ9rp2INe4MpQpYC+KMHTneU3MCW0/hWLSG5NRmSQJA6W/1KUtwoekSaecSA09yt47zZdKxrrk7LvWadq2znUqnu8OFXH51pj4ERkX1CY=
+	t=1708261345; cv=none; b=WB3MBJQ3pPZM/69LUOTEaWosamQSCwIZoXJkz+osdxodlZBWn/V86rynSVso5i+h7lkfbFILTqquRbs3M1bsGA/xq/e0shOnfYC/SPR1apHkxdyfXdAyec+iud2cg9JjSttAabdJlrBh/7ahi2xuvhFARKqiCQ7OfjNOhlXI3uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708240735; c=relaxed/simple;
-	bh=LZqwQjxc3WNdVwQL0IszZ+L7hR2FgLuF54Fz0u8hoCU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H9Q6nUQ2KyRQExTv4V/5i1JgVRh1sNFecZdwaIq2MQ/17+7eiHZk8kWWr/q+F4vPbbGkgekMHvpS9P5XpZeobiisNlYhjm9Bl/G2tlJh+UAMcwk30oCygBJ+TmI7QPYVT4uqFAbNoIZVLj5LPXuW5WzPo3VNfKzFcSwqtLAnu10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZzxHJio; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d21a68dd3bso24678291fa.1;
-        Sat, 17 Feb 2024 23:18:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708240732; x=1708845532; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uoMtWxcRWAYRMgAR64TH67exXWHzzjC76RrscHy/AZU=;
-        b=FZzxHJioI1eIltVbo9+0uGw7GA16nlOfOhKqN54WVPzsMW7jhx/2vbTa1ZIbvJo2f9
-         JdUQHkXwFbJvEVQvXImEKdm2kLUaTPEjgQGneGLiPRDNLou2efL5Gh1H7P3205Mm4A6a
-         zD+TQ35t6ZpEZl+lVW11bLQOWUe8kS2KKERQssyJ4LcMLlyW5pmzu1kAh93aXAXlGZbs
-         kFptBd1ZNXKT06r6NnnNu+R2u29YjWhBxocGGsSYamBFMNoM33VbnUWO7nfwcX/WZvkw
-         oyio6RmeR+p3JOkEWfvYiGe6ilhRwRIsaa7JSB1PDlAetIQrhPMXwjU7I4ATRplAoVnj
-         BeHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708240732; x=1708845532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uoMtWxcRWAYRMgAR64TH67exXWHzzjC76RrscHy/AZU=;
-        b=bCd20QYmpkEpDzHkW9oYWcNNZbGWYYh6PWyTRFYJgyiKvQ0//I5zs0kQUtob9fiTLf
-         Mvi/eEecnAcOifu0Gbtc4DpXUpDdqKh7itD7RkGiY28vRTyKEf41flqlC5CTFwg62Lmx
-         qpivRzLWNqqtbB1SMCZBU5ldBuMEoHocpN2Na2YWw3Kn3q36hTdux6Z60gAe1UYkBEFX
-         iUaAlJxB07pYfyY7bVwHsgsXT6A4Nv4YtCeHlMB3qgxxRfpWpRAa6TrRpoK/fUtNJUiV
-         nssi3rn2Rst2Y/pY+BHLJkt6b6y+O1J9D33XkhUgIm+/qrDaFHwc0cdd80FkLzvKCqfi
-         x2hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrRKm9HZmfaCdnlHPewC8WlEppN0A0Tw1uENrGzvhZzCcmmc9ObzgkvR0zcFC+wxxsxxTkF2DfnYVTxEX63A2TltH0967MqNCc/5pfdjRmd68F04aCFOAcEdQaNnigCb3sWnIwJCBnJg==
-X-Gm-Message-State: AOJu0Yw/nsaF7AI+mtTG8Yvckifh1Stq80vM1ORuNjnhmbwLA2SJ+Z5Q
-	v6AT46dNfU0dZyDAdNHZGFwrhQDK4ndIhiwuDizBfKSDYaAfzjSldVrPcVsGePo+odf/e0TXO88
-	VRimbGuC6xjyurA6JDnmdSg4He/3Lz5BDg7JavQ==
-X-Google-Smtp-Source: AGHT+IHXsKbUAnLaswlubkUVSjxcVITALdr6/5cxflDhuJ4pVB97a4rXUaqRixc+Hik3Kiz0Skp1uw1ULPxi43uK5xw=
-X-Received: by 2002:a2e:a686:0:b0:2d0:9324:aab3 with SMTP id
- q6-20020a2ea686000000b002d09324aab3mr5869682lje.30.1708240731756; Sat, 17 Feb
- 2024 23:18:51 -0800 (PST)
+	s=arc-20240116; t=1708261345; c=relaxed/simple;
+	bh=dVY8BMPtchDOweysfrajkGdjXqnmHGF53GbnihHyl/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A/8PLPdIgs+kgqgotVNbhxXsgVepbGCtqxMQBiihs9hMT1k+0iwUcusFruhvEgb+8kC160J6ZMLRMfFyBUjZP7m5Gi2OCz4KELetoAOPTzX2ikenWBVVPuOhkoOrhiIH1jnOMDRJwCa46s3pMCLCLRDxpW2zztMDOkcvbb+wwuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZNs1Dh4A; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708261343; x=1739797343;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dVY8BMPtchDOweysfrajkGdjXqnmHGF53GbnihHyl/8=;
+  b=ZNs1Dh4AugRT7qpSPRFVWo8Ui0tYrXEoE+GqKufJAqnCVQrjgn4KbeCC
+   NvTy18+zQbt1LmOFyjBl6y4SaBU5l5LEJN0yGZ7hfZli0mjYXLq4414Wf
+   kAotmcCheCUhiB0ABd0WdCSqGPVZ8TVhfe4wd3Wmo7wbXHwFjqLO7UsJ+
+   AObQkjp1XPzi0E3kyDJ3bLx8qhyjwgbQqhgCdfdqnnId8JCe/n37/lC/m
+   c2QoXQgtmaaI3S2xC9wp6TDmT5NnVYFYTNMfYwtgDnlQlwyQs23IlRIQq
+   3MmCGbstzcdeZHnhKoJlvX6R0tJ+gyBEW6nImC+MR4CfdIuIruRCKeGlb
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10987"; a="2207210"
+X-IronPort-AV: E=Sophos;i="6.06,168,1705392000"; 
+   d="scan'208";a="2207210"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 05:02:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,168,1705392000"; 
+   d="scan'208";a="8850629"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa003.fm.intel.com with ESMTP; 18 Feb 2024 05:02:18 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rbgnS-00031w-2W;
+	Sun, 18 Feb 2024 13:01:49 +0000
+Date: Sun, 18 Feb 2024 20:58:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Robert Richter <rrichter@amd.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>, Robert Richter <rrichter@amd.com>,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] lib/firmware_table: Provide buffer length
+ argument to cdat_table_parse()
+Message-ID: <202402182055.zfTIyfls-lkp@intel.com>
+References: <20240216155844.406996-4-rrichter@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1706603678.git.haibo1.xu@intel.com> <6473e0bb42524e4f29112290a92539d1a800eb69.1706603678.git.haibo1.xu@intel.com>
- <CAJZ5v0hC7gxoJK0kszw9GgRjxjrKgh7q0sC1L1FdVfOb-TCSRw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0hC7gxoJK0kszw9GgRjxjrKgh7q0sC1L1FdVfOb-TCSRw@mail.gmail.com>
-From: Haibo Xu <xiaobo55x@gmail.com>
-Date: Sun, 18 Feb 2024 15:18:40 +0800
-Message-ID: <CAJve8omH2NvqnTu2a2V=wwrQCiQrP=uzu3ttO1VkjJN0ZyRjMA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ACPICA: SRAT: Add RISC-V RINTC affinity structure
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Haibo Xu <haibo1.xu@intel.com>, ajones@ventanamicro.com, sunilvl@ventanamicro.com, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, Conor Dooley <conor.dooley@microchip.com>, 
-	Guo Ren <guoren@kernel.org>, Anup Patel <apatel@ventanamicro.com>, 
-	Alexandre Ghiti <alexghiti@rivosinc.com>, Greentime Hu <greentime.hu@sifive.com>, 
-	Jisheng Zhang <jszhang@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
-	Baoquan He <bhe@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Chen Jiahao <chenjiahao16@huawei.com>, Arnd Bergmann <arnd@arndb.de>, 
-	James Morse <james.morse@arm.com>, Evan Green <evan@rivosinc.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Marc Zyngier <maz@kernel.org>, 
-	Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Yuntao Wang <ytcoode@gmail.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240216155844.406996-4-rrichter@amd.com>
 
-On Mon, Feb 12, 2024 at 9:31=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Wed, Jan 31, 2024 at 3:18=E2=80=AFAM Haibo Xu <haibo1.xu@intel.com> wr=
-ote:
-> >
-> > ACPICA commit 93caddbf2f620769052c59ec471f018281dc3a24
->
-> Not really.
->
-> > Add definition of RISC-V Interrupt Controller(RINTC)
-> > affinity structure which was approved by UEFI forum
-> > and will be part of next ACPI spec version(6.6).
-> >
-> > Link: https://github.com/acpica/acpica/commit/93caddbf
->
-> And this doesn't point to an upstream ACPICA PR.
->
+Hi Robert,
 
-Hi Rafael,
+kernel test robot noticed the following build warnings:
 
-This patch was generated by the acpica/generate/linux/gen-patch.sh and
-should be merged
-through the ACPICA project. To include it in this series is just to
-serve as a reference.
+[auto build test WARNING on 6be99530c92c6b8ff7a01903edc42393575ad63b]
 
-BTW, the corresponding ACPICA patch is still under review and please
-refer to the following
-link for the status.
+url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/cxl-pci-Rename-DOE-mailbox-handle-to-doe_mb/20240217-000206
+base:   6be99530c92c6b8ff7a01903edc42393575ad63b
+patch link:    https://lore.kernel.org/r/20240216155844.406996-4-rrichter%40amd.com
+patch subject: [PATCH v4 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
+config: i386-randconfig-006-20240217 (https://download.01.org/0day-ci/archive/20240218/202402182055.zfTIyfls-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240218/202402182055.zfTIyfls-lkp@intel.com/reproduce)
 
-https://github.com/acpica/acpica/pull/926
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402182055.zfTIyfls-lkp@intel.com/
 
-Regards,
-Haibo
+All warnings (new ones prefixed by >>):
 
-> > Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> > ---
-> >  include/acpi/actbl3.h | 18 +++++++++++++++++-
-> >  1 file changed, 17 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-> > index c080d579a546..5202e3fc9b41 100644
-> > --- a/include/acpi/actbl3.h
-> > +++ b/include/acpi/actbl3.h
-> > @@ -192,7 +192,8 @@ enum acpi_srat_type {
-> >         ACPI_SRAT_TYPE_GIC_ITS_AFFINITY =3D 4,    /* ACPI 6.2 */
-> >         ACPI_SRAT_TYPE_GENERIC_AFFINITY =3D 5,    /* ACPI 6.3 */
-> >         ACPI_SRAT_TYPE_GENERIC_PORT_AFFINITY =3D 6,       /* ACPI 6.4 *=
-/
-> > -       ACPI_SRAT_TYPE_RESERVED =3D 7     /* 7 and greater are reserved=
- */
-> > +       ACPI_SRAT_TYPE_RINTC_AFFINITY =3D 7,      /* ACPI 6.6 */
-> > +       ACPI_SRAT_TYPE_RESERVED =3D 8     /* 8 and greater are reserved=
- */
-> >  };
-> >
-> >  /*
-> > @@ -296,6 +297,21 @@ struct acpi_srat_generic_affinity {
-> >  #define ACPI_SRAT_GENERIC_AFFINITY_ENABLED     (1)     /* 00: Use affi=
-nity structure */
-> >  #define ACPI_SRAT_ARCHITECTURAL_TRANSACTIONS   (1<<1)  /* ACPI 6.4 */
-> >
-> > +/* 7: RINTC Affinity (ACPI 6.6) */
-> > +
-> > +struct acpi_srat_rintc_affinity {
-> > +       struct acpi_subtable_header header;
-> > +       u16 reserved;           /* Reserved, must be zero */
-> > +       u32 proximity_domain;
-> > +       u32 acpi_processor_uid;
-> > +       u32 flags;
-> > +       u32 clock_domain;
-> > +};
-> > +
-> > +/* Flags for struct acpi_srat_rintc_affinity */
-> > +
-> > +#define ACPI_SRAT_RINTC_ENABLED     (1)        /* 00: Use affinity str=
-ucture */
-> > +
-> >  /*********************************************************************=
-**********
-> >   *
-> >   * STAO - Status Override Table (_STA override) - ACPI 6.0
-> > --
-> > 2.34.1
-> >
+>> drivers/cxl/core/pci.c:673:4: warning: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                                                             ~~~
+         |                                                             %zu
+     673 |                         table_length, length);
+         |                         ^~~~~~~~~~~~
+   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
+     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                                     ~~~     ^~~~~~~~~~~
+   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ~~~    ^~~~~~~~~~~
+   drivers/cxl/core/pci.c:673:18: warning: format specifies type 'unsigned long' but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
+     672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+         |                                                                 ~~~
+         |                                                                 %zu
+     673 |                         table_length, length);
+         |                                       ^~~~~~
+   include/linux/dev_printk.h:146:70: note: expanded from macro 'dev_warn'
+     146 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                                     ~~~     ^~~~~~~~~~~
+   include/linux/dev_printk.h:110:23: note: expanded from macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ~~~    ^~~~~~~~~~~
+   2 warnings generated.
+
+
+vim +673 drivers/cxl/core/pci.c
+
+   611	
+   612	/**
+   613	 * read_cdat_data - Read the CDAT data on this port
+   614	 * @port: Port to read data from
+   615	 *
+   616	 * This call will sleep waiting for responses from the DOE mailbox.
+   617	 */
+   618	void read_cdat_data(struct cxl_port *port)
+   619	{
+   620		struct device *uport = port->uport_dev;
+   621		struct device *dev = &port->dev;
+   622		struct pci_doe_mb *doe_mb;
+   623		struct pci_dev *pdev = NULL;
+   624		struct cxl_memdev *cxlmd;
+   625		struct cdat_doe_rsp *buf;
+   626		size_t table_length, length;
+   627		int rc;
+   628	
+   629		if (is_cxl_memdev(uport)) {
+   630			struct device *host;
+   631	
+   632			cxlmd = to_cxl_memdev(uport);
+   633			host = cxlmd->dev.parent;
+   634			if (dev_is_pci(host))
+   635				pdev = to_pci_dev(host);
+   636		} else if (dev_is_pci(uport)) {
+   637			pdev = to_pci_dev(uport);
+   638		}
+   639	
+   640		if (!pdev)
+   641			return;
+   642	
+   643		doe_mb = pci_find_doe_mailbox(pdev, PCI_DVSEC_VENDOR_ID_CXL,
+   644					      CXL_DOE_PROTOCOL_TABLE_ACCESS);
+   645		if (!doe_mb) {
+   646			dev_dbg(dev, "No CDAT mailbox\n");
+   647			return;
+   648		}
+   649	
+   650		port->cdat_available = true;
+   651	
+   652		if (cxl_cdat_get_length(dev, doe_mb, &length)) {
+   653			dev_dbg(dev, "No CDAT length\n");
+   654			return;
+   655		}
+   656	
+   657		/*
+   658		 * The begin of the CDAT buffer needs space for additional 4
+   659		 * bytes for the DOE header. Table data starts afterwards.
+   660		 */
+   661		buf = devm_kzalloc(dev, sizeof(*buf) + length, GFP_KERNEL);
+   662		if (!buf)
+   663			goto err;
+   664	
+   665		table_length = length;
+   666	
+   667		rc = cxl_cdat_read_table(dev, doe_mb, buf, &length);
+   668		if (rc)
+   669			goto err;
+   670	
+   671		if (table_length != length)
+   672			dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
+ > 673				table_length, length);
+   674	
+   675		if (cdat_checksum(buf->data, length))
+   676			goto err;
+   677	
+   678		port->cdat.table = buf->data;
+   679		port->cdat.length = length;
+   680	
+   681		return;
+   682	err:
+   683		/* Don't leave table data allocated on error */
+   684		devm_kfree(dev, buf);
+   685		dev_err(dev, "Failed to read/validate CDAT.\n");
+   686	}
+   687	EXPORT_SYMBOL_NS_GPL(read_cdat_data, CXL);
+   688	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
