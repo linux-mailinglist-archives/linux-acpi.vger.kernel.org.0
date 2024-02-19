@@ -1,198 +1,235 @@
-Return-Path: <linux-acpi+bounces-3672-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24790859A41
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 02:03:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D134859A91
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 02:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90DF81C209EF
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 01:03:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DB461F21177
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 01:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97427394;
-	Mon, 19 Feb 2024 01:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAE8EBF;
+	Mon, 19 Feb 2024 01:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SDLSmo2w"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ujAijiCv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2077.outbound.protection.outlook.com [40.107.94.77])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E295163;
-	Mon, 19 Feb 2024 01:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708304583; cv=fail; b=VWrhnGNWRAhoFy5BQdLJTJQy1Ub9TvCcfT9A6ZEqtMDGFXyDZb3oB+p3w9qkSACcHFNXInjsom8VNnSX0mY27t+/UGwrel3cFN1PaNZdIq4IBqFfGbdlBF/fxzatnXS4S9W9xHO+ObAmS29GKUAfXW8cxD9y8VDEQ0ks4ssRw9I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708304583; c=relaxed/simple;
-	bh=/yWmIkPNVrHeu9cDAyvqnzafmZUGRZj+ZrcVjlEX4ts=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jk9ZQCHxsf4338udxgL5ikMziEJTT8A7/ZGK6c9GSARFq5uZE4xHt2ZyfAs/FNt36Vt9B25Ntu/2sD+SW8mg3Z1aB1XUfQJpt37ClVv8+deop6+bVVaYlbuHHSFcGQc+C+XQwtqHS49SLGu0SwwJmsY+CU/jVTrfus8WzRDDRMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=SDLSmo2w; arc=fail smtp.client-ip=40.107.94.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R0OUR9MgwpqWSXyCFsX4ySL2PJEzZLNmYYgfwrbpqBqbngFkSSBZg/r1RLihl3uqp0OXlnnBNYyHDxk7HsOdpfEkwNH1oKds0r8kW+0vzmLBSFDCmb9Wh4+cRA7EPVNj/GJm1OId3mcXFp0nMQlt1A7xWSXbMX3hpQ/lKeQf7wrVzEDONfVvllt5bs7I3Rr+PTrWHulNPx6N8zRGSyN3VuY+UkHc6LDE1Zu5ey0eol4gXUUynRNvuVW3jcx43OwMaPdLSczbwPxnDEHtvgDQ2RQeYlEyZvfo2xzZ2IDS6YvHEXWApkhXzCEo0ItV/MSY70aj0ED3gKHOAIue52VmQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/yWmIkPNVrHeu9cDAyvqnzafmZUGRZj+ZrcVjlEX4ts=;
- b=N0ZXeYgzgTLR37RCtpvILycXpVXvEVj4DJNHhmgPb/R0sDNYrZ7Tpw0PvMJRxN44jhri8Vp60sbT0vXIfphT+thRaTrzW3L4jPUTLCMKMKWu4ZcdjWLWksqElhilTbVz0pUrk4v+pZLV9bNCFxSYaEJGWCGbWdpUABpEG98uTPSU65kdQE79DtEBFzeMnfl2w3J5d/BiobtfPFOC9VxtFNTHrNhQj1ZcyedjxQDQWG1lUfvKLMM4XJsISm1H1B+/smqRrqXvTvkOV6ebI5yo1pwQIaCK5AsFh/FMjWOxfZbkSXovYlJUdwyJoPoHFGMILZ1rBWMQQetSnKSo7xU14Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/yWmIkPNVrHeu9cDAyvqnzafmZUGRZj+ZrcVjlEX4ts=;
- b=SDLSmo2wKMy3G0wdRwRnhCraAm/jxNX8gnGggCpNAwm8tmbqI55M+kYHLffplKdw/UeL32Eleo3IxfFEDHxPkwDC4EbFXe8wNlT5w3Z7eM/orLAd0ZW6YMptEphytZLa5W5O+2b4MR+dceIMV5vPFgv8J7/Xln4hX9ezKy+BQrs=
-Received: from DM4PR12MB6351.namprd12.prod.outlook.com (2603:10b6:8:a2::6) by
- MW6PR12MB8833.namprd12.prod.outlook.com (2603:10b6:303:23f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.17; Mon, 19 Feb
- 2024 01:02:58 +0000
-Received: from DM4PR12MB6351.namprd12.prod.outlook.com
- ([fe80::1b3:8ca1:e95b:22e5]) by DM4PR12MB6351.namprd12.prod.outlook.com
- ([fe80::1b3:8ca1:e95b:22e5%6]) with mapi id 15.20.7292.022; Mon, 19 Feb 2024
- 01:02:58 +0000
-From: "Meng, Li (Jassmine)" <Li.Meng@amd.com>
-To: Lucas Lee Jing Yi <lucasleeeeeeeee@gmail.com>, "rafael@kernel.org"
-	<rafael@kernel.org>
-CC: "Yuan, Perry" <Perry.Yuan@amd.com>, "Du, Xiaojian" <Xiaojian.Du@amd.com>,
-	"Deucher, Alexander" <Alexander.Deucher@amd.com>, "bp@alien8.de"
-	<bp@alien8.de>, "Sharma, Deepak" <Deepak.Sharma@amd.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, "Limonciello, Mario"
-	<Mario.Limonciello@amd.com>, "Fontenot, Nathan" <Nathan.Fontenot@amd.com>,
-	"oleksandr@natalenko.name" <oleksandr@natalenko.name>,
-	"rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>, "Huang, Ray"
-	<Ray.Huang@amd.com>, "Huang, Shimmer" <Shimmer.Huang@amd.com>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"viresh.kumar@linaro.org" <viresh.kumar@linaro.org>, "x86@kernel.org"
-	<x86@kernel.org>
-Subject: RE: [PATCH V14 0/7] amd-pstate preferred core
-Thread-Topic: [PATCH V14 0/7] amd-pstate preferred core
-Thread-Index: AQHaSrao7cru5/jeHkCV0sSINFqsALDw90UAgAAEPICAAwoUAIAcbvkAgACUhQA=
-Date: Mon, 19 Feb 2024 01:02:58 +0000
-Message-ID:
- <DM4PR12MB6351F882F2AC0AF0E4F2CA22F7512@DM4PR12MB6351.namprd12.prod.outlook.com>
-References:
- <CAJZ5v0hRk3tME7yeC+1r0RM4-oPPrnSu2=JCsOshBbJp_Nq2Hg@mail.gmail.com>
- <20240218161435.38312-1-lucasleeeeeeeee@gmail.com>
-In-Reply-To: <20240218161435.38312-1-lucasleeeeeeeee@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ActionId=c5a92805-7f4b-4203-85a0-0f6b08bc26ce;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_ContentBits=0;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Enabled=true;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Method=Standard;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_Name=General;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SetDate=2024-02-19T01:02:04Z;MSIP_Label_4342314e-0df4-4b58-84bf-38bed6170a0f_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR12MB6351:EE_|MW6PR12MB8833:EE_
-x-ms-office365-filtering-correlation-id: 693e7da5-3a40-4cf2-254c-08dc30e68336
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- YyYJId9hyxaMKtYGaGOHG/cY3uwBFMuA9YBQuY2RGY6RQ8/m0mPopcMmSr5baTKurcHv4/l3CgBFbW49DajDeMYzveMSbUtdkcVQgvhNHEq+BShKVQVy+qW4LjSCve3E8cwqjdSvrHcgiPHnXwELUfshW5vBwI13KFDsrSpYJj0lr46d8hm3+sd9DLZliLt0q9JrZPLAcarx8lVEicpTyRBsPec/rBG9fqZ2miqdyEJHsdz8YBHKGBVTVqvnxdyrR7kpiKIGs7OrrW63bLAeidxt8T3ZB6uqGxFkdesUa5fHmGVobsZK33ZjQkIR/6kvapH4uzowiIwiFibF+ZvO+4n+0bs3VP8iU9OHTgQGhDAlJ+KOkb1fv3TK7TYips8CSSdfAsolOjlTnwFORwWN26MWXoK4X0w1hTTC45TNKqnaXA5vOuR8cL5AzzQCzG4pKla5mUJEm6nsLQrNu0dVf7mgf4PrO8KGJ2dV/XAkvlT7Wjd7I8l53S6uYcfYyA+MlBYch/dVXBwsbIELY9WYXZcXbGOrUznuQvUAL6BQm2xAeX65go0gbWe7gghnyMKDGGPzlknCyjpbFKG+BdW34ZFst3GcFttqVFUmJtREHH94tBOo7p8o5GZVlp1+T4dz
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6351.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(366004)(396003)(39860400002)(376002)(230273577357003)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(110136005)(316002)(54906003)(41300700001)(55016003)(7416002)(2906002)(66476007)(66556008)(66946007)(76116006)(5660300002)(4326008)(8676002)(8936002)(83380400001)(86362001)(52536014)(71200400001)(478600001)(9686003)(66446008)(38070700009)(53546011)(6506007)(7696005)(26005)(64756008)(38100700002)(33656002)(122000001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?BR8Pvx/EnunxnE6DKiuwNJQG2DL+jI4yvNC7nWKgD4sCHM2hK2CdTJfzZ4Vh?=
- =?us-ascii?Q?9vZDrbceWsuh0eG57rQK+6gJRV38oldBBOzol8Gmw4It1P4VsC89UqXNj9uh?=
- =?us-ascii?Q?DnGuP2lf5onrxE4wN8Zvij8f/CNWQyOp+r7h8bkXrIhwVln7uxq5iedVhKPa?=
- =?us-ascii?Q?4qdvwV1pKeVe8th7WXQL62Mr61ugNHpVFRpd9RJaAXAYT9Kr1qzAJ43Kn5Wc?=
- =?us-ascii?Q?EOIHga/YduZOwnXlCvIDrTQCmYCXcCRFXA2S+ua8Vw6hbUlkdnQsxp0DIPtK?=
- =?us-ascii?Q?w5R8OszIRvgkMFTKGENZ+1iaC3dBa13RDxnbOgXnLpYujCLffl9QDL8ufcDp?=
- =?us-ascii?Q?T36ROfxtXw1e0kArFddd4jHzViTeES+ZDf+RniUXOfR9oeQEuuXVfq1Wfyxq?=
- =?us-ascii?Q?NwOq0kNa5CQM64B2/sTAQwn+zNlHfsMaLia98uvbEggASp33oQOKzr0LmNQo?=
- =?us-ascii?Q?wPCAp4e0fF6TNsA5FOnuanUqnOamZXeE74eA2zo6PYSg2umJZNb/t0T2YY0c?=
- =?us-ascii?Q?j5iI6LSUH0ICcz4ORbJLt37gJ0ToQkgs9unAKtfLHmguGozVXR1uxa25WEar?=
- =?us-ascii?Q?iMII6G3xTLAgPzhYpKNg+6RaHA0YA/5RA97rvcYhRczfBU9zZwRUkKgS7Jss?=
- =?us-ascii?Q?G46e6dvrivq02DhyQogjyrRi4cviaeAoKdamz0iZKpxnKcXorRXxMnvY1MF4?=
- =?us-ascii?Q?H5AjoPkB802z5q5u0TRq9p+w1Gw9bbwM+LIJjH20NtUYAnmQG4FdQizzoi1i?=
- =?us-ascii?Q?pAjgSXbIEnP1TWDIlwC0L7RT1Ciwx77ShOKtFrY9br+3j+PqY6giQLdND7yW?=
- =?us-ascii?Q?Gz6t/YZ30NKGwVlGvSN7YDD8Bc1fKeRYNWw/3Os0klBoV9oTwAUMHPrqf24w?=
- =?us-ascii?Q?i1TLWG4XNatJECkf5Y6DIAtNqD2oGkjcjkyjzl8b22Fpj1NJqK1+iIJJfYDu?=
- =?us-ascii?Q?Ou4eVzQgNmNBnZpLYMMcA2ZQYaFvAHLAgVFh3LcLcfVDdBD5ufuQ/x52vivA?=
- =?us-ascii?Q?smPzE33UHQ4IEbqVmAP50xc4q7BrbH4qDFIDWShLwH+HgH7GMQtDBWdpnY4m?=
- =?us-ascii?Q?0FNapaaeE90xhDw970zVb0iY2xQSQ3Q4j/G0uI2aRbiIljVcjZZZ67FmcGw9?=
- =?us-ascii?Q?ShFW1hB7xqa/pZMXYW+2jyXUB2wI61z9evBw2wwWHIc0vDryijMp9Cm7HOe8?=
- =?us-ascii?Q?ZFCE+aiv4bmfAi2oYu/yeKSYi53zjF/4yWaa13HES6AZECuqSMjPYcEl1zVp?=
- =?us-ascii?Q?CUaiI7yf7gbgmqG+6x1Vg3BVoZ00OTWxB5xArdc/BgkQhIN6I8qNArmej57s?=
- =?us-ascii?Q?Z5o5Je+SCQ1sOrFG1OH5i07u07HTd111w3VmmJt9YClESln10fMoLl5sN/8F?=
- =?us-ascii?Q?YPWHUUG+J5lLKScTvMPd8YvOfY9PrV9ySn5OuZTuutMsM3Z1buPRq8eAXxmY?=
- =?us-ascii?Q?BJhkn19oYlTHmDH1qDaVNtBFlXueUIR/pEVNOaCKRhbWhUEeLqpLLUTpWlni?=
- =?us-ascii?Q?eFcZbd4TJWM3rYUTAGI1+nvgrFKuEm8CCgIX92xfPi8Yun1cS80rsluEHNSS?=
- =?us-ascii?Q?EsFYc3/bvSDgFyco8r4=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC04394;
+	Mon, 19 Feb 2024 01:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708307235; cv=none; b=qiEwk+tND5eGam+PCqRg7zDD72jNuw3RzkkOz2JAek51PLU6o5N96Zo4cWF+U/tuGllnqp1gb+8n5wTJsM2Du3tVxuVSkyL317R2SQOgHtQsvPlINn+rCcya9LTKcST0n8+p+ev2WeBafPyPknvNxNAiMrQJTJx2Cvb+8lri4/E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708307235; c=relaxed/simple;
+	bh=ksaa4UwMu7iSxFJGBgVO7PBzq/jdvj9fS1T+/SOrN1A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tp7N3ME8jyMakltPf9jW2L2Q7pteHbFyRr+diHO+WxmMIgsipPRncgIWHeMIZlcSFTVhQi0RGkX9IE9bIcrw5uKFAU0kxhoWpX5KOFsAIRYVdTpxBi5Mx36hlnHigrSNp2ssjGsNPmzFNPIGDDhj4CX7GljmLY9hcc91CNUymDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ujAijiCv; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708307223; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=6cJ+ZJtAysi52r932E530yoSx3LcIwhYcvRHFW0VzE4=;
+	b=ujAijiCvDp6hEHrozPJG+eXFZ5O2d0T23S6rqg3/YkEXDSjQKMG7D0mqPNE0tCAhnaOu5uhDQTRbmp8TEQeveL4W5t3q6ZvgqghYjRqtESGgOxQag4AbT/0q8ud3WOYhOyq3RXCOfZno/6+XcuOaNa8AZCfOIKl8H64U/IwU3n8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=32;SR=0;TI=SMTPD_---0W0mV91Q_1708307218;
+Received: from 30.240.113.204(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0W0mV91Q_1708307218)
+          by smtp.aliyun-inc.com;
+          Mon, 19 Feb 2024 09:47:01 +0800
+Message-ID: <a1a6d101-1c08-4cd0-860f-af905869c573@linux.alibaba.com>
+Date: Mon, 19 Feb 2024 09:46:57 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6351.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 693e7da5-3a40-4cf2-254c-08dc30e68336
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Feb 2024 01:02:58.1514
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pNWXtYPb3LSqewl561V5cuCc1BDullAALoeJ1jK/yojbBBi79xwIlGOpWevmlYeBElOV1/LhbvV0LUPbvTY6vw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8833
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 0/3] ACPI: APEI: handle synchronous exceptions in task
+ work to send correct SIGBUS si_code
+To: bp@alien8.de, rafael@kernel.org, wangkefeng.wang@huawei.com,
+ tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+ linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
+ gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240204080144.7977-1-xueshuai@linux.alibaba.com>
+Content-Language: en-US
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20240204080144.7977-1-xueshuai@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-[AMD Official Use Only - General]
+Hi, James and Borislav,
 
-Hi :
-Thanks.
-I will check this issue and fix it as soon as possible.
+Gentle Ping. Any feedback to this new version?
 
-> -----Original Message-----
-> From: Lucas Lee Jing Yi <lucasleeeeeeeee@gmail.com>
-> Sent: Monday, February 19, 2024 12:11 AM
-> To: rafael@kernel.org
-> Cc: Yuan, Perry <Perry.Yuan@amd.com>; Du, Xiaojian
-> <Xiaojian.Du@amd.com>; Deucher, Alexander
-> <Alexander.Deucher@amd.com>; bp@alien8.de; Sharma, Deepak
-> <Deepak.Sharma@amd.com>; Meng, Li (Jassmine) <Li.Meng@amd.com>;
-> linux-acpi@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> kselftest@vger.kernel.org; linux-pm@vger.kernel.org; Limonciello, Mario
-> <Mario.Limonciello@amd.com>; Fontenot, Nathan
-> <Nathan.Fontenot@amd.com>; oleksandr@natalenko.name;
-> rafael.j.wysocki@intel.com; Huang, Ray <Ray.Huang@amd.com>; Huang,
-> Shimmer <Shimmer.Huang@amd.com>; skhan@linuxfoundation.org;
-> viresh.kumar@linaro.org; x86@kernel.org
-> Subject: Re: [PATCH V14 0/7] amd-pstate preferred core
->
-> Caution: This message originated from an External Source. Use proper
-> caution when opening attachments, clicking links, or responding.
->
->
-> Dear all,
-> I have found an issue with the patchset when applying on 6.7, leading to =
-a
-> large degradation in performance.
->
-> On my 7840HS on *STOCK* 6.7 highest_perf is reported as 196, not 166 as
-> assumed in the patchset. Applying the patchset causes highest_perf to be
-> misreported and hence a misreported maximum frequency as well, at
-> 4.35GHz instead of 5.14GHz, leading to the degradation in performance.
-> However, On my 5950X, highest_perf is indeed reported as 166 before and
-> after applying the patchset.
->
-> Hence, I propose the following patch (should be attached).
->
-> I do apologize for any mistakes as I am new to this and this is my first =
-email on
-> the mailing list.
->
-> Cheers!
-> Lucas
+Thank you.
+
+Best Regards,
+Shuai
+
+On 2024/2/4 16:01, Shuai Xue wrote:
+> ## Changes Log
+> changes since v10:
+> - rebase to v6.8-rc2
+> 
+> changes since v9:
+> - split patch 2 to address exactly one issue in one patch (per Borislav)
+> - rewrite commit log according to template (per Borislav)
+> - pickup reviewed-by tag of patch 1 from James Morse
+> - alloc and free twcb through gen_pool_{alloc, free) (Per James)
+> - rewrite cover letter
+> 
+> changes since v8:
+> - remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
+> - remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
+> - rewrite the return value comments of memory_failure (per Naoya Horiguchi)
+> 
+> changes since v7:
+> - rebase to Linux v6.6-rc2 (no code changed)
+> - rewritten the cover letter to explain the motivation of this patchset
+> 
+> changes since v6:
+> - add more explicty error message suggested by Xiaofei
+> - pick up reviewed-by tag from Xiaofei
+> - pick up internal reviewed-by tag from Baolin
+> 
+> changes since v5 by addressing comments from Kefeng:
+> - document return value of memory_failure()
+> - drop redundant comments in call site of memory_failure() 
+> - make ghes_do_proc void and handle abnormal case within it
+> - pick up reviewed-by tag from Kefeng Wang 
+> 
+> changes since v4 by addressing comments from Xiaofei:
+> - do a force kill only for abnormal sync errors
+> 
+> changes since v3 by addressing comments from Xiaofei:
+> - do a force kill for abnormal memory failure error such as invalid PA,
+> unexpected severity, OOM, etc
+> - pcik up tested-by tag from Ma Wupeng
+> 
+> changes since v2 by addressing comments from Naoya:
+> - rename mce_task_work to sync_task_work
+> - drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+> - add steps to reproduce this problem in cover letter
+> 
+> changes since v1:
+> - synchronous events by notify type
+> - Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+> 
+> ## Cover Letter
+> 
+> There are two major types of uncorrected recoverable (UCR) errors :
+> 
+> - Synchronous error: The error is detected and raised at the point of the
+>   consumption in the execution flow, e.g. when a CPU tries to access
+>   a poisoned cache line. The CPU will take a synchronous error exception
+>   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+>   Exception (MCE) on X86. OS requires to take action (for example, offline
+>   failure page/kill failure thread) to recover this uncorrectable error.
+> 
+> - Asynchronous error: The error is detected out of processor execution
+>   context, e.g. when an error is detected by a background scrubber. Some data
+>   in the memory are corrupted. But the data have not been consumed. OS is
+>   optional to take action to recover this uncorrectable error.
+> 
+> Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+> could be used to determine whether a synchronous exception occurs on ARM64
+> platform. When a synchronous exception is detected, the kernel should
+> terminate the current process which accessing the poisoned page. This is
+> done by sending a SIGBUS signal with an error code BUS_MCEERR_AR,
+> indicating an action-required machine check error on read.
+> 
+> However, the memory failure recovery is incorrectly sending a SIGBUS
+> with wrong error code BUS_MCEERR_AO for synchronous errors in early kill
+> mode, even MF_ACTION_REQUIRED is set. The main problem is that
+> synchronous errors are queued as a memory_failure() work, and are
+> executed within a kernel thread context, not the user-space process that
+> encountered the corrupted memory on ARM64 platform. As a result, when
+> kill_proc() is called to terminate the process, it sends the incorrect
+> SIGBUS error code because the context in which it operates is not the
+> one where the error was triggered.
+> 
+> To this end, fix the problem by:
+> 
+> - Patch 1: performing a force kill if no memory_failure() work is queued for
+> 	   synchronous errors.
+> - Patch 2: a minor comments improvement.
+> - Patch 3: queue memory_failure() as a task_work so that it runs in the
+> 	   context of the process that is actually consuming the poisoned
+> 	   data, and it will send SIBBUS with si_code BUS_MCEERR_AR.
+> 
+> Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
+> Acknowledge to discussion with them.
+> 
+> ## Steps to Reproduce This Problem
+> 
+> To reproduce this problem:
+> 
+> 	# STEP1: enable early kill mode
+> 	#sysctl -w vm.memory_failure_early_kill=1
+> 	vm.memory_failure_early_kill = 1
+> 
+> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+> 	#einj_mem_uc single
+> 	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+> 	injecting ...
+> 	triggering ...
+> 	signal 7 code 5 addr 0xffffb0d75000
+> 	page not present
+> 	Test passed
+> 
+> The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO error
+> and it is not fact.
+> 
+> After this patch set:
+> 
+> 	# STEP1: enable early kill mode
+> 	#sysctl -w vm.memory_failure_early_kill=1
+> 	vm.memory_failure_early_kill = 1
+> 
+> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+> 	#einj_mem_uc single
+> 	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+> 	injecting ...
+> 	triggering ...
+> 	signal 7 code 4 addr 0xffffb0d75000
+> 	page not present
+> 	Test passed
+> 
+> The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR error
+> as we expected.
+> 
+> [1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
+> [2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
+> [3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
+> [4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+> 
+> Shuai Xue (3):
+>   ACPI: APEI: send SIGBUS to current task if synchronous memory error
+>     not recovered
+>   mm: memory-failure: move return value documentation to function
+>     declaration
+>   ACPI: APEI: handle synchronous exceptions in task work to send correct
+>     SIGBUS si_code
+> 
+>  arch/x86/kernel/cpu/mce/core.c |  9 +---
+>  drivers/acpi/apei/ghes.c       | 84 +++++++++++++++++++++-------------
+>  include/acpi/ghes.h            |  3 --
+>  mm/memory-failure.c            | 22 +++------
+>  4 files changed, 59 insertions(+), 59 deletions(-)
+> 
 
