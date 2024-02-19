@@ -1,145 +1,220 @@
-Return-Path: <linux-acpi+bounces-3693-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3694-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3430985A3DC
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 13:53:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAC185A50E
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 14:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8FD6B25688
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 12:53:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB62A1F25C42
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 13:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B992E832;
-	Mon, 19 Feb 2024 12:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886AC364A8;
+	Mon, 19 Feb 2024 13:46:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PDIeFQEx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACB62E835;
-	Mon, 19 Feb 2024 12:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5042C848;
+	Mon, 19 Feb 2024 13:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708347221; cv=none; b=U+459p/B507NLsNxyf0D1Qnwa/lKvyicMAM1znfGafD2WNVI/NonylSVlbAPstg0HDj6dEkVgD0ZRqBc3XLckON6nQdKz4Tq9xSt3Upn50UP8lzU9LG5SoRUh+ZA0uXShYccXihlsNfJgnIu7pLdf8Qyz6f/QT46fWZErGPvqgA=
+	t=1708350361; cv=none; b=mqKoNfH4fWvKIrICqmjzcZ2PZfj9MTnVNDKrqV8y56rOeGdVBpImfkdiT1ZGVPEdTGst440Ulwu/0ME7HqNgn/Ak2/CrlvbsSArZ4DqOpSkti+dM7XhtT1j3jIIYfqyvDoYWLSZD8J4xOI/auDnmgyn1e5h+xPjPOQ8gRCdqGoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708347221; c=relaxed/simple;
-	bh=zbwGpXT5xkTmS6Rpg+489aV9VmgzsWnZ5SCdCsy9epM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QT8B9StzD9qCdqP7DVJBHZBiEpwn60Nm4IbpP0hqNZdqioB10kWBKfOoJdqwIi32XFJWZ/0aV3YQpzYjbGA9DlWjc5QypFYn3Sc7cPdMzpCjjhIC0eu7rRWhqhGGzq83uwzSeetvdXPNi1otJGI/GJgKP3Gp5SAtAwQ+/rSRnSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tdj6W6YJJz6K63b;
-	Mon, 19 Feb 2024 20:49:39 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 55327140B38;
-	Mon, 19 Feb 2024 20:53:36 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
- 2024 12:53:35 +0000
-Date: Mon, 19 Feb 2024 12:53:34 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Richter <rrichter@amd.com>
-CC: Dan Williams <dan.j.williams@intel.com>, kernel test robot
-	<lkp@intel.com>, Alison Schofield <alison.schofield@intel.com>, "Vishal
- Verma" <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Davidlohr Bueso <dave@stgolabs.net>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	<oe-kbuild-all@lists.linux.dev>, Linux Memory Management List
-	<linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v5] lib/firmware_table: Provide buffer length argument
- to cdat_table_parse()
-Message-ID: <20240219125334.000036cd@Huawei.com>
-In-Reply-To: <ZdEnopFO0Tl3t2O1@rric.localdomain>
-References: <20240216155844.406996-4-rrichter@amd.com>
-	<202402171817.i0WShbft-lkp@intel.com>
-	<ZdEnopFO0Tl3t2O1@rric.localdomain>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1708350361; c=relaxed/simple;
+	bh=LVRTwEd+DLA5yoWWO1QyoAikwulsSgVa5Hj+jZY0/KU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ov2sL9IV3aAy4WjkuBWxrU0pmVcGAN3zvdZQge3ALOSJTK4BOP8dwGkLIipODin0U8pyYdPmAa5VXI+Q10RbQl5fGhrqkeheYJxEBfjUUtGgyWUQeTNQ665njiggpzLae+u5tLKXKoqtKwTjGBbJ0OxPe0deWB2n95Ugf2M93K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PDIeFQEx; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso4186348a12.3;
+        Mon, 19 Feb 2024 05:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708350357; x=1708955157; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/jg6Jw6XVlwGHC6wg4qyCUXEftgbjGUXyrYMQCE+eOs=;
+        b=PDIeFQExfXgWjaIlE3CqGPAzlc0YQpf90TPIkayJp61AlpKgQK0EMYF5dGEGUQZZPa
+         8uf6NIhYZtlYt+lt3hQHkfSPZVTwnyEXLELiIsRIspUzEzqt/v2J7+MPzoXJkmrkUkHn
+         BLjopXOnOmV2nbupznaBNC4fyaP/nFjJlM/lCdLiA7L+pWWLb8M7O6X5qJmUSvq8bsn9
+         bpRLRUqwLNF5cdz8YXzR5KnkgBx+u/ZPwnWK0QrbEU5L4vrRvJjyn5s+L2O5cqHUtWaO
+         z6IuphuIcWh4lvYRwDbGBkVdOQF+3g653gRfzQxcCYbP89CIFSsX799hehgJkQewL5kh
+         TXgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708350357; x=1708955157;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/jg6Jw6XVlwGHC6wg4qyCUXEftgbjGUXyrYMQCE+eOs=;
+        b=CUOG3KwPYAete+B49jRlGimmTCc3yIuOWfbs3U5OeiaH3ilBQUC9Ef4vUpoj60RnmO
+         /LoYIdLQxaLAWploAKJQx7fRhhc1eemAMnFZVKxJrKc1eYBnmHAfWqXKgwQ232HjsJZ3
+         7df7XMCCPFZx58O78Ub3Q9Oil3FLGpymIGXIvsG2zJtrblpStTcChUnjq9JU02kVirV5
+         BO+XRvIKMWeUKPyeIV0JDbZ5zpsufvqZcuQN7pBKFhFcwzcDwBABMQotcmbSvRBAjPVc
+         c15qUPgtKOv21HxLzsjkkjbUV2kxAHYGgsfB3d02Npi0Dq2AhLTyh5m7IihDIFuEURCl
+         YeCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeRkNvPL6p7J1Rvh/KusOgq4Y+6qp9y0dWFICHZ4GCLWcw0jkpDFX804SwUcXjIcSxz+5OfVD28JgdsXHrYDMtYlIfEzFCwhEI81vhbBEAhJKTjLrfHxMQWs0+3RfKllQeRkv36A==
+X-Gm-Message-State: AOJu0YzxfQsskgM0030VpvuyhEDe5IiJ/ozPjOJkgwqODA42qB95KsMB
+	TZYEVhmDpFQ3rUZrR4klj1HA92Z02oZRQ4aAeRmUhyjDpc2wnaF/
+X-Google-Smtp-Source: AGHT+IG3aji4Ty3GEIJP9dbRMwyuvWwZbf3vrpfTuIDHxuukCje4SvBwS71gN000mbnquJt4Wn0cHw==
+X-Received: by 2002:aa7:d98e:0:b0:564:1ecc:ffb1 with SMTP id u14-20020aa7d98e000000b005641eccffb1mr3817601eds.39.1708350356513;
+        Mon, 19 Feb 2024 05:45:56 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id x16-20020a056402415000b005644e4fdf36sm1708994eda.6.2024.02.19.05.45.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Feb 2024 05:45:56 -0800 (PST)
+Message-ID: <ce7ba8c4178fa05125bb91f35e3bf8c2a28098e7.camel@gmail.com>
+Subject: Re: [PATCH v4 15/15] iio: dac: ltc2688: Use
+ device_for_each_child_node_scoped()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, "Rafael
+ J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+  Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+ <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,  Olivier Moysan
+ <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>,  Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Date: Mon, 19 Feb 2024 14:49:17 +0100
+In-Reply-To: <20240217164249.921878-16-jic23@kernel.org>
+References: <20240217164249.921878-1-jic23@kernel.org>
+	 <20240217164249.921878-16-jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sat, 17 Feb 2024 22:39:46 +0100
-Robert Richter <rrichter@amd.com> wrote:
+On Sat, 2024-02-17 at 16:42 +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> Switching to the _scoped() version removes the need for manual
+> calling of fwnode_handle_put() in the paths where the code
+> exits the loop early. In this case that's all in error paths.
+>=20
+> Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-> On 17.02.24 18:43:37, kernel test robot wrote:
-> > Hi Robert,
-> > 
-> > kernel test robot noticed the following build warnings:
-> > 
-> > [auto build test WARNING on 6be99530c92c6b8ff7a01903edc42393575ad63b]
-> > 
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/cxl-pci-Rename-DOE-mailbox-handle-to-doe_mb/20240217-000206
-> > base:   6be99530c92c6b8ff7a01903edc42393575ad63b
-> > patch link:    https://lore.kernel.org/r/20240216155844.406996-4-rrichter%40amd.com
-> > patch subject: [PATCH v4 3/3] lib/firmware_table: Provide buffer length argument to cdat_table_parse()
-> > config: arc-allyesconfig (https://download.01.org/0day-ci/archive/20240217/202402171817.i0WShbft-lkp@intel.com/config)
-> > compiler: arceb-elf-gcc (GCC) 13.2.0
-> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240217/202402171817.i0WShbft-lkp@intel.com/reproduce)  
-> 
-> >    In file included from include/linux/device.h:15,
-> >                     from drivers/cxl/core/pci.c:5:
-> >    drivers/cxl/core/pci.c: In function 'read_cdat_data':  
-> > >> drivers/cxl/core/pci.c:672:31: warning: format '%lu' expects argument of type 'long unsigned int', but argument 3 has type 'size_t' {aka 'unsigned int'} [-Wformat=]  
-> >      672 |                 dev_warn(dev, "Malformed CDAT table length (%lu:%lu), discarding trailing data\n",
-> >          |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-> 
-> Fix below, it basically uses %zu for both format strings.
-> 
-> -Robert
-> 
-> 
-> From 08685053a91e370fd1263b921aa3e8942025c4e4 Mon Sep 17 00:00:00 2001
-> From: Robert Richter <rrichter@amd.com>
-> Date: Sun, 7 Jan 2024 18:13:16 +0100
-> Subject: [PATCH v5] lib/firmware_table: Provide buffer length argument to
->  cdat_table_parse()
-> 
-> There exist card implementations with a CDAT table using a fixed size
-> buffer, but with entries filled in that do not fill the whole table
-> length size. Then, the last entry in the CDAT table may not mark the
-> end of the CDAT table buffer specified by the length field in the CDAT
-> header. It can be shorter with trailing unused (zero'ed) data. The
-> actual table length is determined while reading all CDAT entries of
-> the table with DOE.
-> 
-> If the table is greater than expected (containing zero'ed trailing
-> data), the CDAT parser fails with:
-> 
->  [   48.691717] Malformed DSMAS table length: (24:0)
->  [   48.702084] [CDAT:0x00] Invalid zero length
->  [   48.711460] cxl_port endpoint1: Failed to parse CDAT: -22
-> 
-> In addition, a check of the table buffer length is missing to prevent
-> an out-of-bound access then parsing the CDAT table.
-> 
-> Hardening code against device returning borked table. Fix that by
-> providing an optional buffer length argument to
-> acpi_parse_entries_array() that can be used by cdat_table_parse() to
-> propagate the buffer size down to its users to check the buffer
-> length. This also prevents a possible out-of-bound access mentioned.
-> 
-> Add a check to warn about a malformed CDAT table length.
-> 
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Signed-off-by: Robert Richter <rrichter@amd.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> Signed-off-by: Robert Richter <rrichter@amd.com>
+Tested-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+> v4: Moved alignment changes back to patch 4.
+> v3: Tweaked the alignment after comments from Andy.
+>=20
+> =C2=A0drivers/iio/dac/ltc2688.c | 24 ++++++------------------
+> =C2=A01 file changed, 6 insertions(+), 18 deletions(-)
+>=20
+> diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
+> index fc8eb53c65be..b71df03fc13b 100644
+> --- a/drivers/iio/dac/ltc2688.c
+> +++ b/drivers/iio/dac/ltc2688.c
+> @@ -746,26 +746,21 @@ static int ltc2688_span_lookup(const struct
+> ltc2688_state *st, int min, int max)
+> =C2=A0static int ltc2688_channel_config(struct ltc2688_state *st)
+> =C2=A0{
+> =C2=A0	struct device *dev =3D &st->spi->dev;
+> -	struct fwnode_handle *child;
+> =C2=A0	u32 reg, clk_input, val, tmp[2];
+> =C2=A0	int ret, span;
+> =C2=A0
+> -	device_for_each_child_node(dev, child) {
+> +	device_for_each_child_node_scoped(dev, child) {
+> =C2=A0		struct ltc2688_chan *chan;
+> =C2=A0
+> =C2=A0		ret =3D fwnode_property_read_u32(child, "reg", &reg);
+> -		if (ret) {
+> -			fwnode_handle_put(child);
+> +		if (ret)
+> =C2=A0			return dev_err_probe(dev, ret,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to get reg property\n");
+> -		}
+> =C2=A0
+> -		if (reg >=3D LTC2688_DAC_CHANNELS) {
+> -			fwnode_handle_put(child);
+> +		if (reg >=3D LTC2688_DAC_CHANNELS)
+> =C2=A0			return dev_err_probe(dev, -EINVAL,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 "reg bigger than: %d\n",
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 LTC2688_DAC_CHANNELS);
+> -		}
+> =C2=A0
+> =C2=A0		val =3D 0;
+> =C2=A0		chan =3D &st->channels[reg];
+> @@ -786,12 +781,10 @@ static int ltc2688_channel_config(struct ltc2688_st=
+ate
+> *st)
+> =C2=A0		if (!ret) {
+> =C2=A0			span =3D ltc2688_span_lookup(st, (int)tmp[0] / 1000,
+> =C2=A0						=C2=A0=C2=A0 tmp[1] / 1000);
+> -			if (span < 0) {
+> -				fwnode_handle_put(child);
+> +			if (span < 0)
+> =C2=A0				return dev_err_probe(dev, -EINVAL,
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0 "output range not
+> valid:[%d %d]\n",
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0 tmp[0], tmp[1]);
+> -			}
+> =C2=A0
+> =C2=A0			val |=3D FIELD_PREP(LTC2688_CH_SPAN_MSK, span);
+> =C2=A0		}
+> @@ -800,17 +793,14 @@ static int ltc2688_channel_config(struct ltc2688_st=
+ate
+> *st)
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &clk_input);
+> =C2=A0		if (!ret) {
+> =C2=A0			if (clk_input >=3D LTC2688_CH_TGP_MAX) {
+> -				fwnode_handle_put(child);
+> =C2=A0				return dev_err_probe(dev, -EINVAL,
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0 "toggle-dither-input inv
+> value(%d)\n",
+> =C2=A0						=C2=A0=C2=A0=C2=A0=C2=A0 clk_input);
+> =C2=A0			}
+> =C2=A0
+> =C2=A0			ret =3D ltc2688_tgp_clk_setup(st, chan, child,
+> clk_input);
+> -			if (ret) {
+> -				fwnode_handle_put(child);
+> +			if (ret)
+> =C2=A0				return ret;
+> -			}
+> =C2=A0
+> =C2=A0			/*
+> =C2=A0			 * 0 means software toggle which is the default mode.
+> @@ -844,11 +834,9 @@ static int ltc2688_channel_config(struct ltc2688_sta=
+te
+> *st)
+> =C2=A0
+> =C2=A0		ret =3D regmap_write(st->regmap, LTC2688_CMD_CH_SETTING(reg),
+> =C2=A0				=C2=A0=C2=A0 val);
+> -		if (ret) {
+> -			fwnode_handle_put(child);
+> +		if (ret)
+> =C2=A0			return dev_err_probe(dev, -EINVAL,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 "failed to set chan
+> settings\n");
+> -		}
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	return 0;
 
 
