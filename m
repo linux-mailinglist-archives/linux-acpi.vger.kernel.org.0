@@ -1,127 +1,90 @@
-Return-Path: <linux-acpi+bounces-3686-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3687-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8423985A25F
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 12:47:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2EF85A264
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 12:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B5F1C218F5
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 11:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD7372848B1
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 11:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDC52C856;
-	Mon, 19 Feb 2024 11:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QypcSBS3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB972D051;
+	Mon, 19 Feb 2024 11:47:33 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721EB28DBD;
-	Mon, 19 Feb 2024 11:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4462CCB4;
+	Mon, 19 Feb 2024 11:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708343224; cv=none; b=rQwbdpBmjn2H662N67iIqecfc+TqMIF+6pO1+sfaYsYe/rtA8bdAomUo3NGDH9jUyiB9kfAmdRhdtc5mHem2k3q96/pr0dX5ujDXU/qIzZGcdQ7DrhDkvCoUyUA+ebrhj+dttGNocDasNNSA3mAhT3XyFOT80ndtD7w4vlSUrtY=
+	t=1708343252; cv=none; b=NWdAAmXmq/sRRLuLsjUgJjbY5AX3RPi6/QZuZeLsOGEY4R9N+RYG+/brIQNkBdvrkEgeHcLEIioNrgOdk7oYYqJDuVbtP2oFxsE0OFXIMKWpzUmhatmEhbEQ/vBdpwAulnSOSOU/5CCJSIvHfRJpTOYNmi/F7Cd9CZyl3VbjNq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708343224; c=relaxed/simple;
-	bh=wyM173WXobkqcMdBuV/vTYBDtXpq/fDb2dNUkfTTQdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SzdbTM3Y3wnSzOhxrmiDvL/UmGDAcvUPYtH+/L/0RbDTyRPgdmlQ63wnl2xz0AkE2fiZ8VKLzIuqzbe7btfuO2z2hEqG+Ij4UYtZ1+KU5Um5bmnPjvmLWlAEv7uGUTZjb+738hrbnxwugXcgQCuWDaDl05F/KfyvOcy+beVaUMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QypcSBS3; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708343223; x=1739879223;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wyM173WXobkqcMdBuV/vTYBDtXpq/fDb2dNUkfTTQdE=;
-  b=QypcSBS3ZppD+3OhbIvXx99WRauTdMW1Yk5aTif4U+YA/HCEXx+d9gus
-   zMvwSOw0BXBXt4q91L6gW4aHms2sHfbim8J2trf6xGF98pOpSWooepwUF
-   uRkyWO2Bsay/nNtdjBrO3XwrbzHxa1FxtQ9vHga7ulaF0eUpvwIYq4zQx
-   +nzX0xpzgKeT+WOItWjcmocPNmLrkPu4vlVboEYxhmcJH2QdnTBvbp0+J
-   ELWQ7UACXeTDm+EowX1/3vtRVl15IR5VO7afpdgLbPghwCPhMDeYzENh5
-   TjTFHu5N0/eItpvIkUZdq5/hTJjbGZaAkTxwDhy/gCf+rQeK9d0303kZf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="19949732"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="19949732"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 03:47:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="912861667"
-X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
-   d="scan'208";a="912861667"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2024 03:46:55 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rc26l-00000005oJ5-07Ji;
-	Mon, 19 Feb 2024 13:46:51 +0200
-Date: Mon, 19 Feb 2024 13:46:50 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 13/15] iio: dac: ad3552r: Use
- device_for_each_child_node_scoped()
-Message-ID: <ZdM_qp78GbvzWlN9@smile.fi.intel.com>
-References: <20240217164249.921878-1-jic23@kernel.org>
- <20240217164249.921878-14-jic23@kernel.org>
+	s=arc-20240116; t=1708343252; c=relaxed/simple;
+	bh=qQWNAa3rHjdaAl5JSrWrPWVk6WSw4xgV59on5h3QRjU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jB30V40WphevwyLB5mF8By7O84biB9C3RbiiFe1VZ9270h1iXh4NgAM/mafLhlIs2NLDxtIeBfO3vsCPCTjmSk28euDC1FwcePpVxq3s6NatZb7UwZJ9lzlcP0yG/8RZiA9vxjsBnsc0EKzeFjubrMJpJ73288eTWgkB8IXDMyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tdgfh0KTRz6K9B6;
+	Mon, 19 Feb 2024 19:43:56 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 26EDA140D1D;
+	Mon, 19 Feb 2024 19:47:29 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
+ 2024 11:47:28 +0000
+Date: Mon, 19 Feb 2024 11:47:21 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-cxl@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, Ira Weiny <ira.weiny@intel.com>,
+	<vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
+	<linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] acpi/ghes: Remove CXL CPER notifications
+Message-ID: <20240219114721.0000420b@Huawei.com>
+In-Reply-To: <170820177849.631006.8893584762602010898.stgit@dwillia2-xfh.jf.intel.com>
+References: <170820177849.631006.8893584762602010898.stgit@dwillia2-xfh.jf.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240217164249.921878-14-jic23@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sat, Feb 17, 2024 at 04:42:47PM +0000, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Sat, 17 Feb 2024 12:29:38 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
+
+> Initial tests with the CXL CPER implementation identified that error
+> reports were being duplicated in the log and the trace event [1].  Then
+> it was discovered that the notification handler took sleeping locks
+> while the GHES event handling runs in spin_lock_irqsave() context [2]
 > 
-> Switching to the _scoped() version removes the need for manual
-> calling of fwnode_handle_put() in the paths where the code
-> exits the loop early. In this case that's all in error paths.
+> Given multiple bugs to fix and how late it is in the development cycle,
+> remove the CXL hookup for now and try again during the next merge
+> window.
 > 
-> Removing the goto err; statements also allows more extensive use of
-> dev_err_probe() further simplifying the code.
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Link: http://lore.kernel.org/r/20240108165855.00002f5a@Huawei.com [1]
+> Closes: http://lore.kernel.org/r/b963c490-2c13-4b79-bbe7-34c6568423c7@moroto.mountain [2]
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+I'm fine with this.  Updated text in thread is fine as well.
 
-...
-
->  			err = fwnode_property_read_u32_array(child,
->  							     "adi,output-range-microvolt",
->  							     vals,
->  							     2);
-
-Side note: ARRAY_SIZE()?
-
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 
 
