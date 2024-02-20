@@ -1,219 +1,169 @@
-Return-Path: <linux-acpi+bounces-3708-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3709-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF50585BA18
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 12:14:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF4285BA8D
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 12:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD591F21986
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 11:14:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FD8A1C2308A
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 11:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96B4664A4;
-	Tue, 20 Feb 2024 11:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B39679E4;
+	Tue, 20 Feb 2024 11:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="O6lRSVZh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B219760DF0;
-	Tue, 20 Feb 2024 11:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90153664CF;
+	Tue, 20 Feb 2024 11:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708427671; cv=none; b=t5JzTEh+m4sYlho89uUk7h+JAR9FDcX4RI24u2g8pR2HXFKMI0mdmErR7Lcbe+4tVNq3outOKbiGE0ubRZ/g2CIMALQz8f/XIbP2ZRY4u33M3ln6+PutXNbqcIfHMsMQIB1wYAF2piz+bvzguuU3MVD4aVplPXj/y1swmDCtOGA=
+	t=1708428451; cv=none; b=uDN8xS+cXldVwbYhT3DuKFoepLTkqYQroXkXTxCp7x2SaeC5E2NYA/tZuDRvmlcSN3rmvZ2iP9mO2Zb5hQIff/a6VkahLwNs3SthDGHxTPFnihEt/eiQJOZV3tEZybpF9JCAbpBGGuRWR50c/NGJx1lbh69wVx/dTeN/9deTymI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708427671; c=relaxed/simple;
-	bh=YnyMyA2hDVuzoNVumqBKaS5+hcq6Bw/UggiiX/iZvbo=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IiER62G4zhi2TI/4Jhj1fkR50Jxug9AAAXpMiNozJhd/ZDHGfPUaVlXrzsfKPa9cHVV4Y5WxITJ+zvrY5vaLgsAgVL8hLFyOMLXWI0sG5mJaFy0WHzIOh3TEyMaipBAPluwE+nPh7O4cC25u4VwQ0nzXtjn3qo+88OrjbrrKUQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TfGsZ39l6z6K6Sy;
-	Tue, 20 Feb 2024 19:10:26 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA3D4140A70;
-	Tue, 20 Feb 2024 19:14:25 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 11:14:24 +0000
-Date: Tue, 20 Feb 2024 11:14:23 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: <shiju.jose@huawei.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <dan.j.williams@intel.com>, <dave@stgolabs.net>,
-	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<david@redhat.com>, <Vilas.Sridharan@amd.com>, <leo.duran@amd.com>,
-	<Yazen.Ghannam@amd.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
-	<tony.luck@intel.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
-	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
-	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
-	<mike.malvestuto@intel.com>, <gthelen@google.com>,
-	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<linuxarm@huawei.com>
-Subject: Re: [RFC PATCH v6 02/12] cxl/mbox: Add GET_FEATURE mailbox command
-Message-ID: <20240220111423.00003eae@Huawei.com>
-In-Reply-To: <20240215111455.1462-3-shiju.jose@huawei.com>
-References: <20240215111455.1462-1-shiju.jose@huawei.com>
-	<20240215111455.1462-3-shiju.jose@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1708428451; c=relaxed/simple;
+	bh=Mipp2WNrLFK4BBvNJ8I27aEf24TMVYEu5ip2QcqVhxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CGZ7SB5qw73LHRYGc2CIWp+FIP7azwMEBOy0EETU6BfQ8G1U7iObrE88/+c3vEvB8ZQc+36NwqJpEdzNaOrx9qGYE1CXDhLYXV2vw88DqYpShbCgckPGcm/aVzctpYlA1Evn5Tt0dimcQoEoHzgcyCW3YZogWTLhz5whKEvOV+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=O6lRSVZh; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YAbiUOeHNTOOtMQq3T2dYQUt8NBgKEvDfS/NrGbV6TI=; b=O6lRSVZhxbh5i6u+BH25w3f3Cm
+	1Vw7wxiDSgvtyuvUnEQCtl4LHsD0HzY1J+QnwBBfWvzYrZnw4ZdEKbmD4OvhU0znyUN2QW3v3TQK6
+	acFANS/gPds8L+eRUinfOfYI/5P5/HHW8+MaTKOwBEFBIXcdD2h/rAjy4+NEGoLQ4VhzrvLbGSILa
+	e4bVQ4JEXiZ5ggyFjiYKM2SMFHyueGtUiByprCY7LB4A0i9T5NoqAM9yDfSyA8mANNn7sjoowzKXf
+	gZg39Bgc4AYxKTEmwc/LOvXE0VrkkOYgYtUo08k1FAqXJPZDFh0Fdt9VSeb+Bh6zHM/C3MKPJvsVF
+	UW/+AtXw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54660)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rcOHQ-0002Id-2W;
+	Tue, 20 Feb 2024 11:27:20 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rcOHM-0000pR-05; Tue, 20 Feb 2024 11:27:16 +0000
+Date: Tue, 20 Feb 2024 11:27:15 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
+ acpi_processor_get_info()
+Message-ID: <ZdSMk93c1I6x973h@shell.armlinux.org.uk>
+References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
+ <E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
+ <CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, 15 Feb 2024 19:14:44 +0800
-<shiju.jose@huawei.com> wrote:
-
-> From: Shiju Jose <shiju.jose@huawei.com>
+On Thu, Feb 15, 2024 at 08:22:29PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Jan 31, 2024 at 5:50 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > index cf7c1cca69dd..a68c475cdea5 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -314,6 +314,18 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> >                         cpufreq_add_device("acpi-cpufreq");
+> >         }
+> >
+> > +       /*
+> > +        * Register CPUs that are present. get_cpu_device() is used to skip
+> > +        * duplicate CPU descriptions from firmware.
+> > +        */
+> > +       if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> > +           !get_cpu_device(pr->id)) {
+> > +               int ret = arch_register_cpu(pr->id);
+> > +
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> > +
+> >         /*
+> >          *  Extra Processor objects may be enumerated on MP systems with
+> >          *  less than the max # of CPUs. They should be ignored _iff
 > 
-> Add support for GET_FEATURE mailbox command.
+> This is interesting, because right below there is the following code:
 > 
-> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
-> The settings of a feature can be retrieved using Get Feature command.
-Hi Shiju
-
-I think this needs to be more complex so that this utility function gets
-the whole feature, not just a section of it (subject to big enough buffer
-being available etc).  We don't want the higher level code to have to
-deal with the complexity of small mailboxes.
-
-A few other things inline.
-
-Jonathan
-
+>     if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>         int ret = acpi_processor_hotadd_init(pr);
 > 
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/cxl/core/mbox.c | 22 ++++++++++++++++++++++
->  drivers/cxl/cxlmem.h    | 23 +++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
+>         if (ret)
+>             return ret;
+>     }
 > 
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index 191f51f3df0e..f43189b6859a 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -1313,6 +1313,28 @@ int cxl_get_supported_features(struct cxl_memdev_state *mds,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_get_supported_features, CXL);
->  
-> +int cxl_get_feature(struct cxl_memdev_state *mds,
-> +		    struct cxl_mbox_get_feat_in *pi, void *feat_out)
+> and acpi_processor_hotadd_init() essentially calls arch_register_cpu()
+> with some extra things around it (more about that below).
+> 
+> I do realize that acpi_processor_hotadd_init() is defined under
+> CONFIG_ACPI_HOTPLUG_CPU, so for the sake of the argument let's
+> consider an architecture where CONFIG_ACPI_HOTPLUG_CPU is set.
+> 
+> So why are the two conditionals that almost contradict each other both
+> needed?  It looks like the new code could be combined with
+> acpi_processor_hotadd_init() to do the right thing in all cases.
+> 
+> Now, acpi_processor_hotadd_init() does some extra things that look
+> like they should be done by the new code too.
+> 
+> 1. It checks invalid_phys_cpuid() which appears to be a good idea to me.
+> 
+> 2. It uses locking around arch_register_cpu() which doesn't seem
+> unreasonable either.
+> 
+> 3. It calls acpi_map_cpu() and I'm not sure why this is not done by
+> the new code.
+> 
+> The only thing that can be dropped from it is the _STA check AFAICS,
+> because acpi_processor_add() won't even be called if the CPU is not
+> present (and not enabled after the first patch).
+> 
+> So why does the code not do 1 - 3 above?
 
-Comments below on this signature.  Key is I'd expect this function to deal
-with potential need for multiple requests (small mailbox size compared to
-the size of the output data being read).
+Honestly, I'm out of my depth with this and can't answer your
+questions - and I really don't want to try fiddling with this code
+because it's just too icky (even in its current form in mainline)
+to be understandable to anyone who hasn't gained a detailed knowledge
+of this code.
 
-To test that we'd probably have to tweak the qemu code to use a smaller mailbox.
-Or fake that in here so that we do multiple smaller reads.
+It's going to require a lot of analysis - how acpi_map_cpuid() behaves
+in all circumstances, what this means for invalid_logical_cpuid() and
+invalid_phys_cpuid(), what paths will be taken in each case. This code
+is already just too hairy for someone who isn't an experienced ACPI
+hacker to be able to follow and I don't see an obvious way to make it
+more readable.
 
-> +{
-> +	struct cxl_mbox_cmd mbox_cmd;
-> +	int rc;
-> +
-> +	mbox_cmd = (struct cxl_mbox_cmd) {
-> +		.opcode = CXL_MBOX_OP_GET_FEATURE,
-> +		.size_in = sizeof(*pi),
-> +		.payload_in = pi,
-> +		.size_out = le16_to_cpu(pi->count),
-> +		.payload_out = feat_out,
-> +		.min_out = le16_to_cpu(pi->count),
+James' additions make it even more complex and less readable.
 
-Are there feature with variable responses sizes?  I think there will be.
-size_out should be the size of the buffer, but min_out should be
-the size of the particular feature data header - note these will change
-as we iterate over multiple messages.
-
-
-> +	};
-> +	rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	return 0;
-I think this should return the size to the caller, rather than 0 on success.
-
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
-> +
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr)
->  {
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index 23e4d98b9bae..eaecc3234cfd 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -530,6 +530,7 @@ enum cxl_opcode {
->  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	= 0x0400,
->  	CXL_MBOX_OP_GET_LOG		= 0x0401,
->  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
-> +	CXL_MBOX_OP_GET_FEATURE		= 0x0501,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
->  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> @@ -757,6 +758,26 @@ struct cxl_mbox_get_supp_feats_out {
->  	struct cxl_mbox_supp_feat_entry feat_entries[];
->  } __packed;
->  
-> +/* Get Feature CXL 3.1 Spec 8.2.9.6.2 */
-> +/*
-> + * Get Feature input payload
-> + * CXL rev 3.1 section 8.2.9.6.2 Table 8-99
-> + */
-> +/* Get Feature : Payload in selection */
-
-Naming of enum is good enough that I don't think we need
-this particular comment.
-
-> +enum cxl_get_feat_selection {
-> +	CXL_GET_FEAT_SEL_CURRENT_VALUE,
-> +	CXL_GET_FEAT_SEL_DEFAULT_VALUE,
-> +	CXL_GET_FEAT_SEL_SAVED_VALUE,
-> +	CXL_GET_FEAT_SEL_MAX
-> +};
-> +
-> +struct cxl_mbox_get_feat_in {
-> +	uuid_t uuid;
-> +	__le16 offset;
-> +	__le16 count;
-> +	u8 selection;
-> +}  __packed;
-> +
->  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */
->  struct cxl_mbox_poison_in {
->  	__le64 offset;
-> @@ -891,6 +912,8 @@ int cxl_set_timestamp(struct cxl_memdev_state *mds);
->  int cxl_get_supported_features(struct cxl_memdev_state *mds,
->  			       struct cxl_mbox_get_supp_feats_in *pi,
->  			       void *feats_out);
-> +int cxl_get_feature(struct cxl_memdev_state *mds,
-> +		    struct cxl_mbox_get_feat_in *pi, void *feat_out);
-
-For this I'd expect us to wrap up the need for multi messages inside this.
-So this would then just take the feature index, a size for the output buffer
-overall size, plus min acceptable response size and a selection enum value.
-
-int cxl_get_feature(struct cxl_memdev_state *mds,
-		    uuid_t feat,
-		    void *feat_out, size_t feat_out_min_size,
-		    size_t feat_out_size);
-
->  int cxl_poison_state_init(struct cxl_memdev_state *mds);
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr);
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
