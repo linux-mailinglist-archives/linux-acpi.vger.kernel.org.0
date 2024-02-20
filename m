@@ -1,135 +1,154 @@
-Return-Path: <linux-acpi+bounces-3699-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3700-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3905C85A7D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 16:50:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C957985B28D
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 07:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BB111C22D82
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Feb 2024 15:50:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F8961F233EB
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 06:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315153C467;
-	Mon, 19 Feb 2024 15:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8924557316;
+	Tue, 20 Feb 2024 06:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Yysu/Cl+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2078.outbound.protection.outlook.com [40.107.93.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E563D38C;
-	Mon, 19 Feb 2024 15:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708357794; cv=none; b=hCo4yg1XhX6HBBHhv7Nkp33OQhQa1OjKZHizs+/si8fCJfnRQGcWmuYMQVPJVNX0YkSFHAvs+ZBqYambrB2/hLaPxM+tdkYX5mAUBNz+gEnZKM06yCb2lOtkISCbLNpihILeIVBp86siQqP7OyDYb4J2F9GycycPkBeg6786v4g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708357794; c=relaxed/simple;
-	bh=x5zOWXxQIf1d7fTrSg+f4glMORlONk1rC2rbp/gkCH0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M6VgDFQMdJOIfors6/gelzD2WcGBVeruqbxvYXt17rBv7fo5xO7T/XHk4kxNgfNpdhH1OIYtgGOmgE2P4WFg28ShmjGByCKrVc+cke+A3/F8yqFNRcLNVqIBEGQUa057kc1o+0hbJPWrcTAtyGd4mzhyjl9whTMt11dSw2AoCcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tdn2H4SgJz6K9GC;
-	Mon, 19 Feb 2024 23:46:15 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id EF516140CF4;
-	Mon, 19 Feb 2024 23:49:48 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 19 Feb
- 2024 15:49:48 +0000
-Date: Mon, 19 Feb 2024 15:49:47 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rafael
- J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
-	<cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
-	<tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
-	<olivier.moysan@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
-	<dmitry.baryshkov@linaro.org>, Marijn Suijten
-	<marijn.suijten@somainline.org>, Marius Cristea
-	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 00/15] device property / IIO: Use cleanup.h magic for
- fwnode_handle_put() handling.
-Message-ID: <20240219154947.0000681b@Huawei.com>
-In-Reply-To: <ZdNAQi6IlMN-quO_@smile.fi.intel.com>
-References: <20240217164249.921878-1-jic23@kernel.org>
-	<ZdNAQi6IlMN-quO_@smile.fi.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6F357302;
+	Tue, 20 Feb 2024 06:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.78
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708408849; cv=fail; b=VHoWckGEW2zmzZ4j4P66A3GIs65LJWBzTc66fzuDnK0fVwWlNkwS/BFsgTXkldihbStyGTMWaoMCDgbuQs4J6kyEnQLoeiR5PcCNdYSw+JxsvHStsHGrfKm23awR49A3up5/ruwK+QgHQ5IzVzcUD45CeP2NLzZlsYPeYd1pvMc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708408849; c=relaxed/simple;
+	bh=G4Tc+7Zb3w+pmvhaBq+QwaDIX9/OWcq55Yha3Uk8pl4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BM7SR8YfLJvTWHsdijH8tn7KYHIKOu0n3HEOTjSwJPdzRSDV6YKxzT2DhrjXsLq7JDCP8ftlBnHbjZoaw+r2QVgK80hnBsMxeKFr1HmqOO5etA57MbYWTOzpRajNeKSRwdE25IuWO/og0n66r3PHXsXouLq2oXM43Kzjzin3QSY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Yysu/Cl+; arc=fail smtp.client-ip=40.107.93.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cK9gmoKms6cI2QK+ep22w2yNCQ3af4jD0O6Nr5qstbu9bHgO3qaGIdXeAG4HGOVmkc/6ZLeK8QEIh7DAmnSCJnNuwcVhyXzUD2LApOtvB4gnP0YVpBN/nPnuK2qBH1zhdWCUnJ/hiX4dfsmZ2xY9nusbNf93UCLRpaLiaI0GRQOqewLcpAADdrS/QVhPogPxxX9NXFpzPbSs0GnMo4KGXSOFev95WZRcqKZ3Z4A9AaTDRDvLqN/EUz1wuAIDxfNAkdmFN6TS513f/WFsPAtH32GvplK3ExenOI+inqYmG18KMREaMPoQVhIMbHX13sQG2p9iGkAqGr0nI0shhQ80Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bHn3iXH7UVdNTmCEfhrVhu0TnsY4LxYdcTCsJr0bNbg=;
+ b=KOQ9AGtzG5s94uoWHJbyT0ows+7f6XynC3CAeZACahRedNxDz48WPIPH1Nc1zSeEjsxENu4roxPDAKvDqmY6LwiR2sO+FqH/I/FhiVd7DANlybvVfy5qrFX6r7y3MrGyON1qi6ZJBeEo1K0dTcUium5mMmrbPc3Mts++wNr6nA/Fz3dYsZGG8Pzhuashhe0CZyMK1fI3yoFaAZk9bfI6IJUgJ/GukzZhg+VVV8HUmCCr4i+XavOfeo1+olhIY5JIvDWZcqogiB2tp46U6J5IQLf1vs8OcgCi4PLp7mzrwpMc3RNcuK1zG5y4qo791iVzL8/UBQFtPeYTe+9g0o6IZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=intel.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bHn3iXH7UVdNTmCEfhrVhu0TnsY4LxYdcTCsJr0bNbg=;
+ b=Yysu/Cl+nCRnYxV7om0gB59rED1W/MjqXFiESrV+R1io64HnbeeW085NP+wLOpSRaim2rqKACajdPEvDSLj4kBr+owkZK/QkBRTHNrNvB3xvsqv5Ewta+0GLV16IUNR/9/PXinL2y+/hu6n1E4geNpHJk/pzjgGmeJv05GJRcqc=
+Received: from CH5P222CA0002.NAMP222.PROD.OUTLOOK.COM (2603:10b6:610:1ee::22)
+ by BN9PR12MB5339.namprd12.prod.outlook.com (2603:10b6:408:104::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.20; Tue, 20 Feb
+ 2024 06:00:45 +0000
+Received: from CH3PEPF0000000D.namprd04.prod.outlook.com
+ (2603:10b6:610:1ee:cafe::85) by CH5P222CA0002.outlook.office365.com
+ (2603:10b6:610:1ee::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.40 via Frontend
+ Transport; Tue, 20 Feb 2024 06:00:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH3PEPF0000000D.mail.protection.outlook.com (10.167.244.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Tue, 20 Feb 2024 06:00:45 +0000
+Received: from jasmine-meng.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
+ 2024 00:00:41 -0600
+From: Meng Li <li.meng@amd.com>
+To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui
+	<ray.huang@amd.com>
+CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<x86@kernel.org>, <linux-acpi@vger.kernel.org>, Shuah Khan
+	<skhan@linuxfoundation.org>, <linux-kselftest@vger.kernel.org>, "Nathan
+ Fontenot" <nathan.fontenot@amd.com>, Deepak Sharma <deepak.sharma@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Shimmer Huang <shimmer.huang@amd.com>, "Perry
+ Yuan" <Perry.Yuan@amd.com>, Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar
+	<viresh.kumar@linaro.org>, Borislav Petkov <bp@alien8.de>, Meng Li
+	<li.meng@amd.com>
+Subject: [RESEND PATCH] selftests/overlayfs: fix compilation error in overlayfs
+Date: Tue, 20 Feb 2024 13:59:40 +0800
+Message-ID: <20240220055940.3563308-1-li.meng@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000D:EE_|BN9PR12MB5339:EE_
+X-MS-Office365-Filtering-Correlation-Id: f21f3f58-9515-410a-608e-08dc31d9474f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	NKD70da/Md+FtySDEGKpzKK/L8cSQZtjuLV2gmAPNtNSGnXSdQNqw/2+WCCXHhp3obrBguPvlu1isleWHp2ZTiw776Gcw98VhT+FHxXpZ2/JSJiy+kikCQ/GwhvdA89XA3tMnJkwu2MLO9PgAzMYuL3fDKw6RcgAtwfMvnWlQGmLYDqABx8+ed9Mehs21wacec1FdnLVWMpkFX3XHVfwBKuAMm7HfFtLrSqD+vZyrA9i8EuS54bhigGpzIpUPEeH5B6r+nFeJSjuFIpx1FH47JkwXbZrtdxg08rObM1vyJ+JRD02ZC82t01xF5jRFZO80QZ0D4Jy9rKR7zOVjgeNPVSNMmf8Ww5nkAe9ZScPn1pIO0fEvBd8LHU9zrbot83l4apJjkT6ouwyau4riTo45TtPsT5TySdzV9PXR4mt5bwnpb3L1xhgomIpt52jcrEaW1mocjYM5aUQv6S+kRqtg0vZbymRsenJyEzAFMl5cuAJWjwBhBEh8ceIUdWisseKS71N/Lzu6Rkk0XHtnroRuWmLYp5iYbLG33RRe/nQ0tu92tjGLd+tMfBG67l5KdHVs2p/sjERiu43QgIvNqaMbSKOcWJi7Dt08PxG+9GUuXmDqjUdLAlIW/chGihStrMPEeHa4H5t1z52Kz3+xowOYnR66vw6tCM5VVdJ8hGOQ8c=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(46966006)(40470700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2024 06:00:45.3191
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f21f3f58-9515-410a-608e-08dc31d9474f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF0000000D.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5339
 
-On Mon, 19 Feb 2024 13:49:22 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+make -C tools/testing/selftests, compiling dev_in_maps fail.
+In file included from dev_in_maps.c:10:
+/usr/include/x86_64-linux-gnu/sys/mount.h:35:3: error: expected identifier before numeric constant
+   35 |   MS_RDONLY = 1,                /* Mount read-only.  */
+      |   ^~~~~~~~~
 
-> On Sat, Feb 17, 2024 at 04:42:34PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Sorry for the rapid resend, Andy noticed I'd messed up creating the v3 patch
-> > set with some updates committed in the wrong patch.
-> > 
-> > Since v3: The updates to alignment of device_for_each_child_node_scopd() were
-> >     in the wrong patch. Move them to patch 4 where they should always
-> >     have been. (thanks Andy!)
-> > 
-> > Since v2: Thanks to Sakari and Andy for reviews.
-> > - New first patch moving fwnode_handle_put() into property.h
-> > - Tweak alignment in the loop macro
-> > - Pick up tags.
-> > - scopd -> scoped typo fix in some patch descriptions.
-> > 
-> > As can be seen by the examples from IIO that follow this can save
-> > a reasonable amount of complexity and boiler plate code, often enabling
-> > additional cleanups in related code such as use of
-> > return dev_err_probe().
-> > 
-> > Given we are now fairly late in the cycle, I'd expect to take this
-> > through the IIO tree and we can make use of it elsewhere next cycle.
-> > 
-> > Note I don't have the hardware so this is compile tested only.
-> > Hence I'd appreciate some Tested-by tags if anyone can poke one of the
-> > effected drivers.
-> > 
-> > Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
-> > Referenced from that cover letter.  Similar may help us convert more
-> > drivers to use this new approach, but often hand tweaking can take
-> > additional advantage of other cleanup.h based magic, or things like
-> > return dev_err_probe().
-> > https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/  
-> 
-> It seems you are got all necessary tags to go.
+That sys/mount.h has to be included before linux/mount.h.
 
-Light on the driver changes to use it, but seems that we have
-reached convergence on the infrastructure.
+Signed-off-by: Meng Li <li.meng@amd.com>
+---
+ tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'll let it sit until the end of the week though as I want to
-get a pull request out anyway before taking this into my tree.
-
-
-> I commented with some side notes that may be addressed later on.
-> Up to you.
-Thanks. I'll catch up with those shortly. 
-
-Jonathan
-
-> 
+diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+index e19ab0e85709..871a0923c06e 100644
+--- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
++++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+@@ -7,11 +7,11 @@
+ 
+ #include <linux/unistd.h>
+ #include <linux/types.h>
+-#include <linux/mount.h>
+ #include <sys/syscall.h>
+ #include <sys/stat.h>
+ #include <sys/mount.h>
+ #include <sys/mman.h>
++#include <linux/mount.h>
+ #include <sched.h>
+ #include <fcntl.h>
+ 
+-- 
+2.34.1
 
 
