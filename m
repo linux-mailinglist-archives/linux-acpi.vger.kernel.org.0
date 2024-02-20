@@ -1,160 +1,176 @@
-Return-Path: <linux-acpi+bounces-3737-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3741-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D600285CA7D
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 23:12:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D7385CA96
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 23:21:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59A0EB22B98
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 22:12:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85B421C2142A
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 22:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32753152E0D;
-	Tue, 20 Feb 2024 22:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94E8152E05;
+	Tue, 20 Feb 2024 22:21:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6633E152DEA
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Feb 2024 22:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46123151CF4
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Feb 2024 22:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708467144; cv=none; b=MEAErkVRGBr+fHKm5LSOHI38PG27cr4IWs18tu4YFe6DIc6uOcr78clG0gL9V6utbeQQ9Fuj8hX4xJ8/y/7GXlE/tBOqp4f5DAPX/9b68JA9SThKx0ZVCK30yer4RIo3aRVWGCvALKzAzh2x3HEh7D8SW+zRVr5sJcT80g0UO0g=
+	t=1708467677; cv=none; b=Up4+q4ac1dkQkI/nwPOL29vsAn9BKEq9BhXZcRez0pAI7JwulBo1jHAKR9VR9ID5HwGmfZFuCbspNgQQvhl7qAn6Bxs0JquBzlJSfGe1UbI1Z1EUcTm4cj9JN7PrPrqncciuUU9rF0Hfbodr5P4uupE2N2nijcHK1/1lGnaRGA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708467144; c=relaxed/simple;
-	bh=jhOQFc9APgBspPIxG9I1BX/ftsAh5rGUbYwZn98o1VQ=;
+	s=arc-20240116; t=1708467677; c=relaxed/simple;
+	bh=UI6nc//5LaUt0b1ovboOTheF0mpKCsj6wpGdgtd8tvY=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAFv0jQ0MP+QZoA970szKapddU/AvtyfVr/jwRxr4kaMsPP+R4xVCPAFO/9hC7K+WTqcSpJkTqgkFcSkuoH5/RxN9rmgiNiTqTIttX2KK9gM1ivT22m7rDi9qtdzxsElZLBYJ4RkE107dOHYMX24MXjg78q4mCSKtsoFTBPf0MQ=
+	 Content-Type:Content-Disposition:In-Reply-To; b=aWAGJCDpMD6W0MAsfzl7V91PvAqHE/wd3DmZ+K4y7X6ox+TcxTseFTDZgaQlthA2MWe7zU9H2pd+jElovHVwKK+/zEb1uUyIx11tF/QqVOchiUQq4BRwEBjDwtbF50twepODwMyij9TwqC9z0wzbL5MAEIdWJJfRD7wGWHKNEV8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
 	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
-	id 19a140a6-d03d-11ee-b3cf-005056bd6ce9;
-	Wed, 21 Feb 2024 00:12:14 +0200 (EET)
+	id 5b49f83f-d03e-11ee-b3cf-005056bd6ce9;
+	Wed, 21 Feb 2024 00:21:13 +0200 (EET)
 From: andy.shevchenko@gmail.com
-Date: Wed, 21 Feb 2024 00:12:13 +0200
-To: Mateusz =?utf-8?Q?Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Cc: linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Borislav Petkov <bp@suse.de>,
-	Jean Delvare <jdelvare@suse.de>
-Subject: Re: [PATCH v4] acpi,pci: warn about duplicate IRQ routing entries
- returned from _PRT
-Message-ID: <ZdUjvUG3aUgGCwBs@surfacebook.localdomain>
-References: <20231226124254.66102-1-mat.jonczyk@o2.pl>
+Date: Wed, 21 Feb 2024 00:21:13 +0200
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2 2/2] ACPI: property: Ignore bad graph port nodes on
+ Dell XPS 9315
+Message-ID: <ZdUl2eg8hM5RkrOL@surfacebook.localdomain>
+References: <20240213134606.383817-1-sakari.ailus@linux.intel.com>
+ <20240213134606.383817-3-sakari.ailus@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231226124254.66102-1-mat.jonczyk@o2.pl>
+In-Reply-To: <20240213134606.383817-3-sakari.ailus@linux.intel.com>
 
-Tue, Dec 26, 2023 at 01:42:54PM +0100, Mateusz Jończyk kirjoitti:
-> On some platforms, the ACPI _PRT function returns duplicate interrupt
-> routing entries. Linux uses the first matching entry, but sometimes the
-> second matching entry contains the correct interrupt vector.
+Tue, Feb 13, 2024 at 03:46:06PM +0200, Sakari Ailus kirjoitti:
+> Some systems were shipped with both Windows and Linux camera descriptions.
+> In general, if Linux description exist, they will be used and Windows
+> description ignored.
 > 
-> As a debugging aid, print a warning to dmesg if duplicate interrupt
-> routing entries are present. This way, we could check how many models
-> are affected.
-> 
-> This happens on a Dell Latitude E6500 laptop with the i2c-i801 Intel
-> SMBus controller. This controller is nonfunctional unless its interrupt
-> usage is disabled (using the "disable_features=0x10" module parameter).
-> 
-> After investigation, it turned out that the driver was using an
-> incorrect interrupt vector: in lspci output for this device there was:
->         Interrupt: pin B routed to IRQ 19
-> but after running i2cdetect (without using any i2c-i801 module
-> parameters) the following was logged to dmesg:
-> 
->         [...]
->         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->         i801_smbus 0000:00:1f.3: Transaction timeout
->         i801_smbus 0000:00:1f.3: Timeout waiting for interrupt!
->         i801_smbus 0000:00:1f.3: Transaction timeout
->         irq 17: nobody cared (try booting with the "irqpoll" option)
-> 
-> Existence of duplicate entries in a table returned by the _PRT method
-> was confirmed by disassembling the ACPI DSDT table.
-> 
-> Windows XP is using IRQ3 (as reported by HWiNFO32 and in the Device
-> Manager), which is neither of the two vectors returned by _PRT.
-> As HWiNFO32 decoded contents of the SPD EEPROMs, the i2c-i801 device is
-> working under Windows. It appears that Windows has reconfigured the
-> chipset independently to use another interrupt vector for the device.
-> This is possible, according to the chipset datasheet [1], page 436 for
-> example (PIRQ[n]_ROUT—PIRQ[A,B,C,D] Routing Control Register).
-
-> [1] https://www.intel.com/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
-> 
-
-Can you convert this to be a Link tag?
-
-Link: ...URL... # [1]
-Signed-off-by: ...
-
-> Signed-off-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-
-> Cc: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Borislav Petkov <bp@suse.de>
-> Cc: Jean Delvare <jdelvare@suse.de>
-
-Please, move these (Cc lines) down after --- cutter line.
-
-> Previously-reviewed-by: Jean Delvare <jdelvare@suse.de>
-> Previously-tested-by: Jean Delvare <jdelvare@suse.de>
-
-This shouldn't be in the commit message, just use the comment block
-(after --- line) for this.
+> In this case the Linux descriptions were buggy so use Windows definition
+> instead. This patch ignores the bad graph port nodes on Dell XPS 9315 and
+> there are likely other such systems, too. The corresponding information
+> has been added to ipu-bridge to cover the missing bits.
 
 ...
 
->  	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
->  	struct acpi_pci_routing_table *entry;
->  	acpi_handle handle = NULL;
-> +	struct acpi_prt_entry *match = NULL;
-> +	const char *match_int_source = NULL;
+>  void acpi_mipi_scan_crs_csi2(void);
+>  void acpi_mipi_init_crs_csi2_swnodes(void);
+>  void acpi_mipi_crs_csi2_cleanup(void);
 
-Can you preserve reversed xmas tree ordering?
++ blank line?
+
+> +bool acpi_graph_ignore_port(acpi_handle handle);
+>  
+>  #endif /* _ACPI_INTERNAL_H_ */
 
 ...
 
->  	while (entry && (entry->length > 0)) {
-> -		if (!acpi_pci_irq_check_entry(handle, dev, pin,
-> -						 entry, entry_ptr))
-> -			break;
-> +		struct acpi_prt_entry *curr;
+> +static const struct dmi_system_id dmi_ignore_port_nodes[] = {
+> +	{
+> +		.matches = {
+> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
+> +		},
+> +	},
+> +	{ 0 }
+
+0 is not needed. Moreover, it's a bit unusual.
+
+> +};
+
+...
+
+> +static const char *strnext(const char *s1, const char *s2)
+> +{
+> +	s1 = strstr(s1, s2);
 > +
-> +		if (!acpi_pci_irq_check_entry(handle, dev, pin, entry, &curr)) {
+> +	if (!s1)
+> +		return NULL;
+> +
+> +	return s1 + strlen(s2);
+> +}
 
-> +			if (!match) {
+NIH str_has_prefix() ?
 
-Why not positive condition?
+...
 
-> +				match = curr;
-> +				match_int_source = entry->source;
-> +			} else {
-> +				dev_warn(&dev->dev, FW_BUG
-> +				       "ACPI _PRT returned duplicate IRQ routing entries for INT%c: %s[%d] and %s[%d]\n",
-> +				       pin_name(curr->pin),
-> +				       match_int_source, match->index,
-> +				       entry->source, curr->index);
-> +				/* We use the first matching entry nonetheless,
-> +				 * for compatibility with older kernels.
-> +				 */
-> +			}
-> +		}
+> +/**
+> + * acpi_graph_ignore_port - Tell whether a port node should be ignored
+> + * @handle: The ACPI handle of the node (which may be a port node)
+> + *
+> + * Returns true if a port node should be ignored and the data to that should
+
+Please, run kernel-doc validation and fix the warnings.
+
+> + * come from other sources instead (Windows ACPI definitions and
+> + * ipu-bridge). This is currently used to ignore bad port nodes related to IPU6
+> + * ("IPU?") and camera sensor devices ("LNK?") in certain Dell systems with
+> + * Intel VSC.
+> + */
+> +bool acpi_graph_ignore_port(acpi_handle handle)
+> +{
+> +	const char *path = NULL, *orig_path;
+> +	static bool dmi_tested, ignore_port;
+> +
+> +	if (!dmi_tested) {
+> +		ignore_port = dmi_first_match(dmi_ignore_port_nodes);
+> +		dmi_tested = true;
+> +	}
+> +
+> +	if (!ignore_port)
+> +		return false;
+> +
+> +	/* Check if the device is either "IPU" or "LNK" (sensor). */
+> +	orig_path = acpi_handle_path(handle);
+> +	if (!orig_path)
+> +		return false;
+> +	path = strnext(orig_path, "IPU");
+
+IIUC this can be rewritten as
+
+	path += str_has_prefix();
+	if (path == orig_path)
+		...
+
+> +	if (!path)
+> +		path = strnext(orig_path, "LNK");
+> +	if (!path)
+> +		goto out_free;
+> +
+> +	if (!(path[0] >= '0' && path[0] <= '9' && path[1] == '.'))
+
+isdigit() ?
+
+> +		goto out_free;
+> +
+> +	/* Check if the node has a "PRT" prefix. */
+> +	path = strnext(path, "PRT");
+> +	if (path && path[0] >= '0' && path[0] <= '9' && !path[1]) {
+
+Ditto.
+
+> +		acpi_handle_debug(handle, "ignoring data node\n");
+> +
+> +		kfree(orig_path);
+> +		return true;
+> +	}
+> +
+> +out_free:
+> +	kfree(orig_path);
+> +	return false;
+> +}
 
 -- 
 With Best Regards,
