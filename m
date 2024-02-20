@@ -1,236 +1,183 @@
-Return-Path: <linux-acpi+bounces-3725-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3726-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959E885C0D8
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 17:12:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C06A185C142
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 17:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2191F23832
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 16:12:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FAB285D54
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 16:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC834763E5;
-	Tue, 20 Feb 2024 16:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0916977644;
+	Tue, 20 Feb 2024 16:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KUH1yyvS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4AB768FA;
-	Tue, 20 Feb 2024 16:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4A97640F;
+	Tue, 20 Feb 2024 16:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708445560; cv=none; b=Aohs+BqGzUSwtPO0qXZkTN7uFrCZiSjKUl39rI5u1ie0cgP25l3Sv7ksdWG+orBMQF08rQDXp8PiN6CS48Xc5g9fRtsAjq+VQG86X7Dd/WwJN8yGFp5jp48d39xpx2yteburfhWICqOnHMShV2RIDLQoTeEToHKE5QfLD79vcU0=
+	t=1708446178; cv=none; b=MfvUvt3V0Kn7tI+YyHGqX7rob1aFGbXIUxKGw0Qaq/vLx7Sd1Yxlo9V6YlicHMbYphvesHjdlpdx7Fz3bNRK2Ko6mQ121MtVD0G6nTGehWd1YMwErskzZpWxYHHzSNa+MAKRXO0QqCKA3WiFH7SHjCiaCBGm/C/QmblAYTHlg7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708445560; c=relaxed/simple;
-	bh=WZwcnRFd8AxpgMn/ncUH7HuyNVf1CJoD2fIOANFeZdk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pAE2XePKwjdm8jTqf2SuZMcjLPq6SBGDyTE7JYUpA1mxtsb8m8R3Qgtf5aEqS/rhPXydnj7DYWveMs2VxtVDSpZLH9hlSLXu7NF62sCTQdphXjPicnBlxZ2SPemmLyxkV4LUQ8buSs0gSkc586KIYQm5IegNSSb3ONZ1wthic+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TfPTZ58hwz6K635;
-	Wed, 21 Feb 2024 00:08:34 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id B9642140B54;
-	Wed, 21 Feb 2024 00:12:34 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 16:12:33 +0000
-Date: Tue, 20 Feb 2024 16:12:32 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: <shiju.jose@huawei.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-mm@kvack.org>, <dan.j.williams@intel.com>, <dave@stgolabs.net>,
-	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
-	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
-	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<david@redhat.com>, <Vilas.Sridharan@amd.com>, <leo.duran@amd.com>,
-	<Yazen.Ghannam@amd.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
-	<tony.luck@intel.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
-	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
-	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
-	<mike.malvestuto@intel.com>, <gthelen@google.com>,
-	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<linuxarm@huawei.com>
-Subject: Re: [RFC PATCH v6 12/12] memory: RAS2: Add memory RAS2 driver
-Message-ID: <20240220161232.00000496@Huawei.com>
-In-Reply-To: <20240215111455.1462-13-shiju.jose@huawei.com>
-References: <20240215111455.1462-1-shiju.jose@huawei.com>
-	<20240215111455.1462-13-shiju.jose@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1708446178; c=relaxed/simple;
+	bh=4EXMl5e7uXAcwic9xOAtMCb24DT48b9NpcADcBf9+fY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVLZWDsMI2p5v/7HrgPV4FOrs3sB0yIVdRP4S+5Vbt7nwrHTNWWzniHpJ4fBLQ8/9/FMjck4VrfOeL8S1Ht6KooYl9bmvwCIbREX0R3Clyr5dK09cYjgsrCbwmnFReMSGandfBt6Kr0lvtMGzyRbZwnz3CRr31vrbSK32hvFAWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KUH1yyvS; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708446177; x=1739982177;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4EXMl5e7uXAcwic9xOAtMCb24DT48b9NpcADcBf9+fY=;
+  b=KUH1yyvSKQSgLdPrNnI9R4n01LxoiCePXG1NMMLuO974zHhn0f8LKor/
+   gE+l+lpknbHJ1fokxQs9Z5Lr94rrjz7m0FiM+UhXBrdjzr9hUL5XGMul6
+   nh5TJ1mT3wJwS4ho6e4l8Kh8LGihD6y3W+CAZDvLWauvTQwBikapj/rNB
+   tG6P3OwgBk+pbPE8YBS6yudayAzcHQ6lmJw2sQ6MBsmCevaUdVycKfUqQ
+   QMOcxkDfKeM+AIDbKKZ9iGvWr2hoCGc4y8x2DRBMhc7/EcxwjYfZXDrhG
+   jLXJPqsu072Cab1W5n83QLYwgB7d0hrfvzpBXuzwdfzRxv31OWgYSMclX
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="3021833"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="3021833"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 08:19:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="936472936"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="936472936"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 20 Feb 2024 08:19:35 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id E7399305; Tue, 20 Feb 2024 18:19:33 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Saravana Kannan <saravanak@google.com>
+Subject: [PATCH v1 1/1] device property: Don't use "proxy" headers
+Date: Tue, 20 Feb 2024 18:18:50 +0200
+Message-ID: <20240220161931.3091680-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Thu, 15 Feb 2024 19:14:54 +0800
-<shiju.jose@huawei.com> wrote:
+Update header inclusions to follow IWYU (Include What You Use)
+principle.
 
-> From: Shiju Jose <shiju.jose@huawei.com>
->=20
-> Memory RAS2 driver binds to the platform device add by the ACPI RAS2
-> driver.
-> Driver registers the PCC channel for communicating with the ACPI compliant
-> platform that contains RAS2 command support in the hardware.
->=20
-> Add interface functions to support configuring the parameters of HW patrol
-> scrubs in the system, which exposed to the kernel via the RAS2 and PCC,
-> using the RAS2 commands.
->=20
-> Add support for RAS2 platform devices to register with scrub subsystem
-> driver. This enables user to configure the parameters of HW patrol scrubs,
-> which exposed to the kernel via the RAS2 table, through the scrub sysfs
-> attributes.
->=20
-> Open Question:
-> Sysfs scrub control attribute "enable_background_scrub" is added for RAS2,
-> based on the feedback from Bill Schwartz <wschwartz@amperecomputing.com
-> on v4 to enable/disable the background_scrubbing in the platform as defin=
-ed in the
-> =E2=80=9CConfigure Scrub Parameters [INPUT]=E2=80=9C field  in RAS2 Table=
- 5.87: Parameter Block
-> Structure for PATROL_SCRUB.
-> Is it a right approach to support "enable_background_scrub" in the sysfs
-> scrub control?
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
 
-Does anyone know what this means?  IIUC patrol scrub is always background...
+This one heavily depends on the 
+https://lore.kernel.org/r/20240220161002.2983334-1-andriy.shevchenko@linux.intel.com
 
->=20
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+ drivers/base/property.c  | 11 ++++++-----
+ drivers/base/swnode.c    | 13 ++++++++++++-
+ include/linux/fwnode.h   |  4 ++--
+ include/linux/property.h |  1 +
+ 4 files changed, 21 insertions(+), 8 deletions(-)
 
-A few minor comments inline.  Rushed review as out of time for today though
-so may have missed stuff.
-
-> diff --git a/drivers/memory/rasf_common.c b/drivers/memory/rasf_common.c
-> new file mode 100644
-> index 000000000000..85f67308698d
-> --- /dev/null
-> +++ b/drivers/memory/rasf_common.c
-> @@ -0,0 +1,269 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * rasf_common.c - Common functions for memory RASF driver
-> + *
-> + * Copyright (c) 2023 HiSilicon Limited.
-> + *
-> + * This driver implements call back functions for the scrub
-> + * configure driver to configure the parameters of the hw patrol
-> + * scrubbers in the system, which exposed via the ACPI RASF/RAS2
-> + * table and PCC.
-> + */
-> +
-> +#define pr_fmt(fmt)     "MEMORY RASF COMMON: " fmt
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/io.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/mailbox_controller.h>
-> +#include <linux/mailbox_client.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-
-of.h Shouldn't be here in an ACPI driver!
-
-> +#include <linux/platform_device.h>
-> +
-> +#include <acpi/rasf_acpi.h>
-> +#include <memory/rasf.h>
-> +
-> +static int enable_write(struct rasf_context *rasf_ctx, long val)
-> +{
-> +	int ret;
-> +	bool enable =3D val;
-> +
-> +	ret =3D rasf_ctx->ops->enable_scrub(rasf_ctx, enable);
-> +	if (ret) {
-> +		pr_err("enable patrol scrub fail, enable=3D%d ret=3D%d\n",
-> +		       enable, ret);
-
-dev_err(rasf_ctx->dev,...
-
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-> +
-> +/**
-> + * rasf_hw_scrub_is_visible() - Callback to return attribute visibility
-> + * @drv_data: Pointer to driver-private data structure passed
-> + *	      as argument to devm_scrub_device_register().
-> + * @attr_id: Scrub attribute
-> + * @region_id: ID of the memory region
-> + *
-> + * Returns: 0 on success, an error otherwise
-> + */
-> +umode_t rasf_hw_scrub_is_visible(struct device *dev, u32 attr_id, int re=
-gion_id)
-> +{
-> +	switch (attr_id) {
-> +	case scrub_rate_available:
-> +		return 0444;
-> +	case scrub_enable:
-> +	case scrub_enable_background_scrub:
-> +		return 0200;
-> +	case scrub_addr_base:
-> +	case scrub_addr_size:
-> +	case scrub_rate:
-> +		return 0644;
-
-As before, I'd prefer to see this passed the current permissions then just
-return those rather than encoding them here and in the attributes where they
-may end up out of sync
-
-> +	default:
-> +		return 0;
-> +	}
-> +}
-
-> +
-> +/**
-> + * rasf_hw_scrub_read_strings() - Read callback for string attributes
-> + * @device: Pointer to scrub device
-> + * @attr_id: Scrub attribute
-> + * @region_id: ID of the memory region
-> + * @buf: Pointer to the buffer for copying returned string
-> + *
-> + * Returns: 0 on success, an error otherwise
-> + */
-> +int rasf_hw_scrub_read_strings(struct device *device, u32 attr_id, int r=
-egion_id,
-> +			       char *buf)
-
-dev maybe instead of device.  Shorter lines and it's very common shorthand.
-
-> +{
-> +	struct rasf_context *rasf_ctx;
-> +
-> +	rasf_ctx =3D dev_get_drvdata(device);
-
-	struct rasf_context *rasf_ctx =3D dev_get_drvdata(dev);
-Same throughout.
-> +
-> +	switch (attr_id) {
-> +	case scrub_rate_available:
-> +		return rate_available_read(rasf_ctx, buf);
-> +	default:
-> +		return -ENOTSUPP;
-> +	}
-> +}
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index afa1bf2b3c5a..7324a704a9a1 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -7,15 +7,16 @@
+  *          Mika Westerberg <mika.westerberg@linux.intel.com>
+  */
+ 
+-#include <linux/acpi.h>
++#include <linux/device.h>
++#include <linux/err.h>
+ #include <linux/export.h>
+-#include <linux/kernel.h>
++#include <linux/kconfig.h>
+ #include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/of_graph.h>
+-#include <linux/of_irq.h>
+ #include <linux/property.h>
+ #include <linux/phy.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/types.h>
+ 
+ struct fwnode_handle *__dev_fwnode(struct device *dev)
+ {
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 36512fb75a20..eb6eb25b343b 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -6,10 +6,21 @@
+  * Author: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+  */
+ 
++#include <linux/container_of.h>
+ #include <linux/device.h>
+-#include <linux/kernel.h>
++#include <linux/err.h>
++#include <linux/export.h>
++#include <linux/idr.h>
++#include <linux/init.h>
++#include <linux/kobject.h>
++#include <linux/kstrtox.h>
++#include <linux/list.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
++#include <linux/string.h>
++#include <linux/sysfs.h>
++#include <linux/types.h>
+ 
+ #include "base.h"
+ 
+diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
+index 4228c45d5ccc..80f3cd91b471 100644
+--- a/include/linux/fwnode.h
++++ b/include/linux/fwnode.h
+@@ -9,10 +9,10 @@
+ #ifndef _LINUX_FWNODE_H_
+ #define _LINUX_FWNODE_H_
+ 
+-#include <linux/types.h>
+-#include <linux/list.h>
+ #include <linux/bits.h>
+ #include <linux/err.h>
++#include <linux/list.h>
++#include <linux/types.h>
+ 
+ enum dev_dma_attr {
+ 	DEV_DMA_NOT_SUPPORTED,
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 1f0135e24d00..3a1045eb786c 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -11,6 +11,7 @@
+ #define _LINUX_PROPERTY_H_
+ 
+ #include <linux/args.h>
++#include <linux/array_size.h>
+ #include <linux/bits.h>
+ #include <linux/fwnode.h>
+ #include <linux/stddef.h>
+-- 
+2.43.0.rc1.1.gbec44491f096
 
 
