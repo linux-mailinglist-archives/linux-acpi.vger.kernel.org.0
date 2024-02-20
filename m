@@ -1,201 +1,192 @@
-Return-Path: <linux-acpi+bounces-3755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3756-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E909685CBDE
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 00:14:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB0385CC03
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 00:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26BC21C21EDE
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 23:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE971C2127E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 23:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E2A154453;
-	Tue, 20 Feb 2024 23:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E38135416;
+	Tue, 20 Feb 2024 23:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bk40mBms"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2D9135416;
-	Tue, 20 Feb 2024 23:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B21578688;
+	Tue, 20 Feb 2024 23:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708470876; cv=none; b=dIMB1rFdYVO20+LPH1MAJAbdYYopMCT73g7nxjmefNQCesihs1Guq8nXIIofr7/evzXeI5/UG4elS9oKxM8vbjnbp96n1Q3dc25fu93ajn2Dwrj5Y9w+bC0vH+fQ6i1QIEjsOeR5CT4hF1OSbx6sU1n2wsChfr+wP5Rj8HqRZ0w=
+	t=1708471544; cv=none; b=KrZCHTP1imBp1uXw2Bxdsp65Aj1S4H1ugqD0zwBM6BX2Iq/VDW2l0P1J0ZdkII/uxhayQcsEG3THZR3ICK+NfZYdismQ9dKHpRKWQgzjDUYs90Oxbi98s0JINHtgk1mkskz21JKqUBkd1ZLObzJAaD8rTnuoyVCxGaGOWDY/uBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708470876; c=relaxed/simple;
-	bh=JU4veNt5hrGUnQDWscagjKa4KoUnwGcHqIKQ25B4EDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvIS0hrtKnzZYqqSkpGuIFVaAXJCmcVCB8Q/tMwSy/hyou/3SsyOURQaRrVX+tvtAXSt1avNen04IGSymqKlXmi65TcJ8vvcLjNvoD4IgaFezEmDYkzRY4X+Uz5xKwfiXQHNjisT7QWEPexRoNyqF5x9EICOKDk7eRpCvhQPlqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C28AC433F1;
-	Tue, 20 Feb 2024 23:14:35 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: dan.j.williams@intel.com,
-	ira.weiny@intel.com,
-	vishal.l.verma@intel.com,
-	alison.schofield@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave@stgolabs.net,
-	rafael@kernel.org,
-	gregkh@linuxfoundation.org
-Subject: [PATCH v6 12/12] cxl/region: Deal with numa nodes not enumarated by SRAT
-Date: Tue, 20 Feb 2024 16:12:41 -0700
-Message-ID: <20240220231402.3156281-13-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240220231402.3156281-1-dave.jiang@intel.com>
-References: <20240220231402.3156281-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1708471544; c=relaxed/simple;
+	bh=aZEXdgDXNpiV9ynLc8omSuxhI/t3RarAVerP6oXpfWU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ag1MWHhgoHgjMpRzwwZWK17rdmGrpTxEdzdZaORjtKr2GH62w1zzhehz2HPO5K65ABtBO0QqdgblXNvvuc5BWAewkgO7IbT69K9xA6UwVJL8vHiP6dfYnE8ZTKFiSX94VRtXT7mMjrXFOFotdXrHqPpbM3YKKukIKkkRbD1gGYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bk40mBms; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708471542; x=1740007542;
+  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=aZEXdgDXNpiV9ynLc8omSuxhI/t3RarAVerP6oXpfWU=;
+  b=bk40mBmswitWUmc6gSXTsSAVAc08sl0YWIqYUP5/HXjJV4SGvXMnSHZo
+   kKNR7Azkh1sCwVcDVjagzlENo85KkJOkTNesm1ajzL0InuD2c0bgPApW5
+   Dmgt0OSAf5H+RrsmnuiyMu3GQVM77+ZFGxdaIHdFnDKJH4zejkqh9KRhn
+   nbX2uOyItbWR9kFb/NfAO57u/bue8MscwzOQbTLzG0wWeukmCEuvKFvhn
+   i+iRAVG/v5ceK6LTzVZZ4nyf/22UScptHtdJ2CCfCf++s9nF/uF96NMeL
+   QKrBxXFQEpuX3yhsBFI1GV3YKBCE+mIoouojE9kXbkGEabXHdChwiuMUF
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="13164219"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="13164219"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 15:25:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="5287373"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 15:25:42 -0800
+Received: from [10.54.75.156] (debox1-desk1.jf.intel.com [10.54.75.156])
+	by linux.intel.com (Postfix) with ESMTP id 92A65580DBE;
+	Tue, 20 Feb 2024 15:25:41 -0800 (PST)
+Message-ID: <6d989b7da1e7493a3e2d478cec060a459f375daf.camel@linux.intel.com>
+Subject: Re: [PATCH v2 1/2] PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge
+From: "David E. Box" <david.e.box@linux.intel.com>
+Reply-To: david.e.box@linux.intel.com
+To: Daniel Drake <drake@endlessos.org>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, tglx@linutronix.de,
+ mingo@redhat.com,  bp@alien8.de, dave.hansen@linux.intel.com,
+ x86@kernel.org, hpa@zytor.com,  linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bhelgaas@google.com, 
+ mario.limonciello@amd.com, rafael@kernel.org, lenb@kernel.org, 
+ linux-acpi@vger.kernel.org, linux@endlessos.org
+Date: Tue, 20 Feb 2024 15:25:41 -0800
+In-Reply-To: <CAD8Lp46dPtE12ai8srt9Bz3awnkkb1LZz_7FQuF57M=LaUSaCw@mail.gmail.com>
+References: <20240207084452.9597-1-drake@endlessos.org>
+	 <20240207200538.GA912749@bhelgaas>
+	 <CAD8Lp47DjuAAxqwt+yKD22UNMyvqE00x0u+JeM74KO2OC+Otrg@mail.gmail.com>
+	 <CAD8Lp44-8WhPyOrd2dCWyG3rRuCqzJ-aZCH6b1r0kyhfcXJ8xg@mail.gmail.com>
+	 <9654146ac849bb00faf2fe963d3da94ad65003b8.camel@linux.intel.com>
+	 <CAD8Lp44tO_pz_HZmPOKUQ-LEQT=c856eH52xWL9nBtAtJwjL1g@mail.gmail.com>
+	 <CAD8Lp46dPtE12ai8srt9Bz3awnkkb1LZz_7FQuF57M=LaUSaCw@mail.gmail.com>
+Autocrypt: addr=david.e.box@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mQENBF2w2YABCACw5TpqmFTR6SgsrNqZE8ro1q2lUgVZda26qIi8GeHmVBmu572RfPydisEpCK246rYM5YY9XAps810ZxgFlLyBqpE/rxB4Dqvh04QePD6fQNui/QCSpyZ6j9F8zl0zutOjfNTIQBkcar28hazL9I8CGnnMko21QDl4pkrq1dgLSgl2r2N1a6LJ2l8lLnQ1NJgPAev4BWo4WAwH2rZ94aukzAlkFizjZXmB/6em+lhinTR9hUeXpTwcaAvmCHmrUMxeOyhx+csO1uAPUjxL7olj2J83dv297RrpjMkDyuUOv8EJlPjvVogJF1QOd5MlkWdj+6vnVDRfO8zUwm2pqg25DABEBAAG0KkRhdmlkIEUuIEJveCA8ZGF2aWQuZS5ib3hAbGludXguaW50ZWwuY29tPokBTgQTAQgAOBYhBBFoZ8DYRC+DyeuV6X7Mry1gl3p/BQJdsNmAAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEH7Mry1gl3p/NusIAK9z1xnXphedgZMGNzifGUs2UUw/xNl91Q9qRaYGyNYATI6E7zBYmynsUL/4yNFnXK8P/I7WMffiLoMqmUvNp9pG6oYYj8ouvbCexS21jgw54I3m61M+wTokieRIO/GettVlCGhz7YHlHtGGqhzzWB3CGPSJMwsouDPvyFFE+28p5d2v9l6rXSb7T297Kh50VX9Ele8QEKngrG+Z/u2lr/bHEhvx24vI8ka22cuTaZvThYMwLTSC4kq9L9WgRv31JBSa1pcbcHLOCoUl0RaQwe6J8w9hN2uxCssHrrfhSA4YjxKNIIp3YH4IpvzuDR3AadYz1klFTnEOxIM7fvQ2iGu5AQ0EXbDZgAEIAPGbL3wvbYUDGMoBSN89GtiC6ybWo28JSiYIN5N9LhDTwfWROenkRvmTESaE5fAM24sh8S0h+F+eQ7j/E/RF3pM31gSovTKw0Pxk7GorK
+	FSa25CWemxSV97zV8fVegGkgfZkBMLUId+AYCD1d2R+tndtgjrHtVq/AeN0N09xv/d3a+Xzc4ib/SQh9mM50ksqiDY70EDe8hgPddYH80jHJtXFVA7Ar1ew24TIBF2rxYZQJGLe+Mt2zAzxOYeQTCW7WumD/ZoyMm7bg46/2rtricKnpaACM7M0r7g+1gUBowFjF4gFqY0tbLVQEB/H5e9We/C2zLG9r5/Lt22dj7I8A6kAEQEAAYkBNgQYAQgAIBYhBBFoZ8DYRC+DyeuV6X7Mry1gl3p/BQJdsNmAAhsMAAoJEH7Mry1gl3p/Z/AH/Re8YwzY5I9ByPM56B3Vkrh8qihZjsF7/WB14Ygl0HFzKSkSMTJ+fvZv19bk3lPIQi5lUBuU5rNruDNowCsnvXr+sFxFyTbXw0AQXIsnX+EkMg/JO+/V/UszZiqZPkvHsQipCFVLod/3G/yig9RUO7A/1efRi0E1iJAa6qHrPqE/kJANbz/x+9wcx1VfFwraFXbdT/P2JeOcW/USW89wzMRmOo+AiBSnTI4xvb1s/TxSfoLZvtoj2MR+2PW1zBALWYUKHOzhfFKs3cMufwIIoQUPVqGVeH+u6Asun6ZpNRxdDONop+uEXHe6q6LzI/NnczqoZQLhM8d1XqokYax/IZ4=
+Organization: David E. Box
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-For the numa nodes that are not created by SRAT, no memory_target is
-allocated and is not managed by the HMAT_REPORTING code. Therefore
-hmat_callback() memory hotplug notifier will exit early on those NUMA
-nodes. The CXL memory hotplug notifier will need to call
-node_set_perf_attrs() directly in order to setup the access sysfs
-attributes.
+On Mon, 2024-02-19 at 12:35 +0100, Daniel Drake wrote:
+> On Fri, Feb 9, 2024 at 9:36=E2=80=AFAM Daniel Drake <drake@endlessos.org>=
+ wrote:
+> > On Thu, Feb 8, 2024 at 5:57=E2=80=AFPM David E. Box <david.e.box@linux.=
+intel.com>
+> > wrote:
+> > > This does look like a firmware bug. We've had reports of D3cold suppo=
+rt
+> > > missing
+> > > when running in non-VMD mode on systems that were designed with VMD f=
+or
+> > > Windows.
+> > > These issues have been caught and addressed by OEMs during enabling o=
+f
+> > > Linux
+> > > systems. Does D3cold work in VMD mode?
+> >=20
+> > On Windows for the VMD=3Don case, we only tested this on a BIOS with
+> > StorageD3Enable=3D0. The NVMe device and parent bridge stayed in D0 ove=
+r
+> > suspend, but that's exactly what the BIOS asked for, so it doesn't
+> > really answer your question.
+>=20
+> Tested on the original BIOS version with VMD=3Don: Windows leaves the
+> NVMe device (and parent bridge) in D0 during suspend (i.e. same result
+> as VMD=3Doff).
+>=20
+> On this setup, there are 2 devices with StorageD3Enable flags:
+>=20
+> 1. \_SB.PC00.PEG0.PEGP._DSD has StorageD3Enable=3D1. This is set
+> regardless of the VMD setting at the BIOS level. This is the flag that
+> is causing us the headache in non-VMD mode where Linux then proceeds
+> to put devices into D3cold.
 
-In acpi_numa_init(), the last proximity domain (pxm) id created by SRAT is
-stored. Add a helper function acpi_node_backed_by_real_pxm() in order to
-check if a NUMA node id is defined by SRAT or created by CFMWS.
+Likely never tested.
 
-node_set_perf_attrs() symbol is exported to allow update of perf attribs
-for a node. The sysfs path of
-/sys/devices/system/node/nodeX/access0/initiators/* is created by
-node_set_perf_attrs() for the various attributes where nodeX is matched
-to the NUMA node of the CXL region.
+> This PEGP device in the non-VMD configuration corresponds to the NVMe
+> storage device. PEG0 is the PCI root port at 00:06.0 (the one in
+> question in this thread), and PEGP is the child with address 0.
+> However in VMD mode, 00:06.0 is a dummy device (not a bridge) so this
+> PEGP device isn't going to be used by anything.
+>=20
+> 2. \_SB.PC00.VMD0._DSD has StorageD3Enable=3D0. This VMD0 device is only
+> present when VMD is enabled in the BIOS. It is the companion for
+> 00:0e.0 which is the device that the vmd driver binds against. This
+> could be influencing Windows to leave the NVMe device in D0, but I
+> doubt it, because it can't explain why Windows would have the D0
+> behaviour when VMD=3Doff, also this is a really strange place to put the
+> StorageD3Enable setting because it is not a storage device.
 
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
----
-v6:
-- Fix typo is commit log. (Jonathan)
----
- drivers/acpi/numa/srat.c  | 11 +++++++++++
- drivers/base/node.c       |  1 +
- drivers/cxl/core/cdat.c   |  5 +++++
- drivers/cxl/core/core.h   |  1 +
- drivers/cxl/core/region.c |  7 ++++++-
- include/linux/acpi.h      |  9 +++++++++
- 6 files changed, 33 insertions(+), 1 deletion(-)
+Yes, we don't look for the property here, only under the child device of th=
+e
+Root Port.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 0214518fc582..e45e64993c50 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -29,6 +29,8 @@ static int node_to_pxm_map[MAX_NUMNODES]
- unsigned char acpi_srat_revision __initdata;
- static int acpi_numa __initdata;
- 
-+static int last_real_pxm;
-+
- void __init disable_srat(void)
- {
- 	acpi_numa = -1;
-@@ -536,6 +538,7 @@ int __init acpi_numa_init(void)
- 		if (node_to_pxm_map[i] > fake_pxm)
- 			fake_pxm = node_to_pxm_map[i];
- 	}
-+	last_real_pxm = fake_pxm;
- 	fake_pxm++;
- 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
- 			      &fake_pxm);
-@@ -547,6 +550,14 @@ int __init acpi_numa_init(void)
- 	return 0;
- }
- 
-+bool acpi_node_backed_by_real_pxm(int nid)
-+{
-+	int pxm = node_to_pxm(nid);
-+
-+	return pxm <= last_real_pxm;
-+}
-+EXPORT_SYMBOL_GPL(acpi_node_backed_by_real_pxm);
-+
- static int acpi_get_pxm(acpi_handle h)
- {
- 	unsigned long long pxm;
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index a73b0c9a401a..eb72580288e6 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -215,6 +215,7 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
- 		}
- 	}
- }
-+EXPORT_SYMBOL_GPL(node_set_perf_attrs);
- 
- /**
-  * struct node_cache_info - Internal tracking for memory node caches
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index ee1bc8fa396b..10d4f1d7dad1 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -586,3 +586,8 @@ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
- {
- 	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
- }
-+
-+bool cxl_need_node_perf_attrs_update(int nid)
-+{
-+	return !acpi_node_backed_by_real_pxm(nid);
-+}
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index e19800a7ce06..bc5a95665aa0 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -92,5 +92,6 @@ long cxl_pci_get_latency(struct pci_dev *pdev);
- 
- int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
- 				       enum access_coordinate_class access);
-+bool cxl_need_node_perf_attrs_update(int nid);
- 
- #endif /* __CXL_CORE_H__ */
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 39f9a48ba640..e875e9c7a8b7 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -3074,7 +3074,12 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
- 
- 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
- 		if (cxlr->coord[i].read_bandwidth) {
--			rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
-+			rc = 0;
-+			if (cxl_need_node_perf_attrs_update(nid))
-+				node_set_perf_attrs(nid, &cxlr->coord[i], i);
-+			else
-+				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
-+
- 			if (rc == 0)
- 				cset++;
- 		}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index c84c2f34b8ee..2a7c4b90d589 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1559,4 +1559,13 @@ static inline int hmat_update_target_coordinates(int nid,
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_NUMA
-+bool acpi_node_backed_by_real_pxm(int nid);
-+#else
-+static inline bool acpi_node_backed_by_real_pxm(int nid)
-+{
-+	return false;
-+}
-+#endif
-+
- #endif	/*_LINUX_ACPI_H*/
--- 
-2.43.0
+>=20
+> > On Linux with VMD=3Don and StorageD3Enable=3D1, the NVMe storage device
+> > and the VMD parent bridge are staying in D0 over suspend. I don't know
+> > why this is, I would have expected at least D3hot.=C2=A0 However, given
+> > that the NVMe device has no firmware_node under the VMD=3Don setup, I
+> > believe there is no way it would enter D3cold because there's no
+> > linkage to an ACPI device, so no available _PS3 or _PR0 or whatever is
+> > the precise definition of D3cold.
+>=20
+> Checked in more detail. In Linux, the NVMe device will only go into
+> D3hot/D3cold if the ACPI companion device has an explicit
+> StorageD3Enable=3D1. However, in VMD mode the NVMe storage device has no
+> ACPI companion. Code flow is nvme_pci_alloc_dev() -> acpi_storage_d3()
+> =C2=A0-> return false because no companion.
 
+That explains it.
+
+>=20
+> The VMD PCI bridge at 10000:e0:06.0 that is parent of the SATA & NVME
+> devices does have a companion \_SB.PC00.VMD0.PEG0
+> However, the SATA and NVME child devices do not have any ACPI
+> companion. I examined the logic of vmd_acpi_find_companion() and
+> determined that it is looking for devices with _ADR 80b8ffff (SATA)
+> and 8100ffff (NVME) and such devices do not exist in the ACPI tables.
+
+Based on its counterpart it should be at \_SB.PC00.VMD0.PEG0.PEGP in VMD mo=
+de.
+This is where _ADR =3D 8100FFFF should be. This looks like broken ACPI code=
+ since
+the property does exist in the expected location when VMD is disabled.
+
+>=20
+> Speculating a little, I guess this is also why Windows leaves the
+> device in D0 in VMD=3Don mode: it would only put the NVMe device in
+> D3hot/D3cold if it had a corresponding companion with
+> StorageD3Enable=3D1 and there isn't one of those. What's still unknown
+> is why it doesn't put the device in D3 in VMD=3Doff mode because there
+> is a correctly placed StorageD3Enable=3D1 in that case.
+
+Given the observations (inconsistent firmware and testing showing Windows u=
+sing
+D0) I'm good with the approach.
+
+David
 
