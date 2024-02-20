@@ -1,253 +1,99 @@
-Return-Path: <linux-acpi+bounces-3727-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3728-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0F885C14E
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 17:27:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD70285C2FE
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 18:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C7B1F21ADB
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 16:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A35A1C224DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Feb 2024 17:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397CE78B70;
-	Tue, 20 Feb 2024 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4495777634;
+	Tue, 20 Feb 2024 17:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CCTc9Smc"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF0A78B6B;
-	Tue, 20 Feb 2024 16:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7B076C89;
+	Tue, 20 Feb 2024 17:52:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708446255; cv=none; b=PyiebT/xvHKe2LvQWAsKIaJsjQl/HHXOux5ice/QZwDW3vBIS/NjFQ1u7a8j4fX/2DbqDEHVgh1aluXAcf+v79CJRYk0il4FHr+NF3G6vfhtCzXWvCvtme3rrxyq4KihTWvZTTwGlh8gq6x+FcL0UhITfnCQ0a48dcFklcZW0Xc=
+	t=1708451528; cv=none; b=T2rDZu5PTVwKMLhieZtwYwLZc8Z6NU6DgdVKszVCNsigw36iMpO0gWbFK5vj2enapDVxDLBClg8+T0QHhC0Y24C+EPp4TxxgE/VO/Nesr9upxuiPlvBJpRFE+U46CVLP7t2Tnm4VKEjZ/Dh4xn+ggMtCK/2AYl+hVPqRosFkF70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708446255; c=relaxed/simple;
-	bh=X1LmlBpp9/hB3Wl48tFmyVRbajeTNCx4reU1tnbF/qg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sIQ8NmtzidtZOc4ClQwhBtiqD4TkubBUbjuOglT3UEc9IjT+wWaBygarDXaoKBvTBfx6Dtwqpxv+vgJxJfp778XjMZkXv+3ScsvhKHztpI7x7FIzG+VsUNaFu0uUNufQBJyVA48qFViyfpC6NjyOfc9gavkC8zfWjevlEjnWH+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TfPkb0bShz6J9dD;
-	Wed, 21 Feb 2024 00:19:51 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6B52E1400DD;
-	Wed, 21 Feb 2024 00:24:08 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 20 Feb
- 2024 16:24:07 +0000
-Date: Tue, 20 Feb 2024 16:24:06 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>,
-	<acpica-devel@lists.linuxfoundation.org>, <linux-csky@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-	<linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, <jianyong.wu@arm.com>,
-	<justin.he@arm.com>, James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
- acpi_processor_get_info()
-Message-ID: <20240220162406.00005b59@Huawei.com>
-In-Reply-To: <ZdTBtt0oR6Q1RcAB@shell.armlinux.org.uk>
-References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
-	<E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
-	<CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
-	<ZdSMk93c1I6x973h@shell.armlinux.org.uk>
-	<ZdTBtt0oR6Q1RcAB@shell.armlinux.org.uk>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1708451528; c=relaxed/simple;
+	bh=07NZaNS/lvIIT2XfHfsULw5hQHjc10frrDfze3nLP4s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F2twMQhJ0kENDUhM1477izCh6eFwzvZV8zLTvQWr2FDJs1qCMAk1rHOWpCw7KM4qHHUsitAY5LCwBNludoopyAOVxUP4sbbXsMteFo7Zc0rbndrlVgOD1GSpDAZCG9POFLyrmjySrDnUNpQ7nha+BCFET9zeOSp6nwmj5JJkoQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CCTc9Smc; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708451527; x=1739987527;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=07NZaNS/lvIIT2XfHfsULw5hQHjc10frrDfze3nLP4s=;
+  b=CCTc9SmcsxkRtKaGc7P1or05m/sztEnm33In1RsRR7UdHx3MDGzUsP72
+   p0sc7PxmAckpmyVVeLT3DRNbtDWMBcpk7+9ZRF+Ul7Xi8UO+My8VeNexR
+   Ap7MLCtVE4yTo8HJi/NMMRZMluofa5AX0sCGS/rU7/BU4hi85FYecobKp
+   SlBs6SLe1kErd6HLjfCMDbe3gp+d/b9fst51Niv2Um2uKpEqbtsOKyzAV
+   ytSb0vWV+kJEMUZq0zITtoYtNyGqZl6plT4EqnjqfCRM7f2J0iQm7Eie4
+   HWvBQVFsGTJo7O4ipfOfcQpOjEtUC6qneYz6uVcKWoAVqqlnpRctLn2KO
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="3036033"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="3036033"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 09:52:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="913116549"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="913116549"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 09:52:03 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rcUHg-000000069Ha-2GtT;
+	Tue, 20 Feb 2024 19:52:00 +0200
+Date: Tue, 20 Feb 2024 19:52:00 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Saravana Kannan <saravanak@google.com>
+Subject: Re: [PATCH v1 1/1] driver core:  Drop unneeded 'externt' keyword in
+ fwnode.h
+Message-ID: <ZdTmwCSZrHhS5K1H@smile.fi.intel.com>
+References: <20240220154532.2684428-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220154532.2684428-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 20 Feb 2024 15:13:58 +0000
-"Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+On Tue, Feb 20, 2024 at 05:45:32PM +0200, Andy Shevchenko wrote:
+> We do not use 'extern' keywork with functions. Remove the last one
+> mistakenly added to fwnode.h.
 
-> On Tue, Feb 20, 2024 at 11:27:15AM +0000, Russell King (Oracle) wrote:
-> > On Thu, Feb 15, 2024 at 08:22:29PM +0100, Rafael J. Wysocki wrote: =20
-> > > On Wed, Jan 31, 2024 at 5:50=E2=80=AFPM Russell King <rmk+kernel@arml=
-inux.org.uk> wrote: =20
-> > > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_proc=
-essor.c
-> > > > index cf7c1cca69dd..a68c475cdea5 100644
-> > > > --- a/drivers/acpi/acpi_processor.c
-> > > > +++ b/drivers/acpi/acpi_processor.c
-> > > > @@ -314,6 +314,18 @@ static int acpi_processor_get_info(struct acpi=
-_device *device)
-> > > >                         cpufreq_add_device("acpi-cpufreq");
-> > > >         }
-> > > >
-> > > > +       /*
-> > > > +        * Register CPUs that are present. get_cpu_device() is used=
- to skip
-> > > > +        * duplicate CPU descriptions from firmware.
-> > > > +        */
-> > > > +       if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
-> > > > +           !get_cpu_device(pr->id)) {
-> > > > +               int ret =3D arch_register_cpu(pr->id);
-> > > > +
-> > > > +               if (ret)
-> > > > +                       return ret;
-> > > > +       }
-> > > > +
-> > > >         /*
-> > > >          *  Extra Processor objects may be enumerated on MP systems=
- with
-> > > >          *  less than the max # of CPUs. They should be ignored _if=
-f =20
-> > >=20
-> > > This is interesting, because right below there is the following code:
-> > >=20
-> > >     if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
-> > >         int ret =3D acpi_processor_hotadd_init(pr);
-> > >=20
-> > >         if (ret)
-> > >             return ret;
-> > >     }
-> > >=20
-> > > and acpi_processor_hotadd_init() essentially calls arch_register_cpu()
-> > > with some extra things around it (more about that below).
-> > >=20
-> > > I do realize that acpi_processor_hotadd_init() is defined under
-> > > CONFIG_ACPI_HOTPLUG_CPU, so for the sake of the argument let's
-> > > consider an architecture where CONFIG_ACPI_HOTPLUG_CPU is set.
-> > >=20
-> > > So why are the two conditionals that almost contradict each other both
-> > > needed?  It looks like the new code could be combined with
-> > > acpi_processor_hotadd_init() to do the right thing in all cases.
-> > >=20
-> > > Now, acpi_processor_hotadd_init() does some extra things that look
-> > > like they should be done by the new code too.
-> > >=20
-> > > 1. It checks invalid_phys_cpuid() which appears to be a good idea to =
-me.
-> > >=20
-> > > 2. It uses locking around arch_register_cpu() which doesn't seem
-> > > unreasonable either.
-> > >=20
-> > > 3. It calls acpi_map_cpu() and I'm not sure why this is not done by
-> > > the new code.
-> > >=20
-> > > The only thing that can be dropped from it is the _STA check AFAICS,
-> > > because acpi_processor_add() won't even be called if the CPU is not
-> > > present (and not enabled after the first patch).
-> > >=20
-> > > So why does the code not do 1 - 3 above? =20
-> >=20
-> > Honestly, I'm out of my depth with this and can't answer your
-> > questions - and I really don't want to try fiddling with this code
-> > because it's just too icky (even in its current form in mainline)
-> > to be understandable to anyone who hasn't gained a detailed knowledge
-> > of this code.
-> >=20
-> > It's going to require a lot of analysis - how acpi_map_cpuid() behaves
-> > in all circumstances, what this means for invalid_logical_cpuid() and
-> > invalid_phys_cpuid(), what paths will be taken in each case. This code
-> > is already just too hairy for someone who isn't an experienced ACPI
-> > hacker to be able to follow and I don't see an obvious way to make it
-> > more readable.
-> >=20
-> > James' additions make it even more complex and less readable. =20
->=20
-> As an illustration of the problems I'm having here, I was just writing
-> a reply to this with a suggestion of transforming this code ultimately
-> to:
->=20
-> 	if (!get_cpu_device(pr->id)) {
-> 		int ret;
->=20
-> 		if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id))
-> 			ret =3D acpi_processor_make_enabled(pr);
-> 		else
-> 			ret =3D acpi_processor_make_present(pr);
->=20
-> 		if (ret)
-> 			return ret;
-> 	}
->=20
-> (acpi_processor_make_present() would be acpi_processor_hotadd_init()
-> and acpi_processor_make_enabled() would be arch_register_cpu() at this
-> point.)
->=20
-> Then I realised that's a bad idea - because we really need to check
-> that pr->id is valid before calling get_cpu_device() on it, so this
-> won't work. That leaves us with:
->=20
-> 	int ret;
->=20
-> 	if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
-> 		/* x86 et.al. path */
-> 		ret =3D acpi_processor_make_present(pr);
-> 	} else if (!get_cpu_device(pr->id)) {
-> 		/* Arm64 path */
-> 		ret =3D acpi_processor_make_enabled(pr);
-> 	} else {
-> 		ret =3D 0;
-> 	}
->=20
-> 	if (ret)
-> 		return ret;
->=20
-> Now, the next transformation would be to move !get_cpu_device(pr->id)
-> into acpi_processor_make_enabled() which would eliminate one of those
-> if() legs.
->=20
-> Now, if we want to somehow make the call to arch_regster_cpu() common
-> in these two paths, the next question is what are the _precise_
-> semantics of acpi_map_cpu(), particularly with respect to it
-> modifying pr->id. Is it guaranteed to always give the same result
-> for the same processor described in ACPI? What acpi_map_cpu() anyway,
-> I can find no documentation for it.
->=20
-> Then there's the question whether calling acpi_unmap_cpu() should be
-> done on the failure path if arch_register_cpu() fails, which is done
-> for the x86 path but not the Arm64 path. Should it be done for the
-> Arm64 path? I've no idea, but as Arm64 doesn't implement either of
-> these two functions, I guess they could be stubbed out and thus be
-> no-ops - but then we open a hole where if pr->id is invalid, we
-> end up passing that invalid value to arch_register_cpu() which I'm
-> quite sure will explode with a negative CPU number.
->=20
-> So, to my mind, what you're effectively asking for is a total rewrite
-> of all the code in and called by acpi_processor_get_info()... and that
-> is not something I am willing to do (because it's too far outside of
-> my knowledge area.)
->=20
-> As I said in my reply to patch 1, I think your comments on patch 2
-> make Arm64 vcpu hotplug unachievable in a reasonable time frame, and
-> certainly outside the bounds of what I can do to progress this.
->=20
-> So, at this point I'm going to stand down from further participation
-> with this patch set as I believe I've reached the limit of what I can
-> do to progress it.
->=20
+Oops, there are two typos in the Subject.
+I'm going to send a v2 with them fixed.
 
-Thanks for your hard work on this Russell - we have moved forwards.
-
-Short of anyone else stepping up I'll pick this up with
-the help of some my colleagues. As such I'm keen on getting patch
-1 upstream ASAP so that we can exclude the need for some of the
-other workarounds from earlier versions of this series (the ones
-dropped before now).
-
-We will need a little time to get up to speed on the current status
-and discussion points Russell raises above.
-
-Jonathan
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
 
