@@ -1,127 +1,179 @@
-Return-Path: <linux-acpi+bounces-3782-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3783-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BFB85DEC0
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 15:21:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF6F85DFBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 15:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F25B281D32
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 14:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416FE1C23FF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 14:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB237BB11;
-	Wed, 21 Feb 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C475178B73;
+	Wed, 21 Feb 2024 14:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="No2piR1T"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F25A4C62;
-	Wed, 21 Feb 2024 14:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948A647F48;
+	Wed, 21 Feb 2024 14:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525300; cv=none; b=BPTqcgdOq7wNygizetmd6pYQTKvxeg5IiMVxx+ZHSgdwTTvcCzoLVpovdsEzz17oX86SJAxYTlf71haDa4D8ZspElBUP/fhTOohlrhw21dbJ/aRtfmNzGhOPvemJCXkuKXvpgeoqfefOA5Nnc6f3Fc8ugstD9HezEZ4OtkEMSfA=
+	t=1708525927; cv=none; b=YlSGEHUjN9bZCcTUKDjDToYcXH9LQxUCwVh2vcs188xI5JtRu35fsqHMNb8681scH7PuJKpHYTsEGuUtxXr9N0vqEWVzl8SQKReLMAlrKtP1J9m9yeBORv3z5de2R7w/UPk/CDkuziTMEDsPQXYOp27FGnmKuGIuesmiax3Huko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525300; c=relaxed/simple;
-	bh=YwsNhLos5IF+HpOc8CL35aaw3xRztGJyd0Rg4VH16iw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PvHzb3BfaFEJWFiC3ZxATSWopg4iotpihYSLrmjfatUBXcvKPVGLaP8KRFuTEWZSgQOt0mX5cBzrE6S7RyklvKkkpG6LbeOPSAlBlr2LDsc3DA9okgzMHx6fnIKH1YjtrmfLz/xLOYeGVVHqlf8A28MmGyl3nebHfRNxQC9oFPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7722FFEC;
-	Wed, 21 Feb 2024 06:22:16 -0800 (PST)
-Received: from [10.57.11.178] (unknown [10.57.11.178])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A67F3F762;
-	Wed, 21 Feb 2024 06:21:36 -0800 (PST)
-Message-ID: <08ab3e7b-c9af-4c07-bff9-1ae64f298eae@arm.com>
-Date: Wed, 21 Feb 2024 14:21:52 +0000
+	s=arc-20240116; t=1708525927; c=relaxed/simple;
+	bh=ETU59JMcllMSB/or4eosb1YfI1+Lc4q0wczytbrnDNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UzgSSkKnH5CXNBd/xtzRKnGRqXQxrfxtH1dcEo830FDe8vLZEjq0Y8gS6cTSMlBpXP7OjMjNKmtjnrwJfWA9ONHB9i/Jsp7scoifSpvNe2xMIV+8Slu2VAKRttNQQub7jWFPemjadgUIx+h1hnxZBvFm3QUz6bUJV/8kDHtb+2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=No2piR1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160ABC433C7;
+	Wed, 21 Feb 2024 14:32:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708525927;
+	bh=ETU59JMcllMSB/or4eosb1YfI1+Lc4q0wczytbrnDNQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=No2piR1TxZde8nJFFXemM2a3+zqfT436aGB+BMcjfAbgT7qoNeY3Ugzq2eYbu+wh7
+	 +hwltOlGdL/UB4JE+TY8cLUBK8DpBP1uuFfW4MYCxZ1QEZ3+51k0b/t/2+G9iuwwDk
+	 P5Itmhah8RpUWeJjtbXpSRe0mrC6qAZXUoTnutiVH1LtyKU32ARVkjr+AZNdB6o7c5
+	 QG0YuXMGYeXL26sbnFcx9E0BAMmUG2NCS63m/IJZWdi/v704kE34N6ZNPx4dgUlof7
+	 5a0BoTqhnE0SoLRWJs3vfmbuYmuDIJjDCT8o/3UF9qlg1ZqrsieGf1N67iw+04QylX
+	 VI16bpwZCgZ/A==
+Date: Wed, 21 Feb 2024 07:32:04 -0700
+From: Rob Herring <robh@kernel.org>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	kernel-team@android.com, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-efi@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
+Message-ID: <20240221143204.GA2773516-robh@kernel.org>
+References: <20240212213147.489377-1-saravanak@google.com>
+ <20240212213147.489377-4-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 18e0452b740e01daf1abb498116ad89716bfd5bc
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: kernel test robot <lkp@intel.com>, linux-acpi@vger.kernel.org,
- devel@acpica.org, linux-pm@vger.kernel.org
-References: <202402211643.99kLO5dl-lkp@intel.com>
-From: Lukasz Luba <lukasz.luba@arm.com>
-In-Reply-To: <202402211643.99kLO5dl-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240212213147.489377-4-saravanak@google.com>
 
-Hi Rafael,
+On Mon, Feb 12, 2024 at 01:31:44PM -0800, Saravana Kannan wrote:
+> The post-init-supplier property can be used to break a dependency cycle by
+> marking some supplier(s) as a post device initialization supplier(s). This
+> allows an OS to do a better job at ordering initialization and
+> suspend/resume of the devices in a dependency cycle.
+> 
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  .../bindings/post-init-supplier.yaml          | 101 ++++++++++++++++++
+>  MAINTAINERS                                   |  13 +--
+>  2 files changed, 108 insertions(+), 6 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/post-init-supplier.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/post-init-supplier.yaml b/Documentation/devicetree/bindings/post-init-supplier.yaml
+> new file mode 100644
+> index 000000000000..aab75b667259
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/post-init-supplier.yaml
+> @@ -0,0 +1,101 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright (c) 2020, Google LLC. All rights reserved.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/post-init-supplier.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Post device initialization supplier
+> +
+> +maintainers:
+> +  - Saravana Kannan <saravanak@google.com>
+> +
+> +description: |
+> +  This property is used to indicate that the device(s) pointed to by the
+> +  property are not needed for the initialization of the device that lists this
+> +  property. This property is meaningful only when pointing to direct suppliers
+> +  of a device that are pointed to by other properties in the device.
+> +
+> +  A device can list its suppliers in devicetree using one or more of the
+> +  standard devicetree bindings. By default, it would be safe to assume the
+> +  supplier device can be initialized before the consumer device is initialized.
+> +
+> +  However, that assumption cannot be made when there are cyclic dependencies
+> +  between devices. Since each device is a supplier (directly or indirectly) of
+> +  the others in the cycle, there is no guaranteed safe order for initializing
+> +  the devices in a cycle. We can try to initialize them in an arbitrary order
+> +  and eventually successfully initialize all of them, but that doesn't always
+> +  work well.
+> +
+> +  For example, say,
+> +  * The device tree has the following cyclic dependency X -> Y -> Z -> X (where
+> +    -> denotes "depends on").
+> +  * But X is not needed to fully initialize Z (X might be needed only when a
+> +    specific functionality is requested post initialization).
+> +
+> +  If all the other -> are mandatory initialization dependencies, then trying to
+> +  initialize the devices in a loop (or arbitrarily) will always eventually end
+> +  up with the devices being initialized in the order Z, Y and X.
+> +
+> +  However, if Y is an optional supplier for X (where X provides limited
+> +  functionality when Y is not initialized and providing its services), then
+> +  trying to initialize the devices in a loop (or arbitrarily) could end up with
+> +  the devices being initialized in the following order:
+> +
+> +  * Z, Y and X - All devices provide full functionality
+> +  * Z, X and Y - X provides partial functionality
+> +  * X, Z and Y - X provides partial functionality
+> +
+> +  However, we always want to initialize the devices in the order Z, Y and X
+> +  since that provides the full functionality without interruptions.
+> +
+> +  One alternate option that might be suggested is to have the driver for X
+> +  notice that Y became available at a later point and adjust the functionality
+> +  it provides. However, other userspace applications could have started using X
+> +  with the limited functionality before Y was available and it might not be
+> +  possible to transparently transition X or the users of X to full
+> +  functionality while X is in use.
+> +
+> +  Similarly, when it comes to suspend (resume) ordering, it's unclear which
+> +  device in a dependency cycle needs to be suspended/resumed first and trying
+> +  arbitrary orders can result in system crashes or instability.
+> +
+> +  Explicitly calling out which link in a cycle needs to be broken when
+> +  determining the order, simplifies things a lot, improves efficiency, makes
+> +  the behavior more deterministic and maximizes the functionality that can be
+> +  provided without interruption.
+> +
+> +  This property is used to provide this additional information between devices
+> +  in a cycle by telling which supplier(s) is not needed for initializing the
+> +  device that lists this property.
+> +
+> +  In the example above, Z would list X as a post-init-supplier and the
+> +  initialization dependency would become X -> Y -> Z -/-> X. So the best order
+> +  to initialize them become clear: Z, Y and then X.
+> +
+> +select: true
 
-On 2/21/24 08:16, kernel test robot wrote:
-> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> branch HEAD: 18e0452b740e01daf1abb498116ad89716bfd5bc  Merge branch 'acpi-scan' into bleeding-edge
-> 
-> Warning ids grouped by kconfigs:
-> 
-> gcc_recent_errors
-> |-- arm64-defconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- arm64-randconfig-001-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- i386-allmodconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- i386-allyesconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- i386-buildonly-randconfig-006-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- i386-randconfig-015-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- i386-randconfig-141-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- mips-allyesconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- powerpc64-randconfig-002-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- powerpc64-randconfig-003-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- sparc64-randconfig-002-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> `-- x86_64-buildonly-randconfig-002-20240221
->      |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
->      `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> clang_recent_errors
-> |-- i386-randconfig-014-20240221
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- riscv-allmodconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- riscv-allyesconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> |-- x86_64-allmodconfig
-> |   |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
-> |   `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> `-- x86_64-allyesconfig
->      |-- kernel-power-energy_model.c:warning:Function-parameter-or-struct-member-nr_states-not-described-in-em_dev_compute_costs
->      `-- kernel-power-energy_model.c:warning:variable-nr_states-set-but-not-used
-> 
-> elapsed time: 726m
-> 
+blank line
 
-I have figured out the 2 places which trigger this. I'm going to send
-a small patch to calm down those static checks.
+> +properties:
+> +  post-init-supplier:
 
-Regards,
-Lukasz
+'supply' is already used for regulators. Let's make it 
+'post-init-providers'.
+
+Rob
 
