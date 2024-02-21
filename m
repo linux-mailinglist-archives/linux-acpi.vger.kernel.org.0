@@ -1,197 +1,113 @@
-Return-Path: <linux-acpi+bounces-3784-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3785-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D22E85E146
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 16:34:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4881185E47C
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 18:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA2A1F25373
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 15:34:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3A51F24469
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 17:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086CB7FBBD;
-	Wed, 21 Feb 2024 15:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6C783CA0;
+	Wed, 21 Feb 2024 17:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e6SEBLng"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MGA654KS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445C96994A
-	for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 15:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F647F7EA;
+	Wed, 21 Feb 2024 17:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708529656; cv=none; b=ttmcHwWpZBvo6fgjobiG6qbNDQQPPJtG35izHTa/k00jR9r53NLt1YJQ6mjmAU+3UBs84YTklEPvXVGDNXIbjwJ8rCGEV/2zkFpdHqi1sYKkHH6oxFP4RpmUwWP+L5vDoKrJvgnopUmmtZL3TjkAO0ZpIX5CqTH9/r8qNSfAkpI=
+	t=1708536236; cv=none; b=Bed+v8hT8MCPRlIfBnLL1w6Q5tRdkgV8gc43RBBbznTSTNKymkaXEKqC+VGCm0Kmyr+//pH3/Sy121WbxpQcC2O2QUDGcyVNSXuo1JVqHZcy8WTxm5aeJ+G/vZYZWKivRCNuQFTyQlUYnXbyQExLXYwlz8nGylp2JNSvGlfkdLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708529656; c=relaxed/simple;
-	bh=pCRAlbE7mMMt6S6v2tV6AbYIaqkOsyUzJw1YCKYxKNM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aW/RzpzkF3O0jE1/0D30LdNM6FzFkFmp1QoNDyoZ7nMHS/vaVgZBHShLgsgpEPwdKtZzrIlE8f1VK1cdNaD7kpk4uvAYhpWBMZ2W7OG0JBSyYuTTB88V+ldQ0/tEHlDnvJeoFXoo+NWtXsUIsJs/pkDFaIM/oO8EmQgQINo4Y/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e6SEBLng; arc=none smtp.client-ip=209.85.167.47
+	s=arc-20240116; t=1708536236; c=relaxed/simple;
+	bh=wfo3IqN4Mq3KWjYAejdmJ2nwaWZQJuRCWSSTiTO0wro=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZTEp+cwN+8d1i90JB2EbUnKChudVPAqqpaaTOlYxYfAx2uPXNXLoGllBXwdtiMgxBesk+2x0BXh/XO7sSbrm8C8wIKbD+xWbsgMI/ZX7htFnMCnjHUWbSsXs8jaNtXKAi7h1durytH/uGOn6nvOyx+CMz0jDQ+S5A2Ue8Ey/gFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MGA654KS; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-512b42b6697so4278184e87.1
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 07:34:14 -0800 (PST)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6de3141f041so4834506b3a.0;
+        Wed, 21 Feb 2024 09:23:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708529653; x=1709134453; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1708536235; x=1709141035; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aFNTOWznuw3QWL+IXaT+QoQZyDq4kTDL0/IaVpqE03w=;
-        b=e6SEBLngcJDwvNXojGMk0Cr+3ZZG1iO4UOmnjzXs2DGVe09qipwAqFmdsAPvxICrLn
-         lhBAI2PZ91xdsMlXP6axZX1m3GGw7R+L09nhHLtqRCLI7GhXv36+bko5THEE4iKidr/r
-         LsKphzlykSzYawI64h0wJTtl/WYOymHnFNAZHUVUFqTV2Ximq61l8FTlkzbMaz9yjat4
-         QZwVC/S21o6e98NwTPU6ZSmmQLd5/Bp5+2+2mQbuSdQlEm709qntJE3KX3i25aczd0Cc
-         4foQ5TdMQHx4kRIrjXVdkoplVlOgQHlKBSgDUklArfKC9FBn59mp8DLHdZ2972wY/9tT
-         mrvQ==
+        bh=wfo3IqN4Mq3KWjYAejdmJ2nwaWZQJuRCWSSTiTO0wro=;
+        b=MGA654KSGTHjdQEAHneNkQ6Ss10crprjbVg4M5SF8fGbQAv03wkL9s+bwgVqqyWyJk
+         jGVzRVzwCfiiaGA+dOwhhg2a49vr/eqIzPVh9zPiMAYuzt0GVxeszelKyY1C0w3UdrQ7
+         UV98q1X48qw+yWyDN87vor2l6aDmJqZzl6fGXc4HBzl8+sBXDZ29C7yjhUahvrKwWU9v
+         nvR3lB3+8WMh3sEdMfR+lnUmXK6qvcQeJnDmg2svvZnW0bd4Fu2dZb2NLijDdwDdyxMd
+         E4Yh81oUjJBM66zk8j08u27lkirSySekQg+8klhGKZV7viAroOXziRjyEEsUWLbGq/qP
+         7WNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708529653; x=1709134453;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1708536235; x=1709141035;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aFNTOWznuw3QWL+IXaT+QoQZyDq4kTDL0/IaVpqE03w=;
-        b=RnHVy+yK7bB5b8/jcRV2GhL+XCQ9sm4bEmBLuiPT3ZPU6IXgoY9YVPsraV6AjjxYj8
-         zp76dj7aCV4bpq7SSRM64aGYxZR43jrbvOno7vxQgXP9DflrgerW4EG3j//JxHrW8vLe
-         K/tgaXgRIlulRnYnr3HZN6gttthaixBcignD8Qm34NWtQnw7IrZgZOGnOQ1Df91FqDe9
-         CpmlB502W5TKRcAaBkcbyFLiscpY8wkIQN9bH4Ns1/RLxyNZkg2ScWc4zwDtjTWjTvGJ
-         07lKouAAntKdyb2ZvsMdBvFsZ0UkoFyHTuFDMKihpzo4mCrjY41Q43XNzJTeahJwPttu
-         a/IQ==
-X-Gm-Message-State: AOJu0YyYxGOmyeDtwdPbj/G92tiS3dAUb4oaDg8UEg5HWtzAeVX+xGkp
-	1bRAhQuYISdxu3samhuWuWwDwJTCvfzAe80awK8X7GHVZRBOTXRSCS0iLZe8sGOdLcAAHOvJe6l
-	alr/kYwPeHBaXX4wWDXON775iwVEM8yjN+10JrA==
-X-Google-Smtp-Source: AGHT+IFc/Duh1oYma3JV/AjJ1Uk7w9ay/EMuNllvuPV7LUVZhi14K2OUzfsJwyWSyfPrYmi73Ns15SiAh27vw40RKz8=
-X-Received: by 2002:ac2:5589:0:b0:512:ab9e:3525 with SMTP id
- v9-20020ac25589000000b00512ab9e3525mr6480617lfg.40.1708529653142; Wed, 21 Feb
- 2024 07:34:13 -0800 (PST)
+        bh=wfo3IqN4Mq3KWjYAejdmJ2nwaWZQJuRCWSSTiTO0wro=;
+        b=d+4zFedWl1BQ/kFAprKyeAt+bVO1QMUdmXu/qjShwDNi/cK7oXp5XofQIo2cq1c4vr
+         yianZTTRtcCfUgMIKXAZud1AY5voFMnhB31zRsDLgOL8hZ0jis7o6I6r/UvOtJRvTsA/
+         hJAVlZ2rnkXBSGqM58ShxJ9lO0b9KlmGtzZxZu+irA8MQhYezLgRPmnzxe4mZd9+VFUk
+         3Pf41/Gg/rsH5mUPUYh1JxKejyl5/fiysbVxoOMzGlW1UM7Dj+fF344zVdkrf2QYgTlV
+         I8ffdaBzPQI3YjcrVM+Xh6p/wU6eUZ05DKTvv3Ux9PkYOPVdMC6YdOS4dm+dnnpif0S1
+         itVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUY97ycuLRJB8s5y7m4ridtjVjNgXAStfND4zCV9RbbiFhmlOuvXqFSzZHw+FWv7XRiasYEWYDM5xGYZjKlV1Z0g/Ou18BmzOipElXoMN/98PfavYEp6/qBPaBlxnItmRY+fT9aB0l1COv/4Vc3RiVdzugnMzCkxeCdqIJTA7Gc+xoeUxgRajnBvy7ePpsVbjxmmNfWmejuWy0bJxFSEjEB/Itn
+X-Gm-Message-State: AOJu0YxIxkgnaJYeACHtAmdgYi2EYL3BC1RzfqHmuTt6Iu3vMQgXYet2
+	OMN5qeCECGpQY6qMapY8SDkiDZJtua3gkB95WQirRrp5upzBXPLG
+X-Google-Smtp-Source: AGHT+IE59FCC/t+zMXkdlfOszaAbcfam4PoFW8ZvkAA8ellpnl6GKzpZod9gKRIYj9HKw1ZNyXXkCA==
+X-Received: by 2002:a62:aa0c:0:b0:6e4:5a6c:957a with SMTP id e12-20020a62aa0c000000b006e45a6c957amr9182990pff.12.1708536234610;
+        Wed, 21 Feb 2024 09:23:54 -0800 (PST)
+Received: from localhost.localdomain ([2406:3003:2000:500f:a246:8a16:bee7:140f])
+        by smtp.gmail.com with ESMTPSA id fn15-20020a056a002fcf00b006e324e33ab8sm8640356pfb.218.2024.02.21.09.23.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Feb 2024 09:23:53 -0800 (PST)
+From: Lucas Lee Jing Yi <lucasleeeeeeeee@gmail.com>
+To: oleksandr@natalenko.name
+Cc: Perry.Yuan@amd.com,
+	Xiaojian.Du@amd.com,
+	alexander.deucher@amd.com,
+	bp@alien8.de,
+	deepak.sharma@amd.com,
+	li.meng@amd.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	lucasleeeeeeeee@gmail.com,
+	mario.limonciello@amd.com,
+	nathan.fontenot@amd.com,
+	rafael.j.wysocki@intel.com,
+	rafael@kernel.org,
+	ray.huang@amd.com,
+	shimmer.huang@amd.com,
+	skhan@linuxfoundation.org,
+	viresh.kumar@linaro.org,
+	x86@kernel.org
+Subject: Re: [PATCH] [PATCH] amd_pstate: fix erroneous highest_perf value on some CPUs
+Date: Thu, 22 Feb 2024 01:19:14 +0800
+Message-ID: <20240221172404.99765-1-lucasleeeeeeeee@gmail.com>
+X-Mailer: git-send-email 2.43.2
+In-Reply-To: <3868832.mvXUDI8C0e@natalenko.name>
+References: <3868832.mvXUDI8C0e@natalenko.name>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240213134606.383817-1-sakari.ailus@linux.intel.com>
- <20240213134606.383817-3-sakari.ailus@linux.intel.com> <ZdUl2eg8hM5RkrOL@surfacebook.localdomain>
- <ZdWes9XxXG1PzYJZ@kekkonen.localdomain>
-In-Reply-To: <ZdWes9XxXG1PzYJZ@kekkonen.localdomain>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 21 Feb 2024 17:33:36 +0200
-Message-ID: <CAHp75VdJMQ1HUMHWmtkSLH=m0KQYqpcEpDGb6cVbxYw_iNPwTA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] ACPI: property: Ignore bad graph port nodes on
- Dell XPS 9315
-To: Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 21, 2024 at 8:56=E2=80=AFAM Sakari Ailus
-<sakari.ailus@linux.intel.com> wrote:
-> I think Rafael has already applied this but I can send a new patch...
 
-Depends if it's final or can be dropped.
-If the former is the case, follow ups, please.
+Hi Oleksandr,
 
-> On Wed, Feb 21, 2024 at 12:21:13AM +0200, andy.shevchenko@gmail.com wrote=
-:
-> > Tue, Feb 13, 2024 at 03:46:06PM +0200, Sakari Ailus kirjoitti:
+Thanks, sent in a new patch with the recommendations highlighted by the script.
 
-...
-
-> > >  void acpi_mipi_scan_crs_csi2(void);
-> > >  void acpi_mipi_init_crs_csi2_swnodes(void);
-> > >  void acpi_mipi_crs_csi2_cleanup(void);
-> >
-> > + blank line?
->
-> The usa of blank lines elsewhere in the file is consistent with the above=
-.
-> These are all related.
-
-Naming does not suggest that. I see either naming or semantic tights
-issues here. Hence the proposal to have a blank line.
-
-> > > +bool acpi_graph_ignore_port(acpi_handle handle);
-
-...
-
-> > > +static const struct dmi_system_id dmi_ignore_port_nodes[] =3D {
-> > > +   {
-> > > +           .matches =3D {
-> > > +                   DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> > > +                   DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
-> > > +           },
-> > > +   },
-> > > +   { 0 }
-> >
-> > 0 is not needed. Moreover, it's a bit unusual.
->
-> But also required by the C standard.
-
-We have a lot of code that doesn't use that (yet this is valid C23,
-and yes I know that we rely on C11).
-
-> > > +};
-
-...
-
-> > > +static const char *strnext(const char *s1, const char *s2)
-> > > +{
-> > > +   s1 =3D strstr(s1, s2);
-> > > +
-> > > +   if (!s1)
-> > > +           return NULL;
-> > > +
-> > > +   return s1 + strlen(s2);
-> > > +}
-> >
-> > NIH str_has_prefix() ?
->
-> It doesn't do the same thing. Yes, it could be used, but the code looks
-> cleaner with this.
-
-"Not Invented Here" was even at Nokia times, why do we repeat our mistakes?
-
-...
-
-> > > +/**
-> > > + * acpi_graph_ignore_port - Tell whether a port node should be ignor=
-ed
-> > > + * @handle: The ACPI handle of the node (which may be a port node)
-> > > + *
-> > > + * Returns true if a port node should be ignored and the data to tha=
-t should
-> >
-> > Please, run kernel-doc validation and fix the warnings.
->
-> Running kernel-doc on the file doesn't produce any here.
-
-You haven't run it correctly?
-
-$ scripts/kernel-doc -v -none -Wall drivers/acpi/mipi-disco-img.c
-drivers/acpi/mipi-disco-img.c:163: info: Scanning doc for function
-acpi_mipi_check_crs_csi2
-drivers/acpi/mipi-disco-img.c:384: info: Scanning doc for function
-acpi_mipi_scan_crs_csi2
-drivers/acpi/mipi-disco-img.c:703: info: Scanning doc for function
-acpi_mipi_init_crs_csi2_swnodes
-drivers/acpi/mipi-disco-img.c:718: info: Scanning doc for function
-acpi_mipi_crs_csi2_cleanup
-drivers/acpi/mipi-disco-img.c:749: info: Scanning doc for function
-acpi_graph_ignore_port
-drivers/acpi/mipi-disco-img.c:759: warning: No description found for
-return value of 'acpi_graph_ignore_port'
-1 warnings
-
-> > > + * come from other sources instead (Windows ACPI definitions and
-> > > + * ipu-bridge). This is currently used to ignore bad port nodes rela=
-ted to IPU6
-> > > + * ("IPU?") and camera sensor devices ("LNK?") in certain Dell syste=
-ms with
-> > > + * Intel VSC.
-> > > + */
-
---=20
-With Best Regards,
-Andy Shevchenko
+Regards,
+Lucas
 
