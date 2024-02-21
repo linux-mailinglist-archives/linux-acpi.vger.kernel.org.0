@@ -1,235 +1,236 @@
-Return-Path: <linux-acpi+bounces-3765-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3766-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12E485D0C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:57:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C97D85D0C2
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CB992863B5
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 06:57:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 029B4B24633
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 06:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD99838F9B;
-	Wed, 21 Feb 2024 06:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331C239FE4;
+	Wed, 21 Feb 2024 06:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kcxWi2TL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nBlnul1p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F207039FE0
-	for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 06:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503AD365;
+	Wed, 21 Feb 2024 06:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708498618; cv=none; b=rP35sZNIaxzV7gPR3Y1AZUZpXurBAjESfPCE5PWf+b+1ywmjp1pkpV4HXG/Hfkje9NyiCcupxs0QQgVIgTMzeWpkhjGQbVm0A4omtFEG4W75QJMPaFO97BvmV1kJvmN5ePYSQuIoqVmc/UEqhZ1VZhXKmtPhzz3O/NRUI0Ida9g=
+	t=1708498718; cv=none; b=hr/8HUV//QbP6cSyC23xrZ0K6TlarcgRlJouzjxpi9Hi/VW5hT5/4iHEhRjasU6sG4JaXaXr/SUZl4oLupJi3cmGSwqnhJabeuFF+TGC5vnxfv5aaZ6VJ+QYQF5W33blwNkBw2mpklXconve7Bojytef/oTiY7iEHkg9UUYX/VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708498618; c=relaxed/simple;
-	bh=a4Pw9m4w2DIMWopfY3UNMEgZavR9KrvD4Wn0l6d/B2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jhXuvbRDCYi4dopD6AQJvgxGcwEiVc/7EWgTg4j2WtyqSsuttSWzjeuUdBuLbhddcaw5cXxWChJg9S4pO3i0iUH3/GSfTvSXlCaJGXAGq1H/EbZD/t0AFhm7JXaDn8bfLBcBbIMBaDO/sdtSAF1aWYJd061ce459pCe3GMlUoF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kcxWi2TL; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708498617; x=1740034617;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a4Pw9m4w2DIMWopfY3UNMEgZavR9KrvD4Wn0l6d/B2E=;
-  b=kcxWi2TLGXz97hbkvbMyeXjMk1jBdy3BJqCwQKL6BdRyLh0WpUKCq2iF
-   HLU5VusMQI8aqPE10jMEwfTKufjxUW/57e45kauGYXMAXITQN/EIKXjyF
-   XwquPYYa9XUAXo8L6zEU/c16nokpd/WN1CMxbTARQqJme4vefoEVP6TzX
-   O8/8wUKmlLjCluRO67VIaTNWw5k6gilXJGbSFdzDOkjSGk4ZZ6PhevtuO
-   YLdsnG5GLJVO0ApzMjaH29TM/PKBZJy8NAgFfprVpvs8IPNvOzm5eOjtE
-   oZl6FJHzBVA+59TvUlzgqlSty3XjrfK+FM7CrSaFTfFe+TZggmSxLLRzT
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="28084177"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="28084177"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 22:56:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
-   d="scan'208";a="35806167"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 22:56:54 -0800
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 3C9FC11F855;
-	Wed, 21 Feb 2024 08:56:51 +0200 (EET)
-Date: Wed, 21 Feb 2024 06:56:51 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: andy.shevchenko@gmail.com
-Cc: linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 2/2] ACPI: property: Ignore bad graph port nodes on
- Dell XPS 9315
-Message-ID: <ZdWes9XxXG1PzYJZ@kekkonen.localdomain>
-References: <20240213134606.383817-1-sakari.ailus@linux.intel.com>
- <20240213134606.383817-3-sakari.ailus@linux.intel.com>
- <ZdUl2eg8hM5RkrOL@surfacebook.localdomain>
+	s=arc-20240116; t=1708498718; c=relaxed/simple;
+	bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cXX86owVyBQz4LqZnwwHd9ZirXARPyesY6rw9UCk2wOc1sZ76TcBjLPgiYTbPwjVoE4ynk1+gO0LRpS5ZmoEkxC70Wc/kTEHbrCvh36H0kQDmk1EiToPS2/AqEG9ux44hGel6wLCSxo8EZ5QEHDVs6dNoHfvMFudpeuYJLotAbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nBlnul1p; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so892247366b.0;
+        Tue, 20 Feb 2024 22:58:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708498714; x=1709103514; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
+        b=nBlnul1pJfdkPAP2OKhFeCC3E8KZJqIpAbzaYkDzpR9a8GhGrc7Gnds3H5lOhmEx58
+         8qBWYFczb6wsHT9qHBu9YT5/gb37QMHGpFEWRO4znHpoME6+CqfeRahyzfmhLc8ownib
+         6kwklYqjRajtc2Mpz8oBPB7bnJln2FIisMI0ITlsZyqsgAprF8Z3SCbKAJ+1rjnYgzMe
+         ZsGME1BNmzCcy6syb6zjCs3Y1A9whbOaj2Lu4IntVQ8DL1+CpwoToQPJLLTBBSspNGYB
+         c6rDHfnnfY2gvON4f+58NstRa/F3TUFFSxflueW4wOF1imuUsJdlLOMD4XQ5R+jmCLl3
+         IbZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708498714; x=1709103514;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
+        b=FCumL/e0gHTvCdeB0vRLqhU0SlgeFb72uaavwVFUm8XVnwQFpQVO/MDCOLhZexiBoO
+         DnR+eKt1bQBghXmEhmRMvKqp0U2pzHQRuP0rcD0pwKXWLiNROr+7VxRx0jrL1WW5KQy/
+         DddpCvtWwMTKsX4Oxj+ECClNLAW8FMDp+uzzfhMOzY/Iak3x2gFffc2837hWlgcQfpiV
+         P5gv1B9qyOLFJsaj97XDEFQKOJ6xUjxi5t+NgcFMv0FR/Rlm/c/KSsJjVVNyKoF7alSK
+         UCIeWvrQ8MempXjGDECFz4crQ1fiu6PdqMZy2kKXOrsYoVEbkDsXz5HjUg4YIKDRbOSz
+         jUyw==
+X-Forwarded-Encrypted: i=1; AJvYcCX6CmIrogE8Zh+uqS66rpKM/z+AmLQygZ/p5jJTfrzTmnr6xf00JKgI9/LVl1gXXEfwhxH0IN1hx0mM5uJARvW6RUjhfL1/0NhYb2So7+iCNKl9jSpUWozmuq+KF5ZrNNm3fQNZSsI5IKgtMWZ3hWzPSVV7qKRI96NNdhd8cMDfK+8UWi8=
+X-Gm-Message-State: AOJu0YzrZ500zKEr+QRi2da2vNey2tDnQeaKCCd0cFsVDALgiFeu9S36
+	kEAqdHOdAkfVxofgGkqmaJ+H3aug+fpZ2Zdyunhy2lI/P/gm03eP
+X-Google-Smtp-Source: AGHT+IEdq9MC0zgE7wqEf/VS52ohHkOx4ge1L7oe+1hYC8s/S2/omVx3tnQ/BdcSwepvqOW0PZjRAA==
+X-Received: by 2002:a17:906:80d7:b0:a3f:5576:d7b9 with SMTP id a23-20020a17090680d700b00a3f5576d7b9mr10387ejx.5.1708498714028;
+        Tue, 20 Feb 2024 22:58:34 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id pk27-20020a170906d7bb00b00a3ee20b00d0sm1672835ejb.4.2024.02.20.22.58.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 22:58:33 -0800 (PST)
+Message-ID: <96b3f77d6ed4a03030743b93bce144523accd585.camel@gmail.com>
+Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
+ destroying the changeset
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+ linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Android Kernel Team <kernel-team@android.com>
+Date: Wed, 21 Feb 2024 07:58:33 +0100
+In-Reply-To: <CAGETcx_kjmZypvhjGED5V3C4E=NzffD2=8cn5Hh-tEHTMVKsiQ@mail.gmail.com>
+References: 
+	<20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
+	 <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
+	 <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
+	 <20240213145131.GA1180152-robh@kernel.org>
+	 <48a86fa6908a2a7a38a45dc6dbb5574c4a9d7400.camel@gmail.com>
+	 <CAGETcx9xgLykm7Ti-A4+sYxQkn=KTUptW9fbFxgTcceihutwRQ@mail.gmail.com>
+	 <71fa22870246c4ed6ae9cbb2cb93db557dd855f7.camel@gmail.com>
+	 <CAGETcx_kjmZypvhjGED5V3C4E=NzffD2=8cn5Hh-tEHTMVKsiQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZdUl2eg8hM5RkrOL@surfacebook.localdomain>
 
-Hi Andy,
+On Tue, 2024-02-20 at 16:39 -0800, Saravana Kannan wrote:
+> On Wed, Feb 14, 2024 at 4:48=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om> wrote:
+> >=20
+> > On Tue, 2024-02-13 at 19:44 -0800, Saravana Kannan wrote:
+> > > On Tue, Feb 13, 2024 at 6:57=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gma=
+il.com> wrote:
+> > > >=20
+> > > > On Tue, 2024-02-13 at 08:51 -0600, Rob Herring wrote:
+> > > > > On Mon, Feb 12, 2024 at 01:10:27PM +0100, Nuno S=C3=A1 wrote:
+> > > > > > On Mon, 2024-02-05 at 13:09 +0100, Nuno Sa wrote:
+> > > > > > > Device links will drop their supplier + consumer refcounts
+> > > > > > > asynchronously. That means that the refcount of the of_node a=
+ttached
+> > > > > > > to
+> > > > > > > these devices will also be dropped asynchronously and so we c=
+annot
+> > > > > > > guarantee the DT overlay assumption that the of_node refcount=
+ must be
+> > > > > > > 1 in
+> > > > > > > __of_changeset_entry_destroy().
+> > > > > > >=20
+> > > > > > > Given the above, call the new fwnode_links_flush_queue() help=
+er to
+> > > > > > > flush
+> > > > > > > the devlink workqueue so we can be sure that all links are dr=
+opped
+> > > > > > > before
+> > > > > > > doing the proper checks.
+> > > > > > >=20
+> > > > > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > > > > > ---
+> > > > > > > =C2=A0drivers/of/dynamic.c | 8 ++++++++
+> > > > > > > =C2=A01 file changed, 8 insertions(+)
+> > > > > > >=20
+> > > > > > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> > > > > > > index 3bf27052832f..b7153c72c9c9 100644
+> > > > > > > --- a/drivers/of/dynamic.c
+> > > > > > > +++ b/drivers/of/dynamic.c
+> > > > > > > @@ -14,6 +14,7 @@
+> > > > > > > =C2=A0#include <linux/slab.h>
+> > > > > > > =C2=A0#include <linux/string.h>
+> > > > > > > =C2=A0#include <linux/proc_fs.h>
+> > > > > > > +#include <linux/fwnode.h>
+> > > > > > >=20
+> > > > > > > =C2=A0#include "of_private.h"
+> > > > > > >=20
+> > > > > > > @@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
+> > > > > > >=20
+> > > > > > > =C2=A0static void __of_changeset_entry_destroy(struct of_chan=
+geset_entry
+> > > > > > > *ce)
+> > > > > > > =C2=A0{
+> > > > > > > + /*
+> > > > > > > +=C2=A0 * device links drop their device references (and henc=
+e their
+> > > > > > > of_node
+> > > > > > > +=C2=A0 * references) asynchronously on a dedicated workqueue=
+. Hence we
+> > > > > > > need
+> > > > > > > +=C2=A0 * to flush it to make sure everything is done before =
+doing the
+> > > > > > > below
+> > > > > > > +=C2=A0 * checks.
+> > > > > > > +=C2=A0 */
+> > > > > > > + fwnode_links_flush_queue();
+> > > > > > > =C2=A0 if (ce->action =3D=3D OF_RECONFIG_ATTACH_NODE &&
+> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 of_node_check_flag(ce->np, OF_=
+OVERLAY)) {
+> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (kr=
+ef_read(&ce->np->kobj.kref) > 1) {
+> > > > > > >=20
+> > > > > >=20
+> > > > > > Hi Rob and Frank,
+> > > > > >=20
+> > > > > > Any way you could take a look at this and see if you're ok with=
+ the
+> > > > > > change
+> > > > > > in the
+> > > > > > overlay code?
+> > > > > >=20
+> > > > > > On the devlink side , we already got the ok from Rafael.
+> > > > >=20
+> > > > > Didn't Saravana say he was going to look at this? As of yesterday=
+, he's
+> > > > > also a DT maintainer so deferring to him.
+> > > > >=20
+> > > >=20
+> > > > Yeah, I did asked him but I guess he never had the time for it... S=
+aravana,
+> > > > could you please give some feedback on this? I think the most sensi=
+ble part
+> > > > is
+> > > > on the devlink side but I assume this is not going to be merged wit=
+hout an
+> > > > ack
+> > > > from a DT maintainer...
+> > >=20
+> > > Sorry for the delay Nuno. I'll get to this. I promise. This week is a=
+ bit
+> > > busy.
+> > >=20
+> >=20
+> > No worries. Just making sure it's not forgotten :)
+>=20
+> Hi Nuno,
+>=20
+> Thanks for nudging me about this issue.
+>=20
 
-Thanks for the review.
+Hi Saravana,
 
-I think Rafael has already applied this but I can send a new patch...
+> I replied to a similar patch series that Herve sent out last year.
+> Chose to reply to that because it had fewer issues to fix and Herve
+> sent it out a while ago.
 
-On Wed, Feb 21, 2024 at 12:21:13AM +0200, andy.shevchenko@gmail.com wrote:
-> Tue, Feb 13, 2024 at 03:46:06PM +0200, Sakari Ailus kirjoitti:
-> > Some systems were shipped with both Windows and Linux camera descriptions.
-> > In general, if Linux description exist, they will be used and Windows
-> > description ignored.
-> > 
-> > In this case the Linux descriptions were buggy so use Windows definition
-> > instead. This patch ignores the bad graph port nodes on Dell XPS 9315 and
-> > there are likely other such systems, too. The corresponding information
-> > has been added to ipu-bridge to cover the missing bits.
-> 
-> ...
-> 
-> >  void acpi_mipi_scan_crs_csi2(void);
-> >  void acpi_mipi_init_crs_csi2_swnodes(void);
-> >  void acpi_mipi_crs_csi2_cleanup(void);
-> 
-> + blank line?
+I think it's fixing the same issues but as he sent first, fair enough :)
 
-The usa of blank lines elsewhere in the file is consistent with the above.
-These are all related.
+> https://lore.kernel.org/all/20231130174126.688486-1-herve.codina@bootlin.=
+com/
+>=20
+> Can you please chime in there?
+>=20
 
-> 
-> > +bool acpi_graph_ignore_port(acpi_handle handle);
-> >  
-> >  #endif /* _ACPI_INTERNAL_H_ */
-> 
-> ...
-> 
-> > +static const struct dmi_system_id dmi_ignore_port_nodes[] = {
-> > +	{
-> > +		.matches = {
-> > +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> > +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
-> > +		},
-> > +	},
-> > +	{ 0 }
-> 
-> 0 is not needed. Moreover, it's a bit unusual.
+Already did... Please look at my first patch. It already has an ack from Ra=
+fael and I
+think it's fairly close with what you want (it might need some naming impro=
+vements
+though).
 
-But also required by the C standard.
- 
-> > +};
-> 
-> ...
-> 
-> > +static const char *strnext(const char *s1, const char *s2)
-> > +{
-> > +	s1 = strstr(s1, s2);
-> > +
-> > +	if (!s1)
-> > +		return NULL;
-> > +
-> > +	return s1 + strlen(s2);
-> > +}
-> 
-> NIH str_has_prefix() ?
+- Nuno S=C3=A1
 
-It doesn't do the same thing. Yes, it could be used, but the code looks
-cleaner with this.
-
-> 
-> ...
-> 
-> > +/**
-> > + * acpi_graph_ignore_port - Tell whether a port node should be ignored
-> > + * @handle: The ACPI handle of the node (which may be a port node)
-> > + *
-> > + * Returns true if a port node should be ignored and the data to that should
-> 
-> Please, run kernel-doc validation and fix the warnings.
-
-Running kernel-doc on the file doesn't produce any here.
-
-> 
-> > + * come from other sources instead (Windows ACPI definitions and
-> > + * ipu-bridge). This is currently used to ignore bad port nodes related to IPU6
-> > + * ("IPU?") and camera sensor devices ("LNK?") in certain Dell systems with
-> > + * Intel VSC.
-> > + */
-> > +bool acpi_graph_ignore_port(acpi_handle handle)
-> > +{
-> > +	const char *path = NULL, *orig_path;
-> > +	static bool dmi_tested, ignore_port;
-> > +
-> > +	if (!dmi_tested) {
-> > +		ignore_port = dmi_first_match(dmi_ignore_port_nodes);
-> > +		dmi_tested = true;
-> > +	}
-> > +
-> > +	if (!ignore_port)
-> > +		return false;
-> > +
-> > +	/* Check if the device is either "IPU" or "LNK" (sensor). */
-> > +	orig_path = acpi_handle_path(handle);
-> > +	if (!orig_path)
-> > +		return false;
-> > +	path = strnext(orig_path, "IPU");
-> 
-> IIUC this can be rewritten as
-> 
-> 	path += str_has_prefix();
-> 	if (path == orig_path)
-
-You could do that here, but now below, without introducing a new temporary
-variable and shuffling that and "path". I prefer to keep it as-is.
-
-> 		...
-> 
-> > +	if (!path)
-> > +		path = strnext(orig_path, "LNK");
-> > +	if (!path)
-> > +		goto out_free;
-> > +
-> > +	if (!(path[0] >= '0' && path[0] <= '9' && path[1] == '.'))
-> 
-> isdigit() ?
-
-Makes sense.
-
-> 
-> > +		goto out_free;
-> > +
-> > +	/* Check if the node has a "PRT" prefix. */
-> > +	path = strnext(path, "PRT");
-> > +	if (path && path[0] >= '0' && path[0] <= '9' && !path[1]) {
-> 
-> Ditto.
-
-Yes.
-
-> 
-> > +		acpi_handle_debug(handle, "ignoring data node\n");
-> > +
-> > +		kfree(orig_path);
-> > +		return true;
-> > +	}
-> > +
-> > +out_free:
-> > +	kfree(orig_path);
-> > +	return false;
-> > +}
-> 
-
--- 
-Kind regards,
-
-Sakari Ailus
 
