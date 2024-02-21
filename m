@@ -1,73 +1,73 @@
-Return-Path: <linux-acpi+bounces-3766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C97D85D0C2
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:58:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CF485D0F8
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 08:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 029B4B24633
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 06:58:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7421B21617
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331C239FE4;
-	Wed, 21 Feb 2024 06:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD67B3A1D3;
+	Wed, 21 Feb 2024 07:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nBlnul1p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRmn43fF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503AD365;
-	Wed, 21 Feb 2024 06:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22AF3A8C0;
+	Wed, 21 Feb 2024 07:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708498718; cv=none; b=hr/8HUV//QbP6cSyC23xrZ0K6TlarcgRlJouzjxpi9Hi/VW5hT5/4iHEhRjasU6sG4JaXaXr/SUZl4oLupJi3cmGSwqnhJabeuFF+TGC5vnxfv5aaZ6VJ+QYQF5W33blwNkBw2mpklXconve7Bojytef/oTiY7iEHkg9UUYX/VQ=
+	t=1708499589; cv=none; b=kqS158d7JZi0vIpgOJoYyBEWW2NqyZ/20A5lXRVs/CqBEp1K1wAZB+tSEcSvfy8zUajupaspJnfZLHt8vvQE6c97m2sC1fblcqmwKt2YZ3BA4tLzUEHCpvbzUFXsOwDOaX2TdfnHQ/LSDvuZHwHDtUARAHypI8CrUwNuVGfhe+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708498718; c=relaxed/simple;
-	bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
+	s=arc-20240116; t=1708499589; c=relaxed/simple;
+	bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cXX86owVyBQz4LqZnwwHd9ZirXARPyesY6rw9UCk2wOc1sZ76TcBjLPgiYTbPwjVoE4ynk1+gO0LRpS5ZmoEkxC70Wc/kTEHbrCvh36H0kQDmk1EiToPS2/AqEG9ux44hGel6wLCSxo8EZ5QEHDVs6dNoHfvMFudpeuYJLotAbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nBlnul1p; arc=none smtp.client-ip=209.85.218.44
+	 Content-Type:MIME-Version; b=lEouptVRmdlt0ljvxdtDAjWCxh0fQH03MltfaV779sMyC62cPJAaAcVsrpaZZht++9I4FdfrGhNQ/PWD3UqlcqBojODNoEWkes/qRz8/HIsX9E+eoobb6JULyhjMW5Fuv6pQGVQ/fZFSSuo1T0IJmjox96OPx5JUBGcHwNp74iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRmn43fF; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so892247366b.0;
-        Tue, 20 Feb 2024 22:58:35 -0800 (PST)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-563c403719cso6479406a12.2;
+        Tue, 20 Feb 2024 23:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708498714; x=1709103514; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708499586; x=1709104386; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
-        b=nBlnul1pJfdkPAP2OKhFeCC3E8KZJqIpAbzaYkDzpR9a8GhGrc7Gnds3H5lOhmEx58
-         8qBWYFczb6wsHT9qHBu9YT5/gb37QMHGpFEWRO4znHpoME6+CqfeRahyzfmhLc8ownib
-         6kwklYqjRajtc2Mpz8oBPB7bnJln2FIisMI0ITlsZyqsgAprF8Z3SCbKAJ+1rjnYgzMe
-         ZsGME1BNmzCcy6syb6zjCs3Y1A9whbOaj2Lu4IntVQ8DL1+CpwoToQPJLLTBBSspNGYB
-         c6rDHfnnfY2gvON4f+58NstRa/F3TUFFSxflueW4wOF1imuUsJdlLOMD4XQ5R+jmCLl3
-         IbZw==
+        bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
+        b=BRmn43fFOTrccA1HYQmBohjAsaLsMaZKGKPqRvbde84JP5H2QvGdmFpzYw4+6Z6HKV
+         XSxxs7cgCy+OaPbGv/JT38YU517O7QbQ/M0b77nmbEthWZBsDwlrH6XxCQy40TdNcxl8
+         Advi6edJfMxwc3E5H5JMgwe642X6nfdPua066VCioJND5MLC8eXCwlWlWR3SYpzCQsVC
+         XZMJMMg2XyrqDDhBfM7EDXr37AYsFtK73lSqMaX7a+e9kk3MA3ZoIlhR8N5DSXLAhl+E
+         Jmg9OzQMsJ//ix82QTDZBkM/iwHCLry43RxpjlqBFM4c0uoj/itjs9RMaCfvXz+LSV/2
+         TMoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708498714; x=1709103514;
+        d=1e100.net; s=20230601; t=1708499586; x=1709104386;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1jd6QMoE2ejlyiU6SG9p9X9CNmYrm38X2akkykt93dg=;
-        b=FCumL/e0gHTvCdeB0vRLqhU0SlgeFb72uaavwVFUm8XVnwQFpQVO/MDCOLhZexiBoO
-         DnR+eKt1bQBghXmEhmRMvKqp0U2pzHQRuP0rcD0pwKXWLiNROr+7VxRx0jrL1WW5KQy/
-         DddpCvtWwMTKsX4Oxj+ECClNLAW8FMDp+uzzfhMOzY/Iak3x2gFffc2837hWlgcQfpiV
-         P5gv1B9qyOLFJsaj97XDEFQKOJ6xUjxi5t+NgcFMv0FR/Rlm/c/KSsJjVVNyKoF7alSK
-         UCIeWvrQ8MempXjGDECFz4crQ1fiu6PdqMZy2kKXOrsYoVEbkDsXz5HjUg4YIKDRbOSz
-         jUyw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6CmIrogE8Zh+uqS66rpKM/z+AmLQygZ/p5jJTfrzTmnr6xf00JKgI9/LVl1gXXEfwhxH0IN1hx0mM5uJARvW6RUjhfL1/0NhYb2So7+iCNKl9jSpUWozmuq+KF5ZrNNm3fQNZSsI5IKgtMWZ3hWzPSVV7qKRI96NNdhd8cMDfK+8UWi8=
-X-Gm-Message-State: AOJu0YzrZ500zKEr+QRi2da2vNey2tDnQeaKCCd0cFsVDALgiFeu9S36
-	kEAqdHOdAkfVxofgGkqmaJ+H3aug+fpZ2Zdyunhy2lI/P/gm03eP
-X-Google-Smtp-Source: AGHT+IEdq9MC0zgE7wqEf/VS52ohHkOx4ge1L7oe+1hYC8s/S2/omVx3tnQ/BdcSwepvqOW0PZjRAA==
-X-Received: by 2002:a17:906:80d7:b0:a3f:5576:d7b9 with SMTP id a23-20020a17090680d700b00a3f5576d7b9mr10387ejx.5.1708498714028;
-        Tue, 20 Feb 2024 22:58:34 -0800 (PST)
+        bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
+        b=ioGOhZYgKYI3m9d0p9mf9Vhi9TUvN4cYd8QN5/AJvcxMyxp/o6KR8ScLY+OxX0BCGa
+         tiNRJ44kxcf7e+v3Pg3iT41TCUr9IKdfZhjg0EfZkPnBSfwb8JKzLTbOKMahlA/hT0cM
+         noaiilxLOHxyzarD7MuQVEPMFOuWamk5mNVw4Sf5IaP3HalhJwTu/NvH75UiYGcEueAK
+         ITtY9vXwHRbhm1sNZBAtmeI2mNOv/+KZrvZr7j9FRSNq+nUBFmkdS3IgjWOLcnWbfspn
+         xI42K1Ja+wXuGapVohoAIHPP/LZQ4hiQo2bRzxJftKZ5gxHAZgkWTX/QontgIylwDYjh
+         Q6nw==
+X-Forwarded-Encrypted: i=1; AJvYcCVc4kolil0NMtNJ3SJmVXCJ2niJFnIGbYm9Q1J9bym/q0SfZzH+Y+dIdaYKuekXlPZxhobAaPQB3r9nWH6/nJW7ZBTvXRU5QmK8oXR+c+LCy1YFLxOuxy378iJzYtJFzvPwaOfCaznfdAssk9NX4qeipeW3LzjdHhVk2LnqnOpZgpucC9c=
+X-Gm-Message-State: AOJu0YwTmJVgvUxU013iqBQqgO5Mh66fUxow1NtGpAxrzRgKAGEBO/85
+	9IXzdHYUY1ErwwD3oNzd+3/aoBolYSLCfJlEWrmywMhb9ckMl3dfaDFlv7Iv+7BibQ==
+X-Google-Smtp-Source: AGHT+IHih9H/kOAHi1jgRty14z6Wg6Wf6dyGnRbDr1Qq7YpRnBeCqaZTGERYL55l3oahk5qu3N+Cug==
+X-Received: by 2002:a17:906:7c4a:b0:a3e:72ca:700d with SMTP id g10-20020a1709067c4a00b00a3e72ca700dmr7765191ejp.45.1708499585861;
+        Tue, 20 Feb 2024 23:13:05 -0800 (PST)
 Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id pk27-20020a170906d7bb00b00a3ee20b00d0sm1672835ejb.4.2024.02.20.22.58.33
+        by smtp.gmail.com with ESMTPSA id rs6-20020a170907890600b00a3e1b4575dfsm4337061ejc.2.2024.02.20.23.13.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 22:58:33 -0800 (PST)
-Message-ID: <96b3f77d6ed4a03030743b93bce144523accd585.camel@gmail.com>
+        Tue, 20 Feb 2024 23:13:05 -0800 (PST)
+Message-ID: <17baf0c5e1ce19a1bc930fd439c27d9ef8cbe6a1.camel@gmail.com>
 Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
  destroying the changeset
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
@@ -80,7 +80,7 @@ Cc: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Greg
  <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
  linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Android Kernel Team <kernel-team@android.com>
-Date: Wed, 21 Feb 2024 07:58:33 +0100
+Date: Wed, 21 Feb 2024 08:13:05 +0100
 In-Reply-To: <CAGETcx_kjmZypvhjGED5V3C4E=NzffD2=8cn5Hh-tEHTMVKsiQ@mail.gmail.com>
 References: 
 	<20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
@@ -210,26 +210,24 @@ hout an
 >=20
 > Thanks for nudging me about this issue.
 >=20
-
-Hi Saravana,
-
 > I replied to a similar patch series that Herve sent out last year.
 > Chose to reply to that because it had fewer issues to fix and Herve
 > sent it out a while ago.
 
-I think it's fixing the same issues but as he sent first, fair enough :)
+Ehehe, FWIW, I did sent it out before I believe:
 
-> https://lore.kernel.org/all/20231130174126.688486-1-herve.codina@bootlin.=
-com/
->=20
-> Can you please chime in there?
->=20
+https://lore.kernel.org/lkml/20231127-fix-device-links-overlays-v1-1-d7438f=
+56d025@analog.com/
 
-Already did... Please look at my first patch. It already has an ack from Ra=
-fael and I
-think it's fairly close with what you want (it might need some naming impro=
-vements
-though).
+I just got no attention and it took some time until I got some feedback (I =
+also
+pushed for it with resends). If you follow the links in the cover, you'll s=
+ee I first
+started (and spotted the issue) the effort in May last year.
+
+That said, I'm more than fine with whatever series is taken. I just care ab=
+out the
+problem being solved :)
 
 - Nuno S=C3=A1
 
