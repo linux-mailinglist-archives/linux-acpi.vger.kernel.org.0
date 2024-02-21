@@ -1,111 +1,85 @@
-Return-Path: <linux-acpi+bounces-3789-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3790-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DBB85E4E5
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 18:48:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9721385E69B
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 19:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF88C2854C5
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 17:48:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25BA1C245EA
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 18:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8443784038;
-	Wed, 21 Feb 2024 17:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7947185953;
+	Wed, 21 Feb 2024 18:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CtZz9kYd"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KCwsESLM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2081.outbound.protection.outlook.com [40.107.243.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0487BB00;
-	Wed, 21 Feb 2024 17:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F8285941;
+	Wed, 21 Feb 2024 18:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708537729; cv=fail; b=N1blzb5rKSuS/hsHZ4RoVe8pO0RU749Bj72eZ2g2DtV/Ifst3pA7GN1aDLPq4lTF+VAbxEI8qd3ZHwMrkGTXvyIRrLAJHR/6dJvD9rs0JXQJd3PXVWmOXjGObmWSRQufwFe4aF4ZJrtgjl53xl11mGps4/Zr4WrwRX1dZ1HnRyw=
+	t=1708541275; cv=fail; b=acIyn1VR/gtg9MB+uce+kWMJs1vzbaCJ/G38gBTgItcRPsgOnLKkjnQ2DrBvsNEWaGEVX4rQ9rMzbehQjmbKNrkmxm2x4UKXmtCzckH2oyTNTG5lgme5n6gmrnm5qA9qktoN7M+9VJaMCO7hG0oa10LShfvADROb1thTECk4c8w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708537729; c=relaxed/simple;
-	bh=RKAuc2HJwUdDDIStcANHGJ+CzmevSAAfkwzijlL8Mrg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TYaKO07eyNcuXXdFLFoJqoGeKMPJ6jcyr/57a9iTFyGA64D7ay+rmbSEtJQ0ccAPdgVA4+QHG8O+nOnZKjFhqaYuslLRSTxJ0y4iVEC2KBYmoJc8prVbNPIO5owT+mrvurBug9Yh/JfSPVlebf94LmsATpBEOESRbJNS7neonHU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CtZz9kYd; arc=fail smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708537727; x=1740073727;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=RKAuc2HJwUdDDIStcANHGJ+CzmevSAAfkwzijlL8Mrg=;
-  b=CtZz9kYdHAuU5aH37olorlfU3RP2/r0xUKGiERA7A5KhB4/S2SU9iV2l
-   CYmNsBdUVRmuCLz1/90ykbq30TxxpWXkjXBLXT3+UWoviTFYgIbWJBSQA
-   Zm+cNYKstHTM++pyFeTMaLS9sV3/U/GXKUyTR/ilYEArUg88XQbWmgGCN
-   +2173jwtspU66wrDejp+LYP6W4aqh8PrqcuxO4HrzElpPiq0wYoljP7BL
-   xuZy1l/lSvITW1hxaO/wjByAU5dKlZ9jlLGMQS5nR/JMC/S77Mync2I2U
-   WaqAuEKiYTYtH9lbZhlFbFTRruNN2qtyXciOE1pMSU6ECcbqHDUqeFgyE
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="14137898"
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="14137898"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 09:48:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
-   d="scan'208";a="9770744"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Feb 2024 09:48:47 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 21 Feb 2024 09:48:46 -0800
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 21 Feb 2024 09:48:46 -0800
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 21 Feb 2024 09:48:45 -0800
+	s=arc-20240116; t=1708541275; c=relaxed/simple;
+	bh=o8lUqljxvZGhcfuZR1IQtTPGVPCCkzNuxYwVKEzDbwg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=dcSGOpbILpBTKrqlCrvCE8dX+ME2lVbCb4LgdiWe1q4cSp9jcIKcRHerB83z1ykbzOYW20UnvAsEcTMWxc/MMmh3HqIeIKkMknuaziXMLfnktqVm6mVsgCvqisyEu6N29WnsS/vVMxNj8F6htOHGruEFGyv3JVz4qgpUQ+uf1Gs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KCwsESLM; arc=fail smtp.client-ip=40.107.243.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BVoqNvad/AVKwmieXPsLtZ9sUd5Ay7Wbn3DFwp7addUOxsNOVUb75SjmyFDbla5cT6IIteoojw6OZkjrW0IGjljWplNF/kF4MFdSo6YNANAzFRmmiipJY6dPiq+e6+Vn66uVI5IzH/SPBl9iQfafG2i7nZuJP1XBwWOM4EU7L9bqGXriU0BbJjJyozSq9ELay8eZIFKENxp9dI9egCtWkfNmE85G7QBHhcN8WP1fshs8roNal6jWi6OILcftaroKTZ+BNX48WPTa0U6FKa9/xGR+RuTuV/BQDjSJklGVrQF3y5DyfopmRWL24sUCMyfSByQUNIRUazkTzLL/i08QJw==
+ b=OIome5t086D74QabXfRmiBxE88XCx9p3Bj/F4TfV1uG+QtHC5tEPviGqidwpY2el8MMKuY2XWXOUt5060TBnd5B23e6TXudKNQbHb06Bl+0/nwdedfZV0zycnd7PJZ2qkwODFslvBC7fOsF3S6W33OtSJ5aP5q4fWcTQoQyts+uhUWji5YN0CTBiNeKEYjw0JZekbKhaIL8hV5Iy0dYGq2sepDwIQEFhKCGQiri+Te0xWPqVWagDaWf5rs5jHoRhmiTwOeUBc7JpZCjc/XHPNO2C73DyhGl+km4ESuVR3ShhpKdjLOJkbOia5o/LN91Kuh33bENl5YYlFfz9lxOlyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J8Wk4wuODdlEjIxEWDJO6VZxam+S4LEtpvDLw9TmAOw=;
- b=TxMCLQ82ufzoVP/ZzhUQ9ZXzUzAgYyUc9vbsY6otgOIOpiTP8WzWAKRTVWQuqISNNBdRsA0kZ3v+HrlK4WhyshQFePPSTIbo2mhlJxt2qH2Wi2cL8ouDwB4f1E6bI19M/aAIqW3HRg5Z0qwIzF9pivn+NxyDOlsz5kmTjeQuyUdZVghsX+IdjNwxDDY2eM2aKimaPy7TjWgGhfZoYeJhgxlJPGweMvYSy0fKnXTbCjhPC2HWOwQXPsdiUqDhKVcdn0nUGJUigPixIH4RW1vvOaQpO+tJ8FW6/EpxE32siwum3mAJh0ySKlUTCheV5gU9rIxMch2lhxP5XZ75WeOECQ==
+ bh=GLT0psKsGJ3r1dy1PAHy5a9WiB2IbS4PK7XcBN+8UqA=;
+ b=CE1nNXeJv4FEjsiAvwZKArJSpVpkPhfrTa+NcNldUzGequZ8YwsZBu70spotwKbBzf18DqxcliyDCUrh+9/qDxpFGxQRysg5l7s0o+IqCMd0rCa9vADvzEDS+ITEgE0jLaX54zubdqaXM5B/sUbI4BbWCVhXGjRhLUy3xpN7k5zZM5GO7HvRmv/K6Eiqh6qAQEjjxFMbCwl22QQCoNGjlN98WMt21HDZ3LuohxsLIJYNskCdfApoPXhLhwYJIjdgUvpZnSBpu5xEX4UYfFN/a5cxusdjb4RrCyfT733udSTW/0/Efil4o0jpMEQpU7747IUpxRLdupe/L8B0kWxeWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GLT0psKsGJ3r1dy1PAHy5a9WiB2IbS4PK7XcBN+8UqA=;
+ b=KCwsESLMHwpwVQCg+6GF6vOkK1ThSq2/5VMS99ThvsJwnKXndPiCwU/ZgsCp1mbvooi98hkvJTTHjVkNm2VaFAApw9jxo+tiefIMW3PAq7adGiDAFRSdTF+/Du9rBiNSNmChQXlWuxK1Wg7B7qL8NX8lAmy4n15V1wy9lrormDE=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by IA1PR11MB7942.namprd11.prod.outlook.com (2603:10b6:208:3fa::21) with
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
+ by SA0PR12MB4413.namprd12.prod.outlook.com (2603:10b6:806:9e::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.38; Wed, 21 Feb
- 2024 17:48:43 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::da43:97f6:814c:4dc]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::da43:97f6:814c:4dc%7]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
- 17:48:42 +0000
-Date: Wed, 21 Feb 2024 09:48:39 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>, <dan.j.williams@intel.com>,
-	<jonathan.cameron@huawei.com>, <rafael@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>
-CC: <dave@stogolabs.net>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <benjamin.cheatham@amd.com>
-Subject: RE: [PATCH v13 3/4] cxl/core: Add CXL EINJ debugfs files
-Message-ID: <65d6377778823_5e9bf294b4@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20240220221146.399209-1-Benjamin.Cheatham@amd.com>
- <20240220221146.399209-4-Benjamin.Cheatham@amd.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240220221146.399209-4-Benjamin.Cheatham@amd.com>
-X-ClientProxiedBy: MW4P222CA0007.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::12) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.21; Wed, 21 Feb
+ 2024 18:47:46 +0000
+Received: from MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dd00:9ab5:4d11:2d1a]) by MN0PR12MB6101.namprd12.prod.outlook.com
+ ([fe80::dd00:9ab5:4d11:2d1a%7]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
+ 18:47:46 +0000
+Message-ID: <a92eb6e2-1636-4f80-8db9-23bbcf885337@amd.com>
+Date: Wed, 21 Feb 2024 12:47:43 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [PATCH] amd_pstate: fix erroneous highest_perf value on
+ some CPUs
+Content-Language: en-US
+To: Lucas Lee Jing Yi <lucasleeeeeeeee@gmail.com>, oleksandr@natalenko.name
+Cc: Perry.Yuan@amd.com, Xiaojian.Du@amd.com, alexander.deucher@amd.com,
+ bp@alien8.de, deepak.sharma@amd.com, li.meng@amd.com,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-pm@vger.kernel.org,
+ nathan.fontenot@amd.com, rafael.j.wysocki@intel.com, rafael@kernel.org,
+ ray.huang@amd.com, shimmer.huang@amd.com, skhan@linuxfoundation.org,
+ viresh.kumar@linaro.org, x86@kernel.org
+References: <3868832.mvXUDI8C0e@natalenko.name>
+ <20240221172404.99765-1-lucasleeeeeeeee@gmail.com>
+ <20240221172404.99765-2-lucasleeeeeeeee@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20240221172404.99765-2-lucasleeeeeeeee@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN7P222CA0024.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:124::20) To MN0PR12MB6101.namprd12.prod.outlook.com
+ (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -113,124 +87,144 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA1PR11MB7942:EE_
-X-MS-Office365-Filtering-Correlation-Id: a56e4c3c-e63d-4b60-0ec2-08dc330557d8
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA0PR12MB4413:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b9554d8-2e79-45ba-b4d3-08dc330d983c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WzFG3B3ktd+ynKBghu9meB1/PW2TPdvoZOAoeP8tEhfF1nrtMgjUZIuMDX09lU3dueczx/jnmZuWPTNPGRdMDDIk5Zdpn1wN+XUJsA0zk7jlzbBhnFw3Pdsm1pLZOugvOPh+LmyAp63TjSGxWTEPb/6qIsigTROe11zUxeTLUHiswO6gyyLWU1l/pzuUW3+Y/P1aCxEoF1YVpmnMHKZCvOWBe0NrTam7bnd4pQ2whhEVt4GINllX49qiYIoitlILEvt2qAWiUoqobLMooigunlWfYkXWpHOWaNiuWH390dhKfaU5Eb1h5vO0Vk5I4yepVoJci6MNwtUP7LYQYXDsVRmJMRhVHk/WfYKYZfL6U3fAIKZBrgwU0nxMwtWnsssPmKzeJJFdp6qzHKSuwaZwypoqEQmKyDF20qBWtZN/5apvpVU4FVoO7yaPAlr2Y5TY9GNgWSNaru+3Jm9pJRBC7xfceXGd4owvcNOGFC8VPwuuaZIteWaCTgH5N1OAHbbsAVV0ClLKTyy+HFCZ62U33kkjCdPlfMI7uxLIINgZ88E=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info:
+	LzSxSKX+xE/p/Qv42uQY7KDCUXLC0S8uLxka4gRioT9+SquqgTCAs1bHHs3QIBqnjJDBDzyo5H+Q2ZtXsPQHk9UeSid+B5Jibg9VjPwXKKG4e/aztW7XA3Jb3tcDgFeOwdGuZVWq+DyzpDjPG8LHICNNrXYb15yFkS05GBxPyLuLO9oy9TF7EQxjNZusVmwpyhHmrgkjOeh0B/7SaI1KYDMFDD0qxHFBiBi9gwEPSIzJzVDcG2SeuI3QKSIQjIr3j3pt3LKqLk1j3b6VHiDMUySkva+eA8pCBjiAwH/fbuIbJBY6bdyGIq0D+7VfXu7/0j5FjQbsoqrcfOE9mj0upYfm1RN15wNuMi7V62FLPFcHvIUIXf0+9votmyll04PTB+5jni0NN9kD/hjjVN6H4HuMHREHbk+5rE/WzP/qB4SG+Nw5z7lVdFau31Us3nrOwxaDcRYyZrrh1WxkSvzNFkwAs4tRKGJuETMHjy86Yce3n66uuqoBz5q8E10p/DP7SmMsQ6p7IIRRXBpj+cF9Qw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QCxGPLhdRHWUrD3gM8uKHsWbCm3QZPeO0WzUFLoVYJkFsb4B9PnS4NB9U28I?=
- =?us-ascii?Q?XOutbJ21Uh9nMVxy5lYCUfsyNEl8mr8tHtkfFgLeoLIFyqDCduvJuKPsUIaM?=
- =?us-ascii?Q?u1Q+FJJOAkAirkRLq+gCPHOR5cDSO6/Cl92/wd3lcvZih4pXttrjy5ai/cRj?=
- =?us-ascii?Q?PurOmeWRlrxOGbwsv/Dvdjs/H26EZh0ARnCVZTplm0aN+sn6gsOSc2jKgt9p?=
- =?us-ascii?Q?iBN+VfbWNMbRe/hCcoegPTXcZafnLpQoFUTAKbUCYU1ns63ozBSaVl0Ojo0U?=
- =?us-ascii?Q?NbtkDnkm2ClpCgFD6FuKjCA6ThmbvDc3MCzP5fcynmm4c6SUDFdcbiZ06zca?=
- =?us-ascii?Q?fQi4v3xBgZW8AvITbkuBRqNKADqg+pxS020SDs+PI1ksYWT0Ou7zCx77kcv5?=
- =?us-ascii?Q?cXQAIzPQcDrKXc3y6pz7IMUeF8XFngt++dw2vPYPlu0Zig6mtGQeJ7ydnESE?=
- =?us-ascii?Q?Mh7J8ULgZWw05WphmS1M018Vs+38v0S1r6oS18/esDa3X+qAov0tyMydovOX?=
- =?us-ascii?Q?W9uUg5f4zM4RR0p5Y8WJrU+X8OPgDABg/Ln0gjbPe8AcUVYzWqIJLvZof0y4?=
- =?us-ascii?Q?SDPyypR0aXCx2YGxEgubfKPuaMkaD1Y5OUbY2tEuPx+ICeVar3TFgieE2jX0?=
- =?us-ascii?Q?2WfZ/0xNkREMCoQfpgw95BA1itlu44yxJbIkHZsCxxFx5IPNi034df2tOkDd?=
- =?us-ascii?Q?YcTbe3MH8uXM01SRV7aWS8vwkYf9DLqtnmYP5JJgTJWOYQ5lX5xTb1GVNK3n?=
- =?us-ascii?Q?fWfIjvY+nCjY4LI5hmYUDRlPXddpI2azf8jzUi2z+cpJlD+m2Up2HSW5GlJ9?=
- =?us-ascii?Q?ywlwqlpS7szeB8KeId3qO37JHVN4rtCQXF6bxLrLnNI2L8AE9BPXne8pDG+7?=
- =?us-ascii?Q?nKa/eoZAqDdLm7r/GvwnHdLofPqKzVlGxGNz+l8tDOLRdqxO1eRngNNZFbhv?=
- =?us-ascii?Q?O3OolAvj+QpSIHBUiDQA4EUB6DJvQa/6hLCPTKvYvRn5FGIKihZMuY0/GVB3?=
- =?us-ascii?Q?/3bPo5J6fI+UDhmC9D9QOgYqH6YX0kM6Ws+KsqKF9FDZawkO7JKyu6ZRPSZy?=
- =?us-ascii?Q?VXxE5uyefS1aGntKhrCIgcGqkvVKRMUNSSlZDbEDZ/BwL9wCGe+xhspUeIU4?=
- =?us-ascii?Q?MB3FCnMLC4wYbAK1cGkSuClqzmVxqRV7GR4/mrNK/F7xpEopkBjNu8KqEATK?=
- =?us-ascii?Q?34nMkWGc8eJC+1Wsp/Ev4L3ekYvfeycyrNL3Jo58Cy8PYNyVRIICKFjdyUWx?=
- =?us-ascii?Q?Q5J10A+KdWZ6WLSfu0L44gG1Z9G2SnmxxeY95ity3lkZZbrV8oOeTOjKSZj1?=
- =?us-ascii?Q?q/I+Re4i8XytfdxcqD+pnGF7mQExXzBH5lpl+Wb3qfF72AdbNtKy+ZBvw0MF?=
- =?us-ascii?Q?BKaL4p5WKuVJtzg+qAx6MtnMs9tXi3uXF0+/8aArAIxbTFr7iseKT5YoGC0Q?=
- =?us-ascii?Q?7mrWhsTn/qygd2pbSNbxZZ+D3lEqwCh9EIINnBNU/OTRxBCugF95cjPHP3ou?=
- =?us-ascii?Q?DsKUwNGOBuk9KYyBgON48BdRKjmfFVIxalTr2VqEu32GyjTEJX5KblkrzYxe?=
- =?us-ascii?Q?hl2WT9A3G2653c7ofQagxpqIkugBSGiowv4JaGD8U6a52Bi3VVGMqq/rCIMY?=
- =?us-ascii?Q?vA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a56e4c3c-e63d-4b60-0ec2-08dc330557d8
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWdaRGFHdWZyWlZIUWdWUCtHajNVSTdkbFY4S2llRTR0YnZPWHFCR0lLQ2Vt?=
+ =?utf-8?B?UXNtdTl0cG5qQlVLdmpkRWp6RUxLcVViazJhWFh4WXF3SDJUaFZZUklOcDJn?=
+ =?utf-8?B?OTJ0S3h6TlJJYmFnTHNsazBCTlV2SE1uWVk2TVZ4OGJVQkV2dFVHeTdPY0c5?=
+ =?utf-8?B?UkxWc3N4MUl3dlFXTkhsd1FLT1haakpRNXVmRitZOE8xRFQ2czRTVGV3Ymo5?=
+ =?utf-8?B?RkhhZzJSb1N3MGlRVU5XZThoVHYyRXJoNWhMcEFmNEN1U2xhTnEvQnI2YlNB?=
+ =?utf-8?B?MWczTUkyR0g1Q1gvV01RRi9YUzBvS2FaUjhXZS9vVEV6bDV4dTYyWVBjYW5C?=
+ =?utf-8?B?NEpMQm10ak5PWmNpQ3pQOGZHTmw3NjdyZFdsQjRYVnJ6MG9jODlOT1c5dkNX?=
+ =?utf-8?B?WEtNeGt6RTVNVGdUL2RzWnVwcEcrNDlqV2llTjRDS0l5MXZLQnU3cTN2aXlq?=
+ =?utf-8?B?ZUpqMllTOEN0WXdPM0dIajE1MGZDaFZWOGhKT1F6N0tFQVgzalNjLzRwQUly?=
+ =?utf-8?B?aTN6L3haQUZyRmd0M2FyOHJteDBFWjhSZHdhMDBXL2xZeDRkUlZ6TkUzcmF2?=
+ =?utf-8?B?c0xTdHViU0hFbkJYaTJZcnV6WDhUUEdSVHFINkZXVjQwMUdMQUhteTNMUnRu?=
+ =?utf-8?B?cUxCcWpzMGZibEdBSG13VmtRSlc1dkJ6cnc2QitrcUlld01FK3J4N0EvclNo?=
+ =?utf-8?B?eS85WWNVdWJSbXhzZks5STJFdG45RFJZRmRPSDRvVTRnZE5qNVV5eTN1MUVY?=
+ =?utf-8?B?RDh5QXZqaWRSNlBhTm1CSmVIczRmRm9FMzJCQTJucW9tdnBxaDViYmxCcVNx?=
+ =?utf-8?B?Y2NDeUlYVUEzUWlScGdLZTVCKzZQZ1hWNEtFT1Y3OEZIM0xnYm4xS1ViMVRy?=
+ =?utf-8?B?NEV0YzJCWVZOV0RQOUZrVnFjTVhDVFpmZ0hiOGVqbDdRQ25PTzROZ05wYXUy?=
+ =?utf-8?B?K0hHMzI0SlVKZUlMbEMvRGh6VnF5SjRDVTY5bllEWmk4QlcwVU41ZFg3NmdZ?=
+ =?utf-8?B?clZEWWYrdmlVUG0yOFRuOTJxNldvV2pHd1I4STdzandsMlQzd05sUloxWEVE?=
+ =?utf-8?B?VGpNR1RQTGpXZVBNQTEyNllWNHFiNi8rdHJNNmlla1dOZ2NONnUya2s3cGNR?=
+ =?utf-8?B?aHc1Q1dVTUtNQ2pUTGx1NDJwUEdUaHdWUjVyeit5QkdPWmRnd01MWXJUWTBO?=
+ =?utf-8?B?U1dqN1FINmVjOUdETW5tUWxlN21xRG1QNHJscmowa25GRXFsZFhaTFFlUUsy?=
+ =?utf-8?B?dll5SmY4TnovbFhybkZYYkc2MnBCMSswYkNnVXV5cEVUNVl3S0oyQzJCc0xD?=
+ =?utf-8?B?MEYrdHlIaXErTGJDMWRWSFZFTnhFaXNzUTVSTCt0ZC9UNFYwOXdWcXhjdVFW?=
+ =?utf-8?B?TVNvODZNcklrSTdjWXJycmpVaUh6bmoxSWMzMGN3KzJRYjM0d3pTQlUwN2Zy?=
+ =?utf-8?B?dlc4RVhMVmZkNlpabGFVbXF1bnBGd1IxUmR2YkNFOThWV1hxZEtTOWl3cCtu?=
+ =?utf-8?B?Ky9lUnJQcDRWZ3Q3VzJPZlh4bnpNYzVCb1JRcUNZZkNYVU1oTGVhQzNyZDJn?=
+ =?utf-8?B?dTU1T0VLQ2lkQkJvaENEeDFhd1ZkRFc1MGtibzNYMHNTb096UVNraEwxWG9h?=
+ =?utf-8?B?c1ZHanNRRURRVGE4bm0ydEZ3VkZaTlhJWXU2Qkc3S2g5Qi9BQVhBQlB6UDNw?=
+ =?utf-8?B?eEpkSGlVVTlMK2JNYS9LL255cFgxUnd1cVZxZWRiamtGd0FLTmdIVS93Wklp?=
+ =?utf-8?B?QmhqaW00bFVkS3BCT3RQU0RrNFBpenBkVU1sUFlQUDR1UkYvendPRHg1em9r?=
+ =?utf-8?B?Q2lnNVFVaXdXL0ZBdys1MTFvN3V1SDNXUElWdmZHdDFBK2pFRnZVOTFKdUU4?=
+ =?utf-8?B?MHJBa1RyNzA0WWxLbWJXbFhqZzBIbkFpMzZmY2dEOXdMcE9pR3BKZVVFa2Zx?=
+ =?utf-8?B?OWtiTmZGeDhrQkFRRllvcG1Ua3VYQVNiOFBwbmI4OHFZTjd4Y09CK3VmRzJV?=
+ =?utf-8?B?cVV2bUwyb0VXSWQrQ0svN0x5bndCSnhadFgweDZRNjlza1lxRE5EajlOUXda?=
+ =?utf-8?B?TFZkRFpTdkxJQ09XcUQvOUZuMXc0K0MrS0IwV295MklPelVlRm5jdHBmZDdh?=
+ =?utf-8?Q?glOd7upklYOl5IUQbrHDHcg5h?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b9554d8-2e79-45ba-b4d3-08dc330d983c
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 17:48:42.3316
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 18:47:46.3412
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YpfsM4DLoZ395VOWJKtHvV98HuDQpBHFdHW0gowx7a2rkOSzvdBcs5eiwkCjWAzUo7Dar+RB7XFCrDKOHHbQuXZrkOsLApF3aJT0reHpwrE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7942
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: cKnymOQsyxr5lg3AfUbGGYZ7uCSkGQOjPwRZLjO1N+JhihQmM4pfGYYh9+U2D2D+f6pb3qdEngYPbd/A7tO9sw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4413
 
-Ben Cheatham wrote:
-> Export CXL helper functions in the einj_cxl module for getting/injecting
-> available CXL protocol error types to sysfs under kernel/debug/cxl.
+On 2/21/2024 11:19, Lucas Lee Jing Yi wrote:
+> On a Ryzen 7840HS the highest_perf value is 196, not 166 as AMD assumed.
+> This leads to the advertised max clock speed to only be 4.35ghz
+> instead of 5.14ghz leading to a large degradation in performance.
 > 
-> The kernel/debug/cxl/einj_types file will print the available CXL
-> protocol errors in the same format as the available_error_types
-> file provided by the einj_cxl module. The
-> kernel/debug/cxl/$dport_dev/einj_inject is functionally the same as the
-> error_type and error_inject files provided by the EINJ module, i.e.:
-> writing an error type into $dport_dev/einj_inject will inject said error
-> type into the CXL dport represented by $dport_dev.
+> Fix the broken assumption and revert back to the old logic for
+> getting highest_perf.
 > 
-> Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
+> TEST:
+> Geekbench 6 Before Patch:
+> Single Core:	2325 (-22%)!
+> Multi Core:	11335 (-10%)
+> 
+> Geekbench 6 AFTER Patch:
+> Single Core:	2635
+> Multi Core:	12487
+> 
+
+Yes; the max boost for your system should be 5.1GHz according to the 
+specification [1].
+
+Would you please open a kernel Bugzilla and attach an acpidump and dmesg 
+for your system?  I believe we need to better understand your system's 
+situation before deciding on how to correctly approach it.
+
+[1] https://www.amd.com/en/product/13041
+
+> Signed-off-by: Lucas Lee Jing Yi <lucasleeeeeeeee@gmail.com>
 > ---
->  Documentation/ABI/testing/debugfs-cxl | 30 ++++++++++++++++++++
->  drivers/cxl/Kconfig                   |  1 +
->  drivers/cxl/core/port.c               | 41 +++++++++++++++++++++++++++
->  3 files changed, 72 insertions(+)
+>   drivers/cpufreq/amd-pstate.c | 22 ++++++++++------------
+>   1 file changed, 10 insertions(+), 12 deletions(-)
 > 
-> diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
-> index fe61d372e3fa..4c0f62f881ca 100644
-> --- a/Documentation/ABI/testing/debugfs-cxl
-> +++ b/Documentation/ABI/testing/debugfs-cxl
-> @@ -33,3 +33,33 @@ Description:
->  		device cannot clear poison from the address, -ENXIO is returned.
->  		The clear_poison attribute is only visible for devices
->  		supporting the capability.
+> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+> index 08e112444c27..54df68773620 100644
+> --- a/drivers/cpufreq/amd-pstate.c
+> +++ b/drivers/cpufreq/amd-pstate.c
+> @@ -50,7 +50,6 @@
+>   
+>   #define AMD_PSTATE_TRANSITION_LATENCY	20000
+>   #define AMD_PSTATE_TRANSITION_DELAY	1000
+> -#define AMD_PSTATE_PREFCORE_THRESHOLD	166
+>   
+>   /*
+>    * TODO: We need more time to fine tune processors with shared memory solution
+> @@ -299,15 +298,12 @@ static int pstate_init_perf(struct amd_cpudata *cpudata)
+>   				     &cap1);
+>   	if (ret)
+>   		return ret;
+> -
+> -	/* For platforms that do not support the preferred core feature, the
+> -	 * highest_pef may be configured with 166 or 255, to avoid max frequency
+> -	 * calculated wrongly. we take the AMD_CPPC_HIGHEST_PERF(cap1) value as
+> -	 * the default max perf.
 > +
-> +What:		/sys/kernel/debug/cxl/einj_types
-> +Date:		January, 2024
-> +KernelVersion:	v6.9
-> +Contact:	linux-cxl@vger.kernel.org
-> +Description:
-> +		(RO) Prints the CXL protocol error types made available by
-> +		the platform in the format "0x<error number>	<error type>".
-> +		The possible error types are (as of ACPI v6.5):
-> +			0x1000	CXL.cache Protocol Correctable
-> +			0x2000	CXL.cache Protocol Uncorrectable non-fatal
-> +			0x4000	CXL.cache Protocol Uncorrectable fatal
-> +			0x8000	CXL.mem Protocol Correctable
-> +			0x10000	CXL.mem Protocol Uncorrectable non-fatal
-> +			0x20000	CXL.mem Protocol Uncorrectable fatal
-> +
-> +		The <error number> can be written to einj_inject to inject
-> +		<error type> into a chosen dport.
-> +
-> +What:		/sys/kernel/debug/cxl/$dport_dev/einj_inject
-> +Date:		January, 2024
-> +KernelVersion:	v6.9
-> +Contact:	linux-cxl@vger.kernel.org
-> +Description:
-> +		(WO) Writing an integer to this file injects the corresponding
-> +		CXL protocol error into $dport_dev ($dport_dev will be a device
-> +		name from /sys/bus/pci/devices). The integer to type mapping for
-> +		injection can be found by reading from einj_types. If the dport
-> +		was enumerated in RCH mode, a CXL 1.1 error is injected, otherwise
-> +		a CXL 2.0 error is injected.
-> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> index 67998dbd1d46..c86ae4c65c03 100644
-> --- a/drivers/cxl/Kconfig
-> +++ b/drivers/cxl/Kconfig
-> @@ -2,6 +2,7 @@
->  menuconfig CXL_BUS
->  	tristate "CXL (Compute Express Link) Devices Support"
->  	depends on PCI
-> +	depends on ACPI_APEI_EINJ_CXL || !ACPI_APEI_EINJ_CXL
+> +	/* Some CPUs have different highest_perf from others, it is safer
+> +	 * to read it than to assume some erroneous value, leading to performance issues.
+>   	 */
+> -	if (cpudata->hw_prefcore)
+> -		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
+> -	else
+> +	highest_perf = amd_get_highest_perf();
+> +	if (highest_perf > AMD_CPPC_HIGHEST_PERF(cap1))
+>   		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
+>   
+>   	WRITE_ONCE(cpudata->highest_perf, highest_perf);
+> @@ -329,9 +325,11 @@ static int cppc_init_perf(struct amd_cpudata *cpudata)
+>   	if (ret)
+>   		return ret;
+>   
+> -	if (cpudata->hw_prefcore)
+> -		highest_perf = AMD_PSTATE_PREFCORE_THRESHOLD;
+> -	else
+> +	/* Some CPUs have different highest_perf from others, it is safer
+> +	 * to read it than to assume some erroneous value, leading to performance issues.
+> +	 */
+> +	highest_perf = amd_get_highest_perf();
+> +	if (highest_perf > cppc_perf.highest_perf)
+>   		highest_perf = cppc_perf.highest_perf;
+>   
+>   	WRITE_ONCE(cpudata->highest_perf, highest_perf);
 
-This statement is always true "x || !x"
-
-I mentioned in the other patch that ACPI_APEI_EINJ_CXL needs to have a
-dependency on CXL_BUS.
 
