@@ -1,442 +1,194 @@
-Return-Path: <linux-acpi+bounces-3762-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3763-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CAE485CF3F
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 05:14:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D94285CF62
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 05:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9DB1F257E2
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 04:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E90A1C222F0
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 04:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D8A39ADB;
-	Wed, 21 Feb 2024 04:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7894039879;
+	Wed, 21 Feb 2024 04:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ltAGKq+e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7Q3wJpK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231E339854
-	for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 04:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708488857; cv=none; b=rdJrsbDKLgBcwOSjag6/uO+IlrEe/z3VrAnhFBCQjZiJszvEvaTKzonFrEgOwd/Q8qPKMb8gANhOYvrWDAWBOpB5jagF+JKLgNG6OiF0OmucesCcFtCQebuhQRUMG+8SvH0cbNU1UEp/AdOOhbBmH0jmTWtEkzl9zLZaPZ0lQA8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708488857; c=relaxed/simple;
-	bh=iv7CH99iRhguDQ1/YjXbTn4+yMkEyHgzrQwytHVXsmo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Et6WYWyo2g1WGR/PtntKnBYlsv9TTgjbejaaa1gHDZEe/ztTU8bc6qxvCIKDBOViuWOzgZUJa6UlCwxTyJCpmG+CKrASkBEbEzxQyyTsw59EkJIg3EwzcBf0X0rcXS06W3uITXGYGn7O8f4DjrBiFAoJ3/TB3kcjIH8+Cb5WAlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ltAGKq+e; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-564e4477b7cso4758a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 20 Feb 2024 20:14:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708488852; x=1709093652; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TCa6Ml6GRh+LdklHOgguZfEh9d/lY861XdAuUikozNs=;
-        b=ltAGKq+e1pRtwewINOGDXpaAx3jWSDpDE5UXqojnajW6k25F/HrfoY9CnF3HSEqOX9
-         O+z3CZJPoeDyeXw+uFppwgHZFJBYGsKRwLJSk4WRTPdcj0hcqF70oFozmzubx17gr6TI
-         W8rKFC8WgFyfDaX/5onkLVzmuyBc5lZMNO00Y37JwHA4ZOfylYBmeJWrgx1SwSLTM5Qd
-         BPecGoUf4oAWSnlA3woJQdutHgCLa3f832mP1564IXWV14VlsKpDH/xTrVqvf96kO8aa
-         2PvRJEm8FDyOfdZBz1N+l2EMUWmtfKLCO25XD2OVoH/Z6kdgj2obH1CyxKwoQnA087Lk
-         mjQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708488852; x=1709093652;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TCa6Ml6GRh+LdklHOgguZfEh9d/lY861XdAuUikozNs=;
-        b=PMlxf7vMmmOT/6uGAIJVlEIhj1VfwO4THUzEW+KyCaUr/zDmnZlKeCIwvPyBhi7scy
-         l8w6oHVynpvlzImUJdTnkkuR5rO6moMQ29JTwStFwY9jD4H+wSKLr8ixiNMHbZUqRmdQ
-         RuaBohdAZ67OdTkwI2Nn8qiSM0GK/3S3FOAzANqoXZjh07DQOqj19Np8/gjHmfEWKyBq
-         cHGydmdkOFZ2hFjT+CukDGJhmjCCVix/XFkSGVUrfOlSBok7jeZwNlut7RIkX591uzwi
-         fBKmfz+NCH/BxradJtd4loLD8N5ZRqkWWBDyxZpnJHTb9Eba5/WxmpiW7YtLpTSkrgvc
-         yifQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5wPhsuz0AiMrZN6Cm8O2SoN8waPD+U45bvt1EQSCi2YrE0pK1EamoZdLPq2evAf6R1y2OsM/NJq81bOErMZgss+su1QwmJwsgFw==
-X-Gm-Message-State: AOJu0Yx3IL75pjiTm7LRq1U2LbJP/TzGblfdSlsN7KvcPhVvDS3s3u7H
-	U2neZcUChUjF5fvuL1OtrMe+Jm9XE+2hYQLZi8ip71ZpmcqFGN4FJsjXAV9ZpW8vAY3bwffCzDb
-	f2IXp3+dRrUEl35c43DGs7AEBulj5mNeahjSW
-X-Google-Smtp-Source: AGHT+IEmhFJMlJUUEju8UhhM1aaUnzSKK+rUpO3avm0pyBj9JxssRH7+jbwr7oE7NQv7fjKcKV4K1nsC9iq3UoRUqVE=
-X-Received: by 2002:a50:c30f:0:b0:564:55e5:6ee1 with SMTP id
- a15-20020a50c30f000000b0056455e56ee1mr107058edb.2.1708488852242; Tue, 20 Feb
- 2024 20:14:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B6E28382;
+	Wed, 21 Feb 2024 04:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708491564; cv=fail; b=DVxx70t/z7micHgJ46FeJ9su74wDDSG95/3EgF1BuovwIxGIds9o/Ga40nAGuiIOlTxtnIha+5dqI7oTP95YdGDpAsjfOGMs3KBlYdWjjXsxK76hCQKtGjH9j2COPVKaQ1imY7s7+xmLY/MQlacK2+SWw+Fba+uIbcdR3MQUE/Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708491564; c=relaxed/simple;
+	bh=CxEH+EzbD83+vPOQ5mrRCgAmCc/o96re9kWsBntRHCo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pTxn+4RBRE+lNkZ//RADQHR/ol59/eWXiL3xNLoVvzGq647qHJMsfYLXJ3Egb+IEArjZrgJZUenr1kO8p8IYgTDqG54wthb0dNC/++MDsQBBHbvGG4Chv+uUiM1q7UwYL4kDAA9FWso34rMsRoSpCbJ27SvjFMUdB5hcj4JFe60=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m7Q3wJpK; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708491560; x=1740027560;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=CxEH+EzbD83+vPOQ5mrRCgAmCc/o96re9kWsBntRHCo=;
+  b=m7Q3wJpKj8Xc1weus/bULucBlygJPE3j5IHqehqvH3F2cMSxTrHXHfIR
+   yCkFcyjxzJYxNiXeWZ1MAMuKmDKVQZNWGsaLYEqAdCBwhXC/wSKfDQU5M
+   W28VuzxJdPch6wVb5JBxpGAug90w4CwYSQLFEwvhZHMfZMBWRcO+rFGbD
+   ZTuruSFRvzkkOYUU+hrSlaf3/kUh+q9FdR9wLoX7eXz2jOctSoDXMUjj0
+   6tcjrc8Ovq2QU+186a++1ujck2/Ng/Zli/15AGaUgzEqBBXgHP6yV72ow
+   svS8FmGAVeOo6Ji+QKvADM9n5luaSBxnVBXZ+Hv0Lwq4hzFUbLwEzo+8G
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="2496315"
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="2496315"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2024 20:59:19 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,174,1705392000"; 
+   d="scan'208";a="9664150"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Feb 2024 20:59:18 -0800
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 20 Feb 2024 20:59:18 -0800
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 20 Feb 2024 20:59:18 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 20 Feb 2024 20:59:17 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZvFh+JbHEQwvp67DtUttJHcWE6YzGVvr555erMNure7bXvvA14ehreUGVaTHmfEmPNBZIBM22FquIYUhCE7M2m/zwZAlyP4bHGprhzRou54mSlsTL7sNvrKcXKn1UiR6UT9k5OOv/jAxhQDVGRxQuq7fuV+T3tiElo5b3ix7Sn3xnYqmG+aOnZlwOIvyteLurHoTl0uSf3WkBZ4atFWH6SLE6Fn6pZnCwtAuyDSpPAvhmT3t5cBbuvvYfp9er3rGCYxNIVglx8BxiihgaSP7HrV8Fkof1mDAJLIlnd7lTNewKprl2tIVviGbMaBDRUxWR0ycdAGYTs6mz7Ztvd8gaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=USac7kJdwYWa8SHrTheGYA+JkbJ1TxdBvsm7ik/lwx0=;
+ b=W/K3+ffqzF2mml1G8NnzSrWyfXtbkaBU0Y0zgKC5Kl9Lf+Zl+ip5ve9Pjys4M/2eoHZ+R5OwuR+FINhgpDNkmqbdJoHbWbVgZMWOnpk3aHPd5pfLNMDKbyzHuU1WekfzBKtgWkVN7QaBqsYC3KpBgvm1BQ1a3WmkS1VZLhwI6UADJoXIeOVsZW0OG5h18dejLmp7X6SRPFGtKZf9DILleDu7Ma+PMCc3j/9F3xvpFU0P3cejBhTJEMYsmpVRAxrP0cRH5Goi/hDnpp58WO+Pl8MrWnfh7IyA/YqPQrkJZKtvNzxTvDpi5iY14NSPmMGPmSoSvnTniza0yFJ+Lj6Taw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by SA1PR11MB8541.namprd11.prod.outlook.com (2603:10b6:806:3a9::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Wed, 21 Feb
+ 2024 04:59:16 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::5c74:8206:b635:e10e]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::5c74:8206:b635:e10e%7]) with mapi id 15.20.7292.036; Wed, 21 Feb 2024
+ 04:59:16 +0000
+Date: Tue, 20 Feb 2024 20:59:12 -0800
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>,
+	"Ira Weiny" <ira.weiny@intel.com>
+Subject: RE: [PATCH v2] acpi/ghes: Prevent sleeping with spinlock held
+Message-ID: <65d5832090c5b_1ada2029473@iweiny-mobl.notmuch>
+References: <20240206-cxl-cper-smatch-v2-1-84ed07563c31@intel.com>
+ <65d111eb87115_6c745294ac@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <65d111eb87115_6c745294ac@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: BYAPR01CA0003.prod.exchangelabs.com (2603:10b6:a02:80::16)
+ To SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240212213147.489377-1-saravanak@google.com> <20240212213147.489377-4-saravanak@google.com>
- <20240214-stable-anytime-b51b898d87af@spud> <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
- <20240215-unstirred-rearrange-d619a2524a63@spud>
-In-Reply-To: <20240215-unstirred-rearrange-d619a2524a63@spud>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 20 Feb 2024 20:13:31 -0800
-Message-ID: <CAGETcx8EBta8dUSELUJ6_ibZABnnhSYX0VEGa8s-CbHFYuskkQ@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
-To: Conor Dooley <conor@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|SA1PR11MB8541:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f88575a-cb34-4124-5edf-08dc3299db00
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 5wu6nlN8wg0aiNIyMYByjvWg/MCheVNVujdeGYCA63E00nyIn33j2Fs2RL5Toc56N7BIDMZ7czebp/Jd0REve3KDF35PsCqX/qVR2h4pfl9KAuSs+zBTHEozXPtePlb60Yt1fSY0rqg96V6ULbApuyJAphimuynS1ZZ0ol7GNliQwQrE+qO7VjwtTg+BesZ+Jns5XRAVT0X4tj7xYyQgyUqPQu4HyuLV4bKefKZlsH+k0B9dYIuB3BPIM2wDbFerh7c+HTMlCAEpEt0FJOD8W4xofsSf1JTMsZGMJhS6OiwwUDbd/beC4oVVD5wPs6EjOflMLEwwt5WO00Jm3Wkkley/bFomk3FlR0VLkjhnaZjpafp6u056cWVAVY09IB2qYBp3yXTSwGmwmdckg9Lq5NXaV2GFKEDH6XirGT/GZRAZdd/GQceSqkgGMfWcwzHqoB0hjuXoWuT7EAnAuDN85egNz2RMgk6vzbFo617wN3wSxp6tAkm6rKQcLSh8JidXjvvYP1o1u8Bfe/1I3SBnq4bRqPooOxm/hy5kud3KxV8=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gF1wqVGwJkHO8gDVZUUkASkHy5lrgLbF73G24QzZrgI2nO/xOljaHLWKh+qu?=
+ =?us-ascii?Q?O+vuQ4HM1INyV7f2e5FVZ/On+M8/wMrHfMxWMo/ymKU7958XfXbLGv9mN4AE?=
+ =?us-ascii?Q?KpP+FsOimFOlYCCPEHBgGGOazGCrGrn8r8xZTZpxAAuqcEzFb+yVw6U06AJe?=
+ =?us-ascii?Q?CZ+CnA5aEYVbMJA1ubfchj/zgtzdAYL3+pgG/k03nd1J9by9iEe/FjsUg80n?=
+ =?us-ascii?Q?3DJe+HLuXV4k/UbWuvc7YgH91v1iFwcAcEbhRsRUO1DsNa0veEtqOII7qgTj?=
+ =?us-ascii?Q?T34n8/W984nn88/f9VRzbGXao6p8t9c54e0vrO4mPRQBLbDjuxmpACBgilHw?=
+ =?us-ascii?Q?Eu6HqvkGDFnvDctXQzxuP5bm+S60+a7ussM/AO3eQ24MAStyDBm5Bw2B2T+5?=
+ =?us-ascii?Q?469GhiFOFbKX9T73dnM2nNlK3nzqOIyeTOhwi/47FgOnmmVXO3RhxcVAfzU/?=
+ =?us-ascii?Q?AHSW5GfpNHCc3oGXNJem4rMHbu4BQpO0bBpojsAFMY52/Kf2+IheSE7dwkNa?=
+ =?us-ascii?Q?wNCUDY8Ds+5nokOLI4po+qPPiliWG1WTfUQdkKuuhFX2qbvSvpPcl37suxQj?=
+ =?us-ascii?Q?UV7w+88jSR+Pb75L+/YSZs1CFu/daAa22VEP5T5xdx19nNFRybYvO+wuiVEO?=
+ =?us-ascii?Q?obX88jkbOasvWiotpdeGe9ZrroSRhCUfKnL+kwmKzYVatil1Hd3yd4J+Rm58?=
+ =?us-ascii?Q?m1fcG5laApfqY+ToKXD5ZvB70g2vdkKIrXIvPCsxgeXgIACUF1sfZxPfYVOy?=
+ =?us-ascii?Q?ti0yx4foCA3wCmill/cfppeE75QDARt+K2oa+RAVB9Q8UM/V+G4BTSMLjqQp?=
+ =?us-ascii?Q?RfQezHqZt1V1bUDDREL2xbF7zU9TN30ozNh5IlFMeekpYTr5ypsTCcdbAjBZ?=
+ =?us-ascii?Q?ZkU6XzBJ9DP2XrCLryVxKTyUwk11zlQSfjE9Qfzfu3idJADg4A+QewRIp7p2?=
+ =?us-ascii?Q?5oluCtCRgo8dGWuvjr7cXTDv+U2fJqL7GG6m87RCwyqwf1mPfLgWuRc3ern8?=
+ =?us-ascii?Q?KSPTGjVDB5xi2hidZ01HhRc70O20DGS0XC5od7zyt85Qu01zS6lfSZkwq1gh?=
+ =?us-ascii?Q?BB+HbGRT/0t69qHFwdmvQ09iEcHzXxiWZJmVdsJSPnYbkrSPsK1gAPzsREfS?=
+ =?us-ascii?Q?HsFFQ6c1uVXzqvajJtkUXkyU2YJ14R7/hnm318yRURVPZEBZjNcHWog/5OAm?=
+ =?us-ascii?Q?tzDSIlo9uf4Uxys3fcmqGamDPyv4Z1bwAhJXHNDlnIX7HMrwkGu0mN21thJJ?=
+ =?us-ascii?Q?4o76oDFZPLn/U3AKxs6+/g6RUAIr/w0MYyDVQPA6AUhlfS3wpluKymeyvSfj?=
+ =?us-ascii?Q?TIdgjoMzFIBd7TfwesWYpe+LfYMn8l94HEauDOyay7irKJUHdh+UEcu9DMyL?=
+ =?us-ascii?Q?h0LddTW2CsGKihy+iKwrpC04LFFMC9JNeaaSkM1iSUaSQSweCvK3sTU4IjlA?=
+ =?us-ascii?Q?hT+8DpzsW3094sHTy/AC9toSJ4ggkUXKy7SMmBS2VYOXdYkj22wunss4/7Y9?=
+ =?us-ascii?Q?qgrD5zl1D1wbtIvNzfTQEXuMzjgOOqn+/5VE68+vUiK6laysneCT9ejMPqAk?=
+ =?us-ascii?Q?5drvWRuqakIQxQjvEhfJgWYn57Qt4+WaLbj/e8e8?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f88575a-cb34-4124-5edf-08dc3299db00
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 04:59:16.6888
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NhwV5QPN09+wk1d2ofBNG7gP36cnnOtFSvMLPWk2rGCUY1Wg/McrrXaKBMbxl3ICIwXO8bLqlr0CzBU1Au6AMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8541
+X-OriginatorOrg: intel.com
 
-On Thu, Feb 15, 2024 at 4:15=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> On Wed, Feb 14, 2024 at 03:32:31PM -0800, Saravana Kannan wrote:
-> > Hi Conon,
-> >
-> > On Wed, Feb 14, 2024 at 10:49=E2=80=AFAM Conor Dooley <conor@kernel.org=
-> wrote:
-> > >
-> > > On Mon, Feb 12, 2024 at 01:31:44PM -0800, Saravana Kannan wrote:
-> > > > The post-init-supplier property can be used to break a dependency c=
-ycle by
-> > > > marking some supplier(s) as a post device initialization supplier(s=
-). This
-> > > > allows an OS to do a better job at ordering initialization and
-> > > > suspend/resume of the devices in a dependency cycle.
-> > > >
-> > > > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > > > ---
-> > > >  .../bindings/post-init-supplier.yaml          | 101 ++++++++++++++=
-++++
-> > > >  MAINTAINERS                                   |  13 +--
-> > > >  2 files changed, 108 insertions(+), 6 deletions(-)
-> > > >  create mode 100644 Documentation/devicetree/bindings/post-init-sup=
-plier.yaml
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/post-init-supplier.y=
-aml b/Documentation/devicetree/bindings/post-init-supplier.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..aab75b667259
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/post-init-supplier.yaml
-> > > > @@ -0,0 +1,101 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > > +# Copyright (c) 2020, Google LLC. All rights reserved.
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/post-init-supplier.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Post device initialization supplier
-> > > > +
-> > > > +maintainers:
-> > > > +  - Saravana Kannan <saravanak@google.com>
-> > > > +
-> > > > +description: |
-> > > > +  This property is used to indicate that the device(s) pointed to =
-by the
-> > > > +  property are not needed for the initialization of the device tha=
-t lists this
-> > > > +  property.
-> > >
-> > > > This property is meaningful only when pointing to direct suppliers
-> > > > +  of a device that are pointed to by other properties in the devic=
-e.
-> > >
-> > > I don't think this sentence makes sense, or at least it is not easy t=
-o
-> > > parse. It implies that it can "point to" other properties too
-> >
-> > I don't see how this sentence implies this.
->
-> Because, to me, it reads as if you can put extra stuff in here that will
-> be ignored if not "pointed to" by another property. The word
-> "meaningful" is what implies that you can.
->
-> > But open to suggestions on
-> > how to reword it. I don't want to drop this line entirely though
-> > because I'm trying to make it clear that this doesn't make a device
-> > (that's not previously a supplier) into a supplier. It only down
-> > grades an existing supplier to a post device initialization supplier.
->
-> If you wanna keep it, I would just go for what you said in this
-> response - that this property does not make devices into suppliers and
-> is only to mark existing suppliers as post-init. I think that rules out
-> putting other devices in there.
+Dan Williams wrote:
+> Ira Weiny wrote:
 
-Sounds good.
+[snip]
 
-> > > - but
-> > > that's not the case. It is only valid to "point to" these suppliers.
-> > > I'd drop this entirely.
-> >
-> > >
-> > > > +
-> > > > +  A device can list its suppliers in devicetree using one or more =
-of the
-> > > > +  standard devicetree bindings. By default, it would be safe to as=
-sume the
-> > > > +  supplier device can be initialized before the consumer device is=
- initialized.
-> > >
-> > > "it would be safe to assume" seems odd wording to me - I feel like th=
-e
-> > > default is stronger than "safe to assume". I'd just drop the "would b=
-e
-> > > safe to assume and replace with "is assumed".
-> >
-> > Sounds good.
-> >
-> > >
-> > > > +
-> > > > +  However, that assumption cannot be made when there are cyclic de=
-pendencies
-> > > > +  between devices. Since each device is a supplier (directly or in=
-directly) of
-> > > > +  the others in the cycle, there is no guaranteed safe order for i=
-nitializing
-> > > > +  the devices in a cycle. We can try to initialize them in an arbi=
-trary order
-> > > > +  and eventually successfully initialize all of them, but that doe=
-sn't always
-> > > > +  work well.
-> > > > +
-> > > > +  For example, say,
-> > > > +  * The device tree has the following cyclic dependency X -> Y -> =
-Z -> X (where
-> > > > +    -> denotes "depends on").
-> > > > +  * But X is not needed to fully initialize Z (X might be needed o=
-nly when a
-> > > > +    specific functionality is requested post initialization).
-> > > > +
-> > > > +  If all the other -> are mandatory initialization dependencies, t=
-hen trying to
-> > > > +  initialize the devices in a loop (or arbitrarily) will always ev=
-entually end
-> > > > +  up with the devices being initialized in the order Z, Y and X.
-> > > > +
-> > > > +  However, if Y is an optional supplier for X (where X provides li=
-mited
-> > > > +  functionality when Y is not initialized and providing its servic=
-es), then
-> > > > +  trying to initialize the devices in a loop (or arbitrarily) coul=
-d end up with
-> > > > +  the devices being initialized in the following order:
-> > > > +
-> > > > +  * Z, Y and X - All devices provide full functionality
-> > > > +  * Z, X and Y - X provides partial functionality
-> > > > +  * X, Z and Y - X provides partial functionality
-> > > > +
-> > > > +  However, we always want to initialize the devices in the order Z=
-, Y and X
-> > > > +  since that provides the full functionality without interruptions=
-.
-> > > > +
-> > > > +  One alternate option that might be suggested is to have the driv=
-er for X
-> > > > +  notice that Y became available at a later point and adjust the f=
-unctionality
-> > > > +  it provides. However, other userspace applications could have st=
-arted using X
-> > > > +  with the limited functionality before Y was available and it mig=
-ht not be
-> > > > +  possible to transparently transition X or the users of X to full
-> > > > +  functionality while X is in use.
-> > > > +
-> > > > +  Similarly, when it comes to suspend (resume) ordering, it's uncl=
-ear which
-> > > > +  device in a dependency cycle needs to be suspended/resumed first=
- and trying
-> > > > +  arbitrary orders can result in system crashes or instability.
-> > > > +
-> > > > +  Explicitly calling out which link in a cycle needs to be broken =
-when
-> > > > +  determining the order, simplifies things a lot, improves efficie=
-ncy, makes
-> > > > +  the behavior more deterministic and maximizes the functionality =
-that can be
-> > > > +  provided without interruption.
-> > > > +
-> > > > +  This property is used to provide this additional information bet=
-ween devices
-> > > > +  in a cycle by telling which supplier(s) is not needed for initia=
-lizing the
-> > > > +  device that lists this property.
-> > > > +
-> > > > +  In the example above, Z would list X as a post-init-supplier and=
- the
-> > > > +  initialization dependency would become X -> Y -> Z -/-> X. So th=
-e best order
-> > > > +  to initialize them become clear: Z, Y and then X.
-> > >
-> > > Otherwise, I think this is a great description, describing the use ca=
-se
-> > > well :)
-> >
-> > Thanks! I always spend more time writing documentation and commit text
-> > than the time I spend writing code.
-> >
-> > >
-> > > > +
-> > > > +select: true
-> > > > +properties:
-> > > > +  post-init-supplier:
-> >
-> > [Merging your other email here]
-> >
-> > > Also, this should likely be pluralised, to match "clocks" "resets"
-> > > "interrupts" etc.
-> >
-> > Good point. Done.
-> >
-> > > > +    # One or more suppliers can be marked as post initialization s=
-upplier
-> > > > +    description:
-> > > > +      List of phandles to suppliers that are not needed for initia=
-lizing or
-> > > > +      resuming this device.
-> > > > +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> > > > +      items:
-> > > > +        maxItems: 1
-> > >
-> > > Rob's bot rightfully complains here about invalid syntax.
-> >
-> > I added these two lines based on Rob's feedback. Is the indentation
-> > that's wrong?
->
-> Aye, both items: and maxItems: need to lose a level of indent. That
-> said, its not actually restricting anything. I fixed it up locally and
-> you can put as many elements as you like into each phandle and it does
-> not care. Maybe Rob can tell what is going wrong there..
+> >  
+> > -	guard(rwsem_read)(&cxl_cper_rw_sem);
+> > -	if (cper_callback)
+> > -		cper_callback(event_type, rec);
+> 
+> Given a work function can be set atomically there is no need to create /
+> manage a registration lock. Set a 'struct work' instance to a CXL
+> provided routine on cxl_pci module load and restore it to a nop function
+> + cancel_work_sync() on cxl_pci module exit.
 
-I made that fix and now I'm getting this:
-$ make DT_CHECKER_FLAGS=3D-m dt_binding_check
-DT_SCHEMA_FILES=3DDocumentation/devicetree/bindings/post-init-suppliers.yam=
-l
-  DTEX    Documentation/devicetree/bindings/post-init-suppliers.example.dts
-  LINT    Documentation/devicetree/bindings
-  CHKDT   Documentation/devicetree/bindings/processed-schema.json
-/mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-supplie=
-rs.yaml:
-'oneOf' conditional failed, one must be fixed:
-        'unevaluatedProperties' is a required property
-        'additionalProperties' is a required property
-        hint: Either unevaluatedProperties or additionalProperties
-must be present
-        from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-  SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-/mnt/android/linus-tree/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml=
-:
-ignoring, error in schema: properties
-/mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-supplie=
-rs.yaml:
-ignoring, error in schema:
-/mnt/android/linus-tree/Documentation/devicetree/bindings/soc/tegra/nvidia,=
-tegra20-pmc.yaml:
-ignoring, error in schema: allOf: 0: then: properties: pinmux
-/mnt/android/linus-tree/Documentation/devicetree/bindings/net/lantiq,pef225=
-6.yaml:
-ignoring, error in schema: properties: lantiq,data-rate-bps
-/mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-supplie=
-r.yaml:
-ignoring, error in schema:
-/mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/hone=
-ywell,mprls0025pa.yaml:
-ignoring, error in schema: properties: honeywell,pmax-pascal
-/mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/hone=
-ywell,hsc030pa.yaml:
-ignoring, error in schema: properties: honeywell,pmax-pascal
-  DTC_CHK Documentation/devicetree/bindings/post-init-suppliers.example.dtb
-Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-/example-0/clock-controller@1000: failed to match any schema with
-compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-/example-0/clock-controller@1000: failed to match any schema with
-compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-/example-0/clock-controller@2000: failed to match any schema with
-compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-/example-0/clock-controller@2000: failed to match any schema with
-compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
+Ok I'll look into this.
 
-But I guess the "oneOf" error is because the yaml is being treated as
-a description of a DT node and not a schema?
+> 
+> > +	wi = kmalloc(sizeof(*wi), GFP_ATOMIC);
+> 
+> The system is already under distress trying to report an error it should
+> not dip into emergency memory reserves to report errors. Use a kfifo()
+> similar to how memory_failure_queue() avoids memory allocation in the
+> error reporting path.
 
-Rob,
+I have a question on ghes_proc() [ghes_do_proc()].  Can they be called by
+2 threads at the same time?  It seems like there could be multiple
+platform devices which end up queueing into the single kfifo.  So either
+there needs to be a kfifo per device or synchronization with multiple
+writers.
 
-Can you let me know how to move ahead with this? I'll do the fixes
-that Conor suggested in v3.
-
--Saravana
-
->
-> >
-> > Yeah, I'm trying to run the dts checker, but I haven't be able to get
-> > it to work on my end. See my email to Rob on the v1 series about this.
-> >
-> > $ make DT_CHECKER_FLAGS=3D-m dt_binding_check
-> >
-> > The best I could get out of it is a bunch of error reports on other
-> > files and then:
-> > ...
-> > <snip>/Documentation/devicetree/bindings/post-init-suppliers.yaml:
-> > ignoring, error parsing file
-> > ...
->
-> Yup, that is about right, although you snipped out the actual complaint.
->
-> >
-> > I also tried to use DT_SCHEMA_FILES so I can only test this one file,
-> > but that wasn't working either:
-> >
-> > $ make DT_CHECKER_FLAGS=3D-m dt_binding_check
-> > DT_SCHEMA_FILES=3DDocumentation/devicetree/bindings/post-init-suppliers=
-.yaml
-> > or
-> > $ make DT_CHECKER_FLAGS=3D-m dt_binding_check DT_SCHEMA_FILES=3D<path t=
-o
-> > the .patch file>
-> >
-> > Results in this error early on in the output:
-> > ...
-> > usage: yamllint [-h] [-] [-c CONFIG_FILE | -d CONFIG_DATA]
-> > [--list-files] [-f {parsable,standard,colored,github,auto}] [-s]
-> > [--no-warnings] [-v] [FILE_OR_DIR ...]
-> > yamllint: error: one of the arguments FILE_OR_DIR - is required
-> > ...
-> > /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-sup=
-pliers.yaml:
-> > ignoring, error parsing file
-> > ...
->
-> That is part of the actual complaint:
->
-> make dt_binding_check W=3D1 -j 30 DT_SCHEMA_FILES=3Dpost-init-supplier.ya=
-ml
->   LINT    Documentation/devicetree/bindings
->   DTEX    Documentation/devicetree/bindings/post-init-supplier.example.dt=
-s
-> Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: mapping =
-values are not allowed here
-> make[2]: *** [Documentation/devicetree/bindings/Makefile:26: Documentatio=
-n/devicetree/bindings/post-init-supplier.example.dts] Error 1
-> make[2]: *** Deleting file 'Documentation/devicetree/bindings/post-init-s=
-upplier.example.dts'
-> make[2]: *** Waiting for unfinished jobs....
-> ./Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: [error=
-] syntax error: mapping values are not allowed here (syntax)
->   CHKDT   Documentation/devicetree/bindings/processed-schema.json
-> ./Documentation/devicetree/bindings/post-init-supplier.yaml:84:12: mappin=
-g values are not allowed here
->   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-> /stuff/linux-dt/Documentation/devicetree/bindings/post-init-supplier.yaml=
-: ignoring, error parsing file
-> make[1]: *** [/stuff/linux-dt/Makefile:1432: dt_binding_check] Error 2
-> make: *** [Makefile:240: __sub-make] Error 2
+Ira
 
