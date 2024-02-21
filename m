@@ -1,152 +1,206 @@
-Return-Path: <linux-acpi+bounces-3791-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3792-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA37885E757
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 20:34:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B0D85E8A5
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 21:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10F73B24662
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 19:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFB41C234C3
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 20:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121E485C6C;
-	Wed, 21 Feb 2024 19:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEFB85C44;
+	Wed, 21 Feb 2024 19:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pOHByhzS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NufHx0Ob"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E2783A06;
-	Wed, 21 Feb 2024 19:34:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708544060; cv=none; b=S7k5iRBS7gPr6FFc3bzUGJk/eoF3i8IeTlXKrJCzorkmeEVGsCONjzf3HOM0YADUNEmUqL9eX2J85cHzEWFmzHRWVU1sikUI892iwZE6DNLZrjHF2X9GqrFhx4iRa3I5n1tLDuAm5jOgrNgt7vx2a33AmnSgGZaEWUwRMw2GBtc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708544060; c=relaxed/simple;
-	bh=sXa5dPwz8bX/os8/Ajvudq3p1HLKGVCbEjjsuMeVa5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CgN2jxUv2y3RGSZUFhjKr9GsFWctXdEzFahrIZjxyaWGDfWlZSFaWtSDSUMX8Wic/sfUxRzIicwD0U9CjSozM/URmtgenTW47PJuy5NeS4ZF2wYclis378iLMkf1p99InnjzgG/DxG94fhym2Kc7y4KMLLvdgg3KYMMX6aQglIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pOHByhzS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA81FC433C7;
-	Wed, 21 Feb 2024 19:34:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708544059;
-	bh=sXa5dPwz8bX/os8/Ajvudq3p1HLKGVCbEjjsuMeVa5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pOHByhzScvU/U0TCoTIQTNO5d3/UV2yM9PwLvGTv35mTJpxaGtM+G+RdDlJL53puo
-	 QYfMCCRjV8YrCpDvU+bdh8Wb24/aAvFRyea6WmIceRG17LO/LlsquvUkVKk39XtJXD
-	 YVt37gKZGq5efvojR20BnMmOS4eDcPTx/ZRYSgtVeceR+gkDoioXuDmixB0OAWf4vz
-	 t0rMDee6yY5N4h42osps466yGwZywfH9RyZiMsNpPnk7rugdSBWh9h1uqgwXVlKYOm
-	 nKXarH0nNjLI4ltp9t2LtGgcZ4xOuF1JY2DoELiDNTgtedT2t4RSVwFXnuKtw/aaZ7
-	 4SO24rSgbzwtw==
-Date: Wed, 21 Feb 2024 19:34:12 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	kernel-team@android.com, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
-Message-ID: <20240221-emblaze-ripeness-7ad4e41343fa@spud>
-References: <20240212213147.489377-1-saravanak@google.com>
- <20240212213147.489377-4-saravanak@google.com>
- <20240214-stable-anytime-b51b898d87af@spud>
- <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
- <20240215-unstirred-rearrange-d619a2524a63@spud>
- <CAGETcx8EBta8dUSELUJ6_ibZABnnhSYX0VEGa8s-CbHFYuskkQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19A186141;
+	Wed, 21 Feb 2024 19:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708545474; cv=fail; b=QOeofdC4ieCpk+FfVuxUXF7xDgCAgQr9zkNh/j1mbg+fFv6enQ/Y8IFchds/F4k8oEbvrxiy16nOXzRHKr2jCE8wvVP6tRB1A6gpyVVXkVEGcJezgskI5ePCaAXfogN76fqR/bFZpbgGtXi4v2XXPWlf343WxFXgLZ6GaG0uUn0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708545474; c=relaxed/simple;
+	bh=uUJjIiKuqulnEiT1FiKMpAhsNhZ3tIQ2uJe9PsCwFew=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WIQhfCZGZ2bFUtCqTYwDwwobO79pzG1kiCgVB+2CsEepjEDwRd7EdEcqiWOJxjt/QmcxjIXyNUIXg9seFG5X08wqn4gbtXHrQ95zilcvV2jQfRD3d795v3o+b8BfLXr6mFpIgRNkr2dfzsCYdKCun50gw7Jxwnbz7vR5FzNuLIQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NufHx0Ob; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708545472; x=1740081472;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=uUJjIiKuqulnEiT1FiKMpAhsNhZ3tIQ2uJe9PsCwFew=;
+  b=NufHx0ObYVhY2MNiV/gE82/Kw7mv4R+HdnmpaLKQUn0uRD6NCU9cQvZa
+   wRgH1wsgz89MhcuOLKR/ixIiPRqCLm+L/bKoFA69VGxATyoNiV/lOlWF7
+   RDmmleAK8ctkMwrOIjUEYEspS9s7O6iZjS4ni3HH0OYspQv36rhYccNrl
+   w+OZPzuiCY+4Kj7nNxct2rEHzOKUDYWI5UfmyFa16wBkENyBLtA8LRNnx
+   BiehRu/06X8SC5Z7gTcGMcXeIu1ju2R72cXHOBs/+ugtQw0QoY86+Wreh
+   ftN3Ilw6hlr2rPcuch94jcO9QgG/DPvskydZKMO4mOjpkIM8mlpAQMG4G
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="2603751"
+X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
+   d="scan'208";a="2603751"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 11:57:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,176,1705392000"; 
+   d="scan'208";a="9948694"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 21 Feb 2024 11:57:52 -0800
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 21 Feb 2024 11:57:50 -0800
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 21 Feb 2024 11:57:50 -0800
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 21 Feb 2024 11:57:50 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=B9oFJ3HAVKkGSa4SXTflJvCOaS0A6l2wMXglbxlij7ZGUdYH1Pc/fMRtqq1uf0TD6DevPFdpZccnQRsOzSDrXAAKl9nc1dWZuPZbuaeAuwxeY9ChdNIaYWNH+5XpKA/uIJeJgoZ8I41WLu+8abrAtY4U8Pq3lsRyLEhWXJKKNkLBugQKtcwd9mW4/dKrRidGYv1emqYskGEHdohE4LH6VI2Ij/+gR6Cj7v4U4eO/OmMlw0ENQntuPeraYhogR5YzhOXaOpe5JTYIoW6QA9lmGYrbRr0OLYZG0ptVMr0TCHOgWLxl6M0jQM04WRQY82Z71kzdmr/1qVGgEnfmSaK93g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aTiLFFwiynOvP9tGLu/XwgA3wTA3zLHZ6sU4kV+JwdE=;
+ b=D9OGSvuvoWS4qWiu5IkqaH4yGGyWH1yShkNijW9XDEmo0eiZlPP/U9/0OgqK1xBfdPqw3UawfZepNEiq9xGqZEPHvU6cU1hK2+TrrK8J7YjKSNd/NN/HuhNArB0ruqWMnqNYCjVcX/xMdeshbYqTpB7qrLY3il/6c2daGTNofxauTlrRbrKZyiTBT8Vu5JF9J870VGrGEBG6X0PLKKIr3n+c8GABMLjU7hdE00iDfvBgUW00/onlGtr/6sL26mupAZLz6VomLhxY838iVOVqx7ZWcX3CeU0mVwWBNJUsZausKefwBHsJdP/ZGkDXgd0bJu3mfn3kX7UCTJ7DGqf8Xw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by MN2PR11MB4759.namprd11.prod.outlook.com (2603:10b6:208:26a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Wed, 21 Feb
+ 2024 19:57:47 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::da43:97f6:814c:4dc]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::da43:97f6:814c:4dc%7]) with mapi id 15.20.7316.018; Wed, 21 Feb 2024
+ 19:57:47 +0000
+Date: Wed, 21 Feb 2024 11:57:44 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>,
+	"Ira Weiny" <ira.weiny@intel.com>
+Subject: RE: [PATCH v2] acpi/ghes: Prevent sleeping with spinlock held
+Message-ID: <65d655b8a098d_5c76294ac@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20240206-cxl-cper-smatch-v2-1-84ed07563c31@intel.com>
+ <65d111eb87115_6c745294ac@dwillia2-xfh.jf.intel.com.notmuch>
+ <65d5832090c5b_1ada2029473@iweiny-mobl.notmuch>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <65d5832090c5b_1ada2029473@iweiny-mobl.notmuch>
+X-ClientProxiedBy: MW4PR04CA0247.namprd04.prod.outlook.com
+ (2603:10b6:303:88::12) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="pLmCPIAdI0+mCq/J"
-Content-Disposition: inline
-In-Reply-To: <CAGETcx8EBta8dUSELUJ6_ibZABnnhSYX0VEGa8s-CbHFYuskkQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MN2PR11MB4759:EE_
+X-MS-Office365-Filtering-Correlation-Id: f41029bd-fd99-4ea4-f428-08dc33176054
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: z4iz7dprPvACOjvnY548jWT7vc4WK4sPURbBlDOs175th0kgGv8E4oUO8kQJnuTl/E0AgyK31/IBnDt6pJiOuaw/kHxM2tVEy1daSmlmiYFHGz96qX5FbrVQ4fUWvozjf/IiahayPqfhBFv5ooLQNuVCLZ7f/y+kJjk3K13Dk12yIhiT96iAUYqqQcpnqn6K7OfSElr0k3yD/uQoAfbRLLgHYDRp6emGUCDwYyXz/orjRxwjDBAQirmQwyjmVQ+TWFdTw0pE7PQB/FOQuy2r79Ih86p1n0oDWMmbG8YuGzpT5DO4HeL3Wr1dXPyat9EnZ36B/GN9v6H+xPmj614I4xpjUiW3uMrcJxQPK7AiQGawl6w4Q/BYyabeo4S9m4RL2plLGxSJUGLUzxQ9BNFrDYa6ftWrxGdq/aZnQekRuelYjMsKMT1Bw75gsKbu73z7Sj9UnAXvosHBQPeBpTbQoa/bgW5BENU9DzA76uk18UouLrrETyzshSx5VyHiI0z6nlLuoU/yeVXgIOpKPFC+/q+5fCE5SsJf5OIuTbj0R0Y=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FIlOPGCehoXyZq/KP9Pk1H0wHAKnkpr2voPKWfhQHfmZJmFdB5BIT0yWlaYJ?=
+ =?us-ascii?Q?fAPMpts8I5dmTibiuyFIl9FhVR0J3WBuH+LMtNzihG7jLwB6gY7EP8fi6fas?=
+ =?us-ascii?Q?Z3fLNWhtCwcDifYYwjZy76mCQQk3oQ/pGaPKRy6/FPJ78cydX0M3zrHpz593?=
+ =?us-ascii?Q?XAxTaA01oEbxEtTPhp7wY3hNb6BJ2mqmp/f3ZB3hMpLem5QSiVLoyOxBMsMM?=
+ =?us-ascii?Q?qngbddiO5ZhdqeopKThG7vhLUDs0Yr5RIe8vKyOb37/emCT7aeJXUYOpc2DR?=
+ =?us-ascii?Q?4Iocra7cIuKrk32SJQMlUPb8uO8dvw6kbfAFlYv5/tdKqph5pnDS4ronnJb5?=
+ =?us-ascii?Q?5wRSnnpJxyuxyz7cVklYA8HuBmYVmJSXTfBQEI7sqbUNM/K303Uo/FQe9FuZ?=
+ =?us-ascii?Q?HEKJmiutu9/6yS8l4dSAVegaGsGLbSt7ZKCeLFt3ImzQs9oFL2PKfT/3Su1+?=
+ =?us-ascii?Q?xh/NNYpdiTom81Z4f1r8guFj6mC0bkf+KoLnYWjrIWGEBxgg+RxowQeqKNW2?=
+ =?us-ascii?Q?vl8Tz12bjR8kOcZZDo2If+4edHx5Ynn158zEO4FPGl1JNkalzst+LarAY9SJ?=
+ =?us-ascii?Q?kq/oiE2JlicVpOIIRmScUkxOU51v/uaSEmLnZkU+slEc7xKrwZJMkAWZIyQZ?=
+ =?us-ascii?Q?lCLK1AzAJCC5MGkZFPTu8GJuD4W0WFO4Fgsfhx2nHWQKFH2+sgYuqJNVLLuo?=
+ =?us-ascii?Q?Y587an14qHlWvVRyR7p6ZTOf1/OHeQio4hLlPW/DaA58cyJcl6afFQetMKuz?=
+ =?us-ascii?Q?AGUSZ44O2sIzCzDNFDwDUXJjFxAjFNobMQyl6RdVYEZUmtj8iYBTDPX8RGb3?=
+ =?us-ascii?Q?96K7GqgCTjZ/7vZD2p8Zd1KjPlzx3JxHYV1Had82pR8AzM8Yfs2DpAf7yB5+?=
+ =?us-ascii?Q?4QPzC9VyZWJpFOTE7S4i6EgRcLjccGIJg3ya+dciamiJbcWkFK2iBM7wfIAv?=
+ =?us-ascii?Q?Fbpqy7RLMP/pl4SqWzG1WPUP1R/BsOORxQA/6jhF+ov683Ek8JPTfBUoR7wt?=
+ =?us-ascii?Q?Qk1ENSOa0u2bPEFX+m3c+61MtdkD8lfvVsMAtZWu3TexkBgGS+2IUNZ+CE40?=
+ =?us-ascii?Q?Enzx2LdpUwXJwaREAq6dd04TaL5/Jy8CMo+dKLzdTfyzXYe+9AVdISHZy27c?=
+ =?us-ascii?Q?NiUdS2XZGZLyi+KCen/++lSS5ykotGX2genb9FD9rxopQ051FyquAvDMGT3V?=
+ =?us-ascii?Q?gAaD7mlItmDk3UotjJnqDGepZ20lywTlXwZyB5GmFilXo6BLBjhh+luayhI2?=
+ =?us-ascii?Q?1DBxJ2Gn2TZ4/WBNAU7sCLavEloLwYLsFbt/syMncqG7YfkFNodaIsyKvXxs?=
+ =?us-ascii?Q?Qw1a9weqpRpBpTGnLIak3IXwY6Q+7fFyGqhREQodW+WovPHtt1r8SdogY5FY?=
+ =?us-ascii?Q?0qiz1OscLjE9txaU5eyZ8V+2xzDXW/gVw2HtGyE9SFUBm5Nx1m2H609L11bC?=
+ =?us-ascii?Q?sxqys6u3FkiSvNf+zqzVwKEmePu2dlKHCB3a8IXjfsC1RPK3+KQM9i9P6iHo?=
+ =?us-ascii?Q?RFrpDxsEJ5PZgy+0cgzneRXT0TvpfhMA08f0VpBShKrfQSLT1K5tZ4UNMwqH?=
+ =?us-ascii?Q?kr6ip35JVshfxOXofs19T523KiRpGPB83to0V3Z8EB6C8UBOQTgpkVFOFaDD?=
+ =?us-ascii?Q?gA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f41029bd-fd99-4ea4-f428-08dc33176054
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2024 19:57:47.4989
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pudQNGE+hLj75oC8SAb1z1KftM5qDbXaDYypHYvdUuzPAwt37+/LSjdnhcNY0ZhoeQMiLC1Go+yyuKZFjw3pofpeDkhXzFRvthfeR7nAs1o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4759
+X-OriginatorOrg: intel.com
 
+Ira Weiny wrote:
+> Dan Williams wrote:
+> > Ira Weiny wrote:
+> 
+> [snip]
+> 
+> > >  
+> > > -	guard(rwsem_read)(&cxl_cper_rw_sem);
+> > > -	if (cper_callback)
+> > > -		cper_callback(event_type, rec);
+> > 
+> > Given a work function can be set atomically there is no need to create /
+> > manage a registration lock. Set a 'struct work' instance to a CXL
+> > provided routine on cxl_pci module load and restore it to a nop function
+> > + cancel_work_sync() on cxl_pci module exit.
+> 
+> Ok I'll look into this.
+> 
+> > 
+> > > +	wi = kmalloc(sizeof(*wi), GFP_ATOMIC);
+> > 
+> > The system is already under distress trying to report an error it should
+> > not dip into emergency memory reserves to report errors. Use a kfifo()
+> > similar to how memory_failure_queue() avoids memory allocation in the
+> > error reporting path.
+> 
+> I have a question on ghes_proc() [ghes_do_proc()].  Can they be called by
+> 2 threads at the same time?  It seems like there could be multiple
+> platform devices which end up queueing into the single kfifo.
 
---pLmCPIAdI0+mCq/J
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Yes, that is already the case for memory_failure_queue() and
+aer_recover_queue().
 
-On Tue, Feb 20, 2024 at 08:13:31PM -0800, Saravana Kannan wrote:
-> I made that fix and now I'm getting this:
-> $ make DT_CHECKER_FLAGS=-m dt_binding_check
-> DT_SCHEMA_FILES=Documentation/devicetree/bindings/post-init-suppliers.yaml
->   DTEX    Documentation/devicetree/bindings/post-init-suppliers.example.dts
->   LINT    Documentation/devicetree/bindings
->   CHKDT   Documentation/devicetree/bindings/processed-schema.json
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-suppliers.yaml:
-> 'oneOf' conditional failed, one must be fixed:
->         'unevaluatedProperties' is a required property
->         'additionalProperties' is a required property
->         hint: Either unevaluatedProperties or additionalProperties
-> must be present
->         from schema $id: http://devicetree.org/meta-schemas/core.yaml#
->   SCHEMA  Documentation/devicetree/bindings/processed-schema.json
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/tpm/ibm,vtpm.yaml:
-> ignoring, error in schema: properties
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-suppliers.yaml:
-> ignoring, error in schema:
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/soc/tegra/nvidia,tegra20-pmc.yaml:
-> ignoring, error in schema: allOf: 0: then: properties: pinmux
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/net/lantiq,pef2256.yaml:
-> ignoring, error in schema: properties: lantiq,data-rate-bps
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/post-init-supplier.yaml:
-> ignoring, error in schema:
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml:
-> ignoring, error in schema: properties: honeywell,pmax-pascal
-> /mnt/android/linus-tree/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml:
-> ignoring, error in schema: properties: honeywell,pmax-pascal
+> there needs to be a kfifo per device or synchronization with multiple
+> writers.
 
->   DTC_CHK Documentation/devicetree/bindings/post-init-suppliers.example.dtb
-> Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> /example-0/clock-controller@1000: failed to match any schema with
-> compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-> Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> /example-0/clock-controller@1000: failed to match any schema with
-> compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-> Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> /example-0/clock-controller@2000: failed to match any schema with
-> compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-> Documentation/devicetree/bindings/post-init-suppliers.example.dtb:0:0:
-> /example-0/clock-controller@2000: failed to match any schema with
-> compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
+Yes, follow the other _queue() examples. kfifo_in_spinlocked() looks
+useful for this purpose.
 
-FWIW, I don't see these or the other errors you see above. You really
-need to get yourself a newer version of dt-schema, or else avoid
-working on this using whatever castrated system google provides you with!
-
-> But I guess the "oneOf" error is because the yaml is being treated as
-> a description of a DT node and not a schema?
-
-The oneOf is due to missing "additionalProperties: true" - As far as I
-understand you need that regardless of whether this is going into
-dt-schema or the kernel.
-
---pLmCPIAdI0+mCq/J
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdZQNAAKCRB4tDGHoIJi
-0g3HAQDpIe4M9otvSpLROV6Ux41ghNaHIm5e1Qhx4Q295ZxF3QEAodiz/FUXPees
-zSZSMDf2CLnO5KDtqoIy8tOHjOqzMw0=
-=9UjH
------END PGP SIGNATURE-----
-
---pLmCPIAdI0+mCq/J--
+I expect no lock needed on the read side since the reader is only the
+single workqueue context.
 
