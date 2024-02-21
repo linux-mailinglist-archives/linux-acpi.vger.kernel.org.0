@@ -1,234 +1,177 @@
-Return-Path: <linux-acpi+bounces-3767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CF485D0F8
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 08:13:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFA885D12C
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 08:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7421B21617
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:13:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C9221F276CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Feb 2024 07:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD67B3A1D3;
-	Wed, 21 Feb 2024 07:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457F3A8E9;
+	Wed, 21 Feb 2024 07:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRmn43fF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q/iGDjhA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22AF3A8C0;
-	Wed, 21 Feb 2024 07:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638D03A8D8
+	for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 07:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708499589; cv=none; b=kqS158d7JZi0vIpgOJoYyBEWW2NqyZ/20A5lXRVs/CqBEp1K1wAZB+tSEcSvfy8zUajupaspJnfZLHt8vvQE6c97m2sC1fblcqmwKt2YZ3BA4tLzUEHCpvbzUFXsOwDOaX2TdfnHQ/LSDvuZHwHDtUARAHypI8CrUwNuVGfhe+w=
+	t=1708500082; cv=none; b=SvAJCrL9zKJwH+L5snsu4mdGTPSHDFtXus1ZqXAhotyQqszshwEsZKcbgsJZXxzlDBr3jIiN0LOtEDlpw3vI0NwtocVGsk6ViZcvViLTCV0VcxHmzfxAbtGGpgKIATrqVUQeC9TzkuJtyygZBve+fZzj3VDudutBEUz+6/gl0ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708499589; c=relaxed/simple;
-	bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lEouptVRmdlt0ljvxdtDAjWCxh0fQH03MltfaV779sMyC62cPJAaAcVsrpaZZht++9I4FdfrGhNQ/PWD3UqlcqBojODNoEWkes/qRz8/HIsX9E+eoobb6JULyhjMW5Fuv6pQGVQ/fZFSSuo1T0IJmjox96OPx5JUBGcHwNp74iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRmn43fF; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-563c403719cso6479406a12.2;
-        Tue, 20 Feb 2024 23:13:07 -0800 (PST)
+	s=arc-20240116; t=1708500082; c=relaxed/simple;
+	bh=SijJc/wIuNH1gy7HXbK/xEaQaAPhUQ6dKydZEW27bh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hio9EatQZNTwHsljRTxoPoYc4NPznhtSsiDQ9zdBUJK6dgQr/yR6R0h1mgLZLFoLSVRVk4wRI5S3ROuQ4zI0aKVq5iFJef3lZZxTBBDMccPNtmi7oPfe5DkptDFsNozD87l4fk27KFnYpA62nNlEju1oRxrPsKDyOyuKGL4xs/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q/iGDjhA; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so895327066b.0
+        for <linux-acpi@vger.kernel.org>; Tue, 20 Feb 2024 23:21:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708499586; x=1709104386; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
-        b=BRmn43fFOTrccA1HYQmBohjAsaLsMaZKGKPqRvbde84JP5H2QvGdmFpzYw4+6Z6HKV
-         XSxxs7cgCy+OaPbGv/JT38YU517O7QbQ/M0b77nmbEthWZBsDwlrH6XxCQy40TdNcxl8
-         Advi6edJfMxwc3E5H5JMgwe642X6nfdPua066VCioJND5MLC8eXCwlWlWR3SYpzCQsVC
-         XZMJMMg2XyrqDDhBfM7EDXr37AYsFtK73lSqMaX7a+e9kk3MA3ZoIlhR8N5DSXLAhl+E
-         Jmg9OzQMsJ//ix82QTDZBkM/iwHCLry43RxpjlqBFM4c0uoj/itjs9RMaCfvXz+LSV/2
-         TMoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708499586; x=1709104386;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=linaro.org; s=google; t=1708500078; x=1709104878; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=BYlt0yJ64/STqFM6+6BFOkQp8WSF3CmfQfcqtetiEOM=;
-        b=ioGOhZYgKYI3m9d0p9mf9Vhi9TUvN4cYd8QN5/AJvcxMyxp/o6KR8ScLY+OxX0BCGa
-         tiNRJ44kxcf7e+v3Pg3iT41TCUr9IKdfZhjg0EfZkPnBSfwb8JKzLTbOKMahlA/hT0cM
-         noaiilxLOHxyzarD7MuQVEPMFOuWamk5mNVw4Sf5IaP3HalhJwTu/NvH75UiYGcEueAK
-         ITtY9vXwHRbhm1sNZBAtmeI2mNOv/+KZrvZr7j9FRSNq+nUBFmkdS3IgjWOLcnWbfspn
-         xI42K1Ja+wXuGapVohoAIHPP/LZQ4hiQo2bRzxJftKZ5gxHAZgkWTX/QontgIylwDYjh
-         Q6nw==
-X-Forwarded-Encrypted: i=1; AJvYcCVc4kolil0NMtNJ3SJmVXCJ2niJFnIGbYm9Q1J9bym/q0SfZzH+Y+dIdaYKuekXlPZxhobAaPQB3r9nWH6/nJW7ZBTvXRU5QmK8oXR+c+LCy1YFLxOuxy378iJzYtJFzvPwaOfCaznfdAssk9NX4qeipeW3LzjdHhVk2LnqnOpZgpucC9c=
-X-Gm-Message-State: AOJu0YwTmJVgvUxU013iqBQqgO5Mh66fUxow1NtGpAxrzRgKAGEBO/85
-	9IXzdHYUY1ErwwD3oNzd+3/aoBolYSLCfJlEWrmywMhb9ckMl3dfaDFlv7Iv+7BibQ==
-X-Google-Smtp-Source: AGHT+IHih9H/kOAHi1jgRty14z6Wg6Wf6dyGnRbDr1Qq7YpRnBeCqaZTGERYL55l3oahk5qu3N+Cug==
-X-Received: by 2002:a17:906:7c4a:b0:a3e:72ca:700d with SMTP id g10-20020a1709067c4a00b00a3e72ca700dmr7765191ejp.45.1708499585861;
-        Tue, 20 Feb 2024 23:13:05 -0800 (PST)
-Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
-        by smtp.gmail.com with ESMTPSA id rs6-20020a170907890600b00a3e1b4575dfsm4337061ejc.2.2024.02.20.23.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 23:13:05 -0800 (PST)
-Message-ID: <17baf0c5e1ce19a1bc930fd439c27d9ef8cbe6a1.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] of: dynamic: flush devlinks workqueue before
- destroying the changeset
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
- linux-acpi@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Android Kernel Team <kernel-team@android.com>
-Date: Wed, 21 Feb 2024 08:13:05 +0100
-In-Reply-To: <CAGETcx_kjmZypvhjGED5V3C4E=NzffD2=8cn5Hh-tEHTMVKsiQ@mail.gmail.com>
-References: 
-	<20240205-fix-device-links-overlays-v2-0-5344f8c79d57@analog.com>
-	 <20240205-fix-device-links-overlays-v2-2-5344f8c79d57@analog.com>
-	 <aed988a09cb4347ec7ac1b682c4ee53b7d2a840b.camel@gmail.com>
-	 <20240213145131.GA1180152-robh@kernel.org>
-	 <48a86fa6908a2a7a38a45dc6dbb5574c4a9d7400.camel@gmail.com>
-	 <CAGETcx9xgLykm7Ti-A4+sYxQkn=KTUptW9fbFxgTcceihutwRQ@mail.gmail.com>
-	 <71fa22870246c4ed6ae9cbb2cb93db557dd855f7.camel@gmail.com>
-	 <CAGETcx_kjmZypvhjGED5V3C4E=NzffD2=8cn5Hh-tEHTMVKsiQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+        bh=z2BsVV2R37Sw3qoktZXHBNmc73Lk7wn6DNh5+RBjhDU=;
+        b=Q/iGDjhAGiIVkUzTO/cm3/nWVN1xB9oYBsrr+IxdN5pJ7YQt4AKkoA8GorMjtsy5ou
+         mxDCe47B46M1qYjIr61akWbO1cL8OGPVNYLiQlAnSXJIvpO3H2gb662vPQBaKblEw5mp
+         QrJvQg249hRv87RAmPElhyeuVGdBpqbc6zITt/d/JP32u5Rqqh8ej0xUsrcPdQHP2TM9
+         D/uGbQVEf7FLfYJKvmPuF0/qFkFzZSE8tAaEk1IEnyeN1td9N2Jm05gjbqQpjsWgHBQV
+         YxVmcoKiwi5M/VdZArxgxCvuCzuKenOqHgdLBqxRONPoea9bVbmP8SLnBPf1Dcbwv4Pa
+         y0Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708500078; x=1709104878;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z2BsVV2R37Sw3qoktZXHBNmc73Lk7wn6DNh5+RBjhDU=;
+        b=T18udUdtYpdXMrAmEXLBE2oCnnB9oioP4m4ut0cfaXv193EoT6rQfh41tb9RDvQoIL
+         5cWzc0+lUDRDYAGhNFReIbT2Rowcmdya9wE3Xg+UQIASE7w2Fa/+isD5TfcCI/LqONie
+         6p28xZFVP0LbZhsy2ydxILAIKmkxUad/WxSnfZmocefBHaVbkEi/trsZf/MMzsIBwLSc
+         J9pADT1Ye9zFQimsqQw6F4k1sCL7AyI+pVZeTVNFioZK53MzpzPCGVpp/NB7tXhlX34F
+         6HdgoSUXPED5IaHR8Lega/U2GE3FfypLkpRkZfm9VUChn3cK9V4uRDBJMVRfVB93qQlK
+         jtpg==
+X-Forwarded-Encrypted: i=1; AJvYcCXfCsT+zbaRUBlT2w5mf2359F3gj6FF3OWPPt4lUtN0TS6XCB/i9VNVu2/ps8evsYwni55UosPcJ2/UNzPrJJsiZQzNIpebndXhGw==
+X-Gm-Message-State: AOJu0YyxjRhwtAOK2pTzbrfVwxf2VCmOitd84ETm9B+njxTljoVWeEi2
+	SlaqwGGQE3owFqomK7zUcyngeFMnAMNFIY3uHL+8I6GdFolAEYW/RcJZsnyhoSs=
+X-Google-Smtp-Source: AGHT+IFLXrNiZk5Qdhzc7Fz88jUdKWeXWiWkINHgJ30XNSzlO3qSJhjA+RUPQ+2BtUmFzNc59HQsdQ==
+X-Received: by 2002:a17:906:c105:b0:a3f:52dc:786b with SMTP id do5-20020a170906c10500b00a3f52dc786bmr140285ejc.23.1708500078714;
+        Tue, 20 Feb 2024 23:21:18 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.116])
+        by smtp.gmail.com with ESMTPSA id vi8-20020a170907d40800b00a3d61775382sm4653366ejc.0.2024.02.20.23.21.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Feb 2024 23:21:18 -0800 (PST)
+Message-ID: <5d8a4ee4-2657-4750-8263-af1baae2c91e@linaro.org>
+Date: Wed, 21 Feb 2024 08:21:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] dt-bindings: Add post-init-supplier property
+Content-Language: en-US
+To: Saravana Kannan <saravanak@google.com>
+Cc: Conor Dooley <conor@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>, Len Brown <lenb@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, kernel-team@android.com,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
+References: <20240212213147.489377-1-saravanak@google.com>
+ <20240212213147.489377-4-saravanak@google.com>
+ <20240214-stable-anytime-b51b898d87af@spud>
+ <CAGETcx-tBjfaLQqmGW=ap2N5FLK_gvTzxskA6sVsr_SUEpvomA@mail.gmail.com>
+ <b7fcb71a-e3bf-4f50-89d6-caff9f3303dc@linaro.org>
+ <CAGETcx8XBj=vh_e3vyXuj8oQYA3UC4uy9h9K2OmwBxZ2G_ms9Q@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAGETcx8XBj=vh_e3vyXuj8oQYA3UC4uy9h9K2OmwBxZ2G_ms9Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2024-02-20 at 16:39 -0800, Saravana Kannan wrote:
-> On Wed, Feb 14, 2024 at 4:48=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
-om> wrote:
-> >=20
-> > On Tue, 2024-02-13 at 19:44 -0800, Saravana Kannan wrote:
-> > > On Tue, Feb 13, 2024 at 6:57=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gma=
-il.com> wrote:
-> > > >=20
-> > > > On Tue, 2024-02-13 at 08:51 -0600, Rob Herring wrote:
-> > > > > On Mon, Feb 12, 2024 at 01:10:27PM +0100, Nuno S=C3=A1 wrote:
-> > > > > > On Mon, 2024-02-05 at 13:09 +0100, Nuno Sa wrote:
-> > > > > > > Device links will drop their supplier + consumer refcounts
-> > > > > > > asynchronously. That means that the refcount of the of_node a=
-ttached
-> > > > > > > to
-> > > > > > > these devices will also be dropped asynchronously and so we c=
-annot
-> > > > > > > guarantee the DT overlay assumption that the of_node refcount=
- must be
-> > > > > > > 1 in
-> > > > > > > __of_changeset_entry_destroy().
-> > > > > > >=20
-> > > > > > > Given the above, call the new fwnode_links_flush_queue() help=
-er to
-> > > > > > > flush
-> > > > > > > the devlink workqueue so we can be sure that all links are dr=
-opped
-> > > > > > > before
-> > > > > > > doing the proper checks.
-> > > > > > >=20
-> > > > > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > > > > > ---
-> > > > > > > =C2=A0drivers/of/dynamic.c | 8 ++++++++
-> > > > > > > =C2=A01 file changed, 8 insertions(+)
-> > > > > > >=20
-> > > > > > > diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-> > > > > > > index 3bf27052832f..b7153c72c9c9 100644
-> > > > > > > --- a/drivers/of/dynamic.c
-> > > > > > > +++ b/drivers/of/dynamic.c
-> > > > > > > @@ -14,6 +14,7 @@
-> > > > > > > =C2=A0#include <linux/slab.h>
-> > > > > > > =C2=A0#include <linux/string.h>
-> > > > > > > =C2=A0#include <linux/proc_fs.h>
-> > > > > > > +#include <linux/fwnode.h>
-> > > > > > >=20
-> > > > > > > =C2=A0#include "of_private.h"
-> > > > > > >=20
-> > > > > > > @@ -518,6 +519,13 @@ EXPORT_SYMBOL(of_changeset_create_node);
-> > > > > > >=20
-> > > > > > > =C2=A0static void __of_changeset_entry_destroy(struct of_chan=
-geset_entry
-> > > > > > > *ce)
-> > > > > > > =C2=A0{
-> > > > > > > + /*
-> > > > > > > +=C2=A0 * device links drop their device references (and henc=
-e their
-> > > > > > > of_node
-> > > > > > > +=C2=A0 * references) asynchronously on a dedicated workqueue=
-. Hence we
-> > > > > > > need
-> > > > > > > +=C2=A0 * to flush it to make sure everything is done before =
-doing the
-> > > > > > > below
-> > > > > > > +=C2=A0 * checks.
-> > > > > > > +=C2=A0 */
-> > > > > > > + fwnode_links_flush_queue();
-> > > > > > > =C2=A0 if (ce->action =3D=3D OF_RECONFIG_ATTACH_NODE &&
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 of_node_check_flag(ce->np, OF_=
-OVERLAY)) {
-> > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (kr=
-ef_read(&ce->np->kobj.kref) > 1) {
-> > > > > > >=20
-> > > > > >=20
-> > > > > > Hi Rob and Frank,
-> > > > > >=20
-> > > > > > Any way you could take a look at this and see if you're ok with=
- the
-> > > > > > change
-> > > > > > in the
-> > > > > > overlay code?
-> > > > > >=20
-> > > > > > On the devlink side , we already got the ok from Rafael.
-> > > > >=20
-> > > > > Didn't Saravana say he was going to look at this? As of yesterday=
-, he's
-> > > > > also a DT maintainer so deferring to him.
-> > > > >=20
-> > > >=20
-> > > > Yeah, I did asked him but I guess he never had the time for it... S=
-aravana,
-> > > > could you please give some feedback on this? I think the most sensi=
-ble part
-> > > > is
-> > > > on the devlink side but I assume this is not going to be merged wit=
-hout an
-> > > > ack
-> > > > from a DT maintainer...
-> > >=20
-> > > Sorry for the delay Nuno. I'll get to this. I promise. This week is a=
- bit
-> > > busy.
-> > >=20
-> >=20
-> > No worries. Just making sure it's not forgotten :)
->=20
-> Hi Nuno,
->=20
-> Thanks for nudging me about this issue.
->=20
-> I replied to a similar patch series that Herve sent out last year.
-> Chose to reply to that because it had fewer issues to fix and Herve
-> sent it out a while ago.
+On 21/02/2024 05:07, Saravana Kannan wrote:
+>>
+>> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+>>
+>> I assume you develop on some older trees, because both next and v6.8-rc1
+>> work... or standard issues: old dtschema, old yamllint.
+>>
+>> I am afraid you do it for some old Android kernel... :(
+> 
+> No, I always develop on Linus's tree and test it on an android kernel
+> that's behind Linus's tree by a month or so.
+> 
+> My yamllint version is 1.32.0, but until 2 weeks ago the latest
+> yamllint version was 1.33.0.
+> 
+> And dt-schema is  2022.08.2-5 and I had to revert this from Linus's
+> tree to get it to work:
+> b32dcf23a03e dt-bindings: Drop kernel copy of common reserved-memory bindings
+> 
+> Unfortunately, AFAIK, I don't have permissions to change the package
+> repo, so can't really install a newer version.
 
-Ehehe, FWIW, I did sent it out before I believe:
+pip packages are by default per user, so why you cannot install updated
+dtschema?
 
-https://lore.kernel.org/lkml/20231127-fix-device-links-overlays-v1-1-d7438f=
-56d025@analog.com/
-
-I just got no attention and it took some time until I got some feedback (I =
-also
-pushed for it with resends). If you follow the links in the cover, you'll s=
-ee I first
-started (and spotted the issue) the effort in May last year.
-
-That said, I'm more than fine with whatever series is taken. I just care ab=
-out the
-problem being solved :)
-
-- Nuno S=C3=A1
+Best regards,
+Krzysztof
 
 
