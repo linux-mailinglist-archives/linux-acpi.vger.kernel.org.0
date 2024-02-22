@@ -1,336 +1,274 @@
-Return-Path: <linux-acpi+bounces-3854-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3855-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7461285F869
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 13:41:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBECB85F929
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 14:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A6F1F24201
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 12:41:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6131A1F26CAD
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 13:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F119A12DD97;
-	Thu, 22 Feb 2024 12:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="k1rGqdtO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D9112EBD4;
+	Thu, 22 Feb 2024 13:10:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2076.outbound.protection.outlook.com [40.107.93.76])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA63F9ED;
-	Thu, 22 Feb 2024 12:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708605705; cv=fail; b=jCX0urtOIDaIbSifn/kO8p2daiWmGRfaPEGDqdHigThRkj2aE+vO3VKLRcEaWLK364KCkQKjq31/iTA74v7LhSPrtpCKKOwNJRvetwlhWJi3MPPbAIB+9i4OR9DgJKGqoy9G2VT6OL4xY+PsmFVXD0YINRiH2mqcoitNwhlsKCc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708605705; c=relaxed/simple;
-	bh=/8iim6Odnq3bniuyxvsPqDgvjcGqDABgif97Nybskx0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BXfo0dx0iRSH5b8C2R6xc818sGT9bJzGpwWbbaZ+DYD2XNNvSgwfAAT2IZawzYWcnsYYqoiX9BPA8hnOqqgGLrkCjyLfe0bejK4ug/wI4KreUjxcOgWHGz/yIyKGU25YPwRzvVOvD5rDdGuR+LSOQ5BKz24fmcEra1wKeA9eeVk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=k1rGqdtO; arc=fail smtp.client-ip=40.107.93.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X8Ey4PYF+O1xpMc33t5efCYAqB/cQYzJeFGU+NYbxCvM/G1S+ZOurr9bgJc6/ghLInXkBFXDqRmIHmKID3hFROmQTA+u419VR6w8V2lv4jMxFXd+FfkZQAR1XoFQkWKYtmWnEt5FiYDlEHTYRn3rgJsvR7OQLJPKkUK4ceaqVb7LjLLgXeYIv7/OTYiCYaZwETujkrHvYD2unOlnUwNLy0fiBfcUpw4+QRnTsNIEiygaFxVgjYHaqtBjwfignztlILZ1acIrJJzqGqP6g6McDPyEDIKdbAh6LtXEaQ0F7SDRGaV6PIVvsPqpq2aTlWPu1fUIMA2F0MZK7FW4o8e2Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vyh6oaCu+k3fo/EjEA/8BsFuywQUjll2qpTNlLMJvhE=;
- b=iRTfmd+qkuN8RxOh7/bT7OVVly16ILsswxskt6v+YgZ0wi00Cc6Lo4wiFuemmozaJRDKyJYP7jbcyA9oZWqGMRs7wKY/FTNKYRW64cXpD/LM5gINm4mHtRLOtDMSSmlvf2kKo8bsE/EWwB3Conl8QMYoNa1dUjlSDYK0/kI/88k0n3yyynV3o2NiuWP99Oe2sWmmZVYXH3C/O+vqfYOy9DpBzWRNj5BdCyiR/ratEYSvW50N//p26oGDQtRfsnsJdXQDqj5MPo8KUD3ZpkBz3DFSuy+GXZmkf09p5hcVPnOrIoeuEeWJU1Z/LEAu27VjuglLcHwsV14Hru7BPAHhCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vyh6oaCu+k3fo/EjEA/8BsFuywQUjll2qpTNlLMJvhE=;
- b=k1rGqdtO139urIsyTFvCKejm73NE98tMJsyM/+TlvCtSFGoyzhjrdjQY34ouf3iAcaPo5u1IP83Arggalizof1/1eNmGZjR1Yehw78ZwYRoH05EZoIksF1t2C+JDA5SJOrNYH0Gc3DQMJKc1BLCi53czXNPfRJduPNEFHI47l1VRR8hC9E8oa64SoKVdskiXXV0UkNLDd6HExYW9rtozYYKr7KBqky7G/7xhvExmvhvP3Wmv0ulmYBbxFwqinxVssxI0E61OsGBt8kgpv325/KNj/7SL3GMcTRVa7bqG+1TmkR20sszdaxY4Zf59Zrt6YqCfxEncVsx41grohUqibw==
-Received: from BL1PR13CA0298.namprd13.prod.outlook.com (2603:10b6:208:2bc::33)
- by IA1PR12MB6018.namprd12.prod.outlook.com (2603:10b6:208:3d6::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.23; Thu, 22 Feb
- 2024 12:41:40 +0000
-Received: from BL6PEPF0001AB56.namprd02.prod.outlook.com
- (2603:10b6:208:2bc:cafe::be) by BL1PR13CA0298.outlook.office365.com
- (2603:10b6:208:2bc::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.17 via Frontend
- Transport; Thu, 22 Feb 2024 12:41:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB56.mail.protection.outlook.com (10.167.241.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.25 via Frontend Transport; Thu, 22 Feb 2024 12:41:40 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 22 Feb
- 2024 04:41:18 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 22 Feb
- 2024 04:41:18 -0800
-Received: from vidyas-desktop.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Thu, 22 Feb 2024 04:41:13 -0800
-From: Vidya Sagar <vidyas@nvidia.com>
-To: <bhelgaas@google.com>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<will@kernel.org>, <lpieralisi@kernel.org>, <kw@linux.com>,
-	<robh@kernel.org>, <frowand.list@gmail.com>
-CC: <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<devicetree@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
-	<kthota@nvidia.com>, <mmaddireddy@nvidia.com>, <vidyas@nvidia.com>,
-	<sagar.tv@gmail.com>
-Subject: [PATCH V3] PCI: Add support for preserving boot configuration
-Date: Thu, 22 Feb 2024 18:11:10 +0530
-Message-ID: <20240222124110.2681455-1-vidyas@nvidia.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240110030725.710547-3-vidyas@nvidia.com>
-References: <20240110030725.710547-3-vidyas@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3627C3C480;
+	Thu, 22 Feb 2024 13:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708607417; cv=none; b=YBknTdN2iGfOBnbZSBIA2h/0rkK7U2q/gqCQuNDFRsow2u8ieN1WwoIq395ci82J0tZjh0oia0nqnJf61EHm53Ic8zNgHQ5diXwPt0RmpoF7ZRhjhH2NC9O0IEfNASwaM+djYkvCBFS126IpJ2jGqNUwNJHTI9NLz4pD5BvzEnQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708607417; c=relaxed/simple;
+	bh=ZzftmtglKci0zpgxoEpyBLyNZWJSrRUbiNCxtC/QWAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IDcD8uLCI/SEcOdu3D/eq9qxb7YGiJ+2dHTEl4Ybk5dc8QW74ysM+lYKSEm+T0/x2Tvko311PeVB9xBGSetmhQvddXnP3T+vcVlhzZPGO0jpAmNX9CdUATObTjEFUZesTawAcczCl3lLULe/5icrjs4nSweBgrK9LO1Uch4HNjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 7883e718e97da4f2; Thu, 22 Feb 2024 14:10:09 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 3DE6466A2D4;
+	Thu, 22 Feb 2024 14:10:09 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>,
+ LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
+Subject:
+ [PATCH v2.1 1/6] thermal: core: Store zone trips table in struct
+ thermal_zone_device
+Date: Thu, 22 Feb 2024 14:10:09 +0100
+Message-ID: <12405371.O9o76ZdvQC@kreacher>
+In-Reply-To: <1883976.tdWV9SEqCh@kreacher>
+References: <4551531.LvFx2qVVIh@kreacher> <1883976.tdWV9SEqCh@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB56:EE_|IA1PR12MB6018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20e0c21f-e981-46b9-b2c1-08dc33a39e14
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	CunnjSPOpz9Lx6vS6ASsf4GLvpIxfFci8Uc3EuB7qvoW9z+gbV37PHSVDaXKZm6Jtru9z0asF2QzJraJoFSGdqbRil6pgYzyHf+DHEq3ApJcvUfLhlMy+nwBOB9m7U9by/ns5J9SerJc9O3d7Gm+p91sqOqexCSEx0lAEYBkIS23GIAbHfpXXW38NvjtiR9MAFb3nT3XlDxSZ0zvBHtUXYU1/WMIPACGTLxWC7mF3g4SQsKloQKeJgvfWOBBBJ37r5R+chA8e4Wt/gofXmDY162KT6gHTeFIouLN+W5NCE0PVP8h2OhM9pTQGduJbopjgOk6HW/MiN5RzgnAzHh+1TS5z0feEQHs210DvuRorALnGt9hveK4sMSzoTje4C00aiGz9u4kqNge72Kn5bGGFLxjaSokHHtFjZTgEdenyI8VutRvKBTLnez+k61Dm9tfjcWliSOXJqjfBscyQQypXU6HqfbsBf0HZgziaeg4xKRPYC2OTyjBlezw+vymcAcRdilRNLNV30dK+UTiZTV3Z3G+DeYjNzDOkQLnHtHKMefV+uIl68+51oM14c2Y6undejO9wq4HGaeE92wCRgP8TSPd70oMEQzn1EGSYeOsJ1lTOH/kmxd+BpH+2OxYEFpqjoUrMJuvpBu25w3pqcBDHjmHd1xRV7B03VVUTgJfJQE=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(40470700004)(46966006);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2024 12:41:40.1172
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20e0c21f-e981-46b9-b2c1-08dc33a39e14
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB56.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6018
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeeggdegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopedugedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghp
+ thhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=14 Fuz1=14 Fuz2=14
 
-Add support for preserving the boot configuration done by the
-platform firmware per host bridge basis, based on the presence of
-'linux,pci-probe-only' property in the respective PCIe host bridge
-device-tree node. It also unifies the ACPI and DT based boot flows
-in this regard.
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+The current code expects thermal zone creators to pass a pointer to a
+writable trips table to thermal_zone_device_register_with_trips() and
+that trips table is then used by the thermal core going forward.
+
+Consequently, the callers of thermal_zone_device_register_with_trips()
+are required to hold on to the trips table passed to it until the given
+thermal zone is unregistered, at which point the trips table can be
+freed, but at the same time they are not expected to access that table
+directly.  This is both error prone and confusing.
+
+To address it, turn the trips table pointer in struct thermal_zone_device
+into a flex array (counted by its num_trips field), allocate it during
+thermal zone device allocation and copy the contents of the trips table
+supplied by the zone creator (which can be const now) into it, which
+will allow the callers of thermal_zone_device_register_with_trips() to
+drop their trip tables right after the zone registration.
+
+This requires the imx thermal driver to be adjusted to store the new
+temperature in its internal trips table in imx_set_trip_temp(), because
+it will be separate from the core's trips table now and it has to be
+explicitly kept in sync with the latter.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 ---
-V3:
-* Unified ACPI and DT flows as part of addressing Bjorn's review comments
 
-V2:
-* Addressed issues reported by kernel test robot <lkp@intel.com>
+v2 -> v2.1:
+   * Remove the trips table freeing from thermal_of (Daniel).
+   * Add R-by from Daniel.
 
- drivers/acpi/pci_root.c                  | 12 -------
- drivers/pci/controller/pci-host-common.c |  4 ---
- drivers/pci/of.c                         | 22 ++++++++++++
- drivers/pci/probe.c                      | 46 ++++++++++++++++++------
- include/linux/of_pci.h                   |  6 ++++
- 5 files changed, 63 insertions(+), 27 deletions(-)
+v1 -> v2:
+   * Rebase.
+   * Drop all of the redundant trips[] checks against NULL.
+   * Add imx change to still allow it to use its local trips table.
+   * Add R-by from Stanislaw (which is still applicable IMV).
 
-diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-index 84030804a763..ddc2b3e89111 100644
---- a/drivers/acpi/pci_root.c
-+++ b/drivers/acpi/pci_root.c
-@@ -1008,7 +1008,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
- 	int node = acpi_get_node(device->handle);
- 	struct pci_bus *bus;
- 	struct pci_host_bridge *host_bridge;
--	union acpi_object *obj;
- 
- 	info->root = root;
- 	info->bridge = device;
-@@ -1050,17 +1049,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
- 	if (!(root->osc_ext_control_set & OSC_CXL_ERROR_REPORTING_CONTROL))
- 		host_bridge->native_cxl_error = 0;
- 
--	/*
--	 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
--	 * exists and returns 0, we must preserve any PCI resource
--	 * assignments made by firmware for this host bridge.
--	 */
--	obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid, 1,
--				DSM_PCI_PRESERVE_BOOT_CONFIG, NULL);
--	if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
--		host_bridge->preserve_config = 1;
--	ACPI_FREE(obj);
--
- 	acpi_dev_power_up_children_with_adr(device);
- 
- 	pci_scan_child_bus(bus);
-diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
-index 6be3266cd7b5..e2602e38ae45 100644
---- a/drivers/pci/controller/pci-host-common.c
-+++ b/drivers/pci/controller/pci-host-common.c
-@@ -73,10 +73,6 @@ int pci_host_common_probe(struct platform_device *pdev)
- 	if (IS_ERR(cfg))
- 		return PTR_ERR(cfg);
- 
--	/* Do not reassign resources if probe only */
--	if (!pci_has_flag(PCI_PROBE_ONLY))
--		pci_add_flags(PCI_REASSIGN_ALL_BUS);
--
- 	bridge->sysdata = cfg;
- 	bridge->ops = (struct pci_ops *)&ops->pci_ops;
- 	bridge->msi_domain = true;
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 51e3dd0ea5ab..7b553dd83587 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -258,6 +258,28 @@ void of_pci_check_probe_only(void)
- }
- EXPORT_SYMBOL_GPL(of_pci_check_probe_only);
- 
-+/**
-+ * of_pci_bridge_check_probe_only - Return true if the boot configuration
-+ *                                  needs to be preserved
-+ * @node: Device tree node with the domain information.
-+ *
-+ * This function looks for "linux,pci-probe-only" property for a given
-+ * PCIe controller's node and returns true if found. Having this property
-+ * for a PCIe controller ensures that the kernel doesn't re-enumerate and
-+ * reconfigure the BAR resources that are already done by the platform firmware.
-+ * NOTE: The scope of "linux,pci-probe-only" defined within a PCIe bridge device
-+ *       is limited to the hierarchy under that particular bridge device. whereas
-+ *       the scope of "linux,pci-probe-only" defined within chosen node is
-+ *       system wide.
-+ *
-+ * Return: true if the property exists false otherwise.
-+ */
-+bool of_pci_bridge_check_probe_only(struct device_node *node)
-+{
-+	return of_property_read_bool(node, "linux,pci-probe-only");
-+}
-+EXPORT_SYMBOL_GPL(of_pci_bridge_check_probe_only);
-+
- /**
-  * devm_of_pci_get_host_bridge_resources() - Resource-managed parsing of PCI
-  *                                           host bridge resources from DT
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 795534589b98..d62d1f151ba9 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -15,6 +15,7 @@
- #include <linux/cpumask.h>
- #include <linux/aer.h>
- #include <linux/acpi.h>
-+#include <linux/pci-acpi.h>
- #include <linux/hypervisor.h>
- #include <linux/irqdomain.h>
- #include <linux/pm_runtime.h>
-@@ -877,6 +878,28 @@ static void pci_set_bus_msi_domain(struct pci_bus *bus)
- 	dev_set_msi_domain(&bus->dev, d);
- }
- 
-+static void pci_check_config_preserve(struct pci_host_bridge *host_bridge)
-+{
-+	if (&host_bridge->dev) {
-+		union acpi_object *obj;
-+
-+		/*
-+		 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
-+		 * exists and returns 0, we must preserve any PCI resource
-+		 * assignments made by firmware for this host bridge.
-+		 */
-+		obj = acpi_evaluate_dsm(ACPI_HANDLE(&host_bridge->dev), &pci_acpi_dsm_guid, 1,
-+					DSM_PCI_PRESERVE_BOOT_CONFIG, NULL);
-+		if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
-+			host_bridge->preserve_config = 1;
-+		ACPI_FREE(obj);
-+	}
-+
-+	if (host_bridge->dev.parent && host_bridge->dev.parent->of_node)
-+		host_bridge->preserve_config =
-+			of_pci_bridge_check_probe_only(host_bridge->dev.parent->of_node);
-+}
-+
- static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- {
- 	struct device *parent = bridge->dev.parent;
-@@ -971,6 +994,9 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
- 	if (nr_node_ids > 1 && pcibus_to_node(bus) == NUMA_NO_NODE)
- 		dev_warn(&bus->dev, "Unknown NUMA node; performance will be reduced\n");
- 
-+	/* Check if the boot configuration by FW needs to be preserved */
-+	pci_check_config_preserve(bridge);
-+
- 	/* Coalesce contiguous windows */
- 	resource_list_for_each_entry_safe(window, n, &resources) {
- 		if (list_is_last(&window->node, &resources))
-@@ -3080,20 +3106,18 @@ int pci_host_probe(struct pci_host_bridge *bridge)
- 
- 	bus = bridge->bus;
- 
-+	/* If we must preserve the resource configuration, claim now */
-+	if (pci_has_flag(PCI_PROBE_ONLY) || bridge->preserve_config)
-+		pci_bus_claim_resources(bus);
-+
- 	/*
--	 * We insert PCI resources into the iomem_resource and
--	 * ioport_resource trees in either pci_bus_claim_resources()
--	 * or pci_bus_assign_resources().
-+	 * Assign whatever was left unassigned. If we didn't claim above,
-+	 * this will reassign everything.
- 	 */
--	if (pci_has_flag(PCI_PROBE_ONLY)) {
--		pci_bus_claim_resources(bus);
--	} else {
--		pci_bus_size_bridges(bus);
--		pci_bus_assign_resources(bus);
-+	pci_assign_unassigned_root_bus_resources(bus);
- 
--		list_for_each_entry(child, &bus->children, node)
--			pcie_bus_configure_settings(child);
--	}
-+	list_for_each_entry(child, &bus->children, node)
-+		pcie_bus_configure_settings(child);
- 
- 	pci_bus_add_devices(bus);
- 	return 0;
-diff --git a/include/linux/of_pci.h b/include/linux/of_pci.h
-index 29658c0ee71f..9e045de3be44 100644
---- a/include/linux/of_pci.h
-+++ b/include/linux/of_pci.h
-@@ -13,6 +13,7 @@ struct device_node *of_pci_find_child_device(struct device_node *parent,
- 					     unsigned int devfn);
- int of_pci_get_devfn(struct device_node *np);
- void of_pci_check_probe_only(void);
-+bool of_pci_bridge_check_probe_only(struct device_node *node);
- #else
- static inline struct device_node *of_pci_find_child_device(struct device_node *parent,
- 					     unsigned int devfn)
-@@ -26,6 +27,11 @@ static inline int of_pci_get_devfn(struct device_node *np)
- }
- 
- static inline void of_pci_check_probe_only(void) { }
-+
-+static inline bool of_pci_bridge_check_probe_only(struct device_node *node)
-+{
-+	return false;
-+}
+---
+ drivers/thermal/imx_thermal.c  |    1 +
+ drivers/thermal/thermal_core.c |   17 ++++++++---------
+ drivers/thermal/thermal_of.c   |    2 --
+ drivers/thermal/thermal_trip.c |    2 +-
+ include/linux/thermal.h        |   10 +++++-----
+ 5 files changed, 15 insertions(+), 17 deletions(-)
+
+Index: linux-pm/include/linux/thermal.h
+===================================================================
+--- linux-pm.orig/include/linux/thermal.h
++++ linux-pm/include/linux/thermal.h
+@@ -137,7 +137,6 @@ struct thermal_cooling_device {
+  * @trip_hyst_attrs:	attributes for trip points for sysfs: trip hysteresis
+  * @mode:		current mode of this thermal zone
+  * @devdata:	private pointer for device private data
+- * @trips:	an array of struct thermal_trip
+  * @num_trips:	number of trip points the thermal zone supports
+  * @passive_delay_jiffies: number of jiffies to wait between polls when
+  *			performing passive cooling.
+@@ -167,6 +166,7 @@ struct thermal_cooling_device {
+  * @poll_queue:	delayed work for polling
+  * @notify_event: Last notification event
+  * @suspended: thermal zone suspend indicator
++ * @trips:	array of struct thermal_trip objects
+  */
+ struct thermal_zone_device {
+ 	int id;
+@@ -179,7 +179,6 @@ struct thermal_zone_device {
+ 	struct thermal_attr *trip_hyst_attrs;
+ 	enum thermal_device_mode mode;
+ 	void *devdata;
+-	struct thermal_trip *trips;
+ 	int num_trips;
+ 	unsigned long passive_delay_jiffies;
+ 	unsigned long polling_delay_jiffies;
+@@ -200,10 +199,11 @@ struct thermal_zone_device {
+ 	struct list_head node;
+ 	struct delayed_work poll_queue;
+ 	enum thermal_notify_event notify_event;
++	bool suspended;
+ #ifdef CONFIG_THERMAL_DEBUGFS
+ 	struct thermal_debugfs *debugfs;
  #endif
+-	bool suspended;
++	struct thermal_trip trips[] __counted_by(num_trips);
+ };
  
- #if IS_ENABLED(CONFIG_OF_IRQ)
--- 
-2.25.1
+ /**
+@@ -322,7 +322,7 @@ int thermal_zone_get_crit_temp(struct th
+ #ifdef CONFIG_THERMAL
+ struct thermal_zone_device *thermal_zone_device_register_with_trips(
+ 					const char *type,
+-					struct thermal_trip *trips,
++					const struct thermal_trip *trips,
+ 					int num_trips, void *devdata,
+ 					struct thermal_zone_device_ops *ops,
+ 					const struct thermal_zone_params *tzp,
+@@ -381,7 +381,7 @@ void thermal_zone_device_critical(struct
+ #else
+ static inline struct thermal_zone_device *thermal_zone_device_register_with_trips(
+ 					const char *type,
+-					struct thermal_trip *trips,
++					const struct thermal_trip *trips,
+ 					int num_trips, void *devdata,
+ 					struct thermal_zone_device_ops *ops,
+ 					const struct thermal_zone_params *tzp,
+Index: linux-pm/drivers/thermal/thermal_core.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_core.c
++++ linux-pm/drivers/thermal/thermal_core.c
+@@ -1227,9 +1227,6 @@ int thermal_zone_get_crit_temp(struct th
+ 	if (tz->ops->get_crit_temp)
+ 		return tz->ops->get_crit_temp(tz, temp);
+ 
+-	if (!tz->trips)
+-		return -EINVAL;
+-
+ 	mutex_lock(&tz->lock);
+ 
+ 	for (i = 0; i < tz->num_trips; i++) {
+@@ -1271,10 +1268,12 @@ EXPORT_SYMBOL_GPL(thermal_zone_get_crit_
+  * IS_ERR*() helpers.
+  */
+ struct thermal_zone_device *
+-thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *trips, int num_trips,
+-					void *devdata, struct thermal_zone_device_ops *ops,
+-					const struct thermal_zone_params *tzp, int passive_delay,
+-					int polling_delay)
++thermal_zone_device_register_with_trips(const char *type,
++					const struct thermal_trip *trips,
++					int num_trips, void *devdata,
++					struct thermal_zone_device_ops *ops,
++					const struct thermal_zone_params *tzp,
++					int passive_delay, int polling_delay)
+ {
+ 	struct thermal_zone_device *tz;
+ 	int id;
+@@ -1308,7 +1307,7 @@ thermal_zone_device_register_with_trips(
+ 	if (!thermal_class)
+ 		return ERR_PTR(-ENODEV);
+ 
+-	tz = kzalloc(sizeof(*tz), GFP_KERNEL);
++	tz = kzalloc(struct_size(tz, trips, num_trips), GFP_KERNEL);
+ 	if (!tz)
+ 		return ERR_PTR(-ENOMEM);
+ 
+@@ -1340,7 +1339,7 @@ thermal_zone_device_register_with_trips(
+ 	tz->ops = ops;
+ 	tz->device.class = thermal_class;
+ 	tz->devdata = devdata;
+-	tz->trips = trips;
++	memcpy(tz->trips, trips, num_trips * sizeof(*trips));
+ 	tz->num_trips = num_trips;
+ 
+ 	thermal_set_delay_jiffies(&tz->passive_delay_jiffies, passive_delay);
+Index: linux-pm/drivers/thermal/imx_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/imx_thermal.c
++++ linux-pm/drivers/thermal/imx_thermal.c
+@@ -355,6 +355,7 @@ static int imx_set_trip_temp(struct ther
+ 		return -EINVAL;
+ 
+ 	imx_set_alarm_temp(data, temp);
++	trips[IMX_TRIP_PASSIVE].temperature = temp;
+ 
+ 	pm_runtime_put(data->dev);
+ 
+Index: linux-pm/drivers/thermal/thermal_trip.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_trip.c
++++ linux-pm/drivers/thermal/thermal_trip.c
+@@ -122,7 +122,7 @@ void __thermal_zone_set_trips(struct the
+ int __thermal_zone_get_trip(struct thermal_zone_device *tz, int trip_id,
+ 			    struct thermal_trip *trip)
+ {
+-	if (!tz || !tz->trips || trip_id < 0 || trip_id >= tz->num_trips || !trip)
++	if (!tz || trip_id < 0 || trip_id >= tz->num_trips || !trip)
+ 		return -EINVAL;
+ 
+ 	*trip = tz->trips[trip_id];
+Index: linux-pm/drivers/thermal/thermal_of.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_of.c
++++ linux-pm/drivers/thermal/thermal_of.c
+@@ -440,12 +440,10 @@ static int thermal_of_unbind(struct ther
+  */
+ static void thermal_of_zone_unregister(struct thermal_zone_device *tz)
+ {
+-	struct thermal_trip *trips = tz->trips;
+ 	struct thermal_zone_device_ops *ops = tz->ops;
+ 
+ 	thermal_zone_device_disable(tz);
+ 	thermal_zone_device_unregister(tz);
+-	kfree(trips);
+ 	kfree(ops);
+ }
+ 
+
+
 
 
