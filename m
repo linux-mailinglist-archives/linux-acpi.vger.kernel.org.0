@@ -1,72 +1,72 @@
-Return-Path: <linux-acpi+bounces-3818-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3819-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5736185F012
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 04:47:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB66985F014
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 04:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C17251F21776
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 03:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A801C22B6D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 03:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9461947B;
-	Thu, 22 Feb 2024 03:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C00E1B7E7;
+	Thu, 22 Feb 2024 03:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Qhk18JYI"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eKdfwIsH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88911862A
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 03:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02A01B59C
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 03:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708573598; cv=none; b=sClGJE1rt9fHtz2pd0n98Ywyw8SCrr+WtgqAdXdZsC1SR8HD8CwUlN7S24rTtHqiEyata5ck/zSEb7vGQpb00svdyNhkkQk8+X/9AwwQLWRLVY0xo9svii0sSd/qRzgCCt81+G40SM/y3LaWktEkbBZzvWTV9DT5gPUTP1VX95Y=
+	t=1708573601; cv=none; b=kKlA74FGh1t+i/HzmenHR7qFO/6QpuNtAfv7jHC/u8hgTUdXcjgWSMccp42eKNOR2tH9M6RCdfMTCNK2nI/EfNZVyAk4XjQd+DOIwWHZkZ7fZ1DApreTCLhWd7LxNlHtbC0QfQjY/Lx+tngquR/aZauCgtmBO4HWMf6EcGFjRGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708573598; c=relaxed/simple;
-	bh=/z8Eu/KeLJ7IbgMJCENA0qx1maElopa30GOhgYXJfiQ=;
+	s=arc-20240116; t=1708573601; c=relaxed/simple;
+	bh=cp0XJ1vg7N+tq7T/hQqrmLoRlQ0Tu1sLQF3XCorNNhs=;
 	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=FUjGxL9nYaWpNt5JUqT1Wv5oUiruYltnH98KiQfE2g2U5wAvtYdH3Mxeq6QyDO7w3E4A97XKOL+o7bRCjZl/ybr5WbvuHdFyZ7TPev6kGDcQaZJnQPkZe+YeGm+QKZxqIi5QezctQ58wOHDrCPDfJc7uGj8Dl5MGl1HhnNBh/aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Qhk18JYI; arc=none smtp.client-ip=209.85.219.202
+	 To:Cc:Content-Type; b=ZcuSvZeYPWKXa80Jv0PyUE3Gfm0pwjuI9iExDut66c2GvjxMtOFU0DBNrB/Vjb/klVfUuKKxvZQFHm5l0gVfW3ayb1VpDDLXydjxsIjy+i2Gaq7O6AliQvpmluoUAlkHBWRMbpCb/quCMNaDpLk5bPgiCg4a+xXe5fTDdPkkLm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eKdfwIsH; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc657e9bdc4so9637610276.0
-        for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 19:46:35 -0800 (PST)
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc64b659a9cso13234198276.3
+        for <linux-acpi@vger.kernel.org>; Wed, 21 Feb 2024 19:46:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708573595; x=1709178395; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1708573598; x=1709178398; darn=vger.kernel.org;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hz8i/GyBU5B3ALvYkkFzM0iQaG+ZmlRW+5k11B+Bktg=;
-        b=Qhk18JYIGwL3GWM+1Rd5LcpQxWCDDMvoSRBadEndPXts/NfnyFIwS5BTkz9TnHF+ef
-         udacYejdBUnvuRa1naCEirLw6crLMjA5CVNfxhveuNK4iTu0A3rpNxusk6/gPRBGvg9J
-         wiZFepL3apuxJu9TbmhrnzYnvy5uSRCio5Ejek/akPWfrajT96v10RURaS/wsgc8roTc
-         CBjKXenOBc7q7jipaM8ak19oHx4LCNr3Fj+iYpRwkbhMxu+x50eIuUCkM+YlbpbMiMeW
-         3V5TYr6m/sI545Yqu7+sJDVYHMqX1lth7/+/HXTTd9/1t3bBvNEn2wsJ5fYodRsrQ0ch
-         hitA==
+        bh=wH33w5aG2BffksVtrB54fX5fBHp+P/Q2DjXoHgc9nyE=;
+        b=eKdfwIsH5w8eFcUFGOrDNG/nCGjXPZf/pnkbbo2V+M9kBdTsxftXqvex1bZH3QyPej
+         vf5qtS1JqXIFAxAKDryQ3FdMVe6Mp+0bq/8FakzEjuZ6Ayub6tPlOUjT267kX4ZXMWe1
+         OVgbXZVa9Koexehbjaw2ii3FHjPNqATNH3DqUJwaQ7ORk+WovRD8rb/d+jknFyyxFFwA
+         nWq3UA2LLLkKlzygJIKHDrR0Vj5AdeuXqgQvGe7tJ6P0tkyO0ECvctCa/9cKqJQpvFbM
+         2dAbDJMzfQWssNIDHl5xALh9sYW4wMQ0iiw5i9lvYtzMDQGjc7nG8a5ZB2zfrmHCbW4P
+         mo8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708573595; x=1709178395;
+        d=1e100.net; s=20230601; t=1708573598; x=1709178398;
         h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hz8i/GyBU5B3ALvYkkFzM0iQaG+ZmlRW+5k11B+Bktg=;
-        b=r0lW1fAWBrowQpydKhSqwdcBZOAZ1YKaP59LW5u3vwM3qSprEGQlPakMM1VX3Mmvqp
-         +EJgpTgZnVBiFFIMvUGSitlslLh+E4dCXVwpFNSchfMVEIswbipmfz8d3HtmzKASWuzc
-         +WgK5YLa4aqqfzZZRi/2dBfRRgyBU14cAFykHtJaA6CvXZjAJTZ/ll2/ZGmIz6HJEQt3
-         L0rGECMfL1PzuQGWtW84pH1RZmUbG3XjBnrHyrj6EKcZpcNSdOGfuR4IFq9M4quVoeCf
-         uP6mfPcQ+CSAIsNJwcjOZ9YKjRbIWBCnDS4qVV0mNkehe3ZJd5HCarzo6VAuzkA8xdDT
-         iskg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbZsV+GewX41wjFwoWNg28DdGZa0qjaHIqM1X97GEaoSwkISh35l65V2kTftcATpojKMySfbZS5NMK3o+ZYkZiSFq2h6KT1dUGvw==
-X-Gm-Message-State: AOJu0Yz4m9+6bUADyoIadqiTN0swTvwlBiP2fzGOj4j8oqcmzc/1zAqh
-	EUQzl6NubWl31ZeOGzc/XtOFrC9D3q8eCiztlLiU2fENHTHpWlGIAzqBROo84OeVkqzDBndlKw0
-	62ocWh3yQ7ejhug==
-X-Google-Smtp-Source: AGHT+IF3QQPEtZbXiIqHornd0y/4FT86dntj5KuKg8uawdGZql13WDvoR73iyo2QI20QtUg6WnsI1hRNMe7av2k=
+        bh=wH33w5aG2BffksVtrB54fX5fBHp+P/Q2DjXoHgc9nyE=;
+        b=v4C+Z4vKQzfj0T//vNUEiS25/CMRToZ+QyE3/lTTe7OXp3conXJnXLEPR2m6/O59H7
+         01VfmCREwZPHsijMvF3qn1ndHQhBUoUsXpWrIU+4kQApWZb7EVAHkcetbmhKw1UmuLcW
+         uEqokuEdGRPYgH1vxRPmzjMAz4BOMgGt02ahyLWMSQQrOjPNxASoLQSAcTox6me4cKCO
+         NtgBphJ1koSE3q4I46wFj9AS9OceyDTL7j5KmjAKiZf3xnkRrYgHeMLdsWGQG3XKZM7E
+         qABmYRQy5PFe7+UUrOx6hRUgiooOyOIxhEuWy0cLlvHks5ZLcXHnBIdr3fgRq0zn5tuX
+         3PNw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3iOa7CMraYAxhXckCLhHKITc8x8ax455Fuddu68C86MhOHifCPjj0tCB3TqcqmX0CS4PgoHsMBO9uML9GXEC/T2h+qgx9aYCFEQ==
+X-Gm-Message-State: AOJu0YzDI04HPS+HWgBRK6Pbw7XQaFbYRP6I83qGU7K5hOdqlN9kMS3e
+	w1s0iRKGClYnMC8BMmEEoA0RllIMnsLLtM+00ZHeOfx+/FxYncVcq6Zqtmyseds2jUQwHaz5YE6
+	snyvYnIXlBYvE5g==
+X-Google-Smtp-Source: AGHT+IECAd++kNqbj7P3O+ZaufolEwh1k0tAwEFsFNnN5Q1YIPOlFxgE+MiOrvGczCSWeJaEYcSnAoQ6Lx71cos=
 X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:451c:c6c5:1fb1:a2a1])
- (user=saravanak job=sendgmr) by 2002:a05:6902:1891:b0:dc6:e20f:80cb with SMTP
- id cj17-20020a056902189100b00dc6e20f80cbmr69205ybb.3.1708573594920; Wed, 21
- Feb 2024 19:46:34 -0800 (PST)
-Date: Wed, 21 Feb 2024 19:46:20 -0800
+ (user=saravanak job=sendgmr) by 2002:a25:ef09:0:b0:dc6:53c3:bcbd with SMTP id
+ g9-20020a25ef09000000b00dc653c3bcbdmr325368ybd.7.1708573598675; Wed, 21 Feb
+ 2024 19:46:38 -0800 (PST)
+Date: Wed, 21 Feb 2024 19:46:21 -0800
 In-Reply-To: <20240222034624.2970024-1-saravanak@google.com>
-Message-Id: <20240222034624.2970024-3-saravanak@google.com>
+Message-Id: <20240222034624.2970024-4-saravanak@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,8 +75,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240222034624.2970024-1-saravanak@google.com>
 X-Mailer: git-send-email 2.44.0.rc0.258.g7320e95886-goog
-Subject: [PATCH v4 2/4] driver core: Add FWLINK_FLAG_IGNORE to completely
- ignore a fwnode link
+Subject: [PATCH v4 3/4] dt-bindings: Add post-init-providers property
 From: Saravana Kannan <saravanak@google.com>
 To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -90,73 +89,160 @@ Cc: kernel-team@android.com, linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-A fwnode link between specific supplier-consumer fwnodes can be added
-multiple times for multiple reasons. If that dependency doesn't exist,
-deleting the fwnode link once doesn't guarantee that it won't get created
-again.
-
-So, add FWLINK_FLAG_IGNORE flag to mark a fwnode link as one that needs to
-be completely ignored. Since a fwnode link's flags is an OR of all the
-flags passed to all the fwnode_link_add() calls to create that specific
-fwnode link, the FWLINK_FLAG_IGNORE flag is preserved and can be used to
-mark a fwnode link as on that need to be completely ignored until it is
-deleted.
+The post-init-providers property can be used to break a dependency cycle by
+marking some provider(s) as a post device initialization provider(s). This
+allows an OS to do a better job at ordering initialization and
+suspend/resume of the devices in a dependency cycle.
 
 Signed-off-by: Saravana Kannan <saravanak@google.com>
 ---
- drivers/base/core.c    | 9 ++++++++-
- include/linux/fwnode.h | 2 ++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
+ MAINTAINERS                                   |  13 ++-
+ 2 files changed, 112 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index adeff041d472..fac017657d25 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1012,7 +1012,8 @@ static struct fwnode_handle *fwnode_links_check_suppliers(
- 		return NULL;
- 
- 	list_for_each_entry(link, &fwnode->suppliers, c_hook)
--		if (!(link->flags & FWLINK_FLAG_CYCLE))
-+		if (!(link->flags &
-+		      (FWLINK_FLAG_CYCLE | FWLINK_FLAG_IGNORE)))
- 			return link->supplier;
- 
- 	return NULL;
-@@ -1963,6 +1964,9 @@ static bool __fw_devlink_relax_cycles(struct device *con,
- 	}
- 
- 	list_for_each_entry(link, &sup_handle->suppliers, c_hook) {
-+		if (link->flags & FWLINK_FLAG_IGNORE)
-+			continue;
+diff --git a/Documentation/devicetree/bindings/post-init-providers.yaml b/Documentation/devicetree/bindings/post-init-providers.yaml
+new file mode 100644
+index 000000000000..92eb9a027443
+--- /dev/null
++++ b/Documentation/devicetree/bindings/post-init-providers.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright (c) 2020, Google LLC. All rights reserved.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/post-init-providers.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 		if (__fw_devlink_relax_cycles(con, link->supplier)) {
- 			__fwnode_link_cycle(link);
- 			ret = true;
-@@ -2041,6 +2045,9 @@ static int fw_devlink_create_devlink(struct device *con,
- 	int ret = 0;
- 	u32 flags;
- 
-+	if (link->flags & FWLINK_FLAG_IGNORE)
-+		return 0;
++title: Post device initialization providers
 +
- 	if (con->fwnode == link->consumer)
- 		flags = fw_devlink_get_flags(link->flags);
- 	else
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index c964749953e3..21699eee9641 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -53,8 +53,10 @@ struct fwnode_handle {
-  * fwnode link flags
-  *
-  * CYCLE:	The fwnode link is part of a cycle. Don't defer probe.
-+ * IGNORE:	Completely ignore this link, even during cycle detection.
-  */
- #define FWLINK_FLAG_CYCLE			BIT(0)
-+#define FWLINK_FLAG_IGNORE			BIT(1)
++maintainers:
++  - Saravana Kannan <saravanak@google.com>
++
++description: |
++  This property is used to indicate that the device(s) pointed to by the
++  property are not needed for the initialization of the device that lists this
++  property. This property does not make a device (that's previously not a
++  provider) into a provider. It simply downgrades an existing provider to a
++  post device initialization provider.
++
++  A device can list its providers in devicetree using one or more of the
++  standard devicetree bindings. By default, it is assumed that the provider
++  device can be initialized before the consumer device is initialized.
++
++  However, that assumption cannot be made when there are cyclic dependencies
++  between devices. Since each device is a provider (directly or indirectly) of
++  the others in the cycle, there is no guaranteed safe order for initializing
++  the devices in a cycle. We can try to initialize them in an arbitrary order
++  and eventually successfully initialize all of them, but that doesn't always
++  work well.
++
++  For example, say,
++  * The device tree has the following cyclic dependency X -> Y -> Z -> X (where
++    -> denotes "depends on").
++  * But X is not needed to fully initialize Z (X might be needed only when a
++    specific functionality is requested post initialization).
++
++  If all the other -> are mandatory initialization dependencies, then trying to
++  initialize the devices in a loop (or arbitrarily) will always eventually end
++  up with the devices being initialized in the order Z, Y and X.
++
++  However, if Y is an optional provider for X (where X provides limited
++  functionality when Y is not initialized and providing its services), then
++  trying to initialize the devices in a loop (or arbitrarily) could end up with
++  the devices being initialized in the following order:
++
++  * Z, Y and X - All devices provide full functionality
++  * Z, X and Y - X provides partial functionality
++  * X, Z and Y - X provides partial functionality
++
++  However, we always want to initialize the devices in the order Z, Y and X
++  since that provides the full functionality without interruptions.
++
++  One alternate option that might be suggested is to have the driver for X
++  notice that Y became available at a later point and adjust the functionality
++  it provides. However, other userspace applications could have started using X
++  with the limited functionality before Y was available and it might not be
++  possible to transparently transition X or the users of X to full
++  functionality while X is in use.
++
++  Similarly, when it comes to suspend (resume) ordering, it's unclear which
++  device in a dependency cycle needs to be suspended/resumed first and trying
++  arbitrary orders can result in system crashes or instability.
++
++  Explicitly calling out which link in a cycle needs to be broken when
++  determining the order, simplifies things a lot, improves efficiency, makes
++  the behavior more deterministic and maximizes the functionality that can be
++  provided without interruption.
++
++  This property is used to provide this additional information between devices
++  in a cycle by telling which provider(s) is not needed for initializing the
++  device that lists this property.
++
++  In the example above, Z would list X as a post-init-providers and the
++  initialization dependency would become X -> Y -> Z -/-> X. So the best order
++  to initialize them becomes clear: Z, Y and then X.
++
++select: true
++
++properties:
++  post-init-providers:
++    # One or more providers can be marked as post initialization provider
++    description:
++      List of phandles to providers that are not needed for initializing or
++      resuming this device.
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    items:
++      maxItems: 1
++
++additionalProperties: true
++
++examples:
++  - |
++    gcc: clock-controller@1000 {
++        compatible = "vendor,soc4-gcc", "vendor,soc1-gcc";
++        reg = <0x1000 0x80>;
++        clocks = <&dispcc 0x1>;
++        #clock-cells = <1>;
++        post-init-providers = <&dispcc>;
++    };
++    dispcc: clock-controller@2000 {
++        compatible = "vendor,soc4-dispcc", "vendor,soc1-dispcc";
++        reg = <0x2000 0x80>;
++        clocks = <&gcc 0xdd>;
++        #clock-cells = <1>;
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9ed4d3868539..feec740239c9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6060,12 +6060,6 @@ S:	Maintained
+ F:	drivers/base/devcoredump.c
+ F:	include/linux/devcoredump.h
  
- struct fwnode_link {
- 	struct fwnode_handle *supplier;
+-DEVICE DEPENDENCY HELPER SCRIPT
+-M:	Saravana Kannan <saravanak@google.com>
+-L:	linux-kernel@vger.kernel.org
+-S:	Maintained
+-F:	scripts/dev-needs.sh
+-
+ DEVICE DIRECT ACCESS (DAX)
+ M:	Dan Williams <dan.j.williams@intel.com>
+ M:	Vishal Verma <vishal.l.verma@intel.com>
+@@ -8300,6 +8294,13 @@ F:	include/linux/firewire.h
+ F:	include/uapi/linux/firewire*.h
+ F:	tools/firewire/
+ 
++FIRMWARE DEVICE LINK (fw_devlink)
++M:	Saravana Kannan <saravanak@google.com>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/post-init-providers.yaml
++F:	scripts/dev-needs.sh
++
+ FIRMWARE FRAMEWORK FOR ARMV8-A
+ M:	Sudeep Holla <sudeep.holla@arm.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
 -- 
 2.44.0.rc0.258.g7320e95886-goog
 
