@@ -1,121 +1,107 @@
-Return-Path: <linux-acpi+bounces-3874-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3867-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AE38601FF
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 19:57:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E71860280
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 20:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5592A1C25DF4
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 18:57:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 987EEB28169
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 18:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F70A1EA95;
-	Thu, 22 Feb 2024 18:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C4E7173C;
+	Thu, 22 Feb 2024 18:47:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B509E13793D
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 18:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F006E5E1;
+	Thu, 22 Feb 2024 18:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708627976; cv=none; b=mf0v0zYd9dHvEIVhwK5x2AIO+LmZphkx2MkTjeOJpw+CZPEiLgCe+/c8GLal/nqXCTBsmgLfo0l/U9o66ImGvEkzI1B60ve1m2fW62g30uksxQpfbYkQ6VQkATH3QPsVxEKYOAD3+Vf+epW+fgTzu5zZPVRgshvYAM6JR5Kz5/k=
+	t=1708627667; cv=none; b=FlcVVQYpcoQ9vxxDfHhNtzCGKQjwcd4sez0MDHbBWjTTmADyWkoFqcYDOGz9jcdEHVFLTcHB9CQag4e74JfxsxUhwkOTgcyF1rBR4JviX91ctPPvutDKmYpXl43ht5vpn/YlpWVPtZ/3Ug1D5fbrzx4odWoA80jjFgst1qZfWkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708627976; c=relaxed/simple;
-	bh=e/BnsPbUNcAHFTR9McwzEhuDJgjW1zHEVsVkDj6jMYI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DyO/JbSnFPAfOTjER6h1xoPQT6S6iMJBqHgCfuHHpV0wKRMmpBbYr66HHW9ITwjCLIg8enkbKxlTLN6j82Z04qXIythncXI0FeKYllnBN2ZsZCdqyFedvyE2oVi0Ze5Z1ZJb5fBGZUNm9Huu3DqRpBs5jjpNxcBhvRLXPqv0ddg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rdEBb-0003P7-Ua; Thu, 22 Feb 2024 19:52:47 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rdEBb-002HZ3-HU; Thu, 22 Feb 2024 19:52:47 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rdEBb-009dAh-1U;
-	Thu, 22 Feb 2024 19:52:47 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH 7/7] ACPI: pfr_update: Convert to platform remove callback returning void
-Date: Thu, 22 Feb 2024 19:52:39 +0100
-Message-ID:  <322bdb682c4bbcdbe14fef0689851466b631f752.1708627599.git.u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1708627599.git.u.kleine-koenig@pengutronix.de>
-References: <cover.1708627599.git.u.kleine-koenig@pengutronix.de>
+	s=arc-20240116; t=1708627667; c=relaxed/simple;
+	bh=GDp40XzKQ0cQgRksU/oyFZVrTyRlcWTheyhy8HJaaAo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NF4jdWiEift7gy17B6LKvRXreDHnRZ0EuJR+Xkjb0yZR12bJwYRFT6nh0XRIYlTk/FCHLNs4WZnOyYwb2ljmNgrdOHMnMBfDjtTHLcZQ0F5bDqMGG4bAD1/cz7f83sFrXUOCZBg7FbZtNhgX6H8MquO/HFwHKsQInL6Vbfx0vto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TghqC0q26z6J9St;
+	Fri, 23 Feb 2024 02:43:19 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 66F81140119;
+	Fri, 23 Feb 2024 02:47:42 +0800 (CST)
+Received: from localhost (10.195.247.94) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 22 Feb
+ 2024 18:47:41 +0000
+Date: Thu, 22 Feb 2024 18:47:38 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Mika Westerberg
+	<mika.westerberg@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>
+Subject: Re: [PATCH v1 4/4] ACPI: scan: Make acpi_processor_add() check the
+ device enabled bit
+Message-ID: <20240222184738.00000bf7@Huawei.com>
+In-Reply-To: <3298279.44csPzL39Z@kreacher>
+References: <4562925.LvFx2qVVIh@kreacher>
+	<3298279.44csPzL39Z@kreacher>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1699; i=u.kleine-koenig@pengutronix.de; h=from:subject:message-id; bh=e/BnsPbUNcAHFTR9McwzEhuDJgjW1zHEVsVkDj6jMYI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBl15f6FB00xcRSZGODhMUaoDneUf2wvkgDfVI72 ai7+yYZn5eJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZdeX+gAKCRCPgPtYfRL+ ThXuB/wP/WK+2qGfjwoyQWpHBO5KHg5iICW2S1ODbHBI8TJs8ooyS+4GdJy6K5Y2v2S/WMiUSc7 N3hsBlFJpOzmmpqD+sybf0OcrTYn+u8lczfJnH+FaM4pb2vxv/zAgoHM60624WMefeM1Sag6713 04B7uUEGEliFGs9JNNJWVTsDTgMjdM8Pkf90UpPX/pQQl0ph2x/wt1pwEw2Cg+CETTky5V6IJB8 UprPPncSAoS3AOMD5J2QtBs7JrAAfA0xoFhLeMvyWIsVbbIqMAuKQd35areCNt+iyJGbrKs77Uo eaqJmq/WAUEarxXSwna7sp1yH7x5mBJDsptvLA4+uQKh2DQF
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+On Wed, 21 Feb 2024 21:03:17 +0100
+"Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Modify acpi_processor_add() return an error if _STA returns the enabled
+> bit clear for the given processor device, so as to avoid using processors
+> that don't decode their resources, as per the ACPI specification. [1]
+> 
+> Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-device-status # [1]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+This does the job for us so if you are happier with this approach
+that works for me.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/acpi/pfr_update.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/drivers/acpi/pfr_update.c b/drivers/acpi/pfr_update.c
-index 98267f163e2b..8b2910995fc1 100644
---- a/drivers/acpi/pfr_update.c
-+++ b/drivers/acpi/pfr_update.c
-@@ -489,13 +489,11 @@ static const struct file_operations acpi_pfru_fops = {
- 	.llseek		= noop_llseek,
- };
- 
--static int acpi_pfru_remove(struct platform_device *pdev)
-+static void acpi_pfru_remove(struct platform_device *pdev)
- {
- 	struct pfru_device *pfru_dev = platform_get_drvdata(pdev);
- 
- 	misc_deregister(&pfru_dev->miscdev);
--
--	return 0;
- }
- 
- static void pfru_put_idx(void *data)
-@@ -567,7 +565,7 @@ static struct platform_driver acpi_pfru_driver = {
- 		.acpi_match_table = acpi_pfru_ids,
- 	},
- 	.probe = acpi_pfru_probe,
--	.remove = acpi_pfru_remove,
-+	.remove_new = acpi_pfru_remove,
- };
- module_platform_driver(acpi_pfru_driver);
- 
--- 
-2.43.0
+> ---
+>  drivers/acpi/acpi_processor.c |    3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> Index: linux-pm/drivers/acpi/acpi_processor.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/acpi_processor.c
+> +++ linux-pm/drivers/acpi/acpi_processor.c
+> @@ -381,6 +381,9 @@ static int acpi_processor_add(struct acp
+>  	struct device *dev;
+>  	int result = 0;
+>  
+> +	if (!acpi_device_is_enabled(device))
+> +		return -ENODEV;
+> +
+>  	pr = kzalloc(sizeof(struct acpi_processor), GFP_KERNEL);
+>  	if (!pr)
+>  		return -ENOMEM;
+> 
+> 
+> 
 
 
