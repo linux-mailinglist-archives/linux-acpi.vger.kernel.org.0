@@ -1,116 +1,167 @@
-Return-Path: <linux-acpi+bounces-3824-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3825-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FA785F22F
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 08:53:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D3F85F2B4
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 09:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041F81C22CE5
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 07:53:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8CF1F22D07
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 08:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC95F17BCA;
-	Thu, 22 Feb 2024 07:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IWTI03Dk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0364182CF;
+	Thu, 22 Feb 2024 08:22:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012FA17BA2;
-	Thu, 22 Feb 2024 07:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C15748F;
+	Thu, 22 Feb 2024 08:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708588400; cv=none; b=Gg6CRxN9IjKF5CZxtQC2acLam5eHjWJwwDhIjzEp9KKr8nY4p65/Ge4FaXfhitZdQJacIr0OEulPC5BXjddOgmO6RW7RJd/FYh4S51pSYYo16z1eaORgBt2fmTWLAHLzeT04PkNepjFCNw9CyWt0I5vAMxDe6wUSRlNuy2/F/n8=
+	t=1708590124; cv=none; b=agFu70RpVOL9sPZlw4ymHn33sSsSKHpS0k4aTMdZ/cDTAjIWVyjBGAlyP3Usk75jN2ORaIMkl+DRxzu9GDt9SYgwik3zgIHthWSMp2wJ0WhytlErIZc+NH702R7l0JqbbMYN5xpVzeXmyd99wsRAEAbaVr1gRcLwrgNZsj86NmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708588400; c=relaxed/simple;
-	bh=OpWra/EZ0f3kN02EXvLkRDc0JSylAvQfhUnApbno8/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAXtVmaBUKt49mbg5drNK+70TIVEfPZmi6SoNJfcKJSlN1+230UvjMYyHoV2Ph2syjw+YspspcnmmVPlJzF/1fA3tvconWBy9nTlYCktKjksz1MpOhQEjWXyQLt5+Yiq+vyBSjYrIoESk+iqsbZx4Cx4y26dpedeRqZ8OdBNk+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IWTI03Dk; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708588398; x=1740124398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OpWra/EZ0f3kN02EXvLkRDc0JSylAvQfhUnApbno8/A=;
-  b=IWTI03DkcTC0OWi8OffuvmU+33TnqjE80qiv1rRqrXeXyH/q3n15KGJF
-   ytlLQ0ntfE51oppiOkwse10tqPO3ZbpGFKWR117RBqfob91PLDFiD8Isc
-   Y3/9VMOoYtUpLbr+CdZ+YxM7S3Fn3j/OiXe8ttOV37ppG38mq4pomRN34
-   FTundkMIkfNSQuwgYxI9kTS5ECtrLmltrPDsFOs2r6hFlV3XiAQ9PrSK5
-   bXRL+Aqv9212zS6ebqI3jBXu7LlgOBPZf5Y5qDyS0+2IBRDdUU8ltfDpd
-   EgobgDT4VtgqMLooiHwt1HBS1WsR/p15VHBIDhVN8G8SO5Ieq/fp/zniv
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="20228154"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="20228154"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 23:53:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="827507925"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="827507925"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 21 Feb 2024 23:53:13 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rd3qV-00065w-27;
-	Thu, 22 Feb 2024 07:53:10 +0000
-Date: Thu, 22 Feb 2024 15:49:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ben Cheatham <Benjamin.Cheatham@amd.com>, dan.j.williams@intel.com,
-	jonathan.cameron@huawei.com, rafael@kernel.org, james.morse@arm.com,
-	tony.luck@intel.com, bp@alien8.de
-Cc: oe-kbuild-all@lists.linux.dev, dave@stogolabs.net, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, benjamin.cheatham@amd.com
-Subject: Re: [PATCH v13 2/4] EINJ: Add CXL error type support
-Message-ID: <202402221559.7ZWbaUpL-lkp@intel.com>
-References: <20240220221146.399209-3-Benjamin.Cheatham@amd.com>
+	s=arc-20240116; t=1708590124; c=relaxed/simple;
+	bh=8jkTLnn7gBBPF4itUKsTqP2461O7zUJ7O2h6H4x68Kg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PHI9Q5aV9UBakWaA4dxn4itlRGi+Tp7OqIV0X+zoUzfsgJ8NAbra9/BtgagSrPL6dcq9xjk8aQuvQ5uYrRIrDjPP7g00BT6goPSkEhT2dZUa2wEhVRHJemsbK1XdbHcX9M0UU2HCWP7817Fy73hfkcBxDggHIl2lts5J/NE15NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8862A1007;
+	Thu, 22 Feb 2024 00:22:39 -0800 (PST)
+Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.42.8])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C810C3F762;
+	Thu, 22 Feb 2024 00:21:56 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-arm-kernel@lists.infradead.org,
+	suzuki.poulose@arm.com
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: [PATCH V5 00/11] coresight: Move remaining AMBA ACPI devices into platform driver
+Date: Thu, 22 Feb 2024 13:51:31 +0530
+Message-Id: <20240222082142.3663983-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220221146.399209-3-Benjamin.Cheatham@amd.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Ben,
+This moves remaining AMBA ACPI devices into respective platform drivers for
+enabling ACPI based power management support. This series applies on kernel
+v6.8-rc5 release. This series has been built, and boot tested on a DT based
+(RB5) and ACPI supported coresight platform (N1SDP).
 
-kernel test robot noticed the following build errors:
+https://git.gitlab.arm.com/linux-arm/linux-anshuman.git (amba_other_acpi_migration_v5)
 
-[auto build test ERROR on rafael-pm/linux-next]
-[also build test ERROR on linus/master v6.8-rc5 next-20240221]
-[cannot apply to rafael-pm/acpi-bus rafael-pm/devprop]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-acpi@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: coresight@lists.linaro.org
+Cc: linux-stm32@st-md-mailman.stormreply.com
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ben-Cheatham/EINJ-Migrate-to-a-platform-driver/20240221-061359
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20240220221146.399209-3-Benjamin.Cheatham%40amd.com
-patch subject: [PATCH v13 2/4] EINJ: Add CXL error type support
-config: i386-buildonly-randconfig-004-20240221 (https://download.01.org/0day-ci/archive/20240222/202402221559.7ZWbaUpL-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240222/202402221559.7ZWbaUpL-lkp@intel.com/reproduce)
+Changes in V5:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402221559.7ZWbaUpL-lkp@intel.com/
+- Used table->mask to filter out bits from pid in coresight_get_uci_data_from_amba()
+- Dropped custom masks such as STM_AMBA_MASK and TMC_AMBA_MASK
+- Modified tmc_etr_setup_caps() to accept struct csdev_access argument
+- Reverted back tmc_etr_setup_caps() call site position in tmc_probe()
+- Changed replicator and funnel devices to use the new helpers earlier in series
+- Updated the commit messages regarding xxx_probe() refactoring and renaming
 
-All errors (new ones prefixed by >>):
+Changes in V4:
 
-   ld: drivers/acpi/apei/einj-cxl.o: in function `einj_cxl_inject_error':
->> einj-cxl.c:(.text+0x166): undefined reference to `pci_find_host_bridge'
+https://lore.kernel.org/all/20240123054608.1790189-1-anshuman.khandual@arm.com/
+
+- Fixed PM imbalance in etm4_probe() error path with pm_runtime_disable()
+- Restored back the pm_runtime_disable() on platform probe error paths
+  in replicator, funnel, catu, tpiu, tmc and stm devices
+- Dropped dev_caps argument from __tmc_probe()
+- Changed xxxx_platform_remove() for platform_driver->remove_new() callback
+
+Changes in V3:
+
+https://lore.kernel.org/all/20231208053939.42901-1-anshuman.khandual@arm.com/
+
+- Split coresight_init_driver/remove_driver() helpers into a separate patch
+- Added 'drvdata->pclk' comments in replicator, funnel, tpiu, tmc, and stm devices
+- Updated funnel, and replicator drivers to use these new helpers
+- Check for drvdata instead of drvdata->pclk in suspend and resume paths in catu,
+  tmc and debug devices
+- Added patch to extract device name from AMBA pid based table lookup for stm
+- Added patch to extract device properties from AMBA pid based table look for tmc
+- Dropped pm_runtime_put() from common __probe() functions
+- Handled pm_runtime_put() in AMBA driver in success path
+- Handled pm_runtime_put() in platform driver in both success and error paths
+
+Changes in V2:
+
+https://lore.kernel.org/all/20231201062053.1268492-1-anshuman.khandual@arm.com/
+
+- Dropped redundant devm_ioremap_resource() hunk from tmc_platform_probe()
+- Defined coresight_[init|remove]_driver() for both AMBA/platform drivers
+- Changed catu, tmc, tpiu, stm and debug coresight drivers to use the new
+  helpers avoiding build issues arising from module_amba_driver(), and
+  module_platform_driver() being on the same file
+
+Changes in V1:
+
+https://lore.kernel.org/all/20231027072943.3418997-1-anshuman.khandual@arm.com/
+
+- Replaced all IS_ERR() instances with IS_ERR_OR_NULL() as per Suzuki
+
+Changes in RFC:
+
+https://lore.kernel.org/all/20230921042040.1334641-1-anshuman.khandual@arm.com/
+
+Anshuman Khandual (11):
+  coresight: etm4x: Fix unbalanced pm_runtime_enable()
+  coresight: stm: Extract device name from AMBA pid based table lookup
+  coresight: tmc: Extract device properties from AMBA pid based table lookup
+  coresight: Add helpers registering/removing both AMBA and platform drivers
+  coresight: replicator: Move ACPI support from AMBA driver to platform driver
+  coresight: funnel: Move ACPI support from AMBA driver to platform driver
+  coresight: catu: Move ACPI support from AMBA driver to platform driver
+  coresight: tpiu: Move ACPI support from AMBA driver to platform driver
+  coresight: tmc: Move ACPI support from AMBA driver to platform driver
+  coresight: stm: Move ACPI support from AMBA driver to platform driver
+  coresight: debug: Move ACPI support from AMBA driver to platform driver
+
+ drivers/acpi/arm64/amba.c                     |   8 -
+ drivers/hwtracing/coresight/coresight-catu.c  | 142 +++++++++++++---
+ drivers/hwtracing/coresight/coresight-catu.h  |   1 +
+ drivers/hwtracing/coresight/coresight-core.c  |  29 ++++
+ .../hwtracing/coresight/coresight-cpu-debug.c | 141 ++++++++++++++--
+ .../coresight/coresight-etm4x-core.c          |   3 +
+ .../hwtracing/coresight/coresight-funnel.c    |  86 +++++-----
+ drivers/hwtracing/coresight/coresight-priv.h  |  10 ++
+ .../coresight/coresight-replicator.c          |  81 +++++-----
+ drivers/hwtracing/coresight/coresight-stm.c   | 115 +++++++++++--
+ .../hwtracing/coresight/coresight-tmc-core.c  | 153 +++++++++++++++---
+ drivers/hwtracing/coresight/coresight-tmc.h   |   2 +
+ drivers/hwtracing/coresight/coresight-tpiu.c  | 102 ++++++++++--
+ include/linux/coresight.h                     |   7 +
+ 14 files changed, 721 insertions(+), 159 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
