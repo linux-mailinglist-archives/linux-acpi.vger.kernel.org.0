@@ -1,74 +1,74 @@
-Return-Path: <linux-acpi+bounces-3845-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3846-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A296E85F5F2
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 11:44:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D7C85F603
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 11:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4400A1F238B4
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:44:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C59551C23B67
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587AF3FB38;
-	Thu, 22 Feb 2024 10:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9553A22099;
+	Thu, 22 Feb 2024 10:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BOeIXNrn"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tplJAyO8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A093F9ED
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 10:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B533FB3F
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 10:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708598666; cv=none; b=omvrKHOfZ3G9UI8ODbqzZi4O8aS4Q21xiJ6T6r/RgBh5N3Yy+YONvF+UlU0KlbYBESeBoTqCx/yjYfy1pHlHuwzulWbPCdDEyy69YmMEmhh7R6qIvpohg3AYIx+CI/rHyElBGlHEspou9Pv3+j6mV17pux0cQTJUYtxCyluqnho=
+	t=1708598858; cv=none; b=INH8MaSYcJEJ5RwanmtYCHawJHptbQzwGOrFeLbNVDc6dMB9SvyHU2twPIVnh6bQFisS1ckp39+kOUC8GOTBnCyZNH76NG2IDP3FCE4URq9pqDSjbaNFWQuyQrnSnBClSD7HYd/3nogu4xGfTiliA4vl/vBnDH30OscdsIBz/jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708598666; c=relaxed/simple;
-	bh=I8GfOfCTLZmih12aYKjE14cKV4MXTg54Oq7SR/j3eZA=;
+	s=arc-20240116; t=1708598858; c=relaxed/simple;
+	bh=3zP/VtA1AgtaTaQw2U6AxyLni4JwLiOiv99igy1cVDw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MS28LlaoUHi+oPCd931jzDBRcYmm2bCExoOwwUPmcXWGuNnhLSXtT2MSmuKvbD+S9zZJ4ajrSniDGCQyvna+z+n4haNtmfdqXjYk55/VLUV1wjczllfFntZOpN6en+Jdxj7sr8CO3jV8upWvi3myHKgqrLDvrZnvfQ5Gi/EhAfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BOeIXNrn; arc=none smtp.client-ip=209.85.208.181
+	 In-Reply-To:Content-Type; b=JabsGLaHjRNLx3HMA3pgHGQNfOX9gMqaCOLPrGe9NrUcHQri0q7A7nRTK3gK1IN17rCPOm8l8wRIAJmNsesMxx7+PvWf115y8LpQnV1d8YoEpHM8Odlwsx87UL6NWf7d5/mwdTjTYdcXJnphOfqPaQR7qx6FI8Isj/dgjwVm+IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tplJAyO8; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d25a7b02d6so17673061fa.2
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 02:44:23 -0800 (PST)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-33adec41b55so3966117f8f.0
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 02:47:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708598662; x=1709203462; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708598855; x=1709203655; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=MiMRQBwGLj/KPIT0lE6FKUXqjnkUTGxkru+2azcnTvM=;
-        b=BOeIXNrntHg88q0ztMhKZTwdp11aOLgzRPMmQ/xvzL1DiLUoyLpkJ/zYREPOF+TbJU
-         jeYHjUwv7Bxb7YmN/k6Jow5ziite1pz5l3Zf2NWIUR18QaDWFSjMoexbo9xedEPzc4pi
-         LMcCCLpYM2q6Wp3G0aID7yHmPQJp0EvsstAmkmvwlkuTQkFV0fM2Q/4BIhxbQeZRY3JV
-         N1isLzmP+oo0W+OfUZO6CPxnu+S6Lwo314bEyQTpFU8iskpXcYfyD1kjsj+D25dy20J2
-         zv7xHf4IUBj6+MkMF1hUizBe34FQDoivg/r/wbZAMEOdHSR+7RQttIUwCCIJ/pJEyfkZ
-         RUnQ==
+        bh=5aqpcdx+kqPsDksMwy3/1ZpsNRD3e+cH+lqKOGDH4SU=;
+        b=tplJAyO8ImuOx31ipVmS25WlR0yZtap78n7NHrgNzYv5S3HdVHA72P3W2jhEvVUUmz
+         e62zXAIXW9p5yY5kG60AEnjenkHxaTX9fao7uHfOzd9uPaqrWIQaiVuHfK9TBtied5Ju
+         +uSUyCiTpqKFsPwLu0GtqXzPYBmrIVFrCnDUUwRBG/vg+7BG4BVs3FDVhnrACM/hyES4
+         E7AJxiZg9ZsAEHAL3jeskg+eYqIDOGGAy6Wlwz3FdEiAtahWNy9ueiFpUIvYL0hdJO1W
+         B3UpIUv0X1q5SXXe7a4K/cWP44JvQX60MZQpSJ2lDhY3MCVHub60iVPCSOKR2uaRT5k4
+         Psag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708598662; x=1709203462;
+        d=1e100.net; s=20230601; t=1708598855; x=1709203655;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MiMRQBwGLj/KPIT0lE6FKUXqjnkUTGxkru+2azcnTvM=;
-        b=gYdFEDtXUHiTOdLbi0Ck5fEPC5kmFOaAOAB2M0cydAVy3anRXS3SsR36EjFlS9egrd
-         C8kKzGmaKFwPjAJSK1qE48DA1jQEQv8r+TWhc/pkmt0cW5lfEjb7OJP3zlOfs5odlyTZ
-         ELeyruX6/SeBEq2aEfJiYQCC5Vh4wwGTOF4Etl6+ZLAA2E+RTPLDO8PYTnumhARsn6eR
-         jGHZ9sf1+4jSw0rUkVtWR9ZpuQpJ0eHAHoG32jLcBuiPiZXtIFifLi2JSe8ck3AwtP9k
-         wkaGlkWh65MH6x5fVq3qTJxOFVFcHMRUQdKVp3R390NzkVGf2AN3qBxhWOYkOblhULjC
-         Q4eA==
-X-Forwarded-Encrypted: i=1; AJvYcCWApi1S80RYdMfsH9KZepfAUnOxDp9zNNRZe4I43ChLrQEEFPYbAU9vV4IVKok0qOuPlVyCJZItgXuN1PDF6essv5n+dxZdV+F7og==
-X-Gm-Message-State: AOJu0Yz0sQmdA/5dM6QaOyMDyYhXIzFoR6RtUnub7kQZUNQQe3Aim7ik
-	eBA6Yjj13co9BKII5lWgrtqrVGngVCjb0kzDwunkhw6AmeDsn2Dhglk+jARSnKg=
-X-Google-Smtp-Source: AGHT+IFI+YXV+IbPRZDUS5Mhza+q8qDL4tfABrK7RQ5BrnppYXtMdT6C1vmAYblahRewhKdggLFw7Q==
-X-Received: by 2002:a2e:870f:0:b0:2d2:4218:6275 with SMTP id m15-20020a2e870f000000b002d242186275mr6301038lji.49.1708598661733;
-        Thu, 22 Feb 2024 02:44:21 -0800 (PST)
+        bh=5aqpcdx+kqPsDksMwy3/1ZpsNRD3e+cH+lqKOGDH4SU=;
+        b=diqReKMQWunc2qdIYa2+d5/66JRDMO76EWq9gWy1OVNAEdoCyGgCT5MPgPHeq2EwtW
+         j3zMpOgnwwY61HWKMarBliLPpbeaNTQWe6s7QI4iV9/t4//fgwP7vVs4mAo+M8HlC8uW
+         Ym/AM+DoYB1xtWIY4mmsJRE0MnlhE0CkUqiTNWBMafCYK7Bz76tXR98i0yHs5wKDJTQV
+         5Qyb8c2zzQD89JWsVYbzJIxunF39X7SOO4AkVgK9cGmwllMtsl+y3oRYqJQjCn1S4VUc
+         h60lVq1rg28LTv8pKj1X2BAnwxUOQllaeQMaEcubUgqy+lPGAVhqqsIbEvMPL5WrXVj/
+         PbGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrydzWVZGYWNvCRDBY/Sa30UA6PI5IjbA3mNMOR0YH3Xkg0PN6lXbWpasNv62tAnbk3ykW9Tnchs/XQ/jd/XF5q4mStMNQ8Io3CA==
+X-Gm-Message-State: AOJu0Yw1WFWqjwfOzcqWqg6C22ZSKr2/+bcIu5P0mb7RPypGtC7FqYg7
+	qfmn5hXS0Mouw+o8+d2K3cs4qVy8lcfpHrVs8m5O43iP0L685ImSJNGyjfNqC2o=
+X-Google-Smtp-Source: AGHT+IGs1kam3tuErV0BZMvW5Bv5dj9iYPqaMk+UBtUuUvBtTpsPOm3+SsvB5+lg6Z2no0OLjEXKYA==
+X-Received: by 2002:adf:ec4a:0:b0:33d:82c2:ad8d with SMTP id w10-20020adfec4a000000b0033d82c2ad8dmr2582908wrn.56.1708598855237;
+        Thu, 22 Feb 2024 02:47:35 -0800 (PST)
 Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id p6-20020adfe606000000b0033cdbe335bcsm20032407wrm.71.2024.02.22.02.44.20
+        by smtp.googlemail.com with ESMTPSA id bo29-20020a056000069d00b0033d5f5571b4sm11278754wrb.44.2024.02.22.02.47.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 02:44:21 -0800 (PST)
-Message-ID: <d6ecb1c6-f9a7-4303-96a0-129c42eff75a@linaro.org>
-Date: Thu, 22 Feb 2024 11:44:20 +0100
+        Thu, 22 Feb 2024 02:47:34 -0800 (PST)
+Message-ID: <ffa37950-d850-44e2-a33e-837466238d6d@linaro.org>
+Date: Thu, 22 Feb 2024 11:47:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -118,12 +118,22 @@ On 14/02/2024 13:45, Rafael J. Wysocki wrote:
 > thermal_of_zone_register() to use a local ops variable during
 > thermal zone registration so ops do not need to be freed in
 > thermal_of_zone_unregister() any more.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> ---
 
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+[ ... ]
+
+>   static void thermal_of_zone_unregister(struct thermal_zone_device *tz)
+>   {
+>   	struct thermal_trip *trips = tz->trips;
+> -	struct thermal_zone_device_ops *ops = tz->ops;
+>   
+>   	thermal_zone_device_disable(tz);
+>   	thermal_zone_device_unregister(tz);
+>   	kfree(trips);
+
+Not related to the current patch but with patch 1/6. Freeing the trip 
+points here will lead to a double free given it is already freed from 
+thermal_zone_device_unregister() after the changes introduces in patch 
+1, right ?
 
 
 -- 
