@@ -1,134 +1,117 @@
-Return-Path: <linux-acpi+bounces-3821-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3822-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C594A85F07E
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 05:46:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F5885F0E8
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 06:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 563DFB22692
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 04:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5E9928513D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 05:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70345110A;
-	Thu, 22 Feb 2024 04:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C0379F0;
+	Thu, 22 Feb 2024 05:23:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MB8rzZ4p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB2610E6;
-	Thu, 22 Feb 2024 04:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316781C14;
+	Thu, 22 Feb 2024 05:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708577168; cv=none; b=kGlJAGmP9jNaVyGNTo3AVcKWTREAVPwdmaRSwxRJ/ix6g+Zz4UUxCcOjk15LAlIhqZbh0sIl1Wk14D16l4H6lQfQjGiGarYET/UO0OPmGdqLpRSN19erx2PhCWDkrK3hx7+F69Xs4XR66Cfz0dCMT24R2mz5qn9eEW/WpUxPjj8=
+	t=1708579435; cv=none; b=bWDmnyqPkDbgDXx+xo8pTageheI4sjQrHQN6/PYtljFGb+zYGH5tod38K3y9gkaDp712S7GRR+IjnU3hKFVWQPOgAIpGh+o5FHHqj9RLLh+CDg0XBcx17LNf2fqNlzj+E/H0bH6gnasdo7nwWaAJwTY6f189c1eMCDlZzEwPI50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708577168; c=relaxed/simple;
-	bh=DOFuJP32JfVLnHOt7Gsj7z5JBoLZWG7S0ZlTo53ht8A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tQH9o6GrGQ1B8nb3y1tIjpFkfH0qiJXGR174dViQJPJhhj+oEZyhdm2nZ6FZtvzlYlWk8rL5YB0G4I9rj5PJ642t/VJgwbi0rXbM81OPSz0Lb1EmURKBjiiX4DujVxqPydGP2FtF31/1Ilj/pK6dQ0IujC0aAW2p87cV/fZ+pwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8ADF1007;
-	Wed, 21 Feb 2024 20:46:37 -0800 (PST)
-Received: from [10.162.42.8] (a077893.blr.arm.com [10.162.42.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A6FC73F766;
-	Wed, 21 Feb 2024 20:45:54 -0800 (PST)
-Message-ID: <8c4165e1-e875-4a61-8935-1ae1e2099477@arm.com>
-Date: Thu, 22 Feb 2024 10:15:51 +0530
+	s=arc-20240116; t=1708579435; c=relaxed/simple;
+	bh=oOyXXaM42M394k31mWSYzMIXwBXz0g5QPtbRtGpl334=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=D390IxaMACaRWYtQIzjoPT9spfRXsz3DuMeWwC3sw12eGnz+NR7eE+hLVYw9BxHY1bV3sRm0557yP3rDCceSy2YeNVLyYsdR/7NRW9udvwfru5mV1YI74oaOAnkTSsDtQ9rArJH9JGYMC2QVFWEoW9tOBew1DFGoQJ+CeyM0LL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MB8rzZ4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7139FC433C7;
+	Thu, 22 Feb 2024 05:23:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708579434;
+	bh=oOyXXaM42M394k31mWSYzMIXwBXz0g5QPtbRtGpl334=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=MB8rzZ4poIEv2PIzSdjhgHgCztPjWnhjitgxz8CtVroogptmQCCuzJtbFiVkaehdg
+	 6I18tQogN516AL62cVl2MJ45tpxcO9AiQ1Zh1SqBv4VZiW1ItAL2G3zBJNbsPTV1Ed
+	 L2UzQKuQqO9VA6UD4T8kh8aFvGZ6OQ5bs1eEXpeooCiRK9O4zBf4pFX2t/51eWv0Cg
+	 SnAbAg9ZPXD4YiGpw9WlTh/OpI2VdMd3qWeaDn6UnmYQ6BzQy6yfHhrjOYB/Eka7oQ
+	 BNWQ5RaGgLd7bIYKbHS0igveRzcrkDQ+/+X74wLSBJWEsd6uAVzHRcGq0mniE7d0xU
+	 2leHNkHaKiJjA==
+Date: Wed, 21 Feb 2024 22:23:53 -0700
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 01/11] coresight: etm4x: Fix unbalanced
- pm_runtime_enable()
-Content-Language: en-US
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com, Hanjun Guo <guohanjun@huawei.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Leo Yan <leo.yan@linaro.org>
-References: <20240123054608.1790189-1-anshuman.khandual@arm.com>
- <20240123054608.1790189-2-anshuman.khandual@arm.com>
- <68eb9e4e-de77-4854-8212-816c66d5f657@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <68eb9e4e-de77-4854-8212-816c66d5f657@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Rob Herring <robh@kernel.org>
+To: Saravana Kannan <saravanak@google.com>
+Cc: Len Brown <lenb@kernel.org>, kernel-team@android.com, 
+ devicetree@vger.kernel.org, 
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ linux-kernel@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, 
+ linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org, 
+ Ard Biesheuvel <ardb@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Daniel Scally <djrscally@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>
+In-Reply-To: <20240222034624.2970024-4-saravanak@google.com>
+References: <20240222034624.2970024-1-saravanak@google.com>
+ <20240222034624.2970024-4-saravanak@google.com>
+Message-Id: <170857943207.1269080.12494800385688440904.robh@kernel.org>
+Subject: Re: [PATCH v4 3/4] dt-bindings: Add post-init-providers property
 
 
-
-On 2/15/24 16:34, Suzuki K Poulose wrote:
-> On 23/01/2024 05:45, Anshuman Khandual wrote:
->> There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
->> when etm4_probe() fails. This problem can be observed via the coresight
->> etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
->> in etm4_probe_platform_dev().
->>
->> [   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
->> [   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
->> [   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
->> [   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
->> [   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
->> [   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
->> [   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
->> [   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
->>
->> This fixes the above problem - with an explicit pm_runtime_disable() call
->> when etm4_probe() fails during etm4_probe_platform_dev().
+On Wed, 21 Feb 2024 19:46:21 -0800, Saravana Kannan wrote:
+> The post-init-providers property can be used to break a dependency cycle by
+> marking some provider(s) as a post device initialization provider(s). This
+> allows an OS to do a better job at ordering initialization and
+> suspend/resume of the devices in a dependency cycle.
 > 
-> Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices"
-
-Sure, will add this 'Fixes' tag here.
-
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
+>  MAINTAINERS                                   |  13 ++-
+>  2 files changed, 112 insertions(+), 6 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
 > 
->>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: Hanjun Guo <guohanjun@huawei.com>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->> Cc: Len Brown <lenb@kernel.org>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: James Clark <james.clark@arm.com>
->> Cc: Leo Yan <leo.yan@linaro.org>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: coresight@lists.linaro.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->> Changes in V4:
->>
->> - New patch in the series
->>
->>   drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> index ce1995a2827f..7c693b45ac05 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
->> @@ -2217,6 +2217,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
->>       ret = etm4_probe(&pdev->dev);
->>         pm_runtime_put(&pdev->dev);
->> +    if (ret)
->> +        pm_runtime_disable(&pdev->dev);
->> +
->>       return ret;
->>   }
->>   
-> 
-> Looks good to me. I have glanced through the other platform device driver code in coresight subsystem and they all seem to be safe, except
-> for Ultrasoc-smb, which doesn't do any power managment. It may be, because it is only supported on an ACPI system.
 
-Understood.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
+Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
+Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
+Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240222034624.2970024-4-saravanak@google.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 
