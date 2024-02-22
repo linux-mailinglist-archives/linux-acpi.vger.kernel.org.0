@@ -1,130 +1,150 @@
-Return-Path: <linux-acpi+bounces-3848-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3849-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5052385F632
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 11:55:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DFA85F649
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 11:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F9CB2518A
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:55:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69958B268E3
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8103FB39;
-	Thu, 22 Feb 2024 10:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735123FB14;
+	Thu, 22 Feb 2024 10:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwhZdvVr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1023FB2D;
-	Thu, 22 Feb 2024 10:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D572BB1B;
+	Thu, 22 Feb 2024 10:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708599177; cv=none; b=OH9KFvLv4BmCRxUITy4POXjvAxCX+GtxcUWGP3KYj4/Z3fyCHK0M0tpzw9pFFUDmO/V4P/3YYD7dMKDatMsMn8FCORo5dw78JRULd9FZ3uMHSNFfR31Zd9S/s92lRbtSwE83Exa1thauhL7ZfjgEDsmYgceERPheY9zGzHIlKaI=
+	t=1708599448; cv=none; b=Zpb8cYMP5ALgbEoeLoZulpO+6PUpEa/j85tFlKg/WrlwG3s3fXoanCoMiH2E+vS8B57NOwXduozLlekW+F83s80Cvu69Jd2p4vPcWSRoG1Q/7mZjsQIFGkb4Ob+Hnto5uE18xnbamC0XhR8riEW1hGyJ1erO7d31XZdHJDOkh6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708599177; c=relaxed/simple;
-	bh=mvKZwxbf/e4KF9+fRM4X3wplM/O7yu2E+CvOcToAuEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pjY8XoXslJNGliA1EZ1M8zljGMwmqEjnl6uZ12SItx09JS3vYpa10ryS7cE+Mnmgy8tK6Hp1Y968arRmBiUJVmaeWjUAQ1ya+lEOOiwDq0tf7dPQqrkCllQKr6dhFAnTG2Pl/xm0T46WZbjNFmWmrQ0WGkjpXLMFYtcxbKTkd1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	s=arc-20240116; t=1708599448; c=relaxed/simple;
+	bh=KZFamjtTkLlgnuhFg6Rr3E9yf5OE94BjBfpAh6iuEGI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ZHO+X7escd7HSUb2qvGSR2MmvemTnlMKPkzP5MGw3ee+Kg04nWUTQBzhrDpEMTRatNPC1zulVP+9NS3J79y0x9YNj5qPajsqw0F1lk3T/huqGu9aMUcrj3LRd5U/i0Y+QjGXe7f7RpLIA5hGL7/7oZba5ALcxafLE9gMtQiYtUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwhZdvVr; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3bc21303a35so2863221b6e.0;
-        Thu, 22 Feb 2024 02:52:56 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d208d0b282so101904501fa.0;
+        Thu, 22 Feb 2024 02:57:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708599445; x=1709204245; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wGYV6JHoJ7Q+x7LBEW9ExN+ZwTE9A2g4Q3ZY71UFQaI=;
+        b=TwhZdvVrwp5X90pjhnXaRlOlxjZgNMD+gjazKx6iUu61Yr6AMEoIhyrvTlBJHD8hfW
+         4yB/1u3kzyi5YYU4V6+RXO8wXR4ZLY9iQMeCZvK21rvNgQegaWxDWnWSThLaBDmk1HR+
+         kWLewHVM15c49Yws4elSCRFmYYl+bVFmXMyCGQQwFyiCCMGcxnwb1bfq0cBse5Jo1Zbk
+         XiLO5cBCMAzAEE7bQTap8Qtxj6IkdW5Q+KR7XE023IDOeZk+zjWL6dvMbuRwN2FWFIAa
+         JpB1Lze4k93A5aPPaZaOrILQ4Id64LnfcU3sKYzwHyuc7xoIkDkUsnpRuV2EWOL+Mkmn
+         eGtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708599175; x=1709203975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=If0nc9cpG0C+2T1xh8+4TleRWChMsk96hA+uEtXVAuA=;
-        b=Jbbu7rhAtgszkFooPYgpfNAdfIghiCS4janxYyP49nhz0/2VeJJVvK9N/J5mgHNTed
-         4ZqSsWPCxDRBZhd0g6dFiCJjbsR4tn7TdxvRW2vnUXi4V8ncGUERezfoXHEC/NLeoY9O
-         nJzizbWCKp5l3m1u84VHxskA8JaREd49kNORdVepn8YSY954guqx6DRXp8E4aMJk6pXK
-         zumHqhbKHnafY17bgsGOuqKqeeEezOtiDYInAkx55erBNDEb6TtRz2Em6V6sdM466vFG
-         KS6wBNnNwWhbiZmWR4lrge41fWATuAPR5hAW+3xDCGi3OHcgCVEOJjqluHvzKUUCN0it
-         3MuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSKZGzMYxcL4JabY61WIdrkzCONnATvtAji62AYzSEsS9ze6NfeIqnPU30rxTUPPwCUK7vX5vu9JftgiOJTnJS9YHFmxYmskE8tNzOSSJN+GKB4wGsGSvLm3auq27pAagK1wdLFkCK5ty6geraLq7mAAK2UZ/o8dc+5CwUEunvbwa8
-X-Gm-Message-State: AOJu0Yyzul8XDiLKMKy2p1OXMGct44HsQFjpSr4fA8IZ9f2NeWKWOihe
-	ozXn4eIvSPnyjLI80Fb6WoC1o+2+tQqgHDdd1sxidMZXcCdRg7tvxa+HNG5gxck6lB4otZN8lJ/
-	l63gMqUDLxO7lbhoGTsxyr54XStA=
-X-Google-Smtp-Source: AGHT+IHqsc+vabOS1Zt0KKodBLknVgJXlppgLgPIySA5IzdBgwvKA6+n7hQNngnZt6jo743Sp9KtYpzlONTi/s0ZFhA=
-X-Received: by 2002:a4a:a886:0:b0:5a0:396d:2489 with SMTP id
- q6-20020a4aa886000000b005a0396d2489mr20650oom.1.1708599175400; Thu, 22 Feb
- 2024 02:52:55 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708599445; x=1709204245;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wGYV6JHoJ7Q+x7LBEW9ExN+ZwTE9A2g4Q3ZY71UFQaI=;
+        b=gC8mZQZwWy2kFijgURzH94OS9KyrBZ3qSaQGjz1hAxd2m2HNKHcxo6Mc73ieVmpa32
+         p/oqxPpMAGbOZrS1Gbz1nk2hHZX4I49uIRb1QlxnYo3+B4HHRUiQ1YllDuvM1IT9TEX2
+         LBOvFJWlPlAdCWISqQhUEr27fcY9xcCqdsUkWvnFYsO6hMje8j70QTdlcozkHiChE2jL
+         iiDLndz+4NHcv7af3BUl1fU7wiiZrOWre9fxvmxZI4h+LomsbZ8zh4+WUlEax1VskhbJ
+         zIJmSYEplamSzFrpj6mGvA7yEbZiE7HorbbevuyTfLTwKJ4pp2k9+NSruiTVpTRILPPC
+         0ySg==
+X-Forwarded-Encrypted: i=1; AJvYcCWv/D5gnvbEL8l7v2mc5KVcCMgevGTb0+12Bnn27F87iAzEhevmvPbtceGm8PM+lS3luym2sd/2kb1ILWcV6xHeOmZh1DOIJPqkf+SuAKrNvRIF3jBvOTH9S03oubEzQngHpCkrpWYaYw==
+X-Gm-Message-State: AOJu0YypyCvNu7MEHwLsV2ZkuZ4mbkKri4O6cNrTyV6iBJoOKgmAui+5
+	NN1LYGvz6BQDQfUwcE6tjFNCC7eDmgrGfMZW4DP5NyOG+Jq8n3a8
+X-Google-Smtp-Source: AGHT+IHz5LqeM9DUmbD/xyQv66R4i+bjqBOk1QDmMso/Qu5MSDXQ0gE8+Dy4cGs7NeCGyFy9ARzguA==
+X-Received: by 2002:a05:651c:1199:b0:2d2:6378:ad3e with SMTP id w25-20020a05651c119900b002d26378ad3emr623730ljo.7.1708599444544;
+        Thu, 22 Feb 2024 02:57:24 -0800 (PST)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id m20-20020a05600c281400b0041214ff06cesm21011733wmb.42.2024.02.22.02.57.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Feb 2024 02:57:24 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next][V2] ACPI: thermal_lib: Initialize temp_decik to zero
+Date: Thu, 22 Feb 2024 10:57:23 +0000
+Message-Id: <20240222105723.3810303-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4551531.LvFx2qVVIh@kreacher> <2262393.iZASKD2KPV@kreacher> <ffa37950-d850-44e2-a33e-837466238d6d@linaro.org>
-In-Reply-To: <ffa37950-d850-44e2-a33e-837466238d6d@linaro.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 22 Feb 2024 11:52:44 +0100
-Message-ID: <CAJZ5v0hqCbxChYmvADZJAFiuS1yPnRmj6ZZJfD032tnLB7ZZAA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] thermal: core: Store zone ops in struct thermal_zone_device
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 22, 2024 at 11:47=E2=80=AFAM Daniel Lezcano
-<daniel.lezcano@linaro.org> wrote:
->
-> On 14/02/2024 13:45, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The current code requires thermal zone creators to pass pointers to
-> > writable ops structures to thermal_zone_device_register_with_trips()
-> > which needs to modify the target struct thermal_zone_device_ops object
-> > if the "critical" operation in it is NULL.
-> >
-> > Moreover, the callers of thermal_zone_device_register_with_trips() are
-> > required to hold on to the struct thermal_zone_device_ops object passed
-> > to it until the given thermal zone is unregistered.
-> >
-> > Both of these requirements are quite inconvenient, so modify struct
-> > thermal_zone_device to contain struct thermal_zone_device_ops as field =
-and
-> > make thermal_zone_device_register_with_trips() copy the contents of the
-> > struct thermal_zone_device_ops passed to it via a pointer (which can be
-> > const now) to that field.
-> >
-> > Also adjust the code using thermal zone ops accordingly and modify
-> > thermal_of_zone_register() to use a local ops variable during
-> > thermal zone registration so ops do not need to be freed in
-> > thermal_of_zone_unregister() any more.
->
-> [ ... ]
->
-> >   static void thermal_of_zone_unregister(struct thermal_zone_device *tz=
-)
-> >   {
-> >       struct thermal_trip *trips =3D tz->trips;
-> > -     struct thermal_zone_device_ops *ops =3D tz->ops;
-> >
-> >       thermal_zone_device_disable(tz);
-> >       thermal_zone_device_unregister(tz);
-> >       kfree(trips);
->
-> Not related to the current patch but with patch 1/6. Freeing the trip
-> points here will lead to a double free given it is already freed from
-> thermal_zone_device_unregister() after the changes introduces in patch
-> 1, right ?
+Static analysis with clang scan build is warning that uninitialized
+data is being passed into various functions. Stop these warnings by
+initializing temp_decik to zero.
 
-No, patch [1/6] doesn't free the caller-supplied ops, just copies them
-into the local instance.  Attempting to free a static ops would not be
-a good idea, for example.
+Cleans up clang scan warnings in lines 106, 125, 146 and 164 such as:
+drivers/acpi/thermal_lib.c:106:9: warning: 2nd function call argument
+is an uninitialized value [core.CallAndMessage]
 
-BTW, thanks for all of the reviews, but this series is not applicable
-without the one at
+Kudos to Dan Carpenter for the deeper analysis of this issue.
 
-https://lore.kernel.org/linux-pm/6017196.lOV4Wx5bFT@kreacher/
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+
+V2: just set temp_decik to 0
+
+---
+ drivers/acpi/thermal_lib.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/thermal_lib.c b/drivers/acpi/thermal_lib.c
+index 4e0519ca9739..6214d6ebe1fa 100644
+--- a/drivers/acpi/thermal_lib.c
++++ b/drivers/acpi/thermal_lib.c
+@@ -100,7 +100,7 @@ static int thermal_temp(int error, int temp_decik, int *ret_temp)
+  */
+ int thermal_acpi_active_trip_temp(struct acpi_device *adev, int id, int *ret_temp)
+ {
+-	int temp_decik;
++	int temp_decik = 0;
+ 	int ret = acpi_active_trip_temp(adev, id, &temp_decik);
+ 
+ 	return thermal_temp(ret, temp_decik, ret_temp);
+@@ -119,7 +119,7 @@ EXPORT_SYMBOL_GPL(thermal_acpi_active_trip_temp);
+  */
+ int thermal_acpi_passive_trip_temp(struct acpi_device *adev, int *ret_temp)
+ {
+-	int temp_decik;
++	int temp_decik = 0;
+ 	int ret = acpi_passive_trip_temp(adev, &temp_decik);
+ 
+ 	return thermal_temp(ret, temp_decik, ret_temp);
+@@ -139,7 +139,7 @@ EXPORT_SYMBOL_GPL(thermal_acpi_passive_trip_temp);
+  */
+ int thermal_acpi_hot_trip_temp(struct acpi_device *adev, int *ret_temp)
+ {
+-	int temp_decik;
++	int temp_decik = 0;
+ 	int ret = acpi_hot_trip_temp(adev, &temp_decik);
+ 
+ 	return thermal_temp(ret, temp_decik, ret_temp);
+@@ -158,7 +158,7 @@ EXPORT_SYMBOL_GPL(thermal_acpi_hot_trip_temp);
+  */
+ int thermal_acpi_critical_trip_temp(struct acpi_device *adev, int *ret_temp)
+ {
+-	int temp_decik;
++	int temp_decik = 0;
+ 	int ret = acpi_critical_trip_temp(adev, &temp_decik);
+ 
+ 	return thermal_temp(ret, temp_decik, ret_temp);
+-- 
+2.39.2
+
 
