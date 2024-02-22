@@ -1,110 +1,133 @@
-Return-Path: <linux-acpi+bounces-3857-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3858-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC77D85F9E6
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 14:35:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0E685F9FC
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 14:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6931F27353
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 13:35:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3A93B2200A
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 13:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE611332AC;
-	Thu, 22 Feb 2024 13:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3B2134723;
+	Thu, 22 Feb 2024 13:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lEdzhZPT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wmnz7T4V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA091426D;
-	Thu, 22 Feb 2024 13:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64956133296
+	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 13:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708608897; cv=none; b=phe3GOSYVsG5tj7PastyGL6zl+CuZ/hcyFPbCBIHSGYWwhSAbGzbBi0gny44tUL7vth2EcKVBs3LGfRH6QBVQUeJpiqV2rzEedMB+X1bwH6D3/dKo4IldtK4qTwK1kKB9XLsWs3F5Qndt213l5P1QPzw7VWW0cjzOvHRS9umBUM=
+	t=1708609111; cv=none; b=f2euhhqosQobyRf/dQTFFcoqq6EzPAdPgwhKDzF9WEPnVLiIwjJfKIX5wKUEXJJ5t1JZyPbaUjPQ8QhzWKJHeYC3NPtnuURbZvTbyhWk+KYOVsdHDIddW6ZZDjUD8N86NqFBFlDPojWgyUpW7xzqe9qO3IspbND3qD0+LdBEAXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708608897; c=relaxed/simple;
-	bh=FJNo02xrI7B578rCZqjEq5SuMvAu+CX0qSHZV36BLwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XjRu67+EGqwOWfk8XqO+vLP/4zMwtJfh1v4iJXtM8+f/GGh1MxbKsdVcP7lsfG6B/UHTFBWFj4eRBBYM+pQ0f93TeoRVHLrtI//ttF2OVI3Xh0qWnxA8WUSFaS7eiNY+//rQrsv4xOtkCRPn6TrLGMqzhhcOkO5LGweLevyEfTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lEdzhZPT; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708608895; x=1740144895;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FJNo02xrI7B578rCZqjEq5SuMvAu+CX0qSHZV36BLwM=;
-  b=lEdzhZPTehL9Zq2b4MsDIijevHdwlbOgH+fdgBcvkyL2Np1RtL+kkyFG
-   ge+xkFurKjgLn5ZDV1GH/XTrB6Zy9/IE38H38LAw2qqshI/ZP7nxlyxAS
-   EZA2346+pA6+kD8skEqqPuQ1TKlld2oxkpnadgEnEBOVgxnmiwOJbdWNf
-   +V8WaZRwwc5qbEblcNIQTfmY7MwzlKzAY7hWoUisyMTcy50aZq+36kizu
-   g2doavq6PFS6Vuk1YpTXlxaWIBuEOhTcZzUXEq0aBKwJSuWHeHxiRZJsJ
-   F+L2BmTiFu1BWawHXzGCAAVQ0lw3NDLL+4YjuzoNrMCL0JSMJkO6iRJ8M
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="13961551"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="13961551"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:34:54 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936851039"
-X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="936851039"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:34:50 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rd9Dr-00000006dff-1Lsn;
-	Thu, 22 Feb 2024 15:34:47 +0200
-Date: Thu, 22 Feb 2024 15:34:46 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, kernel-team@android.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v3 0/4] Add post-init-providers binding to improve
- suspend/resume stability
-Message-ID: <ZddNdqoqEz3BSXGI@smile.fi.intel.com>
-References: <20240221233026.2915061-1-saravanak@google.com>
+	s=arc-20240116; t=1708609111; c=relaxed/simple;
+	bh=dnP6Na2KFoHfi/00jkUuH2sx/m/bitJm1og9b7z1FOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WYtK4hs0iFI2fd043GEZPPhhXObX+m4w7nT7LIJiVOuFCe+cOZCwIzku6Qo8fWq0B9rUE4UIMbEiK2jzh9JFWymS0b/5+IuIOJxzK0KY2owNxij7MVVJ1CzU22Z5H61N/mUk2WjyB89oLoG03QeBf0C5BoEE9g7jz7uT4tWXcw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Wmnz7T4V; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4128e15d5e5so1356985e9.2
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 05:38:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1708609108; x=1709213908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u0eeSj0Rbo8Tyxk9+gjLQ2yol07l3Rs5IcpVi8aXUFs=;
+        b=Wmnz7T4VTWdXNdsRdQiQsuAII/BAIrrgq0uXxoTvioFxQ1mCZ0fDhOdD+0gHBPArHe
+         tncRF9DTSzxJiVgzWoLXyiZyDIOmyPp8EUXmeFF7dAiMdlkAziEc7dXeZGqbe6nStSPY
+         vJqT2bI5l/FmAld0YUUEzyUo2p/30a/Yly0hY3ukr2J1IXoL2vywHEEgS4A4yVLg381d
+         IvWbhiKNI/7MNElA3eEn9P5EZ7HbXoU8ouVO9jUydurw9tukPnhxZYndciUS8GYlNiwI
+         PYmOlQpp/ADsZJcTeLs1NFzmD0xlPMa44nsfmhJutmmhW1u6T0PoBKacHvM8y4gRxhUD
+         pGuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708609108; x=1709213908;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u0eeSj0Rbo8Tyxk9+gjLQ2yol07l3Rs5IcpVi8aXUFs=;
+        b=iKtWiLHaS93P3K6BxlKYIDn9fNYObU9HTAj1sik4lcETXxmVDbnczU99uIokkFCsnV
+         /nYhc7xWuZoA4OU8dZzyxUK4nSbKVzwrV0US6xZy2PV4d0gSR4PzU8g4J6AY4eu92vHg
+         qNjofrdWaY/Px7pbUcZMrZ7dp1L0Fdz+c9Zwv/5w6dOGWQWzYbdfTxkjVBtt+PVIdOY7
+         fA8f2GHMRFvgruVDACVn2PuosaJyjWSyIBcie2Ob6kpiF5IfKOBsQ4AZKA6Ja4WxD7ic
+         JSRfS0oZXImzFY38kVt23fwIifOIY60Zwnr4mdgcFmz6bXpL3E7KgFkvVbWS1mT8pUQS
+         HGkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVntYeB5j9N2gyclQZ/BmlMv/cDAe0PG9TpHD+YI72H/dUpIbpkatj1wtXI7+T6qTqNjYeehGFUNMlVpMj91yxdwPDzPnetHPWcSA==
+X-Gm-Message-State: AOJu0YxacGWzTs0N8MHHEPHGnL09Xzh/AF7z1fQWZvx2WPqV1YJ9UkAu
+	15EL5UFp5GgjiGhzS667CP6LM+Jk7YHZTraT1PDGOg2GKI1LJ3DGqQZbcvT79TE=
+X-Google-Smtp-Source: AGHT+IG891wIGj3n6n+q1STkih4LzXtpjLUJ07Dpm8f6+K69gfvd5F6o5ICUx3SMCN+wGTidEMMoCg==
+X-Received: by 2002:a05:600c:a03:b0:410:deab:96bf with SMTP id z3-20020a05600c0a0300b00410deab96bfmr15301794wmp.22.1708609107670;
+        Thu, 22 Feb 2024 05:38:27 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id 11-20020a05600c228b00b0041288122af0sm95586wmf.0.2024.02.22.05.38.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Feb 2024 05:38:27 -0800 (PST)
+Message-ID: <0de4fb24-8e33-4c2b-b6a6-d9e8a7b358bd@linaro.org>
+Date: Thu, 22 Feb 2024 14:38:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221233026.2915061-1-saravanak@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2.1 1/6] thermal: core: Store zone trips table in struct
+ thermal_zone_device
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Zhang Rui <rui.zhang@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
+References: <4551531.LvFx2qVVIh@kreacher> <1883976.tdWV9SEqCh@kreacher>
+ <12405371.O9o76ZdvQC@kreacher>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <12405371.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 21, 2024 at 03:30:20PM -0800, Saravana Kannan wrote:
-> This patch series adds a "post-init-providers" device tree binding that
-> can be used to break dependency cycles in device tree and enforce a more
-> determinstic probe/suspend/resume order. This will also improve the
-> stability of global async probing and async suspend/resume and allow us
-> to enable them more easily. Yet another step away from playing initcall
-> chicken with probing and step towards fully async probing and
-> suspend/resume.
+On 22/02/2024 14:10, Rafael J. Wysocki wrote:
 
-Do you know what is the state of affairs in ACPI? Is there any (similar)
-issue even possible?
+[ ... ]
+
+> Index: linux-pm/drivers/thermal/thermal_of.c
+> ===================================================================
+> --- linux-pm.orig/drivers/thermal/thermal_of.c
+> +++ linux-pm/drivers/thermal/thermal_of.c
+> @@ -440,12 +440,10 @@ static int thermal_of_unbind(struct ther
+>    */
+>   static void thermal_of_zone_unregister(struct thermal_zone_device *tz)
+>   {
+> -	struct thermal_trip *trips = tz->trips;
+>   	struct thermal_zone_device_ops *ops = tz->ops;
+>   
+>   	thermal_zone_device_disable(tz);
+>   	thermal_zone_device_unregister(tz);
+> -	kfree(trips);
+
+thermal_of_zone_register() must free the allocated trip points after 
+registering the thermal zone.
+
+>   	kfree(ops);
+>   }
+
 
 -- 
-With Best Regards,
-Andy Shevchenko
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
 
 
