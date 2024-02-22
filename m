@@ -1,143 +1,133 @@
-Return-Path: <linux-acpi+bounces-3863-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3864-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E36E85FCAF
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 16:41:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E2685FEAD
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 18:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE34E1F2677C
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 15:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8F501F275E1
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 17:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5104B14F9E0;
-	Thu, 22 Feb 2024 15:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E2A154422;
+	Thu, 22 Feb 2024 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="prTh+oj8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qMv3dQYD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD5514D443
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 15:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3C715099F;
+	Thu, 22 Feb 2024 17:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708616401; cv=none; b=dxEf6EuqmqgH+Q7YD6BmVPdqemCLs6XJfPruUR5KYmL1XrQPsoaYOAHQ8MkVWU8GXqZo6yHoQWDRuaEDsHrqiBN/Jr8CDquv20bIf6BbfHJzXlaTUhazMkxTR02A1wk2vO5p0zNp4p3empNimDoawhXQ0mWmeGgeqzkAlZyyl4Q=
+	t=1708621604; cv=none; b=kswNrQDrVARku7F8IK9dDiqbiristj14HmZihWpgrYn4PcO5FoM2fYxg8qihpzYw6mLFV9PafF+jUoEbyQGxsItbg1j95tilD3brUBiYLfHq1r6EHwwXW98v1gSvmX41N5lcTi4krVo3vrt7CQBgDq+IZ1CwmQV2K378igfsfEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708616401; c=relaxed/simple;
-	bh=irUaaTgSHl9McK+IT2Ipld7BjAvthbn+fFnbtiJW/dk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BfXL2IXgC4JmWsXHhhLLAHhGJBdEkGp/r64zzyvnj3Lo27mahNM6ag/kRxNxlfgRLFAL9stK0oLbpewrZQ8m9995PicTLvbxxuQLOwKoe40a1a70LEB8AmZqE3dSRhQcZhTXVd3/SBmjQvEHOPzmxj1JFCd2dmC01G6hHpBhgZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=prTh+oj8; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-512b84bdaf1so5896071e87.1
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 07:39:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708616397; x=1709221197; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c1npCLJELsPSC1JsXp5VaFpN9TsOulzmiEht9MHB0lk=;
-        b=prTh+oj83tNb8/rX1g5my1Cv2cx4hoVfk1RyWnVChP8jt0Diog2uFzZDeNQBlpcRHn
-         HPbKkYZaBUJWX5vo9k8ay8dW0A1DhGP9PFbuL7iaGv4S6qdWADLvX/aB+T4JtC76HvrE
-         OFTxb55rM5Ke1hUpMk/IT1bxs9n+/w/JRqVSF/w9bA3isnW/oifNhomq6uvWWnbQkhU3
-         RgY4PNLZ8pNhi785w532Y/9mNcm5zVYmBtVg+dkUFMe48eIHO4ND8yw2gAWk2RTX9r2z
-         CruoXDNG5XmOJC30hkNkVR4t4aGAYyZfMVx0JMLUvDS5u/o/KKT7W74lMhMx15P0yGJS
-         j1cg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708616397; x=1709221197;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c1npCLJELsPSC1JsXp5VaFpN9TsOulzmiEht9MHB0lk=;
-        b=jlvDvyQx8IWTRJTP3WyQIUWJMj7RNBIU6Wp37rIpxBbShIVT9CIbpqCwbMMuRVPbk0
-         AdhMBwXgmk66kicKT4LuSoIjnURvGVXhxf4u53QKI+7/WiZBKRBoR6xfEVnWMSt7T6rr
-         OpgNsAqMBCbUrrKDHpOO6U0tpmOnIku9nyIrIMl5QIqFCEvjpdBPTM6i7DyO7d5qwyd9
-         69zvN/Wl6BjHvhB6J3j8k0Rse6TZ7IVY6A/+niuOJWEOCuvOjLC3WVTp08vh6mE/tqhQ
-         Os7wTT466fbwpDAdk2PKR9rMUufW1TpHLABp/7WZqf/Gmtw4o6EsOiYQMCDZvRt5d5eG
-         YsbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWD2J63QSA2Hx3FpnI4h6+/dkc8AMN1hCOBiUrqQ7q+QbPgSzIlhWLWvytLP2GynTVQyvbaL76jZi38IWOX4UQl3A1NwQrh22Ss9Q==
-X-Gm-Message-State: AOJu0YwuN5YPKUusrNBTtLA6/UsBWNEt2vtkAHfUPJol5XmHfR/wFUly
-	hJ0EgcQlE585omTmQoy2++eKB7wrPNl7x8E8c5NQNajeYll2Qzfsrs+OoJCubd8=
-X-Google-Smtp-Source: AGHT+IF5oA+zj1hJdLGm59l4SglX5mVSDyz7ZtNxq7Z4/wQ0vArID2KuXJIuLjHr2LPtjtbbTxicyw==
-X-Received: by 2002:a05:6512:3d8d:b0:512:be44:656f with SMTP id k13-20020a0565123d8d00b00512be44656fmr8689020lfv.63.1708616397318;
-        Thu, 22 Feb 2024 07:39:57 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id u11-20020a5d468b000000b0033d4adb3ebbsm14270878wrq.26.2024.02.22.07.39.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 07:39:56 -0800 (PST)
-Message-ID: <4eda4893-8db5-47f0-8566-ecf379e987c7@linaro.org>
-Date: Thu, 22 Feb 2024 16:39:55 +0100
+	s=arc-20240116; t=1708621604; c=relaxed/simple;
+	bh=kE8TIXCP4omiH8Tb48QLZ4vtCQlIIcYaY2PACwfRHLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PXA93MwD/OdzL+FQOQgzWsH6W7CUa0KVCL6dkosrFMrtcALwmOscIayTgaSUL9i4jbbFTSRBUx1GCeO+9MDVX2VAQ68qHtDrZQ7XUMR+x7jdgR/9eYp1SQimodLGt31HTOv7Rq5GBoAFJqbIIX5G8YL5WLXYUf9z0AF4+3IciJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qMv3dQYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5688BC433C7;
+	Thu, 22 Feb 2024 17:06:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708621603;
+	bh=kE8TIXCP4omiH8Tb48QLZ4vtCQlIIcYaY2PACwfRHLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=qMv3dQYDhbkA55iCtTxciIgE1L7pMg9o9uWTVAV+VOYkCajdj9ypNeK3dAMJjedon
+	 Yfm16dXgjEDaJvw7MKL3T1NUQJuoykxKJy3QBBvO7KjZn6mhHuhTJGHvovxIKU2zrR
+	 zDIG+iHYedR7cXvE6GdAAvt5KB235VxZ/Plmw5wAIXTGdCIAdrxI/gYIsiztfOlUMO
+	 sRy4h/QB7EziUrqeYVH8Xhch+hYzriJXTd6xGKvdtvOfJu8/ojjSIEqc2no6ipAGbJ
+	 +fGCcGAK0vbTCM29gk3bUyqBGrb/tWnTENLA+Bk37mXCqwO4TnK5iKODRwQgZELV7b
+	 cavlvjo3SyKpg==
+Date: Thu, 22 Feb 2024 11:06:41 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Vidya Sagar <vidyas@nvidia.com>
+Cc: bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org,
+	will@kernel.org, lpieralisi@kernel.org, kw@linux.com,
+	robh@kernel.org, frowand.list@gmail.com, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	treding@nvidia.com, jonathanh@nvidia.com, kthota@nvidia.com,
+	mmaddireddy@nvidia.com, sagar.tv@gmail.com
+Subject: Re: [PATCH V3] PCI: Add support for preserving boot configuration
+Message-ID: <20240222170641.GA15593@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2.2 1/6] thermal: core: Store zone trips table in struct
- thermal_zone_device
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
- Zhang Rui <rui.zhang@intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, NXP Linux Team <linux-imx@nxp.com>
-References: <4551531.LvFx2qVVIh@kreacher> <1883976.tdWV9SEqCh@kreacher>
- <12406375.O9o76ZdvQC@kreacher>
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <12406375.O9o76ZdvQC@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240222124110.2681455-1-vidyas@nvidia.com>
 
-On 22/02/2024 14:52, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The current code expects thermal zone creators to pass a pointer to a
-> writable trips table to thermal_zone_device_register_with_trips() and
-> that trips table is then used by the thermal core going forward.
-> 
-> Consequently, the callers of thermal_zone_device_register_with_trips()
-> are required to hold on to the trips table passed to it until the given
-> thermal zone is unregistered, at which point the trips table can be
-> freed, but at the same time they are not expected to access that table
-> directly.  This is both error prone and confusing.
-> 
-> To address it, turn the trips table pointer in struct thermal_zone_device
-> into a flex array (counted by its num_trips field), allocate it during
-> thermal zone device allocation and copy the contents of the trips table
-> supplied by the zone creator (which can be const now) into it, which
-> will allow the callers of thermal_zone_device_register_with_trips() to
-> drop their trip tables right after the zone registration.
-> 
-> This requires the imx thermal driver to be adjusted to store the new
-> temperature in its internal trips table in imx_set_trip_temp(), because
-> it will be separate from the core's trips table now and it has to be
-> explicitly kept in sync with the latter.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-> ---
-> 
-> v2.1 -> v2.2:
->     * Add missing kfree(trips) to thermal_of_zone_register() (Daniel).
+On Thu, Feb 22, 2024 at 06:11:10PM +0530, Vidya Sagar wrote:
+> Add support for preserving the boot configuration done by the
+> platform firmware per host bridge basis, based on the presence of
+> 'linux,pci-probe-only' property in the respective PCIe host bridge
+> device-tree node. It also unifies the ACPI and DT based boot flows
+> in this regard.
 
-OK for me
+> +/**
+> + * of_pci_bridge_check_probe_only - Return true if the boot configuration
+> + *                                  needs to be preserved
 
+I don't like the "check_probe_only" name because it's a boolean
+function but the name doesn't tell me what a true/false return value
+means.  Something like "preserve_resources" would be better.  If you
+want "probe_only", even removing the "check" would help.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> + * @node: Device tree node with the domain information.
+> + *
+> + * This function looks for "linux,pci-probe-only" property for a given
+> + * PCIe controller's node and returns true if found. Having this property
+> + * for a PCIe controller ensures that the kernel doesn't re-enumerate and
+> + * reconfigure the BAR resources that are already done by the platform firmware.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+This is generic PCI, not PCIe-specific (also in commit log and comment
+below).
 
+I think "enumeration" specifically refers to discovering what devices
+are present, and the kernel always does that, so drop that part.
+Reconfiguring BARs and bridge windows is what we want to prevent.
+
+> + * NOTE: The scope of "linux,pci-probe-only" defined within a PCIe bridge device
+> + *       is limited to the hierarchy under that particular bridge device. whereas
+> + *       the scope of "linux,pci-probe-only" defined within chosen node is
+> + *       system wide.
+> + *
+> + * Return: true if the property exists false otherwise.
+> + */
+
+> +bool of_pci_bridge_check_probe_only(struct device_node *node)
+> +{
+> +	return of_property_read_bool(node, "linux,pci-probe-only");
+> +}
+> +EXPORT_SYMBOL_GPL(of_pci_bridge_check_probe_only);
+
+Why does this need to be exported for modules and exposed via
+include/linux/pci.h?
+
+> +static void pci_check_config_preserve(struct pci_host_bridge *host_bridge)
+> +{
+> +	if (&host_bridge->dev) {
+
+Checking &host_bridge->dev doesn't seem like the right way to
+determine whether this is an ACPI host bridge.
+
+> +		union acpi_object *obj;
+> +
+> +		/*
+> +		 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
+> +		 * exists and returns 0, we must preserve any PCI resource
+> +		 * assignments made by firmware for this host bridge.
+> +		 */
+> +		obj = acpi_evaluate_dsm(ACPI_HANDLE(&host_bridge->dev), &pci_acpi_dsm_guid, 1,
+> +					DSM_PCI_PRESERVE_BOOT_CONFIG, NULL);
+> +		if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
+> +			host_bridge->preserve_config = 1;
+> +		ACPI_FREE(obj);
+> +	}
 
