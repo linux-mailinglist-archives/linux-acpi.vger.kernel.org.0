@@ -1,133 +1,160 @@
-Return-Path: <linux-acpi+bounces-3864-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3865-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E2685FEAD
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 18:06:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42DD485FEC3
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 18:09:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8F501F275E1
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 17:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0B97289F03
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 17:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E2A154422;
-	Thu, 22 Feb 2024 17:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qMv3dQYD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E00154437;
+	Thu, 22 Feb 2024 17:09:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3C715099F;
-	Thu, 22 Feb 2024 17:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFEA14F9FE;
+	Thu, 22 Feb 2024 17:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708621604; cv=none; b=kswNrQDrVARku7F8IK9dDiqbiristj14HmZihWpgrYn4PcO5FoM2fYxg8qihpzYw6mLFV9PafF+jUoEbyQGxsItbg1j95tilD3brUBiYLfHq1r6EHwwXW98v1gSvmX41N5lcTi4krVo3vrt7CQBgDq+IZ1CwmQV2K378igfsfEQ=
+	t=1708621781; cv=none; b=nNDggy33elGL3jp9wDve4cyqSCiSoaB50RdgzZbSCNx8cFPZ9V7Fp6DRQU/0EA1fXFyVySsSiYBORCy/s1MOd/U/B9iSXQR3gJNfSJiOmo5QUcN3XTdjioayj52RrkVPTIUj14/GpW/s/2HP0QhdBODwDNSwSfOppIQxaSVZa2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708621604; c=relaxed/simple;
-	bh=kE8TIXCP4omiH8Tb48QLZ4vtCQlIIcYaY2PACwfRHLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PXA93MwD/OdzL+FQOQgzWsH6W7CUa0KVCL6dkosrFMrtcALwmOscIayTgaSUL9i4jbbFTSRBUx1GCeO+9MDVX2VAQ68qHtDrZQ7XUMR+x7jdgR/9eYp1SQimodLGt31HTOv7Rq5GBoAFJqbIIX5G8YL5WLXYUf9z0AF4+3IciJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qMv3dQYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5688BC433C7;
-	Thu, 22 Feb 2024 17:06:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708621603;
-	bh=kE8TIXCP4omiH8Tb48QLZ4vtCQlIIcYaY2PACwfRHLU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=qMv3dQYDhbkA55iCtTxciIgE1L7pMg9o9uWTVAV+VOYkCajdj9ypNeK3dAMJjedon
-	 Yfm16dXgjEDaJvw7MKL3T1NUQJuoykxKJy3QBBvO7KjZn6mhHuhTJGHvovxIKU2zrR
-	 zDIG+iHYedR7cXvE6GdAAvt5KB235VxZ/Plmw5wAIXTGdCIAdrxI/gYIsiztfOlUMO
-	 sRy4h/QB7EziUrqeYVH8Xhch+hYzriJXTd6xGKvdtvOfJu8/ojjSIEqc2no6ipAGbJ
-	 +fGCcGAK0vbTCM29gk3bUyqBGrb/tWnTENLA+Bk37mXCqwO4TnK5iKODRwQgZELV7b
-	 cavlvjo3SyKpg==
-Date: Thu, 22 Feb 2024 11:06:41 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Vidya Sagar <vidyas@nvidia.com>
-Cc: bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org,
-	will@kernel.org, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, frowand.list@gmail.com, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	treding@nvidia.com, jonathanh@nvidia.com, kthota@nvidia.com,
-	mmaddireddy@nvidia.com, sagar.tv@gmail.com
-Subject: Re: [PATCH V3] PCI: Add support for preserving boot configuration
-Message-ID: <20240222170641.GA15593@bhelgaas>
+	s=arc-20240116; t=1708621781; c=relaxed/simple;
+	bh=mIilUSVPnUtIgyL5qEymGqB/IlLbf3/YZNTlBlIzB3Q=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TaxWoBTNeNJy73umNGxsiTavG52jKf2eOXpaqIs+pTEQOJ7CCw3QWdHRd+b1rQqzVtfZHJJXuynjxzpuHodB1lIt2h7rLWKw+O8ESCjV54kAASoHBb7uObaVdZliQeW/TIJr374juZbzrebgIniwwNMvznp0yRg4r4rkackdVHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TgffK0Y7Wz6K66S;
+	Fri, 23 Feb 2024 01:05:29 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 90D471400C9;
+	Fri, 23 Feb 2024 01:09:15 +0800 (CST)
+Received: from localhost (10.195.247.94) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 22 Feb
+ 2024 17:09:11 +0000
+Date: Thu, 22 Feb 2024 17:09:07 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
+	<linux-kernel@vger.kernel.org>, Mika Westerberg
+	<mika.westerberg@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>
+Subject: Re: [PATCH v1 2/4] ACPI: scan: Relocate acpi_bus_trim_one()
+Message-ID: <20240222170907.00000afa@Huawei.com>
+In-Reply-To: <2189881.irdbgypaU6@kreacher>
+References: <4562925.LvFx2qVVIh@kreacher>
+	<2189881.irdbgypaU6@kreacher>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240222124110.2681455-1-vidyas@nvidia.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, Feb 22, 2024 at 06:11:10PM +0530, Vidya Sagar wrote:
-> Add support for preserving the boot configuration done by the
-> platform firmware per host bridge basis, based on the presence of
-> 'linux,pci-probe-only' property in the respective PCIe host bridge
-> device-tree node. It also unifies the ACPI and DT based boot flows
-> in this regard.
+On Wed, 21 Feb 2024 21:01:48 +0100
+"Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
 
-> +/**
-> + * of_pci_bridge_check_probe_only - Return true if the boot configuration
-> + *                                  needs to be preserved
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> Relocate acpi_bus_trim_one() (without modifications) so as to avoid the
+> need to add a forward declaration of it in a subsequent patch.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+FWIW you indeed moved the code :)
 
-I don't like the "check_probe_only" name because it's a boolean
-function but the name doesn't tell me what a true/false return value
-means.  Something like "preserve_resources" would be better.  If you
-want "probe_only", even removing the "check" would help.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> + * @node: Device tree node with the domain information.
-> + *
-> + * This function looks for "linux,pci-probe-only" property for a given
-> + * PCIe controller's node and returns true if found. Having this property
-> + * for a PCIe controller ensures that the kernel doesn't re-enumerate and
-> + * reconfigure the BAR resources that are already done by the platform firmware.
-
-This is generic PCI, not PCIe-specific (also in commit log and comment
-below).
-
-I think "enumeration" specifically refers to discovering what devices
-are present, and the kernel always does that, so drop that part.
-Reconfiguring BARs and bridge windows is what we want to prevent.
-
-> + * NOTE: The scope of "linux,pci-probe-only" defined within a PCIe bridge device
-> + *       is limited to the hierarchy under that particular bridge device. whereas
-> + *       the scope of "linux,pci-probe-only" defined within chosen node is
-> + *       system wide.
-> + *
-> + * Return: true if the property exists false otherwise.
-> + */
-
-> +bool of_pci_bridge_check_probe_only(struct device_node *node)
+> ---
+>  drivers/acpi/scan.c |   52 ++++++++++++++++++++++++++--------------------------
+>  1 file changed, 26 insertions(+), 26 deletions(-)
+> 
+> Index: linux-pm/drivers/acpi/scan.c
+> ===================================================================
+> --- linux-pm.orig/drivers/acpi/scan.c
+> +++ linux-pm/drivers/acpi/scan.c
+> @@ -244,6 +244,32 @@ static int acpi_scan_try_to_offline(stru
+>  	return 0;
+>  }
+>  
+> +static int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
 > +{
-> +	return of_property_read_bool(node, "linux,pci-probe-only");
-> +}
-> +EXPORT_SYMBOL_GPL(of_pci_bridge_check_probe_only);
-
-Why does this need to be exported for modules and exposed via
-include/linux/pci.h?
-
-> +static void pci_check_config_preserve(struct pci_host_bridge *host_bridge)
-> +{
-> +	if (&host_bridge->dev) {
-
-Checking &host_bridge->dev doesn't seem like the right way to
-determine whether this is an ACPI host bridge.
-
-> +		union acpi_object *obj;
+> +	struct acpi_scan_handler *handler = adev->handler;
 > +
-> +		/*
-> +		 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
-> +		 * exists and returns 0, we must preserve any PCI resource
-> +		 * assignments made by firmware for this host bridge.
-> +		 */
-> +		obj = acpi_evaluate_dsm(ACPI_HANDLE(&host_bridge->dev), &pci_acpi_dsm_guid, 1,
-> +					DSM_PCI_PRESERVE_BOOT_CONFIG, NULL);
-> +		if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
-> +			host_bridge->preserve_config = 1;
-> +		ACPI_FREE(obj);
+> +	acpi_dev_for_each_child_reverse(adev, acpi_bus_trim_one, NULL);
+> +
+> +	adev->flags.match_driver = false;
+> +	if (handler) {
+> +		if (handler->detach)
+> +			handler->detach(adev);
+> +
+> +		adev->handler = NULL;
+> +	} else {
+> +		device_release_driver(&adev->dev);
 > +	}
+> +	/*
+> +	 * Most likely, the device is going away, so put it into D3cold before
+> +	 * that.
+> +	 */
+> +	acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
+> +	adev->flags.initialized = false;
+> +	acpi_device_clear_enumerated(adev);
+> +
+> +	return 0;
+> +}
+> +
+>  static int acpi_scan_hot_remove(struct acpi_device *device)
+>  {
+>  	acpi_handle handle = device->handle;
+> @@ -2547,32 +2573,6 @@ int acpi_bus_scan(acpi_handle handle)
+>  }
+>  EXPORT_SYMBOL(acpi_bus_scan);
+>  
+> -static int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
+> -{
+> -	struct acpi_scan_handler *handler = adev->handler;
+> -
+> -	acpi_dev_for_each_child_reverse(adev, acpi_bus_trim_one, NULL);
+> -
+> -	adev->flags.match_driver = false;
+> -	if (handler) {
+> -		if (handler->detach)
+> -			handler->detach(adev);
+> -
+> -		adev->handler = NULL;
+> -	} else {
+> -		device_release_driver(&adev->dev);
+> -	}
+> -	/*
+> -	 * Most likely, the device is going away, so put it into D3cold before
+> -	 * that.
+> -	 */
+> -	acpi_device_set_power(adev, ACPI_STATE_D3_COLD);
+> -	adev->flags.initialized = false;
+> -	acpi_device_clear_enumerated(adev);
+> -
+> -	return 0;
+> -}
+> -
+>  /**
+>   * acpi_bus_trim - Detach scan handlers and drivers from ACPI device objects.
+>   * @adev: Root of the ACPI namespace scope to walk.
+> 
+> 
+> 
+
 
