@@ -1,117 +1,143 @@
-Return-Path: <linux-acpi+bounces-3813-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3814-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E16585EDEC
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 01:23:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938F385EEEC
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 03:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 676761C221A1
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 00:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5AA28324D
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 02:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7178BF3;
-	Thu, 22 Feb 2024 00:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD22168AC;
+	Thu, 22 Feb 2024 02:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXJQW0/B"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bHC2M4Rk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2F4A35;
-	Thu, 22 Feb 2024 00:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FEA13FF1;
+	Thu, 22 Feb 2024 02:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708561386; cv=none; b=g1msZsXWupRhm2fn+JL9diatdP+tNO6L6F6rdgR8frHH2VdpVAFVvNKxjTfhu+4zHG1U8mrxRF9kzfgRcVk3TZ1rftlOeTE2ZYu+bDQOVqHP0CNRkgLtpjJG++deMrrrz2+vELfYHPDCoHjCPCKq5+IcCGMWYdWDDnHK4zjwQFg=
+	t=1708567655; cv=none; b=u255SuA9RjF8+TqS2c2wwPP16r1dUALUvyywefYJzASCR1rs5jowuRsZ3SSDfzrBeaSZDblJtOR7R2XTCKbkm3vfijlfENFjP1xhK2qu9BqIDEWHIq0jxxmS+8LeM91TYnt0VOIRQlDhKGE5m50qmzo83/4aHbFcaZ/juqu7Yb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708561386; c=relaxed/simple;
-	bh=eUWPi2XweW42m5sudJBaw7LCj+SQtvsiVFN93Jf+Jgg=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=mrDBYhQ3TWYkk5GXKs5/nh0RmJhW8lLAZgS1NqWPT/hcZ4Wh4b1z493xjjIb6893odjoupEf0M/g5cFMKzCLvM8msfJ6eP9C1VikbJv0g8P2GbqqQLYpTLcD+gkAhisQVT+hgCxRokSlEtWlCj63/CXN268iR7XxlUqqq8m937E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXJQW0/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD9DC433C7;
-	Thu, 22 Feb 2024 00:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708561386;
-	bh=eUWPi2XweW42m5sudJBaw7LCj+SQtvsiVFN93Jf+Jgg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=NXJQW0/BrFNtBUe9GuH3ljh6EoHVSUAeDxJFN3aX+8OMHd1RQwkogjQTHeTsreqC9
-	 E3rAFb4R6LLLsHq8hHhJHaUbFUCM9MvkcCMR1ce4Zw8wAovi1EPYzWaTfGSZTExeTL
-	 BXOIF1a6EULI5Oi5te88SXGIEAkt5DEvdgDzgOLCaNy4c+c1yLqg7OXQxO30X8J+TX
-	 ZiWeL2aCSrIkBPfabz+z4dqXvTOu4zZ+8Ce6TnsJ2XvwvStfN2z4yd27pEz05TPsmm
-	 cfFVRKGteQ4NGcWB7zB3LURn1nbHxG8STiKtyeSpMT+zgvp55rYAuyUv9aKJxyUA3W
-	 7WW8HeDDVRxmw==
-Date: Wed, 21 Feb 2024 17:23:04 -0700
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1708567655; c=relaxed/simple;
+	bh=wpfrzY5wnM49lInKxaLzb9/hPGzdAubLDvCFyOqjldc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FtAZ6RoiNC8KlJssg3yYmH0Gt/YLRysp/JnxbWRsCzlaAqcXHJxsITqPNS0cqcEJFHlw/K3kIQHZyJxEIhaIaYMRUAtfzdK4bWC5bvAExGE/IWao1NqTsyuhscBF+EMVp/NkyKHEoHzgr3K6VlBD5KBM0gfzlCqyjAJNKADl54Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bHC2M4Rk; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708567644; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=lDGwJr9TuPvJsHHw5w4m96qLqRHU5UZ2FIU9NMbibkY=;
+	b=bHC2M4Rk2wv0ylI87krt3QbgBa+WsZdcKjeeVawCMgE59rh2AuqctJIQw80gUR5agkL0oeaTDmalmtdsjFdxIx627a9T3mWcGvaLYmS3oWCSEVTZSO6Ah5UIDVnR2Uacs0OQ3FbX2m+PVgX7FOw9lzq/xDSbRS2TaIwdEWzw8m4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0W1.N3yS_1708567639;
+Received: from 30.240.113.243(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0W1.N3yS_1708567639)
+          by smtp.aliyun-inc.com;
+          Thu, 22 Feb 2024 10:07:22 +0800
+Message-ID: <bdf15819-46e0-498f-97e1-a0183f257086@linux.alibaba.com>
+Date: Thu, 22 Feb 2024 10:07:18 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Saravana Kannan <saravanak@google.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
- Rob Herring <robh+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, kernel-team@android.com, 
- linux-efi@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>
-In-Reply-To: <20240221233026.2915061-4-saravanak@google.com>
-References: <20240221233026.2915061-1-saravanak@google.com>
- <20240221233026.2915061-4-saravanak@google.com>
-Message-Id: <170856138383.540970.12743608676098316685.robh@kernel.org>
-Subject: Re: [PATCH v3 3/4] dt-bindings: Add post-init-providers property
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+To: Borislav Petkov <bp@alien8.de>, Ira Weiny <ira.weiny@intel.com>,
+ "Luck, Tony" <tony.luck@intel.com>, "james.morse@arm.com"
+ <james.morse@arm.com>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, gregkh@linuxfoundation.org, will@kernel.org,
+ jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240204080144.7977-2-xueshuai@linux.alibaba.com>
+ <20240219092528.GTZdMeiDWIDz613VeT@fat_crate.local>
+Content-Language: en-US
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20240219092528.GTZdMeiDWIDz613VeT@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-On Wed, 21 Feb 2024 15:30:23 -0800, Saravana Kannan wrote:
-> The post-init-providers property can be used to break a dependency cycle by
-> marking some provider(s) as a post device initialization provider(s). This
-> allows an OS to do a better job at ordering initialization and
-> suspend/resume of the devices in a dependency cycle.
+
+On 2024/2/19 17:25, Borislav Petkov wrote:
+> On Sun, Feb 04, 2024 at 04:01:42PM +0800, Shuai Xue wrote:
+>> Synchronous error was detected as a result of user-space process accessing
+>> a 2-bit uncorrected error. The CPU will take a synchronous error exception
+>> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
+>> memory_failure() work which poisons the related page, unmaps the page, and
+>> then sends a SIGBUS to the process, so that a system wide panic can be
+>> avoided.
+>>
+>> However, no memory_failure() work will be queued when abnormal synchronous
+>> errors occur. These errors can include situations such as invalid PA,
+>> unexpected severity, no memory failure config support, invalid GUID
+>> section, etc. In such case, the user-space process will trigger SEA again.
+>> This loop can potentially exceed the platform firmware threshold or even
+>> trigger a kernel hard lockup, leading to a system reboot.
+>>
+>> Fix it by performing a force kill if no memory_failure() work is queued
+>> for synchronous errors.
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> ---
+>>  drivers/acpi/apei/ghes.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 7b7c605166e0..0892550732d4 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -806,6 +806,15 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>  		}
+>>  	}
+>>  
+>> +	/*
+>> +	 * If no memory failure work is queued for abnormal synchronous
+>> +	 * errors, do a force kill.
+>> +	 */
+>> +	if (sync && !queued) {
+>> +		pr_err("Sending SIGBUS to current task due to memory error not recovered");
+>> +		force_sig(SIGBUS);
+>> +	}
 > 
-> Signed-off-by: Saravana Kannan <saravanak@google.com>
-> ---
->  .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
->  MAINTAINERS                                   |  13 ++-
->  2 files changed, 112 insertions(+), 6 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
+> Except that there are a bunch of CXL GUIDs being handled there too and
+> this will sigbus those processes now automatically.
+
+Before the CXL GUIDs added, @Tony confirmed that the HEST notifications are always
+asynchronous on x86 platform, so only Synchronous External Abort (SEA) on ARM is
+delivered as a synchronous notification.
+
+Will the CXL component trigger synchronous events for which we need to terminate the
+current process by sending sigbus to process?
+
+> 
+> Lemme add the whole bunch from
+> 
+>   671a794c33c6 ("acpi/ghes: Process CXL Component Events")
+> 
+> for comment to Cc.
 > 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Thank you.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
-Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-
-doc reference errors (make refcheckdocs):
-Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/post-init-supplier.yaml
-MAINTAINERS: Documentation/devicetree/bindings/post-init-supplier.yaml
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240221233026.2915061-4-saravanak@google.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Best Regards,
+Shuai
 
