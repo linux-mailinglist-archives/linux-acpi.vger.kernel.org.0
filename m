@@ -1,186 +1,432 @@
-Return-Path: <linux-acpi+bounces-3837-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3838-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6247685F3F8
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:08:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553EB85F4DB
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 10:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 179D5285EE9
-	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 09:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0753D282FEF
+	for <lists+linux-acpi@lfdr.de>; Thu, 22 Feb 2024 09:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CADC36AF3;
-	Thu, 22 Feb 2024 09:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fKa4zg18"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C12381A1;
+	Thu, 22 Feb 2024 09:44:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454AD20DDC
-	for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 09:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF573613A;
+	Thu, 22 Feb 2024 09:43:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708592877; cv=none; b=FVUSIB1l7kib1Azidd2wss7IqXmw2Hy54+9U8XdIC9048vNgq/XUaGhsJHVEQ48ctRquQUrZUXFwTL225cJdSnRjo8J6kqIN8lPgiJxoFWKJPdrOpcez+und38BWtAsXrMerkOFpzDsIgAl9z0QZuHJkksqWu1zCOr1yq4BBQWE=
+	t=1708595042; cv=none; b=tHcjOHKH6OgKC+Y2OzO1BBeeVqETuw4uhpmEpmKD+Wzx8pQst8+iy40J4aa0YNmzBHAIQZ2M3DsNsswZQEol3R2daX9p1+xLfo/GtjTmpqGBLxncWcm3ivaV5UrKbesLCCYzoVdhGsGO41jhMfPgGSjoOgOfWUe9MGG8xF6iveg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708592877; c=relaxed/simple;
-	bh=w2YVtj14mJYN/DBHiYMlFojoVgEZJr4yEw2ozYCtueQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Aq4fHTMnJE7J/WctRleGqdi294xCipQtSWtmJGH2zfdpv+5WVE4yPIOULqrpBD5Iy36B4EFq9u5jkadmKRe0pMcPRmO6D4g+tbBrMFmIhkkK0LhPgVCiHKSRlGv88NSh0Ll7B+2QL5i/bdnzX0ECYXQN5PiomC8C3xON+WJg5lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fKa4zg18; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5649c25369aso5806854a12.2
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 01:07:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708592873; x=1709197673; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vP/n41qKMmnFZWvtAa6bIMuGiBG2lj2PP2oWwVowhdo=;
-        b=fKa4zg18lcr2QWdjIu7JSOWnYzeQBNGo2oOeO519iwPP2jgUBKizimUQmmEqtSoZN5
-         nBzeEvLoPVLrwv1U5RKP8buZiX3DdmEk3+9Cv/Qchp5s5EsAsfv5XGDDT9Hcc4o/D5Bi
-         DjTFd1SfLwvB7vf4lUygmbdXqJkpoDN0zSMhCnAVuAn1+titStAztZYpxyi6/h7FrSm9
-         xoVrBhLMwUPdv+j93Ki5k6NLHXvU1IBM/QqBs9hBVbPInQq7lZ4EPNMKEAWSXf6ocU/h
-         hCxein8rC4UAjfl47EuNMBfz7NP02yEXJ+mRSJ/QyGvGGgBHeOZA5um8FnhJqItAkilk
-         96/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708592873; x=1709197673;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vP/n41qKMmnFZWvtAa6bIMuGiBG2lj2PP2oWwVowhdo=;
-        b=HHftj4KqGfJIPBXRlJZSvWlbhkjYsxvM62w6ZPRiPO4zAUhDHl0ACVvmzrW6hKgT0l
-         O/O+57EHCpLCyuRAcOB5ZzDYeAKM+/P/cd6rYqRtwcYSOxL1Kt0k8+BhuE2Z1d+vohNP
-         jdwrsgftAwR+RacqqDwNWy3luLsUMHeyNEQ1XBLxewoftIllfs34V6QP97+ZspJTJF3v
-         saonlbNn1CM4wrBQk4l78xtQSF2KmF9Xc19maVC8tXN35pzs/6oyJIS2qqM4ogOszNPZ
-         CdojUr0tixIo8tXBp38aTXrCBobg8/4H4t3szvLF4RBCSMubZ5QYIdfqR0p5LPYUBd2/
-         /PTw==
-X-Forwarded-Encrypted: i=1; AJvYcCV47ClqOaWUh8B7Tad6ty5Lfxqsi2lwfBmeJG3PnXUJg9Fqq8Ai/lj+JWWif7L2G3rD/ZxJHLRw/w/OieOOKfKF7WTsjBNlowLkGQ==
-X-Gm-Message-State: AOJu0YyPnLT3BCIxrndzrOOomGgLJ+mXIk2HfhGorOhzxfrvx2HWTRFT
-	4vfzcvSxcPkj8+OFDUkO59/9sX/8sNonygLKrNVoKBGaxpCorKD+29XYuy1qhIo=
-X-Google-Smtp-Source: AGHT+IGzgmqpsGNjtZpPJAeFzfPQKVvdO33iEfZtGi2PLjQut65szGL8kXE+6IyzFgpbReJ/VQNWIg==
-X-Received: by 2002:a05:6402:643:b0:564:65c5:f048 with SMTP id u3-20020a056402064300b0056465c5f048mr8534936edx.28.1708592873602;
-        Thu, 22 Feb 2024 01:07:53 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.116])
-        by smtp.gmail.com with ESMTPSA id b2-20020aa7dc02000000b00564cb5a3c7esm2195241edu.81.2024.02.22.01.07.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Feb 2024 01:07:52 -0800 (PST)
-Message-ID: <a643d615-e56b-481e-9a15-e0c578de3eb0@linaro.org>
-Date: Thu, 22 Feb 2024 10:07:50 +0100
+	s=arc-20240116; t=1708595042; c=relaxed/simple;
+	bh=obZPR+6UbVULJXHm78nA0C0z595i34qplBI+aY2HQHI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SsGzWAv/eMywOpAHRhW4MMgufl/n5EW7d+TQpwMDD64tSNOZWJXHaRF1QrXWQ8DMjs8HSroTNlY31yYyovcoSFWZYG7vFiJ2DPF0OrIAmT/DYEeBHWF8tX2p/P93lDWdcR0s1gadL1qIfOMxlsMsL/t3HjXuEBrWoDbypL8dCTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 0d23f7cd2b165d67; Thu, 22 Feb 2024 10:43:56 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 5AFAB66A293;
+	Thu, 22 Feb 2024 10:43:56 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Dieter Mummenschanz <dmummenschanz@web.de>
+Subject:
+ [PATCH] Revert "ACPI: EC: Use a spin lock without disabing  interrupts"
+Date: Thu, 22 Feb 2024 10:43:56 +0100
+Message-ID: <2739288.mvXUDI8C0e@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] dt-bindings: Add post-init-providers property
-Content-Language: en-US
-To: Saravana Kannan <saravanak@google.com>, Rob Herring <robh@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, kernel-team@android.com,
- linux-efi@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-References: <20240221233026.2915061-1-saravanak@google.com>
- <20240221233026.2915061-4-saravanak@google.com>
- <170856138383.540970.12743608676098316685.robh@kernel.org>
- <CAGETcx9v_NHhC4EwKDQ1UQMQQB=B2e1nQSqJZAwc7VwEWztp8g@mail.gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CAGETcx9v_NHhC4EwKDQ1UQMQQB=B2e1nQSqJZAwc7VwEWztp8g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeeggddtiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepfedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegumhhumhhmvghnshgthhgrnhiiseifvggsrdguvg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=3 Fuz1=3 Fuz2=3
 
-On 22/02/2024 04:41, Saravana Kannan wrote:
-> On Wed, Feb 21, 2024 at 4:23 PM Rob Herring <robh@kernel.org> wrote:
->>
->>
->> On Wed, 21 Feb 2024 15:30:23 -0800, Saravana Kannan wrote:
->>> The post-init-providers property can be used to break a dependency cycle by
->>> marking some provider(s) as a post device initialization provider(s). This
->>> allows an OS to do a better job at ordering initialization and
->>> suspend/resume of the devices in a dependency cycle.
->>>
->>> Signed-off-by: Saravana Kannan <saravanak@google.com>
->>> ---
->>>  .../bindings/post-init-providers.yaml         | 105 ++++++++++++++++++
->>>  MAINTAINERS                                   |  13 ++-
->>>  2 files changed, 112 insertions(+), 6 deletions(-)
->>>  create mode 100644 Documentation/devicetree/bindings/post-init-providers.yaml
->>>
->>
->> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
->> on your patch (DT_CHECKER_FLAGS is new in v5.13):
->>
->> yamllint warnings/errors:
->>
->> dtschema/dtc warnings/errors:
->> Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
->> Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@1000: failed to match any schema with compatible: ['vendor,soc4-gcc', 'vendor,soc1-gcc']
->> Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
->> Documentation/devicetree/bindings/post-init-providers.example.dtb: /example-0/clock-controller@2000: failed to match any schema with compatible: ['vendor,soc4-dispcc', 'vendor,soc1-dispcc']
-> 
-> I'm assuming it's okay to ignore these warnings about made up
-> compatible string names.
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-No, unfortunately not. I think you need to come with a real example or
-just drop compatibles.
+Commit eb9299beadbd ("ACPI: EC: Use a spin lock without disabing
+interrupts") introduced an unexpected user-visible change in
+behavior, which is a significant CPU load increase when the EC
+is in use.
 
-BTW, I still don't see any users of this binding.
+This most likely happens due to increased spinlock contention
+and so reducing this effect would require a major rework of the
+EC driver locking.  There is no time for this in the current
+cycle, so revert commit eb9299beadbd.
 
-Best regards,
-Krzysztof
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218511
+Reported-by: Dieter Mummenschanz <dmummenschanz@web.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/ec.c | 112 +++++++++++++++++++++++++++-------------------
+ 1 file changed, 66 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index dbdee2924594..02255795b800 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -525,10 +525,12 @@ static void acpi_ec_clear(struct acpi_ec *ec)
+ 
+ static void acpi_ec_enable_event(struct acpi_ec *ec)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	if (acpi_ec_started(ec))
+ 		__acpi_ec_enable_event(ec);
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 
+ 	/* Drain additional events if hardware requires that */
+ 	if (EC_FLAGS_CLEAR_ON_RESUME)
+@@ -544,9 +546,11 @@ static void __acpi_ec_flush_work(void)
+ 
+ static void acpi_ec_disable_event(struct acpi_ec *ec)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	__acpi_ec_disable_event(ec);
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 
+ 	/*
+ 	 * When ec_freeze_events is true, we need to flush events in
+@@ -567,9 +571,10 @@ void acpi_ec_flush_work(void)
+ 
+ static bool acpi_ec_guard_event(struct acpi_ec *ec)
+ {
++	unsigned long flags;
+ 	bool guarded;
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, flags);
+ 	/*
+ 	 * If firmware SCI_EVT clearing timing is "event", we actually
+ 	 * don't know when the SCI_EVT will be cleared by firmware after
+@@ -585,29 +590,31 @@ static bool acpi_ec_guard_event(struct acpi_ec *ec)
+ 	guarded = ec_event_clearing == ACPI_EC_EVT_TIMING_EVENT &&
+ 		ec->event_state != EC_EVENT_READY &&
+ 		(!ec->curr || ec->curr->command != ACPI_EC_COMMAND_QUERY);
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 	return guarded;
+ }
+ 
+ static int ec_transaction_polled(struct acpi_ec *ec)
+ {
++	unsigned long flags;
+ 	int ret = 0;
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, flags);
+ 	if (ec->curr && (ec->curr->flags & ACPI_EC_COMMAND_POLL))
+ 		ret = 1;
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 	return ret;
+ }
+ 
+ static int ec_transaction_completed(struct acpi_ec *ec)
+ {
++	unsigned long flags;
+ 	int ret = 0;
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, flags);
+ 	if (ec->curr && (ec->curr->flags & ACPI_EC_COMMAND_COMPLETE))
+ 		ret = 1;
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 	return ret;
+ }
+ 
+@@ -749,6 +756,7 @@ static int ec_guard(struct acpi_ec *ec)
+ 
+ static int ec_poll(struct acpi_ec *ec)
+ {
++	unsigned long flags;
+ 	int repeat = 5; /* number of command restarts */
+ 
+ 	while (repeat--) {
+@@ -757,14 +765,14 @@ static int ec_poll(struct acpi_ec *ec)
+ 		do {
+ 			if (!ec_guard(ec))
+ 				return 0;
+-			spin_lock(&ec->lock);
++			spin_lock_irqsave(&ec->lock, flags);
+ 			advance_transaction(ec, false);
+-			spin_unlock(&ec->lock);
++			spin_unlock_irqrestore(&ec->lock, flags);
+ 		} while (time_before(jiffies, delay));
+ 		pr_debug("controller reset, restart transaction\n");
+-		spin_lock(&ec->lock);
++		spin_lock_irqsave(&ec->lock, flags);
+ 		start_transaction(ec);
+-		spin_unlock(&ec->lock);
++		spin_unlock_irqrestore(&ec->lock, flags);
+ 	}
+ 	return -ETIME;
+ }
+@@ -772,10 +780,11 @@ static int ec_poll(struct acpi_ec *ec)
+ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 					struct transaction *t)
+ {
++	unsigned long tmp;
+ 	int ret = 0;
+ 
+ 	/* start transaction */
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, tmp);
+ 	/* Enable GPE for command processing (IBF=0/OBF=1) */
+ 	if (!acpi_ec_submit_flushable_request(ec)) {
+ 		ret = -EINVAL;
+@@ -786,11 +795,11 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 	ec->curr = t;
+ 	ec_dbg_req("Command(%s) started", acpi_ec_cmd_string(t->command));
+ 	start_transaction(ec);
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, tmp);
+ 
+ 	ret = ec_poll(ec);
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, tmp);
+ 	if (t->irq_count == ec_storm_threshold)
+ 		acpi_ec_unmask_events(ec);
+ 	ec_dbg_req("Command(%s) stopped", acpi_ec_cmd_string(t->command));
+@@ -799,7 +808,7 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 	acpi_ec_complete_request(ec);
+ 	ec_dbg_ref(ec, "Decrease command");
+ unlock:
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, tmp);
+ 	return ret;
+ }
+ 
+@@ -927,7 +936,9 @@ EXPORT_SYMBOL(ec_get_handle);
+ 
+ static void acpi_ec_start(struct acpi_ec *ec, bool resuming)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	if (!test_and_set_bit(EC_FLAGS_STARTED, &ec->flags)) {
+ 		ec_dbg_drv("Starting EC");
+ 		/* Enable GPE for event processing (SCI_EVT=1) */
+@@ -937,28 +948,31 @@ static void acpi_ec_start(struct acpi_ec *ec, bool resuming)
+ 		}
+ 		ec_log_drv("EC started");
+ 	}
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+ static bool acpi_ec_stopped(struct acpi_ec *ec)
+ {
++	unsigned long flags;
+ 	bool flushed;
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irqsave(&ec->lock, flags);
+ 	flushed = acpi_ec_flushed(ec);
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ 	return flushed;
+ }
+ 
+ static void acpi_ec_stop(struct acpi_ec *ec, bool suspending)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	if (acpi_ec_started(ec)) {
+ 		ec_dbg_drv("Stopping EC");
+ 		set_bit(EC_FLAGS_STOPPED, &ec->flags);
+-		spin_unlock(&ec->lock);
++		spin_unlock_irqrestore(&ec->lock, flags);
+ 		wait_event(ec->wait, acpi_ec_stopped(ec));
+-		spin_lock(&ec->lock);
++		spin_lock_irqsave(&ec->lock, flags);
+ 		/* Disable GPE for event processing (SCI_EVT=1) */
+ 		if (!suspending) {
+ 			acpi_ec_complete_request(ec);
+@@ -969,25 +983,29 @@ static void acpi_ec_stop(struct acpi_ec *ec, bool suspending)
+ 		clear_bit(EC_FLAGS_STOPPED, &ec->flags);
+ 		ec_log_drv("EC stopped");
+ 	}
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+ static void acpi_ec_enter_noirq(struct acpi_ec *ec)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	ec->busy_polling = true;
+ 	ec->polling_guard = 0;
+ 	ec_log_drv("interrupt blocked");
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+ static void acpi_ec_leave_noirq(struct acpi_ec *ec)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 	ec->busy_polling = ec_busy_polling;
+ 	ec->polling_guard = ec_polling_guard;
+ 	ec_log_drv("interrupt unblocked");
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+ void acpi_ec_block_transactions(void)
+@@ -1119,9 +1137,9 @@ static void acpi_ec_event_processor(struct work_struct *work)
+ 
+ 	ec_dbg_evt("Query(0x%02x) stopped", handler->query_bit);
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irq(&ec->lock);
+ 	ec->queries_in_progress--;
+-	spin_unlock(&ec->lock);
++	spin_unlock_irq(&ec->lock);
+ 
+ 	acpi_ec_put_query_handler(handler);
+ 	kfree(q);
+@@ -1184,12 +1202,12 @@ static int acpi_ec_submit_query(struct acpi_ec *ec)
+ 	 */
+ 	ec_dbg_evt("Query(0x%02x) scheduled", value);
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irq(&ec->lock);
+ 
+ 	ec->queries_in_progress++;
+ 	queue_work(ec_query_wq, &q->work);
+ 
+-	spin_unlock(&ec->lock);
++	spin_unlock_irq(&ec->lock);
+ 
+ 	return 0;
+ 
+@@ -1205,14 +1223,14 @@ static void acpi_ec_event_handler(struct work_struct *work)
+ 
+ 	ec_dbg_evt("Event started");
+ 
+-	spin_lock(&ec->lock);
++	spin_lock_irq(&ec->lock);
+ 
+ 	while (ec->events_to_process) {
+-		spin_unlock(&ec->lock);
++		spin_unlock_irq(&ec->lock);
+ 
+ 		acpi_ec_submit_query(ec);
+ 
+-		spin_lock(&ec->lock);
++		spin_lock_irq(&ec->lock);
+ 
+ 		ec->events_to_process--;
+ 	}
+@@ -1229,11 +1247,11 @@ static void acpi_ec_event_handler(struct work_struct *work)
+ 
+ 		ec_dbg_evt("Event stopped");
+ 
+-		spin_unlock(&ec->lock);
++		spin_unlock_irq(&ec->lock);
+ 
+ 		guard_timeout = !!ec_guard(ec);
+ 
+-		spin_lock(&ec->lock);
++		spin_lock_irq(&ec->lock);
+ 
+ 		/* Take care of SCI_EVT unless someone else is doing that. */
+ 		if (guard_timeout && !ec->curr)
+@@ -1246,7 +1264,7 @@ static void acpi_ec_event_handler(struct work_struct *work)
+ 
+ 	ec->events_in_progress--;
+ 
+-	spin_unlock(&ec->lock);
++	spin_unlock_irq(&ec->lock);
+ }
+ 
+ static void clear_gpe_and_advance_transaction(struct acpi_ec *ec, bool interrupt)
+@@ -1271,11 +1289,13 @@ static void clear_gpe_and_advance_transaction(struct acpi_ec *ec, bool interrupt
+ 
+ static void acpi_ec_handle_interrupt(struct acpi_ec *ec)
+ {
+-	spin_lock(&ec->lock);
++	unsigned long flags;
++
++	spin_lock_irqsave(&ec->lock, flags);
+ 
+ 	clear_gpe_and_advance_transaction(ec, true);
+ 
+-	spin_unlock(&ec->lock);
++	spin_unlock_irqrestore(&ec->lock, flags);
+ }
+ 
+ static u32 acpi_ec_gpe_handler(acpi_handle gpe_device,
+@@ -2085,7 +2105,7 @@ bool acpi_ec_dispatch_gpe(void)
+ 	 * Dispatch the EC GPE in-band, but do not report wakeup in any case
+ 	 * to allow the caller to process events properly after that.
+ 	 */
+-	spin_lock(&first_ec->lock);
++	spin_lock_irq(&first_ec->lock);
+ 
+ 	if (acpi_ec_gpe_status_set(first_ec)) {
+ 		pm_pr_dbg("ACPI EC GPE status set\n");
+@@ -2094,7 +2114,7 @@ bool acpi_ec_dispatch_gpe(void)
+ 		work_in_progress = acpi_ec_work_in_progress(first_ec);
+ 	}
+ 
+-	spin_unlock(&first_ec->lock);
++	spin_unlock_irq(&first_ec->lock);
+ 
+ 	if (!work_in_progress)
+ 		return false;
+@@ -2107,11 +2127,11 @@ bool acpi_ec_dispatch_gpe(void)
+ 
+ 		pm_pr_dbg("ACPI EC work flushed\n");
+ 
+-		spin_lock(&first_ec->lock);
++		spin_lock_irq(&first_ec->lock);
+ 
+ 		work_in_progress = acpi_ec_work_in_progress(first_ec);
+ 
+-		spin_unlock(&first_ec->lock);
++		spin_unlock_irq(&first_ec->lock);
+ 	} while (work_in_progress && !pm_wakeup_pending());
+ 
+ 	return false;
+-- 
+2.35.3
+
+
+
 
 
