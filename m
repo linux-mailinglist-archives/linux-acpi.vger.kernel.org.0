@@ -1,122 +1,103 @@
-Return-Path: <linux-acpi+bounces-3921-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3922-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547948617CA
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 17:25:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6ADF8617CE
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 17:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79E101C219D9
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 16:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE2B1F21A05
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 16:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26792126F26;
-	Fri, 23 Feb 2024 16:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4NRD34p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9125A82C60;
+	Fri, 23 Feb 2024 16:25:59 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48494128378
-	for <linux-acpi@vger.kernel.org>; Fri, 23 Feb 2024 16:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A60A7EF06;
+	Fri, 23 Feb 2024 16:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708705468; cv=none; b=TPeqFxhM01+CRpB+lUijOiUcM0lnr2PEuLuv9ctC1OIRsfU0qv60fV3rH6rcHxAwL+0jCKUyj6ClfeU67Q9sVPUZ3sfqyBmWCBC7abn2g0BJI1PsPiT+gBKWVabLmcVxYmK3KbPNGG34zH1w+D+G3iSISBDK3fUJnMJ4J6jM99M=
+	t=1708705559; cv=none; b=PjrXHKNt/RVU9Ev8YO3lF6jXnoaiD0Ohkpd7M/Oyi/NN/Z87Nij28MoV9gn0hLDn1ooDrOXpqiMK3B6obZ2RRbicqttr71R4xUKg/AmAQjkyA0yak+itFZv63ZoMPxXtVSU5ZoCuln1MuF6XrQauZrpup/bYrDnLDrKdEFQWBnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708705468; c=relaxed/simple;
-	bh=WhB2DjD7ZAA+QIHvsDz3757MA4T80EiG7E0kSoHSwmE=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=lbdvq/gyCfg5QGUWJWuacxzyT6DmQOKmEJZazB4r6Ic16RyyR19ABS16tSlbfZ6fFmpy/LMfYVnWjY5sY9OqmvpWa2fcECggJs2fAASd7CrOEt+km+/qRn8iT1kMlpiZX5ZX8chtElQnSfJ4S0m6WpzpatkQhPySFBCjAHDJQa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4NRD34p; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-412895f726dso3848215e9.3
-        for <linux-acpi@vger.kernel.org>; Fri, 23 Feb 2024 08:24:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708705459; x=1709310259; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8gDge0Q1djmOzhLYsn0ZYL2nTpzB6D67s40bSn2KrM0=;
-        b=V4NRD34prkN79EMXgRTJlSm/2VsNC8SyErdEbWtXL8HE1YEhH/OxkHPYelXlTukfe6
-         HvgCChGFwRTcvHZScmHZZffs5IZDQjHcBbmDfkjLcZKES8FXyPD6pFG4W9dVwQl7MZM1
-         dxeF20SAG6bAvTFMkQ9QrwtZ8YWw8YAlTtH7u3MWbfb4OT4dOgjdxA+7imjlmMEptv34
-         TZWql/ElxVb1A/l7iDg5XnPnhdkzV7nbMlimWyY6c6IO/KGDzYB2m1WmZRzcrwgVOMj9
-         9TR/DTYS7tHM0lnLgDu1KDLauWwcfO+uKjLoOtDFIMne+m1Jv23c0VT1a5n7wJHQKBIb
-         wKvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708705459; x=1709310259;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8gDge0Q1djmOzhLYsn0ZYL2nTpzB6D67s40bSn2KrM0=;
-        b=nZ1zk3th2EEWXPCry1oJmfqQCNGQSDI25RiHcHTQdrpWgUkwQpxOPSQnvF6VEdiuVq
-         rV/QEhwZBS0NZerT7DqAZAeMOCWj9HvQvRDNjEinsFx4I+i+mwCNDIa3WsqAjr9/2Mnc
-         oEx1iaC7Up39kEZlJbCBj9p9gIVLG/w/pL7IRIHZWZeFcQuyU3p6Knbqg6ekBPs00Mpi
-         wP1d3jhLlM2jGpR29hWwXyp+ZTcrUYV5iHETxTJG89Z5jx+OH+Wz0CR5hBqDcbfbOE4o
-         swaZsWEyKgYBrqLaPF2aX1DtsX4FBE2meMU9/gvsqdEDE5aWKgu3VkNHTKrKLp0imiyk
-         IPRA==
-X-Gm-Message-State: AOJu0YxhAPKoWxEwYKYdn//9jWLGybGsCXwqNem/9l7Rd9pXiPVIfF/4
-	Ps/oekIeNh4dw4S1vpSV/5lLOjk4GW1+HCNeNvzOkEY5t9phMqeTk4hrVYKOZdrNaz2QgV9PnsH
-	7OWKASXfeqR01nTnv9j7cyH6/mOvFdcXR/Vs=
-X-Google-Smtp-Source: AGHT+IHuwhbcpOyAqUfb1qTh90mf2LDJ2w6ALGlfe3uGn5jKb7jn1Fw8MqVCqEMd3Hmxuuj2WdsaaSZ2bwT01AbXs18=
-X-Received: by 2002:a05:600c:520a:b0:412:985d:45a with SMTP id
- fb10-20020a05600c520a00b00412985d045amr183603wmb.13.1708705459072; Fri, 23
- Feb 2024 08:24:19 -0800 (PST)
+	s=arc-20240116; t=1708705559; c=relaxed/simple;
+	bh=pcgLlYSZ94N8Z5tjPSaQIgYSm+pxjOpzSlJJCy147m0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dr/4ypPYAvI5XJC3a6WWVwbAu98iHZpg/umh1TUfQhYnj8jSPZPLgVXVm6phxrusUQW4CGekIycT99PFBUptmtDc0dIGqk2myG3puN4CtSmQRC+DexMz7Gdr3hJOQ5SaHrEazQ4ocEN/UhZs386oS9JupJirmzknKANHWewklFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ThFd33KWmz6JB2J;
+	Sat, 24 Feb 2024 00:21:27 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 51DEA140D30;
+	Sat, 24 Feb 2024 00:25:53 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
+ 2024 16:25:52 +0000
+Date: Fri, 23 Feb 2024 16:25:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: <shiju.jose@huawei.com>, <linux-cxl@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <linux-edac@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <david@redhat.com>,
+	<Vilas.Sridharan@amd.com>, <leo.duran@amd.com>, <Yazen.Ghannam@amd.com>,
+	<rientjes@google.com>, <jiaqiyan@google.com>, <tony.luck@intel.com>,
+	<Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>, <rafael@kernel.org>,
+	<lenb@kernel.org>, <naoya.horiguchi@nec.com>, <james.morse@arm.com>,
+	<jthoughton@google.com>, <somasundaram.a@hpe.com>, <erdemaktas@google.com>,
+	<pgonda@google.com>, <duenwen@google.com>, <mike.malvestuto@intel.com>,
+	<gthelen@google.com>, <wschwartz@amperecomputing.com>,
+	<dferguson@amperecomputing.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [RFC PATCH v7 00/12] memory: scrub: introduce subsystem +
+ CXL/ACPI-RAS2 drivers
+Message-ID: <20240223162551.000013ec@Huawei.com>
+In-Reply-To: <20240223154251.GAZdi8--NPaMAK_ZBp@fat_crate.local>
+References: <20240223143723.1574-1-shiju.jose@huawei.com>
+	<20240223154251.GAZdi8--NPaMAK_ZBp@fat_crate.local>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Uldyk <m.kudinovv@gmail.com>
-Date: Fri, 23 Feb 2024 19:24:08 +0300
-Message-ID: <CAAa5hjU-QV8LQtiNW5uuh_z1Gvge_q36LzmLqj7FiK7tT6JsOg@mail.gmail.com>
-Subject: [PATCH] ACPI: resource: Add MAIBENBEN X577 to irq1_edge_low_force_override
-To: rafael@kernel.org
-Cc: linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-A known issue on some Zen laptops, keyboard stopped working due to commit
-9946e39fe8d0 fael@kernel.org("ACPI: resource: skip IRQ override on AMD
-Zen platforms")
-on kernel 5.19.10.
+On Fri, 23 Feb 2024 16:42:51 +0100
+Borislav Petkov <bp@alien8.de> wrote:
 
-The ACPI IRQ override is required for this board due to buggy DSDT, thus
-adding the board vendor and name to irq1_edge_low_force_override fixes
-the issue.
+> On Fri, Feb 23, 2024 at 10:37:11PM +0800, shiju.jose@huawei.com wrote:
+> > CXL patrol scrub and DDR5 ECS and ACPI RAS2 HW based memory
+> > patrol scrub features are added as use cases for the scrub
+> > subsystem to expose the scrub controls to the user.  
+> 
+> WTH is a RAS2 driver and where is the RAS1 driver?
+> 
+Odd ACPI naming.  RASF (which is very limited) was replaced by RAS2.
 
-Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217394
-Link: https://lore.kernel.org/linux-acpi/20231006123304.32686-1-hdegoede@redhat.com/
-Tested-by: Maxim Trofimov <maxvereschagin@gmail.com>
-Signed-off-by: Maxim Kudinov <m.kudinovv@gmail.com>
----
-If you need more info (dmesg, dmidecode), then please let me know.
+Both are ACPI tables that describe the Platform Communication Channels
+(mailbox) + provide a definition of the protocol that is sent over
+it in order to control memory scrub.  RAS2 has some other uses this
+driver isn't touching on.
 
-P.S. Sorry Rafael for sending it to you again, my email client was in
-HTML mode, so
-the email was rejected from the mailing list.
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+So in short, it's an ACPI spec defined interface for controlling 
+Memory Scrub engines.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index dacad1d846c0..f681fd66d32b 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -588,6 +588,13 @@ static const struct dmi_system_id
-irq1_edge_low_force_override[] = {
-                        DMI_MATCH(DMI_BOARD_NAME, "GM5RGEE0016COM"),
-                },
-        },
-+       {
-+               /* MAIBENBEN X577 */
-+               .matches = {
-+                       DMI_MATCH(DMI_SYS_VENDOR, "MAIBENBEN"),
-+                       DMI_MATCH(DMI_BOARD_NAME, "X577"),
-+               },
-+       },
-        { }
- };
---
-2.43.2
+https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html#acpi-ras2-feature-table-ras2
+
+Jonathan
 
