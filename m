@@ -1,138 +1,144 @@
-Return-Path: <linux-acpi+bounces-3885-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3886-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B7B8607DF
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 01:55:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16243860823
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 02:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773251F24D24
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 00:55:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE9442822CD
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 01:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4501A3236;
-	Fri, 23 Feb 2024 00:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97A28F47;
+	Fri, 23 Feb 2024 01:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0Ftgx/2j"
+	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="A8Jb1eve"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from snail.cherry.relay.mailchannels.net (snail.cherry.relay.mailchannels.net [23.83.223.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857C28BF9
-	for <linux-acpi@vger.kernel.org>; Fri, 23 Feb 2024 00:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708649723; cv=none; b=dCFknt/cpiB7Lr1GmBony/89ESHWiXikKcSc7ovlziJDH7zjLM/9hqJOtgXFEuyvR/wjoFyDPqQ+GC7rAs9Buf38UT+9yDi2gbnjOy7NFnTLeoV8/DCtj/wNkJYiNY4Rcg+8Tm7Ow3v24zLzmg6qk5I2igm7+/VyKCuhKeLmb7o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708649723; c=relaxed/simple;
-	bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pZ3qAIHkle2LIux+ZfN2D5Av4LBmi2rr/Bj14VRfmsmwcyZ2+2yhvLRkLoQ2SmfLZnG+H/oBrLJACCiBpmT6JNsEVC96902lNzGVmuDBkZ95cTttBYemfeUedEC2uW6Dd2d0+I5sC7a7uJ69fFZ2Z3m10fYdRCf2HWnsOcetYt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0Ftgx/2j; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-565223fd7d9so2430a12.1
-        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 16:55:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708649720; x=1709254520; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
-        b=0Ftgx/2jAFs04UxEh55RSEQCbOQYfOXPpZTAhrY2DGFhqhETq42A+CE6HvWHBKJbTe
-         dAT+uLVXYG9UrNJpKlQMahTp+5S7jRgTsFGXnQv6Lf7pPjsPPE/VOIp4bULka5ouu5wo
-         Q2OOmRTOgEeVX5IbV6FTxBDqgylzo/O0pbC/K+WEKRFpUbQ1pfsOXwlogcOkVXKMfcF2
-         09WytAvYD3dZJEIXtaIopop66K6mzQTzn327r2FwaTYBpxPgDoutg2Y7IaNmeBXaoeko
-         l8x5+mI98EEfN/8R/3T/rFEuTrNAZJ4eshxkDUXNUnVt1xwDe2Nd5DMcEZTAt7uEFLro
-         OkVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708649720; x=1709254520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
-        b=wZ2MMOe2qOe6126zus30GZMINt2NTm0SYJk9rwOnqu5cQHZbwNkhXFo72g53Vjdaae
-         FitO9sKpNdDOy0o+xrqMZfJqI5VzjYn1rZ0wTO7Mv/EtP8A9WSnbifsVFpd3DUuvnIq6
-         flwx/krB8GmGQHuWftJR4Po5OHzEy2d+jTSfopS3XJbo1QsIIxYnW5ONscgi0AY0P7nf
-         VK9fcJchlPVkznrnSdmgX4qJQdsetK7mKvau+Che+RziayseDvLw+pgHtQ+u0g9ALmg0
-         bFDoafgOIMLsSntXfqxiq039jBvPemToZGGOWAN4e3FoWBQX6JV7ADFDnYE5jTWZ/Cqg
-         isXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVaNm3Frys1qXXqlFOjk9wfP/szE3u/OBvaTQ1GiBiiP4mbda+HbiFK8C8d1pJGcvWK2uX+kVPgxkuNfQBMIljd9R5PynEHUhk4IA==
-X-Gm-Message-State: AOJu0YwaPWmjFwjsJoE9kDDNwMMtLVJ8JoBLcdCITbAc1w3O06r/OMnb
-	EwlkX7DT1qxxwtMM5+dnmGfXF0cKjzr8hSLkFN4pQ3Wa04YTfESBgJVSb5phq998/3qk1zin1uW
-	fiC1xMysq6tTo8asPQ6vo1UHZ+JRP2qhhaicVnYkoPn6tsLDGeUQm
-X-Google-Smtp-Source: AGHT+IEKSApiDsDWT52bIXThzJBemkvAMEQc57fMaQvv1LlerrWc1/VvLi6QB1yxU0wGVvPjeIBszr5d077cJ68wngU=
-X-Received: by 2002:a50:a408:0:b0:565:123a:ccec with SMTP id
- u8-20020a50a408000000b00565123accecmr419373edb.3.1708649719604; Thu, 22 Feb
- 2024 16:55:19 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0391B33EA;
+	Fri, 23 Feb 2024 01:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.223.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708650815; cv=pass; b=VZvKGJnBW/muHLBAm6n2bGhNWAhkcYAL3FwBvBKp0EjveQMmlmR/qfcgc8Itxa7XB04Szk6t0iI5/jXSDTKr9c0QK95yyLLusMttlf5vXTSFH7uLYk3hTqW3ObikdaBvShGU1CNibJbrZ/a48Rta74Y034WrQOHUcvYiqJsPkr8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708650815; c=relaxed/simple;
+	bh=mKFXGFHpxOFwq73nT0CzdoEb75f0DuCUlRp626b0U5o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Edjsj3ey2IBAUrKGwIR6a0GqYleY6FKO5OPlAeHY5KSDzkZYbLDCrTKSNWYHG0TK2BzNkwgg4hc6QAJ9kZWF91iE53W+6AgAPKXT2q0jwulwmR21QY68E0SRuqLhk/mVx76v616nWuZtOeOP2HvRhHJNT68uFSR1QCGye0UJcmU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=A8Jb1eve; arc=pass smtp.client-ip=23.83.223.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 62C043619E3;
+	Fri, 23 Feb 2024 01:13:27 +0000 (UTC)
+Received: from pdx1-sub0-mail-a236.dreamhost.com (unknown [127.0.0.6])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id BE64236167F;
+	Fri, 23 Feb 2024 01:13:24 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1708650804; a=rsa-sha256;
+	cv=none;
+	b=JpyCfBSWLPn/CQcD/bz2Z04wbO78M584h+EYOAQe2uPS+wDrlA7jUgGDc/uLxLgp6facsy
+	k/o1HCKvw0oyUxQ6tPQtKfpqigJzrbVNjAeuYZ7pKWQA3lUedQ4BNSnsdc0aG/5pbEcVB1
+	s9Rn2/H4M0SvadpxuxK12FTnKFPK+pWn5cEE2/jBQb73zB7zpgg0OKQjFROAsxX90lL0m9
+	qJZ1efiOMvgq+qHE/Q/0gYbNziff/q9ZRNhyQlQQKiOeZJdgGQiwilKbrlrmcSQRKq/Qf+
+	2q0RNA3ypv59uk53xRoP+ZcJ3IbwRLqFFpqDucAsLlQGx2Jr6iwI1RgMCFvCSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1708650804;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E8pn+w3HibWLdOMz9pQ+J+2lKrcMhmXwK9/XHfbO8Yo=;
+	b=Qci2ShCjkn1wqSbexL+ofa9BpdOszoxdiTDsA/ZaeTkBCvpWkmXrMFR0je1pmXX7aTwomY
+	a1+O6zoqd2YTYKKkfMqXGTWqy/CwzkWx9zWpXVWuw3OLOqUy0kiNk0ZYmqCuzpG8D/03/e
+	aFiUuV2a1Z+Wj3I+6kuhQI2oSj1h+Ad51kuImcasNI4vwiiOV71lWhUNcsBGIjfbTE6/n3
+	v2cc11tfEXbCcXYlgbYTnMFY+8xkBajFWsBJ/0KmgittyHbFQuLioJSIQkI/XhcTYl+Xij
+	hhTVLTYJs/HdMtu+zHkn2M9Uzu1/m/g7snX2+uhO5+rWsqWgHbASYLkmsmKykw==
+ARC-Authentication-Results: i=1;
+	rspamd-55b4bfd7cb-w5t9p;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Arithmetic-Abortive: 22a6d8a66356533b_1708650807211_1721313757
+X-MC-Loop-Signature: 1708650807211:1808631686
+X-MC-Ingress-Time: 1708650807211
+Received: from pdx1-sub0-mail-a236.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.112.142.233 (trex/6.9.2);
+	Fri, 23 Feb 2024 01:13:27 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a236.dreamhost.com (Postfix) with ESMTPSA id 4TgsTB3R7pzQg;
+	Thu, 22 Feb 2024 17:13:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1708650804;
+	bh=E8pn+w3HibWLdOMz9pQ+J+2lKrcMhmXwK9/XHfbO8Yo=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=A8Jb1eveAREnA0NyRAiWRq0vA0ZVB7HVgEKyaCQwEVy/w3E0WadQGYMWeOdrNIL79
+	 Tbh4U3dPno+2i4EgW3P1pBwnLl3LuSJDUOUd69XUbT56N6NS5bEneXsl7yKOQ4j88N
+	 rMZWVjr0lNV0ykcg1X3blQrALIAxrTWLBufHiyAB6Of+IIYhuSmbZZjpho21SKa30q
+	 OT12bp82AWG4kw9eAZ7RuPWbEhOerhPZW6jLhpgOF9mt/HOxs7oHEGOs4jEI/4Fed7
+	 SlkleUCIoFYCn18IXlJrvkyHaUNySeRmT+Q276BbkbgeieDTwYhl5lnymDIYMXrxm8
+	 07thysYEkPMig==
+Date: Thu, 22 Feb 2024 17:13:02 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Ben Cheatham <benjamin.cheatham@amd.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, jonathan.cameron@huawei.com, 
+	rafael@kernel.org, james.morse@arm.com, tony.luck@intel.com, bp@alien8.de, 
+	dave@stogolabs.net, dave.jiang@intel.com, alison.schofield@intel.com, 
+	vishal.l.verma@intel.com, ira.weiny@intel.com, linux-cxl@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Subject: Re: Re: [PATCH v13 2/4] EINJ: Add CXL error type support
+Message-ID: <aitsb65thx4oyojuuf7s4tett5sw7p4qih7hlqqzmahrkdgoqi@akiloc4olwrx>
+References: <20240220221146.399209-1-Benjamin.Cheatham@amd.com>
+ <20240220221146.399209-3-Benjamin.Cheatham@amd.com>
+ <65d63647ecdb1_5e9bf294d6@dwillia2-xfh.jf.intel.com.notmuch>
+ <5a650a49-8f80-4ade-8844-61f88172cecd@amd.com>
+ <65d65ffdd40f_5c76294ce@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <f308f836-a41c-4de8-8522-7c086d89f167@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240220161002.2983334-1-andriy.shevchenko@linux.intel.com>
- <CAGETcx8hzYzjKWPz4ACgS=XrVXqg46QHB4hTpP5bDTY9=WFK+Q@mail.gmail.com>
- <ZdXxNFB8bMMFPoki@smile.fi.intel.com> <ZdXxYjYsBQybbilQ@smile.fi.intel.com>
-In-Reply-To: <ZdXxYjYsBQybbilQ@smile.fi.intel.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Thu, 22 Feb 2024 16:54:39 -0800
-Message-ID: <CAGETcx9akN315asPP=e8xieHqs7gKXvHP-BwRxD=vCBuhh8_Jw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] driver core: Move fw_devlink stuff to where it belongs
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <f308f836-a41c-4de8-8522-7c086d89f167@amd.com>
+User-Agent: NeoMutt/20231221
 
-On Wed, Feb 21, 2024 at 4:49=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 21 Feb 2024, Ben Cheatham wrote:
+
+>So the way the EINJ module currently works (at least as I understand it)
+>is that any address supplied for memory errors is checked to make sure it's
+>a "normal" memory address. Looking at the comment above the memory checks:
 >
-> On Wed, Feb 21, 2024 at 02:48:52PM +0200, Andy Shevchenko wrote:
-> > On Tue, Feb 20, 2024 at 06:08:56PM -0800, Saravana Kannan wrote:
-> > > On Tue, Feb 20, 2024 at 8:10=E2=80=AFAM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > >
-> > > > A few APIs that belong specifically to the fw_devlink APIs
-> > > > - are exposed to others without need
-> > > > - prevents device property code to be cleaned up in the future
-> > > >
-> > > > Resolve this mess by moving fw_devlink code to where it belongs
-> > > > and hide from others.
+>	/*
+>	 * Disallow crazy address masks that give BIOS leeway to pick
+>	 * injection address almost anywhere. Insist on page or
+>	 * better granularity and that target address is normal RAM or
+>	 * NVDIMM.
+>	 */
 >
-> ...
->
-> > > The rest of the functions here are related to parents and children of
-> > > a fwnode. So, why is this function considered to be in the wrong
-> > > place?
-> >
-> > When devlink was added it made a few fields in struct fwnode_handle.
-> > These fields have no common grounds with device properties. In particul=
-ar
-> > struct device pointer is solely for devlinks and shouldn't be used with
-> > them. Hence this patch. TL;DR: they semantically do _not_ belong to
-> > the device property APIs.
+>it seems that's the case. What this means is that we can't supply the
+>RCRB of a CXL 1.0/1.1 port because it's an MMIO address and we have to disable
+>the checks to inject a CXL 1.0/1.1 error.
 
-But fwnode_is_ancestor_of() uses none of those new fields and seems
-like a very reasonable API to provide. I understand if you want to
-make the "device link only" argument for fwnode_get_next_parent_dev().
+Maybe worth a comment here as to why the error checking is skipped for cxl?
 
-> On top of that for the 4+ years no new users appeared, so exporting them =
-was
-> a clear mistake. Hence Fixes tags.
++	} else if ((type & CXL_ERROR_MASK) && (flags & SETWA_FLAGS_MEM)) {
++		goto inject;
 
-We have plenty of APIs in .h files (not the same as export to modules)
--- that have only 1 user. And even some with no users. You don't move
-a string function out of lib/string.c just because there's only one
-user of that function. We put functions in C files that make sense.
-
-I think Fixes is a bit of an overkill. It's not a bug. Fixes get
-propagated to LTS. This is certainly not LTS worthy. I'm not going to
-NACK or push back on this patch for these reasons, but just letting
-you know that you come off as unreasonably grumpy when you do these
-things even for fwnode_is_ancestor_of() :)
-
--Saravana
+Thanks,
+Davidlohr
 
