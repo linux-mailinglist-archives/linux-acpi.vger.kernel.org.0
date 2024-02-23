@@ -1,286 +1,138 @@
-Return-Path: <linux-acpi+bounces-3884-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3885-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4200D86079A
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 01:24:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B7B8607DF
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 01:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70947286645
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 00:24:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773251F24D24
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 00:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1AA38C;
-	Fri, 23 Feb 2024 00:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4501A3236;
+	Fri, 23 Feb 2024 00:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jl+0Mx5F"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0Ftgx/2j"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D344019B;
-	Fri, 23 Feb 2024 00:23:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857C28BF9
+	for <linux-acpi@vger.kernel.org>; Fri, 23 Feb 2024 00:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708647833; cv=none; b=lQc1N2aUTw3mlTfOZ9XyTHJ81zK8REyewzSyUeqrD0FDz8QzGn5nqT+QROXKBnZr6cyzbzaBoVPm+JWvVd/WphY29mi8cfk3iF/z3r8gOKlv47OF+mIJ92EsFMPy91eWZFdPeqI94vK9cXvvB4VBR14DN6v89quHzOkZfLOyAhY=
+	t=1708649723; cv=none; b=dCFknt/cpiB7Lr1GmBony/89ESHWiXikKcSc7ovlziJDH7zjLM/9hqJOtgXFEuyvR/wjoFyDPqQ+GC7rAs9Buf38UT+9yDi2gbnjOy7NFnTLeoV8/DCtj/wNkJYiNY4Rcg+8Tm7Ow3v24zLzmg6qk5I2igm7+/VyKCuhKeLmb7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708647833; c=relaxed/simple;
-	bh=N50MF0FEA09+JdWWeSvMMaGLUQyg9qJDly4KxW/WH/E=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Fy2tiK7QBxbzeTBNOQdXSKyFiwhjIX9B2Vzt6dzFS8w0k6ikCIC9KXRcfOWoPS36RYxMaL8jIKnlnaTkwSnETOpThaLNnB6OGFajidKVnSa68N4Jn12oSJ8vKwRIC/NRqVcB2J8LryC3OBUN12uSfRX8GVA3u2KLTnLdfNFJZRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jl+0Mx5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C99C433C7;
-	Fri, 23 Feb 2024 00:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708647833;
-	bh=N50MF0FEA09+JdWWeSvMMaGLUQyg9qJDly4KxW/WH/E=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=Jl+0Mx5FR+/lTfq3bBupa6egNmH/ZvbEnlWJLi7B0LT49a8HDDkw9VRnwuer3NtUz
-	 G7fdAwswNBE4Mak1W1T/wp1OUGuxg3UMITwset0GoLfaZblcN8lMQKR3eDyqLrT2Ac
-	 rhGhgjJsCXOnHrPAOvz75j36TkWXbr70dezzFDhMOvEAxwMAu3iwraUHU6O3Rs9B8X
-	 jamAjUL6RXaFCPCnLZPWJIfJMLcDN9qQbXIcW64fpMgF/wIFTlOLZ6fqP9OppflKQO
-	 aDQkrepAuXioLa2VBKcgNjeXUNBYnUDLF71P4pQBhaXth2/TsjVNAwv/lmFOd7mzhO
-	 rp4ZNAOSWcQrg==
-Date: Thu, 22 Feb 2024 16:23:49 -0800 (PST)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Jiqian Chen <Jiqian.Chen@amd.com>
-cc: Juergen Gross <jgross@suse.com>, 
-    Stefano Stabellini <sstabellini@kernel.org>, 
-    Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, 
-    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-    =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
-    xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    Stewart Hildebrand <Stewart.Hildebrand@amd.com>, 
-    Huang Rui <Ray.Huang@amd.com>, Huang Rui <ray.huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v4 2/3] xen/pvh: Setup gsi for passthrough
- device
-In-Reply-To: <20240105062217.349645-3-Jiqian.Chen@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2402221622000.754277@ubuntu-linux-20-04-desktop>
-References: <20240105062217.349645-1-Jiqian.Chen@amd.com> <20240105062217.349645-3-Jiqian.Chen@amd.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	s=arc-20240116; t=1708649723; c=relaxed/simple;
+	bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pZ3qAIHkle2LIux+ZfN2D5Av4LBmi2rr/Bj14VRfmsmwcyZ2+2yhvLRkLoQ2SmfLZnG+H/oBrLJACCiBpmT6JNsEVC96902lNzGVmuDBkZ95cTttBYemfeUedEC2uW6Dd2d0+I5sC7a7uJ69fFZ2Z3m10fYdRCf2HWnsOcetYt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0Ftgx/2j; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-565223fd7d9so2430a12.1
+        for <linux-acpi@vger.kernel.org>; Thu, 22 Feb 2024 16:55:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708649720; x=1709254520; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
+        b=0Ftgx/2jAFs04UxEh55RSEQCbOQYfOXPpZTAhrY2DGFhqhETq42A+CE6HvWHBKJbTe
+         dAT+uLVXYG9UrNJpKlQMahTp+5S7jRgTsFGXnQv6Lf7pPjsPPE/VOIp4bULka5ouu5wo
+         Q2OOmRTOgEeVX5IbV6FTxBDqgylzo/O0pbC/K+WEKRFpUbQ1pfsOXwlogcOkVXKMfcF2
+         09WytAvYD3dZJEIXtaIopop66K6mzQTzn327r2FwaTYBpxPgDoutg2Y7IaNmeBXaoeko
+         l8x5+mI98EEfN/8R/3T/rFEuTrNAZJ4eshxkDUXNUnVt1xwDe2Nd5DMcEZTAt7uEFLro
+         OkVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708649720; x=1709254520;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5kjCp8j/UQEpPhPqZWoKio2bsh6Z8YRqEl1lcKCoPdM=;
+        b=wZ2MMOe2qOe6126zus30GZMINt2NTm0SYJk9rwOnqu5cQHZbwNkhXFo72g53Vjdaae
+         FitO9sKpNdDOy0o+xrqMZfJqI5VzjYn1rZ0wTO7Mv/EtP8A9WSnbifsVFpd3DUuvnIq6
+         flwx/krB8GmGQHuWftJR4Po5OHzEy2d+jTSfopS3XJbo1QsIIxYnW5ONscgi0AY0P7nf
+         VK9fcJchlPVkznrnSdmgX4qJQdsetK7mKvau+Che+RziayseDvLw+pgHtQ+u0g9ALmg0
+         bFDoafgOIMLsSntXfqxiq039jBvPemToZGGOWAN4e3FoWBQX6JV7ADFDnYE5jTWZ/Cqg
+         isXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaNm3Frys1qXXqlFOjk9wfP/szE3u/OBvaTQ1GiBiiP4mbda+HbiFK8C8d1pJGcvWK2uX+kVPgxkuNfQBMIljd9R5PynEHUhk4IA==
+X-Gm-Message-State: AOJu0YwaPWmjFwjsJoE9kDDNwMMtLVJ8JoBLcdCITbAc1w3O06r/OMnb
+	EwlkX7DT1qxxwtMM5+dnmGfXF0cKjzr8hSLkFN4pQ3Wa04YTfESBgJVSb5phq998/3qk1zin1uW
+	fiC1xMysq6tTo8asPQ6vo1UHZ+JRP2qhhaicVnYkoPn6tsLDGeUQm
+X-Google-Smtp-Source: AGHT+IEKSApiDsDWT52bIXThzJBemkvAMEQc57fMaQvv1LlerrWc1/VvLi6QB1yxU0wGVvPjeIBszr5d077cJ68wngU=
+X-Received: by 2002:a50:a408:0:b0:565:123a:ccec with SMTP id
+ u8-20020a50a408000000b00565123accecmr419373edb.3.1708649719604; Thu, 22 Feb
+ 2024 16:55:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20240220161002.2983334-1-andriy.shevchenko@linux.intel.com>
+ <CAGETcx8hzYzjKWPz4ACgS=XrVXqg46QHB4hTpP5bDTY9=WFK+Q@mail.gmail.com>
+ <ZdXxNFB8bMMFPoki@smile.fi.intel.com> <ZdXxYjYsBQybbilQ@smile.fi.intel.com>
+In-Reply-To: <ZdXxYjYsBQybbilQ@smile.fi.intel.com>
+From: Saravana Kannan <saravanak@google.com>
+Date: Thu, 22 Feb 2024 16:54:39 -0800
+Message-ID: <CAGETcx9akN315asPP=e8xieHqs7gKXvHP-BwRxD=vCBuhh8_Jw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] driver core: Move fw_devlink stuff to where it belongs
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 5 Jan 2024, Jiqian Chen wrote:
-> In PVH dom0, the gsis don't get registered, but the gsi of
-> a passthrough device must be configured for it to be able to be
-> mapped into a domU.
-> 
-> When assign a device to passthrough, proactively setup the gsi
-> of the device during that process.
-> 
-> Co-developed-by: Huang Rui <ray.huang@amd.com>
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> ---
->  arch/x86/xen/enlighten_pvh.c       | 90 ++++++++++++++++++++++++++++++
->  drivers/acpi/pci_irq.c             |  2 +-
->  drivers/xen/xen-pciback/pci_stub.c |  8 +++
->  include/linux/acpi.h               |  1 +
->  include/xen/acpi.h                 |  6 ++
->  5 files changed, 106 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
-> index ada3868c02c2..ecadd966c684 100644
-> --- a/arch/x86/xen/enlighten_pvh.c
-> +++ b/arch/x86/xen/enlighten_pvh.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  #include <linux/acpi.h>
->  #include <linux/export.h>
-> +#include <linux/pci.h>
->  
->  #include <xen/hvc-console.h>
->  
-> @@ -25,6 +26,95 @@
->  bool __ro_after_init xen_pvh;
->  EXPORT_SYMBOL_GPL(xen_pvh);
->  
-> +typedef struct gsi_info {
-> +	int gsi;
-> +	int trigger;
-> +	int polarity;
-> +} gsi_info_t;
-> +
-> +struct acpi_prt_entry {
-> +	struct acpi_pci_id	id;
-> +	u8			pin;
-> +	acpi_handle		link;
-> +	u32			index;		/* GSI, or link _CRS index */
-> +};
-> +
-> +static int xen_pvh_get_gsi_info(struct pci_dev *dev,
-> +								gsi_info_t *gsi_info)
-> +{
-> +	int gsi;
-> +	u8 pin = 0;
-> +	struct acpi_prt_entry *entry;
-> +	int trigger = ACPI_LEVEL_SENSITIVE;
-> +	int polarity = acpi_irq_model == ACPI_IRQ_MODEL_GIC ?
-> +				      ACPI_ACTIVE_HIGH : ACPI_ACTIVE_LOW;
-> +
-> +	if (dev)
-> +		pin = dev->pin;
+On Wed, Feb 21, 2024 at 4:49=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Wed, Feb 21, 2024 at 02:48:52PM +0200, Andy Shevchenko wrote:
+> > On Tue, Feb 20, 2024 at 06:08:56PM -0800, Saravana Kannan wrote:
+> > > On Tue, Feb 20, 2024 at 8:10=E2=80=AFAM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > >
+> > > > A few APIs that belong specifically to the fw_devlink APIs
+> > > > - are exposed to others without need
+> > > > - prevents device property code to be cleaned up in the future
+> > > >
+> > > > Resolve this mess by moving fw_devlink code to where it belongs
+> > > > and hide from others.
+>
+> ...
+>
+> > > The rest of the functions here are related to parents and children of
+> > > a fwnode. So, why is this function considered to be in the wrong
+> > > place?
+> >
+> > When devlink was added it made a few fields in struct fwnode_handle.
+> > These fields have no common grounds with device properties. In particul=
+ar
+> > struct device pointer is solely for devlinks and shouldn't be used with
+> > them. Hence this patch. TL;DR: they semantically do _not_ belong to
+> > the device property APIs.
 
-This is minor, but you can just move the pin = dev->pin after the !dev
-check below.
+But fwnode_is_ancestor_of() uses none of those new fields and seems
+like a very reasonable API to provide. I understand if you want to
+make the "device link only" argument for fwnode_get_next_parent_dev().
 
-With that change, and assuming the Xen-side and QEMU-side patches are
-accepted:
+> On top of that for the 4+ years no new users appeared, so exporting them =
+was
+> a clear mistake. Hence Fixes tags.
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+We have plenty of APIs in .h files (not the same as export to modules)
+-- that have only 1 user. And even some with no users. You don't move
+a string function out of lib/string.c just because there's only one
+user of that function. We put functions in C files that make sense.
 
+I think Fixes is a bit of an overkill. It's not a bug. Fixes get
+propagated to LTS. This is certainly not LTS worthy. I'm not going to
+NACK or push back on this patch for these reasons, but just letting
+you know that you come off as unreasonably grumpy when you do these
+things even for fwnode_is_ancestor_of() :)
 
-
-
-> +	if (!dev || !pin || !gsi_info)
-> +		return -EINVAL;
-> +
-> +	entry = acpi_pci_irq_lookup(dev, pin);
-> +	if (entry) {
-> +		if (entry->link)
-> +			gsi = acpi_pci_link_allocate_irq(entry->link,
-> +							 entry->index,
-> +							 &trigger, &polarity,
-> +							 NULL);
-> +		else
-> +			gsi = entry->index;
-> +	} else
-> +		gsi = -1;
-> +
-> +	if (gsi < 0)
-> +		return -EINVAL;
-> +
-> +	gsi_info->gsi = gsi;
-> +	gsi_info->trigger = trigger;
-> +	gsi_info->polarity = polarity;
-> +
-> +	return 0;
-> +}
-> +
-> +static int xen_pvh_setup_gsi(gsi_info_t *gsi_info)
-> +{
-> +	struct physdev_setup_gsi setup_gsi;
-> +
-> +	if (!gsi_info)
-> +		return -EINVAL;
-> +
-> +	setup_gsi.gsi = gsi_info->gsi;
-> +	setup_gsi.triggering = (gsi_info->trigger == ACPI_EDGE_SENSITIVE ? 0 : 1);
-> +	setup_gsi.polarity = (gsi_info->polarity == ACPI_ACTIVE_HIGH ? 0 : 1);
-> +
-> +	return HYPERVISOR_physdev_op(PHYSDEVOP_setup_gsi, &setup_gsi);
-> +}
-> +
-> +int xen_pvh_passthrough_gsi(struct pci_dev *dev)
-> +{
-> +	int ret;
-> +	gsi_info_t gsi_info;
-> +
-> +	if (!dev)
-> +		return -EINVAL;
-> +
-> +	ret = xen_pvh_get_gsi_info(dev, &gsi_info);
-> +	if (ret) {
-> +		xen_raw_printk("Fail to get gsi info!\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = xen_pvh_setup_gsi(&gsi_info);
-> +	if (ret == -EEXIST) {
-> +		xen_raw_printk("Already setup the GSI :%d\n", gsi_info.gsi);
-> +		ret = 0;
-> +	} else if (ret)
-> +		xen_raw_printk("Fail to setup GSI (%d)!\n", gsi_info.gsi);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(xen_pvh_passthrough_gsi);
-> +
->  void __init xen_pvh_init(struct boot_params *boot_params)
->  {
->  	u32 msr;
-> diff --git a/drivers/acpi/pci_irq.c b/drivers/acpi/pci_irq.c
-> index ff30ceca2203..630fe0a34bc6 100644
-> --- a/drivers/acpi/pci_irq.c
-> +++ b/drivers/acpi/pci_irq.c
-> @@ -288,7 +288,7 @@ static int acpi_reroute_boot_interrupt(struct pci_dev *dev,
->  }
->  #endif /* CONFIG_X86_IO_APIC */
->  
-> -static struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin)
-> +struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin)
->  {
->  	struct acpi_prt_entry *entry = NULL;
->  	struct pci_dev *bridge;
-> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-> index 46c40ec8a18e..22d4380d2b04 100644
-> --- a/drivers/xen/xen-pciback/pci_stub.c
-> +++ b/drivers/xen/xen-pciback/pci_stub.c
-> @@ -20,6 +20,7 @@
->  #include <linux/atomic.h>
->  #include <xen/events.h>
->  #include <xen/pci.h>
-> +#include <xen/acpi.h>
->  #include <xen/xen.h>
->  #include <asm/xen/hypervisor.h>
->  #include <xen/interface/physdev.h>
-> @@ -435,6 +436,13 @@ static int pcistub_init_device(struct pci_dev *dev)
->  			goto config_release;
->  		pci_restore_state(dev);
->  	}
-> +
-> +	if (xen_initial_domain() && xen_pvh_domain()) {
-> +		err = xen_pvh_passthrough_gsi(dev);
-> +		if (err)
-> +			goto config_release;
-> +	}
-> +
->  	/* Now disable the device (this also ensures some private device
->  	 * data is setup before we export)
->  	 */
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 4db54e928b36..7ea3be981cc3 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -360,6 +360,7 @@ void acpi_unregister_gsi (u32 gsi);
->  
->  struct pci_dev;
->  
-> +struct acpi_prt_entry *acpi_pci_irq_lookup(struct pci_dev *dev, int pin);
->  int acpi_pci_irq_enable (struct pci_dev *dev);
->  void acpi_penalize_isa_irq(int irq, int active);
->  bool acpi_isa_irq_available(int irq);
-> diff --git a/include/xen/acpi.h b/include/xen/acpi.h
-> index b1e11863144d..17c4d37f1e60 100644
-> --- a/include/xen/acpi.h
-> +++ b/include/xen/acpi.h
-> @@ -67,10 +67,16 @@ static inline void xen_acpi_sleep_register(void)
->  		acpi_suspend_lowlevel = xen_acpi_suspend_lowlevel;
->  	}
->  }
-> +int xen_pvh_passthrough_gsi(struct pci_dev *dev);
->  #else
->  static inline void xen_acpi_sleep_register(void)
->  {
->  }
-> +
-> +static inline int xen_pvh_passthrough_gsi(struct pci_dev *dev)
-> +{
-> +	return -1;
-> +}
->  #endif
->  
->  #endif	/* _XEN_ACPI_H */
-> -- 
-> 2.34.1
-> 
+-Saravana
 
