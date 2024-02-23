@@ -1,289 +1,262 @@
-Return-Path: <linux-acpi+bounces-3894-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3895-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191B4861165
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 13:23:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B69F861200
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 13:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2E61C22239
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 12:23:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F3C1F21C64
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 12:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEF06280B;
-	Fri, 23 Feb 2024 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E717CF1F;
+	Fri, 23 Feb 2024 12:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K18oqD8U"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F13D5C60F;
-	Fri, 23 Feb 2024 12:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34693651A2;
+	Fri, 23 Feb 2024 12:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708690989; cv=none; b=Q1JQOd/tQOZZ4xEp08UfgGPD5p7cg9C7jDDcUId6WYWK2VY1qWCRV96vsI53KVbLDv/oDbcygza7Oc2gGtVc88RqyUez4xT9NG2PY5qZqzGaqXSWDQn0RYm/kIF4o1IEygCfKWwJ044Lfruwzd0XZirr4335b1CRFv3WGG3aPl0=
+	t=1708692849; cv=none; b=GoTPKRn/xPnUQl46lkMiOgCYhGjxiOd+SOukJswVMUPsUJlKb/hZLXZZMiPwVxzn96MX96BGddvSKnWbD4Ne0yXsaH1N8DpL2GVg9cS+5XZvb8vJ7x4wpyOOykZ1HmAvLT+fhup/PbDCYTpLO5OWaSLXPvesrjs6tWZ4+HgocsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708690989; c=relaxed/simple;
-	bh=zsIvpoAGN9d289STaiA9COpeVnbLgfYNHqBxTzUt5SU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ke/tyTfP7eADZLA6/FeO1TeQjKSTLzzMG/h2xnFCKOvFp90se48ShjpGL9wbt5vT9WNbKa15J5kTcmmmt0t3eLo8zw7AcLO60gn6MZfeiCCYt6w75ISZZUKoiDQGoeKc7+3KlBn3H3UQK9VZb7+iUl41DZFNjAGY56My9/gOBmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Th8Fn0wTmz6K6nR;
-	Fri, 23 Feb 2024 20:19:25 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
-	by mail.maildlp.com (Postfix) with ESMTPS id 17987140F0B;
-	Fri, 23 Feb 2024 20:23:04 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 23 Feb 2024 12:23:03 +0000
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
- Fri, 23 Feb 2024 12:23:03 +0000
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [RFC PATCH v6 02/12] cxl/mbox: Add GET_FEATURE mailbox command
-Thread-Topic: [RFC PATCH v6 02/12] cxl/mbox: Add GET_FEATURE mailbox command
-Thread-Index: AQHaYAA6Z/8grteajEC0EjChA/BUx7ETG+mAgATIXoA=
-Date: Fri, 23 Feb 2024 12:23:03 +0000
-Message-ID: <c4a8ecf535df419eae132fda68407760@huawei.com>
-References: <20240215111455.1462-1-shiju.jose@huawei.com>
-	<20240215111455.1462-3-shiju.jose@huawei.com>
- <20240220111423.00003eae@Huawei.com>
-In-Reply-To: <20240220111423.00003eae@Huawei.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1708692849; c=relaxed/simple;
+	bh=U3cNu6ZtAk2vq+kQ0cBK0IoSIm8jPsMIwwxqZD3c0HU=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=mHXHryllO3aVYLa/FEOuxnLuyDgloRgtVBtaQV8z0o8EyXeqKMTsMKKjkPqi0s1VUiY/St4wiszS001sBShNJoj9k3uQ5i/il/vxUifdcyxpD+DhQVqPJfL2Gi144M6ARhS+v8WbQd22lhaJlTt7Zn3B/cZUUUZl7K1MdaQ8kbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K18oqD8U; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708692847; x=1740228847;
+  h=date:from:to:cc:subject:message-id;
+  bh=U3cNu6ZtAk2vq+kQ0cBK0IoSIm8jPsMIwwxqZD3c0HU=;
+  b=K18oqD8U42PelQFzczRgD59epNu1HJ6qmVzM4lDpZ9O1ktKoo6N4hzOM
+   RfiLoR2jg/+os4x6TLmPYUFiTJENkkHnmPK1PVTyA0r2/FHHEdFDbSXlv
+   sJOUQ6bMP3RX3kYkpn/Rvov7XapVATgoTSP4eSImfLhWRKLn/MSHmJUqd
+   PrwBzFJlnkKfCyLvcrxl+dEdc7GDORzL5933FEmy5ZHHVE8hi1jtJ7SEE
+   MebfCw+cKK3kL9R5VzLcgSnD1L1734rIzrHSWa9sEIzsU/HOi3ifA1w4f
+   iCoO/ismSd3pOjZFZqyGjoTaRfbaOmTACkEHJt7vG5k1FD6LTiZuOqJNn
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="2890435"
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="2890435"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 04:54:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="6379799"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 23 Feb 2024 04:54:05 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rdV3r-0007WQ-2k;
+	Fri, 23 Feb 2024 12:53:58 +0000
+Date: Fri, 23 Feb 2024 20:52:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 79345cdd3204859dd557baf8fcb9a3389f1660c9
+Message-ID: <202402232030.ntj1mDqU-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-Hi Jonathan,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 79345cdd3204859dd557baf8fcb9a3389f1660c9  Merge branch 'acpi-thermal' into bleeding-edge
 
-Thanks for the comments.
-I will post  the updated version incorporated with your suggestions in the =
-series. =20
+elapsed time: 1010m
 
->-----Original Message-----
->From: Jonathan Cameron <jonathan.cameron@huawei.com>
->Sent: 20 February 2024 11:14
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
->mm@kvack.org; dan.j.williams@intel.com; dave@stgolabs.net;
->dave.jiang@intel.com; alison.schofield@intel.com; vishal.l.verma@intel.com=
-;
->ira.weiny@intel.com; linux-edac@vger.kernel.org; linux-
->kernel@vger.kernel.org; david@redhat.com; Vilas.Sridharan@amd.com;
->leo.duran@amd.com; Yazen.Ghannam@amd.com; rientjes@google.com;
->jiaqiyan@google.com; tony.luck@intel.com; Jon.Grimm@amd.com;
->dave.hansen@linux.intel.com; rafael@kernel.org; lenb@kernel.org;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>=
-;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [RFC PATCH v6 02/12] cxl/mbox: Add GET_FEATURE mailbox
->command
->
->On Thu, 15 Feb 2024 19:14:44 +0800
-><shiju.jose@huawei.com> wrote:
->
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add support for GET_FEATURE mailbox command.
->>
->> CXL spec 3.1 section 8.2.9.6 describes optional device specific features=
-.
->> The settings of a feature can be retrieved using Get Feature command.
->Hi Shiju
->
->I think this needs to be more complex so that this utility function gets t=
-he whole
->feature, not just a section of it (subject to big enough buffer being avai=
-lable etc).
->We don't want the higher level code to have to deal with the complexity of=
- small
->mailboxes.
-Sure.
+configs tested: 172
+configs skipped: 3
 
->
->A few other things inline.
->
->Jonathan
->
->>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  drivers/cxl/core/mbox.c | 22 ++++++++++++++++++++++
->>  drivers/cxl/cxlmem.h    | 23 +++++++++++++++++++++++
->>  2 files changed, 45 insertions(+)
->>
->> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c index
->> 191f51f3df0e..f43189b6859a 100644
->> --- a/drivers/cxl/core/mbox.c
->> +++ b/drivers/cxl/core/mbox.c
->> @@ -1313,6 +1313,28 @@ int cxl_get_supported_features(struct
->> cxl_memdev_state *mds,  }
->> EXPORT_SYMBOL_NS_GPL(cxl_get_supported_features, CXL);
->>
->> +int cxl_get_feature(struct cxl_memdev_state *mds,
->> +		    struct cxl_mbox_get_feat_in *pi, void *feat_out)
->
->Comments below on this signature.  Key is I'd expect this function to deal=
- with
->potential need for multiple requests (small mailbox size compared to the s=
-ize of
->the output data being read).
->
->To test that we'd probably have to tweak the qemu code to use a smaller
->mailbox.
->Or fake that in here so that we do multiple smaller reads.
-Sure.
->
->> +{
->> +	struct cxl_mbox_cmd mbox_cmd;
->> +	int rc;
->> +
->> +	mbox_cmd =3D (struct cxl_mbox_cmd) {
->> +		.opcode =3D CXL_MBOX_OP_GET_FEATURE,
->> +		.size_in =3D sizeof(*pi),
->> +		.payload_in =3D pi,
->> +		.size_out =3D le16_to_cpu(pi->count),
->> +		.payload_out =3D feat_out,
->> +		.min_out =3D le16_to_cpu(pi->count),
->
->Are there feature with variable responses sizes?  I think there will be.
->size_out should be the size of the buffer, but min_out should be the size =
-of the
->particular feature data header - note these will change as we iterate over
->multiple messages.
-Sure.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->
->
->> +	};
->> +	rc =3D cxl_internal_send_cmd(mds, &mbox_cmd);
->> +	if (rc < 0)
->> +		return rc;
->> +
->> +	return 0;
->I think this should return the size to the caller, rather than 0 on succes=
-s.
-I will change.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240223   gcc  
+arc                   randconfig-002-20240223   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240223   gcc  
+arm                   randconfig-002-20240223   clang
+arm                   randconfig-003-20240223   clang
+arm                   randconfig-004-20240223   gcc  
+arm                        spear3xx_defconfig   clang
+arm                           stm32_defconfig   gcc  
+arm                         wpcm450_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240223   clang
+arm64                 randconfig-002-20240223   gcc  
+arm64                 randconfig-003-20240223   clang
+arm64                 randconfig-004-20240223   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240223   gcc  
+csky                  randconfig-002-20240223   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240223   clang
+hexagon               randconfig-002-20240223   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240223   gcc  
+i386         buildonly-randconfig-002-20240223   gcc  
+i386         buildonly-randconfig-003-20240223   gcc  
+i386         buildonly-randconfig-004-20240223   gcc  
+i386         buildonly-randconfig-005-20240223   gcc  
+i386         buildonly-randconfig-006-20240223   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240223   clang
+i386                  randconfig-002-20240223   gcc  
+i386                  randconfig-003-20240223   gcc  
+i386                  randconfig-004-20240223   gcc  
+i386                  randconfig-005-20240223   gcc  
+i386                  randconfig-006-20240223   clang
+i386                  randconfig-011-20240223   gcc  
+i386                  randconfig-012-20240223   gcc  
+i386                  randconfig-013-20240223   clang
+i386                  randconfig-014-20240223   clang
+i386                  randconfig-015-20240223   clang
+i386                  randconfig-016-20240223   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240223   gcc  
+loongarch             randconfig-002-20240223   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        mvme147_defconfig   gcc  
+m68k                        mvme16x_defconfig   gcc  
+m68k                           sun3_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                          rb532_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240223   gcc  
+nios2                 randconfig-002-20240223   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           alldefconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240223   gcc  
+parisc                randconfig-002-20240223   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      cm5200_defconfig   clang
+powerpc               randconfig-001-20240223   clang
+powerpc               randconfig-002-20240223   clang
+powerpc               randconfig-003-20240223   clang
+powerpc64             randconfig-001-20240223   gcc  
+powerpc64             randconfig-002-20240223   gcc  
+powerpc64             randconfig-003-20240223   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240223   gcc  
+riscv                 randconfig-002-20240223   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240223   gcc  
+s390                  randconfig-002-20240223   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240223   gcc  
+sh                    randconfig-002-20240223   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240223   gcc  
+sparc64               randconfig-002-20240223   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240223   clang
+um                    randconfig-002-20240223   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240223   gcc  
+x86_64       buildonly-randconfig-002-20240223   gcc  
+x86_64       buildonly-randconfig-003-20240223   clang
+x86_64       buildonly-randconfig-004-20240223   clang
+x86_64       buildonly-randconfig-005-20240223   gcc  
+x86_64       buildonly-randconfig-006-20240223   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240223   gcc  
+x86_64                randconfig-002-20240223   clang
+x86_64                randconfig-003-20240223   gcc  
+x86_64                randconfig-004-20240223   gcc  
+x86_64                randconfig-005-20240223   clang
+x86_64                randconfig-006-20240223   gcc  
+x86_64                randconfig-011-20240223   gcc  
+x86_64                randconfig-012-20240223   gcc  
+x86_64                randconfig-013-20240223   clang
+x86_64                randconfig-014-20240223   gcc  
+x86_64                randconfig-015-20240223   clang
+x86_64                randconfig-016-20240223   clang
+x86_64                randconfig-071-20240223   gcc  
+x86_64                randconfig-072-20240223   gcc  
+x86_64                randconfig-073-20240223   gcc  
+x86_64                randconfig-074-20240223   clang
+x86_64                randconfig-075-20240223   gcc  
+x86_64                randconfig-076-20240223   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240223   gcc  
+xtensa                randconfig-002-20240223   gcc  
 
->
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
->> +
->>  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr)
->>  {
->> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h index
->> 23e4d98b9bae..eaecc3234cfd 100644
->> --- a/drivers/cxl/cxlmem.h
->> +++ b/drivers/cxl/cxlmem.h
->> @@ -530,6 +530,7 @@ enum cxl_opcode {
->>  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	=3D 0x0400,
->>  	CXL_MBOX_OP_GET_LOG		=3D 0x0401,
->>  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	=3D 0x0500,
->> +	CXL_MBOX_OP_GET_FEATURE		=3D 0x0501,
->>  	CXL_MBOX_OP_IDENTIFY		=3D 0x4000,
->>  	CXL_MBOX_OP_GET_PARTITION_INFO	=3D 0x4100,
->>  	CXL_MBOX_OP_SET_PARTITION_INFO	=3D 0x4101,
->> @@ -757,6 +758,26 @@ struct cxl_mbox_get_supp_feats_out {
->>  	struct cxl_mbox_supp_feat_entry feat_entries[];  } __packed;
->>
->> +/* Get Feature CXL 3.1 Spec 8.2.9.6.2 */
->> +/*
->> + * Get Feature input payload
->> + * CXL rev 3.1 section 8.2.9.6.2 Table 8-99  */
->> +/* Get Feature : Payload in selection */
->
->Naming of enum is good enough that I don't think we need this particular
->comment.
-I will change.
-
->
->> +enum cxl_get_feat_selection {
->> +	CXL_GET_FEAT_SEL_CURRENT_VALUE,
->> +	CXL_GET_FEAT_SEL_DEFAULT_VALUE,
->> +	CXL_GET_FEAT_SEL_SAVED_VALUE,
->> +	CXL_GET_FEAT_SEL_MAX
->> +};
->> +
->> +struct cxl_mbox_get_feat_in {
->> +	uuid_t uuid;
->> +	__le16 offset;
->> +	__le16 count;
->> +	u8 selection;
->> +}  __packed;
->> +
->>  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */  struct
->> cxl_mbox_poison_in {
->>  	__le64 offset;
->> @@ -891,6 +912,8 @@ int cxl_set_timestamp(struct cxl_memdev_state
->> *mds);  int cxl_get_supported_features(struct cxl_memdev_state *mds,
->>  			       struct cxl_mbox_get_supp_feats_in *pi,
->>  			       void *feats_out);
->> +int cxl_get_feature(struct cxl_memdev_state *mds,
->> +		    struct cxl_mbox_get_feat_in *pi, void *feat_out);
->
->For this I'd expect us to wrap up the need for multi messages inside this.
->So this would then just take the feature index, a size for the output buff=
-er overall
->size, plus min acceptable response size and a selection enum value.
-Sure.
-
->
->int cxl_get_feature(struct cxl_memdev_state *mds,
->		    uuid_t feat,
->		    void *feat_out, size_t feat_out_min_size,
->		    size_t feat_out_size);
->
->>  int cxl_poison_state_init(struct cxl_memdev_state *mds);  int
->> cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr);
-
-Thanks,
-Shiju
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
