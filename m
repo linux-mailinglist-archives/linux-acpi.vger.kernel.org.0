@@ -1,426 +1,279 @@
-Return-Path: <linux-acpi+bounces-3896-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3897-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC688612BE
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 14:31:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562D886140E
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 15:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FC061C21370
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 13:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFF321F23F2D
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 14:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D427EEEF;
-	Fri, 23 Feb 2024 13:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8EE566D;
+	Fri, 23 Feb 2024 14:37:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633384A22;
-	Fri, 23 Feb 2024 13:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07255469D;
+	Fri, 23 Feb 2024 14:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708694918; cv=none; b=T8ZW9gB6H17aF4ffuilYp/T0w45Qm50/uD1xx1GlvPLRs+95x3oZZVd5mibIvt/cVEK5L0oAPhaiC0aDJdXmIdk/WgZQVbwv+1TXsxZk4Dx46VB0QlV4YCsMJglAEB9pZvZVxCrJ2zkJflgTOWSC9hb8BTdkXPLz4Iuw0c9kQ7Q=
+	t=1708699063; cv=none; b=Fz2HPxzh+gq050UtTGk1yrpQBJ27F7jRvRuVGp9/xjSNbjPnGQ+GtQ87ni1TyPV5aIbpL1ELozEtfCzZephicul8l12hQAfW4d1u/WkssxdO7ykhZIOckipr9cc3/n1tyKRRsVZSFJqJS7JzoGusjud2kEiMvm3mp8mSJbQf5aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708694918; c=relaxed/simple;
-	bh=k5IcJFYe2Oj28CekmCm67SBOC9vQRXLSFbrluz6aVMc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ICuvr91Sj7z+gBxurXOQvP0UgZGUIfWXDusKNfE2wfqtNoKUruRG5c/cMWfnMg36vTenXw00Z79nVFrR9V3k6jk0xhKvxhZZTgDsO01z6NO5K7KqJCTPYFjgVNyVkLX0/2INYRzVanSsIPC/0d9dtFFPG+2HlfHBXczO+YqjfOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+	s=arc-20240116; t=1708699063; c=relaxed/simple;
+	bh=B8tmKlM2SuEwWy8ZSsDEye6G44FSjeSZYQxZwkll2q4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZbTway0UUe5pgD8zDtkeQdkTuw2lO4chxaLpXiVw1AqUsOT6pmLsaoT47jLfaEi5PkImoe3lXAeLbnjEhB1YvkeK+XfUuUPjYpXhGuEUCLGI6IMSxE1izISmIJnMXWFbGnE5LuYlHzpEwTZ2KnuAo5nXX2LntlXXD9Xw2VY6Hcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Th9hk391Cz67ZPP;
-	Fri, 23 Feb 2024 21:24:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 97A93140119;
-	Fri, 23 Feb 2024 21:28:31 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 13:28:31 +0000
-Date: Fri, 23 Feb 2024 13:28:29 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <stable@vger.kernel.org>, Breno Leitao
-	<leitao@debian.org>, Alison Schofield <alison.schofield@intel.com>, "Vishal
- Verma" <vishal.l.verma@intel.com>, <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] cxl/acpi: Fix load failures due to single window
- creation failure
-Message-ID: <20240223132829.00007741@Huawei.com>
-In-Reply-To: <65d6335ea74ac_6c745294a8@dwillia2-xfh.jf.intel.com.notmuch>
-References: <170820177238.631006.1012639681618409284.stgit@dwillia2-xfh.jf.intel.com>
-	<20240219124041.00002bda@Huawei.com>
-	<65d6335ea74ac_6c745294a8@dwillia2-xfh.jf.intel.com.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ThCD5296xz6J9yc;
+	Fri, 23 Feb 2024 22:33:09 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8E88140B33;
+	Fri, 23 Feb 2024 22:37:34 +0800 (CST)
+Received: from SecurePC30232.china.huawei.com (10.122.247.234) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 23 Feb 2024 14:37:33 +0000
+From: <shiju.jose@huawei.com>
+To: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <dan.j.williams@intel.com>, <dave@stgolabs.net>,
+	<jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>
+CC: <linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<david@redhat.com>, <Vilas.Sridharan@amd.com>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<tony.luck@intel.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<mike.malvestuto@intel.com>, <gthelen@google.com>,
+	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
+	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<linuxarm@huawei.com>, <shiju.jose@huawei.com>
+Subject: [RFC PATCH v7 00/12] memory: scrub: introduce subsystem + CXL/ACPI-RAS2 drivers
+Date: Fri, 23 Feb 2024 22:37:11 +0800
+Message-ID: <20240223143723.1574-1-shiju.jose@huawei.com>
+X-Mailer: git-send-email 2.35.1.windows.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500006.china.huawei.com (7.191.161.198)
 
-On Wed, 21 Feb 2024 09:31:10 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+From: Shiju Jose <shiju.jose@huawei.com>
 
-> Jonathan Cameron wrote:
-> > On Sat, 17 Feb 2024 12:29:32 -0800
-> > Dan Williams <dan.j.williams@intel.com> wrote:
-> >   
-> > > The expectation is that cxl_parse_cfwms() continues in the face the of
-> > > failure as evidenced by code like:
-> > > 
-> > >     cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
-> > >     if (IS_ERR(cxlrd))
-> > >     	return 0;
-> > > 
-> > > There are other error paths in that function which mistakenly follow
-> > > idiomatic expectations and return an error when they should not. Most of
-> > > those mistakes are innocuous checks that hardly ever fail in practice.
-> > > However, a recent change succeed in making the implementation more
-> > > fragile by applying an idiomatic, but still wrong "fix" [1]. In this
-> > > failure case the kernel reports:
-> > > 
-> > >     cxl root0: Failed to populate active decoder targets
-> > >     cxl_acpi ACPI0017:00: Failed to add decode range: [mem 0x00000000-0x7fffffff flags 0x200]
-> > > 
-> > > ...which is a real issue with that one window (to be fixed separately),
-> > > but ends up failing the entirety of cxl_acpi_probe().
-> > > 
-> > > Undo that recent breakage while also removing the confusion about
-> > > ignoring errors. Update all exits paths to return an error per typical
-> > > expectations and let an outer wrapper function handle dropping the
-> > > error.
-> > > 
-> > > Fixes: 91019b5bc7c2 ("cxl/acpi: Return 'rc' instead of '0' in cxl_parse_cfmws()") [1]
-> > > Cc: <stable@vger.kernel.org>
-> > > Cc: Breno Leitao <leitao@debian.org>
-> > > Cc: Alison Schofield <alison.schofield@intel.com>
-> > > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>  
-> > 
-> > General idea makes a lot of sense to me.
-> > 
-> > A few comments on specific implementation inline
-> >   
-> > > ---
-> > >  drivers/cxl/acpi.c |   45 +++++++++++++++++++++++++++------------------
-> > >  1 file changed, 27 insertions(+), 18 deletions(-)
-> > > 
-> > > diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> > > index dcf2b39e1048..53d2dff0c7a3 100644
-> > > --- a/drivers/cxl/acpi.c
-> > > +++ b/drivers/cxl/acpi.c
-> > > @@ -316,31 +316,27 @@ static const struct cxl_root_ops acpi_root_ops = {
-> > >  	.qos_class = cxl_acpi_qos_class,
-> > >  };
-> > >  
-> > > -static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-> > > -			   const unsigned long end)
-> > > +static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
-> > > +			     struct cxl_cfmws_context *ctx)
-> > >  {
-> > >  	int target_map[CXL_DECODER_MAX_INTERLEAVE];
-> > > -	struct cxl_cfmws_context *ctx = arg;
-> > >  	struct cxl_port *root_port = ctx->root_port;
-> > >  	struct resource *cxl_res = ctx->cxl_res;
-> > >  	struct cxl_cxims_context cxims_ctx;
-> > >  	struct cxl_root_decoder *cxlrd;
-> > >  	struct device *dev = ctx->dev;
-> > > -	struct acpi_cedt_cfmws *cfmws;
-> > >  	cxl_calc_hb_fn cxl_calc_hb;
-> > >  	struct cxl_decoder *cxld;
-> > >  	unsigned int ways, i, ig;
-> > >  	struct resource *res;
-> > >  	int rc;
-> > >  
-> > > -	cfmws = (struct acpi_cedt_cfmws *) header;
-> > > -
-> > >  	rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> > >  	if (rc) {
-> > >  		dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-> > >  			cfmws->base_hpa,
-> > >  			cfmws->base_hpa + cfmws->window_size - 1);  
-> > 
-> > Why keep this error print?  
-> 
-> True, that can go.
-> 
-> > > -		return 0;
-> > > +		return rc;
-> > >  	}
-> > >  
-> > >  	rc = eiw_to_ways(cfmws->interleave_ways, &ways);
-> > > @@ -376,7 +372,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-> > >  
-> > >  	cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
-> > >  	if (IS_ERR(cxlrd))
-> > > -		return 0;
-> > > +		return PTR_ERR(cxlrd);
-> > >  
-> > >  	cxld = &cxlrd->cxlsd.cxld;
-> > >  	cxld->flags = cfmws_to_decoder_flags(cfmws->restrictions);
-> > > @@ -420,16 +416,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-> > >  		put_device(&cxld->dev);
-> > >  	else
-> > >  		rc = cxl_decoder_autoremove(dev, cxld);
-> > > -	if (rc) {
-> > > -		dev_err(dev, "Failed to add decode range: %pr", res);
-> > > -		return rc;  
-> > 
-> > As no longer sharing this message. Might be neater to have this lot as
-> > 	rc = cxl_decoder_add(cxld, target_map);
-> > err_xormap:
-> > 	if (rc) {
-> > 		put_device(&cxld->dev);
-> > 		return rc;
-> > 	}
-> > 
-> > 	return cxl_decoder_autoremove(dev, cxld);
-> > 
-> > or a second error exit path.
-> > 
-> > 	rc = cxl_decoder_add(cxld, target_map);
-> > 	if (rc)
-> > 		goto err_put_devie;
-> > 
-> > 	return cxl_decoder_autoremove(dev, cxld;
-> > 
-> > err_put_device;
-> > 	put_device(&cxld->dev);
-> > 	return rc;
-> > 
-> > err_insert:
-> > 	kfree(res->name); ...  
-> 
-> True, there's enough here to do an even deeper cleanup... below.
-> 
-> > 
-> >   
-> > > -	}
-> > > -	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
-> > > -		dev_name(&cxld->dev),
-> > > -		phys_to_target_node(cxld->hpa_range.start),
-> > > -		cxld->hpa_range.start, cxld->hpa_range.end);
-> > > -
-> > > -	return 0;
-> > > +	return rc;
-> > >  
-> > >  err_insert:
-> > >  	kfree(res->name);
-> > > @@ -438,6 +425,28 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-> > >  	return -ENOMEM;
-> > >  }
-> > >  
-> > > +static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-> > > +			   const unsigned long end)
-> > > +{
-> > > +	struct acpi_cedt_cfmws *cfmws = (struct acpi_cedt_cfmws *)header;
-> > > +	struct cxl_cfmws_context *ctx = arg;
-> > > +	struct device *dev = ctx->dev;
-> > > +	int rc;
-> > > +
-> > > +	dev_dbg(dev, "decode range: node: %d range [%#llx - %#llx]\n",
-> > > +		phys_to_target_node(cfmws->base_hpa), cfmws->base_hpa,
-> > > +		cfmws->base_hpa + cfmws->window_size - 1);  
-> > 
-> > Could maybe put this in an else below?
-> >   
-> > > +	rc = __cxl_parse_cfmws(cfmws, ctx);
-> > > +	if (rc)
-> > > +		dev_err(dev,
-> > > +			"Failed to add decode range: [%#llx - %#llx] (%d)\n",
-> > > +			cfmws->base_hpa,
-> > > +			cfmws->base_hpa + cfmws->window_size - 1, rc);
-> > > +  
-> > else 
-> > 	dev_dbg();
-> > 
-> > so we only give the dbg version on success?  
-> 
-> Yeah, I will switch to this since the previous state was also skipping
-> the debug messages on success.
-> 
-> Follow-on cleanup:
-> 
-> -- 8< --
-> From e30c267c0b69d5e4531d8f65ec86e4fa32d72340 Mon Sep 17 00:00:00 2001
-> From: Dan Williams <dan.j.williams@intel.com>
-> Date: Tue, 20 Feb 2024 22:44:34 -0800
-> Subject: [PATCH] cxl/acpi: Cleanup __cxl_parse_cfmws() error exits
-> 
-> As a follow on to the recent rework of __cxl_parse_cfmws() to always
-> return errors, use cleanup.h helpers to remove goto and other cleanups
-> now that logging is moved to the cxl_parse_cfmws() wrapper.
+'Previously known as: cxl: Add support for CXL feature commands,
+ CXL device patrol scrub control and DDR5 ECS control features'
+https://lore.kernel.org/lkml/20240215111455.1462-1-shiju.jose@huawei.com/
 
-This runs into the question of where the declarations should be for
-cleanup.h changes.  I can dig out the Linus comment on this but
-I'm feeling lazy ;)
+Introduce generic memory scrub subsystem which allows user to
+control underlying memory scrubbers in the system via the sysfs
+scrub control interface.
 
-In general I like this stuff, but in this case I think it's ended
-up harder to read than the original code.
+Memory scrub is a feature where an ECC engine reads data from
+each memory media location, corrects with an ECC if necessary and
+writes the corrected data back to the same memory media location.
+More details can be found in Reference [1].
 
-> 
-> Reported-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Closes: http://lore.kernel.org/r/20240219124041.00002bda@Huawei.com
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/cxl/acpi.c | 45 +++++++++++++++++++--------------------------
->  1 file changed, 19 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-> index 1a3e6aafbdcc..b1ea2d152c65 100644
-> --- a/drivers/cxl/acpi.c
-> +++ b/drivers/cxl/acpi.c
-> @@ -319,25 +319,23 @@ static const struct cxl_root_ops acpi_root_ops = {
->  static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  			     struct cxl_cfmws_context *ctx)
->  {
-> +	struct device *cxld_dev __free(put_device) = NULL;
->  	int target_map[CXL_DECODER_MAX_INTERLEAVE];
->  	struct cxl_port *root_port = ctx->root_port;
-> +	struct resource *res __free(kfree) = NULL;
->  	struct resource *cxl_res = ctx->cxl_res;
-> +	const char *name __free(kfree) = NULL;
+CXL patrol scrub and DDR5 ECS and ACPI RAS2 HW based memory
+patrol scrub features are added as use cases for the scrub
+subsystem to expose the scrub controls to the user.
 
-Linus has expressed that he prefers these done inline
-so the allocation and clearing are obviously associated - there
-is an ordering related factor as well as they will unwind
-in the reverse of declaration order, not allocation order.
+CXL device patrol scrub and DDR5 ECS features needs support for
+the CXL feature mail box commands. CXL device scrub driver
+registers with the memory scrub subsystem to expose the scrub
+controls for CXL device patrol and ECS scrubs to the user.
 
+RAS2 HW based memory patrol scrub needs RAS2 PCC interfaces
+and ACPI RAS2 driver for communication b/w kernel and firmware.
+ACPI RAS2 Driver adds platform device, for each memory feature,
+which binds to the RAS2 memory driver.
+Memory RAS2 driver registers with the memory scrub subsystem to
+expose the RAS2 scrub controls to the user.
 
->  	struct cxl_cxims_context cxims_ctx;
->  	struct cxl_root_decoder *cxlrd;
->  	struct device *dev = ctx->dev;
->  	cxl_calc_hb_fn cxl_calc_hb;
->  	struct cxl_decoder *cxld;
->  	unsigned int ways, i, ig;
-> -	struct resource *res;
->  	int rc;
->  
->  	rc = cxl_acpi_cfmws_verify(dev, cfmws);
-> -	if (rc) {
-> -		dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
-> -			cfmws->base_hpa,
-> -			cfmws->base_hpa + cfmws->window_size - 1);
-> +	if (rc)
->  		return rc;
-> -	}
->  
->  	rc = eiw_to_ways(cfmws->interleave_ways, &ways);
->  	if (rc)
-> @@ -352,10 +350,11 @@ static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  	if (!res)
->  		return -ENOMEM;
->  
-> -	res->name = kasprintf(GFP_KERNEL, "CXL Window %d", ctx->id++);
-> -	if (!res->name)
-> -		goto err_name;
+Series adds,
+1. scrub subsystem driver supports configuring memory scrubs
+   in the system.
+2. support for CXL feature mailbox commands.
+3. CXL device scrub driver supporting patrol scrub control and
+   ECS control features.
+4. register CXL device patrol scrub and ECS with scrub subsystem.
+5. common library for RAS2 PCC interfaces.
+6. ACPI RAS2 driver for ACPI RAS2 feature table (RAS2).
+7. memory RAS2 driver and registers with scrub subsystem.
 
-const char *name __free(kfree) = kasprintf(...);
+The QEMU series to support the CXL specific scrub features is
+available here,
+https://lore.kernel.org/qemu-devel/20240223085902.1549-1-shiju.jose@huawei.com/
 
-same for the others.
-> +	name = kasprintf(GFP_KERNEL, "CXL Window %d", ctx->id++);
-> +	if (!name)
-> +		return -ENOMEM;
->  
-> +	res->name = name;
->  	res->start = cfmws->base_hpa;
->  	res->end = cfmws->base_hpa + cfmws->window_size - 1;
->  	res->flags = IORESOURCE_MEM;
-> @@ -363,7 +362,9 @@ static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  	/* add to the local resource tracking to establish a sort order */
->  	rc = insert_resource(cxl_res, res);
->  	if (rc)
-> -		goto err_insert;
-> +		return rc;
-> +	name = NULL;
+References:
+1. Discussions on kernel support of memory error detection and
+   patrol scrubber can be found here.
+   https://lore.kernel.org/all/20221103155029.2451105-1-jiaqiyan@google.com/
 
-I guess we'll get used to this.  Kind of annoying that no_free_ptr() is
-defined as __must_check. Otherwise would be good to use that to document
-the 'why' of these are being set to NULL.
+2. Discussions on RASF:
+   https://lore.kernel.org/lkml/20230915172818.761-1-shiju.jose@huawei.com/#r 
+   https://patchwork.kernel.org/project/linux-arm-kernel/patch/CS1PR84MB0038718F49DBC0FF03919E1184390@CS1PR84MB0038.NAMPRD84.PROD.OUTLOOK.COM/
 
-> +	res = NULL;
->  
->  	if (cfmws->interleave_arithmetic == ACPI_CEDT_CFMWS_ARITHMETIC_MODULO)
->  		cxl_calc_hb = cxl_hb_modulo;
-> @@ -375,11 +376,12 @@ static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  		return PTR_ERR(cxlrd);
->  
->  	cxld = &cxlrd->cxlsd.cxld;
-> +	cxld_dev = &cxld->dev;
+Changes
+v6 -> v7:
+1. Main changes for comments from Jonathan.
+1.1. CXL
+ - Changes for deal with small mail box and supporting multipart
+   feature data transfers.
+ - Provide more specific parameters to mbox supported/get/set features
+   interface functions.
+ - kvmalloc -> kmalloc in CXL scrub mem allocation for feature commands.
+ - Changed the way using __free(kfree)
+ - Removed readback and verify for setting CXL scrub patrol and ECS
+   parameters. Could be added later if needed.
+ - In is_visible() callback functions for scrub control sysfs attrs
+   changed to writeback the default attribute mode value instead of
+   setting per attrs.
+ - Add documentation for sysfs interfaces for CXL ECS scrub control. 
+1.2. RAS2
+ - In rasf common code, rename rasf to ras2 because RASF seems obselete.
+ - Replace pr_* with dev_* log function calls from ACPI RAS2 and
+   memory RAS2 drivers.
+ - In rasf common code, rename rasf to ras2.
+ - Removed including unnecessary .h file from memory RAS2 driver.
+ - In is_visible() callback functions for scrub control sysfs attrs
+   changed to writeback the default attribute mode value instead of
+   setting per attribute.
 
-This I find odd, there is no allocation as such in here so the matching of
-the unwind and the allocation isn't clear. 
+2. Changes for comments from Fan.
+ - Add debug message if cxl patrol scrub and ecs init function
+   calls fail.
+3. Updated cover letter for feedback from Dan Williams. 
+   
+v5 -> v6:
+1. Changes for comments from Davidlohr, Thanks.
+ - Update CXL feature code based on spec 3.1.
+ - attrb -> attr
+ - Use enums with default counting.  
+2. Rebased to the latest kernel.
 
->  	cxld->flags = cfmws_to_decoder_flags(cfmws->restrictions);
->  	cxld->target_type = CXL_DECODER_HOSTONLYMEM;
->  	cxld->hpa_range = (struct range) {
-> -		.start = res->start,
-> -		.end = res->end,
-> +		.start = cfmws->base_hpa,
-> +		.end = cfmws->base_hpa + cfmws->window_size - 1,
->  	};
->  	cxld->interleave_ways = ways;
->  	/*
-> @@ -399,11 +401,10 @@ static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  			rc = acpi_table_parse_cedt(ACPI_CEDT_TYPE_CXIMS,
->  						   cxl_parse_cxims, &cxims_ctx);
->  			if (rc < 0)
-> -				goto err_xormap;
-> +				return rc;
->  			if (!cxlrd->platform_data) {
->  				dev_err(dev, "No CXIMS for HBIG %u\n", ig);
-> -				rc = -EINVAL;
-> -				goto err_xormap;
-> +				return -EINVAL;
->  			}
->  		}
->  	}
-> @@ -411,18 +412,10 @@ static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
->  	cxlrd->qos_class = cfmws->qtg_id;
->  
->  	rc = cxl_decoder_add(cxld, target_map);
-> -err_xormap:
->  	if (rc)
-> -		put_device(&cxld->dev);
-> -	else
-> -		rc = cxl_decoder_autoremove(dev, cxld);
-> -	return rc;
-> -
-> -err_insert:
-> -	kfree(res->name);
-> -err_name:
-> -	kfree(res);
-> -	return -ENOMEM;
-> +		return rc;
-> +	cxld_dev = NULL;
+v4 -> v5:
+1. Following are the main changes made based on the feedback from Dan Williams on v4.
+1.1. In the scrub subsystem the common scrub control attributes are statically defined
+     instead of dynamically created.
+1.2. Add scrub subsystem support externally defined attribute group.
+     Add CXL ECS driver define ECS specific attribute group and pass to
+	 the scrub subsystem.
+1.3. Move cxl_mem_ecs_init() to cxl/core/region.c so that the CXL region_id
+     is used in the registration with the scrub subsystem. 	 
+1.4. Add previously posted RASF common and RAS2 patches to this scrub series.
+	 
+2. Add support for the 'enable_background_scrub' attribute
+   for RAS2, on request from Bill Schwartz(wschwartz@amperecomputing.com).
 
-This is definitely not nice to read.  We are randomly setting an
-apparently unrelated pointer to NULL.  At very least the __free
-should operating on cxld then we can use
+v3 -> v4:
+1. Fixes for the warnings/errors reported by kernel test robot.
+2. Add support for reading the 'enable' attribute of CXL patrol scrub.
 
-return cxl_decoder_autoremove(dev, no_free_ptr(cxld));
+Changes
+v2 -> v3:
+1. Changes for comments from Davidlohr, Thanks.
+ - Updated cxl scrub kconfig
+ - removed usage of the flag is_support_feature from
+   the function cxl_mem_get_supported_feature_entry().
+ - corrected spelling error.
+ - removed unnecessary debug message.
+ - removed export feature commands to the userspace.
+2. Possible fix for the warnings/errors reported by kernel
+   test robot.
+3. Add documentation for the common scrub configure atrributes.
 
-But the get was burred in cxl_root_decoder_alloc() so even that
-is non obvious.  You could do the magic to make
+v1 -> v2:
+1. Changes for comments from Dave Jiang, Thanks.
+ - Split patches.
+ - reversed xmas tree declarations.
+ - declared flags as enums.
+ - removed few unnecessary variable initializations.
+ - replaced PTR_ERR_OR_ZERO() with IS_ERR() and PTR_ERR().
+ - add auto clean declarations.
+ - replaced while loop with for loop.
+ - Removed allocation from cxl_get_supported_features() and
+   cxl_get_feature() and make change to take allocated memory
+   pointer from the caller.
+ - replaced if/else with switch case.
+ - replaced sprintf() with sysfs_emit() in 2 places.
+ - replaced goto label with return in few functions.
+2. removed unused code for supported attributes from ecs.
+3. Included following common patch for scrub configure driver
+   to this series.
+   "memory: scrub: Add scrub driver supports configuring memory scrubbers
+    in the system"
 
-struct cxl_root_decoder *cxld __free(cxlroot_put) = 
-	cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
+A Somasundaram (1):
+  ACPI:RAS2: Add common library for RAS2 PCC interfaces
 
-return cxl_decoder_autoremove(dev, &no_free_ptr(cxlrd)->cxlsd.cxld);
+Shiju Jose (11):
+  cxl/mbox: Add GET_SUPPORTED_FEATURES mailbox command
+  cxl/mbox: Add GET_FEATURE mailbox command
+  cxl/mbox: Add SET_FEATURE mailbox command
+  cxl/memscrub: Add CXL device patrol scrub control feature
+  cxl/memscrub: Add CXL device ECS control feature
+  memory: scrub: Add scrub subsystem driver supports configuring memory
+    scrubs in the system
+  cxl/memscrub: Register CXL device patrol scrub with scrub subsystem
+    driver
+  cxl/memscrub: Register CXL device ECS with scrub subsystem driver
+  ACPICA: ACPI 6.5: Add support for RAS2 table
+  ACPI:RAS2: Add driver for ACPI RAS2 feature table (RAS2)
+  memory: RAS2: Add memory RAS2 driver
 
-Is it worth it? Just about, maybe...
+ .../ABI/testing/sysfs-class-cxl-ecs-configure |  79 ++
+ .../ABI/testing/sysfs-class-scrub-configure   |  91 ++
+ drivers/acpi/Kconfig                          |  14 +
+ drivers/acpi/Makefile                         |   1 +
+ drivers/acpi/ras2_acpi.c                      |  97 ++
+ drivers/acpi/ras2_acpi_common.c               | 272 +++++
+ drivers/cxl/Kconfig                           |  21 +
+ drivers/cxl/core/Makefile                     |   1 +
+ drivers/cxl/core/mbox.c                       | 143 +++
+ drivers/cxl/core/memscrub.c                   | 954 ++++++++++++++++++
+ drivers/cxl/core/region.c                     |   3 +
+ drivers/cxl/cxlmem.h                          | 124 +++
+ drivers/cxl/pci.c                             |   4 +
+ drivers/memory/Kconfig                        |  15 +
+ drivers/memory/Makefile                       |   3 +
+ drivers/memory/ras2.c                         | 364 +++++++
+ drivers/memory/ras2_common.c                  | 282 ++++++
+ drivers/memory/scrub/Kconfig                  |  11 +
+ drivers/memory/scrub/Makefile                 |   6 +
+ drivers/memory/scrub/memory-scrub.c           | 369 +++++++
+ include/acpi/actbl2.h                         | 137 +++
+ include/acpi/ras2_acpi.h                      |  59 ++
+ include/memory/memory-scrub.h                 |  79 ++
+ include/memory/ras2.h                         |  88 ++
+ 24 files changed, 3217 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-class-cxl-ecs-configure
+ create mode 100644 Documentation/ABI/testing/sysfs-class-scrub-configure
+ create mode 100755 drivers/acpi/ras2_acpi.c
+ create mode 100755 drivers/acpi/ras2_acpi_common.c
+ create mode 100644 drivers/cxl/core/memscrub.c
+ create mode 100644 drivers/memory/ras2.c
+ create mode 100644 drivers/memory/ras2_common.c
+ create mode 100644 drivers/memory/scrub/Kconfig
+ create mode 100644 drivers/memory/scrub/Makefile
+ create mode 100755 drivers/memory/scrub/memory-scrub.c
+ create mode 100644 include/acpi/ras2_acpi.h
+ create mode 100755 include/memory/memory-scrub.h
+ create mode 100755 include/memory/ras2.h
 
-
-> +	return cxl_decoder_autoremove(dev, cxld);
->  }
->  
->  static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
+-- 
+2.34.1
 
 
