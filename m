@@ -1,62 +1,70 @@
-Return-Path: <linux-acpi+bounces-3890-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3891-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636D5860DB3
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 10:13:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DE286110E
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 13:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0F01C217E4
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 09:13:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936F3285E35
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 12:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D660D381B8;
-	Fri, 23 Feb 2024 09:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99937C6E9;
+	Fri, 23 Feb 2024 12:08:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6AB1BDEE;
-	Fri, 23 Feb 2024 09:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C0D7C099;
+	Fri, 23 Feb 2024 12:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708679621; cv=none; b=d0NmrjgqdlhKN8itCy+ve6/EOmss2rH6NnlM0dhMIka8u1ta44peIdSKQ34uNxNx26uZ2u/TpgzjoAYMAGVMAPv9i6qGiZn2wttOfkKQImOoXYGrEIQANgciHj6o0j0U/clop1hy3An1Q2oaJZ3zARuY1mTPMYXXsG//TaDuX8Q=
+	t=1708690108; cv=none; b=EqOQlKx0eLtNyiFouykPfNY1o7/FV0SkimAoIelNj5+bSdjafc4qAimsXTF0J9StTgs5kZgDGqB9bmuCUmdGw+91nCBHT1bKgp4HTHqwE5QSmxpaEPKrN8nOylPiKt/6xBp48nYZcj+WE6AGrXLly/cRQLTLDfbjQxlnMgrn0dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708679621; c=relaxed/simple;
-	bh=/cxpcMGeXQCVeZ+jggIPGGTTs4Sl/gpFjVZN1g4uHzo=;
+	s=arc-20240116; t=1708690108; c=relaxed/simple;
+	bh=kbwCh5ivkreyialYBJQE89WYwcGywhW6JhNL6UddKKo=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bII2iLj72jKaIfQATaFa8UU8COt1ba9GoIPk5HbTjwkF/R+UmyYKiKG0nfGuWRCxBNvQF1hFUiWEHjzNwazkb9YsGMA+sVDdAC5k0az0iIZGlFosnO9I2kNt8CRO9XvVWUus+2WHubv9Vl9/aim16lIBm+HSn9Q2NyZbJ9u5j8k=
+	 MIME-Version:Content-Type; b=JwFrFQbvJ+WkSWRlT5EkDsXKo8lRtMd0VCGlyy3pOsWIxLiTSpWu+vRjMn0U9kVNbyageK3wK0mpYz2WBI+2CJMiVwJQimMfUMJYp2ORUnYCfBvtMoRDdR/AlZ4tI0QXwec8t4U6ien7R/dX/QYeqD5qlHesVKlKOQkoQzZKeNs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Th42G63N9z6JBbR;
-	Fri, 23 Feb 2024 17:09:10 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Th7w71fm3z6K6B1;
+	Fri, 23 Feb 2024 20:04:07 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id D5CF81400DC;
-	Fri, 23 Feb 2024 17:13:35 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 2F56D140B33;
+	Fri, 23 Feb 2024 20:08:16 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 09:13:35 +0000
-Date: Fri, 23 Feb 2024 09:13:34 +0000
+ 2024 12:08:15 +0000
+Date: Fri, 23 Feb 2024 12:08:13 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>, "Rob
- Herring" <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
-	<linux-kernel@vger.kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>, "Peter
- Zijlstra" <peterz@infradead.org>, Nicolas Palix <nicolas.palix@imag.fr>,
-	Sumera Priyadarsini <sylphrenadin@gmail.com>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Subject: Re: [PATCH 0/8] of: automate of_node_put() - new approach to loops.
-Message-ID: <20240223091334.00005522@Huawei.com>
-In-Reply-To: <Zc9-eSEH-D1n4dAv@smile.fi.intel.com>
-References: <20240211174237.182947-1-jic23@kernel.org>
-	<ZcoJEUTdMAKdMHd1@smile.fi.intel.com>
-	<20240216144756.08e25894@jic23-huawei>
-	<Zc9-eSEH-D1n4dAv@smile.fi.intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: Shuai Xue <xueshuai@linux.alibaba.com>, Borislav Petkov <bp@alien8.de>,
+	Ira Weiny <ira.weiny@intel.com>, "Luck, Tony" <tony.luck@intel.com>,
+	"james.morse@arm.com" <james.morse@arm.com>, <rafael@kernel.org>,
+	<wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
+	<mawupeng1@huawei.com>, <linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>,
+	<gregkh@linuxfoundation.org>, <will@kernel.org>, <jarkko@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<linux-edac@vger.kernel.org>, <x86@kernel.org>, <justin.he@arm.com>,
+	<ardb@kernel.org>, <ying.huang@intel.com>, <ashish.kalra@amd.com>,
+	<baolin.wang@linux.alibaba.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
+	<robert.moore@intel.com>, <lvying6@huawei.com>, <xiexiuqi@huawei.com>,
+	<zhuo.song@linux.alibaba.com>
+Subject: Re: [PATCH v11 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+Message-ID: <20240223120813.00005d1f@Huawei.com>
+In-Reply-To: <65d82c9352e78_24f3f294d5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+	<20240204080144.7977-2-xueshuai@linux.alibaba.com>
+	<20240219092528.GTZdMeiDWIDz613VeT@fat_crate.local>
+	<bdf15819-46e0-498f-97e1-a0183f257086@linux.alibaba.com>
+	<65d82c9352e78_24f3f294d5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -67,62 +75,71 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, 16 Feb 2024 17:25:45 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 22 Feb 2024 21:26:43 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-> On Fri, Feb 16, 2024 at 02:47:56PM +0000, Jonathan Cameron wrote:
-> > On Mon, 12 Feb 2024 14:03:29 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:  
-> > > On Sun, Feb 11, 2024 at 05:42:28PM +0000, Jonathan Cameron wrote:  
-> 
-> ...
-> 
-> > > I'm a bit skeptical about need of this work. What I would prefer to see
-> > > is getting rid of OF-centric drivers in IIO. With that, we would need
-> > > only fwnode part to be properly implemented.  
+> Shuai Xue wrote:
 > > 
-> > To be honest main reason for doing of first was that they have unit tests :)  
+> > 
+> > On 2024/2/19 17:25, Borislav Petkov wrote:  
+> > > On Sun, Feb 04, 2024 at 04:01:42PM +0800, Shuai Xue wrote:  
+> > >> Synchronous error was detected as a result of user-space process accessing
+> > >> a 2-bit uncorrected error. The CPU will take a synchronous error exception
+> > >> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue a
+> > >> memory_failure() work which poisons the related page, unmaps the page, and
+> > >> then sends a SIGBUS to the process, so that a system wide panic can be
+> > >> avoided.
+> > >>
+> > >> However, no memory_failure() work will be queued when abnormal synchronous
+> > >> errors occur. These errors can include situations such as invalid PA,
+> > >> unexpected severity, no memory failure config support, invalid GUID
+> > >> section, etc. In such case, the user-space process will trigger SEA again.
+> > >> This loop can potentially exceed the platform firmware threshold or even
+> > >> trigger a kernel hard lockup, leading to a system reboot.
+> > >>
+> > >> Fix it by performing a force kill if no memory_failure() work is queued
+> > >> for synchronous errors.
+> > >>
+> > >> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> > >> ---
+> > >>  drivers/acpi/apei/ghes.c | 9 +++++++++
+> > >>  1 file changed, 9 insertions(+)
+> > >>
+> > >> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> > >> index 7b7c605166e0..0892550732d4 100644
+> > >> --- a/drivers/acpi/apei/ghes.c
+> > >> +++ b/drivers/acpi/apei/ghes.c
+> > >> @@ -806,6 +806,15 @@ static bool ghes_do_proc(struct ghes *ghes,
+> > >>  		}
+> > >>  	}
+> > >>  
+> > >> +	/*
+> > >> +	 * If no memory failure work is queued for abnormal synchronous
+> > >> +	 * errors, do a force kill.
+> > >> +	 */
+> > >> +	if (sync && !queued) {
+> > >> +		pr_err("Sending SIGBUS to current task due to memory error not recovered");
+> > >> +		force_sig(SIGBUS);
+> > >> +	}  
+> > > 
+> > > Except that there are a bunch of CXL GUIDs being handled there too and
+> > > this will sigbus those processes now automatically.  
+> > 
+> > Before the CXL GUIDs added, @Tony confirmed that the HEST notifications are always
+> > asynchronous on x86 platform, so only Synchronous External Abort (SEA) on ARM is
+> > delivered as a synchronous notification.
+> > 
+> > Will the CXL component trigger synchronous events for which we need to terminate the
+> > current process by sending sigbus to process?  
 > 
-> fwnode also has KUnit test. Have you considered adding test cases there?
-> 
-> > The IIO drivers were more of a proving ground than cases I really cared
-> > out cleaning up.  However I'm always of the view that better to make
-> > some improvement now than wait for a perfect improvement later.  
-> 
-> Yes, but in my opinion _in this particular case_ it brings more churn and
-> some maybe even not good from educational purposes, i.e. one can look at
-> the current series and think "oh, OF is still in use, let me provide my
-> driver OF-only (for whatever reasons behind)", while targeting conversion
-> first will tell people: "hey, there is an agnostic device property framework
-> that should be used in a new code and that's why we have been converting old
-> drivers too".
-> 
-> > However one or two are not going to be converted to fwnode handling
-> > any time soon because they make use of phandle based referencing for
-> > driver specific hook ups that isn't going to get generic handling any
-> > time soon.  
-> 
-> Sure, exceptions happen.
+> None of the CXL component errors should be handled as synchronous
+> events. They are either asynchronous protocol errors, or effectively
+> equivalent to CPER_SEC_PLATFORM_MEM notifications.
 
-After the series converting over most of the cases this patch set touched
-in IIO, I have 
+Not a good example, CPER_SEC_PLATFORM_MEM is sometimes signaled via SEA.
 
-rcar-gyroadc and the unit test left, which are enough to show the purpose
-of the patch and put a few real users in place.
-
-Will submit a v2 with just those 2 users.  Ideal would be to get these in
-for the merge window so it is available for other subsystems next cycle.
-
-> 
-> > I'll probably focus on getting the fwnode version of this moving
-> > forwards first though and 'maybe' convert a few of the easier ones
-> > of these over to that framework to reduce how many users of this
-> > we end up with in IIO.  
-> 
-> Thanks!
-> 
 
 
