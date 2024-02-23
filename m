@@ -1,119 +1,114 @@
-Return-Path: <linux-acpi+bounces-3923-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3924-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B51C861A0C
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 18:39:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB41861AAA
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 18:53:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3248F1F27305
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 17:39:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7021F27EF8
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Feb 2024 17:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF13112EBFD;
-	Fri, 23 Feb 2024 17:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A79F13A264;
+	Fri, 23 Feb 2024 17:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kEP+tViy"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="REvmuwwi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2F1292DF;
-	Fri, 23 Feb 2024 17:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F162713A27B;
+	Fri, 23 Feb 2024 17:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708709874; cv=none; b=k5kCVXKziWzHhPNtDPaGlEJGTI70rXUptCwls5FDmAAj3u7f/GMa02kjWsuTfxuA+AhM5CoVqei6g2PUHhQ0PMHffcFikH5UNe0U+2CEUd6h5QaaiQk69P5NEc2IZQI7xmsTqwz6jZFw81xvp9UAIqWg0cX9BNc+QrSNu4N2ru0=
+	t=1708710716; cv=none; b=eHdS36ANzjAmHa29848FylXePJjBb0NdbGnvHnllPb3cuA+n2YOYUUppKxTcJdORjuPlfkpkyB9JoOcP5GEjIPrQqtSNh0gb4xGf46RZRmqFG82GjoWBXl08OR8nddo/SBaHBQ5KvtLSZh51z2FJbbDEi190CcCqcDFVlm+3S7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708709874; c=relaxed/simple;
-	bh=+C0eEtfMj4S5hq66oGvN7X+C67tb5HSsGQI9RTl/0qE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ArOSPVkd/oJxGxoqEznvDrW9oxFoceSN7cAvqVJEIirEvnfZvav9xb4DTS2Yd1wOAPnBeaZqgfu8k2LmP6xl7c5OK42nxwHhqnA1owyQrDWgKPJrgadYEsFmKsXb3xs780FSkLqWyO9+W09rtYGx8tDHCtFaq7aVMuC7SyML+uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kEP+tViy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D08DC433B2;
-	Fri, 23 Feb 2024 17:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708709874;
-	bh=+C0eEtfMj4S5hq66oGvN7X+C67tb5HSsGQI9RTl/0qE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kEP+tViyvM7Lrh/MbLagrSkN+jODt1LddtU2XN9CKOxciJqDuUC+KWPx6HK1vQiRZ
-	 Z03wfY2dGrmAOsOzrfqSV+ldO/4zJDXLem+Bw0LLaln80jKmoor8m7WzEt0gPMALkT
-	 fpBNDYFsSzymBNoXa0Pshr8mWMAXD6eR8vA0I9UWI5WyAvcDd+voT1g3CIbupxMGi4
-	 qbgbJFlfKhKBqdSFF1FS8JLCRNfkKGjW51U0A+6Ys0rL7XnvfL/Ru92pLiFUK6JVwx
-	 Nr4wHmhGWVGplW4ner+JiGqFpk6q8b0ma/2/qFpvcvoP58Oh6yXIw74TUuya/+vley
-	 ye9bJoWJ7wmuQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-512db550e3fso1420350e87.2;
-        Fri, 23 Feb 2024 09:37:54 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUCa1k3NggxqnJlcRu/JpSehyiBK4/AGQrdCgPbn7CoZUyCENLogFqg7MUqfyFZxW4zoIk8igCQBY9gJkd8CvATAN7v5vW2ymCs7oL6pcKu2X/MdLgHD4woBhxZytEHe24hkFRqGQQyeaXN81No56IA4srH4rvqJf5MpMZDfsEawZN2ZKTPgnALwf6+D7d0GEHvS6ak3/tZpETqEkkGojQ=
-X-Gm-Message-State: AOJu0YzTXfPnncck40FEape0q073QEHUEdY+hLBabMiBVg1+GsQcbtNa
-	QX8F9zcpp1dFE6PTFPgIEc2ktICR3HQdHYc7UsmWm/bxpJtN7/rav33zq0doftGjd4/0YGyzGzR
-	FiFEyoKKpuHlyom0P0T0S+ygjJw==
-X-Google-Smtp-Source: AGHT+IGNZjMvh7S1025ZqB3yiouLwHO2vlT54KE7NgY7X2HF/zxZWnWrt4cVuNfv3VT4Hbk1i3E7ekmPzVTC0DOYjdo=
-X-Received: by 2002:a05:6512:480c:b0:512:a04a:52d6 with SMTP id
- eo12-20020a056512480c00b00512a04a52d6mr270864lfb.44.1708709872305; Fri, 23
- Feb 2024 09:37:52 -0800 (PST)
+	s=arc-20240116; t=1708710716; c=relaxed/simple;
+	bh=3MtOstKPgk5E7lxshF6YUvjFhLxlyzflm8vH2Ep6Y+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QbldMXqtwStEIXNBBPAS0AXnbSgKOirrdzKBqW3kQPf9tqDht+kVLpYzct2odbVNO0VVYIDY9EgHw6JcyueJxKNSVHJb93FV+QPn+ZE4AvlJpb5anDLj6btcmjEtngCv/KKaSugTHcR7C+kaRKVz2OcsGTWlTo8RWVblQRQRjzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=REvmuwwi; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CCFD840E0192;
+	Fri, 23 Feb 2024 17:51:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id DZ5q3Q_bndI4; Fri, 23 Feb 2024 17:51:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1708710708; bh=rkpeN08zur0iQ6scKcdTzeAW6Eskv9jZ3rMpviIPZ0U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=REvmuwwiIVCNBSNUYb4BQZvSTePGuN67Jq3SwEjLRx0f+MfQ/cIibpbyRJ6SZTyS0
+	 36vKn1G/RUNTHLYGa3xvAl5kCoQ3J9V8COgDQyHUy4qQHqLhc9cuVd2XdfDS7Mef0Z
+	 lTMvoOhhLo24Pb/yuEL87DXMS3kECR9R+DcoshvfB38qk3uxbzscyenXhyB6JPVDWY
+	 g3wcylGYqPc4fICZ7MYqhYK/EWn1ZUWvK0d+Z8Dp9lmbqCwBWHDdluKcTMpgOi+b3M
+	 VMikameDf9QqMVG2zVD/2tTgJoIXfLFHsBwtbklcLTdrWj60wn19J79QkjEAJtpx8T
+	 So69gS0MYPXU+QGQJRpGI4D6Awwt1HN9uppVYBQCs7PzupvccW2lfecuWblFIYHCAE
+	 21A0Nv0B37601ZHjh0giIOVN+O2RoigGTqW2Azf8ZqX88umpT3RuQE15rpQlIr4lOe
+	 DBhYCd1j0c1ejHlZxLxrb4NN0akDG1eTZI87AhfXlDDfG5Aa4QmkYPUY6J+wdV+2Je
+	 UVzQog0zRxpaLEVmkRj4nDhND2H3Fq7HNGG+R02dz37EXYroYTU/RVs89zuDB61jmQ
+	 Li4V1I/7YR44hh3U73R4cDOE4n5MG0V3xdCVwIw6O+PGuvDJ3hQUgPukerqoMqVc5Q
+	 XlynR/rd6OkpptLyqAixACWE=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id CE93040E016C;
+	Fri, 23 Feb 2024 17:51:07 +0000 (UTC)
+Date: Fri, 23 Feb 2024 18:51:00 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: shiju.jose@huawei.com, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	dan.j.williams@intel.com, dave@stgolabs.net, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
+	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
+	jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [RFC PATCH v7 00/12] memory: scrub: introduce subsystem +
+ CXL/ACPI-RAS2 drivers
+Message-ID: <20240223175100.GCZdjbBNlS0hluk3_B@fat_crate.local>
+References: <20240223143723.1574-1-shiju.jose@huawei.com>
+ <20240223154251.GAZdi8--NPaMAK_ZBp@fat_crate.local>
+ <20240223162551.000013ec@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240221233026.2915061-1-saravanak@google.com>
- <20240221233026.2915061-5-saravanak@google.com> <ZddNAHqwCNR5MZc4@smile.fi.intel.com>
- <CAGETcx8-fz7ijTJcBLMWetrZRfvS5GGGOBBoFM7an6qDtZ1NNg@mail.gmail.com>
-In-Reply-To: <CAGETcx8-fz7ijTJcBLMWetrZRfvS5GGGOBBoFM7an6qDtZ1NNg@mail.gmail.com>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Fri, 23 Feb 2024 10:37:39 -0700
-X-Gmail-Original-Message-ID: <CAL_JsqLZbCJ3ziFFtq9V30rvCw_Y+-XUCJNXeHeRA8u76LYQuw@mail.gmail.com>
-Message-ID: <CAL_JsqLZbCJ3ziFFtq9V30rvCw_Y+-XUCJNXeHeRA8u76LYQuw@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] of: property: fw_devlink: Add support for
- "post-init-providers" property
-To: Saravana Kannan <saravanak@google.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Frank Rowand <frowand.list@gmail.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, kernel-team@android.com, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240223162551.000013ec@Huawei.com>
 
-On Thu, Feb 22, 2024 at 5:04=E2=80=AFPM Saravana Kannan <saravanak@google.c=
-om> wrote:
->
-> On Thu, Feb 22, 2024 at 5:32=E2=80=AFAM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Wed, Feb 21, 2024 at 03:30:24PM -0800, Saravana Kannan wrote:
-> > > Add support for this property so that dependency cycles can be broken=
- and
-> > > fw_devlink can do better probe/suspend/resume ordering between device=
-s in a
-> > > dependency cycle.
-> >
-> > ...
-> >
-> > > -     fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_=
-np), 0);
-> > > +     fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_=
-np),
-> > > +                     flags);
-> >
-> > I would leave it one line despite being 83 characters long.
-> >
-> > ...
-> >
-> > > -                     of_link_to_phandle(con_dev_np, phandle);
-> > > +                     of_link_to_phandle(con_dev_np, phandle,
-> > > +                                        s->fwlink_flags);
-> >
-> > I would leave this on one line, it's only 81 characters.
->
-> I don't have a strong opinion either way. If I need to send another
-> revision out, I'll address this (if checkpatch doesn't complain).
+On Fri, Feb 23, 2024 at 04:25:51PM +0000, Jonathan Cameron wrote:
+> So in short, it's an ACPI spec defined interface for controlling 
+> Memory Scrub engines.
 
-My terminal is >80 chars, so 1 line is good.
+Ok, let's call it acpi_ras2 then so that it is clear. We shouldn't be
+perpetuating the ACPI poor naming in the kernel. This way at least it is
+namespaced and says exactly where it is coming from.
 
-Rob
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
