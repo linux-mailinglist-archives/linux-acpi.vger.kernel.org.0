@@ -1,46 +1,45 @@
-Return-Path: <linux-acpi+bounces-3934-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3935-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E7886249E
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:43:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAFA8624B5
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F51E1C219F5
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 11:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CB11F22F38
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 11:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40615286BF;
-	Sat, 24 Feb 2024 11:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87B82941B;
+	Sat, 24 Feb 2024 11:47:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE9336AF3;
-	Sat, 24 Feb 2024 11:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B69EB29431;
+	Sat, 24 Feb 2024 11:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708775015; cv=none; b=SPnjWPwY5DRtks1YHAQPRCnBKn2UWBaj88wM+0x0kIeJnQXdclMJsDNeVlHfH+Sf0Rg+IxorCsz9JKTDneWexEUwhvdWK+LGeg1PrfLcanL2zcgWXQoSpcEhUb6rTYU+bGaqKZlG3vMR2EzSwfQCTsQTHewCVQwFGvC+/WyxNN4=
+	t=1708775259; cv=none; b=m2CbEaA8yFYfaB/x3bR82QuCl3mcXMqYqDTIEJDxhTWkiSRG4sIJoKo2Te0ze50FCZkM51MxVZrkzDdE7JBN8rBQ9t4R73tU36WwM7nsn9kPptCqRvggvQzhF2Qaj7ZyFSv3MbA9669zVRSIoh3pR35BPkeCH7wHm/+SuKZnWAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708775015; c=relaxed/simple;
-	bh=8VJckfJvcNBhFjZ7UyOVWAMSOuwa6K1jsyFc/kuZ1nI=;
+	s=arc-20240116; t=1708775259; c=relaxed/simple;
+	bh=9cqKCErocqPNNEG9BvS/09Xa2+C39jZH7JHgM7Zy5GA=;
 	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=MSD755z819rWy5CqUkm3G7g9h3FUNnu/l2rwrTL8XEVwse2vShjABXuxZP6crKZlOuW5hbkRAhXvnQFMCS8bfq1BMAQDux6uNGeAziSONPCLS9E3ikkKYmBRYGC06sFXpTKPXKv2vIDU+F3KlvpqkhETn4Ribfzde/CwSLPCi2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+	 In-Reply-To:Content-Type; b=pH9/gcaFdhcr0N+ZZpDwxy+f2VOT+8rmQ9NfwA6aQ/DdGBuO/FSysp3svFCHh5oTuYvlSXXtxLmuHAT95ueyXqEm6a1BGd7V//MTZfdrKAyMf2G+WU3J2+lFyK0Ars8kFocQ9Tn260f8PYXTJFDBF4rXdzvKbVz85nKpZSNHbaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ThlJB2rwSz1FLF6;
-	Sat, 24 Feb 2024 19:38:34 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4ThlSp3ShJzNllG;
+	Sat, 24 Feb 2024 19:46:02 +0800 (CST)
 Received: from dggpemm500002.china.huawei.com (unknown [7.185.36.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 65BE41A016B;
-	Sat, 24 Feb 2024 19:43:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id C97211400DD;
+	Sat, 24 Feb 2024 19:47:28 +0800 (CST)
 Received: from [10.174.178.247] (10.174.178.247) by
  dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sat, 24 Feb 2024 19:43:28 +0800
-Subject: Re: [PATCH v3 3/7] ACPI/IORT: Handle memory address size limits as
- limits
+ 15.1.2507.35; Sat, 24 Feb 2024 19:47:27 +0800
+Subject: Re: [PATCH v3 4/7] dma-mapping: Add helpers for dma_range_map bounds
 To: Robin Murphy <robin.murphy@arm.com>
 CC: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
 	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
@@ -59,12 +58,13 @@ CC: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
 	<m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-acpi@vger.kernel.org>, <iommu@lists.linux.dev>,
-	<devicetree@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+	<devicetree@vger.kernel.org>, Rob Herring <robh@kernel.org>, Christoph
+ Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@nvidia.com>
 References: <cover.1707493264.git.robin.murphy@arm.com>
- <5d52d580bf33d475053f9b05188fe3541cbe8798.1707493264.git.robin.murphy@arm.com>
+ <cc90d296daa52e9cfe9fdd6681c68df4773a5e6a.1707493264.git.robin.murphy@arm.com>
 From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <ab2099fd-b0b7-63d3-bdba-a4462ec230a8@huawei.com>
-Date: Sat, 24 Feb 2024 19:43:27 +0800
+Message-ID: <6e837f8b-b855-99b6-6f73-721de97b3fa4@huawei.com>
+Date: Sat, 24 Feb 2024 19:47:27 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 Precedence: bulk
@@ -73,31 +73,33 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <5d52d580bf33d475053f9b05188fe3541cbe8798.1707493264.git.robin.murphy@arm.com>
+In-Reply-To: <cc90d296daa52e9cfe9fdd6681c68df4773a5e6a.1707493264.git.robin.murphy@arm.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
  dggpemm500002.china.huawei.com (7.185.36.229)
 
 On 2024/2/10 0:50, Robin Murphy wrote:
-> Return the Root Complex/Named Component memory address size limit as an
-> inclusive limit value, rather than an exclusive size. This saves having
-> to fudge an off-by-one for the 64-bit case, and simplifies our caller.
+> Several places want to compute the lower and/or upper bounds of a
+> dma_range_map, so let's factor that out into reusable helpers.
 > 
+> Acked-by: Rob Herring <robh@kernel.org>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 > ---
-> v2: Avoid undefined shifts (grr...)
+> v2: fix warning for 32-bit builds
 > ---
->   drivers/acpi/arm64/dma.c  |  9 +++------
->   drivers/acpi/arm64/iort.c | 20 ++++++++++----------
->   include/linux/acpi_iort.h |  4 ++--
->   3 files changed, 15 insertions(+), 18 deletions(-)
+>   arch/loongarch/kernel/dma.c |  9 ++-------
+>   drivers/acpi/arm64/dma.c    |  8 +-------
+>   drivers/of/device.c         | 11 ++---------
+>   include/linux/dma-direct.h  | 18 ++++++++++++++++++
+>   4 files changed, 23 insertions(+), 23 deletions(-)
 
-This also makes the code easier to read,
+For the ARM64 code,
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
 Thanks
 Hanjun
