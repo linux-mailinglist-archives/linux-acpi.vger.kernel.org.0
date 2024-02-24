@@ -1,54 +1,53 @@
-Return-Path: <linux-acpi+bounces-3936-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3937-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD7B8624B8
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:49:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02ED48624F3
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 13:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08614283EB2
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 11:49:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FF12834AD
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8200C2941B;
-	Sat, 24 Feb 2024 11:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62E73B79E;
+	Sat, 24 Feb 2024 12:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyCCxW+2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oGVgb878"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA8F1798C;
-	Sat, 24 Feb 2024 11:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF094250EA;
+	Sat, 24 Feb 2024 12:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708775372; cv=none; b=EvziXkoCjtTUIbhPFWw89Cf9d+OYJ/DDD91BBN8Cdl8FnWCi8CTJIXCsovt1HIdld0Ow+sy995ORD5FfUC6FvlRxxH42O75THlJ4XeLzNFW1aeafrkM3FJr+P1vkAZLs3ToFsi5d4+Eeq143rheecwQixI1NsMpkRCuPvVYfF4o=
+	t=1708777031; cv=none; b=a3p0wNsv0jZqJza81zoxmKVGtm5CvGcJf7Y7LHwJZuySAvUCbDQgNSUBc6QJKEWg04IQqssUPwK+PYt8/PtqbdY2sG/HvOnLaYKPienp8dpTay6bjYu5EHzem6aQDnm1I6+qQ0Wcu7MtEkUzWh0qoJhwXYlaeJyorziNkgkV9eI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708775372; c=relaxed/simple;
-	bh=FPQ9lETrmP4wu/O2ohnbZ8lLxVvGDSsrtykAtXiGb/4=;
+	s=arc-20240116; t=1708777031; c=relaxed/simple;
+	bh=ZWpsYiNfzULQnKaSo35Y3LNGUc+8+X9Y66Kzvcxbu2k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tnqrlbyukNYOuMGA/z2m3wGdwvO8JZxd/pNPLxPTSBOgohJj6vy1lAS7+wT4DjYQeOXf4psxknaV8n41v7fqp/dYCPF0WXZY/QfYivHHp1BMeHB9z4fCwufzw+QAXcX19FhhiAm4qIopUqC8LYzCqk5GYdUOHpySZwAeRVr5DTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyCCxW+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFB2C433C7;
-	Sat, 24 Feb 2024 11:49:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dMuGkn+CARBTqQBnI7HpZtUfWDSBV43vlR8oSUDnd0hQJjZYBPbEDYNZoqC1pELkBRBQGavIC+cIyqSnUlmZnObWd61LxDPGfFiH5oGiu6kWeFKMIV++GdnsXtCShxf9eXPPD8Fu/zExb3E5bqH2XC1QOmHDoam6s/uEsBdCVP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oGVgb878; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4DFC433F1;
+	Sat, 24 Feb 2024 12:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708775371;
-	bh=FPQ9lETrmP4wu/O2ohnbZ8lLxVvGDSsrtykAtXiGb/4=;
+	s=k20201202; t=1708777031;
+	bh=ZWpsYiNfzULQnKaSo35Y3LNGUc+8+X9Y66Kzvcxbu2k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iyCCxW+2ph3NSLrdFDhsSdJ2JZB+3Ouy6wSmXvwtHD/dnqn1H3Lt2gIl5mzJDicX7
-	 bUtE8wrf0b7rfTE0yLrwAA34lRdEoDvcfEtlcv/oGOHUwcTlIvnCUA6pNwu+bu3dcO
-	 bz34ANvj/ZzxgJYYbnaXpru6j37GwgLZvAsxz05W5A9rCUAN8vAS/TZu17yuL3Lq6y
-	 mF4x7M1fTpu9a7nxO16XU7hnJ+f1iCR5V9dGWZW96oVGQY88z0TweAzUTeDNcKZO0W
-	 s5c8n0hUhUHxDHUrNvqLe7zLH2Z2aj/FPCYTAUWpJSje72CwSbvwR+SymRyNeF2Gw8
-	 2yKQEGsI3vUEA==
-Date: Sat, 24 Feb 2024 11:49:12 +0000
+	b=oGVgb878zFLcRiGmJBNTSDoVgTizDEsBm8RCVDQo0DgyOsC+zID/IZiQiVCGC+Qau
+	 fuQDnLfxANuZYecB3ofHuux8YRs04UqEUI39+l/3aAI3XjRuiPOhbStRGyuOQTf1KN
+	 YZmqTSf1gGIgUCmLHS2pztJqui1BxhNx1oOHtt1+MlR4ot3czhQ65x7h3ys9lPHrs1
+	 elDtKb+QKk9dBRn3qHanpaM988LzuOpCUHht34IlZuUhuL3UpAzfYSIkU6fw7221W2
+	 K4Of1Sta9XU5APFikXLq9gQvbyNMmt6WhTEmDn7srTrkll5G1niBzQGkKfzrTBwlBE
+	 B2Cz1gm09dhqQ==
+Date: Sat, 24 Feb 2024 12:16:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- <linux-iio@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
+ Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
+ Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
  <sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
  =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Cosmin Tanislav
  <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
@@ -60,14 +59,15 @@ Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  <dmitry.baryshkov@linaro.org>, Marijn Suijten
  <marijn.suijten@somainline.org>, Marius Cristea
  <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 00/15] device property / IIO: Use cleanup.h magic for
- fwnode_handle_put() handling.
-Message-ID: <20240224114912.6da6aa9d@jic23-huawei>
-In-Reply-To: <20240219154947.0000681b@Huawei.com>
+ Peter Zijlstra <peterz@infradead.org>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4 09/15] iio: adc: stm32: Use
+ device_for_each_child_node_scoped()
+Message-ID: <20240224121651.260404a5@jic23-huawei>
+In-Reply-To: <ZdM_P93vVIrBHkmg@smile.fi.intel.com>
 References: <20240217164249.921878-1-jic23@kernel.org>
-	<ZdNAQi6IlMN-quO_@smile.fi.intel.com>
-	<20240219154947.0000681b@Huawei.com>
+	<20240217164249.921878-10-jic23@kernel.org>
+	<ZdM_P93vVIrBHkmg@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -78,81 +78,123 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Feb 2024 15:49:47 +0000
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Mon, 19 Feb 2024 13:45:03 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Mon, 19 Feb 2024 13:49:22 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > On Sat, Feb 17, 2024 at 04:42:34PM +0000, Jonathan Cameron wrote:  
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > 
-> > > Sorry for the rapid resend, Andy noticed I'd messed up creating the v3 patch
-> > > set with some updates committed in the wrong patch.
-> > > 
-> > > Since v3: The updates to alignment of device_for_each_child_node_scopd() were
-> > >     in the wrong patch. Move them to patch 4 where they should always
-> > >     have been. (thanks Andy!)
-> > > 
-> > > Since v2: Thanks to Sakari and Andy for reviews.
-> > > - New first patch moving fwnode_handle_put() into property.h
-> > > - Tweak alignment in the loop macro
-> > > - Pick up tags.
-> > > - scopd -> scoped typo fix in some patch descriptions.
-> > > 
-> > > As can be seen by the examples from IIO that follow this can save
-> > > a reasonable amount of complexity and boiler plate code, often enabling
-> > > additional cleanups in related code such as use of
-> > > return dev_err_probe().
-> > > 
-> > > Given we are now fairly late in the cycle, I'd expect to take this
-> > > through the IIO tree and we can make use of it elsewhere next cycle.
-> > > 
-> > > Note I don't have the hardware so this is compile tested only.
-> > > Hence I'd appreciate some Tested-by tags if anyone can poke one of the
-> > > effected drivers.
-> > > 
-> > > Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
-> > > Referenced from that cover letter.  Similar may help us convert more
-> > > drivers to use this new approach, but often hand tweaking can take
-> > > additional advantage of other cleanup.h based magic, or things like
-> > > return dev_err_probe().
-> > > https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/    
+> On Sat, Feb 17, 2024 at 04:42:43PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > It seems you are got all necessary tags to go.  
+> > Switching to the _scoped() version removes the need for manual
+> > calling of fwnode_handle_put() in the paths where the code
+> > exits the loop early. In this case that's all in error paths.
+> > 
+> > Note this includes a probable fix as in one path an error message was
+> > printed with ret == 0.
+> > 
+> > Took advantage of dev_err_probe() to futher simplify things given no
+> > longer a need for the goto err.  
 > 
-> Light on the driver changes to use it, but seems that we have
-> reached convergence on the infrastructure.
+> ...
+> 
+> >  	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;  
+> 
+> I believe with
+> 
+> 	struct device *dev = &indio_dev->dev;
+> 
+> you can make the below neater.
 
-What I'll do in the short term is pick up the changes that have been
-reviewed and gained tags (so the infrastructure plus a few of the driver
-changes) and then send a v5 with the remainder. I suspect the driver
-changes have gotten lost in the deluge as IIO has been very busy this week.
+Agreed.  Given the users of indio_dev are all the error messages I'm touching
+anyway, this is in scope for this patch I think.
 
-Whilst I will occasionally pick up my own IIO changes with out review
-tags I normally only do that for trivial stuff like build fixes.
-These are simple but not simple enough!
+> Also see some side notes.
+> 
+> > -	struct fwnode_handle *child;
+> >  	const char *name;
+> >  	int val, scan_index = 0, ret;
+> >  	bool differential;
+> >  	u32 vin[2];  
+> 
+> ...
+> 
+> >  		if (!ret) {  
+> 
+> Not a fan of this pattern, below we have two different patterns for the cases
+> like this :-(
 
-So applied patches
-1,2,4,5,12 and 15 to the togreg branch of iio.git which will be initially
-pushed out as testing for 0-day to look at it.
+Likewise not a fan.
+
+Tidying this up is unrelated enough though that I won't do it in this
+series.
+
+> 
+> > +			if (strlen(name) >= STM32_ADC_CH_SZ)
+> > +				return dev_err_probe(&indio_dev->dev, -EINVAL,
+> > +						     "Label %s exceeds %d characters\n",
+> > +						     name, STM32_ADC_CH_SZ);
+> > +
+> >  			strscpy(adc->chan_name[val], name, STM32_ADC_CH_SZ);
+> >  			ret = stm32_adc_populate_int_ch(indio_dev, name, val);
+> >  			if (ret == -ENOENT)
+> >  				continue;
+> >  			else if (ret)  
+> 
+> 
+> This 'else' is redundant.
+> 
+> > +				return ret;
+> > +		} else if (ret != -EINVAL)  
+>
+I shouldn't have dropped the bracket here, so I'll put that back for now.
+ 
+> This also...
+> 
+> > +			return dev_err_probe(&indio_dev->dev, ret, "Invalid label\n");  
+> 
+> ...if you first do like
+> 
+> 		if (ret && ret != -EINVAL)
+> 			return dev_err_probe(...);
+> 		if (!ret) {
+> 
+> Another option
+> 
+> 		if (ret) {
+> 			if (ret != -EINVAL)
+> 				return dev_err_probe(...);
+> 		} else {
+> 
+> ...
+> 
+> >  		differential = false;
+> >  		ret = fwnode_property_read_u32_array(child, "diff-channels", vin, 2);  
+> 
+> ARRAY_SIZE()?
+> 
+> >  		/* diff-channels is optional */  
+> 
+> ...
+> 
+> >  		if (!ret) {
+> > +			if (vin[0] != val || vin[1] >= adc_info->max_channels)
+> > +				return dev_err_probe(&indio_dev->dev, -EINVAL,
+> > +						     "Invalid channel in%d-in%d\n",
+> > +						     vin[0], vin[1]);
+> >  		} else if (ret != -EINVAL) {
+> > -			dev_err(&indio_dev->dev, "Invalid diff-channels property %d\n", ret);
+> > -			goto err;
+> > +			return dev_err_probe(&indio_dev->dev, ret,
+> > +					     "Invalid diff-channels property\n");
+> >  		} 
+> 
+> As per above?
+> 
+Agree with all comments, but as you said side notes. Stuff to cleanup in a series
+doing a wider driver clean up.
 
 Thanks,
 
 Jonathan
 
-> 
-> I'll let it sit until the end of the week though as I want to
-> get a pull request out anyway before taking this into my tree.
-> 
-> 
-> > I commented with some side notes that may be addressed later on.
-> > Up to you.  
-> Thanks. I'll catch up with those shortly. 
-> 
-> Jonathan
-> 
-> >   
-> 
 
 
