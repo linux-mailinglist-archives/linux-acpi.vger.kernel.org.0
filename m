@@ -1,114 +1,104 @@
-Return-Path: <linux-acpi+bounces-3933-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3934-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFC886248C
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:37:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E7886249E
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 12:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47D2A1F220D3
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 11:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F51E1C219F5
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Feb 2024 11:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D52825756;
-	Sat, 24 Feb 2024 11:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le6qnzXk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40615286BF;
+	Sat, 24 Feb 2024 11:43:35 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64AD1AAD0;
-	Sat, 24 Feb 2024 11:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE9336AF3;
+	Sat, 24 Feb 2024 11:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708774648; cv=none; b=YsiehTCLL89AqOS7B3ZipyM49ylkl01w3ChAS0aDTHyuld8mTCPJ+VN4ykEZFG+dZEtw8Yo2lxcHiNd2BZfu2Shqz6QBu7PdDPMf6G4jskmkIPTHy2Wp9MvTUqLFQ1AC8v8KDeygkyQR2RCJ6z5OZLOMWtD/Dnl8O2DZSIxX+xg=
+	t=1708775015; cv=none; b=SPnjWPwY5DRtks1YHAQPRCnBKn2UWBaj88wM+0x0kIeJnQXdclMJsDNeVlHfH+Sf0Rg+IxorCsz9JKTDneWexEUwhvdWK+LGeg1PrfLcanL2zcgWXQoSpcEhUb6rTYU+bGaqKZlG3vMR2EzSwfQCTsQTHewCVQwFGvC+/WyxNN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708774648; c=relaxed/simple;
-	bh=0RSh39baeivDOjluBr/l5qE556pSIdvYkxZPHoKTN/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1Cvl8gf5liml2HvnkBollR1yk+A1mB3VwgElxx+3B3btwvMj4fcru1gJk4RvXLXj1ohZcr0i//WT8PkADSAbGPNrUC+xv8aYGMe2rsvVwbrhX/zBp6UDsCqLSKqYIW3Dida8rV7PkYjEhf4ITv10Kpdno9w9BJMsJWAQKtT8DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le6qnzXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82D5C433C7;
-	Sat, 24 Feb 2024 11:37:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708774648;
-	bh=0RSh39baeivDOjluBr/l5qE556pSIdvYkxZPHoKTN/8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=le6qnzXkUNIADhfMVJkjA4BYf4hfdH4f6g59CiLcyE8uJ34dMPWzSBz8ZEhw6fzmQ
-	 /4lWmWdHNmxQAWnG1rFWl/nBN5O4dZ2wURSTlrGwJXtdqU+rqvGHt8k87/qCqlDqc5
-	 raslBFNZoAySUQxzf8p1XNfrSf2AVZD8NkKs99yZBtuiNaa4lkaEbMBxNGZMYwCLko
-	 4H7oaV7jecChQVNIMbdJV9yHoUGkC+8AF6o/nxMRZFgWEZONwISAEp51zvTvukvgu0
-	 opKw85cueJoTX99NlIhUvp6EplUCB9AetWjHKY5df1g3c2f8Jhdd8qKgpvsCYZLtax
-	 thdbdNfLA5z2g==
-Date: Sat, 24 Feb 2024 11:37:13 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: linux-iio@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, Heikki
- Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
- <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Peter Zijlstra <peterz@infradead.org>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 03/15] iio: temp: ltc2983: Use __free(fwnode_handle)
- to replace fwnode_handle_put() calls
-Message-ID: <20240224113713.2f2aa84d@jic23-huawei>
-In-Reply-To: <611bf0695d497219d85390d200417596086435ed.camel@gmail.com>
-References: <20240217164249.921878-1-jic23@kernel.org>
-	<20240217164249.921878-4-jic23@kernel.org>
-	<611bf0695d497219d85390d200417596086435ed.camel@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708775015; c=relaxed/simple;
+	bh=8VJckfJvcNBhFjZ7UyOVWAMSOuwa6K1jsyFc/kuZ1nI=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=MSD755z819rWy5CqUkm3G7g9h3FUNnu/l2rwrTL8XEVwse2vShjABXuxZP6crKZlOuW5hbkRAhXvnQFMCS8bfq1BMAQDux6uNGeAziSONPCLS9E3ikkKYmBRYGC06sFXpTKPXKv2vIDU+F3KlvpqkhETn4Ribfzde/CwSLPCi2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4ThlJB2rwSz1FLF6;
+	Sat, 24 Feb 2024 19:38:34 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (unknown [7.185.36.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 65BE41A016B;
+	Sat, 24 Feb 2024 19:43:29 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sat, 24 Feb 2024 19:43:28 +0800
+Subject: Re: [PATCH v3 3/7] ACPI/IORT: Handle memory address size limits as
+ limits
+To: Robin Murphy <robin.murphy@arm.com>
+CC: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep
+ Holla <sudeep.holla@arm.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang
+ Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+	<decui@microsoft.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>, Matthew Rosato
+	<mjrosato@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Rob Herring
+	<robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>, <iommu@lists.linux.dev>,
+	<devicetree@vger.kernel.org>, Jason Gunthorpe <jgg@nvidia.com>
+References: <cover.1707493264.git.robin.murphy@arm.com>
+ <5d52d580bf33d475053f9b05188fe3541cbe8798.1707493264.git.robin.murphy@arm.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <ab2099fd-b0b7-63d3-bdba-a4462ec230a8@huawei.com>
+Date: Sat, 24 Feb 2024 19:43:27 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <5d52d580bf33d475053f9b05188fe3541cbe8798.1707493264.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
 
-On Mon, 19 Feb 2024 14:52:51 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On 2024/2/10 0:50, Robin Murphy wrote:
+> Return the Root Complex/Named Component memory address size limit as an
+> inclusive limit value, rather than an exclusive size. This saves having
+> to fudge an off-by-one for the 64-bit case, and simplifies our caller.
+> 
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> v2: Avoid undefined shifts (grr...)
+> ---
+>   drivers/acpi/arm64/dma.c  |  9 +++------
+>   drivers/acpi/arm64/iort.c | 20 ++++++++++----------
+>   include/linux/acpi_iort.h |  4 ++--
+>   3 files changed, 15 insertions(+), 18 deletions(-)
 
-> On Sat, 2024-02-17 at 16:42 +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > This use of the new cleanup.h scope based freeing infrastructure allows
-> > us to exit directly from error conditions and in the good path with
-> > the reference obtained from fwnode_find_reference() (which may be an er=
-ror
-> > pointer) automatically released.
-> >=20
-> > Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> > Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> > v2: Move the declarations down to where they are assigned.
-> > This both clearly associates the cleanup with the action that it
-> > is cleaning up and avoid potential future missordering of cleanup.
-> > --- =20
->=20
-> This LGTM. Only comment is that in ltc2983_parse_dt() we do have a loop w=
-here we
-> could make use of device_for_each_child_node_scoped(). It seems to me that
-> change could be included in this patch.
->=20
-> - Nuno S=C3=A1
->=20
->=20
+This also makes the code easier to read,
 
-True. Not sure how I missed that.  I'll do that for v5 posting of remaining=
- drivers.
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+
+Thanks
+Hanjun
 
