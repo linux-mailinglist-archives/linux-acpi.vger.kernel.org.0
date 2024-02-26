@@ -1,300 +1,128 @@
-Return-Path: <linux-acpi+bounces-3946-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3947-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3322B867A69
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 16:38:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37F1C867BE4
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 17:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A68B51F28154
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 15:38:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAFDB34958
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 15:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1956F12AAD8;
-	Mon, 26 Feb 2024 15:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5543E12BE92;
+	Mon, 26 Feb 2024 15:54:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D3B1E51D;
-	Mon, 26 Feb 2024 15:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27721292ED;
+	Mon, 26 Feb 2024 15:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708961885; cv=none; b=XMHJaczwpdfjr7jK2wSqjKXAuoaAj0eIq3tBdSqJHxJAok8D4Itkjq5ZTpWpCjP/kuPdJBKYaDD66Z0gXmxw7rbbcXDyODvZ3m9vwjNZ0af7KXZvJq0e+nCb4HULJ6w6Ti/+9bNNZgebpicY/W3IZHX9sY8tXPN1yDkU733m01Q=
+	t=1708962881; cv=none; b=RITeDFitdbeRbz3ZHYVMMp0UBCd6SwQHB/QsO/4rmzq8fKxMxe0lOT4+EJq8W5/5nouRa8YISeullplT1Z5kGj9G+DtpUF9yk7nu8Go3j8v4GRliRc76hts5OZaLhLBvOeJoQqMXlttccnjc0wk3PWgMKqFr5e7bRQFpmZ6Sk0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708961885; c=relaxed/simple;
-	bh=x/l9Hdq8Up8A8J22fcEOt+L6TcEkGTO0C+l2vJkuX9M=;
+	s=arc-20240116; t=1708962881; c=relaxed/simple;
+	bh=GIXw4CMiWjn027axPINZjhYRbMIP/5BA//VYtZABjv8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dI0bF52frQNdbL8Wy4qOAGQEMme7G51Yhf54ChkKdB0C1sqT2r/y9KtGrDOy93RlpvaK6uysQsJnK+aDSHd18ePzoririXsUBHcng34BSm9H1XA2SJtELSO8cURywSPoeAXLpeqDBOSO8xaBx1pimKnY/7ELERLuYrPzHMhYj0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.41
+	 To:Cc:Content-Type; b=s+dSD1fz6csBBOEUnJErrCs5cDBjh9WMO2BFyGgIC+jBPGEuQDrTynbsqcUPTwZFiUwLKHItxkom90gJIGpuHEVzRBmTj/peYbSSZ7PbZ1cGxVa+1QRIkn7pxpmd8Mk1lQ/1IcFjX4t8REhzVhGt51/7K4jrOwDrGCegkl49PEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e45f7c63f4so297385a34.1;
-        Mon, 26 Feb 2024 07:38:03 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-21fbe64ef0cso172921fac.1;
+        Mon, 26 Feb 2024 07:54:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708961882; x=1709566682;
+        d=1e100.net; s=20230601; t=1708962879; x=1709567679;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rht5mdp0Unm5ac83yufMkSEYG/yulI8r8YVcvuPo9ak=;
-        b=NLgaM/9Ys5Fysy8+Y9urDhAEUFSvr+W+SXlE5+/jnz0BVn/XIf6VUpISnLQjs7OV5O
-         cMSEZCIuWErk1yPPx4nuOeOAIM7Lwvs24OqLcnALCp+iDqtN1J+7wktF9YsU+775rDf/
-         P6eo5rYizBjYS4OiUnSSBUmr0GBYfWu8npMQd+Zy8eKeQUsYVIw0gQ8Y5Z1PfPUH1btL
-         iusoWBZNTE7mfWEP7MxcMbXDk2F7xO1W3tkA3wlnzRMRP1e0TkR6ASMQl4u/qa5hXQtt
-         gOj1McNZyYeVGcrYB3BPo2sxUGHOluP80/XTUKqrrUJwVWVr1dEcSW7wfaESJu5zkbbu
-         IjXw==
-X-Forwarded-Encrypted: i=1; AJvYcCWU1Uii+D8c3WuBo5oFdkkF2UF04hf/cWx8qAGvQss4ENwJg/0FyP6EJy+uKRLKplX8xn17PXvy58Wjh25y/9O48xmSpwmh+TnzqyaJbeo6wNjOL61UJ8bMMLYh21r7mqm91FRjSZz7HQ==
-X-Gm-Message-State: AOJu0YwJo878O1HZsR/9HVwgQxt0W4sUAFxtEW+jUkKwxd+/GQXXLc9F
-	MnKrSdfu0jz3wy+RcL3ils1H/sDOJVVnLx2om+ewfNdkVXi4vIYk+Q6xkG62W2CajE2rnyrcK/e
-	FtdDSd2PREt+bber9V9HVWvaLWQni3olufq4=
-X-Google-Smtp-Source: AGHT+IGv1bLZpsrS5tytcayR2qoWneBSEa/iQRUWg1MhkqXkB3DzmjrNfRxHYNbRIoG1pg4OO4+cAK9I1X47w82piAA=
-X-Received: by 2002:a05:6820:2b15:b0:5a0:396d:2489 with SMTP id
- dt21-20020a0568202b1500b005a0396d2489mr6987622oob.1.1708961882412; Mon, 26
- Feb 2024 07:38:02 -0800 (PST)
+        bh=8hG+R8NZ6weR+cw6Mtpt9mJbOI6Ku9oH9aEPOnZNcL4=;
+        b=GDi9peFSdfaxXypWsHXYi1JlyTy7fJ0vafzaF9xRBRj/iJcp3wd0cn7OV0fnwzr61q
+         QHxIGPSP3ZTIyrkbAcjoE39O9Icwd6yEaGc/bkdggkYyHp4ONt4wefMFBsvV4y6k7v39
+         F59OaAIZQlmcMq4umg3OGJ9t8hnmXSTwYZKhr/qOBuLQzKrNDt5etOpibg/QpicQbSD1
+         Quw2N81b+1dg7HjHAOoEHcSE/ku8b5UzwkSOWefx7uTA/Xz746SfqsSYguo8KcN1NNkV
+         hevzsSuEOZadPQNmPYbXlqUDFb/t36VQG3MQzO9dYrp9kFvZvYugAQ6QjOzz5GJYi5/p
+         6uCw==
+X-Forwarded-Encrypted: i=1; AJvYcCWhrzbqCVBcPx8l0UZsRhzEWbgQ4QP0y10P1vD6er63mWbkshf2rHSF+IaR1Lm58ibj97AVGsUQHBb1C2syJ7L4kA67MDZF+geuwjufgAyYFdNRsWJWxOfz1HGrTIrtmkniCozvyqOvVQ==
+X-Gm-Message-State: AOJu0Yz2SKHPsiqDsCABVgfwIzhsfcr2va2F6NkjmCzpCbLg9Yzfrfnv
+	r5Yld6tycuANGy8+dbrE7ZOq6eznagDQELemWM5qrii4yAOrbDnqcdlHwSTnKAeNpH5G/YY49PN
+	qI9Dq6AX76Eod/WiaqAMj3yX9dyAJDDUZHwk=
+X-Google-Smtp-Source: AGHT+IGYj3I+pBHztUYABBs8ofR2SML4EWvnehN8WclVuckleTZbje1PaIZCZP9V36/pwzXDffMk5oDBgMXjDRenn3g=
+X-Received: by 2002:a05:6820:2c8e:b0:5a0:4d78:975d with SMTP id
+ dx14-20020a0568202c8e00b005a04d78975dmr6637712oob.1.1708962878870; Mon, 26
+ Feb 2024 07:54:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4562925.LvFx2qVVIh@kreacher> <2939512.e9J7NaK4W3@kreacher> <20240222182834.00000b02@Huawei.com>
-In-Reply-To: <20240222182834.00000b02@Huawei.com>
+References: <4562925.LvFx2qVVIh@kreacher> <2939512.e9J7NaK4W3@kreacher>
+ <20240222182834.00000b02@Huawei.com> <CAJZ5v0id7ktjAne4wyEWox_xqjH9K=Kzbs3+Bcn1qHBctnincw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0id7ktjAne4wyEWox_xqjH9K=Kzbs3+Bcn1qHBctnincw@mail.gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 26 Feb 2024 16:37:50 +0100
-Message-ID: <CAJZ5v0id7ktjAne4wyEWox_xqjH9K=Kzbs3+Bcn1qHBctnincw@mail.gmail.com>
+Date: Mon, 26 Feb 2024 16:54:27 +0100
+Message-ID: <CAJZ5v0jjD=KN0pOuWZZ8DT5yHdu03KgOSHYe3wB7h2vafNa44w@mail.gmail.com>
 Subject: Re: [PATCH v1 3/4] ACPI: scan: Rework Device Check and Bus Check
  notification handling
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
 Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
 	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
 	"Russell King (Oracle)" <linux@armlinux.org.uk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 22, 2024 at 7:28=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Mon, Feb 26, 2024 at 4:37=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
+g> wrote:
 >
-> On Wed, 21 Feb 2024 21:02:33 +0100
-> "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
->
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> On Thu, Feb 22, 2024 at 7:28=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > >
-> > The underlying problem is the handling of the enabled bit in device
-> > status (bit 1 of _STA return value) which is required by the ACPI
-> > specification to be observed in addition to the present bit (bit 0
-> > of _STA return value) [1], but Linux does not observe it.
+> > On Wed, 21 Feb 2024 21:02:33 +0100
+> > "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+
+[...]
+
+> > > +bool acpi_device_is_enabled(const struct acpi_device *adev)
+> > > +{
+> > > +     return acpi_device_is_present(adev) && adev->status.enabled;
 > >
-> > Since Linux has not looked at that bit for a long time, it is generally
-> > risky to start obseving it in all device enumeration cases, especially
-> > at the system initialization time, but it can be observed when the
-> > kernel receives a Bus Check or Device Check notification indicating a
-> > change in device configuration.  In those cases, seeing the enabled bit
-> > clear may be regarded as an indication that the device at hand should
-> > not be used any more.
->
-> Hi Rafael,
->
-> I rebased the vCPU HP series Russell was working to go on top of this
-> and give me a basis to check the flows through your new conditions.
-> It may have it's own issues, but at least it makes use of some of these
-> bits and related checks.
->
-> For now the only key thing is make sure we don't check enabled()
-> in the hot remove path (until after _EJ0).  That happens correctly
-> because acpi_device_trim() is called and that doesn't have check_status
-> set.  The naming however doesn't make it obvious that path elides the
-> check, so I wonder if that call in acpi_scan_hotremove()
-> should be replaced with acpi_bus_trim_one(, NULL);
-
-Well, that's how acpi_bus_trim() is supposed to work: Detach
-everything under the target device (and including that device itself)
-unconditionally.
-
-I would prefer to rename acpi_bus_trim_one() to something closer
-reflecting its purpose.
-
+> > This resolves as (present or functional) && enabled.
 > >
-> > For this reason, rework the handling of Device Check and Bus Check
-> > notifications in the ACPI core device enumeration code in the
-> > following way:
+> > By my reading you are not allowed functional && enabled, but not presen=
+t.
+> > Line one of the description says.
 > >
-> >  1. Make acpi_bus_trim_one() check device status if its second argument
-> >     is not NULL, in which case it will only detach scan handlers or ACP=
-I
-> >     drivers from devices whose _STA returns the enabled bit clear.
+> > "If bit [0] is cleared, then bit 1 must also be cleared (in other words=
+, a device that is not present cannot be enabled)."
 > >
-> >  2. Make acpi_scan_device_check() and acpi_scan_bus_check() invoke
-> >     acpi_bus_trim_one() with a non-NULL second argument unconditionally=
-,
-> >     so scan handlers and ACPI drivers are detached from the target
-> >     device and its ancestors if their _STA returns the enabled bit
-> >     clear.
-> >
-> >  3. Make acpi_scan_device_check() skip the bus rescan if _STA for the
-> >     target device return the enabled bit clear, which is allowed by the
-> >     ACPI specification in the Device Check case. [2]
-> >
-> > In addition to the above:
-> >
-> >  4. Make sure that the bus rescan that needs to be triggered in the cas=
-e
-> >     when a new device has appeared is carried out in the same way in
-> >     both the Device Check and Bus Check cases.
-> >
-> >  5. In the Device Check case, start the bus rescan mentioned above from
-> >     the target device's parent, as per the specification. [2]
+> > I don't much care about that though (I think we discussed this
+> > in Russel's earlier series)
 >
-> This feels like an 'and' kind of a patch. Can we split it up so refactors
-> are done first and the _STA check stuff in a follow up patch?
-
-Sure, that will produce more readable patches.
-
-> End result is good, just could possibly be easier to review in two hops.
-
-Sure.
-
-> >
-> > Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-=
-device-status # [1]
-> > Link: https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Mode=
-l.html#device-object-notification-values # [2]
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Functional and enabled, but not present would go against the spec.  I
+> guess the kernel could protect itself against this, but then whatever
+> it chooses to do has not been defined anyway.
 >
-> Diff had a field day here and generated an somewhat unreadable patch.
+> The spec doesn't actually say what the OSPM is supposed to do when it
+> sees that combination of bits.  I'm inclined to clarify it to say "if
+> bit [0] is cleared, bit [1] has no defined meaning and it should be
+> ignored by the OSPM".  To be consistent with this interpretation,
+> acpi_device_is_enabled() should return "(present and enabled) or
+> functional".
+>
+> I'll change it along these lines.
 
-Well, agreed.
+Actually, I don't think that the "functional" bit has any bearing on
+this.  It only means that the OSPM should continue the enumeration
+below the device regardless of the present bit value.
 
-> A few other comments inline, but superficial stuff. The handling looks
-> correct to me.
->
-> > ---
-> >  drivers/acpi/internal.h |    1
-> >  drivers/acpi/scan.c     |  109 +++++++++++++++++++++++++++------------=
----------
-> >  2 files changed, 64 insertions(+), 46 deletions(-)
-> >
-> > Index: linux-pm/drivers/acpi/scan.c
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > --- linux-pm.orig/drivers/acpi/scan.c
-> > +++ linux-pm/drivers/acpi/scan.c
-> > @@ -244,11 +244,27 @@ static int acpi_scan_try_to_offline(stru
-> >       return 0;
-> >  }
-> >
-> > -static int acpi_bus_trim_one(struct acpi_device *adev, void *not_used)
-> > +static int acpi_bus_trim_one(struct acpi_device *adev, void *check_sta=
-tus)
->
-> Bool as pointer is a bit hard to read particularly as you use (void *)tru=
-e
-> for true, but not (void *)false for false.
->
-> However it's not too bad.  My current version of the vCPU patches needs
-> to pass more data in here anyway (as there a few things we need to
-> not do on eject, that don't correspond to !check_status)
-> so I have this as a struct anyway after a rebase.
+In the acpi_processor_add() case it is clearly irrelevant.
 
-The reason for using void * here is that this function is called
-recursively via acpi_dev_for_each_child_reverse() which requires a
-pointer as the second arg.
+acpi_scan_bus_check() needs to walk the entire subtree below the
+target device anyway.
 
-I guess I could define a wrapper around it for this, but that would be
-more code without any functional difference.
-
-> >  {
-> >       struct acpi_scan_handler *handler =3D adev->handler;
-> >
-> > -     acpi_dev_for_each_child_reverse(adev, acpi_bus_trim_one, NULL);
-> > +     acpi_dev_for_each_child_reverse(adev, acpi_bus_trim_one, check_st=
-atus);
-> > +
-> > +     if (check_status) {
-> > +             acpi_bus_get_status(adev);
-> > +             /*
-> > +              * Skip devices that are still there and take the enabled
-> > +              * flag into account.
-> > +              */
-> > +             if (acpi_device_is_enabled(adev))
-> > +                     return 0;
-> > +
-> > +             /* Skip device that have not been enumerated. */
-> > +             if (!acpi_device_enumerated(adev)) {
-> > +                     dev_dbg(&adev->dev, "Still not enumerated\n");
-> > +                     return 0;
-> > +             }
-> > +     }
-> >
-> >       adev->flags.match_driver =3D false;
-> >       if (handler) {
-> > @@ -315,71 +331,67 @@ static int acpi_scan_hot_remove(struct a
-> >       return 0;
-> >  }
-> >
-> > -static int acpi_scan_device_not_enumerated(struct acpi_device *adev)
-> > +static void acpi_scan_check_gone(struct acpi_device *adev)
->
-> The name of this had me initially a little confused.  Maybe
-> acpi_bus_trim_if_gone()
->
-> Or maybe just drop this wrapper entirely as it doesn't save much
-> and naming it clearly is hard.
-
-I'll try to make it somewhat better.
-
->
-> >  {
-> > -     if (!acpi_device_enumerated(adev)) {
-> > -             dev_warn(&adev->dev, "Still not enumerated\n");
-> > -             return -EALREADY;
-> > -     }
-> > -     acpi_bus_trim(adev);
-> > -     return 0;
-> > +     acpi_bus_trim_one(adev, (void *)true);
-> >  }
->
->
-> >  static int acpi_generic_hotplug_event(struct acpi_device *adev, u32 ty=
-pe)
-> >  {
-> >       switch (type) {
-> >       case ACPI_NOTIFY_BUS_CHECK:
-> > -             return acpi_scan_bus_check(adev, NULL);
-> > +             return acpi_scan_bus_check(adev);
-> >       case ACPI_NOTIFY_DEVICE_CHECK:
-> >               return acpi_scan_device_check(adev);
-> >       case ACPI_NOTIFY_EJECT_REQUEST:
-> > @@ -1945,6 +1957,11 @@ bool acpi_device_is_present(const struct
-> >       return adev->status.present || adev->status.functional;
-> >  }
-> >
-> > +bool acpi_device_is_enabled(const struct acpi_device *adev)
-> > +{
-> > +     return acpi_device_is_present(adev) && adev->status.enabled;
->
-> This resolves as (present or functional) && enabled.
->
-> By my reading you are not allowed functional && enabled, but not present.
-> Line one of the description says.
->
-> "If bit [0] is cleared, then bit 1 must also be cleared (in other words, =
-a device that is not present cannot be enabled)."
->
-> I don't much care about that though (I think we discussed this
-> in Russel's earlier series)
-
-Functional and enabled, but not present would go against the spec.  I
-guess the kernel could protect itself against this, but then whatever
-it chooses to do has not been defined anyway.
-
-The spec doesn't actually say what the OSPM is supposed to do when it
-sees that combination of bits.  I'm inclined to clarify it to say "if
-bit [0] is cleared, bit [1] has no defined meaning and it should be
-ignored by the OSPM".  To be consistent with this interpretation,
-acpi_device_is_enabled() should return "(present and enabled) or
-functional".
-
-I'll change it along these lines.
+As for acpi_scan_device_check(), IMO it's better to make it walk the
+subtree below the device if it is present, but not enabled, for
+backwards compatibility.
 
