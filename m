@@ -1,252 +1,120 @@
-Return-Path: <linux-acpi+bounces-3941-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3943-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28617862999
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Feb 2024 08:14:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F9D86716F
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 11:39:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9016E1F215CA
-	for <lists+linux-acpi@lfdr.de>; Sun, 25 Feb 2024 07:14:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83E0DB2F785
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 10:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD125D2E5;
-	Sun, 25 Feb 2024 07:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B7B1D690;
+	Mon, 26 Feb 2024 10:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iv2oXJIj"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="T7kI/UOW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FF17460;
-	Sun, 25 Feb 2024 07:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BB41BC4E;
+	Mon, 26 Feb 2024 10:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708845268; cv=none; b=ClILbpOpI/uzVsP+Ip2THUU7zTs5Vd2vxckbOVA867viA9gv6kGJ/vSunn0LxTzMlhEMg6dehHBdMQcBtEEN6T01qlg21l1WgemDeRRWsFr0Ry9VuaX+FdmogL9yeTo9/m4ihuXHGTfRJnRf4RqLGYyyVnrVQBE0cVga99qCC6g=
+	t=1708943408; cv=none; b=TfE9CmFWaz0cy3kaoea65Jwa+p/lTreFzutV6KZokVfMSBE0+yLapbRkunjhH5Gtzg2unkmNg/VwGq678yZ3SjRtAODSMdkQ+xKIsedEN3mQbpCxyj5qCtur2vHjluBar75CCkeF0PAihzMbM9xnQzIjI3v2Y0iiSkLgUS9tXBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708845268; c=relaxed/simple;
-	bh=z4OFGREyddGguIyPt5+jgAeUNGiDqPBZjgzPMCBvdlE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=A4Py3Q0yP+RL3l7PgtEdBI6dBLlP3ebLzAJk1OeyFhId9o3ZLMUMQJbPaWsjdoDFGH066Bxxs8iWqRoM+0BbCJFoIlmuH5kk06kpppb1gac0oy5kzGZVeVj+bSw/jrZEA3418Y+weGYAIM0hMNll61/X91fZ3UrDgcinFiZwMeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iv2oXJIj; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708845266; x=1740381266;
-  h=date:from:to:cc:subject:message-id;
-  bh=z4OFGREyddGguIyPt5+jgAeUNGiDqPBZjgzPMCBvdlE=;
-  b=Iv2oXJIjodloW4wR0lzzQlzLhnZu4wOnn+msFrUMZyWRKy2bIAhUILWr
-   z67X56uzQ7RDK8cOGWLi0TkhaVLQ/fImpbgeuocqwWsoYOGB8NmH8dWfA
-   sMORJGiTWZISV0CVklhcKrB48n1ojdgU/rUjeoKUTqvTfDP6xoQCw6eCz
-   J3g/oTFebMYvqrOmrLwrJ65jYXEPL2EvTJYP9eJmG8Ylhf2iZH7YsQ3d8
-   7IPO2UflcOyq18Pcz2Jl+83tFI1WxDQa4jRoWP8C+KpxmaNm3R3tMrc2Y
-   UDd01CWw1s/TYrQDayXok0BFlORkbydFpiJw6nsm9XdDM02wCVzN3MH5M
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10994"; a="14273784"
-X-IronPort-AV: E=Sophos;i="6.06,183,1705392000"; 
-   d="scan'208";a="14273784"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2024 23:14:25 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,183,1705392000"; 
-   d="scan'208";a="6559331"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 24 Feb 2024 23:14:23 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1re8iL-0009O3-0j;
-	Sun, 25 Feb 2024 07:14:21 +0000
-Date: Sun, 25 Feb 2024 15:14:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- cf6b8fb0504e3066fcd684734eb336343924e37e
-Message-ID: <202402251500.OIj8Dz5H-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1708943408; c=relaxed/simple;
+	bh=1gssGLDWBwd5TR2GbXCEaXghJw5mSrwpLhPlGUk3dTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rLLwiqGa+m8Z9rdbXp5u0cTR2q0epIvVamxJ0sHP9//cdylxCrYGuZd8Obqo7iSllsm0XM/EYnJ444fnRwJXTxNF9wMjLoj2/wml8zWnTyZzWX5OpwUBJ/PkiNwt9uhoE7bv+nHM6IP4I6xbspdLIqx7AIugkUaidJKS0VyY0q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=T7kI/UOW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8C88E40E0192;
+	Mon, 26 Feb 2024 10:30:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3hwmnnfbHmpR; Mon, 26 Feb 2024 10:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1708943400; bh=Uk18MAnYeobpuZAlHZy8fLU6VFT+yZHRPdSaWvS7J0o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T7kI/UOWE8N3GaTFewiJhglD8ljyhWOM2j5YbFSLN0p49b34AZNO+BLYA4zsOEkyO
+	 itjl0w0A0oFcdGnU7x8bXJtNLJ6z06cPrtC+MHPeRlK6faoX/XFJf2kY1sXTChcehH
+	 PTcjKMMDESMAa8qTNaRtyX34ejT5yONemI5jv6BQsSjacnDu9b+xBuYQCu7RIGAUEO
+	 WccwpfWnEt8e50ocFo3GJpCF+v8S+ozCaX2YasQegHwsEomEbT3CFv6Ng5qYFJJjPM
+	 M3l4HcdyFMchU7zmd+8tHxIUXstADLz6zl8kGHWRAKaCmICTSbbROgh9yM0AeBBJiZ
+	 Y4UdFtaf8x23++dzKM5RqNsZZ7Tegf6YFzPRk7K623NnkFOl8dI6cgLnkZ4sVVKUqj
+	 ZdOMafPgQGr76rBAlb7M6mkZgHs8I4iBYi8yY47MNyklCWReHLZNS3LHrUYm+pKStR
+	 ugG1zW2pLOQ0DaHJOEVQleUq+UWkxL1akaW0gB5ijK5TZnIkg2iSGoI3pLPLaLNOUm
+	 x+lMQFrd2nRpzRpEKgMOk75x5n14jiJ7sUYJgvcCtsyoKa7gT/F5b5OPrZE3vGfnEA
+	 m2yVc0e5MK1q7AuYqu5ph+pX6sQzBXYLUMa62wkb10Nc5f8Lq3TndaVNbrMLjDMVhO
+	 RZ/sgkb6VP37z5cNy9TLDIQM=
+Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AE6AD40E019E;
+	Mon, 26 Feb 2024 10:29:24 +0000 (UTC)
+Date: Mon, 26 Feb 2024 11:29:18 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>,
+	"james.morse@arm.com" <james.morse@arm.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, "Luck, Tony" <tony.luck@intel.com>,
+	rafael@kernel.org, wangkefeng.wang@huawei.com,
+	tanxiaofei@huawei.com, mawupeng1@huawei.com, linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com, gregkh@linuxfoundation.org,
+	will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, linux-edac@vger.kernel.org,
+	x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+	ying.huang@intel.com, ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v11 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+Message-ID: <20240226102918.GBZdxn_v0NbVjs2XMB@fat_crate.local>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240204080144.7977-2-xueshuai@linux.alibaba.com>
+ <20240219092528.GTZdMeiDWIDz613VeT@fat_crate.local>
+ <bdf15819-46e0-498f-97e1-a0183f257086@linux.alibaba.com>
+ <65d82c9352e78_24f3f294d5@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <20240223120813.00005d1f@Huawei.com>
+ <20240223121701.00004bcf@Huawei.com>
+ <00126cf9-bb59-4c05-8046-478d0d7f4297@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <00126cf9-bb59-4c05-8046-478d0d7f4297@linux.alibaba.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: cf6b8fb0504e3066fcd684734eb336343924e37e  Merge branch 'acpi-scan' into bleeding-edge
+On Sat, Feb 24, 2024 at 02:08:42PM +0800, Shuai Xue wrote:
+> @Borislav, do you have any other concerns?
 
-elapsed time: 965m
+Yes, this change needs to be further reviewed by an ARM person: I have
+no clue what those "abnormal synchronous errors" on ARM are and how
+they're supposed to be handled properly there:
 
-configs tested: 162
-configs skipped: 3
+- what happens if you get such an error when ghes is disabled there?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+- is that even the right place to handle them?
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                      axs103_smp_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240225   gcc  
-arc                   randconfig-002-20240225   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                         assabet_defconfig   clang
-arm                         axm55xx_defconfig   clang
-arm                                 defconfig   clang
-arm                           imxrt_defconfig   clang
-arm                        mvebu_v5_defconfig   gcc  
-arm                   randconfig-001-20240225   clang
-arm                   randconfig-002-20240225   gcc  
-arm                   randconfig-003-20240225   clang
-arm                   randconfig-004-20240225   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240225   gcc  
-arm64                 randconfig-002-20240225   clang
-arm64                 randconfig-003-20240225   gcc  
-arm64                 randconfig-004-20240225   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240225   gcc  
-csky                  randconfig-002-20240225   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240225   clang
-hexagon               randconfig-002-20240225   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386                                defconfig   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240225   gcc  
-loongarch             randconfig-002-20240225   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        m5307c3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                           ip22_defconfig   gcc  
-mips                     loongson1b_defconfig   clang
-mips                      loongson3_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240225   gcc  
-nios2                 randconfig-002-20240225   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240225   gcc  
-parisc                randconfig-002-20240225   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                  mpc866_ads_defconfig   clang
-powerpc                     powernv_defconfig   gcc  
-powerpc               randconfig-001-20240225   clang
-powerpc               randconfig-002-20240225   clang
-powerpc               randconfig-003-20240225   clang
-powerpc64             randconfig-001-20240225   gcc  
-powerpc64             randconfig-002-20240225   clang
-powerpc64             randconfig-003-20240225   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240225   gcc  
-riscv                 randconfig-002-20240225   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                          debug_defconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240225   gcc  
-s390                  randconfig-002-20240225   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                         ecovec24_defconfig   gcc  
-sh                    randconfig-001-20240225   gcc  
-sh                    randconfig-002-20240225   gcc  
-sh                          rsk7264_defconfig   gcc  
-sh                           se7724_defconfig   gcc  
-sh                           se7751_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc64_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240225   gcc  
-sparc64               randconfig-002-20240225   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240225   clang
-um                    randconfig-002-20240225   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240225   clang
-x86_64       buildonly-randconfig-002-20240225   clang
-x86_64       buildonly-randconfig-003-20240225   clang
-x86_64       buildonly-randconfig-004-20240225   gcc  
-x86_64       buildonly-randconfig-005-20240225   clang
-x86_64       buildonly-randconfig-006-20240225   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240225   gcc  
-x86_64                randconfig-002-20240225   clang
-x86_64                randconfig-003-20240225   gcc  
-x86_64                randconfig-004-20240225   clang
-x86_64                randconfig-005-20240225   clang
-x86_64                randconfig-006-20240225   gcc  
-x86_64                randconfig-011-20240225   clang
-x86_64                randconfig-012-20240225   clang
-x86_64                randconfig-013-20240225   gcc  
-x86_64                randconfig-014-20240225   gcc  
-x86_64                randconfig-015-20240225   clang
-x86_64                randconfig-016-20240225   gcc  
-x86_64                randconfig-071-20240225   gcc  
-x86_64                randconfig-072-20240225   gcc  
-x86_64                randconfig-073-20240225   clang
-x86_64                randconfig-074-20240225   gcc  
-x86_64                randconfig-075-20240225   clang
-x86_64                randconfig-076-20240225   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240225   gcc  
-xtensa                randconfig-002-20240225   gcc  
+James?
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards/Gruss,
+    Boris.
+ ttps://people.kernel.org/tglx/notes-about-netiquette
 
