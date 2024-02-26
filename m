@@ -1,128 +1,99 @@
-Return-Path: <linux-acpi+bounces-3947-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3953-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F1C867BE4
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 17:26:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF935867C6A
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 17:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAFDB34958
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 15:54:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A43292F98
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Feb 2024 16:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5543E12BE92;
-	Mon, 26 Feb 2024 15:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAF212CD8E;
+	Mon, 26 Feb 2024 16:47:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27721292ED;
-	Mon, 26 Feb 2024 15:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179D412CDAE;
+	Mon, 26 Feb 2024 16:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708962881; cv=none; b=RITeDFitdbeRbz3ZHYVMMp0UBCd6SwQHB/QsO/4rmzq8fKxMxe0lOT4+EJq8W5/5nouRa8YISeullplT1Z5kGj9G+DtpUF9yk7nu8Go3j8v4GRliRc76hts5OZaLhLBvOeJoQqMXlttccnjc0wk3PWgMKqFr5e7bRQFpmZ6Sk0M=
+	t=1708966029; cv=none; b=GWfCr1z9lK9VZwYqrtrL/dlh6eB9N8BeNQ3owJQzZ64p3GNHdzj5sSjFoD3AmXh83/7/fQ08YDZpNB/KuWBdVUJBeEu/btDTAnWrQeGl1Kh00tiWIVExn1yA512eoR90U9BnXDqx6gDpWaWd2YMfbMNADCCIdWwGHuCr8XsENPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708962881; c=relaxed/simple;
-	bh=GIXw4CMiWjn027axPINZjhYRbMIP/5BA//VYtZABjv8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s+dSD1fz6csBBOEUnJErrCs5cDBjh9WMO2BFyGgIC+jBPGEuQDrTynbsqcUPTwZFiUwLKHItxkom90gJIGpuHEVzRBmTj/peYbSSZ7PbZ1cGxVa+1QRIkn7pxpmd8Mk1lQ/1IcFjX4t8REhzVhGt51/7K4jrOwDrGCegkl49PEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-21fbe64ef0cso172921fac.1;
-        Mon, 26 Feb 2024 07:54:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708962879; x=1709567679;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8hG+R8NZ6weR+cw6Mtpt9mJbOI6Ku9oH9aEPOnZNcL4=;
-        b=GDi9peFSdfaxXypWsHXYi1JlyTy7fJ0vafzaF9xRBRj/iJcp3wd0cn7OV0fnwzr61q
-         QHxIGPSP3ZTIyrkbAcjoE39O9Icwd6yEaGc/bkdggkYyHp4ONt4wefMFBsvV4y6k7v39
-         F59OaAIZQlmcMq4umg3OGJ9t8hnmXSTwYZKhr/qOBuLQzKrNDt5etOpibg/QpicQbSD1
-         Quw2N81b+1dg7HjHAOoEHcSE/ku8b5UzwkSOWefx7uTA/Xz746SfqsSYguo8KcN1NNkV
-         hevzsSuEOZadPQNmPYbXlqUDFb/t36VQG3MQzO9dYrp9kFvZvYugAQ6QjOzz5GJYi5/p
-         6uCw==
-X-Forwarded-Encrypted: i=1; AJvYcCWhrzbqCVBcPx8l0UZsRhzEWbgQ4QP0y10P1vD6er63mWbkshf2rHSF+IaR1Lm58ibj97AVGsUQHBb1C2syJ7L4kA67MDZF+geuwjufgAyYFdNRsWJWxOfz1HGrTIrtmkniCozvyqOvVQ==
-X-Gm-Message-State: AOJu0Yz2SKHPsiqDsCABVgfwIzhsfcr2va2F6NkjmCzpCbLg9Yzfrfnv
-	r5Yld6tycuANGy8+dbrE7ZOq6eznagDQELemWM5qrii4yAOrbDnqcdlHwSTnKAeNpH5G/YY49PN
-	qI9Dq6AX76Eod/WiaqAMj3yX9dyAJDDUZHwk=
-X-Google-Smtp-Source: AGHT+IGYj3I+pBHztUYABBs8ofR2SML4EWvnehN8WclVuckleTZbje1PaIZCZP9V36/pwzXDffMk5oDBgMXjDRenn3g=
-X-Received: by 2002:a05:6820:2c8e:b0:5a0:4d78:975d with SMTP id
- dx14-20020a0568202c8e00b005a04d78975dmr6637712oob.1.1708962878870; Mon, 26
- Feb 2024 07:54:38 -0800 (PST)
+	s=arc-20240116; t=1708966029; c=relaxed/simple;
+	bh=twU+tMuF8yiiSxQu2y66mEJ72k6nKVyPzSVPeSq01uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SsK6gPPEKw4R5ZdivyNyDB4qUgvFRUkZjz/EF4KWqxvEPLDyVlWvBeGML4cxTJKOtTjsMYp3JwYJ26qMssFLyhwS9si9chaCuMcT1A1sF0KhoKe8slGKMtNr7fD20dUDdSbUvWqlbDYFOv7QkRXY21jdBDjrZiS1PEkDvz8FyHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
+ id 914ec8f2b00af1d2; Mon, 26 Feb 2024 17:46:57 +0100
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 6835466A4D4;
+	Mon, 26 Feb 2024 17:46:57 +0100 (CET)
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Russell King (Oracle)" <linux@armlinux.org.uk>
+Subject:
+ [PATCH v2 0/5] ACPI: scan: Check enabled _STA bit on Bus/Device Checks
+Date: Mon, 26 Feb 2024 17:24:57 +0100
+Message-ID: <6021126.lOV4Wx5bFT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4562925.LvFx2qVVIh@kreacher> <2939512.e9J7NaK4W3@kreacher>
- <20240222182834.00000b02@Huawei.com> <CAJZ5v0id7ktjAne4wyEWox_xqjH9K=Kzbs3+Bcn1qHBctnincw@mail.gmail.com>
-In-Reply-To: <CAJZ5v0id7ktjAne4wyEWox_xqjH9K=Kzbs3+Bcn1qHBctnincw@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 26 Feb 2024 16:54:27 +0100
-Message-ID: <CAJZ5v0jjD=KN0pOuWZZ8DT5yHdu03KgOSHYe3wB7h2vafNa44w@mail.gmail.com>
-Subject: Re: [PATCH v1 3/4] ACPI: scan: Rework Device Check and Bus Check
- notification handling
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrgedvgdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhhikhgrrdifvghsthgv
+ rhgsvghrgheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesrghrmhhlihhnuhigrdhorhhgrdhukh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
 
-On Mon, Feb 26, 2024 at 4:37=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Thu, Feb 22, 2024 at 7:28=E2=80=AFPM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > On Wed, 21 Feb 2024 21:02:33 +0100
-> > "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+Hi,
 
-[...]
+This is an update of the patch series at
 
-> > > +bool acpi_device_is_enabled(const struct acpi_device *adev)
-> > > +{
-> > > +     return acpi_device_is_present(adev) && adev->status.enabled;
-> >
-> > This resolves as (present or functional) && enabled.
-> >
-> > By my reading you are not allowed functional && enabled, but not presen=
-t.
-> > Line one of the description says.
-> >
-> > "If bit [0] is cleared, then bit 1 must also be cleared (in other words=
-, a device that is not present cannot be enabled)."
-> >
-> > I don't much care about that though (I think we discussed this
-> > in Russel's earlier series)
->
-> Functional and enabled, but not present would go against the spec.  I
-> guess the kernel could protect itself against this, but then whatever
-> it chooses to do has not been defined anyway.
->
-> The spec doesn't actually say what the OSPM is supposed to do when it
-> sees that combination of bits.  I'm inclined to clarify it to say "if
-> bit [0] is cleared, bit [1] has no defined meaning and it should be
-> ignored by the OSPM".  To be consistent with this interpretation,
-> acpi_device_is_enabled() should return "(present and enabled) or
-> functional".
->
-> I'll change it along these lines.
+https://lore.kernel.org/linux-acpi/4562925.LvFx2qVVIh@kreacher/
 
-Actually, I don't think that the "functional" bit has any bearing on
-this.  It only means that the OSPM should continue the enumeration
-below the device regardless of the present bit value.
+which mostly only rearranges the code and makes one functional
+change in acpi_scan_devie_check().
 
-In the acpi_processor_add() case it is clearly irrelevant.
+The original series description is mostly still applicable:
 
-acpi_scan_bus_check() needs to walk the entire subtree below the
-target device anyway.
+"This series adds _STA enabled bit checking for processors (in all cases)
+ and for all devices in the Bus Check and Device Check notification handling
+ paths.  It does so without any side-effects on non-processor devices, unlike
 
-As for acpi_scan_device_check(), IMO it's better to make it walk the
-subtree below the device if it is present, but not enabled, for
-backwards compatibility.
+ https://lore.kernel.org/linux-acpi/E1rVDmP-0027YJ-EW@rmk-PC.armlinux.org.uk/
+
+ The first patch fixes an issue with failing Device Check notifications
+ without a valid reason.
+
+ The next two patches together make Bus Check and Device Check notification
+ handling take the enabled bit into account.
+
+ The last patch modifies the processor scan handler to check the enabled bit
+ it its add callback.
+
+ I would appreciate testing this on a system where the enabled bit really
+ matters."
+
+Thanks!
+
+
+
 
