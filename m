@@ -1,123 +1,126 @@
-Return-Path: <linux-acpi+bounces-3981-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3982-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B6E4869C7F
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 17:42:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA36869CD6
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 17:53:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13031F24214
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 16:42:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 806D028291F
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 16:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE8A4EB39;
-	Tue, 27 Feb 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919B2208CE;
+	Tue, 27 Feb 2024 16:53:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7193D22337
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Feb 2024 16:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061EB20B38
+	for <linux-acpi@vger.kernel.org>; Tue, 27 Feb 2024 16:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709052031; cv=none; b=I0AcZ8wGXk6MnWxu4zVpmop5ftB5XpRcsrbFAbnEI4VPgLS0/iS9DGQhd6jYq6LxBSRN6FgnWqzJRv7hU4QSu3rHxYlpsyi6yo7ubMqrnbmeR6t8KADENmsOiSEiOUVoFxnpsaOmwS2/SNXtJPV/SogqxahGAOsntYCiEZD104Q=
+	t=1709052803; cv=none; b=CFsFSBhdZKipppUoP7LtM01eJnVUR5uzt6t8U/8+dGTxoWfM2fyE+YxZpuNQR2wxaff1vEgPGfII9JSQw/erqwNeOuJ7kWSdNE6zeBKkd8Wl4mjKV9MdCWzsFCbApgzicnW2UTgKxa1ihEVW/ZJ5BKv17CadEyUdcjnV7BHVYg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709052031; c=relaxed/simple;
-	bh=Sl5Brb97/GQ1VKcZVF9OsZqvjPbQZ0ClksFl19qa/ZU=;
+	s=arc-20240116; t=1709052803; c=relaxed/simple;
+	bh=XO8U3UXJDnqh1S9jpTsd392IIv1O/Bg1kxApTAw5BYo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rMl4MqDMZhl/Ugi1kelEK2LtHbB8UrdWfSvsrBuhS/OafDh0Eds3v4bxqsfrO60ey81aYpYdMYvq+0HbrB6E1izcBHzG5gcAlGbt6v6OHEQdnsoLWmPtHnzKG+5yM4B1ieveaZMgp69g0EcOFgBoif7t8bgBx/eG4+B7vV1WcLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
+	 To:Cc:Content-Type; b=O++ofx0Bocn2oLXoEn9ZkAlK5GsRpSmm8yzGkc16A7lo9GHXpxba9XPxDILH0SQNcH5m2VCiJeNRLIFX9HB40acGjKi9Xo2eTYjamJfWJkQiDG96Oopij63WELsy6OkxeCB12F49LWIWtVsdtmYiOCP5SyiBiuoVrgPDd7UwOvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e45f7c63f4so453727a34.1
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Feb 2024 08:40:29 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5a05210e560so331249eaf.1
+        for <linux-acpi@vger.kernel.org>; Tue, 27 Feb 2024 08:53:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709052028; x=1709656828;
+        d=1e100.net; s=20230601; t=1709052801; x=1709657601;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wn3Jp5ZK1ROXp4S11XCbijpyOqJV2e0J/Iz4WkUARXQ=;
-        b=c7V2goEVmy4mww0d3PWicYzgEQCx2SPVKukJJ2SmxJkg3ARHD/zoQYxb1Ay/zoveMi
-         EvOAwehO+eyUXS9gTnDlOifygzuL8CChC7DeLkBMsl3rf2lDceErquVmRLWzVbLgGSlX
-         R6KNxggZG4Cb6PXP2unZRYp+fzbKJ5HPcPWc1utx5l1/Eyj8u5h7wK/nmq/Nq4zPC5cv
-         9FtAdhbGckjTh9+x5oHNjaMdIw7ueNdMwOne3LZ2V+lPptn4B4NLL+98b7RgCY6loEGL
-         qgEk+aOqWRC5bF/xjLh4y2qCZG76x6DFUzLumYoQy/mj1VYphsQCt/MFFN1a+d9A9q4i
-         w11g==
-X-Forwarded-Encrypted: i=1; AJvYcCUl2epbOVhZdQXI6PJlFt70bkBtFDOE3HWkpUV/9D016ayeuCYs2e+4Msvd9V4YNItArE2IbniL+91O2p+7uICs5RCRRjVK/KdRUg==
-X-Gm-Message-State: AOJu0YxNzQ3jlYsVXYpgZZ3y0O/s9bsVU9Dm+olRB7LrlevUqZD01Zba
-	6T3Iqn+JykkAoPw9DfyLbBovMFDS36zYDB4NuXx7HbWXHxs+wBnrfHEkb31XRM/WCoJq5Rp+Sio
-	y7F2nu+w8bIww5CcpwoRHiR6rz/w=
-X-Google-Smtp-Source: AGHT+IHIi+10uf9gjj/tu2GGicfD8krq8Fx4onfXCKbudQ494xEFvV0Hq5X65IyL1SPiyq6e+veLxazNbR+ZRvqxdhA=
-X-Received: by 2002:a4a:d037:0:b0:5a0:3d13:a45a with SMTP id
- w23-20020a4ad037000000b005a03d13a45amr9984103oor.0.1709052028595; Tue, 27 Feb
- 2024 08:40:28 -0800 (PST)
+        bh=hBv/eynRGNumgIDvw5MoNJpuLVnJNY3nVzYp2JVRlIk=;
+        b=edAKMuT0y4dGd7BZCd4mM/foSy+1N13vnt7vuK9kyAVY0MgtIK+9eBbCg1HdqP9aqm
+         60EQUsVAIYWS+BvlQWFiB2Y85cAgm+l/VhTJROxn/ZkXkslxnpr5dpFozaSZiYV+8gzu
+         HKLIgZyGKSDf0r+u++wGLIrdXJVCbQG6eGUFxnEg9I4V5KFwvjkTOOTVm5KXxtlW8vGn
+         KDBNtv8O14MXh+fkg7CYoQ7XVT7BVcJSh636d21QtM4edj72P3gVqy8Lsdj71tNqDhJN
+         17mcpYq7pO53j7gccwpD470ukboW+Y3KfQ24iORdp/mqLZeF3Js9NcUSWtTR9OA/pTVo
+         9Fig==
+X-Forwarded-Encrypted: i=1; AJvYcCUCRPU0oaCdLGyk0f9fapMujweAwnnz1ivb63Zv47Hxlli1P35cgakFgCe5upu2sxw6RGIMLDb2xYfFLW0SX8L3JfQzKkSMF21XBQ==
+X-Gm-Message-State: AOJu0YzHb+CegDEKvGlPpeILzVUNZYxz1uD2BHzphYA3xeIw0MW6RwiS
+	rf9aIin5LPALPev2cX8MaC73danptEfDcILGrX2N4wUHLP+sCWd+G1SylxQjmmZxP4d2EUaZZfy
+	mmD7AvdM5rQb4pSTLLxSl/q0WsS6fCG4X
+X-Google-Smtp-Source: AGHT+IEtHv2wZtdVLw96M5w8OsEG18faMHhqVnceHb8iz7W4YK3yJZ4ymBHJzzOxus16Ap0fe8MM+mheaaGCwnV5HYE=
+X-Received: by 2002:a05:6820:c04:b0:5a0:2cbe:43dd with SMTP id
+ eh4-20020a0568200c0400b005a02cbe43ddmr9705695oob.1.1709052801086; Tue, 27 Feb
+ 2024 08:53:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1708627599.git.u.kleine-koenig@pengutronix.de>
-In-Reply-To: <cover.1708627599.git.u.kleine-koenig@pengutronix.de>
+References: <CAAa5hjU-QV8LQtiNW5uuh_z1Gvge_q36LzmLqj7FiK7tT6JsOg@mail.gmail.com>
+In-Reply-To: <CAAa5hjU-QV8LQtiNW5uuh_z1Gvge_q36LzmLqj7FiK7tT6JsOg@mail.gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 27 Feb 2024 17:40:17 +0100
-Message-ID: <CAJZ5v0i5qAHU5NpMwfyh7PDYjD0COyBTxS9ucEF0tmR869_pSw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] ACPI: Convert to platform remove callback returning void
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	kernel@pengutronix.de, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	linux-arm-kernel@lists.infradead.org
+Date: Tue, 27 Feb 2024 17:53:10 +0100
+Message-ID: <CAJZ5v0g4PtZCbNmyvn8OPy9K5tCGWqJkRkhbQUjzOz7puzaNwA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Add MAIBENBEN X577 to irq1_edge_low_force_override
+To: Uldyk <m.kudinovv@gmail.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 22, 2024 at 7:52=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
+On Fri, Feb 23, 2024 at 5:24=E2=80=AFPM Uldyk <m.kudinovv@gmail.com> wrote:
 >
-> Hello,
+> A known issue on some Zen laptops, keyboard stopped working due to commit
+> 9946e39fe8d0 fael@kernel.org("ACPI: resource: skip IRQ override on AMD
+> Zen platforms")
+> on kernel 5.19.10.
 >
-> this series converts all drivers below drivers/acpi to struct
-> platform_driver::remove_new(). See commit 5c5a7680e67b ("platform:
-> Provide a remove callback that returns no value") for an extended
-> explanation and the eventual goal.
+> The ACPI IRQ override is required for this board due to buggy DSDT, thus
+> adding the board vendor and name to irq1_edge_low_force_override fixes
+> the issue.
 >
-> All conversations are trivial, because their .remove() callbacks
-> returned zero unconditionally.
+> Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platfo=
+rms")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217394
+> Link: https://lore.kernel.org/linux-acpi/20231006123304.32686-1-hdegoede@=
+redhat.com/
+> Tested-by: Maxim Trofimov <maxvereschagin@gmail.com>
+> Signed-off-by: Maxim Kudinov <m.kudinovv@gmail.com>
+> ---
+> If you need more info (dmesg, dmidecode), then please let me know.
 >
-> There are no interdependencies between these patches, so they could be
-> picked up individually. But I'd hope that they get picked up all
-> together by Rafael.
+> P.S. Sorry Rafael for sending it to you again, my email client was in
+> HTML mode, so
+> the email was rejected from the mailing list.
+> ---
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> There is another driver that needs adaption (as of today's next), but
-> this is discussed separately, see
-> https://lore.kernel.org/linux-acpi/CAJZ5v0jJX-6L9f_TLe-cv2MNnZVK7au=3Ddrb=
-KCn-tEWEagY-9ZA@mail.gmail.com
-> .
->
-> Best regards
-> Uwe
->
-> Uwe Kleine-K=C3=B6nig (7):
->   ACPI: TAD: Convert to platform remove callback returning void
->   ACPI: AGDI: Convert to platform remove callback returning void
->   ACPI: DPTF: Convert to platform remove callback returning void
->   ACPI: GED: Convert to platform remove callback returning void
->   ACPI: fan: Convert to platform remove callback returning void
->   ACPI: pfr_telemetry: Convert to platform remove callback returning void
->   ACPI: pfr_update: Convert to platform remove callback returning void
->
->  drivers/acpi/acpi_tad.c           | 5 ++---
->  drivers/acpi/arm64/agdi.c         | 8 +++-----
->  drivers/acpi/dptf/dptf_pch_fivr.c | 6 ++----
->  drivers/acpi/dptf/dptf_power.c    | 6 ++----
->  drivers/acpi/evged.c              | 5 ++---
->  drivers/acpi/fan_core.c           | 6 ++----
->  drivers/acpi/pfr_telemetry.c      | 6 ++----
->  drivers/acpi/pfr_update.c         | 6 ++----
->  8 files changed, 17 insertions(+), 31 deletions(-)
->
-> base-commit: 4893c639cc3659cefaa675bf1e59f4e7571afb5c
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index dacad1d846c0..f681fd66d32b 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -588,6 +588,13 @@ static const struct dmi_system_id
+> irq1_edge_low_force_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "GM5RGEE0016COM"),
+>                 },
+>         },
+> +       {
+> +               /* MAIBENBEN X577 */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "MAIBENBEN"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "X577"),
+> +               },
+> +       },
+>         { }
+>  };
 > --
 
-The whole series has been applied as 6.9 material, thanks!
+Applied as 6.9 material, but:
+(1) whitespace was all converted to spaces (please fix your email
+client or use a different one to send patches),
+(2) your S-o-b tag didn't match From:, so I used the name from the
+former  for the latter.
+
+Thanks!
 
