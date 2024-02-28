@@ -1,111 +1,109 @@
-Return-Path: <linux-acpi+bounces-4007-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4008-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5675086B926
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 21:38:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D92486B98A
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 22:02:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887C71C23E72
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 20:38:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7DE1C2739C
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 21:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F081B71EAD;
-	Wed, 28 Feb 2024 20:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oDjVDa3o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E599C86263;
+	Wed, 28 Feb 2024 21:02:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F0E5E060;
-	Wed, 28 Feb 2024 20:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C25D8624B;
+	Wed, 28 Feb 2024 21:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709152683; cv=none; b=MPuWMwtUsxr2keWsx/pXMADS9QpkHVlfkcJSmSdUfDb7qWf70oOZgcQRd9sI2sne9LyxW08zCywQlngBTAMa4/3DyALqNgpoYcI1nYh9X6G5WxlPOTnBbdNYurOXwXPANQRvxM2l/EndhK48ThMVPE3AWQ79V4Q0WTtfUYDG6bI=
+	t=1709154131; cv=none; b=MNGkA5HrAptlgQsMhX3VNj9LULOmRVHFCz5EUN8j+PTLhkbF/iJZAncBXts/CHcIAJ7mmowcNMOkb+bet+LC3Sehm19Fzniy/lI+Cn4GQ8ARlkft2tlnOn15dGfKwuT6H2wWHOFlsLh7ehzojfTPtIx6kVUh0ubCE3R1jL/F+Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709152683; c=relaxed/simple;
-	bh=0Q6xuzCclX2DBnM/iyNF85skbnZtBTaulITRAdjHuS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGeCVCiqcFRYX4sw2G+cZZegCUKWXjjpgFoa53q8cSx68itNRJO8JpIW2/GYWrCGe5VTMklURhP1IM6cIodbYicx6M+hsgmEQP+QvSCwnRMRrffEoEYf2CZCBlcPsCEY25y+54qUq+w+5CEi13g4/cZ/3XNJkcOGXdz1EV8uI+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oDjVDa3o; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709152682; x=1740688682;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0Q6xuzCclX2DBnM/iyNF85skbnZtBTaulITRAdjHuS4=;
-  b=oDjVDa3o87NNazkGw1l6QFIpFZ5E5GjPJdIMzpKNBwSlMkb6UfMjenAP
-   bdin3Gr3G2flz3SGaGsbXvFb2X0egEKcDwsmD9Y+X6XQpgoYvMLJ0zq2l
-   +n0dbqnPYzm/kh3iE+MjylmlMmHnu0yguP6UMtWBBZBuTfPNJnZ3JaXw6
-   OXufnEWHJvtT//PxnGdM0qkM/oA5/L9dJvFgFXwnEPopLWA2aVKYBbBGH
-   cw7cmdFkFOZnPRg46pd6OImkft5O4L9oywKyjHA+bEZCzn5ZOOdKWQIWr
-   GzgNEcIJWXATzQIcLwIGl3k3Z/1h72HmIRw0vNzvyEICNyIEIIt+nWzLZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3447063"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="3447063"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 12:38:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913960802"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="913960802"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 12:37:58 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rfQge-00000008Ubr-1H5C;
-	Wed, 28 Feb 2024 22:37:56 +0200
-Date: Wed, 28 Feb 2024 22:37:56 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 1/2] gpiolib-of: Make of_gpio_get_count() take
- firmware node as a parameter
-Message-ID: <Zd-ZpNNpUOgMBf78@smile.fi.intel.com>
-References: <20240228184412.3591847-1-andriy.shevchenko@linux.intel.com>
- <20240228184412.3591847-2-andriy.shevchenko@linux.intel.com>
- <8862c6a9-529c-4c52-a84b-176e6d61351a@alliedtelesis.co.nz>
+	s=arc-20240116; t=1709154131; c=relaxed/simple;
+	bh=f2E/PxHTdkAA66JUThG2R7iMitY1zi3+RidEBdAzSbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XHNrkR0zuMhMDgPwzIPzU1wLpj0tyO5d7Sk3e6bDETcaQROm3jd+8UarIQ60fxd7fwvHXd1pdEM92xNAEQLg1HuS80BLRkBQreG5HzMNujuH1BDH/4W8IlfeClEbsfxIgw6h/Hmf4094v80rGXTEuJgtflD6e6r+wLEKWcjpCCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e4aa4877a9so29242a34.0;
+        Wed, 28 Feb 2024 13:02:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709154129; x=1709758929;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0avo+3TPJ6C9EUCLGrpf7J7w7kB90jDxq4qRrj4Zxv0=;
+        b=OSAztUX0NA83S2CJDIbXswASJl0SVSF1eMVWArfFh5NXK53kAk+waa7WKbGsMIRrcW
+         Nwp1Hg8Y2REA4u5wvl0QHFtOrxL6ZriQ/FZ97ffZHO0hDE6yn1yeQXXu56P3/x6RJJaG
+         +W0TZlv830pYbePh8Gy9RL6FzFDcGCnOSfhXBiWntDq5gWlvapCtLAPkLWphC12iNz5+
+         r9YiisKiRZRB/66+bKADV4rqNL9sq9QY4oSqTQiU6rRGAaf9i3V5JbQ0sUQS4KTOemnA
+         kZlvV1wPB+QXdC/ms/HnPB81siZuSycyUyxJIm4fWYliB1Bt4rqdti0V+4SnDCrRZ3o4
+         /TKA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7ATJku6zlxehUXSyJFsFbP2QCN6AxN8bcedot9sPsZrK/xJggY/bgFzjeZNgDvMxuDMimLfTA/DPYXdDkGpbY4qlzZn6poBEJYhqUgufdWIT3DufPGLIUbQh6psKGie8Ij9Q5XHd/IQ==
+X-Gm-Message-State: AOJu0YyRDH/g5Uhcrg8SeE5PVqQ0A9ohnb+Sk5a/0J7KJpe3Gnn6KmzC
+	SMp0A47r7ABFztbJvChLpYlgG0YLtEV35zyNPmVFgMUoAKlEPTRZp9iC8t/Q7s1PRuSfTQKGEUA
+	l7HMzhNWF5egojmypspsWXq/f9Gs=
+X-Google-Smtp-Source: AGHT+IFdE9LB/cub6f7YK5AXJkUU9wAyIzEqghD6UR9pim6GcGMmJiookGbi7z8qGJ3v1XHyntEd6yM0iKdZrxq6LBc=
+X-Received: by 2002:a05:6820:d09:b0:5a0:3d13:a45a with SMTP id
+ ej9-20020a0568200d0900b005a03d13a45amr294699oob.0.1709154129401; Wed, 28 Feb
+ 2024 13:02:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8862c6a9-529c-4c52-a84b-176e6d61351a@alliedtelesis.co.nz>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240223155731.858412-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240223155731.858412-1-andriy.shevchenko@linux.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 28 Feb 2024 22:01:57 +0100
+Message-ID: <CAJZ5v0gJm48gX_Gssfc_6QOky3WiRLY+Wb5_iEYHR_u5CCVgaw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] driver core & device property: clean up APIs
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 28, 2024 at 08:23:10PM +0000, Chris Packham wrote:
-> 
-> On 29/02/24 07:40, Andy Shevchenko wrote:
-> > Make of_gpio_get_count() take firmware node as a parameter in order
-> > to be aligned with other functions and decouple form unused device
-> typo: form -> from
+On Fri, Feb 23, 2024 at 4:58=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> There are two, but dependent pair of patches that:
+> - hides unused devlink APIs
+> - removes 'proxy' header use
+>
+> v2:
+> - most of the patches were sent separately as v1, thus this series is v2
+> - harvested tags from that patches (Sakari, Saravana)
+>
+> Andy Shevchenko (4):
+>   driver core: Drop unneeded 'extern' keyword in fwnode.h
+>   driver core: Move fw_devlink stuff to where it belongs
+>   device property: Move enum dev_dma_attr to fwnode.h
+>   device property: Don't use "proxy" headers
+>
+>  drivers/base/core.c      | 58 ++++++++++++++++++++++++++++++++++
+>  drivers/base/property.c  | 67 ++++------------------------------------
+>  drivers/base/swnode.c    | 13 +++++++-
+>  include/linux/fwnode.h   | 13 +++++---
+>  include/linux/property.h |  9 +-----
+>  5 files changed, 86 insertions(+), 74 deletions(-)
+>
+> --
 
-Thanks, I will fix it if new version will be needed.
-Otherwise I hope Bart can do that.
+All of the code changes in the series look good to me, so
 
-> > pointer. The latter helps to create a common fwnode_gpio_count()
-> > in the future.
-> >
-> > While at it, rename to be of_gpio_count() to be aligned with the others.
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-P.S> Please, remove unneeded context in the replies.
+for all of the patches.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+The changelog of patch [2/4] could be a bit more to the point IMV, but
+let me reply to it directly.
 
