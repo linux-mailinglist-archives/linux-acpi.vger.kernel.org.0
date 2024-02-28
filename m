@@ -1,145 +1,194 @@
-Return-Path: <linux-acpi+bounces-3996-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3997-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0703486A94D
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 08:53:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B1A86B172
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 15:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C22EB22D39
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 07:53:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FBE1F298EF
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 14:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71232561B;
-	Wed, 28 Feb 2024 07:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b="A23y+ng2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D24151CC6;
+	Wed, 28 Feb 2024 14:15:47 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FDD250EC
-	for <linux-acpi@vger.kernel.org>; Wed, 28 Feb 2024 07:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51221379;
+	Wed, 28 Feb 2024 14:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709106804; cv=none; b=l4plrWciReuA+PcqnwfbGMSb5nq+Z73ARWKGcR1mK+TgwF18tK4hCeZmTe5tWf+JMKCTdmy0H852vtRgCWy9RZtlPIW6FJZUAmANMX0Hpjioz4inX+wuZvhIBEMmMfrwm+RstEDgHMU42pBgrd0U8QWxl9Nd1kQPj/BmKafjuqY=
+	t=1709129747; cv=none; b=WMrVcBNvhy3theyZGwnj8kFQOH41bDJNQkrECXw4siWPWAEdXOcF3LNN205/iMmgPYB9baCaWDwpIS5JGU06YYwW9tftLJla5YQQokMoWcWibl+OPiaB69c1dgh9Kjy13/mE/PGQyP077rRCtOyl2bjelX4zr7zgVsrq9yuQGcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709106804; c=relaxed/simple;
-	bh=uiNV5GxuIw+2wK1NRUMnwrIPShLTOVx6Wtri/oC0dQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5/z23bErDe04N6VNJe6ExaOgEaesN7uNJ9SnSnw3uLKG0RKyZB83h7FqhHKrIO/1iUxJ40e/oRd8u2W+IDy0LREYGwbw1VukdjndF0vUYTJK96uIcNpDwu0dyR9u1CfHMRSEvGHWq4YjLbM4jEnLDy698nN0LQzaKPogvZ+rz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org; spf=pass smtp.mailfrom=endlessos.org; dkim=pass (2048-bit key) header.d=endlessos.org header.i=@endlessos.org header.b=A23y+ng2; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=endlessos.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=endlessos.org
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56617252a07so635513a12.1
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Feb 2024 23:53:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessos.org; s=google; t=1709106801; x=1709711601; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h/4jINKFGsyIzql22NGVobeSi0DTkJ0EFvem76bD04Y=;
-        b=A23y+ng2K1BpILvjdlL9Yh6W8Bx+vPUN25tFKr8zPJtzvRuX86b57Zon3Xl2JoTOsD
-         Q2wTSj2Cy5QzEi79u2XzOO6ddUl9HIM4MLA1WtUx1d/Q5oa0qxM5O2k+UIkviU/NHMvY
-         dvmzqvQ+7xm/RK/8Injep+FklLrhYgMm3MncwBP4hq08ih+p76lfOnVRmY6XXsDScasn
-         v+VyNjpeXJld+/e3gypwydJ/oWwcnUBiJ6DwrGywFM93I8i2u1LY5/yKfVMXfTJcJvVl
-         0vbLris3RPK4USDlSywME3yY6Qk2pwveSPFJQmdjXXGKIhH+jial52Rwkbvbyw0cU8FI
-         NxUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709106801; x=1709711601;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h/4jINKFGsyIzql22NGVobeSi0DTkJ0EFvem76bD04Y=;
-        b=q9xCT1qnKVo06FV1+LDMYSyWzGleR2EF5rA4P01NXTl3MGF3IdiNhrAJ4GPHQ/0KyM
-         o0suf1NLbiY9Q8CDutHaLclEI52MzenLzbX+IN3iJlkNTrRKeQl53+ynDHS2xjgYey8r
-         iEGyvAIZhxTOu4qOY101tASzsxUoRIW3+g6OcWEcLnPOyJk9dDPVOmFW8Pt6ZCiLgI0l
-         UcMmJGkNyteyi1r0HeWD7iZmTzrgmuIyRSN79UZLVeCSf0TDthQqhtjf5sNINgO2uEuL
-         a4s1MilhCnmG6fTZP8D8AU7JHyNIal38SHNLFdMZdgHtuqtx67uB3I2FyiFfV+loVGgR
-         y68w==
-X-Forwarded-Encrypted: i=1; AJvYcCUr2jErNMO17cIkEWdY14hNkMR7qJgQuRJrpkrxakLhnJ3+Vkp5/x22dLGm57NBwzDLyOL5BEWd1n5OW9DEkieHd12DD0/PsghnNw==
-X-Gm-Message-State: AOJu0YzbibrHUTc/RTGOxrePzJ+hs+pyWSGXJGCc5chr140dDcb8ED+c
-	FAKfyyuXXEIkuC4JvSkKIO8pB1JxaVzwotJIQSn3N2uIxmsH62NGyBdG/kKmBao=
-X-Google-Smtp-Source: AGHT+IGxRTh2VGuVfyRxq6BtQ8iD2uJcNHz9XuBbzRygjMNWPj9gsIbmn5zp+jnwEkU5YGHp5IJmxQ==
-X-Received: by 2002:a17:907:7898:b0:a3f:8915:1622 with SMTP id ku24-20020a170907789800b00a3f89151622mr8214302ejc.4.1709106801367;
-        Tue, 27 Feb 2024 23:53:21 -0800 (PST)
-Received: from limbo.local ([2a00:1bb8:11f:a33a:d002:9fcd:70bf:4f2a])
-        by smtp.gmail.com with ESMTPSA id o14-20020a17090608ce00b00a4396e930bdsm1561581eje.79.2024.02.27.23.53.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 23:53:20 -0800 (PST)
-From: Daniel Drake <drake@endlessos.org>
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org
-Cc: hpa@zytor.com,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bhelgaas@google.com,
-	david.e.box@linux.intel.com,
-	mario.limonciello@amd.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux@endlessos.org,
-	Jian-Hong Pan <jhp@endlessos.org>
-Subject: [PATCH v3 2/2] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
-Date: Wed, 28 Feb 2024 08:53:16 +0100
-Message-ID: <20240228075316.7404-2-drake@endlessos.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240228075316.7404-1-drake@endlessos.org>
-References: <20240228075316.7404-1-drake@endlessos.org>
+	s=arc-20240116; t=1709129747; c=relaxed/simple;
+	bh=3voUT4C0aiAEWU44I/mNBH/4Ghg3ogoV6z6+5em1SqU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cX0QdnWIVSiNTorMN6L5XhCXQbNXZ1UjIC+KrOjQzXjfon+5UwI1jfz5LVymoU92anw/apDGLajBqmeymMBsqNMrMuEuiK2eMfwBBmZnfFdgSAoGu/QPM/VY15lFAgxF4R1qV1Fi8wz6f5hV9mOqHBk7LA4GXN8LZtuXwEbXKNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TlGWF4zbMz6K7JS;
+	Wed, 28 Feb 2024 22:11:53 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id E40E3140D26;
+	Wed, 28 Feb 2024 22:15:39 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
+ 2024 14:15:39 +0000
+Date: Wed, 28 Feb 2024 14:15:38 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<linux-iio@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
+ Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
+	<sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
+	<cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+	<tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
+	<olivier.moysan@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>, Marijn Suijten
+	<marijn.suijten@somainline.org>, Marius Cristea
+	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v4 00/15] device property / IIO: Use cleanup.h magic for
+ fwnode_handle_put() handling.
+Message-ID: <20240228141538.00005b31@Huawei.com>
+In-Reply-To: <20240224114912.6da6aa9d@jic23-huawei>
+References: <20240217164249.921878-1-jic23@kernel.org>
+	<ZdNAQi6IlMN-quO_@smile.fi.intel.com>
+	<20240219154947.0000681b@Huawei.com>
+	<20240224114912.6da6aa9d@jic23-huawei>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which
-was originally put in place to work around a s2idle failure on this
-platform where the NVMe device was inaccessible upon resume.
+On Sat, 24 Feb 2024 11:49:12 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-After extended testing, we found that the firmware's implementation of
-S3 is buggy and intermittently fails to wake up the system. We need
-to revert to s2idle mode.
+> On Mon, 19 Feb 2024 15:49:47 +0000
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> 
+> > On Mon, 19 Feb 2024 13:49:22 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >   
+> > > On Sat, Feb 17, 2024 at 04:42:34PM +0000, Jonathan Cameron wrote:    
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > 
+> > > > Sorry for the rapid resend, Andy noticed I'd messed up creating the v3 patch
+> > > > set with some updates committed in the wrong patch.
+> > > > 
+> > > > Since v3: The updates to alignment of device_for_each_child_node_scopd() were
+> > > >     in the wrong patch. Move them to patch 4 where they should always
+> > > >     have been. (thanks Andy!)
+> > > > 
+> > > > Since v2: Thanks to Sakari and Andy for reviews.
+> > > > - New first patch moving fwnode_handle_put() into property.h
+> > > > - Tweak alignment in the loop macro
+> > > > - Pick up tags.
+> > > > - scopd -> scoped typo fix in some patch descriptions.
+> > > > 
+> > > > As can be seen by the examples from IIO that follow this can save
+> > > > a reasonable amount of complexity and boiler plate code, often enabling
+> > > > additional cleanups in related code such as use of
+> > > > return dev_err_probe().
+> > > > 
+> > > > Given we are now fairly late in the cycle, I'd expect to take this
+> > > > through the IIO tree and we can make use of it elsewhere next cycle.
+> > > > 
+> > > > Note I don't have the hardware so this is compile tested only.
+> > > > Hence I'd appreciate some Tested-by tags if anyone can poke one of the
+> > > > effected drivers.
+> > > > 
+> > > > Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
+> > > > Referenced from that cover letter.  Similar may help us convert more
+> > > > drivers to use this new approach, but often hand tweaking can take
+> > > > additional advantage of other cleanup.h based magic, or things like
+> > > > return dev_err_probe().
+> > > > https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/      
+> > > 
+> > > It seems you are got all necessary tags to go.    
+> > 
+> > Light on the driver changes to use it, but seems that we have
+> > reached convergence on the infrastructure.  
+> 
+> What I'll do in the short term is pick up the changes that have been
+> reviewed and gained tags (so the infrastructure plus a few of the driver
+> changes) and then send a v5 with the remainder. I suspect the driver
+> changes have gotten lost in the deluge as IIO has been very busy this week.
+> 
+> Whilst I will occasionally pick up my own IIO changes with out review
+> tags I normally only do that for trivial stuff like build fixes.
+> These are simple but not simple enough!
+> 
+> So applied patches
+> 1,2,4,5,12 and 15 to the togreg branch of iio.git which will be initially
+> pushed out as testing for 0-day to look at it.
 
-The NVMe issue has now been solved more precisely in the commit titled
-"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+Linus is pushing back on some of the uses for cleanup.h for not being
+sufficiently standard c like.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Signed-off-by: Daniel Drake <drake@endlessos.org>
----
- drivers/acpi/sleep.c | 12 ------------
- 1 file changed, 12 deletions(-)
+https://lore.kernel.org/linux-cxl/170905252721.2268463.6714121678946763402.stgit@dwillia2-xfh.jf.intel.com/T/#m336ba4087e4f963abbc654ba56eba6d61b77a14b
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 808484d112097..728acfeb774d8 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
- 		},
- 	},
--	/*
--	 * ASUS B1400CEAE hangs on resume from suspend (see
--	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
--	 */
--	{
--	.callback = init_default_s3,
--	.ident = "ASUS B1400CEAE",
--	.matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
--		},
--	},
- 	{},
- };
- 
--- 
-2.39.2
+That's fair enough, but I think makes pull requests with them in higher
+risk than normal.
+
+As such, for the things I have queued in the IIO tree (beyond the pull
+request GregKH already took which we can cross fingers on),
+I'm going to shuffle the tree so that the remainder can be handled
+in two separate pull requests:
+
+1) Everything else
+2) cleanup.h related including this series.
+
+That should give Greg maximum flexibility to do what makes sense for
+char-misc-next.
+
+The scoped_cond_guard() stuff can be easily modified to be near what Linus is
+proposing so hopefully we can do that next cycle.
+
+Hopefully I can get this done later today.
+
+Jonathan
+
+
+
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> > I'll let it sit until the end of the week though as I want to
+> > get a pull request out anyway before taking this into my tree.
+> > 
+> >   
+> > > I commented with some side notes that may be addressed later on.
+> > > Up to you.    
+> > Thanks. I'll catch up with those shortly. 
+> > 
+> > Jonathan
+> >   
+> > >     
+> >   
+> 
+> 
 
 
