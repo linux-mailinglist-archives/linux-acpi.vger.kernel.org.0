@@ -1,194 +1,174 @@
-Return-Path: <linux-acpi+bounces-3997-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3998-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B1A86B172
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 15:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E96686B1B8
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 15:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19FBE1F298EF
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 14:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0D8F1F271DD
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 14:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D24151CC6;
-	Wed, 28 Feb 2024 14:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A384D159574;
+	Wed, 28 Feb 2024 14:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Po6BnweY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2063.outbound.protection.outlook.com [40.107.243.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51221379;
-	Wed, 28 Feb 2024 14:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709129747; cv=none; b=WMrVcBNvhy3theyZGwnj8kFQOH41bDJNQkrECXw4siWPWAEdXOcF3LNN205/iMmgPYB9baCaWDwpIS5JGU06YYwW9tftLJla5YQQokMoWcWibl+OPiaB69c1dgh9Kjy13/mE/PGQyP077rRCtOyl2bjelX4zr7zgVsrq9yuQGcY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709129747; c=relaxed/simple;
-	bh=3voUT4C0aiAEWU44I/mNBH/4Ghg3ogoV6z6+5em1SqU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cX0QdnWIVSiNTorMN6L5XhCXQbNXZ1UjIC+KrOjQzXjfon+5UwI1jfz5LVymoU92anw/apDGLajBqmeymMBsqNMrMuEuiK2eMfwBBmZnfFdgSAoGu/QPM/VY15lFAgxF4R1qV1Fi8wz6f5hV9mOqHBk7LA4GXN8LZtuXwEbXKNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TlGWF4zbMz6K7JS;
-	Wed, 28 Feb 2024 22:11:53 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id E40E3140D26;
-	Wed, 28 Feb 2024 22:15:39 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
- 2024 14:15:39 +0000
-Date: Wed, 28 Feb 2024 14:15:38 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	<linux-iio@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Len
- Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
-	<cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
-	<tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
-	<olivier.moysan@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
-	<dmitry.baryshkov@linaro.org>, Marijn Suijten
-	<marijn.suijten@somainline.org>, Marius Cristea
-	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v4 00/15] device property / IIO: Use cleanup.h magic for
- fwnode_handle_put() handling.
-Message-ID: <20240228141538.00005b31@Huawei.com>
-In-Reply-To: <20240224114912.6da6aa9d@jic23-huawei>
-References: <20240217164249.921878-1-jic23@kernel.org>
-	<ZdNAQi6IlMN-quO_@smile.fi.intel.com>
-	<20240219154947.0000681b@Huawei.com>
-	<20240224114912.6da6aa9d@jic23-huawei>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ACF15957D;
+	Wed, 28 Feb 2024 14:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709130531; cv=fail; b=F36cZlifU/egRWV3k+UE0pY5D9/NflYf7nX3hD3F1GElkyyHHcbUmnBxJIj+idGxWi0fYHXXQfH6tHTPuSjNZwtOQmFl3OxMU5ChS5ZmYja2b2BwOQvgmPqT9Yr7uYj8d3hgFulpjOyj0zBaD7R+TXAlL8Y8iYMoty2ohpYxBz4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709130531; c=relaxed/simple;
+	bh=urlkHtRstBhObCQ/80yKr9fritvQVQHnYk+mioulDqQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FpRyP3Tjtml5yJFWLc1e8oRA1zJAJu1PzKJ8tZZzFfFlrJh41kd7IxN0YtgHZp/WhnkoasZa4Xh47FFrFbkhL5wmxp4IBHkk5Q1vJtfYjDsJ/1foh7PWaOhOcKq75SUQmOMFNUrlzvR2yNarJ4wl8R6lxdfOiEBK/wCP4eOj2oU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Po6BnweY; arc=fail smtp.client-ip=40.107.243.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Pz/svnn9ZUa4vZh0XfRSrMfhCBfvt0yIWpdVMmcwReUshR8uo88tgN7vVc178txTCMB/dUKe/5RZltPXZ9qvSWRW25geiRJJ4fjqkv7TMg0LP8oQoE5P5yrSXP/+XAC10GZdYVVGlSey44A/R0HcqnpUn5gLWd1bYBUqnqzVCqwklrexGyDuN+z/AW6JLfV6T+8t3qsHsJvSLSYoUN1erbszRewA+kTfef3zY71Len782tpQ0BuCurDDZ2Ko3OByU+Ntw2szvGsaFAOF12kl3MsBobrSWFCbm3C9Rc9+g04zDiFxA90lTCBr/32e4dWU9HcKh8YQx1jLW5RBII3maA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P/CXl/zQ2zv3Vmd4UqUVAZz1wC4aoFvrscTH30oK4VA=;
+ b=dm7oUcLPhlW+1qvVKBrrFHd+YY6ps9GAJk1x7FyfuNUp6ORYMCA5chts19Yu464YCdHZEWfEc8tvO8cOgiIO8XrRL5ikbT1BjvHBaZiN1eifM+PwPc8Q/vfPxjTiEXWpNcNlUhExa5AMoM0RZ+x59S+V6yFLD6xaLhnDMEZDKHNq3QK98NE2j2bfjsUmLITGDpen9oIR3+LeIPc/L2rFBxxm88HxMxocM8hDUoJurKs64xkESusxkif5lv/rnxP6Fv16RBbY1T+rlgmxrS/B+zOoq8U/AOdOW+5HUwL2t2KexBlLyIXD/fh4avb4RraLZ2ZeYfybmVDmaeRad1JncA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P/CXl/zQ2zv3Vmd4UqUVAZz1wC4aoFvrscTH30oK4VA=;
+ b=Po6BnweYPfKcDCHlhh46mWLgtf1Im7OMdJnPO48qPH1TWs5Qr915Lb7JBBCG4qa9nqnmcMUobfng+Fd5gPe4DMhoKkqX8BGUycqxC2vLSS4ssIww9k14oRHfHZt3sZdKQ15KC+42MbnCJEGcnsnAQKPCNx4DNnOgmr7wR/qIhro=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
+ by MW6PR12MB8913.namprd12.prod.outlook.com (2603:10b6:303:247::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Wed, 28 Feb
+ 2024 14:28:45 +0000
+Received: from CH3PR12MB8535.namprd12.prod.outlook.com
+ ([fe80::5302:26cf:a913:7e06]) by CH3PR12MB8535.namprd12.prod.outlook.com
+ ([fe80::5302:26cf:a913:7e06%5]) with mapi id 15.20.7316.034; Wed, 28 Feb 2024
+ 14:28:45 +0000
+Message-ID: <0317930f-c2ec-4ef7-8bc2-4c155f62ece1@amd.com>
+Date: Wed, 28 Feb 2024 08:28:34 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 1/4] EINJ: Migrate to a platform driver
+Content-Language: en-US
+To: Dan Williams <dan.j.williams@intel.com>, jonathan.cameron@huawei.com,
+ rafael@kernel.org, james.morse@arm.com, tony.luck@intel.com, bp@alien8.de
+Cc: dave@stogolabs.net, dave.jiang@intel.com, alison.schofield@intel.com,
+ vishal.l.verma@intel.com, ira.weiny@intel.com, linux-cxl@vger.kernel.org,
+ linux-acpi@vger.kernel.org
+References: <20240226222704.1079449-1-Benjamin.Cheatham@amd.com>
+ <20240226222704.1079449-2-Benjamin.Cheatham@amd.com>
+ <65dec8ec4d478_3651e29421@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+From: Ben Cheatham <benjamin.cheatham@amd.com>
+In-Reply-To: <65dec8ec4d478_3651e29421@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BN9PR03CA0662.namprd03.prod.outlook.com
+ (2603:10b6:408:10e::7) To CH3PR12MB8535.namprd12.prod.outlook.com
+ (2603:10b6:610:160::19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|MW6PR12MB8913:EE_
+X-MS-Office365-Filtering-Correlation-Id: 112e7ad4-0783-4c85-a330-08dc386991f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	dfdit2GNXyZhUCrHodXaJAwHLQEX4cDRtzojxdmvwVvs0U1ki4O5xirh3KgZIZDnsHdiEsMFUS18Yr7Mi+2PIo5/ziFSxcVtqsdJbpvZaQVwQOmbjXOh+r3XmqZrSeDUfj3KC5j8W4Lab+JjD+WTpajY79a2wp+lmMQdFt5bNUp6k7d/mi8WJjy/ndGb+m5jhbGG/Q3+4W1jdANiUU4blQ6AketYHqkeuJhuUNaLErssIx7l2E2qUErc3ViOS/+iFmX5y6X4+EFLDjOg3ct/C4e24CBv8LwwqP5QuOHHgjKsXpfGj1bHEQMMwKHzz9P+1SBO+PG/KfG+IwlRQVURhn7Ya6CezrpESbZfvtoFnyTGnY5s0EfC1j6dKB3arRvBRPH1UPI1VNpkPv28rJk4e5KKK0W1S/h/qM8jsyt/eGZQV0Z7gPeaXz0x849YR3DSxJ4OzWpT2MXF/mMBGlbw5GiNp7TZb14HSjoSzB2NNN33uoBfFopTlNefD1cRW94Ekpfm/WitFSMSd5CHojSo+B/AbI4HgA149bN+WePnp+ukyd++6tvkqz+GPkPiOGYTlwld6TXwM/bIGzADT+GifOGew+EtLcQVXsPC91yXFRykVdelppx5Fpr8+GAJFQ5cgreFTrQTS90atuHbuPvrdyXkvV1KeNBZl+axUrdnTnQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(230273577357003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?R3ZjelNNYWlDVTltRjZtdHJVMGhJQjhocUV5TldtVzdaSC9xWkhCelZlSFJw?=
+ =?utf-8?B?Q08vc0pkQW5RMjBaeTFRY0VuazJPaTNQWE5nUld1MlpYNFh6bGRsRDVmWG9T?=
+ =?utf-8?B?T0hUY0NLeWNBc3FQNjJJaFhxMm5yODl6VTFxYU8zamFYWmJIQVM0SUJVbmg2?=
+ =?utf-8?B?VWF5Zy9sNmhQaWRjNGkreVd3TUwzd045TDNrb0pNVC9CYnpweFc1TWVEc1NJ?=
+ =?utf-8?B?QVR1elVWd21uZnYwampKL01KWExZUld2ellZbXE5N3oxMWdvSFZ2SnhrYVRW?=
+ =?utf-8?B?dGZUUDEvc0lzTDNCZERZUWlJKzJZVi9GZWZ6UGdKTjVHdll1d1VQZ1lZOGh5?=
+ =?utf-8?B?elZGc00wVkZGREVEeVBkLzhNNmJ2REpOYStTRmpkMis0cmpvUVJWb0h0dnMy?=
+ =?utf-8?B?ZFJ0SHdBdVRnckxmcWlJVkVTOFFjNERibzMvcmpFOE02cFFWSVNvYkIxQ3M4?=
+ =?utf-8?B?MDAyTTNYdTUvUjBiaGZHOFVYSzJxSzJsQlI0TUlOTE1GZHNBRDd3QTFGdmxM?=
+ =?utf-8?B?MVVMTjdWSVVsMWo1b3orcDYxS0NwTFliMzRxSUZleTRLYTlhckJPakE3R2Zl?=
+ =?utf-8?B?cmZwWWJ3QlpYNitzTWorc2p6bWNMTzFmNEcrMEJYdWFiMlpUbkxMU0pRYWs3?=
+ =?utf-8?B?R2tPM0NEZkFhYjQxN3lJZ200c0dtSVhGUHRMc29Jbm5YbGwxOUswVE5ROCtq?=
+ =?utf-8?B?R3hCS25naWZQMkNWM3FRTjZvRndKS3hqNkxZWWRCS1FIdXcyVTVxUHllcXZN?=
+ =?utf-8?B?WDlINHI5WVRad3dROXMzdkZQcm5DSUw5Zi9SNlVkS29ZOFBLd0YrVmgwTHpK?=
+ =?utf-8?B?S0FLK0dKVUhETkoxKzFSOFNTeCtNem1zaTRKUzlMcEpvQy8xWjVTWFByMnI0?=
+ =?utf-8?B?a0d2OWZxNHRSU0VOakplVHBQUTdBVEJJUTlGT1ZQbHNDQlRHMUlIZFlpdHdt?=
+ =?utf-8?B?R0NsQk9xc0x3VTU2dStZbFpPK0RpWktvMmNtRkVZa0dYRTVSRExaVFJ6QzlU?=
+ =?utf-8?B?Tlp2U1puZXpCay9CeVNXdCs2alVCajZFalVUblZPSmtBRUQrL0J2MmRqQUlj?=
+ =?utf-8?B?clVnVlVzMENSTHJRcmJmek8xQ1Ayc2lsVkJKQ21YNjlFeWZNZ015YXJzUUVX?=
+ =?utf-8?B?TGRvWjlkVWlEOVlTMzlnQ0ViWlh3cWN4ZkMvYVNPODhuZGpYK1lScmFscmtQ?=
+ =?utf-8?B?TzBwempkSjlRWFo4OEljUzFDejlGZmpBUjlhd21tQlNrdEhtMEhNQXRBcW8r?=
+ =?utf-8?B?NVpic2Y0VXU1dVNqbVN1THUwL3JOZGJETnB5a21uNGdRUTdxU0Jia2J4VjRY?=
+ =?utf-8?B?TTJsd2QydHRzcW9pTDhYa25Oa1lUQW0xa0JlT2J4V2R2SXBlaUVUT2xSOGdk?=
+ =?utf-8?B?Y204ZXN2YTNQbllFQURjMnFmUXNZdUJ3anBhMTZjaHlJcWlXTHF4K2JxVWJ3?=
+ =?utf-8?B?ODFZMlk3b082bTdoMW5MeTNjL0J4QlhxT2tNTy9RZDA4TzBVMTJRSVZpQnFr?=
+ =?utf-8?B?U1R5WTQ0Y1JnYVk4aUE4STlpd2xZd3cxTXVIVHpmaTJXOWIxWFhXdGZpaDVn?=
+ =?utf-8?B?ZDZUVmEzMzNGc0F3dnJ2Uy81ek8rOHh1anJ6UThESUUzUTdxK3VHM25yQ1o5?=
+ =?utf-8?B?SUI2bnhlcW5SWFM0dWNvaUNHNWFQYjlVRm1HUE8vcXNhUUNVaW0vRDVCa2RJ?=
+ =?utf-8?B?dkdlVWZyalh2b1NoMFZNQzg2MlNuZ2VCelI4aVJKdFFZMzM1aUJ3T1lRLzZO?=
+ =?utf-8?B?SjFzYUdWSW9pZWFZNGR4a2U2cGtCa0RNbUsrOWxRUVRXemlWUjJ2N3d4bjBC?=
+ =?utf-8?B?RFIwWDJReUpGZ0haQm05bC8xb1U2UVNGVDZnN0dIckdkem00OHZROW5vNi82?=
+ =?utf-8?B?MndRbXZVTG04Smh0dnZnVzgvVG5NQ1ZQUVpER2J6bmF5SWljd0luVWlBQnM2?=
+ =?utf-8?B?QVJzQUF2OHRrU3I5MklEdHNLb3JpdlBDTGk5SlhDVDZOZUlXQ1NseTRWMERs?=
+ =?utf-8?B?Nk5TdmRXWWkwR1VIZUFjd0NHbktObzc1T0VzdGxoMlluU0N6RS93UmNlVk9n?=
+ =?utf-8?B?UWQ5QTVaYU1pcXo4a1RBcExmRmgxUXRmWUZQUlJQRk9XdXd2U0psRDcydVpk?=
+ =?utf-8?Q?o8s1scf8BDOYRsTTYVCn/niB0?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 112e7ad4-0783-4c85-a330-08dc386991f6
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8535.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 14:28:45.2768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xKfy0ZJ2x3jQUM9pHd4YYPEr/XtI3NSygOkQkA7TvuIrQRhrAHtbFGEChvRnsdSjj830gtoAtPuFbry0q1Hzlw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8913
 
-On Sat, 24 Feb 2024 11:49:12 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Mon, 19 Feb 2024 15:49:47 +0000
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+
+On 2/27/24 11:47 PM, Dan Williams wrote:
+> Ben Cheatham wrote:
+>> Change the EINJ module to install a platform device/driver on module
+>> init and move the module init() and exit() functions to driver probe and
+>> remove. This change allows the EINJ module to load regardless of whether
+>> setting up EINJ succeeds, which allows dependent modules to still load
+>> (i.e. the CXL core).
+>>
+>> Since EINJ may no longer be initialized when the module loads, any
+>> functions that are called from dependent/external modules should check
+>> the einj_initialized variable before calling any EINJ functions.
 > 
-> > On Mon, 19 Feb 2024 13:49:22 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >   
-> > > On Sat, Feb 17, 2024 at 04:42:34PM +0000, Jonathan Cameron wrote:    
-> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > 
-> > > > Sorry for the rapid resend, Andy noticed I'd messed up creating the v3 patch
-> > > > set with some updates committed in the wrong patch.
-> > > > 
-> > > > Since v3: The updates to alignment of device_for_each_child_node_scopd() were
-> > > >     in the wrong patch. Move them to patch 4 where they should always
-> > > >     have been. (thanks Andy!)
-> > > > 
-> > > > Since v2: Thanks to Sakari and Andy for reviews.
-> > > > - New first patch moving fwnode_handle_put() into property.h
-> > > > - Tweak alignment in the loop macro
-> > > > - Pick up tags.
-> > > > - scopd -> scoped typo fix in some patch descriptions.
-> > > > 
-> > > > As can be seen by the examples from IIO that follow this can save
-> > > > a reasonable amount of complexity and boiler plate code, often enabling
-> > > > additional cleanups in related code such as use of
-> > > > return dev_err_probe().
-> > > > 
-> > > > Given we are now fairly late in the cycle, I'd expect to take this
-> > > > through the IIO tree and we can make use of it elsewhere next cycle.
-> > > > 
-> > > > Note I don't have the hardware so this is compile tested only.
-> > > > Hence I'd appreciate some Tested-by tags if anyone can poke one of the
-> > > > effected drivers.
-> > > > 
-> > > > Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
-> > > > Referenced from that cover letter.  Similar may help us convert more
-> > > > drivers to use this new approach, but often hand tweaking can take
-> > > > additional advantage of other cleanup.h based magic, or things like
-> > > > return dev_err_probe().
-> > > > https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/      
-> > > 
-> > > It seems you are got all necessary tags to go.    
-> > 
-> > Light on the driver changes to use it, but seems that we have
-> > reached convergence on the infrastructure.  
-> 
-> What I'll do in the short term is pick up the changes that have been
-> reviewed and gained tags (so the infrastructure plus a few of the driver
-> changes) and then send a v5 with the remainder. I suspect the driver
-> changes have gotten lost in the deluge as IIO has been very busy this week.
-> 
-> Whilst I will occasionally pick up my own IIO changes with out review
-> tags I normally only do that for trivial stuff like build fixes.
-> These are simple but not simple enough!
-> 
-> So applied patches
-> 1,2,4,5,12 and 15 to the togreg branch of iio.git which will be initially
-> pushed out as testing for 0-day to look at it.
-
-Linus is pushing back on some of the uses for cleanup.h for not being
-sufficiently standard c like.
-
-https://lore.kernel.org/linux-cxl/170905252721.2268463.6714121678946763402.stgit@dwillia2-xfh.jf.intel.com/T/#m336ba4087e4f963abbc654ba56eba6d61b77a14b
-
-That's fair enough, but I think makes pull requests with them in higher
-risk than normal.
-
-As such, for the things I have queued in the IIO tree (beyond the pull
-request GregKH already took which we can cross fingers on),
-I'm going to shuffle the tree so that the remainder can be handled
-in two separate pull requests:
-
-1) Everything else
-2) cleanup.h related including this series.
-
-That should give Greg maximum flexibility to do what makes sense for
-char-misc-next.
-
-The scoped_cond_guard() stuff can be easily modified to be near what Linus is
-proposing so hopefully we can do that next cycle.
-
-Hopefully I can get this done later today.
-
-Jonathan
-
-
-
-
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > 
-> > I'll let it sit until the end of the week though as I want to
-> > get a pull request out anyway before taking this into my tree.
-> > 
-> >   
-> > > I commented with some side notes that may be addressed later on.
-> > > Up to you.    
-> > Thanks. I'll catch up with those shortly. 
-> > 
-> > Jonathan
-> >   
-> > >     
-> >   
-> 
+> Is this statement true given that no debugfs files are registered when
+> einj_initialized() is false?
 > 
 
+That's true, I guess this would just be for redundancy/extra safety.
+
+> It would be nice to remove that from the functions and just rely on
+> debugfs files not being published for safety.
+> 
+
+I'll go ahead and remove those checks.
+
+> With that fixed up you can add:
+> 
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
