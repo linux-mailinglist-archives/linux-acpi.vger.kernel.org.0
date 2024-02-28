@@ -1,98 +1,118 @@
-Return-Path: <linux-acpi+bounces-4009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6368986B9B3
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 22:14:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EEA86BAB7
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 23:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20257289A7D
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 21:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8DD8281A75
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 22:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5F586266;
-	Wed, 28 Feb 2024 21:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0E81361DA;
+	Wed, 28 Feb 2024 22:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNLD2+Q3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72CD86241;
-	Wed, 28 Feb 2024 21:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8601361C7;
+	Wed, 28 Feb 2024 22:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709154890; cv=none; b=lCmNbR4W3qwIdm0NfxH363zHis8xuoTiGP7j1k+Q8qJ3FZdX2FxmNCtThL7paAPBQVjWzKOYTvnHnIszn7anYLb3M86RR4q9jm60HOIDHtegw2Qoe9/OmiQrbYrbEFbljat9vUUtHyZfAAtz1Y0ASX/gFOJM756a0793SMVPwF8=
+	t=1709159163; cv=none; b=fFAQkAIgCPDGtaSRtKHEZd8HiJxa6BqVpuYwioqpLQaRcqnxMbMn8H051hWSriU9CdQBDLZ58EE1lFql//ORitYbCtXiQ1R31sxFuWF9AsTC+M+3JrZeaRDOAtvyd3JyfG8O7G7ZbJRenek2V299Dmm+G/XTqe4IU/b+PmCeLlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709154890; c=relaxed/simple;
-	bh=vga5pA+ojUatokeTJQVGmvG5MkhEI6W2dbJk1EB3qrE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sxYyLQePr0VpWq9q+N8mEzn5D3PuHAZJAr/qQQiMeAdhJgY4WTT/LOA+eh6rVvqHBjzQsdWt7QrQu9BAs0h1+Exe165c9/iDKHZ9lbQVu0H3k6UiJT+fDpCzJhBpWgZGyiUtj+b908TXqqwM8uMz94wNGm5d/qdEGaeYIFAHeIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6e2b466d213so38915a34.0;
-        Wed, 28 Feb 2024 13:14:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709154888; x=1709759688;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W9hD0YbFqBXT/nXqtV3fYDeNO40gmiO0A4+0rNHvkIk=;
-        b=LAnkfUFSGPyR3aqU8uuC+Ig2vg6IVv8WgofgMh6a3JasuoM//1CUthoRTPVljKXWCC
-         v66FbGzP9To6h/7HHOJgqopDoiHZ1N6UzkHl8dWGp+fTSElNB3iTR/LSw57Cc1+tCHH8
-         PKEvXtAU0tKsri+X6+NtVYMrSeSnBlcT/CIm7n9Q592BK9BBLsqqd/mT9E8nLcJli/NA
-         tRuCw2xzs25ueIsGRV5UvV6kexeYz02wBFDcz3G1cS2qM7iOKMa/rUKDgb/DIGo5pZ4p
-         swbUAID13R6c8HmG3s6IezaVmCIP46niOFF2dWn0PAf1LTdgOb0KOSWhPDgiJcNfO5gT
-         C4fg==
-X-Forwarded-Encrypted: i=1; AJvYcCXVfGiR3A93Yxcp3lN3DSrI915qpcyHgLMQ/apPGHNqTuzkx/LDEL3tPTL/eC7A4YLpomUAbkZrfX79vvNEyAEhZZs+HvrKq0IBLZ9HOBfC+cHjscI+ba/C0vzZzsCQCChU8Cf7fdrZWw==
-X-Gm-Message-State: AOJu0YxANWcdDB5ThaW8kNNrSINfcJ+nGMcbsCwtAROtrjhWharwnWFX
-	SZAd8GBqzv5nhW864vmz0Vx68J00dcFX7s6YyfH0H7QYSE1fIqnofD1sBnS4HAsPTPZtDHNv3W3
-	XpRkmKHJPg5LC0Dhh22BqLbOqAEsHZkdx
-X-Google-Smtp-Source: AGHT+IFR7qFdUqz48+gGHmdyqSr7YuDPzeNmv6VTZEBxCB9UizCjvZI5i60mgaTaHiqy7YBJ7WfwSn306BNwE3vBPUA=
-X-Received: by 2002:a4a:620a:0:b0:5a0:6de5:a880 with SMTP id
- x10-20020a4a620a000000b005a06de5a880mr347558ooc.0.1709154887860; Wed, 28 Feb
- 2024 13:14:47 -0800 (PST)
+	s=arc-20240116; t=1709159163; c=relaxed/simple;
+	bh=qMdsiFcrkQxDpSIkDbKgrGb6ge3rWsOYQtLwEYq+96Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=XPJdf3hXuUyOJsoUywZQGugg00WY/Bd74O1rOl0oNVZK9Tdg6Qc190nDBXfMOV8Q7zYfXzcrcKGnkHcx5AS5b00PPJhkQ/t33rvzA1AGpedEvzTyux3GZpnRVWqfEFHXx13UtiUpIbgYSBPx0Z6sRE1OydzSE9TToKKMH65Wx5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNLD2+Q3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809DDC433C7;
+	Wed, 28 Feb 2024 22:26:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709159162;
+	bh=qMdsiFcrkQxDpSIkDbKgrGb6ge3rWsOYQtLwEYq+96Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=aNLD2+Q3L/qbx5kq8BFulNFuIjUecoFTuaxd7xJ7UhNJLwxiK5oJuJWtY24Rw9OZm
+	 QawhRaVZYAmkbF2iPIZJAn9QivrtM9TSTnqkPMTNITRa/CB9Tb4u06tKhUiv8J1YOG
+	 CXbqR1GsfjPUW7CNqci5HwpM6RYhlAtmCu7D1B37O7ZI8x/DxjC+fRv+kVISluZMkg
+	 cMn72eXuym0Xe+SzEymb/qJnX0s9ZTYfXTOFRGJpI5Rwhqygo7rxoLFL8QG2Jjinqt
+	 L/94o5Y4YbaMlSsbd2qdUDPTGy9AMEwohVn+T9PezC2+BAEur8AO5dqN9gQjnDRJm4
+	 mgdnbVveJGgiQ==
+Date: Wed, 28 Feb 2024 16:26:01 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Daniel Drake <drake@endlessos.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bhelgaas@google.com, david.e.box@linux.intel.com,
+	mario.limonciello@amd.com, rafael@kernel.org, lenb@kernel.org,
+	linux-acpi@vger.kernel.org, linux@endlessos.org,
+	Jian-Hong Pan <jhp@endlessos.org>
+Subject: Re: [PATCH v3 2/2] Revert "ACPI: PM: Block ASUS B1400CEAE from
+ suspend to idle by default"
+Message-ID: <20240228222601.GA310596@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240223155731.858412-1-andriy.shevchenko@linux.intel.com> <20240223155731.858412-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240223155731.858412-3-andriy.shevchenko@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 28 Feb 2024 22:14:36 +0100
-Message-ID: <CAJZ5v0gmJYZ==O_xn7v+=-9dr9n+GvV2TmcjWVsRvXc4F2UcYQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] driver core: Move fw_devlink stuff to where it belongs
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228075316.7404-2-drake@endlessos.org>
 
-On Fri, Feb 23, 2024 at 4:57=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> A few APIs that belong specifically to the fw_devlink APIs
+[+to Rafael]
 
-It would be better to say which functions specifically you mean here.
+On Wed, Feb 28, 2024 at 08:53:16AM +0100, Daniel Drake wrote:
+> This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which
+> was originally put in place to work around a s2idle failure on this
+> platform where the NVMe device was inaccessible upon resume.
+> 
+> After extended testing, we found that the firmware's implementation of
+> S3 is buggy and intermittently fails to wake up the system. We need
+> to revert to s2idle mode.
+> 
+> The NVMe issue has now been solved more precisely in the commit titled
+> "PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+> Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+> Signed-off-by: Daniel Drake <drake@endlessos.org>
 
-> - are exposed to others without need
+Rafael, if you're OK with this, I can queue both patches for v6.9.
 
-This is not particularly precise.  I guess you mean that they could be
-static and are not, which is fair enough, but why not just say that?
-
-> - prevents device property code to be cleaned up in the future
-
-This is completely unclear to me.
-
-> Resolve this mess by moving fw_devlink code to where it belongs
-> and hide from others.
-
-This could be more precise.
-
-Also I think that the patch is not expected to introduce functional
-changes, which could be mentioned here.
+> ---
+>  drivers/acpi/sleep.c | 12 ------------
+>  1 file changed, 12 deletions(-)
+> 
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 808484d112097..728acfeb774d8 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+>  		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
+>  		},
+>  	},
+> -	/*
+> -	 * ASUS B1400CEAE hangs on resume from suspend (see
+> -	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
+> -	 */
+> -	{
+> -	.callback = init_default_s3,
+> -	.ident = "ASUS B1400CEAE",
+> -	.matches = {
+> -		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> -		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
+> -		},
+> -	},
+>  	{},
+>  };
+>  
+> -- 
+> 2.39.2
+> 
 
