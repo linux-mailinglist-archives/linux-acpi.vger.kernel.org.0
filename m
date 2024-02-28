@@ -1,287 +1,239 @@
-Return-Path: <linux-acpi+bounces-3987-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-3988-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C15086A0B0
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 21:14:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19ABD86A6A8
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 03:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA551C23781
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Feb 2024 20:14:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C358028A6A2
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 02:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E5F14A4C1;
-	Tue, 27 Feb 2024 20:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D609C18E03;
+	Wed, 28 Feb 2024 02:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fTezXRVF"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="UXSuuIK9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2052.outbound.protection.outlook.com [40.107.220.52])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32824D5A2;
-	Tue, 27 Feb 2024 20:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709064883; cv=fail; b=jw6WIIjGyGXHA/Ur7/wfJzVPRv2Pm50Qf9WnK3oej9ocd+uEUOS7AV537WNERbYPmprpb3QkxTHzO52KPHvgPABITnGoCqGyyxxQM+qgeb4Ydo2eSnPsmvBh7ErlRnZOAK0nm+mWukU9yPUmMjNfq7QEkD5mA+5cVZSjuXvkzw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709064883; c=relaxed/simple;
-	bh=NHFFZDhNLextz8FPuGVUkn1XBlW4b7OeI5ncX9NX8tQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Y+OuShEAOiWT6oUGeM7YF6fH7Tfs1cVXQkrUNzQCMb7Sqh6P9DDg3+Nb/+0XW7difLn/PgbWZhY03iLtzHTgCXzB0xXrFOJ5gDcv0aMc8HzfIs3KwHmLXoztn3ykSUkskj7My/OLFy6kc6Q3B8QvAFaGeSrLw3jKQXyQJy6gj14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fTezXRVF; arc=fail smtp.client-ip=40.107.220.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R2dWMly+x4BmeWvpRTu42Hdn58tMT1e8CBeTToYTtju7OA15lZXEgVMIi9A4ALlGo+lHj2ocwUnFU4H1CxdOHkjZPda8XhvBxzm9mWKEUAQX040ZPEYPBRd8Y1iemLavIW9YA0BrlMADYUzdXYqmZe0vh6Df0RHtRIJl4YqonydquFDZSA0ikK2Mz9n9tu61Vviu/sZucD+E70s8vBkkPTd2XPwwn7lITpAsyH+oJd+s+BDiXhnQFq2GoNNeYQyf8Z21mpSAYY0MwcebbZO2XiI3apExpBefA+wO8bDpZAxoBfco4b+Y/OVlmO5J7/weuzvOF7SaNDMl9dcjxLDCfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mhHJISLYg5reNFVNXUSFRtV8FtJoRObs+N+hzYPd1/8=;
- b=O2IPRTlKugkwHsvL9ZMgCttjXRxvJKWxo9HW0IpT5OrBkA6zb4u+JC/PwW15zMQA0C0ewXXtMcGaNIs01bScoOJPlWuROZBEDzunQtBTB2wjA6PmTUS3c3/oMGDDwWsoRCh13pLagJQlRRRMcN58o8Eq71cMhWJFz8Ce/Q+oeighS0Dxk6EpiYoR3sE0fmKS2JAd9kbzHy6SWrr2P5sn3Ebtb1u7F/5kS8ZamqBGZ4W3+HYHjier2uPItD8+KxG8EWZ9lAaS+DeXgv7VBMRQn1Py5VhkXegpeuu4wfSyhC3lAIHHyu+aGvDsXzW6soX1ZyUjrfEzEvNaM6pDwrV1QA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mhHJISLYg5reNFVNXUSFRtV8FtJoRObs+N+hzYPd1/8=;
- b=fTezXRVFGzzkUvB8kXQ5IypyWp3eFNQqbH3aQfuaSocjJc8zBb1pV2MrXY8IfqHqLmjewRK13kMMKWFjfRKpbt70wCj0HUnk3xOsCO/PzZopkZ6K3GKh7yQ9525gVWwEatZHZwZI7ZbhzFzq+SEhjokdCMjW9qjkZ3c06ZknTjU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
- by SA3PR12MB9090.namprd12.prod.outlook.com (2603:10b6:806:397::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.37; Tue, 27 Feb
- 2024 20:14:39 +0000
-Received: from CH3PR12MB8535.namprd12.prod.outlook.com
- ([fe80::5302:26cf:a913:7e06]) by CH3PR12MB8535.namprd12.prod.outlook.com
- ([fe80::5302:26cf:a913:7e06%5]) with mapi id 15.20.7316.034; Tue, 27 Feb 2024
- 20:14:39 +0000
-Message-ID: <fcc39ab2-d616-4be2-a816-b0037a9653a2@amd.com>
-Date: Tue, 27 Feb 2024 14:14:35 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 3/4] cxl/core: Add CXL EINJ debugfs files
-Content-Language: en-US
-To: dan.j.williams@intel.com, jonathan.cameron@huawei.com, rafael@kernel.org,
- james.morse@arm.com, tony.luck@intel.com, bp@alien8.de
-Cc: dave@stogolabs.net, dave.jiang@intel.com, alison.schofield@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, linux-cxl@vger.kernel.org,
- linux-acpi@vger.kernel.org
-References: <20240226222704.1079449-1-Benjamin.Cheatham@amd.com>
- <20240226222704.1079449-4-Benjamin.Cheatham@amd.com>
-From: Ben Cheatham <benjamin.cheatham@amd.com>
-In-Reply-To: <20240226222704.1079449-4-Benjamin.Cheatham@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR11CA0076.namprd11.prod.outlook.com
- (2603:10b6:806:d2::21) To CH3PR12MB8535.namprd12.prod.outlook.com
- (2603:10b6:610:160::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4A71CD0F
+	for <linux-acpi@vger.kernel.org>; Wed, 28 Feb 2024 02:39:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709087985; cv=none; b=Ho9WC0j1f3INVG2qvaOrokW2WkHTm5+QKF3CEVXHqDAJyHcltZZYKl1+d4VgQvthbPwFXEbcUUR4bFebzdPIT2JwCULgOmlOt6p34lR5i/h+JXRDA/SmxsutEzUDi0wiJnknyZ+mhax8oSe+jJUfFnDO6VBpcdAA635+p7oHmWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709087985; c=relaxed/simple;
+	bh=DYKsPK+nAJRHdem3y+JromxDS/bOMz+5yFpxfUA6UcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+UVj7TUaIcEKZBnGCT3zQJ8JspYtYVUAFQv7dyz/S3GaQm+9Wpf4DMxVDds70UP9RcMlj4FCYjY5Ni55Zjgq6hWBzTrrPX7ceu/c1h/1t1T0JGCqqDVBRNuFwk9HFmpRys62+jEUCR786MpqwHBmbysUp5W9scfj05oZ0mg1yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=UXSuuIK9; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 9A60E2C0F60;
+	Wed, 28 Feb 2024 15:39:40 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1709087980;
+	bh=74NS7Xkcqh5ka9xf2XrX1XQHgALZjeqj8WkhUPSZZYM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UXSuuIK9goyR5rN58VCscnPrD5Gxu2sbEi8E91bvR3saSdYexpO5T4Ly3bikpM/eY
+	 j8XYiXS6irm4PFryVhI7i3V0Rv7F2hJtFEwKs8TfYJ5IQN815L2syrq68NLAzwBGo1
+	 xiS0h1te7BnNazxVGFDaGAzFf6X0+21H78AE035fdUNWFXTRA1N7Po3UWnOIPxjjSV
+	 uZLF2vjO1RZ301DjltHrNgqF+Wre3BcfU1rVGyr15Opvt+zZwgFKKfOaxnYxY7B5ZI
+	 qmk9VFzYJJG8rb7gqgaXwfLI7MZKbIa5tzy9X9N77E+XBmsEGo/vMqrnAgXS+Z5O6r
+	 21ooNiWJokoxQ==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65de9cec0000>; Wed, 28 Feb 2024 15:39:40 +1300
+Received: from hamishm-dl.ws.atlnz.lc (hamishm-dl.ws.atlnz.lc [10.33.24.13])
+	by pat.atlnz.lc (Postfix) with ESMTP id 70F7F13EDA8;
+	Wed, 28 Feb 2024 15:39:40 +1300 (NZDT)
+Received: by hamishm-dl.ws.atlnz.lc (Postfix, from userid 1133)
+	id 6D19B240BBF; Wed, 28 Feb 2024 15:39:40 +1300 (NZDT)
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+To: mika.westerberg@linux.intel.com,
+	wsa+renesas@sang-engineering.com
+Cc: linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Subject: [PATCH 0/1] I2C mux ACPI SSDT overlay removal issue
+Date: Wed, 28 Feb 2024 15:39:24 +1300
+Message-ID: <20240228023925.2814638-1-hamish.martin@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|SA3PR12MB9090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dc5a3ce-7321-48f1-2687-08dc37d0b9e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	ZRjSyyylXSl02lM54HQfpWLO8MyT5Jcjx6lWjNtvUzexshJFZ7YOCHffrTnSx0OLe6LMYSIdO/JFSuE9Xv/3QNJhNt8pq73Nb/2AgSsGlV1oynBnhVMqWKh6PxoLDK74jwx3vBvTxK/EZXS/NiFd3jKsN/riVn/L0F3gUjURx5jXMEaICTFHqsHSLAjWpiELI7X4ePi2KEds4dT80YFULPVY0O8m0QVzNoQ+QV72Lb5xAO9TpWTok+2mUCwbf1X6kcEF9iWgQAoogj8DFxk4cEriAl7GkGTw54+uYfETGAYv72zRu8UuZW4jdzqStuDmGfATK/xV/LlBCfANgPCBqnuX4/4smtDTOs0a48O2VwLNCl/+DWIH2bmZ1u3ELBFdtKDzr5vJvDlsmd0TWdaDiyCQz7AzysfmAWB8AUryU2FjuJqX+W3xsQsjY+WHdfvh2khS4VHkVeI2qCRy7+aEFtXDM87tdKSUlbeJvayN9uSreTKYRTc8DF6fGoIsGQVWbIP29j1Tz+54S9g1EDDV1t3Jz3f6zp3OE/4uzEgWb8RWALxw6cIf9CWsTfkSIoJuqIEERaRBG8pp/1TNsQsMavaXEOjGtaGzmGZQav1ehy7sgmAUZeJIwacKjX9hB+lkHAx4j6o2trj7aw1CtfKXkw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ek1lMWtWWURYSEdzcDhpL0tqSkpLZWlqMHYrTnVHZVBmVFBFaExhVC9qdkp5?=
- =?utf-8?B?WmZuY0EvdjBVOFB3aUVhVHZjOTZFNjhNZVJGaXNTc3h5VEtWOWk4U3dGSjBF?=
- =?utf-8?B?Yk9PYVlWYWk0ZHFEaGc0WXpvaXA5WXJxKzRBYVloTmUvbFJzMGlhd2ViQ1dZ?=
- =?utf-8?B?MFlDTHU2RWoyNkhOb2NhUDBwTjVKVjZpbWlsUW1wemcxbEhvVDV3eGRyMkdE?=
- =?utf-8?B?OWFQMGUyOThNT0w0S1hLa2Q3U3c0WHFKUnNjNm1hWnVLVEcza2o4akhKcDg3?=
- =?utf-8?B?T094UkVGY2RwU0NZUmorU3pabGxwZnFSYXJjQWpjaVVuV0FSR1ZjQ1luOTg0?=
- =?utf-8?B?ZDkxRVRnSHh4VHI0aWZxK1RpbmQ0c0NpNlMwZlU2Ti9HeE9oNkU3U2xnZGhI?=
- =?utf-8?B?am4wUzV3ZkFxbUc1dDdTbjJaYXpOSmdRU2hrUGVidnhmUHY0cnI2d1gyS3Zt?=
- =?utf-8?B?RU1RQlkrRjNOY2dBeVJzVWtObnlMdC9tR0paUkFrMUhDbTZpaE9takxLK1FV?=
- =?utf-8?B?N2RMditKOEYweStnNmRJNTdaWTdveE4yV003WnBMSitJNXpqVlEvUmgxUlZ6?=
- =?utf-8?B?Yzd3b2hDc2RpUzNKUmlPMUlkMGJvT0RvQko3d0dNZGQrSHE1czVMSG1BSzV2?=
- =?utf-8?B?OTduYWU5RFhZWWNLSVcxSmRleWtySkkvK1RUWXM3MXRIYmN2RmFyaC90RzA2?=
- =?utf-8?B?Z2FmYWpiS3ViRENiSkF5TDVRYWJNa3ZOVTlVQjN3b3FNcVA0aHNVK04reWdK?=
- =?utf-8?B?VTNWRlJFblhhbmZzcXA3eDZEaUFCMmJka1gwTGtxQUhYc0h5cEZsbmFzaWYv?=
- =?utf-8?B?OW9KeUdLaFBUQTgrUVhtNERwdnBXeCtybzFhNURUQ3ZBMVNzQTBVRFVtUGJV?=
- =?utf-8?B?N0l2M1RmaDFLSkN6UmE0OXE3QkpYTFZPZUhvcW9mS0JEWm5pcWxDTm9JOGha?=
- =?utf-8?B?RUN1VjUxcmtVQ0RySVJwOVJxRGIvK3FBQ3ZheFk2Zm9TNHlzaHF4N0ZiUTA2?=
- =?utf-8?B?SldJdVlMZWpQT1ZtbGtFQXluZTJxUlFsTTluRzVmaGs0SGxOMkVFV1hCenEy?=
- =?utf-8?B?R0RLNlh2ZkJDci8vcXRpdjRWbk5MeW9neGNWM0NHZ1BrY3llOCt4V1YrT2My?=
- =?utf-8?B?RzA3S1M1aGRwYXdIemZPcWJ2eUZCdm9CSjdNd3Q4b2ZYakd3TTYzWjhBRmNt?=
- =?utf-8?B?ekZTVENFNmxUUkZrZ1J4bGtyb0VoNDJScDBGMlZnZzFRQUdSdnZoeTBmRGFU?=
- =?utf-8?B?b2ZuS2dyM0l6R1dmTnRPYUtiOFZSQ0I1c2RldFQrMTRkS2tBTmx5Tjk2UnVl?=
- =?utf-8?B?aVNTeEl1NW9BQlNVbjM3cnVwUG5IK21HSVNHMzVNWGdYUDNkVUtCeDE2OWxP?=
- =?utf-8?B?c3dGaHNZWkJZYStMdk5QVlhXa1BpTzdlZzVGb2YyRjlWTXVBa25HczlScXN4?=
- =?utf-8?B?L3gwUzBmaENMZzFuMUpSZjdZbUdRMExUdHZFTE9xWUZpQy9hMnVoK3RYR0Ew?=
- =?utf-8?B?dmNSWVpFdnB3SW81Rk81QVdnK0JnSzJ2dElYMHdSUUIrVHVxdCs2OGwrR3Mz?=
- =?utf-8?B?dFVHNk1KYkdDZ3BGQ3U3djNHZ1gyN2RtYlJDRC9wYlg5SnFKcHBpYWgwS0lY?=
- =?utf-8?B?Si9HOVVpQ1Q1dXNZendWWU1RWEF4N0RnOXB4TGNsSGllSzVrZjdLS3ZQSjZ5?=
- =?utf-8?B?MmlNYmRieWJmRTRDTzJvMkVZemZZUkNNdVhsYzJtRkVzNU90dldUb2lkZXVB?=
- =?utf-8?B?SWJkVy8wSGZ1bVVlbGFpUVBUNmJEaE0xakREam1mNEZzaFF6MXRrcnM4cW9L?=
- =?utf-8?B?cVU0Qnc3ZktiL00raW9TU1ZaZFQyTUt3WGRubGRQZjU1V0crb0NsYkpTNmlC?=
- =?utf-8?B?bkhmQ1cxSnZORTU1STRtaWllWmpobzFZM0tyT3cyZUVIa0NtSXBBVnIvem0z?=
- =?utf-8?B?SXloMWhGOVhvbVNrWmpZaFk1VU5mRjJmd3lkMXdYc1BMV1loZ0Z6SGdoNUw5?=
- =?utf-8?B?NDlZUWlDYnhTV25XNlBSVy9FVFdMQ1hTYW9Zd1o5c1Fic0FwejZ6NGowWUl5?=
- =?utf-8?B?NW9zNXlkOGhTMmx6Rm8zalNUdXBNWnFjc2ZjSmt5eENCT0c2a1Y4cEVJajBu?=
- =?utf-8?Q?nFUDu0GwvQIA8TcAANz7GfIFt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dc5a3ce-7321-48f1-2687-08dc37d0b9e0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8535.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2024 20:14:39.6387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TW2f1qPqdQk0AaxJCKLQ+RMcinZYBt7rHvIIJYR9a3lOXjeCc9cWXFX6CmArKAut0BcK1kf2hnD660XNHB6WqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9090
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BKkQr0QG c=1 sm=1 tr=0 ts=65de9cec a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=k7vzHIieQBIA:10 a=nXG3BeEQHGMQi2UDEzgA:9 a=3ZKOabzyN94A:10
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-This patch also had an outdated commit message (still referenced the einj-cxl module).
-The patch with the updated commit message is below. I also made a tiny change to
-the format specifier of the einj_inject file to "0x%llx\n" from "%llx\n".
+I have found an issue with ACPI overlay table removal specifically relate=
+d to I2C multiplexers.
 
-Thanks,
-Ben
+Consider an ACPI SSDT Overlay such as the following which defines a PCA95=
+48 I2C mux "MUX0" on the existing I2C bus "\_SB.I2CA":
 
-From 321129893da9129473c447772a461c1a4e9e0e9d Mon Sep 17 00:00:00 2001
-From: Ben Cheatham <Benjamin.Cheatham@amd.com>
-Date: Fri, 16 Feb 2024 11:17:01 -0600
-Subject: [PATCH v14 3/4] cxl/core: Add CXL EINJ debugfs files
+DefinitionBlock ("my_mux.asl", "SSDT", 1, "ATL", "RMUX", 0x00000001)
+{
+    External (\_SB.I2CA, DeviceObj)
 
-Export CXL helper functions in einj-cxl.c for getting/injecting
-available CXL protocol error types to sysfs under kernel/debug/cxl.
+    Scope (\_SB.I2CA)
+    {
+        // i2c mux (8-Channel)
+        Device (MUX0)
+        {
+            Name (_HID, "PRP0001")  // Use compatible string
+            Name (_CRS, ResourceTemplate ()
+            {
+                I2cSerialBusV2 (0x70, ControllerInitiated,
+                                100000, AddressingMode7Bit,
+                                "\\_SB.I2CA", 0x00,
+                                ResourceConsumer, , Exclusive, )
+            })
+            Name (_DSD, Package ()
+            {
+                ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"), // Devic=
+e Properties UUID
+                Package ()
+                {
+                    Package () { "name", "cex_direct_mux" },
+                    Package () { "compatible", "nxp,pca9548" },
+                    Package () { "i2c-mux-idle-disconnect", "" },
+                }
+            })
 
-The kernel/debug/cxl/einj_types file will print the available CXL
-protocol errors in the same format as the available_error_types
-file provided by the einj module. The
-kernel/debug/cxl/$dport_dev/einj_inject file is functionally the same
-as the error_type and error_inject files provided by the EINJ module,
-i.e.: writing an error type into $dport_dev/einj_inject will inject
-said error type into the CXL dport represented by $dport_dev.
+            Device (CH00) { name (_ADR, 0) }
+            Device (CH01) { name (_ADR, 1) }
+            Device (CH02) { name (_ADR, 2) }
+            Device (CH03) { name (_ADR, 3) }
+            Device (CH04) { name (_ADR, 4) }
+            Device (CH05) { name (_ADR, 5) }
+            Device (CH06) { name (_ADR, 6) }
+            Device (CH07) { name (_ADR, 7) }
+        }
+    }
+}
 
-Signed-off-by: Ben Cheatham <Benjamin.Cheatham@amd.com>
----
- Documentation/ABI/testing/debugfs-cxl | 30 +++++++++++++++++++
- drivers/cxl/core/port.c               | 42 +++++++++++++++++++++++++++
- 2 files changed, 72 insertions(+)
+When this table is loaded (using configfs method) we see the creation of =
+a device for the overall PCA9548 chip and 8 further devices - one i2c_ada=
+pter each for the mux channels. These are all bound to their ACPI equival=
+ents via an eventual invocation of acpi_bind_one().
 
-diff --git a/Documentation/ABI/testing/debugfs-cxl b/Documentation/ABI/testing/debugfs-cxl
-index fe61d372e3fa..4c0f62f881ca 100644
---- a/Documentation/ABI/testing/debugfs-cxl
-+++ b/Documentation/ABI/testing/debugfs-cxl
-@@ -33,3 +33,33 @@ Description:
- 		device cannot clear poison from the address, -ENXIO is returned.
- 		The clear_poison attribute is only visible for devices
- 		supporting the capability.
-+
-+What:		/sys/kernel/debug/cxl/einj_types
-+Date:		January, 2024
-+KernelVersion:	v6.9
-+Contact:	linux-cxl@vger.kernel.org
-+Description:
-+		(RO) Prints the CXL protocol error types made available by
-+		the platform in the format "0x<error number>	<error type>".
-+		The possible error types are (as of ACPI v6.5):
-+			0x1000	CXL.cache Protocol Correctable
-+			0x2000	CXL.cache Protocol Uncorrectable non-fatal
-+			0x4000	CXL.cache Protocol Uncorrectable fatal
-+			0x8000	CXL.mem Protocol Correctable
-+			0x10000	CXL.mem Protocol Uncorrectable non-fatal
-+			0x20000	CXL.mem Protocol Uncorrectable fatal
-+
-+		The <error number> can be written to einj_inject to inject
-+		<error type> into a chosen dport.
-+
-+What:		/sys/kernel/debug/cxl/$dport_dev/einj_inject
-+Date:		January, 2024
-+KernelVersion:	v6.9
-+Contact:	linux-cxl@vger.kernel.org
-+Description:
-+		(WO) Writing an integer to this file injects the corresponding
-+		CXL protocol error into $dport_dev ($dport_dev will be a device
-+		name from /sys/bus/pci/devices). The integer to type mapping for
-+		injection can be found by reading from einj_types. If the dport
-+		was enumerated in RCH mode, a CXL 1.1 error is injected, otherwise
-+		a CXL 2.0 error is injected.
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index e59d9d37aa65..eeeb6e53fdc4 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -3,6 +3,7 @@
- #include <linux/platform_device.h>
- #include <linux/memregion.h>
- #include <linux/workqueue.h>
-+#include <linux/einj-cxl.h>
- #include <linux/debugfs.h>
- #include <linux/device.h>
- #include <linux/module.h>
-@@ -793,6 +794,40 @@ static int cxl_dport_setup_regs(struct device *host, struct cxl_dport *dport,
- 	return rc;
- }
- 
-+DEFINE_SHOW_ATTRIBUTE(einj_cxl_available_error_type);
-+
-+static int cxl_einj_inject(void *data, u64 type)
-+{
-+	struct cxl_dport *dport = data;
-+
-+	if (dport->rch)
-+		return einj_cxl_inject_rch_error(dport->rcrb.base, type);
-+
-+	return einj_cxl_inject_error(to_pci_dev(dport->dport_dev), type);
-+}
-+DEFINE_DEBUGFS_ATTRIBUTE(cxl_einj_inject_fops, NULL, cxl_einj_inject,
-+			 "0x%llx\n");
-+
-+static void cxl_debugfs_create_dport_dir(struct cxl_dport *dport)
-+{
-+	struct dentry *dir;
-+
-+	if (!einj_cxl_is_initialized())
-+		return;
-+
-+	/*
-+	 * dport_dev needs to be a PCIe port for CXL 2.0+ ports because
-+	 * EINJ expects a dport SBDF to be specified for 2.0 error injection.
-+	 */
-+	if (!dport->rch && !dev_is_pci(dport->dport_dev))
-+		return;
-+
-+	dir = cxl_debugfs_create_dir(dev_name(dport->dport_dev));
-+
-+	debugfs_create_file("einj_inject", 0200, dir, dport,
-+			    &cxl_einj_inject_fops);
-+}
-+
- static struct cxl_port *__devm_cxl_add_port(struct device *host,
- 					    struct device *uport_dev,
- 					    resource_size_t component_reg_phys,
-@@ -1149,6 +1184,8 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
- 	if (dev_is_pci(dport_dev))
- 		dport->link_latency = cxl_pci_get_latency(to_pci_dev(dport_dev));
- 
-+	cxl_debugfs_create_dport_dir(dport);
-+
- 	return dport;
- }
- 
-@@ -2221,6 +2258,11 @@ static __init int cxl_core_init(void)
- 
- 	cxl_debugfs = debugfs_create_dir("cxl", NULL);
- 
-+	if (einj_cxl_is_initialized()) {
-+		debugfs_create_file("einj_types", 0400, cxl_debugfs, NULL,
-+				    &einj_cxl_available_error_type_fops);
-+	}
-+
- 	cxl_mbox_init();
- 
- 	rc = cxl_memdev_init();
--- 
-2.34.1
+When we unload the SSDT overlay (rmdir /sys/kernel/config/acpi/table/my_m=
+ux/) we run into the problem. The ACPI devices are deleted via acpi_devic=
+e_del_work_fn() and the acpi_device_del_list.=20
+
+The following warning and stack trace is output as the deletion does not =
+go smoothly:
+# rmdir /sys/kernel/config/acpi/table/my_mux/
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+=
+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a=
+7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc =
+0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000=
+000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
+
+The issue as I see it is that the binding of the ACPI devices to their pe=
+er I2C adapters is not correctly cleaned up.=20
+Digging deeper into the issue we see that the deletion order is such that=
+ the ACPI devices matching the mux channel i2c adapters are deleted first=
+ during the SSDT overlay removal. For each of the channels we see a call =
+to i2c_acpi_notify() with ACPI_RECONFIG_DEVICE_REMOVE but, because these =
+devices are not actually i2c_clients, nothing is done for them.=20
+
+Later on, after each of the mux channels has been dealt with, we come to =
+delete the i2c_client representing the PCA9548 device. This is the call s=
+tack we see above, whereby the kernel cleans up the i2c_client including =
+destruction of the mux and it's channel adapters (i2c_mux_del_adapters() =
+-> i2c_del_adapter()). At this point we do attempt to unbind from the ACP=
+I peers but those peers no longer exist and so we hit the kernfs errors.
+
+My proposed fix is to augment i2c_acpi_notify() to handle i2c_adapters. B=
+ut, given that the life cycle of the adapters is linked to the i2c_client=
+, instead of deleting the i2c_adapters during the i2c_acpi_notify(), we i=
+nstead just trigger unbinding of the ACPI device from the adapter device,=
+ and allow the cleanup of the adapter to continue in the way it always ha=
+s.
+
+This fix resolves my specific issue with the I2C mux removal. However, I'=
+m not sure about whether there is a better fix for this issue so if you h=
+ave suggestions please let me know. I'm not sure if there needs to be fur=
+ther code to ensure this new code only runs for this specific case where =
+the i2c_adapters are part of an i2c mux. Guidance on this would be apprec=
+iated.
+
+Hamish Martin (1):
+  i2c: acpi: Unbind mux adapters before delete
+
+ drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+--=20
+2.43.0
+
 
