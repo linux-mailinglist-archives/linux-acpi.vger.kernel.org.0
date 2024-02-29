@@ -1,112 +1,116 @@
-Return-Path: <linux-acpi+bounces-4020-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4026-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB9586CC4B
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 16:03:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEA486CF69
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 17:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176A71C22489
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 15:03:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81000B2B59F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 16:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D67F137774;
-	Thu, 29 Feb 2024 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94644160626;
+	Thu, 29 Feb 2024 16:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGzoHtFK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ieCkvpQH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879A27D419;
-	Thu, 29 Feb 2024 15:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFA0160642;
+	Thu, 29 Feb 2024 16:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709219001; cv=none; b=S5f4uSzR4HX+WuJMIy/wBiyWw0gMYu997lz8Pp2PFrKl7QUK/V4AGaz8CeWKOuuP/rixejPbQ8hMupZlpI1SmNzSi+viBettGiJywm89d1ifv1Vn26hZFNgayg9fJljy0kQK28JmeefSaEIeLK5XGWsgAmpFniZr3t893l7tNFM=
+	t=1709224076; cv=none; b=ggPiSVUq2hrqdPI7OXVIs9AiJcf/JEMDmMXf0X1gDmwEBuU8jEd9YTDmA1AqPxm+OPKf70RbrA/9uRb5Ktay58t75dIt4MS2LicosLAJljkKmau0UtdlnA97Fnlg3HXSwjCry92gEmYFQHogYHqHP0PhgrW5o9hbqcIGZTT14ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709219001; c=relaxed/simple;
-	bh=B3j6dMfEFF9rdkpHUi9+vQzEugFC8IlTQWqn9S39dXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N/XAila3jpM6hi4SSSNHERDAMaF1Y2fwigBFYYblctYevaYT+zLrCDJDsRxtOfX3tA8NA4/pZ4x7MaUAcIv5O1dJjau4F122bMjgjYW0MK9wMS0ZF2zrciU9vC4NELOvWGJF5VoXmZCj2rOcd8akMGp89e3IBSgolsajSTp8ykQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGzoHtFK; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1709224076; c=relaxed/simple;
+	bh=ejvm1bmnxBFMRwAGP7H9c0MFEeLIiilFk0iRRW12wW4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XPvTxDIbg10BJ1h2Du9tza/SZqDp5knLsXkCm3jENhsp6Z5HVASy6OhjtblOaG/mEy8BYXAobKx+RN0jtGyXNHvmCft40/bMWXLTF8nFBivURGatTDxzROSupGaKrVtG/zCgluhycVfcaMP4dBJw7B81gT6xAqNsJO8DkS2UIGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ieCkvpQH; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709219000; x=1740755000;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B3j6dMfEFF9rdkpHUi9+vQzEugFC8IlTQWqn9S39dXg=;
-  b=HGzoHtFKH08DyvlxChM4Tvd9JPPpxynJu5NOCsU2XPNrz5X/3bHXp2a6
-   I26j9UDxol+3Ac6U/eP+aEcnHZhylCbel/lmD5iZ8T72yFywt57Y8eThe
-   fS5bDkXdbFS2MH5MagZoI1c8QQAwxyP6bJOxdd/rJmKGtM1nPVfyMAErV
-   OfRnCm1pMpxyiQqYqlf6o/wjfR1At8IVBc00uvKHqcxwzl9E7HUoi+xmK
-   ZocHYssr2LDxbNsk9I97/UOwK4bJ46zIrrg147exu2Gc78OsSz8yB3eC3
-   bomwNZ0d+Ro9pq9ODUmlhwVCmLNVXxhoSReScJWa37NwOpzbBFrApSUhR
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3571423"
+  t=1709224074; x=1740760074;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ejvm1bmnxBFMRwAGP7H9c0MFEeLIiilFk0iRRW12wW4=;
+  b=ieCkvpQHJtxnjSizOR4ld81czQ8F2KehjyHqpRA6DbL92I1b1GPg9kUP
+   Bd7ncMZEvxpdk8r9niSAwD40+UomwCOvTgWnfYf3oYgM0P0eJwPjX0wxp
+   FQ/bNuyz/H4saRcOB8xRQWIPruNgs/Jaf1w0XaqcN/V6w8UPEFNSSAVbF
+   bUmPvIenRdyIPPLn8lORDsGXiKN4VLflaYX6ZyGqMHiD8Lpw2DsvpiHtz
+   8El5YKKd1B+vd0wHz8pKUVWm9jmBokH3v8tCWChC0HaXCTXr7L4B0Uh3K
+   SDH6OvoWDzfvop2HGQ3f4bifg42WdS3IzDzuBi8X+NA0CD+KxJ/AugYMc
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="6660703"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="3571423"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 07:03:03 -0800
+   d="scan'208";a="6660703"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 08:27:49 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913984045"
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="937036135"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="913984045"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 07:03:00 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rfhw2-00000008hTr-0HOK;
-	Thu, 29 Feb 2024 17:02:58 +0200
-Date: Thu, 29 Feb 2024 17:02:57 +0200
+   d="scan'208";a="937036135"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 08:27:45 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 821A023A; Thu, 29 Feb 2024 18:27:44 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Subject: Re: [PATCH v2 1/2] gpiolib-of: Make of_gpio_get_count() take
- firmware node as a parameter
-Message-ID: <ZeCcoYb8gTRGQTku@smile.fi.intel.com>
-References: <20240229145303.3801332-1-andriy.shevchenko@linux.intel.com>
- <20240229145303.3801332-2-andriy.shevchenko@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v3 0/4] driver core & device property: clean up APIs
+Date: Thu, 29 Feb 2024 18:23:42 +0200
+Message-ID: <20240229162741.3854912-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240229145303.3801332-2-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 29, 2024 at 04:51:38PM +0200, Andy Shevchenko wrote:
-> Make of_gpio_get_count() take firmware node as a parameter in order
-> to be aligned with other functions and decouple from unused device
-> pointer. The latter helps to create a common fwnode_gpio_count()
-> in the future.
-> 
-> While at it, rename to be of_gpio_count() to be aligned with the others.
+There are two, but dependent pair of patches that:
+- makes some of devlink APIs static
+- removes 'proxy' header use
 
-...
+This is rebased on top of latest patches from Jonathan as it has a minor
+conflict in property.h. The series can be applied directly to driver
+core tree with reduced context, but it may be better just to route it
+via IIO. Greg, which way do you prefer?
 
->  struct device;
-> +struct fwnode_handle;
+v3:
+- improved commit message in patch 2 (Rafael)
+- added tag (Rafael)
 
-I just realized that this should be replacement, not addition.
+v2: https://lore.kernel.org/r/20240223155731.858412-1-andriy.shevchenko@linux.intel.com
+- most of the patches were sent separately as v1, thus this series is v2
+- harvested tags from that patches (Sakari, Saravana)
 
- -struct device;
- +struct fwnode_handle;
+Andy Shevchenko (4):
+  driver core: Drop unneeded 'extern' keyword in fwnode.h
+  driver core: Move fw_devlink stuff to where it belongs
+  device property: Move enum dev_dma_attr to fwnode.h
+  device property: Don't use "proxy" headers
 
-Bart, tell me if you can update, or should I send a v3?
+ drivers/base/core.c      | 58 ++++++++++++++++++++++++++++++++++
+ drivers/base/property.c  | 67 ++++------------------------------------
+ drivers/base/swnode.c    | 13 +++++++-
+ include/linux/fwnode.h   | 13 +++++---
+ include/linux/property.h |  9 +-----
+ 5 files changed, 86 insertions(+), 74 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1.gbec44491f096
 
 
