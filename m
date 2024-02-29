@@ -1,281 +1,237 @@
-Return-Path: <linux-acpi+bounces-4031-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4032-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B34586D0BE
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 18:33:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C0C86D0C9
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 18:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF404B24D0B
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 17:33:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277AA1C215B7
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 17:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34BA70ADA;
-	Thu, 29 Feb 2024 17:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F373270AD3;
+	Thu, 29 Feb 2024 17:36:11 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016824AEC0;
-	Thu, 29 Feb 2024 17:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4511716062E;
+	Thu, 29 Feb 2024 17:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709227993; cv=none; b=pmhc5fJqtK+AqLgm9GZ39GDfsfTe6F7hSuql/nIqqAc2gw6wrNs/ysQe0ptDEVcEHPCGIQUpXYp/RCBZSOIc7ia/xoUvL0A2EZGBTzHO/Ajkz5yKJMQFGPnry7WFUtrijLYORGAhHsPmJ7wpD3Ketnfngu5LRaJUebc+FQuTEFw=
+	t=1709228171; cv=none; b=Bg2veMglUgwpUv2RYVTs1jDsLPhAeo8jelcVPU4JezQX1sr0ZepqeRpf8tlMEdGgGQfVXM+gDYQwQDinxhSAVPQcPA90rWZj/lniGfo5JXv5pgtyxcsXTIYAusBAq2qQW+OOOZso3PgJVj9oN8veetlm7uJ17BFfqjPv2sjr4oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709227993; c=relaxed/simple;
-	bh=Xcb/Cl9PjMGq/KNM5b/4VikRIorMVBalMVplpmQgSs4=;
+	s=arc-20240116; t=1709228171; c=relaxed/simple;
+	bh=5lQsEr6Qh9tHM7o+Jd5giKSHuT+ZJAdZpli4wmPcN48=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sMLLbWhS0ZUQMKgiCehT2LaOeDYW1SOjmSMtEh3zRxCI5Q1v5YNdyWN3opYnNBTb1BdugP957oevimBW6vNDlUiHF/jwG9TctS6E8kfy+n5nHCkoz+8BHN+ZAhaTXl3hXsOHbAT20yVe39dc2pNnELswKWAMBemRjXxv/9CRmMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.48
+	 To:Cc:Content-Type; b=jdzewnuJkMdK60uSqs1ofvGwsFAxQ6sTozx7wR7fXlO9pcbd9dBR6YP0HdB9kQJlNKIWPI4bPYKL5sMaMbgx2/3/MAgEFBY9VD593aNcEWmuJqM+2e9rogsX634+fUufiHDlcYp91qzKhvhuRfj0EMQAmaSVc9VDepwOt7NHueU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6e45f7c63f4so151844a34.1;
-        Thu, 29 Feb 2024 09:33:11 -0800 (PST)
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5a05210e560so44964eaf.1;
+        Thu, 29 Feb 2024 09:36:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709227991; x=1709832791;
+        d=1e100.net; s=20230601; t=1709228169; x=1709832969;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f6VNqhRaH2SJuKPVuPLQRWdJSZsktM+MOSg52wWcrck=;
-        b=vTdH2kpSXY/kqHOHGaWbLJgrho0r1n+QsW5CcCYjJfhMMfavPOF3x2AL5Q5VXgIB4H
-         zQ02smeoMGA3dZZOKJb2BtI+/F0DN0znrf18dz9apJw2tnVuR4N4dlQLeKH04PlIXV1i
-         7dYZ3kleVAXI3ZqXNxgVVn9W/nTA+0cLRuDw2W6ej5va8MvBau+hHZmKySqnr/uZ4qfT
-         c7QEc/ay/ziFRRqXTERUWeZyAX53v7WeK9hVTiB8aDw1wxR9mXFY0r1uCHKMRl8Kl2Qd
-         4jiOaY9fMtjtpWi5Jtw69iq5IlIHtCjgq/Mta1f7Y9xD4oAw3iSRsYeKHaMJxfBSNTpY
-         i+Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCVIcPaydQDzDd00D2E+oXpDNhhOj17zp3aWw2czmPiroQjLHfxGAbQDi8OhO4slGLb6uV8b6KkM858toHQhBFYzDwfIDKeQ+cZUGd7niK2ZY6aIb9SPW8mRlVdacCVzSYywEuPC94ablVaV1vpQQxAliZTsnW2dAf13pqQqYkPSLzi/
-X-Gm-Message-State: AOJu0Yx/nsPnA19hYBaFknyWLBOs8qNuY+3k8BBgfBaDUlWLdJDZID6V
-	aNS6oSdxbM0UxhjqQ+XzgFEFYH7Phtzww80hnqDpXAoF4vRi16nCnPCoq9sL8CP7qepMBmsPgm/
-	+YQ/Yzok5L6DgyCZT94iNPakqZTPv+l/xIA8=
-X-Google-Smtp-Source: AGHT+IGjpEGSMo+0QpJNV2Tg9yYpRW1jakjszfOjfGj7BtHqDShrpf3q2Dla2vdyWIv5WN8dWQm7RDaPT5UuGqZO3T8=
-X-Received: by 2002:a4a:a543:0:b0:5a0:ec66:b56b with SMTP id
- s3-20020a4aa543000000b005a0ec66b56bmr1884873oom.0.1709227990938; Thu, 29 Feb
- 2024 09:33:10 -0800 (PST)
+        bh=jxEwKBuAzFb8rhBPqNIU8KxSxIjpcceOLSxQpziJruE=;
+        b=P7Vwulba4Xdbr1pIjbXnQ/7EZGCaP5cYzQ5IwT31jt4nFdYfKTnLgLsVwATQXeoReN
+         rze+/CUQksHt7ntitYyBm1aT1OoLkdh3zhvt4Wi15zSld34ZB7x6MnDA72UBm7/Mi0Uy
+         kuVb0Mb2wNfR1IhIwRcpuP8vtTqUFkx+u3fr3onzvd/TnwmEelj2wbmwbNqK/Q9cGIqf
+         bFpD77sjLrxw07tUKRD59sAqqWSCBNNyzNf4OiTrQaAOaTLi+/LjplnGTQd2s/TkJEwI
+         djxdkg9jRIvLolh5X3/ovC5tNfo172QUY9j590F/wAvki+nhsSGQrm+IOTWRBKpDw/zp
+         E8TQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU1UWxRrRMMohep3uHjvtkPFpxBmTGJSydmkCSzECM0Dp21vIvqy2WigJLL8onUAp6zoU7hpIpJgxVRK3wBp7S3T7qNs5xZQAakiuKd
+X-Gm-Message-State: AOJu0Yx2/NqjoVWdXht+A8TAVaa1wxWPYUgP72sRo+ZKw/Av1hVbRV2Y
+	CX/ueW6MMkEKkT5v0Mx//CThI6FPddFQk7/eZVbOYf4EmKS3DzVuActjGOaWFI2d8WUR3N7MMi5
+	cq2qTYQzSvKzLUVA+8GmirOnGfGg=
+X-Google-Smtp-Source: AGHT+IHSHULtjuulGXkkgXIXLdWokYIfmMcJqUGZZxuJPfoeScx8O2YVwHmCBwrCNkorYcyVsq5UUxrpvCxyIfyId0I=
+X-Received: by 2002:a4a:d317:0:b0:5a0:2cbe:43dd with SMTP id
+ g23-20020a4ad317000000b005a02cbe43ddmr2801222oos.1.1709228169391; Thu, 29 Feb
+ 2024 09:36:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229162520.970986-1-vanshikonda@os.amperecomputing.com> <20240229162520.970986-4-vanshikonda@os.amperecomputing.com>
-In-Reply-To: <20240229162520.970986-4-vanshikonda@os.amperecomputing.com>
+References: <20240229062245.2723548-1-avadhut.naik@amd.com>
+In-Reply-To: <20240229062245.2723548-1-avadhut.naik@amd.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 18:32:59 +0100
-Message-ID: <CAJZ5v0j+qz0okToszmU=kBjZvD3GJKzwz-ZrweOkgw6A2e3pQQ@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] ACPI: CPPC: Read CPC FFH counters in a single IPI
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Cc: Huisong Li <lihuisong@huawei.com>, Beata Michalska <beata.michalska@arm.com>, 
-	Ionela Voinescu <ionela.voinescu@arm.com>, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rafael@kernel.org, sumitg@nvidia.com, zengheng4@huawei.com, 
-	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com, 
-	liuyonglong@huawei.com, zhanjie9@hisilicon.com, linux-acpi@vger.kernel.org
+Date: Thu, 29 Feb 2024 18:35:58 +0100
+Message-ID: <CAJZ5v0h4Z_gND9nTBFeWmW+y5TMG-FjxmaFXPWPX7hRjWe9UPw@mail.gmail.com>
+Subject: Re: [PATCH v4] ACPI: APEI: Skip initialization of GHES_ASSIST
+ structures for Machine Check Architecture
+To: Avadhut Naik <avadhut.naik@amd.com>
+Cc: linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org, 
+	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de, 
+	linux-kernel@vger.kernel.org, yazen.ghannam@amd.com, avadnaik@amd.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 29, 2024 at 5:25=E2=80=AFPM Vanshidhar Konda
-<vanshikonda@os.amperecomputing.com> wrote:
+On Thu, Feb 29, 2024 at 7:22=E2=80=AFAM Avadhut Naik <avadhut.naik@amd.com>=
+ wrote:
 >
-> The CPPC driver reads delivered and reference counters using cpc_read
-> one at a time. This leads to inaccurate measurement of CPU frequency
-> discussed in [1]. If the firmware indicates that both the registers are
-> in the FFH interface the kernel can read the registers together in a
-> single IPI. This has two benefits:
-> 1. Reduces the number of IPIs needed to read the two registers
-> 2. The two registers will be read in close proximity resulting in more
->    accurate CPU frequency measurement
+> To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
+> a set of GHES structures is provided by the system firmware for each MCA
+> error source. Each of these sets consists of a GHES structure for each MC=
+A
+> bank on each logical CPU, with all structures of a set sharing a common
+> Related Source ID, equal to the Source ID of one of the MCA error source
+> structures.[1] On SOCs with large core counts, this typically equates to
+> tens of thousands of GHES_ASSIST structures for MCA under
+> "/sys/bus/platform/drivers/GHES".
 >
-> [1]: https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperecomp=
-uting.com/
+> Support for GHES_ASSIST however, hasn't been implemented in the kernel. A=
+s
+> such, the information provided through these structures is not consumed b=
+y
+> Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
+> to provide supplemental information in context of an error reported by
+> hardware, are setup as independent error sources by the kernel during HES=
+T
+> initialization.
 >
-> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> Additionally, if the Type field of the Notification structure, associated
+> with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
+> sets up a timer for each individual structure. The duration of the timer
+> is derived from the Poll Interval field of the Notification structure. On
+> SOCs with high core counts, this will result in tens of thousands of
+> timers expiring periodically causing unnecessary preemptions and wastage
+> of CPU cycles. The problem will particularly intensify if Poll Interval
+> duration is not sufficiently high.
+>
+> Since GHES_ASSIST support is not present in kernel, skip initialization
+> of GHES_ASSIST structures for MCA to eliminate their performance impact.
+>
+> [1] ACPI specification 6.5, section 18.7
+>
+> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+> Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> Reviewed-by: Tony Luck <tony.luck@intel.com>
 > ---
->  arch/arm64/kernel/topology.c | 37 ++++++++++++++++++++++++++++++++++++
->  drivers/acpi/cppc_acpi.c     | 32 +++++++++++++++++++++++++++----
->  include/acpi/cppc_acpi.h     | 13 +++++++++++++
->  3 files changed, 78 insertions(+), 4 deletions(-)
+> Changes in v2:
+> 1. Since is_ghes_assist_struct() returns if any of the conditions is hit
+> if-else-if chain is redundant. Replace it with just if statements.
+> 2. Fix formatting errors.
+> 3. Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
 >
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 8905eb0c681f..8207565f43ee 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -421,6 +421,43 @@ int cpc_read_ffh(int cpu, struct cpc_reg *reg, u64 *=
-val)
->         return ret;
->  }
+> Changes in v3:
+> 1. Modify structure (mces) comment, per Tony's recommendation, to better
+> reflect the structure's usage.
 >
-> +static void cpc_update_freq_counters(void *info)
-> +{
-> +       update_freq_counters_refs();
-> +}
-> +
-> +int cpc_read_regs_ffh(int cpu, struct ffh_cpc_reg_values *ffh_regs)
-> +{
-> +       struct amu_counters *ctrs =3D per_cpu_ptr(&cpu_samples, cpu);
-> +       int idx;
-> +
-> +       if (!cpc_ffh_supported() || !freq_counters_valid(cpu))
-> +               return -EOPNOTSUPP;
-> +
-> +       if (WARN_ON_ONCE(irqs_disabled()))
-> +               return -EPERM;
-> +
-> +       if (!idle_cpu(cpu))
-> +               smp_call_function_single(cpu, cpc_update_freq_counters, N=
-ULL, 1);
-> +
-> +       for (idx =3D 0; idx < MAX_NUM_CPC_REGS_FFH; idx++) {
-> +
-> +               if (!ffh_regs->regs[idx].reg)
-> +                       continue;
-> +
-> +               switch ((u64)(ffh_regs->regs[idx].reg->address)) {
-> +               case 0x0:
-> +                       ffh_regs->regs[idx].value =3D ctrs->core_cnt;
-> +                       break;
-> +               case 0x1:
-> +                       ffh_regs->regs[idx].value =3D ctrs->const_cnt;
-> +                       break;
-> +               }
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
->  {
->         return -EOPNOTSUPP;
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index d155a86a8614..55ffb1915e4f 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -113,6 +113,10 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc_pt=
-r);
->                                 (cpc)->cpc_entry.reg.space_id =3D=3D     =
-   \
->                                 ACPI_ADR_SPACE_SYSTEM_IO)
+> Changes in v4:
+> 1. No changes within the patch. Just sending out to gather more attention=
+.
+> 2. Add Reviewed-by: Tony Luck <tony.luck@intel.com>
+> ---
+>  drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
 >
-> +#define CPC_IN_FFH(cpc) ((cpc)->type =3D=3D ACPI_TYPE_BUFFER &&         =
-   \
-> +                               (cpc)->cpc_entry.reg.space_id =3D=3D     =
-   \
-> +                               ACPI_ADR_SPACE_FIXED_HARDWARE)
-> +
->  /* Evaluates to True if reg is a NULL register descriptor */
->  #define IS_NULL_REG(reg) ((reg)->space_id =3D=3D  ACPI_ADR_SPACE_SYSTEM_=
-MEMORY && \
->                                 (reg)->address =3D=3D 0 &&               =
-   \
-> @@ -974,6 +978,11 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg =
-*reg, u64 val)
->         return -ENOTSUPP;
->  }
+> diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+> index 6aef1ee5e1bd..20d757687e3d 100644
+> --- a/drivers/acpi/apei/hest.c
+> +++ b/drivers/acpi/apei/hest.c
+> @@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
 >
-> +int __weak cpc_read_regs_ffh(int cpu, struct ffh_cpc_reg_values *regs)
-> +{
-> +       return -ENOTSUPP;
-> +}
-
-This might return a bool value.
-
-Is there any case in which the caller would handle different error
-codes differently?
-
-> +
->  /*
->   * Since cpc_read and cpc_write are called while holding pcc_lock, it sh=
-ould be
->   * as fast as possible. We have already mapped the PCC subspace during i=
-nit, so
-> @@ -1317,7 +1326,7 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf=
-_fb_ctrs *perf_fb_ctrs)
->         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpunum);
->         struct cppc_pcc_data *pcc_ss_data =3D NULL;
->         u64 delivered, reference, ref_perf, ctr_wrap_time;
-> -       int ret =3D 0, regs_in_pcc =3D 0;
-> +       int ret =3D 0, regs_in_pcc =3D 0, regs_read_in_ffh =3D 0;
-
-Please use bool as the type for boolean variables.
-
+>  static struct acpi_table_hest *__read_mostly hest_tab;
 >
->         if (!cpc_desc) {
->                 pr_debug("No CPC descriptor for CPU:%d\n", cpunum);
-> @@ -1353,8 +1362,23 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_per=
-f_fb_ctrs *perf_fb_ctrs)
->                 }
+> +/*
+> + * Since GHES_ASSIST is not supported, skip initialization of GHES_ASSIS=
+T
+> + * structures for MCA.
+> + * During HEST parsing, detected MCA error sources are cached from early
+> + * table entries so that the Flags and Source Id fields from these cache=
+d
+> + * values are then referred to in later table entries to determine if th=
+e
+> + * encountered GHES_ASSIST structure should be initialized.
+> + */
+> +static struct {
+> +       struct acpi_hest_ia_corrected *cmc;
+> +       struct acpi_hest_ia_machine_check *mc;
+> +       struct acpi_hest_ia_deferred_check *dmc;
+> +} mces;
+> +
+>  static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] =3D {
+>         [ACPI_HEST_TYPE_IA32_CHECK] =3D -1,       /* need further calcula=
+tion */
+>         [ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] =3D -1,
+> @@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hes=
+t_hdr)
+>                 cmc =3D (struct acpi_hest_ia_corrected *)hest_hdr;
+>                 len =3D sizeof(*cmc) + cmc->num_hardware_banks *
+>                         sizeof(struct acpi_hest_ia_error_bank);
+> +               mces.cmc =3D cmc;
+>         } else if (hest_type =3D=3D ACPI_HEST_TYPE_IA32_CHECK) {
+>                 struct acpi_hest_ia_machine_check *mc;
+>                 mc =3D (struct acpi_hest_ia_machine_check *)hest_hdr;
+>                 len =3D sizeof(*mc) + mc->num_hardware_banks *
+>                         sizeof(struct acpi_hest_ia_error_bank);
+> +               mces.mc =3D mc;
+>         } else if (hest_type =3D=3D ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
+>                 struct acpi_hest_ia_deferred_check *mc;
+>                 mc =3D (struct acpi_hest_ia_deferred_check *)hest_hdr;
+>                 len =3D sizeof(*mc) + mc->num_hardware_banks *
+>                         sizeof(struct acpi_hest_ia_error_bank);
+> +               mces.dmc =3D mc;
 >         }
+>         BUG_ON(len =3D=3D -1);
 >
-> -       cpc_read(cpunum, delivered_reg, &delivered);
-> -       cpc_read(cpunum, reference_reg, &reference);
-> +       if (CPC_IN_FFH(delivered_reg) && CPC_IN_FFH(reference_reg)) {
-> +               struct ffh_cpc_reg_values ffh_regs;
-> +
-> +               ffh_regs.regs[0].reg =3D &(delivered_reg->cpc_entry.reg);
-> +               ffh_regs.regs[1].reg =3D &(reference_reg->cpc_entry.reg);
-> +               ret =3D cpc_read_regs_ffh(cpunum, &ffh_regs);
-> +               if (!ret) {
-
-If cpc_read_regs_ffh() returned 'true' on success, the above could be writt=
-en as
-
-if (cpc_read_regs_ffh(cpunum, &ffh_regs)) {
-
-> +                       delivered =3D ffh_regs.regs[0].value;
-> +                       reference =3D ffh_regs.regs[1].value;
-> +                       regs_read_in_ffh =3D 1;
-> +               }
-> +       }
-> +
-> +       if (!regs_read_in_ffh) {
-> +               cpc_read(cpunum, delivered_reg, &delivered);
-> +               cpc_read(cpunum, reference_reg, &reference);
-> +       }
->         cpc_read(cpunum, ref_perf_reg, &ref_perf);
->
->         /*
-> @@ -1366,7 +1390,7 @@ int cppc_get_perf_ctrs(int cpunum, struct cppc_perf=
-_fb_ctrs *perf_fb_ctrs)
->         if (CPC_SUPPORTED(ctr_wrap_reg))
->                 cpc_read(cpunum, ctr_wrap_reg, &ctr_wrap_time);
->
-> -       if (!delivered || !reference || !ref_perf) {
-> +       if (!delivered || !reference || !ref_perf) {
->                 ret =3D -EFAULT;
->                 goto out_err;
->         }
-> diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-> index 3a0995f8bce8..0da614a50edd 100644
-> --- a/include/acpi/cppc_acpi.h
-> +++ b/include/acpi/cppc_acpi.h
-> @@ -137,6 +137,18 @@ struct cppc_cpudata {
+>         return len;
 >  };
 >
->  #ifdef CONFIG_ACPI_CPPC_LIB
+> +/*
+> + * GHES and GHESv2 structures share the same format, starting from
+> + * Source Id and ending in Error Status Block Length (inclusive).
+> + */
+> +static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
+> +{
+> +       struct acpi_hest_generic *ghes;
+> +       u16 related_source_id;
 > +
-> +#define MAX_NUM_CPC_REGS_FFH 2
+> +       if (hest_hdr->type !=3D ACPI_HEST_TYPE_GENERIC_ERROR &&
+> +           hest_hdr->type !=3D ACPI_HEST_TYPE_GENERIC_ERROR_V2)
+> +               return false;
 > +
-> +struct ffh_cpc_reg {
-> +       struct cpc_reg *reg;
-> +       u64 value;
-> +};
+> +       ghes =3D (struct acpi_hest_generic *)hest_hdr;
+> +       related_source_id =3D ghes->related_source_id;
 > +
-> +struct ffh_cpc_reg_values {
-> +       struct ffh_cpc_reg regs[MAX_NUM_CPC_REGS_FFH];
-> +};
+> +       if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
+> +           related_source_id =3D=3D mces.cmc->header.source_id)
+> +               return true;
+> +       if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
+> +           related_source_id =3D=3D mces.mc->header.source_id)
+> +               return true;
+> +       if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
+> +           related_source_id =3D=3D mces.dmc->header.source_id)
+> +               return true;
 > +
->  extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
->  extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
->  extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb=
-_ctrs);
-> @@ -153,6 +165,7 @@ extern unsigned int cppc_get_transition_latency(int c=
-pu);
->  extern bool cpc_ffh_supported(void);
->  extern bool cpc_supported_by_cpu(void);
->  extern int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val);
-> +extern int cpc_read_regs_ffh(int cpu, struct ffh_cpc_reg_values *regs);
->  extern int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val);
->  extern int cppc_get_epp_perf(int cpunum, u64 *epp_perf);
->  extern int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls=
-, bool enable);
+> +       return false;
+> +}
+> +
+>  typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void =
+*data);
+>
+>  static int apei_hest_parse(apei_hest_func_t func, void *data)
+> @@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, vo=
+id *data)
+>                         return -EINVAL;
+>                 }
+>
+> +               if (is_ghes_assist_struct(hest_hdr)) {
+> +                       hest_hdr =3D (void *)hest_hdr + len;
+> +                       continue;
+> +               }
+> +
+>                 rc =3D func(hest_hdr, data);
+>                 if (rc)
+>                         return rc;
+>
+> base-commit: 07a90c3d91505e44a38e74e1588b304131ad8028
 > --
+
+Applied as 6.9 material, thanks!
 
