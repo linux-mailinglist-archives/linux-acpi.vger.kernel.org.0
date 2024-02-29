@@ -1,234 +1,262 @@
-Return-Path: <linux-acpi+bounces-4011-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4012-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABED586BABB
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 23:27:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB2586C0A0
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 07:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12CBC1F25035
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Feb 2024 22:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F7701C21650
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 06:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35791361D2;
-	Wed, 28 Feb 2024 22:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13293C082;
+	Thu, 29 Feb 2024 06:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ISiNV9ew"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nHcUIb2u"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2087.outbound.protection.outlook.com [40.107.220.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2801361B6;
-	Wed, 28 Feb 2024 22:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709159223; cv=none; b=hkIR+KnKTeJ0e4lfKY9kgDCLAf07GWvAMbC9uASm1cMqbNTwvjSd4BomoJ0bJ84piapGJzj38F3WvtkmHaIFk3aCPl2saic88O9+/cTPumGwDpxh3Ke5mMsWizGqDlFpsIyAuqZocuh4tC8FnXa0bvqlQVYOOPlZgHV2xXfWq4Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709159223; c=relaxed/simple;
-	bh=1TO5f8A5S0u8pNDs4toUErk3IwQ5H/OMSdBtC0j2kxc=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RZ0+jGHQ5Jodg6jmuYnF6yVfAG9tDRn9ZAS18YVdKsmI2GStwVezIO2mva3/rOiRZw3wzzIfQJHIkGMKOx28DxMVK2MKcUguDbuoQKGO35Z94rO8za1VQgdG+HRIHS5O/mQbwjN2z6QZhnmtMSRbl5C+quRVlwzwessUFXJ7WgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Groves.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ISiNV9ew; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=Groves.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e49332d014so107696a34.3;
-        Wed, 28 Feb 2024 14:27:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709159220; x=1709764020; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kaJiMJlBXduLswabTLSZyMUV96qL4jeTVSd7UGYS8fk=;
-        b=ISiNV9ew5NLAkcASXb4I8Aj58SVSeABd4MtXWu71w+c5fEHqgpZlCLTznkWdjY3nJ0
-         kwsanBAkAYf6jnCEbPrKC5gNPIzSFOmdKYNCtoCplGGuWxnV8U26nAVXiOQgQ8mMtD5P
-         TVOlz0gOY3SpyBRxgngN2VXjW+Kwy1E0z7hEy41MKQgW4BQ6Cn/ojDpD0KT+CbN6Ywbq
-         SyMfzJyWo2dsrAYiJvN+Q3yFbEItRZCz7KEaSfmnaSQqARRlMpZKBaD0M7IFH+wp4O+P
-         VsrZd/rx7F0rwB/AJogwwGdcNwDNQB44X7QtXb7wmHaS8tlKlNCRFrkAR6frg0N9CJmk
-         m04w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709159220; x=1709764020;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kaJiMJlBXduLswabTLSZyMUV96qL4jeTVSd7UGYS8fk=;
-        b=nxWMiTwj2Zbz8Af8c/+oxkp/VmKNHyLKncLiQZcDMCdrroOhf/igZy2ZSdum7jexW2
-         xdnMaysJT+eKSjO1lQL2O01T1fpHgg3X0quhIowMrEqCaMYwSQTYavubxfZ99cSVqQB8
-         yUAA1T1utBp0stm1JOtQUspzbiZUkUKifBNcJBA+fmSCbS3AkfETGHMUKvylEPT6VbAI
-         PlTFQyPTufd0tAXRrWikbcC+sYj0kczw4eZXk6SxANzOCuCPdBgdVcej9nhPgDeOQcEU
-         eGiowS0uDdT6gtzi+qKss/c+/RUbJBIVRiBjW2Kd8vST0AFygZtf2fbszK7nJqSj0sS/
-         1VZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVgli7ubgQ+BxHS/LfnYtotjFUmMCJJH6ptjNLeg1CgJMvIJQXdPgmKQc4opN9dglRuojMrI0AmicgWb+2P3n5FE+6VkVRDMAoIAVHiAoOwYwY8PNh3eAzCfzC/vDvlT9RN4r7RMqrZbE6+r8ybq5akwgbqUeo6JpTLSU9Rz1Vse1FIBgo7GQ4qPlvPKNq54rfIL1tyn1tVW90suxhdh/g=
-X-Gm-Message-State: AOJu0YzRedp8HPrJywgS99fokH5CJo+GqBMDh6ACfN4SFHF76UnO5XVp
-	X1Kj5jEiQ0+fjPpTlb4TuIVZzTvFD8SmMY2DPjxrAjOsYqke6n0q
-X-Google-Smtp-Source: AGHT+IEMG8s51d8mnXsggTW0jvuc65XoybjHZXS/KZXAk1iqexdiKPHx6zfzuc4kQZQavEzyv3OCIw==
-X-Received: by 2002:a05:6870:1642:b0:21f:f6f6:cae with SMTP id c2-20020a056870164200b0021ff6f60caemr264638oae.32.1709159220293;
-        Wed, 28 Feb 2024 14:27:00 -0800 (PST)
-Received: from Borg-9.local (070-114-203-196.res.spectrum.com. [70.114.203.196])
-        by smtp.gmail.com with ESMTPSA id gr15-20020a056870aa8f00b0021ff3548a19sm37620oab.37.2024.02.28.14.26.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 14:26:59 -0800 (PST)
-Sender: John Groves <grovesaustin@gmail.com>
-From: John Groves <John@Groves.net>
-X-Google-Original-From: John Groves <john@groves.net>
-Date: Wed, 28 Feb 2024 16:26:56 -0600
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Shiju Jose <shiju.jose@huawei.com>, 
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dave@stgolabs.net" <dave@stgolabs.net>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, "dave.jiang@intel.com" <dave.jiang@intel.com>, 
-	"alison.schofield@intel.com" <alison.schofield@intel.com>, "vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, 
-	"ira.weiny@intel.com" <ira.weiny@intel.com>, "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "david@redhat.com" <david@redhat.com>, 
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>, 
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com" <rientjes@google.com>, 
-	"jiaqiyan@google.com" <jiaqiyan@google.com>, "tony.luck@intel.com" <tony.luck@intel.com>, 
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>, 
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com" <somasundaram.a@hpe.com>, 
-	"erdemaktas@google.com" <erdemaktas@google.com>, "pgonda@google.com" <pgonda@google.com>, 
-	"duenwen@google.com" <duenwen@google.com>, "mike.malvestuto@intel.com" <mike.malvestuto@intel.com>, 
-	"gthelen@google.com" <gthelen@google.com>, "wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>, 
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei <tanxiaofei@huawei.com>, 
-	"Zengtao (B)" <prime.zeng@hisilicon.com>, "kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, 
-	wanghuiqiang <wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: Re: [RFC PATCH v6 00/12] cxl: Add support for CXL feature commands,
- CXL device patrol scrub control and DDR5 ECS control features
-Message-ID: <7r4vrkmpma7u7zkzanuame7q4vl4ourygnyww4muzqjfvwvu3y@qkwmmoy6jflr>
-References: <20240215111455.1462-1-shiju.jose@huawei.com>
- <65d6936952764_1138c7294e@dwillia2-xfh.jf.intel.com.notmuch>
- <54c55412e9374e4e9cacf8410a5a98cb@huawei.com>
- <65d8f5201f8cc_2509b29467@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54F92E415;
+	Thu, 29 Feb 2024 06:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709187777; cv=fail; b=J2YbikFk5OvJFvxi/aPrCkG3G8xf+ZE3/3Ysy9bUQWhOX0NoNYuHSnqQAOgOuUsVOV1lP1OQUmPCIeFlpI1Bgn7VYpryigxPEmzYvr5UC+GN6E6inuIRaw6a3pybh7weHYSbdWmEApxfgp+am6SMAC1VLUJxn/9M/SWiwK10oGk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709187777; c=relaxed/simple;
+	bh=RVbikJl+sHQ/i0PajLBdOzeS7lLhV7wty90TnUqhRgI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e6E4+HqMzTCI2kyq1rOSLCSfxpp9Z+cEKQYb+K5lRfjG8sLoQiLKuHojicpchZe3lRYDIVkeLkQdKUeZTKPAJdHoxnAKMYRiqwWU9lWl7FrrFgQJC2CESI2MZdGC1Ao5HycdyF3Y0mbpQRAPmaaxEKXUFjpyRQmTv1g4D0IZPy8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nHcUIb2u; arc=fail smtp.client-ip=40.107.220.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JIXLLxtau59TL2TlE7dZUjfhv8LKHB9BdSZCmDKT5rqv9Xeci3Mt6nocLvfhXFnIOvdILu4uY5OLrbfzjJlob6hB/Va/+3p/VMMeIz7gI3M/NEMJ7wJww7KerPuPpIOFQpl4vNZnV93xgZF5GuDP3k/3T0Ec3iKESk+67UwI9ajBoi84lteylY2q1Fh/KOohHxcyxw07p/XIq9Q1JwxXS8gXND3QQ7EUkSuBYazVLhvJXwVLXNK8ciQtCpwvPr3+gi4JolEea47yuoJX75QO2C/7ZvxQA2C+ZAey4Gr79GPzskjuEqBHi8Bg2jAnLeK93Pj+VxOQegqzX4sY6yXTAw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GREByrcmPJ1umQ89Kz0166OzFwUmSCBN0U7GUNxqByk=;
+ b=ZfiRCzPukp0veq+zxAbl5oX7iSgQ0WKQaTeldUs+RjFEWfouW8/mrWVItriOt326UoWKPBeYkekXbPiiag0C+XaVIq+jotSaBdnLl1KLQCtfMaf2dHl3qIreUM+8fmpUnm0C0CMnP/JXMEkXuLLgF4OSdU7kMTk8Vi7ugBas2F9//OC/S87QXyOpXYF1ZtnLsyCEiVuADmhMAgEDnvthweNxXkORUiJla0NdXSZpRP+D+mdcMM7S3BlSyGm5BPEQUHaVqIEX/wacQ/hjl1Mp2QbATZ7LRIgljL+LfBZUGyIwN+DLbaUOuXGsFgjeSfTL0lTbKIJlWJYfiziDdo+8yA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GREByrcmPJ1umQ89Kz0166OzFwUmSCBN0U7GUNxqByk=;
+ b=nHcUIb2uD3yD0ZnrIUoTA5q78vbffIJLg6zMa9oSn8pPslOlumEYOYd9oRzaU3NVVhmF4nvFpSF3XTYUqxgstnplUlGbYSf123tmGKENxSn8xgD3r9Y/50YCRX69VO3w4tqNyoTkv9jBEZZL5LM9G4JyF3Z/ALt7ZYf+ZNVU6Fg=
+Received: from CY5PR19CA0053.namprd19.prod.outlook.com (2603:10b6:930:1a::30)
+ by PH7PR12MB9202.namprd12.prod.outlook.com (2603:10b6:510:2ef::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Thu, 29 Feb
+ 2024 06:22:52 +0000
+Received: from CY4PEPF0000EE33.namprd05.prod.outlook.com
+ (2603:10b6:930:1a:cafe::2c) by CY5PR19CA0053.outlook.office365.com
+ (2603:10b6:930:1a::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.28 via Frontend
+ Transport; Thu, 29 Feb 2024 06:22:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE33.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Thu, 29 Feb 2024 06:22:51 +0000
+Received: from titanite-d354host.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 29 Feb 2024 00:22:50 -0600
+From: Avadhut Naik <avadhut.naik@amd.com>
+To: <linux-acpi@vger.kernel.org>
+CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <linux-kernel@vger.kernel.org>,
+	<yazen.ghannam@amd.com>, <avadnaik@amd.com>
+Subject: [PATCH v4] ACPI: APEI: Skip initialization of GHES_ASSIST structures for Machine Check Architecture
+Date: Thu, 29 Feb 2024 00:22:45 -0600
+Message-ID: <20240229062245.2723548-1-avadhut.naik@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65d8f5201f8cc_2509b29467@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE33:EE_|PH7PR12MB9202:EE_
+X-MS-Office365-Filtering-Correlation-Id: c3408d4c-8fa1-44d6-b320-08dc38eedb9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	SlixrivOAus2KmaN7rhtT8331x5EykIh8KdfukyD4AOOgfiiOQTRynEfeea5ZztfRDxtG87Xs/gYGm3R4WZPgWrRfJtckJSwp8AJgc+JxGRQiTUg6bYHQcRM3vuV6y0JTT2h/oAwy8gQLsUy8xURgRYVbLv8rV9N0di6ymkrU3DS4Ue59EGzKSn2JA3JBGmyJsoUYnHcAskdvEhH3IwfoqzpAfSsur+swbBLSNEC00TXUGLdi1tXMXomsjLmpx8bpbSHV/0QCcFWi4CZ54ZtfX8Vk+x4OZtIHGqAkf8dhmlsmxpQzWphwZA9rhQs7AkywImXh47YSApIuoIzhOwNokTfFIXD1ErtjOqDNTOgoI4CgCZ+YCEYDED7fdiqHjWKhdTef/uAMZlQEgxZ254KnQFxHRIA0CXTUQ3aOL1rnTqWk3r0I0g0/F0uA82fdZYL5MioJYTV+SQkNi4hXfTT5EvxGP35vtJsEIRHmLIlNrykvgGzcenB8sYkZSyrj5bSAOzzqzGC9n7wmBTKVmZYvIQiG53mthIG6ObUzt01cfbSVBjYb5gpQpneLsaFcyWF2Xjm6QmnApOCSd6UfnAyRQ+T75TssOK78chtXPH8HbimTU4lTmLP7ZoKTbltz4XMLqMV0QCnWB5qAF6fh4e581gRhqmkSGLtIjtT+nf1cLI2k4OjGjcXZq6v2ri5U66Q9RAYIi8iHbGaDDDsI6ZoXSsInQYDAQ+mwcBr/YBYNjqf94PVs0dI0VCrHKpS17Oe
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 06:22:51.6550
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c3408d4c-8fa1-44d6-b320-08dc38eedb9a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE33.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9202
 
-On 24/02/23 11:42AM, Dan Williams wrote:
-> Shiju Jose wrote:
-> > Hi Dan,
-> > 
-> > Thanks for the feedback.
-> > 
-> > Please find reply inline.
-> > 
-> > >-----Original Message-----
-> > >From: Dan Williams <dan.j.williams@intel.com>
-> > >Sent: 22 February 2024 00:21
-> > >To: Shiju Jose <shiju.jose@huawei.com>; linux-cxl@vger.kernel.org; linux-
-> > >acpi@vger.kernel.org; linux-mm@kvack.org; dan.j.williams@intel.com;
-> > >dave@stgolabs.net; Jonathan Cameron <jonathan.cameron@huawei.com>;
-> > >dave.jiang@intel.com; alison.schofield@intel.com; vishal.l.verma@intel.com;
-> > >ira.weiny@intel.com
-> > >Cc: linux-edac@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > >david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
-> > >Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
-> > >tony.luck@intel.com; Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
-> > >rafael@kernel.org; lenb@kernel.org; naoya.horiguchi@nec.com;
-> > >james.morse@arm.com; jthoughton@google.com; somasundaram.a@hpe.com;
-> > >erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
-> > >mike.malvestuto@intel.com; gthelen@google.com;
-> > >wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
-> > >tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>;
-> > >kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
-> > >Linuxarm <linuxarm@huawei.com>; Shiju Jose <shiju.jose@huawei.com>
-> > >Subject: RE: [RFC PATCH v6 00/12] cxl: Add support for CXL feature commands,
-> > >CXL device patrol scrub control and DDR5 ECS control features
-> > >
-> > >shiju.jose@ wrote:
-> > >> From: Shiju Jose <shiju.jose@huawei.com>
-> > >>
-> > >> 1. Add support for CXL feature mailbox commands.
-> > >> 2. Add CXL device scrub driver supporting patrol scrub control and ECS
-> > >> control features.
-> > >> 3. Add scrub subsystem driver supports configuring memory scrubs in the
-> > >system.
-> > >> 4. Register CXL device patrol scrub and ECS with scrub subsystem.
-> > >> 5. Add common library for RASF and RAS2 PCC interfaces.
-> > >> 6. Add driver for ACPI RAS2 feature table (RAS2).
-> > >> 7. Add memory RAS2 driver and register with scrub subsystem.
-> > >
-> > >I stepped away from this patch set to focus on the changes that landed for v6.8
-> > >and the follow-on regression fixups. Now that v6.8 CXL work has quieted down
-> > >and I circle back to this set for v6.9 I find the lack of story in this cover letter to
-> > >be unsettling. As a reviewer I should not have to put together the story on why
-> > >Linux should care about this feature and independently build up the
-> > >maintainence-burden vs benefit tradeoff analysis.
-> > I will add more details to the cover letter.
-> >  
-> > >
-> > >Maybe it is self evident to others, but for me there is little in these changelogs
-> > >besides "mechanism exists, enable it". There are plenty of platform or device
-> > >mechanisms that get specified that Linux does not enable for one reason or
-> > >another.
-> > >
-> > >The cover letter needs to answer why it matters, and what are the tradeoffs.
-> > >Mind you, in my submissions I do not always get this right in the cover letter [1],
-> > >but hopefully at least one of the patches tells the story [2].
-> > >
-> > >In other words, imagine you are writing the pull request to Linus or someone
-> > >else with limited time who needs to make a risk decision on a pull request with a
-> > >diffstat of:
-> > >
-> > >    23 files changed, 3083 insertions(+)
-> > >
-> > >...where the easiest decision is to just decline. As is, these changelogs are not
-> > >close to tipping the scale to "accept".
-> > >
-> > >[sidebar: how did this manage to implement a new subsystem with 2 consumers
-> > >(CXL + ACPI), without modifying a single existing line? Zero deletions? That is
-> > >either an indication that Linux perfectly anticipated this future use case
-> > >(unlikely), or more work needs to be done to digest an integrate these concepts
-> > >into existing code paths]
-> > >
-> > >One of the first questions for me is why CXL and RAS2 as the first consumers and
-> > >not NVDIMM-ARS and/or RASF Patrol Scrub? Part of the maintenance burden
-> > We don't personally care about NVDIMMS but would welcome drivers from others.
-> 
-> Upstream would also welcome consideration of maintenance burden
-> reduction before piling on, at least include *some* consideration of the
-> implications vs this response that comes off as "that's somebody else's
-> problem".
-> 
-> > Regarding RASF patrol scrub no one cared about it as it's useless and
-> > any new implementation should be RAS2.
-> 
-> The assertion that "RASF patrol scrub no one cared about it as it's
-> useless and any new implementation should be RAS2" needs evidence.
-> 
-> For example, what platforms are going to ship with RAS2 support, what
-> are the implications of Linux not having RAS2 scrub support in a month,
-> or in year? There are parts of the ACPI spec that have never been
-> implemented what is the evidence that RAS2 is not going to suffer the
-> same fate as RASF? There are parts of the CXL specification that have
-> never been implemented in mass market products.
-> 
-> > Previous discussions in the community about RASF and scrub could be find here.
-> > https://lore.kernel.org/lkml/20230915172818.761-1-shiju.jose@huawei.com/#r
-> > and some old ones,
-> > https://patchwork.kernel.org/project/linux-arm-kernel/patch/CS1PR84MB0038718F49DBC0FF03919E1184390@CS1PR84MB0038.NAMPRD84.PROD.OUTLOOK.COM/
-> > 
-> 
-> Do not make people hunt for old discussions, if there are useful points
-> in that discussion that make the case for the patch set include those in
-> the next submission, don't make people hunt for the latest state of the
-> story.
-> 
-> > https://lore.kernel.org/all/20221103155029.2451105-1-jiaqiyan@google.com/
-> 
-> Yes, now that is a useful changelog, thank you for highlighting it,
-> please follow its example.
+To support GHES_ASSIST on Machine Check Architecture (MCA) error sources,
+a set of GHES structures is provided by the system firmware for each MCA
+error source. Each of these sets consists of a GHES structure for each MCA
+bank on each logical CPU, with all structures of a set sharing a common
+Related Source ID, equal to the Source ID of one of the MCA error source
+structures.[1] On SOCs with large core counts, this typically equates to
+tens of thousands of GHES_ASSIST structures for MCA under
+"/sys/bus/platform/drivers/GHES".
 
-Just a comment that is not directed at the implementation details: at Micron we
-see demand for the scrub control feature, so we do hope to see this support
-go in sooner rather than later.
+Support for GHES_ASSIST however, hasn't been implemented in the kernel. As
+such, the information provided through these structures is not consumed by
+Linux. Moreover, these GHES_ASSIST structures for MCA, which are supposed
+to provide supplemental information in context of an error reported by
+hardware, are setup as independent error sources by the kernel during HEST
+initialization.
 
-Regards,
-John
+Additionally, if the Type field of the Notification structure, associated
+with these GHES_ASSIST structures for MCA, is set to Polled, the kernel
+sets up a timer for each individual structure. The duration of the timer
+is derived from the Poll Interval field of the Notification structure. On
+SOCs with high core counts, this will result in tens of thousands of
+timers expiring periodically causing unnecessary preemptions and wastage
+of CPU cycles. The problem will particularly intensify if Poll Interval
+duration is not sufficiently high.
+
+Since GHES_ASSIST support is not present in kernel, skip initialization
+of GHES_ASSIST structures for MCA to eliminate their performance impact.
+
+[1] ACPI specification 6.5, section 18.7
+
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+---
+Changes in v2:
+1. Since is_ghes_assist_struct() returns if any of the conditions is hit
+if-else-if chain is redundant. Replace it with just if statements.
+2. Fix formatting errors.
+3. Add Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+
+Changes in v3:
+1. Modify structure (mces) comment, per Tony's recommendation, to better
+reflect the structure's usage.
+
+Changes in v4:
+1. No changes within the patch. Just sending out to gather more attention.
+2. Add Reviewed-by: Tony Luck <tony.luck@intel.com>
+---
+ drivers/acpi/apei/hest.c | 51 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
+
+diff --git a/drivers/acpi/apei/hest.c b/drivers/acpi/apei/hest.c
+index 6aef1ee5e1bd..20d757687e3d 100644
+--- a/drivers/acpi/apei/hest.c
++++ b/drivers/acpi/apei/hest.c
+@@ -37,6 +37,20 @@ EXPORT_SYMBOL_GPL(hest_disable);
+ 
+ static struct acpi_table_hest *__read_mostly hest_tab;
+ 
++/*
++ * Since GHES_ASSIST is not supported, skip initialization of GHES_ASSIST
++ * structures for MCA.
++ * During HEST parsing, detected MCA error sources are cached from early
++ * table entries so that the Flags and Source Id fields from these cached
++ * values are then referred to in later table entries to determine if the
++ * encountered GHES_ASSIST structure should be initialized.
++ */
++static struct {
++	struct acpi_hest_ia_corrected *cmc;
++	struct acpi_hest_ia_machine_check *mc;
++	struct acpi_hest_ia_deferred_check *dmc;
++} mces;
++
+ static const int hest_esrc_len_tab[ACPI_HEST_TYPE_RESERVED] = {
+ 	[ACPI_HEST_TYPE_IA32_CHECK] = -1,	/* need further calculation */
+ 	[ACPI_HEST_TYPE_IA32_CORRECTED_CHECK] = -1,
+@@ -70,22 +84,54 @@ static int hest_esrc_len(struct acpi_hest_header *hest_hdr)
+ 		cmc = (struct acpi_hest_ia_corrected *)hest_hdr;
+ 		len = sizeof(*cmc) + cmc->num_hardware_banks *
+ 			sizeof(struct acpi_hest_ia_error_bank);
++		mces.cmc = cmc;
+ 	} else if (hest_type == ACPI_HEST_TYPE_IA32_CHECK) {
+ 		struct acpi_hest_ia_machine_check *mc;
+ 		mc = (struct acpi_hest_ia_machine_check *)hest_hdr;
+ 		len = sizeof(*mc) + mc->num_hardware_banks *
+ 			sizeof(struct acpi_hest_ia_error_bank);
++		mces.mc = mc;
+ 	} else if (hest_type == ACPI_HEST_TYPE_IA32_DEFERRED_CHECK) {
+ 		struct acpi_hest_ia_deferred_check *mc;
+ 		mc = (struct acpi_hest_ia_deferred_check *)hest_hdr;
+ 		len = sizeof(*mc) + mc->num_hardware_banks *
+ 			sizeof(struct acpi_hest_ia_error_bank);
++		mces.dmc = mc;
+ 	}
+ 	BUG_ON(len == -1);
+ 
+ 	return len;
+ };
+ 
++/*
++ * GHES and GHESv2 structures share the same format, starting from
++ * Source Id and ending in Error Status Block Length (inclusive).
++ */
++static bool is_ghes_assist_struct(struct acpi_hest_header *hest_hdr)
++{
++	struct acpi_hest_generic *ghes;
++	u16 related_source_id;
++
++	if (hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR &&
++	    hest_hdr->type != ACPI_HEST_TYPE_GENERIC_ERROR_V2)
++		return false;
++
++	ghes = (struct acpi_hest_generic *)hest_hdr;
++	related_source_id = ghes->related_source_id;
++
++	if (mces.cmc && mces.cmc->flags & ACPI_HEST_GHES_ASSIST &&
++	    related_source_id == mces.cmc->header.source_id)
++		return true;
++	if (mces.mc && mces.mc->flags & ACPI_HEST_GHES_ASSIST &&
++	    related_source_id == mces.mc->header.source_id)
++		return true;
++	if (mces.dmc && mces.dmc->flags & ACPI_HEST_GHES_ASSIST &&
++	    related_source_id == mces.dmc->header.source_id)
++		return true;
++
++	return false;
++}
++
+ typedef int (*apei_hest_func_t)(struct acpi_hest_header *hest_hdr, void *data);
+ 
+ static int apei_hest_parse(apei_hest_func_t func, void *data)
+@@ -114,6 +160,11 @@ static int apei_hest_parse(apei_hest_func_t func, void *data)
+ 			return -EINVAL;
+ 		}
+ 
++		if (is_ghes_assist_struct(hest_hdr)) {
++			hest_hdr = (void *)hest_hdr + len;
++			continue;
++		}
++
+ 		rc = func(hest_hdr, data);
+ 		if (rc)
+ 			return rc;
+
+base-commit: 07a90c3d91505e44a38e74e1588b304131ad8028
+-- 
+2.34.1
 
 
