@@ -1,204 +1,79 @@
-Return-Path: <linux-acpi+bounces-4037-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4038-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62EB86D15C
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 19:03:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0496D86D28A
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 19:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42BA628419E
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 18:03:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36AF51C21410
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 18:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B85370AEE;
-	Thu, 29 Feb 2024 18:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2CC134421;
+	Thu, 29 Feb 2024 18:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeV32OQ9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18472E410;
-	Thu, 29 Feb 2024 18:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469BD13441D;
+	Thu, 29 Feb 2024 18:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709229785; cv=none; b=qF1PWog4Z5ZGWtPaNn90X8MC3y+xuAIXpp0KNSdReMRjGE1RiYoo/8Un3py3e5mfPBDRmFR+QScTajL9xIpyHqHp5T4RFpeoFiSU2dqH/1cyfuAloZMGLX+mSDNMtbsb3nmt9JcHvJvnE7vQ6EP1lfOCMLExw1kpigiOcSeSY7Y=
+	t=1709232380; cv=none; b=a703Rd4ZMJJswI2T77CiUxM02RLh3HyJCczAx3bbRFB/LEsTOm4UFjjnTlZ5nyDZpTpjfgOq9xFRWtHd4C4ybScTXBbJHuSFyBmDTkJyoYyrbGXZ8wb5EoFAwnXzuoRPNjUQybe4PXppXKR330AkI0bSFmzpbYAqkFo1du2/XBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709229785; c=relaxed/simple;
-	bh=Yv7Kh+xyzhHgEEJC7cvh6WUFRIzB9hwLqRLYbL6gjZE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rIfK5DagTAOhrLRtgyU8jKnFTSyUDlvfWg9S2bblDpE7wvwl1aX6oS6Jp++b60v1lDLAIfVmBlhralShjL8Ne7DfzSs1yHwotpRrGKdJU0IAfRGZIlhKSd9qCtVvbxUNtA1LXypD2KJh3IEhhI9ghSxCy/9bfeNrQe4fR5BbmuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6e45f7c63f4so156910a34.1;
-        Thu, 29 Feb 2024 10:03:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709229782; x=1709834582;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H+vLszme3j62CDIVZVLpVdKt2WiORGBWMybzMte4imE=;
-        b=Z5q4FK3/Bg/XXIgNjGhp6cpRLtGg4cLjLi3kaDf/7DnJNxGFuGrChXwofhr4/AVV/f
-         oiHHjGfQtr7MeA6O7mEY1bUgJc1lVU4rytu25STCZ0sv3KSXIAl5Mk6YMf3DuaqFbFJ1
-         Pe6BeB0WeJYb2qg/2d68g1+UJfFpwjKaI6gIXlm8ImTv9c2GMFPT3T62loRpSzWaBuoH
-         WpaqKU3wmsXqPv6pEEr3PgHULRuriXOTi16DjqYdbbvP8dzm9qWHTYdtggyA3X9H9/sf
-         uPJfzLaHt9KJkr76+ObptvSaGuLf4xj6Ax02yOaoKE4Aio1B58BVmOv5/9CPYCjMDOCH
-         uEdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqOSQ3YEQdQK4EpOotaiwwofBJSOU4J+mw4hT8myOqHNv+bUF5xwBpGe0gGI5wTRkGcud7yABTrk8RM6hMOUtmYdCn40VDx5/JQQH/uJb2TRqUEr6szaZEBv3CDBJL8ilNeFAHzqIkKKEb2KxVBEXObOjpc28CY6/3cJgbPbDBHwJ+
-X-Gm-Message-State: AOJu0Yz9frwHjSq2Z7TQP+d6Zid6FprDFsf3nJD7Ck+TfOUDpSFR0FzL
-	znHyWW83Ar2F7FjM/i4VYTJhuGYPZ8eVqbZMyblmfRdvquZFGXtV84PRXBUbnJV+ZlMpvKxb19K
-	wsKNCgHFUBcuc/r3n0F2ti3GT5ko=
-X-Google-Smtp-Source: AGHT+IGjwCt8gwPhtD2QfGUFtj7EEmyRNMqlWVH4M3FPv6FvZwVjPAuxpU04rmh+tGHIdUKcjXgxVuCjIWguAI1Ld88=
-X-Received: by 2002:a4a:301:0:b0:5a0:396d:2489 with SMTP id
- 1-20020a4a0301000000b005a0396d2489mr2769270ooi.1.1709229781780; Thu, 29 Feb
- 2024 10:03:01 -0800 (PST)
+	s=arc-20240116; t=1709232380; c=relaxed/simple;
+	bh=Xpf/23s+tpbFYRdfPV6fub2fKtvmlhUT09D+IZLg50Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tEdeiOD7eB31b/xwsi+TJ4LVrLz25bSf+acv0zQU+Vr3FiuHhmItfA3lFlYChfm/bmUc2TK+2ybEvAMCz4xnn7itpvnbYAyM+s7mlQjeek8EjLkPLc2kcDTQpNu0/WVeRL/pzax1Hnite+0Bqd1XlX+XL2D+COCtwijYVwDKaVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeV32OQ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AD7C43399;
+	Thu, 29 Feb 2024 18:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709232379;
+	bh=Xpf/23s+tpbFYRdfPV6fub2fKtvmlhUT09D+IZLg50Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LeV32OQ9yS57vew36uCuLwNmHGchAdfS5eb8fig+23+Edl5bVOhE7v3rBvqdsSF19
+	 uSzlBD8RVBd2h76dfec1Zvimu/rmLW5qRj+zh/BsgaKU+8WYdnhjzPgoTsMufZVAIl
+	 jkDA5Y3WygOyS4bty3gOIodyXNmsLNoP3Kma8lxI=
+Date: Thu, 29 Feb 2024 19:46:15 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Len Brown <lenb@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v3 0/4] driver core & device property: clean up APIs
+Message-ID: <2024022958-motocross-abdominal-e709@gregkh>
+References: <20240229162741.3854912-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229162520.970986-1-vanshikonda@os.amperecomputing.com>
- <20240229162520.970986-4-vanshikonda@os.amperecomputing.com>
- <CAJZ5v0j+qz0okToszmU=kBjZvD3GJKzwz-ZrweOkgw6A2e3pQQ@mail.gmail.com> <5paw5cvh7klhwasvldyl2coaihntkv4cvmogzyov7qwyohxmvl@lt3auiqhg2nv>
-In-Reply-To: <5paw5cvh7klhwasvldyl2coaihntkv4cvmogzyov7qwyohxmvl@lt3auiqhg2nv>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 19:02:50 +0100
-Message-ID: <CAJZ5v0j9t8y9dvTmVXsyUha73a6CBx8iHQNkteY_Bogx27sHLg@mail.gmail.com>
-Subject: Re: Re: [PATCH v1 3/3] ACPI: CPPC: Read CPC FFH counters in a single IPI
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Huisong Li <lihuisong@huawei.com>, 
-	Beata Michalska <beata.michalska@arm.com>, Ionela Voinescu <ionela.voinescu@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, sumitg@nvidia.com, zengheng4@huawei.com, 
-	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com, 
-	liuyonglong@huawei.com, zhanjie9@hisilicon.com, linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229162741.3854912-1-andriy.shevchenko@linux.intel.com>
 
-On Thu, Feb 29, 2024 at 7:01=E2=80=AFPM Vanshidhar Konda
-<vanshikonda@os.amperecomputing.com> wrote:
->
-> On Thu, Feb 29, 2024 at 06:32:59PM +0100, Rafael J. Wysocki wrote:
-> >On Thu, Feb 29, 2024 at 5:25=E2=80=AFPM Vanshidhar Konda
-> ><vanshikonda@os.amperecomputing.com> wrote:
-> >>
-> >> The CPPC driver reads delivered and reference counters using cpc_read
-> >> one at a time. This leads to inaccurate measurement of CPU frequency
-> >> discussed in [1]. If the firmware indicates that both the registers ar=
-e
-> >> in the FFH interface the kernel can read the registers together in a
-> >> single IPI. This has two benefits:
-> >> 1. Reduces the number of IPIs needed to read the two registers
-> >> 2. The two registers will be read in close proximity resulting in more
-> >>    accurate CPU frequency measurement
-> >>
-> >> [1]: https://lore.kernel.org/all/20230328193846.8757-1-yang@os.amperec=
-omputing.com/
-> >>
-> >> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> >> ---
-> >>  arch/arm64/kernel/topology.c | 37 +++++++++++++++++++++++++++++++++++=
-+
-> >>  drivers/acpi/cppc_acpi.c     | 32 +++++++++++++++++++++++++++----
-> >>  include/acpi/cppc_acpi.h     | 13 +++++++++++++
-> >>  3 files changed, 78 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology=
-.c
-> >> index 8905eb0c681f..8207565f43ee 100644
-> >> --- a/arch/arm64/kernel/topology.c
-> >> +++ b/arch/arm64/kernel/topology.c
-> >> @@ -421,6 +421,43 @@ int cpc_read_ffh(int cpu, struct cpc_reg *reg, u6=
-4 *val)
-> >>         return ret;
-> >>  }
-> >>
-> >> +static void cpc_update_freq_counters(void *info)
-> >> +{
-> >> +       update_freq_counters_refs();
-> >> +}
-> >> +
-> >> +int cpc_read_regs_ffh(int cpu, struct ffh_cpc_reg_values *ffh_regs)
-> >> +{
-> >> +       struct amu_counters *ctrs =3D per_cpu_ptr(&cpu_samples, cpu);
-> >> +       int idx;
-> >> +
-> >> +       if (!cpc_ffh_supported() || !freq_counters_valid(cpu))
-> >> +               return -EOPNOTSUPP;
-> >> +
-> >> +       if (WARN_ON_ONCE(irqs_disabled()))
-> >> +               return -EPERM;
-> >> +
-> >> +       if (!idle_cpu(cpu))
-> >> +               smp_call_function_single(cpu, cpc_update_freq_counters=
-, NULL, 1);
-> >> +
-> >> +       for (idx =3D 0; idx < MAX_NUM_CPC_REGS_FFH; idx++) {
-> >> +
-> >> +               if (!ffh_regs->regs[idx].reg)
-> >> +                       continue;
-> >> +
-> >> +               switch ((u64)(ffh_regs->regs[idx].reg->address)) {
-> >> +               case 0x0:
-> >> +                       ffh_regs->regs[idx].value =3D ctrs->core_cnt;
-> >> +                       break;
-> >> +               case 0x1:
-> >> +                       ffh_regs->regs[idx].value =3D ctrs->const_cnt;
-> >> +                       break;
-> >> +               }
-> >> +       }
-> >> +
-> >> +       return 0;
-> >> +}
-> >> +
-> >>  int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
-> >>  {
-> >>         return -EOPNOTSUPP;
-> >> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> >> index d155a86a8614..55ffb1915e4f 100644
-> >> --- a/drivers/acpi/cppc_acpi.c
-> >> +++ b/drivers/acpi/cppc_acpi.c
-> >> @@ -113,6 +113,10 @@ static DEFINE_PER_CPU(struct cpc_desc *, cpc_desc=
-_ptr);
-> >>                                 (cpc)->cpc_entry.reg.space_id =3D=3D  =
-      \
-> >>                                 ACPI_ADR_SPACE_SYSTEM_IO)
-> >>
-> >> +#define CPC_IN_FFH(cpc) ((cpc)->type =3D=3D ACPI_TYPE_BUFFER &&      =
-      \
-> >> +                               (cpc)->cpc_entry.reg.space_id =3D=3D  =
-      \
-> >> +                               ACPI_ADR_SPACE_FIXED_HARDWARE)
-> >> +
-> >>  /* Evaluates to True if reg is a NULL register descriptor */
-> >>  #define IS_NULL_REG(reg) ((reg)->space_id =3D=3D  ACPI_ADR_SPACE_SYST=
-EM_MEMORY && \
-> >>                                 (reg)->address =3D=3D 0 &&            =
-      \
-> >> @@ -974,6 +978,11 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_r=
-eg *reg, u64 val)
-> >>         return -ENOTSUPP;
-> >>  }
-> >>
-> >> +int __weak cpc_read_regs_ffh(int cpu, struct ffh_cpc_reg_values *regs=
-)
-> >> +{
-> >> +       return -ENOTSUPP;
-> >> +}
-> >
-> >This might return a bool value.
-> >
-> >Is there any case in which the caller would handle different error
-> >codes differently?
-> >
-> I kept this similar to cpc_read_ffh(). I didn't see any usage of the erro=
-r
-> codes. The return value of cpc_read_ffh() is returned only from cpc_read(=
-),
-> but I didn't see anyone consuming the return value of cpc_read().
-> Additionally, checkpatch complains about using -ENOTSUPP and suggests
-> replacing it with -EOPNOTSUPP. Does it make sense to update
-> cpc_read/write_ffh() as well to switch to return type bool?
+On Thu, Feb 29, 2024 at 06:23:42PM +0200, Andy Shevchenko wrote:
+> There are two, but dependent pair of patches that:
+> - makes some of devlink APIs static
+> - removes 'proxy' header use
+> 
+> This is rebased on top of latest patches from Jonathan as it has a minor
+> conflict in property.h. The series can be applied directly to driver
+> core tree with reduced context, but it may be better just to route it
+> via IIO. Greg, which way do you prefer?
 
-Probably, but in a separate patch.
+Why would IIO mess with driver core stuff?
+
+I can just take it in my driver core tree, thanks.
+
+greg k-h
 
