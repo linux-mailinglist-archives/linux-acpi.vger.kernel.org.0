@@ -1,172 +1,112 @@
-Return-Path: <linux-acpi+bounces-4019-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4020-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3C386CC20
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 15:53:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB9586CC4B
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 16:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543011C21D58
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 14:53:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 176A71C22489
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 15:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2757D13A874;
-	Thu, 29 Feb 2024 14:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D67F137774;
+	Thu, 29 Feb 2024 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PomS4Fgj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HGzoHtFK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A7D137772;
-	Thu, 29 Feb 2024 14:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879A27D419;
+	Thu, 29 Feb 2024 15:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709218393; cv=none; b=Ckf+9XxtDjHsv579QFbdJXMHGqaavQKM5cPHw7O7qmVEtcNQbFtr7NNanMkQw0Ovxt+fqzUSgaAE1FiFQ/itDJ87Ai/dzu+Agj0KQ2CAB+kMXYHKTwztefO0GN+Oq4wn2oslc1ol8PPXJWx57Q5mS/7wGDXpFxIbjYWoLBp9HvQ=
+	t=1709219001; cv=none; b=S5f4uSzR4HX+WuJMIy/wBiyWw0gMYu997lz8Pp2PFrKl7QUK/V4AGaz8CeWKOuuP/rixejPbQ8hMupZlpI1SmNzSi+viBettGiJywm89d1ifv1Vn26hZFNgayg9fJljy0kQK28JmeefSaEIeLK5XGWsgAmpFniZr3t893l7tNFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709218393; c=relaxed/simple;
-	bh=auK5leopyHo3okmJBfzsjNCZk5qwdivKbIquaIizWuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQFRDPiIdZD2TmxNEbkr+BHZop6wrILxmV9mqhBK5pn0XmqIHulXAJkImHWIof7JHQSMGuiWIcsW4xUc0Qv/DEM8cM14WhrBzCvbb08M7TqQngjzgm/cwMnGKGsZju7cpAtdCs+9e7hCa4z86byJfS2ckAKR/zAowafr2cag96o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PomS4Fgj; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1709219001; c=relaxed/simple;
+	bh=B3j6dMfEFF9rdkpHUi9+vQzEugFC8IlTQWqn9S39dXg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N/XAila3jpM6hi4SSSNHERDAMaF1Y2fwigBFYYblctYevaYT+zLrCDJDsRxtOfX3tA8NA4/pZ4x7MaUAcIv5O1dJjau4F122bMjgjYW0MK9wMS0ZF2zrciU9vC4NELOvWGJF5VoXmZCj2rOcd8akMGp89e3IBSgolsajSTp8ykQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HGzoHtFK; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709218391; x=1740754391;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=auK5leopyHo3okmJBfzsjNCZk5qwdivKbIquaIizWuU=;
-  b=PomS4FgjXJNS2At8RnBp2aKLF9NjIAbXfETJREgVJQHlwo6qLd2W6WF6
-   N9kETvBJM2yhf+H7hlB2dfuBS721DKBCYGFHMP+gGWmsh0Rc3hnmo+iQE
-   XA6wLxMMpOKR9E382WM+Ca+FQ0xBDlH/+zyHPUVSEES2yKaHIzYdtmYFN
-   6dza119h1dpRnrut39S4qzO6kmNodXx0+hIrI+RIyZCmNSNE8YN/R5sLq
-   Z5aAMg0w6qxvIuBPXqnYlSiY8uZUvbzXEBKjcKNE/FbCOnsMO6TRkdMgb
-   J3IQYNFIJGKgB5qMiQKV9Mvn/0FrpgnistNdA+yDOruP19z2EVL5alAjD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14326508"
+  t=1709219000; x=1740755000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B3j6dMfEFF9rdkpHUi9+vQzEugFC8IlTQWqn9S39dXg=;
+  b=HGzoHtFKH08DyvlxChM4Tvd9JPPpxynJu5NOCsU2XPNrz5X/3bHXp2a6
+   I26j9UDxol+3Ac6U/eP+aEcnHZhylCbel/lmD5iZ8T72yFywt57Y8eThe
+   fS5bDkXdbFS2MH5MagZoI1c8QQAwxyP6bJOxdd/rJmKGtM1nPVfyMAErV
+   OfRnCm1pMpxyiQqYqlf6o/wjfR1At8IVBc00uvKHqcxwzl9E7HUoi+xmK
+   ZocHYssr2LDxbNsk9I97/UOwK4bJ46zIrrg147exu2Gc78OsSz8yB3eC3
+   bomwNZ0d+Ro9pq9ODUmlhwVCmLNVXxhoSReScJWa37NwOpzbBFrApSUhR
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3571423"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="14326508"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 06:53:08 -0800
+   d="scan'208";a="3571423"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 07:03:03 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937036062"
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913984045"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="937036062"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 06:53:06 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id F3D4D476; Thu, 29 Feb 2024 16:53:04 +0200 (EET)
+   d="scan'208";a="913984045"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 07:03:00 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rfhw2-00000008hTr-0HOK;
+	Thu, 29 Feb 2024 17:02:58 +0200
+Date: Thu, 29 Feb 2024 17:02:57 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Subject: [PATCH v2 2/2] gpiolib-acpi: Make acpi_gpio_count() take firmware node as a parameter
-Date: Thu, 29 Feb 2024 16:51:39 +0200
-Message-ID: <20240229145303.3801332-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240229145303.3801332-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/2] gpiolib-of: Make of_gpio_get_count() take
+ firmware node as a parameter
+Message-ID: <ZeCcoYb8gTRGQTku@smile.fi.intel.com>
 References: <20240229145303.3801332-1-andriy.shevchenko@linux.intel.com>
+ <20240229145303.3801332-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229145303.3801332-2-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Make acpi_gpio_count() take firmware node as a parameter in order
-to be aligned with other functions and decouple from unused device
-pointer. The latter helps to create a common fwnode_gpio_count()
-in the future.
+On Thu, Feb 29, 2024 at 04:51:38PM +0200, Andy Shevchenko wrote:
+> Make of_gpio_get_count() take firmware node as a parameter in order
+> to be aligned with other functions and decouple from unused device
+> pointer. The latter helps to create a common fwnode_gpio_count()
+> in the future.
+> 
+> While at it, rename to be of_gpio_count() to be aligned with the others.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/gpio/gpiolib-acpi.c | 13 ++++++-------
- drivers/gpio/gpiolib-acpi.h |  4 ++--
- drivers/gpio/gpiolib.c      |  2 +-
- 3 files changed, 9 insertions(+), 10 deletions(-)
+...
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 899cd505073e..7f140df40f35 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1402,17 +1402,17 @@ static int acpi_find_gpio_count(struct acpi_resource *ares, void *data)
- }
- 
- /**
-- * acpi_gpio_count - count the GPIOs associated with a device / function
-- * @dev:	GPIO consumer, can be %NULL for system-global GPIOs
-+ * acpi_gpio_count - count the GPIOs associated with a firmware node / function
-+ * @fwnode:	firmware node of the GPIO consumer
-  * @con_id:	function within the GPIO consumer
-  *
-  * Return:
-- * The number of GPIOs associated with a device / function or %-ENOENT,
-+ * The number of GPIOs associated with a firmware node / function or %-ENOENT,
-  * if no GPIO has been assigned to the requested function.
-  */
--int acpi_gpio_count(struct device *dev, const char *con_id)
-+int acpi_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
- {
--	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	struct acpi_device *adev = to_acpi_device_node(fwnode);
- 	const union acpi_object *obj;
- 	const struct acpi_gpio_mapping *gm;
- 	int count = -ENOENT;
-@@ -1429,8 +1429,7 @@ int acpi_gpio_count(struct device *dev, const char *con_id)
- 			snprintf(propname, sizeof(propname), "%s",
- 				 gpio_suffixes[i]);
- 
--		ret = acpi_dev_get_property(adev, propname, ACPI_TYPE_ANY,
--					    &obj);
-+		ret = acpi_dev_get_property(adev, propname, ACPI_TYPE_ANY, &obj);
- 		if (ret == 0) {
- 			if (obj->type == ACPI_TYPE_LOCAL_REFERENCE)
- 				count = 1;
-diff --git a/drivers/gpio/gpiolib-acpi.h b/drivers/gpio/gpiolib-acpi.h
-index 0fcd7e14d7f9..6f295ea580fe 100644
---- a/drivers/gpio/gpiolib-acpi.h
-+++ b/drivers/gpio/gpiolib-acpi.h
-@@ -33,7 +33,7 @@ struct gpio_desc *acpi_find_gpio(struct fwnode_handle *fwnode,
- 				 enum gpiod_flags *dflags,
- 				 unsigned long *lookupflags);
- 
--int acpi_gpio_count(struct device *dev, const char *con_id);
-+int acpi_gpio_count(const struct fwnode_handle *fwnode, const char *con_id);
- #else
- static inline void acpi_gpiochip_add(struct gpio_chip *chip) { }
- static inline void acpi_gpiochip_remove(struct gpio_chip *chip) { }
-@@ -51,7 +51,7 @@ acpi_find_gpio(struct fwnode_handle *fwnode, const char *con_id,
- {
- 	return ERR_PTR(-ENOENT);
- }
--static inline int acpi_gpio_count(struct device *dev, const char *con_id)
-+static inline int acpi_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
- {
- 	return -ENODEV;
- }
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index a93271b3d538..e6c5c7894553 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -4287,7 +4287,7 @@ int gpiod_count(struct device *dev, const char *con_id)
- 	if (is_of_node(fwnode))
- 		count = of_gpio_count(fwnode, con_id);
- 	else if (is_acpi_node(fwnode))
--		count = acpi_gpio_count(dev, con_id);
-+		count = acpi_gpio_count(fwnode, con_id);
- 	else if (is_software_node(fwnode))
- 		count = swnode_gpio_count(fwnode, con_id);
- 
+>  struct device;
+> +struct fwnode_handle;
+
+I just realized that this should be replacement, not addition.
+
+ -struct device;
+ +struct fwnode_handle;
+
+Bart, tell me if you can update, or should I send a v3?
+
 -- 
-2.43.0.rc1.1.gbec44491f096
+With Best Regards,
+Andy Shevchenko
+
 
 
