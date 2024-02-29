@@ -1,137 +1,103 @@
-Return-Path: <linux-acpi+bounces-4015-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4016-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEEA86C615
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 10:54:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1716E86CB09
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 15:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA451F26532
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 09:54:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC841C20ABD
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 14:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED50629FD;
-	Thu, 29 Feb 2024 09:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7830012F5AA;
+	Thu, 29 Feb 2024 14:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eXByytiG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qW2PHaIm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D07629E6;
-	Thu, 29 Feb 2024 09:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EB912F38D
+	for <linux-acpi@vger.kernel.org>; Thu, 29 Feb 2024 14:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709200457; cv=none; b=J6Vjf8dNZHxmAch5Bw0dZPWtnlgANkAPTEcJGbDHvo1JYJxiSH936BpupltRhxmH7ug7rFCAM2XEsPBKOjnVzuckWOOjmWsXBhLwqmqrWHpdS+yQmplXg9EqniDQEu14zKIxYGPvPRPLAe3lS1zaK1svH7zOFc/7+QVsM0n8TKs=
+	t=1709215935; cv=none; b=ZOQP5fLQnHXBTgaKAArpzJPgBsJ6ZzoohW3sTa/HT8gbFQo6KO57SbeFNs7RVYoMJxnTE6750viTevg8aQ7Yl1KQATDA6O/L/4bq08QqY6IZdOVejAzquVjvoR3LPKKge7EGm7Z8KFGxfqDr2VuoUKro0E3X0M7z+GwzZIOE8yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709200457; c=relaxed/simple;
-	bh=Bm6iDSjlJfmKp4OfVhM02I6Zh9dDTOW62eV0crvepLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Csp9YXcURt24MBbkrymQRoNMFGKz4iXicNwQvlLto0dTctPfgvBzJ06TsZ6jEIoehb+gj6j3qMoDfZp3w/IqSNH+UNhv9EHuIZoNg1/lgsIzI+ZN8h/a7b2dsQ5/+I7Y0RMjJv7i0h82LcX5ca0JsUbHoosNB6gZ1AdrrinhNqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eXByytiG; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709200455; x=1740736455;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Bm6iDSjlJfmKp4OfVhM02I6Zh9dDTOW62eV0crvepLg=;
-  b=eXByytiGdDjhzdJdi3WkZHjgw84AuCUIEW3iZqMAQXtRjiMwtbgM62id
-   0560kqkXghMSJ5+hSGD4o8K5sHhK1LUIelzzyrl+G0HucVJiu0m0A2k4s
-   rYFsd7ppitXiB+XvJjiofl+YjYdmwiDB8gloKpYmpqrkBwZuVC5EX6x/+
-   RxQIEaLhLEmdp/1hfSt3wsvYA4M9jfBAJZqFNzjBscXurvmJRYWDbgJfX
-   UBk1eMnCWP66cGFksJaLC9GpT0+nteF+dFngvhqVyToNyCOkMgsPTunmu
-   l84XlGFsb8H6YvzpMMz1x4NNHLitRbbWVQqzQ5T94dizDKkCWdTF8FX0P
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21201731"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="21201731"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 01:54:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937035548"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="937035548"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 01:54:13 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id CF62323A; Thu, 29 Feb 2024 11:54:11 +0200 (EET)
-Date: Thu, 29 Feb 2024 11:54:11 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Cc: wsa+renesas@sang-engineering.com, linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 1/1] i2c: acpi: Unbind mux adapters before delete
-Message-ID: <20240229095411.GF8454@black.fi.intel.com>
-References: <20240228023925.2814638-1-hamish.martin@alliedtelesis.co.nz>
- <20240228023925.2814638-2-hamish.martin@alliedtelesis.co.nz>
+	s=arc-20240116; t=1709215935; c=relaxed/simple;
+	bh=CvLDc1XcjbF1F7NzLO6PHxnaCxyOqxfcXll9ig8clKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cdksF1M/gCMzALnNvmP7EjHNSdQ/2RmydFP0UpBPokeNioEWvbegwhG0OccTFGWAj9c+l30r9RWfzO2du22SaK0L55tKKLiUMIU3WIVb9/kzHjYcDpKjjq5Lf7iVD+4bTfvTVznnIrymOqJgj+Qre/u9/zP3EQauZnZL3luRD2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qW2PHaIm; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcc80d6004bso923389276.0
+        for <linux-acpi@vger.kernel.org>; Thu, 29 Feb 2024 06:12:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709215932; x=1709820732; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CvLDc1XcjbF1F7NzLO6PHxnaCxyOqxfcXll9ig8clKk=;
+        b=qW2PHaImxY/wGo6lfdvj0bTPJgkNFtmtma/qM6KM13lmeB/FICw+aOa0VYFj5uld0D
+         YR+WduKxVfpGYJrLn8iVjd9rO1fuph4a67wqaFh9fSQFxy3Mywn55EEsFTl3uTMfQ1EA
+         mnLF59f8BdO7JHeffXyyGIX+QSAzFeDi00mcL2Zsz8ik/Bb04BzfkhVRSY0HGb6cNKoj
+         5uXo7FPYuvOgwiM4eO22urHkhY/T3b6WPZ6ThbL+n0p4z0sk5hXTmPm8ODvZb3GmU3La
+         1Gns0To+tia5rH5VsBykkwd9+lxodD3zuxLvpZk9qClH6HXyHyZKfnf+m7mmnKhfMFX1
+         9TKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709215932; x=1709820732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CvLDc1XcjbF1F7NzLO6PHxnaCxyOqxfcXll9ig8clKk=;
+        b=DTxkkf31tEcdkn+cY27ItJYfSE6+NEGllomA/O5o2fMMvGmFmmDtDfyKLEZXE8PRSY
+         dt9HixQnWQpGIv99KxqCosnUM/ya+sY1IZpO6jz1QcLedKqS6Qj6ZqRDgHNilESee2jp
+         atbS8QS6lczQlsNDEuyDaZFBgGyQFT10pik1T22j9OoMDlyd8xiTSVwJawH3s1XI7k4i
+         lE7M8TJa3Tib3LT8AmfwNDfBRqspx2YHrRSFrQyHNAcO4IhdZTIup1ER3pHh206Q3YXa
+         PRwmhfJk1yBCwCaMSLH80BTRREb1hG/DU25qBD7UEuEplqjc9qvdXH/PCe0ZhOFQvEVZ
+         Hwvg==
+X-Forwarded-Encrypted: i=1; AJvYcCUpundLq+BKKRboPQenuN81bV76q/sQ1H1WyVvk4LV5EDNcYs/BRop2MengvvhcB64UgrKATmZ6h/gbB4Eq+9wzTZAaBbPZbf6/Zw==
+X-Gm-Message-State: AOJu0YzAfJ+BVdSd2rO82liZnNjg7EYYIvkyftlK/9NYXteBoPUPaSqT
+	dQyWZ4NO0XPDMIV09HMKQPRL+q4PfO0OoL/5+EJ4ncYpM39MymNyUM7R/iqs6/Ku5oixdBZcJKu
+	nKOfDgZpmDnCzDO1nTgvknq2F6QAqcTzdB5YIq41bV8AJnKqA
+X-Google-Smtp-Source: AGHT+IHxnZN7aHNIGYMA311zt+7uvT7fk6b9fb24xADoJn/BmejCf0pjyDbjm52YexRoGE+uFY9V6BUytI28dnMCTLY=
+X-Received: by 2002:a25:890f:0:b0:dcc:7c0f:2222 with SMTP id
+ e15-20020a25890f000000b00dcc7c0f2222mr2458086ybl.22.1709215932355; Thu, 29
+ Feb 2024 06:12:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240228023925.2814638-2-hamish.martin@alliedtelesis.co.nz>
+References: <20240228184412.3591847-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240228184412.3591847-1-andriy.shevchenko@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 29 Feb 2024 15:12:00 +0100
+Message-ID: <CACRpkdZPx4vyq8bHbQj_CbyrMprbdsLgCbW+T+c6vGPqFDJmdQ@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] gpiolib: Align prototypes of *gpio_count() APIs
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 28, 2024 at 03:39:25PM +1300, Hamish Martin wrote:
-> Unbind any i2c_adapters matching an ACPI device being removed. This
-> ensures that the linkage between the ACPI device and the i2c_adapter is
-> correctly broken before the ACPI device is destroyed.
+On Wed, Feb 28, 2024 at 7:44=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-I suggest to move some of the information from the cover letter here to
-make sure it is not lost. It includes good analysis of the problem so
-should be part of the changelog.
+> Two out of three GPIO count APIs take device pointer. OF case clearly
+> does not need it as it immediately switches to device node inside, and
+> ACPI abstracts that to struct acpi_device pointer. Unify all these by
+> making them to take struct fwnode_handle pointer. This, in particular,
+> will allow to create fwnode_gpio_count() API if needed. The need of that
+> was discussed here [1].
 
-> Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-> ---
->  drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-> index d6037a328669..67fa8deccef6 100644
-> --- a/drivers/i2c/i2c-core-acpi.c
-> +++ b/drivers/i2c/i2c-core-acpi.c
-> @@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_adev(struct acpi_device *adev)
->  	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
->  }
->  
-> +static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_device *adev)
-> +{
-> +	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
-> +}
-> +
->  static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
->  			   void *arg)
->  {
-> @@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long value,
->  			break;
->  
->  		client = i2c_acpi_find_client_by_adev(adev);
-> -		if (!client)
-> -			break;
-> +		if (client) {
-> +			i2c_unregister_device(client);
-> +			put_device(&client->dev);
-> +		}
-> +
-> +		adapter = i2c_acpi_find_adapter_by_adev(adev);
-> +		if (adapter) {
-> +			acpi_device_notify_remove(&adapter->dev);
-> +			put_device(&adapter->dev);
-> +		}
+This looks reasonable to me:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-This looks good to me. I'm just wondering whether we have the same issue
-on DT side too?
-
->  
-> -		i2c_unregister_device(client);
-> -		put_device(&client->dev);
->  		break;
->  	}
->  
-> -- 
-> 2.43.0
+Yours,
+Linus Walleij
 
