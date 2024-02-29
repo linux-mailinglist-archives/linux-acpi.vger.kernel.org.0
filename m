@@ -1,89 +1,103 @@
-Return-Path: <linux-acpi+bounces-4040-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4041-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F0986D2E9
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 20:13:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C557E86D311
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 20:26:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85262B223AA
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 19:13:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB7F2862B2
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Feb 2024 19:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B6E1353EF;
-	Thu, 29 Feb 2024 19:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2352313C9C4;
+	Thu, 29 Feb 2024 19:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P2zY3ncs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE888134436;
-	Thu, 29 Feb 2024 19:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DFE7A140;
+	Thu, 29 Feb 2024 19:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709233995; cv=none; b=XUmY95We0CIyco+M3wUnh7wszFxWXitWmK5m0fCGlPWnUZ43+o3pcq2yBvxpRvXi/Drh3JnftDTjdi+8gRFHakQSA1NkDIdq14LjnUe5/QAnIsPMHXDEEDJhRstmYvWT73UlgBWzrzWOgmmsxmsLPmnKNT0SY3dp2PsVmSbBwDw=
+	t=1709234801; cv=none; b=fPsx/fn2jhsSUKafomwLOV4Wgdr8rcAtsCLQifSnxPhlzY8IvoE5814DpdhxsbNsi2uf0HsSVyIYdRVP0GlPueMMSNOG0AwRoWl0lCBlVFn5B2uGuCq2W8twGCtfudn9KWNcq3w039hBsDGUlIDKzl2JILG74+l2ax7qYZXt0WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709233995; c=relaxed/simple;
-	bh=68Mvbb3k7QKn33UXowNqEyn3+hdJ3GOVrggv3kvEHxA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HxxK06VBQnwwVggGPz2uUSkUChRxhlPPplJdal84d4fLHwnaa7v1fkxa/xb4cn4189hIeAlDyP1pfZo5QmPy5kRNAEOleiKzkrBWW4xBQwqDpASlgh98vrZ82NxI1MSU+gJFYl2Su3R+dC3oKDTaX+hBDmh/D7Q1SqjGB41BXpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5a0c7c87dc6so12061eaf.1;
-        Thu, 29 Feb 2024 11:13:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709233993; x=1709838793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=68Mvbb3k7QKn33UXowNqEyn3+hdJ3GOVrggv3kvEHxA=;
-        b=sgTUr2Ti4J/P7cXkwRXVnJCnWuaZXMqRtOSLW/cXdpO01d6dnppq7a5mXzYJmoX1c+
-         xwKC0dFfkex/Cc7M1gUCfqarDwnPjsbLwb19msxUk6C5e4XzWOKJGvqEUcJcHYDw38Zf
-         zs+EzKoOW5BYzCwSc48bSNdvOnTko9l5tdiwndWvm9jq15ja/69QCscMbGRCSuBYpANO
-         mcT7yIrGKjNuSEUhkyrsHH79yd48ouDhZvca4/DkIZ8R28u0L/bJEtgOG3UweioKszwH
-         pNrrSxpCCcvSbQ1GMbpxHhmqHSckMHCMFjmhb0lgFctapgidqQdEx5e/mWu3CcFWhqA0
-         iLYg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4RqQXk7RI2rExytGz8rEww5ecvs92xuhOCT8WoU0ph0EFUO+YHjfmg2XsgjauUb5a46UEuGy9NGYFTyIyph47Sf5qW+lh5xzifRqhw5vBk9Y7iJNCduz9O15ClC85gxKSmfpmNNHi+x8p/EjXlo2bumxZY0ArbHV6W4U7l/gEWB3msZne2noI28URDt6FYdNM0sv08oVgdnQaZWFrqh3nQUml
-X-Gm-Message-State: AOJu0YzkkpLvz26ATR9Px2FO3x0UBpFAvFKOjg09PHD8Cnjqu9n3RPgO
-	TV4e+MlTafzi5K8i/LWxx9++brv9sxzcqI/RU33jkkXEVbkdNP1LTc1omn6Ksx6COBX4dAQHJ3n
-	jBklMuRY9my9n4j8ql3M2HKCwn2c=
-X-Google-Smtp-Source: AGHT+IFzdeSRC0oF4uYm+ATN7F6IC2O/WKB17N/8gWXOt1JzeF+PGQ+XImDO55nGGMnGakXbb12L7seyAmOMa7GGSHY=
-X-Received: by 2002:a05:6820:352:b0:5a0:6ef3:ed8e with SMTP id
- m18-20020a056820035200b005a06ef3ed8emr3028823ooe.1.1709233993024; Thu, 29 Feb
- 2024 11:13:13 -0800 (PST)
+	s=arc-20240116; t=1709234801; c=relaxed/simple;
+	bh=+k9lxLjUm+D20rV0ZetrkJ4GbTv5jE0llwdBdYuTomM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=USxWZUCW6rpGnulGenqC4zDyDzxv8qfrOlITQGnIMkW4ZczcdVT79eIEgTVfL4iec8ddePjcBpwNu3UN9XbEfTwsvXHkiXBQ+CyBNKEpU7DRITbwow2OBHLeCcVnmotGR2vhb/EsiKneo/FwvAMxSjU7Z27Pw3np/hsi/yrwNQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P2zY3ncs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120DEC433C7;
+	Thu, 29 Feb 2024 19:26:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709234801;
+	bh=+k9lxLjUm+D20rV0ZetrkJ4GbTv5jE0llwdBdYuTomM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=P2zY3ncsHkHmLWClE0zPZ44INslXD32URU8p5wb5wJbZ5oiBwIAeeFjqnSSM8RjUB
+	 jUajOXmfiBM6+5ksQsCBfG1QK5Ooo8+e463W2LZuq+etT+MrjQ/3m4Ry+Tfe1e9qvA
+	 +Ac1ZFkJXgAssJe4loBZV5eXfJfJTc743dNuEdPCbYh/qmT+OCkdSPviYqQ7FOztqU
+	 aCpd75peVSOZmXUWNuy9GQpRVG+OJANKNz7es/F1QABA/vNfUdsVioKLd0SeKDH+pN
+	 VgtNqFpYFhacG7JDZ35+rJulP85yQBalp7qn6PaeTfzvSR1SYQvm+Z0U9hzQwDznCJ
+	 EWSQT5dKU2Qiw==
+Date: Thu, 29 Feb 2024 13:26:39 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Daniel Drake <drake@endlessos.org>,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>, tglx@linutronix.de,
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, bhelgaas@google.com,
+	david.e.box@linux.intel.com, mario.limonciello@amd.com,
+	lenb@kernel.org, linux-acpi@vger.kernel.org, linux@endlessos.org,
+	Jian-Hong Pan <jhp@endlessos.org>
+Subject: Re: [PATCH v3 2/2] Revert "ACPI: PM: Block ASUS B1400CEAE from
+ suspend to idle by default"
+Message-ID: <20240229192639.GA356181@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240227073924.3573398-1-li.meng@amd.com> <f1964180-458f-4c22-90f6-bda2aee5dbf8@amd.com>
-In-Reply-To: <f1964180-458f-4c22-90f6-bda2aee5dbf8@amd.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 20:13:01 +0100
-Message-ID: <CAJZ5v0hHS2YSuQnXbyHOqErEaz1BPbxO5pWPa4PY6fKQch1VNg@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: amd-pstate: adjust min/max limit perf
-To: Mario Limonciello <mario.limonciello@amd.com>, Meng Li <li.meng@amd.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Huang Rui <ray.huang@amd.com>, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-acpi@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>, 
-	linux-kselftest@vger.kernel.org, Nathan Fontenot <nathan.fontenot@amd.com>, 
-	Deepak Sharma <deepak.sharma@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
-	Shimmer Huang <shimmer.huang@amd.com>, Perry Yuan <Perry.Yuan@amd.com>, 
-	Xiaojian Du <Xiaojian.Du@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Borislav Petkov <bp@alien8.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jhEE9X50TGaXpwFA89wfQb8HYK9qNRnhhuYjU6oM84eg@mail.gmail.com>
 
-On Tue, Feb 27, 2024 at 4:36=E2=80=AFPM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> On 2/27/2024 01:39, Meng Li wrote:
-> > The min/max limit perf values calculated based on frequency
-> > may exceed the reasonable range of perf(highest perf, lowest perf).
+On Thu, Feb 29, 2024 at 06:38:01PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Feb 28, 2024 at 11:26 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
 > >
-> > Signed-off-by: Meng Li <li.meng@amd.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> > [+to Rafael]
+> >
+> > On Wed, Feb 28, 2024 at 08:53:16AM +0100, Daniel Drake wrote:
+> > > This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which
+> > > was originally put in place to work around a s2idle failure on this
+> > > platform where the NVMe device was inaccessible upon resume.
+> > >
+> > > After extended testing, we found that the firmware's implementation of
+> > > S3 is buggy and intermittently fails to wake up the system. We need
+> > > to revert to s2idle mode.
+> > >
+> > > The NVMe issue has now been solved more precisely in the commit titled
+> > > "PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+> > >
+> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+> > > Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+> > > Signed-off-by: Daniel Drake <drake@endlessos.org>
+> >
+> > Rafael, if you're OK with this, I can queue both patches for v6.9.
+> 
+> Yes, please!
+> 
+> Feel free to add
+> 
+> Acked-by: Rafael J. Wysocki <rafael@kernel.org
+> 
+> to both.
 
-Applied as 6.9 material, thanks!
+Both patches applied with Rafael's ack to pci/pm for v6.9, thanks!
+
+Bjorn
 
