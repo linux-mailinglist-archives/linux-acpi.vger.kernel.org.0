@@ -1,125 +1,135 @@
-Return-Path: <linux-acpi+bounces-4050-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4051-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A24686DCBB
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 09:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFCF86DCFA
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 09:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0630928A010
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 08:10:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6705228A648
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 08:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36886930E;
-	Fri,  1 Mar 2024 08:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC4A69D31;
+	Fri,  1 Mar 2024 08:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="mRZc7NcB"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="bvxrLYFh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1784969966
-	for <linux-acpi@vger.kernel.org>; Fri,  1 Mar 2024 08:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213B267E6C
+	for <linux-acpi@vger.kernel.org>; Fri,  1 Mar 2024 08:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709280608; cv=none; b=eXcwq8qsBBZcPwyy4nCvswUblBESK3csKIcxoEJ2pbS1GgAHbYaOJgiGC52BjdUfrXWXj8Pe8Ny2b77wieG+iPJN9WJhOg6jVbtaZKmrBH5+3knNY10/1dDwpWSQQsyA2rn2haMn2wVGJ+b4M2srap8dKN6foeTR9Wv7jgByko0=
+	t=1709281443; cv=none; b=kxboW/HcFLlQdp88V6AlaaJPeC2Fc/i9YqGCrnJqqCR+1wogrrIfLlznLh8vRphU+rgkMBjCNjAFehq7gBpXSW3wElx/6XplXq1HTGhBluF5+MqlCz+CZP8efIynC+dBpTtwHBkcOxInZCjrnumOC/odu6nN6yK296DmAihuuTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709280608; c=relaxed/simple;
-	bh=Gt24m6VgPEoo+PtbPdWbeLDUXQElGt2V9/LMi5WVxt0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xtic7hBWcu80D1R2TRhmb7NqudmUUyxcMB0NLvrezcXKuWthxM+M00ZkqOl7HA2TV6dqoFiTOBXr3kJ/ejzvoaZzoDeKoE+OFbB6Iq7zOzSrJnyyF77NcybnZ2fyvKCqpBvDDQYXqrf6d3lxcR+pRmVQXdcvJPbDJifvnVDlHTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=mRZc7NcB; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4d158faf527so494544e0c.0
-        for <linux-acpi@vger.kernel.org>; Fri, 01 Mar 2024 00:10:06 -0800 (PST)
+	s=arc-20240116; t=1709281443; c=relaxed/simple;
+	bh=4eat6mnFfXzoCJ3q1jO+074FtyB2bjfelHIkr8Ir38k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qNdGVqKIl8c3toz21dlk6VMEeXUrw21c2oIAxW+GWx83p/N5CqRH4otGrcJUkWWLVDM+PcSqgFw32jPc9N3w989ru6MsM4dStatG56xdRkCNEW/Gi6tFVOwPmUhEhDHPdpIBUuN4TyS8YTNcJ5wPH1mPD2WejRfvghC8lo3Za/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=bvxrLYFh; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-787bb013422so106869785a.0
+        for <linux-acpi@vger.kernel.org>; Fri, 01 Mar 2024 00:24:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1709280606; x=1709885406; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wk7y2xtTESbht6nwVgBTMrqKWojYrtrLnTeVVOeEZa0=;
-        b=mRZc7NcBp+gOFQ/6/ocXaCzNH+8VJaMjzW2XdKDDbkqql3+vZd4xDxCifXAkegVbs3
-         aU1e3upsRci7/KXGB9zyeU0UsAJcVdErE8A0QFnTaBfrGSTuKXe03cHDqqHXFbBvDy9f
-         5xP4FgBI23A249QKbnqEIsyA+LjvwnqS4O88EBeqxo2UUTLAr1bMlnrRnn4D4Ke7xR6P
-         9RFsaBxznZKQif685LxEG91kL7OnXs64Kuv3mUwKVJXJLaOgUgVznLUDya90xyty7eW4
-         R9PhBqQCMF+aeuyZsUsHRyUZZrpFVb3XcQKRkHpF9YWgHIuCZdN559eC0TOZxNmcXPSp
-         YWRg==
+        d=bytedance.com; s=google; t=1709281440; x=1709886240; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbrAz4lnEz25kwMLB527PTKTo91cgL6BvX6RpZZhxe0=;
+        b=bvxrLYFhGccIDpTcA8STZO/EWHDLnSss9a9yBaMr4dRvcfekUbs8s7vldrjrBTGnxX
+         aKnIaCNVgzRJrn0uvxW+FEPk7GaW96lU4e1jzAUeXdf6oN6r8MbLq9/KHK6FJISywjvr
+         caQ5a5mCbfmOdpvadUnvIDY4JK/DLOEbpqasEex5XHsVJ3DcZol56GYvbaiWoX0e7Ni3
+         5D8a8BpLb5wXlthMgwPOQPeZCqFldpPjgrJcUrxj6cOx1kA/mS4nuJHwQ9uKQdEoBLA+
+         lB68cbZF7P1iQ5KyxQFo31UwfBT2NVq4AhKRvT1ofpoNuffREWfsnn1bETYAW0dGDOWC
+         gtLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709280606; x=1709885406;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wk7y2xtTESbht6nwVgBTMrqKWojYrtrLnTeVVOeEZa0=;
-        b=TQgg4QBuW/KKRj3ZwXkHAZC3xTOAoUgzumU5ilnX9vln3gJo6hD8BsjsSPxtpZRB+R
-         l4ZPIsJwlHW+ofl0ccS2yO6f6mh7eeARgGRmCrcHKIlblQXH3jT5QiAOXKbPCgw9bwox
-         XnPenjFtrwQX1xYb/epcTkXq3mpBaW16RcN0+4Y9VVXT5U9Psp/b/Y92AK98zTBN+0d5
-         kz09Xn2ZTuwkREAnlR44raOjzjp4dpU575hqqGd/dEK1z0Yvr6wSAr8OTsZS4TkWUvMC
-         HwmF2CzYjNX6QcR93f81E5bIBwNwn+GGQKK0GYaJSZbj5dOdi+VGxBUsr4P9W6sUaCd6
-         /58A==
-X-Forwarded-Encrypted: i=1; AJvYcCWb3tdxoPV/1q+atHNzldGpbrz+gboXPdY12whuJlpmrBFA/ULwkhN5xjyFJ4LYibxyOlxz60jjJkXxYUWbl6dBh1mrA/CIw3YTXQ==
-X-Gm-Message-State: AOJu0YzIrM10I+L2uKXOEajRZDxiQWIIhceWdpkLZsDKxVf4wyIV7TYn
-	87nAeOVw9xBA42ycwo4iBw9V0arLQio35gYX9sB4V49HRCNt1SNV2AmzbbgJch8HJSXU+2JrPT2
-	ve1rM3k4Kssg8QiF86DaeQsqve2J9IHgYXZ7q6w==
-X-Google-Smtp-Source: AGHT+IH0cpHkNFw5IVYbKUvxASmoajZZoX8JeRxGPbUsjHJdZ3rD/qnh+2jzEY44I3Wi8ydUmSlgeHZVgglRmImhN4U=
-X-Received: by 2002:a05:6122:6ae:b0:4c0:1bb6:322 with SMTP id
- r14-20020a05612206ae00b004c01bb60322mr594744vkq.15.1709280606100; Fri, 01 Mar
- 2024 00:10:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709281440; x=1709886240;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jbrAz4lnEz25kwMLB527PTKTo91cgL6BvX6RpZZhxe0=;
+        b=f8rtTYWABhPqGf5dVR0iQIMzztKRuc9DrfJEVbGU2npxXpFn5xhg6NPNi0rbgHoHbZ
+         JgsmdILLMz21Q5am6z2lzwbBT/CnWGd0aG28g/QmxOW5huv3QuqZXWIslr7BAVq/sArT
+         uEg4UQiG6U2L6dSjEniwAnYNtMWIg71WZC1USYA+h3VimOpVVpwuBv6vWtnZp6dsV03M
+         oQ1cbBLtO5yfFZnFyHEgdhZoay36F1TtIHtmiUhWcMfDb0/u77jK/LNiBl8tiv0xwWT6
+         BHB6cK86duQdxopULk0d4q3WETtKlmZ+kbuXhgMaqWDJyyy7doX+M1K8MQ/3GfwhuwRa
+         QpLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFueHfKvpET5Qg9aaPs0lqQfLYvDAb7sdyzFsqgxoHbz17etVgy2RTeo3YJ/chB2tEcgZqkqChVvKYxKZbNQhmeuIpqeqLMyyurw==
+X-Gm-Message-State: AOJu0YwU2ET0frmXE47VluvPF5YbcwEoI+7dBi0By9gBKm/kg1gfsv8d
+	OhtjdbTXwwhxfsoZazN7iGnYV7WKsXwPaMEXFS/66Nlmjwdg2lONXr3PvQOB7Tk=
+X-Google-Smtp-Source: AGHT+IExEjh1BdqSl2OFFVnciy2m2VKRizXJqjFfRMSkTbsdSsINER9CoqawxtN38k6ZkAj5ZjelYw==
+X-Received: by 2002:a0c:c20a:0:b0:68f:43f6:4834 with SMTP id l10-20020a0cc20a000000b0068f43f64834mr990776qvh.26.1709281440109;
+        Fri, 01 Mar 2024 00:24:00 -0800 (PST)
+Received: from n231-228-171.byted.org ([130.44.215.123])
+        by smtp.gmail.com with ESMTPSA id y19-20020a0cd993000000b0068fc392f526sm1631907qvj.127.2024.03.01.00.23.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Mar 2024 00:23:59 -0800 (PST)
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Hao Xiang" <hao.xiang@bytedance.com>,
+	"Gregory Price" <gourry.memverge@gmail.com>,
+	aneesh.kumar@linux.ibm.com,
+	mhocko@suse.com,
+	tj@kernel.org,
+	john@jagalactic.com,
+	"Eishan Mirakhur" <emirakhur@micron.com>,
+	"Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
+	"Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+	"Alistair Popple" <apopple@nvidia.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Huang Ying <ying.huang@intel.com>,
+	"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+	"Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
+	linux-cxl@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v1 0/1] Improved Memory Tier Creation for CPUless NUMA Nodes
+Date: Fri,  1 Mar 2024 08:22:44 +0000
+Message-Id: <20240301082248.3456086-1-horenchuang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229145303.3801332-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240229145303.3801332-1-andriy.shevchenko@linux.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 1 Mar 2024 09:09:55 +0100
-Message-ID: <CAMRc=MfE_OUTU12s2eKj-d8Q7uD_52SrSOFzx2yq_D+fy0rqPA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] gpiolib: Align prototypes of *gpio_count() APIs
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Chris Packham <Chris.Packham@alliedtelesis.co.nz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 29, 2024 at 3:53=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> Two out of three GPIO count APIs take device pointer. OF case clearly
-> does not need it as it immediately switches to device node inside, and
-> ACPI abstracts that to struct acpi_device pointer. Unify all these by
-> making them to take struct fwnode_handle pointer. This, in particular,
-> will allow to create fwnode_gpio_count() API if needed. The need of that
-> was discussed here [1].
->
-> Note, no functional changes intended.
->
-> Link: https://lore.kernel.org/r/2ad735ed-963c-4e75-b83e-687ea2c0aef5@alli=
-edtelesis.co.nz [1]
->
-> In v2:
-> - fixed typo (Chris)
-> - added tag (Linus)
->
-> Andy Shevchenko (2):
->   gpiolib-of: Make of_gpio_get_count() take firmware node as a parameter
->   gpiolib-acpi: Make acpi_gpio_count() take firmware node as a parameter
->
->  drivers/gpio/gpiolib-acpi.c | 13 ++++++-------
->  drivers/gpio/gpiolib-acpi.h |  4 ++--
->  drivers/gpio/gpiolib-of.c   | 13 ++++++-------
->  drivers/gpio/gpiolib-of.h   |  5 +++--
->  drivers/gpio/gpiolib.c      |  4 ++--
->  5 files changed, 19 insertions(+), 20 deletions(-)
->
-> --
-> 2.43.0.rc1.1.gbec44491f096
->
+The memory tiering component in the kernel is functionally useless for
+CPUless memory/non-DRAM devices like CXL1.1 type3 memory because the nodes
+are lumped together in the DRAM tier.
+https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
 
-Series applied.
+This patchset automatically resolves the issues. It delays the initialization
+of memory tiers for CPUless NUMA nodes until they obtain HMAT information
+at boot time, eliminating the need for user intervention.
+If no HMAT specified, it falls back to using `default_dram_type`.
 
-Bart
+Example usecase:
+We have CXL memory on the host, and we create VMs with a new system memory
+device backed by host CXL memory. We inject CXL memory performance attributes
+through QEMU, and the guest now sees memory nodes with performance attributes
+in HMAT. With this change, we enable the guest kernel to construct
+the correct memory tiering for the memory nodes.
+
+Ho-Ren (Jack) Chuang (1):
+  memory tier: acpi/hmat: create CPUless memory tiers after obtaining
+    HMAT info
+
+ drivers/acpi/numa/hmat.c     |  3 ++
+ include/linux/memory-tiers.h |  6 +++
+ mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
+ 3 files changed, 77 insertions(+), 8 deletions(-)
+
+-- 
+Hao Xiang and Ho-Ren (Jack) Chuang
+
 
