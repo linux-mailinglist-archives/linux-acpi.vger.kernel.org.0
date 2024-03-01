@@ -1,116 +1,196 @@
-Return-Path: <linux-acpi+bounces-4055-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4056-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D603086DFCE
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 12:04:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C4486E1E8
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 14:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108AF1C226AA
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 11:04:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 365661F21124
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 13:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963746BFCC;
-	Fri,  1 Mar 2024 11:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B544C5F483;
+	Fri,  1 Mar 2024 13:19:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAB96BFC9;
-	Fri,  1 Mar 2024 11:04:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D2B10E9;
+	Fri,  1 Mar 2024 13:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709291062; cv=none; b=j7PQcl19mzzGVeoHTAKnqSUCV2ABgEzxhfvq05rWYvWo1XQV65qrAVYg8b+mt96qnw3iq9yAW4MZAwx1gMKjXhTZkFImkYLYwlkI5nvZIA483Eu/kvt0YP5UQpVbawGJFmaBndUFidNJNWL2rX38PrddELRZG5iPKK9wKGb0l+g=
+	t=1709299181; cv=none; b=OHECKY5GnCyV0HhrMy5LP5HBioaIVeZh5xYb7K2qWWyW7sPuPblxGzV/5mqb12b6smUScCgbAVZdnUseQ1LRTzP1NcKzMqSROW0EMxH1TawXGZ758T97sFGr5ly2F1bZahSQ/lUop0ZB5pknOSj9CdI76jGulV7XATSYJoLLlpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709291062; c=relaxed/simple;
-	bh=sY34af5iX01O2Nt3VP+kaqLg+zUsofnNaFBh0R+AuNU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aAa5UT63HYCbU8Mtg6I4VcjqKSlNtqbYt4vdlFPEWm+xYHp9eW1U01YPlLK8EsR+HsM6Dc5UVaNKM8XMwTGnRONN2AR30LlCxMZNyn3LqX5HWXRvi2soF38a/7M70loM+Oqd8InrdCcQEpM8vNLyp5F1zMMHdpIa2HTvh34rTVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6e2b466d213so499203a34.0;
-        Fri, 01 Mar 2024 03:04:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709291060; x=1709895860;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m4FD47MhM9Hy/db1+3NowmS6c7AXiiERWCqjP+qDMXk=;
-        b=tFqKclrmmyhaWDBdXOTKZdt/PGjj9q+jwIK8XnG/oulHj9UGbGDA5SB0I6RfGJXuBa
-         H356IkIR8b+rx3hmH/Dt0OYCpg22aFjWthFToc4ZMKRvWfWioSenKinZv87m4vOMgucd
-         ooSJwrRXH/AV2Dgy6KzctvlF+gujX+igpdemPItYxvTDsg+fpO6v4IxIDN/vUAmrG7E6
-         t3QWlTCRfh/37/ABl7lk/PVnK5X+FZDrsRUExTeB06NLlW6u2McV3mBRoerg0jgaxX4Y
-         1LXlggRzwcah+o5DrRhwo7xNV87N051Wn5tf6fuQHQoStBYXKqgIBaeQeNfdL6XwX83H
-         mprA==
-X-Forwarded-Encrypted: i=1; AJvYcCWil7/eNSa3tOp4XPRTBa3Dj6Vz5dR0SAGqSAxmm1zsrFYJcdzcb7FHH3yzgy9WhT0jt9IMbgw6hQExK9IFXQeJw589wvgR+EGTXeDAx80SwiNeQpaxNU+JWcO3DAkmkV9G7qwH
-X-Gm-Message-State: AOJu0Yyoq6uouAo7nancPWMmzkUcnBMbPf3TDzDgoYkLmJfZZO5WZdfW
-	xovrN58HeeAQbfBpMkqi3qgONN4GXiVqPnjVTL7el9BK9HMgH0VRvnvB0hdzPNktJJs181FUU4j
-	LjkeJJLYrkj5DvL13r70xgiUJR3g=
-X-Google-Smtp-Source: AGHT+IGgfFsGBSK5CwMtyisGIYA+J4p4zw1wUbMyZn2P5M1Po6/SjRmJSfPQDNH78oU1JtxxMKi19B92jJCWJtv++88=
-X-Received: by 2002:a4a:3441:0:b0:5a0:f488:6489 with SMTP id
- n1-20020a4a3441000000b005a0f4886489mr1254836oof.0.1709291059961; Fri, 01 Mar
- 2024 03:04:19 -0800 (PST)
+	s=arc-20240116; t=1709299181; c=relaxed/simple;
+	bh=HGAOZ9rzwRj4KaggpswQDdIDQnkCzfQ+ozJfEoUzsGo=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K+CUGb3kbwNzlMx06J5JGKOfS3RKUBjVDdCVgk9j0ngx/v5Ydsoe7PrTprpznE0l3McPgwgJbEVOC7tGgyP6QmV5pLgdVmU6xa4wBi79pvQU54H1MTrCKsS0nbwp5seN4B41+wugdEk4fDrg4grgtCmhNlD30tM1Q3ewOmxZvJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TmT8S1fYbz6JB7j;
+	Fri,  1 Mar 2024 21:14:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 482BB140B73;
+	Fri,  1 Mar 2024 21:19:33 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 1 Mar
+ 2024 13:19:32 +0000
+Date: Fri, 1 Mar 2024 13:19:31 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Tony Luck <tony.luck@intel.com>
+CC: Dan Williams <dan.j.williams@intel.com>, Shiju Jose
+	<shiju.jose@huawei.com>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dave@stgolabs.net" <dave@stgolabs.net>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
+	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>, John Groves
+	<John@Groves.net>
+Subject: Re: [RFC PATCH v6 00/12] cxl: Add support for CXL feature commands,
+ CXL device patrol scrub control and DDR5 ECS control features
+Message-ID: <20240301131931.000070c7@Huawei.com>
+In-Reply-To: <ZeDsESXK5pMeialz@agluck-desk3>
+References: <20240215111455.1462-1-shiju.jose@huawei.com>
+	<65d6936952764_1138c7294e@dwillia2-xfh.jf.intel.com.notmuch>
+	<54c55412e9374e4e9cacf8410a5a98cb@huawei.com>
+	<65d8f5201f8cc_2509b29467@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	<20240226102944.000070a3@Huawei.com>
+	<ZeDsESXK5pMeialz@agluck-desk3>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <64137e23-e374-4129-8e3c-dcd7606364d4@linux.alibaba.com>
- <CAJZ5v0hG7vpWd9-pdeuNZDpDQ13MuwzgPkFnyG7TuQ=DRAMo6Q@mail.gmail.com> <cdb0f30e-b1d5-49ba-8730-740e9c06c87c@linux.alibaba.com>
-In-Reply-To: <cdb0f30e-b1d5-49ba-8730-740e9c06c87c@linux.alibaba.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 1 Mar 2024 12:04:08 +0100
-Message-ID: <CAJZ5v0gqcN7F+xzXPdOnYV5m7Lvoa2q8Pftv6u0=_VVA6-FrHw@mail.gmail.com>
-Subject: Re: [PATCH] x86/cstate: fix mwait hint target cstate calc
-To: He Rongguang <herongguang@linux.alibaba.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, jacob.jun.pan@linux.intel.com, lenb@kernel.org, 
-	linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	shannon.zhao@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, Mar 1, 2024 at 11:02=E2=80=AFAM He Rongguang
-<herongguang@linux.alibaba.com> wrote:
->
-> =E5=9C=A8 2024/3/1 1:22, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Wed, Feb 28, 2024 at 8:28=E2=80=AFAM He Rongguang
-> > <herongguang@linux.alibaba.com> wrote:
-> >>
-> >> According to x86 manual (Intel SDM Vol 2, Table 4-11. MWAIT Hints
-> >> Register (EAX) and AMD manual Vol 3, MWAIT), mwait hint[7:4] adds 1 is
-> >> the corresponding cstate, and 0xF means C0, so fix the handling of
-> >> 0xF -> C0.
-> >>
-> >> Intel: "Value of 0 means C1; 1 means C2 and so on
-> >> Value of 01111B means C0".
-> >>
-> >> AMD: "The processor C-state is EAX[7:4]+1, so to request C0 is to plac=
-e
-> >> the value F in EAX[7:4] and to request C1 is to place the value 0 in
-> >> EAX[7:4].".
-> >
-> > Yes, 0x0F is defined to correspond to C0.  However, the value in
-> > question is never equal to 0x0F in any of the functions modified by
-> > this patch.
-> >
-> > What's the purpose of the modification, then?
-> >
->
-> Hi, this is found when I tweak ACPI cstate table qemu presenting to VM.
->
-> Usually, ACPI cstate table only contains C1+, but nothing prevents ACPI
-> firmware from presenting a cstate (maybe C1+) but using a mwait address
-> C0 (i.e., 0xF in ACPI FFH MWAIT hint address). And if this is the case,
-> Linux erroneously treat this cstate as C16, while actually this should
-> be legal C0 state.
->
-> As I think ACPI firmware is out of Linux kernel scope, so I think it=E2=
-=80=99s
-> better for Linux kernel to implement here referring to spec, how do you
-> think? :)
+On Thu, 29 Feb 2024 12:41:53 -0800
+Tony Luck <tony.luck@intel.com> wrote:
 
-That's fair, but you need to put the above information into the patch
-changelog.  Otherwise it is unclear why you want to make this change.
+> > Obviously can't talk about who was involved in this feature
+> > in it's definition, but I have strong confidence it will get implemented
+> > for reasons I can point at on a public list. 
+> > a) There will be scrubbing on devices.
+> > b) It will need control (evidence for this is the BIOS controls mentioned below
+> >    for equivalent main memory).
+> > c) Hotplug means that control must be done by OS driver (or via very fiddly
+> >    pre hotplug hacks that I think we can all agree should not be necessary
+> >    and aren't even an option on all platforms)
+> > d) No one likes custom solutions.
+> > This isn't a fancy feature with a high level of complexity which helps.  
+
+Hi Tony,
+> 
+> But how will users know what are appropriate scrubbing
+> parameters for these devices?
+> 
+> Car analogy: Fuel injection systems on internal combustion engines
+> have tweakable controls. But no auto manufacturer wires them up to
+> a user accessible dashboad control.
+
+Good analogy - I believe performance tuning 3rd parties will change
+them for you. So the controls are used - be it not by every user.
+
+> 
+> Back to computers:
+> 
+> I'd expect the OEMs that produce memory devices to set appropriate
+> scrubbing rates based on their internal knowledge of the components
+> used in construction.
+
+Absolutely agree that they will set a default / baseline value,
+but reality is that 'everyone' (for the first few OEMs I googled)
+exposes tuning controls in their shipping BIOS menus to configure
+this because there are users who want to change it.  I'd expect
+them to clamp the minimum scrub frequency to something that avoids
+them getting hardware returned on mass for reliability and the
+maximum at whatever ensures the perf is good enough that they sell
+hardware in the first place.  I'd also expect a bios menu to
+allow cloud hosts etc to turn off exposing RAS2 or similar.
+
+> 
+> What is the use case where some user would need to override these
+> parameters and scrub and a faster/slower rate than that set by the
+> manufacturer?
+
+Its a performance vs reliability trade off.  If your larger scale
+architecture (many servers) requires a few nodes to be super stable you
+will pay pretty much any cost to keep them running. If a single node
+failure makes little or no difference, you'll happily crank this down
+(same with refresh) in order to save some power / get a small
+performance lift.  Or if you care about latency tails, more than
+reliability you'll turn this off.
+
+For comedy value, some BIOS guides point out that leaving scrub on may
+affect performance benchmarking. Obviously not a good data point, but
+a hint at the sort of market that cares.  Same market that buy cheaper
+RAM knowing they are going to have more system crashes.
+
+There is probably a description gap. That might be a paperwork
+question as part of system specification.
+What is relationship between scrub rate and error rate under particular
+styles of workload (because you get a free scrub whenever you access
+the memory)?  The RAM dimms themselves could in theory provide inputs
+but the workload dependence makes this hard. Probably fallback on a
+a test and tune loop over very long runs.  Single bit error rates
+used to detect when getting below a level people are happy with for
+instance.
+
+With the fancier units that can be supported, you can play more reliable
+memory games by scanning subsets of the memory more frequently.
+
+Though it was about a kernel daemon doing scrub, Jiaqi's RFC document here
+https://lore.kernel.org/all/20221103155029.2451105-1-jiaqiyan@google.com/
+provided justification for on demand scrub - some interesting stuff in the
+bit on hardware patrol scrubbing.  I see you commented on the thread
+and complexity of hardware solutions.
+
+- Cheap memory makes this all more important.
+- Need for configuration of how fast and when depending on system state.
+- Lack of flexibility of what is scanned (RAS2 provides some by association
+  with NUMA node + option to request particular ranges, CXL provides per
+  end point controls).
+
+There are some gaps on hardware scrubbers, but offloading this problem
+definitely attractive.
+
+So my understanding is there is demand to tune this but it won't be exposed
+on every system.
+
+Jonathan
+
+ 
+> 
+> -Tony
+
 
