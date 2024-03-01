@@ -1,247 +1,178 @@
-Return-Path: <linux-acpi+bounces-4066-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4067-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E30986E986
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 20:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7878786ECEE
+	for <lists+linux-acpi@lfdr.de>; Sat,  2 Mar 2024 00:25:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F64728AEDA
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 19:27:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2385F2854BB
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 23:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1FE3B789;
-	Fri,  1 Mar 2024 19:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD565EE85;
+	Fri,  1 Mar 2024 23:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ArRvwRo9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbOkJsWv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4766C3B194;
-	Fri,  1 Mar 2024 19:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8134F5EE80;
+	Fri,  1 Mar 2024 23:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709321223; cv=none; b=kyWsu9KBHcQvd7w3eCtuzqzXZXG5VujIhXnY7iMSoBlPQ3sM7I8sOzsWr41HXbhOd/hp8djvqrYTJMmCkq42+4mzGkRYDCBPhWmo85mzqMLG1r5Cq2l/cNSqYk9Tj4V1bIC1iDmwTOd0v3sv/hjsMSFYxxW4tezRn2pXE/JnRGA=
+	t=1709335518; cv=none; b=AKwdrIdhyd0Lm60JAnIgPTnJAdBEMfhTpEQVwZXLLADZmSu4hJnwUmPY3N/WJV1DMClG4oX2vwwemjieqtYaI6xioia+DidlNea2+BFhVKgIWZMcS0L8bAA2mdQM2UOH4T4H29lAk9ilDD7yQhMb9vVVplQq+qb1Okuo0oe20t4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709321223; c=relaxed/simple;
-	bh=ljxScE5x1fMGmoZxR70bdsQl71mpsKTqENIYWvLhnPI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MOWTi2GaDYlLVGWeDgXkIBNK8tH3mb2xQu4HEUNQ72HYMpdxLGpqNE//a3XEWq/zNUiHXBDzhllBQVbausLCbVgdQzr9SUDWDwLVTHUU27RCFykLjLJSSKWpqBe/HCJNnxo5Jswg4arJTdaiC4GN2OkVnKwFG8QSxL2RkzNYUvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ArRvwRo9; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from localhost.localdomain (unknown [167.220.77.82])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 35C3D20B74C0;
-	Fri,  1 Mar 2024 11:26:56 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 35C3D20B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1709321216;
-	bh=WGu8YW37brgqi1ZUilW8ClBLPCcNPQXPsBsaqdHd2jI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ArRvwRo96GImnyfufm73/8YYYSFL9Eduy+qRlyNKwlMf2QQrPLWMi3OXKlzaamX2J
-	 FyJKZaanhzCnOMLADaydG1kQRI+kTuyCk+p3e4EIvYAgzq9npD2rvdDWgtYZyDCBhe
-	 l7a4cQ3BsHhF+PcKzVaNnkWu4+4W2CoVtJ0vDvFA=
-From: Jarred White <jarredwhite@linux.microsoft.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Jarred White <jarredwhite@linux.microsoft.com>,
-	srivatsabhat@linux.microsoft.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3] acpi: Use access_width over bit_width for system memory accesses
-Date: Fri,  1 Mar 2024 11:25:59 -0800
-Message-Id: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709335518; c=relaxed/simple;
+	bh=XK0Tl3Zm+PRg0/fNwIGqf/8a+6s//mFri+7E886mdsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjB82IS7/jZB5vIretMLHtfhHV4zDQNjULGurL/3FWJ30ckTH0d+1TIpDTKTCa7EbSG8DTNrDtol0qboRZiQpbMOP4wGKG/hAOyJYZBV96Zp0+U8gVpurhhNF7qgXNA4O6A6l9vv6dDFAjrpIN8g9hDLk6rAGQ4RQRMiKehcSiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbOkJsWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91241C433C7;
+	Fri,  1 Mar 2024 23:25:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709335518;
+	bh=XK0Tl3Zm+PRg0/fNwIGqf/8a+6s//mFri+7E886mdsU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KbOkJsWvKR5NigL30sEPMBxS0GaiLcP5S5tlVTpqttz95usLUjZCGVnbTjN/UuhTy
+	 MAvkKS0m8pIbJHoyy9B4wnvARGI3U7zFZww5TodNAoRWjzSHmPnNJArDjKsKe+JQdZ
+	 MAp9+UC9iAXctVipXl02FHka2h8KLTieqhprsEjvIA5jTXy3zAh14YijwzzFuwj+/K
+	 WdGz4ALPfMp8Uf9JkDVVb9u8FCLf6TDTdXqzrVv8xyzWfvNx0Om77UUHgBY04GnxEA
+	 SVoPG1qOdHCpb3vRaRoFDo7TGW1E/t8bAonyQ0nr7z6xo5/VBEUsYLL7flZGBAqEVP
+	 GD7pMsN8EHkYA==
+Date: Sat, 2 Mar 2024 00:25:14 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Cc: mika.westerberg@linux.intel.com, wsa+renesas@sang-engineering.com, 
+	linux-i2c@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] i2c: acpi: Unbind mux adapters before delete
+Message-ID: <c54jmcv3qodf2uaicsobifqc22pvfwcyfwlqkgav7p7bqnsosx@ln3zxp6acng6>
+References: <20240229214940.299586-1-hamish.martin@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229214940.299586-1-hamish.martin@alliedtelesis.co.nz>
 
-To align with ACPI 6.3+, since bit_width can be any 8-bit value, we cannot
-depend on it being always on a clean 8b boundary. This was uncovered on the
-Cobalt 100 platform.
+Hi Hamish,
 
-SError Interrupt on CPU26, code 0xbe000011 -- SError
- CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 5.15.2.1-13 #1
- Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
- pstate: 62400009 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
- pc : cppc_get_perf_caps+0xec/0x410
- lr : cppc_get_perf_caps+0xe8/0x410
- sp : ffff8000155ab730
- x29: ffff8000155ab730 x28: ffff0080139d0038 x27: ffff0080139d0078
- x26: 0000000000000000 x25: ffff0080139d0058 x24: 00000000ffffffff
- x23: ffff0080139d0298 x22: ffff0080139d0278 x21: 0000000000000000
- x20: ffff00802b251910 x19: ffff0080139d0000 x18: ffffffffffffffff
- x17: 0000000000000000 x16: ffffdc7e111bad04 x15: ffff00802b251008
- x14: ffffffffffffffff x13: ffff013f1fd63300 x12: 0000000000000006
- x11: ffffdc7e128f4420 x10: 0000000000000000 x9 : ffffdc7e111badec
- x8 : ffff00802b251980 x7 : 0000000000000000 x6 : ffff0080139d0028
- x5 : 0000000000000000 x4 : ffff0080139d0018 x3 : 00000000ffffffff
- x2 : 0000000000000008 x1 : ffff8000155ab7a0 x0 : 0000000000000000
- Kernel panic - not syncing: Asynchronous SError Interrupt
- CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 
-5.15.2.1-13 #1
- Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
- Call trace:
-  dump_backtrace+0x0/0x1e0
-  show_stack+0x24/0x30
-  dump_stack_lvl+0x8c/0xb8
-  dump_stack+0x18/0x34
-  panic+0x16c/0x384
-  add_taint+0x0/0xc0
-  arm64_serror_panic+0x7c/0x90
-  arm64_is_fatal_ras_serror+0x34/0xa4
-  do_serror+0x50/0x6c
-  el1h_64_error_handler+0x40/0x74
-  el1h_64_error+0x7c/0x80
-  cppc_get_perf_caps+0xec/0x410
-  cppc_cpufreq_cpu_init+0x74/0x400 [cppc_cpufreq]
-  cpufreq_online+0x2dc/0xa30
-  cpufreq_add_dev+0xc0/0xd4
-  subsys_interface_register+0x134/0x14c
-  cpufreq_register_driver+0x1b0/0x354
-  cppc_cpufreq_init+0x1a8/0x1000 [cppc_cpufreq]
-  do_one_initcall+0x50/0x250
-  do_init_module+0x60/0x27c
-  load_module+0x2300/0x2570
-  __do_sys_finit_module+0xa8/0x114
-  __arm64_sys_finit_module+0x2c/0x3c
-  invoke_syscall+0x78/0x100
-  el0_svc_common.constprop.0+0x180/0x1a0
-  do_el0_svc+0x84/0xa0
-  el0_svc+0x2c/0xc0
-  el0t_64_sync_handler+0xa4/0x12c
-  el0t_64_sync+0x1a4/0x1a8
+On Fri, Mar 01, 2024 at 10:49:39AM +1300, Hamish Martin wrote:
+> There is an issue with ACPI overlay table removal specifically related
+> to I2C multiplexers.
+> 
+> Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+> existing I2C bus. When this table is loaded we see the creation of a
+> device for the overall PCA9548 chip and 8 further devices - one
+> i2c_adapter each for the mux channels. These are all bound to their
+> ACPI equivalents via an eventual invocation of acpi_bind_one().
+> 
+> When we unload the SSDT overlay we run into the problem. The ACPI
+> devices are deleted as normal via acpi_device_del_work_fn() and the
+> acpi_device_del_list.
+> 
+> However, the following warning and stack trace is output as the
+> deletion does not go smoothly:
+> ------------[ cut here ]------------
+> kernfs: can not remove 'physical_node', no directory
+> WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+0xb9/0xc0
+> Modules linked in:
+> CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+> Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+> Workqueue: kacpi_hotplug acpi_device_del_work_fn
+> RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+> Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+> RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+> RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+> RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+> RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+> R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+> R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+> FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+> Call Trace:
+>  <TASK>
+>  ? kernfs_remove_by_name_ns+0xb9/0xc0
+>  ? __warn+0x7c/0x130
+>  ? kernfs_remove_by_name_ns+0xb9/0xc0
+>  ? report_bug+0x171/0x1a0
+>  ? handle_bug+0x3c/0x70
+>  ? exc_invalid_op+0x17/0x70
+>  ? asm_exc_invalid_op+0x1a/0x20
+>  ? kernfs_remove_by_name_ns+0xb9/0xc0
+>  ? kernfs_remove_by_name_ns+0xb9/0xc0
+>  acpi_unbind_one+0x108/0x180
+>  device_del+0x18b/0x490
+>  ? srso_return_thunk+0x5/0x5f
+>  ? srso_return_thunk+0x5/0x5f
+>  device_unregister+0xd/0x30
+>  i2c_del_adapter.part.0+0x1bf/0x250
+>  i2c_mux_del_adapters+0xa1/0xe0
+>  i2c_device_remove+0x1e/0x80
+>  device_release_driver_internal+0x19a/0x200
+>  bus_remove_device+0xbf/0x100
+>  device_del+0x157/0x490
+>  ? __pfx_device_match_fwnode+0x10/0x10
+>  ? srso_return_thunk+0x5/0x5f
+>  device_unregister+0xd/0x30
+>  i2c_acpi_notify+0x10f/0x140
+>  notifier_call_chain+0x58/0xd0
+>  blocking_notifier_call_chain+0x3a/0x60
+>  acpi_device_del_work_fn+0x85/0x1d0
+>  process_one_work+0x134/0x2f0
+>  worker_thread+0x2f0/0x410
+>  ? __pfx_worker_thread+0x10/0x10
+>  kthread+0xe3/0x110
+>  ? __pfx_kthread+0x10/0x10
+>  ret_from_fork+0x2f/0x50
+>  ? __pfx_kthread+0x10/0x10
+>  ret_from_fork_asm+0x1b/0x30
+>  </TASK>
+> ---[ end trace 0000000000000000 ]---
+> ...
+> repeated 7 more times, 1 for each channel of the mux
+> ...
+> 
+> The issue is that the binding of the ACPI devices to their peer I2C
+> adapters is not correctly cleaned up. Digging deeper into the issue we
+> see that the deletion order is such that the ACPI devices matching the
+> mux channel i2c adapters are deleted first during the SSDT overlay
+> removal. For each of the channels we see a call to i2c_acpi_notify()
+> with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+> actually i2c_clients, nothing is done for them.
+> 
+> Later on, after each of the mux channels has been dealt with, we come
+> to delete the i2c_client representing the PCA9548 device. This is the
+> call stack we see above, whereby the kernel cleans up the i2c_client
+> including destruction of the mux and its channel adapters. At this
+> point we do attempt to unbind from the ACPI peers but those peers no
+> longer exist and so we hit the kernfs errors.
+> 
+> The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+> given that the life cycle of the adapters is linked to the i2c_client,
+> instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+> just trigger unbinding of the ACPI device from the adapter device, and
+> allow the clean up of the adapter to continue in the way it always has.
+> 
+> Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-Instead, use access_width to determine the size and use the offset and width
-to shift and mask the bits we want to read/write out. Make sure to add a check
-for system memory since pcc redefines the access_width to subspace id. If 
-access_width is not set, then fallback to using the bit_width.
+I guess you need here:
 
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-CC: srivatsabhat@linux.microsoft.com
-CC: stable@vger.kernel.org #5.15+
----
-changelog:
-v1-->v2:
-https://lore.kernel.org/linux-acpi/20231216001312.1160-1-jarredwhite@linux.microsoft.com/
-	1. Fixed coding style errors
-	2. Backwards compatibility with ioremapping of address still an
-		open question. Suggestions are welcomed.
-v2-->v3:
-	1. Created a fallback mechanism to revert to using the bit_width
-	2. Re-labeled macro to GET_BIT_WIDTH
-	3. Collapsed the if/else statements in the cpc_read() and cpc_write() routines
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifications")
+Cc: <stable@vger.kernel.org> # v4.8+
 
- drivers/acpi/cppc_acpi.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+Even though it's a bit too old as a patch and I'm not sure it
+would apply to 4.8.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index d155a86a8614..57de7edda7a5 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -166,6 +166,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
- show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
- show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- 
-+/* Check for valid access_width, otherwise, fallback to using the bit_width */
-+#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
-+
-+/* Shift and apply the mask for CPC reads/writes */
-+#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
-+					GENMASK(((reg)->bit_width), 0)))
-+
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
- {
-@@ -780,6 +787,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
- 				if (gas_t->address) {
- 					void __iomem *addr;
-+					size_t access_width;
- 
- 					if (!osc_cpc_flexible_adr_space_confirmed) {
- 						pr_debug("Flexible address space capability not supported\n");
-@@ -787,7 +795,9 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 							goto out_free;
- 					}
- 
--					addr = ioremap(gas_t->address, gas_t->bit_width/8);
-+					/* Check for access_width for the size, otherwise use bit_width */
-+					access_width = GET_BIT_WIDTH(gas_t) / 8;
-+					addr = ioremap(gas_t->address, access_width);
- 					if (!addr)
- 						goto out_free;
- 					cpc_ptr->cpc_regs[i-2].sys_mem_vaddr = addr;
-@@ -983,6 +993,7 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
- static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- {
- 	void __iomem *vaddr = NULL;
-+	int size;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
-@@ -994,7 +1005,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	*val = 0;
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = 8 << (reg->access_width - 1);
-+		u32 width = GET_BIT_WIDTH(reg);
- 		u32 val_u32;
- 		acpi_status status;
- 
-@@ -1018,7 +1029,9 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	switch (reg->bit_width) {
-+	size = GET_BIT_WIDTH(reg);
-+
-+	switch (size) {
- 	case 8:
- 		*val = readb_relaxed(vaddr);
- 		break;
-@@ -1037,18 +1050,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		return -EFAULT;
- 	}
- 
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		*val = MASK_VAL(reg, *val);
-+
- 	return 0;
- }
- 
- static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- {
- 	int ret_val = 0;
-+	int size;
- 	void __iomem *vaddr = NULL;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = 8 << (reg->access_width - 1);
-+		u32 width = GET_BIT_WIDTH(reg);
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
-@@ -1070,7 +1087,12 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	switch (reg->bit_width) {
-+	size = GET_BIT_WIDTH(reg);
-+
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		val = MASK_VAL(reg, val);
-+
-+	switch (size) {
- 	case 8:
- 		writeb_relaxed(val, vaddr);
- 		break;
--- 
-2.34.1
+In any case,
 
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+
+Thanks,
+Andi
 
