@@ -1,270 +1,139 @@
-Return-Path: <linux-acpi+bounces-4053-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4054-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7469686DE9D
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 10:52:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0249F86DECE
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 11:04:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4FAE1F245CC
-	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 09:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9DD01F2311A
+	for <lists+linux-acpi@lfdr.de>; Fri,  1 Mar 2024 10:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339FD6A8D2;
-	Fri,  1 Mar 2024 09:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEB06EB6C;
+	Fri,  1 Mar 2024 10:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M/TkYZQ4"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="b209a22p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839DB6995C;
-	Fri,  1 Mar 2024 09:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A046B6BB2C;
+	Fri,  1 Mar 2024 10:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709286756; cv=none; b=V2fZGyX7C9EiC8F0HXAJd84BpN+YSuv+g5NiUYmsSy9f60U3YHo/aBDshx/WUitJOg+6XZQo4B6kuqC1OFjdxEqca6Q0ShgBwZEbFFncq8lq4O6LDpZYsbMEgQo8ZyOK1E6guf+SzFYClzAY8EIfRknjMMyE3BXkP3GdOS7b/OE=
+	t=1709287352; cv=none; b=CJNhzoOrjFGsdNeohpljnoD70bThOSXUIPmf8uuaT9Lwef39veAZhuTw4qtJz0tzP8Z8+SIO2PJOGIoj/B4sVVkQ/zdAj9GImEVoAUJOpZwXjF23cFKTbUTgiKU4qoCdFAsAQlt4pr7/rc/K4n4tudtYe8Cp4drTuUkCo/4Ohvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709286756; c=relaxed/simple;
-	bh=ZqvHblQQkf8d8VwOdcVtgy/mjUM/52YTOmLNsXd6FJU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=tQhX01ZXLXaZ85vBP23573TkE6qBsX3w+Rcjmm8zK2WIItQAbnOeAOBx7EPkulZWPModaHIlDrF/L92I6YdlfSC6PylgTlVvpzQzdQEKoUFnOBXtbqsjO1/MnhVqYfitP8vaV8x3Yta90H018Cpa4jhrbp9F0lBxDigvul2rSmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M/TkYZQ4; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709286754; x=1740822754;
-  h=date:from:to:cc:subject:message-id;
-  bh=ZqvHblQQkf8d8VwOdcVtgy/mjUM/52YTOmLNsXd6FJU=;
-  b=M/TkYZQ43axK3gUckJE+WidwkNv/af8ZCdWRHO6GSemcm2fMcZwR7N3L
-   iReJUOQX1nNl3HPuEDiLp8OxhW2+r4WmAZefMvzoPbmy2OAzJqNDOL7Ll
-   sUPTa/Bvjrtu2TWI0a8+OKYxkftPYAhpSPYHOo8FL1BTEkUcdMmjEfxv1
-   oZMDaLAg4hp5/P+pL+6ggWG0SSKmH1ZLgapQzZ5DaxLZ40ht7ZxeFvsfl
-   3FHxgLTGKS0NeCG0XkxBsKtHy8la5NdJqkXB3ARlWhmLtL1O5SXO9POwR
-   bI3LGXASrOBkT06MPKqiB7dit69x5NMzKCkVc5UhdCNQz0oij8v0n24W2
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="3678233"
-X-IronPort-AV: E=Sophos;i="6.06,195,1705392000"; 
-   d="scan'208";a="3678233"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2024 01:52:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,195,1705392000"; 
-   d="scan'208";a="8208920"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 01 Mar 2024 01:52:31 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rfzYT-000Djl-0Q;
-	Fri, 01 Mar 2024 09:52:05 +0000
-Date: Fri, 01 Mar 2024 17:49:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 09e25f0d96cf60fddbb4dae72569d8228b54126a
-Message-ID: <202403011720.d2auXfhY-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1709287352; c=relaxed/simple;
+	bh=OvOYYUCG3c7ssoi05Zx92UGrIZ2K40dKEFbz8G9tN80=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g9bYtIsKB3JUFOo9+OwiZ0uGhGF4LRe8heC/nTEFRtM1AHrs4ZTxV86DapbMiBSWiR7kpyCSvRzhjpV6GVqgkPOsy6FON+xUXSMWewcNn+rfrmIof8xDNq7MEi1j4tJ9dXa6uzcEIa3QD69xR38KlizbRU4RA0KulFqrvvuPEi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=b209a22p; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1709287347; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=quGYQwGPPF3DG0ZofAGuxpdgXr8KP41ZYuJMaGRU+c8=;
+	b=b209a22p+frS3JszGTklJvmQ9vMA62107JwBBOaJ1q67xhS7dOL8PZ5A5Za7lGInfn91IpmcWcG1LIJvZqH9S3CKyqRiFBg8uvu60glzWm7S2Mj0atYjYwRoVMwnsvxkkMJet1bF8Bon9vVKmYkTuYv074eCAnP00t3bqa4zReA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=herongguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0W1bSknU_1709287345;
+Received: from 30.221.97.202(mailfrom:herongguang@linux.alibaba.com fp:SMTPD_---0W1bSknU_1709287345)
+          by smtp.aliyun-inc.com;
+          Fri, 01 Mar 2024 18:02:26 +0800
+Message-ID: <cdb0f30e-b1d5-49ba-8730-740e9c06c87c@linux.alibaba.com>
+Date: Fri, 1 Mar 2024 18:02:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/cstate: fix mwait hint target cstate calc
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: jacob.jun.pan@linux.intel.com, lenb@kernel.org, linux-pm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, shannon.zhao@linux.alibaba.com
+References: <64137e23-e374-4129-8e3c-dcd7606364d4@linux.alibaba.com>
+ <CAJZ5v0hG7vpWd9-pdeuNZDpDQ13MuwzgPkFnyG7TuQ=DRAMo6Q@mail.gmail.com>
+From: He Rongguang <herongguang@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0hG7vpWd9-pdeuNZDpDQ13MuwzgPkFnyG7TuQ=DRAMo6Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 09e25f0d96cf60fddbb4dae72569d8228b54126a  Merge branch 'pm-sleep' into bleeding-edge
+在 2024/3/1 1:22, Rafael J. Wysocki 写道:
+> On Wed, Feb 28, 2024 at 8:28 AM He Rongguang
+> <herongguang@linux.alibaba.com> wrote:
+>>
+>> According to x86 manual (Intel SDM Vol 2, Table 4-11. MWAIT Hints
+>> Register (EAX) and AMD manual Vol 3, MWAIT), mwait hint[7:4] adds 1 is
+>> the corresponding cstate, and 0xF means C0, so fix the handling of
+>> 0xF -> C0.
+>>
+>> Intel: "Value of 0 means C1; 1 means C2 and so on
+>> Value of 01111B means C0".
+>>
+>> AMD: "The processor C-state is EAX[7:4]+1, so to request C0 is to place
+>> the value F in EAX[7:4] and to request C1 is to place the value 0 in
+>> EAX[7:4].".
+> 
+> Yes, 0x0F is defined to correspond to C0.  However, the value in
+> question is never equal to 0x0F in any of the functions modified by
+> this patch.
+> 
+> What's the purpose of the modification, then?
+> 
 
-elapsed time: 776m
+Hi, this is found when I tweak ACPI cstate table qemu presenting to VM.
 
-configs tested: 180
-configs skipped: 3
+Usually, ACPI cstate table only contains C1+, but nothing prevents ACPI 
+firmware from presenting a cstate (maybe C1+) but using a mwait address 
+C0 (i.e., 0xF in ACPI FFH MWAIT hint address). And if this is the case, 
+Linux erroneously treat this cstate as C16, while actually this should 
+be legal C0 state.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+As I think ACPI firmware is out of Linux kernel scope, so I think it’s 
+better for Linux kernel to implement here referring to spec, how do you 
+think? :)
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240301   gcc  
-arc                   randconfig-002-20240301   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                            mps2_defconfig   clang
-arm                       netwinder_defconfig   gcc  
-arm                           omap1_defconfig   gcc  
-arm                   randconfig-001-20240301   gcc  
-arm                   randconfig-002-20240301   clang
-arm                   randconfig-003-20240301   gcc  
-arm                   randconfig-004-20240301   gcc  
-arm                         wpcm450_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240301   gcc  
-arm64                 randconfig-002-20240301   clang
-arm64                 randconfig-003-20240301   gcc  
-arm64                 randconfig-004-20240301   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240301   gcc  
-csky                  randconfig-002-20240301   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240301   clang
-hexagon               randconfig-002-20240301   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240301   clang
-i386         buildonly-randconfig-002-20240301   clang
-i386         buildonly-randconfig-003-20240301   gcc  
-i386         buildonly-randconfig-004-20240301   clang
-i386         buildonly-randconfig-005-20240301   clang
-i386         buildonly-randconfig-006-20240301   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240301   clang
-i386                  randconfig-002-20240301   clang
-i386                  randconfig-003-20240301   clang
-i386                  randconfig-004-20240301   clang
-i386                  randconfig-005-20240301   gcc  
-i386                  randconfig-006-20240301   gcc  
-i386                  randconfig-011-20240301   gcc  
-i386                  randconfig-012-20240301   clang
-i386                  randconfig-013-20240301   clang
-i386                  randconfig-014-20240301   gcc  
-i386                  randconfig-015-20240301   gcc  
-i386                  randconfig-016-20240301   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240301   gcc  
-loongarch             randconfig-002-20240301   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        m5307c3_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      fuloong2e_defconfig   gcc  
-mips                           ip27_defconfig   gcc  
-mips                     loongson1b_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240301   gcc  
-nios2                 randconfig-002-20240301   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240301   gcc  
-parisc                randconfig-002-20240301   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      arches_defconfig   gcc  
-powerpc                        cell_defconfig   gcc  
-powerpc                      ep88xc_defconfig   gcc  
-powerpc                  iss476-smp_defconfig   gcc  
-powerpc                      mgcoge_defconfig   clang
-powerpc                     powernv_defconfig   gcc  
-powerpc                      ppc40x_defconfig   clang
-powerpc               randconfig-001-20240301   gcc  
-powerpc               randconfig-002-20240301   gcc  
-powerpc               randconfig-003-20240301   clang
-powerpc64             randconfig-001-20240301   clang
-powerpc64             randconfig-002-20240301   gcc  
-powerpc64             randconfig-003-20240301   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240301   gcc  
-riscv                 randconfig-002-20240301   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240301   clang
-s390                  randconfig-002-20240301   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                        apsh4ad0a_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240301   gcc  
-sh                    randconfig-002-20240301   gcc  
-sh                           se7750_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240301   gcc  
-sparc64               randconfig-002-20240301   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240301   gcc  
-um                    randconfig-002-20240301   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240301   clang
-x86_64       buildonly-randconfig-002-20240301   gcc  
-x86_64       buildonly-randconfig-003-20240301   clang
-x86_64       buildonly-randconfig-004-20240301   gcc  
-x86_64       buildonly-randconfig-005-20240301   clang
-x86_64       buildonly-randconfig-006-20240301   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240301   gcc  
-x86_64                randconfig-002-20240301   clang
-x86_64                randconfig-003-20240301   clang
-x86_64                randconfig-004-20240301   clang
-x86_64                randconfig-005-20240301   gcc  
-x86_64                randconfig-006-20240301   gcc  
-x86_64                randconfig-011-20240301   clang
-x86_64                randconfig-012-20240301   clang
-x86_64                randconfig-013-20240301   clang
-x86_64                randconfig-014-20240301   gcc  
-x86_64                randconfig-015-20240301   clang
-x86_64                randconfig-016-20240301   gcc  
-x86_64                randconfig-071-20240301   gcc  
-x86_64                randconfig-072-20240301   clang
-x86_64                randconfig-073-20240301   gcc  
-x86_64                randconfig-074-20240301   gcc  
-x86_64                randconfig-075-20240301   gcc  
-x86_64                randconfig-076-20240301   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240301   gcc  
-xtensa                randconfig-002-20240301   gcc  
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>> Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
+>> ---
+>>    arch/x86/kernel/acpi/cstate.c | 4 ++--
+>>    drivers/idle/intel_idle.c     | 3 ++-
+>>    2 files changed, 4 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+>> index 401808b47af3..f3ffd0a3a012 100644
+>> --- a/arch/x86/kernel/acpi/cstate.c
+>> +++ b/arch/x86/kernel/acpi/cstate.c
+>> @@ -131,8 +131,8 @@ static long acpi_processor_ffh_cstate_probe_cpu(void
+>> *_cx)
+>>           cpuid(CPUID_MWAIT_LEAF, &eax, &ebx, &ecx, &edx);
+>>
+>>           /* Check whether this particular cx_type (in CST) is supported
+>> or not */
+>> -       cstate_type = ((cx->address >> MWAIT_SUBSTATE_SIZE) &
+>> -                       MWAIT_CSTATE_MASK) + 1;
+>> +       cstate_type = (((cx->address >> MWAIT_SUBSTATE_SIZE) &
+>> +                       MWAIT_CSTATE_MASK) + 1) & MWAIT_CSTATE_MASK;
+>>           edx_part = edx >> (cstate_type * MWAIT_SUBSTATE_SIZE);
+>>           num_cstate_subtype = edx_part & MWAIT_SUBSTATE_MASK;
+>>
+>> diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+>> index bcf1198e8991..e486027f8b07 100644
+>> --- a/drivers/idle/intel_idle.c
+>> +++ b/drivers/idle/intel_idle.c
+>> @@ -1934,7 +1934,8 @@ static void __init spr_idle_state_table_update(void)
+>>
+>>    static bool __init intel_idle_verify_cstate(unsigned int mwait_hint)
+>>    {
+>> -       unsigned int mwait_cstate = MWAIT_HINT2CSTATE(mwait_hint) + 1;
+>> +       unsigned int mwait_cstate = (MWAIT_HINT2CSTATE(mwait_hint) + 1) &
+>> +                                       MWAIT_CSTATE_MASK;
+>>           unsigned int num_substates = (mwait_substates >> mwait_cstate *
+>> 4) &
+>>                                           MWAIT_SUBSTATE_MASK;
+>>
+>> --
+
 
