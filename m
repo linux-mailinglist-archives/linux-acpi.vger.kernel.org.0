@@ -1,141 +1,125 @@
-Return-Path: <linux-acpi+bounces-4073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152EF86F8C4
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 04:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F9286F9E8
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 07:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90EB11F214C6
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 03:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3F7C1F21355
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 06:14:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8159D211C;
-	Mon,  4 Mar 2024 03:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483FCBA5E;
+	Mon,  4 Mar 2024 06:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QJbLIZXS"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hRj648vQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ED217CE;
-	Mon,  4 Mar 2024 03:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25558DDAB;
+	Mon,  4 Mar 2024 06:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709521684; cv=none; b=oH4eTpdrAmJO6nZjrCLsAmatrS1ef7aUugsSJc2xdu4UfYzGMUS7ConQEZX3d+kCWiTCKFOF0Pqpr8FjNFlybGq0d0JUUaqPpT+oKoH9KmVDTZbgjAAueluHiVt5mt149Y3e6zDKkZgjgdrauqOIGBf7nljs3oCeDH/PAGvPJX8=
+	t=1709532854; cv=none; b=eLctLWN6vdlWF6urRmv4x47Z57dqpCNfLBVK9ALjF5UasZFoqehwYfTIRy70tsLbMMXNjEMOsEm1vnwQOqF9XfzTgCgUKxzvPs7Iesgqhqxwb/4+DpsUeTYCtBAxZytYnwvJon8yM9/s2up1mqO7wSdPmt5mf4zwNDJ03bQVEhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709521684; c=relaxed/simple;
-	bh=3BI8B2Bp4XeQbxQpsn++p8FJGrgiOurWA5aDjJl5cVM=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i+t/l62vqLVD+ozBnmF7msudSU7JysRE7F+Kkz87EkS+ldxdHNfCVHZmd2ml4q1M5ISrdryzX9frRMwXymE7pCDynyoZajacjPCkDs9vcJtPktawdsGGU2BwlXQN4c5P1T5QsZc9ira0ur4jbCby9ulAr5UYvUysuLyJbG+ovqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QJbLIZXS; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6e5dddd3b95so1219277b3a.1;
-        Sun, 03 Mar 2024 19:08:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709521682; x=1710126482; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=09c5Ld8ZWpizXtKH4r3UpdHmyvyQCrCH0kV5BMr3LS0=;
-        b=QJbLIZXSrqr+kTTbEsicCODd2Q/7qSA5XMkjsNnu1lyoVMEd0PX4IuV5cbIunjyw66
-         gYjL8fEDIvNXgOA509EYO9Y5TxW2ZO0stAvFYLyFrTRQvfJXQ+Mn0YoM65SIKqIRklwy
-         nMt7/9FCrkgnw66UhgZo6GiYsS5DIDsmdkB2alTRFzphDhno18N9fBpgax9qlRh5k/jJ
-         e8xrNL9nLPqqcQAApZbEe7zCDkMvE40LVw81jfQBkHILjDCWOA22w8p5qXGfd01rXsdn
-         NsoweUOE+DVrPa2r/tKzqWp6yyEQG1sREd9bzxxnK9YfP7aSpwgUxkUlkL15yjPPktz0
-         Gavw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709521682; x=1710126482;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=09c5Ld8ZWpizXtKH4r3UpdHmyvyQCrCH0kV5BMr3LS0=;
-        b=QjcuBNKyBzWP5GTuAhNfzWUqMXjVQD04hEz8BoelDf2cc3xL6yL3R4XjH19Bsjf9tD
-         ZaN5Dde3yRA0jepM5p6zh9e2l/lddwCbMqZ4L974iZObdtMqmL2zlv3ejjfvOUtxwLIG
-         JnIlJIK1vp6CCBIx9DhRIqyoONLiDrqwyTaUhVCtE0lgb9KikqJSVk2TEbRAzvdfm20S
-         5rPIT+0scoQbWUpGexxUCq0imUnwFq8SxeRDBjpsFpdhRw4h7oFzzXhbahYdRKukjZC/
-         AoxGyTiqKZRic7zhYns/rphwpIPhOWnnbC5jpMg94ogaqe9ZhMDuBMEEntNNbrj8NEjg
-         iXDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuMEWl0WrbE8EOFiIjnzIO4izAXCsEleWvYWEGDueQ1MqexzGuE4vhPsBsLCeSCM6h+EckfWzSPcjDpH5OCP/+vXW+P/1LwxLl6ffCpZvp3s4oCBCEF3SJSneiymb3nHswmRzTFhDy+MfRT3NJ7CF+nqIsWuYRCptt88H+vPeuxQvNAg==
-X-Gm-Message-State: AOJu0Yz3sAtTVoaRJ5cS/GxQIa/EyB70w/eFPc0XU36zgnSnpMQ/0na1
-	C7SifHf8g64R6qZmLA5ACNlHteRKroPgrUfByowdrCGnWbEsz5RO
-X-Google-Smtp-Source: AGHT+IG2uYM8bLWoyeF3gdZVlOJfprj9tSG/wxizpVtatiHSeXDThSwnJefuUnh4WouBjPO9U9WXKA==
-X-Received: by 2002:a05:6a20:8f29:b0:1a1:461a:3691 with SMTP id b41-20020a056a208f2900b001a1461a3691mr6916853pzk.15.1709521682220;
-        Sun, 03 Mar 2024 19:08:02 -0800 (PST)
-Received: from debian ([2601:641:300:14de:bae0:aa65:8bdd:7233])
-        by smtp.gmail.com with ESMTPSA id a3-20020aa78643000000b006e0debc1b75sm6348979pfo.90.2024.03.03.19.08.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Mar 2024 19:08:01 -0800 (PST)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Sun, 3 Mar 2024 19:07:40 -0800
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Cc: Hao Xiang <hao.xiang@bytedance.com>,
-	Gregory Price <gourry.memverge@gmail.com>,
-	aneesh.kumar@linux.ibm.com, mhocko@suse.com, tj@kernel.org,
-	john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>,
-	Vinicius Tavares Petrucci <vtavarespetr@micron.com>,
-	Ravis OpenSrc <Ravis.OpenSrc@micron.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Huang Ying <ying.huang@intel.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	"Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
-	"Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
-	linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v1 0/1] Improved Memory Tier Creation for CPUless NUMA
- Nodes
-Message-ID: <ZeU6_BnXIUs6pCym@debian>
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
+	s=arc-20240116; t=1709532854; c=relaxed/simple;
+	bh=GVrSxTRoMoV/uU/Lb3y9z9tOXaZgZRfgXcw2rhOhs4o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=lDbFlIPO15Y1+BduuOcYsnLGiokq7+Qs83cNUKCxEpp8ywzSqwLhg8u+0I6o3MZuFq+lrklP9UuZdJxuWtL4ECB2cTgXzlG42V64/wm8x/2jkd2IHG9Lq+x1eP+BE/+ORvln2I+pO81YV+ojwPRJchrvEgGZ9Ovp488JsYwLRhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hRj648vQ; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1709532847; h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type;
+	bh=Y3fZ+6vBH41DEF8Tx5lK1ddq74UM+m/DasdXXyNUDG8=;
+	b=hRj648vQBg0rzXXepkUty8Sjd6mX51ieqH3bXy+Vqbz603hJxci3WwDqWftTvSH3K804OpgKE/MUQP+zPO2zAsA/DPLzWzcBLlWqYrHqJ3gpWdTbiJ/ZpXTBav2XvRbmt2tKy8XsJHauVLNEv2vtw+i4rWM3Z7d2cPVleDm9pgk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R441e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=herongguang@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0W1k7gsm_1709532846;
+Received: from 30.221.98.44(mailfrom:herongguang@linux.alibaba.com fp:SMTPD_---0W1k7gsm_1709532846)
+          by smtp.aliyun-inc.com;
+          Mon, 04 Mar 2024 14:14:07 +0800
+Message-ID: <07b62879-2445-4b0d-880a-be01a44820f8@linux.alibaba.com>
+Date: Mon, 4 Mar 2024 14:14:06 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240301082248.3456086-1-horenchuang@bytedance.com>
+User-Agent: Mozilla Thunderbird
+To: jacob.jun.pan@linux.intel.com, lenb@kernel.org,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ herongguang@linux.alibaba.com, shannon.zhao@linux.alibaba.com
+From: He Rongguang <herongguang@linux.alibaba.com>
+Subject: [PATCH v2] x86/cstate: fix mwait hint target cstate calc
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 01, 2024 at 08:22:44AM +0000, Ho-Ren (Jack) Chuang wrote:
-> The memory tiering component in the kernel is functionally useless for
-> CPUless memory/non-DRAM devices like CXL1.1 type3 memory because the nodes
-> are lumped together in the DRAM tier.
-> https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
+According to x86 spec ([1] and [2]), mwait hint_address[7:4] adds 1 is
+the corresponding cstate, and 0xF means C0.
 
-Is this the right patchset you want to refer to? It is about node
-migration between tiers, how is it related to the context here?
+ACPI cstate table usually only contains C1+, but nothing prevents ACPI
+firmware from presenting a cstate (maybe C1+) but using a mwait address C0
+(i.e., 0xF in ACPI FFH MWAIT hint address). And if this is the case, Linux
+erroneously treat this cstate as C16, while actually this should be legal
+C0 state instead of C16, according to spec.
 
-Fan
+Since ACPI firmware is out of Linux kernel scope, fix kernel handling of
+0xF ->(to) C0 in this situation. This is found when tweak ACPI cstate
+table qemu presenting to VM.
 
-> 
-> This patchset automatically resolves the issues. It delays the initialization
-> of memory tiers for CPUless NUMA nodes until they obtain HMAT information
-> at boot time, eliminating the need for user intervention.
-> If no HMAT specified, it falls back to using `default_dram_type`.
-> 
-> Example usecase:
-> We have CXL memory on the host, and we create VMs with a new system memory
-> device backed by host CXL memory. We inject CXL memory performance attributes
-> through QEMU, and the guest now sees memory nodes with performance attributes
-> in HMAT. With this change, we enable the guest kernel to construct
-> the correct memory tiering for the memory nodes.
-> 
-> Ho-Ren (Jack) Chuang (1):
->   memory tier: acpi/hmat: create CPUless memory tiers after obtaining
->     HMAT info
-> 
->  drivers/acpi/numa/hmat.c     |  3 ++
->  include/linux/memory-tiers.h |  6 +++
->  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
->  3 files changed, 77 insertions(+), 8 deletions(-)
-> 
-> -- 
-> Hao Xiang and Ho-Ren (Jack) Chuang
-> 
+Also fix intel_idle case by the way for kernel code consistency.
+
+[1]. Intel SDM Vol 2, Table 4-11. MWAIT Hints
+Register (EAX): "Value of 0 means C1; 1 means C2 and so on
+Value of 01111B means C0".
+
+[2]. AMD manual Vol 3, MWAIT: "The processor C-state is EAX[7:4]+1, so to
+request C0 is to place the value F in EAX[7:4] and to request C1 is to
+place the value 0 in EAX[7:4].".
+
+Signed-off-by: He Rongguang <herongguang@linux.alibaba.com>
+---
+V1 -> V2: Amend commit message according to Rafael.
+
+  arch/x86/kernel/acpi/cstate.c | 4 ++--
+  drivers/idle/intel_idle.c     | 3 ++-
+  2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
+index 401808b47af3..f3ffd0a3a012 100644
+--- a/arch/x86/kernel/acpi/cstate.c
++++ b/arch/x86/kernel/acpi/cstate.c
+@@ -131,8 +131,8 @@ static long acpi_processor_ffh_cstate_probe_cpu(void 
+*_cx)
+         cpuid(CPUID_MWAIT_LEAF, &eax, &ebx, &ecx, &edx);
+
+         /* Check whether this particular cx_type (in CST) is supported 
+or not */
+-       cstate_type = ((cx->address >> MWAIT_SUBSTATE_SIZE) &
+-                       MWAIT_CSTATE_MASK) + 1;
++       cstate_type = (((cx->address >> MWAIT_SUBSTATE_SIZE) &
++                       MWAIT_CSTATE_MASK) + 1) & MWAIT_CSTATE_MASK;
+         edx_part = edx >> (cstate_type * MWAIT_SUBSTATE_SIZE);
+         num_cstate_subtype = edx_part & MWAIT_SUBSTATE_MASK;
+
+diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+index bcf1198e8991..e486027f8b07 100644
+--- a/drivers/idle/intel_idle.c
++++ b/drivers/idle/intel_idle.c
+@@ -1934,7 +1934,8 @@ static void __init spr_idle_state_table_update(void)
+
+  static bool __init intel_idle_verify_cstate(unsigned int mwait_hint)
+  {
+-       unsigned int mwait_cstate = MWAIT_HINT2CSTATE(mwait_hint) + 1;
++       unsigned int mwait_cstate = (MWAIT_HINT2CSTATE(mwait_hint) + 1) &
++                                       MWAIT_CSTATE_MASK;
+         unsigned int num_substates = (mwait_substates >> mwait_cstate * 
+4) &
+                                         MWAIT_SUBSTATE_MASK;
+
+--
+2.43.0
 
