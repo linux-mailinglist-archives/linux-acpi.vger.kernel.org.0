@@ -1,235 +1,339 @@
-Return-Path: <linux-acpi+bounces-4070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B45286F7EC
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 01:04:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3146986F89E
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 03:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A771F1C20AE8
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 00:04:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78CA2810A0
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 02:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0A4389;
-	Mon,  4 Mar 2024 00:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CE015B7;
+	Mon,  4 Mar 2024 02:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="pInqJJhN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TzXeDkGu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32E019A
-	for <linux-acpi@vger.kernel.org>; Mon,  4 Mar 2024 00:04:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238BE19A;
+	Mon,  4 Mar 2024 02:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709510649; cv=none; b=bow/n8OjY7XnqRzvw7LDbCzM+m8YEMz2yZM74AOeYcWeztqU3ie4aFVo8WdHIRaK49oI5/3CWnadsxuaLQ4jYuiUSSeKStpQ1qRTfnwGRhk28RUQpdbBwlfWmO227h+NneRNSBZZUrPN3lWMtIYi4g4GJQQWqNc7QBtw63uaZkk=
+	t=1709520145; cv=none; b=gPiVPGLU2XVDIMgj5uORO8sZb8IFRpLjE1IYWnUCKKUXGa/PX+oLBuvnFIJNAd9wMK4LCor2ivwFWw+gjGb/dU+EUdJwuBewp9Gqk4P+NTGEIPYDg7AlVWenAfC4W8Gjbmzq/+cnUtHJxlU3fY8+H9CTg1XyhTjsTksTWmc7fto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709510649; c=relaxed/simple;
-	bh=uR/5rwCV7vZtbBypIlzw4jSV9DGTLsBJUh5lyOcCPDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TmOHhKQgDHQGKL4f/LnVgRDWrLzxX28f2GVVBVBx4yBT+OLMCqo4uQ1aiY6AuKivQhTDZXrMvvO50YjfH9zPQBTfoBGF46bOUleQSpXOiIvdxRKdMHXLr6msMRWck2EHEEYYSvHyTJfnNzOVHm7pujW1qRVtXlsbKqNkaTwV6Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=pInqJJhN; arc=none smtp.client-ip=202.36.163.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
-Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 7105F2C049D;
-	Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
-	s=mail181024; t=1709510642;
-	bh=rmB6Gec5j5p042fORdevP4/2N+Rmqi8YKHFNq2L9YZE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pInqJJhN+vIbhqbS+u7AYmtHFhSP6N3BJNnVWflGVbFsLjf/aDlkZMc8XC3w/XVx8
-	 /itAQEuEdUwxNkfRrHAOuL9URofRX2AeTdipb+jvVSNN3IoEBbe8tMIPdzspJDX8eQ
-	 qsVBZkkJkLxUBWrPZw3cxmR4ed6l99caFN14Td2C398VRRFzU7BjvNWyhJQfT3wEmx
-	 KzB/hgZr6Qv5cxKwuwbXPNnp6sibFk+Nhwkp3Am5XXONz4f47MIzaoopUaMD85HJmy
-	 w66Z6qSafMCN4cHtHhWlABmlzoAuXfY8tt+rjXTCKCZl0q6ET8IrNbHxMy6hlElVpw
-	 58YFk035Uk7rg==
-Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
-	id <B65e50ff20000>; Mon, 04 Mar 2024 13:04:02 +1300
-Received: from hamishm-dl.ws.atlnz.lc (hamishm-dl.ws.atlnz.lc [10.33.24.13])
-	by pat.atlnz.lc (Postfix) with ESMTP id 45BB813ED8D;
-	Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
-Received: by hamishm-dl.ws.atlnz.lc (Postfix, from userid 1133)
-	id 3C05B241719; Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-To: mika.westerberg@linux.intel.com,
-	wsa+renesas@sang-engineering.com
-Cc: linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] i2c: acpi: Unbind mux adapters before delete
-Date: Mon,  4 Mar 2024 13:03:55 +1300
-Message-ID: <20240304000355.2614421-1-hamish.martin@alliedtelesis.co.nz>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1709520145; c=relaxed/simple;
+	bh=p3rlpauy9CcC/96wXB/B3OYstONDXCGXsyOYQKXvKOw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AcEfLxpI6UvMnz5an7qdU68EMlBKPxKzdkiShdebADu/pYUFDoW/NqRmlVRX1MLfz2IAaguOzbdvtTpHDKulGNC32DLLPIccjTJ/EKw5xMmNsX7yoHWZfZ76FxN4us116U8tvkwNcP0H0SJ89hDtWW8juFvgGiTnVk7rPr0af/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TzXeDkGu; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709520143; x=1741056143;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=p3rlpauy9CcC/96wXB/B3OYstONDXCGXsyOYQKXvKOw=;
+  b=TzXeDkGuOsBuhYbW1/5huDwYVQX+8qMPz44pWs6ERgjXfYfM7cyZtHg8
+   BhwrWRvc7ZyNCXi/A39fG3Lc38Mzr0H+9v2puiVOKLaH1wdIRFtGcF9yx
+   RgUX4L0MBsIuflOiwRhySdzCG7gAXIACCvqfxbxBFhvclMXZsEofMHigE
+   UIzUG5uZ6g+2O79e+JF8DXhPYSVoRDhn2cgBt+aRpvf1OLPHaKrzHMkbC
+   NxaVw7T4+uvKEaJITOBV96QkBMSnY9eZujp66qY9qSGPK6cBr8gvRn/7w
+   PZPxCMUwoLvCq71KkxNW+SGV765acyySWVyVTIJnzsiCh5B5h5eWWGs+t
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="14706601"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="14706601"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2024 18:42:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="39839001"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2024 18:42:16 -0800
+From: "Huang, Ying" <ying.huang@intel.com>
+To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Cc: "Hao Xiang" <hao.xiang@bytedance.com>,  "Gregory Price"
+ <gourry.memverge@gmail.com>,  aneesh.kumar@linux.ibm.com,
+  mhocko@suse.com,  tj@kernel.org,  john@jagalactic.com,  "Eishan Mirakhur"
+ <emirakhur@micron.com>,  "Vinicius Tavares Petrucci"
+ <vtavarespetr@micron.com>,  "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+  "Alistair Popple" <apopple@nvidia.com>,  "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Len Brown <lenb@kernel.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Dave Jiang <dave.jiang@intel.com>,  Dan
+ Williams <dan.j.williams@intel.com>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>,  linux-acpi@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  "Ho-Ren (Jack)
+ Chuang" <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
+  linux-cxl@vger.kernel.org,  qemu-devel@nongnu.org
+Subject: Re: [PATCH v1 1/1] memory tier: acpi/hmat: create CPUless memory
+ tiers after obtaining HMAT info
+In-Reply-To: <20240301082248.3456086-2-horenchuang@bytedance.com> (Ho-Ren
+	Chuang's message of "Fri, 1 Mar 2024 08:22:45 +0000")
+References: <20240301082248.3456086-1-horenchuang@bytedance.com>
+	<20240301082248.3456086-2-horenchuang@bytedance.com>
+Date: Mon, 04 Mar 2024 10:40:22 +0800
+Message-ID: <87jzmibtyh.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-SEG-SpamProfiler-Analysis: v=2.4 cv=BKkQr0QG c=1 sm=1 tr=0 ts=65e50ff2 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=K6JAEmCyrfEA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=1q8fwcNTFP7Op90FAO0A:9 a=3ZKOabzyN94A:10 a=AjGcO6oz07-iQ99wixmX:22
-X-SEG-SpamProfiler-Score: 0
-x-atlnz-ls: pat
+Content-Type: text/plain; charset=ascii
 
-There is an issue with ACPI overlay table removal specifically related
-to I2C multiplexers.
+Hi, Jack,
 
-Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
-existing I2C bus. When this table is loaded we see the creation of a
-device for the overall PCA9548 chip and 8 further devices - one
-i2c_adapter each for the mux channels. These are all bound to their
-ACPI equivalents via an eventual invocation of acpi_bind_one().
+"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
 
-When we unload the SSDT overlay we run into the problem. The ACPI
-devices are deleted as normal via acpi_device_del_work_fn() and the
-acpi_device_del_list.
+> * Introduce `mt_init_with_hmat()`
+> We defer memory tier initialization for those CPUless NUMA nodes
+> until acquiring HMAT info. `mt_init_with_hmat()` is introduced to
+> post-create CPUless memory tiers after obtaining HMAT info.
+> It iterates through each CPUless memory node, creating memory tiers if
+> necessary. Finally, it calculates demotion tables again at the end.
+>
+> * Introduce `hmat_find_alloc_memory_type()`
+> Find or allocate a memory type in the `hmat_memory_types` list.
+>
+> * Make `set_node_memory_tier()` more generic
+> This function can also be used for setting other memory types for a node.
+> To do so, a new argument is added to specify a memory type.
+>
+> * Handle cases where there is no HMAT when creating memory tiers
+> If no HMAT is specified, it falls back to using `default_dram_type`.
+>
+> * Change adist calculation code to use another new lock, mt_perf_lock.
+> Iterating through CPUlist nodes requires holding the `memory_tier_lock`.
+> However, `mt_calc_adistance()` will end up trying to acquire the same lock,
+> leading to a potential deadlock. Therefore, we propose introducing a
+> standalone `mt_perf_lock` to protect `default_dram_perf`. This approach not
+> only avoids deadlock but also prevents holding a large lock simultaneously.
 
-However, the following warning and stack trace is output as the
-deletion does not go smoothly:
-------------[ cut here ]------------
-kernfs: can not remove 'physical_node', no directory
-WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+=
-0xb9/0xc0
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
-Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
-Workqueue: kacpi_hotplug acpi_device_del_work_fn
-RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
-Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a=
-7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc =
-0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
-RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
-RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
-R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
-R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
-FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000=
-000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? __warn+0x7c/0x130
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? report_bug+0x171/0x1a0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x17/0x70
- ? asm_exc_invalid_op+0x1a/0x20
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- ? kernfs_remove_by_name_ns+0xb9/0xc0
- acpi_unbind_one+0x108/0x180
- device_del+0x18b/0x490
- ? srso_return_thunk+0x5/0x5f
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_del_adapter.part.0+0x1bf/0x250
- i2c_mux_del_adapters+0xa1/0xe0
- i2c_device_remove+0x1e/0x80
- device_release_driver_internal+0x19a/0x200
- bus_remove_device+0xbf/0x100
- device_del+0x157/0x490
- ? __pfx_device_match_fwnode+0x10/0x10
- ? srso_return_thunk+0x5/0x5f
- device_unregister+0xd/0x30
- i2c_acpi_notify+0x10f/0x140
- notifier_call_chain+0x58/0xd0
- blocking_notifier_call_chain+0x3a/0x60
- acpi_device_del_work_fn+0x85/0x1d0
- process_one_work+0x134/0x2f0
- worker_thread+0x2f0/0x410
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe3/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2f/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
----[ end trace 0000000000000000 ]---
-...
-repeated 7 more times, 1 for each channel of the mux
-...
+The patch description is used to described why we need the change, and
+how we do that, but not what we do.  People can tell what is done from
+the code itself.
 
-The issue is that the binding of the ACPI devices to their peer I2C
-adapters is not correctly cleaned up. Digging deeper into the issue we
-see that the deletion order is such that the ACPI devices matching the
-mux channel i2c adapters are deleted first during the SSDT overlay
-removal. For each of the channels we see a call to i2c_acpi_notify()
-with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
-actually i2c_clients, nothing is done for them.
+> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
+> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> ---
+>  drivers/acpi/numa/hmat.c     |  3 ++
+>  include/linux/memory-tiers.h |  6 +++
+>  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
+>  3 files changed, 77 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index d6b85f0f6082..9f57338b3cb5 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -1038,6 +1038,9 @@ static __init int hmat_init(void)
+>  	if (!hmat_set_default_dram_perf())
+>  		register_mt_adistance_algorithm(&hmat_adist_nb);
+>  
+> +	/* Post-create CPUless memory tiers after getting HMAT info */
+> +	mt_init_with_hmat();
+> +
+>  	return 0;
+>  out_put:
+>  	hmat_free_structures();
+> diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
+> index 69e781900082..2f845e90c033 100644
+> --- a/include/linux/memory-tiers.h
+> +++ b/include/linux/memory-tiers.h
+> @@ -48,6 +48,7 @@ int mt_calc_adistance(int node, int *adist);
+>  int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+>  			     const char *source);
+>  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+> +void mt_init_with_hmat(void);
 
-Later on, after each of the mux channels has been dealt with, we come
-to delete the i2c_client representing the PCA9548 device. This is the
-call stack we see above, whereby the kernel cleans up the i2c_client
-including destruction of the mux and its channel adapters. At this
-point we do attempt to unbind from the ACPI peers but those peers no
-longer exist and so we hit the kernfs errors.
+HMAT isn't universally available.  It's a driver in fact.  So, don't put
+driver specific code in general code.
 
-The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
-given that the life cycle of the adapters is linked to the i2c_client,
-instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
-just trigger unbinding of the ACPI device from the adapter device, and
-allow the clean up of the adapter to continue in the way it always has.
+>  #ifdef CONFIG_MIGRATION
+>  int next_demotion_node(int node);
+>  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+> @@ -136,5 +137,10 @@ static inline int mt_perf_to_adistance(struct access_coordinate *perf, int *adis
+>  {
+>  	return -EIO;
+>  }
+> +
+> +static inline void mt_init_with_hmat(void)
+> +{
+> +
+> +}
+>  #endif	/* CONFIG_NUMA */
+>  #endif  /* _LINUX_MEMORY_TIERS_H */
+> diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> index 0537664620e5..7a0a579b3deb 100644
+> --- a/mm/memory-tiers.c
+> +++ b/mm/memory-tiers.c
+> @@ -35,7 +35,9 @@ struct node_memory_type_map {
+>  };
+>  
+>  static DEFINE_MUTEX(memory_tier_lock);
+> +static DEFINE_MUTEX(mt_perf_lock);
+>  static LIST_HEAD(memory_tiers);
+> +static LIST_HEAD(hmat_memory_types);
+>  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
+>  struct memory_dev_type *default_dram_type;
+>  
+> @@ -502,7 +504,7 @@ static inline void __init_node_memory_type(int node, struct memory_dev_type *mem
+>  	}
+>  }
+>  
+> -static struct memory_tier *set_node_memory_tier(int node)
+> +static struct memory_tier *set_node_memory_tier(int node, struct memory_dev_type *new_memtype)
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifi=
-cations")
-Cc: <stable@vger.kernel.org> # v4.8+
----
- drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+No. memory_dev_type are passed to the function via node_memory_types[node].memtype.
 
-diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
-index d6037a328669..67fa8deccef6 100644
---- a/drivers/i2c/i2c-core-acpi.c
-+++ b/drivers/i2c/i2c-core-acpi.c
-@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_ad=
-ev(struct acpi_device *adev)
- 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
- }
-=20
-+static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_dev=
-ice *adev)
-+{
-+	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
-+}
-+
- static int i2c_acpi_notify(struct notifier_block *nb, unsigned long valu=
-e,
- 			   void *arg)
- {
-@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *n=
-b, unsigned long value,
- 			break;
-=20
- 		client =3D i2c_acpi_find_client_by_adev(adev);
--		if (!client)
--			break;
-+		if (client) {
-+			i2c_unregister_device(client);
-+			put_device(&client->dev);
-+		}
-+
-+		adapter =3D i2c_acpi_find_adapter_by_adev(adev);
-+		if (adapter) {
-+			acpi_device_notify_remove(&adapter->dev);
-+			put_device(&adapter->dev);
-+		}
-=20
--		i2c_unregister_device(client);
--		put_device(&client->dev);
- 		break;
- 	}
-=20
---=20
-2.43.0
+>  {
+>  	struct memory_tier *memtier;
+>  	struct memory_dev_type *memtype;
+> @@ -514,7 +516,7 @@ static struct memory_tier *set_node_memory_tier(int node)
+>  	if (!node_state(node, N_MEMORY))
+>  		return ERR_PTR(-EINVAL);
+>  
+> -	__init_node_memory_type(node, default_dram_type);
+> +	__init_node_memory_type(node, new_memtype);
+>  
+>  	memtype = node_memory_types[node].memtype;
+>  	node_set(node, memtype->nodes);
+> @@ -623,6 +625,56 @@ void clear_node_memory_type(int node, struct memory_dev_type *memtype)
+>  }
+>  EXPORT_SYMBOL_GPL(clear_node_memory_type);
+>  
+> +static struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
 
+Similar function existed in drivers/dax/kmem.c.  Please abstract them
+and move them here.
+
+> +{
+> +	bool found = false;
+> +	struct memory_dev_type *mtype;
+> +
+> +	list_for_each_entry(mtype, &hmat_memory_types, list) {
+> +		if (mtype->adistance == adist) {
+> +			found = true;
+> +			break;
+> +		}
+> +	}
+> +	if (!found) {
+> +		mtype = alloc_memory_type(adist);
+> +		if (!IS_ERR(mtype))
+> +			list_add(&mtype->list, &hmat_memory_types);
+> +	}
+> +	return mtype;
+> +}
+> +
+> +static void mt_create_with_hmat(int node)
+> +{
+> +	struct memory_dev_type *mtype = NULL;
+> +	int adist = MEMTIER_ADISTANCE_DRAM;
+> +
+> +	mt_calc_adistance(node, &adist);
+> +	if (adist != MEMTIER_ADISTANCE_DRAM) {
+> +		mtype = hmat_find_alloc_memory_type(adist);
+> +		if (IS_ERR(mtype))
+> +			pr_err("%s() failed to allocate a tier\n", __func__);
+> +	} else {
+> +		mtype = default_dram_type;
+> +	}
+> +
+> +	set_node_memory_tier(node, mtype);
+> +}
+> +
+> +void mt_init_with_hmat(void)
+> +{
+> +	int nid;
+> +
+> +	mutex_lock(&memory_tier_lock);
+> +	for_each_node_state(nid, N_MEMORY)
+> +		if (!node_state(nid, N_CPU))
+> +			mt_create_with_hmat(nid);
+> +
+> +	establish_demotion_targets();
+> +	mutex_unlock(&memory_tier_lock);
+> +}
+> +EXPORT_SYMBOL_GPL(mt_init_with_hmat);
+> +
+
+I guess that we can put most hmat related code above in hmat.c.
+
+>  static void dump_hmem_attrs(struct access_coordinate *coord, const char *prefix)
+>  {
+>  	pr_info(
+> @@ -636,7 +688,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+>  {
+>  	int rc = 0;
+>  
+> -	mutex_lock(&memory_tier_lock);
+> +	mutex_lock(&mt_perf_lock);
+>  	if (default_dram_perf_error) {
+>  		rc = -EIO;
+>  		goto out;
+> @@ -684,7 +736,7 @@ int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+>  	}
+>  
+>  out:
+> -	mutex_unlock(&memory_tier_lock);
+> +	mutex_unlock(&mt_perf_lock);
+>  	return rc;
+>  }
+>  
+> @@ -700,7 +752,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
+>  	    perf->read_bandwidth + perf->write_bandwidth == 0)
+>  		return -EINVAL;
+>  
+> -	mutex_lock(&memory_tier_lock);
+> +	mutex_lock(&mt_perf_lock);
+>  	/*
+>  	 * The abstract distance of a memory node is in direct proportion to
+>  	 * its memory latency (read + write) and inversely proportional to its
+> @@ -713,7 +765,7 @@ int mt_perf_to_adistance(struct access_coordinate *perf, int *adist)
+>  		(default_dram_perf.read_latency + default_dram_perf.write_latency) *
+>  		(default_dram_perf.read_bandwidth + default_dram_perf.write_bandwidth) /
+>  		(perf->read_bandwidth + perf->write_bandwidth);
+> -	mutex_unlock(&memory_tier_lock);
+> +	mutex_unlock(&mt_perf_lock);
+>  
+>  	return 0;
+>  }
+> @@ -797,7 +849,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
+>  		break;
+>  	case MEM_ONLINE:
+>  		mutex_lock(&memory_tier_lock);
+> -		memtier = set_node_memory_tier(arg->status_change_nid);
+> +		memtier = set_node_memory_tier(arg->status_change_nid, default_dram_type);
+>  		if (!IS_ERR(memtier))
+>  			establish_demotion_targets();
+>  		mutex_unlock(&memory_tier_lock);
+> @@ -836,7 +888,15 @@ static int __init memory_tier_init(void)
+>  	 * types assigned.
+>  	 */
+>  	for_each_node_state(node, N_MEMORY) {
+> -		memtier = set_node_memory_tier(node);
+> +		if (!node_state(node, N_CPU))
+> +			/*
+> +			 * Defer memory tier initialization on CPUless numa nodes.
+> +			 * These will be initialized when HMAT information is
+> +			 * available.
+> +			 */
+> +			continue;
+> +
+> +		memtier = set_node_memory_tier(node, default_dram_type);
+
+On system with HMAT, how to fall back CPU-less node to
+default_dram_type?  I found your description, but I don't find it in code.
+
+>  		if (IS_ERR(memtier))
+>  			/*
+>  			 * Continue with memtiers we are able to setup
+
+--
+Best Regards,
+Huang, Ying
 
