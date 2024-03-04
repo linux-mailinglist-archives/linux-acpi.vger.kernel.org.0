@@ -1,119 +1,112 @@
-Return-Path: <linux-acpi+bounces-4076-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4077-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B311986FCC0
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 10:08:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D111E86FDBF
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 10:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F4A1F23330
-	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 09:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A280C283B9C
+	for <lists+linux-acpi@lfdr.de>; Mon,  4 Mar 2024 09:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C020B02;
-	Mon,  4 Mar 2024 09:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C55219E2;
+	Mon,  4 Mar 2024 09:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="FqGzq0d3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g95mKmpi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B36617748
-	for <linux-acpi@vger.kernel.org>; Mon,  4 Mar 2024 09:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E919224E0
+	for <linux-acpi@vger.kernel.org>; Mon,  4 Mar 2024 09:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709543317; cv=none; b=JjuP9T5njM8jgtA+fWy5wliHwMrRBpDxFoZaVGdF2Vovi6b5hX/iXJfVzeQvAtBhtTF/Dvtimzg6tEeUANmqa7ocf11+yXs16ta4jwsxTuVvM+IBeaZjA+scQfr5lTBywOSbuOtEwVp+VPMQRcBfNKlCtfdZrt1y4sucdyHrTTA=
+	t=1709544510; cv=none; b=YWQQ9USILl1qM9uEkEqcXxyKN0EWu/2lWMIzQWE7BL7HB3A2ZK2v5YqmRv5Ad+S4ETzKbUxr/H6inX6zvmMiVx4Faa8/G7q2PpSWG+SkhwrjFXIBFcirDdx0psICXik2LPwyYuEw04zzH49Cvkeim1e89W4rSMOV8t48OXD1K6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709543317; c=relaxed/simple;
-	bh=ny95I8bIbXgvYRR/9/ImWnR7LSQXs/XryoYHCkehg3o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ag3uQu5nOnZ5rqvStMOLX00gN0ovg2BySIEufZXSpwkkEin86CS/Qo4d6BvuB16LwdA2rXH7tFkoz1BE6AENsjdHvGTQwOZTckijPQtP7AHXz0NzXo8Z8wYilZZ1WyF8TPd5xF496ItSqRXcR1Y+hCGIXmmTmlDbeY68HB1eScA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=FqGzq0d3; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=ny95
-	I8bIbXgvYRR/9/ImWnR7LSQXs/XryoYHCkehg3o=; b=FqGzq0d3F5k0S+8rAhQf
-	YMkGAu50r/uN9xFoXBSLryaLmM+EJbXOqhN+Lf5EG0EIcbfMOCsf4hGKkJmLq7e5
-	LAAcp6Dsn323IAvhP8C5HFyYdSWfe57ovUdnYChFhEy4NEci7f/4PWfcR5O2Smag
-	5ywHS47WBBcvfhMq3yhjadgFc8wlngjn0YCKIAGi8pWlDStjWaxQAfVgfmzFeZqp
-	3MELY7K83LUArR2AwLqiaX+Bd8jx+GFlGYe7eH2H0AZA9d+ksVSmsYiCS2lVQC4f
-	F3QspEOeeTiybMQu2EO1x8yRc//uMCerkUWMV1y1XFALU74YU74qSeU+xZxGytsm
-	+Q==
-Received: (qmail 3436890 invoked from network); 4 Mar 2024 10:08:24 +0100
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Mar 2024 10:08:24 +0100
-X-UD-Smtp-Session: l3s3148p1@xshaEdISNMwujnuA
-Date: Mon, 4 Mar 2024 10:08:23 +0100
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Cc: mika.westerberg@linux.intel.com, linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3] i2c: acpi: Unbind mux adapters before delete
-Message-ID: <ZeWPh3asA0rSTJ92@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	mika.westerberg@linux.intel.com, linux-i2c@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>,
-	stable@vger.kernel.org
-References: <20240304000355.2614421-1-hamish.martin@alliedtelesis.co.nz>
+	s=arc-20240116; t=1709544510; c=relaxed/simple;
+	bh=DYSJweXIpw6YwRUOqNGWryLCMLbPJLKr3W4We7Zoob8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EOpudFxynZAJ4KEKxr6Je8MDXnlg8oMRPIDr8oUKKzVPCvBK6odGkcJRJpzlMZneolR0WLwZFGtWgYP6nZXntFcOq0K/RpwDDqFZF2UNs3NW/nvmioi4vgAa4g78N+nflnO+SlGNApBdygJnwAmh586eAEa1zZclL8gRo5aM7d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g95mKmpi; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-51340e89df1so1263430e87.1
+        for <linux-acpi@vger.kernel.org>; Mon, 04 Mar 2024 01:28:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709544506; x=1710149306; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fWMcd4GWhZ5Esfhcun7a87Cz0tR0W7YGBDyBNZUJgI=;
+        b=g95mKmpi8EkiN5jmIq7sghJ6A4UYFwq5UwTbyRXttczfrmSFKJOTdpsgHqJ3U8h4lg
+         MfNTflyNd6+zjPLY5z7rgAzDbRqgTSzGaie/YmkT5rApVdVYn+pIQXpzkTRSQduZIQC8
+         XMx7zlROpg/aFpcgMUHp0hLJF71wF9ovhvYYPd0LnZ71IbbL7Lem2VqgjYRp3tGDtteD
+         Jnid98Gdsseo9hq79YcjG5xnz5++Ov2S3qvBTzeZTqQ4J+NlGTWgE+Q15jKjbOYaaX/E
+         q6pU4D4q7xEh+hdNo16Hda+qQzwDxZE+6vlvsi2JFlH1g2IdaoUfu21L1yTngeqcVbQR
+         taHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709544506; x=1710149306;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6fWMcd4GWhZ5Esfhcun7a87Cz0tR0W7YGBDyBNZUJgI=;
+        b=nMOochMIrN76zVeGAR+JSCYIx1iZN1IAF+6V7Y3wUSCEIf3L3vtiadoStHtpAJkoxS
+         z+vIyFGgrbdsNrVPL3UJCkV6YDoLDtzyw8qVZh4vgbiktsUTE/fi24qS09yBaDiH+0hU
+         GSV60AWBtYQ+srPW4TxmB6ZYxL8EiX0TTaHTYFODptycORS4lYHwLucEIhktulxzfE+N
+         ixHVb4eQIkDVLxt0ug8P+3Yk8Uc2hxpW5iZ+twAw1W7Jxe9XdlSIf+dfGTcTwA/Z8Qwa
+         UhOaOafC4Uw3M1DJD8+LZV+BbExVy94dYND9xGNlKC9ORJOHjrzfJXXHK3Rp6SyfhL8V
+         wBUg==
+X-Gm-Message-State: AOJu0YzSZP1nTit1qbWK4bdyXcwdyCv6XleP0r+J+QK0Pw5F1dUyKN1R
+	sZncx7AcpInFudqQrDy6Ri9qnc3Kbdgy8rc5aLh9ELt4aQYglH4pqcdYdKFASk0=
+X-Google-Smtp-Source: AGHT+IE4/9O6hcMMHVLwGBzgS2Eb7Z6tCBtPILk+3kig1hrlD/k3AMtg0SXI1yH87muc9NkWAtQKWw==
+X-Received: by 2002:a05:6512:1389:b0:512:f657:122d with SMTP id fc9-20020a056512138900b00512f657122dmr6650763lfb.12.1709544505757;
+        Mon, 04 Mar 2024 01:28:25 -0800 (PST)
+Received: from localhost.localdomain ([176.59.41.46])
+        by smtp.gmail.com with ESMTPSA id u26-20020ac25bda000000b005133b2d1acasm927094lfn.50.2024.03.04.01.28.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Mar 2024 01:28:25 -0800 (PST)
+From: Sergey Kalinichev <kalinichev.so.0@gmail.com>
+To: linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org,
+	Sergey Kalinichev <kalinichev.so.0@gmail.com>
+Subject: [PATCH] ACPI: resource: Use IRQ override on Maibenben X565
+Date: Mon,  4 Mar 2024 12:26:38 +0300
+Message-ID: <20240304092733.49466-1-kalinichev.so.0@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="kpj1D2yhT/675NeA"
-Content-Disposition: inline
-In-Reply-To: <20240304000355.2614421-1-hamish.martin@alliedtelesis.co.nz>
+Content-Transfer-Encoding: 8bit
 
+Use ACPI IRQ override on Maibenben X565 laptop to make the internal keyboard work.
+Add a new entry to the irq1_edge_low_force_override structure, similar to the existing ones.
 
---kpj1D2yhT/675NeA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Sergey Kalinichev <kalinichev.so.0@gmail.com>
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-On Mon, Mar 04, 2024 at 01:03:55PM +1300, Hamish Martin wrote:
-> There is an issue with ACPI overlay table removal specifically related
-> to I2C multiplexers.
->=20
-> Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
-> existing I2C bus. When this table is loaded we see the creation of a
-> device for the overall PCA9548 chip and 8 further devices - one
-> i2c_adapter each for the mux channels. These are all bound to their
-> ACPI equivalents via an eventual invocation of acpi_bind_one().
->=20
-> When we unload the SSDT overlay we run into the problem. The ACPI
-> devices are deleted as normal via acpi_device_del_work_fn() and the
-> acpi_device_del_list.
->=20
-> However, the following warning and stack trace is output as the
-> deletion does not go smoothly:
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index dacad1d84..485ecc235 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -588,6 +588,13 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM5RGEE0016COM"),
+ 		},
+ 	},
++	{
++		/* Maibenben X565 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MAIBENBEN"),
++			DMI_MATCH(DMI_BOARD_NAME, "X565"),
++		},
++	},
+ 	{ }
+ };
+ 
+-- 
+2.43.0
 
-Applied to for-current, thanks!
-
-
---kpj1D2yhT/675NeA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmXlj4QACgkQFA3kzBSg
-KbYg3w//Yb45Gdsst/nxFw5XwlOlZ+V4Et//WraJxkBGagzxk4j9fuVzP+aoyZzu
-1/74FUO+yfmAJl7aqFEuAPG7zwIKRhnMbgl9z5XX+S2KtIBgDMrIKz76ilkzhklt
-7TtxVz96sa0oLOBL5UUYCqdSWrktvoauWRv0sdS+5zOgXqvhtAGGrxLsUbJ/FDOs
-uxL9fmj6wE5NUrzB1WvTr0Rk3w/jWobFzezxyxO5F9fgTjPfbJ1PqKwhPOH7mBQx
-M9QafJ6GUB+gzkaJnSMIDDC6j7GOCPNy1+p60t/4TSVgukVNKHf8xcKlJwMWNy1I
-85SDBLjDT0+LFQlYZ44AbJkzE0LNKxYMYHSkBMXqcjosnvaqAKSoGd3rpGo28zkY
-E1zjO4dY2Wm4wk62AH3Md5/zJLsrHgpIWPaH+PnO9gb8vpHZyP32ekxXRFFIVR9o
-F2SrdDR7KoEXIppfN+c3BuwN1rGBtPKv45EEObn5L70HCpT/faPwCYoBDadeIZqQ
-Jf0lhSXiJXh3ys7G1NDZ6691L44+jZ0wWyah9LWoKbyk1NmxTSTqtFgXDZUp0G0Q
-bDK/yu+V5s6wdMq8I8bRvbtQ1O6rDDbBUiDlWsfuQClLHpG+J/t5JsHezuzlov/V
-3Bk1Yy1TdMlkut9QmGbPTxar6MAxzoZSW3Uhc4P+jApm2Z1Jcd4=
-=1npF
------END PGP SIGNATURE-----
-
---kpj1D2yhT/675NeA--
 
