@@ -1,175 +1,417 @@
-Return-Path: <linux-acpi+bounces-4103-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4104-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C289871520
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 06:06:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B4B871535
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 06:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D2F1C2243E
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 05:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D1931F22A40
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 05:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9267E0FB;
-	Tue,  5 Mar 2024 05:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AE645BE1;
+	Tue,  5 Mar 2024 05:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y1FpB/Jy"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="aG9/b1In"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62B07D40A
-	for <linux-acpi@vger.kernel.org>; Tue,  5 Mar 2024 05:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8BC10A1B
+	for <linux-acpi@vger.kernel.org>; Tue,  5 Mar 2024 05:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709615114; cv=none; b=LwYpyUX+3R10MWkJL8XcrLsZ6drVmLc2dX/LJmNoa4kkZnAxyOzRU5+m5M437FElk4mbsHfbUAvwt3/waaw3qc5tXN0lh3GIAWxnaQ9xf7ryVWyVMefUM2nxnVAA/4dUpbGsrUhOApR2XpHm0CpaqoFejUbAccAFEW+HTIBkweg=
+	t=1709616285; cv=none; b=C9zlT8LdyMoUci4KTNlIGIQYKx/jLuUy6lb0aUIBUgm5Kw/oBgYRysxojeLRn8C0+n+G3iK4cVWuxncmV/YyVf4m/VcetQPWWN2H2oABK4raO6234cZDckz/5QGHNp5w+nTRzO267lftx8/lusNz5yXwFeb238SP/ss+t4x0H8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709615114; c=relaxed/simple;
-	bh=FgXbHdYbzu0zV1Fn+0Sm3Z2N29NaUTHdcJVRWQiFOe4=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=QrGZUzsD8WO9p6YMtnKI2n0W0zr2Vux/WoppcnsIlnTaTUuJrH7SoC6MCoFoIv6PyVvVwdtMK1vJf9S3eGGaNqgc4ai6CzsZMSR0LK9StvmL9Z8NDSn60sWMiMdImv6WOrqAuKKlc/QNAWZLKE0K+MP1VjxoGsIuvg+oGIr5sv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y1FpB/Jy; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-60966f363c1so77482487b3.3
-        for <linux-acpi@vger.kernel.org>; Mon, 04 Mar 2024 21:05:12 -0800 (PST)
+	s=arc-20240116; t=1709616285; c=relaxed/simple;
+	bh=HdQJhSUxN0qtHYv9yAnHeISS1yqUYyffOakiAyvyK/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R0Qhu4Muf/BsH24Ol3wf3sPKUNzbQMDZAcG+K4fYO/9tS3ocOhfoK6lpLaakGgHG6gcvH7UCAPvsH87MiNUIgE8zkBfnUx9Ex/0IQUqDq5V9a0Btbkc+9X0m/tjCvBPlCbPj2iG6F7eVtW0MNG40c/zd/3PLrCebzC4XWnDueSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=aG9/b1In; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c1a2f7e1d2so2984811b6e.1
+        for <linux-acpi@vger.kernel.org>; Mon, 04 Mar 2024 21:24:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709615112; x=1710219912; darn=vger.kernel.org;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AK1RvhjBdB4hDhmPTNWoUxZx2sr2tNAM1/EjrC2JoM=;
-        b=y1FpB/Jyx5C6fSs1Ap3r6/w8H9k3Y60pZNpsSMYvIHhyejogBqCcddbXL+JrFXK4jr
-         LVGPWpQfaA9gk8QavlnbBmNOLdMXd4LKwFa+pdSqStD85Si0Y50hXqrLMdhAL5RG1K92
-         jUFHm95otGHqlWABF6YAX33/2QUJQfafQwseyAXK9xZWiYYzZ666Gut3dTBvV/pcQEdg
-         QclDAB1zTRRbNCO/YzoHmyzYndCM+/wVLt/MgEMBoF/4GhWn3gbxXo3upofhlctmnmzK
-         XfzdoWMyKEcjnnePfb6EOeXBpW5LsWbH1PGEFxin35vVIt/L1P/NaQrMxqkrDkCz4l95
-         hcoA==
+        d=ventanamicro.com; s=google; t=1709616282; x=1710221082; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4WAStQQm9HoQSzWAlhV1BCbQlgwycMVOjUgyllAWRE0=;
+        b=aG9/b1IngVaDJZAsKvjXxmAQZecRXoXPRVQ4WdfwmTtVuLK4uY1A4wXsFAIcqWl+fj
+         L/cUU/8mL5QXhOrBwDsU+lMDkjma1AN7e9jGPyjIejRuendv7+iT0Jy6/rqOq4h5+vwx
+         0UJ/1vAQLZbVe4hetAkKTsUVEbac/hgt000PY+gLrvUnthxt9PTLw5f9EY/q5KADyukF
+         ZOYhWwovdInWA4/W1umX3Ef60DDDyYCB+fWudq1bee80uThhD2DMjEvIrxSQEBw277ZW
+         0UGsHu2zuNIGAq0IQF2lRRsXmARXi59eV9g9nbxZuFYwXTtLvspntQ3KPPdz6edEvJZ4
+         O8tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709615112; x=1710219912;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AK1RvhjBdB4hDhmPTNWoUxZx2sr2tNAM1/EjrC2JoM=;
-        b=ptyzcVW7NvJbM66oFrcGBbPLT7I7bRuGdiq32DgFYlEu4Rf8CDZP2e611lytkd9rht
-         9YG1eUMEV5HBjN4GRJ6AC/gdpN0IWl5edC03a/uz52lLXdhRbhqrB3wRvtSEDbs7iHc2
-         vJ9v2G7B+aln260E8L/rE9UyoVrYZ/Cw/IpquWdFvnCKywYnMZ186MeeFpLoqnLfCAul
-         7Dd3+8nhLsKfK2CnoZgW/eHE9Xm4zS+NzUyeeV9exvtPS7x+qvj7btKn0SbWe/D86caf
-         TI/agufp1WGxErPpYq4AtA+vgYhRKQjFausY4hrXM3qznjbBNyQykdWBoOr1yF34qaYK
-         FxfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVE+cANNG4f/PEt5e9BcmFyTKtynv1jJkT0D01UR/UPTypRWgR4ZvfkPWBP3+VIW+0QNdPRSER1JfDbwMrVbMq3YJs6JFciO5V+jw==
-X-Gm-Message-State: AOJu0YyDY3J3XetbtAOMD27l6xP15W/N3EbSyxbz5oftt9bksewOtaFw
-	4VXKvhhHLBJhit8NIBwp/ro4E4TaYSpQq7M9QamBSVFYwT+lMEyojkC7xu9bM5SaTH/sMD/nxDV
-	LENyFygJQt7a9Jg==
-X-Google-Smtp-Source: AGHT+IH2KzRd8ijTXs0JYOCur+G/X47aFWeD6zQZ4dffImANFZRDeEhSxZMnhoOcs3UOxIj6Er5VZdNgNg1tQNM=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:d64:6ee3:55a9:46e6])
- (user=saravanak job=sendgmr) by 2002:a05:690c:c9d:b0:607:cd11:5464 with SMTP
- id cm29-20020a05690c0c9d00b00607cd115464mr3058844ywb.9.1709615112162; Mon, 04
- Mar 2024 21:05:12 -0800 (PST)
-Date: Mon,  4 Mar 2024 21:04:56 -0800
-In-Reply-To: <20240305050458.1400667-1-saravanak@google.com>
-Message-Id: <20240305050458.1400667-4-saravanak@google.com>
+        d=1e100.net; s=20230601; t=1709616282; x=1710221082;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4WAStQQm9HoQSzWAlhV1BCbQlgwycMVOjUgyllAWRE0=;
+        b=qriVv8dLWLZt42Zt+jpuge3wYUn9JBaY3JNKd3HqQtd4E1h8bqzIfUvUhc2UuVgLt2
+         XqM/Seqp7ZcSQjSFEirLlHVoZft96VOx3/nmpLh+pYli/DZuY7ciGUas3telfbSTIdnE
+         Pn+n/Dd1uAd82SIGrF/0v0KRMhxV0rIvU+undfw4lcYkQox17gVtCXqT978RTlP9H9nz
+         QrutcEc15vaCVTXxK+6hFxIbSVOE1hLQ5GRgiH7Hc+7pJQnIGg01ZSEe80UNPCIbEf0K
+         CBV2INwb658MWTGkpNNMr21ITzBywZNJdaailDx5FvoiZullNXlGysjNRfZ3TLqPc3bz
+         IQQA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2/h1erQK+dI2Nu2ebB2NjtwsWkwasb9GvcwE1yOieVUdv6vG1TBSRXXXzOBzNJ4PlHWjHe2GNGWhUAGeCHuzJ8fvU86jvnFrFAQ==
+X-Gm-Message-State: AOJu0YzCVnK4mw66banNjyuWRCBWuNHSpPmTzd96SM1qiUYNeo03qjnj
+	AKWJIkrq5iKT5zkd+jY6dMr1KjPe3u65JbkVhWWlf0l2px/3BKJrf+O2WAwfcqI=
+X-Google-Smtp-Source: AGHT+IEI61cbq0NNOa2JijdLjx7qXhrMTKWE8SuR7TUZvXjIoUeb6+dKufDr0lbNPVpaTmIw3sYSmQ==
+X-Received: by 2002:a05:6808:351:b0:3c1:f63a:a80d with SMTP id j17-20020a056808035100b003c1f63aa80dmr811961oie.27.1709616282105;
+        Mon, 04 Mar 2024 21:24:42 -0800 (PST)
+Received: from sunil-laptop ([106.51.184.12])
+        by smtp.gmail.com with ESMTPSA id b123-20020a62cf81000000b006e594b068c8sm8387738pfg.116.2024.03.04.21.24.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Mar 2024 21:24:41 -0800 (PST)
+Date: Tue, 5 Mar 2024 10:54:29 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Haibo Xu <haibo1.xu@intel.com>
+Cc: xiaobo55x@gmail.com, ajones@ventanamicro.com,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Greentime Hu <greentime.hu@sifive.com>, Baoquan He <bhe@redhat.com>,
+	=?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Chen Jiahao <chenjiahao16@huawei.com>,
+	James Morse <james.morse@arm.com>, Evan Green <evan@rivosinc.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Tony Luck <tony.luck@intel.com>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
+Subject: Re: [PATCH 3/4] ACPI: RISCV: Add NUMA support based on SRAT and SLIT
+Message-ID: <ZeasjVWuyeiAlF8y@sunil-laptop>
+References: <cover.1706603678.git.haibo1.xu@intel.com>
+ <799dcc07f41c2357328e9778fbbded7818af34a7.1706603678.git.haibo1.xu@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240305050458.1400667-1-saravanak@google.com>
-X-Mailer: git-send-email 2.44.0.278.ge034bb2e1d-goog
-Subject: [PATCH v5 3/3] of: property: fw_devlink: Add support for
- "post-init-providers" property
-From: Saravana Kannan <saravanak@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, linux-efi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <799dcc07f41c2357328e9778fbbded7818af34a7.1706603678.git.haibo1.xu@intel.com>
 
-Add support for this property so that dependency cycles can be broken and
-fw_devlink can do better probe/suspend/resume ordering between devices in a
-dependency cycle.
+On Wed, Jan 31, 2024 at 10:32:00AM +0800, Haibo Xu wrote:
+> Add acpi_numa.c file to enable parse NUMA information from
+> ACPI SRAT and SLIT tables. SRAT table provide CPUs(Hart) and
+> memory nodes to proximity domain mapping, while SLIT table
+> provide the distance metrics between proximity domains.
+> 
+> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> ---
+>  arch/riscv/include/asm/acpi.h |  15 +++-
+>  arch/riscv/kernel/Makefile    |   1 +
+>  arch/riscv/kernel/acpi.c      |   5 --
+>  arch/riscv/kernel/acpi_numa.c | 133 ++++++++++++++++++++++++++++++++++
+>  arch/riscv/kernel/setup.c     |   4 +-
+>  arch/riscv/kernel/smpboot.c   |   2 -
+>  drivers/acpi/numa/srat.c      |   3 +-
+>  include/linux/acpi.h          |   4 +
+>  8 files changed, 156 insertions(+), 11 deletions(-)
+>  create mode 100644 arch/riscv/kernel/acpi_numa.c
+> 
+> diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
+> index 7dad0cf9d701..e0a1f84404f3 100644
+> --- a/arch/riscv/include/asm/acpi.h
+> +++ b/arch/riscv/include/asm/acpi.h
+> @@ -61,11 +61,14 @@ static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+>  
+>  void acpi_init_rintc_map(void);
+>  struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> -u32 get_acpi_id_for_cpu(int cpu);
+> +static inline u32 get_acpi_id_for_cpu(int cpu)
+> +{
+> +	return acpi_cpu_get_madt_rintc(cpu)->uid;
+> +}
+> +
+>  int acpi_get_riscv_isa(struct acpi_table_header *table,
+>  		       unsigned int cpu, const char **isa);
+>  
+> -static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
+>  void acpi_get_cbo_block_size(struct acpi_table_header *table, u32 *cbom_size,
+>  			     u32 *cboz_size, u32 *cbop_size);
+>  #else
+> @@ -87,4 +90,12 @@ static inline void acpi_get_cbo_block_size(struct acpi_table_header *table,
+>  
+>  #endif /* CONFIG_ACPI */
+>  
+> +#ifdef CONFIG_ACPI_NUMA
+> +int acpi_numa_get_nid(unsigned int cpu);
+> +void acpi_map_cpus_to_nodes(void);
+> +#else
+> +static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
+> +static inline void acpi_map_cpus_to_nodes(void) { }
+> +#endif /* CONFIG_ACPI_NUMA */
+> +
+>  #endif /*_ASM_ACPI_H*/
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index f71910718053..5d3e9cf89b76 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -105,3 +105,4 @@ obj-$(CONFIG_COMPAT)		+= compat_vdso/
+>  
+>  obj-$(CONFIG_64BIT)		+= pi/
+>  obj-$(CONFIG_ACPI)		+= acpi.o
+> +obj-$(CONFIG_ACPI_NUMA)	+= acpi_numa.o
+> diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> index e619edc8b0cc..040bdbfea2b4 100644
+> --- a/arch/riscv/kernel/acpi.c
+> +++ b/arch/riscv/kernel/acpi.c
+> @@ -191,11 +191,6 @@ struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
+>  	return &cpu_madt_rintc[cpu];
+>  }
+>  
+> -u32 get_acpi_id_for_cpu(int cpu)
+> -{
+> -	return acpi_cpu_get_madt_rintc(cpu)->uid;
+> -}
+> -
+>  /*
+>   * __acpi_map_table() will be called before paging_init(), so early_ioremap()
+>   * or early_memremap() should be called here to for ACPI table mapping.
+> diff --git a/arch/riscv/kernel/acpi_numa.c b/arch/riscv/kernel/acpi_numa.c
+> new file mode 100644
+> index 000000000000..493642a61457
+> --- /dev/null
+> +++ b/arch/riscv/kernel/acpi_numa.c
+> @@ -0,0 +1,133 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ACPI 6.6 based NUMA setup for RISCV
+> + * Lots of code was borrowed from arch/arm64/kernel/acpi_numa.c
+> + *
+> + * Copyright 2004 Andi Kleen, SuSE Labs.
+> + * Copyright (C) 2013-2016, Linaro Ltd.
+> + *		Author: Hanjun Guo <hanjun.guo@linaro.org>
+> + * Copyright (C) 2024 Intel Corporation.
+> + *
+> + * Reads the ACPI SRAT table to figure out what memory belongs to which CPUs.
+> + *
+> + * Called from acpi_numa_init while reading the SRAT and SLIT tables.
+> + * Assumes all memory regions belonging to a single proximity domain
+> + * are in one chunk. Holes between them will be included in the node.
+> + */
+> +
+> +#define pr_fmt(fmt) "ACPI: NUMA: " fmt
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/bitmap.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mm.h>
+> +#include <linux/memblock.h>
+> +#include <linux/mmzone.h>
+> +#include <linux/module.h>
+> +#include <linux/topology.h>
+> +
+> +#include <asm/numa.h>
+> +
+> +static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
+> +
+> +int __init acpi_numa_get_nid(unsigned int cpu)
+> +{
+> +	return acpi_early_node_map[cpu];
+> +}
+> +
+> +static inline int get_cpu_for_acpi_id(u32 uid)
+> +{
+> +	int cpu;
+> +
+> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+> +		if (uid == get_acpi_id_for_cpu(cpu))
+> +			return cpu;
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int __init acpi_parse_rintc_pxm(union acpi_subtable_headers *header,
+> +				      const unsigned long end)
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Rob Herring <robh@kernel.org>
----
- drivers/of/property.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Please check alignment.
 
-diff --git a/drivers/of/property.c b/drivers/of/property.c
-index bce849f21ae2..b517a92dabca 100644
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1066,7 +1066,8 @@ of_fwnode_device_get_match_data(const struct fwnode_handle *fwnode,
- }
- 
- static void of_link_to_phandle(struct device_node *con_np,
--			      struct device_node *sup_np)
-+			      struct device_node *sup_np,
-+			      u8 flags)
- {
- 	struct device_node *tmp_np = of_node_get(sup_np);
- 
-@@ -1085,7 +1086,7 @@ static void of_link_to_phandle(struct device_node *con_np,
- 		tmp_np = of_get_next_parent(tmp_np);
- 	}
- 
--	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), 0);
-+	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np), flags);
- }
- 
- /**
-@@ -1198,6 +1199,8 @@ static struct device_node *parse_##fname(struct device_node *np,	     \
-  *		 to a struct device, implement this ops so fw_devlink can use it
-  *		 to find the true consumer.
-  * @optional: Describes whether a supplier is mandatory or not
-+ * @fwlink_flags: Optional fwnode link flags to use when creating a fwnode link
-+ *		  for this property.
-  *
-  * Returns:
-  * parse_prop() return values are
-@@ -1210,6 +1213,7 @@ struct supplier_bindings {
- 					  const char *prop_name, int index);
- 	struct device_node *(*get_con_dev)(struct device_node *np);
- 	bool optional;
-+	u8 fwlink_flags;
- };
- 
- DEFINE_SIMPLE_PROP(clocks, "clocks", "#clock-cells")
-@@ -1240,6 +1244,7 @@ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
- DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
- DEFINE_SIMPLE_PROP(panel, "panel", NULL)
- DEFINE_SIMPLE_PROP(msi_parent, "msi-parent", "#msi-cells")
-+DEFINE_SIMPLE_PROP(post_init_providers, "post-init-providers", NULL)
- DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
- DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
- 
-@@ -1349,6 +1354,10 @@ static const struct supplier_bindings of_supplier_bindings[] = {
- 	{ .parse_prop = parse_regulators, },
- 	{ .parse_prop = parse_gpio, },
- 	{ .parse_prop = parse_gpios, },
-+	{
-+		.parse_prop = parse_post_init_providers,
-+		.fwlink_flags = FWLINK_FLAG_IGNORE,
-+	},
- 	{}
- };
- 
-@@ -1393,7 +1402,7 @@ static int of_link_property(struct device_node *con_np, const char *prop_name)
- 					: of_node_get(con_np);
- 			matched = true;
- 			i++;
--			of_link_to_phandle(con_dev_np, phandle);
-+			of_link_to_phandle(con_dev_np, phandle, s->fwlink_flags);
- 			of_node_put(phandle);
- 			of_node_put(con_dev_np);
- 		}
--- 
-2.44.0.278.ge034bb2e1d-goog
+> +{
+> +	struct acpi_srat_rintc_affinity *pa;
+> +	int cpu, pxm, node;
+> +
+> +	if (srat_disabled())
+> +		return -EINVAL;
+> +
+> +	pa = (struct acpi_srat_rintc_affinity *)header;
+> +	if (!pa)
+> +		return -EINVAL;
+> +
+> +	if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
+> +		return 0;
+> +
+> +	pxm = pa->proximity_domain;
+> +	node = pxm_to_node(pxm);
+> +
+> +	/*
+> +	 * If we can't map the UID to a logical cpu this
+> +	 * means that the UID is not part of possible cpus
+> +	 * so we do not need a NUMA mapping for it, skip
+> +	 * the SRAT entry and keep parsing.
+> +	 */
+> +	cpu = get_cpu_for_acpi_id(pa->acpi_processor_uid);
+> +	if (cpu < 0)
+> +		return 0;
+> +
+> +	acpi_early_node_map[cpu] = node;
+> +	pr_info("SRAT: PXM %d -> HARTID 0x%lx -> Node %d\n", pxm,
+> +		cpuid_to_hartid_map(cpu), node);
+> +
+> +	return 0;
+> +}
+> +
+> +void __init acpi_map_cpus_to_nodes(void)
+> +{
+> +	int i;
+> +
+> +	/*
+> +	 * In ACPI, SMP and CPU NUMA information is provided in separate
+> +	 * static tables, namely the MADT and the SRAT.
+> +	 *
+> +	 * Thus, it is simpler to first create the cpu logical map through
+> +	 * an MADT walk and then map the logical cpus to their node ids
+> +	 * as separate steps.
+> +	 */
+> +	acpi_table_parse_entries(ACPI_SIG_SRAT, sizeof(struct acpi_table_srat),
+> +					    ACPI_SRAT_TYPE_RINTC_AFFINITY,
+> +					    acpi_parse_rintc_pxm, 0);
+> +
+Alignment here as well.
 
+> +	for (i = 0; i < nr_cpu_ids; i++)
+> +		early_map_cpu_to_node(i, acpi_numa_get_nid(i));
+> +}
+> +
+> +/* Callback for Proximity Domain -> logical node ID mapping */
+> +void __init acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa)
+> +{
+> +	int pxm, node;
+> +
+> +	if (srat_disabled())
+> +		return;
+> +
+> +	if (pa->header.length < sizeof(struct acpi_srat_rintc_affinity)) {
+> +		pr_err("SRAT: Invalid SRAT header length: %d\n",
+> +			pa->header.length);
+Can we merge these into single line?
+
+> +		bad_srat();
+> +		return;
+> +	}
+> +
+> +	if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
+> +		return;
+> +
+> +	pxm = pa->proximity_domain;
+> +	node = acpi_map_pxm_to_node(pxm);
+> +
+> +	if (node == NUMA_NO_NODE) {
+> +		pr_err("SRAT: Too many proximity domains %d\n", pxm);
+> +		bad_srat();
+> +		return;
+> +	}
+> +
+> +	node_set(node, numa_nodes_parsed);
+> +}
+> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> index 4f73c0ae44b2..a2cde65b69e9 100644
+> --- a/arch/riscv/kernel/setup.c
+> +++ b/arch/riscv/kernel/setup.c
+> @@ -281,8 +281,10 @@ void __init setup_arch(char **cmdline_p)
+>  	setup_smp();
+>  #endif
+>  
+> -	if (!acpi_disabled)
+> +	if (!acpi_disabled) {
+>  		acpi_init_rintc_map();
+> +		acpi_map_cpus_to_nodes();
+Is it not possible to fill up both in single parsing of MADT?
+
+> +	}
+>  
+>  	riscv_init_cbo_blocksizes();
+>  	riscv_fill_hwcap();
+> diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+> index 519b6bd946e5..b188d83d1ec4 100644
+> --- a/arch/riscv/kernel/smpboot.c
+> +++ b/arch/riscv/kernel/smpboot.c
+> @@ -101,7 +101,6 @@ static int __init acpi_parse_rintc(union acpi_subtable_headers *header, const un
+>  	if (hart == cpuid_to_hartid_map(0)) {
+>  		BUG_ON(found_boot_cpu);
+>  		found_boot_cpu = true;
+> -		early_map_cpu_to_node(0, acpi_numa_get_nid(cpu_count));
+>  		return 0;
+>  	}
+>  
+> @@ -111,7 +110,6 @@ static int __init acpi_parse_rintc(union acpi_subtable_headers *header, const un
+>  	}
+>  
+>  	cpuid_to_hartid_map(cpu_count) = hart;
+> -	early_map_cpu_to_node(cpu_count, acpi_numa_get_nid(cpu_count));
+>  	cpu_count++;
+>  
+>  	return 0;
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 503abcf6125d..1f0462cef47c 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -219,7 +219,8 @@ int __init srat_disabled(void)
+>  	return acpi_numa < 0;
+>  }
+>  
+> -#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
+> +#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH) || \
+> +	defined(CONFIG_RISCV)
+Please check alignment. Or make it single line if fits in 100 chars.
+Also, it looks it covers most of the architectures now. Is it possible
+to simplify / remove the condition? I hope IA64 is removed now?
+
+May be you need to update the comment at #endif too.
+
+Thanks
+Sunil
+
+>  /*
+>   * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
+>   * I/O localities since SRAT does not list them.  I/O localities are
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index a65273db55c6..be78a9d28927 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -269,8 +269,12 @@ acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
+>  
+>  int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
+>  
+> +#ifdef CONFIG_RISCV
+> +void acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa);
+> +#else
+>  static inline void
+>  acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa) { }
+> +#endif
+>  
+>  #ifndef PHYS_CPUID_INVALID
+>  typedef u32 phys_cpuid_t;
+> -- 
+> 2.34.1
+> 
 
