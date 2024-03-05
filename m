@@ -1,82 +1,93 @@
-Return-Path: <linux-acpi+bounces-4123-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4124-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC99872872
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 21:19:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645998728BE
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 21:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7CA91C215C5
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 20:19:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F6E2880B7
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 20:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64A38613C;
-	Tue,  5 Mar 2024 20:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DjiMzww1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26DB1292D5;
+	Tue,  5 Mar 2024 20:29:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F66D27E;
-	Tue,  5 Mar 2024 20:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E919460;
+	Tue,  5 Mar 2024 20:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709669959; cv=none; b=qbxhjO7hl5vZRa9hm55oMFgtrmjINmc0ycd/8RoK3r6I1cjjGHopCKBIcx7NNP6dIEWfi4X9PW58b+Rr7JPJsjDePd32XMgt9g3+horj48X7sk6i8tktEriWn3d9XXaRYngSZqlQxKh5e/9JJimMZ5SMQeWBYaS077FIa1RtsFo=
+	t=1709670572; cv=none; b=dkmgrFpjgKz4BieHfhuZfXrnjV5lQetWri6Tr0pBAFVOgcTG78FQWnxgbkK0Q/NS20AOVnImWcGj0yecNbagx+2cg6Qu6xeAA1gsp2tatCvJfG5gvyHKO4FX92MdyXfiX7pyK8IvR53741yE7eCPSxgFQi2gTLuW1id6MoQqeJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709669959; c=relaxed/simple;
-	bh=nQ6fLtGVbDv1jsxJI65bQJDbl719I1CI6SX6MN/8OZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ktqWyytS+DZNW8f3rNfe6XBUXeMIoxXRmWIQGGzTLffJXEspgZBZc9aQEurLFF6G3leT9jKE/Uv5w0YUIFoAyjwm74zPveDYlWfhW5zwBcFoHTtUQHDjUNKtfGKcjS07EEJDeoASUUKYHlv+tW1Fr62P4ne8w9w9goTKqp7Ocig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DjiMzww1; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.64.1.74] (unknown [20.29.225.195])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2F6C820B74C0;
-	Tue,  5 Mar 2024 12:19:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2F6C820B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1709669952;
-	bh=A7mHUKBlujlqiSWstI8E2zbUA6gQ/Nlqe64JJolnUlo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DjiMzww1rHZYnU7sMhaUFv3Mt56rQFMp2h68jwVR3+SQpO7y9nSRExg9M2xYVfzrr
-	 OlYXk5yOab97pqJ9AyhW+dbfVmMlOsyw9Ve20D19WTspFj2yN5NPfZ6+UfJWFD8mNV
-	 a1jQP9xu7Oy1zOM3Q6HtBFmFiXtEfhEV/e4JlfNI=
-Message-ID: <5cd020bf-35a1-4ffc-bb32-167ac311d5d3@linux.microsoft.com>
-Date: Tue, 5 Mar 2024 12:19:11 -0800
+	s=arc-20240116; t=1709670572; c=relaxed/simple;
+	bh=brvODVjEdn52eqWJ/v1JIz12UyK9u+bcrt/sT4hHvuY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KVwLMjK2QYYA3td9jUEq+SCwk12ywgz5KGRWjqhrkulqzK0nAlIXtumaFqzpGGoKC4bX9/3OZ8C4+lNKBdUj4nr5KHn2HK7pPNsC+7Yy1+KNR9pA4DBGwUy9PnwNoO+7F0vKEA1aDoeoK3T7phLbavJdORAMiI05V++JxoHXMmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-220ce420472so983701fac.1;
+        Tue, 05 Mar 2024 12:29:31 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709670570; x=1710275370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=brvODVjEdn52eqWJ/v1JIz12UyK9u+bcrt/sT4hHvuY=;
+        b=Neuz0n5JvgWquBXnYC4+sK7P2GBxmRaQKgJQ3DQn8du1j2sFG6jvwW7xyKzNfifFk/
+         IK6JELoQyGzIUgtnaJW6YfI4/viJYKwWIAS2+N1Y4C1FSQLp5+PHJ4oPfrx5aj9Vmhic
+         Xj0iC87eJerUpzFbJvV62rrBp6MLf/OLULlpmVG9hVrc2OMX/RBZqJnZSqQIkaZJZENg
+         XUfElU1LHPxS2kaANMQWjNT6KsNCvN5VEavUdo2+cwoq+VslsAs0TOjkrZyE2sWoXcHr
+         /rWQhjVdiZamPbfb43VHoDGpB5cG9wbSfEcmYKUc5qTSBYGp2sUxPb9jJSnmtAH9fK+Z
+         0SqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXF9ScsZYJfa//Sv3IGHkcrbn482546dqa/rECnPXoEXdEUszv3WGOfH4dQHqlAgAr/gyxzc8S7uutB1qc6MUOp6w5QgaNd8FYEUsjm1meWCHpJlLaRdyAo31sOGPhvUpwbMKUw0CSocgAd31qUt50tr8UixuxKIOH7oEktBjrSrQ==
+X-Gm-Message-State: AOJu0YyYM8MnFmP92NGuAtK75hJYSb+qbG1EuLP64p1NMR17ipPlJJ0P
+	cbHgpoWB+pW65TzmZ2olcWAFu0ABKeJE/+EXA+SjvY7iXMVCmT/viQRCCHYwY6UtE+cCtZL6+o2
+	1q0ag+osuUmdWiTKskF4MZtIYWIQ=
+X-Google-Smtp-Source: AGHT+IGmKFCKHu18eVUen1zEspsGJ1M3dG2mdYaT4Jy1mAiZvNyLnluyaZR18TRRqouw19nNwzybIEzP14gA+7Pr5Vs=
+X-Received: by 2002:a05:6870:d681:b0:21e:ad52:3029 with SMTP id
+ z1-20020a056870d68100b0021ead523029mr1568208oap.0.1709670570363; Tue, 05 Mar
+ 2024 12:29:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+ <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com> <5cd020bf-35a1-4ffc-bb32-167ac311d5d3@linux.microsoft.com>
+In-Reply-To: <5cd020bf-35a1-4ffc-bb32-167ac311d5d3@linux.microsoft.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 5 Mar 2024 21:29:18 +0100
+Message-ID: <CAJZ5v0j8hsp0XAWfgXRZwHAk+rRDRQwMGrureFRZgwHa3USbug@mail.gmail.com>
 Subject: Re: [PATCH v3] acpi: Use access_width over bit_width for system
  memory accesses
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Jarred White <jarredwhite@linux.microsoft.com>
-Cc: Len Brown <lenb@kernel.org>, "open list:ACPI"
- <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- srivatsabhat@linux.microsoft.com, stable@vger.kernel.org
-References: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
- <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com>
-Content-Language: en-US
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-In-Reply-To: <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jarred White <jarredwhite@linux.microsoft.com>, 
+	Len Brown <lenb@kernel.org>, "open list:ACPI" <linux-acpi@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>, srivatsabhat@linux.microsoft.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/5/2024 12:15 PM, Rafael J. Wysocki wrote:
+On Tue, Mar 5, 2024 at 9:19=E2=80=AFPM Easwar Hariharan
+<eahariha@linux.microsoft.com> wrote:
+>
+> On 3/5/2024 12:15 PM, Rafael J. Wysocki wrote:
+>
+> <snip>
+> >
+> > Applied as 6.9 material with some edits in the subject and changelog
+> > and some adjustments of the new comments (one edited and one dropped).
+> >
+> > Thanks!
+>
+> Thank you, Rafael! Could you please add as well:
+>
+> Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-<snip>
-> 
-> Applied as 6.9 material with some edits in the subject and changelog
-> and some adjustments of the new comments (one edited and one dropped).
-> 
-> Thanks!
-
-Thank you, Rafael! Could you please add as well:
-
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-
-Thanks,
-Easwar
+Added, thanks!
 
