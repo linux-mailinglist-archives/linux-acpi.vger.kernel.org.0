@@ -1,154 +1,160 @@
-Return-Path: <linux-acpi+bounces-4105-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4106-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5AB87153B
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 06:26:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10A78715CD
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 07:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36A01281C58
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 05:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76B551F220EB
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 06:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED314CB54;
-	Tue,  5 Mar 2024 05:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C317F7D3E8;
+	Tue,  5 Mar 2024 06:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="AXlMY1FA"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="LE8ERebD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7A10A1B
-	for <linux-acpi@vger.kernel.org>; Tue,  5 Mar 2024 05:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5A846521
+	for <linux-acpi@vger.kernel.org>; Tue,  5 Mar 2024 06:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709616409; cv=none; b=Yo0GP6wmBacHFXUnuVM9YDxszepQCBqbZNu6GFlLBDFO4qA6CnN+wfVojUOkb6a/4VvNt/7tVkbUuDfxgWqq+uroCYwcSmGrZDZDZAiQCCluZ9CpN37vrplkwM8aMvxlXAp4iNZ6UJIVrCDvuLR/anfzqJPIo/vbhR96bI2zt7c=
+	t=1709619794; cv=none; b=K9XtfwtsZR0AC5SJG6LPxg/Y/papsLAK2QyeA7zOYkaznH76BOKi7LK292HOnstm6rjBePnD8UlRlHkneL+1ToFtm5nB/SnF65RQgldMtHM4A/SbTkrEuCmTYgx2PgvkGK4yuE6/LQbzQkFD7gcUbfZ0aD/y5Zt0LMiDvG5xiEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709616409; c=relaxed/simple;
-	bh=IUUnXu41nv70y8HvfDJJUOOnZ7pf++QXfILZ3C80xAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=COjM5FIWl3KspdV9ukWD4VlqgDzY08Bg/udzDPr6uw5PzMwD2MA1h5+8Y5Vanr5STdHGfQ1ah6Pyr7P7Du/jYFvwNPfyOWkzwCLYEW1kg1vYYZ0I5Am47SLDGk5AoTomFiY9kjP2f00BQCZBuP4GTJWkMn8TrBVUMNFFow9QWl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=AXlMY1FA; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dc9222b337so52238815ad.2
-        for <linux-acpi@vger.kernel.org>; Mon, 04 Mar 2024 21:26:46 -0800 (PST)
+	s=arc-20240116; t=1709619794; c=relaxed/simple;
+	bh=oSQv4NUxnf7rEIn+bi0UJt8ayyHupEoJoCDqI6CLoMU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lOL2cnBF1NYNZUvDZh8iCbVc/uNv9GWp/UimhSijiUe/MPcoeYrg9mDcfEwK8/jrFlMLfMaLS0UK4Cv3goUYBi6qPPnvUqGIatDT72z1eXE3kzMLbwQ0otf/LqpLzfGONYzGOwZTrYZegTP0njco8jibCTZiq6AY1eS2D8LGvt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=LE8ERebD; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4d355374878so113044e0c.0
+        for <linux-acpi@vger.kernel.org>; Mon, 04 Mar 2024 22:23:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1709616406; x=1710221206; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMCvUOJfUJZd1FjH5xJXeLVB97fRCdKEGxvILGRlgeg=;
-        b=AXlMY1FAYQAm3hVYveyMFVhrABj1ov4QYWhAsOIoGRLVGu6QsX4Nlm2OLueYxhsY0K
-         flkxH65VaDAdvqqAXtW3BJ8y+eSXI/c0ygnTDLyb8BJQiRJzN4Zr8nAtycfgo81tQn6Y
-         ZRnu/oHUBQPvfDTqVWjzRUCjBSBRi0D8r4+pHIZFWZn7MQJRkme5cGxHy5cqnM1y5KIP
-         MPRng+QQnUra5UkTYOLT244LFlmi3AiVw6D4J6l4i4Avcy2tIP+7DLN30TDEQyvlw5ik
-         c5nr4RDhcWngv9+73UqKosl4lfMeX8BYZgHzxuslS3YP6iTJwNAVuE+wK++Obt/Gt6AQ
-         DC/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709616406; x=1710221206;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1709619790; x=1710224590; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KMCvUOJfUJZd1FjH5xJXeLVB97fRCdKEGxvILGRlgeg=;
-        b=IQ1krLLx3wauSt/7a1Vn9vHkWRhDZ0GdItyw/zk+YHz+ui1UzpHNBHq/nPseIu/z5E
-         poFgaT/quh+ewM31/raKWwKYlL3tpOnhjTFXenskFBFNE+uXarXYmpX+AgTH7jCnR9xx
-         xXymui5Lm8436IAYgvPOtT2eVK7cAIq+ZGEsjXwhYnMySUkDppPXf+UwNPZw1YdKpmRY
-         dUl0SunZYcpC3dTlGkGlwMUvVTU2G9AvYTAbA3R4ATV57rcN5qw9hh41+VAPAv3kSaKr
-         yWms5Sy4RCSw6ZerXDRS0gD9AUyPQ0eJJb/7ENNHtVGs+vz2CXEO9Kao8zzHe7lBzFNo
-         rB9g==
-X-Forwarded-Encrypted: i=1; AJvYcCV9K7EkuWkkbEKKdwXt3FaTPl2ZikfKtNp5PEH6Wf3RWLWpKsqPL96KJsM+wS2CwS/YO/gLyquFbUA8YUdCmPuYDWuVekHa35BRXw==
-X-Gm-Message-State: AOJu0YyXOBUzDqIPyKHWfIm+hYkmUU1hh9RJjRGNg1g6XZAnJQJzpSDp
-	Fxa2H/dx5XebnShJ59eUDhzqRbcUrkEwImWdCaGQLOowMP/uOyozz6JSJ2HXgWk=
-X-Google-Smtp-Source: AGHT+IGs95PUoXAEeVYkFgLUnlTCMmRM9UBfrxIhvh57F9nTPhSjmTGyccBIiPgnhfiEPKqxoObiIA==
-X-Received: by 2002:a17:902:f552:b0:1dc:ce28:a47d with SMTP id h18-20020a170902f55200b001dcce28a47dmr929601plf.17.1709616406218;
-        Mon, 04 Mar 2024 21:26:46 -0800 (PST)
-Received: from sunil-laptop ([106.51.184.12])
-        by smtp.gmail.com with ESMTPSA id e8-20020a170902b78800b001dcc1597377sm9455663pls.230.2024.03.04.21.26.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 21:26:45 -0800 (PST)
-Date: Tue, 5 Mar 2024 10:56:32 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Haibo Xu <haibo1.xu@intel.com>
-Cc: xiaobo55x@gmail.com, ajones@ventanamicro.com,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Guo Ren <guoren@kernel.org>, Anup Patel <apatel@ventanamicro.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Greentime Hu <greentime.hu@sifive.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	=?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
-	Baoquan He <bhe@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chen Jiahao <chenjiahao16@huawei.com>,
-	Arnd Bergmann <arnd@arndb.de>, James Morse <james.morse@arm.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Evan Green <evan@rivosinc.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Tony Luck <tony.luck@intel.com>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH 4/4] ACPI: RISCV: Enable ACPI based NUMA
-Message-ID: <ZeatCIUZ/eJa1WHs@sunil-laptop>
-References: <cover.1706603678.git.haibo1.xu@intel.com>
- <0be49d4d7d7e43933534aad6f72b35d3380519fd.1706603678.git.haibo1.xu@intel.com>
+        bh=MOnvvH2W03oK21Enygd77Kz3RD653oFonWkuoJk8SUU=;
+        b=LE8ERebDii+cQmF5RG+dX0zlNm4JZ9MLewpjopaim/ryWpHJebOB9+ajkT5InRWjOj
+         eI0Jfob4gzRx2w/do+JxUoZuhyNGl6onmSwU0Fdp6f8IeepPtM5e90PJSpnM3EMcjGO7
+         z16WhKK3Tdg7VTYKfg6Cjf2iFpUXeIJNSWOQ8xqNprb+EP9xkSPKPFBqsz00ZBbNPxe4
+         Mc08wgnPAZ2u+UM1aKYHTbAOOTBFBb1Tz6QoaRERMxLSfBZeyegh6FOlbmXUOlgaxHwJ
+         xwIhWX81fBDRaONbuib7MOvyyDD1INms0iXN/2ixNLztNxw4yDaS/8yLa/8FrdwIEqAx
+         mbJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709619790; x=1710224590;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MOnvvH2W03oK21Enygd77Kz3RD653oFonWkuoJk8SUU=;
+        b=dBNo/A+l7qofY880BgZv8QADSZoAHARl+R1KdG5wKRHEWuoon38q+JFwOPNTrYqHwG
+         G47XAKwf1VWPh6a7RI/1D76d80mi8QdH5d3hyribfVb0fi+quWK3QD96rwuV58Zvrs7l
+         UejLBE8WaxIAP54jBhvw1tG1JCOAmeYikoWWA8hhwOFiVmoFNDtJGvltL65Q60Xrdihv
+         0HKnUqVFXmdumGAPdI+KHMLaPoDsLWDA9iVqUtuEm9FKszaOGCBCDk6VavgDw36PZizA
+         KtNMoQ3vzCk31LQWF9g0Xq+zJW8qJlXqLqZ+CeimDuJke9e33+jn3u5h81WHr4j1+dNb
+         rodg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7oH5p2wccu8w8sjodELB5gf3pnlx3/DxwDnvMdnDlJnptZ9ajHF+sJs9DCNZb2U+PlVcx6zLPxuovowhIgJH4wHWe4zoqzzqOVQ==
+X-Gm-Message-State: AOJu0YzZPRsw2jS59DWaxcg+Zu8OJOn0KSMzl+e1KMpP+sEI/EEc994d
+	R6ij2F6ZP4Qe7lSLh/ivOuIjgfIgYO+dM7Yx7CcAEg6Q5t32qwTMglkrxMOCSv/tIsdJbJSzjlD
+	7PsA9UKlc3QRDzcHOsA20zKmfdkgZeCwjQeNKFA==
+X-Google-Smtp-Source: AGHT+IF8wFchH2Tpcwl+m9+vC++9MiGH8pjEs4cet64MI10UrFTvnJG9+E2iM+RbR2/QpLJ5rn/dajElMcAyZ2RW5JY=
+X-Received: by 2002:a05:6122:da7:b0:4ca:615e:1b61 with SMTP id
+ bc39-20020a0561220da700b004ca615e1b61mr914463vkb.10.1709619790595; Mon, 04
+ Mar 2024 22:23:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0be49d4d7d7e43933534aad6f72b35d3380519fd.1706603678.git.haibo1.xu@intel.com>
+References: <20240301082248.3456086-1-horenchuang@bytedance.com> <87frx6btqp.fsf@yhuang6-desk2.ccr.corp.intel.com>
+In-Reply-To: <87frx6btqp.fsf@yhuang6-desk2.ccr.corp.intel.com>
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Date: Mon, 4 Mar 2024 22:22:59 -0800
+Message-ID: <CAKPbEqr-0yPDW7qps24vJgVCtVOGy_Jm4kcc0FKUsL3d9APDsw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v1 0/1] Improved Memory Tier Creation for
+ CPUless NUMA Nodes
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com, mhocko@suse.com, 
+	tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
+	Vinicius Tavares Petrucci <vtavarespetr@micron.com>, Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
+	Alistair Popple <apopple@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Jiang <dave.jiang@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	"Ho-Ren (Jack) Chuang" <horenc@vt.edu>, "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, linux-cxl@vger.kernel.org, 
+	qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 31, 2024 at 10:32:01AM +0800, Haibo Xu wrote:
-> Enable ACPI based NUMA for RISCV in Kconfig.
-> 
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> ---
->  arch/riscv/Kconfig        | 1 +
->  drivers/acpi/numa/Kconfig | 2 +-
->  2 files changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index bffbd869a068..e586ab959f34 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -438,6 +438,7 @@ config NUMA
->  	select HAVE_SETUP_PER_CPU_AREA
->  	select NEED_PER_CPU_EMBED_FIRST_CHUNK
->  	select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> +	select ACPI_NUMA if ACPI
->  	select OF_NUMA
->  	select USE_PERCPU_NUMA_NODE_ID
->  	help
-> diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-> index 849c2bd820b9..525297c44250 100644
-> --- a/drivers/acpi/numa/Kconfig
-> +++ b/drivers/acpi/numa/Kconfig
-> @@ -2,7 +2,7 @@
->  config ACPI_NUMA
->  	bool "NUMA support"
->  	depends on NUMA
-> -	depends on (X86 || ARM64 || LOONGARCH)
-> +	depends on (X86 || ARM64 || LOONGARCH || RISCV)
-Is it possible to remove this if IA64 is removed now? 
+On Sun, Mar 3, 2024 at 6:47=E2=80=AFPM Huang, Ying <ying.huang@intel.com> w=
+rote:
+>
+> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
+>
+> > The memory tiering component in the kernel is functionally useless for
+> > CPUless memory/non-DRAM devices like CXL1.1 type3 memory because the no=
+des
+> > are lumped together in the DRAM tier.
+> > https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A=
+@PH0PR08MB7955.namprd08.prod.outlook.com/T/
+>
+> I think that it's unfair to call it "useless".  Yes, it doesn't work if
+> the CXL memory device are not enumerate via drivers/dax/kmem.c.  So,
+> please be specific about in which cases it doesn't work instead of too
+> general "useless".
+>
 
-Thanks,
-Sunil
->  	default y if ARM64
->  
->  config ACPI_HMAT
-> -- 
-> 2.34.1
-> 
+Thank you and I didn't mean anything specific. I simply reused phrases
+we discussed
+earlier in the previous patchset. I will change them to the following in v2=
+:
+"At boot time, current memory tiering assigns all detected memory nodes
+to the same DRAM tier. This results in CPUless memory/non-DRAM devices,
+such as CXL1.1 type3 memory, being unable to be assigned to the
+correct memory tier,
+leading to the inability to migrate pages between different types of memory=
+."
+
+Please see if this looks more specific.
+
+> > This patchset automatically resolves the issues. It delays the initiali=
+zation
+> > of memory tiers for CPUless NUMA nodes until they obtain HMAT informati=
+on
+> > at boot time, eliminating the need for user intervention.
+> > If no HMAT specified, it falls back to using `default_dram_type`.
+> >
+> > Example usecase:
+> > We have CXL memory on the host, and we create VMs with a new system mem=
+ory
+> > device backed by host CXL memory. We inject CXL memory performance attr=
+ibutes
+> > through QEMU, and the guest now sees memory nodes with performance attr=
+ibutes
+> > in HMAT. With this change, we enable the guest kernel to construct
+> > the correct memory tiering for the memory nodes.
+> >
+> > Ho-Ren (Jack) Chuang (1):
+> >   memory tier: acpi/hmat: create CPUless memory tiers after obtaining
+> >     HMAT info
+> >
+> >  drivers/acpi/numa/hmat.c     |  3 ++
+> >  include/linux/memory-tiers.h |  6 +++
+> >  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
+> >  3 files changed, 77 insertions(+), 8 deletions(-)
+>
+> --
+> Best Regards,
+> Huang, Ying
+
+--=20
+---
+Best regards,
+Ho-Ren (Jack) Chuang
+=E8=8E=8A=E8=B3=80=E4=BB=BB
 
