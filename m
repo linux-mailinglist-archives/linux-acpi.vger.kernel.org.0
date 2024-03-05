@@ -1,411 +1,464 @@
-Return-Path: <linux-acpi+bounces-4113-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4114-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361BE871998
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 10:29:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B976871A01
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 10:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFC61C224EA
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 09:29:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F1F2B20982
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 09:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675FE52F97;
-	Tue,  5 Mar 2024 09:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846B7535D6;
+	Tue,  5 Mar 2024 09:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="BTS0heRB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aRZsWrOl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7D53370
-	for <linux-acpi@vger.kernel.org>; Tue,  5 Mar 2024 09:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581324CB58;
+	Tue,  5 Mar 2024 09:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709630949; cv=none; b=p8VWRJSQwKbyXkhwJ+KXNw5nLGC+Cp1n6lrrzDRBJucsgmqp7N8CzqSly/V3GvbENywsb8Pk44i+7aPPrk+02csUufohAaSUScLMgbqVk60eTS6N3lkgGnsMG+01QpeKkfsocPq53YEzEQ6m+SlxN63jwLS0epezFosQjn3z6Cs=
+	t=1709632459; cv=none; b=raAfTgIFj3LsqKaoLT8AnamVKoLZWjkSa6wdoPG42bCw/Ls718tNssm9m/LZTDbrsvV0wF6zIKqoLX0/nHuF2tUGai2kOoecIjeaDLy6Yn/sY99j4CHb7ozpOiu91MmSV2o0hYGbutmO3QDrVnwe0FVm7qWjUpftb7e2sRusSmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709630949; c=relaxed/simple;
-	bh=Mrqo8t6bgnnlAwcyAfSI9kPBX6+0eznEB/cDTEm6dH4=;
+	s=arc-20240116; t=1709632459; c=relaxed/simple;
+	bh=jNKTZwm/zMfNHRVTfXkmKdJ1UALCfxs1UkH3Gqlh3T8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MLik8I5scVx5hdDaUUypvRNF+i/fEKbfMerOaGfEN7Dym+TURsniWnmHDfm1xJyhAYrBpEGHoiMfhn4VCAY8ITbl8/3JY9TpzEG/K8fFJpqgDKLDUZ+HmHiOzDicMIk1JzLm4snk7VI0KNzAxOsnuh9yXDKX9NbhmL5poXj1JlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=BTS0heRB; arc=none smtp.client-ip=209.85.217.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-47282752fc7so1533124137.2
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Mar 2024 01:29:07 -0800 (PST)
+	 To:Cc:Content-Type; b=aV6sZzUk5QwX+olNk8kSDRrQDqdRHbNkFBlPR5OjTV0vZG17ddezstvsAb+aA9pAYi4l3sotCa1DzHRBhL+swWc2rZjKYSif1gYbGwlvII2N61CAV5WmZvsHRjy2RkM27eU9Xh3Wn3ajptjvUK4f58whDXCRIuhK/z8fAtYGVjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aRZsWrOl; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d3f8f7a68dso202831fa.0;
+        Tue, 05 Mar 2024 01:54:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1709630946; x=1710235746; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709632455; x=1710237255; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=79M1BRzVOMDaKqMxEGUh5q94dnwcGvlodjX5ei2a/R4=;
-        b=BTS0heRBs1S9m9m0Cw2rZsvwulJs3a42Lq6jhQV5Tu/x/e66gK++HK8X95i1veG8tn
-         8JPrVf3LB9n59cbCI+hte/17BS0NEYZctWDrl487vuK519nZ3wBIWcvmT9ly9ixEo/G/
-         6MSOf1AZF79VADOZXcON3P+18Vk5SzLpQ/dOHEoIyaAjHt2OkHbiBwtRVR4zb4NKbVCw
-         ldpYs76QbesMzn6ve4dnU5E7wlCt2038iaR9NbxwkH/VjzWZjZG8P3szbgCkjxfJudGj
-         jLCrz92nWlpQpGIlqnvS6Wtj2YXDtNMcHGDmbil5pxcMgGLObB8Ht8qvENYbtUVzdOrI
-         JUcQ==
+        bh=IhM0d+kE3plPStk/1c/yuQp6Ohx1jtFSVotBp1VMtT0=;
+        b=aRZsWrOlG3f1LLdZ3UPKm05OlR/jhzfLuNvBQYnR47UmIYlnc+JpqkCGkxwbQO9Qs+
+         zij0aC6NsdtFNBcAZ+HVph+b7x1SS+9vUaQBSQH5KYhHhgMPlUH5lRfdbdRLuF3hccBf
+         a9Nrh51Ih4fd4qNJgeYsr3H+FL8RirT8qacOQ61iSxHeqUMsHWRmjwhrz1tWjypD2F6B
+         LLSxa3YzK3IYQfpju0pPH1OuJnNsUEvbEt1fSOB0T02rxst72bREJFAXATA/502MR8uh
+         2QyE1yG2dKRkNdMFva505qFc9GnIS9KByD10nsgKO2cYV8kCcg4dKQiGHGUJ80VTsmfw
+         /heQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709630946; x=1710235746;
+        d=1e100.net; s=20230601; t=1709632455; x=1710237255;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=79M1BRzVOMDaKqMxEGUh5q94dnwcGvlodjX5ei2a/R4=;
-        b=R8pO8qFo+IBVa1GmsQe4LPgTfIV9jIb6Y+K+d1x28gpVM9Zp8OnJaDt32X0n7J+/Rp
-         Agu43XKx7BW7DKpFLZqEZxhmujr8K5WBjslWmaT9M7mszq6dsuNtUYU9lG6+nrvP1JUh
-         EW9E38v6BU/JVPJJ2EYeM6NwHYNyrFdl4Ithmxup1MNvPx82athqrzujiBMKoaaj8S7T
-         W6ITxiCBQaBsLGdqmFtlI+0ZnXew8v/VaHPp1tYH2Uxea6UVRuBzHBbUPI0hYnz2Qjis
-         mC2UsGgxXynlJut+/rcUGV0xVMq7ot8Ympbxk84Pkq+8nTN9VN3iiM2tDA1gixH6umcy
-         +bOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdMBnIetD/7S318NuOE5G2DhYkRYvjM7gpYRbEI3dzulfV8II08TOj4ocMSzcZR2RPd/v5CXK2LzdXp+GOxQ/XiXrnE0tcSKf6Hg==
-X-Gm-Message-State: AOJu0Yyx40lMRowLb7RaadX9YHfXVvBThdIeMgCU5fLYoAkW+YtDZTvZ
-	dvGeAwe0acJb+k91eWoc3laZxxjDHygSaYJ+Nz4Pl1Ux87Z0YzLG4VgbQFk1NxI2kRfVaPSZ0rv
-	3Isoq0T0Q2+O+AlxkSWvrDo+J1b56WSG/jRFRCg==
-X-Google-Smtp-Source: AGHT+IGeG8eiA+gbTAW4lP8+EW0Wh/ImGvq3CgHfBV04xBBfvRQuXg2vDyo36TnOBu+4pDZXWZHNMilzpagoOwujU5k=
-X-Received: by 2002:a05:6102:21ba:b0:472:c844:804d with SMTP id
- i26-20020a05610221ba00b00472c844804dmr1040181vsb.18.1709630946252; Tue, 05
- Mar 2024 01:29:06 -0800 (PST)
+        bh=IhM0d+kE3plPStk/1c/yuQp6Ohx1jtFSVotBp1VMtT0=;
+        b=ho9JA3QoH3q+Q7kjiTGgL51Ud3cH1wXC0LM/d0FLWzYUAj4ZbrHikCvo9csRML4rcU
+         oM1C8MgANazYW98wHLnx445l+Rby2nyS4z4MkXyFm8GVbkzy8TeKVaFiOhvLWB8sTQ3z
+         ghO0Mvj/sWfjO5iyElnaL9wnvS2BtMPICWJA8roCEYOCN0bwP0lt7n1vonDnRsGFjSIK
+         x5H1ib+GJhTTJE6tnLKZM0cU8deQCd/nsqJqm6GYQ2RIBSyP1iZBkTYwtm8PSSBX5KN8
+         1V7AV1Hp1t6c5frlpzElTCciungJLGBdd6VU0jlEq/grKgzcI6ZkGUTqHPCG1Po5mYob
+         5rvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXEkklNy/U58xjMr/SNiWcuykk482MFDUVifTA3tmnGfrkWYsZsaB6JkdczHy8S5A5qcHKuG+b+A834FeTc/QDqat/3oSsVYL0KjEuVGyDBxzG31/QxxaDLf9aq9zu2kDMqGdzevUwJew==
+X-Gm-Message-State: AOJu0YznctvleavSgOV8hM+zY1irmm9udu0cA7wzBxKg7r0BE2GIE6mT
+	xDgKKudsFGG18fqCOpdzv2/NzBpxT8i3I3rujnhdXcCIgrf+ooRyHVfK9AASIj/MR63Nek1MlOA
+	nSwSrUESalYQ8GtceASsUHC6C69k=
+X-Google-Smtp-Source: AGHT+IH1y9jM5ofau5NwHul6UpdGMvJwJR/Hnp3eSxZzRLtAunZCfh8YQZeZqH/2FRZAHfwcwFqRRstPSKvzL71iuUQ=
+X-Received: by 2002:a2e:9252:0:b0:2d3:e6ce:75cc with SMTP id
+ v18-20020a2e9252000000b002d3e6ce75ccmr602516ljg.18.1709632455055; Tue, 05 Mar
+ 2024 01:54:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
- <20240301082248.3456086-2-horenchuang@bytedance.com> <87jzmibtyh.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <87jzmibtyh.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Date: Tue, 5 Mar 2024 01:28:55 -0800
-Message-ID: <CAKPbEqrti2x05n5QhXtefhu+C=xmMUaH8mMwDy83LVN3Fj6nDw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v1 1/1] memory tier: acpi/hmat: create
- CPUless memory tiers after obtaining HMAT info
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com, mhocko@suse.com, 
-	tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
-	Vinicius Tavares Petrucci <vtavarespetr@micron.com>, Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
-	Alistair Popple <apopple@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Jiang <dave.jiang@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	"Ho-Ren (Jack) Chuang" <horenc@vt.edu>, "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, linux-cxl@vger.kernel.org, 
-	qemu-devel@nongnu.org
+References: <cover.1706603678.git.haibo1.xu@intel.com> <799dcc07f41c2357328e9778fbbded7818af34a7.1706603678.git.haibo1.xu@intel.com>
+ <ZeasjVWuyeiAlF8y@sunil-laptop>
+In-Reply-To: <ZeasjVWuyeiAlF8y@sunil-laptop>
+From: Haibo Xu <xiaobo55x@gmail.com>
+Date: Tue, 5 Mar 2024 17:54:03 +0800
+Message-ID: <CAJve8ok_J41e33UM+Umr6NNDRC_WtsLYuqioW4TWfL8PwXQOCQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] ACPI: RISCV: Add NUMA support based on SRAT and SLIT
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: Haibo Xu <haibo1.xu@intel.com>, ajones@ventanamicro.com, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Guo Ren <guoren@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, Greentime Hu <greentime.hu@sifive.com>, 
+	Baoquan He <bhe@redhat.com>, =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Jisheng Zhang <jszhang@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Chen Jiahao <chenjiahao16@huawei.com>, James Morse <james.morse@arm.com>, 
+	Evan Green <evan@rivosinc.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	Anup Patel <apatel@ventanamicro.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Tony Luck <tony.luck@intel.com>, Yuntao Wang <ytcoode@gmail.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 3, 2024 at 6:42=E2=80=AFPM Huang, Ying <ying.huang@intel.com> w=
-rote:
+On Tue, Mar 5, 2024 at 1:24=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com>=
+ wrote:
 >
-> Hi, Jack,
->
-> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->
-> > * Introduce `mt_init_with_hmat()`
-> > We defer memory tier initialization for those CPUless NUMA nodes
-> > until acquiring HMAT info. `mt_init_with_hmat()` is introduced to
-> > post-create CPUless memory tiers after obtaining HMAT info.
-> > It iterates through each CPUless memory node, creating memory tiers if
-> > necessary. Finally, it calculates demotion tables again at the end.
+> On Wed, Jan 31, 2024 at 10:32:00AM +0800, Haibo Xu wrote:
+> > Add acpi_numa.c file to enable parse NUMA information from
+> > ACPI SRAT and SLIT tables. SRAT table provide CPUs(Hart) and
+> > memory nodes to proximity domain mapping, while SLIT table
+> > provide the distance metrics between proximity domains.
 > >
-> > * Introduce `hmat_find_alloc_memory_type()`
-> > Find or allocate a memory type in the `hmat_memory_types` list.
-> >
-> > * Make `set_node_memory_tier()` more generic
-> > This function can also be used for setting other memory types for a nod=
-e.
-> > To do so, a new argument is added to specify a memory type.
-> >
-> > * Handle cases where there is no HMAT when creating memory tiers
-> > If no HMAT is specified, it falls back to using `default_dram_type`.
-> >
-> > * Change adist calculation code to use another new lock, mt_perf_lock.
-> > Iterating through CPUlist nodes requires holding the `memory_tier_lock`=
-.
-> > However, `mt_calc_adistance()` will end up trying to acquire the same l=
-ock,
-> > leading to a potential deadlock. Therefore, we propose introducing a
-> > standalone `mt_perf_lock` to protect `default_dram_perf`. This approach=
- not
-> > only avoids deadlock but also prevents holding a large lock simultaneou=
-sly.
->
-> The patch description is used to described why we need the change, and
-> how we do that, but not what we do.  People can tell what is done from
-> the code itself.
->
-
-Got it. Thanks. Will rewrite it after the code is finalized.
-
-> > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+> > Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
 > > ---
-> >  drivers/acpi/numa/hmat.c     |  3 ++
-> >  include/linux/memory-tiers.h |  6 +++
-> >  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
-> >  3 files changed, 77 insertions(+), 8 deletions(-)
+> >  arch/riscv/include/asm/acpi.h |  15 +++-
+> >  arch/riscv/kernel/Makefile    |   1 +
+> >  arch/riscv/kernel/acpi.c      |   5 --
+> >  arch/riscv/kernel/acpi_numa.c | 133 ++++++++++++++++++++++++++++++++++
+> >  arch/riscv/kernel/setup.c     |   4 +-
+> >  arch/riscv/kernel/smpboot.c   |   2 -
+> >  drivers/acpi/numa/srat.c      |   3 +-
+> >  include/linux/acpi.h          |   4 +
+> >  8 files changed, 156 insertions(+), 11 deletions(-)
+> >  create mode 100644 arch/riscv/kernel/acpi_numa.c
 > >
-> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> > index d6b85f0f6082..9f57338b3cb5 100644
-> > --- a/drivers/acpi/numa/hmat.c
-> > +++ b/drivers/acpi/numa/hmat.c
-> > @@ -1038,6 +1038,9 @@ static __init int hmat_init(void)
-> >       if (!hmat_set_default_dram_perf())
-> >               register_mt_adistance_algorithm(&hmat_adist_nb);
+> > diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acp=
+i.h
+> > index 7dad0cf9d701..e0a1f84404f3 100644
+> > --- a/arch/riscv/include/asm/acpi.h
+> > +++ b/arch/riscv/include/asm/acpi.h
+> > @@ -61,11 +61,14 @@ static inline void arch_fix_phys_package_id(int num=
+, u32 slot) { }
 > >
-> > +     /* Post-create CPUless memory tiers after getting HMAT info */
-> > +     mt_init_with_hmat();
-> > +
-> >       return 0;
-> >  out_put:
-> >       hmat_free_structures();
-> > diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.=
-h
-> > index 69e781900082..2f845e90c033 100644
-> > --- a/include/linux/memory-tiers.h
-> > +++ b/include/linux/memory-tiers.h
-> > @@ -48,6 +48,7 @@ int mt_calc_adistance(int node, int *adist);
-> >  int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
-> >                            const char *source);
-> >  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
-> > +void mt_init_with_hmat(void);
->
-> HMAT isn't universally available.  It's a driver in fact.  So, don't put
-> driver specific code in general code.
->
-
-Please see below regarding "move code to hmat.c"
-
-> >  #ifdef CONFIG_MIGRATION
-> >  int next_demotion_node(int node);
-> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-> > @@ -136,5 +137,10 @@ static inline int mt_perf_to_adistance(struct acce=
-ss_coordinate *perf, int *adis
-> >  {
-> >       return -EIO;
-> >  }
-> > +
-> > +static inline void mt_init_with_hmat(void)
+> >  void acpi_init_rintc_map(void);
+> >  struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
+> > -u32 get_acpi_id_for_cpu(int cpu);
+> > +static inline u32 get_acpi_id_for_cpu(int cpu)
 > > +{
-> > +
-> > +}
-> >  #endif       /* CONFIG_NUMA */
-> >  #endif  /* _LINUX_MEMORY_TIERS_H */
-> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-> > index 0537664620e5..7a0a579b3deb 100644
-> > --- a/mm/memory-tiers.c
-> > +++ b/mm/memory-tiers.c
-> > @@ -35,7 +35,9 @@ struct node_memory_type_map {
-> >  };
-> >
-> >  static DEFINE_MUTEX(memory_tier_lock);
-> > +static DEFINE_MUTEX(mt_perf_lock);
-> >  static LIST_HEAD(memory_tiers);
-> > +static LIST_HEAD(hmat_memory_types);
-> >  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
-> >  struct memory_dev_type *default_dram_type;
-> >
-> > @@ -502,7 +504,7 @@ static inline void __init_node_memory_type(int node=
-, struct memory_dev_type *mem
-> >       }
-> >  }
-> >
-> > -static struct memory_tier *set_node_memory_tier(int node)
-> > +static struct memory_tier *set_node_memory_tier(int node, struct memor=
-y_dev_type *new_memtype)
->
-> No. memory_dev_type are passed to the function via node_memory_types[node=
-].memtype.
->
-
-Got it. Will mimic the way kmem.c does. Thanks.
-
-> >  {
-> >       struct memory_tier *memtier;
-> >       struct memory_dev_type *memtype;
-> > @@ -514,7 +516,7 @@ static struct memory_tier *set_node_memory_tier(int=
- node)
-> >       if (!node_state(node, N_MEMORY))
-> >               return ERR_PTR(-EINVAL);
-> >
-> > -     __init_node_memory_type(node, default_dram_type);
-> > +     __init_node_memory_type(node, new_memtype);
-> >
-> >       memtype =3D node_memory_types[node].memtype;
-> >       node_set(node, memtype->nodes);
-> > @@ -623,6 +625,56 @@ void clear_node_memory_type(int node, struct memor=
-y_dev_type *memtype)
-> >  }
-> >  EXPORT_SYMBOL_GPL(clear_node_memory_type);
-> >
-> > +static struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
->
-> Similar function existed in drivers/dax/kmem.c.  Please abstract them
-> and move them here.
->
-
-Got it. Will try. Thanks.
-
-> > +{
-> > +     bool found =3D false;
-> > +     struct memory_dev_type *mtype;
-> > +
-> > +     list_for_each_entry(mtype, &hmat_memory_types, list) {
-> > +             if (mtype->adistance =3D=3D adist) {
-> > +                     found =3D true;
-> > +                     break;
-> > +             }
-> > +     }
-> > +     if (!found) {
-> > +             mtype =3D alloc_memory_type(adist);
-> > +             if (!IS_ERR(mtype))
-> > +                     list_add(&mtype->list, &hmat_memory_types);
-> > +     }
-> > +     return mtype;
+> > +     return acpi_cpu_get_madt_rintc(cpu)->uid;
 > > +}
 > > +
-> > +static void mt_create_with_hmat(int node)
-> > +{
-> > +     struct memory_dev_type *mtype =3D NULL;
-> > +     int adist =3D MEMTIER_ADISTANCE_DRAM;
-> > +
-> > +     mt_calc_adistance(node, &adist);
-> > +     if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
-> > +             mtype =3D hmat_find_alloc_memory_type(adist);
-> > +             if (IS_ERR(mtype))
-> > +                     pr_err("%s() failed to allocate a tier\n", __func=
-__);
-> > +     } else {
-> > +             mtype =3D default_dram_type;
-> > +     }
-> > +
-> > +     set_node_memory_tier(node, mtype);
-> > +}
-> > +
-> > +void mt_init_with_hmat(void)
-> > +{
-> > +     int nid;
-> > +
-> > +     mutex_lock(&memory_tier_lock);
-> > +     for_each_node_state(nid, N_MEMORY)
-> > +             if (!node_state(nid, N_CPU))
-> > +                     mt_create_with_hmat(nid);
-> > +
-> > +     establish_demotion_targets();
-> > +     mutex_unlock(&memory_tier_lock);
-> > +}
-> > +EXPORT_SYMBOL_GPL(mt_init_with_hmat);
-> > +
->
-> I guess that we can put most hmat related code above in hmat.c.
->
-
-To put the heat-related code to hmat.c I will need to export some
-static functions in memory-tiers.c, like set_node_memory_tier() and
-establish_demotion_targets(). Is that ok?
-
-> >  static void dump_hmem_attrs(struct access_coordinate *coord, const cha=
-r *prefix)
-> >  {
-> >       pr_info(
-> > @@ -636,7 +688,7 @@ int mt_set_default_dram_perf(int nid, struct access=
-_coordinate *perf,
-> >  {
-> >       int rc =3D 0;
+> >  int acpi_get_riscv_isa(struct acpi_table_header *table,
+> >                      unsigned int cpu, const char **isa);
 > >
-> > -     mutex_lock(&memory_tier_lock);
-> > +     mutex_lock(&mt_perf_lock);
-> >       if (default_dram_perf_error) {
-> >               rc =3D -EIO;
-> >               goto out;
-> > @@ -684,7 +736,7 @@ int mt_set_default_dram_perf(int nid, struct access=
-_coordinate *perf,
-> >       }
+> > -static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO=
+_NODE; }
+> >  void acpi_get_cbo_block_size(struct acpi_table_header *table, u32 *cbo=
+m_size,
+> >                            u32 *cboz_size, u32 *cbop_size);
+> >  #else
+> > @@ -87,4 +90,12 @@ static inline void acpi_get_cbo_block_size(struct ac=
+pi_table_header *table,
 > >
-> >  out:
-> > -     mutex_unlock(&memory_tier_lock);
-> > +     mutex_unlock(&mt_perf_lock);
-> >       return rc;
+> >  #endif /* CONFIG_ACPI */
+> >
+> > +#ifdef CONFIG_ACPI_NUMA
+> > +int acpi_numa_get_nid(unsigned int cpu);
+> > +void acpi_map_cpus_to_nodes(void);
+> > +#else
+> > +static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO=
+_NODE; }
+> > +static inline void acpi_map_cpus_to_nodes(void) { }
+> > +#endif /* CONFIG_ACPI_NUMA */
+> > +
+> >  #endif /*_ASM_ACPI_H*/
+> > diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> > index f71910718053..5d3e9cf89b76 100644
+> > --- a/arch/riscv/kernel/Makefile
+> > +++ b/arch/riscv/kernel/Makefile
+> > @@ -105,3 +105,4 @@ obj-$(CONFIG_COMPAT)              +=3D compat_vdso/
+> >
+> >  obj-$(CONFIG_64BIT)          +=3D pi/
+> >  obj-$(CONFIG_ACPI)           +=3D acpi.o
+> > +obj-$(CONFIG_ACPI_NUMA)      +=3D acpi_numa.o
+> > diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+> > index e619edc8b0cc..040bdbfea2b4 100644
+> > --- a/arch/riscv/kernel/acpi.c
+> > +++ b/arch/riscv/kernel/acpi.c
+> > @@ -191,11 +191,6 @@ struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(in=
+t cpu)
+> >       return &cpu_madt_rintc[cpu];
 > >  }
 > >
-> > @@ -700,7 +752,7 @@ int mt_perf_to_adistance(struct access_coordinate *=
-perf, int *adist)
-> >           perf->read_bandwidth + perf->write_bandwidth =3D=3D 0)
-> >               return -EINVAL;
-> >
-> > -     mutex_lock(&memory_tier_lock);
-> > +     mutex_lock(&mt_perf_lock);
-> >       /*
-> >        * The abstract distance of a memory node is in direct proportion=
- to
-> >        * its memory latency (read + write) and inversely proportional t=
-o its
-> > @@ -713,7 +765,7 @@ int mt_perf_to_adistance(struct access_coordinate *=
-perf, int *adist)
-> >               (default_dram_perf.read_latency + default_dram_perf.write=
-_latency) *
-> >               (default_dram_perf.read_bandwidth + default_dram_perf.wri=
-te_bandwidth) /
-> >               (perf->read_bandwidth + perf->write_bandwidth);
-> > -     mutex_unlock(&memory_tier_lock);
-> > +     mutex_unlock(&mt_perf_lock);
-> >
-> >       return 0;
-> >  }
-> > @@ -797,7 +849,7 @@ static int __meminit memtier_hotplug_callback(struc=
-t notifier_block *self,
-> >               break;
-> >       case MEM_ONLINE:
-> >               mutex_lock(&memory_tier_lock);
-> > -             memtier =3D set_node_memory_tier(arg->status_change_nid);
-> > +             memtier =3D set_node_memory_tier(arg->status_change_nid, =
-default_dram_type);
-> >               if (!IS_ERR(memtier))
-> >                       establish_demotion_targets();
-> >               mutex_unlock(&memory_tier_lock);
-> > @@ -836,7 +888,15 @@ static int __init memory_tier_init(void)
-> >        * types assigned.
-> >        */
-> >       for_each_node_state(node, N_MEMORY) {
-> > -             memtier =3D set_node_memory_tier(node);
-> > +             if (!node_state(node, N_CPU))
-> > +                     /*
-> > +                      * Defer memory tier initialization on CPUless nu=
-ma nodes.
-> > +                      * These will be initialized when HMAT informatio=
-n is
-> > +                      * available.
-> > +                      */
-> > +                     continue;
-> > +
-> > +             memtier =3D set_node_memory_tier(node, default_dram_type)=
-;
->
-> On system with HMAT, how to fall back CPU-less node to
-> default_dram_type?  I found your description, but I don't find it in code=
+> > -u32 get_acpi_id_for_cpu(int cpu)
+> > -{
+> > -     return acpi_cpu_get_madt_rintc(cpu)->uid;
+> > -}
+> > -
+> >  /*
+> >   * __acpi_map_table() will be called before paging_init(), so early_io=
+remap()
+> >   * or early_memremap() should be called here to for ACPI table mapping=
 .
+> > diff --git a/arch/riscv/kernel/acpi_numa.c b/arch/riscv/kernel/acpi_num=
+a.c
+> > new file mode 100644
+> > index 000000000000..493642a61457
+> > --- /dev/null
+> > +++ b/arch/riscv/kernel/acpi_numa.c
+> > @@ -0,0 +1,133 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * ACPI 6.6 based NUMA setup for RISCV
+> > + * Lots of code was borrowed from arch/arm64/kernel/acpi_numa.c
+> > + *
+> > + * Copyright 2004 Andi Kleen, SuSE Labs.
+> > + * Copyright (C) 2013-2016, Linaro Ltd.
+> > + *           Author: Hanjun Guo <hanjun.guo@linaro.org>
+> > + * Copyright (C) 2024 Intel Corporation.
+> > + *
+> > + * Reads the ACPI SRAT table to figure out what memory belongs to whic=
+h CPUs.
+> > + *
+> > + * Called from acpi_numa_init while reading the SRAT and SLIT tables.
+> > + * Assumes all memory regions belonging to a single proximity domain
+> > + * are in one chunk. Holes between them will be included in the node.
+> > + */
+> > +
+> > +#define pr_fmt(fmt) "ACPI: NUMA: " fmt
+> > +
+> > +#include <linux/acpi.h>
+> > +#include <linux/bitmap.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/mm.h>
+> > +#include <linux/memblock.h>
+> > +#include <linux/mmzone.h>
+> > +#include <linux/module.h>
+> > +#include <linux/topology.h>
+> > +
+> > +#include <asm/numa.h>
+> > +
+> > +static int acpi_early_node_map[NR_CPUS] __initdata =3D { NUMA_NO_NODE =
+};
+> > +
+> > +int __init acpi_numa_get_nid(unsigned int cpu)
+> > +{
+> > +     return acpi_early_node_map[cpu];
+> > +}
+> > +
+> > +static inline int get_cpu_for_acpi_id(u32 uid)
+> > +{
+> > +     int cpu;
+> > +
+> > +     for (cpu =3D 0; cpu < nr_cpu_ids; cpu++)
+> > +             if (uid =3D=3D get_acpi_id_for_cpu(cpu))
+> > +                     return cpu;
+> > +
+> > +     return -EINVAL;
+> > +}
+> > +
+> > +static int __init acpi_parse_rintc_pxm(union acpi_subtable_headers *he=
+ader,
+> > +                                   const unsigned long end)
+>
+> Please check alignment.
 >
 
-I assume you meant without HMAT, if so,
-because if no HMAT, adist will not be updated in mt_calc_adistance():
-+ int adist =3D MEMTIER_ADISTANCE_DRAM;
-+
-+ mt_calc_adistance(node, &adist);
-+ if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
-=E2=80=A6
-+ } else {
-+ mtype =3D default_dram_type;
-+ }
-+
-+ set_node_memory_tier(node, mtype);
+Sure.
 
-> >               if (IS_ERR(memtier))
-> >                       /*
-> >                        * Continue with memtiers we are able to setup
+> > +{
+> > +     struct acpi_srat_rintc_affinity *pa;
+> > +     int cpu, pxm, node;
+> > +
+> > +     if (srat_disabled())
+> > +             return -EINVAL;
+> > +
+> > +     pa =3D (struct acpi_srat_rintc_affinity *)header;
+> > +     if (!pa)
+> > +             return -EINVAL;
+> > +
+> > +     if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
+> > +             return 0;
+> > +
+> > +     pxm =3D pa->proximity_domain;
+> > +     node =3D pxm_to_node(pxm);
+> > +
+> > +     /*
+> > +      * If we can't map the UID to a logical cpu this
+> > +      * means that the UID is not part of possible cpus
+> > +      * so we do not need a NUMA mapping for it, skip
+> > +      * the SRAT entry and keep parsing.
+> > +      */
+> > +     cpu =3D get_cpu_for_acpi_id(pa->acpi_processor_uid);
+> > +     if (cpu < 0)
+> > +             return 0;
+> > +
+> > +     acpi_early_node_map[cpu] =3D node;
+> > +     pr_info("SRAT: PXM %d -> HARTID 0x%lx -> Node %d\n", pxm,
+> > +             cpuid_to_hartid_map(cpu), node);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +void __init acpi_map_cpus_to_nodes(void)
+> > +{
+> > +     int i;
+> > +
+> > +     /*
+> > +      * In ACPI, SMP and CPU NUMA information is provided in separate
+> > +      * static tables, namely the MADT and the SRAT.
+> > +      *
+> > +      * Thus, it is simpler to first create the cpu logical map throug=
+h
+> > +      * an MADT walk and then map the logical cpus to their node ids
+> > +      * as separate steps.
+> > +      */
+> > +     acpi_table_parse_entries(ACPI_SIG_SRAT, sizeof(struct acpi_table_=
+srat),
+> > +                                         ACPI_SRAT_TYPE_RINTC_AFFINITY=
+,
+> > +                                         acpi_parse_rintc_pxm, 0);
+> > +
+> Alignment here as well.
 >
-> --
-> Best Regards,
-> Huang, Ying
---=20
-Best regards,
-Ho-Ren (Jack) Chuang
-=E8=8E=8A=E8=B3=80=E4=BB=BB
+
+Sure.
+
+> > +     for (i =3D 0; i < nr_cpu_ids; i++)
+> > +             early_map_cpu_to_node(i, acpi_numa_get_nid(i));
+> > +}
+> > +
+> > +/* Callback for Proximity Domain -> logical node ID mapping */
+> > +void __init acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affin=
+ity *pa)
+> > +{
+> > +     int pxm, node;
+> > +
+> > +     if (srat_disabled())
+> > +             return;
+> > +
+> > +     if (pa->header.length < sizeof(struct acpi_srat_rintc_affinity)) =
+{
+> > +             pr_err("SRAT: Invalid SRAT header length: %d\n",
+> > +                     pa->header.length);
+> Can we merge these into single line?
+>
+> > +             bad_srat();
+> > +             return;
+> > +     }
+> > +
+> > +     if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
+> > +             return;
+> > +
+> > +     pxm =3D pa->proximity_domain;
+> > +     node =3D acpi_map_pxm_to_node(pxm);
+> > +
+> > +     if (node =3D=3D NUMA_NO_NODE) {
+> > +             pr_err("SRAT: Too many proximity domains %d\n", pxm);
+> > +             bad_srat();
+> > +             return;
+> > +     }
+> > +
+> > +     node_set(node, numa_nodes_parsed);
+> > +}
+> > diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+> > index 4f73c0ae44b2..a2cde65b69e9 100644
+> > --- a/arch/riscv/kernel/setup.c
+> > +++ b/arch/riscv/kernel/setup.c
+> > @@ -281,8 +281,10 @@ void __init setup_arch(char **cmdline_p)
+> >       setup_smp();
+> >  #endif
+> >
+> > -     if (!acpi_disabled)
+> > +     if (!acpi_disabled) {
+> >               acpi_init_rintc_map();
+> > +             acpi_map_cpus_to_nodes();
+> Is it not possible to fill up both in single parsing of MADT?
+>
+
+I think it's not possible to fill both in a single MADT parse since
+the NUMA info is provided in a separate SRAT table.
+
+For RISC-V, currently we parsed 2 times of the MADT.
+FIrst one in setup_smp()->acpi_parse_and_init_cpus() call to build up
+cpuid_to_hartid_map.
+Second one in acpi_init_rintc_map call to build the cpu_madt_rintc[]
+cache structure.
+
+Since the first one depends on the CONFIG_SMP, I am not sure whether
+it's possible to combine
+these two parts into one.
+
+> > +     }
+> >
+> >       riscv_init_cbo_blocksizes();
+> >       riscv_fill_hwcap();
+> > diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+> > index 519b6bd946e5..b188d83d1ec4 100644
+> > --- a/arch/riscv/kernel/smpboot.c
+> > +++ b/arch/riscv/kernel/smpboot.c
+> > @@ -101,7 +101,6 @@ static int __init acpi_parse_rintc(union acpi_subta=
+ble_headers *header, const un
+> >       if (hart =3D=3D cpuid_to_hartid_map(0)) {
+> >               BUG_ON(found_boot_cpu);
+> >               found_boot_cpu =3D true;
+> > -             early_map_cpu_to_node(0, acpi_numa_get_nid(cpu_count));
+> >               return 0;
+> >       }
+> >
+> > @@ -111,7 +110,6 @@ static int __init acpi_parse_rintc(union acpi_subta=
+ble_headers *header, const un
+> >       }
+> >
+> >       cpuid_to_hartid_map(cpu_count) =3D hart;
+> > -     early_map_cpu_to_node(cpu_count, acpi_numa_get_nid(cpu_count));
+> >       cpu_count++;
+> >
+> >       return 0;
+> > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> > index 503abcf6125d..1f0462cef47c 100644
+> > --- a/drivers/acpi/numa/srat.c
+> > +++ b/drivers/acpi/numa/srat.c
+> > @@ -219,7 +219,8 @@ int __init srat_disabled(void)
+> >       return acpi_numa < 0;
+> >  }
+> >
+> > -#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOO=
+NGARCH)
+> > +#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOO=
+NGARCH) || \
+> > +     defined(CONFIG_RISCV)
+> Please check alignment. Or make it single line if fits in 100 chars.
+> Also, it looks it covers most of the architectures now. Is it possible
+> to simplify / remove the condition? I hope IA64 is removed now?
+>
+
+Good catch!
+
+Since IA64 support was removed in commit
+cf8e8658100d4(https://lwn.net/Articles/923376/).
+I think it's possible to remove the condition. Will fix it in v2.
+
+Thanks,
+Haibo
+
+> May be you need to update the comment at #endif too.
+>
+> Thanks
+> Sunil
+>
+> >  /*
+> >   * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
+> >   * I/O localities since SRAT does not list them.  I/O localities are
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index a65273db55c6..be78a9d28927 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -269,8 +269,12 @@ acpi_numa_gicc_affinity_init(struct acpi_srat_gicc=
+_affinity *pa) { }
+> >
+> >  int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma)=
+;
+> >
+> > +#ifdef CONFIG_RISCV
+> > +void acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa=
+);
+> > +#else
+> >  static inline void
+> >  acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa) { }
+> > +#endif
+> >
+> >  #ifndef PHYS_CPUID_INVALID
+> >  typedef u32 phys_cpuid_t;
+> > --
+> > 2.34.1
+> >
 
