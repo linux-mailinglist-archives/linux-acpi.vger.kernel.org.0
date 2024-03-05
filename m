@@ -1,108 +1,135 @@
-Return-Path: <linux-acpi+bounces-4118-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4119-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81ED872163
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 15:24:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C94887218D
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 15:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D671F21C4D
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 14:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B11E31F22B80
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 14:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011A386634;
-	Tue,  5 Mar 2024 14:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0uUn/6V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C375C609;
+	Tue,  5 Mar 2024 14:36:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C352386122;
-	Tue,  5 Mar 2024 14:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECE737145;
+	Tue,  5 Mar 2024 14:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709648669; cv=none; b=UGz4S5cPyPaTbGJNUsKzfj4MenvZVThA3YVIr/sUDM9zMgIiKOt4gRK+jJWAt234GEROr3kVIiF8JOYBukrW6waU1vGrK6zyNuqay9ZCjGCfFgdgcZtAsumqkipW8ZPwp83uJlR4lgPxxWjGILc4lzmgGU1qq4ueRyttKLJB+7o=
+	t=1709649400; cv=none; b=QiVvfgyCfCFkpFu+3njrf+BLOA44jpQhGgY31UlOFDnS941AwNZBGp3k1SF1IK7E5axN8mlDqdt2VH2qsqozKgimsPDDwiEqmXiWu7auCmbdzZaXowIdevLPXGaJP4VY6RjMdG5N8ebg7mkmooV7fs8s8XabjDHYGFMseGM5seU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709648669; c=relaxed/simple;
-	bh=zan+ZoeDXxzZ7Py3Ib0gvt0twgnpqQJYfL+M/dbapaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HfHKHYeOoK9tqH/bJBOusVaDBxtCBJxyl6dVCLBbV6WgqtFCjqpY1AmCF2kX/OCxg7jpLZisDGLablq/ZWPVGaw8mW1JFlAcCuNUxQnzI+PBbzRiyUz3d/NA5/AldjziK0qYmI1CuHauXpecgcD8OQ5u0zxRKMAME9q/RXvcrEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0uUn/6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15069C43390;
-	Tue,  5 Mar 2024 14:24:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709648669;
-	bh=zan+ZoeDXxzZ7Py3Ib0gvt0twgnpqQJYfL+M/dbapaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L0uUn/6VWsIRpBj0MI8Cs9Zlz68UfqVVESRLH41lV8Jnh0qjwNa2FKGJJv0OrELOB
-	 sJFJUk0V1+sBQNKd+WToPNFo0HYwal0psvcVrmwZoAeord/9WQCA3XapUZp//xTdj/
-	 O64EsudmuwyatGTs5ewvhP7aPebIcRtvi1SkoC6nfW6yFO6S/PG4jF/jPfFqdTmyUf
-	 DIxyBjGbaq/o3OMndkl5rvNOMBoNwbBXcRGfmsD5yKAsWpkdjcRvF5fC3iUXG+OkhB
-	 UXdXwYoZwzwVoOqfJ9AFCRHLn4lg2xpaJKc3n9eWlituqTr46U1alWxIdTIrrI5rnM
-	 JCmTfpUrrootQ==
-Date: Tue, 5 Mar 2024 08:24:26 -0600
-From: Rob Herring <robh@kernel.org>
-To: Vidya Sagar <vidyas@nvidia.com>
-Cc: bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org,
-	will@kernel.org, lpieralisi@kernel.org, kw@linux.com,
-	frowand.list@gmail.com, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	treding@nvidia.com, jonathanh@nvidia.com, kthota@nvidia.com,
-	mmaddireddy@nvidia.com, sagar.tv@gmail.com
-Subject: Re: [PATCH V4] PCI: Add support for preserving boot configuration
-Message-ID: <20240305142426.GB3259724-robh@kernel.org>
-References: <20240222124110.2681455-1-vidyas@nvidia.com>
- <20240223080021.1692996-1-vidyas@nvidia.com>
+	s=arc-20240116; t=1709649400; c=relaxed/simple;
+	bh=jT7+/bVUnT1ftVesYJZdiibrGkpzwQBiEa8HWicdv0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M4GS54Ay30uzolXtaGU0rOQutdpWprYAl+3KVs5V1d2EPvgzZe3RxAYKWGEepmTcVFZy3ReOWcS8J5DtoX/XzjX74iWbTRD+plHYHZnH+P6U15RMHZdRXlGioj1NwN3AX00doGWyK0YTsxqgDhBoTdSN//1wgJ8LCAVYWPStiTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F22AC1FB;
+	Tue,  5 Mar 2024 06:37:13 -0800 (PST)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2177B3F73F;
+	Tue,  5 Mar 2024 06:36:34 -0800 (PST)
+Message-ID: <921173d2-c996-4a0f-b3a5-b660036fa254@arm.com>
+Date: Tue, 5 Mar 2024 14:36:33 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223080021.1692996-1-vidyas@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 03/11] coresight: tmc: Extract device properties from
+ AMBA pid based table lookup
+Content-Language: en-US
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
+ <20240222082142.3663983-4-anshuman.khandual@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20240222082142.3663983-4-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 23, 2024 at 01:30:21PM +0530, Vidya Sagar wrote:
-> Add support for preserving the boot configuration done by the
-> platform firmware per host bridge basis, based on the presence of
-> 'linux,pci-probe-only' property in the respective PCI host bridge
-> device-tree node. It also unifies the ACPI and DT based boot flows
-> in this regard.
+On 22/02/2024 08:21, Anshuman Khandual wrote:
+> This extracts device properties from AMBA pid based table lookup. But first
+> this modifies tmc_etr_setup_caps() to accept csdev access.
 > 
-> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+> Cc: Mike Leach <mike.leach@linaro.org>
+> Cc: James Clark <james.clark@arm.com>
+> Cc: coresight@lists.linaro.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: James Clark <james.clark@arm.com>
+
+minor nit: Since there were significant changes from what James 
+previously reviewed, it is a good idea to drop his Reviewed-by:
+
+Otherwise, the changes look good to me.
+
+Suzuki
+
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
-> V4:
-> * Addressed Bjorn's review comments
+> Changes in V5:
 > 
-> V3:
-> * Unified ACPI and DT flows as part of addressing Bjorn's review comments
+> - Modified tmc_etr_setup_caps() to accept struct csdev_access argument
+> - Reverted back tmc_etr_setup_caps() call site position in tmc_probe()
+> - Dropped custom mask TMC_AMBA_MASK
 > 
-> V2:
-> * Addressed issues reported by kernel test robot <lkp@intel.com>
+>   drivers/hwtracing/coresight/coresight-tmc-core.c | 14 ++++++++++----
+>   1 file changed, 10 insertions(+), 4 deletions(-)
 > 
->  drivers/acpi/pci_root.c                  | 12 -------
->  drivers/pci/controller/pci-host-common.c |  4 ---
->  drivers/pci/of.c                         | 21 +++++++++++
->  drivers/pci/probe.c                      | 46 ++++++++++++++++++------
->  include/linux/of_pci.h                   |  6 ++++
->  5 files changed, 62 insertions(+), 27 deletions(-)
+> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> index 7ec5365e2b64..43874fa4def0 100644
+> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+> @@ -370,16 +370,23 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
+>   	return (auth & TMC_AUTH_NSID_MASK) == 0x3;
+>   }
+>   
+> +static const struct amba_id tmc_ids[];
+> +
+>   /* Detect and initialise the capabilities of a TMC ETR */
+> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
+> +static int tmc_etr_setup_caps(struct device *parent, u32 devid,
+> +			      struct csdev_access *access)
+>   {
+>   	int rc;
+> -	u32 dma_mask = 0;
+> +	u32 tmc_pid, dma_mask = 0;
+>   	struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
+> +	void *dev_caps;
+>   
+>   	if (!tmc_etr_has_non_secure_access(drvdata))
+>   		return -EACCES;
+>   
+> +	tmc_pid = coresight_get_pid(access);
+> +	dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
+> +
+>   	/* Set the unadvertised capabilities */
+>   	tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
+>   
+> @@ -497,8 +504,7 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
+>   		desc.type = CORESIGHT_DEV_TYPE_SINK;
+>   		desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
+>   		desc.ops = &tmc_etr_cs_ops;
+> -		ret = tmc_etr_setup_caps(dev, devid,
+> -					 coresight_get_uci_data(id));
+> +		ret = tmc_etr_setup_caps(dev, devid, &desc.access);
+>   		if (ret)
+>   			goto out;
+>   		idr_init(&drvdata->idr);
 
-One more thing.
-
-> @@ -3080,20 +3106,18 @@ int pci_host_probe(struct pci_host_bridge *bridge)
->  
->  	bus = bridge->bus;
->  
-> +	/* If we must preserve the resource configuration, claim now */
-> +	if (pci_has_flag(PCI_PROBE_ONLY) || bridge->preserve_config)
-> +		pci_bus_claim_resources(bus);
-
-No reason to check PCI_PROBE_ONLY if you set preserve_config based on 
-/chosen as well. IOW, we should deprecate PCI_PROBE_ONLY flag in favor 
-of the per host bridge setting.
-
-Rob
 
