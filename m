@@ -1,87 +1,177 @@
-Return-Path: <linux-acpi+bounces-4116-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4117-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07825871DB5
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 12:29:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB255872123
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 15:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349871C23409
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 11:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A6ED1F22AB5
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 14:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAE459153;
-	Tue,  5 Mar 2024 11:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB2186158;
+	Tue,  5 Mar 2024 14:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlcGZRPG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay161.nicmail.ru (relay161.nicmail.ru [91.189.117.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDFC58ADC;
-	Tue,  5 Mar 2024 11:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.189.117.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210935102B;
+	Tue,  5 Mar 2024 14:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709637968; cv=none; b=sitwrYl7KZ0mcGURvXO0zBT3Ak3zHn5YrnyE6HuS5wgRYt3Bz6p+5jKBz+MP3GN428Sthki4EPXnlBD0mAvkdK2P1IEn4QtiZbeEhRDt+L6netOt0CHEx5t1r16HdFPGrOVI784puCYOz91z+8fs3k46ZKUERIwVN/0WD9anQ7o=
+	t=1709647823; cv=none; b=Qa2MzxvRBeMQQtrGpWGG+0CA1S1+FktrHHtfWkBrz/LLq4Z8kPJGg+AdihYgRy1/tBYex5txDUSBKD8rxybvz6zy5Qitlu0H81FZfo82hmQ7ncDsrxS5ILU+b0h1nsI5IdwGwHueeCPZwJuVh5W4Ql4ANCOGJjUUPA0ktWji4z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709637968; c=relaxed/simple;
-	bh=JseQ3jxY0Eiox8xpX+BgZ5wxeni8iP1YPYgbbwUg+dE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Oh+gnzPNSPAhvEDghrx9JXOXUEiCu+CQEuqzeAXX8Ec0RwePBwNAO32iTsHEovBesVoO58HFg5wqGab5hg9PBQFSnPDImR71VX7qy4fqTR/7fNhlyuwzvo+AEJhGbth2ahhRJwf++pLv2Udwm+9qcJQewwRENnZYdiN2tnQqYWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ancud.ru; spf=pass smtp.mailfrom=ancud.ru; arc=none smtp.client-ip=91.189.117.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ancud.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ancud.ru
-Received: from [10.28.138.148] (port=65324 helo=[192.168.95.111])
-	by relay.hosting.mail.nic.ru with esmtp (Exim 5.55)
-	(envelope-from <kiryushin@ancud.ru>)
-	id 1rhSvh-0001jb-5m;
-	Tue, 05 Mar 2024 14:25:54 +0300
-Received: from [87.245.155.195] (account kiryushin@ancud.ru HELO [192.168.95.111])
-	by incarp1101.mail.hosting.nic.ru (Exim 5.55)
-	with id 1rhSvh-008GxQ-2H;
-	Tue, 05 Mar 2024 14:25:53 +0300
-Message-ID: <17bad2c5-e401-45cc-8351-cc28e461257c@ancud.ru>
-Date: Tue, 5 Mar 2024 14:25:52 +0300
+	s=arc-20240116; t=1709647823; c=relaxed/simple;
+	bh=yligJ8IXn0rMPUgLLCLFsqkXEZzbgJx9pASoGxdfXR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FFXLlkfbN8mOlmwhn+yaxysdzKbxIufVFDjZ/nslE4Wsdr/b3i39EjFBcMhMT/NuJiC6y79CSQIvLd1wjEL/9hcr/S4iBZW1zYYevDwCB8k7spmZkL1Nle4N/VFi8t1AYEqEL6gwXmWdTUd/dErd5jjFQc6Z3pJahAgGNKlk3Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlcGZRPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E72C433C7;
+	Tue,  5 Mar 2024 14:10:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709647822;
+	bh=yligJ8IXn0rMPUgLLCLFsqkXEZzbgJx9pASoGxdfXR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tlcGZRPGR3iQ3Rz6cSl+sC1Cd46r5Ye33DMAn5FrLL36CXD9BZQNfPcP+eD5kHU8P
+	 erNmTTXjdJzUzz6MpO4rPA74t7oPJs/J1h3bl8qVKDCyB/V3PA/wAqnsBHoUGg8mlK
+	 K/c8410PacOzLJ7pz2EhJ4+/OG0LzlthgNRgJds7EbXVB41PWzf0lKPtNbVRVIu0ps
+	 1+8c8Nb1LLq4IVbq2OnGm6GOAE2JQSoZVVxA4ath12jYeOaeiDSH/3Ksisngcs6gVG
+	 mMwYTdkTa0hLLZ7wMrGWN6Hh/FZvIbmSGo5qbKIt4LktOPc8uvkNwpxmtQd1K9araP
+	 yTgfP0En4Nimw==
+Date: Tue, 5 Mar 2024 08:10:20 -0600
+From: Rob Herring <robh@kernel.org>
+To: Vidya Sagar <vidyas@nvidia.com>
+Cc: bhelgaas@google.com, rafael@kernel.org, lenb@kernel.org,
+	will@kernel.org, lpieralisi@kernel.org, kw@linux.com,
+	frowand.list@gmail.com, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	treding@nvidia.com, jonathanh@nvidia.com, kthota@nvidia.com,
+	mmaddireddy@nvidia.com, sagar.tv@gmail.com
+Subject: Re: [PATCH V4] PCI: Add support for preserving boot configuration
+Message-ID: <20240305141020.GA3259724-robh@kernel.org>
+References: <20240222124110.2681455-1-vidyas@nvidia.com>
+ <20240223080021.1692996-1-vidyas@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI: OSL: Initialize output value
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Bob Moore <robert.moore@intel.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org
-References: <ea6ef128-fa22-44b3-bd10-c136bc89c036@ancud.ru>
- <CAJZ5v0hxkoeFYVxQ_ZYCMK+0L=7WdBQHRp6ouv+FzahfMrs_eQ@mail.gmail.com>
-From: Nikita Kiryushin <kiryushin@ancud.ru>
-In-Reply-To: <CAJZ5v0hxkoeFYVxQ_ZYCMK+0L=7WdBQHRp6ouv+FzahfMrs_eQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MS-Exchange-Organization-SCL: -1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223080021.1692996-1-vidyas@nvidia.com>
 
-On 11/21/23 23:05, Rafael J. Wysocki wrote:
-> So wouldn't it be better to avoid modifying *value at all if
-> raw_pci_read() returns an error?
+On Fri, Feb 23, 2024 at 01:30:21PM +0530, Vidya Sagar wrote:
+> Add support for preserving the boot configuration done by the
+> platform firmware per host bridge basis, based on the presence of
+> 'linux,pci-probe-only' property in the respective PCI host bridge
+> device-tree node. It also unifies the ACPI and DT based boot flows
+> in this regard.
+> 
+> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> ---
+> V4:
+> * Addressed Bjorn's review comments
+> 
+> V3:
+> * Unified ACPI and DT flows as part of addressing Bjorn's review comments
+> 
+> V2:
+> * Addressed issues reported by kernel test robot <lkp@intel.com>
+> 
+>  drivers/acpi/pci_root.c                  | 12 -------
+>  drivers/pci/controller/pci-host-common.c |  4 ---
+>  drivers/pci/of.c                         | 21 +++++++++++
+>  drivers/pci/probe.c                      | 46 ++++++++++++++++++------
+>  include/linux/of_pci.h                   |  6 ++++
+>  5 files changed, 62 insertions(+), 27 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 84030804a763..ddc2b3e89111 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -1008,7 +1008,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  	int node = acpi_get_node(device->handle);
+>  	struct pci_bus *bus;
+>  	struct pci_host_bridge *host_bridge;
+> -	union acpi_object *obj;
+>  
+>  	info->root = root;
+>  	info->bridge = device;
+> @@ -1050,17 +1049,6 @@ struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+>  	if (!(root->osc_ext_control_set & OSC_CXL_ERROR_REPORTING_CONTROL))
+>  		host_bridge->native_cxl_error = 0;
+>  
+> -	/*
+> -	 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
+> -	 * exists and returns 0, we must preserve any PCI resource
+> -	 * assignments made by firmware for this host bridge.
+> -	 */
+> -	obj = acpi_evaluate_dsm(ACPI_HANDLE(bus->bridge), &pci_acpi_dsm_guid, 1,
+> -				DSM_PCI_PRESERVE_BOOT_CONFIG, NULL);
+> -	if (obj && obj->type == ACPI_TYPE_INTEGER && obj->integer.value == 0)
+> -		host_bridge->preserve_config = 1;
+> -	ACPI_FREE(obj);
+> -
+>  	acpi_dev_power_up_children_with_adr(device);
+>  
+>  	pci_scan_child_bus(bus);
+> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+> index 6be3266cd7b5..e2602e38ae45 100644
+> --- a/drivers/pci/controller/pci-host-common.c
+> +++ b/drivers/pci/controller/pci-host-common.c
+> @@ -73,10 +73,6 @@ int pci_host_common_probe(struct platform_device *pdev)
+>  	if (IS_ERR(cfg))
+>  		return PTR_ERR(cfg);
+>  
+> -	/* Do not reassign resources if probe only */
+> -	if (!pci_has_flag(PCI_PROBE_ONLY))
+> -		pci_add_flags(PCI_REASSIGN_ALL_BUS);
+> -
+>  	bridge->sysdata = cfg;
+>  	bridge->ops = (struct pci_ops *)&ops->pci_ops;
+>  	bridge->msi_domain = true;
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index 51e3dd0ea5ab..f0f1156040a5 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -258,6 +258,27 @@ void of_pci_check_probe_only(void)
+>  }
+>  EXPORT_SYMBOL_GPL(of_pci_check_probe_only);
+>  
+> +/**
+> + * of_pci_bridge_preserve_resources - Return true if the boot configuration
+> + *                                    needs to be preserved
+> + * @node: Device tree node with the domain information.
+> + *
+> + * This function looks for "linux,pci-probe-only" property for a given
+> + * PCI controller's node and returns true if found. Having this property
+> + * for a PCI controller ensures that the kernel doesn't reconfigure the
+> + * BARs and bridge windows that are already done by the platform firmware.
+> + * NOTE: The scope of "linux,pci-probe-only" defined within a PCI bridge device
+> + *       is limited to the hierarchy under that particular bridge device. whereas
+> + *       the scope of "linux,pci-probe-only" defined within chosen node is
+> + *       system wide.
+> + *
+> + * Return: true if the property exists false otherwise.
+> + */
+> +bool of_pci_bridge_preserve_resources(struct device_node *node)
+> +{
+> +	return of_property_read_bool(node, "linux,pci-probe-only");
 
-Avoiding of modification of *value at all seems better idea to me than 
-setting it to arbitrary initializing value, indeed.
+This is the wrong type. The existing "linux,pci-probe-only" is a u32 and 
+non-zero value means probe-only. This would return true for 
+'linux,pci-probe-only = <0>'.
 
-In that case, buffer initialization can be ditched, and *value set only 
-in case of success.
+Also, this should also check chosen. If you make this work accepting 
+NULL for node, then of_pci_check_probe_only() can be re-implemented to 
+use it.
 
-> And if it returns a success, why wouldn't it be trusted?
->
-My concern is, that raw_pci_read() wraps platform-specific handlers, 
-that should conform to the next rules:
 
-1) in case of success, they must set value32 (or else, uninitialized 
-data would leak to acpi_os_read_pci_configuration caller);
 
-2) they should use passed &value32 only to set it (or else, 
-uninitialized data would be used/passed somewhere, is it safe?);
-
-Is there any way to be sure, that all the existing and future 
-platform-specific pci-read handlers conform?
+Rob
 
