@@ -1,175 +1,295 @@
-Return-Path: <linux-acpi+bounces-4121-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4122-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BA687267F
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 19:25:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F884872861
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 21:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47FA1288616
-	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 18:25:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C131F2AFCD
+	for <lists+linux-acpi@lfdr.de>; Tue,  5 Mar 2024 20:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121C918AE0;
-	Tue,  5 Mar 2024 18:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AD58613C;
+	Tue,  5 Mar 2024 20:15:39 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9691C1AAAE;
-	Tue,  5 Mar 2024 18:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B91317BDC;
+	Tue,  5 Mar 2024 20:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709663123; cv=none; b=Rk2eCdK++rgt5bdFZFFFQOdQ5dSrPgaIrBAdWru12oGY7mDDWF5kdK9+Wb5cexJys923Nrblp0gOR+bIG5YxFeWT5jXwbbrA/Gh8vu7kFNyY07aSLl3BK2pFsuz6RCpNTdyHwFfAJTEMTZ1XiS0ebdRICAStAOa/32Z9OtpAFmQ=
+	t=1709669739; cv=none; b=ScLUbgue6Hnr7Gw6uHyewVfzHXDcYkzyfuZwNqTTMnPpkl9O1rilXCAR/2OOz+0f5LM5FpGJEFqew2m5b3IdLebiXaaDt8UCs6rPoe60Vqe2iVjcBLiFTruiPPx/Wef5G0Lm3NOAflBaH3+tsOY0+jp05cl8ItWfQg+/SudAIz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709663123; c=relaxed/simple;
-	bh=gAlZJiLfI3RwKjNnb5P7pE29LXqn0S65DwHXQry2obM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WMKm8s0v4LOd2t7AvLoQgZbeeoqHVY8eWuu8NyISmn6LvyC0tXpAaMGprIvKQP9lZghmXRFdb3bzVCcRyxQGKwBTcUfn1Jig1I3UwVp5zhIrn+R9hOlDAyEm5kdnd7R52iS95kywPpuBgpEnV7fjTio+UR5HCgZx+o80sOBu0t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 303011FB;
-	Tue,  5 Mar 2024 10:25:55 -0800 (PST)
-Received: from [10.57.50.122] (unknown [10.57.50.122])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 90E9E3F73F;
-	Tue,  5 Mar 2024 10:25:16 -0800 (PST)
-Message-ID: <8ef57dd9-a16d-4847-89f5-a309c4ccb849@arm.com>
-Date: Tue, 5 Mar 2024 18:25:15 +0000
+	s=arc-20240116; t=1709669739; c=relaxed/simple;
+	bh=G7no1YJL9DmcoQkfFWDkjzZL68cN4RmEgEThuxLYasc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uxASmnJNm3mngSVMfDI+sYH+PA2it3Wx2/efZMkzFsxZ0bpx3Nv3lvbJ1Ja8p62+tRFh1CAg/sicVKwm4EBFjcvBAD7kJPe1wNj5ZS9U2lC9ELpvXEBbAMBXTVUhG8iidzCefCIyjE6XU5y2ruJ/zocz2rIe/XsVRROkfUP7SpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-21eab2bd67bso347401fac.0;
+        Tue, 05 Mar 2024 12:15:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709669737; x=1710274537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e90WqAEMxgxrpNORTlE61Hg6YT9+0kYQ66C6ACF3xTE=;
+        b=gyU6ekdpbrft3DHiDma7yx2uRdA1cW9yFuS/FIEbZRXWFBFulC/SZGx34Qdww1WnGK
+         fuA7ALzGG+tF4zcoxy05qbDzrs9gD55EfO/fAjD2dkh5CI8ALGH6FjXkF4TS3jxsTrkZ
+         3zccJ7GD3yOqyrIbMJr2V0BDZxav07J8CxY/rRHzd10T/e4bFMsKnP8PgOefrq0MnrM2
+         wuIIG3g+JhjEi0KLFq4VwOejk0OfHGd8JtISEZvQUHjouiSfGnsenxDy4Q+VcS5YEpWK
+         ViQP4qPk1cslRlh4DGJWf1hb90Hd98xz7YfgqXf0KcQ2AAHCm26ko8pR35FdvfN+Spdp
+         otyw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWs0PntAsogGlqKtYYfJQcJgOO69Px/sMqYvt4ipbbzkSzvCQ4alIX1BFm1l2JecorKAnS9oeF0BYhn0+bBOev8tvmqKk2f3ZYP0WyaVR5ZFPZgPAieAbdv8LrF7TG9+OoOuvbhdHbZcxQWMeKZLef5mFLWWv7v1aiBnOn+tCKkA==
+X-Gm-Message-State: AOJu0YxF0ov2c8nr/lptoUezcWJRzsKD/A9QaBITndG0OD6Ms1Pi+um2
+	lL0FN9CUHxKUygotEtzqTudkg12FJ8TTRNN4ebUI5+Xpmn1fW43z8RAmagZlg+gqJimQ+7/OYJd
+	ro5zNqDw9Q0esElVMKu9YhAjm/mLdyRcU
+X-Google-Smtp-Source: AGHT+IGpt94eac2seF1UNAk8Va+8JauiQL3EPR8c2l6hQLevF5ZrIe3j6bVBG6B6s0CQ3k7ZHpGIydw+b6t5H0t9s/U=
+X-Received: by 2002:a05:6870:2143:b0:221:b2a:3beb with SMTP id
+ g3-20020a056870214300b002210b2a3bebmr1054943oae.2.1709669737175; Tue, 05 Mar
+ 2024 12:15:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 00/11] coresight: Move remaining AMBA ACPI devices into
- platform driver
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240222082142.3663983-1-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+In-Reply-To: <20240301192600.2568-1-jarredwhite@linux.microsoft.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 5 Mar 2024 21:15:25 +0100
+Message-ID: <CAJZ5v0hTmkB_rrFgxUYbrxbs_JC-vM1oYdH27D-QvVaVuovNXg@mail.gmail.com>
+Subject: Re: [PATCH v3] acpi: Use access_width over bit_width for system
+ memory accesses
+To: Jarred White <jarredwhite@linux.microsoft.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	srivatsabhat@linux.microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/02/2024 08:21, Anshuman Khandual wrote:
-> This moves remaining AMBA ACPI devices into respective platform drivers for
-> enabling ACPI based power management support. This series applies on kernel
-> v6.8-rc5 release. This series has been built, and boot tested on a DT based
-> (RB5) and ACPI supported coresight platform (N1SDP).
+On Fri, Mar 1, 2024 at 8:27=E2=80=AFPM Jarred White
+<jarredwhite@linux.microsoft.com> wrote:
+>
+> To align with ACPI 6.3+, since bit_width can be any 8-bit value, we canno=
+t
+> depend on it being always on a clean 8b boundary. This was uncovered on t=
+he
+> Cobalt 100 platform.
+>
+> SError Interrupt on CPU26, code 0xbe000011 -- SError
+>  CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 5.15.2.1-13 #1
+>  Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+>  pstate: 62400009 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=3D--)
+>  pc : cppc_get_perf_caps+0xec/0x410
+>  lr : cppc_get_perf_caps+0xe8/0x410
+>  sp : ffff8000155ab730
+>  x29: ffff8000155ab730 x28: ffff0080139d0038 x27: ffff0080139d0078
+>  x26: 0000000000000000 x25: ffff0080139d0058 x24: 00000000ffffffff
+>  x23: ffff0080139d0298 x22: ffff0080139d0278 x21: 0000000000000000
+>  x20: ffff00802b251910 x19: ffff0080139d0000 x18: ffffffffffffffff
+>  x17: 0000000000000000 x16: ffffdc7e111bad04 x15: ffff00802b251008
+>  x14: ffffffffffffffff x13: ffff013f1fd63300 x12: 0000000000000006
+>  x11: ffffdc7e128f4420 x10: 0000000000000000 x9 : ffffdc7e111badec
+>  x8 : ffff00802b251980 x7 : 0000000000000000 x6 : ffff0080139d0028
+>  x5 : 0000000000000000 x4 : ffff0080139d0018 x3 : 00000000ffffffff
+>  x2 : 0000000000000008 x1 : ffff8000155ab7a0 x0 : 0000000000000000
+>  Kernel panic - not syncing: Asynchronous SError Interrupt
+>  CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted
+> 5.15.2.1-13 #1
+>  Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+>  Call trace:
+>   dump_backtrace+0x0/0x1e0
+>   show_stack+0x24/0x30
+>   dump_stack_lvl+0x8c/0xb8
+>   dump_stack+0x18/0x34
+>   panic+0x16c/0x384
+>   add_taint+0x0/0xc0
+>   arm64_serror_panic+0x7c/0x90
+>   arm64_is_fatal_ras_serror+0x34/0xa4
+>   do_serror+0x50/0x6c
+>   el1h_64_error_handler+0x40/0x74
+>   el1h_64_error+0x7c/0x80
+>   cppc_get_perf_caps+0xec/0x410
+>   cppc_cpufreq_cpu_init+0x74/0x400 [cppc_cpufreq]
+>   cpufreq_online+0x2dc/0xa30
+>   cpufreq_add_dev+0xc0/0xd4
+>   subsys_interface_register+0x134/0x14c
+>   cpufreq_register_driver+0x1b0/0x354
+>   cppc_cpufreq_init+0x1a8/0x1000 [cppc_cpufreq]
+>   do_one_initcall+0x50/0x250
+>   do_init_module+0x60/0x27c
+>   load_module+0x2300/0x2570
+>   __do_sys_finit_module+0xa8/0x114
+>   __arm64_sys_finit_module+0x2c/0x3c
+>   invoke_syscall+0x78/0x100
+>   el0_svc_common.constprop.0+0x180/0x1a0
+>   do_el0_svc+0x84/0xa0
+>   el0_svc+0x2c/0xc0
+>   el0t_64_sync_handler+0xa4/0x12c
+>   el0t_64_sync+0x1a4/0x1a8
+>
+> Instead, use access_width to determine the size and use the offset and wi=
+dth
+> to shift and mask the bits we want to read/write out. Make sure to add a =
+check
+> for system memory since pcc redefines the access_width to subspace id. If
+> access_width is not set, then fallback to using the bit_width.
+>
+> Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+> CC: srivatsabhat@linux.microsoft.com
+> CC: stable@vger.kernel.org #5.15+
+> ---
+> changelog:
+> v1-->v2:
+> https://lore.kernel.org/linux-acpi/20231216001312.1160-1-jarredwhite@linu=
+x.microsoft.com/
+>         1. Fixed coding style errors
+>         2. Backwards compatibility with ioremapping of address still an
+>                 open question. Suggestions are welcomed.
+> v2-->v3:
+>         1. Created a fallback mechanism to revert to using the bit_width
+>         2. Re-labeled macro to GET_BIT_WIDTH
+>         3. Collapsed the if/else statements in the cpc_read() and cpc_wri=
+te() routines
+>
+>  drivers/acpi/cppc_acpi.c | 32 +++++++++++++++++++++++++++-----
+>  1 file changed, 27 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index d155a86a8614..57de7edda7a5 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -166,6 +166,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, n=
+ominal_freq);
+>  show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+>  show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+>
+> +/* Check for valid access_width, otherwise, fallback to using the bit_wi=
+dth */
+> +#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_w=
+idth - 1)) : (reg)->bit_width)
+> +
+> +/* Shift and apply the mask for CPC reads/writes */
+> +#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset &               =
+       \
+> +                                       GENMASK(((reg)->bit_width), 0)))
+> +
+>  static ssize_t show_feedback_ctrs(struct kobject *kobj,
+>                 struct kobj_attribute *attr, char *buf)
+>  {
+> @@ -780,6 +787,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *=
+pr)
+>                         } else if (gas_t->space_id =3D=3D ACPI_ADR_SPACE_=
+SYSTEM_MEMORY) {
+>                                 if (gas_t->address) {
+>                                         void __iomem *addr;
+> +                                       size_t access_width;
+>
+>                                         if (!osc_cpc_flexible_adr_space_c=
+onfirmed) {
+>                                                 pr_debug("Flexible addres=
+s space capability not supported\n");
+> @@ -787,7 +795,9 @@ int acpi_cppc_processor_probe(struct acpi_processor *=
+pr)
+>                                                         goto out_free;
+>                                         }
+>
+> -                                       addr =3D ioremap(gas_t->address, =
+gas_t->bit_width/8);
+> +                                       /* Check for access_width for the=
+ size, otherwise use bit_width */
+> +                                       access_width =3D GET_BIT_WIDTH(ga=
+s_t) / 8;
+> +                                       addr =3D ioremap(gas_t->address, =
+access_width);
+>                                         if (!addr)
+>                                                 goto out_free;
+>                                         cpc_ptr->cpc_regs[i-2].sys_mem_va=
+ddr =3D addr;
+> @@ -983,6 +993,7 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg *=
+reg, u64 val)
+>  static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 =
+*val)
+>  {
+>         void __iomem *vaddr =3D NULL;
+> +       int size;
+>         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
+>         struct cpc_reg *reg =3D &reg_res->cpc_entry.reg;
+>
+> @@ -994,7 +1005,7 @@ static int cpc_read(int cpu, struct cpc_register_res=
+ource *reg_res, u64 *val)
+>         *val =3D 0;
+>
+>         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
+> -               u32 width =3D 8 << (reg->access_width - 1);
+> +               u32 width =3D GET_BIT_WIDTH(reg);
+>                 u32 val_u32;
+>                 acpi_status status;
+>
+> @@ -1018,7 +1029,9 @@ static int cpc_read(int cpu, struct cpc_register_re=
+source *reg_res, u64 *val)
+>                 return acpi_os_read_memory((acpi_physical_address)reg->ad=
+dress,
+>                                 val, reg->bit_width);
+>
+> -       switch (reg->bit_width) {
+> +       size =3D GET_BIT_WIDTH(reg);
+> +
+> +       switch (size) {
+>         case 8:
+>                 *val =3D readb_relaxed(vaddr);
+>                 break;
+> @@ -1037,18 +1050,22 @@ static int cpc_read(int cpu, struct cpc_register_=
+resource *reg_res, u64 *val)
+>                 return -EFAULT;
+>         }
+>
+> +       if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> +               *val =3D MASK_VAL(reg, *val);
+> +
+>         return 0;
+>  }
+>
+>  static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64=
+ val)
+>  {
+>         int ret_val =3D 0;
+> +       int size;
+>         void __iomem *vaddr =3D NULL;
+>         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
+>         struct cpc_reg *reg =3D &reg_res->cpc_entry.reg;
+>
+>         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
+> -               u32 width =3D 8 << (reg->access_width - 1);
+> +               u32 width =3D GET_BIT_WIDTH(reg);
+>                 acpi_status status;
+>
+>                 status =3D acpi_os_write_port((acpi_io_address)reg->addre=
+ss,
+> @@ -1070,7 +1087,12 @@ static int cpc_write(int cpu, struct cpc_register_=
+resource *reg_res, u64 val)
+>                 return acpi_os_write_memory((acpi_physical_address)reg->a=
+ddress,
+>                                 val, reg->bit_width);
+>
+> -       switch (reg->bit_width) {
+> +       size =3D GET_BIT_WIDTH(reg);
+> +
+> +       if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
+> +               val =3D MASK_VAL(reg, val);
+> +
+> +       switch (size) {
+>         case 8:
+>                 writeb_relaxed(val, vaddr);
+>                 break;
+> --
 
-Please rebase your series on coresight next and fix build failures with 
-the extra warnings turned ON (should be on by default with next).
+Applied as 6.9 material with some edits in the subject and changelog
+and some adjustments of the new comments (one edited and one dropped).
 
-
-Suzuki
-
-> 
-> https://git.gitlab.arm.com/linux-arm/linux-anshuman.git (amba_other_acpi_migration_v5)
-> 
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: James Clark <james.clark@arm.com>
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: coresight@lists.linaro.org
-> Cc: linux-stm32@st-md-mailman.stormreply.com
-> 
-> Changes in V5:
-> 
-> - Used table->mask to filter out bits from pid in coresight_get_uci_data_from_amba()
-> - Dropped custom masks such as STM_AMBA_MASK and TMC_AMBA_MASK
-> - Modified tmc_etr_setup_caps() to accept struct csdev_access argument
-> - Reverted back tmc_etr_setup_caps() call site position in tmc_probe()
-> - Changed replicator and funnel devices to use the new helpers earlier in series
-> - Updated the commit messages regarding xxx_probe() refactoring and renaming
-> 
-> Changes in V4:
-> 
-> https://lore.kernel.org/all/20240123054608.1790189-1-anshuman.khandual@arm.com/
-> 
-> - Fixed PM imbalance in etm4_probe() error path with pm_runtime_disable()
-> - Restored back the pm_runtime_disable() on platform probe error paths
->    in replicator, funnel, catu, tpiu, tmc and stm devices
-> - Dropped dev_caps argument from __tmc_probe()
-> - Changed xxxx_platform_remove() for platform_driver->remove_new() callback
-> 
-> Changes in V3:
-> 
-> https://lore.kernel.org/all/20231208053939.42901-1-anshuman.khandual@arm.com/
-> 
-> - Split coresight_init_driver/remove_driver() helpers into a separate patch
-> - Added 'drvdata->pclk' comments in replicator, funnel, tpiu, tmc, and stm devices
-> - Updated funnel, and replicator drivers to use these new helpers
-> - Check for drvdata instead of drvdata->pclk in suspend and resume paths in catu,
->    tmc and debug devices
-> - Added patch to extract device name from AMBA pid based table lookup for stm
-> - Added patch to extract device properties from AMBA pid based table look for tmc
-> - Dropped pm_runtime_put() from common __probe() functions
-> - Handled pm_runtime_put() in AMBA driver in success path
-> - Handled pm_runtime_put() in platform driver in both success and error paths
-> 
-> Changes in V2:
-> 
-> https://lore.kernel.org/all/20231201062053.1268492-1-anshuman.khandual@arm.com/
-> 
-> - Dropped redundant devm_ioremap_resource() hunk from tmc_platform_probe()
-> - Defined coresight_[init|remove]_driver() for both AMBA/platform drivers
-> - Changed catu, tmc, tpiu, stm and debug coresight drivers to use the new
->    helpers avoiding build issues arising from module_amba_driver(), and
->    module_platform_driver() being on the same file
-> 
-> Changes in V1:
-> 
-> https://lore.kernel.org/all/20231027072943.3418997-1-anshuman.khandual@arm.com/
-> 
-> - Replaced all IS_ERR() instances with IS_ERR_OR_NULL() as per Suzuki
-> 
-> Changes in RFC:
-> 
-> https://lore.kernel.org/all/20230921042040.1334641-1-anshuman.khandual@arm.com/
-> 
-> Anshuman Khandual (11):
->    coresight: etm4x: Fix unbalanced pm_runtime_enable()
->    coresight: stm: Extract device name from AMBA pid based table lookup
->    coresight: tmc: Extract device properties from AMBA pid based table lookup
->    coresight: Add helpers registering/removing both AMBA and platform drivers
->    coresight: replicator: Move ACPI support from AMBA driver to platform driver
->    coresight: funnel: Move ACPI support from AMBA driver to platform driver
->    coresight: catu: Move ACPI support from AMBA driver to platform driver
->    coresight: tpiu: Move ACPI support from AMBA driver to platform driver
->    coresight: tmc: Move ACPI support from AMBA driver to platform driver
->    coresight: stm: Move ACPI support from AMBA driver to platform driver
->    coresight: debug: Move ACPI support from AMBA driver to platform driver
-> 
->   drivers/acpi/arm64/amba.c                     |   8 -
->   drivers/hwtracing/coresight/coresight-catu.c  | 142 +++++++++++++---
->   drivers/hwtracing/coresight/coresight-catu.h  |   1 +
->   drivers/hwtracing/coresight/coresight-core.c  |  29 ++++
->   .../hwtracing/coresight/coresight-cpu-debug.c | 141 ++++++++++++++--
->   .../coresight/coresight-etm4x-core.c          |   3 +
->   .../hwtracing/coresight/coresight-funnel.c    |  86 +++++-----
->   drivers/hwtracing/coresight/coresight-priv.h  |  10 ++
->   .../coresight/coresight-replicator.c          |  81 +++++-----
->   drivers/hwtracing/coresight/coresight-stm.c   | 115 +++++++++++--
->   .../hwtracing/coresight/coresight-tmc-core.c  | 153 +++++++++++++++---
->   drivers/hwtracing/coresight/coresight-tmc.h   |   2 +
->   drivers/hwtracing/coresight/coresight-tpiu.c  | 102 ++++++++++--
->   include/linux/coresight.h                     |   7 +
->   14 files changed, 721 insertions(+), 159 deletions(-)
-> 
-
+Thanks!
 
