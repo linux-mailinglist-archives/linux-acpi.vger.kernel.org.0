@@ -1,359 +1,285 @@
-Return-Path: <linux-acpi+bounces-4132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0AD7872EAF
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 07:14:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69B587309F
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 09:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB66B2098B
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 06:14:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 370C1B26F78
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 08:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF3E1BDD0;
-	Wed,  6 Mar 2024 06:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F07E5D743;
+	Wed,  6 Mar 2024 08:25:08 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841631BDC4;
-	Wed,  6 Mar 2024 06:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A2D5D735;
+	Wed,  6 Mar 2024 08:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709705681; cv=none; b=Q13ISaexmF6zXNE/t02Zv9i3WWMM6w+QxjTblDJEj4XzQ0sVJcaM705D+UmEIlz9iq6mSXELEJszUa9AI0g6GVXzC/mGNF3IW9asYBtIfMWiXwEUakk6skZODz64dDY53XELaaA/QI2nKywGBceaghKrKd5IhqxtyRbTSXtQWE4=
+	t=1709713508; cv=none; b=Dj4z/gnef5IZynjLZo4tVAhsx8tJBDrc9EtF4QNjQUhYuPe6SyscMhy51BuHBxC/36vmoIBi+7UiMll8tKvJJSO0hVwzlHe6ZBgtl6/XNefhBZ0XGiHlahVK25OcBmQOTFsr3BknIiJ1BqPFaI2G8h1pgTrzGtluNENZLsufjxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709705681; c=relaxed/simple;
-	bh=soIpW3HTXdNgBl6gYedqOIUhGgOr3N0/f+yQTei+WH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oWO2VWty2PISfxyYy+QoCJv8Dz7Big/RFSpRn024wFa6J5cCS45hu3xgzl/zwbhmW3C3/p5adzqr+sb0AcSVu4j7a+40Z2KF5vmKrBEESTUSJVwIaz+KJ0+oom3ivEELj0zZL+Z0RRgs3DxMuSuEPINEG57kK+FZ6MClyY94eIw=
+	s=arc-20240116; t=1709713508; c=relaxed/simple;
+	bh=JZf2RmGphYGkZHB7CaIcGc5DX4EZaA9p+YSIv+s/ImE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b2QcgjPk1r72WkQN4MVkmMsRp95uTy+I3DbUjeZGtVaIwJXr4luz5JT1olMLCDlGMfZlCG7VpureaHNi3bOk4t5vk/I63F8t6INRIhVD1TEZG5wF3v/kMN3Sa2Ru2qgsek2RTtrTo1sZq5wzH851U/XWABjJjcEPSRDQhU+7fdM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 860A31FB;
-	Tue,  5 Mar 2024 22:15:15 -0800 (PST)
-Received: from [10.162.41.20] (a077893.blr.arm.com [10.162.41.20])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB48A3F738;
-	Tue,  5 Mar 2024 22:14:34 -0800 (PST)
-Message-ID: <c52865b2-8608-4a47-967a-6cf3e11b197a@arm.com>
-Date: Wed, 6 Mar 2024 11:44:32 +0530
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABBBF1FB;
+	Wed,  6 Mar 2024 00:25:41 -0800 (PST)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DEBAC3F762;
+	Wed,  6 Mar 2024 00:24:59 -0800 (PST)
+Date: Wed, 6 Mar 2024 09:24:19 +0100
+From: Beata Michalska <beata.michalska@arm.com>
+To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Cc: Huisong Li <lihuisong@huawei.com>,
+	Ionela Voinescu <ionela.voinescu@arm.com>,
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
+	sumitg@nvidia.com, zengheng4@huawei.com,
+	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
+	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] arm64: topology: Add arch_freq_get_on_cpu()
+ support
+Message-ID: <ZegoMy7_BJ0Smvkl@arm.com>
+References: <20240229162520.970986-2-vanshikonda@os.amperecomputing.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 07/11] coresight: catu: Move ACPI support from AMBA
- driver to platform driver
-Content-Language: en-US
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
- <20240222082142.3663983-8-anshuman.khandual@arm.com>
- <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229162520.970986-2-vanshikonda@os.amperecomputing.com>
 
 
+Hi Vanshidhar,
 
-On 3/5/24 23:02, Suzuki K Poulose wrote:
-> On 22/02/2024 08:21, Anshuman Khandual wrote:
->> Add support for the catu devices in a new platform driver, which can then
->> be used on ACPI based platforms. This change would now allow runtime power
->> management for ACPI based systems. The driver would try to enable the APB
->> clock if available. But first this renames and then refactors catu_probe()
->> and catu_remove(), making sure it can be used both for platform and AMBA
->> drivers. This also moves pm_runtime_put() from catu_probe() to the callers.
->>
->> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->> Cc: Sudeep Holla <sudeep.holla@arm.com>
->> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: James Clark <james.clark@arm.com>
->> Cc: linux-acpi@vger.kernel.org
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: coresight@lists.linaro.org
->> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
->> Reviewed-by: James Clark <james.clark@arm.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->> Changes in V5:
->>
->> - Updated commit message regarding catu_probe/remove() refactoring and renaming
->>
->>   drivers/acpi/arm64/amba.c                    |   1 -
->>   drivers/hwtracing/coresight/coresight-catu.c | 142 ++++++++++++++++---
->>   drivers/hwtracing/coresight/coresight-catu.h |   1 +
->>   3 files changed, 124 insertions(+), 20 deletions(-)
->>
->> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
->> index afb6afb66967..587061b0fd2f 100644
->> --- a/drivers/acpi/arm64/amba.c
->> +++ b/drivers/acpi/arm64/amba.c
->> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
->>       {"ARMHC503", 0}, /* ARM CoreSight Debug */
->>       {"ARMHC979", 0}, /* ARM CoreSight TPIU */
->>       {"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
->> -    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
->>       {"", 0},
->>   };
->>   diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
->> index 3949ded0d4fa..a3ea46b53898 100644
->> --- a/drivers/hwtracing/coresight/coresight-catu.c
->> +++ b/drivers/hwtracing/coresight/coresight-catu.c
->> @@ -7,6 +7,8 @@
->>    * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>    */
->>   +#include <linux/platform_device.h>
->> +#include <linux/acpi.h>
->>   #include <linux/amba/bus.h>
->>   #include <linux/device.h>
->>   #include <linux/dma-mapping.h>
->> @@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
->>       .helper_ops = &catu_helper_ops,
->>   };
->>   -static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->> +static int __catu_probe(struct device *dev, struct resource *res)
->>   {
->>       int ret = 0;
->>       u32 dma_mask;
->> -    struct catu_drvdata *drvdata;
->> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>       struct coresight_desc catu_desc;
->>       struct coresight_platform_data *pdata = NULL;
->> -    struct device *dev = &adev->dev;
->>       void __iomem *base;
->>         catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
->>       if (!catu_desc.name)
->>           return -ENOMEM;
->>   -    drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
->> -    if (!drvdata) {
->> -        ret = -ENOMEM;
->> -        goto out;
->> -    }
->> -
->> -    dev_set_drvdata(dev, drvdata);
->> -    base = devm_ioremap_resource(dev, &adev->res);
->> +    base = devm_ioremap_resource(dev, res);
->>       if (IS_ERR(base)) {
->>           ret = PTR_ERR(base);
->>           goto out;
->> @@ -567,19 +561,39 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->>       drvdata->csdev = coresight_register(&catu_desc);
->>       if (IS_ERR(drvdata->csdev))
->>           ret = PTR_ERR(drvdata->csdev);
->> -    else
->> -        pm_runtime_put(&adev->dev);
->>   out:
->>       return ret;
->>   }
->>   -static void catu_remove(struct amba_device *adev)
->> +static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->>   {
->> -    struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
->> +    struct catu_drvdata *drvdata;
->> +    int ret;
->> +
->> +    drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
->> +    if (!drvdata)
->> +        return -ENOMEM;
->> +
->> +    amba_set_drvdata(adev, drvdata);
->> +    ret = __catu_probe(&adev->dev, &adev->res);
->> +    if (!ret)
->> +        pm_runtime_put(&adev->dev);
->> +
->> +    return ret;
->> +}
->> +
->> +static void __catu_remove(struct device *dev)
->> +{
->> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>         coresight_unregister(drvdata->csdev);
->>   }
->>   +static void catu_remove(struct amba_device *adev)
->> +{
->> +    __catu_remove(&adev->dev);
->> +}
->> +
->>   static struct amba_id catu_ids[] = {
->>       CS_AMBA_ID(0x000bb9ee),
->>       {},
->> @@ -598,13 +612,103 @@ static struct amba_driver catu_driver = {
->>       .id_table            = catu_ids,
->>   };
->>   +static int catu_platform_probe(struct platform_device *pdev)
->> +{
->> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +    struct catu_drvdata *drvdata;
->> +    int ret = 0;
->> +
->> +    drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
->> +    if (!drvdata)
->> +        return -ENOMEM;
->> +
->> +    drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
->> +    if (IS_ERR(drvdata->pclk))
->> +        return -ENODEV;
+On Thu, Feb 29, 2024 at 08:25:13AM -0800, Vanshidhar Konda wrote:
+> AMU counters are used by the Frequency Invariance Engine (FIE) to
+> estimate the CPU utilization during each tick. The delta of the AMU
+> counters between two ticks can also be used to estimate the average CPU
+> frequency of each core over the tick duration. Measure the AMU counters
+> during tick, compute the delta and store it. When the frequency of the
+> core is queried, use the stored delta to determine the frequency.
 > 
+> arch_freq_get_on_cpu() is used on x86 systems to estimate the frequency
+> of each CPU. It can be wired up on arm64 for the same functionality.
 > 
-> ---8>---
+> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> ---
+>  arch/arm64/kernel/topology.c | 114 +++++++++++++++++++++++++++++------
+>  1 file changed, 96 insertions(+), 18 deletions(-)
 > 
->> +
->> +    if (res) {
->> +        drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->> +        if (IS_ERR(drvdata->base)) {
->> +            clk_put(drvdata->pclk);
->> +            return PTR_ERR(drvdata->base);
->> +        }
->> +    }
-> 
-> ---<8---
-> 
-> The above section seems unncessary as we already try to map the base in __catu_probe ?
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 1a2c72f3e7f8..db8d14525cf4 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -17,6 +17,8 @@
+>  #include <linux/cpufreq.h>
+>  #include <linux/init.h>
+>  #include <linux/percpu.h>
+> +#include <linux/sched/isolation.h>
+> +#include <linux/seqlock_types.h>
+>  
+>  #include <asm/cpu.h>
+>  #include <asm/cputype.h>
+> @@ -82,20 +84,54 @@ int __init parse_acpi_topology(void)
+>  #undef pr_fmt
+>  #define pr_fmt(fmt) "AMU: " fmt
+>  
+> +struct amu_counters {
+> +	seqcount_t	seq;
+> +	unsigned long	last_update;
+> +	u64		core_cnt;
+> +	u64		const_cnt;
+> +	u64		delta_core_cnt;
+> +	u64		delta_const_cnt;
+> +};
+It still might not be necessary to track both last taken sample and deltas from
+previous ones, see[1].
+I could send v3 of [1] and take into account the changes you have suggested here,
+namely the last tick recorded. Otherwise few comments below.
+> +
+>  /*
+>   * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
+>   * the CPU capacity and its associated frequency have been correctly
+>   * initialized.
+>   */
+> -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
+> -static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
+> -static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
+> +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =
+> +	1UL << (2 * SCHED_CAPACITY_SHIFT);
+> +static DEFINE_PER_CPU_SHARED_ALIGNED(struct amu_counters, cpu_samples) = {
+> +	.seq = SEQCNT_ZERO(cpu_samples.seq)
+> +};
+>  static cpumask_var_t amu_fie_cpus;
+>  
+>  void update_freq_counters_refs(void)
+>  {
+> -	this_cpu_write(arch_core_cycles_prev, read_corecnt());
+> -	this_cpu_write(arch_const_cycles_prev, read_constcnt());
+> +	struct amu_counters *cpu_sample = this_cpu_ptr(&cpu_samples);
+> +	u64 core_cnt, const_cnt, delta_core_cnt, delta_const_cnt;
+> +
+> +	const_cnt = read_constcnt();
+> +	core_cnt = read_corecnt();
+> +
+> +	if (unlikely(core_cnt < cpu_sample->core_cnt) ||
+> +	    unlikely(const_cnt < cpu_sample->const_cnt)) {
+> +		WARN(1, "AMU counter values should be monotonic.\n");
+> +		cpu_sample->delta_const_cnt = 0;
+> +		cpu_sample->delta_core_cnt = 0;
+Not sure if zero-ing is really necessary here
+> +		return;
+> +	}
+> +
+> +	delta_core_cnt = core_cnt - cpu_sample->core_cnt;
+> +	delta_const_cnt = const_cnt - cpu_sample->const_cnt;
+> +
+> +	cpu_sample->core_cnt = core_cnt;
+> +	cpu_sample->const_cnt = const_cnt;
+> +
+> +	raw_write_seqcount_begin(&cpu_sample->seq);
+> +	cpu_sample->last_update = jiffies;
+> +	cpu_sample->delta_const_cnt = delta_const_cnt;
+> +	cpu_sample->delta_core_cnt = delta_core_cnt;
+> +	raw_write_seqcount_end(&cpu_sample->seq);
+>  }
+>  
+>  static inline bool freq_counters_valid(int cpu)
+> @@ -108,8 +144,7 @@ static inline bool freq_counters_valid(int cpu)
+>  		return false;
+>  	}
+>  
+> -	if (unlikely(!per_cpu(arch_const_cycles_prev, cpu) ||
+> -		     !per_cpu(arch_core_cycles_prev, cpu))) {
+> +	if (unlikely(per_cpu_ptr(&cpu_samples, cpu) == NULL)) {
+>  		pr_debug("CPU%d: cycle counters are not enabled.\n", cpu);
+>  		return false;
+>  	}
+> @@ -152,19 +187,15 @@ void freq_inv_set_max_ratio(int cpu, u64 max_rate)
+>  
+>  static void amu_scale_freq_tick(void)
+>  {
+> -	u64 prev_core_cnt, prev_const_cnt;
+> -	u64 core_cnt, const_cnt, scale;
+> -
+> -	prev_const_cnt = this_cpu_read(arch_const_cycles_prev);
+> -	prev_core_cnt = this_cpu_read(arch_core_cycles_prev);
+> +	struct amu_counters *cpu_sample = this_cpu_ptr(&cpu_samples);
+> +	u64 delta_core_cnt, delta_const_cnt, scale;
+>  
+>  	update_freq_counters_refs();
+>  
+> -	const_cnt = this_cpu_read(arch_const_cycles_prev);
+> -	core_cnt = this_cpu_read(arch_core_cycles_prev);
+> +	delta_const_cnt = cpu_sample->delta_const_cnt;
+> +	delta_core_cnt = cpu_sample->delta_core_cnt;
+>  
+> -	if (unlikely(core_cnt <= prev_core_cnt ||
+> -		     const_cnt <= prev_const_cnt))
+> +	if ((delta_const_cnt == 0) || (delta_core_cnt == 0))
+>  		return;
+>  
+>  	/*
+> @@ -175,15 +206,62 @@ static void amu_scale_freq_tick(void)
+>  	 * See validate_cpu_freq_invariance_counters() for details on
+>  	 * arch_max_freq_scale and the use of SCHED_CAPACITY_SHIFT.
+>  	 */
+> -	scale = core_cnt - prev_core_cnt;
+> +	scale = delta_core_cnt;
+>  	scale *= this_cpu_read(arch_max_freq_scale);
+>  	scale = div64_u64(scale >> SCHED_CAPACITY_SHIFT,
+> -			  const_cnt - prev_const_cnt);
+> +			  delta_const_cnt);
+>  
+>  	scale = min_t(unsigned long, scale, SCHED_CAPACITY_SCALE);
+>  	this_cpu_write(arch_freq_scale, (unsigned long)scale);
+>  }
+>  
+> +/*
+> + * Discard samples older than the define maximum sample age of 20ms. There
+> + * is no point in sending IPIs in such a case. If the scheduler tick was
+> + * not running then the CPU is either idle or isolated.
+> + */
+> +#define MAX_SAMPLE_AGE	((unsigned long)HZ / 50)
+This depends on the config, so for HZ_1000 it will indeed give 20ms,
+for CONFIG_250 that will be 5ms. It might be better to set it to number of
+expected missed ticks instead ? Or amend the comment.
+> +
+> +unsigned int arch_freq_get_on_cpu(int cpu)
+> +{
+> +	struct amu_counters *cpu_sample = per_cpu_ptr(&cpu_samples, cpu);
+> +	u64 delta_const_cnt, delta_core_cnt;
+> +	unsigned int seq, freq;
+> +	unsigned long last;
+> +
+> +	if (!freq_counters_valid(cpu))
+> +		goto fallback;
+> +
+> +	do {
+> +		seq = raw_read_seqcount_begin(&cpu_sample->seq);
+> +		last = cpu_sample->last_update;
+> +		delta_core_cnt = cpu_sample->delta_core_cnt;
+> +		delta_const_cnt = cpu_sample->delta_const_cnt;
+> +	} while (read_seqcount_retry(&cpu_sample->seq, seq));
+> +
+This seems to be taken from APERF/MPERF relevant code. Including the comments.
+> +	/*
+> +	 * Bail on invalid count and when the last update was too long ago,
+> +	 * which covers idle and NOHZ full CPUs.
+> +	 */
+> +	if (!delta_const_cnt || ((jiffies - last) > MAX_SAMPLE_AGE)) {
+Shouldn't the first condition (non-zero increase of cnt_cycles counter)
+disqualify the sample taken altogether ?
+> +		if (!(housekeeping_cpu(cpu, HK_TYPE_TICK) && idle_cpu(cpu)))
+> +			goto fallback;
+Not entirely convinced that this condition is what is expected ?
+For housekeeping cpu that is not idle it will still resolve to AMU counters,
+not sure if that's what was intended ?
+Also, for cases when given cpufreq policy spans more than a single core, the
+frequency might be queried based on relevant CPU that might have seen the tick
+within specified timeframe (see [1])
 
-Agreed, though it seems unnecessary, there is a small difference in there. In the platform
-driver case i.e catu_platform_probe(), clk_put() is called on platform clock drvdata->pclk
-(just enabled earlier) for cases when devm_ioremap_resource() fails.
+> +	}
+> +
+> +	/*
+> +	 * CPU frequency = reference perf (in Hz) * (/\ delivered) / (/\ reference)
+> +	 * AMU reference performance counter increment rate is equal to the rate
+> +	 * of increment of the System counter, CNTPCT_EL0 and can be used to
+> +	 * compute the CPU frequency.
+> +	 */
+> +	return div64_u64((delta_core_cnt * (arch_timer_get_rate() / HZ)),
+/HZ/HZ_PER_KHZ ?
+> +			 delta_const_cnt);
+> +
+> +fallback:
+> +	freq = cpufreq_quick_get(cpu);
+> +	return freq ? freq : cpufreq_get_hw_max_freq(cpu);
+If the arch specific code cannot determine the frequency it should actually make
+it clear by returning '0' instead of trying to patch things up by itself (?)
 
-To remove this redundancy, let's move devm_ioremap_resource() into it's AMBA caller i.e
-catu_probe() thus dropping struct resource argument from __catu_probe(). Similar situation
-is present in coresight-cpu-debug driver as well, will fix that.
+Overall I'd prefer to revive [1] and amened it accordingly instead.
 
-But there are some other drivers in the series where coresight_get_enable_apb_pclk() called
-on 'drvdata->pclk' and devm_ioremap_resource() is attempted inside the factored __xxx_probe()
-function which is common for both AMBA and platform drivers.
-
-Such drivers are ...
-
-- tpiu
-- tmc
-- stm
-- replicator
-
-IMHO it would be better to follow same scheme for all drivers in the series. Please do let
-me know which method will be preferred.
-
-> 
->> +
-
->> +    pm_runtime_get_noresume(&pdev->dev);
->> +    pm_runtime_set_active(&pdev->dev);
->> +    pm_runtime_enable(&pdev->dev);
->> +
->> +    dev_set_drvdata(&pdev->dev, drvdata);
->> +    ret = __catu_probe(&pdev->dev, res);
->> +    pm_runtime_put(&pdev->dev);
->> +    if (ret)
->> +        pm_runtime_disable(&pdev->dev);
->> +
->> +    return ret;
->> +}
->> +
->> +static int catu_platform_remove(struct platform_device *pdev)
->> +{
->> +    struct catu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
->> +
->> +    if (drvdata)
->> +        __catu_remove(&pdev->dev);
-> 
-> I don't understand the need for if () check here (and on all the other drivers). Even if we have a drvdata != NULL, what guarantees that
-> the drvdata->csdev is valid (which is used in xx_remove) ?
-
-Agreed, although drvdata is derived in __xxx_remove() functions, a pre-check here is not
-required - similar to the AMBA remove path. Sure, will drop them across drivers.
-
-> 
-> Suzuki
-> 
->> +
->> +    pm_runtime_disable(&pdev->dev);
->> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->> +        clk_put(drvdata->pclk);
->> +    return 0;
->> +}
->> +
->> +#ifdef CONFIG_PM
->> +static int catu_runtime_suspend(struct device *dev)
->> +{
->> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->> +
->> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->> +        clk_disable_unprepare(drvdata->pclk);
->> +    return 0;
->> +}
->> +
->> +static int catu_runtime_resume(struct device *dev)
->> +{
->> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->> +
->> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->> +        clk_prepare_enable(drvdata->pclk);
->> +    return 0;
->> +}
->> +#endif
->> +
->> +static const struct dev_pm_ops catu_dev_pm_ops = {
->> +    SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
->> +};
->> +
->> +#ifdef CONFIG_ACPI
->> +static const struct acpi_device_id catu_acpi_ids[] = {
->> +    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
->> +    {},
->> +};
->> +
->> +MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
->> +#endif
->> +
->> +static struct platform_driver catu_platform_driver = {
->> +    .probe    = catu_platform_probe,
->> +    .remove    = catu_platform_remove,
->> +    .driver    = {
->> +        .name            = "coresight-catu-platform",
->> +        .acpi_match_table    = ACPI_PTR(catu_acpi_ids),
->> +        .suppress_bind_attrs    = true,
->> +        .pm            = &catu_dev_pm_ops,
->> +    },
->> +};
->> +
->>   static int __init catu_init(void)
->>   {
->>       int ret;
->>   -    ret = amba_driver_register(&catu_driver);
->> -    if (ret)
->> -        pr_info("Error registering catu driver\n");
->> +    ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
->>       tmc_etr_set_catu_ops(&etr_catu_buf_ops);
->>       return ret;
->>   }
->> @@ -612,7 +716,7 @@ static int __init catu_init(void)
->>   static void __exit catu_exit(void)
->>   {
->>       tmc_etr_remove_catu_ops();
->> -    amba_driver_unregister(&catu_driver);
->> +    coresight_remove_driver(&catu_driver, &catu_platform_driver);
->>   }
->>     module_init(catu_init);
->> diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
->> index 442e034bbfba..141feac1c14b 100644
->> --- a/drivers/hwtracing/coresight/coresight-catu.h
->> +++ b/drivers/hwtracing/coresight/coresight-catu.h
->> @@ -61,6 +61,7 @@
->>   #define CATU_IRQEN_OFF        0x0
->>     struct catu_drvdata {
->> +    struct clk *pclk;
->>       void __iomem *base;
->>       struct coresight_device *csdev;
->>       int irq;
+---
+[1] https://lore.kernel.org/all/20231127160838.1403404-1-beata.michalska@arm.com/
+---
+Best Regards
+Beata
+> +}
+> +
+>  static struct scale_freq_data amu_sfd = {
+>  	.source = SCALE_FREQ_SOURCE_ARCH,
+>  	.set_freq_scale = amu_scale_freq_tick,
+> -- 
+> 2.43.1
 > 
 
