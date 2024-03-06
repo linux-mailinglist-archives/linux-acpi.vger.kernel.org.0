@@ -1,447 +1,359 @@
-Return-Path: <linux-acpi+bounces-4131-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4132-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0320C872DBA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 04:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AD7872EAF
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 07:14:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78EFEB236F6
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 03:55:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB66B2098B
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 06:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73F414A98;
-	Wed,  6 Mar 2024 03:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="lKwxgEeS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF3E1BDD0;
+	Wed,  6 Mar 2024 06:14:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB10179B2
-	for <linux-acpi@vger.kernel.org>; Wed,  6 Mar 2024 03:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841631BDC4;
+	Wed,  6 Mar 2024 06:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709697321; cv=none; b=O6vKMIhrrEjRXEWMoR/oD6gwpqDp00pE+z6UamHkZ1ts5ykWSqP3F60Ph36PVUh476WJKxmlmrAdFPOSqPUce6jgjZS8fDYR+xnXdhs2KlMolUBA/Fg+lgHEGGYEp2UEySJVjdT7SZ9KxHAkYl4v4sYkYSgmbP5I79W0OtK2v1I=
+	t=1709705681; cv=none; b=Q13ISaexmF6zXNE/t02Zv9i3WWMM6w+QxjTblDJEj4XzQ0sVJcaM705D+UmEIlz9iq6mSXELEJszUa9AI0g6GVXzC/mGNF3IW9asYBtIfMWiXwEUakk6skZODz64dDY53XELaaA/QI2nKywGBceaghKrKd5IhqxtyRbTSXtQWE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709697321; c=relaxed/simple;
-	bh=BTrWqCpBt6xXl4RCVtxCODrw2kvt0Gq5B9RSeQeMwHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EWtO0WgY2gLQV2O/Ks+IFA3nGAaZGEaOGcnotPOjEx9HI3YCC6mg2HxO/DySnTkEnV5J5ezfZbBe2oSNPkfQq/4XozEGK5HRPsw2SPwx5OX5QIP7BUF2cGCC8DXcT/0ZfOSy5ttvVCnEmg3A30aMBSkVjYw3iqMUA68fz/EqmKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=lKwxgEeS; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4d36196a7f7so1151469e0c.2
-        for <linux-acpi@vger.kernel.org>; Tue, 05 Mar 2024 19:55:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1709697318; x=1710302118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uztHPh5m6/k/YQgSozU3xl+sBK6noaMrM17GF/+3NFs=;
-        b=lKwxgEeSa2FST2EAdGinq2OfKrbLoBlKSkfOfIk0Q5GSWstbKFfauxkJIncPirG32F
-         ROhUbvP9wCCiLdljP1wkFaKIOQ0TjSMNkRaHOkbEvRQxcyUZaF3vaOmcMO75vnhX4fn5
-         tO1cAQAYUj60U58i6yvCo/McV0Xojmam6/za7C9GZGJGRr3jL6+Y5+XoLVOMkO5O7I0g
-         99hkgI8ymGgGbbPQUhh36Lm1Rwr2QdaE75qMNW/AK2IxOcHkJCBu4N45uewoda1FrkHW
-         RsyXkmBAVMOMGSd2A8uuOG/ze4Rwy0lsCUXKCWaB5ecvxb2tE2id/R9lnkjkWof0FrhJ
-         HoCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709697318; x=1710302118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uztHPh5m6/k/YQgSozU3xl+sBK6noaMrM17GF/+3NFs=;
-        b=q9mQyhax+KTIslwyCZdCb2CECZoLGFiOp7EzoLZv/pgRy2re8SrPJkvajTxr8v6nOe
-         +jXUXIdp7rm7fmaD7Lkv4Y+9L84vQogk/wSMpEit9aHYLHrIjNUJS8GqjGR/+ZylcDb4
-         7pLRTBEYxloU4ejd6MLZLLogN+HJU8nLS+FlHAdrNTzt4hNeChVbUizqI5fopGSnJC0K
-         BrrgLaQPCpyU5CWDp75xkGWyWSYRVzdBpYbTfDOLF1mUe9edq13kD8YvmkRwWcFlMp5l
-         UeCMieEMubukYjzB0pWOXqGroB6qsojcF/L9bH+94KOtpBc92YXUxUpYztJa48reBbJX
-         tX8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVOLvWGGf75r8JB1Y+ISFzjxryWL8T15Deel9ppHiDg1TEkb9ML2DHqUAjfvUte2XI25Z54oWPvILFs7/l8br1BHoxXL5eG/GY4oQ==
-X-Gm-Message-State: AOJu0Yz0/amE41YO7xgI5PWVbSnrBm6jEokDBhCn7mS0alfOpeEfVCKb
-	KEoVwNCghULiiOb3eBPEn1WG3zylmOSD0/ljodJc3pCu82SdDmM3bWANg5CNoiQpdp0Nldk1Ck/
-	R+RLjpTFRRpJpJorVef2WC+Jaz5tCBubYF91MwA==
-X-Google-Smtp-Source: AGHT+IFL4Fnwe2jyRS6YBPBmNcPht468oprH/h2dgRAKYEKhGBH97gw91noZEOItrRp8dylLlQ8oLiX9iDiaYDigGIw=
-X-Received: by 2002:a05:6102:3bcf:b0:472:eca1:46c with SMTP id
- a15-20020a0561023bcf00b00472eca1046cmr721701vsv.30.1709697318414; Tue, 05 Mar
- 2024 19:55:18 -0800 (PST)
+	s=arc-20240116; t=1709705681; c=relaxed/simple;
+	bh=soIpW3HTXdNgBl6gYedqOIUhGgOr3N0/f+yQTei+WH4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oWO2VWty2PISfxyYy+QoCJv8Dz7Big/RFSpRn024wFa6J5cCS45hu3xgzl/zwbhmW3C3/p5adzqr+sb0AcSVu4j7a+40Z2KF5vmKrBEESTUSJVwIaz+KJ0+oom3ivEELj0zZL+Z0RRgs3DxMuSuEPINEG57kK+FZ6MClyY94eIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 860A31FB;
+	Tue,  5 Mar 2024 22:15:15 -0800 (PST)
+Received: from [10.162.41.20] (a077893.blr.arm.com [10.162.41.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EB48A3F738;
+	Tue,  5 Mar 2024 22:14:34 -0800 (PST)
+Message-ID: <c52865b2-8608-4a47-967a-6cf3e11b197a@arm.com>
+Date: Wed, 6 Mar 2024 11:44:32 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
- <20240301082248.3456086-2-horenchuang@bytedance.com> <87jzmibtyh.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAKPbEqrti2x05n5QhXtefhu+C=xmMUaH8mMwDy83LVN3Fj6nDw@mail.gmail.com> <87edco85b4.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <87edco85b4.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Date: Tue, 5 Mar 2024 19:55:07 -0800
-Message-ID: <CAKPbEqoz8eqH30f_q9v2CiR+3D2xN9K+=NEZ1DcQ0OaR1KMTXA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v1 1/1] memory tier: acpi/hmat: create
- CPUless memory tiers after obtaining HMAT info
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com, mhocko@suse.com, 
-	tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
-	Vinicius Tavares Petrucci <vtavarespetr@micron.com>, Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
-	Alistair Popple <apopple@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Jiang <dave.jiang@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	"Ho-Ren (Jack) Chuang" <horenc@vt.edu>, "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, linux-cxl@vger.kernel.org, 
-	qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Mar 5, 2024 at 6:27=E2=80=AFPM Huang, Ying <ying.huang@intel.com> w=
-rote:
->
-> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->
-> > On Sun, Mar 3, 2024 at 6:42=E2=80=AFPM Huang, Ying <ying.huang@intel.co=
-m> wrote:
-> >>
-> >> Hi, Jack,
-> >>
-> >> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
-> >>
-> >> > * Introduce `mt_init_with_hmat()`
-> >> > We defer memory tier initialization for those CPUless NUMA nodes
-> >> > until acquiring HMAT info. `mt_init_with_hmat()` is introduced to
-> >> > post-create CPUless memory tiers after obtaining HMAT info.
-> >> > It iterates through each CPUless memory node, creating memory tiers =
-if
-> >> > necessary. Finally, it calculates demotion tables again at the end.
-> >> >
-> >> > * Introduce `hmat_find_alloc_memory_type()`
-> >> > Find or allocate a memory type in the `hmat_memory_types` list.
-> >> >
-> >> > * Make `set_node_memory_tier()` more generic
-> >> > This function can also be used for setting other memory types for a =
-node.
-> >> > To do so, a new argument is added to specify a memory type.
-> >> >
-> >> > * Handle cases where there is no HMAT when creating memory tiers
-> >> > If no HMAT is specified, it falls back to using `default_dram_type`.
-> >> >
-> >> > * Change adist calculation code to use another new lock, mt_perf_loc=
-k.
-> >> > Iterating through CPUlist nodes requires holding the `memory_tier_lo=
-ck`.
-> >> > However, `mt_calc_adistance()` will end up trying to acquire the sam=
-e lock,
-> >> > leading to a potential deadlock. Therefore, we propose introducing a
-> >> > standalone `mt_perf_lock` to protect `default_dram_perf`. This appro=
-ach not
-> >> > only avoids deadlock but also prevents holding a large lock simultan=
-eously.
-> >>
-> >> The patch description is used to described why we need the change, and
-> >> how we do that, but not what we do.  People can tell what is done from
-> >> the code itself.
-> >>
-> >
-> > Got it. Thanks. Will rewrite it after the code is finalized.
-> >
-> >> > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> >> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> >> > ---
-> >> >  drivers/acpi/numa/hmat.c     |  3 ++
-> >> >  include/linux/memory-tiers.h |  6 +++
-> >> >  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++-=
----
-> >> >  3 files changed, 77 insertions(+), 8 deletions(-)
-> >> >
-> >> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> >> > index d6b85f0f6082..9f57338b3cb5 100644
-> >> > --- a/drivers/acpi/numa/hmat.c
-> >> > +++ b/drivers/acpi/numa/hmat.c
-> >> > @@ -1038,6 +1038,9 @@ static __init int hmat_init(void)
-> >> >       if (!hmat_set_default_dram_perf())
-> >> >               register_mt_adistance_algorithm(&hmat_adist_nb);
-> >> >
-> >> > +     /* Post-create CPUless memory tiers after getting HMAT info */
-> >> > +     mt_init_with_hmat();
-> >> > +
-> >> >       return 0;
-> >> >  out_put:
-> >> >       hmat_free_structures();
-> >> > diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tie=
-rs.h
-> >> > index 69e781900082..2f845e90c033 100644
-> >> > --- a/include/linux/memory-tiers.h
-> >> > +++ b/include/linux/memory-tiers.h
-> >> > @@ -48,6 +48,7 @@ int mt_calc_adistance(int node, int *adist);
-> >> >  int mt_set_default_dram_perf(int nid, struct access_coordinate *per=
-f,
-> >> >                            const char *source);
-> >> >  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist=
-);
-> >> > +void mt_init_with_hmat(void);
-> >>
-> >> HMAT isn't universally available.  It's a driver in fact.  So, don't p=
-ut
-> >> driver specific code in general code.
-> >>
-> >
-> > Please see below regarding "move code to hmat.c"
-> >
-> >> >  #ifdef CONFIG_MIGRATION
-> >> >  int next_demotion_node(int node);
-> >> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets=
-);
-> >> > @@ -136,5 +137,10 @@ static inline int mt_perf_to_adistance(struct a=
-ccess_coordinate *perf, int *adis
-> >> >  {
-> >> >       return -EIO;
-> >> >  }
-> >> > +
-> >> > +static inline void mt_init_with_hmat(void)
-> >> > +{
-> >> > +
-> >> > +}
-> >> >  #endif       /* CONFIG_NUMA */
-> >> >  #endif  /* _LINUX_MEMORY_TIERS_H */
-> >> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-> >> > index 0537664620e5..7a0a579b3deb 100644
-> >> > --- a/mm/memory-tiers.c
-> >> > +++ b/mm/memory-tiers.c
-> >> > @@ -35,7 +35,9 @@ struct node_memory_type_map {
-> >> >  };
-> >> >
-> >> >  static DEFINE_MUTEX(memory_tier_lock);
-> >> > +static DEFINE_MUTEX(mt_perf_lock);
-> >> >  static LIST_HEAD(memory_tiers);
-> >> > +static LIST_HEAD(hmat_memory_types);
-> >> >  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
-> >> >  struct memory_dev_type *default_dram_type;
-> >> >
-> >> > @@ -502,7 +504,7 @@ static inline void __init_node_memory_type(int n=
-ode, struct memory_dev_type *mem
-> >> >       }
-> >> >  }
-> >> >
-> >> > -static struct memory_tier *set_node_memory_tier(int node)
-> >> > +static struct memory_tier *set_node_memory_tier(int node, struct me=
-mory_dev_type *new_memtype)
-> >>
-> >> No. memory_dev_type are passed to the function via node_memory_types[n=
-ode].memtype.
-> >>
-> >
-> > Got it. Will mimic the way kmem.c does. Thanks.
-> >
-> >> >  {
-> >> >       struct memory_tier *memtier;
-> >> >       struct memory_dev_type *memtype;
-> >> > @@ -514,7 +516,7 @@ static struct memory_tier *set_node_memory_tier(=
-int node)
-> >> >       if (!node_state(node, N_MEMORY))
-> >> >               return ERR_PTR(-EINVAL);
-> >> >
-> >> > -     __init_node_memory_type(node, default_dram_type);
-> >> > +     __init_node_memory_type(node, new_memtype);
-> >> >
-> >> >       memtype =3D node_memory_types[node].memtype;
-> >> >       node_set(node, memtype->nodes);
-> >> > @@ -623,6 +625,56 @@ void clear_node_memory_type(int node, struct me=
-mory_dev_type *memtype)
-> >> >  }
-> >> >  EXPORT_SYMBOL_GPL(clear_node_memory_type);
-> >> >
-> >> > +static struct memory_dev_type *hmat_find_alloc_memory_type(int adis=
-t)
-> >>
-> >> Similar function existed in drivers/dax/kmem.c.  Please abstract them
-> >> and move them here.
-> >>
-> >
-> > Got it. Will try. Thanks.
-> >
-> >> > +{
-> >> > +     bool found =3D false;
-> >> > +     struct memory_dev_type *mtype;
-> >> > +
-> >> > +     list_for_each_entry(mtype, &hmat_memory_types, list) {
-> >> > +             if (mtype->adistance =3D=3D adist) {
-> >> > +                     found =3D true;
-> >> > +                     break;
-> >> > +             }
-> >> > +     }
-> >> > +     if (!found) {
-> >> > +             mtype =3D alloc_memory_type(adist);
-> >> > +             if (!IS_ERR(mtype))
-> >> > +                     list_add(&mtype->list, &hmat_memory_types);
-> >> > +     }
-> >> > +     return mtype;
-> >> > +}
-> >> > +
-> >> > +static void mt_create_with_hmat(int node)
-> >> > +{
-> >> > +     struct memory_dev_type *mtype =3D NULL;
-> >> > +     int adist =3D MEMTIER_ADISTANCE_DRAM;
-> >> > +
-> >> > +     mt_calc_adistance(node, &adist);
-> >> > +     if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
-> >> > +             mtype =3D hmat_find_alloc_memory_type(adist);
-> >> > +             if (IS_ERR(mtype))
-> >> > +                     pr_err("%s() failed to allocate a tier\n", __f=
-unc__);
-> >> > +     } else {
-> >> > +             mtype =3D default_dram_type;
-> >> > +     }
-> >> > +
-> >> > +     set_node_memory_tier(node, mtype);
-> >> > +}
-> >> > +
-> >> > +void mt_init_with_hmat(void)
-> >> > +{
-> >> > +     int nid;
-> >> > +
-> >> > +     mutex_lock(&memory_tier_lock);
-> >> > +     for_each_node_state(nid, N_MEMORY)
-> >> > +             if (!node_state(nid, N_CPU))
-> >> > +                     mt_create_with_hmat(nid);
-> >> > +
-> >> > +     establish_demotion_targets();
-> >> > +     mutex_unlock(&memory_tier_lock);
-> >> > +}
-> >> > +EXPORT_SYMBOL_GPL(mt_init_with_hmat);
-> >> > +
-> >>
-> >> I guess that we can put most hmat related code above in hmat.c.
-> >>
-> >
-> > To put the heat-related code to hmat.c I will need to export some
-> > static functions in memory-tiers.c, like set_node_memory_tier() and
-> > establish_demotion_targets(). Is that ok?
->
-> Think about this again.  In fact, although there are "_hmat" in the name
-> of the above functions, the code has nothing to do with hmat.  So, we
-> should rename these functions, but don't need to move them to hmat.c.
-> And, to set memory_tier for CPUless node on system without HMAT.  We
-> should call mt_init_with_hmat() with late_initcall().  Where HMAT
-> information is expected to be available on system with HMAT.  On system
-> without HMAT, default_dram_type will be used.
->
-
-Sounds good and thank you! I'm working on v2 according to the feedback.
-
-> >> >  static void dump_hmem_attrs(struct access_coordinate *coord, const =
-char *prefix)
-> >> >  {
-> >> >       pr_info(
-> >> > @@ -636,7 +688,7 @@ int mt_set_default_dram_perf(int nid, struct acc=
-ess_coordinate *perf,
-> >> >  {
-> >> >       int rc =3D 0;
-> >> >
-> >> > -     mutex_lock(&memory_tier_lock);
-> >> > +     mutex_lock(&mt_perf_lock);
-> >> >       if (default_dram_perf_error) {
-> >> >               rc =3D -EIO;
-> >> >               goto out;
-> >> > @@ -684,7 +736,7 @@ int mt_set_default_dram_perf(int nid, struct acc=
-ess_coordinate *perf,
-> >> >       }
-> >> >
-> >> >  out:
-> >> > -     mutex_unlock(&memory_tier_lock);
-> >> > +     mutex_unlock(&mt_perf_lock);
-> >> >       return rc;
-> >> >  }
-> >> >
-> >> > @@ -700,7 +752,7 @@ int mt_perf_to_adistance(struct access_coordinat=
-e *perf, int *adist)
-> >> >           perf->read_bandwidth + perf->write_bandwidth =3D=3D 0)
-> >> >               return -EINVAL;
-> >> >
-> >> > -     mutex_lock(&memory_tier_lock);
-> >> > +     mutex_lock(&mt_perf_lock);
-> >> >       /*
-> >> >        * The abstract distance of a memory node is in direct proport=
-ion to
-> >> >        * its memory latency (read + write) and inversely proportiona=
-l to its
-> >> > @@ -713,7 +765,7 @@ int mt_perf_to_adistance(struct access_coordinat=
-e *perf, int *adist)
-> >> >               (default_dram_perf.read_latency + default_dram_perf.wr=
-ite_latency) *
-> >> >               (default_dram_perf.read_bandwidth + default_dram_perf.=
-write_bandwidth) /
-> >> >               (perf->read_bandwidth + perf->write_bandwidth);
-> >> > -     mutex_unlock(&memory_tier_lock);
-> >> > +     mutex_unlock(&mt_perf_lock);
-> >> >
-> >> >       return 0;
-> >> >  }
-> >> > @@ -797,7 +849,7 @@ static int __meminit memtier_hotplug_callback(st=
-ruct notifier_block *self,
-> >> >               break;
-> >> >       case MEM_ONLINE:
-> >> >               mutex_lock(&memory_tier_lock);
-> >> > -             memtier =3D set_node_memory_tier(arg->status_change_ni=
-d);
-> >> > +             memtier =3D set_node_memory_tier(arg->status_change_ni=
-d, default_dram_type);
-> >> >               if (!IS_ERR(memtier))
-> >> >                       establish_demotion_targets();
-> >> >               mutex_unlock(&memory_tier_lock);
-> >> > @@ -836,7 +888,15 @@ static int __init memory_tier_init(void)
-> >> >        * types assigned.
-> >> >        */
-> >> >       for_each_node_state(node, N_MEMORY) {
-> >> > -             memtier =3D set_node_memory_tier(node);
-> >> > +             if (!node_state(node, N_CPU))
-> >> > +                     /*
-> >> > +                      * Defer memory tier initialization on CPUless=
- numa nodes.
-> >> > +                      * These will be initialized when HMAT informa=
-tion is
-> >> > +                      * available.
-> >> > +                      */
-> >> > +                     continue;
-> >> > +
-> >> > +             memtier =3D set_node_memory_tier(node, default_dram_ty=
-pe);
-> >>
-> >> On system with HMAT, how to fall back CPU-less node to
-> >> default_dram_type?  I found your description, but I don't find it in c=
-ode.
-> >>
-> > I assume you meant without HMAT, if so,
-> > because if no HMAT, adist will not be updated in mt_calc_adistance():
->
-> Sorry, typo.  On system with HMAT, mt_init_with_hmat() will not be
-> called.  I have a solution in above comment.
->
-> --
-> Best Regards,
-> Huang, Ying
->
-> > + int adist =3D MEMTIER_ADISTANCE_DRAM;
-> > +
-> > + mt_calc_adistance(node, &adist);
-> > + if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
-> > =E2=80=A6
-> > + } else {
-> > + mtype =3D default_dram_type;
-> > + }
-> > +
-> > + set_node_memory_tier(node, mtype);
-> >
-> >> >               if (IS_ERR(memtier))
-> >> >                       /*
-> >> >                        * Continue with memtiers we are able to setup
-> >>
-> >> --
-> >> Best Regards,
-> >> Huang, Ying
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 07/11] coresight: catu: Move ACPI support from AMBA
+ driver to platform driver
+Content-Language: en-US
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
+ <20240222082142.3663983-8-anshuman.khandual@arm.com>
+ <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
 
---=20
-Best regards,
-Ho-Ren (Jack) Chuang
-=E8=8E=8A=E8=B3=80=E4=BB=BB
+On 3/5/24 23:02, Suzuki K Poulose wrote:
+> On 22/02/2024 08:21, Anshuman Khandual wrote:
+>> Add support for the catu devices in a new platform driver, which can then
+>> be used on ACPI based platforms. This change would now allow runtime power
+>> management for ACPI based systems. The driver would try to enable the APB
+>> clock if available. But first this renames and then refactors catu_probe()
+>> and catu_remove(), making sure it can be used both for platform and AMBA
+>> drivers. This also moves pm_runtime_put() from catu_probe() to the callers.
+>>
+>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Mike Leach <mike.leach@linaro.org>
+>> Cc: James Clark <james.clark@arm.com>
+>> Cc: linux-acpi@vger.kernel.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Cc: coresight@lists.linaro.org
+>> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+>> Reviewed-by: James Clark <james.clark@arm.com>
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> Changes in V5:
+>>
+>> - Updated commit message regarding catu_probe/remove() refactoring and renaming
+>>
+>>   drivers/acpi/arm64/amba.c                    |   1 -
+>>   drivers/hwtracing/coresight/coresight-catu.c | 142 ++++++++++++++++---
+>>   drivers/hwtracing/coresight/coresight-catu.h |   1 +
+>>   3 files changed, 124 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+>> index afb6afb66967..587061b0fd2f 100644
+>> --- a/drivers/acpi/arm64/amba.c
+>> +++ b/drivers/acpi/arm64/amba.c
+>> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
+>>       {"ARMHC503", 0}, /* ARM CoreSight Debug */
+>>       {"ARMHC979", 0}, /* ARM CoreSight TPIU */
+>>       {"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
+>> -    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>>       {"", 0},
+>>   };
+>>   diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+>> index 3949ded0d4fa..a3ea46b53898 100644
+>> --- a/drivers/hwtracing/coresight/coresight-catu.c
+>> +++ b/drivers/hwtracing/coresight/coresight-catu.c
+>> @@ -7,6 +7,8 @@
+>>    * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>    */
+>>   +#include <linux/platform_device.h>
+>> +#include <linux/acpi.h>
+>>   #include <linux/amba/bus.h>
+>>   #include <linux/device.h>
+>>   #include <linux/dma-mapping.h>
+>> @@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
+>>       .helper_ops = &catu_helper_ops,
+>>   };
+>>   -static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>> +static int __catu_probe(struct device *dev, struct resource *res)
+>>   {
+>>       int ret = 0;
+>>       u32 dma_mask;
+>> -    struct catu_drvdata *drvdata;
+>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>       struct coresight_desc catu_desc;
+>>       struct coresight_platform_data *pdata = NULL;
+>> -    struct device *dev = &adev->dev;
+>>       void __iomem *base;
+>>         catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
+>>       if (!catu_desc.name)
+>>           return -ENOMEM;
+>>   -    drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
+>> -    if (!drvdata) {
+>> -        ret = -ENOMEM;
+>> -        goto out;
+>> -    }
+>> -
+>> -    dev_set_drvdata(dev, drvdata);
+>> -    base = devm_ioremap_resource(dev, &adev->res);
+>> +    base = devm_ioremap_resource(dev, res);
+>>       if (IS_ERR(base)) {
+>>           ret = PTR_ERR(base);
+>>           goto out;
+>> @@ -567,19 +561,39 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>>       drvdata->csdev = coresight_register(&catu_desc);
+>>       if (IS_ERR(drvdata->csdev))
+>>           ret = PTR_ERR(drvdata->csdev);
+>> -    else
+>> -        pm_runtime_put(&adev->dev);
+>>   out:
+>>       return ret;
+>>   }
+>>   -static void catu_remove(struct amba_device *adev)
+>> +static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>>   {
+>> -    struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
+>> +    struct catu_drvdata *drvdata;
+>> +    int ret;
+>> +
+>> +    drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
+>> +    if (!drvdata)
+>> +        return -ENOMEM;
+>> +
+>> +    amba_set_drvdata(adev, drvdata);
+>> +    ret = __catu_probe(&adev->dev, &adev->res);
+>> +    if (!ret)
+>> +        pm_runtime_put(&adev->dev);
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +static void __catu_remove(struct device *dev)
+>> +{
+>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>         coresight_unregister(drvdata->csdev);
+>>   }
+>>   +static void catu_remove(struct amba_device *adev)
+>> +{
+>> +    __catu_remove(&adev->dev);
+>> +}
+>> +
+>>   static struct amba_id catu_ids[] = {
+>>       CS_AMBA_ID(0x000bb9ee),
+>>       {},
+>> @@ -598,13 +612,103 @@ static struct amba_driver catu_driver = {
+>>       .id_table            = catu_ids,
+>>   };
+>>   +static int catu_platform_probe(struct platform_device *pdev)
+>> +{
+>> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +    struct catu_drvdata *drvdata;
+>> +    int ret = 0;
+>> +
+>> +    drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+>> +    if (!drvdata)
+>> +        return -ENOMEM;
+>> +
+>> +    drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
+>> +    if (IS_ERR(drvdata->pclk))
+>> +        return -ENODEV;
+> 
+> 
+> ---8>---
+> 
+>> +
+>> +    if (res) {
+>> +        drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+>> +        if (IS_ERR(drvdata->base)) {
+>> +            clk_put(drvdata->pclk);
+>> +            return PTR_ERR(drvdata->base);
+>> +        }
+>> +    }
+> 
+> ---<8---
+> 
+> The above section seems unncessary as we already try to map the base in __catu_probe ?
+
+Agreed, though it seems unnecessary, there is a small difference in there. In the platform
+driver case i.e catu_platform_probe(), clk_put() is called on platform clock drvdata->pclk
+(just enabled earlier) for cases when devm_ioremap_resource() fails.
+
+To remove this redundancy, let's move devm_ioremap_resource() into it's AMBA caller i.e
+catu_probe() thus dropping struct resource argument from __catu_probe(). Similar situation
+is present in coresight-cpu-debug driver as well, will fix that.
+
+But there are some other drivers in the series where coresight_get_enable_apb_pclk() called
+on 'drvdata->pclk' and devm_ioremap_resource() is attempted inside the factored __xxx_probe()
+function which is common for both AMBA and platform drivers.
+
+Such drivers are ...
+
+- tpiu
+- tmc
+- stm
+- replicator
+
+IMHO it would be better to follow same scheme for all drivers in the series. Please do let
+me know which method will be preferred.
+
+> 
+>> +
+
+>> +    pm_runtime_get_noresume(&pdev->dev);
+>> +    pm_runtime_set_active(&pdev->dev);
+>> +    pm_runtime_enable(&pdev->dev);
+>> +
+>> +    dev_set_drvdata(&pdev->dev, drvdata);
+>> +    ret = __catu_probe(&pdev->dev, res);
+>> +    pm_runtime_put(&pdev->dev);
+>> +    if (ret)
+>> +        pm_runtime_disable(&pdev->dev);
+>> +
+>> +    return ret;
+>> +}
+>> +
+>> +static int catu_platform_remove(struct platform_device *pdev)
+>> +{
+>> +    struct catu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
+>> +
+>> +    if (drvdata)
+>> +        __catu_remove(&pdev->dev);
+> 
+> I don't understand the need for if () check here (and on all the other drivers). Even if we have a drvdata != NULL, what guarantees that
+> the drvdata->csdev is valid (which is used in xx_remove) ?
+
+Agreed, although drvdata is derived in __xxx_remove() functions, a pre-check here is not
+required - similar to the AMBA remove path. Sure, will drop them across drivers.
+
+> 
+> Suzuki
+> 
+>> +
+>> +    pm_runtime_disable(&pdev->dev);
+>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>> +        clk_put(drvdata->pclk);
+>> +    return 0;
+>> +}
+>> +
+>> +#ifdef CONFIG_PM
+>> +static int catu_runtime_suspend(struct device *dev)
+>> +{
+>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>> +
+>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>> +        clk_disable_unprepare(drvdata->pclk);
+>> +    return 0;
+>> +}
+>> +
+>> +static int catu_runtime_resume(struct device *dev)
+>> +{
+>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>> +
+>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>> +        clk_prepare_enable(drvdata->pclk);
+>> +    return 0;
+>> +}
+>> +#endif
+>> +
+>> +static const struct dev_pm_ops catu_dev_pm_ops = {
+>> +    SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
+>> +};
+>> +
+>> +#ifdef CONFIG_ACPI
+>> +static const struct acpi_device_id catu_acpi_ids[] = {
+>> +    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>> +    {},
+>> +};
+>> +
+>> +MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
+>> +#endif
+>> +
+>> +static struct platform_driver catu_platform_driver = {
+>> +    .probe    = catu_platform_probe,
+>> +    .remove    = catu_platform_remove,
+>> +    .driver    = {
+>> +        .name            = "coresight-catu-platform",
+>> +        .acpi_match_table    = ACPI_PTR(catu_acpi_ids),
+>> +        .suppress_bind_attrs    = true,
+>> +        .pm            = &catu_dev_pm_ops,
+>> +    },
+>> +};
+>> +
+>>   static int __init catu_init(void)
+>>   {
+>>       int ret;
+>>   -    ret = amba_driver_register(&catu_driver);
+>> -    if (ret)
+>> -        pr_info("Error registering catu driver\n");
+>> +    ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
+>>       tmc_etr_set_catu_ops(&etr_catu_buf_ops);
+>>       return ret;
+>>   }
+>> @@ -612,7 +716,7 @@ static int __init catu_init(void)
+>>   static void __exit catu_exit(void)
+>>   {
+>>       tmc_etr_remove_catu_ops();
+>> -    amba_driver_unregister(&catu_driver);
+>> +    coresight_remove_driver(&catu_driver, &catu_platform_driver);
+>>   }
+>>     module_init(catu_init);
+>> diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+>> index 442e034bbfba..141feac1c14b 100644
+>> --- a/drivers/hwtracing/coresight/coresight-catu.h
+>> +++ b/drivers/hwtracing/coresight/coresight-catu.h
+>> @@ -61,6 +61,7 @@
+>>   #define CATU_IRQEN_OFF        0x0
+>>     struct catu_drvdata {
+>> +    struct clk *pclk;
+>>       void __iomem *base;
+>>       struct coresight_device *csdev;
+>>       int irq;
+> 
 
