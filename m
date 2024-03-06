@@ -1,147 +1,98 @@
-Return-Path: <linux-acpi+bounces-4137-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4138-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3CE873980
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 15:43:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A74D8739C0
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 15:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5806D28B3EE
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 14:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26A39289270
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C70D1339A4;
-	Wed,  6 Mar 2024 14:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgyhOkVd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A16E13440D;
+	Wed,  6 Mar 2024 14:49:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B58F28EC;
-	Wed,  6 Mar 2024 14:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D2F131759;
+	Wed,  6 Mar 2024 14:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709736218; cv=none; b=ljq9JFPK5iQe0+spxDC+uSqObUcrl/FrhV9ZhB+Keo3kqyLZgLgnU4c6FCcE6TYP4YzlAbL1N/UUfhGB/oaB2s91+jrqwwIhqyfNaOBl5G3P1SQ4k8b450nCz27YLH+m8txnak4RwJvRT123/T35GDgXCtbs8ho6cjr8VpW6QxM=
+	t=1709736540; cv=none; b=Po3hI4FCfV8EdnI1ybLNT0B+cpl+ds8iYq513/EmwGjTqV4pqMvnhj1F7WM7tiqRygMfSSwOMFjNbOK5xVEuadKfhE1xOVpdM8TV5E8LhaaFrL+6VYOjHyUy+ujSADAk/xQ4+ngG9yHFCyYT0AufWDpU1Ql5lMkMui+/EsssPH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709736218; c=relaxed/simple;
-	bh=mWbp73eMNAokt9fYznOu9SNauqvLUqMJhCKZDXxOfNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ki1EjzCQ0Rirq0h6r1v8NIM5k9VllpaTW9BAHIqTRRycayM/spLBqFupFjBv3MPv24vtZa6D2ai46ztiRHGvgCvSsX4o5DWAuAYzqAApH+Dg6/DewWXO7PatSd+YW5iurY+kLiYIrxo6WsShLgWEt9f7iPuwU4DEHYhRA/nsLas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgyhOkVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DF3C433C7;
-	Wed,  6 Mar 2024 14:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709736217;
-	bh=mWbp73eMNAokt9fYznOu9SNauqvLUqMJhCKZDXxOfNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OgyhOkVd6u4W1iU9MwffZEuZVCC29CBMHvD/EVRTHl54EfAiveOAdI/WlsPpa0XiP
-	 xUZLAOGxJ8gQvg8/MyH4WZgZlkFYKEqK/jKLJqs2GFYc7w3sbzeZ/knXIzLbS6H1xR
-	 NpY0knjWotss727Q7C8fAcbLX5qwiqFIFcO4+Rlei/wFNtRE6jPYA/3g6Wlg6f9MU+
-	 zMblSRZ2hHVwZ8J3QBglYvaVrNodciQnBv2g0jYCvg+XbGA9G/6QjaYu+UFCK/LGw3
-	 EwXOT/Zhqo0dAKB2XN6l3lVyW/0otjgXnpVndljWcw7os9DkTj+UlElp6i1f8LrprU
-	 68AChOpdZ114g==
-Date: Wed, 6 Mar 2024 15:43:32 +0100
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Fang Xiang <fangxiang3@xiaomi.com>, Marc Zyngier <maz@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v5 0/1] irqchip/gic-v3: Enable non-coherent GIC designs
- probing
-Message-ID: <ZeiBFBDhwlJnCUZ2@lpieralisi>
-References: <20240123110332.112797-1-lpieralisi@kernel.org>
+	s=arc-20240116; t=1709736540; c=relaxed/simple;
+	bh=75d+921Vgrd/MF25y9yKj07lCNdQoY9StIIvrFPtlu8=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fp41sP1b+mF+lFFMeQFg+4Yjf+B9MQzJdXJ92P2kreoJv0VRThuTCSz+V2zg7QfOgXisiTQr4km3DzkclQWmAupAJVza5lytGJYAXWJkyXE+YFvT+EMGvOxTvx/Tz+3bO5jWQZuF28YwqFNEqutj5/EW9O6enHW4K/gSVFFgHLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TqZw83McNz6K8L5;
+	Wed,  6 Mar 2024 22:44:56 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 74328140CF4;
+	Wed,  6 Mar 2024 22:48:33 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Mar
+ 2024 14:48:13 +0000
+Date: Wed, 6 Mar 2024 14:48:12 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dave Jiang <dave.jiang@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<dan.j.williams@intel.com>, <ira.weiny@intel.com>,
+	<vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
+	<dave@stgolabs.net>, <rafael@kernel.org>, <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v6 10/12] cxl/region: Add sysfs attribute for locality
+ attributes of CXL regions
+Message-ID: <20240306144812.00007ccc@Huawei.com>
+In-Reply-To: <20240220231402.3156281-11-dave.jiang@intel.com>
+References: <20240220231402.3156281-1-dave.jiang@intel.com>
+	<20240220231402.3156281-11-dave.jiang@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240123110332.112797-1-lpieralisi@kernel.org>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, Jan 23, 2024 at 12:03:31PM +0100, Lorenzo Pieralisi wrote:
-> This series is v5 of previous series:
-> 
-> v4: https://lore.kernel.org/all/20231227110038.55453-1-lpieralisi@kernel.org
-> v3: https://lore.kernel.org/all/20231006125929.48591-1-lpieralisi@kernel.org
-> v2: https://lore.kernel.org/all/20230906094139.16032-1-lpieralisi@kernel.org
-> v1: https://lore.kernel.org/all/20230905104721.52199-1-lpieralisi@kernel.org
-> 
-> v4 -> v5
-> 	- ACPICA patches merged for v6.8
-> 	- Refactored ACPI parsing code according to review
-> 	- Rebased against v6.8-rc1
+On Tue, 20 Feb 2024 16:12:39 -0700
+Dave Jiang <dave.jiang@intel.com> wrote:
 
-Hi Marc, all,
+> Add read/write latencies and bandwidth sysfs attributes for the enabled CXL
+> region. The bandwidth is the aggregated bandwidth of all devices that
+> contribute to the CXL region. The latency is the worst latency of the
+> device amongst all the devices that contribute to the CXL region.
+> 
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+One trivial comment follows though it applies in a couple of places.
+Up to you whether you act on it.
 
-this is not an urgent fix (I don't think there is any ACPI platform
-affected in the field so it is not even a fix), I am just asking please
-what should I do with it, I appreciate it is late in the cycle (and I
-know some fixes got merged in -rcX leading up to -rc7 that are
-pre-requisite for this patch to work).
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Thanks,
-Lorenzo
+> +
+> +ACCESS_ATTR_RO(1, read_bandwidth);
+> +ACCESS_ATTR_RO(1, read_latency);
+> +ACCESS_ATTR_RO(1, write_bandwidth);
+> +ACCESS_ATTR_RO(1, write_latency);
+> +
+> +static struct attribute *access1_coordinate_attrs[] = {
+> +	ACCESS_ATTR_DECLARE(1, read_bandwidth),
+> +	ACCESS_ATTR_DECLARE(1, write_bandwidth),
+> +	ACCESS_ATTR_DECLARE(1, read_latency),
+> +	ACCESS_ATTR_DECLARE(1, write_latency),
+> +	NULL,
+I'd drop that comma on the trailing entry, but there are others
+already in this file that do have it, so up to you.
 
-> v3 -> v4:
-> 	- Dropped patches [1-3], already merged
-> 	- Added Linuxized ACPICA changes accepted upstream
-> 	- Rebased against v6.7-rc3
-> 
-> v2 -> v3:
-> 	- Added ACPICA temporary changes and ACPI changes to implement
-> 	  ECR https://bugzilla.tianocore.org/show_bug.cgi?id=4557
-> 	- ACPI changes are for testing purposes - subject to ECR code
-> 	  first approval
-> 
-> v1 -> v2:
-> 	- Updated DT bindings as per feedback
-> 	- Updated patch[2] to use GIC quirks infrastructure
-> 
-> Original cover letter
-> ---
-> The GICv3 architecture specifications provide a means for the
-> system programmer to set the shareability and cacheability
-> attributes the GIC components (redistributors and ITSes) use
-> to drive memory transactions.
-> 
-> Albeit the architecture give control over shareability/cacheability
-> memory transactions attributes (and barriers), it is allowed to
-> connect the GIC interconnect ports to non-coherent memory ports
-> on the interconnect, basically tying off shareability/cacheability
-> "wires" and de-facto making the redistributors and ITSes non-coherent
-> memory observers.
-> 
-> This series aims at starting a discussion over a possible solution
-> to this problem, by adding to the GIC device tree bindings the
-> standard dma-noncoherent property. The GIC driver uses the property
-> to force the redistributors and ITSes shareability attributes to
-> non-shareable, which consequently forces the driver to use CMOs
-> on GIC memory tables.
-> 
-> On ARM DT DMA is default non-coherent, so the GIC driver can't rely
-> on the generic DT dma-coherent/non-coherent property management layer
-> (of_dma_is_coherent()) which would default all GIC designs in the field
-> as non-coherent; it has to rely on ad-hoc dma-noncoherent property handling.
-> 
-> When a consistent approach is agreed upon for DT an equivalent binding will
-> be put forward for ACPI based systems.
-> 
-> Lorenzo Pieralisi (1):
->   irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-> 
->  drivers/acpi/processor_core.c    | 15 +++++++++++++++
->  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
->  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
->  include/linux/acpi.h             |  3 +++
->  4 files changed, 31 insertions(+)
-> 
-> -- 
-> 2.34.1
-> 
+
 
