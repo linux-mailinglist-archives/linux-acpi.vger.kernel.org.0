@@ -1,285 +1,235 @@
-Return-Path: <linux-acpi+bounces-4133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69B587309F
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 09:25:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5987345A
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 11:35:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 370C1B26F78
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 08:25:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C61CB2660D
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 10:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F07E5D743;
-	Wed,  6 Mar 2024 08:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AFD5FDAF;
+	Wed,  6 Mar 2024 10:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vl1VzYsz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A2D5D735;
-	Wed,  6 Mar 2024 08:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6385FDA0;
+	Wed,  6 Mar 2024 10:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709713508; cv=none; b=Dj4z/gnef5IZynjLZo4tVAhsx8tJBDrc9EtF4QNjQUhYuPe6SyscMhy51BuHBxC/36vmoIBi+7UiMll8tKvJJSO0hVwzlHe6ZBgtl6/XNefhBZ0XGiHlahVK25OcBmQOTFsr3BknIiJ1BqPFaI2G8h1pgTrzGtluNENZLsufjxc=
+	t=1709720783; cv=none; b=XWCBuI/RcyOcfYFb3+ajO1lPl/RPeNvgXGLaWPnwofwZZhgUX6JNCX5TponPVmcGsrWsYt4oGEhJqjgDF+umAJIF8vRY72fkV8Q47FaZCk+qY31DKKx4OpPkVIChg6aLI/Sq99mRlnESzKZw/aQzSZQnRNjH7CxglA2NNnaxLjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709713508; c=relaxed/simple;
-	bh=JZf2RmGphYGkZHB7CaIcGc5DX4EZaA9p+YSIv+s/ImE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b2QcgjPk1r72WkQN4MVkmMsRp95uTy+I3DbUjeZGtVaIwJXr4luz5JT1olMLCDlGMfZlCG7VpureaHNi3bOk4t5vk/I63F8t6INRIhVD1TEZG5wF3v/kMN3Sa2Ru2qgsek2RTtrTo1sZq5wzH851U/XWABjJjcEPSRDQhU+7fdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ABBBF1FB;
-	Wed,  6 Mar 2024 00:25:41 -0800 (PST)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DEBAC3F762;
-	Wed,  6 Mar 2024 00:24:59 -0800 (PST)
-Date: Wed, 6 Mar 2024 09:24:19 +0100
-From: Beata Michalska <beata.michalska@arm.com>
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Cc: Huisong Li <lihuisong@huawei.com>,
-	Ionela Voinescu <ionela.voinescu@arm.com>,
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, rafael@kernel.org,
-	sumitg@nvidia.com, zengheng4@huawei.com,
-	yang@os.amperecomputing.com, will@kernel.org, sudeep.holla@arm.com,
-	liuyonglong@huawei.com, zhanjie9@hisilicon.com,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] arm64: topology: Add arch_freq_get_on_cpu()
- support
-Message-ID: <ZegoMy7_BJ0Smvkl@arm.com>
-References: <20240229162520.970986-2-vanshikonda@os.amperecomputing.com>
+	s=arc-20240116; t=1709720783; c=relaxed/simple;
+	bh=u2SSRHuQm/xCIhGXXwH0Qm+yS653HHK60z9FAswcoSU=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Mxo+Gqv2Dd1wdepDQqNO4AmStoZXQs8cq1JcLgCYab4XntfA0Zkj3BWgBiCFAj9+JEpLNf5e8zp7Ufep4OdKac0sGh5DJiv9dg2HWC2Jy1ZeD3TzXboxmsHuU6fkBjBDLofJqwus7HJeOISC8DmiGIfLLFbCDkHuI0MRIsiMFvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vl1VzYsz; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709720781; x=1741256781;
+  h=date:from:to:cc:subject:message-id;
+  bh=u2SSRHuQm/xCIhGXXwH0Qm+yS653HHK60z9FAswcoSU=;
+  b=Vl1VzYsz13Kv4afiuIX/auJAg61IO4U/uaSrvB1M+c5qW5tdo762rPJ8
+   r3rOaJNt/Lsn/F6fIOtXMdfsFVYvPTz/WqRDBVWj11rRzhnkPjjMCj/Ls
+   wpMkflNCOHU+8RHfmgS1vtwYlXpCig3k46hf5ScNKRA2r/Pe2k6k8R85S
+   lWbgZe5YprHlavERE3ANvBeLXdrfr9nVB3Fm8P4cQJEqNU7TS4jjJ77qw
+   3ZTzQmuL7KVUgmNzml7ugwZvuwP3P2HxhuZdl4LZJUn1UQei3X3qgglrQ
+   uASvWhXnR5ItIYqv283OhOfPkfDsVme3lcTW9kaANST4Kahi7D8PF9Pil
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4495406"
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
+   d="scan'208";a="4495406"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 02:26:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
+   d="scan'208";a="14273264"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 06 Mar 2024 02:26:19 -0800
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rhoTY-00048X-36;
+	Wed, 06 Mar 2024 10:26:16 +0000
+Date: Wed, 06 Mar 2024 18:25:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ c1f2f2f23c6357a634b9614d8ca13e3dbd8aa60c
+Message-ID: <202403061825.UPcHfcNY-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240229162520.970986-2-vanshikonda@os.amperecomputing.com>
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: c1f2f2f23c6357a634b9614d8ca13e3dbd8aa60c  Merge branch 'thermal-intel' into bleeding-edge
 
-Hi Vanshidhar,
+elapsed time: 794m
 
-On Thu, Feb 29, 2024 at 08:25:13AM -0800, Vanshidhar Konda wrote:
-> AMU counters are used by the Frequency Invariance Engine (FIE) to
-> estimate the CPU utilization during each tick. The delta of the AMU
-> counters between two ticks can also be used to estimate the average CPU
-> frequency of each core over the tick duration. Measure the AMU counters
-> during tick, compute the delta and store it. When the frequency of the
-> core is queried, use the stored delta to determine the frequency.
-> 
-> arch_freq_get_on_cpu() is used on x86 systems to estimate the frequency
-> of each CPU. It can be wired up on arm64 for the same functionality.
-> 
-> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> ---
->  arch/arm64/kernel/topology.c | 114 +++++++++++++++++++++++++++++------
->  1 file changed, 96 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 1a2c72f3e7f8..db8d14525cf4 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -17,6 +17,8 @@
->  #include <linux/cpufreq.h>
->  #include <linux/init.h>
->  #include <linux/percpu.h>
-> +#include <linux/sched/isolation.h>
-> +#include <linux/seqlock_types.h>
->  
->  #include <asm/cpu.h>
->  #include <asm/cputype.h>
-> @@ -82,20 +84,54 @@ int __init parse_acpi_topology(void)
->  #undef pr_fmt
->  #define pr_fmt(fmt) "AMU: " fmt
->  
-> +struct amu_counters {
-> +	seqcount_t	seq;
-> +	unsigned long	last_update;
-> +	u64		core_cnt;
-> +	u64		const_cnt;
-> +	u64		delta_core_cnt;
-> +	u64		delta_const_cnt;
-> +};
-It still might not be necessary to track both last taken sample and deltas from
-previous ones, see[1].
-I could send v3 of [1] and take into account the changes you have suggested here,
-namely the last tick recorded. Otherwise few comments below.
-> +
->  /*
->   * Ensure that amu_scale_freq_tick() will return SCHED_CAPACITY_SCALE until
->   * the CPU capacity and its associated frequency have been correctly
->   * initialized.
->   */
-> -static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =  1UL << (2 * SCHED_CAPACITY_SHIFT);
-> -static DEFINE_PER_CPU(u64, arch_const_cycles_prev);
-> -static DEFINE_PER_CPU(u64, arch_core_cycles_prev);
-> +static DEFINE_PER_CPU_READ_MOSTLY(unsigned long, arch_max_freq_scale) =
-> +	1UL << (2 * SCHED_CAPACITY_SHIFT);
-> +static DEFINE_PER_CPU_SHARED_ALIGNED(struct amu_counters, cpu_samples) = {
-> +	.seq = SEQCNT_ZERO(cpu_samples.seq)
-> +};
->  static cpumask_var_t amu_fie_cpus;
->  
->  void update_freq_counters_refs(void)
->  {
-> -	this_cpu_write(arch_core_cycles_prev, read_corecnt());
-> -	this_cpu_write(arch_const_cycles_prev, read_constcnt());
-> +	struct amu_counters *cpu_sample = this_cpu_ptr(&cpu_samples);
-> +	u64 core_cnt, const_cnt, delta_core_cnt, delta_const_cnt;
-> +
-> +	const_cnt = read_constcnt();
-> +	core_cnt = read_corecnt();
-> +
-> +	if (unlikely(core_cnt < cpu_sample->core_cnt) ||
-> +	    unlikely(const_cnt < cpu_sample->const_cnt)) {
-> +		WARN(1, "AMU counter values should be monotonic.\n");
-> +		cpu_sample->delta_const_cnt = 0;
-> +		cpu_sample->delta_core_cnt = 0;
-Not sure if zero-ing is really necessary here
-> +		return;
-> +	}
-> +
-> +	delta_core_cnt = core_cnt - cpu_sample->core_cnt;
-> +	delta_const_cnt = const_cnt - cpu_sample->const_cnt;
-> +
-> +	cpu_sample->core_cnt = core_cnt;
-> +	cpu_sample->const_cnt = const_cnt;
-> +
-> +	raw_write_seqcount_begin(&cpu_sample->seq);
-> +	cpu_sample->last_update = jiffies;
-> +	cpu_sample->delta_const_cnt = delta_const_cnt;
-> +	cpu_sample->delta_core_cnt = delta_core_cnt;
-> +	raw_write_seqcount_end(&cpu_sample->seq);
->  }
->  
->  static inline bool freq_counters_valid(int cpu)
-> @@ -108,8 +144,7 @@ static inline bool freq_counters_valid(int cpu)
->  		return false;
->  	}
->  
-> -	if (unlikely(!per_cpu(arch_const_cycles_prev, cpu) ||
-> -		     !per_cpu(arch_core_cycles_prev, cpu))) {
-> +	if (unlikely(per_cpu_ptr(&cpu_samples, cpu) == NULL)) {
->  		pr_debug("CPU%d: cycle counters are not enabled.\n", cpu);
->  		return false;
->  	}
-> @@ -152,19 +187,15 @@ void freq_inv_set_max_ratio(int cpu, u64 max_rate)
->  
->  static void amu_scale_freq_tick(void)
->  {
-> -	u64 prev_core_cnt, prev_const_cnt;
-> -	u64 core_cnt, const_cnt, scale;
-> -
-> -	prev_const_cnt = this_cpu_read(arch_const_cycles_prev);
-> -	prev_core_cnt = this_cpu_read(arch_core_cycles_prev);
-> +	struct amu_counters *cpu_sample = this_cpu_ptr(&cpu_samples);
-> +	u64 delta_core_cnt, delta_const_cnt, scale;
->  
->  	update_freq_counters_refs();
->  
-> -	const_cnt = this_cpu_read(arch_const_cycles_prev);
-> -	core_cnt = this_cpu_read(arch_core_cycles_prev);
-> +	delta_const_cnt = cpu_sample->delta_const_cnt;
-> +	delta_core_cnt = cpu_sample->delta_core_cnt;
->  
-> -	if (unlikely(core_cnt <= prev_core_cnt ||
-> -		     const_cnt <= prev_const_cnt))
-> +	if ((delta_const_cnt == 0) || (delta_core_cnt == 0))
->  		return;
->  
->  	/*
-> @@ -175,15 +206,62 @@ static void amu_scale_freq_tick(void)
->  	 * See validate_cpu_freq_invariance_counters() for details on
->  	 * arch_max_freq_scale and the use of SCHED_CAPACITY_SHIFT.
->  	 */
-> -	scale = core_cnt - prev_core_cnt;
-> +	scale = delta_core_cnt;
->  	scale *= this_cpu_read(arch_max_freq_scale);
->  	scale = div64_u64(scale >> SCHED_CAPACITY_SHIFT,
-> -			  const_cnt - prev_const_cnt);
-> +			  delta_const_cnt);
->  
->  	scale = min_t(unsigned long, scale, SCHED_CAPACITY_SCALE);
->  	this_cpu_write(arch_freq_scale, (unsigned long)scale);
->  }
->  
-> +/*
-> + * Discard samples older than the define maximum sample age of 20ms. There
-> + * is no point in sending IPIs in such a case. If the scheduler tick was
-> + * not running then the CPU is either idle or isolated.
-> + */
-> +#define MAX_SAMPLE_AGE	((unsigned long)HZ / 50)
-This depends on the config, so for HZ_1000 it will indeed give 20ms,
-for CONFIG_250 that will be 5ms. It might be better to set it to number of
-expected missed ticks instead ? Or amend the comment.
-> +
-> +unsigned int arch_freq_get_on_cpu(int cpu)
-> +{
-> +	struct amu_counters *cpu_sample = per_cpu_ptr(&cpu_samples, cpu);
-> +	u64 delta_const_cnt, delta_core_cnt;
-> +	unsigned int seq, freq;
-> +	unsigned long last;
-> +
-> +	if (!freq_counters_valid(cpu))
-> +		goto fallback;
-> +
-> +	do {
-> +		seq = raw_read_seqcount_begin(&cpu_sample->seq);
-> +		last = cpu_sample->last_update;
-> +		delta_core_cnt = cpu_sample->delta_core_cnt;
-> +		delta_const_cnt = cpu_sample->delta_const_cnt;
-> +	} while (read_seqcount_retry(&cpu_sample->seq, seq));
-> +
-This seems to be taken from APERF/MPERF relevant code. Including the comments.
-> +	/*
-> +	 * Bail on invalid count and when the last update was too long ago,
-> +	 * which covers idle and NOHZ full CPUs.
-> +	 */
-> +	if (!delta_const_cnt || ((jiffies - last) > MAX_SAMPLE_AGE)) {
-Shouldn't the first condition (non-zero increase of cnt_cycles counter)
-disqualify the sample taken altogether ?
-> +		if (!(housekeeping_cpu(cpu, HK_TYPE_TICK) && idle_cpu(cpu)))
-> +			goto fallback;
-Not entirely convinced that this condition is what is expected ?
-For housekeeping cpu that is not idle it will still resolve to AMU counters,
-not sure if that's what was intended ?
-Also, for cases when given cpufreq policy spans more than a single core, the
-frequency might be queried based on relevant CPU that might have seen the tick
-within specified timeframe (see [1])
+configs tested: 145
+configs skipped: 3
 
-> +	}
-> +
-> +	/*
-> +	 * CPU frequency = reference perf (in Hz) * (/\ delivered) / (/\ reference)
-> +	 * AMU reference performance counter increment rate is equal to the rate
-> +	 * of increment of the System counter, CNTPCT_EL0 and can be used to
-> +	 * compute the CPU frequency.
-> +	 */
-> +	return div64_u64((delta_core_cnt * (arch_timer_get_rate() / HZ)),
-/HZ/HZ_PER_KHZ ?
-> +			 delta_const_cnt);
-> +
-> +fallback:
-> +	freq = cpufreq_quick_get(cpu);
-> +	return freq ? freq : cpufreq_get_hw_max_freq(cpu);
-If the arch specific code cannot determine the frequency it should actually make
-it clear by returning '0' instead of trying to patch things up by itself (?)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Overall I'd prefer to revive [1] and amened it accordingly instead.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240306   gcc  
+arc                   randconfig-002-20240306   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240306   gcc  
+arm                   randconfig-002-20240306   clang
+arm                   randconfig-003-20240306   clang
+arm                   randconfig-004-20240306   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240306   gcc  
+arm64                 randconfig-002-20240306   clang
+arm64                 randconfig-003-20240306   gcc  
+arm64                 randconfig-004-20240306   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240306   gcc  
+csky                  randconfig-002-20240306   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240306   clang
+hexagon               randconfig-002-20240306   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240306   clang
+i386         buildonly-randconfig-002-20240306   clang
+i386         buildonly-randconfig-003-20240306   gcc  
+i386         buildonly-randconfig-004-20240306   clang
+i386         buildonly-randconfig-005-20240306   clang
+i386         buildonly-randconfig-006-20240306   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240306   gcc  
+i386                  randconfig-002-20240306   clang
+i386                  randconfig-003-20240306   clang
+i386                  randconfig-004-20240306   clang
+i386                  randconfig-005-20240306   gcc  
+i386                  randconfig-006-20240306   clang
+i386                  randconfig-011-20240306   clang
+i386                  randconfig-012-20240306   clang
+i386                  randconfig-013-20240306   gcc  
+i386                  randconfig-014-20240306   gcc  
+i386                  randconfig-015-20240306   clang
+i386                  randconfig-016-20240306   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240306   gcc  
+loongarch             randconfig-002-20240306   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240306   gcc  
+nios2                 randconfig-002-20240306   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240306   gcc  
+parisc                randconfig-002-20240306   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240306   gcc  
+powerpc               randconfig-002-20240306   gcc  
+powerpc               randconfig-003-20240306   clang
+powerpc64             randconfig-001-20240306   gcc  
+powerpc64             randconfig-002-20240306   clang
+powerpc64             randconfig-003-20240306   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240306   clang
+riscv                 randconfig-002-20240306   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240306   clang
+s390                  randconfig-002-20240306   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240306   gcc  
+sh                    randconfig-002-20240306   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240306   gcc  
+sparc64               randconfig-002-20240306   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240306   gcc  
+um                    randconfig-002-20240306   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240306   clang
+x86_64       buildonly-randconfig-002-20240306   clang
+x86_64       buildonly-randconfig-003-20240306   clang
+x86_64       buildonly-randconfig-004-20240306   clang
+x86_64       buildonly-randconfig-005-20240306   gcc  
+x86_64       buildonly-randconfig-006-20240306   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240306   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-002-20240306   gcc  
 
----
-[1] https://lore.kernel.org/all/20231127160838.1403404-1-beata.michalska@arm.com/
----
-Best Regards
-Beata
-> +}
-> +
->  static struct scale_freq_data amu_sfd = {
->  	.source = SCALE_FREQ_SOURCE_ARCH,
->  	.set_freq_scale = amu_scale_freq_tick,
-> -- 
-> 2.43.1
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
