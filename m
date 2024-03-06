@@ -1,420 +1,137 @@
-Return-Path: <linux-acpi+bounces-4129-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4130-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1E9872CBA
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 03:27:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB147872DB6
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 04:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D805284142
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 02:27:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7C41C22086
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 03:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654AED29B;
-	Wed,  6 Mar 2024 02:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BElsvnoG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E5D14273;
+	Wed,  6 Mar 2024 03:55:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78607ECF;
-	Wed,  6 Mar 2024 02:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EA718637;
+	Wed,  6 Mar 2024 03:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709692060; cv=none; b=Ps45n4eD3vgokxFGHUr8xQIs3VKuMROekPDzQ26vOij9PBmJZoxd90a14RP2fOnk7cCxhX0bIATwhDlkOHBxdkpHogRYoyK+qmkVHzq4d6GMJ+ncFmaK2GQ1gvWnIjartx2SanZQX2iMqmowCfUsBou68nHUzLWyOsuc4xGTPNI=
+	t=1709697304; cv=none; b=qI0wvJYOebmMSw1xy3JCU06YV3Wa4ntW/hL/7s9SMWT5q0JBRA8RuSwAlu7178TauI9YgkXgUFllLQdy3bRjk5rgKnuTQwz7at/XXPUDycXiKfrQEFLGoyox+dtK2fTkUFz28sFb5gE9L4pi1W3bWzjKDLnCKFTrfSb/LAUYfFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709692060; c=relaxed/simple;
-	bh=XDNTXC9Xxd0YQ5QcW7RTouxzsRfUoLkVDKJefb4p6HY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YQ642NBf0m7Eop1NTynYbft/YW3f74I0eDIbim7YK4FU17TqcACVNfXquLRwMa8s9yJ3yZBMJV7y2iISwxS6rEYNDERoobZZF1ltqc08gjN1Bb+DdMf5HPiIQ01ZIwcPwmhUPC6Qi89KY+YO4HkywjTo+Y7qYPzR2lxbhhfPNDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BElsvnoG; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709692057; x=1741228057;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=XDNTXC9Xxd0YQ5QcW7RTouxzsRfUoLkVDKJefb4p6HY=;
-  b=BElsvnoGZH19kU1iMpiZFIbbXEti1NV2ETkhWJRSlLb+YoqocCmRoEpd
-   HOY8yo/tKiIvu8TIV/3YDL1XrZwiBY6C3h7QWvG7sJzVJ1cE43Mg+DX7d
-   PIr4tmKtUGKxO3uxuMMeya4NyvaO1rU6Up8k56lbaBQhL92hRjgFnh3/P
-   N4J23rEd5zWTPp0gsXo5s+rIee0uo1lHhoOZ9BW7GDfTtUjA2VINCcYkv
-   GcIB5Xe3uJG1e/YfmU+AHYbk0Z4zPgDAujhvTi8AlGY4DIRDKewx+1Nd1
-   aQAyNoC6eKHaNY0lfKZvhVBqWbsXFP2Sapo+tYlW5RJrXhlrzYGT1NJPT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4142091"
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="4142091"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 18:27:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,207,1705392000"; 
-   d="scan'208";a="9994256"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2024 18:27:30 -0800
-From: "Huang, Ying" <ying.huang@intel.com>
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>,  aneesh.kumar@linux.ibm.com,
-  mhocko@suse.com,  tj@kernel.org,  john@jagalactic.com,  Eishan Mirakhur
- <emirakhur@micron.com>,  Vinicius Tavares Petrucci
- <vtavarespetr@micron.com>,  Ravis OpenSrc <Ravis.OpenSrc@micron.com>,
-  Alistair Popple <apopple@nvidia.com>,  "Rafael J. Wysocki"
- <rafael@kernel.org>,  Len Brown <lenb@kernel.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  Dave Jiang <dave.jiang@intel.com>,  Dan
- Williams <dan.j.williams@intel.com>,  Jonathan Cameron
- <Jonathan.Cameron@huawei.com>,  linux-acpi@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  "Ho-Ren (Jack)
- Chuang" <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
-  linux-cxl@vger.kernel.org,  qemu-devel@nongnu.org
-Subject: Re: [External] Re: [PATCH v1 1/1] memory tier: acpi/hmat: create
- CPUless memory tiers after obtaining HMAT info
-In-Reply-To: <CAKPbEqrti2x05n5QhXtefhu+C=xmMUaH8mMwDy83LVN3Fj6nDw@mail.gmail.com>
-	(Ho-Ren Chuang's message of "Tue, 5 Mar 2024 01:28:55 -0800")
-References: <20240301082248.3456086-1-horenchuang@bytedance.com>
-	<20240301082248.3456086-2-horenchuang@bytedance.com>
-	<87jzmibtyh.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<CAKPbEqrti2x05n5QhXtefhu+C=xmMUaH8mMwDy83LVN3Fj6nDw@mail.gmail.com>
-Date: Wed, 06 Mar 2024 10:25:35 +0800
-Message-ID: <87edco85b4.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1709697304; c=relaxed/simple;
+	bh=QE+ywB9r3lEEE5CiBzVzKiKPeS/oqgnmiYa/KrTrZR0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nmBdabbNn8z3DSB1c+Tb0+eZhJdLtwyMvyQI/xgRKnH7pBkQwo7vwHkf0OltNNlToFV9uej4Wtl9DfgJAaLjo5GQunLiZ/ydqZxrUlFZ+vz5OLQKzfS/8v4SFYc1UcLxjW9Vqo/No3XUHP4EDaeEPqiF8dNvYnbgor/NKio/55M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA08E1FB;
+	Tue,  5 Mar 2024 19:55:37 -0800 (PST)
+Received: from [10.162.41.20] (unknown [10.162.41.20])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28C793F762;
+	Tue,  5 Mar 2024 19:54:56 -0800 (PST)
+Message-ID: <4bfe9477-9ea9-4609-96c8-470cd5393d75@arm.com>
+Date: Wed, 6 Mar 2024 09:24:53 +0530
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 03/11] coresight: tmc: Extract device properties from
+ AMBA pid based table lookup
+Content-Language: en-US
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
+ <20240222082142.3663983-4-anshuman.khandual@arm.com>
+ <921173d2-c996-4a0f-b3a5-b660036fa254@arm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <921173d2-c996-4a0f-b3a5-b660036fa254@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
 
-> On Sun, Mar 3, 2024 at 6:42=E2=80=AFPM Huang, Ying <ying.huang@intel.com>=
- wrote:
->>
->> Hi, Jack,
->>
->> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->>
->> > * Introduce `mt_init_with_hmat()`
->> > We defer memory tier initialization for those CPUless NUMA nodes
->> > until acquiring HMAT info. `mt_init_with_hmat()` is introduced to
->> > post-create CPUless memory tiers after obtaining HMAT info.
->> > It iterates through each CPUless memory node, creating memory tiers if
->> > necessary. Finally, it calculates demotion tables again at the end.
->> >
->> > * Introduce `hmat_find_alloc_memory_type()`
->> > Find or allocate a memory type in the `hmat_memory_types` list.
->> >
->> > * Make `set_node_memory_tier()` more generic
->> > This function can also be used for setting other memory types for a no=
-de.
->> > To do so, a new argument is added to specify a memory type.
->> >
->> > * Handle cases where there is no HMAT when creating memory tiers
->> > If no HMAT is specified, it falls back to using `default_dram_type`.
->> >
->> > * Change adist calculation code to use another new lock, mt_perf_lock.
->> > Iterating through CPUlist nodes requires holding the `memory_tier_lock=
-`.
->> > However, `mt_calc_adistance()` will end up trying to acquire the same =
-lock,
->> > leading to a potential deadlock. Therefore, we propose introducing a
->> > standalone `mt_perf_lock` to protect `default_dram_perf`. This approac=
-h not
->> > only avoids deadlock but also prevents holding a large lock simultaneo=
-usly.
->>
->> The patch description is used to described why we need the change, and
->> how we do that, but not what we do.  People can tell what is done from
->> the code itself.
->>
->
-> Got it. Thanks. Will rewrite it after the code is finalized.
->
->> > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
->> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
->> > ---
->> >  drivers/acpi/numa/hmat.c     |  3 ++
->> >  include/linux/memory-tiers.h |  6 +++
->> >  mm/memory-tiers.c            | 76 ++++++++++++++++++++++++++++++++----
->> >  3 files changed, 77 insertions(+), 8 deletions(-)
->> >
->> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
->> > index d6b85f0f6082..9f57338b3cb5 100644
->> > --- a/drivers/acpi/numa/hmat.c
->> > +++ b/drivers/acpi/numa/hmat.c
->> > @@ -1038,6 +1038,9 @@ static __init int hmat_init(void)
->> >       if (!hmat_set_default_dram_perf())
->> >               register_mt_adistance_algorithm(&hmat_adist_nb);
->> >
->> > +     /* Post-create CPUless memory tiers after getting HMAT info */
->> > +     mt_init_with_hmat();
->> > +
->> >       return 0;
->> >  out_put:
->> >       hmat_free_structures();
->> > diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers=
-.h
->> > index 69e781900082..2f845e90c033 100644
->> > --- a/include/linux/memory-tiers.h
->> > +++ b/include/linux/memory-tiers.h
->> > @@ -48,6 +48,7 @@ int mt_calc_adistance(int node, int *adist);
->> >  int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
->> >                            const char *source);
->> >  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
->> > +void mt_init_with_hmat(void);
->>
->> HMAT isn't universally available.  It's a driver in fact.  So, don't put
->> driver specific code in general code.
->>
->
-> Please see below regarding "move code to hmat.c"
->
->> >  #ifdef CONFIG_MIGRATION
->> >  int next_demotion_node(int node);
->> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
->> > @@ -136,5 +137,10 @@ static inline int mt_perf_to_adistance(struct acc=
-ess_coordinate *perf, int *adis
->> >  {
->> >       return -EIO;
->> >  }
->> > +
->> > +static inline void mt_init_with_hmat(void)
->> > +{
->> > +
->> > +}
->> >  #endif       /* CONFIG_NUMA */
->> >  #endif  /* _LINUX_MEMORY_TIERS_H */
->> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
->> > index 0537664620e5..7a0a579b3deb 100644
->> > --- a/mm/memory-tiers.c
->> > +++ b/mm/memory-tiers.c
->> > @@ -35,7 +35,9 @@ struct node_memory_type_map {
->> >  };
->> >
->> >  static DEFINE_MUTEX(memory_tier_lock);
->> > +static DEFINE_MUTEX(mt_perf_lock);
->> >  static LIST_HEAD(memory_tiers);
->> > +static LIST_HEAD(hmat_memory_types);
->> >  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
->> >  struct memory_dev_type *default_dram_type;
->> >
->> > @@ -502,7 +504,7 @@ static inline void __init_node_memory_type(int nod=
-e, struct memory_dev_type *mem
->> >       }
->> >  }
->> >
->> > -static struct memory_tier *set_node_memory_tier(int node)
->> > +static struct memory_tier *set_node_memory_tier(int node, struct memo=
-ry_dev_type *new_memtype)
->>
->> No. memory_dev_type are passed to the function via node_memory_types[nod=
-e].memtype.
->>
->
-> Got it. Will mimic the way kmem.c does. Thanks.
->
->> >  {
->> >       struct memory_tier *memtier;
->> >       struct memory_dev_type *memtype;
->> > @@ -514,7 +516,7 @@ static struct memory_tier *set_node_memory_tier(in=
-t node)
->> >       if (!node_state(node, N_MEMORY))
->> >               return ERR_PTR(-EINVAL);
->> >
->> > -     __init_node_memory_type(node, default_dram_type);
->> > +     __init_node_memory_type(node, new_memtype);
->> >
->> >       memtype =3D node_memory_types[node].memtype;
->> >       node_set(node, memtype->nodes);
->> > @@ -623,6 +625,56 @@ void clear_node_memory_type(int node, struct memo=
-ry_dev_type *memtype)
->> >  }
->> >  EXPORT_SYMBOL_GPL(clear_node_memory_type);
->> >
->> > +static struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
->>
->> Similar function existed in drivers/dax/kmem.c.  Please abstract them
->> and move them here.
->>
->
-> Got it. Will try. Thanks.
->
->> > +{
->> > +     bool found =3D false;
->> > +     struct memory_dev_type *mtype;
->> > +
->> > +     list_for_each_entry(mtype, &hmat_memory_types, list) {
->> > +             if (mtype->adistance =3D=3D adist) {
->> > +                     found =3D true;
->> > +                     break;
->> > +             }
->> > +     }
->> > +     if (!found) {
->> > +             mtype =3D alloc_memory_type(adist);
->> > +             if (!IS_ERR(mtype))
->> > +                     list_add(&mtype->list, &hmat_memory_types);
->> > +     }
->> > +     return mtype;
->> > +}
->> > +
->> > +static void mt_create_with_hmat(int node)
->> > +{
->> > +     struct memory_dev_type *mtype =3D NULL;
->> > +     int adist =3D MEMTIER_ADISTANCE_DRAM;
->> > +
->> > +     mt_calc_adistance(node, &adist);
->> > +     if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
->> > +             mtype =3D hmat_find_alloc_memory_type(adist);
->> > +             if (IS_ERR(mtype))
->> > +                     pr_err("%s() failed to allocate a tier\n", __fun=
-c__);
->> > +     } else {
->> > +             mtype =3D default_dram_type;
->> > +     }
->> > +
->> > +     set_node_memory_tier(node, mtype);
->> > +}
->> > +
->> > +void mt_init_with_hmat(void)
->> > +{
->> > +     int nid;
->> > +
->> > +     mutex_lock(&memory_tier_lock);
->> > +     for_each_node_state(nid, N_MEMORY)
->> > +             if (!node_state(nid, N_CPU))
->> > +                     mt_create_with_hmat(nid);
->> > +
->> > +     establish_demotion_targets();
->> > +     mutex_unlock(&memory_tier_lock);
->> > +}
->> > +EXPORT_SYMBOL_GPL(mt_init_with_hmat);
->> > +
->>
->> I guess that we can put most hmat related code above in hmat.c.
->>
->
-> To put the heat-related code to hmat.c I will need to export some
-> static functions in memory-tiers.c, like set_node_memory_tier() and
-> establish_demotion_targets(). Is that ok?
 
-Think about this again.  In fact, although there are "_hmat" in the name
-of the above functions, the code has nothing to do with hmat.  So, we
-should rename these functions, but don't need to move them to hmat.c.
-And, to set memory_tier for CPUless node on system without HMAT.  We
-should call mt_init_with_hmat() with late_initcall().  Where HMAT
-information is expected to be available on system with HMAT.  On system
-without HMAT, default_dram_type will be used.
-
->> >  static void dump_hmem_attrs(struct access_coordinate *coord, const ch=
-ar *prefix)
->> >  {
->> >       pr_info(
->> > @@ -636,7 +688,7 @@ int mt_set_default_dram_perf(int nid, struct acces=
-s_coordinate *perf,
->> >  {
->> >       int rc =3D 0;
->> >
->> > -     mutex_lock(&memory_tier_lock);
->> > +     mutex_lock(&mt_perf_lock);
->> >       if (default_dram_perf_error) {
->> >               rc =3D -EIO;
->> >               goto out;
->> > @@ -684,7 +736,7 @@ int mt_set_default_dram_perf(int nid, struct acces=
-s_coordinate *perf,
->> >       }
->> >
->> >  out:
->> > -     mutex_unlock(&memory_tier_lock);
->> > +     mutex_unlock(&mt_perf_lock);
->> >       return rc;
->> >  }
->> >
->> > @@ -700,7 +752,7 @@ int mt_perf_to_adistance(struct access_coordinate =
-*perf, int *adist)
->> >           perf->read_bandwidth + perf->write_bandwidth =3D=3D 0)
->> >               return -EINVAL;
->> >
->> > -     mutex_lock(&memory_tier_lock);
->> > +     mutex_lock(&mt_perf_lock);
->> >       /*
->> >        * The abstract distance of a memory node is in direct proportio=
-n to
->> >        * its memory latency (read + write) and inversely proportional =
-to its
->> > @@ -713,7 +765,7 @@ int mt_perf_to_adistance(struct access_coordinate =
-*perf, int *adist)
->> >               (default_dram_perf.read_latency + default_dram_perf.writ=
-e_latency) *
->> >               (default_dram_perf.read_bandwidth + default_dram_perf.wr=
-ite_bandwidth) /
->> >               (perf->read_bandwidth + perf->write_bandwidth);
->> > -     mutex_unlock(&memory_tier_lock);
->> > +     mutex_unlock(&mt_perf_lock);
->> >
->> >       return 0;
->> >  }
->> > @@ -797,7 +849,7 @@ static int __meminit memtier_hotplug_callback(stru=
-ct notifier_block *self,
->> >               break;
->> >       case MEM_ONLINE:
->> >               mutex_lock(&memory_tier_lock);
->> > -             memtier =3D set_node_memory_tier(arg->status_change_nid);
->> > +             memtier =3D set_node_memory_tier(arg->status_change_nid,=
- default_dram_type);
->> >               if (!IS_ERR(memtier))
->> >                       establish_demotion_targets();
->> >               mutex_unlock(&memory_tier_lock);
->> > @@ -836,7 +888,15 @@ static int __init memory_tier_init(void)
->> >        * types assigned.
->> >        */
->> >       for_each_node_state(node, N_MEMORY) {
->> > -             memtier =3D set_node_memory_tier(node);
->> > +             if (!node_state(node, N_CPU))
->> > +                     /*
->> > +                      * Defer memory tier initialization on CPUless n=
-uma nodes.
->> > +                      * These will be initialized when HMAT informati=
-on is
->> > +                      * available.
->> > +                      */
->> > +                     continue;
->> > +
->> > +             memtier =3D set_node_memory_tier(node, default_dram_type=
-);
+On 3/5/24 20:06, Suzuki K Poulose wrote:
+> On 22/02/2024 08:21, Anshuman Khandual wrote:
+>> This extracts device properties from AMBA pid based table lookup. But first
+>> this modifies tmc_etr_setup_caps() to accept csdev access.
 >>
->> On system with HMAT, how to fall back CPU-less node to
->> default_dram_type?  I found your description, but I don't find it in cod=
-e.
+>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>> Cc: Mike Leach <mike.leach@linaro.org>
+>> Cc: James Clark <james.clark@arm.com>
+>> Cc: coresight@lists.linaro.org
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Reviewed-by: James Clark <james.clark@arm.com>
+> 
+> minor nit: Since there were significant changes from what James previously reviewed, it is a good idea to drop his Reviewed-by:
+
+Sure, will do.
+
+> 
+> Otherwise, the changes look good to me.
+> 
+> Suzuki
+> 
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> Changes in V5:
 >>
-> I assume you meant without HMAT, if so,
-> because if no HMAT, adist will not be updated in mt_calc_adistance():
-
-Sorry, typo.  On system with HMAT, mt_init_with_hmat() will not be
-called.  I have a solution in above comment.
-
---
-Best Regards,
-Huang, Ying
-
-> + int adist =3D MEMTIER_ADISTANCE_DRAM;
-> +
-> + mt_calc_adistance(node, &adist);
-> + if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
-> =E2=80=A6
-> + } else {
-> + mtype =3D default_dram_type;
-> + }
-> +
-> + set_node_memory_tier(node, mtype);
->
->> >               if (IS_ERR(memtier))
->> >                       /*
->> >                        * Continue with memtiers we are able to setup
+>> - Modified tmc_etr_setup_caps() to accept struct csdev_access argument
+>> - Reverted back tmc_etr_setup_caps() call site position in tmc_probe()
+>> - Dropped custom mask TMC_AMBA_MASK
 >>
->> --
->> Best Regards,
->> Huang, Ying
+>>   drivers/hwtracing/coresight/coresight-tmc-core.c | 14 ++++++++++----
+>>   1 file changed, 10 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/hwtracing/coresight/coresight-tmc-core.c b/drivers/hwtracing/coresight/coresight-tmc-core.c
+>> index 7ec5365e2b64..43874fa4def0 100644
+>> --- a/drivers/hwtracing/coresight/coresight-tmc-core.c
+>> +++ b/drivers/hwtracing/coresight/coresight-tmc-core.c
+>> @@ -370,16 +370,23 @@ static inline bool tmc_etr_has_non_secure_access(struct tmc_drvdata *drvdata)
+>>       return (auth & TMC_AUTH_NSID_MASK) == 0x3;
+>>   }
+>>   +static const struct amba_id tmc_ids[];
+>> +
+>>   /* Detect and initialise the capabilities of a TMC ETR */
+>> -static int tmc_etr_setup_caps(struct device *parent, u32 devid, void *dev_caps)
+>> +static int tmc_etr_setup_caps(struct device *parent, u32 devid,
+>> +                  struct csdev_access *access)
+>>   {
+>>       int rc;
+>> -    u32 dma_mask = 0;
+>> +    u32 tmc_pid, dma_mask = 0;
+>>       struct tmc_drvdata *drvdata = dev_get_drvdata(parent);
+>> +    void *dev_caps;
+>>         if (!tmc_etr_has_non_secure_access(drvdata))
+>>           return -EACCES;
+>>   +    tmc_pid = coresight_get_pid(access);
+>> +    dev_caps = coresight_get_uci_data_from_amba(tmc_ids, tmc_pid);
+>> +
+>>       /* Set the unadvertised capabilities */
+>>       tmc_etr_init_caps(drvdata, (u32)(unsigned long)dev_caps);
+>>   @@ -497,8 +504,7 @@ static int tmc_probe(struct amba_device *adev, const struct amba_id *id)
+>>           desc.type = CORESIGHT_DEV_TYPE_SINK;
+>>           desc.subtype.sink_subtype = CORESIGHT_DEV_SUBTYPE_SINK_SYSMEM;
+>>           desc.ops = &tmc_etr_cs_ops;
+>> -        ret = tmc_etr_setup_caps(dev, devid,
+>> -                     coresight_get_uci_data(id));
+>> +        ret = tmc_etr_setup_caps(dev, devid, &desc.access);
+>>           if (ret)
+>>               goto out;
+>>           idr_init(&drvdata->idr);
+> 
 
