@@ -1,235 +1,134 @@
-Return-Path: <linux-acpi+bounces-4134-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4135-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE5987345A
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 11:35:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC4F8735FF
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 13:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C61CB2660D
-	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 10:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E9D71F2426B
+	for <lists+linux-acpi@lfdr.de>; Wed,  6 Mar 2024 12:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89AFD5FDAF;
-	Wed,  6 Mar 2024 10:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vl1VzYsz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28E17FBBB;
+	Wed,  6 Mar 2024 12:02:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6385FDA0;
-	Wed,  6 Mar 2024 10:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0122A78B43;
+	Wed,  6 Mar 2024 12:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709720783; cv=none; b=XWCBuI/RcyOcfYFb3+ajO1lPl/RPeNvgXGLaWPnwofwZZhgUX6JNCX5TponPVmcGsrWsYt4oGEhJqjgDF+umAJIF8vRY72fkV8Q47FaZCk+qY31DKKx4OpPkVIChg6aLI/Sq99mRlnESzKZw/aQzSZQnRNjH7CxglA2NNnaxLjQ=
+	t=1709726573; cv=none; b=ABDxJ24d7A1zNz2d8RVHP//ydVcsNc2F0BcLeoaAcLoxFHCEha4FTE69Nm+1KvpL8yA+9ibNZAKJd6v6+IUlUcs6qOSC/+t787pgw/JDwFOcENR+74aO3K+Of5k28I2hcUsNlXTo2Rh+53BOtpPfIxrvucydNA9sv82YWVV7GjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709720783; c=relaxed/simple;
-	bh=u2SSRHuQm/xCIhGXXwH0Qm+yS653HHK60z9FAswcoSU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Mxo+Gqv2Dd1wdepDQqNO4AmStoZXQs8cq1JcLgCYab4XntfA0Zkj3BWgBiCFAj9+JEpLNf5e8zp7Ufep4OdKac0sGh5DJiv9dg2HWC2Jy1ZeD3TzXboxmsHuU6fkBjBDLofJqwus7HJeOISC8DmiGIfLLFbCDkHuI0MRIsiMFvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vl1VzYsz; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709720781; x=1741256781;
-  h=date:from:to:cc:subject:message-id;
-  bh=u2SSRHuQm/xCIhGXXwH0Qm+yS653HHK60z9FAswcoSU=;
-  b=Vl1VzYsz13Kv4afiuIX/auJAg61IO4U/uaSrvB1M+c5qW5tdo762rPJ8
-   r3rOaJNt/Lsn/F6fIOtXMdfsFVYvPTz/WqRDBVWj11rRzhnkPjjMCj/Ls
-   wpMkflNCOHU+8RHfmgS1vtwYlXpCig3k46hf5ScNKRA2r/Pe2k6k8R85S
-   lWbgZe5YprHlavERE3ANvBeLXdrfr9nVB3Fm8P4cQJEqNU7TS4jjJ77qw
-   3ZTzQmuL7KVUgmNzml7ugwZvuwP3P2HxhuZdl4LZJUn1UQei3X3qgglrQ
-   uASvWhXnR5ItIYqv283OhOfPkfDsVme3lcTW9kaANST4Kahi7D8PF9Pil
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11004"; a="4495406"
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="4495406"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 02:26:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,208,1705392000"; 
-   d="scan'208";a="14273264"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 06 Mar 2024 02:26:19 -0800
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rhoTY-00048X-36;
-	Wed, 06 Mar 2024 10:26:16 +0000
-Date: Wed, 06 Mar 2024 18:25:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c1f2f2f23c6357a634b9614d8ca13e3dbd8aa60c
-Message-ID: <202403061825.UPcHfcNY-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1709726573; c=relaxed/simple;
+	bh=yF6gwCEWbGF3pPVi8P+IIvtLpYFThZkXLvepHc0U0MA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XC9ZLbHXV/y+n/oYYkxPNAVYr2VPuPTCYMhwJZbr8a1rsm2Bp83uiuT0dxcLMOxWIxlmqwte8XffIU8Dbhv6in6GtJdHm/BXLy4m0p/GasqYsnhhIvSduPXlfWelQcf/688/Ts+eEwObc93A7HK476pyuJcjNyM7OmsOMTv+XPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 552571FB;
+	Wed,  6 Mar 2024 04:03:27 -0800 (PST)
+Received: from [10.57.67.126] (unknown [10.57.67.126])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1AF433F738;
+	Wed,  6 Mar 2024 04:02:41 -0800 (PST)
+Message-ID: <6af5e7da-08ba-4fc7-8e57-863377182142@arm.com>
+Date: Wed, 6 Mar 2024 12:02:41 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/7] dma-mapping: Simplify arch_setup_dma_ops()
+Content-Language: en-GB
+From: Robin Murphy <robin.murphy@arm.com>
+To: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>
+Cc: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, iommu@lists.linux.dev, devicetree@vger.kernel.org
+References: <cover.1707493264.git.robin.murphy@arm.com>
+In-Reply-To: <cover.1707493264.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c1f2f2f23c6357a634b9614d8ca13e3dbd8aa60c  Merge branch 'thermal-intel' into bleeding-edge
+Hi Joerg, Christoph,
 
-elapsed time: 794m
+On 2024-02-09 4:49 pm, Robin Murphy wrote:
+> v2: https://lore.kernel.org/linux-iommu/cover.1702486837.git.robin.murphy@arm.com/
+> 
+> Hi all,
+> 
+> Here's v3, rebased and fixing the thinko from v2, so unless anything
+> else has changed behind my back I hope it's good to go (via the IOMMU
+> tree, as mentioned before).
 
-configs tested: 145
-configs skipped: 3
+Are either of you happy to pick this series up now that we have Hanjun's 
+acks for the IORT parts? As it stands it still applies cleanly to both 
+iommu/next and dma/for-next. I do have some followup IOMMU patches 
+prepared already (continuing to delete more code, yay!), but I don't 
+want to get too far ahead of myself.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Cheers,
+Robin.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240306   gcc  
-arc                   randconfig-002-20240306   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240306   gcc  
-arm                   randconfig-002-20240306   clang
-arm                   randconfig-003-20240306   clang
-arm                   randconfig-004-20240306   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240306   gcc  
-arm64                 randconfig-002-20240306   clang
-arm64                 randconfig-003-20240306   gcc  
-arm64                 randconfig-004-20240306   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240306   gcc  
-csky                  randconfig-002-20240306   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240306   clang
-hexagon               randconfig-002-20240306   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240306   clang
-i386         buildonly-randconfig-002-20240306   clang
-i386         buildonly-randconfig-003-20240306   gcc  
-i386         buildonly-randconfig-004-20240306   clang
-i386         buildonly-randconfig-005-20240306   clang
-i386         buildonly-randconfig-006-20240306   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240306   gcc  
-i386                  randconfig-002-20240306   clang
-i386                  randconfig-003-20240306   clang
-i386                  randconfig-004-20240306   clang
-i386                  randconfig-005-20240306   gcc  
-i386                  randconfig-006-20240306   clang
-i386                  randconfig-011-20240306   clang
-i386                  randconfig-012-20240306   clang
-i386                  randconfig-013-20240306   gcc  
-i386                  randconfig-014-20240306   gcc  
-i386                  randconfig-015-20240306   clang
-i386                  randconfig-016-20240306   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240306   gcc  
-loongarch             randconfig-002-20240306   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240306   gcc  
-nios2                 randconfig-002-20240306   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240306   gcc  
-parisc                randconfig-002-20240306   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240306   gcc  
-powerpc               randconfig-002-20240306   gcc  
-powerpc               randconfig-003-20240306   clang
-powerpc64             randconfig-001-20240306   gcc  
-powerpc64             randconfig-002-20240306   clang
-powerpc64             randconfig-003-20240306   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240306   clang
-riscv                 randconfig-002-20240306   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240306   clang
-s390                  randconfig-002-20240306   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240306   gcc  
-sh                    randconfig-002-20240306   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240306   gcc  
-sparc64               randconfig-002-20240306   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240306   gcc  
-um                    randconfig-002-20240306   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240306   clang
-x86_64       buildonly-randconfig-002-20240306   clang
-x86_64       buildonly-randconfig-003-20240306   clang
-x86_64       buildonly-randconfig-004-20240306   clang
-x86_64       buildonly-randconfig-005-20240306   gcc  
-x86_64       buildonly-randconfig-006-20240306   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240306   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-002-20240306   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> 
+> Thanks,
+> Robin.
+> 
+> 
+> Robin Murphy (7):
+>    OF: Retire dma-ranges mask workaround
+>    OF: Simplify DMA range ca1lculations
+>    ACPI/IORT: Handle memory address size limits as limits
+>    dma-mapping: Add helpers for dma_range_map bounds
+>    iommu/dma: Make limit checks self-contained
+>    iommu/dma: Centralise iommu_setup_dma_ops()
+>    dma-mapping: Simplify arch_setup_dma_ops()
+> 
+>   arch/arc/mm/dma.c               |  3 +--
+>   arch/arm/mm/dma-mapping-nommu.c |  3 +--
+>   arch/arm/mm/dma-mapping.c       | 16 +++++++------
+>   arch/arm64/mm/dma-mapping.c     |  5 +---
+>   arch/loongarch/kernel/dma.c     |  9 ++-----
+>   arch/mips/mm/dma-noncoherent.c  |  3 +--
+>   arch/riscv/mm/dma-noncoherent.c |  3 +--
+>   drivers/acpi/arm64/dma.c        | 17 ++++---------
+>   drivers/acpi/arm64/iort.c       | 20 ++++++++--------
+>   drivers/acpi/scan.c             |  7 +-----
+>   drivers/hv/hv_common.c          |  6 +----
+>   drivers/iommu/amd/iommu.c       |  8 -------
+>   drivers/iommu/dma-iommu.c       | 39 ++++++++++++------------------
+>   drivers/iommu/dma-iommu.h       | 14 +++++------
+>   drivers/iommu/intel/iommu.c     |  7 ------
+>   drivers/iommu/iommu.c           | 20 ++++++----------
+>   drivers/iommu/s390-iommu.c      |  6 -----
+>   drivers/iommu/virtio-iommu.c    | 10 --------
+>   drivers/of/device.c             | 42 ++++++---------------------------
+>   include/linux/acpi_iort.h       |  4 ++--
+>   include/linux/dma-direct.h      | 18 ++++++++++++++
+>   include/linux/dma-map-ops.h     |  6 ++---
+>   include/linux/iommu.h           |  7 ------
+>   23 files changed, 89 insertions(+), 184 deletions(-)
+> 
 
