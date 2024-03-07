@@ -1,125 +1,84 @@
-Return-Path: <linux-acpi+bounces-4169-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4170-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50048757BB
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 20:58:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10118758F8
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 22:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB3C4B25176
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 19:58:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6922AB2247E
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 21:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB52138482;
-	Thu,  7 Mar 2024 19:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B90651B9;
+	Thu,  7 Mar 2024 21:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="eE96wVP5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEzV6Mlt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10408137C36;
-	Thu,  7 Mar 2024 19:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E9C2376A;
+	Thu,  7 Mar 2024 21:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709841496; cv=none; b=PduHsLVtCE8pauatNgRDbstglwjX+xB1x4wJvEUM0E3G9NynTCqxG5X1p6PvMv+uMyf+BDO3gtBmkBSIPWpZjyZTuCmtom4oPGYpXnbbHQVybq6+G3yyrq9TihmYd/MpWI/LjEwLWE3lKEbs4dQkYjw8yt+3pOp/eNl0wIZfFYM=
+	t=1709845360; cv=none; b=ebiwvh624F0SiH6sLxKtL7SAdTiyAHplzR2fAjP4I99XvAF6bGLjg97KmaRWdldEXYiIXvKyP0UiDdoMM9Y78gTEfa/7IfI+fJMQ4wT85VT/bUat127Azm7VkLWXbdppMYCRiptcIS35FRVg8ZLUHS4lhghJrn6wRFBEF4zAsvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709841496; c=relaxed/simple;
-	bh=dVVO80js759j4nvce22wbRDafQcr7cFxiq3JvwZyOYM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0wBZvi7DOkgC6Liqo9XyQNKtEu1JPCYQonDiC0HeikS1XPGmr8IFBxe/TyUX6zkdleQxWGRUKqG3L23peIZdbm8TFm/7uDkJzxDWhXxRidLB6nLUw2vTHyO+tlnnn1A4gvALO2PhmW8U3orxw1CiVOzUNhQzNCn+lGnJIjNiDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=eE96wVP5; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1709841482; x=1710446282; i=w_armin@gmx.de;
-	bh=dVVO80js759j4nvce22wbRDafQcr7cFxiq3JvwZyOYM=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=eE96wVP5omenyoQ3PEfl82WJTUkbrl16Z+HTy0/MAikyXymwen12ChVAqy5fa5UR
-	 kNm94v1wuvG+f/zFRuStZUAtuUVN7zsnFZ2CQWKE7ImNMExi6TPLCBD7OGDpwITVA
-	 tx/T9AcdcpStnBE4ItYRZp6N1sGcsV2OMJ8Hp/kWRxv9z+k3ClN0/rzroWyWWOrzA
-	 gA1r3kkbwWecRZtnkXJ6oJX6w/eMl4UVb1aXPZzItYzwyNNRCJGCbEkVxeSIiy7Tg
-	 IbzDovkYDVxL59aJ1MeJgP5DJ3XZ92cBtJFhhlVwdXrprRLNQ/3+5F6BMzNRVjgTH
-	 tlqw/qtb8jp5h8HVqQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1MXp9Y-1rLIIA0NPI-00YCrb; Thu, 07 Mar 2024 20:58:02 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-To: hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] platform/x86: wmi: Avoid returning AE_OK upon unknown error
-Date: Thu,  7 Mar 2024 20:57:53 +0100
-Message-Id: <20240307195753.2961-2-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240307195753.2961-1-W_Armin@gmx.de>
-References: <20240307195753.2961-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1709845360; c=relaxed/simple;
+	bh=eu+RNQH2/4O10Zw3NcoKSSqNVhU7rkqGoBQPn+s4Mtg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h6z3SBsXxdUMBe8Vd9lso3bgnKkg04aTIpDQJcQ/EtQog87RcClMh7fTE9dx9nL23BVPDPdpnUOjAXpCKThZBMiNx1t+OSnI3BSfTSSspy2SB48y6ZXvKMD0fBL8GhsK/CV8zY0CrZLh5NjvSZME4R4vCHUrKNbpGDd2St2No9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEzV6Mlt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF70C433C7;
+	Thu,  7 Mar 2024 21:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709845359;
+	bh=eu+RNQH2/4O10Zw3NcoKSSqNVhU7rkqGoBQPn+s4Mtg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dEzV6MltWttzj5FJTWY+yJyodDei8ViBbTpI4Xppr+9tWalDmAOinOg61OQQQfbOh
+	 9xnmcCQQp3yEEsglzoLs61TFk/0kiVHHr7O2wjC12aUUamN5oYpuh9oYr+5PGdU4yG
+	 jDJxWpnDfV8chx5HOlbKRSBQO7M+/S3fQCXZP4C4=
+Date: Thu, 7 Mar 2024 21:02:37 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	dan.j.williams@intel.com, ira.weiny@intel.com,
+	vishal.l.verma@intel.com, alison.schofield@intel.com,
+	Jonathan.Cameron@huawei.com, dave@stgolabs.net, rafael@kernel.org
+Subject: Re: [PATCH v6 02/12] base/node / ACPI: Enumerate node access class
+ for 'struct access_coordinate'
+Message-ID: <2024030729-ditch-stung-62ca@gregkh>
+References: <20240220231402.3156281-1-dave.jiang@intel.com>
+ <20240220231402.3156281-3-dave.jiang@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:B1KLFHgvBUA/1PWVazQcA7KyQurIENAqhMXKuSgnGfTB6TKorHW
- ZHwSid6Km3NV7GUhbz1ph8/1TKHVcXB6dD7vBg+jvElCYARMZ/5Hw2x6uBZVlAQy9gk5ZLV
- CJB7GjkAttNvl6v5dD0av9lsONBUZusSw2UnK1Qfkymo3xLd/O32AY70pYV7G+yX8HQ1EV+
- KC9kULR8ir2saG02l0D7A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4wi1RJYkdXk=;tRAdEKzXE8V8wR9rPtN9FACtYRW
- lvvlBw1YqPTZH0lUW4DEyOzTKtSXoHo5gHtKNHUCpJjcOooUgQUiKPtHqO6Cw0b2F49w6QBsg
- irzXd/1Hw9t+Hy2uIg7+W+RVukACQ21Z1+cNm7yLCfeWHhULZhUwXvZB1gX7eTnnVk+nVzXdE
- /T4DbBY29eny50i7tDQpJOq80LnLLfzrF25xIfmTY9O646qn5kAFkFwJozqibVSUROUZmGDtz
- qB3A0NdCE7ct8vHnEAOj2ERrFjAykdmDQ+ztfUe8FwriH6FYD/y1jOEhvkQejdBXvKS6CO6xu
- GwnIrkwokIrgYNMOfllTsOeSlxH2uH8p2EXxjgx/Jq0GeeOv9H85exE1vDkHt+64menvGcObA
- Yo59uzSVi1pnMO2R7JBjvfvXXU4uRPXMlU4LiNYVZFgdNWppH8E0Ve4hCDYQJoCxB+PQRhPkL
- KEzLU9ykViOJd0xsyGac+K8g7DKwwBHxhBZ/DmNtBFoREgp7VzFPuCy6NQr+XSVWUpalhwKx6
- QYpNHGptWjet4ggYHxe+OT/FF6cYs58OIRc4leVY87xklcOdfRjbAobM0eDTn+RgI3nv8iqxf
- s1ucSLQ3pA1Jvn6V3mxwsLxF20ARn5vQ3DYNE54xqQASw5VM6WhvsocuqLrfbqnf7+sOjr9ik
- KmAcqtIba1HGpVvluVJfLwixi+Diot2JCvJClmnQWJYSsfmNVaro8TbNraXO1H/Kcjlc8X8kl
- NFzYsvxGsailVgY5FfXyNNpnDCYOMA1Lt/nmz7Yj0A0n9o6Cs68LaC0AQtnEZq99z0iJuFviH
- 8d7VFiTQmNDiaJ0mOyQz6QEzhY4bIlWejT85CQzNKfsUk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220231402.3156281-3-dave.jiang@intel.com>
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by ec_read()/ec_write(), then AE_OK is wrongly returned.
+On Tue, Feb 20, 2024 at 04:12:31PM -0700, Dave Jiang wrote:
+> Both generic node and HMAT handling code have been using magic numbers to
+> indicate access classes for 'struct access_coordinate'. Introduce enums to
+> enumerate the access0 and access1 classes shared by the two subsystems.
+> Update the function parameters and callers as appropriate to utilize the
+> new enum.
+> 
+> Access0 is named to ACCESS_COORDINATE_LOCAL in order to indicate that the
+> access class is for 'struct access_coordinate' between a target node and
+> the nearest initiator node.
+> 
+> Access1 is named to ACCESS_COORDINATE_CPU in order to indicate that the
+> access class is for 'struct access_coordinate' between a target node and
+> the nearest CPU node.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 
-Fix this by only returning AE_OK if the return code is 0, and
-return AE_ERROR otherwise.
-
-Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/platform/x86/wmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index e542aef825a3..ad82a96ed145 100644
-=2D-- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -1216,8 +1216,10 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physic=
-al_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
-
-=2D-
-2.39.2
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
