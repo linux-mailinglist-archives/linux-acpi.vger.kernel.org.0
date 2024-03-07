@@ -1,161 +1,208 @@
-Return-Path: <linux-acpi+bounces-4156-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4149-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588598749FD
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 09:44:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3A48749AF
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 09:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 618F01C21C68
-	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 08:44:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D4CB20ABB
+	for <lists+linux-acpi@lfdr.de>; Thu,  7 Mar 2024 08:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5CC82C8E;
-	Thu,  7 Mar 2024 08:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5E7823D7;
+	Thu,  7 Mar 2024 08:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="gW+LiIMh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="q9x+Oejp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/shuUL/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3E780C1F;
-	Thu,  7 Mar 2024 08:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6925074262;
+	Thu,  7 Mar 2024 08:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709801071; cv=none; b=NVWgiL67RMxEBQtm/Z5hcUhYculAFhozX2N9Ks3sJ2GVRnz59PIUsDOeKpg7F4aBP5HoIzjSoh08ysENo7eGRpb+EUnpdn8qgZx3Jo1axB5qJ6uFzKR7xirIgxt3cL/b/jIfDTEl0bie1w0WGB5G/Jc9ViQGSFkD3y02vDrri8Y=
+	t=1709800470; cv=none; b=g4ibSAvVrLdCjc7XBkVBwiYNSisduH7UFDwDtINrVmH26TK3YLfNjyal7LqgT3pHmsJdhTRjCiCMNNeIPn5oaRlyDZyEUjkGro60fX+7B2aO4RbY76C8zI74eENBLRXHn12KFu/iFX0vdWE87EVhqrtxIblzuTS+SaEZuJgG6v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709801071; c=relaxed/simple;
-	bh=TImqIAoJvStQdyHuXOudqUE7tZvk0JApfWvejmmmwpM=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=p2+ZFc51lddYbywY6VWdF9f6HxP6m3Rirk1ldGK2qmn3Mqc4CB4jB/bZ7pHVJpF7PpSHhTWwfuLcMJPCfJZzbnCN7hYzUq/QlECp5LB0a7G+8KMKZpaNlBZiweOaAFJ6SqhCtU4XaZM9a9Fj4QYvi1u2Aq1Epgg6yo2suiKmrJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=gW+LiIMh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=q9x+Oejp; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 6F05E18000AB;
-	Thu,  7 Mar 2024 03:44:25 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Thu, 07 Mar 2024 03:44:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1709801064; x=1709887464; bh=3x5EJge/Em
-	DoFbef/njqgwd3SUh9kx0m4dgwsd9pvxQ=; b=gW+LiIMhZ5dX+1y2jIuxu8urAV
-	I+94yqHIdHWJxG0UXkjcYfSOK6dQsSOi32Iv+aP7Jv5/JYJtlX6Y5i7goqvdlytM
-	5pH5oDSV6mBMltpmG6VaGNsrWcuIA4ebtVZDEUoTyIneh7XWkqr6OYzvd1m+i/pd
-	U9b90JwQgECo6EShjOk3WeNFU+mqUsAbjPHJ+E5EKY4Xn3fhanYASY54RzDB9T+L
-	jumYGX8OD4uGLR5hDXLkrmXLYo3zegUM0FfiSw0CytA7jfXHG/Nag2EX7RC8ZM29
-	P7z/fNb/NhuWWXmbYPHnL1L6azxhgE2vD1X4RmENlHy8M3DBh+a7scqE/Waw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1709801064; x=1709887464; bh=3x5EJge/EmDoFbef/njqgwd3SUh9
-	kx0m4dgwsd9pvxQ=; b=q9x+OejpwtxbInNV1pB+5UsW7B1Gw4/FdTM3Lrx85V09
-	tdnjq2nB4gxHdPkLexUIzWthuucc9iHoAF90BtEFSoLKWf9CWdFkTdPQ3qijhNth
-	Mj6amIrIcPhvwecUdxtRmy1ogm74ZRahxuuuedS+Pu6MjxqnFU91Qf96aDxvjFnU
-	Yh18JOHQxwrluTDgkI+Bj+ANNzWuIWfmCtLSJAPLRPnsqzpJnVrCIRUnrx2pQ1fH
-	eItLh4mm5V9ECSZAwNzt4q8IZXVkoDTvggYwWdgl41eSrwG/C2suz1RfEyOdmI7P
-	b5g0/2Ox+LDS2ZrirDM+E+c8dkomK51laVaVmgwV1g==
-X-ME-Sender: <xms:aH7pZQRMTZnFz-kMyHV_9d4-GkQ2_djj4i8jWTM-XNQPbrPvngIyiQ>
-    <xme:aH7pZdwR24tzB5RUIHDCB7PsVwoBT_PabPcsOyxqa2ingmIDh7Vg8Xl2hqGOK8Ytl
-    RT4xwU0TXul7CpzhiY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledriedvgdduvddvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:aH7pZd2agpRhZ7xsM1ATy3YKuwahGSz9xgCYItToeCPtFbApie4mrw>
-    <xmx:aH7pZUDqXUFNDhPSfBf4_cs6UUiHfHtDnqKgZ_asrswjo97rznzNfg>
-    <xmx:aH7pZZgBtuTvRxv0bmng63ucxota81RZhVR3D0hHA_s6u20_sf1YPA>
-    <xmx:aH7pZaGW_1q3sGd-4J14uI4cgPzvA_M0NAq9q0f446gyEUjUSUDroLfb2fQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 2E7F5B6008D; Thu,  7 Mar 2024 03:44:23 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-251-g8332da0bf6-fm-20240305.001-g8332da0b
+	s=arc-20240116; t=1709800470; c=relaxed/simple;
+	bh=xxeOUPpVmvNkXIEHbrtGfOjB9ivL0JFCLXLAfH8o+c4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JMBFQhDSokTAStJ4oP6jHZZNfvjhxyIRrO0eG3GzPVZjeqX9oF9naquLgBT0inSAOiQN9PGjJJEfoL7CYg9nbWqttWE/rmnZg8FQqclBJs5b7c5Is2V1/ZBaT63EmKUDMdP4dpg+tpCLri4x4yxdI365+ax+EUdbwnz2YJGprX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/shuUL/; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709800468; x=1741336468;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=xxeOUPpVmvNkXIEHbrtGfOjB9ivL0JFCLXLAfH8o+c4=;
+  b=m/shuUL/Tw1OkGP496tfpiF5EkzXaoKBu53H89R835rtG1HpBA2UzAv0
+   mG3MRhGsX9/GlEJTWSG3h9EYPtfDrPswKu8Z+eBeT36fgONH9x0HXWa8K
+   +EqI+GgyQBrJ3xhCCXcn8bkWkMrpks/+TGbkay2sHRHdXG7r1hvOSLB3L
+   O29lmE0E4E/LJubnc4GjxYupmcryDa4TtSje7xE1KGlePHxD8xEe+00b/
+   Q3nBRlXnB2J4Uc3UJPou6bAILWuPs7nYUy0hBp5LvZERqDf5h+uQDdkYX
+   uZ9akC8sIQgDyQU1VFSVbu22PdFygAE8jUhaxGS78OE2nssIkO280y7jN
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4600264"
+X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
+   d="scan'208";a="4600264"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 00:34:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,210,1705392000"; 
+   d="scan'208";a="14699530"
+Received: from haibo-optiplex-7090.sh.intel.com ([10.239.159.132])
+  by orviesa004.jf.intel.com with ESMTP; 07 Mar 2024 00:34:17 -0800
+From: Haibo Xu <haibo1.xu@intel.com>
+To: 
+Cc: xiaobo55x@gmail.com,
+	ajones@ventanamicro.com,
+	sunilvl@ventanamicro.com,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Greentime Hu <greentime.hu@sifive.com>,
+	Baoquan He <bhe@redhat.com>,
+	Evan Green <evan@rivosinc.com>,
+	Zong Li <zong.li@sifive.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Chen Jiahao <chenjiahao16@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	James Morse <james.morse@arm.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH v2 0/6] Add ACPI NUMA support for RISC-V
+Date: Thu,  7 Mar 2024 16:47:52 +0800
+Message-Id: <cover.1709780590.git.haibo1.xu@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c9e9da9f-ff81-48eb-beec-4f54921cd268@app.fastmail.com>
-In-Reply-To: 
- <f23da383a8fdbee15acd41fdcd38ef3a89045a43.1709780590.git.haibo1.xu@intel.com>
-References: <cover.1709780590.git.haibo1.xu@intel.com>
- <f23da383a8fdbee15acd41fdcd38ef3a89045a43.1709780590.git.haibo1.xu@intel.com>
-Date: Thu, 07 Mar 2024 09:44:03 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Haibo Xu" <haibo1.xu@intel.com>
-Cc: "Alison Schofield" <alison.schofield@intel.com>,
- "Jisheng Zhang" <jszhang@kernel.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- =?UTF-8?Q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>,
- "Conor.Dooley" <conor.dooley@microchip.com>, guoren <guoren@kernel.org>,
- "Zong Li" <zong.li@sifive.com>, "James Morse" <james.morse@arm.com>,
- linux-riscv@lists.infradead.org, "Ard Biesheuvel" <ardb@kernel.org>,
- "Baoquan He" <bhe@redhat.com>, acpica-devel@lists.linux.dev,
- "Robert Moore" <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
- "Sami Tolvanen" <samitolvanen@google.com>,
- "Greentime Hu" <greentime.hu@sifive.com>,
- "Dan Williams" <dan.j.williams@intel.com>, "Len Brown" <lenb@kernel.org>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alexghiti@rivosinc.com>,
- "Charlie Jenkins" <charlie@rivosinc.com>,
- "Chen Jiahao" <chenjiahao16@huawei.com>,
- "Yuntao Wang" <ytcoode@gmail.com>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- =?UTF-8?Q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>,
- "Haibo Xu" <xiaobo55x@gmail.com>, "Anup Patel" <apatel@ventanamicro.com>,
- "Tony Luck" <tony.luck@intel.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org,
- "Samuel Holland" <samuel.holland@sifive.com>,
- "Evan Green" <evan@rivosinc.com>, "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Andrew Jones" <ajones@ventanamicro.com>
-Subject: Re: [PATCH v2 5/6] ACPI: NUMA: Remove ARCH depends option in ACPI_NUMA Kconfig
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 7, 2024, at 09:47, Haibo Xu wrote:
-> x86/arm64/loongarch would select ACPI_NUMA by default and riscv
-> would do the same thing, so the dependency is no longer needed
-> since these are the four architectures that support ACPI.
->
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Suggested-by: Sunil V L <sunilvl@ventanamicro.com>
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> ---
->  drivers/acpi/numa/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
-> index 849c2bd820b9..2bf47ad1ec9b 100644
-> --- a/drivers/acpi/numa/Kconfig
-> +++ b/drivers/acpi/numa/Kconfig
-> @@ -2,7 +2,6 @@
->  config ACPI_NUMA
->  	bool "NUMA support"
->  	depends on NUMA
-> -	depends on (X86 || ARM64 || LOONGARCH)
->  	default y if ARM64
+This patch series enable RISC-V ACPI NUMA support which was based on
+the recently approved ACPI ECR[1].
 
-Can we remove the prompt as well and make this a
-hidden option? I think this is now always selected
-when it can be used anyway.
+Patch 1/6 is generated from the acpica PR[2] and should be merged through
+the acpica project. Due to this dependency, other 5 patches can only be
+merged after the corresponding ACPICA patch was pulled into linux.
 
-If we make it
+Patch 2/6 add RISC-V specific acpi_numa.c file to parse NUMA information
+from SRAT and SLIT ACPI tables.
+Patch 3/6 add the common SRAT RINTC affinity structure handler.
+Patch 4/6 remove the '#if defined(CONFIG_ARCH)' condition to make some NUMA
+related parse functions common for all current architectures that support
+ACPI_NUMA
+Patch 5/6 remove ARCH depends option in ACPI_NUMA Kconfig which was no
+longer needed since all the current architectures that support ACPI would
+select ACPI_NUMA by default.
+Patch 6/6 add corresponding ACPI_NUMA config for RISC-V Kconfig.
 
-      def_bool NUMA && !X86
+Based-on: https://github.com/linux-riscv/linux-riscv/tree/for-next
 
-then the select statements except for the X86_64_ACPI_NUMA
-can also go away.
+[1] https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view?usp=sharing
+[2] https://github.com/acpica/acpica/pull/926
 
-      Arnd
+Testing:
+Since the ACPI AIA/PLIC support patch set is still under upstream review,
+hence it is tested using the poll based HVC SBI console and RAM disk.
+1) Build latest Qemu with the following patch backported
+   https://lore.kernel.org/all/20240129094200.3581037-1-haibo1.xu@intel.com/
+   https://github.com/vlsunil/qemu/commit/42bd4eeefd5d4410a68f02d54fee406d8a1269b0
+
+2) Build latest EDK-II
+   https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+
+3) Build Linux with the following configs enabled
+   CONFIG_RISCV_SBI_V01=y
+   CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+   CONFIG_HVC_RISCV_SBI=y
+   CONFIG_NUMA=y
+   CONFIG_ACPI_NUMA=y
+
+4) Build buildroot rootfs.cpio
+
+5) Launch the Qemu machine
+   qemu-system-riscv64 -nographic \
+   -machine virt,pflash0=pflash0,pflash1=pflash1 -smp 4 -m 8G \
+   -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+   -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+   -object memory-backend-ram,size=4G,id=m0 \
+   -object memory-backend-ram,size=4G,id=m1 \
+   -numa node,memdev=m0,cpus=0-1,nodeid=0 \
+   -numa node,memdev=m1,cpus=2-3,nodeid=1 \
+   -numa dist,src=0,dst=1,val=30 \
+   -kernel linux/arch/riscv/boot/Image \
+   -initrd buildroot/output/images/rootfs.cpio \
+   -append "root=/dev/ram ro console=hvc0 earlycon=sbi"
+
+[    0.000000] ACPI: SRAT: Node 0 PXM 0 [mem 0x80000000-0x17fffffff]
+[    0.000000] ACPI: SRAT: Node 1 PXM 1 [mem 0x180000000-0x27fffffff]
+[    0.000000] NUMA: NODE_DATA [mem 0x17fe3bc40-0x17fe3cfff]
+[    0.000000] NUMA: NODE_DATA [mem 0x27fff4c40-0x27fff5fff]
+...
+[    0.000000] ACPI: NUMA: SRAT: PXM 0 -> HARTID 0x0 -> Node 0
+[    0.000000] ACPI: NUMA: SRAT: PXM 0 -> HARTID 0x1 -> Node 0
+[    0.000000] ACPI: NUMA: SRAT: PXM 1 -> HARTID 0x2 -> Node 1
+[    0.000000] ACPI: NUMA: SRAT: PXM 1 -> HARTID 0x3 -> Node 1
+
+---
+Changes since v1
+  - Switch the order of patch 2/4 and 3/4 - Per Sunil's suggestion
+  - Add a new patch 4/6 to make some NUMA related parse functions common
+    for all the architectures that support ACPI NUMA - Per Sunil's suggestion
+  - Add a new patch 5/6 to remove ARCH depends option in ACPI_NUMA
+    Kconfig since all the current architectures that support ACPI
+    would select ACPI_NUMA by default - Per Arnd and Sunil's suggestion
+  - Other minor fix for code format - Per Sunil's comments
+
+Haibo Xu (6):
+  ACPICA: SRAT: Add RISC-V RINTC affinity structure
+  ACPI: RISCV: Add NUMA support based on SRAT and SLIT
+  ACPI: NUMA: Add handler for SRAT RINTC affinity structure
+  ACPI: NUMA: Make some NUMA related parse functions common
+  ACPI: NUMA: Remove ARCH depends option in ACPI_NUMA Kconfig
+  ACPI: RISCV: Enable ACPI based NUMA
+
+ arch/riscv/Kconfig            |   1 +
+ arch/riscv/include/asm/acpi.h |  15 +++-
+ arch/riscv/kernel/Makefile    |   1 +
+ arch/riscv/kernel/acpi.c      |   5 --
+ arch/riscv/kernel/acpi_numa.c | 131 ++++++++++++++++++++++++++++++++++
+ arch/riscv/kernel/setup.c     |   4 +-
+ arch/riscv/kernel/smpboot.c   |   2 -
+ drivers/acpi/numa/Kconfig     |   1 -
+ drivers/acpi/numa/srat.c      |  40 ++++++++---
+ include/acpi/actbl3.h         |  18 ++++-
+ include/linux/acpi.h          |   6 ++
+ 11 files changed, 203 insertions(+), 21 deletions(-)
+ create mode 100644 arch/riscv/kernel/acpi_numa.c
+
+-- 
+2.34.1
+
 
