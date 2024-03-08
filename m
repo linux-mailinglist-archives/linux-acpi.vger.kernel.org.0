@@ -1,40 +1,47 @@
-Return-Path: <linux-acpi+bounces-4173-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4174-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1371F875D22
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 05:25:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03255875D40
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 05:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDFEE2824EF
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 04:25:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B620B1C20BDD
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 04:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56D02D022;
-	Fri,  8 Mar 2024 04:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4CD2D611;
+	Fri,  8 Mar 2024 04:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Rfet6cuv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051E42CCB3;
-	Fri,  8 Mar 2024 04:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141C12C1A6;
+	Fri,  8 Mar 2024 04:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709871938; cv=none; b=m2caIaamKAI7oS+mzYIsREeSWClZjGs1LZuHEFzX5ycNQjCsOkhcdi5UsCuJzLsrNinpBPXee8ZSpocCim4lqTdlatSurQmfOJD96yRqa0hwaMJ60Hd115swlti4QJZMuMYON0TsF/5thxku3zJXy9uVVCYlZWoTUKdCFOO7Lqo=
+	t=1709873384; cv=none; b=T3cV6s7e7lSUd5+pLH7n2UM/KK+J+tzGYu3v/qdD1/ks1045caN3seivM7Gdxxdm3WLS3aNiUyunLsPQnXxWCrXypGzaLP/s1QS43mvTXfFmV1q/3I2xNUbb0EALYtBokHAE6mQq8LqyR48ok9bBYHg+uqTuJ/9OslOJM4Ghdts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709871938; c=relaxed/simple;
-	bh=0s6LX4ZJqSwnluUC8+FNNjctrJML7EMT+rXaISsObuA=;
+	s=arc-20240116; t=1709873384; c=relaxed/simple;
+	bh=C7fGMxVCHCVaH+yWPQn7SeaE7kn0BDYqx0kmPz3bdSc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bg2eskdQUdCpeK/pMc/wpw2e4c/DrU0UDF+yQ7/cOM9TfPi4/uq0q1HQzEs6dIjtDZKrOyXL8Sbi2KuD7opmY0rIlrm9eBzU3y4992Sx7RWZ2FnHheaZW639pOxk2XhiHOa5Nm9fBNLHQhlLVIStCkZ8LJte1xoH1T3vWPZAmE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4CE81FB;
-	Thu,  7 Mar 2024 20:26:11 -0800 (PST)
-Received: from [10.162.41.20] (a077893.blr.arm.com [10.162.41.20])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DCDE13F738;
-	Thu,  7 Mar 2024 20:25:30 -0800 (PST)
-Message-ID: <a553951a-9432-4336-82a6-32fc338d0c91@arm.com>
-Date: Fri, 8 Mar 2024 09:55:27 +0530
+	 In-Reply-To:Content-Type; b=RFw994ji/YW9tINxqPnd4ZJSc+a6BRnDB7iX5F/xGgyG3yjRFSbfS8UGZGmzzENRXgARJFNnZqDvD0pymrt29Fy6l9Asxr5BwWOGXKXd4SW88it1WY8BsQPVo7uiszp97LUG68a1duOnlObqpZzvZOzc0vonC2iiVmNrK1iyo2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Rfet6cuv; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1709873379; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=cTn5awRb+yOa5Pwccwuxc60eJ89VlixI2n5TbpC45PI=;
+	b=Rfet6cuvnzIChn/P7l2TCgzGCs7bzDh8qWfagfFKt4ILczxkorp8NCexe/xIm2TKzhFFc6WQTrMYtD2Dm0lVPN5PVrpedphq6wxDCeM270sFvlpZxgJRz5FRIVq9koy6ZgbQZ9tR7yL/8VqnhJ55tr/jzGsM8EUrM9ZYvfHwxyI=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0W21SW6f_1709873377;
+Received: from 30.221.132.183(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0W21SW6f_1709873377)
+          by smtp.aliyun-inc.com;
+          Fri, 08 Mar 2024 12:49:38 +0800
+Message-ID: <7b804a97-3fa7-42af-8d15-30c99febc200@linux.alibaba.com>
+Date: Fri, 8 Mar 2024 12:49:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -42,395 +49,660 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 07/11] coresight: catu: Move ACPI support from AMBA
- driver to platform driver
+Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
 Content-Language: en-US
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
- <20240222082142.3663983-8-anshuman.khandual@arm.com>
- <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
- <c52865b2-8608-4a47-967a-6cf3e11b197a@arm.com>
- <2bd6ed98-fd58-42ef-8b86-fddac28df5c7@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <2bd6ed98-fd58-42ef-8b86-fddac28df5c7@arm.com>
-Content-Type: text/plain; charset=UTF-8
+To: Marc Zyngier <maz@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, lpieralisi@kernel.org,
+ guohanjun@huawei.com, sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
+ baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Tyler Baicar <baicar@os.amperecomputing.com>
+References: <20240304111517.33001-1-tianruidong@linux.alibaba.com>
+ <20240304111517.33001-2-tianruidong@linux.alibaba.com>
+ <86wmqi19pg.wl-maz@kernel.org>
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+In-Reply-To: <86wmqi19pg.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
-On 3/6/24 22:51, Suzuki K Poulose wrote:
-> On 06/03/2024 06:14, Anshuman Khandual wrote:
+在 2024/3/4 20:07, Marc Zyngier 写道:
+> On Mon, 04 Mar 2024 11:15:16 +0000,
+> Ruidong Tian <tianruidong@linux.alibaba.com> wrote:
 >>
+>> From: Tyler Baicar <baicar@os.amperecomputing.com>
 >>
->> On 3/5/24 23:02, Suzuki K Poulose wrote:
->>> On 22/02/2024 08:21, Anshuman Khandual wrote:
->>>> Add support for the catu devices in a new platform driver, which can then
->>>> be used on ACPI based platforms. This change would now allow runtime power
->>>> management for ACPI based systems. The driver would try to enable the APB
->>>> clock if available. But first this renames and then refactors catu_probe()
->>>> and catu_remove(), making sure it can be used both for platform and AMBA
->>>> drivers. This also moves pm_runtime_put() from catu_probe() to the callers.
->>>>
->>>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
->>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
->>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>> Cc: Mike Leach <mike.leach@linaro.org>
->>>> Cc: James Clark <james.clark@arm.com>
->>>> Cc: linux-acpi@vger.kernel.org
->>>> Cc: linux-arm-kernel@lists.infradead.org
->>>> Cc: linux-kernel@vger.kernel.org
->>>> Cc: coresight@lists.linaro.org
->>>> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
->>>> Reviewed-by: James Clark <james.clark@arm.com>
->>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->>>> ---
->>>> Changes in V5:
->>>>
->>>> - Updated commit message regarding catu_probe/remove() refactoring and renaming
->>>>
->>>>    drivers/acpi/arm64/amba.c                    |   1 -
->>>>    drivers/hwtracing/coresight/coresight-catu.c | 142 ++++++++++++++++---
->>>>    drivers/hwtracing/coresight/coresight-catu.h |   1 +
->>>>    3 files changed, 124 insertions(+), 20 deletions(-)
->>>>
->>>> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
->>>> index afb6afb66967..587061b0fd2f 100644
->>>> --- a/drivers/acpi/arm64/amba.c
->>>> +++ b/drivers/acpi/arm64/amba.c
->>>> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
->>>>        {"ARMHC503", 0}, /* ARM CoreSight Debug */
->>>>        {"ARMHC979", 0}, /* ARM CoreSight TPIU */
->>>>        {"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
->>>> -    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
->>>>        {"", 0},
->>>>    };
->>>>    diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
->>>> index 3949ded0d4fa..a3ea46b53898 100644
->>>> --- a/drivers/hwtracing/coresight/coresight-catu.c
->>>> +++ b/drivers/hwtracing/coresight/coresight-catu.c
->>>> @@ -7,6 +7,8 @@
->>>>     * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
->>>>     */
->>>>    +#include <linux/platform_device.h>
->>>> +#include <linux/acpi.h>
->>>>    #include <linux/amba/bus.h>
->>>>    #include <linux/device.h>
->>>>    #include <linux/dma-mapping.h>
->>>> @@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
->>>>        .helper_ops = &catu_helper_ops,
->>>>    };
->>>>    -static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->>>> +static int __catu_probe(struct device *dev, struct resource *res)
->>>>    {
->>>>        int ret = 0;
->>>>        u32 dma_mask;
->>>> -    struct catu_drvdata *drvdata;
->>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>>>        struct coresight_desc catu_desc;
->>>>        struct coresight_platform_data *pdata = NULL;
->>>> -    struct device *dev = &adev->dev;
->>>>        void __iomem *base;
->>>>          catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
->>>>        if (!catu_desc.name)
->>>>            return -ENOMEM;
->>>>    -    drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
->>>> -    if (!drvdata) {
->>>> -        ret = -ENOMEM;
->>>> -        goto out;
->>>> -    }
->>>> -
->>>> -    dev_set_drvdata(dev, drvdata);
->>>> -    base = devm_ioremap_resource(dev, &adev->res);
->>>> +    base = devm_ioremap_resource(dev, res);
->>>>        if (IS_ERR(base)) {
->>>>            ret = PTR_ERR(base);
->>>>            goto out;
->>>> @@ -567,19 +561,39 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->>>>        drvdata->csdev = coresight_register(&catu_desc);
->>>>        if (IS_ERR(drvdata->csdev))
->>>>            ret = PTR_ERR(drvdata->csdev);
->>>> -    else
->>>> -        pm_runtime_put(&adev->dev);
->>>>    out:
->>>>        return ret;
->>>>    }
->>>>    -static void catu_remove(struct amba_device *adev)
->>>> +static int catu_probe(struct amba_device *adev, const struct amba_id *id)
->>>>    {
->>>> -    struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
->>>> +    struct catu_drvdata *drvdata;
->>>> +    int ret;
->>>> +
->>>> +    drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
->>>> +    if (!drvdata)
->>>> +        return -ENOMEM;
->>>> +
->>>> +    amba_set_drvdata(adev, drvdata);
->>>> +    ret = __catu_probe(&adev->dev, &adev->res);
->>>> +    if (!ret)
->>>> +        pm_runtime_put(&adev->dev);
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>> +static void __catu_remove(struct device *dev)
->>>> +{
->>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>>>          coresight_unregister(drvdata->csdev);
->>>>    }
->>>>    +static void catu_remove(struct amba_device *adev)
->>>> +{
->>>> +    __catu_remove(&adev->dev);
->>>> +}
->>>> +
->>>>    static struct amba_id catu_ids[] = {
->>>>        CS_AMBA_ID(0x000bb9ee),
->>>>        {},
->>>> @@ -598,13 +612,103 @@ static struct amba_driver catu_driver = {
->>>>        .id_table            = catu_ids,
->>>>    };
->>>>    +static int catu_platform_probe(struct platform_device *pdev)
->>>> +{
->>>> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>>> +    struct catu_drvdata *drvdata;
->>>> +    int ret = 0;
->>>> +
->>>> +    drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
->>>> +    if (!drvdata)
->>>> +        return -ENOMEM;
->>>> +
->>>> +    drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
->>>> +    if (IS_ERR(drvdata->pclk))
->>>> +        return -ENODEV;
->>>
->>>
->>> ---8>---
->>>
->>>> +
->>>> +    if (res) {
->>>> +        drvdata->base = devm_ioremap_resource(&pdev->dev, res);
->>>> +        if (IS_ERR(drvdata->base)) {
->>>> +            clk_put(drvdata->pclk);
->>>> +            return PTR_ERR(drvdata->base);
->>>> +        }
->>>> +    }
->>>
->>> ---<8---
->>>
->>> The above section seems unncessary as we already try to map the base in __catu_probe ?
+>> Add support for parsing the ARM Error Source Table and basic handling of
+>> errors reported through both memory mapped and system register interfaces.
 >>
->> Agreed, though it seems unnecessary, there is a small difference in there. In the platform
->> driver case i.e catu_platform_probe(), clk_put() is called on platform clock drvdata->pclk
->> (just enabled earlier) for cases when devm_ioremap_resource() fails.
+>> Assume system register interfaces are only registered with private
+>> peripheral interrupts (PPIs); otherwise there is no guarantee the
+>> core handling the error is the core which took the error and has the
+>> syndrome info in its system registers.
 >>
->> To remove this redundancy, let's move devm_ioremap_resource() into it's AMBA caller i.e
->> catu_probe() thus dropping struct resource argument from __catu_probe(). Similar situation
->> is present in coresight-cpu-debug driver as well, will fix that.
+>> All detected errors will be collected to a workqueue in irq context and
+>> print error information later.
 >>
->> But there are some other drivers in the series where coresight_get_enable_apb_pclk() called
->> on 'drvdata->pclk' and devm_ioremap_resource() is attempted inside the factored __xxx_probe()
->> function which is common for both AMBA and platform drivers.
+>> Signed-off-by: Tyler Baicar <baicar@os.amperecomputing.com>
+>> Signed-off-by: Ruidong Tian <tianruidong@linux.alibaba.com>
+>> ---
+>>   MAINTAINERS                  |  11 +
+>>   arch/arm64/include/asm/ras.h |  38 ++
+>>   drivers/acpi/arm64/Kconfig   |  10 +
+>>   drivers/acpi/arm64/Makefile  |   1 +
+>>   drivers/acpi/arm64/aest.c    | 723 +++++++++++++++++++++++++++++++++++
+>>   include/linux/acpi_aest.h    |  91 +++++
+>>   include/linux/cpuhotplug.h   |   1 +
+>>   7 files changed, 875 insertions(+)
+>>   create mode 100644 arch/arm64/include/asm/ras.h
+>>   create mode 100644 drivers/acpi/arm64/aest.c
+>>   create mode 100644 include/linux/acpi_aest.h
 >>
->> Such drivers are ...
->>
->> - tpiu
->> - tmc
->> - stm
->> - replicator
->>
->> IMHO it would be better to follow same scheme for all drivers in the series. Please do let
->> me know which method will be preferred.
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 2a7a90eeec49..5df845763a9c 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -329,6 +329,17 @@ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>>   S:	Maintained
+>>   F:	drivers/acpi/arm64
+>>   
+>> +ACPI AEST
+>> +M:	Tyler Baicar <baicar@os.amperecomputing.com>
+>> +M:	Ruidong Tian <tianruidond@linux.alibaba.com>
+>> +L:	linux-acpi@vger.kernel.org
+>> +L:	linux-arm-kernel@lists.infradead.org
+>> +S:	Supported
+>> +F:	arch/arm64/include/asm/ras.h
+>> +F:	drivers/acpi/arm64/aest.c
+>> +F:	include/linux/acpi_aest.h
+>> +
+>> +
+>>   ACPI FOR RISC-V (ACPI/riscv)
+>>   M:	Sunil V L <sunilvl@ventanamicro.com>
+>>   L:	linux-acpi@vger.kernel.org
+>> diff --git a/arch/arm64/include/asm/ras.h b/arch/arm64/include/asm/ras.h
+>> new file mode 100644
+>> index 000000000000..2fb0d9741567
+>> --- /dev/null
+>> +++ b/arch/arm64/include/asm/ras.h
+>> @@ -0,0 +1,38 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef __ASM_RAS_H
+>> +#define __ASM_RAS_H
+>> +
+>> +#include <linux/types.h>
+>> +#include <linux/bits.h>
+>> +
+>> +#define ERR_STATUS_AV		BIT(31)
+>> +#define ERR_STATUS_V		BIT(30)
+>> +#define ERR_STATUS_UE		BIT(29)
+>> +#define ERR_STATUS_ER		BIT(28)
+>> +#define ERR_STATUS_OF		BIT(27)
+>> +#define ERR_STATUS_MV		BIT(26)
+>> +#define ERR_STATUS_CE		(BIT(25) | BIT(24))
+>> +#define ERR_STATUS_DE		BIT(23)
+>> +#define ERR_STATUS_PN		BIT(22)
+>> +#define ERR_STATUS_UET		(BIT(21) | BIT(20))
+>> +#define ERR_STATUS_CI		BIT(19)
+>> +#define ERR_STATUS_IERR 	GENMASK_ULL(15, 8)
+>> +#define ERR_STATUS_SERR 	GENMASK_ULL(7, 0)
 > 
-> Lets pass the "res" to the common probe and deal it there.
+> All these bits need to be defined in arch/arm64/tools/sysreg as
+> ERXSTATUS_EL1 fields.
 
-Sure, but then will have to deal with drvdata->pclk in the caller, where it was originally
-acquired, when the __xxxx_probe() fails. For example - in case with the debug cpu driver,
-following changes will be required.
-
-diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-index 68d077174a6a..2d77f9a17692 100644
---- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
-+++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-@@ -577,11 +577,11 @@ static int __debug_probe(struct device *dev, struct resource *res)
-        }
- 
-        drvdata->dev = dev;
--
--       /* Validity for the resource is already checked by the AMBA core */
--       base = devm_ioremap_resource(dev, res);
--       if (IS_ERR(base))
--               return PTR_ERR(base);
-+       if (res) {
-+               base = devm_ioremap_resource(dev, res);
-+               if (IS_ERR(base))
-+                       return PTR_ERR(base);
-+       }
- 
-        drvdata->base = base;
- 
-@@ -703,14 +703,6 @@ static int debug_platform_probe(struct platform_device *pdev)
-        if (IS_ERR(drvdata->pclk))
-                return -ENODEV;
- 
--       if (res) {
--               drvdata->base = devm_ioremap_resource(&pdev->dev, res);
--               if (IS_ERR(drvdata->base)) {
--                       clk_put(drvdata->pclk);
--                       return PTR_ERR(drvdata->base);
--               }
--       }
--
-        dev_set_drvdata(&pdev->dev, drvdata);
-        pm_runtime_get_noresume(&pdev->dev);
-        pm_runtime_set_active(&pdev->dev);
-@@ -720,6 +712,8 @@ static int debug_platform_probe(struct platform_device *pdev)
-        if (ret) {
-                pm_runtime_put_noidle(&pdev->dev);
-                pm_runtime_disable(&pdev->dev);
-+               if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+                       clk_put(drvdata->pclk);
-        }
-        return ret;
-
->>
->>>
->>>> +
->>
->>>> +    pm_runtime_get_noresume(&pdev->dev);
->>>> +    pm_runtime_set_active(&pdev->dev);
->>>> +    pm_runtime_enable(&pdev->dev);
->>>> +
->>>> +    dev_set_drvdata(&pdev->dev, drvdata);
->>>> +    ret = __catu_probe(&pdev->dev, res);
->>>> +    pm_runtime_put(&pdev->dev);
->>>> +    if (ret)
->>>> +        pm_runtime_disable(&pdev->dev);
->>>> +
->>>> +    return ret;
->>>> +}
->>>> +
->>>> +static int catu_platform_remove(struct platform_device *pdev)
->>>> +{
->>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
->>>> +
->>>> +    if (drvdata)
->>>> +        __catu_remove(&pdev->dev);
->>>
->>> I don't understand the need for if () check here (and on all the other drivers). Even if we have a drvdata != NULL, what guarantees that
->>> the drvdata->csdev is valid (which is used in xx_remove) ?
->>
->> Agreed, although drvdata is derived in __xxx_remove() functions, a pre-check here is not
->> required - similar to the AMBA remove path. Sure, will drop them across drivers.
-> 
-> No, my point is : Is there a case where :
-> 
-> 1) drvdata == NULL, but we have a device to do some cleanup ?
-
-NO, I don't believe there are any such cases.
-
-> 2) If drvdata != NULL, but drvdata->csdev is not valid, because we failed to register the coresight device ?
-
-I don't believe so. If drvdata->csdev is not valid because coresight_register() has failed,
-that would have also failed driver' probe() as well. Hence driver remove() could not have
-been called in such situations.
+This file only describes the system register, but RAS MMIO registers
+use these bits too. Would it be appropriate to define them in
+arch/arm64/tools/sysreg?
 
 > 
+>> +
+>> +/* These bit is write-one-to-clear */
+>> +#define ERR_STATUS_W1TC 	(ERR_STATUS_AV | ERR_STATUS_V | ERR_STATUS_UE | \
+>> +				ERR_STATUS_ER | ERR_STATUS_OF | ERR_STATUS_MV | \
+>> +				ERR_STATUS_CE | ERR_STATUS_DE | ERR_STATUS_PN | \
+>> +				ERR_STATUS_UET | ERR_STATUS_CI)
+>> +
+>> +#define RAS_REV_v1_1		0x1
 > 
-> Suzuki
+> What is this? We already have ID_AA64PFR1_EL1.RAS_frac.
+
+I will delete it in v2.
+
+> 
+>> +
+>> +struct ras_ext_regs {
+>> +	u64 err_fr;
+>> +	u64 err_ctlr;
+>> +	u64 err_status;
+>> +	u64 err_addr;
+>> +	u64 err_misc[4];
+>> +};
+>> +
+>> +#endif	/* __ASM_RAS_H */
+>> diff --git a/drivers/acpi/arm64/Kconfig b/drivers/acpi/arm64/Kconfig
+>> index b3ed6212244c..639db671c5cf 100644
+>> --- a/drivers/acpi/arm64/Kconfig
+>> +++ b/drivers/acpi/arm64/Kconfig
+>> @@ -21,3 +21,13 @@ config ACPI_AGDI
+>>   
+>>   config ACPI_APMT
+>>   	bool
+>> +
+>> +config ACPI_AEST
+>> +	bool "ARM Error Source Table Support"
+>> +
+>> +	help
+>> +	  The Arm Error Source Table (AEST) provides details on ACPI
+>> +	  extensions that enable kernel-first handling of errors in a
+>> +	  system that supports the Armv8 RAS extensions.
+>> +
+>> +	  If set, the kernel will report and log hardware errors.
+>> diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
+>> index 726944648c9b..5ea82b196b90 100644
+>> --- a/drivers/acpi/arm64/Makefile
+>> +++ b/drivers/acpi/arm64/Makefile
+>> @@ -6,3 +6,4 @@ obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
+>>   obj-$(CONFIG_ARM_AMBA)		+= amba.o
+>>   obj-y				+= dma.o init.o
+>>   obj-y				+= thermal_cpufreq.o
+>> +obj-$(CONFIG_ACPI_AEST) 	+= aest.o
+>> diff --git a/drivers/acpi/arm64/aest.c b/drivers/acpi/arm64/aest.c
+>> new file mode 100644
+>> index 000000000000..be0883316449
+>> --- /dev/null
+>> +++ b/drivers/acpi/arm64/aest.c
+>> @@ -0,0 +1,723 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * ARM Error Source Table Support
+>> + *
+>> + * Copyright (c) 2021, Ampere Computing LLC
+>> + * Copyright (c) 2021-2024, Alibaba Group.
+>> + */
+>> +
+>> +#include <linux/acpi.h>
+>> +#include <linux/acpi_aest.h>
+>> +#include <linux/cpuhotplug.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/genalloc.h>
+>> +#include <linux/llist.h>
+>> +#include <acpi/actbl.h>
+>> +#include <asm/ras.h>
+>> +
+>> +#undef pr_fmt
+>> +#define pr_fmt(fmt) "ACPI AEST: " fmt
+>> +
+>> +#define CASE_READ_CLEAR(x, clear)					\
+>> +	case (x): {							\
+>> +		res = read_sysreg_s(SYS_##x##_EL1);			\
+>> +		if (clear)						\
+>> +			write_sysreg_s(0, SYS_##x##_EL1);		\
+>> +		break;							\
+>> +	}
+> 
+> Please don't use macros with side effects. This is horrible to debug.
+> Instead, *return* the value from the macro, or pass the variable you
+> want to affect as a parameter.
+
+OK, I will pass **res** as a parameter like this:
+
+   #define CASE_READ_CLEAR(res, x, clear)        \
+       case (x): {                        	\
+           res = read_sysreg_s(SYS_##x##_EL1);   \
+           if (clear)                       	\
+               write_sysreg_s(0, SYS_##x##_EL1); \
+           break;                    		\
+       }
+
+> 
+> Also, what ensures the synchronisation of this write? How is the W1TC
+> aspect enforced?
+
+aest_proc is just call in irq context, one ras error is just routed to
+one core, so it is thread safe. And this is a Write-After-Read (WAR)
+Hazards with dependence，can i assume that pipeline would guarantee
+the order of writing and reading?
+
+> 
+>> +
+>> +#define CASE_WRITE(val, x)						\
+>> +	case (x): {							\
+>> +		write_sysreg_s((val), SYS_##x##_EL1);			\
+>> +		break;							\
+>> +	}
+>> +
+>> +static struct acpi_table_header *aest_table;
+>> +
+>> +static struct aest_node __percpu **ppi_data;
+>> +
+>> +static int *ppi_irqs;
+>> +static u8 num_ppi;
+>> +static u8 ppi_idx;
+>> +
+>> +static struct work_struct aest_work;
+>> +
+>> +static struct gen_pool *aest_node_pool;
+>> +static struct llist_head aest_node_llist;
+>> +
+>> +/*
+>> + * This memory pool is only to be used to save AEST node in AEST irq context.
+>> + * Use 8 pages to save AEST node for now (~500 AEST node at most).
+>> + */
+>> +#define AEST_NODE_POOLSZ	(8 * PAGE_SIZE)
+> 
+> This doesn't make sense. PAGE_SIZE is a variable concept (ranging from
+> 4 to 64kB). What is this "~500" number coming from? If you want to
+> store a given number of records, allocate the size you actually want.
+
+Use AEST_NODE_MAX_NUM as the max number AEST nodes can be allocated in
+genpool instead of AEST_NODE_POOLSZ in v2.
+
+> 
+>> +
+>> +static u64 aest_sysreg_read_clear(u64 base, u32 offset, bool clear)
+>> +{
+>> +	u64 res;
+>> +
+>> +	switch (offset) {
+>> +	CASE_READ_CLEAR(ERXFR, clear)
+>> +	CASE_READ_CLEAR(ERXCTLR, clear)
+>> +	CASE_READ_CLEAR(ERXSTATUS, clear)
+>> +	CASE_READ_CLEAR(ERXADDR, clear)
+>> +	CASE_READ_CLEAR(ERXMISC0, clear)
+>> +	CASE_READ_CLEAR(ERXMISC1, clear)
+>> +	CASE_READ_CLEAR(ERXMISC2, clear)
+>> +	CASE_READ_CLEAR(ERXMISC3, clear)
+>> +	default :
+>> +		res = 0;
+>> +	}
+>> +	return res;
+>> +}
+>> +
+>> +static void aest_sysreg_write(u64 base, u32 offset, u64 val)
+>> +{
+>> +	switch (offset) {
+>> +	CASE_WRITE(val, ERXFR)
+>> +	CASE_WRITE(val, ERXCTLR)
+>> +	CASE_WRITE(val, ERXSTATUS)
+>> +	CASE_WRITE(val, ERXADDR)
+>> +	CASE_WRITE(val, ERXMISC0)
+>> +	CASE_WRITE(val, ERXMISC1)
+>> +	CASE_WRITE(val, ERXMISC2)
+>> +	CASE_WRITE(val, ERXMISC3)
+>> +	default :
+>> +		return;
+>> +	}
+>> +}
+>> +
+>> +static u64 aest_iomem_read_clear(u64 base, u32 offset, bool clear)
+>> +{
+>> +	u64 res;
+>> +
+>> +	res = readq((void *)(base + offset));
+>> +	if (clear)
+>> +		writeq(0, (void *)(base + offset));
+> 
+> Do you need the explicit synchronisation? What ordering are you trying
+> to guarantee?
+
+This read and write use the same address, pipeline would guarantee
+the order of writing and reading.
+
+> 
+>> +	return res;
+>> +}
+>> +
+>> +static void aest_iomem_write(u64 base, u32 offset, u64 val)
+>> +{
+>> +	writeq(val, (void *)(base + offset));
+> 
+> Same question.
+
+This function just privides aest access method, caller need explict 
+synchronisation if needed.
+
+> 
+>> +}
+>> +
+>> +static void aest_print(struct aest_node_llist *lnode)
+>> +{
+>> +	static atomic_t seqno;
+> 
+> Uninitialised atomic?
+
+Fix it next version.
+
+> 
+>> +	unsigned int curr_seqno;
+>> +	char pfx_seq[64];
+> 
+> Magic number?
+
+Fix it next version.
+
+> 
+>> +	int index;
+>> +	struct ras_ext_regs *regs;
+>> +
+>> +	curr_seqno = atomic_inc_return(&seqno);
+>> +	snprintf(pfx_seq, sizeof(pfx_seq), "{%u}" HW_ERR, curr_seqno);
+>> +	pr_info("%sHardware error from %s\n", pfx_seq, lnode->node_name);
+>> +
+>> +	switch (lnode->type) {
+>> +	case ACPI_AEST_PROCESSOR_ERROR_NODE:
+>> +		pr_err("%s Error from CPU%d\n", pfx_seq, lnode->id0);
+>> +		break;
+>> +	case ACPI_AEST_MEMORY_ERROR_NODE:
+>> +		pr_err("%s Error from memory at SRAT proximity domain 0x%x\n",
+>> +			pfx_seq, lnode->id0);
+>> +		break;
+>> +	case ACPI_AEST_SMMU_ERROR_NODE:
+>> +		pr_err("%s Error from SMMU IORT node 0x%x subcomponent 0x%x\n",
+>> +			pfx_seq, lnode->id0, lnode->id1);
+>> +		break;
+>> +	case ACPI_AEST_VENDOR_ERROR_NODE:
+>> +		pr_err("%s Error from vendor hid 0x%x uid 0x%x\n",
+>> +			pfx_seq, lnode->id0, lnode->id1);
+>> +		break;
+>> +	case ACPI_AEST_GIC_ERROR_NODE:
+>> +		pr_err("%s Error from GIC type 0x%x instance 0x%x\n",
+>> +			pfx_seq, lnode->id0, lnode->id1);
+>> +		break;
+>> +	default:
+>> +		pr_err("%s Unknown AEST node type\n", pfx_seq);
+>> +		return;
+>> +	}
+>> +
+>> +	index = lnode->index;
+>> +	regs = &lnode->regs;
+>> +
+>> +	pr_err("%s  ERR%uFR: 0x%llx\n", pfx_seq, index, regs->err_fr);
+>> +	pr_err("%s  ERR%uCTRL: 0x%llx\n", pfx_seq, index, regs->err_ctlr);
+>> +	pr_err("%s  ERR%uSTATUS: 0x%llx\n", pfx_seq, index, regs->err_status);
+>> +	if (regs->err_status & ERR_STATUS_AV)
+>> +		pr_err("%s  ERR%uADDR: 0x%llx\n", pfx_seq, index, regs->err_addr);
+>> +
+>> +	if (regs->err_status & ERR_STATUS_MV) {
+>> +		pr_err("%s  ERR%uMISC0: 0x%llx\n", pfx_seq, index, regs->err_misc[0]);
+>> +		pr_err("%s  ERR%uMISC1: 0x%llx\n", pfx_seq, index, regs->err_misc[1]);
+>> +		pr_err("%s  ERR%uMISC2: 0x%llx\n", pfx_seq, index, regs->err_misc[2]);
+>> +		pr_err("%s  ERR%uMISC3: 0x%llx\n", pfx_seq, index, regs->err_misc[3]);
+>> +	}
+>> +}
+>> +
+>> +
+>> +static void aest_node_pool_process(struct work_struct *__unused)
+>> +{
+>> +	struct llist_node *head;
+>> +	struct aest_node_llist *lnode, *tmp;
+>> +
+>> +	head = llist_del_all(&aest_node_llist);
+>> +	if (!head)
+>> +		return;
+>> +
+>> +	head = llist_reverse_order(head);
+>> +	llist_for_each_entry_safe(lnode, tmp, head, llnode) {
+>> +		aest_print(lnode);
+>> +		gen_pool_free(aest_node_pool, (unsigned long)lnode,
+>> +				sizeof(*lnode));
+>> +	}
+>> +}
+>> +
+>> +static int aest_node_gen_pool_add(struct aest_node *node, int index,
+>> +				struct ras_ext_regs *regs)
+>> +{
+>> +	struct aest_node_llist *list;
+>> +
+>> +	if (!aest_node_pool)
+>> +		return -EINVAL;
+>> +
+>> +	list = (void *)gen_pool_alloc(aest_node_pool, sizeof(*list));
+>> +	if (!list)
+>> +		return -ENOMEM;
+>> +
+>> +	list->type = node->type;
+>> +	list->node_name = node->name;
+>> +	switch (node->type) {
+>> +	case ACPI_AEST_PROCESSOR_ERROR_NODE:
+>> +		list->id0 = node->spec.processor.processor_id;
+>> +		if (node->spec.processor.flags & (ACPI_AEST_PROC_FLAG_SHARED |
+>> +						ACPI_AEST_PROC_FLAG_GLOBAL))
+>> +			list->id0 = smp_processor_id();
+>> +
+>> +		list->id1 = node->spec.processor.resource_type;
+>> +		break;
+>> +	case ACPI_AEST_MEMORY_ERROR_NODE:
+>> +		list->id0 = node->spec.memory.srat_proximity_domain;
+>> +		break;
+>> +	case ACPI_AEST_SMMU_ERROR_NODE:
+>> +		list->id0 = node->spec.smmu.iort_node_reference;
+>> +		list->id1 = node->spec.smmu.subcomponent_reference;
+>> +		break;
+>> +	case ACPI_AEST_VENDOR_ERROR_NODE:
+>> +		list->id0 = node->spec.vendor.acpi_hid;
+>> +		list->id1 = node->spec.vendor.acpi_uid;
+>> +		break;
+>> +	case ACPI_AEST_GIC_ERROR_NODE:
+>> +		list->id0 = node->spec.gic.interface_type;
+>> +		list->id1 = node->spec.gic.instance_id;
+>> +		break;
+>> +	default:
+>> +		list->id0 = 0;
+>> +		list->id1 = 0;
+>> +	}
+>> +
+>> +	memcpy(&list->regs, regs, sizeof(*regs));
+> 
+> You have vmalloced the record. Why do you need to copy it instead of
+> simply pointing to it?
+
+Yes you are right, it will be fixed next version.
+
+> 
+>> +	list->index = index;
+>> +	llist_add(&list->llnode, &aest_node_llist);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int aest_node_pool_init(void)
+>> +{
+>> +	unsigned long addr, size;
+>> +	int rc;
+>> +
+>> +	if (aest_node_pool)
+>> +		return 0;
+>> +
+>> +	aest_node_pool = gen_pool_create(ilog2(sizeof(struct aest_node_llist)), -1);
+>> +	if (!aest_node_pool)
+>> +		return -ENOMEM;
+>> +
+>> +	size = PAGE_ALIGN(AEST_NODE_POOLSZ);
+>> +	addr = (unsigned long)vmalloc(size);
+>> +	if (!addr)
+>> +		goto err_pool_alloc;
+>> +
+>> +	rc = gen_pool_add(aest_node_pool, addr, size, -1);
+>> +	if (rc)
+>> +		goto err_pool_add;
+>> +
+>> +	return 0;
+>> +
+>> +err_pool_add:
+>> +	vfree((void *)addr);
+>> +
+>> +err_pool_alloc:
+>> +	gen_pool_destroy(aest_node_pool);
+>> +
+>> +	return -ENOMEM;
+>> +}
+>> +
+>> +static void aest_log(struct aest_node *node, int index, struct ras_ext_regs *regs)
+>> +{
+>> +	if (!aest_node_gen_pool_add(node, index, regs))
+>> +		schedule_work(&aest_work);
+>> +}
+>> +
+>> +/*
+>> + * you must select cpu number first in order to operate RAS register belonged
+>> + * that cpu.
+>> + */
+>> +static void aest_select_cpu(struct aest_node *node, int i)
+>> +{
+>> +	if (node->interface.type == ACPI_AEST_NODE_SYSTEM_REGISTER) {
+>> +		write_sysreg_s(i, SYS_ERRSELR_EL1);
+> 
+> ERRSELR_EL1 doesn't select a CPU. It selects a RAS record. How records
+> and CPUs are mapped isn't specified in the architecture.
+> 
+
+Yes, I'm wrong, and change aest_select_cpu to aest_select_record in v2.
+
+>> +		isb();
+>> +	}
+>> +}
+>> +
+>> +static void aest_proc(struct aest_node *node)
+>> +{
+>> +	struct ras_ext_regs regs = {0};
+>> +	struct aest_access *access;
+>> +	int i;
+>> +	u64 regs_p;
+>> +
+>> +
+>> +	for (i = node->interface.record_start; i < node->interface.record_end; i++) {
+>> +		/* 1b: Error record at i index is not implemented */
+>> +		if (test_bit(i, &node->interface.record_implemented))
+>> +			continue;
+>> +
+>> +		aest_select_cpu(node, i);
+>> +
+>> +		access = node->access;
+>> +		regs_p = (u64)&node->interface.regs[i];
+>> +
+>> +		regs.err_status = access->read_clear(regs_p, ERXSTATUS, false);
+>> +		if (!(regs.err_status & ERR_STATUS_V))
+>> +			continue;
+>> +
+>> +		if (regs.err_status & ERR_STATUS_AV)
+>> +			regs.err_addr = access->read_clear(regs_p, ERXADDR, false);
+>> +
+>> +		regs.err_fr = access->read_clear(regs_p, ERXFR, false);
+>> +		regs.err_ctlr = access->read_clear(regs_p, ERXCTLR, false);
+>> +
+>> +		if (regs.err_status & ERR_STATUS_MV) {
+>> +			bool clear = node->interface.flags & ACPI_AEST_INTERFACE_CLEAR_MISC;
+>> +
+>> +			regs.err_misc[0] = access->read_clear(regs_p, ERXMISC0, clear);
+>> +			regs.err_misc[1] = access->read_clear(regs_p, ERXMISC1, clear);
+>> +			regs.err_misc[2] = access->read_clear(regs_p, ERXMISC2, clear);
+>> +			regs.err_misc[3] = access->read_clear(regs_p, ERXMISC3, clear);
+>> +		}
+>> +
+>> +		aest_log(node, i, &regs);
+>> +
+>> +		if (regs.err_status & ERR_STATUS_UE)
+>> +			panic("AEST: uncorrectable error encountered");
+>> +
+>> +		/* Write-one-to-clear the bits we've seen */
+>> +		regs.err_status &= ERR_STATUS_W1TC;
+>> +
+>> +		/* Multi bit filed need to write all-ones to clear. */
+>> +		if (regs.err_status & ERR_STATUS_CE)
+>> +			regs.err_status |= ERR_STATUS_CE;
+>> +
+>> +		/* Multi bit filed need to write all-ones to clear. */
+>> +		if (regs.err_status & ERR_STATUS_UET)
+>> +			regs.err_status |= ERR_STATUS_UET;
+>> +
+>> +		access->write(regs_p, ERXSTATUS, regs.err_status);
+>> +	}
+>> +}
+>> +
+>> +static irqreturn_t aest_irq_func(int irq, void *input)
+>> +{
+>> +	struct aest_node *node = input;
+>> +
+>> +	aest_proc(node);
+>> +
+>> +	return IRQ_HANDLED;
+>> +}
+>> +
+>> +static int __init aest_register_gsi(u32 gsi, int trigger, void *data,
+>> +					irq_handler_t aest_irq_func)
+>> +{
+>> +	int cpu, irq;
+>> +
+>> +	irq = acpi_register_gsi(NULL, gsi, trigger, ACPI_ACTIVE_HIGH);
+>> +
+>> +	if (irq == -EINVAL) {
+>> +		pr_err("failed to map AEST GSI %d\n", gsi);
+>> +		return -EINVAL;
+>> +	}
+>> +
+>> +	if (gsi < 16) {
+>> +		pr_err("invalid GSI %d\n", gsi);
+>> +		return -EINVAL;
+>> +	} else if (gsi < 32) {
+>> +		if (ppi_idx >= AEST_MAX_PPI) {
+>> +			pr_err("Unable to register PPI %d\n", gsi);
+>> +			return -EINVAL;
+>> +		}
+>> +		ppi_irqs[ppi_idx] = irq;
+>> +		enable_percpu_irq(irq, IRQ_TYPE_NONE);
+> 
+> Enabling the PPI before requesting it? Looks... great. And how does
+> this work on a system that supports EPPIs, which are in the
+> [1119:1056] range?
+
+It is better to enable it after request it, i will fix it next version.
+My machine do not use EPPI as RAS interrupt, i can not test it now. Can
+we support EPPI in later patch?
+
+> 
+> Also, if you get a trigger as a parameter, why the IRQ_TYPE_NONE?
+
+Sorry，I do not really understand this comment, should I use
+(IRQ_LEVEL | IRQ_PER_CPU)?
+
 > 
 > 
->>
->>>
->>> Suzuki
->>>
->>>> +
->>>> +    pm_runtime_disable(&pdev->dev);
->>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->>>> +        clk_put(drvdata->pclk);
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +#ifdef CONFIG_PM
->>>> +static int catu_runtime_suspend(struct device *dev)
->>>> +{
->>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>>> +
->>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->>>> +        clk_disable_unprepare(drvdata->pclk);
->>>> +    return 0;
->>>> +}
->>>> +
->>>> +static int catu_runtime_resume(struct device *dev)
->>>> +{
->>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
->>>> +
->>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
->>>> +        clk_prepare_enable(drvdata->pclk);
->>>> +    return 0;
->>>> +}
->>>> +#endif
->>>> +
->>>> +static const struct dev_pm_ops catu_dev_pm_ops = {
->>>> +    SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
->>>> +};
->>>> +
->>>> +#ifdef CONFIG_ACPI
->>>> +static const struct acpi_device_id catu_acpi_ids[] = {
->>>> +    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
->>>> +    {},
->>>> +};
->>>> +
->>>> +MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
->>>> +#endif
->>>> +
->>>> +static struct platform_driver catu_platform_driver = {
->>>> +    .probe    = catu_platform_probe,
->>>> +    .remove    = catu_platform_remove,
->>>> +    .driver    = {
->>>> +        .name            = "coresight-catu-platform",
->>>> +        .acpi_match_table    = ACPI_PTR(catu_acpi_ids),
->>>> +        .suppress_bind_attrs    = true,
->>>> +        .pm            = &catu_dev_pm_ops,
->>>> +    },
->>>> +};
->>>> +
->>>>    static int __init catu_init(void)
->>>>    {
->>>>        int ret;
->>>>    -    ret = amba_driver_register(&catu_driver);
->>>> -    if (ret)
->>>> -        pr_info("Error registering catu driver\n");
->>>> +    ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
->>>>        tmc_etr_set_catu_ops(&etr_catu_buf_ops);
->>>>        return ret;
->>>>    }
->>>> @@ -612,7 +716,7 @@ static int __init catu_init(void)
->>>>    static void __exit catu_exit(void)
->>>>    {
->>>>        tmc_etr_remove_catu_ops();
->>>> -    amba_driver_unregister(&catu_driver);
->>>> +    coresight_remove_driver(&catu_driver, &catu_platform_driver);
->>>>    }
->>>>      module_init(catu_init);
->>>> diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
->>>> index 442e034bbfba..141feac1c14b 100644
->>>> --- a/drivers/hwtracing/coresight/coresight-catu.h
->>>> +++ b/drivers/hwtracing/coresight/coresight-catu.h
->>>> @@ -61,6 +61,7 @@
->>>>    #define CATU_IRQEN_OFF        0x0
->>>>      struct catu_drvdata {
->>>> +    struct clk *pclk;
->>>>        void __iomem *base;
->>>>        struct coresight_device *csdev;
->>>>        int irq;
->>>
+>> +		for_each_possible_cpu(cpu) {
+>> +			memcpy(per_cpu_ptr(ppi_data[ppi_idx], cpu), data,
+>> +			       sizeof(struct aest_node));
+>> +		}
+>> +		if (request_percpu_irq(irq, aest_irq_func, "AEST",
+>> +				       ppi_data[ppi_idx++])) {
+>> +			pr_err("failed to register AEST IRQ %d\n", irq);
+>> +			return -EINVAL;
+>> +		}
+>> +	} else if (gsi < 1020) {
+>> +		if (request_irq(irq, aest_irq_func, IRQF_SHARED, "AEST",
+>> +				data)) {
+> 
+> Why SHARED? Who would share a RAS interrupt?????
+
+Multi AEST nodes may use the same interrupt, for example, one DDRC with
+a RAS interrupt has two sub channels, these two sub channel is described
+as two AEST node in AEST table, so they share the same one. In another
+case, SMMU has two RAS node, TCU and TBU, they may also share the same
+interrupt.
+
+> 
+>> +			pr_err("failed to register AEST IRQ %d\n", irq);
+>> +			return -EINVAL;
+> 
+> Same question about extended SPIs.
+> 
+> All in all, this whole logic is totally useless. It isn't the driver's
+> job to classify the GIC INTIDs...
+
+AEST use both PPI and SPI, it seems that AEST driver must recognize
+INTID in order to request irq number with different function, do you
+have better solution here?
+
+> 
+> 	M.
 > 
 
