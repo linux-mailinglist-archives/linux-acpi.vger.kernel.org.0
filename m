@@ -1,132 +1,172 @@
-Return-Path: <linux-acpi+bounces-4198-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4199-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B534876806
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 17:05:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EEA8769D0
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 18:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3513A283AEA
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 16:05:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 718B7B20D93
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 17:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D575E25753;
-	Fri,  8 Mar 2024 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D16528DC1;
+	Fri,  8 Mar 2024 17:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="POIUQF/R"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Q3v8WJFx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JabkKrle";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Q3v8WJFx";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="JabkKrle"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F871539C;
-	Fri,  8 Mar 2024 16:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1A71170F;
+	Fri,  8 Mar 2024 17:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709913904; cv=none; b=LBpnityFU/2lzrjU73qj1pZu7J3qyL2m4Rh7Yda9BVDHG0E5c68qfMNQ8viAwrTC4G5vqZ74TRRaM+r3a8rtCk+/kCFpTHQrhIe2BjkT8+xAjdBX3WMTF4a896XXFsrs2zDV661bW6fdA/6ad/2yuhSgpfvljrmQE0dBBJFXVwo=
+	t=1709918889; cv=none; b=pQOSqnswB+gOIoGcc35fLzTzc7XATqSN1HH2q354C1uRwowMj/bhg0tEloXqo4LoSJ5Xc+11UFzwutlG6eXjUlFoLcZfhq6T89SdJMKfOWAYxoogiwzM3H27S1OBoyPHvF4OUlupJvCjjtlaHSIMIBS9AMeJfIFSLzPE/j3RUpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709913904; c=relaxed/simple;
-	bh=K7z8th/v+DsQhE0bFlxFAc251ph2T8/2hocApg51reA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cyADcDxyn4SMWux6ivRjcOxki3NPO38nKM+j25dX3PgOZlyUjStIb6sXGQx6utsCMdKHEsLZqRACkKZxXAa+wZWTfi0lLxhozASge5mzVZW6pJfNX+GVkuzLsB08MwJRWQXrJqu0JYrqauYL5Wy2cuaFrBT2VTFclgHTAhawK7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=POIUQF/R; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1709913890; x=1710518690; i=w_armin@gmx.de;
-	bh=K7z8th/v+DsQhE0bFlxFAc251ph2T8/2hocApg51reA=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=POIUQF/R/TqLEbi6jCX6ME6vQvdEBE2VNGA4oHFZnP2rLCstv51w+m5j5g7x7JF3
-	 E0l8zSnr98CUQt4QbQ4tkfVtGIe/RoOUwsD9yCxy5lnVa3y30tYVxu3+tSxjjaNqk
-	 8uLVU0Wv31TLU22NGrhJyBGZdmo9vzZxpA9+g4SVET0VDAhSv9MqCtbh+MihzaNLz
-	 LryhZQn/HTi5R4aG3j9o1gLUhMTp5YPIQq2abSiNuNTetR+jm4/GGoxTX6H9+vNfT
-	 TMv2cPtkTcRL2ZUDNvRosIdoI+1uj+8IOBMkD/EsxW4ZaomMdZjteNc7YpydTTlS2
-	 LtsV1iuBQi9LIq4XhA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvsIv-1qsIk91K6B-00stjh; Fri, 08
- Mar 2024 17:04:50 +0100
-Message-ID: <ec91a9ff-7c64-4428-b32d-c65d7a5a1ed3@gmx.de>
-Date: Fri, 8 Mar 2024 17:04:49 +0100
+	s=arc-20240116; t=1709918889; c=relaxed/simple;
+	bh=jSd7IIXQ7VLOmg5dOyp3aWtcasoACFv/Wzn1lQdNPGQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZFVlPtExfnBMtfkOdxSaZAUg1Lcy3ziZ91i3jvNaWKnI4NYhCUcbBctQPeptTqte6tdP6Si9lr+xvlwtgfjJSXE20LmiPTK8gANfY8i5x0sXBxxEGIq6jrQmrRi86JPZ7m+4+8R3twACfA7YdBKh9aF70Wiyn4WxPV5FbDSRdIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Q3v8WJFx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JabkKrle; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Q3v8WJFx; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=JabkKrle; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 32C7F38984;
+	Fri,  8 Mar 2024 17:01:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709917300; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JplA17DpVz2NSdYvWMuTpMBcFjE3T30ebSwmXrG1t4E=;
+	b=Q3v8WJFx7o2fsPQpSOC/SLdlrPBcMqqbM6FKV/IVhO/MwGfFJJj26pmz4LyhP1E1Bp8rlY
+	pldcsGR/3ihuclHzqHasc4eqEx87v58Iq+umN6WBJ3G5ZmWQGzBISyzBrKQbT/959FidAs
+	U2rTWXmsUjBo/XeO+r1UtYvIs2xmU3s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709917300;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JplA17DpVz2NSdYvWMuTpMBcFjE3T30ebSwmXrG1t4E=;
+	b=JabkKrleE3jFzGoB6O82N27VgsmfyaAH0LcGEa2IiIIVG+usEXnMxjUP9EFgUgriAlTnsX
+	YoOL9JKpQtqZkoDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1709917300; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JplA17DpVz2NSdYvWMuTpMBcFjE3T30ebSwmXrG1t4E=;
+	b=Q3v8WJFx7o2fsPQpSOC/SLdlrPBcMqqbM6FKV/IVhO/MwGfFJJj26pmz4LyhP1E1Bp8rlY
+	pldcsGR/3ihuclHzqHasc4eqEx87v58Iq+umN6WBJ3G5ZmWQGzBISyzBrKQbT/959FidAs
+	U2rTWXmsUjBo/XeO+r1UtYvIs2xmU3s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1709917300;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JplA17DpVz2NSdYvWMuTpMBcFjE3T30ebSwmXrG1t4E=;
+	b=JabkKrleE3jFzGoB6O82N27VgsmfyaAH0LcGEa2IiIIVG+usEXnMxjUP9EFgUgriAlTnsX
+	YoOL9JKpQtqZkoDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CDB0A133DC;
+	Fri,  8 Mar 2024 17:01:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PvNnMHNE62XTYgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 08 Mar 2024 17:01:39 +0000
+Date: Fri, 08 Mar 2024 18:01:38 +0100
+Message-ID: <87bk7od5e5.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Richard Fitzgerald <rf@opensource.cirrus.com>
+Cc: <broonie@kernel.org>,
+	<tiwai@suse.com>,
+	<hdegoede@redhat.com>,
+	<lenb@kernel.org>,
+	<rafael@kernel.org>,
+	<linux-sound@vger.kernel.org>,
+	<alsa-devel@alsa-project.org>,
+	<linux-kernel@vger.kernel.org>,
+	<patches@opensource.cirrus.com>,
+	<platform-driver-x86@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH 0/3] ALSA: Add support for Cirrus Logic CS35L54 and CS35L57
+In-Reply-To: <20240308135900.603192-1-rf@opensource.cirrus.com>
+References: <20240308135900.603192-1-rf@opensource.cirrus.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] platform/x86: wmi: Support reading/writing 16 bit
- EC values
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20240307195753.2961-1-W_Armin@gmx.de>
- <21fd57a2-d8c3-779c-7090-b7cdfc8198be@linux.intel.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <21fd57a2-d8c3-779c-7090-b7cdfc8198be@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eDoC37TAcRM0DNcDk4oCDxtUXhYKhG2/rUkOPlEN5vrIWyyUL0Q
- ybCMpqI1Z0L9iCbV27rDa21df9lw/3BK5ZiWOniXJaWrne7YiCakEkQo0VWDJ8v3M5dYwen
- MF5rrgjqfAjRZ8ZSSAvqWTMHIKNoxjaiNpcMhZcIzk8oJA3psyl0JBcEc550F5W/XJzsf1Q
- YUiK/bD/8ocsmfe6nCtLg==
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Q3v8WJFx;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JabkKrle
+X-Spamd-Result: default: False [-2.82 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 URIBL_BLOCKED(0.00)[suse.de:dkim];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_TWELVE(0.00)[12];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-1.51)[91.76%];
+	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Spam-Score: -2.82
+X-Rspamd-Queue-Id: 32C7F38984
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:/twEZbo7cPw=;zH/K0U78ml8Acbw9oc6kY6gf+mD
- ZGC0SLF+n2cNgzsHXXvRhSNqdLD7XzgfEqhR9VOwexp02rWCeGFhQfbIAYcC6IW26nBhHTcC6
- AND1zXD+8gCl7ocJARDrwljV3ojCC1nAa5tQCj1lYj7OGLN+ABk2soFiRSkP6dn3URVufpE7k
- fBf8zYz5BUMQ9+Yy1v3YH3AdBBDvj4JhFIE0T/u5gPuUck2oOGFC3o8jo89+b8IqXpkuRX8uK
- D0x/7Y65I1kCBqzOIDDWBqoI/au1BlZDqhcLBpU+cwJ6wD7h0/woKbBlG1HTMpiO7O1c+wYEr
- Qug8e4jdzQLY2Ttig9QAPTnuPWblNcwlpi8ZwcmUQGOZREzNHe3W8hu6XuqqnGy+juSo5WLo2
- e+RnN9b4lv3TZc+GLFYCc5j7ndC4eZCrvHNqbW+pCuFK8urcwRUXSsfqb+2wxy+HSPy30j2JQ
- ptfaErPcSpmGggeSvFGwgCxviwQS13JSRmg2idrR7u/BnFwBS9+n4hdPVmoFsNy5tkp1vOSTR
- P3jsP+oJqgCUkAXPx+7GCcH7bKAyhkAgdBW+DGls0t53f9F7Qv5fMWigDa9PO1eZ2Y5sAG0TC
- 4Y2l9RW3Sjee1fl7VlHpQ6eKf7jWolB8Co2HQIqMMPaHUUzpxb5fUS3yFY6zQm8gCLUvRoVr0
- 5VLOz5soEI6FOC4TV5m5MahYDE5SiRjwhIQ4uIj+WO4FeIhSpvOMY7DNfKvHHoSWPFKxHsXw+
- eN68aqLGJ6JBAgbDQ3w3S61BK39LGUMTf1dd4DFq8rLIaHWKOjGfQSiR8Vri1V4gyuEN63oeH
- Qy1pnUEUJ1fFR1WfhxVcikzAwPpcvza8b5HqH0AUVOZzs=
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-Am 08.03.24 um 09:01 schrieb Ilpo J=C3=A4rvinen:
+On Fri, 08 Mar 2024 14:58:57 +0100,
+Richard Fitzgerald wrote:
+> 
+> The CS35L54 and CS35L57 are Boosted Smart Amplifiers. The CS35L54 has
+> I2C/SPI control and I2S/TDM audio. The CS35L57 also has SoundWire
+> control and audio.
+>     
+> The hardware differences between L54, L56 and L57 do not affect the
+> driver control interface so they can all be handled by the same driver.
+> 
+> The HDA patch has build dependencies on the ASoC patch.
+> 
+> The final patch updates serial-multi-instantiate and scan.c to trap
+> the ACPI HID for HDA systems that declare multiple amps all under one
+> Device() node. This patch does not have any build dependency on the
+> first two patches so can be taken separately.
+> 
+> Simon Trimmer (3):
+>   ASoC: cs35l56: Add support for CS35L54 and CS35L57
+>   ALSA: hda: cs35l56: Add support for CS35L54 and CS35L57
+>   platform/x86: serial-multi-instantiate: Add support for CS35L54 and
+>     CS35L57
 
-> On Thu, 7 Mar 2024, Armin Wolf wrote:
->
->> The ACPI EC address space handler currently only supports
->> reading/writing 8 bit values. Some firmware implementations however
->> want to access for example 16 bit values, which is prefectly legal
->> according to the ACPI spec.
->>
->> Add support for reading/writing such values.
->>
->> Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
->>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> @@ -1162,27 +1188,28 @@ acpi_wmi_ec_space_handler(u32 function, acpi_ph=
-ysical_address address,
->>   			  u32 bits, u64 *value,
->>   			  void *handler_context, void *region_context)
->>   {
->> -	int result =3D 0;
->> -	u8 temp =3D 0;
->> +	int bytes =3D bits / BITS_PER_BYTE;
->> +	int ret;
->> +
->> +	if (!value)
->> +		return AE_NULL_ENTRY;
->>
->> -	if ((address > 0xFF) || !value)
->> +	if (bytes > sizeof(*value))
->>   		return AE_BAD_PARAMETER;
->>
->> -	if (function !=3D ACPI_READ && function !=3D ACPI_WRITE)
->> +	if (address > U8_MAX || address + bytes > U8_MAX)
-> This doesn't look correct. With address =3D 0xff and bits =3D 8 this wil=
-l
-> return AE_BAD_PARAMETER, is that intensional?
->
-You are absolutely correct, i will send an updated series soon.
+Applied all three patches to for-next branch now.
 
-Thanks,
-Armin Wolf
 
+thanks,
+
+Takashi
 
