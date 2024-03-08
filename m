@@ -1,126 +1,129 @@
-Return-Path: <linux-acpi+bounces-4206-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4207-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4F5876C42
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:05:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FBC876C97
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 23:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4B11C20F74
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 21:05:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07D9282C9F
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC0E5FB81;
-	Fri,  8 Mar 2024 21:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="L39jFG3K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1EE5FB8B;
+	Fri,  8 Mar 2024 22:01:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2715E097;
-	Fri,  8 Mar 2024 21:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34C55E094;
+	Fri,  8 Mar 2024 22:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709931942; cv=none; b=KwkF+byzu2w50Xn6jgyYblTuJ92d5btAU8NQmTeTYeUKo6zSEXvihwUAhFNJkjbB40m/FL3BCqc1Pe2wF5U1DhCA7xvF7i43xPu6Y3jwX+e2j7VkkQcB6q3HTNvSTQ3aKh37GcAgHPn+Ekxm8m4tmM5191erq3c1rVuTnLI/X7U=
+	t=1709935263; cv=none; b=IUKFj93roS5yI9wjQExVKxfJ+vCl0Ix7IU2AT37O6RIKtxoMNx81pEXrdiXcSuNROSBk31QPO/X67gZJ2IXmrLe9Vj5hebHLTdn2rL8+MxMfoK9U1QrzZ5szVfniSFwycF760njQLk4ovKeMXK46UIkIs4jKczy8PJTmTi6xrbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709931942; c=relaxed/simple;
-	bh=rie7fmUkfM0m8cYoiL41OvyYJnWYQxdPB6xJIoQaK9s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MXrI8I2g32dbFDS9Y/3xU+fnAvn3pAGlOoGts3R31aGtucxNr+zYGHnFRL0Unu4rv04kWyYIltzL3UMZKzBD0zfJAQP2isno6JotjgQaptrK9AE14o5JTJxU2RdgAqNJfcD6ZJKbgsKPtajGFhU9ZT0Mtk8dFZSOAaJOSihKIvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=L39jFG3K; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1709931925; x=1710536725; i=w_armin@gmx.de;
-	bh=rie7fmUkfM0m8cYoiL41OvyYJnWYQxdPB6xJIoQaK9s=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=L39jFG3KNdJcYIR9zz3ekYOkp2bOXpYWBJRjgHf6M1H7MkEJOS03CNer5FC4SYSD
-	 diZOsPHUUtgwclVt/44iM15F4RE6MmYqyMK+0tCiySIVRkSagSCrN7Tqdmy0hhnEZ
-	 n/OGfljVzTozinBPkN18fn5cQx5xYeywFNElafmBRY6zpy2rlAWatoJFSPV+3m49L
-	 6BB6ux0+0jrSQ+IkxRuhFEPa3uJ+ofCv7ugoRkWBFsydMPsMMsfedk/cYV0xhReDG
-	 FeCsS4yqJMPwa9I8PkPIiXHi3WUlog++w+n/XydStTXdyvFrDhgUcTvVUpbqxAqNR
-	 OtuG51uesGca3k4oRw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1M4b1o-1rjFMx1aQo-001ffC; Fri, 08 Mar 2024 22:05:25 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-To: hdegoede@redhat.com,
-	ilpo.jarvinen@linux.intel.com
-Cc: rafael@kernel.org,
-	lenb@kernel.org,
-	mario.limonciello@amd.com,
-	linux-acpi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] platform/x86: wmi: Avoid returning AE_OK upon unknown error
-Date: Fri,  8 Mar 2024 22:05:19 +0100
-Message-Id: <20240308210519.2986-2-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240308210519.2986-1-W_Armin@gmx.de>
-References: <20240308210519.2986-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1709935263; c=relaxed/simple;
+	bh=ZgRS+pkfLbcRBERv0qpMefaDzsG714FgyTgyLPVQeUI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jBFrPwPrEkDycJ3ZL3SnZjHpXMOaEGfShSW/1/LvdtRbJi6KyVb4RKM9v3Whi9ICbL0ub8TJbYqO2GVNPH1JLnCAfps9FRnhQb79YpWwFbDeWHmYz14BLF+gZpb8+8CaY7ycvzVTBC/gBUlBUuKYD7OEMoTWVJcQr4/SNtfpU1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A912FC433F1;
+	Fri,  8 Mar 2024 22:01:01 +0000 (UTC)
+From: Dave Jiang <dave.jiang@intel.com>
+To: linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: dan.j.williams@intel.com,
+	ira.weiny@intel.com,
+	vishal.l.verma@intel.com,
+	alison.schofield@intel.com,
+	Jonathan.Cameron@huawei.com,
+	dave@stgolabs.net,
+	rafael@kernel.org,
+	gregkh@linuxfoundation.org
+Subject: [PATCH v7 0/12] cxl: Add support to report region access coordinates to numa nodes
+Date: Fri,  8 Mar 2024 14:59:19 -0700
+Message-ID: <20240308220055.2172956-1-dave.jiang@intel.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:J8S3T8zp0/viK1dNI8/U0HtfNcG/2RqO6qETHNtIOpdJOTdw7aY
- dc0trKA0CKu64SvWOg7QyiWJhj4s8q32AXLjGFFdHh0SrmTi8qF05n52rfEJwV5bqTsdI8G
- shFXP8BI7a68NO2FeodXM5bNArk+uCVOO2tJNPGUJgzX4dyv8M6wytY9C7GbsKYX38IiSxX
- 3H0k5bJJg5BM0L+ALQBbg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:BPecIgapw+s=;3D0P6lza2e4okWHFLcxGy2BWAkV
- fXzvhW2hfKFClJjnAY1WCgam42VPDx0+TZ0X3qBLJrQkeIea371hZfz8GJEOU+UUx8oaDFJA0
- VadTHmbSG8gVhoh6jW9poR0iQmKIAnNJOiP5B5ByXVsrM5aQmorpsR9GDOyewdspExGZCqyXk
- FhyqbNoDswqr5xymAZFsj3uYPJQQMkL1m96VRa10/UxMK6WxZQ07ufMD/t6LZ+WLzOBoXlyWb
- BdOc4wMVRVWyBSaTH3tJnAQQAlWfn8k0P98w0YZFt+Z89hA0ozCaK+lsbBtxa2fZR3XPY17eT
- 0M5RTeqaJeDTdm8grZYafstoPCnKrHoRusICjgqBoLMFvf2vIQTlgGB/+yQQpFobx/3AmcWv9
- t4KBtQbt/fVGvoKC3i2kHk7m2r1RPQDYWiO+7IKJhuYw+ftwW18Z5+mvHciEOEbZquJPz2S26
- 3OJNdnvnoOR7sPz731kw5Od4nipihAdhc7ZehURUGeN2cfkdgpQYN3NywgWVD3IUVVCPhze4A
- 5gKR8yeurRC3KiCoZ+cUaCHVueXa837OPFkeSgWNLl7VieUFSN3Wrb71tEqUtdZLxsYexXPAl
- F4w6/axQdP73KbhCtY17qUF3sdolTl+VJSOF908cwWK9YpT+XM089+TO6xk/YH6lTEmIXPGCw
- 8dQKjSJmn8rgkd6HaTyG0iE2QlfyDrYi3K17CthJQ4u6KeFc28CYFApqWU0RG1YDogKgp09cB
- AWICj/ckXLYj3ANjPdf3kNWZLSdzbov2MNUm73rK+ZIFhZ8cjlsii3Qqb0YZyJQrDXTrmBOvl
- +ipnhgRCxRFlQe4FjuVEJV7vdJ4QG/i97SoHWZGRibImc=
+Content-Transfer-Encoding: 8bit
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by ec_read()/ec_write(), then AE_OK is wrongly returned.
+Hi Rafael,
+Please review patches 1-4,10,11 and ack if they look ok to you. Thank you!
 
-Fix this by only returning AE_OK if the return code is 0, and
-return AE_ERROR otherwise.
+Hi Greg,
+Please review patch 11 and ack the numa node bits if they look ok to you. Thank you!
 
-Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
+v7:
+- Add review tag from Greg
+- Add review and test tags from Jonathan
+- Fix typos (Jonathan)
+- Move memory_notifier registeration to devm_cxl_add_region() (Dan)
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/platform/x86/wmi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+v6:
+- Enhance macros used to reduce code for cxl access coordinates sysfs attrs (Jonathan)
+- Various minor updates and fixes, see per commit details. (Jonathan)
+- Added review tags from Jonathan.
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index d9bf6d452b3a..84d1ccf6bc14 100644
-=2D-- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -1218,8 +1218,10 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physic=
-al_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+v5:
+- Fix various 0-day issues
+- Remove EXPORT_SYMBOL for cxl_coords_combine() (Dan)
+- Rebased against fixes series for qos_class
+https://lore.kernel.org/linux-cxl/20240206190431.1810289-1-dave.jiang@intel.com/T/#t 
 
-=2D-
-2.39.2
+v4:
+- Introduce access class 0 and 1 for CXL access coordinates.
+- See individual patches for detailed change log if applicable.
+
+v3:
+- Make attributes not visible if no data. (Jonathan)
+- Fix documentation verbiage. (Jonathan)
+- Check against read bandwidth instead of write bandwidth due to future RO devices. (Jonathan)
+- Export node_set_perf_attrs() to all namespaces. (Jonathan)
+- Remove setting of coordinate access level 1. (Jonathan)
+
+v2:
+- Move calculation function to core/cdat.c due to QTG series changes
+- Make cxlr->coord static (Dan)
+- Move calculation to cxl_region_attach to be under cxl_dpa_rwsem (Dan)
+- Normalize perf latency numbers to nanoseconds (Brice)
+- Update documentation with units and initiator details (Brice, Dan)
+- Fix notifier return values (Dan)
+- Use devm_add_action_or_reset() to unregister memory notifier (Dan)
+
+This series adds support for computing the performance data of a CXL region
+and also updates the performance data to the NUMA node. This series depends
+on the CXL QOS class series that's pending 6.8 pull request.
+
+CXL memory devices already attached before boot are enumerated by the BIOS.
+The SRAT and HMAT tables are properly setup to including memory regions
+enumerated from those CXL memory devices. For regions not programmed or a
+hot-plugged CXL memory device, the BIOS does not have the relevant
+information and the performance data has to be caluclated by the driver
+post region assembly.
+
+According to numaperf documentation [1] there are 2 access classes defined
+for performance between an initiator node and a memory target node. Access
+class "0" describes attributes between a memory target and the highest
+performing initator local to the target. In this case the initiator can be
+a CPU or an I/O initiator such as a GPU or NIC. Access class "1" describes
+attributes between a memory target and the nearest CPU node. Both access
+classes are calculated for the CXL memory target and updated for NUMA nodes
+through HMAT_REPORTING code or directly depending on if the NUMA node is
+described by the ACPI SRAT table.
+
+Recall from qos_class series (v6.8) that the performance data for the ranges
+of a CXL memory device is computed and cached. A CXL memory region can be
+backed by one or more devices. Thus the performance data would be the
+aggregated bandwidth of all devices that back a region and the worst
+latency out of all devices backing the region.
+
+See kernel git branch [2] for convenience.
+
+[1]: https://www.kernel.org/doc/Documentation/admin-guide/mm/numaperf.rst
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/djiang/linux.git/log/?h=cxl-hmem-report
 
 
