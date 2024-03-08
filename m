@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-4216-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4217-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9BD876CA0
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 23:02:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B7D876CA1
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 23:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07DE5B21964
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:02:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAB42B2184E
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86735FB9E;
-	Fri,  8 Mar 2024 22:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181675FBA7;
+	Fri,  8 Mar 2024 22:02:10 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F85CDC9;
-	Fri,  8 Mar 2024 22:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E75CDC9;
+	Fri,  8 Mar 2024 22:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709935323; cv=none; b=FmWugANRk33EBlwiyia1pClk0OnGdvmv6l/Nd1Z19hFJ78p9iNjarF8W1ZGY14MY11wF21ZXaqKtaHqeX1v9MtVJZEXpHY6PWHgNghNtrz4b7smidbW2QIn2hRp7NPHAv6DQprC6N7nxQJmTmoN1uYT7TEuknEbV3NUoY/sKENA=
+	t=1709935330; cv=none; b=aov+BaqaxPTJBxpUWi/4VAnZTVKp9KQ3EhBANID0p1UOSBSG77Rhplp6q0clwPLo0cUP142HvWbjKNtBDm0Mv42WknNubrcqgnBGway/TwNm1ZH1Vu8UMPRkEas4Z9gc9lAsY972reu5wY0uwKZJfuaqRW6erH41nCsWRJqdIJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709935323; c=relaxed/simple;
-	bh=SpENiyzU8d9DlmC7qJzmJ6UlwWDoIWMbJf93n8q7mtE=;
+	s=arc-20240116; t=1709935330; c=relaxed/simple;
+	bh=fV3/shBGK7hp2t2FeW5xGKu14Ek0PABcwrbRM89nz2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b67I/qr3OlH7DmvEPvdFj9XmUubEdVEpV+BBRahKU+wnAWr+HjEVs87Htn5A3CbCPtWz5iU57JKWXfqvy9IG6EgjJT1Lt+kA5NDJ5KFGl0+4ZthJeO+LQIEwgBiMH94JiHMsrjT9lkQ/4k5Xz24mPuptkokX07ntDUGTan0dYjo=
+	 MIME-Version; b=UFBr19ojLYV74m5lZ1uq+BV4/rZ9G8utY6aPgKmVKXerLdgco14DAF9COV7gz6AxyXasXYS6lM1hye9p2asv/a/USYemN4wyGpm+HgaK9c9jOuC6CrNfTfiQiDzelcgo3gyZq3GF+mb3JOy9E3agVcNob1zeMPz2joN3z7qORdg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E32C433C7;
-	Fri,  8 Mar 2024 22:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFC6C433F1;
+	Fri,  8 Mar 2024 22:02:08 +0000 (UTC)
 From: Dave Jiang <dave.jiang@intel.com>
 To: linux-cxl@vger.kernel.org,
 	linux-acpi@vger.kernel.org
@@ -40,9 +40,9 @@ Cc: dan.j.williams@intel.com,
 	dave@stgolabs.net,
 	rafael@kernel.org,
 	gregkh@linuxfoundation.org
-Subject: [PATCH v7 09/12] cxl/region: Calculate performance data for a region
-Date: Fri,  8 Mar 2024 14:59:28 -0700
-Message-ID: <20240308220055.2172956-10-dave.jiang@intel.com>
+Subject: [PATCH v7 10/12] cxl/region: Add sysfs attribute for locality attributes of CXL regions
+Date: Fri,  8 Mar 2024 14:59:29 -0700
+Message-ID: <20240308220055.2172956-11-dave.jiang@intel.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240308220055.2172956-1-dave.jiang@intel.com>
 References: <20240308220055.2172956-1-dave.jiang@intel.com>
@@ -54,148 +54,175 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Calculate and store the performance data for a CXL region. Find the worst
-read and write latency for all the included ranges from each of the devices
-that attributes to the region and designate that as the latency data. Sum
-all the read and write bandwidth data for each of the device region and
-that is the total bandwidth for the region.
-
-The perf list is expected to be constructed before the endpoint decoders
-are registered and thus there should be no early reading of the entries
-from the region assemble action. The calling of the region qos calculate
-function is under the protection of cxl_dpa_rwsem and will ensure that
-all DPA associated work has completed.
+Add read/write latencies and bandwidth sysfs attributes for the enabled CXL
+region. The bandwidth is the aggregated bandwidth of all devices that
+contribute to the CXL region. The latency is the worst latency of the
+device amongst all the devices that contribute to the CXL region.
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 ---
- drivers/cxl/core/cdat.c   | 65 +++++++++++++++++++++++++++++++++++++++
- drivers/cxl/core/region.c |  2 ++
- drivers/cxl/cxl.h         |  4 +++
- 3 files changed, 71 insertions(+)
+v7:
+- Remove comma after NULL in array listing. (Jonathan)
+---
+ Documentation/ABI/testing/sysfs-bus-cxl | 34 +++++++++
+ drivers/cxl/core/region.c               | 94 +++++++++++++++++++++++++
+ 2 files changed, 128 insertions(+)
 
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index 02e97a90a43c..40052666ebf1 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -9,6 +9,7 @@
- #include "cxlmem.h"
- #include "core.h"
- #include "cxl.h"
-+#include "core.h"
- 
- struct dsmas_entry {
- 	struct range dpa_range;
-@@ -515,3 +516,67 @@ void cxl_coordinates_combine(struct access_coordinate *out,
- }
- 
- MODULE_IMPORT_NS(CXL);
+diff --git a/Documentation/ABI/testing/sysfs-bus-cxl b/Documentation/ABI/testing/sysfs-bus-cxl
+index fff2581b8033..3f5627a1210a 100644
+--- a/Documentation/ABI/testing/sysfs-bus-cxl
++++ b/Documentation/ABI/testing/sysfs-bus-cxl
+@@ -552,3 +552,37 @@ Description:
+ 		attribute is only visible for devices supporting the
+ 		capability. The retrieved errors are logged as kernel
+ 		events when cxl_poison event tracing is enabled.
 +
-+void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
-+				    struct cxl_endpoint_decoder *cxled)
-+{
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct cxl_port *port = cxlmd->endpoint;
-+	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-+	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-+	struct access_coordinate hb_coord[ACCESS_COORDINATE_MAX];
-+	struct access_coordinate coord;
-+	struct range dpa = {
-+			.start = cxled->dpa_res->start,
-+			.end = cxled->dpa_res->end,
-+	};
-+	struct cxl_dpa_perf *perf;
-+	int rc;
 +
-+	switch (cxlr->mode) {
-+	case CXL_DECODER_RAM:
-+		perf = &mds->ram_perf;
-+		break;
-+	case CXL_DECODER_PMEM:
-+		perf = &mds->pmem_perf;
-+		break;
-+	default:
-+		return;
-+	}
++What:		/sys/bus/cxl/devices/regionZ/accessY/read_bandwidth
++		/sys/bus/cxl/devices/regionZ/accessY/write_banwidth
++Date:		Jan, 2024
++KernelVersion:	v6.9
++Contact:	linux-cxl@vger.kernel.org
++Description:
++		(RO) The aggregated read or write bandwidth of the region. The
++		number is the accumulated read or write bandwidth of all CXL memory
++		devices that contributes to the region in MB/s. It is
++		identical data that should appear in
++		/sys/devices/system/node/nodeX/accessY/initiators/read_bandwidth or
++		/sys/devices/system/node/nodeX/accessY/initiators/write_bandwidth.
++		See Documentation/ABI/stable/sysfs-devices-node. access0 provides
++		the number to the closest initiator and access1 provides the
++		number to the closest CPU.
 +
-+	lockdep_assert_held(&cxl_dpa_rwsem);
 +
-+	if (!range_contains(&perf->dpa_range, &dpa))
-+		return;
-+
-+	rc = cxl_hb_get_perf_coordinates(port, hb_coord);
-+	if (rc)  {
-+		dev_dbg(&port->dev, "Failed to retrieve hb perf coordinates.\n");
-+		return;
-+	}
-+
-+	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
-+		/* Pickup the host bridge coords */
-+		cxl_coordinates_combine(&coord, &hb_coord[i], &perf->coord);
-+
-+		/* Get total bandwidth and the worst latency for the cxl region */
-+		cxlr->coord[i].read_latency = max_t(unsigned int,
-+						    cxlr->coord[i].read_latency,
-+						    coord.read_latency);
-+		cxlr->coord[i].write_latency = max_t(unsigned int,
-+						     cxlr->coord[i].write_latency,
-+						     coord.write_latency);
-+		cxlr->coord[i].read_bandwidth += coord.read_bandwidth;
-+		cxlr->coord[i].write_bandwidth += coord.write_bandwidth;
-+
-+		/*
-+		 * Convert latency to nanosec from picosec to be consistent
-+		 * with the resulting latency coordinates computed by the
-+		 * HMAT_REPORTING code.
-+		 */
-+		cxlr->coord[i].read_latency =
-+			DIV_ROUND_UP(cxlr->coord[i].read_latency, 1000);
-+		cxlr->coord[i].write_latency =
-+			DIV_ROUND_UP(cxlr->coord[i].write_latency, 1000);
-+	}
-+}
++What:		/sys/bus/cxl/devices/regionZ/accessY/read_latency
++		/sys/bus/cxl/devices/regionZ/accessY/write_latency
++Date:		Jan, 2024
++KernelVersion:	v6.9
++Contact:	linux-cxl@vger.kernel.org
++Description:
++		(RO) The read or write latency of the region. The number is
++		the worst read or write latency of all CXL memory devices that
++		contributes to the region in nanoseconds. It is identical data
++		that should appear in
++		/sys/devices/system/node/nodeX/accessY/initiators/read_latency or
++		/sys/devices/system/node/nodeX/accessY/initiators/write_latency.
++		See Documentation/ABI/stable/sysfs-devices-node. access0 provides
++		the number to the closest initiator and access1 provides the
++		number to the closest CPU.
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 4c7fd2d5cccb..9a0d2d7621de 100644
+index 9a0d2d7621de..d4d39536e6c7 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -1752,6 +1752,8 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -EINVAL;
- 	}
+@@ -30,6 +30,98 @@
  
-+	cxl_region_perf_data_calculate(cxlr, cxled);
+ static struct cxl_region *to_cxl_region(struct device *dev);
+ 
++#define __ACCESS_ATTR_RO(_level, _name) {				\
++	.attr	= { .name = __stringify(_name), .mode = 0444 },		\
++	.show	= _name##_access##_level##_show,			\
++}
 +
- 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
- 		int i;
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index de477eb7f5d5..95864ce7b394 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -517,6 +517,7 @@ struct cxl_region_params {
-  * @cxlr_pmem: (for pmem regions) cached copy of the nvdimm bridge
-  * @flags: Region state flags
-  * @params: active + config params for the region
-+ * @coord: QoS access coordinates for the region
-  */
- struct cxl_region {
- 	struct device dev;
-@@ -527,6 +528,7 @@ struct cxl_region {
- 	struct cxl_pmem_region *cxlr_pmem;
- 	unsigned long flags;
- 	struct cxl_region_params params;
-+	struct access_coordinate coord[ACCESS_COORDINATE_MAX];
++#define ACCESS_DEVICE_ATTR_RO(level, name)	\
++	struct device_attribute dev_attr_access##level##_##name = __ACCESS_ATTR_RO(level, name)
++
++#define ACCESS_ATTR_RO(level, attrib)					      \
++static ssize_t attrib##_access##level##_show(struct device *dev,	      \
++					  struct device_attribute *attr,      \
++					  char *buf)			      \
++{									      \
++	struct cxl_region *cxlr = to_cxl_region(dev);			      \
++									      \
++	if (cxlr->coord[level].attrib == 0)				      \
++		return -ENOENT;						      \
++									      \
++	return sysfs_emit(buf, "%u\n", cxlr->coord[level].attrib);	      \
++}									      \
++static ACCESS_DEVICE_ATTR_RO(level, attrib)
++
++ACCESS_ATTR_RO(0, read_bandwidth);
++ACCESS_ATTR_RO(0, read_latency);
++ACCESS_ATTR_RO(0, write_bandwidth);
++ACCESS_ATTR_RO(0, write_latency);
++
++#define ACCESS_ATTR_DECLARE(level, attrib)	\
++	(&dev_attr_access##level##_##attrib.attr)
++
++static struct attribute *access0_coordinate_attrs[] = {
++	ACCESS_ATTR_DECLARE(0, read_bandwidth),
++	ACCESS_ATTR_DECLARE(0, write_bandwidth),
++	ACCESS_ATTR_DECLARE(0, read_latency),
++	ACCESS_ATTR_DECLARE(0, write_latency),
++	NULL
++};
++
++ACCESS_ATTR_RO(1, read_bandwidth);
++ACCESS_ATTR_RO(1, read_latency);
++ACCESS_ATTR_RO(1, write_bandwidth);
++ACCESS_ATTR_RO(1, write_latency);
++
++static struct attribute *access1_coordinate_attrs[] = {
++	ACCESS_ATTR_DECLARE(1, read_bandwidth),
++	ACCESS_ATTR_DECLARE(1, write_bandwidth),
++	ACCESS_ATTR_DECLARE(1, read_latency),
++	ACCESS_ATTR_DECLARE(1, write_latency),
++	NULL
++};
++
++#define ACCESS_VISIBLE(level)						\
++static umode_t cxl_region_access##level##_coordinate_visible(		\
++		struct kobject *kobj, struct attribute *a, int n)	\
++{									\
++	struct device *dev = kobj_to_dev(kobj);				\
++	struct cxl_region *cxlr = to_cxl_region(dev);			\
++									\
++	if (a == &dev_attr_access##level##_read_latency.attr &&		\
++	    cxlr->coord[level].read_latency == 0)			\
++		return 0;						\
++									\
++	if (a == &dev_attr_access##level##_write_latency.attr &&	\
++	    cxlr->coord[level].write_latency == 0)			\
++		return 0;						\
++									\
++	if (a == &dev_attr_access##level##_read_bandwidth.attr &&	\
++	    cxlr->coord[level].read_bandwidth == 0)			\
++		return 0;						\
++									\
++	if (a == &dev_attr_access##level##_write_bandwidth.attr &&	\
++	    cxlr->coord[level].write_bandwidth == 0)			\
++		return 0;						\
++									\
++	return a->mode;							\
++}
++
++ACCESS_VISIBLE(0);
++ACCESS_VISIBLE(1);
++
++static const struct attribute_group cxl_region_access0_coordinate_group = {
++	.name = "access0",
++	.attrs = access0_coordinate_attrs,
++	.is_visible = cxl_region_access0_coordinate_visible,
++};
++
++static const struct attribute_group cxl_region_access1_coordinate_group = {
++	.name = "access1",
++	.attrs = access1_coordinate_attrs,
++	.is_visible = cxl_region_access1_coordinate_visible,
++};
++
+ static ssize_t uuid_show(struct device *dev, struct device_attribute *attr,
+ 			 char *buf)
+ {
+@@ -2069,6 +2161,8 @@ static const struct attribute_group *region_groups[] = {
+ 	&cxl_base_attribute_group,
+ 	&cxl_region_group,
+ 	&cxl_region_target_group,
++	&cxl_region_access0_coordinate_group,
++	&cxl_region_access1_coordinate_group,
+ 	NULL,
  };
- 
- struct cxl_nvdimm_bridge {
-@@ -881,6 +883,8 @@ int cxl_endpoint_get_perf_coordinates(struct cxl_port *port,
- 				      struct access_coordinate *coord);
- int cxl_hb_get_perf_coordinates(struct cxl_port *port,
- 				struct access_coordinate *coord);
-+void cxl_region_perf_data_calculate(struct cxl_region *cxlr,
-+				    struct cxl_endpoint_decoder *cxled);
- 
- void cxl_memdev_update_perf(struct cxl_memdev *cxlmd);
  
 -- 
 2.44.0
