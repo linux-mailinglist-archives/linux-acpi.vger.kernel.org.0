@@ -1,144 +1,195 @@
-Return-Path: <linux-acpi+bounces-4204-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4205-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07ED876BED
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 21:37:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAE3876C40
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E219A1C218AD
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 20:37:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A612812A7
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 21:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0091F5D900;
-	Fri,  8 Mar 2024 20:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A415F478;
+	Fri,  8 Mar 2024 21:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="SzrPtdCt"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="BYluXopi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7122B1D52D
-	for <linux-acpi@vger.kernel.org>; Fri,  8 Mar 2024 20:37:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF4317745;
+	Fri,  8 Mar 2024 21:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709930260; cv=none; b=Ay2PlOYeIxeFuZlEPvK4laekH1ynUXb/Zzi8yWhESEZudhGWU3vArvtDi9yvrj6R4BspTTCBpq0Ti8j4o+zugZIu9W0y8Kjcjtxr0DjDdXq0sFJttUMpS6RDnaAJOhXG+/zzxN4WBo5j2utBmd0eK7pclfP7HDN5luDX/GIZO9o=
+	t=1709931941; cv=none; b=jLZWaxyeYCqY+RoEm0xRmdghniL6L+xkwgZzkC1W6Y7KBDcjchMJ2faqaRlQ3C9vzu9uNTWQHCgLYbezU8DgVVBDgy12QZ4pwfTDFHzTOEeKVs1OpdRBrBWrjpHTCvrGmmSQn2e90GeqSWYU+PicGsWtMJMxrMcBbNPjSUF+r7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709930260; c=relaxed/simple;
-	bh=QVuJYBg7eAXpV6Ijtmm49xelHY48E81cS9xdFZ2y8ww=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oLuRbDJwT58YmY+/NcT0DiOOmV16Noo6cvMY/+YD8uB7EWqKimRuqAcrl7JEGTBMbIF6laLqq9QSjxOcoS1Ur+cp2QoDhkpeCN5ajinI2vG51Iemx9Xtoy06QlrlCNfWVpvsrl4kaC5f2pkWORhdrL9VTNvYThE34VWtHqY2U30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=SzrPtdCt; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e4eaa4b394so1145351a34.1
-        for <linux-acpi@vger.kernel.org>; Fri, 08 Mar 2024 12:37:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1709930258; x=1710535058; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8AtBhhUJsX7iCjuz60QlnI9oeTh8ox4hiuWAL+2qFxI=;
-        b=SzrPtdCtETYaH+fXoFNcVZ674Y60rUoV24SHjrWWDyPuffz3hHq4no4/0zSaV3YAOd
-         3pITU2krQ+XDZV8KTm8DbbDUxfHgTrcSBp72H+2XuUj2wSERwR6Oq5tIbH84/e8violY
-         XBkz2lEi58aCBxCQXU+EnRkfJyyex8DnTmOfPlrkwUAUEBulOTXwb4wB6svmuAjMCBrv
-         vNqwD49cXpsvWh6R50V+4fN8EusTzt9GcGUyuuTKPnJDEHlTeqpvynw0A/KxKFND/6gd
-         PScL6wYo2bwUE7ZOCdsUUCPHc/JvD2GTo+8RU/G8n2zK0OU/XMH7/nnXo0bRNxpOXj3g
-         mn9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709930258; x=1710535058;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8AtBhhUJsX7iCjuz60QlnI9oeTh8ox4hiuWAL+2qFxI=;
-        b=UCyBF7zde1ubBHQgRDhnN0cj6Tq358itIvv+FSgTLFafChAXJgV4rDDwkTmvyrju43
-         +WG+x3fivCoBZmr5z7xIWKd7B3+gzUH23FDN0R3EstsGYdW1532tbS/WTZPNne0UDvGC
-         22md83rVcMhXftohTHSj2MnX0ZvEJbCHtDCqYsX6928JxKv+4ifuautDpQQ47ZoNiD2m
-         kGVFxspfaBcWh9wqWXDDIYhnKHtWJvOqWWMp483GQeVrRfYvCIhma16xA9AGshOwKJ/H
-         1/pOjkHmMzSQ3LTn/oIAEszO0tv6MVMlxHVkcqMYnwzm699/Lv37UMo5Bb+gCN2v1fLp
-         7VIw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/lQfwXrgFl7JT64Wd2mLXUWO1ddvcVX5C5FOvOCjAb7e/FFMZtY8zc7Yx9yd6TR8n1yNJXE6NUG9BfC0rSNR3kyiJ1nxB1OKn2g==
-X-Gm-Message-State: AOJu0Yzul5hSuXH4iWYF0MpJEYG0BJMMh8dPwcxAbjffNLh3vzwyuf5A
-	QBslEqePsrDaWfDBjzK2eEZ29IWuYbElH0Yq+aO+nYb1LuQs9nMLdKJsvYKkDyo=
-X-Google-Smtp-Source: AGHT+IFbgpl0pB6g2XaoyrWZZStUAXJBL7gQEaHjPXP/ruZgANeVKSb/3hxLcl0YhzvyQSM42+vm+A==
-X-Received: by 2002:a05:6870:7a0d:b0:21f:ab17:44c3 with SMTP id hf13-20020a0568707a0d00b0021fab1744c3mr272908oab.24.1709930258434;
-        Fri, 08 Mar 2024 12:37:38 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
-        by smtp.gmail.com with ESMTPSA id gu19-20020a056870ab1300b0022154dd4eb0sm47251oab.4.2024.03.08.12.37.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Mar 2024 12:37:38 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1rigyH-007y3a-Aw;
-	Fri, 08 Mar 2024 16:37:37 -0400
-Date: Fri, 8 Mar 2024 16:37:37 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
-	devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v3 7/7] dma-mapping: Simplify arch_setup_dma_ops()
-Message-ID: <20240308203737.GB9225@ziepe.ca>
-References: <cover.1707493264.git.robin.murphy@arm.com>
- <f0ea76846c89a65dfe42933d78d770004bb3de01.1707493264.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1709931941; c=relaxed/simple;
+	bh=CJpU7PWKIrFYOOqFWndohMTjLNyEZPWygUxPokaxCcQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L0YF8CbXnZY+PjrGbqMIi/VNOLmdcuSH9ehDsF6yy9/n933kUF7BoU7uI0q6g11becQWl8610kKLRdCCnjn4SwwAtlBfUdJ0oYM7B8bvWPrsmpbzB6IaG1XOnvSTSp8zxDKvMjwmjOhU7bkrac7cqrbiciQumSOM7nu2THg3ppE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=BYluXopi; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1709931923; x=1710536723; i=w_armin@gmx.de;
+	bh=CJpU7PWKIrFYOOqFWndohMTjLNyEZPWygUxPokaxCcQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=BYluXopicfKwxb4kNRBAZGM+7BqLtW3izs1+WvcRuPX3kRljpM41EJZ6sWNzZbu/
+	 2O7r+iF1aD2426dvwm+IxQawEF+gpPZZswwVfAORqk+ZpG5Vmg+niLdzGtS4UbL4+
+	 ltYNoH4Dc6rOd3C07PrpxbB42NYgPeBpqLZs508RFdViseBg/U8ldytS/cJrGD4E2
+	 Rx1LVY9PEwfpFzCxKuDTcKKKRCCiKuOykNIdiMbiMYtXZLKqjRTtJ8VrZDY2TaIAD
+	 7B7rt0+V8TCphu/EwMuY+krY0iuujAy0+r4n/sDs50COVB1CipF0lpgXFA94aHo2O
+	 1HQ2YVM3sdzBVxlblQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MVvLB-1rJ19i021V-00RqXc; Fri, 08 Mar 2024 22:05:23 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: rafael@kernel.org,
+	lenb@kernel.org,
+	mario.limonciello@amd.com,
+	linux-acpi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/2] platform/x86: wmi: Support reading/writing 16 bit EC values
+Date: Fri,  8 Mar 2024 22:05:18 +0100
+Message-Id: <20240308210519.2986-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f0ea76846c89a65dfe42933d78d770004bb3de01.1707493264.git.robin.murphy@arm.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mtu9WjXr40WaZ2ID4AXRXUusZwL9r7IBbaUfGB7C3QwidQdllXb
+ lJFb8UHCwQAT5k/dx9avOSubQuFGgfSuPq+861b1tMVB4qP1TtMSkaPnrfMDp+Pzd4uKb2k
+ DR3zItvG8MBcHwhzeI/JnLo+qxadtq3MFk90IWByj24XuD4mRxXklSBMjIk8Eyrv1Sr/4bX
+ uHmyzoQ+p/tXj1I6w9Z+Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4NUKyOK3Rx4=;G11GCJfi82Dmn84z8Oo9Twa3FU4
+ MsE4DPtcljrVZChUY+iZzezsOLEOS+f7ONKrNrt4RVHkYVeD8+lI2h7rSZTJPTPP0w0raE08Y
+ csF12pKVBNxt8ydffMoBssbHJeZOE64nSv9IPFYFbSS0ui0jUoFE4xJMtQYsleYckihyr3RYE
+ SHqQBoyTW5cEO1HlgqsbxtuuYpfLfpsXJA0ZNAYQwX1QJlJgJ2LRyjID7TPwVqb0Hxvwup59n
+ gnwBW6R5xhtX6XAgfuqKTNxB1qLqpjlVDm54LkR2FJGaG0Y5WIOFb5l9VoudRepZasuCeWNYq
+ VsCK0oivqMg5xRDRh+GspcxheU0/cKMxh1Rfke/VNo32g6115FMmYbC4uv/Qu4xPZh+9/N8Ue
+ G8vo/5fvJkIuqXBBjHF87UNLsvI2rLqEv3NVwypSww8crLJF/o6M0UjOwJIV5Dm4Z3FcMPn7s
+ Hh9LWusoMfCB1/BSUzATggyZo1Tu10K8ZgDLYvOGW11otJIdlRYylLEno1ni5ADe5Ev2komJc
+ 0/FpOtwOku4LKXTJXpaf2+ujaBDgNp40y0LGKMJDJdvKsfj4DO2eQjXugls8TWEpgq3sOF+Zv
+ UHBkLae8zO+RYuH537dOvaJ34MabSmG5f7uKVQM00iCjOno8qEgLQ9uldJPJHHAM2W0B7cBJi
+ QXxWGBOohi0mp7rPLrhxZ+vyzVBkiDpJqc+xMtv8SOzWj8JSoeqSKPKlC6HhIB64hEPKijv1h
+ zEJXILT5EIFnt3Ner4gf4ZgF268/3vYQLK04lQ1XVDGODqOd6oY8jIF8Ajvkqb/UFLNcOByGI
+ VM46RCMh/AI+WEAolS3M2SDbY7pcWnZ8322BeKvPTodQ0=
 
-On Fri, Feb 09, 2024 at 04:50:04PM +0000, Robin Murphy wrote:
-> The dma_base, size and iommu arguments are only used by ARM, and can
-> now easily be deduced from the device itself, so there's no need to pass
-> them through the callchain as well.
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
-> v2: Make sure the ARM changes actually build (oops...)
-> ---
->  arch/arc/mm/dma.c               |  3 +--
->  arch/arm/mm/dma-mapping-nommu.c |  3 +--
->  arch/arm/mm/dma-mapping.c       | 16 +++++++++-------
->  arch/arm64/mm/dma-mapping.c     |  3 +--
->  arch/mips/mm/dma-noncoherent.c  |  3 +--
->  arch/riscv/mm/dma-noncoherent.c |  3 +--
->  drivers/acpi/scan.c             |  7 +------
->  drivers/hv/hv_common.c          |  6 +-----
->  drivers/of/device.c             |  4 +---
->  include/linux/dma-map-ops.h     |  6 ++----
->  10 files changed, 19 insertions(+), 35 deletions(-)
+The ACPI EC address space handler currently only supports
+reading/writing 8 bit values. Some firmware implementations however
+want to access for example 16 bit values, which is prefectly legal
+according to the ACPI spec.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Add support for reading/writing such values.
 
-Jason
+Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Changes since v3:
+- change type of variable i to size_t
+
+Changes since v2:
+- fix address overflow check
+
+Changes since v1:
+- use BITS_PER_BYTE
+- validate that number of bytes to read/write does not overflow the
+  address
+=2D--
+ drivers/platform/x86/wmi.c | 49 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 1920e115da89..d9bf6d452b3a 100644
+=2D-- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1153,6 +1153,34 @@ static int parse_wdg(struct device *wmi_bus_dev, st=
+ruct platform_device *pdev)
+ 	return 0;
+ }
+
++static int ec_read_multiple(u8 address, u8 *buffer, size_t bytes)
++{
++	size_t i;
++	int ret;
++
++	for (i =3D 0; i < bytes; i++) {
++		ret =3D ec_read(address + i, &buffer[i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int ec_write_multiple(u8 address, u8 *buffer, size_t bytes)
++{
++	size_t i;
++	int ret;
++
++	for (i =3D 0; i < bytes; i++) {
++		ret =3D ec_write(address + i, buffer[i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
+ /*
+  * WMI can have EmbeddedControl access regions. In which case, we just wa=
+nt to
+  * hand these off to the EC driver.
+@@ -1162,27 +1190,28 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physi=
+cal_address address,
+ 			  u32 bits, u64 *value,
+ 			  void *handler_context, void *region_context)
+ {
+-	int result =3D 0;
+-	u8 temp =3D 0;
++	int bytes =3D bits / BITS_PER_BYTE;
++	int ret;
++
++	if (!value)
++		return AE_NULL_ENTRY;
+
+-	if ((address > 0xFF) || !value)
++	if (!bytes || bytes > sizeof(*value))
+ 		return AE_BAD_PARAMETER;
+
+-	if (function !=3D ACPI_READ && function !=3D ACPI_WRITE)
++	if (address > U8_MAX || address + bytes - 1 > U8_MAX)
+ 		return AE_BAD_PARAMETER;
+
+-	if (bits !=3D 8)
++	if (function !=3D ACPI_READ && function !=3D ACPI_WRITE)
+ 		return AE_BAD_PARAMETER;
+
+ 	if (function =3D=3D ACPI_READ) {
+-		result =3D ec_read(address, &temp);
+-		*value =3D temp;
++		ret =3D ec_read_multiple(address, (u8 *)value, bytes);
+ 	} else {
+-		temp =3D 0xff & *value;
+-		result =3D ec_write(address, temp);
++		ret =3D ec_write_multiple(address, (u8 *)value, bytes);
+ 	}
+
+-	switch (result) {
++	switch (ret) {
+ 	case -EINVAL:
+ 		return AE_BAD_PARAMETER;
+ 	case -ENODEV:
+=2D-
+2.39.2
+
 
