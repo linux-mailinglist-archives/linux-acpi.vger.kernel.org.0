@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-4175-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4181-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC3875E5E
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 08:20:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5155D875E93
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 08:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC2611C2192A
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 07:20:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B441C21543
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 07:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613CA4EB42;
-	Fri,  8 Mar 2024 07:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB91A2C1A0;
+	Fri,  8 Mar 2024 07:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rDb2+2zg"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SBkYY+8g"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFE34EB41;
-	Fri,  8 Mar 2024 07:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDC34F1E3;
+	Fri,  8 Mar 2024 07:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709882441; cv=none; b=l7fkRj1weyS1Fywl2CJhi7UbVnza16SX55ftMPeZNbbCvvZv1m/DZU0IjGrYBy6Gf+iv+8H8BdllJLmLI0l+lZoTbZD1xOmc0GSgpxcjYbyWTPsm/X3sy60oUyQwdfGtHPmrXXpMy2qNK8e9Gz4zyOHUTi6ugBpYBUZJBwhZAHA=
+	t=1709883141; cv=none; b=WggQ6cpKd0jr3GvVgs2ZZvYC1a5q4Ufq8h7COQ5+TKxZmHae256DZc9iO4FaKck+yibHGbY8UW8Aq6RN/gFZ2gEnrAGoDehA2FreKbZti8eWc1bsfWv0PKV8bvL0vBptXcGFa+KRtt7bv8/G1GYyH10LMYzVsjIxhJCAJFXXdK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709882441; c=relaxed/simple;
-	bh=1rMp09pt+DJziaOPTfngoZfnVNRH/uQtUHw0I3KJEa4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jg5avUgTo2PFHTRe61/AwtLlsLvFX7xxv9IP2abck9gM2yOuc0O/9Le0yzRynjsx/Lvhs7hENDXbERj7hfL5YfZzkMpNuzMuZnkmpDyIf4B1HmrGQa3SdTkmTaYkFuLo/elu3uOxdZ3VQn4/Y10d9vI4IeycMpGBcunrYHdSpGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rDb2+2zg; arc=none smtp.client-ip=115.124.30.97
+	s=arc-20240116; t=1709883141; c=relaxed/simple;
+	bh=z/Jzop/xcOF0UsmGrGdSmhNu+gX+BqNaPpjSqxQzzAE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PxMK/GSoh5st0E+0aVNICX1k0/h2cbPXZQ/kY55T7AHV/ryU9z6nLr3V7gAa5lDuF2qfqbjNK5WU2J1O+PKVKmL9m41oN8lRUHph87x0/zTTc3ti+sw8frgBuX/wqLUq9pcq9+P7qlm2FS+AKe4Si+A9Osmo5I7FrwdU+IrWR8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SBkYY+8g; arc=none smtp.client-ip=115.124.30.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1709882435; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=sore9SltRzniIBmsB1VRaVO6lEzW9PUjGtyywAUpNBM=;
-	b=rDb2+2zgQAmUdjXIrDp7UZ09F7qHo1hPD6/TTjad+fDzNE+8ZzpmDeGQJrzsK63Jf3BokZi8/8Ckit3zO7v9uQ6MBIpFDemkvdNFp6ipA6GXpoSCHS+7mZzM5MjHFaBtjOKgdF4ZxlyM19xQnRBlrQiDKaZxyoxE6z1qLgMUK80=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0W21q8eo_1709882434;
-Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0W21q8eo_1709882434)
+	t=1709883136; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=LEaQuW7svx3Ut6/i/Znb5O8w/jVnOY46iEm+jkT/Fhw=;
+	b=SBkYY+8gqafRV7K99BeLRo78H2jOHqgoIuYA3CjbRaLIHCZZgf1d8R2J+2Jk1WK8qc5WYlN2C+40sX9BBokEeqz6tcRMJbn3QLXpnJsda4052Xb5FaNqluV338DB15SZ1MOUsGIVgLXq0f/XxFAjPCiccqmeZbkEi5SchbLY5+Q=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0W21nh7e_1709883135;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0W21nh7e_1709883135)
           by smtp.aliyun-inc.com;
-          Fri, 08 Mar 2024 15:20:34 +0800
+          Fri, 08 Mar 2024 15:32:16 +0800
 From: Yang Li <yang.lee@linux.alibaba.com>
 To: rafael@kernel.org,
 	lenb@kernel.org
 Cc: linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yang Li <yang.lee@linux.alibaba.com>
-Subject: [PATCH -next] ACPI: Add kernel-doc comments for ACPI suspend and hibernation functions
-Date: Fri,  8 Mar 2024 15:20:33 +0800
-Message-Id: <20240308072033.116556-1-yang.lee@linux.alibaba.com>
+Subject: [PATCH -next] ACPI: Add kernel-doc comments to handle_eject_request function
+Date: Fri,  8 Mar 2024 15:32:14 +0800
+Message-Id: <20240308073214.11262-1-yang.lee@linux.alibaba.com>
 X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -57,72 +57,27 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch enhances the documentation for the ACPI power management
-functions related to system suspend and hibernation. This includes the
-use of kernel-doc style comments which provide developers with clearer
-guidance on the usage and expectations of these functions.
+This patch adds proper kernel-doc comments to the
+handle_eject_request function in the ACPI dock subsystem.
 
 Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
 ---
- drivers/acpi/sleep.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/acpi/dock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 728acfeb774d..5bc61f40c189 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -502,6 +502,7 @@ static void acpi_pm_finish(void)
+diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
+index a89bdbe00184..a7c00ef78086 100644
+--- a/drivers/acpi/dock.c
++++ b/drivers/acpi/dock.c
+@@ -380,6 +380,8 @@ static int dock_in_progress(struct dock_station *ds)
  
  /**
-  * acpi_pm_start - Start system PM transition.
-+ * @acpi_state: The target ACPI power state to transition to.
-  */
- static void acpi_pm_start(u32 acpi_state)
- {
-@@ -540,8 +541,9 @@ static u32 acpi_suspend_states[] = {
- };
- 
- /**
-- *	acpi_suspend_begin - Set the target system sleep state to the state
-- *		associated with given @pm_state, if supported.
-+ *acpi_suspend_begin - Set the target system sleep state to the state
-+ *	associated with given @pm_state, if supported.
-+ *@pm_state: The target system power management state.
-  */
- static int acpi_suspend_begin(suspend_state_t pm_state)
- {
-@@ -671,10 +673,11 @@ static const struct platform_suspend_ops acpi_suspend_ops = {
- };
- 
- /**
-- *	acpi_suspend_begin_old - Set the target system sleep state to the
-- *		state associated with given @pm_state, if supported, and
-- *		execute the _PTS control method.  This function is used if the
-- *		pre-ACPI 2.0 suspend ordering has been requested.
-+ *acpi_suspend_begin_old - Set the target system sleep state to the
-+ *	state associated with given @pm_state, if supported, and
-+ *	execute the _PTS control method.  This function is used if the
-+ *	pre-ACPI 2.0 suspend ordering has been requested.
-+ *@pm_state: The target suspend state for the system.
-  */
- static int acpi_suspend_begin_old(suspend_state_t pm_state)
- {
-@@ -967,10 +970,11 @@ static const struct platform_hibernation_ops acpi_hibernation_ops = {
- };
- 
- /**
-- *	acpi_hibernation_begin_old - Set the target system sleep state to
-- *		ACPI_STATE_S4 and execute the _PTS control method.  This
-- *		function is used if the pre-ACPI 2.0 suspend ordering has been
-- *		requested.
-+ *acpi_hibernation_begin_old - Set the target system sleep state to
-+ *	ACPI_STATE_S4 and execute the _PTS control method.  This
-+ *	function is used if the pre-ACPI 2.0 suspend ordering has been
-+ *	requested.
-+ *@stage: The power management event message.
-  */
- static int acpi_hibernation_begin_old(pm_message_t stage)
- {
+  * handle_eject_request - handle an undock request checking for error conditions
++ * @ds: The dock station to undock.
++ * @event: The ACPI event number associated with the undock request.
+  *
+  * Check to make sure the dock device is still present, then undock and
+  * hotremove all the devices that may need removing.
 -- 
 2.20.1.7.g153144c
 
