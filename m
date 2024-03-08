@@ -1,334 +1,150 @@
-Return-Path: <linux-acpi+bounces-4195-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4196-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806B98766B4
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 15:50:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC408767E6
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 17:01:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2EB41C21120
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 14:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 090C8283BB8
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 16:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927B321104;
-	Fri,  8 Mar 2024 14:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCA624A1A;
+	Fri,  8 Mar 2024 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="wULQIMkC"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MYBeSPn5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C15200C1;
-	Fri,  8 Mar 2024 14:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D415C0;
+	Fri,  8 Mar 2024 16:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709909392; cv=none; b=EiGRPzsCALXav1UuCeL4OrBejYjFcjSmWrBEK6l2aKmcihwZnCgIkx3yKwEcyfLOE3j12J0Km96qW9/3i+kQbzlO2J5nI4dbL+Tbw4UaDRkKzl/oqC+sOAHdsSfwDYvf/gysBni1KDXTJDC8/U6JPkaQF8Z8X07F/0xu9LqRahs=
+	t=1709913669; cv=none; b=GxcsLTL63rK/909pWvxcyxs8EpFLZQe0fl77UlI7iKJIXuabUNXVhbrk4oP/ZGP75tYNOJDZpKSiKJjloA+mMORtqkQqYZRM8rhfP7BCZYtiS5bwO1NK2LiiYV4yVOaF1HE3tD2g7GszYvz4eVtXrZoIOvvgmicktwcyz/0xOkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709909392; c=relaxed/simple;
-	bh=WY/qS/ckGhQLvKky6SlRpqOjuzNXZYS0fZnkGAFszI0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u4J1q1cWoJdEODfchvBfvd7zQzON0r3Xd3zg+KAyvj6jSXwL6+ccDMv/NcIUf9UNz4/pUT16hNOydoHp2GrWl8RR9GCl9kTNKq2Su9tzhW08otvLUcZu2hN0DuoJC2Zg/Iz3HVpzKB8vWY2d8PWPBiVfrSYM/Xln4xOK05XtHJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=wULQIMkC; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1709909389;
-	bh=WY/qS/ckGhQLvKky6SlRpqOjuzNXZYS0fZnkGAFszI0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wULQIMkCxXx4EE5m3lJFejVUnirWj/2tNP5kGhXXhKYnP2NAe3v/zVr2ixIxRu79m
-	 opjUYf4gVvC84wdh1Gz/MImANci1fObGdhWJL8m7UjTVhrgaCCg8Cm+KwEjQFCEdWU
-	 JjcNUK7u57x8/TSrsnXHz7DsVxoKk6ajslWyOpBZx8jcEBtmMDXOxAyvECgq2fG2SF
-	 V52ppxHKFUcg+kfuDKoArsdU02zJrUPw0GnDapG2qc/4ZJusX4WzJXX0AAs7N4qswp
-	 eXu1bWzbJ9aWg6o3ra61WKtlvQht6EcYSc0idHRtMobjRkENC9FNGW0IcpVvnbh1r+
-	 0AOHTS4J4W3mQ==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0599337820F1;
-	Fri,  8 Mar 2024 14:49:47 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	shuah@kernel.org
-Cc: dan.carpenter@linaro.org,
-	broonie@kernel.org,
-	groeck@chromium.org,
-	kernel@collabora.com,
-	kernelci@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	robh+dt@kernel.org,
-	saravanak@google.com,
-	davidgow@google.com,
-	Tim.Bird@sony.com,
-	dianders@chromium.org,
-	Laura Nao <laura.nao@collabora.com>
-Subject: [RFC PATCH v2 2/2] kselftest: Add test to detect unprobed devices on ACPI platforms
-Date: Fri,  8 Mar 2024 15:49:33 +0100
-Message-Id: <20240308144933.337107-3-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240308144933.337107-1-laura.nao@collabora.com>
-References: <20240308144933.337107-1-laura.nao@collabora.com>
+	s=arc-20240116; t=1709913669; c=relaxed/simple;
+	bh=RFfZFo9qX00ig1YaxgXYwq7KQphEKTKfNwAYxMhxCqA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P4X9LgTNTb2IXM0/wwtZlr5FzDbaR6b4Lrj+pCjS9Tsx2GZOx6A/sQ/c5bOE4iywZXgkqpSE4R20WuhIlmTIpbHEJj7nF+L0xh+gfsqkj3zad7xRj3wfYmdFvBgW1dz8hoNnjW8AmL9SRANZAOFtcCKkUPyu3u2WY4WbZNHTErw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MYBeSPn5; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=VhIY4Br0Ekomd9yYHf9WgFKFdCONPOv+EuoT+Fc7ADw=; b=MYBeSPn57zP643IurkdUBAC8DS
+	II0cKShArpmUvluLrOeVnlqn9o8WdfVHcR0cxPFOPedxpRhzAdz+C64Y7432zU7DDP63nfjC4aw56
+	UYOX4FhPylwHczTbp5JcbnInbl38N+6sN3WJWvFxC27frBvmrXGZdfbSMi8nXktEeTF2raZH5cn/d
+	7NQEUpvT5+0vjlywpXkiyD28qqJdYBgtwr1NX21J7ZlX+fw9yC5eDRiorZah2UoGMfwItHuPZx9h+
+	l6+gjTWnzGDMJW14qGbKs+iiTbRh0SHYm78ZIiRyo7z7cW4/NxTIc8eCQUrBkL1VpCDZqAg+brhAf
+	31f7k9dQ==;
+Received: from [50.53.50.0] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1ricee-0000000A2Y6-0RrI;
+	Fri, 08 Mar 2024 16:01:07 +0000
+Message-ID: <691bd1ca-a199-474f-9b1c-1c91f21648ae@infradead.org>
+Date: Fri, 8 Mar 2024 08:01:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -next] ACPI: Add kernel-doc comments for ACPI suspend and
+ hibernation functions
+Content-Language: en-US
+To: Yang Li <yang.lee@linux.alibaba.com>, rafael@kernel.org, lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240308072033.116556-1-yang.lee@linux.alibaba.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240308072033.116556-1-yang.lee@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add new kselftest that tests whether devices declared in the ACPI
-namespace and supported by the kernel are correctly bound
-to a driver.
+Hi--
 
-The test traverses the ACPI sysfs tree to get a list of all the devices
-defined in the ACPI namespace and verifies whether the physical devices
-linked to each ACPI object are bound to a driver.
-The test relies on two lists to skip devices not expected to be bound
-to a driver:
-- List generated by the acpi-extract-ids script: includes the ACPI IDs
-  matched by a driver
-- Manual list of ignored IDs: includes the ID of devices that may be
-  discovered only via the platform firmware and that don't require a
-  driver or cannot be represented as platform devices
+On 3/7/24 23:20, Yang Li wrote:
+> This patch enhances the documentation for the ACPI power management
+> functions related to system suspend and hibernation. This includes the
+> use of kernel-doc style comments which provide developers with clearer
+> guidance on the usage and expectations of these functions.
+> 
+> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+> ---
+>  drivers/acpi/sleep.c | 24 ++++++++++++++----------
+>  1 file changed, 14 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+> index 728acfeb774d..5bc61f40c189 100644
+> --- a/drivers/acpi/sleep.c
+> +++ b/drivers/acpi/sleep.c
+> @@ -502,6 +502,7 @@ static void acpi_pm_finish(void)
+>  
+>  /**
+>   * acpi_pm_start - Start system PM transition.
+> + * @acpi_state: The target ACPI power state to transition to.
+>   */
+>  static void acpi_pm_start(u32 acpi_state)
+>  {
+> @@ -540,8 +541,9 @@ static u32 acpi_suspend_states[] = {
+>  };
+>  
+>  /**
+> - *	acpi_suspend_begin - Set the target system sleep state to the state
+> - *		associated with given @pm_state, if supported.
+> + *acpi_suspend_begin - Set the target system sleep state to the state
+> + *	associated with given @pm_state, if supported.
+> + *@pm_state: The target system power management state.
 
-The test also examines the sysfs attributes of the target device objects
-linked by physical_node* to exclude other devices that should not be
-bound to a driver. This includes:
-- Devices not assigned to any subsystem
-- Devices that are linked to other devices
-- Class devices
-- Specific PCI bridges that do not require a driver
+Please use a space between '*' and function names, function parameters, etc.
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
----
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/acpi/.gitignore       |   1 +
- tools/testing/selftests/acpi/Makefile         |  21 +++
- tools/testing/selftests/acpi/id_ignore_list   |   3 +
- .../selftests/acpi/test_unprobed_devices.sh   | 138 ++++++++++++++++++
- 6 files changed, 165 insertions(+)
- create mode 100644 tools/testing/selftests/acpi/.gitignore
- create mode 100644 tools/testing/selftests/acpi/Makefile
- create mode 100644 tools/testing/selftests/acpi/id_ignore_list
- create mode 100755 tools/testing/selftests/acpi/test_unprobed_devices.sh
+>   */
+>  static int acpi_suspend_begin(suspend_state_t pm_state)
+>  {
+> @@ -671,10 +673,11 @@ static const struct platform_suspend_ops acpi_suspend_ops = {
+>  };
+>  
+>  /**
+> - *	acpi_suspend_begin_old - Set the target system sleep state to the
+> - *		state associated with given @pm_state, if supported, and
+> - *		execute the _PTS control method.  This function is used if the
+> - *		pre-ACPI 2.0 suspend ordering has been requested.
+> + *acpi_suspend_begin_old - Set the target system sleep state to the
+> + *	state associated with given @pm_state, if supported, and
+> + *	execute the _PTS control method.  This function is used if the
+> + *	pre-ACPI 2.0 suspend ordering has been requested.
+> + *@pm_state: The target suspend state for the system.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8333ead448c4..1f58949c9e51 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -294,6 +294,7 @@ F:	include/linux/fwnode.h
- F:	include/linux/fw_table.h
- F:	lib/fw_table.c
- F:	scripts/acpi/acpi-extract-ids
-+F:	tools/testing/selftests/acpi/
- F:	tools/power/acpi/
- 
- ACPI APEI
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index e1504833654d..3107301ea4f3 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
-+TARGETS += acpi
- TARGETS += alsa
- TARGETS += amd-pstate
- TARGETS += arm64
-diff --git a/tools/testing/selftests/acpi/.gitignore b/tools/testing/selftests/acpi/.gitignore
-new file mode 100644
-index 000000000000..3c520e8a1962
---- /dev/null
-+++ b/tools/testing/selftests/acpi/.gitignore
-@@ -0,0 +1 @@
-+id_list
-diff --git a/tools/testing/selftests/acpi/Makefile b/tools/testing/selftests/acpi/Makefile
-new file mode 100644
-index 000000000000..b80d4fb797ac
---- /dev/null
-+++ b/tools/testing/selftests/acpi/Makefile
-@@ -0,0 +1,21 @@
-+PY3 = $(shell which python3 2>/dev/null)
-+
-+ifneq ($(PY3),)
-+
-+TEST_PROGS := test_unprobed_devices.sh
-+TEST_GEN_FILES := id_list
-+TEST_FILES := id_ignore_list
-+
-+include ../lib.mk
-+
-+$(OUTPUT)/id_list:
-+	$(top_srcdir)/scripts/acpi/acpi-extract-ids -d $(top_srcdir) > $@
-+
-+else
-+
-+all: no_py3_warning
-+
-+no_py3_warning:
-+	@echo "Missing python3. This test will be skipped."
-+
-+endif
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/id_ignore_list b/tools/testing/selftests/acpi/id_ignore_list
-new file mode 100644
-index 000000000000..86ddf4b0a55a
---- /dev/null
-+++ b/tools/testing/selftests/acpi/id_ignore_list
-@@ -0,0 +1,3 @@
-+PNP0A05
-+PNP0A06
-+ACPI0004
-\ No newline at end of file
-diff --git a/tools/testing/selftests/acpi/test_unprobed_devices.sh b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-new file mode 100755
-index 000000000000..23e52833c475
---- /dev/null
-+++ b/tools/testing/selftests/acpi/test_unprobed_devices.sh
-@@ -0,0 +1,138 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2023 Collabora Ltd
-+#
-+# Inspired by the tools/testing/selftests/dt/test_unprobed_devices.sh
-+# script, adapted for the ACPI use case.
-+#
-+# This script checks whether devices declared in the ACPI namespace and
-+# supported by the kernel are correctly bound to a driver.
-+#
-+# To do this, two lists are used:
-+# * a list of ACPI IDs matched by existing drivers
-+# * a list of IDs that should be ignored
-+#
-+
-+DIR="$(dirname "$(readlink -f "$0")")"
-+
-+KTAP_HELPERS="${DIR}/../kselftest/ktap_helpers.sh"
-+if ! source "$KTAP_HELPERS"; then
-+	exit 4
-+fi
-+
-+ACPI_SYSTEM_DIR="/sys/devices/LNXSYSTM:00"
-+ID_IGNORE_LIST="${DIR}"/id_ignore_list
-+ID_LIST="${DIR}"/id_list
-+
-+PCI_CLASS_BRIDGE_HOST="0x0600"
-+PCI_CLASS_BRIDGE_ISA="0x0601"
-+
-+ktap_print_header
-+
-+if [[ ! -d "${ACPI_SYSTEM_DIR}" ]]; then
-+	ktap_skip_all "${ACPI_SYSTEM_DIR} doesn't exist."
-+	exit "${KSFT_SKIP}"
-+fi
-+
-+# The ACPI specification mandates that ACPI objects representing devices on
-+# non-enumerable and enumerable busses contain a _HID or an _ADR
-+# identification object respectively. Get a list of devices of both types,
-+# by searching the ACPI sysfs subtree for directories containing a hid or
-+# adr attribute.
-+supp_dev_paths=$(while IFS=$'\n' read -r dev_path; do
-+	if [ ! -f "${dev_path}"/hid ] && [ ! -f "${dev_path}"/adr ]; then
-+		continue
-+	fi
-+
-+	# Check if the device is present, enabled, and functioning properly
-+	status="${dev_path}/status"
-+	if [ -f "${status}" ]; then
-+		status_hex=$(($(cat "${status}")))
-+
-+		if [ $((status_hex & 1)) -eq 0 ] ||
-+			[ $((status_hex >> 1 & 1)) -eq 0 ] ||
-+			[ $((status_hex >> 3 & 1)) -eq 0 ]; then
-+			continue
-+		fi
-+	fi
-+
-+	if [ -n "$(find -L "${dev_path}" -maxdepth 1 -name "physical_node*" -print -quit)" ]; then
-+		for node in "${dev_path}"/physical_node*; do
-+			# Ignore devices without a subsystem, devices that link to
-+			# other devices, and class devices
-+			if [ ! -d "${node}/subsystem" ] ||
-+				[ -d "${node}/device" ] ||
-+				[[ "$(readlink -f "${node}/subsystem")" == /sys/class/* ]]; then
-+				continue
-+			fi
-+
-+			echo "${node}"
-+		done
-+	fi
-+done < <(find ${ACPI_SYSTEM_DIR} -name uevent -exec dirname {} \;))
-+
-+supp_dev_paths_num=$(echo "${supp_dev_paths}" | wc -w)
-+ktap_set_plan "${supp_dev_paths_num}"
-+
-+# Iterate over ACPI devices
-+for dev_path in ${supp_dev_paths}; do
-+	if [ -f "${dev_path}/firmware_node/path" ]; then
-+		acpi_path="$(<"${dev_path}"/firmware_node/path)"
-+	fi
-+
-+	dev_link=$(readlink -f "${dev_path}")
-+	desc="${acpi_path}-${dev_link#/sys/devices/}"
-+
-+	if [ -f "${dev_path}/firmware_node/hid" ]; then
-+		hid="$(<"${dev_path}"/firmware_node/hid)"
-+
-+		if [ -f "${dev_path}/firmware_node/modalias" ]; then
-+			modalias=$(<"${dev_path}/firmware_node/modalias")
-+			cid=$(echo "${modalias}" | cut -d':' -f3)
-+
-+			# Skip devices with ignored HID/CID
-+			if ignored_id=$(grep -i "${hid}" "${ID_IGNORE_LIST}" ||
-+				{ [ -n "${cid}" ] && grep -i "${cid}" "${ID_IGNORE_LIST}"; }); then
-+				ktap_print_msg "ID ${ignored_id} ignored [SKIP]"
-+				ktap_test_skip "${desc}"
-+				continue
-+			fi
-+			# Skip devices with unsupported HID/CID
-+			if [[ "${hid}" != LNX* ]] && ! grep -x -q -i "${hid}" "${ID_LIST}"; then
-+				if [ -z "${cid}" ] || ! grep -x -q -i "${cid}" "${ID_LIST}"; then
-+					ktap_print_msg "no match for ${hid}${cid:+:${cid}} found \
-+						in the supported IDs list [SKIP]"
-+					ktap_test_skip "${desc}"
-+					continue
-+				fi
-+			fi
-+		fi
-+	fi
-+
-+	# Skip bridges that don't require a driver
-+	if [ -f "${dev_path}/class" ]; then
-+		class=$(<"${dev_path}"/class)
-+		if [[ ${class} == ${PCI_CLASS_BRIDGE_HOST}* ]] ||
-+			[[ ${class} == ${PCI_CLASS_BRIDGE_ISA}* ]]; then
-+			ktap_print_msg "device linked to ${desc} does not require a driver [SKIP]"
-+			ktap_test_skip "${desc}"
-+			continue
-+		fi
-+	fi
-+
-+	# Search for the driver in both the device folder and the companion's folder
-+	if [ -d "${dev_path}/driver" ] || [ -d "${dev_path}/firmware_node/driver" ]; then
-+		ktap_test_pass "${desc}"
-+	# Skip char devices
-+	elif [ -f "${dev_path}/dev" ]; then
-+		ktap_print_msg "${desc} is a char device [SKIP]"
-+		ktap_test_skip "${desc}"
-+		continue
-+	else
-+		ktap_test_fail "${desc}"
-+	fi
-+
-+done
-+
-+ktap_finished
+Ditto.
+
+>   */
+>  static int acpi_suspend_begin_old(suspend_state_t pm_state)
+>  {
+> @@ -967,10 +970,11 @@ static const struct platform_hibernation_ops acpi_hibernation_ops = {
+>  };
+>  
+>  /**
+> - *	acpi_hibernation_begin_old - Set the target system sleep state to
+> - *		ACPI_STATE_S4 and execute the _PTS control method.  This
+> - *		function is used if the pre-ACPI 2.0 suspend ordering has been
+> - *		requested.
+> + *acpi_hibernation_begin_old - Set the target system sleep state to
+> + *	ACPI_STATE_S4 and execute the _PTS control method.  This
+> + *	function is used if the pre-ACPI 2.0 suspend ordering has been
+> + *	requested.
+> + *@stage: The power management event message.
+
+Ditto.
+
+>   */
+>  static int acpi_hibernation_begin_old(pm_message_t stage)
+>  {
+
+thanks.
 -- 
-2.30.2
-
+#Randy
 
