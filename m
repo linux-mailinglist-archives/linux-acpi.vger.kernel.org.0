@@ -1,59 +1,59 @@
-Return-Path: <linux-acpi+bounces-4179-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4180-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6F3875E91
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD646875E92
 	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 08:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8C891F234F7
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 07:31:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE2D1C21C2A
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 07:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3178F4F1EB;
-	Fri,  8 Mar 2024 07:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87574EB5E;
+	Fri,  8 Mar 2024 07:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NVBfC7Bp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DFbDhDmx"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5203E4F1E0
-	for <linux-acpi@vger.kernel.org>; Fri,  8 Mar 2024 07:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F024B4F1F1
+	for <linux-acpi@vger.kernel.org>; Fri,  8 Mar 2024 07:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709883062; cv=none; b=p3XJo1t+DA4SjMPUt3kBJ1wiX1eLPrQDjL7w1S/MJMa2qFjQR0UT91CkOu6yLmoVq+cTcWthZ0AH4dhGe84siX3oDiTPE4qh5CxuwzwiA7U7j83XVoktvTsESGppHicq02Od6KEQoBFH2/Y9sMj9LQJnsyd7cEAIw8CmwRyiRx4=
+	t=1709883064; cv=none; b=WEiSY/xNBeUa7+f/qcT2KxeH+HArUK4UJ9I6Su6lTRaTGZCZu9BBMyOiScCuH0+Eg+HccXeGT8Cu/3o+ZE9ZCDoJ1Rnt4lfRdYDdbTtHqTj1tue3vg6s/Rax9mx6A5N2qVwGurn6P/TLoooBDeN6lYoEjPPK33Y0eWML4VfzS9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709883062; c=relaxed/simple;
-	bh=yhIQ5ut2TGi29Xd6cmzIGuOECw1MorBumAs/o7ZC+h8=;
+	s=arc-20240116; t=1709883064; c=relaxed/simple;
+	bh=Yfe44Kqt5IDGq3RMBQa9JBfISJMKTePyxG/LjwDdPKQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cJA48JXNNwHwOeHN0d5i0ImTwIA7+bp6N8lMRzkmNaLb1ajvSvOgsc6WYIk7NtVMPP528qV1tzrdZNCeCBDEkNzWTER+1gq++1aimPBXSLIBFsxt22aXexDKwHw6PFY4By5f/ZqMPajoZ+SpOm1Ok0OPXxa4Wn/Cdt+EO99biBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NVBfC7Bp; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=U00vf3Qk7NDrWOZ4sCYGut4iHiI5B5VwlXwMtULc4rNWVy4SIgK9RlGAVYiJy0gySD/IF2akf8gfaaK4sHZtMISy5W30tRNrpBZs25QfL2JPYK7aS2DVXCD5emV2VzqB7MFc1KCXYL4O7R8hRvFjZVyJiH1EyEUJnGVbFHAv/ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DFbDhDmx; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709883060; x=1741419060;
+  t=1709883063; x=1741419063;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yhIQ5ut2TGi29Xd6cmzIGuOECw1MorBumAs/o7ZC+h8=;
-  b=NVBfC7BpexvAT6SjjMqv60fVukUhu4U2jt2tjzcxdcheO8+GMulQEzOV
-   YpqjbrICRyeSZpAB+8q/wWm676Kn/LRL5qK/mlbAWApd91O1oGNHvL6ZE
-   I+5PzKn7VdxsX3IdzvkCdKHJiX34qvxjTP6nfftxh4/5zQnPurv83HYWW
-   euYaMhZW8QLtlb3JkR/yprPZJSu+n7CF9SzwupEe9qus+9HDxCKnzBzuM
-   wyYOTFvlCguBT0KT6Go5ioBrpzJSMTRNmEyCuEDpKLpKN8Sa8RLhEV6G2
-   wBHAw55mxSzSDhGQbSK96J6AdqzQLzqOqXg52a0b77WdZdMjvLZrIhBSL
+  bh=Yfe44Kqt5IDGq3RMBQa9JBfISJMKTePyxG/LjwDdPKQ=;
+  b=DFbDhDmxtn6GiPxZjyhsyUXOqZNo371RQSpZ2MOry3bw9RJinHJnXtU4
+   Ln/bu+PnduWNxMAEedcBRiCE3/pIHP4JQ5wGYc/nlGBkL+PGUcqosZYA8
+   7NrXfpbUH960R+/hCsI8p1N0f+rUkra7jeFCyRzolnGb6vQT00fAV1gxe
+   3xF6f8nmveSxwhYa1GSGo7I1NRPtj2sO80zTEL96H5+Pke6WrlQWpH1/o
+   RsJ4yyKFhxWe5MlTsx6tQbBrRdxoLl9llBHUiia5hzpydZd6QY7Bt4FKd
+   ULiBe3vGDmAE7HyOkjVgJ0Zl/mG5Jhd7pPJljhGrZNt4PgwN5tjcL32lN
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4771722"
+X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4771726"
 X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; 
-   d="scan'208";a="4771722"
+   d="scan'208";a="4771726"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 23:31:00 -0800
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2024 23:31:02 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,108,1708416000"; 
-   d="scan'208";a="10472227"
+   d="scan'208";a="10472234"
 Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
-  by fmviesa008.fm.intel.com with ESMTP; 07 Mar 2024 23:30:58 -0800
+  by fmviesa008.fm.intel.com with ESMTP; 07 Mar 2024 23:31:00 -0800
 From: Cezary Rojewski <cezary.rojewski@intel.com>
 To: rafael@kernel.org
 Cc: linux-acpi@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: linux-acpi@vger.kernel.org,
 	pierre-louis.bossart@linux.intel.com,
 	andriy.shevchenko@linux.intel.com,
 	Cezary Rojewski <cezary.rojewski@intel.com>
-Subject: [PATCH v6 3/4] ACPI: NHLT: Drop redundant types
-Date: Fri,  8 Mar 2024 08:32:39 +0100
-Message-Id: <20240308073240.2047932-4-cezary.rojewski@intel.com>
+Subject: [PATCH v6 4/4] ACPI: NHLT: Streamline struct naming
+Date: Fri,  8 Mar 2024 08:32:40 +0100
+Message-Id: <20240308073240.2047932-5-cezary.rojewski@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240308073240.2047932-1-cezary.rojewski@intel.com>
 References: <20240308073240.2047932-1-cezary.rojewski@intel.com>
@@ -76,278 +76,316 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are no users for the duplicated NHLT table components.
+Few recently introduced structs are named 'nhlt2' instead of 'nhlt' to
+avoid naming conflicts. With duplicate types gone, the conflicts are no
+more.
 
 Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
 ---
- include/acpi/actbl2.h | 254 ------------------------------------------
- 1 file changed, 254 deletions(-)
+ drivers/acpi/nhlt.c   | 36 ++++++++++++++++-----------------
+ include/acpi/actbl2.h | 22 ++++++++++-----------
+ include/acpi/nhlt.h   | 46 +++++++++++++++++++++----------------------
+ 3 files changed, 52 insertions(+), 52 deletions(-)
 
+diff --git a/drivers/acpi/nhlt.c b/drivers/acpi/nhlt.c
+index 4a0e39ca89e9..b161444a6c3a 100644
+--- a/drivers/acpi/nhlt.c
++++ b/drivers/acpi/nhlt.c
+@@ -11,9 +11,9 @@
+ #include <linux/export.h>
+ #include <acpi/nhlt.h>
+ 
+-static struct acpi_table_nhlt2 *acpi_gbl_nhlt;
++static struct acpi_table_nhlt *acpi_gbl_nhlt;
+ 
+-static struct acpi_table_nhlt2 empty_nhlt = {
++static struct acpi_table_nhlt empty_nhlt = {
+ 	.header = {
+ 		.signature = ACPI_SIG_NHLT,
+ 	},
+@@ -60,7 +60,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_put_gbl_table);
+  *
+  * Return: %true if endpoint matches specified criteria or %false otherwise.
+  */
+-bool acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
++bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
+ 			      int link_type, int dev_type, int dir, int bus_id)
+ {
+ 	return ep &&
+@@ -85,11 +85,11 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_match);
+  * Return: A pointer to endpoint matching the criteria, %NULL if not found or
+  * an ERR_PTR() otherwise.
+  */
+-struct acpi_nhlt2_endpoint *
+-acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
++struct acpi_nhlt_endpoint *
++acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
+ 			   int link_type, int dev_type, int dir, int bus_id)
+ {
+-	struct acpi_nhlt2_endpoint *ep;
++	struct acpi_nhlt_endpoint *ep;
+ 
+ 	for_each_nhlt_endpoint(tb, ep)
+ 		if (acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
+@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_tb_find_endpoint);
+  * Return: A pointer to endpoint matching the criteria, %NULL if not found or
+  * an ERR_PTR() otherwise.
+  */
+-struct acpi_nhlt2_endpoint *
++struct acpi_nhlt_endpoint *
+ acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id)
+ {
+ 	/* TODO: Currently limited to table of index 0. */
+@@ -131,12 +131,12 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_find_endpoint);
+  * Return: A pointer to format matching the criteria, %NULL if not found or
+  * an ERR_PTR() otherwise.
+  */
+-struct acpi_nhlt2_format_config *
+-acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
++struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
+ 			       u16 ch, u32 rate, u16 vbps, u16 bps)
+ {
+-	struct acpi_nhlt2_wave_formatext *wav;
+-	struct acpi_nhlt2_format_config *fmt;
++	struct acpi_nhlt_wave_formatext *wav;
++	struct acpi_nhlt_format_config *fmt;
+ 
+ 	for_each_nhlt_endpoint_fmtcfg(ep, fmt) {
+ 		wav = &fmt->format;
+@@ -171,13 +171,13 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_find_fmtcfg);
+  * Return: A pointer to format matching the criteria, %NULL if not found or
+  * an ERR_PTR() otherwise.
+  */
+-struct acpi_nhlt2_format_config *
+-acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
++struct acpi_nhlt_format_config *
++acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
+ 			 int link_type, int dev_type, int dir, int bus_id,
+ 			 u16 ch, u32 rate, u16 vbps, u16 bps)
+ {
+-	struct acpi_nhlt2_format_config *fmt;
+-	struct acpi_nhlt2_endpoint *ep;
++	struct acpi_nhlt_format_config *fmt;
++	struct acpi_nhlt_endpoint *ep;
+ 
+ 	for_each_nhlt_endpoint(tb, ep) {
+ 		if (!acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
+@@ -210,7 +210,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_tb_find_fmtcfg);
+  * Return: A pointer to format matching the criteria, %NULL if not found or
+  * an ERR_PTR() otherwise.
+  */
+-struct acpi_nhlt2_format_config *
++struct acpi_nhlt_format_config *
+ acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
+ 		      u16 ch, u32 rate, u16 vbps, u16 bps)
+ {
+@@ -239,10 +239,10 @@ static bool acpi_nhlt_config_is_vendor_micdevice(struct acpi_nhlt_config *cfg)
+  *
+  * Return: A number of microphones or an error code if an invalid endpoint is provided.
+  */
+-int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep)
++int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep)
+ {
+ 	union acpi_nhlt_device_config *devcfg;
+-	struct acpi_nhlt2_format_config *fmt;
++	struct acpi_nhlt_format_config *fmt;
+ 	struct acpi_nhlt_config *cfg;
+ 	u16 max_ch = 0;
+ 
 diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index 8030a1743100..31a716a74340 100644
+index 31a716a74340..f237269bd1cb 100644
 --- a/include/acpi/actbl2.h
 +++ b/include/acpi/actbl2.h
-@@ -1887,260 +1887,6 @@ struct nfit_device_handle {
- #define ACPI_NFIT_GET_NODE_ID(handle) \
- 	(((handle) & ACPI_NFIT_NODE_ID_MASK)        >> ACPI_NFIT_NODE_ID_OFFSET)
- 
--/*******************************************************************************
-- *
-- * NHLT - Non HD Audio Link Table
-- *
-- * Conforms to: Intel Smart Sound Technology NHLT Specification
-- * Version 0.8.1, January 2020.
-- *
-- ******************************************************************************/
--
--/* Main table */
--
--struct acpi_table_nhlt {
--	struct acpi_table_header header;	/* Common ACPI table header */
--	u8 endpoint_count;
--};
--
--struct acpi_nhlt_endpoint {
--	u32 descriptor_length;
--	u8 link_type;
--	u8 instance_id;
--	u16 vendor_id;
--	u16 device_id;
--	u16 revision_id;
--	u32 subsystem_id;
--	u8 device_type;
--	u8 direction;
--	u8 virtual_bus_id;
--};
--
--/* Types for link_type field above */
--
--#define ACPI_NHLT_RESERVED_HD_AUDIO         0
--#define ACPI_NHLT_RESERVED_DSP              1
--#define ACPI_NHLT_PDM                       2
--#define ACPI_NHLT_SSP                       3
--#define ACPI_NHLT_RESERVED_SLIMBUS          4
--#define ACPI_NHLT_RESERVED_SOUNDWIRE        5
--#define ACPI_NHLT_TYPE_RESERVED             6	/* 6 and above are reserved */
--
--/* All other values above are reserved */
--
--/* Values for device_id field above */
--
--#define ACPI_NHLT_PDM_DMIC                  0xAE20
--#define ACPI_NHLT_BT_SIDEBAND               0xAE30
--#define ACPI_NHLT_I2S_TDM_CODECS            0xAE23
--
--/* Values for device_type field above */
--
--/* SSP Link */
--
--#define ACPI_NHLT_LINK_BT_SIDEBAND          0
--#define ACPI_NHLT_LINK_FM                   1
--#define ACPI_NHLT_LINK_MODEM                2
--/* 3 is reserved */
--#define ACPI_NHLT_LINK_SSP_ANALOG_CODEC     4
--
--/* PDM Link */
--
--#define ACPI_NHLT_PDM_ON_CAVS_1P8           0
--#define ACPI_NHLT_PDM_ON_CAVS_1P5           1
--
--/* Values for Direction field above */
--
--#define ACPI_NHLT_DIR_RENDER                0
--#define ACPI_NHLT_DIR_CAPTURE               1
--#define ACPI_NHLT_DIR_RENDER_LOOPBACK       2
--#define ACPI_NHLT_DIR_RENDER_FEEDBACK       3
--#define ACPI_NHLT_DIR_RESERVED              4	/* 4 and above are reserved */
--
--struct acpi_nhlt_device_specific_config {
--	u32 capabilities_size;
--	u8 virtual_slot;
--	u8 config_type;
--};
--
--struct acpi_nhlt_device_specific_config_a {
--	u32 capabilities_size;
--	u8 virtual_slot;
--	u8 config_type;
--	u8 array_type;
--};
--
--/* Values for Config Type above */
--
--#define ACPI_NHLT_CONFIG_TYPE_GENERIC              0x00
--#define ACPI_NHLT_CONFIG_TYPE_MIC_ARRAY            0x01
--#define ACPI_NHLT_CONFIG_TYPE_RENDER_FEEDBACK      0x03
--#define ACPI_NHLT_CONFIG_TYPE_RESERVED             0x04	/* 4 and above are reserved */
--
--struct acpi_nhlt_device_specific_config_b {
--	u32 capabilities_size;
--};
--
--struct acpi_nhlt_device_specific_config_c {
--	u32 capabilities_size;
--	u8 virtual_slot;
--};
--
--struct acpi_nhlt_render_device_specific_config {
--	u32 capabilities_size;
--	u8 virtual_slot;
--};
--
--struct acpi_nhlt_wave_extensible {
--	u16 format_tag;
--	u16 channel_count;
--	u32 samples_per_sec;
--	u32 avg_bytes_per_sec;
--	u16 block_align;
--	u16 bits_per_sample;
--	u16 extra_format_size;
--	u16 valid_bits_per_sample;
--	u32 channel_mask;
--	u8 sub_format_guid[16];
--};
--
--/* Values for channel_mask above */
--
--#define ACPI_NHLT_SPKR_FRONT_LEFT             0x1
--#define ACPI_NHLT_SPKR_FRONT_RIGHT            0x2
--#define ACPI_NHLT_SPKR_FRONT_CENTER           0x4
--#define ACPI_NHLT_SPKR_LOW_FREQ               0x8
--#define ACPI_NHLT_SPKR_BACK_LEFT              0x10
--#define ACPI_NHLT_SPKR_BACK_RIGHT             0x20
--#define ACPI_NHLT_SPKR_FRONT_LEFT_OF_CENTER   0x40
--#define ACPI_NHLT_SPKR_FRONT_RIGHT_OF_CENTER  0x80
--#define ACPI_NHLT_SPKR_BACK_CENTER            0x100
--#define ACPI_NHLT_SPKR_SIDE_LEFT              0x200
--#define ACPI_NHLT_SPKR_SIDE_RIGHT             0x400
--#define ACPI_NHLT_SPKR_TOP_CENTER             0x800
--#define ACPI_NHLT_SPKR_TOP_FRONT_LEFT         0x1000
--#define ACPI_NHLT_SPKR_TOP_FRONT_CENTER       0x2000
--#define ACPI_NHLT_SPKR_TOP_FRONT_RIGHT        0x4000
--#define ACPI_NHLT_SPKR_TOP_BACK_LEFT          0x8000
--#define ACPI_NHLT_SPKR_TOP_BACK_CENTER        0x10000
--#define ACPI_NHLT_SPKR_TOP_BACK_RIGHT         0x20000
--
--struct acpi_nhlt_format_config {
--	struct acpi_nhlt_wave_extensible format;
--	u32 capability_size;
--	u8 capabilities[];
--};
--
--struct acpi_nhlt_formats_config {
--	u8 formats_count;
--};
--
--struct acpi_nhlt_device_specific_hdr {
--	u8 virtual_slot;
--	u8 config_type;
--};
--
--/* Types for config_type above */
--
--#define ACPI_NHLT_GENERIC                   0
--#define ACPI_NHLT_MIC                       1
--#define ACPI_NHLT_RENDER                    3
--
--struct acpi_nhlt_mic_device_specific_config {
--	struct acpi_nhlt_device_specific_hdr device_config;
--	u8 array_type_ext;
--};
--
--/* Values for array_type_ext above */
--
--#define ACPI_NHLT_ARRAY_TYPE_RESERVED               0x09	/* 9 and below are reserved */
--#define ACPI_NHLT_SMALL_LINEAR_2ELEMENT             0x0A
--#define ACPI_NHLT_BIG_LINEAR_2ELEMENT               0x0B
--#define ACPI_NHLT_FIRST_GEOMETRY_LINEAR_4ELEMENT    0x0C
--#define ACPI_NHLT_PLANAR_LSHAPED_4ELEMENT           0x0D
--#define ACPI_NHLT_SECOND_GEOMETRY_LINEAR_4ELEMENT   0x0E
--#define ACPI_NHLT_VENDOR_DEFINED                    0x0F
--#define ACPI_NHLT_ARRAY_TYPE_MASK                   0x0F
--#define ACPI_NHLT_ARRAY_TYPE_EXT_MASK               0x10
--
--#define ACPI_NHLT_NO_EXTENSION                      0x0
--#define ACPI_NHLT_MIC_SNR_SENSITIVITY_EXT           (1<<4)
--
--struct acpi_nhlt_vendor_mic_count {
--	u8 microphone_count;
--};
--
--struct acpi_nhlt_vendor_mic_config {
--	u8 type;
--	u8 panel;
--	u16 speaker_position_distance;	/* mm */
--	u16 horizontal_offset;	/* mm */
--	u16 vertical_offset;	/* mm */
--	u8 frequency_low_band;	/* 5*Hz */
--	u8 frequency_high_band;	/* 500*Hz */
--	u16 direction_angle;	/* -180 - + 180 */
--	u16 elevation_angle;	/* -180 - + 180 */
--	u16 work_vertical_angle_begin;	/* -180 - + 180 with 2 deg step */
--	u16 work_vertical_angle_end;	/* -180 - + 180 with 2 deg step */
--	u16 work_horizontal_angle_begin;	/* -180 - + 180 with 2 deg step */
--	u16 work_horizontal_angle_end;	/* -180 - + 180 with 2 deg step */
--};
--
--/* Values for Type field above */
--
--#define ACPI_NHLT_MIC_OMNIDIRECTIONAL       0
--#define ACPI_NHLT_MIC_SUBCARDIOID           1
--#define ACPI_NHLT_MIC_CARDIOID              2
--#define ACPI_NHLT_MIC_SUPER_CARDIOID        3
--#define ACPI_NHLT_MIC_HYPER_CARDIOID        4
--#define ACPI_NHLT_MIC_8_SHAPED              5
--#define ACPI_NHLT_MIC_RESERVED6             6	/* 6 is reserved */
--#define ACPI_NHLT_MIC_VENDOR_DEFINED        7
--#define ACPI_NHLT_MIC_RESERVED              8	/* 8 and above are reserved */
--
--/* Values for Panel field above */
--
--#define ACPI_NHLT_MIC_POSITION_TOP          0
--#define ACPI_NHLT_MIC_POSITION_BOTTOM       1
--#define ACPI_NHLT_MIC_POSITION_LEFT         2
--#define ACPI_NHLT_MIC_POSITION_RIGHT        3
--#define ACPI_NHLT_MIC_POSITION_FRONT        4
--#define ACPI_NHLT_MIC_POSITION_BACK         5
--#define ACPI_NHLT_MIC_POSITION_RESERVED     6	/* 6 and above are reserved */
--
--struct acpi_nhlt_vendor_mic_device_specific_config {
--	struct acpi_nhlt_mic_device_specific_config mic_array_device_config;
--	u8 number_of_microphones;
--	struct acpi_nhlt_vendor_mic_config mic_config[];	/* Indexed by number_of_microphones */
--};
--
--/* Microphone SNR and Sensitivity extension */
--
--struct acpi_nhlt_mic_snr_sensitivity_extension {
--	u32 SNR;
--	u32 sensitivity;
--};
--
--/* Render device with feedback */
--
--struct acpi_nhlt_render_feedback_device_specific_config {
--	u8 feedback_virtual_slot;	/* Render slot in case of capture */
--	u16 feedback_channels;	/* Informative only */
--	u16 feedback_valid_bits_per_sample;
--};
--
--/* Non documented structures */
--
--struct acpi_nhlt_device_info_count {
--	u8 structure_count;
--};
--
--struct acpi_nhlt_device_info {
--	u8 device_id[16];
--	u8 device_instance_id;
--	u8 device_port_id;
--};
--
- /*******************************************************************************
+@@ -1894,7 +1894,7 @@ struct nfit_device_handle {
   *
-  * NHLT - Non HDAudio Link Table
+  ******************************************************************************/
+ 
+-struct acpi_table_nhlt2 {
++struct acpi_table_nhlt {
+ 	struct acpi_table_header header;	/* Common ACPI table header */
+ 	u8 endpoints_count;
+ 	/*
+@@ -1903,7 +1903,7 @@ struct acpi_table_nhlt2 {
+ 	 */
+ };
+ 
+-struct acpi_nhlt2_endpoint {
++struct acpi_nhlt_endpoint {
+ 	u32 length;
+ 	u8 link_type;
+ 	u8 instance_id;
+@@ -1990,7 +1990,7 @@ struct acpi_nhlt_micdevice_config {
+ #define ACPI_NHLT_ARRAYTYPE_LINEAR4_GEO2	0xE
+ #define ACPI_NHLT_ARRAYTYPE_VENDOR		0xF
+ 
+-struct acpi_nhlt2_vendor_mic_config {
++struct acpi_nhlt_vendor_mic_config {
+ 	u8 type;
+ 	u8 panel;
+ 	u16 speaker_position_distance;		/* mm */
+@@ -2031,7 +2031,7 @@ struct acpi_nhlt_vendor_micdevice_config {
+ 	u8 config_type;
+ 	u8 array_type;
+ 	u8 mics_count;
+-	struct acpi_nhlt2_vendor_mic_config mics[];
++	struct acpi_nhlt_vendor_mic_config mics[];
+ };
+ 
+ union acpi_nhlt_device_config {
+@@ -2042,7 +2042,7 @@ union acpi_nhlt_device_config {
+ };
+ 
+ /* Inherited from Microsoft's WAVEFORMATEXTENSIBLE. */
+-struct acpi_nhlt2_wave_formatext {
++struct acpi_nhlt_wave_formatext {
+ 	u16 format_tag;
+ 	u16 channel_count;
+ 	u32 samples_per_sec;
+@@ -2055,17 +2055,17 @@ struct acpi_nhlt2_wave_formatext {
+ 	u8 subformat[16];
+ };
+ 
+-struct acpi_nhlt2_format_config {
+-	struct acpi_nhlt2_wave_formatext format;
++struct acpi_nhlt_format_config {
++	struct acpi_nhlt_wave_formatext format;
+ 	struct acpi_nhlt_config config;
+ };
+ 
+-struct acpi_nhlt2_formats_config {
++struct acpi_nhlt_formats_config {
+ 	u8 formats_count;
+-	struct acpi_nhlt2_format_config formats[];
++	struct acpi_nhlt_format_config formats[];
+ };
+ 
+-struct acpi_nhlt2_device_info {
++struct acpi_nhlt_device_info {
+ 	u8 id[16];
+ 	u8 instance_id;
+ 	u8 port_id;
+@@ -2073,7 +2073,7 @@ struct acpi_nhlt2_device_info {
+ 
+ struct acpi_nhlt_devices_info {
+ 	u8 devices_count;
+-	struct acpi_nhlt2_device_info devices[];
++	struct acpi_nhlt_device_info devices[];
+ };
+ 
+ /*******************************************************************************
+diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
+index 02c764e599fe..90cb09cd0bce 100644
+--- a/include/acpi/nhlt.h
++++ b/include/acpi/nhlt.h
+@@ -22,12 +22,12 @@
+  *
+  * Return: A pointer to the formats configuration space.
+  */
+-static inline struct acpi_nhlt2_formats_config *
+-acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt2_endpoint *ep)
++static inline struct acpi_nhlt_formats_config *
++acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt_endpoint *ep)
+ {
+ 	struct acpi_nhlt_config *cfg = __acpi_nhlt_endpoint_config(ep);
+ 
+-	return (struct acpi_nhlt2_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
++	return (struct acpi_nhlt_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
+ }
+ 
+ #define __acpi_nhlt_first_endpoint(tb) \
+@@ -98,24 +98,24 @@ acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt2_endpoint *ep)
+ acpi_status acpi_nhlt_get_gbl_table(void);
+ void acpi_nhlt_put_gbl_table(void);
+ 
+-bool acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
++bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
+ 			      int link_type, int dev_type, int dir, int bus_id);
+-struct acpi_nhlt2_endpoint *
+-acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
++struct acpi_nhlt_endpoint *
++acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
+ 			   int link_type, int dev_type, int dir, int bus_id);
+-struct acpi_nhlt2_endpoint *
++struct acpi_nhlt_endpoint *
+ acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id);
+-struct acpi_nhlt2_format_config *
+-acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
++struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
+ 			       u16 ch, u32 rate, u16 vbps, u16 bps);
+-struct acpi_nhlt2_format_config *
+-acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
++struct acpi_nhlt_format_config *
++acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
+ 			 int link_type, int dev_type, int dir, int bus_id,
+ 			 u16 ch, u32 rate, u16 vpbs, u16 bps);
+-struct acpi_nhlt2_format_config *
++struct acpi_nhlt_format_config *
+ acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
+ 		      u16 ch, u32 rate, u16 vpbs, u16 bps);
+-int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep);
++int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep);
+ 
+ #else /* !CONFIG_ACPI_NHLT */
+ 
+@@ -129,46 +129,46 @@ static inline void acpi_nhlt_put_gbl_table(void)
+ }
+ 
+ static inline bool
+-acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
++acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
+ 			 int link_type, int dev_type, int dir, int bus_id)
+ {
+ 	return false;
+ }
+ 
+-static inline struct acpi_nhlt2_endpoint *
+-acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
++static inline struct acpi_nhlt_endpoint *
++acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
+ 			   int link_type, int dev_type, int dir, int bus_id)
+ {
+ 	return NULL;
+ }
+ 
+-static inline struct acpi_nhlt2_format_config *
+-acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
++static inline struct acpi_nhlt_format_config *
++acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
+ 			       u16 ch, u32 rate, u16 vbps, u16 bps)
+ {
+ 	return NULL;
+ }
+ 
+-static inline struct acpi_nhlt2_format_config *
+-acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
++static inline struct acpi_nhlt_format_config *
++acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
+ 			 int link_type, int dev_type, int dir, int bus_id,
+ 			 u16 ch, u32 rate, u16 vpbs, u16 bps)
+ {
+ 	return NULL;
+ }
+ 
+-static inline int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep)
++static inline int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep)
+ {
+ 	return 0;
+ }
+ 
+-static inline struct acpi_nhlt2_endpoint *
++static inline struct acpi_nhlt_endpoint *
+ acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id)
+ {
+ 	return NULL;
+ }
+ 
+-static inline struct acpi_nhlt2_format_config *
++static inline struct acpi_nhlt_format_config *
+ acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
+ 		      u16 ch, u32 rate, u16 vpbs, u16 bps)
+ {
 -- 
 2.25.1
 
