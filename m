@@ -1,306 +1,454 @@
-Return-Path: <linux-acpi+bounces-4184-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4185-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB268761CE
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 11:20:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45EF8761F4
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 11:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36A2A1F232FF
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 10:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 136811C20C40
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 10:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D6854FBE;
-	Fri,  8 Mar 2024 10:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="H6hdl/LO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B6254665;
+	Fri,  8 Mar 2024 10:29:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0CB53E38;
-	Fri,  8 Mar 2024 10:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4D553E1A;
+	Fri,  8 Mar 2024 10:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709893164; cv=none; b=uq2rF+Wa4ZhiRDDtj9DGFmrh6sysMIcW4uowhCsg2RV3e2nBg9exwOWX0i3flkMZQ1qFwL7+wXJCB4qIl4kLXz7UEsAso/EHqDh/44ild6qzPz2Ol3q3OhHL+KZESeOD4Xud/dkQLCPR1njphXpj2I+hDiz9dyMwWEh21pbzftk=
+	t=1709893756; cv=none; b=pzCG/tZBZEbm5TpMHXUe1Vxp2KT0pBHe8Tdn/8yXmnK6f56Dg/u+wRyfZNAvRKcb5Y/CAHnZv0fFlWtdKL+JcRvreJMcQgVTwPLV/TVFvWOo2Au+X/+Kv6zZDw9LXaPrsmD6x9nXx4OMLDCUEa4aHgv4rtHMEPl6A/RJ7xB/Ylg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709893164; c=relaxed/simple;
-	bh=R5gaARdNsRmM69c5HgWPDtEZ+UQVlNygoacJUf6ucTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eDdJ8kPu7+JvFNOPG5JPtOmro5XYQZyg9KM6hqnCqh9nqMwAkUvPy0TFi4PfTGvLtUd7YsLMixxsR9SM8j8OfagFwL6sgsQQbD/EyTjMWOHO8S+vQXE9n32keoS4xlCjRBpmWpIGbchRy3Z6riTT2IAP5DuJcSrvXDRbMCAJ8LQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=H6hdl/LO; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9EE8240E016C;
-	Fri,  8 Mar 2024 10:19:18 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ruZKQR_-Iw_R; Fri,  8 Mar 2024 10:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1709893155; bh=y77t4200yTQouMTgjVRR5xGyTOTtJKOA/I+puU2K3Oo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H6hdl/LOCtM16GhjDYZN9SDiUSP84YGd0MMZhv89JKdmmQUDFS9wWsLlwLe7zOlm8
-	 kt/3Ts1rNR/ra5fXsjBUCT9fgqVDSgQ4G56PgGI/NInAjgu+gkEXXimjKBwSM81XS/
-	 QqWLkMRGNY1Y/rdp18vAhLw39y66cdfcYLnrR9N30Kqyy26pzx5f/GnvKeRpQxdMem
-	 bjcVr2rN+dOQEhjoEUGbPoF7Aw6B9+5cfY9KoI/mzgkCvqisE8s+jHMUjbnO7Wr8YE
-	 gGxkcbm21c+Ml3EsXzXKvg1tMHKzUzm/Msd/epIpCTTLw12N/4TSfGhR+4CxoG8BXZ
-	 N4I9lmImAjH3+gFa0U99H5UkJQcwMg8S7/9Ayo/U1485XU349KJ3qNzsa7QUTC2dKa
-	 y9HzuFioKBDxO/zIaH7pQsr24DBg0n6eUbMTmOOTL3RGNNZBnjnW9VMJbG0UA4YOcW
-	 CAKQi96BHFTyZC1fD0iChfAxPx2Sz8nxoDTZcozmqhJbHNb6nqdNKULendIOSc/Bdm
-	 i6mt/+LV1J6mtw+viyRqpe2QNA+te3oOrKVRvAebaPSMdxA1DRsW+s8vy6SQBTdn3d
-	 jQa9XePuPRxpFzm9cvQ/B7RLWUW0op6gseeN4lIWW19ZwpgeOgXlddT+dj7AcK3mB0
-	 Vc3l4KAgt5FV+Fou4h/mpzE4=
-Received: from zn.tnic (pd953021b.dip0.t-ipconnect.de [217.83.2.27])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1961540E016B;
-	Fri,  8 Mar 2024 10:18:43 +0000 (UTC)
-Date: Fri, 8 Mar 2024 11:18:36 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com,
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v11 3/3] ACPI: APEI: handle synchronous exceptions in
- task work to send correct SIGBUS si_code
-Message-ID: <20240308101836.GDZerl_IXIkWt8VuZN@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20240204080144.7977-4-xueshuai@linux.alibaba.com>
+	s=arc-20240116; t=1709893756; c=relaxed/simple;
+	bh=mpGPPXrIn6TS/fFQvb/j4q5Ps6S4+Y7ZleP59hy6DIs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ql5IqSD49BdfsDgc1T2uw7o66j3Dul31tm9K0UC8L6NZd7WBjR8UeqN3xpWra1KojaSauhRHryBAlJAtBsYPrJGLJ+y6XFUSFgfRldK3wwZiUvljEFcljtvsBEN5voSqMYH6XlXt7NMaubhRowCtENLrNOjDiuBt0kz154QBwrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D9698C15;
+	Fri,  8 Mar 2024 02:29:48 -0800 (PST)
+Received: from [10.57.50.143] (unknown [10.57.50.143])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 366853F73F;
+	Fri,  8 Mar 2024 02:29:10 -0800 (PST)
+Message-ID: <0b5aa4be-c466-4e1b-91c4-45a26f2f67bf@arm.com>
+Date: Fri, 8 Mar 2024 10:29:08 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240204080144.7977-4-xueshuai@linux.alibaba.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 07/11] coresight: catu: Move ACPI support from AMBA
+ driver to platform driver
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
+ <20240222082142.3663983-8-anshuman.khandual@arm.com>
+ <c43fcd3a-9813-4e1f-adb3-25cc32c54438@arm.com>
+ <c52865b2-8608-4a47-967a-6cf3e11b197a@arm.com>
+ <2bd6ed98-fd58-42ef-8b86-fddac28df5c7@arm.com>
+ <a553951a-9432-4336-82a6-32fc338d0c91@arm.com>
+Content-Language: en-GB
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <a553951a-9432-4336-82a6-32fc338d0c91@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 04, 2024 at 04:01:44PM +0800, Shuai Xue wrote:
-> Hardware errors could be signaled by asynchronous interrupt, e.g. when an
-> error is detected by a background scrubber, or signaled by synchronous
-> exception, e.g. when a CPU tries to access a poisoned cache line. Since
-> commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-> could be used to determine whether a synchronous exception occurs on ARM64
-> platform. When a synchronous exception is detected, the kernel should
-> terminate the current process which accessing the poisoned page. This is
-
-"which has accessed poison data"
-
-> done by sending a SIGBUS signal with an error code BUS_MCEERR_AR,
-> indicating an action-required machine check error on read.
+On 08/03/2024 04:25, Anshuman Khandual wrote:
 > 
-> However, the memory failure recovery is incorrectly sending a SIGBUS
-> with wrong error code BUS_MCEERR_AO for synchronous errors in early kill
-> mode, even MF_ACTION_REQUIRED is set. The main problem is that
-
-"even if"
-
-> synchronous errors are queued as a memory_failure() work, and are
-> executed within a kernel thread context, not the user-space process that
-> encountered the corrupted memory on ARM64 platform. As a result, when
-> kill_proc() is called to terminate the process, it sends the incorrect
-> SIGBUS error code because the context in which it operates is not the
-> one where the error was triggered.
 > 
-> To this end, queue memory_failure() as a task_work so that it runs in
-> the context of the process that is actually consuming the poisoned data,
-> and it will send SIBBUS with si_code BUS_MCEERR_AR.
+> On 3/6/24 22:51, Suzuki K Poulose wrote:
+>> On 06/03/2024 06:14, Anshuman Khandual wrote:
+>>>
+>>>
+>>> On 3/5/24 23:02, Suzuki K Poulose wrote:
+>>>> On 22/02/2024 08:21, Anshuman Khandual wrote:
+>>>>> Add support for the catu devices in a new platform driver, which can then
+>>>>> be used on ACPI based platforms. This change would now allow runtime power
+>>>>> management for ACPI based systems. The driver would try to enable the APB
+>>>>> clock if available. But first this renames and then refactors catu_probe()
+>>>>> and catu_remove(), making sure it can be used both for platform and AMBA
+>>>>> drivers. This also moves pm_runtime_put() from catu_probe() to the callers.
+>>>>>
+>>>>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>>>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>>>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>>>> Cc: James Clark <james.clark@arm.com>
+>>>>> Cc: linux-acpi@vger.kernel.org
+>>>>> Cc: linux-arm-kernel@lists.infradead.org
+>>>>> Cc: linux-kernel@vger.kernel.org
+>>>>> Cc: coresight@lists.linaro.org
+>>>>> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+>>>>> Reviewed-by: James Clark <james.clark@arm.com>
+>>>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>>> ---
+>>>>> Changes in V5:
+>>>>>
+>>>>> - Updated commit message regarding catu_probe/remove() refactoring and renaming
+>>>>>
+>>>>>     drivers/acpi/arm64/amba.c                    |   1 -
+>>>>>     drivers/hwtracing/coresight/coresight-catu.c | 142 ++++++++++++++++---
+>>>>>     drivers/hwtracing/coresight/coresight-catu.h |   1 +
+>>>>>     3 files changed, 124 insertions(+), 20 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+>>>>> index afb6afb66967..587061b0fd2f 100644
+>>>>> --- a/drivers/acpi/arm64/amba.c
+>>>>> +++ b/drivers/acpi/arm64/amba.c
+>>>>> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
+>>>>>         {"ARMHC503", 0}, /* ARM CoreSight Debug */
+>>>>>         {"ARMHC979", 0}, /* ARM CoreSight TPIU */
+>>>>>         {"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
+>>>>> -    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>>>>>         {"", 0},
+>>>>>     };
+>>>>>     diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+>>>>> index 3949ded0d4fa..a3ea46b53898 100644
+>>>>> --- a/drivers/hwtracing/coresight/coresight-catu.c
+>>>>> +++ b/drivers/hwtracing/coresight/coresight-catu.c
+>>>>> @@ -7,6 +7,8 @@
+>>>>>      * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>>>>      */
+>>>>>     +#include <linux/platform_device.h>
+>>>>> +#include <linux/acpi.h>
+>>>>>     #include <linux/amba/bus.h>
+>>>>>     #include <linux/device.h>
+>>>>>     #include <linux/dma-mapping.h>
+>>>>> @@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
+>>>>>         .helper_ops = &catu_helper_ops,
+>>>>>     };
+>>>>>     -static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>>>>> +static int __catu_probe(struct device *dev, struct resource *res)
+>>>>>     {
+>>>>>         int ret = 0;
+>>>>>         u32 dma_mask;
+>>>>> -    struct catu_drvdata *drvdata;
+>>>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>>>>         struct coresight_desc catu_desc;
+>>>>>         struct coresight_platform_data *pdata = NULL;
+>>>>> -    struct device *dev = &adev->dev;
+>>>>>         void __iomem *base;
+>>>>>           catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
+>>>>>         if (!catu_desc.name)
+>>>>>             return -ENOMEM;
+>>>>>     -    drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
+>>>>> -    if (!drvdata) {
+>>>>> -        ret = -ENOMEM;
+>>>>> -        goto out;
+>>>>> -    }
+>>>>> -
+>>>>> -    dev_set_drvdata(dev, drvdata);
+>>>>> -    base = devm_ioremap_resource(dev, &adev->res);
+>>>>> +    base = devm_ioremap_resource(dev, res);
+>>>>>         if (IS_ERR(base)) {
+>>>>>             ret = PTR_ERR(base);
+>>>>>             goto out;
+>>>>> @@ -567,19 +561,39 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>>>>>         drvdata->csdev = coresight_register(&catu_desc);
+>>>>>         if (IS_ERR(drvdata->csdev))
+>>>>>             ret = PTR_ERR(drvdata->csdev);
+>>>>> -    else
+>>>>> -        pm_runtime_put(&adev->dev);
+>>>>>     out:
+>>>>>         return ret;
+>>>>>     }
+>>>>>     -static void catu_remove(struct amba_device *adev)
+>>>>> +static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+>>>>>     {
+>>>>> -    struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
+>>>>> +    struct catu_drvdata *drvdata;
+>>>>> +    int ret;
+>>>>> +
+>>>>> +    drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
+>>>>> +    if (!drvdata)
+>>>>> +        return -ENOMEM;
+>>>>> +
+>>>>> +    amba_set_drvdata(adev, drvdata);
+>>>>> +    ret = __catu_probe(&adev->dev, &adev->res);
+>>>>> +    if (!ret)
+>>>>> +        pm_runtime_put(&adev->dev);
+>>>>> +
+>>>>> +    return ret;
+>>>>> +}
+>>>>> +
+>>>>> +static void __catu_remove(struct device *dev)
+>>>>> +{
+>>>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>>>>           coresight_unregister(drvdata->csdev);
+>>>>>     }
+>>>>>     +static void catu_remove(struct amba_device *adev)
+>>>>> +{
+>>>>> +    __catu_remove(&adev->dev);
+>>>>> +}
+>>>>> +
+>>>>>     static struct amba_id catu_ids[] = {
+>>>>>         CS_AMBA_ID(0x000bb9ee),
+>>>>>         {},
+>>>>> @@ -598,13 +612,103 @@ static struct amba_driver catu_driver = {
+>>>>>         .id_table            = catu_ids,
+>>>>>     };
+>>>>>     +static int catu_platform_probe(struct platform_device *pdev)
+>>>>> +{
+>>>>> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>>>> +    struct catu_drvdata *drvdata;
+>>>>> +    int ret = 0;
+>>>>> +
+>>>>> +    drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
+>>>>> +    if (!drvdata)
+>>>>> +        return -ENOMEM;
+>>>>> +
+>>>>> +    drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
+>>>>> +    if (IS_ERR(drvdata->pclk))
+>>>>> +        return -ENODEV;
+>>>>
+>>>>
+>>>> ---8>---
+>>>>
+>>>>> +
+>>>>> +    if (res) {
+>>>>> +        drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+>>>>> +        if (IS_ERR(drvdata->base)) {
+>>>>> +            clk_put(drvdata->pclk);
+>>>>> +            return PTR_ERR(drvdata->base);
+>>>>> +        }
+>>>>> +    }
+>>>>
+>>>> ---<8---
+>>>>
+>>>> The above section seems unncessary as we already try to map the base in __catu_probe ?
+>>>
+>>> Agreed, though it seems unnecessary, there is a small difference in there. In the platform
+>>> driver case i.e catu_platform_probe(), clk_put() is called on platform clock drvdata->pclk
+>>> (just enabled earlier) for cases when devm_ioremap_resource() fails.
+>>>
+>>> To remove this redundancy, let's move devm_ioremap_resource() into it's AMBA caller i.e
+>>> catu_probe() thus dropping struct resource argument from __catu_probe(). Similar situation
+>>> is present in coresight-cpu-debug driver as well, will fix that.
+>>>
+>>> But there are some other drivers in the series where coresight_get_enable_apb_pclk() called
+>>> on 'drvdata->pclk' and devm_ioremap_resource() is attempted inside the factored __xxx_probe()
+>>> function which is common for both AMBA and platform drivers.
+>>>
+>>> Such drivers are ...
+>>>
+>>> - tpiu
+>>> - tmc
+>>> - stm
+>>> - replicator
+>>>
+>>> IMHO it would be better to follow same scheme for all drivers in the series. Please do let
+>>> me know which method will be preferred.
+>>
+>> Lets pass the "res" to the common probe and deal it there.
+> 
+> Sure, but then will have to deal with drvdata->pclk in the caller, where it was originally
+> acquired, when the __xxxx_probe() fails. For example - in case with the debug cpu driver,
+> following changes will be required.
 
-SIGBUS
+Of course, why not. Because that is specific to the platform driver (for 
+a reason). The whole point is, push everything that is common across 
+AMBA or Platform to a common __xxx_probe()/remove() routine, rather than
+duplicating things around.
+
 
 > 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  drivers/acpi/apei/ghes.c | 77 +++++++++++++++++++++++-----------------
->  include/acpi/ghes.h      |  3 --
->  mm/memory-failure.c      | 13 -------
->  3 files changed, 44 insertions(+), 49 deletions(-)
-> 
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 0892550732d4..e5086d795bee 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -465,28 +465,41 @@ static void ghes_clear_estatus(struct ghes *ghes,
->  }
->  
->  /*
-> - * Called as task_work before returning to user-space.
-> - * Ensure any queued work has been done before we return to the context that
-> - * triggered the notification.
-> + * struct sync_task_work - for synchronous RAS event
-
-What's so special about it being a "sync_"?
-
-task_work is just fine and something else could use it too.
-
-> + *
-> + * @twork:                callback_head for task work
-> + * @pfn:                  page frame number of corrupted page
-> + * @flags:                fine tune action taken
-
-s/fine tune action taken/work control flags/
-
-> + *
-> + * Structure to pass task work to be handled before
-> + * ret_to_user via task_work_add().
-
-What is "ret_to_user"?
-
-If this is an ARM thing, then make sure you explain stuff properly and
-detailed. This driver is used by multiple architectures.
-
->   */
-> -static void ghes_kick_task_work(struct callback_head *head)
-> +struct sync_task_work {
-> +	struct callback_head twork;
-> +	u64 pfn;
-> +	int flags;
-> +};
-> +
-> +static void memory_failure_cb(struct callback_head *twork)
->  {
-> -	struct acpi_hest_generic_status *estatus;
-> -	struct ghes_estatus_node *estatus_node;
-> -	u32 node_len;
-> +	int ret;
-> +	struct sync_task_work *twcb =
-> +		container_of(twork, struct sync_task_work, twork);
-
-Ugly linebreak - no need for it.
-
-> -	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
-> -	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
-> -		memory_failure_queue_kick(estatus_node->task_work_cpu);
-> +	ret = memory_failure(twcb->pfn, twcb->flags);
-> +	gen_pool_free(ghes_estatus_pool, (unsigned long)twcb, sizeof(*twcb));
->  
-> -	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
-> -	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
-> -	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-> +	if (!ret || ret == -EHWPOISON || ret == -EOPNOTSUPP)
-> +		return;
-> +
-> +	pr_err("Sending SIGBUS to current task due to memory error not recovered");
-> +	force_sig(SIGBUS);
->  }
->  
->  static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->  {
->  	unsigned long pfn;
-> +	struct sync_task_work *twcb;
->  
->  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
->  		return false;
-> @@ -499,6 +512,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->  		return false;
->  	}
->  
-> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
-> +		twcb = (void *)gen_pool_alloc(ghes_estatus_pool, sizeof(*twcb));
-> +		if (!twcb)
-> +			return false;
-> +
-> +		twcb->pfn = pfn;
-> +		twcb->flags = flags;
-> +		init_task_work(&twcb->twork, memory_failure_cb);
-> +		task_work_add(current, &twcb->twork, TWA_RESUME);
-> +		return true;
-> +	}
-> +
->  	memory_failure_queue(pfn, flags);
->  	return true;
->  }
-> @@ -746,7 +771,7 @@ int cxl_cper_unregister_callback(cxl_cper_callback callback)
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_callback, CXL);
->  
-> -static bool ghes_do_proc(struct ghes *ghes,
-> +static void ghes_do_proc(struct ghes *ghes,
->  			 const struct acpi_hest_generic_status *estatus)
->  {
->  	int sev, sec_sev;
-> @@ -814,8 +839,6 @@ static bool ghes_do_proc(struct ghes *ghes,
->  		pr_err("Sending SIGBUS to current task due to memory error not recovered");
->  		force_sig(SIGBUS);
->  	}
+> diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
+> index 68d077174a6a..2d77f9a17692 100644
+> --- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
+> +++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
+> @@ -577,11 +577,11 @@ static int __debug_probe(struct device *dev, struct resource *res)
+>          }
+>   
+>          drvdata->dev = dev;
 > -
-> -	return queued;
->  }
->  
->  static void __ghes_print_estatus(const char *pfx,
-> @@ -1117,9 +1140,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->  	struct ghes_estatus_node *estatus_node;
->  	struct acpi_hest_generic *generic;
->  	struct acpi_hest_generic_status *estatus;
-> -	bool task_work_pending;
->  	u32 len, node_len;
-> -	int ret;
->  
->  	llnode = llist_del_all(&ghes_estatus_llist);
->  	/*
-> @@ -1134,25 +1155,16 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
->  		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
->  		len = cper_estatus_len(estatus);
->  		node_len = GHES_ESTATUS_NODE_LEN(len);
-> -		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-> +
-> +		ghes_do_proc(estatus_node->ghes, estatus);
-> +
->  		if (!ghes_estatus_cached(estatus)) {
->  			generic = estatus_node->generic;
->  			if (ghes_print_estatus(NULL, generic, estatus))
->  				ghes_estatus_cache_add(generic, estatus);
->  		}
+> -       /* Validity for the resource is already checked by the AMBA core */
+> -       base = devm_ioremap_resource(dev, res);
+> -       if (IS_ERR(base))
+> -               return PTR_ERR(base);
+> +       if (res) {
+> +               base = devm_ioremap_resource(dev, res);
+> +               if (IS_ERR(base))
+> +                       return PTR_ERR(base);
+> +       }
+>   
+>          drvdata->base = base;
+>   
+> @@ -703,14 +703,6 @@ static int debug_platform_probe(struct platform_device *pdev)
+>          if (IS_ERR(drvdata->pclk))
+>                  return -ENODEV;
+>   
+> -       if (res) {
+> -               drvdata->base = devm_ioremap_resource(&pdev->dev, res);
+> -               if (IS_ERR(drvdata->base)) {
+> -                       clk_put(drvdata->pclk);
+> -                       return PTR_ERR(drvdata->base);
+> -               }
+> -       }
 > -
-> -		if (task_work_pending && current->mm) {
-> -			estatus_node->task_work.func = ghes_kick_task_work;
-> -			estatus_node->task_work_cpu = smp_processor_id();
-> -			ret = task_work_add(current, &estatus_node->task_work,
-> -					    TWA_RESUME);
-> -			if (ret)
-> -				estatus_node->task_work.func = NULL;
-> -		}
-> -
-> -		if (!estatus_node->task_work.func)
-> -			gen_pool_free(ghes_estatus_pool,
-> -				      (unsigned long)estatus_node, node_len);
+>          dev_set_drvdata(&pdev->dev, drvdata);
+>          pm_runtime_get_noresume(&pdev->dev);
+>          pm_runtime_set_active(&pdev->dev);
+> @@ -720,6 +712,8 @@ static int debug_platform_probe(struct platform_device *pdev)
+>          if (ret) {
+>                  pm_runtime_put_noidle(&pdev->dev);
+>                  pm_runtime_disable(&pdev->dev);
+> +               if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+> +                       clk_put(drvdata->pclk);
+>          }
+>          return ret;
+> 
+>>>
+>>>>
+>>>>> +
+>>>
+>>>>> +    pm_runtime_get_noresume(&pdev->dev);
+>>>>> +    pm_runtime_set_active(&pdev->dev);
+>>>>> +    pm_runtime_enable(&pdev->dev);
+>>>>> +
+>>>>> +    dev_set_drvdata(&pdev->dev, drvdata);
+>>>>> +    ret = __catu_probe(&pdev->dev, res);
+>>>>> +    pm_runtime_put(&pdev->dev);
+>>>>> +    if (ret)
+>>>>> +        pm_runtime_disable(&pdev->dev);
+>>>>> +
+>>>>> +    return ret;
+>>>>> +}
+>>>>> +
+>>>>> +static int catu_platform_remove(struct platform_device *pdev)
+>>>>> +{
+>>>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
+>>>>> +
+>>>>> +    if (drvdata)
+>>>>> +        __catu_remove(&pdev->dev);
+>>>>
+>>>> I don't understand the need for if () check here (and on all the other drivers). Even if we have a drvdata != NULL, what guarantees that
+>>>> the drvdata->csdev is valid (which is used in xx_remove) ?
+>>>
+>>> Agreed, although drvdata is derived in __xxx_remove() functions, a pre-check here is not
+>>> required - similar to the AMBA remove path. Sure, will drop them across drivers.
+>>
+>> No, my point is : Is there a case where :
+>>
+>> 1) drvdata == NULL, but we have a device to do some cleanup ?
+> 
+> NO, I don't believe there are any such cases.
+> 
+>> 2) If drvdata != NULL, but drvdata->csdev is not valid, because we failed to register the coresight device ?
+> 
+> I don't believe so. If drvdata->csdev is not valid because coresight_register() has failed,
+> that would have also failed driver' probe() as well. Hence driver remove() could not have
+> been called in such situations.
 
-I have no clue why this is being removed.
+So, all of those seem to be cases we don't expect. To be on the safer 
+side, add a if (WARN_ON(!drvdata)) and return. Deal the rest with
+drvdata and drvdata->csdev being valid.
 
-Why doesn't a synchronous exception on ARM call into ghes_proc_in_irq()?
+Suzuki
 
-That SDEI thing certainly does.
 
-Well looka here:
+> 
+>>
+>>
+>> Suzuki
+>>
+>>
+>>>
+>>>>
+>>>> Suzuki
+>>>>
+>>>>> +
+>>>>> +    pm_runtime_disable(&pdev->dev);
+>>>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>>>> +        clk_put(drvdata->pclk);
+>>>>> +    return 0;
+>>>>> +}
+>>>>> +
+>>>>> +#ifdef CONFIG_PM
+>>>>> +static int catu_runtime_suspend(struct device *dev)
+>>>>> +{
+>>>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>>>> +
+>>>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>>>> +        clk_disable_unprepare(drvdata->pclk);
+>>>>> +    return 0;
+>>>>> +}
+>>>>> +
+>>>>> +static int catu_runtime_resume(struct device *dev)
+>>>>> +{
+>>>>> +    struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+>>>>> +
+>>>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>>>> +        clk_prepare_enable(drvdata->pclk);
+>>>>> +    return 0;
+>>>>> +}
+>>>>> +#endif
+>>>>> +
+>>>>> +static const struct dev_pm_ops catu_dev_pm_ops = {
+>>>>> +    SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
+>>>>> +};
+>>>>> +
+>>>>> +#ifdef CONFIG_ACPI
+>>>>> +static const struct acpi_device_id catu_acpi_ids[] = {
+>>>>> +    {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>>>>> +    {},
+>>>>> +};
+>>>>> +
+>>>>> +MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
+>>>>> +#endif
+>>>>> +
+>>>>> +static struct platform_driver catu_platform_driver = {
+>>>>> +    .probe    = catu_platform_probe,
+>>>>> +    .remove    = catu_platform_remove,
+>>>>> +    .driver    = {
+>>>>> +        .name            = "coresight-catu-platform",
+>>>>> +        .acpi_match_table    = ACPI_PTR(catu_acpi_ids),
+>>>>> +        .suppress_bind_attrs    = true,
+>>>>> +        .pm            = &catu_dev_pm_ops,
+>>>>> +    },
+>>>>> +};
+>>>>> +
+>>>>>     static int __init catu_init(void)
+>>>>>     {
+>>>>>         int ret;
+>>>>>     -    ret = amba_driver_register(&catu_driver);
+>>>>> -    if (ret)
+>>>>> -        pr_info("Error registering catu driver\n");
+>>>>> +    ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
+>>>>>         tmc_etr_set_catu_ops(&etr_catu_buf_ops);
+>>>>>         return ret;
+>>>>>     }
+>>>>> @@ -612,7 +716,7 @@ static int __init catu_init(void)
+>>>>>     static void __exit catu_exit(void)
+>>>>>     {
+>>>>>         tmc_etr_remove_catu_ops();
+>>>>> -    amba_driver_unregister(&catu_driver);
+>>>>> +    coresight_remove_driver(&catu_driver, &catu_platform_driver);
+>>>>>     }
+>>>>>       module_init(catu_init);
+>>>>> diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+>>>>> index 442e034bbfba..141feac1c14b 100644
+>>>>> --- a/drivers/hwtracing/coresight/coresight-catu.h
+>>>>> +++ b/drivers/hwtracing/coresight/coresight-catu.h
+>>>>> @@ -61,6 +61,7 @@
+>>>>>     #define CATU_IRQEN_OFF        0x0
+>>>>>       struct catu_drvdata {
+>>>>> +    struct clk *pclk;
+>>>>>         void __iomem *base;
+>>>>>         struct coresight_device *csdev;
+>>>>>         int irq;
+>>>>
+>>
 
-  7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
-
-that thing does exactly what you're trying to "fix". So why doesn't that
-work for you?
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
