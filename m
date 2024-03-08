@@ -1,121 +1,119 @@
-Return-Path: <linux-acpi+bounces-4186-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4187-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B93876578
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 14:39:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C2B8765D2
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 14:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 367731C20A09
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 13:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07311C21FFA
+	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 13:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3392CCDF;
-	Fri,  8 Mar 2024 13:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA09D40858;
+	Fri,  8 Mar 2024 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i8Z4dEFn"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="WkjmJMD9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FCD381C1
-	for <linux-acpi@vger.kernel.org>; Fri,  8 Mar 2024 13:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B0F3DBBF;
+	Fri,  8 Mar 2024 13:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.152.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709905148; cv=none; b=piQROtKPhgDIamRc/OaQrQY/D3VIGFtBbCDge0BZB5adw7O8guzCmYOhazbB2DmXEWF4GWQpgAfKx5uDj99C3rNQVvdT9NyzKoymJo0NkTL3k6eX/9lW7H7WSMihcQcCI7bGV87nMFrY6+8J15J7nsMXxLjJenMUZl4SiKKPhw4=
+	t=1709906363; cv=none; b=OD+Vjp37mICm9MgX6Fo3LjmG3hUXYjKU1cK3XL7mWbjUkGnGTQwkGCNzbUXWkiIARBpXAPswjliVe3sON03QL+cU5kuZ56w6L9mfWQchUQRw4BWnHCfKlWCBkxyzPGwzK9noDUdbNTe/Na/PNSqlsUqMwUJ69WZfVgz8ue/NuIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709905148; c=relaxed/simple;
-	bh=GciotLxwspdeyyyB0U/YUypbPZGqg8FE4QdrXJixYVY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VLxH3hADa+zukpC/LlMStL6dTjBPloxi1rna4U3YWZl2EcoTCkhjof789meZ/LKiMk+KAVCLSRzvDD3kKnHnS8iJFPrN5X4OG5oVFrd4kasviwyP/9ohskyGchK8w/FoV4CmvwGys+uMWirw2XkcCYQfStrElskiN08n3AE5jOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i8Z4dEFn; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709905147; x=1741441147;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GciotLxwspdeyyyB0U/YUypbPZGqg8FE4QdrXJixYVY=;
-  b=i8Z4dEFnDhSopGM0469nyuDmrX8jZFU0RcEoX4EjrrcXEalV3FmSkq18
-   o08xQ/JKyDV42+divNvGqX4l2wrAfNuH41ask2aqi/O07YKKd/FeDErbn
-   g7rONUDCDtFFgiD6D25ApCW6qpv1uVtYQFNlOOMGGuTQ7aqzSK3R5Tonr
-   Iz44REeC/X/HcA1xBrX/+Fw3JQA/kwhUJ8uqz5L3KimXWMRgPKITA0OWl
-   DckwJpZcYSk0zCMjDcLzgXvurPBoIBZGtEFwtciX7ETYvkMEN4VtZI9YK
-   BI6f+fhbYj0KfMHWOf9/L2xfnOpz6xquIy/zhv4z6KVDc7DgIzGdYJSZd
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="4493823"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="4493823"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:39:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11006"; a="914246807"
-X-IronPort-AV: E=Sophos;i="6.07,109,1708416000"; 
-   d="scan'208";a="914246807"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Mar 2024 05:39:04 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1riaRB-0000000Aqrd-3MEg;
-	Fri, 08 Mar 2024 15:39:01 +0200
-Date: Fri, 8 Mar 2024 15:39:01 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Cezary Rojewski <cezary.rojewski@intel.com>
-Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, robert.moore@intel.com,
-	amadeuszx.slawinski@linux.intel.com,
-	pierre-louis.bossart@linux.intel.com
-Subject: Re: [PATCH v6 2/4] ACPI: NHLT: Introduce API for the table
-Message-ID: <ZesU9QXtM2n2eiZ1@smile.fi.intel.com>
-References: <20240308073240.2047932-1-cezary.rojewski@intel.com>
- <20240308073240.2047932-3-cezary.rojewski@intel.com>
+	s=arc-20240116; t=1709906363; c=relaxed/simple;
+	bh=QXNA9tK+wmD2HHQFcTyFQ7nNugKbTesrK1cHl52yxac=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=d7tles/CWsHhTiv+qLfQLELeKazwJvSmZ9fHJjZMDu3FFnLXd+rMMljDNA7ALKjeDWb6IbtYH1rsUAUH3Ga+oKwp7D0Se8rGNDxxFvk4liEg0LFba4aLtIHjWoO4w6m+jb2QPACchsoSMWIvmTGPEMlgFpOZnWETl7fO9Ja2C8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com; spf=pass smtp.mailfrom=opensource.cirrus.com; dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b=WkjmJMD9; arc=none smtp.client-ip=67.231.152.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4286juhT000826;
+	Fri, 8 Mar 2024 07:59:02 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=PODMain02222019; bh=d
+	yH+H0ET4bfpETq9uSfKDHwS0TiJSVm0/9UjiFrw1Jc=; b=WkjmJMD9A5Sz8dkxo
+	FD1JGeB7zDA6cxNieh+CJIwTTkOWEy57p0d+6Ppi2TZeBb1we138EGpnvdmij37z
+	Ey2L2NOIEiUKWcwINcG/dbe1QfjGU6ONNnJKKMNAsJU/nHSTpFGiMT09ofXoo5NW
+	xaw+NLcIBegx/zgWB4ArskBCQuMs6Awfa9dunQkc/P8Yx6GVO/TP1L16e3yL/uBi
+	Ufr004L8mfJ95rcEsMMWNyH1+kaXCrcnMm1q4/GdZmo09RLo/mUiffXsWI3BN/T4
+	bJc89x6nR6/BGhg6qGs5x+W2EKqgyMr1+Y1qbybH9Uf6ycpq2ISZ30wqxthBpMD1
+	zmzlA==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3wpn933f32-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Mar 2024 07:59:02 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 8 Mar 2024
+ 13:59:00 +0000
+Received: from ediswmail9.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1544.4 via Frontend Transport; Fri, 8 Mar 2024 13:59:00 +0000
+Received: from ediswws06.ad.cirrus.com (ediswws06.ad.cirrus.com [198.90.208.18])
+	by ediswmail9.ad.cirrus.com (Postfix) with ESMTP id B4D59820242;
+	Fri,  8 Mar 2024 13:59:00 +0000 (UTC)
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+To: <broonie@kernel.org>, <tiwai@suse.com>, <hdegoede@redhat.com>,
+        <lenb@kernel.org>, <rafael@kernel.org>
+CC: <linux-sound@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <patches@opensource.cirrus.com>,
+        <platform-driver-x86@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+        "Richard
+ Fitzgerald" <rf@opensource.cirrus.com>
+Subject: [PATCH 0/3] ALSA: Add support for Cirrus Logic CS35L54 and CS35L57
+Date: Fri, 8 Mar 2024 13:58:57 +0000
+Message-ID: <20240308135900.603192-1-rf@opensource.cirrus.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308073240.2047932-3-cezary.rojewski@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 3Pz0AOdoologX1j2pdPnX3OURDvv61KF
+X-Proofpoint-ORIG-GUID: 3Pz0AOdoologX1j2pdPnX3OURDvv61KF
+X-Proofpoint-Spam-Reason: safe
 
-On Fri, Mar 08, 2024 at 08:32:38AM +0100, Cezary Rojewski wrote:
-> The table is composed of a range of endpoints with each describing
-> audio formats they support. Most of the operations involve iterating
-> over elements of the table and filtering them. Simplify the process by
-> implementing range of getters.
-> 
-> While the acpi_nhlt_endpoint_mic_count() stands out a bit, it is a
-> critical component for any AudioDSP driver to know how many digital
-> microphones it is dealing with.
+The CS35L54 and CS35L57 are Boosted Smart Amplifiers. The CS35L54 has
+I2C/SPI control and I2S/TDM audio. The CS35L57 also has SoundWire
+control and audio.
+    
+The hardware differences between L54, L56 and L57 do not affect the
+driver control interface so they can all be handled by the same driver.
 
-...
+The HDA patch has build dependencies on the ASoC patch.
 
-+ acpi.h ?
+The final patch updates serial-multi-instantiate and scan.c to trap
+the ACPI HID for HDA systems that declare multiple amps all under one
+Device() node. This patch does not have any build dependency on the
+first two patches so can be taken separately.
 
-> +#include <linux/export.h>
+Simon Trimmer (3):
+  ASoC: cs35l56: Add support for CS35L54 and CS35L57
+  ALSA: hda: cs35l56: Add support for CS35L54 and CS35L57
+  platform/x86: serial-multi-instantiate: Add support for CS35L54 and
+    CS35L57
 
-+ errno.h
-
-+ minmax.h
-
-+ printk.h
-+ types.h
-
-> +#include <acpi/nhlt.h>
-
-...
-
-> +#if IS_ENABLED(CONFIG_ACPI_NHLT)
-
-+ kconfig.h ?
-
-> +#endif /* CONFIG_ACPI_NHLT */
+ drivers/acpi/scan.c                           |  2 ++
+ .../platform/x86/serial-multi-instantiate.c   | 28 +++++++++++++++++++
+ include/sound/cs35l56.h                       |  1 +
+ sound/pci/hda/cs35l56_hda.c                   | 16 +++++++----
+ sound/pci/hda/cs35l56_hda.h                   |  2 +-
+ sound/pci/hda/cs35l56_hda_i2c.c               |  7 +++--
+ sound/pci/hda/cs35l56_hda_spi.c               |  7 +++--
+ sound/soc/codecs/cs35l56-sdw.c                |  3 +-
+ sound/soc/codecs/cs35l56-shared.c             |  8 ++++--
+ sound/soc/codecs/cs35l56.c                    | 14 +++++++++-
+ 10 files changed, 73 insertions(+), 15 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.30.2
 
 
