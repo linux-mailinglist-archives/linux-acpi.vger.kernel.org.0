@@ -1,218 +1,118 @@
-Return-Path: <linux-acpi+bounces-4225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2512C87737D
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 20:17:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 696998773C8
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 21:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40D901C20A6C
-	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 19:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A451A1C20950
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 20:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392984AEFB;
-	Sat,  9 Mar 2024 19:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BA74D9F2;
+	Sat,  9 Mar 2024 20:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Ev5pHiZN"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="GcELflsL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FC944366;
-	Sat,  9 Mar 2024 19:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082E34D9EC;
+	Sat,  9 Mar 2024 20:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710011844; cv=none; b=A0bdbUnNLZaJVRF6fZ4pXH0IL4oynCez4LbZxR4qbYrBmc2Qnms99kJfoCAGnjznTg8Ujt+/z7lEzWp+/gJVN5Z9DhyiI+Cb6UYtu4RmCG6V5H1VPLDTeLYtOOw5u5/vOg1M4D7vDzM8nLQYDwq5Q9fUG+0H/RYMBWxYLQeJrNo=
+	t=1710015212; cv=none; b=DiEizPQD1CI+VzZafhonK8G/lecAqli9jyyzoYfgb4N3QJh9E95DrNLP6ZL9N15Q8dP7+chf5YlQg47jcfssc+deCdE7h0VNo3kMM1DCJ0g4UnG8FqHaGA03fhK1/z681wEe4RE/ujqX8r2FpghnYP3bkxVcea+8FrZCTZEoCK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710011844; c=relaxed/simple;
-	bh=XRlgEWOTVijLiWgo9FahxuxdDdXF/OXoFOorpeUKHVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ezK+YDqwE9fylfE+y8954xXI0xCAD8/nrBEPEi7jqdzi2yRQqHt9Nv2RGhScg+XgcCzSog3eCHTgZ/2dXfJp9maUs+mU7Srh667miKib5RwtmAxX/BvXC5onRwicpEBapc6iHkuy7j68bgorIy18Nyek+BbKe1NmhCBE6Rcykk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Ev5pHiZN; arc=none smtp.client-ip=212.227.17.21
+	s=arc-20240116; t=1710015212; c=relaxed/simple;
+	bh=DDC1CBqfrgPh109rJsO3aoCX8S+FPW2MUiqgY2AF9rM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qS1ifmHMv1HHhtfmx73h8Y/J2iXhoPoseEpZp9xKavthNPyMwCju/SSIGlSn7EAGItFaxBXdTH1ZNRWHl7TAx1CZMUno6ygTMIbkCgUMnPDMHeUZ0D9wizv3uMunckQY2TdBYLRtGzD+6OQDQa9D/v5oCxhikRd7aoRoYmXYIL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=GcELflsL; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1710011827; x=1710616627; i=w_armin@gmx.de;
-	bh=XRlgEWOTVijLiWgo9FahxuxdDdXF/OXoFOorpeUKHVg=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=Ev5pHiZNcYYTercqnsnNLQvLbY0Ka1D+dwIWT2MxivlCNB27GKhGfM6wW8tAm5v9
-	 bnR+grdk90QBnxlNuEQisejz5Cjd3ZgaJzlWMNWcOwUDqCVTGIeEOkN7OyHXMl50Z
-	 aQpiTLigIxwbVyYkmfMf2otsU07aVF+eJtbMBzZa9l3dfYpQasFqrb43dOidRXE4k
-	 U4yHntioafOzo4lcK8aMPWTvGXHtP44AA8GuvxT4efXiymd17lcMJ+dxeUhAW7qCl
-	 VeeihpwpmvCVwRS5aE6Qp8rM++Pp7TBk0KCbOgeiFsXlgIJMURITykhi7eS2FCi+M
-	 jb4BF4tnh49G78+LBw==
+	t=1710015203; x=1710620003; i=w_armin@gmx.de;
+	bh=DDC1CBqfrgPh109rJsO3aoCX8S+FPW2MUiqgY2AF9rM=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=GcELflsLOy5f67IKtlHLrqz3LZ4eyiVuk32fZJQjgWCfQAPRG53HNIDlwzdVvoic
+	 o9FeByXfZiX80d+nUvLN3iLtM86wwYIBIWQgr1q2+BTzrMZ8qEUwsOu04SmDnWIi8
+	 VbUEPdy8me30uj9z1A5KG/7T8bw3ZnDGeMT/QE248EV6F9xEqTBO7yfoCTHIkZwaW
+	 U1XT8WTTvpB+F0RWkr2lc/W82L0cT3hAJjXA+4QgN6zyU7ek4QCXSrkHwKCH9Eo2Z
+	 YYpIeIu+Tv0JawfL5ZYkuN4FzsDEpBjumkm+mjsz9BquumJ+ela/8FbRXyRv6yjb4
+	 vPybz+7nOno14OVW3Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVvPJ-1rHq9n41Z7-00RnwU; Sat, 09
- Mar 2024 20:17:07 +0100
-Message-ID: <2fcd7176-108a-47dc-8096-99a5b6a69641@gmx.de>
-Date: Sat, 9 Mar 2024 20:17:05 +0100
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MHGCu-1rehTn1hdQ-00DFGl; Sat, 09 Mar 2024 21:13:23 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] ACPI: bus: _OSC fixes
+Date: Sat,  9 Mar 2024 21:13:05 +0100
+Message-Id: <20240309201310.7548-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] platform/x86: wmi: Support reading/writing 16 bit
- EC values
-Content-Language: en-US
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- hdegoede@redhat.com, ilpo.jarvinen@linux.intel.com
-Cc: rafael@kernel.org, lenb@kernel.org, mario.limonciello@amd.com,
- linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240308210519.2986-1-W_Armin@gmx.de>
- <a6152da8-5f3a-458b-bc48-4bc654677ece@linux.intel.com>
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <a6152da8-5f3a-458b-bc48-4bc654677ece@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:bULHEOU6HX1JaTlIKMLQ25OmT1v3acdl+rHs8OfvFAc3yHKN2GC
- Ms+Db2sxx2KK1SsbYZrmcdUlKyU7XHpdvOiyYY2ZSyke2hWW1dp6whprny6TZoEnFgyjEvD
- GBq8vLUXq/mSSaWlX0GU9S7IJOPid75vxNLOkGcCXgB0qBUrKSM7o4EGh2jcTC0oY8PzopO
- VFDMPAUHSve3ZM++lJGdQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hcAHVwh3puWdFWCzTNLQb11Nb//DTgywMjaP/u392ecCA8J2ja6
+ LkzeLC//34oOdOLMv+AwhUh1ORztMdAP1B4hD5w1gj66NX04uin6adadO6yU7emiuALkoV/
+ pPk/I52liAaB+BWmRL3wrbmOCXbLbUUHrjh2Jpbg6bDhqYJ5/I1YMpYk4xWw/LG//Ab3HUq
+ 1vkSQ19aEQ3ZEeM8Ek+hA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ceCQFEkWCsY=;+DQKmJPoaMZM4s90BLCt1KVrr01
- IwR2rYzQnyxCx6oNHPjlTVeLBH7wdGz3dI4rGFDH/avUoVIYTOIs/cMxFLCZWwtgrLpnhs8bz
- j4xpo93L+pgXsZ+tv9B9imBr0FZmJQGbvvI61rXgTyHhLxXDexo+sQdsHhPsf9/Enl4bpddtI
- Cv67E/R6je5/CFI0MRJz5NLJ6ZlN3+9YrSq1UimDGJ+F6WKb8qYz4gFZ6pGekc52gfAKEhI3g
- 1hezLCoJt0AAZjBjAoTJdYGGXuRgw1true2gPFw38ewvsAZb4cn+4Vxe3O9uyimCMIFQwJXx8
- wDT5uTYT8UrO2VT6BGAvqElWjxD5ehHBz0zspp4Yr6w5caIuZ7/d70KuBMNHttkuYA32FiaRf
- XfP6HhNIeMysx4j9UgLY3kWlbyugUTxeNS7j1eYF7yc1v2VeoQmpuzZSPfAUx/fnI7P8RElLR
- j9mV24nB0QJWtU9fmOImABjJavMSDAioCHB4yKIVVS0ciFt6yPonSodtzYpr6VmzELkICIsa/
- qzNlI9hbG8810C/CG9Izrxk75BB6K5TDxz35QmyJs8GgTnUkSHhX+nUMJY60kKTiJHFzWlOxo
- 8LA0rHAYsrSjr5kx/G3YWUgDW8SKxxVw9RmIK4SNKWo7KGfi+TLRRIWLp0l58iguFCiu7o/NV
- gcXEP/Dx1tH9XwCEZaJAcV/xB6qawQwcpmRi31KGJyFO9F2ksUkxXrwgMnvdbc5w6+QsmnOwm
- dKzeu5U66CZCLqHsLnM18m7GAiFtLJfmg0XZ6xdHkS3TLG+BnmO9JufMFsrqsxaQM4fXenEEA
- WqT3+CSrxE/gMHmdtf8rQ5szYYSWA7EJGFS1EJz9QmdR8=
+UI-OutboundReport: notjunk:1;M01:P0:apj0qsU2eTg=;RtOeomMluZg0R4FowefKrNuIJAO
+ 3R1jTzdS2TisXRi/4kTc3h3dDt5ljBnHgI1FYWpEKXgpoEtI0zhf+1V/MUlhmJ3abigH2IFS8
+ cc9/X4UtKsRjnyuV0ejksGrORLGHMv+GtFfWTSaarnBpBvbVqkrgV9N2MPaqrK6gJyHgyN7cu
+ Zp/u3T2XeF74g6rv5zCP3MZ6YceDlRHme7oWnhOjB2Z2NvQmCk60K4VFpj43p0HgxLKcAy8Ne
+ caBRThNgFhX/vI6ra0Zr7bCtC/tENwcZSvxKEEy/oGhhFa+jdm6k/mj6QajjoP+h7ZnXPxTU6
+ aDYfbRMqrZ6d+6m0vGkURUwHocG00QfUke80GV1lTg3DkI61ahUyxlJTcYzzT/xBGgakyezxW
+ 8zAWEOH4BRwAY6K0gcWf1vKd+cbPKkHSErL4SgO+anV5Sie/7fzVLRmeSzOyAPdcoWothRYmr
+ esPKocOProQEsxVMznKpawUmHT9jzd/yG7Sfpb1cqx9S5zhazRtJKN0FEdokHJxFXLxKPtF5J
+ bttN2usGahuyBwUPAq4Hd1g2TpotQIkp2m2pkzwcwL1LhwbePxg999wCtMOqvYP28B/3uFqjB
+ D+aPX7VgreKlOLhxqGCc7amIWOn3ZBmWHnRm/g8RxTkslGMSnWd00B3oE0PJmaBYluxOkAUtX
+ rmaL2fKHt9Uc53wxfiYVCk+tmT4zrN0dn/6QotfBxjYYRoC7/Z4OeK/anHn84tvSJOyLRzjGA
+ RBCHUDINI03UKQCChHh364HDQVrqQIRgrRDBfPjzb7jcFNCn6jdrLRZS9J/MHvyySHLYtZMF/
+ Gzb+WAsWke+P6YzWTuZ5wdkK2CR+y77s+q/wXIhooaeis=
 
-Am 09.03.24 um 18:07 schrieb Kuppuswamy Sathyanarayanan:
+This patch series fixes the handling of various ACPI features bits
+when evaluating _OSC.
 
-> On 3/8/24 1:05 PM, Armin Wolf wrote:
->> The ACPI EC address space handler currently only supports
->> reading/writing 8 bit values. Some firmware implementations however
->> want to access for example 16 bit values, which is prefectly legal
->> according to the ACPI spec.
->>
->> Add support for reading/writing such values.
->>
->> Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
->>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> ---
->> Changes since v3:
->> - change type of variable i to size_t
->>
->> Changes since v2:
->> - fix address overflow check
->>
->> Changes since v1:
->> - use BITS_PER_BYTE
->> - validate that number of bytes to read/write does not overflow the
->>    address
->> ---
->>   drivers/platform/x86/wmi.c | 49 ++++++++++++++++++++++++++++++--------
->>   1 file changed, 39 insertions(+), 10 deletions(-)
->>
->> diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
->> index 1920e115da89..d9bf6d452b3a 100644
->> --- a/drivers/platform/x86/wmi.c
->> +++ b/drivers/platform/x86/wmi.c
->> @@ -1153,6 +1153,34 @@ static int parse_wdg(struct device *wmi_bus_dev, struct platform_device *pdev)
->>   	return 0;
->>   }
->>
->> +static int ec_read_multiple(u8 address, u8 *buffer, size_t bytes)
->> +{
->> +	size_t i;
->> +	int ret;
->> +
->> +	for (i = 0; i < bytes; i++) {
->> +		ret = ec_read(address + i, &buffer[i]);
->> +		if (ret < 0)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
-> Why not use ec_transaction?
+The first three patches fix the reporting of various features supported
+by the kernel, while the fourth patch corrects the feature bit used to
+indicate support for the "Generic Initiator Affinity" in SRAT.
 
-Hi,
+The last patch fixes the reporting of IRQ ResourceSource support. Unlike
+the other feature bits, the ACPI specification states that this feature
+bit might be used by the ACPI firmware to indicate whether or not it
+supports the usage of IRQ ResourceSource:
 
-because ec_transaction() is meant to send raw commands to the EC. And AFAIK read/write transactions can only transfer a
-single byte at once, so using ec_transaction() would yield no benefit here.
+	"If not set, the OS may choose to ignore the ResourceSource
+	 parameter in the extended interrupt descriptor."
 
->
->> +
->> +static int ec_write_multiple(u8 address, u8 *buffer, size_t bytes)
->> +{
->> +	size_t i;
->> +	int ret;
->> +
->> +	for (i = 0; i < bytes; i++) {
->> +		ret = ec_write(address + i, buffer[i]);
->> +		if (ret < 0)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->> +}
-> Same as above.
->> +
->>   /*
->>    * WMI can have EmbeddedControl access regions. In which case, we just want to
->>    * hand these off to the EC driver.
->> @@ -1162,27 +1190,28 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physical_address address,
->>   			  u32 bits, u64 *value,
->>   			  void *handler_context, void *region_context)
->>   {
->> -	int result = 0;
->> -	u8 temp = 0;
->> +	int bytes = bits / BITS_PER_BYTE;
->> +	int ret;
->> +
->> +	if (!value)
->> +		return AE_NULL_ENTRY;
->>
->> -	if ((address > 0xFF) || !value)
->> +	if (!bytes || bytes > sizeof(*value))
->>   		return AE_BAD_PARAMETER;
->>
->> -	if (function != ACPI_READ && function != ACPI_WRITE)
->> +	if (address > U8_MAX || address + bytes - 1 > U8_MAX)
->>   		return AE_BAD_PARAMETER;
->>
->> -	if (bits != 8)
-> Since you want to support only 16 bit reads/writes, can you check for >16
+Since the code responsible for parsing IRQ ResourceSource already checks
+if ResourceSource is present, i assumed that we can omit taking this
+into account.
 
-The 16 bit reads/writes where meant as an example, ACPI code can request much larger values.
-The WMI EC handler should be able to handle those, just like the regular ACPI EC handler.
+All patches where tested on a Asus Prime B650-Plus and a Dell Inspiron
+3505.
 
-Thanks,
-Armin Wolf
+Armin Wolf (5):
+  ACPI: bus: Indicate support for _TFP thru _OSC
+  ACPI: bus: Indicate support for more than 16 p-states thru _OSC
+  ACPI: bus: Indicate support for the Generic Event Device thru _OSC
+  ACPI: Fix Generic Initiator Affinity _OSC bit
+  ACPI: bus: Indicate support for IRQ ResourceSource thru _OSC
 
->> +	if (function != ACPI_READ && function != ACPI_WRITE)
->>   		return AE_BAD_PARAMETER;
->>
->>   	if (function == ACPI_READ) {
->> -		result = ec_read(address, &temp);
->> -		*value = temp;
->> +		ret = ec_read_multiple(address, (u8 *)value, bytes);
->>   	} else {
->> -		temp = 0xff & *value;
->> -		result = ec_write(address, temp);
->> +		ret = ec_write_multiple(address, (u8 *)value, bytes);
->>   	}
->>
->> -	switch (result) {
->> +	switch (ret) {
->>   	case -EINVAL:
->>   		return AE_BAD_PARAMETER;
->>   	case -ENODEV:
->> --
->> 2.39.2
->>
->>
+ drivers/acpi/bus.c   | 5 +++++
+ include/linux/acpi.h | 6 +++++-
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+=2D-
+2.39.2
+
 
