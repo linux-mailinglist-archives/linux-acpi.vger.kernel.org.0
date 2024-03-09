@@ -1,202 +1,281 @@
-Return-Path: <linux-acpi+bounces-4219-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4220-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27556876CA3
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 23:02:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2CD87707A
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 11:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14152827DF
-	for <lists+linux-acpi@lfdr.de>; Fri,  8 Mar 2024 22:02:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7521F213C1
+	for <lists+linux-acpi@lfdr.de>; Sat,  9 Mar 2024 10:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6585FBA3;
-	Fri,  8 Mar 2024 22:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CA914294;
+	Sat,  9 Mar 2024 10:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrmXG+T1"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420921E515;
-	Fri,  8 Mar 2024 22:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFB926AC5;
+	Sat,  9 Mar 2024 10:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709935343; cv=none; b=j2nvNxcEvEN5jcps+gxnOx5hXAMeWa4zQfjri0w9a6FYcCETQJoqcQtTyKdL4N6VEmtisyNlE5q6pNcj0vh8cWLA51eJqF5v8RslEteU7YnvrtjA1jQEZHartoJ6e/q3eLySBIQppHeauJse9S+fqa2/hTgV1lciAGsyfk/ZQDY=
+	t=1709980408; cv=none; b=Cv4ciaMJzh2LUq/zIsgIjrXyr57erUG7fH7eLC+vxFTGUpYf8+cRY2KAiQkOwYtmBL8YXdG5/CB0UvzwxFuudBNsWcU5YRdpB76XSsX5+OgRchDp6Ksb3femRt+hbdMOQZivg4NcC4wA9g6L21d9+ZWVMNUO/J6GDGUMuaBOt9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709935343; c=relaxed/simple;
-	bh=cRVAmkZfa9S17PCaPNZeA59zKO+slEMu6Jd1X/fnNuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oueq3N2w0n/UefamRzAQ+yo086MsOTkkrso/AYxjBzEYIgNFZcfm3U7A/3nUsbBrzWFkdSKoe1bi0ZjRpDO2WXPA80KTANsuf1Y/XscYVZYF+squAWqrx7y26zN0ccoVnrw6XGFs/DjEbyPo2zxhuk9GwhAt3wJkesPdMpiYFms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB84C433C7;
-	Fri,  8 Mar 2024 22:02:21 +0000 (UTC)
-From: Dave Jiang <dave.jiang@intel.com>
-To: linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: dan.j.williams@intel.com,
-	ira.weiny@intel.com,
-	vishal.l.verma@intel.com,
-	alison.schofield@intel.com,
-	Jonathan.Cameron@huawei.com,
-	dave@stgolabs.net,
-	rafael@kernel.org,
-	gregkh@linuxfoundation.org
-Subject: [PATCH v7 12/12] cxl/region: Deal with numa nodes not enumerated by SRAT
-Date: Fri,  8 Mar 2024 14:59:31 -0700
-Message-ID: <20240308220055.2172956-13-dave.jiang@intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240308220055.2172956-1-dave.jiang@intel.com>
-References: <20240308220055.2172956-1-dave.jiang@intel.com>
+	s=arc-20240116; t=1709980408; c=relaxed/simple;
+	bh=ep80T4R3DsChFlCxVs40oKoocVSvRg0xEN7d7U/tIbo=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NHycoTwNQogjPm7AjfcYl34QiVJTdbFgoy6jCweAZjTFAQFsE2l8Vgnmsd62GjMcNYaA9gSyddKOWX8s+J8/MJ15WOeqAa+p87VAISs3ae1VOrcTtBvEL49tBBrRwQQAwANQlQXEP2K+nc52YAi5BZNZDF446VanwYzAQK3wjI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrmXG+T1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1CCC433C7;
+	Sat,  9 Mar 2024 10:33:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709980407;
+	bh=ep80T4R3DsChFlCxVs40oKoocVSvRg0xEN7d7U/tIbo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KrmXG+T15xq3cHjLexInxaHKvv7nQHc4nVfoQeFwC9C5CIKv3SG9hwz1HCKO4e8zZ
+	 y4dH4ErV1XuGC0zjuIdaXbPzooGVe6DIV4fN6WoT2A60aNMeBtQHdglR3VI0ipu3oV
+	 vXRQFRFJs8Lu+lZWG4/KbydkKnOPnwLnvuo2J3WMfqjqNJKp6tWHrZpPucsj1yL1S4
+	 TdW7zjJxwTjv799dA9v7LwjE5OaEdc17Weq9gbG/aRuu/FMJUd4uPdXvK+B6FJmfLg
+	 ban7vmFsKfrm02sEGCibboTqgd4Ouvg6RpX8hJQEIdo+VGl+ATCFnC8rHiILYtqOOv
+	 w2OxHiQaa6siw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1riu17-00Ay3W-63;
+	Sat, 09 Mar 2024 10:33:25 +0000
+Date: Sat, 09 Mar 2024 10:33:18 +0000
+Message-ID: <8734szr8y9.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Ruidong Tian <tianruidong@linux.alibaba.com>
+Cc: catalin.marinas@arm.com,
+	will@kernel.org,
+	lpieralisi@kernel.org,
+	guohanjun@huawei.com,
+	sudeep.holla@arm.com,
+	xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Tyler Baicar <baicar@os.amperecomputing.com>
+Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
+In-Reply-To: <aaad88c3-333d-4714-a9ca-3b66c8a5d9c8@linux.alibaba.com>
+References: <20240304111517.33001-1-tianruidong@linux.alibaba.com>
+	<20240304111517.33001-2-tianruidong@linux.alibaba.com>
+	<86wmqi19pg.wl-maz@kernel.org>
+	<aaad88c3-333d-4714-a9ca-3b66c8a5d9c8@linux.alibaba.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: tianruidong@linux.alibaba.com, catalin.marinas@arm.com, will@kernel.org, lpieralisi@kernel.org, guohanjun@huawei.com, sudeep.holla@arm.com, xueshuai@linux.alibaba.com, baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, baicar@os.amperecomputing.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-For the numa nodes that are not created by SRAT, no memory_target is
-allocated and is not managed by the HMAT_REPORTING code. Therefore
-hmat_callback() memory hotplug notifier will exit early on those NUMA
-nodes. The CXL memory hotplug notifier will need to call
-node_set_perf_attrs() directly in order to setup the access sysfs
-attributes.
+On Fri, 08 Mar 2024 03:43:30 +0000,
+Ruidong Tian <tianruidong@linux.alibaba.com> wrote:
+>=20
+> =E5=9C=A8 2024/3/4 20:07, Marc Zyngier =E5=86=99=E9=81=93:
+> > On Mon, 04 Mar 2024 11:15:16 +0000,
+> > Ruidong Tian<tianruidong@linux.alibaba.com>  wrote:
+> >> diff --git a/arch/arm64/include/asm/ras.h b/arch/arm64/include/asm/ras=
+.h
+> >> new file mode 100644
+> >> index 000000000000..2fb0d9741567
+> >> --- /dev/null
+> >> +++ b/arch/arm64/include/asm/ras.h
+> >> @@ -0,0 +1,38 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +#ifndef __ASM_RAS_H
+> >> +#define __ASM_RAS_H
+> >> +
+> >> +#include <linux/types.h>
+> >> +#include <linux/bits.h>
+> >> +
+> >> +#define ERR_STATUS_AV		BIT(31)
+> >> +#define ERR_STATUS_V		BIT(30)
+> >> +#define ERR_STATUS_UE		BIT(29)
+> >> +#define ERR_STATUS_ER		BIT(28)
+> >> +#define ERR_STATUS_OF		BIT(27)
+> >> +#define ERR_STATUS_MV		BIT(26)
+> >> +#define ERR_STATUS_CE		(BIT(25) | BIT(24))
+> >> +#define ERR_STATUS_DE		BIT(23)
+> >> +#define ERR_STATUS_PN		BIT(22)
+> >> +#define ERR_STATUS_UET		(BIT(21) | BIT(20))
+> >> +#define ERR_STATUS_CI		BIT(19)
+> >> +#define ERR_STATUS_IERR 	GENMASK_ULL(15, 8)
+> >> +#define ERR_STATUS_SERR 	GENMASK_ULL(7, 0)
+> > All these bits need to be defined in arch/arm64/tools/sysreg as
+> > ERXSTATUS_EL1 fields.
+>=20
+> This file only describes the system register, but RAS MMIO registers
+> use these bits too. Would it be appropriate to define them in
+> arch/arm64/tools/sysreg?
 
-In acpi_numa_init(), the last proximity domain (pxm) id created by SRAT is
-stored. Add a helper function acpi_node_backed_by_real_pxm() in order to
-check if a NUMA node id is defined by SRAT or created by CFMWS.
+You are using them for system registers, they need to be defined
+there. The fact that they are also used to MMIO is anecdotal.
 
-node_set_perf_attrs() symbol is exported to allow update of perf attribs
-for a node. The sysfs path of
-/sys/devices/system/node/nodeX/access0/initiators/* is created by
-node_set_perf_attrs() for the various attributes where nodeX is matched
-to the NUMA node of the CXL region.
+[...]
 
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
----
-v7:
-- Fix typo is commit log. (Jonathan)
----
- drivers/acpi/numa/srat.c  | 11 +++++++++++
- drivers/base/node.c       |  1 +
- drivers/cxl/core/cdat.c   |  5 +++++
- drivers/cxl/core/core.h   |  1 +
- drivers/cxl/core/region.c |  7 ++++++-
- include/linux/acpi.h      |  9 +++++++++
- 6 files changed, 33 insertions(+), 1 deletion(-)
+> >> +#define CASE_READ_CLEAR(x, clear)					\
+> >> +	case (x): {							\
+> >> +		res =3D read_sysreg_s(SYS_##x##_EL1);			\
+> >> +		if (clear)						\
+> >> +			write_sysreg_s(0, SYS_##x##_EL1);		\
+> >> +		break;							\
+> >> +	}
+> > Please don't use macros with side effects. This is horrible to debug.
+> > Instead, *return* the value from the macro, or pass the variable you
+> > want to affect as a parameter.
+>=20
+> OK, I will pass **res** as a parameter like this:
+>=20
+>   #define CASE_READ_CLEAR(res, x, clear)			\
+> 	  case (x): {						\
+> 		  res =3D read_sysreg_s(SYS_##x##_EL1);		\
+> 		  if (clear)					\
+> 			  write_sysreg_s(0, SYS_##x##_EL1);	\
+> 		  break;					\
+> 	  }
+>=20
+> >=20
+> > Also, what ensures the synchronisation of this write? How is the W1TC
+> > aspect enforced?
+>=20
+> aest_proc is just call in irq context, one ras error is just routed to
+> one core, so it is thread safe. And this is a Write-After-Read (WAR)
+> Hazards with dependence=EF=BC=8Ccan i assume that pipeline would guarantee
+> the order of writing and reading?
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 0214518fc582..e45e64993c50 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -29,6 +29,8 @@ static int node_to_pxm_map[MAX_NUMNODES]
- unsigned char acpi_srat_revision __initdata;
- static int acpi_numa __initdata;
- 
-+static int last_real_pxm;
-+
- void __init disable_srat(void)
- {
- 	acpi_numa = -1;
-@@ -536,6 +538,7 @@ int __init acpi_numa_init(void)
- 		if (node_to_pxm_map[i] > fake_pxm)
- 			fake_pxm = node_to_pxm_map[i];
- 	}
-+	last_real_pxm = fake_pxm;
- 	fake_pxm++;
- 	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
- 			      &fake_pxm);
-@@ -547,6 +550,14 @@ int __init acpi_numa_init(void)
- 	return 0;
- }
- 
-+bool acpi_node_backed_by_real_pxm(int nid)
-+{
-+	int pxm = node_to_pxm(nid);
-+
-+	return pxm <= last_real_pxm;
-+}
-+EXPORT_SYMBOL_GPL(acpi_node_backed_by_real_pxm);
-+
- static int acpi_get_pxm(acpi_handle h)
- {
- 	unsigned long long pxm;
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index a73b0c9a401a..eb72580288e6 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -215,6 +215,7 @@ void node_set_perf_attrs(unsigned int nid, struct access_coordinate *coord,
- 		}
- 	}
- }
-+EXPORT_SYMBOL_GPL(node_set_perf_attrs);
- 
- /**
-  * struct node_cache_info - Internal tracking for memory node caches
-diff --git a/drivers/cxl/core/cdat.c b/drivers/cxl/core/cdat.c
-index ee1bc8fa396b..10d4f1d7dad1 100644
---- a/drivers/cxl/core/cdat.c
-+++ b/drivers/cxl/core/cdat.c
-@@ -586,3 +586,8 @@ int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
- {
- 	return hmat_update_target_coordinates(nid, &cxlr->coord[access], access);
- }
-+
-+bool cxl_need_node_perf_attrs_update(int nid)
-+{
-+	return !acpi_node_backed_by_real_pxm(nid);
-+}
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index e19800a7ce06..bc5a95665aa0 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -92,5 +92,6 @@ long cxl_pci_get_latency(struct pci_dev *pdev);
- 
- int cxl_update_hmat_access_coordinates(int nid, struct cxl_region *cxlr,
- 				       enum access_coordinate_class access);
-+bool cxl_need_node_perf_attrs_update(int nid);
- 
- #endif /* __CXL_CORE_H__ */
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 535492ec8529..5c186e0a39b9 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2279,7 +2279,12 @@ static bool cxl_region_update_coordinates(struct cxl_region *cxlr, int nid)
- 
- 	for (int i = 0; i < ACCESS_COORDINATE_MAX; i++) {
- 		if (cxlr->coord[i].read_bandwidth) {
--			rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
-+			rc = 0;
-+			if (cxl_need_node_perf_attrs_update(nid))
-+				node_set_perf_attrs(nid, &cxlr->coord[i], i);
-+			else
-+				rc = cxl_update_hmat_access_coordinates(nid, cxlr, i);
-+
- 			if (rc == 0)
- 				cset++;
- 		}
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index c84c2f34b8ee..2a7c4b90d589 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1559,4 +1559,13 @@ static inline int hmat_update_target_coordinates(int nid,
- }
- #endif
- 
-+#ifdef CONFIG_ACPI_NUMA
-+bool acpi_node_backed_by_real_pxm(int nid);
-+#else
-+static inline bool acpi_node_backed_by_real_pxm(int nid)
-+{
-+	return false;
-+}
-+#endif
-+
- #endif	/*_LINUX_ACPI_H*/
--- 
-2.44.0
+You are missing the point. WAR hazarding doesn't mean that the write
+has taken effect, and can be delayed for as long as the CPU decides
+to, until the nest context synchronisation event.
 
+The W1TC question still stands.
+
+[...]
+
+> >> +static u64 aest_iomem_read_clear(u64 base, u32 offset, bool clear)
+> >> +{
+> >> +	u64 res;
+> >> +
+> >> +	res =3D readq((void *)(base + offset));
+> >> +	if (clear)
+> >> +		writeq(0, (void *)(base + offset));
+> > Do you need the explicit synchronisation? What ordering are you trying
+> > to guarantee?
+>=20
+> This read and write use the same address, pipeline would guarantee
+> the order of writing and reading.
+
+You are missing the point again. Non-relaxed accessors come with a DMB
+that enforces ordering with younger reads and older writes. Why do you
+need those?
+
+[...]
+
+> >> +static int __init aest_register_gsi(u32 gsi, int trigger, void *data,
+> >> +					irq_handler_t aest_irq_func)
+> >> +{
+> >> +	int cpu, irq;
+> >> +
+> >> +	irq =3D acpi_register_gsi(NULL, gsi, trigger, ACPI_ACTIVE_HIGH);
+> >> +
+> >> +	if (irq =3D=3D -EINVAL) {
+> >> +		pr_err("failed to map AEST GSI %d\n", gsi);
+> >> +		return -EINVAL;
+> >> +	}
+> >> +
+> >> +	if (gsi < 16) {
+> >> +		pr_err("invalid GSI %d\n", gsi);
+> >> +		return -EINVAL;
+> >> +	} else if (gsi < 32) {
+> >> +		if (ppi_idx >=3D AEST_MAX_PPI) {
+> >> +			pr_err("Unable to register PPI %d\n", gsi);
+> >> +			return -EINVAL;
+> >> +		}
+> >> +		ppi_irqs[ppi_idx] =3D irq;
+> >> +		enable_percpu_irq(irq, IRQ_TYPE_NONE);
+> > Enabling the PPI before requesting it? Looks... great. And how does
+> > this work on a system that supports EPPIs, which are in the
+> > [1119:1056] range?
+>=20
+> It is better to enable it after request it, i will fix it next version.
+> My machine do not use EPPI as RAS interrupt, i can not test it now. Can
+> we support EPPI in later patch?
+
+No, because you shouldn't even have to care. Can you see a single
+driver in the tree that do this?
+
+>=20
+> >=20
+> > Also, if you get a trigger as a parameter, why the IRQ_TYPE_NONE?
+> >=20
+> Sorry=EF=BC=8CI do not really understand this comment, should I use
+> (IRQ_LEVEL | IRQ_PER_CPU)?
+
+You tell me. Either the trigger is relevant, or it isn't. But I assume
+it is passed as a parameter to the function for a good reason.
+
+>=20
+> >> +		for_each_possible_cpu(cpu) {
+> >> +			memcpy(per_cpu_ptr(ppi_data[ppi_idx], cpu), data,
+> >> +			       sizeof(struct aest_node));
+> >> +		}
+> >> +		if (request_percpu_irq(irq, aest_irq_func, "AEST",
+> >> +				       ppi_data[ppi_idx++])) {
+> >> +			pr_err("failed to register AEST IRQ %d\n", irq);
+> >> +			return -EINVAL;
+> >> +		}
+> >> +	} else if (gsi < 1020) {
+> >> +		if (request_irq(irq, aest_irq_func, IRQF_SHARED, "AEST",
+> >> +				data)) {
+> > Why SHARED? Who would share a RAS interrupt?????
+>=20
+> Multi AEST nodes may use the same interrupt, for example, one DDRC with
+> a RAS interrupt has two sub channels, these two sub channel is described
+> as two AEST node in AEST table, so they share the same one. In another
+> case, SMMU has two RAS node, TCU and TBU, they may also share the same
+> interrupt.
+
+I still find it odd, but hey, if that's the way people want to handle
+RAS, they might as well OR all of them and wire it to the RESET pin.
+
+>
+> >=20
+> >> +			pr_err("failed to register AEST IRQ %d\n", irq);
+> >> +			return -EINVAL;
+> > Same question about extended SPIs.
+> >=20
+> > All in all, this whole logic is totally useless. It isn't the driver's
+> > job to classify the GIC INTIDs...
+>=20
+> AEST use both PPI and SPI, it seems that AEST driver must recognize
+> INTID in order to request irq number with different function, do you
+> have better solution here?
+
+Again, you should have to look at the INTID, ever. That's none of your
+business, and you don't even know what interrupt controller the system
+is presenting you anyway. The way to identify a per-CPU interrupt is
+to use the irq_is_percpu_devid() helper, and not to mess with
+pointless heuristics.
+
+Thanks,
+
+	M.
+
+--=20
+Without deviation from the norm, progress is not possible.
 
