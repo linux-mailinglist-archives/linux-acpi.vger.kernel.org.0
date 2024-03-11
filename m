@@ -1,104 +1,137 @@
-Return-Path: <linux-acpi+bounces-4238-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4239-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66897877CCE
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 10:33:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA4B877D36
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 10:49:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C2E28115D
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 09:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C31A1C21211
+	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 09:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD991799B;
-	Mon, 11 Mar 2024 09:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A890022313;
+	Mon, 11 Mar 2024 09:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iCrI5jWa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD11017548;
-	Mon, 11 Mar 2024 09:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3CA208C8
+	for <linux-acpi@vger.kernel.org>; Mon, 11 Mar 2024 09:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710149616; cv=none; b=sMcrXfppvahX/zKAK2KF9lWJovcQDYPZ0B4Y/hOE7Am3y64qJdOQz2xG8gIAvcni8d9ubAS9g7GFVerT6S23WL+qrAbb4m27kWAHUqF7ZpS2VrHFucGw0wkk2UjINePqCm3MVYhoRYrRgPiz2jTrkZgpnJAOEaxYBtuVdNfE/fo=
+	t=1710150531; cv=none; b=rCmw7kGQZRBlXq35EOqMp5swiwzOyjW6aTkEafSEwffpIT1iUp8tY9WG9TwRZiVCfHeptjoKwzgqtUcWMPuY56/Y3kc5pLmvToF4J8HnyMGmmGTD1TQPIV/B1InZRobD0eiWvK4ATmFlBkv+ULYuFR50F78cd/UN0bQ9XSXcFoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710149616; c=relaxed/simple;
-	bh=5h2/ErZoU+OYJlydwEWZQA4nPorm3Yj7oMA72BmjzmI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hup9LCrGMy2iSGhdj53K5Qjp5eT+8eL7w9f8Qfn9dhTGMy+T8CS818ZrpTkJFAHZ/rQ/mOnCWOzboC4u/ZTKf8ViXNEbJuvXpijmw4gFyrWnUnBvlH98Ifgba2m2WL5HGJ795KMGnV3xMHlgeiKMhCsuuZcW+SiUJLTUuXhu/4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86557FEC;
-	Mon, 11 Mar 2024 02:34:10 -0700 (PDT)
-Received: from [10.162.42.8] (a077893.blr.arm.com [10.162.42.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7CBC03F762;
-	Mon, 11 Mar 2024 02:33:30 -0700 (PDT)
-Message-ID: <081eef3f-3b19-42d1-b70d-8916b867f766@arm.com>
-Date: Mon, 11 Mar 2024 15:03:27 +0530
+	s=arc-20240116; t=1710150531; c=relaxed/simple;
+	bh=ZVZzb9k/oGOy7V8mIzyWoSmGoCb+BSj/8dDrm/Ju5qU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M701gubYQSdoFo1DrAfWxPxCC6LIOJwbO3pFM380qdseBQo3KZjWe8g2cmqG0N2JOdCNVLkzqPd8e/vHZduoeif51Vlir/jJ1RZvQOZXjug/9gGw79UTZtVqzOn944hB7tBDPROzseYUYtC//7Yo7/YYJ1DqwYiflH+Jin/HWOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iCrI5jWa; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710150530; x=1741686530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZVZzb9k/oGOy7V8mIzyWoSmGoCb+BSj/8dDrm/Ju5qU=;
+  b=iCrI5jWafyCzLjNyWy8DdAoLkMWWDlhH5Yg0TN8eFiQZ0s6sEI7Chqp7
+   6p6FBgtMsIm6LxTllWK3C4yHNX9v+zfQz1ol5N4auYH8r5heRT2/DGPzr
+   7BcFFf6q4aO+6peRWHrsQ6oAcV6ZbnButRmN3WzroSqOQyHrZ0qcmayug
+   MSvXTGcfv7BXHVrIWKFRZzK8Ipb5cbuvQONyTNnmhe52oP/2wbc0Xisef
+   mgqVfBBGfS7BXYdvzC6aFWBpzE3WxKizVd0qO623sfTdvPnrK2AvCx+VY
+   ELLnPHKfNt8feb677kGn+blDm4HoDBucnTvx6jIzZodtMguRt+/QFCMHk
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="8619171"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
+   d="scan'208";a="8619171"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 02:48:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="914354233"
+X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
+   d="scan'208";a="914354233"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 02:48:47 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rjcGz-0000000BaFW-1OzV;
+	Mon, 11 Mar 2024 11:48:45 +0200
+Date: Mon, 11 Mar 2024 11:48:44 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, robert.moore@intel.com,
+	amadeuszx.slawinski@linux.intel.com,
+	pierre-louis.bossart@linux.intel.com
+Subject: Re: [PATCH v6 2/4] ACPI: NHLT: Introduce API for the table
+Message-ID: <Ze7TfGVvdEg8rZ1A@smile.fi.intel.com>
+References: <20240308073240.2047932-1-cezary.rojewski@intel.com>
+ <20240308073240.2047932-3-cezary.rojewski@intel.com>
+ <ZesU9QXtM2n2eiZ1@smile.fi.intel.com>
+ <dd7b08f4-2513-4b35-8364-2227780632ff@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 00/11] coresight: Move remaining AMBA ACPI devices into
- platform driver
-Content-Language: en-US
-To: James Clark <james.clark@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
-References: <20240222082142.3663983-1-anshuman.khandual@arm.com>
- <8ef57dd9-a16d-4847-89f5-a309c4ccb849@arm.com>
- <379bf6df-3568-43c0-9a68-4a5693bf5ccc@arm.com>
- <828d2109-7413-ffe5-da6a-56f15ed2f562@arm.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <828d2109-7413-ffe5-da6a-56f15ed2f562@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd7b08f4-2513-4b35-8364-2227780632ff@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
+On Sat, Mar 09, 2024 at 11:39:40AM +0100, Cezary Rojewski wrote:
+> On 2024-03-08 2:39 PM, Andy Shevchenko wrote:
+> > On Fri, Mar 08, 2024 at 08:32:38AM +0100, Cezary Rojewski wrote:
 
+...
 
-On 3/11/24 14:55, James Clark wrote:
+> > + acpi.h ?
+
+> > > +#include <linux/export.h>
+> > 
+> > + errno.h
+> > 
+> > + minmax.h
+> > 
+> > + printk.h
+> > + types.h
+> > 
+> > > +#include <acpi/nhlt.h>
+
+...
+
+> > > +#if IS_ENABLED(CONFIG_ACPI_NHLT)
+> > 
+> > + kconfig.h ?
+> > 
+> > > +#endif /* CONFIG_ACPI_NHLT */
 > 
-> On 11/03/2024 06:04, Anshuman Khandual wrote:
->>
->> On 3/5/24 23:55, Suzuki K Poulose wrote:
->>> On 22/02/2024 08:21, Anshuman Khandual wrote:
->>>> This moves remaining AMBA ACPI devices into respective platform drivers for
->>>> enabling ACPI based power management support. This series applies on kernel
->>>> v6.8-rc5 release. This series has been built, and boot tested on a DT based
->>>> (RB5) and ACPI supported coresight platform (N1SDP).
->>> Please rebase your series on coresight next and fix build failures with the extra warnings turned ON (should be on by default with next).
->> I did rebase the series (which required some rebase related changes for some) on
->> coresight next i.e with the following commit as HEAD.
->>
->> a4f3057d19ff ("coresight-tpda: Change qcom,dsb-element-size to qcom,dsb-elem-bits")
->>
->> Although did not see any warning either with = m or = y based coresight options.
->> Is there any other particular config which needs to be enabled for these warnings
->> to come up ?
->>
-> It doesn't apply cleanly on a4f305 for me, maybe you sent an old version
-> after rebasing?
+> Which tool helps you find out these? I want it too!
 
-Ohh, I was not clear enough earlier. This series is NOT rebased against coresight next.
-I am preparing V6 series respin which is rebased against the above mentioned commit on
-coresight next branch instead.
+My brain and my experience.
 
-> 
-> This change in patch 5 is a warning for example, because not all members
-> of the struct are initialised. No special config is required:
-> 
-> +	{"ARMHC98D", 0}, /* ARM CoreSight Dynamic Replicator */"
+Actually you can do it yourself much better than me (as the author of
+the code). Just read the code and check each constant and function for
+the header that provides it.
 
-Right, will change the above as follows and fix other affected places as well.
+> While I'll add the headers mentioned here, it feels weird to include
+> primitives such as errno.h or minmax.h. Majority of C-files found in the
+> kernel utilize such primitives yet the number of includes for these when
+> looking at the kernel as a whole is low.
 
-	{"ARMHC98D", 0, 0, 0}, /* ARM CoreSight Dynamic Replicator */
+Which does NOT mean they are good examples.
+
+> Is there a "common defs" header in kernel? Looking for an equivalent of
+> 'build-essentials' package.
+
+No, there is a mess only.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
