@@ -1,58 +1,68 @@
-Return-Path: <linux-acpi+bounces-4275-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4277-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0BB8791F6
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 11:27:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F10287953C
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 14:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAFF4283563
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 10:27:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152801F23794
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 13:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9427AE61;
-	Tue, 12 Mar 2024 10:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A22C7A71A;
+	Tue, 12 Mar 2024 13:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="AsFv99gt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A5C7B3C7;
-	Tue, 12 Mar 2024 10:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF995B1E1;
+	Tue, 12 Mar 2024 13:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710239071; cv=none; b=VSlA+9SJZ2kqD5DWdgIRlI/CO8GQx0E69/ShHOqQsNnryOD7Vu3cPauFNPMnK5C2k9k2KuMo2VFWeEqjrSVdYiGyj2flIFAgQxL8MRY3XKH9zXghXJ53NbET9QRwR7ZrfZW9m5dZH8wG4pSZFqoI2sq7ENuI4Qz5TB+GwU2oqpc=
+	t=1710250918; cv=none; b=V3YH6NNAzbKvKuk5g1aitiffYsUhnpDydhYR+oRQZaXirwTXdBAiN0iG0zjcGL8FOZw63cUrkA8NwHpBnAd1JTyOxgfe2A+U7bhEtRz2LEhzIPWjY7wml6evVsP2pXIAutopfC9QuvwEX94wSmHCCUZf/UcqPvaVXwlXcLT4hf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710239071; c=relaxed/simple;
-	bh=46h4Z64YAm56+A1sCgDYonDJUS80e0rMMopA+9XGuV0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RFCMOzj1Azmpemrcy6aVpNlhYELyqTGmUgts86KsyC4rllbGXKZ0VPb76SR0s6Fzy8YWu/baqV7IHw1DGLsCUH7HITCpT6rkOA9wKVOwL8L468ljfPiAoiey5XVYOMCyvMbDyCqLFc3tLO1jTJwF5BbQT4qHXAIlXh6ae04VXiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A31F21570;
-	Tue, 12 Mar 2024 03:25:06 -0700 (PDT)
-Received: from a077893.arm.com (unknown [10.163.52.80])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 371833F73F;
-	Tue, 12 Mar 2024 03:24:24 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	suzuki.poulose@arm.com
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-acpi@vger.kernel.org,
+	s=arc-20240116; t=1710250918; c=relaxed/simple;
+	bh=e0tD6pX6xwZoiwXkNmdHyZiDqoGTK5swzwTMQ0e4R40=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oHkAKf+Pgaqv9M188Xu2INAnVKAR+9Zb57pmPO+nwIGXDREtvKMv67EbogPrHsTNCXsMu2TGWeugLcPytLL0FMcXYfZebFBbcLT7ymKwWmYq/+E6JiK6dT5VTG2HdvDA3Wu1q7a8tJMlubH7MmaHH5UrSwB1vRHZTC9RTLPWOZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=AsFv99gt; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=xa8JQ3KvRA3TOgaBHWeRGuMMjhi7suQa/WUm17VoCcg=; b=AsFv99gt9tiVB4IvPWpp0zhn/q
+	yAbrTW80SEAlzDGcnxg0eIauLDMd8Ueell+LxV1jgKPF6ZeEHtxE95I4up6xl7/iYxoR+E4PbscFS
+	+UKnA2/qIyCqV3MF1qK3cHd7Ga86D01o45mEWZJYrJCtP3dPc57wEz85CqU/DQ7FdAyoK2Xzr+xOA
+	lc08WumNg6hxdL2/7cf6dYDCvBqBGk5/WMCu2n4/5DIZhidooDV9qS9CdjA0WHKMGaYl8sZrPs1Al
+	9yNGbz6L5ql2Ubj5V3bvOM24V/9i7h58oz/wSqcZ5nkqkWPI2BQUaR0BzstRC23MOlPJRUqwNECAT
+	VAq7uKSw==;
+Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rk2O5-00000009UzB-2mNO;
+	Tue, 12 Mar 2024 13:41:49 +0000
+Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rk2O4-000000033FJ-0PsV;
+	Tue, 12 Mar 2024 13:41:48 +0000
+From: David Woodhouse <dwmw2@infradead.org>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	mediou@amazon.de,
+	alisaidi@amazon.com,
 	linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org,
-	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH V6 11/11] coresight: debug: Move ACPI support from AMBA driver to platform driver
-Date: Tue, 12 Mar 2024 15:53:18 +0530
-Message-Id: <20240312102318.2285165-12-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240312102318.2285165-1-anshuman.khandual@arm.com>
-References: <20240312102318.2285165-1-anshuman.khandual@arm.com>
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH 1/2] ACPICA: Detect FACS even for hardware reduced platforms
+Date: Tue, 12 Mar 2024 13:41:46 +0000
+Message-ID: <20240312134148.727454-1-dwmw2@infradead.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -60,254 +70,83 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Sender: David Woodhouse <dwmw2@infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-Add support for the cpu debug devices in a new platform driver, which can
-then be used on ACPI based platforms. This change would now allow runtime
-power management for ACPI based systems. The driver would try to enable
-the APB clock if available. But first this renames and then refactors
-debug_probe() and debug_remove(), making sure they can be used both for
-platform and AMBA drivers.
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: coresight@lists.linaro.org
-Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+ACPICA PR https://github.com/acpica/acpica/pull/933
+
+The FACS is optional even on hardware reduced platforms, and may exist
+for the purpose of communicating the hardware_signature field to provke
+a clean reboot instead of a resume from hibernation.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
-Changes in V6:
+ drivers/acpi/acpica/tbfadt.c  | 30 +++++++++++++-----------------
+ drivers/acpi/acpica/tbutils.c |  7 +------
+ 2 files changed, 14 insertions(+), 23 deletions(-)
 
-- Added clk_put() for pclk in debug_platform_probe() error path
-- Added WARN_ON(!drvdata) check in debug_platform_remove()
-- Added additional elements for acpi_device_id[]
-
- drivers/acpi/arm64/amba.c                     |   1 -
- .../hwtracing/coresight/coresight-cpu-debug.c | 146 +++++++++++++++---
- 2 files changed, 127 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
-index bec0976541da..e1f0bbb8f393 100644
---- a/drivers/acpi/arm64/amba.c
-+++ b/drivers/acpi/arm64/amba.c
-@@ -22,7 +22,6 @@
- static const struct acpi_device_id amba_id_list[] = {
- 	{"ARMH0061", 0}, /* PL061 GPIO Device */
- 	{"ARMH0330", 0}, /* ARM DMA Controller DMA-330 */
--	{"ARMHC503", 0}, /* ARM CoreSight Debug */
- 	{"", 0},
- };
+diff --git a/drivers/acpi/acpica/tbfadt.c b/drivers/acpi/acpica/tbfadt.c
+index 44267a92bce5..3c126c6d306b 100644
+--- a/drivers/acpi/acpica/tbfadt.c
++++ b/drivers/acpi/acpica/tbfadt.c
+@@ -315,23 +315,19 @@ void acpi_tb_parse_fadt(void)
+ 				       ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
+ 				       NULL, FALSE, TRUE, &acpi_gbl_dsdt_index);
  
-diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-index 1874df7c6a73..8ae96504ba06 100644
---- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
-+++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-@@ -23,6 +23,8 @@
- #include <linux/smp.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
-+#include <linux/platform_device.h>
-+#include <linux/acpi.h>
- 
- #include "coresight-priv.h"
- 
-@@ -84,6 +86,7 @@
- #define DEBUG_WAIT_TIMEOUT		32000
- 
- struct debug_drvdata {
-+	struct clk	*pclk;
- 	void __iomem	*base;
- 	struct device	*dev;
- 	int		cpu;
-@@ -557,18 +560,12 @@ static void debug_func_exit(void)
- 	debugfs_remove_recursive(debug_debugfs_dir);
- }
- 
--static int debug_probe(struct amba_device *adev, const struct amba_id *id)
-+static int __debug_probe(struct device *dev, struct resource *res)
- {
-+	struct debug_drvdata *drvdata = dev_get_drvdata(dev);
- 	void __iomem *base;
--	struct device *dev = &adev->dev;
--	struct debug_drvdata *drvdata;
--	struct resource *res = &adev->res;
- 	int ret;
- 
--	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
--	if (!drvdata)
--		return -ENOMEM;
+-	/* If Hardware Reduced flag is set, there is no FACS */
 -
- 	drvdata->cpu = coresight_get_cpu(dev);
- 	if (drvdata->cpu < 0)
- 		return drvdata->cpu;
-@@ -579,13 +576,12 @@ static int debug_probe(struct amba_device *adev, const struct amba_id *id)
- 		return -EBUSY;
+-	if (!acpi_gbl_reduced_hardware) {
+-		if (acpi_gbl_FADT.facs) {
+-			acpi_tb_install_standard_table((acpi_physical_address)
+-						       acpi_gbl_FADT.facs,
+-						       ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
+-						       NULL, FALSE, TRUE,
+-						       &acpi_gbl_facs_index);
+-		}
+-		if (acpi_gbl_FADT.Xfacs) {
+-			acpi_tb_install_standard_table((acpi_physical_address)
+-						       acpi_gbl_FADT.Xfacs,
+-						       ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
+-						       NULL, FALSE, TRUE,
+-						       &acpi_gbl_xfacs_index);
+-		}
++	if (acpi_gbl_FADT.facs) {
++		acpi_tb_install_standard_table((acpi_physical_address)
++					       acpi_gbl_FADT.facs,
++					       ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
++					       NULL, FALSE, TRUE,
++					       &acpi_gbl_facs_index);
++	}
++	if (acpi_gbl_FADT.Xfacs) {
++		acpi_tb_install_standard_table((acpi_physical_address)
++					       acpi_gbl_FADT.Xfacs,
++					       ACPI_TABLE_ORIGIN_INTERNAL_PHYSICAL,
++					       NULL, FALSE, TRUE,
++					       &acpi_gbl_xfacs_index);
  	}
- 
--	drvdata->dev = &adev->dev;
--	amba_set_drvdata(adev, drvdata);
--
--	/* Validity for the resource is already checked by the AMBA core */
--	base = devm_ioremap_resource(dev, res);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
-+	drvdata->dev = dev;
-+	if (res) {
-+		base = devm_ioremap_resource(dev, res);
-+		if (IS_ERR(base))
-+			return PTR_ERR(base);
-+	}
- 
- 	drvdata->base = base;
- 
-@@ -629,10 +625,21 @@ static int debug_probe(struct amba_device *adev, const struct amba_id *id)
- 	return ret;
  }
  
--static void debug_remove(struct amba_device *adev)
-+static int debug_probe(struct amba_device *adev, const struct amba_id *id)
-+{
-+	struct debug_drvdata *drvdata;
-+
-+	drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
-+	if (!drvdata)
-+		return -ENOMEM;
-+
-+	amba_set_drvdata(adev, drvdata);
-+	return __debug_probe(&adev->dev, &adev->res);
-+}
-+
-+static void __debug_remove(struct device *dev)
+diff --git a/drivers/acpi/acpica/tbutils.c b/drivers/acpi/acpica/tbutils.c
+index bb4a56e5673a..15fa68a5ea6e 100644
+--- a/drivers/acpi/acpica/tbutils.c
++++ b/drivers/acpi/acpica/tbutils.c
+@@ -36,12 +36,7 @@ acpi_status acpi_tb_initialize_facs(void)
  {
--	struct device *dev = &adev->dev;
--	struct debug_drvdata *drvdata = amba_get_drvdata(adev);
-+	struct debug_drvdata *drvdata = dev_get_drvdata(dev);
+ 	struct acpi_table_facs *facs;
  
- 	per_cpu(debug_drvdata, drvdata->cpu) = NULL;
- 
-@@ -646,6 +653,11 @@ static void debug_remove(struct amba_device *adev)
- 		debug_func_exit();
- }
- 
-+static void debug_remove(struct amba_device *adev)
-+{
-+	__debug_remove(&adev->dev);
-+}
-+
- static const struct amba_cs_uci_id uci_id_debug[] = {
- 	{
- 		/*  CPU Debug UCI data */
-@@ -677,7 +689,103 @@ static struct amba_driver debug_driver = {
- 	.id_table	= debug_ids,
- };
- 
--module_amba_driver(debug_driver);
-+static int debug_platform_probe(struct platform_device *pdev)
-+{
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	struct debug_drvdata *drvdata;
-+	int ret = 0;
-+
-+	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
-+	if (!drvdata)
-+		return -ENOMEM;
-+
-+	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
-+	if (IS_ERR(drvdata->pclk))
-+		return -ENODEV;
-+
-+	dev_set_drvdata(&pdev->dev, drvdata);
-+	pm_runtime_get_noresume(&pdev->dev);
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
-+	ret = __debug_probe(&pdev->dev, res);
-+	if (ret) {
-+		pm_runtime_put_noidle(&pdev->dev);
-+		pm_runtime_disable(&pdev->dev);
-+		if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+			clk_put(drvdata->pclk);
-+	}
-+	return ret;
-+}
-+
-+static int debug_platform_remove(struct platform_device *pdev)
-+{
-+	struct debug_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
-+
-+	if (WARN_ON(!drvdata))
-+		return -ENODEV;
-+
-+	__debug_remove(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
-+	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_put(drvdata->pclk);
-+	return 0;
-+}
-+
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id debug_platform_ids[] = {
-+	{"ARMHC503", 0, 0, 0}, /* ARM CoreSight Debug */
-+	{},
-+};
-+MODULE_DEVICE_TABLE(acpi, debug_platform_ids);
-+#endif
-+
-+#ifdef CONFIG_PM
-+static int debug_runtime_suspend(struct device *dev)
-+{
-+	struct debug_drvdata *drvdata = dev_get_drvdata(dev);
-+
-+	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_disable_unprepare(drvdata->pclk);
-+	return 0;
-+}
-+
-+static int debug_runtime_resume(struct device *dev)
-+{
-+	struct debug_drvdata *drvdata = dev_get_drvdata(dev);
-+
-+	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_prepare_enable(drvdata->pclk);
-+	return 0;
-+}
-+#endif
-+
-+static const struct dev_pm_ops debug_dev_pm_ops = {
-+	SET_RUNTIME_PM_OPS(debug_runtime_suspend, debug_runtime_resume, NULL)
-+};
-+
-+static struct platform_driver debug_platform_driver = {
-+	.probe	= debug_platform_probe,
-+	.remove	= debug_platform_remove,
-+	.driver	= {
-+		.name			= "coresight-debug-platform",
-+		.acpi_match_table	= ACPI_PTR(debug_platform_ids),
-+		.suppress_bind_attrs	= true,
-+		.pm			= &debug_dev_pm_ops,
-+	},
-+};
-+
-+static int __init debug_init(void)
-+{
-+	return coresight_init_driver("debug", &debug_driver, &debug_platform_driver);
-+}
-+
-+static void __exit debug_exit(void)
-+{
-+	coresight_remove_driver(&debug_driver, &debug_platform_driver);
-+}
-+module_init(debug_init);
-+module_exit(debug_exit);
- 
- MODULE_AUTHOR("Leo Yan <leo.yan@linaro.org>");
- MODULE_DESCRIPTION("ARM Coresight CPU Debug Driver");
+-	/* If Hardware Reduced flag is set, there is no FACS */
+-
+-	if (acpi_gbl_reduced_hardware) {
+-		acpi_gbl_FACS = NULL;
+-		return (AE_OK);
+-	} else if (acpi_gbl_FADT.Xfacs &&
++	if (acpi_gbl_FADT.Xfacs &&
+ 		   (!acpi_gbl_FADT.facs
+ 		    || !acpi_gbl_use32_bit_facs_addresses)) {
+ 		(void)acpi_get_table_by_index(acpi_gbl_xfacs_index,
 -- 
-2.25.1
+2.44.0
 
 
