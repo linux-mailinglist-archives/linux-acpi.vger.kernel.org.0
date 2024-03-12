@@ -1,300 +1,292 @@
-Return-Path: <linux-acpi+bounces-4262-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4263-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B7187911B
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 10:41:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABEC87917A
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 10:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B23FB21F5A
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 09:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3FB2816E8
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 09:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896C78274;
-	Tue, 12 Mar 2024 09:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC0878286;
+	Tue, 12 Mar 2024 09:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="RhjP3V/S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13AF278273;
-	Tue, 12 Mar 2024 09:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823B678281;
+	Tue, 12 Mar 2024 09:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710236495; cv=none; b=ZbTOulhdLw+++OtY683nKbzLHkEDoCNXrIW3FESjfrBDC8IJM8yQLJ3CyoctQavDA5YH8WuaL4+DT+FyU4Q9rvz+e1rqsOtepY9T3DdeRD+tJ1c/a//WkpObsnbfTKbFvpWfP/rNkH4KJd0S7y4H75RMORduz5ECfAW0nJLZax8=
+	t=1710237227; cv=none; b=AlhAvdLQuERk3lXGyD7dwdQYeJZHTtauaXOxw7sIX4t+dHNZBctXgHAyLpymPh5FhcKpXU68P+YD2nvz97HFJHuniwnP9dUqfJwOxaE/oZ2Y0eptNwjRL6AHp0Scd953Iu3D8p2k7ebJIrOKEM+FJPUZuhO6GOBxt1o4OdTWEqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710236495; c=relaxed/simple;
-	bh=9BVd3T4GZqlg+poIfhaoPYk3KkThuqvVtjsxrrpVzUg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nXsjDloJSJjTY1IYr81d91FJtZJfe9iTyfdcFrYgOo2ukmQqw19ry4ICQz/avYpvbtpPGC9V+phYCf4Wq8KpEjge7+eO3334C8ShFZ3aN/NWFnDOeg2DDTLr0X4o3bWuXI1m6DXx8GYb1Dl1S8XeIavYxCYu9AarsH7yPI10UVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tv7pW0sy4z688hZ;
-	Tue, 12 Mar 2024 17:37:23 +0800 (CST)
-Received: from lhrpeml500003.china.huawei.com (unknown [7.191.162.67])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5738E140D1D;
-	Tue, 12 Mar 2024 17:41:28 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 12 Mar 2024 09:41:27 +0000
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
- Tue, 12 Mar 2024 09:41:27 +0000
-From: Shiju Jose <shiju.jose@huawei.com>
-To: fan <nifan.cxl@gmail.com>
-CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [RFC PATCH v7 03/12] cxl/mbox: Add SET_FEATURE mailbox command
-Thread-Topic: [RFC PATCH v7 03/12] cxl/mbox: Add SET_FEATURE mailbox command
-Thread-Index: AQHaZmXa2rf54FiQvUO4a7U5LboEzbEzJw+AgADJeeA=
-Date: Tue, 12 Mar 2024 09:41:27 +0000
-Message-ID: <b6aa1dd19ab44b7db7b9aa1318c5d8b0@huawei.com>
-References: <20240223143723.1574-1-shiju.jose@huawei.com>
- <20240223143723.1574-4-shiju.jose@huawei.com> <Ze91l0jz_DZR9jjx@debian>
-In-Reply-To: <Ze91l0jz_DZR9jjx@debian>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1710237227; c=relaxed/simple;
+	bh=sUamQysyu6qncLunL28VRaKzze+Y8PjsFwjFSAPvlns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aRFEExAAst3WL/siHnB3J7BfIJkQeFgZztjE/KmAXv1Lcx8RI/MNQ9MZovxQ0tWA0Gc9ZSIGM8eGfKl2LVOrSHBNpKko0steTQQFFz6v81EV37MN9l8YE8ZUH2FzYhlNLVGVatAZs11rlUYsf/sdvW5ifE0Dmt9SpL1GWaTfgsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=RhjP3V/S; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1710237222; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=xQKHCh361SfWZRmqI7leh9Mlmi1eAF8yjLMSaUPV8LQ=;
+	b=RhjP3V/SGYM7fOvnyYt9jX8IbgGwFmTS/z/eCVfZUku/n3h087JZHf1uytQQGWewBDMAuSvO/1yd1ASIVPuLGf3c77lure1LlWSllSe2ZCvtWphK+3JUGZYnMU0nPKqbXzRfpQz+9McDz74D67r1irSSHOzTu4EoRvBBMiTosMg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0W2LY0LL_1710237220;
+Received: from 30.221.132.227(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0W2LY0LL_1710237220)
+          by smtp.aliyun-inc.com;
+          Tue, 12 Mar 2024 17:53:41 +0800
+Message-ID: <79d3441c-fb7e-4e02-a381-99e8d639ad1c@linux.alibaba.com>
+Date: Tue, 12 Mar 2024 17:53:40 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ACPI/AEST: Initial AEST driver
+Content-Language: en-US
+To: Marc Zyngier <maz@kernel.org>
+Cc: catalin.marinas@arm.com, will@kernel.org, lpieralisi@kernel.org,
+ guohanjun@huawei.com, sudeep.holla@arm.com, xueshuai@linux.alibaba.com,
+ baolin.wang@linux.alibaba.com, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Tyler Baicar <baicar@os.amperecomputing.com>,
+ Ruidong Tian <tianruidong@linux.alibaba.com>
+References: <20240304111517.33001-1-tianruidong@linux.alibaba.com>
+ <20240304111517.33001-2-tianruidong@linux.alibaba.com>
+ <86wmqi19pg.wl-maz@kernel.org>
+ <aaad88c3-333d-4714-a9ca-3b66c8a5d9c8@linux.alibaba.com>
+ <8734szr8y9.wl-maz@kernel.org>
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+In-Reply-To: <8734szr8y9.wl-maz@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Fan,
 
->-----Original Message-----
->From: fan <nifan.cxl@gmail.com>
->Sent: 11 March 2024 21:20
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
->mm@kvack.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->linux-edac@vger.kernel.org; linux-kernel@vger.kernel.org; david@redhat.com=
-;
->Vilas.Sridharan@amd.com; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->rientjes@google.com; jiaqiyan@google.com; tony.luck@intel.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com; rafael@kernel.org;
->lenb@kernel.org; naoya.horiguchi@nec.com; james.morse@arm.com;
->jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->tanxiaofei <tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>=
-;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [RFC PATCH v7 03/12] cxl/mbox: Add SET_FEATURE mailbox
->command
->
->On Fri, Feb 23, 2024 at 10:37:14PM +0800, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add support for SET_FEATURE mailbox command.
->>
->> CXL spec 3.1 section 8.2.9.6 describes optional device specific features=
-.
->> CXL devices supports features with changeable attributes.
->> The settings of a feature can be optionally modified using Set Feature
->> command.
->>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  drivers/cxl/core/mbox.c | 67
->+++++++++++++++++++++++++++++++++++++++++
->>  drivers/cxl/cxlmem.h    | 30 ++++++++++++++++++
->>  2 files changed, 97 insertions(+)
->>
->> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c index
->> c078e62ea194..d1660bd20bdb 100644
->> --- a/drivers/cxl/core/mbox.c
->> +++ b/drivers/cxl/core/mbox.c
->> @@ -1366,6 +1366,73 @@ size_t cxl_get_feature(struct cxl_memdev_state
->> *mds,  }  EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
->>
->> +int cxl_set_feature(struct cxl_memdev_state *mds,
->> +		    const uuid_t feat_uuid, u8 feat_version,
->> +		    void *feat_data, size_t feat_data_size,
->> +		    u8 feat_flag)
->> +{
->> +	struct cxl_memdev_set_feat_pi {
->> +		struct cxl_mbox_set_feat_hdr hdr;
->> +		u8 feat_data[];
->> +	}  __packed;
->> +	size_t data_in_size, data_sent_size =3D 0;
->> +	struct cxl_mbox_cmd mbox_cmd;
->> +	size_t hdr_size;
->> +	int rc =3D 0;
->> +
->> +	struct cxl_memdev_set_feat_pi *pi __free(kfree) =3D
->> +					kmalloc(mds->payload_size,
->GFP_KERNEL);
->> +	pi->hdr.uuid =3D feat_uuid;
->> +	pi->hdr.version =3D feat_version;
->> +	feat_flag &=3D ~CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK;
->> +	hdr_size =3D sizeof(pi->hdr);
->> +	/*
->> +	 * Check minimum mbox payload size is available for
->> +	 * the feature data transfer.
->> +	 */
->> +	if (hdr_size + 10 > mds->payload_size)
->
->Where does this magic number come from?
 
-This represents minimum extra number of bytes to be available in the mail b=
-ox
-for storing the actual feature data to work with multipart feature data tra=
-nsfers.
-This will be set as a definition in the next version and however not sure t=
-he
-best value to be set.
->
->Fan
->
->> +		return -ENOMEM;
->> +
->> +	if ((hdr_size + feat_data_size) <=3D mds->payload_size) {
->> +		pi->hdr.flags =3D cpu_to_le32(feat_flag |
->> +
->CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER);
->> +		data_in_size =3D feat_data_size;
->> +	} else {
->> +		pi->hdr.flags =3D cpu_to_le32(feat_flag |
->> +
->CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER);
->> +		data_in_size =3D mds->payload_size - hdr_size;
->> +	}
->> +
->> +	do {
->> +		pi->hdr.offset =3D cpu_to_le16(data_sent_size);
->> +		memcpy(pi->feat_data, feat_data + data_sent_size,
->data_in_size);
->> +		mbox_cmd =3D (struct cxl_mbox_cmd) {
->> +			.opcode =3D CXL_MBOX_OP_SET_FEATURE,
->> +			.size_in =3D hdr_size + data_in_size,
->> +			.payload_in =3D pi,
->> +		};
->> +		rc =3D cxl_internal_send_cmd(mds, &mbox_cmd);
->> +		if (rc < 0)
->> +			return rc;
->> +
->> +		data_sent_size +=3D data_in_size;
->> +		if (data_sent_size >=3D feat_data_size)
->> +			return 0;
->> +
->> +		if ((feat_data_size - data_sent_size) <=3D (mds->payload_size -
->hdr_size)) {
->> +			data_in_size =3D feat_data_size - data_sent_size;
->> +			pi->hdr.flags =3D cpu_to_le32(feat_flag |
->> +
->CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER);
->> +		} else {
->> +			pi->hdr.flags =3D cpu_to_le32(feat_flag |
->> +
->CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER);
->> +		}
->> +	} while (true);
->> +
->> +	return rc;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_set_feature, CXL);
->> +
->>  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr)
->>  {
->> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h index
->> bcfefff062a6..a8d4104afa53 100644
->> --- a/drivers/cxl/cxlmem.h
->> +++ b/drivers/cxl/cxlmem.h
->> @@ -531,6 +531,7 @@ enum cxl_opcode {
->>  	CXL_MBOX_OP_GET_LOG		=3D 0x0401,
->>  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	=3D 0x0500,
->>  	CXL_MBOX_OP_GET_FEATURE		=3D 0x0501,
->> +	CXL_MBOX_OP_SET_FEATURE		=3D 0x0502,
->>  	CXL_MBOX_OP_IDENTIFY		=3D 0x4000,
->>  	CXL_MBOX_OP_GET_PARTITION_INFO	=3D 0x4100,
->>  	CXL_MBOX_OP_SET_PARTITION_INFO	=3D 0x4101,
->> @@ -773,6 +774,31 @@ struct cxl_mbox_get_feat_in {
->>  	u8 selection;
->>  }  __packed;
+在 2024/3/9 18:33, Marc Zyngier 写道:
+> On Fri, 08 Mar 2024 03:43:30 +0000,
+> Ruidong Tian <tianruidong@linux.alibaba.com> wrote:
 >>
->> +/* Set Feature CXL 3.1 Spec 8.2.9.6.3 */
->> +/*
->> + * Set Feature input payload
->> + * CXL rev 3.1 section 8.2.9.6.3 Table 8-101  */
->> +/* Set Feature : Payload in flags */
->> +#define CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK	GENMASK(2, 0)
->> +enum cxl_set_feat_flag_data_transfer {
->> +	CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
->> +	CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER,
->> +	CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER,
->> +	CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER,
->> +	CXL_SET_FEAT_FLAG_ABORT_DATA_TRANSFER,
->> +	CXL_SET_FEAT_FLAG_DATA_TRANSFER_MAX
->> +};
->> +#define CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET	BIT(3)
->> +
->> +struct cxl_mbox_set_feat_hdr {
->> +	uuid_t uuid;
->> +	__le32 flags;
->> +	__le16 offset;
->> +	u8 version;
->> +	u8 rsvd[9];
->> +}  __packed;
->> +
->>  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */  struct
->> cxl_mbox_poison_in {
->>  	__le64 offset;
->> @@ -912,6 +938,10 @@ size_t cxl_get_feature(struct cxl_memdev_state
->*mds,
->>  		       size_t feat_out_size,
->>  		       size_t feat_out_min_size,
->>  		       enum cxl_get_feat_selection selection);
->> +int cxl_set_feature(struct cxl_memdev_state *mds,
->> +		    const uuid_t feat_uuid, u8 feat_version,
->> +		    void *feat_data, size_t feat_data_size,
->> +		    u8 feat_flag);
->>  int cxl_poison_state_init(struct cxl_memdev_state *mds);  int
->> cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr);
->> --
->> 2.34.1
+>> 在 2024/3/4 20:07, Marc Zyngier 写道:
+>>> On Mon, 04 Mar 2024 11:15:16 +0000,
+>>> Ruidong Tian<tianruidong@linux.alibaba.com>  wrote:
+>>>> diff --git a/arch/arm64/include/asm/ras.h b/arch/arm64/include/asm/ras.h
+>>>> new file mode 100644
+>>>> index 000000000000..2fb0d9741567
+>>>> --- /dev/null
+>>>> +++ b/arch/arm64/include/asm/ras.h
+>>>> @@ -0,0 +1,38 @@
+>>>> +/* SPDX-License-Identifier: GPL-2.0 */
+>>>> +#ifndef __ASM_RAS_H
+>>>> +#define __ASM_RAS_H
+>>>> +
+>>>> +#include <linux/types.h>
+>>>> +#include <linux/bits.h>
+>>>> +
+>>>> +#define ERR_STATUS_AV		BIT(31)
+>>>> +#define ERR_STATUS_V		BIT(30)
+>>>> +#define ERR_STATUS_UE		BIT(29)
+>>>> +#define ERR_STATUS_ER		BIT(28)
+>>>> +#define ERR_STATUS_OF		BIT(27)
+>>>> +#define ERR_STATUS_MV		BIT(26)
+>>>> +#define ERR_STATUS_CE		(BIT(25) | BIT(24))
+>>>> +#define ERR_STATUS_DE		BIT(23)
+>>>> +#define ERR_STATUS_PN		BIT(22)
+>>>> +#define ERR_STATUS_UET		(BIT(21) | BIT(20))
+>>>> +#define ERR_STATUS_CI		BIT(19)
+>>>> +#define ERR_STATUS_IERR 	GENMASK_ULL(15, 8)
+>>>> +#define ERR_STATUS_SERR 	GENMASK_ULL(7, 0)
+>>> All these bits need to be defined in arch/arm64/tools/sysreg as
+>>> ERXSTATUS_EL1 fields.
 >>
+>> This file only describes the system register, but RAS MMIO registers
+>> use these bits too. Would it be appropriate to define them in
+>> arch/arm64/tools/sysreg?
+> 
+> You are using them for system registers, they need to be defined
+> there. The fact that they are also used to MMIO is anecdotal.
 
-Thanks,
-Shiju
+There might have been some misunderstanding. AEST interface can be 
+SR(processor) or MMIO(GIC, SMMU, Memory), All these two types of nodes 
+have ERR<n>STATUS register, and AEST driver need to operate these filed 
+both in SR and MMIO register.
+
+> 
+> [...]
+> 
+>>>> +#define CASE_READ_CLEAR(x, clear)					\
+>>>> +	case (x): {							\
+>>>> +		res = read_sysreg_s(SYS_##x##_EL1);			\
+>>>> +		if (clear)						\
+>>>> +			write_sysreg_s(0, SYS_##x##_EL1);		\
+>>>> +		break;							\
+>>>> +	}
+>>> Please don't use macros with side effects. This is horrible to debug.
+>>> Instead, *return* the value from the macro, or pass the variable you
+>>> want to affect as a parameter.
+>>
+>> OK, I will pass **res** as a parameter like this:
+>>
+>>    #define CASE_READ_CLEAR(res, x, clear)			\
+>> 	  case (x): {						\
+>> 		  res = read_sysreg_s(SYS_##x##_EL1);		\
+>> 		  if (clear)					\
+>> 			  write_sysreg_s(0, SYS_##x##_EL1);	\
+>> 		  break;					\
+>> 	  }
+>>
+>>>
+>>> Also, what ensures the synchronisation of this write? How is the W1TC
+>>> aspect enforced?
+>>
+>> aest_proc is just call in irq context, one ras error is just routed to
+>> one core, so it is thread safe. And this is a Write-After-Read (WAR)
+>> Hazards with dependence，can i assume that pipeline would guarantee
+>> the order of writing and reading?
+> 
+> You are missing the point. WAR hazarding doesn't mean that the write
+> has taken effect, and can be delayed for as long as the CPU decides
+> to, until the nest context synchronisation event.
+> 
+> The W1TC question still stands.
+
+OK, i will add an ISB at the end of aest_proc to ensure all writes has 
+taken effect.
+
+> 
+> [...] >
+>>>> +static u64 aest_iomem_read_clear(u64 base, u32 offset, bool clear)
+>>>> +{
+>>>> +	u64 res;
+>>>> +
+>>>> +	res = readq((void *)(base + offset));
+>>>> +	if (clear)
+>>>> +		writeq(0, (void *)(base + offset));
+>>> Do you need the explicit synchronisation? What ordering are you trying
+>>> to guarantee?
+>>
+>> This read and write use the same address, pipeline would guarantee
+>> the order of writing and reading.
+> 
+> You are missing the point again. Non-relaxed accessors come with a DMB
+> that enforces ordering with younger reads and older writes. Why do you
+> need those?
+>
+
+I get it. Relaxed accesses are still guaranteed to be ordered when 
+operating MMIO address. I will use readq/writeq_relaxed in next version.
+
+> [...]
+	>
+>>>> +static int __init aest_register_gsi(u32 gsi, int trigger, void *data,
+>>>> +					irq_handler_t aest_irq_func)
+>>>> +{
+>>>> +	int cpu, irq;
+>>>> +
+>>>> +	irq = acpi_register_gsi(NULL, gsi, trigger, ACPI_ACTIVE_HIGH);
+>>>> +
+>>>> +	if (irq == -EINVAL) {
+>>>> +		pr_err("failed to map AEST GSI %d\n", gsi);
+>>>> +		return -EINVAL;
+>>>> +	}
+>>>> +
+>>>> +	if (gsi < 16) {
+>>>> +		pr_err("invalid GSI %d\n", gsi);
+>>>> +		return -EINVAL;
+>>>> +	} else if (gsi < 32) {
+>>>> +		if (ppi_idx >= AEST_MAX_PPI) {
+>>>> +			pr_err("Unable to register PPI %d\n", gsi);
+>>>> +			return -EINVAL;
+>>>> +		}
+>>>> +		ppi_irqs[ppi_idx] = irq;
+>>>> +		enable_percpu_irq(irq, IRQ_TYPE_NONE);
+>>> Enabling the PPI before requesting it? Looks... great. And how does
+>>> this work on a system that supports EPPIs, which are in the
+>>> [1119:1056] range?
+>>
+>> It is better to enable it after request it, i will fix it next version.
+>> My machine do not use EPPI as RAS interrupt, i can not test it now. Can
+>> we support EPPI in later patch?
+> 
+> No, because you shouldn't even have to care. Can you see a single
+> driver in the tree that do this?
+
+OK，I will fix it next version.
+
+> 
+>>
+>>>
+>>> Also, if you get a trigger as a parameter, why the IRQ_TYPE_NONE?
+>>>
+>> Sorry，I do not really understand this comment, should I use
+>> (IRQ_LEVEL | IRQ_PER_CPU)?
+> 
+> You tell me. Either the trigger is relevant, or it isn't. But I assume
+> it is passed as a parameter to the function for a good reason.
+
+
+> 
+>>
+>>>> +		for_each_possible_cpu(cpu) {
+>>>> +			memcpy(per_cpu_ptr(ppi_data[ppi_idx], cpu), data,
+>>>> +			       sizeof(struct aest_node));
+>>>> +		}
+>>>> +		if (request_percpu_irq(irq, aest_irq_func, "AEST",
+>>>> +				       ppi_data[ppi_idx++])) {
+>>>> +			pr_err("failed to register AEST IRQ %d\n", irq);
+>>>> +			return -EINVAL;
+>>>> +		}
+>>>> +	} else if (gsi < 1020) {
+>>>> +		if (request_irq(irq, aest_irq_func, IRQF_SHARED, "AEST",
+>>>> +				data)) {
+>>> Why SHARED? Who would share a RAS interrupt?????
+>>
+>> Multi AEST nodes may use the same interrupt, for example, one DDRC with
+>> a RAS interrupt has two sub channels, these two sub channel is described
+>> as two AEST node in AEST table, so they share the same one. In another
+>> case, SMMU has two RAS node, TCU and TBU, they may also share the same
+>> interrupt.
+> 
+> I still find it odd, but hey, if that's the way people want to handle
+> RAS, they might as well OR all of them and wire it to the RESET pin.
+> 
+
+It depends on HW designer especially for DDRC, and i think **SHARED** is 
+more compatible. But in fact, I'm not sure if driver should assume that 
+all RAS interruptions are no shared. If AEST driver set IRQ no shared, 
+does it need to loop through all AEST node first to ensure no node 
+sharing interrupt?
+
+>>
+>>>
+>>>> +			pr_err("failed to register AEST IRQ %d\n", irq);
+>>>> +			return -EINVAL;
+>>> Same question about extended SPIs.
+>>>
+>>> All in all, this whole logic is totally useless. It isn't the driver's
+>>> job to classify the GIC INTIDs...
+>>
+>> AEST use both PPI and SPI, it seems that AEST driver must recognize
+>> INTID in order to request irq number with different function, do you
+>> have better solution here?
+> 
+> Again, you should have to look at the INTID, ever. That's none of your
+> business, and you don't even know what interrupt controller the system
+> is presenting you anyway. The way to identify a per-CPU interrupt is
+> to use the irq_is_percpu_devid() helper, and not to mess with
+> pointless heuristics.
+
+OK, it will be fixed in next version.
+> 
+> Thanks,
+> 
+> 	M.
+> 
 
