@@ -1,518 +1,202 @@
-Return-Path: <linux-acpi+bounces-4284-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4285-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B591879B6D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 19:32:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA4D879C8A
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 21:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFD01B221DD
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 18:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8357B20D5B
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 20:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B087813C9EB;
-	Tue, 12 Mar 2024 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4D0142649;
+	Tue, 12 Mar 2024 20:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tx6xWRPX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mczNI+Cm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACB813B791;
-	Tue, 12 Mar 2024 18:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710268356; cv=none; b=FLZmdbtd0D46Ohzx7BF/OjZ66l25HQ390GPg6U37yrQOrL5SC6he9FQb76Hgygk/5zdhkinH3vvHCuB38Pi4t5IlMPhYW88ZPAoxAxY50xsjxLmNcS6FrmQrbzjcmv1M+dDi/G83NnouTR7NwZxVbLLkiu4jkGh6NOLL1rn0et0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710268356; c=relaxed/simple;
-	bh=yEXm95J5wvGnUMUtqcXy7Ftllk3x5/GMp5heKqnYsHA=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cY0qjS4S5Gp+RxDExNvmXLYhYec90u6wzSbxWEwfsikXyoFqc2Np3vQObDBg55mpy5Mmy3plWv7tvSXv7Qn+7rC16+FiCoqgTwVxuOKMUt4X9i2X42lm6Jtyh9GChHX72eH6o20WPZ+gcIfmHtwUWKOsLEuENtxJbVRiBEBTJTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tx6xWRPX; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7c88a2173daso8363239f.0;
-        Tue, 12 Mar 2024 11:32:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710268354; x=1710873154; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pqU8vwf+tbdTSkXAgzjKJdEijPq7ApphWIX0SIRCQzk=;
-        b=Tx6xWRPXaLRsXGvcZcjAEL0ivLXuLZuf/uKXYZQk33G1cMijavtnpASkRvhIFXjBGP
-         blNvUGbEbCH6qvIEHpApW9Bt22PjBPAMUcQLssxCll+BjucY2CosOVa1Flx/TDr5Qp+P
-         AOqtl5d3NqNw8MxIDyRIv0KZ63GG5cI4c97RnvHkYfi5cdRLCKRWAE9aIyG9vLJdvgeb
-         GpCMJw+8gqHM9MYLb3OZNZI96s//0E78hlsS6gE20OgeKzV/xibkQuUhOFW/nVjyxP8O
-         +jHeTQJp2mhZYvFufbi7EqoxOQuA6y8U80EeG79Tk8KbpkCmxFbYS0IjPWWo19EFCTql
-         0joA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710268354; x=1710873154;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pqU8vwf+tbdTSkXAgzjKJdEijPq7ApphWIX0SIRCQzk=;
-        b=vxD/IivbmGMdULnVYH4jeEbWdexEeaYTXd/XgoCjMZSiB2+hkKYcukcf8TI3Ty+z/7
-         YuQ3iwVTPgWUXVxKxd8U7n50Tpp/awYMHeVzFOEuIRVNZtOigUe3sWSXpI3BaHD+QEus
-         Kd5QDGQPkhzA2juXVLfChg7ysQKgUb71eqXYghWv4RQa+r3Bp7OJMm73PAEYM1gXtx9f
-         2VE/ZyhKqMNJOP4onFZZY80AH8mNJabhlYVbhlaNeWbNhgXTaS8+6q8UaEgM+cK3IWjt
-         TTRtZL/uar3tmbCB+42d/PXMxgsCdJtIGMSw45fPOa5ORrYfShlR9Ecz51jfHmsUWwud
-         w6wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYDRHSEUPWixRKkyqmpUEHfLYkKM6satrH0esz4relotG0PKZ3OgV1v+tbAO5ybpTGhPTz4RoB6Bmwz4pjIpE6XpArUSDjun1RmCbKjWJmo0iwLH9fIO2kLeF/FMFmaWwtEdVz+1RFUfWiPej/QKA+OF3nme1UjbRwV99PvHJATHF3kwA=
-X-Gm-Message-State: AOJu0YyD83P9c9yM2GScCTbHbfZxJ0GLDP/DiQqKLPG85aC8KDjEh0w9
-	KOPdFLT/q9GAeAvUXK/hKguGb0XdX9NljDp5M/kIFW6t+rF215JJnnBbKz1V
-X-Google-Smtp-Source: AGHT+IHQ91EGeIfz2oaj8S9TucVWBSI/m7YsmBPoTA68buP0uVHpq6iN4yvUa+DL1kIPCUmvF0cgcw==
-X-Received: by 2002:a6b:5c12:0:b0:7c8:c9b8:f976 with SMTP id z18-20020a6b5c12000000b007c8c9b8f976mr1280322ioh.21.1710268353693;
-        Tue, 12 Mar 2024 11:32:33 -0700 (PDT)
-Received: from debian ([50.205.20.42])
-        by smtp.gmail.com with ESMTPSA id c18-20020a02c9d2000000b00474fab2523dsm2436749jap.62.2024.03.12.11.32.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 11:32:33 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Tue, 12 Mar 2024 11:32:17 -0700
-To: shiju.jose@huawei.com
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, david@redhat.com,
-	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
-	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
-	jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	linuxarm@huawei.com
-Subject: Re: [RFC PATCH v7 10/12] ACPI:RAS2: Add common library for RAS2 PCC
- interfaces
-Message-ID: <ZfCfsZARb_QY7bA5@debian>
-References: <20240223143723.1574-1-shiju.jose@huawei.com>
- <20240223143723.1574-11-shiju.jose@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E03B139580;
+	Tue, 12 Mar 2024 20:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710273841; cv=fail; b=AsEnogl0jWy8EP1XQb20CBx2mkZhYf+38b1aS+RHewQJgY6ixxTOIH+/SOVWkGRpC2tChEzGe/oY9HwmeW4G3BrWYuIP5dOwXANKWnCSEVcco0agCJuAZ6xZ7CJGXE7PrEUdBOKOctyo5mGr3dxRlBzq6DRF88kdrvm78LYF/jc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710273841; c=relaxed/simple;
+	bh=DjVPhU+ee23OsaiG1VDbT3TuKMBNxPLs+bR2LEw485Q=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Rr2XxHZWSOUv+fabURdcTjjV8Vddo74ZXliFTrPCdzI7GK1TSVDyKYh4I0Wpf5egh2UKzC/RVZy803SQTkb0/HbuUrRuolHoSG5qB/QaFoIsMQzLMJ5mS6NowbNp/3yt8PASonGY+6aE04Dfkmo2+fxnmJx70jG4v89F+6GKbUU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mczNI+Cm; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710273839; x=1741809839;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=DjVPhU+ee23OsaiG1VDbT3TuKMBNxPLs+bR2LEw485Q=;
+  b=mczNI+CmXcSRMuS1gLqRPKGl1pxFNP8KMYDR+KnC2YYgRYKsRGXsKlY2
+   MsBTO8EYKM6T46lJ8ZOcV9Z8NMv6Q1ZLS094LWvDAUpMZvv6OpBQTSXtp
+   M9U7j9sqYDEmzuJ6SNMpj207i0AGZLgclPxDIkoy4Ax2dFbhmupnTQlPd
+   +gKMlScO1kXh1gWM0JzuPW5VhGLewpTgPvMv/C4rBWfhX0kwpgjnq1JZJ
+   B1/Mji6kHa0vVrsx3H+0UWUbAJ5H78ztS2EoEVGMecxihPqHHX3x9G+h1
+   GxhW7r2a7lTDVXL82jjOEWPa69uhebic+SXRuudxz1e72R10Ncji/i75E
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="22525101"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="22525101"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 13:03:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="49089985"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Mar 2024 13:03:58 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 12 Mar 2024 13:03:57 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 12 Mar 2024 13:03:57 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 12 Mar 2024 13:03:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=DGWRK6e9lVRztyhPEEUgD0SiIFBPKpHpI8kMdCce0W0yF/RGugGLD24O6HYxJ3fxIaP3YbyxVBfwHZ7np04CT9/dpSGWYsfnj7UvWtRi+Fdod+fIQ2ctYUKlF9BgTAzIXx0boDxqeqFzDiO2I8ddcTXBqGWKk/I8oDkEK9tkPEJv+ctOvfzss8cFAPmiavOKENql6D9zHdLXfjGR2Ah3hzv5nUnafD/U/IS2+vPVQyLCdvEQzlmHPA1W/d1xgVlyjN74Ss5+3D2OcNwYstsHlG6OONoyZOUW1RqcS7eIAu50vgDK+2ifV6W90U6zv8BQp3MYeC2YFKJ5bF1wp1TrEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yHmvUapKcGLGYV9QdFwqLuOlPOlAxdnUA+uiX0XjWNg=;
+ b=oJhyf47/Np7ebk6VVG6IycQWGiDLUtD5QtX1PpUnl0kZ8wMfNeSXEWcNtutV23/RnKGC9DfpGRQsCCqKfeBBi5iYyOazPoo+lxU+aSE79pSWztMiyzR0XXqcKjc7pFjqfa8q0p9m8t/HzwwVl0lOVjUJ6alqXTBb19BoFMBeZUX6AWOSacuOwUCEGbr21zRzmjMlBsORx/jx7RjDcsiw9+cp5w2HOBVs8qg4URAHkeuPtTAxaA/H+C62g6vC4FX/sOgNCBK34tcpnboZ9TTiohztP+l9qDUhzm6bOsWep596rk26VvcBjudzYT/23fOUxaWBLj80N4Hb8iD1vlYo+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CH3PR11MB7300.namprd11.prod.outlook.com (2603:10b6:610:150::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.16; Tue, 12 Mar
+ 2024 20:03:54 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7386.015; Tue, 12 Mar 2024
+ 20:03:54 +0000
+Date: Tue, 12 Mar 2024 13:03:51 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Dave Jiang <dave.jiang@intel.com>, <linux-cxl@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>
+CC: <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
+	<vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
+	<Jonathan.Cameron@huawei.com>, <dave@stgolabs.net>, <rafael@kernel.org>,
+	<gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
+	"Huang, Ying" <ying.huang@intel.com>
+Subject: Re: [PATCH v7 11/12] cxl/region: Add memory hotplug notifier for cxl
+ region
+Message-ID: <65f0b527de6b3_aa22294ce@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20240308220055.2172956-1-dave.jiang@intel.com>
+ <20240308220055.2172956-12-dave.jiang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240308220055.2172956-12-dave.jiang@intel.com>
+X-ClientProxiedBy: MW2PR16CA0004.namprd16.prod.outlook.com (2603:10b6:907::17)
+ To PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223143723.1574-11-shiju.jose@huawei.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CH3PR11MB7300:EE_
+X-MS-Office365-Filtering-Correlation-Id: d89bb8c0-0f33-4041-f407-08dc42cf8b5f
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 17SLMOvp0FX0F8BNVY8q3Il009f4gVcTQwnfko8qS0dIUpoq2jFCABObxqxFx/Nw9gj0Vna9xCB8SUwSfPnKGAUSRbtB03uWzz3jiysXYUsY1yfRzkciy9IROoM7wej399+wYfrRJhXUlA5udzD6LHx7daJfGCfKmCB8U74Nre8U9Ff72V9snc35uynqm3Ffq5j5PL7IoGRhaetLrocCQ2clETXIQNtYZhw93WKWP9k1lFIxWH8uefLyj+p1HK7+1LKm+tXmALyJwfaXlG0Cp9h+qxGPiOgSRD82Znb001Suhxy/vWUG/51+c1/UDQyonbpf2mXd7p2M0sjB9KAE0cCuv1ChFMtaQqb81UJR7a/bsmDlUVO9207wYZShCaeFgvL1m3Zk2lktdXn2UOLHTlsbf4gffka0qOURXof7IW/1yMutCFIp6nroaEBhPDkFwz9088w7g4wVUFfsepRn4amBmyYGFBWuaWJNnc6y0AWuKdZgjTBS/P5rpHweKCCNjiPSYkxKFOM2pmV2BN5rOSLba776GM1pBfznny5MyFQKUYhXlXGFyKccdEYdAJf5bBbzMfCHPafkzGVORRfnBQ9PVEQskWEIDRNXevXpBv14cSt+iOiLIlBpPw5XEy50SirKeFXIzmU08/f6EHOhZatTtN27A9TU4tW3cyqS2VM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8xky1c1ibu0D2pi9EaOwEzD7bfa7D9uX2KlFpAPhMZ5KCspIy1OSN77h6w3l?=
+ =?us-ascii?Q?GGgCbGsvf/J59+8+sjEdXh1un+tXBCYyDmcJHgoP+AWDAPvyesylTx1y02Vt?=
+ =?us-ascii?Q?ZJ873sq94M2ZpckvtTzdqblMwqg1Us7H8KgO5V1TtKr5Z5Iz0SDKLNcBST1l?=
+ =?us-ascii?Q?rrxmXttQBAB+bOjhro92TNDmu86NB4f+GnU1p5AIi1b8h9y1TeyINWpR5c9Z?=
+ =?us-ascii?Q?uWPdeyxdJlT0/Ss6i/qLj42c7qfsKfREmoE/bVeTjQgPM2oObFcfuq8nE+pt?=
+ =?us-ascii?Q?j1uvXsWqSIL/V56U7MVbrvTvUsXTsz1JyYwWw8rJaDaXOfwdhzsnMwo6nrb4?=
+ =?us-ascii?Q?LjL1SBDpR0RevuqdRVq30bUYo8awPQSe9NPloqgbC6/NMW0vudvvJUNUwOZE?=
+ =?us-ascii?Q?25jF8c8sPCqsx2Aign58ntL/pQ5RxOQR+gjMyZoKisGgvd+ILoQnjFR3Ufkv?=
+ =?us-ascii?Q?CRIeenkalIelPeArFg97FVKq13YENUGKG844cKuznrtJW5XBVuVM3tqNqks8?=
+ =?us-ascii?Q?6qoG2kjMZziy3bdy86L6D5SStDLf6agXyUlrhAZkRqHi/rY2qC8rZu4GZ6aj?=
+ =?us-ascii?Q?tkio+1mskO4M54UKI21U0oXL/sU137dxOX7f168Mfo5mqCXpNNgCYw+4LX+H?=
+ =?us-ascii?Q?mwE6NaDgqLUW8rviQFoD/s8nrHMVNVByvQQ1LiUi+RctTszzUd7xeM/5aWMz?=
+ =?us-ascii?Q?FdpKnG0Y+HCkygdZdL44hg/z7VBV6jAEkcckIvhBLPpPFoR/N13WclrdKnyJ?=
+ =?us-ascii?Q?1mCjzYPJZTsbikx2p67Kmd/+zCOHgW/0dTVV4DwFPsgUkR/4di0qTnsDJJ3w?=
+ =?us-ascii?Q?6Hcajd/oCUH+GHZN+5EokIsecsFTrIPF5Qwp0/cCRDXpPMGhlhyUV+GezoqV?=
+ =?us-ascii?Q?k+J1lq7YqMswU4cMtnj8hUgLoKIA61oBKlF2AlOZJiLjUzIvKGy/BoOu4yo9?=
+ =?us-ascii?Q?CG0pFSBrLYN3eu2pwGzO7af9F5GlafezcWU3Wx12Xlb88r63exeh7SCFqg9M?=
+ =?us-ascii?Q?RQwRBQEGDfA5/Iaium/ds5cFiX0SbP0pj2bf4z3WZ+JwEClGE0e06NjQhPXF?=
+ =?us-ascii?Q?q3loahVkiv0X5x+v6MEbsK3y9XWYy6xPeTcchnauSwZiwsRlQbhoi9E+rQX5?=
+ =?us-ascii?Q?q4ixwsy34TbrvhL5xY5/oi+0crj37eZKMIvvN2zu3JVo3Exqcf4B6u86IN8D?=
+ =?us-ascii?Q?1biVzrmN8tgOZn6Dd7xoP1YN58mt4MBu27/zt5HQTQ3DQpuYZSXmNreSNjZa?=
+ =?us-ascii?Q?Wf+6e6/iho4MGd+JFSH/RFZN1AA9ZtCLWaDzY6aOxk+fppyC6JFFtFUnqbH+?=
+ =?us-ascii?Q?YORIbiPwvTAOlYzAuUdCrMOeodHjXIR/5u2M1xk6a6iEuHyO+mKyAhGdXEUR?=
+ =?us-ascii?Q?Y6NuqbVqXEVdy+K/2KSXtk2ZuGe1q7Su/bOFgrqI95y2yCUpOeO0t2mmRJvU?=
+ =?us-ascii?Q?VC/lpeK188qvFT4R6rPIGSwh2RkCx0TYhOLhnyzo9FvOPGoHCZgPmy2gYphP?=
+ =?us-ascii?Q?iSwhcYkpWoBRwivMShA+3EbIvNTQ/W+Cdv3mwuKwrKcOR6XS5TGgwa3SHv+K?=
+ =?us-ascii?Q?azsiC1SwV9T/iQeNFojI/HMdDZOeDA4x48dfTHAaBEJiOISpfY9ptinJ4tfi?=
+ =?us-ascii?Q?HQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d89bb8c0-0f33-4041-f407-08dc42cf8b5f
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 20:03:54.6973
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G2juaMdjAvGjrhIdrNJsnIwCiTdFC78GMmLVjmOmGekNEHQBoYo0tVIlFTO2jYjlaSSFq9A1zYB0oJKLbNUJvGbaSxctZYsAZfVed69Aqus=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7300
+X-OriginatorOrg: intel.com
 
-On Fri, Feb 23, 2024 at 10:37:21PM +0800, shiju.jose@huawei.com wrote:
-> From: A Somasundaram <somasundaram.a@hpe.com>
+Dave Jiang wrote:
+> When the CXL region is formed, the driver would computed the performance
+
+s/would computed/computes/
+
+...fixed that up locally.
+
+> data for the region. However this data is not available at the node data
+> collection that has been populated by the HMAT during kernel
+> initialization. Add a memory hotplug notifier to update the access
+> coordinates to the 'struct memory_target' context kept by the
+> HMAT_REPORTING code.
 > 
-> The code contains PCC interfaces for RAS2 table, functions to send
-> RAS2 commands as per ACPI 6.5 & upwards revision.
+> Add CXL_CALLBACK_PRI for a memory hotplug callback priority. Set the
+> priority number to be called before HMAT_CALLBACK_PRI. The CXL update must
+> happen before hmat_callback().
 > 
-> References for this implementation,
-> ACPI specification 6.5 section 5.2.21 for RAS2 table and chapter 14
-> for PCC (Platform Communication Channel).
+> A new HMAT_REPORTING helper hmat_update_target_coordinates() is added in
+> order to allow CXL to update the memory_target access coordinates.
 > 
-> Driver uses PCC interfaces to communicate to the ACPI HW. This code
-> implements PCC interfaces and the functions to send the RAS2 commands
-> to be used by OSPM.
+> A new ext_updated member is added to the memory_target to indicate that
+> the access coordinates within the memory_target has been updated by an
+> external agent such as CXL. This prevents data being overwritten by the
+> hmat_update_target_attrs() triggered by hmat_callback().
 > 
-> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
-> Co-developed-by: Shiju Jose <shiju.jose@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 > ---
->  drivers/acpi/Kconfig            |  14 ++
->  drivers/acpi/Makefile           |   1 +
->  drivers/acpi/ras2_acpi_common.c | 272 ++++++++++++++++++++++++++++++++
->  include/acpi/ras2_acpi.h        |  59 +++++++
->  4 files changed, 346 insertions(+)
->  create mode 100755 drivers/acpi/ras2_acpi_common.c
->  create mode 100644 include/acpi/ras2_acpi.h
-> 
-> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
-> index 3c3f8037ebed..6f69c9976c4f 100644
-> --- a/drivers/acpi/Kconfig
-> +++ b/drivers/acpi/Kconfig
-> @@ -284,6 +284,20 @@ config ACPI_CPPC_LIB
->  	  If your platform does not support CPPC in firmware,
->  	  leave this option disabled.
->  
-> +config ACPI_RAS2
-> +	bool "ACPI RAS2 driver"
-> +	depends on ACPI_PROCESSOR
-> +	select MAILBOX
-> +	select PCC
-> +	help
-> +	  The driver adds support for PCC (platform communication
-> +	  channel) interfaces to communicate with the ACPI complaint
-> +	  hardware platform supports RAS2(RAS2 Feature table).
-> +	  The driver adds support for RAS2(extraction of RAS2
-> +	  tables from OS system table), PCC interfaces and OSPM interfaces
-> +	  to send RAS2 commands. Driver adds platform device which
-> +	  binds to the RAS2 memory driver.
-> +
->  config ACPI_PROCESSOR
->  	tristate "Processor"
->  	depends on X86 || ARM64 || LOONGARCH
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index 12ef8180d272..b12fba9cff06 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -105,6 +105,7 @@ obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
->  obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
->  obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
->  obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
-> +obj-$(CONFIG_ACPI_RAS2)		+= ras2_acpi_common.o
->  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
->  obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
->  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
-> diff --git a/drivers/acpi/ras2_acpi_common.c b/drivers/acpi/ras2_acpi_common.c
-> new file mode 100755
-> index 000000000000..c6e4ed96cd81
-> --- /dev/null
-> +++ b/drivers/acpi/ras2_acpi_common.c
-> @@ -0,0 +1,272 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * ACPI RAS2 table processing common functions
-> + *
-> + * (C) Copyright 2014, 2015 Hewlett-Packard Enterprises.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + *
-> + * Support for
-> + * RAS2 - ACPI 6.5 Specification, section 5.2.21
-> + * PCC(Platform Communications Channel) - ACPI 6.5 Specification,
-> + * chapter 14.
-> + *
-> + * Code contains common functions for RAS2.
-> + * PCC(Platform communication channel) interfaces for the RAS2
-> + * and the functions for sending RAS2 commands to the ACPI HW.
-> + */
-> +
-> +#include <linux/export.h>
-> +#include <linux/delay.h>
-> +#include <linux/ktime.h>
-> +#include <linux/platform_device.h>
-> +#include <acpi/ras2_acpi.h>
-> +#include <acpi/acpixf.h>
-> +
-> +static int ras2_check_pcc_chan(struct ras2_context *ras2_ctx)
-> +{
-> +	struct acpi_ras2_shared_memory  __iomem *generic_comm_base = ras2_ctx->pcc_comm_addr;
-> +	ktime_t next_deadline = ktime_add(ktime_get(), ras2_ctx->deadline);
-> +
-> +	while (!ktime_after(ktime_get(), next_deadline)) {
-> +		/*
-> +		 * As per ACPI spec, the PCC space wil be initialized by
+> v7:
+> - Fix typo in commit log (Jonathan)
+> - Move memory_notifier registration to devm_cxl_add_region(). (Dan)
 
-s/wil/will/
-
-Fan
-> +		 * platform and should have set the command completion bit when
-> +		 * PCC can be used by OSPM
-> +		 */
-> +		if (readw_relaxed(&generic_comm_base->status) & RAS2_PCC_CMD_COMPLETE)
-> +			return 0;
-> +		/*
-> +		 * Reducing the bus traffic in case this loop takes longer than
-> +		 * a few retries.
-> +		 */
-> +		udelay(10);
-> +	}
-> +
-> +	return -EIO;
-> +}
-> +
-> +/**
-> + * ras2_send_pcc_cmd() - Send RAS2 command via PCC channel
-> + * @ras2_ctx:	pointer to the ras2 context structure
-> + * @cmd:	command to send
-> + *
-> + * Returns: 0 on success, an error otherwise
-> + */
-> +int ras2_send_pcc_cmd(struct ras2_context *ras2_ctx, u16 cmd)
-> +{
-> +	int ret;
-> +	struct acpi_ras2_shared_memory  *generic_comm_base =
-> +		(struct acpi_ras2_shared_memory *)ras2_ctx->pcc_comm_addr;
-> +	static ktime_t last_cmd_cmpl_time, last_mpar_reset;
-> +	struct mbox_chan *pcc_channel;
-> +	static int mpar_count;
-> +	unsigned int time_delta;
-> +
-> +	if (cmd == RAS2_PCC_CMD_EXEC) {
-> +		ret = ras2_check_pcc_chan(ras2_ctx);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +	pcc_channel = ras2_ctx->pcc_chan->mchan;
-> +
-> +	/*
-> +	 * Handle the Minimum Request Turnaround Time(MRTT)
-> +	 * "The minimum amount of time that OSPM must wait after the completion
-> +	 * of a command before issuing the next command, in microseconds"
-> +	 */
-> +	if (ras2_ctx->pcc_mrtt) {
-> +		time_delta = ktime_us_delta(ktime_get(), last_cmd_cmpl_time);
-> +		if (ras2_ctx->pcc_mrtt > time_delta)
-> +			udelay(ras2_ctx->pcc_mrtt - time_delta);
-> +	}
-> +
-> +	/*
-> +	 * Handle the non-zero Maximum Periodic Access Rate(MPAR)
-> +	 * "The maximum number of periodic requests that the subspace channel can
-> +	 * support, reported in commands per minute. 0 indicates no limitation."
-> +	 *
-> +	 * This parameter should be ideally zero or large enough so that it can
-> +	 * handle maximum number of requests that all the cores in the system can
-> +	 * collectively generate. If it is not, we will follow the spec and just
-> +	 * not send the request to the platform after hitting the MPAR limit in
-> +	 * any 60s window
-> +	 */
-> +	if (ras2_ctx->pcc_mpar) {
-> +		if (mpar_count == 0) {
-> +			time_delta = ktime_ms_delta(ktime_get(), last_mpar_reset);
-> +			if (time_delta < 60 * MSEC_PER_SEC) {
-> +				dev_dbg(ras2_ctx->dev,
-> +					"PCC cmd not sent due to MPAR limit");
-> +				return -EIO;
-> +			}
-> +			last_mpar_reset = ktime_get();
-> +			mpar_count = ras2_ctx->pcc_mpar;
-> +		}
-> +		mpar_count--;
-> +	}
-> +
-> +	/* Write to the shared comm region. */
-> +	writew_relaxed(cmd, &generic_comm_base->command);
-> +
-> +	/* Flip CMD COMPLETE bit */
-> +	writew_relaxed(0, &generic_comm_base->status);
-> +
-> +	/* Ring doorbell */
-> +	ret = mbox_send_message(pcc_channel, &cmd);
-> +	if (ret < 0) {
-> +		dev_err(ras2_ctx->dev,
-> +			"Err sending PCC mbox message. cmd:%d, ret:%d\n",
-> +			cmd, ret);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * For READs we need to ensure the cmd completed to ensure
-> +	 * the ensuing read()s can proceed. For WRITEs we dont care
-> +	 * because the actual write()s are done before coming here
-> +	 * and the next READ or WRITE will check if the channel
-> +	 * is busy/free at the entry of this call.
-> +	 *
-> +	 * If Minimum Request Turnaround Time is non-zero, we need
-> +	 * to record the completion time of both READ and WRITE
-> +	 * command for proper handling of MRTT, so we need to check
-> +	 * for pcc_mrtt in addition to CMD_READ
-> +	 */
-> +	if (cmd == RAS2_PCC_CMD_EXEC || ras2_ctx->pcc_mrtt) {
-> +		ret = ras2_check_pcc_chan(ras2_ctx);
-> +		if (ras2_ctx->pcc_mrtt)
-> +			last_cmd_cmpl_time = ktime_get();
-> +	}
-> +
-> +	if (pcc_channel->mbox->txdone_irq)
-> +		mbox_chan_txdone(pcc_channel, ret);
-> +	else
-> +		mbox_client_txdone(pcc_channel, ret);
-> +
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(ras2_send_pcc_cmd);
-> +
-> +/**
-> + * ras2_register_pcc_channel() - Register PCC channel
-> + * @ras2_ctx:	pointer to the ras2 context structure
-> + *
-> + * Returns: 0 on success, an error otherwise
-> + */
-> +int ras2_register_pcc_channel(struct ras2_context *ras2_ctx)
-> +{
-> +	u64 usecs_lat;
-> +	unsigned int len;
-> +	struct pcc_mbox_chan *pcc_chan;
-> +	struct mbox_client *ras2_mbox_cl;
-> +	struct acpi_pcct_hw_reduced *ras2_ss;
-> +
-> +	ras2_mbox_cl = &ras2_ctx->mbox_client;
-> +	if (!ras2_mbox_cl || ras2_ctx->pcc_subspace_idx < 0)
-> +		return -EINVAL;
-> +
-> +	pcc_chan = pcc_mbox_request_channel(ras2_mbox_cl,
-> +					    ras2_ctx->pcc_subspace_idx);
-> +
-> +	if (IS_ERR(pcc_chan)) {
-> +		dev_err(ras2_ctx->dev,
-> +			"Failed to find PCC channel for subspace %d\n",
-> +			ras2_ctx->pcc_subspace_idx);
-> +		return -ENODEV;
-> +	}
-> +	ras2_ctx->pcc_chan = pcc_chan;
-> +	/*
-> +	 * The PCC mailbox controller driver should
-> +	 * have parsed the PCCT (global table of all
-> +	 * PCC channels) and stored pointers to the
-> +	 * subspace communication region in con_priv.
-> +	 */
-> +	ras2_ss = pcc_chan->mchan->con_priv;
-> +
-> +	if (!ras2_ss) {
-> +		dev_err(ras2_ctx->dev, "No PCC subspace found for RAS2\n");
-> +		pcc_mbox_free_channel(ras2_ctx->pcc_chan);
-> +		return -ENODEV;
-> +	}
-> +
-> +	/*
-> +	 * This is the shared communication region
-> +	 * for the OS and Platform to communicate over.
-> +	 */
-> +	ras2_ctx->comm_base_addr = ras2_ss->base_address;
-> +	len = ras2_ss->length;
-> +	dev_dbg(ras2_ctx->dev, "PCC subspace for RAS2=0x%llx len=%d\n",
-> +		ras2_ctx->comm_base_addr, len);
-> +
-> +	/*
-> +	 * ras2_ss->latency is just a Nominal value. In reality
-> +	 * the remote processor could be much slower to reply.
-> +	 * So add an arbitrary amount of wait on top of Nominal.
-> +	 */
-> +	usecs_lat = RAS2_NUM_RETRIES * ras2_ss->latency;
-> +	ras2_ctx->deadline = ns_to_ktime(usecs_lat * NSEC_PER_USEC);
-> +	ras2_ctx->pcc_mrtt = ras2_ss->min_turnaround_time;
-> +	ras2_ctx->pcc_mpar = ras2_ss->max_access_rate;
-> +	ras2_ctx->pcc_comm_addr = acpi_os_ioremap(ras2_ctx->comm_base_addr,
-> +						  len);
-> +	dev_dbg(ras2_ctx->dev, "pcc_comm_addr=%p\n",
-> +		ras2_ctx->pcc_comm_addr);
-> +
-> +	/* Set flag so that we dont come here for each CPU. */
-> +	ras2_ctx->pcc_channel_acquired = true;
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(ras2_register_pcc_channel);
-> +
-> +/**
-> + * ras2_unregister_pcc_channel() - Unregister PCC channel
-> + * @ras2_ctx:	pointer to the ras2 context structure
-> + *
-> + * Returns: 0 on success, an error otherwise
-> + */
-> +int ras2_unregister_pcc_channel(struct ras2_context *ras2_ctx)
-> +{
-> +	if (!ras2_ctx->pcc_chan)
-> +		return -EINVAL;
-> +
-> +	pcc_mbox_free_channel(ras2_ctx->pcc_chan);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(ras2_unregister_pcc_channel);
-> +
-> +/**
-> + * ras2_add_platform_device() - Add a platform device for RAS2
-> + * @name:	name of the device we're adding
-> + * @data:	platform specific data for this platform device
-> + * @size:	size of platform specific data
-> + *
-> + * Returns: pointer to platform device on success, an error otherwise
-> + */
-> +struct platform_device *ras2_add_platform_device(char *name, const void *data,
-> +						 size_t size)
-> +{
-> +	int ret;
-> +	struct platform_device *pdev;
-> +
-> +	pdev = platform_device_alloc(name, PLATFORM_DEVID_AUTO);
-> +	if (!pdev)
-> +		return NULL;
-> +
-> +	ret = platform_device_add_data(pdev, data, size);
-> +	if (ret)
-> +		goto dev_put;
-> +
-> +	ret = platform_device_add(pdev);
-> +	if (ret)
-> +		goto dev_put;
-> +
-> +	return pdev;
-> +
-> +dev_put:
-> +	platform_device_put(pdev);
-> +
-> +	return ERR_PTR(ret);
-> +}
-> diff --git a/include/acpi/ras2_acpi.h b/include/acpi/ras2_acpi.h
-> new file mode 100644
-> index 000000000000..5e9ac788670a
-> --- /dev/null
-> +++ b/include/acpi/ras2_acpi.h
-> @@ -0,0 +1,59 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * RAS2 ACPI driver header file
-> + *
-> + * (C) Copyright 2014, 2015 Hewlett-Packard Enterprises
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited
-> + */
-> +
-> +#ifndef _RAS2_ACPI_H
-> +#define _RAS2_ACPI_H
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/mailbox_client.h>
-> +#include <linux/mailbox_controller.h>
-> +#include <linux/types.h>
-> +#include <acpi/pcc.h>
-> +
-> +#define RAS2_PCC_CMD_COMPLETE 1
-> +
-> +/* RAS2 specific PCC commands */
-> +#define RAS2_PCC_CMD_EXEC 0x01
-> +
-> +#define RAS2_FAILURE 0
-> +#define RAS2_SUCCESS 1
-> +
-> +/*
-> + * Arbitrary Retries for PCC commands because the
-> + * remote processor could be much slower to reply.
-> + */
-> +#define RAS2_NUM_RETRIES 600
-> +
-> +/*
-> + * Data structures for PCC communication and RAS2 table
-> + */
-> +struct ras2_context {
-> +	struct device *dev;
-> +	int id;
-> +	struct mbox_client mbox_client;
-> +	struct pcc_mbox_chan *pcc_chan;
-> +	void __iomem *pcc_comm_addr;
-> +	u64 comm_base_addr;
-> +	int pcc_subspace_idx;
-> +	bool pcc_channel_acquired;
-> +	ktime_t deadline;
-> +	unsigned int pcc_mpar;
-> +	unsigned int pcc_mrtt;
-> +	/* Lock to provide mutually exclusive access to PCC channel */
-> +	spinlock_t spinlock;
-> +	struct device *scrub_dev;
-> +	const struct ras2_hw_scrub_ops *ops;
-> +};
-> +
-> +struct platform_device *ras2_add_platform_device(char *name, const void *data,
-> +						 size_t size);
-> +int ras2_send_pcc_cmd(struct ras2_context *ras2_ctx, u16 cmd);
-> +int ras2_register_pcc_channel(struct ras2_context *ras2_ctx);
-> +int ras2_unregister_pcc_channel(struct ras2_context *ras2_ctx);
-> +#endif /* _RAS2_ACPI_H */
-> -- 
-> 2.34.1
-> 
+With that change, looks good.
 
