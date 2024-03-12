@@ -1,306 +1,518 @@
-Return-Path: <linux-acpi+bounces-4283-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4284-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE23C87991A
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 17:37:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B591879B6D
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 19:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35C901F2396D
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 16:37:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFD01B221DD
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 18:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7927D409;
-	Tue, 12 Mar 2024 16:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B087813C9EB;
+	Tue, 12 Mar 2024 18:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tx6xWRPX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CADE7C09F;
-	Tue, 12 Mar 2024 16:37:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACB813B791;
+	Tue, 12 Mar 2024 18:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710261434; cv=none; b=py28nCwBlCNUQNiEFk7ifKLg2TcvMSVQcflyCrc9haED69T6AT0CKB+207jDLqKA6t/BjCsld9975nql7/g51g4nKZlt/9vCkx7kb6uHmEFyPlak8Ho28vGHht0TpprGLZqiizbMYFctjJ+NwqQv+cY6yfsC22tzhQOClv5ISb8=
+	t=1710268356; cv=none; b=FLZmdbtd0D46Ohzx7BF/OjZ66l25HQ390GPg6U37yrQOrL5SC6he9FQb76Hgygk/5zdhkinH3vvHCuB38Pi4t5IlMPhYW88ZPAoxAxY50xsjxLmNcS6FrmQrbzjcmv1M+dDi/G83NnouTR7NwZxVbLLkiu4jkGh6NOLL1rn0et0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710261434; c=relaxed/simple;
-	bh=pG88zyNL5EF+jFPRHmuiRwR6KFsIryO5jhHj3EGWkq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EEagdeXEEGBlAhRqP/oNPj7p4ZUjkXmSuMVEdB0IqxGLxfuMyAOB1UN3GtCVAVRpsJzFr6CeaLgAO9S1pAHqugM5X8oGoUj+K6Rcw1fObu72Bazv9wecFHTWIeKfS888Qk+hrld2j7Leuuzds5erCn5g3DTYfIc22BWXXJ6ZrDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B41971007;
-	Tue, 12 Mar 2024 09:37:48 -0700 (PDT)
-Received: from [10.57.50.231] (unknown [10.57.50.231])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAAF33F73F;
-	Tue, 12 Mar 2024 09:37:09 -0700 (PDT)
-Message-ID: <6d812f7b-169c-45bd-99f6-56b993381bd4@arm.com>
-Date: Tue, 12 Mar 2024 16:37:08 +0000
+	s=arc-20240116; t=1710268356; c=relaxed/simple;
+	bh=yEXm95J5wvGnUMUtqcXy7Ftllk3x5/GMp5heKqnYsHA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cY0qjS4S5Gp+RxDExNvmXLYhYec90u6wzSbxWEwfsikXyoFqc2Np3vQObDBg55mpy5Mmy3plWv7tvSXv7Qn+7rC16+FiCoqgTwVxuOKMUt4X9i2X42lm6Jtyh9GChHX72eH6o20WPZ+gcIfmHtwUWKOsLEuENtxJbVRiBEBTJTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tx6xWRPX; arc=none smtp.client-ip=209.85.166.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7c88a2173daso8363239f.0;
+        Tue, 12 Mar 2024 11:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710268354; x=1710873154; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pqU8vwf+tbdTSkXAgzjKJdEijPq7ApphWIX0SIRCQzk=;
+        b=Tx6xWRPXaLRsXGvcZcjAEL0ivLXuLZuf/uKXYZQk33G1cMijavtnpASkRvhIFXjBGP
+         blNvUGbEbCH6qvIEHpApW9Bt22PjBPAMUcQLssxCll+BjucY2CosOVa1Flx/TDr5Qp+P
+         AOqtl5d3NqNw8MxIDyRIv0KZ63GG5cI4c97RnvHkYfi5cdRLCKRWAE9aIyG9vLJdvgeb
+         GpCMJw+8gqHM9MYLb3OZNZI96s//0E78hlsS6gE20OgeKzV/xibkQuUhOFW/nVjyxP8O
+         +jHeTQJp2mhZYvFufbi7EqoxOQuA6y8U80EeG79Tk8KbpkCmxFbYS0IjPWWo19EFCTql
+         0joA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710268354; x=1710873154;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pqU8vwf+tbdTSkXAgzjKJdEijPq7ApphWIX0SIRCQzk=;
+        b=vxD/IivbmGMdULnVYH4jeEbWdexEeaYTXd/XgoCjMZSiB2+hkKYcukcf8TI3Ty+z/7
+         YuQ3iwVTPgWUXVxKxd8U7n50Tpp/awYMHeVzFOEuIRVNZtOigUe3sWSXpI3BaHD+QEus
+         Kd5QDGQPkhzA2juXVLfChg7ysQKgUb71eqXYghWv4RQa+r3Bp7OJMm73PAEYM1gXtx9f
+         2VE/ZyhKqMNJOP4onFZZY80AH8mNJabhlYVbhlaNeWbNhgXTaS8+6q8UaEgM+cK3IWjt
+         TTRtZL/uar3tmbCB+42d/PXMxgsCdJtIGMSw45fPOa5ORrYfShlR9Ecz51jfHmsUWwud
+         w6wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYDRHSEUPWixRKkyqmpUEHfLYkKM6satrH0esz4relotG0PKZ3OgV1v+tbAO5ybpTGhPTz4RoB6Bmwz4pjIpE6XpArUSDjun1RmCbKjWJmo0iwLH9fIO2kLeF/FMFmaWwtEdVz+1RFUfWiPej/QKA+OF3nme1UjbRwV99PvHJATHF3kwA=
+X-Gm-Message-State: AOJu0YyD83P9c9yM2GScCTbHbfZxJ0GLDP/DiQqKLPG85aC8KDjEh0w9
+	KOPdFLT/q9GAeAvUXK/hKguGb0XdX9NljDp5M/kIFW6t+rF215JJnnBbKz1V
+X-Google-Smtp-Source: AGHT+IHQ91EGeIfz2oaj8S9TucVWBSI/m7YsmBPoTA68buP0uVHpq6iN4yvUa+DL1kIPCUmvF0cgcw==
+X-Received: by 2002:a6b:5c12:0:b0:7c8:c9b8:f976 with SMTP id z18-20020a6b5c12000000b007c8c9b8f976mr1280322ioh.21.1710268353693;
+        Tue, 12 Mar 2024 11:32:33 -0700 (PDT)
+Received: from debian ([50.205.20.42])
+        by smtp.gmail.com with ESMTPSA id c18-20020a02c9d2000000b00474fab2523dsm2436749jap.62.2024.03.12.11.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Mar 2024 11:32:33 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Tue, 12 Mar 2024 11:32:17 -0700
+To: shiju.jose@huawei.com
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
+	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
+	jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [RFC PATCH v7 10/12] ACPI:RAS2: Add common library for RAS2 PCC
+ interfaces
+Message-ID: <ZfCfsZARb_QY7bA5@debian>
+References: <20240223143723.1574-1-shiju.jose@huawei.com>
+ <20240223143723.1574-11-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V6 08/11] coresight: tpiu: Move ACPI support from AMBA
- driver to platform driver
-Content-Language: en-GB
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
- James Clark <james.clark@arm.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20240312102318.2285165-1-anshuman.khandual@arm.com>
- <20240312102318.2285165-9-anshuman.khandual@arm.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20240312102318.2285165-9-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223143723.1574-11-shiju.jose@huawei.com>
 
-On 12/03/2024 10:23, Anshuman Khandual wrote:
-> Add support for the tpiu device in the platform driver, which can then be
-> used on ACPI based platforms. This change would now allow runtime power
-> management for ACPI based systems. The driver would try to enable the APB
-> clock if available. But first this renames and then refactors tpiu_probe()
-> and tpiu_remove(), making sure it can be used both for platform and AMBA
-> drivers. This also moves pm_runtime_put() from tpiu_probe() to the callers.
+On Fri, Feb 23, 2024 at 10:37:21PM +0800, shiju.jose@huawei.com wrote:
+> From: A Somasundaram <somasundaram.a@hpe.com>
 > 
-> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: James Clark <james.clark@arm.com>
-> Cc: linux-acpi@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: coresight@lists.linaro.org
-> Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
-> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
-> Reviewed-by: James Clark <james.clark@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> The code contains PCC interfaces for RAS2 table, functions to send
+> RAS2 commands as per ACPI 6.5 & upwards revision.
+> 
+> References for this implementation,
+> ACPI specification 6.5 section 5.2.21 for RAS2 table and chapter 14
+> for PCC (Platform Communication Channel).
+> 
+> Driver uses PCC interfaces to communicate to the ACPI HW. This code
+> implements PCC interfaces and the functions to send the RAS2 commands
+> to be used by OSPM.
+> 
+> Signed-off-by: A Somasundaram <somasundaram.a@hpe.com>
+> Co-developed-by: Shiju Jose <shiju.jose@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 > ---
-> Changes in V6:
+>  drivers/acpi/Kconfig            |  14 ++
+>  drivers/acpi/Makefile           |   1 +
+>  drivers/acpi/ras2_acpi_common.c | 272 ++++++++++++++++++++++++++++++++
+>  include/acpi/ras2_acpi.h        |  59 +++++++
+>  4 files changed, 346 insertions(+)
+>  create mode 100755 drivers/acpi/ras2_acpi_common.c
+>  create mode 100644 include/acpi/ras2_acpi.h
 > 
-> - Added WARN_ON(!drvdata) check in tpiu_platform_remove()
-> - Added additional elements for acpi_device_id[]
-> 
->   drivers/acpi/arm64/amba.c                    |   1 -
->   drivers/hwtracing/coresight/coresight-tpiu.c | 103 +++++++++++++++++--
->   2 files changed, 93 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
-> index 587061b0fd2f..6d24a8f7914b 100644
-> --- a/drivers/acpi/arm64/amba.c
-> +++ b/drivers/acpi/arm64/amba.c
-> @@ -25,7 +25,6 @@ static const struct acpi_device_id amba_id_list[] = {
->   	{"ARMHC501", 0}, /* ARM CoreSight ETR */
->   	{"ARMHC502", 0}, /* ARM CoreSight STM */
->   	{"ARMHC503", 0}, /* ARM CoreSight Debug */
-> -	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
->   	{"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
->   	{"", 0},
->   };
-> diff --git a/drivers/hwtracing/coresight/coresight-tpiu.c b/drivers/hwtracing/coresight/coresight-tpiu.c
-> index 29024f880fda..4117475f8889 100644
-> --- a/drivers/hwtracing/coresight/coresight-tpiu.c
-> +++ b/drivers/hwtracing/coresight/coresight-tpiu.c
-> @@ -5,6 +5,8 @@
->    * Description: CoreSight Trace Port Interface Unit driver
->    */
->   
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 3c3f8037ebed..6f69c9976c4f 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -284,6 +284,20 @@ config ACPI_CPPC_LIB
+>  	  If your platform does not support CPPC in firmware,
+>  	  leave this option disabled.
+>  
+> +config ACPI_RAS2
+> +	bool "ACPI RAS2 driver"
+> +	depends on ACPI_PROCESSOR
+> +	select MAILBOX
+> +	select PCC
+> +	help
+> +	  The driver adds support for PCC (platform communication
+> +	  channel) interfaces to communicate with the ACPI complaint
+> +	  hardware platform supports RAS2(RAS2 Feature table).
+> +	  The driver adds support for RAS2(extraction of RAS2
+> +	  tables from OS system table), PCC interfaces and OSPM interfaces
+> +	  to send RAS2 commands. Driver adds platform device which
+> +	  binds to the RAS2 memory driver.
+> +
+>  config ACPI_PROCESSOR
+>  	tristate "Processor"
+>  	depends on X86 || ARM64 || LOONGARCH
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index 12ef8180d272..b12fba9cff06 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -105,6 +105,7 @@ obj-$(CONFIG_ACPI_CUSTOM_METHOD)+= custom_method.o
+>  obj-$(CONFIG_ACPI_BGRT)		+= bgrt.o
+>  obj-$(CONFIG_ACPI_CPPC_LIB)	+= cppc_acpi.o
+>  obj-$(CONFIG_ACPI_SPCR_TABLE)	+= spcr.o
+> +obj-$(CONFIG_ACPI_RAS2)		+= ras2_acpi_common.o
+>  obj-$(CONFIG_ACPI_DEBUGGER_USER) += acpi_dbg.o
+>  obj-$(CONFIG_ACPI_PPTT) 	+= pptt.o
+>  obj-$(CONFIG_ACPI_PFRUT)	+= pfr_update.o pfr_telemetry.o
+> diff --git a/drivers/acpi/ras2_acpi_common.c b/drivers/acpi/ras2_acpi_common.c
+> new file mode 100755
+> index 000000000000..c6e4ed96cd81
+> --- /dev/null
+> +++ b/drivers/acpi/ras2_acpi_common.c
+> @@ -0,0 +1,272 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * ACPI RAS2 table processing common functions
+> + *
+> + * (C) Copyright 2014, 2015 Hewlett-Packard Enterprises.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + *
+> + * Support for
+> + * RAS2 - ACPI 6.5 Specification, section 5.2.21
+> + * PCC(Platform Communications Channel) - ACPI 6.5 Specification,
+> + * chapter 14.
+> + *
+> + * Code contains common functions for RAS2.
+> + * PCC(Platform communication channel) interfaces for the RAS2
+> + * and the functions for sending RAS2 commands to the ACPI HW.
+> + */
+> +
+> +#include <linux/export.h>
+> +#include <linux/delay.h>
+> +#include <linux/ktime.h>
 > +#include <linux/platform_device.h>
-> +#include <linux/acpi.h>
-
-nit: Please could you keep them alphabetic order (including the existing 
-ones below).
-
->   #include <linux/atomic.h>
->   #include <linux/kernel.h>
->   #include <linux/init.h>
-> @@ -52,11 +54,13 @@ DEFINE_CORESIGHT_DEVLIST(tpiu_devs, "tpiu");
->   /*
->    * @base:	memory mapped base address for this component.
->    * @atclk:	optional clock for the core parts of the TPIU.
-> + * @pclk:	APB clock if present, otherwise NULL
->    * @csdev:	component vitals needed by the framework.
->    */
->   struct tpiu_drvdata {
->   	void __iomem		*base;
->   	struct clk		*atclk;
-> +	struct clk		*pclk;
->   	struct coresight_device	*csdev;
->   	spinlock_t		spinlock;
->   };
-> @@ -122,14 +126,12 @@ static const struct coresight_ops tpiu_cs_ops = {
->   	.sink_ops	= &tpiu_sink_ops,
->   };
->   
-> -static int tpiu_probe(struct amba_device *adev, const struct amba_id *id)
-> +static int __tpiu_probe(struct device *dev, struct resource *res)
->   {
->   	int ret;
->   	void __iomem *base;
-> -	struct device *dev = &adev->dev;
->   	struct coresight_platform_data *pdata = NULL;
->   	struct tpiu_drvdata *drvdata;
-> -	struct resource *res = &adev->res;
->   	struct coresight_desc desc = { 0 };
->   
->   	desc.name = coresight_alloc_device_name(&tpiu_devs, dev);
-> @@ -142,12 +144,16 @@ static int tpiu_probe(struct amba_device *adev, const struct amba_id *id)
->   
->   	spin_lock_init(&drvdata->spinlock);
->   
-> -	drvdata->atclk = devm_clk_get(&adev->dev, "atclk"); /* optional */
-> +	drvdata->atclk = devm_clk_get(dev, "atclk"); /* optional */
->   	if (!IS_ERR(drvdata->atclk)) {
->   		ret = clk_prepare_enable(drvdata->atclk);
->   		if (ret)
->   			return ret;
->   	}
+> +#include <acpi/ras2_acpi.h>
+> +#include <acpi/acpixf.h>
 > +
-> +	drvdata->pclk = coresight_get_enable_apb_pclk(dev);
-> +	if (IS_ERR(drvdata->pclk))
-> +		return -ENODEV;
->   	dev_set_drvdata(dev, drvdata);
->   
->   	/* Validity for the resource is already checked by the AMBA core */
-> @@ -173,21 +179,34 @@ static int tpiu_probe(struct amba_device *adev, const struct amba_id *id)
->   	desc.dev = dev;
->   	drvdata->csdev = coresight_register(&desc);
->   
-> -	if (!IS_ERR(drvdata->csdev)) {
-> -		pm_runtime_put(&adev->dev);
-> +	if (!IS_ERR(drvdata->csdev))
->   		return 0;
-> -	}
->   
->   	return PTR_ERR(drvdata->csdev);
->   }
->   
-> -static void tpiu_remove(struct amba_device *adev)
-> +static int tpiu_probe(struct amba_device *adev, const struct amba_id *id)
->   {
-> -	struct tpiu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
-> +	int ret;
+> +static int ras2_check_pcc_chan(struct ras2_context *ras2_ctx)
+> +{
+> +	struct acpi_ras2_shared_memory  __iomem *generic_comm_base = ras2_ctx->pcc_comm_addr;
+> +	ktime_t next_deadline = ktime_add(ktime_get(), ras2_ctx->deadline);
 > +
-> +	ret = __tpiu_probe(&adev->dev, &adev->res);
-> +	if (!ret)
-> +		pm_runtime_put(&adev->dev);
-> +	return ret;
+> +	while (!ktime_after(ktime_get(), next_deadline)) {
+> +		/*
+> +		 * As per ACPI spec, the PCC space wil be initialized by
+
+s/wil/will/
+
+Fan
+> +		 * platform and should have set the command completion bit when
+> +		 * PCC can be used by OSPM
+> +		 */
+> +		if (readw_relaxed(&generic_comm_base->status) & RAS2_PCC_CMD_COMPLETE)
+> +			return 0;
+> +		/*
+> +		 * Reducing the bus traffic in case this loop takes longer than
+> +		 * a few retries.
+> +		 */
+> +		udelay(10);
+> +	}
+> +
+> +	return -EIO;
 > +}
 > +
-> +static void __tpiu_remove(struct device *dev)
+> +/**
+> + * ras2_send_pcc_cmd() - Send RAS2 command via PCC channel
+> + * @ras2_ctx:	pointer to the ras2 context structure
+> + * @cmd:	command to send
+> + *
+> + * Returns: 0 on success, an error otherwise
+> + */
+> +int ras2_send_pcc_cmd(struct ras2_context *ras2_ctx, u16 cmd)
 > +{
-> +	struct tpiu_drvdata *drvdata = dev_get_drvdata(dev);
->   
->   	coresight_unregister(drvdata->csdev);
->   }
->   
-> +static void tpiu_remove(struct amba_device *adev)
-> +{
-> +	__tpiu_remove(&adev->dev);
-> +}
-> +
->   #ifdef CONFIG_PM
->   static int tpiu_runtime_suspend(struct device *dev)
->   {
-> @@ -196,6 +215,8 @@ static int tpiu_runtime_suspend(struct device *dev)
->   	if (drvdata && !IS_ERR(drvdata->atclk))
->   		clk_disable_unprepare(drvdata->atclk);
->   
-> +	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-> +		clk_disable_unprepare(drvdata->pclk);
->   	return 0;
->   }
->   
-> @@ -206,6 +227,8 @@ static int tpiu_runtime_resume(struct device *dev)
->   	if (drvdata && !IS_ERR(drvdata->atclk))
->   		clk_prepare_enable(drvdata->atclk);
->   
-> +	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-> +		clk_prepare_enable(drvdata->pclk);
->   	return 0;
->   }
->   #endif
-> @@ -245,7 +268,67 @@ static struct amba_driver tpiu_driver = {
->   	.id_table	= tpiu_ids,
->   };
->   
-> -module_amba_driver(tpiu_driver);
-> +static int tpiu_platform_probe(struct platform_device *pdev)
-> +{
-> +	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 > +	int ret;
+> +	struct acpi_ras2_shared_memory  *generic_comm_base =
+> +		(struct acpi_ras2_shared_memory *)ras2_ctx->pcc_comm_addr;
+> +	static ktime_t last_cmd_cmpl_time, last_mpar_reset;
+> +	struct mbox_chan *pcc_channel;
+> +	static int mpar_count;
+> +	unsigned int time_delta;
 > +
-> +	pm_runtime_get_noresume(&pdev->dev);
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
+> +	if (cmd == RAS2_PCC_CMD_EXEC) {
+> +		ret = ras2_check_pcc_chan(ras2_ctx);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	pcc_channel = ras2_ctx->pcc_chan->mchan;
 > +
-> +	ret = __tpiu_probe(&pdev->dev, res);
-> +	pm_runtime_put(&pdev->dev);
-> +	if (ret)
-> +		pm_runtime_disable(&pdev->dev);
+> +	/*
+> +	 * Handle the Minimum Request Turnaround Time(MRTT)
+> +	 * "The minimum amount of time that OSPM must wait after the completion
+> +	 * of a command before issuing the next command, in microseconds"
+> +	 */
+> +	if (ras2_ctx->pcc_mrtt) {
+> +		time_delta = ktime_us_delta(ktime_get(), last_cmd_cmpl_time);
+> +		if (ras2_ctx->pcc_mrtt > time_delta)
+> +			udelay(ras2_ctx->pcc_mrtt - time_delta);
+> +	}
+> +
+> +	/*
+> +	 * Handle the non-zero Maximum Periodic Access Rate(MPAR)
+> +	 * "The maximum number of periodic requests that the subspace channel can
+> +	 * support, reported in commands per minute. 0 indicates no limitation."
+> +	 *
+> +	 * This parameter should be ideally zero or large enough so that it can
+> +	 * handle maximum number of requests that all the cores in the system can
+> +	 * collectively generate. If it is not, we will follow the spec and just
+> +	 * not send the request to the platform after hitting the MPAR limit in
+> +	 * any 60s window
+> +	 */
+> +	if (ras2_ctx->pcc_mpar) {
+> +		if (mpar_count == 0) {
+> +			time_delta = ktime_ms_delta(ktime_get(), last_mpar_reset);
+> +			if (time_delta < 60 * MSEC_PER_SEC) {
+> +				dev_dbg(ras2_ctx->dev,
+> +					"PCC cmd not sent due to MPAR limit");
+> +				return -EIO;
+> +			}
+> +			last_mpar_reset = ktime_get();
+> +			mpar_count = ras2_ctx->pcc_mpar;
+> +		}
+> +		mpar_count--;
+> +	}
+> +
+> +	/* Write to the shared comm region. */
+> +	writew_relaxed(cmd, &generic_comm_base->command);
+> +
+> +	/* Flip CMD COMPLETE bit */
+> +	writew_relaxed(0, &generic_comm_base->status);
+> +
+> +	/* Ring doorbell */
+> +	ret = mbox_send_message(pcc_channel, &cmd);
+> +	if (ret < 0) {
+> +		dev_err(ras2_ctx->dev,
+> +			"Err sending PCC mbox message. cmd:%d, ret:%d\n",
+> +			cmd, ret);
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * For READs we need to ensure the cmd completed to ensure
+> +	 * the ensuing read()s can proceed. For WRITEs we dont care
+> +	 * because the actual write()s are done before coming here
+> +	 * and the next READ or WRITE will check if the channel
+> +	 * is busy/free at the entry of this call.
+> +	 *
+> +	 * If Minimum Request Turnaround Time is non-zero, we need
+> +	 * to record the completion time of both READ and WRITE
+> +	 * command for proper handling of MRTT, so we need to check
+> +	 * for pcc_mrtt in addition to CMD_READ
+> +	 */
+> +	if (cmd == RAS2_PCC_CMD_EXEC || ras2_ctx->pcc_mrtt) {
+> +		ret = ras2_check_pcc_chan(ras2_ctx);
+> +		if (ras2_ctx->pcc_mrtt)
+> +			last_cmd_cmpl_time = ktime_get();
+> +	}
+> +
+> +	if (pcc_channel->mbox->txdone_irq)
+> +		mbox_chan_txdone(pcc_channel, ret);
+> +	else
+> +		mbox_client_txdone(pcc_channel, ret);
 > +
 > +	return ret;
 > +}
+> +EXPORT_SYMBOL_GPL(ras2_send_pcc_cmd);
 > +
-> +static int tpiu_platform_remove(struct platform_device *pdev)
+> +/**
+> + * ras2_register_pcc_channel() - Register PCC channel
+> + * @ras2_ctx:	pointer to the ras2 context structure
+> + *
+> + * Returns: 0 on success, an error otherwise
+> + */
+> +int ras2_register_pcc_channel(struct ras2_context *ras2_ctx)
 > +{
-> +	struct tpiu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
+> +	u64 usecs_lat;
+> +	unsigned int len;
+> +	struct pcc_mbox_chan *pcc_chan;
+> +	struct mbox_client *ras2_mbox_cl;
+> +	struct acpi_pcct_hw_reduced *ras2_ss;
 > +
-> +	if (WARN_ON(!drvdata))
+> +	ras2_mbox_cl = &ras2_ctx->mbox_client;
+> +	if (!ras2_mbox_cl || ras2_ctx->pcc_subspace_idx < 0)
+> +		return -EINVAL;
+> +
+> +	pcc_chan = pcc_mbox_request_channel(ras2_mbox_cl,
+> +					    ras2_ctx->pcc_subspace_idx);
+> +
+> +	if (IS_ERR(pcc_chan)) {
+> +		dev_err(ras2_ctx->dev,
+> +			"Failed to find PCC channel for subspace %d\n",
+> +			ras2_ctx->pcc_subspace_idx);
 > +		return -ENODEV;
+> +	}
+> +	ras2_ctx->pcc_chan = pcc_chan;
+> +	/*
+> +	 * The PCC mailbox controller driver should
+> +	 * have parsed the PCCT (global table of all
+> +	 * PCC channels) and stored pointers to the
+> +	 * subspace communication region in con_priv.
+> +	 */
+> +	ras2_ss = pcc_chan->mchan->con_priv;
 > +
-> +	__tpiu_remove(&pdev->dev);
-> +	pm_runtime_disable(&pdev->dev);
-> +	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-
-Same as the previous patches.
-
-Suzuki
-
-
-> +		clk_put(drvdata->pclk);
+> +	if (!ras2_ss) {
+> +		dev_err(ras2_ctx->dev, "No PCC subspace found for RAS2\n");
+> +		pcc_mbox_free_channel(ras2_ctx->pcc_chan);
+> +		return -ENODEV;
+> +	}
+> +
+> +	/*
+> +	 * This is the shared communication region
+> +	 * for the OS and Platform to communicate over.
+> +	 */
+> +	ras2_ctx->comm_base_addr = ras2_ss->base_address;
+> +	len = ras2_ss->length;
+> +	dev_dbg(ras2_ctx->dev, "PCC subspace for RAS2=0x%llx len=%d\n",
+> +		ras2_ctx->comm_base_addr, len);
+> +
+> +	/*
+> +	 * ras2_ss->latency is just a Nominal value. In reality
+> +	 * the remote processor could be much slower to reply.
+> +	 * So add an arbitrary amount of wait on top of Nominal.
+> +	 */
+> +	usecs_lat = RAS2_NUM_RETRIES * ras2_ss->latency;
+> +	ras2_ctx->deadline = ns_to_ktime(usecs_lat * NSEC_PER_USEC);
+> +	ras2_ctx->pcc_mrtt = ras2_ss->min_turnaround_time;
+> +	ras2_ctx->pcc_mpar = ras2_ss->max_access_rate;
+> +	ras2_ctx->pcc_comm_addr = acpi_os_ioremap(ras2_ctx->comm_base_addr,
+> +						  len);
+> +	dev_dbg(ras2_ctx->dev, "pcc_comm_addr=%p\n",
+> +		ras2_ctx->pcc_comm_addr);
+> +
+> +	/* Set flag so that we dont come here for each CPU. */
+> +	ras2_ctx->pcc_channel_acquired = true;
+> +
 > +	return 0;
 > +}
+> +EXPORT_SYMBOL_GPL(ras2_register_pcc_channel);
 > +
-> +#ifdef CONFIG_ACPI
-> +static const struct acpi_device_id tpiu_acpi_ids[] = {
-> +	{"ARMHC979", 0, 0, 0}, /* ARM CoreSight TPIU */
-> +	{}
-> +};
-> +MODULE_DEVICE_TABLE(acpi, tpiu_acpi_ids);
-> +#endif
-> +
-> +static struct platform_driver tpiu_platform_driver = {
-> +	.probe	= tpiu_platform_probe,
-> +	.remove	= tpiu_platform_remove,
-> +	.driver = {
-> +		.name			= "coresight-tpiu-platform",
-> +		.acpi_match_table	= ACPI_PTR(tpiu_acpi_ids),
-> +		.suppress_bind_attrs	= true,
-> +		.pm			= &tpiu_dev_pm_ops,
-> +	},
-> +};
-> +
-> +static int __init tpiu_init(void)
+> +/**
+> + * ras2_unregister_pcc_channel() - Unregister PCC channel
+> + * @ras2_ctx:	pointer to the ras2 context structure
+> + *
+> + * Returns: 0 on success, an error otherwise
+> + */
+> +int ras2_unregister_pcc_channel(struct ras2_context *ras2_ctx)
 > +{
-> +	return coresight_init_driver("tpiu", &tpiu_driver, &tpiu_platform_driver);
-> +}
+> +	if (!ras2_ctx->pcc_chan)
+> +		return -EINVAL;
 > +
-> +static void __exit tpiu_exit(void)
-> +{
-> +	coresight_remove_driver(&tpiu_driver, &tpiu_platform_driver);
+> +	pcc_mbox_free_channel(ras2_ctx->pcc_chan);
+> +
+> +	return 0;
 > +}
-> +module_init(tpiu_init);
-> +module_exit(tpiu_exit);
->   
->   MODULE_AUTHOR("Pratik Patel <pratikp@codeaurora.org>");
->   MODULE_AUTHOR("Mathieu Poirier <mathieu.poirier@linaro.org>");
-
+> +EXPORT_SYMBOL_GPL(ras2_unregister_pcc_channel);
+> +
+> +/**
+> + * ras2_add_platform_device() - Add a platform device for RAS2
+> + * @name:	name of the device we're adding
+> + * @data:	platform specific data for this platform device
+> + * @size:	size of platform specific data
+> + *
+> + * Returns: pointer to platform device on success, an error otherwise
+> + */
+> +struct platform_device *ras2_add_platform_device(char *name, const void *data,
+> +						 size_t size)
+> +{
+> +	int ret;
+> +	struct platform_device *pdev;
+> +
+> +	pdev = platform_device_alloc(name, PLATFORM_DEVID_AUTO);
+> +	if (!pdev)
+> +		return NULL;
+> +
+> +	ret = platform_device_add_data(pdev, data, size);
+> +	if (ret)
+> +		goto dev_put;
+> +
+> +	ret = platform_device_add(pdev);
+> +	if (ret)
+> +		goto dev_put;
+> +
+> +	return pdev;
+> +
+> +dev_put:
+> +	platform_device_put(pdev);
+> +
+> +	return ERR_PTR(ret);
+> +}
+> diff --git a/include/acpi/ras2_acpi.h b/include/acpi/ras2_acpi.h
+> new file mode 100644
+> index 000000000000..5e9ac788670a
+> --- /dev/null
+> +++ b/include/acpi/ras2_acpi.h
+> @@ -0,0 +1,59 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/*
+> + * RAS2 ACPI driver header file
+> + *
+> + * (C) Copyright 2014, 2015 Hewlett-Packard Enterprises
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited
+> + */
+> +
+> +#ifndef _RAS2_ACPI_H
+> +#define _RAS2_ACPI_H
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/mailbox_client.h>
+> +#include <linux/mailbox_controller.h>
+> +#include <linux/types.h>
+> +#include <acpi/pcc.h>
+> +
+> +#define RAS2_PCC_CMD_COMPLETE 1
+> +
+> +/* RAS2 specific PCC commands */
+> +#define RAS2_PCC_CMD_EXEC 0x01
+> +
+> +#define RAS2_FAILURE 0
+> +#define RAS2_SUCCESS 1
+> +
+> +/*
+> + * Arbitrary Retries for PCC commands because the
+> + * remote processor could be much slower to reply.
+> + */
+> +#define RAS2_NUM_RETRIES 600
+> +
+> +/*
+> + * Data structures for PCC communication and RAS2 table
+> + */
+> +struct ras2_context {
+> +	struct device *dev;
+> +	int id;
+> +	struct mbox_client mbox_client;
+> +	struct pcc_mbox_chan *pcc_chan;
+> +	void __iomem *pcc_comm_addr;
+> +	u64 comm_base_addr;
+> +	int pcc_subspace_idx;
+> +	bool pcc_channel_acquired;
+> +	ktime_t deadline;
+> +	unsigned int pcc_mpar;
+> +	unsigned int pcc_mrtt;
+> +	/* Lock to provide mutually exclusive access to PCC channel */
+> +	spinlock_t spinlock;
+> +	struct device *scrub_dev;
+> +	const struct ras2_hw_scrub_ops *ops;
+> +};
+> +
+> +struct platform_device *ras2_add_platform_device(char *name, const void *data,
+> +						 size_t size);
+> +int ras2_send_pcc_cmd(struct ras2_context *ras2_ctx, u16 cmd);
+> +int ras2_register_pcc_channel(struct ras2_context *ras2_ctx);
+> +int ras2_unregister_pcc_channel(struct ras2_context *ras2_ctx);
+> +#endif /* _RAS2_ACPI_H */
+> -- 
+> 2.34.1
+> 
 
