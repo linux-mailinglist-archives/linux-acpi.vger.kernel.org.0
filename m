@@ -1,244 +1,250 @@
-Return-Path: <linux-acpi+bounces-4298-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4299-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A60879D98
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 22:42:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB477879E4F
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 23:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FE291F214DE
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 21:42:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7025E284933
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 22:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F6914372C;
-	Tue, 12 Mar 2024 21:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806A7143C5F;
+	Tue, 12 Mar 2024 22:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AV89oZLV"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="FM779HfQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228E313B2BF;
-	Tue, 12 Mar 2024 21:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710279722; cv=fail; b=KT4CZAXvdvfcSVkF06wnarS/Hm+z4OlQg5e1hoUy0gDmxGVBzWJi6FAiqDs/kPm2rHtD7G8ANP3DRdKpOwmPJYbgQxdWkgp/PDqLJflTlHckm+4rc8VV1iQX9Tr4w1TRv9Kz9T/yQVNy3wYpNiPX9SFP4zpFXkowjSDHTd6gq3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710279722; c=relaxed/simple;
-	bh=o0L1dEYUnm17sDwqpWqhi9ICtmyEGfzo+oo2bjzcgGA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WAKDE44PdHDKEfr0Rk1yAE3sUxovy2fAf2hR+JWSyc0QiKIsPft6yPQvUQxrgCWZ8trOAuoGmgxYsbj4JZVa5pBbxz+vS1EpZXILdqbHLV8SIQEVE+Jmjd5dtvubzzIrje/sGDBZwVZytE/xsghWJkf8R+4wOFcRiAn9RzJFFTk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AV89oZLV; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710279721; x=1741815721;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=o0L1dEYUnm17sDwqpWqhi9ICtmyEGfzo+oo2bjzcgGA=;
-  b=AV89oZLVuSggbVZS9787QyuWvfPY0GH0Laa/5BlC3OR3r1Vy25L1q9gM
-   B8gRthV8qM2Och7kM9aUc1rGUWtiGbpXb+36nI7xIK4aHYoVatSKrDVSO
-   T0WDxMls0TRrnjkYiElcDHcnuOESTMWFOpTNdYp+NKGzJ4OF9jx0M5wvy
-   4+DssrDSSuPBVgk1ToXL72KxOtWVLQV8Fk3CAj0Fc7rCdt1hClxqsRXAd
-   qQKnwO3+EjemqLcXV+KltsNKDhxmO3dSVEFTdgfyjYBWU4u9xVwvKVWEG
-   RVUlJtfVHW4OSYj5096+uofEexguikQugC7jtjF0/Zx0OtSRtU/SFiPdo
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="8830876"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="8830876"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 14:42:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="12143468"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Mar 2024 14:42:01 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Mar 2024 14:42:00 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 12 Mar 2024 14:41:59 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 12 Mar 2024 14:41:59 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 12 Mar 2024 14:41:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mCBQri4AalCCO5y3b/x8c/zXJuFahgZvvD+ZBSAmayABONUiSQ7sjQmOXuxPxfjFaUdtmAvGfTZ2Nou4zi9YDzhAk31U0beDdjtOOkpfaPRv9qL++HbMZXqmc8Il2//bTMEj7UDL4FS6zwyO06CQDeV2cdFqC6yas+Hwwhqh7igJG+QWbFIDt74wF+8fw4RKzkHbpp7s0Jsg8ZdCxbuLXgcTHQqWyDCJn0AL01gA2mE09UAONFX82J7wgkmq5FOLTeps/mUiFw7IZg64pPZujudbm0EB9f77JTbaJdGO0P3SAWFq+QVmWJjmKgUpaYgPrZXc1rG2uFEuq56OU936Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uA4KnZJsQLxUG9HfTUY9jDfN99b/v2Cemyg3mUmDGIo=;
- b=mO8M3jxh8IqDShgDx9xHgfBu9oFpGXhX+6JSfUiYXFM5E6M5YBhtKtr9qx5Enp02dgbqHRfld9OQYLv6P/mqqsN38vbIM5QGel8F8E1nYsL0sZJW9B3UE1qgRRc03fFFbfH2R3uWi6HaWQE8Pk7xqZOHOV6LW2sUy/IffAh/rXgOBsaI4D63v2AQb4WfY9hVwYi4Tx51qXcemCvBvUI35zZhXPgEC7Dz+1VoyNQ63cdOMnrrLyE67kg8zJPxAOcdgNgSkEIe2ftPkEdeBBJdCn1bL/RWq7UWUIOBT+GUx4A7L4jGqRn3guadiJrpOmS75Z8/l7dAQMjX8MiqXeojHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA0PR11MB4672.namprd11.prod.outlook.com (2603:10b6:806:96::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.18; Tue, 12 Mar
- 2024 21:41:57 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7386.015; Tue, 12 Mar 2024
- 21:41:57 +0000
-Date: Tue, 12 Mar 2024 14:41:55 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Dave Jiang <dave.jiang@intel.com>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>
-CC: <dan.j.williams@intel.com>, <ira.weiny@intel.com>,
-	<vishal.l.verma@intel.com>, <alison.schofield@intel.com>,
-	<Jonathan.Cameron@huawei.com>, <dave@stgolabs.net>, <rafael@kernel.org>,
-	<gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v7 12/12] cxl/region: Deal with numa nodes not enumerated
- by SRAT
-Message-ID: <65f0cc232c07_a9b42945c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <20240308220055.2172956-1-dave.jiang@intel.com>
- <20240308220055.2172956-13-dave.jiang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240308220055.2172956-13-dave.jiang@intel.com>
-X-ClientProxiedBy: MW4PR03CA0079.namprd03.prod.outlook.com
- (2603:10b6:303:b6::24) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CEF143757
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Mar 2024 22:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710281800; cv=none; b=rqrW/n1cEB06j4B+16hgSL37CUGgq9JWPI9zPgR/8JgAuqPxqydrMwnN0w2A2eSRbj6Y1n+y2Hxvq8btOF+uuMYxFVKQePAANA1uUKS5Y0rkGjeywzzFsmUsejPfZIk991FqKmaZqSfLsp7H1YTQeAterS3biujq83DSKEoivxs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710281800; c=relaxed/simple;
+	bh=29lGtt+FNCN9S2KQf6kk94AOhKW6QWHPkOKp+UlxMXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eyp8weSo7/mT0ZQqVJf7ERu5shnpT5SxPYJ23nNFul1MiFVctaCEyic8y4tpBcK6gPJRRxwII35/+QKt8bPiKZ3tIYZOTNkv2Sr+EG3N7Cxi3/RUE7oMvucpyfKAWsqxMQ/KN4b+OFSLAMZTQ1vvAuW2LOdXO1ySoEdn5YM1o6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=FM779HfQ; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id EB8FB2C02A7;
+	Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1710281794;
+	bh=QkDvjqXPbE0D7ZwwFAxzlxE4F1vMbl+jYl4PeFHElW0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FM779HfQbBK/kf1/Z52N+32dKIO/ksjXXz/rG2NQfomXSyBY3tnRAnlXW8x62AI6k
+	 F+lrYa1A30c6pXZeyDrVjoqcZ0296TKTFML3saV1X5WF2LyzgVkPZu8V/9SQQLjuge
+	 RZNHOEWAvTkxUNluXfOzCTv5DVhVIai4VwuOKBHoAcB+lUrn/IBFwW7YJir9J3Nleo
+	 3le3U/vLu/nRKmBWVclzXh5y2DGjJm2fZqjtZsC3h+wWO+1xGSNd0hdGIv0V/6Hjun
+	 kr8lmPvZknby0ZKJ1DknTVIRh0jdyqy4WJJG8fbXLNyGRC/odKEqr18K9QKYnyeb5T
+	 h6sDHqC/lBi2Q==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65f0d4420000>; Wed, 13 Mar 2024 11:16:34 +1300
+Received: from hamishm-dl.ws.atlnz.lc (hamishm-dl.ws.atlnz.lc [10.33.24.13])
+	by pat.atlnz.lc (Postfix) with ESMTP id B2B7613ED56;
+	Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+Received: by hamishm-dl.ws.atlnz.lc (Postfix, from userid 1133)
+	id B4EDF2408B9; Wed, 13 Mar 2024 11:16:34 +1300 (NZDT)
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+To: mika.westerberg@linux.intel.com,
+	wsa+renesas@sang-engineering.com
+Cc: linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] i2c: acpi: Unbind mux adapters before delete
+Date: Wed, 13 Mar 2024 11:16:32 +1300
+Message-ID: <20240312221632.859695-1-hamish.martin@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB4672:EE_
-X-MS-Office365-Filtering-Correlation-Id: 92ecd3ad-7af1-4398-ebee-08dc42dd3df2
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OpyJPmoGitJR9J0QmNcufwFX6Ov012jAeRIGIL5obifQsc8HJiM1WDmZdS9xujvRb2ab/UufneGbRHyjwndNV+ha/HzRM0gJG3hMbKPszArfh+HM0plbnDlkgc+lxXRVER3hv6zB46LFJeMqLjJOVpR220PSMxH+oSrPQU8OlkRWpdYhsmVWd942G1yy1O5LGun+F0KgBn30UK9gt1tsEXTcLVs2cNLEwaFyqkxJZTm6l+xb9pSKXB6Au1Z4atf5NdUTTdAvRV6G+Ki1GcuIFpob0QzabsrHP+IRlrXcYieDQFGkjx/DVLB7c0f3+IvYHhkNG0ETH3u70dtsBeLYfaylU7b1XmgHScDZIlQXShCCsNdUpbifwQYnS0zH9y3KMaxd3wVy+dk/sCumLuFA3oG+1C283Qx5lyxJruEIoESVv+eO87ie+lQ79UKFoIKIbJBPKM4YElSGbrklgySuTPu2SExqn2oa0s6Q6xlAJOSs8TLYj36Qx4lvSGtEXDsvP+KSTTfs7qc30y3tAxxs0rJ8k0oxJ9Pb+2zLq58RBf2kLbPX8T6PWpaav1GrzgPv3GDpA13+ly6J0q2vrlOa22qVNrLuvHCKVRFLCChvWlxDjCTVxP+M5PN3mlfQu53t3569kcN3sCU+t0iJ+xlqnGQ2aoRUISPei4gjRQZAaNY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XUrHijSH/qt3o++3IALszYh1shJrevR1dmEz4JKGWiCSfs8DAnP2PkuxJ76h?=
- =?us-ascii?Q?eooYZCcm2/6bfRW7ACEo1OXab1JHm9Vg23uMkXtr9FqH/MhrjwlooXqR9Sgc?=
- =?us-ascii?Q?iDwAksJlOIMCoOLnD5SwtL24Ls3hVQHDTe8bQ3eUX7/G1eCbHb2LjH79Z5RQ?=
- =?us-ascii?Q?rZVeu+PYjYA+Ou6A8HpqFgE78Rnc0F/Pwr7WLqpXG8160/YNOubrdoVHOS8/?=
- =?us-ascii?Q?7mcF/DSRNxKdncnbfTsQpPm6w+gTsUy5AL0khg5qxgicYf4Ridv/atqhkTpV?=
- =?us-ascii?Q?GvF31AX6AvOu7nKtPL6Xk+imVjIMIMUrkNr2345HlMBhHuAQJz+wJagnTYf2?=
- =?us-ascii?Q?0MEWMk1+/w3BuauA/A5wZmiWng42Hn1ecOvXu8oxcjdx1sidg7yYTgFzvv7H?=
- =?us-ascii?Q?YXg1GU/1RZt7yQpYgLWl8BUsJ8sSz9DdWe5IJ7WzQZIpy+u+rbloeBwPbu/E?=
- =?us-ascii?Q?MkgMFegCP6EZ7mI0tW3y2/HI7Nb0cVFb8SquzNzLyf7wQ1nAClGLc0FnK5oL?=
- =?us-ascii?Q?f987kadBtW10ENILtcMyMmfzLZi9s1PXOmw4SOdrck0/DX9BU/UX9hTI0vpu?=
- =?us-ascii?Q?oJyH46SmPFXcx7GlFEG29UaO+VUdkNNS6soYwdQjS6H+uVT5QhNj7OMTtaQm?=
- =?us-ascii?Q?NIPO1JwYZB6GY4MEZDsOknmJh4OZ9ra6sPWDZTo3TxZ5fEebz4qg63njTSeA?=
- =?us-ascii?Q?Co4pGSPRAhXWnYyysot7W8Yw2mp+OGLlTfrDIvmTQsvlEOMSJSbOtrYB2LUG?=
- =?us-ascii?Q?IiUcsFM+wYldXg71Stukr139UcubGjv9vNvp4UcUTnyTWOuFNpeDSbY7Tpb9?=
- =?us-ascii?Q?eHZVW4WTMHL7cZ5LupzsPQfLOCiXC1o2qyJTzHmPnuS18B6+ZhrpDRZK+G4t?=
- =?us-ascii?Q?vGnugpeiiQ7eJVybSezY0NifJBKSeJwkuAIyKvb2lpcRrUL9+9scgNtJXpKL?=
- =?us-ascii?Q?zzvM+GSOUuezno1rqgvBP241B9oR2D9WQhzZISs8ZYVdPr8ddw1vLm9kFq57?=
- =?us-ascii?Q?+qqthpDaE0tBh+OoZ93QgRdM91cCBG7nKoTsT9cT3H9EAcY1I2rdXHQr7l00?=
- =?us-ascii?Q?Cripf0BZgcY2wEKJwdpIqgiQuTu6mN0i6DB6ku3es91HGvvnIV1pmYG3tGqR?=
- =?us-ascii?Q?Z5Sci7tC/xrAJs4DQ3X+gG6CfflckmJ+snAWh96SATTAjMqQcPSkktkgwqLh?=
- =?us-ascii?Q?jc808Znhulhlqixn3Off3uPC0jL/1u+qogBrssl6GF8O6Lv3naUkVyAAYhJ5?=
- =?us-ascii?Q?OfzhF5ody7vy2WCyrC+Hm8/Pj+YpVl5VlMKxLQF9u+zIOKsEA4R/1Pk5KFE7?=
- =?us-ascii?Q?yeQdm/nPXKQ9jpD58CHqW1Gg7REpZkJcBY/3qMhOa2VrTn7u5CF6OMuty9rc?=
- =?us-ascii?Q?f1aN2EVlxinApHu3lnMlkM7ax/u/wTALy1EdiOmADYzRKHUmKWo1DGGsYlxj?=
- =?us-ascii?Q?h0UpHa6wn/iYrIm4jCJ58l4N3evcVz60PT7F1VpTDl3ihvHGK2XS1w2MkU4I?=
- =?us-ascii?Q?SDkGYlA5zLqmmy8/LePwZ8kapelk2N7j9uMJu8gEnonMGOY79OrK4oxpNozi?=
- =?us-ascii?Q?vu4tOh8giP4aEyCjQLHhoL2qu21ccaUZ+O07riSUu3qt3UYgS36btzlr/WYo?=
- =?us-ascii?Q?mg=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 92ecd3ad-7af1-4398-ebee-08dc42dd3df2
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Mar 2024 21:41:57.5738
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rSXLZeAlbh9h0OotcoTlu7+nI0uCN+pQCj+thArj3fcILTAO4/ZNGydKDJw+TA/Jr/lgSL1AxPH1uqd4uK0wS/6cMk1XNsHRx2dqMu2rBpI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4672
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BKkQr0QG c=1 sm=1 tr=0 ts=65f0d442 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=K6JAEmCyrfEA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=yJIMdjkqGNwF9fQ3hkEA:9 a=3ZKOabzyN94A:10 a=AjGcO6oz07-iQ99wixmX:22 a=cvBusfyB2V15izCimMoJ:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-Dave Jiang wrote:
-> For the numa nodes that are not created by SRAT, no memory_target is
-> allocated and is not managed by the HMAT_REPORTING code. Therefore
-> hmat_callback() memory hotplug notifier will exit early on those NUMA
-> nodes. The CXL memory hotplug notifier will need to call
-> node_set_perf_attrs() directly in order to setup the access sysfs
-> attributes.
-> 
-> In acpi_numa_init(), the last proximity domain (pxm) id created by SRAT is
-> stored. Add a helper function acpi_node_backed_by_real_pxm() in order to
-> check if a NUMA node id is defined by SRAT or created by CFMWS.
-> 
-> node_set_perf_attrs() symbol is exported to allow update of perf attribs
-> for a node. The sysfs path of
-> /sys/devices/system/node/nodeX/access0/initiators/* is created by
-> node_set_perf_attrs() for the various attributes where nodeX is matched
-> to the NUMA node of the CXL region.
-> 
-> Cc: Rafael J. Wysocki <rafael@kernel.org>
-> Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> ---
-> v7:
-> - Fix typo is commit log. (Jonathan)
-> ---
->  drivers/acpi/numa/srat.c  | 11 +++++++++++
->  drivers/base/node.c       |  1 +
->  drivers/cxl/core/cdat.c   |  5 +++++
->  drivers/cxl/core/core.h   |  1 +
->  drivers/cxl/core/region.c |  7 ++++++-
->  include/linux/acpi.h      |  9 +++++++++
->  6 files changed, 33 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 0214518fc582..e45e64993c50 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -29,6 +29,8 @@ static int node_to_pxm_map[MAX_NUMNODES]
->  unsigned char acpi_srat_revision __initdata;
->  static int acpi_numa __initdata;
->  
-> +static int last_real_pxm;
-> +
->  void __init disable_srat(void)
->  {
->  	acpi_numa = -1;
-> @@ -536,6 +538,7 @@ int __init acpi_numa_init(void)
->  		if (node_to_pxm_map[i] > fake_pxm)
->  			fake_pxm = node_to_pxm_map[i];
->  	}
-> +	last_real_pxm = fake_pxm;
->  	fake_pxm++;
->  	acpi_table_parse_cedt(ACPI_CEDT_TYPE_CFMWS, acpi_parse_cfmws,
->  			      &fake_pxm);
-> @@ -547,6 +550,14 @@ int __init acpi_numa_init(void)
->  	return 0;
->  }
->  
-> +bool acpi_node_backed_by_real_pxm(int nid)
-> +{
-> +	int pxm = node_to_pxm(nid);
-> +
-> +	return pxm <= last_real_pxm;
-> +}
-> +EXPORT_SYMBOL_GPL(acpi_node_backed_by_real_pxm);
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
 
-I quibble with this naming because it is not about "real" vs "fake" is
-about HMAT decorated PXMs vs not, but I do not want to hold up v6.9
-consideration for this quibble.
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
 
-It can be addressed when / if cxl_need_node_perf_attrs_update() ever
-interoperates with a non ACPI platform.
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
+
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+=
+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a=
+7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc =
+0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000=
+000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
+
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
+
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
+
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifi=
+cations")
+Cc: <stable@vger.kernel.org> # v4.8+
+---
+
+Notes:
+    v4:
+      Resolve Build failure noted by:
+        Linux Kernel Functional Testing <lkft@linaro.org>, and
+        kernel test robot <lkp@intel.com>
+      These failures led to revert of the v3 version of this patch that h=
+ad been accepted earlier.
+    v3:
+      Add reviewed by tags (Mika Westerberg and Andi Shyti) and Fixes tag=
+.
+    v2:
+      Moved long problem description from cover letter to commit descript=
+ion at Mika's suggestion
+
+ drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d6037a328669..14ae0cfc325e 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_ad=
+ev(struct acpi_device *adev)
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
+=20
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_dev=
+ice *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
++
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long valu=
+e,
+ 			   void *arg)
+ {
+@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *n=
+b, unsigned long value,
+ 			break;
+=20
+ 		client =3D i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter =3D i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_unbind_one(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+=20
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
+ 	}
+=20
+--=20
+2.43.2
 
 
