@@ -1,261 +1,371 @@
-Return-Path: <linux-acpi+bounces-4256-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4257-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221808789F3
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 22:20:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314C3878E6B
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 07:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDFF5281332
-	for <lists+linux-acpi@lfdr.de>; Mon, 11 Mar 2024 21:20:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553861C21E4D
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 06:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504C656B69;
-	Mon, 11 Mar 2024 21:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE422B2D7;
+	Tue, 12 Mar 2024 06:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D9gGpIua"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="SAIxxY67"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF5356772;
-	Mon, 11 Mar 2024 21:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583881E48C;
+	Tue, 12 Mar 2024 06:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710192045; cv=none; b=bbvb8CwJHRDe4mx9JeBUqdMNwf/0cjhCVGjbtcPp5y32hOWxYrQH+dSyl1dfAnJsehPKHfw335IqPk8+/iEMqv7fT6AWRYnbsxT8q8hoOkt+07uUxCHnRknKCLTXd7XcRi5Mqs+hmvY7Hp9sfs5Ea/cKNtycoqQ5h25QJ+ZH/UQ=
+	t=1710223557; cv=none; b=LtQQx9IK5qG2GaITcJXR3aNo5luWm1aotbBK3ccJDbm0mnUWafzrQMmsSfBfZoeLNECMdzs/HyJOS8m+hfvGmNRVy+TWV/PJI5hZY1iN/pSl0dgNhX/FhEt1xr/X8JPrLldYeZQThxndorW1Q0cn0Z5SOEb6W+Gxg0DX9nXMftc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710192045; c=relaxed/simple;
-	bh=HxYdp/+1ZrmqCfP7H1h9KnkYHbDmS8tczK9UeaKATig=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NeNFU8jQrufw0UNrXtIaWPdjwrLbeUlUJLpHj3802m+e3ktSVc1D8HtX/kkwuEcJbFCTvcP/Q9u4q5Zg85/z+jImgDjQ+UcQw1cli+hY99wOUbZncx/nVeZy9cLDmpJ3Is8fOg0GTqTlycidzMrisIsRjZCZusQVO6WFFH1J72w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D9gGpIua; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7bed9fb159fso172492439f.1;
-        Mon, 11 Mar 2024 14:20:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710192043; x=1710796843; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BBhNEQBVy1fL/SUIc8TvpP+Pi6/a540l6mhfsmCEnoA=;
-        b=D9gGpIuaKliULNOid2NDaeh/rxs8s9kHu1YDiG5TYBrkC3bAoW2CUIioGe5LzmITXn
-         UEtWWw+drSglfkEAq1Z4FN3MIIlyScW5yxvYXhLZB2PMTR17Jz4Buvuce002k3I+YkIA
-         GOyoJISL2jJ4rQw7yTK/ZCbtQWKGEJLkecLqZekN/prt3Zsj74GYmS7Q9KGIvtP8ewKr
-         xFzdAlj9Gc3w3Qe8adxiUTfkkjfXBxoegs/L3NtluYoVlNfGndQwWJidy9nBNhzr3+HA
-         IUJLEgN/cWFLy33yDRaqzr2xY3N8ju3tJYwqwSmHJpw0Dg4mHmrmwaJF0sTksb8w/W18
-         k1qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710192043; x=1710796843;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BBhNEQBVy1fL/SUIc8TvpP+Pi6/a540l6mhfsmCEnoA=;
-        b=uyRtQ5rLtO3BwPYbQzfQ6hOoQQG1xi3km79ntZS5l/0sJUYw9M2lV0xAG0ROgsJFid
-         hXkEfUPOV3/DHgtZlbhB1W//EX5DMa97aK289zZYg5anBEu/7fZHGh2OUhjDkNRHxSU8
-         HTT1nIlLLRcofYWTcyryx7s4Fg7cl1675IFDgPCyeO8k8TGbGYgUFspzXVf8G2fqCz6v
-         l47td1y4prNvzt+//usvQ6O70ceqb6T8ddMOHYF1WirkFD/1Ic9uDkDr2UXzfE+hIhRP
-         IBiIImevwCollKJdut1apy0OlyGF/UTfWg2GaJJbHmtNF6LnE0ZZKqat6tI5inATvom1
-         7C/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXNZQPRKceiaLGRVDNzxqvo+VUj9wDwQC4KfRitebiCToT+MWPZG/CIxopkzQs5tJdTny0vRkrYwnFtm11icOKVzSZWf652+7Ba5Q/fMUst7KYZfPsiI55lX7Xh9WybJivDHdQbofpmKtnDc9aXYAYYHVZasb9Jl4cMs31SFw0JJlz5+Lc=
-X-Gm-Message-State: AOJu0YzR5ibGQWoONgv92ceKVG0MSXQqJYfUhQrfprmTaWN9zu4+yPoy
-	A9CRRv4cSHe8QlFd9Zs2RzlEspYjj4I7JSN5/cH7aSnJUP86pNAK
-X-Google-Smtp-Source: AGHT+IF0bJjkZx211Ow0o9UR7ZYHFVRcRVsv6ZP9/5/UfJ2pK3pt/4piWTc05I528CJAag+9Qocpiw==
-X-Received: by 2002:a05:6602:3307:b0:7c7:b761:9cea with SMTP id b7-20020a056602330700b007c7b7619ceamr8625565ioz.14.1710192042729;
-        Mon, 11 Mar 2024 14:20:42 -0700 (PDT)
-Received: from debian ([50.205.20.42])
-        by smtp.gmail.com with ESMTPSA id a26-20020a056638005a00b004746fab2afdsm1904555jap.40.2024.03.11.14.20.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 14:20:42 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Mon, 11 Mar 2024 14:20:23 -0700
-To: shiju.jose@huawei.com
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, david@redhat.com,
-	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
-	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
-	jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	linuxarm@huawei.com
-Subject: Re: [RFC PATCH v7 03/12] cxl/mbox: Add SET_FEATURE mailbox command
-Message-ID: <Ze91l0jz_DZR9jjx@debian>
-References: <20240223143723.1574-1-shiju.jose@huawei.com>
- <20240223143723.1574-4-shiju.jose@huawei.com>
+	s=arc-20240116; t=1710223557; c=relaxed/simple;
+	bh=rDcBJbsRo0JhtRhfwW/jpTXKT07sa2TW+DJ7aRY/6fs=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=UkVtNwBq3Y0fSCBvMvIbb1yVqDNdcrWcmY1SOliuAxOyEPhZ6QyUS0EX9VAwAUhmEH+aU2IePuQsno2Ipg0YxHYMeNYbgBVjX0kura0tVEQxt4w1h+uwTwq5o53XkI+YskkDBHXonvFAAesY6ZvK58XtMibvZj3B650k2RHx79M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=SAIxxY67; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1710223552; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=+tAyefb9X6kRjApZV5oPZWTBz3sh185ettyS9iiaj4k=;
+	b=SAIxxY67l9mMRH/Faczezr5ve+81pDcrAnAaC99+VoNi5JQkP4ip9seIgXGSxq9qu9rcDLzHFx4l943ESRL+xT5/jeaRiLQ8SbD76cSI5yTuAjv31cZNYzTUQZUEk5VQM/eNaCTi4tMNEmNX7By55sRn2vPIwkqaA01RCptMer4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046060;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=32;SR=0;TI=SMTPD_---0W2KiIQW_1710223549;
+Received: from 30.240.112.150(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0W2KiIQW_1710223549)
+          by smtp.aliyun-inc.com;
+          Tue, 12 Mar 2024 14:05:51 +0800
+Message-ID: <2a6642a1-d20d-4588-9e5c-a4693f96fe38@linux.alibaba.com>
+Date: Tue, 12 Mar 2024 14:05:48 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223143723.1574-4-shiju.jose@huawei.com>
+User-Agent: Mozilla Thunderbird
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH v11 3/3] ACPI: APEI: handle synchronous exceptions in task
+ work to send correct SIGBUS si_code
+To: Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
+ will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+ ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+ baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240204080144.7977-4-xueshuai@linux.alibaba.com>
+ <20240308101836.GDZerl_IXIkWt8VuZN@fat_crate.local>
+Content-Language: en-US
+In-Reply-To: <20240308101836.GDZerl_IXIkWt8VuZN@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 23, 2024 at 10:37:14PM +0800, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add support for SET_FEATURE mailbox command.
-> 
-> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
-> CXL devices supports features with changeable attributes.
-> The settings of a feature can be optionally modified using Set Feature
-> command.
-> 
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/cxl/core/mbox.c | 67 +++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlmem.h    | 30 ++++++++++++++++++
->  2 files changed, 97 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index c078e62ea194..d1660bd20bdb 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -1366,6 +1366,73 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
->  
-> +int cxl_set_feature(struct cxl_memdev_state *mds,
-> +		    const uuid_t feat_uuid, u8 feat_version,
-> +		    void *feat_data, size_t feat_data_size,
-> +		    u8 feat_flag)
-> +{
-> +	struct cxl_memdev_set_feat_pi {
-> +		struct cxl_mbox_set_feat_hdr hdr;
-> +		u8 feat_data[];
-> +	}  __packed;
-> +	size_t data_in_size, data_sent_size = 0;
-> +	struct cxl_mbox_cmd mbox_cmd;
-> +	size_t hdr_size;
-> +	int rc = 0;
-> +
-> +	struct cxl_memdev_set_feat_pi *pi __free(kfree) =
-> +					kmalloc(mds->payload_size, GFP_KERNEL);
-> +	pi->hdr.uuid = feat_uuid;
-> +	pi->hdr.version = feat_version;
-> +	feat_flag &= ~CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK;
-> +	hdr_size = sizeof(pi->hdr);
-> +	/*
-> +	 * Check minimum mbox payload size is available for
-> +	 * the feature data transfer.
-> +	 */
-> +	if (hdr_size + 10 > mds->payload_size)
 
-Where does this magic number come from? 
 
-Fan
-
-> +		return -ENOMEM;
-> +
-> +	if ((hdr_size + feat_data_size) <= mds->payload_size) {
-> +		pi->hdr.flags = cpu_to_le32(feat_flag |
-> +				       CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER);
-> +		data_in_size = feat_data_size;
-> +	} else {
-> +		pi->hdr.flags = cpu_to_le32(feat_flag |
-> +				       CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER);
-> +		data_in_size = mds->payload_size - hdr_size;
-> +	}
-> +
-> +	do {
-> +		pi->hdr.offset = cpu_to_le16(data_sent_size);
-> +		memcpy(pi->feat_data, feat_data + data_sent_size, data_in_size);
-> +		mbox_cmd = (struct cxl_mbox_cmd) {
-> +			.opcode = CXL_MBOX_OP_SET_FEATURE,
-> +			.size_in = hdr_size + data_in_size,
-> +			.payload_in = pi,
-> +		};
-> +		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		data_sent_size += data_in_size;
-> +		if (data_sent_size >= feat_data_size)
-> +			return 0;
-> +
-> +		if ((feat_data_size - data_sent_size) <= (mds->payload_size - hdr_size)) {
-> +			data_in_size = feat_data_size - data_sent_size;
-> +			pi->hdr.flags = cpu_to_le32(feat_flag |
-> +					       CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER);
-> +		} else {
-> +			pi->hdr.flags = cpu_to_le32(feat_flag |
-> +					       CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER);
-> +		}
-> +	} while (true);
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_set_feature, CXL);
-> +
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr)
->  {
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index bcfefff062a6..a8d4104afa53 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -531,6 +531,7 @@ enum cxl_opcode {
->  	CXL_MBOX_OP_GET_LOG		= 0x0401,
->  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
->  	CXL_MBOX_OP_GET_FEATURE		= 0x0501,
-> +	CXL_MBOX_OP_SET_FEATURE		= 0x0502,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
->  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> @@ -773,6 +774,31 @@ struct cxl_mbox_get_feat_in {
->  	u8 selection;
->  }  __packed;
->  
-> +/* Set Feature CXL 3.1 Spec 8.2.9.6.3 */
-> +/*
-> + * Set Feature input payload
-> + * CXL rev 3.1 section 8.2.9.6.3 Table 8-101
-> + */
-> +/* Set Feature : Payload in flags */
-> +#define CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK	GENMASK(2, 0)
-> +enum cxl_set_feat_flag_data_transfer {
-> +	CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_ABORT_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_DATA_TRANSFER_MAX
-> +};
-> +#define CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET	BIT(3)
-> +
-> +struct cxl_mbox_set_feat_hdr {
-> +	uuid_t uuid;
-> +	__le32 flags;
-> +	__le16 offset;
-> +	u8 version;
-> +	u8 rsvd[9];
-> +}  __packed;
-> +
->  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */
->  struct cxl_mbox_poison_in {
->  	__le64 offset;
-> @@ -912,6 +938,10 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
->  		       size_t feat_out_size,
->  		       size_t feat_out_min_size,
->  		       enum cxl_get_feat_selection selection);
-> +int cxl_set_feature(struct cxl_memdev_state *mds,
-> +		    const uuid_t feat_uuid, u8 feat_version,
-> +		    void *feat_data, size_t feat_data_size,
-> +		    u8 feat_flag);
->  int cxl_poison_state_init(struct cxl_memdev_state *mds);
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr);
-> -- 
-> 2.34.1
+On 2024/3/8 18:18, Borislav Petkov wrote:
+> On Sun, Feb 04, 2024 at 04:01:44PM +0800, Shuai Xue wrote:
+>> Hardware errors could be signaled by asynchronous interrupt, e.g. when an
+>> error is detected by a background scrubber, or signaled by synchronous
+>> exception, e.g. when a CPU tries to access a poisoned cache line. Since
+>> commit a70297d22132 ("ACPI: APEI: set memory failure flags as
+>> MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
+>> could be used to determine whether a synchronous exception occurs on ARM64
+>> platform. When a synchronous exception is detected, the kernel should
+>> terminate the current process which accessing the poisoned page. This is
 > 
+> "which has accessed poison data"
+
+Thank you. Will fix the grammer.
+
+> 
+>> done by sending a SIGBUS signal with an error code BUS_MCEERR_AR,
+>> indicating an action-required machine check error on read.
+>>
+>> However, the memory failure recovery is incorrectly sending a SIGBUS
+>> with wrong error code BUS_MCEERR_AO for synchronous errors in early kill
+>> mode, even MF_ACTION_REQUIRED is set. The main problem is that
+> 
+> "even if"
+
+Thank you. Will fix the grammer.
+
+
+> 
+>> synchronous errors are queued as a memory_failure() work, and are
+>> executed within a kernel thread context, not the user-space process that
+>> encountered the corrupted memory on ARM64 platform. As a result, when
+>> kill_proc() is called to terminate the process, it sends the incorrect
+>> SIGBUS error code because the context in which it operates is not the
+>> one where the error was triggered.
+>>
+>> To this end, queue memory_failure() as a task_work so that it runs in
+>> the context of the process that is actually consuming the poisoned data,
+>> and it will send SIBBUS with si_code BUS_MCEERR_AR.
+> 
+> SIGBUS
+
+Sorry, will fix the typo.
+> 
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>  drivers/acpi/apei/ghes.c | 77 +++++++++++++++++++++++-----------------
+>>  include/acpi/ghes.h      |  3 --
+>>  mm/memory-failure.c      | 13 -------
+>>  3 files changed, 44 insertions(+), 49 deletions(-)
+>>
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 0892550732d4..e5086d795bee 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -465,28 +465,41 @@ static void ghes_clear_estatus(struct ghes *ghes,
+>>  }
+>>  
+>>  /*
+>> - * Called as task_work before returning to user-space.
+>> - * Ensure any queued work has been done before we return to the context that
+>> - * triggered the notification.
+>> + * struct sync_task_work - for synchronous RAS event
+> 
+> What's so special about it being a "sync_"?
+> 
+> task_work is just fine and something else could use it too.
+
+You are right, the `sync_task_work` is only use for synchronous RAS event right, but
+it could be also use for other purpose in the future. The purpose can be specified
+through flags.
+
+I will remove the `sync_` prefix.
+
+> 
+>> + *
+>> + * @twork:                callback_head for task work
+>> + * @pfn:                  page frame number of corrupted page
+>> + * @flags:                fine tune action taken
+> 
+> s/fine tune action taken/work control flags/
+> 
+
+Will fix it.
+
+>> + *
+>> + * Structure to pass task work to be handled before
+>> + * ret_to_user via task_work_add().
+> 
+> What is "ret_to_user"?
+> 
+> If this is an ARM thing, then make sure you explain stuff properly and
+> detailed. This driver is used by multiple architectures.
+
+It is not ARM specific thing. I mean it is used by task_work before returning to user-space.
+
+	+ * Structure to pass task work to be handled before
+	+ * returning to user-space via task_work_add().
+
+> 
+>>   */
+>> -static void ghes_kick_task_work(struct callback_head *head)
+>> +struct sync_task_work {
+>> +	struct callback_head twork;
+>> +	u64 pfn;
+>> +	int flags;
+>> +};
+>> +
+>> +static void memory_failure_cb(struct callback_head *twork)
+>>  {
+>> -	struct acpi_hest_generic_status *estatus;
+>> -	struct ghes_estatus_node *estatus_node;
+>> -	u32 node_len;
+>> +	int ret;
+>> +	struct sync_task_work *twcb =
+>> +		container_of(twork, struct sync_task_work, twork);
+> 
+> Ugly linebreak - no need for it.
+
+Will fix it.
+> 
+>> -	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
+>> -	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+>> -		memory_failure_queue_kick(estatus_node->task_work_cpu);
+>> +	ret = memory_failure(twcb->pfn, twcb->flags);
+>> +	gen_pool_free(ghes_estatus_pool, (unsigned long)twcb, sizeof(*twcb));
+>>  
+>> -	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
+>> -	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
+>> -	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
+>> +	if (!ret || ret == -EHWPOISON || ret == -EOPNOTSUPP)
+>> +		return;
+>> +
+>> +	pr_err("Sending SIGBUS to current task due to memory error not recovered");
+>> +	force_sig(SIGBUS);
+>>  }
+>>  
+>>  static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>>  {
+>>  	unsigned long pfn;
+>> +	struct sync_task_work *twcb;
+>>  
+>>  	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
+>>  		return false;
+>> @@ -499,6 +512,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>>  		return false;
+>>  	}
+>>  
+>> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
+>> +		twcb = (void *)gen_pool_alloc(ghes_estatus_pool, sizeof(*twcb));
+>> +		if (!twcb)
+>> +			return false;
+>> +
+>> +		twcb->pfn = pfn;
+>> +		twcb->flags = flags;
+>> +		init_task_work(&twcb->twork, memory_failure_cb);
+>> +		task_work_add(current, &twcb->twork, TWA_RESUME);
+>> +		return true;
+>> +	}
+>> +
+>>  	memory_failure_queue(pfn, flags);
+>>  	return true;
+>>  }
+>> @@ -746,7 +771,7 @@ int cxl_cper_unregister_callback(cxl_cper_callback callback)
+>>  }
+>>  EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_callback, CXL);
+>>  
+>> -static bool ghes_do_proc(struct ghes *ghes,
+>> +static void ghes_do_proc(struct ghes *ghes,
+>>  			 const struct acpi_hest_generic_status *estatus)
+>>  {
+>>  	int sev, sec_sev;
+>> @@ -814,8 +839,6 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>  		pr_err("Sending SIGBUS to current task due to memory error not recovered");
+>>  		force_sig(SIGBUS);
+>>  	}
+>> -
+>> -	return queued;
+>>  }
+>>  
+>>  static void __ghes_print_estatus(const char *pfx,
+>> @@ -1117,9 +1140,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
+>>  	struct ghes_estatus_node *estatus_node;
+>>  	struct acpi_hest_generic *generic;
+>>  	struct acpi_hest_generic_status *estatus;
+>> -	bool task_work_pending;
+>>  	u32 len, node_len;
+>> -	int ret;
+>>  
+>>  	llnode = llist_del_all(&ghes_estatus_llist);
+>>  	/*
+>> @@ -1134,25 +1155,16 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
+>>  		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
+>>  		len = cper_estatus_len(estatus);
+>>  		node_len = GHES_ESTATUS_NODE_LEN(len);
+>> -		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
+>> +
+>> +		ghes_do_proc(estatus_node->ghes, estatus);
+>> +
+>>  		if (!ghes_estatus_cached(estatus)) {
+>>  			generic = estatus_node->generic;
+>>  			if (ghes_print_estatus(NULL, generic, estatus))
+>>  				ghes_estatus_cache_add(generic, estatus);
+>>  		}
+>> -
+>> -		if (task_work_pending && current->mm) {
+>> -			estatus_node->task_work.func = ghes_kick_task_work;
+>> -			estatus_node->task_work_cpu = smp_processor_id();
+>> -			ret = task_work_add(current, &estatus_node->task_work,
+>> -					    TWA_RESUME);
+>> -			if (ret)
+>> -				estatus_node->task_work.func = NULL;
+>> -		}
+>> -
+>> -		if (!estatus_node->task_work.func)
+>> -			gen_pool_free(ghes_estatus_pool,
+>> -				      (unsigned long)estatus_node, node_len);
+> 
+> I have no clue why this is being removed.
+
+Before this patch, a memory_failure() work is queued into workqueue for
+both the asynchronous interrupt and synchronous exception. So
+memory_failure() will be executed asynchronously.  For NMIlike
+notifications, commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure()
+queue for synchronous errors") keeps track of whether memory_failure() work
+was queued, and makes task_work pending to flush out the queue.  It ensures
+any queued work has been done before we return to the context that
+triggered the notification.
+
+In this patch:
+
+	- a memory_failure() work is queued into workqueue for asynchronous interrupt
+	- a memory_failure() task_work is queued by task_work_add for synchronous exception
+
+The memory_failure() task_work will be handled before returning to user
+space, so we does not need to queue a flushing task_work any anymore.
+
+> 
+> Why doesn't a synchronous exception on ARM call into ghes_proc_in_irq()?
+
+	/*
+	 * SEA can interrupt SError, mask it and describe this as an NMI so
+	 * that APEI defers the handling.
+	 */
+	local_daif_restore(DAIF_ERRCTX);
+	nmi_enter();
+	 => ghes_notify_sea
+		=> ghes_in_nmi_spool_from_list
+			=> ghes_in_nmi_queue_one_entry	// also called in __ghes_sdei_callback
+			=> irq_work_queue(&ghes_proc_irq_work);
+	nmi_exit();
+> 
+> That SDEI thing certainly does.
+> 
+> Well looka here:
+> 
+>   7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
+> 
+> that thing does exactly what you're trying to "fix". So why doesn't that
+> work for you?
+> 
+
+Commit a70297d22132 (ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on synchronous events)
+set MF_ACTION_REQUIRED for synchronous events.
+
+	/*
+	 * Send all the processes who have the page mapped a signal.
+	 * ``action optional'' if they are not immediately affected by the error
+	 * ``action required'' if error happened in current execution context
+	 */
+	static int kill_proc(struct to_kill *tk, unsigned long pfn, int flags)
+	{
+		...
+		if ((flags & MF_ACTION_REQUIRED) && (t == current))
+			ret = force_sig_mceerr(BUS_MCEERR_AR,
+					 (void __user *)tk->addr, addr_lsb);
+		else
+			ret = send_sig_mceerr(BUS_MCEERR_AO, (void __user *)tk->addr,
+					      addr_lsb, t);
+		...
+	}
+
+Because the memory_failure() running in a kthread context, the false branch in kill_proc()
+will send SIGBUS with BUS_MCEERR_AO. But we except it as a BUS_MCEERR_AR.
+
+Thank you for valuable comments :)
+
+Best Regards,
+Shuai
 
