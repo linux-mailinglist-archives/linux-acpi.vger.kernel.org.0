@@ -1,116 +1,322 @@
-Return-Path: <linux-acpi+bounces-4286-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4287-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40989879CA7
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 21:11:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF866879CB3
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 21:14:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECE1A283E36
-	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 20:11:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F2E81C21AC0
+	for <lists+linux-acpi@lfdr.de>; Tue, 12 Mar 2024 20:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFA11428E8;
-	Tue, 12 Mar 2024 20:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BB61428F8;
+	Tue, 12 Mar 2024 20:14:23 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA8E23A6;
-	Tue, 12 Mar 2024 20:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2770139580
+	for <linux-acpi@vger.kernel.org>; Tue, 12 Mar 2024 20:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710274263; cv=none; b=hWIdRXvojnNtnIc9Lt2DYql8/dF3CA9YCeWR2b0DXlsRnY9KWNPdxxyRNHlOvNCCkcgX+eZ6+LjWmCNb24tIKjD0Z7c5z6WhzvEPuOQAU/fDVO5o4VjtegejRykm4Irq9DRo6JN2u+20N669qwFYI1Z027A3Lat/Khdb9ANAGmo=
+	t=1710274463; cv=none; b=Zm491VWMscYxZHSvry+yK7RNdUuPOK19tulfMxxbmoFqkZw1Mujhb/HSeSmFFRIvsrupgGb5kBz7K+wPonXqGuX4/YqDk/Vvpz5uOKAEUYFqAHaESpTVYzFzo2d2ZmF0G1A4Sg0H701lVMcSW3p63zB+CUGpM41jAobvr0Ahzgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710274263; c=relaxed/simple;
-	bh=je5YC9U3ddF8ei/q29MpEPpcJqXyyP/xr4yGnd/FbS8=;
+	s=arc-20240116; t=1710274463; c=relaxed/simple;
+	bh=0YW1FZUNc+YdF9O+TD8KhJukfYgDyASsvnYFNhO+XrI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gEv8TL1bqQV6iyDOfGOKMAFYSaWQkl4sE05cpVcH0Zd2LWwqbfkWpqC8CuI5lSBk7qHe/m24nRrxGK0qsKqKoi9HUTcCjheEMtgAPpU7gfjzCxpMjUSsl/hrFLgV0lKlSlshdJR1eOMGuLysQ/HbzSV35Wtb2jMq3VDdO3+W758=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.41
+	 To:Cc:Content-Type; b=WHgDIFFWovbt8fwjtDzxnyZJW6mcI2OxlbxgZNW8J7EV340oyQKa+YUJfOL/aRir26JrSAVsvU+OsI3Na7l2tSj9eFy49CPsnHRJlhcfDbHzchlRnfXT7UNGpNUEdGMZVqRv79c2JQMEQQVFTpN3koM56/htnP/soJmrulweUPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-221a1722824so387323fac.1;
-        Tue, 12 Mar 2024 13:11:01 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-221a1722824so387869fac.1
+        for <linux-acpi@vger.kernel.org>; Tue, 12 Mar 2024 13:14:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710274261; x=1710879061;
+        d=1e100.net; s=20230601; t=1710274461; x=1710879261;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QXxHWgg+0wOaWKRbDAdCzkozj0GWD5SuJOBuLOZermI=;
-        b=UOg2ew+/c+tBYbPYpzGCyomgwfZvwRO5Ij5xiFqXkjg/T0fuoJPh6gyp+KRFefu8LP
-         zVAJMl2R/QSlzp7L4hIYI63iTnW8jXdoLz8IoxAT/5RdhqovHnt8a5IA0GiF/IrFfsNi
-         o9u8FJyHgUjP8NRSJ8XBwGHbaZNSqyUwxLLXzGWDmb6WS1g4rDlJqDzbfMJJmb79gBRE
-         9rwAplD0ozdpgLfpYSy0hrVdS3q7XcyOtZm13oSZ2Ve1jR9KLnrWrWgzCiYbU4wVwaQx
-         ifLLuh/sas/J6eHt0l7Gj4tgRK7k9Aef77YYiD/LNsNZ42iJY2xIeylVqtUjoiXMyvkr
-         sMkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUe4evalMDFhqiGWVBwwFRiXgx0NW5UMsQ4I09H/NFXPysJlYtABOuwyarmXoZyML/dWG9hGVwO6veomACVz1Vl99msK31VrZy1susjudAfz6CsRXBG06JSwP0uDIXyvSuql6mkfHVoMw==
-X-Gm-Message-State: AOJu0YyhEM49/SgPbkUrq8/H8HftFtYlvkxP927fhFSIaXjcYoGri6N1
-	z0u64GztoBrY07Gm4DcUwj+QnyJav3Egpao7dK/gImnUgd8j9/z5/eMA+6H878nJf9ieufnd/6z
-	cVcSkFGlAdIaamq9CZtyhyMZKaRs=
-X-Google-Smtp-Source: AGHT+IH84zxGnZ+6HYPVQpIHxVZhMBEXHQoKKTB+hn81jpYlVGueuJF3ddHZcUPjfoJr3HSELgOW7w0JZKKwWVvgKaA=
+        bh=oKq5JqksRYzFuiaU+8iT803inPbPnfA+1q0E+0uyeVg=;
+        b=NDeeDb6odyWdJi4d7G0RKH2/008vhxs5z8/eNptKROHNq5fCHPZ6yJC3pxxjnHM7Zy
+         K+8na+32v5xYEwJ+ONlYVFy2L2Idi/5D10DGlcBFIi8nE5CkGg/0kmtyzfQOPO0uHB6b
+         5Et7sBcftTJIAN1A8XQg6OjfUtiPCoUMoEpvUT49YjrPJa8S8UDn+L0dta1i9p8q5mvd
+         6+lfI8mPT1n0PjeYyw9jn4uIeZPisS+uDxxqqZe42aZY2ISKj6ljq/20y3Zu/4jLQz2y
+         C0KpBedwq2yxHh6GyHDVbu2nuOl/8JlNzWliHMHYe3UdWLGLpiv+jF1LriCuDpwGOFdS
+         o0sg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4t+NWXEGIZdNzUrH1MBz8ZcmQUikCRy5iS6dXV8xSJXq7m2Zy/OvnLaOLGkrF/JHLRSHZvSEUUIlxCVv9T2hKgiQYKHqNpO6DMg==
+X-Gm-Message-State: AOJu0Yy4g4FYjG8SDJvJEZaMFpudyflUVGVtNyEEIC+lHZwr8uAFgs+o
+	RYdELrLbJ9qHkeocz4ZRfBnnr5qJsusReI2zJwSXE5b2Qlej/rEHyf/4AuZUnfYz76Y5wV5d4t8
+	X4Ago8ueLohLzSgXcM50bZo1ofm0=
+X-Google-Smtp-Source: AGHT+IHy62htj/SdUQcMquWG+D5+HdcJB656NfB+6LlKR8/sGjeGpRgTn+VE0euBpW2NygH9isyXvKJj00xGyfOMsiY=
 X-Received: by 2002:a05:6870:1ce:b0:221:bc20:76e1 with SMTP id
- n14-20020a05687001ce00b00221bc2076e1mr11006554oad.0.1710274260979; Tue, 12
- Mar 2024 13:11:00 -0700 (PDT)
+ n14-20020a05687001ce00b00221bc2076e1mr11013907oad.0.1710274460873; Tue, 12
+ Mar 2024 13:14:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240309201310.7548-1-W_Armin@gmx.de>
-In-Reply-To: <20240309201310.7548-1-W_Armin@gmx.de>
+References: <20240311101658.2343816-1-cezary.rojewski@intel.com> <20240311101658.2343816-2-cezary.rojewski@intel.com>
+In-Reply-To: <20240311101658.2343816-2-cezary.rojewski@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 12 Mar 2024 21:10:49 +0100
-Message-ID: <CAJZ5v0hKwThcAO4jMOzi7ySqSv_jHvs_+paBB212qVsaf7LZng@mail.gmail.com>
-Subject: Re: [PATCH 0/5] ACPI: bus: _OSC fixes
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 12 Mar 2024 21:14:09 +0100
+Message-ID: <CAJZ5v0jzMOa8Z1rg9-pJDKR50892n2v+gf93MdFYid_Rbyj3tg@mail.gmail.com>
+Subject: Re: [PATCH v7 1/4] ACPI: NHLT: Reintroduce types the table consists of
+To: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, robert.moore@intel.com, 
+	amadeuszx.slawinski@linux.intel.com, pierre-louis.bossart@linux.intel.com, 
+	andriy.shevchenko@linux.intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 9, 2024 at 9:13=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+On Mon, Mar 11, 2024 at 11:15=E2=80=AFAM Cezary Rojewski
+<cezary.rojewski@intel.com> wrote:
 >
-> This patch series fixes the handling of various ACPI features bits
-> when evaluating _OSC.
+> Non HDAudio Link Table (NHLT) is designed to separate hardware-related
+> description (registers) from AudioDSP firmware-related one i.e.:
+> pipelines and modules that together make up the audio stream on Intel
+> DSPs. This task is important as same set of hardware registers can be
+> used with different topologies and vice versa, same topology could be
+> utilized with different set of hardware. As the hardware registers
+> description is directly tied to specific platform, intention is to have
+> such description part of low-level firmware e.g.: BIOS.
 >
-> The first three patches fix the reporting of various features supported
-> by the kernel, while the fourth patch corrects the feature bit used to
-> indicate support for the "Generic Initiator Affinity" in SRAT.
+> The initial design has been provided in early Sky Lake (SKL) days. The
+> audio architecture goes by the name cAVS. SKL is a representative of
+> cAVS 1.5. The table helps describe endpoint capabilities ever since.
+> While Raptor Lake (RPL) is the last of cAVS architecture - cAVS 2.5 to
+> be precise - its successor, the ACE architecture which begun with
+> Meteor Lake (MTL) inherited the design for all I2S and PDM
+> configurations. These two configurations are the primary targets for
+> NHLT table.
 >
-> The last patch fixes the reporting of IRQ ResourceSource support. Unlike
-> the other feature bits, the ACPI specification states that this feature
-> bit might be used by the ACPI firmware to indicate whether or not it
-> supports the usage of IRQ ResourceSource:
+> Due to naming conflicts with existing code, several structs are named
+> 'nhlt2' rather than 'nhlt'. Follow up changes clean this up once
+> existing code has no users and is removed.
 >
->         "If not set, the OS may choose to ignore the ResourceSource
->          parameter in the extended interrupt descriptor."
+> Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+
+I suppose that this is based on an upstream ACPICA pull request that
+has been merged?
+
+If so, it should carry a Link: tag pointing to that pull request.  The
+ID of the upstream ACPICA commit corresponding to this should be
+included into the changelog too.
+
+> ---
+>  include/acpi/actbl2.h | 189 ++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 189 insertions(+)
 >
-> Since the code responsible for parsing IRQ ResourceSource already checks
-> if ResourceSource is present, i assumed that we can omit taking this
-> into account.
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index 9775384d61c6..8030a1743100 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -2141,6 +2141,195 @@ struct acpi_nhlt_device_info {
+>         u8 device_port_id;
+>  };
 >
-> All patches where tested on a Asus Prime B650-Plus and a Dell Inspiron
-> 3505.
->
-> Armin Wolf (5):
->   ACPI: bus: Indicate support for _TFP thru _OSC
->   ACPI: bus: Indicate support for more than 16 p-states thru _OSC
->   ACPI: bus: Indicate support for the Generic Event Device thru _OSC
->   ACPI: Fix Generic Initiator Affinity _OSC bit
->   ACPI: bus: Indicate support for IRQ ResourceSource thru _OSC
->
->  drivers/acpi/bus.c   | 5 +++++
->  include/linux/acpi.h | 6 +++++-
->  2 files changed, 10 insertions(+), 1 deletion(-)
->
+> +/***********************************************************************=
+********
+> + *
+> + * NHLT - Non HDAudio Link Table
+> + *        Version 1
+> + *
+> + ***********************************************************************=
+*******/
+> +
+> +struct acpi_table_nhlt2 {
+> +       struct acpi_table_header header;        /* Common ACPI table head=
+er */
+> +       u8 endpoints_count;
+> +       /*
+> +        * struct acpi_nhlt_endpoint endpoints[];
+> +        * struct acpi_nhlt_config oed_config;
+> +        */
+> +};
+> +
+> +struct acpi_nhlt2_endpoint {
+> +       u32 length;
+> +       u8 link_type;
+> +       u8 instance_id;
+> +       u16 vendor_id;
+> +       u16 device_id;
+> +       u16 revision_id;
+> +       u32 subsystem_id;
+> +       u8 device_type;
+> +       u8 direction;
+> +       u8 virtual_bus_id;
+> +       /*
+> +        * struct acpi_nhlt_config device_config;
+> +        * struct acpi_nhlt_formats_config formats_config;
+> +        * struct acpi_nhlt_devices_info devices_info;
+> +        */
+> +};
+> +
+> +/*
+> + * Values for link_type field above
+> + *
+> + * Only types PDM and SSP are used
+> + */
+> +#define ACPI_NHLT_LINKTYPE_HDA                 0
+> +#define ACPI_NHLT_LINKTYPE_DSP                 1
+> +#define ACPI_NHLT_LINKTYPE_PDM                 2
+> +#define ACPI_NHLT_LINKTYPE_SSP                 3
+> +#define ACPI_NHLT_LINKTYPE_SLIMBUS             4
+> +#define ACPI_NHLT_LINKTYPE_SDW                 5
+> +#define ACPI_NHLT_LINKTYPE_UAOL                        6
+> +
+> +/* Values for device_id field above */
+> +
+> +#define ACPI_NHLT_DEVICEID_DMIC                        0xAE20
+> +#define ACPI_NHLT_DEVICEID_BT                  0xAE30
+> +#define ACPI_NHLT_DEVICEID_I2S                 0xAE34
+> +
+> +/* Values for device_type field above */
+> +
+> +/*
+> + * Device types unique to endpoint of link_type=3DPDM
+> + *
+> + * Type PDM used for all SKL+ platforms
+> + */
+> +#define ACPI_NHLT_DEVICETYPE_PDM               0
+> +#define ACPI_NHLT_DEVICETYPE_PDM_SKL           1
+> +/* Device types unique to endpoint of link_type=3DSSP */
+> +#define ACPI_NHLT_DEVICETYPE_BT                        0
+> +#define ACPI_NHLT_DEVICETYPE_FM                        1
+> +#define ACPI_NHLT_DEVICETYPE_MODEM             2
+> +#define ACPI_NHLT_DEVICETYPE_CODEC             4
+> +
+> +/* Values for Direction field above */
+> +
+> +#define ACPI_NHLT_DIR_RENDER                   0
+> +#define ACPI_NHLT_DIR_CAPTURE                  1
+> +
+> +struct acpi_nhlt_config {
+> +       u32 capabilities_size;
+> +       u8 capabilities[];
+> +};
+> +
+> +struct acpi_nhlt_gendevice_config {
+> +       u8 virtual_slot;
+> +       u8 config_type;
+> +};
+> +
+> +/* Values for config_type field above */
+> +
+> +#define ACPI_NHLT_CONFIGTYPE_GENERIC           0
+> +#define ACPI_NHLT_CONFIGTYPE_MICARRAY          1
+> +
+> +struct acpi_nhlt_micdevice_config {
+> +       u8 virtual_slot;
+> +       u8 config_type;
+> +       u8 array_type;
+> +};
+> +
+> +/* Values for array_type field above */
+> +
+> +#define ACPI_NHLT_ARRAYTYPE_LINEAR2_SMALL      0xA
+> +#define ACPI_NHLT_ARRAYTYPE_LINEAR2_BIG                0xB
+> +#define ACPI_NHLT_ARRAYTYPE_LINEAR4_GEO1       0xC
+> +#define ACPI_NHLT_ARRAYTYPE_PLANAR4_LSHAPED    0xD
+> +#define ACPI_NHLT_ARRAYTYPE_LINEAR4_GEO2       0xE
+> +#define ACPI_NHLT_ARRAYTYPE_VENDOR             0xF
+> +
+> +struct acpi_nhlt2_vendor_mic_config {
+> +       u8 type;
+> +       u8 panel;
+> +       u16 speaker_position_distance;          /* mm */
+> +       u16 horizontal_offset;                  /* mm */
+> +       u16 vertical_offset;                    /* mm */
+> +       u8 frequency_low_band;                  /* 5*Hz */
+> +       u8 frequency_high_band;                 /* 500*Hz */
+> +       u16 direction_angle;                    /* -180 - +180 */
+> +       u16 elevation_angle;                    /* -180 - +180 */
+> +       u16 work_vertical_angle_begin;          /* -180 - +180 with 2 deg=
+ step */
+> +       u16 work_vertical_angle_end;            /* -180 - +180 with 2 deg=
+ step */
+> +       u16 work_horizontal_angle_begin;        /* -180 - +180 with 2 deg=
+ step */
+> +       u16 work_horizontal_angle_end;          /* -180 - +180 with 2 deg=
+ step */
+> +};
+> +
+> +/* Values for Type field above */
+> +
+> +#define ACPI_NHLT_MICTYPE_OMNIDIRECTIONAL      0
+> +#define ACPI_NHLT_MICTYPE_SUBCARDIOID          1
+> +#define ACPI_NHLT_MICTYPE_CARDIOID             2
+> +#define ACPI_NHLT_MICTYPE_SUPERCARDIOID                3
+> +#define ACPI_NHLT_MICTYPE_HYPERCARDIOID                4
+> +#define ACPI_NHLT_MICTYPE_8SHAPED              5
+> +#define ACPI_NHLT_MICTYPE_RESERVED             6
+> +#define ACPI_NHLT_MICTYPE_VENDORDEFINED                7
+> +
+> +/* Values for Panel field above */
+> +
+> +#define ACPI_NHLT_MICLOCATION_TOP              0
+> +#define ACPI_NHLT_MICLOCATION_BOTTOM           1
+> +#define ACPI_NHLT_MICLOCATION_LEFT             2
+> +#define ACPI_NHLT_MICLOCATION_RIGHT            3
+> +#define ACPI_NHLT_MICLOCATION_FRONT            4
+> +#define ACPI_NHLT_MICLOCATION_REAR             5
+> +
+> +struct acpi_nhlt_vendor_micdevice_config {
+> +       u8 virtual_slot;
+> +       u8 config_type;
+> +       u8 array_type;
+> +       u8 mics_count;
+> +       struct acpi_nhlt2_vendor_mic_config mics[];
+> +};
+> +
+> +union acpi_nhlt_device_config {
+> +       u8 virtual_slot;
+> +       struct acpi_nhlt_gendevice_config gen;
+> +       struct acpi_nhlt_micdevice_config mic;
+> +       struct acpi_nhlt_vendor_micdevice_config vendor_mic;
+> +};
+> +
+> +/* Inherited from Microsoft's WAVEFORMATEXTENSIBLE. */
+> +struct acpi_nhlt2_wave_formatext {
+> +       u16 format_tag;
+> +       u16 channel_count;
+> +       u32 samples_per_sec;
+> +       u32 avg_bytes_per_sec;
+> +       u16 block_align;
+> +       u16 bits_per_sample;
+> +       u16 extra_format_size;
+> +       u16 valid_bits_per_sample;
+> +       u32 channel_mask;
+> +       u8 subformat[16];
+> +};
+> +
+> +struct acpi_nhlt2_format_config {
+> +       struct acpi_nhlt2_wave_formatext format;
+> +       struct acpi_nhlt_config config;
+> +};
+> +
+> +struct acpi_nhlt2_formats_config {
+> +       u8 formats_count;
+> +       struct acpi_nhlt2_format_config formats[];
+> +};
+> +
+> +struct acpi_nhlt2_device_info {
+> +       u8 id[16];
+> +       u8 instance_id;
+> +       u8 port_id;
+> +};
+> +
+> +struct acpi_nhlt_devices_info {
+> +       u8 devices_count;
+> +       struct acpi_nhlt2_device_info devices[];
+> +};
+> +
+>  /***********************************************************************=
+********
+>   *
+>   * PCCT - Platform Communications Channel Table (ACPI 5.0)
 > --
-
-All of that looks reasonable to me, but do you know about systems in
-the field where any of these patches actually fix functionality?
-
-If not, I'd prefer to queue them up for 6.10 as they are likely to
-change behavior, at least in corner cases.
-
-Thanks!
+> 2.25.1
+>
 
