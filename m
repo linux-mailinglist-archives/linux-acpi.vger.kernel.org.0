@@ -1,490 +1,221 @@
-Return-Path: <linux-acpi+bounces-4309-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4310-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C8987A3FF
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 09:16:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6EA87A51A
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 10:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03471C21654
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 08:16:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C52282F60
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 09:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0889F17588;
-	Wed, 13 Mar 2024 08:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Kzb0T1DV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC8E20B27;
+	Wed, 13 Mar 2024 09:41:49 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C931B7EF
-	for <linux-acpi@vger.kernel.org>; Wed, 13 Mar 2024 08:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.173
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D442FC16;
+	Wed, 13 Mar 2024 09:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710317800; cv=none; b=mmxlZxcjTDB5EdhArxIbWSqZEtvFEEKpQNqgZbfQrE6VuCnPQCvSrsiI5PcdwuMuVHmxHE46zQYuOWfeT19ngqaXzk2Pl3ZNyAi5KLbLi5yISdfzMjRzVeVuHNSOcKY8RIK+b526GKIW28ppzSitsFN7yWvY81Vg49wCn+aKnU8=
+	t=1710322909; cv=none; b=B6XXvF+wTyQI70+WmEEKy8SmaPmo0qkXcW4c2GaH9NvNEviGaQ+2NiXlwmY244TN9TICE9lgsocvcP5O3vfLhAxMP9BEbbOLiYYEWZSiqrsIHzvgwQXRpHjf2IKm2yZrTR6WJbYDh5QMMOftvbsmwbF0QNykoT86b0VT18O2WUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710317800; c=relaxed/simple;
-	bh=iIAVGptrxrpcKUcQe28ZGs6beH/58Jg/lYdsXdo6itw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MsIYyK4JlbUAVwki9r9NCWZNRfRadRUKCF9h8N9YYXIYmBI6kZRyXgFHH9JDkny90c83jVGyA7PgZrErwqSWUDqD6uCF4qr8/Rnrmuu21hSYSxfuCqckSinQRHrD3hIwRhxxntSHJHvtYiyJRoJGfFP1AIIAQu+EUnlTn5gt100=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Kzb0T1DV; arc=none smtp.client-ip=209.85.219.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dcbcea9c261so4972584276.3
-        for <linux-acpi@vger.kernel.org>; Wed, 13 Mar 2024 01:16:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1710317798; x=1710922598; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PjonAc8oEn9nxPK0YY+VDWqHB4SeTT8yB1nbEWly4fA=;
-        b=Kzb0T1DVU/lu2NvCvXqfYRIEAQgpgoP4tXGc/ZVDGhFHo5GgrfV4LN5cRfZc8ycGoc
-         rfgvz5v4jF1m3cvXC7pTd47gLxej8yx7MnDwzxjIyGiyz+qY/5SG4l2eU5lfYTVvIsVq
-         0Vdz8+6QTYIYjDPLpELHNUO1pGKKdaBggdDkLQZluUs9P0MaNcaE/6ayAmtWgPI66Skx
-         klcDDgkUZg3sf43M6i3c8YUwPZRgjPX1HPRX74pD63PQQrDV4wDncuVfo8ZD25FMYXkU
-         /dNdJsuPXfsLkLUWuhbDMuDAUwC0yi3bCerKLVGNeb77vCLalBwx85XAj0gw3Gd/INsL
-         iRUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710317798; x=1710922598;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PjonAc8oEn9nxPK0YY+VDWqHB4SeTT8yB1nbEWly4fA=;
-        b=VMpx7skP3Zy4Z/X+J6UjR93yESCSG4gEzRy/wjCv1pvFnh/gTwdEkIFS15V/v1JX4J
-         EGPgcIfkbH9q15Tlwvipk0xhXu3iv1fJe4xIW72NefTBwZgkjxfwJijCpZh1uS+DG1IZ
-         6VdD30pHT0AHF1y+UDky3qQ0/UjGG73kfU1vk3WC1sGfQMz5x2MSoy8PnDSTZUCcmBYT
-         8NcNne6fY+rmgqbxGXY4r0xI9Yk+wYZuinsKf825H7H6AY75CGM0zLHqCCTjTqSxiRS2
-         ZbnepGWp4RTfrbf5p5GTKZG6AYzjHNB+EAxu7ieU1nvtHmjWadzxXNiuphaLivRPwYdo
-         k9Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCX8H3RRhXWUw5SndPklLuTqsOjLGPBPj2Za77GM4v1k7eriynSeYZt18Zmh1Z+sah/l69Vmw31hYa2aGsKzfWRsRjhhZ0ugnANg0g==
-X-Gm-Message-State: AOJu0Yx75hsGGWmDT7dKbWT91D95xCD8vAqsy5OaCoWbBAbeDHt17qKi
-	M2TEWNnsDj7A69R3Dq1CnqFhOOzx0fB5tTISBkIexsQbiffr988atRhh/jhxJSxx7JjbhxI1Ul7
-	IBo68SGNU4WxquveVCS0eJ+F9kAapRPMeTBmGQw==
-X-Google-Smtp-Source: AGHT+IE65VHYxesx4YYzvTJxe72DdkmVzBXmOm+qIMlTDtZKqKJ9DrCZTYHxl9AkfjBGu0wP8S8LSx1yMLyXIXG/b8U=
-X-Received: by 2002:a25:ace0:0:b0:dc7:45f4:44f7 with SMTP id
- x32-20020a25ace0000000b00dc745f444f7mr1559987ybd.14.1710317797661; Wed, 13
- Mar 2024 01:16:37 -0700 (PDT)
+	s=arc-20240116; t=1710322909; c=relaxed/simple;
+	bh=21fdptQdCpp0Zv7JsGqyIAExfGPwwg4YtOObMUPRD6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F/AsgwJafIZ3vidfNqdo6O0BcIMePjRE2usqX4lkZFJAjIx+nsQaDeeiEKtBLBOguEUovjYOBxnI7Xms2xL6oVJG9NObABIfln1CJQ2Cro+qt+dr7QmFxzs75vQIDbTcE4leesFCctHERQPEKDNKfAs2INVtmDdoUvZ7CLpDy/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 030CE1007;
+	Wed, 13 Mar 2024 02:42:23 -0700 (PDT)
+Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E15D43F73F;
+	Wed, 13 Mar 2024 02:41:43 -0700 (PDT)
+Message-ID: <9b8f8e96-c205-4089-abf4-8b6ef0d4b182@arm.com>
+Date: Wed, 13 Mar 2024 09:41:42 +0000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240312061729.1997111-1-horenchuang@bytedance.com>
- <20240312061729.1997111-2-horenchuang@bytedance.com> <874jdb4xk8.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <874jdb4xk8.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Date: Wed, 13 Mar 2024 01:16:27 -0700
-Message-ID: <CAKPbEqpTNN5GKKCXmyTv0szpL-N1pdKFZYPHCJjyhgpKZGMiWw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v2 1/1] memory tier: acpi/hmat: create
- CPUless memory tiers after obtaining HMAT info
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com, mhocko@suse.com, 
-	tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
-	Vinicius Tavares Petrucci <vtavarespetr@micron.com>, Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
-	Alistair Popple <apopple@nvidia.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-mm@kvack.org, 
-	"Ho-Ren (Jack) Chuang" <horenc@vt.edu>, "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org, 
-	Hao Xiang <hao.xiang@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V6 05/11] coresight: replicator: Move ACPI support from
+ AMBA driver to platform driver
+Content-Language: en-US
+To: Anshuman Khandual <anshuman.khandual@arm.com>,
+ linux-arm-kernel@lists.infradead.org
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Mike Leach <mike.leach@linaro.org>,
+ James Clark <james.clark@arm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, coresight@lists.linaro.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20240312102318.2285165-1-anshuman.khandual@arm.com>
+ <20240312102318.2285165-6-anshuman.khandual@arm.com>
+ <9f95ba15-b75c-414c-b87a-e88fddc77ebf@arm.com>
+ <5c4512ff-3102-4302-bc4b-2400799bd598@arm.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <5c4512ff-3102-4302-bc4b-2400799bd598@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 12, 2024 at 2:21=E2=80=AFAM Huang, Ying <ying.huang@intel.com> =
-wrote:
->
-> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
->
-> > The current implementation treats emulated memory devices, such as
-> > CXL1.1 type3 memory, as normal DRAM when they are emulated as normal me=
-mory
-> > (E820_TYPE_RAM). However, these emulated devices have different
-> > characteristics than traditional DRAM, making it important to
-> > distinguish them. Thus, we modify the tiered memory initialization proc=
-ess
-> > to introduce a delay specifically for CPUless NUMA nodes. This delay
-> > ensures that the memory tier initialization for these nodes is deferred
-> > until HMAT information is obtained during the boot process. Finally,
-> > demotion tables are recalculated at the end.
-> >
-> > * Abstract common functions into `find_alloc_memory_type()`
->
-> We should move kmem_put_memory_types() (renamed to
-> mt_put_memory_types()?) too.  This can be put in a separate patch.
->
+On 13/03/2024 02:31, Anshuman Khandual wrote:
+> 
+> 
+> On 3/12/24 20:09, Suzuki K Poulose wrote:
+>> On 12/03/2024 10:23, Anshuman Khandual wrote:
+>>> Add support for the dynamic replicator device in the platform driver, which
+>>> can then be used on ACPI based platforms. This change would now allow
+>>> runtime power management for replicator devices on ACPI based systems.
+>>>
+>>> The driver would try to enable the APB clock if available. Also, rename the
+>>> code to reflect the fact that it now handles both static and dynamic
+>>> replicators. But first this refactors replicator_probe() making sure it can
+>>> be used both for platform and AMBA drivers, by moving the pm_runtime_put()
+>>> to the callers.
+>>>
+>>> Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>>> Cc: Sudeep Holla <sudeep.holla@arm.com>
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>> Cc: James Clark <james.clark@arm.com>
+>>> Cc: linux-acpi@vger.kernel.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Cc: coresight@lists.linaro.org
+>>> Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
+>>> Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
+>>> Reviewed-by: James Clark <james.clark@arm.com>
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>> Changes in V6:
+>>>
+>>> - Added clk_disable_unprepare() for pclk in replicator_probe() error path
+>>> - Added WARN_ON(!drvdata) check in replicator_platform_remove()
+>>> - Added additional elements for acpi_device_id[]
+>>>
+>>>    drivers/acpi/arm64/amba.c                     |  1 -
+>>>    .../coresight/coresight-replicator.c          | 68 ++++++++++++-------
+>>>    2 files changed, 45 insertions(+), 24 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
+>>> index 171b5c2c7edd..270f4e3819a2 100644
+>>> --- a/drivers/acpi/arm64/amba.c
+>>> +++ b/drivers/acpi/arm64/amba.c
+>>> @@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
+>>>        {"ARMHC503", 0}, /* ARM CoreSight Debug */
+>>>        {"ARMHC979", 0}, /* ARM CoreSight TPIU */
+>>>        {"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
+>>> -    {"ARMHC98D", 0}, /* ARM CoreSight Dynamic Replicator */
+>>>        {"ARMHC9CA", 0}, /* ARM CoreSight CATU */
+>>>        {"ARMHC9FF", 0}, /* ARM CoreSight Dynamic Funnel */
+>>>        {"", 0},
+>>> diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+>>> index ddb530a8436f..ed9be5435f94 100644
+>>> --- a/drivers/hwtracing/coresight/coresight-replicator.c
+>>> +++ b/drivers/hwtracing/coresight/coresight-replicator.c
+>>> @@ -31,6 +31,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>>>     * @base:    memory mapped base address for this component. Also indicates
+>>>     *        whether this one is programmable or not.
+>>>     * @atclk:    optional clock for the core parts of the replicator.
+>>> + * @pclk:    APB clock if present, otherwise NULL
+>>>     * @csdev:    component vitals needed by the framework
+>>>     * @spinlock:    serialize enable/disable operations.
+>>>     * @check_idfilter_val: check if the context is lost upon clock removal.
+>>> @@ -38,6 +39,7 @@ DEFINE_CORESIGHT_DEVLIST(replicator_devs, "replicator");
+>>>    struct replicator_drvdata {
+>>>        void __iomem        *base;
+>>>        struct clk        *atclk;
+>>> +    struct clk        *pclk;
+>>>        struct coresight_device    *csdev;
+>>>        spinlock_t        spinlock;
+>>>        bool            check_idfilter_val;
+>>> @@ -243,6 +245,10 @@ static int replicator_probe(struct device *dev, struct resource *res)
+>>>                return ret;
+>>>        }
+>>>    +    drvdata->pclk = coresight_get_enable_apb_pclk(dev);
+>>> +    if (IS_ERR(drvdata->pclk))
+>>> +        return -ENODEV;
+>>> +
+>>>        /*
+>>>         * Map the device base for dynamic-replicator, which has been
+>>>         * validated by AMBA core
+>>> @@ -285,11 +291,12 @@ static int replicator_probe(struct device *dev, struct resource *res)
+>>>        }
+>>>          replicator_reset(drvdata);
+>>> -    pm_runtime_put(dev);
+>>>      out_disable_clk:
+>>>        if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
+>>>            clk_disable_unprepare(drvdata->atclk);
+>>> +    if (ret && !IS_ERR_OR_NULL(drvdata->pclk))
+>>> +        clk_disable_unprepare(drvdata->pclk);
+>>>        return ret;
+>>>    }
+>>>    @@ -301,29 +308,34 @@ static int replicator_remove(struct device *dev)
+>>>        return 0;
+>>>    }
+>>>    -static int static_replicator_probe(struct platform_device *pdev)
+>>> +static int replicator_platform_probe(struct platform_device *pdev)
+>>>    {
+>>> +    struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>>>        int ret;
+>>>          pm_runtime_get_noresume(&pdev->dev);
+>>>        pm_runtime_set_active(&pdev->dev);
+>>>        pm_runtime_enable(&pdev->dev);
+>>>    -    /* Static replicators do not have programming base */
+>>> -    ret = replicator_probe(&pdev->dev, NULL);
+>>> -
+>>> -    if (ret) {
+>>> -        pm_runtime_put_noidle(&pdev->dev);
+>>> +    ret = replicator_probe(&pdev->dev, res);
+>>> +    pm_runtime_put(&pdev->dev);
+>>> +    if (ret)
+>>>            pm_runtime_disable(&pdev->dev);
+>>> -    }
+>>>          return ret;
+>>>    }
+>>>    -static void static_replicator_remove(struct platform_device *pdev)
+>>> +static void replicator_platform_remove(struct platform_device *pdev)
+>>>    {
+>>> +    struct replicator_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
+>>> +
+>>> +    if (WARN_ON(!drvdata))
+>>> +        return;
+>>> +
+>>>        replicator_remove(&pdev->dev);
+>>>        pm_runtime_disable(&pdev->dev);
+>>> +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>> +        clk_put(drvdata->pclk);
 
-Will do! Thanks,
+The comment below applies here. We already return for !drvdata, so you 
+don't need a duplicate check.
 
 
->
-> > Since different memory devices require finding or allocating a memory t=
-ype,
-> > these common steps are abstracted into a single function,
-> > `find_alloc_memory_type()`, enhancing code scalability and conciseness.
-> >
-> > * Handle cases where there is no HMAT when creating memory tiers
-> > There is a scenario where a CPUless node does not provide HMAT informat=
-ion.
-> > If no HMAT is specified, it falls back to using the default DRAM tier.
-> >
-> > * Change adist calculation code to use another new lock, mt_perf_lock.
-> > In the current implementation, iterating through CPUlist nodes requires
-> > holding the `memory_tier_lock`. However, `mt_calc_adistance()` will end=
- up
-> > trying to acquire the same lock, leading to a potential deadlock.
-> > Therefore, we propose introducing a standalone `mt_perf_lock` to protec=
-t
-> > `default_dram_perf`. This approach not only avoids deadlock but also
-> > prevents holding a large lock simultaneously.
-> >
-> > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> > ---
-> >  drivers/acpi/numa/hmat.c     | 11 ++++++
-> >  drivers/dax/kmem.c           | 13 +------
-> >  include/linux/acpi.h         |  6 ++++
-> >  include/linux/memory-tiers.h |  8 +++++
-> >  mm/memory-tiers.c            | 70 +++++++++++++++++++++++++++++++++---
-> >  5 files changed, 92 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> > index d6b85f0f6082..28812ec2c793 100644
-> > --- a/drivers/acpi/numa/hmat.c
-> > +++ b/drivers/acpi/numa/hmat.c
-> > @@ -38,6 +38,8 @@ static LIST_HEAD(targets);
-> >  static LIST_HEAD(initiators);
-> >  static LIST_HEAD(localities);
-> >
-> > +static LIST_HEAD(hmat_memory_types);
-> > +
->
-> HMAT isn't a device driver for some memory devices.  So I don't think we
-> should manage memory types in HMAT.
+>>>    }
+>>>      #ifdef CONFIG_PM
+>>> @@ -334,6 +346,8 @@ static int replicator_runtime_suspend(struct device *dev)
+>>>        if (drvdata && !IS_ERR(drvdata->atclk))
+>>>            clk_disable_unprepare(drvdata->atclk);
+>>>    +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>> +        clk_disable_unprepare(drvdata->pclk);
+>>>        return 0;
+>>>    }
+>>>    @@ -344,6 +358,8 @@ static int replicator_runtime_resume(struct device *dev)
+>>>        if (drvdata && !IS_ERR(drvdata->atclk))
+>>>            clk_prepare_enable(drvdata->atclk);
+>>>    +    if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
+>>> +        clk_prepare_enable(drvdata->pclk);
+>>
+>> nit: drvdata is != NULL, so could drop it
+> But we already have a similar check for drvdata->atclk above, would not
+> dropping drvdata for drvdata->pclk cause inconsistency and asymmetry ?
 
-I can put it back in memory-tier.c. How about the list? Do we still
-need to keep a separate list for storing late_inited memory nodes?
-And how about the list name if we need to remove the prefix "hmat_"?
-
-
-> Instead, if the memory_type of a
-> node isn't set by the driver, we should manage it in memory-tier.c as
-> fallback.
->
-
-Do you mean some device drivers may init memory tiers between
-memory_tier_init() and late_initcall(memory_tier_late_init);?
-And this is the reason why you mention to exclude
-"node_memory_types[nid].memtype !=3D NULL" in memory_tier_late_init().
-Is my understanding correct?
-
-> >  static DEFINE_MUTEX(target_lock);
-> >
-> >  /*
-> > @@ -149,6 +151,12 @@ int acpi_get_genport_coordinates(u32 uid,
-> >  }
-> >  EXPORT_SYMBOL_NS_GPL(acpi_get_genport_coordinates, CXL);
-> >
-> > +struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
-> > +{
-> > +     return find_alloc_memory_type(adist, &hmat_memory_types);
-> > +}
-> > +EXPORT_SYMBOL_GPL(hmat_find_alloc_memory_type);
-> > +
-> >  static __init void alloc_memory_initiator(unsigned int cpu_pxm)
-> >  {
-> >       struct memory_initiator *initiator;
-> > @@ -1038,6 +1046,9 @@ static __init int hmat_init(void)
-> >       if (!hmat_set_default_dram_perf())
-> >               register_mt_adistance_algorithm(&hmat_adist_nb);
-> >
-> > +     /* Post-create CPUless memory tiers after getting HMAT info */
-> > +     memory_tier_late_init();
-> > +
->
-> This should be called in memory-tier.c via
->
-> late_initcall(memory_tier_late_init);
->
-> Then, we don't need hmat to call it.
->
-
-Thanks. Learned!
-
-
-> >       return 0;
-> >  out_put:
-> >       hmat_free_structures();
-> > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> > index 42ee360cf4e3..aee17ab59f4f 100644
-> > --- a/drivers/dax/kmem.c
-> > +++ b/drivers/dax/kmem.c
-> > @@ -55,21 +55,10 @@ static LIST_HEAD(kmem_memory_types);
-> >
-> >  static struct memory_dev_type *kmem_find_alloc_memory_type(int adist)
-> >  {
-> > -     bool found =3D false;
-> >       struct memory_dev_type *mtype;
-> >
-> >       mutex_lock(&kmem_memory_type_lock);
-> > -     list_for_each_entry(mtype, &kmem_memory_types, list) {
-> > -             if (mtype->adistance =3D=3D adist) {
-> > -                     found =3D true;
-> > -                     break;
-> > -             }
-> > -     }
-> > -     if (!found) {
-> > -             mtype =3D alloc_memory_type(adist);
-> > -             if (!IS_ERR(mtype))
-> > -                     list_add(&mtype->list, &kmem_memory_types);
-> > -     }
-> > +     mtype =3D find_alloc_memory_type(adist, &kmem_memory_types);
-> >       mutex_unlock(&kmem_memory_type_lock);
-> >
-> >       return mtype;
-> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> > index b7165e52b3c6..3f927ff01f02 100644
-> > --- a/include/linux/acpi.h
-> > +++ b/include/linux/acpi.h
-> > @@ -434,12 +434,18 @@ int thermal_acpi_critical_trip_temp(struct acpi_d=
-evice *adev, int *ret_temp);
-> >
-> >  #ifdef CONFIG_ACPI_HMAT
-> >  int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *co=
-ord);
-> > +struct memory_dev_type *hmat_find_alloc_memory_type(int adist);
-> >  #else
-> >  static inline int acpi_get_genport_coordinates(u32 uid,
-> >                                              struct access_coordinate *=
-coord)
-> >  {
-> >       return -EOPNOTSUPP;
-> >  }
-> > +
-> > +static inline struct memory_dev_type *hmat_find_alloc_memory_type(int =
-adist)
-> > +{
-> > +     return NULL;
-> > +}
-> >  #endif
-> >
-> >  #ifdef CONFIG_ACPI_NUMA
-> > diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.=
-h
-> > index 69e781900082..4bc2596c5774 100644
-> > --- a/include/linux/memory-tiers.h
-> > +++ b/include/linux/memory-tiers.h
-> > @@ -48,6 +48,9 @@ int mt_calc_adistance(int node, int *adist);
-> >  int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
-> >                            const char *source);
-> >  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
-> > +struct memory_dev_type *find_alloc_memory_type(int adist,
-> > +                                                     struct list_head =
-*memory_types);
-> > +void memory_tier_late_init(void);
-> >  #ifdef CONFIG_MIGRATION
-> >  int next_demotion_node(int node);
-> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
-> > @@ -136,5 +139,10 @@ static inline int mt_perf_to_adistance(struct acce=
-ss_coordinate *perf, int *adis
-> >  {
-> >       return -EIO;
-> >  }
-> > +
-> > +static inline void memory_tier_late_init(void)
-> > +{
-> > +
-> > +}
-> >  #endif       /* CONFIG_NUMA */
-> >  #endif  /* _LINUX_MEMORY_TIERS_H */
-> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-> > index 0537664620e5..79f748d60e6f 100644
-> > --- a/mm/memory-tiers.c
-> > +++ b/mm/memory-tiers.c
-> > @@ -6,6 +6,7 @@
-> >  #include <linux/memory.h>
-> >  #include <linux/memory-tiers.h>
-> >  #include <linux/notifier.h>
-> > +#include <linux/acpi.h>
-> >
-> >  #include "internal.h"
-> >
-> > @@ -35,6 +36,7 @@ struct node_memory_type_map {
-> >  };
-> >
-> >  static DEFINE_MUTEX(memory_tier_lock);
-> > +static DEFINE_MUTEX(mt_perf_lock);
->
-> Please add comments about what it protects.  And put it near the data
-> structure it protects.
->
-
-Where is better for me to add comments for this? Code? Patch description?
-Will put it closer to the protected data. Thanks.
+Sorry, I meant this for above. See above.
 
 
 
-> >  static LIST_HEAD(memory_tiers);
-> >  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
-> >  struct memory_dev_type *default_dram_type;
-> > @@ -623,6 +625,58 @@ void clear_node_memory_type(int node, struct memor=
-y_dev_type *memtype)
-> >  }
-> >  EXPORT_SYMBOL_GPL(clear_node_memory_type);
-> >
-> > +struct memory_dev_type *find_alloc_memory_type(int adist, struct list_=
-head *memory_types)
-> > +{
-> > +     bool found =3D false;
-> > +     struct memory_dev_type *mtype;
-> > +
-> > +     list_for_each_entry(mtype, memory_types, list) {
-> > +             if (mtype->adistance =3D=3D adist) {
-> > +                     found =3D true;
-> > +                     break;
-> > +             }
-> > +     }
-> > +     if (!found) {
-> > +             mtype =3D alloc_memory_type(adist);
-> > +             if (!IS_ERR(mtype))
-> > +                     list_add(&mtype->list, memory_types);
-> > +     }
-> > +
-> > +     return mtype;
-> > +}
-> > +EXPORT_SYMBOL_GPL(find_alloc_memory_type);
-> > +
-> > +static void memory_tier_late_create(int node)
-> > +{
-> > +     struct memory_dev_type *mtype =3D NULL;
-> > +     int adist =3D MEMTIER_ADISTANCE_DRAM;
-> > +
-> > +     mt_calc_adistance(node, &adist);
-> > +     if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
->
-> We can manage default_dram_type() via find_alloc_memory_type()
-> too.
->
-> And, if "node_memory_types[node].memtype =3D=3D NULL", we can call
-> mt_calc_adistance(node, &adist) and find_alloc_memory_type() in
-> set_node_memory_tier().  Then, we can cover hotpluged memory node too.
->
-> > +             mtype =3D hmat_find_alloc_memory_type(adist);
-> > +             if (!IS_ERR(mtype))
-> > +                     __init_node_memory_type(node, mtype);
-> > +             else
-> > +                     pr_err("Failed to allocate a memory type at %s()\=
-n", __func__);
-> > +     }
-> > +
-> > +     set_node_memory_tier(node);
-> > +}
-> > +
-> > +void memory_tier_late_init(void)
-> > +{
-> > +     int nid;
-> > +
-> > +     mutex_lock(&memory_tier_lock);
-> > +     for_each_node_state(nid, N_MEMORY)
-> > +             if (!node_state(nid, N_CPU))
->
-> We should exclude "node_memory_types[nid].memtype !=3D NULL".  Some memor=
-y
-> nodes may be onlined by some device drivers and setup memory tiers
-> already.
->
-> > +                     memory_tier_late_create(nid);
-> > +
-> > +     establish_demotion_targets();
-> > +     mutex_unlock(&memory_tier_lock);
-> > +}
-> > +EXPORT_SYMBOL_GPL(memory_tier_late_init);
-> > +
-> >  static void dump_hmem_attrs(struct access_coordinate *coord, const cha=
-r *prefix)
-> >  {
-> >       pr_info(
-> > @@ -636,7 +690,7 @@ int mt_set_default_dram_perf(int nid, struct access=
-_coordinate *perf,
-> >  {
-> >       int rc =3D 0;
-> >
-> > -     mutex_lock(&memory_tier_lock);
-> > +     mutex_lock(&mt_perf_lock);
-> >       if (default_dram_perf_error) {
-> >               rc =3D -EIO;
-> >               goto out;
-> > @@ -684,7 +738,7 @@ int mt_set_default_dram_perf(int nid, struct access=
-_coordinate *perf,
-> >       }
-> >
-> >  out:
-> > -     mutex_unlock(&memory_tier_lock);
-> > +     mutex_unlock(&mt_perf_lock);
-> >       return rc;
-> >  }
-> >
-> > @@ -700,7 +754,7 @@ int mt_perf_to_adistance(struct access_coordinate *=
-perf, int *adist)
-> >           perf->read_bandwidth + perf->write_bandwidth =3D=3D 0)
-> >               return -EINVAL;
-> >
-> > -     mutex_lock(&memory_tier_lock);
-> > +     mutex_lock(&mt_perf_lock);
-> >       /*
-> >        * The abstract distance of a memory node is in direct proportion=
- to
-> >        * its memory latency (read + write) and inversely proportional t=
-o its
-> > @@ -713,7 +767,7 @@ int mt_perf_to_adistance(struct access_coordinate *=
-perf, int *adist)
-> >               (default_dram_perf.read_latency + default_dram_perf.write=
-_latency) *
-> >               (default_dram_perf.read_bandwidth + default_dram_perf.wri=
-te_bandwidth) /
-> >               (perf->read_bandwidth + perf->write_bandwidth);
-> > -     mutex_unlock(&memory_tier_lock);
-> > +     mutex_unlock(&mt_perf_lock);
-> >
-> >       return 0;
-> >  }
-> > @@ -836,6 +890,14 @@ static int __init memory_tier_init(void)
-> >        * types assigned.
-> >        */
-> >       for_each_node_state(node, N_MEMORY) {
-> > +             if (!node_state(node, N_CPU))
-> > +                     /*
-> > +                      * Defer memory tier initialization on CPUless nu=
-ma nodes.
-> > +                      * These will be initialized when HMAT informatio=
-n is
->
-> HMAT is platform specific, we should avoid to mention it in general code
-> if possible.
->
-
-Will fix! Thanks,
-
-
-> > +                      * available.
-> > +                      */
-> > +                     continue;
-> > +
-> >               memtier =3D set_node_memory_tier(node);
-> >               if (IS_ERR(memtier))
-> >                       /*
->
-> --
-> Best Regards,
-> Huang, Ying
-
-
-
---=20
-Best regards,
-Ho-Ren (Jack) Chuang
-=E8=8E=8A=E8=B3=80=E4=BB=BB
 
