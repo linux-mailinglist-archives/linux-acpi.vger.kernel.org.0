@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-4314-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4315-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A93087A837
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 14:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D62887A838
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 14:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE0271F23627
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 13:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA3571F23326
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 13:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999283B798;
-	Wed, 13 Mar 2024 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2814E40860;
+	Wed, 13 Mar 2024 13:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="XfA93gWy"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cjtHzNJC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2071.outbound.protection.outlook.com [40.107.94.71])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2087.outbound.protection.outlook.com [40.107.220.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3366D3FE58;
-	Wed, 13 Mar 2024 13:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2603B3F9CE;
+	Wed, 13 Mar 2024 13:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.87
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710336262; cv=fail; b=ibIcJ3zMcetRdPnTKK/BDeL8Y1CChT/92Fxv/6werkqXvWyt6uuTdotrVzRsr9gomyHgQ1sJWgDWgoP9rpDC2kDIyfx1YXuDNuG2me+35uzZKugCy3eqfN+s9MgLHr45/rB9vgSRNcyCQFTXMU6IYWi1eSxkxJqdambZ3YbklnE=
+	t=1710336269; cv=fail; b=G1s+DX/2RHN5FnzeGVqYp74M9h63iFikRVGrEWmOiHvvKbr3cOuOg4vxplTWuxy3efSKKS+Eijbqs0In0zyOCisD7kMdL6xVVdhlN3GAslonapfxHMGy6sabMazpUSjOGFTp7pdMNxgYN1qXwMagUNnBoYKRoX31n/Koc8N+zo4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710336262; c=relaxed/simple;
-	bh=2bsY1s4YktYXKG7LuuYN3jkngdE5b53dMbffr3M353E=;
+	s=arc-20240116; t=1710336269; c=relaxed/simple;
+	bh=4+AHPW2lvVXjQmcYpSe1sLTv4dnPy6wahFe0MbXjMME=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lfaxtXNDFYqoRndGmMSm5fUS0UvJVObF6TVMnMfBBGZ1mRwWoV0It1mVkhMs5DzNxtJZYbFxM4ZBxY7/0kc1ELlrMyGtBql8AEjx1yTrpU2a9qg00kvaoLd9Ske8kyK9VnIRcnmCKVfPeeC8lYhw4XMzTF7dU7ZqiHtJuEc/J7o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=XfA93gWy; arc=fail smtp.client-ip=40.107.94.71
+	 Content-Type:MIME-Version; b=CcDwSsHOLfe9+MuxARLz70rbB0xRqQRTDajCmC5xlei3BuO06BljsWKlyvXk889Pl7PHpM1nOCmqIOpubNWRo+L4FRxd6029C8ywhnjQJmTwVGxYcuc0FCc0DIQ9qvCpLvVpkidji3sIaeu5iHWiOQL/HNpIJ/pfCKiMLO9TtUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cjtHzNJC; arc=fail smtp.client-ip=40.107.220.87
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kr5rHLhKegQTjZZaTRCVMrKa0t2z1EPLJc3KIITP6L+fsCM6MJfii+LzaHQSt5HIwir5Dv78H+eOe8VbB5YVtxYDLFY+OcOaEmQpiYbmRKrnqzwfmCJvMHs76I1sZkKRGVcuIiZdLG12LAIrtjb2E5ztaoAP5WU+xUthWDhokH88vShp+TwTEtxbP3WY+7cxMGxgZPRN00SmdrFxVIIGT89D8V1EO8bDCXUhz6pS1Jdv+0WI5RUPXwE9RL3pltp0UrnCrwpXvQgLopFs2445SISu8eXh5fKoBC+7aiMQH99ZYbE3JZut6YlWN3yZy8epDL2ltUAu4i7aleB3GliqDg==
+ b=CfClkYup88a6RQ10CXkmwUNHqWacL9zlHwWyCHNx0iYGe7NdGaCKJ7sU27PCiQX3iw7K+vqrWYBLKJMaKtkiRu9W5AGfiTzGQ2a5AtqXEvjNe9AjeWOZFXD9y7h/CYjWv2aFfDLJ2+9BiuoLMevZ2CgxVj9Pwz32JJzSE5dWgPnVbSi2W/ErXwuTbcr3yhSESynGQXiRPGZhi52056ac+cWGPAh+amLehLNnGNL/bzob/UFY5R3PlThkWbKphDDwXn9dGnkgyxuWgzGyUOIjWsR0X1IjTctzT+HMHEaTrvMO+8EIM0WGat99W/+Rl0i1BsUilQDD97vC0ctONpGU8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PbUGhI7MbAc+L1ajytT4wty1vLe97BSdCc5zT27QfeE=;
- b=AIrHx1x2a3iWOWfVoNc8QSYFL3c1O0aTNJsHHAD/ypHFNQtuD3RZ5zwPZvz1Qk7pSwY9H1Ec9WYBiMZUziVM7gapQ4I4f2PDX96qMiIzAxOUhVRwHgd4ZAzEcU1TjMsdAs+MHWQXtiQ7tI95tqxqe+/ZdgXiqpfbcNU1JVsOqPFYbRZzDNha6T1iXYCotOVeJNyaQpTS3ZsGCimrGnq6iB1/Y6xiMX4iwpKIH0FVPQSC0nFoAIUjrUxByDu0UV6PReX9KoIEnyPLCPv3dFO0cDRt3E7hvVKx2AvFhrn/WMsW/huRMtGZN0La/fKEUtHyho2Zj7gR6cCr8kp2fDQIZw==
+ bh=TtaXMZ0VsZTcZ6EwHWXi+1RSzJbLG7C5vB9gvet9+Tw=;
+ b=ZMIfn5+ifJelSYY/s2pKzRwS1qJdVRXqck4nveBD57YO4XqliNifc02x2qGLfQgYJYqGksJqVSk6Cl7abBq+90CACpQH6FFK1YbYKxZooke70XV3AoUA4tz7NMMfrdTjTYsyWmIv271qsnAT3smPhUHSiMMCHpV1SLR8SkPVuCRKmH4y8VoqlJHEdxgXwqe5dXFCxlHR7mt9Zzz+l6M9u62AN2sYE+jiuO1FoIDuLyzFY6wnQ/usFCINCHYVScNGDmDLiynG/yORCZagO2K5R1t/G7NeR4fb/tN7QTIQBrAXul0EuP7lUTCfOOyRm/yy/ecJ+g+cW0qTXDld4HTUzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PbUGhI7MbAc+L1ajytT4wty1vLe97BSdCc5zT27QfeE=;
- b=XfA93gWymnuO/fpfvS7hQtEnNe0OX0/W/lkxRFsgXAWiKnSIdadHybZlRMHQHFG0X2BwtXapNGnbPGfvf4CpRWVlNVoRZRo5AqsIjAzNz9ulhEWpAeZhAn6JAdGrrq50wYnEpjO28wi5E3fcN+RN9MxbtFj5o0CctYJPTlj3v+k=
+ bh=TtaXMZ0VsZTcZ6EwHWXi+1RSzJbLG7C5vB9gvet9+Tw=;
+ b=cjtHzNJCZRbDhpidRw/TzZnC9Wamig4MmBh6huDAJ+BxRJpTf2Aj4nukuow+PQz+ZQnV0ZjMKjKl6/LDUEpohzPdH/9zXlFwlkmvkMoaYIcL1lLV8+sk3ARhrqtHz74QLX7Af9N3oshHDmObJGvikMQ3GANt/HYqwkZFaZl51E0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from CH3PR12MB8535.namprd12.prod.outlook.com (2603:10b6:610:160::19)
- by BL1PR12MB5777.namprd12.prod.outlook.com (2603:10b6:208:390::21) with
+ by DS0PR12MB8320.namprd12.prod.outlook.com (2603:10b6:8:f8::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.20; Wed, 13 Mar
- 2024 13:24:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.36; Wed, 13 Mar
+ 2024 13:24:25 +0000
 Received: from CH3PR12MB8535.namprd12.prod.outlook.com
  ([fe80::5302:26cf:a913:7e06]) by CH3PR12MB8535.namprd12.prod.outlook.com
  ([fe80::5302:26cf:a913:7e06%5]) with mapi id 15.20.7362.035; Wed, 13 Mar 2024
- 13:24:14 +0000
-Message-ID: <5dd9cf4a-decd-42a0-b6bf-2456a8efee99@amd.com>
-Date: Wed, 13 Mar 2024 08:24:04 -0500
+ 13:24:25 +0000
+Message-ID: <41563ff5-30cc-4343-a0b6-a0bd3c7b09a3@amd.com>
+Date: Wed, 13 Mar 2024 08:24:18 -0500
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v15 2/4] EINJ: Add CXL error type support
 Content-Language: en-US
@@ -68,9 +68,9 @@ Cc: dave@stogolabs.net, dave.jiang@intel.com, alison.schofield@intel.com,
  linux-acpi@vger.kernel.org
 References: <20240311142508.31717-1-Benjamin.Cheatham@amd.com>
  <20240311142508.31717-3-Benjamin.Cheatham@amd.com>
- <65f13f8f15389_a9b42944a@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <65f14075cea72_a9b429414@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 From: Ben Cheatham <benjamin.cheatham@amd.com>
-In-Reply-To: <65f13f8f15389_a9b42944a@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+In-Reply-To: <65f14075cea72_a9b429414@dwillia2-mobl3.amr.corp.intel.com.notmuch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: YQBPR01CA0097.CANPRD01.PROD.OUTLOOK.COM
@@ -83,68 +83,68 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|BL1PR12MB5777:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8b037e08-3d3b-4f8f-83d9-08dc4360e088
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8535:EE_|DS0PR12MB8320:EE_
+X-MS-Office365-Filtering-Correlation-Id: f885bdaf-2713-407c-406e-08dc4360e6f2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	KxfoGWZKmXeuVb6vymktdPNEnrBDanSJeg0k2dYBcwTW+Ly7PxguAdTj+aRogc+TKErMjY8eWzpX8B7CRpdKqdjObAHnQCoRbfsVHoqa76E5w+o1YUKpYDv5VuFI7+fmB0btgPexw/ns/l+C1+FR1rbN8IQYVO51tQdwdRTqvcwNyWP/h1giMod9ZBHNvFZv7K3uwumwVQUgKGw0YaWnJ8YT3yhQ8IDpJcT6WsIEExxnQSzhkOLqLYaOJlSvoU9Twj0uLx8bZpwAHLMINj9zyX/c4HB3AZY8MtGiU5OKgEZB1P5br1U2Jh3wg0oTVu6T1i6J4muqKXT0N1xM0xxlneRvBeKBIrTvgBY3BqkXsJ1x9m6a0Oba1rbOq27jzuXXNVXekZeiS03TJYMLWni8EW4S+2A5bWTHLKsqkfUDvgahtOUJT/uPov37L1klJO7ye1fqsBgAJKm6e2Ee+hRt428shJelIcC1/v1nrTESwzg+KCaNZM2vMfRImwGx19cxQyj19BuLgfIpuWEWEvbuqvFndy13cty4d/OHHhz6NZcu7JgURXr0tJGMbMp/kSgCWOUb0kFR6Pf0r9u9GXm5cmW42PEasU4L+Fp7B+Flejvi4FA+q1P0p4NCXOXUAOA+SbbC6fzYSfAjE+ctu9Xak0phvSamdLFoUFPYoL2Jg0o=
+	mjZpjUgMD75RsIaCstZWfL2JbPwSBg2gbw5RpuDlei3102l0Uf3pnV/f6GpfgA0368NM+SSe7zSyGdgc0I2KdReo9YaBIvzvAoOaRc7aRoKgCcTXkXke1Sx9cq+uswkdjQ9/0gzjrqkFbGN2PiOyvXWhmv3l+Ki2od020Ok6W+fxfpe2BRaM2oN88IaC+KYXfnH1VNXN45ga1earflWe/j7X5yjAawW3xYyjdHs9A1q6JVGKIEfViG/83KgRFiVVIVBy34AICo1Pqr7Ee6Jp5tiw5Y/9wnlUOiHtAmKhJL4ZnAVbKnAbO9BPoiRKOYdpffwEyjkI6OZiSkVQ50QotFSI5hq77bP/P9jfobaajbu084hPnWH615iSqyYn4l78xYIndhxZUu9HB7LVWaKjV+hyK5IezhRw1ddX5vMUyfQXTJl/NpSkQKmOOiE79ExM3kNHApBPsAD7+fCg4FJ/3M/bznwteFWLa3NM7rXc9zhx2TsqpxZD96PzHXjfbCnQTjjD52pRP3q/gMZckzwPpzuWKOjbvyENBGW5I5a24a9aQz5Tq4S0ezxrsWhKvVQ5rIGZH8xmCFWEe9Cso7liAoqQF7c4mUg9muZ8YDRyz076z3pdP9UKico220eaL4d5CLfWxVkji/M6oR385pONpiHW8BXA81HKZMp6RbDueiE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(7416005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8535.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(376005)(1800799015);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OVord3JBWm9OL3lKQjVCRno5ellwU2dQZDl5WmdCUURnVDVJUmR3TFNIWCtE?=
- =?utf-8?B?UmlYN2hvWndPUWYvTkIxSWZPK3pGK1dHdEdxaHl6ZW9qalk4c2szdHVEV0hm?=
- =?utf-8?B?d0VQVzZobm9vdzVydzFubFUyVXE0MlNMRHM3WklCM0Zvd0tNRXQ4MnZWODRS?=
- =?utf-8?B?eGpMWmxSUTBnT01SOEI0S1hTbk9vT1p2K0ZhOUlSSEN0Vmt1ZmRLL0hkcUhR?=
- =?utf-8?B?bUljOGh4L1I0U1NiYUcwY3lXSGNuc0F3UGRvcStDZFNlUkxlc1k0YWhkWVBw?=
- =?utf-8?B?SHFpVElrVnFSZTl1eUFYT3hMWW5QdEFJbFFxMFlVdFV4NHczWE42ZlN3M0tM?=
- =?utf-8?B?QWw2WTNrZmxyYzZKM3U1R3o1cWdEa0c1a0dUM1VSTmxYUWd5aEY3NFNpc1h6?=
- =?utf-8?B?TjVnZnprNklBMlB1S1lRYkdodkxRNjlaQWlMZlA4cVJpYXZEL25JYnBHOG00?=
- =?utf-8?B?L1BLRWwraFhvUER4QVgwR3Rjem1oSjEybmg0S0xrNlBCeTJxenlON1puUnAy?=
- =?utf-8?B?ckJnRWxrN2YzZ01obXdobmZNVmowSGdmMmh2QjM4TWFSVkF2SkZhREEwR1g4?=
- =?utf-8?B?Y0tVL3dGMTNqNm91dm1ISlAzZFFWVzdQUHkzZi9PR3I3OFp2WGptYmtzUjBn?=
- =?utf-8?B?OTV1RGJKS0QyMnUveWpydEhJQ1pZUTltOGtYMituTHh1YjE3VmxyWUxBcy9T?=
- =?utf-8?B?ak44ckFna0xpVHVRYnVRRmdJMStLRXJPY1FCclNDTU5HSjZ5b043R0w3Y2o4?=
- =?utf-8?B?eWNrMW8zZW9nS3lRS1h6eTRPcXgwdHJpVHo5RTl3ZFFsM1gzRThrL1U3WE9m?=
- =?utf-8?B?MitDK2JPZHBTT2ljR0VOb0dmbnNuNEQxNDFiRHNaUnAyenFuSUVFMkRKRHhw?=
- =?utf-8?B?LzBUR05ZNExUczBHMUxwOFB5ZFdXd0p1R0Y2bHdJcDRDNFc2VXpJVDhaMmJQ?=
- =?utf-8?B?OVorRWhraFRIQUlMWHkveU9PMlZIamxmbHdmR0c3bEp5SGtOUWpLN0JrSHV1?=
- =?utf-8?B?cko2ejZka1ROdFZNSURJMUNxVUxwTjAzNkxsajNOejdLSjd2SjgwcUpOU3A1?=
- =?utf-8?B?cDlpY2I2dEtWYXVsd1BZbklBZE45cE82bDFxV25HUFJEMFRHZ0FWM0VUSGFy?=
- =?utf-8?B?UVFIK3U4VmlSL3NRWWk0UXBMYnVxTDJhSUpBcjByM2xuaTA2TTU1b2lxZEds?=
- =?utf-8?B?VjV0M2VvTWhpSW9NOFpyVHN4U0U1Z0kvU1p6cmRyVjBpcTNMY1QrY2JOVVZL?=
- =?utf-8?B?WEVJMFFuSzlRb0FZckZjZm03aEw3c3hoVExRZkZhN0VpZ1JsT0I0QVN4WXFE?=
- =?utf-8?B?N3NQWit0U2t5UjB1NDIwNVc0MStQaHl5OWpSajFlZ2U3T0UrTlY2UHpVUWF3?=
- =?utf-8?B?cmpiY1Zxd2tMT1lqelNJSVBydVYwY0FxeGZvcWJ4ZlZVNXgzQjI4WlNKYmlv?=
- =?utf-8?B?MVdiSzFpanVCcmRtWERCTVRXZE1Nc3p3cHRqVWZtVlJTeEZDOWpYVFZSbWo1?=
- =?utf-8?B?SFJiUWNyYStKV05ubHU1eHlSbk5kRXdmU2tiN2J6dE9FM2FmVFkwOHBpSnpy?=
- =?utf-8?B?dmxURXVYRGlYYlZEUEF3VU5lei9sNlZadHBiTTduc1JyNktQT0ExMkUvdEE1?=
- =?utf-8?B?L2lzNWhMUFBqVWl2RStSbjZaMlE5anQwbGlPTjI3WWtmNUlmbEVSaDJOYURW?=
- =?utf-8?B?SHB5TWNlNTF2b0pCdW5nbmZwNjFWWVBqckRId1V4UmVKS3BaZFhrUlYzL0hn?=
- =?utf-8?B?eEtYNFhGL05qTlVXSGJXa1kwNnFhSTdVMGY2Ykk4OG9EYlB6akJNZXVEdzZP?=
- =?utf-8?B?MDJGVDRJUm8zWnpWWFVYRU9FN3dQQTV4VkxiMDZ2bm44SHV5T2s5ejRmc0Q3?=
- =?utf-8?B?dEhpVFpxS1ZJbGY3OFdRSTJZSXVaMFN6VjBnTjVKTkE4c3FKeVpDZTVUQnBB?=
- =?utf-8?B?citETXRUT2E1MUM2QlZVVUEvQko5cVF6NENkSlJEdjJEeHFDMHNwZC9JSGIw?=
- =?utf-8?B?b0hYUVpBSU1tUkwxOGdmK3JJU1BSVVJRM3RqNDB4M2sxajh4NEQ2M2hnc1E3?=
- =?utf-8?B?TXBoL0tXeGlEbEdvdVlVaE4vWGovWEkxeGZwZ21sdzVVWFlFUVZkM054RkxV?=
- =?utf-8?Q?j0S6UXNpn9qXiPPfSG5jDXdyx?=
+	=?utf-8?B?em9Xc1B3a3ozSHp0cDlwVjdaSzBWRnF4T1hxYkg2OHZlWGcxR1Z5OHE1L0wr?=
+ =?utf-8?B?Tm11S2EydktaZUlFWm1NZDFBVjhSRmhiRnBsbjRuSlZKa1NPeWxHNC9kVEUy?=
+ =?utf-8?B?bWFHTjdZdlQxb0l5NWpQbUJOSjUyUFZZcFc1REFjdGxJR1BzOHk1TGtiYTg5?=
+ =?utf-8?B?OVJVemVXK2dXODgxTHBNUUx0RW9zVm9SV1lhTlNCRFRkZ2wyTnpZZStIUWI3?=
+ =?utf-8?B?ZGVGVGE0UHJWWGVHdUVFdmpWNjRRVk1wUSswc1p3TEIvcEsydHNvNTBBdHlT?=
+ =?utf-8?B?TmJTT3V4RFBsVUZibnRMbEdGQnlPVmlYRFJWcEo4OExMY1hLNUxKYnRyS1I0?=
+ =?utf-8?B?bmNaRVcxbjhWd2Ftb0MvOElrVWxPNzNNQ3dCQ3B1c1djeFBNdFZnSDFXbUJ4?=
+ =?utf-8?B?WEErY0dKQ0I4U2s2Q0loOHJoME0rdGJ5RVRPSmRNa2RUUXdOc28rbXhURlBz?=
+ =?utf-8?B?YkxnalVTY0hlT3l4Wkkzay9nYXNvYWJpaFZDM2JEVUhzekJXWEhBNG53dUtQ?=
+ =?utf-8?B?Rnd1V1JIVGVqR3Y1aHJkRVYyOE1LSG1oMldkaGtBM0NNQ3JmQnRIMHFmL1R6?=
+ =?utf-8?B?QklGd09HaDVvd1dYbGZWNkdkdWNJUDBhVGU5REhsdy9NNXdJdGFsK1ZCUFJh?=
+ =?utf-8?B?N1BzWngybnZCY3J2UXF1R0dWaHhTYVdNU0kvYnZlU09hbGt1ZlI2WWJ3M1JB?=
+ =?utf-8?B?cDlVR3dBYVVvTk9ScTdmMHQraDVLT3Y5Uk1tV3Q3QjFmZHduRjlDNVd4bEtK?=
+ =?utf-8?B?ZDRWV2p4U1hHZWFkSWdpSWxqQU5laDhUa05iVS8zZmk1MzU0bGY4YkJBMWFY?=
+ =?utf-8?B?V2cvb3d5bk5NaXZCSXJIYitmYnBvWXo2a0NQUk1nZytZMTJtUHdNdU5icTRp?=
+ =?utf-8?B?WktUSVNPOExCRytvdjhBSkZWc0JrOS9IWHk2K0t4VVlucDJzQW1JOTRCdytH?=
+ =?utf-8?B?bTl2MzB5WHU1bUcwS1FDdmFMVHNzWnU1ZUNTQUpWMzBhVnZoVTZRcVlFejJS?=
+ =?utf-8?B?elU3UExIS1hXWVJHMGhOSENPTHlSaWZaQ3QyYzBqVmVoaGNqbExpUkhOczE3?=
+ =?utf-8?B?S1lJTVJDTllJV1NBY1BiMUVHVjAxNnAzMlk5T2NOaktYTldubnJTUmRWdklw?=
+ =?utf-8?B?Q1VlMGsxZ2FFWmY0algxclhOYy80QVZvQ0ZBb3NHcUJBQVB5d3l6YlFENnZz?=
+ =?utf-8?B?SFNQeSs1QVhscnlENjl2OFhIQzNkZm1YM3BCcGNjbW51YlRrQUVmWGtMV2Nz?=
+ =?utf-8?B?Y1BJQXE4cmIwNXk4a0R3bEw2djZxMU5iTUY1YVNLZXBDMDJSMjBGQlhQZnNT?=
+ =?utf-8?B?aUhHZE0xcnVKcWJINStsZm16Mll5TXNjaWt6bmkwa2RFZVdWMEtTeXFQOFpE?=
+ =?utf-8?B?OVVrM280WVNOcjBsZ1VRMFZPU0pFQ3NpeFJDTFdEOHZNeEZXT1E0SDdpVkRz?=
+ =?utf-8?B?ZnRvbUJxTW9LcVBTT0ZaanFQVWZVVjE2eVplZmF4NjZSS2VKekszVTlWNnBE?=
+ =?utf-8?B?NWVldkcrSHBvakhlSUZFRUtFSy9mRDNnOVF4aW5kcEJ0UmwvZUVPdTVrWEJo?=
+ =?utf-8?B?eHZDT0xkRlBMQzY4bTlCMXhSSWttN00xQ0JEOThVL3pBQ3huNWpkdnkyOElx?=
+ =?utf-8?B?T2JhWWUwYVE3R0E0OURYeUhhMWZlUFJWMUt1RzRvYzF1VHdxT0kzejVOdkVj?=
+ =?utf-8?B?WmhjblhRSm83ekJVL1UrRUI4ZDUrS3M5UitjRzJ6ZFk3bm4wdHhIQS9BeHd5?=
+ =?utf-8?B?SEpyWDFWZGJ5Uk9nTU05U0xOLzJSQXNOS0h5eVZEV3gwTmFwWllXdFFxRmtD?=
+ =?utf-8?B?bVBNL3BtS1VHM2NBS1NiNE52NjZidngrNkFqbXJXM0pJY1hVNWwxZ1pLdzdp?=
+ =?utf-8?B?L29yVklyNEp3MjRyZ25QTjZzWlMzVmw3OU5DR2s4WG5DeTB5cWhqaGliK3FR?=
+ =?utf-8?B?aDNkd2xXSmJobURFZzcxelppMm8vcFJkTUh4RGJ3WXNXTGZhSTVySlBhcEpN?=
+ =?utf-8?B?WnBveFBoVW1uRHR4UVRLOWhlSHY2bGFVRUhoREgyZ255cS9lT2NYYjZmWVJT?=
+ =?utf-8?B?bVpudVA4aEZCNCsxR1ZUaWFzd1pxMVhkdXc3Uzlta3VBOEhzZHdIU1paREVT?=
+ =?utf-8?Q?91v5CUUu7nNGvnFhaacoO0X56?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8b037e08-3d3b-4f8f-83d9-08dc4360e088
+X-MS-Exchange-CrossTenant-Network-Message-Id: f885bdaf-2713-407c-406e-08dc4360e6f2
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8535.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2024 13:24:14.4893
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Mar 2024 13:24:25.1836
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sHAkU2wbejv0y46Dctd9iCfOwAr2DXeYaiVlx7g/JzfzIWu/RWCXf3qIuFlMOcUlgOo/cfTg6DMKHEfU2v9WpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5777
+X-MS-Exchange-CrossTenant-UserPrincipalName: QwPEKywB6hWESwa0YbhRxDg1EsL/DLRQ0cM8uPhWA4zIxJ3yAfI3gTDRpqnAKfQekzJC+dR+slXPvy5hM8MRnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8320
 
 
 
-On 3/13/24 12:54 AM, Dan Williams wrote:
+On 3/13/24 12:58 AM, Dan Williams wrote:
 > Ben Cheatham wrote:
 >> Move CXL protocol error types from einj.c (now einj-core.c) to einj-cxl.c.
 >> einj-cxl.c implements the necessary handling for CXL protocol error
@@ -252,57 +252,7 @@ On 3/13/24 12:54 AM, Dan Williams wrote:
 >> index 937c69844dac..9affbe807ded 100644
 >> --- a/drivers/acpi/apei/einj.c
 >> +++ b/drivers/acpi/apei/einj-core.c
->> @@ -37,6 +37,12 @@
->>  #define MEM_ERROR_MASK		(ACPI_EINJ_MEMORY_CORRECTABLE | \
->>  				ACPI_EINJ_MEMORY_UNCORRECTABLE | \
->>  				ACPI_EINJ_MEMORY_FATAL)
->> +#define CXL_ERROR_MASK		(ACPI_EINJ_CXL_CACHE_CORRECTABLE | \
->> +				ACPI_EINJ_CXL_CACHE_UNCORRECTABLE | \
->> +				ACPI_EINJ_CXL_CACHE_FATAL | \
->> +				ACPI_EINJ_CXL_MEM_CORRECTABLE | \
->> +				ACPI_EINJ_CXL_MEM_UNCORRECTABLE | \
->> +				ACPI_EINJ_CXL_MEM_FATAL)
->>  
->>  /*
->>   * ACPI version 5 provides a SET_ERROR_TYPE_WITH_ADDRESS action.
->> @@ -141,7 +147,7 @@ static DEFINE_MUTEX(einj_mutex);
->>  /*
->>   * Exported APIs use this flag to exit early if einj_probe() failed.
->>   */
->> -static bool einj_initialized __ro_after_init;
->> +bool einj_initialized __ro_after_init;
->>  
->>  static void *einj_param;
->>  
->> @@ -166,7 +172,7 @@ static int __einj_get_available_error_type(u32 *type)
->>  }
->>  
->>  /* Get error injection capabilities of the platform */
->> -static int einj_get_available_error_type(u32 *type)
->> +int einj_get_available_error_type(u32 *type)
->>  {
->>  	int rc;
->>  
->> @@ -536,8 +542,8 @@ static int __einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->>  }
->>  
->>  /* Inject the specified hardware error */
->> -static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->> -			     u64 param3, u64 param4)
->> +int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2, u64 param3,
->> +		      u64 param4)
->>  {
->>  	int rc;
->>  	u64 base_addr, size;
->> @@ -560,8 +566,18 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->>  	if (type & ACPI5_VENDOR_BIT) {
->>  		if (vendor_flags != SETWA_FLAGS_MEM)
->>  			goto inject;
->> -	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM))
->> +	} else if (!(type & MEM_ERROR_MASK) && !(flags & SETWA_FLAGS_MEM)) {
->>  		goto inject;
->> +	}
->> +
+> [..]
 >> +	/*
 >> +	 * Injections targeting a CXL 1.0/1.1 port have to be injected
 >> +	 * via the einj_cxl_rch_error_inject() path as that does the proper
@@ -311,143 +261,18 @@ On 3/13/24 12:54 AM, Dan Williams wrote:
 >> +	if (einj_is_cxl_error_type(type) && (flags & SETWA_FLAGS_MEM)) {
 >> +		return -EINVAL;
 >> +	}
->>  
->>  	/*
->>  	 * Disallow crazy address masks that give BIOS leeway to pick
->> @@ -593,6 +609,21 @@ static int einj_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->>  	return rc;
->>  }
->>  
->> +int einj_cxl_rch_error_inject(u32 type, u32 flags, u64 param1, u64 param2,
->> +			      u64 param3, u64 param4)
->> +{
->> +	int rc;
->> +
->> +	if (!(einj_is_cxl_error_type(type) && (flags & SETWA_FLAGS_MEM)))
->> +		return -EINVAL;
->> +
->> +	mutex_lock(&einj_mutex);
->> +	rc = __einj_error_inject(type, flags, param1, param2, param3, param4);
->> +	mutex_unlock(&einj_mutex);
->> +
->> +	return rc;
->> +}
->> +
->>  static u32 error_type;
->>  static u32 error_flags;
->>  static u64 error_param1;
->> @@ -613,12 +644,6 @@ static struct { u32 mask; const char *str; } const einj_error_type_string[] = {
->>  	{ BIT(9), "Platform Correctable" },
->>  	{ BIT(10), "Platform Uncorrectable non-fatal" },
->>  	{ BIT(11), "Platform Uncorrectable fatal"},
->> -	{ BIT(12), "CXL.cache Protocol Correctable" },
->> -	{ BIT(13), "CXL.cache Protocol Uncorrectable non-fatal" },
->> -	{ BIT(14), "CXL.cache Protocol Uncorrectable fatal" },
->> -	{ BIT(15), "CXL.mem Protocol Correctable" },
->> -	{ BIT(16), "CXL.mem Protocol Uncorrectable non-fatal" },
->> -	{ BIT(17), "CXL.mem Protocol Uncorrectable fatal" },
->>  	{ BIT(31), "Vendor Defined Error Types" },
->>  };
->>  
->> @@ -647,22 +672,26 @@ static int error_type_get(void *data, u64 *val)
->>  	return 0;
->>  }
->>  
->> -static int error_type_set(void *data, u64 val)
->> +bool einj_is_cxl_error_type(u64 type)
->> +{
->> +	return (type & CXL_ERROR_MASK) && (!(type & ACPI5_VENDOR_BIT));
->> +}
->> +
->> +int einj_validate_error_type(u64 type)
->>  {
->> +	u32 tval, vendor, available_error_type = 0;
->>  	int rc;
->> -	u32 available_error_type = 0;
->> -	u32 tval, vendor;
->>  
->>  	/* Only low 32 bits for error type are valid */
->> -	if (val & GENMASK_ULL(63, 32))
->> +	if (type & GENMASK_ULL(63, 32))
->>  		return -EINVAL;
->>  
->>  	/*
->>  	 * Vendor defined types have 0x80000000 bit set, and
->>  	 * are not enumerated by ACPI_EINJ_GET_ERROR_TYPE
->>  	 */
->> -	vendor = val & ACPI5_VENDOR_BIT;
->> -	tval = val & 0x7fffffff;
->> +	vendor = type & ACPI5_VENDOR_BIT;
->> +	tval = type & GENMASK(30, 0);
->>  
->>  	/* Only one error type can be specified */
->>  	if (tval & (tval - 1))
->> @@ -671,9 +700,21 @@ static int error_type_set(void *data, u64 val)
->>  		rc = einj_get_available_error_type(&available_error_type);
->>  		if (rc)
->>  			return rc;
->> -		if (!(val & available_error_type))
->> +		if (!(type & available_error_type))
->>  			return -EINVAL;
->>  	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int error_type_set(void *data, u64 val)
->> +{
->> +	int rc;
->> +
->> +	rc = einj_validate_error_type(val);
->> +	if (rc)
->> +		return rc;
->> +
->>  	error_type = val;
->>  
->>  	return 0;
->> diff --git a/drivers/acpi/apei/einj-cxl.c b/drivers/acpi/apei/einj-cxl.c
->> new file mode 100644
->> index 000000000000..bde7e20c7fbb
->> --- /dev/null
->> +++ b/drivers/acpi/apei/einj-cxl.c
->> @@ -0,0 +1,116 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * CXL Error INJection support. Used by CXL core to inject
->> + * protocol errors into CXL ports.
->> + *
->> + * Copyright (C) 2023 Advanced Micro Devices, Inc.
->> + *
->> + * Author: Ben Cheatham <benjamin.cheatham@amd.com>
->> + */
->> +#include <linux/einj-cxl.h>
->> +#include <linux/seq_file.h>
->> +#include <linux/pci.h>
->> +
->> +#include "apei-internal.h"
->> +
->> +/* Defined in einj-core.c */
->> +extern bool einj_initialized;
->> +
->> +static struct { u32 mask; const char *str; } const einj_cxl_error_type_string[] = {
->> +	{ ACPI_EINJ_CXL_CACHE_CORRECTABLE, "CXL.cache Protocol Correctable" },
->> +	{ ACPI_EINJ_CXL_CACHE_UNCORRECTABLE, "CXL.cache Protocol Uncorrectable non-fatal" },
->> +	{ ACPI_EINJ_CXL_CACHE_FATAL, "CXL.cache Protocol Uncorrectable fatal" },
->> +	{ ACPI_EINJ_CXL_MEM_CORRECTABLE, "CXL.mem Protocol Correctable" },
->> +	{ ACPI_EINJ_CXL_MEM_UNCORRECTABLE, "CXL.mem Protocol Uncorrectable non-fatal" },
->> +	{ ACPI_EINJ_CXL_MEM_FATAL, "CXL.mem Protocol Uncorrectable fatal" },
->> +};
->> +
->> +int einj_cxl_available_error_type_show(struct seq_file *m, void *v)
->> +{
->> +	int cxl_err, rc;
->> +	u32 available_error_type = 0;
->> +
->> +	if (!einj_initialized)
->> +		return -ENXIO;
 > 
-> One of the unnecessary einj_initialized checks leaked through...
-> removed it on applying.
+> Checkpatch says:
+> 
+> WARNING: braces {} are not necessary for single statement blocks
+> #170: FILE: drivers/acpi/apei/einj-core.c:578:
+> +       if (einj_is_cxl_error_type(type) && (flags & SETWA_FLAGS_MEM)) {
+> +               return -EINVAL;
+> +       }
+> 
+> 
+> Fixed.
 
-Sorry about that, no clue how I didn't see that one.
+That's interesting, I have checkpatch set to run on git commit so I should've
+seen that. I'll need to take another look at my setup.
 
