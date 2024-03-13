@@ -1,101 +1,142 @@
-Return-Path: <linux-acpi+bounces-4320-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4321-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F6E87B278
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 21:04:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F5687B397
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 22:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D22781C249C0
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 20:04:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E14D5284108
+	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 21:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614214CB47;
-	Wed, 13 Mar 2024 20:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF2F53E2D;
+	Wed, 13 Mar 2024 21:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="pxVlJYub"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB834CB35;
-	Wed, 13 Mar 2024 20:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A946535B7
+	for <linux-acpi@vger.kernel.org>; Wed, 13 Mar 2024 21:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360244; cv=none; b=h8sIQyt84oiN8qOYlzjIVtCzMXrOOA17+9N4Sq/ihKEvHEFDOYNFR38doqN2udJaXrqcQcecSlcAcK/MqZfrdERrRCOhDsNRMePtPxtrqX1si4qFtonCC/4zAQnzehjUAaHIIxomcRzB4bH4/vqn/BRTKa/jQ3w/4j1yZ7QGiyU=
+	t=1710366051; cv=none; b=OVNlZAIUiSOHp6HADvzAf4clQac/0V2wqpw7e/P6bojewlIqL+u6gSyLGwKNweY/dfTDEc/Xj1pE63tW5Mz1WJbPOCDUkifRS3X0VlKIzQbVtVhicwpcnl3IWQXac8ncwAzDaXpSp1WUJRBJHjAWtwrbBjCnCwpfsYNFvCtbT/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360244; c=relaxed/simple;
-	bh=HpnEoUB/oMjy6t9QQon1zh6WUkd8bXZJNBtBgtGcZ38=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C73sVRYyk0Ra6n2F+nJhbkb4GPtK250CPjHId/aeIO+ZylytvEFE4UeP9UGIz99dDobGYckE2c8bGEgb6pXmAuicWxbH0OwFJ617cGZJOkjyGv0P91VhsuZZvY6oeEppuS+jjRF2tIXw0BV8PIp4MCJeYiTVWq/Zrd8IRJZQqgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3bc21303a35so74928b6e.0;
-        Wed, 13 Mar 2024 13:04:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710360242; x=1710965042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6HjfA5JeS0LPF5tA3E2BddNSyfSC+siJkaEjPswhwp4=;
-        b=vFtyYy0lhshYq+oFdf80W6M7s5/neMjUvJ+jLWA9LMSFFT7hbPNRZ83YO3abBp2ImJ
-         NO4wzwaf44kEB+BLZCq1mnAbgqAURroZQEbjyQr2hUTdJXAPdsGsrcOOFizddWonNZCP
-         9bF70SHg4f6NC0Q6Il2CAHodwc3dkrd6K+XDrh8QmLzc6gWl8Yw3f3DZK8zJ2BcExDO1
-         d0ZcdGUgQwiWOtuPtbgibK3opf8jFRT9WORsM547dDdVfP2L4sliJ+cIj1KWvrLzCiiT
-         dVxPQmWhOu0yzljWWY7uK2w5SQyGei8mGd6t1HvPqe1iSf8gqNpAMyCEEFkeocayWQuY
-         Hqcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOAAeIdJV9eKh3FrKkB6i2aFeGbGPSkJq6+42vabV5fDR7lhKKAwtVioTxg6VwmyS84o8UVUNUjLVUr6hUAYmm3noWMpf3hErDvCht7Y6R0cmsM/wdZXdunkcRjJipA7N5leg3PqI5/w==
-X-Gm-Message-State: AOJu0YwMXqrTJ7JUa312G4LtwhsAGHx+izrKHVkud9LFPeUacf814r26
-	HIvAQzMKRFQExpQIXMYXYBUhh9TKUJnlHz4JU6p6xQPIfbBaVGrJVHUYVQduxj3La8uQh+6sSbA
-	mR7TOEvxkDNioAMrkynTHxVqOBb8HFjJX
-X-Google-Smtp-Source: AGHT+IGoah+dWg2O7jbUzVhRGML+Fdut2kM0oYls7T42xhIzyeWm7X4GmCawVRkDOSnQt1bBxxcOJyOGsW3fPjozBw8=
-X-Received: by 2002:a05:6871:54e:b0:221:c9ef:43f with SMTP id
- t14-20020a056871054e00b00221c9ef043fmr11194388oal.1.1710360241762; Wed, 13
- Mar 2024 13:04:01 -0700 (PDT)
+	s=arc-20240116; t=1710366051; c=relaxed/simple;
+	bh=mPoVTQYq7VdvrrxQ6la9CwblUF2lFdSL1QHuZq2WXy8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KodjNKCN3fzWay4r29OaCr/aIJDbayQzGKu7JW+m+LnqdkxTxs6AlrHIWjxH4aseq4fEHBijRFjf3nI65YE9qKEoEnuCVsjsacsIhUhU/aggyHTFt/Z1dSKm2YnU0J2NuHtYeAQrG57MtLpbLE5Rzhr667MLmsPi7ObTOHu3Fks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=pxVlJYub; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id CA5592C018E;
+	Thu, 14 Mar 2024 10:40:40 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1710366040;
+	bh=mV4oUURtJa5fDu6eFwW5lGCkuKZZh3l9yb4RSs8QcHQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pxVlJYubjo1eWXzzeyJ8BwJYcJGiFp8JZOY6qVsg+gF+blBWcweh8BYyMwD1+MWPu
+	 Eg7vmuhvRYLrkh5aM2XAIuvx91yL35m9wZIiYmTM0uqN1HNOnJjIWWAo/r5RkBxWR/
+	 cY7K1x5FlVeacgNN6i5VFH0ImCP+A+CGgIQdKhmm6tLYCnTsedSShaquxE63jCqOsE
+	 Xz8nqfaPSgaKTiy3JHFXlfe5MoKaG/gmi4F4gJt2tCS2CR9Rgo9oicQCH7cUgZT1yJ
+	 cxKtB4vnBgD4J2/oycOTk+UItUkVyuJmId4P5CB8PGF1EkvZMbk+bSCUbeg9Q0zWE7
+	 ty8e/8v6vgLJw==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65f21d580000>; Thu, 14 Mar 2024 10:40:40 +1300
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.30])
+	by pat.atlnz.lc (Postfix) with ESMTP id 85A5D13EE36;
+	Thu, 14 Mar 2024 10:40:40 +1300 (NZDT)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+	id 80C5D280A37; Thu, 14 Mar 2024 10:40:40 +1300 (NZDT)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chris Packham <chris.packham@alliedtelesis.co.nz>
+Subject: [PATCH] ACPI: docs: enumeration: Make footnotes links
+Date: Thu, 14 Mar 2024 10:40:38 +1300
+Message-ID: <20240313214038.479253-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240308073214.11262-1-yang.lee@linux.alibaba.com>
-In-Reply-To: <20240308073214.11262-1-yang.lee@linux.alibaba.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Mar 2024 21:03:50 +0100
-Message-ID: <CAJZ5v0h0KwKE9QOZSej6HVR1WePw_jd=GR03hDd_Kg6Fo2s3qA@mail.gmail.com>
-Subject: Re: [PATCH -next] ACPI: Add kernel-doc comments to
- handle_eject_request function
-To: Yang Li <yang.lee@linux.alibaba.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=KIH5D0Fo c=1 sm=1 tr=0 ts=65f21d58 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=K6JAEmCyrfEA:10 a=dw0t6H4-AAAA:8 a=iFXl2urbudpVc5562-MA:9 a=3ZKOabzyN94A:10 a=wVJa4CU9-Z26yuRAZDil:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-On Fri, Mar 8, 2024 at 8:32=E2=80=AFAM Yang Li <yang.lee@linux.alibaba.com>=
- wrote:
->
-> This patch adds proper kernel-doc comments to the
-> handle_eject_request function in the ACPI dock subsystem.
->
-> Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-> ---
->  drivers/acpi/dock.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-> index a89bdbe00184..a7c00ef78086 100644
-> --- a/drivers/acpi/dock.c
-> +++ b/drivers/acpi/dock.c
-> @@ -380,6 +380,8 @@ static int dock_in_progress(struct dock_station *ds)
->
->  /**
->   * handle_eject_request - handle an undock request checking for error co=
-nditions
-> + * @ds: The dock station to undock.
-> + * @event: The ACPI event number associated with the undock request.
->   *
->   * Check to make sure the dock device is still present, then undock and
->   * hotremove all the devices that may need removing.
-> --
+Update the numeric footnotes so that they are rendered as hyperlinks in
+the html output.
 
-Applied as 6.9-rc material with edits in the subject and changelog, thanks!
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+---
+ Documentation/firmware-guide/acpi/enumeration.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Document=
+ation/firmware-guide/acpi/enumeration.rst
+index d79f69390991..0165b09c0957 100644
+--- a/Documentation/firmware-guide/acpi/enumeration.rst
++++ b/Documentation/firmware-guide/acpi/enumeration.rst
+@@ -595,7 +595,7 @@ bridges/switches of the board.
+=20
+ For example, let's assume we have a system with a PCIe serial port, an
+ Exar XR17V3521, soldered on the main board. This UART chip also includes
+-16 GPIOs and we want to add the property ``gpio-line-names`` [1] to thes=
+e pins.
++16 GPIOs and we want to add the property ``gpio-line-names`` [1]_ to the=
+se pins.
+ In this case, the ``lspci`` output for this component is::
+=20
+ 	07:00.0 Serial controller: Exar Corp. XR17V3521 Dual PCIe UART (rev 03)
+@@ -637,7 +637,7 @@ of the chipset bridge (also called "root port") with =
+address::
+ 	Bus: 0 - Device: 14 - Function: 1
+=20
+ To find this information, it is necessary to disassemble the BIOS ACPI t=
+ables,
+-in particular the DSDT (see also [2])::
++in particular the DSDT (see also [2]_)::
+=20
+ 	mkdir ~/tables/
+ 	cd ~/tables/
+@@ -667,7 +667,7 @@ device::
+ 			}
+ 	... other definitions follow ...
+=20
+-and the _ADR method [3] returns exactly the device/function couple that
++and the _ADR method [3]_ returns exactly the device/function couple that
+ we are looking for. With this information and analyzing the above ``lspc=
+i``
+ output (both the devices list and the devices tree), we can write the fo=
+llowing
+ ACPI description for the Exar PCIe UART, also adding the list of its GPI=
+O line
+@@ -724,10 +724,10 @@ created analyzing the position of the Exar UART in =
+the PCI bus topology.
+ References
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=20
+-[1] Documentation/firmware-guide/acpi/gpio-properties.rst
++.. [1] Documentation/firmware-guide/acpi/gpio-properties.rst
+=20
+-[2] Documentation/admin-guide/acpi/initrd_table_override.rst
++.. [2] Documentation/admin-guide/acpi/initrd_table_override.rst
+=20
+-[3] ACPI Specifications, Version 6.3 - Paragraph 6.1.1 _ADR Address)
++.. [3] ACPI Specifications, Version 6.3 - Paragraph 6.1.1 _ADR Address)
+     https://uefi.org/sites/default/files/resources/ACPI_6_3_May16.pdf,
+     referenced 2020-11-18
+--=20
+2.43.2
+
 
