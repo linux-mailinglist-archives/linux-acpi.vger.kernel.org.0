@@ -1,38 +1,38 @@
-Return-Path: <linux-acpi+bounces-4330-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4331-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FB887B7AB
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 07:04:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0388787B7AE
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 07:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C34E8B20E40
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 06:04:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274F11C21070
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 06:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6767E10A0C;
-	Thu, 14 Mar 2024 05:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B23215491;
+	Thu, 14 Mar 2024 05:59:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50501381D0;
-	Thu, 14 Mar 2024 05:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990083BB37;
+	Thu, 14 Mar 2024 05:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710395989; cv=none; b=N4r075um2rPmJWhrmAE+fek5Yi8V7UCwpjKbuZyQBBs+Gx5amwpXDLhC4FEzajSWohjguZZXVBE0kIHFlI82o6S0M+8bS6rmgrMpQ8XlfnMV5TwK95hospqpJSmxNgXvdPQ7RnqElUTV5XkpV+C2hs28JHA1lhZZymtDJoS7jsU=
+	t=1710395993; cv=none; b=bOOj9Cr6d0i18ptbDTaXoSIxTeFGKCdH3znXq5rAa0B6cpbCSvgz/nSySxiUAVgiv0ogjyrUV+Efw30udUAWZGnR6BR7BogodKVdH8fEAnWFQGS4iDP72UXBK0ouzEwiyOI4wHRQ8ZxUioqaNJfIKyYRbGTfC33/vU1+tZfgoC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710395989; c=relaxed/simple;
-	bh=nF1vib//JfS9VVM1KMJL7ziPCfj+3ZudKLaYfcABLc0=;
+	s=arc-20240116; t=1710395993; c=relaxed/simple;
+	bh=/ynXK/wwo6vxgSvodH8Qphiw9crFmPIhTLqhJ1xqsnI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=innDWgAYmhiA3bEfmuhatmt+zb+Lotv+2AvBbyJtBWcPW6G7PE32cwVW//NlLFSGARMiXlB4y5ROtrSSeheJrYMZi0CLSEg+H8giWbd9kGUGTnWMzhhpLOid1jA26ycM/eI/omCfuPqAdFN1NPsBIlFOCqi2M3B7wsFE8zse4nc=
+	 MIME-Version; b=cUn5ODBN+KTxTy9m4dqyaYxjISsB0iwKgrBZD/e8STwTOSEwPyayPddWL0qKe+9z4Vj2TFJ/3EcYOMNj4C90j04x8EwVi66Koe8EIzVi4O6QFbffPNSa9NfiUDKee43A8AUDXFdZvBRJOyALlt4EYkMSZyz2NEiA0KbgPUet0Is=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF30E1063;
-	Wed, 13 Mar 2024 23:00:22 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 646A01007;
+	Wed, 13 Mar 2024 23:00:27 -0700 (PDT)
 Received: from a077893.arm.com (unknown [10.163.53.138])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8EC683F73F;
-	Wed, 13 Mar 2024 22:59:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 02F203F73F;
+	Wed, 13 Mar 2024 22:59:46 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-arm-kernel@lists.infradead.org,
 	suzuki.poulose@arm.com
@@ -47,9 +47,9 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	linux-kernel@vger.kernel.org,
 	coresight@lists.linaro.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH V7 06/11] coresight: funnel: Move ACPI support from AMBA driver to platform driver
-Date: Thu, 14 Mar 2024 11:28:38 +0530
-Message-Id: <20240314055843.2625883-7-anshuman.khandual@arm.com>
+Subject: [PATCH V7 07/11] coresight: catu: Move ACPI support from AMBA driver to platform driver
+Date: Thu, 14 Mar 2024 11:28:39 +0530
+Message-Id: <20240314055843.2625883-8-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240314055843.2625883-1-anshuman.khandual@arm.com>
 References: <20240314055843.2625883-1-anshuman.khandual@arm.com>
@@ -61,15 +61,12 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for the dynamic funnel device in the platform driver, which can
-then be used on ACPI based platforms. This change would allow runtime power
-management for ACPI based systems.
-
-The driver would try to enable the APB clock if available. Also, rename the
-code to reflect the fact that it now handles both static and dynamic
-funnels. But first this refactors funnel_probe() making sure it can be used
-both for platform and AMBA drivers, by moving the pm_runtime_put() to the
-callers.
+Add support for the catu devices in a new platform driver, which can then
+be used on ACPI based platforms. This change would now allow runtime power
+management for ACPI based systems. The driver would try to enable the APB
+clock if available. But first this renames and then refactors catu_probe()
+and catu_remove(), making sure it can be used both for platform and AMBA
+drivers. This also moves pm_runtime_put() from catu_probe() to the callers.
 
 Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Cc: Sudeep Holla <sudeep.holla@arm.com>
@@ -80,208 +77,252 @@ Cc: linux-acpi@vger.kernel.org
 Cc: linux-arm-kernel@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org
 Cc: coresight@lists.linaro.org
-Tested-by: Sudeep Holla <sudeep.holla@arm.com> # Boot and driver probe only
 Acked-by: Sudeep Holla <sudeep.holla@arm.com> # For ACPI related changes
 Reviewed-by: James Clark <james.clark@arm.com>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
 Changes in V7:
 
-- Dropped reduntant drvdata check in funnel_platform_remove()
+- Dropped struct resource check before devm_ioremap_resource()
+- Dropped reduntant drvdata check in catu_platform_probe()
+- Dropped reduntant drvdata check in catu_platform_remove()
+- Sorted the headers in alphabetic order
 
- drivers/acpi/arm64/amba.c                     |  1 -
- .../hwtracing/coresight/coresight-funnel.c    | 72 ++++++++++++-------
- 2 files changed, 48 insertions(+), 25 deletions(-)
+ drivers/acpi/arm64/amba.c                    |   1 -
+ drivers/hwtracing/coresight/coresight-catu.c | 138 ++++++++++++++++---
+ drivers/hwtracing/coresight/coresight-catu.h |   1 +
+ 3 files changed, 120 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/acpi/arm64/amba.c b/drivers/acpi/arm64/amba.c
-index 270f4e3819a2..afb6afb66967 100644
+index afb6afb66967..587061b0fd2f 100644
 --- a/drivers/acpi/arm64/amba.c
 +++ b/drivers/acpi/arm64/amba.c
-@@ -28,7 +28,6 @@ static const struct acpi_device_id amba_id_list[] = {
+@@ -27,7 +27,6 @@ static const struct acpi_device_id amba_id_list[] = {
+ 	{"ARMHC503", 0}, /* ARM CoreSight Debug */
  	{"ARMHC979", 0}, /* ARM CoreSight TPIU */
  	{"ARMHC97C", 0}, /* ARM CoreSight SoC-400 TMC, SoC-600 ETF/ETB */
- 	{"ARMHC9CA", 0}, /* ARM CoreSight CATU */
--	{"ARMHC9FF", 0}, /* ARM CoreSight Dynamic Funnel */
+-	{"ARMHC9CA", 0}, /* ARM CoreSight CATU */
  	{"", 0},
  };
  
-diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
-index ff3ea0670a5b..616735dc80a6 100644
---- a/drivers/hwtracing/coresight/coresight-funnel.c
-+++ b/drivers/hwtracing/coresight/coresight-funnel.c
-@@ -36,6 +36,7 @@ DEFINE_CORESIGHT_DEVLIST(funnel_devs, "funnel");
-  * struct funnel_drvdata - specifics associated to a funnel component
-  * @base:	memory mapped base address for this component.
-  * @atclk:	optional clock for the core parts of the funnel.
-+ * @pclk:	APB clock if present, otherwise NULL
-  * @csdev:	component vitals needed by the framework.
-  * @priority:	port selection order.
-  * @spinlock:	serialize enable/disable operations.
-@@ -43,6 +44,7 @@ DEFINE_CORESIGHT_DEVLIST(funnel_devs, "funnel");
- struct funnel_drvdata {
- 	void __iomem		*base;
- 	struct clk		*atclk;
-+	struct clk		*pclk;
- 	struct coresight_device	*csdev;
- 	unsigned long		priority;
- 	spinlock_t		spinlock;
-@@ -236,6 +238,10 @@ static int funnel_probe(struct device *dev, struct resource *res)
- 			return ret;
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-catu.c b/drivers/hwtracing/coresight/coresight-catu.c
+index 3949ded0d4fa..9712be6acd26 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.c
++++ b/drivers/hwtracing/coresight/coresight-catu.c
+@@ -7,11 +7,13 @@
+  * Author: Suzuki K Poulose <suzuki.poulose@arm.com>
+  */
  
-+	drvdata->pclk = coresight_get_enable_apb_pclk(dev);
-+	if (IS_ERR(drvdata->pclk))
-+		return -ENODEV;
-+
- 	/*
- 	 * Map the device base for dynamic-funnel, which has been
- 	 * validated by AMBA core.
-@@ -272,12 +278,13 @@ static int funnel_probe(struct device *dev, struct resource *res)
- 		goto out_disable_clk;
- 	}
++#include <linux/acpi.h>
+ #include <linux/amba/bus.h>
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
++#include <linux/platform_device.h>
+ #include <linux/slab.h>
  
--	pm_runtime_put(dev);
- 	ret = 0;
- 
- out_disable_clk:
- 	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
- 		clk_disable_unprepare(drvdata->atclk);
-+	if (ret && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_disable_unprepare(drvdata->pclk);
- 	return ret;
- }
- 
-@@ -298,6 +305,9 @@ static int funnel_runtime_suspend(struct device *dev)
- 	if (drvdata && !IS_ERR(drvdata->atclk))
- 		clk_disable_unprepare(drvdata->atclk);
- 
-+	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_disable_unprepare(drvdata->pclk);
-+
- 	return 0;
- }
- 
-@@ -308,6 +318,8 @@ static int funnel_runtime_resume(struct device *dev)
- 	if (drvdata && !IS_ERR(drvdata->atclk))
- 		clk_prepare_enable(drvdata->atclk);
- 
-+	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_prepare_enable(drvdata->pclk);
- 	return 0;
- }
- #endif
-@@ -316,55 +328,61 @@ static const struct dev_pm_ops funnel_dev_pm_ops = {
- 	SET_RUNTIME_PM_OPS(funnel_runtime_suspend, funnel_runtime_resume, NULL)
+ #include "coresight-catu.h"
+@@ -502,28 +504,20 @@ static const struct coresight_ops catu_ops = {
+ 	.helper_ops = &catu_helper_ops,
  };
  
--static int static_funnel_probe(struct platform_device *pdev)
-+static int funnel_platform_probe(struct platform_device *pdev)
+-static int catu_probe(struct amba_device *adev, const struct amba_id *id)
++static int __catu_probe(struct device *dev, struct resource *res)
  {
-+	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	int ret;
+ 	int ret = 0;
+ 	u32 dma_mask;
+-	struct catu_drvdata *drvdata;
++	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+ 	struct coresight_desc catu_desc;
+ 	struct coresight_platform_data *pdata = NULL;
+-	struct device *dev = &adev->dev;
+ 	void __iomem *base;
  
- 	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+ 	catu_desc.name = coresight_alloc_device_name(&catu_devs, dev);
+ 	if (!catu_desc.name)
+ 		return -ENOMEM;
  
--	/* Static funnel do not have programming base */
--	ret = funnel_probe(&pdev->dev, NULL);
--
--	if (ret) {
--		pm_runtime_put_noidle(&pdev->dev);
-+	ret = funnel_probe(&pdev->dev, res);
-+	pm_runtime_put(&pdev->dev);
-+	if (ret)
- 		pm_runtime_disable(&pdev->dev);
+-	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
+-	if (!drvdata) {
+-		ret = -ENOMEM;
+-		goto out;
 -	}
- 
+-
+-	dev_set_drvdata(dev, drvdata);
+-	base = devm_ioremap_resource(dev, &adev->res);
++	base = devm_ioremap_resource(dev, res);
+ 	if (IS_ERR(base)) {
+ 		ret = PTR_ERR(base);
+ 		goto out;
+@@ -567,19 +561,39 @@ static int catu_probe(struct amba_device *adev, const struct amba_id *id)
+ 	drvdata->csdev = coresight_register(&catu_desc);
+ 	if (IS_ERR(drvdata->csdev))
+ 		ret = PTR_ERR(drvdata->csdev);
+-	else
+-		pm_runtime_put(&adev->dev);
+ out:
  	return ret;
  }
  
--static void static_funnel_remove(struct platform_device *pdev)
-+static void funnel_platform_remove(struct platform_device *pdev)
+-static void catu_remove(struct amba_device *adev)
++static int catu_probe(struct amba_device *adev, const struct amba_id *id)
  {
-+	struct funnel_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
-+
-+	if (WARN_ON(!drvdata))
-+		return;
-+
- 	funnel_remove(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	if (!IS_ERR_OR_NULL(drvdata->pclk))
-+		clk_put(drvdata->pclk);
- }
- 
--static const struct of_device_id static_funnel_match[] = {
-+static const struct of_device_id funnel_match[] = {
- 	{.compatible = "arm,coresight-static-funnel"},
- 	{}
- };
- 
--MODULE_DEVICE_TABLE(of, static_funnel_match);
-+MODULE_DEVICE_TABLE(of, funnel_match);
- 
- #ifdef CONFIG_ACPI
--static const struct acpi_device_id static_funnel_ids[] = {
--	{"ARMHC9FE", 0, 0, 0},
-+static const struct acpi_device_id funnel_acpi_ids[] = {
-+	{"ARMHC9FE", 0, 0, 0}, /* ARM Coresight Static Funnel */
-+	{"ARMHC9FF", 0, 0, 0}, /* ARM CoreSight Dynamic Funnel */
- 	{},
- };
- 
--MODULE_DEVICE_TABLE(acpi, static_funnel_ids);
-+MODULE_DEVICE_TABLE(acpi, funnel_acpi_ids);
- #endif
- 
--static struct platform_driver static_funnel_driver = {
--	.probe          = static_funnel_probe,
--	.remove_new      = static_funnel_remove,
--	.driver         = {
--		.name   = "coresight-static-funnel",
-+static struct platform_driver funnel_driver = {
-+	.probe		= funnel_platform_probe,
-+	.remove_new	= funnel_platform_remove,
-+	.driver		= {
-+		.name   = "coresight-funnel",
- 		/* THIS_MODULE is taken care of by platform_driver_register() */
--		.of_match_table = static_funnel_match,
--		.acpi_match_table = ACPI_PTR(static_funnel_ids),
-+		.of_match_table = funnel_match,
-+		.acpi_match_table = ACPI_PTR(funnel_acpi_ids),
- 		.pm	= &funnel_dev_pm_ops,
- 		.suppress_bind_attrs = true,
- 	},
-@@ -373,7 +391,13 @@ static struct platform_driver static_funnel_driver = {
- static int dynamic_funnel_probe(struct amba_device *adev,
- 				const struct amba_id *id)
- {
--	return funnel_probe(&adev->dev, &adev->res);
+-	struct catu_drvdata *drvdata = dev_get_drvdata(&adev->dev);
++	struct catu_drvdata *drvdata;
 +	int ret;
 +
-+	ret = funnel_probe(&adev->dev, &adev->res);
++	drvdata = devm_kzalloc(&adev->dev, sizeof(*drvdata), GFP_KERNEL);
++	if (!drvdata)
++		return -ENOMEM;
++
++	amba_set_drvdata(adev, drvdata);
++	ret = __catu_probe(&adev->dev, &adev->res);
 +	if (!ret)
 +		pm_runtime_put(&adev->dev);
 +
 +	return ret;
++}
++
++static void __catu_remove(struct device *dev)
++{
++	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
+ 
+ 	coresight_unregister(drvdata->csdev);
  }
  
- static void dynamic_funnel_remove(struct amba_device *adev)
-@@ -410,12 +434,12 @@ static struct amba_driver dynamic_funnel_driver = {
++static void catu_remove(struct amba_device *adev)
++{
++	__catu_remove(&adev->dev);
++}
++
+ static struct amba_id catu_ids[] = {
+ 	CS_AMBA_ID(0x000bb9ee),
+ 	{},
+@@ -598,13 +612,99 @@ static struct amba_driver catu_driver = {
+ 	.id_table			= catu_ids,
+ };
  
- static int __init funnel_init(void)
++static int catu_platform_probe(struct platform_device *pdev)
++{
++	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	struct catu_drvdata *drvdata;
++	int ret = 0;
++
++	drvdata = devm_kzalloc(&pdev->dev, sizeof(*drvdata), GFP_KERNEL);
++	if (!drvdata)
++		return -ENOMEM;
++
++	drvdata->pclk = coresight_get_enable_apb_pclk(&pdev->dev);
++	if (IS_ERR(drvdata->pclk))
++		return -ENODEV;
++
++	pm_runtime_get_noresume(&pdev->dev);
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
++	dev_set_drvdata(&pdev->dev, drvdata);
++	ret = __catu_probe(&pdev->dev, res);
++	pm_runtime_put(&pdev->dev);
++	if (ret) {
++		pm_runtime_disable(&pdev->dev);
++		if (!IS_ERR_OR_NULL(drvdata->pclk))
++			clk_put(drvdata->pclk);
++	}
++
++	return ret;
++}
++
++static int catu_platform_remove(struct platform_device *pdev)
++{
++	struct catu_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
++
++	if (WARN_ON(!drvdata))
++		return -ENODEV;
++
++	__catu_remove(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++	if (!IS_ERR_OR_NULL(drvdata->pclk))
++		clk_put(drvdata->pclk);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int catu_runtime_suspend(struct device *dev)
++{
++	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
++
++	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
++		clk_disable_unprepare(drvdata->pclk);
++	return 0;
++}
++
++static int catu_runtime_resume(struct device *dev)
++{
++	struct catu_drvdata *drvdata = dev_get_drvdata(dev);
++
++	if (drvdata && !IS_ERR_OR_NULL(drvdata->pclk))
++		clk_prepare_enable(drvdata->pclk);
++	return 0;
++}
++#endif
++
++static const struct dev_pm_ops catu_dev_pm_ops = {
++	SET_RUNTIME_PM_OPS(catu_runtime_suspend, catu_runtime_resume, NULL)
++};
++
++#ifdef CONFIG_ACPI
++static const struct acpi_device_id catu_acpi_ids[] = {
++	{"ARMHC9CA", 0, 0, 0}, /* ARM CoreSight CATU */
++	{},
++};
++
++MODULE_DEVICE_TABLE(acpi, catu_acpi_ids);
++#endif
++
++static struct platform_driver catu_platform_driver = {
++	.probe	= catu_platform_probe,
++	.remove	= catu_platform_remove,
++	.driver	= {
++		.name			= "coresight-catu-platform",
++		.acpi_match_table	= ACPI_PTR(catu_acpi_ids),
++		.suppress_bind_attrs	= true,
++		.pm			= &catu_dev_pm_ops,
++	},
++};
++
+ static int __init catu_init(void)
  {
--	return coresight_init_driver("funnel", &dynamic_funnel_driver, &static_funnel_driver);
-+	return coresight_init_driver("funnel", &dynamic_funnel_driver, &funnel_driver);
- }
+ 	int ret;
  
- static void __exit funnel_exit(void)
+-	ret = amba_driver_register(&catu_driver);
+-	if (ret)
+-		pr_info("Error registering catu driver\n");
++	ret = coresight_init_driver("catu", &catu_driver, &catu_platform_driver);
+ 	tmc_etr_set_catu_ops(&etr_catu_buf_ops);
+ 	return ret;
+ }
+@@ -612,7 +712,7 @@ static int __init catu_init(void)
+ static void __exit catu_exit(void)
  {
--	coresight_remove_driver(&dynamic_funnel_driver, &static_funnel_driver);
-+	coresight_remove_driver(&dynamic_funnel_driver, &funnel_driver);
+ 	tmc_etr_remove_catu_ops();
+-	amba_driver_unregister(&catu_driver);
++	coresight_remove_driver(&catu_driver, &catu_platform_driver);
  }
  
- module_init(funnel_init);
+ module_init(catu_init);
+diff --git a/drivers/hwtracing/coresight/coresight-catu.h b/drivers/hwtracing/coresight/coresight-catu.h
+index 442e034bbfba..141feac1c14b 100644
+--- a/drivers/hwtracing/coresight/coresight-catu.h
++++ b/drivers/hwtracing/coresight/coresight-catu.h
+@@ -61,6 +61,7 @@
+ #define CATU_IRQEN_OFF		0x0
+ 
+ struct catu_drvdata {
++	struct clk *pclk;
+ 	void __iomem *base;
+ 	struct coresight_device *csdev;
+ 	int irq;
 -- 
 2.25.1
 
