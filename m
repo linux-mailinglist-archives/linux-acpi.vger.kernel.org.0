@@ -1,141 +1,204 @@
-Return-Path: <linux-acpi+bounces-4339-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4340-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF87787C081
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 16:39:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C1A87C2FD
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 19:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CF328328D
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 15:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F079281A02
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 18:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0A171723;
-	Thu, 14 Mar 2024 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA35A74C09;
+	Thu, 14 Mar 2024 18:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="rHy0czus"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4912471B20;
-	Thu, 14 Mar 2024 15:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D5D1A38D0;
+	Thu, 14 Mar 2024 18:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710430762; cv=none; b=B6vT26IkocdXlVtX5mOHk8218s1k3WLhLGKlxWkdhHA4AbrTV0NFJOaeGm0eqKLJM0g/tpxYH1Tk4ijppD8JQiL2LuPdFYNE3zveUD1l65cOiVUcZ3oT2YAgZIr0CO9a4Kn6WiU7V2N750OuKBLS3OQWrrN0OHVpgRD4gxhvTRE=
+	t=1710441960; cv=none; b=OvkZ/T86uM/u0WIOe09mB6fVuYzk2IOQmsw+2mjZWZuiQYrLxefx/oZ/IXkd1ULmSQOIwWZ/bB5oxGPdLy8qE5hJuJzrKOWLG5liDicb2E7XyoDu2msaAN6UJ43sP/mNkJkgNKPLQCXOG2swKCv8p3TipIz7DI2WfUn1VjLE2v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710430762; c=relaxed/simple;
-	bh=RqAwxC+r6BxzdQNPLjy42rMTlUFF3/b+ExPwj7EGxug=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KuaYoVHTCgf8M4sXVDygBzt0X5RDXwsLMsUrgDMlEaH5xHp7/Fuhtzlnq8AyfcNtLwOCHsbChGcx+YhLksEwGupvUh5Nsl04RPjRdyU0LXA0twMexNSjCDqdrzL4N2tRvhwfBT3yH+aGw9GSG5Fh5yiHkK+wdXZ8o9OrsXQdKhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-221d4c52759so94481fac.1;
-        Thu, 14 Mar 2024 08:39:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710430760; x=1711035560;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cqfz94TfI8eBe+oW7+FvouKqicHZ2DlDCCTyZ/mvmvA=;
-        b=D/3MR5H4w29YsUxdjc1JegJi9a+ZlWSoFX0HzkaAWFxYi1zmjCZ/nBYSzo9ILj5quz
-         2JS7Lqq8MSwuAGz5xqFVOqKJGrijUZLhPQNOJe1ZXu7ljt1dEBX2Ta8AqN+V4dHpsRi7
-         ahwkreRzjke58OP/pRfNcuGlLw9i9Y5LA2U1te5sn+aSWq44EJ5hAbga2qFIWXF1qXPJ
-         3/sM0SYg+TpLF/VrrN962lcPY6DtplEzePAjDkN3eDl3yGaKx5G+AYkMB6Jm0j16vymS
-         7IcYi+J7A3a0qOiikm9C8iRzSxm/9pICh/SfvH3BJjz96JYYLEy/e7Ld2+0q9vcAjDcj
-         +XXg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+L9zDdLwOaDn30y5kew3Jp2AX6MysU4u7K6WRMRsDUlH8sgbdVW6Q4Dbsiyg5weMHEhh1O9+mRq4pgLXGKbGEdQecdv+csD1Bgp3+HRSqqdFx3wnZUPf52otVZiZTbDyDvcXA4T0anw==
-X-Gm-Message-State: AOJu0Ywi7hZjcgTCp4HUcWiLmsbU9+kJW/FwEOiy0lUJTg3zAqXnynsH
-	Lt8wHLOFOa/TvUQ114/bDd/2kXpLrRqcWgcpeJr8CqUCDTfMd3ly+V5nlQF3fGWT/pCJVAzL+n7
-	YMoNRcOr444YxGR0Cz4ADjjw4HKc=
-X-Google-Smtp-Source: AGHT+IF/hswpYvINAKDljbW7/WpSwgNIbI4X01V+IcBYS+xigRd3Ea7qNnvlJ20bncm7jOcmKJzV7VdD7YUbyQhSLYA=
-X-Received: by 2002:a05:6870:5e4d:b0:221:3b96:4e84 with SMTP id
- ne13-20020a0568705e4d00b002213b964e84mr2263277oac.5.1710430760371; Thu, 14
- Mar 2024 08:39:20 -0700 (PDT)
+	s=arc-20240116; t=1710441960; c=relaxed/simple;
+	bh=Yt/Ht2srOy/MWCeGWifQCTS+hIHpil3Qr+8V2f3E2F4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=gKilfIDWLxDlPDOUQLnrEVFYwGUioaSwTzfnvlwhvvNlO9FWcwZRjkn7QAVpk46p2movZZ74lYkLMdviqm4bAR9Zb/tVuhHym3Kn8fn0Ih7s1V8sqIgYPq3CF/Cct7z7af1MxJTBHuZhkDWPkFIhTGa3Bh71nwTC+N3Fai+Mge0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=rHy0czus; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1710441944; x=1711046744; i=w_armin@gmx.de;
+	bh=/mn6muzWIRKWcjsSnajnl4H8oquLpAAam6hy8/xPwIQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=rHy0czusPTznn1fpc3Y8eDzLXfwUvohmWNqKR7VakmygTrjrIvLdQgscmsTpbouB
+	 7eGTBBny+eF0lb2NmjrM81MI4B1V+VAMQnKig4UODlTnofid0Wn+h8pl7v55EVyu+
+	 HM2RCpIjyXPWgASzvIUMNx4UsKgmLaaI+5cSHk4E0F9a74B10fhpmcsYryNfW+6e/
+	 M2+DEz7OxNT3SBPNw2SM5ocYv3kWtxHiP5eDMRCxN9Ol9wRj68uajiVACVMzS2AL/
+	 j1DnEA/KPUL+g91dnDZ1javkRGy7qJ06fDNu0gyKiml/tOGJdHv2v33XjTeewk7rG
+	 peXfegeiqW5OBCM7hw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MGhyS-1rX8yQ0JOM-00DoVs; Thu, 14 Mar 2024 19:45:44 +0100
+From: Armin Wolf <W_Armin@gmx.de>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: rafael@kernel.org,
+	lenb@kernel.org,
+	mario.limonciello@amd.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	linux-acpi@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 1/2] platform/x86: wmi: Support reading/writing 16 bit EC values
+Date: Thu, 14 Mar 2024 19:45:37 +0100
+Message-Id: <20240314184538.2933-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240313214038.479253-1-chris.packham@alliedtelesis.co.nz>
-In-Reply-To: <20240313214038.479253-1-chris.packham@alliedtelesis.co.nz>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 14 Mar 2024 16:39:09 +0100
-Message-ID: <CAJZ5v0hi_eGEu-ON5SLLwE_m_ut55FYtmn8eJ848FseHYV+F+g@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: docs: enumeration: Make footnotes links
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/cqH+NjydsRZcAVaI7S67/vzGgGpC5ogQtVinAFyhRN575Hz5aH
+ JMetDs+5HM0fcKKi0hHLiAvrwxDRiVYZLkYucxrwmLijq7a6DXOcxjuo6K5YlbDT1wVNFCo
+ 7a5aexbIEKtucHVIn/A8meyuKw3dio5bZDvJMixIjaChquzt5Tn+gcSgNoGhI+YMo8VhCSY
+ WCzlphX8ZUGjhiZjEAuXA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:FabCNjlmGVU=;O794OGRdPae3dIb4R1gaWQv8KA9
+ K8mT4uQ3b5lB08wTSukck2bRDH5MMDcSlkRUiOz1CLci1V9cixwE1CB6aM/rhdGlvc8IiOjwh
+ 1LXM6N4DMeVbL3nsDRo+EoM66MswaECp8q6SMUmiZPhvBd3uWMtyF0VZwMxSC/kCwrFF2gPpz
+ XKmrIV4p0jL0cCkhFhzOILbSAzJzeNpcTzpKvq2hScckdVmENGe76CLaZzJvg5wA2rxH28JJY
+ Co93bkDu45B8ugjVgfkF2PMXdnYTDO56EXmZjp8qY3LAriXJSPLvc31sf3VxhbJIj7qtIOHqP
+ cGodsui0KXrp9U/0h6hZP/jMnYeTnBQFUUIVx0uwLTynwPMscyDX/4A7EZx1huYlHgmEg38UI
+ 277nnnfBkpJmh+RYj0yqakvfKMQ35kiM53Qwvn/bCu1F/vDi553yR7DcLMH3vO+vcK2gtnJx0
+ TGI55mlV1Uf42np2fdhDLAxDFryyG0nCCGhXrohwdpx9T5pGmKn0yS/DLjkIc6dEjaci5fkyv
+ 1l7Eq6u03+H9zaXfaYPBGA68A+ip7lmT3r7POfdOG/ZZC86rt3LmLgWmkow5GB4AVLbOOR1AT
+ iKnYRggAaU1cIiSdxyQgjKZ4J9lzrAihm9+6vjYnSi1Q3LDKFZQtMKt/VjTaZ2L92ZcVP6t6s
+ kwfsfU4rK7+Qj1Ke51vMbapEVd84JxPqbuS4xzAJ438kHWlxSN1ATPFb/9xhWwkl8xyVPJcz3
+ PpgS+4e3NGkZM306xo3sqFknpo5yhreyOyX2QWSUHAUCb224lZaQGDYBAHc4KbWiC0sY/DmUF
+ VD0W3IjMx4gyRZpcYGOtH5gabCHnuMmh01cOXk3dKfRsQ=
 
-On Wed, Mar 13, 2024 at 10:40=E2=80=AFPM Chris Packham
-<chris.packham@alliedtelesis.co.nz> wrote:
->
-> Update the numeric footnotes so that they are rendered as hyperlinks in
-> the html output.
->
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> ---
->  Documentation/firmware-guide/acpi/enumeration.rst | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/Documentation/firmware-guide/acpi/enumeration.rst b/Document=
-ation/firmware-guide/acpi/enumeration.rst
-> index d79f69390991..0165b09c0957 100644
-> --- a/Documentation/firmware-guide/acpi/enumeration.rst
-> +++ b/Documentation/firmware-guide/acpi/enumeration.rst
-> @@ -595,7 +595,7 @@ bridges/switches of the board.
->
->  For example, let's assume we have a system with a PCIe serial port, an
->  Exar XR17V3521, soldered on the main board. This UART chip also includes
-> -16 GPIOs and we want to add the property ``gpio-line-names`` [1] to thes=
-e pins.
-> +16 GPIOs and we want to add the property ``gpio-line-names`` [1]_ to the=
-se pins.
->  In this case, the ``lspci`` output for this component is::
->
->         07:00.0 Serial controller: Exar Corp. XR17V3521 Dual PCIe UART (r=
-ev 03)
-> @@ -637,7 +637,7 @@ of the chipset bridge (also called "root port") with =
-address::
->         Bus: 0 - Device: 14 - Function: 1
->
->  To find this information, it is necessary to disassemble the BIOS ACPI t=
-ables,
-> -in particular the DSDT (see also [2])::
-> +in particular the DSDT (see also [2]_)::
->
->         mkdir ~/tables/
->         cd ~/tables/
-> @@ -667,7 +667,7 @@ device::
->                         }
->         ... other definitions follow ...
->
-> -and the _ADR method [3] returns exactly the device/function couple that
-> +and the _ADR method [3]_ returns exactly the device/function couple that
->  we are looking for. With this information and analyzing the above ``lspc=
-i``
->  output (both the devices list and the devices tree), we can write the fo=
-llowing
->  ACPI description for the Exar PCIe UART, also adding the list of its GPI=
-O line
-> @@ -724,10 +724,10 @@ created analyzing the position of the Exar UART in =
-the PCI bus topology.
->  References
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> -[1] Documentation/firmware-guide/acpi/gpio-properties.rst
-> +.. [1] Documentation/firmware-guide/acpi/gpio-properties.rst
->
-> -[2] Documentation/admin-guide/acpi/initrd_table_override.rst
-> +.. [2] Documentation/admin-guide/acpi/initrd_table_override.rst
->
-> -[3] ACPI Specifications, Version 6.3 - Paragraph 6.1.1 _ADR Address)
-> +.. [3] ACPI Specifications, Version 6.3 - Paragraph 6.1.1 _ADR Address)
->      https://uefi.org/sites/default/files/resources/ACPI_6_3_May16.pdf,
->      referenced 2020-11-18
-> --
+The ACPI EC address space handler currently only supports
+reading/writing 8 bit values. Some firmware implementations however
+want to access for example 16 bit values, which is perfectly legal
+according to the ACPI spec.
 
-Applied as 6.9-rc material, thanks!
+Add support for reading/writing such values.
+
+Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
+
+Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Chnages since v4:
+- spelling fix
+- fix checkpatch warning
+
+Changes since v3:
+- change type of variable i to size_t
+
+Changes since v2:
+- fix address overflow check
+
+Changes since v1:
+- use BITS_PER_BYTE
+- validate that number of bytes to read/write does not overflow the
+  address
+=2D--
+ drivers/platform/x86/wmi.c | 54 +++++++++++++++++++++++++++++---------
+ 1 file changed, 41 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 1920e115da89..9602658711cf 100644
+=2D-- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1153,6 +1153,34 @@ static int parse_wdg(struct device *wmi_bus_dev, st=
+ruct platform_device *pdev)
+ 	return 0;
+ }
+
++static int ec_read_multiple(u8 address, u8 *buffer, size_t bytes)
++{
++	size_t i;
++	int ret;
++
++	for (i =3D 0; i < bytes; i++) {
++		ret =3D ec_read(address + i, &buffer[i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
++static int ec_write_multiple(u8 address, u8 *buffer, size_t bytes)
++{
++	size_t i;
++	int ret;
++
++	for (i =3D 0; i < bytes; i++) {
++		ret =3D ec_write(address + i, buffer[i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
++}
++
+ /*
+  * WMI can have EmbeddedControl access regions. In which case, we just wa=
+nt to
+  * hand these off to the EC driver.
+@@ -1162,27 +1190,27 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physi=
+cal_address address,
+ 			  u32 bits, u64 *value,
+ 			  void *handler_context, void *region_context)
+ {
+-	int result =3D 0;
+-	u8 temp =3D 0;
++	int bytes =3D bits / BITS_PER_BYTE;
++	int ret;
+
+-	if ((address > 0xFF) || !value)
++	if (!value)
++		return AE_NULL_ENTRY;
++
++	if (!bytes || bytes > sizeof(*value))
+ 		return AE_BAD_PARAMETER;
+
+-	if (function !=3D ACPI_READ && function !=3D ACPI_WRITE)
++	if (address > U8_MAX || address + bytes - 1 > U8_MAX)
+ 		return AE_BAD_PARAMETER;
+
+-	if (bits !=3D 8)
++	if (function !=3D ACPI_READ && function !=3D ACPI_WRITE)
+ 		return AE_BAD_PARAMETER;
+
+-	if (function =3D=3D ACPI_READ) {
+-		result =3D ec_read(address, &temp);
+-		*value =3D temp;
+-	} else {
+-		temp =3D 0xff & *value;
+-		result =3D ec_write(address, temp);
+-	}
++	if (function =3D=3D ACPI_READ)
++		ret =3D ec_read_multiple(address, (u8 *)value, bytes);
++	else
++		ret =3D ec_write_multiple(address, (u8 *)value, bytes);
+
+-	switch (result) {
++	switch (ret) {
+ 	case -EINVAL:
+ 		return AE_BAD_PARAMETER;
+ 	case -ENODEV:
+=2D-
+2.39.2
+
 
