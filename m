@@ -1,143 +1,179 @@
-Return-Path: <linux-acpi+bounces-4322-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4323-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19EA787B458
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 23:29:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1119C87B614
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 02:13:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C87F1C2136B
-	for <lists+linux-acpi@lfdr.de>; Wed, 13 Mar 2024 22:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 431A2B23B54
+	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 01:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAF859B63;
-	Wed, 13 Mar 2024 22:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CF01A38DB;
+	Thu, 14 Mar 2024 01:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="id6RFgIT"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="XFKGdyrj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076FB59B4E;
-	Wed, 13 Mar 2024 22:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1EDEDE
+	for <linux-acpi@vger.kernel.org>; Thu, 14 Mar 2024 01:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710368944; cv=none; b=Szuy3aCYg0nyORkpZ+GRQWkB02RW7Vb/zsRiOR2al8npN0nnaBkPGrhsxQ3s11mlKKxVLsFtnCQwJbb80hitvlZyXGpQrz/yR3wESmnW/91fC/7eDA9gAUVU16GCfii+m7dt1lpTG9Gjk4BtqdTJGnc1DfVgivjbDDoGYYlwbaE=
+	t=1710378817; cv=none; b=IprYSB01e18prsI04i1D2GOBFFjKQH/ZdzsIBheMKSc0xJgar1Ewlx64EP+Lrm6IPi2kPmhRCpaVtnyOjhd8UYMtZUPWr5w4QVk7dYFSDsuGBrbRP1vLgZfWnzXQjVSkop0FV5Cv8c2c7/FqevIBjmw8c06tQgqK/qOaBd8U8Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710368944; c=relaxed/simple;
-	bh=cD01GlzbpDft9/egkt97qgIoWlbkMTHG3rZa/g6LfpM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qx+s3dhLOwodz/LLa6D2d6j6ou3OUzDD8xrKXDH/nldVrM+4h2J6nZe1u8OO0vv+SPWBAMzzudQOS01vuiTu4F2rX+iAw2NlcQ4u3JITVi0JuOKMoXpIKtbgl1A7MdQNxNykc2HA2bkshquo6r09c5c9FOoWS5pXg1VUquM4WXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=id6RFgIT; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1710368935; x=1710973735; i=w_armin@gmx.de;
-	bh=20CbePg34fNBEaE5jWgFVZCXbm8KLekGbiZqGqIC5I4=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=id6RFgITiDN9dNIZ1+pwKLeZgGpJUGo19CHjCLJD2Ai8oDRD0YMZYlvxAYEtbNjM
-	 /IzUSC+wbUK85WCx7oeDPgbSDKGI4mUlioHn/z8KIEShrvFuIVtObUggwaY2Uoy5p
-	 4jyKgONPMbom6rV4zkBfAc5e3QM+z5NGKquAfBp/vVwIXxFqGl0q9Z9tWa7o6ZM7V
-	 e3rER6JWZxASKiVG5T0A4x3uJ+60+bLs9JDjvczalR9eax9K6VbE98fZ8h7mG6qPQ
-	 RvZGauXQZrxh72zpDxA6xemf2ZnS4VhVnUcQODogcOcZ3blcT1sjgb+pHj2+lYQEL
-	 hTMLdJ3v4wPniev1Rg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M89Gj-1rfsWq324h-005Ewb; Wed, 13
- Mar 2024 23:28:55 +0100
-Message-ID: <2e8100b0-d87c-413e-bcb1-b91c3ce41633@gmx.de>
-Date: Wed, 13 Mar 2024 23:28:55 +0100
+	s=arc-20240116; t=1710378817; c=relaxed/simple;
+	bh=EMLXlzagD8YBbRmt3b0dmLf3kS1Q2wjnQPJd/cMrSQU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Gr5COgkKLfRhify/IVOkxKSwV+I4D2nFiB1Znq+cRIDaTbCnn7DQWmrDpKi6sE/3x83FOOszBIpikrp8paFBKuji91EKMolljTTGagJAEGngeCXJhSruJvQEivK/fk8lZ7FBADPDo38Wd7cc8Qg5PwZkPhn/k0YqTOlKxoIaHt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=XFKGdyrj; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 0C3A42C0362;
+	Thu, 14 Mar 2024 14:13:32 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1710378812;
+	bh=EMLXlzagD8YBbRmt3b0dmLf3kS1Q2wjnQPJd/cMrSQU=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=XFKGdyrj9+ypF1PO3i7Bqyn5wQ2YGoiUiR6akFgDBQgS34h8RmG0/MnwNFPSG6Wg6
+	 qouLhaHtVNfdd6FusbYlqqKysdegyYlQsVV3FP1STMmD0jwuqHvLUxd/emrW9rEx3S
+	 P8JUT+UdfDQ4m59O0ELmO5cjBEGb8v0hH/TsiGyORZA/EPFNP5Z3UFHEZh37KnRwUm
+	 zE9aLyY7Zfim3V4GsId1wmY961Ci9dkz89NRUOCFhu/hzpCkhp0wGkAPCR5lt6K5Ul
+	 87n7CUSkTUJ5wOkMp6vlUojh7X1In1d4vY4WLnAXqHZvl8qWX/cNk9IBIawWT8tnRj
+	 GM0/3HgmU8Kfw==
+Received: from svr-chch-ex2.atlnz.lc (Not Verified[2001:df5:b000:bc8::76]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65f24f3b0001>; Thu, 14 Mar 2024 14:13:31 +1300
+Received: from svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) by
+ svr-chch-ex2.atlnz.lc (2001:df5:b000:bc8:f753:6de:11c0:a008) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 14 Mar 2024 14:13:31 +1300
+Received: from svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567]) by
+ svr-chch-ex2.atlnz.lc ([fe80::a9eb:c9b7:8b52:9567%15]) with mapi id
+ 15.02.1118.040; Thu, 14 Mar 2024 14:13:31 +1300
+From: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>
+To: "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>
+CC: "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, "brgl@bgdev.pl"
+	<brgl@bgdev.pl>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH] gpiolib: acpi: Move storage of acpi_gpio_chip
+Thread-Topic: [PATCH] gpiolib: acpi: Move storage of acpi_gpio_chip
+Thread-Index: AQHadPL2e5DSb6pETUy7jtZsYbUE97E0rVeAgAABiACAAOb0gA==
+Date: Thu, 14 Mar 2024 01:13:31 +0000
+Message-ID: <f6833616b81e4e35f561dc0ea4dae8dcd0ac026b.camel@alliedtelesis.co.nz>
+References: <20240313030251.1049624-1-hamish.martin@alliedtelesis.co.nz>
+	 <ZfGMNWtFrgsuUdLz@smile.fi.intel.com> <ZfGNfucm2-izJBfd@smile.fi.intel.com>
+In-Reply-To: <ZfGNfucm2-izJBfd@smile.fi.intel.com>
+Accept-Language: en-NZ, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <AB8EF91C67990648BABFAEE946196BB1@atlnz.lc>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] ACPI: bus: _OSC fixes
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240309201310.7548-1-W_Armin@gmx.de>
- <CAJZ5v0hKwThcAO4jMOzi7ySqSv_jHvs_+paBB212qVsaf7LZng@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0hKwThcAO4jMOzi7ySqSv_jHvs_+paBB212qVsaf7LZng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wI++P+1b+yKc3YfUm2hj1g7DmaS99w7cJz6RXTctsALxs2etRWd
- ywx1NcFkSLsO8QpJQIVn8/1XbUkmdt10xTqWn0DdzXFBHyFey3Y2eekSkWtgK7oEuJ9VNDT
- 6B1nA/6qiefS6P0fcSt7ogVznZkh4DVh7KfG8otKP+7SawOeJ1bG7nzNvyX7sv3Un+PlI2+
- DB3NIafcmslS8mOecEM0A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:P2LB0CjAtRs=;UnbPdXSB8tyXnF5xg20gQT1w9ys
- JMctO74RNrzAl1GH29HunkOTFQ4sZqPUDY7ohOKeMMfsloHeDZgDOyer2mLzK5FFPpMu1IBeD
- 0H1ZHWTSFrzfFaeJtvOXm6HI5bpyxTEVL5E9cawTXXxT0STq6R0452CERoHHG1w2AXhHdzsNI
- 0mmEynM9voaN7qRJfmC4ZiUEnJ6zQi1E2FssXXQVJ/JPAxq82Dih2mr0VsTJb5CHh10WEdBcQ
- pmqQ4qO36zcQg1gwdltwAK8NyRk+EADiqYokRmaTA9JNj1Z1o2wFvWp5S+bE7nJuuGcYZoAIG
- KLxzIuPgTltbvHXKkhb1N27Zxuf/1ke77+MbkJQOST8Mbq5etdubuiTDQ9y1BYzQuFDzn+LM5
- z9IlF3o5Dum4pjBEUekolvUrBPtdZH8aAqI9g7z7JcU10PwqdNj9Ay0+q0RYxaUtuFYX0Qth/
- lB7nebHVcsQciVE53u7RLJaVnSfCH4kRnoKc5KB5KWNXbacHdDNto3OkI10uPfuBQt5Oqysob
- OTseHYAl6Xc6WRhcA8Gi9M1s1tXzIC5Gv2FlnhVj5RaqcWqXEsauHp6iUUts1IjqFxVz0d2Bi
- UyZLY3eOBt10hEy92CwH5PDk19CH+/URD2BBoPdTM3tlOxzD20XW5EccPjSftUeJFiQ50+aNr
- N/NMDlEuj+w8T3SrCP62hdElmBygnk4CLzcUHByKOm3mX1LT7UKIyNK2wtTx3+2F7Uz26s9ZK
- 5PSwEJJbxY6NX/6EY59gacnsH1jMdG85RcGCr81DyUJ4fsFNhFGoIx+J2NiM9Ubmm/mzWRXVl
- 7q8K79JU8z9B51bF+B20paDAWyz2EN1uuB6rkvMZ+nVSc=
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=KIH5D0Fo c=1 sm=1 tr=0 ts=65f24f3b a=Xf/6aR1Nyvzi7BryhOrcLQ==:117 a=xqWC_Br6kY4A:10 a=fzn4atkRgMAA:10 a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=rHCuErA-0DJHcIhzJiIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Score: 0
 
-Am 12.03.24 um 21:10 schrieb Rafael J. Wysocki:
-
-> On Sat, Mar 9, 2024 at 9:13=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote=
-:
->> This patch series fixes the handling of various ACPI features bits
->> when evaluating _OSC.
->>
->> The first three patches fix the reporting of various features supported
->> by the kernel, while the fourth patch corrects the feature bit used to
->> indicate support for the "Generic Initiator Affinity" in SRAT.
->>
->> The last patch fixes the reporting of IRQ ResourceSource support. Unlik=
-e
->> the other feature bits, the ACPI specification states that this feature
->> bit might be used by the ACPI firmware to indicate whether or not it
->> supports the usage of IRQ ResourceSource:
->>
->>          "If not set, the OS may choose to ignore the ResourceSource
->>           parameter in the extended interrupt descriptor."
->>
->> Since the code responsible for parsing IRQ ResourceSource already check=
-s
->> if ResourceSource is present, i assumed that we can omit taking this
->> into account.
->>
->> All patches where tested on a Asus Prime B650-Plus and a Dell Inspiron
->> 3505.
->>
->> Armin Wolf (5):
->>    ACPI: bus: Indicate support for _TFP thru _OSC
->>    ACPI: bus: Indicate support for more than 16 p-states thru _OSC
->>    ACPI: bus: Indicate support for the Generic Event Device thru _OSC
->>    ACPI: Fix Generic Initiator Affinity _OSC bit
->>    ACPI: bus: Indicate support for IRQ ResourceSource thru _OSC
->>
->>   drivers/acpi/bus.c   | 5 +++++
->>   include/linux/acpi.h | 6 +++++-
->>   2 files changed, 10 insertions(+), 1 deletion(-)
->>
->> --
-> All of that looks reasonable to me, but do you know about systems in
-> the field where any of these patches actually fix functionality?
->
-> If not, I'd prefer to queue them up for 6.10 as they are likely to
-> change behavior, at least in corner cases.
->
-> Thanks!
-
-Hi,
-
-i know no system which even queries those feature bits, so i am fine with
-this landing in 6.10.
-
-Thanks,
-Armin Wolf
-
+T24gV2VkLCAyMDI0LTAzLTEzIGF0IDEzOjI2ICswMjAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
+DQo+IE9uIFdlZCwgTWFyIDEzLCAyMDI0IGF0IDAxOjIxOjI1UE0gKzAyMDAsIEFuZHkgU2hldmNo
+ZW5rbyB3cm90ZToNCj4gPiBPbiBXZWQsIE1hciAxMywgMjAyNCBhdCAwNDowMjo1MVBNICsxMzAw
+LCBIYW1pc2ggTWFydGluIHdyb3RlOg0KPiA+ID4gQSBtZW1vcnkgbGVhayBvY2N1cnMgaW4gYSBz
+Y2VuYXJpbyB3aGVyZSBhbiBBQ1BJIFNTRFQgb3ZlcmxheSBpcw0KPiA+ID4gcmVtb3ZlZA0KPiA+
+ID4gYW5kIHRoYXQgaXMgdGhlIHRyaWdnZXIgZm9yIHRoZSByZW1vdmFsIG9mIHRoZSBhY3BpX2dw
+aW9fY2hpcC4NCj4gPiA+IFRoaXMgb2NjdXJzIGJlY2F1c2Ugd2UgdXNlIHRoZSBBQ1BJX0hBTkRM
+RSBvZiB0aGUgY2hpcC0+cGFyZW50IGFzDQo+ID4gPiBhDQo+ID4gPiBjb252ZW5pZW50IGxvY2F0
+aW9uIHRvIHRpZSB0aGUgJ3N0cnVjdCBhY3BpX2dwaW9fY2hpcCcgdG8sIHVzaW5nDQo+ID4gPiBh
+Y3BpX2F0dGFjaF9kYXRhKCkuDQo+ID4gPiBUaGlzIGlzIGZpbmUgaW4gdGhlIHVzdWFsIGNhc2Ug
+b2YgcmVtb3ZhbCBvZiB0aGUgJ3N0cnVjdA0KPiA+ID4gYWNwaV9ncGlvX2NoaXAnDQo+ID4gPiB2
+aWEgYSBjYWxsIHRvIGFjcGlfZ3Bpb2NoaXBfcmVtb3ZlKCkgYmVjYXVzZSB1c3VhbGx5IHRoZSBB
+Q1BJDQo+ID4gPiBkYXRhIGlzDQo+ID4gPiBzdGlsbCB2YWxpZC4NCj4gPiA+IEJ1dCBpbiB0aGUg
+Y2FzZSBvZiBhbiBTU0RUIG92ZXJsYXkgcmVtb3ZhbCwgdGhlIEFDUEkgZGF0YSBoYXMNCj4gPiA+
+IGJlZW4NCj4gPiA+IG1hcmtlZCBhcyBpbnZhbGlkIGJlZm9yZSB0aGUgcmVtb3ZhbCBjb2RlIGlz
+IHRyaWdnZXJlZCAoc2VlIHRoZQ0KPiA+ID4gc2V0dGluZw0KPiA+ID4gb2YgdGhlIGFjcGlfZGV2
+aWNlIGhhbmRsZSB0byBJTlZBTElEX0FDUElfSEFORExFIGluDQo+ID4gPiBhY3BpX3NjYW5fZHJv
+cF9kZXZpY2UoKSkuIFRoaXMgbWVhbnMgdGhhdCBieSB0aGUgdGltZSB3ZSBleGVjdXRlDQo+ID4g
+PiBhY3BpX2dwaW9jaGlwX3JlbW92ZSgpLCB0aGUgaGFuZGxlcyBhcmUgaW52YWxpZCBhbmQgd2Ug
+YXJlIHVuYWJsZQ0KPiA+ID4gdG8NCj4gPiA+IHJldHJpZXZlIHRoZSAnc3RydWN0IGFjcGlfZ3Bp
+b19jaGlwJyB1c2luZyBhY3BpX2dldF9kYXRhKCkuDQo+ID4gPiBVbmFibGUgdG8NCj4gPiA+IGdl
+dCBvdXIgZGF0YSwgd2UgaGl0IHRoZSBmYWlsdXJlIGNhc2UgYW5kIHNlZSB0aGUgZm9sbG93aW5n
+DQo+ID4gPiB3YXJuaW5nDQo+ID4gPiBsb2dnZWQ6DQo+ID4gPiDCoCBGYWlsZWQgdG8gcmV0cmll
+dmUgQUNQSSBHUElPIGNoaXANCj4gPiA+IFRoaXMgbWVhbnMgd2UgYWxzbyBmYWlsIHRvIGtmcmVl
+KCkgdGhlIHN0cnVjdCBhdCB0aGUgZW5kIG9mDQo+ID4gPiBhY3BpX2dwaW9jaGlwX3JlbW92ZSgp
+Lg0KPiA+ID4gDQo+ID4gPiBUaGUgZml4IGlzIHRvIG5vIGxvbmdlciB0aWUgdGhlIGFjcGlfZ3Bp
+b19jaGlwIGRhdGEgdG8gdGhlIEFDUEkNCj4gPiA+IGRhdGEsDQo+ID4gPiBidXQgaW5zdGVhZCBo
+YW5nIGl0IGRpcmVjdGx5IGZyb20gdGhlICdzdHJ1Y3QgZ3Bpb19jaGlwJyB3aXRoIGENCj4gPiA+
+IG5ldw0KPiA+ID4gZmllbGQuIFRoaXMgZGVjb3VwbGVzIHRoZSBsaWZlY3ljbGUgb2YgdGhlIGFj
+cGlfZ3Bpb19jaGlwIGZyb20NCj4gPiA+IHRoZSBBQ1BJDQo+ID4gPiBkYXRhLCBhbmQgdGllcyBp
+dCB0byB0aGUgZ3Bpb19jaGlwLiBUaGlzIHNlZW1zIGEgbXVjaCBiZXR0ZXINCj4gPiA+IHBsYWNl
+IHNpbmNlDQo+ID4gPiB0aGV5IHNoYXJlIGEgY29tbW9uIGxpZmVjeWNsZS4NCj4gPiANCj4gPiBN
+YXliZSBpbiB0aGlzIGNhc2UgaXQncyBpbmRlZWQgYmV0dGVyLg0KPiA+IA0KPiA+ID4gVGhlIGdl
+bmVyYWwgY29uY2VwdCBvZiBhdHRhY2hpbmcgZGF0YSB0byB0aGUgQUNQSSBvYmplY3RzIG1heQ0K
+PiA+ID4gYWxzbyBuZWVkDQo+ID4gPiByZXZpc2l0aW5nIGluIGxpZ2h0IG9mIHRoZSBpc3N1ZSB0
+aGlzIHBhdGNoIGFkZHJlc3Nlcy4gRm9yDQo+ID4gPiBpbnN0YW5jZQ0KPiA+ID4gaTJjX2FjcGlf
+cmVtb3ZlX3NwYWNlX2hhbmRsZXIoKSBpcyB2dWxuZXJhYmxlIHRvIGEgc2ltaWxhciBsZWFrDQo+
+ID4gPiBkdWUgdG8NCj4gPiA+IHVzaW5nIGFjcGlfYnVzX2dldF9wcml2YXRlX2RhdGEoKSwgd2hp
+Y2gganVzdCB3cmFwcw0KPiA+ID4gYWNwaV9hdHRhY2hfZGF0YSgpLg0KPiA+ID4gVGhpcyBtYXkg
+bmVlZCBhIG1vcmUgd2lkZXNwcmVhZCBjaGFuZ2UgdGhhbiBpcyBhZGRyZXNzZWQgaW4gdGhpcw0K
+PiA+ID4gcGF0Y2guDQo+ID4gDQo+ID4gQnV0IHdpdGggdGhpcyBpdCBzb3VuZHMgdG8gbWUgdGhh
+dCB0aGUgcm9vdCBjYXVzZSBpcyBsaWtlIHlvdSBzYWlkDQo+ID4gaW4gQUNQSQ0KPiA+IHJlbW92
+YWwgZGV2aWNlIGNvZGUsIGkuZS4gYWNwaV9zY2FuX2Ryb3BfZGV2aWNlLiBTaG91bGRuJ3QgdGhh
+dCBiZQ0KPiA+IGZpeGVkIGZpcnN0DQo+ID4gdG8gYmUgbW9yZSBjbGV2ZXI/DQpQb3RlbnRpYWxs
+eSwgYWx0aG91Z2ggSSB0aGluayBsb2NraW5nIGJlY29tZXMgYW4gaXNzdWUuIEZvciBpbnN0YW5j
+ZSBJDQp0cmllZCB0byB1c2UgdGhlIGFjcGlfZ3Bpb19jaGlwX2RoKCkgZnVuY3Rpb24gZm9yIGl0
+cyBjb3JyZWN0IHB1cnBvc2UNCmFzIGl0IGlzIGludm9rZWQgaW4gYWNwaV9uc19kZWxldGVfbm9k
+ZSgpIHdoaWNoIGlzIHRvIGFsbG93IHRoZQ0KYXR0YWNoZWQgZGF0YSB0byBiZSBjbGVhbmVkIHVw
+Lg0KLS0tLS0tLS0tPjgtLS0tLS0tLS0tLQ0KLyogSW52b2tlIHRoZSBhdHRhY2hlZCBkYXRhIGRl
+bGV0aW9uIGhhbmRsZXIgaWYgcHJlc2VudCAqLw0KDQoJCWlmIChvYmpfZGVzYy0+ZGF0YS5oYW5k
+bGVyKSB7DQoJCQlvYmpfZGVzYy0+ZGF0YS5oYW5kbGVyKG5vZGUsIG9ial9kZXNjLQ0KPmRhdGEu
+cG9pbnRlcik7DQoJCX0NCi0tLS0tLS0tLT44LS0tLS0tLS0tLS0NCg0KU28gSSB0cmllZCB0byBk
+byB0aGUgd29yayBkb25lIGluIGFjcGlfZ3Bpb2NoaXBfcmVtb3ZlKCkgYXQgdGhhdCB0aW1lDQpi
+dXQgaGl0IGxvY2tpbmcgaXNzdWVzIGRvd25zdHJlYW0gb2YgYWNwaV9ncGlvY2hpcF9mcmVlX3Jl
+Z2lvbnMoKS4gSQ0KY291bGQganVzdCBrZnJlZSB0aGUgYWNwaV9ncGlvX2NoaXAgaW4gIGFjcGlf
+Z3Bpb19jaGlwX2RoKCksIGFuZCBhbHRlcg0KYWNwaV9ncGlvY2hpcF9yZW1vdmUoKSB0byBqdXN0
+IHNpbGVudGx5IGlnbm9yZSB0aGUgZmFpbHVyZSBvZg0KYWNwaV9nZXRfZGF0YSgpIGZvciBteSB1
+c2UgY2FzZSwgYnV0IHRoYXQgc2VlbXMgYSBsaXR0bGUgdW50aWR5IHNpbmNlDQppdCB3b3VsZCBs
+ZWF2ZSB0d28gZGlmZmVyZW50IHBsYWNlcyB3aGVyZSB0aGUgYWNwaV9ncGlvX2NoaXAgaXMNCnJl
+bW92ZWQuIFRoYXQgaXMgc2FmZSB0byBkbyBzaW5jZSBhbGwgdGhlIHN0dWZmIGFjdHVhbGx5IHJl
+bW92ZWQgdW5kZXINCmFjcGlfZ3Bpb2NoaXBfZnJlZV9yZWdpb25zKCkgZ2V0cyBjbGVhbmVkIHVw
+IGJ5IHRoZSBkZWxldGlvbiBvZiB0aGUNCm5hbWVzcGFjZSBub2RlIC0gYnV0IGFnYWluLCBpdCBz
+ZWVtcyB1bnRpZHkgdG8gaGF2ZSB0d28gZGlmZmVyZW50DQpkZWxldGlvbiBwYXRocyBkZXBlbmRp
+bmcgb24gaG93IHRoZSByZW1vdmFsIGlzIHRyaWdnZXJlZC4NClJlbW92aW5nIHRoZSBzZXR0aW5n
+IG9mIHRoZSBoYW5kbGUgdG8gaW52YWxpZCBtYXkgYmUgdGhlIHJpZ2h0IGZpeCBidXQNCkkgZG9u
+J3QgZmVlbCBJIGtub3cgdGhlIGNvZGUgd2VsbCBlbm91Z2ggdG8gbWFrZSBhIGRlY2lzaW9uIG9u
+IHRoYXQuIEl0DQpjZXJ0YWlubHkgZG9lc24ndCByZXNvbHZlIHRoaW5ncyBpbW1lZGlhdGVseSAt
+IEkgc2F3IHJlZiBjb3VudGluZw0Kd2FybmluZ3Mgb3V0cHV0Lg0KDQo+ID4gT3IgYXJlIHlvdSBz
+dGF0aW5nIHRoYXQgYmFzaWNhbGx5IGFjcGlfYnVzX2dldF9wcml2YXRlX2RhdGEoKSBhbmQNCj4g
+PiBjb25jZXB0IG9mDQo+ID4gdGhlIHByaXZhdGUgZGF0YSBpcyB3ZWFrIHRvIHRoZSBwb2ludCB0
+aGF0IG1vc3RseSBiZWNvbWUgdXNlbGVzcz8NCkkgdGhpbmsgYXMgaXQgaXMgd3JpdHRlbiwgYW55
+IGNvZGUgaW4gZHJpdmVyIHJlbW92ZSgpIHBhdGhzIHRoYXQgdHJpZXMNCnRvIGdldCBhbnkgYXR0
+YWNoZWQgZGF0YSBjYW5ub3QgcmVsaWFibGUgYWNoaWV2ZSB0aGF0IGluIFNTRFQgb3ZlcmxheQ0K
+cmVtb3ZhbCBzY2VuYXJpb3MuIEkgdGhpbmsgdGhpcyBpcyBtb3N0bHkgZmFpbGluZyBzaWxlbnRs
+eSB3aXRoIHNtYWxsDQpsZWFrcy4gQWxzbywgcGVyaGFwcyByZW1vdmluZyB0aGVzZSBTU0RUIG92
+ZXJsYXlzIGlzIG5vdCBhIGNvbW1vbiB1c2UNCmNhc2UuDQoNCj4gDQo+IEFub3RoZXIgUSBpcyBo
+b3cgZG9lcyB0aGUgT0YgY2FzZSBzdXJ2aXZlIHNpbWlsYXIgZmxvdyAoRFQgb3ZlcmxheQ0KPiBy
+ZW1vdmFsKT8NCj4gDQpGb3IgRFQgb3ZlcmxheXMsIGluIHRoZSBncGlvX2NoaXAgY2FzZSB0aGVy
+ZSBpcyBubyBkYXRhIGNyZWF0ZWQgYW5kDQphdHRhY2hlZCB0byB0aGUgb2Zfbm9kZS4gSXQgc2lt
+cGx5IHRha2VzIGEgcmVmIChvZl9ub2RlX2dldChjaGlwLQ0KPm9mX25vZGUpIGluIG9mX2dwaW9j
+aGlwX2FkZCgpIGFuZCByZWxlYXNlIGl0IG9uIHJlbW92YWwNCihvZl9ub2RlX3B1dChjaGlwLT5v
+Zl9ub2RlKSBpbiBvZl9ncGlvY2hpcF9yZW1vdmUoKSkuDQpJbiBhIG1vcmUgZ2VuZXJhbCBzZW5z
+ZSwgSSBoYXZlbid0IHNlZW4gYW55IGF0dGFjaGluZyBvZiBkYXRhIHRvIHRoZQ0Kb2Zfbm9kZSBv
+YmplY3RzIGluIGFueSBvZiB0aGUgZHJpdmVycyBJJ20gZmFtaWxpYXIgd2l0aCBvciBoYXZlIHNl
+ZW4uDQpJbiBteSBleHBlcmllbmNlIHRoZSBkZXZpY2UgdHJlZSBpcyB1c2VkIGF0IHByb2JlKCkg
+dGltZSwgbm90aGluZyBpcw0KYWRkZWQgdG8gaXQgYnkgdGhlIGRyaXZlcnMsIGFuZCBpdCBpcyBu
+b3QgdXNlZCBhdCByZW1vdmUoKSB0aW1lLg0KDQpUaGFua3MgZm9yIHlvdXIgaGVscCB3aXRoIHRo
+aXMgc3R1ZmYuIEFueSBmdXJ0aGVyIGlkZWFzIG9yIHJlcXVlc3RzIGZvcg0KaW5mbyB3b3VsZCBi
+ZSBhcHByZWNpYXRlZC4NCg0KVGhhbmtzLA0KSGFtaXNoIE0NCg0K
 
