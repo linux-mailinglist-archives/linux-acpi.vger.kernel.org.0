@@ -1,202 +1,133 @@
-Return-Path: <linux-acpi+bounces-4342-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4343-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE90F87C32D
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 19:57:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E7887C6CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 01:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFE741C212A3
-	for <lists+linux-acpi@lfdr.de>; Thu, 14 Mar 2024 18:57:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF21282796
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 00:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317BF7605C;
-	Thu, 14 Mar 2024 18:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926D47F9;
+	Fri, 15 Mar 2024 00:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Co4/9v+M"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="OMUB6LE6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4513774E39;
-	Thu, 14 Mar 2024 18:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E5119F;
+	Fri, 15 Mar 2024 00:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710442614; cv=none; b=OAzDH2Y/FyWJlEqFHwAFQjE3N13yAaX6Rib/oIOOEekNioWvBTshXnehNCE7r/a8hAJ/alNumuvI89auMJodIX7iJ3VmyuERwPAJozD1zhYcF5tnlTxC3ickw/pfGX4931vl+RW6NWHh8wTnYBGEXSaz+kTzvd9JEMXaHbEpnww=
+	t=1710463082; cv=none; b=J3PrUCRVxKH7eUiXQGIekGKe+OuX7LIdOrxBpuipJLNopOd+q/IXm22FYFUHzcscOmMocVt8QhcXb7NT7gf8sM6yqdIlF69bTy7QWooakvuwySeotiKCiiCU5I+OBgcPtdUWJzsVV25O95UTs1ybxaejmsDVYMBmFkm2MYgz3qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710442614; c=relaxed/simple;
-	bh=vbdumEA8i1vHquFSQh0G9ie0UpZsWtmjCxra+Osqsgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QGnYUqrhXTLmCtsqfHpTA8yeOISkmPl037wRYzHJNShClLqipJBJvO1aFP8f+PSOB4vpS5zfRh1os/8WFR1Ite6w/MhyGGvta8yJ20fLciKNkli+BYw0ZD3zaelgJs1g1LbVwokQGL28AbQfzFiKFJSOZi/J2JEafRShIU2/VdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Co4/9v+M; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710442612; x=1741978612;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vbdumEA8i1vHquFSQh0G9ie0UpZsWtmjCxra+Osqsgs=;
-  b=Co4/9v+M8+QoRr8tyIcskty2er+P7qlYkzPVfmCadiVTDazk1wA60/LI
-   5SPtOH4LQIMPxWcMwngJeB9SOj++m+xyUaIQwlexM8dejHAggM3U+F36q
-   XPNDhIauo9wbSsPhbELZUxYRM5KIHydzZhwXlX4E9EX1J5/I7pLGEVIaJ
-   CgsY4csaUXMtZnElHK+XmvNTpmJQyvXB43KKhpLSGyFs7m1Pk2e4dYXtE
-   iyL8y7wsCy5QzWcGbCDXayF7/k0ROu3F4KLrO6N7Ai6jdU1tqzTR67xJd
-   EqpbeN62QslkuzkvkQ7M/dYvNt08cazRcfqIlB1cQgHUtxAW1Aedu8/8c
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="8224369"
-X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
-   d="scan'208";a="8224369"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 11:56:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,126,1708416000"; 
-   d="scan'208";a="16865490"
-Received: from jtang15-mobl.amr.corp.intel.com (HELO [10.212.137.58]) ([10.212.137.58])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Mar 2024 11:56:51 -0700
-Message-ID: <887d0674-9531-417a-8eca-ecd86c528c29@linux.intel.com>
-Date: Thu, 14 Mar 2024 11:56:50 -0700
+	s=arc-20240116; t=1710463082; c=relaxed/simple;
+	bh=O+aJPqb8PVSPpsoY82kSTGSpQw4eZ44xl2CPE2dgCSU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JQq3pLnGavTq1ppNFqBtTp0pgCtGA5JseUDswGSte4fbuiYhizPkcvXtITYf/vr0crhkyP1VcH8ev7v9o/16uGRxmGAJmiQNPddJICJADUHbAgT2qhtOrGsLBZRd/3659uzNPJsHcKdWmbjZejlUuHoGCSEr9ClMPQoVkMq0MYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=OMUB6LE6; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1710463076; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=8AwO9e/7WeeN+DMgRNE/AH1+WurQAlcji4grBC4mXDY=;
+	b=OMUB6LE6spFhHhqBu8clIh+gWOaXvI7tTLdwPmK40cFGqKC+ckUOP8uJD4UVE+2J92AVbUTlD8EnOdhp9nF5l4w07dvXl7AeMyArIULBgsc6uG0Ap2v+TH4SFNjSW1Y1jFbDCctQRVH0DM8Jv+SYNFupMfZlkBDtULP5KOGqT6I=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=yang.lee@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0W2U6Nu._1710463074;
+Received: from localhost(mailfrom:yang.lee@linux.alibaba.com fp:SMTPD_---0W2U6Nu._1710463074)
+          by smtp.aliyun-inc.com;
+          Fri, 15 Mar 2024 08:37:55 +0800
+From: Yang Li <yang.lee@linux.alibaba.com>
+To: rafael@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yang Li <yang.lee@linux.alibaba.com>
+Subject: [PATCH -next v2] ACPI: Add kernel-doc comments for ACPI suspend and hibernation functions
+Date: Fri, 15 Mar 2024 08:37:53 +0800
+Message-Id: <20240315003753.96173-1-yang.lee@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] platform/x86: wmi: Support reading/writing 16 bit
- EC values
-Content-Language: en-US
-To: Armin Wolf <W_Armin@gmx.de>, hdegoede@redhat.com,
- ilpo.jarvinen@linux.intel.com
-Cc: rafael@kernel.org, lenb@kernel.org, mario.limonciello@amd.com,
- linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240314184538.2933-1-W_Armin@gmx.de>
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20240314184538.2933-1-W_Armin@gmx.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+This patch enhances the documentation for the ACPI power management
+functions related to system suspend and hibernation. This includes the
+use of kernel-doc style comments which provide developers with clearer
+guidance on the usage and expectations of these functions.
 
-On 3/14/24 11:45 AM, Armin Wolf wrote:
-> The ACPI EC address space handler currently only supports
-> reading/writing 8 bit values. Some firmware implementations however
-> want to access for example 16 bit values, which is perfectly legal
-> according to the ACPI spec.
->
-> Add support for reading/writing such values.
->
-> Tested on a Dell Inspiron 3505 and a Asus Prime B650-Plus.
->
-> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+---
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+change in v2:
+--According to Randy's suggestion, use a space between '*'
+  and function names, function parameters.
 
-> Chnages since v4:
-> - spelling fix
-> - fix checkpatch warning
->
-> Changes since v3:
-> - change type of variable i to size_t
->
-> Changes since v2:
-> - fix address overflow check
->
-> Changes since v1:
-> - use BITS_PER_BYTE
-> - validate that number of bytes to read/write does not overflow the
->   address
-> ---
->  drivers/platform/x86/wmi.c | 54 +++++++++++++++++++++++++++++---------
->  1 file changed, 41 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-> index 1920e115da89..9602658711cf 100644
-> --- a/drivers/platform/x86/wmi.c
-> +++ b/drivers/platform/x86/wmi.c
-> @@ -1153,6 +1153,34 @@ static int parse_wdg(struct device *wmi_bus_dev, struct platform_device *pdev)
->  	return 0;
->  }
->
-> +static int ec_read_multiple(u8 address, u8 *buffer, size_t bytes)
-> +{
-> +	size_t i;
-> +	int ret;
-> +
-> +	for (i = 0; i < bytes; i++) {
-> +		ret = ec_read(address + i, &buffer[i]);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ec_write_multiple(u8 address, u8 *buffer, size_t bytes)
-> +{
-> +	size_t i;
-> +	int ret;
-> +
-> +	for (i = 0; i < bytes; i++) {
-> +		ret = ec_write(address + i, buffer[i]);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  /*
->   * WMI can have EmbeddedControl access regions. In which case, we just want to
->   * hand these off to the EC driver.
-> @@ -1162,27 +1190,27 @@ acpi_wmi_ec_space_handler(u32 function, acpi_physical_address address,
->  			  u32 bits, u64 *value,
->  			  void *handler_context, void *region_context)
->  {
-> -	int result = 0;
-> -	u8 temp = 0;
-> +	int bytes = bits / BITS_PER_BYTE;
-> +	int ret;
->
-> -	if ((address > 0xFF) || !value)
-> +	if (!value)
-> +		return AE_NULL_ENTRY;
-> +
-> +	if (!bytes || bytes > sizeof(*value))
->  		return AE_BAD_PARAMETER;
->
-> -	if (function != ACPI_READ && function != ACPI_WRITE)
-> +	if (address > U8_MAX || address + bytes - 1 > U8_MAX)
->  		return AE_BAD_PARAMETER;
->
-> -	if (bits != 8)
-> +	if (function != ACPI_READ && function != ACPI_WRITE)
->  		return AE_BAD_PARAMETER;
->
-> -	if (function == ACPI_READ) {
-> -		result = ec_read(address, &temp);
-> -		*value = temp;
-> -	} else {
-> -		temp = 0xff & *value;
-> -		result = ec_write(address, temp);
-> -	}
-> +	if (function == ACPI_READ)
-> +		ret = ec_read_multiple(address, (u8 *)value, bytes);
-> +	else
-> +		ret = ec_write_multiple(address, (u8 *)value, bytes);
->
-> -	switch (result) {
-> +	switch (ret) {
->  	case -EINVAL:
->  		return AE_BAD_PARAMETER;
->  	case -ENODEV:
-> --
-> 2.39.2
->
+ drivers/acpi/sleep.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 728acfeb774d..5bc61f40c189 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -502,6 +502,7 @@ static void acpi_pm_finish(void)
+ 
+ /**
+  * acpi_pm_start - Start system PM transition.
++ * @acpi_state: The target ACPI power state to transition to.
+  */
+ static void acpi_pm_start(u32 acpi_state)
+ {
+@@ -540,8 +541,9 @@ static u32 acpi_suspend_states[] = {
+ };
+ 
+ /**
+- *	acpi_suspend_begin - Set the target system sleep state to the state
+- *		associated with given @pm_state, if supported.
++ * acpi_suspend_begin - Set the target system sleep state to the state
++ *	associated with given @pm_state, if supported.
++ * @pm_state: The target system power management state.
+  */
+ static int acpi_suspend_begin(suspend_state_t pm_state)
+ {
+@@ -671,10 +673,11 @@ static const struct platform_suspend_ops acpi_suspend_ops = {
+ };
+ 
+ /**
+- *	acpi_suspend_begin_old - Set the target system sleep state to the
+- *		state associated with given @pm_state, if supported, and
+- *		execute the _PTS control method.  This function is used if the
+- *		pre-ACPI 2.0 suspend ordering has been requested.
++ * acpi_suspend_begin_old - Set the target system sleep state to the
++ *	state associated with given @pm_state, if supported, and
++ *	execute the _PTS control method.  This function is used if the
++ *	pre-ACPI 2.0 suspend ordering has been requested.
++ * @pm_state: The target suspend state for the system.
+  */
+ static int acpi_suspend_begin_old(suspend_state_t pm_state)
+ {
+@@ -967,10 +970,11 @@ static const struct platform_hibernation_ops acpi_hibernation_ops = {
+ };
+ 
+ /**
+- *	acpi_hibernation_begin_old - Set the target system sleep state to
+- *		ACPI_STATE_S4 and execute the _PTS control method.  This
+- *		function is used if the pre-ACPI 2.0 suspend ordering has been
+- *		requested.
++ * acpi_hibernation_begin_old - Set the target system sleep state to
++ *	ACPI_STATE_S4 and execute the _PTS control method.  This
++ *	function is used if the pre-ACPI 2.0 suspend ordering has been
++ *	requested.
++ * @stage: The power management event message.
+  */
+ static int acpi_hibernation_begin_old(pm_message_t stage)
+ {
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.20.1.7.g153144c
 
 
