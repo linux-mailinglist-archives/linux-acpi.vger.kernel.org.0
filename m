@@ -1,90 +1,105 @@
-Return-Path: <linux-acpi+bounces-4349-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4350-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 210E387CD3C
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 13:28:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED76D87CD4B
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 13:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5251C1C21456
-	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 12:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC39D1C2107D
+	for <lists+linux-acpi@lfdr.de>; Fri, 15 Mar 2024 12:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DDF1C683;
-	Fri, 15 Mar 2024 12:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7563C1EEE0;
+	Fri, 15 Mar 2024 12:32:09 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E551AAD2;
-	Fri, 15 Mar 2024 12:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12663D76;
+	Fri, 15 Mar 2024 12:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710505691; cv=none; b=fM+s3vEpyH/8Ly8l3zAwFoCzyfbUYkUQl+IWA56OPzoA3dE8Hv93HOCxZ4NZMEm1p5BnbavLoVRLo7lEaF5y97vyyGo08HLHxA7zt/e8hCtDbNr2ouAb5UUHnVLAb3LsZeM04kfkpQ0d5xsbdhQqExNxwEktspd+WLy6wjU18Q0=
+	t=1710505929; cv=none; b=tkkm9pxuuogYrLISp5hvsueTnVdZRTWrNPPOlykoU6844v8ESj4asT1qz0I2XH37Hp2MhmHyygK0Dt5zkZ2RNGHiTzTkAL6ZZd3McHichR+QmK22qudFP24j9gz2PMjAMedtthPt9DPq3mikAU40kjkrs5+WeYwJSqeaEYfiCV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710505691; c=relaxed/simple;
-	bh=Jue/LIAxwV6F+/SVwPKt9ySNu2ex3QNTL7w1vp43f4A=;
+	s=arc-20240116; t=1710505929; c=relaxed/simple;
+	bh=j31+yMWO3vIgCtHa47BOYcnWShrCl0VEtcdZTnTOWgw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l7mzYt5DBUxoBF39i9eqeS9R6Z8MKFZS6uxUEvcIngnCs4xYBx+oTa9cXhS/LSgUkkT50QXvFxAvaJMNWc9Qsw0/7DNun8JnepwI34c+I6e6eQRRD7WpylHTDsUU4QQE6E39Hn6APr1cbSvR2R2IQiJPBr3tdFBNGjV1ry0Vyc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
+	 To:Cc:Content-Type; b=RIffM4SPoqTiFtQ2uajUmkxf6cQ5iwIl0QSqgoNq11RHh3Nr5oYuFKst99rQCUZ650z1maasO99auZy4Lcsknby+2+nlGLUyNvTmAP+HKNLcpDbRzzFpvCeBZpQqah4BYQDkuiFvlROp8IqkuEOZbuajGQpdTq7A8XS0uqGeQUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e677ec9508so110391a34.1;
-        Fri, 15 Mar 2024 05:28:09 -0700 (PDT)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2219edd959dso675716fac.0;
+        Fri, 15 Mar 2024 05:32:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710505689; x=1711110489;
+        d=1e100.net; s=20230601; t=1710505927; x=1711110727;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Jue/LIAxwV6F+/SVwPKt9ySNu2ex3QNTL7w1vp43f4A=;
-        b=MRfqjJElXbUpoaIOJfvsgua7Vu7MmODSVY3uGRUK47y2IkjPEuDQttZ+cGAf3LjRuT
-         qGU97tJPr8Hyy+otyLYblO3LMy0nQzzgmEwwz7I8dV/fngb092XnOGvTOySePTkXZskA
-         8iB6ZsCIkUrAgZXxQlUUl2A9TgqGBwf9DkZqVH/lX5cC9xtZ66hFB9wYOLG9mbSMBvWg
-         U/GHxZjXT46edSPKsd51bmkJlM8PnVBZHic5+XGZbFiNlHNCgOutQfu9XHORraR3PH8X
-         s2Tna/xE+aUR0BnSlBRWY2RJgo6UIQ8TdT2U9fY/WTKXemA1Z+/CKEB+V4TMf9ILbroc
-         obxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmn1zZKUVvOUQh7w5yJgHhbz8L0UKdl2bfSnq8eg/Ua/123Y8JxrMWp/a3exnVa507sJl7gLqmkOI3f6B/E7lEejXXDXo2LBiG1VFXTiTVEVkbcNksr9Ba/qvcJalmsIXricSj0KItCg==
-X-Gm-Message-State: AOJu0YzE+aAgNHuwrTptEyfUK6Xe1aoEDFcMr1Y4D4tmeq4HdCFh+P7K
-	Ob73CEHVct+o7CjF+g3zYtjtZ8Nnd1JjPxnJQ2CudtDpK9TXBgG6Mda5yBVkSEY0ewYnk70MmXM
-	FUg3KO9ZEWa2OFsTLkd21P+nFq3Dyayph
-X-Google-Smtp-Source: AGHT+IFcaUn8z7QjpJtzdEzYON3twDaQcEDAxvhwcLtUg6lgIfiH2mYgkJlW2YRsUaNMBo74pGBEryZ+3digzjdqIrs=
-X-Received: by 2002:a05:6870:3053:b0:221:bc20:76e1 with SMTP id
- u19-20020a056870305300b00221bc2076e1mr2168790oau.0.1710505689257; Fri, 15 Mar
- 2024 05:28:09 -0700 (PDT)
+        bh=j31+yMWO3vIgCtHa47BOYcnWShrCl0VEtcdZTnTOWgw=;
+        b=RRydMfu1Qch89m7BqTK6mpQnwA2I4pMmV+5ySipOaJlPvRWWgCYqDrFSIZ2g7zgips
+         M83tdugiPdd2cHiME0HK97VCAKzH5aYPn37m4cf/hbE9/scFbob4PNQr8+l8DuM9fEAh
+         ulIS181+m4jw+ldiCK+FfkF0XUvfusUXbI7uO+p8dYrriukVSBMbHxh2V5sNN3m1PKqf
+         9EC+u/+9UksXqcNwjSEmL0htdRBIf/0QrbM6nPjtJa/EygFd3h0DCsEBkHjVauK9wNhd
+         ruHqznNcDpyrz/npmQN5dDfe7OBni6WFgW9JKj/FzBBOgNXZvSfJCdrvaM5AJPCzUc05
+         a+aA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWSjsK0srLjvcJv/3MMFyhtg30CjJTfZDQUR+7HnacAZDcHhbs9CxNqV5f/MhkwfO4wwEaGLSWC5fDEy/8fJ48XKj9psGYsOndDrMjcL6lOa3kHtiBy3GIqWaZQ+WZNssns3FUkuZPHw==
+X-Gm-Message-State: AOJu0Yx73MALidpyfwxTHQdAeuRYyqA1GR7PEsAtZjjz9Y9ro9/Og1Ef
+	dngzk/c99U90dk2oUQNDohhymQTS4P0JMc/WjLNjnZ9EUfe9Xh4gk3NLY2vtRQGiDrrglTsQJi6
+	ctnAjYLzrBJxaKwtDBcduWO8SBmA=
+X-Google-Smtp-Source: AGHT+IGfMnFTEOnZaqR3REd4OURjr0SyRKy28dnUBfXOV8VCPImJ6jmpCfhSKSb5BKmLCAHTXAFjDVx0p+e6u+QOw88=
+X-Received: by 2002:a05:6871:458a:b0:21f:cd7d:9904 with SMTP id
+ nl10-20020a056871458a00b0021fcd7d9904mr4604361oab.4.1710505927029; Fri, 15
+ Mar 2024 05:32:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240315003753.96173-1-yang.lee@linux.alibaba.com> <11706f70-539d-43b3-8b5d-e20bdd38d23b@infradead.org>
-In-Reply-To: <11706f70-539d-43b3-8b5d-e20bdd38d23b@infradead.org>
+References: <20240118062930.245937-1-sunilvl@ventanamicro.com> <Zc2U70o7teYnJyp9@sunil-laptop>
+In-Reply-To: <Zc2U70o7teYnJyp9@sunil-laptop>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 15 Mar 2024 13:27:58 +0100
-Message-ID: <CAJZ5v0hmCXgfgECyG+B_Hp10nHchQN-EvF6oQYtW6fT81JoiqA@mail.gmail.com>
-Subject: Re: [PATCH -next v2] ACPI: Add kernel-doc comments for ACPI suspend
- and hibernation functions
-To: Randy Dunlap <rdunlap@infradead.org>, Yang Li <yang.lee@linux.alibaba.com>
-Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 15 Mar 2024 13:31:56 +0100
+Message-ID: <CAJZ5v0iaVj+E5yq2wph7-tr6y-vzFbfoscxjk9Y_O1iWqNp3Mg@mail.gmail.com>
+Subject: Re: [PATCH v3 -next 0/3] RISC-V: ACPI: Add LPI support
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-pm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Pavel Machek <pavel@ucw.cz>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Len Brown <lenb@kernel.org>, 
+	Anup Patel <anup@brainfault.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Andrew Jones <ajones@ventanamicro.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Atish Kumar Patra <atishp@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 15, 2024 at 5:55=E2=80=AFAM Randy Dunlap <rdunlap@infradead.org=
+On Thu, Feb 15, 2024 at 5:37=E2=80=AFAM Sunil V L <sunilvl@ventanamicro.com=
 > wrote:
 >
+> Hi Rafel,
 >
->
-> On 3/14/24 17:37, Yang Li wrote:
-> > This patch enhances the documentation for the ACPI power management
-> > functions related to system suspend and hibernation. This includes the
-> > use of kernel-doc style comments which provide developers with clearer
-> > guidance on the usage and expectations of these functions.
+> On Thu, Jan 18, 2024 at 11:59:27AM +0530, Sunil V L wrote:
+> > This series adds support for Low Power Idle (LPI) on ACPI based
+> > platforms.
 > >
-> > Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
->
-> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
+> > LPI is described in the ACPI spec [1]. RISC-V FFH spec required to
+> > enable this is available at [2].
+> >
+> > [1] - https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Co=
+ntrol.html#lpi-low-power-idle-states
+> > [2] - https://github.com/riscv-non-isa/riscv-acpi-ffh/releases/download=
+/v/riscv-ffh.pdf
+> >
+> Could you please take a look at this series also and provide ACK if
+> looks fine?
 
-Applied as 6.9-rc material, thanks!
+I cannot really comment on RISC-V-specific changes.
+
+As for the ACPI Kconfig change, please feel free to add
+
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+to that patch.
 
