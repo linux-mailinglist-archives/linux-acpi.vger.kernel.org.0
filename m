@@ -1,132 +1,169 @@
-Return-Path: <linux-acpi+bounces-4371-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4372-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3A887F570
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 03:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A9187F9C3
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 09:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB301C214D5
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 02:27:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA9111C21B95
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 08:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA15965189;
-	Tue, 19 Mar 2024 02:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB47754746;
+	Tue, 19 Mar 2024 08:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="Yeobk/Hf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="boN89ypT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820F064CEF
-	for <linux-acpi@vger.kernel.org>; Tue, 19 Mar 2024 02:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CC1548EA
+	for <linux-acpi@vger.kernel.org>; Tue, 19 Mar 2024 08:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710815260; cv=none; b=cxVvu5FQGOpgwDNYKb/hc3YylE8yuMq9PRBdifJyq2vbLiYL5Yxm9LN6j3olGQ4gPAzfQaF/1GD5+ow2fp5pDsDcEvtBD1RYuOlphQRD++BP4QKV3P9GzMETSKLR4rtwgMFCUGUON5ZYwKFLitcp5yxl7I4qCuqVxeah21aU9KM=
+	t=1710836927; cv=none; b=mY8vGbIggM+2+mjFTRE6UmB/7JwUKM5cNKT3JbQcssn0j+5BlyYsJ0f/GQxgrpl7H1V9jftjRWqkbN+pSLhckmHJsSDMhh/nawbm6Ryl0SheKhvOyL13n4Phy7VhDP0vrFZB3SHTWK6IZzgtg8NXqi//HY0djxy8DqnNwjqqf4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710815260; c=relaxed/simple;
-	bh=sP2e+6JEJh7rHz8Yoq24mQxbkis71cZ97nSr01L0O54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t0vioOPLDfW17tEYdJnKQ34DZDF2AtECxfCzqyeT8NpPdMNc4x/JY8LkFXouz2PgdM7KseiojOvT1WZOUvBv4gzW/HPKHVJfSVaa0LcZZZ2TopnzOpAm9j4vxLCj3cXtQ/NX9tXq9ZueKWmf+u74N1kU5brdrxkhK/8ndKkW0jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=Yeobk/Hf; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dee5ef2a7bso33554035ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 18 Mar 2024 19:27:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1710815258; x=1711420058; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5aSzY2VJWDittzpsS5JFj/mmLGexq9XYEbkvVBzvnJA=;
-        b=Yeobk/Hf0XL3Ax61xcZQttm/BUQsRSsLfxbPgHnCzGbMyDutfh7X0WQbD7CbcJf7L/
-         wzsZxuIFAk2IBmmdNaSWPMiB+6WvNUFvySqgZesF/sTypX7ivjMbf8Y5eX8GFa1XiTPH
-         s2mwL+1vZsiXd3F+L1b+We9UVMESce9dKmAX5Ax0LEKDfg0uiX1eW0u46OxcUicNrTRK
-         +hBipN3fguNOfPExZSh+9Ep2nwPeAQvPqUKScYjfxw1XaYKOrVnsiR+g/ddtzlZhGX0B
-         945xDYeUG/FdP2SIy39Us37OWY760xKtoLQUF6GsRGdU0Xt35YYSAy+qMU5L47HdIvEC
-         r9og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710815258; x=1711420058;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5aSzY2VJWDittzpsS5JFj/mmLGexq9XYEbkvVBzvnJA=;
-        b=RGeDQK0cnOzaSTNFycGx2X4ZvvpCD7WJ9FH20VXoHHGyY+POG+syRv+l3/xBoNjaji
-         Mdc1Uc1bJkeYnXFnsyR4GLs2O3lbYub+3YXcfW+UZP/4Pmz1ZyAhn8sTHbv0QkZc26/9
-         KDNx3xqg6l6kX4WZQwsgz382vRw+fnbES0WzIosGtcy9Pd5ZOPP5Oslt1yM7XFKN+oF2
-         WaAb+CVtPLxzCwBln57EASf5roZTLidY1VOdQK14Ml7IDMau0quzPmBE2gmC9dvWAt1h
-         2ZCl9aOVn4e7J4opMsaGMOByrQ99r3WD4mHurJTFX+MrFUhr4H3bNLsbTVoP6yBX/jPt
-         Gatw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6ITMVVXZERM4uN98Ke8PhiK5PybB98hqJ9BrcwMRGc2A63xqnLrKeFosax56f6DHYwbbXxp07m94dCUbFrZSNFMK2qBYNTo9g/Q==
-X-Gm-Message-State: AOJu0YzMKZotBNxJ5Z7c/i6kJ+W/sv7pGIaUZPcIhhfgJ92tNNNRTEsT
-	bSVs9JpcyWXcfBkRjwt9nkML/wd/uOcjgEILOhXgr/tcjaCtSMNOfdwday0dUlY=
-X-Google-Smtp-Source: AGHT+IFn1GD8CcESCvZXxz6GgRez+vUiJL1aI027U4ZrLO0sqXw9+T+YegJmcdj3OkfCqIw1NPTw+w==
-X-Received: by 2002:a17:902:ce81:b0:1dd:a8e2:60a4 with SMTP id f1-20020a170902ce8100b001dda8e260a4mr17768006plg.42.1710815257730;
-        Mon, 18 Mar 2024 19:27:37 -0700 (PDT)
-Received: from x1 ([2601:1c2:1800:a790:ca87:56ba:58b7:a676])
-        by smtp.gmail.com with ESMTPSA id t5-20020a170902e84500b001e02d9c05d8sm2323576plg.103.2024.03.18.19.27.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Mar 2024 19:27:36 -0700 (PDT)
-Date: Mon, 18 Mar 2024 19:27:34 -0700
-From: Drew Fustini <drew@pdp7.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>
-Subject: Re: [PATCH v1 -next 0/3] RISC-V: ACPI: Enable CPPC based cpufreq
- support
-Message-ID: <Zfj4FnG5vAPP55ri@x1>
-References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
- <ZfiKooxO88h1nj35@x1>
+	s=arc-20240116; t=1710836927; c=relaxed/simple;
+	bh=h7BrpAwQ6QzdzxUH5xwJh7dNpL89171MEZNa8doUcQo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ins1ay6RGOO9t38IH/tRuN9wovNACDWyg1o5+cY8kxBJI2qrM2GsXV3VSGLH8dC9h9ZhNoji7CUj8qTXheFnP3HdSGX9dvea/pDgFnG+TpVpK9UMUMQzG4tWkh7Cy4WYraXPGKn3jJlUJOf+7KhvBi/dpVsBswrBaum/hzPqrT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=boN89ypT; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710836925; x=1742372925;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=h7BrpAwQ6QzdzxUH5xwJh7dNpL89171MEZNa8doUcQo=;
+  b=boN89ypTODtiDzo38c+hbTRVzr8tVZ6b+Rn+Gs75qnS5fRndQG6wX6NM
+   JOM/zgRQFV8mBM650kso4aM3Adt4RnrAhPOBb1AoXJS5V+Ng4BPM6hGej
+   ChgHub+OqFORRDCyJgKWoc3ihkmPI8aY86OWl0aL8LSLC9JgoVLL7mclb
+   WZM9ZRaSS/DMoTp/fo28UPAbMS3l01YBYZlV5BUAah1WGtq02XsyFhIx2
+   5ULcUhMrKdumaEazTex0aKdvUdSetLwV+6OlnEm9huZs8YJavxHTZWU01
+   i2rrfZi+tGpCNtn666ADKfIpnKa79nvrxz+k49LcPXzy9hWiFUrmqF9A+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5621340"
+X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
+   d="scan'208";a="5621340"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:28:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
+   d="scan'208";a="44808836"
+Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
+  by fmviesa001.fm.intel.com with ESMTP; 19 Mar 2024 01:28:42 -0700
+From: Cezary Rojewski <cezary.rojewski@intel.com>
+To: rafael@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	robert.moore@intel.com,
+	amadeuszx.slawinski@linux.intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	Cezary Rojewski <cezary.rojewski@intel.com>
+Subject: [PATCH v8 0/4] ACPI: NHLT: Access and query helpers
+Date: Tue, 19 Mar 2024 09:30:14 +0100
+Message-Id: <20240319083018.3159716-1-cezary.rojewski@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZfiKooxO88h1nj35@x1>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 18, 2024 at 11:40:34AM -0700, Drew Fustini wrote:
-> On Thu, Feb 08, 2024 at 09:14:11AM +0530, Sunil V L wrote:
-> > This series enables the support for "Collaborative Processor Performance
-> > Control (CPPC) on ACPI based RISC-V platforms. It depends on the
-> > encoding of CPPC registers as defined in RISC-V FFH spec [2].
-> > 
-> > CPPC is described in the ACPI spec [1]. RISC-V FFH spec required to
-> > enable this, is available at [2].
-> > 
-> > [1] - https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#collaborative-processor-performance-control
-> > [2] - https://github.com/riscv-non-isa/riscv-acpi-ffh/releases/download/v1.0.0/riscv-ffh.pdf
-> > 
-> > The series is based on the LPI support series.
-> > Based-on: 20240118062930.245937-1-sunilvl@ventanamicro.com
-> > (https://lore.kernel.org/lkml/20240118062930.245937-1-sunilvl@ventanamicro.com/)
-> 
-> Should the https://github.com/vlsunil/qemu/tree/lpi_exp branch also be
-> used for this CPPC series too?
+The goal of this patchset is to refactor existing interface of
+Non HDAudio Link Table (NHLT) table so it becomes useful for the Intel
+AudioDSP sound-drivers. Right now the useful duplicate resides in
+sound/hda/intel-nhlt.c.
 
-I noticed the ventanamicro qemu repo has a dev-upstream branch [1] which
-contains 4bb6ba4d0fb9 ("riscv/virt: acpi: Enable CPPC - _CPC and _PSD").
-I've built that but I still see 'SBI CPPC extension NOT detected!!' in
-the Linux boot log.
+The API takes form of query functions that help access device or
+audio-format configuration space. This information can be then utilized
+by a sound-driver to perform necessary programming and facilitate
+streaming over I2S/PDM interfaces. Once the series is merged, existing
+sound-drivers can move from utilizing sound/hda/intel-nhlt.c to this
+very code and ultimately the former file can be removed.
 
-I'm using upstream opensbi. It seems that sbi_cppc_probe() fails because
-cppc_dev is not set. Nothing in the upstream opensbi repo seems to call
-sbi_cppc_set_device(), so I am uncertain how it is possible for it to
-work. Is there an opensbi branch I should be using?
+Paired with equivalent change on ACPICA [1].
 
-Thanks,
-Drew
+-
 
-[1] https://github.com/ventanamicro/qemu/tree/dev-upstream
+Non HDAudio Link Table (NHLT) is designed to separate hardware-related
+description (registers) from AudioDSP firmware-related one i.e.:
+pipelines and modules that together make up the audio stream on Intel
+DSPs. This task is important as same set of hardware registers can be
+used with different topologies and vice versa, same topology could be
+utilized with different set of hardware. As the hardware registers
+description is directly tied to specific platform, intention is to have
+such description part of low-level firmware e.g.: BIOS.
+
+The initial design has been provided in early Sky Lake (SKL) days. The
+audio architecture goes by the name cAVS. SKL is a representative of
+cAVS 1.5. The table helps describe endpoint capabilities ever since.
+While Raptor Lake (RPL) is the last of cAVS architecture - cAVS 2.5 to
+be precise - its successor, the ACE architecture which begun with
+Meteor Lake (MTL) inherited the design for all I2S and PDM
+configurations. These two configurations are the primary targets for
+NHLT table.
+
+Due to naming conflicts with existing code, several structs are named
+'nhlt2' rather than 'nhlt'. Last patch cleans the situation up.
+
+
+Changes in v8:
+- fixed file headers for all added files
+- commit messages now carry links to ACPICA PRs and relevant commits ids
+
+Changes in v7:
+- added missing headers to nhlt.c/nhlt.h as suggested by Andy
+
+Changes in v6:
+- added comments explaining usage of LINKTYPE and DEVICETYPE constants
+
+Changes in v5:
+- split find_endpoint/fmtcfg() into tb-less and tb-aware variants.
+  This is to make API scale with 2+ NHLTs and removes the need for
+  acpi_gbl_nhlt to be accessible globally.
+- acpi_nhlt_device_config now a union that encompasses all device_config
+  types.
+
+Changes in v4:
+- relocated ACPI_NHLT kconfig in the drivers/acpi/Kconfig to a more
+  relevant area within the file
+
+Changes in v3:
+- uncapitalized acpi_gbl_NHLT
+- fixed compilation problems when CONFIG_ACPI_NHLT is disabled
+- dropped Reviewed-by tags in the 2/4 patch due to above, those were not
+  one-line changes
+
+Changes in v2:
+- minor wording improvements in kernel-doc for patch 3/4
+- dropped parentheses around loop cursors in for_each_nhlt_*() macros
+- readability improvements in compound if-statements within query
+  functions
+- dropped NULL-checks in query functions
+
+[1]: https://github.com/acpica/acpica/pull/912
+
+
+Cezary Rojewski (4):
+  ACPI: NHLT: Reintroduce types the table consists of
+  ACPI: NHLT: Introduce API for the table
+  ACPI: NHLT: Drop redundant types
+  ACPI: NHLT: Streamline struct naming
+
+ drivers/acpi/Kconfig  |   3 +
+ drivers/acpi/Makefile |   1 +
+ drivers/acpi/nhlt.c   | 289 ++++++++++++++++++++++++++++++++++++++++
+ include/acpi/actbl2.h | 299 +++++++++++++++++-------------------------
+ include/acpi/nhlt.h   | 181 +++++++++++++++++++++++++
+ 5 files changed, 591 insertions(+), 182 deletions(-)
+ create mode 100644 drivers/acpi/nhlt.c
+ create mode 100644 include/acpi/nhlt.h
+
+-- 
+2.25.1
+
 
