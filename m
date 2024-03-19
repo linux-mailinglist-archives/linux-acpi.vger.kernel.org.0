@@ -1,114 +1,79 @@
-Return-Path: <linux-acpi+bounces-4383-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4384-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D8D87FDE3
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 13:57:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D2188056A
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 20:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E321C21D2C
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 12:57:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1DB61F2350B
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 19:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AF53CF5E;
-	Tue, 19 Mar 2024 12:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6053A1A8;
+	Tue, 19 Mar 2024 19:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGGS+xyH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B4633981;
-	Tue, 19 Mar 2024 12:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B7839FFB;
+	Tue, 19 Mar 2024 19:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710853024; cv=none; b=ichqMknOoRWGN1aVok97ma2RoeKNbCto6LRhvCECMpmrToOtNZNiOlGCd2b0E1T3/eL28MVrzJC4GVecUFJSKyYRY/CgCz2+HFVGDRmIydgNE1hFE2WZO+3h4UIsUP58JHJo9jGB2sM0lKq9IdVy+CLx4pFGqbrcXXVao8EGSS0=
+	t=1710876584; cv=none; b=MnofdlXHPdgcnzVZoCAN6XQ0SXCxpJxJzu+9KINNnVpJP7Wm5ifNXjJIDWS2tVQm/DYA+DHg23Ae+ROFLKfFczjfF2NYP/odyRJ/Ye11j97Mm/rkmbi3dwxIRkVI2LdHRKX5X7taNzsU36Ytdee74oQZVP8BliPYuzx8vNHaozY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710853024; c=relaxed/simple;
-	bh=aSfk12ZNC2aNib7t4Nxall7keaBK9D68QLM8bit25BI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Owomlf4LuahJPNZoI6/N/pfqf12oWVKdd6lGueXEvSED/9ganvVKvwslYqtykL9BSawSsjqSAEuw/jLuj99BEde13vfCt7FIV39AVh8VDXip7fiUQNhiOiWBaRfhugHRG23HqnqIFhSuvHue/UZ/FhrKDobckm4lJlvxmkhCVM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5a4e0859b65so11141eaf.0;
-        Tue, 19 Mar 2024 05:57:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710853022; x=1711457822;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xrj+Mt4U3wrpxTx1LRg8WME9pASH7mdtf+hRrVD3zVk=;
-        b=RwOfkVYfKZ7rgoEq0oEWMHtMA0l7CPkTaeXKMUV0SIgp9OIi6KwwOOlKF40VkLV2Av
-         L7IDOqxWROpXMTqBCw51/A7uKneWs7Lh96TknX207k47PPAJxrxQ7SVuSJ76EqqCuMHe
-         3cazPzmb0AXJW1qFcjHsmj+KqOKmSTb8b/wju0bj7lJi64kvabxNfbNqzWZbdf6WxzQn
-         ZernRQs4/6Ocl3c0ut0MIqljYpDpY42pxYrcoo3xXQvPvJLhuvHPDoxdqdgpL+mZkDPD
-         rF4oIBPP5DZA2o/vlXwY/zr3sXymo+cOrTtKtWP9VJ+xU4YxRAp9vAFXbIovv9W+g9A5
-         rBKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTC5+MwoldrrwWVulqwmTKyph3UIgM+ra4mZABSy2lWWsNT/n9IaXw5Y9Tl83YcFM9Xcf20uz+FziDNb1VUbya3rCsl4aHYEw1Bmm24BDrbs3xABoaLJ8qibFKmkvNqGmKtEj+gE0=
-X-Gm-Message-State: AOJu0YwJbZTlHNHVGUVPPMsUmEOdOCRkUBoTH+GnzqtL+0UixljLTE92
-	4JnGO+MYMehZ+tTfkBKONTV6EYYihiNV+g0Xc8SmXtY8XOo8atORlNdqMIXveMrvB5GREtO+l7T
-	CoNT6GHvL71WXKHcR1+FmabjrlzqdpNjjMu8=
-X-Google-Smtp-Source: AGHT+IF8bfM4Rz54Mt6OBW3mcF/C6DrIiYAWJme3QWHlB/fRqsPE1nkTuiRvYUjbum8eMWZWhDZfTvRy6RuVeKPuE3s=
-X-Received: by 2002:a05:6870:888c:b0:221:cb1b:cc05 with SMTP id
- m12-20020a056870888c00b00221cb1bcc05mr2340095oam.0.1710853022246; Tue, 19 Mar
- 2024 05:57:02 -0700 (PDT)
+	s=arc-20240116; t=1710876584; c=relaxed/simple;
+	bh=5anQmS3jsOUfvYL/cz883dX2dkMRuYztf9vijMfN+fo=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Fil89rW5jvZ0lIMqRR+t+9oqYrwjz1lxrt+3kIRJzR/vxfEIbhYctZ5vdnuuFolenPI2/9FjgD+b4DE5OfVI3v3GN9wmLbD7wxUS72oRyvdu99jKV3NR+w6KW+Eo0pzAyBo+HtA9vG95XLTsoXaD1yvZ80U35f5PI8lUhIjrFKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGGS+xyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 17F63C43390;
+	Tue, 19 Mar 2024 19:29:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710876584;
+	bh=5anQmS3jsOUfvYL/cz883dX2dkMRuYztf9vijMfN+fo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=mGGS+xyH0vGq8wgQmtzqxrPZ37BNlOw/TnYs/mQrB4dKAcJQABzlWoYn92kV5pPCa
+	 09DpBVe3ryD5J01R02LaNGkaolt2gjawFBGu/IddVkMgG+G/5HJQ0GNyihW6t05tgF
+	 YOXAlSsnrwSiBKe0Q7FehILVZgfDzqtc+9mqnRd4Wk/EjY4d9CV68YpF7wQ/4dBaAk
+	 fr4ywuP8llo3Mk7zxshLl1BWRbj3EqRtetP00OUqK2su1YTNXzhHRZnZ0YhaZYcx6+
+	 YAh85CKKD1bnwzcbCBUzIETyeXSh5y1Vsazl8ffJp/fFuCEp2r4QRhPwD5EESVS+8W
+	 nakx4I9MVHi4Q==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 107B5D84BB3;
+	Tue, 19 Mar 2024 19:29:44 +0000 (UTC)
+Subject: Re: [GIT PULL] More ACPI updates for v6.9-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hMT+x=axU2BKz5XHYwdYZzdSm-itYvYD0K16T5NUnuyw@mail.gmail.com>
+References: <CAJZ5v0hMT+x=axU2BKz5XHYwdYZzdSm-itYvYD0K16T5NUnuyw@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hMT+x=axU2BKz5XHYwdYZzdSm-itYvYD0K16T5NUnuyw@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.9-rc1-2
+X-PR-Tracked-Commit-Id: a873add22a46beec0291c5a40194a90eb92ba3da
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6d37f7e7d195fb1c2f9cac2cd431771936fd4692
+Message-Id: <171087658405.21820.14282277004543750164.pr-tracker-bot@kernel.org>
+Date: Tue, 19 Mar 2024 19:29:44 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 19 Mar 2024 13:56:51 +0100
-Message-ID: <CAJZ5v0hMT+x=axU2BKz5XHYwdYZzdSm-itYvYD0K16T5NUnuyw@mail.gmail.com>
-Subject: [GIT PULL] More ACPI updates for v6.9-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+The pull request you sent on Tue, 19 Mar 2024 13:56:51 +0100:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.9-rc1-2
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.9-rc1-2
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6d37f7e7d195fb1c2f9cac2cd431771936fd4692
 
-with top-most commit a873add22a46beec0291c5a40194a90eb92ba3da
+Thank you!
 
- Merge branch 'acpi-docs'
-
-on top of commit 943446795909929f261565cebafb3b56d66cc513
-
- Merge tag 'acpi-6.9-rc1' of
-git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-
-to receive more ACPI updates for 6.9-rc1.
-
-These update ACPI documentation and kerneldoc comments.
-
-Specifics:
-
- - Add markup to generate links from footnotes in the ACPI enumeration
-   document (Chris Packham).
-
- - Update the handle_eject_request() kerneldoc comment to document the
-   arguments of the function and improve kerneldoc comments for ACPI
-   suspend and hibernation functions (Yang Li).
-
-Thanks!
-
-
----------------
-
-Chris Packham (1):
-      ACPI: docs: enumeration: Make footnotes links
-
-Yang Li (2):
-      ACPI: Document handle_eject_request() arguments
-      ACPI: PM: Improve kerneldoc comments for suspend and hibernation functions
-
----------------
-
- Documentation/firmware-guide/acpi/enumeration.rst | 12 ++++++------
- drivers/acpi/dock.c                               |  2 ++
- drivers/acpi/sleep.c                              | 24 +++++++++++++----------
- 3 files changed, 22 insertions(+), 16 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
