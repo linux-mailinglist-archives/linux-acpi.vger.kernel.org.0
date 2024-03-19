@@ -1,392 +1,144 @@
-Return-Path: <linux-acpi+bounces-4376-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4377-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0D587F9C8
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 09:28:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D465987FBAB
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 11:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FCFE1F2186B
-	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 08:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798712819C9
+	for <lists+linux-acpi@lfdr.de>; Tue, 19 Mar 2024 10:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BD454775;
-	Tue, 19 Mar 2024 08:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD257D416;
+	Tue, 19 Mar 2024 10:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WvNmmM9O"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CkPD2AuK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5495854665
-	for <linux-acpi@vger.kernel.org>; Tue, 19 Mar 2024 08:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16697D096
+	for <linux-acpi@vger.kernel.org>; Tue, 19 Mar 2024 10:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710836935; cv=none; b=VUdO2gX87GFfCk8+JUjRWojk7CghmssZDcFxRRWT9ehdV/Nf6II77eDLEbMiZAYEk2SQs/30Cm99bOAC4tc2yy1ufBswGJf89TtWKVXI+5AIrsLUg7BtjeJgucwb8iUV1yvMignN6d7LaUyibPW/0cjKNw276Mk684xf3xzqUE4=
+	t=1710843634; cv=none; b=IQc5ewjyqeHk31d4PM6gFBmWhEcZBguGUeD5o/U3IFgX1/PtU3AV1rO+ty8Sm9st2HyHAj8oWd+gp6FhubdmixGlS0Z4vP/4zQfleS8F2ElPUK6PsCwoRVwoLpgOJ5lcuVaXHJASul24Pm1ILO5RZVyqL7ABt+tPgZ66336pDmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710836935; c=relaxed/simple;
-	bh=TkLvHIIp7tSz9HKWPW8vknaMTYj6iqn+ASIY6II0ijU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fexccVRNmGpAukNDKFRFuKnLIU20DgxDL4snVo8Z+ri5ZzLlRtYyNIFKEcFjSr3KpKzQxd7VlVZhZIudvIJ+8lA6jpR2kwBFvpjvvVlKGaODbtyJrSgrSDz5O937/4n29H0fksAb9DR1BXI501dd/HWRBU0EPmZiV+iVXLiJGxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WvNmmM9O; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710836934; x=1742372934;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TkLvHIIp7tSz9HKWPW8vknaMTYj6iqn+ASIY6II0ijU=;
-  b=WvNmmM9O15hQMkBpiWrNpUNIzSbJM9UWF6LwZ7Rk//ziOfHaUIdgxBxu
-   +4vwIWB3q3uHtMVq51e+ggPkhWNJzH4yj24w2BqMVrZ7hn+w771aBcmhq
-   m5FK/tJupR+dfbRJRLXErkASvCHVUf6fXWMKAmt9IwsiaHt0uB/9FN2h3
-   gatpq/D3HcUvZAcfxpYCUoJxM+O7IDEbM1dGNSEkd4CPIy4FtLlmbUyW6
-   XZgLzrYoTnyPsJAZNiNU0KYLou5AovTvxjHn4rtqFB/wXDbpbbbnbvUed
-   0ULuAvYK/u78y61pxex746K3XxEkoOaX+JCUeg4fqcrhJl/wbCo0iMw49
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5621348"
-X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="5621348"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2024 01:28:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,136,1708416000"; 
-   d="scan'208";a="44809084"
-Received: from crojewsk-ctrl.igk.intel.com ([10.102.9.28])
-  by fmviesa001.fm.intel.com with ESMTP; 19 Mar 2024 01:28:51 -0700
-From: Cezary Rojewski <cezary.rojewski@intel.com>
-To: rafael@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	robert.moore@intel.com,
-	amadeuszx.slawinski@linux.intel.com,
-	pierre-louis.bossart@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	Cezary Rojewski <cezary.rojewski@intel.com>
-Subject: [PATCH v8 4/4] ACPI: NHLT: Streamline struct naming
-Date: Tue, 19 Mar 2024 09:30:18 +0100
-Message-Id: <20240319083018.3159716-5-cezary.rojewski@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240319083018.3159716-1-cezary.rojewski@intel.com>
-References: <20240319083018.3159716-1-cezary.rojewski@intel.com>
+	s=arc-20240116; t=1710843634; c=relaxed/simple;
+	bh=f3d4nTxhLrJKF8BIku5uXK0MHpCRy45pJaoaXw7zLR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AFn/eOEID0SMaFwiLIuvgi8GcZg6PZy/Vw/Z1WHniPKXazsATpb/yT33TysCTsgME5IhQoOlEmAxVyPv5dwr5Agvd7z/uAI2aVY2cKVens1g7FiEy6rZ7Pwd9NdHqTsK3c1fqY9/Kja71htG2HsEOpq9Y6E9mpQ0WzvzXbEMFes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CkPD2AuK; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a46abf093cso2999361eaf.2
+        for <linux-acpi@vger.kernel.org>; Tue, 19 Mar 2024 03:20:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1710843632; x=1711448432; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QL3EGbNhVw3JtUTld34AtoZby/9DY4UaNMDtaugQZHE=;
+        b=CkPD2AuK+GZb+OvUMVdm6TKVbj/4IFgBmKdmoKEb1cSD6G8XNjjMyt4zPKAO1mU7vx
+         QRfqDVVtDZBFl+cpHaqYOPASnxGsBqPzP3h7cKaV8Tkn5lG9CUo01xmGcN/L26g1IaqQ
+         F9hU/ejhRM5Vi4MweC/UBr1yHm2+qLZcvrpr++CJCJozWCbivmV8A2WClasQ3zK76Eq+
+         L7kzV+ZIP+r5Dx9zMVNfLlfcDr5CNBXRZ85bZ1X0q9LmcTRP7AQmL+yxtHyL7cQU6Osi
+         VunFetqrrkvtWqKAy3VErLxjx8sgk0h3fHydkiki02Am/dMi9v3r9/boswRO+0CyxDJw
+         in7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710843632; x=1711448432;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QL3EGbNhVw3JtUTld34AtoZby/9DY4UaNMDtaugQZHE=;
+        b=bKpOun+rC3+BZd2qbMSClnqlcKCB+heJTu3iK+HUr5LworY55EKJ8Puq6dAg+qL9yq
+         lYSQng8Td3/XhxN7MN6Lg1peyAXb3v0IeLZbFr2cElDVN4wwlMCUeXlEy3TptmmkKIqs
+         lYmqlugm9vn/tew6A7tTHnJNQ9eUmCD2eYqPLQqPLQgtOGvxGNnyAWVvZXmWJ5leTD2T
+         umYIvT2sAuYhhS91CwYJO6BKbe0jQPJLvfPTxkjocx/nqLdZ5Edpw1AnwjivnW8SzTck
+         oMNtG4DoKcsvKhmKrihggP4NbMQTlHorSdr9O/T//KMn+RdniqOIbMr00wz4z9Ee40N5
+         n2GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDueA7NWMBPfFhxYIwwl9IKQ40sIiXt8Iq2ZM4pRYoyOt76goWn2ZEHyme5I8vyJKbLSgW+XtPM00BQpSjx678HlboqVwsDtVxxg==
+X-Gm-Message-State: AOJu0Yxg/mXAK1IH8n2lk060op8U9zH3abK76VYnAAP0ggz6G5Iuyrv7
+	O5oCHMu44dylOBDJMwob6k8l5CBwJtrewahM9iXBSMOwmJuuIUvjNKkRe0hswEA=
+X-Google-Smtp-Source: AGHT+IGVGk/H1aT7F0MOr8+0o1ytVFNZ5mK4pp0hbrmu8U5f3VIEAqB/PjrEuaGzbfdxTTLcPEkOJw==
+X-Received: by 2002:a4a:6f0b:0:b0:5a2:37c9:d91f with SMTP id h11-20020a4a6f0b000000b005a237c9d91fmr12704898ooc.5.1710843632056;
+        Tue, 19 Mar 2024 03:20:32 -0700 (PDT)
+Received: from sunil-laptop ([106.51.187.230])
+        by smtp.gmail.com with ESMTPSA id dc4-20020a056820278400b005a4a656860bsm1040842oob.2.2024.03.19.03.20.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Mar 2024 03:20:31 -0700 (PDT)
+Date: Tue, 19 Mar 2024 15:50:21 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Drew Fustini <drew@pdp7.com>
+Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>
+Subject: Re: [PATCH v1 -next 0/3] RISC-V: ACPI: Enable CPPC based cpufreq
+ support
+Message-ID: <Zflm5cje/+rnZ7HH@sunil-laptop>
+References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
+ <ZfiKooxO88h1nj35@x1>
+ <Zfj4FnG5vAPP55ri@x1>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zfj4FnG5vAPP55ri@x1>
 
-Few recently introduced structs are named 'nhlt2' instead of 'nhlt' to
-avoid naming conflicts. With duplicate types gone, the conflicts are no
-more.
+On Mon, Mar 18, 2024 at 07:27:34PM -0700, Drew Fustini wrote:
+> On Mon, Mar 18, 2024 at 11:40:34AM -0700, Drew Fustini wrote:
+> > On Thu, Feb 08, 2024 at 09:14:11AM +0530, Sunil V L wrote:
+> > > This series enables the support for "Collaborative Processor Performance
+> > > Control (CPPC) on ACPI based RISC-V platforms. It depends on the
+> > > encoding of CPPC registers as defined in RISC-V FFH spec [2].
+> > > 
+> > > CPPC is described in the ACPI spec [1]. RISC-V FFH spec required to
+> > > enable this, is available at [2].
+> > > 
+> > > [1] - https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#collaborative-processor-performance-control
+> > > [2] - https://github.com/riscv-non-isa/riscv-acpi-ffh/releases/download/v1.0.0/riscv-ffh.pdf
+> > > 
+> > > The series is based on the LPI support series.
+> > > Based-on: 20240118062930.245937-1-sunilvl@ventanamicro.com
+> > > (https://lore.kernel.org/lkml/20240118062930.245937-1-sunilvl@ventanamicro.com/)
+> > 
+> > Should the https://github.com/vlsunil/qemu/tree/lpi_exp branch also be
+> > used for this CPPC series too?
+> 
+> I noticed the ventanamicro qemu repo has a dev-upstream branch [1] which
+> contains 4bb6ba4d0fb9 ("riscv/virt: acpi: Enable CPPC - _CPC and _PSD").
+> I've built that but I still see 'SBI CPPC extension NOT detected!!' in
+> the Linux boot log.
+> 
+> I'm using upstream opensbi. It seems that sbi_cppc_probe() fails because
+> cppc_dev is not set. Nothing in the upstream opensbi repo seems to call
+> sbi_cppc_set_device(), so I am uncertain how it is possible for it to
+> work. Is there an opensbi branch I should be using?
+> 
+> Thanks,
+> Drew
+> 
+> [1] https://github.com/ventanamicro/qemu/tree/dev-upstream
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
----
- drivers/acpi/nhlt.c   | 36 ++++++++++++++++-----------------
- include/acpi/actbl2.h | 22 ++++++++++-----------
- include/acpi/nhlt.h   | 46 +++++++++++++++++++++----------------------
- 3 files changed, 52 insertions(+), 52 deletions(-)
+Please use below branches for qemu and opensbi. These are just dummy
+objects/interfaces added to test the kernel change which are otherwise
+platform specific features.
 
-diff --git a/drivers/acpi/nhlt.c b/drivers/acpi/nhlt.c
-index ab722a95cbb5..dc1bd0df9228 100644
---- a/drivers/acpi/nhlt.c
-+++ b/drivers/acpi/nhlt.c
-@@ -16,9 +16,9 @@
- #include <linux/types.h>
- #include <acpi/nhlt.h>
- 
--static struct acpi_table_nhlt2 *acpi_gbl_nhlt;
-+static struct acpi_table_nhlt *acpi_gbl_nhlt;
- 
--static struct acpi_table_nhlt2 empty_nhlt = {
-+static struct acpi_table_nhlt empty_nhlt = {
- 	.header = {
- 		.signature = ACPI_SIG_NHLT,
- 	},
-@@ -65,7 +65,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_put_gbl_table);
-  *
-  * Return: %true if endpoint matches specified criteria or %false otherwise.
-  */
--bool acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
-+bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
- 			      int link_type, int dev_type, int dir, int bus_id)
- {
- 	return ep &&
-@@ -90,11 +90,11 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_match);
-  * Return: A pointer to endpoint matching the criteria, %NULL if not found or
-  * an ERR_PTR() otherwise.
-  */
--struct acpi_nhlt2_endpoint *
--acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
-+struct acpi_nhlt_endpoint *
-+acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
- 			   int link_type, int dev_type, int dir, int bus_id)
- {
--	struct acpi_nhlt2_endpoint *ep;
-+	struct acpi_nhlt_endpoint *ep;
- 
- 	for_each_nhlt_endpoint(tb, ep)
- 		if (acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
-@@ -116,7 +116,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_tb_find_endpoint);
-  * Return: A pointer to endpoint matching the criteria, %NULL if not found or
-  * an ERR_PTR() otherwise.
-  */
--struct acpi_nhlt2_endpoint *
-+struct acpi_nhlt_endpoint *
- acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id)
- {
- 	/* TODO: Currently limited to table of index 0. */
-@@ -136,12 +136,12 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_find_endpoint);
-  * Return: A pointer to format matching the criteria, %NULL if not found or
-  * an ERR_PTR() otherwise.
-  */
--struct acpi_nhlt2_format_config *
--acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
-+struct acpi_nhlt_format_config *
-+acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
- 			       u16 ch, u32 rate, u16 vbps, u16 bps)
- {
--	struct acpi_nhlt2_wave_formatext *wav;
--	struct acpi_nhlt2_format_config *fmt;
-+	struct acpi_nhlt_wave_formatext *wav;
-+	struct acpi_nhlt_format_config *fmt;
- 
- 	for_each_nhlt_endpoint_fmtcfg(ep, fmt) {
- 		wav = &fmt->format;
-@@ -176,13 +176,13 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_endpoint_find_fmtcfg);
-  * Return: A pointer to format matching the criteria, %NULL if not found or
-  * an ERR_PTR() otherwise.
-  */
--struct acpi_nhlt2_format_config *
--acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
-+struct acpi_nhlt_format_config *
-+acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
- 			 int link_type, int dev_type, int dir, int bus_id,
- 			 u16 ch, u32 rate, u16 vbps, u16 bps)
- {
--	struct acpi_nhlt2_format_config *fmt;
--	struct acpi_nhlt2_endpoint *ep;
-+	struct acpi_nhlt_format_config *fmt;
-+	struct acpi_nhlt_endpoint *ep;
- 
- 	for_each_nhlt_endpoint(tb, ep) {
- 		if (!acpi_nhlt_endpoint_match(ep, link_type, dev_type, dir, bus_id))
-@@ -215,7 +215,7 @@ EXPORT_SYMBOL_GPL(acpi_nhlt_tb_find_fmtcfg);
-  * Return: A pointer to format matching the criteria, %NULL if not found or
-  * an ERR_PTR() otherwise.
-  */
--struct acpi_nhlt2_format_config *
-+struct acpi_nhlt_format_config *
- acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
- 		      u16 ch, u32 rate, u16 vbps, u16 bps)
- {
-@@ -244,10 +244,10 @@ static bool acpi_nhlt_config_is_vendor_micdevice(struct acpi_nhlt_config *cfg)
-  *
-  * Return: A number of microphones or an error code if an invalid endpoint is provided.
-  */
--int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep)
-+int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep)
- {
- 	union acpi_nhlt_device_config *devcfg;
--	struct acpi_nhlt2_format_config *fmt;
-+	struct acpi_nhlt_format_config *fmt;
- 	struct acpi_nhlt_config *cfg;
- 	u16 max_ch = 0;
- 
-diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
-index 31a716a74340..f237269bd1cb 100644
---- a/include/acpi/actbl2.h
-+++ b/include/acpi/actbl2.h
-@@ -1894,7 +1894,7 @@ struct nfit_device_handle {
-  *
-  ******************************************************************************/
- 
--struct acpi_table_nhlt2 {
-+struct acpi_table_nhlt {
- 	struct acpi_table_header header;	/* Common ACPI table header */
- 	u8 endpoints_count;
- 	/*
-@@ -1903,7 +1903,7 @@ struct acpi_table_nhlt2 {
- 	 */
- };
- 
--struct acpi_nhlt2_endpoint {
-+struct acpi_nhlt_endpoint {
- 	u32 length;
- 	u8 link_type;
- 	u8 instance_id;
-@@ -1990,7 +1990,7 @@ struct acpi_nhlt_micdevice_config {
- #define ACPI_NHLT_ARRAYTYPE_LINEAR4_GEO2	0xE
- #define ACPI_NHLT_ARRAYTYPE_VENDOR		0xF
- 
--struct acpi_nhlt2_vendor_mic_config {
-+struct acpi_nhlt_vendor_mic_config {
- 	u8 type;
- 	u8 panel;
- 	u16 speaker_position_distance;		/* mm */
-@@ -2031,7 +2031,7 @@ struct acpi_nhlt_vendor_micdevice_config {
- 	u8 config_type;
- 	u8 array_type;
- 	u8 mics_count;
--	struct acpi_nhlt2_vendor_mic_config mics[];
-+	struct acpi_nhlt_vendor_mic_config mics[];
- };
- 
- union acpi_nhlt_device_config {
-@@ -2042,7 +2042,7 @@ union acpi_nhlt_device_config {
- };
- 
- /* Inherited from Microsoft's WAVEFORMATEXTENSIBLE. */
--struct acpi_nhlt2_wave_formatext {
-+struct acpi_nhlt_wave_formatext {
- 	u16 format_tag;
- 	u16 channel_count;
- 	u32 samples_per_sec;
-@@ -2055,17 +2055,17 @@ struct acpi_nhlt2_wave_formatext {
- 	u8 subformat[16];
- };
- 
--struct acpi_nhlt2_format_config {
--	struct acpi_nhlt2_wave_formatext format;
-+struct acpi_nhlt_format_config {
-+	struct acpi_nhlt_wave_formatext format;
- 	struct acpi_nhlt_config config;
- };
- 
--struct acpi_nhlt2_formats_config {
-+struct acpi_nhlt_formats_config {
- 	u8 formats_count;
--	struct acpi_nhlt2_format_config formats[];
-+	struct acpi_nhlt_format_config formats[];
- };
- 
--struct acpi_nhlt2_device_info {
-+struct acpi_nhlt_device_info {
- 	u8 id[16];
- 	u8 instance_id;
- 	u8 port_id;
-@@ -2073,7 +2073,7 @@ struct acpi_nhlt2_device_info {
- 
- struct acpi_nhlt_devices_info {
- 	u8 devices_count;
--	struct acpi_nhlt2_device_info devices[];
-+	struct acpi_nhlt_device_info devices[];
- };
- 
- /*******************************************************************************
-diff --git a/include/acpi/nhlt.h b/include/acpi/nhlt.h
-index 7c394e7bc2bb..2108aa6d0207 100644
---- a/include/acpi/nhlt.h
-+++ b/include/acpi/nhlt.h
-@@ -23,12 +23,12 @@
-  *
-  * Return: A pointer to the formats configuration space.
-  */
--static inline struct acpi_nhlt2_formats_config *
--acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt2_endpoint *ep)
-+static inline struct acpi_nhlt_formats_config *
-+acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt_endpoint *ep)
- {
- 	struct acpi_nhlt_config *cfg = __acpi_nhlt_endpoint_config(ep);
- 
--	return (struct acpi_nhlt2_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
-+	return (struct acpi_nhlt_formats_config *)((u8 *)(cfg + 1) + cfg->capabilities_size);
- }
- 
- #define __acpi_nhlt_first_endpoint(tb) \
-@@ -99,24 +99,24 @@ acpi_nhlt_endpoint_fmtscfg(const struct acpi_nhlt2_endpoint *ep)
- acpi_status acpi_nhlt_get_gbl_table(void);
- void acpi_nhlt_put_gbl_table(void);
- 
--bool acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
-+bool acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
- 			      int link_type, int dev_type, int dir, int bus_id);
--struct acpi_nhlt2_endpoint *
--acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
-+struct acpi_nhlt_endpoint *
-+acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
- 			   int link_type, int dev_type, int dir, int bus_id);
--struct acpi_nhlt2_endpoint *
-+struct acpi_nhlt_endpoint *
- acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id);
--struct acpi_nhlt2_format_config *
--acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
-+struct acpi_nhlt_format_config *
-+acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
- 			       u16 ch, u32 rate, u16 vbps, u16 bps);
--struct acpi_nhlt2_format_config *
--acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
-+struct acpi_nhlt_format_config *
-+acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
- 			 int link_type, int dev_type, int dir, int bus_id,
- 			 u16 ch, u32 rate, u16 vpbs, u16 bps);
--struct acpi_nhlt2_format_config *
-+struct acpi_nhlt_format_config *
- acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
- 		      u16 ch, u32 rate, u16 vpbs, u16 bps);
--int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep);
-+int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep);
- 
- #else /* !CONFIG_ACPI_NHLT */
- 
-@@ -130,46 +130,46 @@ static inline void acpi_nhlt_put_gbl_table(void)
- }
- 
- static inline bool
--acpi_nhlt_endpoint_match(const struct acpi_nhlt2_endpoint *ep,
-+acpi_nhlt_endpoint_match(const struct acpi_nhlt_endpoint *ep,
- 			 int link_type, int dev_type, int dir, int bus_id)
- {
- 	return false;
- }
- 
--static inline struct acpi_nhlt2_endpoint *
--acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt2 *tb,
-+static inline struct acpi_nhlt_endpoint *
-+acpi_nhlt_tb_find_endpoint(const struct acpi_table_nhlt *tb,
- 			   int link_type, int dev_type, int dir, int bus_id)
- {
- 	return NULL;
- }
- 
--static inline struct acpi_nhlt2_format_config *
--acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt2_endpoint *ep,
-+static inline struct acpi_nhlt_format_config *
-+acpi_nhlt_endpoint_find_fmtcfg(const struct acpi_nhlt_endpoint *ep,
- 			       u16 ch, u32 rate, u16 vbps, u16 bps)
- {
- 	return NULL;
- }
- 
--static inline struct acpi_nhlt2_format_config *
--acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt2 *tb,
-+static inline struct acpi_nhlt_format_config *
-+acpi_nhlt_tb_find_fmtcfg(const struct acpi_table_nhlt *tb,
- 			 int link_type, int dev_type, int dir, int bus_id,
- 			 u16 ch, u32 rate, u16 vpbs, u16 bps)
- {
- 	return NULL;
- }
- 
--static inline int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt2_endpoint *ep)
-+static inline int acpi_nhlt_endpoint_mic_count(const struct acpi_nhlt_endpoint *ep)
- {
- 	return 0;
- }
- 
--static inline struct acpi_nhlt2_endpoint *
-+static inline struct acpi_nhlt_endpoint *
- acpi_nhlt_find_endpoint(int link_type, int dev_type, int dir, int bus_id)
- {
- 	return NULL;
- }
- 
--static inline struct acpi_nhlt2_format_config *
-+static inline struct acpi_nhlt_format_config *
- acpi_nhlt_find_fmtcfg(int link_type, int dev_type, int dir, int bus_id,
- 		      u16 ch, u32 rate, u16 vpbs, u16 bps)
- {
--- 
-2.25.1
+https://github.com/vlsunil/qemu/tree/lpi_cppc_exp
+https://github.com/vlsunil/opensbi/tree/cppc_exp
 
+Regards
+Sunil
 
