@@ -1,184 +1,179 @@
-Return-Path: <linux-acpi+bounces-4395-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4396-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F611881491
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 16:27:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658728816C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 18:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A39F1F2360E
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 15:27:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C4D1C21991
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 17:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFFA524AA;
-	Wed, 20 Mar 2024 15:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668286A8AC;
+	Wed, 20 Mar 2024 17:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QrLABlI0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GAmFQNll"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE592524B7
-	for <linux-acpi@vger.kernel.org>; Wed, 20 Mar 2024 15:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710948451; cv=fail; b=B/aTp/xvUr5tTKmwjYInLCd48+BkkT9VRRRsPxROvpSZSv6lvEg13cd+yYReMEL8oWl38vZo3qHmp/+FDXpCPYltMYrDZTncocOwXLUX21+zlUS+6w1uPJ4UT/MbChpx6s/ap7LNr6cWfMT9qUQMoPdeLEys4rn0xnMEso9nIrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710948451; c=relaxed/simple;
-	bh=k88w2q+YDcSSBx2Cm3YlSbZnzn0PA68Rm684+7CcxxM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MfE9DQbra0yRXJZeUSxflaDcqHhYwq0D6PdG72PlEKDZOSSerOag4KBeusbBhBrFIbWLg9wFGvRkfjsa10wvB+QMSVvbM00t0p5lK47AIAmAdWkIz14QypMUPp8V8cEex/Nxgn5YhiZ2UK/UkTwWzIJ/y0tmPlVUGhEHlax0HHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QrLABlI0; arc=fail smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CDA4436E;
+	Wed, 20 Mar 2024 17:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710956773; cv=none; b=BzPEUqtPuPdK6/7gdHycvQeaJuI7Ykr2/wAY1YlBVA6FqnGnUnDUdth49q8DF4Ox+3fjJVr5xTOlC/07IjjMcBHRgNriB8JPXyC2oV7IqSC5pmbivtXNEeihHva0IdV2iQzG5ypJx+DF2L34zzvm4JfIEfHMHUdxGHkfHkoVaWA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710956773; c=relaxed/simple;
+	bh=4tUKS+lrAbbNWp2JU9fdGghW7+U5wKN3OA2hFRyNMmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lNQ09pxIcBT4cAtRyPJA45QQOTdvhfH83uaCpRVUbJjKr2oAUR5ppj4fV+BfsLLCqBowXt2IOTtEFMR45ikcc9JD3XYjcOy4uXEvTnkhdDJSmeEMGLTo3Tb1dU5mpCzx7MzAPw1uPz285VMY6xLhqdBL67FTSJXOw/eeI3b52tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GAmFQNll; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710948449; x=1742484449;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=k88w2q+YDcSSBx2Cm3YlSbZnzn0PA68Rm684+7CcxxM=;
-  b=QrLABlI0j2rycy7+/Hrv/leHaiOKwcIM3MUr3EmiVsknk0f5e6ODLo4f
-   DgM+YueIIym7HdR25bRd2+jJg2GOVOeBNKcH4FwBvlPMZg9IVqeFZXKXV
-   8H+ixV7Z48ASuliTHSZpApCle4W+jeoSFXWFS41Kbz91pFZqdwPrX+GE9
-   TmiC4C3PS1WKRjBQiLxCud27p3n3lmj4NLJduoWVRFFj7HFzVpTR2Kgol
-   /DbJreDkNQLgVDboJ3JVRJhUgTl/01RxfbmqWqqVslk1oWjZUrhh0ktqb
-   5yLefyMetr+ozIKrVmVKl1PoGUAtV3gIUCCZymlckftcLXWt8CSUut92i
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="16420225"
+  t=1710956770; x=1742492770;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4tUKS+lrAbbNWp2JU9fdGghW7+U5wKN3OA2hFRyNMmI=;
+  b=GAmFQNllaZrQmclA0nTO5yLEmWzQRqdJ4DW4fn8Kcv2LVRRAbodwKk4G
+   6DX1lQget9UiyMl+orS8Yy4avUx5vrI627p7terxlzImRv0z8jCNj/FhG
+   X5yiboTcVVy3hj3urpyHcI8ZtD+7ISvEgKxdeUz3Q9SME1P4RDVYpqyh5
+   qAkgLZxyaT64J1cvrX5aMsD5fnWPxy/ZOsifnnnbMbv2tnT2w2e6Ewi+V
+   Wuzr4p/5yjE7ycTtrxNm7gRgRBKtDPbJSYDnnvNcb9otTZzOqXRy+DYH+
+   rU66QROYmB4pWMlFiN90bLkMPtxpoMgOincndGCUWkwUI2QbSp7jHrgrF
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6023981"
 X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="16420225"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 08:27:29 -0700
+   d="scan'208";a="6023981"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 10:46:09 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="51628585"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Mar 2024 08:27:29 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 08:27:28 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 20 Mar 2024 08:27:28 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Wed, 20 Mar 2024 08:27:28 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 20 Mar 2024 08:27:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k0DaTa6qGqoEfvr90g1dntxuMEd9ZeowMOANedoLrZpltbsQKFvJ0fbNrb3PeOQNEFMK7TZisygQKTsNyfaFEcKu9CQfajl3KjpNuVWrogjdFE3jH5uWRwAWeuM3KTs64F9vTPDR1v40thdL37PvzodimgGbwsqqhanbK3DuvscdAjBP/f2CexDnMCQnGyDB333BdEuMt+HmZBI0j5tpGat9gB2DX8JLBdGjzr78jMC1ewGE/se++6Fax/1ImGQKmgAIEMlUfY1Xig391SHMEjwdKGGX0wQhlBE53wTOvTByKvkXetnG2zOelH33zDwjUvyAxVzO524wle4C3DOflw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k88w2q+YDcSSBx2Cm3YlSbZnzn0PA68Rm684+7CcxxM=;
- b=fpEGk45iFsYriq8DgLu5G/UxXKD8n/y6qFA43Jr0CnoWSMbAM5iZKFaK2fmibVL9fxz2aqiF5zwXqTmtPOL+Ex/w2FpG/YmVL8emnnyn9iTpvVYDnp4ub5MtDxAZOYzJcisAVsS2e2aliqit4rFDf53jva3ElCOVpzk1F7CiXP4RSin/ZaLTge7hc9YE2FHut9ek5yG4afXS58THdrwHLBbr87P6g9M8hMOs2M+A9MiReKCDvBTFcQJsCRU25TPg9lm8HMSr2qGZIVGspMMcqY++wvEnGoyHHy9neGzJLuCbgHP9J5JKjr2YJkaAba87aTwq8dZ/7OsOZmJHnunZEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com (2603:10b6:a03:48a::9)
- by DM4PR11MB7376.namprd11.prod.outlook.com (2603:10b6:8:100::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12; Wed, 20 Mar
- 2024 15:27:25 +0000
-Received: from SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::fca9:7c00:b6d0:1d62]) by SJ1PR11MB6083.namprd11.prod.outlook.com
- ([fe80::fca9:7c00:b6d0:1d62%5]) with mapi id 15.20.7409.010; Wed, 20 Mar 2024
- 15:27:25 +0000
-From: "Luck, Tony" <tony.luck@intel.com>
-To: Li RongQing <lirongqing@baidu.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "bp@alien8.de" <bp@alien8.de>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: RE: [PATCH] acpi/ghes: load balance timers
-Thread-Topic: [PATCH] acpi/ghes: load balance timers
-Thread-Index: AQHaeod8ehRIuExPO0aQzc4QwPGNfLFAv2nw
-Date: Wed, 20 Mar 2024 15:27:25 +0000
-Message-ID: <SJ1PR11MB6083BD24995E3F281C05AEC2FC332@SJ1PR11MB6083.namprd11.prod.outlook.com>
-References: <20240320052724.41099-1-lirongqing@baidu.com>
-In-Reply-To: <20240320052724.41099-1-lirongqing@baidu.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6083:EE_|DM4PR11MB7376:EE_
-x-ms-office365-filtering-correlation-id: ef04cafc-54ec-410b-423b-08dc48f23f10
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: N8SWeULzSw4JAq6fcpn5Pwz3Lxt/vCQ6+k/XmVh0gNbjT9wE4VZTpideRAH1Wv2I++4Yb6oW+vwZaSPLpvft6v6C8c3r2FcQ7aGXMmEGk2ZEUofOJ/quyyL2ycmiTomdagEP4NZAoyM+9jfF3PFA4xw+97HbbxSgApyUSkScjt601uAfLTiIWEU/KEhqsRsZD0yqGnh6k/8UaczQ73Yxcxnh4nrKuuPXzjllgL41Lxk1dEd+41D1Eo8azfPsflWUEMN2hyktR+Slj2VO7Cp/g/hfJhyghZ8XjoaSyIWX3ftWLVU8H2q7SyLAqc/R50EkjQ2BNt5B0xyW9r2IlozvwM1g0nag3fKuki6IDLGLpq4TTjDMWrBXM2J5jlTNyfnexzTUm81FVYiC24M+OsYW2j3/DxCMqObd3gZfqWAVn1ubq9PejDAyaxtXJGweU6IYhhnEZJD1VGeQUfoJpC26P0YMkWDnHfRkH3aiIk++Atak7ZV5FnZDQ+5SfTjH8BxGL64miSpiZ4lVFN5rHNnvKDANQbj9GHaQCo/OwIRTEjHuVg7CICUJOxA1VlQg8ashHBm/mqQJAyn380dTzHHW4iwwcMYDLAue/Yh2cf0mct4hBmr1oDuxM4WrvrQ8lL3sKKrCqRf3Rz0Mxo5q8pgl/llcRy3YmLWNJ3cSNzCdOcy+cKGvmVs7GZnpu/Cugd/hTvmgN3vdVRA6OM2TMnd5wA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6083.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?rfZNpOe/OT3LKoPzVYt+zgVzHkb3VmqeIhSwJue/9KaK93iuhHwpPobZSnG8?=
- =?us-ascii?Q?jXX6n7VrmYe6Y+FrNEdQD4CMNvsesYFFf//k3tSxv3MVZCDNuBLf6Hw9JlLX?=
- =?us-ascii?Q?aLYtyPQ1EE1bEeujSAwCTZ+pfK3PLSwXjL8RUapNuZes9lC0EZDdk5DFioYi?=
- =?us-ascii?Q?B/QEmXOpi2R1jqzLtyQrpGp7v6YRMVHNCppQmiIXHAeE2T4m59E/pWae9dgE?=
- =?us-ascii?Q?dMeAdkwXMg2U7W9CwJMvj6ApDANqqpjP02YYBe+0keirpR9Zdj63TSDv+B3n?=
- =?us-ascii?Q?AixSdiWDVo1wA4mUj4tQwF9OaVk2SsBVVpixR1gfp77nDpfTv8prYXLNItyQ?=
- =?us-ascii?Q?uEJcpG/5tfsD/p/jbHAxzLjeBUCZe02KDyQuqhpqyJPTP9iKzSQSeOeAUNj4?=
- =?us-ascii?Q?yyLzeqRBoE5qFgrTJue5JsfymN7t3B87zUIFwoVn5F8LpTgLgpbrIVVjUOal?=
- =?us-ascii?Q?Gx3AWj58V2FTxZ0+m4b6rQ1SRLekzBKA5SvigSdbm/GCcMe3zMe01yAsL5De?=
- =?us-ascii?Q?p/FsHAj+3JWQhOAxqbtqnNz5RiSuDDM7JlezceOsG4G/fILoKo55dw/1KvCi?=
- =?us-ascii?Q?B/kgPoFHSE2HwzfGbyMHx8m/F3rB+gIOKi1n2M1LHgnrOL6JVcey/il/xwrf?=
- =?us-ascii?Q?kcx42QblPIaTIEzmOrryDy3NP8qXvVpHJ3dOmfV5aYU+2QyxnPuYKUNQnYXL?=
- =?us-ascii?Q?OzKdW5UVqaUWCYzjrMVfJJmuqEpWd1vfsxwRmLca/FhZIPefiAm77wvtk1Ii?=
- =?us-ascii?Q?TqAZkZDaRIgiBCZnjlPVVD1xgPdsHOpMC0OokQ0oql8I/S/IvfOPmkEu3gT+?=
- =?us-ascii?Q?TxzQodcascNs46vhdtFnJLegEN8NRZnBKDnEQ1QDyRkzy6eLRx+HwqljqBcH?=
- =?us-ascii?Q?qVoJOVK6hnvor6QI/q8V+4QdRC3e7G2x/9xviSDUWOo7HdJXlKXXnjuZo4cm?=
- =?us-ascii?Q?cGhbshRYbrzBxl1vLazH4vJQaio9BwU+xkb7IomDz0ppVXSfBIcUK1EkrjGK?=
- =?us-ascii?Q?0Q030bwU84MFL7/Cg+KyGPvZfeX3BOWpQJ5OPgC8F9mrNKgMiav7A+e/qnuB?=
- =?us-ascii?Q?w0BKLv1S+aGGsSmFbk6Y1k2evSgoe+fM1bLqKZL8YfoQl/TWEdis4Vk3stIm?=
- =?us-ascii?Q?mSH8Sv8Iz5uWkSYICo1vWIxAPAt2XpJcmVzyoIJgTkbxUP+AJRKJuQWQmu3n?=
- =?us-ascii?Q?CR2ZvkNu/xQjAgJzKhRoXDO4bKDTia/fKpfFo4/MDG7X28PiLqGtTmtJlY9x?=
- =?us-ascii?Q?IO6reSFYxAVRBlDl+Q+8zk9HAcB/1tknF+meIAvXnn7FY/zCMDXudbX77WkA?=
- =?us-ascii?Q?juNa+u5OPZneK7N9BJtgyTahLdTyym8YEjIpEheLyTCRKGghD1sAuzYclvKt?=
- =?us-ascii?Q?z/DAPHUJnMwIbmfMIheVbI6YHU5R2bvtYi5I7ovFLGky/aHP7W9yZmOjiyju?=
- =?us-ascii?Q?eelIfmNKJjjtUCBVEGtV4SWizIeihhH+pwmKDdgqnqTgNstb+zXVvoryk3N3?=
- =?us-ascii?Q?ElYKcWMEX6gxM+QqiFZKi88lU5R07394SIeiuNYfSADrwzFkVbGuC25hLHtZ?=
- =?us-ascii?Q?C8FX7F7dFLwzanX9ES4axyq/IcoSTnKe2weQDxiQ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="37336134"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.209.72.188])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 10:46:09 -0700
+Date: Wed, 20 Mar 2024 10:46:07 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Robert Richter <rrichter@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Dan Williams <dan.j.williams@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, Derick Marks <derick.w.marks@intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v2 1/3] x86/numa: Fix SRAT lookup of CFMWS ranges with
+ numa_fill_memblks()
+Message-ID: <Zfsg3wZpSFVT+Zv2@aschofie-mobl2>
+References: <20240319120026.2246389-1-rrichter@amd.com>
+ <20240319120026.2246389-2-rrichter@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6083.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef04cafc-54ec-410b-423b-08dc48f23f10
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2024 15:27:25.6930
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OHgearQNIrnmgqZLFkoCXUfebeabT3S+pJPHQjZGcimfudYfd3zkyIeMowNzpCyRfKcBCFsAYWUvrCZY/Jdq8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7376
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240319120026.2246389-2-rrichter@amd.com>
 
-> Kernel needs to set up a timer for each poll type notification, On
-> some system, these are tens of thousands of timers, which expires
-> periodically and preempt one CPU which calls ghes_probe at boot stage
->
-> so load balance evenly timers to all online cpus, reduce task jitter
+On Tue, Mar 19, 2024 at 01:00:23PM +0100, Robert Richter wrote:
+> For configurations that have the kconfig option NUMA_KEEP_MEMINFO
+> disabled, the SRAT lookup done with numa_fill_memblks() fails
+> returning NUMA_NO_MEMBLK (-1). An existing SRAT memory range cannot be
+> found for a CFMWS address range. This causes the addition of a
+> duplicate numa_memblk with a different node id and a subsequent page
+> fault and kernel crash during boot.
+> 
+> numa_fill_memblks() is implemented and used in the init section only.
+> The option NUMA_KEEP_MEMINFO is only for the case when NUMA data will
+> be used outside of init. So fix the SRAT lookup by moving
+> numa_fill_memblks() out of the NUMA_KEEP_MEMINFO block to make it
+> always available in the init section.
+> 
+> Note that the issue was initially introduced with [1]. But since
+> phys_to_target_node() was originally used that returned the valid node
+> 0, an additional numa_memblk was not added. Though, the node id was
+> wrong too.
 
-Tens of thousands of timers still sounds bad. Spreading the pain across
-all CPUs just moves the pain around.
+Hi Richard,
 
-Question: do these all have the same, or similar poll interval?
+I recall a bit of wrangling w #defines to make ARM64 and LOONGARCH build.
+I'm seeing an x86 build error today:
 
-Could these be both spread out and batched? E.g. have a kernel thread
-on each CPU that runs periodically. Assign bunches of these ghes
-poll items to each CPU to be handled by the kernel thread?
+>> arch/x86/mm/numa.c:957:12: error: redefinition of 'numa_fill_memblks'
+     957 | int __init numa_fill_memblks(u64 start, u64 end)
 
--Tony
+include/linux/numa.h:40:26: note: previous definition of 'numa_fill_memblks' with type
++'int(u64,  u64)' {aka 'int(long long unsigned int,  long long unsigned int)'}
+      40 | static inline int __init numa_fill_memblks(u64 start, u64 end)
+         |                          ^~~~~~~~~~~~~~~~~
 
+In addition to what you suggest, would something like this diff below be
+a useful safety measure to distinguish num_fill_memblks() success (rc:0)
+and possible non-existence (rc:-1). I don't think it hurts to take a
+second look using phys_to_target_node() (totall untested)
 
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 070a52e4daa8..0c48fe32ced4 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -437,9 +437,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+         * found for any portion of the window to cover the entire
+         * window.
+         */
+-       if (!numa_fill_memblks(start, end))
++       rc = numa_fill_memblks(start, end);
++       if (!rc)
+                return 0;
+ 
++       if (rc == NUMA_NO_MEMBLK) {
++               node = phys_to_target_node(start);
++               if (node != NUMA_NO_NODE)
++                       return 0;
++       }
++
+        /* No SRAT description. Create a new node. */
+
+--Alison
+
+> 
+> [1] fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
+> 
+> Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+> Cc: Derick Marks <derick.w.marks@intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+> ---
+>  arch/x86/mm/numa.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 65e9a6e391c0..ce84ba86e69e 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -929,6 +929,8 @@ int memory_add_physaddr_to_nid(u64 start)
+>  }
+>  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+>  
+> +#endif
+> +
+>  static int __init cmp_memblk(const void *a, const void *b)
+>  {
+>  	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
+> @@ -1001,5 +1003,3 @@ int __init numa_fill_memblks(u64 start, u64 end)
+>  	}
+>  	return 0;
+>  }
+> -
+> -#endif
+> -- 
+> 2.39.2
+> 
 
