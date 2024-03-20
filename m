@@ -1,161 +1,132 @@
-Return-Path: <linux-acpi+bounces-4392-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4393-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100D2880DC8
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 09:52:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2AE88100E
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 11:39:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4BAE1F2528E
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 08:52:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA297B23610
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 10:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3743D566;
-	Wed, 20 Mar 2024 08:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDE02D05C;
+	Wed, 20 Mar 2024 10:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="mdx1PW+V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eN6GOwGn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90B839FF2;
-	Wed, 20 Mar 2024 08:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2329B20DCC;
+	Wed, 20 Mar 2024 10:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710924606; cv=none; b=OpUfIf+qFKV9KF7+OsKWVwu0UxBfGpmZ1NDWA06CksTMrR2FaNmxVGppp0IZuGQBX1eUBYlNuvOPLgrhwrOY3hXS/cucshUUjYd3Us1ljCo/wLw2JJmnqHdtBZHomowWuxZ8UTnhPHxrsD9066+HK/ZMvpkyFV9jbakeVM/YhZw=
+	t=1710931180; cv=none; b=aGgxQzdA7UDVvbN3TdrpJ2Y7t0juvJqQpyS19biE8EnSCiueDUTLWASv6JnmH6UikqvYKmX0bZd5q8HziOD3Nx5/rSUGkusDZkfJwpSopIRojLCFoDkJHcTfrzcdejTOsDidFMgvn4F4HTkLDdJQ6dUG+Pq01LIgN2eeCrvk/gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710924606; c=relaxed/simple;
-	bh=qN90YsyhEdTYLpAgk86xiUkWMEl53xc5BeEM/tePBFw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SxKw/LyW8CpGCtpfT0R0CdC+G9oG+x40BBnW9Rr7Bd5HoFuHFegsUp0N5+cy0nV4i0/wMf6DX9uh4VAx2YsaaOgJaOPbf4Jn3FYJoqdqeFolxbcIIHIz9tdOKP/vZapyqlpFSkeeR+TX3akmUprWEGtNpjNGknGIow/mMBh9H2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=mdx1PW+V; arc=none smtp.client-ip=185.125.188.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from localhost.localdomain (unknown [10.101.196.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id 0ACE241C1B;
-	Wed, 20 Mar 2024 08:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1710924254;
-	bh=3Phe7IR9wF0mRfOHuRR6w4aXwl1W5QC++Hur2AKYbiY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=mdx1PW+Vl7YelstHZeGGC96/XjqJrPLabPIvRYbpM0kGPveB2JaU9y/YRkWVOv2FI
-	 AKjtuJW6HyiRQYgqmP4E28tuQ6w0mmnMrrIKfZosMd3h3iPl+u4mG+lFHSNWDH6bfz
-	 r/Lmlbis4H6D8sXbQpqMF3dYJgvZ14bL/XbxrPOtUU7CjER8DeG5h+TVPyKD0KDoUu
-	 vAlQsJ7sxPqY3Foptos8KLwHwPA+9vu2gOuRP0+Zhp6mhe3x4XQXd5rGUPoaC1oClz
-	 LlG5g2ms5YQbmeGKaf8Y8i8CckL2xpOyr9TU7MMdkiRYGAx0rNuzKP2trvPPd+1d7Z
-	 Zk0/7KiIENTYA==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	jdelvare@suse.com,
-	linux@roeck-us.net
-Cc: robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: [PATCH v5 2/2] hwmon: (acpi_power_meter) Ensure IPMI space handler is ready on Dell systems
-Date: Wed, 20 Mar 2024 16:43:17 +0800
-Message-Id: <20240320084317.366853-2-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320084317.366853-1-kai.heng.feng@canonical.com>
-References: <20240320084317.366853-1-kai.heng.feng@canonical.com>
+	s=arc-20240116; t=1710931180; c=relaxed/simple;
+	bh=NXyshRl6EibK8Fv9ThYhsEZH4LzWv/DjUpaMXHd7ofA=;
+	h=Date:From:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I8KWu1ariZFtOWeb0M1Aw8LvMqy46zUMUFSxXSCUZyeRIWmmv4s6l4Y+axHJlcuy9sQRHFXLJJaw77gJ2bFiC3o3LalAVmgvUfcyAm7Qi+ok0nh59kE3CIp+bbnnNnGPBZKNcF7gY82rJNK38R7eIdheum8jMU4fnkdFCpDSwIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eN6GOwGn; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710931179; x=1742467179;
+  h=date:from:cc:subject:message-id:references:mime-version:
+   in-reply-to;
+  bh=NXyshRl6EibK8Fv9ThYhsEZH4LzWv/DjUpaMXHd7ofA=;
+  b=eN6GOwGnZJ+7ccX7zWvCBTdyRLeh3jAkhkuZrcKoWcSpdTMsTHuDSGqc
+   ezcDyoOR7o3G19zut3EDESalWrmQ/sSZSXEDlU4qXcdUmf+sDVAYxETAC
+   NGtstZd2yKMU4xNRX1ETNXbBtk8CnAMJRc5I9W4Y94nc35Nz4qXgdlVis
+   VBmOxfTccRzQLuFcsCk/jB2GyInBfFvQ5YWFRDyAMzluTdCHUpNWaTFob
+   iBv9vlnTQQSy89rkYWhsFkgUw26CWzBsnQqtw9IjKsCLaazvvgPrNK4We
+   zKp656cG7qzoTTOX0hM3nKeO2szlGx12HnFyVrJlvzI+CiK9zBFPYAby2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="23304768"
+X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
+   d="scan'208";a="23304768"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 03:39:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="914662247"
+X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; 
+   d="scan'208";a="914662247"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 03:39:36 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rmtM5-0000000EXk2-2icX;
+	Wed, 20 Mar 2024 12:39:33 +0200
+Date: Wed, 20 Mar 2024 12:39:33 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] software node: Implement device_get_match_data fwnode
+ callback
+Message-ID: <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
+References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-The following error can be observed at boot:
-[    3.717920] ACPI Error: No handler for Region [SYSI] (00000000ab9e62c5) [IPMI] (20230628/evregion-130)
-[    3.717928] ACPI Error: Region IPMI (ID=7) has no handler (20230628/exfldio-261)
++Cc: Vladimir
 
-[    3.717936] No Local Variables are initialized for Method [_GHL]
+On Tue, Mar 19, 2024 at 07:42:22AM +0800, Sui Jingfeng wrote:
+> This makes it possible to support (and/or test) a few drivers that
+> originates from DT World on the x86-64 platform. Originally, those
+> drivers using the of_device_get_match_data() function to get match
+> data. For example, drivers/gpu/drm/bridge/simple-bridge.c and
+> drivers/gpu/drm/bridge/display-connector.c. Those drivers works very
+> well in the DT world, however, there is no counterpart to
+> of_device_get_match_data() when porting them to the x86 platform,
+> because x86 CPUs lack DT support.
 
-[    3.717938] No Arguments are initialized for method [_GHL]
+This is not true.
 
-[    3.717940] ACPI Error: Aborting method \_SB.PMI0._GHL due to previous error (AE_NOT_EXIST) (20230628/psparse-529)
-[    3.717949] ACPI Error: Aborting method \_SB.PMI0._PMC due to previous error (AE_NOT_EXIST) (20230628/psparse-529)
-[    3.717957] ACPI: \_SB_.PMI0: _PMC evaluation failed: AE_NOT_EXIST
+First of all, there is counter part that called device_get_match_data().
+Second, there *is* DT support for the _selected_ x86 based platforms.
 
-On Dell systems several methods of acpi_power_meter access variables in
-IPMI region [0], so wait until IPMI space handler is installed by
-acpi_ipmi and also wait until SMI is selected to make the space handler
-fully functional.
+> By replacing it with device_get_match_data() and creating a software
+> graph that mimics the OF graph, everything else works fine, except that
+> there isn't an out-of-box replacement for the of_device_get_match_data()
+> function. Because the software node backend of the fwnode framework lacks
+> an implementation for the device_get_match_data callback.
 
-Since the dependency is inside BIOS's ASL code and it's not
-discoverable, so use this fixup is a hack to workaround BIOS issue.
+.device_get_match_data
 
-[0] https://www.dell.com/support/manuals/en-us/redhat-enterprise-linux-v8.0/rhel8_rn_pub/advanced-configuration-and-power-interface-acpi-error-messages-displayed-in-dmesg?guid=guid-0d5ae482-1977-42cf-b417-3ed5c3f5ee62
+> Implement device_get_match_data fwnode callback fwnode callback to fill
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v5:
- - Check CONFIG_ACPI_IPMI to fix link error.
- - Use acpi_dev_put() to balance reference count.
- - Wording.
- - Add comment to explain the rationale.
+.device_get_match_data
 
-v4:
- - No change.
+> this gap. Device drivers or platform setup codes are expected to provide
+> a "compatible" string property. The value of this string property is used
+> to match against the compatible entries in the of_device_id table. Which
+> is consistent with the original usage style.
 
-v3:
- - Use helper.
- - Use return value to print warning message.
+Why do you need to implement the graph in the board file?
 
-v2:
- - Use completion instead of request_module().
+...
 
- drivers/hwmon/acpi_power_meter.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+Have you seen this discussion?
+https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 703666b95bf4..b34cb57f2a0e 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -868,6 +868,9 @@ static int acpi_power_meter_add(struct acpi_device *device)
- {
- 	int res;
- 	struct acpi_power_meter_resource *resource;
-+#if IS_REACHABLE(CONFIG_ACPI_IPMI)
-+	struct acpi_device *ipi_device;
-+#endif
- 
- 	if (!device)
- 		return -EINVAL;
-@@ -883,6 +886,24 @@ static int acpi_power_meter_add(struct acpi_device *device)
- 	strcpy(acpi_device_class(device), ACPI_POWER_METER_CLASS);
- 	device->driver_data = resource;
- 
-+#if IS_REACHABLE(CONFIG_ACPI_IPMI)
-+	/*
-+	 * On Dell systems several methods of acpi_power_meter access
-+	 * variables in IPMI region, so wait until IPMI space handler is
-+	 * installed by acpi_ipmi and also wait until SMI is selected to make
-+	 * the space handler fully functional.
-+	 */
-+	if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.")) {
-+		ipi_device = acpi_dev_get_first_match_dev("IPI0001", NULL, -1);
-+
-+		if (ipi_device) {
-+			if (acpi_wait_for_acpi_ipmi())
-+				dev_warn(&device->dev, "Waiting for ACPI IPMI timeout");
-+			acpi_dev_put(ipi_device);
-+		}
-+	}
-+#endif
-+
- 	res = read_capabilities(resource);
- 	if (res)
- 		goto exit_free;
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 
