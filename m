@@ -1,222 +1,187 @@
-Return-Path: <linux-acpi+bounces-4402-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4403-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD0B8817D6
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:30:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634D8881831
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C6F11C22AD0
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 19:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86F271C219B7
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 19:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2664485637;
-	Wed, 20 Mar 2024 19:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF0785654;
+	Wed, 20 Mar 2024 19:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="pMZ7IAzk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M1PcAfVb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4D485639;
-	Wed, 20 Mar 2024 19:30:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710963007; cv=none; b=W2LYDZ9uogStuJyDWxZhPH24IDBtnbIvSCeAcQnJxEsu8FtkOB37jruEFTlJoJbt77LyIp+JqlQpftHfUmzY5wmV65hzZLsqLVFRGer0Zf5OiGVXEHBLcQQW/TtFKx6H90J2zx4Rdhpm993ENYroukc0KLNBPMP1bFZdXRrwts0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710963007; c=relaxed/simple;
-	bh=fGS3F1q6ekW/yCKZ4NCW6yPu736Ze9C5mVOM0rCHt1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JgEj4gzXKfjYhZm4xbrM882yZdm9be1cdYZfXooyT/9bCIcynlQ4cPXmIUxp8ybmfFwtPFE+QGrVkLX0ODuDv+N1lYBLjYUDU4FRaIuLwitrlZdesgeF/Zp8Iq2VBeOML7B5nbAGzjo6EqWDoCPZwb086ctMu0Mf6Q0OFqfnN1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=pMZ7IAzk reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 5.4.0)
- id c31793086dac50fa; Wed, 20 Mar 2024 20:29:56 +0100
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id AD11D66B753;
-	Wed, 20 Mar 2024 20:29:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1710962996;
-	bh=fGS3F1q6ekW/yCKZ4NCW6yPu736Ze9C5mVOM0rCHt1M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=pMZ7IAzkPS9xe7oGU/ABJjyxXCL6MCryXkq5K6JE9mpX5vSJxG0WFtNgbJXIVf3eJ
-	 SZlHgzUFmcZPyMTzDJkxl6Xv1PrO9ajk2Hd22SzeBZ6tDlIzJwgU3PzwvV9ZKm+CSe
-	 wfOOwdBsez5CaTDez8NsyOOBsZtwIU0JX4p9hM1I7d+VP77WnptBU8TanYQwJlmcA7
-	 R/LHglJv3bu+9QQr2+ezRH8vY3/lBa2cDzxhCp7HtfYSthZI+l2F+tRzXrwTM2+P1p
-	 UXoTbgggbmw9mbVNH9xnB4YT5n5L82DM91jxWd1JHWFDC7nE8pSKfFVjXaNEE4jZPW
-	 CCgoikU1bbzcw==
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Francisco Ayala Le Brun <francisco@videowindow.eu>
-Cc: Adrian Hunter <adrian.hunter@intel.com>, linux-mmc@vger.kernel.org,
- linux-kernel@vger.kernel.org, ulf.hansson@linaro.org,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Mario Limonciello <mario.limonciello@amd.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: Bug report: probe of AMDI0040:00 failed with error -16
-Date: Wed, 20 Mar 2024 20:29:55 +0100
-Message-ID: <5767438.DvuYhMxLoT@kreacher>
-In-Reply-To: <36198864-579e-41f0-baf6-917f0a7f4bfa@intel.com>
-References:
- <CAN-StX1HqWqi+YW=t+V52-38Mfp5fAz7YHx4aH-CQjgyNiKx3g@mail.gmail.com>
- <36198864-579e-41f0-baf6-917f0a7f4bfa@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2793869DF4;
+	Wed, 20 Mar 2024 19:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710964728; cv=fail; b=JrE0LnGym/vRm7xe1at0+9NeSIfofQYV3kadjsatlPPhvF3glIB5VpTvbfacN19EeygcSRowUxrenlyX8RjFvfmxWdcj7+BGTPqQwzGFrKcj0zUjw8l01xq4m6tEcFe5E5OUOdDxP2huqMpiwllO1rQmLMpqESseMnSiuGweyhU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710964728; c=relaxed/simple;
+	bh=+tWpOOyxLnRejN5AfkZjhuzWqu2EaYr2eAuZ4NePc9A=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X8VjUobNpV0DA8OA9pnCWpZv3KxfO9OBEHopKqodTkrHWtzWyzd2ICzZ9hFvdSTmBQCrZcOhzexmg6xHTZ/rHePC1InSPZxQ76zxYBAm8eeXGQSNlOSyXWE/Y/LdOmfCejBDghQ7SnrfTNNIWQ+vovtoqgw6VVJA5Xt/rcTUqak=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M1PcAfVb; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710964726; x=1742500726;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=+tWpOOyxLnRejN5AfkZjhuzWqu2EaYr2eAuZ4NePc9A=;
+  b=M1PcAfVbkvH9Lqv7ZxMKYNFVZgBOtaLneUqVXou6bAFK1BLi43pMLNzu
+   OvMyHkeoXx+lQtnjmRH/u0cLiKo6OocaRVM0WdAqcaMZoxm2oimYIZw52
+   YPKDMnm7H9epzU5VxXDFd1wZx+QEMkwnaTsbl2TEJJpQgINg01I911tPP
+   gI/Q82kbHxKooESdfdyWj9HevDXgLBr9fwAQA96r5KKAqgRn9OcYvEu5I
+   8c46eaLW1+V+t4ipGCBvSb3TKGrALm+mHbFbS0uiovCZBS67IYy/netcG
+   fF2mH1dVLtbprcFWAPvC9VZhSBdfeZh52MfkqCQDM2QDh7OGUteRUXtPj
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="9686607"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="9686607"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 12:58:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="37374873"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 20 Mar 2024 12:58:45 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Mar 2024 12:58:44 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Mar 2024 12:58:44 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Wed, 20 Mar 2024 12:58:44 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 20 Mar 2024 12:58:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MLAG8TedCNLTl2FGDxJXXRPME2BrYPnRZtgik4C7xBzUNLSp192XIV68VbWhtk4TUGBA70RFe27kmpwBWzOaI/TqT/cEuk/CdWi/aD+pJyvp8L+3TFaHzzWnNLX+eEqI0/T4CtGLCu0/pyCD7yzCHfIXTSeLFqavhq/v2RlyeVWRUSPYujqxxwnwMk+oITpDCGWOg4AuA5f7Z6zB9jkAT2u2NIegcnzYMcD/56EaG47FF/Oxv9Qwn9ioSxFhl8Gtt1zYqjXBJ271xykonAjblKAk+tbdkP7JYnx3X0eC8mOScdIIgtfSPeCnhYIg7FZMZnp3OA6VL6ncxGLXlpcmhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4Il8zg5TbzAru6/a44bKMNZA4HG6sqHntTSMymH/+bY=;
+ b=nHZOYswmoAgBlnJGY1yyurDMKKWroCnpWGjy1D/NRc9F8mTc0yN+aUAbhWYtiqdFnh7f1coak5rpNxOnsaaqBTlh+zoG6o9sAUVAZEOVKLW9PnCce6GglKlgXOFyqFVhYTvepFbcqPMiE/FoC6AWXhZ28A8fumZsTaorbGSFK0zukq5RYvRR3F5IV33W6k9EdNUqimoYlKOXaCK+KlCCXHzn5qYwej3AjpnOD3JpCfgB625+2hm3323R9BObES21BUyw2hv2R68CAiNDU75BM+vUpSdZtw72LjT0jM9E2TX2AYR8brWSBXOVLFV0Mz8kFDP+K5kpm+dYTrmJ+H7Mnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SJ0PR11MB5103.namprd11.prod.outlook.com (2603:10b6:a03:2d3::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12; Wed, 20 Mar
+ 2024 19:58:41 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::82fd:75df:40d7:ed71%4]) with mapi id 15.20.7409.010; Wed, 20 Mar 2024
+ 19:58:41 +0000
+Date: Wed, 20 Mar 2024 12:58:38 -0700
+From: Dan Williams <dan.j.williams@intel.com>
+To: Arnd Bergmann <arnd@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>
+CC: Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>, James Morse
+	<james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
+	<bp@alien8.de>, Avadhut Naik <Avadhut.Naik@amd.com>, Shuai Xue
+	<xueshuai@linux.alibaba.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] acpi: EINJ: mark remove callback as non-__exit
+Message-ID: <65fb3fee96ec7_aa222949b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+References: <20240320180302.143707-1-arnd@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240320180302.143707-1-arnd@kernel.org>
+X-ClientProxiedBy: MW4PR03CA0124.namprd03.prod.outlook.com
+ (2603:10b6:303:8c::9) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrleeggdduvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepfhhrrghntghishgtohesvhhiuggvohifihhnughofidrvghupdhrtghpthhtoheprggurhhirghnrdhhuhhnthgvrhesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmhgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
- ohepuhhlfhdrhhgrnhhsshhonheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-DCC--Metrics: v370.home.net.pl 1024; Body=10 Fuz1=10 Fuz2=10
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SJ0PR11MB5103:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53e4d2ff-5be6-4ff0-ceca-08dc49182424
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: RCN3uhBLHVr2GK3xUedrEbaJzkANOUn1kfiDwGR8aMq1NJ4Tv+n9EnyxxZ7fBElOyZC/0TxZe0YosVUey30mrThi9Ls5NogAq2TLpdk7xSW8dytpTr4Rvz+oVub0aPn+t+ieW9yVy53o9QmBCQ0Ti9uCuY8hneQnIoEQNfgHBr5IkiIcfY51INFEgfCjMWtnCBgAi4v5az7JAq4gZsX2ODwiTLN5tNC4lI0UbER78sqgtkTBhHG64D52xLNuVj4ECsP8dmLOFu5XX2O1BdKinbTIUyeVP6RVRpcy7f3jMi4HF2+xY/7Cq6p68/BkzNjnbCqdWkrkQ0yea6HPCAQaUUZbyWp225o34lQaYSQ7MnTABqYADqHfrFFUfDwL5CffdW7ztKnOiAzKZc9WTqCHvp+95CXw/VWX3AVAeK9IfO9oD0WYQJxAcF/TqM0iGutV8PA5fs7zBNpr+ooq46mTvEqcV6m7d/b54czDw1B9pvkW9WhczT30zhg39MNDaWWViDPVvNSUJ21eM+slN0td0wRQhTEwPyZtn3mSfVqzVHhFWvBvyPDB5+wm1nk0HRWBKosg4F6Az19wwJVKMublQWWHZJHQiaqdal4IhFzX0beMPEtSWzX16B0enn2Q7Ya8aLgCs2yla6uOCCz46MdXEcngHtjQpm1PwV4j4Xcej7w=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sBApVTIMjb9SRp4HWll00t1XoxsyiKTqe9s80suHZ1ARGpUqHn2IPG5Syfrq?=
+ =?us-ascii?Q?xCK8qfnM3jdJ4k7xlJNT0qC28GuMDCJ9rU1IjkXANRThWkMJh6Ov+9CyqdDP?=
+ =?us-ascii?Q?vDr8l35YQZrP4/D2Vqx6g3opPaP4YfXHuhokvDqvwDC/XJpvVOptVSsv6sgP?=
+ =?us-ascii?Q?63Clj1wFTDPj5z3HqSPaZVPqgdARMCV2ehSAbBpBWbMTzB1d4xl/gsJ5sfNT?=
+ =?us-ascii?Q?cVqEQdJanVfeHsRjCjMyiqjEJJT1GSGUVU24zeETb6ZITQSxqwebUGUmsEAb?=
+ =?us-ascii?Q?8aCiTV+G7lYgm0uwrvtgbyRLY8EOXI/am/rKaE+zSBW3cVKw38enSTOelJ2a?=
+ =?us-ascii?Q?dcz7sZnpFUWmR6phwKsi+EPKqhtOWGdnwJbmGVjYZgCJmlwF11fRT3RRSY8z?=
+ =?us-ascii?Q?7Wt6hyL0QpUexd+hbe8R2ydstsMV3gGh4Q93pMdILJ2el0sDz9iXzL2soXQi?=
+ =?us-ascii?Q?EHvBdZDQKYqSXOxms8OIPRWfM/UWRC/LsnA9XeHVj8KuAo9mop1/NyCL7Sfq?=
+ =?us-ascii?Q?zVIg/6hZ4QTGJqbuWt8opYscjP/UKUghoSuZnATzb2OcD3Jegt+vLMRSUfq5?=
+ =?us-ascii?Q?hKbtGb9PSLsz7NWvnbmJ8E1zzDBEH/f3mDApqXRT/GMQ8y6euLcjv6zuE/ax?=
+ =?us-ascii?Q?5ihsB3hNtt6uA0g6g4PeogQx+p3Q2w9nbuiJVmVZxpDCpDJro3GV33o0tVKX?=
+ =?us-ascii?Q?N62e4ot2bAKd6YzfZJiFKa2MEYSaq3azcKmDVkZmRhsm4YSAZCc9QAsWLMg2?=
+ =?us-ascii?Q?mdKnYNYOaA4guLNAdUMmlAD377UQ7NCCGFBBsnUq2MGhY2OdqWpBZ5uzBTw9?=
+ =?us-ascii?Q?uMrnul9OdG42gemEsodCMNaWaywID8ZOCm5+b30smS26P94WY5D5jmorMD7g?=
+ =?us-ascii?Q?XFEUomkjh8Kqg5d3QV805DATkMZBQrEyytpcGoya/okv675yjD8orXQUsjlE?=
+ =?us-ascii?Q?yHKCIJB2t83TW7aUJs+k2mGUrtYZtLnZyM6rEOKK4Bfnh8+P/6Dx+xz0cz5q?=
+ =?us-ascii?Q?iyUS765kiHcV9nP+Pd2xbXq8OYx3jpuFnnvDNkOp7r1MUNtxaIYIZckeruE4?=
+ =?us-ascii?Q?3exVCM6P5wAsP5pPCw2eEvvV1JMFWpmCnr9JpbT+mabpmPmLMmZyIuqgkuEq?=
+ =?us-ascii?Q?/+MFEb0FmhRBjyqqEN3Z6xFX/seTcYYXAtZusxs7LBQTNiGS8MoHtFOEXGPx?=
+ =?us-ascii?Q?bvwxXKTvPBAm37vcHzLnXnakPetokN8ZAjdU30oQ4rJ0bz+68X10vlAXOulU?=
+ =?us-ascii?Q?WRByMJmfsTMcgsaygSXcJU91tmLTwJv7IAV2MWcXeM6WctsusaJe9zKDxrn7?=
+ =?us-ascii?Q?NGn30uIlct+rFd0n1nxi1KZ+pz/cgVJcQsojhdhkuTkgqwUoJ3ZFzTzFc22T?=
+ =?us-ascii?Q?77HNkC2bqcJ+pY5GdGG9UfSY5+V8x2ILwoj/FT4OzQvxN4FcIJcswOu6V3Ut?=
+ =?us-ascii?Q?fuhyAYOyFRmvpL0hycjOs7sSPooUyCKMqlQ0rPYFiv1dDOv2Sz82yuC02g7S?=
+ =?us-ascii?Q?W3a3tdOBYVDkw4bpOndg9evNFn8gi+eVGJ8hMxOnlv2BhPj2+F1Jgp+6G9c6?=
+ =?us-ascii?Q?SmizPijtFksHFs9lynSJKXE+R2rRVettzP35RH/NoNlZhbNXwoyHMKAqFBUx?=
+ =?us-ascii?Q?TA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53e4d2ff-5be6-4ff0-ceca-08dc49182424
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 19:58:41.5607
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WcqJXtO8lnMfclXPLs09KwFHbnsyf6m0LeUFwbjavLCFxIQq8qBKEyte3ozihaUuYWVQUIxIuc9mv4ao0XSxi7N4xJmn45SDtD5q+my7cRc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5103
+X-OriginatorOrg: intel.com
 
-On Tuesday, March 19, 2024 5:20:41 PM CET Adrian Hunter wrote:
-> On 19/03/24 16:43, Francisco Ayala Le Brun wrote:
-> > Hello,
-> > 
-> > I would like to report a bug.
-> > 
-> > Issue description:
-> > After updating a GHF51 SBC to a newer kernel version, the system was
+Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> What was the older / working kernel version?  Are you able
-> to git bisect?
+> The remove callback of a device is called whenever it is unbound,
+> which may happen during runtime e.g. through sysfs, so this is not
+> allowed to be dropped from the binary:
 > 
-> > no longer able to boot. Running the "lsblk" command in the recovery
-> > console showed no mmc storage detected.
-> > 
-> > System Information:
-> > OS: Fedora 40 x86_64
-> > Kernel: 6.8.0-0.rc6.49.fc40.x86_64
-> > 
-> > Relevant Logs:
+> WARNING: modpost: vmlinux: section mismatch in reference: einj_driver+0x8 (section: .data) -> einj_remove (section: .exit.text)
+> ERROR: modpost: Section mismatches detected.
 > 
-> Really no error / fail messages before the stack dump?
-> 
-> > [   10.920756] Call Trace:
-> > [   10.920763]  <TASK>
-> > [   10.920771]  dump_stack_lvl+0x4d/0x70
-> > [   10.920786]  __setup_irq+0x530/0x6c0
-> > [   10.920801]  request_threaded_irq+0xe5/0x180
-> > [   10.920813]  ? __pfx_sdhci_thread_irq+0x10/0x10 [sdhci]
-> > [   10.920843]  __sdhci_add_host+0x108/0x360 [sdhci]
-> > [   10.920871]  sdhci_acpi_probe+0x3a8/0x500 [sdhci_acpi]
-> > [   10.920894]  platform_probe+0x44/0xa0
-> > [   10.920908]  really_probe+0x19e/0x3e0
-> > [   10.930244]  __driver_probe_device+0x78/0x160
-> > [   10.930264]  driver_probe_device+0x1f/0xa0
-> > [   10.930273]  __driver_attach_async_helper+0x5e/0xe0
-> > [   10.930284]  async_run_entry_fn+0x34/0x130
-> > [   10.930296]  process_one_work+0x170/0x330
-> > [   10.930309]  worker_thread+0x273/0x3c0
-> > [   10.934639]  ? __pfx_worker_thread+0x10/0x10
-> > [   10.934654]  kthread+0xe8/0x120
-> > [   10.934663]  ? __pfx_kthread+0x10/0x10
-> > [   10.934671]  ret_from_fork+0x34/0x50
-> > [   10.934681]  ? __pfx_kthread+0x10/0x10
-> > [   10.934688]  ret_from_fork_asm+0x1b/0x30
-> > [   10.934708]  </TASK>
-> > [   10.940978] mmc0: Failed to request IRQ 7: -16
-> > [   10.943885] sdhci-acpi: probe of AMDI0040:00 failed with error -16
-> 
-> 16 is EBUSY which seems to be used by __setup_irq() for
-> irq mismatch
+> Remove that annotation.
 
-Would you be able to test the patch below and see if it helps?
+Looks good, not sure why the build robots missed this while this was
+sitting in -next. Yes, this was a side effect of reusing the former
+einj_exit() as the device remove callback.
 
----
- drivers/pinctrl/pinctrl-amd.c |    2 +-
- include/linux/interrupt.h     |    5 ++++-
- kernel/irq/manage.c           |   13 +++++++++++--
- 3 files changed, 16 insertions(+), 4 deletions(-)
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
-Index: linux-pm/include/linux/interrupt.h
-===================================================================
---- linux-pm.orig/include/linux/interrupt.h
-+++ linux-pm/include/linux/interrupt.h
-@@ -67,6 +67,8 @@
-  *                later.
-  * IRQF_NO_DEBUG - Exclude from runnaway detection for IPI and similar handlers,
-  *		   depends on IRQF_PERCPU.
-+ * IRQF_COND_ONESHOT - Agree to do IRQF_ONESHOT if already set for a shared
-+ *                 interrupt.
-  */
- #define IRQF_SHARED		0x00000080
- #define IRQF_PROBE_SHARED	0x00000100
-@@ -82,6 +84,7 @@
- #define IRQF_COND_SUSPEND	0x00040000
- #define IRQF_NO_AUTOEN		0x00080000
- #define IRQF_NO_DEBUG		0x00100000
-+#define IRQF_COND_ONESHOT	0x00200000
- 
- #define IRQF_TIMER		(__IRQF_TIMER | IRQF_NO_SUSPEND | IRQF_NO_THREAD)
- 
-@@ -784,7 +787,7 @@ extern void tasklet_setup(struct tasklet
-  * if more than one irq occurred.
-  */
- 
--#if !defined(CONFIG_GENERIC_IRQ_PROBE) 
-+#if !defined(CONFIG_GENERIC_IRQ_PROBE)
- static inline unsigned long probe_irq_on(void)
- {
- 	return 0;
-Index: linux-pm/kernel/irq/manage.c
-===================================================================
---- linux-pm.orig/kernel/irq/manage.c
-+++ linux-pm/kernel/irq/manage.c
-@@ -1642,8 +1642,14 @@ __setup_irq(unsigned int irq, struct irq
- 		}
- 
- 		if (!((old->flags & new->flags) & IRQF_SHARED) ||
--		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)) ||
--		    ((old->flags ^ new->flags) & IRQF_ONESHOT))
-+		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)))
-+			goto mismatch;
-+
-+		if ((old->flags & IRQF_ONESHOT) &&
-+		    (new->flags & IRQF_COND_ONESHOT))
-+			new->flags |= IRQF_ONESHOT;
-+
-+		if ((old->flags ^ new->flags) & IRQF_ONESHOT)
- 			goto mismatch;
- 
- 		/* All handlers must agree on per-cpuness */
-@@ -1665,6 +1671,9 @@ __setup_irq(unsigned int irq, struct irq
- 		shared = 1;
- 	}
- 
-+	/* IRQF_COND_ONESHOT has no meaning from now on, so clear it. */
-+	new->flags &= ~IRQF_COND_ONESHOT;
-+
- 	/*
- 	 * Setup the thread mask for this irqaction for ONESHOT. For
- 	 * !ONESHOT irqs the thread mask is 0 so we can avoid a
-Index: linux-pm/drivers/pinctrl/pinctrl-amd.c
-===================================================================
---- linux-pm.orig/drivers/pinctrl/pinctrl-amd.c
-+++ linux-pm/drivers/pinctrl/pinctrl-amd.c
-@@ -1159,7 +1159,7 @@ static int amd_gpio_probe(struct platfor
- 	}
- 
- 	ret = devm_request_irq(&pdev->dev, gpio_dev->irq, amd_gpio_irq_handler,
--			       IRQF_SHARED | IRQF_ONESHOT, KBUILD_MODNAME, gpio_dev);
-+			       IRQF_SHARED | IRQF_COND_ONESHOT, KBUILD_MODNAME, gpio_dev);
- 	if (ret)
- 		goto out2;
- 
-
-
-
-
+Rafael, can you pick this up?
 
