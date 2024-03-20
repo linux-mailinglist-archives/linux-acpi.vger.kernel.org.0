@@ -1,102 +1,178 @@
-Return-Path: <linux-acpi+bounces-4400-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4401-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD4C881705
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 19:03:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DCC8817CC
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24E11C20BEC
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 18:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDAFBB22A62
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 19:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C706A359;
-	Wed, 20 Mar 2024 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2921C85639;
+	Wed, 20 Mar 2024 19:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pxaYGgfw"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nWJh5EdR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508756A327;
-	Wed, 20 Mar 2024 18:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC7B8529D
+	for <linux-acpi@vger.kernel.org>; Wed, 20 Mar 2024 19:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710957789; cv=none; b=HhRB3nb2l9RyFgy6nFtKQ/cKjuEtMhS+XsbJ5IEuS0yTy/jm5q56mzUpm/yO84ycK434TtosVs66UzKrETJATtDPIcKpvyQIFi9h4XSqRsEevFHaDqo2Wl6ObQ2dd0vf1vFUZU99evSiYFPZYRx9TmW0HSLjK4fvTSDjYcEMRMI=
+	t=1710962540; cv=none; b=YXIw/+DNN/8NopmHaFW/oNpgY0nBCeUYWBp9mLjDZEUZX5/mSxZcSAORrLe+S3m6nNYmgJ1wphxG9+AmClBHYmyWbc2QRMBKEoMawxPvdVvWqn035LM12Il1nMrDlE6kEZRJrIUNBzJBTcJmOJON0rYO32qyCDsXrGoYtEP+gsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710957789; c=relaxed/simple;
-	bh=sQaZL7VLbnroXfvNjOJrzk5y7wEaU2H+hGDvuuVnmt4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RB3bX8qI8QXCek5TE6Xznzb11Da+GcGdWgqx4WAoVELvClNZd24+kzOBq6Qov7Omve5eZsKdtpTD19Ss42WqfpyLik3PV+qIY76pxC6La0tVolCmhs/FmSNWuSKLOlbYKT1JX/vewUTs3nJz2UgezdYs+ZGjqx4eNWhfJDbjfKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pxaYGgfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1E0C433C7;
-	Wed, 20 Mar 2024 18:03:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710957788;
-	bh=sQaZL7VLbnroXfvNjOJrzk5y7wEaU2H+hGDvuuVnmt4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pxaYGgfwM5gWfUwAIQVlvbsFIvuR9xWLbhy80E2Y1VaeUB7Errm0apfISDlmeqp/N
-	 Czc4TuEQ/cPtriXw/RWwCyWFz3ardBGSic0KeDlKpgROUVkYm1R3RUBoxUf9YTPOby
-	 fNHMzg7BJP374ArTFNYeGN9POxQeidOiMX4l3TYsX7Jvisgzdo9ifIZ4/OB94cQB4c
-	 GMFWBwAkJ39BRxDBArgDoiafbGvCD5LQjh75wIli3Npl1eHMPw/y4vb/xDRyL3BnmB
-	 3jTA3TtH/dtAZ+GGEbyQoa68/PZCuaIKl95vUttTCKv9DHF1bne5TPsKOu9UaQ71fp
-	 cjqj3M79ewPng==
-From: Arnd Bergmann <arnd@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ben Cheatham <Benjamin.Cheatham@amd.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Len Brown <lenb@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Avadhut Naik <Avadhut.Naik@amd.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] acpi: EINJ: mark remove callback as non-__exit
-Date: Wed, 20 Mar 2024 19:02:50 +0100
-Message-Id: <20240320180302.143707-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1710962540; c=relaxed/simple;
+	bh=bJsr6GmD+N1RSONGR4sqICG/kfmdwzIcSNAniUL48D8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JWxXvTgekgqTpHGmKloLaJovdTmVVioyy90oWZ7F+Y3bEo2oPw/j5s7a9vGtUSB6aokhAbYhTlu79KOb9/WQrfJz6FleZ8HL1L4CITgnN/rVESenkC9k6/Gih4AMHId6DlKPuF0MXCIAII5JUuX5Kl7/SqXbgIZUuLNA27GzIh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nWJh5EdR; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710962535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4sLgrJY1ZHs50/OMosMO/w2/lI0zobbFbhfe2FQeSiw=;
+	b=nWJh5EdR/NoeKbO6ajZVjvEdcrTpbnjzliR8Vg196YIG+UjS7Qjc4OZ7PidoKBChgAHQMo
+	EeJhjVQv30LZq8FySDzflVzZEwmatx5h71eEX4JQkM+vFk5naj9XT9KJhrUJwWrphTiRPk
+	KO7KxKja8+lBqyKn/Nx+A/HTKxw3OSY=
+Date: Thu, 21 Mar 2024 03:22:05 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH] software node: Implement device_get_match_data fwnode
+ callback
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
+ <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+In-Reply-To: <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi,
 
-The remove callback of a device is called whenever it is unbound,
-which may happen during runtime e.g. through sysfs, so this is not
-allowed to be dropped from the binary:
 
-WARNING: modpost: vmlinux: section mismatch in reference: einj_driver+0x8 (section: .data) -> einj_remove (section: .exit.text)
-ERROR: modpost: Section mismatches detected.
+On 2024/3/20 18:39, Andy Shevchenko wrote:
+> +Cc: Vladimir
+>
+> On Tue, Mar 19, 2024 at 07:42:22AM +0800, Sui Jingfeng wrote:
+>> This makes it possible to support (and/or test) a few drivers that
+>> originates from DT World on the x86-64 platform. Originally, those
+>> drivers using the of_device_get_match_data() function to get match
+>> data. For example, drivers/gpu/drm/bridge/simple-bridge.c and
+>> drivers/gpu/drm/bridge/display-connector.c. Those drivers works very
+>> well in the DT world, however, there is no counterpart to
+>> of_device_get_match_data() when porting them to the x86 platform,
+>> because x86 CPUs lack DT support.
+> This is not true.
+>
+> First of all, there is counter part that called device_get_match_data().
 
-Remove that annotation.
+Are you means that the acpi_fwnode_device_get_match_data() implementation?
+As the fwnode API framework has three backend: OF, ACPI, and software node.
+If you are hinting me that the acpi backend has the .device_get_match_data
+implemented. Then you are right.
 
-Fixes: 12fb28ea6b1c ("EINJ: Add CXL error type support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/acpi/apei/einj-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/einj-core.c b/drivers/acpi/apei/einj-core.c
-index 66e7f529e92f..01faca3a238a 100644
---- a/drivers/acpi/apei/einj-core.c
-+++ b/drivers/acpi/apei/einj-core.c
-@@ -851,7 +851,7 @@ static int __init einj_probe(struct platform_device *pdev)
- 	return rc;
- }
- 
--static void __exit einj_remove(struct platform_device *pdev)
-+static void einj_remove(struct platform_device *pdev)
- {
- 	struct apei_exec_context ctx;
- 
+> Second, there *is* DT support for the _selected_ x86 based platforms.
+
+Yeah, you maybe right again here. I guess you means that some special
+hardware or platform may have a *limited* support?
+
+Can you pointed it out for study of learning purpose?
+
+To speak precisely, there are some drm display bridges drivers are
+lack of the DT support on X86. Those display bridges belong to the
+device drivers catalogs.
+
+OK, I will update my commit message at the next version if possible,
+and try my best to describe the problem precisely.
+
+>> By replacing it with device_get_match_data() and creating a software
+>> graph that mimics the OF graph, everything else works fine, except that
+>> there isn't an out-of-box replacement for the of_device_get_match_data()
+>> function. Because the software node backend of the fwnode framework lacks
+>> an implementation for the device_get_match_data callback.
+> .device_get_match_data
+>
+>> Implement device_get_match_data fwnode callback fwnode callback to fill
+> .device_get_match_data
+
+
+OK, thanks a lot.
+
+>> this gap. Device drivers or platform setup codes are expected to provide
+>> a "compatible" string property. The value of this string property is used
+>> to match against the compatible entries in the of_device_id table. Which
+>> is consistent with the original usage style.
+> Why do you need to implement the graph in the board file?
+
+It can be inside the chip, there is no clear cut.  I means that
+the graph(including fwnode graph, OF graph or swnode graph) can
+be used at anywhere. The examples given here may lead you to
+think it is board specific, but it is not limited to board specific.
+
+fwnode graph, OF graph and swnode graph, all of them are implements
+of the graph. Its common that different hardware vendors bought the
+some IP and has been integrated it into their SoC. So it can be inside
+of the chip if you want *code sharing*.
+
+
+Back to the patch itself, we want to keep the three backends aligned as 
+much as possible. Is this reasonable enough?
+
+> ...
+>
+> Have you seen this discussion?
+> https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
+>
+
+I really didn't have seen that thread before this patch is sent,
+I'm a graphic developer, I'm mainly focus on graphics domain.
+
+Previously, I have implemented similar functionality at the drivers
+layer [1][2]. But as the instances grows,  I realized there is a
+risk to introducing *boilerplate*.  So I send this patch. [1][2] can
+be drop if this patch could be merged.
+
+[1] https://patchwork.freedesktop.org/patch/575414/?series=129040&rev=1
+
+[2] https://patchwork.freedesktop.org/patch/575411/?series=129040&rev=1
+
+
+After a brief skim,  I guess we encounter similar problems. Oops!
+In a nutshell, there is a need to *emulation* on X86 platform,
+to suit the need of device-driver coding style of DT world.
+
+Besides, at the swnode backend layer, we should not call
+fwnode_property_read_string(), instead, we should usethe property_entry_read_string_array() function. Because the 
+fwnode_property_read_string() is belong to upper layer.
+While backend implementations should call functions from
+bottom layer only.
+
+
 -- 
-2.39.2
+Best regards,
+Sui
 
 
