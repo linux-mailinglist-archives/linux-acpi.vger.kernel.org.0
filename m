@@ -1,209 +1,101 @@
-Return-Path: <linux-acpi+bounces-4406-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4407-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C32881893
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:28:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186058818BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:50:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4883C28560A
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:28:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D6AA284D50
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F9185922;
-	Wed, 20 Mar 2024 20:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61E085293;
+	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JvLfiFjV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaUNpUnF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E98B29CE8;
-	Wed, 20 Mar 2024 20:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7893A33062;
+	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710966514; cv=none; b=ZOhXh4NbAhZqz/wvfbzIbNYZKpdra3khfXACyLQjDHqssqnflbZwFoSwWn9VDbr+lPJIxWHWZG5W++PqE5zbg4nj2mrK5DLDzjYtP/EhcwKeXVIgWcZVmIgZgyj4EiEQT6YNk5YR8ot2Ia6nAqH9X2dK67SaA4dPv2cY3r9gJ2U=
+	t=1710967839; cv=none; b=DYR3IikW2AepnHoK6kf3Dke1IoA8qofa/JqHSS9zy8v6W3snRRVSE918pkDMt/bHCz9IeYGY5dN4C6X4/XnYYP7jkILNjsIJRQKnTRGkndYdhiKX9WP8htlATp1S6phkU4iJvnfyk8FARG35ZIPfOUhsBifEVap0D3HGqZ+uv6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710966514; c=relaxed/simple;
-	bh=19JKsMVbfLQf3JKH5gCamyH6U4qvbAxEWxgXR/6nnkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+sUl4Pn33dssM4yciQA7S1A4pFN+2bcoLSdYHtuAiq8nKXEDwR1b7oKp4ED+9tdcO7Vy4xbsIDRR7CS2WKXsmiQVf+TEX/HhGmnOFm8OauUDd7nI/tv3TARrINCmCN0GSEtm/Vclltzp7gMfMBSSiAjFhusQKMlYBhuSnByq68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JvLfiFjV; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710966512; x=1742502512;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=19JKsMVbfLQf3JKH5gCamyH6U4qvbAxEWxgXR/6nnkI=;
-  b=JvLfiFjV39g0SHeAjZ8POGF4Uqb9eBdY/o61PIe4hswmjUC+zo/pAXVG
-   TcWe7EsdRqp0NPmdNAhj6Dfcqgm0d8QL6ulw125iDP9T0g/WIijrUR4P0
-   wf/QPJJpQiqN5ZzW1q1OnU+AQ5x5IHsVapipew6Dzxn+e3D2iUaIjB96m
-   AdU1Bgz9rGN3xbmoY1xd4hrvdWpLOMO27BHLK+pH9JsmAqg9rshqsMUOa
-   ANJ0W5NslxPWLdnAJgPRwnRe29x+ousgt4Rt3GbNqHs9Oqbvp1aEMhCGu
-   QVI6wCPpx4IKWpmPDpPSs9UyJ2KSDHRCrXPCP7tvnV7oxQsoj592PafB+
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5776237"
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="5776237"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:28:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="914678108"
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
-   d="scan'208";a="914678108"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:28:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rn2Xx-0000000EgD4-1KZz;
-	Wed, 20 Mar 2024 22:28:25 +0200
-Date: Wed, 20 Mar 2024 22:28:25 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sui Jingfeng <sui.jingfeng@linux.dev>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Vladimir Oltean <vladimir.oltean@nxp.com>
-Subject: Re: [PATCH] software node: Implement device_get_match_data fwnode
- callback
-Message-ID: <ZftG6Q5AaG71dhWq@smile.fi.intel.com>
-References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
- <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
- <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
+	s=arc-20240116; t=1710967839; c=relaxed/simple;
+	bh=+PifagGk+gURTA9vY7TNHlo06xkwkczqhge93C7brus=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=clFz2G9XVEy1Kv7l1J//c80gakmKYW0cHt1O6FwAHofgpIbbXcPFMExEWYv4bU8FOJA0zi3qfQIGeUGSSq1dGurFMhD6gMB3z4RmnrPKhpXFaIWJAU1lK6DqzCpPWjgB/QTrTmTGvgruv5ZRwmqBxrAS5JzL95byCJTjfL3Fhw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaUNpUnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 43F56C433A6;
+	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710967839;
+	bh=+PifagGk+gURTA9vY7TNHlo06xkwkczqhge93C7brus=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=RaUNpUnFQt9VpK/coGA3iciZ+/yHKVYvwi2+1siV7cdtSYp7NIa0QzYszfRlMGj85
+	 ylwm/+3+VQcacNO3DQ9ST89McinYvkSYW5L+QFzbaJRO/exncukegYe89JYmnWi8Gx
+	 v6xnM4ebhoB+F6UzxWBTmbQ+k5bMNzl6LtAkWJuFt0h2PGFtuhy0IvRrE7O1ElL1dj
+	 mGvxj3njoHwuTqX9ChaFupTJMGZQrmoiEvIRDHpuc4Llk21rKw0iKjxVqSS/6hqnTO
+	 1MrvVE81ve9GAA4c1zyrATV3LE9FNoCUkcS41kCesYeUcJnguivuaxPjyubCihLRkF
+	 65HAx8WEs9E6w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 366D6D98302;
+	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Subject: Re: [PATCH v3 -next 0/3] RISC-V: ACPI: Add LPI support
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <171096783922.6804.3192320298991985852.git-patchwork-notify@kernel.org>
+Date: Wed, 20 Mar 2024 20:50:39 +0000
+References: <20240118062930.245937-1-sunilvl@ventanamicro.com>
+In-Reply-To: <20240118062930.245937-1-sunilvl@ventanamicro.com>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-riscv@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ aou@eecs.berkeley.edu, rafael@kernel.org, anup@brainfault.org,
+ daniel.lezcano@linaro.org, atishp@rivosinc.com, conor.dooley@microchip.com,
+ palmer@dabbelt.com, pavel@ucw.cz, paul.walmsley@sifive.com,
+ ajones@ventanamicro.com, lenb@kernel.org
 
-On Thu, Mar 21, 2024 at 03:22:05AM +0800, Sui Jingfeng wrote:
-> On 2024/3/20 18:39, Andy Shevchenko wrote:
-> > On Tue, Mar 19, 2024 at 07:42:22AM +0800, Sui Jingfeng wrote:
-> > > This makes it possible to support (and/or test) a few drivers that
-> > > originates from DT World on the x86-64 platform. Originally, those
-> > > drivers using the of_device_get_match_data() function to get match
-> > > data. For example, drivers/gpu/drm/bridge/simple-bridge.c and
-> > > drivers/gpu/drm/bridge/display-connector.c. Those drivers works very
-> > > well in the DT world, however, there is no counterpart to
-> > > of_device_get_match_data() when porting them to the x86 platform,
-> > > because x86 CPUs lack DT support.
-> > This is not true.
-> > 
-> > First of all, there is counter part that called device_get_match_data().
+Hello:
+
+This series was applied to riscv/linux.git (for-next)
+by Palmer Dabbelt <palmer@rivosinc.com>:
+
+On Thu, 18 Jan 2024 11:59:27 +0530 you wrote:
+> This series adds support for Low Power Idle (LPI) on ACPI based
+> platforms.
 > 
-> Are you means that the acpi_fwnode_device_get_match_data() implementation?
-> As the fwnode API framework has three backend: OF, ACPI, and software node.
-> If you are hinting me that the acpi backend has the .device_get_match_data
-> implemented. Then you are right.
-
-Yes, for all firmware property providers there is a callback.
-
-> > Second, there *is* DT support for the _selected_ x86 based platforms.
+> LPI is described in the ACPI spec [1]. RISC-V FFH spec required to
+> enable this is available at [2].
 > 
-> Yeah, you maybe right again here. I guess you means that some special
-> hardware or platform may have a *limited* support?
+> [1] - https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#lpi-low-power-idle-states
+> [2] - https://github.com/riscv-non-isa/riscv-acpi-ffh/releases/download/v/riscv-ffh.pdf
 > 
-> Can you pointed it out for study of learning purpose?
+> [...]
 
-Point to what? This arch/x86/kernel/devicetree.c ?
+Here is the summary with links:
+  - [v3,-next,1/3] cpuidle: RISC-V: Move few functions to arch/riscv
+    https://git.kernel.org/riscv/c/6649182a383c
+  - [v3,-next,2/3] ACPI: RISC-V: Add LPI driver
+    https://git.kernel.org/riscv/c/4877fc92142f
+  - [v3,-next,3/3] ACPI: Enable ACPI_PROCESSOR for RISC-V
+    https://git.kernel.org/riscv/c/359df7c5be4b
 
-> To speak precisely, there are some drm display bridges drivers are
-> lack of the DT support on X86. Those display bridges belong to the
-> device drivers catalogs.
-
-Do they support Device Tree? Do you want to enable them in ACPI environment?
-
-> OK, I will update my commit message at the next version if possible,
-> and try my best to describe the problem precisely.
-
-Please do.
-
-> > > By replacing it with device_get_match_data() and creating a software
-> > > graph that mimics the OF graph, everything else works fine, except that
-> > > there isn't an out-of-box replacement for the of_device_get_match_data()
-> > > function. Because the software node backend of the fwnode framework lacks
-> > > an implementation for the device_get_match_data callback.
-> > .device_get_match_data
-> > 
-> > > Implement device_get_match_data fwnode callback fwnode callback to fill
-> > .device_get_match_data
-> 
-> OK, thanks a lot.
-> 
-> > > this gap. Device drivers or platform setup codes are expected to provide
-> > > a "compatible" string property. The value of this string property is used
-> > > to match against the compatible entries in the of_device_id table. Which
-> > > is consistent with the original usage style.
-> > Why do you need to implement the graph in the board file?
-> 
-> It can be inside the chip, there is no clear cut.\
-
-Which chip? Flash memory / ROM or you meant something like FPGA here?
-For the latter there is another discussion on how to use DT overlays
-in ACPI-enabled environments for the FPGA configurations.
-
-> I means that
-> the graph(including fwnode graph, OF graph or swnode graph) can
-> be used at anywhere. The examples given here may lead you to
-> think it is board specific, but it is not limited to board specific.
-> 
-> fwnode graph, OF graph and swnode graph, all of them are implements
-> of the graph. Its common that different hardware vendors bought the
-> some IP and has been integrated it into their SoC. So it can be inside
-> of the chip if you want *code sharing*.
-> 
-> 
-> Back to the patch itself, we want to keep the three backends aligned as much
-> as possible. Is this reasonable enough?
-
-Yes, but it misses details about board files approach. See also above.
-
-...
-
-> > Have you seen this discussion?
-> > https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
-> 
-> I really didn't have seen that thread before this patch is sent,
-> I'm a graphic developer, I'm mainly focus on graphics domain.
-> 
-> Previously, I have implemented similar functionality at the drivers
-> layer [1][2]. But as the instances grows,  I realized there is a
-> risk to introducing *boilerplate*.  So I send this patch. [1][2] can
-> be drop if this patch could be merged.
-> 
-> [1] https://patchwork.freedesktop.org/patch/575414/?series=129040&rev=1
-> 
-> [2] https://patchwork.freedesktop.org/patch/575411/?series=129040&rev=1
-> 
-> 
-> After a brief skim,  I guess we encounter similar problems. Oops!
-> In a nutshell, there is a need to *emulation* on X86 platform,
-> to suit the need of device-driver coding style of DT world.
-
-What does "emulation" mean? Can you elaborate a bit?
-
-> Besides, at the swnode backend layer, we should not call
-> fwnode_property_read_string(), instead, we should usethe
-> property_entry_read_string_array() function. Because the
-> fwnode_property_read_string() is belong to upper layer.
-> While backend implementations should call functions from
-> bottom layer only.
-
+You are awesome, thank you!
 -- 
-With Best Regards,
-Andy Shevchenko
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
