@@ -1,95 +1,209 @@
-Return-Path: <linux-acpi+bounces-4405-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4406-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 775E988187F
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C32881893
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6A96284E66
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:19:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4883C28560A
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F24B85929;
-	Wed, 20 Mar 2024 20:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F9185922;
+	Wed, 20 Mar 2024 20:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="FUD/CI4Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JvLfiFjV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19B78594C;
-	Wed, 20 Mar 2024 20:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E98B29CE8;
+	Wed, 20 Mar 2024 20:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710965951; cv=none; b=oFRLnum0/btMXQi5St9rH3GZ1L03uoN2by5isa597q8fiIG7MRoBzuy+OXRQ0aQsyX687Of3B2pStene4DNTKbtxn9tmtBmUPzYWa2EAE38yk1ZvgJ24DIKYgsTUCr4t/LqnOxLb9cOCDzlTwBtAu/DjrreqlF3gnDYpvvqYy84=
+	t=1710966514; cv=none; b=ZOhXh4NbAhZqz/wvfbzIbNYZKpdra3khfXACyLQjDHqssqnflbZwFoSwWn9VDbr+lPJIxWHWZG5W++PqE5zbg4nj2mrK5DLDzjYtP/EhcwKeXVIgWcZVmIgZgyj4EiEQT6YNk5YR8ot2Ia6nAqH9X2dK67SaA4dPv2cY3r9gJ2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710965951; c=relaxed/simple;
-	bh=1InWQrQRzI8df03YA+uMajlmuvvarx0891Elr78Rzfo=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JRy541NxTdGEtt/cKlI4wc4PhlDrUCJ1eHKGzrkhOtCSyz+0fRSTmzJ1p3qJY5aW1oN8D5PfuX1qtW3cJjM91DzTc/ydm1Cs/9RX/HJqEcXgJADP80uWS+HGAlCiajv58blft6U41e84NBZk6TXW1BvtZqmQLvN0y2SvguZN8Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=FUD/CI4Y; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 7D59D1C007F; Wed, 20 Mar 2024 21:19:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1710965945;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=YzWGo7ZDlHo/gTXMevOf1cRXxQyP40vDt4ohNrfOea4=;
-	b=FUD/CI4Ynd3ojwXbF4td8Z5XNROCnJPOWc7sWz8hfag6L09DLzxdhhVVdcpaVXqhvZVdFc
-	f6TwTZYbYTxYSmo/7KPhr4xp6jjM2AP04a+cDNune89cRQldDq1lfHm03yLuo9BzSg7cE7
-	oUmqeVA+sBITQL3eU4eT6+SpGBSWOFc=
-Date: Wed, 20 Mar 2024 21:19:05 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: linux-kernel@vger.kernel.org, hdegoede@redhat.com, rafael@kernel.org,
-	lenb@kernel.org, linux-acpi@vger.kernel.org
-Subject: Wake-on-LAN stopped working around 6.8-rc7. Thinkpad X220.
-Message-ID: <ZftEufJx0uDXSqFT@duo.ucw.cz>
+	s=arc-20240116; t=1710966514; c=relaxed/simple;
+	bh=19JKsMVbfLQf3JKH5gCamyH6U4qvbAxEWxgXR/6nnkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B+sUl4Pn33dssM4yciQA7S1A4pFN+2bcoLSdYHtuAiq8nKXEDwR1b7oKp4ED+9tdcO7Vy4xbsIDRR7CS2WKXsmiQVf+TEX/HhGmnOFm8OauUDd7nI/tv3TARrINCmCN0GSEtm/Vclltzp7gMfMBSSiAjFhusQKMlYBhuSnByq68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JvLfiFjV; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710966512; x=1742502512;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=19JKsMVbfLQf3JKH5gCamyH6U4qvbAxEWxgXR/6nnkI=;
+  b=JvLfiFjV39g0SHeAjZ8POGF4Uqb9eBdY/o61PIe4hswmjUC+zo/pAXVG
+   TcWe7EsdRqp0NPmdNAhj6Dfcqgm0d8QL6ulw125iDP9T0g/WIijrUR4P0
+   wf/QPJJpQiqN5ZzW1q1OnU+AQ5x5IHsVapipew6Dzxn+e3D2iUaIjB96m
+   AdU1Bgz9rGN3xbmoY1xd4hrvdWpLOMO27BHLK+pH9JsmAqg9rshqsMUOa
+   ANJ0W5NslxPWLdnAJgPRwnRe29x+ousgt4Rt3GbNqHs9Oqbvp1aEMhCGu
+   QVI6wCPpx4IKWpmPDpPSs9UyJ2KSDHRCrXPCP7tvnV7oxQsoj592PafB+
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5776237"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="5776237"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:28:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="914678108"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="914678108"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:28:27 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rn2Xx-0000000EgD4-1KZz;
+	Wed, 20 Mar 2024 22:28:25 +0200
+Date: Wed, 20 Mar 2024 22:28:25 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sui Jingfeng <sui.jingfeng@linux.dev>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [PATCH] software node: Implement device_get_match_data fwnode
+ callback
+Message-ID: <ZftG6Q5AaG71dhWq@smile.fi.intel.com>
+References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
+ <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
+ <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JFcImNO7Rayn6cOk"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+On Thu, Mar 21, 2024 at 03:22:05AM +0800, Sui Jingfeng wrote:
+> On 2024/3/20 18:39, Andy Shevchenko wrote:
+> > On Tue, Mar 19, 2024 at 07:42:22AM +0800, Sui Jingfeng wrote:
+> > > This makes it possible to support (and/or test) a few drivers that
+> > > originates from DT World on the x86-64 platform. Originally, those
+> > > drivers using the of_device_get_match_data() function to get match
+> > > data. For example, drivers/gpu/drm/bridge/simple-bridge.c and
+> > > drivers/gpu/drm/bridge/display-connector.c. Those drivers works very
+> > > well in the DT world, however, there is no counterpart to
+> > > of_device_get_match_data() when porting them to the x86 platform,
+> > > because x86 CPUs lack DT support.
+> > This is not true.
+> > 
+> > First of all, there is counter part that called device_get_match_data().
+> 
+> Are you means that the acpi_fwnode_device_get_match_data() implementation?
+> As the fwnode API framework has three backend: OF, ACPI, and software node.
+> If you are hinting me that the acpi backend has the .device_get_match_data
+> implemented. Then you are right.
+
+Yes, for all firmware property providers there is a callback.
+
+> > Second, there *is* DT support for the _selected_ x86 based platforms.
+> 
+> Yeah, you maybe right again here. I guess you means that some special
+> hardware or platform may have a *limited* support?
+> 
+> Can you pointed it out for study of learning purpose?
+
+Point to what? This arch/x86/kernel/devicetree.c ?
+
+> To speak precisely, there are some drm display bridges drivers are
+> lack of the DT support on X86. Those display bridges belong to the
+> device drivers catalogs.
+
+Do they support Device Tree? Do you want to enable them in ACPI environment?
+
+> OK, I will update my commit message at the next version if possible,
+> and try my best to describe the problem precisely.
+
+Please do.
+
+> > > By replacing it with device_get_match_data() and creating a software
+> > > graph that mimics the OF graph, everything else works fine, except that
+> > > there isn't an out-of-box replacement for the of_device_get_match_data()
+> > > function. Because the software node backend of the fwnode framework lacks
+> > > an implementation for the device_get_match_data callback.
+> > .device_get_match_data
+> > 
+> > > Implement device_get_match_data fwnode callback fwnode callback to fill
+> > .device_get_match_data
+> 
+> OK, thanks a lot.
+> 
+> > > this gap. Device drivers or platform setup codes are expected to provide
+> > > a "compatible" string property. The value of this string property is used
+> > > to match against the compatible entries in the of_device_id table. Which
+> > > is consistent with the original usage style.
+> > Why do you need to implement the graph in the board file?
+> 
+> It can be inside the chip, there is no clear cut.\
+
+Which chip? Flash memory / ROM or you meant something like FPGA here?
+For the latter there is another discussion on how to use DT overlays
+in ACPI-enabled environments for the FPGA configurations.
+
+> I means that
+> the graph(including fwnode graph, OF graph or swnode graph) can
+> be used at anywhere. The examples given here may lead you to
+> think it is board specific, but it is not limited to board specific.
+> 
+> fwnode graph, OF graph and swnode graph, all of them are implements
+> of the graph. Its common that different hardware vendors bought the
+> some IP and has been integrated it into their SoC. So it can be inside
+> of the chip if you want *code sharing*.
+> 
+> 
+> Back to the patch itself, we want to keep the three backends aligned as much
+> as possible. Is this reasonable enough?
+
+Yes, but it misses details about board files approach. See also above.
+
+...
+
+> > Have you seen this discussion?
+> > https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
+> 
+> I really didn't have seen that thread before this patch is sent,
+> I'm a graphic developer, I'm mainly focus on graphics domain.
+> 
+> Previously, I have implemented similar functionality at the drivers
+> layer [1][2]. But as the instances grows,  I realized there is a
+> risk to introducing *boilerplate*.  So I send this patch. [1][2] can
+> be drop if this patch could be merged.
+> 
+> [1] https://patchwork.freedesktop.org/patch/575414/?series=129040&rev=1
+> 
+> [2] https://patchwork.freedesktop.org/patch/575411/?series=129040&rev=1
+> 
+> 
+> After a brief skim,  I guess we encounter similar problems. Oops!
+> In a nutshell, there is a need to *emulation* on X86 platform,
+> to suit the need of device-driver coding style of DT world.
+
+What does "emulation" mean? Can you elaborate a bit?
+
+> Besides, at the swnode backend layer, we should not call
+> fwnode_property_read_string(), instead, we should usethe
+> property_entry_read_string_array() function. Because the
+> fwnode_property_read_string() is belong to upper layer.
+> While backend implementations should call functions from
+> bottom layer only.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---JFcImNO7Rayn6cOk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-I was using wake-on-LAN a lot... and it stopped working.
-
-pavel@duo:/data/l/k$ sudo ethtool enp0s25 | grep Wake-on
-	Supports Wake-on: pumbg
-	Wake-on: g
-
-Hardware is thinkpad x220. ethtool was correct, and I don't think I
-changed anything.
-
-Did something break in ACPI? Does wake-on-LAN work for you?
-
-Best regards,
-							Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---JFcImNO7Rayn6cOk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZftEuQAKCRAw5/Bqldv6
-8lCCAKC2h4M/GqWtqARDbwM73uz1BChUDgCbBTEGyDePE5LbJMzXxHrMC+QALzw=
-=kEU1
------END PGP SIGNATURE-----
-
---JFcImNO7Rayn6cOk--
 
