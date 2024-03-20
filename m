@@ -1,101 +1,95 @@
-Return-Path: <linux-acpi+bounces-4404-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4405-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F1F881834
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:01:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775E988187F
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82D0B1F234E9
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6A96284E66
+	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2764485658;
-	Wed, 20 Mar 2024 20:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F24B85929;
+	Wed, 20 Mar 2024 20:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="FUD/CI4Y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD269DF4;
-	Wed, 20 Mar 2024 20:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19B78594C;
+	Wed, 20 Mar 2024 20:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710964869; cv=none; b=qVaegnLhw78zT/vM9g+UZ1VEEseOWrXV9cjJQWusvP/5PM/56BdZZc6/Ysxl39HJAh4vCRHi1355WnECH9jTxj/tmZyutCVaOJPmILJYfBHbL21SrWaPm1Uol18lCB4TTsuLwJX6UzLaFmCp7Jr+2jspyfGeboQ4eKvtkz5PNbA=
+	t=1710965951; cv=none; b=oFRLnum0/btMXQi5St9rH3GZ1L03uoN2by5isa597q8fiIG7MRoBzuy+OXRQ0aQsyX687Of3B2pStene4DNTKbtxn9tmtBmUPzYWa2EAE38yk1ZvgJ24DIKYgsTUCr4t/LqnOxLb9cOCDzlTwBtAu/DjrreqlF3gnDYpvvqYy84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710964869; c=relaxed/simple;
-	bh=PEJK4d4YdMXR0AsXMOStldl4zFxOtfPf3D5VxkkFrQI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=px2Y7l3100tnOXhSiucwD7ZiWlRYjT3x3CIoDtyMw2MLObPQp3bMiWo7hyJkRGJ961XQVXB4XhSRRHduleAPoU235PlUDyn636SK7jhZ70owKM9nemnSQI+e3I4RyiypuHoTK9N48LGKORC2XxtQB0sZJwkIFa1wJaEzr6aTISA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e681fad78cso23122a34.0;
-        Wed, 20 Mar 2024 13:01:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710964867; x=1711569667;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PEJK4d4YdMXR0AsXMOStldl4zFxOtfPf3D5VxkkFrQI=;
-        b=p3ljatDvBRhQtYEnVvvHyLQZvWYsUnESO+DHzzNVPU8AWvLxnw90lHsbdynD/Ib7x4
-         EJoGJTwsQTMplwOwrGtGTX3w3PWE1UMZxS+53dg5VEpye/TiFqwc6xFJxCDfuYufsmbM
-         mitzIaadTmVY9rG0ueySRo9W5Xo0nxj4YBRx6Gr7vMb7CTPybXDlGCklVJxEE6MEIoYs
-         JniCN+sjmoflUHloMPJDs2qn+nIQ7SU9Peou2Xiu5kavGnnAu+MQDdRIF3sxOBmb9Jyq
-         MmOs4fiXyZ30nuj5zlwnVGWjysADzRr63vDaJM1kmU+gQnLGfg+WdjrjBK41bOknqHXz
-         d/oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDZsPKyP5WEWBDZMC4wZvQAyErUM4Belwl7EQNDoY77yme6YLYB6mPKQJLNY0u/5Rj3H8E/n+oPt+UdVUDkn01ODBDwv81H45yy40kGEW1zQx/WETco3eCZaFEl7alVl935FNwnzbs+g==
-X-Gm-Message-State: AOJu0YyG806hAMhvSfNGuvJKzX7BqfZxbskncmVAfd+eAQrnWovtO6Mf
-	HkeiCoK9zZRuJav6BGvdnq2u+i+qF/roI8/IofvbragnIlXgo4UEytXREfveC2n+drZNKlMdDFi
-	MFsQkAQweMOomDwDI5w72O6cKSDI=
-X-Google-Smtp-Source: AGHT+IGaGoBeSE4UB6667YOwykswCxISQ0gVBli2Vn788iB4Dqf6sqyahEi3HmxP+DcD2/+PLFxqL2UZjfCiiiTR9kI=
-X-Received: by 2002:a05:6871:580b:b0:220:cdfe:cdde with SMTP id
- oj11-20020a056871580b00b00220cdfecddemr6367101oac.1.1710964866655; Wed, 20
- Mar 2024 13:01:06 -0700 (PDT)
+	s=arc-20240116; t=1710965951; c=relaxed/simple;
+	bh=1InWQrQRzI8df03YA+uMajlmuvvarx0891Elr78Rzfo=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JRy541NxTdGEtt/cKlI4wc4PhlDrUCJ1eHKGzrkhOtCSyz+0fRSTmzJ1p3qJY5aW1oN8D5PfuX1qtW3cJjM91DzTc/ydm1Cs/9RX/HJqEcXgJADP80uWS+HGAlCiajv58blft6U41e84NBZk6TXW1BvtZqmQLvN0y2SvguZN8Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=FUD/CI4Y; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 7D59D1C007F; Wed, 20 Mar 2024 21:19:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1710965945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=YzWGo7ZDlHo/gTXMevOf1cRXxQyP40vDt4ohNrfOea4=;
+	b=FUD/CI4Ynd3ojwXbF4td8Z5XNROCnJPOWc7sWz8hfag6L09DLzxdhhVVdcpaVXqhvZVdFc
+	f6TwTZYbYTxYSmo/7KPhr4xp6jjM2AP04a+cDNune89cRQldDq1lfHm03yLuo9BzSg7cE7
+	oUmqeVA+sBITQL3eU4eT6+SpGBSWOFc=
+Date: Wed, 20 Mar 2024 21:19:05 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: linux-kernel@vger.kernel.org, hdegoede@redhat.com, rafael@kernel.org,
+	lenb@kernel.org, linux-acpi@vger.kernel.org
+Subject: Wake-on-LAN stopped working around 6.8-rc7. Thinkpad X220.
+Message-ID: <ZftEufJx0uDXSqFT@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240320180302.143707-1-arnd@kernel.org> <65fb3fee96ec7_aa222949b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-In-Reply-To: <65fb3fee96ec7_aa222949b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 20 Mar 2024 21:00:55 +0100
-Message-ID: <CAJZ5v0ivpUuKGx9pW+QeQPSSXNWSSbJwN2oN9p_hmE-nV5VQKA@mail.gmail.com>
-Subject: Re: [PATCH] acpi: EINJ: mark remove callback as non-__exit
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Arnd Bergmann <arnd@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Avadhut Naik <Avadhut.Naik@amd.com>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="JFcImNO7Rayn6cOk"
+Content-Disposition: inline
+
+
+--JFcImNO7Rayn6cOk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 8:58=E2=80=AFPM Dan Williams <dan.j.williams@intel.=
-com> wrote:
->
-> Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > The remove callback of a device is called whenever it is unbound,
-> > which may happen during runtime e.g. through sysfs, so this is not
-> > allowed to be dropped from the binary:
-> >
-> > WARNING: modpost: vmlinux: section mismatch in reference: einj_driver+0=
-x8 (section: .data) -> einj_remove (section: .exit.text)
-> > ERROR: modpost: Section mismatches detected.
-> >
-> > Remove that annotation.
->
-> Looks good, not sure why the build robots missed this while this was
-> sitting in -next. Yes, this was a side effect of reusing the former
-> einj_exit() as the device remove callback.
->
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
->
-> Rafael, can you pick this up?
+Hi!
 
-I will, thanks!
+I was using wake-on-LAN a lot... and it stopped working.
+
+pavel@duo:/data/l/k$ sudo ethtool enp0s25 | grep Wake-on
+	Supports Wake-on: pumbg
+	Wake-on: g
+
+Hardware is thinkpad x220. ethtool was correct, and I don't think I
+changed anything.
+
+Did something break in ACPI? Does wake-on-LAN work for you?
+
+Best regards,
+							Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--JFcImNO7Rayn6cOk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZftEuQAKCRAw5/Bqldv6
+8lCCAKC2h4M/GqWtqARDbwM73uz1BChUDgCbBTEGyDePE5LbJMzXxHrMC+QALzw=
+=kEU1
+-----END PGP SIGNATURE-----
+
+--JFcImNO7Rayn6cOk--
 
