@@ -1,50 +1,66 @@
-Return-Path: <linux-acpi+bounces-4408-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4409-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284BF8818BE
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 21:50:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB32881B53
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 03:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D38901F22C24
-	for <lists+linux-acpi@lfdr.de>; Wed, 20 Mar 2024 20:50:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE8801C20C63
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 02:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB458593E;
-	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2925660;
+	Thu, 21 Mar 2024 02:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPvhtzof"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="snxm+kmC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D3854BFD;
-	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE251877;
+	Thu, 21 Mar 2024 02:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710967839; cv=none; b=TE4mJ887sxFAbE9SkAlbIW1+xoPYK2WaW/xC0ptnMNgdFOLczDxjGZh3BnaOXS30PrthvWmnu+UpXaof831dvwSibSnMmstiKYyHcywIk2jTDI6UNwkdBsxfIQYMRWmIvgHD15WCwRVWf0NLQElc4R/Ap1OU0VRWP2Dne3rH7C8=
+	t=1710989608; cv=none; b=nVBMX3r5FQIiDBIwTExwZP045oslmS97ae3TwQv2JeXwccSc7lz32pZHp44Hb+Go3oGsofwk2lsVzHskFyqseRG3Jvw04zQhoOTgI6zGoYdk26BeKc//Sh52gMAZtJ8wVcUazN18T3Ven1II6cOODJWOn4OxFfmjQJ/6XViZJpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710967839; c=relaxed/simple;
-	bh=unp53PjekzZMC/5vEoDX88dY1TMRGKCJLqvM+e32nrY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Jn0gDWMtX7nveseblN/+T4qA3ZKeoI6I37OE/Prg+VKmRfQIghCaH0ntmMvl0D6v4xFCO4uabJ28+fiMTb3o1y5kT1Gm797REDSBlJIkaHPe8+ylTXyKNO2zgeGUzi5Ap8HW0e1jHHXE9IGGlT/Mfyw5C9HjF72rhQLvApTEdxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPvhtzof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 17321C433F1;
-	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710967839;
-	bh=unp53PjekzZMC/5vEoDX88dY1TMRGKCJLqvM+e32nrY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=KPvhtzoff/CyBMTlGfR9NwYwpWRBtm25NWFcHyo0ahqdA2nGfogYpX/FBXrLuVU7v
-	 iULJfq45x31mUbF3xLfSuN+vSeW/vOk6hnXwzgDTxFkXGZRWiHlZ/P2+4VenOKSyV4
-	 o4lvpUgtuiuIyBI3/Y1C6T88zfPvDY+TEZjI+ZQqt/6HJv2kZLOAQQdgA/Qp6CpzLw
-	 X6qu0bnnh0cxMJ7VCgAvNdePQV1OT3ufPqPoECYObsC9YkV/Qztr0S6NgoWY4vfCiD
-	 JiudvBXgXe453vGFfQgD02RktoTGZdFIpB+VKROw0zv7rsWwiprSC1i2lz80i/HUGK
-	 2B0+7GS0HtuhQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0A23BD84BB0;
-	Wed, 20 Mar 2024 20:50:39 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1710989608; c=relaxed/simple;
+	bh=OZiUkq/wmr+qnd1FdBGm2naXPOomtQWmzQ1UrEmHvLg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fd3k4q6a6P7aDWgxMc26DHN1rbnosELx975WtLQBV8vwVaYjnLQC2qXHBpclihhoxtB1c1s0J58fpv70lsqOWEDeZ3i/aTPWHdFYJlU4ykruvVFsCjiTo1OWuvpsa8Z6yDKb4uIwtfIHnG8ZTf7oJzR6w44e5iQIxlU/aJY69TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=snxm+kmC; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1710989602; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=QqSJg4FMwGwgy/XBJ2XliwqjmCjrqPhPQDS9UJTxrzU=;
+	b=snxm+kmCQUkQ99SyAqpYkZGWGuv/gU5enlItHlFU7VF6R1v4MtZch6ZTOcZFbDscIjJO3eojPmV+8xOM7KYP5jtVU1rYzrwqcRyjV/BtIROem1EmaZYEyPSAqM2l9I8dZvUBdBFlallVAo1RnL+FIo5N5rwK1YZ3UFCvHVIOIh8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R951e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0W2zFICf_1710989599;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0W2zFICf_1710989599)
+          by smtp.aliyun-inc.com;
+          Thu, 21 Mar 2024 10:53:21 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: catalin.marinas@arm.com,
+	will@kernel.org,
+	lpieralisi@kernel.org,
+	guohanjun@huawei.com,
+	sudeep.holla@arm.com,
+	xueshuai@linux.alibaba.com,
+	baolin.wang@linux.alibaba.com,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	tony.luck@intel.com,
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Cc: tianruidond@linux.alibaba.com,
+	Ruidong Tian <tianruidong@linux.alibaba.com>
+Subject: [PATCH v2 0/2] ARM Error Source Table V1 Support
+Date: Thu, 21 Mar 2024 10:53:15 +0800
+Message-Id: <20240321025317.114621-1-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -52,47 +68,70 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v1 -next 0/3] RISC-V: ACPI: Enable CPPC based cpufreq support
-From: patchwork-bot+linux-riscv@kernel.org
-Message-Id: 
- <171096783903.6804.2033008831254517156.git-patchwork-notify@kernel.org>
-Date: Wed, 20 Mar 2024 20:50:39 +0000
-References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20240208034414.22579-1-sunilvl@ventanamicro.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, apatel@ventanamicro.com, aou@eecs.berkeley.edu,
- rafael@kernel.org, viresh.kumar@linaro.org, atishp@rivosinc.com,
- conor.dooley@microchip.com, palmer@dabbelt.com, paul.walmsley@sifive.com,
- ajones@ventanamicro.com, lenb@kernel.org
 
-Hello:
+This series adds support for the ARM Error Source Table (AEST) based on
+the 1.1 version of ACPI for the Armv8 RAS Extensions [0].
 
-This series was applied to riscv/linux.git (for-next)
-by Palmer Dabbelt <palmer@rivosinc.com>:
+The Arm Error Source Table (AEST) enable kernel-first handling of errors
+in a system that supports the Armv8 RAS extensions. In kernel-first mode,
+kernel controls almost all RAS configuration, include CE threshold and
+interrupt enable/disable. Hardware errors will trigger a RAS interrupt
+to kernel, kernel scan all AEST node to find error node which occur
+error in irq context and process the RAS error. Kernel will act as
+follow for different types error:
+  - CE, DE: use a workqueue to log this hardware errors.
+  - UER, UEO: call memory_failure.
+  - UC, UEU: panic.
 
-On Thu,  8 Feb 2024 09:14:11 +0530 you wrote:
-> This series enables the support for "Collaborative Processor Performance
-> Control (CPPC) on ACPI based RISC-V platforms. It depends on the
-> encoding of CPPC registers as defined in RISC-V FFH spec [2].
-> 
-> CPPC is described in the ACPI spec [1]. RISC-V FFH spec required to
-> enable this, is available at [2].
-> 
-> [...]
+I have tested this series on PTG Yitian710 SOC. Both corrected and
+uncorrected errors were tested to verify the non-fatal vs fatal
+scenarios.
 
-Here is the summary with links:
-  - [v1,-next,1/3] ACPI: RISC-V: Add CPPC driver
-    https://git.kernel.org/riscv/c/30f3ffbee86b
-  - [v1,-next,2/3] cpufreq: Move CPPC configs to common Kconfig and add RISC-V
-    https://git.kernel.org/riscv/c/7ee1378736f0
-  - [v1,-next,3/3] RISC-V: defconfig: Enable CONFIG_ACPI_CPPC_CPUFREQ
-    https://git.kernel.org/riscv/c/282b9df4e960
+Future work:
+1. Add CE storm mitigation.
+2. Support AEST V2.
 
-You are awesome, thank you!
+This series is based on Tyler Baicar's patches [1], which do not have v2
+sended to mail list yet. Change from origin patch:
+1. Add a genpool to collect all AEST error, and log them in a workqueue
+other than in irq context.
+2. Just use the same one aest_proc function for system register interface
+and MMIO interface.
+3. Reconstruct some structures and functions to make it more clear.
+4. Accept all comments in Tyler Baicar's mail list.
+
+Change from V1:
+https://lore.kernel.org/all/20240304111517.33001-1-tianruidong@linux.alibaba.com/
+1. Marc Zyngier
+  - Use readq/writeq_relaxed instead of readq/writeq for MMIO address.
+  - Add sync for system register operation.
+  - Use irq_is_percpu_devid() helper to identify a per-CPU interrupt.
+  - Other fix.
+2. Set RAS CE threshold in AEST driver.
+3. Enable RAS interrupt explicitly in driver.
+4. UER and UEO trigger memory_failure other than panic.
+
+[0]: https://developer.arm.com/documentation/den0085/0101/
+[1]: https://lore.kernel.org/all/20211124170708.3874-1-baicar@os.amperecomputing.com/
+
+Tyler Baicar (2):
+  ACPI/AEST: Initial AEST driver
+  trace, ras: add ARM RAS extension trace event
+
+ MAINTAINERS                  |  11 +
+ arch/arm64/include/asm/ras.h |  71 +++
+ drivers/acpi/arm64/Kconfig   |  10 +
+ drivers/acpi/arm64/Makefile  |   1 +
+ drivers/acpi/arm64/aest.c    | 839 +++++++++++++++++++++++++++++++++++
+ include/linux/acpi_aest.h    |  92 ++++
+ include/linux/cpuhotplug.h   |   1 +
+ include/ras/ras_event.h      |  55 +++
+ 8 files changed, 1080 insertions(+)
+ create mode 100644 arch/arm64/include/asm/ras.h
+ create mode 100644 drivers/acpi/arm64/aest.c
+ create mode 100644 include/linux/acpi_aest.h
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.33.1
 
 
