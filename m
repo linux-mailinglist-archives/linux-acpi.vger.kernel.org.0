@@ -1,164 +1,167 @@
-Return-Path: <linux-acpi+bounces-4414-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4415-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BD69881C31
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 06:49:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C976885541
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 09:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E614B2831E5
-	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 05:49:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B515E282A6B
+	for <lists+linux-acpi@lfdr.de>; Thu, 21 Mar 2024 08:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B430736B01;
-	Thu, 21 Mar 2024 05:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52015812A;
+	Thu, 21 Mar 2024 08:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="kebzPVb+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZdDfj0nK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2082.outbound.protection.outlook.com [40.107.223.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123A833994
-	for <linux-acpi@vger.kernel.org>; Thu, 21 Mar 2024 05:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711000190; cv=none; b=MvhFmJmx0oZGuiX6A3t3S7Z1cMHNptdImkFV4CFha2/ffX1i2/Cwq1HCLz74Blp5j6r52oqgzu7Uos82B2yUP85mLsPel8QXRQAjQ2cZ0eZTHUPRhYpd8DGz5I5fgREXrJwoi8qjmHWe7w9u/H/kGBlpwvoy6Fca36w1wtI6thE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711000190; c=relaxed/simple;
-	bh=xqb6OW4NL610PwfRqtZ6sO9SB9ttkAls8egmCeYMbwQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gn/i5+NukPXJw9owr0xibW+gwQ73dYHvMPcl0EZGbbZrvL+DoCDEOQeLqQkWi9QKLPXsl1DcbVtl5gfGjUPLTZsKZ1MkdYxGiS/Db/UKtTAuggQcXLRbQHVsz7r2LUuwM7XEcKi7y4YVOcOvyDEbLQ98c0a6FJr9MezE5PqnTnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=kebzPVb+; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3c390030af2so448459b6e.3
-        for <linux-acpi@vger.kernel.org>; Wed, 20 Mar 2024 22:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1711000188; x=1711604988; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4fMphhNJ5kOGNAmeCpoYULkf287odK9ySZpSTtY/rRg=;
-        b=kebzPVb+6u/YW8a0A4XMCsggydlDOG1DgqRx4NaX/gLoiocHYgJws6JIkKpizbsUiK
-         miUGX005eeVMYYGjv9iJrRmGSzQim+w7p+odCysbKYG7bbcpKZP14136G3IsaK9w17+F
-         Qep9aosrjOdC+b0ze6XJdNG/tD2mB3Ot+votZaTS9SzprVrEcbas/vFwSwloTxILWBqg
-         GFhfCSUILmoONUI5asJEMrWFRfG1hCI9rqZYALreffY8ALRZKRmlONGkcOzYBCkKZ5Z3
-         Tu/Davi9vKKCJHsSkfg8LLXcFIyruQzDuyGiCEUaWnPnrKXS9juo1Ujrcm0tRAAHt8Al
-         uuYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711000188; x=1711604988;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4fMphhNJ5kOGNAmeCpoYULkf287odK9ySZpSTtY/rRg=;
-        b=EzjWh29zGzigcL7LfVdLUc2wGwWOhK8vLRou/0hDi5frqyjtNq+TSePAVJdSw6WpQP
-         gV3SnVnURCMYMRubaSswcXfNGCTGBTzRKJmO3RymS963S+6CRO7HSN/EC5oEuW4i5Rq6
-         J2y9SyJRgqW021l7pmP5Unz79X2WN8bvXESRMmd2GpGTJh7n5rebcfckgE2wD1KEMU9S
-         AXMTaoFQXRsgkSRMN1zL7OIUK0X5MANIEPchl3KvU8DvYrR+5kCCIMBvMoX/HTmrjV64
-         EXeErGVmcSLtKDukZHARuQitFdaNWzKe7qD1H4MLpU8KmXlRzsK5yAXzBgUdReu6rxFq
-         NljA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5z7p/SN56H6ZDM99N3+iVK0K6x1jvcYs7igmqxwgs0LEaGULpkP31KSiuptIiXR0piu7DfG5KoezdQdx6CVzmKQKmaw7jfXjl7w==
-X-Gm-Message-State: AOJu0YyHXYDWkaKXtfezuLgVPkuK2BAuW2RU7NilHUc9YH8TxJ5N2sYg
-	z30AqCTza8as7Gvzrr7Gm7BECT+whfnbu3TYf18CYoi4DsirpO6EOnaRbG0Bp2g=
-X-Google-Smtp-Source: AGHT+IE0/NeFnqIC97uS0g8chtXLhBTnsViFruSK0O5TsDNqnoRtdY/a9pxc+Nn5UfS59hiKwsJLqA==
-X-Received: by 2002:a05:6808:16ac:b0:3c3:773b:1289 with SMTP id bb44-20020a05680816ac00b003c3773b1289mr4629025oib.5.1711000187996;
-        Wed, 20 Mar 2024 22:49:47 -0700 (PDT)
-Received: from sunil-laptop ([106.51.83.242])
-        by smtp.gmail.com with ESMTPSA id c25-20020aca1c19000000b003c3aef12838sm56402oic.42.2024.03.20.22.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 22:49:47 -0700 (PDT)
-Date: Thu, 21 Mar 2024 11:19:38 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Drew Fustini <drew@pdp7.com>
-Cc: linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>
-Subject: Re: [PATCH v1 -next 0/3] RISC-V: ACPI: Enable CPPC based cpufreq
- support
-Message-ID: <ZfvKclUHAPkmywT3@sunil-laptop>
-References: <20240208034414.22579-1-sunilvl@ventanamicro.com>
- <ZfiKooxO88h1nj35@x1>
- <Zfj4FnG5vAPP55ri@x1>
- <Zflm5cje/+rnZ7HH@sunil-laptop>
- <Zfuzmx/bvJZjWDx4@x1>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B155441E4E;
+	Thu, 21 Mar 2024 08:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711008551; cv=fail; b=VPCrxPdDAONzE0KfSt+Kfmn0LWkIofz5nGjQK+xyDeHIMQhja368qTlXZE24wLbG+tKN2Gy9rtIwgcxccn1qpTwcL6T4w+tzDVPAXik3F46t6pkU5X2iwa+Nipaa2vqtBEjqQHS9CLceupFbRmTNsjyQwPbzLW2LEkNi3NZx1bI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711008551; c=relaxed/simple;
+	bh=tIR11BiQA1JPgmJqUI8/swdWMVGIMLSrwojQmX0arSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tgLFbcD9qu8Hu2mj20verYbnY0h6OlM2Uvt3Rdn/AtucBwPo8uMQNr1CWdG9aABIFVNv3egTCZ+QdXPDlAK1QwfLY9i2VrEeIIuX10BTlugylcV1SQIdwYLW6vga4m9iHae9oFn3EGJ02DCTodzx5LKdvqXDSV7KJduRlKlAqaI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZdDfj0nK; arc=fail smtp.client-ip=40.107.223.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AH0weEdw80afpcWUp9IprszpDRV4QwphU0ZQtWbIZoiGgKVIIaBezHeeywtU77pdp/VAkbiAOyk6+eq8aQ+RMF92hQ8KZtirwPZOxeNbzd5FP+rWTapeoFPkjwSTfTioclr24twA+7tePmOJRPS5ZvL9pFJnkM5mSrz3rOnl0ZLoiijB5YyNNX6qWo3k8FyZaCLHVnc4+QXD5tBScByCDPkUodxUP6UE79n9SCHkhBIFHQIjOB3ckG8DDtb54HtdJJK+gnVCY4d/JjjGDbIaU3Ez55PlNxvL6G8hmzqk5hH9xgSta55jyMvwgX1I+OqcxEGupWYcobuK/9UFsUw+VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cinKj7UNq02lP3lJF62PTbAMXOo8WE/KlV4HxlpCTqI=;
+ b=Dh34uwiyJL4AqVYAHu4c4pr6S+8KIhQkbyd2C1rZZz5eLx79t7aqZUqX0JGuXl4oF4EZJIu07bBwUuGV+auyQd97ya9dHZuhhVl4u5/jm+yhfMRbrjEhh0Q9RiueqffGMSyBgq4cs7P/D7BTmx1XMBpTA0CAiu6v+HSwzbTAxhBsK1hQmW7dqGAOjGXB72YwNBqFUudvqm5oL2xvZ1Or6KLsd3iTh8GEnTPVMY2HdIWsW3QzFnpOQF1BOkBnW0m3bUjMIjs4NBjwkHEpyl8H0H29CF8mXhCmjlKMlTcgpsdpIyYMVvQ3dfg8MRTbB2kprYcctVnopJ1Yh34EwHHibw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cinKj7UNq02lP3lJF62PTbAMXOo8WE/KlV4HxlpCTqI=;
+ b=ZdDfj0nK2R8gMWp2nxD4vPohmSXfa0dbY3Kdwk6uONFZ0vghRxWZRHEetyohw4Fdwg0pa4n7S20h/ja6QxYJHBUymwKNJTXPBMVVzdz/5Y9dBpSTUuc5siXXosg69iCRpUWlTMxr+6A4u0bKFxNMfppMdRX0mcMh31xKEzDd62Q=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
+ by SN7PR12MB8129.namprd12.prod.outlook.com (2603:10b6:806:323::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.34; Thu, 21 Mar
+ 2024 08:09:07 +0000
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::9d:17f1:8b3b:1958]) by CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::9d:17f1:8b3b:1958%4]) with mapi id 15.20.7409.010; Thu, 21 Mar 2024
+ 08:09:07 +0000
+Date: Thu, 21 Mar 2024 09:09:00 +0100
+From: Robert Richter <rrichter@amd.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Alison Schofield <alison.schofield@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, Derick Marks <derick.w.marks@intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v2 1/3] x86/numa: Fix SRAT lookup of CFMWS ranges with
+ numa_fill_memblks()
+Message-ID: <ZfvrHAQ9GMQ9aJlk@rric.localdomain>
+References: <20240319120026.2246389-1-rrichter@amd.com>
+ <20240319120026.2246389-2-rrichter@amd.com>
+ <65f9f2741e607_7702a294f7@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65f9f2741e607_7702a294f7@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: FRYP281CA0018.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::28)
+ To CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zfuzmx/bvJZjWDx4@x1>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|SN7PR12MB8129:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6f86f83-22b7-4cb2-9fd4-08dc497e2e6c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	nM/01/EmMklT7IGiRnJGghfiqsY6s6SbmRvm7jTb+XrugFINnye4qzbeH9wnvJRCFLnJQxqukKe+sY/KOYhdu1iU19qm599GWExdZz/m6XXQmheUAWXx5/1RZ9Iw/DQ3RZnSkA4ELHwUOv4F7/0NbEx2mqKryEVH05qmj7PQKOYMJMSCElsfi4wdKqSf1DXRr1rWCIqVvY2AeNIjb9RlPlppRHPXlDAAVOfXMiIRPG8ODqPHk0wCD51NTt3a4zq/KW/XE2ODxs7nXrhLZXTP81IV8YuaP5l8CRVMxudX9fTaRAp+C1wMPArdrCB3+3ksVtC3IuI5LUMrTk4iK1OFso1SbR/RwSxeSqoLV+XL3bpTXTJ1e/f9Hg2/JwPUefdDCJH3lddPacd2nbP6OspBwLMhcrzGElACd4/YOWXwxq+N5cMJSdrzqJAWsTFtYVy0XM7KknardqxYdDNvD5yvhAgkKS6VzNTGZYKhK7Pazi+GG8JmCvPwpeXo4fKO87lqy8fRv6nZxLlhw+QY3U61MZzpyDAejkuZe0dDrydiMKcqyDOG5bnt2BdycGr4witEfWsn7q9ziDnHEaGDhZnihtM4+M5Sp3dPn5t1t5Fewe08gbe+P1ucu3xNRSnl7opNhfsjDBNNJBpM1VN3cgs/At5LmBxFYGepxXNkEav6IAA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(7416005)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?T2KNd4ZaHc1lwaFbxm+b2U5kqWvqvZBRYavw3oUo3AOWiKUoFudcJbsBwGHs?=
+ =?us-ascii?Q?lv5nGnwXnW6pPcrMx8w+0RKnUt+KkcYLlj0xEb21Fr3t1pa3fEOZtb/6HPDn?=
+ =?us-ascii?Q?gAO+gZSaxIYGSjhIpCKJXzLelO+lKqCI3s4JmlyNlM+414teWvtvZ6PNH6UH?=
+ =?us-ascii?Q?fq8gJGpIlalTmiibt366CI1oBOjVsUVDqguO0QpDlJXrx0FbHmm/DTYNW/ct?=
+ =?us-ascii?Q?iPxa9G8K3w3RwtpPrIhWnDUgBfRGzaK/baz2YQfmcaYWbcCmqB57GMhgNPYy?=
+ =?us-ascii?Q?L8VGUYqIHZjusatQYN+E+d/j5fpHXSuIbl4iaEFKUMMEoQnssaCkhtJrgchJ?=
+ =?us-ascii?Q?IsE4d7RzLHUHHOg1fxYZcAcs7Dd73TNHcQkNYNWFWCkgrjIMaCLZNUkWwJ05?=
+ =?us-ascii?Q?BINAfoPwGislVimdM61hHXlGO0PP0bh38D4p4t42cekS744wKJyPaaa5S2M+?=
+ =?us-ascii?Q?9vwfIsRUaV917J9MzldjWLzKExxRc4/idpSSSXpd3l+BRqDaK212VbjcK4do?=
+ =?us-ascii?Q?53v7sPuNHPnj1ZmtNd+RUdiUMIzB3qexKRzLzafqxDV0/jW+HuuhRLO69sJI?=
+ =?us-ascii?Q?yN9MfMhF+4FuBsoRjnvEuoewJy+uGcrnI5P3Tvw2Cf0tSlSLPzUrz4dKD7vP?=
+ =?us-ascii?Q?wC6We4xGkpN87UPV/Ktsn+oem4uX2n3NQDwA4Y4IeNjyjyRadKBNciFWIxz1?=
+ =?us-ascii?Q?FTqLoYkY8x7EqdUoZg9t4MtrGCWtIsawfMcvrC2okyFXVUqkIGxE+Bntr1lf?=
+ =?us-ascii?Q?xK+5sASH6I7X5PGPy+m1PvI9YOF/3B3qHVy16RFgZqnKyJm80YWNPiRD7Hor?=
+ =?us-ascii?Q?FfRtMMA0nNYsJwAS/FfqTJpvUmYcWsK0k7pw/3emhtc0kvkVGP5Xj0ekQk3M?=
+ =?us-ascii?Q?Zc74ogEcBTg+XoBWEdr9EgSA1gPOQRab+zvH6saNxcYe3eOPtyBynYLTCBXF?=
+ =?us-ascii?Q?F/9zGISyUITbpLMEDW9sxyhGNL+7OgjbpqDsXr37ptgohKc8yBVo4nHs1PCb?=
+ =?us-ascii?Q?CTOBrZ6eyAxNkXUFJ8Td+EQ5sbpJRojP+leQR+P3GfSdjQ3HbwASG91TqQGJ?=
+ =?us-ascii?Q?ZfGR5e6XDpkMBe+NqH3pTwxNqrRhPKs/yNPmiem4gqTSf8EigVK4C+ZMqwc+?=
+ =?us-ascii?Q?fsXElJgZcwztIpHYb00lXPRU0PROLCADoJdaeE7n1CUoyrO8z1idPcMXYne8?=
+ =?us-ascii?Q?K8wYNGgyduqjOXGy9TPVwPr8pc52Iyyyl3O+hclX0E7jiZILfdaAHr1neC6y?=
+ =?us-ascii?Q?WB2M0NcGTRgoMTEk8ptaeg9sLVdE159XbmyfIe5K9Dp5vcQXs8itb33jsyAs?=
+ =?us-ascii?Q?BaqGiN+A6AXj0ByVUVjj525KnFwO4UDCtRzxnkIzbrXBaKOATb4GWt2DWxIg?=
+ =?us-ascii?Q?Acep/RZ+ikxRk2pUzQ81wHKY2tJkPwO2BUsTTiP+rsBFmxlGf3v7qXawBmJ/?=
+ =?us-ascii?Q?/8OqBxvczBOHq81UhqcjajcmRPEIxYl4jQxqTRC46TxUFnb5Mlp3cXts/QyD?=
+ =?us-ascii?Q?2VIj6WeQ1R0Os4YQjtqTgmPmDgyTLeP1v2EK5pvQp+mUaDfyK5O34ocgcj2N?=
+ =?us-ascii?Q?6XzuK4WZXdFGJzAxq/uQ07xC3N7MaJ8HX12hwlin?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6f86f83-22b7-4cb2-9fd4-08dc497e2e6c
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2024 08:09:07.4535
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UvEoLcDUEbTa/ttJHEADphskGi6D5oTE/p+gx5urxi7SRPpznbsVtvkmVmlv+w1BaOBthyjC1ndLE+PsdfvNnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8129
 
-On Wed, Mar 20, 2024 at 09:12:11PM -0700, Drew Fustini wrote:
-> On Tue, Mar 19, 2024 at 03:50:21PM +0530, Sunil V L wrote:
-> > On Mon, Mar 18, 2024 at 07:27:34PM -0700, Drew Fustini wrote:
-> > > On Mon, Mar 18, 2024 at 11:40:34AM -0700, Drew Fustini wrote:
-> > > > On Thu, Feb 08, 2024 at 09:14:11AM +0530, Sunil V L wrote:
-> > > > > This series enables the support for "Collaborative Processor Performance
-> > > > > Control (CPPC) on ACPI based RISC-V platforms. It depends on the
-> > > > > encoding of CPPC registers as defined in RISC-V FFH spec [2].
-> > > > > 
-> > > > > CPPC is described in the ACPI spec [1]. RISC-V FFH spec required to
-> > > > > enable this, is available at [2].
-> > > > > 
-> > > > > [1] - https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html#collaborative-processor-performance-control
-> > > > > [2] - https://github.com/riscv-non-isa/riscv-acpi-ffh/releases/download/v1.0.0/riscv-ffh.pdf
-> > > > > 
-> > > > > The series is based on the LPI support series.
-> > > > > Based-on: 20240118062930.245937-1-sunilvl@ventanamicro.com
-> > > > > (https://lore.kernel.org/lkml/20240118062930.245937-1-sunilvl@ventanamicro.com/)
-> > > > 
-> > > > Should the https://github.com/vlsunil/qemu/tree/lpi_exp branch also be
-> > > > used for this CPPC series too?
-> > > 
-> > > I noticed the ventanamicro qemu repo has a dev-upstream branch [1] which
-> > > contains 4bb6ba4d0fb9 ("riscv/virt: acpi: Enable CPPC - _CPC and _PSD").
-> > > I've built that but I still see 'SBI CPPC extension NOT detected!!' in
-> > > the Linux boot log.
-> > > 
-> > > I'm using upstream opensbi. It seems that sbi_cppc_probe() fails because
-> > > cppc_dev is not set. Nothing in the upstream opensbi repo seems to call
-> > > sbi_cppc_set_device(), so I am uncertain how it is possible for it to
-> > > work. Is there an opensbi branch I should be using?
-> > > 
-> > > Thanks,
-> > > Drew
-> > > 
-> > > [1] https://github.com/ventanamicro/qemu/tree/dev-upstream
-> > 
-> > Please use below branches for qemu and opensbi. These are just dummy
-> > objects/interfaces added to test the kernel change which are otherwise
-> > platform specific features.
-> > 
-> > https://github.com/vlsunil/qemu/tree/lpi_cppc_exp
-> > https://github.com/vlsunil/opensbi/tree/cppc_exp
-> 
-> I know the opensbi branch is just for the purpose of testing the kernel
-> driver. However, I am new to ACPI and I am trying to understand how a
-> real system might work.
-> 
-> The _CPC register address encoding in the RISC-V FFH spec enables the
-> SBI CPPC register ID to be specified. But how would SBI firmware know
-> what physical address corresponds to the CPPC register?
-> 
-> If sbi_cppc_test_write() [1] was implemented for a real system, then how
-> would it know what physical address to write to for a CPPC register like
-> SBI_CPPC_DESIRED_PERF?
-> 
-The SBI extension provides an abstraction to access the CPPC registers.
-SBI implementation for the platform should be aware of how to access a
-particular register in the back end when it supports the extension.
+Dan,
 
-Regards,
-Sunil
+On 19.03.24 13:15:48, Dan Williams wrote:
+> Does this achieve the goal without an additional hunk like this?
+> 
+> diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> index 1be13b2dfe8b..1aaa447ef24b 100644
+> --- a/arch/x86/include/asm/sparsemem.h
+> +++ b/arch/x86/include/asm/sparsemem.h
+> @@ -37,9 +37,9 @@ extern int phys_to_target_node(phys_addr_t start);
+>  #define phys_to_target_node phys_to_target_node
+>  extern int memory_add_physaddr_to_nid(u64 start);
+>  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> +#endif
+>  extern int numa_fill_memblks(u64 start, u64 end);
+>  #define numa_fill_memblks numa_fill_memblks
+> -#endif
+>  #endif /* __ASSEMBLY__ */
+>  
+>  #endif /* _ASM_X86_SPARSEMEM_H */
+
+right, there are some build issues that need to be fixed in this
+patch. Sorry for that.
+
+Thanks,
+
+-Robert
 
