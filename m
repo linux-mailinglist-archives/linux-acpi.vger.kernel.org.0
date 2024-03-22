@@ -1,65 +1,78 @@
-Return-Path: <linux-acpi+bounces-4431-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4432-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A429C8872B8
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Mar 2024 19:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F65D8872D4
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Mar 2024 19:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448051F25886
-	for <lists+linux-acpi@lfdr.de>; Fri, 22 Mar 2024 18:12:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D991F26200
+	for <lists+linux-acpi@lfdr.de>; Fri, 22 Mar 2024 18:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B3563099;
-	Fri, 22 Mar 2024 18:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B06633E7;
+	Fri, 22 Mar 2024 18:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="mjTgzcPa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="axSqTKNk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECED629F8
-	for <linux-acpi@vger.kernel.org>; Fri, 22 Mar 2024 18:12:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEB363137;
+	Fri, 22 Mar 2024 18:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711131148; cv=none; b=jxQlnA2GDeEbmkSIqHK8sfnEvjgznAudnSsTMG8Mjd3UUal7nD8uaMbBpvWNmC9/BZZkAAv/O0S65th22HhOzetErwxYiiODufALWZj3ppEMeJZQG744U05I54Wl95oQwsnS2aw1+vhWnjerkWi6WO9lIc2MelZt7fI2P7z2Yyk=
+	t=1711131407; cv=none; b=bEYyYRYGZ3gjm/zAif5Jq9Qi51xTaHIDiAMRbUonv91J7y9kn0vW0Ufu0QgmX4M9a+37354vI3Se2U97neA6aqt9AINzXQj3fx+g3O40ke++Rh+0p7P9FiwwfDaJ+EXGgPZwS9sIctYRO7Vus4HxASgDu2vRzWuldaaL2HSFVv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711131148; c=relaxed/simple;
-	bh=W+fx4MS4or2BP/f0GWe+w1c2YvtMTPRiTmEWfMajIFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YrB6nXqU9w47oT5NfJfm+5Vf8PQCzcVOv+Wu0IXYetLphkbBtlAtInU2tOdZtMiOd88klO24PtgqKAa2+LRPLmVf5lzEpJc1jvuZ+0jUyHQH1lRaLnqCh9Reu8WMRHvCM19iU7uVrgMuVa/4D3a4DxoqtYAobEpvtLrIZ0zqTyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=mjTgzcPa; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <8afe3f27-fc8e-4c20-ba28-74a0a2937e55@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1711131142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PZ1o/opYgIzUM1VjnrIvbzSw8b5obvxKpmvvVITsLf8=;
-	b=mjTgzcPaCGTKrFIbb5VFUgckqJQPFwF4J2IqEZlCeLZ4YdntK5hU3jzMtZzeKeYxEweGHg
-	aXZKlfPzifwlDEypUEeySV6VeTgrLUqUSJLwx1RW+FBSJoUymkNiFjVn57GFE4Pw5XtgbV
-	ixbap/jrFX5VGq9mcPiZ7UO5RBKlj9g=
-Date: Sat, 23 Mar 2024 02:12:14 +0800
-Precedence: bulk
-X-Mailing-List: linux-acpi@vger.kernel.org
-List-Id: <linux-acpi.vger.kernel.org>
-List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+	s=arc-20240116; t=1711131407; c=relaxed/simple;
+	bh=CSb/2Xd0kjyrzXVz+VuBtqsWEMSEE9CK8ZtmpNce0Hw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AkwSFl9fTlBbt1FGDZC/nRtD6IlIYTdBNzHszXuah7tJK0vdGrz408pZuqibHPn/E4SN+CRrXYD0cjIJEl4LgMo1Nda5ilg6U0aK/Xjctb2y7JjvrZ8nkv0Hu8DdKw/Ctao5sg6aQoEM1jy60a2leeGZtA3zoy53yaC9HjX8DcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=axSqTKNk; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711131406; x=1742667406;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CSb/2Xd0kjyrzXVz+VuBtqsWEMSEE9CK8ZtmpNce0Hw=;
+  b=axSqTKNkTnEVbovQV5wPy2pEYWljKjAVmd1nu4G+XVERUIL9KwuuMXIw
+   UWcio8egxcmzvTO5JuYxx6rLWEsOTjkjHXzoEDo4rpsQaGeBo2WYQ+VlC
+   kwSprKDIeAj9pklpZDD3oBiwIrrEUqKsgr71lLchnG68JSLzuOpVLYGJK
+   WZ+HkuLM+YrR3JOFe+ws2ysdqKxj6sq7Wr4AjK+5lCBQJnuyDrwOqi5YI
+   hztT38hmECrTpLcl0DRFSzMID4JeYWEsWnA4iQe/n+BK1lWQIGto7P/vr
+   pF9TVrZK75fjbCeueOUxcs1xJ99FWuwG7mxm+RyKTYg5yjA50vxfXOLSO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="28671897"
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
+   d="scan'208";a="28671897"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 11:16:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="914750928"
+X-IronPort-AV: E=Sophos;i="6.07,146,1708416000"; 
+   d="scan'208";a="914750928"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2024 11:16:41 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rnjRW-0000000FEYM-2S1Q;
+	Fri, 22 Mar 2024 20:16:38 +0200
+Date: Fri, 22 Mar 2024 20:16:38 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Sui Jingfeng <sui.jingfeng@linux.dev>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Vladimir Oltean <vladimir.oltean@nxp.com>
 Subject: Re: [PATCH] software node: Implement device_get_match_data fwnode
  callback
-Content-Language: en-US
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- Vladimir Oltean <vladimir.oltean@nxp.com>
+Message-ID: <Zf3LBvJEJF9xr2fv@smile.fi.intel.com>
 References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
  <Zfq85f-Dp1S3CKuG@smile.fi.intel.com>
  <9ced20e0-dfbd-4337-b5df-223b7baffd9e@linux.dev>
@@ -68,32 +81,39 @@ References: <20240318234222.1278882-1-sui.jingfeng@linux.dev>
  <Zf2uUwcMgIpo6rVh@smile.fi.intel.com>
  <6bf102a4-6419-4083-8918-4f7c76cfa9a1@linux.dev>
  <Zf3IWyrW8IZLTg4x@smile.fi.intel.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
-In-Reply-To: <Zf3IWyrW8IZLTg4x@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+ <8afe3f27-fc8e-4c20-ba28-74a0a2937e55@linux.dev>
+Precedence: bulk
+X-Mailing-List: linux-acpi@vger.kernel.org
+List-Id: <linux-acpi.vger.kernel.org>
+List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8afe3f27-fc8e-4c20-ba28-74a0a2937e55@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi,
+On Sat, Mar 23, 2024 at 02:12:14AM +0800, Sui Jingfeng wrote:
+> On 2024/3/23 02:05, Andy Shevchenko wrote:
+> >   Besides that, the kernel project rule is "we do not add
+> > the dead (unused) code".
+> 
+> This rule is good an correct and I admit.
+> 
+> But the problem is that it is chicken-and-egg problem,
+> it probably have at least two user now.
 
+Then show them! Convert in the same series and show that.
 
-On 2024/3/23 02:05, Andy Shevchenko wrote:
->   Besides that, the kernel project rule is "we do not add
-> the dead (unused) code".
+> it's possible that it will gain more users in the future.
+> 
+> But if you reject everybody from now, then it is zero.
 
-
-This rule is good an correct and I admit.
-
-But the problem is that it is chicken-and-egg problem,
-it probably have at least two user now.
-it's possible that it will gain more users in the future.
-
-But if you reject everybody from now, then it is zero.
-
+As a no-user patch, yes, I reject this.
 
 -- 
-Best regards,
-Sui
+With Best Regards,
+Andy Shevchenko
+
 
 
