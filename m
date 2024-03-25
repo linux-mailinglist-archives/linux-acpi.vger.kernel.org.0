@@ -1,34 +1,34 @@
-Return-Path: <linux-acpi+bounces-4442-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE2588A61B
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 16:17:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6330488B375
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 23:08:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38EBA1F60C94
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 15:17:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D376ECC5D1B
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 15:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2061494CD;
-	Mon, 25 Mar 2024 12:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B77148FFF;
+	Mon, 25 Mar 2024 12:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GYyAhHMx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="canUxtjf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDFC1428FC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBF61448EA;
 	Mon, 25 Mar 2024 12:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711370096; cv=none; b=oZQoIXGPFXQ90bFEaSVDN0ZN33loLqdYWHFMOP4CjKop/wK0OzjvW3nLCRnYjTc7V3vqraUThbnRHguhycI51Jj2DK4jS/XI15QPOXHfTUkJNkY+0NNLzvm3z6DFCJ/yrmjnOGWP2ANXcyQJ01WfA/F/Znerqr2kVcRXp/ntglg=
+	t=1711370097; cv=none; b=fc6AcfrsxcQhqTKQyTAcC8SkrDnAlaVHuF70F1LuG8pAr8DDjr+Ee5mbqlf2QxKbyK6+Tc3DvJ6t6r2y5SPbgSEPt1J/U8G6/WKBCoZ3J/0JFGGQpikP3GdS0J2XugdHUuUBkmHCjTKHV00rfqNi9IPCvMHO93EORtxgF53KiCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711370096; c=relaxed/simple;
-	bh=2QqcFaZw9ZOboSMWLp4Lpq84CkXZHQ0XhXntHOHAUGY=;
+	s=arc-20240116; t=1711370097; c=relaxed/simple;
+	bh=kYaSqMOPeljRP3bQrvr/dBmRA0QEYgsB0ELeJUX3x+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmaMi1KDeBUOGdJY3rX8NF4jAz/8PmGOOeknqiPU0ba2nMpum8JGSRwDFErbWA2+eTSssgmQNNcaFB9cuHEI/JuODi2vT4CiPZmS6x8m8nZd3tfwwO8HppQ7/FyWrUiV2gcMjhOwLoMSzovlYOo4YEDKKLPI85ZlVqleU/SUNeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GYyAhHMx; arc=none smtp.client-ip=192.198.163.15
+	 MIME-Version; b=thdFkKmXIiZS593OalDuSJJ7PNRrckbq7ZtiIr3CnK7q1Rw6ux+Y83jJfhk0B2pr5lUN+2ebATth/UurSCGPfFj9dpcL0J1EhwTa3WZ7V0Ip5SELGCW6REeFpNjemZjA6tmKnkADZ59s6aA+8fpswBuAG1iNN0X+5HN19I0plyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=canUxtjf; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,27 +36,27 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1711370095; x=1742906095;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2QqcFaZw9ZOboSMWLp4Lpq84CkXZHQ0XhXntHOHAUGY=;
-  b=GYyAhHMxV055L1UCDKEB8y4ZmDUxuHh/ai1uKJ4RWWmg/qtdTyQcq98q
-   3OO4YJkTpg6h86MgT/nGgGN/Skm2/KuFum51+zOTcqHBPZqoMQZUCEH4X
-   AMNi7swuesMvjyw/plmptWZ8doBcQcXCineCV+IY55HcZFTkuB0/MB9u7
-   syWxA1weR6Ppl2jhmA3eD2zvS4n3fGfjk9Wni7hyzcydiySA6JcbvUxAo
-   6FUAuSGBactS1dvCrx6WiZpNyWZh7p0rkuclK4M3xyvXGd18NQoHzNuk9
-   JK0Odytz8VSaKqq3sB+psU6Bah6dnNoFThyLXK55sQSqXOPJxOjCt9bxz
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6549697"
+  bh=kYaSqMOPeljRP3bQrvr/dBmRA0QEYgsB0ELeJUX3x+g=;
+  b=canUxtjfMtCALu+bCpdwnlMPgEvhJ9nysXWgTkdXwk9bKX0f9/KSropi
+   Wdak0rlevy68mSEJjTy786blrlaLVc8sZp9dpcycOqnVyrx4C9kfTa1Tp
+   kmJZjKIwAVYq53Iaxy+PyxOHdyyPHehvrZ3P+NusuP3yFXqsre5TcrQMn
+   70Vg+1+rT8ZOtKxrAJDiPvrGUgzKh/n1CDod1AsEL/nPg3qLu8hnyMy+q
+   +Hs15g7dGxeaMsnp7GA+Puo8XQ2nEuf/CFO5df1hgD/r0/RGq4UClwVtG
+   jY4D41QWppPNEjmGv+cl7PL93pUo5K7sHlnZeljM/qtykST+FDVi92KlZ
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6549703"
 X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="6549697"
+   d="scan'208";a="6549703"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 05:34:50 -0700
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 05:34:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070335"
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070340"
 X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="937070335"
+   d="scan'208";a="937070340"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 05:34:47 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 05:34:50 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id D7FDB484; Mon, 25 Mar 2024 14:34:46 +0200 (EET)
+	id DCC693C5; Mon, 25 Mar 2024 14:34:46 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
@@ -66,9 +66,9 @@ To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Len Brown <lenb@kernel.org>,
 	Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v1 4/7] ACPI: scan: Use list_first_entry_or_null() in acpi_device_hid()
-Date: Mon, 25 Mar 2024 14:33:00 +0200
-Message-ID: <20240325123444.3031851-5-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 5/7] ACPI: scan: Move misleading comment to acpi_dma_configure_id()
+Date: Mon, 25 Mar 2024 14:33:01 +0200
+Message-ID: <20240325123444.3031851-6-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 In-Reply-To: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com>
 References: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com>
@@ -80,30 +80,52 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To replace list_empty() + list_first_entry() pair to simplify code.
+The acpi_iommu_configure_id() implementation has a misleading comment
+since after it the flow does something different to what it states.
+Move the commit to the caller and with that unshadow the error code
+inside acpi_iommu_configure_id().
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/acpi/scan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/scan.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 5e4118970285..f5581d3701f1 100644
+index f5581d3701f1..b2785a036a68 100644
 --- a/drivers/acpi/scan.c
 +++ b/drivers/acpi/scan.c
-@@ -1296,10 +1296,10 @@ const char *acpi_device_hid(struct acpi_device *device)
- {
- 	struct acpi_hardware_id *hid;
+@@ -1623,12 +1623,11 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
+ 	if (!err && dev->bus)
+ 		err = iommu_probe_device(dev);
  
--	if (list_empty(&device->pnp.ids))
-+	hid = list_first_entry_or_null(&device->pnp.ids, struct acpi_hardware_id, list);
-+	if (!hid)
- 		return dummy_hid;
+-	/* Ignore all other errors apart from EPROBE_DEFER */
+-	if (err == -EPROBE_DEFER) {
++	if (err == -EPROBE_DEFER)
+ 		return err;
+-	} else if (err) {
++	if (err) {
+ 		dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
+-		return -ENODEV;
++		return err;
+ 	}
+ 	if (!acpi_iommu_fwspec_ops(dev))
+ 		return -ENODEV;
+@@ -1669,13 +1668,14 @@ int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
  
--	hid = list_first_entry(&device->pnp.ids, struct acpi_hardware_id, list);
- 	return hid->id;
- }
- EXPORT_SYMBOL(acpi_device_hid);
+ 	acpi_arch_dma_setup(dev);
+ 
++	/* Ignore all other errors apart from EPROBE_DEFER */
+ 	ret = acpi_iommu_configure_id(dev, input_id);
+ 	if (ret == -EPROBE_DEFER)
+ 		return -EPROBE_DEFER;
+ 
+ 	/*
+ 	 * Historically this routine doesn't fail driver probing due to errors
+-	 * in acpi_iommu_configure_id()
++	 * in acpi_iommu_configure_id().
+ 	 */
+ 
+ 	arch_setup_dma_ops(dev, 0, U64_MAX, attr == DEV_DMA_COHERENT);
 -- 
 2.43.0.rc1.1.gbec44491f096
 
