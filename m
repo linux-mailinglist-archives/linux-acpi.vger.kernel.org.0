@@ -1,218 +1,114 @@
-Return-Path: <linux-acpi+bounces-4445-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4446-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E95F88A628
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 16:18:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A2788A63D
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 16:20:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973561C23AD7
-	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 15:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5761D1C3C7F7
+	for <lists+linux-acpi@lfdr.de>; Mon, 25 Mar 2024 15:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C771553AA;
-	Mon, 25 Mar 2024 12:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dXCjXhY1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1136614AD1C;
+	Mon, 25 Mar 2024 12:38:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5588149DFA;
-	Mon, 25 Mar 2024 12:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F534A1C;
+	Mon, 25 Mar 2024 12:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711370099; cv=none; b=JFr/Oet9+mwdwbgLoMfl+ssUhfGurvMsKttJYvzxiNOplR0homQV9bYl2B5jhzpErcydkYArBBEulauLA4okujYyspJo/QLvmccQsUh1DfWXJKCGUka0/4GWcQpmqM9DaiYZedLAIH687E2O/zFixGNzNgcbFj9c45GIzfsdQZ8=
+	t=1711370292; cv=none; b=iyOV1RM4LTHazYGDA/4BpCuYOBJTR/5CvyDxCtEmsmTAZjzTw/mmSprZy5Fhogakp0MX+kkPaFP+Ah9llsUgK89HD6PIlx9/jsG75e2vNqsQ1IS7UA3VAUlrhpn5V+z6cFLYh0fCny0URYIeFNJm2asUWr7TTtMS6KUSSDbaHWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711370099; c=relaxed/simple;
-	bh=WSEkVBdORAODjRrcbYfVLEM4QYPG1G7EGlAISHGvqxU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMqznptl5w8MJeCPVRcT0XnN+mcrjijQ/fY9X8a0stWMgFBgapfzJvoS5oAReJA8no5zYXgmYU10ftOSjD078rXMd/MaMny0wnCdmZ5Mf7Brkb/7DFCfZalPlLMUYg+lr2Vw8hBr0fpoUV46fyYMsF2AyV30ESyAh3/I0XWsQA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dXCjXhY1; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711370097; x=1742906097;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=WSEkVBdORAODjRrcbYfVLEM4QYPG1G7EGlAISHGvqxU=;
-  b=dXCjXhY10Rx6rXx/QKKZcWW9aF1Yob3zmPE+PrnCymsIn6sJgKqtYgPM
-   ye9kHZurEufb3LOiuJP9kW8u8Js09rwIPh4w4Awa2w5M1HO6VpICVAlnH
-   wMb2Ko9U5I4z5KaolCSwAG2F/soHiluYnkP+aIFhAVDsEHXRDxYmYMkJK
-   APSP/N02ZNKdw+4LVn7ucdTiQHqqFQSEtGznNxplZCh25ePikUI3TIVzu
-   6BJ1RFl4/7MW0152hKyoj7k6vnB9vfH1SIsN0AtGTKZZR7fuD0GUK8TFK
-   Wzy8bh5F6tV8NjfyOouYfmjb5B/07BeINNeowM0hRA6YRcZP5ocAGDTbE
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6549711"
+	s=arc-20240116; t=1711370292; c=relaxed/simple;
+	bh=qeAcaT5CXsM7WiKAlDn7So/q00mu0KRykv/FEqyC1mI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hozDNAn7KlGhWuXLPxh0pILW2tSoFMDvmcaR85TwSeqNEDRSqFVD3h0nCTUYz8rZUusm8a4NEJs5QtkB9gpfaR4a8OT/mSvDQj+RpGnNZN6wtjp+J/ACPhrEwxTaRIq3+h0MHTY8QU1btDo/OCrzyOl7/zWnKMhIG6n80sJlWgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=black.fi.intel.com; spf=pass smtp.mailfrom=intel.com; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=black.fi.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="6550152"
 X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="6549711"
+   d="scan'208";a="6550152"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 05:34:53 -0700
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2024 05:38:08 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070344"
+X-IronPort-AV: E=McAfee;i="6600,9927,11023"; a="937070365"
 X-IronPort-AV: E=Sophos;i="6.07,153,1708416000"; 
-   d="scan'208";a="937070344"
+   d="scan'208";a="937070365"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 05:34:50 -0700
+  by fmsmga001.fm.intel.com with ESMTP; 25 Mar 2024 05:38:06 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 02AFD5A8; Mon, 25 Mar 2024 14:34:47 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Subject: [PATCH v1 7/7] ACPI: scan: Introduce typedef:s for struct acpi_hotplug_context members
-Date: Mon, 25 Mar 2024 14:33:03 +0200
-Message-ID: <20240325123444.3031851-8-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com>
-References: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com>
+	id 89D4813F; Mon, 25 Mar 2024 14:38:05 +0200 (EET)
+Date: Mon, 25 Mar 2024 14:38:05 +0200
+From: Andy Shevchenko <andy@black.fi.intel.com>
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: rafael@kernel.org, lenb@kernel.org, jdelvare@suse.com,
+	linux@roeck-us.net, robert.moore@intel.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, acpica-devel@lists.linux.dev
+Subject: Re: [PATCH v5 2/2] hwmon: (acpi_power_meter) Ensure IPMI space
+ handler is ready on Dell systems
+Message-ID: <ZgFwLXzNG2aTL_BQ@black.fi.intel.com>
+References: <20240320084317.366853-1-kai.heng.feng@canonical.com>
+ <20240320084317.366853-2-kai.heng.feng@canonical.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240320084317.366853-2-kai.heng.feng@canonical.com>
 
-Follow the struct acpi_device_ops approach and introduce typedef:s
-for the members. It makes code less verbose and more particular on
-what parameters we take or types we use.
+On Wed, Mar 20, 2024 at 04:43:17PM +0800, Kai-Heng Feng wrote:
+> The following error can be observed at boot:
+> [    3.717920] ACPI Error: No handler for Region [SYSI] (00000000ab9e62c5) [IPMI] (20230628/evregion-130)
+> [    3.717928] ACPI Error: Region IPMI (ID=7) has no handler (20230628/exfldio-261)
+> 
+> [    3.717936] No Local Variables are initialized for Method [_GHL]
+> 
+> [    3.717938] No Arguments are initialized for method [_GHL]
+> 
+> [    3.717940] ACPI Error: Aborting method \_SB.PMI0._GHL due to previous error (AE_NOT_EXIST) (20230628/psparse-529)
+> [    3.717949] ACPI Error: Aborting method \_SB.PMI0._PMC due to previous error (AE_NOT_EXIST) (20230628/psparse-529)
+> [    3.717957] ACPI: \_SB_.PMI0: _PMC evaluation failed: AE_NOT_EXIST
+> 
+> On Dell systems several methods of acpi_power_meter access variables in
+> IPMI region [0], so wait until IPMI space handler is installed by
+> acpi_ipmi and also wait until SMI is selected to make the space handler
+> fully functional.
+> 
+> Since the dependency is inside BIOS's ASL code and it's not
+> discoverable, so use this fixup is a hack to workaround BIOS issue.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/dock.c     | 48 +++++++++++++++--------------------------
- drivers/acpi/scan.c     |  5 ++---
- include/acpi/acpi_bus.h | 13 ++++++-----
- 3 files changed, 27 insertions(+), 39 deletions(-)
+...
 
-diff --git a/drivers/acpi/dock.c b/drivers/acpi/dock.c
-index a7c00ef78086..34affbda295e 100644
---- a/drivers/acpi/dock.c
-+++ b/drivers/acpi/dock.c
-@@ -88,43 +88,29 @@ static void dock_hotplug_event(struct dock_dependent_device *dd, u32 event,
- 			       enum dock_callback_type cb_type)
- {
- 	struct acpi_device *adev = dd->adev;
-+	acpi_hp_fixup fixup = NULL;
-+	acpi_hp_uevent uevent = NULL;
-+	acpi_hp_notify notify = NULL;
- 
- 	acpi_lock_hp_context();
- 
--	if (!adev->hp)
--		goto out;
--
--	if (cb_type == DOCK_CALL_FIXUP) {
--		void (*fixup)(struct acpi_device *);
--
--		fixup = adev->hp->fixup;
--		if (fixup) {
--			acpi_unlock_hp_context();
--			fixup(adev);
--			return;
--		}
--	} else if (cb_type == DOCK_CALL_UEVENT) {
--		void (*uevent)(struct acpi_device *, u32);
--
--		uevent = adev->hp->uevent;
--		if (uevent) {
--			acpi_unlock_hp_context();
--			uevent(adev, event);
--			return;
--		}
--	} else {
--		int (*notify)(struct acpi_device *, u32);
--
--		notify = adev->hp->notify;
--		if (notify) {
--			acpi_unlock_hp_context();
--			notify(adev, event);
--			return;
--		}
-+	if (adev->hp) {
-+		if (cb_type == DOCK_CALL_FIXUP)
-+			fixup = adev->hp->fixup;
-+		else if (cb_type == DOCK_CALL_UEVENT)
-+			uevent = adev->hp->uevent;
-+		else
-+			notify = adev->hp->notify;
- 	}
- 
-- out:
- 	acpi_unlock_hp_context();
-+
-+	if (fixup)
-+		fixup(adev);
-+	else if (uevent)
-+		uevent(adev, event);
-+	else if (notify)
-+		notify(adev, event);
- }
- 
- static struct dock_station *find_dock_station(acpi_handle handle)
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 45f7ec3b6548..534cb15351f5 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -73,8 +73,7 @@ void acpi_unlock_hp_context(void)
- 
- void acpi_initialize_hp_context(struct acpi_device *adev,
- 				struct acpi_hotplug_context *hp,
--				int (*notify)(struct acpi_device *, u32),
--				void (*uevent)(struct acpi_device *, u32))
-+				acpi_hp_notify notify, acpi_hp_uevent uevent)
- {
- 	acpi_lock_hp_context();
- 	hp->notify = notify;
-@@ -428,7 +427,7 @@ void acpi_device_hotplug(struct acpi_device *adev, u32 src)
- 	} else if (adev->flags.hotplug_notify) {
- 		error = acpi_generic_hotplug_event(adev, src);
- 	} else {
--		int (*notify)(struct acpi_device *, u32);
-+		acpi_hp_notify notify;
- 
- 		acpi_lock_hp_context();
- 		notify = adev->hp ? adev->hp->notify : NULL;
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index acb62d1d3306..6aa0d8a1de79 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -144,11 +144,15 @@ struct acpi_scan_handler {
-  * --------------------
-  */
- 
-+typedef int (*acpi_hp_notify) (struct acpi_device *, u32);
-+typedef void (*acpi_hp_uevent) (struct acpi_device *, u32);
-+typedef void (*acpi_hp_fixup) (struct acpi_device *);
-+
- struct acpi_hotplug_context {
- 	struct acpi_device *self;
--	int (*notify)(struct acpi_device *, u32);
--	void (*uevent)(struct acpi_device *, u32);
--	void (*fixup)(struct acpi_device *);
-+	acpi_hp_notify notify;
-+	acpi_hp_uevent uevent;
-+	acpi_hp_fixup fixup;
- };
- 
- /*
-@@ -583,8 +587,7 @@ static inline void acpi_set_hp_context(struct acpi_device *adev,
- 
- void acpi_initialize_hp_context(struct acpi_device *adev,
- 				struct acpi_hotplug_context *hp,
--				int (*notify)(struct acpi_device *, u32),
--				void (*uevent)(struct acpi_device *, u32));
-+				acpi_hp_notify notify, acpi_hp_uevent uevent);
- 
- /* acpi_device.dev.bus == &acpi_bus_type */
- extern const struct bus_type acpi_bus_type;
+> +	if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.")) {
+> +		ipi_device = acpi_dev_get_first_match_dev("IPI0001", NULL, -1);
+> +
+> +		if (ipi_device) {
+> +			if (acpi_wait_for_acpi_ipmi())
+> +				dev_warn(&device->dev, "Waiting for ACPI IPMI timeout");
+> +			acpi_dev_put(ipi_device);
+> +		}
+
+Can be written as
+
+	if (dmi_match(DMI_SYS_VENDOR, "Dell Inc.")) {
+		ipi_device = acpi_dev_get_first_match_dev("IPI0001", NULL, -1);
+		if (ipi_device && acpi_wait_for_acpi_ipmi())
+			dev_warn(&device->dev, "Waiting for ACPI IPMI timeout");
+		acpi_dev_put(ipi_device);
+
+> +	}
+
 -- 
-2.43.0.rc1.1.gbec44491f096
+With Best Regards,
+Andy Shevchenko
+
 
 
