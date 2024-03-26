@@ -1,123 +1,105 @@
-Return-Path: <linux-acpi+bounces-4463-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4464-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039C788C19C
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 13:08:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BFE88CBBF
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 19:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7A02E2334
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 12:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E821F85715
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 18:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FB570CC9;
-	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4ACF1272B7;
+	Tue, 26 Mar 2024 18:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDKDmqtN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kG2UkDKJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1C6E61B;
-	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3104184D0D;
+	Tue, 26 Mar 2024 18:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711454887; cv=none; b=lGvO87JXZStxjNqYnXydNvWPWo/55Vv69p8Hyr7gZ7QscucUEOse1ucxY5UsZ2XkvVMvYnOlbFBShsuKqMplbVPVsJxVVUBxngVICOOCsvOZKp44YvmqxHDiSFM97S3oEHazjbNK8KSwa5mIDxBVfvWjcQiYztxftxg8NadAAys=
+	t=1711476774; cv=none; b=jvKxp+oEZ8YO2GZgRgXDPdAXd4+qknC5s7wbvJ+HLcLaz/eb/6epG9iWXFKrLNwXfMSnfbxuu41cosrYN7huRn0MDvems1xEJFuZw0Qw2U9Z+W7C1Dwg91ktKAh5/FItCo3BX2K4yauAZwDAGtCEW4RCER0CnUahuPBkSBXTPk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711454887; c=relaxed/simple;
-	bh=+JYnu5emNgwEhffD7wjz6RfzwF5VDV57vHflFSPkjQk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nw3VAW56+OELMDQ5kgwGQ1DGQicq1051Rgnix2Aokqsen34kZoUErySDHksNh+XqXjjdFpKN80Tww9tlWnFXAXo24KCDmw2n5IeaTaTBV5qHllAIcLAo8oqr2D2jqhfaLx4HnV6beSFu6SKosm35PhllJyZdUwJIs8PgNT5e0mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDKDmqtN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324EBC433F1;
-	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711454887;
-	bh=+JYnu5emNgwEhffD7wjz6RfzwF5VDV57vHflFSPkjQk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tDKDmqtNz6pQZIugZvH6fEiUGmGcfgZc+0HcylzuD03kRmdgjSTMJjtPXgkooZqE4
-	 K75IvqV1VA0a6Fc7W59kkjN24unq0udazgM9ZJM4lsKgEwcg1GWrzJYz4AvIVzdjHG
-	 5+DBKk9tmA8mmxT1tOK6Kk3uMp+fMNI//GMZLEaWtC+6MyOb8cO476/vXiIkUL4XWq
-	 8a8ieQrIog3Jty7r+Zd0bufmrpaEIV4vUk7yrktrXGtpMLIQ6CdMKkr8CGFWkqyQP7
-	 RctvWgpzGN9L1OR0lJqrCY6wPBWYiq2oIQ30F4fo9DVBMn5J8ZR8YFQaPz0qjIxAYI
-	 sze2/6FdUAy9Q==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5a46ad0d981so1266871eaf.1;
-        Tue, 26 Mar 2024 05:08:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUrx7erH3FOiGVpNwXYUpw9DTCAqF22/vZERynTzqmdIAJSbWpY5pWEvqLJODe/HIEVGNT/wLtjgKDknA9aBc1o0WxVdElPAO0AgHaT6VBjDQYRe9NZ0hilkAE266fYopHeLiI0OyGIEg==
-X-Gm-Message-State: AOJu0YwmLkNLx1Vnyao73eZSL2ZF8zAAKrgp4cN8Om1NTu4RjTByoEi7
-	2mgSlER4jaSP4hdoc9wynOSE9iIBl9EThME4kDXOr9jkcQxh4gyLDd1Z0sLPbiTTEY0acJ5ykMf
-	auYc97bOb0LUhybK3Pr+wbTC9jDM=
-X-Google-Smtp-Source: AGHT+IEX7/3bqP2g4RhkkN03lYfLqGuaIjY5MPN5VZV2xraUgKf1Irx0etz7kkJgjwvEIwCKtzXzqfKw+8ET1f5pR10=
-X-Received: by 2002:a05:6820:820:b0:5a4:7300:b57f with SMTP id
- bg32-20020a056820082000b005a47300b57fmr9614933oob.1.1711454886495; Tue, 26
- Mar 2024 05:08:06 -0700 (PDT)
+	s=arc-20240116; t=1711476774; c=relaxed/simple;
+	bh=ev8rYzqaCDj4b9qlzn5q+6SJHRO94m+OOkOuEDYlsFw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tStX3aRq/8QI1CfWCNsrR2/ImXLqFmdnFA7ZVJt5I7a3jpMBnAps1skX0bCnK1ghS/vRcpc0AFCaHzCsEjXneKAJqUVL7g/PndzUSHYd4jvYZ+crhPFJei0fKBG2xKgJOHFqJB8IFGamvKbys624Yd/UzYwwHzeiaHwu17lCj1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kG2UkDKJ; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711476773; x=1743012773;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ev8rYzqaCDj4b9qlzn5q+6SJHRO94m+OOkOuEDYlsFw=;
+  b=kG2UkDKJi2kWXBpqnCXD17zkro12JAZL6VJtcZk6RWnjxDHl0Zwm0U37
+   wy+7NsnP9NbX61kEhnS4PEGO1Tn+LVOfvPgti33X4MVgfwOSWn4rNOdWN
+   HDmVuQMdoJ6UzSdR9osrvK+w6e6eN7v9/6J6eh9XaGpd+oPGKxq+1Q/bU
+   +Eylm8vZfbKBlrM2+cW+Z3M6s61Ko/LvLqFsetmX2zRlOPXClhFTJQoSD
+   y5xLGKJVD86WuLfAOww1u4VfHJ6YOOQ6BJJRGDr7uuF8I/rLNnIZzIBaR
+   AkKFS7frgejMqCQp6FdJLPY57D/NGJjGgYWH+jnpFJE04Gfe1sl2k7NFr
+   w==;
+X-CSE-ConnectionGUID: 4hSgYS+5TRG+5XzK/03yhA==
+X-CSE-MsgGUID: ohGs1RozQv2SPRaXtQDB7Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10325985"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="10325985"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 11:12:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="937072946"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="937072946"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Mar 2024 11:12:50 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 59022284; Tue, 26 Mar 2024 20:12:49 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v1 0/2] gpiolib: in-kernel documentation updates
+Date: Tue, 26 Mar 2024 20:11:19 +0200
+Message-ID: <20240326181247.1419138-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJZ5v0i7LYzF13M0qdeYWXZ7uO6HUpAS7pE5RJnOAJtKB8o88A@mail.gmail.com>
- <20240322180753.5612-1-kiryushin@ancud.ru>
-In-Reply-To: <20240322180753.5612-1-kiryushin@ancud.ru>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 26 Mar 2024 13:07:54 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0gmO8_cosZ5j6iLRFaBEscxTGtfb5JTmnDeRqTOS-6-JQ@mail.gmail.com>
-Message-ID: <CAJZ5v0gmO8_cosZ5j6iLRFaBEscxTGtfb5JTmnDeRqTOS-6-JQ@mail.gmail.com>
-Subject: Re: [PATCH v2] ACPICA: debugger: check status of acpi_evaluate_object
- in acpi_db_walk_for_fields
-To: Nikita Kiryushin <kiryushin@ancud.ru>
-Cc: Robert Moore <robert.moore@intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 22, 2024 at 7:23=E2=80=AFPM Nikita Kiryushin <kiryushin@ancud.r=
-u> wrote:
->
-> ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
->
-> Errors in acpi_evaluate_object can lead to incorrect state of buffer.
-> This can lead to access to data in previously ACPI_FREEd buffer and
-> secondary ACPI_FREE to the same buffer later.
->
-> Handle errors in acpi_evaluate_object the same way it is done earlier
-> with acpi_ns_handle_to_pathname.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Link: https://github.com/acpica/acpica/commit/9061cd9a
-> Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of=
- particular subtype")
-> Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-> ---
-> v2: Add ACPICA project git links for corresponding changes
->  drivers/acpi/acpica/dbnames.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.=
-c
-> index b91155ea9c34..c9131259f717 100644
-> --- a/drivers/acpi/acpica/dbnames.c
-> +++ b/drivers/acpi/acpica/dbnames.c
-> @@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
->         ACPI_FREE(buffer.pointer);
->
->         buffer.length =3D ACPI_ALLOCATE_LOCAL_BUFFER;
-> -       acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-> -
-> +       status =3D acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
-> +       if (ACPI_FAILURE(status)) {
-> +               acpi_os_printf("Could Not evaluate object %p\n",
-> +                              obj_handle);
-> +               return (AE_OK);
-> +       }
->         /*
->          * Since this is a field unit, surround the output in braces
->          */
-> --
+While looking for something I have noticed that in-kernel documentation
+for gpiolib implementation may be updated to reflect the current state
+of affairs. Hence these two patches.
 
-Applied as 6.10 material, thanks!
+Andy Shevchenko (2):
+  gpiolib: Do not mention legacy GPIOF_* in the code
+  gpiolib: Up to date the kernel documentation
+
+ drivers/gpio/gpiolib-acpi.c   |  45 ++--
+ drivers/gpio/gpiolib-cdev.c   |  15 +-
+ drivers/gpio/gpiolib-devres.c |  85 ++++++--
+ drivers/gpio/gpiolib-legacy.c |   3 +
+ drivers/gpio/gpiolib-of.c     | 102 +++++----
+ drivers/gpio/gpiolib-swnode.c |   8 +-
+ drivers/gpio/gpiolib-sysfs.c  |  41 ++--
+ drivers/gpio/gpiolib.c        | 388 +++++++++++++++++++++-------------
+ drivers/gpio/gpiolib.h        |   8 +-
+ 9 files changed, 438 insertions(+), 257 deletions(-)
+
+-- 
+2.43.0.rc1.1.gbec44491f096
+
 
