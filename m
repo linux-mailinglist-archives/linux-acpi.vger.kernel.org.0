@@ -1,107 +1,123 @@
-Return-Path: <linux-acpi+bounces-4462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B5D88C06C
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 12:18:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039C788C19C
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 13:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762BE1F3C60C
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 11:18:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF7A02E2334
+	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 12:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F7A14AB8;
-	Tue, 26 Mar 2024 11:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FB570CC9;
+	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnahrbcw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDKDmqtN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E843D52F;
-	Tue, 26 Mar 2024 11:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1C6E61B;
+	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711451926; cv=none; b=f5nfFR8bLlPYzQDryCvpedd7uZ+1WjrL3dddDXlR+8bd5VQ3TyX+2F/gxA7XwDrHlHWWviu8B/sDjsGD8em0mA6tjhb0ggfsvis46tYmg4Xk/1xm9WUU/ppSKfqhRLOHlmUdX6Xue8bUPG4kDOsE221S04F7/GxjboisD8VpfeU=
+	t=1711454887; cv=none; b=lGvO87JXZStxjNqYnXydNvWPWo/55Vv69p8Hyr7gZ7QscucUEOse1ucxY5UsZ2XkvVMvYnOlbFBShsuKqMplbVPVsJxVVUBxngVICOOCsvOZKp44YvmqxHDiSFM97S3oEHazjbNK8KSwa5mIDxBVfvWjcQiYztxftxg8NadAAys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711451926; c=relaxed/simple;
-	bh=c3DT0yLem2b3enR7udipH6xBBSV9/V0+ZqfgXpeBGP8=;
+	s=arc-20240116; t=1711454887; c=relaxed/simple;
+	bh=+JYnu5emNgwEhffD7wjz6RfzwF5VDV57vHflFSPkjQk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lOsJ1LUfSTeHRRD+l9b6sSnD7hDfOLxXrKgwK64vSPI4pzXy9fvcIEVqEa5PeMruPaY5uH1fPJkNVn+2+gJTQA++cRaULGXqKQhw5+y5lipBP5yM7eNlG3CnjqpCv5+xuJg/cYiZX8Vrh1Ww1ouG9VnXW1VVyT0KtlggPsohYBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnahrbcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DC2C43390;
-	Tue, 26 Mar 2024 11:18:45 +0000 (UTC)
+	 To:Cc:Content-Type; b=nw3VAW56+OELMDQ5kgwGQ1DGQicq1051Rgnix2Aokqsen34kZoUErySDHksNh+XqXjjdFpKN80Tww9tlWnFXAXo24KCDmw2n5IeaTaTBV5qHllAIcLAo8oqr2D2jqhfaLx4HnV6beSFu6SKosm35PhllJyZdUwJIs8PgNT5e0mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDKDmqtN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324EBC433F1;
+	Tue, 26 Mar 2024 12:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711451925;
-	bh=c3DT0yLem2b3enR7udipH6xBBSV9/V0+ZqfgXpeBGP8=;
+	s=k20201202; t=1711454887;
+	bh=+JYnu5emNgwEhffD7wjz6RfzwF5VDV57vHflFSPkjQk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cnahrbcw6XINevHPRqe90R2bmhq/HqiYP/nHdQxaHKSr8oAWLJ6s4aw9GJiwtqYDU
-	 MyJmLAFZEySQStNw9kMO/lzr72mIV6bxJyHtK+RWPHbC6juj1D0o9si9woKMlIlD1M
-	 PT1kAATHUK0QRT/1oVnafIXIYCIDEywvMkljlFWdvMJgVSJHSksPyy4hZbGT/Izcto
-	 BOZjkGh6JFVhRvNX5XMZ7XwZ0FGEM5XnO1roa3c2YbjGjsXz7x1QzMA/0+TrAuX5jo
-	 7/p+hqGFCXtvTdSFE2sq+vQqiLsTx56gkLzPmqfbgg4WgJjLrKrCLqo15TsHQdz5Iw
-	 UaIQQkiUJApFg==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5a47a3786dbso1590316eaf.0;
-        Tue, 26 Mar 2024 04:18:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU4kHPEK5onhgQ00rMgCYty7CLodlUutDL8w8wmzCbxDN1tsY5eh+phYrpDYN+SWdoibwMcDhBbhdG32MmKwxfMPphOcjAqqbq2t8eZo2wfAQrMg/dmwWXxdogpAUoBJE7zSENbTOpQng==
-X-Gm-Message-State: AOJu0YxAQCMWJiIphFpfEgeaNzPrVBR8g3At520QLHYZxFIPrQatKdMe
-	io862AFjkWb1Uu2Xqj/1cr5MWUUTYUMM4J7oaT5E8ETJcANe+buUUasthi2qcINMyhrXE7FGdi4
-	4pcWMMERK1ZuXiVYZs4lH5r9sImM=
-X-Google-Smtp-Source: AGHT+IEp4Yj1kWediwy97HZIkIJVGhqp3U4oQXnlyVq/44GG2xbedKNyvZGtdMFmVVFO1CpKrFR9EsAIgtUkRwDMnUY=
-X-Received: by 2002:a05:6870:65a0:b0:229:ee6d:77da with SMTP id
- fp32-20020a05687065a000b00229ee6d77damr9425596oab.2.1711451925292; Tue, 26
- Mar 2024 04:18:45 -0700 (PDT)
+	b=tDKDmqtNz6pQZIugZvH6fEiUGmGcfgZc+0HcylzuD03kRmdgjSTMJjtPXgkooZqE4
+	 K75IvqV1VA0a6Fc7W59kkjN24unq0udazgM9ZJM4lsKgEwcg1GWrzJYz4AvIVzdjHG
+	 5+DBKk9tmA8mmxT1tOK6Kk3uMp+fMNI//GMZLEaWtC+6MyOb8cO476/vXiIkUL4XWq
+	 8a8ieQrIog3Jty7r+Zd0bufmrpaEIV4vUk7yrktrXGtpMLIQ6CdMKkr8CGFWkqyQP7
+	 RctvWgpzGN9L1OR0lJqrCY6wPBWYiq2oIQ30F4fo9DVBMn5J8ZR8YFQaPz0qjIxAYI
+	 sze2/6FdUAy9Q==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5a46ad0d981so1266871eaf.1;
+        Tue, 26 Mar 2024 05:08:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUrx7erH3FOiGVpNwXYUpw9DTCAqF22/vZERynTzqmdIAJSbWpY5pWEvqLJODe/HIEVGNT/wLtjgKDknA9aBc1o0WxVdElPAO0AgHaT6VBjDQYRe9NZ0hilkAE266fYopHeLiI0OyGIEg==
+X-Gm-Message-State: AOJu0YwmLkNLx1Vnyao73eZSL2ZF8zAAKrgp4cN8Om1NTu4RjTByoEi7
+	2mgSlER4jaSP4hdoc9wynOSE9iIBl9EThME4kDXOr9jkcQxh4gyLDd1Z0sLPbiTTEY0acJ5ykMf
+	auYc97bOb0LUhybK3Pr+wbTC9jDM=
+X-Google-Smtp-Source: AGHT+IEX7/3bqP2g4RhkkN03lYfLqGuaIjY5MPN5VZV2xraUgKf1Irx0etz7kkJgjwvEIwCKtzXzqfKw+8ET1f5pR10=
+X-Received: by 2002:a05:6820:820:b0:5a4:7300:b57f with SMTP id
+ bg32-20020a056820082000b005a47300b57fmr9614933oob.1.1711454886495; Tue, 26
+ Mar 2024 05:08:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240320180302.143707-1-arnd@kernel.org> <65fb3fee96ec7_aa222949b@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <CAJZ5v0ivpUuKGx9pW+QeQPSSXNWSSbJwN2oN9p_hmE-nV5VQKA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0ivpUuKGx9pW+QeQPSSXNWSSbJwN2oN9p_hmE-nV5VQKA@mail.gmail.com>
+References: <CAJZ5v0i7LYzF13M0qdeYWXZ7uO6HUpAS7pE5RJnOAJtKB8o88A@mail.gmail.com>
+ <20240322180753.5612-1-kiryushin@ancud.ru>
+In-Reply-To: <20240322180753.5612-1-kiryushin@ancud.ru>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 26 Mar 2024 12:18:33 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iKbquyA8st=ywUd+WtcJ0A3FYDuhCqSq_3B_koi0RYXg@mail.gmail.com>
-Message-ID: <CAJZ5v0iKbquyA8st=ywUd+WtcJ0A3FYDuhCqSq_3B_koi0RYXg@mail.gmail.com>
-Subject: Re: [PATCH] acpi: EINJ: mark remove callback as non-__exit
-To: Dan Williams <dan.j.williams@intel.com>, Arnd Bergmann <arnd@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ben Cheatham <Benjamin.Cheatham@amd.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Avadhut Naik <Avadhut.Naik@amd.com>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 26 Mar 2024 13:07:54 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gmO8_cosZ5j6iLRFaBEscxTGtfb5JTmnDeRqTOS-6-JQ@mail.gmail.com>
+Message-ID: <CAJZ5v0gmO8_cosZ5j6iLRFaBEscxTGtfb5JTmnDeRqTOS-6-JQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPICA: debugger: check status of acpi_evaluate_object
+ in acpi_db_walk_for_fields
+To: Nikita Kiryushin <kiryushin@ancud.ru>
+Cc: Robert Moore <robert.moore@intel.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	lvc-project@linuxtesting.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 9:00=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
+On Fri, Mar 22, 2024 at 7:23=E2=80=AFPM Nikita Kiryushin <kiryushin@ancud.r=
+u> wrote:
 >
-> On Wed, Mar 20, 2024 at 8:58=E2=80=AFPM Dan Williams <dan.j.williams@inte=
-l.com> wrote:
-> >
-> > Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > >
-> > > The remove callback of a device is called whenever it is unbound,
-> > > which may happen during runtime e.g. through sysfs, so this is not
-> > > allowed to be dropped from the binary:
-> > >
-> > > WARNING: modpost: vmlinux: section mismatch in reference: einj_driver=
-+0x8 (section: .data) -> einj_remove (section: .exit.text)
-> > > ERROR: modpost: Section mismatches detected.
-> > >
-> > > Remove that annotation.
-> >
-> > Looks good, not sure why the build robots missed this while this was
-> > sitting in -next. Yes, this was a side effect of reusing the former
-> > einj_exit() as the device remove callback.
-> >
-> > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> >
-> > Rafael, can you pick this up?
+> ACPICA commit 9061cd9aa131205657c811a52a9f8325a040c6c9
 >
-> I will, thanks!
+> Errors in acpi_evaluate_object can lead to incorrect state of buffer.
+> This can lead to access to data in previously ACPI_FREEd buffer and
+> secondary ACPI_FREE to the same buffer later.
+>
+> Handle errors in acpi_evaluate_object the same way it is done earlier
+> with acpi_ns_handle_to_pathname.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Link: https://github.com/acpica/acpica/commit/9061cd9a
+> Fixes: 5fd033288a86 ("ACPICA: debugger: add command to dump all fields of=
+ particular subtype")
+> Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+> ---
+> v2: Add ACPICA project git links for corresponding changes
+>  drivers/acpi/acpica/dbnames.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/dbnames.c b/drivers/acpi/acpica/dbnames.=
+c
+> index b91155ea9c34..c9131259f717 100644
+> --- a/drivers/acpi/acpica/dbnames.c
+> +++ b/drivers/acpi/acpica/dbnames.c
+> @@ -550,8 +550,12 @@ acpi_db_walk_for_fields(acpi_handle obj_handle,
+>         ACPI_FREE(buffer.pointer);
+>
+>         buffer.length =3D ACPI_ALLOCATE_LOCAL_BUFFER;
+> -       acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+> -
+> +       status =3D acpi_evaluate_object(obj_handle, NULL, NULL, &buffer);
+> +       if (ACPI_FAILURE(status)) {
+> +               acpi_os_printf("Could Not evaluate object %p\n",
+> +                              obj_handle);
+> +               return (AE_OK);
+> +       }
+>         /*
+>          * Since this is a field unit, surround the output in braces
+>          */
+> --
 
-Applied now, thanks!
+Applied as 6.10 material, thanks!
 
