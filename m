@@ -1,96 +1,260 @@
-Return-Path: <linux-acpi+bounces-4497-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4498-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356CE88DB87
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 11:48:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9E488E187
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 14:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 652FA1C268C6
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 10:48:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695CA1F2CB44
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 13:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0046B38FA1;
-	Wed, 27 Mar 2024 10:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCE61598EC;
+	Wed, 27 Mar 2024 12:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="g5JEHzLd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1TpYYJf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from forward101c.mail.yandex.net (forward101c.mail.yandex.net [178.154.239.212])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06B02C180
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 10:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.212
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CC31598EA;
+	Wed, 27 Mar 2024 12:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711536527; cv=none; b=ZB7fQzOuxPhCpb4AM7KZdXu73yAe0Or+BkDwMhMwvEKs81AzFEmMxXfs9OweK+BGGpQ4J+pfqrPu4DXYZ08VfO2A7xS608ubAUra30dWvVKVeGNCZMDrunT3M1A6IBAi6qhCdKeazI0SCsIw7W2m4jTCKtblVG5aBxgrSPnLoVI=
+	t=1711541860; cv=none; b=l17TNBdOC5Tyo6JYDrAQ7Hh5x9sF3hvZQyvZECQpzViJpbyc15jUgK6+Yr24GJr/YXTYz8BSkUAsoASH4D4xQ4ARvWDG8YHMhDs9Znud7+w5ENQb0mmwOmH34ipGOYaury5Vo0R6D1bFHgfquRZyaKCZ7Va69lE9s3SppqRpYbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711536527; c=relaxed/simple;
-	bh=cLuTmATVqniDZfvN/Fm7nWpy6tZE+44hMyxnr4HpV5o=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=rd4IP3lg7I/MaUIZ4KNi4uZlYdOOM64/jJbvO1wB7a6gA97PIkPRRR76YtF8Ol8hny7sSnA0jkbNfSpb2vxnISbn7r4NWr9HjlxP8/rn4Bx5URQrKVlZFELIhESNf+Q2WZiW83u0mPNPoe+knKXTwn5fG5b4POlVqti0k0y+ARE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=g5JEHzLd; arc=none smtp.client-ip=178.154.239.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:20ad:0:640:1465:0])
-	by forward101c.mail.yandex.net (Yandex) with ESMTPS id 80A7860AB5;
-	Wed, 27 Mar 2024 13:48:35 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XmJp812Og8c0-QEdnrxGE;
-	Wed, 27 Mar 2024 13:48:35 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1711536515; bh=3gdyxb1TvFgt00g2R5qnrrlAAVlR1PMiseWo/ml51zk=;
-	h=Subject:From:Cc:To:Date:Message-ID;
-	b=g5JEHzLdDEvU1QONYFqTmk36WVgPfM3AonuWwli6pfXcCJio6DIhj3+A3DXEAfEcR
-	 3MThqx8p16zg98GLbtXOHMP9NO3gKhbZ1Kpt0k9nUcL3cUTAbZZ4Gk1zCHJXqWsZBC
-	 feXdHIpoxgktGJa8lF2mrZO3+pQf5ZROFJnFT42w=
-Authentication-Results: mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <9d0a3bd8-62d6-43cc-8109-311448ad0867@yandex.ru>
-Date: Wed, 27 Mar 2024 13:48:32 +0300
+	s=arc-20240116; t=1711541860; c=relaxed/simple;
+	bh=ZtDyWzl6vlQGyj4eaqFCotX+i+u9W9h/D1eFqrQAtUY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gxRkq+VY9u5qtwQ/jevhpb6LWQYBL59s4lYBgMJIbaUcg6PmKtn7S4ji44QUgA22slJ2m1neRksfVOUUQcx4d9Bq2wg22yfYGNq7UTYjxEbykBriOuuFqgb9oXnFrz/y52m6vsLd4JsMb69hpqbjnYZUfTLtuXO5fjnavfEaLl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1TpYYJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DFBC433C7;
+	Wed, 27 Mar 2024 12:17:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711541860;
+	bh=ZtDyWzl6vlQGyj4eaqFCotX+i+u9W9h/D1eFqrQAtUY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g1TpYYJfXSp+UFfMu1YyptxA+KMgE6dfKNJpwXbOatJLlrTba2al9tT8D+M0IU3ib
+	 8YXDl95dEInpIoGKdp6j+GLfjYO+At2pBRohAE1H2TzsHeNbDhw6KCwwCHVhtzxXcT
+	 wjBtVd90sgztHjgrCaYcrbajUitknc5O8q8NJrSfDkZL0QdIeI9EMgGEeeIM5aRkzR
+	 QQcPb6ikoNMGmYiiQqJfNMX2Dva29oofXPpIYoBq001DjCq+NWxOL56Fit0rbIeDU0
+	 nM7UubZqs4kLPzTnJbFQueapkxKOjTxjwpDDCEAZeeXNUj9OOTpOG6HXte4vIzLLu1
+	 IU+Kq6jc/KJXg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	jarredwhite@linux.microsoft.com
+Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: FAILED: Patch "ACPI: CPPC: Use access_width over bit_width for system memory accesses" failed to apply to 5.15-stable tree
+Date: Wed, 27 Mar 2024 08:17:38 -0400
+Message-ID: <20240327121738.2833692-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Subject: ACPI BIOS bug and memory leak?
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Patchwork-Hint: ignore
+X-stable: review
+Content-Transfer-Encoding: 8bit
 
-Is it possible that this:
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-[    7.727080] ACPI BIOS Error (bug): Could not resolve symbol [\_TZ.ETMD], AE_NOT_FOUND (20230628/psargs-335)
-[    7.728470] ACPI Error: Aborting method \_SB.IETM._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
+Thanks,
+Sasha
 
-is somehow related to:
+------------------ original commit in Linus's tree ------------------
 
-unreferenced object 0xffff944e85013d58 (size 56):
-   comm "thermald", pid 966, jiffies 4294674933
-   hex dump (first 32 bytes):
-     00 00 00 00 00 00 00 00 0d 01 2d 00 00 00 00 00  ..........-.....
-     94 8c 05 80 51 b8 ff ff 00 00 00 00 00 00 00 00  ....Q...........
-   backtrace (crc 41e9984d):
-     [<000000004b53f9d1>] kmem_cache_alloc+0x256/0x340
-     [<000000008d9ead3a>] acpi_ps_alloc_op+0xbf/0xd0
-     [<000000002f1e617e>] acpi_ps_get_next_arg+0xbb/0x6a0
-     [<00000000b697bac7>] acpi_ps_parse_loop+0x466/0x6b0
-     [<000000008dbc2acb>] acpi_ps_parse_aml+0x80/0x3c0
-     [<00000000b26066ae>] acpi_ps_execute_method+0x13f/0x270
-     [<00000000f80592ab>] acpi_ns_evaluate+0x12b/0x2c0
-     [<00000000bbc91886>] acpi_evaluate_object+0x14e/0x310
-     [<000000005729c43d>] acpi_run_osc+0x158/0x270
-     [<00000000e6666993>] int3400_thermal_run_osc+0x73/0xc0 [int3400_thermal]
-     [<000000000a474314>] current_uuid_store+0xd5/0x110 [int3400_thermal]
-     [<00000000e27be786>] kernfs_fop_write_iter+0x13e/0x1f0
-     [<00000000992f9e08>] vfs_write+0x293/0x460
-     [<000000008b9e130c>] ksys_write+0x6d/0xf0
-     [<000000007d501d09>] do_syscall_64+0x85/0x170
-     [<0000000073c5a34b>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
+From 2f4a4d63a193be6fd530d180bb13c3592052904c Mon Sep 17 00:00:00 2001
+From: Jarred White <jarredwhite@linux.microsoft.com>
+Date: Fri, 1 Mar 2024 11:25:59 -0800
+Subject: [PATCH] ACPI: CPPC: Use access_width over bit_width for system memory
+ accesses
 
-(recently observed on 6.9.0-rc1)
+To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
+cannot be depended on to be always on a clean 8b boundary. This was
+uncovered on the Cobalt 100 platform.
 
-Dmitry
+SError Interrupt on CPU26, code 0xbe000011 -- SError
+ CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted 5.15.2.1-13 #1
+ Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+ pstate: 62400009 (nZCv daif +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
+ pc : cppc_get_perf_caps+0xec/0x410
+ lr : cppc_get_perf_caps+0xe8/0x410
+ sp : ffff8000155ab730
+ x29: ffff8000155ab730 x28: ffff0080139d0038 x27: ffff0080139d0078
+ x26: 0000000000000000 x25: ffff0080139d0058 x24: 00000000ffffffff
+ x23: ffff0080139d0298 x22: ffff0080139d0278 x21: 0000000000000000
+ x20: ffff00802b251910 x19: ffff0080139d0000 x18: ffffffffffffffff
+ x17: 0000000000000000 x16: ffffdc7e111bad04 x15: ffff00802b251008
+ x14: ffffffffffffffff x13: ffff013f1fd63300 x12: 0000000000000006
+ x11: ffffdc7e128f4420 x10: 0000000000000000 x9 : ffffdc7e111badec
+ x8 : ffff00802b251980 x7 : 0000000000000000 x6 : ffff0080139d0028
+ x5 : 0000000000000000 x4 : ffff0080139d0018 x3 : 00000000ffffffff
+ x2 : 0000000000000008 x1 : ffff8000155ab7a0 x0 : 0000000000000000
+ Kernel panic - not syncing: Asynchronous SError Interrupt
+ CPU: 26 PID: 1510 Comm: systemd-udevd Not tainted
+5.15.2.1-13 #1
+ Hardware name: MICROSOFT CORPORATION, BIOS MICROSOFT CORPORATION
+ Call trace:
+  dump_backtrace+0x0/0x1e0
+  show_stack+0x24/0x30
+  dump_stack_lvl+0x8c/0xb8
+  dump_stack+0x18/0x34
+  panic+0x16c/0x384
+  add_taint+0x0/0xc0
+  arm64_serror_panic+0x7c/0x90
+  arm64_is_fatal_ras_serror+0x34/0xa4
+  do_serror+0x50/0x6c
+  el1h_64_error_handler+0x40/0x74
+  el1h_64_error+0x7c/0x80
+  cppc_get_perf_caps+0xec/0x410
+  cppc_cpufreq_cpu_init+0x74/0x400 [cppc_cpufreq]
+  cpufreq_online+0x2dc/0xa30
+  cpufreq_add_dev+0xc0/0xd4
+  subsys_interface_register+0x134/0x14c
+  cpufreq_register_driver+0x1b0/0x354
+  cppc_cpufreq_init+0x1a8/0x1000 [cppc_cpufreq]
+  do_one_initcall+0x50/0x250
+  do_init_module+0x60/0x27c
+  load_module+0x2300/0x2570
+  __do_sys_finit_module+0xa8/0x114
+  __arm64_sys_finit_module+0x2c/0x3c
+  invoke_syscall+0x78/0x100
+  el0_svc_common.constprop.0+0x180/0x1a0
+  do_el0_svc+0x84/0xa0
+  el0_svc+0x2c/0xc0
+  el0t_64_sync_handler+0xa4/0x12c
+  el0t_64_sync+0x1a4/0x1a8
+
+Instead, use access_width to determine the size and use the offset and
+width to shift and mask the bits to read/write out. Make sure to add a
+check for system memory since pcc redefines the access_width to
+subspace id.
+
+If access_width is not set, then fall back to using bit_width.
+
+Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+[ rjw: Subject and changelog edits, comment adjustments ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/cppc_acpi.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index d155a86a86148..b954ce3638a9c 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -166,6 +166,13 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, reference_perf);
+ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+ 
++/* Check for valid access_width, otherwise, fallback to using bit_width */
++#define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
++
++/* Shift and apply the mask for CPC reads/writes */
++#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
++					GENMASK(((reg)->bit_width), 0)))
++
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
+ {
+@@ -780,6 +787,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 			} else if (gas_t->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+ 				if (gas_t->address) {
+ 					void __iomem *addr;
++					size_t access_width;
+ 
+ 					if (!osc_cpc_flexible_adr_space_confirmed) {
+ 						pr_debug("Flexible address space capability not supported\n");
+@@ -787,7 +795,8 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 							goto out_free;
+ 					}
+ 
+-					addr = ioremap(gas_t->address, gas_t->bit_width/8);
++					access_width = GET_BIT_WIDTH(gas_t) / 8;
++					addr = ioremap(gas_t->address, access_width);
+ 					if (!addr)
+ 						goto out_free;
+ 					cpc_ptr->cpc_regs[i-2].sys_mem_vaddr = addr;
+@@ -983,6 +992,7 @@ int __weak cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ {
+ 	void __iomem *vaddr = NULL;
++	int size;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
+@@ -994,7 +1004,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 	*val = 0;
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = 8 << (reg->access_width - 1);
++		u32 width = GET_BIT_WIDTH(reg);
+ 		u32 val_u32;
+ 		acpi_status status;
+ 
+@@ -1018,7 +1028,9 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
+ 
+-	switch (reg->bit_width) {
++	size = GET_BIT_WIDTH(reg);
++
++	switch (size) {
+ 	case 8:
+ 		*val = readb_relaxed(vaddr);
+ 		break;
+@@ -1037,18 +1049,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		return -EFAULT;
+ 	}
+ 
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		*val = MASK_VAL(reg, *val);
++
+ 	return 0;
+ }
+ 
+ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ {
+ 	int ret_val = 0;
++	int size;
+ 	void __iomem *vaddr = NULL;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = 8 << (reg->access_width - 1);
++		u32 width = GET_BIT_WIDTH(reg);
+ 		acpi_status status;
+ 
+ 		status = acpi_os_write_port((acpi_io_address)reg->address,
+@@ -1070,7 +1086,12 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+ 				val, reg->bit_width);
+ 
+-	switch (reg->bit_width) {
++	size = GET_BIT_WIDTH(reg);
++
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		val = MASK_VAL(reg, val);
++
++	switch (size) {
+ 	case 8:
+ 		writeb_relaxed(val, vaddr);
+ 		break;
+-- 
+2.43.0
+
+
+
+
 
