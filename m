@@ -1,155 +1,96 @@
-Return-Path: <linux-acpi+bounces-4496-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4497-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9122288D7F8
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 08:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 356CE88DB87
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 11:48:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38BE1C25DA5
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 07:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 652FA1C268C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 10:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56DB58104;
-	Wed, 27 Mar 2024 07:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0046B38FA1;
+	Wed, 27 Mar 2024 10:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pFV3igqv"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="g5JEHzLd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward101c.mail.yandex.net (forward101c.mail.yandex.net [178.154.239.212])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB86256769
-	for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 07:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06B02C180
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 10:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.212
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711525554; cv=none; b=Kib2SpXrfERNWKx44cKq+c+/vRbljj4aG5q7e639QL4wgOKLreobaa78bC4AItwjkfG7f1MsTSWdH2NPdilRPiHLu5GhwNEAJNaVdCEEuPOXBm4VUlg5G6tgzCC4N4bvYSzZUA+ReADFsBqfvejqx+O+s0rAhJX4thpBwTMfSHg=
+	t=1711536527; cv=none; b=ZB7fQzOuxPhCpb4AM7KZdXu73yAe0Or+BkDwMhMwvEKs81AzFEmMxXfs9OweK+BGGpQ4J+pfqrPu4DXYZ08VfO2A7xS608ubAUra30dWvVKVeGNCZMDrunT3M1A6IBAi6qhCdKeazI0SCsIw7W2m4jTCKtblVG5aBxgrSPnLoVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711525554; c=relaxed/simple;
-	bh=htKh4Jp4vM0zvCuX4KapTUnP1c1FqeWCRPv1BZ+Q/j8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZVqTScBxfBHFr4BzhhmKfxx4BQJuVLv8C9v/MLK0DvZszcuDuObGfYy/3SQA7ZcjYTBspHaLgJpSZ5gIJ1REVQQCjLkdW1nDzGtnvXeuJWdO5oWGgeJt/aBGNPiZTKZ/JN7TqdSzSPxAg3+bfTvzB3l+feRF+dOlMFWn3KQOpdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pFV3igqv; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a46ea03c2a5so107809066b.1
-        for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 00:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711525551; x=1712130351; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N7K6idk2YeGVu0lxj/Ps3L084ba7NhsvfbgHIaF82R8=;
-        b=pFV3igqvMJ9HjluHp9Vf0MAhtXbNQ842Fbm5B7bFRfSuyEJNxCwy027lyxinbK1zC9
-         ZmCJgklr0fKbMRe7WPKSN44dgzHg7XJjBSV3FngoSqdey2jX7ObyAXRanlG81bHyvJC9
-         czDRKpp5nVwhNhaj/ZJJ8IkU+DBIWxXl+Xu8aRiz5hdIF4t2S1ILUfp3mra0uEIgvPSk
-         40Abq57DGCsYzUOOGqhQB5wN5edTKBiNbfznKNZxmSA999sLsLfdaFmc1K5u5YMzioly
-         BsA41ig8RRChZ86qzkDLsMP7upAELFQFRSga5bJEb4KoTNJRvNjnEqdjCTuLFArvTMda
-         s0nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711525551; x=1712130351;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N7K6idk2YeGVu0lxj/Ps3L084ba7NhsvfbgHIaF82R8=;
-        b=hw2uJtuiWv9tjmXc/t/JPk7c4QtGR51Dwc2T3QMER7yqAHTLCjSa9cYcnpw3FKLIYm
-         U6rbGBehTgGI2QNP4qIwD+prwekv9uaZytK0lqLT5c6IeQEJ0nPhPiqpBlONlS/KPJf5
-         wtSgrSWv/iiALJ69A0X9/3QBKISYJTx35KztGBk5dM/kXUmCXO0f8TY4/qlLDkEJrdwP
-         vCnkrnvVAZ1dg74yw/uHtjL++oHR7n88AiBEoT5WBT5EYpgkboaHtSyzswlEOBzDK0do
-         HPYvJ1UwGXT9/2AQQxIIrUhDf31c8GAbfLoQxBsQbXk57Nzm73xQDGEa/qX7CGX3S0QM
-         gDWw==
-X-Gm-Message-State: AOJu0Yxz6bepOntyku+dMDdUJ5+jRVsBDg11oXSlnEnNgXh7S/ppp54A
-	uT2ScWY7qKveB2f0Antn0ZoN2EXP0P2Zi/Fe2K1flJ9Kp1WSE7CJv000521R/kE=
-X-Google-Smtp-Source: AGHT+IFo1SVbUJhfk2D5dISc82f8C01XAvtK/9Ua8RHBqCpkGF1uNtl0N5fMsZ3xQ2K6OiUoagNCQg==
-X-Received: by 2002:a17:907:e8c:b0:a46:a3d1:679a with SMTP id ho12-20020a1709070e8c00b00a46a3d1679amr4106291ejc.14.1711525551050;
-        Wed, 27 Mar 2024 00:45:51 -0700 (PDT)
-Received: from [127.0.1.1] ([178.197.206.205])
-        by smtp.gmail.com with ESMTPSA id am11-20020a170906568b00b00a474690a946sm4671745ejc.48.2024.03.27.00.45.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Mar 2024 00:45:50 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 27 Mar 2024 08:44:06 +0100
-Subject: [PATCH 19/19] ACPI: drop redundant owner from acpi_driver
+	s=arc-20240116; t=1711536527; c=relaxed/simple;
+	bh=cLuTmATVqniDZfvN/Fm7nWpy6tZE+44hMyxnr4HpV5o=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=rd4IP3lg7I/MaUIZ4KNi4uZlYdOOM64/jJbvO1wB7a6gA97PIkPRRR76YtF8Ol8hny7sSnA0jkbNfSpb2vxnISbn7r4NWr9HjlxP8/rn4Bx5URQrKVlZFELIhESNf+Q2WZiW83u0mPNPoe+knKXTwn5fG5b4POlVqti0k0y+ARE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=g5JEHzLd; arc=none smtp.client-ip=178.154.239.212
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:20ad:0:640:1465:0])
+	by forward101c.mail.yandex.net (Yandex) with ESMTPS id 80A7860AB5;
+	Wed, 27 Mar 2024 13:48:35 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id XmJp812Og8c0-QEdnrxGE;
+	Wed, 27 Mar 2024 13:48:35 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1711536515; bh=3gdyxb1TvFgt00g2R5qnrrlAAVlR1PMiseWo/ml51zk=;
+	h=Subject:From:Cc:To:Date:Message-ID;
+	b=g5JEHzLdDEvU1QONYFqTmk36WVgPfM3AonuWwli6pfXcCJio6DIhj3+A3DXEAfEcR
+	 3MThqx8p16zg98GLbtXOHMP9NO3gKhbZ1Kpt0k9nUcL3cUTAbZZ4Gk1zCHJXqWsZBC
+	 feXdHIpoxgktGJa8lF2mrZO3+pQf5ZROFJnFT42w=
+Authentication-Results: mail-nwsmtp-smtp-production-main-90.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+Message-ID: <9d0a3bd8-62d6-43cc-8109-311448ad0867@yandex.ru>
+Date: Wed, 27 Mar 2024 13:48:32 +0300
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi@vger.kernel.org
+From: Dmitry Antipov <dmantipov@yandex.ru>
+Subject: ACPI BIOS bug and memory leak?
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240327-b4-module-owner-acpi-v1-19-725241a2d224@linaro.org>
-References: <20240327-b4-module-owner-acpi-v1-0-725241a2d224@linaro.org>
-In-Reply-To: <20240327-b4-module-owner-acpi-v1-0-725241a2d224@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Robert Moore <robert.moore@intel.com>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
- Corentin Chary <corentin.chary@gmail.com>, 
- "Luke D. Jones" <luke@ljones.dev>, Hans de Goede <hdegoede@redhat.com>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>, 
- Daniel Oliveira Nascimento <don@syst.com.br>, 
- =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
- Matan Ziv-Av <matan@svgalib.org>, Mattia Dongili <malattia@linux.it>, 
- Azael Avalos <coproscefalo@gmail.com>, 
- Richard Cochran <richardcochran@gmail.com>, Jeff Sipek <jsipek@vmware.com>, 
- Ajay Kaher <akaher@vmware.com>, Alexey Makhalov <amakhalov@vmware.com>, 
- VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, 
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- acpica-devel@lists.linux.dev, linux-input@vger.kernel.org, 
- netdev@vger.kernel.org, chrome-platform@lists.linux.dev, 
- platform-driver-x86@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=674;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=htKh4Jp4vM0zvCuX4KapTUnP1c1FqeWCRPv1BZ+Q/j8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmA85bDmBUKGxLiw+IE8MXLih8uNdO+fOokRWlT
- TIm2uaEvyuJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZgPOWwAKCRDBN2bmhouD
- 1z6cD/oCytA+t0QmfxlLxr4zYP8tlK64yfX5UfqshoxKOm8kP+7fJ49TPWNAJ/2WOuldx1L8JZP
- GlN8xW/4GU+WN5dsD5vqU4gbr9Fuk5sFzeGpF1Wn+LAWc7Rzm6MSPsGY32bIeJfKiv6H4mha/ps
- 6iC3ilwowIllCYO/VS+7EUinaRgOc4gLWxeG5fsWst0/vaT/ppa+J0RqUaM65oxA2SVXfaGW29Z
- WfdVl9fZ4bIoKvmzM1u0QM8ugLZUVyqdYaaMqZb4oCV9JATh4I80NtpIfy6o4YaCRAmDwxiapUC
- HUHnluTQsUJdqX4wyUG5eukbNSJWoevYgQkyFge+T9YteFs9tbViIAwcMKZDN/XVEY76fDZjxCh
- V9t5i4PTRFJFOxxwQMv34S//WxQreKqDkMyo2m8nbCDEp0dHGXiYPbibrEXk286kkju9dqzQXFL
- SwWC13gJbV5ZXZoYT9ZtKUN7IgyenZ8Emo5hTx8uQQ0hP/r2vwR8uRfZZ2tbr1CEqFdpciqLfBo
- eWfMHiqnX05AtOftT8P6/W5u4JbGxibHOlzGY+SlIFixrIy9beGzWztoHO5v77lVosMNGQixCAH
- Brl8aSiMZnR5rKQUT7+dBC9lBBeAk761YLH+3wjtZoA4c8m63tKEgTknXO4Ny2XJQcxUiykSJaM
- p0b7ggN21hq0YrQ==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-Once all .owner is removed from all acpi_driver instances, drop it from
-the structure.
+Is it possible that this:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+[    7.727080] ACPI BIOS Error (bug): Could not resolve symbol [\_TZ.ETMD], AE_NOT_FOUND (20230628/psargs-335)
+[    7.728470] ACPI Error: Aborting method \_SB.IETM._OSC due to previous error (AE_NOT_FOUND) (20230628/psparse-529)
 
----
+is somehow related to:
 
-This depends on all previous patches. It could go next cycle, after
-things got merged.
----
- include/acpi/acpi_bus.h | 1 -
- 1 file changed, 1 deletion(-)
+unreferenced object 0xffff944e85013d58 (size 56):
+   comm "thermald", pid 966, jiffies 4294674933
+   hex dump (first 32 bytes):
+     00 00 00 00 00 00 00 00 0d 01 2d 00 00 00 00 00  ..........-.....
+     94 8c 05 80 51 b8 ff ff 00 00 00 00 00 00 00 00  ....Q...........
+   backtrace (crc 41e9984d):
+     [<000000004b53f9d1>] kmem_cache_alloc+0x256/0x340
+     [<000000008d9ead3a>] acpi_ps_alloc_op+0xbf/0xd0
+     [<000000002f1e617e>] acpi_ps_get_next_arg+0xbb/0x6a0
+     [<00000000b697bac7>] acpi_ps_parse_loop+0x466/0x6b0
+     [<000000008dbc2acb>] acpi_ps_parse_aml+0x80/0x3c0
+     [<00000000b26066ae>] acpi_ps_execute_method+0x13f/0x270
+     [<00000000f80592ab>] acpi_ns_evaluate+0x12b/0x2c0
+     [<00000000bbc91886>] acpi_evaluate_object+0x14e/0x310
+     [<000000005729c43d>] acpi_run_osc+0x158/0x270
+     [<00000000e6666993>] int3400_thermal_run_osc+0x73/0xc0 [int3400_thermal]
+     [<000000000a474314>] current_uuid_store+0xd5/0x110 [int3400_thermal]
+     [<00000000e27be786>] kernfs_fop_write_iter+0x13e/0x1f0
+     [<00000000992f9e08>] vfs_write+0x293/0x460
+     [<000000008b9e130c>] ksys_write+0x6d/0xf0
+     [<000000007d501d09>] do_syscall_64+0x85/0x170
+     [<0000000073c5a34b>] entry_SYSCALL_64_after_hwframe+0x6c/0x74
 
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 7453be56f855..32aae3ee99ac 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -170,7 +170,6 @@ struct acpi_driver {
- 	unsigned int flags;
- 	struct acpi_device_ops ops;
- 	struct device_driver drv;
--	struct module *owner;
- };
- 
- /*
+(recently observed on 6.9.0-rc1)
 
--- 
-2.34.1
-
+Dmitry
 
