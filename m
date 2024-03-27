@@ -1,260 +1,270 @@
-Return-Path: <linux-acpi+bounces-4469-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4470-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E3888D002
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 22:27:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEB588D38C
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 01:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D814B25517
-	for <lists+linux-acpi@lfdr.de>; Tue, 26 Mar 2024 21:27:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E971C2472B
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 00:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA90C13D880;
-	Tue, 26 Mar 2024 21:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB854F9F7;
+	Wed, 27 Mar 2024 00:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lEAB+IBp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RB+f1HrN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC2413D632;
-	Tue, 26 Mar 2024 21:27:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711488437; cv=fail; b=h1hCTdDur5L1RZ9YxoO1RXnFMoE31bN+6hxykDLpubg7oafTmlBHBFfgtZd13pg5mSy/nJykwPLasiioE8nJ9G+FzqcTpCu39zGUmgTljFwVHUBFhd5WYsxE7F3zra/T0D7RvNvPjz+NuFo/SUBrSCwCiCaS2333uRuaZeXgDm4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711488437; c=relaxed/simple;
-	bh=uWEN28y8cxM+7Tcx8QgD9+QUIs2CmTCNLSfyQiDHvZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aXUHvIjlYpr++BeF83i4OmkSzKQPKe/tVkPiPMEyBgZ6TZIRC2MeTXOLSgFKOopgBbVGq8acCv5MZMye5d7IN05/HHFPFOrkOB9EVxmcHpYOfIjr2Mu0t1k/cwRFYlyg3VdFKJOQyn7ZkbptW8DZr5gFy2p8/4zWGAkadNHsMXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lEAB+IBp; arc=fail smtp.client-ip=40.107.236.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lBKSv4tM0umGwUKYbidNVVfA5aKOK9gk5XtaDq0Q51CMuEBySb8svCOICV4AhJyYg3L1i2BxOxBrmbC0ZAJ78zN0mob990+m/JiV9xdR4a9XRlCVGK+zi7ddr0AcoNOp2nhg8So4ZdZznXYK+knph3mM6y8CFz4FCrdfvM/aeyYKZnhOXbyIn6LtZYIELd+KXEb6uCJyjRPuFBTXnaGUsO+fQf5Igte2C2vY4Iv/56crv8qrmmND0n+eIMudEbOtN1CE6bwnAj7zHWQC5aIjRxjZjPX5qi9XtAJZ6qGIuSr2Wc0YZRuJqA1tkRajmprdySQVvNRFZ8DfTxJX0tVEOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ns7AoyqkgI3sgzvCx+xSUTBQed0dAEKftJstVRghqtc=;
- b=idW6SFW3QwwdFp69+GntSMetFFaU7oFz6iB1vy8cScz4OOLKLbQXGtd+WvxQ5B3khj/e15OE2Rg441Wuo9a1AHaV8aHNJpbXS6wDVmS0fSqKrtNJK3f2ZIrGsm8evObhTNV2tAZ3JD/ntMSwl+GHUuE/TAJdBIi2FA8l0psKuTpufzJskM8zGG774Qc/Do8vtViBuDWerKo1EWL60ak5xZInyueEqKde8HQF/CtZrAxORYzFA+TNQAGWDNGpLgOVNAjvz8hDrhxP9Npi04p834WE4lNnTTbPrebH/hIx/ERubmGVtilppuSltdWgt1XL+h01zpd5aJdb9EDKAG/YuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ns7AoyqkgI3sgzvCx+xSUTBQed0dAEKftJstVRghqtc=;
- b=lEAB+IBpJfNuBojV+1ec+FCe+NNY37IbeLH/TSJGsdfXsYquQt9uUnXwavYs23U3ORj4VOzgTAAxVXbrznPFfOHNG/guAawQVlSbpAGE6c7ha9Ic1fVvQA1HA3neMWmDoFIrT0CV3JGIPrsgA14ImBNYjReVOgSM4HukyIYdiLk=
-Received: from BN9PR03CA0924.namprd03.prod.outlook.com (2603:10b6:408:107::29)
- by CH3PR12MB7644.namprd12.prod.outlook.com (2603:10b6:610:14f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Tue, 26 Mar
- 2024 21:27:12 +0000
-Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
- (2603:10b6:408:107:cafe::31) by BN9PR03CA0924.outlook.office365.com
- (2603:10b6:408:107::29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.13 via Frontend
- Transport; Tue, 26 Mar 2024 21:27:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Tue, 26 Mar 2024 21:27:12 +0000
-Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 26 Mar
- 2024 16:27:09 -0500
-From: John Allen <john.allen@amd.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <bp@alien8.de>,
-	<yazen.ghannam@amd.com>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-edac@vger.kernel.org>, John Allen <john.allen@amd.com>
-Subject: [PATCH 2/2] RAS/AMD/ATL: Translate normalized to system physical addresses using PRM
-Date: Tue, 26 Mar 2024 21:26:40 +0000
-Message-ID: <20240326212640.96920-3-john.allen@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240326212640.96920-1-john.allen@amd.com>
-References: <20240326212640.96920-1-john.allen@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9CD17547;
+	Wed, 27 Mar 2024 00:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711501030; cv=none; b=EXPRr3z7YmoL1OblOfcdfQrqDl38BJve3f6/m+2cr/wN3L1hci7QlyeU1e3ZNo59Oj686g+h+toY+2xU3tMBg+oVCtHfnkMbDx1u5JCiw6zKH4dJ8mUD5xA53Zc94u42WsY+wRqtqKUIQk85XboZpff0AL8y/sM1RjySJSTxIm8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711501030; c=relaxed/simple;
+	bh=zb4Sspc2/Dkp2hoYl16xLo2UI4ZH9fY9R/loa4b2xRU=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=DgHMNpnMlzlV7AdvXkTEI+uxyR/mtAnPwgueGUWx4XaH3gvR4ymKVnoGCtmnDpYcs35aINB0JS/E/o7lVi51kG0WwMnMpIhoYFGFSiB7Xo+PeL58av0IjhO2SQhTR0Js44gjCAQodPTGWoc12dnUJFsEab1kZrQo7bXUq43foJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RB+f1HrN; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711501028; x=1743037028;
+  h=date:from:to:cc:subject:message-id;
+  bh=zb4Sspc2/Dkp2hoYl16xLo2UI4ZH9fY9R/loa4b2xRU=;
+  b=RB+f1HrNZ5PJNrdk8DwnejQjcw+9UELo2YdO1vflq1boiZiD99aufGhy
+   nALWc5iyI4MnWbnxW/4PX/evLBNuw8gkTsx+3cN1e1vCHyUCe/ATjWhTk
+   m7Im3enFgujx7C7/pZF4smFSXp7GZHU9X8SC1tYdYecxXYWhK8S+S/qxq
+   7J308/h69IRUFYry32zfiERnG4UzKB/9usqNqZeQ8tur97CLgWU+puSwK
+   2lp07FWQRitcTBXm+hoi7brHdmmxyqA3pYj0o6DgLauNig5OCgwTybugW
+   YqmyuZDH5u9EmAsbqzKouCUdpGK8uk7Xl8G/dnQPUMM/C6r+rpSQdNqV2
+   w==;
+X-CSE-ConnectionGUID: zDXwGtEtQKqar5wE+0jeCA==
+X-CSE-MsgGUID: ytl/P8twTGezmAxJx+kaEg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="24072208"
+X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
+   d="scan'208";a="24072208"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Mar 2024 17:57:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,157,1708416000"; 
+   d="scan'208";a="16126360"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 26 Mar 2024 17:57:06 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rpHbE-0000Zv-0I;
+	Wed, 27 Mar 2024 00:57:04 +0000
+Date: Wed, 27 Mar 2024 08:56:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 497faca9b45e03b5695f1ca41e665c39265f0d28
+Message-ID: <202403270826.DvXjQsh9-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|CH3PR12MB7644:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e0807f2-28c9-4439-aa8b-08dc4ddb8042
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	hKR98Wvl+QHNIuTyBLIERfh4gloTK/hIFiZl92cjwsoaaBySBN+C9OGipM8gW6S9RLhOxMstoABl5AuPqYZFDRAqh/zvfotYsXVMgZrAMMb8/vu+04+imNc6F9t9T1J2LyDC4hqA97QxAghhPhPIn8pPClZIkxhjUTuRlMaZY9G75QMlIb9urlPfpT8gq7qm5R229bU6qsCmkRX4N6PoJhQMShECIleWjhyS40Z+zIKXulFStvO3RYQMY3ozIEC2ezxNugsNgand23wLXduGMLvZf4qeWOT52PbXNidmloDtWnsDCE5xHJi/X+pSRMxZvs//EJNfborAAxxjd7fgNAcTKx6ggaFqx0Z6YH9G0iNyZN74UJmxp2NNUiwGrO0f9wxf1nx7Fn+6KNRTEyYm7EWBhve6B5UmzxQa45X2SE++WrZGF9Nx+kq916I8JRtgEfGTCAKVcZjsUDr00U8Pf6KgClsV8npK6/D6BUQX8TO/xeT+i4+oFGhm4v6AeyaXw8dqs2SmigVvSzLNjuvmVnhCzA7y/6HNNfutWXz3sDHLOGbxY8zGZo2HstCNrat2djPFnPz3TUpR+Tl8bim7PB6wJSh8zanK1J492mHDtf/nCgtjmbHD9iK1poWbOWTNCsEdGpvx2NHfKZb4BpBsplSK+qz32a+DQhJjX1COgpvA/NZtYpy6p0EkKj/JQNRxHofE7nr8ighx7axYfKmpChltREALJTtR+4/tMC1BmyEENlfInRFhGaSaROeq4zrK
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(82310400014)(376005)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Mar 2024 21:27:12.2766
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e0807f2-28c9-4439-aa8b-08dc4ddb8042
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000044A2.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7644
 
-Future AMD platforms will provide a UEFI PRM module that implements a
-number of address translation PRM handlers. This will provide an
-interface for the OS to call platform specific code without requiring
-the use of SMM or other heavy firmware operations.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 497faca9b45e03b5695f1ca41e665c39265f0d28  Merge branch 'acpica' into bleeding-edge
 
-AMD Zen-based systems report memory error addresses through Machine
-Check banks representing Unified Memory Controllers (UMCs) in the form
-of UMC relative "normalized" addresses. A normalized address must be
-converted to a system physical address to be usable by the OS.
+elapsed time: 738m
 
-Add support for the normalized to system physical address translation
-PRM handler in the AMD Address Translation Library and prefer it over
-native code if available. The GUID and parameter buffer structure are
-specific to the normalized to system physical address handler provided
-by the address translation PRM module included in future AMD systems.
+configs tested: 178
+configs skipped: 3
 
-The address translation PRM module is documented in chapter 22 of the
-publicly available "AMD Family 1Ah Models 00h–0Fh and Models 10h–1Fh
-ACPI v6.5 Porting Guide":
-https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/58088-0.75-pub.pdf
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Signed-off-by: John Allen <john.allen@amd.com>
----
- drivers/ras/amd/atl/Makefile   |  1 +
- drivers/ras/amd/atl/internal.h |  2 ++
- drivers/ras/amd/atl/prm.c      | 61 ++++++++++++++++++++++++++++++++++
- drivers/ras/amd/atl/umc.c      |  5 +++
- 4 files changed, 69 insertions(+)
- create mode 100644 drivers/ras/amd/atl/prm.c
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                     nsimosci_hs_defconfig   gcc  
+arc                   randconfig-001-20240326   gcc  
+arc                   randconfig-002-20240326   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                      jornada720_defconfig   clang
+arm                   randconfig-001-20240326   gcc  
+arm                   randconfig-002-20240326   gcc  
+arm                   randconfig-003-20240326   gcc  
+arm                   randconfig-004-20240326   gcc  
+arm                          sp7021_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240326   clang
+arm64                 randconfig-002-20240326   clang
+arm64                 randconfig-003-20240326   gcc  
+arm64                 randconfig-004-20240326   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240326   gcc  
+csky                  randconfig-002-20240326   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240326   clang
+hexagon               randconfig-002-20240326   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240326   gcc  
+i386         buildonly-randconfig-002-20240326   clang
+i386         buildonly-randconfig-003-20240326   clang
+i386         buildonly-randconfig-004-20240326   gcc  
+i386         buildonly-randconfig-005-20240326   gcc  
+i386         buildonly-randconfig-006-20240326   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240326   gcc  
+i386                  randconfig-002-20240326   gcc  
+i386                  randconfig-003-20240326   gcc  
+i386                  randconfig-004-20240326   clang
+i386                  randconfig-005-20240326   gcc  
+i386                  randconfig-006-20240326   clang
+i386                  randconfig-011-20240326   clang
+i386                  randconfig-012-20240326   gcc  
+i386                  randconfig-013-20240326   clang
+i386                  randconfig-014-20240326   clang
+i386                  randconfig-015-20240326   clang
+i386                  randconfig-016-20240326   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240326   gcc  
+loongarch             randconfig-002-20240326   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                          atari_defconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                          ath79_defconfig   gcc  
+mips                           ip27_defconfig   gcc  
+mips                           jazz_defconfig   clang
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240326   gcc  
+nios2                 randconfig-002-20240326   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+openrisc                  or1klitex_defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240326   gcc  
+parisc                randconfig-002-20240326   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                   microwatt_defconfig   gcc  
+powerpc               randconfig-001-20240326   clang
+powerpc               randconfig-002-20240326   gcc  
+powerpc               randconfig-003-20240326   clang
+powerpc                    socrates_defconfig   gcc  
+powerpc                 xes_mpc85xx_defconfig   gcc  
+powerpc64             randconfig-001-20240326   gcc  
+powerpc64             randconfig-002-20240326   gcc  
+powerpc64             randconfig-003-20240326   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240326   gcc  
+riscv                 randconfig-002-20240326   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240326   clang
+s390                  randconfig-002-20240326   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240326   gcc  
+sh                    randconfig-002-20240326   gcc  
+sh                           se7712_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                       sparc32_defconfig   gcc  
+sparc                       sparc64_defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240326   gcc  
+sparc64               randconfig-002-20240326   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240326   gcc  
+um                    randconfig-002-20240326   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240327   gcc  
+x86_64       buildonly-randconfig-002-20240327   gcc  
+x86_64       buildonly-randconfig-003-20240327   gcc  
+x86_64       buildonly-randconfig-004-20240327   clang
+x86_64       buildonly-randconfig-005-20240327   gcc  
+x86_64       buildonly-randconfig-006-20240327   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240327   clang
+x86_64                randconfig-002-20240327   gcc  
+x86_64                randconfig-003-20240327   gcc  
+x86_64                randconfig-004-20240327   gcc  
+x86_64                randconfig-005-20240327   clang
+x86_64                randconfig-006-20240327   clang
+x86_64                randconfig-011-20240327   gcc  
+x86_64                randconfig-012-20240327   clang
+x86_64                randconfig-013-20240327   clang
+x86_64                randconfig-014-20240327   clang
+x86_64                randconfig-015-20240327   clang
+x86_64                randconfig-016-20240327   clang
+x86_64                randconfig-071-20240327   gcc  
+x86_64                randconfig-072-20240327   clang
+x86_64                randconfig-073-20240327   clang
+x86_64                randconfig-074-20240327   clang
+x86_64                randconfig-075-20240327   clang
+x86_64                randconfig-076-20240327   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                           alldefconfig   gcc  
+xtensa                            allnoconfig   gcc  
+xtensa                       common_defconfig   gcc  
 
-diff --git a/drivers/ras/amd/atl/Makefile b/drivers/ras/amd/atl/Makefile
-index 4acd5f05bd9c..8f1afa793e3b 100644
---- a/drivers/ras/amd/atl/Makefile
-+++ b/drivers/ras/amd/atl/Makefile
-@@ -14,5 +14,6 @@ amd_atl-y		+= denormalize.o
- amd_atl-y		+= map.o
- amd_atl-y		+= system.o
- amd_atl-y		+= umc.o
-+amd_atl-y		+= prm.o
- 
- obj-$(CONFIG_AMD_ATL)	+= amd_atl.o
-diff --git a/drivers/ras/amd/atl/internal.h b/drivers/ras/amd/atl/internal.h
-index 5de69e0bb0f9..f739dcada126 100644
---- a/drivers/ras/amd/atl/internal.h
-+++ b/drivers/ras/amd/atl/internal.h
-@@ -234,6 +234,8 @@ int dehash_address(struct addr_ctx *ctx);
- unsigned long norm_to_sys_addr(u8 socket_id, u8 die_id, u8 coh_st_inst_id, unsigned long addr);
- unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err);
- 
-+unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr);
-+
- /*
-  * Make a gap in @data that is @num_bits long starting at @bit_num.
-  * e.g. data		= 11111111'b
-diff --git a/drivers/ras/amd/atl/prm.c b/drivers/ras/amd/atl/prm.c
-new file mode 100644
-index 000000000000..54a69e660eb5
---- /dev/null
-+++ b/drivers/ras/amd/atl/prm.c
-@@ -0,0 +1,61 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * AMD Address Translation Library
-+ *
-+ * prm.c : Plumbing code to UEFI Platform Runtime Mechanism (PRM)
-+ *
-+ * Copyright (c) 2024, Advanced Micro Devices, Inc.
-+ * All Rights Reserved.
-+ *
-+ * Author: John Allen <john.allen@amd.com>
-+ */
-+
-+#include "internal.h"
-+
-+#if defined(CONFIG_ACPI_PRMT)
-+
-+#include <linux/prmt.h>
-+
-+struct prm_umc_param_buffer_norm {
-+	u64 norm_addr;
-+	u8 socket;
-+	u64 umc_bank_inst_id;
-+	void *output_buffer;
-+} __packed;
-+
-+const guid_t norm_to_sys_prm_handler_guid = GUID_INIT(0xE7180659, 0xA65D,
-+						      0x451D, 0x92, 0xCD,
-+						      0x2B, 0x56, 0xF1, 0x2B,
-+						      0xEB, 0xA6);
-+
-+unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr)
-+{
-+	struct prm_umc_param_buffer_norm param_buffer;
-+	unsigned long ret_addr;
-+	int ret;
-+
-+	param_buffer.norm_addr        = addr;
-+	param_buffer.socket           = socket_id;
-+	param_buffer.umc_bank_inst_id = umc_bank_inst_id;
-+	param_buffer.output_buffer    = &ret_addr;
-+
-+	ret = acpi_call_prm_handler(norm_to_sys_prm_handler_guid, &param_buffer);
-+	if (!ret)
-+		return ret_addr;
-+
-+	if (ret == -ENODEV)
-+		pr_info("PRM module/handler not available\n");
-+	else
-+		pr_info("PRM address translation failed\n");
-+
-+	return ret;
-+}
-+
-+#else /* ACPI_PRMT */
-+
-+unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr)
-+{
-+	return -ENODEV;
-+}
-+
-+#endif
-diff --git a/drivers/ras/amd/atl/umc.c b/drivers/ras/amd/atl/umc.c
-index 59b6169093f7..954cbe6bf465 100644
---- a/drivers/ras/amd/atl/umc.c
-+++ b/drivers/ras/amd/atl/umc.c
-@@ -333,9 +333,14 @@ unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
- 	u8 coh_st_inst_id = get_coh_st_inst_id(err);
- 	unsigned long addr = get_addr(err->addr);
- 	u8 die_id = get_die_id(err);
-+	unsigned long ret_addr;
- 
- 	pr_debug("socket_id=0x%x die_id=0x%x coh_st_inst_id=0x%x addr=0x%016lx",
- 		 socket_id, die_id, coh_st_inst_id, addr);
- 
-+	ret_addr = prm_umc_norm_to_sys_addr(socket_id, err->ipid, addr);
-+	if (!IS_ERR_VALUE(ret_addr))
-+		return ret_addr;
-+
- 	return norm_to_sys_addr(socket_id, die_id, coh_st_inst_id, addr);
- }
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
