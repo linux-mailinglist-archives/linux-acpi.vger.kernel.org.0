@@ -1,114 +1,159 @@
-Return-Path: <linux-acpi+bounces-4503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C896488E96F
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 16:41:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E71888E974
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 16:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E4FD1F32014
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 15:41:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE63A1F254E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66EF131BD8;
-	Wed, 27 Mar 2024 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815A36FE35;
+	Wed, 27 Mar 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pwfkdvz/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lunxU8RP"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFABF12FF74;
-	Wed, 27 Mar 2024 15:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4194503E
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 15:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711553707; cv=none; b=tsQ74LYvIwLvPUoaeZn0HXGma23kFD/hT2K/5cmiPecipf8xsv4z9OqDLj2gT0C9pgxYZIdO+OSNhZJ6xVJAtrpHw+CABezH0R1IL2a3ONGdog5GpkLVud/UZDgRgtVn6GgWxF7qmcejRn8MJ4usKEpo7GLwojyZKCpDmXqKc9A=
+	t=1711553901; cv=none; b=gBCL4dtR6BwDFkaLsEsbSJkX7vcuTZ4ezdKt5KNqQE6feo4f85nCheTwFsga73NbFnLrNWIIsbVR5wlwweBFK5kAibyINtji0ctb3j66t25raZX/Fk/CF5jXCIgRzsQZ8yc3wV/7tU1BT7mlBxjQ+FpQxelSP+zH9OgNiAGvDN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711553707; c=relaxed/simple;
-	bh=OKOBRjWUmEBgIQQoauzyn2lJtxsFxD/jNHsmS6fQ4YE=;
+	s=arc-20240116; t=1711553901; c=relaxed/simple;
+	bh=TGWadAQ2tq+tUMMTgxCSdYAEq4JOsOJtttw1w9qZKOA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rMw3F4Zkr7Cwb7WUf0z7kjSv798Aw+wlyx8ZcGAqlFIWb98zEgzyNeNULdYnDeIJfoNt8UcZyXTnTWrs0hCNn7tIaCfA+Oi8MEZdcib68QH7qtvT+dVS7ToHBmj/TtXwjLF+n9zGv22Ha98r8GTkElzPKow526gCvbnYy6LHT8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pwfkdvz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A80C43394;
-	Wed, 27 Mar 2024 15:35:07 +0000 (UTC)
+	 To:Cc:Content-Type; b=GlhGTugkGv//4jqDgLO7M4THsIgmZf6lL6g4UDAomNx9vc8mmvGRthvXHpLkj2LkG+uVenqGclDCbQq/0p4WTxoe936l9PWOKNNazj30+OzSiOP9fqRcLelgEQACOVv6VQYRlmstFWl0VZMHGpIyD+47LGKiUVKLcC9MRysaAcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lunxU8RP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB8EC433A6
+	for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 15:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711553707;
-	bh=OKOBRjWUmEBgIQQoauzyn2lJtxsFxD/jNHsmS6fQ4YE=;
+	s=k20201202; t=1711553901;
+	bh=TGWadAQ2tq+tUMMTgxCSdYAEq4JOsOJtttw1w9qZKOA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Pwfkdvz/X7rr2mAqpGmZvB0B8ecBq9LHLmAmpa00j0QbemDCmmS0o68hVnoPkJ9Gk
-	 YPpwqZg/c+2xzVZcp2YJasyjcwOmFSmUNyKAFf4wzn6TwKGSx0+0cA/f2W8USgjkMR
-	 7CVqMA4M/IcqiLyAD8vS+2ezbkmezvMF1CFZ3Ir50RXjc+lH1an5NtCUdR0YfFaNLI
-	 jSrF662YW7otBMatSWokKC+8H7ORA+qaxSPEt4RgOhnNL+9xU54Ew1OPnQb3vzzh2G
-	 IWICpt93yvvr+u/vDtdUdoF43nng3X+9t01NeWfmZ5KT9wvfrG7/OcuFYn5lgAfJ4e
-	 K9fb39sNUn9gQ==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5a46b30857bso1715306eaf.1;
-        Wed, 27 Mar 2024 08:35:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXxsm5TrY2rETOHYftjK3buFSPc+oVJp3jJtAaoT24A0wwS7ySFQXEI0q5Bw090mbBQAR8oOay2mN4Y8ix5ZcbF0cyLCfVUWhX4Qoqv3sJLsDeBXlcsgKtkZpREkpNzCB5ejuuWRX6scg==
-X-Gm-Message-State: AOJu0YyGM2PCVbrD7R7g++N3ChbwiT/4rhq1ZjKy/9ZKj2J8556qww/e
-	tIteKM4TApMHJj5/NjoRWgh66IT4ycNEW2cKPXG0tRptgD4r043jVP6feaR1Y45qTynKKzfk8eQ
-	fwdwsdLpIchzz5k0W0NqH6EUrg/8=
-X-Google-Smtp-Source: AGHT+IFBVjTHKN2OSbd29nBi1LmoTNb/CDz2t7Lc0cIWDApE6Zrrwq/1vp73kdOXVecYtj2lL221LJZ21VkZUIVKeyk=
-X-Received: by 2002:a05:6871:b0a:b0:221:399e:959a with SMTP id
- fq10-20020a0568710b0a00b00221399e959amr24851oab.0.1711553706522; Wed, 27 Mar
- 2024 08:35:06 -0700 (PDT)
+	b=lunxU8RPo8KfeYLsx9DflJhnnKCrYWqRiBTy0anmWpnIbmQWZ9PtTSDctAuvHS8et
+	 8/8BS+r8LN3Q7r82ZGbOoonEDhPhwcrn9QPqygS5xb1zCPhFVVb8hm3icP8pdBmDME
+	 1sLndGbTVl/YrxXXx1+v5aaklpbP6g1GHRDiyJNbekuid9tQBUYqZ1yfHZpDGUe0gG
+	 dfwcZzdfNTDfj850j6tz8hMPRHKOUFsrtuuRDUjcZtEi4VJ8HVhfarxxWrvVMv4qZ5
+	 dXkZ9JUvxnUcMC9I+UrSwRL/vwWvmCd09umLc+SxAmgkZevK4+Q3+ydUMBGbyhfuzb
+	 NUdBFpwaZEUXg==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5a47680a806so1674327eaf.0
+        for <linux-acpi@vger.kernel.org>; Wed, 27 Mar 2024 08:38:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUen/0YfXkcFOAlr7TSI0T0FVaUmwV4WUyJP2jm9o4YtCOneaI4SmKaqSPi99NR5nt6aBml9ZYi4xs1QtYtrYuicttLOVYKAgbPIA==
+X-Gm-Message-State: AOJu0YxeGWXkX9hTqCKxo33MQ7BGtvv29mM+KpigRTTt3TI1QI0L62E3
+	282fwwnTpjdFE1QWynnL/BqWcxVi36j8lwf03enlHM+cbppKyUcHp7CIbMD/uMIG+HGaNKw2XM3
+	rJ5hVpAR6ibTBCicbX1ZX/qjga7g=
+X-Google-Smtp-Source: AGHT+IHoWak7xNJJgMoGB8zzNTCbHPaxIgA8QqRXrG/qY+kTaMz3BM5vrxEIrAPlebjcSKXMXnX5Kfyy4tt8O1xsYog=
+X-Received: by 2002:a05:6808:13cc:b0:3c3:ce25:ac93 with SMTP id
+ d12-20020a05680813cc00b003c3ce25ac93mr288708oiw.2.1711553900445; Wed, 27 Mar
+ 2024 08:38:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <SY4P282MB3063EE2CC37BD0EF2318B746C5362@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
-In-Reply-To: <SY4P282MB3063EE2CC37BD0EF2318B746C5362@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+References: <20240319083018.3159716-1-cezary.rojewski@intel.com>
+In-Reply-To: <20240319083018.3159716-1-cezary.rojewski@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 27 Mar 2024 16:34:55 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0iogogd+AxL5ZPU-80Nj-nQz4avkymaPRPa4SiJdvBfjg@mail.gmail.com>
-Message-ID: <CAJZ5v0iogogd+AxL5ZPU-80Nj-nQz4avkymaPRPa4SiJdvBfjg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: thermal_lib: Continue registering thermal zones
- even if trip points fail validation
-To: Stephen Horvath <s.horvath@outlook.com.au>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 27 Mar 2024 16:38:09 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ixaTvE2pejR4mTZUQHsYJU5MTaoCVsdq19UwcEgqqo1w@mail.gmail.com>
+Message-ID: <CAJZ5v0ixaTvE2pejR4mTZUQHsYJU5MTaoCVsdq19UwcEgqqo1w@mail.gmail.com>
+Subject: Re: [PATCH v8 0/4] ACPI: NHLT: Access and query helpers
+To: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, robert.moore@intel.com, 
+	amadeuszx.slawinski@linux.intel.com, pierre-louis.bossart@linux.intel.com, 
+	andriy.shevchenko@linux.intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 25, 2024 at 5:44=E2=80=AFAM Stephen Horvath
-<s.horvath@outlook.com.au> wrote:
+On Tue, Mar 19, 2024 at 9:28=E2=80=AFAM Cezary Rojewski
+<cezary.rojewski@intel.com> wrote:
 >
-> Some laptops where the thermal control is handled by the EC may
-> provide trip points that fail the kernels new validation, but still have
-> working temperature sensors. An example of this is the Framework 13 AMD.
+> The goal of this patchset is to refactor existing interface of
+> Non HDAudio Link Table (NHLT) table so it becomes useful for the Intel
+> AudioDSP sound-drivers. Right now the useful duplicate resides in
+> sound/hda/intel-nhlt.c.
+>
+> The API takes form of query functions that help access device or
+> audio-format configuration space. This information can be then utilized
+> by a sound-driver to perform necessary programming and facilitate
+> streaming over I2S/PDM interfaces. Once the series is merged, existing
+> sound-drivers can move from utilizing sound/hda/intel-nhlt.c to this
+> very code and ultimately the former file can be removed.
+>
+> Paired with equivalent change on ACPICA [1].
+>
+> -
+>
+> Non HDAudio Link Table (NHLT) is designed to separate hardware-related
+> description (registers) from AudioDSP firmware-related one i.e.:
+> pipelines and modules that together make up the audio stream on Intel
+> DSPs. This task is important as same set of hardware registers can be
+> used with different topologies and vice versa, same topology could be
+> utilized with different set of hardware. As the hardware registers
+> description is directly tied to specific platform, intention is to have
+> such description part of low-level firmware e.g.: BIOS.
+>
+> The initial design has been provided in early Sky Lake (SKL) days. The
+> audio architecture goes by the name cAVS. SKL is a representative of
+> cAVS 1.5. The table helps describe endpoint capabilities ever since.
+> While Raptor Lake (RPL) is the last of cAVS architecture - cAVS 2.5 to
+> be precise - its successor, the ACE architecture which begun with
+> Meteor Lake (MTL) inherited the design for all I2S and PDM
+> configurations. These two configurations are the primary targets for
+> NHLT table.
+>
+> Due to naming conflicts with existing code, several structs are named
+> 'nhlt2' rather than 'nhlt'. Last patch cleans the situation up.
+>
+>
+> Changes in v8:
+> - fixed file headers for all added files
+> - commit messages now carry links to ACPICA PRs and relevant commits ids
+>
+> Changes in v7:
+> - added missing headers to nhlt.c/nhlt.h as suggested by Andy
+>
+> Changes in v6:
+> - added comments explaining usage of LINKTYPE and DEVICETYPE constants
+>
+> Changes in v5:
+> - split find_endpoint/fmtcfg() into tb-less and tb-aware variants.
+>   This is to make API scale with 2+ NHLTs and removes the need for
+>   acpi_gbl_nhlt to be accessible globally.
+> - acpi_nhlt_device_config now a union that encompasses all device_config
+>   types.
+>
+> Changes in v4:
+> - relocated ACPI_NHLT kconfig in the drivers/acpi/Kconfig to a more
+>   relevant area within the file
+>
+> Changes in v3:
+> - uncapitalized acpi_gbl_NHLT
+> - fixed compilation problems when CONFIG_ACPI_NHLT is disabled
+> - dropped Reviewed-by tags in the 2/4 patch due to above, those were not
+>   one-line changes
+>
+> Changes in v2:
+> - minor wording improvements in kernel-doc for patch 3/4
+> - dropped parentheses around loop cursors in for_each_nhlt_*() macros
+> - readability improvements in compound if-statements within query
+>   functions
+> - dropped NULL-checks in query functions
+>
+> [1]: https://github.com/acpica/acpica/pull/912
+>
+>
+> Cezary Rojewski (4):
+>   ACPI: NHLT: Reintroduce types the table consists of
+>   ACPI: NHLT: Introduce API for the table
+>   ACPI: NHLT: Drop redundant types
+>   ACPI: NHLT: Streamline struct naming
 
-I believe that this is a regression introduced recently, so would it
-be possible to provide a pointer to the commit that introduced it?
-
-> This patch allows the thermal zone to still be registered without trip
-> points if the trip points fail validation, allowing the temperature
-> sensor to be viewed and used by the user.
->
-> Signed-off-by: Stephen Horvath <s.horvath@outlook.com.au>
-> ---
->  drivers/acpi/thermal.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
-> index 302dce0b2b50..fd59e41037ec 100644
-> --- a/drivers/acpi/thermal.c
-> +++ b/drivers/acpi/thermal.c
-> @@ -903,8 +903,8 @@ static int acpi_thermal_add(struct acpi_device *devic=
-e)
->
->         if (trip =3D=3D trip_table) {
->                 pr_warn(FW_BUG "No valid trip points!\n");
-> -               result =3D -ENODEV;
-> -               goto free_memory;
-> +               /* Effectively disable polling since it is not needed */
-> +               tz->polling_frequency =3D 0;
-
-Because the thermal zone becomes effectively tripless, it should be
-registered with thermal_tripless_zone_device_register().
-
->         }
->
->         result =3D acpi_thermal_register_thermal_zone(tz, trip_table,
-> --
+All applied as 6.10 material, thanks!
 
