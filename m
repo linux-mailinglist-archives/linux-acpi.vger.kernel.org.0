@@ -1,132 +1,94 @@
-Return-Path: <linux-acpi+bounces-4505-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4506-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437D688E99D
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 16:44:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8742188E9CA
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 16:49:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1FEC296EA1
-	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 15:44:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1D91F3597A
+	for <lists+linux-acpi@lfdr.de>; Wed, 27 Mar 2024 15:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDC3127B5A;
-	Wed, 27 Mar 2024 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43F7131191;
+	Wed, 27 Mar 2024 15:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmPtwFae"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="aSYnsKqT"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84518136E10;
-	Wed, 27 Mar 2024 15:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB8C12DDAF;
+	Wed, 27 Mar 2024 15:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711554094; cv=none; b=fS6N9IRIoqDS9dOjLkx9+fF+PKdulO1ci89rzMYR2ZC7dYALLl7w+pQ1NXDMUlt/3B3+rDMwjhITzFqA3zranS0glyOu/UArS4T/X8byUHfDyiGkILw4uISe0VsxQLZ3lnGIN5GvS1ZjiTWCBCzhq2q45Rm3BYObkilmiM/WxS8=
+	t=1711554500; cv=none; b=dFji8geqZ7tJLIU0Qnk9TyK/J2/jL9GvFgUJ05NIGbI1ncaYopOy+lo3Lz9cG0Cu/g+4pWDFfPNTs77nescRZlhAf+MksP/VrQGJzDY5J2s+JYwVY+ziS5z0UE+2gWyu02rhpbbgE/8HMmGnwVOIxZy/LQ45znfRwt2pjiI1Qag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711554094; c=relaxed/simple;
-	bh=LMPJEN0Q1kL6wjZR1BkihkNe0y6p24fFsF8WeVGlrIk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T56lUKAgHOHFTw+qBWHGxiIc0/o9js8QRXzbIBpGgFmM7mnSNJYXP/aZkiaekS3Sf0k7gpAkZnb92Vma0aYlce7fdA4B3wd4NKCBWED2xjMEBzoCYAjHOVJv1YfZ9RsrYPJWJ4oKsRPBGEpe3nfMU7dJmSkiZ9dO1bfExz9UzlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmPtwFae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2438AC43390;
-	Wed, 27 Mar 2024 15:41:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711554094;
-	bh=LMPJEN0Q1kL6wjZR1BkihkNe0y6p24fFsF8WeVGlrIk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EmPtwFaeaWH723l5SGWUHrp/psYuY5+YTcOTDloFhpTsyQ3UtGJyfL36Xw6gGbhz7
-	 M1kCRRJy8laFSHW6sS9/Q5TRwuboL/5+Gmxw5uwoYULVdI+yXtzSsjImqgBaeYXIJa
-	 s1cLagNzzoclapAHQzsSyGi5XIf23OFKZUUeXwcj8yrIhR30GKZY0agHuULqYFV00d
-	 SqPCXfQFBqbDApyntBX/5WHubleBY/Wpu5GpbL4dBeTdUFf8bHqJ3LNl53GZi+S50V
-	 sm1FcIqhpZdklN9X3ACfU49pcp2mtnF5pHV8UYTTvP8OpwwWRqG0WOAYd/hKM/HFmJ
-	 ZqHX4TNNPGvnA==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5a536642635so604395eaf.0;
-        Wed, 27 Mar 2024 08:41:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVVCRYFUzrMfK6p2H+7Tc3b/OqAZEcn3PUD3Nu6hOeQvxuHVL9rNXPvc/RV8PjvIGimeNgZkX9DG8+tyZH+jAX2i5LufgpcR+sv7f55w9/GUU11GYvTwtE24QTNYwAJCoDDfNUObcuzpQ==
-X-Gm-Message-State: AOJu0Ywi3gU82viPnhkOct2vGSncqZKqfgCcDsVcWepcKgim5c0bzD4f
-	+L61uzU/FH+GQkxcFlROV2XItOFlr3PE/2f+InqKbGYI5oZIsABcLF0jJCyp4DPOcaeu7QBG373
-	EyFSGQgKOcZBGO8cHttDtxHnPQMM=
-X-Google-Smtp-Source: AGHT+IHW1/QvDGhLasTLBEzBrf8gKgjH+n1OTLtNGlnZvaDmzs9gTyGz4vmxb2pMwa+y9j4jGilJTLuqCrUIXlp6v2Q=
-X-Received: by 2002:a05:6870:6715:b0:229:e46d:763a with SMTP id
- gb21-20020a056870671500b00229e46d763amr53100oab.0.1711554093467; Wed, 27 Mar
- 2024 08:41:33 -0700 (PDT)
+	s=arc-20240116; t=1711554500; c=relaxed/simple;
+	bh=76OeUfIHMBxJhe8IVfeoWgftOWgpYR+KcvuA/0YJZ20=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rqTv7/ooJgxXT5RnFbdb7CARfYFWZdgV8EK0SeVc0jm7bhpYBAE7PfjbZ+/Tj+FmC1IvPSSgIjhd7xkfsgkzamUsl8u0G2ORZvs1lorbP/8XW3Hdb6wwaReK5L9BH9/E9Km6gWZm69MuwxSGpPgTxiqfj5PW7mv6e7e6yxIa2cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=aSYnsKqT; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.64.128.218] (unknown [20.29.225.195])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8344F2098E07;
+	Wed, 27 Mar 2024 08:48:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8344F2098E07
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1711554498;
+	bh=y+2+9j6sWbPoLeSeuAktrd2FKSwR04iT4UsblobGcEo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aSYnsKqTNvT3v1QSZJomn1eKSsYHIkcl42F7FToV2X9hSN1YPhzZMnutZN+JOtLZ4
+	 BHI1WG/HkmTgSbC05nsvNYmSzXJ6ozZyJEF84DOzH82F09+B9SzfnFx/lD9z2ZL6pn
+	 cd1rjP0mCGRYzc7ljxNor7ODIW35T/dLnrPOV/uI=
+Message-ID: <b34308af-ebc9-4a0e-a27b-90d6e176c526@linux.microsoft.com>
+Date: Wed, 27 Mar 2024 08:48:17 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240309201310.7548-1-W_Armin@gmx.de> <CAJZ5v0hKwThcAO4jMOzi7ySqSv_jHvs_+paBB212qVsaf7LZng@mail.gmail.com>
- <2e8100b0-d87c-413e-bcb1-b91c3ce41633@gmx.de>
-In-Reply-To: <2e8100b0-d87c-413e-bcb1-b91c3ce41633@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 27 Mar 2024 16:41:22 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0idAkoiuXgfGYX-a9ZoNeWxw8CjOnTKCU-00BgcpCwisQ@mail.gmail.com>
-Message-ID: <CAJZ5v0idAkoiuXgfGYX-a9ZoNeWxw8CjOnTKCU-00BgcpCwisQ@mail.gmail.com>
-Subject: Re: [PATCH 0/5] ACPI: bus: _OSC fixes
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: Patch "ACPI: CPPC: Use access_width over bit_width for
+ system memory accesses" failed to apply to 5.15-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ jarredwhite@linux.microsoft.com
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240327121738.2833692-1-sashal@kernel.org>
+Content-Language: en-CA
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+In-Reply-To: <20240327121738.2833692-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 13, 2024 at 11:29=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 12.03.24 um 21:10 schrieb Rafael J. Wysocki:
->
-> > On Sat, Mar 9, 2024 at 9:13=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrot=
-e:
-> >> This patch series fixes the handling of various ACPI features bits
-> >> when evaluating _OSC.
-> >>
-> >> The first three patches fix the reporting of various features supporte=
-d
-> >> by the kernel, while the fourth patch corrects the feature bit used to
-> >> indicate support for the "Generic Initiator Affinity" in SRAT.
-> >>
-> >> The last patch fixes the reporting of IRQ ResourceSource support. Unli=
-ke
-> >> the other feature bits, the ACPI specification states that this featur=
-e
-> >> bit might be used by the ACPI firmware to indicate whether or not it
-> >> supports the usage of IRQ ResourceSource:
-> >>
-> >>          "If not set, the OS may choose to ignore the ResourceSource
-> >>           parameter in the extended interrupt descriptor."
-> >>
-> >> Since the code responsible for parsing IRQ ResourceSource already chec=
-ks
-> >> if ResourceSource is present, i assumed that we can omit taking this
-> >> into account.
-> >>
-> >> All patches where tested on a Asus Prime B650-Plus and a Dell Inspiron
-> >> 3505.
-> >>
-> >> Armin Wolf (5):
-> >>    ACPI: bus: Indicate support for _TFP thru _OSC
-> >>    ACPI: bus: Indicate support for more than 16 p-states thru _OSC
-> >>    ACPI: bus: Indicate support for the Generic Event Device thru _OSC
-> >>    ACPI: Fix Generic Initiator Affinity _OSC bit
-> >>    ACPI: bus: Indicate support for IRQ ResourceSource thru _OSC
-> >>
-> >>   drivers/acpi/bus.c   | 5 +++++
-> >>   include/linux/acpi.h | 6 +++++-
-> >>   2 files changed, 10 insertions(+), 1 deletion(-)
-> >>
-> >> --
-> > All of that looks reasonable to me, but do you know about systems in
-> > the field where any of these patches actually fix functionality?
-> >
-> > If not, I'd prefer to queue them up for 6.10 as they are likely to
-> > change behavior, at least in corner cases.
-> >
-> > Thanks!
->
-> Hi,
->
-> i know no system which even queries those feature bits, so i am fine with
-> this landing in 6.10.
+Hi Sasha,
 
-Now applied as 6.10 material, thanks!
+On 3/27/2024 5:17 AM, Sasha Levin wrote:
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> Thanks,
+> Sasha
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+>>From 2f4a4d63a193be6fd530d180bb13c3592052904c Mon Sep 17 00:00:00 2001
+> From: Jarred White <jarredwhite@linux.microsoft.com>
+> Date: Fri, 1 Mar 2024 11:25:59 -0800
+> Subject: [PATCH] ACPI: CPPC: Use access_width over bit_width for system memory
+>  accesses
+> 
+> To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
+> cannot be depended on to be always on a clean 8b boundary. This was
+> uncovered on the Cobalt 100 platform.
+> 
+
+Please see the backport for this patch I sent earlier: https://lore.kernel.org/stable/6df99ad6-0402-4dcf-9a1c-7259436768dd@linux.microsoft.com/T/#u
+
+Thanks,
+Easwar
+
 
