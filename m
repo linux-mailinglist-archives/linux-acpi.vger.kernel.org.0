@@ -1,158 +1,150 @@
-Return-Path: <linux-acpi+bounces-4523-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4524-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70879890650
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Mar 2024 17:51:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729378907C3
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Mar 2024 18:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A6D1F28430
-	for <lists+linux-acpi@lfdr.de>; Thu, 28 Mar 2024 16:51:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 260C81F28462
+	for <lists+linux-acpi@lfdr.de>; Thu, 28 Mar 2024 17:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3009A53387;
-	Thu, 28 Mar 2024 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8A81304B9;
+	Thu, 28 Mar 2024 17:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZKEa43GU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IffZ6Zq7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2072.outbound.protection.outlook.com [40.107.244.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5487940856;
-	Thu, 28 Mar 2024 16:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711644592; cv=fail; b=bf/a6QFnDIQddWe8KW1eQWxBLCave4i/LTwTIghDCG/27ORdA2hDAtrgxn16ovxrN7O3s5LE82lgwwymNlLBg9m1KX4zmTh4Rrk8wT56JAnKcixdGGgdBbjXappx8si2gBhrI/rDsooC67WfN1ZaxfvojQvZP96RHFJiEv8vd1Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711644592; c=relaxed/simple;
-	bh=vfr8oPqicmvLFiY9/ueM5hD98OphbYDg6wgJEaK7K4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=S7Ufn40qnR1hwD25LzPAuTfQbm4hu1Ay1PvYSq0iV1xYfUmvhphNQJwKqf1ugOSuzcaVdKKrdMHq0GaAnXBClXDxSeOgRqJ0wBTG+bkCvcsJfRWAkvzdHvsfv1kSVVikHW2X9fo8tVuiK2mf6ujhIboWZXRnLfL2q9XtAzcvPGA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZKEa43GU; arc=fail smtp.client-ip=40.107.244.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ILjjrSQddzZ4WTrm2w1BCs43Z1VT24rdEzhUvknd+LXn+elOj0Z1ewLVsQMRWhBcLXXRlvM5sLxpEA0ogOxMuISuPp6270nuFztiUnl037yIWyAbqvo9e/8TFTviWXr4ifgExwD3iT65kTewZh0KuGbfs4zKqZUDwcPEHa38bm6QiTjxwyLfKTPYGSQ8i0CLPV6OTnNqudFVTs6QgLPIxsUH4aygZ5mvmFrcD7nnhBFpVwIoO8l9G2Oma4v4ql1spNa7J3FnivomvLVFhrxx0CY2F8B3Y7qJFv5WwZfi4eTU0oeTCbrlNJk/HMMhfRHBQDE4HiLgeTzWnSsSLkXDpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u9S7DxOd1oZDn9BeIdLbAtE0v8HyuwcDpWjS4zgPwYU=;
- b=ZdiW3gAd+HgqVHoaIhIdg8/m0TGgvGyAdPY2JIT9d6zMMikm9YnOqsQwTZtsfpLWr/TMm82IOZYtdFyALN1VmMEuXfAUktX0s6yH7jWDqEqeUnRcp+xz+oXqib+FaFvtyb/Aaql5qKRRbUQFlEvQQPdJZrogpf1ZMzENcQeRisN6eM6sH+IOJEeinF8VwtNObxJfbFEUwGn8+LgA8p1DLY88W3Ooq3j26CYKJGfzomw7LNtyGXvBMcvuJsvJy6z48zQ14wU9KTxukVfoNpfIwZ7NPEo38SEyremZIw7+LkTZI/x5BClzuwrPTSH+iwHHyk0xIte4GBCHAKhc/c+FOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u9S7DxOd1oZDn9BeIdLbAtE0v8HyuwcDpWjS4zgPwYU=;
- b=ZKEa43GUe2cUMX05lmXQ8nSRg1+bG/XolmwJ3vvL73DFf8J04BKdNJTVw8aJ5Sr5VQiaUKF5zutSRWSOyIy4C9i8Pi/5QPYbu9EKqrLJKNPPiKOuqar+8woQxOwiAjZ5/YJsqo3IXOz5yG/ATnRfM9/MGEiWfO8JPDUZcM4Sn4g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
- by SA3PR12MB8811.namprd12.prod.outlook.com (2603:10b6:806:312::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Thu, 28 Mar
- 2024 16:49:47 +0000
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::9d:17f1:8b3b:1958]) by CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::9d:17f1:8b3b:1958%4]) with mapi id 15.20.7409.031; Thu, 28 Mar 2024
- 16:49:47 +0000
-Date: Thu, 28 Mar 2024 17:49:40 +0100
-From: Robert Richter <rrichter@amd.com>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-acpi@vger.kernel.org,
-	ying.huang@intel.com, feng.tang@intel.com, fengwei.yin@intel.com,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v2 3/3] ACPI/NUMA: Remove architecture dependent
- remainings
-Message-ID: <ZgWfpFseS3HTO30V@rric.localdomain>
-References: <20240319120026.2246389-4-rrichter@amd.com>
- <202403220943.96dde419-oliver.sang@intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202403220943.96dde419-oliver.sang@intel.com>
-X-ClientProxiedBy: FR0P281CA0259.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::18) To CYYPR12MB8750.namprd12.prod.outlook.com
- (2603:10b6:930:be::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEB240856;
+	Thu, 28 Mar 2024 17:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711648512; cv=none; b=rCNusSNWawPdtBev9rBxKvcMyWP4CBPziROQ4R7k7qEJdo8fyKomF5XgdGotdff+qMx2bv5UDISv7ANR/fk/+cInznBOysVsO6VklJDYm2pEeEcJcXiP9Y6cNuHOWyH4Mc5TE31H9UR+qbHN0OG4a66Hu7rxcZwaubM6O+hoHaQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711648512; c=relaxed/simple;
+	bh=o/ViFlzn9DcSB6zcA7kLtK65QCPH/Ss4D4l1HH9emKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qp3gRY+mBkqKv6pmLXP6ISa1//f9MbZliapH+/irw3ssTL02eMwD/AVllUrx6yRDq6OO+holO5Y+mf5v7ScJUN7LY7TthnoWS6HbwZjgVm6yy8iXHwGW+32KpKDoBXUSxLb4d0AjiruXxcZKihacu6ewvgWSShA6rfOdnhLFeY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IffZ6Zq7; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-29e0a1fd9a7so980847a91.2;
+        Thu, 28 Mar 2024 10:55:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711648511; x=1712253311; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yWQ5s/MasTSk4jjQrdrW05L8Qpoj2heGIDr+tGSERBM=;
+        b=IffZ6Zq7mdTlgFNOXYKYk8APhEZ+jnWd5P7vwV8L5bZgdd5YBj99UAEtTmBYfmR5vI
+         gExwSz+/raqBzCXL2yKp/akDSbKK4j7V/ZzyD8CH9e+ylDWW1RtX0MbZa14kZfmILufE
+         /t3NJ3FtHc4hJDtK0Ox1C+/15dK6UqLmvleGLbLMkMMCfZBj2UHcoQ7dL8xtIpJRwJl+
+         H89s8wOuwf68ipXVqoyOIbAlimD9s8bMgjmEGEgfJ7gGYdhKPob06n89IRUa+tQvD5gm
+         KwmFbmNMvYYX6vVqLyGIRIBIAYpr3u0zZqWZMKvv+Sxeh0voL1kH9oCsa0rVhT+AlTSF
+         o8DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711648511; x=1712253311;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yWQ5s/MasTSk4jjQrdrW05L8Qpoj2heGIDr+tGSERBM=;
+        b=igCQB4QFsYScQJeP3cRiQxUa5qmLNqpZC5tOlwX33nWNCf888oEZxhRUtBNw6Az6De
+         ayrIpJosrt6iJl7D+ax3xPKN8uCp/jyESYD8z8rs9mXeYrLD1DY3pPv92MZJu2F5f23t
+         NWhdBQuIEovlxVw0gsUf00ja9tHjqs2nBCcP6Ogwtv1JjTs+xRuwYXtQQCZMB4MhtLu3
+         7Rjbh5TEQQTDwCBcOds3vpthVYN3CT+bF3kfHE76b2X36+qhh5oqjYbuTbt5YNGJTxJY
+         aLRmt/G4WfGjB2+dKLvjCvG91AleXJG/H49ITYfiFvNR1IR9hafdcTG6r9wS6YfgpJQ8
+         awuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXuGa0nZKrEsNS7AXHHBRX65WF9XiM3fFvpPsn3s2rxTK/FMqe7m4o9cyoHYzwTFthYPh/CRYANPbWi0C0UEr2FCaOA1ZKayBxC+DCIuj8jS4RmiRYVxh2oEX60+KNM4p7RiuNdFSZg2iSNS7s50CRed6fjNUC1FAHnjyDZEGJ1wzDUIw1SUqXjMIkioK/ok0h0W6hrDTsvkbBRQfY6oi8aRzzmf7IzP8dSJJOq9iCUeyAARKJJXE3OY2FQCQp4TbB4QQ==
+X-Gm-Message-State: AOJu0YyzHv5stqt7AuVoBIO8Gpz08IsWdmauhSa1iX/DxA1OW/oUtjV3
+	6bf5HpY87l7xy1IlctxEQ2/KuciA1G63gA5DB1HzsuIdcZk1r+n7
+X-Google-Smtp-Source: AGHT+IEL2KsBed1zz8v9qIzuDDeEt0qqVBch3QKL5XMgY1v1rvbtZioXqmZcYbMTotvgHuw38SY6bw==
+X-Received: by 2002:a17:90a:e7c6:b0:29b:d748:fae5 with SMTP id kb6-20020a17090ae7c600b0029bd748fae5mr155051pjb.32.1711648510684;
+        Thu, 28 Mar 2024 10:55:10 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:493e:82a3:49f9:d88])
+        by smtp.gmail.com with ESMTPSA id z2-20020a17090ab10200b0029c7963a33fsm3791215pjq.10.2024.03.28.10.55.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 10:55:10 -0700 (PDT)
+Date: Thu, 28 Mar 2024 10:55:07 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Benson Leung <bleung@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Corentin Chary <corentin.chary@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>,
+	Daniel Oliveira Nascimento <don@syst.com.br>,
+	Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+	Matan Ziv-Av <matan@svgalib.org>,
+	Mattia Dongili <malattia@linux.it>,
+	Azael Avalos <coproscefalo@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jeff Sipek <jsipek@vmware.com>, Ajay Kaher <akaher@vmware.com>,
+	Alexey Makhalov <amakhalov@vmware.com>,
+	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
+	Theodore Ts'o <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev, linux-input@vger.kernel.org,
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 02/19] Input: atlas: - drop owner assignment
+Message-ID: <ZgWu-33aKyCOjRBX@google.com>
+References: <20240327-b4-module-owner-acpi-v1-0-725241a2d224@linaro.org>
+ <20240327-b4-module-owner-acpi-v1-2-725241a2d224@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|SA3PR12MB8811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 877f4937-3ef4-4f10-4a2f-08dc4f4713a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Z+PS79SH32vbze6nyDVOJklFWrg4pGfxuRGh4dN1zGf2PwEjKCxoQDiFzHQwmOpXqLuga2dx8ZXLs6qcs39F/1BFF/iekw2ppZL3Mvm3dVSQ8JGQwAJP7ECGxOil34ezUJTCXb7EvK6lSZKsnogfDFap63Pv9RKc9GzrLx4jrGCXMunVZKwigSaSf1s8R2cxtXJ0gfPG3TCIqEp9NW5Vcyg5jmff1qevlQMaqnE/WJQm0oX1/A6P0+O+/mBHYQ9TpK1boZGi49WnrCgXdD6Amq7p6tSXIhu1n/ifNHyJRrAdC4f2JEAdUNDNzQtMgJkZNtDkm1+Tx2eXNv12yAgYLkrpQMSko/VljXXpZyhbOVwdBqdlY1X6lsCTCQpTH9x6Me7Ode86YJrKaYDttzTQ5IV2bjeQaM77TkxuSm3bFz4KWrt46uhwPHrlfI4V/hXm0nxGhlQ4es7eZbU41Cm5wUvPpDVtOTs26aN/wWcLs8ggycwhqbcsMF4xJ6tPGvS7CWtNsibQgdhK/8VO5CTFzXYYGD7RR0vr0pyzPsYRfJ6YF+dfti7pn/kKC103pb46AG015kWY6eBRvuBe1LbC8Z8DTAfrJ2aQYp8HxxG6zuLrixTQ4e219aWTuCAQBh5Z
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/5+in2hoEhPF0jnO75gmtdoWNaD1NgYAWmFyCCLf49wJxZCr24gdXUF+tHo3?=
- =?us-ascii?Q?0efP4BeZuaUKDs555IBeNENqZtoIB0c9ZemVwjZlXk6OM69xhei5Y4Wm7CYy?=
- =?us-ascii?Q?25yU1FKEXcjcyvPlaLW1gr6ryn+LEhDJCku7XJ6+6h4i3MOh5uRjL1nQ7u24?=
- =?us-ascii?Q?6qUNtS6K3qtE1HK44RhCwSW5mOujZFCk1f+5aeX7OFVHXXChuJm2G5kgbspK?=
- =?us-ascii?Q?+pLeOMTY6Oh0+7CEpm787O/VzyWLnombMFjgtTdOA8HOd4Qpi22/Yg/Gbq0T?=
- =?us-ascii?Q?+RGGrWXFvso/MDF3/buYTpeqhcvQgqXiN02YT7eLNKCUIpT3orlM1zUt9ggH?=
- =?us-ascii?Q?MEpPT4BZVJk31qApYcvwag/O5g4aNJC/AVlO/4zST/RI48UQLSRHtP0WbAE4?=
- =?us-ascii?Q?ivxyKmxnGptGoe0TE071zcrN45ryGp1qd5dQelTIc1d2V24DPR3t5lQ88IBH?=
- =?us-ascii?Q?Ej4sVevrMiTPSe282lkcFt50GrOpOh3oIytzIfToNG4ac1qrg7w8WyMaDi41?=
- =?us-ascii?Q?n8iaqPVMvF7Cucsel1bas72htap6DNW6QNm03WLvV8j7SRtEXqfAaYVfwxxe?=
- =?us-ascii?Q?bGKoRt2Fw39HXWnoTgkD3m9HbFzEOdwzl7VoKhO1DPMYElaBBRer/vttcyLB?=
- =?us-ascii?Q?KqJzuN2I2938IkIjdEd4Z6uiNnYe99CNsDBS0CFEtjMW3yO3v8fwAH0Gc0FY?=
- =?us-ascii?Q?ctDU4zRdmW+DIk7V6RV5NUF5u/Qc6QtFqZuNdWZKBaKUyFb7p4sfntTsWPTI?=
- =?us-ascii?Q?sVPqsm4a5qQwfgVZYRNoVxX3oHgmj/XVPhmXO5NUqpUC5WXpEMRcG9yG1G2S?=
- =?us-ascii?Q?4IN39DeAkFRLbmDq2qs7JnpB/Onv54VOBdTXZRrOgHSFmehNZqqK7eEmpGAQ?=
- =?us-ascii?Q?EALkF8iC4/F6fYi+WGM59PQFysASwiEFuSuKTjvEy7WY9odc6fsMxL0qRaqc?=
- =?us-ascii?Q?u6dckxtoP1wSt3mRpCeU8+hEWE/oelBTWGXXvVCwIK59w3Kmvj2s0+2HmDvC?=
- =?us-ascii?Q?CH5Q1gdRuaOa5G4syZ5fHhM7BJkH8nDBowqnu2THu1M5Hebger08QPRBpQ2h?=
- =?us-ascii?Q?egnjt/noGIhP/rZHFPDDQrKEN1ck6pkbsDiikE/1J4C4W3k4c09mfs/kAx+a?=
- =?us-ascii?Q?mQqBsDZEPOEMNJZaxrhPYpcddvAUz/dT3eBU1Fs+tpTij+CMty8iVraFQLqv?=
- =?us-ascii?Q?pUAT0dXcyDt/2v3G+Ok8pmA3yM3v5fZL2a32QdgMyPcTiDgtXxbsPfXQUjY2?=
- =?us-ascii?Q?zpAHLsxCd7DygeXxW1NkNyMAXfyhPT3KnBFBccecNvkcqshlRTqbvzyL56B3?=
- =?us-ascii?Q?tnIUILc2r+4cHXjU6nw8A+lT7IUKyGfQign23tXW7rpapNzhEwLviMnkFIgg?=
- =?us-ascii?Q?yy4GwKfnli4gL2oWqud9PHnpRGo89A9CNBF0TWMBDxg0DftmVxhtepDPpdoy?=
- =?us-ascii?Q?/FjWmQz6ENoOMbmQIWWCHJ2DLvjv1nKbVITuza/Ohv3JRn9GO+M/pmjBMmQF?=
- =?us-ascii?Q?nhIYAfvXVgwD9m1KJZJ1PmeRyDKyXvBahpILHnVrjYianG7zcwHXaDwhbMXU?=
- =?us-ascii?Q?3hFgQCqWpXcobt4t/dusDHdJKQBRwP6WUoyjtNLu?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 877f4937-3ef4-4f10-4a2f-08dc4f4713a0
-X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 16:49:47.2055
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v66RJiaJtx3nW1OjFKtBYTwhvlEJ7+5t484wXsqb7R+ufjQqr53AlocnYeQ++k1vFb5/S2xP4/xlFANNPL8uDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8811
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327-b4-module-owner-acpi-v1-2-725241a2d224@linaro.org>
 
-On 22.03.24 10:12:04, kernel test robot wrote:
-> kernel test robot noticed a -43.6% regression of vm-scalability.throughput on:
+On Wed, Mar 27, 2024 at 08:43:49AM +0100, Krzysztof Kozlowski wrote:
+> ACPI bus core already sets the .owner, so driver does not need to.
 > 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+
+But please fix the stray colon in the subject.
+
 > 
-> commit: 09f84589a8ed1162c0274a1b5b3dadb98ee3155e ("[PATCH v2 3/3] ACPI/NUMA: Remove architecture dependent remainings")
-> url: https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/x86-numa-Fix-SRAT-lookup-of-CFMWS-ranges-with-numa_fill_memblks/20240319-200345
-> base: https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git linux-next
-> patch link: https://lore.kernel.org/all/20240319120026.2246389-4-rrichter@amd.com/
-> patch subject: [PATCH v2 3/3] ACPI/NUMA: Remove architecture dependent remainings
+> ---
+> 
+> Depends on the first patch.
+> ---
+>  drivers/input/misc/atlas_btns.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/input/misc/atlas_btns.c b/drivers/input/misc/atlas_btns.c
+> index 3c9bbd04e143..5b9be2957746 100644
+> --- a/drivers/input/misc/atlas_btns.c
+> +++ b/drivers/input/misc/atlas_btns.c
+> @@ -127,7 +127,6 @@ MODULE_DEVICE_TABLE(acpi, atlas_device_ids);
+>  static struct acpi_driver atlas_acpi_driver = {
+>  	.name	= ACPI_ATLAS_NAME,
+>  	.class	= ACPI_ATLAS_CLASS,
+> -	.owner	= THIS_MODULE,
+>  	.ids	= atlas_device_ids,
+>  	.ops	= {
+>  		.add	= atlas_acpi_button_add,
+> 
+> -- 
+> 2.34.1
+> 
 
-I have root cause the regression. After refactoring of the function an
-error in acpi_numa_memory_affinity_init() is no longer ignored
-(e.g. if a mem range is disabled) which finally causes
-acpi_numa_init() to fail too.
-
-Will be fixed in v3.
-
-Thanks to the kernel test robot team.
-
--Robert
+-- 
+Dmitry
 
