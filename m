@@ -1,63 +1,58 @@
-Return-Path: <linux-acpi+bounces-4561-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4562-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE724891D11
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:08:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5329891D2E
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64A311F21773
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 14:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AEB71F25FEC
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 14:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED821BD5F3;
-	Fri, 29 Mar 2024 12:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CF71C5AAF;
+	Fri, 29 Mar 2024 12:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7wz5DVq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiOun3hH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618B91BD5EC;
-	Fri, 29 Mar 2024 12:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00891C5AA8;
+	Fri, 29 Mar 2024 12:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716280; cv=none; b=aYOo0BIpTq7tOLB4dTCBtqdUT99fP6+C3JPGaP9L3NpZBIZgunr1pvXzkFI9DlsWGJoXnypFbaSRyZMR1XFXgSQzCxzGOY39giRI+rHntnQq6oXiuzgOhMMqhT/fPDBLdTUOnRcrifWUXgXwScQG6hFzvHFeSqHkr3jYCcAjncI=
+	t=1711716303; cv=none; b=uz2UdrRAE0ZkrZFT6Ou22TAZOrUbdRppiESo5ahNR0WpBSpvQq7NlDcLz7vK38iMjkLn+jbsI0CAb0EEETWWMtVQJQvVVpf7YX+InZlFUsxxaq0QJ4C+/R0qG+m7N1AVWYZlQAuH3DwzXq3qOhdwpZWXJZ6QQInm0V79WH+c1aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716280; c=relaxed/simple;
-	bh=XooxLjpXXfGU922eAkYTNAx+aBe681fCNba+85D9r94=;
+	s=arc-20240116; t=1711716303; c=relaxed/simple;
+	bh=/QjzGuuut/USs5wAY2EV1/61sfdJ81IHHQB48v+JzWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LRFJjnovOesoIDF9H9eYZtCDhsUEXSNei0oo+NNDHUXXoWs74IDp+1W1BIxSgI7hDmh03NV+eqUGuoH+QCME3n0NhEyyAXdnBwwBx0HmDdi0vQdjUhOvjAch0NjytgrkKUR9YML8ZBc1vy66+zQpM9E6jjQzN05+Z8egdapAsno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7wz5DVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2983C433F1;
-	Fri, 29 Mar 2024 12:44:38 +0000 (UTC)
+	 MIME-Version; b=alagrTXiOF2g9ph3suv1Z39nBKfVHgao1YSKKg8h9JVzNl9hbRn6t111okA10MFeVdcmYKkfYIlDrzJ/Himm+/nieBTxaN59UCRVGNjM24ub71YGQNCzpzybesIp7Z4Q3rna097d+3TfLcX492wd184038ffIe5xH1h/vgt8TyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiOun3hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F866C433B1;
+	Fri, 29 Mar 2024 12:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716280;
-	bh=XooxLjpXXfGU922eAkYTNAx+aBe681fCNba+85D9r94=;
+	s=k20201202; t=1711716302;
+	bh=/QjzGuuut/USs5wAY2EV1/61sfdJ81IHHQB48v+JzWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7wz5DVq/ByDOAeLW9Bh17rAXtTd0Iisahi8LQWAFddUYk0DJ1y23ZTWiVLQ8nUzi
-	 Nsuxx8YQG2qxm3D/fFkqFuIfZOvJ4NT8q+28Dt13c8JLZGpyfsUr9zv6ppviTKXlJG
-	 hP60rWnrd33iarJf2sVhWRUP/KNPk0k8Wt8C3PbG4+cVVhhtFL4g+BCN4rvrRJR13m
-	 O2TxjqTYGUa8h1vaidMHxfm9x2TdezwR/8I1lJvGOuK1yskeHCIjwO0oHzap3LB377
-	 /XZaCabBVO6VKa6BBAlJ3uMj+rB8Cb77xVBj3fGaZrnN/zEkMV9DqyahwbVA+HArCn
-	 Jac4V0TNLMs0A==
+	b=FiOun3hHF65EfYPKOB8+Bqkw7+C+wUpiU97y4FFMcuS5EDciXAXs1A8zEBm0v7TxR
+	 Zt2NBmdGEfs/i+bXMFaI4HXBqUqN1jLXuUc+8Hs8JvJtEKAfxHuECNVpg7q60UCd6A
+	 4KtzSiYbDd0Zz0bD+Kx4A/Sej+3SfapoCEAjqT8vJS94x6RYlp9eMb4pkxpdqxhU4d
+	 q8KCNE7kB2GxRFhtq0gu0A2xjw6OL6w9NQe+uyeNaRDMoiGUO+GWSh/0b0qJsb4nFg
+	 bbMs5si8FzNzHRfMLyIgm0M0AFZnZpbjcqRgGOVqCLB0kg9ETNOEFBdTNxH6Pv04mE
+	 pGza2USAxaBug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Daniel Drake <drake@endlessos.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jian-Hong Pan <jhp@endlessos.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	robert.moore@intel.com,
-	michal.wilczynski@intel.com,
-	mario.limonciello@amd.com,
-	raag.jadav@intel.com,
-	mail@mariushoch.de,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 37/75] ACPI: x86: Move acpi_quirk_skip_serdev_enumeration() out of CONFIG_X86_ANDROID_TABLETS
-Date: Fri, 29 Mar 2024 08:42:18 -0400
-Message-ID: <20240329124330.3089520-37-sashal@kernel.org>
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 49/75] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
+Date: Fri, 29 Mar 2024 08:42:30 -0400
+Message-ID: <20240329124330.3089520-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240329124330.3089520-1-sashal@kernel.org>
 References: <20240329124330.3089520-1-sashal@kernel.org>
@@ -72,126 +67,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.23
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Daniel Drake <drake@endlessos.org>
 
-[ Upstream commit 7c86e17455de1a442ec906d3449148b5e9a218a4 ]
+[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
 
-Some recent(ish) Dell AIO devices have a backlight controller board
-connected to an UART.
+This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
+originally put in place to work around a s2idle failure on this platform
+where the NVMe device was inaccessible upon resume.
 
-This UART has a DELL0501 HID with CID set to PNP0501 so that the UART is
-still handled by 8250_pnp.c. Unfortunately there is no separate ACPI device
-with an UartSerialBusV2() resource to model the backlight-controller.
+After extended testing, we found that the firmware's implementation of S3
+is buggy and intermittently fails to wake up the system. We need to revert
+to s2idle mode.
 
-The next patch in this series will use acpi_quirk_skip_serdev_enumeration()
-to still create a serdev for this for a backlight driver to bind to
-instead of creating a /dev/ttyS0.
+The NVMe issue has now been solved more precisely in the commit titled
+"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
 
-This new acpi_quirk_skip_serdev_enumeration() use is not limited to Android
-X86 tablets, so move it out of the ifdef CONFIG_X86_ANDROID_TABLETS block.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
+Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
+Signed-off-by: Daniel Drake <drake@endlessos.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Jian-Hong Pan <jhp@endlessos.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 18 ++++++++++++++----
- include/acpi/acpi_bus.h  | 14 +++++++-------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ drivers/acpi/sleep.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 63d834dd38112..c708524576df4 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -429,7 +429,7 @@ bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev)
- }
- EXPORT_SYMBOL_GPL(acpi_quirk_skip_i2c_client_enumeration);
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 808484d112097..728acfeb774d8 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
+ 		},
+ 	},
+-	/*
+-	 * ASUS B1400CEAE hangs on resume from suspend (see
+-	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
+-	 */
+-	{
+-	.callback = init_default_s3,
+-	.ident = "ASUS B1400CEAE",
+-	.matches = {
+-		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
+-		},
+-	},
+ 	{},
+ };
  
--int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-+static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
- {
- 	struct acpi_device *adev = ACPI_COMPANION(controller_parent);
- 	const struct dmi_system_id *dmi_id;
-@@ -437,8 +437,6 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 	u64 uid;
- 	int ret;
- 
--	*skip = false;
--
- 	ret = acpi_dev_uid_to_integer(adev, &uid);
- 	if (ret)
- 		return 0;
-@@ -464,7 +462,6 @@ int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *s
- 
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(acpi_quirk_skip_serdev_enumeration);
- 
- bool acpi_quirk_skip_gpio_event_handlers(void)
- {
-@@ -479,8 +476,21 @@ bool acpi_quirk_skip_gpio_event_handlers(void)
- 	return (quirks & ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS);
- }
- EXPORT_SYMBOL_GPL(acpi_quirk_skip_gpio_event_handlers);
-+#else
-+static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-+{
-+	return 0;
-+}
- #endif
- 
-+int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-+{
-+	*skip = false;
-+
-+	return acpi_dmi_skip_serdev_enumeration(controller_parent, skip);
-+}
-+EXPORT_SYMBOL_GPL(acpi_quirk_skip_serdev_enumeration);
-+
- /* Lists of PMIC ACPI HIDs with an (often better) native charger driver */
- static const struct {
- 	const char *hid;
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 0b7eab0ef7d7f..d9c20ae23b632 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -652,6 +652,7 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
- bool acpi_quirk_skip_acpi_ac_and_battery(void);
- int acpi_install_cmos_rtc_space_handler(acpi_handle handle);
- void acpi_remove_cmos_rtc_space_handler(acpi_handle handle);
-+int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip);
- #else
- static inline bool acpi_device_override_status(struct acpi_device *adev,
- 					       unsigned long long *status)
-@@ -669,23 +670,22 @@ static inline int acpi_install_cmos_rtc_space_handler(acpi_handle handle)
- static inline void acpi_remove_cmos_rtc_space_handler(acpi_handle handle)
- {
- }
-+static inline int
-+acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
-+{
-+	*skip = false;
-+	return 0;
-+}
- #endif
- 
- #if IS_ENABLED(CONFIG_X86_ANDROID_TABLETS)
- bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev);
--int acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip);
- bool acpi_quirk_skip_gpio_event_handlers(void);
- #else
- static inline bool acpi_quirk_skip_i2c_client_enumeration(struct acpi_device *adev)
- {
- 	return false;
- }
--static inline int
--acpi_quirk_skip_serdev_enumeration(struct device *controller_parent, bool *skip)
--{
--	*skip = false;
--	return 0;
--}
- static inline bool acpi_quirk_skip_gpio_event_handlers(void)
- {
- 	return false;
 -- 
 2.43.0
 
