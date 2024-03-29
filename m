@@ -1,93 +1,108 @@
-Return-Path: <linux-acpi+bounces-4552-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4553-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CC68916BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 11:26:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A9C891936
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 13:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F7F1C21A76
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 10:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC7DA1F230C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 12:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B334753E14;
-	Fri, 29 Mar 2024 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CA01448FE;
+	Fri, 29 Mar 2024 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvdknBHB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iN3nPVCX"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18052F61;
-	Fri, 29 Mar 2024 10:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F14D1448F3;
+	Fri, 29 Mar 2024 12:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711707958; cv=none; b=bIFCeHGONLhiTd4mAopg1BoMqVxJeaI9cMJUw0eG6MaYNiTcQ5CaAgpIm+8YiGoXfqqiy5cwzQN/rem2mEchJbTvwSyYCcleiBKLuQMR9LCiCC8+9hF2soLCFsN9HHs/ouolxsVYfhJTlxbJ/VsijXYh8STm6elbeehrpqiXoVc=
+	t=1711715282; cv=none; b=XBFc5GQAh7hrd0D2VVAYxglKZL8kjh5R8I1lI95ixplawGkpi7EIWGUF2rAIu+NT02NA5WUEp/GfjHA6j9NBSy0CFKHQMgKdZ3n/l5/EoMezo0AqzRcny9kGgZVRuHlfAaFrwOikwb1TGCWlsove/ZmsTecB05SfrnmAO2k+C1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711707958; c=relaxed/simple;
-	bh=3MalgDy3HFA5HZM/zbui+LEPKnHzf7WcdyEXeFgOkLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YDcElWnuo3UrBKVio1WHg5Gx+DrY18dXRrSiwmjm24WQlIbwfZBfXvUKR/+raH/grQLyhSdX2JIA8MRVneUaMVVCChRerICzAQyJnNdaVUzJNyLvyYrmpaCEf3Lu0N5rHqZbiWB1aWg2js4IAnfCqTK6q9VMDCre5MsKYjElFQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvdknBHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50965C43399;
-	Fri, 29 Mar 2024 10:25:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1711707958;
-	bh=3MalgDy3HFA5HZM/zbui+LEPKnHzf7WcdyEXeFgOkLA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dvdknBHBa5i/b6LSvHuoYDxWxMQAYUeJhiTB4L7X2uyL4lZe/RrdauUGCeIglN6KH
-	 Jp/ZBiNc7AhLOb6DWbhOWibzu34dg37QVNG6DMFdcZdbU98aifuysMCDOIHj+uWQB1
-	 DFGlA8/zgpgN7I8MHsiguQC09UYljA7uoYXWi+zo=
-Date: Fri, 29 Mar 2024 11:25:46 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	jarredwhite@linux.microsoft.com,
+	s=arc-20240116; t=1711715282; c=relaxed/simple;
+	bh=4O1Vte6fsnpVIqKWi6MUYJs7yvI0UQm1XS+XRgmqiWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ub6vg3+t2VNl9244gphcWP091ufK7SLUQIHU2q2D/Hm3yZcTJyhaG2ywCo7iqqUiF7PYHJoIuLL/ZTKQXq875YtWAJp8l6Q6YYVTvYhoHjtiZltPdScktMtVLAsJmX5rgbZr+ldr3RFSLuyy2vNSBya6vGtLAT4FydZI4tN3a4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iN3nPVCX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75646C43390;
+	Fri, 29 Mar 2024 12:28:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711715282;
+	bh=4O1Vte6fsnpVIqKWi6MUYJs7yvI0UQm1XS+XRgmqiWk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iN3nPVCXSnA0PnMUo+UwMRGazsNt+FAfFIuFhipsRFPDzCJPzx/NHpiD1FaLJsc+Z
+	 BZ1SGqipBsnpk1/hjQbsJOBuLEEyGvHC82NzR8cWhXvy5lDyHHvvYO0X2ByTLTfIiw
+	 PYuvIMzcPmnY2aWdCuOe4NfnCnMy71ygddpuQxsoE6OOwoog/H4uyjaw/wkERVm0QE
+	 tz8+PCHYX9gTwrs5EGaiQH+Q+8sy0QP/z1sebJ6JOL2fBiYf7o97wQemTVHphYWbQp
+	 oY1QFPXdo3quBawdqEnpW8ItU27nJ0ONhoWjcp+B1BV8ycd4GqeJXSv+wtGi85WKiw
+	 J1SqA3cFCTuSQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: FAILED: Patch "ACPI: CPPC: Use access_width over bit_width for
- system memory accesses" failed to apply to 5.15-stable tree
-Message-ID: <2024032936-bootleg-debtless-1975@gregkh>
-References: <20240327121738.2833692-1-sashal@kernel.org>
- <b34308af-ebc9-4a0e-a27b-90d6e176c526@linux.microsoft.com>
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.8 36/68] ACPI: resource: Add IRQ override quirk for ASUS ExpertBook B2502FBA
+Date: Fri, 29 Mar 2024 08:25:32 -0400
+Message-ID: <20240329122652.3082296-36-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240329122652.3082296-1-sashal@kernel.org>
+References: <20240329122652.3082296-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b34308af-ebc9-4a0e-a27b-90d6e176c526@linux.microsoft.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.8.2
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 27, 2024 at 08:48:17AM -0700, Easwar Hariharan wrote:
-> Hi Sasha,
-> 
-> On 3/27/2024 5:17 AM, Sasha Levin wrote:
-> > The patch below does not apply to the 5.15-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > Thanks,
-> > Sasha
-> > 
-> > ------------------ original commit in Linus's tree ------------------
-> > 
-> >>>From 2f4a4d63a193be6fd530d180bb13c3592052904c Mon Sep 17 00:00:00 2001
-> > From: Jarred White <jarredwhite@linux.microsoft.com>
-> > Date: Fri, 1 Mar 2024 11:25:59 -0800
-> > Subject: [PATCH] ACPI: CPPC: Use access_width over bit_width for system memory
-> >  accesses
-> > 
-> > To align with ACPI 6.3+, since bit_width can be any 8-bit value, it
-> > cannot be depended on to be always on a clean 8b boundary. This was
-> > uncovered on the Cobalt 100 platform.
-> > 
-> 
-> Please see the backport for this patch I sent earlier: https://lore.kernel.org/stable/6df99ad6-0402-4dcf-9a1c-7259436768dd@linux.microsoft.com/T/#u
+From: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
 
-Got it, now queued up, thanks!
+[ Upstream commit 0793e511c4c66c38dd26add86f7236bcdc70c3b5 ]
 
-greg k-h
+In order to fix the keyboard on ASUS ExpertBook B2502FBA, add an IRQ override
+quirk for it in analogy with how it was done for other members of this machine
+family.
+
+Link: https://lore.kernel.org/linux-acpi/20230411183144.6932-1-pmenzel@molgen.mpg.de
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
+Signed-off-by: Sviatoslav Harasymchuk <sviatoslav.harasymchuk@gmail.com>
+[ rjw: Subject and changelog rewrite, fix broken white space ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index dacad1d846c0d..2f7ae709bb192 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -489,6 +489,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
+ 		},
+ 	},
++	{
++		/* Asus ExpertBook B2502FBA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
++		},
++	},
+ 	{
+ 		/* Asus Vivobook E1504GA */
+ 		.matches = {
+-- 
+2.43.0
+
 
