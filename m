@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-4563-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4564-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36F0891E47
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:38:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C54891E34
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0055BB2E5EC
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 14:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F73728789E
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 14:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D542BF307;
-	Fri, 29 Mar 2024 12:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B919F1A9CCC;
+	Fri, 29 Mar 2024 12:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4A9UUTo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmUjACsH"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000642BF302;
-	Fri, 29 Mar 2024 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9049B1A9CC3;
+	Fri, 29 Mar 2024 12:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716422; cv=none; b=seRsN6nfvsrS9T5J9P05V+KCUnfwarE/DNDYcBDgLlIyAdMgOk0ocPtt7AwjXCS7hkXuaNAJRSk4QCRHHWRJJTVjRoUxWxYZlNLbZIcFByavHhwRsbDQrHpkQecBx8YUE8tmPnTkjGTPaUJlXGLtGAC0CdnYJEXMFXJt220fmPs=
+	t=1711716505; cv=none; b=UWOHKWKH7ukXl5/1xnMBPVsSl+YQ+bStaKER9R7ATYWJz66HDqOV3El+cB55LFyuXe/sLsusz6PrZJX5d+FV+9Z0AFgP5gsNixpWUUAdTD0YCC+BcJMs/h8GaC/dJ8P3s8wRCA/nJXI3/rmiua3HlW6uEB5eLepgu100p/apW2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716422; c=relaxed/simple;
-	bh=ed2cUITjT6VQusC+aW3CeplbXf3sbglIv8AIqMzuOvk=;
+	s=arc-20240116; t=1711716505; c=relaxed/simple;
+	bh=Mpq//dk5KR3KFP9QkYIiwXcTBz+YA/K2dwRwxYPoBUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tigfmNhflhu9T6eaPR60O0q+gTh0bqXt02rRpNLb2G781kIsK+sLDsz6ZgboslA7XjTIqkjMW7ycPTlT33CjvWCqaTOexEvZQfCByUU/iWG1UVpMevapXlaN9dukA88RapJ0EEyrWU0SH/8qt+CH2kyoVyCmO0qE9FnbwT0/HeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4A9UUTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9322FC433C7;
-	Fri, 29 Mar 2024 12:47:00 +0000 (UTC)
+	 MIME-Version; b=jal7wTKKnDRyiXFBjhukJ05R3l5XmNE8buSsz+FDr7i4ZhMem6qwCE1fz0jjt6Kj3s4rrKeIxt5UmFBSmZlEz9YJQ4yxkGIhJ37OmUlvH06i5J3Wv76w2/2xsKNnHVgtLpmiGi++o4X/92Lmm5Fnmq/WpiH1x18dkNS/5ld1APM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmUjACsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B74AC43390;
+	Fri, 29 Mar 2024 12:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716421;
-	bh=ed2cUITjT6VQusC+aW3CeplbXf3sbglIv8AIqMzuOvk=;
+	s=k20201202; t=1711716505;
+	bh=Mpq//dk5KR3KFP9QkYIiwXcTBz+YA/K2dwRwxYPoBUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4A9UUToKUuzlWmmFJDTePqUtsalelAA4vGoMs9pyPtx7I1HL5jUR0tzF/g50PP1H
-	 fVceeLQAXWOtlAf/swcZW6l4WsXdLv+0X78BwnMe4hlHFNs1xezc+n0NMenqjDitMo
-	 Ia5lvnlhKRze5FSZ4BX501uMuHPkTr5hjaGwM+a3tAHwRcCI3ndFQpE18/7yz0m297
-	 yt6064U6zfjqLGOp6oiBgn365TSh816DNr0ZvkHlk8dbftUC/zrsqJaMRyF1tc7nKz
-	 nNdOGNhfk9vJk79q8jIHdZp0ImP53PzcYGA1AIuxyT9B1pyIeihmtSs20mFEIeAstS
-	 xHRkCn7blPT5A==
+	b=JmUjACsHjj+7pXHc5J70VThnnzHn3MdIaPDS8QCR5izDOSP7ARW85sh+trAkrAEhj
+	 rvB23FqAds2BUcecjY1GuW6zcBXbA2i8qOZ6KgYyX1GK44tyDLcyhh5/Tu9MicJ79P
+	 bpyFwP+uNB/kEG/MA6BXqAt83SJ1IfYxhVGbRQfqdd3OftJPR4Pcv23TUL3JDk4D4e
+	 AZBo/JR5JW2ZoQDoJ9jUQKM32CSJo08l0rdBRPUKkov/2NJpErd8t7TGTuI8SMRQlP
+	 rFv10NZsnzNz9SJsnVOerYxXMcH8P9tmh0D191q09RRukmGW6jP6wHigM1jrrdoCMQ
+	 2amKWYxILSm5A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,12 +50,12 @@ Cc: Daniel Drake <drake@endlessos.org>,
 	"Rafael J . Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 30/52] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
-Date: Fri, 29 Mar 2024 08:45:24 -0400
-Message-ID: <20240329124605.3091273-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 20/34] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
+Date: Fri, 29 Mar 2024 08:47:21 -0400
+Message-ID: <20240329124750.3092394-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329124605.3091273-1-sashal@kernel.org>
-References: <20240329124605.3091273-1-sashal@kernel.org>
+In-Reply-To: <20240329124750.3092394-1-sashal@kernel.org>
+References: <20240329124750.3092394-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.83
+X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
 From: Daniel Drake <drake@endlessos.org>
@@ -94,10 +94,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 deletions(-)
 
 diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index 539c12fbd2f14..6026e20f022a2 100644
+index b277e25b276ce..95deb55fb9a8c 100644
 --- a/drivers/acpi/sleep.c
 +++ b/drivers/acpi/sleep.c
-@@ -385,18 +385,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+@@ -382,18 +382,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
  		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
  		},
  	},
