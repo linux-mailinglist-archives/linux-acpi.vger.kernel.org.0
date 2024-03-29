@@ -1,112 +1,115 @@
-Return-Path: <linux-acpi+bounces-4567-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4568-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE0E891FCB
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 16:11:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B39E89235E
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 19:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55F428947A
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB96A286278
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 18:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D7D148311;
-	Fri, 29 Mar 2024 14:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFEB2C692;
+	Fri, 29 Mar 2024 18:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrJt+Y8Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYhmm8jr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D601482FD;
-	Fri, 29 Mar 2024 14:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846AE320B;
+	Fri, 29 Mar 2024 18:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711721697; cv=none; b=abl+dWsnXU7r6Kau76dl+TNu8TmVJK0jE8DVYK/DcIY7VdrOKNeoZWCdzSy289O3850CZvtIQl5VvaEkraoygSHKh1VUMeFetDZB2EOKYn7K47oXz8kjMMvE2XufGDUNAzjL+CDebHVjDiwZEiQnBpDjuO55w5nEwqLdC+PGCNE=
+	t=1711737091; cv=none; b=eGCI5ST4AU1X+v0v+TU3wOWCUDVWDnGMdRsl1JLWEScsO6bB+4EDsRltojauCXID7XThGBBODlZ8K9+RpIt1IvHCJY9Cf72tBD3GEH8a5lEtOlwKjPXTDjUE6U6tF5H/vM3h/jkLviveUH3tt19HfUebBJkD3NOgv3CrnYTY4VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711721697; c=relaxed/simple;
-	bh=pj1mTlDrDGST+H80OnmhHk4hz5HIPNduSuVF66YCGOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=F/j27rgIIG78CbDR7v2HC5Pypo+kShX/h7cPKZcdqcSymP9wjTggqsRt4qM9D9JYrOM4myvD/w5kzufv2fezrVSMBnfdhTCc8Zx5Q8iEGRygJEvzsh1EWHEMT37gBY1izjx9zuorhVuVWwlqlMBo7DdP/gSfYAPJEvd8owTIlZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrJt+Y8Z; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711721696; x=1743257696;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=pj1mTlDrDGST+H80OnmhHk4hz5HIPNduSuVF66YCGOU=;
-  b=nrJt+Y8ZOW8+UedNlg49kNILStjDaFTbM4hw50pK5nOynP5zyYthU6Pv
-   ZzAT8oQhGdfu6KsRqgP4Y1aEDmIquAc33DpMK5BWBEq4pLrntAf4Z5+9z
-   WKc0actUbF7ICI+gvkJU5uUuyhNfPRUu1hUCiSyuWNpVPsHe+xTKzLncM
-   DKo/urKz4hi2Fg/1yCbuELpBSURphPuM9w/Xm2a2Ld+uYBc6xz/bxrm7U
-   HVeKFKIp250HYazO/LhMCC/8PE+7QpsH8bW8n8NETukjpfJ7A87H/Ny3e
-   2E3QdyrH6eXS62fOrEg6W95llkWB0ZMR3At5h6HaT+owQbTihFERoMGZ6
-   Q==;
-X-CSE-ConnectionGUID: kL5JTmjZSQe367TuRRF5ew==
-X-CSE-MsgGUID: QTt/+1VkSvKgsNngBM0IPQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="6848056"
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="6848056"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 07:14:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
-   d="scan'208";a="21695007"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 29 Mar 2024 07:14:53 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rqD0L-0003Fc-2o;
-	Fri, 29 Mar 2024 14:14:49 +0000
-Date: Fri, 29 Mar 2024 22:13:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:intel_pstate-testing 13/14]
- arch/x86/kernel/smpboot.c:129:1: sparse: sparse: symbol
- '__pcpu_scope_arch_cpu_scale' was not declared. Should it be static?
-Message-ID: <202403292251.KAvVZtwd-lkp@intel.com>
+	s=arc-20240116; t=1711737091; c=relaxed/simple;
+	bh=TvpS37TuH38fbL7Zms7LKNeuuEbSsU60yenC+/E1pTU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=Ysi3KGpZs+L+pV/AYLmr53AXKBE6NSgiQhp8KYnYcBLcGBsfPWhU/Hce36dbvpFhOZ32AaUgLcJWTgWBqjlyfDrPE4LICPovkMfbfPxzLbyn/a7dONDdz7lyOYN4yVcLie6HetW4d3lmgajv5USX8B+g+3bp4Hac8GQ5XLmoRCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYhmm8jr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7C4C433C7;
+	Fri, 29 Mar 2024 18:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711737091;
+	bh=TvpS37TuH38fbL7Zms7LKNeuuEbSsU60yenC+/E1pTU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=bYhmm8jrDEgc8/5rNzjsR3m0ykpBpG+AeLnfqDe+87oEVDmXcYpwLnETptU9cXGfP
+	 f6eD93VKr+jJ0+tBRj6hyzOUxaqPPf9cXaI1yYIo/cojDJU0sjhWa8NAKEdkR2EXUx
+	 ekeKAxpKbR5Y7Y1LWx0PbY+PIwCQi1jDTzIEd+E2ifdVsPZ0GQY1DVnrNFaTwqd1qk
+	 lZZVM5RFCPM3GgzhsoIxxj03E5kIukj6DyL+QTPwBbfgWBy8FREWpotMpaXAnOZX1+
+	 j61hvUsFqQHqFadaLGAc7OHzw23lW+K92jvKa0pOIOU/RwVK5lc8Jdf7oezRGTOmXI
+	 2ufFaXEwoXhBA==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5a4e0859b65so700277eaf.0;
+        Fri, 29 Mar 2024 11:31:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUTRq34HRsxl7D+Bae3tPTrl5J09XZBwsDy8AveBnxlZ/bBePmto71hKgwWtWnl2J7hlpHWa6fmcSmAiYYfshHzcnsGdVTxvr+ouqwB
+X-Gm-Message-State: AOJu0YxR2DdOzN6kqbx0GVDM9ovy7jaLjZchIb6PxbOsuSNhUdTHEb7M
+	n2MT06zHBOvYC2z/Ypn3gT/noje/YacZVSaVdF5vq5U7puDaccWRvnXrhIAMWPGcRok2+Dhqi5r
+	IE/NMmNgJyHldq2zZzs0ZR+xewQY=
+X-Google-Smtp-Source: AGHT+IFIviysJgYU1yDqwD3yGYyhTcToYGEPzLF7ZAeMU2lDbUYA0TOx8kYIYxGJMdSeGn+dOzPcyzAMvvQcrk4KzQ0=
+X-Received: by 2002:a05:6870:8e0e:b0:22a:1e0c:8bc6 with SMTP id
+ lw14-20020a0568708e0e00b0022a1e0c8bc6mr3122507oab.2.1711737090421; Fri, 29
+ Mar 2024 11:31:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 29 Mar 2024 19:31:19 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0jO6Op9u9x0j0XVfaSN-5OguoubAwxTbSacJ_QLX5wCDA@mail.gmail.com>
+Message-ID: <CAJZ5v0jO6Op9u9x0j0XVfaSN-5OguoubAwxTbSacJ_QLX5wCDA@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.9-rc2
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git intel_pstate-testing
-head:   9e188470f00d32c31b5be6f701ed94e6cce3a195
-commit: fbc05ec06cbf10eb71658eb41582c0df7098b95b [13/14] x86/sched: Add basic support for CPU capacity scaling
-config: i386-randconfig-061-20240329 (https://download.01.org/0day-ci/archive/20240329/202403292251.KAvVZtwd-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240329/202403292251.KAvVZtwd-lkp@intel.com/reproduce)
+Hi Linus,
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403292251.KAvVZtwd-lkp@intel.com/
+Please pull from the tag
 
-sparse warnings: (new ones prefixed by >>)
->> arch/x86/kernel/smpboot.c:129:1: sparse: sparse: symbol '__pcpu_scope_arch_cpu_scale' was not declared. Should it be static?
-   arch/x86/kernel/smpboot.c: note: in included file (through include/linux/mmzone.h, include/linux/topology.h, include/linux/sched/topology.h, ...):
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
-   arch/x86/kernel/smpboot.c: note: in included file (through arch/x86/include/asm/mmu_context.h, include/linux/mmu_context.h, include/linux/cpuset.h):
-   arch/x86/include/asm/desc.h:54:16: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct gdt_page * @@
-   arch/x86/include/asm/desc.h:54:16: sparse:     expected void const [noderef] __percpu *__vpp_verify
-   arch/x86/include/asm/desc.h:54:16: sparse:     got struct gdt_page *
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.9-rc2
 
-vim +/__pcpu_scope_arch_cpu_scale +129 arch/x86/kernel/smpboot.c
+with top-most commit 6af71633b04036a12d165d03ce6f21145ec5a555
 
-   127	
-   128	/* CPU capacity scaling support */
- > 129	DEFINE_PER_CPU(unsigned long, arch_cpu_scale) = SCHED_CAPACITY_SCALE;
-   130	
+ Merge branch 'acpica'
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+on top of commit 4cece764965020c22cff7665b18a012006359095
+
+ Linux 6.9-rc1
+
+to receive ACPI fixes for 6.9-rc2.
+
+These fix two issues that may lead to attempts to use memory that
+has been freed already.
+
+Specifics:
+
+ - Drop __exit annotation from einj_remove() in the ACPI APEI code
+   because this function can be called during runtime (Arnd Bergmann).
+
+ - Make acpi_db_walk_for_fields() check acpi_evaluate_object() return
+   value to avoid accessing memory that has been freed (Nikita
+   Kiryushin).
+
+Thanks!
+
+
+---------------
+
+Arnd Bergmann (1):
+      ACPI: APEI: EINJ: mark remove callback as non-__exit
+
+Nikita Kiryushin (1):
+      ACPICA: debugger: check status of acpi_evaluate_object() in
+acpi_db_walk_for_fields()
+
+---------------
+
+ drivers/acpi/acpica/dbnames.c | 8 ++++++--
+ drivers/acpi/apei/einj-core.c | 2 +-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
