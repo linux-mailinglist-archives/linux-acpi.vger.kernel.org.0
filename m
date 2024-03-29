@@ -1,122 +1,112 @@
-Return-Path: <linux-acpi+bounces-4566-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4567-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53993891ECA
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:52:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE0E891FCB
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 16:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DF38288C19
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 14:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55F428947A
+	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 15:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147351B8588;
-	Fri, 29 Mar 2024 12:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D7D148311;
+	Fri, 29 Mar 2024 14:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mM2BnVNa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrJt+Y8Z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A591B8584;
-	Fri, 29 Mar 2024 12:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D601482FD;
+	Fri, 29 Mar 2024 14:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711716637; cv=none; b=ZU+DF57AKzKWY3VQHANxP4dIg8+nxefGiBNHLjsS6k+z4Hof6zyDzOqvKf5Y2RaatRADkJ1PxjcKxhV5Srlp8tMpOdKSlWUAKvhRtBfquI51EZpkrc+hNYKvmzZUL47chAQ1EtzOZpMP9vdLms8SPGMFfQhfzdBxKewx6igals4=
+	t=1711721697; cv=none; b=abl+dWsnXU7r6Kau76dl+TNu8TmVJK0jE8DVYK/DcIY7VdrOKNeoZWCdzSy289O3850CZvtIQl5VvaEkraoygSHKh1VUMeFetDZB2EOKYn7K47oXz8kjMMvE2XufGDUNAzjL+CDebHVjDiwZEiQnBpDjuO55w5nEwqLdC+PGCNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711716637; c=relaxed/simple;
-	bh=zwcDsX9XqGeRfOXaV0OqiblrlYAFBRKPywf5cl6CGGE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8HHtQxeF/PXLrOX7mG30UptjCbO2LluNJku4yYNLw47KY9lZrtX/bJ4wBn9Bf2iFfaeMDExTv0b0TqpgGbbjvLA65alqcvgF5FsICHI2GXdSoJ/zR1iDrJzL8yyiAk39YcTmzwF05bWUaV1hebMhkJ94xpToZRT4Q4GkvDQUV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mM2BnVNa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5ADC433F1;
-	Fri, 29 Mar 2024 12:50:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711716636;
-	bh=zwcDsX9XqGeRfOXaV0OqiblrlYAFBRKPywf5cl6CGGE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mM2BnVNaAHeHnDijNLleEBYKoSHIlFyG8VhAu8tNN5z3Q0h/R5+Df3cKGq2zBUozw
-	 QVx75V1CqoAqF4sxjOpovhcCTvhoPxVy1jA2jkgfGKWO1xcpyLsP8XfTYkeAqV8KGH
-	 yNk9QTs7CeZuX1r/cJ7r8llR2Vq+jx6k9/X+xT3b8pYWmXVmg1hI0Kq6kKN53jPTLn
-	 O6CvqAavFcvQWJyuPXAlaIojF2JJKlZPwoiLe15rZMg+XKVMLvf//5cldcb4ggHS8a
-	 odmze5gW9doPve2zX2E7TTUJPoF2rVZUSo5QfXjUNfi7fg2JlyrnfthT1wkevKiveH
-	 hcycbbhnNVpmw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Daniel Drake <drake@endlessos.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jian-Hong Pan <jhp@endlessos.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 14/23] Revert "ACPI: PM: Block ASUS B1400CEAE from suspend to idle by default"
-Date: Fri, 29 Mar 2024 08:49:47 -0400
-Message-ID: <20240329125009.3093845-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329125009.3093845-1-sashal@kernel.org>
-References: <20240329125009.3093845-1-sashal@kernel.org>
+	s=arc-20240116; t=1711721697; c=relaxed/simple;
+	bh=pj1mTlDrDGST+H80OnmhHk4hz5HIPNduSuVF66YCGOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=F/j27rgIIG78CbDR7v2HC5Pypo+kShX/h7cPKZcdqcSymP9wjTggqsRt4qM9D9JYrOM4myvD/w5kzufv2fezrVSMBnfdhTCc8Zx5Q8iEGRygJEvzsh1EWHEMT37gBY1izjx9zuorhVuVWwlqlMBo7DdP/gSfYAPJEvd8owTIlZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrJt+Y8Z; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711721696; x=1743257696;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=pj1mTlDrDGST+H80OnmhHk4hz5HIPNduSuVF66YCGOU=;
+  b=nrJt+Y8ZOW8+UedNlg49kNILStjDaFTbM4hw50pK5nOynP5zyYthU6Pv
+   ZzAT8oQhGdfu6KsRqgP4Y1aEDmIquAc33DpMK5BWBEq4pLrntAf4Z5+9z
+   WKc0actUbF7ICI+gvkJU5uUuyhNfPRUu1hUCiSyuWNpVPsHe+xTKzLncM
+   DKo/urKz4hi2Fg/1yCbuELpBSURphPuM9w/Xm2a2Ld+uYBc6xz/bxrm7U
+   HVeKFKIp250HYazO/LhMCC/8PE+7QpsH8bW8n8NETukjpfJ7A87H/Ny3e
+   2E3QdyrH6eXS62fOrEg6W95llkWB0ZMR3At5h6HaT+owQbTihFERoMGZ6
+   Q==;
+X-CSE-ConnectionGUID: kL5JTmjZSQe367TuRRF5ew==
+X-CSE-MsgGUID: QTt/+1VkSvKgsNngBM0IPQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="6848056"
+X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
+   d="scan'208";a="6848056"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Mar 2024 07:14:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,165,1708416000"; 
+   d="scan'208";a="21695007"
+Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 29 Mar 2024 07:14:53 -0700
+Received: from kbuild by be39aa325d23 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rqD0L-0003Fc-2o;
+	Fri, 29 Mar 2024 14:14:49 +0000
+Date: Fri, 29 Mar 2024 22:13:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:intel_pstate-testing 13/14]
+ arch/x86/kernel/smpboot.c:129:1: sparse: sparse: symbol
+ '__pcpu_scope_arch_cpu_scale' was not declared. Should it be static?
+Message-ID: <202403292251.KAvVZtwd-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.273
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Daniel Drake <drake@endlessos.org>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git intel_pstate-testing
+head:   9e188470f00d32c31b5be6f701ed94e6cce3a195
+commit: fbc05ec06cbf10eb71658eb41582c0df7098b95b [13/14] x86/sched: Add basic support for CPU capacity scaling
+config: i386-randconfig-061-20240329 (https://download.01.org/0day-ci/archive/20240329/202403292251.KAvVZtwd-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240329/202403292251.KAvVZtwd-lkp@intel.com/reproduce)
 
-[ Upstream commit cb98555fcd8eee98c30165537c7e394f3a66e809 ]
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403292251.KAvVZtwd-lkp@intel.com/
 
-This reverts commit d52848620de00cde4a3a5df908e231b8c8868250, which was
-originally put in place to work around a s2idle failure on this platform
-where the NVMe device was inaccessible upon resume.
+sparse warnings: (new ones prefixed by >>)
+>> arch/x86/kernel/smpboot.c:129:1: sparse: sparse: symbol '__pcpu_scope_arch_cpu_scale' was not declared. Should it be static?
+   arch/x86/kernel/smpboot.c: note: in included file (through include/linux/mmzone.h, include/linux/topology.h, include/linux/sched/topology.h, ...):
+   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
+   include/linux/page-flags.h:242:46: sparse: sparse: self-comparison always evaluates to false
+   arch/x86/kernel/smpboot.c: note: in included file (through arch/x86/include/asm/mmu_context.h, include/linux/mmu_context.h, include/linux/cpuset.h):
+   arch/x86/include/asm/desc.h:54:16: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct gdt_page * @@
+   arch/x86/include/asm/desc.h:54:16: sparse:     expected void const [noderef] __percpu *__vpp_verify
+   arch/x86/include/asm/desc.h:54:16: sparse:     got struct gdt_page *
 
-After extended testing, we found that the firmware's implementation of S3
-is buggy and intermittently fails to wake up the system. We need to revert
-to s2idle mode.
+vim +/__pcpu_scope_arch_cpu_scale +129 arch/x86/kernel/smpboot.c
 
-The NVMe issue has now been solved more precisely in the commit titled
-"PCI: Disable D3cold on Asus B1400 PCI-NVMe bridge"
+   127	
+   128	/* CPU capacity scaling support */
+ > 129	DEFINE_PER_CPU(unsigned long, arch_cpu_scale) = SCHED_CAPACITY_SCALE;
+   130	
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=215742
-Link: https://lore.kernel.org/r/20240228075316.7404-2-drake@endlessos.org
-Signed-off-by: Daniel Drake <drake@endlessos.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Jian-Hong Pan <jhp@endlessos.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/sleep.c | 12 ------------
- 1 file changed, 12 deletions(-)
-
-diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
-index b9d203569ac1d..5996293f422e3 100644
---- a/drivers/acpi/sleep.c
-+++ b/drivers/acpi/sleep.c
-@@ -382,18 +382,6 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "20GGA00L00"),
- 		},
- 	},
--	/*
--	 * ASUS B1400CEAE hangs on resume from suspend (see
--	 * https://bugzilla.kernel.org/show_bug.cgi?id=215742).
--	 */
--	{
--	.callback = init_default_s3,
--	.ident = "ASUS B1400CEAE",
--	.matches = {
--		DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--		DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK B1400CEAE"),
--		},
--	},
- 	{},
- };
- 
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
