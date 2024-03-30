@@ -1,278 +1,189 @@
-Return-Path: <linux-acpi+bounces-4571-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4572-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3F089268A
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 23:01:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5878689299A
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 08:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDADE1F229F3
-	for <lists+linux-acpi@lfdr.de>; Fri, 29 Mar 2024 22:01:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F02283281
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 07:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABD113C9B9;
-	Fri, 29 Mar 2024 22:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7535915C9;
+	Sat, 30 Mar 2024 07:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="O0h1z7YS"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Gkcdic5f";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Te5ANeTJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
+Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77F048CCD;
-	Fri, 29 Mar 2024 22:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.100
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711749676; cv=fail; b=Be/F3ZdQwrw047hfethP/yAoBTkvyUF6QRap9ZyZmNUiTymYNCKBecMS6f3nClWhP9TU/SdVtMa3u0uqpd1O0oDAWUJSh/ZQ1FnPk63mjkHBJnVgt0HqcfsmoNhJXMX8rfSnzAPzVi5Ae/ectPLxk+Xa1rpvvdA1apG6Q9vcDcM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711749676; c=relaxed/simple;
-	bh=HJZRi6jWSO2n5SP7Apyp77l4K071wxQZzQcrvt5o0Fc=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EjzLvZQnAbYI9x5xGDCElTudAzsk2m+/X3BokMAkm1kXA2nABgnPFev+3aE9HC1ABOW9Qcf5hJiKdH4FFTrUuU78dy9seKpmszpTCv81U0/kvkJ2YHW01fpJjFBC6hsP7fvi8VANaoG4n1qeCDnNkzTN9Slmi6YWEW+tz04yPAk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=O0h1z7YS; arc=fail smtp.client-ip=40.107.236.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=guHHZ2i0kOiswygLGQ0fPTzCIUWpEULHvGG28sQucD8QkbzJ+B6nbKg5y+hSckBQ3UnqPpuSdYCKD8BO0dtuKPAvE/91PoPZWqbv+nBnAjhPrDwNruk1ySvaYgoZ1xft8Xyi8I9Q10tRUWSstLU+p4Fxvr0vFbSQSK4+WNPN6L7TfQGyU7yt33C113N8gZ0+HCEHFfC3RRM1K7Ea+xRi51H36MSvX+UN4lR6iF66oQGK4T1lCvJmnIYY0k3Mv6+Gl/g7wditUkwdyerPsx9wrx1EKX1IQVgjIEDYwwS+ZEB4KDjNkNJyFU1rD1QogQBsCRF7Y/VfIGMw+CM9ID7/sA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7/8Q+41xpSk8U8z62Yf+wqZxjJFUbzgLX5Jaxm5Rsa4=;
- b=iVu1QTtKe32LCCZ7lu6okG8Th9KNJP0cAqAi8fcBaUsgp5tGzrmbHFXnYp/eZ+18twPdy+eUUkhezcgSBxIegWcwt3VsaDtpMdq0nDHBVTgRb2CDjmc9DmHkG7zLZqaQPQa/tshe1sOvyuvsdJAzgQ1ZSfahPgwuYZ0C9UCqZx48X9e348scF9WF0kM4v6vsrbfewQHduayh3svMRNaCOlsCjo6iM8MJwarVXx4Owbxg/dn4gUFgFBHBwjNJwb9monsOxHJx06HizENno1cVTf7FBWkuWEzo6cjyLxCOMxjycBL9aSPt2TL0/cxuEmiwer3mZEqZrehUajQs2HUYXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7/8Q+41xpSk8U8z62Yf+wqZxjJFUbzgLX5Jaxm5Rsa4=;
- b=O0h1z7YSJSAh0oZWVfHvV0xqNaGqnlfGSKfaywkPz3wxWyuAKIFrqt8jjdOtvhxoMaUMpXcEx8TJ7Sr8OUjxPzP/NEYVNLrvLh5D5uwBd2e1YupWstMRUful1HzYg8TWqLGxgKFS5GWT/5MluzDqGSz72I/fTGyr30EF4QJb3FE=
-Received: from MW4PR01MB6498.prod.exchangelabs.com (2603:10b6:303:79::19) by
- SJ0PR01MB6222.prod.exchangelabs.com (2603:10b6:a03:292::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7409.38; Fri, 29 Mar 2024 22:01:07 +0000
-Received: from MW4PR01MB6498.prod.exchangelabs.com
- ([fe80::4fc3:132:87ac:c13b]) by MW4PR01MB6498.prod.exchangelabs.com
- ([fe80::4fc3:132:87ac:c13b%5]) with mapi id 15.20.7409.039; Fri, 29 Mar 2024
- 22:01:07 +0000
-From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-To: Jarred White <jarredwhite@linux.microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Subject: [PATCH v1 1/1] ACPI: CPPC: Fix access width used for PCC registers
-Date: Fri, 29 Mar 2024 15:00:54 -0700
-Message-ID: <20240329220054.1205596-1-vanshikonda@os.amperecomputing.com>
-X-Mailer: git-send-email 2.43.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CY8PR10CA0016.namprd10.prod.outlook.com
- (2603:10b6:930:4f::27) To MW4PR01MB6498.prod.exchangelabs.com
- (2603:10b6:303:79::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3623C7FB
+	for <linux-acpi@vger.kernel.org>; Sat, 30 Mar 2024 07:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711782037; cv=none; b=Et/u1b01ubLXWvjTdfC6iXtGI0LXFiUOtHyS7GHP9e/1waks8VeiFimwx6JUfpvxAjMQ01R2KRn/uPqeqTzEqE5kD7NYYzIB8OLSrs+QX4OKFMBww+Zhicdmnp4mrSBNRRHCPoBWj7NOCA3P+i86dK9qC7T28YNuy+3VTihU4cY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711782037; c=relaxed/simple;
+	bh=luQuQt0cywrwnxZrfSoUMvqzYD0+ZW8E9d6RGOc/eW0=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=ic5gr6Rl+Pb+xd+/SxKGBO7McQusA6Wvi7LWCTcqVkSBKZuDsKls3Aqvk7Ipte5Si6WvqMjtruLfvvAhASB8UOdgPHo892W1CUEiOayX+Ml9zDXgbaWIOQ57wWwKlO74rBm29oNUrrrSPeX1XxdXmM8UEZqX4s6ato+fvAtRoQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Gkcdic5f; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Te5ANeTJ; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 1FFAA138010F;
+	Sat, 30 Mar 2024 03:00:34 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Sat, 30 Mar 2024 03:00:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1711782034;
+	 x=1711868434; bh=Ur/nT5RbykWH2DvGLVa7v7x6kXVV495L2a3dmor8HDw=; b=
+	Gkcdic5fp0ZPEE0cpvbyVNIGq0xD1SKOQ20gaY9qFPXaftrPxOV0eHX8Cm90fB1j
+	EdvChwj9Z3SkWe4tIyWrCatf5kJElHxGcBZvj1M9CXdQtcRgKKu+ZLxziCb4BFiw
+	Wlw8dp/aVmw6pPT/YOOtpdWYvaPY6wAwZYYs9IROdJd+uLpVODsplvKrcNayvHTc
+	+Ybgb1T3nAjwdlaZSi0GzZz5Aj2qQx++2Bkc7Z3QkCA8pORwA0JpGXYp60LHEpzQ
+	zMMWnRfQnMnRyCKx23/IEGyPa2Y7766YlfRd9falR5RartAo+CKV1miDbC+QktAh
+	yZJn2/5R4IdaheeqPIJAdw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1711782034; x=
+	1711868434; bh=Ur/nT5RbykWH2DvGLVa7v7x6kXVV495L2a3dmor8HDw=; b=T
+	e5ANeTJmKsUF0CujRvn7FY/R0HpQPeTk4kwtv/AFKUSOm5xJ5Iplw8dCujsInbfX
+	ATH4dkG5XL3Uz3/mUoHA4aOAA10J9JOkTHnasaty5LHcAbi+fD5A9X/faVJmzN9s
+	XprC7AZDUb57jDG1/x3AzTTZb2BPwjIzZu/wTSNFWMLh9axlMnJXLvvb85/k6lsw
+	bD3xKK9O5h5VOcmiAIdhAgFac2z83O1csn0FoVYKOt0VJMzP1KMggv5eSE2+aHqp
+	xBdvTDhTW9PXwnSE3gwZl9jNEPfXitd8WMbtlxTwT4ok7SV1/VSEJRKR2SdE9T1e
+	VsVx12HC8ce2MxK5tTH4g==
+X-ME-Sender: <xms:kbgHZmF5Ds9B3lNiLN2MVUw2zDAHcqhVZO0U9WnH_JECexIwxd22bw>
+    <xme:kbgHZnXwmHXU1mqLV7ffq7hW-ENAixlMRXbfO4Ty9jJMsErlMKaWwK1cOqoBoN3Ue
+    mnFLijUxnzmdE7bvrY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddvfedguddtfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
+    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:kbgHZgLYY5OTB7Juk3kmLKeICSR5B98P38jYsQeb-2yO9Sqlv1nxsQ>
+    <xmx:kbgHZgExUJi2vhyEQ8qEUphBEFJfQDde09bDSf6hMacS2ZVMUENAjQ>
+    <xmx:kbgHZsWHWy3vdh7fPoGTuMuu7KeXZwV9HQFai3GzmLYj2Vbzp1Eqyw>
+    <xmx:kbgHZjNpdgxMqwlApRxGGQKiCziuTM-be1ZfkcEQFckMaTOxNAzfRA>
+    <xmx:krgHZts3SBcxSXFdWG5RuUqU46gIOj8LEoy4cajtnz_ZHCsDACh0rQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 16B74B6008D; Sat, 30 Mar 2024 03:00:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR01MB6498:EE_|SJ0PR01MB6222:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	js5/uXJliDVl3klsQhjQ684ijzwZAn6k5J8g2mTfV0NBpJHJhfcQ9PdGezBbzPgikwDc5NJtQaloGUxqXQTxI31pOF/voAMfELagTgyybZkh+5EGks8bDpvI22kVYnvg4gUFL6GzRExqkN7sPG6I/rtSQVtpxiOaT50HKcfPsPJFwte58/eh4OGERDYIq2Xx44pPg95BNUX/aFDgkTqGm4hQ9Rb7UT9NdVPNRklAe87CzfO/xeuBat5rEwVDilXyjazUb7IHQ2n5u4y0B6EoZ9Vv1H0IN/dfXZV7obf2ft0ryPFBH+RdxnQsWgQsXzmXL8/+D/YPT9AdNuSEsMlLB4qasZdNSiUMUT0HP6WBUJ4RlVpixxjoG2JWQiaSD9lYWd3XkA5QqJRJeyiY537De0n39/zHqTnfnMc91mYGblxtgi/vXXYP61qC7nUYhK0KeAyTIr/JtWskISTFecDxsDQA6GZABYbUw04S9uGoQjC32Myuvk3rK5ChMWAbQ3OrHo7vxOG9z3VyXIbnyomBXyUN8FhHTpK1HiohukQWc/6aDYQyNZN2TjdgBYGWfdk1jXeuwf5c6/Ccc9UASTjLwmiar0Jb9sTTVairJDqjN9UMddNQvXiS2jyZ9xwC1uJYeGMANx9ACYpf98rDz05TWtqoCv+bMNYc67ps3qWm7Us=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR01MB6498.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EZN36iqlDpIxui9Dj0ANE3WBTvmG+TaX9J/Ai1mR5J8K3EDvYF8CI+vP8Fb9?=
- =?us-ascii?Q?1vgJggTvfS+4pVMDqcjQnqIXrAMveJnMb2eF+YB7uvWbs/7+6vnHc57pOePe?=
- =?us-ascii?Q?5oI0QFpvqtg+/684PrL/ebovcLPGXxRta/SUOZqjm5zymaXI3FANuFo3ao/u?=
- =?us-ascii?Q?Gj0rYR/Q0gSuHI5UoLGxeXU8q7LqcG2QTswS5SUEgP1x+iqDfzKxpNQEPdsh?=
- =?us-ascii?Q?vNjPmoRCvsK4K6BdCkn8/AiUPMJLjrJ+87H0iAJ+KBWyN3nQFBEmyEbrEHAL?=
- =?us-ascii?Q?0rpN3++AKu94loixokq/C2yikasDGKz3TjO64nvCzwlitt/UjmgmFTjegoP2?=
- =?us-ascii?Q?9tcK6n5KgaASLlaUH746lEZ+6h89Fl89HljOS7+z+hBQbkg7BIc6QvPHVPLo?=
- =?us-ascii?Q?nmVS+0yxpZqogW57lYhdl0Lg5qkbTZy5ZJjRq/GhYQuY6+oYiT5iSJ942gBc?=
- =?us-ascii?Q?iw4k1Ny/P5P6oA+L+1GxbRRIcWHPAOcFAwvwOgp8YD6V/+GHDQPZS3xGP4Je?=
- =?us-ascii?Q?k3SZFyqlGXFTNtq40AhZS1zZ6sqzXjV3ePUEBqpGsJ73cDLO7DZQQqGZI3B1?=
- =?us-ascii?Q?bGYSZNgC3I75qhaxfn1reC0D+4+05EzC92/WBQ0imcs42VTWWK/icI8FMjQo?=
- =?us-ascii?Q?gth9IIk01M7PiRuWDkesmFGkqAtLvdsT3Ln3b+3eMVZTJE7ib5rFbMzc+NfL?=
- =?us-ascii?Q?FLEdqOcHrwB01HxwtYcKkMiFkLkO4sh6pJH8i6tVuZoILfMe9U0RAA+Asrlc?=
- =?us-ascii?Q?F6tHEI9NQMNTEQO7ACeUppGyT96BZDQTolCC+cizjGCf5sdiQv1SEMaNFFhZ?=
- =?us-ascii?Q?VfvrXek8gTrKNaGzoMEFYFrS8HcQ5M2w8JLnh/MwQx6zutodWLfUVpiluzVf?=
- =?us-ascii?Q?/iF14IhgusPZ1BdVlLp1ouNUYq/r3Nz46yb3k3z/KwR79otbXUOsMY49zTa/?=
- =?us-ascii?Q?vXOJlleHw1vm/SnhI8dYR7J60L63Z5KXOR5N7mAhg5Y9+rC+7Rr8xiX3pEvG?=
- =?us-ascii?Q?H6yhrX5iI/CMXt3KgoDQ9jo7l+voP2pEl27ZSJt/E4MEXTgGKbZhXkCGkpNl?=
- =?us-ascii?Q?q/dC85sR7sTM0UXofAMsT+1M9wBFJxkgO7/jhjIudCus1ybsTu/tqJlZg61t?=
- =?us-ascii?Q?oPhhx96ffVdzJUWI+TTLcPKPjLDvTX7PWuzp8bObINRKdU5yQ9iTSP74G0Yp?=
- =?us-ascii?Q?9IhgUuuHW65Ix8X/zC+AF7HXhAc2wParY3eXteLmQ39rAQTHm9eLuAjt1cLo?=
- =?us-ascii?Q?uQE4+vPcXJIyhdDpNDSyL/r6TIkFtio3moLOqv94yp2+YAYv5wRxElOeVxCY?=
- =?us-ascii?Q?w669GIxjNYAd11Aoi/sEI5wyMVWWRJ12jKWenWkj5nBJhWPUg+pQGlBae6pV?=
- =?us-ascii?Q?bOyAjVq6YzourAEkDNFfUh9e57iIOK3jznPFvF04A0FCtoUKLrMWp5i/0ZEa?=
- =?us-ascii?Q?J4LY7v4sI5winymT8wQuVzSAESwZXz8G8bNjT3dMAH1i5RNYbnyYZdfP2Y+D?=
- =?us-ascii?Q?KB4J4pkYjZ9RhKM4zpyNN/WQpaQ9FWe+DdGdSouZcTjwBumNl/vFjrP4Usxc?=
- =?us-ascii?Q?U4plqSy2+49DpWbXg2MtVgH8RpPsUyuXhC2o+e7vxKmWy65uqTU/zvUihAhQ?=
- =?us-ascii?Q?YfYyx73+PBrrcqZB4t7tbD8=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0f4d4b9-d30a-4151-a52b-08dc503bbc66
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR01MB6498.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2024 22:01:07.4891
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: d0h5Hnt+9ZoUp5PK+zt6NIIjBrb/EJ/7INhOCY8xYuODi4CvXR/xRIxx3A6rxHlGL/VlBXAGLlfeS1RAfdtfYzC+chQCAJe1/vWWzaRO9U6ZfJGpV2j6yxUjNFqlHxUl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR01MB6222
+Message-Id: <53480b07-612f-4701-bcd5-bb677701b00e@app.fastmail.com>
+In-Reply-To: <20240329100203.540368-2-u.kleine-koenig@pengutronix.de>
+References: <20240329100203.540368-2-u.kleine-koenig@pengutronix.de>
+Date: Sat, 30 Mar 2024 08:00:32 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Dan Williams" <dan.j.williams@intel.com>
+Cc: "Len Brown" <lenb@kernel.org>, "James Morse" <james.morse@arm.com>,
+ "Tony Luck" <tony.luck@intel.com>, "Borislav Petkov" <bp@alien8.de>,
+ "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ "Avadhut Naik" <Avadhut.Naik@amd.com>,
+ "Ben Cheatham" <Benjamin.Cheatham@amd.com>, linux-acpi@vger.kernel.org,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>
+Subject: Re: [PATCH] ACPI: APEI: EINJ: mark remove callback as __exit
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") modified cpc_read/cpc_write to use access_width to
-read CPC registers. For PCC registers the access width field in the ACPI
-register macro specifies the PCC subspace id. For non-zero PCC subspace id
-the access width is incorrectly treated as access width. This causes errors
-when reading from PCC registers in the CPPC driver.
+On Fri, Mar 29, 2024, at 11:02, Uwe Kleine-K=C3=B6nig wrote:
+> The einj_driver driver is registered using platform_driver_probe(). In
+> this case it cannot get unbound via sysfs and it's ok to put the remove
+> callback into an exit section. To prevent the modpost warning about
+> einj_driver referencing .exit.text, mark the driver struct with
+> __refdata and explain the situation in a comment.
+>
+> This is an improvement over commit a24118a8a687 ("ACPI: APEI: EINJ: ma=
+rk
+> remove callback as non-__exit") which recently addressed the same issu=
+e,
+> but picked a less optimal variant.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-For PCC registers base the size of read/write on the bit width field.
-The debug message in cpc_read/cpc_write is updated to print relevant
-information for the address space type used to read the register.
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
----
+I noticed another curiosity:
 
-When testing v6.9-rc1 kernel on AmpereOne system dmesg showed that
-cpufreq policy had failed to initialize on some cores during boot because
-cpufreq->get() always returned 0. On this system CPPC registers are in PCC
-subspace index 2 that are 32 bits wide. With this patch the CPPC driver
-interpreted the access width field as 16 bits, causing the register read
-to roll over too quickly to provide valid values during frequency
-computation.
+>  static struct platform_device *einj_dev;
+> -static struct platform_driver einj_driver =3D {
+> -	.remove_new =3D einj_remove,
+> +/*
+> + * einj_remove() lives in .exit.text. For drivers registered via
+> + * platform_driver_probe() this is ok because they cannot get unbound=
+ at
+> + * runtime. So mark the driver struct with __refdata to prevent modpo=
+st
+> + * triggering a section mismatch warning.
+> + */
+> +static struct platform_driver einj_driver __refdata =3D {
+> +	.remove_new =3D __exit_p(einj_remove),
+>  	.driver =3D {
+>  		.name =3D "acpi-einj",
+>  	},
 
- drivers/acpi/cppc_acpi.c | 45 +++++++++++++++++++++++++++++-----------
- 1 file changed, 33 insertions(+), 12 deletions(-)
+I was wondering why this doesn't cause an "unused function"
+warning for einj_remove(), given that __exit_p() turns the
+reference into NULL.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 4bfbe55553f4..23d16a1ee878 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	}
- 
- 	*val = 0;
-+	size = GET_BIT_WIDTH(reg);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		u32 val_u32;
- 		acpi_status status;
- 
- 		status = acpi_os_read_port((acpi_io_address)reg->address,
--					   &val_u32, width);
-+					   &val_u32, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to read SystemIO port %llx\n",
- 				 reg->address);
-@@ -1018,8 +1018,15 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 
- 		*val = val_u32;
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
-@@ -1028,8 +1035,6 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	size = GET_BIT_WIDTH(reg);
--
- 	switch (size) {
- 	case 8:
- 		*val = readb_relaxed(vaddr);
-@@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		*val = readq_relaxed(vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot read %u width from for system memory: 0x%llx\n",
-+				reg->bit_width, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot read %u bit width to PCC for ss: %d\n",
- 			 reg->bit_width, pcc_ss_id);
-+		}
- 		return -EFAULT;
- 	}
- 
-@@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
-+	size = GET_BIT_WIDTH(reg);
-+
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
--					    (u32)val, width);
-+					    (u32)val, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to write SystemIO port %llx\n",
- 				 reg->address);
-@@ -1076,8 +1087,15 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		}
- 
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
-@@ -1086,8 +1104,6 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
- 				val, reg->bit_width);
- 
--	size = GET_BIT_WIDTH(reg);
--
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		val = MASK_VAL(reg, val);
- 
-@@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		writeq_relaxed(val, vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot write %u width from for system memory: 0x%llx\n",
-+				reg->bit_width, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
- 			 reg->bit_width, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 		break;
- 	}
--- 
-2.43.1
+As it turns out, the __exit annotation marks the function as
+"__attribute__((used))", so it still gets put in the object
+file but then dropped by the linker. The __used annotation
+seems to predate the introduction of "__attribute__((unused))",
+which would seem more appropriate here, which would allow
+more dead-code elimination.
 
+The patch below gets rid of the __used annotation completely,
+which in turn uncovers some interesting bugs with __exit
+functions in built-in code that are never called from
+anywhere, like
+
+drivers/video/fbdev/asiliantfb.c:627:20: error: 'asiliantfb_exit' define=
+d but not used [-Werror=3Dunused-function]
+
+     Arnd
+
+diff --git a/include/linux/init.h b/include/linux/init.h
+index 58cef4c2e59a..d0e6354f3050 100644
+--- a/include/linux/init.h
++++ b/include/linux/init.h
+@@ -82,7 +82,7 @@
+ #define __exitused  __used
+ #endif
+=20
+-#define __exit          __section(".exit.text") __exitused __cold notra=
+ce
++#define __exit          __section(".exit.text") __cold notrace
+=20
+ /* Used for MEMORY_HOTPLUG */
+ #define __meminit        __section(".meminit.text") __cold notrace \
+@@ -394,7 +394,7 @@ void __init parse_early_options(char *cmdline);
+ #ifdef MODULE
+ #define __exit_p(x) x
+ #else
+-#define __exit_p(x) NULL
++#define __exit_p(x) (0 ? (x) : NULL)
+ #endif
+=20
+ #endif /* _LINUX_INIT_H */
 
