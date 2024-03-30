@@ -1,189 +1,269 @@
-Return-Path: <linux-acpi+bounces-4572-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4573-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5878689299A
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 08:00:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B99892C22
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 18:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F02283281
-	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 07:00:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0065E282D84
+	for <lists+linux-acpi@lfdr.de>; Sat, 30 Mar 2024 17:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7535915C9;
-	Sat, 30 Mar 2024 07:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF18E3A8CE;
+	Sat, 30 Mar 2024 17:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Gkcdic5f";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Te5ANeTJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KroSnvmy"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3623C7FB
-	for <linux-acpi@vger.kernel.org>; Sat, 30 Mar 2024 07:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB242AF13;
+	Sat, 30 Mar 2024 17:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711782037; cv=none; b=Et/u1b01ubLXWvjTdfC6iXtGI0LXFiUOtHyS7GHP9e/1waks8VeiFimwx6JUfpvxAjMQ01R2KRn/uPqeqTzEqE5kD7NYYzIB8OLSrs+QX4OKFMBww+Zhicdmnp4mrSBNRRHCPoBWj7NOCA3P+i86dK9qC7T28YNuy+3VTihU4cY=
+	t=1711819899; cv=none; b=P4/7tYSj3FtQxNBKV1LJGQJzRBOxPhw5d3yTp0GjqLWbqB4Dw5fdTXjOQjzXq1D9VHbscStLJsAb0OAvYXNMm7QTJXhiGGCC3A3kn5+X6CvnAFBmbROi8mxwrv4ABSEuNb8tTnwuXXgXRVuFppAg1coBwHpL8lfH9duf/zAFLXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711782037; c=relaxed/simple;
-	bh=luQuQt0cywrwnxZrfSoUMvqzYD0+ZW8E9d6RGOc/eW0=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=ic5gr6Rl+Pb+xd+/SxKGBO7McQusA6Wvi7LWCTcqVkSBKZuDsKls3Aqvk7Ipte5Si6WvqMjtruLfvvAhASB8UOdgPHo892W1CUEiOayX+Ml9zDXgbaWIOQ57wWwKlO74rBm29oNUrrrSPeX1XxdXmM8UEZqX4s6ato+fvAtRoQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Gkcdic5f; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Te5ANeTJ; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 1FFAA138010F;
-	Sat, 30 Mar 2024 03:00:34 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Sat, 30 Mar 2024 03:00:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1711782034;
-	 x=1711868434; bh=Ur/nT5RbykWH2DvGLVa7v7x6kXVV495L2a3dmor8HDw=; b=
-	Gkcdic5fp0ZPEE0cpvbyVNIGq0xD1SKOQ20gaY9qFPXaftrPxOV0eHX8Cm90fB1j
-	EdvChwj9Z3SkWe4tIyWrCatf5kJElHxGcBZvj1M9CXdQtcRgKKu+ZLxziCb4BFiw
-	Wlw8dp/aVmw6pPT/YOOtpdWYvaPY6wAwZYYs9IROdJd+uLpVODsplvKrcNayvHTc
-	+Ybgb1T3nAjwdlaZSi0GzZz5Aj2qQx++2Bkc7Z3QkCA8pORwA0JpGXYp60LHEpzQ
-	zMMWnRfQnMnRyCKx23/IEGyPa2Y7766YlfRd9falR5RartAo+CKV1miDbC+QktAh
-	yZJn2/5R4IdaheeqPIJAdw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1711782034; x=
-	1711868434; bh=Ur/nT5RbykWH2DvGLVa7v7x6kXVV495L2a3dmor8HDw=; b=T
-	e5ANeTJmKsUF0CujRvn7FY/R0HpQPeTk4kwtv/AFKUSOm5xJ5Iplw8dCujsInbfX
-	ATH4dkG5XL3Uz3/mUoHA4aOAA10J9JOkTHnasaty5LHcAbi+fD5A9X/faVJmzN9s
-	XprC7AZDUb57jDG1/x3AzTTZb2BPwjIzZu/wTSNFWMLh9axlMnJXLvvb85/k6lsw
-	bD3xKK9O5h5VOcmiAIdhAgFac2z83O1csn0FoVYKOt0VJMzP1KMggv5eSE2+aHqp
-	xBdvTDhTW9PXwnSE3gwZl9jNEPfXitd8WMbtlxTwT4ok7SV1/VSEJRKR2SdE9T1e
-	VsVx12HC8ce2MxK5tTH4g==
-X-ME-Sender: <xms:kbgHZmF5Ds9B3lNiLN2MVUw2zDAHcqhVZO0U9WnH_JECexIwxd22bw>
-    <xme:kbgHZnXwmHXU1mqLV7ffq7hW-ENAixlMRXbfO4Ty9jJMsErlMKaWwK1cOqoBoN3Ue
-    mnFLijUxnzmdE7bvrY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddvfedguddtfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
-    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
-    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:kbgHZgLYY5OTB7Juk3kmLKeICSR5B98P38jYsQeb-2yO9Sqlv1nxsQ>
-    <xmx:kbgHZgExUJi2vhyEQ8qEUphBEFJfQDde09bDSf6hMacS2ZVMUENAjQ>
-    <xmx:kbgHZsWHWy3vdh7fPoGTuMuu7KeXZwV9HQFai3GzmLYj2Vbzp1Eqyw>
-    <xmx:kbgHZjNpdgxMqwlApRxGGQKiCziuTM-be1ZfkcEQFckMaTOxNAzfRA>
-    <xmx:krgHZts3SBcxSXFdWG5RuUqU46gIOj8LEoy4cajtnz_ZHCsDACh0rQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 16B74B6008D; Sat, 30 Mar 2024 03:00:33 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-333-gbfea15422e-fm-20240327.001-gbfea1542
+	s=arc-20240116; t=1711819899; c=relaxed/simple;
+	bh=giVx9/Fipt8Pgmlsg1aHLlHlo1g8adYHBDtICHP+gRc=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=EAatlvhYIXk6V3nN3CbrJHHUvjTvR4O3h+gpkfqr5ZBUwrHvWjWeLqbwuPCIHFNqszOq7OustOpgVSFfF8N6US+nJsrgDnk390shQeWuPUu/dYtlRou47zNI1mp8ZUrKr1MXLs4A/HnyPUMcuSo4ftLn+xfCVaqL1bP/1vS4mbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KroSnvmy; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1711819898; x=1743355898;
+  h=date:from:to:cc:subject:message-id;
+  bh=giVx9/Fipt8Pgmlsg1aHLlHlo1g8adYHBDtICHP+gRc=;
+  b=KroSnvmyV2cJxCWGOJTyYO+A84ece9rzKaGPJQz4JKpFXzE93SrmpSd9
+   aGjxrjSsQuEu5Ms27EURWQ38MiRobwebkwDqF8ynpQC7ySGFBog3KpDTy
+   oVXjkMLH4a58CQhjMsl5hj6TTi8O2+L2veOWKdivtAP9j5YlHeM0WuQNb
+   LRPwMmH7OJyAmIx51HU/sTLUpHl1j5UL34ElAPPfhAg9hmsRwmrDsKZez
+   4+SeNYumUPShTwdNo+LPzTZTEtHvJOv/giOp6UMyP02XuTOKLjpVIsBYf
+   eNIe2TnEvk+k4ZrRWErUHm1graemwjEmOZRf4ec0OnszZBUSjJnhfmpK8
+   A==;
+X-CSE-ConnectionGUID: nf2XccxLTBqBEHdMkn6Wnw==
+X-CSE-MsgGUID: pguGgiFpR42kTlGW0M1iiA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11029"; a="7112741"
+X-IronPort-AV: E=Sophos;i="6.07,168,1708416000"; 
+   d="scan'208";a="7112741"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2024 10:31:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,168,1708416000"; 
+   d="scan'208";a="17315341"
+Received: from lkp-server01.sh.intel.com (HELO 3d808bfd2502) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 30 Mar 2024 10:31:35 -0700
+Received: from kbuild by 3d808bfd2502 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rqcYH-0000Ea-0l;
+	Sat, 30 Mar 2024 17:31:33 +0000
+Date: Sun, 31 Mar 2024 01:30:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 07ab29143acde0dec716a5a94c694b995e19d2a4
+Message-ID: <202403310152.q7lte70t-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-Id: <53480b07-612f-4701-bcd5-bb677701b00e@app.fastmail.com>
-In-Reply-To: <20240329100203.540368-2-u.kleine-koenig@pengutronix.de>
-References: <20240329100203.540368-2-u.kleine-koenig@pengutronix.de>
-Date: Sat, 30 Mar 2024 08:00:32 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Dan Williams" <dan.j.williams@intel.com>
-Cc: "Len Brown" <lenb@kernel.org>, "James Morse" <james.morse@arm.com>,
- "Tony Luck" <tony.luck@intel.com>, "Borislav Petkov" <bp@alien8.de>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
- "Avadhut Naik" <Avadhut.Naik@amd.com>,
- "Ben Cheatham" <Benjamin.Cheatham@amd.com>, linux-acpi@vger.kernel.org,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>
-Subject: Re: [PATCH] ACPI: APEI: EINJ: mark remove callback as __exit
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 29, 2024, at 11:02, Uwe Kleine-K=C3=B6nig wrote:
-> The einj_driver driver is registered using platform_driver_probe(). In
-> this case it cannot get unbound via sysfs and it's ok to put the remove
-> callback into an exit section. To prevent the modpost warning about
-> einj_driver referencing .exit.text, mark the driver struct with
-> __refdata and explain the situation in a comment.
->
-> This is an improvement over commit a24118a8a687 ("ACPI: APEI: EINJ: ma=
-rk
-> remove callback as non-__exit") which recently addressed the same issu=
-e,
-> but picked a less optimal variant.
->
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 07ab29143acde0dec716a5a94c694b995e19d2a4  Merge branches 'thermal-core' and 'thermal-intel' into linux-next
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+elapsed time: 1381m
 
-I noticed another curiosity:
+configs tested: 177
+configs skipped: 3
 
->  static struct platform_device *einj_dev;
-> -static struct platform_driver einj_driver =3D {
-> -	.remove_new =3D einj_remove,
-> +/*
-> + * einj_remove() lives in .exit.text. For drivers registered via
-> + * platform_driver_probe() this is ok because they cannot get unbound=
- at
-> + * runtime. So mark the driver struct with __refdata to prevent modpo=
-st
-> + * triggering a section mismatch warning.
-> + */
-> +static struct platform_driver einj_driver __refdata =3D {
-> +	.remove_new =3D __exit_p(einj_remove),
->  	.driver =3D {
->  		.name =3D "acpi-einj",
->  	},
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I was wondering why this doesn't cause an "unused function"
-warning for einj_remove(), given that __exit_p() turns the
-reference into NULL.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                            hsdk_defconfig   gcc  
+arc                        nsimosci_defconfig   gcc  
+arc                   randconfig-001-20240330   gcc  
+arc                   randconfig-002-20240330   gcc  
+arc                    vdk_hs38_smp_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                        multi_v7_defconfig   gcc  
+arm                        neponset_defconfig   gcc  
+arm                   randconfig-001-20240330   clang
+arm                   randconfig-002-20240330   clang
+arm                   randconfig-003-20240330   gcc  
+arm                   randconfig-004-20240330   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240330   clang
+arm64                 randconfig-002-20240330   clang
+arm64                 randconfig-003-20240330   clang
+arm64                 randconfig-004-20240330   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240330   gcc  
+csky                  randconfig-002-20240330   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240330   clang
+hexagon               randconfig-002-20240330   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240330   clang
+i386         buildonly-randconfig-002-20240330   clang
+i386         buildonly-randconfig-003-20240330   clang
+i386         buildonly-randconfig-004-20240330   clang
+i386         buildonly-randconfig-005-20240330   clang
+i386         buildonly-randconfig-006-20240330   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240330   clang
+i386                  randconfig-002-20240330   clang
+i386                  randconfig-003-20240330   clang
+i386                  randconfig-004-20240330   clang
+i386                  randconfig-005-20240330   clang
+i386                  randconfig-006-20240330   gcc  
+i386                  randconfig-011-20240330   clang
+i386                  randconfig-012-20240330   gcc  
+i386                  randconfig-013-20240330   gcc  
+i386                  randconfig-014-20240330   clang
+i386                  randconfig-015-20240330   gcc  
+i386                  randconfig-016-20240330   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240330   gcc  
+loongarch             randconfig-002-20240330   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                          ath25_defconfig   clang
+mips                           mtx1_defconfig   clang
+mips                           rs90_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240330   gcc  
+nios2                 randconfig-002-20240330   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240330   gcc  
+parisc                randconfig-002-20240330   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                      chrp32_defconfig   clang
+powerpc                   lite5200b_defconfig   clang
+powerpc               randconfig-001-20240330   gcc  
+powerpc               randconfig-002-20240330   clang
+powerpc               randconfig-003-20240330   clang
+powerpc64             randconfig-001-20240330   gcc  
+powerpc64             randconfig-002-20240330   gcc  
+powerpc64             randconfig-003-20240330   gcc  
+riscv                            alldefconfig   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240330   gcc  
+riscv                 randconfig-002-20240330   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240330   clang
+s390                  randconfig-002-20240330   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                             espt_defconfig   gcc  
+sh                    randconfig-001-20240330   gcc  
+sh                    randconfig-002-20240330   gcc  
+sh                        sh7763rdp_defconfig   gcc  
+sh                          urquell_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240330   gcc  
+sparc64               randconfig-002-20240330   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240330   clang
+um                    randconfig-002-20240330   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240330   gcc  
+x86_64       buildonly-randconfig-002-20240330   gcc  
+x86_64       buildonly-randconfig-003-20240330   clang
+x86_64       buildonly-randconfig-004-20240330   clang
+x86_64       buildonly-randconfig-005-20240330   gcc  
+x86_64       buildonly-randconfig-006-20240330   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240330   gcc  
+x86_64                randconfig-002-20240330   clang
+x86_64                randconfig-003-20240330   clang
+x86_64                randconfig-004-20240330   gcc  
+x86_64                randconfig-005-20240330   gcc  
+x86_64                randconfig-006-20240330   gcc  
+x86_64                randconfig-011-20240330   clang
+x86_64                randconfig-012-20240330   clang
+x86_64                randconfig-013-20240330   clang
+x86_64                randconfig-014-20240330   gcc  
+x86_64                randconfig-015-20240330   gcc  
+x86_64                randconfig-016-20240330   gcc  
+x86_64                randconfig-071-20240330   clang
+x86_64                randconfig-072-20240330   clang
+x86_64                randconfig-073-20240330   gcc  
+x86_64                randconfig-074-20240330   clang
+x86_64                randconfig-075-20240330   clang
+x86_64                randconfig-076-20240330   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240330   gcc  
+xtensa                randconfig-002-20240330   gcc  
 
-As it turns out, the __exit annotation marks the function as
-"__attribute__((used))", so it still gets put in the object
-file but then dropped by the linker. The __used annotation
-seems to predate the introduction of "__attribute__((unused))",
-which would seem more appropriate here, which would allow
-more dead-code elimination.
-
-The patch below gets rid of the __used annotation completely,
-which in turn uncovers some interesting bugs with __exit
-functions in built-in code that are never called from
-anywhere, like
-
-drivers/video/fbdev/asiliantfb.c:627:20: error: 'asiliantfb_exit' define=
-d but not used [-Werror=3Dunused-function]
-
-     Arnd
-
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 58cef4c2e59a..d0e6354f3050 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -82,7 +82,7 @@
- #define __exitused  __used
- #endif
-=20
--#define __exit          __section(".exit.text") __exitused __cold notra=
-ce
-+#define __exit          __section(".exit.text") __cold notrace
-=20
- /* Used for MEMORY_HOTPLUG */
- #define __meminit        __section(".meminit.text") __cold notrace \
-@@ -394,7 +394,7 @@ void __init parse_early_options(char *cmdline);
- #ifdef MODULE
- #define __exit_p(x) x
- #else
--#define __exit_p(x) NULL
-+#define __exit_p(x) (0 ? (x) : NULL)
- #endif
-=20
- #endif /* _LINUX_INIT_H */
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
