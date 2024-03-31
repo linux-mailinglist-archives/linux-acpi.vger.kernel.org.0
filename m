@@ -1,188 +1,190 @@
-Return-Path: <linux-acpi+bounces-4575-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4576-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352BF892EA4
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Mar 2024 07:11:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BD2892F06
+	for <lists+linux-acpi@lfdr.de>; Sun, 31 Mar 2024 10:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE3E11C20BCB
-	for <lists+linux-acpi@lfdr.de>; Sun, 31 Mar 2024 05:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E8D1C20A0D
+	for <lists+linux-acpi@lfdr.de>; Sun, 31 Mar 2024 08:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7204436;
-	Sun, 31 Mar 2024 05:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DFC6A8AC;
+	Sun, 31 Mar 2024 08:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y38q9kBJ"
+	dkim=pass (2048-bit key) header.d=OUTLOOK.COM.AU header.i=@OUTLOOK.COM.AU header.b="So+lHeaJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AUS01-SY4-obe.outbound.protection.outlook.com (mail-sy4aus01olkn2150.outbound.protection.outlook.com [40.92.62.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6612B28FD;
-	Sun, 31 Mar 2024 05:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711861893; cv=none; b=PD7BCV77YMnxIEL7ypCl2MnkcgML/6agJcQFT+ate1/sRa4/iX31NOfQ0WRgUJY359WntL/QdmIT212EYI5prOHwo9AzOe1pvyqamn9ciHlMlHoE2KuOBvb43wZEVtAa98w2iw6CF8LZgyXjlmaW4uxhKSqK7NmnpnVU80rl0UQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711861893; c=relaxed/simple;
-	bh=iM4j34xzs4H/C5aI7KW/5nrBVU6wpjnIj2bQR623P+Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Bj7n2euwqLhuIo93jWpLyAmjgDHBf5Pp4q38isPPVLb4w5S6qitoXfJZE/iyAW3OHCpLoKAIoOkLw/TgA4ZwBjFsl7nvHr4MQowICqbDydbI2JcEu1rhh3oD/LYxJYxd2KINmN+Fp+NhaXc6QrI4vInK6CGZKYY/pcz9g7bRT+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y38q9kBJ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1e0edd0340fso28583705ad.2;
-        Sat, 30 Mar 2024 22:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711861892; x=1712466692; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gf3j772g4D5kTGxQjNZomrFFVnZ2TPDJswvLXT8RHmo=;
-        b=Y38q9kBJ2WNcYh3iFBWfLbqGz8jfQXgIKPXEhGhudbWYneLPeAhzHBoFwsQuGZYR7K
-         HgWf67ajTAqHvqmDFFRmZidA8rHasv1DZXFD6dFLzP284jYTkOtpXb4ZR+8wvAAkJ797
-         lpd+9DM+l6bVkSqm91yjhM0Xo9l4+9c/IKrzXYPeU3XfNBtM78V9AUHvdySJao4I+DJw
-         n7Yt14gX1RDWA2dem1YfR1klCzaa9Nt3xGhFDiuK0v/e1Pg8eYNO5UHzudboyalagNZN
-         by1ZdPFNL+9afUhZEncJOQLnAjvDoX6AzhGI7uDc+tpxwM+YWMnwSaPprDQgDzVo+Bow
-         FC/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711861892; x=1712466692;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gf3j772g4D5kTGxQjNZomrFFVnZ2TPDJswvLXT8RHmo=;
-        b=o31onb31AN1DNPEMKOzNJoA5d6Y1E80B7FXdIE/J9pDrFe/7SnCT+s0IL3g8NOfz59
-         sGLXc0KjCNSuNM7gh2hTMPwLOATY3j5naQs99L4kANq5XaBIjNIG/wd3a3Uy5OrkHOVu
-         aaIiauZote78DcEebCOCmvygH2ssansbttxNjwLcBIKsg9WXx/rZjFaHaSOmZL3IRve3
-         ji4ZnfHmW5TbkOUu4wJsMpXV8JdzW/Mmxi8bh4pTug9mHwwNkxGP2celNQbEnK875/55
-         IyYMfXYouBONF10mpb6Wv8bSjDJ1TGJdsw+bmd8m8wPE98QUNe46PywUewA4Bbvqoqzq
-         NC/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWCAu5kTfzQvbxJC+0nUC0rfLR/0FMGxIm00VrOVut3HXCAmCdI6JMVcFf4VOckp5WhtLB38K9fipz9DDMZE17LI4QzQP5X66cSxttD
-X-Gm-Message-State: AOJu0YzoI1+j3NCGBkb3VzAhvMS5I9sw4O//4gaJsX4HDQ4joL9l6pvm
-	xTiSMkpe6UkMGN6wWKMAmUIB5ZfTVAXjNpbfHw3QbSYiGzhaocuA
-X-Google-Smtp-Source: AGHT+IEW6mEI2o29MvVNfuTAXnOCmcdkryAvITWJPRNY6G3PO7GIg2OC1xLmDXWGomi4pIpzpxYByQ==
-X-Received: by 2002:a17:902:e746:b0:1de:ff81:f650 with SMTP id p6-20020a170902e74600b001deff81f650mr8170911plf.10.1711861891567;
-        Sat, 30 Mar 2024 22:11:31 -0700 (PDT)
-Received: from arotq-MS-7C96.. ([103.74.140.156])
-        by smtp.gmail.com with ESMTPSA id d4-20020a170902cec400b001e0c5be4e2esm6146481plg.48.2024.03.30.22.11.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Mar 2024 22:11:31 -0700 (PDT)
-From: Rithvik Rama <rithvik.rama@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Rithvik Rama <rithvik.rama@gmail.com>
-Subject: [PATCH] ACPI/ADXL: Added function for ADXL DSM Function 3
-Date: Sun, 31 Mar 2024 10:41:26 +0530
-Message-Id: <20240331051126.10024-1-rithvik.rama@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962262AC29;
+	Sun, 31 Mar 2024 08:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.62.150
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1711874248; cv=fail; b=c9jOhdinFfvq3r449DrRpPw3hPNDz+1Vpa9Ir9bvUsWWbJRngiKb0tuoxOhGSylWOTjlGKT30PncxfR8M0IDDLT3POPEyZcboWP47IQ0iBuj1IRfnapVBdMDSDK+46R1KNJ+idJlsUvgXWECj1nS7sN1SHDK0Fn8DqcykrKytTE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1711874248; c=relaxed/simple;
+	bh=0MyAjGVqEYy+K1dXkwn2r9r0ya8CW14LKbsK1pDwtok=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=tOzCRlSb4pKzMbnkSltQlRm1Gu1FG6Oxt83EssILj6G6864BJ3jfKJxXABe3nft3hhRzDVvlk2ezQFm72coPLrWAT0iEK5GeQZHAjvAkGR82rf+Q0y/FKLlz4w434T2d1fB4EuJ5xGccitmqH329l3mNgNri/+Zf6i4V77qNzKg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com.au; spf=pass smtp.mailfrom=outlook.com.au; dkim=pass (2048-bit key) header.d=OUTLOOK.COM.AU header.i=@OUTLOOK.COM.AU header.b=So+lHeaJ; arc=fail smtp.client-ip=40.92.62.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com.au
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mVVbSj09mfy3Pj9txqmkh9IILejYx3v9/E9sryVMc6tZzxYmhg51dhMqFLO7I5sPIPY++LPn2RqbL/4TjLaEnAKrwcvfQLJnrzrCtNYD4Q+p1ZgB/qrzv9nNwEaRVik4N8BB0tvvXyo0/t1Co34PqJsGNJcXML4dHrXtB2OoGnTpiVeAbFjucIolednbi5jn/75ey01pOcsb/oA7M8rJ/yxeu953QyyTZTJTe05SCSsyFe69Q/BbeTRvpHTnRPqJSi7Umsid+NbTwi62XLxRq0jAHfFWqpepfuE7pG4lpkZ3I/fAHkVpAabeOg9WCnUMTg2fZYJAdg1ult9n01CEMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OZrwxN3CbJI4EDmxBONXwLWu+1hTOg9jQ2yEmrIP8fs=;
+ b=jXKgFeODhhY57NjlduY0RL57pI76sC1JoRFiHv8uQ2tEU0AYckZ2IGZzKqQgWGCq0mVX58k60XD/wTkNv955exerXJOowvMnwCOAXEARgr/PGeo4CAZJwZJMCbkxedgwqMI9i8qCZweWa3f8j9tZ2LV+xI8+C8/wtn2EcbzffsAI+G7EwWYvkRXcjpTjfEHEoiBTVMcGlYB+CIOYocgcQ4RyKudJ9uQ4X79QCS6EBaaLFJ+45ymPnMyF+/E2sPu3mrt9uqQs6/1KWllFlzv+NS9kE9alMdcZ3kA9AjlX/JYeIAO1az8oxrww7fQLgTsBAAVBB59weaUTdx372djmSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=OUTLOOK.COM.AU;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OZrwxN3CbJI4EDmxBONXwLWu+1hTOg9jQ2yEmrIP8fs=;
+ b=So+lHeaJ+JH6tSQEsz5nVzxTk/TPpI83PIvtWwGidu1M4T7JJILU+hn1Yi/BMAMcsHn09SOdJLpNHIOWiIOzBu2kzt0IYAyYM/fTcrdV5C0+0+wtwwnCj1PFJM6fNTkp/CPGfaLNQ8QXY18U/o/CWwGJgHny+u8wOpHn629CYAt/EhXD57OO0CR4OKeoXrD6NYQ09y+5Tl58xkZbQSOMieGF0uhMbpoJcF3jrGyDyHLdKYf5C/mLl7BXhngsZkUZOoDUlJNFDzN2tMinXK0GI570n2l1Pj9caBedeaQTRKB/q0+zl4B0P+hX10soJaHa3gMEL7MWycGueL/agRgamQ==
+Received: from SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM (2603:10c6:10:159::9) by
+ ME3P282MB0817.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:81::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.45; Sun, 31 Mar 2024 08:37:22 +0000
+Received: from SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::22c8:76c8:58ad:f00d]) by SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::22c8:76c8:58ad:f00d%3]) with mapi id 15.20.7409.042; Sun, 31 Mar 2024
+ 08:37:22 +0000
+From: Stephen Horvath <s.horvath@outlook.com.au>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Stephen Horvath <s.horvath@outlook.com.au>
+Subject: [PATCH v2] ACPI: thermal: Continue registering thermal zones even if trip points fail validation
+Date: Sun, 31 Mar 2024 18:37:06 +1000
+Message-ID:
+ <SY4P282MB3063A002007A252337A416DEC5382@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN:
+ [6xuK7COvvvAbR46gIA5uXwkfoeDUjLsvWcnZVgCoSRDTeELuU970N7P8hYsg5HuBnTUYtWdCwNo=]
+X-ClientProxiedBy: SY2PR01CA0027.ausprd01.prod.outlook.com
+ (2603:10c6:1:15::15) To SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:159::9)
+X-Microsoft-Original-Message-ID:
+ <20240331083707.81468-1-s.horvath@outlook.com.au>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SY4P282MB3063:EE_|ME3P282MB0817:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cd8dcb0-77e8-4a4b-9626-08dc515dc80e
+X-MS-Exchange-SLBlob-MailProps:
+	xgbIMsDSu2aSx6qwb8CTBxBMMjMsogXZT/5Ec7LiPG93Hf0Pxkda8eFQtHTNcMVKIVRcoU76bkpF/xHMnP7AjN6eL6TjIcrBWLdiYHohou58GaWIpQpAzpvzTlSnKJY/hupuFZz7gSvIu1vdY03+kIvOHBGlemiQbFF5F+g7U54ZHVhvavzRdI5u8VdPFiQqco1XQrapzavNDupWm7GG3PuTE07jlawngVmNuL5wE12hgNJ1l++E4RJ5ctsT3x0sl3utPiPcrsCr9RVS/tgf9uXcyDHnLUwHaAvTppREDlVfzBMC4z/L2TSOfVB3falZSUO4yTLdJWOyz/jr65KfR/s2g5f7GIdUeFcnTHUaukEMx4qio/U/DgFL/K1pu8DBG2O0zVHrF3VgO/Gx3knQZH4ahqL1U9EUmtcvibFTZXBXRP6ZuXDTDKUdsxf2aEOa17zWHHW+l3pSK/zxjQhQlPo0pYAdeHGPChNwbJnRnmkqTL8yBkxEFqPNKo6BC+PWTX381rfWJaHvhKeN+9ePK97FwbOhk5X61xvrvNILf8xjFrh4rMHZPkDQPbavXv8ac5spzFtrmzX/sNiSroh887DPDYyasdHGfOe6Qj3Ul/2u3UMiBAmjxlaX0bKSl6CRTeKxcWGIn6dfsVurPexcTeKHUU7V2qRG6YzpEP72DZxJb9G0PX73ArGIT9A48xmIDM2bBLK1mu+F2Mrcq0HpjUO0hP7sD7rwoCiT3Iout5DgbwR8SVfvY2cffdE2PNN2tdw3gI1p7ndAbkNXVCyErCE/bjovAN97
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	A8R5e4RogUi/pCf2ua6rJAL3HJBxmgq6TnOgvrDm8U7Yk3hyqsBxQ3zAZ3pm5nu65Yfx4r6eoxW+MjrNZw6CG5NckfMOSqCqOpb85CCcTHYTHyF4r53+osLAKzJZmQqVs2sbVrxS00cbDP+ORdBIa9jv1ZkjXwZdAKS9Ehk2TZ9qjaJ6apTvO3gs32EoY1Tw/qPtdqX2zxr1NshcP6VRJqLe4Y5Lp7aLRzbsBVMVZmTPGDe94jPL4ivD3xm+/a4h7Jy/Pi2j9uDUej5uGc4+rMw8Rw52wNVY36fcu78C8k3YTXjiL4M2J3R+sLybvKWrGePJ+SNGwjTRdpPVLZeBPvqvguMezRwnEQDnHzvhId18lVvgpnBLJAtHQXRBDlNeSo+xtwFU5hOHD20Nme7G/xzB0ra+cOng2QdWNBvIDhPYA1Nxi1RJwSDYusaJ2UVD6K+QsmAtG2WIbgoh1gH7ZD0Dodxdd0iYgmzdj+dhVIc061aGk8BNQsJ9L7+FXljni/1UYd4mJVNKWpjEHueQd5AKZBJp5KjSdNa2jg4eoLUFY3edROgkDTT3UyOWeA7f2qwSaPcLvNFt/0raDvssMAWgSF9BW/5sX+oWtAOindUAfBrIq18Lwc8hU9LOlwzxRHnVU7KMmdjNAaAt6zDf/4H237DjiPoqTtpVAGsjOI/LG+9Yw8osC3BfZly4hH64
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bpJt/J/eHWP6i/siSD0IcpFcgOQomXhLK5NeGSldwX8mKLej7Wnjy9miU/eV?=
+ =?us-ascii?Q?SJLBrzJ/VLPkKtN6wj4zqSKh+SBqIsLebMQBYnB9xYPiI6K1f9E3SOtuRmZ9?=
+ =?us-ascii?Q?z1dx7wfvUrrIaud1mhgJqnCTei5aZ0g6bjpLp802loD5A/rtD/XuHwbY74+2?=
+ =?us-ascii?Q?mK3s/RXCxikZJo98RvmQ/7a8CgTFVWqcqdAp6y1TXN2S/OlGTiuIu8jaup1G?=
+ =?us-ascii?Q?3E4gfFAl8eoIS2iNhNqddBcYNlssHi0lsBo5KNgcnFpgOyE1LwgQeoWnEaNu?=
+ =?us-ascii?Q?0eBQdJsvljc+jkOirjen+pIGjSJ59djLoQXwrlTgW1V3NF7hVF7BQG9N76hZ?=
+ =?us-ascii?Q?9X4vXN8r4XdkOncHa1ReBP8qKyDYmQr22//JkxWiTnMJnsr5XrTXTVXGGy1/?=
+ =?us-ascii?Q?RJhh3Wvj12ivsuVdln6itB1yPVQkJatxpBOexb2lp6kQBnGMFtePTKFXP8cV?=
+ =?us-ascii?Q?JkdXqnros8ICnbeO8vJcoE44AvSfHzgtSnlt3zZafRol2ppUPdtv7B/F8JCB?=
+ =?us-ascii?Q?Qy37+9G8nZnT5tGceNK6v4nK6c7ylXluz+Prw1Wa8YkXIHjYu2JXhZcOUh9X?=
+ =?us-ascii?Q?osC8b0SCu/+KvlVROWeuzWPMvC4lQgkJEG0VMq1VHBNqnPhbi4ZnOwWFjEiP?=
+ =?us-ascii?Q?5wHOKXolwj7On+mPALYwsl9H4iqpG366RasMdT3L6wR2tSPDboX5llhm/P/3?=
+ =?us-ascii?Q?1XsgE9OvREPEgT51ACUUoTNiBJ6jTWy0p9qJaV14L+IY8XtcQfvNDmcVrCFV?=
+ =?us-ascii?Q?olACnhKU1BgIcnNAzjzRMgwCbEZPIG3kq5ZFkvlxPGosTJ5m8ny0wRzSxt1V?=
+ =?us-ascii?Q?VcHq0A7xxyr5OXObF+3rJ4ijTqWXEAtbj9g+waj5uMERK91TIk7hcReQB0oU?=
+ =?us-ascii?Q?7eVahL74gZAFL5sNcDFTfrtlv65s9hiw6hJGEBBGk3rR+zIhvPjIVrvRGRni?=
+ =?us-ascii?Q?sG6LzA9+yppOpGpjlcZASB60eyb4G0sD9ihoj1WxxzB6/7OBkac4M63ANdcI?=
+ =?us-ascii?Q?j+biXAt5OcDxwDOfRWOBqSzs0aJPSHRQUHj/V4WFo6vfU2xMhcQzixDQYGoy?=
+ =?us-ascii?Q?O1J8k69w/F/AbSxckJtiXHbHPC2H1eUUbtqXbu+5WMTxzzDJlOmJ1TFqsXFb?=
+ =?us-ascii?Q?UW7egh1C58yPybBaXsxpdcuNGqhtOO1gYFI88jgGV6JBid9R9WBpA0q+zoNW?=
+ =?us-ascii?Q?ljEdQDqtR37/Elik78Hx2ql5TSb0mXSgxzL0TTeedReQW2M5x/h3FfVxTdPZ?=
+ =?us-ascii?Q?x1dEWROexUREdpSE2rrFjz0ADUM42K5XrdbKuSWN3cbwj+H1XRSfgpMnzKwz?=
+ =?us-ascii?Q?X1kknOakaVHnrbJPWTuC7Zv2?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-746f3.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cd8dcb0-77e8-4a4b-9626-08dc515dc80e
+X-MS-Exchange-CrossTenant-AuthSource: SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2024 08:37:21.3076
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME3P282MB0817
 
-Current driver supports only Function Index 1 & 2 as mentioned in the
-ACPI ADXL DSM Interface. Added a function for ACPI Function Index 3.
+Some laptops where the thermal control is handled by the EC may
+provide trip points that fail the kernels new validation, but still have
+working temperature sensors. An example of this is the Framework 13 AMD.
 
-Signed-off-by: Rithvik Rama <rithvik.rama@gmail.com>
+This patch allows the thermal zone to still be registered without trip
+points if the trip points fail validation, allowing the temperature
+sensor to be viewed and used by the user.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218586
+Fixes: 9c8647224e9f ("ACPI: thermal: Use library functions to obtain trip point temperature values")
+Signed-off-by: Stephen Horvath <s.horvath@outlook.com.au>
 ---
- drivers/acpi/acpi_adxl.c | 54 +++++++++++++++++++++++++++++++++++++++-
- include/linux/adxl.h     |  1 +
- 2 files changed, 54 insertions(+), 1 deletion(-)
+ V1 -> V2: Referenced bug tracker in commit, and switched to using
+                `thermal_tripless_zone_device_register` as per the
+                suggestion of Rafael J. Wysocki.
 
-diff --git a/drivers/acpi/acpi_adxl.c b/drivers/acpi/acpi_adxl.c
-index 13c8f7b50c46..5bf53662b737 100644
---- a/drivers/acpi/acpi_adxl.c
-+++ b/drivers/acpi/acpi_adxl.c
-@@ -14,6 +14,7 @@
- #define ADXL_REVISION			0x1
- #define ADXL_IDX_GET_ADDR_PARAMS	0x1
- #define ADXL_IDX_FORWARD_TRANSLATE	0x2
-+#define ADXL_IDX_REVERSE_TRANSLATE	0X3
- #define ACPI_ADXL_PATH			"\\_SB.ADXL"
- 
- /*
-@@ -135,6 +136,56 @@ int adxl_decode(u64 addr, u64 component_values[])
- }
- EXPORT_SYMBOL_GPL(adxl_decode);
- 
-+/**
-+ * adxl_reverse_decode - Ask BIOS to decode a memory address to system address
-+ * @component_values: pointer to array of values for each component
-+ * Returns 0 on success, negative error code otherwise
-+ *
-+ */
-+
-+int adxl_reverse_decode(u64 component_values[])
-+{
-+	union acpi_object *argv4, *results, *r;
-+	int i, cnt;
-+
-+	argv4 = kzalloc((adxl_count+1)*sizeof(*argv4), GFP_KERNEL);
-+	if (!argv4)
-+		return -ENOMEM;
-+
-+	if (!adxl_component_names)
-+		return -EOPNOTSUPP;
-+
-+	argv4[0].type = ACPI_TYPE_PACKAGE;
-+	argv4[0].package.count = adxl_count;
-+	argv4[0].package.elements = &argv4[1];
-+
-+	/*
-+	 * Loop through supported memory component values
-+	 */
-+	for (i = 1; i <= adxl_count; i++) {
-+		argv4[i].integer.type = ACPI_TYPE_INTEGER;
-+		argv4[i].integer.value = component_values[i-1];
-+	}
-+
-+	results = adxl_dsm(ADXL_IDX_REVERSE_TRANSLATE, argv4);
-+	if (!results)
-+		return -EINVAL;
-+
-+	r = results->package.elements + 1;
-+	cnt = r->package.count;
-+	if (cnt != adxl_count) {
-+		ACPI_FREE(results);
-+		return -EINVAL;
-+	}
-+	r = r->package.elements;
-+	for (i = 0; i < cnt; i++)
-+		component_values[i] = r[i].integer.value;
-+
-+	ACPI_FREE(results);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(adxl_reverse_decode);
-+
- static int __init adxl_init(void)
+ drivers/acpi/thermal.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+index 302dce0b2b50..10044c56b85e 100644
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -662,14 +662,16 @@ static int acpi_thermal_register_thermal_zone(struct acpi_thermal *tz,
  {
- 	char *path = ACPI_ADXL_PATH;
-@@ -155,7 +206,8 @@ static int __init adxl_init(void)
+ 	int result;
  
- 	if (!acpi_check_dsm(handle, &adxl_guid, ADXL_REVISION,
- 			    ADXL_IDX_GET_ADDR_PARAMS |
--			    ADXL_IDX_FORWARD_TRANSLATE)) {
-+			    ADXL_IDX_FORWARD_TRANSLATE |
-+			    ADXL_IDX_REVERSE_TRANSLATE)) {
- 		pr_info("DSM method does not support forward translate\n");
- 		return -ENODEV;
+-	tz->thermal_zone = thermal_zone_device_register_with_trips("acpitz",
+-								   trip_table,
+-								   trip_count,
+-								   tz,
+-								   &acpi_thermal_zone_ops,
+-								   NULL,
+-								   passive_delay,
+-								   tz->polling_frequency * 100);
++	if (trip_count) {
++		tz->thermal_zone = thermal_zone_device_register_with_trips(
++			"acpitz", trip_table, trip_count, tz,
++			&acpi_thermal_zone_ops, NULL, passive_delay,
++			tz->polling_frequency * 100);
++	} else {
++		tz->thermal_zone = thermal_tripless_zone_device_register(
++			"acpitz", tz, &acpi_thermal_zone_ops, NULL);
++	}
++
+ 	if (IS_ERR(tz->thermal_zone))
+ 		return PTR_ERR(tz->thermal_zone);
+ 
+@@ -903,8 +905,6 @@ static int acpi_thermal_add(struct acpi_device *device)
+ 
+ 	if (trip == trip_table) {
+ 		pr_warn(FW_BUG "No valid trip points!\n");
+-		result = -ENODEV;
+-		goto free_memory;
  	}
-diff --git a/include/linux/adxl.h b/include/linux/adxl.h
-index 2a629acb4c3f..f3fea64a270c 100644
---- a/include/linux/adxl.h
-+++ b/include/linux/adxl.h
-@@ -9,5 +9,6 @@
  
- const char * const *adxl_get_component_names(void);
- int adxl_decode(u64 addr, u64 component_values[]);
-+int adxl_reverse_decode(u64 component_values[]);
- 
- #endif /* _LINUX_ADXL_H */
+ 	result = acpi_thermal_register_thermal_zone(tz, trip_table,
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
 -- 
-2.34.1
+2.43.0
 
 
