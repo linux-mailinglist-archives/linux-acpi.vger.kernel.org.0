@@ -1,107 +1,93 @@
-Return-Path: <linux-acpi+bounces-4594-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4595-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0150895654
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 16:12:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AA8895832
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 17:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954251F21AAD
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 14:12:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DCD31C2244A
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 15:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F6185C46;
-	Tue,  2 Apr 2024 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90D7131729;
+	Tue,  2 Apr 2024 15:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LgXN6oQE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7998405F;
-	Tue,  2 Apr 2024 14:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B4C12F398;
+	Tue,  2 Apr 2024 15:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712067131; cv=none; b=N0YIKZ8DghqKfwsmFfsafLdrveWTA497EuvQkcV5rLjLCqwtZCnmf1BKEaq4arQ1dGs+Z39OF3OeGX1tjwuw3I8w0swYwT0qDnK9x3cGTm4dm97fImz1RkSP11tRDRjnRK4MI+FTtXEYMjC26yS3RZvtE9AGteRgnH2Ch7u8RNg=
+	t=1712071800; cv=none; b=nyC8gA8/ezmhkLghDIO9swnuJNjv8Ri9UBZzhiOyZ3KkC+JO6/mRPgY1wZ3VZdmRjFi04L5yTJFKI86/z7DP9CpmWPcvqifjhbiwJpcXa25pBS6n84NFC81Ovfkg7Za+jNM4oVI8bTRxe+VF22fXolZeii00LQF6Q6x6sReRRjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712067131; c=relaxed/simple;
-	bh=sBOdmheLZ2gGf5kKDBuAKPcg2oBCHcIwa/Kgod/gHsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oB9iZ/Qmn1MBjFyOB5xPSAlc/nW5vPnwDntfsPpPp9EEUcJHfe9NaT3ViWJ/ibA71WClVfAsz9TMvF8CuyUeIMN+X/igl08pJxxf6ziNevovgqb6wiwDRu593yWAZfehDXKMQie+4nQF/20EPLKoyDkUy4F1LjCeIKP1IKChmI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 75B9A2F4;
-	Tue,  2 Apr 2024 07:12:40 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E93503F64C;
-	Tue,  2 Apr 2024 07:12:06 -0700 (PDT)
-Date: Tue, 2 Apr 2024 15:12:04 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: "Mediouni, Mohamed" <mediou@amazon.de>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>, "Saidi, Ali" <alisaidi@amazon.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>,
-	Saket Dumbre <saket.dumbre@intel.com>
-Subject: Re: [PATCH 2/2] arm64: acpi: Honour firmware_signature field of
- FACS, if it exists
-Message-ID: <ZgwSNLmQw-TrDsaZ@bogus>
-References: <20240312134148.727454-1-dwmw2@infradead.org>
- <20240312134148.727454-2-dwmw2@infradead.org>
- <dbd60df4632e5ea9cef13cdc1a406b47bd8629da.camel@infradead.org>
- <ZgveD6Hb2HbTNYNO@bogus>
- <70B4B352-08A5-4922-93A0-7F420374A831@amazon.de>
+	s=arc-20240116; t=1712071800; c=relaxed/simple;
+	bh=XaVUGRUrb5mPQCplqhRQIZ+eY7CGaNjyYlKQrNyMwug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WQd2gKsMhxzLgKC+Jm8AhzrArntWMyq3zA0Frz517eJZgj7m8AfeUs1ACT/LZL23We7PAe9GTROMijRxVCY0dvqRNoR0W06OcrriS56HX53k7OhaJNBdRrCg73eMdJca40JyNXKGGVxEVXdZOH243OVs7/6DaCANgZNPHPpnOPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LgXN6oQE; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712071800; x=1743607800;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=XaVUGRUrb5mPQCplqhRQIZ+eY7CGaNjyYlKQrNyMwug=;
+  b=LgXN6oQEEa7k39jl7+g1Kw/33GCBZ+0KH3sdhyt176JSupKVpeIf6uFG
+   hsy/Y8Z+SCY5GmlBpMvEw7DdJ+Krps0iJ+TXaV8qO1oculzr8IntAOiL0
+   DehrT+USjgfJrcD0YTCEjpCG6KhUMlyHEN2TWEx0FxJZ9J7r0oSJ/x2YU
+   PpEtmgg4Jqy0CCrbqhCrHWJKlwBAlYPBP4Ppv3IG351Slmq3bhppKEvzD
+   /+iKuFO7JnDdE6yUnCXAmDLHbO5WgKhX+cJ8g+7RYC1PvYANVco3/qp16
+   gkfu8cPyiOesWIIUuZ6k7JiUXuOAaJSAE9dAovbfnA+3Olhxl0pLxg4wy
+   A==;
+X-CSE-ConnectionGUID: YZp5r3uJR4CIF5lBwI1gPQ==
+X-CSE-MsgGUID: U6wTc1JDTG2l840N579uiQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="17867550"
+X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
+   d="scan'208";a="17867550"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 08:29:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="937083610"
+X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
+   d="scan'208";a="937083610"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 02 Apr 2024 08:29:57 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 1F7011C5; Tue,  2 Apr 2024 18:29:56 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 0/2] ACPI: LPSS: Prepare for SPI code cleanup
+Date: Tue,  2 Apr 2024 18:28:51 +0300
+Message-ID: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <70B4B352-08A5-4922-93A0-7F420374A831@amazon.de>
 
-On Tue, Apr 02, 2024 at 12:17:22PM +0000, Mediouni, Mohamed wrote:
-> 
-> > On 2. Apr 2024, at 12:29, Sudeep Holla <sudeep.holla@arm.com> wrote:
-> > 
-> > I think it is OK as a temporary solution for now. But there was some
-> > investigation last year as part of some work in Linaro to enable
-> > "drivers/acpi/sleep.c" into the build cleaning up some x86-ness in there.
-> > acpi_sleep_hibernate_setup() already does this but enabling sleep.c need
-> > some careful investigation so that it doesn't break any existing arm64/x86
-> > platforms and made need some wordings clarification in the ACPI spec.
-> > Today system suspend work via psci std path bypassing the ACPI paths which
-> > may not be ideal as none of the ACPI methods are honoured. Some arm64
-> > platforms may implement them and expect to be executed in the future,
-> > maybe ?
-> Current Windows on Arm platforms (seen on SC8280XP) don’t have _GTS
-> or _PTS methods, and don’t have sleeping objects either.
->
+An ad-hoc cleanup followed by preparation for SPI code cleaning.
+The latter will be done in the next kernel cycle to avoid conflicts.
 
-IMO, SC8280XP is not a very good model platform for ACPI firmware reference.
-It uses PEP which Linux doesn't support for good reason and that make it
-hard to follow everything on that platform.
+Andy Shevchenko (2):
+  ACPI: LPSS: Remove nested ifdeffery for CONFIG_PM
+  ACPI: LPSS: Advertise number of chip selects via property
 
-> As such, I don’t expect any users for that potential functionality.
+ drivers/acpi/acpi_lpss.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I am not 100% sure
+-- 
+2.43.0.rc1.1.gbec44491f096
 
-> Am I missing something or hibernation signalling to firmware (on ARM64)
-> can be made PSCI only indefinitely?
-
-Also bypassing certain operation taken care in sleep.c might result in
-missing certain features. Few things IIRC(might be missing things myself
-or misunderstood as it has been a while since I looked at the code in
-detail): handing of GPE for wakeup, power resource handling during the
-resume, power button event to mention few.
-
---
-Regards,
-Sudeep
 
