@@ -1,105 +1,100 @@
-Return-Path: <linux-acpi+bounces-4597-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4598-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D494F895837
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 17:30:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDBA895923
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 18:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D811C227B9
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 15:30:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812781C24126
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 16:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FDF133401;
-	Tue,  2 Apr 2024 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D9A133987;
+	Tue,  2 Apr 2024 16:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WmBBI6y8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSLA4esj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858E13175D;
-	Tue,  2 Apr 2024 15:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91AB133422;
+	Tue,  2 Apr 2024 16:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712071803; cv=none; b=LPc1L+utBfnbnUATdlWB4s1A9K1MyRxAKTJA+KLgwdSnJJT0cCN8kjVrLcgSJzIg2muCnMeh+4pXdJlMBB7YG5PSSQbg7C95+7M93NHFI+u1SxrYtP3YXe2gTvSl6IcfODeCNb5L/Vo+a0BajtT3tJhsepUc92j0wiTuPpNdEbk=
+	t=1712073698; cv=none; b=qihu3l16+ZPgvQdtp153znlotydyIKZ3M/b5zVfefKH0YH1HcUjlLNEh8gukuZwKu0ewHXsgUTgEvPKaAXmjhK2E/RspNiz54VK4VbknY1s6CBUQzzdSGvS/KHgO0k4oDXwk3jsDTLmgriOWdsJXF75vizoHq4dqi8djkYdQORo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712071803; c=relaxed/simple;
-	bh=rqVurMiCivJ0gWGCbPcucCSz51pxMDQmeUQYco0dJ5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mgobCEpr6o1CBPPutEkqDKDwsbTj6WL6fGCv2Vqua7tP/M4a3Mzhw7h7/yzF46drO1TymFGdJuJdt55SZzhASfRmEKdPPs0XEKxxQDBJSyD1HiBWEf9DWRGS4rQ7gyL3yCjtQ2MOy/hxZNr346Y71zWNDGSUQBaHQ19WvlDWmaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WmBBI6y8; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712071802; x=1743607802;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=rqVurMiCivJ0gWGCbPcucCSz51pxMDQmeUQYco0dJ5o=;
-  b=WmBBI6y81cEeJ3czfSEaIhYBygTomMOetKalwfvY5Ezs8zMVF+Wbn9w+
-   rpOJHqoEX7Hhxq80gQ8daTr4/nulmv8+ZLRy6tj2i9QKAzj6GoG5zy82l
-   SuR8Xwb/VgKgOkFRrhTXyz6n75C2ImJx2O5PNCsCJMO4vRVRtmskFJAoe
-   SaI74O8XahTLAwwzuMx+3K4frSFUZM+55gfx3FUOEwiOexuVAkYRJcQ9z
-   umYOfcfVSkLJ7aS0m9B/Di407FoVEH8jbw/0oqZryhbivekCvPrl0VY3o
-   ca+XWrpp+ebVsUvpalgKRdox5JX3vWQ243tY0Ao3LjGpEclSlusUIOj1k
-   w==;
-X-CSE-ConnectionGUID: mUYlgKelR2atBTAqUnEagw==
-X-CSE-MsgGUID: 425KLKtkQN6enZzSPVnYpA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="17867553"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="17867553"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 08:29:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="937083614"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="937083614"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 02 Apr 2024 08:29:57 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 385DB506; Tue,  2 Apr 2024 18:29:56 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 2/2] ACPI: LPSS: Advertise number of chip selects via property
-Date: Tue,  2 Apr 2024 18:28:53 +0300
-Message-ID: <20240402152952.3578659-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
-References: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712073698; c=relaxed/simple;
+	bh=piAeRL8jL5H//bWXatXO+ZkDRSotyneYNOXg1rYkXlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PpJk4bENlLm86kCAYz8/zif2ZST+rJTnvpbrLjphja03INuoMqc+sXxeN3nIbShukjz3AjeiAEkHl20fn3wqLUHTVp+8tvPEGkZQUZRJ67w7q5bW/yVfTFlmjF/rh6qfBweyXPnYJ105+XIFiOckuRBBpD7swZUMbJU6r/OB9nA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSLA4esj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B04C433F1;
+	Tue,  2 Apr 2024 16:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712073697;
+	bh=piAeRL8jL5H//bWXatXO+ZkDRSotyneYNOXg1rYkXlU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aSLA4esj25B6Ow9aAFy65xp2uv+GjcvwJVWZJpNlI4qQX93hI9VMBj9DB5pnefXCl
+	 Z5R2qfqGdYil99aiGgFNQIfd+8Gu0mV8X3a7Ti5pw5ZqXiBvnDnJjn54qU6TEdLj3c
+	 fnvjiOLwNPj2sXiwJLxnlIPpzwK5ns6clE5kms1wEp+0HkgQL36ALQc7aZqXCcYERo
+	 QPjPhY1citXxJ7N2/I1kxnrX89IeSHQqzr/4hvCiXuyVjbjUnhGOTQk3F+OLrsGu5O
+	 PBf/CVoGi2mT+YAd2KqzxYFXrsnN29t7LWbTPq/ZYhaSHLHIYcEFI5JRJmLT4hrI13
+	 8odU9toOF8e3Q==
+Date: Tue, 2 Apr 2024 11:01:35 -0500
+From: Rob Herring <robh@kernel.org>
+To: Vidya Sagar <vidyas@nvidia.com>
+Cc: lpieralisi@kernel.org, mmaddireddy@nvidia.com,
+	linux-kernel@vger.kernel.org, will@kernel.org, jonathanh@nvidia.com,
+	kthota@nvidia.com, frowand.list@gmail.com, kw@linux.com,
+	linux-arm-kernel@lists.infradead.org, lenb@kernel.org,
+	devicetree@vger.kernel.org, sagar.tv@gmail.com, rafael@kernel.org,
+	bhelgaas@google.com, linux-pci@vger.kernel.org, treding@nvidia.com,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH V5] PCI: Add support for preserving boot configuration
+Message-ID: <171207369295.222743.17702844066682854972.robh@kernel.org>
+References: <20240223080021.1692996-1-vidyas@nvidia.com>
+ <20240401075031.3337211-1-vidyas@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240401075031.3337211-1-vidyas@nvidia.com>
 
-Advertise number of chip selects via property for Intel Braswell.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/acpi_lpss.c | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, 01 Apr 2024 13:20:31 +0530, Vidya Sagar wrote:
+> Add support for preserving the boot configuration done by the
+> platform firmware per host bridge basis, based on the presence of
+> 'linux,pci-probe-only' property in the respective PCI host bridge
+> device-tree node. It also unifies the ACPI and DT based boot flows
+> in this regard.
+> 
+> Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+> ---
+> V5:
+> * Addressed Rob's review comments
+> 
+> V4:
+> * Addressed Bjorn's review comments
+> 
+> V3:
+> * Unified ACPI and DT flows as part of addressing Bjorn's review comments
+> 
+> V2:
+> * Addressed issues reported by kernel test robot <lkp@intel.com>
+> 
+>  drivers/acpi/pci_root.c                  | 12 -----
+>  drivers/pci/controller/pci-host-common.c |  4 --
+>  drivers/pci/of.c                         | 57 +++++++++++++++++++-----
+>  drivers/pci/probe.c                      | 46 ++++++++++++++-----
+>  include/linux/of_pci.h                   |  6 +++
+>  5 files changed, 88 insertions(+), 37 deletions(-)
+> 
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 5b56f198d005..a3d2d94be5c0 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -325,6 +325,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc = {
- 
- static const struct property_entry bsw_spi_properties[] = {
- 	PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
-+	PROPERTY_ENTRY_U32("num-cs", 2),
- 	{ }
- };
- 
--- 
-2.43.0.rc1.1.gbec44491f096
+Reviewed-by: Rob Herring <robh@kernel.org>
 
 
