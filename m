@@ -1,97 +1,156 @@
-Return-Path: <linux-acpi+bounces-4600-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4601-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9F2895C16
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 20:58:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FA1895CE2
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 21:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBDF61C22487
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 18:58:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7FE1F214E7
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 19:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A31C15B545;
-	Tue,  2 Apr 2024 18:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34715CD47;
+	Tue,  2 Apr 2024 19:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BuFwNfgn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ue84BwGu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CE615B14D;
-	Tue,  2 Apr 2024 18:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CF515B98D;
+	Tue,  2 Apr 2024 19:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712084329; cv=none; b=EkNhbcs99e7k++Flr6O2Dvq1X6XNQNBQgcNzBVO3l43jM5KNoztC+Oc6q32ynJGGl150OYxtok9S/IK61X7xWOYEJr2+zZQWKI5yOj16qMExccd+UX1ebzCuOia5C/85C9IHahKsMn4Tg6+hknrwcxeEe7YSsZ3G2Ij/P1dZess=
+	t=1712086839; cv=none; b=r1zm7h4TnuuqEVJWeMwCUhXb2tXpXwQ1ct8jquhexHurHYkWfqd3PH8PMbjjgpfUEEMuhOTSjJ6E6/1xKH8MbOWjO87GVtXpRKDH8IWr8dWaxsUbRY1EpmiUXKh3qsdI8HtYUmPkl0H9uQHrsqZXXqpNVsPx9hLc6Q60obnWNGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712084329; c=relaxed/simple;
-	bh=pfhTEjnGoQZBXhOvCxvyf4F/kDdqOCTHbhRdXUe7DvE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n9Ynj0BV5leIA5UkibyJ+GZ7i27TNvKGNmK4obIzuyYdfQ/HvQygyk8YmN8rfX9TadasStaMxIm4wMN7rMCLBI7mcoxR9vFI0yVsY9mJfwZwrA8W7Xa6UcODpxmfA2q1bJMUOtwlIgf/7znfCZ6yBl5Eiyi6XvBb2JpyWbYVAQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BuFwNfgn; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712084328; x=1743620328;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pfhTEjnGoQZBXhOvCxvyf4F/kDdqOCTHbhRdXUe7DvE=;
-  b=BuFwNfgnKX+LesH7SCzK4M8dndjBejME5PwZW6sUoqvaP9N+ZwrP51cD
-   fjY7UznsRJoLHnaE1K+5xCnFzq0S3SGEfqlPjwwDTQkpjeeA6zFj+70xy
-   1H/+LTH2/d8uAe06sHWtNyrlG0U2vG7WxgjBa/xKdpyxZiAOQpi8gcj9z
-   YDGK+siy+nstjcvMXOzyD6uebJIQ4rlq6z6rF+gZYAPGBTbxY3GjxGF7C
-   XyrS7mPbhYuTDu39d0sjK5HPy0ooPlDTkww3cOYBPIkjk5xaDGmiBf+WW
-   VcR130pBOnv/fUJIlx5X4ZFUOYSXRK+SFmfydCQxzYnWgJVtbwKfY17Ua
-   Q==;
-X-CSE-ConnectionGUID: 6uCN5v8sQa2xVT9j3JS4NA==
-X-CSE-MsgGUID: Ucc9FJmVQMieEGXdO5cz8g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7179084"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="7179084"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 11:58:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="915150459"
-X-IronPort-AV: E=Sophos;i="6.07,175,1708416000"; 
-   d="scan'208";a="915150459"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 11:58:44 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rrjLH-00000000uJT-0cxb;
-	Tue, 02 Apr 2024 21:58:43 +0300
-Date: Tue, 2 Apr 2024 21:58:42 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 0/2] ACPI: LPSS: Prepare for SPI code cleanup
-Message-ID: <ZgxVYnB84nyCb4FA@smile.fi.intel.com>
-References: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712086839; c=relaxed/simple;
+	bh=JjsMiAsMrx1FADRwbTcj5FR+rfAA0/BlPrYl94uuDFI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V7A8ycHr/0w54IWmAMSwrc6GObEe+ri2wm6HpS6zFsBJc7IRUO3m8co6Uuu6SojlHYBqCgRYA2wpbd+8xT/dM8GSlGh8j1fRr75dHXiCPtKRiOCwxHsf1dw4r6zS8I8mUvNrwwaKKmhcKL1Q78bBUKByRwNvrpIKrvvO3/+NFqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ue84BwGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A932CC43390;
+	Tue,  2 Apr 2024 19:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712086839;
+	bh=JjsMiAsMrx1FADRwbTcj5FR+rfAA0/BlPrYl94uuDFI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ue84BwGuwO8F7y/5bSnkVDiho4U7LPqhLfhO/tV3HemCWFbuML/HabHOr/1Vrf44k
+	 MyCkJQ8NvWpauNVCWjwpMFiSKzQhDp1zXQPrZFvfk1P1hwFiOgAxbluXaNQXG34J26
+	 puJWL5EOOJTa2qHrbqpEqwDjJYODw0xqpII2yC1Hz3KQqSj4Jbezt0Kl97f4tstsRz
+	 zr32TrpT5j7INkNEv33To1HkHKy5pOBrRxjZ4Y0IV6glxD+s0y1JCJfupSo2gL8Uq5
+	 2yeXXpyI8VS/MTogQ77ds6ymrOHnHsLvX+3U7sGOVwe/hEklVQSRHXuV8rS/9v07o6
+	 q2Of1FgJGBsNQ==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5a4930d9c48so1088889eaf.1;
+        Tue, 02 Apr 2024 12:40:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWQxz1Sw4fZKKuC7L11Bo7vhZ1TxI6qHp/1j2Y/mkGkOGreG0KlYGt79pQyfdisO02CiyeX9RBIhHgFN0goGgLsubXGXPTk0Myv+14n1RpopgaS4F7hOZbQL0tJp6EVXmAD9Lt+bQCzQQ==
+X-Gm-Message-State: AOJu0Yxr4L6Ugzw3eOKzDLMPdU238qyA5B+I109iLW+L8iKYguSBTOhO
+	gqoduaP9txlPrZWWYplYMSzziMjVAR11CvFq55x6CxF1HCpjRVHBrEzBifuo0jjJUqr8LOcjQYM
+	c+1tLlGWhxmroMV1cePvvySwIoH8=
+X-Google-Smtp-Source: AGHT+IGFh/PeKcJPPYYo87cIDkTkH10FJMqvAD+DIqZbrEV1a1HQyycrPF7kCmTxHnlFz1L2mu0wPm9H+zv8DnVWH0Q=
+X-Received: by 2002:a05:6820:2289:b0:5a4:6e23:e335 with SMTP id
+ ck9-20020a056820228900b005a46e23e335mr15513677oob.0.1712086838999; Tue, 02
+ Apr 2024 12:40:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <SY4P282MB3063A002007A252337A416DEC5382@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+In-Reply-To: <SY4P282MB3063A002007A252337A416DEC5382@SY4P282MB3063.AUSP282.PROD.OUTLOOK.COM>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 2 Apr 2024 21:40:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0icbgfNbt_5TibMWuxU=+SgdQxy8S0xFQkSY5MoPN77hg@mail.gmail.com>
+Message-ID: <CAJZ5v0icbgfNbt_5TibMWuxU=+SgdQxy8S0xFQkSY5MoPN77hg@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: thermal: Continue registering thermal zones even
+ if trip points fail validation
+To: Stephen Horvath <s.horvath@outlook.com.au>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 02, 2024 at 06:28:51PM +0300, Andy Shevchenko wrote:
-> An ad-hoc cleanup followed by preparation for SPI code cleaning.
-> The latter will be done in the next kernel cycle to avoid conflicts.
+On Sun, Mar 31, 2024 at 10:37=E2=80=AFAM Stephen Horvath
+<s.horvath@outlook.com.au> wrote:
+>
+> Some laptops where the thermal control is handled by the EC may
+> provide trip points that fail the kernels new validation, but still have
+> working temperature sensors. An example of this is the Framework 13 AMD.
+>
+> This patch allows the thermal zone to still be registered without trip
+> points if the trip points fail validation, allowing the temperature
+> sensor to be viewed and used by the user.
+>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218586
+> Fixes: 9c8647224e9f ("ACPI: thermal: Use library functions to obtain trip=
+ point temperature values")
+> Signed-off-by: Stephen Horvath <s.horvath@outlook.com.au>
+> ---
+>  V1 -> V2: Referenced bug tracker in commit, and switched to using
+>                 `thermal_tripless_zone_device_register` as per the
+>                 suggestion of Rafael J. Wysocki.
+>
+>  drivers/acpi/thermal.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/acpi/thermal.c b/drivers/acpi/thermal.c
+> index 302dce0b2b50..10044c56b85e 100644
+> --- a/drivers/acpi/thermal.c
+> +++ b/drivers/acpi/thermal.c
+> @@ -662,14 +662,16 @@ static int acpi_thermal_register_thermal_zone(struc=
+t acpi_thermal *tz,
+>  {
+>         int result;
+>
+> -       tz->thermal_zone =3D thermal_zone_device_register_with_trips("acp=
+itz",
+> -                                                                  trip_t=
+able,
+> -                                                                  trip_c=
+ount,
+> -                                                                  tz,
+> -                                                                  &acpi_=
+thermal_zone_ops,
+> -                                                                  NULL,
+> -                                                                  passiv=
+e_delay,
+> -                                                                  tz->po=
+lling_frequency * 100);
+> +       if (trip_count) {
+> +               tz->thermal_zone =3D thermal_zone_device_register_with_tr=
+ips(
+> +                       "acpitz", trip_table, trip_count, tz,
+> +                       &acpi_thermal_zone_ops, NULL, passive_delay,
+> +                       tz->polling_frequency * 100);
+> +       } else {
+> +               tz->thermal_zone =3D thermal_tripless_zone_device_registe=
+r(
+> +                       "acpitz", tz, &acpi_thermal_zone_ops, NULL);
+> +       }
+> +
+>         if (IS_ERR(tz->thermal_zone))
+>                 return PTR_ERR(tz->thermal_zone);
+>
+> @@ -903,8 +905,6 @@ static int acpi_thermal_add(struct acpi_device *devic=
+e)
+>
+>         if (trip =3D=3D trip_table) {
+>                 pr_warn(FW_BUG "No valid trip points!\n");
+> -               result =3D -ENODEV;
+> -               goto free_memory;
+>         }
+>
+>         result =3D acpi_thermal_register_thermal_zone(tz, trip_table,
+>
+> base-commit: 4cece764965020c22cff7665b18a012006359095
+> --
 
-Thinking more about these two, it might be even possible to put them
-as amendments for v6.9-rc3, but I'm fine to have them for v6.10-rc1.
-Just speaking out my thoughts, whatever is better for you is good
-for me.
+Applied as 6.9-rc material under a modified subject ("ACPI: thermal:
+Register thermal zones without valid trip points"), with some
+redundant braces removed and with some white space adjusted.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Please verify the result at
+https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/=
+?h=3Dbleeding-edge&id=3D8a4ff5452dd0cdcc35940460bb777d836bece11c
 
