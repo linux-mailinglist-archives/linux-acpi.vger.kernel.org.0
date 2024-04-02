@@ -1,358 +1,145 @@
-Return-Path: <linux-acpi+bounces-4590-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4591-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C1D894EB7
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 11:31:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E25E894FE4
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 12:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB721F23F93
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 09:31:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 919871C20CA5
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 10:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1823358203;
-	Tue,  2 Apr 2024 09:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F94664C0;
+	Tue,  2 Apr 2024 10:17:17 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9BF57876;
-	Tue,  2 Apr 2024 09:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B75A7AE;
+	Tue,  2 Apr 2024 10:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712050291; cv=none; b=CNqOhZDp8TQgZoTZic1dzVAV8tePR823OknOU21scQEwCXvO3Dgt93IlO00Uq4/tszmUSgVwKSdB67MDltrXnf/Bi1Kfqj6kLuYdqJIRdJlJ2wticAjo3UNGR6Rv7+mwy7zyzFG8NYfvT8BoRVf+TT7yqhhIuP0MIYrWmTYAT30=
+	t=1712053036; cv=none; b=CGo8pjwD2v6GxZuf4JumjHBLKU3LChnZNgZTh8hwQW6UorqXFu9Py7pas1+oa8iaYN/vlbWUMo+vHAT5wMNLnybb5zwt5EOXYk7nbQjf+oLlIgp8Sj83iNNr+t7qNkxrdlU+ZD2LSltQdLBKxcHsgiAJFIKvUgcm+d5+WAS29Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712050291; c=relaxed/simple;
-	bh=XcO6QrDyIRMglgpT78IcWpD3VE1qSUiB47QoEKtwnFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tIYQZT/s5fGWtRMRu2f/9yc7s1NRNYOMpwqE6c448r++j3dDMSIpRsLugYBa6eE4jZYsEF8ueP/Gba3Af1edfg3mNuKuj+rMyfNxak+cgcnF0cIABlJc44jItv+VWFr41qcuRitpdVPlGR1Mvvi5t25Jg8h6rhVZXyVAE0bfBw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 24A7FFF810;
-	Tue,  2 Apr 2024 09:31:18 +0000 (UTC)
-Message-ID: <93e24c6c-65e6-4e99-ac56-aa264dbbf525@ghiti.fr>
-Date: Tue, 2 Apr 2024 11:31:18 +0200
+	s=arc-20240116; t=1712053036; c=relaxed/simple;
+	bh=7w+zfYL5/EU3k21GldfEZOmIoR0yGMwEVvQsUYIGfEg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WreR7uhbnnMuroSuJfM4KO1/urGSCd211C8rUz3gPSqMk+ttgk3/mzt0mNkOv1Deycpx5FRi4CIEfPcieAXhJsqH5YigbsXkb5+0FmxkJYHRJaYQVqctUNL4hI54DcXc4C4LlZ/v4rZ3Ks34hy/5056zoMfnY7uaQAID7RDFm7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V83bQ4VC0z6K98F;
+	Tue,  2 Apr 2024 18:12:34 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id AFD60140A87;
+	Tue,  2 Apr 2024 18:17:10 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 2 Apr
+ 2024 11:17:09 +0100
+Date: Tue, 2 Apr 2024 11:17:09 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Yazen Ghannam <yazen.ghannam@amd.com>
+CC: <shiju.jose@huawei.com>, <linux-cxl@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <linux-edac@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <david@redhat.com>,
+	<Vilas.Sridharan@amd.com>, <leo.duran@amd.com>, <rientjes@google.com>,
+	<jiaqiyan@google.com>, <tony.luck@intel.com>, <Jon.Grimm@amd.com>,
+	<dave.hansen@linux.intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
+	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
+	<duenwen@google.com>, <mike.malvestuto@intel.com>, <gthelen@google.com>,
+	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
+	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
+	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
+	<linuxarm@huawei.com>
+Subject: Re: [RFC PATCH v7 12/12] memory: RAS2: Add memory RAS2 driver
+Message-ID: <20240402111709.0000653a@Huawei.com>
+In-Reply-To: <71d41ec9-17ed-442f-8d68-a6cb9bcbb4b0@amd.com>
+References: <20240223143723.1574-1-shiju.jose@huawei.com>
+	<20240223143723.1574-13-shiju.jose@huawei.com>
+	<71d41ec9-17ed-442f-8d68-a6cb9bcbb4b0@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] ACPI: RISCV: Add NUMA support based on SRAT and
- SLIT
-Content-Language: en-US
-To: Haibo Xu <haibo1.xu@intel.com>
-Cc: Alison Schofield <alison.schofield@intel.com>,
- Zong Li <zong.li@sifive.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- Conor Dooley <conor.dooley@microchip.com>, Guo Ren <guoren@kernel.org>,
- Jisheng Zhang <jszhang@kernel.org>, James Morse <james.morse@arm.com>,
- linux-riscv@lists.infradead.org, Ard Biesheuvel <ardb@kernel.org>,
- Baoquan He <bhe@redhat.com>, Marc Zyngier <maz@kernel.org>,
- acpica-devel@lists.linux.dev, Robert Moore <robert.moore@intel.com>,
- linux-acpi@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>,
- Greentime Hu <greentime.hu@sifive.com>, Len Brown <lenb@kernel.org>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alexghiti@rivosinc.com>,
- Arnd Bergmann <arnd@arndb.de>, Dan Williams <dan.j.williams@intel.com>,
- Chen Jiahao <chenjiahao16@huawei.com>, Yuntao Wang <ytcoode@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- =?UTF-8?B?Q2zDqW1lbnQgTO+/vT1BIDlnZXI=?= <cleger@rivosinc.com>,
- xiaobo55x@gmail.com, Anup Patel <apatel@ventanamicro.com>,
- Tony Luck <tony.luck@intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Samuel Holland <samuel.holland@sifive.com>, Evan Green <evan@rivosinc.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, ajones@ventanamicro.com
-References: <cover.1709780590.git.haibo1.xu@intel.com>
- <7ca110c59cbb2fb358304a9ba4f9c7cbeb191345.1709780590.git.haibo1.xu@intel.com>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <7ca110c59cbb2fb358304a9ba4f9c7cbeb191345.1709780590.git.haibo1.xu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Hi Haibo,
+On Thu, 28 Mar 2024 11:23:38 -0400
+Yazen Ghannam <yazen.ghannam@amd.com> wrote:
 
-On 07/03/2024 09:47, Haibo Xu wrote:
-> Add acpi_numa.c file to enable parse NUMA information from
-> ACPI SRAT and SLIT tables. SRAT table provide CPUs(Hart) and
-> memory nodes to proximity domain mapping, while SLIT table
-> provide the distance metrics between proximity domains.
->
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-> ---
->   arch/riscv/include/asm/acpi.h |  15 +++-
->   arch/riscv/kernel/Makefile    |   1 +
->   arch/riscv/kernel/acpi.c      |   5 --
->   arch/riscv/kernel/acpi_numa.c | 131 ++++++++++++++++++++++++++++++++++
->   arch/riscv/kernel/setup.c     |   4 +-
->   arch/riscv/kernel/smpboot.c   |   2 -
->   include/linux/acpi.h          |   6 ++
->   7 files changed, 154 insertions(+), 10 deletions(-)
->   create mode 100644 arch/riscv/kernel/acpi_numa.c
->
-> diff --git a/arch/riscv/include/asm/acpi.h b/arch/riscv/include/asm/acpi.h
-> index 7dad0cf9d701..e0a1f84404f3 100644
-> --- a/arch/riscv/include/asm/acpi.h
-> +++ b/arch/riscv/include/asm/acpi.h
-> @@ -61,11 +61,14 @@ static inline void arch_fix_phys_package_id(int num, u32 slot) { }
->   
->   void acpi_init_rintc_map(void);
->   struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu);
-> -u32 get_acpi_id_for_cpu(int cpu);
-> +static inline u32 get_acpi_id_for_cpu(int cpu)
-> +{
-> +	return acpi_cpu_get_madt_rintc(cpu)->uid;
-> +}
-> +
->   int acpi_get_riscv_isa(struct acpi_table_header *table,
->   		       unsigned int cpu, const char **isa);
->   
-> -static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
->   void acpi_get_cbo_block_size(struct acpi_table_header *table, u32 *cbom_size,
->   			     u32 *cboz_size, u32 *cbop_size);
->   #else
-> @@ -87,4 +90,12 @@ static inline void acpi_get_cbo_block_size(struct acpi_table_header *table,
->   
->   #endif /* CONFIG_ACPI */
->   
-> +#ifdef CONFIG_ACPI_NUMA
-> +int acpi_numa_get_nid(unsigned int cpu);
-> +void acpi_map_cpus_to_nodes(void);
-> +#else
-> +static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
-> +static inline void acpi_map_cpus_to_nodes(void) { }
-> +#endif /* CONFIG_ACPI_NUMA */
-> +
->   #endif /*_ASM_ACPI_H*/
-> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
-> index f71910718053..5d3e9cf89b76 100644
-> --- a/arch/riscv/kernel/Makefile
-> +++ b/arch/riscv/kernel/Makefile
-> @@ -105,3 +105,4 @@ obj-$(CONFIG_COMPAT)		+= compat_vdso/
->   
->   obj-$(CONFIG_64BIT)		+= pi/
->   obj-$(CONFIG_ACPI)		+= acpi.o
-> +obj-$(CONFIG_ACPI_NUMA)	+= acpi_numa.o
-> diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
-> index e619edc8b0cc..040bdbfea2b4 100644
-> --- a/arch/riscv/kernel/acpi.c
-> +++ b/arch/riscv/kernel/acpi.c
-> @@ -191,11 +191,6 @@ struct acpi_madt_rintc *acpi_cpu_get_madt_rintc(int cpu)
->   	return &cpu_madt_rintc[cpu];
->   }
->   
-> -u32 get_acpi_id_for_cpu(int cpu)
-> -{
-> -	return acpi_cpu_get_madt_rintc(cpu)->uid;
-> -}
-> -
->   /*
->    * __acpi_map_table() will be called before paging_init(), so early_ioremap()
->    * or early_memremap() should be called here to for ACPI table mapping.
-> diff --git a/arch/riscv/kernel/acpi_numa.c b/arch/riscv/kernel/acpi_numa.c
-> new file mode 100644
-> index 000000000000..0231482d6946
-> --- /dev/null
-> +++ b/arch/riscv/kernel/acpi_numa.c
-> @@ -0,0 +1,131 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * ACPI 6.6 based NUMA setup for RISCV
-> + * Lots of code was borrowed from arch/arm64/kernel/acpi_numa.c
-> + *
-> + * Copyright 2004 Andi Kleen, SuSE Labs.
-> + * Copyright (C) 2013-2016, Linaro Ltd.
-> + *		Author: Hanjun Guo <hanjun.guo@linaro.org>
-> + * Copyright (C) 2024 Intel Corporation.
-> + *
-> + * Reads the ACPI SRAT table to figure out what memory belongs to which CPUs.
-> + *
-> + * Called from acpi_numa_init while reading the SRAT and SLIT tables.
-> + * Assumes all memory regions belonging to a single proximity domain
-> + * are in one chunk. Holes between them will be included in the node.
-> + */
-> +
-> +#define pr_fmt(fmt) "ACPI: NUMA: " fmt
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/bitmap.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mm.h>
-> +#include <linux/memblock.h>
-> +#include <linux/mmzone.h>
-> +#include <linux/module.h>
-> +#include <linux/topology.h>
-> +
-> +#include <asm/numa.h>
-> +
-> +static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
-> +
-> +int __init acpi_numa_get_nid(unsigned int cpu)
-> +{
-> +	return acpi_early_node_map[cpu];
-> +}
-> +
-> +static inline int get_cpu_for_acpi_id(u32 uid)
-> +{
-> +	int cpu;
-> +
-> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> +		if (uid == get_acpi_id_for_cpu(cpu))
-> +			return cpu;
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int __init acpi_parse_rintc_pxm(union acpi_subtable_headers *header,
-> +				       const unsigned long end)
-> +{
-> +	struct acpi_srat_rintc_affinity *pa;
-> +	int cpu, pxm, node;
-> +
-> +	if (srat_disabled())
-> +		return -EINVAL;
-> +
-> +	pa = (struct acpi_srat_rintc_affinity *)header;
-> +	if (!pa)
-> +		return -EINVAL;
-> +
-> +	if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
-> +		return 0;
-> +
-> +	pxm = pa->proximity_domain;
-> +	node = pxm_to_node(pxm);
-> +
-> +	/*
-> +	 * If we can't map the UID to a logical cpu this
-> +	 * means that the UID is not part of possible cpus
-> +	 * so we do not need a NUMA mapping for it, skip
-> +	 * the SRAT entry and keep parsing.
-> +	 */
-> +	cpu = get_cpu_for_acpi_id(pa->acpi_processor_uid);
-> +	if (cpu < 0)
-> +		return 0;
-> +
-> +	acpi_early_node_map[cpu] = node;
-> +	pr_info("SRAT: PXM %d -> HARTID 0x%lx -> Node %d\n", pxm,
-> +		cpuid_to_hartid_map(cpu), node);
-> +
-> +	return 0;
-> +}
-> +
-> +void __init acpi_map_cpus_to_nodes(void)
-> +{
-> +	int i;
-> +
-> +	/*
-> +	 * In ACPI, SMP and CPU NUMA information is provided in separate
-> +	 * static tables, namely the MADT and the SRAT.
-> +	 *
-> +	 * Thus, it is simpler to first create the cpu logical map through
-> +	 * an MADT walk and then map the logical cpus to their node ids
-> +	 * as separate steps.
-> +	 */
-> +	acpi_table_parse_entries(ACPI_SIG_SRAT, sizeof(struct acpi_table_srat),
-> +				 ACPI_SRAT_TYPE_RINTC_AFFINITY, acpi_parse_rintc_pxm, 0);
-> +
-> +	for (i = 0; i < nr_cpu_ids; i++)
-> +		early_map_cpu_to_node(i, acpi_numa_get_nid(i));
-> +}
-> +
-> +/* Callback for Proximity Domain -> logical node ID mapping */
-> +void __init acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa)
-> +{
-> +	int pxm, node;
-> +
-> +	if (srat_disabled())
-> +		return;
-> +
-> +	if (pa->header.length < sizeof(struct acpi_srat_rintc_affinity)) {
-> +		pr_err("SRAT: Invalid SRAT header length: %d\n", pa->header.length);
-> +		bad_srat();
-> +		return;
-> +	}
-> +
-> +	if (!(pa->flags & ACPI_SRAT_RINTC_ENABLED))
-> +		return;
-> +
-> +	pxm = pa->proximity_domain;
-> +	node = acpi_map_pxm_to_node(pxm);
-> +
-> +	if (node == NUMA_NO_NODE) {
-> +		pr_err("SRAT: Too many proximity domains %d\n", pxm);
-> +		bad_srat();
-> +		return;
-> +	}
-> +
-> +	node_set(node, numa_nodes_parsed);
-> +}
+> On 2/23/2024 9:37 AM, shiju.jose@huawei.com wrote:
+> > From: Shiju Jose <shiju.jose@huawei.com>
+> >=20
+> > Memory RAS2 driver binds to the platform device add by the ACPI RAS2
+> > driver.
+> > Driver registers the PCC channel for communicating with the ACPI compli=
+ant
+> > platform that contains RAS2 command support in the hardware.
+> >=20
+> > Add interface functions to support configuring the parameters of HW pat=
+rol
+> > scrubs in the system, which exposed to the kernel via the RAS2 and PCC,
+> > using the RAS2 commands.
+> >=20
+> > Add support for RAS2 platform devices to register with scrub subsystem
+> > driver. This enables user to configure the parameters of HW patrol scru=
+bs,
+> > which exposed to the kernel via the RAS2 table, through the scrub sysfs
+> > attributes.
+> >=20
+> > Open Question:
+> > Sysfs scrub control attribute "enable_background_scrub" is added for RA=
+S2,
+> > based on the feedback from Bill Schwartz <wschwartz@amperecomputing.com
+> > on v4 to enable/disable the background_scrubbing in the platform as def=
+ined in the
+> > =E2=80=9CConfigure Scrub Parameters [INPUT]=E2=80=9C field  in RAS2 Tab=
+le 5.87: Parameter Block
+> > Structure for PATROL_SCRUB.
+> > Is it a right approach to support "enable_background_scrub" in the sysfs
+> > scrub control?
+> >=20
+> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> > ---
+> >  drivers/memory/Kconfig       |  14 ++
+> >  drivers/memory/Makefile      |   2 +
+> >  drivers/memory/ras2.c        | 364 +++++++++++++++++++++++++++++++++++
+> >  drivers/memory/ras2_common.c | 282 +++++++++++++++++++++++++++
+> >  include/memory/ras2.h        |  88 +++++++++
+> >  5 files changed, 750 insertions(+)
+> >  create mode 100644 drivers/memory/ras2.c
+> >  create mode 100644 drivers/memory/ras2_common.c
+> >  create mode 100755 include/memory/ras2.h
+> >  =20
+>=20
+> Sorry if this was already covered, but why not put the common scrub and r=
+as2
+> changes under /drivers/ras/?
 
+Hi Yazen
 
-What is riscv specific in the parsing of those tables? Can't we try to 
-merge this into generic ACPI code? I know that's a burden to try and 
-factorize code with other architectures instead of reusing it, but it 
-showed numerous times that duplicating was even worse (I have the NAPOT 
-code in mind).
+Location / naming etc is definitely an open question.
+Given the OCP RAS API has repeatedly come up in discussions (and that
+has a much wider scope), a RAS focused location may well make sense + some
+renaming to avoid being memory scrub specific.
 
-Thanks,
+Jonathan
 
-Alex
+>=20
+> Thanks,
+> Yazen
 
-
-> diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-> index 4f73c0ae44b2..a2cde65b69e9 100644
-> --- a/arch/riscv/kernel/setup.c
-> +++ b/arch/riscv/kernel/setup.c
-> @@ -281,8 +281,10 @@ void __init setup_arch(char **cmdline_p)
->   	setup_smp();
->   #endif
->   
-> -	if (!acpi_disabled)
-> +	if (!acpi_disabled) {
->   		acpi_init_rintc_map();
-> +		acpi_map_cpus_to_nodes();
-> +	}
->   
->   	riscv_init_cbo_blocksizes();
->   	riscv_fill_hwcap();
-> diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-> index cfbe4b840d42..81a2aa77680c 100644
-> --- a/arch/riscv/kernel/smpboot.c
-> +++ b/arch/riscv/kernel/smpboot.c
-> @@ -100,7 +100,6 @@ static int __init acpi_parse_rintc(union acpi_subtable_headers *header, const un
->   	if (hart == cpuid_to_hartid_map(0)) {
->   		BUG_ON(found_boot_cpu);
->   		found_boot_cpu = true;
-> -		early_map_cpu_to_node(0, acpi_numa_get_nid(cpu_count));
->   		return 0;
->   	}
->   
-> @@ -110,7 +109,6 @@ static int __init acpi_parse_rintc(union acpi_subtable_headers *header, const un
->   	}
->   
->   	cpuid_to_hartid_map(cpu_count) = hart;
-> -	early_map_cpu_to_node(cpu_count, acpi_numa_get_nid(cpu_count));
->   	cpu_count++;
->   
->   	return 0;
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index b7165e52b3c6..f74c62956e07 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -269,6 +269,12 @@ acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
->   
->   int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
->   
-> +#ifdef CONFIG_RISCV
-> +void acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa);
-> +#else
-> +static inline void acpi_numa_rintc_affinity_init(struct acpi_srat_rintc_affinity *pa) { }
-> +#endif
-> +
->   #ifndef PHYS_CPUID_INVALID
->   typedef u32 phys_cpuid_t;
->   #define PHYS_CPUID_INVALID (phys_cpuid_t)(-1)
 
