@@ -1,145 +1,127 @@
-Return-Path: <linux-acpi+bounces-4591-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4592-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E25E894FE4
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 12:18:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B8D895011
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 12:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 919871C20CA5
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 10:18:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C56B239B9
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Apr 2024 10:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F94664C0;
-	Tue,  2 Apr 2024 10:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F63E5C603;
+	Tue,  2 Apr 2024 10:29:43 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B75A7AE;
-	Tue,  2 Apr 2024 10:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756345B5D6;
+	Tue,  2 Apr 2024 10:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712053036; cv=none; b=CGo8pjwD2v6GxZuf4JumjHBLKU3LChnZNgZTh8hwQW6UorqXFu9Py7pas1+oa8iaYN/vlbWUMo+vHAT5wMNLnybb5zwt5EOXYk7nbQjf+oLlIgp8Sj83iNNr+t7qNkxrdlU+ZD2LSltQdLBKxcHsgiAJFIKvUgcm+d5+WAS29Ng=
+	t=1712053783; cv=none; b=b5RtPfDTyYrh8l/vj7pKNe2H1NWqXS2n6WaR8x8tHM0NaU06NqF4G3bgeRfvp38PXPsW33pWSSUN3ZpyQq4DxICqt7aUAVv3UfO1SQ+glEVfu5Q4Qy05UnU6CIl9iTIVCAVcdw8lh4oj0zxlyWh907kjA+NQwRtRE6H2igX7WQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712053036; c=relaxed/simple;
-	bh=7w+zfYL5/EU3k21GldfEZOmIoR0yGMwEVvQsUYIGfEg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WreR7uhbnnMuroSuJfM4KO1/urGSCd211C8rUz3gPSqMk+ttgk3/mzt0mNkOv1Deycpx5FRi4CIEfPcieAXhJsqH5YigbsXkb5+0FmxkJYHRJaYQVqctUNL4hI54DcXc4C4LlZ/v4rZ3Ks34hy/5056zoMfnY7uaQAID7RDFm7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V83bQ4VC0z6K98F;
-	Tue,  2 Apr 2024 18:12:34 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id AFD60140A87;
-	Tue,  2 Apr 2024 18:17:10 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 2 Apr
- 2024 11:17:09 +0100
-Date: Tue, 2 Apr 2024 11:17:09 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-CC: <shiju.jose@huawei.com>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
-	<dan.j.williams@intel.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <linux-edac@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <david@redhat.com>,
-	<Vilas.Sridharan@amd.com>, <leo.duran@amd.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <tony.luck@intel.com>, <Jon.Grimm@amd.com>,
-	<dave.hansen@linux.intel.com>, <rafael@kernel.org>, <lenb@kernel.org>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <mike.malvestuto@intel.com>, <gthelen@google.com>,
-	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<kangkang.shen@futurewei.com>, <wanghuiqiang@huawei.com>,
-	<linuxarm@huawei.com>
-Subject: Re: [RFC PATCH v7 12/12] memory: RAS2: Add memory RAS2 driver
-Message-ID: <20240402111709.0000653a@Huawei.com>
-In-Reply-To: <71d41ec9-17ed-442f-8d68-a6cb9bcbb4b0@amd.com>
-References: <20240223143723.1574-1-shiju.jose@huawei.com>
-	<20240223143723.1574-13-shiju.jose@huawei.com>
-	<71d41ec9-17ed-442f-8d68-a6cb9bcbb4b0@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1712053783; c=relaxed/simple;
+	bh=0PLxVVExlBoCSyhGw16os7pDNVu9PcLykdvcokxzKlk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KhFdQb2kiZpg28fEIBeAJX7tHl4glEibNGguKyqi3OU6uwJ4k+iidZMWWJ3gP8Alt9M7lMMpVrEN/MQJRFFMJQsn9l0Sj8ap8nYSqE9BDwc2jLqvneAxGmTExrm8xr8dWEYNKK8ieVTjxEn6iPofRNgdezCPEowRBA4hHH8FS/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C811DFEC;
+	Tue,  2 Apr 2024 03:30:11 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3BBAE3F766;
+	Tue,  2 Apr 2024 03:29:38 -0700 (PDT)
+Date: Tue, 2 Apr 2024 11:29:35 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>, mediou@amazon.de, alisaidi@amazon.com,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev, Saket Dumbre <saket.dumbre@intel.com>
+Subject: Re: [PATCH 2/2] arm64: acpi: Honour firmware_signature field of
+ FACS, if it exists
+Message-ID: <ZgveD6Hb2HbTNYNO@bogus>
+References: <20240312134148.727454-1-dwmw2@infradead.org>
+ <20240312134148.727454-2-dwmw2@infradead.org>
+ <dbd60df4632e5ea9cef13cdc1a406b47bd8629da.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <dbd60df4632e5ea9cef13cdc1a406b47bd8629da.camel@infradead.org>
 
-On Thu, 28 Mar 2024 11:23:38 -0400
-Yazen Ghannam <yazen.ghannam@amd.com> wrote:
-
-> On 2/23/2024 9:37 AM, shiju.jose@huawei.com wrote:
-> > From: Shiju Jose <shiju.jose@huawei.com>
-> >=20
-> > Memory RAS2 driver binds to the platform device add by the ACPI RAS2
-> > driver.
-> > Driver registers the PCC channel for communicating with the ACPI compli=
-ant
-> > platform that contains RAS2 command support in the hardware.
-> >=20
-> > Add interface functions to support configuring the parameters of HW pat=
-rol
-> > scrubs in the system, which exposed to the kernel via the RAS2 and PCC,
-> > using the RAS2 commands.
-> >=20
-> > Add support for RAS2 platform devices to register with scrub subsystem
-> > driver. This enables user to configure the parameters of HW patrol scru=
-bs,
-> > which exposed to the kernel via the RAS2 table, through the scrub sysfs
-> > attributes.
-> >=20
-> > Open Question:
-> > Sysfs scrub control attribute "enable_background_scrub" is added for RA=
-S2,
-> > based on the feedback from Bill Schwartz <wschwartz@amperecomputing.com
-> > on v4 to enable/disable the background_scrubbing in the platform as def=
-ined in the
-> > =E2=80=9CConfigure Scrub Parameters [INPUT]=E2=80=9C field  in RAS2 Tab=
-le 5.87: Parameter Block
-> > Structure for PATROL_SCRUB.
-> > Is it a right approach to support "enable_background_scrub" in the sysfs
-> > scrub control?
-> >=20
-> > Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+On Tue, Apr 02, 2024 at 10:29:57AM +0100, David Woodhouse wrote:
+> On Tue, 2024-03-12 at 13:41 +0000, David Woodhouse wrote:
+> > From: David Woodhouse <dwmw@amazon.co.uk>
+> > 
+> > If the firmware_signature changes then OSPM should not attempt to resume
+> > from hibernate, but should instead perform a clean reboot. Set the global
+> > swsusp_hardware_signature to allow the generic code to include the value
+> > in the swsusp header on disk, and perform the appropriate check on resume.
+> > 
+> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> Ping?
+> 
 > > ---
-> >  drivers/memory/Kconfig       |  14 ++
-> >  drivers/memory/Makefile      |   2 +
-> >  drivers/memory/ras2.c        | 364 +++++++++++++++++++++++++++++++++++
-> >  drivers/memory/ras2_common.c | 282 +++++++++++++++++++++++++++
-> >  include/memory/ras2.h        |  88 +++++++++
-> >  5 files changed, 750 insertions(+)
-> >  create mode 100644 drivers/memory/ras2.c
-> >  create mode 100644 drivers/memory/ras2_common.c
-> >  create mode 100755 include/memory/ras2.h
-> >  =20
->=20
-> Sorry if this was already covered, but why not put the common scrub and r=
-as2
-> changes under /drivers/ras/?
+> >  arch/arm64/kernel/acpi.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+> > index dba8fcec7f33..e0e7b93c16cc 100644
+> > --- a/arch/arm64/kernel/acpi.c
+> > +++ b/arch/arm64/kernel/acpi.c
+> > @@ -26,6 +26,7 @@
+> >  #include <linux/libfdt.h>
+> >  #include <linux/smp.h>
+> >  #include <linux/serial_core.h>
+> > +#include <linux/suspend.h>
+> >  #include <linux/pgtable.h>
+> >  
+> >  #include <acpi/ghes.h>
+> > @@ -227,6 +228,15 @@ void __init acpi_boot_table_init(void)
+> >                 if (earlycon_acpi_spcr_enable)
+> >                         early_init_dt_scan_chosen_stdout();
+> >         } else {
+> > +#ifdef CONFIG_HIBERNATION
+> > +               struct acpi_table_header *facs = NULL;
+> > +               acpi_get_table(ACPI_SIG_FACS, 1, &facs);
+> > +               if (facs) {
+> > +                       swsusp_hardware_signature =
+> > +                               ((struct acpi_table_facs *)facs)->hardware_signature;
+> > +                       acpi_put_table(facs);
+> > +               }
+> > +#endif
 
-Hi Yazen
+I think it is OK as a temporary solution for now. But there was some
+investigation last year as part of some work in Linaro to enable
+"drivers/acpi/sleep.c" into the build cleaning up some x86-ness in there.
+acpi_sleep_hibernate_setup() already does this but enabling sleep.c need
+some careful investigation so that it doesn't break any existing arm64/x86
+platforms and made need some wordings clarification in the ACPI spec.
+Today system suspend work via psci std path bypassing the ACPI paths which
+may not be ideal as none of the ACPI methods are honoured. Some arm64
+platforms may implement them and expect to be executed in the future,
+maybe ?
 
-Location / naming etc is definitely an open question.
-Given the OCP RAS API has repeatedly come up in discussions (and that
-has a much wider scope), a RAS focused location may well make sense + some
-renaming to avoid being memory scrub specific.
+So, until that happens, I see this as an possible alternative and
+temporary solution.
 
-Jonathan
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
 
->=20
-> Thanks,
-> Yazen
-
+--
+Regards,
+Sudeep
 
