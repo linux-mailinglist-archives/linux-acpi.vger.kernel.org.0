@@ -1,129 +1,101 @@
-Return-Path: <linux-acpi+bounces-4604-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4605-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0DB89619D
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 02:47:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101F88961A8
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 02:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFCE31F241A4
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 00:47:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B3081C22581
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 00:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1353F6FC6;
-	Wed,  3 Apr 2024 00:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70103E560;
+	Wed,  3 Apr 2024 00:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="R5pE7E3O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IzdaEyav"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DACD527;
-	Wed,  3 Apr 2024 00:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D38CDDD3;
+	Wed,  3 Apr 2024 00:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712105255; cv=none; b=GeLoezhHSqYafvNThrg19Kf4uciGBPObaYlAiMetmgn1zyGEeXPeCwneW6QlTN/vwI6yJEZZDNJt/8M5LRxVTGKlOWWqMhNpsBMu71+NqRefpSmSh7RIs28uGpCqhOL5wrBZZAvh2jWFTASBLMCy+WKjCrcnX5WPDpxt9BqR6xg=
+	t=1712105510; cv=none; b=BiRFTPFx/0dx1LL8cvSEyZqnHB4f1xDN/FcEZLwk3ErxQCr0S36e92OPYEcW4iTh1sqE1p4Yzq82j8gerHbWV9cTnhttsu7idtRxlRdURpT2/vtByh559oHbMtGTZbSUASros8nYI0cWrPVEpH2D9dGwhsRrFid39qlkRPwMAtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712105255; c=relaxed/simple;
-	bh=PycG9uF6X1iUrfJJtuBIh+LSC4+I0nUUV++uRc/SI80=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N2etIhdot7157U6YWeiSYQ+tY8+uRUGeW7wBCUJjV85peADPlxH0953f8VBT4AGA/sWZKnF+XsLxqlZuZRZJMUON9Jnvj/Yd8A4s+cu9UMMwfH+MvLMLSzea6ya6gL6xj2W6h/RGVEbxcvcmx55Yj4x8vcCnWbPh1pikHHpqDAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=R5pE7E3O; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1712105241; x=1712710041; i=w_armin@gmx.de;
-	bh=qWA45U+Q/mPj2MlS1QXch4htPzcG9qzFx8+xi4l7E7Q=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=R5pE7E3OWnWfXlJhppMpmo0uoUcIdrDEPgvkAQ80oVURheeJAmktS3zPwWHDU/0Y
-	 Eb/dhFHL5aJ1Kbqb0OtggQEDUD1DYo3w6XCVfQvTzmDqcujg3mTE5V6cifr1Qvhjh
-	 czmdlQULJKg9bCs9pi4vAd3JuzdK+tZqxyc4Yx/IiWF3DSEj7Omvr4JuYI7FQIQ77
-	 clm/N3vMJi7Z2YuMfBigerMJKILOCMpV6ABe60Pz3PuxfnJ+7TlgoqgCaAcXWCw1B
-	 0yVopwfhmbAXnU1FrkTSNBvJUngMgXj9hHYphawzWK/AMazuXfhpka2c16CGI5g+6
-	 Kb9gmQiDDLTUnNm6Yg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MrhUE-1scxNV1nzo-00ngOb; Wed, 03 Apr 2024 02:47:21 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: robert.moore@intel.com,
-	rafael.j.wysocki@intel.com,
-	lenb@kernel.org
-Cc: dmantipov@yandex.ru,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPICA: Fix memory leak then namespace lookup fails
-Date: Wed,  3 Apr 2024 02:47:18 +0200
-Message-Id: <20240403004718.11902-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1712105510; c=relaxed/simple;
+	bh=2Rk4D5RDvMb3U9Iily/8E9F/vfmEX7nK+qtx/KtLMNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=n7gL9kmpSJBA0bybVm78w3K8B8nsHxtRFYanBy71QrXKb4dlhAfOqabcpUv3vsL/TmvZfaeAASn1itnNgt2qABAsyqU8a7+4l/RhY0/flgV9Lbr+waFJRNmbMyvH9wUUweXZ2VUsHiauw8PwqALuea2UrLBXKqRjG9bqhCdPw9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IzdaEyav; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712105507; x=1743641507;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=2Rk4D5RDvMb3U9Iily/8E9F/vfmEX7nK+qtx/KtLMNE=;
+  b=IzdaEyavPz6xbJR5T3KNf+h6iWWHvD5noCbQ/3jcqoJsESjeTlaZ0Y2t
+   BAwuvoHKTAYiAOI4kBtU/yTUjgGZnWd+hl6OzWnZnGh9x/F5i9KPgIqkV
+   7z1a9kZ1CsnISlb075eaA7Hqnp3BRS4zkuq8KzZo/imgn0DHLZPAcjUo9
+   HoX8egxxN4CAwQTPEgFCOjCh0uIJETubsD97bEF7YnuXOpwXyaoseZ7EZ
+   SROWy7eLGWB56J+tW3HEWtV/RbmgCcsofwi5Uu7v9nPB2HO/DwiuxDFZM
+   V4TESdYbBjCmS4auL89r6QgOR/zwnweiI1W8JAIRGuujqJy6ceJ3u7rym
+   w==;
+X-CSE-ConnectionGUID: 6wdeMZe+TLSjtN4f4NKlnw==
+X-CSE-MsgGUID: 5xEP0JxTRL+QHcSl1Lq/oA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7503799"
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
+   d="scan'208";a="7503799"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 17:51:47 -0700
+X-CSE-ConnectionGUID: PrYGTXviR2yD/g/e2Xh0tw==
+X-CSE-MsgGUID: X5yaSiBeTceFMXUqKmTuHQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
+   d="scan'208";a="18672295"
+Received: from lkp-server02.sh.intel.com (HELO 90ee3aa53dbd) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 02 Apr 2024 17:51:45 -0700
+Received: from kbuild by 90ee3aa53dbd with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rroqs-0001gn-0y;
+	Wed, 03 Apr 2024 00:51:42 +0000
+Date: Wed, 3 Apr 2024 08:50:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org
+Subject: [rafael-pm:intel_pstate-testing 14/14] intel_pstate.c:undefined
+ reference to `arch_rebuild_sched_domains'
+Message-ID: <202404030858.0AJW6re4-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1+/LohT4HMfkZjpcu/5lHP4fjT6BlNjAsRMOUBzgk5gIkQQT05O
- 2h+PiMk0MnMm1bzN5x2a3KDSEfy4kOtNbpnKex2ZLBwowvAuKERhcRF8DQGelTWjuTglJyo
- 6ra/y6IVZ9D24/EA0NIC032gmCznF+lgoKnlRC3t/Dpv7E9aE++tnxy2dj8yBARMwGdEe/6
- KIKqoyzxUbib2HQAs6cvw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:icUtJdfJZeM=;kfGPWYFf7109ebjlp50NjFzPt+1
- sZWGNPsf/k5ubapg6s1UkJKbobX0InlykQgHs7STQywpZqXent1KsshMDMBgUhjQPBMcfSSF2
- 6GWilxktOsotEG3x/JlwrOvcFJIk2/feS1J6DCH9kIXcnwubCN2bPjOiFL1TaxO6qxOoUvDvY
- SH5bknShaqBK4+06uuh80mVwzA+xcM5B6LLuTMt6AtawAwdmsty2dHBZI/0OHCX3+gtLSUX7K
- KAYtCY0GaCq52OdGYG5tcu5mTd5O0EZ8C3JdhWsFzK2+lPvT26844ooqPG00Ha4vwBao95h8K
- zP+RC/yYqYA0Yvrcezjs52VA2jA5hx7viCabDq6PUFiTwZRqWbv/hx5wAlJmV02vAxRa+dOMJ
- U40bjiuZdyzasARKQEPXaoJsCKOn9KqEOHZQQ8Vk28DnIRa6e5cv+buDKGMh84BaAL7BTfwE0
- 4dJMExhjLrmrCgpUCyml8Mkid1j0StCUobbl98rileu0cKytdgY5FnFh6xJroAoAVW1LUn/2X
- 3XvbJ9gDZ/1QhgqXeygV0kktS00GHHxNeakbMRHBctalhmQebOvkMV1mvPu2gJTxJ/l3i3QZ7
- NXveWrmcKJ3e8enpxplblq6QdKzVPVMGsSHwght1AhLlqxGLrm/eLq9Eirn/IWJizx8B+NV6R
- VQqCdmbzkwTIYSNfKVObuJQ7e+GJGyZiIJEy0bMK5ZKr3iNEltc/wjYcZwF3Qc/+WKsPE3WvY
- e2r5QJNHGChJr3Ez5iGnqYNwAM+fWTXfl6R7COFEA2MZsunjTLzDN5VJ0DYzA6lN0+5XqaOuu
- rwija1eWrs8dMMC5J8GS8Hc2J10D03RGLi+EaAaGNYdpM=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When acpi_ps_get_next_namepath() fails due to a namespace lookup
-failure, the acpi_parse_object is not freed before returning the
-error code, causing a memory leak.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git intel_pstate-testing
+head:   e35f6a1b27a71e7c8cb1880197e01d93b593cc85
+commit: e35f6a1b27a71e7c8cb1880197e01d93b593cc85 [14/14] cpufreq: intel_pstate: Set asymmetric CPU capacity on hybrid systems
+config: i386-buildonly-randconfig-001-20240403 (https://download.01.org/0day-ci/archive/20240403/202404030858.0AJW6re4-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240403/202404030858.0AJW6re4-lkp@intel.com/reproduce)
 
-Fix this by freeing the acpi_parse_object when encountering an
-error.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404030858.0AJW6re4-lkp@intel.com/
 
-Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/acpi/acpica/psargs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+All errors (new ones prefixed by >>):
 
-diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-index 422c074ed289..7debfd5ce0d8 100644
-=2D-- a/drivers/acpi/acpica/psargs.c
-+++ b/drivers/acpi/acpica/psargs.c
-@@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_sta=
-te,
- 			    acpi_ps_get_next_namepath(walk_state, parser_state,
- 						      arg,
- 						      ACPI_NOT_METHOD_CALL);
-+			if (ACPI_FAILURE(status)) {
-+				acpi_ps_free_op(arg);
-+				return_ACPI_STATUS(status);
-+			}
- 		} else {
- 			/* Single complex argument, nothing returned */
+   ld: drivers/cpufreq/intel_pstate.o: in function `intel_pstate_register_driver':
+>> intel_pstate.c:(.text+0x232e): undefined reference to `arch_rebuild_sched_domains'
 
-@@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_sta=
-te,
- 			    acpi_ps_get_next_namepath(walk_state, parser_state,
- 						      arg,
- 						      ACPI_POSSIBLE_METHOD_CALL);
-+			if (ACPI_FAILURE(status)) {
-+				acpi_ps_free_op(arg);
-+				return_ACPI_STATUS(status);
-+			}
-
- 			if (arg->common.aml_opcode =3D=3D AML_INT_METHODCALL_OP) {
-
-=2D-
-2.39.2
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
