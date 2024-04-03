@@ -1,80 +1,77 @@
-Return-Path: <linux-acpi+bounces-4620-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4621-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD71896BAB
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 12:09:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDCD896D26
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 12:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EBCD1F28381
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 10:09:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65AB028F856
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 10:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FCE136E3E;
-	Wed,  3 Apr 2024 10:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEDC13A24A;
+	Wed,  3 Apr 2024 10:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/SOJQMH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mAWv6Ycz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ED013667E;
-	Wed,  3 Apr 2024 10:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE52259C;
+	Wed,  3 Apr 2024 10:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712138878; cv=none; b=lyj4CyIRrcEht20YnNJpW/NiMakmRScPmsXxhiABkL2Zc6/2zTucUIRydpOChQbDjy3P0omvu2j8U7hhC8BYVoPjouHWmlN0Jy4ptDdgu5wjT6cXjsWS2p1MK8UNp04zSEI8uWqP5is3XAoUUUoTlZ6eQsgP9EEWfsBqZC4Pro8=
+	t=1712141437; cv=none; b=UHupAO/49cSzjeK0slpNZMWcaYdfDqoFINmc8vd6O//Jeb1mScBq/EEPF+XPFIx+XSm+59O3Jex4pjwU5HPgJr3Y/10ZzDkenGmPOh2GR5uRUfOAsaoVEcC2unqVOsYycmUnugexOe+qV54CQ7L+3FU2aizT4jxA67zm6pv9v2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712138878; c=relaxed/simple;
-	bh=lliMUOsXEts4XSI5J1Vp7adBehF0j1L3Zhp4i236Y6Q=;
+	s=arc-20240116; t=1712141437; c=relaxed/simple;
+	bh=g6dc0Rf3RsM/c0X8Hx5ZYkJET+AMXU/vkjfKAnotBsk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a0vjb6c44xVsABccy1q2HpzQRAAXSxMpMzMbhwRPejZIEycXbVEebdHvSrsyRCR0HhtEHwptSP1ky4AUA6D7X0XleMBg9ZxfCvEbliaE4ymUoJIUCldoTtagNDwGrt3Cv2/AKPy5eQzpac0dxpivWb9jf0ovI6NFaJ+1qoo7FWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/SOJQMH; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HJIvcdtVNnYOJjTBxbLzYYneQuc8VU2WOZoDffaFIL6D0o60RfaJw84g2fRfLyKNzc8lzutKBpR41DVuxAAox7+cIEWIAfULpD2eY/RjBxh9LDpWQRRl7E+wX5BftZOtB4X52TeH7JTtLKfW2MxghfY94i6/XC7ZzuLdXtLqWv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mAWv6Ycz; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712138877; x=1743674877;
+  t=1712141436; x=1743677436;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lliMUOsXEts4XSI5J1Vp7adBehF0j1L3Zhp4i236Y6Q=;
-  b=i/SOJQMHzfDx/fVHPSPhSPihxIKlKCH3/NvmZy7NNLU6rQwGCYwach4U
-   Q7M/aSwWkPvs/fEVhsBxRpcBPiOC+peFgbIqOxGR+qvqdSyqzDJxUdFuw
-   MM0zMbfJlKFAvWl/DQyzfNJ6Z1XxM+FTicnvy6880hHGpe99Yr/tK2yOf
-   i+avZAFjq3dq680k75Ur/awLmlLfhu0gI/4jfQ3xpkMFTqLjwvl7V+j33
-   hxe8WweqBoVuK79A2H9ScYETvz79VL0qQSvVic9cxcFCF5agkQkkeUqTA
-   yBm6IgKY1P4+E6amFEZLf26iad6Eh7ZIfA5TbpEWibjWVzThc/VKY4QQ0
+  bh=g6dc0Rf3RsM/c0X8Hx5ZYkJET+AMXU/vkjfKAnotBsk=;
+  b=mAWv6Ycz24FosUWWWFq+dWloJUihC8YcGzG0NnAGsnSQrLvpXrYLzr5S
+   mIIthywfeBz1BkaPi8AlbnbHyJWWm6gLbw9jk994ArYoST8NmgMSgsZy6
+   6g2tn9KS3Ao0qPsTtjfqv200mYxcRXgYC0+F5RrkLYSw3jIt7RSVUsBqQ
+   3vzAUHINwgtMkItCJKTFZXLj9KOpv65uFj6R5yqnMs99Pa667G4BbOAzM
+   f0O7Zy3jcj1Ut+boXz+geRd8gRxh+lF6vIQtU+2M2T/g+yqgizMcG5ItO
+   IqPcKIGgEFEiO7PBXfqW0oDj98UJQong/Oz4czbCJWK5/56bu4bjpcf/u
    w==;
-X-CSE-ConnectionGUID: Jt/UJR3jRfm5+5X/RPTYPQ==
-X-CSE-MsgGUID: 3n3i0ZQbRnqm91KCIytBCg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7486071"
+X-CSE-ConnectionGUID: sXKTVtFFRli0ZWUP/X5fag==
+X-CSE-MsgGUID: AMZK0LYpSBKSZ1vv8l6Xug==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7590424"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="7486071"
+   d="scan'208";a="7590424"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:07:56 -0700
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:50:35 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="915177337"
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="915178807"
 X-IronPort-AV: E=Sophos;i="6.07,177,1708416000"; 
-   d="scan'208";a="915177337"
+   d="scan'208";a="915178807"
 Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:07:52 -0700
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2024 03:50:33 -0700
 Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1rrxX4-000000015JQ-1M10;
-	Wed, 03 Apr 2024 13:07:50 +0300
-Date: Wed, 3 Apr 2024 13:07:50 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Guanbing Huang <albanhuang@outlook.com>
-Cc: gregkh@linuxfoundation.org, rafael.j.wysocki@intel.com,
-	linux-acpi@vger.kernel.org, tony@atomide.com,
-	john.ogness@linutronix.de, yangyicong@hisilicon.com,
-	jirislaby@kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, lvjianmin@loongson.cn,
-	albanhuang@tencent.com, tombinfan@tencent.com
-Subject: Re: [PATCH v4 0/3] serial: 8250_pnp: Support configurable reg shift
- property
-Message-ID: <Zg0qdpZu1N4SJw8E@smile.fi.intel.com>
-References: <PSAPR06MB49524F135EBF81C4F2D181BCC93D2@PSAPR06MB4952.apcprd06.prod.outlook.com>
- <Zg0pBzp5IRPkrZeQ@smile.fi.intel.com>
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rryCM-0000000162m-2SvB;
+	Wed, 03 Apr 2024 13:50:30 +0300
+Date: Wed, 3 Apr 2024 13:50:30 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v1 0/2] gpiolib: in-kernel documentation updates
+Message-ID: <Zg00djT3MXSW9UUg@smile.fi.intel.com>
+References: <20240326181247.1419138-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,32 +80,15 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zg0pBzp5IRPkrZeQ@smile.fi.intel.com>
+In-Reply-To: <20240326181247.1419138-1-andriy.shevchenko@linux.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Apr 03, 2024 at 01:01:44PM +0300, Andy Shevchenko wrote:
-> On Wed, Apr 03, 2024 at 03:41:27PM +0800, Guanbing Huang wrote:
-> > From: Guanbing Huang <albanhuang@tencent.com>
-> > 
-> > The 16550a serial port based on the ACPI table requires obtaining the
-> > reg-shift attribute. In the ACPI scenario, If the reg-shift property
-> > is not configured like in DTS, the 16550a serial driver cannot read or
-> > write controller registers properly during initialization.
-> > 
-> > To address the issue of configuring the reg-shift property, the 
-> > __uart_read_properties() universal interface is called to implement it.
-> > Adaptation of pnp devices is done in the __uart_read_properties() function.
-> 
-> Thank you!
-> 
-> I have a few comments, mostly cosmetic except a couple in the last patch.
-> Most likely the v4 will be good enough for merging.
+On Tue, Mar 26, 2024 at 08:11:19PM +0200, Andy Shevchenko wrote:
+> While looking for something I have noticed that in-kernel documentation
+> for gpiolib implementation may be updated to reflect the current state
+> of affairs. Hence these two patches.
 
-Btw, your cover letter is not chained in the same mail thread, be sure you run
-
-	git format-patch -v4 --thread --cover-letter ...
-
-to have proper versioning and cover letter to be chained with the rest.
+Bart, do you have any comments here?
 
 -- 
 With Best Regards,
