@@ -1,146 +1,155 @@
-Return-Path: <linux-acpi+bounces-4609-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4610-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD68896531
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 09:00:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5608966D5
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 09:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00538284351
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 07:00:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACFAB1F240BE
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 07:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C3853393;
-	Wed,  3 Apr 2024 06:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210B358AAC;
+	Wed,  3 Apr 2024 07:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SGfli6gO"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="BnyJR+AU"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01olkn2012.outbound.protection.outlook.com [40.92.52.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DA024B23;
-	Wed,  3 Apr 2024 06:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712127580; cv=none; b=N8H0cljV832hgoWOOa++YeUgfZ7kE8dEaLe5DBIIMOQg4sjFHX8ql2871ybfBdM6jedn7gRHPTlbbWhIilUCzjccmJ52x8UlcTK4b3JShWXzs+b8+xVS4ixYg1gFzahM4Ume6V6DIagWhQrKiKS+cXy5T5saCzBF/zxfO35U58Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712127580; c=relaxed/simple;
-	bh=C63E9xFIqmaqyqq61R2hzDE8eqlb46lHuUiLFuY6IEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jdpiWAS78cEO7K8zcxSrL5y3OC0s7nE0gaziJjQN09qZ7NbfDDuJy/xWmUIoaW8fzAZMppaLaMb5Eye8mj2Zzd6NOxGsoYTTG3pFEFxKtIhqCQ+4qTlBLhc42ZBNsQPJjOMhJ7QS7Ljgoz9ff+jgKVmghM59UQ/b+s/ec/xEGvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SGfli6gO; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712127577; x=1743663577;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=C63E9xFIqmaqyqq61R2hzDE8eqlb46lHuUiLFuY6IEw=;
-  b=SGfli6gO83rmByJtWG2jri7iPoKjmff05JJqPVfzMPLwNTEbo86Xum1/
-   szIrh3YfbXgk5KUcLM/+dP93WbHdR5Fv+RzB2HJ09ogt8utJpLZe8nct2
-   OzrDal4+e+5/fZKEvvtVJYV9eeKMZdNMbsssk2e36DZ87YYwNe5v/FLpu
-   gP9sOZ8dR8r3HbrWUAfD9idyEOtAqNvaVfcc4T/DtLdSEnJahcLI5LAdk
-   /o8oyyFfWPZWXB1pEyDKL8XqKgViu0yt0PQ6ftjKDQ04P5WV7ZiukCDCu
-   1oHdYfFiGy4ndBOiodClbLIQrhUmoiRWSvJv+0bVIyIIHyLrWeHbkm/37
-   Q==;
-X-CSE-ConnectionGUID: Pl5JO6dSR5S4O0hwmopfYQ==
-X-CSE-MsgGUID: fgWcETS0QCaP+We0gtQ7CQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="18496024"
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="18496024"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 23:59:36 -0700
-X-CSE-ConnectionGUID: HmdooRwJQVSKUF9bR/U2HA==
-X-CSE-MsgGUID: r4IZeYqkScavXWJcFrl30Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="23027565"
-Received: from lkp-server02.sh.intel.com (HELO 90ee3aa53dbd) ([10.239.97.151])
-  by orviesa005.jf.intel.com with ESMTP; 02 Apr 2024 23:59:35 -0700
-Received: from kbuild by 90ee3aa53dbd with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rruaq-0001xR-1z;
-	Wed, 03 Apr 2024 06:59:32 +0000
-Date: Wed, 3 Apr 2024 14:58:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:intel_pstate-testing 14/14]
- drivers/cpufreq/intel_pstate.c:3301:undefined reference to
- `arch_rebuild_sched_domains'
-Message-ID: <202404031421.nMNiWZMY-lkp@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE944EB2E;
+	Wed,  3 Apr 2024 07:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.52.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712130106; cv=fail; b=D4y45ULUPT3gSTYUYwbALnptMlSJWKKWYaWk92t/C8l3tCpJ/vTRtcMSRZ2+Xz+WmjP/7rSZ3sUQNyusPcndIm4mmkFUZkWP5yUcdCToAQw1+ai6CF8IP9qy8gjXDYKBCfVU/mh4ACDUAcSwenqyaxsELP8dLkhg6TbCQ6morec=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712130106; c=relaxed/simple;
+	bh=XEbPO2jF/jt3BT4YdYHk3UIhCO2+CJxodcZi2Sxa7uU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=PUhMEMCWWWmL13d/HrEo+qx7HrArvUzo7xubd2d28ZaaL3Iie8cnNhoWkkUHDOwSUpRdRSQSH3qx48iovlXSFUN01KXHM2hrH6ADvzV7iz5HrNBQtV+EMiOOn4RepLc+3heJtBCpDFxCnj0LDLDfho5Zc2xk8YdRTVmBdLa6POI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=BnyJR+AU; arc=fail smtp.client-ip=40.92.52.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Q2lPbJPKULKslb5Y1m1DNqKAYWVxlqCGuN4o+pDWxS2E1JZxTYbs14sBVUwPTE+JiP/FxeEu1aI5ucwp8lrrOrCn7KKHim2ahT9m4l4hEOlwztObnvZY3FlPBRM8OcBrXg+AAGTsAfRDeIcKc30owthi09fLmpc5REguHG3pmXfk9sU1wjMIcSEsTrJsoV/fnUsE4uqPipk+uhE3zm6fhN7DI5Jw7TVbOnWQwlva1/yZhAZjFV+U26xGb9/nsmg3ltWsqATD3oN3xlR14omAeh+9VyexwwXavETna7Qc/zsIkDeVN2l1eFPLwqfNx7HjYVkpGUqV3Dykw5bU6OaCjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xBh2Mo42HQOCROtJW97N/C+xLV2w7oHLJGQAtmMf4g4=;
+ b=C1qsteGf2QsTWs9NABNQU2BuA5q1wBXHvE7u6xR3zzYPp22cFiX8o/AQ8mtlK5IqBi79jhwDT1KJadaKGElhkgfNBOV/IQtS0wW9szx/Z9Cky4p+WiGwdZV0JEPNltQfsY0+bM9jIXmqv9LJzoUusALqj2tUts+8cgV7OMqlN2WvVSqh13UcATIB5awzCuOJ/I52G31LwnbOaRZeMar6FHIQc4dvYODTlIWLCKsfPgsocU/zYEgshIw3yIkYNB09ni2rxRnqm0f1DYX7XMn0Jdjjqd6CiLWT1L6imtnSkXd0DPPtebpmvvjsp9QPnGuWe5H+qCv1OdsSNgQiY1Y1zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xBh2Mo42HQOCROtJW97N/C+xLV2w7oHLJGQAtmMf4g4=;
+ b=BnyJR+AUrPGX5anbeVeuCCetI57U/o9kPs5tQGa8qcL3jegerDvAi7evuOgh2ngxoLTOswSz+DmUXQYEfuKUGebh5kkA28/LhtKVbNCJhldfVrOBbVUOeBqB4ejKmhrh/gLJUNTV/r5C3mTf/Z1bnk885LqOBHtdWbGzjwC+E/ICjY11asF/wyHTXF9t5Z83Xz0YxTObI/MFqN2te/TyzICkH2d9Kite8IPNzTYwCXVe9oJ65VOe68ep2JLInxO6f5jEOmaRP8+AFGAXay5B2Oc87zGHL6nCb0m+IrpySnV1rOlJRAIM4Vn9ZRApXT5zWCDsC0LLXcvDNFG7l4UpPA==
+Received: from PSAPR06MB4952.apcprd06.prod.outlook.com (2603:1096:301:a3::11)
+ by TYZPR06MB7169.apcprd06.prod.outlook.com (2603:1096:405:b7::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.45; Wed, 3 Apr
+ 2024 07:41:40 +0000
+Received: from PSAPR06MB4952.apcprd06.prod.outlook.com
+ ([fe80::45cb:f62c:d9bc:b12b]) by PSAPR06MB4952.apcprd06.prod.outlook.com
+ ([fe80::45cb:f62c:d9bc:b12b%7]) with mapi id 15.20.7409.042; Wed, 3 Apr 2024
+ 07:41:40 +0000
+From: Guanbing Huang <albanhuang@outlook.com>
+To: gregkh@linuxfoundation.org,
+	andriy.shevchenko@intel.com,
+	rafael.j.wysocki@intel.com
+Cc: linux-acpi@vger.kernel.org,
+	tony@atomide.com,
+	john.ogness@linutronix.de,
+	yangyicong@hisilicon.com,
+	jirislaby@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	lvjianmin@loongson.cn,
+	albanhuang@tencent.com,
+	tombinfan@tencent.com
+Subject: [PATCH v4 0/3] serial: 8250_pnp: Support configurable reg shift property
+Date: Wed,  3 Apr 2024 15:41:27 +0800
+Message-ID:
+ <PSAPR06MB49524F135EBF81C4F2D181BCC93D2@PSAPR06MB4952.apcprd06.prod.outlook.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-TMN: [KOut+fD3pxOctsiPMJgwofpbhdruQFIO]
+X-ClientProxiedBy: SI1PR02CA0053.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::8) To PSAPR06MB4952.apcprd06.prod.outlook.com
+ (2603:1096:301:a3::11)
+X-Microsoft-Original-Message-ID:
+ <20240403074130.93811-1-albanhuang@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PSAPR06MB4952:EE_|TYZPR06MB7169:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80144fb7-8466-4424-e4dc-08dc53b17fbf
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	NujF5vtNh+EdKgamEP+gNmgd/rViO/vDFUQW3hbzrPUy6H3Cr1r9FYLtKRuSg6l4GuzgwtyUdmB9DZc9A0NtSnvALUDYCNgnfuXnIMtM4kPVfgNF6xaAUJcWNKNmtOjXBCwXaBgEqnnz3Q18IC/0B9hf29IE6x8rfHILoCl+M93En4ZkqW16tuhTzkJLjvD/zCTO0JteEtlKky0TB9d4lYnryRWLH9yohYMCxaT+VMmjz23Stz89IgYR/ZaOx/60D+KEGe+BomuV5HsrzwkrzvDW5+RpJPifEl8FVXNPmuvZUxX/9qDc+yXahJtJ+6nuupojDLVAgiGbELDxvVZKLw8llo4s3BmI1t0tQmG4XRAOH2esDK8pXs/KTrL5idXXYUQQX56Q2LkG1f24qb+N/oZn1RBKFu7keZVAA/0+E2MjNp6DTxNOIAuR9Il8kzhmtsrrpGs0+SvzyOsr4QPXqOEaU1wtvuMw2rDHIHl2/RBNbXk+N3aglwYV4SDruN1VlAQDpxHuGRgktGjmUdrhB/s3ZwVupbZVJ3bQOl27g0EOFt0x3pvixxXa4ca1/kvv
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JfCJDLFKJxNRiyHpLnq7bH3Slaq/EbtvWvC1Ne+E1ar6GoneqOacLPwQjR6y?=
+ =?us-ascii?Q?3F/n4GAwS2xtE3IHBolMLLPHrgRDy2gBWiU0vHdufIB0fGMEhmBR0Wgb5XNh?=
+ =?us-ascii?Q?et3gIUKFujC+LnRozPYQGCQT8ym48UKYlWM+bJImWgEuIzT87NTJAtyysYdM?=
+ =?us-ascii?Q?yuWc5rCSINQJzNpHz9GehNR4hexGFRfZJpFTbgYhF7aays66lC09l5YTFPV6?=
+ =?us-ascii?Q?Bj2wXa/i8rzqfv+VB+urkaLDtjQclasqBCGpnAFI5Cj5jEnGzSjeH1J87tBZ?=
+ =?us-ascii?Q?QE47+lvMEMHjS8ALs5lxRA/PQx7WMulPUC8v/OnsuB1MCeRQ7EuYzxvYcl89?=
+ =?us-ascii?Q?kGi6oSAns2QZJOURO2AY4uNSC48cfmcuB0pdGnEELSbTtGHdO6fRXWPOsleZ?=
+ =?us-ascii?Q?7IxzGDIRFvfSqkrRnisDolclRJ60nDQzekp9GfxJ2730ePNx+aYkxRg39xS8?=
+ =?us-ascii?Q?vZo/iE5z1ZJzZYxZuBbU5xn7oNzE6Ue6wXOfmNG4BeaQ5w4stEIhvs0JLhYM?=
+ =?us-ascii?Q?xawqB2O3EHq67AJi3f9AROqef1FzC/03B1ok+ITv5WSXV2Z76XOnyOWlYiEM?=
+ =?us-ascii?Q?c2N+JWtL/jMGtFL3L5VnytzLOKBCMgU2DyfM7I3H+PNxwOpUlEODNJvSIg7b?=
+ =?us-ascii?Q?mqzTEuL3ZM+hDO9L2LGUYl8PpVDS1Ht44OMZ7E2tketgZn/bazgmDVeaMxcZ?=
+ =?us-ascii?Q?OFO++Zg4umhYi0s4HhBzJZ+Kf8+dA3y4A/gg16U8c1p5gyQ1t+qoEXaJSCop?=
+ =?us-ascii?Q?yzjGF/sgv9E76nR0H9GTV/yCTRcDM3yMtBS3dDV64Rx9wchKAfHwlVsdxyFR?=
+ =?us-ascii?Q?T/TawtENOILlD5dzQSVc8cS6eYetJAogMNoy5+t6N4QJSpypQYDCYPSmK8ZE?=
+ =?us-ascii?Q?s5RXPsY6qadSVn1F6hM58z4wJIjWBrQ0gxchG6RYHsZ/lBlQiuREbypfab/r?=
+ =?us-ascii?Q?ZrqNXqPU034bgQWDU8Yi0qtxYc9Epp5dNUjm40oFMsezcVdEU77gQ6O707Rt?=
+ =?us-ascii?Q?hlarej8qjODXRtbE/a47T/iik91/T5hiyyEaCd0SOlfEQ6UafQqN3vOMl9wv?=
+ =?us-ascii?Q?i83CSDw+AtfRZhIO36TxXAsLX1r4s5aSf21bjl35WmznYiGWQ6Mwq4y7kp9h?=
+ =?us-ascii?Q?Yl+Q1/Mcs8QW8UuDBKp8OXQz7H2fptxte4BryDXuEGAMd0M52+AYj319sTlr?=
+ =?us-ascii?Q?7seR3GHI6JL50DydvwdfwYdZPiajwmvMPKfw0RaM0FXMbpgn8x49TdXkr10?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80144fb7-8466-4424-e4dc-08dc53b17fbf
+X-MS-Exchange-CrossTenant-AuthSource: PSAPR06MB4952.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Apr 2024 07:41:39.9780
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB7169
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git intel_pstate-testing
-head:   e35f6a1b27a71e7c8cb1880197e01d93b593cc85
-commit: e35f6a1b27a71e7c8cb1880197e01d93b593cc85 [14/14] cpufreq: intel_pstate: Set asymmetric CPU capacity on hybrid systems
-config: x86_64-randconfig-014-20240403 (https://download.01.org/0day-ci/archive/20240403/202404031421.nMNiWZMY-lkp@intel.com/config)
-compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240403/202404031421.nMNiWZMY-lkp@intel.com/reproduce)
+From: Guanbing Huang <albanhuang@tencent.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404031421.nMNiWZMY-lkp@intel.com/
+The 16550a serial port based on the ACPI table requires obtaining the
+reg-shift attribute. In the ACPI scenario, If the reg-shift property
+is not configured like in DTS, the 16550a serial driver cannot read or
+write controller registers properly during initialization.
 
-All errors (new ones prefixed by >>):
+To address the issue of configuring the reg-shift property, the 
+__uart_read_properties() universal interface is called to implement it.
+Adaptation of pnp devices is done in the __uart_read_properties() function.
 
-   ld: drivers/cpufreq/intel_pstate.o: in function `intel_pstate_register_driver':
->> drivers/cpufreq/intel_pstate.c:3301:(.text+0x409c): undefined reference to `arch_rebuild_sched_domains'
+Guanbing Huang (3):
+  pnp: Add dev_is_pnp() macro
+  serial: 8250_port: Add support of pnp irq to __uart_read_properties()
+  serial: 8250_pnp: Support configurable reg shift property
 
-
-vim +3301 drivers/cpufreq/intel_pstate.c
-
-  3267	
-  3268	static int intel_pstate_register_driver(struct cpufreq_driver *driver)
-  3269	{
-  3270		int ret;
-  3271	
-  3272		if (driver == &intel_pstate)
-  3273			intel_pstate_sysfs_expose_hwp_dynamic_boost();
-  3274	
-  3275		memset(&global, 0, sizeof(global));
-  3276		global.max_perf_pct = 100;
-  3277		global.turbo_disabled = turbo_is_disabled();
-  3278		global.no_turbo = global.turbo_disabled;
-  3279	
-  3280		arch_set_max_freq_ratio(global.turbo_disabled);
-  3281	
-  3282		intel_pstate_driver = driver;
-  3283		ret = cpufreq_register_driver(intel_pstate_driver);
-  3284		if (ret) {
-  3285			intel_pstate_driver_cleanup();
-  3286			return ret;
-  3287		}
-  3288	
-  3289		global.min_perf_pct = min_perf_pct_min();
-  3290	
-  3291		/*
-  3292		 * On hybrid systems, use asym capacity instead of ITMT, but because
-  3293		 * the capacity of SMT threads is not deterministic even approximately,
-  3294		 * do not do that when SMT is in use.
-  3295		 */
-  3296		if (hwp_is_hybrid && !sched_smt_active()) {
-  3297			sched_clear_itmt_support();
-  3298	
-  3299			hybrid_init_cpu_scaling();
-  3300	
-> 3301			arch_rebuild_sched_domains();
-  3302		}
-  3303	
-  3304		return 0;
-  3305	}
-  3306	
+ drivers/tty/serial/8250/8250_pnp.c | 36 ++++++++++++++++++++----------
+ drivers/tty/serial/serial_port.c   |  7 +++++-
+ include/linux/pnp.h                |  2 ++
+ 3 files changed, 32 insertions(+), 13 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.17.1
+
 
