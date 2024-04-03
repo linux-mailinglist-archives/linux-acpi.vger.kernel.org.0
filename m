@@ -1,101 +1,118 @@
-Return-Path: <linux-acpi+bounces-4605-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4606-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101F88961A8
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 02:51:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5541896235
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 03:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B3081C22581
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 00:51:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FF8C28D840
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Apr 2024 01:44:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70103E560;
-	Wed,  3 Apr 2024 00:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605FB1B950;
+	Wed,  3 Apr 2024 01:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IzdaEyav"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVkyI4L9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D38CDDD3;
-	Wed,  3 Apr 2024 00:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73D01CAAA;
+	Wed,  3 Apr 2024 01:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712105510; cv=none; b=BiRFTPFx/0dx1LL8cvSEyZqnHB4f1xDN/FcEZLwk3ErxQCr0S36e92OPYEcW4iTh1sqE1p4Yzq82j8gerHbWV9cTnhttsu7idtRxlRdURpT2/vtByh559oHbMtGTZbSUASros8nYI0cWrPVEpH2D9dGwhsRrFid39qlkRPwMAtg=
+	t=1712108617; cv=none; b=SlGgXvyldwyqpExbOHR62aLx0OuUYyrCz/fqqEu75AqZjhiyo1btooq89R6pylLKF0ekttT2/LGqGnkPxnr3gWrQEBVXXygruo4vYq4t87JMSgrh1AhDyZGAWorjmQkJ8uVeQ/rm7DMGlpGQJD4/hU0L07qqLRe2661Dlpv8xkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712105510; c=relaxed/simple;
-	bh=2Rk4D5RDvMb3U9Iily/8E9F/vfmEX7nK+qtx/KtLMNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=n7gL9kmpSJBA0bybVm78w3K8B8nsHxtRFYanBy71QrXKb4dlhAfOqabcpUv3vsL/TmvZfaeAASn1itnNgt2qABAsyqU8a7+4l/RhY0/flgV9Lbr+waFJRNmbMyvH9wUUweXZ2VUsHiauw8PwqALuea2UrLBXKqRjG9bqhCdPw9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IzdaEyav; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712105507; x=1743641507;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=2Rk4D5RDvMb3U9Iily/8E9F/vfmEX7nK+qtx/KtLMNE=;
-  b=IzdaEyavPz6xbJR5T3KNf+h6iWWHvD5noCbQ/3jcqoJsESjeTlaZ0Y2t
-   BAwuvoHKTAYiAOI4kBtU/yTUjgGZnWd+hl6OzWnZnGh9x/F5i9KPgIqkV
-   7z1a9kZ1CsnISlb075eaA7Hqnp3BRS4zkuq8KzZo/imgn0DHLZPAcjUo9
-   HoX8egxxN4CAwQTPEgFCOjCh0uIJETubsD97bEF7YnuXOpwXyaoseZ7EZ
-   SROWy7eLGWB56J+tW3HEWtV/RbmgCcsofwi5Uu7v9nPB2HO/DwiuxDFZM
-   V4TESdYbBjCmS4auL89r6QgOR/zwnweiI1W8JAIRGuujqJy6ceJ3u7rym
-   w==;
-X-CSE-ConnectionGUID: 6wdeMZe+TLSjtN4f4NKlnw==
-X-CSE-MsgGUID: 5xEP0JxTRL+QHcSl1Lq/oA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="7503799"
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="7503799"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 17:51:47 -0700
-X-CSE-ConnectionGUID: PrYGTXviR2yD/g/e2Xh0tw==
-X-CSE-MsgGUID: X5yaSiBeTceFMXUqKmTuHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
-   d="scan'208";a="18672295"
-Received: from lkp-server02.sh.intel.com (HELO 90ee3aa53dbd) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 02 Apr 2024 17:51:45 -0700
-Received: from kbuild by 90ee3aa53dbd with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rroqs-0001gn-0y;
-	Wed, 03 Apr 2024 00:51:42 +0000
-Date: Wed, 3 Apr 2024 08:50:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	devel@acpica.org, linux-pm@vger.kernel.org
-Subject: [rafael-pm:intel_pstate-testing 14/14] intel_pstate.c:undefined
- reference to `arch_rebuild_sched_domains'
-Message-ID: <202404030858.0AJW6re4-lkp@intel.com>
+	s=arc-20240116; t=1712108617; c=relaxed/simple;
+	bh=GmjAj532GROcGfekdwYtm9RSioEjiUXNOBiz7tB0ing=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mYliCyAOiU9rmLJsUoJXCIF79QfpuJDPXuhqbN8Il0tK/itLymBma2HzAYiGOpRZBZctyxXNtCUPsESYz9qUcmCDSTwpmuRphGFni6PzUvrpuUWpxARsJAOJKJfX42+8cvtnOqAveO9MFw+M9KWso3e09PFU9lu9s4qHBJV9a/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVkyI4L9; arc=none smtp.client-ip=209.85.210.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-6e6888358dfso3348614a34.2;
+        Tue, 02 Apr 2024 18:43:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712108615; x=1712713415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fsJ4FQL0ZHmTisEqkBaubldM19KDKDegM1Fl5PQoDrw=;
+        b=PVkyI4L9iBrtKOkXjopDfwREj4MfiTnC+nvllKXfLE0WNxQLK0oGCPWvPxb14eeXjL
+         Dwg5CBVLWCWMmFPfAP1pFF0YaAziVNs9luQo3WP3aL+SENd0JYXhMyob7XZ/DbF3lCK8
+         JTQFpy6gBFx097tvW9CQnxxfgyzgdhnz0Kf+1N6J+JA/kGHBQoikfbDa+ebhO6NQqNJD
+         4+Yk76wYqk/yH1HS7VYcdk+/PzwVOfDRs0cR0rgXG+8ZI0bOQNxER6DZM12weEHxdrZw
+         fpUjqgJT+5f0Uh8DyqVGuNQMKQ7a1HQQwhM0ep98uf7IdZ28U2GXukbPYUmfGLBiJyr2
+         zMrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712108615; x=1712713415;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fsJ4FQL0ZHmTisEqkBaubldM19KDKDegM1Fl5PQoDrw=;
+        b=APU1DkQde/dmY/8IcJgxWdfIz79I1MuPrY4kI7hFtqRxlpiqr3srC0PRaomlRMA3zA
+         4kFXDAk/vI8ppHh/wM4xDJqYU97HIuL2GdHCCYtr7w7Cl15oMU6rRp2ssbTTpvNC4cR7
+         P/5mmwZp7xUcVV5ek49zt+NcTlhrhVmWFLrpt7Ztbd+wCKwBmVgga5I6noYR9/mEps0o
+         d2rVu6KTXiKx7aXhqOFFeTcZRMh7Ci3MoH1sBU0JBWWgx+XU+3knalsNPTYnb4ZGDJzL
+         kht7nu/0k4xx8cGeGV5oMvc2iGjf6HUikTMVmDLd7Nfirv0zXZOG+DCOjDZd9kZ8y45w
+         cm2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUjmotA4qjpf+Y3jn4sarER4rv7YAMkTSmfhfMBYr/s9vHJMg3u6F3f2rcyThTWzBS1iIesgCDNzroDmD1cD2k3lLjYvjyjgdQthGjc
+X-Gm-Message-State: AOJu0YyFv8niW7Nhzc+TowWi5bc2sCuw4fopAi0jQ9tQCDOLh62ccCCq
+	FBlF0xGUJ5KbwMcMBFCT8IT2OhmKdjnrTP1FOWnSlEvqhoyFDBtE
+X-Google-Smtp-Source: AGHT+IFWdg4Jft0MJsEyLjf4TOUUiI1Wxoc2/tcBKNMSE+rgJhzeGdOLrEF3UdhUe1Jq5sMqFuCbww==
+X-Received: by 2002:a9d:6f13:0:b0:6e6:8516:4866 with SMTP id n19-20020a9d6f13000000b006e685164866mr16951430otq.16.1712108614783;
+        Tue, 02 Apr 2024 18:43:34 -0700 (PDT)
+Received: from lhy-a01-ubuntu22.. ([106.39.42.164])
+        by smtp.gmail.com with ESMTPSA id u4-20020a632344000000b005dc3fc53f19sm10403737pgm.7.2024.04.02.18.43.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Apr 2024 18:43:34 -0700 (PDT)
+From: Huai-Yuan Liu <qq810974084@gmail.com>
+To: robert.moore@intel.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@outlook.com,
+	Huai-Yuan Liu <qq810974084@gmail.com>
+Subject: [PATCH] ACPICA: debugger: dbconvert: add a null pointer check
+Date: Wed,  3 Apr 2024 09:43:26 +0800
+Message-Id: <20240403014326.970237-1-qq810974084@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git intel_pstate-testing
-head:   e35f6a1b27a71e7c8cb1880197e01d93b593cc85
-commit: e35f6a1b27a71e7c8cb1880197e01d93b593cc85 [14/14] cpufreq: intel_pstate: Set asymmetric CPU capacity on hybrid systems
-config: i386-buildonly-randconfig-001-20240403 (https://download.01.org/0day-ci/archive/20240403/202404030858.0AJW6re4-lkp@intel.com/config)
-compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240403/202404030858.0AJW6re4-lkp@intel.com/reproduce)
+The memory allocation function ACPI_ALLOCATE_ZEROED does not guarantee a
+successful allocation, but the subsequent code directly dereferences the
+pointer that receives it, which may lead to null pointer dereference.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404030858.0AJW6re4-lkp@intel.com/
+To fix this issue, a null pointer check should be added. If it is null, 
+return exception code AE_NO_MEMORY.
 
-All errors (new ones prefixed by >>):
+Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
+Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
+---
+ drivers/acpi/acpica/dbconvert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-   ld: drivers/cpufreq/intel_pstate.o: in function `intel_pstate_register_driver':
->> intel_pstate.c:(.text+0x232e): undefined reference to `arch_rebuild_sched_domains'
-
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 2b84ac093698..8dbab6932049 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	elements =
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
++	if (!elements)
++		return (AE_NO_MEMORY);
+ 
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
