@@ -1,108 +1,112 @@
-Return-Path: <linux-acpi+bounces-4634-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4635-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF80898589
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 12:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0A0898693
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 13:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9461C20F02
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 10:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 464F01C2187D
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 11:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DC58004D;
-	Thu,  4 Apr 2024 10:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3689584FAE;
+	Thu,  4 Apr 2024 11:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9DHWV28"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bGIPWXvv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3DF7580B;
-	Thu,  4 Apr 2024 10:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B03785276;
+	Thu,  4 Apr 2024 11:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712228322; cv=none; b=HZCTI4OD4cXCUool0lTAxNavUjZATDHrRFmLgTeeYnHuIjKnIxhxuvtmZxirWJR731E2yVk9K0AfwEO32ZZKpbuSPqpYE5dbPASeqv3jmamvQN6Qq6W4/ndCEt4Qh48ob48rf4l3C+Zk1vvix5lYG8PtSB8D5pxNBZpatzX+RFM=
+	t=1712231867; cv=none; b=MPQKuQQjoLTa9ZlP/HNL2ZC7D7ecYrimqzE5JP5YMBXcOA8LnI3mmqOd8dfukxXIsRWQhUtK/xdmC8qBHomIBFJTVQzcBsH449m/IkTjU4sCx2ASMSdbRh7JP5j5hkA4BW24L5Q5CfGqZia0qoL5zVY77Kpno1gQpay5Nuu9z9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712228322; c=relaxed/simple;
-	bh=j0/b5icC4/y9iKwybRqd4qGBAgnSIe+hulZQpmzIqSI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rb1txrDx8WRkylVol0Z0RdW7DhtZ7M901yav2zDhEVr17A1mKEAa5LR+d4IvSYaIPI7T0cBNlwCP6q2S3Dx/NvzWKE/vp24KDtYziebnlUhsiRBUgsIjUbKhNC1TSjGV3rZXzG5uIKkMBfIgj0uDhbWubkFX44I/uFqAJ/G/FWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9DHWV28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9FAC43390;
-	Thu,  4 Apr 2024 10:58:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712228321;
-	bh=j0/b5icC4/y9iKwybRqd4qGBAgnSIe+hulZQpmzIqSI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d9DHWV28feoOxh3KI8vKWHtsPF1BHWx7EsxHL4bHWQkk8Yh9MGbsvn0UTdDi+ZfCu
-	 hsflcQeJk3lGvM1hMLTfoU8vxHrvsSCtncL8KL2np6IHpix0meyo1lYp3ikaGwJAqC
-	 1NLTIVf3XDbcoNdl6li9B9XQdFWsB8PCwtyuPR8QgeZ7YW7mfsYVA/2Yt/ocP/oKbj
-	 2GvDmfmyqGj8A9Zl2VTBJhLIOmg49SqRSn2+tUgd7e3hL8vzP3+AlX6rk+VehkZSBy
-	 rATLwFUEsOzp63EivWavqOx6Ok5TVePxVXhBxANE2XSZ+eA9fsSIUHoxp/wBulNbEs
-	 Me2MShD2/8mQg==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a46b30857bso153283eaf.1;
-        Thu, 04 Apr 2024 03:58:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWPzuZfj1F8oSzX78u5WJvup+NygC0NJtBZ5pqLE041bIaGDojyNLBvgcC0TJc1ffIbN7HImCCpQ3xAymkwllGS5FmnNplUQKuTF0NJifNIcnfhxP09hchWJ0Yfixp2SUVwJgMp9OOJdA==
-X-Gm-Message-State: AOJu0YwF+a13j8T3V4iTI2w5WSiawmB2RdlzWlQUhfDpoeERV2vIb2wk
-	+oJq+K68jtwD22P7M0XY3+gLX8GsUW4l7kyCWpSj4I1mQFEBEr3hczO2xbztGPr/CnudVRHGXC9
-	AbafGOZn6Bpf9lBFeZVy9z05eGgY=
-X-Google-Smtp-Source: AGHT+IEPyD/Py8AcpOLdageN0KMaqKGHz52ZV2Ws3RRCwPXwIQmpNyzG1+SqfqHWLDkzTS6BEMbw94MHGezgoOVrIVM=
-X-Received: by 2002:a4a:ea0f:0:b0:5a2:26c7:397b with SMTP id
- x15-20020a4aea0f000000b005a226c7397bmr1985048ood.0.1712228320933; Thu, 04 Apr
- 2024 03:58:40 -0700 (PDT)
+	s=arc-20240116; t=1712231867; c=relaxed/simple;
+	bh=vfjVnDcA4y40C1ptsdkzs8++Rd0MHm7wYp7KYKcJhZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ortODAXbvv+CO8GcK4ysKj+O3ZFZciDOFaMCsv0yVXn1DeEk4hT31BeJn5VKNUQ2ZRT3bQtWlaCDULPtWos/5LPnuo91CxV57WDjknx+dBX0sfTl2idXoYOE95kocPfPEskTB1R7E/IgOoUIVWNWfkThbVJQmUZo4D1ClJR+cjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bGIPWXvv; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712231862; x=1743767862;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=vfjVnDcA4y40C1ptsdkzs8++Rd0MHm7wYp7KYKcJhZA=;
+  b=bGIPWXvvYI9w38+N4HOIwsBTuDB9Bx8g0hRE6/CwnkiyEqJIMiOUQ0Lh
+   6nFecPGgSa/x//O/3ePxupuR/w/lJMxqjkh9an1uo/rFy1IpEX/kkK8ow
+   QX1o16mYuUwamwvYQ/W0KNuL95iX49XCgLdJ6LNu4oj5HIMNWaUP75I/w
+   hOuhU9BFS5ZNwox75bYCxYt1mn9FUWR0QBRF6XgH+5xkCYILogz8BSyyH
+   pz4tqbuVyfytRJb33LYYAWSO6sIPdDMqBFzvjcDl6vXl+52yRQxQu+XJi
+   wUyYpuzmJbO/gczIRE6jSnUZr3BgBkUz/hYpbrnh6KFl3oAG1wpoA5HC5
+   A==;
+X-CSE-ConnectionGUID: IbiyF15MQtyWOHRKlXUWZw==
+X-CSE-MsgGUID: +PiQYXwDTB6RKHJ1RyZcYA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7349576"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="7349576"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 04:57:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="915216165"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="915216165"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 04:57:38 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rsLir-00000001PyV-2E4J;
+	Thu, 04 Apr 2024 14:57:37 +0300
+Date: Thu, 4 Apr 2024 14:57:37 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v1 2/2] ACPI: LPSS: Advertise number of chip selects via
+ property
+Message-ID: <Zg6Vsc-Uh-iUX8XB@smile.fi.intel.com>
+References: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com>
+ <20240402152952.3578659-3-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0iQZXbFQFsZ+gL3==LV7UsqfOr-FZuWdoPSv0veUkuCrQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240402152952.3578659-1-andriy.shevchenko@linux.intel.com> <20240402152952.3578659-3-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240402152952.3578659-3-andriy.shevchenko@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 4 Apr 2024 12:58:29 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iQZXbFQFsZ+gL3==LV7UsqfOr-FZuWdoPSv0veUkuCrQ@mail.gmail.com>
-Message-ID: <CAJZ5v0iQZXbFQFsZ+gL3==LV7UsqfOr-FZuWdoPSv0veUkuCrQ@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] ACPI: LPSS: Advertise number of chip selects via property
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0iQZXbFQFsZ+gL3==LV7UsqfOr-FZuWdoPSv0veUkuCrQ@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Apr 2, 2024 at 5:30=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> Advertise number of chip selects via property for Intel Braswell.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Thu, Apr 04, 2024 at 12:58:29PM +0200, Rafael J. Wysocki wrote:
+> On Tue, Apr 2, 2024 at 5:30 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > Advertise number of chip selects via property for Intel Braswell.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> A Fixes: tag, please?
 
-A Fixes: tag, please?
+Sure.
 
-Also, IIUC this should be applied before
-https://lore.kernel.org/linux-acpi/20240403170302.1073841-1-andriy.shevchen=
-ko@linux.intel.com/
-?
+> Also, IIUC this should be applied before
+> https://lore.kernel.org/linux-acpi/20240403170302.1073841-1-andriy.shevchenko@linux.intel.com/
+> ?
 
-> ---
->  drivers/acpi/acpi_lpss.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-> index 5b56f198d005..a3d2d94be5c0 100644
-> --- a/drivers/acpi/acpi_lpss.c
-> +++ b/drivers/acpi/acpi_lpss.c
-> @@ -325,6 +325,7 @@ static const struct lpss_device_desc bsw_i2c_dev_desc=
- =3D {
->
->  static const struct property_entry bsw_spi_properties[] =3D {
->         PROPERTY_ENTRY_U32("intel,spi-pxa2xx-type", LPSS_BSW_SSP),
-> +       PROPERTY_ENTRY_U32("num-cs", 2),
->         { }
->  };
->
-> --
-> 2.43.0.rc1.1.gbec44491f096
->
+I believe yes for the sake of simplicity in maintaining / backporting
+(if needed).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
