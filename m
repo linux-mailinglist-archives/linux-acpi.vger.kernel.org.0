@@ -1,132 +1,108 @@
-Return-Path: <linux-acpi+bounces-4648-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4649-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C7D898EEB
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 21:22:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20380898EFF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 21:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473C528C9FB
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 19:22:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5F01B2A6FF
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 19:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1197134404;
-	Thu,  4 Apr 2024 19:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2E01369A2;
+	Thu,  4 Apr 2024 19:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YWSU8WaK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPMARq/w"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8051339A5;
-	Thu,  4 Apr 2024 19:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DE8135A4C;
+	Thu,  4 Apr 2024 19:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712258561; cv=none; b=FpczNlN3nEOXdI8rlunEs8T8woUUytXDqlm9xDNsQRf4bZcYBXmGEZI2BzmpXHTUCXfr/XpoKVQvC2i9ShKBBsPaLEjmd2DnlUnAcGnjC5tXHVVh7CdL/R/zDJF3QxL4EzOaH6nYBKnbZ3FwsTUAdGE0/9P+tU0yH9zuWyWwUOY=
+	t=1712258813; cv=none; b=EuGEgIBDw87IGNGB+DDxYE5vH9A1MZ/ohzMW+s43jVtAlbOI+folnQ94lNKdrXUqXc/2wb3st/JMcLfXJTNb+giXSHq0XC3s5LWgxDXBfbDJBBomjyg3jO+VTfJJg5xMGQEnPIzz4MqV92AfjfihVAOynOzZ13VvNFLfxwh9bfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712258561; c=relaxed/simple;
-	bh=8WNCQA2Qp3GjdSD3VAeio8P6hRuSDdefSKR77rNOC8k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=APf9owpaQZSHK8wtg1QdyWSCN7DA6qFiBSkx8gD9ysUYGwTvZTTLJPthSSjxY//vwOnWjgqO2g5E8gJeQICDaQuxMGpMXn2fZcHiWTtFeykn4efK5lU265Pag+ynL4m6p0k55L3uEwQZovikMhOZRrvHHWEmJ/gx1rkK6a0xY2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YWSU8WaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0C0C433F1;
-	Thu,  4 Apr 2024 19:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712258561;
-	bh=8WNCQA2Qp3GjdSD3VAeio8P6hRuSDdefSKR77rNOC8k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=YWSU8WaKnRmHkmA2Fjd6sSysAxBu61BERgRSyepJ2uX9gM1FJnOc2ztLs8Jd9oehi
-	 51ZAdLoF3podq9eEO4PUthDZT0l3RKyIpDQPiTKmZ02sR1V/628i80rJklU1RhV3Lx
-	 21rWip2WpBgD+7O4wCU5TEL/ouRz3w+LSv8WGR0eHXCf9rHOtaQhfuRcbW9MqclSge
-	 mNeDaoN+5PV/MrzhOoN4beQ6AO1/4nODrSHmQjnUQ3EYONZEwlyfoj2MAzgSsLj1cI
-	 Mdua8xzVD6/bHvRuxEC0jypCFNNFignItzWnl9FSLxQ+qiWANeYibFkjWPt/cfEys7
-	 vpj1JzOtDnPBQ==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5a46b30857bso253327eaf.1;
-        Thu, 04 Apr 2024 12:22:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX2Esl+5uM5Jomqbcc3RuFjU2w75qLlmzA7T4Xv/9RlT0pJfdHlt1SufOGvJ6zR7SnaMlDuo5hza4yrPzINU2gUvdHZRZlPZBKKYT8Zke0k2tpzj1bP0dZWVb8BHEZGQb+g6TyRLQF8OQ==
-X-Gm-Message-State: AOJu0YxkCy3tx9sWgHEqCjBhppfaaAhcdVlwg8IJeYMu0Jg0be5ksdjO
-	VXyhbJN0en9NQ60fSkc83KdqJGFrUhnRG7eo62UL/boTK0pX/Fx80v06o1rQXGlIVgNqmtko49a
-	D+bn01XmllvSlopPld51i6XZDdZc=
-X-Google-Smtp-Source: AGHT+IE3plFIEkphAB8CO7rhbTEJi1S27LAagOoIbFfRCZLahWFxIuVODF8WMjZsqD45ENMVl1mkyHsol77H+i0uEE4=
-X-Received: by 2002:a05:6820:f45:b0:5a5:2d09:4fdc with SMTP id
- ep5-20020a0568200f4500b005a52d094fdcmr3357764oob.1.1712258560736; Thu, 04 Apr
- 2024 12:22:40 -0700 (PDT)
+	s=arc-20240116; t=1712258813; c=relaxed/simple;
+	bh=UYUzD7T4Jph7nLu+kUWLGhaquNztQP+/2JKuOZkr4Xs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IQRVrxQ8IymHIC9+qk4q0WNr0CHjy3FtryhfOoApR4WpCNAv2TPT7AItoLVE1ePXTXT7Nf9s0vps1hSmZvaJUqUx+7FFOyZQAdrlh/lchapP87yps7R6lZwecX9e9ngMgGqtoixba+gI67y8TVv4cgUsuSaBdkDU2Z2SvQ8soYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPMARq/w; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712258812; x=1743794812;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=UYUzD7T4Jph7nLu+kUWLGhaquNztQP+/2JKuOZkr4Xs=;
+  b=YPMARq/wKp/ULCGTSLFFtGfp7iY8R7jrPpVgdStvSTlxLXaa63DGMTl2
+   kkMRZXarG2EqG3QrxGTTKIw6DG7/+HTEyLhJdRnuJfAJklvFAhg0t8MOb
+   7nHWjoIXt7yPgQI8OF3iBUuPxuZxm6poQSSJa67Yn9mjwvvGYyrIUw1fB
+   F95Zslrebb4n4yxm+axLT0PDGFaVGPM2HvO4p5bhvkCtT9pqpA4ZT3Dkl
+   WLbPHgXhYT9/koLpgExsG9cjH05cq5HGrbSD1OEh9hnUb4CHyDDgmtKSV
+   W2vMoTn9pubgBfWjEjSnhSoEkSqUQ27nENuIPZCw3MkEUFH1c4nJkXrEu
+   g==;
+X-CSE-ConnectionGUID: rBhp0tOkRPOx7Q7PdcJUiA==
+X-CSE-MsgGUID: PLc86ybZQcKrpXb4s+OZJw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="18178258"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="18178258"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 12:26:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="915227545"
+X-IronPort-AV: E=Sophos;i="6.07,180,1708416000"; 
+   d="scan'208";a="915227545"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 12:26:48 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rsSjW-00000001YZ7-04j3;
+	Thu, 04 Apr 2024 22:26:46 +0300
+Date: Thu, 4 Apr 2024 22:26:45 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v1 3/7] ACPI: scan: Replace infinite for-loop with finite
+ while-loop
+Message-ID: <Zg7-9QFnaDzb53tt@smile.fi.intel.com>
+References: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com>
+ <20240325123444.3031851-4-andriy.shevchenko@linux.intel.com>
+ <CAJZ5v0g6bn4k2Sv+SRC1fiDoXU+hZ2iUR6GuL5O1Eny=Pxmh0w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325123444.3031851-1-andriy.shevchenko@linux.intel.com> <20240325123444.3031851-4-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240325123444.3031851-4-andriy.shevchenko@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 4 Apr 2024 21:22:29 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g6bn4k2Sv+SRC1fiDoXU+hZ2iUR6GuL5O1Eny=Pxmh0w@mail.gmail.com>
-Message-ID: <CAJZ5v0g6bn4k2Sv+SRC1fiDoXU+hZ2iUR6GuL5O1Eny=Pxmh0w@mail.gmail.com>
-Subject: Re: [PATCH v1 3/7] ACPI: scan: Replace infinite for-loop with finite while-loop
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0g6bn4k2Sv+SRC1fiDoXU+hZ2iUR6GuL5O1Eny=Pxmh0w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Mar 25, 2024 at 1:34=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> The infinite loops is harder to understand (as one has to go
-> over the body in order to find main exit conditional) and it's
-> more verbose than usual approach with a while-loop.
->
-> Note, we may not use list_for_each_entry_safe() as there is locking
-> involved and the saved pointer may become invalid behind our back.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/acpi/scan.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 7c157bf92695..5e4118970285 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -530,15 +530,10 @@ static DEFINE_MUTEX(acpi_device_del_lock);
->
->  static void acpi_device_del_work_fn(struct work_struct *work_not_used)
->  {
-> -       for (;;) {
-> -               struct acpi_device *adev;
-> +       struct acpi_device *adev;
->
-> -               mutex_lock(&acpi_device_del_lock);
-> -
-> -               if (list_empty(&acpi_device_del_list)) {
-> -                       mutex_unlock(&acpi_device_del_lock);
-> -                       break;
-> -               }
-> +       mutex_lock(&acpi_device_del_lock);
-> +       while (!list_empty(&acpi_device_del_list)) {
->                 adev =3D list_first_entry(&acpi_device_del_list,
->                                         struct acpi_device, del_list);
->                 list_del(&adev->del_list);
-> @@ -555,7 +550,10 @@ static void acpi_device_del_work_fn(struct work_stru=
-ct *work_not_used)
->                  */
->                 acpi_power_transition(adev, ACPI_STATE_D3_COLD);
->                 acpi_dev_put(adev);
-> +
-> +               mutex_lock(&acpi_device_del_lock);
->         }
-> +       mutex_unlock(&acpi_device_del_lock);
->  }
->
->  /**
-> --
+On Thu, Apr 04, 2024 at 09:22:29PM +0200, Rafael J. Wysocki wrote:
+> On Mon, Mar 25, 2024 at 1:34 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 
-I don't quite agree with this one, sorry.
+...
 
-The rest of the series has been applied as 6.10 material.
+> I don't quite agree with this one, sorry.
 
-Thanks!
+No problem.
+
+> The rest of the series has been applied as 6.10 material.
+
+Thank you!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
