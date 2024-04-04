@@ -1,75 +1,72 @@
-Return-Path: <linux-acpi+bounces-4636-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4639-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405F18986C6
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 14:09:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC328986D9
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 14:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6011F22E16
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 12:09:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1437D28EB37
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 12:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D9580C09;
-	Thu,  4 Apr 2024 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E4384FCC;
+	Thu,  4 Apr 2024 12:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xrv3c56q"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YULxGPOY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E4B6A005;
-	Thu,  4 Apr 2024 12:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A758526B;
+	Thu,  4 Apr 2024 12:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712232542; cv=none; b=tCy4TaXG2KM2skDbTIAkeofgg71CtyEfvDfDCvdWR9fSi9ZJbmMyFrLaYRIn9uITe+E9nmwe8MN19w3FhZ+L6xlq/VW73/LPCSmPxKpelaYy815sLDEmbcSFljGpJp70wVErx7x/ISfGhxrFun4MVbr+m8NbWtc/d9WGpaHRPfI=
+	t=1712232696; cv=none; b=LNdyMpeW+M3+bs1VHBPpQdlw6ppgkI20/RWybMuE/HDQdYAOgStoFeI9risSx2VCBAUutz5KDiDqBHBCK6gx8x+pgKP7P2uykoPRUZJjaqdFUCkT1AUr/Zak41qp5xXGEXCf8BM6yhR+2ILTUaIgnSjHHsnJ6LsbjvCU5dBuI24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712232542; c=relaxed/simple;
-	bh=iDPQ2vVkxpAwDuDwOEgx6CmC+oACC23Hj4S4yh3efDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJD/+63FXV37n7hHmoxVEzMaVia1Qu2GCUVhIWOI+Z0kWAZ6TOlHffXNOO4wY2CLgrgEGZwpK9Dv03MbhvEWe6TWmGN78rvijBSgWNC2uLkZzOKvZPfLGuaz6cncC6fUJKMYz+XF+G+zOvsdeSVW2f2eh9R47aJ6CWaDiM3ID8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xrv3c56q; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1712232696; c=relaxed/simple;
+	bh=252nTC/vhBKxpMQxxrSnCOB5cIOsD0sOThNf85Lyd+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jt3R63pjZ2s3rKymwqZl46XWlwIF+AGcJAzuyIoCf9+vmH+vJQlnV+OwSLfu/EOCzZuLtPZON4SU3MSKq8RKR33ndZI7FDip6xfHM/wJGkreGO463joasZyI1+9mgE48OWMUAUtf+ljFbLc96lLL9HQXm+Phe7WU9jFSeNxtwn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YULxGPOY; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712232541; x=1743768541;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iDPQ2vVkxpAwDuDwOEgx6CmC+oACC23Hj4S4yh3efDU=;
-  b=Xrv3c56qUTE1yl0F5KT5HghTfTb5nusybTN/9x6hj0xezbf3CU2TmjYw
-   Nnm3zUU59RAlOz/hRx5gBGMsywudK7MfJaGiqm58zGo+g0EmvW40maasH
-   CJ1pYoNCawA/tzgQL0G6GTYCuyDfpoox8RIBdKWOJcCQR2gThNclui7N2
-   cXo1sqB+anQuRGWcx01bcKxigQ4aDA8D1wkT1O1TECqlBoCs0J8soUcWD
-   5bFghhpQ9DTBtA8Ee7EjiydQJXrtCWy5CwqDnwur8OnAz4X4T/Pr0XX1J
-   LtsW/oFz9EckvLWr8zIGzLPBkt3O81yIFcuLZnhPt+WwxIDkye4RkXLIs
-   Q==;
-X-CSE-ConnectionGUID: 9mY35rnbQDez+k/mDbKV6Q==
-X-CSE-MsgGUID: PAaM0nMBS+2FUrAKqVw/9g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="18240566"
+  t=1712232694; x=1743768694;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=252nTC/vhBKxpMQxxrSnCOB5cIOsD0sOThNf85Lyd+4=;
+  b=YULxGPOY598mkO055nluGox9L6Ogn2QR06ps0Rm+i2Fl97jPsiyWE2iM
+   NakUqqlOW6oqYi3I5ygRYmD+bHiAjWO6UXcUlLyCt5n0B720qJgD+t56u
+   ThpbM3lL3sqKSk5n6BxO9BdbxXWpQ6FdtRgjU5gd8YrFdPgCzIJ3wzJPG
+   esDZjxpYf36KDrjvRicwcdKDP8MmtMlkPN0bX6zCv/Gk52JhGvukOGyeG
+   NYem4tcTwpUk5vRH5ivQr0I30aaQU+eMQkSoHh3k+icoKmWQkAGBK8zDW
+   qTqQRocpPzqknIdSDNvGEb0RwPLGMyh0yRyh1T/+mGGOiJ+Yn3o163XPz
+   w==;
+X-CSE-ConnectionGUID: 81W6Ei3dTJKBL+ouklEIlw==
+X-CSE-MsgGUID: KfacjiFwQJuQ/I1nM035Qw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7351512"
 X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="18240566"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:09:00 -0700
+   d="scan'208";a="7351512"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:11:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="937086418"
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="915216427"
 X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="937086418"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 04 Apr 2024 05:08:58 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 8270E3E5; Thu,  4 Apr 2024 15:08:57 +0300 (EEST)
+   d="scan'208";a="915216427"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:11:29 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rsLwH-00000001QBP-0UJm;
+	Thu, 04 Apr 2024 15:11:29 +0300
+Date: Thu, 4 Apr 2024 15:11:28 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2 2/2] ACPI: LPSS: Remove nested ifdeffery for CONFIG_PM
-Date: Thu,  4 Apr 2024 15:06:59 +0300
-Message-ID: <20240404120856.4109303-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
-In-Reply-To: <20240404120856.4109303-1-andriy.shevchenko@linux.intel.com>
+To: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2 0/2] ACPI: LPSS: Prepare for SPI code cleanup
+Message-ID: <Zg6Y8AVId_R83yMI@smile.fi.intel.com>
 References: <20240404120856.4109303-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -77,34 +74,32 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240404120856.4109303-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-There is no need to have the ifdef CONFIG_PM to be nested.
-The second and so on will obviously become a no-op.
+On Thu, Apr 04, 2024 at 03:06:57PM +0300, Andy Shevchenko wrote:
+> An ad-hoc cleanup followed by preparation for SPI code cleaning.
+> The latter will be done in the next kernel cycle to avoid conflicts.
+> 
+> This patch series should go before
+> https://lore.kernel.org/linux-acpi/20240403170302.1073841-1-andriy.shevchenko@linux.intel.com/
 
-Remove redundant nested ifdeffery.
+Indeliberately forgot
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/acpi_lpss.c | 2 --
- 1 file changed, 2 deletions(-)
+(Code hasn't been changed, commit messages also stays the same, hence I added
+ it from v1)
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index 8e01792228d1..a3d2d94be5c0 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -887,10 +887,8 @@ static int acpi_lpss_activate(struct device *dev)
- 	if (pdata->dev_desc->flags & (LPSS_SAVE_CTX | LPSS_SAVE_CTX_ONCE))
- 		lpss_deassert_reset(pdata);
- 
--#ifdef CONFIG_PM
- 	if (pdata->dev_desc->flags & LPSS_SAVE_CTX_ONCE)
- 		acpi_lpss_save_ctx(dev, pdata);
--#endif
- 
- 	return 0;
- }
+> In v2:
+> - added Fixes tag to the first patch (Rafael)
+> - reordered to get Fixes first in the series
+> - v1: 20240402152952.3578659-1-andriy.shevchenko@linux.intel.com
+
 -- 
-2.43.0.rc1.1.gbec44491f096
+With Best Regards,
+Andy Shevchenko
+
 
 
