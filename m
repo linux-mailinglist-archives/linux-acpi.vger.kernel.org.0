@@ -1,169 +1,151 @@
-Return-Path: <linux-acpi+bounces-4667-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4668-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B8899CEE
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:31:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ED7899D50
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:44:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DEA28721C
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 12:31:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 769E5B21E4C
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 12:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2178916C847;
-	Fri,  5 Apr 2024 12:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A512B16C86D;
+	Fri,  5 Apr 2024 12:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DIN5424d"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="u5ed4rhu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF913C670;
-	Fri,  5 Apr 2024 12:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19A216C86E;
+	Fri,  5 Apr 2024 12:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712320275; cv=none; b=unRmbR/Pfiqj25KtLWh0NTP9yo9t0z1dK1GowQKDep7u+phme78f7S4NCwEJrpIsYgrAraYvf53VfG6+TBtIP5RScrEkG9gSQoLCrROmqJ0/Gjiaaag6dLXByDUUqK1qITQYEXZkvDOqxNwbmkLhRHt+yxni4sEe6Czc7r8lEZU=
+	t=1712321074; cv=none; b=JL6CT3KnKeEHQEfUDLZpGx4hrZTfnu9yatKQJdugl4O9oXRaON1vNF059dJPZYPpv/YIZN+M7QZHFJXHwQMSORLbolxKO4/DVUsYGXROFRSpLj7rWXSt9qgjhc7ujyNQCMsnoD5zHdR7mtVMZFkR4hAUuRnHkTbVxjjR/9L39GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712320275; c=relaxed/simple;
-	bh=nOZUjovfA1TSvzaMpe+qzYO18xLqNYoJ7Tk9cqEQ9rg=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=XcUdCYMfzJg49LWRX7igOUjuQVTH23TrAFP7GVHhKbQQvN/qzPK8BUHjYgsxCkFHYFmMfyYAfK6APChM+kG4vUJYlZRGAiogCO7QlY1dhIEul/dUXNQDs2EEXfOOBlW8B+D4+KtmizvRd+dNMap/sG9re67dKqAXbxCqAHXxCUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DIN5424d; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712320273; x=1743856273;
-  h=from:to:cc:subject:date:message-id;
-  bh=nOZUjovfA1TSvzaMpe+qzYO18xLqNYoJ7Tk9cqEQ9rg=;
-  b=DIN5424dRHwznOMDV2yxfzEA4UeRBwB+sC/2mQZlzDkXC/H9urdqgZRJ
-   p8fUPMjDYqmC+x2tghTZrzESbbwUS3lVE1uL6/sY/YSxU0kcl2v2y87hx
-   KXQwSUIqa8Ru+i875db9UbviIZ3dDUW7F1j53SHCSoBf/MVG1Y54KnAgC
-   8IBFuX9/b2HP7q4+7zONUZBZ9YvpICCBODNQZReWDeNBBeISUhIbnSjIy
-   8CJD/Xp5by9miFxHr8QwE/0SNhNYojxhkvTaR6043/P71ovd8cwAzb3nz
-   MccKGEPicFLPDMa2NLRPNtsVnqmy03VSoTvOGULtOOhtEyyYyglvoMZ2v
-   g==;
-X-CSE-ConnectionGUID: O2RYbtIxRBORnJ1wW25NTw==
-X-CSE-MsgGUID: q398mmydSNiyrpmSBbDc9w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7773668"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7773668"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 05:31:12 -0700
-X-CSE-ConnectionGUID: 3snKCyrzT+Gbdqac/nMkQw==
-X-CSE-MsgGUID: rjKZHFngSDaA6MQNajB4yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="23832355"
-Received: from srpawnik.iind.intel.com ([10.223.107.103])
-  by orviesa003.jf.intel.com with ESMTP; 05 Apr 2024 05:31:11 -0700
-From: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-To: rafael@kernel.org,
-	srinivas.pandruvada@linux.intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Cc: sumeet.r.pawnikar@intel.com
-Subject: [PATCH] ACPI: DPTF: Add Lunar Lake support
-Date: Fri,  5 Apr 2024 17:48:19 +0530
-Message-Id: <20240405121819.31331-1-sumeet.r.pawnikar@intel.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1712321074; c=relaxed/simple;
+	bh=hmp72QspsqQzNfL1h/lUM6waz79GdMoYXwuNVIfb0JI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N+/SOHK1mX6+y2umx4fy3toiLkcR++8j+vPQejn8S78/hrqGZ1L5wqrbTKXfwMwmUboGz2Q58qXASnl6jSwA/c8173nv9BJeFTDOThPQMvvyQ34LgwWG7FosT75riNskYp3XtF27MUievFsJkkXhtVszwfk9W/6b4Aa/7gyk32Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=u5ed4rhu; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=eeNIVwqmbnOxALTxtADLGm9TG4sDVgGYt1HYshiYKqc=; b=u5ed4rhuZriAmkiqPN+PL+siyW
+	LqRb4vlEwDanh3tAUYLOdMIV7AkIlisbY/us6TAVJuto+5fuwLvpi9TPIrnjWbaPPJNccNZW+iz9n
+	CE7C1RkLY5MAKN+mK5a2RxNIgLnodNe3aX7iDp0V7aCmr5P/N6ISdHIVtmL/cESx2/auaAWvOPmPb
+	KuyRV5Y+LQqQCk5pQAdOvh7O24Xw0aWYZroHPNWg+x3RZAuUdwa4MbZzNihetVBFDxn0z1t842ZIz
+	FOV6F7MyMIx1gNWKJJYhVEkf93kF4Zc6qtlbIo+KLHjWxeAtAZV2JO/tPX3rOWtiHHQwKzPY7f2Nl
+	e0gCTrgg==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rsivU-0000000AUMn-1hDK;
+	Fri, 05 Apr 2024 12:44:12 +0000
+Date: Fri, 5 Apr 2024 13:44:12 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>, joro@8bytes.org,
+	will@kernel.org, trond.myklebust@hammerspace.com, anna@kernel.org,
+	arnd@arndb.de, herbert@gondor.apana.org.au, davem@davemloft.net,
+	jikos@kernel.org, benjamin.tissoires@redhat.com, tytso@mit.edu,
+	jack@suse.com, dennis@kernel.org, tj@kernel.org, cl@linux.com,
+	jakub@cloudflare.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, vbabka@suse.cz, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-arch@vger.kernel.org, linux-crypto@vger.kernel.org,
+	bpf@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm: change inlined allocation helpers to account at
+ the call site
+Message-ID: <Zg_yHGKpw4HJHdpb@casper.infradead.org>
+References: <20240404165404.3805498-1-surenb@google.com>
+ <Zg7dmp5VJkm1nLRM@casper.infradead.org>
+ <CAJuCfpHbTCwDERz+Hh+aLZzNdtSFKA+Q7sW-xzvmFmtyHCqROg@mail.gmail.com>
+ <CAJuCfpHy5Xo76S7h9rEuA3cQ1pVqurL=wmtQ2cx9-xN1aa_C_A@mail.gmail.com>
+ <Zg8qstJNfK07siNn@casper.infradead.org>
+ <jb25mtkveqf63bv74jhynf6ncxmums5s37esveqsv52yurh4z7@5q55ttv34bia>
+ <20240404154150.c25ba3a0b98023c8c1eff3a4@linux-foundation.org>
+ <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
 
-Add Lunar Lake ACPI IDs for DPTF devices.
+On Thu, Apr 04, 2024 at 07:00:51PM -0400, Kent Overstreet wrote:
+> On Thu, Apr 04, 2024 at 03:41:50PM -0700, Andrew Morton wrote:
+> > On Thu, 4 Apr 2024 18:38:39 -0400 Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> > 
+> > > On Thu, Apr 04, 2024 at 11:33:22PM +0100, Matthew Wilcox wrote:
+> > > > On Thu, Apr 04, 2024 at 03:17:43PM -0700, Suren Baghdasaryan wrote:
+> > > > > Ironically, checkpatch generates warnings for these type casts:
+> > > > > 
+> > > > > WARNING: unnecessary cast may hide bugs, see
+> > > > > http://c-faq.com/malloc/mallocnocast.html
+> > > > > #425: FILE: include/linux/dma-fence-chain.h:90:
+> > > > > + ((struct dma_fence_chain *)kmalloc(sizeof(struct dma_fence_chain),
+> > > > > GFP_KERNEL))
+> > > > > 
+> > > > > I guess I can safely ignore them in this case (since we cast to the
+> > > > > expected type)?
+> > > > 
+> > > > I find ignoring checkpatch to be a solid move 99% of the time.
+> > > > 
+> > > > I really don't like the codetags.  This is so much churn, and it could
+> > > > all be avoided by just passing in _RET_IP_ or _THIS_IP_ depending on
+> > > > whether we wanted to profile this function or its caller.  vmalloc
+> > > > has done it this way since 2008 (OK, using __builtin_return_address())
+> > > > and lockdep has used _THIS_IP_ / _RET_IP_ since 2006.
+> > > 
+> > > Except you can't. We've been over this; using that approach for tracing
+> > > is one thing, using it for actual accounting isn't workable.
+> > 
+> > I missed that.  There have been many emails.  Please remind us of the
+> > reasoning here.
+> 
+> I think it's on the other people claiming 'oh this would be so easy if
+> you just do it this other way' to put up some code - or at least more
+> than hot takes.
 
-Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
----
- drivers/acpi/dptf/dptf_pch_fivr.c                       | 1 +
- drivers/acpi/dptf/dptf_power.c                          | 2 ++
- drivers/acpi/dptf/int340x_thermal.c                     | 6 ++++++
- drivers/acpi/fan.h                                      | 1 +
- drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 1 +
- drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 1 +
- 6 files changed, 12 insertions(+)
+Well, /proc/vmallocinfo exists, and has existed since 2008, so this is
+slightly more than a "hot take".
 
-diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
-index 654aaa53c67f..d202730fafd8 100644
---- a/drivers/acpi/dptf/dptf_pch_fivr.c
-+++ b/drivers/acpi/dptf/dptf_pch_fivr.c
-@@ -150,6 +150,7 @@ static const struct acpi_device_id pch_fivr_device_ids[] = {
- 	{"INTC1045", 0},
- 	{"INTC1049", 0},
- 	{"INTC1064", 0},
-+	{"INTC106B", 0},
- 	{"INTC10A3", 0},
- 	{"", 0},
- };
-diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
-index b8187babbbbb..8023b3e23315 100644
---- a/drivers/acpi/dptf/dptf_power.c
-+++ b/drivers/acpi/dptf/dptf_power.c
-@@ -232,6 +232,8 @@ static const struct acpi_device_id int3407_device_ids[] = {
- 	{"INTC1061", 0},
- 	{"INTC1065", 0},
- 	{"INTC1066", 0},
-+	{"INTC106C", 0},
-+	{"INTC106D", 0},
- 	{"INTC10A4", 0},
- 	{"INTC10A5", 0},
- 	{"", 0},
-diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
-index b7113fa92fa6..014ada759954 100644
---- a/drivers/acpi/dptf/int340x_thermal.c
-+++ b/drivers/acpi/dptf/int340x_thermal.c
-@@ -43,6 +43,12 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
- 	{"INTC1064"},
- 	{"INTC1065"},
- 	{"INTC1066"},
-+	{"INTC1068"},
-+	{"INTC1069"},
-+	{"INTC106A"},
-+	{"INTC106B"},
-+	{"INTC106C"},
-+	{"INTC106D"},
- 	{"INTC10A0"},
- 	{"INTC10A1"},
- 	{"INTC10A2"},
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index e7b4b4e4a55e..f89d19c922dc 100644
---- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -15,6 +15,7 @@
- 	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
- 	{"INTC1048", }, /* Fan for Alder Lake generation */ \
- 	{"INTC1063", }, /* Fan for Meteor Lake generation */ \
-+	{"INTC106A", }, /* Fan for Lunar Lake generation */ \
- 	{"INTC10A2", }, /* Fan for Raptor Lake generation */ \
- 	{"PNP0C0B", } /* Generic ACPI fan */
- 
-diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-index 427d370648d5..f8ebdd19d340 100644
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -705,6 +705,7 @@ static const struct acpi_device_id int3400_thermal_match[] = {
- 	{"INTC1040", 0},
- 	{"INTC1041", 0},
- 	{"INTC1042", 0},
-+	{"INTC1068", 0},
- 	{"INTC10A0", 0},
- 	{}
- };
-diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-index 9b33fd3a66da..86901f9f54d8 100644
---- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-@@ -284,6 +284,7 @@ static const struct acpi_device_id int3403_device_ids[] = {
- 	{"INTC1043", 0},
- 	{"INTC1046", 0},
- 	{"INTC1062", 0},
-+	{"INTC1069", 0},
- 	{"INTC10A1", 0},
- 	{"", 0},
- };
--- 
-2.17.1
+> But, since you asked - one of the main goals of this patchset was to be
+> fast enough to run in production, and if you do it by return address
+> then you've added at minimum a hash table lookup to every allocate and
+> free; if you do that, running it in production is completely out of the
+> question.
 
+And yet vmalloc doesn't do that.
+
+> Besides that - the issues with annotating and tracking the correct
+> callsite really don't go away, they just shift around a bit. It's true
+> that the return address approach would be easier initially, but that's
+> not all we're concerned with; we're concerned with making sure
+> allocations get accounted to the _correct_ callsite so that we're giving
+> numbers that you can trust, and by making things less explicit you make
+> that harder.
+
+I'm not convinced that _THIS_IP_ is less precise than a codetag.  They
+do essentially the same thing, except that codetags embed the source
+location in the file while _THIS_IP_ requires a tool like faddr2line
+to decode kernel_clone+0xc0/0x430 into a file + line number.
+
+> This is all stuff that I've explained before; let's please dial back on
+> the whining - or I'll just bookmark this for next time...
+
+Please stop mischaracterising serious thoughtful criticism as whining.
+I don't understand what value codetags bring over using _THIS_IP_ and
+_RET_IP_ and you need to explain that.
 
