@@ -1,133 +1,142 @@
-Return-Path: <linux-acpi+bounces-4672-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4673-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6289D899F86
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:26:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA8B89A00B
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7183B21FED
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:26:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4011C2098F
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD7E16EBE3;
-	Fri,  5 Apr 2024 14:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C9516F282;
+	Fri,  5 Apr 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="d5YN2Qr4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lew1hGE3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD156CDB7;
-	Fri,  5 Apr 2024 14:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9A41CD2B;
+	Fri,  5 Apr 2024 14:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712327203; cv=none; b=auLvxKabwoayVjcLoZkAgfa/3qBt6UGYP4w5/fMlK7G0bKUZ6uwQY4lWKoC2Uzba2wxVncK+4GsU49N+v5XL75j3mxWyLwSgQsIoyzEVDI8F5s5NcSVgPrmI2UwIO3fIWnoe83GjKIbs+F3ThNOxIkZl2SKxFc3DiTdaDXXWsNc=
+	t=1712328258; cv=none; b=kpIJFhU8XHsR3WXEtEDEUeJ2J4e1fEkP58H8V21KWfcAE6kWI2MYTWs4b0aSQGj8gw8iID3CAX065WRMWP6cnvEY2zUPwRVobeEtbv9uoQ+5gHbLBmc04Zf70vP+B9tns1NbQiU+CJHqogQR/7zmWlgmWQ4+yeqY36uAXGAtiRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712327203; c=relaxed/simple;
-	bh=UhRnsU78ZDrRf3B0lZc2belagC3V0J+pq4SCdT+OcZU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tR9q9DU/o5mFdkiZIHJQLHX8BT2scvUme2yNU36+pPAHOFQXnYyXNAminUkBUe93R30lS+Y6Jdd/FlROfBCxGdxWR3r9T90FdUEIT5jottZFqIT9oZZq4GHD0ARBw66syLMMIUyFSWeZlbwgeuaFAFZx0xkglQ5CcAK7+CltBMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=d5YN2Qr4; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435CvN8T010444;
-	Fri, 5 Apr 2024 14:26:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=HrrIFi5xYR4eKRJXOyyWxavd4B03u9QlRyXjpM6kF/4=;
- b=d5YN2Qr4Z6yAZSSNEKN/dvA86cqeUeHmrZUJ93NnkH4MO/dD5hucXS2Iz+B1gTJdOARd
- MX9yYXjAQ3IM0TSvRSRNoldeOV4xE03s66zmSNgxXperFiD6eTB5GpSw8FsvXfWL4Qm+
- ZUqz6xQ1cmqlIY4R7a1VUPiluW6A0SqkyQ+n+LSFSHlRfdDrIEuoMGb76ON7o1nIkEOS
- zF8yx1gYyZjpt7YP/+aD4YmSwJBIRLg8k5MmtPYgxW3CX8wmgwxy3bSwwHehe3dOaa3k
- cj7fzG3WjGd5G6+kT96I4cGFygDXHnWiupaQ1zcol5M/9TiLhSUS+jNx8/YORZWvR7Yx Yw== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xahrur7gj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 14:26:22 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 435DE85H009100;
-	Fri, 5 Apr 2024 14:22:32 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9epy2v2f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Apr 2024 14:22:32 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435EMR7Q49086950
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Apr 2024 14:22:29 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 326C720040;
-	Fri,  5 Apr 2024 14:22:27 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 042262004D;
-	Fri,  5 Apr 2024 14:22:27 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Apr 2024 14:22:26 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: linux-acpi@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: [PATCH 1/1] pnp: add HAS_IOPORT dependencies
-Date: Fri,  5 Apr 2024 16:22:26 +0200
-Message-Id: <20240405142226.144216-2-schnelle@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240405142226.144216-1-schnelle@linux.ibm.com>
-References: <20240405142226.144216-1-schnelle@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: z3qwB7mRlZYk1VBcsgnUx9rM-9hj76fm
-X-Proofpoint-ORIG-GUID: z3qwB7mRlZYk1VBcsgnUx9rM-9hj76fm
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1712328258; c=relaxed/simple;
+	bh=9dpbmAJPM0JfLCrP3RmJsaVOlpVPAps6eS3B5ySdjTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o2AmlTZ5tqDCft0tywr5yZUATxkpJBVxSZP9BqVY9xeQsSUhW5RHn/Dw4sLvsMXsBk7k970geYqhlj3W8mA99eiQyPFdse3+LV8ppTa1O6hdVHBFukjo0rlMylGma4h2Tf998Ig3w7GthIgdeLeZT3CdG34DVNivyLVowFtO0vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lew1hGE3; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712328257; x=1743864257;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9dpbmAJPM0JfLCrP3RmJsaVOlpVPAps6eS3B5ySdjTc=;
+  b=Lew1hGE3FSZiccajWNoBfKOL4GYvTZpq0ZXxeDzKkIiesinQEXU5ohcf
+   dZHfTuroXI3NATqy3H7lf0vh31K06yMpp7E3IK6iei6SNqngTjWgP0zaq
+   aRpv4jc7T2AxsbF5MQ0kU1sFUu6axGFHVXBQGXjlw2YLOrAMibI1o1tVT
+   skXwYm3dTAS7zTgBATOQwn+IHg34ZBIOwEdxpOVN/ejtfRS5zNmZ5kCbZ
+   XE3fKt7+prIqDHqSPprb8wRoHw3yXA47SxJbsoFiiYXCohY2TEkblaKhy
+   HbbvsG1X4XUGFSX05FsktMaHfER8GI08hA8LrsViKRI8rsBpk3hX98YJ2
+   w==;
+X-CSE-ConnectionGUID: i33PHZTWRY2yCWP4QrP8Aw==
+X-CSE-MsgGUID: WDc7KlI/QuW6mgMyde/ivg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="10629400"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="10629400"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 07:44:16 -0700
+X-CSE-ConnectionGUID: F1r6EvQCTdO8Pmwg7qg/6g==
+X-CSE-MsgGUID: 0gjku4KHQB6Chw+uu1oUGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="19750711"
+Received: from mdawoo-mobl.amr.corp.intel.com (HELO [10.212.152.63]) ([10.212.152.63])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 07:44:16 -0700
+Message-ID: <311c6f62-4232-417a-beb8-df9ca8a732ec@linux.intel.com>
+Date: Fri, 5 Apr 2024 07:44:15 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-05_14,2024-04-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 mlxlogscore=999 impostorscore=0
- bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404050103
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] ACPI: x86: Move blacklist to x86 folder
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+References: <20240404183448.3310449-1-andriy.shevchenko@linux.intel.com>
+ <20240404183448.3310449-4-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20240404183448.3310449-4-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In a future patch HAS_IOPORT=n will disable inb()/outb() and friends at
-compile time. We thus need to depend on HAS_IOPORT even when compile
-testing only.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
-Note: This patch does not depend any not-yet-mainline HAS_IOPORT changes
-and may be merged via subsystem specific trees at your earliest
-convenience.
+On 4/4/24 11:23 AM, Andy Shevchenko wrote:
+> blacklist is built solely for x86, move it to the respective folder.
 
- drivers/pnp/isapnp/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Don't you need #ifdef CONFIG_X86 for acpi_blacklisted() in
+include/linux/acpi.h
 
-diff --git a/drivers/pnp/isapnp/Kconfig b/drivers/pnp/isapnp/Kconfig
-index 8b5f2e461a80..8e5dec59e342 100644
---- a/drivers/pnp/isapnp/Kconfig
-+++ b/drivers/pnp/isapnp/Kconfig
-@@ -4,7 +4,7 @@
- #
- config ISAPNP
- 	bool "ISA Plug and Play support"
--	depends on ISA || COMPILE_TEST
-+	depends on ISA || (HAS_IOPORT && COMPILE_TEST)
- 	help
- 	  Say Y here if you would like support for ISA Plug and Play devices.
- 	  Some information is in <file:Documentation/userspace-api/isapnp.rst>.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/acpi/Makefile              | 1 -
+>  drivers/acpi/x86/Makefile          | 2 ++
+>  drivers/acpi/{ => x86}/blacklist.c | 2 +-
+>  3 files changed, 3 insertions(+), 2 deletions(-)
+>  rename drivers/acpi/{ => x86}/blacklist.c (99%)
+>
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index 413c18e2bf61..6f4187a34f41 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -14,7 +14,6 @@ tables.o: $(src)/../../include/$(CONFIG_ACPI_CUSTOM_DSDT_FILE) ;
+>  endif
+>  
+>  obj-$(CONFIG_ACPI)		+= tables.o
+> -obj-$(CONFIG_X86)		+= blacklist.o
+>  
+>  #
+>  # ACPI Core Subsystem (Interpreter)
+> diff --git a/drivers/acpi/x86/Makefile b/drivers/acpi/x86/Makefile
+> index b97b1bcf8404..1f3c5fa84f9e 100644
+> --- a/drivers/acpi/x86/Makefile
+> +++ b/drivers/acpi/x86/Makefile
+> @@ -3,3 +3,5 @@ acpi-x86-y		+= apple.o
+>  acpi-x86-y		+= cmos_rtc.o
+>  acpi-x86-y		+= s2idle.o
+>  acpi-x86-y		+= utils.o
+> +
+> +obj-$(CONFIG_X86)	+= blacklist.o
+> diff --git a/drivers/acpi/blacklist.c b/drivers/acpi/x86/blacklist.c
+> similarity index 99%
+> rename from drivers/acpi/blacklist.c
+> rename to drivers/acpi/x86/blacklist.c
+> index a558d24fb788..55214d0a12b1 100644
+> --- a/drivers/acpi/blacklist.c
+> +++ b/drivers/acpi/x86/blacklist.c
+> @@ -17,7 +17,7 @@
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+>  
+> -#include "internal.h"
+> +#include "../internal.h"
+>  
+>  #ifdef CONFIG_DMI
+>  static const struct dmi_system_id acpi_rev_dmi_table[] __initconst;
+
 -- 
-2.40.1
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
 
