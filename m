@@ -1,105 +1,113 @@
-Return-Path: <linux-acpi+bounces-4661-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4662-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2FA899391
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 05:06:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48999899405
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 06:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BAA81C21EC4
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 03:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58F4A1C22DAE
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 04:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FE1208A4;
-	Fri,  5 Apr 2024 03:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CE81BC40;
+	Fri,  5 Apr 2024 04:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="d3g6iIFk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9F17BAA;
-	Fri,  5 Apr 2024 03:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC0F18E2A;
+	Fri,  5 Apr 2024 04:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712286359; cv=none; b=bOIgrFsybGTCZIIdH+O9nFTfJuvF/PVqbj3ZzSKhBBKjzCCU9d7a/biTtXbllWICx5PJkvjjo0eLa20xbSLM6nkyCnY7/8jp6bBSGNP7Qm+JvJddgpX849v1EwGjFMrLasNSb7Urb1W5mcARojyWetN9UtyPdTdF5OgGmtky8rM=
+	t=1712290215; cv=none; b=JUD9ILNUkRmTJG+83G5u/AyO0mLe6R/qq7/oP956kGFuFzYcj2MX1Gi8cOvjsgpYyX/R2ErYGCB/BlipQJBtnPckVATMJxnltYD3hvsGSbWRegvGoN3DLKhdxJObATKUSui3HVv0SXBYSmg98GEDry07vIRfUjQWbqQodt7cODI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712286359; c=relaxed/simple;
-	bh=ReyZ/SK2T9RJMzqGhOr+f/IyAMkYqv/fQkx3qjS6WBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=e0q1Ia9Si3x+ERpnAOh2PhvgyabqfGJdCp85PtIzknlkOV+V89iqy6su6v8xwxlJUd/jC6V3opMLsOVrySSrqFeYlpHplmjo71b+qdWfANowpLFXqrHLmZ1MSGsZEe/1lnJbMMCISFqWh5cVxdclLKD7YAND3DcU6bzoY6QNedg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b69867.dsl.pool.telekom.hu [::ffff:81.182.152.103])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000006F242.00000000660F6A94.0025A8B9; Fri, 05 Apr 2024 05:05:56 +0200
-From: Gergo Koteles <soyer@irl.hu>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-  Len Brown <lenb@kernel.org>, Ike Panhc <ike.pan@canonical.com>,
-  Hans de Goede <hdegoede@redhat.com>,
-  =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-  Henrique de Moraes Holschuh <hmh@hmh.eng.br>
-Cc: linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-  Gergo Koteles <soyer@irl.hu>
-Subject: [PATCH v4 3/3] platform/x86: thinkpad_acpi: use platform_profile_cycle()
-Date: Fri,  5 Apr 2024 05:05:30 +0200
-Message-ID: <25733f2e4b87705a27ee23540b69459cf8931255.1712282976.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.1712282976.git.soyer@irl.hu>
-References: <cover.1712282976.git.soyer@irl.hu>
+	s=arc-20240116; t=1712290215; c=relaxed/simple;
+	bh=g7BQtInmRrLi+M5GE0wFlNQnSVd6g23d07lp51zGVzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AkvcTORALrBrWvjkjg8qtvpCEssYfPNyFONm6+8pzhAiD5wlIeiGDdD60rGH35Eo3Q/uHnUbKpya12WDdrlOkrAft7I8kv42S3dXlh+9xIpbYqpVvPPO2ilxt6lDH5C8/+FKjFhJrCOhAA2TQWcz3ncWHZpV1mkTKkwp0MNirr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=d3g6iIFk; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=nSPrZsWCYvArB4boS+pxoaKtULxq2hWNfqCbSHuZGp0=; b=d3g6iIFkTBjoDGDsoT4rR4mRKB
+	fnoRlIasjLao0N0/kvQ4SyspHeB22M+5OV+KfpBJkWEMfEQCj/piOe29f+EOfjYr6vXYLULT+CMpX
+	EHCmvYaE47DTi/cFYiFmmCPVrI1dnDXenLCJqFTY8JUKVF9XnEwNiP49Ub+82ip+1945FVdGVA3aF
+	HGYmdhaSsqA0IA/sLo8ciSfoRnUi2hONym1a13L3KJwopqoWvzGFzt/SncuS/zPl1JicXRe09AZ4A
+	jyVrXN8d8z63xnzXtrYJXksxPOvfWbjQWl5yWEiPgLn6u9ZEL5SXVaRF9ANriu0xffFYuOny83MWL
+	syZsNBeQ==;
+Received: from [50.53.2.121] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rsau3-000000057M5-1q8y;
+	Fri, 05 Apr 2024 04:10:11 +0000
+Message-ID: <2df0e132-5599-4cb5-93f8-4ed664a5d1cc@infradead.org>
+Date: Thu, 4 Apr 2024 21:10:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] gpiolib: Update the kernel documentation - add
+ Return sections
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-Some Thinkpads have a 'mode' button that switches between platform
-profiles.
+Hi,
 
-Use the new platform_module_cycle function instead of the existing
-switch-based one.
+On 4/4/24 2:27 PM, Andy Shevchenko wrote:
+> $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
+> 67
+> 
+> Fix these by adding Return sections. While at it, make sure all of
+> Return sections use the same style.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c   |  22 +++--
+>  drivers/gpio/gpiolib-cdev.c   |   8 +-
+>  drivers/gpio/gpiolib-devres.c |  44 +++++++++-
+>  drivers/gpio/gpiolib-legacy.c |   3 +
+>  drivers/gpio/gpiolib-of.c     |  48 ++++++++---
+>  drivers/gpio/gpiolib-swnode.c |   4 +-
+>  drivers/gpio/gpiolib-sysfs.c  |   6 +-
+>  drivers/gpio/gpiolib.c        | 157 +++++++++++++++++++++++++++-------
+>  8 files changed, 233 insertions(+), 59 deletions(-)
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
----
- drivers/platform/x86/thinkpad_acpi.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 82429e59999d..771aaa7ae4cf 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -11190,23 +11190,8 @@ static void tpacpi_driver_event(const unsigned int hkey_event)
- 		else
- 			dytc_control_amt(!dytc_amt_active);
- 	}
--	if (hkey_event == TP_HKEY_EV_PROFILE_TOGGLE) {
--		switch (dytc_current_profile) {
--		case PLATFORM_PROFILE_LOW_POWER:
--			dytc_profile_set(NULL, PLATFORM_PROFILE_BALANCED);
--			break;
--		case PLATFORM_PROFILE_BALANCED:
--			dytc_profile_set(NULL, PLATFORM_PROFILE_PERFORMANCE);
--			break;
--		case PLATFORM_PROFILE_PERFORMANCE:
--			dytc_profile_set(NULL, PLATFORM_PROFILE_LOW_POWER);
--			break;
--		default:
--			pr_warn("Profile HKEY unexpected profile %d", dytc_current_profile);
--		}
--		/* Notify user space the profile changed */
--		platform_profile_notify();
--	}
-+	if (hkey_event == TP_HKEY_EV_PROFILE_TOGGLE)
-+		platform_profile_cycle();
- }
- 
- static void hotkey_driver_event(const unsigned int scancode)
+I would use %true, %false, %NULL, %0, and %1 in a few places.
+
+s/error-code/error code/
+or
+s/error-code/errno/
+
+I would s/active-low/active low/
+
+
+or it can just be merged as is. It's a nice improvement.
+
+
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
 -- 
-2.44.0
-
+#Randy
 
