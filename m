@@ -1,240 +1,169 @@
-Return-Path: <linux-acpi+bounces-4666-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4667-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637E3899A04
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 11:56:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B8899CEE
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7929B21206
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 09:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DEA28721C
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 12:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19ECF161B4D;
-	Fri,  5 Apr 2024 09:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2178916C847;
+	Fri,  5 Apr 2024 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0AXR3Sr9";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mv3acM2x";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0+7rq6f";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lVccGfCI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DIN5424d"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4C7161318;
-	Fri,  5 Apr 2024 09:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BF913C670;
+	Fri,  5 Apr 2024 12:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712310815; cv=none; b=mIY19KJ4UI01mSUrK/lBBv8QwjcJFR/GcJ6feTqejR8OgeII6d1QwMKbqIJTyzfDe2X7g00bTfU0bh5S7h+NSCXlfxA62h9QQpRYFxXo7OHTIxC2zyX5YlvA7BynzOoUeIx5UKv0uZ6mblIOhEjhQ3rfAySQg7m8fsf0PYzEYx8=
+	t=1712320275; cv=none; b=unRmbR/Pfiqj25KtLWh0NTP9yo9t0z1dK1GowQKDep7u+phme78f7S4NCwEJrpIsYgrAraYvf53VfG6+TBtIP5RScrEkG9gSQoLCrROmqJ0/Gjiaaag6dLXByDUUqK1qITQYEXZkvDOqxNwbmkLhRHt+yxni4sEe6Czc7r8lEZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712310815; c=relaxed/simple;
-	bh=iG4O7MMO9gnBVtJZSYs1Hq2UvQRfp2O+8N10zEhPJQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTPANW0a0wV97PEgXPLudGyv3gNtEeQLhpJBkNuIi948I7CrYZ9fV9IXUO9CHKdzxmRFDqRx0rKF1oJDd3VteF75R6+ZlJBtipMSwfwrUNbT5Fxu40VGFfJ1EKKvwLJtoCIlZQ86OWSzO0Xlf9VMAHYCMnI1p2jWMX1LE6MYm2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0AXR3Sr9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mv3acM2x; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0+7rq6f; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lVccGfCI; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 65BF721A2E;
-	Fri,  5 Apr 2024 09:53:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712310809; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
-	b=0AXR3Sr9XfI+c7rTPImw5uCIqUd0/09qhqdILdsZtrOOOTHNThWW8IWO2LavomosrDlGR4
-	r5zcQ7aU/RB1e9VhO2PeMNtjvZCEdKzHqupTEPNLaoS68JZ7HFWh4OFd1ckPqsmFOlBB7H
-	mcwM4kvxTwfCAYfvPvAMLZZtKWx5vB8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712310809;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
-	b=mv3acM2xzaAtD0goPoMaKRbxprQYlRRQRdWeBSj+XgsIgB6XYwFswsOsyAWM2lrdH+uuj0
-	DSsBpoDlTl2n1rDQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1712310808; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
-	b=Z0+7rq6fcjYyrOGJFwhu7EPjxeB2YzEP6/GI4QJE77wXmTpoCFc1mE9dE1Bj/PEGY1tu49
-	ESTilKNYDaC1JrKhdHCnLw44UtjznYqGrEfN+CtNGBPA2Dt9MhQgjmAw2Ok0XXX+qUvUQJ
-	M0o1kG24lT0V2nbGjew3Qb50utPv0T0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1712310808;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
-	b=lVccGfCILCM4svVbHjo2v2GSsNkbxp/3kUm/GIkdwdP1GGRDcHYdF3Ew32qMBI0ItKMWtc
-	2n16V0vgVrwCANAQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5716C139F1;
-	Fri,  5 Apr 2024 09:53:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id 2Ig+FRjKD2a3YAAAn2gu4w
-	(envelope-from <jack@suse.cz>); Fri, 05 Apr 2024 09:53:28 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0505DA0814; Fri,  5 Apr 2024 11:53:27 +0200 (CEST)
-Date: Fri, 5 Apr 2024 11:53:27 +0200
-From: Jan Kara <jack@suse.cz>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>, joro@8bytes.org,
-	will@kernel.org, trond.myklebust@hammerspace.com, anna@kernel.org,
-	arnd@arndb.de, herbert@gondor.apana.org.au, davem@davemloft.net,
-	jikos@kernel.org, benjamin.tissoires@redhat.com, tytso@mit.edu,
-	jack@suse.com, dennis@kernel.org, tj@kernel.org, cl@linux.com,
-	jakub@cloudflare.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, vbabka@suse.cz, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	linux-arch@vger.kernel.org, linux-crypto@vger.kernel.org,
-	bpf@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org,
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH 1/1] mm: change inlined allocation helpers to account at
- the call site
-Message-ID: <20240405095327.ufsimeplwahh6mem@quack3>
-References: <20240404165404.3805498-1-surenb@google.com>
- <Zg7dmp5VJkm1nLRM@casper.infradead.org>
- <CAJuCfpHbTCwDERz+Hh+aLZzNdtSFKA+Q7sW-xzvmFmtyHCqROg@mail.gmail.com>
- <CAJuCfpHy5Xo76S7h9rEuA3cQ1pVqurL=wmtQ2cx9-xN1aa_C_A@mail.gmail.com>
- <Zg8qstJNfK07siNn@casper.infradead.org>
- <jb25mtkveqf63bv74jhynf6ncxmums5s37esveqsv52yurh4z7@5q55ttv34bia>
- <20240404154150.c25ba3a0b98023c8c1eff3a4@linux-foundation.org>
- <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
- <CAJuCfpF10COO2nh1nt3CcaZOFe4iSXszsup+a0qAEQ1ngyy5tQ@mail.gmail.com>
+	s=arc-20240116; t=1712320275; c=relaxed/simple;
+	bh=nOZUjovfA1TSvzaMpe+qzYO18xLqNYoJ7Tk9cqEQ9rg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=XcUdCYMfzJg49LWRX7igOUjuQVTH23TrAFP7GVHhKbQQvN/qzPK8BUHjYgsxCkFHYFmMfyYAfK6APChM+kG4vUJYlZRGAiogCO7QlY1dhIEul/dUXNQDs2EEXfOOBlW8B+D4+KtmizvRd+dNMap/sG9re67dKqAXbxCqAHXxCUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DIN5424d; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712320273; x=1743856273;
+  h=from:to:cc:subject:date:message-id;
+  bh=nOZUjovfA1TSvzaMpe+qzYO18xLqNYoJ7Tk9cqEQ9rg=;
+  b=DIN5424dRHwznOMDV2yxfzEA4UeRBwB+sC/2mQZlzDkXC/H9urdqgZRJ
+   p8fUPMjDYqmC+x2tghTZrzESbbwUS3lVE1uL6/sY/YSxU0kcl2v2y87hx
+   KXQwSUIqa8Ru+i875db9UbviIZ3dDUW7F1j53SHCSoBf/MVG1Y54KnAgC
+   8IBFuX9/b2HP7q4+7zONUZBZ9YvpICCBODNQZReWDeNBBeISUhIbnSjIy
+   8CJD/Xp5by9miFxHr8QwE/0SNhNYojxhkvTaR6043/P71ovd8cwAzb3nz
+   MccKGEPicFLPDMa2NLRPNtsVnqmy03VSoTvOGULtOOhtEyyYyglvoMZ2v
+   g==;
+X-CSE-ConnectionGUID: O2RYbtIxRBORnJ1wW25NTw==
+X-CSE-MsgGUID: q398mmydSNiyrpmSBbDc9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7773668"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="7773668"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 05:31:12 -0700
+X-CSE-ConnectionGUID: 3snKCyrzT+Gbdqac/nMkQw==
+X-CSE-MsgGUID: rjKZHFngSDaA6MQNajB4yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="23832355"
+Received: from srpawnik.iind.intel.com ([10.223.107.103])
+  by orviesa003.jf.intel.com with ESMTP; 05 Apr 2024 05:31:11 -0700
+From: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+To: rafael@kernel.org,
+	srinivas.pandruvada@linux.intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Cc: sumeet.r.pawnikar@intel.com
+Subject: [PATCH] ACPI: DPTF: Add Lunar Lake support
+Date: Fri,  5 Apr 2024 17:48:19 +0530
+Message-Id: <20240405121819.31331-1-sumeet.r.pawnikar@intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJuCfpF10COO2nh1nt3CcaZOFe4iSXszsup+a0qAEQ1ngyy5tQ@mail.gmail.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[39];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLinodumkc3pofpwycnya9d5a9)];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[c-faq.com:url,suse.com:email,imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,linux.dev:email]
-X-Spam-Score: -3.80
-X-Spam-Flag: NO
 
-On Thu 04-04-24 16:16:15, Suren Baghdasaryan wrote:
-> On Thu, Apr 4, 2024 at 4:01 PM Kent Overstreet
-> <kent.overstreet@linux.dev> wrote:
-> >
-> > On Thu, Apr 04, 2024 at 03:41:50PM -0700, Andrew Morton wrote:
-> > > On Thu, 4 Apr 2024 18:38:39 -0400 Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> > >
-> > > > On Thu, Apr 04, 2024 at 11:33:22PM +0100, Matthew Wilcox wrote:
-> > > > > On Thu, Apr 04, 2024 at 03:17:43PM -0700, Suren Baghdasaryan wrote:
-> > > > > > Ironically, checkpatch generates warnings for these type casts:
-> > > > > >
-> > > > > > WARNING: unnecessary cast may hide bugs, see
-> > > > > > http://c-faq.com/malloc/mallocnocast.html
-> > > > > > #425: FILE: include/linux/dma-fence-chain.h:90:
-> > > > > > + ((struct dma_fence_chain *)kmalloc(sizeof(struct dma_fence_chain),
-> > > > > > GFP_KERNEL))
-> > > > > >
-> > > > > > I guess I can safely ignore them in this case (since we cast to the
-> > > > > > expected type)?
-> > > > >
-> > > > > I find ignoring checkpatch to be a solid move 99% of the time.
-> > > > >
-> > > > > I really don't like the codetags.  This is so much churn, and it could
-> > > > > all be avoided by just passing in _RET_IP_ or _THIS_IP_ depending on
-> > > > > whether we wanted to profile this function or its caller.  vmalloc
-> > > > > has done it this way since 2008 (OK, using __builtin_return_address())
-> > > > > and lockdep has used _THIS_IP_ / _RET_IP_ since 2006.
-> > > >
-> > > > Except you can't. We've been over this; using that approach for tracing
-> > > > is one thing, using it for actual accounting isn't workable.
-> > >
-> > > I missed that.  There have been many emails.  Please remind us of the
-> > > reasoning here.
-> >
-> > I think it's on the other people claiming 'oh this would be so easy if
-> > you just do it this other way' to put up some code - or at least more
-> > than hot takes.
-> >
-> > But, since you asked - one of the main goals of this patchset was to be
-> > fast enough to run in production, and if you do it by return address
-> > then you've added at minimum a hash table lookup to every allocate and
-> > free; if you do that, running it in production is completely out of the
-> > question.
-> >
-> > Besides that - the issues with annotating and tracking the correct
-> > callsite really don't go away, they just shift around a bit. It's true
-> > that the return address approach would be easier initially, but that's
-> > not all we're concerned with; we're concerned with making sure
-> > allocations get accounted to the _correct_ callsite so that we're giving
-> > numbers that you can trust, and by making things less explicit you make
-> > that harder.
-> >
-> > Additionally: the alloc_hooks() macro is for more than this. It's also
-> > for more usable fault injection - remember every thread we have where
-> > people are begging for every allocation to be __GFP_NOFAIL - "oh, error
-> > paths are hard to test, let's just get rid of them" - never mind that
-> > actually do have to have error paths - but _per callsite_ selectable
-> > fault injection will actually make it practical to test memory error
-> > paths.
-> >
-> > And Kees working on stuff that'll make use of the alloc_hooks() macro
-> > for segregating kmem_caches.
-> 
-> Yeah, that pretty much summarizes it. Note that we don't have to make
-> the conversions in this patch and accounting will still work but then
-> all allocations from different callers will be accounted to the helper
-> function and that's less useful than accounting at the call site.
-> It's a sizable churn but the conversions are straight-forward and we
-> do get accurate, performant and easy to use memory accounting.
+Add Lunar Lake ACPI IDs for DPTF devices.
 
-OK, fair enough. I guess I can live with the allocation macros in jbd2 if
-type safety is preserved. But please provide a short summary of why we need
-these macros (e.g. instead of RET_IP approach) in the changelog (or at
-least a link to some email explaining this if the explanation would get too
-long). Because I was wondering about the same as Andrew (and yes, this is
-because I wasn't really following the huge discussion last time).
+Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+---
+ drivers/acpi/dptf/dptf_pch_fivr.c                       | 1 +
+ drivers/acpi/dptf/dptf_power.c                          | 2 ++
+ drivers/acpi/dptf/int340x_thermal.c                     | 6 ++++++
+ drivers/acpi/fan.h                                      | 1 +
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 1 +
+ drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 1 +
+ 6 files changed, 12 insertions(+)
 
-								Honza
+diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_pch_fivr.c
+index 654aaa53c67f..d202730fafd8 100644
+--- a/drivers/acpi/dptf/dptf_pch_fivr.c
++++ b/drivers/acpi/dptf/dptf_pch_fivr.c
+@@ -150,6 +150,7 @@ static const struct acpi_device_id pch_fivr_device_ids[] = {
+ 	{"INTC1045", 0},
+ 	{"INTC1049", 0},
+ 	{"INTC1064", 0},
++	{"INTC106B", 0},
+ 	{"INTC10A3", 0},
+ 	{"", 0},
+ };
+diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_power.c
+index b8187babbbbb..8023b3e23315 100644
+--- a/drivers/acpi/dptf/dptf_power.c
++++ b/drivers/acpi/dptf/dptf_power.c
+@@ -232,6 +232,8 @@ static const struct acpi_device_id int3407_device_ids[] = {
+ 	{"INTC1061", 0},
+ 	{"INTC1065", 0},
+ 	{"INTC1066", 0},
++	{"INTC106C", 0},
++	{"INTC106D", 0},
+ 	{"INTC10A4", 0},
+ 	{"INTC10A5", 0},
+ 	{"", 0},
+diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int340x_thermal.c
+index b7113fa92fa6..014ada759954 100644
+--- a/drivers/acpi/dptf/int340x_thermal.c
++++ b/drivers/acpi/dptf/int340x_thermal.c
+@@ -43,6 +43,12 @@ static const struct acpi_device_id int340x_thermal_device_ids[] = {
+ 	{"INTC1064"},
+ 	{"INTC1065"},
+ 	{"INTC1066"},
++	{"INTC1068"},
++	{"INTC1069"},
++	{"INTC106A"},
++	{"INTC106B"},
++	{"INTC106C"},
++	{"INTC106D"},
+ 	{"INTC10A0"},
+ 	{"INTC10A1"},
+ 	{"INTC10A2"},
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index e7b4b4e4a55e..f89d19c922dc 100644
+--- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -15,6 +15,7 @@
+ 	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
+ 	{"INTC1048", }, /* Fan for Alder Lake generation */ \
+ 	{"INTC1063", }, /* Fan for Meteor Lake generation */ \
++	{"INTC106A", }, /* Fan for Lunar Lake generation */ \
+ 	{"INTC10A2", }, /* Fan for Raptor Lake generation */ \
+ 	{"PNP0C0B", } /* Generic ACPI fan */
+ 
+diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+index 427d370648d5..f8ebdd19d340 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -705,6 +705,7 @@ static const struct acpi_device_id int3400_thermal_match[] = {
+ 	{"INTC1040", 0},
+ 	{"INTC1041", 0},
+ 	{"INTC1042", 0},
++	{"INTC1068", 0},
+ 	{"INTC10A0", 0},
+ 	{}
+ };
+diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+index 9b33fd3a66da..86901f9f54d8 100644
+--- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
+@@ -284,6 +284,7 @@ static const struct acpi_device_id int3403_device_ids[] = {
+ 	{"INTC1043", 0},
+ 	{"INTC1046", 0},
+ 	{"INTC1062", 0},
++	{"INTC1069", 0},
+ 	{"INTC10A1", 0},
+ 	{"", 0},
+ };
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.17.1
+
 
