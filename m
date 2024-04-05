@@ -1,159 +1,117 @@
-Return-Path: <linux-acpi+bounces-4682-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4683-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C030E89A295
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 18:35:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1011A89A457
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 20:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58E63B219F2
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:35:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93929B23A18
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 18:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A48416EBFD;
-	Fri,  5 Apr 2024 16:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AA1172BAB;
+	Fri,  5 Apr 2024 18:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="AIbz7XCx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFzTlWaL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F427269;
-	Fri,  5 Apr 2024 16:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B517172766;
+	Fri,  5 Apr 2024 18:41:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712334906; cv=none; b=VrPBfxiEKqdBEco+/jZkxthtVC8/Frkzrs0qeVXbAHUoklqUhIlw7K9vGckIH2wh+KosoBMVdqjsfhrGmpprLMA/XCwYYX3QeivgTAmbhaV8SrTNAiUGVwVT0yf5QnfahDGqDmencnva8+cWP+xeUAIJBa/LmmgSNgbv9uAmdHc=
+	t=1712342476; cv=none; b=l0d60MKdRKAZu9ts45jB9bSGD4S9zDWk8FOTYW5Wc8/VwTlzDwRC1GnFpH8Do9P+VD14aINZRw64xbIvAHM5GZo2YG9aYV0ucyffJo2NX0UVfYQyQgEPokyhXv0F5xomQrsS3mD1rd5fkO0LRDxxRFU8wFP8GBuSq1vPu9I8k30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712334906; c=relaxed/simple;
-	bh=O+UnvDut8VP1erLUptBy2LRJVciHe8+vp0N0w/zfIa4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jqxt4IW0xprHWKQbcViRxfx0J+6WJwzqoEyh8hiPaRekrEkCN8+8OIt295LN3qTRD83FGFeHjeLGFRCz7A24KEZj40n04xpkXIxYV7Ip4VmnMkDLwlrN8cGrUrn3cCOZELZ8j1iUq16ZS0OvsdHXW7Yu8gqiJ37MMOKDCcC3yng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=AIbz7XCx; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1712334901; x=1712594101;
-	bh=S3WQALqPQkgNA4pAsO5tIwgQszOpcZJAo1yOP3F/ne0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AIbz7XCx1kxCmMrfMHXFnmgxeaXtcWXNZHadfoIuneQnq8ltsXCS45mrqKOztcfmL
-	 82aRIXMWdvr7D5s7S0O2A55FUGTNQDcIDMb95xf1i1vCw8TpEoO/nUgr9BFejmPeSC
-	 wun1UzgVf5gQDrt/FScjLqTNc0WQ4SkKKWQVWnjRpVqOxreF3XFQM5r4/Jgr/mZcl9
-	 3X2XkDKMGTlylO4zOrqaEUzCaTgEPWnrjH0SHPc+b02vIJdaGmHwyAcjnHQqQl0mpA
-	 rIuVsPwXD+vQbq9Ryd+irQgGunhfbUAcCX83e+S5B/fv8wdVmoFxUPv/LTdWa3LlxQ
-	 GFjWbwZN1Qhdw==
-Date: Fri, 05 Apr 2024 16:34:58 +0000
-To: Gergo Koteles <soyer@irl.hu>
-From: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Ike Panhc <ike.pan@canonical.com>, Hans de Goede <hdegoede@redhat.com>, =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] ACPI: platform-profile: add platform_profile_cycle()
-Message-ID: <g_07w0jkBp9IeComzpK26YHPB1QZNjN_amEZ2bTG6xrOMMltvaav0Rd9Oh4a0nlzPsW2guvvUHkNQrfzSdFGbJhKDB0SHgUJB4belZNrapI=@protonmail.com>
-In-Reply-To: <fdc1b0b9f910753967b7a9b1996e4923cc63124f.1712282976.git.soyer@irl.hu>
-References: <cover.1712282976.git.soyer@irl.hu> <fdc1b0b9f910753967b7a9b1996e4923cc63124f.1712282976.git.soyer@irl.hu>
-Feedback-ID: 20568564:user:proton
+	s=arc-20240116; t=1712342476; c=relaxed/simple;
+	bh=ahFnZ0vavyaYu2qL/A3OV5znLtsIcqMrPE06H3bADIA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=rdzbdR0sxEqlviw2GcKnkBCuw3MQ4a6OXJ/mh1iMls59ZaFy6/vCftWPKWGsEPvM3ZV0yHCIuXP04ij1WkCuE5RdQI6jrRfe4wzrV4OHPTG1eT6GdRFQI6wlx6iGvd7E2a2kD01U+OduDRNcLJ6GSvpX48Xn1NoYme4aV4GYG2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFzTlWaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8C0C43601;
+	Fri,  5 Apr 2024 18:41:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712342476;
+	bh=ahFnZ0vavyaYu2qL/A3OV5znLtsIcqMrPE06H3bADIA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=iFzTlWaLQTeMd9XvbeleRgWhGAIQr9PUENHM8uWLJZgfbMpaxFX+71yRNICh8zl/H
+	 E9F/g5+CMQD/XSKdojWjRHx2iCaMACFBZbja2nP4hnji6p3DAQGDf07JHrmROnUG0H
+	 OUCCM3+3PpJUJn5mPwSsX3qw0yp/9XHF38Deh/WqlAJhnt8vfybNIs0e5+CZJl9rxm
+	 vjt7JV5M5+N68zEvzN3iYAzv+A/00h6PrjJ6EDYBS7fD8nyqsNI6UzwYj16qwSlVK3
+	 iol/I9BUbCNxCsjC6ttdg1cG+lJqlN/vashy7XPQIq22gKVWZhKko8KKbWlAGgcVWl
+	 su5FVFmDsFbAg==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5a47680a806so732645eaf.0;
+        Fri, 05 Apr 2024 11:41:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXwox0CeC3BQdi8vxNnJXgdxt01M/Oq8pl2CYghbhYXmlyxOwQCq+mJ/0UOuON+zNZuuBLhC8Es8npdZs906TTJXzu/Z7gJ2EU3C7jK3rc+vBIIK6yZ8u2gjP63SpAj0wslt8Mv36dUyQ==
+X-Gm-Message-State: AOJu0YwlmKjwURm5CEP8YmGQkauj4EKE6mqNcjtTfAfgQvvOEav+nHab
+	tJbEhKXnP/Dwwrscap7n4s3S1IrbGEo0WBIDyVWz1GSs+FjfV5hiIGZgg8S/WuvWax4F23/Pygy
+	JPQbQc7FQushx0lDprTV5pSPN5Z0=
+X-Google-Smtp-Source: AGHT+IGWs1c8u7OEOwNopt7d01lGeC9+Ckks5+bsi/GEKX5c7e0wX/vghKSGy2MIGCgKqoLRArct50Z9D68anlgGuww=
+X-Received: by 2002:a05:6820:2b81:b0:5a6:2c6b:d3b with SMTP id
+ du1-20020a0568202b8100b005a62c6b0d3bmr2688220oob.0.1712342475428; Fri, 05 Apr
+ 2024 11:41:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 5 Apr 2024 20:41:04 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hHLvQWGDtwk=yXv_bJxZH2KTW2SWSUopdRDHHQp0sqow@mail.gmail.com>
+Message-ID: <CAJZ5v0hHLvQWGDtwk=yXv_bJxZH2KTW2SWSUopdRDHHQp0sqow@mail.gmail.com>
+Subject: [GIT PULL] Thermal control fixes for v6.9-rc3
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi
+Hi Linus,
 
+Please pull from the tag
 
-2024. =C3=A1prilis 5., p=C3=A9ntek 5:05 keltez=C3=A9ssel, Gergo Koteles <so=
-yer@irl.hu> =C3=ADrta:
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-6.9-rc3
 
-> Some laptops have a key to switch platform profiles.
->=20
-> Add a platform_profile_cycle() function to cycle between the enabled
-> profiles.
->=20
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
-> ---
->  drivers/acpi/platform_profile.c  | 42 ++++++++++++++++++++++++++++++++
->  include/linux/platform_profile.h |  1 +
->  2 files changed, 43 insertions(+)
->=20
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index d418462ab791..1579f380d469 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -136,6 +136,48 @@ void platform_profile_notify(void)
->  }
->  EXPORT_SYMBOL_GPL(platform_profile_notify);
->=20
-> +int platform_profile_cycle(void)
-> +{
-> +=09enum platform_profile_option profile;
-> +=09enum platform_profile_option next;
-> +=09int err;
-> +
-> +=09err =3D mutex_lock_interruptible(&profile_lock);
-> +=09if (err)
-> +=09=09return err;
-> +
-> +=09if (!cur_profile) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -ENODEV;
-> +=09}
-> +
-> +=09err =3D cur_profile->profile_get(cur_profile, &profile);
-> +=09if (err) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return err;
-> +=09}
-> +
-> +=09next =3D ffs(cur_profile->choices[0] >> (profile + 1)) + profile;
-> +
-> +=09/* current profile is the highest, select the lowest */
-> +=09if (next =3D=3D profile)
-> +=09=09next =3D ffs(cur_profile->choices[0]) - 1;
+with top-most commit 6f824c9fccd494319988fa529601923edf5caacb
 
-I think you can use `find_next_bit()` or similar instead.
+ Merge branch 'acpi-thermal'
+
+on top of commit 39cd87c4eb2b893354f3b850f916353f2658ae6f
+
+ Linux 6.9-rc2
+
+to receive thermal control fixes for 6.9-rc3.
+
+These fix two power allocator thermal governor issues and an ACPI
+thermal driver regression that all were introduced during the 6.8
+development cycle.
+
+Specifics:
+
+ - Allow the power allocator thermal governor to bind to a thermal zone
+   without cooling devices and/or without trip points (Nikita Travkin).
+
+ - Make the ACPI thermal driver register a tripless thermal zone when
+   it cannot find any usable trip points instead of returning an error
+   from acpi_thermal_add() (Stephen Horvath).
+
+Thanks!
 
 
-> +
-> +=09if (WARN_ON((next < 0) || (next >=3D ARRAY_SIZE(profile_names)))) {
-> +=09=09mutex_unlock(&profile_lock);
-> +=09=09return -EINVAL;
-> +=09}
-> +
-> +=09err =3D cur_profile->profile_set(cur_profile, next);
-> +=09mutex_unlock(&profile_lock);
-> +
-> +=09if (!err)
-> +=09=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> +
-> +=09return err;
-> +}
-> +EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> +
->  int platform_profile_register(struct platform_profile_handler *pprof)
->  {
->  =09int err;
-> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
-ofile.h
-> index e5cbb6841f3a..f5492ed413f3 100644
-> --- a/include/linux/platform_profile.h
-> +++ b/include/linux/platform_profile.h
-> @@ -36,6 +36,7 @@ struct platform_profile_handler {
->=20
->  int platform_profile_register(struct platform_profile_handler *pprof);
->  int platform_profile_remove(void);
-> +int platform_profile_cycle(void);
->  void platform_profile_notify(void);
->=20
->  #endif  /*_PLATFORM_PROFILE_H_*/
-> --
-> 2.44.0
->=20
+---------------
 
+Nikita Travkin (2):
+      thermal: gov_power_allocator: Allow binding without cooling devices
+      thermal: gov_power_allocator: Allow binding without trip points
 
-Regards,
-Barnab=C3=A1s P=C5=91cze
+Stephen Horvath (1):
+      ACPI: thermal: Register thermal zones without valid trip points
+
+---------------
+
+ drivers/acpi/thermal.c                | 22 ++++++++++------------
+ drivers/thermal/gov_power_allocator.c | 14 +++++---------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
 
