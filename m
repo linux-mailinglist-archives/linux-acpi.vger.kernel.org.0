@@ -1,186 +1,130 @@
-Return-Path: <linux-acpi+bounces-4670-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4671-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEF4899EC2
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 15:53:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A684A899F73
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64DD1F2261B
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 13:53:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60321282330
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9172516D9CA;
-	Fri,  5 Apr 2024 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7BC16EBEE;
+	Fri,  5 Apr 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aYTVf2I+"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aNsq930U"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5885B16D9B4
-	for <linux-acpi@vger.kernel.org>; Fri,  5 Apr 2024 13:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF2F16E892;
+	Fri,  5 Apr 2024 14:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712325203; cv=none; b=AnH36+0x2NjPsRxyqCVIGY8BehpvLsVBOT6nM4MMD8/W+GqeykEksXaGrrnZkS+IYfjWuIAU/zBukYqqyDWufPyVnvBwpV/isvWju9ST/uOs1mxsFe4JUA9MNE9aP8YGQrrbnm+GOY+xKFCnnVqnRJbQFZSyzHEXKwQMvkpb2/k=
+	t=1712326966; cv=none; b=tTOMpwgUJSRTkbG83aW9K4iAPSYaH1pyrXAFEI8K7s3V3naZfZBaxeV44J+APxhhDJEhejEQmVe4wEfSRaOh1kEJknTfPZDc3Lxu9ytdF30XGZDwjsNiCCGXrihfLwjvLapUTP/1sTtI3EO59gRb0I516v5kTKN4LFyOE7hx7/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712325203; c=relaxed/simple;
-	bh=0BksyQPOyLKGmYa0FEtepwJD1JDHx0EJaEKX0tpkO58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ILNjJ+VlLB8IBKPqXxdy3PQKMuWqRYxyrztFyZcGjwLgApzUWdHFVCGTcRcr7E3T/jqTLSK3hHNe+nG/R0c6Z/o1l8DNEniFlda13Yu/vwfRYoxhCkL0f97aIrPyS4eHJFJ70sQqYGpIgqK8z6RjL+lIo4x4UZAX1KC4wLQqvuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aYTVf2I+; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-ddaad2aeab1so2129687276.3
-        for <linux-acpi@vger.kernel.org>; Fri, 05 Apr 2024 06:53:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712325200; x=1712930000; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lAHdE5NFk++ufix28SzhuwWBAI0pKipkj98VJiYe3GU=;
-        b=aYTVf2I+TyRnSSdH8+I/CVMYO1BJa7hB9/v01eKTU4OrNL9qd16Jg0wQfeflZu4I00
-         bJzKgnoYGjlF2wFjjjOIkrUvFIjP/gbka8Ca/nK2NNuY96Fo8i0pVlzBoXDg1TkGWJgh
-         e74bm5LQIwxwotdUhDKtFybHE4VYNE/OXkfP4r8mdYC/WVnYYO2zvp0is9rK/LvGlb1u
-         rNp+xyY2kEDgPEpFHmoCvWu4DRKLOea8E3f1pcxL98WGt6zjQX+gyOrqvrhhCb7mBZhQ
-         NliJCHdvq8o1zOgd+ypWl8ttBwBOiemAKjdJsQE5P4duBu286hd2IUmiV+Z3y72bJNxi
-         hYIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712325200; x=1712930000;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lAHdE5NFk++ufix28SzhuwWBAI0pKipkj98VJiYe3GU=;
-        b=aLXo7704FzOOn6gk7M1CH+awBGAxjaO794Pk1jKlD2erYCdPE1loMC5EqbslNnK9pC
-         3IQq6LdrrXizxZpXxAkw6cvWwonEoatw0Y8x7Qi48iwwVOfnANQcC8mFg3cxJVgZOVmf
-         bNA3d9TQZ11e9fqk1I0l7V6C+t3yGAN9ARwn8hWlvJqAbjJ7E5BgMgoRiOnwgvkRE3ms
-         2t/4+N7XgEcluz6N74n70tK4dW65lgxMRh0WT1I/X6FXyEFje8gzqLZzVAXNvkw86W1Q
-         D9M2xmykHcr9TrQHRO7NBygQd9Fp3byNJAIb3q2IqeqSZZMVuLAbado5VNxyy/3t7aWk
-         i4xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWSeYpelQLIMuKvIulxyQrfHNe6m09a6XkSR0IbSP13b5NWf9yN1VoUrz/Krwj72wGAxoZry/eg4sYKBREBfAU2ZBeVIkdKvpqj5g==
-X-Gm-Message-State: AOJu0YyFWTc6N3T00wgsdxifZ2NmU3nOimqVp5oJADPSK6lcEmPTbOvm
-	1zyAgxOA02HoKzKTMv67XpEyDpIJAtoAGxJmMaOr5bMmhafktKfcHJQ8k4iwnuCs3ZV3tqNy7/B
-	qE6w90vJ9j+SwPwdEji9vTyBuxk3x4oZOmGSF
-X-Google-Smtp-Source: AGHT+IH/KRHN+9M5N1gYIB2bCPgMB25x0KPnvuKiHgvgSCGh43Ngn+0mkz51p67LhizDAcBL1UgazcYTNlxqGDPZP2o=
-X-Received: by 2002:a25:f454:0:b0:dcd:b624:3e55 with SMTP id
- p20-20020a25f454000000b00dcdb6243e55mr1115241ybe.54.1712325200128; Fri, 05
- Apr 2024 06:53:20 -0700 (PDT)
+	s=arc-20240116; t=1712326966; c=relaxed/simple;
+	bh=nuBPcAwJYkEtaMJN3jKt7eUYz/CYsRJYcKHTo8qFlgw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YQKqSo3St8iZqSrqhFa9o0kmJH4EQ34BpFo24t7cgwctmT9qYPoqwJdzWMcFWLKOS9x85KOmto3r2iLlXKRz852KhjrMAiJABYiuml7SHWOFUzuj/YnQnWyS7HSgeGySUT/fNyBPK1ChCWx5G7LkUZt70sFQAbEUfC/YoG/Yeeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aNsq930U; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 435E2kPH018001;
+	Fri, 5 Apr 2024 14:22:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=grwsk+W/eXYQvDxTupHbw6cOyd/DDMicuPp61Y3Cfh8=;
+ b=aNsq930UyaTGvEjrnXEeoeD7AoaLOaDW7tFvS+zggbqogAlUuCf4mQ9bV51j/gfpSIp9
+ P/eHSONfWsPqtewwN4NNfH/OurU5SZ0kvTkpeSjWvn1vKUVNai7o4q2tIu5jb3C4jXpi
+ Qh0p4BIcGoc0zch63l70VqVmsmgtmMi7677Ex0yABSLeW5xdC0IWRjW4DXs5TmO7SPXf
+ 6/JUoDE0PXe94T/n8TFqUTymcliyYhxTxnaKuZvRtOzRsGMIoYlev+J8EvIfCTBqpN0I
+ hpTCXD35Fz8Po18YLhziqqXdHmo+T4Fys1SLdxg/JqM4l2z3xQeSkJyzQBG+UVBig7jW +Q== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xajq7025m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 14:22:33 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 435Ctgpl022264;
+	Fri, 5 Apr 2024 14:22:32 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x9eq0jv61-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 14:22:32 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 435EMR0Z44695870
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Apr 2024 14:22:29 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F294A2004B;
+	Fri,  5 Apr 2024 14:22:26 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C405420040;
+	Fri,  5 Apr 2024 14:22:26 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Apr 2024 14:22:26 +0000 (GMT)
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Jaroslav Kysela <perex@perex.cz>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: linux-acpi@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        Niklas Schnelle <schnelle@linux.ibm.com>
+Subject: [PATCH 0/1] pnp: Handle HAS_IOPORT dependencies
+Date: Fri,  5 Apr 2024 16:22:25 +0200
+Message-Id: <20240405142226.144216-1-schnelle@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: K7iE-Kpv8xNScdPY8OBuD_omHQ_KZxJE
+X-Proofpoint-ORIG-GUID: K7iE-Kpv8xNScdPY8OBuD_omHQ_KZxJE
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404165404.3805498-1-surenb@google.com> <Zg7dmp5VJkm1nLRM@casper.infradead.org>
- <CAJuCfpHbTCwDERz+Hh+aLZzNdtSFKA+Q7sW-xzvmFmtyHCqROg@mail.gmail.com>
- <CAJuCfpHy5Xo76S7h9rEuA3cQ1pVqurL=wmtQ2cx9-xN1aa_C_A@mail.gmail.com>
- <Zg8qstJNfK07siNn@casper.infradead.org> <jb25mtkveqf63bv74jhynf6ncxmums5s37esveqsv52yurh4z7@5q55ttv34bia>
- <20240404154150.c25ba3a0b98023c8c1eff3a4@linux-foundation.org>
- <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3> <Zg_yHGKpw4HJHdpb@casper.infradead.org>
-In-Reply-To: <Zg_yHGKpw4HJHdpb@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 5 Apr 2024 06:53:09 -0700
-Message-ID: <CAJuCfpGMSHv7drSu7Veo5CVz3d_Upt8S6Rdx3isi7orct9-uNQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: change inlined allocation helpers to account at
- the call site
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	joro@8bytes.org, will@kernel.org, trond.myklebust@hammerspace.com, 
-	anna@kernel.org, arnd@arndb.de, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, jikos@kernel.org, benjamin.tissoires@redhat.com, 
-	tytso@mit.edu, jack@suse.com, dennis@kernel.org, tj@kernel.org, cl@linux.com, 
-	jakub@cloudflare.com, penberg@kernel.org, rientjes@google.com, 
-	iamjoonsoo.kim@lge.com, vbabka@suse.cz, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-05_14,2024-04-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 impostorscore=0 mlxlogscore=999 spamscore=0
+ malwarescore=0 suspectscore=0 phishscore=0 adultscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2404010000 definitions=main-2404050103
 
-On Fri, Apr 5, 2024 at 5:44=E2=80=AFAM Matthew Wilcox <willy@infradead.org>=
- wrote:
->
-> On Thu, Apr 04, 2024 at 07:00:51PM -0400, Kent Overstreet wrote:
-> > On Thu, Apr 04, 2024 at 03:41:50PM -0700, Andrew Morton wrote:
-> > > On Thu, 4 Apr 2024 18:38:39 -0400 Kent Overstreet <kent.overstreet@li=
-nux.dev> wrote:
-> > >
-> > > > On Thu, Apr 04, 2024 at 11:33:22PM +0100, Matthew Wilcox wrote:
-> > > > > On Thu, Apr 04, 2024 at 03:17:43PM -0700, Suren Baghdasaryan wrot=
-e:
-> > > > > > Ironically, checkpatch generates warnings for these type casts:
-> > > > > >
-> > > > > > WARNING: unnecessary cast may hide bugs, see
-> > > > > > http://c-faq.com/malloc/mallocnocast.html
-> > > > > > #425: FILE: include/linux/dma-fence-chain.h:90:
-> > > > > > + ((struct dma_fence_chain *)kmalloc(sizeof(struct dma_fence_ch=
-ain),
-> > > > > > GFP_KERNEL))
-> > > > > >
-> > > > > > I guess I can safely ignore them in this case (since we cast to=
- the
-> > > > > > expected type)?
-> > > > >
-> > > > > I find ignoring checkpatch to be a solid move 99% of the time.
-> > > > >
-> > > > > I really don't like the codetags.  This is so much churn, and it =
-could
-> > > > > all be avoided by just passing in _RET_IP_ or _THIS_IP_ depending=
- on
-> > > > > whether we wanted to profile this function or its caller.  vmallo=
-c
-> > > > > has done it this way since 2008 (OK, using __builtin_return_addre=
-ss())
-> > > > > and lockdep has used _THIS_IP_ / _RET_IP_ since 2006.
-> > > >
-> > > > Except you can't. We've been over this; using that approach for tra=
-cing
-> > > > is one thing, using it for actual accounting isn't workable.
-> > >
-> > > I missed that.  There have been many emails.  Please remind us of the
-> > > reasoning here.
-> >
-> > I think it's on the other people claiming 'oh this would be so easy if
-> > you just do it this other way' to put up some code - or at least more
-> > than hot takes.
->
-> Well, /proc/vmallocinfo exists, and has existed since 2008, so this is
-> slightly more than a "hot take".
->
-> > But, since you asked - one of the main goals of this patchset was to be
-> > fast enough to run in production, and if you do it by return address
-> > then you've added at minimum a hash table lookup to every allocate and
-> > free; if you do that, running it in production is completely out of the
-> > question.
->
-> And yet vmalloc doesn't do that.
->
-> > Besides that - the issues with annotating and tracking the correct
-> > callsite really don't go away, they just shift around a bit. It's true
-> > that the return address approach would be easier initially, but that's
-> > not all we're concerned with; we're concerned with making sure
-> > allocations get accounted to the _correct_ callsite so that we're givin=
-g
-> > numbers that you can trust, and by making things less explicit you make
-> > that harder.
->
-> I'm not convinced that _THIS_IP_ is less precise than a codetag.  They
-> do essentially the same thing, except that codetags embed the source
-> location in the file while _THIS_IP_ requires a tool like faddr2line
-> to decode kernel_clone+0xc0/0x430 into a file + line number.
->
-> > This is all stuff that I've explained before; let's please dial back on
-> > the whining - or I'll just bookmark this for next time...
->
-> Please stop mischaracterising serious thoughtful criticism as whining.
-> I don't understand what value codetags bring over using _THIS_IP_ and
-> _RET_IP_ and you need to explain that.
+Hi Jaroslav, Rafael,
 
-The conceptual difference between codetag and _THIS_IP_/_RET_IP_ is
-that codetag injects counters at the call site, so you don't need to
-spend time finding the appropriate counter to operate on during
-allocation.
+This is a follow up in my ongoing effort of making inb()/outb() and
+similar I/O port accessors compile-time optional. Previously I sent this
+as a treewide series titled "treewide: Remove I/O port accessors for
+HAS_IOPORT=n" with the latest being its 5th version[0]. With a significant
+subset of patches merged I've changed over to per-subsystem series. These
+series are stand alone and should be merged via the relevant tree such
+that with all subsystems complete we can follow this up with the final
+patch that will make the I/O port accessors compile-time optional.
+
+The current state of the full series with changes to the remaining subsystems
+and the aforementioned final patch can be found for your convenience on my
+git.kernel.org tree in the has_ioport branch[1]. As for compile-time vs runtime
+see Linus' reply to my first attempt[2].
+
+Thanks,
+Niklas
+
+[0] https://lore.kernel.org/all/20230522105049.1467313-1-schnelle@linux.ibm.com/
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/niks/linux.git/log/?h=has_ioport
+[2] https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
+
+Niklas Schnelle (1):
+  pnp: add HAS_IOPORT dependencies
+
+ drivers/pnp/isapnp/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.40.1
+
 
