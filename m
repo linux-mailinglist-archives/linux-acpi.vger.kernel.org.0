@@ -1,181 +1,102 @@
-Return-Path: <linux-acpi+bounces-4657-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4658-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC12C8991F4
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 01:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15012899388
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 05:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5398E1F21F30
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Apr 2024 23:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD6741F23505
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 03:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8213C670;
-	Thu,  4 Apr 2024 23:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GhQB4Lr2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7381862A;
+	Fri,  5 Apr 2024 03:05:58 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from irl.hu (irl.hu [95.85.9.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F1A13C3EC
-	for <linux-acpi@vger.kernel.org>; Thu,  4 Apr 2024 23:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7795B125C9;
+	Fri,  5 Apr 2024 03:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712272591; cv=none; b=gtVjTu3a0HOZbJmVp+Q2us3r52eeAQCERs/2JQQYaUN6RukWZqGFQsKv00SU5f4KHloSKi9z8xoL3yRQT2MsyIoCTsSZ5xJYcQkQMOwYrKJ6e/Tr6wFkY2ZfwP3Tmv5oo2AnhuhvJ9Chq6ERjInOxpumm5RwKID1ZK2vmU5E1i8=
+	t=1712286358; cv=none; b=ZzIEsUUtiaKOu/YE6dtF90nogvIzcxFse8bHpkFAYeSbpa+HXSMjaDBzMWbLpVZ2AanHWa3s7up2FukgYEqX+QMg381/waolzm95TmY4FRAS4e88fVbNDyzl0TVTNMOEYZ+jkDzsAtDvG5VWrAsGzEQrpenvzHGuH20J81vBAD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712272591; c=relaxed/simple;
-	bh=APEooEWI1lH4C+bL4GyHHSZ5KchOvO14ONUoet0RRr0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cRhfsrWfcvdf0Ws96JVvKVoHN3/I2B8uhIH1HC8icJnJpLFDJAZE6NTTvJ6FuoenNMJAKf6xDpxocsLnRIXUUx/BlU4N7Picvo/uSE03JEJ8JAhR5jvfkQQXqK4CUvaR9DmjF2JOSKJ24c6j5wHWVN+8zfkPYiUS/yKigm3Iumw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GhQB4Lr2; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dcbd1d4904dso1672995276.3
-        for <linux-acpi@vger.kernel.org>; Thu, 04 Apr 2024 16:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712272588; x=1712877388; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=px33Bjt2eInHJiP0NeuRgUTO3pjhGqqLrEOvRjM23DI=;
-        b=GhQB4Lr2TOfRJr0yIbGk1UCRhhyf/EKVpCXPZqXmV/XkgG3+Ip4CUhh5q4gr0g9aWQ
-         bi/MtONwHxDMZ2USmEekynhmPdIj7XimYzkMyO6YIhdhd8laosX9Kqavzc0sEGt4s393
-         x3jIewExo36NNhoGC8fa0dDVejtUCmH++FNYSfkbwZ/UmhgU1sdlt3bN2hQJz5ko/8/2
-         ObAiMXaSN6L+F4xGADKQcR60IRWI0WYZxrQoJLkbTK4kPXRxqPMACqxkEQFVlYIVb5E4
-         NZ/mGrhb+ljA8cMBS1XGt9r2KxFFWpC0uxhpGDOwu+7sHOeMPE3IS3bKmZETlEo4VFCK
-         XvLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712272588; x=1712877388;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=px33Bjt2eInHJiP0NeuRgUTO3pjhGqqLrEOvRjM23DI=;
-        b=jqnwlblN9jk0xOAdZVX638DFJ3KRSRTiEpCPf4AA4KXvJfbCHD9NvMOTuNLucQX26t
-         7v6amWOnVy+67rXXe6dTmJ1uWIifuVZOs19fk8POIkM+22YERd8qxM9IQ7Wa/6fo4Tyd
-         Y1tStDWkbOwhSluQ0qaX6uAkIrhmvi3e/y6Ru/EeRsEAXfziGVeZy/dE4S/Fmn47AmUE
-         biFhtTl2ucYpjwXLlABXxIyDDnGaNMmwMC9rpjJdMlxvjbOkJgcCnowKQnUIEjwoEEAA
-         X664tYsOcWOcs+ca24NFjKJjlbLEvxsxFI52bzUFgDo7y3UKo3df66H/+tZLF+ujpoOT
-         0i2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVF7y85EMxJ1IqJw/sVPJ+w/jCJmMgryXNZw94NEO9TpwngvQFYiJrz+CkXZNPTH8Ia8bZu+C8Hh9Wm+Zc4N9I67cjQrAAov64vYA==
-X-Gm-Message-State: AOJu0YxjIYjerWgpc1jND1panMgo4GMhsfOx88KNNgdyOTTQq86RF2f5
-	PElENNse0EUdljQiGoBGGeq45euwT66yVkKeQ1phgLsfPkUV1P6UFYawqWyMHzx46NpwaZE9+fF
-	IScXNe7gw+fxlTGEgAAB5MHi1jmmTM49XUFLQ
-X-Google-Smtp-Source: AGHT+IFqOT0sdB5Mq8Em3ez8wUqwsDenflcnFBaGGydYTj8cPQz4oQR3/fK7VmQ9yLCyTSRCqikRdMTTYcQR8Kj+db8=
-X-Received: by 2002:a25:c7c6:0:b0:dcc:d5aa:af36 with SMTP id
- w189-20020a25c7c6000000b00dccd5aaaf36mr1095387ybe.44.1712272587959; Thu, 04
- Apr 2024 16:16:27 -0700 (PDT)
+	s=arc-20240116; t=1712286358; c=relaxed/simple;
+	bh=8RuxM6J8Cm2RSk+vd4fvxUTuSbBohuHlixB97Gvdd+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=ZNDskeumvSsftz0kLrkwHGUVYm1zXzdeVyJweikyFj8qkK2TAnm38SroFBx4/hV35hDGHO2Imc/s9qFpbJ/OiwK9yPxbuLEZl1sO40gUvpLwaVW2EaoXW8ykhawWbQFJ2INBQQLJv2bZgIS4OTCM5FEH7SlZPE51vEO4ixGberY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b69867.dsl.pool.telekom.hu [::ffff:81.182.152.103])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 000000000006F204.00000000660F6A92.0025A893; Fri, 05 Apr 2024 05:05:54 +0200
+From: Gergo Koteles <soyer@irl.hu>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+  Len Brown <lenb@kernel.org>, Ike Panhc <ike.pan@canonical.com>,
+  Hans de Goede <hdegoede@redhat.com>,
+  =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+  Henrique de Moraes Holschuh <hmh@hmh.eng.br>
+Cc: linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+  Gergo Koteles <soyer@irl.hu>
+Subject: [PATCH v4 0/3] switch platform profiles with Lenovo laptops
+Date: Fri,  5 Apr 2024 05:05:27 +0200
+Message-ID: <cover.1712282976.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240404165404.3805498-1-surenb@google.com> <Zg7dmp5VJkm1nLRM@casper.infradead.org>
- <CAJuCfpHbTCwDERz+Hh+aLZzNdtSFKA+Q7sW-xzvmFmtyHCqROg@mail.gmail.com>
- <CAJuCfpHy5Xo76S7h9rEuA3cQ1pVqurL=wmtQ2cx9-xN1aa_C_A@mail.gmail.com>
- <Zg8qstJNfK07siNn@casper.infradead.org> <jb25mtkveqf63bv74jhynf6ncxmums5s37esveqsv52yurh4z7@5q55ttv34bia>
- <20240404154150.c25ba3a0b98023c8c1eff3a4@linux-foundation.org> <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
-In-Reply-To: <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 4 Apr 2024 16:16:15 -0700
-Message-ID: <CAJuCfpF10COO2nh1nt3CcaZOFe4iSXszsup+a0qAEQ1ngyy5tQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: change inlined allocation helpers to account at
- the call site
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, joro@8bytes.org, 
-	will@kernel.org, trond.myklebust@hammerspace.com, anna@kernel.org, 
-	arnd@arndb.de, herbert@gondor.apana.org.au, davem@davemloft.net, 
-	jikos@kernel.org, benjamin.tissoires@redhat.com, tytso@mit.edu, jack@suse.com, 
-	dennis@kernel.org, tj@kernel.org, cl@linux.com, jakub@cloudflare.com, 
-	penberg@kernel.org, rientjes@google.com, iamjoonsoo.kim@lge.com, 
-	vbabka@suse.cz, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-ext4@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-On Thu, Apr 4, 2024 at 4:01=E2=80=AFPM Kent Overstreet
-<kent.overstreet@linux.dev> wrote:
->
-> On Thu, Apr 04, 2024 at 03:41:50PM -0700, Andrew Morton wrote:
-> > On Thu, 4 Apr 2024 18:38:39 -0400 Kent Overstreet <kent.overstreet@linu=
-x.dev> wrote:
-> >
-> > > On Thu, Apr 04, 2024 at 11:33:22PM +0100, Matthew Wilcox wrote:
-> > > > On Thu, Apr 04, 2024 at 03:17:43PM -0700, Suren Baghdasaryan wrote:
-> > > > > Ironically, checkpatch generates warnings for these type casts:
-> > > > >
-> > > > > WARNING: unnecessary cast may hide bugs, see
-> > > > > http://c-faq.com/malloc/mallocnocast.html
-> > > > > #425: FILE: include/linux/dma-fence-chain.h:90:
-> > > > > + ((struct dma_fence_chain *)kmalloc(sizeof(struct dma_fence_chai=
-n),
-> > > > > GFP_KERNEL))
-> > > > >
-> > > > > I guess I can safely ignore them in this case (since we cast to t=
-he
-> > > > > expected type)?
-> > > >
-> > > > I find ignoring checkpatch to be a solid move 99% of the time.
-> > > >
-> > > > I really don't like the codetags.  This is so much churn, and it co=
-uld
-> > > > all be avoided by just passing in _RET_IP_ or _THIS_IP_ depending o=
-n
-> > > > whether we wanted to profile this function or its caller.  vmalloc
-> > > > has done it this way since 2008 (OK, using __builtin_return_address=
-())
-> > > > and lockdep has used _THIS_IP_ / _RET_IP_ since 2006.
-> > >
-> > > Except you can't. We've been over this; using that approach for traci=
-ng
-> > > is one thing, using it for actual accounting isn't workable.
-> >
-> > I missed that.  There have been many emails.  Please remind us of the
-> > reasoning here.
->
-> I think it's on the other people claiming 'oh this would be so easy if
-> you just do it this other way' to put up some code - or at least more
-> than hot takes.
->
-> But, since you asked - one of the main goals of this patchset was to be
-> fast enough to run in production, and if you do it by return address
-> then you've added at minimum a hash table lookup to every allocate and
-> free; if you do that, running it in production is completely out of the
-> question.
->
-> Besides that - the issues with annotating and tracking the correct
-> callsite really don't go away, they just shift around a bit. It's true
-> that the return address approach would be easier initially, but that's
-> not all we're concerned with; we're concerned with making sure
-> allocations get accounted to the _correct_ callsite so that we're giving
-> numbers that you can trust, and by making things less explicit you make
-> that harder.
->
-> Additionally: the alloc_hooks() macro is for more than this. It's also
-> for more usable fault injection - remember every thread we have where
-> people are begging for every allocation to be __GFP_NOFAIL - "oh, error
-> paths are hard to test, let's just get rid of them" - never mind that
-> actually do have to have error paths - but _per callsite_ selectable
-> fault injection will actually make it practical to test memory error
-> paths.
->
-> And Kees working on stuff that'll make use of the alloc_hooks() macro
-> for segregating kmem_caches.
+Hi All,
 
-Yeah, that pretty much summarizes it. Note that we don't have to make
-the conversions in this patch and accounting will still work but then
-all allocations from different callers will be accounted to the helper
-function and that's less useful than accounting at the call site.
-It's a sizable churn but the conversions are straight-forward and we
-do get accurate, performant and easy to use memory accounting.
+This patch series adds a platform_profile_cycle function to the platform 
+profile module, which allows modules to easily switch between the 
+enabled profiles.
 
->
-> This is all stuff that I've explained before; let's please dial back on
-> the whining - or I'll just bookmark this for next time...
+Use it in ideapad-laptop and thinkpad-acpi modules.
+
+Best regards,
+Gergo
+
+Changes in v4:
+ - move the cycle to the platform profile module where it can switch 
+ between the enabled profiles
+ - add a patch to use it in the thinkpad-acpi module
+
+Changes in v3:
+ - add dytc_profile_cycle function
+
+Changes in v2:
+ - only switch platform profiles if supported, otherwise keep the 
+   behavior.
+
+[3]: https://lore.kernel.org/all/7c358ad8dd6de7889fa887954145a181501ac362.1712236099.git.soyer@irl.hu/
+[2]: https://lore.kernel.org/all/797884d8cab030d3a2b656dba67f3c423cc58be7.1712174794.git.soyer@irl.hu/
+[1]: https://lore.kernel.org/all/85254ce8e87570c05e7f04d6507701bef954ed75.1712149429.git.soyer@irl.hu/
+---
+Gergo Koteles (3):
+  ACPI: platform-profile: add platform_profile_cycle()
+  platform/x86: ideapad-laptop: switch platform profiles using thermal
+    management key
+  platform/x86: thinkpad_acpi: use platform_profile_cycle()
+
+ drivers/acpi/platform_profile.c       | 42 +++++++++++++++++++++++++++
+ drivers/platform/x86/ideapad-laptop.c |  7 +++--
+ drivers/platform/x86/thinkpad_acpi.c  | 19 ++----------
+ include/linux/platform_profile.h      |  1 +
+ 4 files changed, 50 insertions(+), 19 deletions(-)
+
+
+base-commit: 39cd87c4eb2b893354f3b850f916353f2658ae6f
+-- 
+2.44.0
+
 
