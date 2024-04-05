@@ -1,120 +1,159 @@
-Return-Path: <linux-acpi+bounces-4681-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4682-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50CC89A184
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 17:40:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C030E89A295
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 18:35:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0283E1C20358
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 15:40:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58E63B219F2
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9AE16F910;
-	Fri,  5 Apr 2024 15:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A48416EBFD;
+	Fri,  5 Apr 2024 16:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UFKUDwYo"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="AIbz7XCx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F751DFE4;
-	Fri,  5 Apr 2024 15:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F427269;
+	Fri,  5 Apr 2024 16:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712331653; cv=none; b=tPJsIdtVge9tl6eXJW88A0x8R0/SZ3UJKKfJ/Od+h/cn4nIoTRCmFg4Yn/Z8Vo29cEi6pqVMTb71ez9cZH6o//6d8vi84jPFs/W/v/2ukDvwm8d/AH2V91odM7mMkG1Rd8w70yAdC+kPgv6Mn9DtXQ1tDsAO26JS/SMvcpSWWCI=
+	t=1712334906; cv=none; b=VrPBfxiEKqdBEco+/jZkxthtVC8/Frkzrs0qeVXbAHUoklqUhIlw7K9vGckIH2wh+KosoBMVdqjsfhrGmpprLMA/XCwYYX3QeivgTAmbhaV8SrTNAiUGVwVT0yf5QnfahDGqDmencnva8+cWP+xeUAIJBa/LmmgSNgbv9uAmdHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712331653; c=relaxed/simple;
-	bh=oEGg+zdE+WnyIiCnbzgQ7uRmt3VoH/bWDMJdCz6YnxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oU8gtY0RTkqe2x7J7vULgIDH5UnyZyBV8PuRnmYL/CupD87KIYBs/+uPSUcs1Pn3f+K43qOrFPeD8DuqKfXFV90sRnAM3eFpd/mnYRt7nmnrHJDzhV7qqiTknCwQmEQEkpuOr/y6MPYgu596pOnx/1vHXn7c+9WBx4RP3hOh4pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UFKUDwYo; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712331652; x=1743867652;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oEGg+zdE+WnyIiCnbzgQ7uRmt3VoH/bWDMJdCz6YnxE=;
-  b=UFKUDwYorl+ZePM0igE7YL1+EXmeTNtz4QO5/TBJ8wAJJ0dAbFGqjnJz
-   V5ATCQ9/7TBFdgV1KynHSkQ+gFHry0P+xz8H/+r2I+FSxqT3Z9xI+hcNS
-   0PVMDCM9dJIRekZKYK0iYrXa4VltiLvZTQQa1kJyVReZ/dWnYMiXB2ZMl
-   zGkGoWGZnK/wW1UCcCkGyX7vV58O52zPPTpsmo2PQBBRu5N4YIaZhB1KL
-   KO095FJba6PzUJXjkTYK9gZixDDoQyrfJ4WvwZUERIkFi1dbKVEwY2SUB
-   WsN96jI83xI49CGdzXtG9tHrA1nRQCDEEvpsyK2EQBRrKxo11FlrxI3bC
-   Q==;
-X-CSE-ConnectionGUID: AJMlaFpkQvy6XhMjgZFWjw==
-X-CSE-MsgGUID: Bt830bM2T6aPJaNYzfIIBQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="7566076"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7566076"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:40:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="915257359"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="915257359"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:40:48 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rslgM-00000001mwV-05xP;
-	Fri, 05 Apr 2024 18:40:46 +0300
-Date: Fri, 5 Apr 2024 18:40:45 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 1/1] gpiolib: Update the kernel documentation - add
- Return sections
-Message-ID: <ZhAbfcGkt-Bjj9NY@smile.fi.intel.com>
-References: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
- <2df0e132-5599-4cb5-93f8-4ed664a5d1cc@infradead.org>
- <ZhAYeMNzHg0x97gN@smile.fi.intel.com>
- <47955de8-dfe5-48c0-bc9b-4e930b8f943e@infradead.org>
+	s=arc-20240116; t=1712334906; c=relaxed/simple;
+	bh=O+UnvDut8VP1erLUptBy2LRJVciHe8+vp0N0w/zfIa4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jqxt4IW0xprHWKQbcViRxfx0J+6WJwzqoEyh8hiPaRekrEkCN8+8OIt295LN3qTRD83FGFeHjeLGFRCz7A24KEZj40n04xpkXIxYV7Ip4VmnMkDLwlrN8cGrUrn3cCOZELZ8j1iUq16ZS0OvsdHXW7Yu8gqiJ37MMOKDCcC3yng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=AIbz7XCx; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1712334901; x=1712594101;
+	bh=S3WQALqPQkgNA4pAsO5tIwgQszOpcZJAo1yOP3F/ne0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=AIbz7XCx1kxCmMrfMHXFnmgxeaXtcWXNZHadfoIuneQnq8ltsXCS45mrqKOztcfmL
+	 82aRIXMWdvr7D5s7S0O2A55FUGTNQDcIDMb95xf1i1vCw8TpEoO/nUgr9BFejmPeSC
+	 wun1UzgVf5gQDrt/FScjLqTNc0WQ4SkKKWQVWnjRpVqOxreF3XFQM5r4/Jgr/mZcl9
+	 3X2XkDKMGTlylO4zOrqaEUzCaTgEPWnrjH0SHPc+b02vIJdaGmHwyAcjnHQqQl0mpA
+	 rIuVsPwXD+vQbq9Ryd+irQgGunhfbUAcCX83e+S5B/fv8wdVmoFxUPv/LTdWa3LlxQ
+	 GFjWbwZN1Qhdw==
+Date: Fri, 05 Apr 2024 16:34:58 +0000
+To: Gergo Koteles <soyer@irl.hu>
+From: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Ike Panhc <ike.pan@canonical.com>, Hans de Goede <hdegoede@redhat.com>, =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, Henrique de Moraes Holschuh <hmh@hmh.eng.br>, linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net, platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] ACPI: platform-profile: add platform_profile_cycle()
+Message-ID: <g_07w0jkBp9IeComzpK26YHPB1QZNjN_amEZ2bTG6xrOMMltvaav0Rd9Oh4a0nlzPsW2guvvUHkNQrfzSdFGbJhKDB0SHgUJB4belZNrapI=@protonmail.com>
+In-Reply-To: <fdc1b0b9f910753967b7a9b1996e4923cc63124f.1712282976.git.soyer@irl.hu>
+References: <cover.1712282976.git.soyer@irl.hu> <fdc1b0b9f910753967b7a9b1996e4923cc63124f.1712282976.git.soyer@irl.hu>
+Feedback-ID: 20568564:user:proton
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47955de8-dfe5-48c0-bc9b-4e930b8f943e@infradead.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 05, 2024 at 08:33:26AM -0700, Randy Dunlap wrote:
-> On 4/5/24 8:27 AM, Andy Shevchenko wrote:
-> > On Thu, Apr 04, 2024 at 09:10:09PM -0700, Randy Dunlap wrote:
-> >> On 4/4/24 2:27 PM, Andy Shevchenko wrote:
-> >>> $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
-> >>> 67
-> >>>
-> >>> Fix these by adding Return sections. While at it, make sure all of
-> >>> Return sections use the same style.
-
-...
-
-> >> I would use %true, %false, %NULL, %0, and %1 in a few places.
-> > 
-> > Why? I specifically removed % from all of them, it's not so useful.
-> > Do we have, btw, generated HTML with these % as an example to see
-> > the difference. Maybe that helps to understand this better?
-> 
-> The leading '%' just changes the font style of constants.
-> I don't know of any HTML that compares them.
-
-I meant to compare the (HTML) render to see the difference, but you already
-explained that it adds/modifies <font> tag or so.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Hi
 
 
+2024. =C3=A1prilis 5., p=C3=A9ntek 5:05 keltez=C3=A9ssel, Gergo Koteles <so=
+yer@irl.hu> =C3=ADrta:
+
+> Some laptops have a key to switch platform profiles.
+>=20
+> Add a platform_profile_cycle() function to cycle between the enabled
+> profiles.
+>=20
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> ---
+>  drivers/acpi/platform_profile.c  | 42 ++++++++++++++++++++++++++++++++
+>  include/linux/platform_profile.h |  1 +
+>  2 files changed, 43 insertions(+)
+>=20
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
+ile.c
+> index d418462ab791..1579f380d469 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -136,6 +136,48 @@ void platform_profile_notify(void)
+>  }
+>  EXPORT_SYMBOL_GPL(platform_profile_notify);
+>=20
+> +int platform_profile_cycle(void)
+> +{
+> +=09enum platform_profile_option profile;
+> +=09enum platform_profile_option next;
+> +=09int err;
+> +
+> +=09err =3D mutex_lock_interruptible(&profile_lock);
+> +=09if (err)
+> +=09=09return err;
+> +
+> +=09if (!cur_profile) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -ENODEV;
+> +=09}
+> +
+> +=09err =3D cur_profile->profile_get(cur_profile, &profile);
+> +=09if (err) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return err;
+> +=09}
+> +
+> +=09next =3D ffs(cur_profile->choices[0] >> (profile + 1)) + profile;
+> +
+> +=09/* current profile is the highest, select the lowest */
+> +=09if (next =3D=3D profile)
+> +=09=09next =3D ffs(cur_profile->choices[0]) - 1;
+
+I think you can use `find_next_bit()` or similar instead.
+
+
+> +
+> +=09if (WARN_ON((next < 0) || (next >=3D ARRAY_SIZE(profile_names)))) {
+> +=09=09mutex_unlock(&profile_lock);
+> +=09=09return -EINVAL;
+> +=09}
+> +
+> +=09err =3D cur_profile->profile_set(cur_profile, next);
+> +=09mutex_unlock(&profile_lock);
+> +
+> +=09if (!err)
+> +=09=09sysfs_notify(acpi_kobj, NULL, "platform_profile");
+> +
+> +=09return err;
+> +}
+> +EXPORT_SYMBOL_GPL(platform_profile_cycle);
+> +
+>  int platform_profile_register(struct platform_profile_handler *pprof)
+>  {
+>  =09int err;
+> diff --git a/include/linux/platform_profile.h b/include/linux/platform_pr=
+ofile.h
+> index e5cbb6841f3a..f5492ed413f3 100644
+> --- a/include/linux/platform_profile.h
+> +++ b/include/linux/platform_profile.h
+> @@ -36,6 +36,7 @@ struct platform_profile_handler {
+>=20
+>  int platform_profile_register(struct platform_profile_handler *pprof);
+>  int platform_profile_remove(void);
+> +int platform_profile_cycle(void);
+>  void platform_profile_notify(void);
+>=20
+>  #endif  /*_PLATFORM_PROFILE_H_*/
+> --
+> 2.44.0
+>=20
+
+
+Regards,
+Barnab=C3=A1s P=C5=91cze
 
