@@ -1,166 +1,107 @@
-Return-Path: <linux-acpi+bounces-4675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAF589A029
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 16:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6B789A0E5
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 17:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB44A284FF4
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 14:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7C5C286FDE
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 15:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A543416F299;
-	Fri,  5 Apr 2024 14:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5714316F8E6;
+	Fri,  5 Apr 2024 15:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bw87D4sm"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA83C16D9D5;
-	Fri,  5 Apr 2024 14:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884D916F850;
+	Fri,  5 Apr 2024 15:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712328533; cv=none; b=CivB5u6HaGyoZ1XlLNUvNR4/ml0KYE6cIXUvmpy438GQ7kivX999GvQbnDmnlKhgZWZgWcAKUwDBunYrzKwAxWCm2Fzm4kbl2Kat3EdEDQgvjzQV89a8KXO25vEF41mflumCEbnM/gnMEpe0gK7ItbX2GYk+iPzH6m8XNxi8eag=
+	t=1712330436; cv=none; b=Bi+OOTJtJ6YsHwwTp3fRa/5kMiWdh+UWR6r3LVyHsBWTj/SKWoVDWAtsLfOT+cUI+yCTb8f7p+H66OaCvCdEbmln03j4YARc0SFpNkNnpiRRUoYMEThfL4cuRGQD3a+5WwwygmieB2WGSM8RdTJdHCFWZ3jw3ZPOg1CffRoudIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712328533; c=relaxed/simple;
-	bh=pDZ7GGq8ciXMnPm7K6+Woob0Fc+oq+L2M++ZSsq1Lg0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aGQV/VAR/bWixX4NrxMLeNR+EOYjWIB0iiZEuaONwQ4/YBMYYwTROeRgHVdPKiyXrhs/ht8WFnDnXoNdmeN6RIPrJOsuqAizyXQjxxPzXSzpBO9GEM4ZgFsiiygq4+ZwdFnsWu2Vv9oaQTN44MZJeKoBa09LQ7m8dr3rjYAWbs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from [192.168.2.4] (51b69f53.dsl.pool.telekom.hu [::ffff:81.182.159.83])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000006F7E5.0000000066100F51.0025C4B2; Fri, 05 Apr 2024 16:48:49 +0200
-Message-ID: <bf8771c31f282ae31009a1ef5737c03849deebc2.camel@irl.hu>
-Subject: Re: [PATCH v4 1/3] ACPI: platform-profile: add
- platform_profile_cycle()
-From: Gergo Koteles <soyer@irl.hu>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>,
-  "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-  Ike Panhc <ike.pan@canonical.com>,
-  Hans de Goede <hdegoede@redhat.com>,
-  Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-  Henrique de Moraes Holschuh <hmh@hmh.eng.br>
-Cc: linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
-  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 05 Apr 2024 16:48:48 +0200
-In-Reply-To: <87d38d4c-14e2-4c64-baba-c9b8bd694339@linaro.org>
-References: <cover.1712282976.git.soyer@irl.hu>
-	 <fdc1b0b9f910753967b7a9b1996e4923cc63124f.1712282976.git.soyer@irl.hu>
-	 <87d38d4c-14e2-4c64-baba-c9b8bd694339@linaro.org>
-Autocrypt: addr=soyer@irl.hu; prefer-encrypt=mutual;
- keydata=mDMEZgeDQBYJKwYBBAHaRw8BAQdAD5oxV6MHkjzSfQL2O8VsPW3rSUeCHfbx/a6Yfj3NUnS0HEdlcmdvIEtvdGVsZXMgPHNveWVyQGlybC5odT6ImQQTFgoAQRYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsDBQkFo5qABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEAtEJzXf/1IRmdYA/0bE1BX7zOGKBgCa1DwzH2UHXawSKLpptADvI/ao6OOtAP4+wYgpR0kWR28lhmkRTpzG/+8GiMWsT60SV2bz9B7sCbg4BGYHg0ASCisGAQQBl1UBBQEBB0CPo8ow/E97WYtaek9EsLXvsvwpBsjWLq5mMOgJL/ukCwMBCAeIfgQYFgoAJhYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsMBQkFo5qAAAoJEAtEJzXf/1IRklEA/ipTfAI/onzNwZIp9sCdnt0bLhR5Oz8RD/FpbrJV1v7eAP0c/C6NQPDPWbQpobBR0pf1eTjWXjjr1fj2jxSvWbMRCw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1712330436; c=relaxed/simple;
+	bh=iLxrV8OLJBLSSBzXUgsi4X41ZUQ9qZyi/i2pZUh7N7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rwdd7Ix496zXgwSaHQU3sFNbJfxXNr3we0uY2Rv/+tky6Oy6LG6vd8XJTSG8F3zQkwKDUDIU5aY8D2mCo9KlK7vpwFvtKZsQp4tcz39bHwHa+UolmQHcA2CEB1HC/qk7cDF3QR6nwsADei/HBhzK5/viHjBJ+mghoBJFfLMnmuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bw87D4sm; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712330435; x=1743866435;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iLxrV8OLJBLSSBzXUgsi4X41ZUQ9qZyi/i2pZUh7N7I=;
+  b=bw87D4smkCBV+1eJs+tsSxCn3h5EWtitz+tKFP4Ami0dPDNeuC7gGVal
+   BM/kwxIqNF7rcx+rV/MoWhCcuuW1c9R1mrwD6be5nNaCV8TRTMROq7ugE
+   J7wMB9uL7cwvnDY0DjdxkM6n0Rm4ikMEftJ0kVZvRAD6xdUpaZ2+eA/Fg
+   oMFC5RP8vnJTlkZTPoMxPqhRP3jkuxzo0LKP+m+LVSAOl5dGrzI+PxSmM
+   WnU4VyRDLQ78JGJ8o4kVpqw8VG1IbCRk8L5Sv/xhpkICRbJq7uzu11/lv
+   l/vBFJkasNofNOyPufiI1p/v0IFODayzwgbvChy0ZpGpgo111PyLfSoT5
+   w==;
+X-CSE-ConnectionGUID: oja9SY2aQUa2nskqpEZhYg==
+X-CSE-MsgGUID: 5nZZc+FTQcqtMVdZ9NcqAg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="18274366"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="18274366"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:20:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11035"; a="915256791"
+X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
+   d="scan'208";a="915256791"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 08:19:58 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rslMC-00000001mVO-1PB5;
+	Fri, 05 Apr 2024 18:19:56 +0300
+Date: Fri, 5 Apr 2024 18:19:56 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2 3/4] ACPI: x86: Move blacklist to x86 folder
+Message-ID: <ZhAWnOMaIcgXykft@smile.fi.intel.com>
+References: <20240404183448.3310449-1-andriy.shevchenko@linux.intel.com>
+ <20240404183448.3310449-4-andriy.shevchenko@linux.intel.com>
+ <311c6f62-4232-417a-beb8-df9ca8a732ec@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <311c6f62-4232-417a-beb8-df9ca8a732ec@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Daniel,
+On Fri, Apr 05, 2024 at 07:44:15AM -0700, Kuppuswamy Sathyanarayanan wrote:
+> 
+> On 4/4/24 11:23 AM, Andy Shevchenko wrote:
+> > blacklist is built solely for x86, move it to the respective folder.
+> 
+> Don't you need #ifdef CONFIG_X86 for acpi_blacklisted() in
+> include/linux/acpi.h
 
-On Fri, 2024-04-05 at 08:48 +0200, Daniel Lezcano wrote:
-> Hi Gergo,
->=20
-> please Cc people who commented your changes.
+It's unrelated to this series.
+It was like that before and this series doesn't change this aspect.
 
-Thanks for this info, next time :)
+AFAICS the API is called from x86 only, that's why it's not a problem,
+but strictly speaking you are right. Feel free to submit a patch.
 
-> > +int platform_profile_cycle(void)
-> > +{
-> > +	enum platform_profile_option profile;
-> > +	enum platform_profile_option next;
-> > +	int err;
-> > +
-> > +	err =3D mutex_lock_interruptible(&profile_lock);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	if (!cur_profile) {
-> > +		mutex_unlock(&profile_lock);
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	err =3D cur_profile->profile_get(cur_profile, &profile);
-> > +	if (err) {
-> > +		mutex_unlock(&profile_lock);
-> > +		return err;
-> > +	}
-> > +
-> > +	next =3D ffs(cur_profile->choices[0] >> (profile + 1)) + profile;
-> > +
-> > +	/* current profile is the highest, select the lowest */
-> > +	if (next =3D=3D profile)
-> > +		next =3D ffs(cur_profile->choices[0]) - 1;
-> > +
-> > +	if (WARN_ON((next < 0) || (next >=3D ARRAY_SIZE(profile_names)))) {
-> > +		mutex_unlock(&profile_lock);
-> > +		return -EINVAL;
-> > +	}
->=20
-> Why do you need to do this?
->=20
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Many platform drivers use the platform profile module. They support
-different sets of profiles, not all. They sets the corresponding bits
-in the choices variable.
-
-like this:
-set_bit(PLATFORM_PROFILE_BALANCED, platform_profile_handler.choices);
-
-The platform_profile_cycle() cycles through the enabled profiles.
-
-Best regards,
-Gergo
-
-> That can be simplified by:
->=20
-> 	[ ... ]
->=20
-> 	err =3D cur_profile->profile_get(cur_profile, &profile);
-> 	if (err)
-> 		goto out;
->=20
-> 	profile =3D (profile + 1) % ARRAY_SIZE(profile_names);
->=20
-> 	err =3D cur_profile->profile_set(cur_profile, next);
-> out:
-> 	mutex_unlock(&profile_lock);
-> =09
-> 	[ ... ]
->=20
-> > +	err =3D cur_profile->profile_set(cur_profile, next);
-> > +	mutex_unlock(&profile_lock);
-> > +
-> > +	if (!err)
-> > +		sysfs_notify(acpi_kobj, NULL, "platform_profile");
-> > +
-> > +	return err;
-> > +}
-> > +EXPORT_SYMBOL_GPL(platform_profile_cycle);
-> > +
-> >   int platform_profile_register(struct platform_profile_handler *pprof)
-> >   {
-> >   	int err;
-> > diff --git a/include/linux/platform_profile.h b/include/linux/platform_=
-profile.h
-> > index e5cbb6841f3a..f5492ed413f3 100644
-> > --- a/include/linux/platform_profile.h
-> > +++ b/include/linux/platform_profile.h
-> > @@ -36,6 +36,7 @@ struct platform_profile_handler {
-> >  =20
-> >   int platform_profile_register(struct platform_profile_handler *pprof)=
-;
-> >   int platform_profile_remove(void);
-> > +int platform_profile_cycle(void);
-> >   void platform_profile_notify(void);
-> >  =20
-> >   #endif  /*_PLATFORM_PROFILE_H_*/
->=20
 
 
