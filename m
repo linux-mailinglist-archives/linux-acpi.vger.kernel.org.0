@@ -1,273 +1,240 @@
-Return-Path: <linux-acpi+bounces-4665-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4666-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10871899908
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 11:10:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637E3899A04
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 11:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 278EF1C2140C
-	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 09:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7929B21206
+	for <lists+linux-acpi@lfdr.de>; Fri,  5 Apr 2024 09:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73C715FCEC;
-	Fri,  5 Apr 2024 09:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19ECF161B4D;
+	Fri,  5 Apr 2024 09:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l69FFtXL"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0AXR3Sr9";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mv3acM2x";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0+7rq6f";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lVccGfCI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1261115FCEA;
-	Fri,  5 Apr 2024 09:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4C7161318;
+	Fri,  5 Apr 2024 09:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712308243; cv=none; b=j7MVSegKYh7qiGlwhZX01d0fAzYJxFXjd4S8DHp0JyPCAfPZu21hiUXM6LfcMcOBUtK+B3P5n6ECWlL+QE2+TblM7wvkGWCWoQTxZS0mw10VuhR3QXlTgcbOoQR/YFd5h70QZ6invHd8tCVQkvF6xBcWN4ddAW/DXlFP/YTTPHk=
+	t=1712310815; cv=none; b=mIY19KJ4UI01mSUrK/lBBv8QwjcJFR/GcJ6feTqejR8OgeII6d1QwMKbqIJTyzfDe2X7g00bTfU0bh5S7h+NSCXlfxA62h9QQpRYFxXo7OHTIxC2zyX5YlvA7BynzOoUeIx5UKv0uZ6mblIOhEjhQ3rfAySQg7m8fsf0PYzEYx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712308243; c=relaxed/simple;
-	bh=D8akveyv8EAH6aqRsyNERFGYx6Skd7Zb0+OXU3kvFCM=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=i+OOJ0n3VoEfRcAMuu24XUNSRJzSBhFJ/+eRbdG2ZP7zli8I1yY0frlXspzGmx4n/7SiNe42ltZquw2b2Pk5wHuU89MjMld1JLkuFDDVCI362jyOBAgc7g/gJMuieRwHT/w4kSBDKaJUgyOSGyxt2JMGoa5T7MajEu8d/E9pl5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l69FFtXL; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712308242; x=1743844242;
-  h=date:from:to:cc:subject:message-id;
-  bh=D8akveyv8EAH6aqRsyNERFGYx6Skd7Zb0+OXU3kvFCM=;
-  b=l69FFtXLya1Fix0p8RriH0ApZdRFPtsZg277hJgovevSgPrGNlNP2t1A
-   /S3MS5NzCYfgfLnSfKKcEyEzetHRWnCPpX6Xw2s6N4zQtYLNZQjLSOfOu
-   nMVlQmcXwkjod6zMmEnTl29cCI675VA8nNaJGSNy2opv9XLb1BvRYrrpM
-   kFELgv4Z7Cg9U9kMYm+Jl+ndMx9IOQ/MggWAsQKGURYMHOrl8eqKzMtEq
-   NWD/Hd20PD66ExsvR+EU+hBiVzIsqRy1S67MZ5GCEmTOsTRmOw+KFWVUt
-   5vNBztWNXjIBESitfilfJUiaA7XAo91SBpKsENmypEqUYHN/tePjvhuG+
-   w==;
-X-CSE-ConnectionGUID: D4B4FCn2TGqADH4jjALrCg==
-X-CSE-MsgGUID: ug05L6IkSKKYNqWW8xFjmQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11034"; a="7862881"
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="7862881"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2024 02:10:40 -0700
-X-CSE-ConnectionGUID: 0AeZ+ajdQP+WOBXmTFjj3w==
-X-CSE-MsgGUID: BXtnGWJpQ3++XU2Cue5QHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,181,1708416000"; 
-   d="scan'208";a="19174626"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 05 Apr 2024 02:10:38 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rsfak-00024W-33;
-	Fri, 05 Apr 2024 09:10:34 +0000
-Date: Fri, 05 Apr 2024 17:10:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 19c31f086fbfc78ea4f695d1d2e666448c35d42f
-Message-ID: <202404051718.ClZ30LkL-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1712310815; c=relaxed/simple;
+	bh=iG4O7MMO9gnBVtJZSYs1Hq2UvQRfp2O+8N10zEhPJQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DTPANW0a0wV97PEgXPLudGyv3gNtEeQLhpJBkNuIi948I7CrYZ9fV9IXUO9CHKdzxmRFDqRx0rKF1oJDd3VteF75R6+ZlJBtipMSwfwrUNbT5Fxu40VGFfJ1EKKvwLJtoCIlZQ86OWSzO0Xlf9VMAHYCMnI1p2jWMX1LE6MYm2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0AXR3Sr9; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mv3acM2x; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0+7rq6f; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lVccGfCI; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 65BF721A2E;
+	Fri,  5 Apr 2024 09:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712310809; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
+	b=0AXR3Sr9XfI+c7rTPImw5uCIqUd0/09qhqdILdsZtrOOOTHNThWW8IWO2LavomosrDlGR4
+	r5zcQ7aU/RB1e9VhO2PeMNtjvZCEdKzHqupTEPNLaoS68JZ7HFWh4OFd1ckPqsmFOlBB7H
+	mcwM4kvxTwfCAYfvPvAMLZZtKWx5vB8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712310809;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
+	b=mv3acM2xzaAtD0goPoMaKRbxprQYlRRQRdWeBSj+XgsIgB6XYwFswsOsyAWM2lrdH+uuj0
+	DSsBpoDlTl2n1rDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1712310808; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
+	b=Z0+7rq6fcjYyrOGJFwhu7EPjxeB2YzEP6/GI4QJE77wXmTpoCFc1mE9dE1Bj/PEGY1tu49
+	ESTilKNYDaC1JrKhdHCnLw44UtjznYqGrEfN+CtNGBPA2Dt9MhQgjmAw2Ok0XXX+qUvUQJ
+	M0o1kG24lT0V2nbGjew3Qb50utPv0T0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1712310808;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kxLJbVvPYqfzG83pwvoYNu5wMFXj9ZScFtz4XZeGAUk=;
+	b=lVccGfCILCM4svVbHjo2v2GSsNkbxp/3kUm/GIkdwdP1GGRDcHYdF3Ew32qMBI0ItKMWtc
+	2n16V0vgVrwCANAQ==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5716C139F1;
+	Fri,  5 Apr 2024 09:53:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 2Ig+FRjKD2a3YAAAn2gu4w
+	(envelope-from <jack@suse.cz>); Fri, 05 Apr 2024 09:53:28 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 0505DA0814; Fri,  5 Apr 2024 11:53:27 +0200 (CEST)
+Date: Fri, 5 Apr 2024 11:53:27 +0200
+From: Jan Kara <jack@suse.cz>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>, joro@8bytes.org,
+	will@kernel.org, trond.myklebust@hammerspace.com, anna@kernel.org,
+	arnd@arndb.de, herbert@gondor.apana.org.au, davem@davemloft.net,
+	jikos@kernel.org, benjamin.tissoires@redhat.com, tytso@mit.edu,
+	jack@suse.com, dennis@kernel.org, tj@kernel.org, cl@linux.com,
+	jakub@cloudflare.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, vbabka@suse.cz, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	linux-arch@vger.kernel.org, linux-crypto@vger.kernel.org,
+	bpf@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 1/1] mm: change inlined allocation helpers to account at
+ the call site
+Message-ID: <20240405095327.ufsimeplwahh6mem@quack3>
+References: <20240404165404.3805498-1-surenb@google.com>
+ <Zg7dmp5VJkm1nLRM@casper.infradead.org>
+ <CAJuCfpHbTCwDERz+Hh+aLZzNdtSFKA+Q7sW-xzvmFmtyHCqROg@mail.gmail.com>
+ <CAJuCfpHy5Xo76S7h9rEuA3cQ1pVqurL=wmtQ2cx9-xN1aa_C_A@mail.gmail.com>
+ <Zg8qstJNfK07siNn@casper.infradead.org>
+ <jb25mtkveqf63bv74jhynf6ncxmums5s37esveqsv52yurh4z7@5q55ttv34bia>
+ <20240404154150.c25ba3a0b98023c8c1eff3a4@linux-foundation.org>
+ <jpaw4hdd73ngt7mvtcdryqscivx6m2ic76ikfkcopceb47becp@vox5czt5bec3>
+ <CAJuCfpF10COO2nh1nt3CcaZOFe4iSXszsup+a0qAEQ1ngyy5tQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpF10COO2nh1nt3CcaZOFe4iSXszsup+a0qAEQ1ngyy5tQ@mail.gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLinodumkc3pofpwycnya9d5a9)];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[c-faq.com:url,suse.com:email,imap2.dmz-prg2.suse.org:helo,imap2.dmz-prg2.suse.org:rdns,linux.dev:email]
+X-Spam-Score: -3.80
+X-Spam-Flag: NO
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 19c31f086fbfc78ea4f695d1d2e666448c35d42f  Merge branch 'acpi-scan' into bleeding-edge
+On Thu 04-04-24 16:16:15, Suren Baghdasaryan wrote:
+> On Thu, Apr 4, 2024 at 4:01 PM Kent Overstreet
+> <kent.overstreet@linux.dev> wrote:
+> >
+> > On Thu, Apr 04, 2024 at 03:41:50PM -0700, Andrew Morton wrote:
+> > > On Thu, 4 Apr 2024 18:38:39 -0400 Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> > >
+> > > > On Thu, Apr 04, 2024 at 11:33:22PM +0100, Matthew Wilcox wrote:
+> > > > > On Thu, Apr 04, 2024 at 03:17:43PM -0700, Suren Baghdasaryan wrote:
+> > > > > > Ironically, checkpatch generates warnings for these type casts:
+> > > > > >
+> > > > > > WARNING: unnecessary cast may hide bugs, see
+> > > > > > http://c-faq.com/malloc/mallocnocast.html
+> > > > > > #425: FILE: include/linux/dma-fence-chain.h:90:
+> > > > > > + ((struct dma_fence_chain *)kmalloc(sizeof(struct dma_fence_chain),
+> > > > > > GFP_KERNEL))
+> > > > > >
+> > > > > > I guess I can safely ignore them in this case (since we cast to the
+> > > > > > expected type)?
+> > > > >
+> > > > > I find ignoring checkpatch to be a solid move 99% of the time.
+> > > > >
+> > > > > I really don't like the codetags.  This is so much churn, and it could
+> > > > > all be avoided by just passing in _RET_IP_ or _THIS_IP_ depending on
+> > > > > whether we wanted to profile this function or its caller.  vmalloc
+> > > > > has done it this way since 2008 (OK, using __builtin_return_address())
+> > > > > and lockdep has used _THIS_IP_ / _RET_IP_ since 2006.
+> > > >
+> > > > Except you can't. We've been over this; using that approach for tracing
+> > > > is one thing, using it for actual accounting isn't workable.
+> > >
+> > > I missed that.  There have been many emails.  Please remind us of the
+> > > reasoning here.
+> >
+> > I think it's on the other people claiming 'oh this would be so easy if
+> > you just do it this other way' to put up some code - or at least more
+> > than hot takes.
+> >
+> > But, since you asked - one of the main goals of this patchset was to be
+> > fast enough to run in production, and if you do it by return address
+> > then you've added at minimum a hash table lookup to every allocate and
+> > free; if you do that, running it in production is completely out of the
+> > question.
+> >
+> > Besides that - the issues with annotating and tracking the correct
+> > callsite really don't go away, they just shift around a bit. It's true
+> > that the return address approach would be easier initially, but that's
+> > not all we're concerned with; we're concerned with making sure
+> > allocations get accounted to the _correct_ callsite so that we're giving
+> > numbers that you can trust, and by making things less explicit you make
+> > that harder.
+> >
+> > Additionally: the alloc_hooks() macro is for more than this. It's also
+> > for more usable fault injection - remember every thread we have where
+> > people are begging for every allocation to be __GFP_NOFAIL - "oh, error
+> > paths are hard to test, let's just get rid of them" - never mind that
+> > actually do have to have error paths - but _per callsite_ selectable
+> > fault injection will actually make it practical to test memory error
+> > paths.
+> >
+> > And Kees working on stuff that'll make use of the alloc_hooks() macro
+> > for segregating kmem_caches.
+> 
+> Yeah, that pretty much summarizes it. Note that we don't have to make
+> the conversions in this patch and accounting will still work but then
+> all allocations from different callers will be accounted to the helper
+> function and that's less useful than accounting at the call site.
+> It's a sizable churn but the conversions are straight-forward and we
+> do get accurate, performant and easy to use memory accounting.
 
-elapsed time: 782m
+OK, fair enough. I guess I can live with the allocation macros in jbd2 if
+type safety is preserved. But please provide a short summary of why we need
+these macros (e.g. instead of RET_IP approach) in the changelog (or at
+least a link to some email explaining this if the explanation would get too
+long). Because I was wondering about the same as Andrew (and yes, this is
+because I wasn't really following the huge discussion last time).
 
-configs tested: 179
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                   randconfig-001-20240405   gcc  
-arc                   randconfig-002-20240405   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                         lpc32xx_defconfig   clang
-arm                   randconfig-001-20240405   gcc  
-arm                   randconfig-002-20240405   clang
-arm                   randconfig-003-20240405   gcc  
-arm                   randconfig-004-20240405   clang
-arm                           tegra_defconfig   gcc  
-arm                           u8500_defconfig   gcc  
-arm                        vexpress_defconfig   gcc  
-arm                         vf610m4_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240405   gcc  
-arm64                 randconfig-002-20240405   gcc  
-arm64                 randconfig-003-20240405   gcc  
-arm64                 randconfig-004-20240405   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240405   gcc  
-csky                  randconfig-002-20240405   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240405   clang
-hexagon               randconfig-002-20240405   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240405   gcc  
-i386         buildonly-randconfig-002-20240405   gcc  
-i386         buildonly-randconfig-003-20240405   clang
-i386         buildonly-randconfig-004-20240405   gcc  
-i386         buildonly-randconfig-005-20240405   clang
-i386         buildonly-randconfig-006-20240405   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240405   clang
-i386                  randconfig-002-20240405   gcc  
-i386                  randconfig-003-20240405   clang
-i386                  randconfig-004-20240405   clang
-i386                  randconfig-005-20240405   clang
-i386                  randconfig-006-20240405   gcc  
-i386                  randconfig-011-20240405   clang
-i386                  randconfig-012-20240405   gcc  
-i386                  randconfig-013-20240405   gcc  
-i386                  randconfig-014-20240405   gcc  
-i386                  randconfig-015-20240405   gcc  
-i386                  randconfig-016-20240405   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240405   gcc  
-loongarch             randconfig-002-20240405   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      bmips_stb_defconfig   clang
-mips                        omega2p_defconfig   clang
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240405   gcc  
-nios2                 randconfig-002-20240405   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240405   gcc  
-parisc                randconfig-002-20240405   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                   currituck_defconfig   clang
-powerpc                     mpc5200_defconfig   clang
-powerpc                 mpc834x_itx_defconfig   clang
-powerpc                      pmac32_defconfig   clang
-powerpc               randconfig-001-20240405   clang
-powerpc               randconfig-002-20240405   clang
-powerpc               randconfig-003-20240405   clang
-powerpc                         wii_defconfig   gcc  
-powerpc64             randconfig-001-20240405   gcc  
-powerpc64             randconfig-002-20240405   gcc  
-powerpc64             randconfig-003-20240405   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240405   clang
-riscv                 randconfig-002-20240405   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                          debug_defconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240405   clang
-s390                  randconfig-002-20240405   gcc  
-s390                       zfcpdump_defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240405   gcc  
-sh                    randconfig-002-20240405   gcc  
-sh                        sh7757lcr_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240405   gcc  
-sparc64               randconfig-002-20240405   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240405   gcc  
-um                    randconfig-002-20240405   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240405   clang
-x86_64       buildonly-randconfig-002-20240405   clang
-x86_64       buildonly-randconfig-003-20240405   gcc  
-x86_64       buildonly-randconfig-004-20240405   gcc  
-x86_64       buildonly-randconfig-005-20240405   clang
-x86_64       buildonly-randconfig-006-20240405   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240405   clang
-x86_64                randconfig-002-20240405   clang
-x86_64                randconfig-003-20240405   clang
-x86_64                randconfig-004-20240405   gcc  
-x86_64                randconfig-005-20240405   clang
-x86_64                randconfig-006-20240405   gcc  
-x86_64                randconfig-011-20240405   clang
-x86_64                randconfig-012-20240405   gcc  
-x86_64                randconfig-013-20240405   gcc  
-x86_64                randconfig-014-20240405   clang
-x86_64                randconfig-015-20240405   gcc  
-x86_64                randconfig-016-20240405   gcc  
-x86_64                randconfig-071-20240405   gcc  
-x86_64                randconfig-072-20240405   gcc  
-x86_64                randconfig-073-20240405   gcc  
-x86_64                randconfig-074-20240405   gcc  
-x86_64                randconfig-075-20240405   gcc  
-x86_64                randconfig-076-20240405   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                  audio_kc705_defconfig   gcc  
-xtensa                randconfig-001-20240405   gcc  
-
+								Honza
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
