@@ -1,111 +1,83 @@
-Return-Path: <linux-acpi+bounces-4918-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4691-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3A78A28D6
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 10:06:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F27289AB22
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 15:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A3B6B26915
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 08:06:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CEEFB2179C
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 13:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739ED53390;
-	Fri, 12 Apr 2024 08:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KiUuUVgq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82113714C;
+	Sat,  6 Apr 2024 13:52:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CF355774;
-	Fri, 12 Apr 2024 08:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CC213ACC;
+	Sat,  6 Apr 2024 13:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712909072; cv=none; b=sRZMDDOlBO9WqCHSilgFg0UFwVVjCgD1xDQKeUan9+i8onVToNx4vhGte2k9fohKk0RNCcM81RxvOyqAY8DAefLZG99bFNQ2dnwJ6jfOMKj+rP7mNyZ5F5o9oaR7kWc6IBUfdLlNQWPSF/GEhCFuDQjzQU2Y0w04QZLrBtJ+dHI=
+	t=1712411532; cv=none; b=Q33Yu3yflhIdnRXeHSsLWGVTmN+pTiAyCsMO9QWRtyglEfytxZNDLVKeoVXJGUhdWmbeU/eErFjcMdihw1UJAaHIZ2UEGA4Lld1uqMIOy8tHOuYy06aS1RLlVKn12JLNXgpeqcdx1o5iVha9UJIl67WpySVgtg3S7SXul/5XqYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712909072; c=relaxed/simple;
-	bh=d7cFxhCB3YkupKziFZ26ogRn5cKTA+vaajWjvO+U5mw=;
-	h=In-Reply-To:References:Message-Id:From:Date:Subject:To:Cc; b=Ev8cWZaZc7GorpT9qiVN5rhqyZerCE9USkwZgwgKzlJeFrjfKKWY3cvI5KQZqIQ7wlJ/1bNTzie5+6oj4m5t81TxkT5Juk9cHcZP+ggvE1DZWo24BbVLU3D19Fj3y26v7NGbmlbGdmXMDsbS8c74R77iV/vAoTrZ59TKudYqfp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KiUuUVgq; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Cc:To:Subject:Date:From:
-	Message-Id:References:In-Reply-To:Reply-To:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=GHkEo0uIXHettMVCbsHimID5bYVEU0q/Ed8abuN0cqo=; b=KiUuUVgqBsUbNnmujmNFQgElNs
-	vZoxYrB+KxLxZM8vSWCv7Wb/4/fiOLou9IESxOTDVSW30YLzoQxzONYa02q7gx7TiixdWhtDBq++9
-	yq/3xK4KOCRAcA9fYeJjAeHU5N3GxU0wNz3+IAN+UHgLPhbdsS9i08JWzSYOhksV/7AZ6wTFiPax2
-	YGyRJ3Micen4JqhKU5U8SWSj2d60wZPf23KPTBm06XzvUqggj5PN5qy/UJ4NmnLzeG7Y1uek29ekF
-	WtsqJPMJCp0V6rjjByZKuwzsXP/FU/3YxkR2mF//E7u1c3Mm1aB2vY9jTvZeecIGFqEcHejpBn0es
-	F3Xa3sYQ==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rvBtV-00000008izc-39VM;
-	Fri, 12 Apr 2024 08:04:21 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rvBtV-00000009KTB-0quC;
-	Fri, 12 Apr 2024 09:04:21 +0100
-In-Reply-To: <20240412073530.2222496-1-dwmw2@infradead.org>
-References: <20240412073530.2222496-1-dwmw2@infradead.org>
-Message-Id: <20240412073530.2222496-3-dwmw2@infradead.org>
-From: David Woodhouse <dwmw2@infradead.org>
-Date: Mon, 11 Mar 2024 13:04:07 +0000
-Subject: [PATCH v2 2/2] arm64: acpi: Honour firmware_signature field of FACS,
- if it exists
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: Robert Moore <robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+	s=arc-20240116; t=1712411532; c=relaxed/simple;
+	bh=c4P6XCqXe/1/PyNm0hEV/fhObLttlXBUccidgoz+KNA=;
+	h=Message-Id:From:Date:Subject:To:Cc; b=mMlODrFL13/cWyvrkYkx65xwMpCoVHsmPZGNQd/w/SVmm3Z9wc5V/f9w9+vV3bds3ENFFIaq/pn8E5nfsdbO1aUPhZgIcBoM8//qjW5aPJ03Kf8XTuspVnsIJFB3d6OVfWNxfVvIy8Q21Zpw2VAQiWcOTw3AaMltZ2Lq+HagSxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 94813100D943C;
+	Sat,  6 Apr 2024 15:51:59 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 3B10F233389; Sat,  6 Apr 2024 15:51:59 +0200 (CEST)
+Message-Id: <cover.1712410202.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Sat, 6 Apr 2024 15:52:00 +0200
+Subject: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, intel-gvt-dev@lists.freedesktop.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+For my upcoming PCI device authentication v2 patches, I have the need
+to expose a simple buffer in virtual memory as a bin_attribute.
 
-If the firmware_signature changes then OSPM should not attempt to resume
-from hibernate, but should instead perform a clean reboot. Set the global
-swsusp_hardware_signature to allow the generic code to include the value
-in the swsusp header on disk, and perform the appropriate check on resume.
+It turns out we've duplicated the ->read() callback for such simple
+buffers a fair number of times across the tree.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
----
- arch/arm64/kernel/acpi.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+So instead of reinventing the wheel, I decided to introduce a common
+helper and eliminate all duplications I could find.
 
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index dba8fcec7f33..e0e7b93c16cc 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -26,6 +26,7 @@
- #include <linux/libfdt.h>
- #include <linux/smp.h>
- #include <linux/serial_core.h>
-+#include <linux/suspend.h>
- #include <linux/pgtable.h>
- 
- #include <acpi/ghes.h>
-@@ -227,6 +228,15 @@ void __init acpi_boot_table_init(void)
- 		if (earlycon_acpi_spcr_enable)
- 			early_init_dt_scan_chosen_stdout();
- 	} else {
-+#ifdef CONFIG_HIBERNATION
-+		struct acpi_table_header *facs = NULL;
-+		acpi_get_table(ACPI_SIG_FACS, 1, &facs);
-+		if (facs) {
-+			swsusp_hardware_signature =
-+				((struct acpi_table_facs *)facs)->hardware_signature;
-+			acpi_put_table(facs);
-+		}
-+#endif
- 		acpi_parse_spcr(earlycon_acpi_spcr_enable, true);
- 		if (IS_ENABLED(CONFIG_ACPI_BGRT))
- 			acpi_table_parse(ACPI_SIG_BGRT, acpi_parse_bgrt);
+I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
+name. ;)
+
+Lukas Wunner (2):
+  sysfs: Add sysfs_bin_attr_simple_read() helper
+  treewide: Use sysfs_bin_attr_simple_read() helper
+
+ arch/powerpc/platforms/powernv/opal.c              | 10 +-------
+ drivers/acpi/bgrt.c                                |  9 +-------
+ drivers/firmware/dmi_scan.c                        | 12 ++--------
+ drivers/firmware/efi/rci2-table.c                  | 10 +-------
+ drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++----------------
+ .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
+ fs/sysfs/file.c                                    | 27 ++++++++++++++++++++++
+ include/linux/sysfs.h                              | 15 ++++++++++++
+ init/initramfs.c                                   | 10 +-------
+ kernel/module/sysfs.c                              | 13 +----------
+ 10 files changed, 56 insertions(+), 85 deletions(-)
+
 -- 
-2.44.0
+2.43.0
 
 
