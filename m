@@ -1,297 +1,106 @@
-Return-Path: <linux-acpi+bounces-4693-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4694-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F300489AB2C
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 15:54:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922EB89AB35
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 15:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 220EA1C20ADD
-	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 13:54:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C31231C20C6A
+	for <lists+linux-acpi@lfdr.de>; Sat,  6 Apr 2024 13:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70EC374DD;
-	Sat,  6 Apr 2024 13:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2194374E9;
+	Sat,  6 Apr 2024 13:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NbBZ6lx7"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C96C2D05E;
-	Sat,  6 Apr 2024 13:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB99F34CD8
+	for <linux-acpi@vger.kernel.org>; Sat,  6 Apr 2024 13:58:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712411661; cv=none; b=jBPrjJY2Psv4Resl/TlgFsetGc8sDS2uQOSSXsNHEa7QeyFTm8AlWF1kLHiK1xiZjY9hcPhx/CDcYXxSAZRfA4VMY/YBxHUfvnq+dEbkbY0mnFpa6/F/vMbqy6nv/LIbPo9pgwHer3bz51sqrAYst+tV+0EWyHsIMfLeoLU0yK8=
+	t=1712411928; cv=none; b=OGLjeqKumpcdrj0T8FZ9iQdDvAETK651h87+HyyCk3XIjbe4t+OhBvw5PUrs6eFf9EpcsxzaxvlLrrMJE7sD9vrLZgvX/EDNiEQ02MNEO9smHaxk4erulUi3sGrOkCAKIxgRVoBTLTCZbus+pay5hvI/sWZELHj6likG3tERaFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712411661; c=relaxed/simple;
-	bh=++C446erfBmkIadT7UESxN+hRSqQcV8WtV6QE89m0GM=;
-	h=Message-Id:In-Reply-To:References:From:Date:Subject:To:Cc; b=Ri2tzIyzkDCL/JJtYu9lpo++jFAQJHcEbYk9RS5VZCXSXSqOCCPNc+vAWn87TIRjxtxSoiR9UOxRtANhN6xxiZ9EzQWC8TSsnoJCLZBPyiV7YVOHV4Wu0cEDi7fJAHL90K9tNnAeyBbzj0Z3Mkton1aBsnhEtWx6xYCL+FJH2E0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	s=arc-20240116; t=1712411928; c=relaxed/simple;
+	bh=HiYlmnV1JxvSmus2kMoCceHatoMsYMccco3jmZPU9mU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nc7iFjKfwt+JLLJY0d99y3EGP+j4h+Z9Bh/pNb/Y4nEH83FTt1QNveb+gzBRUsH2jVgn98GRlVCR5VNZeyjWjizC9F4/qhypQEbs2/5G7lMW3kyL0+4obwEt4fqR6KlAQ0Kow/KNsZOS5X43CWYWGYjOuydq2U3RwgFPYmVQztE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NbBZ6lx7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712411925;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tCV++6cziM8hD67Ei5JbV2ZY6ibWidsrdMVvhhP3Y0k=;
+	b=NbBZ6lx7tNTZiye5SRFC+kP7Cpgy+g40mRk5oyQ+olBUeqmOLn3M/n2R3+Y3a/x3hpn/UX
+	lJ2/VFB+V3RKAqd2B9DopNWNkzMpt6LaHp7kTz80eJkrNxO0JQfHJ/Mg2Rc8/U+oSr2J6P
+	tNiLucOb4H8K6Fn4ZyAqdAKR+/QlZZw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-wopHcyHHM3CN8SeSxZk0IQ-1; Sat, 06 Apr 2024 09:58:39 -0400
+X-MC-Unique: wopHcyHHM3CN8SeSxZk0IQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 879992800B3F1;
-	Sat,  6 Apr 2024 15:54:16 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 8084A9926B3; Sat,  6 Apr 2024 15:54:16 +0200 (CEST)
-Message-Id: <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
-In-Reply-To: <cover.1712410202.git.lukas@wunner.de>
-References: <cover.1712410202.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Sat, 6 Apr 2024 15:52:02 +0200
-Subject: [PATCH 2/2] treewide: Use sysfs_bin_attr_simple_read() helper
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, intel-gvt-dev@lists.freedesktop.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4823685A588;
+	Sat,  6 Apr 2024 13:58:39 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.50])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B30972166B33;
+	Sat,  6 Apr 2024 13:58:38 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH 1/2] ACPI: x86: utils: Mark SMO8810 accel on Dell XPS 15 9550 as always present
+Date: Sat,  6 Apr 2024 15:56:24 +0200
+Message-ID: <20240406135625.17118-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Deduplicate ->read() callbacks of bin_attributes which are backed by a
-simple buffer in memory:
+The Dell XPS 15 9550 has a SMO8110 accelerometer /
+HDD freefall sensor which is wrongly marked as not present.
 
-Use the newly introduced sysfs_bin_attr_simple_read() helper instead,
-either by referencing it directly or by declaring such bin_attributes
-with BIN_ATTR_SIMPLE_RO() or BIN_ATTR_SIMPLE_ADMIN_RO().
+Mark this as always present so that the dell-smo8800 driver
+can bind to it.
 
-Aside from a reduction of LoC, this shaves off a few bytes from vmlinux
-(304 bytes on an x86_64 allyesconfig).
-
-No functional change intended.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- arch/powerpc/platforms/powernv/opal.c              | 10 +--------
- drivers/acpi/bgrt.c                                |  9 +-------
- drivers/firmware/dmi_scan.c                        | 12 ++--------
- drivers/firmware/efi/rci2-table.c                  | 10 +--------
- drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++-----------------
- .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
- init/initramfs.c                                   | 10 +--------
- kernel/module/sysfs.c                              | 13 +----------
- 8 files changed, 14 insertions(+), 85 deletions(-)
+ drivers/acpi/x86/utils.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-index 45dd77e..5d0f35b 100644
---- a/arch/powerpc/platforms/powernv/opal.c
-+++ b/arch/powerpc/platforms/powernv/opal.c
-@@ -792,14 +792,6 @@ static int __init opal_sysfs_init(void)
- 	return 0;
- }
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 90c3d2eab9e9..c7af2d2986fd 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -100,6 +100,15 @@ static const struct override_status_id override_status_ids[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Venue 11 Pro 7139"),
+ 	      }),
  
--static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
--				struct bin_attribute *bin_attr, char *buf,
--				loff_t off, size_t count)
--{
--	return memory_read_from_buffer(buf, count, &off, bin_attr->private,
--				       bin_attr->size);
--}
--
- static int opal_add_one_export(struct kobject *parent, const char *export_name,
- 			       struct device_node *np, const char *prop_name)
- {
-@@ -826,7 +818,7 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
- 	sysfs_bin_attr_init(attr);
- 	attr->attr.name = name;
- 	attr->attr.mode = 0400;
--	attr->read = export_attr_read;
-+	attr->read = sysfs_bin_attr_simple_read;
- 	attr->private = __va(vals[0]);
- 	attr->size = vals[1];
- 
-diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
-index e4fb9e2..d1d9c92 100644
---- a/drivers/acpi/bgrt.c
-+++ b/drivers/acpi/bgrt.c
-@@ -29,14 +29,7 @@
- BGRT_SHOW(xoffset, image_offset_x);
- BGRT_SHOW(yoffset, image_offset_y);
- 
--static ssize_t image_read(struct file *file, struct kobject *kobj,
--	       struct bin_attribute *attr, char *buf, loff_t off, size_t count)
--{
--	memcpy(buf, attr->private + off, count);
--	return count;
--}
--
--static BIN_ATTR_RO(image, 0);	/* size gets filled in later */
-+static BIN_ATTR_SIMPLE_RO(image);
- 
- static struct attribute *bgrt_attributes[] = {
- 	&bgrt_attr_version.attr,
-diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
-index 015c95a..3d0f773 100644
---- a/drivers/firmware/dmi_scan.c
-+++ b/drivers/firmware/dmi_scan.c
-@@ -746,16 +746,8 @@ static void __init dmi_scan_machine(void)
- 	pr_info("DMI not present or invalid.\n");
- }
- 
--static ssize_t raw_table_read(struct file *file, struct kobject *kobj,
--			      struct bin_attribute *attr, char *buf,
--			      loff_t pos, size_t count)
--{
--	memcpy(buf, attr->private + pos, count);
--	return count;
--}
--
--static BIN_ATTR(smbios_entry_point, S_IRUSR, raw_table_read, NULL, 0);
--static BIN_ATTR(DMI, S_IRUSR, raw_table_read, NULL, 0);
-+static BIN_ATTR_SIMPLE_ADMIN_RO(smbios_entry_point);
-+static BIN_ATTR_SIMPLE_ADMIN_RO(DMI);
- 
- static int __init dmi_init(void)
- {
-diff --git a/drivers/firmware/efi/rci2-table.c b/drivers/firmware/efi/rci2-table.c
-index de1a9a1..4fd45d6 100644
---- a/drivers/firmware/efi/rci2-table.c
-+++ b/drivers/firmware/efi/rci2-table.c
-@@ -40,15 +40,7 @@ struct rci2_table_global_hdr {
- static u32 rci2_table_len;
- unsigned long rci2_table_phys __ro_after_init = EFI_INVALID_TABLE_ADDR;
- 
--static ssize_t raw_table_read(struct file *file, struct kobject *kobj,
--			      struct bin_attribute *attr, char *buf,
--			      loff_t pos, size_t count)
--{
--	memcpy(buf, attr->private + pos, count);
--	return count;
--}
--
--static BIN_ATTR(rci2, S_IRUSR, raw_table_read, NULL, 0);
-+static BIN_ATTR_SIMPLE_ADMIN_RO(rci2);
- 
- static u16 checksum(void)
- {
-diff --git a/drivers/gpu/drm/i915/gvt/firmware.c b/drivers/gpu/drm/i915/gvt/firmware.c
-index 4dd52ac..5e66a26 100644
---- a/drivers/gpu/drm/i915/gvt/firmware.c
-+++ b/drivers/gpu/drm/i915/gvt/firmware.c
-@@ -50,21 +50,7 @@ struct gvt_firmware_header {
- 
- #define dev_to_drm_minor(d) dev_get_drvdata((d))
- 
--static ssize_t
--gvt_firmware_read(struct file *filp, struct kobject *kobj,
--	     struct bin_attribute *attr, char *buf,
--	     loff_t offset, size_t count)
--{
--	memcpy(buf, attr->private + offset, count);
--	return count;
--}
--
--static struct bin_attribute firmware_attr = {
--	.attr = {.name = "gvt_firmware", .mode = (S_IRUSR)},
--	.read = gvt_firmware_read,
--	.write = NULL,
--	.mmap = NULL,
--};
-+static BIN_ATTR_SIMPLE_ADMIN_RO(gvt_firmware);
- 
- static int expose_firmware_sysfs(struct intel_gvt *gvt)
- {
-@@ -107,10 +93,10 @@ static int expose_firmware_sysfs(struct intel_gvt *gvt)
- 	crc32_start = offsetof(struct gvt_firmware_header, version);
- 	h->crc32 = crc32_le(0, firmware + crc32_start, size - crc32_start);
- 
--	firmware_attr.size = size;
--	firmware_attr.private = firmware;
-+	bin_attr_gvt_firmware.size = size;
-+	bin_attr_gvt_firmware.private = firmware;
- 
--	ret = device_create_bin_file(&pdev->dev, &firmware_attr);
-+	ret = device_create_bin_file(&pdev->dev, &bin_attr_gvt_firmware);
- 	if (ret) {
- 		vfree(firmware);
- 		return ret;
-@@ -122,8 +108,8 @@ static void clean_firmware_sysfs(struct intel_gvt *gvt)
- {
- 	struct pci_dev *pdev = to_pci_dev(gvt->gt->i915->drm.dev);
- 
--	device_remove_bin_file(&pdev->dev, &firmware_attr);
--	vfree(firmware_attr.private);
-+	device_remove_bin_file(&pdev->dev, &bin_attr_gvt_firmware);
-+	vfree(bin_attr_gvt_firmware.private);
- }
- 
- /**
-diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-index 427d370..6d4b51a 100644
---- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-+++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-@@ -73,14 +73,7 @@ struct odvp_attr {
- 	struct device_attribute attr;
- };
- 
--static ssize_t data_vault_read(struct file *file, struct kobject *kobj,
--	     struct bin_attribute *attr, char *buf, loff_t off, size_t count)
--{
--	memcpy(buf, attr->private + off, count);
--	return count;
--}
--
--static BIN_ATTR_RO(data_vault, 0);
-+static BIN_ATTR_SIMPLE_RO(data_vault);
- 
- static struct bin_attribute *data_attributes[] = {
- 	&bin_attr_data_vault,
-diff --git a/init/initramfs.c b/init/initramfs.c
-index da79760..5193fae 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -575,15 +575,7 @@ static int __init initramfs_async_setup(char *str)
- #include <linux/initrd.h>
- #include <linux/kexec.h>
- 
--static ssize_t raw_read(struct file *file, struct kobject *kobj,
--			struct bin_attribute *attr, char *buf,
--			loff_t pos, size_t count)
--{
--	memcpy(buf, attr->private + pos, count);
--	return count;
--}
--
--static BIN_ATTR(initrd, 0440, raw_read, NULL, 0);
-+static BIN_ATTR(initrd, 0440, sysfs_bin_attr_simple_read, NULL, 0);
- 
- void __init reserve_initrd_mem(void)
- {
-diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
-index d964167..26efe13 100644
---- a/kernel/module/sysfs.c
-+++ b/kernel/module/sysfs.c
-@@ -146,17 +146,6 @@ struct module_notes_attrs {
- 	struct bin_attribute attrs[] __counted_by(notes);
- };
- 
--static ssize_t module_notes_read(struct file *filp, struct kobject *kobj,
--				 struct bin_attribute *bin_attr,
--				 char *buf, loff_t pos, size_t count)
--{
--	/*
--	 * The caller checked the pos and count against our size.
--	 */
--	memcpy(buf, bin_attr->private + pos, count);
--	return count;
--}
--
- static void free_notes_attrs(struct module_notes_attrs *notes_attrs,
- 			     unsigned int i)
- {
-@@ -205,7 +194,7 @@ static void add_notes_attrs(struct module *mod, const struct load_info *info)
- 			nattr->attr.mode = 0444;
- 			nattr->size = info->sechdrs[i].sh_size;
- 			nattr->private = (void *)info->sechdrs[i].sh_addr;
--			nattr->read = module_notes_read;
-+			nattr->read = sysfs_bin_attr_simple_read;
- 			++nattr;
- 		}
- 		++loaded;
++	/*
++	 * The Dell XPS 15 9550 has a SMO8110 accelerometer /
++	 * HDD freefall sensor which is wrongly marked as not present.
++	 */
++	PRESENT_ENTRY_HID("SMO8810", "1", SKYLAKE, {
++		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		DMI_MATCH(DMI_PRODUCT_NAME, "XPS 15 9550"),
++	      }),
++
+ 	/*
+ 	 * The GPD win BIOS dated 20170221 has disabled the accelerometer, the
+ 	 * drivers sometimes cause crashes under Windows and this is how the
 -- 
-2.43.0
+2.44.0
 
 
