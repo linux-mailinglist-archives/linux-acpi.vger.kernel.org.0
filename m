@@ -1,73 +1,72 @@
-Return-Path: <linux-acpi+bounces-4701-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4704-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B6889B0D0
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 14:39:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA8389B0E5
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 14:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08DA31F216AB
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 12:39:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A47B20DF0
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 12:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2562B2375F;
-	Sun,  7 Apr 2024 12:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F3328DD8;
+	Sun,  7 Apr 2024 12:49:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD5E2BAFD;
-	Sun,  7 Apr 2024 12:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E03E4C7B;
+	Sun,  7 Apr 2024 12:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712493561; cv=none; b=VK1SVdIUG4QO0E4e/rfpaiWi91mCSaO18hnrqHN0BCqPsugRo748Pyf1/xqw/3/yf68OZ2SsVGrkm6btZjNPZVG2MXrC/h0W8JEjzfd0hntFxP3+rbjvYgP0D9Bw5ZivpIPrD1E9pErb8wzjrdG0OJkXFoyRHPn0kgVOtFlJx9A=
+	t=1712494180; cv=none; b=j62qt1VXQr8n+q/2P672WyalYKb8OHc5M6JJVE3VIQN0fnpkkxg5QygW3IHIYdAe6N1gfudifoUfGO1zRuZfOq9gR1k4vf1x7zn24CxwuQcITblVdy4mloo85YC8BHTuZxqG37D4QllKhOEuUkH3xeOu+HIquVPO9xWLLHV89UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712493561; c=relaxed/simple;
+	s=arc-20240116; t=1712494180; c=relaxed/simple;
 	bh=J1H/qX8SRFDlHJ/QBkm7cFTa1sYh0vN4k5jahtXiAaQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pUQGVzu/ZwFNkvDqQ/iwJpy9vd3ORzaA8LgeUeVS4EkprUFwv+JKmSY6ghpX68m8mI7BdMSnmSk6/ugU+xyN/uWIWmLdpHkoLyWiwWWTFmn043vW/eHe7rQ7LSySCipA+eoTudEUbeylnWmhiOaeZs6IftuSpAHkKJvNOhPS5wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version:Content-Type; b=UMFyPKfVQso35X0c1TW6cQ5hMTV5uh4gxvHeky3pMzYHSb0OC+ILfQIObatVlJkYYLrPuTuCFj9Pm9G2E4o1fI/JQDgMLEmVERLGMVoQU5veCSTQ/ftKk+9xHo/+hR3WrChcntwquCBh1cqguHbkqaS/u2z/4HWdBhYTri16+Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1e2be2361efso6417585ad.0;
-        Sun, 07 Apr 2024 05:39:18 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6ecee443c79so411687b3a.0;
+        Sun, 07 Apr 2024 05:49:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712493557; x=1713098357;
+        d=1e100.net; s=20230601; t=1712494178; x=1713098978;
         h=content-transfer-encoding:mime-version:list-id:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
         bh=gH1KKOCelF2ThGU1cHU4FIyi0LwXgGcMVoj+JXuvN68=;
-        b=vg5GThUmBhLZLqR7YeFet6S30bYvAc28z8jKXY7XPcqSg6gNSYnp4u/3qLl5dxHEJR
-         IwxIShFsQtbtUrAfGibJMyvwkENO7V+0AFQLx9DDY34PWZnplD1QHJSl5v6gncNrNhGu
-         jwIF7px5xObWGtg1lOv+TP60jMQWFSq8pXy5VIec1n5McacCNqGuISWplOffjSO2h3A1
-         xSr2NZBR5esF3sWhjXy2SwCFYnvYN+AALlu3S184fHN+yi8iglA9jaFLDgVG7l+oMuO7
-         grS1OwU1HkDAzvsj3jk0k4GDLbxVztZ6D2F6j4Kxet9ZImZPi9/pCAKIVyaeyOJt4tzk
-         exzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJLW3Q4knEX5vy21AgGdd++yeBcbM7ii9wYTGIIxO3erWzoqiay54FyyXH6suuI0aBX1sn1vnofb8lR41nzuO19KxWhvf3se4x4N4d1jmuzVu7nYjyQcUI+zqqLE/nQcNkDYC9OO5pw06i+R631APetr+PaEDU2UwTqsdjg1QnikLwFyayeX8lA1kmrYEj4+tO9wcNWDuEJZ3kYn4TUBU6Kni6HW9Zl80aKEdDTJTqkAwkGsrarm7Qzd91hU+gJ/FLD24=
-X-Gm-Message-State: AOJu0YxGLrNZMT3iBbQLyo9o7VeA0haQSuCGSaImLBrF/d9HPuQ/uiVV
-	nOdpTWLQIDANd3wHQGPaRGseXfagr0ouDpBxXNMgIcVcKx0+m6uZ
-X-Google-Smtp-Source: AGHT+IHyvAb+guuz0e00AaSmzIzllRxt4szwRJ66ajt1UGZg+b5metBcaJu7z1HTr0mFKQWF0c3bmQ==
-X-Received: by 2002:a17:902:e5c1:b0:1dd:b883:3398 with SMTP id u1-20020a170902e5c100b001ddb8833398mr7436090plf.4.1712493557482;
-        Sun, 07 Apr 2024 05:39:17 -0700 (PDT)
+        b=MIJA0Wot1Qghh8EQLxxyyfbLrBYRKDYh7aNXOqdQNmN+CJsqDCipBR5eWRnI5x70mA
+         05ThpeHeLEPSk6/XVVESA2RV4GWzaoHMel2tjwzV5syjTsJ2BwN372/5wZGIiAqGKZNd
+         KOEQj1kF0io5iNGktVOjZ2+3e4fvLsI0NL5ReralF9Z7Pu5I304/F0+Kf1uuuYCmZv5Q
+         2ZlumbaNpx+/rMqHYmU6zX1KXstrozYLXpsNSXFrTdivtIvQAzfBxZKxd6W4Sp0ozlch
+         0OfRM6kGgQTZGxvVUc2CRGBFTIw0ypRD99rhEY8QzyRjk7ammTF+7PhoJvKBH4+8tb3h
+         Rjow==
+X-Forwarded-Encrypted: i=1; AJvYcCVhM7fTIZhDD8Qshqy0I1Kc+w+bKR6q8OPoXVvUfiT80bnhn7cjloNKQKeVCO8z9UihmhScWZomyQ7t6oEtiBuNbbVInSnLvJGIejYjn1+1ZZ1AY36HRJCcflcMJDtd5ptl4mtZSwOMzD3GmTgCNhyb0VyR8VBUlZedclQ9Q+uEKfsSDBV4FcMLrlqNd2m52tHKeGXWm+1p4hZQ6xW5EGTpMODLCktTwfLZNAIl6jExjFoBha2wYg5K2vYFtiCVjCQKJ/M=
+X-Gm-Message-State: AOJu0YzZ+GU6xzTsuqvNvmEw68gC55YnLvWajrm9EvkASsqJwWIquiNj
+	/LnTlCGxp9e+fasH2hrXUfs6HHq081bQJQYuC4hUCFfUKzcv+uh4
+X-Google-Smtp-Source: AGHT+IGmwZEw1xm9D6NmAXuVXmOZeBYvUcoCH5DdguExSt3s8bitCu93PDdAZPDeUUAbx3SB5z+oag==
+X-Received: by 2002:a05:6a20:2452:b0:1a7:17d:8863 with SMTP id t18-20020a056a20245200b001a7017d8863mr8555787pzc.4.1712494177572;
+        Sun, 07 Apr 2024 05:49:37 -0700 (PDT)
 Received: from tgsp-ThinkPad-X280.. ([223.153.78.230])
-        by smtp.gmail.com with ESMTPSA id h15-20020a170902f7cf00b001e27c7ecd24sm4828518plw.283.2024.04.07.05.39.10
+        by smtp.gmail.com with ESMTPSA id e7-20020a63aa07000000b005f09e966e8asm4495442pgf.60.2024.04.07.05.49.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Apr 2024 05:39:17 -0700 (PDT)
+        Sun, 07 Apr 2024 05:49:37 -0700 (PDT)
 From: xiongxin <xiongxin@kylinos.cn>
-To: xiongxin@kylinos.cn,
+To: mario.limonciello@amd.com,
 	Rafael Wysocki <rafael@kernel.org>,
 	hdegoede@redhat.com,
 	linus.walleij@linaro.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
+Cc: Basavaraj.Natikar@amd.com,
+	Shyam-sundar.S-k@amd.com,
+	linux-pm@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	platform-driver-x86@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Basavaraj.Natikar@amd.com,
-	Shyam-sundar.S-k@amd.com
+	linux-gpio@vger.kernel.org
 Subject: [PATCH v4 1/4] include/linux/suspend.h: Only show pm_pr_dbg messages at suspend/resume
-Date: Sun,  7 Apr 2024 20:39:03 +0800
+Date: Sun,  7 Apr 2024 20:49:15 +0800
 Message-Id: <20230602073025.22884-1-mario.limonciello@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230602073025.22884-1-mario.limonciello@amd.com>
