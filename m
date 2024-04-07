@@ -1,324 +1,162 @@
-Return-Path: <linux-acpi+bounces-4706-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4707-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E30E89B270
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 16:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 700D989B2B3
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 17:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 899461F21127
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 14:17:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06FB31F214B7
+	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 15:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9470F374F1;
-	Sun,  7 Apr 2024 14:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2159F39FE5;
+	Sun,  7 Apr 2024 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="olxlRaiX"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qSha4Hyp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2139.outbound.protection.outlook.com [40.107.96.139])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3BB2B9C1;
-	Sun,  7 Apr 2024 14:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.139
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712499453; cv=fail; b=KD8L49AdlvrL87dBbYKJhAlbMSDN6y6FcMDJFQ1Tu93yTHR2mHw8oqrQH9iszS6W/DA6jv1gM0eM5VXgPbtqeAXEdl7h5eY+71MPuKNpdYL8GkSNlkuw/nNOF181NxSr/wHatWUV3o39JtH9q7+8L8lVjVujBGssIOhALg5eRF4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712499453; c=relaxed/simple;
-	bh=CVHMfM5c86uCkNsErN3jRJnVb3nVAIlmpAPn85XjWzQ=;
-	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MltKV9nbOkqrzod9cPobWs+qY8iESPBSXerqSuQm5o/p3p2h3Isygj6utpCRUPaYCapLqxtzyI/bIHO9+5FeUGL2PoPXFA7f08Dn5gLEe4lPdSue5FcgQTSrf1ylRmrgziF/Wh2zKLIqTo1MiBFaawae0YBZzQjgxzsw6bZ7Ef4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=olxlRaiX; arc=fail smtp.client-ip=40.107.96.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=inBWmpuQyj1wN06Zf3+2NCYqOch2r2jvd00HcAWQc1HNhgarJ1cAiimLN9LTSC7yGt8jufjg++uuspepz7rQq3EY0OGpgaiHpN1T+A8zT7KIbFFkkokcL/FNeYgOzQ+5F/ugXltnTNHJLbDC2CmOVftD1YPoo/SpBJUm01Lj0IR2BzXkmON8iXs9WNwVgGdmjL+yIlMUtaSmMfLTpuz+9VEea1vpchhR6OPQs5EA+1apGNbGDyZ0Ui6IYljNJV9JatvJsVvtIbQTOZesRp6y8CFYswraQjWGuGxpjTTH764LHNrCPIKXjsvLsVHr+62W01BQzBPXL5alXNMx4bxxFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hy3hJJCgosowhS+YWzmjo54G+Z5gap/BQkjqWqC09zg=;
- b=csBzM7M+YyjPNtYUA82ne5+izbH9du0O/2thX94cFcwfuTG9PWvsj8CijGh4/RQz2aFPO+XHf9HJJpl2p4D6ATQ9RiAwXzMgrMmpqsrF1KwlMGkVmzNy63lsuhl1dWczYISCc7h0737W5NFszsWD4CYsWUxD9+vjYgiNH8OGbb7okbTcDNoAwwaNawNwqDo4/jD/IEKkndMN20ptxnaEb2It5kmJVZJdejXFO3d29CmWMuzs2bHc5ARTQDKBRlNWm+uxeJ6qsJXfNvE6LY8pjExHfhUNw6mXMRLFqPwXKS1O46sXS4T9Yth/FXQJ22Cz6CJBblga4GkaHLD03pqZwQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hy3hJJCgosowhS+YWzmjo54G+Z5gap/BQkjqWqC09zg=;
- b=olxlRaiXCF9LOvhwouugNOKTJ2RKzi7GnDmO87Y/wsa6vz//XqfPJJ+nnLGIYZ9QApuw/AbO7vOVo6xi8xuws3eiNHI37t3vt+QwS4CUU787bKmHSqeJ/iLne/8YYmvGqh3moNMLp8DQaB1YwC1p9x4pF/x8jfLNOvb0HIxpwJg=
-Received: from BN8PR12MB3108.namprd12.prod.outlook.com (2603:10b6:408:40::20)
- by IA1PR12MB8261.namprd12.prod.outlook.com (2603:10b6:208:3f7::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Sun, 7 Apr
- 2024 14:17:28 +0000
-Received: from BN8PR12MB3108.namprd12.prod.outlook.com
- ([fe80::43a5:ed10:64c2:aba3]) by BN8PR12MB3108.namprd12.prod.outlook.com
- ([fe80::43a5:ed10:64c2:aba3%6]) with mapi id 15.20.7409.042; Sun, 7 Apr 2024
- 14:17:28 +0000
-Message-ID: <f7e50ef5-44f1-4b39-8d60-9e271b294ea0@amd.com>
-Date: Sun, 7 Apr 2024 10:17:26 -0400
-User-Agent: Mozilla Thunderbird
-Cc: yazen.ghannam@amd.com, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org
-Subject: Re: [PATCH 2/2] RAS/AMD/ATL: Translate normalized to system physical
- addresses using PRM
-To: John Allen <john.allen@amd.com>, rafael@kernel.org, lenb@kernel.org,
- bp@alien8.de
-References: <20240326212640.96920-1-john.allen@amd.com>
- <20240326212640.96920-3-john.allen@amd.com>
-Content-Language: en-US
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-In-Reply-To: <20240326212640.96920-3-john.allen@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BN9PR03CA0957.namprd03.prod.outlook.com
- (2603:10b6:408:108::32) To BN8PR12MB3108.namprd12.prod.outlook.com
- (2603:10b6:408:40::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED18485;
+	Sun,  7 Apr 2024 15:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712503983; cv=none; b=K7Av1UtgiCl9J2vrO7vLEdv09e23+GH+QbHd5076O5gD67PUs5d6DiqJUJ9BEISAVyOjhqwfD87uM0Mlh2qV1VL4Fo9ldmJ0A7qBtjU/wpMcgN3pYDwH5fLdIamsXqpcrWWHNcp9dAO+0SuV31B/2+g/aK/+pSyLIxmNLKzCd74=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712503983; c=relaxed/simple;
+	bh=AvRYUhFInEf5FxUp/Xb5Vz8WYz3KdPlt9mAh9CIAq7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f/XLlDcjgdwD969C0rcTSlzEWIUUA74IeYjYkt0wkMFjdfsU3SvPuMQlJTzZ8sXHKnXvtvBBjizhRT4yCKJQrrLW4wOb55hjJ1v10KcFtd19s8SgRbAI8Y48b9iL7GorfLUj5sJioCsO5HK5Y3m5dqBqZG6IPicId2U15YI4kbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qSha4Hyp; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=MLm6iC4WNTdIn+XgL/qIwT01bSJfAFu6/aMBhdI31mM=; b=qSha4Hyp47jW+Iw55N4ejDVPWe
+	R50J4MZBkjl1ljsl8lmbCyXXeRCtIkvr9H8+MhKWL1RqgS0YadiGyTeVkQtJaLxMBUmny++XLamZo
+	naMhlFfBA9Wj1dQyIMiwAlars/PfCZtyAe8Qt8T38x8MmzZhs7Y1Ke7WKWdMmJ+2iKSuM9sTd8kWc
+	ti03BmHsO/GPxs1BL3ZrhSW3dzRvZi1ubQEIkPXTCog0N0uUXnTD9dbqqZoA4UhU85Rav2dPWANty
+	RjPUjL9YjSqCk29sHdsFWuEV0tSwNWrASf/6aoPtQvkCY0ATh+zI1NiDBPE0hrxAeAGIGnclSDIPv
+	c5aq+uNQ==;
+Received: from [50.53.2.121] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rtUVo-0000000CuIr-3hLx;
+	Sun, 07 Apr 2024 15:32:52 +0000
+Message-ID: <7a8bc242-d41e-425b-9a62-36835aca7721@infradead.org>
+Date: Sun, 7 Apr 2024 08:32:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3108:EE_|IA1PR12MB8261:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	jJd4CG2iTM0gj6bYbOwj2qwTTSAO99OVZ+YLtGoEGk7DorWavRwGbI4WOAsIzWiIlIxL6+Ge892WJfnH6pe9FBAXOOxeOIpmXLckPT+Us9JN3BrJTVwdzSqpMYBsec9ypWk6cIJEKNphvMtQ0Ah4edAATvnoOFDCQhXWZqZIOk5a/b4+fnmLakhOIPQwHD/A2k6XlDCn47e4APPZE8w5MHsIqWj7sspFui8VCUuvgy10p/X3Q1qnKLRq9lWVmcZy4+M4w/tPrhgI3vVAVzVFLMKFO4/DMA9HCB4+4atF6yys/PImPKzXQPjCTifmDfU/rhvzrHALLaO3tstqfDsTATAzqdMzLhj7z1AD0vwUO4Xg7SURpnQDllGYNNBkuOs7Yr/mnngUNxxcCSH3vTcnmL97XPHL99neKsfJQOZWVMU9uC5civEkLWPgukONzxqFZqQeHT+xMUxzC3+7Z5O5bDCTQOqKmQuaIz6+UtLDh9B+lQs68lK+oWCDXUGUDTCKk2zo8c1vr4G+iMaGrj3rIoL1lzYQuHPZAwC1tTnl8cYtpKSzWCo0VgeBfAHZ1NYd9ssSM8dwM8+R8KzUgiFUBrIlXt8uN4ZhaT70hqAThjkQg3cRP78IugZGohTATC+s5RMMp0VumTM4OPDkGHP3e+VH7tzq89WzLqj9kJFbz9A=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3108.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VFI4Qm91OW05dGJLMUR5cG9ScTBIem5BSDVxSm8vanBTRWxHaVl0b2lQOXZZ?=
- =?utf-8?B?NGFpU1lKUUNwSkZEMkIrdFBHandIbnpmR3RHbkxEb09pamdYT01WVFZNcE11?=
- =?utf-8?B?V3JnKy9aTEFuejZnY2Q5YkN1VWlqZ1E4dVpSR2FjeDFHd0prdi8zcXdRRmpI?=
- =?utf-8?B?bnFLalhVcjNIK3l1VGh5dk5pVE5nbFRhZGo3Rkp4NzBrNFFXQk1UZ1NjRUhS?=
- =?utf-8?B?amZXeERRK2JyT0kwQkYrUi9JU0E2WkxJTWtZaExaWHJHaERMajFQdGN4NVdr?=
- =?utf-8?B?Y09POThUK0RDYzkwTVpDWTNwQ3pHSUJYYjE5ZUR3ajVublpuckhva2ZpWHFV?=
- =?utf-8?B?NUJHNTlwTFJ4RFBSMzIwUDZJSUJVTzZyaU9pWkU3dTRMUnBUSm9TeU8wbWZH?=
- =?utf-8?B?WThEbVIxY0pLWWVKNTFTZUFKTWNEdnhBcjk3SjhuWHhTdmhmaTdPS0Y3YlA0?=
- =?utf-8?B?WGpHTi93ZU1KaVNNazVkZFN2Z0sxNDEyTDI2eTYxSXM4ZDlDN015aE9Benhi?=
- =?utf-8?B?SS9OT1FjY3BuK3RFUW5PallJUm5kOW90Yk44MFBnQXB3L3ZYUlk2L2VtaUV2?=
- =?utf-8?B?QU1CTGNzd0Q3NU1ZTEpPdUVRZG5wVlFwWE9DSDBvMTNxc2p6dDRWcVRwb09l?=
- =?utf-8?B?bTFaTVBraXppMlJvRzZrc1JTdW5Ndm9PeG9aTXJPeTZMSnlPZjdZV2lZY2JN?=
- =?utf-8?B?NGREUy95WmFoUmZYL1h1ajYxZVgvTDlFU3F5U09hNThhYnQ2WWl1dnBmb1JU?=
- =?utf-8?B?aFRyQ1lLc1M1eWV5MVFaL2RlbWhxMVpvbG1xTmQ2NVpCeDlveG8zNmxCOWJa?=
- =?utf-8?B?V1hUc3hxUG5Bc2RvYzhGZmxBMEVzSGsvTTkzdFhYdkF3QXJMbWU2MTNtblFQ?=
- =?utf-8?B?R2pacnlkSEhCU2Rpa2ROaVlqMHAvQWFmbk1yRHBma29NeFVraUxVbWFJbi9W?=
- =?utf-8?B?TTlNV2xwckxhR1phTTRmUEppWFovbGNFSFNsNjNRencrZ1kwK2tPRTdSNzky?=
- =?utf-8?B?M3hlaWdnYzhLVkhQU1l3alN5d1hiMGJXeHNlYU4yRGV3VkE5RzNFNXR0Rzh1?=
- =?utf-8?B?MkhhV2hTTDZrMWVnV293dExBMjNwelB0YWNrYUdMTktMQXlGUkJ0NTlYbWcy?=
- =?utf-8?B?OGVnR1UvSzJRbkZrUTBiTmYzSWNUMUVRTjd5S1ZkWXdKWkY1SUpZek9NR0NE?=
- =?utf-8?B?TCtlVlUzTnJ6b3ZYdzkyLzFwRzN6TzZrM0hBZWtFMzNxZzNTU0IvZWRCa3d6?=
- =?utf-8?B?ajJ3cml1YXVOTFFlM3NURkxBajd6dWVCd3c1Slg1V283YnFWdnkyczFLdWdE?=
- =?utf-8?B?MnAvVEI3UkF6YVBpM3FJQXR2SzFFNEFtWU45M2Q4a0lPR2NuS3BjTVhqWTBR?=
- =?utf-8?B?Y29IaUFkM2lLVndqWm1uSUVDSzdnb3BSL1VhVkdtQXJFM3lyTnVyM1c3L1Vt?=
- =?utf-8?B?cE5KaGRRVzAyenQzQkI2bWwyMmt3UHpucTMzY0o3V0dBS3crWjFpL0JjVTNU?=
- =?utf-8?B?RG84RlhlV2dMMGdKMmZhQ3RMQ0pGaXYwQkZuZ3NXWlVwQndwTWNtV0Z4WE40?=
- =?utf-8?B?V2g3THdNWDU3amdMa29SUWNXOFZYSmM3S2VGM1pEb1hMcTNXK1IyekVseStJ?=
- =?utf-8?B?VSs2Q0tJejlhL2k5RytCV0xjeVpBVGJ3RkNzNmdQME9xQzF4Zi8vaGgwUUF3?=
- =?utf-8?B?UXNzNmhyclVGbnBBdXk2ZmpIMnhKWk43eENLMlRKbFp5eGphZ3diV0hBNFRi?=
- =?utf-8?B?VSs5RnVBWDc1S1NNLzdLMDdjZ2dQcm9hS3J4RnpaZXUrbHAzZ0R2ZVFndUV0?=
- =?utf-8?B?eGloL0JscGsxY2JMNTlhNVJJOGVQT05RK3lFcUIzVWQxSGlteWQrNWFEN1lJ?=
- =?utf-8?B?MElDZDlxbGgrVUtpbHpIU0Fjamw5dTBNbXppLzh1TUM0ODZUME5Oa2dhcmJs?=
- =?utf-8?B?YkoxYXNpdnUvSC9qM2VQbkFGcy9LZko5SzloRVlhUXhTb254STVnTWlLdS9l?=
- =?utf-8?B?STduUjdESWQwSWk3T1U3YmxqZ2Z4MW5EQTRydTZpUUFDTXVzQnRibVN0cGpw?=
- =?utf-8?B?ZFVSeUQra0hEV09Cd1d3TjNqVjZad1NsZWtxU1Y0VW83OTFRY294WHFTejQ3?=
- =?utf-8?Q?iUxwz63Y9G3JIeam66eJ5i0xC?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e41a15b5-0d8f-4313-909d-08dc570d74a1
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3108.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Apr 2024 14:17:28.3771
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y3OhsBENlEqIYSI9yOM4vr2wzDtBhbk56RLMQVPEZFfA0zJrU5UOTCewmzPYTVxzvs+o55Z1q+zERUK4VSwrFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8261
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] include/linux/suspend.h: Only show pm_pr_dbg
+ messages at suspend/resume
+To: xiongxin <xiongxin@kylinos.cn>, mario.limonciello@amd.com,
+ Rafael Wysocki <rafael@kernel.org>, hdegoede@redhat.com,
+ linus.walleij@linaro.org
+Cc: Basavaraj.Natikar@amd.com, Shyam-sundar.S-k@amd.com,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-gpio@vger.kernel.org
+References: <20230602073025.22884-1-mario.limonciello@amd.com>
+ <20230602073025.22884-1-mario.limonciello@amd.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20230602073025.22884-1-mario.limonciello@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
 
-On 3/26/24 17:26, John Allen wrote:
-> Future AMD platforms will provide a UEFI PRM module that implements a
-> number of address translation PRM handlers. This will provide an
-> interface for the OS to call platform specific code without requiring
-> the use of SMM or other heavy firmware operations.
+On 4/7/24 5:49 AM, xiongxin wrote:
+> From: Mario Limonciello <mario.limonciello@amd.com>
 > 
-> AMD Zen-based systems report memory error addresses through Machine
-> Check banks representing Unified Memory Controllers (UMCs) in the form
-> of UMC relative "normalized" addresses. A normalized address must be
-> converted to a system physical address to be usable by the OS.
+> All uses in the kernel are currently already oriented around
+> suspend/resume. As some other parts of the kernel may also use these
+> messages in functions that could also be used outside of
+> suspend/resume, only enable in suspend/resume path.
 > 
-> Add support for the normalized to system physical address translation
-> PRM handler in the AMD Address Translation Library and prefer it over
-> native code if available. The GUID and parameter buffer structure are
-> specific to the normalized to system physical address handler provided
-> by the address translation PRM module included in future AMD systems.
-> 
-> The address translation PRM module is documented in chapter 22 of the
-> publicly available "AMD Family 1Ah Models 00h–0Fh and Models 10h–1Fh
-> ACPI v6.5 Porting Guide":
-> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/58088-0.75-pub.pdf
-> 
-> Signed-off-by: John Allen <john.allen@amd.com>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > ---
->   drivers/ras/amd/atl/Makefile   |  1 +
->   drivers/ras/amd/atl/internal.h |  2 ++
->   drivers/ras/amd/atl/prm.c      | 61 ++++++++++++++++++++++++++++++++++
->   drivers/ras/amd/atl/umc.c      |  5 +++
->   4 files changed, 69 insertions(+)
->   create mode 100644 drivers/ras/amd/atl/prm.c
+> v3->v4:
+>  * add back do/while as it wasn't pointless.  It fixes a warning.
+> ---
+>  include/linux/suspend.h | 8 +++++---
+>  kernel/power/main.c     | 6 ++++++
+>  2 files changed, 11 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/ras/amd/atl/Makefile b/drivers/ras/amd/atl/Makefile
-> index 4acd5f05bd9c..8f1afa793e3b 100644
-> --- a/drivers/ras/amd/atl/Makefile
-> +++ b/drivers/ras/amd/atl/Makefile
-> @@ -14,5 +14,6 @@ amd_atl-y		+= denormalize.o
->   amd_atl-y		+= map.o
->   amd_atl-y		+= system.o
->   amd_atl-y		+= umc.o
-> +amd_atl-y		+= prm.o
->   
->   obj-$(CONFIG_AMD_ATL)	+= amd_atl.o
-> diff --git a/drivers/ras/amd/atl/internal.h b/drivers/ras/amd/atl/internal.h
-> index 5de69e0bb0f9..f739dcada126 100644
-> --- a/drivers/ras/amd/atl/internal.h
-> +++ b/drivers/ras/amd/atl/internal.h
-> @@ -234,6 +234,8 @@ int dehash_address(struct addr_ctx *ctx);
->   unsigned long norm_to_sys_addr(u8 socket_id, u8 die_id, u8 coh_st_inst_id, unsigned long addr);
->   unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err);
->   
-> +unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr);
-> +
->   /*
->    * Make a gap in @data that is @num_bits long starting at @bit_num.
->    * e.g. data		= 11111111'b
-> diff --git a/drivers/ras/amd/atl/prm.c b/drivers/ras/amd/atl/prm.c
-> new file mode 100644
-> index 000000000000..54a69e660eb5
-> --- /dev/null
-> +++ b/drivers/ras/amd/atl/prm.c
-> @@ -0,0 +1,61 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * AMD Address Translation Library
-> + *
-> + * prm.c : Plumbing code to UEFI Platform Runtime Mechanism (PRM)
-> + *
-> + * Copyright (c) 2024, Advanced Micro Devices, Inc.
-> + * All Rights Reserved.
-> + *
-> + * Author: John Allen <john.allen@amd.com>
-> + */
-> +
-> +#include "internal.h"
-> +
-> +#if defined(CONFIG_ACPI_PRMT)
-> +
-> +#include <linux/prmt.h>
-> +
-> +struct prm_umc_param_buffer_norm {
-> +	u64 norm_addr;
-> +	u8 socket;
-> +	u64 umc_bank_inst_id;
-> +	void *output_buffer;
-> +} __packed;
-> +
-> +const guid_t norm_to_sys_prm_handler_guid = GUID_INIT(0xE7180659, 0xA65D,
-
-Use the static keyword since this is only used in the current file.
-
-> +						      0x451D, 0x92, 0xCD,
-> +						      0x2B, 0x56, 0xF1, 0x2B,
-> +						      0xEB, 0xA6);
-> +
-> +unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr)
+> diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+> index 1a0426e6761c..74f406c53ac0 100644
+> --- a/include/linux/suspend.h
+> +++ b/include/linux/suspend.h
+> @@ -555,6 +555,7 @@ static inline void unlock_system_sleep(unsigned int flags) {}
+>  #ifdef CONFIG_PM_SLEEP_DEBUG
+>  extern bool pm_print_times_enabled;
+>  extern bool pm_debug_messages_on;
+> +extern bool pm_debug_messages_should_print(void);
+>  static inline int pm_dyn_debug_messages_on(void)
+>  {
+>  #ifdef CONFIG_DYNAMIC_DEBUG
+> @@ -568,14 +569,14 @@ static inline int pm_dyn_debug_messages_on(void)
+>  #endif
+>  #define __pm_pr_dbg(fmt, ...)					\
+>  	do {							\
+> -		if (pm_debug_messages_on)			\
+> +		if (pm_debug_messages_should_print())		\
+>  			printk(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+>  		else if (pm_dyn_debug_messages_on())		\
+>  			pr_debug(fmt, ##__VA_ARGS__);	\
+>  	} while (0)
+>  #define __pm_deferred_pr_dbg(fmt, ...)				\
+>  	do {							\
+> -		if (pm_debug_messages_on)			\
+> +		if (pm_debug_messages_should_print())		\
+>  			printk_deferred(KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__);	\
+>  	} while (0)
+>  #else
+> @@ -593,7 +594,8 @@ static inline int pm_dyn_debug_messages_on(void)
+>  /**
+>   * pm_pr_dbg - print pm sleep debug messages
+>   *
+> - * If pm_debug_messages_on is enabled, print message.
+> + * If pm_debug_messages_on is enabled and the system is entering/leaving
+> + *      suspend, print message.
+>   * If pm_debug_messages_on is disabled and CONFIG_DYNAMIC_DEBUG is enabled,
+>   *	print message only from instances explicitly enabled on dynamic debug's
+>   *	control.
+> diff --git a/kernel/power/main.c b/kernel/power/main.c
+> index 3113ec2f1db4..daa535012e51 100644
+> --- a/kernel/power/main.c
+> +++ b/kernel/power/main.c
+> @@ -556,6 +556,12 @@ power_attr_ro(pm_wakeup_irq);
+>  
+>  bool pm_debug_messages_on __read_mostly;
+>  
+> +bool pm_debug_messages_should_print(void)
 > +{
-> +	struct prm_umc_param_buffer_norm param_buffer;
-> +	unsigned long ret_addr;
-> +	int ret;
-> +
-> +	param_buffer.norm_addr        = addr;
-> +	param_buffer.socket           = socket_id;
-> +	param_buffer.umc_bank_inst_id = umc_bank_inst_id;
-> +	param_buffer.output_buffer    = &ret_addr;
-> +
-> +	ret = acpi_call_prm_handler(norm_to_sys_prm_handler_guid, &param_buffer);
-> +	if (!ret)
-> +		return ret_addr;
-> +
-> +	if (ret == -ENODEV)
-> +		pr_info("PRM module/handler not available\n");
+> +	return pm_debug_messages_on && pm_suspend_target_state != PM_SUSPEND_ON;
+> 
+>> hibernate processes also mostly use the pm_pr_dbg() function, which
+>> results in hibernate processes only being able to output such logs
+>> through dynamic debug, which is unfriendly to kernels without
+>> CONFIG_DYNAMIC_DEBUG configuration.
 
-Make this a pr_debug(). I don't think this is something a user could do
-anything about. And one goal of this library to abstract how the
-functions work. So "trying different backends" is a library developer
-concern.
+This part of the patch doesn't look so good. ^^^^^^^^^^^^^^^^^^^^
 
-> +	else
-> +		pr_info("PRM address translation failed\n");
-
-Make this a pr_notice_once().
-
-If the handler is available and fails, then this is likely a bug. It
-should be reported to the system vendor. And it may be possible for the
-user to update the PRM handler. This could be through a BIOS update or
-the runtime update option for PRM.
-
-Aside: is the runtime update option implemented?
-
-"Notice" is between info and warning. I think we'd want the user to
-notice, but this isn't so severe to need a warning.
-
-Also, *_once() will prevent duplicate messages in the case of multiple
-memory errors in the system. The handler shouldn't fail on any valid
-input, so a single notice is enough. Especially if the message doesn't
-have any error/context-specific details.
-
-Another aside: it's possible to have invalid input. This can happen in
-"software/simulated" MCA errors, i.e. the user provides an arbitrary
-value for MCA_ADDR. But this would be a user error. I don't think it's
-worth trying to filter out this case. An expert user could provide valid
-inputs, and they may want to test the full flow. And this isn't an issue
-just for PRM but the ATL overall. I hit this myself while testing
-another feature. I used a signature for MCA_ADDR (0xC001C0DE01ABCDEF ?)
-and the translation failed. But I was more interested in the signature
-than the real value. :)
-
-> +
-> +	return ret;
+> 
 > +}
+> +EXPORT_SYMBOL_GPL(pm_debug_messages_should_print);
 > +
-> +#else /* ACPI_PRMT */
-> +
-> +unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst_id, unsigned long addr)
-> +{
-> +	return -ENODEV;
-> +}
-> +
-> +#endif
-> diff --git a/drivers/ras/amd/atl/umc.c b/drivers/ras/amd/atl/umc.c
-> index 59b6169093f7..954cbe6bf465 100644
-> --- a/drivers/ras/amd/atl/umc.c
-> +++ b/drivers/ras/amd/atl/umc.c
-> @@ -333,9 +333,14 @@ unsigned long convert_umc_mca_addr_to_sys_addr(struct atl_err *err)
->   	u8 coh_st_inst_id = get_coh_st_inst_id(err);
->   	unsigned long addr = get_addr(err->addr);
->   	u8 die_id = get_die_id(err);
-> +	unsigned long ret_addr;
->   
->   	pr_debug("socket_id=0x%x die_id=0x%x coh_st_inst_id=0x%x addr=0x%016lx",
->   		 socket_id, die_id, coh_st_inst_id, addr);
->   
-> +	ret_addr = prm_umc_norm_to_sys_addr(socket_id, err->ipid, addr);
-> +	if (!IS_ERR_VALUE(ret_addr))
-> +		return ret_addr;
-> +
->   	return norm_to_sys_addr(socket_id, die_id, coh_st_inst_id, addr);
->   }
+>  static ssize_t pm_debug_messages_show(struct kobject *kobj,
+>  				      struct kobj_attribute *attr, char *buf)
+>  {
+> 
 
-Thanks,
-Yazen
+-- 
+#Randy
 
