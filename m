@@ -1,114 +1,198 @@
-Return-Path: <linux-acpi+bounces-4717-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4718-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4734989BA7E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 10:42:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A78989BB86
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 11:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681111C21931
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 08:42:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 897DDB22070
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 09:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209AD38FA0;
-	Mon,  8 Apr 2024 08:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A87C47F7C;
+	Mon,  8 Apr 2024 09:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+qi3BU/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TtvdTwny"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD6D2A8DA;
-	Mon,  8 Apr 2024 08:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C914594B
+	for <linux-acpi@vger.kernel.org>; Mon,  8 Apr 2024 09:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712565746; cv=none; b=tSmtB8maf/npoGPE8n4GlEy+aZ+DAVOK91ABGRBlsHryDKC6Hkm2585v7MDebXDLBh1pqQj8eCDXl4eE8J/PIH4h3tWlSG/HsWuhzWlcplIkaawJXgA8ikcgO1EDFbcjXj/Ut06khVk6lVyUd3Zfa+79D8I5nBY46HkwZZei1E4=
+	t=1712568071; cv=none; b=f6N6gko4AZyE3GOdXxO9FtYgoZgqlOC0VvS1AtI8Z2rOY99CDiOFkiI9rS+TK2iKzyB/bPUiAv6FhNRZDJbBty5WzV0urVG7hTC+WJbGUVk3XsJQoYAgFwhVyVbQMDlmTaIGc4adUX1VqNkI2qQ3nDm9052zpYKcN47s0KDcm80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712565746; c=relaxed/simple;
-	bh=x5uAG/ltu+aXdeMkNcec1QhqHWClHSds/cSLz1O5N+g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZT/fGoGwQyBaa7rWv9GNT9/qhrtLMGgiYyfgCHw05zl4mAx9jMipSp0EjxpbBuprT8zeOcYHp/e0Ui8O9GIE6rbN+vNxlVcBI+Fi6q+8nvoOpl65yJqoRZkqJ2bXpA/khmqdVQEZ/Q0UTHgJ/2pqCcMdqGYUhggYf4yEJMi9BpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+qi3BU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F0CC433B2;
-	Mon,  8 Apr 2024 08:42:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712565745;
-	bh=x5uAG/ltu+aXdeMkNcec1QhqHWClHSds/cSLz1O5N+g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=j+qi3BU/XayOJEtk+zUWGNNXQZwmsfv+7aRrjOixLWr9b8aDnkabQa9KH3L/LY6DI
-	 m+NUPCrWQD+jJhcuDStJoFGhTxPISCbmLKbIMwc1bFdbxldPGeFotZRP6XX6Yyd1Sw
-	 8wW/P/+K3Tm/krPTPGekFenbgHv7BnAJwy+LJocFCu1wAm/93oF6WXorKLzFVtb796
-	 5Q/i+69eFIPDnCr0eBPH58O33gEBpxh53m0HOGjCTGWk4+u1OXRHXOZLCw5h7+TNm8
-	 xz7Or05SIZ89ACo+2Vey5KDI9TxFEUmkyU6UxNShLs+ZjjGIyqQbPR5Gy+6aw56pgm
-	 UQ1Y0TfhTn4wg==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d8129797fcso56246301fa.1;
-        Mon, 08 Apr 2024 01:42:25 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXHW8otahrjrLLKh9J4WLXrl0zC74rJD2KqhK2M7odqLJVeRJxSYoq81uYvwmkreoN4X50RogjkAAPpKtfjar5iOWBF1mxJYwuGWmDiSdUbwLsQarYDrhSU42isJLV2+mXWkW3wGWJAx6xQgLkQAJRx8GhC2+rkSrZSlKn6ov9RbYC+4mjaKt/vvljwuTEU33okZRTFUanGHRatLTB4iBTJ3FVCJcmvu719ajLMQw6yDozrwyVq5dy/pBQiLw==
-X-Gm-Message-State: AOJu0Yy92AjzvoA49OSpu1/HpsCJ70hwuWcRj6qYl6KenfOkQU9UBiKM
-	saiF0PmCf4JU9tKcqmsYG47Z5BsiS2TkK6qlVgLPTU6x4m8G9LDTy9NjNyWIy1dsuTz4ghjiHA8
-	V8+sAoB9/MKS5JrMZ/6YmZQjNEOM=
-X-Google-Smtp-Source: AGHT+IEEZZz1BlhQIx5HBD9lAq9n0KDHPwdJDpGGUfNMfpXy5a9hhWu2MwVcoReA5TtUW0Y7LCD+C38a7qls1lB/zag=
-X-Received: by 2002:a2e:8911:0:b0:2d8:713f:817b with SMTP id
- d17-20020a2e8911000000b002d8713f817bmr4768893lji.26.1712565743595; Mon, 08
- Apr 2024 01:42:23 -0700 (PDT)
+	s=arc-20240116; t=1712568071; c=relaxed/simple;
+	bh=LlWw5D5iq3eRsOKi/6cRekmwRU6E2z6fXUzoAVyRkgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HEL/ARLQAurKyox9Nxs5psFwZapRf85CTZA82DIliyjNw8P/o8dgMW9NusAhxcmcbP4EBws5mWMvHmc9Zplk1AoLHvK2BLKVv+iWX6Qwrij2YrLHA+fh7vaEt6zid9TIqksQY1zO5qhrtw2Jp5Bt6lBnO1ScRcTQKtnmRnYAg98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TtvdTwny; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1712568066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vXql7UyGB0xfCaYsiXkmotNqC4Ch89jqlagi6eSTNP4=;
+	b=TtvdTwnyeE8jL6BVawSrz3gj74oxe8k3jfOgLkJcgowRAVf7k7RwV00wl0B3Zna+/wxo1Z
+	NyzEoaQB1TyRTeiccznsA7su9rJ7YCH1E9xqLklTonVrlyySr2MS2DW7D20214tA5qTWgs
+	oH5yq0DcR0MB4c7c6+G6l0agMF6Fmtg=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-M3AGzIkYOa21i-ECXOZOOA-1; Mon, 08 Apr 2024 05:21:02 -0400
+X-MC-Unique: M3AGzIkYOa21i-ECXOZOOA-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a4698fc37dfso272457066b.2
+        for <linux-acpi@vger.kernel.org>; Mon, 08 Apr 2024 02:21:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712568061; x=1713172861;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vXql7UyGB0xfCaYsiXkmotNqC4Ch89jqlagi6eSTNP4=;
+        b=c0nsPQfW/qfZHvlBtAwfjWg8MbvclKzTvAF4ZYwLsFAkexzrxFPqI/TbOAP0p0fO8V
+         9mlSc+/AVdsy1j52PNNHxJwfe4qQ4tNOpzg1pxWwfekowGB7a9th0Z8X3nrzlSOpTBYG
+         bFcNeTQmmE1URdOxAkAgo8sHhT9bwBn1YTzJBF9SpGk4tdY8r8/ZG27TIS4itLIawOmc
+         LalvF1bqaQN/sNogZJU/cu1SCxeic2lnH7+KqZpFgI8UnMY9TiDXcoSdrqtgr0m6fm+e
+         Ed/OaF41Na6rcIA7dLF0+gDU8OjEUp8o1JHgeVyJ611Ok0fib8ba6h20l0fUsL9vzgrB
+         n9fA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7xYMygycTo2RQt+5gGyw8EEnT/8CSdpcAZCztIqu47pwaeCTXR2+blAlCsR5q+F13nL9rk9or/8npnjyKc2kklTqxS0nmcO57HA==
+X-Gm-Message-State: AOJu0Yx1uymvffqFDX61oqLsj7heNxMCKGwrFAKS8JNAygiuwYM3KE/M
+	jyTvAeQ0OeGrzxkyPpC5SxuW/8uxmemAxEtXTdiCOutc788vOMIAc7aen6UgvBba6krfxPwkDOL
+	mxEx4+wGS20NRhIKq1Hei3pIVM8yOJmCJGSOW8d7rxFpobEs1La3G9fA9SeA=
+X-Received: by 2002:a17:906:af7b:b0:a46:1d4b:d81 with SMTP id os27-20020a170906af7b00b00a461d4b0d81mr5221300ejb.62.1712568061724;
+        Mon, 08 Apr 2024 02:21:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGWOk6NEUrk9lnCfVbhMKNrjuoMqwfAbqHURxAw52jR4biGZq5z+GiQk0FKFdfGm0nyfmNnwA==
+X-Received: by 2002:a17:906:af7b:b0:a46:1d4b:d81 with SMTP id os27-20020a170906af7b00b00a461d4b0d81mr5221290ejb.62.1712568061420;
+        Mon, 08 Apr 2024 02:21:01 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id o12-20020a170906358c00b00a51d0690052sm1617988ejb.124.2024.04.08.02.21.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 02:21:01 -0700 (PDT)
+Message-ID: <2dd4f820-8b94-4e9b-909c-b43cb40bfc99@redhat.com>
+Date: Mon, 8 Apr 2024 11:21:00 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1712410202.git.lukas@wunner.de>
-In-Reply-To: <cover.1712410202.git.lukas@wunner.de>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 8 Apr 2024 10:42:12 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXHsRLqdXZmRddVUZswCmiJqy8-ncgDF-ooTM2Wdi9q0Qw@mail.gmail.com>
-Message-ID: <CAMj1kXHsRLqdXZmRddVUZswCmiJqy8-ncgDF-ooTM2Wdi9q0Qw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, 
-	Jean Delvare <jdelvare@suse.com>, linux-efi@vger.kernel.org, 
-	Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, 
-	intel-gvt-dev@lists.freedesktop.org, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
-	Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] platform/x86: quickstart: Fix race condition when
+ reporting input event
+To: Armin Wolf <W_Armin@gmx.de>, ilpo.jarvinen@linux.intel.com
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240327214524.123935-1-W_Armin@gmx.de>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20240327214524.123935-1-W_Armin@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 6 Apr 2024 at 15:52, Lukas Wunner <lukas@wunner.de> wrote:
->
-> For my upcoming PCI device authentication v2 patches, I have the need
-> to expose a simple buffer in virtual memory as a bin_attribute.
->
-> It turns out we've duplicated the ->read() callback for such simple
-> buffers a fair number of times across the tree.
->
-> So instead of reinventing the wheel, I decided to introduce a common
-> helper and eliminate all duplications I could find.
->
-> I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
-> name. ;)
->
-> Lukas Wunner (2):
->   sysfs: Add sysfs_bin_attr_simple_read() helper
->   treewide: Use sysfs_bin_attr_simple_read() helper
->
+Hi,
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+On 3/27/24 10:45 PM, Armin Wolf wrote:
+> Since commit e2ffcda16290 ("ACPI: OSL: Allow Notify () handlers to run
+> on all CPUs"), the ACPI core allows multiple notify calls to be active
+> at the same time. This means that two instances of quickstart_notify()
+> running at the same time can mess which each others input sequences.
+> 
+> Fix this by protecting the input sequence with a mutex.
+> 
+> Compile-tested only.
+> 
+> Fixes: afd66f2a739e ("platform/x86: Add ACPI quickstart button (PNP0C32) driver")
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 
->  arch/powerpc/platforms/powernv/opal.c              | 10 +-------
->  drivers/acpi/bgrt.c                                |  9 +-------
->  drivers/firmware/dmi_scan.c                        | 12 ++--------
->  drivers/firmware/efi/rci2-table.c                  | 10 +-------
->  drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++----------------
->  .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
->  fs/sysfs/file.c                                    | 27 ++++++++++++++++++++++
->  include/linux/sysfs.h                              | 15 ++++++++++++
->  init/initramfs.c                                   | 10 +-------
->  kernel/module/sysfs.c                              | 13 +----------
->  10 files changed, 56 insertions(+), 85 deletions(-)
->
+Thank you for your patch, I've applied this patch to my review-hans 
+branch:
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+
+Note it will show up in my review-hans branch once I've pushed my
+local branch there, which might take a while.
+
+Once I've run some tests on this branch the patches there will be
+added to the platform-drivers-x86/for-next branch and eventually
+will be included in the pdx86 pull-request to Linus for the next
+merge-window.
+
+Regards,
+
+Hans
+
+
+
+> ---
+> This applies on the branch "review-hans". Maybe we could somehow
+> document the concurrency rules for ACPI notify handlers?
+> ---
+>  drivers/platform/x86/quickstart.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/quickstart.c b/drivers/platform/x86/quickstart.c
+> index ba3a7a25dda7..e40f852d42c1 100644
+> --- a/drivers/platform/x86/quickstart.c
+> +++ b/drivers/platform/x86/quickstart.c
+> @@ -18,6 +18,7 @@
+>  #include <linux/input/sparse-keymap.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+> +#include <linux/mutex.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/sysfs.h>
+>  #include <linux/types.h>
+> @@ -35,6 +36,7 @@
+> 
+>  struct quickstart_data {
+>  	struct device *dev;
+> +	struct mutex input_lock;	/* Protects input sequence during notify */
+>  	struct input_dev *input_device;
+>  	char input_name[32];
+>  	char phys[32];
+> @@ -73,7 +75,10 @@ static void quickstart_notify(acpi_handle handle, u32 event, void *context)
+> 
+>  	switch (event) {
+>  	case QUICKSTART_EVENT_RUNTIME:
+> +		mutex_lock(&data->input_lock);
+>  		sparse_keymap_report_event(data->input_device, 0x1, 1, true);
+> +		mutex_unlock(&data->input_lock);
+> +
+>  		acpi_bus_generate_netlink_event(DRIVER_NAME, dev_name(data->dev), event, 0);
+>  		break;
+>  	default:
+> @@ -147,6 +152,13 @@ static void quickstart_notify_remove(void *context)
+>  	acpi_remove_notify_handler(handle, ACPI_DEVICE_NOTIFY, quickstart_notify);
+>  }
+> 
+> +static void quickstart_mutex_destroy(void *data)
+> +{
+> +	struct mutex *lock = data;
+> +
+> +	mutex_destroy(lock);
+> +}
+> +
+>  static int quickstart_probe(struct platform_device *pdev)
+>  {
+>  	struct quickstart_data *data;
+> @@ -165,6 +177,11 @@ static int quickstart_probe(struct platform_device *pdev)
+>  	data->dev = &pdev->dev;
+>  	dev_set_drvdata(&pdev->dev, data);
+> 
+> +	mutex_init(&data->input_lock);
+> +	ret = devm_add_action_or_reset(&pdev->dev, quickstart_mutex_destroy, &data->input_lock);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	/* We have to initialize the device wakeup before evaluating GHID because
+>  	 * doing so will notify the device if the button was used to wake the machine
+>  	 * from S5.
 > --
-> 2.43.0
->
+> 2.39.2
+> 
+
 
