@@ -1,159 +1,117 @@
-Return-Path: <linux-acpi+bounces-4761-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4762-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADEB89C7A5
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:58:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F16489C7B0
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 415E1B29253
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD9A1C21A59
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4056F13F421;
-	Mon,  8 Apr 2024 14:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE3413F437;
+	Mon,  8 Apr 2024 15:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="txqodJ7u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPVzIBvT"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1486B126F07;
-	Mon,  8 Apr 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470CD13F42A;
+	Mon,  8 Apr 2024 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712588070; cv=none; b=szKeFTkrpqTZCHJyEjE6C4xqE9MIJsyUiq88i3YqGEoJanMSR/tl/fig0bFWuJcFdG/LLEY6dHJHHOkGggm3Y7l9nZMIDEacEVJNRpWzmogOcDNs7ZRI5Y6/sHRWoEuZK0W2Ax7QFvJ2g94/n8QrXi5MWrhw5SSTHnPSgFfQkLc=
+	t=1712588494; cv=none; b=uRoqqWANLNavbl5vmJnsCI4xn5XWcY4D5QYlTYtBKee6s8H4U6lakBSySHofUzWXb4l8a5c1DZh7NevtJfL8iJDzHTUxGPz/OhMui4vbheLZfMah4cCeRzo/tXAOPsbuHWNcrjaUtDl4On02G5sBnG4plBv6lJpcDBLscpEvzCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712588070; c=relaxed/simple;
-	bh=6nyvPHBNhtt42tmLE/4Kw6HI0hcocSOnFt5NeHT3nEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=li2uRk009/4mQq4DsrmDs7iJ0Po7+BITwsQLLlv4Cy5zKUFTxqCad3+7d2q4cdF9xZYw81Kx4exDymrhwwPiiP9hvW3astWQuhC1Drvn/JJjj8qNWBqUDZp/HT9t1dRxJ3IzUvBwoNiFzlPA1v/YvXBdtTAUSXFgrqatwNsWEtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=txqodJ7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42448C43390;
-	Mon,  8 Apr 2024 14:54:27 +0000 (UTC)
+	s=arc-20240116; t=1712588494; c=relaxed/simple;
+	bh=EITVdlJtkrnylLXhed9Pr1DfYAyVTQ3XvaUDh63E534=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bjGRrwHk++ZbrkhTgH5dXtENpfRHmOQgJczDQVc15iA567JVW7k1W6MUUOXs7yZhxnNGzTX9gfmFXSqeiqb/RfO03pubmr21C5vGhsPv+wymsdlr54E51D1WxkfwCXhutiACQjLNfRk4LWGJ4pRpG7g74ENrtKCkg1UVyI74PrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPVzIBvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB446C433F1;
+	Mon,  8 Apr 2024 15:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712588069;
-	bh=6nyvPHBNhtt42tmLE/4Kw6HI0hcocSOnFt5NeHT3nEU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=txqodJ7uy/GQaOX8PSTuc64L79RjRCEeCpLVCqNUXEgUhda0jt8vB/kwSiCz62dn7
-	 RIHGvtz08C3PpxT+3F4L639wcylZR8NUXtcS7JeKoFD4LJown+VUItdvdjsW773Xcq
-	 Cx5sG81gz+x4s8oHBFczmAM8S3o7YTbm5SfHbP60TLos/P6WvZbOHhpuGbjVF2VNyw
-	 /yVX9GAbMnZN3Il23+0TIPH+2dXogL4MuWlWDbBoy4n+oppmO5QX5RyIFoNDgNQfuh
-	 Ebf53Bavz1pRUyvJDz8xYBMnpDFl7109se1gckgdoS/zz8EUSVh8LoO2p1ovvzJoVV
-	 UlQtAg49UzPFQ==
-Date: Mon, 8 Apr 2024 16:54:24 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Fang Xiang <fangxiang3@xiaomi.com>, Marc Zyngier <maz@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Subject: Re: [PATCH v5 0/1] irqchip/gic-v3: Enable non-coherent GIC designs
- probing
-Message-ID: <ZhQFICltEOcBHszS@lpieralisi>
-References: <20240123110332.112797-1-lpieralisi@kernel.org>
- <ZeiBFBDhwlJnCUZ2@lpieralisi>
+	s=k20201202; t=1712588493;
+	bh=EITVdlJtkrnylLXhed9Pr1DfYAyVTQ3XvaUDh63E534=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=iPVzIBvT/iSK03mJ74WyCdtfwrYQ0FIvhL5K8YMXOWzUcxtAW1X9DNCrqtBiFjfyi
+	 tl90sPwPpZ5rbnlWkWlrmucbJbApIpssRcLEk4bwAVt6FxwLnhmycj60p3s5ZulGuY
+	 Oi6kb5XzN6oeZLDaCEoYGMUGaCwA36s9aVa2vFCs+0r3L2ACNZZS6RJMIMK7lmGxXl
+	 LZaKWREq5eaTZ8dEmqubeluPfq1pepZhLI9FVjpANsP8XqyeISOYtrQC8gZ/KN/t0I
+	 J4RLdMza2ntow+e8CC8hAcBjXsrybDusTaZepo397svH4xSl9ToXUzq+mYubuhRT/b
+	 17pKAxdggeVsA==
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6ea1572136eso453455a34.1;
+        Mon, 08 Apr 2024 08:01:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW3+0lUuKg3hHhe5fIqYbB6u665OvDnFDviXdUd7KWwdn3iXbLFY6hEeIr3VKPT+6KhtijdC/aMEQixQJR8e62LzYen9GjggTwawKLEhn9SqELjylZL57kGQkpxmjD/8n7Z+WFUBW8H2HCWTBOLjc+YqFVDm55FTv5XdDPgzEIaiLOjT+XnmOtAolUMwTh7zUKraa7MV0+2yxafcRNvULKVG6VwrLZivXIW1gexeQtwi62weIsFjgZCMyHHVQ==
+X-Gm-Message-State: AOJu0YzUFgJuG5OoHcgg+C7cG0jOPGlDiSTYqqsmM17PI9Otqcm2Gp8w
+	0xKNpdaFYwl5HKE7Dz+tIuFRrDijMGKw9nsfRzmQji05ws/GVvDn/2lcM2jA+e5CupL+fHBJ80z
+	yHjpuw6lyNGtgRjHxBoAg7xnjuYg=
+X-Google-Smtp-Source: AGHT+IE7BjvtTOsOgPqYkXR1Qq+KOOG/nJtiEyKbfNUuvRcPpCIK8D3B6ZYbWXxS6qJ87RK9Jxd6UH195uv+p6a4TTw=
+X-Received: by 2002:a05:6808:603:b0:3c5:f534:e2c7 with SMTP id
+ y3-20020a056808060300b003c5f534e2c7mr2839026oih.1.1712588493105; Mon, 08 Apr
+ 2024 08:01:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZeiBFBDhwlJnCUZ2@lpieralisi>
+References: <cover.1712410202.git.lukas@wunner.de>
+In-Reply-To: <cover.1712410202.git.lukas@wunner.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 8 Apr 2024 17:01:22 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
+Message-ID: <CAJZ5v0hOHCSp8-8EZjuGAOR0QSH3CcvokG3uBGAKFFpTrkqQRA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
+	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, 
+	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, 
+	Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, 
+	intel-gvt-dev@lists.freedesktop.org, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, 
+	Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 06, 2024 at 03:43:32PM +0100, Lorenzo Pieralisi wrote:
-> On Tue, Jan 23, 2024 at 12:03:31PM +0100, Lorenzo Pieralisi wrote:
-> > This series is v5 of previous series:
-> > 
-> > v4: https://lore.kernel.org/all/20231227110038.55453-1-lpieralisi@kernel.org
-> > v3: https://lore.kernel.org/all/20231006125929.48591-1-lpieralisi@kernel.org
-> > v2: https://lore.kernel.org/all/20230906094139.16032-1-lpieralisi@kernel.org
-> > v1: https://lore.kernel.org/all/20230905104721.52199-1-lpieralisi@kernel.org
-> > 
-> > v4 -> v5
-> > 	- ACPICA patches merged for v6.8
-> > 	- Refactored ACPI parsing code according to review
-> > 	- Rebased against v6.8-rc1
-> 
-> Hi Marc, all,
-> 
-> this is not an urgent fix (I don't think there is any ACPI platform
-> affected in the field so it is not even a fix), I am just asking please
-> what should I do with it, I appreciate it is late in the cycle (and I
-> know some fixes got merged in -rcX leading up to -rc7 that are
-> pre-requisite for this patch to work).
+On Sat, Apr 6, 2024 at 3:52=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
+:
+>
+> For my upcoming PCI device authentication v2 patches, I have the need
+> to expose a simple buffer in virtual memory as a bin_attribute.
+>
+> It turns out we've duplicated the ->read() callback for such simple
+> buffers a fair number of times across the tree.
+>
+> So instead of reinventing the wheel, I decided to introduce a common
+> helper and eliminate all duplications I could find.
+>
+> I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
+> name. ;)
+>
+> Lukas Wunner (2):
+>   sysfs: Add sysfs_bin_attr_simple_read() helper
+>   treewide: Use sysfs_bin_attr_simple_read() helper
+>
+>  arch/powerpc/platforms/powernv/opal.c              | 10 +-------
+>  drivers/acpi/bgrt.c                                |  9 +-------
+>  drivers/firmware/dmi_scan.c                        | 12 ++--------
+>  drivers/firmware/efi/rci2-table.c                  | 10 +-------
+>  drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++-----------=
+-----
+>  .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
+>  fs/sysfs/file.c                                    | 27 ++++++++++++++++=
+++++++
+>  include/linux/sysfs.h                              | 15 ++++++++++++
+>  init/initramfs.c                                   | 10 +-------
+>  kernel/module/sysfs.c                              | 13 +----------
+>  10 files changed, 56 insertions(+), 85 deletions(-)
+>
+> --
 
-Hi,
+For the series
 
-just a reminder to ask how to proceed with this patch, I know it
-is not urgent, just to understand how to handle it please.
-
-The related ACPICA changes are already merged in the mainline.
-
-Thanks,
-Lorenzo
-
-> Thanks,
-> Lorenzo
-> 
-> > v3 -> v4:
-> > 	- Dropped patches [1-3], already merged
-> > 	- Added Linuxized ACPICA changes accepted upstream
-> > 	- Rebased against v6.7-rc3
-> > 
-> > v2 -> v3:
-> > 	- Added ACPICA temporary changes and ACPI changes to implement
-> > 	  ECR https://bugzilla.tianocore.org/show_bug.cgi?id=4557
-> > 	- ACPI changes are for testing purposes - subject to ECR code
-> > 	  first approval
-> > 
-> > v1 -> v2:
-> > 	- Updated DT bindings as per feedback
-> > 	- Updated patch[2] to use GIC quirks infrastructure
-> > 
-> > Original cover letter
-> > ---
-> > The GICv3 architecture specifications provide a means for the
-> > system programmer to set the shareability and cacheability
-> > attributes the GIC components (redistributors and ITSes) use
-> > to drive memory transactions.
-> > 
-> > Albeit the architecture give control over shareability/cacheability
-> > memory transactions attributes (and barriers), it is allowed to
-> > connect the GIC interconnect ports to non-coherent memory ports
-> > on the interconnect, basically tying off shareability/cacheability
-> > "wires" and de-facto making the redistributors and ITSes non-coherent
-> > memory observers.
-> > 
-> > This series aims at starting a discussion over a possible solution
-> > to this problem, by adding to the GIC device tree bindings the
-> > standard dma-noncoherent property. The GIC driver uses the property
-> > to force the redistributors and ITSes shareability attributes to
-> > non-shareable, which consequently forces the driver to use CMOs
-> > on GIC memory tables.
-> > 
-> > On ARM DT DMA is default non-coherent, so the GIC driver can't rely
-> > on the generic DT dma-coherent/non-coherent property management layer
-> > (of_dma_is_coherent()) which would default all GIC designs in the field
-> > as non-coherent; it has to rely on ad-hoc dma-noncoherent property handling.
-> > 
-> > When a consistent approach is agreed upon for DT an equivalent binding will
-> > be put forward for ACPI based systems.
-> > 
-> > Lorenzo Pieralisi (1):
-> >   irqchip/gic-v3: Enable non-coherent redistributors/ITSes ACPI probing
-> > 
-> >  drivers/acpi/processor_core.c    | 15 +++++++++++++++
-> >  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
-> >  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
-> >  include/linux/acpi.h             |  3 +++
-> >  4 files changed, 31 insertions(+)
-> > 
-> > -- 
-> > 2.34.1
-> > 
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
