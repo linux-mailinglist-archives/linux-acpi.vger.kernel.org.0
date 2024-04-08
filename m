@@ -1,246 +1,115 @@
-Return-Path: <linux-acpi+bounces-4772-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4773-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D8089CA8D
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 19:15:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C38789CAD9
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 19:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAE0E1C21F49
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:15:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB033B2701F
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EBC143880;
-	Mon,  8 Apr 2024 17:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zef5djim"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B35143C67;
+	Mon,  8 Apr 2024 17:35:20 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F76142906;
-	Mon,  8 Apr 2024 17:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E503143C52;
+	Mon,  8 Apr 2024 17:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712596527; cv=none; b=cR9nwkY5O0OLQ4/t5p7QL4hAJTcmcX571azwPfryD/WwcCZoEF1lxIRzgTVv1ROrzQ2KxAsUimi1hZR/UbmRmneh68c4g3sDvfKbeL6ghwpEYBepTggkqobKLbPgQE/RxleSYgiwxppaBD0/KtxqhC4YBJqQl46I3RC5atWLx/c=
+	t=1712597720; cv=none; b=J+bBr5xovS+0vqNEVB3Cn2ehNkaixRuY4/GzgQtkEWEZ8khf33Uwu7PNxoPYwvluQ5kcFyqt4LGZyaMWgcBdhvRAlN1HBNXcHk8R2DO/BU2Q+zPkknjlG3YBeYvoPC3tw3CX5lDza2vrAyq/7z5crAbZqctN1O7CxzAWnSwI4P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712596527; c=relaxed/simple;
-	bh=cb3yCHZjckEDvem/7qkDx7+ocNrNL4H3d8W/mSBltHc=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=SqQxS10lbI3DMu7OmlmMGd/JwNCU2mQ8gHNHTw44vTNxArrZGqXETYUic1wbYWhpA52fCUCe4D18ZoGjnZcJqJXYOdXN4bBbtwkBcWVsH4SSzTwLvfQDl09L6Z4wLY+gP20JRsnQ1ZdwMKczTGMuMJXNCXmT/I8635++GL+OdrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zef5djim; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712596525; x=1744132525;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=cb3yCHZjckEDvem/7qkDx7+ocNrNL4H3d8W/mSBltHc=;
-  b=Zef5djimDvlod85TlhdR7U5mN7Lhsg9mG0qvPaE2iVijpoVkMiLGy6zf
-   j2C6TfOz7RlMhAttpbtcHC2LJtGx18dh/dBtN85zFQK/AANrTbMhWVzTX
-   F3dpTYOzgsEd2DVAftPe/tPx6/4sOm++SRyZ0LpPj06uRoJPQMixR0HRO
-   I2Fc67RZE7OqK3HQo3PoDZLPwcZMGKwRzkk3J6JcDe9SxTp/9VsY42NRW
-   SQsEJTtRLqnfF2xdJXMiI48s7FKc/dqhck4Tko4XndY5j7FKqsHZdnQxK
-   aLKAI+dADCBc3WJ/xCS8RUbOkgBnElkhp/0spPeEPoAGPSwSIOQWfOtY+
-   Q==;
-X-CSE-ConnectionGUID: EM9+v3cIQvescg2JlZ8urA==
-X-CSE-MsgGUID: UddkRFC4TKarMozCvhME1g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="18497437"
-X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="18497437"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 10:15:24 -0700
-X-CSE-ConnectionGUID: mpnUkkKMSJWvY24XJKOp0A==
-X-CSE-MsgGUID: HoxRDC2aSX+hAH2ZkWUTyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="20037843"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.28])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 10:15:21 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 8 Apr 2024 20:15:17 +0300 (EEST)
-To: Armin Wolf <W_Armin@gmx.de>
-cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-    linux-acpi@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH] ACPI: fan: Add hwmon support
-In-Reply-To: <36a8ebff-8a89-44e0-9b30-374913bd8cbd@gmx.de>
-Message-ID: <d5cf9425-c43d-2771-0906-7c055244d783@linux.intel.com>
-References: <20240408123718.15512-1-W_Armin@gmx.de> <63187b48-7978-3b0f-0526-79afea65c492@linux.intel.com> <36a8ebff-8a89-44e0-9b30-374913bd8cbd@gmx.de>
+	s=arc-20240116; t=1712597720; c=relaxed/simple;
+	bh=AG5FVer0czQB1zSAMA46mk/VvnsPmT9sOnmRMzqKe38=;
+	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=afgRMvhwWc41+JdBUBYtFL+wteyxKZVJ1isg4FOTnA8R1EDLs9Vd7ZdtLeRy696eculSBURdrMMY2cGtgsGPOmMpsI8oZerQabkLWaD/Nwpl5W5IWDaht2yGoAM/fDBfpiAkjkeCT75+sG+6DshmeAZ9vpu3SUNRW/8SWWd65/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b69f53.dsl.pool.telekom.hu [::ffff:81.182.159.83])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 00000000000706C6.0000000066142AD3.002645EE; Mon, 08 Apr 2024 19:35:15 +0200
+From: Gergo Koteles <soyer@irl.hu>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+  Len Brown <lenb@kernel.org>, Ike Panhc <ike.pan@canonical.com>,
+  Hans de Goede <hdegoede@redhat.com>,
+  =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+  Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+  Daniel Lezcano <daniel.lezcano@linaro.org>,
+  =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>
+Cc: linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+  Gergo Koteles <soyer@irl.hu>
+Subject: [PATCH v6 0/3] switch platform profiles with Lenovo laptops
+Date: Mon,  8 Apr 2024 19:35:09 +0200
+Message-ID: <cover.1712597199.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-884334050-1712596517=:14302"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi All,
 
---8323328-884334050-1712596517=:14302
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+This patch series adds a platform_profile_cycle function to the platform 
+profile module, which allows modules to easily switch between the 
+enabled profiles.
 
-On Mon, 8 Apr 2024, Armin Wolf wrote:
-> Am 08.04.24 um 17:48 schrieb Ilpo J=C3=A4rvinen:
-> > On Mon, 8 Apr 2024, Armin Wolf wrote:
-> >=20
-> > > Currently, the driver does only supports a custom sysfs
-> > > interface to allow userspace to read the fan speed.
-> > > Add support for the standard hwmon interface so users
-> > > can read the fan speed with standard tools like "sensors".
-> > >=20
-> > > Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> > > ---
-> > >   drivers/acpi/Makefile    |  1 +
-> > >   drivers/acpi/fan.h       |  2 ++
-> > >   drivers/acpi/fan_core.c  |  7 ++++
-> > >   drivers/acpi/fan_hwmon.c | 78 +++++++++++++++++++++++++++++++++++++=
-+++
-> > >   4 files changed, 88 insertions(+)
-> > >   create mode 100644 drivers/acpi/fan_hwmon.c
-> > >=20
-> > > diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> > > index d69d5444acdb..9a2e03acc1be 100644
-> > > --- a/drivers/acpi/Makefile
-> > > +++ b/drivers/acpi/Makefile
-> > > @@ -83,6 +83,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)=09+=3D
-> > > tiny-power-button.o
-> > >   obj-$(CONFIG_ACPI_FAN)=09=09+=3D fan.o
-> > >   fan-objs=09=09=09:=3D fan_core.o
-> > >   fan-objs=09=09=09+=3D fan_attr.o
-> > > +fan-objs=09=09=09+=3D fan_hwmon.o
-> > >=20
-> > >   obj-$(CONFIG_ACPI_VIDEO)=09+=3D video.o
-> > >   obj-$(CONFIG_ACPI_TAD)=09=09+=3D acpi_tad.o
-> > > diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> > > index e7b4b4e4a55e..45c2637566da 100644
-> > > --- a/drivers/acpi/fan.h
-> > > +++ b/drivers/acpi/fan.h
-> > > @@ -56,4 +56,6 @@ struct acpi_fan {
-> > >   int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fs=
-t
-> > > *fst);
-> > >   int acpi_fan_create_attributes(struct acpi_device *device);
-> > >   void acpi_fan_delete_attributes(struct acpi_device *device);
-> > > +
-> > > +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-> > >   #endif
-> > > diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-> > > index ff72e4ef8738..6bbdbb914e95 100644
-> > > --- a/drivers/acpi/fan_core.c
-> > > +++ b/drivers/acpi/fan_core.c
-> > > @@ -7,6 +7,7 @@
-> > >    *  Copyright (C) 2022 Intel Corporation. All rights reserved.
-> > >    */
-> > >=20
-> > > +#include <linux/kconfig.h>
-> > >   #include <linux/kernel.h>
-> > >   #include <linux/module.h>
-> > >   #include <linux/init.h>
-> > > @@ -336,6 +337,12 @@ static int acpi_fan_probe(struct platform_device
-> > > *pdev)
-> > >   =09=09if (result)
-> > >   =09=09=09return result;
-> > >=20
-> > > +=09=09if (IS_REACHABLE(CONFIG_HWMON)) {
-> > > +=09=09=09result =3D devm_acpi_fan_create_hwmon(device);
-> > > +=09=09=09if (result)
-> > > +=09=09=09=09return result;
-> > > +=09=09}
-> > > +
-> > >   =09=09result =3D acpi_fan_create_attributes(device);
-> > >   =09=09if (result)
-> > >   =09=09=09return result;
-> > > diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-> > > new file mode 100644
-> > > index 000000000000..4f2bec8664f4
-> > > --- /dev/null
-> > > +++ b/drivers/acpi/fan_hwmon.c
-> > > @@ -0,0 +1,78 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > > +/*
-> > > + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
-> > > + *
-> > > + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
-> > > + */
-> > > +
-> > > +#include <linux/acpi.h>
-> > > +#include <linux/hwmon.h>
-> > > +#include <linux/limits.h>
-> > > +
-> > > +#include "fan.h"
-> > > +
-> > > +static umode_t acpi_fan_is_visible(const void *drvdata, enum
-> > > hwmon_sensor_types type, u32 attr,
-> > > +=09=09=09=09   int channel)
-> > > +{
-> > > +=09return 0444;
-> > > +}
-> > > +
-> > > +static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types
-> > > type, u32 attr, int channel,
-> > > +=09=09=09 long *val)
-> > > +{
-> > > +=09struct acpi_device *adev =3D dev_get_drvdata(dev);
-> > > +=09struct acpi_fan_fst fst;
-> > > +=09int ret;
-> > > +
-> > > +=09switch (type) {
-> > > +=09case hwmon_fan:
-> > > +=09=09ret =3D acpi_fan_get_fst(adev, &fst);
-> > > +=09=09if (ret < 0)
-> > > +=09=09=09return ret;
-> > > +
-> > > +=09=09switch (attr) {
-> > > +=09=09case hwmon_fan_input:
-> > > +=09=09=09if (fst.speed > LONG_MAX)
-> > > +=09=09=09=09return -EOVERFLOW;
-> > > +
-> > > +=09=09=09*val =3D fst.speed;
-> > > +=09=09=09return 0;
-> > > +=09=09case hwmon_fan_fault:
-> > > +=09=09=09*val =3D (fst.speed =3D=3D U32_MAX);
-> > > +=09=09=09return 0;
-> > Is it okay to return 0 in this case?
->=20
-> Hi,
->=20
-> i think so, since the value of the attribute (with the meaning of "is the=
- rpm
-> value ok?") is being
-> correctly stored in val. If acpi_fan_get_fst() fails, we already return a
-> negative error code.
+Use it in ideapad-laptop and thinkpad-acpi modules.
 
-Ah, right. It seems fine.
+Best regards,
+Gergo
 
---=20
- i.
+Changes in v6:
+ - use PLATFORM_PROFILE_LAST instead of ARRAY_SIZE(profile_names) for 
+ consistency
 
-> > > +=09=09default:
-> > > +=09=09=09break;
-> > > +=09=09}
-> > > +=09=09break;
-> > > +=09default:
-> > > +=09=09break;
-> > > +=09}
-> > > +
-> > > +=09return -EOPNOTSUPP;
-> > > +}
-> > > +
-> > > +static const struct hwmon_ops acpi_fan_ops =3D {
-> > > +=09.is_visible =3D acpi_fan_is_visible,
-> > > +=09.read =3D acpi_fan_read,
-> > > +};
-> > > +
-> > > +static const struct hwmon_channel_info * const acpi_fan_info[] =3D {
-> > > +=09HWMON_CHANNEL_INFO(fan,
-> > > +=09=09=09   HWMON_F_INPUT | HWMON_F_FAULT),
-> > One line.
-> >=20
->=20
+Changes in v5:
+ - use find_next_bit_wrap function to find the next enabled profile 
+ instead of multiple ffs calls
 
---8323328-884334050-1712596517=:14302--
+Changes in v4:
+ - move the cycle to the platform profile module where it can switch 
+ between the enabled profiles
+ - add a patch to use it in the thinkpad-acpi module
+
+Changes in v3:
+ - add dytc_profile_cycle function
+
+Changes in v2:
+ - only switch platform profiles if supported, otherwise keep the 
+   behavior.
+
+[5]: https://lore.kernel.org/all/cover.1712360639.git.soyer@irl.hu/
+[4]: https://lore.kernel.org/all/cover.1712282976.git.soyer@irl.hu/
+[3]: https://lore.kernel.org/all/7c358ad8dd6de7889fa887954145a181501ac362.17122>
+[2]: https://lore.kernel.org/all/797884d8cab030d3a2b656dba67f3c423cc58be7.17121>
+[1]: https://lore.kernel.org/all/85254ce8e87570c05e7f04d6507701bef954ed75.17121>
+
+
+Gergo Koteles (3):
+  ACPI: platform-profile: add platform_profile_cycle()
+  platform/x86: ideapad-laptop: switch platform profiles using thermal
+    management key
+  platform/x86: thinkpad_acpi: use platform_profile_cycle()
+
+ drivers/acpi/platform_profile.c       | 39 +++++++++++++++++++++++++++
+ drivers/platform/x86/ideapad-laptop.c |  7 +++--
+ drivers/platform/x86/thinkpad_acpi.c  | 19 ++-----------
+ include/linux/platform_profile.h      |  1 +
+ 4 files changed, 47 insertions(+), 19 deletions(-)
+
+
+base-commit: 39cd87c4eb2b893354f3b850f916353f2658ae6f
+-- 
+2.44.0
+
 
