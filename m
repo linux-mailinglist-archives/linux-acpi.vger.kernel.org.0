@@ -1,104 +1,117 @@
-Return-Path: <linux-acpi+bounces-4765-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4766-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA6789C7E7
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:12:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72EC89C89F
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:43:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5E11F244CD
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:12:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F5112881F6
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3452913F44A;
-	Mon,  8 Apr 2024 15:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="oDSGbC8e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4F61411E2;
+	Mon,  8 Apr 2024 15:43:04 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E25E13F439;
-	Mon,  8 Apr 2024 15:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95075140E4F;
+	Mon,  8 Apr 2024 15:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712589129; cv=none; b=ZMAlqIWfRy7r474Q+yCoFJpnI1CxHzymhmdoDcGVl96tuKtfxEHgqfJnOeMDAHrwpPxk0YnUxmhqpk6lB/g9mWJ3rGwBw988bOcjRkQwAc0MEmBfqr+rejyt674zORimgwQTrmZCUy0OipLqxmbmB57tQDefYBfP4P1exMyJ5LE=
+	t=1712590984; cv=none; b=kPBFmsooLW2wVYfmz565ZuetDJWiHAvm1/lJIbtQgL0HtBlftsYdLha6lvAvYYIR2yocRnCLUmyCNKKXX8lp6157E4HT+gZrUDfbi91GUkzkO4lOXZ0hiKbqPra8AloqEjVmw5SGzs+uX1Ycdw7BisFhIlKs8SS3fhHgfj7cuqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712589129; c=relaxed/simple;
-	bh=qr2rFW6w9/fvO6Ij1T8ekWnLY0TacXSC2/hiYqqAFmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XUys2MXJX7h9dWNfUS1k6KdWhsUPz78B+PdGcOqudKlb0Z6CqeLXwtEYqaHm/GcxHLAY5m7M+FxM3/OW4L64pLAIT4QyI1jyQjiUxc5NZKcI1d5445P16aKoQb2eRnthMb0B2hjhliiIdyi05r+Zx4aLfO9HnyEqSDlenCVDCTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=oDSGbC8e; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1712589118;
-	bh=qr2rFW6w9/fvO6Ij1T8ekWnLY0TacXSC2/hiYqqAFmQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oDSGbC8elT7mNaWJPttrR6M96crZSrhUQpXj4MBczDc6c+xxtAjQJ4AJcVjQn1u8S
-	 pbPg25UPAmUENh1PRbCXrDz2HFCvnqBqP52ovQH0yqcAo9SFZZiUL1nGhMaLCEryLi
-	 D53tuPWKGc/8UPFAbtyb8RV9asVDuasmnU+S5Kz8=
-Date: Mon, 8 Apr 2024 17:11:57 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH] ACPI: fan: Add hwmon support
-Message-ID: <8bccc21e-58ce-460f-b73b-de3b4cf383dd@t-8ch.de>
-References: <20240408123718.15512-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1712590984; c=relaxed/simple;
+	bh=u84nzCTNcDWnJynwd2ody8MWoy74b9HyxAnHlJf7VLU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rvawbQybeBdQ6WgtmkYkHtqQAixtVfYPMFl68Pkq+IDrUjHGjNtKDgM7hRE6ewtwE7W4EA6xxYP9exoOM+jilTvf0Acr3HUiBipZS8+D8/8qYOlHE9m1DPl+g/YoXrUKgslzh/cFAXsDmyQaClpuC7Ejcni+urM5I2ZD6qjrsAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a47385a4379so1037797266b.0;
+        Mon, 08 Apr 2024 08:43:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712590981; x=1713195781;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DZWqINXfXQoMnEdU+hyVda4sKWIxPOFDKIPjHb2rhh4=;
+        b=aTUo+4PXaGRzfMsMQyipb+hany+VwAAENggECWkchAW5xpRCPLM/91UpvPsXdhApic
+         pGMfYeO7UB2wvunx7mRW6Xzzcr8z8Z1ROaBTUaZd3YuNWykFMDsNeqcwklGbHK62HTB6
+         SrL/Yl12YXLmm3RUy4NtmnPufUS8e6iVwF+XKKoehDZ/d1FRGJBD7fE3fvRNnNGz5g1L
+         I7z5+7CpN8ZsoxqxtvnaNlComPmRhUn8jqAR3EhaBc9kWD+lZR06peVedjLAEw//qdIm
+         UKb/Jqhn5aM8GfMROXe4SeJsZy/KnCXK1gQ7u5bVctrmyIPJcjz5rvKB72AMuFqG1Azm
+         KSGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWVQXkcZPWcJ7djU06yBPQUGh1OHABUWSFLWbALfFPK+ZJUUnBsjCMlWduVCV1XlWmkfYSDo15U4F8grdR3bf6tPTB29OaOMEyVCYe5d/a96l5sSlWPtojD8HEVDYVUUPNhl1THWIoWQ==
+X-Gm-Message-State: AOJu0YyqVb2G4piUXhu4DRLQraQGiEFjNsQfbs9GCWxgRmhNjaS0A/io
+	4onavXy1hhgXStM2eL0t6E9f3ySkzn5b/DlUUKeRYi9FAvx7Fez550rLZCULtng=
+X-Google-Smtp-Source: AGHT+IEb2tkCJ5LtsHHh+awJaUpNleR7NuEVn30Ony6kKYtpbE4jPA3g00j8HmqrnOlXBgzZMb1F+g==
+X-Received: by 2002:a17:907:1c21:b0:a51:9575:bd3a with SMTP id nc33-20020a1709071c2100b00a519575bd3amr41936ejc.38.1712590980346;
+        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
+        by smtp.gmail.com with ESMTPSA id an2-20020a17090656c200b00a51b00b5236sm3758352ejc.120.2024.04.08.08.43.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a46ea03c2a5so777067766b.1;
+        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUoGjDKDaWBkl4Kh4/apT7/NMANJqcuw3q7cT5Etm6MSqDcTiRA4A6t4nr5TX0lvUMEYENv9LtMRuHL2CJp78/4P8LBc/ZuhH6IvirOo8/c3jsSIKggWewd5YbowMk9r896vWcp5pgmkw==
+X-Received: by 2002:a17:907:3e1d:b0:a51:c62f:3c91 with SMTP id
+ hp29-20020a1709073e1d00b00a51c62f3c91mr54115ejc.21.1712590980025; Mon, 08 Apr
+ 2024 08:43:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240408123718.15512-1-W_Armin@gmx.de>
+References: <20240407063341.3710801-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <ZhQE9dU-VIcWI6au@smile.fi.intel.com>
+In-Reply-To: <ZhQE9dU-VIcWI6au@smile.fi.intel.com>
+Reply-To: sathyanarayanan.kuppuswamy@linux.intel.com
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Date: Mon, 8 Apr 2024 08:42:48 -0700
+X-Gmail-Original-Message-ID: <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
+Message-ID: <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: Declare acpi_blacklisted() only if CONFIG_X86 is enabled
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Apr 8, 2024 at 7:53=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Sat, Apr 06, 2024 at 11:33:41PM -0700, Kuppuswamy Sathyanarayanan wrot=
+e:
+> > The function acpi_blacklisted() is defined only when CONFIG_X86 is
+> > enabled. So to keep it consistent, protect its declaration with
+> > CONFIG_X86.
+>
+> ...
+>
+> >  extern char acpi_video_backlight_string[];
+> >  extern long acpi_is_video_device(acpi_handle handle);
+> > +#ifdef CONFIG_X86
+> >  extern int acpi_blacklisted(void);
+> > +#endif
+> >  extern void acpi_osi_setup(char *str);
+> >  extern bool acpi_osi_is_win8(void);
+>
+> IIRC there is already similar ifdeffery, can we just move the declaration
+> there?
 
-On 2024-04-08 14:37:18+0200, Armin Wolf wrote:
-> Currently, the driver does only supports a custom sysfs
-> interface to allow userspace to read the fan speed.
-> Add support for the standard hwmon interface so users
-> can read the fan speed with standard tools like "sensors".
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
->  drivers/acpi/Makefile    |  1 +
->  drivers/acpi/fan.h       |  2 ++
->  drivers/acpi/fan_core.c  |  7 ++++
->  drivers/acpi/fan_hwmon.c | 78 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 88 insertions(+)
->  create mode 100644 drivers/acpi/fan_hwmon.c
+There is none for CONFIG_X86. We only have some combinations or
+derived config checks like below:
 
-[snip]
+#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+#ifdef CONFIG_X86_IO_APIC
 
-> +
-> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-> +{
-> +	struct device *hdev;
-> +
-> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", device,
-> +						    &acpi_fan_chip_info, NULL);
-
-This fails to link if CONFIG_ACPI_FAN=y and CONFIG_HWMON=n:
-
-ld: vmlinux.o: in function `devm_acpi_fan_create_hwmon':
-.../drivers/acpi/fan_hwmon.c:74:(.text+0x819e65): undefined reference to `devm_hwmon_device_register_with_info'
-
-With this fixed:
-
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-
-> +
-> +	return PTR_ERR_OR_ZERO(hdev);
-> +}
+>
 > --
-> 2.39.2
-> 
-> 
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
