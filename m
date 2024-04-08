@@ -1,74 +1,64 @@
-Return-Path: <linux-acpi+bounces-4742-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4747-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E4E89BD51
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 12:33:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2FD89BD6D
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 12:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50FEE282D88
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 10:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 740E71F2182A
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 10:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB3657332;
-	Mon,  8 Apr 2024 10:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E3F5F86E;
+	Mon,  8 Apr 2024 10:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZZ/brF4y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXn2SB+H"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F038C56461;
-	Mon,  8 Apr 2024 10:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504EA59B6D;
+	Mon,  8 Apr 2024 10:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712572419; cv=none; b=sFYNWcsrzqu5DnmA/luurmvN5VEzcSdckJV+B5AH+ZpOJBP8hnEMGRPEjWJP1A858h7jt8wYipejF+hDu2xnat/lfbzbKuk5XsiKOp1ezdJez7+X8iFFkTCzlyYkCPEQZ3eho7eZvYEbnsF9wEa59/aZkyQL6dYPSmLKIyul+cM=
+	t=1712572952; cv=none; b=GCKWdGYXTkEcL4ZcosqtUGo+TBoPfZZ9fix+hYOlDNre1wRF78hSgOrKECpvQjRXiJ4uLmNDbwDcfet+Ifj3lAVZW1I1+2UuaKy4YJuXdOBtnDOIW1kz2NMsv1pHBLUzidxlcgb4oM2Z9hlSKbg/0dHkNi1wZQ40nUuYqWyePD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712572419; c=relaxed/simple;
-	bh=ClOpZ0AHH9yZZkGvJ+uxL1FXrhBie5+wy8x5tlWlRsc=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=R17yFJXsVZjjssFUzIPZoQQlSKpBUveaIn40srMn9/H/y0eGAN0oycoWRCRqgDEw7e+MNlj1pFvZbO1iQKLkka4tDIV2XguOD1i/MlA+Oa7QeHnyB7mAtaMaGuzyeJrCy1WKs5O/6Teerqpv95xxDrrMQj+Ng7fqEl0hoF/elEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZZ/brF4y; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712572418; x=1744108418;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=ClOpZ0AHH9yZZkGvJ+uxL1FXrhBie5+wy8x5tlWlRsc=;
-  b=ZZ/brF4yf1EaHXq0cvyumsOHxd5xJ9rAAWoavKai/qe9LTbel3Qs6GVp
-   IfBwkp1fflM7usGAIsptrCgr2qLYmA85U8LOwsYWr+C0z1ShXNpnydVgu
-   W4YMv/dWPbQYLCbQr/P01/isEypqA+c90yfAoj8N+1Mkw4t1/4TfWLGUn
-   pg9wkpItkdPTeJYfTywuDLZYzKogVlScSTNUK3c2SW8ngTs+hjRXibYAx
-   gGCz1LCwbXgRqJF7QIPDU4eElKLJXlyqlutlvRoBx4WWCWFxBsuxFNuOC
-   EHiEeWlbgtJdYEeEWp+omFQQennzf7xEXV8zgdBQ7mLK1He9j2F5DucMp
-   A==;
-X-CSE-ConnectionGUID: rbWS5ig5TXK3Pb6GG89llA==
-X-CSE-MsgGUID: qjBqXD34QUaPMklqCImTKw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="19212441"
-X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; 
-   d="scan'208";a="19212441"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 03:33:37 -0700
-X-CSE-ConnectionGUID: 40eWzVcvT8+d8Jcpadl6ew==
-X-CSE-MsgGUID: /KCd51CkSYuRPI3FXVJx9w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; 
-   d="scan'208";a="24586450"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.28])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 03:33:35 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 8 Apr 2024 13:33:29 +0300 (EEST)
-To: Hans de Goede <hdegoede@redhat.com>
-cc: Armin Wolf <W_Armin@gmx.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-    linux-acpi@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
-    LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] platform/x86: quickstart: Fix race condition when
- reporting input event
-In-Reply-To: <b5d808fd-f9c4-48d5-b888-c4ded4b0cad6@redhat.com>
-Message-ID: <6d89b1f3-f37d-918d-b497-fc9b877ac297@linux.intel.com>
-References: <20240327214524.123935-1-W_Armin@gmx.de> <f662fab0-0f47-4b71-ab71-2b9492253483@gmx.de> <b5d808fd-f9c4-48d5-b888-c4ded4b0cad6@redhat.com>
+	s=arc-20240116; t=1712572952; c=relaxed/simple;
+	bh=b/Ple0Ig9f380CD8S4g6oLAOcX+OtwPclqtC9HiW+mw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DxF6pwvr8D+Z0WJnfWHLgh2rD+2L6q5cmUrKqZK93+KqDtTIkiO0we2EVqSyCUYafzVWbpf9CTVpgUKguog6w+h7cRyD27+7I355ZVIX/ECUjh9brH+yBZ3h7LkE3wnXcNxL2Cu3pXJnnXXpxfhPG18Z4FP8RywUGEvnasMTzuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXn2SB+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E9EC433C7;
+	Mon,  8 Apr 2024 10:42:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712572951;
+	bh=b/Ple0Ig9f380CD8S4g6oLAOcX+OtwPclqtC9HiW+mw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PXn2SB+HH0gGSdOSB6uwQC2te3iLBzVI/QAQlIRQ/ovvRqxqatyXEjDT5IlmLBE54
+	 eQpPUtOmIOHmxJr8EHDpCEuSlFSEeG66kLXpCH4D5QkHoHHxQqu4fl0C9hE+8NX7rB
+	 Dk5A60rdZZhOlUQIE0QkYBoIqa4psq76Vi/HqQoI7WcjWCVs0HxZY7WnDD6RIbehzZ
+	 xWKccqRhW1SY2q8W35RTttBVTrPg6ddeOumiQs5d0h5hwwPmbNFnUYdNnstxyGEu9Y
+	 YK/keo6oC81pGkBxJCkHrBzCRWQYq3zvyxlg9JDag6rQydgOI60qehLqH4LHFNRJax
+	 NUtOKiwTDXC4w==
+Date: Mon, 8 Apr 2024 13:42:22 +0300
+From: Zhi Wang <zhiwang@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, linux-kernel@vger.kernel.org, Michael Ellerman
+ <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, Ard
+ Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, Zhenyu Wang
+ <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>,
+ intel-gvt-dev@lists.freedesktop.org, Daniel Lezcano
+ <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis Chamberlain
+ <mcgrof@kernel.org>, linux-modules@vger.kernel.org
+Subject: Re: [PATCH 2/2] treewide: Use sysfs_bin_attr_simple_read() helper
+Message-ID: <20240408134222.00005994.zhiwang@kernel.org>
+In-Reply-To: <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
+References: <cover.1712410202.git.lukas@wunner.de>
+ <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,59 +66,263 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 7 Apr 2024, Hans de Goede wrote:
-> On 4/6/24 8:57 PM, Armin Wolf wrote:
-> > Am 27.03.24 um 22:45 schrieb Armin Wolf:
-> > 
-> >> Since commit e2ffcda16290 ("ACPI: OSL: Allow Notify () handlers to run
-> >> on all CPUs"), the ACPI core allows multiple notify calls to be active
-> >> at the same time. This means that two instances of quickstart_notify()
-> >> running at the same time can mess which each others input sequences.
-> >>
-> >> Fix this by protecting the input sequence with a mutex.
-> >>
-> >> Compile-tested only.
-> > 
-> > Any thoughts on this?
-> 
-> I wonder if we need this at all ?
-> 
-> The input_event() / input_report_key() / input_sync() functions
-> which underpin sparse_keymap_report_event() all are safe to be called
-> from multiple threads at the same time AFAIK.
-> 
-> The only thing which can then still go "wrong" if we have
-> 2 sparse_keymap_report_event() functions racing for the same
-> quickstart button and thus for the same keycode is that we may
-> end up with:
-> 
-> input_report_key(dev, keycode, 1);
-> input_report_key(dev, keycode, 1); /* This is a no-op */
-> input_sync(); /* + another input_sync() somewhere which is a no-op */
-> input_report_key(dev, keycode, 0);
-> input_report_key(dev, keycode, 0); /* This is a no-op */
-> input_sync(); /* + another input_sync() somewhere which is a no-op */
-> 
-> IOW if 2 racing notifiers hit the perfect race conditions then
-> only 1 key press is reported, instead of 2 which seems like
-> it is not a problem since arguably if the same event gets
-> reported twice at the exact same time it probably really
-> is only a single button press.
-> 
-> Also I think it is highly unlikely we will actually see
-> 2 notifiers for this racing in practice.
-> 
-> So I don't think we need this at all. But if others feel strongly
-> about adding this I can still merge it... ?
+On Sat, 6 Apr 2024 15:52:02 +0200
+Lukas Wunner <lukas@wunner.de> wrote:
 
-Hi,
+> Deduplicate ->read() callbacks of bin_attributes which are backed by a
+> simple buffer in memory:
+> 
+> Use the newly introduced sysfs_bin_attr_simple_read() helper instead,
+> either by referencing it directly or by declaring such bin_attributes
+> with BIN_ATTR_SIMPLE_RO() or BIN_ATTR_SIMPLE_ADMIN_RO().
+> 
+> Aside from a reduction of LoC, this shaves off a few bytes from
+> vmlinux (304 bytes on an x86_64 allyesconfig).
+> 
+> No functional change intended.
+> 
 
-I know you already merged this and I agree it's not very likely race but 
-still it can turn two presses into one which seems unwanted side-effect, 
-even if it's unlikely to occur in practice.
+As for GVT, looks good to me.
 
--- 
- i.
+Acked-by: Zhi Wang <zhiwang@kernel.org>
+
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+>  arch/powerpc/platforms/powernv/opal.c              | 10 +--------
+>  drivers/acpi/bgrt.c                                |  9 +-------
+>  drivers/firmware/dmi_scan.c                        | 12 ++--------
+>  drivers/firmware/efi/rci2-table.c                  | 10 +--------
+>  drivers/gpu/drm/i915/gvt/firmware.c                | 26
+> +++++----------------- .../intel/int340x_thermal/int3400_thermal.c
+>     |  9 +------- init/initramfs.c
+> | 10 +-------- kernel/module/sysfs.c                              |
+> 13 +---------- 8 files changed, 14 insertions(+), 85 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/opal.c
+> b/arch/powerpc/platforms/powernv/opal.c index 45dd77e..5d0f35b 100644
+> --- a/arch/powerpc/platforms/powernv/opal.c
+> +++ b/arch/powerpc/platforms/powernv/opal.c
+> @@ -792,14 +792,6 @@ static int __init opal_sysfs_init(void)
+>  	return 0;
+>  }
+>  
+> -static ssize_t export_attr_read(struct file *fp, struct kobject
+> *kobj,
+> -				struct bin_attribute *bin_attr, char
+> *buf,
+> -				loff_t off, size_t count)
+> -{
+> -	return memory_read_from_buffer(buf, count, &off,
+> bin_attr->private,
+> -				       bin_attr->size);
+> -}
+> -
+>  static int opal_add_one_export(struct kobject *parent, const char
+> *export_name, struct device_node *np, const char *prop_name)
+>  {
+> @@ -826,7 +818,7 @@ static int opal_add_one_export(struct kobject
+> *parent, const char *export_name, sysfs_bin_attr_init(attr);
+>  	attr->attr.name = name;
+>  	attr->attr.mode = 0400;
+> -	attr->read = export_attr_read;
+> +	attr->read = sysfs_bin_attr_simple_read;
+>  	attr->private = __va(vals[0]);
+>  	attr->size = vals[1];
+>  
+> diff --git a/drivers/acpi/bgrt.c b/drivers/acpi/bgrt.c
+> index e4fb9e2..d1d9c92 100644
+> --- a/drivers/acpi/bgrt.c
+> +++ b/drivers/acpi/bgrt.c
+> @@ -29,14 +29,7 @@
+>  BGRT_SHOW(xoffset, image_offset_x);
+>  BGRT_SHOW(yoffset, image_offset_y);
+>  
+> -static ssize_t image_read(struct file *file, struct kobject *kobj,
+> -	       struct bin_attribute *attr, char *buf, loff_t off,
+> size_t count) -{
+> -	memcpy(buf, attr->private + off, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR_RO(image, 0);	/* size gets filled in later */
+> +static BIN_ATTR_SIMPLE_RO(image);
+>  
+>  static struct attribute *bgrt_attributes[] = {
+>  	&bgrt_attr_version.attr,
+> diff --git a/drivers/firmware/dmi_scan.c b/drivers/firmware/dmi_scan.c
+> index 015c95a..3d0f773 100644
+> --- a/drivers/firmware/dmi_scan.c
+> +++ b/drivers/firmware/dmi_scan.c
+> @@ -746,16 +746,8 @@ static void __init dmi_scan_machine(void)
+>  	pr_info("DMI not present or invalid.\n");
+>  }
+>  
+> -static ssize_t raw_table_read(struct file *file, struct kobject
+> *kobj,
+> -			      struct bin_attribute *attr, char *buf,
+> -			      loff_t pos, size_t count)
+> -{
+> -	memcpy(buf, attr->private + pos, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR(smbios_entry_point, S_IRUSR, raw_table_read, NULL,
+> 0); -static BIN_ATTR(DMI, S_IRUSR, raw_table_read, NULL, 0);
+> +static BIN_ATTR_SIMPLE_ADMIN_RO(smbios_entry_point);
+> +static BIN_ATTR_SIMPLE_ADMIN_RO(DMI);
+>  
+>  static int __init dmi_init(void)
+>  {
+> diff --git a/drivers/firmware/efi/rci2-table.c
+> b/drivers/firmware/efi/rci2-table.c index de1a9a1..4fd45d6 100644
+> --- a/drivers/firmware/efi/rci2-table.c
+> +++ b/drivers/firmware/efi/rci2-table.c
+> @@ -40,15 +40,7 @@ struct rci2_table_global_hdr {
+>  static u32 rci2_table_len;
+>  unsigned long rci2_table_phys __ro_after_init =
+> EFI_INVALID_TABLE_ADDR; 
+> -static ssize_t raw_table_read(struct file *file, struct kobject
+> *kobj,
+> -			      struct bin_attribute *attr, char *buf,
+> -			      loff_t pos, size_t count)
+> -{
+> -	memcpy(buf, attr->private + pos, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR(rci2, S_IRUSR, raw_table_read, NULL, 0);
+> +static BIN_ATTR_SIMPLE_ADMIN_RO(rci2);
+>  
+>  static u16 checksum(void)
+>  {
+> diff --git a/drivers/gpu/drm/i915/gvt/firmware.c
+> b/drivers/gpu/drm/i915/gvt/firmware.c index 4dd52ac..5e66a26 100644
+> --- a/drivers/gpu/drm/i915/gvt/firmware.c
+> +++ b/drivers/gpu/drm/i915/gvt/firmware.c
+> @@ -50,21 +50,7 @@ struct gvt_firmware_header {
+>  
+>  #define dev_to_drm_minor(d) dev_get_drvdata((d))
+>  
+> -static ssize_t
+> -gvt_firmware_read(struct file *filp, struct kobject *kobj,
+> -	     struct bin_attribute *attr, char *buf,
+> -	     loff_t offset, size_t count)
+> -{
+> -	memcpy(buf, attr->private + offset, count);
+> -	return count;
+> -}
+> -
+> -static struct bin_attribute firmware_attr = {
+> -	.attr = {.name = "gvt_firmware", .mode = (S_IRUSR)},
+> -	.read = gvt_firmware_read,
+> -	.write = NULL,
+> -	.mmap = NULL,
+> -};
+> +static BIN_ATTR_SIMPLE_ADMIN_RO(gvt_firmware);
+>  
+>  static int expose_firmware_sysfs(struct intel_gvt *gvt)
+>  {
+> @@ -107,10 +93,10 @@ static int expose_firmware_sysfs(struct
+> intel_gvt *gvt) crc32_start = offsetof(struct gvt_firmware_header,
+> version); h->crc32 = crc32_le(0, firmware + crc32_start, size -
+> crc32_start); 
+> -	firmware_attr.size = size;
+> -	firmware_attr.private = firmware;
+> +	bin_attr_gvt_firmware.size = size;
+> +	bin_attr_gvt_firmware.private = firmware;
+>  
+> -	ret = device_create_bin_file(&pdev->dev, &firmware_attr);
+> +	ret = device_create_bin_file(&pdev->dev,
+> &bin_attr_gvt_firmware); if (ret) {
+>  		vfree(firmware);
+>  		return ret;
+> @@ -122,8 +108,8 @@ static void clean_firmware_sysfs(struct intel_gvt
+> *gvt) {
+>  	struct pci_dev *pdev = to_pci_dev(gvt->gt->i915->drm.dev);
+>  
+> -	device_remove_bin_file(&pdev->dev, &firmware_attr);
+> -	vfree(firmware_attr.private);
+> +	device_remove_bin_file(&pdev->dev, &bin_attr_gvt_firmware);
+> +	vfree(bin_attr_gvt_firmware.private);
+>  }
+>  
+>  /**
+> diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+> b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c index
+> 427d370..6d4b51a 100644 ---
+> a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c +++
+> b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c @@ -73,14
+> +73,7 @@ struct odvp_attr { struct device_attribute attr;
+>  };
+>  
+> -static ssize_t data_vault_read(struct file *file, struct kobject
+> *kobj,
+> -	     struct bin_attribute *attr, char *buf, loff_t off,
+> size_t count) -{
+> -	memcpy(buf, attr->private + off, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR_RO(data_vault, 0);
+> +static BIN_ATTR_SIMPLE_RO(data_vault);
+>  
+>  static struct bin_attribute *data_attributes[] = {
+>  	&bin_attr_data_vault,
+> diff --git a/init/initramfs.c b/init/initramfs.c
+> index da79760..5193fae 100644
+> --- a/init/initramfs.c
+> +++ b/init/initramfs.c
+> @@ -575,15 +575,7 @@ static int __init initramfs_async_setup(char
+> *str) #include <linux/initrd.h>
+>  #include <linux/kexec.h>
+>  
+> -static ssize_t raw_read(struct file *file, struct kobject *kobj,
+> -			struct bin_attribute *attr, char *buf,
+> -			loff_t pos, size_t count)
+> -{
+> -	memcpy(buf, attr->private + pos, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR(initrd, 0440, raw_read, NULL, 0);
+> +static BIN_ATTR(initrd, 0440, sysfs_bin_attr_simple_read, NULL, 0);
+>  
+>  void __init reserve_initrd_mem(void)
+>  {
+> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+> index d964167..26efe13 100644
+> --- a/kernel/module/sysfs.c
+> +++ b/kernel/module/sysfs.c
+> @@ -146,17 +146,6 @@ struct module_notes_attrs {
+>  	struct bin_attribute attrs[] __counted_by(notes);
+>  };
+>  
+> -static ssize_t module_notes_read(struct file *filp, struct kobject
+> *kobj,
+> -				 struct bin_attribute *bin_attr,
+> -				 char *buf, loff_t pos, size_t count)
+> -{
+> -	/*
+> -	 * The caller checked the pos and count against our size.
+> -	 */
+> -	memcpy(buf, bin_attr->private + pos, count);
+> -	return count;
+> -}
+> -
+>  static void free_notes_attrs(struct module_notes_attrs *notes_attrs,
+>  			     unsigned int i)
+>  {
+> @@ -205,7 +194,7 @@ static void add_notes_attrs(struct module *mod,
+> const struct load_info *info) nattr->attr.mode = 0444;
+>  			nattr->size = info->sechdrs[i].sh_size;
+>  			nattr->private = (void
+> *)info->sechdrs[i].sh_addr;
+> -			nattr->read = module_notes_read;
+> +			nattr->read = sysfs_bin_attr_simple_read;
+>  			++nattr;
+>  		}
+>  		++loaded;
 
 
