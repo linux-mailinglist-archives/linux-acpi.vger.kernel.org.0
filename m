@@ -1,110 +1,107 @@
-Return-Path: <linux-acpi+bounces-4779-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4780-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4818389CCE3
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 22:19:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EA589CD5F
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 23:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83B14284F8E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 20:19:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500BE1F21E8C
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 21:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE102146A61;
-	Mon,  8 Apr 2024 20:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22A1147C79;
+	Mon,  8 Apr 2024 21:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gDabHaWJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fDrebjF1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7588738DD6;
-	Mon,  8 Apr 2024 20:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5938147C62;
+	Mon,  8 Apr 2024 21:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712607542; cv=none; b=q33G/nEjzPUp9aua9xF160/EUtEEBE6u6vDQoCD/ti7i1Zikgijp5BmAZImFIVf2ME8wl9vAI2eri9njwvN0RI6EMEwtFkJxBD7xT228fTfnEwxwlUlGVNRYIv6ovtfdAAYTk73IBEqtCknOthodzJIcJhUZfH2MY4kMrxchng4=
+	t=1712611160; cv=none; b=QK1SUP+okv8fHYLikYgFY6kpTgdAPBCQbo9Uya7h/dAYli/zlO2HAtcx3+4tyynZLsDqMyX4vq/1IyWwxG+Z04IAMLH0Tj2sxFfGrW0dyAmoDMRro2+gP0jkAqNLd1m9/kbgBGKfbTbt2Yz833hhWTI+eHseTXkT3VmXcRibsFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712607542; c=relaxed/simple;
-	bh=NyGs5314UvkFHv1BlockzhAUPYtZOtClRMMt7esdDqc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HVV3NoVZiLTK2MmyY93Uj8EeHA66QSrGYKnz8ansq8WoGBV7DXeR2i460av/RONOWiFu3UqBh1O5xMeyXn9cTjZULEiZl/qOUxOMu+RhLGRcywnNuSKqBFfYo3dcoIqwf6CNWAtRN7+WoRoncXOx9Y8Ak31R77wrO0OHydOLXx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gDabHaWJ; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.192.9.210] (unknown [167.220.77.82])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 263C420EA446;
-	Mon,  8 Apr 2024 13:19:01 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 263C420EA446
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1712607541;
-	bh=9CF14shWGmvFsYBJo5BENhzax76hIR6cw6nC81BBl28=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gDabHaWJXTKV4YaGT3f+cIScqkWv1ydP++c3PyNvWXyg9ElLEh78f7AzvkTlRrLHz
-	 hJowEX//MygT3PwRWBh1mip8XfJAb/3g4QFDMZNFh/ERQegcIUwCU4ZD7TVgk06nSK
-	 9WF8lvgAyA8WqV6AIWm62PIvvU9YEnzT+bKoR+bc=
-Message-ID: <365b430b-d91c-4391-bfc4-ea6a3444cb43@linux.microsoft.com>
-Date: Mon, 8 Apr 2024 13:19:00 -0700
+	s=arc-20240116; t=1712611160; c=relaxed/simple;
+	bh=E215z4yNgNQnZ5yyZUlVNUGteHZIYbQ3gK1FUVJXYsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mUrZK47SPrzCjsDqlQ8ME9Q4RxTx9E4H0k7xaQYI55qlr0lOs6FjWoserfk/E4v5zGM6uABvBkjYCvotw9KBInrp9WYtYDaKHO+a1scgFJOZGxBm2QMDY2vmQSoyaLkQNzNT9MvxxhkY0rvOPIbA+PZhw5ZLtlZBEaZaxOSNgvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fDrebjF1; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712611159; x=1744147159;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E215z4yNgNQnZ5yyZUlVNUGteHZIYbQ3gK1FUVJXYsw=;
+  b=fDrebjF1Rl45UkT4Bo6Qni8dpcx/f3nNVBoBi/mvx8B2pn3TnqtaCSjj
+   wKs79IYoRVMenVO6Zs/Vl3930Ka9eFMxEaulElYxr/3FbPdTHdmZetVc6
+   2ItUi/S1Skhs2HmcFJch2WHDOgz600erEOemOQilvwMuS/sUAe83jb3cn
+   6PTbw9hvYfij51bhJLe7y4hUuN5kyGqI3Es1xBDPLeBHwFzGVSQpK3N85
+   SJKvH4vOr+2X2IB7cmy4lZsFoHKTu3Bc0mvdQiEV4NYr5P5b1IlIhZ1gL
+   3cTY28YYXWx4XW4Q9oRR+lsMht8LDUMD0oSVJ2F3qFWlo53ZviiIWVizU
+   A==;
+X-CSE-ConnectionGUID: PxlJ0tneRmaLXulJ6OEZZQ==
+X-CSE-MsgGUID: +xm6HA57ShaLycf/pVNDEA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7764769"
+X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
+   d="scan'208";a="7764769"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 14:19:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="915377857"
+X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
+   d="scan'208";a="915377857"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 14:19:16 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rtwOX-00000002eS9-37Sw;
+	Tue, 09 Apr 2024 00:19:13 +0300
+Date: Tue, 9 Apr 2024 00:19:13 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v1 1/1] gpiolib: Update the kernel documentation - add
+ Return sections
+Message-ID: <ZhRfUQP8GlJ7ZEBd@smile.fi.intel.com>
+References: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
+ <ZhQ1l6naYpVlmlex@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] ACPI: CPPC: Fix access width used for PCC
- registers
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
- Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240329220054.1205596-1-vanshikonda@os.amperecomputing.com>
- <eecf5b00-0b61-46a8-82d9-a3c113f2d956@linux.microsoft.com>
- <m2m7qytrlhdvht7ro6hee2msi2bd5j733yagdakyjfxi2su46i@nj77lj3ulqp7>
-Content-Language: en-CA
-From: Jarred White <jarredwhite@linux.microsoft.com>
-In-Reply-To: <m2m7qytrlhdvht7ro6hee2msi2bd5j733yagdakyjfxi2su46i@nj77lj3ulqp7>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZhQ1l6naYpVlmlex@smile.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 4/1/2024 10:45 AM, Vanshidhar Konda wrote:
-> On Mon, Apr 01, 2024 at 09:48:28AM -0700, Easwar Hariharan wrote:
->> Hi Vanshi,
->>
->> Thanks for testing and catching this. One comment below, but Jarred is 
->> OOF for a couple days so
->> we'll get back again after testing on our platform.
->>
->> On 3/29/2024 3:00 PM, Vanshidhar Konda wrote:
->>> Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
->>> system memory accesses") modified cpc_read/cpc_write to use 
->>> access_width to
->>> read CPC registers. For PCC registers the access width field in the ACPI
->>> register macro specifies the PCC subspace id. For non-zero PCC 
->>> subspace id
->>> the access width is incorrectly treated as access width. This causes 
->>> errors
->>> when reading from PCC registers in the CPPC driver.
->>>
->>> For PCC registers base the size of read/write on the bit width field.
->>> The debug message in cpc_read/cpc_write is updated to print relevant
->>> information for the address space type used to read the register.
->>>
->>> Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for 
->>> system memory accesses")
->>> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
->>> ---
+On Mon, Apr 08, 2024 at 09:21:11PM +0300, Andy Shevchenko wrote:
+> On Fri, Apr 05, 2024 at 12:27:06AM +0300, Andy Shevchenko wrote:
+> > $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
+> > 67
+> > 
+> > Fix these by adding Return sections. While at it, make sure all of
+> > Return sections use the same style.
+> 
+> Bart, this is the biggest part from the v1, I would like to have that applied
+> first if no objections since it fixes kernel doc warnings. What do you think?
 
-Hi Vanshi,
+Hold on a sec, I found bigger issue that needs to be backported and this patch
+needs to be rebased on top of it. I'll send an update.
 
-The patch is good.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-You can add,
-Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-
-We also found another bug in the process of testing, which we will 
-submitting a patch for.
-
-
-Thanks,
-Jarred
 
 
