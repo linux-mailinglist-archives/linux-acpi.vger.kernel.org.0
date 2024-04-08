@@ -1,224 +1,153 @@
-Return-Path: <linux-acpi+bounces-4708-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4709-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3AF89B2B9
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 17:33:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB05989B66F
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 05:36:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF36F1C21665
-	for <lists+linux-acpi@lfdr.de>; Sun,  7 Apr 2024 15:33:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DE8B21208
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 03:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279893B289;
-	Sun,  7 Apr 2024 15:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB2C1860;
+	Mon,  8 Apr 2024 03:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PExbmaJQ"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="cpU2mBU8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01olkn2028.outbound.protection.outlook.com [40.92.53.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354FF39AE7
-	for <linux-acpi@vger.kernel.org>; Sun,  7 Apr 2024 15:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712503985; cv=none; b=texYjcTsluR+5ZgrHOfFCpknMjyorTh7vAF8DU2rMFdFw864EYFUpIvR3I4DOTJiP3bUrHrY5znN73SAI2B8JJbnD4WQ28ewljp5TdRzPO1TiXXZQRwhf6lWehnDLqXoY8NpBG27U/5RoV5QNL05dsWU05DxsRNlHlFfFosUyBc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712503985; c=relaxed/simple;
-	bh=IdIszNAZdHUvkpcbu4SCWsXGKWy/qpq4SQEnarOFj2w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NiUHCGDWsHcqVpDkfEhGO6V5jgpeJWP3i8GHOQPxaYCSzIKVGb3QQxZigdrPVblPLgZOJeo9KZ9eilQzkOw+AsE11/FPRfxrjMD5dO/3YEoK1SVoNU2ROfWruTT+vT++6qzBm8F82SqTyC2AdT7nHjJ7dFjLAj6Fi2n+5k992kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PExbmaJQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1712503981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+yTit1pd4N1JfLmD2IuXDJZJ+5rq1l/Jqlj1ws6D198=;
-	b=PExbmaJQfrSujKRlI2YfN+zqq3SiBVioD6KcxX/q2WnCZtgRXyV0aakqWf/9MT9EyE/qNN
-	NSphJ1ogRd7fYGrLgP+aorlSGFazLp6gLhc9ivhWDvuQtdyF3H1/RRHRYZKRokFEJbq213
-	rmoMurg01Y2RBvwzngWd2E9Y9BJ6Lrw=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-353-Zpr_M3JsPC2LZGwQyx3oCA-1; Sun, 07 Apr 2024 11:32:59 -0400
-X-MC-Unique: Zpr_M3JsPC2LZGwQyx3oCA-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2d87f6e0fd7so6866361fa.3
-        for <linux-acpi@vger.kernel.org>; Sun, 07 Apr 2024 08:32:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712503977; x=1713108777;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+yTit1pd4N1JfLmD2IuXDJZJ+5rq1l/Jqlj1ws6D198=;
-        b=E01mKuYuown7GFKK18V2xLwuGHP4GDujKHf4QoFKIaehoQKX8mBcONsA2wUYa6si2h
-         qdg0EFr0faL7V0X0102FwS63LLedLQhB2eOf7HiybsGy6tWicpltd0PMUKRWKO4mmMN4
-         yei2Alzf4BwDe6CfnS6TUdXC2M9mLrARLqtV6Pm8arMsj7qHq3uxcetLXz1SNkxFaDY1
-         WD0czGiOOZND1fXLdqscZpiDneSeqMEAPh4hvQXrvg1Aw1n+jnQfpTewqX4t9B/2/NQO
-         APowdXh4t/1q23JHTMeG+MI9J4mDfVO1457I4yRp2yeWROrabVTCgS4I1EiFNWzpbVKX
-         6LEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRdIjrE60kE7qAdE9fJ/H4Ft1kkXIYDAv2p8GN9fIu3iZk6aKwk5eXh3lLFU9rNcOmuz+6fiabPGfe7XfhA5pwrL093PJdDqunbg==
-X-Gm-Message-State: AOJu0YxW0CqyK7Z8kPEQLnyxigrWjzNspaCcxCRplkzkA3nUs6qsiAvH
-	a5Y+2BVN9nzEkv8u9LIw0JppEr1V2Hy/j7HL5Gu/C/OXI/Q0ukPsHRT9CbMRnthbz2EAPbOwXBF
-	Gpd5Z9D/VT85+rKzhs+lm4xAQvseJRNopbsHgywLkE8GFs2noLWKzzlNDETtfSgCsA+Gz9g==
-X-Received: by 2002:a05:651c:1410:b0:2d8:64c9:8d39 with SMTP id u16-20020a05651c141000b002d864c98d39mr4993400lje.37.1712503977793;
-        Sun, 07 Apr 2024 08:32:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMWHQhwJf/rIOtg4Hzqpz5zr/RJe6xJCgxm7fMsz0EC64H7nX6lYIpXDVkk9VPt3oLIcixCw==
-X-Received: by 2002:a05:651c:1410:b0:2d8:64c9:8d39 with SMTP id u16-20020a05651c141000b002d864c98d39mr4993385lje.37.1712503977409;
-        Sun, 07 Apr 2024 08:32:57 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id j24-20020a17090643d800b00a51d46c684csm303350ejn.89.2024.04.07.08.32.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Apr 2024 08:32:56 -0700 (PDT)
-Message-ID: <b5d808fd-f9c4-48d5-b888-c4ded4b0cad6@redhat.com>
-Date: Sun, 7 Apr 2024 17:32:56 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5664D1851;
+	Mon,  8 Apr 2024 03:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.53.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712547404; cv=fail; b=ZnAF3QT92B2WECGGVXtijAEN4Ixyy5TsvyF/0EUkzwtZsqbDkWsOy1ZkorzSg8ch9CEct8DinBCLD3c+cahP3s/NlWThtwjVWRMj2/EkH+gkdpw0Ikd0i3oKtXak2X25fIdpjvGpisp9ydGj3wzXNfYwSyCGKYAYP+jBBYmCNoM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712547404; c=relaxed/simple;
+	bh=RW3Vcu+pBuM8Ouz89hCFm3+7XrBJRg4T1ezg40F76/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=inc9DuiDOsJY1jOMfJBCGcOOcXioiclMiLWszDV6LpeMFHDh6qY/jyj57KqDMohswBtpOIsYQ2fcSHE6guBtKaPfMsc9FYwvv8uCs26JfsX2kAOnL25i22HdGXMHGxb1KnzHLVQP0Mu327BI9t6jqXAFqe8Q82al66mWvMqiigM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=cpU2mBU8; arc=fail smtp.client-ip=40.92.53.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Z9MZnMY71IdcNy7CGuTk+9z3pAiG0LvCOkG57mdhkRo2RcRLgktXUavlFuJTHEOwT6ztnriCmppbZpua9v8DRPIaeqf5euQhtrCyzWRS79pJ3w3E4gROYF1p98IqhTRbCqStK5XfzHWjdQCtUrBrrnCPbR7vKCjRQHK0DKu0+6NJQZ/Gm721LnchGcNp2CUMyrHCTLT6/UE/EYKb0F2FdT8TVg7uYbjqeqF/hPU9s0qShYjPucgIVA6k8byHzYMY9WUAEiQ1LX/GegkwCGnvn+Fu98EhzbbfaQFlaaujrEa2Z18QxGJargqso5OQtFuiiH6+MgzF/VqpPCt/jDQtHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zh/VM2PvaWXby6D1nbK/G/Ihjx2YeKbQpPxdCvQ3goc=;
+ b=KLF56n8MSIaz7usdXeeNOi85Cr8xwyS9aDgLJ5HIFLQEtVGtCrbQUFu1F7MjyeSoV4RPvHPYkAw5lw1J4VEEZCpF7kO5vwgKxUW9p1EGES1HpX2/SOyShmkQVaxwz3IMuRpQ5MpxkHEghmuBuyZ5QcdJZpg1kyTyRuwsOR0NRirlsYCNl7RoTZGxb/twRj1uXZ1mA+1Q+DXhRtzalxV17E19IpxkXFB0DBAi23y/O+hh2/VP/t9X85WEj60ypx32t6RBzyHgmFi+RhdxCjKCmnbWn1FEqGhGyI+N3UHHwqRFwJWO7J6u3I5nKCZA/hxIQ9g9HecDbr291m2RWoFJSg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zh/VM2PvaWXby6D1nbK/G/Ihjx2YeKbQpPxdCvQ3goc=;
+ b=cpU2mBU8YtwEEPUvNGNbNgawIl5K6up0jO/y5J0C9vm1mDsqkusuoKkPIqaMHJNB1D3MdcD9UO/8qiScNly7aC+P9P4dXhlf4eAk34t7/e+dlvch5mo2YfqAy2T7GToA3rU4pjK7UwO9lUfJB8FAlP+smHZdLleeuuGNbhcJmKLOLSPjXWc+QxBNc2SkdcP9OkWfHNCn36SSdjgYl980e6Mv/5X2PBdHbGZlGraPsQksB17I/KGvSVe5wCkmzo/cHAzbfACzH+7Ko4hLxYNklSWI4frIF4nK/OvsCreG7xanBuY0dBLUwUo2lQ8wwSFPloHhVGN2edj1ivbitGe47Q==
+Received: from PSAPR06MB4952.apcprd06.prod.outlook.com (2603:1096:301:a3::11)
+ by KL1PR06MB6041.apcprd06.prod.outlook.com (2603:1096:820:cb::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 8 Apr
+ 2024 03:36:36 +0000
+Received: from PSAPR06MB4952.apcprd06.prod.outlook.com
+ ([fe80::45cb:f62c:d9bc:b12b]) by PSAPR06MB4952.apcprd06.prod.outlook.com
+ ([fe80::45cb:f62c:d9bc:b12b%7]) with mapi id 15.20.7409.053; Mon, 8 Apr 2024
+ 03:36:36 +0000
+From: Guanbing Huang <albanhuang@outlook.com>
+To: gregkh@linuxfoundation.org,
+	andriy.shevchenko@intel.com,
+	rafael.j.wysocki@intel.com
+Cc: linux-acpi@vger.kernel.org,
+	tony@atomide.com,
+	john.ogness@linutronix.de,
+	yangyicong@hisilicon.com,
+	jirislaby@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	lvjianmin@loongson.cn,
+	albanhuang@tencent.com,
+	tombinfan@tencent.com
+Subject: [PATCH v5 0/3] serial: 8250_pnp: Support configurable reg shift property
+Date: Mon,  8 Apr 2024 11:36:21 +0800
+Message-ID:
+ <PSAPR06MB4952B86F64A6CEB853114EA4C9002@PSAPR06MB4952.apcprd06.prod.outlook.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-TMN: [p97xvQlQGoN1tk5Eyn2ARy0a0ypZKaFe]
+X-ClientProxiedBy: SGXP274CA0001.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::13)
+ To PSAPR06MB4952.apcprd06.prod.outlook.com (2603:1096:301:a3::11)
+X-Microsoft-Original-Message-ID: <cover.1712472167.git.albanhuang@tencent.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] platform/x86: quickstart: Fix race condition when
- reporting input event
-To: Armin Wolf <W_Armin@gmx.de>, ilpo.jarvinen@linux.intel.com
-Cc: rafael@kernel.org, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240327214524.123935-1-W_Armin@gmx.de>
- <f662fab0-0f47-4b71-ab71-2b9492253483@gmx.de>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <f662fab0-0f47-4b71-ab71-2b9492253483@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PSAPR06MB4952:EE_|KL1PR06MB6041:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47c2ec61-78f1-40e0-bbe7-08dc577d180d
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	UoGlc1BrzhyqAR6AWi1SmadhVnd8WwNi2msCt7IBkuoigJIuqbcm3D3WrVyBx5QWpeY7Y0gD+6jCNUkWmT3VbTOi7si4JwHVbt30VJLQ4k2aq9842CzW+t3qGr6SYDFBVHBfR47jX/XTaTlUyvZwMwCH5UQQrbxRKqBrT00DzDdaoAgqYXTPz5Ywic757Rksdpsct654ClpvTLGChZgG/EMvMNn4TxIVLoiFwfeNbR4mD/qKDxR0tFDn/0RTtEYKfYmSuM9xYQHJEa8HftVPRAWNJaXtHaDxbZ6O4ilm4OphEpx2A8oFcY4AGfsGGAPX9d2j8Oy70kt6LXRaMqT4aLYz0gjVJt3e541aqVKEjIpF+fF16XAHvhLlxlPEzRrs9OO1HnIPNmT7TzQEJKa+uX4LlL3Uiq2a00fBweCpxMjyc3H/+gxq+DGo4e+78pG5Tis/550Y5ZN0j2OsEuYzaiEtldwTj8fU8vrJVkAe+r5VfPhTTw8dWJF9n2c9POjMRrbbPouN/kOWYxy23J/8o4C4zns3x2qONXL7dYVTG137VRqz8fzfXXkcMho3bpYr
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?nNNQZiNGct6q5Xxa5toL2/5lu+PCQLcBx7BTsFgQ6MQtDMfu38vne8BFx2qd?=
+ =?us-ascii?Q?U+PE5Xq8qraP+MP20ZUT8yvlXU0wJeMlIvqxCVkZUMfuL/qW8CKcSmR62gdB?=
+ =?us-ascii?Q?IBGR/HJCiTZ3Cp1e4k7zUnIWNxMaN+xl1151TdCIAG2KTQeJO+ZqyBtpLu82?=
+ =?us-ascii?Q?5fkYT2poZ8+U+4h8A9gEQ6Xzc8bmo0FxZjeRyOC3/E3YyqEGZmghz4699HPJ?=
+ =?us-ascii?Q?aaMOf/B+krCCvieWkM/XGz+DsEID00wtcsbGOKPpqY98uYBviDmyeuuPFphG?=
+ =?us-ascii?Q?66Zh0Z9+z+7YuV9Iv+nHaP0sHlXzuTyUlOlcdB5cgpMgKMdJjzB+vi80/5S4?=
+ =?us-ascii?Q?SbLFGfU4H+jFuemuzdqEohU1nMzNnSCRiATiDvBDlnvjPZxc+oq7F6o2fnd6?=
+ =?us-ascii?Q?3VfdVjRmHSlwndzrU8nEM5zpacptoWUHd9ucz+I8TfNmR6LiksrzjFPr1sGW?=
+ =?us-ascii?Q?JbM2wuz3qM9BoeXB9lIwxI3CBIrdOK1QxjLdBcngJdVNb7qhNrTk7d0zSkMM?=
+ =?us-ascii?Q?IZd7HM6GgNQyF2z9qaDyc8IBnvHS1sKBnq9bCds43zCVn5sfZEdjYzELYB0J?=
+ =?us-ascii?Q?oqnQa457T7N0SRiCG1/gSASd9/Cj6HVyHvxxwitSebpSYUdEICJOQXeaCGq5?=
+ =?us-ascii?Q?gkC2ebIBO7YLFO1le0dIMjQOkDs05D6WhmiRDIDk639e2t8GT9FOrD3z92YP?=
+ =?us-ascii?Q?BJ1+drlcx6ymushR0xBhRJhbMsnRVoGUhZ4hxxedcdRkyZssXsUZjciHYZLl?=
+ =?us-ascii?Q?EWs9AWH8XBktnJ2oEUFs7ZBgDmkkYg+veg/SDdYzNLUf4+XhnZPz9cjU2D0f?=
+ =?us-ascii?Q?HVGA+7IPp2b+aDao9mY3gYJORTKV32nCjuddkhM8UomSgwB00ztDjoZFo9/r?=
+ =?us-ascii?Q?HUVYxXJ793fymWTp4kKrKj1ILi9EiAQyVnsaJi2vt6dWdl4qdYZN4Rx4ODkN?=
+ =?us-ascii?Q?/wIHv4dH7Orz/+PUmfRP6mjXHj8KnWqm/lxd+5v2zaMINte72TUr56EYJMpE?=
+ =?us-ascii?Q?qk5UYRuJzlWxvLNzdds4igihKh9QCPW6Lp7O8D+g8TwhI60zJahUsjiR5Z7M?=
+ =?us-ascii?Q?kbUfLuZSEgEYXVsa/xbWoyq0s78tXRx6w6/WTxZyZMRaTx0hc2h9v7aM9j37?=
+ =?us-ascii?Q?DKhVgA1TFOZ02QdYDXV4PMvr5yHt4mKdaNdDTlLore6hL82gQhZ4i9kVeFwb?=
+ =?us-ascii?Q?ARzoOcKKRZ8l61AJsbTF0A+5Czf5sXzPrgtYemIu5uU1KfNphb1AONnKvCs?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47c2ec61-78f1-40e0-bbe7-08dc577d180d
+X-MS-Exchange-CrossTenant-AuthSource: PSAPR06MB4952.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2024 03:36:36.7964
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR06MB6041
 
-Hi,
+From: Guanbing Huang <albanhuang@tencent.com>
 
-On 4/6/24 8:57 PM, Armin Wolf wrote:
-> Am 27.03.24 um 22:45 schrieb Armin Wolf:
-> 
->> Since commit e2ffcda16290 ("ACPI: OSL: Allow Notify () handlers to run
->> on all CPUs"), the ACPI core allows multiple notify calls to be active
->> at the same time. This means that two instances of quickstart_notify()
->> running at the same time can mess which each others input sequences.
->>
->> Fix this by protecting the input sequence with a mutex.
->>
->> Compile-tested only.
-> 
-> Any thoughts on this?
+The 16550a serial port based on the ACPI table requires obtaining the
+reg-shift attribute. In the ACPI scenario, If the reg-shift property
+is not configured like in DTS, the 16550a serial driver cannot read or
+write controller registers properly during initialization.
 
-I wonder if we need this at all ?
+To address the issue of configuring the reg-shift property, the 
+__uart_read_properties() universal interface is called to implement it.
+Adaptation of PNP devices is done in the __uart_read_properties() function.
 
-The input_event() / input_report_key() / input_sync() functions
-which underpin sparse_keymap_report_event() all are safe to be called
-from multiple threads at the same time AFAIK.
+Guanbing Huang (3):
+  PNP: Add dev_is_pnp() macro
+  serial: port: Add support of PNP IRQ to __uart_read_properties()
+  serial: 8250_pnp: Support configurable reg shift property
 
-The only thing which can then still go "wrong" if we have
-2 sparse_keymap_report_event() functions racing for the same
-quickstart button and thus for the same keycode is that we may
-end up with:
+ drivers/tty/serial/8250/8250_pnp.c | 40 +++++++++++++++++++-----------
+ drivers/tty/serial/serial_port.c   |  7 +++++-
+ include/linux/pnp.h                |  2 ++
+ 3 files changed, 33 insertions(+), 16 deletions(-)
 
-input_report_key(dev, keycode, 1);
-input_report_key(dev, keycode, 1); /* This is a no-op */
-input_sync(); /* + another input_sync() somewhere which is a no-op */
-input_report_key(dev, keycode, 0);
-input_report_key(dev, keycode, 0); /* This is a no-op */
-input_sync(); /* + another input_sync() somewhere which is a no-op */
-
-IOW if 2 racing notifiers hit the perfect race conditions then
-only 1 key press is reported, instead of 2 which seems like
-it is not a problem since arguably if the same event gets
-reported twice at the exact same time it probably really
-is only a single button press.
-
-Also I think it is highly unlikely we will actually see
-2 notifiers for this racing in practice.
-
-So I don't think we need this at all. But if others feel strongly
-about adding this I can still merge it... ?
-
-Regards,
-
-Hans
-
-
-
-
-
->> Fixes: afd66f2a739e ("platform/x86: Add ACPI quickstart button (PNP0C32) driver")
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> ---
->> This applies on the branch "review-hans". Maybe we could somehow
->> document the concurrency rules for ACPI notify handlers?
->> ---
->>   drivers/platform/x86/quickstart.c | 17 +++++++++++++++++
->>   1 file changed, 17 insertions(+)
->>
->> diff --git a/drivers/platform/x86/quickstart.c b/drivers/platform/x86/quickstart.c
->> index ba3a7a25dda7..e40f852d42c1 100644
->> --- a/drivers/platform/x86/quickstart.c
->> +++ b/drivers/platform/x86/quickstart.c
->> @@ -18,6 +18,7 @@
->>   #include <linux/input/sparse-keymap.h>
->>   #include <linux/kernel.h>
->>   #include <linux/module.h>
->> +#include <linux/mutex.h>
->>   #include <linux/platform_device.h>
->>   #include <linux/sysfs.h>
->>   #include <linux/types.h>
->> @@ -35,6 +36,7 @@
->>
->>   struct quickstart_data {
->>       struct device *dev;
->> +    struct mutex input_lock;    /* Protects input sequence during notify */
->>       struct input_dev *input_device;
->>       char input_name[32];
->>       char phys[32];
->> @@ -73,7 +75,10 @@ static void quickstart_notify(acpi_handle handle, u32 event, void *context)
->>
->>       switch (event) {
->>       case QUICKSTART_EVENT_RUNTIME:
->> +        mutex_lock(&data->input_lock);
->>           sparse_keymap_report_event(data->input_device, 0x1, 1, true);
->> +        mutex_unlock(&data->input_lock);
->> +
->>           acpi_bus_generate_netlink_event(DRIVER_NAME, dev_name(data->dev), event, 0);
->>           break;
->>       default:
->> @@ -147,6 +152,13 @@ static void quickstart_notify_remove(void *context)
->>       acpi_remove_notify_handler(handle, ACPI_DEVICE_NOTIFY, quickstart_notify);
->>   }
->>
->> +static void quickstart_mutex_destroy(void *data)
->> +{
->> +    struct mutex *lock = data;
->> +
->> +    mutex_destroy(lock);
->> +}
->> +
->>   static int quickstart_probe(struct platform_device *pdev)
->>   {
->>       struct quickstart_data *data;
->> @@ -165,6 +177,11 @@ static int quickstart_probe(struct platform_device *pdev)
->>       data->dev = &pdev->dev;
->>       dev_set_drvdata(&pdev->dev, data);
->>
->> +    mutex_init(&data->input_lock);
->> +    ret = devm_add_action_or_reset(&pdev->dev, quickstart_mutex_destroy, &data->input_lock);
->> +    if (ret < 0)
->> +        return ret;
->> +
->>       /* We have to initialize the device wakeup before evaluating GHID because
->>        * doing so will notify the device if the button was used to wake the machine
->>        * from S5.
->> -- 
->> 2.39.2
->>
->>
-> 
+-- 
+2.17.1
 
 
