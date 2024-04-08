@@ -1,107 +1,123 @@
-Return-Path: <linux-acpi+bounces-4780-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4784-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EA589CD5F
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 23:19:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 890D889CECD
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 01:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500BE1F21E8C
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 21:19:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F24431F2322A
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 23:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22A1147C79;
-	Mon,  8 Apr 2024 21:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA48762CD;
+	Mon,  8 Apr 2024 23:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fDrebjF1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mXCvlBh/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5938147C62;
-	Mon,  8 Apr 2024 21:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F219B38DD9;
+	Mon,  8 Apr 2024 23:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712611160; cv=none; b=QK1SUP+okv8fHYLikYgFY6kpTgdAPBCQbo9Uya7h/dAYli/zlO2HAtcx3+4tyynZLsDqMyX4vq/1IyWwxG+Z04IAMLH0Tj2sxFfGrW0dyAmoDMRro2+gP0jkAqNLd1m9/kbgBGKfbTbt2Yz833hhWTI+eHseTXkT3VmXcRibsFs=
+	t=1712618261; cv=none; b=kF20FLohT5PIs4odAbTWaML1wIAUsoZaZgKWbNzL9nlJHCfQ8n1vVIOfLP/6L35BoxfYDQb5JMxqgHl0xVPRK1oJoMZ+rEE4ZHRJr2cEcElOEcZwpOc5Kfx0TtxPNPq2ryyoHZEA26foA87p1N1hDfssDqyu7QVxuoxIRMcqYN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712611160; c=relaxed/simple;
-	bh=E215z4yNgNQnZ5yyZUlVNUGteHZIYbQ3gK1FUVJXYsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mUrZK47SPrzCjsDqlQ8ME9Q4RxTx9E4H0k7xaQYI55qlr0lOs6FjWoserfk/E4v5zGM6uABvBkjYCvotw9KBInrp9WYtYDaKHO+a1scgFJOZGxBm2QMDY2vmQSoyaLkQNzNT9MvxxhkY0rvOPIbA+PZhw5ZLtlZBEaZaxOSNgvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fDrebjF1; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1712618261; c=relaxed/simple;
+	bh=OZrzEFdKvPOSNSciBqI9vzb5cQOAqSfgD21/jOJfMKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c/9oNcxMyjwVA4TUDEtUUNSBCvuu2I65oeZep1jfcznW0BGgyeqHr4VC3S4Gxuz0jqrXCJ8DuGWjpOm1QBm/QJIJpwo5P3FbdnLituFakB+kQlXH7YRuJ93aazSaU4eY4HYAtNrPjUuh4k3C4re3QxqxSzDEnX5LTkph12KyOgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mXCvlBh/; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712611159; x=1744147159;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=E215z4yNgNQnZ5yyZUlVNUGteHZIYbQ3gK1FUVJXYsw=;
-  b=fDrebjF1Rl45UkT4Bo6Qni8dpcx/f3nNVBoBi/mvx8B2pn3TnqtaCSjj
-   wKs79IYoRVMenVO6Zs/Vl3930Ka9eFMxEaulElYxr/3FbPdTHdmZetVc6
-   2ItUi/S1Skhs2HmcFJch2WHDOgz600erEOemOQilvwMuS/sUAe83jb3cn
-   6PTbw9hvYfij51bhJLe7y4hUuN5kyGqI3Es1xBDPLeBHwFzGVSQpK3N85
-   SJKvH4vOr+2X2IB7cmy4lZsFoHKTu3Bc0mvdQiEV4NYr5P5b1IlIhZ1gL
-   3cTY28YYXWx4XW4Q9oRR+lsMht8LDUMD0oSVJ2F3qFWlo53ZviiIWVizU
-   A==;
-X-CSE-ConnectionGUID: PxlJ0tneRmaLXulJ6OEZZQ==
-X-CSE-MsgGUID: +xm6HA57ShaLycf/pVNDEA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7764769"
+  t=1712618260; x=1744154260;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OZrzEFdKvPOSNSciBqI9vzb5cQOAqSfgD21/jOJfMKk=;
+  b=mXCvlBh/oijWL0CD8eO9l1Z8ucmzYgi06OQJl+qgBkuNjDiRag8Jhro/
+   Tg8I8fiZKqAMzLUH6pQmc+ZNGS8XK69ZpbaAn9cHPV3Saa+4nMJBNaZ5q
+   93OIkfCd5Eq9Wi8rQP/7q365wGIBLjFqhHnu7BOf6gKciEgDVH5rBALon
+   yjUwLs/yaz5+cK0hfT5HAt8FiT15h8KCSqW9eupoz0FwRdYZc7Ii7cO1B
+   FfMVn26cumzlgbIFE7KXRwtr38QDhIch39e1GAY0fRzRYmuR0xJ7U6Ldx
+   QR2ogDFcsHzS9pSF8l2jHLxWDNKQA9lEdknpExD6LWooPgQdS9hbxQpBN
+   Q==;
+X-CSE-ConnectionGUID: n6hfu70uTPyX+Zke5SZbDQ==
+X-CSE-MsgGUID: YDGSvRaCQTCpIcvTxTi62g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7831107"
 X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="7764769"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 14:19:18 -0700
+   d="scan'208";a="7831107"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 16:17:39 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="915377857"
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="937092374"
 X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="915377857"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 14:19:16 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rtwOX-00000002eS9-37Sw;
-	Tue, 09 Apr 2024 00:19:13 +0300
-Date: Tue, 9 Apr 2024 00:19:13 +0300
+   d="scan'208";a="937092374"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 08 Apr 2024 16:17:34 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id BDB2312C; Tue,  9 Apr 2024 02:17:33 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 1/1] gpiolib: Update the kernel documentation - add
- Return sections
-Message-ID: <ZhRfUQP8GlJ7ZEBd@smile.fi.intel.com>
-References: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
- <ZhQ1l6naYpVlmlex@smile.fi.intel.com>
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: [PATCH v2 0/2] gpiolib: Fix gpio_lookup_flags mess and add Return sections
+Date: Tue,  9 Apr 2024 02:12:49 +0300
+Message-ID: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZhQ1l6naYpVlmlex@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 08, 2024 at 09:21:11PM +0300, Andy Shevchenko wrote:
-> On Fri, Apr 05, 2024 at 12:27:06AM +0300, Andy Shevchenko wrote:
-> > $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
-> > 67
-> > 
-> > Fix these by adding Return sections. While at it, make sure all of
-> > Return sections use the same style.
-> 
-> Bart, this is the biggest part from the v1, I would like to have that applied
-> first if no objections since it fixes kernel doc warnings. What do you think?
+While reviewing another patch I have realised that enum
+gpio_lookup_flags messes up with GPIO_* flags definitions.
+Hence the first patch fix. Second one is an updated version
+of adding Return sections to the kernel-doc.
 
-Hold on a sec, I found bigger issue that needs to be backported and this patch
-needs to be rebased on top of it. I'll send an update.
+The series is made in assumption that the patches will land in this
+order, but if applied separately, e.g., one to for-current and one to
+for-next branches, no conflicts should appear.
+
+In v2:
+- new patch 1
+- replaces error-code by errno (Randy)
+- added tags to patch 2 (Randy)
+
+Andy Shevchenko (2):
+  gpiolib: Fix a mess with the GPIO_* flags
+  gpiolib: Update the kernel documentation - add Return sections
+
+ drivers/gpio/gpiolib-acpi.c                   |  22 ++-
+ drivers/gpio/gpiolib-cdev.c                   |   8 +-
+ drivers/gpio/gpiolib-devres.c                 |  44 ++++-
+ drivers/gpio/gpiolib-legacy.c                 |   3 +
+ drivers/gpio/gpiolib-of.c                     |  53 ++++--
+ drivers/gpio/gpiolib-swnode.c                 |   4 +-
+ drivers/gpio/gpiolib-sysfs.c                  |   6 +-
+ drivers/gpio/gpiolib.c                        | 165 ++++++++++++++----
+ .../broadcom/brcm80211/brcmsmac/led.c         |   2 +-
+ include/linux/gpio/driver.h                   |   3 +-
+ include/linux/gpio/machine.h                  |  20 +--
+ 11 files changed, 245 insertions(+), 85 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0.rc1.1.gbec44491f096
 
 
