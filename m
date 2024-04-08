@@ -1,122 +1,100 @@
-Return-Path: <linux-acpi+bounces-4754-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4755-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FD689C728
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:32:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E47189C733
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F202285817
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:32:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBDFBB2207E
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB5C13F42F;
-	Mon,  8 Apr 2024 14:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241DF13E3EE;
+	Mon,  8 Apr 2024 14:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t0Njdtbg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM0jA44C"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2697A13F42C;
-	Mon,  8 Apr 2024 14:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE193768EA;
+	Mon,  8 Apr 2024 14:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712586755; cv=none; b=T/ktwBjE1z12pysM8ZbLkLj0RQhzi5PUNSfp/4kcHcpC0fyQv2X1sQSHhEAaOZyKCoYM73YjEeeXRAK00Io/4eiIklx4PyHuDvB28V1bYM1buUXLC5BGQwWexUQtejWM07FmAts1HyWuusbu8FKXCCmYw69ZcY5b3dqr0oZaoiM=
+	t=1712587083; cv=none; b=Ne8MR7VbAiMsQXv8OvDoq4MVvgVRCLaO3zFkP9YHXvo5gVqjVjGbSlrhvMDEG2HcMnZj1gEid+uxbsphcvlHsGXCtwRNT4lksohNyq++/1KC5U9YrYpDfMc02V7Uy/hYaZWkqxijG19hs3C45398Qf5vb0tocOTd0iYgIqPSCWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712586755; c=relaxed/simple;
-	bh=GorUcEBtXYyDfbB1UeZUkcg7USCD8pj7xfmi6TH0c9U=;
+	s=arc-20240116; t=1712587083; c=relaxed/simple;
+	bh=ZYMMKfFOivNhDtj80tBTwOeXAwS3KmSz3sLf7icExEQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cafZP3IyrRuGvVkEpGhtRHwrNOC6JXg5hcFavofTLCt3xqHGwDoxd73tqa5NrDNQBs4HE2a5z6sV65i1yMnCGkNNuv7aMI4k5NnNbdIkEnI1RVzsA5s0QIyTWOsqH0OT8uwnlkOR1JwxD69Ns+awxHTjzsEn2odcRwdboFBWP/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t0Njdtbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68F4C433F1;
-	Mon,  8 Apr 2024 14:32:34 +0000 (UTC)
+	 To:Cc:Content-Type; b=X1DAeEFHBuRKQkKmbCf7PEakEuvM+rkzYL2NCnFW+25pkXSCdzwzdT8xcySOmiNrluBYun7XI4aWJIYgUcM2hdswPZsdCGAOJMb7geIjDs8K6N2arbvXi7ezb+WYkWQig57PBkmWUSE+kgCTCj/mgWohhcEvK5IrQkd4i31t0HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM0jA44C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829DCC43399;
+	Mon,  8 Apr 2024 14:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712586754;
-	bh=GorUcEBtXYyDfbB1UeZUkcg7USCD8pj7xfmi6TH0c9U=;
+	s=k20201202; t=1712587082;
+	bh=ZYMMKfFOivNhDtj80tBTwOeXAwS3KmSz3sLf7icExEQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=t0NjdtbgBAY1oaeA7fpBU7GPvb7eVIuDwfMucnKlmlOKGN+NLrQ8dq8jLC13+eiUA
-	 RlPrgOt+m4jbTndOYfweumXNQqfnHRW5z4rxsmY3YMQ+D8S0yzyoTTYE4plSWa+lWr
-	 DSx8W/w8aOTo+ckhBgZaULNqNSdA/jXLPJdZERyealBbykAD1rJDfoVdfpqXktCIX0
-	 Xkac+8/2LRJLtEjIGpygLBhpIT5w7BNt/MY2YF06eQdFSns+ZVKjO+20Lyyk3I/9lP
-	 cQvGM5IqOgjH9bW7qU5ai+ZPbKVn5vzaGffhkeABmWjcP3ay42m/EYI7aKl3kb2f2u
-	 LZdVpA+h2hu6g==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-22ed9094168so77370fac.1;
-        Mon, 08 Apr 2024 07:32:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWodZp5gc2ar1nuE+EXUGFaRZ9MUOKl/yt16vOXLQvJ0GVnmORmdzf1zqJ0THCnDHT+s5Z2oqkm34rhNQggMJBKnwOzyLhbcjYZ9QTiUICcLfj23I/hG7nw0r7KRHKYEtZPmN8vv3ymjg==
-X-Gm-Message-State: AOJu0Yxzd7/KS2JjgaI+oYrfcmt4RABPyIjyZ2OA5x8ZjQKqxOLI3Crh
-	7VfK9bii8SVVsejBrOh9nVRzGk4exRkc+YtT7dTebCeepzb9MUiAGPxVude/D8BJwk6IkdA1qPZ
-	Na89zmHVxD/sqHnHI3rlHGKqqJgE=
-X-Google-Smtp-Source: AGHT+IG+u1ISr73/uSJMxwF7LPacCeZeKrVirQ/ehRPW31puIHBK+pGdttJAar4GdVESogf5a5L8qxLT7Xd++wq99R8=
-X-Received: by 2002:a05:6870:210c:b0:229:ee6d:77da with SMTP id
- f12-20020a056870210c00b00229ee6d77damr8582804oae.2.1712586754084; Mon, 08 Apr
- 2024 07:32:34 -0700 (PDT)
+	b=rM0jA44CtcwCaaI7JHx6Opc4+s02GKJM5hEf9nlZH51u0se7R0EPl/5raY0BfqeFn
+	 SAHHJhX7ZJc6CpZ2/T2lpC/0shWQjuvdg0YOjsJPwrMqBoSHRltwmrWkwOf0b1jEoP
+	 3Taa8vcAp+DXsIRI8SEdyZoNLU6EgtgvnTWabdfZkkZdxAn+8CY7mBAyPveLZJf/5+
+	 7ufqvV2n6rB2nGh0LAXh/TVJezmCta9Cbb0rgsfOSY5JKrHKme0cRZfAeo87oT3/KM
+	 PNtp+x5uBT3K05hZk2NA7d5tntNuY8wXYsQFb1ufPseXtwgwtYFFe5qr8pMrV0+LLW
+	 8DNqFgnCFwftg==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-22ed9094168so79056fac.1;
+        Mon, 08 Apr 2024 07:38:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVkiIZdtyN704R1KsyViyRv4Us0uVR9rOTTFrMoM85ZePSiQ3pLGaju1/hO4Cg8gS7r/DZSxWpVomFWi7g/ohRtNkuaji4/320fqN5w
+X-Gm-Message-State: AOJu0YwKtFxVU1s0Zp43TpRWYpZRMk7hRrDWBqo4vlMB2WlzwH7qG99W
+	bdms5L0TM0OUMF0UmhvyIDz520aeJxD/EcAxAD+Tm6RD45qWMJxokR2UB2mLVf3JTTED8Q1DpW8
+	vU7l4fXEoteYA+i0vTKjKk0cE7Ow=
+X-Google-Smtp-Source: AGHT+IGtmZXNEoC9c+sdC1heDm8rgMBGwpq2DBXgaueWP2WRdsxUJgN/rzMJUV0g5kWrVGqDlbPvXQCeHGz3/ow3FJI=
+X-Received: by 2002:a05:6870:218c:b0:22e:b2ea:5758 with SMTP id
+ l12-20020a056870218c00b0022eb2ea5758mr8972934oae.0.1712587081788; Mon, 08 Apr
+ 2024 07:38:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403014326.970237-1-qq810974084@gmail.com>
-In-Reply-To: <20240403014326.970237-1-qq810974084@gmail.com>
+References: <20240404120856.4109303-1-andriy.shevchenko@linux.intel.com> <Zg6Y8AVId_R83yMI@smile.fi.intel.com>
+In-Reply-To: <Zg6Y8AVId_R83yMI@smile.fi.intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 16:32:23 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g087vTJmgLHssedyCuhh61F_hR+TP3HQpoTACuzh+0jA@mail.gmail.com>
-Message-ID: <CAJZ5v0g087vTJmgLHssedyCuhh61F_hR+TP3HQpoTACuzh+0jA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: debugger: dbconvert: add a null pointer check
-To: Huai-Yuan Liu <qq810974084@gmail.com>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, baijiaju1990@outlook.com
+Date: Mon, 8 Apr 2024 16:37:50 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hYWVpXqNfy834w+PYRfsN4XocBfZ6cGygLucdz1bcQig@mail.gmail.com>
+Message-ID: <CAJZ5v0hYWVpXqNfy834w+PYRfsN4XocBfZ6cGygLucdz1bcQig@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] ACPI: LPSS: Prepare for SPI code cleanup
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 3:43=E2=80=AFAM Huai-Yuan Liu <qq810974084@gmail.com=
-> wrote:
+On Thu, Apr 4, 2024 at 2:11=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> The memory allocation function ACPI_ALLOCATE_ZEROED does not guarantee a
-> successful allocation, but the subsequent code directly dereferences the
-> pointer that receives it, which may lead to null pointer dereference.
+> On Thu, Apr 04, 2024 at 03:06:57PM +0300, Andy Shevchenko wrote:
+> > An ad-hoc cleanup followed by preparation for SPI code cleaning.
+> > The latter will be done in the next kernel cycle to avoid conflicts.
+> >
+> > This patch series should go before
+> > https://lore.kernel.org/linux-acpi/20240403170302.1073841-1-andriy.shev=
+chenko@linux.intel.com/
 >
-> To fix this issue, a null pointer check should be added. If it is null,
-> return exception code AE_NO_MEMORY.
+> Indeliberately forgot
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux=
+.intel.com>
 >
-> Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
-> Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
-
-Because ACPICA is an external project supplying code to the Linux
-kernel, the way to change the ACPICA code in the kernel is to submit a
-pull request to the upstream ACPICA project on GitHub and once that PR
-has been merged, submit a Linux patch corresponding to it including
-the Link: tag pointing to the PR in question and the git ID of the
-corresponding upstream ACPICA commit.
-
-However, note that upstream ACPICA changes are applied to the Linux
-kernel source code every time the upstream ACPICA project makes a
-release, so it is not necessary to send the corresponding Linux
-patches for them unless in the cases when timing matters.
-
-> ---
->  drivers/acpi/acpica/dbconvert.c | 2 ++
->  1 file changed, 2 insertions(+)
+> (Code hasn't been changed, commit messages also stays the same, hence I a=
+dded
+>  it from v1)
 >
-> diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconv=
-ert.c
-> index 2b84ac093698..8dbab6932049 100644
-> --- a/drivers/acpi/acpica/dbconvert.c
-> +++ b/drivers/acpi/acpica/dbconvert.c
-> @@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, =
-union acpi_object *object)
->         elements =3D
->             ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
->                                  sizeof(union acpi_object));
-> +       if (!elements)
-> +               return (AE_NO_MEMORY);
+> > In v2:
+> > - added Fixes tag to the first patch (Rafael)
+> > - reordered to get Fixes first in the series
+> > - v1: 20240402152952.3578659-1-andriy.shevchenko@linux.intel.com
 >
->         this =3D string;
->         for (i =3D 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
 > --
-> 2.34.1
->
->
+
+Both patches applied as 6.10 material, thanks!
 
