@@ -1,100 +1,165 @@
-Return-Path: <linux-acpi+bounces-4755-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4756-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E47189C733
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FF789C746
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBDFBB2207E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:38:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E81AB24BE7
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241DF13E3EE;
-	Mon,  8 Apr 2024 14:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588A13EFE8;
+	Mon,  8 Apr 2024 14:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM0jA44C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+M1bBUZ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE193768EA;
-	Mon,  8 Apr 2024 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C75F13E8A9;
+	Mon,  8 Apr 2024 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712587083; cv=none; b=Ne8MR7VbAiMsQXv8OvDoq4MVvgVRCLaO3zFkP9YHXvo5gVqjVjGbSlrhvMDEG2HcMnZj1gEid+uxbsphcvlHsGXCtwRNT4lksohNyq++/1KC5U9YrYpDfMc02V7Uy/hYaZWkqxijG19hs3C45398Qf5vb0tocOTd0iYgIqPSCWE=
+	t=1712587305; cv=none; b=j7uK+oBFFvouGdsAAWhJf6hVTPCnvs9qIVQlPFkh2M8xRZUX63tZRCd1BXlx4bty/bX61NKJU/s+t2hY5V8DhB0P7mskPZXjAjd4hseCmuYBfBf652rY6zHD4kYpidJb5PK0yc2TJkoeKSf01GEdSJRXM5dcKREGfc/O52rtpX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712587083; c=relaxed/simple;
-	bh=ZYMMKfFOivNhDtj80tBTwOeXAwS3KmSz3sLf7icExEQ=;
+	s=arc-20240116; t=1712587305; c=relaxed/simple;
+	bh=jbEWktGS8Ep13R3bVFaxKXrAOpmIt8ife9UyNU/Rcek=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X1DAeEFHBuRKQkKmbCf7PEakEuvM+rkzYL2NCnFW+25pkXSCdzwzdT8xcySOmiNrluBYun7XI4aWJIYgUcM2hdswPZsdCGAOJMb7geIjDs8K6N2arbvXi7ezb+WYkWQig57PBkmWUSE+kgCTCj/mgWohhcEvK5IrQkd4i31t0HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM0jA44C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829DCC43399;
-	Mon,  8 Apr 2024 14:38:02 +0000 (UTC)
+	 To:Cc:Content-Type; b=p2nwrXer5eAadLJY/Qef777wMjQjzO2rjMPWtfD7xC7MLTSC479+yi4//ZDF2BnHqXfoi1WMvguN83GhkcMRQyCSY9Cf4zJNS+6ZefSu4EFKRh0H1CqeA6/bK+tlfnPNCuqXT4bjtKL3Oukdq82dZV4u99UnPIjO5xlRw9p4hG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+M1bBUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC0FC43394;
+	Mon,  8 Apr 2024 14:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712587082;
-	bh=ZYMMKfFOivNhDtj80tBTwOeXAwS3KmSz3sLf7icExEQ=;
+	s=k20201202; t=1712587304;
+	bh=jbEWktGS8Ep13R3bVFaxKXrAOpmIt8ife9UyNU/Rcek=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rM0jA44CtcwCaaI7JHx6Opc4+s02GKJM5hEf9nlZH51u0se7R0EPl/5raY0BfqeFn
-	 SAHHJhX7ZJc6CpZ2/T2lpC/0shWQjuvdg0YOjsJPwrMqBoSHRltwmrWkwOf0b1jEoP
-	 3Taa8vcAp+DXsIRI8SEdyZoNLU6EgtgvnTWabdfZkkZdxAn+8CY7mBAyPveLZJf/5+
-	 7ufqvV2n6rB2nGh0LAXh/TVJezmCta9Cbb0rgsfOSY5JKrHKme0cRZfAeo87oT3/KM
-	 PNtp+x5uBT3K05hZk2NA7d5tntNuY8wXYsQFb1ufPseXtwgwtYFFe5qr8pMrV0+LLW
-	 8DNqFgnCFwftg==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-22ed9094168so79056fac.1;
-        Mon, 08 Apr 2024 07:38:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVkiIZdtyN704R1KsyViyRv4Us0uVR9rOTTFrMoM85ZePSiQ3pLGaju1/hO4Cg8gS7r/DZSxWpVomFWi7g/ohRtNkuaji4/320fqN5w
-X-Gm-Message-State: AOJu0YwKtFxVU1s0Zp43TpRWYpZRMk7hRrDWBqo4vlMB2WlzwH7qG99W
-	bdms5L0TM0OUMF0UmhvyIDz520aeJxD/EcAxAD+Tm6RD45qWMJxokR2UB2mLVf3JTTED8Q1DpW8
-	vU7l4fXEoteYA+i0vTKjKk0cE7Ow=
-X-Google-Smtp-Source: AGHT+IGtmZXNEoC9c+sdC1heDm8rgMBGwpq2DBXgaueWP2WRdsxUJgN/rzMJUV0g5kWrVGqDlbPvXQCeHGz3/ow3FJI=
-X-Received: by 2002:a05:6870:218c:b0:22e:b2ea:5758 with SMTP id
- l12-20020a056870218c00b0022eb2ea5758mr8972934oae.0.1712587081788; Mon, 08 Apr
- 2024 07:38:01 -0700 (PDT)
+	b=I+M1bBUZx+UIwqb2ohb4+876hCluTB2H4sTqDkldz2ZqbqUpC3gIxFWLKx3dn0xgp
+	 ihGNH6GojUPHEEf4HUem3J7nSH/p5E04AwOY7JcZB/M1DsR1Qe2FcXMsCSQYpWobQf
+	 HJ/3xl3mY61klTHN4wX6dFJwYQa0WFHps/9DD84Ow0Zb3pSXY+voV9O/7Y99pHUjgc
+	 rcuRQRNvMmQUiDCgQPFYb6codKrxr1NllK+SvejOYhXGTrtayfKlUkLR4rw5d4v3BO
+	 oI+vJbMSOxozP8FdZrQiNtIr3eEbX3xIX8jrb7zrgiHCtTCPZdBgOBf/Czm+dLTGY7
+	 P3srcEz9aiK7Q==
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3c3da4140a2so23309b6e.0;
+        Mon, 08 Apr 2024 07:41:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWFbnvMzVFSbjVUvsWZroV1mUyzSeA9VjpLvQUbGdTQLxEmcv4lIeto+Jw5X/DI0XbyqVME20is0BSJN7pufn6FO+tSvP5VF7nfbA==
+X-Gm-Message-State: AOJu0YwzEU2V4kSYSHcsuwCfUOE0PMrvGeZnrVF5wbn4ToTvCL+atUY0
+	LiyYBXn9GEV7joqlOd1xxc03uYJB9Y+phEXyYqZSMep746ZckisGucqwdo/cIaaZmng4NuABdl2
+	zUtM7PmVqSY88+ZOD0vM2Je5lfns=
+X-Google-Smtp-Source: AGHT+IFSY6CfSrDc13Ub9zqdboR0p48m4YcnNknozWduUthGeYqqVzVsbWyjUe3FxoaIxSZdZxmq2ad8FKsv56rKp64=
+X-Received: by 2002:a05:6808:15a2:b0:3c5:d3eb:2c1b with SMTP id
+ t34-20020a05680815a200b003c5d3eb2c1bmr9382476oiw.2.1712587304034; Mon, 08 Apr
+ 2024 07:41:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240404120856.4109303-1-andriy.shevchenko@linux.intel.com> <Zg6Y8AVId_R83yMI@smile.fi.intel.com>
-In-Reply-To: <Zg6Y8AVId_R83yMI@smile.fi.intel.com>
+References: <20240328140512.4148825-1-arnd@kernel.org> <20240328140512.4148825-7-arnd@kernel.org>
+In-Reply-To: <20240328140512.4148825-7-arnd@kernel.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 16:37:50 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hYWVpXqNfy834w+PYRfsN4XocBfZ6cGygLucdz1bcQig@mail.gmail.com>
-Message-ID: <CAJZ5v0hYWVpXqNfy834w+PYRfsN4XocBfZ6cGygLucdz1bcQig@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] ACPI: LPSS: Prepare for SPI code cleanup
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Date: Mon, 8 Apr 2024 16:41:32 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com>
+Message-ID: <CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com>
+Subject: Re: [PATCH 06/11] acpi: avoid warning for truncated string copy
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Robert Moore <robert.moore@intel.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Alexey Starikovskiy <astarikovskiy@suse.de>, 
+	Lin Ming <ming.m.lin@intel.com>, Len Brown <len.brown@intel.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 4, 2024 at 2:11=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Thu, Mar 28, 2024 at 3:06=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wro=
+te:
 >
-> On Thu, Apr 04, 2024 at 03:06:57PM +0300, Andy Shevchenko wrote:
-> > An ad-hoc cleanup followed by preparation for SPI code cleaning.
-> > The latter will be done in the next kernel cycle to avoid conflicts.
-> >
-> > This patch series should go before
-> > https://lore.kernel.org/linux-acpi/20240403170302.1073841-1-andriy.shev=
-chenko@linux.intel.com/
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> Indeliberately forgot
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux=
-.intel.com>
+> gcc -Wstringop-truncation warns about copying a string that results in a
+> missing nul termination:
 >
-> (Code hasn't been changed, commit messages also stays the same, hence I a=
-dded
->  it from v1)
+> drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+> drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equ=
+als destination size [-Werror=3Dstringop-truncation]
+>    60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equ=
+als destination size [-Werror=3Dstringop-truncation]
+>    61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE=
+_ID_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~
 >
-> > In v2:
-> > - added Fixes tag to the first patch (Rafael)
-> > - reordered to get Fixes first in the series
-> > - v1: 20240402152952.3578659-1-andriy.shevchenko@linux.intel.com
+> This one is intentional, so rewrite the code in a way that avoids the
+> warning. Since there is already an extra strlen() and an overflow check,
+> the actual size to be copied is already known here.
+>
+> Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+
+Because ACPICA is an external project supplying code to the Linux
+kernel, the way to change the ACPICA code in the kernel is to submit a
+pull request to the upstream ACPICA project on GitHub and once that PR
+has been merged, submit a Linux patch corresponding to it including
+the Link: tag pointing to the PR in question and the git ID of the
+corresponding upstream ACPICA commit.
+
+However, note that upstream ACPICA changes are applied to the Linux
+kernel source code every time the upstream ACPICA project makes a
+release, so it is not necessary to send the corresponding Linux
+patches for them unless in the cases when timing matters.
+
+> ---
+>  drivers/acpi/acpica/tbfind.c | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/tbfind.c b/drivers/acpi/acpica/tbfind.c
+> index 1c1b2e284bd9..472ce2a6624b 100644
+> --- a/drivers/acpi/acpica/tbfind.c
+> +++ b/drivers/acpi/acpica/tbfind.c
+> @@ -36,7 +36,7 @@ acpi_tb_find_table(char *signature,
+>  {
+>         acpi_status status =3D AE_OK;
+>         struct acpi_table_header header;
+> -       u32 i;
+> +       u32 len, i;
+>
+>         ACPI_FUNCTION_TRACE(tb_find_table);
+>
+> @@ -46,19 +46,18 @@ acpi_tb_find_table(char *signature,
+>                 return_ACPI_STATUS(AE_BAD_SIGNATURE);
+>         }
+>
+> -       /* Don't allow the OEM strings to be too long */
+> -
+> -       if ((strlen(oem_id) > ACPI_OEM_ID_SIZE) ||
+> -           (strlen(oem_table_id) > ACPI_OEM_TABLE_ID_SIZE)) {
+> -               return_ACPI_STATUS(AE_AML_STRING_LIMIT);
+> -       }
+> -
+>         /* Normalize the input strings */
+>
+>         memset(&header, 0, sizeof(struct acpi_table_header));
+>         ACPI_COPY_NAMESEG(header.signature, signature);
+> -       strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+> -       strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE=
+);
+> +       len =3D strlen(oem_id);
+> +       if (len > ACPI_OEM_ID_SIZE)
+> +               return_ACPI_STATUS(AE_AML_STRING_LIMIT);
+> +       memcpy(header.oem_id, oem_id, len);
+> +       len =3D strlen(oem_table_id);
+> +       if (len > ACPI_OEM_TABLE_ID_SIZE)
+> +               return_ACPI_STATUS(AE_AML_STRING_LIMIT);
+> +       memcpy(header.oem_table_id, oem_table_id, len);
+>
+>         /* Search for the table */
 >
 > --
-
-Both patches applied as 6.10 material, thanks!
+> 2.39.2
+>
+>
 
