@@ -1,180 +1,161 @@
-Return-Path: <linux-acpi+bounces-4750-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4751-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C7189C67D
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:11:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE93B89C6D3
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4ECD285119
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:11:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C751C23875
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1469684D3A;
-	Mon,  8 Apr 2024 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15D212DDA1;
+	Mon,  8 Apr 2024 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hi4haSiz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuAljUOw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC9984D1C;
-	Mon,  8 Apr 2024 14:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F54912BEA0;
+	Mon,  8 Apr 2024 14:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712585510; cv=none; b=faCJAns5daGJeyTvM1f/Y5Cn5r8cuCzS60KcK6KVxKB++kOaJqo4bqsGHTktkTautVOFBDYm/DwtfMCU6kirGkLpYgsiB8qrn6QeClliaW+C9pGYP3EO74gH9t7zWpuNo/QUbwT2NTMxdUP74s39+3lvF5MQXGssvN00SPsbkcc=
+	t=1712585947; cv=none; b=TPgrV0ujlvEYoG3oqg+ZzPvE0WEAj/zSAq4eCTqCOXyCIL7HSbg9ICtRnK31/vF/SlTZJZllGkiYh5mrSUaNVbTNFDLXLbVMzMW6rVqa3ns2+vPzMGBAR/tRxky2KOFSR+bnIHNoej7VTB9Af8Xen70QFAix0WxWIZZSxw+L7Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712585510; c=relaxed/simple;
-	bh=Y5VDGX/dMQKlUWcPOeqi5ZCYWJijxH8qLM/15IHq2Ag=;
+	s=arc-20240116; t=1712585947; c=relaxed/simple;
+	bh=fCohwsfER8OLWfZl6LReGaQxXONj5RyinO1IgQBzs1s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pNzWCJtZTC44Bh4sRv1hxpljvwkPsjk6dPlKwF/VfaYMq4N475Tn4Y1G7wvOrn7xwdFvgVf0SfjTcOHt7G9qQl809QPJmvCNXT1sauA71lLQO9LIHBboFv1nrm0VU8LB4Pa+HFFjO0S/JuEuC3Q4zE+VZvDGSmhl/To0GAtAJ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hi4haSiz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D384C433F1;
-	Mon,  8 Apr 2024 14:11:49 +0000 (UTC)
+	 To:Cc:Content-Type; b=LeIP1ZqvXdyUa/hZ7Do6hmea6oYfk45uRxEGl2DzWCH6bE2/aoBcsZMqICV4PbPOIIt/zF1EcOvsAJBKL5iiDn3J2T7HweO4YOkW9Y4A03aTB3U+84vm2KXGM/Kw9GLPk1ZF9udv/SpoBV8LYikec5YsOxV2euXrkf2WKdVXLPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuAljUOw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB69EC41606;
+	Mon,  8 Apr 2024 14:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712585509;
-	bh=Y5VDGX/dMQKlUWcPOeqi5ZCYWJijxH8qLM/15IHq2Ag=;
+	s=k20201202; t=1712585947;
+	bh=fCohwsfER8OLWfZl6LReGaQxXONj5RyinO1IgQBzs1s=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hi4haSizLHLeV1cxPz2QxOf0sM5W3Vwrpvpz75wspuo6phr5Q9EBAv7ole5+JcHVD
-	 B4mexWtiU6i6SPVdOj2n6Rq505T3XDeG9s3dNAD6hSM0PNKHldCAeGmRisHEQNiz6K
-	 cb+isO7Gdz7sXcDItzLKhMvJCpxh+KiIJoLpSY2qlF2PO8kXAnnXj95DQWRnhJiLh/
-	 S8FBsGvp1Z0706XWzLBPsM41nUCDTILIr4iJyQZj+ZsAONcNlB0pglPvW4cIeFCQYK
-	 /cSTYusoNphLJSzIou22wDseKz2gruSn/tzKFclelULXvPLE8+LGdg+8FIXiv6PRkB
-	 VasGbzrUpZMFQ==
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6ea0a6856d7so606196a34.1;
-        Mon, 08 Apr 2024 07:11:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVUoPJgMkLd+wuxJNYrSwV8ur1Sn0Sge/n8Lm9XdVgFBz5aULQVZoiE0I36oPyCHNniI8Nme594ZFmF34frxwdNRbAAC4F7F6OnsAUpBJhIF3l7XfBqjLFwGOmVuy61OesEkMTmxU7y2XXc329rkuvDu5BaUu/XZzUY+jWrS1O+7MEQ
-X-Gm-Message-State: AOJu0YxZt49HPtNuVBTord259UCSjilcfqiP0CavN+SfVhcwTpx0A2Z7
-	bNxvP6Q3qypWZ7rx0RxSzAU56bDpAAu2cjY7Bic+XrzcWZffvxxW/q7nVkc9ea1ODgQmsmaazDj
-	rmHQ2zKgEtqgcCDDxXaPOXVfq3Zs=
-X-Google-Smtp-Source: AGHT+IHXfmB+SUI1PFf5gbH9pXpP3RXeYlH6OKyn7AkJ05XBV8CG5i8TYv8qnvxxum64Q8ax1o9IrX71zGPJ88VXXks=
-X-Received: by 2002:a05:6808:130a:b0:3c5:dc7a:57d0 with SMTP id
- y10-20020a056808130a00b003c5dc7a57d0mr10464908oiv.5.1712585508701; Mon, 08
- Apr 2024 07:11:48 -0700 (PDT)
+	b=YuAljUOw0VGTL6reKBytSgl0plRNv+TSjZRfD3ZKuqxOSYkzoXC5WrRi5cw+S+B+M
+	 D4nwox90lYEDvOC2kltYpVUw1dnHyUlGf0Vz9gQ+VSZQ6UY2PlnOXYtJXUxFO+DpNk
+	 45njopcwprSMB+gVFh0LkX6VN8kgR0mIB2295lbbV+KLETQgy8jgbddtYnqL+2OrFg
+	 vSHyTr4CwHU1Vo0rTAX5E99YyX7sNSwK1JC6glkOPrGKg9aBLjrx4igbUnczVMBXk5
+	 xW34dqGA0uX7ktND0DNuPaGnARMfTcEH0+2d19P/OCslQK+OlaTFr1JQ1fC4J87VDd
+	 UWSr4GruMWPXA==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3be110bbff9so30077b6e.1;
+        Mon, 08 Apr 2024 07:19:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUWnu19PPY0u4kVmxIIQh3V/SM/BPfg0qTlHd1e4rM20PCoEN6dfWSHMDK8e2k4suvScCIAZ2gxzPYvL00HDQbYYniFMCi+YZzr5KKFTBRBzKr3m7itiKFRsotpYNLKXDVyDkcrMitWV3yS7MWyPxKMAT6ivqJgEqnY5RsSoEGzVdvj0BoSh37BKItReZWQnkC/AnFZnd0+eAZw7xASmwZnWtCH7WAvQebyD7Y/y9ASjzzIPlt/a9ipogHQXjuUVs+42A==
+X-Gm-Message-State: AOJu0Yy7ko1dqw+gs0xHuZ66keowJ/N5dPEWaommk6GVa95Bv3HM8fo3
+	feKxrZaqn9+YfMoJg740mOp+qLNWfnO9JlqRiUdqGqSJ4Nnamf4Vr/eVOiTfuC1vIpaeU+gM05A
+	+hJolD3LO6W7d/ZTTa1YcsN0opoo=
+X-Google-Smtp-Source: AGHT+IE2cd5MIHpLilsMOefxnD7lqhVeZau5m81/yoSXqMyOs4mTHwzl+84AR6mEi+xDVYbCBwtZjPGYOY8LlCssj9M=
+X-Received: by 2002:a05:6808:138e:b0:3c5:eab3:657 with SMTP id
+ c14-20020a056808138e00b003c5eab30657mr5718403oiw.4.1712585945878; Mon, 08 Apr
+ 2024 07:19:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240405121819.31331-1-sumeet.r.pawnikar@intel.com>
-In-Reply-To: <20240405121819.31331-1-sumeet.r.pawnikar@intel.com>
+References: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
+In-Reply-To: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 16:11:37 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0is1Y+QHWfp-=sddAD8bUgn+QD7PmfBnAzgjZktqMYhBA@mail.gmail.com>
-Message-ID: <CAJZ5v0is1Y+QHWfp-=sddAD8bUgn+QD7PmfBnAzgjZktqMYhBA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: DPTF: Add Lunar Lake support
-To: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-Cc: rafael@kernel.org, srinivas.pandruvada@linux.intel.com, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org
+Date: Mon, 8 Apr 2024 16:18:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jd7FegkcnJyDn61uBEdGRKHWoaQ8SKJE+JX18W0QHh1Q@mail.gmail.com>
+Message-ID: <CAJZ5v0jd7FegkcnJyDn61uBEdGRKHWoaQ8SKJE+JX18W0QHh1Q@mail.gmail.com>
+Subject: Re: [PATCH v2 00/19] ACPI: store owner from modules with acpi_bus_register_driver()
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Benson Leung <bleung@chromium.org>, 
+	Tzung-Bi Shih <tzungbi@kernel.org>, Corentin Chary <corentin.chary@gmail.com>, 
+	"Luke D. Jones" <luke@ljones.dev>, Hans de Goede <hdegoede@redhat.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Thadeu Lima de Souza Cascardo <cascardo@holoscopio.com>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+	Matan Ziv-Av <matan@svgalib.org>, Mattia Dongili <malattia@linux.it>, 
+	Azael Avalos <coproscefalo@gmail.com>, Ajay Kaher <akaher@vmware.com>, 
+	Alexey Makhalov <amakhalov@vmware.com>, VMware PV-Drivers Reviewers <pv-drivers@vmware.com>, 
+	Richard Cochran <richardcochran@gmail.com>, "Theodore Ts'o" <tytso@mit.edu>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, linux-input@vger.kernel.org, 
+	netdev@vger.kernel.org, chrome-platform@lists.linux.dev, 
+	platform-driver-x86@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 5, 2024 at 2:31=E2=80=AFPM Sumeet Pawnikar
-<sumeet.r.pawnikar@intel.com> wrote:
+On Thu, Mar 28, 2024 at 8:49=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 >
-> Add Lunar Lake ACPI IDs for DPTF devices.
+> Changes in v2:
+> - Correct input and platform/chrome subjects.
+> - Add acks.
+> - Link to v1: https://lore.kernel.org/r/20240327-b4-module-owner-acpi-v1-=
+0-725241a2d224@linaro.org
 >
-> Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+> Merging
+> =3D=3D=3D=3D=3D=3D=3D
+> All further patches depend on the first amba patch, therefore one way is
+> to ack and take it via one tree, e.g. ACPI.
+>
+> Description
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Modules registering driver with acpi_bus_register_driver() often forget t=
+o
+> set .owner field.
+>
+> Solve the problem by moving this task away from the drivers to the core
+> amba bus code, just like we did for platform_driver in commit
+> 9447057eaff8 ("platform_device: use a macro instead of
+> platform_driver_register").
+>
+> Best regards,
+> Krzysztof
+>
 > ---
->  drivers/acpi/dptf/dptf_pch_fivr.c                       | 1 +
->  drivers/acpi/dptf/dptf_power.c                          | 2 ++
->  drivers/acpi/dptf/int340x_thermal.c                     | 6 ++++++
->  drivers/acpi/fan.h                                      | 1 +
->  drivers/thermal/intel/int340x_thermal/int3400_thermal.c | 1 +
->  drivers/thermal/intel/int340x_thermal/int3403_thermal.c | 1 +
->  6 files changed, 12 insertions(+)
+> Krzysztof Kozlowski (19):
+>       ACPI: store owner from modules with acpi_bus_register_driver()
+>       Input: atlas - drop owner assignment
+>       net: fjes: drop owner assignment
+>       platform/chrome: wilco_ec: drop owner assignment
+>       platform: asus-laptop: drop owner assignment
+>       platform: classmate-laptop: drop owner assignment
+>       platform/x86/dell: drop owner assignment
+>       platform/x86/eeepc: drop owner assignment
+>       platform/x86/intel/rst: drop owner assignment
+>       platform/x86/intel/smartconnect: drop owner assignment
+>       platform/x86/lg-laptop: drop owner assignment
+>       platform/x86/sony-laptop: drop owner assignment
+>       platform/x86/toshiba_acpi: drop owner assignment
+>       platform/x86/toshiba_bluetooth: drop owner assignment
+>       platform/x86/toshiba_haps: drop owner assignment
+>       platform/x86/wireless-hotkey: drop owner assignment
+>       ptp: vmw: drop owner assignment
+>       virt: vmgenid: drop owner assignment
+>       ACPI: drop redundant owner from acpi_driver
 >
-> diff --git a/drivers/acpi/dptf/dptf_pch_fivr.c b/drivers/acpi/dptf/dptf_p=
-ch_fivr.c
-> index 654aaa53c67f..d202730fafd8 100644
-> --- a/drivers/acpi/dptf/dptf_pch_fivr.c
-> +++ b/drivers/acpi/dptf/dptf_pch_fivr.c
-> @@ -150,6 +150,7 @@ static const struct acpi_device_id pch_fivr_device_id=
-s[] =3D {
->         {"INTC1045", 0},
->         {"INTC1049", 0},
->         {"INTC1064", 0},
-> +       {"INTC106B", 0},
->         {"INTC10A3", 0},
->         {"", 0},
->  };
-> diff --git a/drivers/acpi/dptf/dptf_power.c b/drivers/acpi/dptf/dptf_powe=
-r.c
-> index b8187babbbbb..8023b3e23315 100644
-> --- a/drivers/acpi/dptf/dptf_power.c
-> +++ b/drivers/acpi/dptf/dptf_power.c
-> @@ -232,6 +232,8 @@ static const struct acpi_device_id int3407_device_ids=
-[] =3D {
->         {"INTC1061", 0},
->         {"INTC1065", 0},
->         {"INTC1066", 0},
-> +       {"INTC106C", 0},
-> +       {"INTC106D", 0},
->         {"INTC10A4", 0},
->         {"INTC10A5", 0},
->         {"", 0},
-> diff --git a/drivers/acpi/dptf/int340x_thermal.c b/drivers/acpi/dptf/int3=
-40x_thermal.c
-> index b7113fa92fa6..014ada759954 100644
-> --- a/drivers/acpi/dptf/int340x_thermal.c
-> +++ b/drivers/acpi/dptf/int340x_thermal.c
-> @@ -43,6 +43,12 @@ static const struct acpi_device_id int340x_thermal_dev=
-ice_ids[] =3D {
->         {"INTC1064"},
->         {"INTC1065"},
->         {"INTC1066"},
-> +       {"INTC1068"},
-> +       {"INTC1069"},
-> +       {"INTC106A"},
-> +       {"INTC106B"},
-> +       {"INTC106C"},
-> +       {"INTC106D"},
->         {"INTC10A0"},
->         {"INTC10A1"},
->         {"INTC10A2"},
-> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> index e7b4b4e4a55e..f89d19c922dc 100644
-> --- a/drivers/acpi/fan.h
-> +++ b/drivers/acpi/fan.h
-> @@ -15,6 +15,7 @@
->         {"INTC1044", }, /* Fan for Tiger Lake generation */ \
->         {"INTC1048", }, /* Fan for Alder Lake generation */ \
->         {"INTC1063", }, /* Fan for Meteor Lake generation */ \
-> +       {"INTC106A", }, /* Fan for Lunar Lake generation */ \
->         {"INTC10A2", }, /* Fan for Raptor Lake generation */ \
->         {"PNP0C0B", } /* Generic ACPI fan */
->
-> diff --git a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c b/dr=
-ivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> index 427d370648d5..f8ebdd19d340 100644
-> --- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> +++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
-> @@ -705,6 +705,7 @@ static const struct acpi_device_id int3400_thermal_ma=
-tch[] =3D {
->         {"INTC1040", 0},
->         {"INTC1041", 0},
->         {"INTC1042", 0},
-> +       {"INTC1068", 0},
->         {"INTC10A0", 0},
->         {}
->  };
-> diff --git a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c b/dr=
-ivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> index 9b33fd3a66da..86901f9f54d8 100644
-> --- a/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> +++ b/drivers/thermal/intel/int340x_thermal/int3403_thermal.c
-> @@ -284,6 +284,7 @@ static const struct acpi_device_id int3403_device_ids=
-[] =3D {
->         {"INTC1043", 0},
->         {"INTC1046", 0},
->         {"INTC1062", 0},
-> +       {"INTC1069", 0},
->         {"INTC10A1", 0},
->         {"", 0},
->  };
-> --
+>  drivers/acpi/bus.c                        | 9 +++++----
+>  drivers/input/misc/atlas_btns.c           | 1 -
+>  drivers/net/fjes/fjes_main.c              | 1 -
+>  drivers/platform/chrome/wilco_ec/event.c  | 1 -
+>  drivers/platform/x86/asus-laptop.c        | 1 -
+>  drivers/platform/x86/classmate-laptop.c   | 5 -----
+>  drivers/platform/x86/dell/dell-rbtn.c     | 1 -
+>  drivers/platform/x86/eeepc-laptop.c       | 1 -
+>  drivers/platform/x86/intel/rst.c          | 1 -
+>  drivers/platform/x86/intel/smartconnect.c | 1 -
+>  drivers/platform/x86/lg-laptop.c          | 1 -
+>  drivers/platform/x86/sony-laptop.c        | 2 --
+>  drivers/platform/x86/toshiba_acpi.c       | 1 -
+>  drivers/platform/x86/toshiba_bluetooth.c  | 1 -
+>  drivers/platform/x86/toshiba_haps.c       | 1 -
+>  drivers/platform/x86/wireless-hotkey.c    | 1 -
+>  drivers/ptp/ptp_vmw.c                     | 1 -
+>  drivers/virt/vmgenid.c                    | 1 -
+>  include/acpi/acpi_bus.h                   | 8 ++++++--
+>  19 files changed, 11 insertions(+), 28 deletions(-)
+> ---
 
-Applied as 6.10 material, thanks!
+Whole series applied as 6.10 material, thanks!
 
