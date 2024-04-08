@@ -1,241 +1,119 @@
-Return-Path: <linux-acpi+bounces-4767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D4B89C8B3
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:49:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E23989C8E5
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6163E1F21A82
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:49:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0B161C21A75
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414C91420C8;
-	Mon,  8 Apr 2024 15:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323BA1428F5;
+	Mon,  8 Apr 2024 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHxhKh0z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="drrUGeTW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E7E24B4A;
-	Mon,  8 Apr 2024 15:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C19C14265A;
+	Mon,  8 Apr 2024 15:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712591339; cv=none; b=ddK+070MhuFz7TnkFSnyHVawm5ZRaTqLILYariFVBXtQGc4pfAsdrEtP2hcOQ6rD2nSQqsV8klU6V4uX2iX2k3ed+W40sUI4uvVMqPRzFnTStTXxpxKrrDPTn5NKSExGEdfPiQWYhGi6bziJoWuIgKMJVcqhSbfXZ8B1EIgfrDw=
+	t=1712591601; cv=none; b=rrAxEG1poWde8lshxzAr+8WIqmpBERs4I/sYXFxJpPZFHgErN1sQdPTFhTAxAR5vFOd95cLS2ry+4go6dIJI8O8T1kG8gOFqTG840onvi/MWNS1ONzf1dwlq9XuQ3oXW5qedtZChkSt5dgBDPA+vfiNfTSB6DfkW+nW49t22shA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712591339; c=relaxed/simple;
-	bh=dlrWxy8aJzTsV8Kbg8Ki+bRRBgvk5NN8dk84yVKvFEM=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=LyHnNLBbeeONm8yUC2Wgunk2Q/7Qpz2lUK308V2X8A543mklazeFTtlnOFEv/ixjDui+Rcs9cuoIH+0OSOQfpAg0y1/8vyvn+rk41/4fkhB53vFRKhRkKbE2wmCTLpE7sQdmc5kDEFfIO1PN/SlQr7cQPvn4vmuHxqB1HguqgWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHxhKh0z; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1712591601; c=relaxed/simple;
+	bh=Ayz7Pk1l7/zi8DRIp+xNrMxlwSWlL1f67lgps6EFpgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PtHzf6jwVYvf72fkkaTczBE7AwQeFbW5ZGGsgbC2/v94AC649w6tWXVuDuGrUynGBgcr2DoGlet//2L31RMJsP8a5srPvzWYxu6uNpZzavWCoddCmNQyC4caxTPvtt+jLuSpkU/SkJMu2hxPCebIMcDq8jLruZPqEiclvsh9kTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=drrUGeTW; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712591338; x=1744127338;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=dlrWxy8aJzTsV8Kbg8Ki+bRRBgvk5NN8dk84yVKvFEM=;
-  b=MHxhKh0zm1Ct93u78IGekqLoklszzT9SeR2Bw81mLCacwpsmUaa2pUNk
-   qwzRqI15g6cbDRWyoPsLDFjJZpaDrIpRSgEYDMheK9wazVAmomDVEUmPB
-   g6CWuC1kVk8vgSeGyrk5/mbxj6eL3hwCXQSoj4CVzTOxy6SyRB9AkrNGn
-   2Y4Yourd/wCgKXs2U9JhwUfUKo3yAPliNmsyIKa/ehFfLuHUlCUqvjW0J
-   0CwRGiykpfXs4gODcpJUrK3oJKIXxCmOlw6sRRb5vOsnH78gY567FVLYM
-   UV4hcgcidB+V1F/3AAgq/5j5eC51Pfj/9MtSWDmlnHp8OhHsvdl84Fi2k
-   g==;
-X-CSE-ConnectionGUID: 8OAKcLehRd+lYPzh8Cx06Q==
-X-CSE-MsgGUID: IeSv79j2T0avpiuiExMFdQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7784184"
+  t=1712591599; x=1744127599;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Ayz7Pk1l7/zi8DRIp+xNrMxlwSWlL1f67lgps6EFpgc=;
+  b=drrUGeTWb/RYNQwm1wu8S8CWkHFVY51C3OHaWLETEXQ8qymgD10m/TTj
+   UEmeYGGNlu09qudh18clqQYXEuikUoEEQsPan7LCNT/VQHPGR1Tt0hIQc
+   XA2zRBYG1g93mLZz8ls6yJzzoYP5Vz68+paFCBwIkvmbuR04pf/sV/hVB
+   nbqU46n7Xaa9W2k5/N8chQNGDSfhN8WNQOhcep8zHnLo2AbnxAl0uq5eR
+   gEtw8EvWhX/DtbaYnm/kG7vGDeEI7Vpr8Qab0gGOJaw7lO3dNzrvPCYfQ
+   uBRyuKT5XfBJjZPzceWr/+SKn2XfW0IYu8hq2yadEO9JgxnhhWDer98IU
+   w==;
+X-CSE-ConnectionGUID: 21Rfsuo3RZuos7YudC5kVA==
+X-CSE-MsgGUID: jeAbz/UJQjKf2egUneo5aA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="10850176"
 X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="7784184"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:48:57 -0700
-X-CSE-ConnectionGUID: DlHRz7zkT1yaH6fwH1SsAg==
-X-CSE-MsgGUID: SjTrHBcKSoSpKirqcqtjmQ==
+   d="scan'208";a="10850176"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:53:18 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="915369182"
 X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="51103101"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.28])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:48:53 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 8 Apr 2024 18:48:50 +0300 (EEST)
-To: Armin Wolf <W_Armin@gmx.de>
-cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-    linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH] ACPI: fan: Add hwmon support
-In-Reply-To: <20240408123718.15512-1-W_Armin@gmx.de>
-Message-ID: <63187b48-7978-3b0f-0526-79afea65c492@linux.intel.com>
-References: <20240408123718.15512-1-W_Armin@gmx.de>
+   d="scan'208";a="915369182"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:53:17 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rtrJ4-00000002ZJF-3Z42;
+	Mon, 08 Apr 2024 18:53:14 +0300
+Date: Mon, 8 Apr 2024 18:53:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v1] ACPI: Declare acpi_blacklisted() only if CONFIG_X86
+ is enabled
+Message-ID: <ZhQS6uYmpsxFD3gn@smile.fi.intel.com>
+References: <20240407063341.3710801-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <ZhQE9dU-VIcWI6au@smile.fi.intel.com>
+ <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, 8 Apr 2024, Armin Wolf wrote:
+On Mon, Apr 08, 2024 at 08:42:48AM -0700, Kuppuswamy Sathyanarayanan wrote:
+> On Mon, Apr 8, 2024 at 7:53 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Sat, Apr 06, 2024 at 11:33:41PM -0700, Kuppuswamy Sathyanarayanan wrote:
 
-> Currently, the driver does only supports a custom sysfs
-> interface to allow userspace to read the fan speed.
-> Add support for the standard hwmon interface so users
-> can read the fan speed with standard tools like "sensors".
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
->  drivers/acpi/Makefile    |  1 +
->  drivers/acpi/fan.h       |  2 ++
->  drivers/acpi/fan_core.c  |  7 ++++
->  drivers/acpi/fan_hwmon.c | 78 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 88 insertions(+)
->  create mode 100644 drivers/acpi/fan_hwmon.c
-> 
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index d69d5444acdb..9a2e03acc1be 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -83,6 +83,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+= tiny-power-button.o
->  obj-$(CONFIG_ACPI_FAN)		+= fan.o
->  fan-objs			:= fan_core.o
->  fan-objs			+= fan_attr.o
-> +fan-objs			+= fan_hwmon.o
-> 
->  obj-$(CONFIG_ACPI_VIDEO)	+= video.o
->  obj-$(CONFIG_ACPI_TAD)		+= acpi_tad.o
-> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> index e7b4b4e4a55e..45c2637566da 100644
-> --- a/drivers/acpi/fan.h
-> +++ b/drivers/acpi/fan.h
-> @@ -56,4 +56,6 @@ struct acpi_fan {
->  int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst);
->  int acpi_fan_create_attributes(struct acpi_device *device);
->  void acpi_fan_delete_attributes(struct acpi_device *device);
-> +
-> +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
->  #endif
-> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-> index ff72e4ef8738..6bbdbb914e95 100644
-> --- a/drivers/acpi/fan_core.c
-> +++ b/drivers/acpi/fan_core.c
-> @@ -7,6 +7,7 @@
->   *  Copyright (C) 2022 Intel Corporation. All rights reserved.
->   */
-> 
-> +#include <linux/kconfig.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/init.h>
-> @@ -336,6 +337,12 @@ static int acpi_fan_probe(struct platform_device *pdev)
->  		if (result)
->  			return result;
-> 
-> +		if (IS_REACHABLE(CONFIG_HWMON)) {
-> +			result = devm_acpi_fan_create_hwmon(device);
-> +			if (result)
-> +				return result;
-> +		}
-> +
->  		result = acpi_fan_create_attributes(device);
->  		if (result)
->  			return result;
-> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-> new file mode 100644
-> index 000000000000..4f2bec8664f4
-> --- /dev/null
-> +++ b/drivers/acpi/fan_hwmon.c
-> @@ -0,0 +1,78 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
-> + *
-> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/hwmon.h>
-> +#include <linux/limits.h>
-> +
-> +#include "fan.h"
-> +
-> +static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
-> +				   int channel)
-> +{
-> +	return 0444;
-> +}
-> +
-> +static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
-> +			 long *val)
-> +{
-> +	struct acpi_device *adev = dev_get_drvdata(dev);
-> +	struct acpi_fan_fst fst;
-> +	int ret;
-> +
-> +	switch (type) {
-> +	case hwmon_fan:
-> +		ret = acpi_fan_get_fst(adev, &fst);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		switch (attr) {
-> +		case hwmon_fan_input:
-> +			if (fst.speed > LONG_MAX)
-> +				return -EOVERFLOW;
-> +
-> +			*val = fst.speed;
-> +			return 0;
-> +		case hwmon_fan_fault:
-> +			*val = (fst.speed == U32_MAX);
-> +			return 0;
+...
 
-Is it okay to return 0 in this case?
+> > >  extern char acpi_video_backlight_string[];
+> > >  extern long acpi_is_video_device(acpi_handle handle);
+> > > +#ifdef CONFIG_X86
+> > >  extern int acpi_blacklisted(void);
+> > > +#endif
+> > >  extern void acpi_osi_setup(char *str);
+> > >  extern bool acpi_osi_is_win8(void);
+> >
+> > IIRC there is already similar ifdeffery, can we just move the declaration
+> > there?
+> 
+> There is none for CONFIG_X86. We only have some combinations or
+> derived config checks like below:
+> 
+> #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
+> #ifdef CONFIG_X86_IO_APIC
 
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static const struct hwmon_ops acpi_fan_ops = {
-> +	.is_visible = acpi_fan_is_visible,
-> +	.read = acpi_fan_read,
-> +};
-> +
-> +static const struct hwmon_channel_info * const acpi_fan_info[] = {
-> +	HWMON_CHANNEL_INFO(fan,
-> +			   HWMON_F_INPUT | HWMON_F_FAULT),
-
-One line.
+Okay, it seems I mixed this with acpi_bus.h.
 
 -- 
- i.
+With Best Regards,
+Andy Shevchenko
 
 
-> +	NULL
-> +};
-> +
-> +static const struct hwmon_chip_info acpi_fan_chip_info = {
-> +	.ops = &acpi_fan_ops,
-> +	.info = acpi_fan_info,
-> +};
-> +
-> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-> +{
-> +	struct device *hdev;
-> +
-> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", device,
-> +						    &acpi_fan_chip_info, NULL);
-> +
-> +	return PTR_ERR_OR_ZERO(hdev);
-> +}
-> --
-> 2.39.2
-> 
-> 
 
