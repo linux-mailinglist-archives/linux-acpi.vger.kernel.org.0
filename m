@@ -1,87 +1,88 @@
-Return-Path: <linux-acpi+bounces-4753-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4754-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF27089C710
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:29:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FD689C728
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 16:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1AA51C21524
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F202285817
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:32:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F83127B56;
-	Mon,  8 Apr 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB5C13F42F;
+	Mon,  8 Apr 2024 14:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BibektuL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t0Njdtbg"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFB9126F3F;
-	Mon,  8 Apr 2024 14:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2697A13F42C;
+	Mon,  8 Apr 2024 14:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712586570; cv=none; b=I4rlEsvi3EQpGZ8bnoNzw/OUVthZxkUBkCZyZwKC26c1H1wIbPcrWd5ach0xzc/1QR+RtjsIgg1/dA+a8iK4/iZL1JkHY9Q3fgZ2+E8HsQLvXwvgjSNd3uxC+e8sPGFpAqRWaBzKZIFmpHFTXaLxsJleqTos0ew2EVFBfGf1Zno=
+	t=1712586755; cv=none; b=T/ktwBjE1z12pysM8ZbLkLj0RQhzi5PUNSfp/4kcHcpC0fyQv2X1sQSHhEAaOZyKCoYM73YjEeeXRAK00Io/4eiIklx4PyHuDvB28V1bYM1buUXLC5BGQwWexUQtejWM07FmAts1HyWuusbu8FKXCCmYw69ZcY5b3dqr0oZaoiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712586570; c=relaxed/simple;
-	bh=DbgXMyCHE8Wx/Fa+odUEeisTrN7s8C2INM07ftx/blw=;
+	s=arc-20240116; t=1712586755; c=relaxed/simple;
+	bh=GorUcEBtXYyDfbB1UeZUkcg7USCD8pj7xfmi6TH0c9U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WaNOEp/IGJM7IGhocxrl5DofRERquT3kGD+ohP+Wv2Bnu5kYhHZYH1KmIWPsZ2ga+9DEBcfuLfZubscvbnk75tWUPhT9nLe/cxNkurB3GR/Ox+7lNOHf/U4XUYeh3OPkNCe7Uf1li3YVd7BYG4M543fXJgYwS6lAsIRicH/K4fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BibektuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48ABC43390;
-	Mon,  8 Apr 2024 14:29:29 +0000 (UTC)
+	 To:Cc:Content-Type; b=cafZP3IyrRuGvVkEpGhtRHwrNOC6JXg5hcFavofTLCt3xqHGwDoxd73tqa5NrDNQBs4HE2a5z6sV65i1yMnCGkNNuv7aMI4k5NnNbdIkEnI1RVzsA5s0QIyTWOsqH0OT8uwnlkOR1JwxD69Ns+awxHTjzsEn2odcRwdboFBWP/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t0Njdtbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68F4C433F1;
+	Mon,  8 Apr 2024 14:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712586569;
-	bh=DbgXMyCHE8Wx/Fa+odUEeisTrN7s8C2INM07ftx/blw=;
+	s=k20201202; t=1712586754;
+	bh=GorUcEBtXYyDfbB1UeZUkcg7USCD8pj7xfmi6TH0c9U=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BibektuLLtArBrXYfKEcOlobHfI71PcexZdZw5MbuLk4QtO/zJ51A03LXXpo3av/A
-	 PLd4HYaYqvaCV3yS20/CsSY8ctrWrh4NU1GHfmbMrotXua9nK8Qi3l28huFigWgDkC
-	 DPnngR3b8g/qBfQ602OsrEcjEXjTVQcMxi9q+p8w1whq2HBaT6DFqlXvv+DZ0h/xIV
-	 GrfkOGzHYEEKfPHMH7JQWYd9NIV42CLdEfMXi+b7LqmgqnpmEyJwR3ETZAGWzan4kf
-	 gC3SLiwMkztb8MtKImoV9nsPjUeTM8E0Q+KZjtQcgLveTIgpd/Qg7CI9FCRmTnP6Eu
-	 1n5Xctw4jJ6AA==
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6ea0a6856d7so610883a34.1;
-        Mon, 08 Apr 2024 07:29:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWhmndsXIi3z5Sr9+Gj1NBH0AOTYWc9koDl0by3qazPW39SjP+NGcZHHs8GHokXEfjA3hYNubCbu4Ap+lMbKhgTAlL3CiUUwH6U9PqPPVYxw17hCuTIklNsJroIg1xULPUStM/dm3GqpQ==
-X-Gm-Message-State: AOJu0YyJBsvRJJ19UFWyhUukG47g98Ml9r6GP5+Be0vsX2R0lxYZHbl0
-	dywiDT3FOHDgLp2xOKkM5iNAWIT1gKLpYA6+m2kId5+ZbMVVDihruy+71mHggg2r5GZzHvEXgQw
-	1djfjOR64RukCZasQ/gRGCo/l2NU=
-X-Google-Smtp-Source: AGHT+IEr3QTeW3KL1Co0KvWLK0r/MBjs6UjG3WZiw6tFUu42vVwm3HBLRXNd99YZP5dEGbQU+zGB/VXoEXcia7caZqQ=
-X-Received: by 2002:a05:6820:248e:b0:5aa:14ff:4128 with SMTP id
- cq14-20020a056820248e00b005aa14ff4128mr6134359oob.1.1712586568935; Mon, 08
- Apr 2024 07:29:28 -0700 (PDT)
+	b=t0NjdtbgBAY1oaeA7fpBU7GPvb7eVIuDwfMucnKlmlOKGN+NLrQ8dq8jLC13+eiUA
+	 RlPrgOt+m4jbTndOYfweumXNQqfnHRW5z4rxsmY3YMQ+D8S0yzyoTTYE4plSWa+lWr
+	 DSx8W/w8aOTo+ckhBgZaULNqNSdA/jXLPJdZERyealBbykAD1rJDfoVdfpqXktCIX0
+	 Xkac+8/2LRJLtEjIGpygLBhpIT5w7BNt/MY2YF06eQdFSns+ZVKjO+20Lyyk3I/9lP
+	 cQvGM5IqOgjH9bW7qU5ai+ZPbKVn5vzaGffhkeABmWjcP3ay42m/EYI7aKl3kb2f2u
+	 LZdVpA+h2hu6g==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-22ed9094168so77370fac.1;
+        Mon, 08 Apr 2024 07:32:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWodZp5gc2ar1nuE+EXUGFaRZ9MUOKl/yt16vOXLQvJ0GVnmORmdzf1zqJ0THCnDHT+s5Z2oqkm34rhNQggMJBKnwOzyLhbcjYZ9QTiUICcLfj23I/hG7nw0r7KRHKYEtZPmN8vv3ymjg==
+X-Gm-Message-State: AOJu0Yxzd7/KS2JjgaI+oYrfcmt4RABPyIjyZ2OA5x8ZjQKqxOLI3Crh
+	7VfK9bii8SVVsejBrOh9nVRzGk4exRkc+YtT7dTebCeepzb9MUiAGPxVude/D8BJwk6IkdA1qPZ
+	Na89zmHVxD/sqHnHI3rlHGKqqJgE=
+X-Google-Smtp-Source: AGHT+IG+u1ISr73/uSJMxwF7LPacCeZeKrVirQ/ehRPW31puIHBK+pGdttJAar4GdVESogf5a5L8qxLT7Xd++wq99R8=
+X-Received: by 2002:a05:6870:210c:b0:229:ee6d:77da with SMTP id
+ f12-20020a056870210c00b00229ee6d77damr8582804oae.2.1712586754084; Mon, 08 Apr
+ 2024 07:32:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403004718.11902-1-W_Armin@gmx.de>
-In-Reply-To: <20240403004718.11902-1-W_Armin@gmx.de>
+References: <20240403014326.970237-1-qq810974084@gmail.com>
+In-Reply-To: <20240403014326.970237-1-qq810974084@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 8 Apr 2024 16:29:18 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i3TAyDERxCm5caud5x5kLbc6J6MKqXXFWecShYe-gCrA@mail.gmail.com>
-Message-ID: <CAJZ5v0i3TAyDERxCm5caud5x5kLbc6J6MKqXXFWecShYe-gCrA@mail.gmail.com>
-Subject: Re: [PATCH] ACPICA: Fix memory leak then namespace lookup fails
-To: Armin Wolf <W_Armin@gmx.de>
+Date: Mon, 8 Apr 2024 16:32:23 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g087vTJmgLHssedyCuhh61F_hR+TP3HQpoTACuzh+0jA@mail.gmail.com>
+Message-ID: <CAJZ5v0g087vTJmgLHssedyCuhh61F_hR+TP3HQpoTACuzh+0jA@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: debugger: dbconvert: add a null pointer check
+To: Huai-Yuan Liu <qq810974084@gmail.com>
 Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	dmantipov@yandex.ru, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, baijiaju1990@outlook.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 2:47=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
+On Wed, Apr 3, 2024 at 3:43=E2=80=AFAM Huai-Yuan Liu <qq810974084@gmail.com=
+> wrote:
 >
-> When acpi_ps_get_next_namepath() fails due to a namespace lookup
-> failure, the acpi_parse_object is not freed before returning the
-> error code, causing a memory leak.
+> The memory allocation function ACPI_ALLOCATE_ZEROED does not guarantee a
+> successful allocation, but the subsequent code directly dereferences the
+> pointer that receives it, which may lead to null pointer dereference.
 >
-> Fix this by freeing the acpi_parse_object when encountering an
-> error.
+> To fix this issue, a null pointer check should be added. If it is null,
+> return exception code AE_NO_MEMORY.
 >
-> Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
+> Signed-off-by: Huai-Yuan Liu <qq810974084@gmail.com>
 
 Because ACPICA is an external project supplying code to the Linux
 kernel, the way to change the ACPICA code in the kernel is to submit a
@@ -90,51 +91,32 @@ has been merged, submit a Linux patch corresponding to it including
 the Link: tag pointing to the PR in question and the git ID of the
 corresponding upstream ACPICA commit.
 
-However, note that upstream ACPICA commits are automatically included
-into the Linux kernel source code every time the upstream ACPICA
-project makes a release, so it is not necessary to send the
-corresponding Linux patches for them unless in the cases when timing
-matters.
+However, note that upstream ACPICA changes are applied to the Linux
+kernel source code every time the upstream ACPICA project makes a
+release, so it is not necessary to send the corresponding Linux
+patches for them unless in the cases when timing matters.
 
 > ---
->  drivers/acpi/acpica/psargs.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>  drivers/acpi/acpica/dbconvert.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-> index 422c074ed289..7debfd5ce0d8 100644
-> --- a/drivers/acpi/acpica/psargs.c
-> +++ b/drivers/acpi/acpica/psargs.c
-> @@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_st=
-ate,
->                             acpi_ps_get_next_namepath(walk_state, parser_=
-state,
->                                                       arg,
->                                                       ACPI_NOT_METHOD_CAL=
-L);
-> +                       if (ACPI_FAILURE(status)) {
-> +                               acpi_ps_free_op(arg);
-> +                               return_ACPI_STATUS(status);
-> +                       }
->                 } else {
->                         /* Single complex argument, nothing returned */
+> diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconv=
+ert.c
+> index 2b84ac093698..8dbab6932049 100644
+> --- a/drivers/acpi/acpica/dbconvert.c
+> +++ b/drivers/acpi/acpica/dbconvert.c
+> @@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, =
+union acpi_object *object)
+>         elements =3D
+>             ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+>                                  sizeof(union acpi_object));
+> +       if (!elements)
+> +               return (AE_NO_MEMORY);
 >
-> @@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_st=
-ate,
->                             acpi_ps_get_next_namepath(walk_state, parser_=
-state,
->                                                       arg,
->                                                       ACPI_POSSIBLE_METHO=
-D_CALL);
-> +                       if (ACPI_FAILURE(status)) {
-> +                               acpi_ps_free_op(arg);
-> +                               return_ACPI_STATUS(status);
-> +                       }
->
->                         if (arg->common.aml_opcode =3D=3D AML_INT_METHODC=
-ALL_OP) {
->
+>         this =3D string;
+>         for (i =3D 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
 > --
-> 2.39.2
+> 2.34.1
 >
 >
 
