@@ -1,133 +1,239 @@
-Return-Path: <linux-acpi+bounces-4748-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4749-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823AA89BDCF
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 13:12:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A7789BF10
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 14:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA5D282485
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 11:12:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D718B22A89
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 12:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA3364CD1;
-	Mon,  8 Apr 2024 11:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A216BB21;
+	Mon,  8 Apr 2024 12:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="KDdYgPfc"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="S9Q7HphF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C43524AF;
-	Mon,  8 Apr 2024 11:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17984433BA;
+	Mon,  8 Apr 2024 12:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712574724; cv=none; b=k964G3MECkIiSKN5VOY0NlMUMBGHuyjdAuEyU7eoucQOGJJDeq8b15qlpTXRxijTFAtyOdSREKd1A0cbtj/HNCb+wXfvJAUh0ZtpwTqi2E5yobSDlq73NhP3mewYoq5KH2l0f5FkV8JhHjfqHPliiLM/HJHIrr/2kkm/C7aHoPM=
+	t=1712579855; cv=none; b=LFIRqCuQw3mq0givcoBg2zOodihI/CDU2+696/sgYipEHNYGSzWW+wrIgRJKWD7TC0j3w4qhu/+/26G2kx8z/Yt9l3bYyKUndrb6ovMYP14D2AchVrDqjW3t2hknLSJgpHvsO9Y6UY8+EylSpmnu7ZVwTyNT/e4kYAR6ErUT97s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712574724; c=relaxed/simple;
-	bh=/qHdiMaIekzpF2hh/Wzjj4H9Q+/t8SpERCHBTT65Khw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EMFRCIUMJhfaN1uWX0SJ8At0/EaClwm+QeqDM/2di4ApyJ6eKy5trlvKAKAMP7Az97/FxkIJRDp+EfX2ibeTFNP7q+CLyWojaFzRgin4ALvF5jg5FWoQW0DqNqLUOmOm/MYHDdHlpGNL0q44U5NKtUHS2AaynMqfMDDkq8GwsxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=KDdYgPfc; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1712574719;
-	bh=Gy2IffhRM6JRRrukWvLRqJnwzreji6m9bj34GwffDNM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KDdYgPfcoO4Xwkc9vPoJtb5pfxHOMMswqVXzEkb/jhRhZbDZDKl2m5brlJJmmnDdl
-	 0Kkk/GINLb1FttDTi7KiDUakFnGXKeHNjAMNPprZXB820lvKPVgL6e3YNFLJgM8X6r
-	 /Bt/2va9Kh+M5yTqqWdLcOsVJQBS6422N6PmXhpKT+4uMtLMWfFRYFOGVJ1PDbgp5W
-	 aBLla90cOIxiStLjk7j/zyOvU4VMGviSwd/s0Htc/v191CCU4vuhkXFJ/ldbpaMBn+
-	 vCiuYLbrxjHnMPxLxfiOeuQ7etxHECiSkN+/1wB6saocLq7ZwqZ+iE0iUd4YlxCv7i
-	 ww2jBxf3AqLhg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VCmdB2lhKz4wcF;
-	Mon,  8 Apr 2024 21:11:57 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Lukas Wunner <lukas@wunner.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, Jean Delvare
- <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
- linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang
- <zhi.wang.linux@gmail.com>, intel-gvt-dev@lists.freedesktop.org, Daniel
- Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis
- Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
-Subject: Re: [PATCH 2/2] treewide: Use sysfs_bin_attr_simple_read() helper
-In-Reply-To: <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
-References: <cover.1712410202.git.lukas@wunner.de>
- <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
-Date: Mon, 08 Apr 2024 21:11:57 +1000
-Message-ID: <87jzl8az2a.fsf@mail.lhotse>
+	s=arc-20240116; t=1712579855; c=relaxed/simple;
+	bh=yefMtkxcArShVlH4gKmHcFyVb/vZbZvOhfWn1j2P5VM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lBZdgtRz9KXfwcXoy8B2079Gsdy1HVGyKIZhF8u+0EPoiMX+TSSYBBT6fyF6XF+SRPlI67W2PrIb4XFBoX1LiWmL49fNWK5+jmTAL9chZZDhK+/lekBDSnM8Jb9+HgUc7mqKA1hQtEAmX7cXBtkVYzt5UszrD4My3C+QgLyMSsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=S9Q7HphF; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1712579841; x=1713184641; i=w_armin@gmx.de;
+	bh=L1BU2ousVKg/7DmZnw1u5sv8vb4fB8a7T761tiV3qfE=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=S9Q7HphFy27GlMXLfw8AHgtihTfaL/SmvzwRaEDv2NlovsXJj8DykQvWlI8Ehk9u
+	 gBLjviYaslpfZGYWozDg4ssLFTzi1l83LULosLpHpQ5NtH0BR/K9CZz9DmIG0h+7Q
+	 giZWiki3YxPAd8CNDrBwIX9g5zSU3nd/23Uc1yd75oEQvVvIhA0VM9PWlR/GZh20V
+	 k+IIxxSzKzuuqIOBq6xvzFez/Qh5mSqJbuG6PkLFonJs0fkGWawK2dlCKdXUdIMnA
+	 iWTBYdmj5ciamUq+AMnTWhaMi8V2NLCsV7LlNDPjhWCJEQ0whSMolGV828c8uHY9a
+	 YDNfGFwzTqTzkmuFiw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MSKu0-1sMJVA45Um-00SfKi; Mon, 08 Apr 2024 14:37:21 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: mlj@danelec.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH] ACPI: fan: Add hwmon support
+Date: Mon,  8 Apr 2024 14:37:18 +0200
+Message-Id: <20240408123718.15512-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:TK8i3nSi3uO+dm9pfkFvHgu1Ru5aKAWC+801oPC3Z2vPUGCb6xd
+ GSOfeeyZ+hwd391g2hc3ov22j6T0G75yPo82BuPRdypwM/ccL3tyC/nxiYWb5iS/8XK4PWK
+ jnlB/yO/Mrx+//S7G8MJNPIOHOBOCEUI5iDJA6Wug3zQeS5RWKCZRrmKLObl2EE4Of2yHQh
+ RwrJ6W91gzNngxumDt+YA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:NOgi25aLGd0=;iMCVK8eKt9CCCYGQdxi8VOTrS5H
+ SF5wcrvUdxUqVXeT7r2zZtWQrKSVf3ElAmy5XvJnVR5LPER1mtXY0u0otXK+kKqyLAoUsA4HA
+ zt9NU0tAWyLe/n73hw/2auc8J9vnRzp04bsSnmF+2Q6ulaKKf+T++Bo5F4MgGE3T1livVO0Zy
+ H8hUPuPb3xQxn066Way1cN7LsW0VrAWfWTegtdnKeVkrVf6vpKwueFX2iQrEcEoY1hQxU9wKU
+ G0sPYyP0qOWEfLvn5ZrXtLAAL+EvqY0lozhxqbA6LZUidvG5Nrqe4Yuer1AR2X+Ebpnnus0ee
+ XdS220hOAS5MfIXGn/6WhN6LgDzgWOFwoNNkBT4CLBxuKpQW/5KHk+7mBdI2BC/D/dOQFzcHs
+ HeUiDpc+ylKI+OcyQ7iMWMBXCwoK2NsrK+soK5Z2iKJqmAuF6KRuc4myilriu1SnouplGXQGA
+ 757ve82M+3+6/lJdtycsj4jq2rf7OecTTsbWgd9qrdGzoJHXhiM4JbzFxAjcbWVtQAkvpOFi4
+ bDnXo9ylpu1X86b8efkFo6Y53RFmGDu9fnz5FluJDCs55X/JufpqgDql+/R6CtuZsk+36LVnv
+ V+/P8GLgkzhW0aQ3gGo9kyp0V8MmrC4ul1iznuy2PEd096DqgcjMD2AIK+pXpGVgA3qCWtd4m
+ 1XEGq/v0VEXQNKl0XrTmMOZmLYvHmJBOCE1dGhw/40VXUBLhzm9DUl6Irf6D0LvX5bIfeLDaF
+ EVZex4sm7SDJs2tLP0kQdRoRqHcR8kvkYpwfe97//eLwMcC9vGsSQI7CRMcloJUdEQoXvjkz+
+ eTlmHKsB9eUiJYvRDZHToh5mAx2xnw/TzXzMgrvJJlGf8=
 
-Lukas Wunner <lukas@wunner.de> writes:
-> Deduplicate ->read() callbacks of bin_attributes which are backed by a
-> simple buffer in memory:
->
-> Use the newly introduced sysfs_bin_attr_simple_read() helper instead,
-> either by referencing it directly or by declaring such bin_attributes
-> with BIN_ATTR_SIMPLE_RO() or BIN_ATTR_SIMPLE_ADMIN_RO().
->
-> Aside from a reduction of LoC, this shaves off a few bytes from vmlinux
-> (304 bytes on an x86_64 allyesconfig).
->
-> No functional change intended.
->
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  arch/powerpc/platforms/powernv/opal.c              | 10 +--------
->  drivers/acpi/bgrt.c                                |  9 +-------
->  drivers/firmware/dmi_scan.c                        | 12 ++--------
->  drivers/firmware/efi/rci2-table.c                  | 10 +--------
->  drivers/gpu/drm/i915/gvt/firmware.c                | 26 +++++-----------------
->  .../intel/int340x_thermal/int3400_thermal.c        |  9 +-------
->  init/initramfs.c                                   | 10 +--------
->  kernel/module/sysfs.c                              | 13 +----------
->  8 files changed, 14 insertions(+), 85 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-> index 45dd77e..5d0f35b 100644
-> --- a/arch/powerpc/platforms/powernv/opal.c
-> +++ b/arch/powerpc/platforms/powernv/opal.c
-> @@ -792,14 +792,6 @@ static int __init opal_sysfs_init(void)
->  	return 0;
->  }
->  
-> -static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
-> -				struct bin_attribute *bin_attr, char *buf,
-> -				loff_t off, size_t count)
-> -{
-> -	return memory_read_from_buffer(buf, count, &off, bin_attr->private,
-> -				       bin_attr->size);
-> -}
-> -
->  static int opal_add_one_export(struct kobject *parent, const char *export_name,
->  			       struct device_node *np, const char *prop_name)
->  {
-> @@ -826,7 +818,7 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
->  	sysfs_bin_attr_init(attr);
->  	attr->attr.name = name;
->  	attr->attr.mode = 0400;
-> -	attr->read = export_attr_read;
-> +	attr->read = sysfs_bin_attr_simple_read;
->  	attr->private = __va(vals[0]);
->  	attr->size = vals[1];
+Currently, the driver does only supports a custom sysfs
+interface to allow userspace to read the fan speed.
+Add support for the standard hwmon interface so users
+can read the fan speed with standard tools like "sensors".
 
-I gave it a quick boot and checked I could still read the attributes,
-everything seems fine.
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/Makefile    |  1 +
+ drivers/acpi/fan.h       |  2 ++
+ drivers/acpi/fan_core.c  |  7 ++++
+ drivers/acpi/fan_hwmon.c | 78 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 88 insertions(+)
+ create mode 100644 drivers/acpi/fan_hwmon.c
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index d69d5444acdb..9a2e03acc1be 100644
+=2D-- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -83,6 +83,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+=3D tiny-power-but=
+ton.o
+ obj-$(CONFIG_ACPI_FAN)		+=3D fan.o
+ fan-objs			:=3D fan_core.o
+ fan-objs			+=3D fan_attr.o
++fan-objs			+=3D fan_hwmon.o
 
-cheers
+ obj-$(CONFIG_ACPI_VIDEO)	+=3D video.o
+ obj-$(CONFIG_ACPI_TAD)		+=3D acpi_tad.o
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index e7b4b4e4a55e..45c2637566da 100644
+=2D-- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -56,4 +56,6 @@ struct acpi_fan {
+ int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst=
+);
+ int acpi_fan_create_attributes(struct acpi_device *device);
+ void acpi_fan_delete_attributes(struct acpi_device *device);
++
++int devm_acpi_fan_create_hwmon(struct acpi_device *device);
+ #endif
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index ff72e4ef8738..6bbdbb914e95 100644
+=2D-- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -7,6 +7,7 @@
+  *  Copyright (C) 2022 Intel Corporation. All rights reserved.
+  */
+
++#include <linux/kconfig.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
+@@ -336,6 +337,12 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+ 		if (result)
+ 			return result;
+
++		if (IS_REACHABLE(CONFIG_HWMON)) {
++			result =3D devm_acpi_fan_create_hwmon(device);
++			if (result)
++				return result;
++		}
++
+ 		result =3D acpi_fan_create_attributes(device);
+ 		if (result)
+ 			return result;
+diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+new file mode 100644
+index 000000000000..4f2bec8664f4
+=2D-- /dev/null
++++ b/drivers/acpi/fan_hwmon.c
+@@ -0,0 +1,78 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * fan_hwmon.c - hwmon interface for the ACPI Fan driver
++ *
++ * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
++ */
++
++#include <linux/acpi.h>
++#include <linux/hwmon.h>
++#include <linux/limits.h>
++
++#include "fan.h"
++
++static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor=
+_types type, u32 attr,
++				   int channel)
++{
++	return 0444;
++}
++
++static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type=
+, u32 attr, int channel,
++			 long *val)
++{
++	struct acpi_device *adev =3D dev_get_drvdata(dev);
++	struct acpi_fan_fst fst;
++	int ret;
++
++	switch (type) {
++	case hwmon_fan:
++		ret =3D acpi_fan_get_fst(adev, &fst);
++		if (ret < 0)
++			return ret;
++
++		switch (attr) {
++		case hwmon_fan_input:
++			if (fst.speed > LONG_MAX)
++				return -EOVERFLOW;
++
++			*val =3D fst.speed;
++			return 0;
++		case hwmon_fan_fault:
++			*val =3D (fst.speed =3D=3D U32_MAX);
++			return 0;
++		default:
++			break;
++		}
++		break;
++	default:
++		break;
++	}
++
++	return -EOPNOTSUPP;
++}
++
++static const struct hwmon_ops acpi_fan_ops =3D {
++	.is_visible =3D acpi_fan_is_visible,
++	.read =3D acpi_fan_read,
++};
++
++static const struct hwmon_channel_info * const acpi_fan_info[] =3D {
++	HWMON_CHANNEL_INFO(fan,
++			   HWMON_F_INPUT | HWMON_F_FAULT),
++	NULL
++};
++
++static const struct hwmon_chip_info acpi_fan_chip_info =3D {
++	.ops =3D &acpi_fan_ops,
++	.info =3D acpi_fan_info,
++};
++
++int devm_acpi_fan_create_hwmon(struct acpi_device *device)
++{
++	struct device *hdev;
++
++	hdev =3D devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", =
+device,
++						    &acpi_fan_chip_info, NULL);
++
++	return PTR_ERR_OR_ZERO(hdev);
++}
+=2D-
+2.39.2
+
 
