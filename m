@@ -1,117 +1,241 @@
-Return-Path: <linux-acpi+bounces-4766-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4767-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72EC89C89F
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:43:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D4B89C8B3
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 17:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F5112881F6
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6163E1F21A82
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 15:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4F61411E2;
-	Mon,  8 Apr 2024 15:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414C91420C8;
+	Mon,  8 Apr 2024 15:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHxhKh0z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95075140E4F;
-	Mon,  8 Apr 2024 15:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E7E24B4A;
+	Mon,  8 Apr 2024 15:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712590984; cv=none; b=kPBFmsooLW2wVYfmz565ZuetDJWiHAvm1/lJIbtQgL0HtBlftsYdLha6lvAvYYIR2yocRnCLUmyCNKKXX8lp6157E4HT+gZrUDfbi91GUkzkO4lOXZ0hiKbqPra8AloqEjVmw5SGzs+uX1Ycdw7BisFhIlKs8SS3fhHgfj7cuqI=
+	t=1712591339; cv=none; b=ddK+070MhuFz7TnkFSnyHVawm5ZRaTqLILYariFVBXtQGc4pfAsdrEtP2hcOQ6rD2nSQqsV8klU6V4uX2iX2k3ed+W40sUI4uvVMqPRzFnTStTXxpxKrrDPTn5NKSExGEdfPiQWYhGi6bziJoWuIgKMJVcqhSbfXZ8B1EIgfrDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712590984; c=relaxed/simple;
-	bh=u84nzCTNcDWnJynwd2ody8MWoy74b9HyxAnHlJf7VLU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rvawbQybeBdQ6WgtmkYkHtqQAixtVfYPMFl68Pkq+IDrUjHGjNtKDgM7hRE6ewtwE7W4EA6xxYP9exoOM+jilTvf0Acr3HUiBipZS8+D8/8qYOlHE9m1DPl+g/YoXrUKgslzh/cFAXsDmyQaClpuC7Ejcni+urM5I2ZD6qjrsAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a47385a4379so1037797266b.0;
-        Mon, 08 Apr 2024 08:43:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712590981; x=1713195781;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DZWqINXfXQoMnEdU+hyVda4sKWIxPOFDKIPjHb2rhh4=;
-        b=aTUo+4PXaGRzfMsMQyipb+hany+VwAAENggECWkchAW5xpRCPLM/91UpvPsXdhApic
-         pGMfYeO7UB2wvunx7mRW6Xzzcr8z8Z1ROaBTUaZd3YuNWykFMDsNeqcwklGbHK62HTB6
-         SrL/Yl12YXLmm3RUy4NtmnPufUS8e6iVwF+XKKoehDZ/d1FRGJBD7fE3fvRNnNGz5g1L
-         I7z5+7CpN8ZsoxqxtvnaNlComPmRhUn8jqAR3EhaBc9kWD+lZR06peVedjLAEw//qdIm
-         UKb/Jqhn5aM8GfMROXe4SeJsZy/KnCXK1gQ7u5bVctrmyIPJcjz5rvKB72AMuFqG1Azm
-         KSGA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWVQXkcZPWcJ7djU06yBPQUGh1OHABUWSFLWbALfFPK+ZJUUnBsjCMlWduVCV1XlWmkfYSDo15U4F8grdR3bf6tPTB29OaOMEyVCYe5d/a96l5sSlWPtojD8HEVDYVUUPNhl1THWIoWQ==
-X-Gm-Message-State: AOJu0YyqVb2G4piUXhu4DRLQraQGiEFjNsQfbs9GCWxgRmhNjaS0A/io
-	4onavXy1hhgXStM2eL0t6E9f3ySkzn5b/DlUUKeRYi9FAvx7Fez550rLZCULtng=
-X-Google-Smtp-Source: AGHT+IEb2tkCJ5LtsHHh+awJaUpNleR7NuEVn30Ony6kKYtpbE4jPA3g00j8HmqrnOlXBgzZMb1F+g==
-X-Received: by 2002:a17:907:1c21:b0:a51:9575:bd3a with SMTP id nc33-20020a1709071c2100b00a519575bd3amr41936ejc.38.1712590980346;
-        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com. [209.85.218.45])
-        by smtp.gmail.com with ESMTPSA id an2-20020a17090656c200b00a51b00b5236sm3758352ejc.120.2024.04.08.08.43.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a46ea03c2a5so777067766b.1;
-        Mon, 08 Apr 2024 08:43:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUoGjDKDaWBkl4Kh4/apT7/NMANJqcuw3q7cT5Etm6MSqDcTiRA4A6t4nr5TX0lvUMEYENv9LtMRuHL2CJp78/4P8LBc/ZuhH6IvirOo8/c3jsSIKggWewd5YbowMk9r896vWcp5pgmkw==
-X-Received: by 2002:a17:907:3e1d:b0:a51:c62f:3c91 with SMTP id
- hp29-20020a1709073e1d00b00a51c62f3c91mr54115ejc.21.1712590980025; Mon, 08 Apr
- 2024 08:43:00 -0700 (PDT)
+	s=arc-20240116; t=1712591339; c=relaxed/simple;
+	bh=dlrWxy8aJzTsV8Kbg8Ki+bRRBgvk5NN8dk84yVKvFEM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=LyHnNLBbeeONm8yUC2Wgunk2Q/7Qpz2lUK308V2X8A543mklazeFTtlnOFEv/ixjDui+Rcs9cuoIH+0OSOQfpAg0y1/8vyvn+rk41/4fkhB53vFRKhRkKbE2wmCTLpE7sQdmc5kDEFfIO1PN/SlQr7cQPvn4vmuHxqB1HguqgWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHxhKh0z; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712591338; x=1744127338;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=dlrWxy8aJzTsV8Kbg8Ki+bRRBgvk5NN8dk84yVKvFEM=;
+  b=MHxhKh0zm1Ct93u78IGekqLoklszzT9SeR2Bw81mLCacwpsmUaa2pUNk
+   qwzRqI15g6cbDRWyoPsLDFjJZpaDrIpRSgEYDMheK9wazVAmomDVEUmPB
+   g6CWuC1kVk8vgSeGyrk5/mbxj6eL3hwCXQSoj4CVzTOxy6SyRB9AkrNGn
+   2Y4Yourd/wCgKXs2U9JhwUfUKo3yAPliNmsyIKa/ehFfLuHUlCUqvjW0J
+   0CwRGiykpfXs4gODcpJUrK3oJKIXxCmOlw6sRRb5vOsnH78gY567FVLYM
+   UV4hcgcidB+V1F/3AAgq/5j5eC51Pfj/9MtSWDmlnHp8OhHsvdl84Fi2k
+   g==;
+X-CSE-ConnectionGUID: 8OAKcLehRd+lYPzh8Cx06Q==
+X-CSE-MsgGUID: IeSv79j2T0avpiuiExMFdQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7784184"
+X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
+   d="scan'208";a="7784184"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:48:57 -0700
+X-CSE-ConnectionGUID: DlHRz7zkT1yaH6fwH1SsAg==
+X-CSE-MsgGUID: SjTrHBcKSoSpKirqcqtjmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
+   d="scan'208";a="51103101"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.28])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 08:48:53 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Mon, 8 Apr 2024 18:48:50 +0300 (EEST)
+To: Armin Wolf <W_Armin@gmx.de>
+cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
+    linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH] ACPI: fan: Add hwmon support
+In-Reply-To: <20240408123718.15512-1-W_Armin@gmx.de>
+Message-ID: <63187b48-7978-3b0f-0526-79afea65c492@linux.intel.com>
+References: <20240408123718.15512-1-W_Armin@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240407063341.3710801-1-sathyanarayanan.kuppuswamy@linux.intel.com>
- <ZhQE9dU-VIcWI6au@smile.fi.intel.com>
-In-Reply-To: <ZhQE9dU-VIcWI6au@smile.fi.intel.com>
-Reply-To: sathyanarayanan.kuppuswamy@linux.intel.com
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Date: Mon, 8 Apr 2024 08:42:48 -0700
-X-Gmail-Original-Message-ID: <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
-Message-ID: <CAC41dw-Df3L7B=Tq2QkQHDT2Yf3MzHgy8-czPAkZhdPf0Tea4Q@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: Declare acpi_blacklisted() only if CONFIG_X86 is enabled
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Len Brown <lenb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-On Mon, Apr 8, 2024 at 7:53=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Sat, Apr 06, 2024 at 11:33:41PM -0700, Kuppuswamy Sathyanarayanan wrot=
-e:
-> > The function acpi_blacklisted() is defined only when CONFIG_X86 is
-> > enabled. So to keep it consistent, protect its declaration with
-> > CONFIG_X86.
->
-> ...
->
-> >  extern char acpi_video_backlight_string[];
-> >  extern long acpi_is_video_device(acpi_handle handle);
-> > +#ifdef CONFIG_X86
-> >  extern int acpi_blacklisted(void);
-> > +#endif
-> >  extern void acpi_osi_setup(char *str);
-> >  extern bool acpi_osi_is_win8(void);
->
-> IIRC there is already similar ifdeffery, can we just move the declaration
-> there?
+On Mon, 8 Apr 2024, Armin Wolf wrote:
 
-There is none for CONFIG_X86. We only have some combinations or
-derived config checks like below:
+> Currently, the driver does only supports a custom sysfs
+> interface to allow userspace to read the fan speed.
+> Add support for the standard hwmon interface so users
+> can read the fan speed with standard tools like "sensors".
+> 
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+>  drivers/acpi/Makefile    |  1 +
+>  drivers/acpi/fan.h       |  2 ++
+>  drivers/acpi/fan_core.c  |  7 ++++
+>  drivers/acpi/fan_hwmon.c | 78 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 88 insertions(+)
+>  create mode 100644 drivers/acpi/fan_hwmon.c
+> 
+> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+> index d69d5444acdb..9a2e03acc1be 100644
+> --- a/drivers/acpi/Makefile
+> +++ b/drivers/acpi/Makefile
+> @@ -83,6 +83,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+= tiny-power-button.o
+>  obj-$(CONFIG_ACPI_FAN)		+= fan.o
+>  fan-objs			:= fan_core.o
+>  fan-objs			+= fan_attr.o
+> +fan-objs			+= fan_hwmon.o
+> 
+>  obj-$(CONFIG_ACPI_VIDEO)	+= video.o
+>  obj-$(CONFIG_ACPI_TAD)		+= acpi_tad.o
+> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+> index e7b4b4e4a55e..45c2637566da 100644
+> --- a/drivers/acpi/fan.h
+> +++ b/drivers/acpi/fan.h
+> @@ -56,4 +56,6 @@ struct acpi_fan {
+>  int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst);
+>  int acpi_fan_create_attributes(struct acpi_device *device);
+>  void acpi_fan_delete_attributes(struct acpi_device *device);
+> +
+> +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
+>  #endif
+> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+> index ff72e4ef8738..6bbdbb914e95 100644
+> --- a/drivers/acpi/fan_core.c
+> +++ b/drivers/acpi/fan_core.c
+> @@ -7,6 +7,7 @@
+>   *  Copyright (C) 2022 Intel Corporation. All rights reserved.
+>   */
+> 
+> +#include <linux/kconfig.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/init.h>
+> @@ -336,6 +337,12 @@ static int acpi_fan_probe(struct platform_device *pdev)
+>  		if (result)
+>  			return result;
+> 
+> +		if (IS_REACHABLE(CONFIG_HWMON)) {
+> +			result = devm_acpi_fan_create_hwmon(device);
+> +			if (result)
+> +				return result;
+> +		}
+> +
+>  		result = acpi_fan_create_attributes(device);
+>  		if (result)
+>  			return result;
+> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+> new file mode 100644
+> index 000000000000..4f2bec8664f4
+> --- /dev/null
+> +++ b/drivers/acpi/fan_hwmon.c
+> @@ -0,0 +1,78 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
+> + *
+> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/hwmon.h>
+> +#include <linux/limits.h>
+> +
+> +#include "fan.h"
+> +
+> +static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
+> +				   int channel)
+> +{
+> +	return 0444;
+> +}
+> +
+> +static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
+> +			 long *val)
+> +{
+> +	struct acpi_device *adev = dev_get_drvdata(dev);
+> +	struct acpi_fan_fst fst;
+> +	int ret;
+> +
+> +	switch (type) {
+> +	case hwmon_fan:
+> +		ret = acpi_fan_get_fst(adev, &fst);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		switch (attr) {
+> +		case hwmon_fan_input:
+> +			if (fst.speed > LONG_MAX)
+> +				return -EOVERFLOW;
+> +
+> +			*val = fst.speed;
+> +			return 0;
+> +		case hwmon_fan_fault:
+> +			*val = (fst.speed == U32_MAX);
+> +			return 0;
 
-#if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
-#ifdef CONFIG_X86_IO_APIC
+Is it okay to return 0 in this case?
 
->
+> +		default:
+> +			break;
+> +		}
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static const struct hwmon_ops acpi_fan_ops = {
+> +	.is_visible = acpi_fan_is_visible,
+> +	.read = acpi_fan_read,
+> +};
+> +
+> +static const struct hwmon_channel_info * const acpi_fan_info[] = {
+> +	HWMON_CHANNEL_INFO(fan,
+> +			   HWMON_F_INPUT | HWMON_F_FAULT),
+
+One line.
+
+-- 
+ i.
+
+
+> +	NULL
+> +};
+> +
+> +static const struct hwmon_chip_info acpi_fan_chip_info = {
+> +	.ops = &acpi_fan_ops,
+> +	.info = acpi_fan_info,
+> +};
+> +
+> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
+> +{
+> +	struct device *hdev;
+> +
+> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", device,
+> +						    &acpi_fan_chip_info, NULL);
+> +
+> +	return PTR_ERR_OR_ZERO(hdev);
+> +}
 > --
-> With Best Regards,
-> Andy Shevchenko
->
->
+> 2.39.2
+> 
+> 
 
