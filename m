@@ -1,102 +1,85 @@
-Return-Path: <linux-acpi+bounces-4777-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4778-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D5189CB9B
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 20:21:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A238A89CCDC
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 22:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 474521C2170B
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 18:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08E86285205
+	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 20:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A5F1448C6;
-	Mon,  8 Apr 2024 18:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N+EJOHe3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAE8146A68;
+	Mon,  8 Apr 2024 20:13:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547FB1E532;
-	Mon,  8 Apr 2024 18:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13F146A65;
+	Mon,  8 Apr 2024 20:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712600479; cv=none; b=tSDU0CFqZQfyS4pxwmjlFHpX7wqGVb4nXrlAUHF9vAkNjhP8FpET89p7+JImW7UwxgfUi3dkfxMDA86lhG42AGReeHRu/9XQo22MhohfqwzDFQUsZJn62+CTzJ3/iaiQ0FcCgM0Qa7hcqeRFec2uv9zcPDAM3uWzaSbVeSzzIn8=
+	t=1712607187; cv=none; b=bgWWTgIkRfdmbhLSgA7WX4T7q8ytVZLPQW2L/Hy6CbNeOwU8a1JEtFtV4Vr9MpV1er8TYI/27BrqsKcavHzBJKUlm8RE6j/si6rarIFUjaGR5FZ+csC7N4zNvTSgholcUtQEWoW2AwInMV2ySmyQrZUYzWQ0L5JljVXJO9etRSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712600479; c=relaxed/simple;
-	bh=z34/j1vtWd7zC0EObYfQ9rp8AHR0JiC5h7Q/5NrsV78=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V8/rKVN1NHosZj0hnOHnRrizyVQw2gQ+J+fjEC7OSt88W49a9hgM/8yC9XUTSvDLo0UklBZxORcZZluH7shc1P14MUZUl8DTRBBfBipxkEVM62iOIb+A/As+5T9jTgb1wThvSH/F61X7/hiHP+2ICuXCw7km0ab9J/M2fSCfFWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N+EJOHe3; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712600477; x=1744136477;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=z34/j1vtWd7zC0EObYfQ9rp8AHR0JiC5h7Q/5NrsV78=;
-  b=N+EJOHe3FGMBMePRpngDxDa5I8iHtXAAINYHncT0J3rCIJXLWfPFLHyo
-   /ioHdeN3HmOgjLKahXZH6YKkGren9s/VSs3bj4TkFQuZd1ISuoOhWxJ4c
-   Qluad/toQ9nqGx1as89kG/HrOlkYA/kZrpSYcxdUZbsMvcmI3phpYgP8N
-   Dxh7f9K3qgCxp2tjerXEpxFs6kakXMhG4LCbWuVrRhXqevSLBu0vZvuE0
-   dezSI0jzkJXYX+1Gkq4lcn5qOnaxO3ng9T9KN/XizVgDcmPQ3DxMg4eCY
-   1xNqSG4hAxaKu/h9QW1IVM+0AMDuZhmARo2S3iW6hjuUAV9l+H0g0iNb0
-   Q==;
-X-CSE-ConnectionGUID: DIoouLBHQhaj9fTQ4UQayA==
-X-CSE-MsgGUID: Zju/Hrh3T9yWbB5cfBGzIg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="7801089"
-X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="7801089"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 11:21:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="915373773"
-X-IronPort-AV: E=Sophos;i="6.07,187,1708416000"; 
-   d="scan'208";a="915373773"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 11:21:14 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rttcF-00000002bo6-3kBX;
-	Mon, 08 Apr 2024 21:21:11 +0300
-Date: Mon, 8 Apr 2024 21:21:11 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 1/1] gpiolib: Update the kernel documentation - add
- Return sections
-Message-ID: <ZhQ1l6naYpVlmlex@smile.fi.intel.com>
-References: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712607187; c=relaxed/simple;
+	bh=tfLVnov28inMOXr94rGhXSFffQYW23uzyFBDUBbpJyk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TVjwmEe9EI8xO3DzmoYoDj4r5UqluNghsg83eUa+ZvkP5RelABiXQ7nCBzpxrV331QRBeUWTApbOVqgE7LBkNAyHtRaeL2hPMHKWFdAz/S5OYLWdd9o2A2QMqlU+F9d4DVM8ncyYnc+/Kl80Pc3VwZagMrgWCiGgCICOxwIwJ18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from [192.168.2.4] (51b69f53.dsl.pool.telekom.hu [::ffff:81.182.159.83])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 000000000007076B.0000000066144FCE.00264A80; Mon, 08 Apr 2024 22:13:02 +0200
+Message-ID: <b925c84615d3edadb1a9c351dd93f84e6e0dce94.camel@irl.hu>
+Subject: Re: [PATCH v5 1/3] ACPI: platform-profile: add
+ platform_profile_cycle()
+From: Gergo Koteles <soyer@irl.hu>
+To: Hans de Goede <hdegoede@redhat.com>,
+  "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+  Ike Panhc <ike.pan@canonical.com>,
+  Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+  Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+  Daniel Lezcano <daniel.lezcano@linaro.org>,
+  =?UTF-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc: linux-acpi@vger.kernel.org, ibm-acpi-devel@lists.sourceforge.net,
+  platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 08 Apr 2024 22:13:01 +0200
+In-Reply-To: <4e37511c-7570-4ea5-bdf9-6bdd62c63575@redhat.com>
+References: <cover.1712360639.git.soyer@irl.hu>
+	 <afd975d98708921f67a269aaf031a1dd1be1220d.1712360639.git.soyer@irl.hu>
+	 <4e37511c-7570-4ea5-bdf9-6bdd62c63575@redhat.com>
+Autocrypt: addr=soyer@irl.hu; prefer-encrypt=mutual;
+ keydata=mDMEZgeDQBYJKwYBBAHaRw8BAQdAD5oxV6MHkjzSfQL2O8VsPW3rSUeCHfbx/a6Yfj3NUnS0HEdlcmdvIEtvdGVsZXMgPHNveWVyQGlybC5odT6ImQQTFgoAQRYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsDBQkFo5qABQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEAtEJzXf/1IRmdYA/0bE1BX7zOGKBgCa1DwzH2UHXawSKLpptADvI/ao6OOtAP4+wYgpR0kWR28lhmkRTpzG/+8GiMWsT60SV2bz9B7sCbg4BGYHg0ASCisGAQQBl1UBBQEBB0CPo8ow/E97WYtaek9EsLXvsvwpBsjWLq5mMOgJL/ukCwMBCAeIfgQYFgoAJhYhBLSYvEYEgjzzEMQCqgtEJzXf/1IRBQJmB4NAAhsMBQkFo5qAAAoJEAtEJzXf/1IRklEA/ipTfAI/onzNwZIp9sCdnt0bLhR5Oz8RD/FpbrJV1v7eAP0c/C6NQPDPWbQpobBR0pf1eTjWXjjr1fj2jxSvWbMRCw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240404212706.3587456-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Apr 05, 2024 at 12:27:06AM +0300, Andy Shevchenko wrote:
-> $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
-> 67
-> 
-> Fix these by adding Return sections. While at it, make sure all of
-> Return sections use the same style.
+Hi Hans,
 
-Bart, this is the biggest part from the v1, I would like to have that applied
-first if no objections since it fixes kernel doc warnings. What do you think?
+On Mon, 2024-04-08 at 18:41 +0200, Hans de Goede wrote:
+> > +	next =3D find_next_bit_wrap(cur_profile->choices,
+> > +				  ARRAY_SIZE(profile_names), profile + 1);
+> > +
+> > +	if (WARN_ON(next =3D=3D ARRAY_SIZE(profile_names))) {
+>=20
+> Other code in drivers/acpi/platform_profile.c uses PLATFORM_PROFILE_LAST
+> instead of ARRAY_SIZE(profile_names) (these are guaranteed to be equal)
+> please switch to using PLATFORM_PROFILE_LAST for consistency.
+>=20
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks for the review. I changed these in v6.
 
+
+Best regards,
+Gergo
 
 
