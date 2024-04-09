@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-4813-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4814-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413BB89DB8C
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 16:02:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422A489DB92
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 16:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8A028766D
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 14:02:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72CB71C20E0D
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 14:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADA3130AED;
-	Tue,  9 Apr 2024 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E511F1311BE;
+	Tue,  9 Apr 2024 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+sLbW0I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSSa5z1S"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966F3130ACF;
-	Tue,  9 Apr 2024 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB061311B9;
+	Tue,  9 Apr 2024 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712671273; cv=none; b=WQMtXTcj+B2/YUzi7QVbZO7nwoFQxSCNp/+KheKDscYkYNUYV6ezUtsDpSmK5KLAhu+ulz0hkUET1LTANZ/tPiZYby28r2rBuobnb44FfMwPPM0t1oXlYcMv5iceU9F0amtxm8LIFMP6gbWuV6w1kzO6kJihkQqYext/lzaKwKE=
+	t=1712671278; cv=none; b=Vmv8bmuu7pOlNIa+PJck2V6glqOf7ucQ77BewfMtr+umtBuU5O+D1q9F57HgcJ0WdLZqa5P/0egdYdnboK2xC+vuORBFgiYcS2fNVJHH5H2ZyTD+xE9kTvJ2IscmzBx9HIJsJHD+s31A/8DZ6yimTiRhMK0lbHrXt6EUixdMppY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712671273; c=relaxed/simple;
-	bh=51Sfm2xp0PQT1gFODKUdeFbVWX58fUeGaMiFqFdRF90=;
+	s=arc-20240116; t=1712671278; c=relaxed/simple;
+	bh=apx3gbxkYNqe3VpAmpZgPTdGN3/2cOQjfTIRYJyoYL8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G2XYJ2neX2oRO4Q2KyfznSQOrnoK5Fc5SlJabwKeD4pVdAV+TObloGw9D+W0S2PAO7aUPF4FlfyqF7rn9kPFeF986M5YJsA0O2YQaysJU45sjuv75oM1dcCmIUR0XY18RCcYiJh/8LFVrMA1S+HwWqLS53POBCQlh5qZmy+IrPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+sLbW0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60BFC433B1;
-	Tue,  9 Apr 2024 14:01:08 +0000 (UTC)
+	 MIME-Version; b=ZrLuoZAmzLwDtERMC71+W/24VHTwqAPWZJJUqR6HeAjfOQx5Pwe1XFwakes2cd0aJ2aB1d692yV5NGp1OV2y9M72TVMLlPvpuSdSOHkN3dXC0yV5MLaFrHo7H7IxBJCQgyVr2rt2yi0ZX7NGVoPqOaexs3iFur1QyWnyYwg6fEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSSa5z1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD480C43142;
+	Tue,  9 Apr 2024 14:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712671273;
-	bh=51Sfm2xp0PQT1gFODKUdeFbVWX58fUeGaMiFqFdRF90=;
+	s=k20201202; t=1712671278;
+	bh=apx3gbxkYNqe3VpAmpZgPTdGN3/2cOQjfTIRYJyoYL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+sLbW0ImOrvVzf5VOnMgtlmcW5JlPVUKLm+TksiUIm87QHwts5XhrwCkeu0+a775
-	 kucx+qagico8Y7FiqyDwpWV7aJYhNg/sBc4ij6yZwCml8OLedkqHfMy990NutRYSLo
-	 o2Q69k0HsodpvGjQC9oZW1jLG9QOQjoI8T30/2Tb3qIYnJoc1GfbYdKoVRbVrBsZ4S
-	 7WCJGAMull3hGNt4lnfSrrA7+hz7p/FD8CRkT1Jz1k/HspEJOLrVwINHLlCQsYcUlp
-	 FiuuTQvX6PhA0pez7lzCebwbKsCQtj64D/VfLCV3Zq4Bx3KiNzr0BxVWhbtvcI4E/P
-	 SBVvxTGXuNKkQ==
+	b=MSSa5z1S9ryJwrH6rhZwsfZ+WYHqk+DUN6umSYaSz9+PInQkEmLLg9HxlScb7SB66
+	 INAABa+8rjj1c4bradO8L6DkDBPNDU7qPWK7URSSmUPTxK+4hefFZn2CZXuFgBrngb
+	 QdlQN775GdzBYwFXCsuI8v5PtJCTjL+tCs3wkzvRFaW5ly10uQ3/gpx0iQk6QTCQNL
+	 x3PysVOlaDEUIoyLnkd+Jm0Vi30mdh9slrYCeOOucTVTqixQKDXisg4oPy8r6K1xlD
+	 BcBWJB4mfLTtXNA4AAKEknHbTNgkfQrMFIZi1WJwSfYfbs/hZovigEojcExc6eLrtw
+	 S96r3fjZf4spg==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-kbuild@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -63,11 +63,10 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	acpica-devel@lists.linux.dev,
-	linux-trace-kernel@vger.kernel.org,
-	Justin Stitt <justinstitt@google.com>
-Subject: [PATCH 1/5] [v2] test_hexdump: avoid string truncation warning
-Date: Tue,  9 Apr 2024 16:00:54 +0200
-Message-Id: <20240409140059.3806717-2-arnd@kernel.org>
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH 2/5] [v2] acpi: disable -Wstringop-truncation
+Date: Tue,  9 Apr 2024 16:00:55 +0200
+Message-Id: <20240409140059.3806717-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240409140059.3806717-1-arnd@kernel.org>
 References: <20240409140059.3806717-1-arnd@kernel.org>
@@ -81,42 +80,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-gcc can warn when a string is too long to fit into the strncpy()
-destination buffer, as it is here depending on the function
-arguments:
+gcc -Wstringop-truncation warns about copying a string that results in a
+missing nul termination:
 
-    inlined from 'test_hexdump_prepare_test.constprop' at /home/arnd/arm-soc/lib/test_hexdump.c:116:3:
-include/linux/fortify-string.h:108:33: error: '__builtin_strncpy' output truncated copying between 0 and 32 bytes from a string of length 32 [-Werror=stringop-truncation]
-  108 | #define __underlying_strncpy    __builtin_strncpy
-      |                                 ^
-include/linux/fortify-string.h:187:16: note: in expansion of macro '__underlying_strncpy'
-  187 |         return __underlying_strncpy(p, q, size);
-      |                ^~~~~~~~~~~~~~~~~~~~
+drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equals destination size [-Werror=stringop-truncation]
+   60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equals destination size [-Werror=stringop-truncation]
+   61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE_ID_SIZE);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The intention here is to copy exactly 'l' bytes without any padding or
-NUL-termination, so the most logical change is to use memcpy(), just as
-a previous change adapted the other output from strncpy() to memcpy().
+The code works as intended, and the warning could be addressed by using
+a memcpy(), but turning the warning off for this file works equally well
+and may be easir to merge.
 
-Cc: Justin Stitt <justinstitt@google.com>
+Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
+Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFNLTBqCZMUxT50Q@mail.gmail.com/#t
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
----
- lib/test_hexdump.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/test_hexdump.c b/lib/test_hexdump.c
-index b916801f23a8..fe2682bb21e6 100644
---- a/lib/test_hexdump.c
-+++ b/lib/test_hexdump.c
-@@ -113,7 +113,7 @@ static void __init test_hexdump_prepare_test(size_t len, int rowsize,
- 			*p++ = ' ';
- 		} while (p < test + rs * 2 + rs / gs + 1);
+diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
+index 30f3fc13c29d..8d18af396de9 100644
+--- a/drivers/acpi/acpica/Makefile
++++ b/drivers/acpi/acpica/Makefile
+@@ -5,6 +5,7 @@
  
--		strncpy(p, data_a, l);
-+		memcpy(p, data_a, l);
- 		p += l;
- 	}
+ ccflags-y			:= -D_LINUX -DBUILDING_ACPICA
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
++CFLAGS_tbfind.o 		+= $(call cc-disable-warning, stringop-truncation)
  
+ # use acpi.o to put all files here into acpi.o modparam namespace
+ obj-y	+= acpi.o
 -- 
 2.39.2
 
