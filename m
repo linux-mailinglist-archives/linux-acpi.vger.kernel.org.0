@@ -1,160 +1,374 @@
-Return-Path: <linux-acpi+bounces-4783-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4787-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04A289CEC4
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 01:13:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF61789CFC3
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 03:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC9F283A4E
-	for <lists+linux-acpi@lfdr.de>; Mon,  8 Apr 2024 23:13:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5385B1F22904
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 01:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6CE14A619;
-	Mon,  8 Apr 2024 23:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sUAgEt7m"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12806FB2;
+	Tue,  9 Apr 2024 01:22:41 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39914148833
-	for <linux-acpi@vger.kernel.org>; Mon,  8 Apr 2024 23:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D6A63B9;
+	Tue,  9 Apr 2024 01:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712618009; cv=none; b=LZEGJ8IsoyJV5FZtd9OeGYKkHgzYRr+Gc8lQjYZ8WLfcEpscAX/13bujzX25IUP0b78XLzaooFANTi51EirhfT1VTkpC65RD+OcOjkUbbTBs8zwkDoZ0cPCuJwDEZherIxV4Z3PJwiPxYpZvmvADXn4sQp36tnHLgxO/GstWjcs=
+	t=1712625761; cv=none; b=sGTW9fJpviI1MKeKjb9OcHGLwiwYJbufF/V26d5FzTwGA+XqAwP8zc42uRdbEaxq/PItcvfDljTfbMnKegDew0/FUyJNEMem4G3Q1VPOXWthMhoclKApPu3UnIgk5jjYGBTxzt6zAf66obAetySRv1TdNhOFHFDS0FXhOH/bDwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712618009; c=relaxed/simple;
-	bh=e6fodSav/CbFNwfCAIa1o37PSzn8hWZNWnEmaNgYfBo=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Cc:Content-Type; b=Y7IUZZDZOrflrXNCR2U4DmjdP3RiH0pJBZ49bjfCrVxf4AwPWHFqfsbYK7Mt+Iat8U/dJqQQvxxapCRgXpKlDabN6/UQrdsjwltf8gHPeblBIWejQfnBw/wFmUq7RMc0FCOJEs/yv1bnhKsJvwsqupfbB6SkeAkjjwxVZBbM0lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sUAgEt7m; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--saravanak.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc6b2682870so7734855276.0
-        for <linux-acpi@vger.kernel.org>; Mon, 08 Apr 2024 16:13:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1712618006; x=1713222806; darn=vger.kernel.org;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nczmkQOw9DMhXXSsKHtJl6R+5z/iUhkTreCA2OOkZws=;
-        b=sUAgEt7mLb0o5ektNf2E5DR8dq3u5+V3Q5mx+gZji6Su6subrmxJyK51ejVlZWfraG
-         0K2oZg2+S23+IreJbAWGOHf6/e8PKRlGjBkY6yIRl2oW2EWz01PcVLyoxfzTUJPafI/o
-         mb/bx0Ez7ylrqVucsHD/d/0QZCRQFW2D1vIwKQPKfJ30qnmzPeDUaakIN32DAEh92ez4
-         kLnPAXfoLQdKbYFozTRuiAd0ZF+9x3hog14FiRVrRgojS8zfXCEPyXPKLuhqZwEUMa4t
-         NOnNhdUiC80wEWEjWFjIaA/UwfR5MgU6DUfGVFc4V3/uPMRhwtQvRarxChohsPoCOB7b
-         DJAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712618006; x=1713222806;
-        h=cc:to:from:subject:references:mime-version:message-id:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nczmkQOw9DMhXXSsKHtJl6R+5z/iUhkTreCA2OOkZws=;
-        b=asjiEhD3YcOT9EGcMBaLW3/smHbe+gX3TkZkJ+Fm0rTsnyo1KHaTzlJzCdno4Rp/tG
-         i9JyUKud9LwEiBQm9KW4uTqc6bLkuiQgWjj6pQJPE1YxDbL2oCmNmILG8DxOLfqf0dEK
-         W3vnMTQam741qzjarhfk/SHkopRXAGCIZnlacLSOH832k24Mw2DGxC+R1sS08HD7FRKY
-         FUoHhwLCOEHSHQ7sgS6CenXQZ8/khtjgEe/WsuL5ORA6FogiwALyuGVGpi4lDi/FJUJn
-         5kHe5fNe4mGGYfCctVWXosGyYN9L4TVk9zOwmosxyWuPikiHe5nuh2Me86Qx/4sl+YRJ
-         qW7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVAxkOBXrAvVTXBZ8Xo3OM+qbBT9Z9k/K8/94fMkpv6V+Ro21O39iPZYHnx8KS/dTkaDStiH+L+3qLw4QKpAtPKz9LQqfPWtnNBUA==
-X-Gm-Message-State: AOJu0YzeUw4Z4FHllVUNY4C1Zl9iO/xwY6NF+HWs0vgGvcPhv7uSCGND
-	lBSus4pjOTM2IHiCv/WzGg3MAdvJImOsWoTBV0CRYdyKQ5h1h7OqRYnIUmAc1pRcwW9zv4DOGGc
-	Rx9tQogrBVSmhrA==
-X-Google-Smtp-Source: AGHT+IHInv1s683PD0VpXFGdyKVT7quDre0k4j4QPZmziEdXPq9Eij+lZ0mHQQ58tOImSwsWuy4cFSS2rHxW/D0=
-X-Received: from saravanak.san.corp.google.com ([2620:15c:2d:3:96d3:321a:67f3:5322])
- (user=saravanak job=sendgmr) by 2002:a25:7456:0:b0:dc7:5c0d:f177 with SMTP id
- p83-20020a257456000000b00dc75c0df177mr3025061ybc.6.1712618006311; Mon, 08 Apr
- 2024 16:13:26 -0700 (PDT)
-Date: Mon,  8 Apr 2024 16:13:09 -0700
-In-Reply-To: <20240408231310.325451-1-saravanak@google.com>
-Message-Id: <20240408231310.325451-3-saravanak@google.com>
+	s=arc-20240116; t=1712625761; c=relaxed/simple;
+	bh=r/Dw8A0LLl/Hw0n8OgewTj3OJo3xxh+3eRWw5NG2fos=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RmzEGbpqQukZ5MbWAF8IEhEkf2sy1ZwfnvSWgfdydBinAa+YWhrWzE0DHQhvIa6Ye2MW1wjJUg8duQ8lAx3Z+dDx1VGnyl8ikmzk4SL67KavuNQczKEPL1RCpwwLoPB2uZhN68BDujGGtwYNTj7MVXBvS4BaQ3P5jjv2HAMHc8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 9e391f9af60f11eeaf09c5092e5928d1-20240409
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:6252bc42-bfef-461d-a3ac-78fa190bb871,IP:15,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:1
+X-CID-INFO: VERSION:1.1.37,REQID:6252bc42-bfef-461d-a3ac-78fa190bb871,IP:15,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:-9,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:1
+X-CID-META: VersionHash:6f543d0,CLOUDID:e852f62fe19ff91727cb4f9f1048f5cd,BulkI
+	D:240408225340UUM9S9GN,BulkQuantity:1,Recheck:0,SF:64|66|24|72|19|44|102,T
+	C:nil,Content:0,EDM:-3,IP:-2,URL:11|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:n
+	il,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_ULN
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_TXT
+	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN, HR_FROM_NAME
+	HR_LANG, HR_MAILER_MTBG, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS
+	HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NAME, IP_TRUSTED, SRC_TRUSTED
+	DN_TRUSTED, SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED
+	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED, CIE_BAD
+	CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI, GTI_FG_IT
+	GTI_RG_INFO, GTI_C_BU, AMN_T1, AMN_GOOD, AMN_C_TI
+	AMN_C_BU, ABX_MISS_RDNS
+X-UUID: 9e391f9af60f11eeaf09c5092e5928d1-20240409
+X-User: lijun01@kylinos.cn
+Received: from [172.30.60.202] [(39.156.73.13)] by mailgw
+	(envelope-from <lijun01@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1329516439; Tue, 09 Apr 2024 09:22:23 +0800
+Message-ID: <15187363-ab71-2463-82be-794b9113211c@kylinos.cn>
+Date: Tue, 9 Apr 2024 09:22:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240408231310.325451-1-saravanak@google.com>
-X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Subject: [RFC PATCH v1 2/2] of: dynamic: Fix probing of overlay devices
-From: Saravana Kannan <saravanak@google.com>
-To: Herve Codina <herve.codina@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Saravana Kannan <saravanak@google.com>, Rob Herring <robh@kernel.org>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH] acpi: Modify ACPI_OBJECT_COMMON_HEADER
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: robert.moore@intel.com, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lenb@kernel.org, rafael.j.wysocki@intel.com,
+ lijun01@kylinos.cn
+References: <20240407032456.4079002-1-lijun01@kylinos.cn>
+ <CAJZ5v0goUZCwTaTqSvD=RfzyMf6QBS_rCGsvtoNN-VboptCNjA@mail.gmail.com>
+From: lijun <lijun01@kylinos.cn>
+In-Reply-To: <CAJZ5v0goUZCwTaTqSvD=RfzyMf6QBS_rCGsvtoNN-VboptCNjA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Get fw_devlink to work well with overlay devices.
+this patch has been merged  into ACPICA, so i resend this mail.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
----
- drivers/base/core.c    | 10 ++++++++++
- drivers/of/dynamic.c   |  8 ++++++++
- include/linux/fwnode.h |  2 ++
- 3 files changed, 20 insertions(+)
+the upstream AFAICS should  be in process.
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 5f4e03336e68..d856f9c5d601 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -237,6 +237,16 @@ static void __fw_devlink_pickup_dangling_consumers(struct fwnode_handle *fwnode,
- 		__fw_devlink_pickup_dangling_consumers(child, new_sup);
- }
- 
-+
-+void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
-+						 struct fwnode_handle *parent)
-+{
-+	mutex_lock(&fwnode_link_lock);
-+	__fw_devlink_pickup_dangling_consumers(child, parent);
-+	__fw_devlink_link_to_consumers(parent->dev);
-+	mutex_unlock(&fwnode_link_lock);
-+}
-+
- static DEFINE_MUTEX(device_links_lock);
- DEFINE_STATIC_SRCU(device_links_srcu);
- 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 19a1a38554f2..0a936f46820e 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -237,6 +237,7 @@ static void __of_attach_node(struct device_node *np)
- int of_attach_node(struct device_node *np)
- {
- 	struct of_reconfig_data rd;
-+	struct fwnode_handle *fwnode, *parent;
- 
- 	memset(&rd, 0, sizeof(rd));
- 	rd.dn = np;
-@@ -246,6 +247,13 @@ int of_attach_node(struct device_node *np)
- 	mutex_unlock(&of_mutex);
- 
- 	of_reconfig_notify(OF_RECONFIG_ATTACH_NODE, &rd);
-+	fwnode = of_fwnode_handle(np);
-+	fwnode_for_each_parent_node(fwnode, parent)
-+		if (parent->dev) {
-+			fw_devlink_pickup_dangling_consumers(fwnode, parent);
-+			fwnode_handle_put(parent);
-+			break;
-+		}
- 
- 	return 0;
- }
-diff --git a/include/linux/fwnode.h b/include/linux/fwnode.h
-index 0d79070c5a70..4b3f697a90e8 100644
---- a/include/linux/fwnode.h
-+++ b/include/linux/fwnode.h
-@@ -220,6 +220,8 @@ int fwnode_link_add(struct fwnode_handle *con, struct fwnode_handle *sup,
- 		    u8 flags);
- void fwnode_links_purge(struct fwnode_handle *fwnode);
- void fw_devlink_purge_absent_suppliers(struct fwnode_handle *fwnode);
-+void fw_devlink_pickup_dangling_consumers(struct fwnode_handle *child,
-+					  struct fwnode_handle *parent);
- bool fw_devlink_is_strict(void);
- 
- #endif
--- 
-2.44.0.478.gd926399ef9-goog
+thanks.
 
+在 2024/4/8 22:53, Rafael J. Wysocki 写道:
+> On Sun, Apr 7, 2024 at 5:25 AM lijun <lijun01@kylinos.cn> wrote:
+>> modify 4 macros:
+>> ACPI_OBJECT_COMMON_HEADER,
+>> ACPI_COMMON_BUFFER_INFO,
+>> ACPI_COMMON_NOTIFY_INFO,
+>> ACPI_COMMON_FIELD_INFO
+>> they  cause  poor readability.so del the last ";"
+>> and when use them in a single line with the ";"in the end.
+>>
+>> Link: https://github.com/acpica/acpica/pull/924
+> This hasn't been merged upstream AFAICS, has it?
+>
+>> Signed-off-by: lijun <lijun01@kylinos.cn>
+>> ---
+>>   drivers/acpi/acpica/acobject.h | 95 +++++++++++++++++++++++-----------
+>>   1 file changed, 64 insertions(+), 31 deletions(-)
+>>
+>> diff --git a/drivers/acpi/acpica/acobject.h b/drivers/acpi/acpica/acobject.h
+>> index 1bdfeee5d7c5..0cd1769022aa 100644
+>> --- a/drivers/acpi/acpica/acobject.h
+>> +++ b/drivers/acpi/acpica/acobject.h
+>> @@ -48,7 +48,7 @@
+>>          u8                              descriptor_type;    /* To differentiate various internal objs */\
+>>          u8                              type;               /* acpi_object_type */\
+>>          u16                             reference_count;    /* For object deletion management */\
+>> -       u8                              flags;
+>> +       u8                              flags
+>>          /*
+>>           * Note: There are 3 bytes available here before the
+>>           * next natural alignment boundary (for both 32/64 cases)
+>> @@ -71,10 +71,12 @@
+>>    *****************************************************************************/
+>>
+>>   struct acpi_object_common {
+>> -ACPI_OBJECT_COMMON_HEADER};
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +};
+>>
+>>   struct acpi_object_integer {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 fill[3];   /* Prevent warning on some compilers */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 fill[3];     /* Prevent warning on some compilers */
+>>          u64 value;
+>>   };
+>>
+>> @@ -86,23 +88,26 @@ struct acpi_object_integer {
+>>    */
+>>   #define ACPI_COMMON_BUFFER_INFO(_type) \
+>>          _type                           *pointer; \
+>> -       u32                             length;
+>> +       u32                             length
+>>
+>>   /* Null terminated, ASCII characters only */
+>>
+>>   struct acpi_object_string {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_BUFFER_INFO(char) /* String in AML stream or allocated string */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_BUFFER_INFO(char);  /* String in AML stream or allocated string */
+>>   };
+>>
+>>   struct acpi_object_buffer {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_BUFFER_INFO(u8)   /* Buffer in AML stream or allocated buffer */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_BUFFER_INFO(u8);/* Buffer in AML stream or allocated buffer */
+>>          u32 aml_length;
+>>          u8 *aml_start;
+>>          struct acpi_namespace_node *node;       /* Link back to parent node */
+>>   };
+>>
+>>   struct acpi_object_package {
+>> -       ACPI_OBJECT_COMMON_HEADER struct acpi_namespace_node *node;     /* Link back to parent node */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       struct acpi_namespace_node *node;       /* Link back to parent node */
+>>          union acpi_operand_object **elements;   /* Array of pointers to acpi_objects */
+>>          u8 *aml_start;
+>>          u32 aml_length;
+>> @@ -116,11 +121,13 @@ struct acpi_object_package {
+>>    *****************************************************************************/
+>>
+>>   struct acpi_object_event {
+>> -       ACPI_OBJECT_COMMON_HEADER acpi_semaphore os_semaphore;  /* Actual OS synchronization object */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       acpi_semaphore os_semaphore;    /* Actual OS synchronization object */
+>>   };
+>>
+>>   struct acpi_object_mutex {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 sync_level;        /* 0-15, specified in Mutex() call */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 sync_level;  /* 0-15, specified in Mutex() call */
+>>          u16 acquisition_depth;  /* Allow multiple Acquires, same thread */
+>>          acpi_mutex os_mutex;    /* Actual OS synchronization object */
+>>          acpi_thread_id thread_id;       /* Current owner of the mutex */
+>> @@ -132,7 +139,8 @@ struct acpi_object_mutex {
+>>   };
+>>
+>>   struct acpi_object_region {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 space_id;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 space_id;
+>>          struct acpi_namespace_node *node;       /* Containing namespace node */
+>>          union acpi_operand_object *handler;     /* Handler for region access */
+>>          union acpi_operand_object *next;
+>> @@ -142,7 +150,8 @@ struct acpi_object_region {
+>>   };
+>>
+>>   struct acpi_object_method {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 info_flags;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 info_flags;
+>>          u8 param_count;
+>>          u8 sync_level;
+>>          union acpi_operand_object *mutex;
+>> @@ -178,33 +187,41 @@ struct acpi_object_method {
+>>    */
+>>   #define ACPI_COMMON_NOTIFY_INFO \
+>>          union acpi_operand_object       *notify_list[2];    /* Handlers for system/device notifies */\
+>> -       union acpi_operand_object       *handler;       /* Handler for Address space */
+>> +       union acpi_operand_object       *handler        /* Handler for Address space */
+>>
+>>   /* COMMON NOTIFY for POWER, PROCESSOR, DEVICE, and THERMAL */
+>>
+>>   struct acpi_object_notify_common {
+>> -ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_NOTIFY_INFO};
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_NOTIFY_INFO;
+>> +};
+>>
+>>   struct acpi_object_device {
+>> -       ACPI_OBJECT_COMMON_HEADER
+>> -           ACPI_COMMON_NOTIFY_INFO struct acpi_gpe_block_info *gpe_block;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_NOTIFY_INFO;
+>> +       struct acpi_gpe_block_info *gpe_block;
+>>   };
+>>
+>>   struct acpi_object_power_resource {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_NOTIFY_INFO u32 system_level;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_NOTIFY_INFO;
+>> +       u32 system_level;
+>>          u32 resource_order;
+>>   };
+>>
+>>   struct acpi_object_processor {
+>> -       ACPI_OBJECT_COMMON_HEADER
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>>              /* The next two fields take advantage of the 3-byte space before NOTIFY_INFO */
+>>          u8 proc_id;
+>>          u8 length;
+>> -       ACPI_COMMON_NOTIFY_INFO acpi_io_address address;
+>> +       ACPI_COMMON_NOTIFY_INFO;
+>> +       acpi_io_address address;
+>>   };
+>>
+>>   struct acpi_object_thermal_zone {
+>> -ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_NOTIFY_INFO};
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_NOTIFY_INFO;
+>> +};
+>>
+>>   /******************************************************************************
+>>    *
+>> @@ -226,17 +243,22 @@ ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_NOTIFY_INFO};
+>>          u32                             base_byte_offset;   /* Byte offset within containing object */\
+>>          u32                             value;              /* Value to store into the Bank or Index register */\
+>>          u8                              start_field_bit_offset;/* Bit offset within first field datum (0-63) */\
+>> -       u8                              access_length;  /* For serial regions/fields */
+>> +       u8                              access_length   /* For serial regions/fields */
+>>
+>>
+>>   /* COMMON FIELD (for BUFFER, REGION, BANK, and INDEX fields) */
+>>
+>>   struct acpi_object_field_common {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO union acpi_operand_object *region_obj; /* Parent Operation Region object (REGION/BANK fields only) */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_FIELD_INFO;
+>> +       union acpi_operand_object *region_obj;
+>> +       /* Parent Operation Region object (REGION/BANK fields only) */
+>>   };
+>>
+>>   struct acpi_object_region_field {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO u16 resource_length;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_FIELD_INFO;
+>> +       u16 resource_length;
+>>          union acpi_operand_object *region_obj;  /* Containing op_region object */
+>>          u8 *resource_buffer;    /* resource_template for serial regions/fields */
+>>          u16 pin_number_index;   /* Index relative to previous Connection/Template */
+>> @@ -244,12 +266,15 @@ struct acpi_object_region_field {
+>>   };
+>>
+>>   struct acpi_object_bank_field {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO union acpi_operand_object *region_obj; /* Containing op_region object */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_FIELD_INFO;
+>> +       union acpi_operand_object *region_obj;  /* Containing op_region object */
+>>          union acpi_operand_object *bank_obj;    /* bank_select Register object */
+>>   };
+>>
+>>   struct acpi_object_index_field {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_FIELD_INFO;
+>>              /*
+>>               * No "RegionObj" pointer needed since the Index and Data registers
+>>               * are each field definitions unto themselves.
+>> @@ -261,7 +286,9 @@ struct acpi_object_index_field {
+>>   /* The buffer_field is different in that it is part of a Buffer, not an op_region */
+>>
+>>   struct acpi_object_buffer_field {
+>> -       ACPI_OBJECT_COMMON_HEADER ACPI_COMMON_FIELD_INFO u8 is_create_field;    /* Special case for objects created by create_field() */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       ACPI_COMMON_FIELD_INFO;
+>> +       u8 is_create_field;     /* Special case for objects created by create_field() */
+>>          union acpi_operand_object *buffer_obj;  /* Containing Buffer object */
+>>   };
+>>
+>> @@ -272,7 +299,8 @@ struct acpi_object_buffer_field {
+>>    *****************************************************************************/
+>>
+>>   struct acpi_object_notify_handler {
+>> -       ACPI_OBJECT_COMMON_HEADER struct acpi_namespace_node *node;     /* Parent device */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       struct acpi_namespace_node *node;       /* Parent device */
+>>          u32 handler_type;       /* Type: Device/System/Both */
+>>          acpi_notify_handler handler;    /* Handler address */
+>>          void *context;
+>> @@ -280,7 +308,8 @@ struct acpi_object_notify_handler {
+>>   };
+>>
+>>   struct acpi_object_addr_handler {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 space_id;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 space_id;
+>>          u8 handler_flags;
+>>          acpi_adr_space_handler handler;
+>>          struct acpi_namespace_node *node;       /* Parent device */
+>> @@ -307,7 +336,8 @@ struct acpi_object_addr_handler {
+>>    * The Reference.Class differentiates these types.
+>>    */
+>>   struct acpi_object_reference {
+>> -       ACPI_OBJECT_COMMON_HEADER u8 class;     /* Reference Class */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       u8 class;       /* Reference Class */
+>>          u8 target_type;         /* Used for Index Op */
+>>          u8 resolved;            /* Reference has been resolved to a value */
+>>          void *object;           /* name_op=>HANDLE to obj, index_op=>union acpi_operand_object */
+>> @@ -340,7 +370,8 @@ typedef enum {
+>>    * Currently: Region and field_unit types
+>>    */
+>>   struct acpi_object_extra {
+>> -       ACPI_OBJECT_COMMON_HEADER struct acpi_namespace_node *method_REG;       /* _REG method for this region (if any) */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       struct acpi_namespace_node *method_REG; /* _REG method for this region (if any) */
+>>          struct acpi_namespace_node *scope_node;
+>>          void *region_context;   /* Region-specific data */
+>>          u8 *aml_start;
+>> @@ -350,14 +381,16 @@ struct acpi_object_extra {
+>>   /* Additional data that can be attached to namespace nodes */
+>>
+>>   struct acpi_object_data {
+>> -       ACPI_OBJECT_COMMON_HEADER acpi_object_handler handler;
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       acpi_object_handler handler;
+>>          void *pointer;
+>>   };
+>>
+>>   /* Structure used when objects are cached for reuse */
+>>
+>>   struct acpi_object_cache_list {
+>> -       ACPI_OBJECT_COMMON_HEADER union acpi_operand_object *next;      /* Link for object cache and internal lists */
+>> +       ACPI_OBJECT_COMMON_HEADER;
+>> +       union acpi_operand_object *next;        /* Link for object cache and internal lists */
+>>   };
+>>
+>>   /******************************************************************************
+>> --
+>> 2.34.1
+>>
+>>
 
