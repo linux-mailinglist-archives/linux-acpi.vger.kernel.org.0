@@ -1,99 +1,100 @@
-Return-Path: <linux-acpi+bounces-4792-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4793-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAAC89D1E3
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 07:25:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1012A89D1EA
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 07:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3E11C22992
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 05:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A35591F24BAB
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 05:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EEB57334;
-	Tue,  9 Apr 2024 05:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECC95C5F4;
+	Tue,  9 Apr 2024 05:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZxH2qNbe"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="RvE29wyt"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1CB54BCB;
-	Tue,  9 Apr 2024 05:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CFB57334;
+	Tue,  9 Apr 2024 05:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712640310; cv=none; b=rDwdYhD312hsvurzjIw9IgBwXFGcm37SlV6YwagxswnHdjsxLKEXyNC8pnZALz+49w39W8vehY2XHuU5ql16SNofzkejGD+zNQRlG2+V3M+kw2PHweS1mOVw17vQy4s3XbxtTIqcS4lFYwXVF7KlmZO71r3Jfbh0y8t1wE9IJl8=
+	t=1712640517; cv=none; b=SgqcdXlP2Wr9uoPbJsNdIJJzf6QAY4HtPMSPH+yZ5j2Xu1tKUpQJubZUrL0Nu/PQxgiZkHCcqdIMBwjjlbL1oH//AkBwpXt/Y+5uyLEB9y2K169ghCE38TtEN2b38KS33tf3Ovi5FoYDRDioLwuhYZ//CssCEVYxSjtjk9beq48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712640310; c=relaxed/simple;
-	bh=c+E0Ivgu8zc3jsKPVvka9jymECqjH91wtE41Wl9104c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pse2kReQoemp9Stua4Oy09CWcBah4i4ECa1OEfsjrvrLuL4P7BOSG0bw5daEbW6ddvLSUWDk4+n4DHI4DF/uKslaAZJ/66kblaUdT0EzDCcDui6x5OtRACWHbDSBSF++IZ3TsklkRcPXzzKtJx8BU/N9hz5tWYrBTskfnASjk9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZxH2qNbe; arc=none smtp.client-ip=13.77.154.182
+	s=arc-20240116; t=1712640517; c=relaxed/simple;
+	bh=B0pJGBgPBVixNPy3sScpcMt39X7U/94nLsgy28kNzVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bqBoXmTsJ+UnTLNk+6l5Wmemc5HL4wQyF4UgV3I3Cq6hvofIp7GCZak/4yTjczZfA3TJtk05BeaPgUXX1Khz5v23uKYeTnCARxT1u6fsRJzT8sZ0LmtmeY6jh2B3mlgry/tHudD115RwTWZ8MjuWIAo7K5ZmCYFvwxnMGT4US+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=RvE29wyt; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from localhost.localdomain (unknown [167.220.77.82])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C0CEC20EA451;
-	Mon,  8 Apr 2024 22:25:07 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C0CEC20EA451
+Received: from [100.64.208.45] (unknown [20.29.225.195])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0938A20EA451;
+	Mon,  8 Apr 2024 22:28:35 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0938A20EA451
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1712640307;
-	bh=FBSe4rDQmSTpv21rWEaJ0GJmEOffcUGm1Kyb8bb+B0c=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZxH2qNbetXYoC5X+JBetIEOdZixI3OTd/3EXEfyemurOcvab17TfSReMc3gnLdKnF
-	 M5jCY5LrRkJLCqTQuY+6yYylrMT29XMT76HnStrh4rr+DtoDZIoiwFA0mDYDBsDYp4
-	 AdYgJdPxvCquqQm/2MgtoqvLR+AlEyDhGsZv6EfI=
-From: Jarred White <jarredwhite@linux.microsoft.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jarred White <jarredwhite@linux.microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
-Date: Mon,  8 Apr 2024 22:23:09 -0700
-Message-Id: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+	s=default; t=1712640516;
+	bh=B0pJGBgPBVixNPy3sScpcMt39X7U/94nLsgy28kNzVI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RvE29wyt8fCX7daJqWxVlv5ePuCEBu+uLrjfs3Hox1yMhRFURT7LSRTdjbo0IvLn8
+	 3Va3pxAYA4pYAZUBo0G4MozP6iigrpMpug/rJNPYs/cmMgq19haKrAZUxVQHyl4pGP
+	 admw9QNLNU4W8HTNtd4PfdCpRQth15C3W5eNUU6w=
+Message-ID: <694fdd96-cc6e-4a4e-aff5-3284cd3ada4e@linux.microsoft.com>
+Date: Mon, 8 Apr 2024 22:28:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] ACPI: CPPC: Fix access width used for PCC
+ registers
+To: Jarred White <jarredwhite@linux.microsoft.com>,
+ Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240329220054.1205596-1-vanshikonda@os.amperecomputing.com>
+ <eecf5b00-0b61-46a8-82d9-a3c113f2d956@linux.microsoft.com>
+ <m2m7qytrlhdvht7ro6hee2msi2bd5j733yagdakyjfxi2su46i@nj77lj3ulqp7>
+ <365b430b-d91c-4391-bfc4-ea6a3444cb43@linux.microsoft.com>
+Content-Language: en-CA
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+In-Reply-To: <365b430b-d91c-4391-bfc4-ea6a3444cb43@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-system memory accesses") neglected to properly wrap the bit_offset shift
-when it comes to applying the mask. This may cause incorrect values to be
-read and may cause the cpufreq module not be loaded.
+On 4/8/2024 1:19 PM, Jarred White wrote:
+> On 4/1/2024 10:45 AM, Vanshidhar Konda wrote:
+>> On Mon, Apr 01, 2024 at 09:48:28AM -0700, Easwar Hariharan wrote:
+>>> Hi Vanshi,
+>>>
+>>> Thanks for testing and catching this. One comment below, but Jarred is OOF for a couple days so
+>>> we'll get back again after testing on our platform.
+>>>
+>>> On 3/29/2024 3:00 PM, Vanshidhar Konda wrote:
+>>>> Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
+>>>> system memory accesses") modified cpc_read/cpc_write to use access_width to
+>>>> read CPC registers. For PCC registers the access width field in the ACPI
+>>>> register macro specifies the PCC subspace id. For non-zero PCC subspace id
+>>>> the access width is incorrectly treated as access width. This causes errors
+>>>> when reading from PCC registers in the CPPC driver.
+>>>>
+>>>> For PCC registers base the size of read/write on the bit width field.
+>>>> The debug message in cpc_read/cpc_write is updated to print relevant
+>>>> information for the address space type used to read the register.
+>>>>
+>>>> Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+>>>> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+>>>> ---
 
-[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-[   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
+Hi Vanshi,
 
-Also, corrected the bitmask generation in GENMASK (extra bit being added).
+When you send v2 for the SystemMemory space fixes, could you add CC: stable@vger.kernel.org # 5.15+
+to your commit message, since your patch fixes 2f4a4d63a193 that was marked for stable?
 
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com> 
-CC: stable@vger.kernel.org #5.15+
----
- drivers/acpi/cppc_acpi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 4bfbe55553f4..00a30ca35e78 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
- 
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
--					GENMASK(((reg)->bit_width), 0)))
-+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+					GENMASK(((reg)->bit_width) - 1, 0))
- 
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
--- 
-2.33.8
+Thanks,
+Easwar
 
 
