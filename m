@@ -1,138 +1,137 @@
-Return-Path: <linux-acpi+bounces-4821-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4822-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B8089DC4D
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 16:30:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D978689DE1E
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 17:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D87781C22321
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 14:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD15294C9B
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 15:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DCD130494;
-	Tue,  9 Apr 2024 14:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E9313342A;
+	Tue,  9 Apr 2024 15:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d8yN6uRp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCn2zHwP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A3612FF65;
-	Tue,  9 Apr 2024 14:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EADB131E3C;
+	Tue,  9 Apr 2024 15:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712672987; cv=none; b=ghdvR9p67ty3Pc7XsvT+9xOZPnhiKCjW3FTa3DL8FSEsdm8ZCOKbAjISCRb4u+E/9NoWpyCjqVk50CVYMIINPgrusI0car3qwhhaBipI7LO2D7cIQq5qVvCclFWwe9wRtDU6vKn3znfJtiGp0FKv1Q4LrnuttMgywDw03m8MFMQ=
+	t=1712675128; cv=none; b=E+5Z0oF7LDb5rnd6FRQ6Fa/NdB/6RPfPiKGvuj398IMcizrSWDAf+6MdO6y5h5fOS/lGf1rs/ZPZdafc0KcczOkP+J1uWN076xmuccB6oIvSy6qEWIvs0bADf+BffreY2M3OPkwztH6wg06ceOaa3KRV0zy0y5SVAuNAE9XES+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712672987; c=relaxed/simple;
-	bh=Y8bgT3Mgnddc7ZwsZVd6eKFtCdR1CtVYYgKNg/kledY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tuX75BGY8AHMhLE2BUJYsx2ykucqJmBcwhy35XFGoptpMPy6qsFkx7UdMhEAz6v++5yUtffuvAuss6uXsrk4vUgS4PMtXWrKNNi9QI3StGSbAG5B00Si13WB8T4TcRuYhrvysSPEOviTzWQepE8L4R1Ku2rZVJq81xBHmhvqVfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d8yN6uRp; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712672986; x=1744208986;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Y8bgT3Mgnddc7ZwsZVd6eKFtCdR1CtVYYgKNg/kledY=;
-  b=d8yN6uRpFEDkGq0JdMKahnXynTjRli+mmmZ0+jZ57FVKyS+1tcGkYBwu
-   jY2cUbDxGwYNjU7jJYv+651DUf2BIN8rMPZvi3jdFN/QTXqVM5WiUfYFg
-   L+jmPZRo/XuXjWWdI5d4y8fxY41EvI5y++IoBrTZ9UsZJknwGqS1R3pK+
-   k8p1zQhSxuqrcOwWRtB2wV0WhQSidum2+5F4FS0lgGo3t2MF+AVVUK/bN
-   W4dXic8RFiXAHkC69ChwX30r5ypYixBxaixcOai0M6AXdEBBTPduWd5B/
-   eY2fdNaSth+lR20Sv5scH56bhvAi4ZAOu3+3USEeM5n6YOmnIO3hlhpAA
-   Q==;
-X-CSE-ConnectionGUID: jVb3WtQsRyiS3CMtsjHopw==
-X-CSE-MsgGUID: xKZBwl6LT0Gxggjfikaswg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11828767"
-X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="11828767"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 07:29:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="915401236"
-X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
-   d="scan'208";a="915401236"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 07:29:41 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ruCTi-00000002pQ9-2wX7;
-	Tue, 09 Apr 2024 17:29:38 +0300
-Date: Tue, 9 Apr 2024 17:29:38 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH v2 2/2] gpiolib: Update the kernel documentation - add
- Return sections
-Message-ID: <ZhVQ0tmpmhFHNxqO@smile.fi.intel.com>
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-3-andriy.shevchenko@linux.intel.com>
- <ZhU57jB_pVvDz0ZR@smile.fi.intel.com>
- <CAMRc=Mdzc2gSEX0h0Uwcxr2qMgwLLXfhJda=3AkNNYsDBQre7A@mail.gmail.com>
- <ZhVLcNI3rRhWs9_D@smile.fi.intel.com>
- <CAMRc=Mf7aNuQfQtOEGO42jMNpCsLjetLYg5YwavLyDu2rz6X1A@mail.gmail.com>
+	s=arc-20240116; t=1712675128; c=relaxed/simple;
+	bh=mJt7v6CLSOYzx1gtAyi5VoQyh9G4Ztq0Q2FlAeZxZmo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e1aqm2m+l4Gkkh2D2ipZD/X4Jfdl/+VZEj9G80D11DeK4yuzNGIrpVtkiWF09QWSgLCOEYb2eExLYQFXXfs6BMufTK72TaO3o8FhtGdeX6GtJ2gP2sZH1bdbu0kOC3qWAGohvbTkvBFG1RKSuozlS+rKuYJvO/BPk18QYaKoaQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCn2zHwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D441C43394;
+	Tue,  9 Apr 2024 15:05:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712675128;
+	bh=mJt7v6CLSOYzx1gtAyi5VoQyh9G4Ztq0Q2FlAeZxZmo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=fCn2zHwPhopHz3aJMqQuvT0XcsT7uQACdH7RpIfWCKsUDLkk3gf5FGDw4zWpYrgvD
+	 uHsoSSt5qLptwNNbfqus0tnv+lz8+j1GLA7xNJuWdgoxedmWIxOy1qpgIkLedk9xDZ
+	 Tk/2gjwceeSc1HSDRiACiU5Lt1elWa15BD6BnZoSUoi2ONmiPBp5pZJ4PFLwkkq164
+	 yQAbCmUhBIsj30JKInNCV4w8feoC9IBwwj2hTtDSdwUhcdDk808VmE/4jVrvoWs8eH
+	 2mdyLkcgR2mZGl6rkNdcwmbWQYw5RmNuI3DaQ9sgQ+yZZNlJVIt3ARO7x5S0Mba2We
+	 Bx23czV4vYapQ==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-22ec8db3803so401636fac.1;
+        Tue, 09 Apr 2024 08:05:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV1ZpLlplzyjSp+xywErsTXtkV+AFugDo9gIIux1ycBbSUIjzE3xViy7vCqYCjcreUuhgkXrog87BDsc7Yo0TtOfiKeV1iKm8X0hVJg/NiV6Lq2bvqtz2+l07rS18EfVl2cMmQjokreUAxXEr28sehtG+V4wb+MlOSp/TFENIYxDVyjoAemHNj5twUWhrNdDmdllpklEqFtzJnRKLQ/cFY47+qbc8eXY1Iv
+X-Gm-Message-State: AOJu0YxrwQXJcPZA9b4blDwM01TCYyX+6S7pznTfEdQ9VBFDQU7+qe7U
+	ew8hrKnpC98nOiJb9vYwchZMbANWwJhLD4tboQ79vwkrGMZCyw49grLn0IdKM4nbIen6xJPJDO8
+	q3jPzUFH+pMZ9PPDCdPDOSY+pVho=
+X-Google-Smtp-Source: AGHT+IGDUO0rZ4GKVyVieaHSmKzYKqNHjEuMKn4kB8H+BP9iyv6DlSuHKVlwMC/rIyJebF0i0bhH71zkmEuwl5+N0cA=
+X-Received: by 2002:a05:6870:f727:b0:222:81cc:ac9c with SMTP id
+ ej39-20020a056870f72700b0022281ccac9cmr12216666oab.5.1712675127270; Tue, 09
+ Apr 2024 08:05:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mf7aNuQfQtOEGO42jMNpCsLjetLYg5YwavLyDu2rz6X1A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240409140059.3806717-1-arnd@kernel.org> <20240409140059.3806717-3-arnd@kernel.org>
+In-Reply-To: <20240409140059.3806717-3-arnd@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 9 Apr 2024 17:05:15 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h7XEV__S4pvQJt54Ab832z6PZFTNTRspfLF507MNo9Og@mail.gmail.com>
+Message-ID: <CAJZ5v0h7XEV__S4pvQJt54Ab832z6PZFTNTRspfLF507MNo9Og@mail.gmail.com>
+Subject: Re: [PATCH 2/5] [v2] acpi: disable -Wstringop-truncation
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Richard Russon <ldm@flatcap.org>, Jens Axboe <axboe@kernel.dk>, Robert Moore <robert.moore@intel.com>, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Lin Ming <ming.m.lin@intel.com>, 
+	Alexey Starikovskiy <astarikovskiy@suse.de>, linux-ntfs-dev@lists.sourceforge.net, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 09, 2024 at 04:18:46PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Apr 9, 2024 at 4:06 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Apr 09, 2024 at 04:01:43PM +0200, Bartosz Golaszewski wrote:
-> > > On Tue, Apr 9, 2024 at 2:52 PM Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Tue, Apr 09, 2024 at 02:12:51AM +0300, Andy Shevchenko wrote:
-> > > > > $ scripts/kernel-doc -v -none -Wall drivers/gpio/gpiolib* 2>&1 | grep -w warning | wc -l
-> > > > > 67
-> > > > >
-> > > > > Fix these by adding Return sections. While at it, make sure all of
-> > > > > Return sections use the same style.
-> > > >
-> > > > Since there shouldn't be hard dependency to the first one, can you consider
-> > > > applying this one, so it unblocks me?
-> > >
-> > > I'm not sure what the resolution is for % and HTML <font> tags in the end?
-> >
-> > Most of the constants are without %, so less churn now is to drop %.
-> > If you think otherwise, please, fix it and I will rebase my patches later.
-> >
-> 
-> I'm not sure I get the logic of it. If the kernel-wide standard is to
-> use %, then we should work towards using it across the GPIO code even
-> if we do it a few lines at a time instead of going backwards just for
-> consistency in drivers/gpio/, no? We don't need to fix everything now
-> but if you're touching this code, then I'd go with %.
-> 
-> Also: what about the s/error-code/error code/g issue? While we should
-> always say "active-low", I think error code looks better as two words.
+On Tue, Apr 9, 2024 at 4:01=E2=80=AFPM Arnd Bergmann <arnd@kernel.org> wrot=
+e:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> gcc -Wstringop-truncation warns about copying a string that results in a
+> missing nul termination:
+>
+> drivers/acpi/acpica/tbfind.c: In function 'acpi_tb_find_table':
+> drivers/acpi/acpica/tbfind.c:60:9: error: 'strncpy' specified bound 6 equ=
+als destination size [-Werror=3Dstringop-truncation]
+>    60 |         strncpy(header.oem_id, oem_id, ACPI_OEM_ID_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/acpi/acpica/tbfind.c:61:9: error: 'strncpy' specified bound 8 equ=
+als destination size [-Werror=3Dstringop-truncation]
+>    61 |         strncpy(header.oem_table_id, oem_table_id, ACPI_OEM_TABLE=
+_ID_SIZE);
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~~~~~~~
+>
+> The code works as intended, and the warning could be addressed by using
+> a memcpy(), but turning the warning off for this file works equally well
+> and may be easir to merge.
 
-I also have no much time for these details. :(
-Let's drop this series then. Feel free to consider this as a problem report.
+"easier" (fixed up).
 
--- 
-With Best Regards,
-Andy Shevchenko
+Tricky that, but OK.let's get the warning off the table.
 
+Applied as 6.10 material, thanks!
 
+> Fixes: 47c08729bf1c ("ACPICA: Fix for LoadTable operator, input strings")
+> Link: https://lore.kernel.org/lkml/CAJZ5v0hoUfv54KW7y4223Mn9E7D4xvR7whRFN=
+LTBqCZMUxT50Q@mail.gmail.com/#t
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/acpi/acpica/Makefile | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/acpi/acpica/Makefile b/drivers/acpi/acpica/Makefile
+> index 30f3fc13c29d..8d18af396de9 100644
+> --- a/drivers/acpi/acpica/Makefile
+> +++ b/drivers/acpi/acpica/Makefile
+> @@ -5,6 +5,7 @@
+>
+>  ccflags-y                      :=3D -D_LINUX -DBUILDING_ACPICA
+>  ccflags-$(CONFIG_ACPI_DEBUG)   +=3D -DACPI_DEBUG_OUTPUT
+> +CFLAGS_tbfind.o                +=3D $(call cc-disable-warning, stringop-=
+truncation)
+>
+>  # use acpi.o to put all files here into acpi.o modparam namespace
+>  obj-y  +=3D acpi.o
+> --
+> 2.39.2
+>
+>
 
