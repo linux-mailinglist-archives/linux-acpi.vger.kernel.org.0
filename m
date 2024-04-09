@@ -1,86 +1,155 @@
-Return-Path: <linux-acpi+bounces-4810-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4811-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C46989D9ED
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 15:15:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E403189DA56
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 15:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE3E9B24469
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 13:15:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E0028BDC8
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Apr 2024 13:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DFD12EBE7;
-	Tue,  9 Apr 2024 13:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4708712FB21;
+	Tue,  9 Apr 2024 13:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2yecTju"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFijhd1M"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7262712DDAB;
-	Tue,  9 Apr 2024 13:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A167A12EBE5;
+	Tue,  9 Apr 2024 13:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712668496; cv=none; b=qMFd0cMMEnTt/dSrhFHMTRvAtkTsnfYutXEAvMtK/nG9B0JmdtJzg8sDm5hiJEQalS1vO/H/G0aXhKjHmXGBewgDlYO6ugzxbRz/RCqVHGo7m89+bUEIVjeKKno1ge9G6+DvnSbEHo+zHoL5rHt5f/zM3Ig+YzJf1Es0SZlcM7E=
+	t=1712669423; cv=none; b=LWP+G9SWnkLXad4n4HyfmnUdVAdjGq+c5nxeHBmF28LqPLfSmmvQklrcJhkOZ2+9tzeTx4Jzm5CUxEyTcstIec76C7OXTI8D/7coKVGRMBbQ3nKV7vy2PwjFSJtAAlZO/gDutUf1e3HVOns5qFpcwtZGPYqoQH4oK/csYQ8Jwjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712668496; c=relaxed/simple;
-	bh=HkkZ12I8ixZQ/oJnXLHsHJfU+zBdCbiPsKQH0yIAXww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OdBo/SnR4qGbueeEk2dB4Krrqs7L9nO8uPQxQPUJrGcBoSpoR/TC2631iBgp/6hYfYQFco7XhlXwU8OW5WcfnehdzZOLeCHhyy2KWUElgpQ0vvof0zwuof6B96iUnQcG0hjCyOOq+D82oQlFFuoNz66oRzomY5QFtoOS65UYYBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2yecTju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E771C433F1;
-	Tue,  9 Apr 2024 13:14:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712668496;
-	bh=HkkZ12I8ixZQ/oJnXLHsHJfU+zBdCbiPsKQH0yIAXww=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=k2yecTjuUO4NFZK3I+/0vQR20NSltBLSvdaVVahQNmcC2hXy+z/YEVjPtB8wukTtF
-	 RNBTgRxl1f+S4MyO6mO4Ohug1+muDJ8rJ+HYqcCvYOmYQQ9uEvEScZfSytM/fl1HaY
-	 v0WNPtrQJA0t5dOgXu1lepBXIUnjDJ1ENQ98y2X9p8PYe/Y4T7Q+ZfpnIG0AEk1z+O
-	 NtlWBITakVkFg7zgbtsLqADU/JY9oiRigVBk3M51esK9Lh60trs0wNPnKqfB3Dk3Zt
-	 T7uJh+8/A7/ZikpZTg8T7YiNH8GOijt497C858TXC6LyecuO1KLN7CYqXMEOwHSvLc
-	 4GHMnVHrGv4hg==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-516d1c8dc79so6101798e87.1;
-        Tue, 09 Apr 2024 06:14:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWklcMrfyUcXrCiI2R9AgwvuylOUg9Rl1JbFM8Np5qSf1+cssmXD6BoRqdr3+4OTG/uxgKg1oq2ITdyaXD9hp0HKeT4eTDXu4eayCzr4ViOYmhL7SDhEFUUr7n46tmF4lGyTdkP3iZJ9J0ZaGxkQDlblnOjOEiugnS8BXqW0+ciPrjt0ydRnDpiYiX4oQBNeCDUe7TUCKWhrlOj0980qCZ7sWsvBSKMOWT4BP1uKcVXDQFYu+oDvUc+5ic=
-X-Gm-Message-State: AOJu0YzsGoR0n/i0HSRALJvAOY7Uu6Cdet/Yi+aXrOV3I4tDne5lirFW
-	sbQPeX+crL6waS0ndY3Cssqd+Bl/DiyryBdPSUA+/9d5t5NXysf4X8jJvWK4d+GxIt3FeHSPmJX
-	La9Jv+U834fWTm412jbApgbCJzQ==
-X-Google-Smtp-Source: AGHT+IFBrxuzqDzZhJGZkUFzxWb6IVnvczlBrbogUAcIexbXYb4PJb6Yp8VQzRvCcDRYhvgi+lQjwy/IEz49V9s6uG4=
-X-Received: by 2002:ac2:5453:0:b0:515:d038:5548 with SMTP id
- d19-20020ac25453000000b00515d0385548mr8080039lfn.31.1712668494427; Tue, 09
- Apr 2024 06:14:54 -0700 (PDT)
+	s=arc-20240116; t=1712669423; c=relaxed/simple;
+	bh=fwIbdQ6kieHWU7HxacTenkKM95bShpnCbvagYrNsuEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OOxJ5GLEY9JQZKWFgQv5ZUbzblgnkCpVPTOWV3AJ0fOP5ddIfj8Hl9aYzXE/PfVDdIsJdUUKZ55zpB42KdG+/XR8AxGl3GxXzWKu1SVEQAzsuMfdUpX8VpPI5fchFnIIsgCSeuFZnqFxnSdhNt73eiSrvF2Q8yLDw1Al4shc28I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFijhd1M; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712669421; x=1744205421;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=fwIbdQ6kieHWU7HxacTenkKM95bShpnCbvagYrNsuEE=;
+  b=CFijhd1MWC8DuYDeKFcKls+VPi9QYuJ0NeUz/2XEpzkSe76wRs+LAzu6
+   cKEKg5T+Aoquzn2LvpkxdZlZSl3kn9E0IeEwzLrbZY381zlVVoZvJkbnY
+   VFxbabtLOCg46OAx2RAvpcTi50yGXxnampfBJuOLbbAQzcLTNqOAt6n2u
+   X29AV7IGy5+RTjxIyGdKkv4NZxQ4AGGC5PmGb80wegHl1D/UpaaTgHTJ1
+   YY2NAP94YPE9kt2VmhuUW90QKnwgbZe838F1X4MOPp+pJfR+vpAEyu5hw
+   hj07rpZGgxHaOIZi868pn+wRTWvEnC8nnWEMO53A/GQn5BlxXOWlQQ4lw
+   g==;
+X-CSE-ConnectionGUID: d3hFL4NER+uyb7sBYSmTcQ==
+X-CSE-MsgGUID: pz/7gzCIT6OukG7VKjksHw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="25423555"
+X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
+   d="scan'208";a="25423555"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 06:30:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="915399886"
+X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
+   d="scan'208";a="915399886"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 06:30:16 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ruBYD-00000002ob8-2kVm;
+	Tue, 09 Apr 2024 16:30:13 +0300
+Date: Tue, 9 Apr 2024 16:30:13 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <ZhVC5Qa472_xQs3A@smile.fi.intel.com>
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CAMRc=Mf73fFHo83gNvDXGy9BosB1MNz_=8kt56hLA12bPBb8CA@mail.gmail.com>
+ <ZhU5uDJk_M_TtKH2@smile.fi.intel.com>
+ <CAMRc=Meh6K2zxpVPHvsDcr5vMMeagK7FGhnUPz3bb2rQQCPHJA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240409053704.428336-1-saravanak@google.com> <20240409053704.428336-2-saravanak@google.com>
-In-Reply-To: <20240409053704.428336-2-saravanak@google.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 9 Apr 2024 08:14:41 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqK3vrd6jE07LAnaShf+Rj54b9DHEY4GVsmD3dPiHYp+tg@mail.gmail.com>
-Message-ID: <CAL_JsqK3vrd6jE07LAnaShf+Rj54b9DHEY4GVsmD3dPiHYp+tg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/2] Revert "treewide: Fix probing of devices in DT overlays"
-To: Saravana Kannan <saravanak@google.com>
-Cc: Herve Codina <herve.codina@bootlin.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	kernel-team@android.com, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Meh6K2zxpVPHvsDcr5vMMeagK7FGhnUPz3bb2rQQCPHJA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Apr 9, 2024 at 12:37=E2=80=AFAM Saravana Kannan <saravanak@google.c=
-om> wrote:
->
-> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+On Tue, Apr 09, 2024 at 02:55:20PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Apr 9, 2024 at 2:51 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> > On Tue, Apr 09, 2024 at 11:42:37AM +0200, Bartosz Golaszewski wrote:
+> > > On Tue, Apr 9, 2024 at 1:17 AM Andy Shevchenko
+> > > <andriy.shevchenko@linux.intel.com> wrote:
+> > > >
+> > > > The GPIO_* flag definitions are *almost* duplicated in two files
+> > > > (with unmatches OPEN_SOURCE / OPEN_DRAIN). Moreover, some code relies
+> > > > on one set of definitions while the rest is on the other. Clean up
+> > > > this mess by providing only one source of the definitions to all.
+> > > >
+> > > > Fixes: b424808115cb ("brcm80211: brcmsmac: Move LEDs to GPIO descriptors")
+> > > > Fixes: 5923ea6c2ce6 ("gpio: pass lookup and descriptor flags to request_own")
+> > > > Fixes: fed7026adc7c ("gpiolib: Make use of enum gpio_lookup_flags consistent")
+> > > > Fixes: 4c0facddb7d8 ("gpio: core: Decouple open drain/source flag with active low/high")
+> > > > Fixes: 69d301fdd196 ("gpio: add DT bindings for existing consumer flags")
+> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > ---
+> > > >  drivers/gpio/gpiolib-of.c                     |  5 ++---
+> > > >  drivers/gpio/gpiolib.c                        |  8 +++-----
+> > > >  .../broadcom/brcm80211/brcmsmac/led.c         |  2 +-
+> > > >  include/linux/gpio/driver.h                   |  3 +--
+> > > >  include/linux/gpio/machine.h                  | 20 +++++--------------
+> > > >  5 files changed, 12 insertions(+), 26 deletions(-)
+> > >
+> > > I don't think ./dt-bindings/gpio/gpio.h is the right source of these
+> > > defines for everyone - including non-OF systems. I would prefer the
+> > > ones in include/linux/gpio/machine.h be the upstream source but then
+> > > headers in include/dt-bindings/ cannot include them so my second-best
+> > > suggestion is to rename the ones in include/linux/gpio/machine.h and
+> > > treewide too. In general values from ./dt-bindings/gpio/gpio.h should
+> > > only be used in DTS sources and gpiolib-of code.
+> >
+> > Then, please fix that your way. It's quite annoying issue.
+> 
+> This is not difficult in itself
 
-Please say *why* we are reverting. And you still need a S-o-b.
+I'm not sure, what about enum gpio_lookup_flags? Shall we resurrect it?
+I see that you have better vision anyway. Consider my patch as a problem
+report (and as bonus you have already list of Fixes tags :-).
 
-And you are missing some maintainers.
+> but it's a tree-wide change so we will
+> probably have to send it to Torvalds at the end of the merge window in
+> a separate pull-request.
 
-Rob
+WFM!
+
+> I don't really have time now, I'll be travelling for 5 weeks in a row.
+> I'll see closer to the merge window. Or next release cycle.
+
+But can you prioritize this? It's a carefully planted minefield with already
+a bug and confusion here.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
