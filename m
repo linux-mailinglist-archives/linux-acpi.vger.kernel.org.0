@@ -1,98 +1,81 @@
-Return-Path: <linux-acpi+bounces-4837-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4838-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6443C89EA41
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 08:00:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2B089EAF5
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 08:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DD5D284187
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 06:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2D01F2171E
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 06:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8A61CA94;
-	Wed, 10 Apr 2024 06:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45F3288D1;
+	Wed, 10 Apr 2024 06:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ldx8Rly/"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Qft2KHiF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A341BF3D;
-	Wed, 10 Apr 2024 06:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32531427B;
+	Wed, 10 Apr 2024 06:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712728837; cv=none; b=QMWRS+nPKrXK8ijJLnAnJrcZOWnJcYgbrFN9HQZVFCNRZtcbRyEeWRjNaUSvnmhal7VrE9GNlJ51BbVnchBTjNuoePRVpaeQT4Pu3i9iH3j9ZfwF4JOgOBIqzu4CfRtuGEwdR4zyOx0W/02SBYvaYuSprvJKzBdeiJU7l/UXCiM=
+	t=1712730977; cv=none; b=Bi8Vg9k1HYCs/aZZLh5H9hIeFWY7UpuPwuqfsFZvMOTZGwJp/kD1VDKNJlPThPj5kYXFhWUn6vBKc7JBqiPFg7aXc4oYlFX+Hv9SjWs3trRbmQFzonkzgQvpZHNEXXmTyneQMYRZXCQiGW5L313M2jRSDxS+NcUtMVLmivVulCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712728837; c=relaxed/simple;
-	bh=lS08xQB5+dfJ13UYeFRd5tnUYpoDHhzEWxLWJIVAq3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZpUcXwvDtHOBXm0XeM12TUIyD5Nll068d+02PHY+JVibxRvq325C8v/F12wMR1E7eNtj7asLllTwGGuQaI0u0ajMnkMF6+hLMMi5+nSSI7/MlpNfqe/8Lq5hX96PRDrmmN++Pqm7w2N710LCyHpvRJMxy2tMchZrtCRGCFWurJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ldx8Rly/; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712728834; x=1744264834;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lS08xQB5+dfJ13UYeFRd5tnUYpoDHhzEWxLWJIVAq3w=;
-  b=Ldx8Rly/4Scf6JyWnoW/7fPPr939waRqk/9pjcCyqWqzJ4U/C3HJN4WB
-   C5smzXGiiUXmyFfWB1Uqe1X4emRXQpl3ce9P/xt4F4vBfKCOv2xBzQf2S
-   8QMjJxhoRdgEcYVIXPMvkPVAbF9H9RzC/Xfmf5ACnxghAydmB21jMLvSp
-   9ebzjMOTlt5rJeEIkVYlse3EnHmLOIgS/J/jLUbWp1fiuMTkeqzqL2GM1
-   2MjFtn4sZgKwti/TdDKNIiG6qqrK+9De3AagoPC/AQ6aXuRZ3otP/DUPf
-   bvxMXMrguG4NjZO1E2flnvildXibHzbHYNnLFPuoroPLVWVMmeUYeedmB
-   A==;
-X-CSE-ConnectionGUID: H6G2pFEuSXS2aGKgU0UjxQ==
-X-CSE-MsgGUID: LlSxPT6YT3iXczubOO53Vg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11039203"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="11039203"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 23:00:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="937094562"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="937094562"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 23:00:30 -0700
-Date: Wed, 10 Apr 2024 09:00:28 +0300
-From: Raag Jadav <raag.jadav@intel.com>
-To: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
-	mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-	stanislaw.gruszka@linux.intel.com
-Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] ACPI: bus: allow _UID matching for integer zero
-Message-ID: <ZhYq_HDwAi4B49Zz@black.fi.intel.com>
-References: <20240328035540.13194-1-raag.jadav@intel.com>
+	s=arc-20240116; t=1712730977; c=relaxed/simple;
+	bh=Ev47tvx7JfofKBhk6oSCIjZTqrZBBLZvAPDIHTSABL8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pV76STRekTzt75YGpGUK7JAsIikkFmYPjkBhL9JDR6gDZOXMy2bvUUPVWeq5iXHgUqDsqaGDJJ2g6pSiWWAZFdVaXTa60613JkekphAURw6/UTBMTxEvd6ZcOKD/QJNrpI1bf6+DFgnY2GUkzanGOBP/lLZlysEyQQuKuV1vtls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Qft2KHiF; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1712730972; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=PvEQZq7/sWs0gwfpV9IvtL45iTzbI63TfJE3CNaP/so=;
+	b=Qft2KHiF32qbuFabGERo7wtzg/Hkf4dqBUzrosC9I6tCmEt/gmovf8i8Sfw0npDkCghBf2NfXPRRwrpC2/kUxeHP7yEj8LRGmADul6Gc+FdseLEvHMSboVwRehx08+s9mcXvutKJKrwlqdvzpzk8YrHNRVoaqXirk6ULv3alSck=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0W4Gt47I_1712730970;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0W4Gt47I_1712730970)
+          by smtp.aliyun-inc.com;
+          Wed, 10 Apr 2024 14:36:12 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: robert.moore@intel.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	tianruidong@linux.alibaba.com
+Subject: [PATCH v2 0/2] ACPICA: AEST: Support AEST V2
+Date: Wed, 10 Apr 2024 14:36:00 +0800
+Message-Id: <20240410063602.41540-1-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328035540.13194-1-raag.jadav@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 28, 2024 at 09:25:40AM +0530, Raag Jadav wrote:
-> Commit b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to
-> support multiple types") added _UID matching support for both integer
-> and string types, which satisfies NULL @uid2 argument for string types
-> using inversion, but this logic prevents _UID comparision in case the
-> argument is integer 0, which may result in false positives.
-> 
-> Fix this using _Generic(), which will allow NULL @uid2 argument for
-> string types as well as _UID matching for all possible integer values.
-> 
-> Fixes: b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to support multiple types")
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+AEST V2 was published[1], add V2 support based on AEST V1.
 
-Bump.
+Fix some code styling issues as well.
 
-Anything I can do to move this forward?
+Change from v1:
+- fix error variable name in struct acpi_aest_node_interface_64k. 
 
-Raag
+[1]: https://developer.arm.com/documentation/den0085/latest/
+
+Ruidong Tian (2):
+  ACPICA: AEST: Fix coding style at struct definition
+  ACPICA: AEST: Add support for the AEST V2 table
+
+ include/acpi/actbl2.h | 132 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 99 insertions(+), 33 deletions(-)
+
+-- 
+2.33.1
+
 
