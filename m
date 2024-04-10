@@ -1,99 +1,122 @@
-Return-Path: <linux-acpi+bounces-4851-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4852-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7C289F849
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 15:39:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C404689F82B
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 15:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6496B2EE5B
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 13:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00FB81C231AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 13:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A615EFB8;
-	Wed, 10 Apr 2024 13:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qnpqka6z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC4915ECEB;
+	Wed, 10 Apr 2024 13:35:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF967158D76;
-	Wed, 10 Apr 2024 13:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCF415DBC4;
+	Wed, 10 Apr 2024 13:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712755874; cv=none; b=kI/w4MjcjZ/9BzKu+4sSDAYwkk0T6tDj/D8jKyrrdM/h1V0FJu+kcvtOAhP9nzOQ2MqRou3Mxd5HYR8ZVf/NC2oSyIhFQ6Q1xa14CWorio+CXBfpja4xsSEmHTgA51viyeSap3zurqw5+2QWMFP2hM9ySQ5sWddixMBOuMxiu8g=
+	t=1712756131; cv=none; b=fNT0MHZ09/adnjNc98v6ZsM3XgHCC90GR6a18zLiyTokvi6KoMHjPa93vveYIcO4+3KNsaEOwULYci9nXxTTO11khGAhiAwcQ29glSBeuk/0+MuG7lxnsje/mmcaI/HOkJC27TyuCX11x/gycWgfppsC4ec9djxrH5JzMVTkXw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712755874; c=relaxed/simple;
-	bh=zfLSD41E2JenoaoPH1O+sKGPiDJDFWMakf+QIw7ergc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d6QwoBdCc2KH32cAeHUxOckUMQa0LMVbXjnW/Qw7Y6y/weoRQvXwUA0oJgLBohe7aR9RoelcwTgubR/LbtKB91elBjpG4JW5yfIeSoX4Z58IvxkeamppTEXlBZRSFQ8B8IKwzbySOc2wMoOay/1NWp6FP9+wRte1qmpA3Sv+NQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qnpqka6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA84C433F1;
-	Wed, 10 Apr 2024 13:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712755874;
-	bh=zfLSD41E2JenoaoPH1O+sKGPiDJDFWMakf+QIw7ergc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Qnpqka6zLNqeggJmofQA0OUZ7ZlkJbBMHx4+OuNsjTjXSUuJ9LDLTt2zHxcjUt5sw
-	 aMH+FcnCv1y50Z1zNn8U1bidV1MDHYpSZZEFidGC2SlZ0R4SHQVcxwPeMSQX+GGcSc
-	 TDrKmenuipM4reDXNdlDIR8CSSdeG22Y1IQ720CYzmGa68atHK9vfdLDunQNRrpk/p
-	 liMn1wJJvqfyYy43T9v75bl7zG2Xf30CaR9FFCt09SMMASEwVgii/1t7c3fXgJZOF0
-	 bynlg8X59dn7iJTfDcUXAG0c8V/Sd0Q0QZIBUBgQMS2jO6jko2TGDll8k0VBl8b1xy
-	 rFqn1hwnaHKMg==
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6ea3855e873so59383a34.1;
-        Wed, 10 Apr 2024 06:31:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVxbZ0uTW0R6BeBi9Io1XvHxuB2Er0/L8xtZ5HbjwEZ9ueYQ88323idBBqyRpvLIWgwzpNf/bfMGvUFgUhntruGjt6usCDxJZNcaXWC7pJ1mC+7zni+mdjIq/R0Jbu9WcQnFhxsIh8S5Q==
-X-Gm-Message-State: AOJu0YwdSOZU3p22vPj9f15HFTgbrolVBQasUXleSTpfmVkFWtGHJIOF
-	OmKD/8O6hZGHcjMIVFYxTk2a/Qc0H2Evir8lsT86lPksHit6W+h7IU3Is5UP+WNIZY8uNr5CpCG
-	KDUMzU8uLntZWx2N9E+MTTbO14G0=
-X-Google-Smtp-Source: AGHT+IFYvZ6wewkoSuhtTaIF3PMZ+E+76ZGLEZUrYkszBd7MFEyZdSN3tcBqx1bogeh+Rx2RmSKe2XSA6KZHDhUFNNE=
-X-Received: by 2002:a05:6870:4687:b0:232:fa03:3736 with SMTP id
- a7-20020a056870468700b00232fa033736mr2649698oap.0.1712755873721; Wed, 10 Apr
- 2024 06:31:13 -0700 (PDT)
+	s=arc-20240116; t=1712756131; c=relaxed/simple;
+	bh=DEngBseA5QdXJf4v5A8FOKLkLRqL3wSCn7bc2Hv/DbU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jO+0FXH25HHd5mKaDCgEQsO8Buetd22xqWObWZwDyfK72s3wShOiE0vJ900YiwplZXWEBsmCQyBhAZJsAO1sxkamms73eg8hxHbrkVfmeCS6IEfk4J6NLNwaZrIbB5YTfP85a+l3AGAKFC9khlHLyizP9N0h92Ql/DDIcEXkhkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VF3gw6K6yz6K64Y;
+	Wed, 10 Apr 2024 21:33:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id B906F1400CA;
+	Wed, 10 Apr 2024 21:35:26 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
+ 2024 14:35:26 +0100
+Date: Wed, 10 Apr 2024 14:35:25 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Miguel Luis <miguel.luis@oracle.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<rmk+kernel@armlinux.org.uk>
+Subject: Re: [RFC PATCH 0/4] ACPI: processor: refactor
+ acpi_processor_{get_info|remove}
+Message-ID: <20240410143525.0000620a@Huawei.com>
+In-Reply-To: <20240409150536.9933-1-miguel.luis@oracle.com>
+References: <20240409150536.9933-1-miguel.luis@oracle.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328035540.13194-1-raag.jadav@intel.com> <ZhYq_HDwAi4B49Zz@black.fi.intel.com>
-In-Reply-To: <ZhYq_HDwAi4B49Zz@black.fi.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 10 Apr 2024 15:31:01 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0idPeRmx1oRHoVEZYmGm1D-5SFP9_C0Bu_fiuyf7YiYqQ@mail.gmail.com>
-Message-ID: <CAJZ5v0idPeRmx1oRHoVEZYmGm1D-5SFP9_C0Bu_fiuyf7YiYqQ@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: bus: allow _UID matching for integer zero
-To: Raag Jadav <raag.jadav@intel.com>
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com, 
-	mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com, 
-	stanislaw.gruszka@linux.intel.com, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Apr 10, 2024 at 8:00=E2=80=AFAM Raag Jadav <raag.jadav@intel.com> w=
-rote:
->
-> On Thu, Mar 28, 2024 at 09:25:40AM +0530, Raag Jadav wrote:
-> > Commit b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to
-> > support multiple types") added _UID matching support for both integer
-> > and string types, which satisfies NULL @uid2 argument for string types
-> > using inversion, but this logic prevents _UID comparision in case the
-> > argument is integer 0, which may result in false positives.
-> >
-> > Fix this using _Generic(), which will allow NULL @uid2 argument for
-> > string types as well as _UID matching for all possible integer values.
-> >
-> > Fixes: b2b32a173881 ("ACPI: bus: update acpi_dev_hid_uid_match() to sup=
-port multiple types")
-> > Signed-off-by: Raag Jadav <raag.jadav@intel.com>
->
-> Bump.
->
-> Anything I can do to move this forward?
+On Tue,  9 Apr 2024 15:05:29 +0000
+Miguel Luis <miguel.luis@oracle.com> wrote:
 
-Should be there in linux-next already, isn't it?
+> Both acpi_processor_get_info and acpi_processor_remove functions have
+> architecture dependent functionality enabled via CONFIG_ACPI_HOTPLUG_CPU.
+> 
+> Current pre-processor guards are restricting too much of functionality which
+> makes it dificult to integrate other features such as Virtual CPU
+> hotplug/unplug for arm64.
+> 
+> This series, applied on top of v6.9-rc3, suggests a refactoring on these two
+> functions with the intent to understand them better and hopefully ease
+> integration of more functionality.
+> 
+> Apart from patches 2/4 and 3/4, which could be squashed but left them separated
+> intentionally so it would ease reviewing, changes are self-contained.
+> 
+> So far I've boot tested it successfully alone and as a prefix for vCPU hotplug/unplug
+> patches [1], on arm64.
 
-Maybe I forgot to send an "applied" message.
+Hi Miguel,
+
+Great to see an attempt to keep this moving. My apologies that I've been rather
+quiet on this so far this cycle - a few things came up that ended up more urgent :(
+
+In the thread you link there was a discussion on whether to stub out these functions
+as a possible way forwards. I did some analysis of what was going on in 
+
+https://lore.kernel.org/linux-arm-kernel/20240322185327.00002416@Huawei.com/
+
+and my conclusion was that to do so would mostly be misleading.
+The flows for make present and make enabled are and should be different
+(though not as different as they were in v4!)
+
+Jonathan
+
+> 
+> [1]: https://lore.kernel.org/linux-arm-kernel/Zbp5xzmFhKDAgHws@shell.armlinux.org.uk/
+> 
+> Miguel Luis (4):
+>   ACPI: processor: refactor acpi_processor_get_info: evaluation of
+>     processor declaration
+>   ACPI: processor: refactor acpi_processor_get_info: isolate cpu hotpug
+>     init delay
+>   ACPI: processor: refactor acpi_processor_get_info: isolate
+>     acpi_{map|unmap}_cpu under CONFIG_ACPI_HOTPLUG_CPU
+>   ACPI: processor: refactor acpi_processor_remove: isolate
+>     acpi_unmap_cpu under CONFIG_ACPI_HOTPLUG_CPU
+> 
+>  drivers/acpi/acpi_processor.c | 138 ++++++++++++++++++++++------------
+>  1 file changed, 91 insertions(+), 47 deletions(-)
+> 
+> --
+> 2.43.0
+> 
+
 
