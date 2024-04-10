@@ -1,139 +1,185 @@
-Return-Path: <linux-acpi+bounces-4853-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4854-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36EC89F8A1
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 15:48:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E99D89F8F5
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 15:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4F4289A95
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 13:48:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D99F31F32EB2
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 13:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A568C16C866;
-	Wed, 10 Apr 2024 13:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WWwjUk8v"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDF816DEA6;
+	Wed, 10 Apr 2024 13:50:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809F16D9D4;
-	Wed, 10 Apr 2024 13:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F010116D9C7;
+	Wed, 10 Apr 2024 13:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712756453; cv=none; b=fw0moWmcPDHo8AEhjPcrXPWW+lL3rM0xazd4vX52ZBDkuC9Y/uoGVlfszt5OmGRQC62SQOXzQSWDMTQFIhWhHYZxN1y/YeRZjEx3SDETiZQ/wFAjmzXvVj+O1jqiQyFOwv3XeGkSazjzLxhGjaUDliFiO+pLqkQVbiW1vnqJ8as=
+	t=1712757012; cv=none; b=Yqjo+u/NhNZ7czDrtUbUBnTiYMsnt3xqKo+Y/g4qe9DIsfa0NVO8S+7e7lGgYxGlxl8KU5PAl3Gi9BfoIM4Asz9bJWspHvD22k4sHprduvQ26cD+PrMEU2ahXgGo9SEeXScJ1Z8vEJds86jS+o/7xhW1tJ+AR53EzA+eSYupn54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712756453; c=relaxed/simple;
-	bh=2FUZKmDC3uXV6lRtnmgMR3WBQZOamgU9l6hJ9YWMlsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwJcH+RMAji3aXbCRaywWl2rbCNpViWwzeoMrhbqTmJWYVHjZk+/sQ4BpLmRRd8ZyXJ+vpbEtciF6R/AL/6c+K5bq0q3oI1Xq2HoyGrz8gDWNRXBfgldga4Q5SwQv0cxiKeTxlnipNAhDcE6l79Wu+Bi7YMxj9GD+zXLSCgO9to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WWwjUk8v; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712756452; x=1744292452;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=2FUZKmDC3uXV6lRtnmgMR3WBQZOamgU9l6hJ9YWMlsw=;
-  b=WWwjUk8v3LNWtBaigWnCnU64h1F45shPvccb2E6tGvTIIe0GLHDP3GKl
-   WaUx8vzj84gHyak3DvWHFPLf37+GdZLCXGjh2Z9wXdqH7PKhS2YtWUpEy
-   ESTPBjjNjdn/Fg6drgO7J4Ou1aIeIrDx5zUxGdm/lUjR3OQfyTfoGxDtw
-   Xaqpfa6jc1Pa6ThOA+ez3/+eJ2Kr7huOkKsmtB0XEgPMi8+AqOg5BodJl
-   6vnBNjj3d9LGQSuHc2RFLrqnr73BsyUPna045+Nrui2vsbRwnODXi9QWd
-   6kEpDavFpWtIjLHQWOtyT3meap66kmTNuZi2NWvkSUow0A/PwurVZoXn9
-   Q==;
-X-CSE-ConnectionGUID: Ad1oVmFiSa2Z/oGaLxFp/g==
-X-CSE-MsgGUID: FX+jqJ92Te+opPcajXWSrw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="7991582"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="7991582"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 06:40:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="915433375"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="915433375"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 06:40:47 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1ruYBw-00000003516-3Ty5;
-	Wed, 10 Apr 2024 16:40:44 +0300
-Date: Wed, 10 Apr 2024 16:40:44 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: albanhuang <albanhuang0@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael.j.wysocki@intel.com,
-	linux-acpi@vger.kernel.org, tony@atomide.com,
-	john.ogness@linutronix.de, yangyicong@hisilicon.com,
-	jirislaby@kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, lvjianmin@loongson.cn,
-	albanhuang@tencent.com, tombinfan@tencent.com
-Subject: Re: [PATCH v6 0/3] serial: 8250_pnp: Support configurable reg shift
- property
-Message-ID: <ZhaW3PM3TccV5t3w@smile.fi.intel.com>
-References: <cover.1712646750.git.albanhuang@tencent.com>
- <ZhU6Or3hTziarHZo@smile.fi.intel.com>
- <4f0950f8-e0e1-4b26-85b9-385c97c39cf6@gmail.com>
+	s=arc-20240116; t=1712757012; c=relaxed/simple;
+	bh=9zjC72oMJYYHMUAUwT5oG2XaeuDan+dzKqCHcr5RWWs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SuFNw84ei2T2SgqjUOQvTBMJcUA4pLXaz10ODwTnCkhFmn9cs7rrOgHha8ujJBRJy/mI3oZ6vrmWgYbtOm4OlWwp1tc+GBk6Ezmiu8Yd0nbn2s1tAeB/PJg77risgo7Weq/bsAKsm/+2uKIYYi3ydNEPBQmWA8OJYji1MGxJdao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VF3xC2BRXz6K6f2;
+	Wed, 10 Apr 2024 21:45:19 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id B565C1400CA;
+	Wed, 10 Apr 2024 21:50:06 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
+ 2024 14:50:06 +0100
+Date: Wed, 10 Apr 2024 14:50:05 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Russell King <rmk+kernel@armlinux.org.uk>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>,
+	<acpica-devel@lists.linuxfoundation.org>, <linux-csky@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, <jianyong.wu@arm.com>,
+	<justin.he@arm.com>, James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
+ acpi_processor_get_info()
+Message-ID: <20240410145005.00003050@Huawei.com>
+In-Reply-To: <CAJZ5v0ggD042sfz3jDXQVDUxQZu_AWaF2ox-Me8CvFeRB8nczw@mail.gmail.com>
+References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
+	<E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
+	<CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
+	<20240322185327.00002416@Huawei.com>
+	<20240410134318.0000193c@huawei.com>
+	<CAJZ5v0ggD042sfz3jDXQVDUxQZu_AWaF2ox-Me8CvFeRB8nczw@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4f0950f8-e0e1-4b26-85b9-385c97c39cf6@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Apr 10, 2024 at 10:49:29AM +0800, albanhuang wrote:
-> 在 2024/4/9 20:53, Andy Shevchenko 写道:
-> > On Tue, Apr 09, 2024 at 03:43:20PM +0800, Guanbing Huang wrote:
-> > > From: Guanbing Huang <albanhuang@tencent.com>
-> > > 
-> > > The 16550a serial port based on the ACPI table requires obtaining the
-> > > reg-shift attribute. In the ACPI scenario, If the reg-shift property
-> > > is not configured like in DTS, the 16550a serial driver cannot read or
-> > > write controller registers properly during initialization.
-> > > 
-> > > To address the issue of configuring the reg-shift property, the
-> > > __uart_read_properties() universal interface is called to implement it.
-> > > Adaptation of PNP devices is done in the __uart_read_properties() function.
-> > You either forgot or deliberately not added my tag. Can you elaborate?
-> 
-> I'm very sorry, this is my first time submitting a kernel patch. My
-> understanding
-> 
-> of the submission specification is not comprehensive and profound enough,
-> 
-> and I didn't intentionally not add tags. I hope you can forgive my
-> operational mistake.
-> 
-> Should I just add a "Reviewed-by tag", or do I need any other tags? Thanks.
+On Wed, 10 Apr 2024 15:28:18 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-Understood. So if you are is one who is sending a new version, you should take
-care about any given tags (such as Reviewed-by) and carry them, in case the
-code is not drastically changed. I.o.w. if you don't, you have to explain why.
+> On Wed, Apr 10, 2024 at 2:43=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> > =20
+> > > > =20
+> > > > > diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+> > > > > index 47de0f140ba6..13d052bf13f4 100644
+> > > > > --- a/drivers/base/cpu.c
+> > > > > +++ b/drivers/base/cpu.c
+> > > > > @@ -553,7 +553,11 @@ static void __init cpu_dev_register_generic(=
+void)
+> > > > >  {
+> > > > >         int i, ret;
+> > > > >
+> > > > > -       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES))
+> > > > > +       /*
+> > > > > +        * When ACPI is enabled, CPUs are registered via
+> > > > > +        * acpi_processor_get_info().
+> > > > > +        */
+> > > > > +       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES) || !acpi_disa=
+bled)
+> > > > >                 return; =20
+> > > >
+> > > > Honestly, this looks like a quick hack to me and it absolutely
+> > > > requires an ACK from the x86 maintainers to go anywhere. =20
+> > > Will address this separately.
+> > > =20
+> >
+> > So do people prefer this hack, or something along lines of the followin=
+g?
+> >
+> > static int __init cpu_dev_register_generic(void)
+> > {
+> >         int i, ret =3D 0;
+> >
+> >         for_each_online_cpu(i) {
+> >                 if (!get_cpu_device(i)) {
+> >                         ret =3D arch_register_cpu(i);
+> >                         if (ret)
+> >                                 pr_warn("register_cpu %d failed (%d)\n"=
+, i, ret);
+> >                 }
+> >         }
+> >         //Probably just eat the error.
+> >         return 0;
+> > }
+> > subsys_initcall_sync(cpu_dev_register_generic); =20
+>=20
+> I would prefer something like the above.
+>=20
+> I actually thought that arch_register_cpu() might return something
+> like -EPROBE_DEFER when it cannot determine whether or not the CPU is
+> really available.
 
-Anyways, it seems the patch still has a flaw as per LKP, so fix that by
-providing probably two macros in the pnp.h header for both cases
-(CONFIG_PNP=y/n), and I will review it again.
+Ok. That would end up looking much more like the original code I think.
+So we wouldn't have this late registration at all, or keep it for DT
+on arm64?  I'm not sure that's a clean solution though leaves
+the x86 path alone.
 
-	#ifdef CONFIG_PNP
-	...
-	#define dev_is_pnp(...) ...
-	...
-	#else
-	...
-	#define dev_is_pnp(...)		false
-	...
-	#endif
+If we get rid of this catch all, solution would be to move the
+!acpi_disabled check into the arm64 version of arch_cpu_register()
+because we would only want the delayed registration path to be
+used on ACPI cases where the question of CPU availability can't
+yet be resolved.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>=20
+> Then, the ACPI processor enumeration path may take care of registering
+> CPU that have not been registered so far and in the more-or-less the
+> same way regardless of the architecture (modulo some arch-specific
+> stuff).
 
+If I understand correctly, in acpi_processor_get_info() we'd end up
+with a similar check on whether it was already registered (the x86 path)
+or had be deferred (arm64 / acpi).
+=20
+>=20
+> In the end, it should be possible to avoid changing the behavior of
+> x86 and loongarch in this series.
+
+Possible, yes, but result if I understand correctly is we end up with
+very different flows and replication of functionality between the
+early registration and the late one. I'm fine with that if you prefer it!
+
+>=20
+> > Which may look familiar at it's effectively patch 3 from v3 which was d=
+ealing
+> > with CPUs missing from DSDT (something we think doesn't happen).
+> >
+> > It might be possible to elide the arch_register_cpu() in
+> > make_present() but that will mean we use different flows in this patch =
+set
+> > for the hotplug and initially present cases which is a bit messy.
+> >
+> > I've tested this lightly on arm64 and x86 ACPI + DT booting and it "see=
+ms" fine. =20
+>=20
+> Sounds promising.
+
+Possibly not that relevant though if proposal is to drop this approach. :(
+At least I now have test setups!
+
+Jonathan
+>=20
+> Thanks!
 
 
