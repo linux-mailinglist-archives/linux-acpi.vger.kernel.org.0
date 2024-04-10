@@ -1,67 +1,58 @@
-Return-Path: <linux-acpi+bounces-4845-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4846-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1F289F280
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 14:43:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDC989F3C5
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 15:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 103C01F22001
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 12:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 460AF1F2A620
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 13:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5197E159914;
-	Wed, 10 Apr 2024 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7222315CD6B;
+	Wed, 10 Apr 2024 13:13:27 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8237412EBEF;
-	Wed, 10 Apr 2024 12:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06D813D2BC;
+	Wed, 10 Apr 2024 13:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712753007; cv=none; b=Z5HSWlGl97YtCfHtJCmYRzyFaWcqDt58uurGSJFN+F1W3aKtjAlISuRgzjZy6958PcsrLFsoGUoEvt3xIwVKkOLyTxi/gm9t06jDgz37oB6xJV6Zz5Qs57dAXcndPqghLV1UiyZjx3vmuTv72uhP2lc0Q0f8clXaTLpBaFzMaRg=
+	t=1712754807; cv=none; b=E07/qNxY+H/zNX4HxsWQMXbneMSAzbXSu3k1aaxKXN0dBX70Cyk8b24d1Dy1Rzdw+MPU0ttEqK8eJ6beNUiX/jW8n61HJZgNqkrYLUwAV+LYIZCsEXW2EdB1DHpX0ScqVd7Vihm3I3m/ncwCT9JCpmwi2Z9mpmNWbua9nJy3U5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712753007; c=relaxed/simple;
-	bh=oNXkmJLZw0UUlzScvUERB+oZiwnYTzIkRhGzopuv6w0=;
+	s=arc-20240116; t=1712754807; c=relaxed/simple;
+	bh=/KPq2zgQ/ewuOwgYMo/IV7fAo0zdk9l7jmJKfZm3w3Q=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OLcJmoohYh4zMuEfFMNApVZR8SGv9dkwP1SUPucNozgW4cC4qrPBKcAyFQ3eDuyjUj2oUuZtFdIw9Lydc7UcZSjtIVqVFUPtyJldlL7G1wuZX82OsEMgW5JqsPePevzbLjo2fA8yXumyFdvwCQMBMcPwzUoWUCJu2UYnCL9NoRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	 MIME-Version:Content-Type; b=p3VcOUoGykpZn88pXgSICdQqZLC7M6UUJRYbDxQ+Q6SA/ordhNMW4mxD5fKGdCvQNndsrC40y0Mh8TGQbxhcan0qjUQSviNnEYECgQHFkXgN9Vq639yqm3e0G0JszkT7PebHMQs/mZl8Sw3dnmVR6FP15pa0mSm4DOYCNoRnf/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VF2Wn6z5Vz6K6Cs;
-	Wed, 10 Apr 2024 20:41:41 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VF36p4gRYz6K9Jd;
+	Wed, 10 Apr 2024 21:08:34 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id AB478140DD4;
-	Wed, 10 Apr 2024 20:43:19 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+	by mail.maildlp.com (Postfix) with ESMTPS id 072F3140CF4;
+	Wed, 10 Apr 2024 21:13:22 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
- 2024 13:43:19 +0100
-Date: Wed, 10 Apr 2024 13:43:18 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Russell King <rmk+kernel@armlinux.org.uk>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>,
-	<acpica-devel@lists.linuxfoundation.org>, <linux-csky@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-	<linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, <jianyong.wu@arm.com>,
-	<justin.he@arm.com>, James Morse <james.morse@arm.com>
-Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
- acpi_processor_get_info()
-Message-ID: <20240410134318.0000193c@huawei.com>
-In-Reply-To: <20240322185327.00002416@Huawei.com>
-References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
-	<E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
-	<CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
-	<20240322185327.00002416@Huawei.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ 2024 14:13:21 +0100
+Date: Wed, 10 Apr 2024 14:13:20 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Miguel Luis <miguel.luis@oracle.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<rmk+kernel@armlinux.org.uk>
+Subject: Re: [RFC PATCH 1/4] ACPI: processor: refactor
+ acpi_processor_get_info: evaluation of processor declaration
+Message-ID: <20240410141320.00004199@Huawei.com>
+In-Reply-To: <20240409150536.9933-2-miguel.luis@oracle.com>
+References: <20240409150536.9933-1-miguel.luis@oracle.com>
+	<20240409150536.9933-2-miguel.luis@oracle.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -70,69 +61,159 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-> >   
-> > > diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-> > > index 47de0f140ba6..13d052bf13f4 100644
-> > > --- a/drivers/base/cpu.c
-> > > +++ b/drivers/base/cpu.c
-> > > @@ -553,7 +553,11 @@ static void __init cpu_dev_register_generic(void)
-> > >  {
-> > >         int i, ret;
-> > >
-> > > -       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES))
-> > > +       /*
-> > > +        * When ACPI is enabled, CPUs are registered via
-> > > +        * acpi_processor_get_info().
-> > > +        */
-> > > +       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES) || !acpi_disabled)
-> > >                 return;    
-> > 
-> > Honestly, this looks like a quick hack to me and it absolutely
-> > requires an ACK from the x86 maintainers to go anywhere.  
-> Will address this separately.
+On Tue,  9 Apr 2024 15:05:30 +0000
+Miguel Luis <miguel.luis@oracle.com> wrote:
+
+> Isolate the evaluation of processor declaration into its own function.
 > 
+> No functional changes.
+> 
+> Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
 
-So do people prefer this hack, or something along lines of the following?
+Hi Miguel,
 
-static int __init cpu_dev_register_generic(void)
-{
-        int i, ret = 0;
+I'd like more description in each patch of 'why' the change is useful. 
 
-        for_each_online_cpu(i) {
-                if (!get_cpu_device(i)) {
-                        ret = arch_register_cpu(i);
-                        if (ret)
-                                pr_warn("register_cpu %d failed (%d)\n", i, ret);
-                }
-        }
-	//Probably just eat the error.
-        return 0;
-}
-subsys_initcall_sync(cpu_dev_register_generic);
-
-Which may look familiar at it's effectively patch 3 from v3 which was dealing
-with CPUs missing from DSDT (something we think doesn't happen).
-
-It might be possible to elide the arch_register_cpu() in
-make_present() but that will mean we use different flows in this patch set
-for the hotplug and initially present cases which is a bit messy.
-
-I've tested this lightly on arm64 and x86 ACPI + DT booting and it "seems" fine.
+A few comments inline.
 
 Jonathan
 
-> >   
-> > >
-> > >         for_each_present_cpu(i) {
-> > > --    
+> ---
+>  drivers/acpi/acpi_processor.c | 78 +++++++++++++++++++++++------------
+>  1 file changed, 51 insertions(+), 27 deletions(-)
 > 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index 7a0dd35d62c9..37e8b69113dd 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -230,15 +230,59 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>  }
+>  #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+>  
+> +static int acpi_evaluate_processor(struct acpi_device *device,
+> +				   struct acpi_processor *pr,
+> +				   union acpi_object *object,
+> +				   int *device_declaration)
+
+I'd use a bool * for device_declaration.
+
+> +{
+> +	struct acpi_buffer buffer = { sizeof(union acpi_object), object };
+> +	acpi_status status = AE_OK;
+
+Status always written so don't initialize it.
+
+> +	unsigned long long value;
+> +
+> +	/*
+> +	 * Declarations via the ASL "Processor" statement are deprecated.
+
+Be clear where they are deprecated. i.e. the ACPI spec and which version and
+under what circumstances. 
+
+Or don't say it. From Linux kernel point of view we need to support this anyway
+for a long long time, so knowing they are deprecated in the ACPI spec
+isn't really of interest.
+
+> +	 */
+> +	if (!strcmp(acpi_device_hid(device), ACPI_PROCESSOR_OBJECT_HID)) {
+> +		/* Declared with "Processor" statement; match ProcessorID */
+> +		status = acpi_evaluate_object(pr->handle, NULL, NULL, &buffer);
+> +		if (ACPI_FAILURE(status)) {
+> +			dev_err(&device->dev,
+> +				"Failed to evaluate processor object (0x%x)\n",
+> +				status);
+> +			return -ENODEV;
+> +		}
+> +
+> +		value = object->processor.proc_id;
+> +		goto out;
+
+I'd keep the if / else form of the original code. I think it's easier to follow given
+this really is choosing between 2 options.
+
+> +	}
+> +
+> +	/*
+> +	 * Declared with "Device" statement; match _UID.
+> +	 */
+> +	status = acpi_evaluate_integer(pr->handle, METHOD_NAME__UID,
+> +					NULL, &value);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_err(&device->dev,
+> +			"Failed to evaluate processor _UID (0x%x)\n",
+> +			status);
+> +		return -ENODEV;
+> +	}
+> +
+> +	*device_declaration = 1;
+> +out:
+> +	pr->acpi_id = value;
+
+Maybe better to pass in the pr->handle, and return value so
+pr->acpi_id is set at the caller rather than setting it in
+this helper function?  That will keep the pr->x setting
+all in one place.
+
+> +	return 0;
+> +}
+> +
+>  static int acpi_processor_get_info(struct acpi_device *device)
+>  {
+>  	union acpi_object object = { 0 };
+> -	struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+>  	struct acpi_processor *pr = acpi_driver_data(device);
+>  	int device_declaration = 0;
+>  	acpi_status status = AE_OK;
+>  	static int cpu0_initialized;
+>  	unsigned long long value;
+> +	int ret;
+>  
+>  	acpi_processor_errata();
+>  
+> @@ -252,32 +296,12 @@ static int acpi_processor_get_info(struct acpi_device *device)
+>  	} else
+>  		dev_dbg(&device->dev, "No bus mastering arbitration control\n");
+>  
+> -	if (!strcmp(acpi_device_hid(device), ACPI_PROCESSOR_OBJECT_HID)) {
+> -		/* Declared with "Processor" statement; match ProcessorID */
+> -		status = acpi_evaluate_object(pr->handle, NULL, NULL, &buffer);
+> -		if (ACPI_FAILURE(status)) {
+> -			dev_err(&device->dev,
+> -				"Failed to evaluate processor object (0x%x)\n",
+> -				status);
+> -			return -ENODEV;
+> -		}
+> -
+> -		pr->acpi_id = object.processor.proc_id;
+> -	} else {
+> -		/*
+> -		 * Declared with "Device" statement; match _UID.
+> -		 */
+> -		status = acpi_evaluate_integer(pr->handle, METHOD_NAME__UID,
+> -						NULL, &value);
+> -		if (ACPI_FAILURE(status)) {
+> -			dev_err(&device->dev,
+> -				"Failed to evaluate processor _UID (0x%x)\n",
+> -				status);
+> -			return -ENODEV;
+> -		}
+> -		device_declaration = 1;
+> -		pr->acpi_id = value;
+> -	}
+> +	/*
+> +	 * Evaluate processor declaration.
+Given function name (which is well named!) I don't see the comment adding anything.
+So I'd drop the comment.
+> +	 */
+> +	ret = acpi_evaluate_processor(device, pr, &object, &device_declaration);
+> +	if (ret)
+> +		return ret;
+>  
+>  	if (acpi_duplicate_processor_id(pr->acpi_id)) {
+>  		if (pr->acpi_id == 0xff)
 
 
