@@ -1,196 +1,99 @@
-Return-Path: <linux-acpi+bounces-4865-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4866-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE258A00C7
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 21:44:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF388A0130
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 22:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54391F22970
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 19:44:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B73D1C22273
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Apr 2024 20:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18418181322;
-	Wed, 10 Apr 2024 19:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D47A181B92;
+	Wed, 10 Apr 2024 20:22:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="acjdbxwv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FA828FD;
-	Wed, 10 Apr 2024 19:44:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00293172BBA;
+	Wed, 10 Apr 2024 20:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712778261; cv=none; b=E35909tQr3VDE50px4fSekRuI71TRX2GB+3TNHJmJcVnoOfuTcMdJoE6095/7DX5t5KocxMP1WrB6d9IpNaqLF/UF3CqGqphqjJZ+OLXzeko/JamXZwWBdZW8Aj3imgvIsZR5u/Ix+gKKjZCgUKPgLggLf3YFUT1aRkxAx+zNsg=
+	t=1712780571; cv=none; b=tsZYaqp+1Nih5tdLaQi3f8y18vKgCJjpASip4/shNsOnK4nIi6iKDl15ZSsbFmI6aVNRGesWnoTMUHgb+gVXrJah0rl7+9TT17X2XV3xTjA2sjvxWyOoNwZxqJKe+OjgFMl8djFXeBLbmrLzSp7JZpr0y5Op7Itv0xUO7C1HIPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712778261; c=relaxed/simple;
-	bh=bvn3HeBV5B1H5EW3+9oYTS8376zM5l0GlHFhqMk/U4U=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ua1abeVAhShbzCV8S6lIlcnVij6ineXvC69VaN2h6ttItGRekMCaTup9YA/6LiQid4SNIeFBiPedCpRta7xu14i2Jjgz5BPhp10aHDvFuzjbrGxgkQD8xtt/KRUyxtN0bH2wFazqomHd2SziInp2ITaIcZEoUOdZADu6SMXnUTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VFCnr464Qz6K9Pl;
-	Thu, 11 Apr 2024 03:39:28 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 53E9C1402C7;
-	Thu, 11 Apr 2024 03:44:16 +0800 (CST)
-Received: from localhost (10.48.150.216) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
- 2024 20:44:15 +0100
-Date: Wed, 10 Apr 2024 20:44:15 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Miguel Luis <miguel.luis@oracle.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>
-Subject: Re: [RFC PATCH 3/4] ACPI: processor: refactor
- acpi_processor_get_info: isolate acpi_{map|unmap}_cpu under
- CONFIG_ACPI_HOTPLUG_CPU
-Message-ID: <20240410204415.00005597@Huawei.com>
-In-Reply-To: <AC422669-2869-4C05-B8CD-4C94BDE24012@oracle.com>
-References: <20240409150536.9933-1-miguel.luis@oracle.com>
-	<20240409150536.9933-4-miguel.luis@oracle.com>
-	<20240410142359.00003dea@Huawei.com>
-	<AC422669-2869-4C05-B8CD-4C94BDE24012@oracle.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1712780571; c=relaxed/simple;
+	bh=fOVy9ydfSMk2C1SidmQiLPrlYSYUlhiiUAewIdJa42E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SW7omyHbLm2kXrm0cVjyuMgE54YoOmQUXI4JSO9Vvus0tPjP93W7BSob9RaRhMdm2KAbTxg2kJIpDHLJ9DVPnrdE+c+qDQGYS390qSO11JvgwmpUirQGuRQig5BSl1G4ts8gveOqX0/xC7x10VKDBwhhgJItDvN56byvkufw+zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=acjdbxwv; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712780570; x=1744316570;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=fOVy9ydfSMk2C1SidmQiLPrlYSYUlhiiUAewIdJa42E=;
+  b=acjdbxwvytgjYFy52sCuu8EYpuuveTJBrrfmTtZYcKp1VMmLbwFMobLK
+   cGfBkn+XRKEA45RBPgNE/R7HB5ApYXGfe0Hy38izibJ+pylJ2D4VL1fR3
+   BFnPqeH/AJfHuMU8EzX+df7Ab0k1WSuFBDwXBi1trLr4zL/ZDXjEvht8+
+   sSk0qSea07bAtS78xgHAbQNTu7P4tSOFcc36w3Sfg5J0qlDqWNVYyzWii
+   EMClCpmCRJ1+xv6kjpzR4uYkc2h3T3k8mmJOP1JdjAN//7NHakJBPVtxs
+   bI3wqcyryHP6aGfta3V87cyVPfGijZUU5kPYDpfeq95nKbl+K06+HSHC+
+   w==;
+X-CSE-ConnectionGUID: OSxV6P1vRXeSmMIwCTDirQ==
+X-CSE-MsgGUID: TLoREJdKR6GRXIhZY4tw9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="11960661"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
+   d="scan'208";a="11960661"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 13:22:49 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="937095428"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
+   d="scan'208";a="937095428"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 10 Apr 2024 13:22:45 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 091D92A4; Wed, 10 Apr 2024 23:22:44 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>
+Subject: [PATCH v1 0/2] gpiolib: acpi: A couple of error checks amendmends
+Date: Wed, 10 Apr 2024 23:21:45 +0300
+Message-ID: <20240410202243.1658129-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 10 Apr 2024 18:29:34 +0000
-Miguel Luis <miguel.luis@oracle.com> wrote:
+One error check is moved and one is dropped.
+No functional changes intended.
 
-> > On 10 Apr 2024, at 13:23, Jonathan Cameron <Jonathan.Cameron@Huawei.com=
-> wrote:
-> >=20
-> > On Tue,  9 Apr 2024 15:05:32 +0000
-> > Miguel Luis <miguel.luis@oracle.com> wrote:
-> >  =20
-> >> mapping and unmaping a cpu at the stage of extra cpu enumeration is
-> >> architecture specific which depends on CONFIG_ACPI_HOTPLUG_CPU so let's
-> >> isolate that functionality from architecture independent one. =20
-> >=20
-> > Should we consider renaming acpi_map_cpu() to arch_acpi_map_cpu()
-> > to make the arch specific nature of that call more obvious? =20
->=20
-> Not sure about the pattern to use here but that seems fine to me. Current=
- usage
-> is architectures export acpi_map_cpu from the acpi interface and do their
-> thing.
->=20
-> Question is what to do when there=E2=80=99s a use-case which dismisses ac=
-pi_map_cpu and
-> it gets called on the code path?
+Andy Shevchenko (2):
+  gpiolib: acpi: Remove never true check in acpi_get_gpiod_by_index()
+  gpiolib: acpi: Check for errors first in acpi_find_gpio()
 
-I'm not sure what you mean by dismisses?
+ drivers/gpio/gpiolib-acpi.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Is missing perhaps?  If that is what you mean, I think it's a mistake to al=
-low
-that code to be called from a path that isn't dependent on
-CONFIG_ACPI_HOTPLUG_CPU. It makes no sense to do so and stubbing it out to =
-give
-the impression that the calling it does make sense (when looking at the cal=
-ler)
-is misleading.
-
-Jonathan
-
-
->=20
-> 1) export it and do nothing - it would be creating unnecessary dependency.
->=20
-> 2) evaluate whether calling it is exclusive to the CPU HP path and keep i=
-t wrapped
-> into CONFIG_ACPI_HOTPLUG_CPU.
->=20
-> Option (2) is the current approach on this RFC. IIUC acpi_map_cpu is sole=
-ly
-> used for CPU HP and the same applies to acpi_unmap_cpu.
->=20
-> > I think that has caused more confusion in the discussion than
-> > whether it is hotplug specific or not. =20
->=20
-> Indeed. Within the CPU HP path there are these arch specific intricacies.
->=20
-> >=20
-> > As mentioned in patch 2, fairly sure this needs to go before that
-> > patch. =20
->=20
-> 2 and 3 depend on each to be self-contained as CPU HP wouldn=E2=80=99t wo=
-rk without late
-> CPU initialisation I think.
->=20
-> Miguel
->=20
-> >=20
-> > Jonathan
-> >  =20
-> >>=20
-> >> Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
-> >> ---
-> >> drivers/acpi/acpi_processor.c | 17 +++++++++++++++--
-> >> 1 file changed, 15 insertions(+), 2 deletions(-)
-> >>=20
-> >> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_process=
-or.c
-> >> index 9ea58b61d741..c6e2f64a056b 100644
-> >> --- a/drivers/acpi/acpi_processor.c
-> >> +++ b/drivers/acpi/acpi_processor.c
-> >> @@ -194,8 +194,21 @@ static void acpi_processor_hotplug_delay_init(str=
-uct acpi_processor *pr)
-> >> pr_info("CPU%d has been hot-added\n", pr->id);
-> >> pr->flags.need_hotplug_init =3D 1;
-> >> }
-> >> +static int acpi_processor_hotplug_map_cpu(struct acpi_processor *pr)
-> >> +{
-> >> + return acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
-> >> +}
-> >> +static void acpi_processor_hotplug_unmap_cpu(struct acpi_processor *p=
-r)
-> >> +{
-> >> + acpi_unmap_cpu(pr->id);
-> >> +}
-> >> #else
-> >> static void acpi_processor_hotplug_delay_init(struct acpi_processor *p=
-r) {}
-> >> +static int acpi_processor_hotplug_map_cpu(struct acpi_processor *pr)
-> >> +{
-> >> + return 0;
-> >> +}
-> >> +static void acpi_processor_hotplug_unmap_cpu(struct acpi_processor *p=
-r) {}
-> >> #endif /* CONFIG_ACPI_HOTPLUG_CPU */
-> >>=20
-> >> /* Enumerate extra CPUs */
-> >> @@ -215,13 +228,13 @@ static int acpi_processor_enumerate_extra(struct=
- acpi_processor *pr)
-> >> cpu_maps_update_begin();
-> >> cpus_write_lock();
-> >>=20
-> >> - ret =3D acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
-> >> + ret =3D acpi_processor_hotplug_map_cpu(pr);
-> >> if (ret)
-> >> goto out;
-> >>=20
-> >> ret =3D arch_register_cpu(pr->id);
-> >> if (ret) {
-> >> - acpi_unmap_cpu(pr->id);
-> >> + acpi_processor_hotplug_unmap_cpu(pr);
-> >> goto out;
-> >> }
-> >>  =20
-> >  =20
->=20
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
 
