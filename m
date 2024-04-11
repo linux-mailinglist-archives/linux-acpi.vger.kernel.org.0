@@ -1,43 +1,42 @@
-Return-Path: <linux-acpi+bounces-4900-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4901-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0768A2056
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 22:43:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E0A38A20D2
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 23:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 860C0284FA2
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 20:43:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C63EDB24652
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 21:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A83418B14;
-	Thu, 11 Apr 2024 20:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8DE736B08;
+	Thu, 11 Apr 2024 21:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="SCw8Sxxf"
+	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="lYMjxSdg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2107.outbound.protection.outlook.com [40.107.223.107])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2136.outbound.protection.outlook.com [40.107.236.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F7D29417;
-	Thu, 11 Apr 2024 20:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1937205E0D;
+	Thu, 11 Apr 2024 21:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.136
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712868191; cv=fail; b=O9XNr8NkUyZ8xDbdzL/usyIcgLaXuKQKykp8sobe5GfXQdrtP4Yi7RfctgVjqhamzwxh+jGWwi4+/JslvAf2Ck4LdZKgPS41LH/sCEpwnMgLUU9GRbES93d5TyOzhVpDc66Ef6bA99F5ir/4dQqu984phrESXeWMFjSKVQWkdmc=
+	t=1712870597; cv=fail; b=GMi5qFnUWFtE2bi8TynaK8trPbAbOoN+8/09paJj/eNBJAbWp2F8BmXaoDORUpdp1HSuIjZBj7QBrzNVhPTVllK8iiHPSJeKvCpSwZMqrO0pfZHqaL3kOjiXzkMl40aTF+Xn/FD5fUJvbLUkDLcUpKk2BFw7i/snH0D5XxKs4OU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712868191; c=relaxed/simple;
-	bh=bq9HpBRDKgCeVjsE8DolkUDAGqHxF2vkw9Jh9Ssgr3Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=uYx6iTKYJIkvukTpgIwjU/DmiftcBZVYKy5XUO1eQHLRXNz2E5cayaHr3WAvFIGP4HqXcJRpp3BVQDNViz25ipHgo+8roUUQHw0LEqVHA8LvEm91H2oVHXInWf654lrvrtWqlhf6o1tT9SY0pm8xlXdlMJU9Bmr9eHYBkzizCSk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=SCw8Sxxf; arc=fail smtp.client-ip=40.107.223.107
+	s=arc-20240116; t=1712870597; c=relaxed/simple;
+	bh=e65CuOU5MD7ODC5XbPiiT/TV5KT4/44yIhAxuQVo7iE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NUI3L8kCQGyoZTsseNj+s3za44MpcAOdGri52TBIFFAV8MqNkNWtPlJqbuGU7EIL5UyBf+iAaApY4OCQS0ZR10e1mrIdWp1Wb3MVCM8XhZ2VSvP+BDs91r3weCr2kbLcnQPSZW9XDpI2mbJDmhabLmZeR4zQJz1kMayJxfyYtrY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=lYMjxSdg; arc=fail smtp.client-ip=40.107.236.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O++laC58LqlWz8dDYT0uZZVmpnckGIzvfhmeXLTyGiOvu4NwpcnoC4YB+TCOU1AknCHtvYjL8b8/nPNWINjuBeB+lxm2dB1Ea9dM5+QMigvMBzIw6ej/KhDxVDeuxLbegP60s6U6/0Dd+RcVFL4PCbnzUdQFUVx96SuR/eQa1JrIOazQn8poj3kjUGPttYcKk3Go0TF1xqMEx+std06ph1ymD0N7jXvqtVUSseb9/JmAdoPScXJ83ybtgl/wn2yqk3DRdODOL1egJTjgm633En0ee1Irdz5AXJ3mEQ68hrOSxBG8rP5u++S8gnlsClmQjxgOj/cg8R5mQ1u5aw/7tg==
+ b=n5GhND3FhT2YcMSUToOlQEv8nXb3UUa9v04wJIUNQ6n813ctgRpfW9Dh6qXCP/HB2TDDstt2o9rQw4MbOOF3O/JjcFBu3jpH133Gx8S5d9wrhDoSgYHd7b0Ljm6vUmXAA8DoFkONLfGmadE2ej57BSMD+EfsSWPLx1o8Ntt/EZ5PzHMKsPg1zyeAM7shQ8QHQNQh8cwokzhufhMlM+QYVhPZVdR9CVEU+vwb1U5RPHe1saOE6V/4Tt6qeJdd3H2wStuDbpg0x3ca5t2lHn+FoIMqXcmYfd0Bq9bMH5lM6dPobdX7h0ZiE/Geb0hgdYd3yfsNrg6vvVHK3LeEfM46EQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uu/U8mgHOB1X5ysL7bno5l1IGovpIqwJprPPgbrXaX8=;
- b=RqOki41+FuwjQtcK7XVs7/GEWvEn8EwVU5EGo/9IqwhuPLoleeL+LAgvP6a627ztwMShZmMJ1UkO5Qg+ZLkIh7OA0rN+ciwKeYP7ZEE5/7qOsO3zGO7btudsh+64FqjBc/Oz01AQ1ZlQiI1Komx5mBAq3UcgzZmOdyCGr/q3LkbhhTGef3BWG9t+yRXaRAvThzw8oOhb+dBIqnXdZzWRcjUwI89uZQk+/+eagqJ0ZLaiAfpHEnrePQr/dQVWhWzprgoUzWvKdjACoXSGXkYE/5sje5sMxS3nzanNKaRCeq6s+XJufPxxssJ2bVq0wLj6yVAiJCHodP0S6w2CxmlrXg==
+ bh=28qqhRrAWogChWLn65zalKJml1ysEKJPLnucucHWJjs=;
+ b=hHY0H5jnZ8gDl9oHlTAwu4k5x1+9O4FRnsBXWe7FiOzjKDBhVqSL6GNg+Mbe5ekCf31k9JrXArW1YIuwIB3UWbEMtv0OlKRxy0FTOy5HSf1wSfSdTiKOXFz5rDNCrPpED7V9fQl+S91kd0rHlGbM+35Ud9tM6drPRlZOC/fn6i5ILyourYUnU0Y8D263AmRNasm6uzImXJiibkhFVoRfXVRZ4TMeEBhGs6eZpEgAm+Alys36Q4TD9fZg7QoDvQkoedtNYmxjiWzAJBjqr8kFuJUEqATr/91ZEqpTu+LHxRyJr9hIskpguGfc5KTVZjyhvv4nGYnxh7EVKLcZUBr/hg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
  header.from=os.amperecomputing.com; dkim=pass
@@ -45,37 +44,35 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=os.amperecomputing.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uu/U8mgHOB1X5ysL7bno5l1IGovpIqwJprPPgbrXaX8=;
- b=SCw8Sxxf+Tz4Tu3EmzCMuL0mvIfuWBK2oe/n7G5MkMZV1Hq0jrIiWQVX4hS0QVbkf12WiCjbkOBrfKzq2X4rYFFyeDnlbL1DPFS0gAC9szUosualNo4hoH67u6bMZNfW3PH3I3qJjaL3/kG7ACEJajqsg2p5TRkXfHSrcJj2jBg=
+ bh=28qqhRrAWogChWLn65zalKJml1ysEKJPLnucucHWJjs=;
+ b=lYMjxSdgG9lSDNjkiY3YuttPUW6Ph/l53MH8kSEYcXAfBuZg/GavBhl9mSRpay8HiRUrnuxvCE1WjA1mDciRYm0oYZLdTELQqQeeLQEiAF0S+e26jiqlPscYu8EhTMjKJiNvs/mmdNjJ6X/4K2wawHR8K7jxM6Ft5kH5H1PzctU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from CO1PR01MB7370.prod.exchangelabs.com (2603:10b6:303:159::16) by
- SJ0PR01MB7447.prod.exchangelabs.com (2603:10b6:a03:3dc::8) with Microsoft
+Received: from MW4PR01MB6498.prod.exchangelabs.com (2603:10b6:303:79::19) by
+ SJ0PR01MB7430.prod.exchangelabs.com (2603:10b6:a03:3d7::14) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7409.54; Thu, 11 Apr 2024 20:43:04 +0000
-Received: from CO1PR01MB7370.prod.exchangelabs.com
- ([fe80::6e98:87d1:5562:ad73]) by CO1PR01MB7370.prod.exchangelabs.com
- ([fe80::6e98:87d1:5562:ad73%5]) with mapi id 15.20.7409.053; Thu, 11 Apr 2024
- 20:43:04 +0000
-Message-ID: <4296a669-ee88-4f6c-aaa2-4416cad5c323@os.amperecomputing.com>
-Date: Thu, 11 Apr 2024 13:43:00 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/2] Adds additional information to ARM RAS errors
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
- Borislav Petkov <bp@alien8.de>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-edac@vger.kernel.org, Shengwei Luo <luoshengwei@huawei.com>,
- Jason Tian <jason@os.amperecomputing.com>
-References: <20240321-b4-arm-ras-error-vendor-info-v5-rc3-v5-0-850f9bfb97a8@os.amperecomputing.com>
-Content-Language: en-US
-From: Daniel Ferguson <danielf@os.amperecomputing.com>
-In-Reply-To: <20240321-b4-arm-ras-error-vendor-info-v5-rc3-v5-0-850f9bfb97a8@os.amperecomputing.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH2PR12CA0019.namprd12.prod.outlook.com
- (2603:10b6:610:57::29) To CO1PR01MB7370.prod.exchangelabs.com
- (2603:10b6:303:159::16)
+ 15.20.7409.46; Thu, 11 Apr 2024 21:23:12 +0000
+Received: from MW4PR01MB6498.prod.exchangelabs.com
+ ([fe80::4fc3:132:87ac:c13b]) by MW4PR01MB6498.prod.exchangelabs.com
+ ([fe80::4fc3:132:87ac:c13b%5]) with mapi id 15.20.7409.048; Thu, 11 Apr 2024
+ 21:23:12 +0000
+From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+To: Jarred White <jarredwhite@linux.microsoft.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	"5 . 15+" <stable@vger.kernel.org>
+Subject: [PATCH v2] ACPI: CPPC: Fix access width used for PCC registers
+Date: Thu, 11 Apr 2024 14:23:06 -0700
+Message-ID: <20240411212306.1359466-1-vanshikonda@os.amperecomputing.com>
+X-Mailer: git-send-email 2.43.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0P221CA0017.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:610:11c::26) To MW4PR01MB6498.prod.exchangelabs.com
+ (2603:10b6:303:79::19)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,93 +80,214 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR01MB7370:EE_|SJ0PR01MB7447:EE_
-X-MS-Office365-Filtering-Correlation-Id: 74dc7824-b9a1-41eb-7dbe-08dc5a67fc6d
+X-MS-TrafficTypeDiagnostic: MW4PR01MB6498:EE_|SJ0PR01MB7430:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21b19214-a9de-4dfd-5fed-08dc5a6d97a9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	U285OdvLfZPSvrMcJQrExSxgBB+YzIzs48/dw61ok+AmrYe3Tdf4hybnj39Djyk5+LFNB9C10KPM91DbYwaezuSzkTr3Fkm9PXhwodCKq8iwaTMXNl/fI+WJxgXNaw8PdFt6AqRvJ4mmdw180GWK4mmVqLwmKNl5bgMA0FmBNTTtfil5cWfgNelbNy1wQe/zEAh8lMWaXIOD+VRNrEjbGw3XZsOSV2zrFVte65LH5dB+QdJSrjDqRS8XAZUvC1IEi764V47PwouAhuJfJKYkCtbGt1/5HY+NUEYzmb6/8I3FxP0QaVkNFOxIFj2ckCxKWb2zGWsMqo/mBqtKEJjQVHaUfvtG/8C/6t2uY7I6pOE+KkSpdqMjO5Nc7RzaoTl5+tlY/BOqO+JPOL+YwOgVfCEx7SghM1lTCVsi+i0hAPmzeYHbTnD3YpILu+WViVC4OfqJsdk+pD3WAJMkZ0YEL8cexTA/TmbA95BRJ4KhcVjXbL6CPCMUjskVsUJDtsJUiZxmY4+49KNcrGRDZnZOaHZM+pyqSuHC3x32cxdaj3hA7aAu+9mcwxYMQjC1J0v0BYSCE83BPLRXzUr8EgYSILq3/2huoTUoJi64I2by9yi1j1d9xJC09TGzlxuYsji41zg9W+B5kEIOXdRe3v6ctZRjbtWz+YeVhLBu6Jbm/zkko1jBDB93I8rmqIYm+9pJvKmcqW5XecvPh1xiOrEVc+mwAuXps/XQyeoOVB76JLo=
+	88zF4GyGKmefRG0MsTjPN/gZrF5Nm6T10dCS8HJjiUX7Lqe3MnixCv3YR6Zn7C4VaRQgVoohXdNv++yG0N+Jn2byXV4RwJ04VllRNgrJyUoVRKpUVBV4wVfyaZnduQst6CyKoHnRDdC1AGq13J4WUC2969ZH+MyZU7hU5YFErdJQCPndtkX+ICtwC4QePZ6jX6AUsa/pFVNcX30hy08iSiiZrIUtzeCtoGk3RhWhI8uSs5h2NtaWu861+2QZDuEfWeat4j41AQqOzpqOZFL81Vp1FvX/ET1FAe8Y4sU8flqxUj5rLiqxgD9k6ekcMITSmbUANWzEAbK/SAmLnwfNRFulkY3bMJUovD7JaYrCM8Q+D56hiBl9Oanf6Nk8acTu+zbjRgKMKaN3DW6sCQKieBTizlq2/4tu1GkVUO/jIZmv2eJY9rh4T8TBL/l4ywR71ygpUXDXl447eVwmbrClnl9jMpxmbuNRkOTou+PnwNZChBDGHmTd2fPSrLVcIOq+FlaFTtVOSw3eOvgEzHphgvUYL0VZ8rJ0+825KCik/GfCoUuqYDno4Ah6e93QR9tEiAbl0PpvHxqK9OuA7IsJp61qM3CRsKnZNKhXm9IDnuPxS7g43wVeLNxYOyf8kHwjWH90w6ebjmjEh1l85Z1598wyFkz9yZZ09cXOaMsr4fw=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR01MB7370.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(52116005)(38350700005);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR01MB6498.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UkFrZ2s0OWJaTjIvR0xWdU9OUHhuV3hsclFOTk1SMzc3K2pWUXFDRGxBZW9N?=
- =?utf-8?B?bVdlUWZYOVlXSnB2RndRbDJHcU5ydmViM2RZUmRLR1VnSFJzVlFKYmpwSEhq?=
- =?utf-8?B?MmZiK0twVVp5T3VCTVpFMklMYWx6ZWw3aGRCc0pheFhvcnBzSWxqUWZhTUZl?=
- =?utf-8?B?K1BOaTYxRDlxWnZtdldvMTFHNmhwbXJJS05US2ZuZEtPNGMwT0xYbVdiVEgz?=
- =?utf-8?B?eUJCc3BEeDI4UG5zSHlrSkE5R3pHTEdlZWw0bE5PWUZ3WlZEeEkzK0o4MlZU?=
- =?utf-8?B?UGJCSHJNRDFFdTlaWnJ2eXJvbExIRGhiNEsxOUxWbUkreHJNWHdPRXB6Ujlv?=
- =?utf-8?B?RmVLVm9aUnc1VWFpaE9pUVlyUWZtMENyOEQwV3RhTTY0dFhTSGZaVVZTQ3ZD?=
- =?utf-8?B?dkdnVGJKVXZITWFiVmtwS2wyTHo5RXpkaGV0U0p6RG9OZDV6WWZveFZuUVBw?=
- =?utf-8?B?elZhd01NazQyNm96NWxYdWRLTXJJZ0NvdnVYeFFCWDNINDJlM2J2c2VWRk4y?=
- =?utf-8?B?RHVjZTljZlgxSmlXZVBaVm1PTkdnNkkzaDMyOEkvU0M4d0g3ZUtOc28xUjdM?=
- =?utf-8?B?UFFuWXc3T1dTaTFxNm4rTGUzejhmWFRCVEtCZkg1NklBeTdkKzJLcHZ1MW1F?=
- =?utf-8?B?MGt5TXVEUzVxaHo3azVTSzdLV25Dd2djTlJKUG1HZXl6SHBLL3oxU3N1N25I?=
- =?utf-8?B?VkxPc09wOXVqdVpsYzJ2STg0S0FvQkE4NUQ3eTIwRytBN2p0Unl4Z04rZzJu?=
- =?utf-8?B?bzRkZDNlNFVKNzBxa2VtMHFIWFE0OThpTXZvanNPVWRJeHdGVlk2UGFNZmsx?=
- =?utf-8?B?K0hpeTJtYkYyUXBvdzVRaHdUc3R3aHlPTit1UmVkc1h3YklSS21hNzEwV200?=
- =?utf-8?B?WStoWDMyVTB1RnlVYkpFUCtiNjZaM25tTTl1UlMzeHkwS2VMdDJiSS9HdUxT?=
- =?utf-8?B?RlAvVXZoM1gxYmJjZkdZUTNnQXoxUERtMER5U3RvQjIrV0NoVWpTNEZqVk5s?=
- =?utf-8?B?WUN2Yzl1Yjl2MHFCcE5xbFNzM0dMelBJNEd3K1RaWXI5cW5xeXF0KzhxNlNO?=
- =?utf-8?B?UlR2WUloUkwrUnJxU0czTStOaU1Rb21GMFpPY3gxb05yU08zNTloUDZ2MDkx?=
- =?utf-8?B?c3ZwSFp1Wkp0MlYvYk0zM3ErMURXZUdjaFdCdjBkOFh1S3BBY3pTNElOdTBi?=
- =?utf-8?B?d1FUTkNmSXA3WnV5dTI3QlhKTmMva1pJLytwNDBBZG9Bd0xCVXZGSi9Bd2w4?=
- =?utf-8?B?elVBNkFJNnFqcEQ1akdFdU1IS0xtYis3UTBTblZ3NkJpUmwyN2o0U1NjTkdw?=
- =?utf-8?B?em50SGRCcGtKR21abHRiRXdGK1crbzNuckdveE9tZnNrV01sWk1yUWFMaDgz?=
- =?utf-8?B?ZnBRSGM4djUzV2lNVllWVEdEKzFIRHU1Y1NhNkFycmRZRW5udmxGaVBkVC9V?=
- =?utf-8?B?dXRhM0RjcGp5OUJ0UEJSYm1YWXVrL2oxZk5nS0VCakhXMXRGOGo0OVJ4SlYw?=
- =?utf-8?B?WWRLa1p1ZHBDb2haSkRFdzU1QVhMSHVCNEg3aEhvRCtqeHZYVGtUQmlid0VD?=
- =?utf-8?B?NjJQMEswYmd6enlpOWIxV0JDcjdBdVFXbm9oQjhmeGluNFR4QjA0Zlo0aXNq?=
- =?utf-8?B?QnVKcTIxS3lYQk9oTlZTREpoWEJTenozMGlWRTQybDF3eWJwUEJQY2w4aklB?=
- =?utf-8?B?NGtsejFvbmF0QjRWYVZvaXp1cVlHRmR5dHBVZFlkWk5ZUEwrSW9sUnhPWER2?=
- =?utf-8?B?VHgzVmlVVWxwTWNVUzYvd1Rocm0xYVVlakp5emZ6cTduSGVFKzNUY01SRitO?=
- =?utf-8?B?WGlSaGUzaVdaYW40NWdqUTlvb1d0cHEyWXQ4MHRlU29JTTNrVVBRRVd2WkRC?=
- =?utf-8?B?bml3K2ZhL3NucVlGVlNGZFZjSXV2Q3hYVEFZWm1aejhaODlwNnhUbDU3WjRY?=
- =?utf-8?B?bEN6UFB2azZLdWRXc0xWcjF6M3VNZmNtQ3F1Nmp4ZytxN3FUbjRSTTl1aGhC?=
- =?utf-8?B?SnZ0KzdldWI4bHpvZGJhS3VGREMrR3FRYVFNMFVHbXQ4bFBDNncvdVYzM2kx?=
- =?utf-8?B?MUdmRFNkZEFRR25EN0ZsZXRWcUVDdS92ZmN3OUF5dnNNenJ5MENHTHhzT2ht?=
- =?utf-8?B?OGdydG5HZEdaM3laS3dWVTRreHRmNFNjSys2VWxyRmN4K2t6OFBDRllZUWJ3?=
- =?utf-8?Q?eZ60gtLe0EEP73bBsMt4mMM=3D?=
+	=?us-ascii?Q?AvpjEpldXwH5nYdPQa5r+TWHOOTp80VgNv59cEw+3tivURKwJ/nCO/S7xB0h?=
+ =?us-ascii?Q?WGIfB/wRpiq+oqthkcPHvQoA1amWMeceSlHuYpKriXLPiOdAkURidI61OBAD?=
+ =?us-ascii?Q?Oo2Ox8a37IMQqQgg4UqqUe8sSNRbCzLMhCHgT9CwRbCVGdNk/Ld917X3/WPP?=
+ =?us-ascii?Q?gAaA9JqCOfvJ3FwPmDbu4p6JqaxgMqnerH4SZ0373Bn7HqGDQi3eDT8Xj66W?=
+ =?us-ascii?Q?fkZ4nF6QkVAvUe109duSAc01zG4Pb/rqhC9bBW18c50/feweG1mJihQdwnFu?=
+ =?us-ascii?Q?Da9a53sZJJfmUrp5zothj8sEnuJUMHlOBfgO5hjkPxm57m3D1k2oSn9/pvWp?=
+ =?us-ascii?Q?E88nk5d3m906ppWvnwD72pRDzU31CD57NLq6POVLqzc1Z9VlrQzLjnmDaFS2?=
+ =?us-ascii?Q?eGvJgDF88InzAydROACQGH9AX5wvwnfBC1NPpta0eTv1h14V3d6ej0bQY0Dc?=
+ =?us-ascii?Q?kn3IeUOskEzdkoG+UjXIlGugtcXYU3MfXM6JPakUjb/WLvlc/S0O49Ho7/zJ?=
+ =?us-ascii?Q?2bR5aRc2F+kfZ9xlzvvRHV6coYCPSOQgKgkgS3kBYUUX3P8KF3IOaAa6Vckm?=
+ =?us-ascii?Q?/kttSNlqBLpTCp0MLIIq3hrDah8yFS9xtMph9ikcxV0OyuAeUrS5UA4Tn423?=
+ =?us-ascii?Q?hKTsMgzBpQnzQvjyHB2kE0yLUnPoc+t2qGBzBl9Iji4IHeMtIx9/yFoghlCG?=
+ =?us-ascii?Q?nwX5mbNdRNAMBem17QEhMlneBqdsLRfC8w7F1CB13RwGgiiryvas7Nry26tF?=
+ =?us-ascii?Q?3kM415JnsTZMcvrSsrBq6ffwmftpbl3XKz6m0QftLU16cLtnO9p/7+b+qtdm?=
+ =?us-ascii?Q?1K4VVCS9YGAKpBc4zU+3kabiaEfH0FW187mD7OTY43nAGu1qkoel7NcU2S9L?=
+ =?us-ascii?Q?l/AZbchWxQ1sl8y57tww7XkHS0kRyNvNKLTeWM5tjzNHuvt1Jc11AHy7Du4X?=
+ =?us-ascii?Q?S1hS0D3FwYduDiprsuG3L92Uo/j6gy8ikCOux5gaXkevuvxHHIM8Jd7NQ/n6?=
+ =?us-ascii?Q?KTlvjO71gSjctEQ2X05BI2mSjZE7suxKpSpOSAiN+KbA5MwU976IIlmuYSy6?=
+ =?us-ascii?Q?FQug8+IoGjN1rKUu5cuFtZaPhEnxJhIUWKPUrLT47Tp/XEtqBvpJatkEqlB2?=
+ =?us-ascii?Q?qOJsfAzNpJLVmBdwxn7LitwWhp55QnB+7uo4EmPSpl0fb+CaJNbceO59V0lB?=
+ =?us-ascii?Q?ElvtZ1dhsS6Okxb+TitZ2rEZJNgVz2D6OABeWtKQgEGpG3VsH9nWwTSPTAGo?=
+ =?us-ascii?Q?h1TqK8UhbVOl4PaWLUAHkSc+kFcnsp0RHqMtQ5s0zBT0DonPLPBD0oqFmqXi?=
+ =?us-ascii?Q?iXQKc7MYfUwnM8B33hXtlztTShniQRInJi4ZSI1iLnzM2aW+1m5U00Zj4YN0?=
+ =?us-ascii?Q?k7vIGBKlmDIHK3ebaGsi72kF37cVXVeCcOslKuaguLlWNMLw4+uvIk3Bi5d2?=
+ =?us-ascii?Q?b0vxQf2A6e2RH6bZff3tFQD6vuhCrTDWmW3lVdJDi+FqB7uhtji784GqJSjS?=
+ =?us-ascii?Q?porud/k96gCpOuGh8TchWiDFr0IA6QPG3xmzafSoBwe/JJXLgXWZukdfwdmF?=
+ =?us-ascii?Q?6YRUiRF3a75svKYk1nirSCoBOsnaStG+hQroCUfTZ4P0sgr5l0oh3Ophz/KN?=
+ =?us-ascii?Q?hX+DnM9/ynnWwflYl0BfXZ4=3D?=
 X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 74dc7824-b9a1-41eb-7dbe-08dc5a67fc6d
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR01MB7370.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21b19214-a9de-4dfd-5fed-08dc5a6d97a9
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR01MB6498.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 20:43:04.5425
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 21:23:12.3698
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HSCzO5PX+M0tNQL4OedLqFp9WWVMeRWldzhuGPW6aQCx+O5JCuU7oysqPjyxen7pdt4n3pvrmDjx+pBv6F71mYwFhYoAOr0VJkpLjS0iwIK4tBrW+hVmw5PGqRvWBQFC
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR01MB7447
+X-MS-Exchange-CrossTenant-UserPrincipalName: nIYEAxbbNq0frZyG7SbUYqWeS2PTm+2Gk+NUqe6ukwfcgNGxZmOaojUmF/NXlMwrpwshuLT22r8/uf6hUXsdB1Ww/hnvl6kYRsUeXrun/w5x8WRRXFLAhHGieLbQIg6g
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR01MB7430
 
+commit 2f4a4d63a193be6fd530d180bb13c3592052904c modified
+cpc_read/cpc_write to use access_width to read CPC registers. For PCC
+registers the access width field in the ACPI register macro specifies
+the PCC subspace id. For non-zero PCC subspace id the access width is
+incorrectly treated as access width. This causes errors when reading
+from PCC registers in the CPPC driver.
 
-On 3/21/2024 3:55 PM, Daniel Ferguson wrote:
-> The patch by Shengwei includes most of the justification for this series
-> in the commit message. The only thing i've done is add a few conditional compilation
-> directives based on feedback from a previous submission attempt. This series adds:
-> 
-> 	1) Conditional compilation directives around ARM specific RAS error
->          handling routines, so non-ARM platforms are not unnecessarily bloated.
->       2) ARM Processor error section (As defined by UEFI 2.9 N2.4) to tracepoints for userspace
->          consumption. This particular patch is a RESEND.
-> 
-> Originally:
-> 	I did a RESEND of Shengwei's V3. I didn't make
->       changes, and I didn't rev.
-> 	The original patch: https://lore.kernel.org/lkml/20220214030813.135766-1-lostway@zju.edu.cn/
-> Changes since v3:
->       Added conditional compilation directives
-> 	previous submission(RESEND): https://lore.kernel.org/lkml/20231214232330.306526-1-danielf@os.amperecomputing.com/
-> Changes since v4:
->       Rebased on latest linux master.
-> 	No functional changes.
-> 	previous submission: https://lore.kernel.org/linux-kernel/20240226-b4-arm-ras-error-vendor-info-v4-rc3-v4-0-08e0f168fec1@os.amperecomputing.com/
-> 
+For PCC registers base the size of read/write on the bit width field.
+The debug message in cpc_read/cpc_write is updated to print relevant
+information for the address space type used to read the register.
 
-Hi Tony,
-Thank you for your original comments several months ago for my v3
-resend. I'm hoping I can get you to take another peek at this.
+Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
+Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
+Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
+---
 
-Daniel
+When testing v6.9-rc1 kernel on AmpereOne system dmesg showed that
+cpufreq policy had failed to initialize on some cores during boot because
+cpufreq->get() always returned 0. On this system CPPC registers are in PCC
+subspace index 2 that are 32 bits wide. With this patch the CPPC driver
+interpreted the access width field as 16 bits, causing the register read
+to roll over too quickly to provide valid values during frequency
+computation.
+
+v2:
+- Use size variable in debug print message
+- Use size instead of reg->bit_width for acpi_os_read_memory and
+  acpi_os_write_memory
+
+ drivers/acpi/cppc_acpi.c | 53 ++++++++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 4bfbe55553f4..a037e9d15f48 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 	}
+ 
+ 	*val = 0;
++	size = GET_BIT_WIDTH(reg);
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = GET_BIT_WIDTH(reg);
+ 		u32 val_u32;
+ 		acpi_status status;
+ 
+ 		status = acpi_os_read_port((acpi_io_address)reg->address,
+-					   &val_u32, width);
++					   &val_u32, size);
+ 		if (ACPI_FAILURE(status)) {
+ 			pr_debug("Error: Failed to read SystemIO port %llx\n",
+ 				 reg->address);
+@@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 
+ 		*val = val_u32;
+ 		return 0;
+-	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_read_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_read_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
+ 
+ 	switch (size) {
+ 	case 8:
+@@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 		*val = readq_relaxed(vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot read %u width from for system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot read %u bit width to PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		return -EFAULT;
+ 	}
+ 
+@@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+ 
++	size = GET_BIT_WIDTH(reg);
++
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+-		u32 width = GET_BIT_WIDTH(reg);
+ 		acpi_status status;
+ 
+ 		status = acpi_os_write_port((acpi_io_address)reg->address,
+-					    (u32)val, width);
++					    (u32)val, size);
+ 		if (ACPI_FAILURE(status)) {
+ 			pr_debug("Error: Failed to write SystemIO port %llx\n",
+ 				 reg->address);
+@@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		}
+ 
+ 		return 0;
+-	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
++	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
++		/*
++		 * For registers in PCC space, the register size is determined
++		 * by the bit width field; the access size is used to indicate
++		 * the PCC subspace id.
++		 */
++		size = reg->bit_width;
+ 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
++	}
+ 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		vaddr = reg_res->sys_mem_vaddr;
+ 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+ 		return cpc_write_ffh(cpu, reg, val);
+ 	else
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+-				val, reg->bit_width);
+-
+-	size = GET_BIT_WIDTH(reg);
++				val, size);
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		val = MASK_VAL(reg, val);
+@@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		writeq_relaxed(val, vaddr);
+ 		break;
+ 	default:
+-		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+-			 reg->bit_width, pcc_ss_id);
++		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++			pr_debug("Error: Cannot write %u width from for system memory: 0x%llx\n",
++				size, reg->address);
++		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
++			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
++				size, pcc_ss_id);
++		}
+ 		ret_val = -EFAULT;
+ 		break;
+ 	}
+-- 
+2.43.1
+
 
