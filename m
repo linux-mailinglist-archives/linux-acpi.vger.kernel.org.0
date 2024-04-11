@@ -1,114 +1,79 @@
-Return-Path: <linux-acpi+bounces-4897-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4898-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B618A1E5C
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 20:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A668D8A1F29
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 21:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB4A21F24668
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 18:33:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C52A1F2660B
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 19:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B5850293;
-	Thu, 11 Apr 2024 18:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA1B14F65;
+	Thu, 11 Apr 2024 19:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1sjHJRc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zq+BUUua"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29C44AEF6;
-	Thu, 11 Apr 2024 18:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3996817BD4;
+	Thu, 11 Apr 2024 19:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712858819; cv=none; b=JDc/hnJ1KQL31+E8pTk5jvqJM3vnsC9usL9meeQfT0j3QfJrFLNht9GzLvmb5t03nyNYoHex6rUV+GavHrB70C8Q7s8F1/oWNljPJp6zY+uz2lter6m5uTRpS/EdbOkhejjKA85OEn0KCqzEAKMS2CTep+iulHXi7BaKvq7k/XU=
+	t=1712862561; cv=none; b=ZgbaEJQDnobN7q7VBfvW7qKf0dyCqfJN/vtzAkhJO6AKyp8ig5TBUaXcca8K1p0MlQBKMKWtT01xMrteJRelZRR10zVmt08XE1HJLx8eg4/NL9vqEgOYd+32b3nUdMnQ414tfGizuR7WZvK/YbApeZKX1x/VMfuMrFdRS6c9Y9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712858819; c=relaxed/simple;
-	bh=OBtJj7ZcYW9SVRHkZ8Ppp3O8vjrSvDbG3fOF0xOk690=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=FYlGTXHxRfXJxoUsM1q0Yq4IdJS5+89CevT9S05/lw6KYyZbin5E9ackExcviYeWWymC9MNhevjoywnoxn1tIGw7NEeNv74eUx2//X+EYSZIuvcxz+Cnj4IeRfjnTYo3H9h0lRe/G13cIc9M1rGaaS9jjKdmUqIuYGi/n6FqwgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1sjHJRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515C8C113CD;
-	Thu, 11 Apr 2024 18:06:59 +0000 (UTC)
+	s=arc-20240116; t=1712862561; c=relaxed/simple;
+	bh=BHC7zYRMjwFCO+jH+MlVDp/eBcPB1tCFsigfLJvxQ4s=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=G7W5i6y+/3nYKpbHtD/9qNTC1js+WpA3WIMQ8SQ2LthpWTlM2eRrqf1iHGrYYtp3H2BrOGHJhwCpMxXa6KoTP/r6YPUea3TcOYpAa9cyfK3VC/BETaAFhapGUnybPsnvuuEc1Ypy7lE2xndqSG3dCdD0/X4cxHuNghQTgdCgPp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zq+BUUua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1BEEFC4AF09;
+	Thu, 11 Apr 2024 19:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712858819;
-	bh=OBtJj7ZcYW9SVRHkZ8Ppp3O8vjrSvDbG3fOF0xOk690=;
-	h=From:Date:Subject:To:Cc:From;
-	b=E1sjHJRcmAr7dYRq/xOaSMm0QKZqtA5gpGFb5Dlg0lAC2ipYJ+6jUcwyHqNU0HRsP
-	 F4LfxCL6/aoW35PK3tIBZxR65G8JnRs0K4xXI/4+PoMazruYwcB7iw+VbafR8F7+rf
-	 4G6RgWizq52t2MU3J3SLsk9fblAV0t5m/xAj47T1yIIyuy6LNdBNm9X2EweG88gaCR
-	 46N2E0GTVk56Q8dY1MbCyHHeEAjlHtmI9OfeQod+AK9OiCuh8Y37R+Y7vQ1CPEMmY7
-	 SyJQ3p6F1owph8MOQYqGdw27AiSBw+cs3Dd/uOOakNUsWZWyUU5pWVR6gZ24nyHx5N
-	 SNdr2jRGgZkzA==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-22ed9094168so37279fac.1;
-        Thu, 11 Apr 2024 11:06:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCURjbqHpNNh1w5l94RtqAQAba0eDgi5dyZ2zOCxXlMwTednWWSPMVqcossqPnHIca9GYRkafvGPkfGzaJcH4LvFDpM5hTbPcX7VadmZ
-X-Gm-Message-State: AOJu0YwAnonuLY3UKWaJNPYoEvdu748FUoPUd6/2yCkSYcupZxaU5xJl
-	PPMo+zWcSQE/sjXM7SMIS+zgb20/HbcSVSFHyrE1PGEvtnk6y03IBXbtah4NWOcytwCs+H+K2q0
-	d8HuF9lUJBtavPb6VWCP/jIsZugg=
-X-Google-Smtp-Source: AGHT+IHH6DIatP4LCBLRv1/7UkplGXpudSu3Xpr5O0NHr8dyFntl9eTZZGSg65NpawsRSDpm77MDno8ofi02EE5ZJMY=
-X-Received: by 2002:a05:6871:612:b0:229:ee6d:77da with SMTP id
- w18-20020a056871061200b00229ee6d77damr293559oan.2.1712858818614; Thu, 11 Apr
- 2024 11:06:58 -0700 (PDT)
+	s=k20201202; t=1712862561;
+	bh=BHC7zYRMjwFCO+jH+MlVDp/eBcPB1tCFsigfLJvxQ4s=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Zq+BUUuaWn+BpRg0SlMdH+1iJPCysJjfqEpCZigohRszcqdAMgkGI4frh33hdnFQF
+	 mFitNWPdqc0VylwQAg5Zl/ZR0aUkYczPHOv9CdKN2UogJ0qwt5Gr+CMAnvymrJ3euQ
+	 BMcTpVUMFHON0h6GUJX7Ti0vKne+UDEf2LDUtBlyyD4uqK5APvsHMGsq4spbMDkUGg
+	 cU1XCNMUKkkgRxiDgox/91sCldn8XYzvF7/cOtaIfaH8FkhSZMM/UnchHNV3PIjVl9
+	 SyWFhFTQBCDEevRx3/ntc25fD8HNFOFQilNX//ht7iBlbkrhay2ygsW5HdfVb5E+es
+	 RzlOU4dZge6mg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 087E2C433E9;
+	Thu, 11 Apr 2024 19:09:21 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fixes for v6.9-rc4
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0jH8rKc3=rNzDdWOobGb4xCCjK46eYoE3U729yRwpgCFQ@mail.gmail.com>
+References: <CAJZ5v0jH8rKc3=rNzDdWOobGb4xCCjK46eYoE3U729yRwpgCFQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0jH8rKc3=rNzDdWOobGb4xCCjK46eYoE3U729yRwpgCFQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.9-rc4
+X-PR-Tracked-Commit-Id: d7da7e7cec9868b24f0e39298156caf0277e82c7
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 00dcf5d862e86e57f5ce46344039f11bb1ad61f6
+Message-Id: <171286256103.2172.6895591074258411583.pr-tracker-bot@kernel.org>
+Date: Thu, 11 Apr 2024 19:09:21 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 11 Apr 2024 20:06:47 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jH8rKc3=rNzDdWOobGb4xCCjK46eYoE3U729yRwpgCFQ@mail.gmail.com>
-Message-ID: <CAJZ5v0jH8rKc3=rNzDdWOobGb4xCCjK46eYoE3U729yRwpgCFQ@mail.gmail.com>
-Subject: [GIT PULL] ACPI fixes for v6.9-rc4
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Hi Linus,
+The pull request you sent on Thu, 11 Apr 2024 20:06:47 +0200:
 
-Please pull from the tag
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.9-rc4
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.9-rc4
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/00dcf5d862e86e57f5ce46344039f11bb1ad61f6
 
-with top-most commit d7da7e7cec9868b24f0e39298156caf0277e82c7
+Thank you!
 
- Merge branch 'acpi-bus'
-
-on top of commit fec50db7033ea478773b159e0e2efb135270e3b7
-
- Linux 6.9-rc3
-
-to receive ACPI fixes for 6.9-rc4.
-
-These fix the handling of dependencies between devices in the ACPI
-device enumeration code and address a _UID matching regression from
-6.8 development cycle.
-
-Specifics:
-
- - Modify the ACPI device enumeration code to avoid counting
-   dependencies that have been met already as unmet (Hans de Goede).
-
- - Make _UID matching take the integer value of 0 into account as
-   appropriate (Raag Jadav).
-
-Thanks!
-
-
----------------
-
-Hans de Goede (1):
-      ACPI: scan: Do not increase dep_unmet for already met dependencies
-
-Raag Jadav (1):
-      ACPI: bus: allow _UID matching for integer zero
-
----------------
-
- drivers/acpi/scan.c     | 3 ++-
- include/acpi/acpi_bus.h | 8 +++++---
- 2 files changed, 7 insertions(+), 4 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
