@@ -1,128 +1,115 @@
-Return-Path: <linux-acpi+bounces-4891-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4896-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895E88A1C92
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 19:50:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFA58A1DC3
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 20:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B87B31C238F4
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 17:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19F528398B
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 18:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970BD3CF40;
-	Thu, 11 Apr 2024 16:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F07454919;
+	Thu, 11 Apr 2024 17:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DdZoJw2r"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CDyejZbC"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F623BBC3;
-	Thu, 11 Apr 2024 16:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C430D535D9;
+	Thu, 11 Apr 2024 17:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712852892; cv=none; b=VFFnMLv9kXj2c+ETnPFC55D8whmUxH27GlZzcj8XPZCiZGH5hpNndaPN5Vz1HuhmHxNwJ4jUFvkAEOiALl/8A0Q/fyhNLyXED7p3GBBcRbJK0V2z5NVb9Dj6WkbDeT19ogsMK/LVKdQ+isVqfxcZnpNnvDjTb1j0MNeO03Uv9Hg=
+	t=1712856405; cv=none; b=AQRza/lm69jZWxgKExSoo6iuqAPv7rffxRomty9ZDNjzybj+n+/jM9FM1v5Hytdgj1nhlxovfHSGCjNoLEqLxUgUgX5SLKPQ89PlOaKsRnKMyxaUzwGRYLAVknlWKMhEVW/fuIcB1Umx2g7jdg7EVSiyHFrnmI78aNL5TEIGdeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712852892; c=relaxed/simple;
-	bh=3XlIAOs87uqlOBPMpqubX7mfWhYqIMI28TNCOjbin5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KCqpeyeyzXoI4fB1ObGEyh/S50RciSnqs/5en1qo+UCTqp+SGwu/c46UXb8wR0enBI2AEkixnJ2Sk1tqkjQiPKp6mqNezQX8CZw5Cn+h6hk386BCWZkZpV3JsAbPHYFxJF1Hbd2SzmYWD0ma/zEELFCpVN1a4nIJx+JI76bV09Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DdZoJw2r; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1712856405; c=relaxed/simple;
+	bh=rb4Rwfv5xHnQdtI+SSu0ajaicwDU38E72wab/KYC78w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KR2qB5EJF5GQZ+PFzKn+U8I6yLQAbgIWyGCTAMVQA/Q7YUqqz8dIf8po0EFUhhGe+/Y7gHBGvGlu89JwJqgRTuwZs2ZxPnJGzqjbd6k1s3GsdS65pTGmz1LoGJIcy2q34jYxsIZF7/AtNb8GrrE2dBOMkvpYYLJhU8tjXJPL3Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CDyejZbC; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712852890; x=1744388890;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3XlIAOs87uqlOBPMpqubX7mfWhYqIMI28TNCOjbin5U=;
-  b=DdZoJw2r/RtjVpxa7ykTqtcgj79Aoj4DRiBjCo+3gTNxv6jr4QmtoqH5
-   G/P+eCmdgozQftm8H7rH6CEMB+ltfxVH5cXBKY9d/P0Oadhe5VZPqnaHh
-   AasKz1iXCZ4kYuf9Cyq61qgT+4UuDiJ3cg3aBOvJrkTTArOXsVHDoEgJF
-   k0HdI1X8ZHVjCWrg/Ipl7rV+SWGlS2FfjKe6IoUu6YqfGu784M6Fqhw0K
-   WCwchtAiEp+/hIeWY3wf81YFQh2fUESb08/gJtpOhW63Gpdc3QSqiScvh
-   Vxc52ZhmRr64HgBCglF9Et4d4tjM1spuACFcVpiKLdzyxV61BIvdkM7fa
-   g==;
-X-CSE-ConnectionGUID: 0jMTWNdAS2aFaNOLUT54iw==
-X-CSE-MsgGUID: C5tGTc4JTjmMoJI+VZ//xw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18837131"
+  t=1712856404; x=1744392404;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=rb4Rwfv5xHnQdtI+SSu0ajaicwDU38E72wab/KYC78w=;
+  b=CDyejZbCvLFiFmOLVt9/RkTrbxuYqiJP72FFAZ2zOGCogQv076JnnPNg
+   1L9Z7KrjtLv5i1zGmm1EsRLwOzE3lZ29yPClI1qMqzRMSH7YhO4TPeIDh
+   I3SKhTQuk2J6lRg48rOmUyH7GN+MMOLxDV1ZIKgTeAVzB1waXqvo31Hgi
+   Sqy5zuwXsH+7jxNK0mIN0ODQu9eqX9ZLOFu1MzDqSRKv7vryuLxJNdU3P
+   5/8++PXiXtkWWKrMCG3RSs3/FCPA3Tuxh14G3pxBuo27sgZQDGDNH9FiG
+   /z/peF8fiVH904gBUXKS2cx7qyFfUQBilHKdA9Te6prFbNncHAWPqNuge
+   A==;
+X-CSE-ConnectionGUID: mQTJ7LqGRnCJl1C1YPR7xg==
+X-CSE-MsgGUID: 3AhjIcm2SzKPeD+XY0VtGA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="18845025"
 X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="18837131"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 09:27:42 -0700
-X-CSE-ConnectionGUID: eO0p8wtaQSW5ISEQjzvlNQ==
-X-CSE-MsgGUID: 0V9qqLyfQMOCzSrfOBR6XQ==
+   d="scan'208";a="18845025"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 10:26:40 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="937097278"
 X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="25422038"
-Received: from ntasneem-mobl.amr.corp.intel.com (HELO aschofie-mobl2) ([10.212.182.183])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 09:27:41 -0700
-Date: Thu, 11 Apr 2024 09:27:39 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Lukas Bulwahn <lbulwahn@redhat.com>
-Cc: Ben Cheatham <Benjamin.Cheatham@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+   d="scan'208";a="937097278"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 11 Apr 2024 10:26:35 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id E99FC194; Thu, 11 Apr 2024 20:26:33 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	David Thompson <davthompson@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Subject: Re: [PATCH] MAINTAINERS: repair file entry in COMPUTE EXPRESS LINK
-Message-ID: <ZhgPe5mDt2ocXovz@aschofie-mobl2>
-References: <20240411062443.47372-1-lukas.bulwahn@redhat.com>
+	linux-acpi@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Subject: [PATCH v1 0/4] gpiolib: acpi: Use con_id in acpi_dev_gpio_irq_get_by()
+Date: Thu, 11 Apr 2024 20:22:28 +0300
+Message-ID: <20240411172540.4122581-2-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240411062443.47372-1-lukas.bulwahn@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 11, 2024 at 08:24:43AM +0200, Lukas Bulwahn wrote:
-> Commit 12fb28ea6b1c ("EINJ: Add CXL error type support") adds the header
-> file include/linux/einj-cxl.h, but then adds a file entry with cxl-einj.h
-> (note the swapping of words) to the COMPUTE EXPRESS LINK (CXL) section.
-> 
-> Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
-> broken reference.
-> 
-> Repair the file entry in COMPUTE EXPRESS LINK (CXL).
+Use con_id instead of property in the acpi_dev_gpio_irq_get_by().
+It will be aligned with other GPIO library functions.
 
-How about stating the impact, something like:
+Assumed to go via my GPIO ACPI library tree follwoed by GPIO subsystem.
 
-get_maintainer.pl can only return commit_signer history for file
-include/linux/einj-cxl.h because the entry in MAINTAINERS is wrong.
-Correct the entry so that the full MAINTAINER list is returned.
+Andy Shevchenko (4):
+  gpiolib: acpi: Extract __acpi_find_gpio() helper
+  gpiolib: acpi: Simplify error handling in __acpi_find_gpio()
+  gpiolib: acpi: Move acpi_can_fallback_to_crs() out of
+    __acpi_find_gpio()
+  gpiolib: acpi: Pass con_id instead of property into
+    acpi_dev_gpio_irq_get_by()
 
-It is interesting how you found it and I'm not suggesting deleting
-that.
+ drivers/gpio/gpio-pca953x.c                   |  2 +-
+ drivers/gpio/gpiolib-acpi.c                   | 52 +++++++++++--------
+ .../mellanox/mlxbf_gige/mlxbf_gige_main.c     |  2 +-
+ drivers/pinctrl/pinctrl-cy8c95x0.c            |  2 +-
+ include/linux/acpi.h                          |  8 +--
+ 5 files changed, 37 insertions(+), 29 deletions(-)
 
-Thanks,
-Alison
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index edf6176a5530..03204db05027 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -5415,7 +5415,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
->  L:	linux-cxl@vger.kernel.org
->  S:	Maintained
->  F:	drivers/cxl/
-> -F:	include/linux/cxl-einj.h
-> +F:	include/linux/einj-cxl.h
->  F:	include/linux/cxl-event.h
->  F:	include/uapi/linux/cxl_mem.h
->  F:	tools/testing/cxl/
-> -- 
-> 2.44.0
-> 
-> 
 
