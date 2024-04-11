@@ -1,88 +1,250 @@
-Return-Path: <linux-acpi+bounces-4887-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4888-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385068A1621
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 15:46:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448A08A1659
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 15:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B888DB2908D
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 13:46:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2CB51F22719
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 13:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B767C150986;
-	Thu, 11 Apr 2024 13:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3421514D707;
+	Thu, 11 Apr 2024 13:57:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB314F9F2;
-	Thu, 11 Apr 2024 13:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5109C14D703;
+	Thu, 11 Apr 2024 13:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712842801; cv=none; b=hlIng1xdjTAbk7v+6q7dtIkec4OT2WIIbS30ef82lxw6/lktsJx625RxC9Kelv/rcL8plaDWw1W+/koBImqYDa25DepbY73qpEJylTeNZ0vWbtTxoArf252yfmXbUJRxlsAKWFPseNIsVZYPO482EZFAgsa0Pwnxf9HFI9zgGC0=
+	t=1712843848; cv=none; b=lFUI3Xqmd9llZUsleuGzzwQAbWUGFWKBiZOMTiK8sAZVXuw94glzhQj1ubtPoNRHaYPjg3qC9vSWXMNuqa66VPyIuzEeXmESfF5ZOEYrfQsw1/xLgBowahZmdaLse8C/DPW1TGC7y02QjJBeeEdDEkOgALkRiNN0P/1odG6nUjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712842801; c=relaxed/simple;
-	bh=UuA5dm6koMgua9DkhFOmmz7faxSDfh7lrYIohOK6E+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LA5wpeGwMe43VQCzrI9HwhMHeuMhF0QTrI89NMScnypuwjGoYITSGMPESOcetmftlReZ5C2G0SB3FSLfZhuufTjuryjIxqX7U4w7nlbSUWD3A7k1wATtEcgUfXeNunNSoet5pIvKafby5Mny+/j7JeOxWXG/dSV5aD1XvDTc2C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 5FE7E28013A52;
-	Thu, 11 Apr 2024 15:39:50 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 4AE723FFCDE; Thu, 11 Apr 2024 15:39:50 +0200 (CEST)
-Date: Thu, 11 Apr 2024 15:39:50 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	intel-gvt-dev@lists.freedesktop.org,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-	linux-modules@vger.kernel.org
-Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
-Message-ID: <ZhfoJkIxJvRal8aF@wunner.de>
-References: <cover.1712410202.git.lukas@wunner.de>
- <2024041128-huddling-humped-4304@gregkh>
+	s=arc-20240116; t=1712843848; c=relaxed/simple;
+	bh=lge/MgUosyK8blHwHVZwkv4fT+9m3PjR3GTcEf/nH6U=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rToaaz6zLSke1laskok/5A543DVCXlaW2v5p5GnoqDaYuAZyVSrXj4+kXbuahe5rp9XIgBdf33umHBcjm1lZzpKY7YakPaLDRg8C45+gKAKwAdDfLwORqmTkXJFHMdGMOKWm72eCtHix3uqPA/Nu//yZgGufz7lHhCCGjBoyuAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VFh345sKWz6K96M;
+	Thu, 11 Apr 2024 21:52:32 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9A0C7140B2F;
+	Thu, 11 Apr 2024 21:57:21 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 11 Apr
+ 2024 14:57:21 +0100
+Date: Thu, 11 Apr 2024 14:57:20 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Miguel Luis <miguel.luis@oracle.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>
+Subject: Re: [RFC PATCH 3/4] ACPI: processor: refactor
+ acpi_processor_get_info: isolate acpi_{map|unmap}_cpu under
+ CONFIG_ACPI_HOTPLUG_CPU
+Message-ID: <20240411145720.000056f6@Huawei.com>
+In-Reply-To: <11AF41A3-05DD-4100-B327-295EF74FE7F6@oracle.com>
+References: <20240409150536.9933-1-miguel.luis@oracle.com>
+	<20240409150536.9933-4-miguel.luis@oracle.com>
+	<20240410142359.00003dea@Huawei.com>
+	<AC422669-2869-4C05-B8CD-4C94BDE24012@oracle.com>
+	<20240410204415.00005597@Huawei.com>
+	<11AF41A3-05DD-4100-B327-295EF74FE7F6@oracle.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024041128-huddling-humped-4304@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, Apr 11, 2024 at 03:07:46PM +0200, Greg Kroah-Hartman wrote:
-> On Sat, Apr 06, 2024 at 03:52:00PM +0200, Lukas Wunner wrote:
-> > For my upcoming PCI device authentication v2 patches, I have the need
-> > to expose a simple buffer in virtual memory as a bin_attribute.
-> > 
-> > It turns out we've duplicated the ->read() callback for such simple
-> > buffers a fair number of times across the tree.
-> > 
-> > So instead of reinventing the wheel, I decided to introduce a common
-> > helper and eliminate all duplications I could find.
-> > 
-> > I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
-> > name. ;)
-> 
-> Seems like no one objects, should I just take this through my
-> driver-core tree for 6.10?
+On Thu, 11 Apr 2024 10:52:13 +0000
+Miguel Luis <miguel.luis@oracle.com> wrote:
 
-That would be awesome, thank you!
+> > On 10 Apr 2024, at 19:44, Jonathan Cameron <jonathan.cameron@huawei.com=
+> wrote:
+> >=20
+> > On Wed, 10 Apr 2024 18:29:34 +0000
+> > Miguel Luis <miguel.luis@oracle.com> wrote:
+> >  =20
+> >>> On 10 Apr 2024, at 13:23, Jonathan Cameron <Jonathan.Cameron@Huawei.c=
+om> wrote:
+> >>>=20
+> >>> On Tue,  9 Apr 2024 15:05:32 +0000
+> >>> Miguel Luis <miguel.luis@oracle.com> wrote:
+> >>>  =20
+> >>>> mapping and unmaping a cpu at the stage of extra cpu enumeration is
+> >>>> architecture specific which depends on CONFIG_ACPI_HOTPLUG_CPU so le=
+t's
+> >>>> isolate that functionality from architecture independent one.   =20
+> >>>=20
+> >>> Should we consider renaming acpi_map_cpu() to arch_acpi_map_cpu()
+> >>> to make the arch specific nature of that call more obvious?   =20
+> >>=20
+> >> Not sure about the pattern to use here but that seems fine to me. Curr=
+ent usage
+> >> is architectures export acpi_map_cpu from the acpi interface and do th=
+eir
+> >> thing.
+> >>=20
+> >> Question is what to do when there=E2=80=99s a use-case which dismisses=
+ acpi_map_cpu and
+> >> it gets called on the code path? =20
+> >=20
+> > I'm not sure what you mean by dismisses?
+> >  =20
+>=20
+> I mean when acpi_map_cpu is not needed.
+>=20
+> > Is missing perhaps? =20
+>=20
+> Yes.
+>=20
+> >  If that is what you mean, I think it's a mistake to allow
+> > that code to be called from a path that isn't dependent on
+> > CONFIG_ACPI_HOTPLUG_CPU.
+> > It makes no sense to do so and stubbing it out to give
+> > the impression that the calling it does make sense (when looking at the=
+ caller)
+> > is misleading. =20
+>=20
+> OK, that would be what not to do.
+>=20
+> acpi_processor_enumerate_extra could deal with make_present and make_enab=
+led while
+> a stub would still be needed for make_present since it depends on
+> CONFIG_ACPI_HOTPLUG_CPU?
 
-Lukas
+Sure, you could make it do that with a bunch of checks on the
+config being enabled, but currently I don't see the overlap in
+shared code as being sufficient for that to make sense.
+
+The discussion before was assuming that things like the acpi_map_cpu
+calls might do stuff that is wanted in the make_enabled() case.
+
+Given they don't do anything that we want there I don't see sharing
+the code as useful.
+
+I am however in favor of renaming those hotplug only calls to something
+more meaningful so no one 'thinks' they may be relevant in the
+enabling only case!
+
+Jonathan
+
+p.s. I'm smashing the outputs of the thread with Rafael into a coherent
+patch set at the moment, perhaps seeing that will make it clearer what
+is going on.  I got distracted by fixing numa node handling this morning
+but that's now pushed out for a follow on series.
+
+
+>=20
+> Miguel
+>=20
+> >=20
+> > Jonathan
+> >=20
+> >  =20
+> >>=20
+> >> 1) export it and do nothing - it would be creating unnecessary depende=
+ncy.
+> >>=20
+> >> 2) evaluate whether calling it is exclusive to the CPU HP path and kee=
+p it wrapped
+> >> into CONFIG_ACPI_HOTPLUG_CPU.
+> >>=20
+> >> Option (2) is the current approach on this RFC. IIUC acpi_map_cpu is s=
+olely
+> >> used for CPU HP and the same applies to acpi_unmap_cpu.
+> >>  =20
+> >>> I think that has caused more confusion in the discussion than
+> >>> whether it is hotplug specific or not.   =20
+> >>=20
+> >> Indeed. Within the CPU HP path there are these arch specific intricaci=
+es.
+> >>  =20
+> >>>=20
+> >>> As mentioned in patch 2, fairly sure this needs to go before that
+> >>> patch.   =20
+> >>=20
+> >> 2 and 3 depend on each to be self-contained as CPU HP wouldn=E2=80=99t=
+ work without late
+> >> CPU initialisation I think.
+> >>=20
+> >> Miguel
+> >>  =20
+> >>>=20
+> >>> Jonathan
+> >>>  =20
+> >>>>=20
+> >>>> Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
+> >>>> ---
+> >>>> drivers/acpi/acpi_processor.c | 17 +++++++++++++++--
+> >>>> 1 file changed, 15 insertions(+), 2 deletions(-)
+> >>>>=20
+> >>>> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_proce=
+ssor.c
+> >>>> index 9ea58b61d741..c6e2f64a056b 100644
+> >>>> --- a/drivers/acpi/acpi_processor.c
+> >>>> +++ b/drivers/acpi/acpi_processor.c
+> >>>> @@ -194,8 +194,21 @@ static void acpi_processor_hotplug_delay_init(s=
+truct acpi_processor *pr)
+> >>>> pr_info("CPU%d has been hot-added\n", pr->id);
+> >>>> pr->flags.need_hotplug_init =3D 1;
+> >>>> }
+> >>>> +static int acpi_processor_hotplug_map_cpu(struct acpi_processor *pr)
+> >>>> +{
+> >>>> + return acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
+> >>>> +}
+> >>>> +static void acpi_processor_hotplug_unmap_cpu(struct acpi_processor =
+*pr)
+> >>>> +{
+> >>>> + acpi_unmap_cpu(pr->id);
+> >>>> +}
+> >>>> #else
+> >>>> static void acpi_processor_hotplug_delay_init(struct acpi_processor =
+*pr) {}
+> >>>> +static int acpi_processor_hotplug_map_cpu(struct acpi_processor *pr)
+> >>>> +{
+> >>>> + return 0;
+> >>>> +}
+> >>>> +static void acpi_processor_hotplug_unmap_cpu(struct acpi_processor =
+*pr) {}
+> >>>> #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+> >>>>=20
+> >>>> /* Enumerate extra CPUs */
+> >>>> @@ -215,13 +228,13 @@ static int acpi_processor_enumerate_extra(stru=
+ct acpi_processor *pr)
+> >>>> cpu_maps_update_begin();
+> >>>> cpus_write_lock();
+> >>>>=20
+> >>>> - ret =3D acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id=
+);
+> >>>> + ret =3D acpi_processor_hotplug_map_cpu(pr);
+> >>>> if (ret)
+> >>>> goto out;
+> >>>>=20
+> >>>> ret =3D arch_register_cpu(pr->id);
+> >>>> if (ret) {
+> >>>> - acpi_unmap_cpu(pr->id);
+> >>>> + acpi_processor_hotplug_unmap_cpu(pr);
+> >>>> goto out;
+> >>>> }
+> >>>>  =20
+> >>>  =20
+> >>  =20
+> >  =20
+>=20
+
 
