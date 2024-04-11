@@ -1,297 +1,387 @@
-Return-Path: <linux-acpi+bounces-4903-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4904-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94DEC8A2230
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 01:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEBD8A225E
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 01:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A61C2891E5
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 23:19:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAA531F22E00
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 23:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C7047A73;
-	Thu, 11 Apr 2024 23:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F3C481D7;
+	Thu, 11 Apr 2024 23:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="LooeFVMT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="WKocJ8ec"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2115.outbound.protection.outlook.com [40.107.237.115])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF77648CE0;
-	Thu, 11 Apr 2024 23:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.115
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712877536; cv=fail; b=G+AkvrFsW7I3xiR1t4F2EPdckrtu1TEAp5P+G7F/Cwfbfz2NuxSPl8ctL95NkdCM5Y9cH+CClq6ZKaRArjjbZDSFph7+BnuHQC5sRe7Pn+rgqZbCsfcQ0d7mF1VE2nrngwfEvO/c/Qy0kjcWQT8Po0Tx0KEhm+i85oTb9Cj4JnU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712877536; c=relaxed/simple;
-	bh=DvhS//OkESqsYF9ZiEp1tehaeqplFMnPK3ciUw+oB3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ftkk2SD9jML/pIR1ixX5aCpH/b3HuJrJbhHpbKouK9r7SnG2sAEx6Y4b4DVwx+u2TRKTov38m+1+iRN89Uixr3J+4ciO697PpFxxv0YtUroowybn0S8+D8q13gADPRWbJUkfad53PvHEnlR1GMGPwfMmCGcugC7pz9f4NpkC8uE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=LooeFVMT; arc=fail smtp.client-ip=40.107.237.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RkT3dpl0lVgpwGbRAzXS4ffuu0ra8wJVWIv6yEY8ukEHL+imJn0afz9o2+CTKHTGeFdni6OE8fXqWQa9aSshikR/j7UxhAzXp+Lv0wEhD2JBvYR36G1UGPOdlemGUHojcYR3RkLnp2Ro3hiKsHEgwNzwxFrS285njiWsU0KVLere6cMNVIAPqqem6+EUCV/MHmu3REdOIxBBc/jNivB4wzR4VD3wZ3a3G/e6l4R4iwV/nH0Sq7QnhiUM9sYUttvUhH7qZpFSITvKgzPMYXbY0/j+s3uuIBNxfLET1xgBhZbESXBPKq5/hkKChWjSdO4oKuSRtWinAxksqDsfYW8HcQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J0ZaL0LElsp36GNEIoUrGpanbNBfV/ET8+hNbmI1L5c=;
- b=SpEH5eKmkekbh0YtQ2QBjBX0NsvaC44ZrSvlf60YPbSrpXgdthHy/nsTVywkTm6REO5Kxxw6VNNmqPuZAxmoty1TJ2PeMKvLzZKCihmo8wCECMj/Wt+Y8cnrUQuXOBuKWxWbZIH5CUHU7nkz/BdHwfHLIjLfo5nQMl31ZvRDHCiMRek0r9EfuyCTvkV4Eogev/jeQnBxyxf7r5suezOJxFKOivejT+KWl24BXe7Sq+xOabynSu/ArkzeMbH39oCxZ2bY+8mQaBNAmSheIcD7iDcD3gvu5xjARPwcpceo7OZbyAf7yol7oPYxXGXSS0wVQs8dKngooitMfAlLdE2eRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J0ZaL0LElsp36GNEIoUrGpanbNBfV/ET8+hNbmI1L5c=;
- b=LooeFVMT+gKWawfTWIW3HEkDiHLu9v/Vs+eu4t0t2MOitHWcIvj+DRmg6oN063qcn4iXRPjP59P52za5IAo+eYHXWusnILGmm+HWjCK8E6hj25RIn1GUUXuRhouc6tr7X8h+BXL8Y0Vzz28Ooga+F98HC4NuL5/6fa1EfA3KUKk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from MW4PR01MB6498.prod.exchangelabs.com (2603:10b6:303:79::19) by
- DM4PR01MB7883.prod.exchangelabs.com (2603:10b6:8:6e::5) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7409.46; Thu, 11 Apr 2024 23:18:51 +0000
-Received: from MW4PR01MB6498.prod.exchangelabs.com
- ([fe80::4fc3:132:87ac:c13b]) by MW4PR01MB6498.prod.exchangelabs.com
- ([fe80::4fc3:132:87ac:c13b%5]) with mapi id 15.20.7409.048; Thu, 11 Apr 2024
- 23:18:51 +0000
-From: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-To: Jarred White <jarredwhite@linux.microsoft.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	"5 . 15+" <stable@vger.kernel.org>
-Subject: [PATCH v3] ACPI: CPPC: Fix access width used for PCC registers
-Date: Thu, 11 Apr 2024 16:18:44 -0700
-Message-ID: <20240411231844.3306037-1-vanshikonda@os.amperecomputing.com>
-X-Mailer: git-send-email 2.43.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH0P221CA0043.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:610:11d::23) To MW4PR01MB6498.prod.exchangelabs.com
- (2603:10b6:303:79::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE13481CD;
+	Thu, 11 Apr 2024 23:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712878726; cv=none; b=lsd8oC9DBOfksqIAQo8TjLL8c8Z1PRGTx9V/z6gtaHqoP7UrumlBZYF63/uju8mlvMY/u2wF1lQPwAysFA7OUVAHANRbKLy/zT4j0KrYB9Z4hVHq9iaoCzWVdxWdpV3fDSSwg5qoGZU/IIf3G9C4Xa96UsUKCGLjzGHL1YKVs6E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712878726; c=relaxed/simple;
+	bh=rOKRzDVI+nfL6DR5Djk7+RjCo0yuvrotw3Ij05MfSBg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rWBpf/stVBZXGsdG0tde8AO3W5QV3mVJoGNVNPuLfEoPZT1zxsl6Fv5CyN0/LRYgyLjQDOZAfCcNVqq9K7/B89sfz3L41wwyAlaIi0sz9TtFJBr/U+zaXGBo9zxsYMXZSeV+5nQSQ5luVE454Ru37mk/qSZ4XS4ioqx18BVyQfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=WKocJ8ec; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1712878693; x=1713483493; i=w_armin@gmx.de;
+	bh=rOKRzDVI+nfL6DR5Djk7+RjCo0yuvrotw3Ij05MfSBg=;
+	h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:
+	 In-Reply-To;
+	b=WKocJ8echLHwzQ/MSZdNsjIMBNwycjASmzpwPtYfPHkBYLHOKz3WeHcf4eOvdX1d
+	 1kgF/plg/nLBViGPvDhbsozs2QiJRopd/AunkKKdtgmrRnSZ69GbhGYGiMLeDixvS
+	 wImIETBdhVTrSfhEHmkwl75hXlZteDOU5LpVVaxH5U+JExN42WXaXX+OHO+QLZpSu
+	 A1tLioC+KQ6MEaTycs69t9zgq5ztI4X3HgwqI/Bvz80VIPiNwlKWWQITLwk6YOjz4
+	 e99Fbrm28nt3++polCN5jwCfmr8XoidYpHPlVbd/669V+6DhUmzC9S/w3QUe5Agn9
+	 x4PmX+iKb4Z2eJ4XTA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUXpQ-1sLMGr27UG-00QSnv; Fri, 12
+ Apr 2024 01:38:13 +0200
+Message-ID: <b0899d74-79d7-459c-8f2d-17a17a0f58d7@gmx.de>
+Date: Fri, 12 Apr 2024 01:38:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR01MB6498:EE_|DM4PR01MB7883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78bad130-3094-42df-e4ba-08dc5a7dbfa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	LUXrNWHyaEiIZJwVywMvvSkBlT4AU/zbPcfmJGRZV8n/3GcIuTDYPo5NcpeQfITWJDF8/sctkFHsVJpGePXBI1vIz3mlapFEERStbJR1X0KJWUTLfHe/KA6ZuyU8l9pcMXgsiozSIf2wjcyIXZBDkt6upSOJq12Jl0GSoCNUbfQAcEvMSGDJGWgo5Lo4wWHlmJMyLDCy4Rr2yzrzCHQ3WngTVCN5jlqWZzrbqLrkiLLqjdhwqkbS2pzuzhP8l0WHA9qT3Utn5a843wcXQpB9EUjIxQPDOF/5o7iB4hUpYeXTHuKsZl6kObPB2VNGqgFVhKYJ8ZlIWqwSH+MtScjDyQ8JeE6UXv4JSSSQf7Xg2CIUCkRKeC6xtt+5teg7nUS+NKdgtR4OFmdpGYaMDBkUXMW/sHdnCIiIwoO16GY+vK48rV5ei9PFWKF91WP29va60oH+Q6RbVu5s//TWsRVCrNIjK9WPDtSSjM1hLuqmwhWK1U2YC1RaA6Xi72JxIpJPm5T+ItqUERygsx+m9813qLNY1A4iAd4Z3XBBJ5OPTCykuKkSFZuhHl/ssjUiW5uO9crZOVTQBR6eHAqqZibmAHsqJk4Q6Ar+Jxbz382ef4TSidB1KZeKMfTg1d3dCI0lF0ojKiG87EqljCi3M0m9et3uGPCigG2PoYmKTGRwgAQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR01MB6498.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qlkzVys9+xRFTWGLIZw9XrEaLmxVswlrXtE5TaMkAFr+HxDm/j8mSTF2I56D?=
- =?us-ascii?Q?oHKS/fH1AZUxINnMQH7hwmbbeCYlP6HfKVDnUPpvP9WIo5/khqQOZ/2hdML4?=
- =?us-ascii?Q?MadivpIzQIn4u4K7ea1UBeD5C03K5FHHipuOrVnFqB8wiuhcaZm+aj0HdYLc?=
- =?us-ascii?Q?PZKTVNK3OQrhzNEKu6W2TvjbEoiRE+UYA42djbab3FcXHuYxtW9Qu+86yYTh?=
- =?us-ascii?Q?6A2yxyZAdSPqLCbiRgQys/csLy4I/UuXbIa8/3L/k+5QFngyni/kSz4xxkwZ?=
- =?us-ascii?Q?ngbFBUisVhODTKZM+hShQ/OsYPhBATyWi43LIX3VoY3MEZmHeV0ichuQ1i8j?=
- =?us-ascii?Q?ILb1VEgV/wpuQqRWlYpQOT8Y468ZxHyHEnt8yrmklFFNkAdsZVU8zgci8C+4?=
- =?us-ascii?Q?RnXJ244SJgZRioIexG0qXPO7X6qBazhV2kl5S4joP7fa33kKZ5UYCx1EKJ80?=
- =?us-ascii?Q?E2IeGwTgRu+SrC3c8J4xcT6JqZa3cibzVwl0EO0C2grn7WvZLktrN+50GbCN?=
- =?us-ascii?Q?u61LGCxveKtrhJybcc0sadL8zcOUp/tRaJq6V5ygXBZy/DWFar5alqNZG8a8?=
- =?us-ascii?Q?zwFkE6zC4aeic8Aj2kL0FbN/mzQSmIdGtuUkJDH5aIsFXRQ71azFO0DMCOaA?=
- =?us-ascii?Q?sMVyRYmuF9srjr8XV1JCijyAF5vucUrorprSYOyK5HwSr3Td+ELapNKIIOXi?=
- =?us-ascii?Q?sg2AT2y9COVD3u3C0RJ+SURdLT0DywVFfuCXAJa80iBoCnYZXplXCmD4ae5Y?=
- =?us-ascii?Q?wPuw7KYgJ3VX6HWMUX2QyQKal4UZw9m5O4JnXnkzatiQZC9P31igWry/sYf9?=
- =?us-ascii?Q?OX6SUrbEemQfByUk4clm0QYO45smhzC5fdBnzh2knfROrXcknSZZQi8DAlYG?=
- =?us-ascii?Q?rJNjL63JRkHpxwUoIj5b+fyE50QEcHp+5ljry54qnp+ucs+0cBx+9pIKCzx6?=
- =?us-ascii?Q?+LzLxtKYujZTwhAXzOeMl4huuFyLyXsvR0x5nrIdg2//wGdAkv7AgWM9u0bP?=
- =?us-ascii?Q?nNjjeotCSWCUSy1/6PWkDm8gDOk3KVMAXymzS33yXFTTX8o1OsexqxL8gyHU?=
- =?us-ascii?Q?gdxtupfKbLZutj/MOPizehyk5nJRWZXMdvw49GF8XYPRSvhKTAPyLGKlby1z?=
- =?us-ascii?Q?fKsjEi2iKdPFvCGmtxeQaKqEg2vKkH63WpoHdvREJdTL42WUx3VWzaW71WGX?=
- =?us-ascii?Q?y9G5zM5/LE8IoNi9zUrXzpC5K2TRb+NDiApMLhy8j7amFwu/zHMFJIqHJTnP?=
- =?us-ascii?Q?o5b/q/vJu0+plKt22zfzRJi0I7E/sgaliOGaOcXlTx1J/HOkyYWOjx8MhBk4?=
- =?us-ascii?Q?nA8I0lENr/6HFhcbJWPqovfGSRL4mRZ0l4vCE1qB5LAEKY5sCv+ru4flvARR?=
- =?us-ascii?Q?FQmEhrqwQsFzQtmdsZMhqB74ACyNx8UHr9qWLTh6/ZMLDvpf/SpZJETYYDNd?=
- =?us-ascii?Q?vCR72B4WiMKRp0cV2iI4i7of8vA8CqyCWoILxwUlbK0Pl9lpdqXqhA2ElF3X?=
- =?us-ascii?Q?KQCRxExc8C9oIyDvVrOW6mHQaXpz8rKRW+LzQ0CuiXqP+HbNQAJBU1xTi7Xe?=
- =?us-ascii?Q?9nEmDQFNcA4oG4sC7veasTvsmb4I9my4gAfZPLQXLRDVylI1nfSRsw7xfj7b?=
- =?us-ascii?Q?4iuancN10nZPDqLujPULzb8=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78bad130-3094-42df-e4ba-08dc5a7dbfa7
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR01MB6498.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 23:18:51.3985
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S/t3EfyafWd9tVNChLC1euv15h1SE3IP9zRoJ0CQiYTnlXfyVIxhC4Ue7H3/Y8WU0f07g78LBAR08kIAluOUTVdTAYePbXqzrucDTtjDCgh0eJuZzGtXEPSdfnVYm+Pn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR01MB7883
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ACPI: fan: Add hwmon support
+From: Armin Wolf <W_Armin@gmx.de>
+To: Mikael Lund Jepsen <mlj@danelec.com>,
+ "rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
+ "lenb@kernel.org" <lenb@kernel.org>
+Cc: "jdelvare@suse.com" <jdelvare@suse.com>,
+ "linux@roeck-us.net" <linux@roeck-us.net>,
+ "linux@weissschuh.net" <linux@weissschuh.net>,
+ "ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
+References: <20240409213323.8031-1-W_Armin@gmx.de>
+ <AS4P189MB21333C826C173582E12FFE3EBA062@AS4P189MB2133.EURP189.PROD.OUTLOOK.COM>
+ <e6798f0a-5e50-41df-ae3e-0069c16abec3@gmx.de>
+Content-Language: en-US
+In-Reply-To: <e6798f0a-5e50-41df-ae3e-0069c16abec3@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Z9kOfMQyQB/Fv2GrugYPqDvo//YKxU6r3vmbv4RWepHwub49NEi
+ hnzRjVzHxFU26+r4lagfvdrhQIvL3vvLS/ZnyhYT1VKKy7zWNsswKGa2p15oqDR1HnXKKm1
+ rvSrOuO7ppx/HMCzkC55hXkSUOCeS5d4oB51H8/tvBrUk9qJvBDlsUu5o+cTsllt+SYEn5y
+ 2GTGJC9oZNxufH92aGIew==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Xop/uKZBb5Q=;zvKmDC3QaAgQWIXBzon3chvuyZR
+ u+dP6urITjayP4RMiaX72Q1nfL5iYJ46XPgBtdjbNu2jROqxZFXaWCsrZ7/ASsBIdss7IxNwz
+ WUeu5ki0mbedBozskWDfjtaap69fNUAokwgBZ34ao7fxtfyS3dLrnK72LGC5zxt5S04ctYxSc
+ iRho0nBhc9+GeANKTt9NXmHwpuHG8HYsVl6AJ8q2O+W3cqRRIEzHe1rOB0k7L13wqJdv+JW0z
+ WlKVCLLQMWDyq88FaKgAW3REGLCpJNLzr+79OvlZxk5Sv8J4rxeWccp6Zp1purFpFjkljzUry
+ ezjkYnasSsdtrF4ZiKL6MOvYmCLVY1YyEwp86A4o2V1r3xQiB7Dxe/xeg3kKvQujaz3i3pw21
+ cYS7EEQDnxUDbmIlgogBtKvbrtoy+u1r4mFFPGHX109wqhnI7co3fjSyyUD92oECdTuys4PwD
+ w+ofhkA5pek+ObnCUvmjvTKQxmQSADEJmyKh4zo/gxUmim1kZegbinfGzQJEhYSSfXuqY4g6t
+ njgRmLRgMkTRa8rNdDjtAdjY5VIwDANhamN/v7LjgY1+E+JEszROSmQkUkIpTUPXYhYLEjqLj
+ RZ7xsL7t2hFb3ZZEbuvapQEVFCpr7ZLAoKFyOQDL2gX7hrQLfIo4Sd5TWPoNn6kkGcznqDWNE
+ sxWrnvNTEc/I7OJdgSjSEutcNVTZV3K40b/RISCUIztwiD2/wnNSPZNQnHS7GPulRrZ9pLIy5
+ +yA5QnXZG+HRl5eUQc65ZUQP6HqgX0LfTqWRexjFVGEPdAUPa32YzbPOkhwhpkfwC0lIo9EO2
+ c1lXBou1nI+7qt5HE7VXoooIL07xV6vSVQPud6L+oNTPQ=
 
-commit 2f4a4d63a193be6fd530d180bb13c3592052904c modified
-cpc_read/cpc_write to use access_width to read CPC registers. For PCC
-registers the access width field in the ACPI register macro specifies
-the PCC subspace id. For non-zero PCC subspace id the access width is
-incorrectly treated as access width. This causes errors when reading
-from PCC registers in the CPPC driver.
+Am 11.04.24 um 22:30 schrieb Armin Wolf:
 
-For PCC registers base the size of read/write on the bit width field.
-The debug message in cpc_read/cpc_write is updated to print relevant
-information for the address space type used to read the register.
+> Am 10.04.24 um 16:29 schrieb Mikael Lund Jepsen:
+>
+>> On 9. april 2024 Armin Wolf wrote:
+>>> To: Mikael Lund Jepsen <mlj@danelec.com>;
+>>> rafael.j.wysocki@intel.com; lenb@kernel.org
+>>> Cc: jdelvare@suse.com; linux@roeck-us.net; linux@weissschuh.net;
+>>> ilpo.jarvinen@linux.intel.com; linux-acpi@vger.kernel.org;
+>>> linux-hwmon@vger.kernel.org; linux-kernel@vger.kernel.org;
+>>> platform-driver-x86@vger.kernel.org
+>>> Subject: [PATCH v2] ACPI: fan: Add hwmon support
+>>>
+>>> Caution: External email. Do not click links or open attachments
+>>> unless you recognize the sender and know the content is safe.
+>>>
+>>>
+>>> Currently, the driver does only support a custom sysfs to allow
+>>> userspace to read the fan speed.
+>>> Add support for the standard hwmon interface so users can read the
+>>> fan speed with standard tools like "sensors".
+>>>
+>>> Compile-tested only.
+>>>
+>>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>>> ---
+>>> Changes since v1:
+>>> - fix undefined reference error
+>>> - fix fan speed validation
+>>> - coding style fixes
+>>> - clarify that the changes are compile-tested only
+>>> - add hwmon maintainers to cc list
+>>>
+>>> The changes will be tested by Mikael Lund Jepsen from Danelec and
+>>> should be merged only after those tests.
+>>> ---
+>>> drivers/acpi/Makefile=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+>>> drivers/acpi/fan.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 9 +++++
+>>> drivers/acpi/fan_core.c=C2=A0 |=C2=A0 4 ++
+>>> drivers/acpi/fan_hwmon.c | 83 ++++++++++++++++++++++++++++++++++++++++
+>>> 4 files changed, 97 insertions(+)
+>>> create mode 100644 drivers/acpi/fan_hwmon.c
+>>>
+>>> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile index
+>>> d69d5444acdb..c272ab2c93b9 100644
+>>> --- a/drivers/acpi/Makefile
+>>> +++ b/drivers/acpi/Makefile
+>>> @@ -83,6 +83,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)=C2=A0 +=3D
+>>> tiny-power-button.o
+>>> obj-$(CONFIG_ACPI_FAN)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ +=3D fan.o
+>>> fan-objs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :=
+=3D fan_core.o
+>>> fan-objs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +=
+=3D fan_attr.o
+>>> +fan-$(CONFIG_HWMON)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 +=3D fan_hwmon.o
+>>>
+>>> obj-$(CONFIG_ACPI_VIDEO)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 +=3D vide=
+o.o
+>>> obj-$(CONFIG_ACPI_TAD)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ +=3D acpi_tad.o
+>>> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h index
+>>> e7b4b4e4a55e..97863bdb6303 100644
+>>> --- a/drivers/acpi/fan.h
+>>> +++ b/drivers/acpi/fan.h
+>>> @@ -10,6 +10,8 @@
+>>> #ifndef _ACPI_FAN_H_
+>>> #define _ACPI_FAN_H_
+>>>
+>>> +#include <linux/kconfig.h>
+>>> +
+>>> #define ACPI_FAN_DEVICE_IDS=C2=A0=C2=A0=C2=A0 \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {"INT3404", }, /* Fan */ \
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {"INTC1044", }, /* Fan for =
+Tiger Lake generation */ \ @@
+>>> -56,4 +58,11 @@ struct acpi_fan {=C2=A0 int acpi_fan_get_fst(struct
+>>> acpi_device *device, struct acpi_fan_fst *fst);=C2=A0 int
+>>> acpi_fan_create_attributes(struct acpi_device *device);=C2=A0 void
+>>> acpi_fan_delete_attributes(struct acpi_device *device);
+>>> +
+>>> +#if IS_REACHABLE(CONFIG_HWMON)
+>>> +int devm_acpi_fan_create_hwmon(struct acpi_device *device); #else
+>>> +static inline int devm_acpi_fan_create_hwmon(struct acpi_device
+>>> +*device) { return 0; }; #endif
+>>> +
+>>> #endif
+>>> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c index
+>>> ff72e4ef8738..7cea4495f19b 100644
+>>> --- a/drivers/acpi/fan_core.c
+>>> +++ b/drivers/acpi/fan_core.c
+>>> @@ -336,6 +336,10 @@ static int acpi_fan_probe(struct
+>>> platform_device *pdev)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 if (result)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retu=
+rn result;
+>>>
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 result =3D devm_acpi_fan_create_hwmon(device);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (result)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return res=
+ult;
+>>> +
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 result =3D acpi_fan_create_attributes(device);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 if (result)
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 retu=
+rn result;
+>>> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c new
+>>> file mode 100644 index 000000000000..b01055432ded
+>>> --- /dev/null
+>>> +++ b/drivers/acpi/fan_hwmon.c
+>>> @@ -0,0 +1,83 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>>> +/*
+>>> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
+>>> + *
+>>> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>=C2=A0 */
+>>> +
+>>> +#include <linux/acpi.h>
+>>> +#include <linux/hwmon.h>
+>>> +#include <linux/limits.h>
+>>> +
+>>> +#include "fan.h"
+>>> +
+>>> +/* Returned when the ACPI fan does not support speed reporting */
+>>> +#define FAN_SPEED_UNAVAILABLE=C2=A0 0xffffffff
+>>> +
+>>> +static umode_t acpi_fan_is_visible(const void *drvdata, enum
+>>> hwmon_sensor_types type, u32 attr,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int channel) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0444;
+>>> +}
+>>> +
+>>> +static int acpi_fan_read(struct device *dev, enum
+>>> hwmon_sensor_types type, u32 attr, int channel,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 long=
+ *val)
+>>> +{
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct acpi_device *adev =3D dev=
+_get_drvdata(dev);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct acpi_fan_fst fst;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (type) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case hwmon_fan:
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 ret =3D acpi_fan_get_fst(adev, &fst);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (ret < 0)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret=
+;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 switch (attr) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 case hwmon_fan_input:
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (fst.sp=
+eed =3D=3D FAN_SPEED_UNAVAILABLE)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENODATA;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (fst.sp=
+eed > LONG_MAX)
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EOVERFLOW;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val =3D f=
+st.speed;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 case hwmon_fan_fault:
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val =3D (=
+fst.speed =3D=3D FAN_SPEED_UNAVAILABLE);
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 default:
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 }
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default:
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 break;
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EOPNOTSUPP;
+>>> +}
+>>> +
+>>> +static const struct hwmon_ops acpi_fan_ops =3D {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .is_visible =3D acpi_fan_is_visi=
+ble,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .read =3D acpi_fan_read,
+>>> +};
+>>> +
+>>> +static const struct hwmon_channel_info * const acpi_fan_info[] =3D {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HWMON_CHANNEL_INFO(fan, HWMON_F_=
+INPUT | HWMON_F_FAULT),
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NULL
+>>> +};
+>>> +
+>>> +static const struct hwmon_chip_info acpi_fan_chip_info =3D {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .ops =3D &acpi_fan_ops,
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .info =3D acpi_fan_info,
+>>> +};
+>>> +
+>>> +int devm_acpi_fan_create_hwmon(struct acpi_device *device) {
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *hdev;
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hdev =3D devm_hwmon_device_regis=
+ter_with_info(&device->dev,
+>>> "acpi_fan", device,
+>>> + &acpi_fan_chip_info,
+>>> + NULL);
+>>> +
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return PTR_ERR_OR_ZERO(hdev);
+>>> +}
+>>> --
+>>> 2.39.2
+>>>
+>> Sorry about the delay, new to ACPI and needed to create the missing
+>> tables to define the fan as an ACPIv4 fan and make it talk to the
+>> pse/eclite firmware.
+>>
+>> I've tested patch v2 on kernel 6.6.15 on my Intel ElkhartLake CRB
+>> board, and it works fine for me:
+>> Fan tacho value is shown correctly and FAULT is reported if
+>> ishtp_eclite driver is not loaded.
+>>
+>> For reference, my test setup:
+>> - Intel ElkhartLake CRB board w/ Intel Atom x6425RE
+>> - Slimbootloader: Intel MR7 release, with custom ACPI definitions for
+>> the fan, and If I remember correctly, I also needed to correct some
+>> TGPIO softstraps compared to release defaults
+>> - PseFW: Intel MR7 release, with fixes to enable TGPIO/Tacho reading
+>> (which was not enabled in release defaults) and to make sure tacho
+>> value is read even when fan is turning off (default PSE FW skipped
+>> reading tacho if control value was 0, so last tacho value read while
+>> fan was turned on would persist).
+>>
+>> One thing that occurred to me: The fan control value is reported in
+>> _FST, but not used in acpi-fan, so how can we flag an error in hwmon
+>> if the fan is broken, but shall not always be running?
+>> If the control value was exported, then we can alert if tacho is zero
+>> when control > 0. I think I'm missing something here?
+>>
+>> Thanks,
+>> Mikael
+>
+> You are right, i can expose the target RPM as fan1_target when the fan
+> is not in fine-grained control mode (otherwise there is no guarantee
+> that each
+> control value has an associated fan state entry).
+>
+> This way, userspace can detect when the fan is stuck. I will send a v3
+> soon.
+>
+> Armin Wolf
+>
+I just noticed that the drvdata argument of the is_visible callback is mar=
+ked as const, so i cannot use dev_get_drvdata() on the resulting ACPI devi=
+ce.
+Guenter, would it be ok to make drvdata non-const in a separate patch seri=
+es?
 
-Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
----
-
-When testing v6.9-rc1 kernel on AmpereOne system dmesg showed that
-cpufreq policy had failed to initialize on some cores during boot because
-cpufreq->get() always returned 0. On this system CPPC registers are in PCC
-subspace index 2 that are 32 bits wide. With this patch the CPPC driver
-interpreted the access width field as 16 bits, causing the register read
-to roll over too quickly to provide valid values during frequency
-computation.
-
-v2:
-- Use size variable in debug print message
-- Use size instead of reg->bit_width for acpi_os_read_memory and
-  acpi_os_write_memory
-
-v3:
-- Fix language in error messages in cpc_read/cpc_write
-
- drivers/acpi/cppc_acpi.c | 53 ++++++++++++++++++++++++++++------------
- 1 file changed, 37 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 4bfbe55553f4..7d476988fae3 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	}
- 
- 	*val = 0;
-+	size = GET_BIT_WIDTH(reg);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		u32 val_u32;
- 		acpi_status status;
- 
- 		status = acpi_os_read_port((acpi_io_address)reg->address,
--					   &val_u32, width);
-+					   &val_u32, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to read SystemIO port %llx\n",
- 				 reg->address);
-@@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 
- 		*val = val_u32;
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_read_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_read_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	switch (size) {
- 	case 8:
-@@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 		*val = readq_relaxed(vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot read %u bit width from system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot read %u bit width from PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		return -EFAULT;
- 	}
- 
-@@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
- 
-+	size = GET_BIT_WIDTH(reg);
-+
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
--		u32 width = GET_BIT_WIDTH(reg);
- 		acpi_status status;
- 
- 		status = acpi_os_write_port((acpi_io_address)reg->address,
--					    (u32)val, width);
-+					    (u32)val, size);
- 		if (ACPI_FAILURE(status)) {
- 			pr_debug("Error: Failed to write SystemIO port %llx\n",
- 				 reg->address);
-@@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		}
- 
- 		return 0;
--	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0)
-+	} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
-+		/*
-+		 * For registers in PCC space, the register size is determined
-+		 * by the bit width field; the access size is used to indicate
-+		 * the PCC subspace id.
-+		 */
-+		size = reg->bit_width;
- 		vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
-+	}
- 	else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		vaddr = reg_res->sys_mem_vaddr;
- 	else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
- 		return cpc_write_ffh(cpu, reg, val);
- 	else
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
--				val, reg->bit_width);
--
--	size = GET_BIT_WIDTH(reg);
-+				val, size);
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		val = MASK_VAL(reg, val);
-@@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		writeq_relaxed(val, vaddr);
- 		break;
- 	default:
--		pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
--			 reg->bit_width, pcc_ss_id);
-+		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+			pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
-+				size, reg->address);
-+		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
-+			pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
-+				size, pcc_ss_id);
-+		}
- 		ret_val = -EFAULT;
- 		break;
- 	}
--- 
-2.43.1
+Thanks,
+Armin Wolf
 
 
