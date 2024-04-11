@@ -1,81 +1,60 @@
-Return-Path: <linux-acpi+bounces-4886-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4887-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64738A15BB
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 15:37:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385068A1621
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 15:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2AA1F23998
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 13:37:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B888DB2908D
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 13:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8454214D6FC;
-	Thu, 11 Apr 2024 13:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y3uZr7pJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B767C150986;
+	Thu, 11 Apr 2024 13:40:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2772014D45D;
-	Thu, 11 Apr 2024 13:37:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AB314F9F2;
+	Thu, 11 Apr 2024 13:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712842649; cv=none; b=L7BkR8yjcCfHuR08bX3CSjWOjkzeN3cxMzh9ZwUYUsdulzUM7hNpIsq80omXja5FmvbVw244DM5AaHDo0rZtL/+vrbkaYhssL9dsgAIol1fkx3l552G57UoyP8VU9ELljTrv2h378NbKER3F5+fg+tF4+Ud4RoyxU7eQp57KpwM=
+	t=1712842801; cv=none; b=hlIng1xdjTAbk7v+6q7dtIkec4OT2WIIbS30ef82lxw6/lktsJx625RxC9Kelv/rcL8plaDWw1W+/koBImqYDa25DepbY73qpEJylTeNZ0vWbtTxoArf252yfmXbUJRxlsAKWFPseNIsVZYPO482EZFAgsa0Pwnxf9HFI9zgGC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712842649; c=relaxed/simple;
-	bh=ZfH/I4d1hrRMe9hj7w2rGrT0Kd9Zdc2d48cUGU8d2hE=;
+	s=arc-20240116; t=1712842801; c=relaxed/simple;
+	bh=UuA5dm6koMgua9DkhFOmmz7faxSDfh7lrYIohOK6E+4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NnXWvZng0/Akq33UV5/NZuH6ZdEfv9L1gRoEsyd7QJaz+PQ+oPuxTzRMjT3a33+sifp0EKN8bpHO+EHpAfSTsxLOS4mjdvZEj/sOrIQeRJwNUuUQtoXh3bKmKy+DrirWHzgeLmQz45mJKwjoEsRGsExT6osymQFLKEjwSeY7YEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y3uZr7pJ; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712842648; x=1744378648;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZfH/I4d1hrRMe9hj7w2rGrT0Kd9Zdc2d48cUGU8d2hE=;
-  b=Y3uZr7pJGG2BrHZ/STELSfftynmmvfpW1FFWpwbc4i3Qwk37IWW/fSFy
-   GbYcHsrf/1mRzE6tndFgsihzXmKugzMzSTofB10vmDvPNNLxv4n8nXVWe
-   W0JI1+wqqHtnOYA5e3FTfSJJY95CI6cJyfTMsOt+DW2tDqsU/LqnIcv0D
-   iaP1ZhSKHkhRQnbrVn9hFSzot8h9kKZRVzQgRXB8+RyLkX8EwmsOwfxQj
-   nexPzEWgJBzogu1B7qvINKqwxqZfYGXe5mQkpljjbbIJMPr/ngJS93DvZ
-   lXdEo+/lZs7iUIGuVJjj5/fsyObq2UuI4jv0kYnmwKTD7z03zky7csdxJ
-   A==;
-X-CSE-ConnectionGUID: tljXGeGBSJys7WZAOTAA4g==
-X-CSE-MsgGUID: HB4JgGZxSvSTJ+/CZ/456A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25705540"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="25705540"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 06:37:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="915463714"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; 
-   d="scan'208";a="915463714"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 06:37:24 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ruucE-00000003MYt-1MVd;
-	Thu, 11 Apr 2024 16:37:22 +0300
-Date: Thu, 11 Apr 2024 16:37:21 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: [PATCH v1 0/2] gpiolib: acpi: A couple of error checks amendmends
-Message-ID: <ZhfnkQmhBjA1tvrk@smile.fi.intel.com>
-References: <20240410202243.1658129-1-andriy.shevchenko@linux.intel.com>
- <20240411132806.GB112498@black.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LA5wpeGwMe43VQCzrI9HwhMHeuMhF0QTrI89NMScnypuwjGoYITSGMPESOcetmftlReZ5C2G0SB3FSLfZhuufTjuryjIxqX7U4w7nlbSUWD3A7k1wATtEcgUfXeNunNSoet5pIvKafby5Mny+/j7JeOxWXG/dSV5aD1XvDTc2C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 5FE7E28013A52;
+	Thu, 11 Apr 2024 15:39:50 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 4AE723FFCDE; Thu, 11 Apr 2024 15:39:50 +0200 (CEST)
+Date: Thu, 11 Apr 2024 15:39:50 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	intel-gvt-dev@lists.freedesktop.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+	linux-modules@vger.kernel.org
+Subject: Re: [PATCH 0/2] Deduplicate bin_attribute simple read() callbacks
+Message-ID: <ZhfoJkIxJvRal8aF@wunner.de>
+References: <cover.1712410202.git.lukas@wunner.de>
+ <2024041128-huddling-humped-4304@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -84,27 +63,26 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240411132806.GB112498@black.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <2024041128-huddling-humped-4304@gregkh>
 
-On Thu, Apr 11, 2024 at 04:28:06PM +0300, Mika Westerberg wrote:
-> On Wed, Apr 10, 2024 at 11:21:45PM +0300, Andy Shevchenko wrote:
-> > One error check is moved and one is dropped.
-> > No functional changes intended.
+On Thu, Apr 11, 2024 at 03:07:46PM +0200, Greg Kroah-Hartman wrote:
+> On Sat, Apr 06, 2024 at 03:52:00PM +0200, Lukas Wunner wrote:
+> > For my upcoming PCI device authentication v2 patches, I have the need
+> > to expose a simple buffer in virtual memory as a bin_attribute.
 > > 
-> > Andy Shevchenko (2):
-> >   gpiolib: acpi: Remove never true check in acpi_get_gpiod_by_index()
-> >   gpiolib: acpi: Check for errors first in acpi_find_gpio()
+> > It turns out we've duplicated the ->read() callback for such simple
+> > buffers a fair number of times across the tree.
+> > 
+> > So instead of reinventing the wheel, I decided to introduce a common
+> > helper and eliminate all duplications I could find.
+> > 
+> > I'm open to a bikeshedding discussion on the sysfs_bin_attr_simple_read()
+> > name. ;)
 > 
-> Both,
-> 
-> Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> Seems like no one objects, should I just take this through my
+> driver-core tree for 6.10?
 
-Pushed to my review and testing queue, thanks!
+That would be awesome, thank you!
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Lukas
 
