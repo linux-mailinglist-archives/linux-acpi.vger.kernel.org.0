@@ -1,85 +1,65 @@
-Return-Path: <linux-acpi+bounces-4877-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4878-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF238A0C09
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 11:14:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E888A0C6A
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 11:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03FF1B22095
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 09:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 068371C2108F
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Apr 2024 09:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DD01442FA;
-	Thu, 11 Apr 2024 09:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F48F144D18;
+	Thu, 11 Apr 2024 09:30:15 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7661442F7;
-	Thu, 11 Apr 2024 09:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267932EAE5;
+	Thu, 11 Apr 2024 09:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712826879; cv=none; b=PrwR8jnSbSclnlU1ogaoafFQTJhzrup7G/BvgEHlDvqtwiJUT0Xxwln1GhOZGUE8CWY10imBYFpkE0AU+Cf4A+qVC2qV6UrA3z5PoEr5sT7n+AFk3aE2uPkEFykW28ROk8iV9+y6imhJd1L48DsTb6GA3OfyOwKg3qjN5oZ2vDg=
+	t=1712827815; cv=none; b=TR+qPeKp9mNgettW2yan8MaPSOyL336+T1bPDBVeB6J1mef3ro6FWEn6AIQNQntP2kgtmiVuoNNQKrb49wocUpcHxoM3rRKOSrFTeBYAVOKKzuBiVwFfuvBnECkrspEy5V3m+c3qhfctusA6Njbx6PHbE8nBR5GhkCD8b4EWyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712826879; c=relaxed/simple;
-	bh=kyhu++ullHOjPqygTG6oKCJuKamhP3KbmBBunl+M5ak=;
+	s=arc-20240116; t=1712827815; c=relaxed/simple;
+	bh=9tf6/NzSwfQ3Vi7lhIXSHNUGVKr3eLMrppEVO217UlQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nv4q3+UGgku4w9vRRhqgrZqlEC+JoSjM9u4XDfrUbw+ytyxEJ3U8aiQIGYdlprB8DFK6I+h1olvHPQffq9Pfp8qKSRK6DGhKGOfkzncY+Ta2UV36w63uwlxV1DdpP9EBKTgxVyx3CMRU9cym3EIbFLu3bk0MzfeXre8k5IKlID8=
+	 Content-Type:Content-Disposition:In-Reply-To; b=f0u0h/TPcmcLckMPUhn1MuD3JthXQFSkYNrysO7c54ipFWsTrQ8Z5FAlhJe7jey4ExuFgqMHh8NjL6Xgda82GTfWb1rtljAUe09c+sJCAR+Wy72P+WHbOL9wYzHM3P4sfFMRE2P9PLdez6RNagVExagUu+4SJ1rVffqQI4xbhPE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EC13113E;
-	Thu, 11 Apr 2024 02:15:07 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3789E113E;
+	Thu, 11 Apr 2024 02:30:43 -0700 (PDT)
 Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 911583F6C4;
-	Thu, 11 Apr 2024 02:14:36 -0700 (PDT)
-Date: Thu, 11 Apr 2024 10:14:33 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7149F3F6C4;
+	Thu, 11 Apr 2024 02:30:12 -0700 (PDT)
+Date: Thu, 11 Apr 2024 10:30:10 +0100
 From: Sudeep Holla <sudeep.holla@arm.com>
-To: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
-	Sudeep Holla <sudeep.holla@arm.com>, linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] ACPICA: AEST: Support AEST V2
-Message-ID: <Zhep-UCqqPlg9BIh@bogus>
-References: <20240410063602.41540-1-tianruidong@linux.alibaba.com>
- <ZhZacAOVpAXK8lDE@bogus>
- <e3c91a7b-4bcc-45ce-92e6-c6a50ad80479@linux.alibaba.com>
+To: Yunhui Cui <cuiyunhui@bytedance.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 1/2] ACPI: PPTT: Populate cacheinfo entirely with PPTT
+Message-ID: <ZhetojJewygmTf6N@bogus>
+References: <20240407123829.36474-1-cuiyunhui@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e3c91a7b-4bcc-45ce-92e6-c6a50ad80479@linux.alibaba.com>
+In-Reply-To: <20240407123829.36474-1-cuiyunhui@bytedance.com>
 
-On Thu, Apr 11, 2024 at 03:54:48PM +0800, Ruidong Tian wrote:
-> 
-> 
-> 在 2024/4/10 17:22, Sudeep Holla 写道:
-> > On Wed, Apr 10, 2024 at 02:36:00PM +0800, Ruidong Tian wrote:
-> > > AEST V2 was published[1], add V2 support based on AEST V1.
-> > > 
-> > 
-> > Any changes to ACPICA has to get merged in the external ACPICA project.
-> > Refer [1] for details from Rafael. You can also refer [2] in the kernel
-> > docs.
-> > 
-> 
-> Patch1 is just a fix to follow kernel code style.
+On Sun, Apr 07, 2024 at 08:38:28PM +0800, Yunhui Cui wrote:
+> When the type and level information of this_leaf cannot be obtained
+> from arch, cacheinfo is completely filled in with the content of PPTT.
+>
 
-IIUC such changes are not allowed as ACPICA changes are always imported
-from the external project. So you have to take same route as patch2
-
-> Patch2 had merged to
-> acpica project, PR link can be see in patch2 comment:
-> 
->   Link: https://github.com/acpica/acpica/commit/ebb4979
-
-Thanks, this will then get imported into kernel next time ACPICA changes
-get merged which usually happens regularly.
+Which platform is this ? Is this arm64 based or something else like RISC-V
+based ? That would help to understand some context here.
 
 -- 
 Regards,
