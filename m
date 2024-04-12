@@ -1,167 +1,104 @@
-Return-Path: <linux-acpi+bounces-4972-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4973-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99B48A337F
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 18:17:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB5F8A33DA
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 18:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568BD1F20FD9
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 16:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675EE287EE7
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 16:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815A148FEB;
-	Fri, 12 Apr 2024 16:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="t2n6MS3Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E15C14883B;
+	Fri, 12 Apr 2024 16:27:28 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C78149DF7;
-	Fri, 12 Apr 2024 16:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F01953811;
+	Fri, 12 Apr 2024 16:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712938597; cv=none; b=Eja/Q+9Vtb2xpKAVvWGCSy3iY7z8gJMIksi00WypjOCjExJFZfbMajSSVOcO8YM3bAZqcRG3hzz43NlNntnLn3pcrCu2uaA4JLJhbrGxl/kjzVmQqvSWJ2EBd+NVZDqr15ty41SRkM9MXK09sJK2S1YULzQJ8JVpG+WMrq5aH0s=
+	t=1712939248; cv=none; b=boep+kbp5rcIHAQkTWR5IFivsp5osYBWINSud3ZsrJWIoNgsp2IYv4AXvcarYl99erExxutz361WGux3J/c9PhwdcjWdFDUvm0s5VODD4BpN5RzssB8O60Vu5SULskRnK+5SVhhiE3cFTE2eJpYLuVHcX0s/fnSVqZwSXE2DtPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712938597; c=relaxed/simple;
-	bh=H8Ts+fPORPk2Ob90sLzmeh0iBBvTzDDrCOxsmMu0ifw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OS+qIMYp+pXMU713kLmQG+TysNmpBSYbej4E1Zfva4xQY/+W2axlN5uYBpjtcUAN6VFCWVkl3MiylwmkZRzc6NaZfrPoI7BE3apJDL8LqJi06zebbAyjF8f1C8u+W9b1Lokr9ayiACqG+eTEHqdNJTneRH5tEeXNFAfZBHAiNvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=t2n6MS3Q; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1712938579; x=1713543379; i=w_armin@gmx.de;
-	bh=fV5LxrZ9sicKZYNtK1OwakvaLfgHSkOsJWQfLLQ6qj8=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=t2n6MS3QRzAncGvP9ucdHs4rFukblQs6NX6A0y+74djsII75PW01mILy1Iqxgi0l
-	 WpI2XDj50C55Nvfgd5sK874CLqs5E8pKHZc3lYgDQ3NYnd68ctiCzrFndwmwrEOP1
-	 yf/27rX0/CvRn9OCY/wd2vLWZZLmx6cmwW6Cw5hbRjTH0zBeHcSwIljywojJBtYq8
-	 J2CV5Wn58GTzUa2jQLQVI2qQqun4lcQ0dth7Yuxrr+LtktSJvjTWSIxoTNv0ak2HZ
-	 cqhbZ62VwgE62MvWbHpAu/ICgoSN5hYhyVjvrtq47eW5MqcTMGDe+rud9IsmQDMNq
-	 KqscBSu2A2cCzc21HA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmULr-1sdD741ToP-00iWgx; Fri, 12
- Apr 2024 18:16:19 +0200
-Message-ID: <23c89f70-98d3-41a5-927c-ff4f2300ab7e@gmx.de>
-Date: Fri, 12 Apr 2024 18:16:18 +0200
+	s=arc-20240116; t=1712939248; c=relaxed/simple;
+	bh=x1mJqb5IdHWSDUYkH+KJm31NSUYWB60CrRprSbXv6A0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ivqgMuS32wqXxCqHd+JV02p308Dtm1rPIHTRJQsujIba3UX1b25mtqoMf+QVghQiaNtxlKZuca2jkPfxKnGWU1cUyLUGB8/mTI9SQDeeC2LfVjXWFbtgnR9PJD6m+4aVrbnTOYVOt8hGGh9/abmdZMY+ewEVmchTWwUcPMQgvhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9A92339;
+	Fri, 12 Apr 2024 09:27:55 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 746CC3F64C;
+	Fri, 12 Apr 2024 09:27:25 -0700 (PDT)
+Date: Fri, 12 Apr 2024 17:27:23 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: yunhui cui <cuiyunhui@bytedance.com>
+Cc: Jeremy Linton <jeremy.linton@arm.com>, rafael@kernel.org,
+	lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: Re: [External] Re: [PATCH 1/2] ACPI: PPTT: Populate cacheinfo
+ entirely with PPTT
+Message-ID: <Zhlg67dbl_S1GD0u@bogus>
+References: <20240407123829.36474-1-cuiyunhui@bytedance.com>
+ <abd135fa-c432-4e37-9792-07a0e17e93d5@arm.com>
+ <CAEEQ3w=+C2J0ZS227-1P-B+pe_NRp_3i4c4CxGssiKqbpXx_qw@mail.gmail.com>
+ <2cde00c8-7878-45c0-8621-fca4e70c75e7@arm.com>
+ <ZhlcYRolZwm7UwJu@bogus>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPICA: Fix memory leak then namespace lookup fails
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
- dmantipov@yandex.ru, linux-acpi@vger.kernel.org,
- acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240403004718.11902-1-W_Armin@gmx.de>
- <CAJZ5v0i3TAyDERxCm5caud5x5kLbc6J6MKqXXFWecShYe-gCrA@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0i3TAyDERxCm5caud5x5kLbc6J6MKqXXFWecShYe-gCrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tj9wE446LKuHlyG8F4jGP0znuiIlFLqdnMAdKcVvr9zI8frC2zq
- jPA41vUM0QadKXLE04LhDEB9jQRtm2SGEXDF+RVEE0X5MOgYB70k5WOE/+r8U1ZYRz21wLt
- 7bTKTeEeFnvR2sFH+kAEFsZVej0qeWJNSP32p2m2hObQSSPAouSHwjBVLLVcc5QaFpoKXdh
- +oX3KMxPSG7qCEd9RgjcA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:XsfWYk+fZUY=;ZZPIPGT2e76V8iqvObNO8Vep1KK
- 5mIBaGIYMknE7r+D+ddNwQfTcJrS3eW4ecayXEWYQxXpk68gY3KJ8jrrNfAdFY6OJR+TmCeP0
- r32VJbxnZyJlFxuhxlT1CN16J1kUGbZjHVKQEu+s2a/u1NwQ+KXKrltS8epsD8yoMu6z2r06p
- ekE5K5dcNAlpG0ye3BRf163ksRgO0pYjitUJqsmz/YRKSSXZL/UDMTaNRL6SY0avIYUIlIpc9
- Mu1WVmvGwmi5uxV9Sl4Yr1w2vLW+PgnNiOBKp9RQIpRkZ8843YVD2Sa/yoG1RfCOKvltnDLYu
- nDjebNIc2V7PwUs/361Nd6tQIIn0LNAke7LbbL4TGeqisldD9ygyLFpFpzVWERDDam7aflNuE
- JmyaZaACQauYW8lVB0iuTm+UHIjV8mq6KpeqLyd4WyaNfU/Ke4Zk14JUu20fV/Lz8WB6+dWR0
- KqOsXCsCS3LTd7/uGNSKIBxmmBUX9i2f85lJJLS7tqphXrPk3ZER6MqP339P7Dyz6PRU7ESDw
- AA4YPPfehSPGJsgu44JlT9HyugywG7F2ORsdbXpAV1iMkcZJXtilggitreiFWrawA/gUS0y6e
- lFznKkiXynOZxgICLypxp2pSNhI/JtCBsIzoWB1b6Gwvn5HiaIj1FnslD3dwBg/DSIzh/NBL3
- wbncWZVRuEeyqYextmoaf+AHc0lyLF10xZs+a5ov6ylZL7sDT0NANV4F8rJq1gnAbzINzbGs5
- 7StkKPY9qVwktgtOoaSZKEQvIdoiwoRHr2yY+Iac23kOkrJyuBgibqm0cr260Kb2detPkpNVz
- Zwe3p8hcULDlOvBURMhucQ8Yqxbq1E2hz/iS7R+bTA1YU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZhlcYRolZwm7UwJu@bogus>
 
-Am 08.04.24 um 16:29 schrieb Rafael J. Wysocki:
+On Fri, Apr 12, 2024 at 05:08:01PM +0100, Sudeep Holla wrote:
+> diff --git i/arch/riscv/kernel/cacheinfo.c w/arch/riscv/kernel/cacheinfo.c
+> index 09e9b88110d1..92ab73ed5234 100644
+> --- i/arch/riscv/kernel/cacheinfo.c
+> +++ w/arch/riscv/kernel/cacheinfo.c
+> @@ -79,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
+>         struct device_node *prev = NULL;
+>         int levels = 1, level = 1;
+> 
+> +       if (!acpi_disabled) {
+> +               int ret, fw_levels, split_levels;
+> +
+> +               ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               /* must be set, so we can drop num_leaves assignment below */
+> +               this_cpu_ci->num_leaves = fw_levels + split_levels;
+> +
+> +               for (idx = 0; level <= this_cpu_ci->num_levels &&
+> +                    idx < this_cpu_ci->num_leaves; idx++, level++) {
+> +                       if (level <= split_levels) {
+> +                               ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+> +                               ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+> +                       } else {
+> +                               ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+> +                       }
+> +               }
 
-> On Wed, Apr 3, 2024 at 2:47=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote=
-:
->> When acpi_ps_get_next_namepath() fails due to a namespace lookup
->> failure, the acpi_parse_object is not freed before returning the
->> error code, causing a memory leak.
->>
->> Fix this by freeing the acpi_parse_object when encountering an
->> error.
->>
->> Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> Because ACPICA is an external project supplying code to the Linux
-> kernel, the way to change the ACPICA code in the kernel is to submit a
-> pull request to the upstream ACPICA project on GitHub and once that PR
-> has been merged, submit a Linux patch corresponding to it including
-> the Link: tag pointing to the PR in question and the git ID of the
-> corresponding upstream ACPICA commit.
->
-> However, note that upstream ACPICA commits are automatically included
-> into the Linux kernel source code every time the upstream ACPICA
-> project makes a release, so it is not necessary to send the
-> corresponding Linux patches for them unless in the cases when timing
-> matters.
+Ofcourse we need to add here,
+		return 0;
 
-I submitted a PR to upstream ACPICA and the changes where accepted.
+> +       }
+> +
+>         if (of_property_read_bool(np, "cache-size"))
+>                 ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
+>         if (of_property_read_bool(np, "i-cache-size"))
+> 
 
-Dmitry, do you think that this memory leak is critical? If not, then i thi=
-nk
-we can wait till the next ACPICA release.
-
-Thanks,
-Armin Wolf
-
->> ---
->>   drivers/acpi/acpica/psargs.c | 8 ++++++++
->>   1 file changed, 8 insertions(+)
->>
->> diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.=
-c
->> index 422c074ed289..7debfd5ce0d8 100644
->> --- a/drivers/acpi/acpica/psargs.c
->> +++ b/drivers/acpi/acpica/psargs.c
->> @@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_=
-state,
->>                              acpi_ps_get_next_namepath(walk_state, pars=
-er_state,
->>                                                        arg,
->>                                                        ACPI_NOT_METHOD_=
-CALL);
->> +                       if (ACPI_FAILURE(status)) {
->> +                               acpi_ps_free_op(arg);
->> +                               return_ACPI_STATUS(status);
->> +                       }
->>                  } else {
->>                          /* Single complex argument, nothing returned *=
-/
->>
->> @@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_=
-state,
->>                              acpi_ps_get_next_namepath(walk_state, pars=
-er_state,
->>                                                        arg,
->>                                                        ACPI_POSSIBLE_ME=
-THOD_CALL);
->> +                       if (ACPI_FAILURE(status)) {
->> +                               acpi_ps_free_op(arg);
->> +                               return_ACPI_STATUS(status);
->> +                       }
->>
->>                          if (arg->common.aml_opcode =3D=3D AML_INT_METH=
-ODCALL_OP) {
->>
->> --
->> 2.39.2
->>
->>
+-- 
+Regards,
+Sudeep
 
