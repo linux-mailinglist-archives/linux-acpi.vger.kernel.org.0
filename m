@@ -1,118 +1,125 @@
-Return-Path: <linux-acpi+bounces-4925-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4926-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD4E8A2C94
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 12:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28CA18A2E9C
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 14:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E5B01C23BB8
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 10:39:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49FEA1C21AA0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 12:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848913FE4B;
-	Fri, 12 Apr 2024 10:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0515F59176;
+	Fri, 12 Apr 2024 12:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="DHq3woNR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrw7zwCj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA8C446DC;
-	Fri, 12 Apr 2024 10:38:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B075915A;
+	Fri, 12 Apr 2024 12:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712918342; cv=none; b=QD4JZ6v1ZcIzD99vxDXY6BxpGHFXLaKi9Ln4SPhEKNFH9UhxXCYWWyyGNGj9tljPmYFLBuiaOKYzxO9qv8aPCGuHpkoEaAcOLC/obd6nXs0EPxNx38dFX1f52lS2V378HNSVr5k/qWIYf9Jmp2v2FtBP7+YnM87jBsnB3JPGGks=
+	t=1712926488; cv=none; b=qsWJla/D/GdwO1JKTJ38hmAmAW2cY8S4vm66eAqjnBaECuTlYLT9oGEPcpCa24gBWFouG6yMN9GYVlsXJRJawgXFK6kIU9AtQi8REuHgeNEJU98Ed6tW+RKkxwVs5gBDqTcSgYS4v/Hw5vv3tp6cR/NSsh9EeAmr/alNWBB+mW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712918342; c=relaxed/simple;
-	bh=u4aUA6NcMnVUvYddJfCG+2UiNKu6Ga4o67L0/zLDAFo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GHMYSToweeoG04S+k6mPM7tBZo2pSHd4Jas3IRVM6IkRWQMRvaLsFqVrDx/xtXIk2j8QNOFOl0c0AQpzCWeIcDeZY03MK4/pTdn/AHJVnQJxlY0w0fdFrqkbhhRVs87S2F3dYo7Xc6oGPwKnW6RptRbcrZJ7sXFlqrJvwz1qqkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=DHq3woNR; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id 0B841100002;
-	Fri, 12 Apr 2024 13:38:41 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1712918321; bh=rYWnZbFlUffRYhsJkJp9tuIBEkLFSWBjZgHCW4zBdKs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=DHq3woNRIwGSc/UkbIaiPcVqKYEvvBCkOVTLL4kGivRHl/YGupV4lLaq2pYlBfiL3
-	 jqPoilbQOp+6yXLl67xtXYSdoNxB70tY7krGtj51UI9kEhUGqDtotWtl4pk4SCGxoY
-	 mtYx63rSHDEpZEnjUR7LwsholWBw0JBULtNqmtpOsSF4P985oYPuXaE6+5bCoV+mKI
-	 SLQ0v7msR3kvzwk56g71vqQC3It1SvTgLpiBDTRE8F6dteJdvyojABfRwjPT02cJWj
-	 rMc/4Y6Ix9XlTDUOl6CpOaiXopFgPnju1YqBoHnDQoAeKY0E72HDxnoSMPS3Bueuik
-	 un/qN1Fnk6LZg==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Fri, 12 Apr 2024 13:37:52 +0300 (MSK)
-Received: from localhost.localdomain (172.17.215.6) by ta-mail-02
- (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 12 Apr
- 2024 13:37:31 +0300
-From: Aleksandr Mishin <amishin@t-argos.ru>
-To: Lv Zheng <lv.zheng@intel.com>
-CC: Aleksandr Mishin <amishin@t-argos.ru>, Robert Moore
-	<robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH] ACPICA: Handle memory allocation error
-Date: Fri, 12 Apr 2024 13:37:23 +0300
-Message-ID: <20240412103723.16943-1-amishin@t-argos.ru>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1712926488; c=relaxed/simple;
+	bh=Ngh8as+dXvRlB5SerxSE46bXBnL0GTaccDHqC6EbXGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q8WnpAWGDzGHXeKNFT9lIQc2+VVulpNnt9lTdryHcs74sHZgo6lYI2NmUPTZ/U9pRB5jc4idUwb/6UqnH/6yef460rJpMlcvCMha8rYZq619wiYkTbjiZVfaO7pQfGwuxpQwDg2OnXjI0Oz3umHOMzffmr3dJZwbk/wZ4YAua2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrw7zwCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63160C4AF0A;
+	Fri, 12 Apr 2024 12:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712926488;
+	bh=Ngh8as+dXvRlB5SerxSE46bXBnL0GTaccDHqC6EbXGs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mrw7zwCj4c2QBgK6ebnLniWioldnKscr9fp4p1xfsM3oK8SK8KHFwuRNe/3rUVQXx
+	 mGByPtNBqaNEyPCrvZj+PHb1DKZfO8e3J+7CApHm3qj8V+t4kMKTEWqU17gxTKhyw8
+	 /fmekHpA7+x2hucHpUzrvhUHeaJfeDqs2AW1FU1u7r90ZL4o25ERwFDchGSfKH5PXW
+	 iHH9FXCK11kzEvqcCCp+JCbHBzFKH9j53SEBK6hZDyDYsx0FYcSXG46os3Vt7bqBt1
+	 hhPSv2x1D/Y0+TKWB72PmFCZcDJpDBGJaCOECqNmOW6AGMi4zTPzlpS8tseKUjHPEN
+	 YLnbiCbfqBcrg==
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d47a92cfefso9936721fa.1;
+        Fri, 12 Apr 2024 05:54:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWaYd27OMdYVB2h5nWrpZrzLEC5NMRHWZ1M0HZj8tfeYgqbFPL+/JIixL1C939JiKN45Ui7kruMN4ZfKgEG3WCbF09kP5nyUebVqGGMVNk5eUIU54yLgAnvmWp+VlTVG+u/MRvw22u19QZwOEgLohK3jGSofmvsauYmrQ1LUxvgY+wUGn9d2UNBCW0SC5Tuo3QIfpBpFSRHUhS7EcwsCIjpuHCRHIp7VvB+FoZZ+KJq2U+AXTTFX5vKKU4=
+X-Gm-Message-State: AOJu0Yw80SHNPssX6hmkfoypbxQF2Sp2JeQNj2BH30wYF9FRp9cmE6V/
+	raeKRW9FHwBRBaje3d8mhrHTuiiBPgwf1e6H3V7zSHgzILtcdU45TE+TOYmEcwZmM+ieNr93d1R
+	NsVZCp6pJ17gLcs05QHaxGuvs9Q==
+X-Google-Smtp-Source: AGHT+IFKEm1DXMB/2mOxm4PPotE7iP/WZMY85GkqR30kYOQrBu7XP7hFrfWzxny45Sfy4yA+K/qn1RB0hJXFKEFWYGY=
+X-Received: by 2002:a2e:88d4:0:b0:2d9:fe27:7716 with SMTP id
+ a20-20020a2e88d4000000b002d9fe277716mr1833708ljk.38.1712926486579; Fri, 12
+ Apr 2024 05:54:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 184684 [Apr 12 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 16 0.3.16 6e64c33514fcbd07e515710c86ba61de7f56194e, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mx1.t-argos.ru.ru:7.1.1;t-argos.ru:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/04/12 08:01:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/04/12 08:56:00 #24754366
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <20240411235623.1260061-1-saravanak@google.com> <20240411235623.1260061-3-saravanak@google.com>
+In-Reply-To: <20240411235623.1260061-3-saravanak@google.com>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 12 Apr 2024 07:54:32 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKRVVNzgQk6PETfJ9RrDuzT1CTjHWW02Twc_T4C82t__Q@mail.gmail.com>
+Message-ID: <CAL_JsqKRVVNzgQk6PETfJ9RrDuzT1CTjHWW02Twc_T4C82t__Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] of: dynamic: Fix overlayed devices not probing
+ because of fw_devlink
+To: Saravana Kannan <saravanak@google.com>
+Cc: Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Mark Brown <broonie@kernel.org>, 
+	Len Brown <lenb@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In acpi_db_add_to_history() acpi_os_allocate() may return NULL
-in case of memory allocation error. This will lead to NULL pointer
-dereference.
-Fix this bug by adding NULL return check.
+On Thu, Apr 11, 2024 at 6:56=E2=80=AFPM Saravana Kannan <saravanak@google.c=
+om> wrote:
+>
+> When an overlay is applied, if the target device has already probed
+> successfully and bound to a device, then some of the fw_devlink logic
+> that ran when the device was probed needs to be rerun. This allows newly
+> created dangling consumers of the overlayed device tree nodes to be
+> moved to become consumers of the target device.
+>
+> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8=
+x6=3D9F9rZ+-KzjOg@mail.gmail.com/
+> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> ---
+>  drivers/base/core.c    | 76 +++++++++++++++++++++++++++++++++++++-----
+>  drivers/of/overlay.c   | 15 +++++++++
+>  include/linux/fwnode.h |  1 +
+>  3 files changed, 83 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index 5f4e03336e68..1a646f393dd7 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -46,6 +46,8 @@ static bool fw_devlink_drv_reg_done;
+>  static bool fw_devlink_best_effort;
+>  static struct workqueue_struct *device_link_wq;
+>
+> +#define get_dev_from_fwnode(fwnode)    get_device((fwnode)->dev)
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+I think it is better to not have this wrapper. We want it to be clear
+when we're acquiring a ref. I know get_device() does that, but I have
+to look up what get_dev_from_fwnode() does exactly.
 
-Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
----
- drivers/acpi/acpica/dbhistry.c | 2 ++
- 1 file changed, 2 insertions(+)
+Side note: I didn't know fwnode has a ptr to the struct device. I
+wonder if we can kill off of_find_device_by_node() using that. That's
+for platform devices though.
 
-diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
-index e874c1dddefa..8366631d457f 100644
---- a/drivers/acpi/acpica/dbhistry.c
-+++ b/drivers/acpi/acpica/dbhistry.c
-@@ -69,6 +69,8 @@ void acpi_db_add_to_history(char *command_line)
- 		acpi_gbl_history_buffer[acpi_gbl_next_history_index].command =
- 		    acpi_os_allocate(cmd_len + 1);
- 	}
-+	if (!acpi_gbl_history_buffer[acpi_gbl_next_history_index].command)
-+		return;
- 
- 	strcpy(acpi_gbl_history_buffer[acpi_gbl_next_history_index].command,
- 	       command_line);
--- 
-2.30.2
-
+Rob
 
