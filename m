@@ -1,162 +1,255 @@
-Return-Path: <linux-acpi+bounces-4980-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4981-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BFE68A3671
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 21:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA2C8A36E0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 22:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF08C2836BE
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 19:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11501F232B9
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 20:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5357150981;
-	Fri, 12 Apr 2024 19:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325BA1514D3;
+	Fri, 12 Apr 2024 20:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="o1XEbJT4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Kz3jwuZA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F01214F9E8
-	for <linux-acpi@vger.kernel.org>; Fri, 12 Apr 2024 19:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE671509B9;
+	Fri, 12 Apr 2024 20:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712951044; cv=none; b=RV8OK45vTd7ZpdpvfywKQ7bn3lbgK3MDeqI/K6h8p8cONT78SBrK+qk9ALAYNkQeMXJ0MXtxuYR30ZbdvcC+hVouuRs90Yf9Y499EjSKYIyZ4xlcQk+HnvHbdsPmVgQ8c739CAeYq7H37h7Z89+Wtmm+963Gi5uMBspcCijjzrc=
+	t=1712952992; cv=none; b=hiFQYShFdBSoejhndpyD+qBIt58w5Yu2odu4EFRIqHhqHMj7hKGjNICKyIJ0NqossLXYZc3hkLRBchtcUMJ4y6fooMgngLDLGYjlJbRQjfoKKO+QTplCt2t99P4zZ6QhG+rs6SpFn0fJOGHylP9MQ2NXjgaPSsCj9ajSo/FcTbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712951044; c=relaxed/simple;
-	bh=IoHqwPR/3f4QWQcrX8xBsgDz0K3wdj+JCIyUfWJkskQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sQ4peKZEwg0MeetPj7yLNY5LBUuDnJyNGCMrAVr4MPB6uG+LKquJxmkCPoA9Sbo7faPCPX1ebmW2ygN7G2iqzcq7XoxY7U134Ah9W6B2r64ZNkDq9NGDFG1fsjHy2bUCvWDQt8JEb9u9ear9pLJLozSDoVqSdD6IZ1x1t9LXFI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=o1XEbJT4; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2da0b3f7ad3so11600061fa.1
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Apr 2024 12:44:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712951041; x=1713555841; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IoHqwPR/3f4QWQcrX8xBsgDz0K3wdj+JCIyUfWJkskQ=;
-        b=o1XEbJT4Cmt4ccmKqmqOe0yb9OeSKxSXA697Tx2X0tLZnxWnUBkxqvwOSlgj8neIgH
-         MM/NWit0lbN0ulumwtrtQmEDOEnt3+FxdjkD0ZKa3ZYmGDS+OPxv23ctSp+A1oAJ9DTv
-         1lyJROZI1WK4z4tbE7ycYX0aWYS7vkrjaK8VzwxQzHyUxphN9TtiDEFYyGCYtVf8H2SC
-         hY4vFV6OnC7SgQo6D1LvBu+L3hOLnAbVaoq2d1D3MRgcPbiwJhXEoBuixNIUKWg5fOfJ
-         8wP21uNnQqxSiH49RxIOgsm3jhatq6HQn7quAL8nuua/G8Kcg7fts4PHhf29R86R/Z2+
-         Cymg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712951041; x=1713555841;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IoHqwPR/3f4QWQcrX8xBsgDz0K3wdj+JCIyUfWJkskQ=;
-        b=tmm9MCarJvTH8EhBdQ7VOqmrXkwcAPQlTLhA2XopfR5yQRccjBbYf+TeYxPlGEgQsZ
-         Y+Y00wypiwr+iRoPlVRYqyba2tRha/uSGKP8e8NRhe73zKxHSgq549P3EmH22peJEncK
-         0VNZHw8FBwTDyW+ytnJz7NSj50J0vldkTSOIkl6+KEdb/nUBh+Gh3C+xZ2PWerdQzf+8
-         5InBLVdIEgeFML99H7a88VC1gdQGyf/D66kAv240gpgzI7u9WoroWYWQtkBWN3bPdtQG
-         3c0BltDb4C5z8Z04RWNPmLPaIPz6BIcUSQm05NjA0uRjltCUvsdy3Avqt2fWz8j5g1cZ
-         5IaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXjIY0UQzPOMvNxkZXahbP+QMetj/P3+HqwtsdgB3/O2D5mQNqvsZv7YhDf+4AzWKBNg9IST7jMKe+gLr418jiS15lhD+Z++r8Ktg==
-X-Gm-Message-State: AOJu0YzcGqnsLXuTyI58WkDY9I+c1tlbee0MOKR89MBOEedWzvwqaV27
-	2JFu0s9iHiOPKjf6WyquAOkLIxgvD+yDzJL0wiphU95oXQyyQApg/9BhEpdoSUj03kgZk+0ZySF
-	aPlnpMi2CHicoKvSr4ZH2+9aH+YhxGdGwe7UumA==
-X-Google-Smtp-Source: AGHT+IHDFaXNrNG2VuRajk4e/f9G/kVH1bAxuITsKhrhrInNpB6M6fKmkwCUyUP9OKMFBkar1WsP6Ai0nTF3XOH1wOg=
-X-Received: by 2002:a2e:a370:0:b0:2d8:8b7:76e3 with SMTP id
- i16-20020a2ea370000000b002d808b776e3mr2331884ljn.11.1712951041199; Fri, 12
- Apr 2024 12:44:01 -0700 (PDT)
+	s=arc-20240116; t=1712952992; c=relaxed/simple;
+	bh=dKNPqsjHMrgzMlxgRL62bo+88LDPLk0E891/+IWrzZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eim8kR8nTyi46nwR8ybxxfUBofr9Tp6qo/SUxBh60c9ddhU/D/tO/XnARSKgYGLbifwbVyJ8Gf8lhjJimkqspt4DDcMpflEu6716INg9mSOxi/i9fDFztPNRo65mnR4TQXlAq3yBXoA/cxTGiFgpkamqWPrNDNgBxCacurQWQQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Kz3jwuZA; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZGFvoma46BCyiMvqt+9PA9y7NlciWRVDAvZYb656yOE=; b=Kz3jwuZAGR4BAUvKYthmWGt7zK
+	86TtebZmpad+x2kmBlT0FQJRoroGh6xBN22wxTgWoYLN0QUU2TAEzf9wwYNt4VcwidIi1ZZP8NfV+
+	wGEq98FH6Eh2SVV2bpMFHKawXebvQF+a00O0xwrlH2depUqecvkemMa9PnVaszuHfP2Hi3E45dxrz
+	AP+SVehvxgJYoj1dijJpNlfLmOGXUNtMQcawDCre4DnDAqnatxi4EiF8s8fkacM9Ug42J7jL9F2e2
+	Z1chwhvtUSuRrnUcSkOPknR5P7RuKcXEGmuFCijvvZ8TJDaH2mLZqPmud+uEsdsMjI8ivzWunEML1
+	RnOAQEYA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52314)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rvNJr-0002wV-1V;
+	Fri, 12 Apr 2024 21:16:19 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rvNJo-00086J-Cq; Fri, 12 Apr 2024 21:16:16 +0100
+Date: Fri, 12 Apr 2024 21:16:16 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, x86@kernel.org,
+	Miguel Luis <miguel.luis@oracle.com>,
+	James Morse <james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, linuxarm@huawei.com,
+	justin.he@arm.com, jianyong.wu@arm.com
+Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
+ acpi_processor_get_info()
+Message-ID: <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
+References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
+ <20240412143719.11398-4-Jonathan.Cameron@huawei.com>
+ <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com> <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
-In-Reply-To: <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 12 Apr 2024 21:43:50 +0200
-Message-ID: <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Kent Gibson <warthog618@gmail.com>, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Fri, Apr 12, 2024 at 5:25=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Fri, Apr 12, 2024 at 10:20:24AM +0200, Linus Walleij wrote:
-> > On Tue, Apr 9, 2024 at 1:17=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
+On Fri, Apr 12, 2024 at 08:30:40PM +0200, Rafael J. Wysocki wrote:
+> On Fri, Apr 12, 2024 at 4:38 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > >
-> > > The GPIO_* flag definitions are *almost* duplicated in two files
-> > > (with unmatches OPEN_SOURCE / OPEN_DRAIN). Moreover, some code relies
-> > > on one set of definitions while the rest is on the other. Clean up
-> > > this mess by providing only one source of the definitions to all.
-> > >
-> > > Fixes: b424808115cb ("brcm80211: brcmsmac: Move LEDs to GPIO descript=
-ors")
-> > > Fixes: 5923ea6c2ce6 ("gpio: pass lookup and descriptor flags to reque=
-st_own")
-> > > Fixes: fed7026adc7c ("gpiolib: Make use of enum gpio_lookup_flags con=
-sistent")
-> > > Fixes: 4c0facddb7d8 ("gpio: core: Decouple open drain/source flag wit=
-h active low/high")
-> > > Fixes: 69d301fdd196 ("gpio: add DT bindings for existing consumer fla=
-gs")
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > From: James Morse <james.morse@arm.com>
 > >
-> > The way the line lookup flags ("lflags") were conceived was through
-> > support for non-DT systems using descriptor tables, and that is how
-> > enum gpio_lookup_flags came to be.
+> > The arm64 specific arch_register_cpu() call may defer CPU registration
+> > until the ACPI interpreter is available and the _STA method can
+> > be evaluated.
 > >
-> > When OF support was added it was bolted on on the side, in essence
-> > assuming that the DT/OF ABI was completely separate (and they/we
-> > sure like to think about it that way...) and thus needed translation fr=
-om
-> > OF flags to kernel-internal enum gpio_lookup_flags.
+> > If this occurs, then a second attempt is made in
+> > acpi_processor_get_info(). Note that the arm64 specific call has
+> > not yet been added so for now this will never be successfully
+> > called.
 > >
-> > The way *I* thought about this when writing it was certainly that the
-> > DT bindings was a separate thing (<dt-bindings/*.h> didn't even exist
-> > at the time I think) and that translation from OF to kernel-internal
-> > lflags would happen in *one* place.
+> > Systems can still be booted with 'acpi=off', or not include an
+> > ACPI description at all as in these cases arch_register_cpu()
+> > will not have deferred registration when first called.
 > >
-> > The main reasoning still holds: the OF define is an ABI, so it can
-> > *never* be changed, but the enum gpio_lookup_flags is subject to
-> > Documentation/process/stable-api-nonsense.rst and that means
-> > that if we want to swap around the order of the definitions we can.
+> > This moves the CPU register logic back to a subsys_initcall(),
+> > while the memory nodes will have been registered earlier.
+> > Note this is where the call was prior to the cleanup series so
+> > there should be no side effects of moving it back again for this
+> > specific case.
 > >
-> > But admittedly this is a bit over-belief in process and separation of
-> > concerns and practical matters may be something else...
->
-> Got it. But we have a name clash and the mess added to the users.
-> I can redo this to separate these entities.
->
-> Note, that there is code in the kernel that *does* use
-> #include <dt-bindings/*.h>
-> for Linux internals.
->
+> > [PATCH 00/21] Initial cleanups for vCPU HP.
+> > https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.org.uk/
+> >
+> > e.g. 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_DEVICES")
+> >
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v5: Update commit message to make it clear this is moving the
+> >     init back to where it was until very recently.
+> >
+> >     No longer change the condition in the earlier registration point
+> >     as that will be handled by the arm64 registration routine
+> >     deferring until called again here.
+> > ---
+> >  drivers/acpi/acpi_processor.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > index 93e029403d05..c78398cdd060 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -317,6 +317,18 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> >
+> >         c = &per_cpu(cpu_devices, pr->id);
+> >         ACPI_COMPANION_SET(&c->dev, device);
+> > +       /*
+> > +        * Register CPUs that are present. get_cpu_device() is used to skip
+> > +        * duplicate CPU descriptions from firmware.
+> > +        */
+> > +       if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> > +           !get_cpu_device(pr->id)) {
+> > +               int ret = arch_register_cpu(pr->id);
+> > +
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> > +
+> >         /*
+> >          *  Extra Processor objects may be enumerated on MP systems with
+> >          *  less than the max # of CPUs. They should be ignored _iff
+> > --
+> 
+> I am still unsure why there need to be two paths calling
+> arch_register_cpu() in acpi_processor_get_info().
+> 
+> Just below the comment partially pulled into the patch context above,
+> there is this code:
+> 
+> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>          int ret = acpi_processor_hotadd_init(pr);
+> 
+>         if (ret)
+>                 return ret;
+> }
+> 
+> For the sake of the argument, fold acpi_processor_hotadd_init() into
+> it and drop the redundant _STA check from it:
+> 
+> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>         if (invalid_phys_cpuid(pr->phys_id))
+>                 return -ENODEV;
+> 
+>         cpu_maps_update_begin();
+>         cpus_write_lock();
+> 
+>        ret = acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
+>        if (ret) {
+>                 cpus_write_unlock();
+>                 cpu_maps_update_done();
+>                 return ret;
+>        }
+>        ret = arch_register_cpu(pr->id);
+>        if (ret) {
+>                 acpi_unmap_cpu(pr->id);
+> 
+>                 cpus_write_unlock();
+>                 cpu_maps_update_done();
+>                 return ret;
+>        }
+>       pr_info("CPU%d has been hot-added\n", pr->id);
+>       pr->flags.need_hotplug_init = 1;
+> 
+>       cpus_write_unlock();
+>       cpu_maps_update_done();
+> }
+> 
+> so I'm not sure why this cannot be combined with the new code.
+> 
+> Say acpi_map_cpu) / acpi_unmap_cpu() are turned into arch calls.
+> What's the difference then?  The locking, which should be fine if I'm
+> not mistaken and need_hotplug_init that needs to be set if this code
+> runs after the processor driver has loaded AFAICS.
 
-Well, then they are wrong. We should convert them to using
-linux/gpio/machine.h first. Or even put these defines elsewhere
-depending on what these drivers are using it for in general. Maybe
-machine.h is not the right place. Then once that's figured out, we can
-start renaming the constants.
+It is over this that I walked away from progressing this code, because
+I don't think it's quite as simple as you make it out to be.
 
-IIUC include/dt-bindings/ headers should only be used by DT sources
-and code that parses the OF properties.
+Yes, acpi_map_cpu() and acpi_unmap_cpu() are already arch implemented
+functions, so Arm64 can easily provide stubs for these that do nothing.
+That never caused me any concern.
 
-But it seems to me that we need to inspect these users, we cannot just
-automatically convert them at once, this is asking for trouble IMO.
+What does cause me great concern though are the finer details. For
+example, above you seem to drop the evaluation of _STA for the
+"make_present" case - I've no idea whether that is something that
+should be deleted or not (if it is something that can be deleted,
+then why not delete it now?)
 
-Bart
+As for the cpu locking, I couldn't find anything in arch_register_cpu()
+that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
+being taken - so I've no idea why the "make_present" case takes these
+locks.
+
+Finally, the "pr->flags.need_hotplug_init = 1" thing... it's not
+obvious that this is required - remember that with Arm64's "enabled"
+toggling, the "processor" is a slice of the system and doesn't
+actually go away - it's just "not enabled" for use.
+
+Again, as "processors" in Arm64 are slices of the system, they have
+to be fully described in ACPI before the OS boots, and they will be
+marked as being "present", which means they will be enumerated, and
+the driver will be probed. Any processor that is not to be used will
+not have its enabled bit set. It is my understanding that every
+processor will result in the ACPI processor driver being bound to it
+whether its enabled or not.
+
+The difference between real hotplug and Arm64 hotplug is that real
+hotplug makes stuff not-present (and thus unenumerable). Arm64 hotplug
+makes stuff not-enabled which is still enumerable.
+
+... or at least that is my understanding which may not be entirely
+correct (which is why I stepped down because I feel totally out of
+my depth with ACPI stuff.)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
