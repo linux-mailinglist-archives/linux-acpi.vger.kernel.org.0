@@ -1,64 +1,63 @@
-Return-Path: <linux-acpi+bounces-4952-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4951-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F588A31E2
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 17:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4B68A31E0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 17:13:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A801C220D0
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 15:13:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD0F28224A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 15:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA3D148838;
-	Fri, 12 Apr 2024 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5855D1487EA;
+	Fri, 12 Apr 2024 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="QA4kR7uJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="qQQc8YnJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D904F1487C3;
-	Fri, 12 Apr 2024 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B861482EB;
+	Fri, 12 Apr 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712934804; cv=none; b=CwZvHQxucixsx4cMu6qrXvbsUPAtSZ0abdl0t5gJWesFkJXalRAmN7+usRI7L+LoOcUrgfzZGYofeT5YZexlgevVdDVjH8y0xAuJqaDdg+awM7jtOsZavfxqwSpBA3xn0svOiWoyPuMWUZqAj5YyE0MRJNDz5IBIMkReI4Nrzkk=
+	t=1712934803; cv=none; b=nhd0+jj5+0QWx9Y9rQyBGrD3JqyA6x2jhaSGHb5H/NFyvCQuEgCN3DUD0e0EFrIfK9ZLE+RysF7wggK/T7Ybe5bQswE0RGpktmF2PgW0/Tj5R68B5DSk4sVHsjTh+m6GySc34/Vz5Q1sVOcObLSxp2+KigmQ9CgABK0FTB5Lb/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712934804; c=relaxed/simple;
-	bh=D/I7zxNBS8m8Chbv2XRv0I+6HHBNWVRfkhP2l99McE0=;
+	s=arc-20240116; t=1712934803; c=relaxed/simple;
+	bh=E1gk3LZozo44aITg1XCYWr1PwZC5BjHqphnzpkpHYjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JvjCKuCGP1cLWTlHSycjUrGAxDIaV4aclmCTutf7D+iQuShwmyEWymArXIiGSpM8vwE0syPaAE7ENhT6NYXeuJt14MD90pz9XcZKVpkQt0kh+215e1N9yCz14T+TWcGnSeYajOcfIXrHqdE3q1+/qOfk1VTzFAoLRGFdbrLrIVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=QA4kR7uJ reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=tqf/EAj1rYKlDuqLkssiCFksFndUl32tsrYrrM+qom4ylkHEVoBKUGio281M39Nc8dyYuNcfAnKid7bqKt6Nf5FxK8o7BIZE5OQotOsq4n+ysWPw8b8Q0k28rCK7KP8SBovxqYfZDfcfvdL/i6MovG6CPb9vjaFa6otXFgUaAT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=qQQc8YnJ reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.0.0)
- id 8ba249045168371a; Fri, 12 Apr 2024 17:13:14 +0200
+ id 4e6cc3ead897acee; Fri, 12 Apr 2024 17:13:13 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id EB84466CC48;
-	Fri, 12 Apr 2024 17:13:13 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C46B766CC48;
+	Fri, 12 Apr 2024 17:13:12 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1712934794;
-	bh=D/I7zxNBS8m8Chbv2XRv0I+6HHBNWVRfkhP2l99McE0=;
+	s=dkim; t=1712934793;
+	bh=E1gk3LZozo44aITg1XCYWr1PwZC5BjHqphnzpkpHYjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QA4kR7uJKDXiNZkWegNMd3v9l1E8+saTyFWpAV5nQ+y1rK2LlvFetr5m/6t1Se1CK
-	 Vc8HxWQaMCHTbf4ZYM3j6fqt2+FDEFyJitJdoRCEbf0JkzOvssmvPOfsFjKw8ZdEf1
-	 AI59NgRPSQjNI8+wJHmpPTda2YkIiwJSjClA9NYk0VcOtoNYOtJBVoGxo5caJJ075j
-	 C2w8KPY6DTt9E4O+DO3D0T1briGf5jPrtw8CjhrB7pvbeItQRSrRARYoelasVObYb5
-	 VPbufxnDALv10nDvNRjjf8TQMMehJgF3ZUMJrVpjru1bwPsxkGJtBLqzEaabadFZPN
-	 oeYLtOLTre1KA==
+	b=qQQc8YnJtiAwvEZ20eV052KswBaaCYyyxr1JkUtGHhecIH6rbRINc/+dBmNuB5oCB
+	 b+xnhHCUGBHQf01FNsxaKrSuI5ZaEMEB48gSJz00Yz9NvjmsTQtx/jibcX5NZfdmr+
+	 NgLowk/czedahZ3gnUuh79HWFNH6ucc0Wkz950LpOfAO8lZ+iwDuBnXngUTI534i/T
+	 faZd80S73NpYCqR+Ww5ZRKJyxPjWNnL6FEKSwCS1g5Vm+IpQWEcpXnCvBidTIC2Vha
+	 ARfzHeErC6RX8AL4BiZpfTx/XsFOFp8t8LSxSb5NDXREwduvNNM/UQecdhPwsW4ZfY
+	 OvjbOKXPQFhxA==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
 Subject:
- [PATCH v1 11/12] ACPICA: events/evgpeinit: don't forget to increment
- registered GPE count
-Date: Fri, 12 Apr 2024 17:12:21 +0200
-Message-ID: <8409590.NyiUUSuA9g@kreacher>
+ [PATCH v1 12/12] ACPICA: Update acpixf.h for new ACPICA release 20240322
+Date: Fri, 12 Apr 2024 17:13:03 +0200
+Message-ID: <3487364.QJadu78ljV@kreacher>
 In-Reply-To: <4920972.31r3eYUQgx@kreacher>
 References: <4920972.31r3eYUQgx@kreacher>
 Precedence: bulk
@@ -76,33 +75,29 @@ X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudeiuddgkeeiucetufdoteggod
  sehinhhtvghlrdgtohhm
 X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-From: Daniil Tatianin <99danilt@gmail.com>
+From: Saket Dumbre <saket.dumbre@intel.com>
 
-ACPICA commit ba8a36b5c7343cb56af6b331362e97b25e898eb2
+ACPICA commit 718374cd1bc21d08960b61069c8ac62b0cf67c0c
 
-This was used to log the number of newly discovered GPEs post table
-load in acpi_ev_update_gpes(), but we never incremented the number inside
-acpi_ev_match_gpe_method(), so that was never logged.
-
-Link: https://github.com/acpica/acpica/commit/ba8a36b5
-Signed-off-by: Daniil Tatianin <99danilt@gmail.com>
+Link: https://github.com/acpica/acpica/commit/718374cd
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/evgpeinit.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/acpi/acpixf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/evgpeinit.c b/drivers/acpi/acpica/evgpeinit.c
-index 0dbc4d88919a..38f408cf13ce 100644
---- a/drivers/acpi/acpica/evgpeinit.c
-+++ b/drivers/acpi/acpica/evgpeinit.c
-@@ -413,6 +413,7 @@ acpi_ev_match_gpe_method(acpi_handle obj_handle,
- 	gpe_event_info->flags &= ~(ACPI_GPE_DISPATCH_MASK);
- 	gpe_event_info->flags |= (u8)(type | ACPI_GPE_DISPATCH_METHOD);
- 	gpe_event_info->dispatch.method_node = method_node;
-+	walk_info->count++;
+diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+index 3d90716f9522..94d0fc3bd412 100644
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -12,7 +12,7 @@
  
- 	ACPI_DEBUG_PRINT((ACPI_DB_LOAD,
- 			  "Registered GPE method %s as GPE number 0x%.2X\n",
+ /* Current ACPICA subsystem version in YYYYMMDD format */
+ 
+-#define ACPI_CA_VERSION                 0x20230628
++#define ACPI_CA_VERSION                 0x20240322
+ 
+ #include <acpi/acconfig.h>
+ #include <acpi/actypes.h>
 -- 
 2.35.3
 
