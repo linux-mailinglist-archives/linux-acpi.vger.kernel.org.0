@@ -1,111 +1,109 @@
-Return-Path: <linux-acpi+bounces-4908-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4909-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C188A2311
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 02:57:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03DE8A23B3
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 04:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAB451F2291A
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 00:57:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7145C1F21BD5
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 02:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF351FB2;
-	Fri, 12 Apr 2024 00:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B35BD2EE;
+	Fri, 12 Apr 2024 02:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQoleHqJ"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="fTiPib+h"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13B6635;
-	Fri, 12 Apr 2024 00:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C49134B6
+	for <linux-acpi@vger.kernel.org>; Fri, 12 Apr 2024 02:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712883450; cv=none; b=UzAS0RBe9cKIpuEP7PcrhnBEUP3HwPC+Ou3DIYLDW3l3cukpNuRpBJd6snjxVIcrr6uCpx7f75mjUok/MKHnDQxBkZI/ZWlOLFn+2cmRbaXKa1YXmHKj3R9JeA8V3dsl1OSw5PNbUxt9C7RX7R0lx2HvtY0C9OqfgQesgDTOtbI=
+	t=1712887818; cv=none; b=pz6q8ENKTvefW3VifB38kX2aROF0GZ/e57BKXN+EckbP5m9H8q5+lcGWbJsKylyp9vZPAFvTht8tH78+0qsy0T0SXwvcBRNpZYRLv/QB55t/IyWuzrpC0JVtq8hbSfrbkaTbZiKQEtvk0EYpM33Yl8l2KqUqTSl7HctBX+eF8zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712883450; c=relaxed/simple;
-	bh=MIfoj+MveIgyU2tpQCyROYfjOQSPryYHNoW/UUrNq+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3QK4kLcccBL+J82vgqY98I5wXesFiJUXMbnmHoglwUnEDszjcWST4HLGYHSeXsvjztlL0O6WzLQSbEHZz9GrBPq2dPX/OTHyjwtBOvdqn/0WKRbt1I2oiQWMxGJBig5H74SyDkJ0m8/HXUCAoGhYCVpfWfG8BabQsAkwBxc2yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQoleHqJ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1e3ff14f249so3267795ad.1;
-        Thu, 11 Apr 2024 17:57:28 -0700 (PDT)
+	s=arc-20240116; t=1712887818; c=relaxed/simple;
+	bh=3byBbhHPbAbBuHjuvastDaMYVcOaFYFEWRQWWcNBJEs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DPKo7dBg+54fxVC4XlqojZryAnTDuX5u8xuXfvpdkEeBTM9xQ4vb7jd6tkdof7eQoy/v6h8y1NJCv1V99G9KxA+VTdcPGloT8dNOs0nITHUQ20rL7rLkzlUavmeb2WK0y5YdqBCcRgx3p2y3nIBfsjTIUngRTUJekVUrVNyCSYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=fTiPib+h; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-222a9eae9a7so269650fac.3
+        for <linux-acpi@vger.kernel.org>; Thu, 11 Apr 2024 19:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712883448; x=1713488248; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DXUPX3W8MoBNn+iv4m0YCN2/u0CoFiw63dWg/F1IegM=;
-        b=NQoleHqJGXU3MW86bbZHF1rIB7ok5HnoFgNlhF/hPA2Cp93A440ZBdAC7c58DQy9BW
-         Il3SSuzMgNXoulyOWoz7MI6+EJLuQYKBkPYxJ+DV+65aihiLK0XwqtrvwKI+mstQTyaA
-         fD28RhYfCvNwpel5K8ZgB/PSrA/wvu4/JZ3OhX7o0TFNSPiypzkKPrIUyM88V5AnJZXV
-         eilXhZj8JrxeSiv15GGsMSaxoabiDBGlsSVJBq+teEWeu5vFEKG+MCb0hPY4jHjz1Zg5
-         GA5WJ3oq1hTKMhYBBJeJfCT8VPYRqnXpf+yO3Zk1VsSvz/iw1VIHn6I74mX2+UDyoMHV
-         2zRQ==
+        d=bytedance.com; s=google; t=1712887816; x=1713492616; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3byBbhHPbAbBuHjuvastDaMYVcOaFYFEWRQWWcNBJEs=;
+        b=fTiPib+hPpELBGl9mXBDX3GtzxsphGVGmZplXY5c60TQ5YwaTHjWIPUD9Zi66Kt3lB
+         7EUU6013wMnUxFPPrW14B06w77hD8EclgIpmhhdPUFbFq32MG0W7fp0UTv1TP8pMs1iA
+         vb8DJdVtoewMod9+w90f6OOs/OJahX6agucWrnZ/bMsXr4LhMjMJspjzVuj7pYR1fs4/
+         6FTPaCuCYb42sDTDgcb2BeYqrp7RHm51wSJw3jrWf9RjQLxhcr8w/3YslbRXAyCN1pLU
+         gYyms8lzPhWTT5LlOsBWolG/RWKZ2lR1I0ksEX+HvtmJnFhlKIL+HfNBDUPYt376pHvl
+         3SRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712883448; x=1713488248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1712887816; x=1713492616;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DXUPX3W8MoBNn+iv4m0YCN2/u0CoFiw63dWg/F1IegM=;
-        b=lZGorXAv5ZZBcJVLBpGWR0/Jk5ZHhedDTr5u4t3vLqJyHXyn+uvI+3qXST5enpxMP0
-         uhY5Q+a/NfZ1/3khnAT7OrC/uwhEidKrE68vgd3rqz3YuBmBHfVJ6drG2nQzflmB70pI
-         ZjxEL1QA+X85VqjCIBFrqKI9fdq6ZCx4OC8J7yGl+bpgmhSctdUtyW/hAxy4+DmZLJb5
-         etsF/vtulvmDwGZ4aCWQzmZkvv7N5fKRSAvs/e2DH6L7E4cK9pgoyLNM3KrpNkIrU9rd
-         M+ATxj6Of1y3DtrmmcgHxvN8BE6XrLgSsY8ohoWv6X7F2oNSy4LLH/D+iGenBGF/xcsM
-         dioQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVEOtjIw9CtoAzrOBUjkALUnPwDuanFNoYHU+rXZ+qf+VuoBkKDpLFD0nFtz9PptJOyWedYMdhVIlFMrKEKpkk/W94dPSY/cmzFoA+4fFGWNyx11ni8Y+fGIrC5MI7n6EBLDEGHiwd9dBSMF4TM92zyk5kHcPDjfdTnbtslBlXKpDkSknF8MiwCe77deMRJcRoeAiQLgWB/DlhCTiWTYzDa3IYPG9DPMEBIbA==
-X-Gm-Message-State: AOJu0YxEL1bNJeXGcJuXvRjsPdrJwAv534WLL3oB8xv6HIG4pRfa8Xgb
-	y+8dsTD4IA5TePpFl5EQ4dgEB64MXN/ckHbNcMAxDB1rzOaB6xgP
-X-Google-Smtp-Source: AGHT+IF3fEVLEbfpH2K0DBl22UuXRCWrmLZcvHt+WYnbX0VMziEsqGFEm5HUu+wPYMMc+73AHxAjCg==
-X-Received: by 2002:a17:903:2303:b0:1e5:5c69:fcda with SMTP id d3-20020a170903230300b001e55c69fcdamr3572445plh.26.1712883448007;
-        Thu, 11 Apr 2024 17:57:28 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i15-20020a170902c94f00b001e25da6f2f2sm1788084pla.68.2024.04.11.17.57.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Apr 2024 17:57:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 11 Apr 2024 17:57:25 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: Mikael Lund Jepsen <mlj@danelec.com>,
-	"rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"jdelvare@suse.com" <jdelvare@suse.com>,
-	"linux@weissschuh.net" <linux@weissschuh.net>,
-	"ilpo.jarvinen@linux.intel.com" <ilpo.jarvinen@linux.intel.com>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"platform-driver-x86@vger.kernel.org" <platform-driver-x86@vger.kernel.org>
-Subject: Re: [PATCH v2] ACPI: fan: Add hwmon support
-Message-ID: <e5398618-5140-4553-8dab-6f5ad73de805@roeck-us.net>
-References: <20240409213323.8031-1-W_Armin@gmx.de>
- <AS4P189MB21333C826C173582E12FFE3EBA062@AS4P189MB2133.EURP189.PROD.OUTLOOK.COM>
- <e6798f0a-5e50-41df-ae3e-0069c16abec3@gmx.de>
- <b0899d74-79d7-459c-8f2d-17a17a0f58d7@gmx.de>
+        bh=3byBbhHPbAbBuHjuvastDaMYVcOaFYFEWRQWWcNBJEs=;
+        b=dml8F1jn4G6hLRui/tGOPLpzG328MZ4w9Ks7bsoGLrAuIN9+Tax9Gn32qAoDZZh4fp
+         w1Kuf/hvltG3mdV65KV5ROcmSRa0A60/582Cbvl/iga+CyiKJBynnHDoty89lJZsCEhc
+         7WqIOHCElJwKnF2AzhEFaTTZMkXi/4qjzcV1jnxFXbFaNMtmLo+QOEd7KXhP3rrCjhHs
+         ik/TI2F1zTKjY0b9csPgv49avvDdiVpnhPCBkna0lgy/UY+6OjXbdFN91a9OcDzkTNyz
+         4IWhdKfV6gMhTwxX7/07KVxzruLTdNNRNgcp7UAFvGdXD8spsBHZTt3/DZKNHPDVELNt
+         iZ7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXEa2SvePiZa7Oy16apjblqgBB3bO8MCfqm3L+NjGf7h0kyhmnSwc4CT9fZUUaFDQUZHSzYO4EW8zKH/NGBd+2JA3G1xeu5UxSXqA==
+X-Gm-Message-State: AOJu0YyX9cqZtAFHk91zb9khD6PIv8oqsw14f+acqCu0fwPCnJLHOs4B
+	IdgRnPTyzIonboveT1Qvg7WJkV7fdnCqIUBOnShj0I+4F1Ui9FZKPKQA+ITCXjslSr+ixvCbIVx
+	yJ2gHmNMFmMX9iVeOeHkY3RXeHIYz0zSfg9uhbw==
+X-Google-Smtp-Source: AGHT+IGlOlFyLP7nb72631wmeBnbeNqFrUTNa6xuGgqZC1KLH6e9hMuOyTmu/5EQbYJDgq3GFRyDSHVjJyECJ38qxLI=
+X-Received: by 2002:a05:6870:390c:b0:233:4685:aea3 with SMTP id
+ b12-20020a056870390c00b002334685aea3mr1355286oap.41.1712887816077; Thu, 11
+ Apr 2024 19:10:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b0899d74-79d7-459c-8f2d-17a17a0f58d7@gmx.de>
+References: <20240407123829.36474-1-cuiyunhui@bytedance.com> <ZhetojJewygmTf6N@bogus>
+In-Reply-To: <ZhetojJewygmTf6N@bogus>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Fri, 12 Apr 2024 10:10:05 +0800
+Message-ID: <CAEEQ3wkfHvH4jXNO5NRDf0Fc3xUkY64hp7BDBmgNVdcsmYy-kA@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH 1/2] ACPI: PPTT: Populate cacheinfo
+ entirely with PPTT
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 12, 2024 at 01:38:11AM +0200, Armin Wolf wrote:
-[ .. ]
-> I just noticed that the drvdata argument of the is_visible callback is marked as const, so i cannot use dev_get_drvdata() on the resulting ACPI device.
-> Guenter, would it be ok to make drvdata non-const in a separate patch series?
-> 
+Hi Sudeep,
 
-I don't know what you are trying to do (the is_visible callback
-isn't supposed to change the information passed to it), but not
-really.
+On Thu, Apr 11, 2024 at 5:30=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com>=
+ wrote:
+>
+> On Sun, Apr 07, 2024 at 08:38:28PM +0800, Yunhui Cui wrote:
+> > When the type and level information of this_leaf cannot be obtained
+> > from arch, cacheinfo is completely filled in with the content of PPTT.
+> >
+>
+> Which platform is this ? Is this arm64 based or something else like RISC-=
+V
+> based ? That would help to understand some context here.
+>
 
-Guenter
+Thanks for your response, RISC-V currently has this requirement.
+Please see: https://patchwork.kernel.org/project/linux-riscv/patch/20240407=
+123829.36474-2-cuiyunhui@bytedance.com/
+
+Thanks,
+Yunhui
 
