@@ -1,211 +1,160 @@
-Return-Path: <linux-acpi+bounces-4969-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4970-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5FD8A3324
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 18:08:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8F78A3346
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 18:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DAF41C20DEA
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 16:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456631F24A4D
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 16:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC3B143899;
-	Fri, 12 Apr 2024 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2634148FF8;
+	Fri, 12 Apr 2024 16:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="m/5W5Ayg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6651F1474DF;
-	Fri, 12 Apr 2024 16:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A914884C;
+	Fri, 12 Apr 2024 16:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712938089; cv=none; b=G07p0GnRlAkgW+T7cYTqMUJVl7JpMDeXtLJGnQS3KMOSxU9huVke6n882mkmkBgMqVqbZrmeIPtQdVFciovqg1KtRFR2jsVaoh9cKSX+0cRvjEON47A3lrJzHL4b3Vi5A6+39q+VuBJJtyk/MAWQili/SdjHEvdrvEbDeJGS+0I=
+	t=1712938176; cv=none; b=nDhjCQhYmBzTcLv8HLmzjHL2dgJaU0w1mLyT813x7df3Ms+yMuhoYaCRBlZNOGFEC+z94PJ+RhXBKBNB6SOAOrBjvxaLBFxyXIMv8z5wZeDJKULBHiMflS+tqS1mqrEqq6S4XWjzokLRwP72JM7s8g3t5LnojXIskqeo+f993bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712938089; c=relaxed/simple;
-	bh=KqGVur9Ye2q6dNqvzw3oeYhfgRsaaL049KXc3Dv2nBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EX9jIndK8yb97on7wE5si7ExpMlpaSX8khAqZYDRxP4YKyCvuZYoCTcTOHjpe5mL/qmNVEPBa52aKH7sDnHDWsztp4newgvKoZ114+sTdeMmhbkPE7FBluzpBiwq4hmIY5dNOXK8O0YUmjYf7zJcpsJjGjhmmtkxFSBstr5ZmT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9584339;
-	Fri, 12 Apr 2024 09:08:34 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2092C3F64C;
-	Fri, 12 Apr 2024 09:08:04 -0700 (PDT)
-Date: Fri, 12 Apr 2024 17:08:01 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: yunhui cui <cuiyunhui@bytedance.com>, rafael@kernel.org,
-	Sudeep Holla <sudeep.holla@arm.com>, lenb@kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: Re: [External] Re: [PATCH 1/2] ACPI: PPTT: Populate cacheinfo
- entirely with PPTT
-Message-ID: <ZhlcYRolZwm7UwJu@bogus>
-References: <20240407123829.36474-1-cuiyunhui@bytedance.com>
- <abd135fa-c432-4e37-9792-07a0e17e93d5@arm.com>
- <CAEEQ3w=+C2J0ZS227-1P-B+pe_NRp_3i4c4CxGssiKqbpXx_qw@mail.gmail.com>
- <2cde00c8-7878-45c0-8621-fca4e70c75e7@arm.com>
+	s=arc-20240116; t=1712938176; c=relaxed/simple;
+	bh=key2rY0okj8iTY/sKjeNG8DebhT6mn/FJZAaKfGK91E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BEXLpjz7PsJbpirgwIDmvnutxNTrRNyRPxySzKnQAr2AZlBV6aex0uthEpctalgV+KnKcP3vy8tcn1RTGUzw9xfpTy0Wb2BwFbNlVvJSpVcW46wyzLfiubF881fytnS4VykgouUZawpC0NIPMl7PzQzS3W1j3PzNMURUY+DTURg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=m/5W5Ayg; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1712938143; x=1713542943; i=w_armin@gmx.de;
+	bh=GfYGlzTabZ/Md6Ur06TpQylZldL1dEkuYiWABfiFon0=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+	b=m/5W5Ayg/cLKO6mqu+hsj+RN9pqKhFwmqKRKSFCwCY0gV+qinWNOKYvpFF/lRTeR
+	 OQYLA0rpOYfYN6WvX8BajQ0+WNaDRexCLtOuK0M43KtsO6Hu6n7r+h2DfqnOiAoc3
+	 xVD6trFryUR9HyRjvEAghFYRcEo81mVmlGM945nUPH6jnaxVEUSwn80u6+MuwcGVe
+	 2y01YTIVE/Jz+sA68Q7TYbYUqcommHH56V0RTNv7lLhifG+z/jcxiB8yGjcEmIvBl
+	 B1mHlQUXTUxrM+cEgXFegxmUidPjmxRxIbgAQIk3aeassvfaXN9O8b4QKtuuCFCvK
+	 wdTTTKliQTVcI76Nag==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MHXFr-1rzSKU0AOv-00Db32; Fri, 12 Apr 2024 18:09:03 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: mlj@danelec.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: jdelvare@suse.com,
+	linux@roeck-us.net,
+	linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH v3 1/2] hwmon: (core) Add support for power fault attribute
+Date: Fri, 12 Apr 2024 18:08:56 +0200
+Message-Id: <20240412160857.79858-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2cde00c8-7878-45c0-8621-fca4e70c75e7@arm.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FxN8oOpXNdjbD6CD5rAKuRlwWxOj0azlCpDAY3MnyB/WSTkNHyl
+ HE/auXD4vpPP6BXM+nU9pvumVwDf4Su+KryhDAmxqJDu8yiDN65uHKbPYAw97u/FiWmko1q
+ Hho5TLZCzT0BwtE7qJV4xiv3mJ/a8nOewjXizuGz1IP0TwXpaVSPDkpdyoI8WjdMpxv/mUW
+ QAgUgReNCQyayF+gFWCyQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:14VeDLJl1bg=;KEqr7ll/Hc3qkWPfpw6n4LsbJL1
+ c8x8CgG9ChVqgozx19NjB6vtmvVcPnWUZuIkUpXd2IoU1eZxfT8st/8o4e7LzBmt2gxfCuoZJ
+ dVWm+IxbFQr74U/KExjrG3HYcg1DmvcwKFzBg5KfT9Ng4slLYwOXl+DLprnJ/4sRxjKsLgEFj
+ ca90DiwEra/KsOtbhhXRxB2GaAE3PU6pfdu7jjtWey7U/YQULXX7X4oSK2nS7prKEaVZDtYMZ
+ EmG477JPhy1mZRtXIiqebhQCEXag6gBngjcjzJetSi/R2HbbHMA7ZgKyzLppjU8JsHdyn5hUK
+ 1J5O6tE8njQN3dbBb4I4lrqy+SfDiUXyqENKxPARclE1bAq+Mtxy27ItVMUxGlFBsod4EMXoj
+ GRMBeLmJi4GRPiYl39q4C1mcK4RQ0QhJiXNR0kLbbBN0n+tAD83sn5RRtkLmNWG+//eGEAFpq
+ PQIZMrfgM2afNEdermyHaO4Yywd1PEja+zdzVMi9VtJ0b7IECl3M3nBgW+Z30AgsGhqPyXz8f
+ om6O35uDstQ9wsH5lXRSO6Z5NoKCqVbhBlWa3Mu7YdaVOxKzGw9qy+Zuj6l4sBLNYVndcURaW
+ 0XG1mKeU5NG3rJPHlfgfbWh23k0lFJIZoTHzhZQ7vnkCUDEeZx79ND6loApE1IkwDJ/eJu8hJ
+ NId6Dv2NIk55CmVKgEynArgI0MuuMkzArq4PdrmN6NXGI339DSedyIgGf6+HDob2OCR2o2KGM
+ png1ApJBjheu5hAxEnGoqcuOgCf3oxZ5rMBguz8z2/hqGT8V4aqkrWLk9URKLV2dif/6krtQx
+ lvV4hWowzBevjjmigXh0FKNSsMK53JPj75lmKMi+8/iuc=
 
-On Fri, Apr 12, 2024 at 10:03:14AM -0500, Jeremy Linton wrote:
-> Hi,
-> On 4/10/24 21:28, yunhui cui wrote:
-> > Hi Jeremy,
-> > 
-> > On Wed, Apr 10, 2024 at 9:30 AM Jeremy Linton <jeremy.linton@arm.com> wrote:
-> > > 
-> > > Hi,
-> > > First thanks for working on this.
-> > > 
-> > > On 4/7/24 07:38, Yunhui Cui wrote:
-> > > > When the type and level information of this_leaf cannot be obtained
-> > > > from arch, cacheinfo is completely filled in with the content of PPTT.
-> > > 
-> > > I started reviewing this, based on what I understood to be the need to
-> > > generate the topology entirely from the PPTT. But, it was raising more
-> > > questions than answers because the PPTT is far too flexable in its
-> > > ability to represent cache hierachies that arn't logically useful. For
-> > > example multiple I or D caches at the same level, or I or D caches
-> > > higher in the topology than unified ones.
-> > > 
-> > > At least for arm64 (and I think others) there is an understood
-> > > simplification that there will be N levels of split I/D caches and M
-> > > unified levels. And from that, the number of cache leaves are computed
-> > > and allocated, and then we go in and largly skip PPTT cache nodes which
-> > > don't make sense in view of a generic topology like that. (see the
-> > > comment in cacheinfo.c:506)
-> > > 
-> > > Both of those pieces of information are available in
-> > > acpi_get_cache_info(). The missing part is marking those N levels of I/D
-> > > cache as such.
-> > > 
-> > > Looking at this code I don't really see all the error/allocation
-> > > logic/etc that assures the cache leaf indexing is allocated correctly
-> > > which worries me, although admidditly I could be missing something
-> > > important.
-> > > 
-> > > In summary, did you consider just allocating matching I/D caches from
-> > > the number of split levels in acpi_get_cache_info() then removing or
-> > > invalidating the ones that don't have matching PPTT entries after
-> > > running cache_setup_acpi()? Thats a fairly trivial change AFAIK if the
-> > > decision is based on the lack of a cache_id or just changing the
-> > > this_leaf->type = CACHE_TYPE_UNIFIED assignment to the correct type and
-> > > assuring left over CACHE_TYPE_NOCACHE entries are removed. I think much
-> > > of the "significant work" is likely fixed for that to work. Just
-> > > tweaking detect_cache_level()/get_cache_type() to set
-> > > CACHE_TYPE_SEPERATE if the level is less than the acpi_get_cache_info()
-> > > split_level value probably also does the majority of what you need
-> > > outside of having unequal counts of I and D caches.
-> > > 
-> > > There are probably other choices as well, thoughts?
-> > > 
-> > 
-> > First, I think the current state of the ACPI PPTT specification meets
-> > the requirements and is logically complete. Otherwise, the PPTT
-> > specification needs to be updated, right?
-> 
-> The specification is capable of representing all the actual physical
-> topologies I'm aware of, its also capable of representing quite a number of
-> topologies that don't make sense to (cant be) build and are largely
-> nonsense. There are some further details around replacement and allocation
-> which could be represented but were AFAIK not considered worth the effort
-> because it makes the representation far more complex.
-> 
-> So, except for minor clarifications I'm not aware of a need to update it.
-> 
-> > Our discussion is best focused on the existing and usual case, even on
-> > ARM64, which is as you say "N-level separated I/D cache, M-level
-> > unified".
-> 
-> I understood this was for RISC-V when I reviewed it, but i'm fairly certain
-> the general cache topologies of RISC-V machines don't vary in their core
-> concepts and layout much from the wide variety of possibilities available
-> elsewhere. So its roughly the same problem, you will likely have one or two
-> layers of split I/D caches and then a number of unified private or shared
-> caches above that.
-> 
-> 
-> > 
-> > And then, the problem we have now is that the RISC-V architecture does
-> > not have a set of registers to describe the cache level and type like
-> > ARM64 does, so we need to fully trust the contents of the PPTT table.
-> > Please check the patch:
-> > https://patchwork.kernel.org/project/linux-riscv/patch/20240407123829.36474-2-cuiyunhui@bytedance.com/
-> 
-> I don't think "fully trust" is something you really want, or is helpful as I
-> suggested above.
-> 
-> I suspect all that is needed is the construction of the missing I/D layers,
-> as the existing code will create the Unified layers above as it does today.
-> On Arm64 the unified system level caches aren't usually described by the
-> core cache registers either, which is why there is that existing bit of code
-> to change unknown caches to unified. But it also turns out the pptt walking
-> code is capable of providing the information to create the I/D layers as
-> well, if they are matched (ex there exists an I cache for every D cache at a
-> certain level).
-> 
-> So, more clarity about the kinds of topologies you expect is helpful to
-> understand where the current code is failing.
-> 
-> AKA, As I mentioned I'm fairly certain that its possible to construct the
-> entire cache topology from the PPTT by changing get_cache_type() to return
-> "CACHE_TYPE_SEPERATE" when the level is less than the value returned as
-> "split_level" from acpi_get_cache_info(). That tends to ignore some edge
-> cases, but I might put them in the "don't to that" bucket.
-> 
->
+Power sensor driver might want to signal that the power
+value is not usable. Add a new power fault attribute to
+report such failures.
 
-I agree with Jeremy's analysis. Can you check if something like below
-will address your issue. Not compile tested but you get an idea of what
-we are trying to do here.
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Changes since v2:
+- added patch
+=2D--
+ Documentation/ABI/testing/sysfs-class-hwmon | 9 +++++++++
+ drivers/hwmon/hwmon.c                       | 1 +
+ include/linux/hwmon.h                       | 2 ++
+ 3 files changed, 12 insertions(+)
 
-Regards,
-Sudeep
+diff --git a/Documentation/ABI/testing/sysfs-class-hwmon b/Documentation/A=
+BI/testing/sysfs-class-hwmon
+index cfd0d0bab483..ed01d43d2491 100644
+=2D-- a/Documentation/ABI/testing/sysfs-class-hwmon
++++ b/Documentation/ABI/testing/sysfs-class-hwmon
+@@ -882,6 +882,15 @@ Description:
 
--->8
-diff --git i/arch/riscv/kernel/cacheinfo.c w/arch/riscv/kernel/cacheinfo.c
-index 09e9b88110d1..92ab73ed5234 100644
---- i/arch/riscv/kernel/cacheinfo.c
-+++ w/arch/riscv/kernel/cacheinfo.c
-@@ -79,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
-        struct device_node *prev = NULL;
-        int levels = 1, level = 1;
+ 		RW
 
-+       if (!acpi_disabled) {
-+               int ret, fw_levels, split_levels;
++What:		/sys/class/hwmon/hwmonX/powerY_fault
++Description:
++		Reports a power sensor failure.
 +
-+               ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
-+               if (ret)
-+                       return ret;
++		- 1: Failed
++		- 0: Ok
 +
-+               /* must be set, so we can drop num_leaves assignment below */
-+               this_cpu_ci->num_leaves = fw_levels + split_levels;
++		RO
 +
-+               for (idx = 0; level <= this_cpu_ci->num_levels &&
-+                    idx < this_cpu_ci->num_leaves; idx++, level++) {
-+                       if (level <= split_levels) {
-+                               ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
-+                               ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
-+                       } else {
-+                               ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
-+                       }
-+               }
-+       }
-+
-        if (of_property_read_bool(np, "cache-size"))
-                ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
-        if (of_property_read_bool(np, "i-cache-size"))
+ What:		/sys/class/hwmon/hwmonX/powerY_rated_min
+ Description:
+ 		Minimum rated power.
+diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
+index 3b259c425ab7..6150d64f5c4c 100644
+=2D-- a/drivers/hwmon/hwmon.c
++++ b/drivers/hwmon/hwmon.c
+@@ -560,6 +560,7 @@ static const char * const hwmon_power_attr_templates[]=
+ =3D {
+ 	[hwmon_power_crit] =3D "power%d_crit",
+ 	[hwmon_power_label] =3D "power%d_label",
+ 	[hwmon_power_alarm] =3D "power%d_alarm",
++	[hwmon_power_fault] =3D "power%d_fault",
+ 	[hwmon_power_cap_alarm] =3D "power%d_cap_alarm",
+ 	[hwmon_power_min_alarm] =3D "power%d_min_alarm",
+ 	[hwmon_power_max_alarm] =3D "power%d_max_alarm",
+diff --git a/include/linux/hwmon.h b/include/linux/hwmon.h
+index edf96f249eb5..00122e565dbf 100644
+=2D-- a/include/linux/hwmon.h
++++ b/include/linux/hwmon.h
+@@ -237,6 +237,7 @@ enum hwmon_power_attributes {
+ 	hwmon_power_max_alarm,
+ 	hwmon_power_lcrit_alarm,
+ 	hwmon_power_crit_alarm,
++	hwmon_power_fault,
+ 	hwmon_power_rated_min,
+ 	hwmon_power_rated_max,
+ };
+@@ -270,6 +271,7 @@ enum hwmon_power_attributes {
+ #define HWMON_P_MAX_ALARM		BIT(hwmon_power_max_alarm)
+ #define HWMON_P_LCRIT_ALARM		BIT(hwmon_power_lcrit_alarm)
+ #define HWMON_P_CRIT_ALARM		BIT(hwmon_power_crit_alarm)
++#define HWMON_P_FAULT			BIT(hwmon_power_fault)
+ #define HWMON_P_RATED_MIN		BIT(hwmon_power_rated_min)
+ #define HWMON_P_RATED_MAX		BIT(hwmon_power_rated_max)
+
+=2D-
+2.39.2
 
 
