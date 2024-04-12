@@ -1,172 +1,145 @@
-Return-Path: <linux-acpi+bounces-4983-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4984-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6141D8A3757
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 22:54:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDE28A3773
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 23:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844D11C20F73
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 20:54:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B480B2127A
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 21:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5B345BF1;
-	Fri, 12 Apr 2024 20:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B995478B;
+	Fri, 12 Apr 2024 21:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4inyeoqy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K69eqoT0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CPTzbRBx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74142D600;
-	Fri, 12 Apr 2024 20:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B4727442;
+	Fri, 12 Apr 2024 21:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712955276; cv=none; b=i3mu0EksJ9RDoNl0p74af+JozoHKLZfvgtaoyxMzDTUXHLnJgmZvK3HYYR6xMqSAdS7T/RvqRfOYL8Pai6VX+W3+GmDAs/ARG7Ifq5uk6CAh1PrbbRsiKh6CenSQGbFL++OcZRI2AYdGPUPE5QA4FdVBoPZcXkgwcs8T263ucPA=
+	t=1712955694; cv=none; b=mzQf4pa+jdaXUs5s/9t4kiwqyK0WEqO+mxt1zvP4ngPnIUwe4Z5WulDEJciD+FDhs3GoAi8c217svomoMDRqda5KO1nbfOu8H4i9d4ErZCU4WjTin+FhDbw4SeIsemI8Bfevf07eH2HjYGKrpS9WdVABPXhev2UPyoe3EJHrEx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712955276; c=relaxed/simple;
-	bh=hhUyIpqpk6o2zo0WNmlEhV8GXEcdBzbXTRRrprL9qy0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WBY1svULg53sZhdO4Deyaek3K3rzoumBlLCLeeab9iT9l0EFB1RCkxitau8n1WwKmQsgCc0VJ0j4cYI2amh/UbHqNWhHs/HLbVI6W6Qxs+JIH/3FEpkD+sfxE+r9xuRtJoee0iivXvFyp/ZvxcrqrYlul36N16+dmC4ltbVRygA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4inyeoqy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K69eqoT0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712955272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zFYNr9CZirRSWZqeBDz7mLZZYuH7MefaeEp2ihefL/4=;
-	b=4inyeoqySqn696oIZQlb9IXUMxLGpByf7AJE7/CY3qCd+WjjkE8MjR2OKow6V0vZ7qLzwJ
-	UZ+Z3xAvJ8LxU9A0fRQW+JlkXq2hlaYRtlDal7asbeGA5LeiC4jZHhVc3QdIauZLLAHox7
-	/ViUdvsemMuvP5+RZYBl195exp6cIwTO0yekVxDM2JA8pBkPnrXcsmZQW5PN1xZKTB7yW0
-	8Z4F95k9a4JoZWM5tsSVxImLVs6Wfk7WB5bkG/a9aiqCT3OYfswjoZnFG3EhOfp441eAxY
-	lpWYte7RtW1FJk/uUAJeUX/o2WmjQZw9mI/NcIEqhOPgLNtycMHUFDMUkZ+eyQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712955272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zFYNr9CZirRSWZqeBDz7mLZZYuH7MefaeEp2ihefL/4=;
-	b=K69eqoT0yTN1N7e3SvOMWhl0A8acYvwWN5ZnRp0dVlstFtDzCgqLvKs7ylRIQnh26GWFqf
-	iUuHNO8hLeSYkoAw==
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki"
- <rafael@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, x86@kernel.org, Miguel Luis
- <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
- <salil.mehta@huawei.com>, Jean-Philippe Brucker
- <jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, linuxarm@huawei.com, justin.he@arm.com,
- jianyong.wu@arm.com
-Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
- acpi_processor_get_info()
-In-Reply-To: <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
- <20240412143719.11398-4-Jonathan.Cameron@huawei.com>
- <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
- <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
-Date: Fri, 12 Apr 2024 22:54:32 +0200
-Message-ID: <87bk6ez4hj.ffs@tglx>
+	s=arc-20240116; t=1712955694; c=relaxed/simple;
+	bh=IP42T3tgWRWDrNGKkDY+DzLNrsB0u7rO5P6dU7fjoFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wx33/9l+9vsTBuCBciBO1OwTXbuMq4VxFazKGfE9u/8eylNlcwArzJ69WdigAmfaitwvTBlWm5/Nh9hAmeac1Z0UfLCsbowt6q8qsHqk7tOCTGLamZ2XByoZ86PbH/+0e0ecPcXpRQiGTNKI3JYsF36CoJGQ4wA6492uZnZKBMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CPTzbRBx; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-29e0229d6b5so1025146a91.3;
+        Fri, 12 Apr 2024 14:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712955692; x=1713560492; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vY6UgSQMubYudbrT8iIFDxh72nPeRohY0ZfJbpBEIZA=;
+        b=CPTzbRBx2ZzgxV6ICRDyBRdzT32zQEDirzSv/U5zyuzI9UXxLME0hb55teae2hWjSZ
+         2dMgPoPICW4Fk7m8nwk3KoyhVhAzO07sLakz/ZjTZVMxlk1+lvZQQovuUV88hZlrDiO6
+         Otm37cySLuB5PXWQ3lloSisAmFXQ7JhJNySTNAFXvHpIpnP2lzXU6hkujR4YHmXv7uab
+         wQCHNT8h8PWxDpfVl5PcO5JoUezjDrLt6c1TmvLmb9KCvCmkvuQoLCMff4g1IxD5aih/
+         5YsJItunI2ElDPkzsuDlxYNTe1WP5PrkhDzWOJo6Pp7Wjbez+rdalKp4SrcLuTRxQM21
+         dwOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712955692; x=1713560492;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vY6UgSQMubYudbrT8iIFDxh72nPeRohY0ZfJbpBEIZA=;
+        b=doDWkyisGLcz76tcHAyKS0GjcbTH+fouTB6gQOKYUqh04BHNutJBZwAMfHtLKpn5DJ
+         EQoq2WWZq0z+rxFomg2TaqPV+flx1BNr32A1HwLCPkx20pJdfMOGqsuXWtgYsLJVZ2Kr
+         vrmfnML6BOd1gniTveqEJdSH7/im0I+V/xGQh1MmKV3bM2kqweS7CLpal/AsCak0tVKz
+         vtFpe9wJ9fwHpfjPnNDxLppmzlhQoy92KGqvgxpTmZ46nwgJ9x3BzesqIIE9o2oEklN1
+         4eUJtKFxjLtp4guzxy1/sQ+/9pMgkSGwi89y3rUoTtCtecoZ48GVTTmk7xu4yDDQBaUt
+         a0Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWLoaDYsPkJXrAb1p64V9wPiixqfAW43W5y5ZC32GsjDoV1vcXdVppoWeG1coAb524djypIRS/1OXlhRae88btV7QOSULvIwcR0CqXfjckSdDg9ItbA+bQE4Rul/bxb2JA4VaDUBD1z0kZXW8mUXyKsLmFR9epcDnZzzkc5Get6eaNHQBObwDJlEvQoMAePR7swNQSLs9B9DBqXL/XoQdAXHc2bpS01knsnA==
+X-Gm-Message-State: AOJu0YwHObihfqwQ+ZX8m1DOADWaghIZgKbV/NWrHSBV7SGMSmhjFiix
+	f0u/NXE58yHe0olrBedOR8NfFthbgROobLTJ7EkUYK36XdI36kH1
+X-Google-Smtp-Source: AGHT+IGtD/J8v512Ay+txxDTiC2uPF6OAxjKYpHqFIs9sDlymxLvIrF1sheBs77hAv/15pkTPSKE9g==
+X-Received: by 2002:a17:90a:de92:b0:2a5:52c3:4ca9 with SMTP id n18-20020a17090ade9200b002a552c34ca9mr3964426pjv.29.1712955692480;
+        Fri, 12 Apr 2024 14:01:32 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y15-20020a17090a1f4f00b002a2b06ce909sm5347803pjy.17.2024.04.12.14.01.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Apr 2024 14:01:31 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Fri, 12 Apr 2024 14:01:30 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
+	jdelvare@suse.com, linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com, linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] ACPI: fan: Add hwmon support
+Message-ID: <cff6f5f3-d883-4509-819d-9d2307bdcd56@roeck-us.net>
+References: <20240412160857.79858-1-W_Armin@gmx.de>
+ <20240412160857.79858-2-W_Armin@gmx.de>
+ <4a07f4d1-bbee-445c-a7cc-377506de850d@roeck-us.net>
+ <aace96e3-8645-469b-9056-0199af9d220c@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aace96e3-8645-469b-9056-0199af9d220c@gmx.de>
 
-On Fri, Apr 12 2024 at 21:16, Russell King (Oracle) wrote:
-> On Fri, Apr 12, 2024 at 08:30:40PM +0200, Rafael J. Wysocki wrote:
->> Say acpi_map_cpu) / acpi_unmap_cpu() are turned into arch calls.
->> What's the difference then?  The locking, which should be fine if I'm
->> not mistaken and need_hotplug_init that needs to be set if this code
->> runs after the processor driver has loaded AFAICS.
->
-> It is over this that I walked away from progressing this code, because
-> I don't think it's quite as simple as you make it out to be.
->
-> Yes, acpi_map_cpu() and acpi_unmap_cpu() are already arch implemented
-> functions, so Arm64 can easily provide stubs for these that do nothing.
-> That never caused me any concern.
->
-> What does cause me great concern though are the finer details. For
-> example, above you seem to drop the evaluation of _STA for the
-> "make_present" case - I've no idea whether that is something that
-> should be deleted or not (if it is something that can be deleted,
-> then why not delete it now?)
->
-> As for the cpu locking, I couldn't find anything in arch_register_cpu()
-> that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
-> being taken - so I've no idea why the "make_present" case takes these
-> locks.
+On Fri, Apr 12, 2024 at 10:27:56PM +0200, Armin Wolf wrote:
+> > > +		case hwmon_fan_fault:
+> > > +			*val = (fst.speed == FAN_SPEED_UNAVAILABLE);
+> > Is it documented that this is indeed a fault (broken fan) ?
+> > 
+> Hi,
+> 
+> it actually means that the fan does not support speed reporting.
+> 
+> > > +			return 0;
+> > > +		default:
+> > > +			break;
+> > > +		}
+> > > +		break;
+> > > +	case hwmon_power:
+> > > +		fps = acpi_fan_get_current_fps(fan, fst.control);
+> > > +		if (!fps)
+> > > +			return -ENODATA;
+> > > +
+> > > +		switch (attr) {
+> > > +		case hwmon_power_input:
+> > > +			if (fps->power == FAN_POWER_UNAVAILABLE)
+> > > +				return -ENODATA;
+> > > +
+> > > +			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
+> > > +				return -EOVERFLOW;
+> > > +
+> > > +			*val = fps->power * MICROWATT_PER_MILLIWATT;
+> > > +			return 0;
+> > > +		case hwmon_power_fault:
+> > > +			*val = (fps->power == FAN_POWER_UNAVAILABLE);
+> > Is it documented that this is indeed a power supply failure ?
+> > What if the value is simply not reported ? "UNAVAILABLE" is not
+> > commonly associated with a "fault".
+> > 
+> > Guenter
+> > 
+> FAN_POWER_UNAVAILABLE signals that the power value is not supported.
+> Would it be more suitable to drop the fault attributes and just return -ENODATA in such a case?
+> 
 
-Anything which updates a CPU mask, e.g. cpu_present_mask, after early
-boot must hold the appropriate write locks. Otherwise it would be
-possible to online a CPU which just got marked present, but the
-registration has not completed yet.
+There should be no fault attributes unless a real fault
+is reported, and if power reporting is not supported the
+hwmon_power_input attribute should not even be created.
 
-> Finally, the "pr->flags.need_hotplug_init = 1" thing... it's not
-> obvious that this is required - remember that with Arm64's "enabled"
-> toggling, the "processor" is a slice of the system and doesn't
-> actually go away - it's just "not enabled" for use.
->
-> Again, as "processors" in Arm64 are slices of the system, they have
-> to be fully described in ACPI before the OS boots, and they will be
-> marked as being "present", which means they will be enumerated, and
-> the driver will be probed. Any processor that is not to be used will
-> not have its enabled bit set. It is my understanding that every
-> processor will result in the ACPI processor driver being bound to it
-> whether its enabled or not.
->
-> The difference between real hotplug and Arm64 hotplug is that real
-> hotplug makes stuff not-present (and thus unenumerable). Arm64 hotplug
-> makes stuff not-enabled which is still enumerable.
+The same really applies to the fan speed atribute: If reading
+the fan speed is not supported, the attribute should not even
+exist.
 
-Define "real hotplug" :)
-
-Real physical hotplug does not really exist. That's at least true for
-x86, where the physical hotplug support was chased for a while, but
-never ended up in production.
-
-Though virtualization happily jumped on it to hot add/remove CPUs
-to/from a guest.
-
-There are limitations to this and we learned it the hard way on X86. At
-the end we came up with the following restrictions:
-
-    1) All possible CPUs have to be advertised at boot time via firmware
-       (ACPI/DT/whatever) independent of them being present at boot time
-       or not.
-
-       That guarantees proper sizing and ensures that associations
-       between hardware entities and software representations and the
-       resulting topology are stable for the lifetime of a system.
-
-       It is really required to know the full topology of the system at
-       boot time especially with hybrid CPUs where some of the cores
-       have hyperthreading and the others do not.
-
-
-    2) Hot add can only mark an already registered (possible) CPU
-       present. Adding non-registered CPUs after boot is not possible.
-
-       The CPU must have been registered in #1 already to ensure that
-       the system topology does not suddenly change in an incompatible
-       way at run-time.
-
-The same restriction would apply to real physical hotplug. I don't think
-that's any different for ARM64 or any other architecture.
-
-Hope that helps.
-
-Thanks,
-
-        tglx
-
+Guenter
 
