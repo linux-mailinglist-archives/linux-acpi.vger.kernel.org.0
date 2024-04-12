@@ -1,113 +1,118 @@
-Return-Path: <linux-acpi+bounces-4948-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4925-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D3C8A318B
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 16:52:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD4E8A2C94
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 12:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 405ED2833D1
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 14:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E5B01C23BB8
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 10:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CDD145B04;
-	Fri, 12 Apr 2024 14:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848913FE4B;
+	Fri, 12 Apr 2024 10:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXAJs4g5"
+	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="DHq3woNR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DB0145333;
-	Fri, 12 Apr 2024 14:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA8C446DC;
+	Fri, 12 Apr 2024 10:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712933572; cv=none; b=HO8JDTJZac0eU5OdyGs2XBy28cB9pzgHDPYM/60b0HEm0999nj9zCzR12ZCUBSfsN+bvKpQqhVYvxOE/sgOrupqcsCeqxZvQ/zjdJ+5rJ1Jfh/8AXJ5YmDII1aDRdlnwWPeOcW4pqo4OTvYGzSwBJJ6r5Xv/Vo94gdI+KE82wYA=
+	t=1712918342; cv=none; b=QD4JZ6v1ZcIzD99vxDXY6BxpGHFXLaKi9Ln4SPhEKNFH9UhxXCYWWyyGNGj9tljPmYFLBuiaOKYzxO9qv8aPCGuHpkoEaAcOLC/obd6nXs0EPxNx38dFX1f52lS2V378HNSVr5k/qWIYf9Jmp2v2FtBP7+YnM87jBsnB3JPGGks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712933572; c=relaxed/simple;
-	bh=3VJO+40pwSkL8WEP5XEs7367DXnCHzRW9AIbe65tr7w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h1ixzWl+R1yCRCu+dSqbLikH2KzgyrgVoftv+40dCgeodPe8SRDdKeafVr7xfeXpJt27Kx97nlj7sXb4bFSEn/hbh52hCAoPVMuTn/sOJYO0BiQunWGtq/sPZc/xGqyJe/TgMnuKYQNiMkKNu7jBq/y2ybS6lR4WuNOZxCihp+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXAJs4g5; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712933571; x=1744469571;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3VJO+40pwSkL8WEP5XEs7367DXnCHzRW9AIbe65tr7w=;
-  b=PXAJs4g5wg3ErC1btReuQ0iiYUy8BKv8nVcclBwEa+cM9Un6mH4WcYAe
-   AFYgML7ccsQ2l+QtWUP97joyNtmOWHPsUsM/JP5YU9EIsBCTPDt8HzF+8
-   5ng6j6Ld0NeviflAFfc74eLzX1fP4DDESayIatu4IV/9gQdGD4+kBRUpc
-   eLT0iEp5cAeu3uDms74G0cMVOB92eWBfkBDX41qmpDtKLLtcyLIZzIGKa
-   HToSXqvb5MYCYKo18wb5YUfn/kLDPA/JBLEQkGck+6BnHISAaU0utNl6g
-   LCSs7IMsBDY5SQlSgDm4RH17WBtSJaFVJ/VxYHSSVTjkzOV3zpb+3fHSk
-   g==;
-X-CSE-ConnectionGUID: 7gGmLBNDSYCUN8qqGendhg==
-X-CSE-MsgGUID: 0E1ZN7QZRTSIaYuVw6rNUA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11042"; a="8497359"
-X-IronPort-AV: E=Sophos;i="6.07,196,1708416000"; 
-   d="scan'208";a="8497359"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 07:52:50 -0700
-X-CSE-ConnectionGUID: UR2HQIB/T9aOUxFJHHipNw==
-X-CSE-MsgGUID: IbdOgvKoQS2wVBiMBfp5dQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,196,1708416000"; 
-   d="scan'208";a="25906271"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa004.fm.intel.com with ESMTP; 12 Apr 2024 07:52:46 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id CCE371B02; Fri, 12 Apr 2024 13:19:44 +0300 (EEST)
-Date: Fri, 12 Apr 2024 13:19:44 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	David Thompson <davthompson@nvidia.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Patrick Rudolph <patrick.rudolph@9elements.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v1 0/4] gpiolib: acpi: Use con_id in
- acpi_dev_gpio_irq_get_by()
-Message-ID: <20240412101944.GE112498@black.fi.intel.com>
-References: <20240411172540.4122581-2-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712918342; c=relaxed/simple;
+	bh=u4aUA6NcMnVUvYddJfCG+2UiNKu6Ga4o67L0/zLDAFo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GHMYSToweeoG04S+k6mPM7tBZo2pSHd4Jas3IRVM6IkRWQMRvaLsFqVrDx/xtXIk2j8QNOFOl0c0AQpzCWeIcDeZY03MK4/pTdn/AHJVnQJxlY0w0fdFrqkbhhRVs87S2F3dYo7Xc6oGPwKnW6RptRbcrZJ7sXFlqrJvwz1qqkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=DHq3woNR; arc=none smtp.client-ip=109.73.34.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
+Received: from mx1.t-argos.ru (localhost [127.0.0.1])
+	by mx1.t-argos.ru (Postfix) with ESMTP id 0B841100002;
+	Fri, 12 Apr 2024 13:38:41 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
+	t=1712918321; bh=rYWnZbFlUffRYhsJkJp9tuIBEkLFSWBjZgHCW4zBdKs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=DHq3woNRIwGSc/UkbIaiPcVqKYEvvBCkOVTLL4kGivRHl/YGupV4lLaq2pYlBfiL3
+	 jqPoilbQOp+6yXLl67xtXYSdoNxB70tY7krGtj51UI9kEhUGqDtotWtl4pk4SCGxoY
+	 mtYx63rSHDEpZEnjUR7LwsholWBw0JBULtNqmtpOsSF4P985oYPuXaE6+5bCoV+mKI
+	 SLQ0v7msR3kvzwk56g71vqQC3It1SvTgLpiBDTRE8F6dteJdvyojABfRwjPT02cJWj
+	 rMc/4Y6Ix9XlTDUOl6CpOaiXopFgPnju1YqBoHnDQoAeKY0E72HDxnoSMPS3Bueuik
+	 un/qN1Fnk6LZg==
+Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
+	by mx1.t-argos.ru (Postfix) with ESMTP;
+	Fri, 12 Apr 2024 13:37:52 +0300 (MSK)
+Received: from localhost.localdomain (172.17.215.6) by ta-mail-02
+ (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 12 Apr
+ 2024 13:37:31 +0300
+From: Aleksandr Mishin <amishin@t-argos.ru>
+To: Lv Zheng <lv.zheng@intel.com>
+CC: Aleksandr Mishin <amishin@t-argos.ru>, Robert Moore
+	<robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH] ACPICA: Handle memory allocation error
+Date: Fri, 12 Apr 2024 13:37:23 +0300
+Message-ID: <20240412103723.16943-1-amishin@t-argos.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240411172540.4122581-2-andriy.shevchenko@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
+ (172.17.13.212)
+X-KSMG-Rule-ID: 1
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 184684 [Apr 12 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 16 0.3.16 6e64c33514fcbd07e515710c86ba61de7f56194e, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;mx1.t-argos.ru.ru:7.1.1;t-argos.ru:7.1.1, FromAlignment: s
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2024/04/12 08:01:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/04/12 08:56:00 #24754366
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-On Thu, Apr 11, 2024 at 08:22:28PM +0300, Andy Shevchenko wrote:
-> Use con_id instead of property in the acpi_dev_gpio_irq_get_by().
-> It will be aligned with other GPIO library functions.
-> 
-> Assumed to go via my GPIO ACPI library tree follwoed by GPIO subsystem.
-> 
-> Andy Shevchenko (4):
->   gpiolib: acpi: Extract __acpi_find_gpio() helper
->   gpiolib: acpi: Simplify error handling in __acpi_find_gpio()
->   gpiolib: acpi: Move acpi_can_fallback_to_crs() out of
->     __acpi_find_gpio()
->   gpiolib: acpi: Pass con_id instead of property into
->     acpi_dev_gpio_irq_get_by()
-> 
->  drivers/gpio/gpio-pca953x.c                   |  2 +-
->  drivers/gpio/gpiolib-acpi.c                   | 52 +++++++++++--------
+In acpi_db_add_to_history() acpi_os_allocate() may return NULL
+in case of memory allocation error. This will lead to NULL pointer
+dereference.
+Fix this bug by adding NULL return check.
 
-For the gpiolib-acpi.c parts,
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+---
+ drivers/acpi/acpica/dbhistry.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/acpica/dbhistry.c b/drivers/acpi/acpica/dbhistry.c
+index e874c1dddefa..8366631d457f 100644
+--- a/drivers/acpi/acpica/dbhistry.c
++++ b/drivers/acpi/acpica/dbhistry.c
+@@ -69,6 +69,8 @@ void acpi_db_add_to_history(char *command_line)
+ 		acpi_gbl_history_buffer[acpi_gbl_next_history_index].command =
+ 		    acpi_os_allocate(cmd_len + 1);
+ 	}
++	if (!acpi_gbl_history_buffer[acpi_gbl_next_history_index].command)
++		return;
+ 
+ 	strcpy(acpi_gbl_history_buffer[acpi_gbl_next_history_index].command,
+ 	       command_line);
+-- 
+2.30.2
+
 
