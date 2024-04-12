@@ -1,98 +1,118 @@
-Return-Path: <linux-acpi+bounces-4923-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4924-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2898A2B81
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 11:47:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E24018A2C13
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 12:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F101F22295
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 09:47:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DFAEB215BE
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 10:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C8A51C40;
-	Fri, 12 Apr 2024 09:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CCB537FB;
+	Fri, 12 Apr 2024 10:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="rJw6jpM5"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2149C54668;
-	Fri, 12 Apr 2024 09:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D26350A63;
+	Fri, 12 Apr 2024 10:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712915220; cv=none; b=LVb1v204V0fnsMGH8DpH31BVtwN0OeRhHxu+hCzzT6DAemgv1bJO5wVohsomRdph6XEdLCPvlYfRy21sZ2qLjqOdS4Y7Y4WbpC35CEFOjukvihcORx9RakpzEqu3ClcAttrjOVEwOk6krfpvTeDJ/fw1qzUIU69FCOgGVhinQ+E=
+	t=1712916943; cv=none; b=g+M6K7tp27IXi9KxUyKKbus79QgW/jM4ygUKCqVUgE2akPUBV+ZWRebXxcUfB1oyyi1l62RHcxZsU4eJvrrJERNtZEUvQrn0i12rlCTCHKqdJoogQWdkd/q9rnAmG0mmhz3pJEicdGmVV3hJwwYKFRIrEPa4P2dzj9H0KzAnSOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712915220; c=relaxed/simple;
-	bh=h6f8y8w1EB4vmaYGFMXAt3NWwiMleFSkOdMtKqaPuSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KzU3eABB7Cc2EgbF3AtZrBj0PxMdSq/2GFUnOMC4jXALtL9Z1A/3BTlCZ/yRjrLNilG/kBJcX3aHAp5Re4pU4vqTIIMWQ8PZiFGda8vhmzRcM+OIVQyURslQoDBDvambXWmtrRnSjQkquQ1fBbCm3mu+czbgvrLJXZwzZjUL5JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC7FA339;
-	Fri, 12 Apr 2024 02:47:27 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 529A53F64C;
-	Fri, 12 Apr 2024 02:46:57 -0700 (PDT)
-Date: Fri, 12 Apr 2024 10:46:54 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: Re: [External] Re: [PATCH 1/2] ACPI: PPTT: Populate cacheinfo
- entirely with PPTT
-Message-ID: <ZhkDDnNvKiyStZZ2@bogus>
-References: <20240407123829.36474-1-cuiyunhui@bytedance.com>
- <ZhetojJewygmTf6N@bogus>
- <CAEEQ3wkfHvH4jXNO5NRDf0Fc3xUkY64hp7BDBmgNVdcsmYy-kA@mail.gmail.com>
- <Zhj-4C7xlklG1m5B@bogus>
- <CAEEQ3wkO4WPaY+bPidg-fDqV5MrQwh8ESbSv-+q8Odhat9XDrQ@mail.gmail.com>
+	s=arc-20240116; t=1712916943; c=relaxed/simple;
+	bh=xGhR+Pl3EV2Hdn4jQp8LQfllkFy6YeulYH8u+XV14Ew=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D6gLfIvTc6tRtMpjuzbZwKZwd6rX4ZpaV198gLSIkoQ32nByEs+n9Qzolpt+wqcpVVy8BHsKCYKTt1CDZmdrXxDQmA5XVSMqv9a463XPyTGLVCqo8IKBeHtHEzGG82njjxFeu4D8PXNK2ehNGf/eon90i4/HZFjMm3KgnQn/B20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=rJw6jpM5; arc=none smtp.client-ip=109.73.34.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
+Received: from mx1.t-argos.ru (localhost [127.0.0.1])
+	by mx1.t-argos.ru (Postfix) with ESMTP id CA27F100002;
+	Fri, 12 Apr 2024 13:15:19 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
+	t=1712916919; bh=LuEVrWBZUXEcAvPqrYHEhF+mnbBHa/fQlhmPnm1GapM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=rJw6jpM53DLVcqYOYuYB6C0GSv253N2/u48MVCgybQeVwiGfFKzWoE5xYOMxFIl3Z
+	 BOs79efSnj9ulCmuIeW6LVNdUtUQNIm63t6vPRjvZzwUS1eP4XdMDaymDWLT5Y0UZa
+	 VwlEPRF/6iDDCjDTDzd9euvR88hXobKw1dqHYX59wbbLfJZWxg35ZEYoFdLBtoPkDb
+	 ltc4ENMSubwtztyx8wllKDcT3F/+FcEvZ0CKhRAypZe3PimqGqBh5+Fhb1hz/oxUiG
+	 pIQdKX1kTTrcOEbDDJVcN9YPQ1vpM7mpT3Ur2Q6w+W/9E370YMqGoS9PPjglcIhBhO
+	 48uGQJvDv9mCA==
+Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
+	by mx1.t-argos.ru (Postfix) with ESMTP;
+	Fri, 12 Apr 2024 13:14:30 +0300 (MSK)
+Received: from localhost.localdomain (172.17.215.6) by ta-mail-02
+ (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 12 Apr
+ 2024 13:14:10 +0300
+From: Aleksandr Mishin <amishin@t-argos.ru>
+To: Lv Zheng <lv.zheng@intel.com>
+CC: Aleksandr Mishin <amishin@t-argos.ru>, Robert Moore
+	<robert.moore@intel.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<acpica-devel@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH] ACPICA: Handle memory allocation failure
+Date: Fri, 12 Apr 2024 13:14:02 +0300
+Message-ID: <20240412101402.14741-1-amishin@t-argos.ru>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wkO4WPaY+bPidg-fDqV5MrQwh8ESbSv-+q8Odhat9XDrQ@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
+ (172.17.13.212)
+X-KSMG-Rule-ID: 1
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 184684 [Apr 12 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 16 0.3.16 6e64c33514fcbd07e515710c86ba61de7f56194e, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;t-argos.ru:7.1.1;mx1.t-argos.ru.ru:7.1.1, FromAlignment: s
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean, bases: 2024/04/12 08:01:00
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/04/12 08:56:00 #24754366
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-On Fri, Apr 12, 2024 at 05:42:22PM +0800, yunhui cui wrote:
-> Hi Sudeep,
-> 
-> On Fri, Apr 12, 2024 at 5:29 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
-> >
-> > On Fri, Apr 12, 2024 at 10:10:05AM +0800, yunhui cui wrote:
-> > > Hi Sudeep,
-> > >
-> > > On Thu, Apr 11, 2024 at 5:30 PM Sudeep Holla <sudeep.holla@arm.com> wrote:
-> > > >
-> > > > On Sun, Apr 07, 2024 at 08:38:28PM +0800, Yunhui Cui wrote:
-> > > > > When the type and level information of this_leaf cannot be obtained
-> > > > > from arch, cacheinfo is completely filled in with the content of PPTT.
-> > > > >
-> > > >
-> > > > Which platform is this ? Is this arm64 based or something else like RISC-V
-> > > > based ? That would help to understand some context here.
-> > > >
-> > >
-> > > Thanks for your response, RISC-V currently has this requirement.
-> > > Please see: https://patchwork.kernel.org/project/linux-riscv/patch/20240407123829.36474-2-cuiyunhui@bytedance.com/
-> > >
-> >
-> > It would be helpful for the review if you have such information in the
-> > commit message.
->
-> Okay, I will update it in the commit message in v2. Do you have some
-> comments on the content of the patch?
->
+In acpi_db_convert_to_package() ACPI_ALLOCATE_ZEROED() may return NULL
+in case of memory allocation error. This will lead to NULL pointer
+dereference.
+Fix this bug by adding NULL return check.
 
-I will take a look at the patch later today or early next week now that
-I understand the requirement better. Sorry for the delay.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
---
-Regards,
-Sudeep
+Fixes: 995751025572 ("ACPICA: Linuxize: Export debugger files to Linux")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+---
+ drivers/acpi/acpica/dbconvert.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 2b84ac093698..8dbab6932049 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	elements =
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
++	if (!elements)
++		return (AE_NO_MEMORY);
+ 
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+-- 
+2.30.2
+
 
