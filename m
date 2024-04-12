@@ -1,353 +1,172 @@
-Return-Path: <linux-acpi+bounces-4982-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4983-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49028A370E
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 22:28:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6141D8A3757
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 22:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033341C215E6
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 20:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844D11C20F73
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 20:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAFB1514C4;
-	Fri, 12 Apr 2024 20:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5B345BF1;
+	Fri, 12 Apr 2024 20:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Tp3aQNg+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4inyeoqy";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K69eqoT0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CD03D548;
-	Fri, 12 Apr 2024 20:28:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74142D600;
+	Fri, 12 Apr 2024 20:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712953710; cv=none; b=Or9rnzaztGbhE5NgFKEgXN/OUk4CqlgnSsZRtIlbbiR83tcBMBrMz0v0FLUsjmhv0NAie6qbzis2r/PW61eBbm1zcGpNiXAcwmfiKJihgB44RVhL5JBo5aZ8wIu9Q3ASqAJpq3oUk+pP25NOu5owYWvd7UK8bifFIAmjf4k+Uck=
+	t=1712955276; cv=none; b=i3mu0EksJ9RDoNl0p74af+JozoHKLZfvgtaoyxMzDTUXHLnJgmZvK3HYYR6xMqSAdS7T/RvqRfOYL8Pai6VX+W3+GmDAs/ARG7Ifq5uk6CAh1PrbbRsiKh6CenSQGbFL++OcZRI2AYdGPUPE5QA4FdVBoPZcXkgwcs8T263ucPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712953710; c=relaxed/simple;
-	bh=NML7HhIB7sL0A36qRIddtkSdJWpp+SzmL65TZpkRlKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DHRK5pLtsXHb2nIW4okz4EXXAF2udrpDyM8GjQD9pAhFrHMOpoDl72vQ3YHJxOfdByDX9OQWdVHzHN6NRgbKPUBAtglKWtEtmAUx1st0JZKkkSZvPVOlxwqIksTIc+K52R6sKK/+suUlWEn+E744wP+dlNXUj+Ag+vObM/7Lr+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Tp3aQNg+; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1712953678; x=1713558478; i=w_armin@gmx.de;
-	bh=KyrgF+nYVVGWGNPHCPiikXqSh6HW9OZuxDd/Wnzjqs8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Tp3aQNg+RoSJMgnCvSy3mayID1O5o7v45xQ+S1xwEOZgoMthSHXPfhN0QyYkGHC0
-	 QZ1yaFSGX+wmVfX+b4osItS9PCghOqCD6i8A456aBEI02A8UY7qH43xmlGgX1LHFU
-	 PPL2cQ3QMOM7wwEl/XTYaLwTRI54e/HTzPdSbrvNR7w4rsusCsHudcEAlxMROXxIG
-	 XtWeYp5nRVt0KlQ0AufzNrjrZIAE7irBz756xG60S+21i9Zf7WTj2F7DoYpCkbBcL
-	 gQN7lYGhrw1/guhwu4ud9c3kypXxHXDsKuf/KmiBeQXju9lAkg5B0FLbtnoAI3ZZI
-	 MhCTKbNifNTp8TJBug==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M1psI-1rtAZi2HJw-002Ec0; Fri, 12
- Apr 2024 22:27:58 +0200
-Message-ID: <aace96e3-8645-469b-9056-0199af9d220c@gmx.de>
-Date: Fri, 12 Apr 2024 22:27:56 +0200
+	s=arc-20240116; t=1712955276; c=relaxed/simple;
+	bh=hhUyIpqpk6o2zo0WNmlEhV8GXEcdBzbXTRRrprL9qy0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WBY1svULg53sZhdO4Deyaek3K3rzoumBlLCLeeab9iT9l0EFB1RCkxitau8n1WwKmQsgCc0VJ0j4cYI2amh/UbHqNWhHs/HLbVI6W6Qxs+JIH/3FEpkD+sfxE+r9xuRtJoee0iivXvFyp/ZvxcrqrYlul36N16+dmC4ltbVRygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4inyeoqy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K69eqoT0; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1712955272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFYNr9CZirRSWZqeBDz7mLZZYuH7MefaeEp2ihefL/4=;
+	b=4inyeoqySqn696oIZQlb9IXUMxLGpByf7AJE7/CY3qCd+WjjkE8MjR2OKow6V0vZ7qLzwJ
+	UZ+Z3xAvJ8LxU9A0fRQW+JlkXq2hlaYRtlDal7asbeGA5LeiC4jZHhVc3QdIauZLLAHox7
+	/ViUdvsemMuvP5+RZYBl195exp6cIwTO0yekVxDM2JA8pBkPnrXcsmZQW5PN1xZKTB7yW0
+	8Z4F95k9a4JoZWM5tsSVxImLVs6Wfk7WB5bkG/a9aiqCT3OYfswjoZnFG3EhOfp441eAxY
+	lpWYte7RtW1FJk/uUAJeUX/o2WmjQZw9mI/NcIEqhOPgLNtycMHUFDMUkZ+eyQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1712955272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFYNr9CZirRSWZqeBDz7mLZZYuH7MefaeEp2ihefL/4=;
+	b=K69eqoT0yTN1N7e3SvOMWhl0A8acYvwWN5ZnRp0dVlstFtDzCgqLvKs7ylRIQnh26GWFqf
+	iUuHNO8hLeSYkoAw==
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki"
+ <rafael@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, x86@kernel.org, Miguel Luis
+ <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
+ <salil.mehta@huawei.com>, Jean-Philippe Brucker
+ <jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, linuxarm@huawei.com, justin.he@arm.com,
+ jianyong.wu@arm.com
+Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
+ acpi_processor_get_info()
+In-Reply-To: <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
+References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
+ <20240412143719.11398-4-Jonathan.Cameron@huawei.com>
+ <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
+ <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
+Date: Fri, 12 Apr 2024 22:54:32 +0200
+Message-ID: <87bk6ez4hj.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] ACPI: fan: Add hwmon support
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
- jdelvare@suse.com, linux@weissschuh.net, ilpo.jarvinen@linux.intel.com,
- linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org
-References: <20240412160857.79858-1-W_Armin@gmx.de>
- <20240412160857.79858-2-W_Armin@gmx.de>
- <4a07f4d1-bbee-445c-a7cc-377506de850d@roeck-us.net>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <4a07f4d1-bbee-445c-a7cc-377506de850d@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:zKcBohe/ud71onOWhcUnYbRcZBehHVNM8Ttx98F9FAdlELN/jSM
- +A+4oYzhwfwzHzJraDZnae+u5Jo3c3Phrf2bjAQoraHzFongnGP0LJsMv2Wh931Ve8s8FNp
- 1+Hae2BtHHYhF5zpZf3hasNT6lWMeu0J/n8zic1SXf1m0LJHgAHAR09ChVuhmehcc1U/DcY
- 54jcgyaTqiAd1iipS9eiw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jIisPhg1bxc=;ffneigWqNJ8AfAYT0r9Ne9T/GIm
- PdlybKldVl47aUlpjIywa6Veazq408nv9rvvDVLxe8sZZF9IrQvZNTuJSPlZGKAbDcKfiZAkk
- m02V7XNBOovblSOLEZMIr7sPLury3XNsMzhrg2SwTMXLetOFWptHS9Zzan+0UU8parfrGar7g
- 6zejkxo1TPr/iZ5E6m2EZZ2CYq0nSmnVFsCozWvUiAYwSOistrQe6GhxMkHKxFCCfrq1Uz3ck
- Pnxfp7L6ldch1tFmlVOdejWtsNfrs6m74JA4b5TZ7qeJnuJBLL1XTpUx+ViYjBOQdtXswFCXR
- ZaRTyV6S3K9mr/A6I5o9rtPeqGe4QCdS7TDUYwTuC9fmsVQz5JX5Eodeosu1ZxqiGBMqIm7zQ
- 2I6VlP8oSeXFpwZAb3TVCI3BPJX3atW59u5Jx4wwauIyDuCRQ/nCILQqUGemeVjnRmn7VWCwS
- ut7yUK3qmPrHM9KGDI5yqL6S9TtYgSAHW0P+lwNvrMEXJV0A0lEcPkXKIVKxLIIjcA/9gNY0u
- oqYiSrOfXuxBM3qvfRTRUokTaWyfAG4L0dd3b2WnRbn6zJ8tjq9ox3zt18NMZ54ej+b/Y2zbk
- PQ5pCdb4QnZ82hnEQRDxDk/xvZJME35Ms0I80PPvom0o3qMiI2cCkuOaK1kbHtt7ynS/BOdG2
- rSaCOqUA/pyWk0ccBgCDFywtDYxg2yfILV0IWmlma9LFBgUSinQR6NRnwHIo/B/MbS9NFkpBO
- tJvBrblu7rEIDmGoXYZb7N4zIuLkUG5izH/f9Zq/AfEEWeBubpbtMM7Nswfs2fThpZTaCmBRQ
- Y9WqBXwa3fjsQh2AhTLaNqeVNsj2udLdvGcd53DKdGU6I=
+Content-Type: text/plain
 
-Am 12.04.24 um 18:41 schrieb Guenter Roeck:
-
-> On Fri, Apr 12, 2024 at 06:08:57PM +0200, Armin Wolf wrote:
->> Currently, the driver does only support a custom sysfs
->> to allow userspace to read the fan speed.
->> Add support for the standard hwmon interface so users
->> can read the fan speed with standard tools like "sensors".
->>
->> Compile-tested only.
->>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> ---
->> Changes since v2:
->> - add support for fanX_target and power attrs
->>
->> Changes since v1:
->> - fix undefined reference error
->> - fix fan speed validation
->> - coding style fixes
->> - clarify that the changes are compile-tested only
->> - add hwmon maintainers to cc list
->>
->> The changes will be tested by Mikael Lund Jepsen from Danelec and
->> should be merged only after those tests.
->> ---
->>   drivers/acpi/Makefile    |   1 +
->>   drivers/acpi/fan.h       |   9 +++
->>   drivers/acpi/fan_core.c  |   4 ++
->>   drivers/acpi/fan_hwmon.c | 148 +++++++++++++++++++++++++++++++++++++++
->>   4 files changed, 162 insertions(+)
->>   create mode 100644 drivers/acpi/fan_hwmon.c
->>
->> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
->> index 39ea5cfa8326..61ca4afe83dc 100644
->> --- a/drivers/acpi/Makefile
->> +++ b/drivers/acpi/Makefile
->> @@ -77,6 +77,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+= tiny-power-button.o
->>   obj-$(CONFIG_ACPI_FAN)		+= fan.o
->>   fan-objs			:= fan_core.o
->>   fan-objs			+= fan_attr.o
->> +fan-$(CONFIG_HWMON)		+= fan_hwmon.o
->>
->>   obj-$(CONFIG_ACPI_VIDEO)	+= video.o
->>   obj-$(CONFIG_ACPI_TAD)		+= acpi_tad.o
->> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
->> index f89d19c922dc..db25a3898af7 100644
->> --- a/drivers/acpi/fan.h
->> +++ b/drivers/acpi/fan.h
->> @@ -10,6 +10,8 @@
->>   #ifndef _ACPI_FAN_H_
->>   #define _ACPI_FAN_H_
->>
->> +#include <linux/kconfig.h>
->> +
->>   #define ACPI_FAN_DEVICE_IDS	\
->>   	{"INT3404", }, /* Fan */ \
->>   	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
->> @@ -57,4 +59,11 @@ struct acpi_fan {
->>   int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst);
->>   int acpi_fan_create_attributes(struct acpi_device *device);
->>   void acpi_fan_delete_attributes(struct acpi_device *device);
->> +
->> +#if IS_REACHABLE(CONFIG_HWMON)
->> +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
->> +#else
->> +static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) { return 0; };
->> +#endif
->> +
->>   #endif
->> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
->> index ff72e4ef8738..7cea4495f19b 100644
->> --- a/drivers/acpi/fan_core.c
->> +++ b/drivers/acpi/fan_core.c
->> @@ -336,6 +336,10 @@ static int acpi_fan_probe(struct platform_device *pdev)
->>   		if (result)
->>   			return result;
->>
->> +		result = devm_acpi_fan_create_hwmon(device);
->> +		if (result)
->> +			return result;
->> +
->>   		result = acpi_fan_create_attributes(device);
->>   		if (result)
->>   			return result;
->> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
->> new file mode 100644
->> index 000000000000..57216ba872db
->> --- /dev/null
->> +++ b/drivers/acpi/fan_hwmon.c
->> @@ -0,0 +1,148 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
->> + *
->> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
->> + */
->> +
->> +#include <linux/acpi.h>
->> +#include <linux/hwmon.h>
->> +#include <linux/limits.h>
->> +#include <linux/units.h>
->> +
->> +#include "fan.h"
->> +
->> +/* Returned when the ACPI fan does not support speed reporting */
->> +#define FAN_SPEED_UNAVAILABLE	0xffffffff
->> +#define FAN_POWER_UNAVAILABLE	0xffffffff
->> +
->> +static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan, u64 control)
->> +{
->> +	int i;
->> +
->> +	for (i = 0; i < fan->fps_count; i++) {
->> +		if (fan->fps[i].control == control)
->> +			return &fan->fps[i];
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->> +static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
->> +				   int channel)
->> +{
->> +	return 0444;
->> +}
->> +
->> +static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
->> +			 long *val)
->> +{
->> +	struct acpi_device *adev = dev_get_drvdata(dev);
->> +	struct acpi_fan *fan = acpi_driver_data(adev);
->> +	struct acpi_fan_fps *fps;
->> +	struct acpi_fan_fst fst;
->> +	int ret;
->> +
->> +	ret = acpi_fan_get_fst(adev, &fst);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	switch (type) {
->> +	case hwmon_fan:
->> +		switch (attr) {
->> +		case hwmon_fan_input:
->> +			if (fst.speed == FAN_SPEED_UNAVAILABLE)
->> +				return -ENODATA;
->> +
->> +			if (fst.speed > LONG_MAX)
->> +				return -EOVERFLOW;
->> +
->> +			*val = fst.speed;
->> +			return 0;
->> +		case hwmon_fan_target:
->> +			fps = acpi_fan_get_current_fps(fan, fst.control);
->> +			if (!fps)
->> +				return -ENODATA;
->> +
->> +			*val = fps->speed;
->> +			return 0;
->> +		case hwmon_fan_fault:
->> +			*val = (fst.speed == FAN_SPEED_UNAVAILABLE);
-> Is it documented that this is indeed a fault (broken fan) ?
+On Fri, Apr 12 2024 at 21:16, Russell King (Oracle) wrote:
+> On Fri, Apr 12, 2024 at 08:30:40PM +0200, Rafael J. Wysocki wrote:
+>> Say acpi_map_cpu) / acpi_unmap_cpu() are turned into arch calls.
+>> What's the difference then?  The locking, which should be fine if I'm
+>> not mistaken and need_hotplug_init that needs to be set if this code
+>> runs after the processor driver has loaded AFAICS.
 >
-Hi,
-
-it actually means that the fan does not support speed reporting.
-
->> +			return 0;
->> +		default:
->> +			break;
->> +		}
->> +		break;
->> +	case hwmon_power:
->> +		fps = acpi_fan_get_current_fps(fan, fst.control);
->> +		if (!fps)
->> +			return -ENODATA;
->> +
->> +		switch (attr) {
->> +		case hwmon_power_input:
->> +			if (fps->power == FAN_POWER_UNAVAILABLE)
->> +				return -ENODATA;
->> +
->> +			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
->> +				return -EOVERFLOW;
->> +
->> +			*val = fps->power * MICROWATT_PER_MILLIWATT;
->> +			return 0;
->> +		case hwmon_power_fault:
->> +			*val = (fps->power == FAN_POWER_UNAVAILABLE);
-> Is it documented that this is indeed a power supply failure ?
-> What if the value is simply not reported ? "UNAVAILABLE" is not
-> commonly associated with a "fault".
+> It is over this that I walked away from progressing this code, because
+> I don't think it's quite as simple as you make it out to be.
 >
-> Guenter
+> Yes, acpi_map_cpu() and acpi_unmap_cpu() are already arch implemented
+> functions, so Arm64 can easily provide stubs for these that do nothing.
+> That never caused me any concern.
 >
-FAN_POWER_UNAVAILABLE signals that the power value is not supported.
-Would it be more suitable to drop the fault attributes and just return -ENODATA in such a case?
+> What does cause me great concern though are the finer details. For
+> example, above you seem to drop the evaluation of _STA for the
+> "make_present" case - I've no idea whether that is something that
+> should be deleted or not (if it is something that can be deleted,
+> then why not delete it now?)
+>
+> As for the cpu locking, I couldn't find anything in arch_register_cpu()
+> that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
+> being taken - so I've no idea why the "make_present" case takes these
+> locks.
+
+Anything which updates a CPU mask, e.g. cpu_present_mask, after early
+boot must hold the appropriate write locks. Otherwise it would be
+possible to online a CPU which just got marked present, but the
+registration has not completed yet.
+
+> Finally, the "pr->flags.need_hotplug_init = 1" thing... it's not
+> obvious that this is required - remember that with Arm64's "enabled"
+> toggling, the "processor" is a slice of the system and doesn't
+> actually go away - it's just "not enabled" for use.
+>
+> Again, as "processors" in Arm64 are slices of the system, they have
+> to be fully described in ACPI before the OS boots, and they will be
+> marked as being "present", which means they will be enumerated, and
+> the driver will be probed. Any processor that is not to be used will
+> not have its enabled bit set. It is my understanding that every
+> processor will result in the ACPI processor driver being bound to it
+> whether its enabled or not.
+>
+> The difference between real hotplug and Arm64 hotplug is that real
+> hotplug makes stuff not-present (and thus unenumerable). Arm64 hotplug
+> makes stuff not-enabled which is still enumerable.
+
+Define "real hotplug" :)
+
+Real physical hotplug does not really exist. That's at least true for
+x86, where the physical hotplug support was chased for a while, but
+never ended up in production.
+
+Though virtualization happily jumped on it to hot add/remove CPUs
+to/from a guest.
+
+There are limitations to this and we learned it the hard way on X86. At
+the end we came up with the following restrictions:
+
+    1) All possible CPUs have to be advertised at boot time via firmware
+       (ACPI/DT/whatever) independent of them being present at boot time
+       or not.
+
+       That guarantees proper sizing and ensures that associations
+       between hardware entities and software representations and the
+       resulting topology are stable for the lifetime of a system.
+
+       It is really required to know the full topology of the system at
+       boot time especially with hybrid CPUs where some of the cores
+       have hyperthreading and the others do not.
+
+
+    2) Hot add can only mark an already registered (possible) CPU
+       present. Adding non-registered CPUs after boot is not possible.
+
+       The CPU must have been registered in #1 already to ensure that
+       the system topology does not suddenly change in an incompatible
+       way at run-time.
+
+The same restriction would apply to real physical hotplug. I don't think
+that's any different for ARM64 or any other architecture.
+
+Hope that helps.
 
 Thanks,
-Armin Wolf
 
->> +			return 0;
->> +		default:
->> +			break;
->> +		}
->> +		break;
->> +	default:
->> +		break;
->> +	}
->> +
->> +	return -EOPNOTSUPP;
->> +}
->> +
->> +static const struct hwmon_ops acpi_fan_ops = {
->> +	.is_visible = acpi_fan_is_visible,
->> +	.read = acpi_fan_read,
->> +};
->> +
->> +static const struct hwmon_channel_info * const acpi_fan_info[] = {
->> +	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_TARGET |  HWMON_F_FAULT),
->> +	HWMON_CHANNEL_INFO(power, HWMON_P_INPUT | HWMON_P_FAULT),
->> +	NULL
->> +};
->> +
->> +static const struct hwmon_chip_info acpi_fan_chip_info = {
->> +	.ops = &acpi_fan_ops,
->> +	.info = acpi_fan_info,
->> +};
->> +
->> +static const struct hwmon_channel_info * const acpi_fan_fine_grain_info[] = {
->> +	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_FAULT),
->> +	NULL
->> +};
->> +
->> +static const struct hwmon_chip_info acpi_fan_fine_grain_chip_info = {
->> +	.ops = &acpi_fan_ops,
->> +	.info = acpi_fan_fine_grain_info,
->> +};
->> +
->> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
->> +{
->> +	struct acpi_fan *fan = acpi_driver_data(device);
->> +	const struct hwmon_chip_info *info;
->> +	struct device *hdev;
->> +
->> +	/* When in fine grain control mode, not every fan control value
->> +	 * has an associated fan performance state.
->> +	 */
->> +	if (fan->fif.fine_grain_ctrl)
->> +		info = &acpi_fan_fine_grain_chip_info;
->> +	else
->> +		info = &acpi_fan_chip_info;
->> +
->> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", device, info, NULL);
->> +
->> +	return PTR_ERR_OR_ZERO(hdev);
->> +}
->> --
->> 2.39.2
->>
+        tglx
+
 
