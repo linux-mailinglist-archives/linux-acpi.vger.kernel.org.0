@@ -1,174 +1,250 @@
-Return-Path: <linux-acpi+bounces-4987-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-4988-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0EF8A38E1
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Apr 2024 01:24:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFF48A3AC4
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Apr 2024 05:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BA8DB21B52
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Apr 2024 23:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22AC91C22CEB
+	for <lists+linux-acpi@lfdr.de>; Sat, 13 Apr 2024 03:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CE6152518;
-	Fri, 12 Apr 2024 23:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C4F199B0;
+	Sat, 13 Apr 2024 03:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tW6ap+zQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C6bVqxHC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SmRmgKPu"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BB9225D7;
-	Fri, 12 Apr 2024 23:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B500D1BDCD;
+	Sat, 13 Apr 2024 03:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712964233; cv=none; b=HEuBLnCz5ho+C6Nr9p6HLdP9LFqDxEOyf+WomaDzzGinXeQ0G1RC+HTu6cDrLjC5GU2WXebPr/b7GtrIQN/zzBRUS1FuujgVM46aoNItevlgPg5+esm3EH8F9MqffPNUiD1CwEfn03wrwn+UC3Bf+cHlZBBMIAzd8Xzm2ST/w/Q=
+	t=1712979899; cv=none; b=OHmvSjjucgmZovI95wk2EaqRRUUKYmb80jhH6RKn0HPTLdQBZEZl9HnkOZs0gigGEf+nWdaKHfhzHhU+twKnT7Dg075p4JbIG1EWcZMuuCZef3PREP0aBhzvQHwSpnP2ZrJSyO2k5mHnJfNlCabaNf2JnJJTBhUQ18IwuoHoZBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712964233; c=relaxed/simple;
-	bh=CbK4jt4ZdUloJNuVh6KOM2ueno3wxztt8Qa5vgstwIQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=PwLx5P2uiQode9/rlPdVsm0S0/NihuwcKmScsrOnS6auK+GM+v2gT+8x+LzhNyWqQQyOxiJShttW9an50wNFXW5IPv2LesEi2zdeBr7A0WZhAYkkaKbhBUMByTIenVN3yFGwx7cI6ClQYsz20jaSSOhBEPnj60nPi4LtrRuQYtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tW6ap+zQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C6bVqxHC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712964230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T5xu2FVtNRnOIqknb2Ux4D1eBvHtL7IvYUAUi+UDnWI=;
-	b=tW6ap+zQjCfPb0Iu5NRfFG9LND9NrDkPfEJWzzMV7FCLTiO/67DEBwqkhnToa6FAcP2EMM
-	6MUD2W5m6nuwV2lpFNG3h+9zzeXDVM+p+g58Cp/G+e4GRZcfa5YXlQCXsvhowZhIeayP0F
-	mX0bfZnV7zatQ27FSiwCVDCNzdKFDc9OqpMidB2qf2Cpn4vHrQKR1CDd5Jo0Vu7BskZTIr
-	zk34+SsJ8yxAruaTIUuw2IA0vIdHj/NMRshMO3Ypq0Afb5kNOeHECSYmsLQEyGEwXiqLV8
-	1HqLCmjoZ7R9k59MXcM+5pSKlvvx5MjGxECT/fcNGhgdh8TjLYqmzvmpqlulZQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712964230;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T5xu2FVtNRnOIqknb2Ux4D1eBvHtL7IvYUAUi+UDnWI=;
-	b=C6bVqxHCPN+wfRrnH1w7K16dZrgwWFLb9vxFt3+t2PJptgUt5gh64ablXIU/tU1hN5ia0j
-	DVRgHQA0LBs0mhCA==
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-pm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- x86@kernel.org, Miguel Luis <miguel.luis@oracle.com>, James Morse
- <james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
- Brucker <jean-philippe@linaro.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- linuxarm@huawei.com, justin.he@arm.com, jianyong.wu@arm.com
-Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
- acpi_processor_get_info()
-In-Reply-To: <ZhmtO6zBExkQGZLk@shell.armlinux.org.uk>
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
- <20240412143719.11398-4-Jonathan.Cameron@huawei.com>
- <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
- <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk> <87bk6ez4hj.ffs@tglx>
- <ZhmtO6zBExkQGZLk@shell.armlinux.org.uk>
-Date: Sat, 13 Apr 2024 01:23:48 +0200
-Message-ID: <878r1iyxkr.ffs@tglx>
+	s=arc-20240116; t=1712979899; c=relaxed/simple;
+	bh=2Y3d18tWZk8W3Xv9C8xq8guEZynXeCFEYI/QaTo+5bQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=OTafcqFdyJpxpn0h9rl0eXOQreoJfOb6CgLfhPTOKFvX4kuuo4Bp72g1bW8f2p+ilDW0ztDrut1VH+ISZH2Kxcx26LrhzW91CYnkK+zthUukxaLTiiqXqYojk7woEMBIoHnJBa2epJZhbBGCGnGRV6n3jIoKmsVFm33/CZJLuL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SmRmgKPu; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712979898; x=1744515898;
+  h=date:from:to:cc:subject:message-id;
+  bh=2Y3d18tWZk8W3Xv9C8xq8guEZynXeCFEYI/QaTo+5bQ=;
+  b=SmRmgKPuaSAUjAlAw6xGD20LRSoa6PDm0vJ/2fGXU0EKzHzd1Dm9F9d7
+   2FnyFIY1LuDxHtFwUhiL7sNHZd1Rcm7E5nWjFooPJuP2I+ddP5xmw7ZRA
+   GKhrViUJncK3Kg4UVLJQOefIywwxQuExp6Cu53IwhhWSdopadJifNrU+J
+   hUpt8XIMZjiXZb9JZu569n67o0zCRcahRd5W4kA3LYHUdYe+nGQylgpA9
+   LlSkjhr5Xu0Jf/NEp36OXGPKskquJXe4IAG7IRToRdGZerx9s8vESrAFb
+   4Loxx7XxY09Dtn8UzLyIWMulyOtjkoyiy2Trow0Z6k9U2DHsnXgfwZeJ/
+   Q==;
+X-CSE-ConnectionGUID: +Tx1jlO3SGiCrNYphRulnA==
+X-CSE-MsgGUID: 99CyY2cdSOaCxLw1CH7dDw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11042"; a="12294834"
+X-IronPort-AV: E=Sophos;i="6.07,198,1708416000"; 
+   d="scan'208";a="12294834"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Apr 2024 20:44:58 -0700
+X-CSE-ConnectionGUID: 3KiEOu9gRC+tyNDFl/vGLA==
+X-CSE-MsgGUID: R3l5J5hTSIaAXQIeGJX3Mw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,198,1708416000"; 
+   d="scan'208";a="52362005"
+Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 12 Apr 2024 20:44:56 -0700
+Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rvUJx-0001do-10;
+	Sat, 13 Apr 2024 03:44:53 +0000
+Date: Sat, 13 Apr 2024 11:43:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ bb01190ed522c30fcf1f0e5312fa2726c84d6535
+Message-ID: <202404131125.yWEobpT5-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Russell!
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: bb01190ed522c30fcf1f0e5312fa2726c84d6535  Merge branch 'pm-cpufreq' into bleeding-edge
 
-On Fri, Apr 12 2024 at 22:52, Russell King (Oracle) wrote:
-> On Fri, Apr 12, 2024 at 10:54:32PM +0200, Thomas Gleixner wrote:
->> > As for the cpu locking, I couldn't find anything in arch_register_cpu()
->> > that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
->> > being taken - so I've no idea why the "make_present" case takes these
->> > locks.
->> 
->> Anything which updates a CPU mask, e.g. cpu_present_mask, after early
->> boot must hold the appropriate write locks. Otherwise it would be
->> possible to online a CPU which just got marked present, but the
->> registration has not completed yet.
->
-> Yes. As far as I've been able to determine, arch_register_cpu()
-> doesn't manipulate any of the CPU masks. All it seems to be doing
-> is initialising the struct cpu, registering the embedded struct
-> device, and setting up the sysfs links to its NUMA node.
->
-> There is nothing obvious in there which manipulates any CPU masks, and
-> this is rather my fundamental point when I said "I couldn't find
-> anything in arch_register_cpu() that depends on ...".
->
-> If there is something, then comments in the code would be a useful aid
-> because it's highly non-obvious where such a manipulation is located,
-> and hence why the locks are necessary.
+elapsed time: 911m
 
-acpi_processor_hotadd_init()
-...
-         acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
+configs tested: 156
+configs skipped: 3
 
-That ends up in fiddling with cpu_present_mask.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I grant you that arch_register_cpu() is not, but it might rely on the
-external locking too. I could not be bothered to figure that out.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240412   gcc  
+arc                   randconfig-001-20240413   gcc  
+arc                   randconfig-002-20240412   gcc  
+arc                   randconfig-002-20240413   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240412   gcc  
+arm                   randconfig-001-20240413   clang
+arm                   randconfig-002-20240412   clang
+arm                   randconfig-003-20240412   clang
+arm                   randconfig-004-20240412   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240412   gcc  
+arm64                 randconfig-002-20240412   gcc  
+arm64                 randconfig-003-20240412   clang
+arm64                 randconfig-004-20240412   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240412   gcc  
+csky                  randconfig-002-20240412   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240412   clang
+hexagon               randconfig-002-20240412   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240412   gcc  
+i386         buildonly-randconfig-001-20240413   gcc  
+i386         buildonly-randconfig-002-20240412   clang
+i386         buildonly-randconfig-002-20240413   gcc  
+i386         buildonly-randconfig-003-20240412   gcc  
+i386         buildonly-randconfig-003-20240413   clang
+i386         buildonly-randconfig-004-20240412   gcc  
+i386         buildonly-randconfig-004-20240413   clang
+i386         buildonly-randconfig-005-20240412   gcc  
+i386         buildonly-randconfig-005-20240413   clang
+i386         buildonly-randconfig-006-20240412   gcc  
+i386         buildonly-randconfig-006-20240413   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240412   clang
+i386                  randconfig-001-20240413   clang
+i386                  randconfig-002-20240412   gcc  
+i386                  randconfig-002-20240413   gcc  
+i386                  randconfig-003-20240413   clang
+i386                  randconfig-004-20240413   gcc  
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240412   gcc  
+loongarch             randconfig-002-20240412   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240412   gcc  
+nios2                 randconfig-002-20240412   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240412   gcc  
+parisc                randconfig-002-20240412   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240412   clang
+powerpc               randconfig-002-20240412   clang
+powerpc               randconfig-003-20240412   gcc  
+powerpc64             randconfig-001-20240412   gcc  
+powerpc64             randconfig-002-20240412   gcc  
+powerpc64             randconfig-003-20240412   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240412   clang
+riscv                 randconfig-002-20240412   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240412   gcc  
+s390                  randconfig-002-20240412   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240412   gcc  
+sh                    randconfig-002-20240412   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240412   gcc  
+sparc64               randconfig-002-20240412   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240412   clang
+um                    randconfig-002-20240412   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240413   gcc  
+x86_64       buildonly-randconfig-002-20240413   gcc  
+x86_64       buildonly-randconfig-003-20240413   gcc  
+x86_64       buildonly-randconfig-004-20240413   gcc  
+x86_64       buildonly-randconfig-005-20240413   gcc  
+x86_64       buildonly-randconfig-006-20240413   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240413   gcc  
+x86_64                randconfig-002-20240413   gcc  
+x86_64                randconfig-003-20240413   gcc  
+x86_64                randconfig-004-20240413   gcc  
+x86_64                randconfig-005-20240413   gcc  
+x86_64                randconfig-006-20240413   gcc  
+x86_64                randconfig-011-20240413   clang
+x86_64                randconfig-012-20240413   clang
+x86_64                randconfig-013-20240413   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240412   gcc  
 
->> Define "real hotplug" :)
->> 
->> Real physical hotplug does not really exist. That's at least true for
->> x86, where the physical hotplug support was chased for a while, but
->> never ended up in production.
->> 
->> Though virtualization happily jumped on it to hot add/remove CPUs
->> to/from a guest.
->> 
->> There are limitations to this and we learned it the hard way on X86. At
->> the end we came up with the following restrictions:
->> 
->>     1) All possible CPUs have to be advertised at boot time via firmware
->>        (ACPI/DT/whatever) independent of them being present at boot time
->>        or not.
->> 
->>        That guarantees proper sizing and ensures that associations
->>        between hardware entities and software representations and the
->>        resulting topology are stable for the lifetime of a system.
->> 
->>        It is really required to know the full topology of the system at
->>        boot time especially with hybrid CPUs where some of the cores
->>        have hyperthreading and the others do not.
->> 
->> 
->>     2) Hot add can only mark an already registered (possible) CPU
->>        present. Adding non-registered CPUs after boot is not possible.
->> 
->>        The CPU must have been registered in #1 already to ensure that
->>        the system topology does not suddenly change in an incompatible
->>        way at run-time.
->> 
->> The same restriction would apply to real physical hotplug. I don't think
->> that's any different for ARM64 or any other architecture.
->
-> This makes me wonder whether the Arm64 has been barking up the wrong
-> tree then, and whether the whole "present" vs "enabled" thing comes
-> from a misunderstanding as far as a CPU goes.
->
-> However, there is a big difference between the two. On x86, a processor
-> is just a processor. On Arm64, a "processor" is a slice of the system
-> (includes the interrupt controller, PMUs etc) and we must enumerate
-> those even when the processor itself is not enabled. This is the whole
-> reason there's a difference between "present" and "enabled" and why
-> there's a difference between x86 cpu hotplug and arm64 cpu hotplug.
-> The processor never actually goes away in arm64, it's just prevented
-> from being used.
-
-It's the same on X86 at least in the physical world.
-
-Thanks,
-
-        tglx
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
