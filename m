@@ -1,268 +1,164 @@
-Return-Path: <linux-acpi+bounces-5009-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5010-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DE78A4E38
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 13:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C6F8A4E6B
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 14:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27B16281C7A
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 11:58:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE949280F1B
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 12:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303A67752;
-	Mon, 15 Apr 2024 11:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A294467A1A;
+	Mon, 15 Apr 2024 12:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="ereQHwXE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB6D66B50;
-	Mon, 15 Apr 2024 11:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EF966B5E
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 12:03:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713182276; cv=none; b=q6dSQy6WheR5guPc4Tu1w5oq6OCSTbjA6gQQftecF3SIHqAv3qLQWrsO/ULWPXKhBbS+rDcJyDSq1VP2ypJpUCAKTQ5Ybi2ZjLSyXBu89SBy98G51T1xrj2ivdD5EVj7A/eLe/wTbazc5kt+uoBrGBoTWP/0VZxqPaTwWhenAlA=
+	t=1713182634; cv=none; b=QgQamE+KqI+YQpXb0qhlqTyxvq9AsRKKcG15EWkLCrOZXhKPtT2c+wuvKDaaK/5l9MQqKB0oQSgPkUoacwXXAzK6mEAkuBv3Jc28nzNoU7nu6qpdykTHW0lyAhTSLyZ1ky3cZMXlFofQJDh49eYZSDM70KzXkF8BbPEO6/rXPf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713182276; c=relaxed/simple;
-	bh=PNLuukF0Yp/9iaVTkZtZJkldxbjTYu/S2BxHnxSKgpc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ff+hVvpU0q0uhOfjCIfW63uRXn6H0bk7tw9hdQfoWLbtGi179deYvqTOwLrKgg6ELHGlkfPzv2YwCZVaHqO+44r36j0eWA8UYDf8prpR6zV/bss/QeoFiisBK/R4Qcov6QkHQx3DYuVstzTzVoxAy692GURw4/4z5rG8LMA87tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VJ5Gl2C5Qz6K6TF;
-	Mon, 15 Apr 2024 19:55:59 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id BAD821409EA;
-	Mon, 15 Apr 2024 19:57:52 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 15 Apr
- 2024 12:57:52 +0100
-Date: Mon, 15 Apr 2024 12:57:50 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-CC: "Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Miguel Luis
-	<miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
-	<salil.mehta@huawei.com>, "Jean-Philippe Brucker" <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
-Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
- acpi_processor_get_info()
-Message-ID: <20240415125750.000026af@huawei.com>
-In-Reply-To: <20240415101637.00007e49@huawei.com>
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
-	<20240412143719.11398-4-Jonathan.Cameron@huawei.com>
-	<CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
-	<ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
-	<87bk6ez4hj.ffs@tglx>
-	<ZhmtO6zBExkQGZLk@shell.armlinux.org.uk>
-	<878r1iyxkr.ffs@tglx>
-	<20240415094552.000008d7@Huawei.com>
-	<20240415101637.00007e49@huawei.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+	s=arc-20240116; t=1713182634; c=relaxed/simple;
+	bh=XUdYqSmwVovBEI2SpQ5+Es9BsdYiZplIxqYD7Dd9rUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OH6bzndXzO2x6BWlXj8YPG/k1qeATSQw5BA/nyJ0+BI3K/+JwmAnChsjXvncmUGp7DRiAoAaUIjiYtaQ+Dpg6sZyysvudy24ijTuQ0gxzuIS/rxwkFYpPheIT1uQxy6FddezTsiiEsUfxqFLB2Tj5ybWUaSg24CP/fMiHIsZ2u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=ereQHwXE; arc=none smtp.client-ip=209.85.160.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-23335730db1so1902347fac.2
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 05:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1713182630; x=1713787430; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nUM9SS9JNPHB2GD0yvR5K/5tFBuL0BhdH0M+pWpbQJA=;
+        b=ereQHwXEWrlqFaVW5w9wnlvTObVZGGEY4MEJIa0J9co40F022QSKULc5iNhC+GDEzy
+         KMUgMTSTdPI6gNpsaOwb/siNe1/NXhdDmuyzmU1V98y6D04rtgxQNFnbxQzYn8Y01Sm0
+         srpCZWI2rSZNWDAveRsWQH5jMNDZcYw2uSvHcRvxpwYsDw2GrQtsEFcVSyDLqj4UIQX2
+         /Z/DbBwa9mkRpTabX+WdPfXmKn/IqjcHa94wwsn5jv3Iex/ZM/y/Nbl7vwcA+T9j2WcH
+         89TDkSF9HO8I3Aj9/5fjIRgJ0/u6J36bvE0ATdtuZqEX8SE3P7RT94ZGIu5Qrdud/Koi
+         HAtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713182630; x=1713787430;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nUM9SS9JNPHB2GD0yvR5K/5tFBuL0BhdH0M+pWpbQJA=;
+        b=EUByQsI0dhQq1XRXB5XhHi0nTPf3HfdJwUsJLN2slToGustqu5Q/w0kq4vD5HNj9xY
+         7WDYoMQL2ug0PkS7k6EbuA5Kdao0f2L4hWreKFeyptmJ+V6b/cOE0FgVoTl3DFKL6PXS
+         jaBYhJjfXVPB6Lc020bNQBpvIhr57EFaW0JwlfkIkqzlDFacjR6yjp98wobgRxpzRzB4
+         wfDUD9Heo/6/h1Kvy0tZM3RfHpwbIiGBffycjKV3qv3pWXOD4yQ/b8UmH8Ub1k0wNPNt
+         znDvT0lnC9kn7wVDYiVznL3ppmTiBgsC7q43r71sYAjol7Bf9cBbMi4a05Eq9NjqfczT
+         oCfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEHTY0ejTGro/1X+/Uoes/9LPC6Nih6vnajk1fp4m2va78noOjUE4UhLBWkhEukIFe9GAkeErrUYg3/oUxu8BzwpqOr/ET5fZETQ==
+X-Gm-Message-State: AOJu0YxKs93k4ma+JY5N2vVaevRfQT9wpFu6haI1tQVEFhh+joaaHhvs
+	4Pd9jfiFpsmujoLq1rqPGsVTDeWNyqjoZbFP1CISRpMGjMKMutCRb9tQTlmMjAoroFExsFBtm6i
+	CmGpKxE5j314tNwi4iPL6ALXrJsswtz04CSLNlA==
+X-Google-Smtp-Source: AGHT+IF+ysnzqvijegluvjiwQKxRcx13O9ZDpCztSQtH8QXKxsIagGyKK5PKiNKWo1TCoNguxXwOTSWqBx38mQ3RLEE=
+X-Received: by 2002:a05:6871:28a9:b0:220:8bd2:cd09 with SMTP id
+ bq41-20020a05687128a900b002208bd2cd09mr12160806oac.32.1713182629917; Mon, 15
+ Apr 2024 05:03:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240414025826.64025-1-cuiyunhui@bytedance.com>
+ <20240414025826.64025-2-cuiyunhui@bytedance.com> <Zhzo_gWFiURs_geD@bogus>
+In-Reply-To: <Zhzo_gWFiURs_geD@bogus>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Mon, 15 Apr 2024 20:03:38 +0800
+Message-ID: <CAEEQ3wkzvOpahzPuoD7=aMG3srjdyCA21tnh-j9PvY3Qerk_hg@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v2 2/3] riscv: cacheinfo: initialize
+ cacheinfo's level and type from ACPI PPTT
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
+	james.morse@arm.com, jhugo@codeaurora.org, jeremy.linton@arm.com, 
+	john.garry@huawei.com, Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, 
+	tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 15 Apr 2024 10:16:37 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+Hi Sudeep,
 
-> On Mon, 15 Apr 2024 09:45:52 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> 
-> > On Sat, 13 Apr 2024 01:23:48 +0200
-> > Thomas Gleixner <tglx@linutronix.de> wrote:
-> >   
-> > > Russell!
-> > > 
-> > > On Fri, Apr 12 2024 at 22:52, Russell King (Oracle) wrote:    
-> > > > On Fri, Apr 12, 2024 at 10:54:32PM +0200, Thomas Gleixner wrote:      
-> > > >> > As for the cpu locking, I couldn't find anything in arch_register_cpu()
-> > > >> > that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
-> > > >> > being taken - so I've no idea why the "make_present" case takes these
-> > > >> > locks.      
-> > > >> 
-> > > >> Anything which updates a CPU mask, e.g. cpu_present_mask, after early
-> > > >> boot must hold the appropriate write locks. Otherwise it would be
-> > > >> possible to online a CPU which just got marked present, but the
-> > > >> registration has not completed yet.      
-> > > >
-> > > > Yes. As far as I've been able to determine, arch_register_cpu()
-> > > > doesn't manipulate any of the CPU masks. All it seems to be doing
-> > > > is initialising the struct cpu, registering the embedded struct
-> > > > device, and setting up the sysfs links to its NUMA node.
-> > > >
-> > > > There is nothing obvious in there which manipulates any CPU masks, and
-> > > > this is rather my fundamental point when I said "I couldn't find
-> > > > anything in arch_register_cpu() that depends on ...".
-> > > >
-> > > > If there is something, then comments in the code would be a useful aid
-> > > > because it's highly non-obvious where such a manipulation is located,
-> > > > and hence why the locks are necessary.      
-> > > 
-> > > acpi_processor_hotadd_init()
-> > > ...
-> > >          acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
-> > > 
-> > > That ends up in fiddling with cpu_present_mask.
-> > > 
-> > > I grant you that arch_register_cpu() is not, but it might rely on the
-> > > external locking too. I could not be bothered to figure that out.
-> > >     
-> > > >> Define "real hotplug" :)
-> > > >> 
-> > > >> Real physical hotplug does not really exist. That's at least true for
-> > > >> x86, where the physical hotplug support was chased for a while, but
-> > > >> never ended up in production.
-> > > >> 
-> > > >> Though virtualization happily jumped on it to hot add/remove CPUs
-> > > >> to/from a guest.
-> > > >> 
-> > > >> There are limitations to this and we learned it the hard way on X86. At
-> > > >> the end we came up with the following restrictions:
-> > > >> 
-> > > >>     1) All possible CPUs have to be advertised at boot time via firmware
-> > > >>        (ACPI/DT/whatever) independent of them being present at boot time
-> > > >>        or not.
-> > > >> 
-> > > >>        That guarantees proper sizing and ensures that associations
-> > > >>        between hardware entities and software representations and the
-> > > >>        resulting topology are stable for the lifetime of a system.
-> > > >> 
-> > > >>        It is really required to know the full topology of the system at
-> > > >>        boot time especially with hybrid CPUs where some of the cores
-> > > >>        have hyperthreading and the others do not.
-> > > >> 
-> > > >> 
-> > > >>     2) Hot add can only mark an already registered (possible) CPU
-> > > >>        present. Adding non-registered CPUs after boot is not possible.
-> > > >> 
-> > > >>        The CPU must have been registered in #1 already to ensure that
-> > > >>        the system topology does not suddenly change in an incompatible
-> > > >>        way at run-time.
-> > > >> 
-> > > >> The same restriction would apply to real physical hotplug. I don't think
-> > > >> that's any different for ARM64 or any other architecture.      
-> > > >
-> > > > This makes me wonder whether the Arm64 has been barking up the wrong
-> > > > tree then, and whether the whole "present" vs "enabled" thing comes
-> > > > from a misunderstanding as far as a CPU goes.
-> > > >
-> > > > However, there is a big difference between the two. On x86, a processor
-> > > > is just a processor. On Arm64, a "processor" is a slice of the system
-> > > > (includes the interrupt controller, PMUs etc) and we must enumerate
-> > > > those even when the processor itself is not enabled. This is the whole
-> > > > reason there's a difference between "present" and "enabled" and why
-> > > > there's a difference between x86 cpu hotplug and arm64 cpu hotplug.
-> > > > The processor never actually goes away in arm64, it's just prevented
-> > > > from being used.      
-> > > 
-> > > It's the same on X86 at least in the physical world.    
-> > 
-> > There were public calls on this via the Linaro Open Discussions group,
-> > so I can talk a little about how we ended up here.  Note that (in my
-> > opinion) there is zero chance of this changing - it took us well over
-> > a year to get to this conclusion.  So if we ever want ARM vCPU HP
-> > we need to work within these constraints. 
-> > 
-> > The ARM architecture folk (the ones defining the ARM ARM, relevant ACPI
-> > specs etc, not the kernel maintainers) are determined that they want
-> > to retain the option to do real physical CPU hotplug in the future
-> > with all the necessary work around dynamic interrupt controller
-> > initialization, debug and many other messy corners.
-> > 
-> > Thus anything defined had to be structured in a way that was 'different'
-> > from that.
-> > 
-> > I don't mind the proposed flattening of the 2 paths if the ARM kernel
-> > maintainers are fine with it but it will remove the distinctions and
-> > we will need to be very careful with the CPU masks - we can't handle
-> > them the same as x86 does.
-> > 
-> > I'll get on with doing that, but do need input from Will / Catalin / James.
-> > There are some quirks that need calling out as it's not quite a simple
-> > as it appears from a high level.
-> > 
-> > Another part of that long discussion established that there is userspace
-> > (Android IIRC) in which the CPU present mask must include all CPUs
-> > at boot. To change that would be userspace ABI breakage so we can't
-> > do that.  Hence the dance around adding yet another mask to allow the
-> > OS to understand which CPUs are 'present' but not possible to online.
-> > 
-> > Flattening the two paths removes any distinction between calls that
-> > are for real hotplug and those that are for this online capable path.
-> > As a side note, the indicating bit for these flows is defined in ACPI
-> > for x86 from ACPI 6.3 as a flag in Processor Local APIC
-> > (the ARM64 definition is a cut and paste of that text).  So someone
-> > is interested in this distinction on x86. I can't say who but if
-> > you have a mantis account you can easily follow the history and it
-> > might be instructive to not everyone considering the current x86
-> > flow the right way to do it.  
-> 
-> Would a higher level check to catch that we are hitting undefined
-> territory on arm64 be acceptable? That might satisfy the constraint
-> that we should not have any software for arm64 that would run if
-> physical CPU HP is added to the arch in future.  Something like:
-> 
-> @@ -331,6 +331,13 @@ static int acpi_processor_get_info(struct acpi_device *device)
-> 
->         c = &per_cpu(cpu_devices, pr->id);
->         ACPI_COMPANION_SET(&c->dev, device);
-> +
-> +       if (!IS_ENABLED(CONFIG_ACPI_CPU_HOTPLUG_CPU) &&
-> +           (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id))) {
-> +               pr_err_once("Changing CPU present bit is not supported\n");
-> +               return -ENODEV;
-> +       }
-> +
-> 
-> This is basically lifting the check out of the acpi_processor_make_present()
-> call in this patch set.
-> 
-> With that in place before the new shared call I think we should be fine
-> wrt to the ARM Architecture requirements.
+On Mon, Apr 15, 2024 at 4:45=E2=80=AFPM Sudeep Holla <sudeep.holla@arm.com>=
+ wrote:
+>
+> On Sun, Apr 14, 2024 at 10:58:25AM +0800, Yunhui Cui wrote:
+> > Before cacheinfo can be built correctly, we need to initialize level
+> > and type. Since RSIC-V currently does not have a register group that
+> > describes cache-related attributes like ARM64, we cannot obtain them
+> > directly, so now we obtain cache leaves from the ACPI PPTT table
+> > (acpi_get_cache_info()) and set the cache type through split_levels.
+> >
+> > Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >  arch/riscv/kernel/cacheinfo.c | 23 +++++++++++++++++++++++
+> >  1 file changed, 23 insertions(+)
+> >
+> > diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinf=
+o.c
+> > index 30a6878287ad..ece92aa404e3 100644
+> > --- a/arch/riscv/kernel/cacheinfo.c
+> > +++ b/arch/riscv/kernel/cacheinfo.c
+> > @@ -6,6 +6,7 @@
+> >  #include <linux/cpu.h>
+> >  #include <linux/of.h>
+> >  #include <asm/cacheinfo.h>
+> > +#include <linux/acpi.h>
+> >
+> >  static struct riscv_cacheinfo_ops *rv_cache_ops;
+> >
+> > @@ -78,6 +79,28 @@ int populate_cache_leaves(unsigned int cpu)
+> >       struct device_node *prev =3D NULL;
+> >       int levels =3D 1, level =3D 1;
+> >
+> > +     if (!acpi_disabled) {
+> > +             int ret, idx, fw_levels, split_levels;
+> > +
+> > +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_level=
+s);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             /* must be set, so we can drop num_leaves assignment belo=
+w */
+>
+> I intentionally added this above comment to check and drop the below stat=
+ement
+> if it is already set. Please check if the value is already set when we ca=
+ll
+> into this function(which I think is the case).
+>
+> > +             this_cpu_ci->num_leaves =3D fw_levels + split_levels;
 
-As discussed elsewhere in this thread, I'll push this into the arm64
-specific arch_register_cpu() definition.
+Uh,got it. I understand that there is no need to add this line:
+"this_cpu_ci->num_leaves =3D fw_levels + split_levels; " , because in
+the Master core first it will:
+smp_prepare_cpus
+     ->init_cpu_topology
+          ->for_each_possible_cpu(cpu) {
+                 fetch_cache_info(cpu); //num_leaves and num_levels will be=
+ set
+Then store_cpu_topology->update_siblings_masks->detect_cache_attributes->po=
+pulate_cache_leaves().
 
-> 
-> Jonathan
-> 
-> 
->         /*
-> > 
-> > Jonathan
-> > 
-> >   
-> > > 
-> > > Thanks,
-> > > 
-> > >         tglx
-> > >     
-> > 
-> > 
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel  
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Slave core will follow the logic of smp_callin->store_cpu_topology().
+It's the same after I tested it, so I plan to remove that line and
+update V3, what do you think?
 
+Thanks,
+Yunhui
 
