@@ -1,354 +1,168 @@
-Return-Path: <linux-acpi+bounces-5021-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5022-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8503A8A56D8
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 17:57:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE9C8A5779
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 18:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6931B20BB1
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 15:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5381F21025
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 16:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED337F47B;
-	Mon, 15 Apr 2024 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D54AB823B5;
+	Mon, 15 Apr 2024 16:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gHawwHEK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btljuCii"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC2C1E535;
-	Mon, 15 Apr 2024 15:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E768062B;
+	Mon, 15 Apr 2024 16:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713196661; cv=none; b=Z5egYbub3SFkOq1bEbElVMhlp6DgI7Jb2PT4JmJHhQ9Md3mOzafrIlBBz6iFc5EOVkW/VVtEhLxd+ZgZfx3Vxvu26sFUhFtJ4rOLrcTcas2t//1lulPNzn3msrMHs1LrdY90JqI5PMRIActkB77U0O00PmLMwKFEOYAjtmGyjj8=
+	t=1713197800; cv=none; b=Z3rEvKccooKo9iX0hZoSYKzI+JLR+mT1hxJo3kcVLJLcd4JFJ6F3gT8tv+dWQgt0Zpd3dyd4VrdE0GVIkOQzM55uFwF05/wTDOurN3YW+9O7oZ2AmYdrKQHJxnVFYaUus2VssESbT49uIQKT5NNNlGeGpRYCE00ir/YBhXzgErY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713196661; c=relaxed/simple;
-	bh=1VFPf/8L9loaEb3hWCEyFbiAGfd1d8Io/SEPciZW5jk=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=W3rrJxa/3HMh4pyAIkD2nmhZ70fbllg5qiDoHCUCsy32BgPPePmMxEVp59FEhusz+6dPiKGw2wiitClV2HebHsmScfJTCTM8exOO3bshu7goW9sFyPoocYILHgSNn3MtZXbBDN0P5KtR6kmhXBdZS6N1POH6J3IzKNIDSxCNpbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gHawwHEK; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713196659; x=1744732659;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=1VFPf/8L9loaEb3hWCEyFbiAGfd1d8Io/SEPciZW5jk=;
-  b=gHawwHEKvg5I4QkDsc9nNJP/onPXwJVFOVMmTGJNof7kjJuHYPkOAae5
-   Jz28S9wgZFWCY0xP6D3z5EVe9Frr46HQU3TEboSUnK4B6jqRJVuPAtfwl
-   5krjgyU1oya0oP+QyxExdaa6rkBt8uaxGMluRlIfdHGgOAfdMo6AcRtpa
-   k8CjOu7a8u3eEoGyJLNJH4TtpU+e2f/rGK3PdPe5oC4rwL70gDub1fe5A
-   fwUwrdOQuzkrHZOPR3BHYULyufkr1VCXSEayFAAuiAIhRX+30SHT4M1ik
-   5VShHlQcMxTmZ3dLxxhnYjOAaSWqs/6PITcZue1SNyD1RwtRN4LIxYpoQ
-   w==;
-X-CSE-ConnectionGUID: kGnz1jjBTWC5AzSMa1yP5A==
-X-CSE-MsgGUID: hhZxhdf/TaO42UfTOgJ9Mg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="19156643"
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="19156643"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:57:38 -0700
-X-CSE-ConnectionGUID: JTqYNy7lR/W6ya5NtXaxrQ==
-X-CSE-MsgGUID: 1tY8o3/9QoaKdWPxehmVoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="22052435"
-Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.33])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 08:57:35 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 15 Apr 2024 18:57:29 +0300 (EEST)
-To: Armin Wolf <W_Armin@gmx.de>
-cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-    jdelvare@suse.com, linux@roeck-us.net, linux@weissschuh.net, 
-    ilpo.jarvinen@linux.intel.com, linux-acpi@vger.kernel.org, 
-    linux-hwmon@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v4] ACPI: fan: Add hwmon support
-In-Reply-To: <20240414174743.8575-1-W_Armin@gmx.de>
-Message-ID: <67b4faf4-eadc-3375-62b4-aaad1b3af564@linux.intel.com>
-References: <20240414174743.8575-1-W_Armin@gmx.de>
+	s=arc-20240116; t=1713197800; c=relaxed/simple;
+	bh=Hs/q49qb60MQ9lAAe4xXemSwTw6fkk0SfYoTbJyFBXM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S8seho20nsfH3sVh7GlmyTGf+DEqkAXwclky+YakKf4ApsR+ilis1fGSP4EQPbKTGNFIzZIpu3lnIZrXRJLMojNgVeSas+5M/ie7gxLehD5tytsdZcxVCPyftSDM0NlNAuM1b4kSXNSZDy0TcX83nPPIeuLVbygtT956p/faOak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btljuCii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55511C4AF0A;
+	Mon, 15 Apr 2024 16:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713197800;
+	bh=Hs/q49qb60MQ9lAAe4xXemSwTw6fkk0SfYoTbJyFBXM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=btljuCiiWdQTJW7dfqzIAc7iRwxdf0AC8sj+my3GALMNqlOv43Dwpan5DYS5qLmST
+	 LSIAo03teu1vXjyowKxAbEop5Iex5fXyUTDwpk8rdWCCyb7042GJJONQqVcfhjvX63
+	 n9bkdcVVURuwXmDook5W60z+hx8k767W4p8cxeoBcPXf0hv3qofHJAsgI/Ymf6bYxM
+	 2IFf5TeTQ/4hKHNWY2+eJ28l0jxKecULKAcK5h/Fr+V3NIm5dQMPaNnuEI2P8VKylV
+	 qn7gcP4hcxBLKAShiXsT8kuWIgqrw36DCEslqrVf2BsxQr9TVn3e6u9oEtjy7gX1dj
+	 FPHzN7fYOAMvQ==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5aa327a5514so593626eaf.0;
+        Mon, 15 Apr 2024 09:16:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUS23cO2TcjyQif0de0m6FB8G4/P1XCRt73PFq/08dPUnTZQmVGDaX4jIZyfdDvz/dK0lZymP2+zrfHHcXgBvn01Ym+LdnaCT2S5g5Kwd/KChmL9dsZMDHJhi29KUUGCvYWmel/DEcjfJdbVdzgVcZXc9q/wEikKQe8YkWEzPe+sVjiok+/TyGP1Gpfhz3+f77zjUuW92ETuJtgmezKCA==
+X-Gm-Message-State: AOJu0Ywr+iIM1zkjY3fQir89qQDqp1PI3jQ0vpAJtVFYyM6LQyckGm+p
+	Nfb83Pjn3pQ95iJBxfbg5Ql3ugoyRFDDRtCqEhz21tNJSm+Di5S8dTPb9ls1yZOeX38MkZfr5AJ
+	KnnHmSvc0O49hbED4xJobkIKLu0M=
+X-Google-Smtp-Source: AGHT+IFfwQFWHYDwwvCKgMxQECCk6RQ2kJ/daxbr7Nx3CWpOEdn6mrSGfGG7iuqV1kOEiKYzgFgiPWVdDd9bL9zcm4k=
+X-Received: by 2002:a05:6870:5248:b0:220:bd4d:674d with SMTP id
+ o8-20020a056870524800b00220bd4d674dmr11333403oai.5.1713197799419; Mon, 15 Apr
+ 2024 09:16:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
+ <20240412143719.11398-3-Jonathan.Cameron@huawei.com> <CAJZ5v0izN5naWY7sTi16whds9ubXkLpgqV2gePQs869BoJTCDA@mail.gmail.com>
+ <20240415164854.0000264f@Huawei.com>
+In-Reply-To: <20240415164854.0000264f@Huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 15 Apr 2024 18:16:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hd+CNsnH9xY+UX0iy_AEaqUqJj4KdR=+yvtvy5FQEy5Q@mail.gmail.com>
+Message-ID: <CAJZ5v0hd+CNsnH9xY+UX0iy_AEaqUqJj4KdR=+yvtvy5FQEy5Q@mail.gmail.com>
+Subject: Re: [PATCH v5 02/18] ACPI: processor: Set the ACPI_COMPANION for the
+ struct cpu instance
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, x86@kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, 
+	Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, linuxarm@huawei.com, 
+	justin.he@arm.com, jianyong.wu@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 14 Apr 2024, Armin Wolf wrote:
+On Mon, Apr 15, 2024 at 5:49=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Fri, 12 Apr 2024 20:10:54 +0200
+> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+>
+> > On Fri, Apr 12, 2024 at 4:38=E2=80=AFPM Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
+> > >
+> > > The arm64 specific arch_register_cpu() needs to access the _STA
+> > > method of the DSDT object so make it available by assigning the
+> > > appropriate handle to the struct cpu instance.
+> > >
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  drivers/acpi/acpi_processor.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_proces=
+sor.c
+> > > index 7a0dd35d62c9..93e029403d05 100644
+> > > --- a/drivers/acpi/acpi_processor.c
+> > > +++ b/drivers/acpi/acpi_processor.c
+> > > @@ -235,6 +235,7 @@ static int acpi_processor_get_info(struct acpi_de=
+vice *device)
+> > >         union acpi_object object =3D { 0 };
+> > >         struct acpi_buffer buffer =3D { sizeof(union acpi_object), &o=
+bject };
+> > >         struct acpi_processor *pr =3D acpi_driver_data(device);
+> > > +       struct cpu *c;
+> > >         int device_declaration =3D 0;
+> > >         acpi_status status =3D AE_OK;
+> > >         static int cpu0_initialized;
+> > > @@ -314,6 +315,8 @@ static int acpi_processor_get_info(struct acpi_de=
+vice *device)
+> > >                         cpufreq_add_device("acpi-cpufreq");
+> > >         }
+> > >
+> > > +       c =3D &per_cpu(cpu_devices, pr->id);
+> > > +       ACPI_COMPANION_SET(&c->dev, device);
+> >
+> > This is also set for per_cpu(cpu_sys_devices, pr->id) in
+> > acpi_processor_add(), via acpi_bind_one().
+>
+> Hi Rafael,
+>
+> cpu_sys_devices gets filled with a pointer to this same structure.
+> The contents gets set in register_cpu() so at this point
+> it doesn't point anywhere.  As a side note register_cpu()
+> memsets to zero the value I set it to in the code above which isn't
+> great, particularly as I want to use this in post_eject for
+> arm64.
+>
+> We could make a copy of the handle and put it back after
+> the memset in register_cpu() but that is also ugly.
+> It's the best I've come up with to make sure this is still set
+> come remove time but is rather odd.
+> >
+> > Moreover, there is some pr->id validation in acpi_processor_add(), so
+> > it seems premature to use it here this way.
+> >
+> > I think that ACPI_COMPANION_SET() should be called from here on
+> > per_cpu(cpu_sys_devices, pr->id) after validating pr->id (so the
+> > pr->id validation should all be done here) and then NULL can be passed
+> > as acpi_dev to acpi_bind_one() in acpi_processor_add().  Then, there
+> > will be one physical device corresponding to the processor ACPI device
+> > and no confusion.
+>
+> I'm fairly sure this is pointing to the same device but agreed this
+> is a tiny bit confusing. However we can't use cpu_sys_devices at this poi=
+nt
+> so I'm not immediately seeing a cleaner solution :(
 
-> Currently, the driver does only support a custom sysfs
-> to allow userspace to read the fan speed.
-> Add support for the standard hwmon interface so users
-> can read the fan speed with standard tools like "sensors".
-> 
-> Compile-tested only.
-> 
-> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-> ---
-> Changes since v3:
-> - drop fault attrs
-> - rework initialization
-> 
-> Changes since v2:
-> - add support for fanX_target and power attrs
-> 
-> Changes since v1:
-> - fix undefined reference error
-> - fix fan speed validation
-> - coding style fixes
-> - clarify that the changes are compile-tested only
-> - add hwmon maintainers to cc list
-> 
-> The changes will be tested by Mikael Lund Jepsen from Danelec and
-> should be merged only after those tests.
-> ---
->  drivers/acpi/Makefile    |   1 +
->  drivers/acpi/fan.h       |   9 +++
->  drivers/acpi/fan_core.c  |   4 +
->  drivers/acpi/fan_hwmon.c | 170 +++++++++++++++++++++++++++++++++++++++
->  4 files changed, 184 insertions(+)
->  create mode 100644 drivers/acpi/fan_hwmon.c
-> 
-> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-> index 39ea5cfa8326..61ca4afe83dc 100644
-> --- a/drivers/acpi/Makefile
-> +++ b/drivers/acpi/Makefile
-> @@ -77,6 +77,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+= tiny-power-button.o
->  obj-$(CONFIG_ACPI_FAN)		+= fan.o
->  fan-objs			:= fan_core.o
->  fan-objs			+= fan_attr.o
-> +fan-$(CONFIG_HWMON)		+= fan_hwmon.o
-> 
->  obj-$(CONFIG_ACPI_VIDEO)	+= video.o
->  obj-$(CONFIG_ACPI_TAD)		+= acpi_tad.o
-> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-> index f89d19c922dc..db25a3898af7 100644
-> --- a/drivers/acpi/fan.h
-> +++ b/drivers/acpi/fan.h
-> @@ -10,6 +10,8 @@
->  #ifndef _ACPI_FAN_H_
->  #define _ACPI_FAN_H_
-> 
-> +#include <linux/kconfig.h>
-> +
->  #define ACPI_FAN_DEVICE_IDS	\
->  	{"INT3404", }, /* Fan */ \
->  	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
-> @@ -57,4 +59,11 @@ struct acpi_fan {
->  int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst);
->  int acpi_fan_create_attributes(struct acpi_device *device);
->  void acpi_fan_delete_attributes(struct acpi_device *device);
-> +
-> +#if IS_REACHABLE(CONFIG_HWMON)
-> +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-> +#else
-> +static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) { return 0; };
-> +#endif
-> +
->  #endif
-> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-> index ff72e4ef8738..7cea4495f19b 100644
-> --- a/drivers/acpi/fan_core.c
-> +++ b/drivers/acpi/fan_core.c
-> @@ -336,6 +336,10 @@ static int acpi_fan_probe(struct platform_device *pdev)
->  		if (result)
->  			return result;
-> 
-> +		result = devm_acpi_fan_create_hwmon(device);
-> +		if (result)
-> +			return result;
-> +
->  		result = acpi_fan_create_attributes(device);
->  		if (result)
->  			return result;
-> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-> new file mode 100644
-> index 000000000000..0ae9017bdbae
-> --- /dev/null
-> +++ b/drivers/acpi/fan_hwmon.c
-> @@ -0,0 +1,170 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
-> + *
-> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
-> + */
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/hwmon.h>
-> +#include <linux/limits.h>
-> +#include <linux/units.h>
-> +
-> +#include "fan.h"
-> +
-> +/* Returned when the ACPI fan does not support speed reporting */
-> +#define FAN_SPEED_UNAVAILABLE	0xffffffff
-> +#define FAN_POWER_UNAVAILABLE	0xffffffff
-> +
-> +static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan, u64 control)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < fan->fps_count; i++) {
-> +		if (fan->fps[i].control == control)
-> +			return &fan->fps[i];
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
-> +				   int channel)
-> +{
-> +	const struct acpi_fan *fan = drvdata;
-> +	int i;
-> +
-> +	switch (type) {
-> +	case hwmon_fan:
-> +		switch (attr) {
-> +		case hwmon_fan_input:
-> +			return 0444;
-> +		case hwmon_fan_target:
-> +			/* When in fine grain control mode, not every fan control value
-> +			 * has an associated fan performance state.
-> +			 */
-> +			if (fan->fif.fine_grain_ctrl)
-> +				return 0;
-> +
-> +			return 0444;
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	case hwmon_power:
-> +		switch (attr) {
-> +		case hwmon_power_input:
-> +			/* When in fine grain control mode, not every fan control value
-> +			 * has an associated fan performance state.
-> +			 */
-> +			if (fan->fif.fine_grain_ctrl)
-> +				return 0;
-> +
-> +			/* When all fan performance states contain no valid power data,
-> +			 * when the associated atttribute should not be created.
+Well, OK.
 
-attribute
+Please at least consider doing the pr->id validation checks before
+setting the ACPI companion for &per_cpu(cpu_devices, pr->id).
 
--- 
- i.
+Also, acpi_bind_one() needs to be called on the "physical" devices
+passed to ACPI_COMPANION_SET() (with NULL as the second argument) for
+the reference counting and physical device lookup to work.
 
-
-> +			 */
-> +			for (i = 0; i < fan->fps_count; i++) {
-> +				if (fan->fps[i].power != FAN_POWER_UNAVAILABLE)
-> +					return 0444;
-> +			}
-> +
-> +			return 0;
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type, u32 attr, int channel,
-> +			 long *val)
-> +{
-> +	struct acpi_device *adev = to_acpi_device(dev->parent);
-> +	struct acpi_fan *fan = dev_get_drvdata(dev);
-> +	struct acpi_fan_fps *fps;
-> +	struct acpi_fan_fst fst;
-> +	int ret;
-> +
-> +	ret = acpi_fan_get_fst(adev, &fst);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	switch (type) {
-> +	case hwmon_fan:
-> +		switch (attr) {
-> +		case hwmon_fan_input:
-> +			if (fst.speed == FAN_SPEED_UNAVAILABLE)
-> +				return -ENODATA;
-> +
-> +			if (fst.speed > LONG_MAX)
-> +				return -EOVERFLOW;
-> +
-> +			*val = fst.speed;
-> +			return 0;
-> +		case hwmon_fan_target:
-> +			fps = acpi_fan_get_current_fps(fan, fst.control);
-> +			if (!fps)
-> +				return -ENODATA;
-> +
-> +			*val = fps->speed;
-> +			return 0;
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	case hwmon_power:
-> +		switch (attr) {
-> +		case hwmon_power_input:
-> +			fps = acpi_fan_get_current_fps(fan, fst.control);
-> +			if (!fps)
-> +				return -ENODATA;
-> +
-> +			if (fps->power == FAN_POWER_UNAVAILABLE)
-> +				return -ENODATA;
-> +
-> +			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
-> +				return -EOVERFLOW;
-> +
-> +			*val = fps->power * MICROWATT_PER_MILLIWATT;
-> +			return 0;
-> +		default:
-> +			break;
-> +		}
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static const struct hwmon_ops acpi_fan_ops = {
-> +	.is_visible = acpi_fan_is_visible,
-> +	.read = acpi_fan_read,
-> +};
-> +
-> +static const struct hwmon_channel_info * const acpi_fan_info[] = {
-> +	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_TARGET),
-> +	HWMON_CHANNEL_INFO(power, HWMON_P_INPUT),
-> +	NULL
-> +};
-> +
-> +static const struct hwmon_chip_info acpi_fan_chip_info = {
-> +	.ops = &acpi_fan_ops,
-> +	.info = acpi_fan_info,
-> +};
-> +
-> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-> +{
-> +	struct acpi_fan *fan = acpi_driver_data(device);
-> +	struct device *hdev;
-> +
-> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", fan,
-> +						    &acpi_fan_chip_info, NULL);
-> +
-> +	return PTR_ERR_OR_ZERO(hdev);
-> +}
-> --
-> 2.39.2
-> 
+Please also note that acpi_primary_dev_companion() should return
+per_cpu(cpu_sys_devices, pr->id) for the processor ACPI device, which
+depends on the order of acpi_bind_one() calls involving the same ACPI
+device.
 
