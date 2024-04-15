@@ -1,72 +1,72 @@
-Return-Path: <linux-acpi+bounces-5031-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5032-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502DF8A586B
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 19:03:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B788A586E
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 19:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B72B283DBF
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 17:03:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C830E1C20FCB
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 17:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67EC839F7;
-	Mon, 15 Apr 2024 17:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAA585C43;
+	Mon, 15 Apr 2024 17:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="YHush3tG"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="L5iRR3Qi"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC94085658
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 17:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3D982892
+	for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 17:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713200512; cv=none; b=Mpdk752/HpY0zFWIwXgIOceIu9kKDH7Dw0p1UKm//pDoDbad1TY7kRKaTBq7rvcuPaG7vFcod0DyCmZBMEkZVhzw9f2aQfXXDn66SgkV8m6xNEoWkajlUUgoKokLEI0jSAmUcU+Et08D498Dkbdug9GfcvGlk4V8DPwqTAWK19s=
+	t=1713200518; cv=none; b=bZ+V18xt1FYRxCvcHDTGDTHMkWh8mrOw59EuQB2BJta/j426W80Zs+FOmfITXZ/xWIGn6cVOKwy4/fZolbHfDSvsLihcU4wvB/3AY/cng0knx7trJTOqIsryEDPeLolkThRBLf2v2DgDUmpzEhfnxZ2PXv/NakrE0aNRzyCFQhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713200512; c=relaxed/simple;
-	bh=dDrKFILdmWkoGj6OkVS37yIsnuHW0WzK5+l8GvebI1Y=;
+	s=arc-20240116; t=1713200518; c=relaxed/simple;
+	bh=nvDPc3L6oEQANMqW6TwMQT+97dhGLiqDQqjjsq7m6Sg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GxKvj4QZYq5CKY/iA1T7OzHd+Wxg/IPKHLTj8SyddUlH9d1Klv8CIOKI+gEz6jZrajUPfSBXOBW9KJJYrPdSBhJNPOHlKRxP2+EFd70fGnsf0aiY9lTKjV3ESmviCPMmykzAby9//o9TJP2MtTUmwsimqZcuKt0SXG1IJdCULPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=YHush3tG; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version; b=TEAdhy6T/lt8wWhmwwcXB2GFyYM2gzWheT9Ih2i6tBLyQ117lttozW24kFblCc7mAt9aSLLtRAh4H9Szah7v3TskpKQHLFOLtL91Wkc+7erTqYx2P5ELJFys7iggyEHx21jinX0epzTQYRewZpy1KPPTkDc52aIpLdswEkRhRjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=L5iRR3Qi; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6edc61d0ff6so3226201b3a.2
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 10:01:50 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6f00f24f761so659117b3a.3
+        for <linux-acpi@vger.kernel.org>; Mon, 15 Apr 2024 10:01:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1713200510; x=1713805310; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1713200517; x=1713805317; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NV0OeA3LqOjcEQwVzmEUb3l+O0qMWG2Q7MAVkkjj25w=;
-        b=YHush3tGWr4Hec4PFk5UeTWH2DN08a1TFuMnEGU8wZjSVYhfTmuBVu7ggj3M+XFOgx
-         pf0SsscYHV/TcXhngqnFOlKmpBGbho4aWRmaxDwMQkyn8VEqlIkp8SnKUU7zkLeY9nUQ
-         vfQgO4fRFZtscFwPgDdkEVmyRUYRtxjaLiuu8R9T1Bh3MoNfmpNWFHnWp8bdPRcLptm6
-         PcFpGREG0Z2TfOYm+vnMbKXEbxN0TBAgXa3CkfnMgrhloMHMl+b/G5z7dxvCQiuS7jcJ
-         kxOXiRLdYWvAaptgYFbdFw1tZTNsg1fA43SGBOa77bTyhGoHwjp9E7p3eNrihl9SK85n
-         RDFg==
+        bh=Z52/1ZZYR1CvGL0V5chwJsk+UfCztWDiXCAoT+2GZNk=;
+        b=L5iRR3QiiU+6sb+LRsiGnwZl3gaT4EJfpuTqOak2N+oz304KL8S796qofU/wokpmAY
+         20+aZkZMzgnLnDns3R4xxR43dIc8sxadQCUUkwDEcJiy/YfMwYpwpSjy473phrvL+pAC
+         Keq59DdmdBeCl2kQijYNUDWrf7zQeBxtBpj914Ct0B1A6j9zjZi0owd3pzKT+XrF6Jcq
+         tcqlzKqaY35Fxn7vfWhqW/QjsbCkTt4prWfJaqng0N6Jrzg6qEy+dZlJ0EhYeneCNm1D
+         0b6LU9ctLvjplDsu2Xk9bk/R0EOHUSE2q1u4LPyTR9YMfN3PHo6Z/cLeY9qK84k/hG2u
+         Rj/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713200510; x=1713805310;
+        d=1e100.net; s=20230601; t=1713200517; x=1713805317;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NV0OeA3LqOjcEQwVzmEUb3l+O0qMWG2Q7MAVkkjj25w=;
-        b=UZvaXK/svp8PxLrG/rQjStIDvIFsnrF6URug+NRSW7rYz3jxSRZVueAGqYFniEtegV
-         05FQ5Q6Sr+vu7bj3nEo1eIkcrxpEq4U2Lafl+hQPpj5fj+9ielZWSdGlfSPbGmowIF7F
-         YFDv636Ol/QO7a09F2MGZQ7NMAEyHBNfiUoVKlDbqXzphQEZwYoecQnW/dQbA7eqBlVp
-         JRnyK72y0oZ3X/kiWUdm4/EefaImoXQIVVP3o3M/Fqjd/iwoXKoyg+QxJMQ3B/5MEkS/
-         pwPDEQofDDgg2Sqzp6l3IZLekHLQGMOVG7+xTNKP2v8FlHFbTf0kukj8vRITdE6vNuHc
-         Q+lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVX6xACK3PEaaok9JzNrWPGJIOjqUtSt4e3GJXtOW3jmvHALcSIAkOVsWyzYUbmJTt6AqJFb+syjD31eFQM1IgfgHoxky/AtDpHgg==
-X-Gm-Message-State: AOJu0YwU8m1i5dBI1ppYP6Q1ZMjpdaw7egw0J58iBqr85qoR9lxaA3Cd
-	gzpl2OYtdy3mfFQStGEAFNUf0rcZiIkFGnNj+UF7UXtYsu4DYu4V3qBSXPhwjPU=
-X-Google-Smtp-Source: AGHT+IGvmjYeaJvV6Cs9b+D8sHsU8MJVs6hR0ePtYiL5D9g9wvurdSLwMSWttPbHZlSkX+z1czGUNQ==
-X-Received: by 2002:a05:6a00:21d0:b0:6ed:de6f:d738 with SMTP id t16-20020a056a0021d000b006edde6fd738mr13801645pfj.9.1713200510295;
-        Mon, 15 Apr 2024 10:01:50 -0700 (PDT)
+        bh=Z52/1ZZYR1CvGL0V5chwJsk+UfCztWDiXCAoT+2GZNk=;
+        b=VTvstN/Eb05up5kxC358yK7IFIHhuHBqrXxCuPQuntKiDHi8J5vfpGEHfUuRVILcsq
+         rzrZfL3kzhptZuE9OaL5gBMkMM2HGoAsz0zYb9VYXuDUMVP5YoxJvQLr6+eIRNh9r0ys
+         y/9xnVSgjB67tNFsF2Vnaiszd7mQ2FjnIMyTnotmYLPQQESRGiBF0mWhWO6twZ1U0xu3
+         kWStKm5mS0pDuoCEGo1OtZ32XZI2a+6ejQ3h7jWhcZz+KNdKGxBEyvvu1AwCoYAi04Xp
+         7rGg/aFWzubl61e1hH+oN+M5GDkNNL2pWJUWfPl1GeUtUeYlnYTdcnRgmr6Y1yuRKVkl
+         YbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCWadAumtIxI91I0EmheFdvhN0FvWOMTYyLieKcBlTXMIgG5d1Ad3SUx5aGjef0yIGb7pFYcu0PkY04b9clGdqIKiPeffyawN982xw==
+X-Gm-Message-State: AOJu0YwVhnqeyQ8+x+3wECv2FZr1Im5bOAqXz/01J3Gf75nIzdT/r7IH
+	CqY5DjSviMoOIYwCqcDL1wLr5mQ20llB06C5FKEBx8wkGoYi8NddRT6sE80AWrY=
+X-Google-Smtp-Source: AGHT+IF3pZ5kgHd0L+s0ETBbrzTu2eQzZocJwTnnUWv3+XrCVjsqR27b/As/nt3u7TcsRgOfwdwSGQ==
+X-Received: by 2002:a05:6a00:986:b0:6ed:1c7:8c6b with SMTP id u6-20020a056a00098600b006ed01c78c6bmr10123074pfg.1.1713200516899;
+        Mon, 15 Apr 2024 10:01:56 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.187.230])
-        by smtp.gmail.com with ESMTPSA id 1-20020a056a00072100b006ed045e3a70sm7433158pfm.25.2024.04.15.10.01.43
+        by smtp.gmail.com with ESMTPSA id 1-20020a056a00072100b006ed045e3a70sm7433158pfm.25.2024.04.15.10.01.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 10:01:49 -0700 (PDT)
+        Mon, 15 Apr 2024 10:01:56 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -94,9 +94,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Marc Zyngier <maz@kernel.org>,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [RFC PATCH v4 04/20] ACPI: scan.c: Add weak arch specific function to reorder the IRQCHIP probe
-Date: Mon, 15 Apr 2024 22:30:57 +0530
-Message-Id: <20240415170113.662318-5-sunilvl@ventanamicro.com>
+Subject: [RFC PATCH v4 05/20] ACPI: RISC-V: Implement arch function to reorder irqchip probe entries
+Date: Mon, 15 Apr 2024 22:30:58 +0530
+Message-Id: <20240415170113.662318-6-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240415170113.662318-1-sunilvl@ventanamicro.com>
 References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
@@ -108,59 +108,68 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unlike OF framework, the irqchip probe using IRQCHIP_ACPI_DECLARE has no
-order defined. Depending on the driver Makefile is not a good idea. So,
-usually it is worked around by mandating only root interrupt controller
-probed using IRQCHIP_ACPI_DECLARE and other interrupt controllers are
-probed via cascade mechanism.
-
-However, this is also not a clean solution because if there are multiple
-root controllers (ex: RINTC in RISC-V which is per CPU) which need to be
-probed first, then the cascade will happen for every root controller.
-So, introduce a architecture specific weak function to order the probing
-of the interrupt controllers which can be implemented by different
-architectures as per their interrupt controller hierarchy.
+ACPI MADT entries for interrupt controllers don't have a way to describe
+the hierarchy. However, the hierarchy is known to the architecture and
+on RISC-V platforms, the MADT sub table types are ordered in the
+incremental order from the root controller which is RINTC. So, add
+architecture function for RISC-V to reorder the interrupt controller
+probing as per the hierarchy as below.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- drivers/acpi/scan.c  | 3 +++
- include/linux/acpi.h | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/acpi/riscv/Makefile |  2 +-
+ drivers/acpi/riscv/irq.c    | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/acpi/riscv/irq.c
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 68f101323f53..de30a0af7a2f 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2749,6 +2749,8 @@ static int __init acpi_match_madt(union acpi_subtable_headers *header,
- 	return 0;
- }
- 
-+void __weak arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr) { }
+diff --git a/drivers/acpi/riscv/Makefile b/drivers/acpi/riscv/Makefile
+index 86b0925f612d..dceec808cfab 100644
+--- a/drivers/acpi/riscv/Makefile
++++ b/drivers/acpi/riscv/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y					+= rhct.o
++obj-y					+= rhct.o irq.o
+ obj-$(CONFIG_ACPI_PROCESSOR_IDLE)	+= cpuidle.o
+ obj-$(CONFIG_ACPI_CPPC_LIB)		+= cppc.o
+diff --git a/drivers/acpi/riscv/irq.c b/drivers/acpi/riscv/irq.c
+new file mode 100644
+index 000000000000..36e0525b3235
+--- /dev/null
++++ b/drivers/acpi/riscv/irq.c
+@@ -0,0 +1,32 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2023, Ventana Micro Systems Inc
++ *	Author: Sunil V L <sunilvl@ventanamicro.com>
++ *
++ */
 +
- int __init __acpi_probe_device_table(struct acpi_probe_entry *ap_head, int nr)
- {
- 	int count = 0;
-@@ -2757,6 +2759,7 @@ int __init __acpi_probe_device_table(struct acpi_probe_entry *ap_head, int nr)
- 		return 0;
- 
- 	mutex_lock(&acpi_probe_mutex);
-+	arch_sort_irqchip_probe(ap_head, nr);
- 	for (ape = ap_head; nr; ape++, nr--) {
- 		if (ACPI_COMPARE_NAMESEG(ACPI_SIG_MADT, ape->id)) {
- 			acpi_probe_count = 0;
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 168201e4c782..914ecd22ba64 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1337,6 +1337,8 @@ struct acpi_probe_entry {
- 	kernel_ulong_t driver_data;
- };
- 
-+void arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr);
++#include <linux/acpi.h>
++#include <linux/sort.h>
 +
- #define ACPI_DECLARE_PROBE_ENTRY(table, name, table_id, subtable,	\
- 				 valid, data, fn)			\
- 	static const struct acpi_probe_entry __acpi_probe_##name	\
++static int irqchip_cmp_func(const void *in0, const void *in1)
++{
++	struct acpi_probe_entry *elem0 = (struct acpi_probe_entry *)in0;
++	struct acpi_probe_entry *elem1 = (struct acpi_probe_entry *)in1;
++
++	return (elem0->type > elem1->type) - (elem0->type < elem1->type);
++}
++
++/*
++ * RISC-V irqchips in MADT of ACPI spec are defined in the same order how
++ * they should be probed. Since IRQCHIP_ACPI_DECLARE doesn't define any
++ * order, this arch function will reorder the probe functions as per the
++ * required order for the architecture.
++ */
++void arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr)
++{
++	struct acpi_probe_entry *ape = ap_head;
++
++	if (nr == 1 || !ACPI_COMPARE_NAMESEG(ACPI_SIG_MADT, ape->id))
++		return;
++	sort(ape, nr, sizeof(*ape), irqchip_cmp_func, NULL);
++}
 -- 
 2.40.1
 
