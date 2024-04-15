@@ -1,121 +1,119 @@
-Return-Path: <linux-acpi+bounces-5050-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5051-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508B58A5A33
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 20:51:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA57F8A5E16
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 01:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083E62849B7
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 18:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF671F22184
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 23:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B27915572F;
-	Mon, 15 Apr 2024 18:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE22158D61;
+	Mon, 15 Apr 2024 23:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=gschafra@web.de header.b="GqGg1tPx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6cKqEvB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8491553A7;
-	Mon, 15 Apr 2024 18:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF8737163;
+	Mon, 15 Apr 2024 23:15:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713207094; cv=none; b=PymB3cKJvs3cBK+NaoYVJzSQV6e9UkU7CImVuaerIuU58NOh6pRjM7dje7g0ar2k+pHiRF91eYzts121703nJe4j46li465nK63phbTyW+hFxWCTCPtYiZo5dZDii+WaUqrd9VzROTZwLjzQyWmnZiYLmg4tt9gKeT2Sfeug0BU=
+	t=1713222925; cv=none; b=UfX0OSeIjTcqEaNZOfgbd4sCCKL5StHA8L08ka7jQ8fvAA17s+O03B5bRPGmLY8XOQTZNi8vpKqnkt4lHCf1iv7zfvnyGF1hcnJcnbRQTdZLN/qmUAE/xMrvzslxEPT/XFi2dYT9UTHmEyCAwocsOURyqBdgjMsr4ELaRwyzgGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713207094; c=relaxed/simple;
-	bh=DfqDZSCy1bT7YhVav0SrkmE8gji+HQI8UQPnQWILtoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tjK6rcdnH1bnoWCXrny3LZHO5ItV7lkFD02EtwAsjR3CU3Uh03zxTJIh518pvANse+YGOf+vJI1GtE4PnUKavdFbD4FadBGVMGMGBwqcWThB2Sa758OowDJp6WGJ0cKG6DJJlR9KS8KJWq1QAFhT/coQWM5A1jlN1NZkZIztQcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=gschafra@web.de header.b=GqGg1tPx; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1713207085; x=1713811885; i=gschafra@web.de;
-	bh=/G+TvMeVvPYHHHKjlKDGzZ+uXBSjb0e1s3YVRMV7XBQ=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=GqGg1tPxo9aX6ntVK9oke/lh/dHH4VOMSWckBxUT4zvv+0VjgxS1O+u22ugcvJaV
-	 zmoQQCUTdV14YZSv79VYObx4AWBx9UqgiGLGdWCuyppgaBMhKvd/SaotMhZ3gcJWv
-	 1zRDl+iWWpT52CS8CWooYbZxjwAzvtDkRoWd+11eXmMLsRm9AzbMSErWCT7Rm+lgC
-	 nvTIRmdk1Ylq4GXrXd1m8VH/W5HmJGnOSJcvhWCCNhC5rvc5Vr3PMk8peO1Q7/pm9
-	 IgvXqOu/CZem3KxNgxGZiAhJrhzp6Hog3FAc7lRa5T9BcfTlLumCkJykoJPzlACek
-	 0GKq2hNSEHQwLUxFNg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from tazdevil.fritz.box ([213.152.127.16]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MODmV-1s75UL3rRJ-00OUz7; Mon, 15
- Apr 2024 20:51:25 +0200
-From: Guenter Schafranek <gschafra@web.de>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guenter Schafranek <gschafra@web.de>
-Subject: [PATCH] ACPI: resource: Do IRQ override on GMxBGxx (XMG APEX 17 M23)
-Date: Mon, 15 Apr 2024 20:51:18 +0200
-Message-ID: <20240415185120.57973-1-gschafra@web.de>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1713222925; c=relaxed/simple;
+	bh=g/+U37u84szEx/7PZiBV5MUYHjoIlyB1hUCoTjwWbPc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bdhEaDAzUPlwtmYM7ffnJ5WN6nYxFdOPolWvFUIofhjsO7BNL3wVmHVDT0WWs0q0/iRRkknkXqIu2DKcCjHusVnaQkybMlX1Q2rdgaeA3EdpKm6w5KrB2qOE405NN8NP8u4ArJBRl5L+Jp5szAjxWG8/d63WJ58fyavjr7e2GOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6cKqEvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82CBC2BD11;
+	Mon, 15 Apr 2024 23:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713222925;
+	bh=g/+U37u84szEx/7PZiBV5MUYHjoIlyB1hUCoTjwWbPc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=p6cKqEvBtdkXDLHMpexoT3q0o5wpBwL9yufwCM7y/K2OWhX2p2yO3SS+pIOOvJ/0k
+	 EvKTPpKgOKs9JyFFQRwOISlc2zpXCHMASoRpHNE/emJQ8/VP1tnNa0LFcsYkIx2fgD
+	 6/E4Fn3eTDMJV0SUn6lH0nKjASXmhSRhzypyfYT4KWtG2sDrSSMPvtzsYgY1DZ0Cdd
+	 n3LYvKqv+KqegGjjdXIzmv+j2R1WQb7OaMnJsAqCw6b8ZB4A8MIiILf8SChFHHLshL
+	 lO9o/ffpYt21j+Joczzy/+1atdVBrrpFojYeTfDkFOJ4LPX/EyqA1dA8mI9PYnyl2g
+	 2wPeEU90TsBpw==
+Date: Mon, 15 Apr 2024 18:15:23 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Haibo1 Xu <haibo1.xu@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Andrei Warkentin <andrei.warkentin@intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Subject: Re: [RFC PATCH v4 03/20] PCI: Make pci_create_root_bus() declare its
+ reliance on MSI domains
+Message-ID: <20240415231523.GA139682@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uKPrlSo69z6OcNVYMf+a7dHHP1IGatc+qsoMPIE2d6gPMjBHJTf
- lFUptmJ900MTQUl6Sqf/rHNe0uKTgpPhq2y+DvAlI3VU8Uhfjo2OeuYnqH6mJCoQoinS5xa
- OcR45WY4R/Vd905SVsZ1pdp0j4bXw5PapQyOnEMx+LDP+jwtfqd1rFQlk9d9W6zsNr1V1Bi
- FwruoplEaPNP3CDmGcYHQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:lXaItDdWRiA=;OLLhv9+CCWfpiDvGx/H5kfutapw
- Gg+Gy2LvlEW2R7+Gxuk8EduOMzjtU8wxUyus9UcalC/qjLsB/5N4T6dfVAXDCk2iEbu3bexHo
- clUhK2jbOf4C98xLpG4Mnn8Gq1SgpPAp8JvQelsyWFxZFNG6pReduvNJ4x3kptkRv+LR7D7SZ
- 53bgN4pGLF1mMt3spXcGFzbhi78Kbu7QYAs3BnpSQx1lqYJ80Gl7rSgtO5t/mUNNEB1pysu5C
- z7VDcVjXOy2kWFqz+paadYDcCrAUVKgg3A4cUIFsbX9pBD+N31/V1pOp5ueveaI7tJFXNbl0H
- 6ysTAw/kXnnJnp+8ItdyX2csm4IvDW8veGIX8Tzl/q0QEI14K58oX3MsoFPsPyLIRTS8l/C0w
- lNeVA9srRXdSFtxI81ePDDAGl4lYqnNtnNWo4QvggBHwAl1EXLyOavB/TsI0hWQNwcWv3T0Lo
- WfSf/flDUroZuOM5e0/dQ6CjBdGMh6DF4UpE7DUPd0fzINonYE1A2PbMkDI02XxBRisvixZ5U
- c4x+c2FnT52VFSaz/e/X5ojXKK77fTywX2CrcwwLH4eEvnsmOwnfZqzv43aQ+6GBuzflhcrXR
- AOkMNvHXrlTupHq7hv8HuqL7g09SHO78E1wIrTN9G6u8Y9dmNh5+NK+r+YgUpJnLFFJwri3lS
- R/YQyNdOxU4PSzmGEQKig2MfEQszddXwuBzWDbqQ83MWSe6+zHp625dEdqdrA1d4eYiwp55UI
- CDj0/X9VHm/SP5ULe9OK5Ho66KSaHBWzcU0Ohpa+h4pxzkHriLxasIMhlW3wdIax29cSDAdF8
- BxcoeDGGQfUqJcDrKdNsRQuEFvfa6pcLZz1vYFmSEPv/g=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240415170113.662318-4-sunilvl@ventanamicro.com>
 
-The XM APEX 17 M23 (TongFang?) GMxBGxx (got using `sudo dmidecode -s
-baseboard-product-name`) needs IRQ overriding for the keyboard to work.
-Adding an entry for this laptop to the override_table makes the internal
-keyboard functional.
-See https://www.reddit.com/r/XMG_gg/comments/15kd5pg/xmg_apex_17_m23_keybo=
-ard_not_working_on_linux/.
-Patch was successfully tested with Arch Linux Kernel v6.8 under
-Manjaro Linux v23.1.4.
+On Mon, Apr 15, 2024 at 10:30:56PM +0530, Sunil V L wrote:
+> Similar to commit 9ec37efb8783 ("PCI/MSI: Make
+> pci_host_common_probe() declare its reliance on MSI domains"), declare
+> this dependency for PCI probe in ACPI based flow.
+> 
+> This is required especially for RISC-V platforms where MSI controller
+> can be absent. However, setting this for all architectures seem to cause
+> issues on non RISC-V architectures [1]. Hence, enabled this only for
+> RISC-V.
+> 
+> [1] - https://lore.kernel.org/oe-lkp/202403041047.791cb18e-oliver.sang@intel.com
+> 
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  drivers/pci/probe.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 1325fbae2f28..e09915bee2ee 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -3048,6 +3048,9 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
+>  	bridge->sysdata = sysdata;
+>  	bridge->busnr = bus;
+>  	bridge->ops = ops;
+> +#ifdef CONFIG_RISCV
+> +	bridge->msi_domain = true;
+> +#endif
 
-Signed-off-by: Guenter Schafranek <gschafra@web.de>
-=2D--
- drivers/acpi/resource.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Ugh.  I looked at [1], but that's not a very good justification for
+this #ifdef.  The fault mentioned in [1] would need to be fixed, but
+not this way.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 59423fe9d..c9af5d2f4 100644
-=2D-- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -533,6 +533,12 @@ static const struct dmi_system_id irq1_level_low_skip=
-_override[] =3D {
-  * to have a working keyboard.
-  */
- static const struct dmi_system_id irq1_edge_low_force_override[] =3D {
-+	{
-+		/* XMG APEX 17 (M23) */
-+		.matches =3D {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
-+		},
-+	},
- 	{
- 		/* TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD */
- 		.matches =3D {
-=2D-
-2.44.0
-
+>  	error = pci_register_host_bridge(bridge);
+>  	if (error < 0)
+> -- 
+> 2.40.1
+> 
 
