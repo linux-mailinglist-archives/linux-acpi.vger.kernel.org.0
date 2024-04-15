@@ -1,69 +1,63 @@
-Return-Path: <linux-acpi+bounces-5001-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5002-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94E48A4B7E
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 11:32:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96748A4CF3
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 12:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D030281E4D
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 09:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3346C1F24050
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 10:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CDC3FB01;
-	Mon, 15 Apr 2024 09:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E920C5CDDB;
+	Mon, 15 Apr 2024 10:52:12 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D8F1BF2B;
-	Mon, 15 Apr 2024 09:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425735D465;
+	Mon, 15 Apr 2024 10:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713173526; cv=none; b=Q6/vrPgQWlrHwGDkPXOcTEg6su2vNVc4NnbqlsmMxB1OajcevnDxpNaNQyGd4/ruelgS4p3hLt58hnoUxrRT6o/nenQ83LKHR5mKGo+DcO6T4231khaEwTVnUy14mr6oskohZoG1iHa23zojEBCJHNcwFjm7GJxnyt6TlYMa3NQ=
+	t=1713178332; cv=none; b=hWXmGqKUPJg4P1v9eXnZCaXlH+LW1pKU3AuaaZkgiqmaWNooIPKfK+LD/5FwWVALhboFgLQuG7B6xSi9YegZBmk4yzpMYV0In+mfsqYeUPFhvOJBCweaqIFJxJv3TMxHK4tkajbGAJFvR01oLmIK9OvZEZxDAPrO2Lv/WQfxwcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713173526; c=relaxed/simple;
-	bh=ozQBPlDTCxQy1EUlwRtS5LfsnaURwAxoL8DWkIMMumY=;
+	s=arc-20240116; t=1713178332; c=relaxed/simple;
+	bh=YjzZLPQbXgfdGlGbGlYWn308Tq/4T7rk/4RnIScxBMU=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TLdNdeaYGeywJosvDh9E1BCS6R1fZRl3nBEuBq0g74zSIwu77x9D4rxaKHUpFUfkjYCHStauwmztscGrOJf+69UUwVd0yv8AacisRweE2Quu7pHZwwE1mbc/ipaxlMcRad9N1oyVH85WDMShe/CLWBNnCFfW+8Fah1kFvx//YAA=
+	 MIME-Version:Content-Type; b=jGVkxz3RPwwHmqkvL0Q/eG0QovHsDcAozyYNfEJacMGdsQqfdoyr0yPlPbZLDisJOvd10k0JFo6WjwNKmayFeU1/xKx0rUD554kOfD/tUj7bkO6ZsVhXYFY6i9c+aon5l7Fkv1QvqD0aojmMD3DFLEQdI++r6FKIP6JfbdShxrY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VJ1yy6W1dz6K8tR;
-	Mon, 15 Apr 2024 17:27:06 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VJ3lL5dzRz6K919;
+	Mon, 15 Apr 2024 18:47:10 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 621EE1400E7;
-	Mon, 15 Apr 2024 17:32:01 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5943D140A08;
+	Mon, 15 Apr 2024 18:52:05 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 15 Apr
- 2024 10:32:00 +0100
-Date: Mon, 15 Apr 2024 10:31:59 +0100
+ 2024 11:52:04 +0100
+Date: Mon, 15 Apr 2024 11:52:03 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>
-CC: "Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
 	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Miguel Luis
-	<miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
-	<salil.mehta@huawei.com>, "Jean-Philippe Brucker" <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	<justin.he@arm.com>, <jianyong.wu@arm.com>
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Russell King
+	<linux@armlinux.org.uk>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, "Jean-Philippe
+ Brucker" <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
 Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
  acpi_processor_get_info()
-Message-ID: <20240415103044.00006cdf@huawei.com>
-In-Reply-To: <20240415101637.00007e49@huawei.com>
+Message-ID: <20240415115203.0000011b@Huawei.com>
+In-Reply-To: <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
 References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
 	<20240412143719.11398-4-Jonathan.Cameron@huawei.com>
 	<CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
-	<ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk>
-	<87bk6ez4hj.ffs@tglx>
-	<ZhmtO6zBExkQGZLk@shell.armlinux.org.uk>
-	<878r1iyxkr.ffs@tglx>
-	<20240415094552.000008d7@Huawei.com>
-	<20240415101637.00007e49@huawei.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -72,203 +66,181 @@ List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, 15 Apr 2024 10:16:37 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Fri, 12 Apr 2024 20:30:40 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-> On Mon, 15 Apr 2024 09:45:52 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> 
-> > On Sat, 13 Apr 2024 01:23:48 +0200
-> > Thomas Gleixner <tglx@linutronix.de> wrote:
-> >   
-> > > Russell!
-> > > 
-> > > On Fri, Apr 12 2024 at 22:52, Russell King (Oracle) wrote:    
-> > > > On Fri, Apr 12, 2024 at 10:54:32PM +0200, Thomas Gleixner wrote:      
-> > > >> > As for the cpu locking, I couldn't find anything in arch_register_cpu()
-> > > >> > that depends on the cpu_maps_update stuff nor needs the cpus_write_lock
-> > > >> > being taken - so I've no idea why the "make_present" case takes these
-> > > >> > locks.      
-> > > >> 
-> > > >> Anything which updates a CPU mask, e.g. cpu_present_mask, after early
-> > > >> boot must hold the appropriate write locks. Otherwise it would be
-> > > >> possible to online a CPU which just got marked present, but the
-> > > >> registration has not completed yet.      
-> > > >
-> > > > Yes. As far as I've been able to determine, arch_register_cpu()
-> > > > doesn't manipulate any of the CPU masks. All it seems to be doing
-> > > > is initialising the struct cpu, registering the embedded struct
-> > > > device, and setting up the sysfs links to its NUMA node.
-> > > >
-> > > > There is nothing obvious in there which manipulates any CPU masks, and
-> > > > this is rather my fundamental point when I said "I couldn't find
-> > > > anything in arch_register_cpu() that depends on ...".
-> > > >
-> > > > If there is something, then comments in the code would be a useful aid
-> > > > because it's highly non-obvious where such a manipulation is located,
-> > > > and hence why the locks are necessary.      
-> > > 
-> > > acpi_processor_hotadd_init()
-> > > ...
-> > >          acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id);
-> > > 
-> > > That ends up in fiddling with cpu_present_mask.
-> > > 
-> > > I grant you that arch_register_cpu() is not, but it might rely on the
-> > > external locking too. I could not be bothered to figure that out.
-> > >     
-> > > >> Define "real hotplug" :)
-> > > >> 
-> > > >> Real physical hotplug does not really exist. That's at least true for
-> > > >> x86, where the physical hotplug support was chased for a while, but
-> > > >> never ended up in production.
-> > > >> 
-> > > >> Though virtualization happily jumped on it to hot add/remove CPUs
-> > > >> to/from a guest.
-> > > >> 
-> > > >> There are limitations to this and we learned it the hard way on X86. At
-> > > >> the end we came up with the following restrictions:
-> > > >> 
-> > > >>     1) All possible CPUs have to be advertised at boot time via firmware
-> > > >>        (ACPI/DT/whatever) independent of them being present at boot time
-> > > >>        or not.
-> > > >> 
-> > > >>        That guarantees proper sizing and ensures that associations
-> > > >>        between hardware entities and software representations and the
-> > > >>        resulting topology are stable for the lifetime of a system.
-> > > >> 
-> > > >>        It is really required to know the full topology of the system at
-> > > >>        boot time especially with hybrid CPUs where some of the cores
-> > > >>        have hyperthreading and the others do not.
-> > > >> 
-> > > >> 
-> > > >>     2) Hot add can only mark an already registered (possible) CPU
-> > > >>        present. Adding non-registered CPUs after boot is not possible.
-> > > >> 
-> > > >>        The CPU must have been registered in #1 already to ensure that
-> > > >>        the system topology does not suddenly change in an incompatible
-> > > >>        way at run-time.
-> > > >> 
-> > > >> The same restriction would apply to real physical hotplug. I don't think
-> > > >> that's any different for ARM64 or any other architecture.      
-> > > >
-> > > > This makes me wonder whether the Arm64 has been barking up the wrong
-> > > > tree then, and whether the whole "present" vs "enabled" thing comes
-> > > > from a misunderstanding as far as a CPU goes.
-> > > >
-> > > > However, there is a big difference between the two. On x86, a processor
-> > > > is just a processor. On Arm64, a "processor" is a slice of the system
-> > > > (includes the interrupt controller, PMUs etc) and we must enumerate
-> > > > those even when the processor itself is not enabled. This is the whole
-> > > > reason there's a difference between "present" and "enabled" and why
-> > > > there's a difference between x86 cpu hotplug and arm64 cpu hotplug.
-> > > > The processor never actually goes away in arm64, it's just prevented
-> > > > from being used.      
-> > > 
-> > > It's the same on X86 at least in the physical world.    
-> > 
-> > There were public calls on this via the Linaro Open Discussions group,
-> > so I can talk a little about how we ended up here.  Note that (in my
-> > opinion) there is zero chance of this changing - it took us well over
-> > a year to get to this conclusion.  So if we ever want ARM vCPU HP
-> > we need to work within these constraints. 
-> > 
-> > The ARM architecture folk (the ones defining the ARM ARM, relevant ACPI
-> > specs etc, not the kernel maintainers) are determined that they want
-> > to retain the option to do real physical CPU hotplug in the future
-> > with all the necessary work around dynamic interrupt controller
-> > initialization, debug and many other messy corners.
-> > 
-> > Thus anything defined had to be structured in a way that was 'different'
-> > from that.
-> > 
-> > I don't mind the proposed flattening of the 2 paths if the ARM kernel
-> > maintainers are fine with it but it will remove the distinctions and
-> > we will need to be very careful with the CPU masks - we can't handle
-> > them the same as x86 does.
-> > 
-> > I'll get on with doing that, but do need input from Will / Catalin / James.
-> > There are some quirks that need calling out as it's not quite a simple
-> > as it appears from a high level.
-> > 
-> > Another part of that long discussion established that there is userspace
-> > (Android IIRC) in which the CPU present mask must include all CPUs
-> > at boot. To change that would be userspace ABI breakage so we can't
-> > do that.  Hence the dance around adding yet another mask to allow the
-> > OS to understand which CPUs are 'present' but not possible to online.
-> > 
-> > Flattening the two paths removes any distinction between calls that
-> > are for real hotplug and those that are for this online capable path.
-> > As a side note, the indicating bit for these flows is defined in ACPI
-> > for x86 from ACPI 6.3 as a flag in Processor Local APIC
-> > (the ARM64 definition is a cut and paste of that text).  So someone
-> > is interested in this distinction on x86. I can't say who but if
-> > you have a mantis account you can easily follow the history and it
-> > might be instructive to not everyone considering the current x86
-> > flow the right way to do it.  
-> 
-> Would a higher level check to catch that we are hitting undefined
-> territory on arm64 be acceptable? That might satisfy the constraint
-> that we should not have any software for arm64 that would run if
-> physical CPU HP is added to the arch in future.  Something like:
-> 
-> @@ -331,6 +331,13 @@ static int acpi_processor_get_info(struct acpi_device *device)
-> 
->         c = &per_cpu(cpu_devices, pr->id);
->         ACPI_COMPANION_SET(&c->dev, device);
-> +
-> +       if (!IS_ENABLED(CONFIG_ACPI_CPU_HOTPLUG_CPU) &&
-> +           (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id))) {
-> +               pr_err_once("Changing CPU present bit is not supported\n");
-> +               return -ENODEV;
-> +       }
-> +
-> 
-> This is basically lifting the check out of the acpi_processor_make_present()
-> call in this patch set.
-> 
-> With that in place before the new shared call I think we should be fine
-> wrt to the ARM Architecture requirements.
-> 
+> On Fri, Apr 12, 2024 at 4:38=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > From: James Morse <james.morse@arm.com>
+> >
+> > The arm64 specific arch_register_cpu() call may defer CPU registration
+> > until the ACPI interpreter is available and the _STA method can
+> > be evaluated.
+> >
+> > If this occurs, then a second attempt is made in
+> > acpi_processor_get_info(). Note that the arm64 specific call has
+> > not yet been added so for now this will never be successfully
+> > called.
+> >
+> > Systems can still be booted with 'acpi=3Doff', or not include an
+> > ACPI description at all as in these cases arch_register_cpu()
+> > will not have deferred registration when first called.
+> >
+> > This moves the CPU register logic back to a subsys_initcall(),
+> > while the memory nodes will have been registered earlier.
+> > Note this is where the call was prior to the cleanup series so
+> > there should be no side effects of moving it back again for this
+> > specific case.
+> >
+> > [PATCH 00/21] Initial cleanups for vCPU HP.
+> > https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.org.uk/
+> >
+> > e.g. 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_DEVICES")
+> >
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v5: Update commit message to make it clear this is moving the
+> >     init back to where it was until very recently.
+> >
+> >     No longer change the condition in the earlier registration point
+> >     as that will be handled by the arm64 registration routine
+> >     deferring until called again here.
+> > ---
+> >  drivers/acpi/acpi_processor.c | 12 ++++++++++++
+> >  1 file changed, 12 insertions(+)
+> >
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
+r.c
+> > index 93e029403d05..c78398cdd060 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -317,6 +317,18 @@ static int acpi_processor_get_info(struct acpi_dev=
+ice *device)
+> >
+> >         c =3D &per_cpu(cpu_devices, pr->id);
+> >         ACPI_COMPANION_SET(&c->dev, device);
+> > +       /*
+> > +        * Register CPUs that are present. get_cpu_device() is used to =
+skip
+> > +        * duplicate CPU descriptions from firmware.
+> > +        */
+> > +       if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> > +           !get_cpu_device(pr->id)) {
+> > +               int ret =3D arch_register_cpu(pr->id);
+> > +
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> > +
+> >         /*
+> >          *  Extra Processor objects may be enumerated on MP systems with
+> >          *  less than the max # of CPUs. They should be ignored _iff
+> > -- =20
+>=20
+> I am still unsure why there need to be two paths calling
+> arch_register_cpu() in acpi_processor_get_info().
 
-Thomas, one result of using the same code in both paths is that we 
-end up calling acpi_map_cpu() in paths on x86 that aren't under CONFIG_ACPI_HOTPLUG_CPU
-any more.   If anyone ever implements the x86 version of online capable, this
-might be valid.
+I replied further down the thread, but the key point was to maintain
+the strong distinction between 'what' was done in a real hotplug
+path vs one where onlining was all.  We can relax that but it goes
+contrary to the careful dance that was needed to get any agreement
+to the ARM architecture aspects of this.
 
-For now I've dropped the CONFIG_ACPI_HOTPLUG_CPU guard in arch/x86/kernel/acpi/boot.c
-but is that the right thing to do or should we stub out with an error return for
-now?
+>=20
+> Just below the comment partially pulled into the patch context above,
+> there is this code:
+>=20
+> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>          int ret =3D acpi_processor_hotadd_init(pr);
+>=20
+>         if (ret)
+>                 return ret;
+> }
+>=20
+> For the sake of the argument, fold acpi_processor_hotadd_init() into
+> it and drop the redundant _STA check from it:
 
-> Jonathan
-> 
-> 
->         /*
-> > 
-> > Jonathan
-> > 
-> >   
-> > > 
-> > > Thanks,
-> > > 
-> > >         tglx
-> > >     
-> > 
-> > 
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel  
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+If we combine these, the _STA check is necessary because we will call this
+path for delayed onlining of ARM64 CPUs (if the earlier registration code
+call or arch_register_cpu() returned -EPROBE defer). That's the only way
+we know that a given CPU is online capable but firmware is saying we can't
+bring it online yet (it may be be vHP later).
+
+>=20
+> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>         if (invalid_phys_cpuid(pr->phys_id))
+>                 return -ENODEV;
+>=20
+>         cpu_maps_update_begin();
+>         cpus_write_lock();
+>=20
+>        ret =3D acpi_map_cpu(pr->handle, pr->phys_id, pr->acpi_id, &pr->id=
+);
+
+I read that call as
+	acpi_map_cpu_for_physical_cpu_hotplug()
+but we could make it equivalent of.
+	acpi_map_cpu_for_whatever_cpu_hotplug()
+(I'm not proposing those names though ;)
+
+in which case it is fine to just stub it out on ARM64.
+>        if (ret) {
+>                 cpus_write_unlock();
+>                 cpu_maps_update_done();
+>                 return ret;
+>        }
+>        ret =3D arch_register_cpu(pr->id);
+>        if (ret) {
+>                 acpi_unmap_cpu(pr->id);
+>=20
+>                 cpus_write_unlock();
+>                 cpu_maps_update_done();
+>                 return ret;
+>        }
+>       pr_info("CPU%d has been hot-added\n", pr->id);
+>       pr->flags.need_hotplug_init =3D 1;
+This one needs more careful handling because we are calling this
+for non hotplug cases on arm64 in which case we end up setting this
+for initially online CPUs - thus if we offline and online them
+again via sysfs /sys/bus/cpu/device/cpuX/online it goes through the
+hotplug path and should not.
+
+So I need a way to detect if we are hotplugging the cpu or not.
+Is there a standard way to do this?  I haven't figured out how
+to use flags in drivers to communicate this state.
+
+>=20
+>       cpus_write_unlock();
+>       cpu_maps_update_done();
+> }
+>=20
+> so I'm not sure why this cannot be combined with the new code.
+>=20
+> Say acpi_map_cpu) / acpi_unmap_cpu() are turned into arch calls.
+> What's the difference then?  The locking, which should be fine if I'm
+> not mistaken and need_hotplug_init that needs to be set if this code
+> runs after the processor driver has loaded AFAICS.
+
+That's the bit that I'm currently finding a challenge. Is there a clean
+way to detect that?
+
+Jonathan
+
+
+
+
 
 
