@@ -1,268 +1,121 @@
-Return-Path: <linux-acpi+bounces-5049-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5050-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A128A5959
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 19:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 508B58A5A33
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 20:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C882858B8
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 17:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083E62849B7
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Apr 2024 18:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38F113A406;
-	Mon, 15 Apr 2024 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B27915572F;
+	Mon, 15 Apr 2024 18:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOoyc7NQ"
+	dkim=pass (2048-bit key) header.d=web.de header.i=gschafra@web.de header.b="GqGg1tPx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847F912C46D;
-	Mon, 15 Apr 2024 17:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8491553A7;
+	Mon, 15 Apr 2024 18:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713202916; cv=none; b=TEFnpP4ERCqjXe6kwDGX0nAr7lzQ+ec/cTjQe5s7oUbq5jQpXgiVhS6ssnh6Wd9gnLIHz8BrMcbA27RgEE7tbhDTkmDV9Bz1+lwFE/8i4Lg5rQu6ZaDVm+8uRlfZLk4xTYMY/U9hBpr9TphHoqEYWhL+LEIsKl8m7Mr+Xt353zI=
+	t=1713207094; cv=none; b=PymB3cKJvs3cBK+NaoYVJzSQV6e9UkU7CImVuaerIuU58NOh6pRjM7dje7g0ar2k+pHiRF91eYzts121703nJe4j46li465nK63phbTyW+hFxWCTCPtYiZo5dZDii+WaUqrd9VzROTZwLjzQyWmnZiYLmg4tt9gKeT2Sfeug0BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713202916; c=relaxed/simple;
-	bh=Nd+cGKqlC3U+o3R2XM4AQmLSXWv3wXIXsvzYcQ1+Mo0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ePShuOebNdOIq9FZGCeP6BhrCuT1deO0ziIoWIQUgMSwl3cg9z7fR4uP5Hx1TxLqnvM7h5cNgpRVRfcv1qmJmWj5MGszMQd3IRNeV6Ll9KAqurjvoaxxinKIUjgqWM+sf8TNAwl7XaYEZ3df0DKPWdn8QzWI8KkzPo0RUYr8f70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOoyc7NQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DEEC113CC;
-	Mon, 15 Apr 2024 17:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713202916;
-	bh=Nd+cGKqlC3U+o3R2XM4AQmLSXWv3wXIXsvzYcQ1+Mo0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kOoyc7NQkGPD3Do4tYzA2emGxOggCq9DabYmVX3J7MyZIH4S5cg5igbZI1WOG1KxG
-	 ChUhfLglw54vaJijOyY9eV4L96p3pdTIwMCCDbWRV8IJrmW/BK/qsU8kDnDli7Ghln
-	 xc08XuSEBl20zaRIqJHnr30EUV7BhGVMB1AekS0i74CDTpzDs+EcSceggZF5qLpJNO
-	 xy2IJ8mbugGVf/guxHY7Xi64GOQygXV3wgeDGLdEMaavSw7gTSbD/Z26kjCRQ8sZUj
-	 qwMymy/wMGb9uodV998OzR6OPpnvybgKqFA+fOCmLbN5d9fpfAKtW3QI23dO/D8/os
-	 gLK5S4BPIjPrg==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-22ec8db3803so373374fac.1;
-        Mon, 15 Apr 2024 10:41:56 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWUbmHwVBrPusjWCoOQ8A9Uwh9JFES4bGDg2mMVyJCrgDAWWPf0kQoCL+f9Fo/ApXmMuj08JF8NGteEnRnUo8n6Fuh/MoZDFe/hrsN3hCNBJ3/Ulay+uylrx3tRHY3ZBmSAmyK+oMpZH3kdKmv6JoyOQAKnKCbDlk40vMLG3fzC+UQF90lsvEMWJgF+HgaxR180fK7tmjOeyKZoGhJSNg==
-X-Gm-Message-State: AOJu0YxEde9rFLe6KzDGjJxrdKVhKlIfO3FMIpYzvyNrJjgeWuERuOaD
-	7FcXg3bMeLORm8ZBcqxqZCl0zg2geNK/M7enpVtGEQuWOuyPbC6OSzVqg5yNyXJA/PiZbkLESrx
-	rUUv5Ps8SkBNPRc0A27liTEUwVIw=
-X-Google-Smtp-Source: AGHT+IFHL4CUA1EFC34zPjAiEkPOGMU0WfbEyDRpxS3+HBh/HZOHrvwKexgvTgQMN8REUusook+8615zLMm/41cNE1w=
-X-Received: by 2002:a05:6870:32d3:b0:22e:cfdd:b32c with SMTP id
- r19-20020a05687032d300b0022ecfddb32cmr12214644oac.2.1713202915413; Mon, 15
- Apr 2024 10:41:55 -0700 (PDT)
+	s=arc-20240116; t=1713207094; c=relaxed/simple;
+	bh=DfqDZSCy1bT7YhVav0SrkmE8gji+HQI8UQPnQWILtoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tjK6rcdnH1bnoWCXrny3LZHO5ItV7lkFD02EtwAsjR3CU3Uh03zxTJIh518pvANse+YGOf+vJI1GtE4PnUKavdFbD4FadBGVMGMGBwqcWThB2Sa758OowDJp6WGJ0cKG6DJJlR9KS8KJWq1QAFhT/coQWM5A1jlN1NZkZIztQcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=gschafra@web.de header.b=GqGg1tPx; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1713207085; x=1713811885; i=gschafra@web.de;
+	bh=/G+TvMeVvPYHHHKjlKDGzZ+uXBSjb0e1s3YVRMV7XBQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=GqGg1tPxo9aX6ntVK9oke/lh/dHH4VOMSWckBxUT4zvv+0VjgxS1O+u22ugcvJaV
+	 zmoQQCUTdV14YZSv79VYObx4AWBx9UqgiGLGdWCuyppgaBMhKvd/SaotMhZ3gcJWv
+	 1zRDl+iWWpT52CS8CWooYbZxjwAzvtDkRoWd+11eXmMLsRm9AzbMSErWCT7Rm+lgC
+	 nvTIRmdk1Ylq4GXrXd1m8VH/W5HmJGnOSJcvhWCCNhC5rvc5Vr3PMk8peO1Q7/pm9
+	 IgvXqOu/CZem3KxNgxGZiAhJrhzp6Hog3FAc7lRa5T9BcfTlLumCkJykoJPzlACek
+	 0GKq2hNSEHQwLUxFNg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from tazdevil.fritz.box ([213.152.127.16]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MODmV-1s75UL3rRJ-00OUz7; Mon, 15
+ Apr 2024 20:51:25 +0200
+From: Guenter Schafranek <gschafra@web.de>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guenter Schafranek <gschafra@web.de>
+Subject: [PATCH] ACPI: resource: Do IRQ override on GMxBGxx (XMG APEX 17 M23)
+Date: Mon, 15 Apr 2024 20:51:18 +0200
+Message-ID: <20240415185120.57973-1-gschafra@web.de>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
- <20240412143719.11398-3-Jonathan.Cameron@huawei.com> <CAJZ5v0izN5naWY7sTi16whds9ubXkLpgqV2gePQs869BoJTCDA@mail.gmail.com>
- <20240415164854.0000264f@Huawei.com> <CAJZ5v0hd+CNsnH9xY+UX0iy_AEaqUqJj4KdR=+yvtvy5FQEy5Q@mail.gmail.com>
- <CAJZ5v0j6gMaHamrCvrF8s+SgC0QVtG+naXhA4Dwg0t1YJvh4Uw@mail.gmail.com>
- <20240415175057.00002e11@Huawei.com> <20240415183454.000072f6@Huawei.com>
-In-Reply-To: <20240415183454.000072f6@Huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Apr 2024 19:41:43 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0huAAa5UpK4kqR-Uz4ALfY-wQ-gv7CC8C-kx9UDFvCgUw@mail.gmail.com>
-Message-ID: <CAJZ5v0huAAa5UpK4kqR-Uz4ALfY-wQ-gv7CC8C-kx9UDFvCgUw@mail.gmail.com>
-Subject: Re: [PATCH v5 02/18] ACPI: processor: Set the ACPI_COMPANION for the
- struct cpu instance
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linuxarm@huawei.com, linux-pm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
-	Russell King <linux@armlinux.org.uk>, Miguel Luis <miguel.luis@oracle.com>, 
-	James Morse <james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, justin.he@arm.com, jianyong.wu@arm.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:uKPrlSo69z6OcNVYMf+a7dHHP1IGatc+qsoMPIE2d6gPMjBHJTf
+ lFUptmJ900MTQUl6Sqf/rHNe0uKTgpPhq2y+DvAlI3VU8Uhfjo2OeuYnqH6mJCoQoinS5xa
+ OcR45WY4R/Vd905SVsZ1pdp0j4bXw5PapQyOnEMx+LDP+jwtfqd1rFQlk9d9W6zsNr1V1Bi
+ FwruoplEaPNP3CDmGcYHQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:lXaItDdWRiA=;OLLhv9+CCWfpiDvGx/H5kfutapw
+ Gg+Gy2LvlEW2R7+Gxuk8EduOMzjtU8wxUyus9UcalC/qjLsB/5N4T6dfVAXDCk2iEbu3bexHo
+ clUhK2jbOf4C98xLpG4Mnn8Gq1SgpPAp8JvQelsyWFxZFNG6pReduvNJ4x3kptkRv+LR7D7SZ
+ 53bgN4pGLF1mMt3spXcGFzbhi78Kbu7QYAs3BnpSQx1lqYJ80Gl7rSgtO5t/mUNNEB1pysu5C
+ z7VDcVjXOy2kWFqz+paadYDcCrAUVKgg3A4cUIFsbX9pBD+N31/V1pOp5ueveaI7tJFXNbl0H
+ 6ysTAw/kXnnJnp+8ItdyX2csm4IvDW8veGIX8Tzl/q0QEI14K58oX3MsoFPsPyLIRTS8l/C0w
+ lNeVA9srRXdSFtxI81ePDDAGl4lYqnNtnNWo4QvggBHwAl1EXLyOavB/TsI0hWQNwcWv3T0Lo
+ WfSf/flDUroZuOM5e0/dQ6CjBdGMh6DF4UpE7DUPd0fzINonYE1A2PbMkDI02XxBRisvixZ5U
+ c4x+c2FnT52VFSaz/e/X5ojXKK77fTywX2CrcwwLH4eEvnsmOwnfZqzv43aQ+6GBuzflhcrXR
+ AOkMNvHXrlTupHq7hv8HuqL7g09SHO78E1wIrTN9G6u8Y9dmNh5+NK+r+YgUpJnLFFJwri3lS
+ R/YQyNdOxU4PSzmGEQKig2MfEQszddXwuBzWDbqQ83MWSe6+zHp625dEdqdrA1d4eYiwp55UI
+ CDj0/X9VHm/SP5ULe9OK5Ho66KSaHBWzcU0Ohpa+h4pxzkHriLxasIMhlW3wdIax29cSDAdF8
+ BxcoeDGGQfUqJcDrKdNsRQuEFvfa6pcLZz1vYFmSEPv/g=
 
-On Mon, Apr 15, 2024 at 7:35=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 15 Apr 2024 17:50:57 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
->
-> > On Mon, 15 Apr 2024 18:19:17 +0200
-> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> >
-> > > On Mon, Apr 15, 2024 at 6:16=E2=80=AFPM Rafael J. Wysocki <rafael@ker=
-nel.org> wrote:
-> > > >
-> > > > On Mon, Apr 15, 2024 at 5:49=E2=80=AFPM Jonathan Cameron
-> > > > <Jonathan.Cameron@huawei.com> wrote:
-> > > > >
-> > > > > On Fri, 12 Apr 2024 20:10:54 +0200
-> > > > > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
-> > > > >
-> > > > > > On Fri, Apr 12, 2024 at 4:38=E2=80=AFPM Jonathan Cameron
-> > > > > > <Jonathan.Cameron@huawei.com> wrote:
-> > > > > > >
-> > > > > > > The arm64 specific arch_register_cpu() needs to access the _S=
-TA
-> > > > > > > method of the DSDT object so make it available by assigning t=
-he
-> > > > > > > appropriate handle to the struct cpu instance.
-> > > > > > >
-> > > > > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > > > > ---
-> > > > > > >  drivers/acpi/acpi_processor.c | 3 +++
-> > > > > > >  1 file changed, 3 insertions(+)
-> > > > > > >
-> > > > > > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acp=
-i_processor.c
-> > > > > > > index 7a0dd35d62c9..93e029403d05 100644
-> > > > > > > --- a/drivers/acpi/acpi_processor.c
-> > > > > > > +++ b/drivers/acpi/acpi_processor.c
-> > > > > > > @@ -235,6 +235,7 @@ static int acpi_processor_get_info(struct=
- acpi_device *device)
-> > > > > > >         union acpi_object object =3D { 0 };
-> > > > > > >         struct acpi_buffer buffer =3D { sizeof(union acpi_obj=
-ect), &object };
-> > > > > > >         struct acpi_processor *pr =3D acpi_driver_data(device=
-);
-> > > > > > > +       struct cpu *c;
-> > > > > > >         int device_declaration =3D 0;
-> > > > > > >         acpi_status status =3D AE_OK;
-> > > > > > >         static int cpu0_initialized;
-> > > > > > > @@ -314,6 +315,8 @@ static int acpi_processor_get_info(struct=
- acpi_device *device)
-> > > > > > >                         cpufreq_add_device("acpi-cpufreq");
-> > > > > > >         }
-> > > > > > >
-> > > > > > > +       c =3D &per_cpu(cpu_devices, pr->id);
-> > > > > > > +       ACPI_COMPANION_SET(&c->dev, device);
-> > > > > >
-> > > > > > This is also set for per_cpu(cpu_sys_devices, pr->id) in
-> > > > > > acpi_processor_add(), via acpi_bind_one().
-> > > > >
-> > > > > Hi Rafael,
-> > > > >
-> > > > > cpu_sys_devices gets filled with a pointer to this same structure=
-.
-> > > > > The contents gets set in register_cpu() so at this point
-> > > > > it doesn't point anywhere.  As a side note register_cpu()
-> > > > > memsets to zero the value I set it to in the code above which isn=
-'t
-> > > > > great, particularly as I want to use this in post_eject for
-> > > > > arm64.
-> > > > >
-> > > > > We could make a copy of the handle and put it back after
-> > > > > the memset in register_cpu() but that is also ugly.
-> > > > > It's the best I've come up with to make sure this is still set
-> > > > > come remove time but is rather odd.
-> > > > > >
-> > > > > > Moreover, there is some pr->id validation in acpi_processor_add=
-(), so
-> > > > > > it seems premature to use it here this way.
-> > > > > >
-> > > > > > I think that ACPI_COMPANION_SET() should be called from here on
-> > > > > > per_cpu(cpu_sys_devices, pr->id) after validating pr->id (so th=
-e
-> > > > > > pr->id validation should all be done here) and then NULL can be=
- passed
-> > > > > > as acpi_dev to acpi_bind_one() in acpi_processor_add().  Then, =
-there
-> > > > > > will be one physical device corresponding to the processor ACPI=
- device
-> > > > > > and no confusion.
-> > > > >
-> > > > > I'm fairly sure this is pointing to the same device but agreed th=
-is
-> > > > > is a tiny bit confusing. However we can't use cpu_sys_devices at =
-this point
-> > > > > so I'm not immediately seeing a cleaner solution :(
-> > > >
-> > > > Well, OK.
-> > > >
-> > > > Please at least consider doing the pr->id validation checks before
-> > > > setting the ACPI companion for &per_cpu(cpu_devices, pr->id).
-> > > >
-> > > > Also, acpi_bind_one() needs to be called on the "physical" devices
-> > > > passed to ACPI_COMPANION_SET() (with NULL as the second argument) f=
-or
-> > > > the reference counting and physical device lookup to work.
-> > > >
-> > > > Please also note that acpi_primary_dev_companion() should return
-> > > > per_cpu(cpu_sys_devices, pr->id) for the processor ACPI device, whi=
-ch
-> > > > depends on the order of acpi_bind_one() calls involving the same AC=
-PI
-> > > > device.
-> > >
-> > > Of course, if the value set by ACPI_COMPANION_SET() is cleared
-> > > subsequently, the above is not needed, but then using
-> > > ACPI_COMPANION_SET() is questionable overall.
-> >
-> > Agreed + smoothing over that by stashing and putting it back doesn't
-> > work because there is an additional call to acpi_bind_one() inbetween
-> > here and the one you reference.
-> >
-> > The arch_register_cpu() calls end up calling register_cpu() /
-> > device_register() / acpi_device_notify() / acpi_bind_one()
-> >
-> > With current code that fails (silently)
+The XM APEX 17 M23 (TongFang?) GMxBGxx (got using `sudo dmidecode -s
+baseboard-product-name`) needs IRQ overriding for the keyboard to work.
+Adding an entry for this laptop to the override_table makes the internal
+keyboard functional.
+See https://www.reddit.com/r/XMG_gg/comments/15kd5pg/xmg_apex_17_m23_keybo=
+ard_not_working_on_linux/.
+Patch was successfully tested with Arch Linux Kernel v6.8 under
+Manjaro Linux v23.1.4.
 
-And that's why there is an explicit acpi_bind_one() invocation in
-acpi_processor_add().
+Signed-off-by: Guenter Schafranek <gschafra@web.de>
+=2D--
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> > If I make sure the handle is set before register_cpu() then it
-> > succeeds, but we end up with duplicate sysfs files etc because we
-> > bind twice.
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 59423fe9d..c9af5d2f4 100644
+=2D-- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -533,6 +533,12 @@ static const struct dmi_system_id irq1_level_low_skip=
+_override[] =3D {
+  * to have a working keyboard.
+  */
+ static const struct dmi_system_id irq1_edge_low_force_override[] =3D {
++	{
++		/* XMG APEX 17 (M23) */
++		.matches =3D {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
++		},
++	},
+ 	{
+ 		/* TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15 Gen4 AMD */
+ 		.matches =3D {
+=2D-
+2.44.0
 
-Right, I should have recalled that earlier.
-
-> > I think the only way around this is larger reorganization of the
-> > CPU hotplug code to pull the arch_register_cpu() call to where
-> > the acpi_bind_one() call is.  However that changes a lot more than I'd =
-like
-> > (and I don't have it working yet).
-
-I see.
-
-> > Alternatively find somewhere else to stash the handle, or just add it a=
-s
-> > a parameter to arch_register_cpu(). Right now this feels the easier
-> > path to me. arch_register_cpu(int cpu, acpi_handle handle)
-> >
-> > Would that be a path you'd consider?
->
-> Another option would be to do the per_cpu(processors, pr->id) =3D pr
-> a few lines earlier than currently and access that directly from the
-> arch_register_cpu() call.  Similarly remove that reference a bit later an=
-d
-> use it in arch_unregister_cpu().
->
-> This seems like the simplest solution, but I may be missing something.
-
-This should work AFAICS, but I'd move the entire piece of code between
-BUG_ON() and setting per_cpu(processors, pr->id) inclusive:
-
-    BUG_ON(pr->id >=3D nr_cpu_ids);
-
-    /*
-     * Buggy BIOS check.
-     * ACPI id of processors can be reported wrongly by the BIOS.
-     * Don't trust it blindly
-     */
-    if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
-        per_cpu(processor_device_array, pr->id) !=3D device) {
-        dev_warn(&device->dev,
-            "BIOS reported wrong ACPI id %d for the processor\n",
-            pr->id);
-        /* Give up, but do not abort the namespace scan. */
-        goto err;
-    }
-    /*
-     * processor_device_array is not cleared on errors to allow buggy BIOS
-     * checks.
-     */
-    per_cpu(processor_device_array, pr->id) =3D device;
-    per_cpu(processors, pr->id) =3D pr;
-
-into acpi_processor_get_info(), right after the point where pr->id is set.
 
