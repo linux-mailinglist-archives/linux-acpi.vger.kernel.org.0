@@ -1,197 +1,172 @@
-Return-Path: <linux-acpi+bounces-5058-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5059-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287A98A6166
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 05:17:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A099F8A6607
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 10:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7CB1C20336
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 03:17:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5E11F23611
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 08:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0738917996;
-	Tue, 16 Apr 2024 03:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418D3153821;
+	Tue, 16 Apr 2024 08:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kcR4q1ln"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="XbrYob97"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8963315AF6;
-	Tue, 16 Apr 2024 03:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EA8139589
+	for <linux-acpi@vger.kernel.org>; Tue, 16 Apr 2024 08:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713237435; cv=none; b=Uzba+73RwhtTRIav/7Rpx9XIutMeIgnlIq0G+nR9gniS8tOJvnJMJY8gvmZHIg6yYXTfKEU/ky1gS7bu+P6/1nY/bofIzvPKEMEL58XSIdM5bpE8V2W0cB+9TEE+S6An8dBopd3ILyal3rkr/cMWrf2DfemsZQ4xymiSKgTmRmY=
+	t=1713255856; cv=none; b=KxiZuBFSDDgu0/la3biBqmBD5mqQ+/b83s8XoxvvXHOwnMZD1M5NjxrAkGgr3I5IcS589B/E7rjLWisg0y/3mjdPe9JbiB5X/SveX/STiF5ojikcUtHYtu914LiKeXc/8MAbYr2KGhfcViQQFej+c88SB3xzYv2cyIw/8RZMRZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713237435; c=relaxed/simple;
-	bh=9CKw6Ns0L5YcJd4x32/1S2dc5YX3XZimEZZwa+KRFmQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=I1zUh9bDQDbNDdsMHptuPjyMB2NnTOwDGOg5gkTYvb40sVEvSPoKoPQ0HHqX43RdgCPVqotdjkorySJTwcWyMJsv6/WdcLy0wJCmPkeyw1LX+dN/6GVPXVZIrOMJ7TrLCoE6DpXUaHJ2CWVaLlKNbaEROhl0Lz7H2gfonWQZ/jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kcR4q1ln; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6ed32341906so3456160b3a.1;
-        Mon, 15 Apr 2024 20:17:14 -0700 (PDT)
+	s=arc-20240116; t=1713255856; c=relaxed/simple;
+	bh=sze8yZb++qhFw0hrhcH+G01pDCr7nF4LIAaKF7TjURE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VmkrZL0xJHgNNIFIShnTV54KvzLwY0jpV1+B/FKFLpWW3HN5BehSt93Nm6GpG+IIi1atvbh9haqdw1CaTUaHBXyjvARpPuaSeaL+Y2PFyh2waWlB0OgBw23JPNXicil5kp6bpo4YAw6KCzW7HR7LJuHOmmTwUkxngVSypeUNegk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=XbrYob97; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6ed691fb83eso3343765b3a.1
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Apr 2024 01:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713237434; x=1713842234; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=KtroaYqcnyMYBjqOiDrOLUzCkiqYy/oQzAEHksV6GfE=;
-        b=kcR4q1lnlfXuS4UMeH5f5vkE2Up1kCIW9DT8HeL8/NPdWL/HhkBMaLOO3NxLf7QNSU
-         mWuJk+pUQT8YMhtF7laMzm+zlgs5vg2oSA6cMMpmEeYj4HR/wVj9dygxnYbsIpQG4kTZ
-         IBljhm6tqgKcocwhjtvQTUmMGyxTXAd9VoUu3GcAM843TldtU6UbCLkqSP3xmEhYD1UL
-         YiBUzU72BY8sI2vE6jfB+AHIlV2E9bVbrag23iziaMe4zbFbAyJ3flGSdAzCa7EMlKIE
-         EOuPztqCni/0WY0ybFBLbBrhME+HdGIt+2sB4POKXXFC9PHzxAa1eWG8+l97W+kXSGgR
-         N/YQ==
+        d=ventanamicro.com; s=google; t=1713255854; x=1713860654; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A8bGjiZPk9FOE86PWXYntaE4YFnpmEJwu/r5kYeeL8c=;
+        b=XbrYob97QBqYx50iq2g1MgVkDOzbOWL4wwBIBB73kj0h70S1DDOfV4oxmfutQfzEyu
+         k6U6QuApooGD07c6ilhNd/vQMWqSgnUeha5s/lhif070572flPVyXVFydCw7xA8i9G+4
+         6/CRKT2EahPZvJ/TkyGzaPcvJdRR51gvJykomAcxv/hsc1X7og6JEdUhcB057kdlYq0E
+         HCi1SHxqAnXkuk6O3B1gy+Fzza8M5bqeTVyzorPgBPT+qvOWE1v/O+cPvWNcZ2OlO0u2
+         GZBqJsJTYJRko3cdaIsr8zLVRG6zybDRxpN3ygHvHCB/ZuaX3s+iw2SzDuhNGBVz8OYr
+         7jKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713237434; x=1713842234;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KtroaYqcnyMYBjqOiDrOLUzCkiqYy/oQzAEHksV6GfE=;
-        b=EE7XtO+RkhiXHeWPhPJGtQaw5ddK88Iw6cTi06Lzqtx7fjsn57eBrXT2lLai73RaDh
-         khEOp/Riw5+hBAvo1cSh7rwA7K/adIvP+ZfFVcNmvBFNx/OzezVg5RdSVTgdNrf9Mq5I
-         OLoriw8DopF4UMf1iRQpZQDkhTLarkatQxclY8uoi0XOVEguUhsqCODosah5kaMeOl7F
-         +EFNsAQf6F+u8OkmUG8YOK0wmiw7xkG0QdcNPN3jjGfQSyQ6yzC71sviAYlDlCxLOU48
-         okTs9HeAcu1TGMH4SQYJfKlt6VDdCG8k20zOpohQ+zOQ7Vc0eqdebelv0S5eSepJcEv0
-         0vzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjQGzBtVPvMXl8UFK6pfLeTAOcivw1BCOfbhFKWBGi0aWJOy5VE7431KESQ/igSd71Ee9nf5gTIBuFJbD81N2EfU/bBsWAQPzN/lGrKw6jn2tFL74h/nY/c9KRpLDYWEKmJInFSv27sBo1
-X-Gm-Message-State: AOJu0YyHmRPYc8ryEkIoROBW/rEs10S2/PKTLfg2IurIq3UP1GO2COEV
-	6Jc+VyMdo3CXQMaLfzlNMOJKxeJd35de5HofsNBsFQr6xrsNi1DI
-X-Google-Smtp-Source: AGHT+IGZ+pHtvHVAPYrf1SMPpr7pKM/v8Z0oeVFJ8UiC0oaGbmOZGtsexEtbO9Nc7cRX4xEeBcD7jQ==
-X-Received: by 2002:a05:6a20:3244:b0:1a7:59b5:4276 with SMTP id hm4-20020a056a20324400b001a759b54276mr8858620pzc.54.1713237433780;
-        Mon, 15 Apr 2024 20:17:13 -0700 (PDT)
-Received: from localhost.localdomain ([43.159.199.34])
-        by smtp.gmail.com with ESMTPSA id n4-20020a17090a5a8400b002a5d684a6a7sm8658616pji.10.2024.04.15.20.17.11
+        d=1e100.net; s=20230601; t=1713255854; x=1713860654;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A8bGjiZPk9FOE86PWXYntaE4YFnpmEJwu/r5kYeeL8c=;
+        b=cQjzBAvx4eM1I3gNRlSF1vwIYrNNz3ve7foij6zNu+mVmmNRc5RenkFpDgI/Nk/9BL
+         2BBKeIV61w8olRDC930gPkhHb3VsMe9Fh77oaIMlWlgD6IjUvGeZEy7ScUK4lmI/arrQ
+         D04HVFcne9EaJA14sPwt8Pj9elReKfRjtRlc4oueWz+LBWgeZtFF0j84rfLtx6fx2xeW
+         5HR1/HS80OQFoeSXcX8bM4XxxEQoQtDFVEm1BZakLjVBI3a7UGV69Js6L4KoH9Kyy+zj
+         IJV8TyEGrC/P3iSIDU/TSbNCX+HdVTc5oNzvipm+N/oRsolHSoItG8CFtJGvFFwhCAB3
+         wySQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXkcJNvFDOci5IqHMjRFH6k8ZMtnuGPr/IzQkF8R8lMmvt5Ehy82JyyJeyQVAEpGmdv1CigycBpHdUROzCzlxNiA3nfWr31Xb6e9Q==
+X-Gm-Message-State: AOJu0YyFO4fDauFZsN+i56IvU8+cdVZfnDUmvhfVtUK7KbhNmJ9xU6Dh
+	NDxZKpK/BZlgL5JMXZ5rsj+elxCKu9CW396MRvxN5HPCwJ0MPNHj1oqmHhMybL4=
+X-Google-Smtp-Source: AGHT+IEtNrPBcSyqGZZnDLBEg+cxYbGo3RSOg3xz8lC9cOiauWkZaAkBaPfo4SIdnCTTCnH+XxMOOw==
+X-Received: by 2002:a05:6a20:3c8e:b0:1a7:89bd:9e8d with SMTP id b14-20020a056a203c8e00b001a789bd9e8dmr12355925pzj.7.1713255854107;
+        Tue, 16 Apr 2024 01:24:14 -0700 (PDT)
+Received: from sunil-laptop ([106.51.187.230])
+        by smtp.gmail.com with ESMTPSA id az21-20020a17090b029500b002a0187d84f0sm8458211pjb.20.2024.04.16.01.24.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 20:17:13 -0700 (PDT)
-From: Guanbing Huang <albanhuang0@gmail.com>
-To: gregkh@linuxfoundation.org,
-	andriy.shevchenko@intel.com,
-	rafael.j.wysocki@intel.com
-Cc: linux-acpi@vger.kernel.org,
-	tony@atomide.com,
-	john.ogness@linutronix.de,
-	yangyicong@hisilicon.com,
-	jirislaby@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	lvjianmin@loongson.cn,
-	albanhuang@tencent.com,
-	tombinfan@tencent.com
-Subject: [PATCH v8 3/3] serial: 8250_pnp: Support configurable reg shift property
-Date: Tue, 16 Apr 2024 11:16:59 +0800
-Message-Id: <4726ecea8f7bfbfe42501b4f6ad9fe5b38994574.1713234515.git.albanhuang@tencent.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1713234515.git.albanhuang@tencent.com>
-References: <cover.1713234515.git.albanhuang@tencent.com>
+        Tue, 16 Apr 2024 01:24:13 -0700 (PDT)
+Date: Tue, 16 Apr 2024 13:54:04 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Haibo1 Xu <haibo1.xu@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Andrei Warkentin <andrei.warkentin@intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Subject: Re: [RFC PATCH v4 03/20] PCI: Make pci_create_root_bus() declare its
+ reliance on MSI domains
+Message-ID: <Zh41pOmtAJ0EcbiN@sunil-laptop>
+References: <20240415170113.662318-4-sunilvl@ventanamicro.com>
+ <20240415231523.GA139682@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240415231523.GA139682@bhelgaas>
 
-From: Guanbing Huang <albanhuang@tencent.com>
+Hi Bjorn,
 
-The 16550a serial port based on the ACPI table requires obtaining the
-reg-shift attribute. In the ACPI scenario, If the reg-shift property
-is not configured like in DTS, the 16550a serial driver cannot read or
-write controller registers properly during initialization.
+On Mon, Apr 15, 2024 at 06:15:23PM -0500, Bjorn Helgaas wrote:
+> On Mon, Apr 15, 2024 at 10:30:56PM +0530, Sunil V L wrote:
+> > Similar to commit 9ec37efb8783 ("PCI/MSI: Make
+> > pci_host_common_probe() declare its reliance on MSI domains"), declare
+> > this dependency for PCI probe in ACPI based flow.
+> > 
+> > This is required especially for RISC-V platforms where MSI controller
+> > can be absent. However, setting this for all architectures seem to cause
+> > issues on non RISC-V architectures [1]. Hence, enabled this only for
+> > RISC-V.
+> > 
+> > [1] - https://lore.kernel.org/oe-lkp/202403041047.791cb18e-oliver.sang@intel.com
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > ---
+> >  drivers/pci/probe.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> > index 1325fbae2f28..e09915bee2ee 100644
+> > --- a/drivers/pci/probe.c
+> > +++ b/drivers/pci/probe.c
+> > @@ -3048,6 +3048,9 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
+> >  	bridge->sysdata = sysdata;
+> >  	bridge->busnr = bus;
+> >  	bridge->ops = ops;
+> > +#ifdef CONFIG_RISCV
+> > +	bridge->msi_domain = true;
+> > +#endif
+> 
+> Ugh.  I looked at [1], but that's not a very good justification for
+> this #ifdef.  The fault mentioned in [1] would need to be fixed, but
+> not this way.
+> 
 
-Signed-off-by: Guanbing Huang <albanhuang@tencent.com>
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Bing Fan <tombinfan@tencent.com>
-Tested-by: Linheng Du <dylanlhdu@tencent.com>
----
-v6 -> v7: add a "Reviewed-by" tag
-v5 -> v6: fix the issue that the cover letter is not chained with the patch series
-v4 -> v5: modify to obtain the value of mapsize through the pnp_mem_len function,
-          add annotations for the iotype variable, delete excess uart.port.flags operation
-v3 -> v4: dependent on two pre patches: "pnp: Add dev_is_pnp() macro" and
-          "serial: 8250_port: Add support of pnp irq to  __uart_read_properties()",
-          the iotype is reserved, the mapsize is initialized, fix the UPF_SHARE_IRQ
-	  flag, check for IRQ being absent
-v2 -> v3: switch to use uart_read_port_properties(), change "Signed-off-by" to "Reviewed-by" and "Tested-by"
-v1 -> v2: change the names after "Signed off by" to the real names
+Thank you again for the feedback!
 
- drivers/tty/serial/8250/8250_pnp.c | 40 +++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 15 deletions(-)
+I agree. This is due to my limitation with knowledge and resources to
+debug the issue happening on non-UEFI x86 system with some particular
+PCIe RC. Also, I was worried that we get into a rat hole of
+assumptions/quirks with various architecture/PCIe RC combinations.
 
-diff --git a/drivers/tty/serial/8250/8250_pnp.c b/drivers/tty/serial/8250/8250_pnp.c
-index 1974bbadc975..8f72a7de1d1d 100644
---- a/drivers/tty/serial/8250/8250_pnp.c
-+++ b/drivers/tty/serial/8250/8250_pnp.c
-@@ -435,6 +435,7 @@ serial_pnp_probe(struct pnp_dev *dev, const struct pnp_device_id *dev_id)
- {
- 	struct uart_8250_port uart, *port;
- 	int ret, line, flags = dev_id->driver_data;
-+	unsigned char iotype;
- 
- 	if (flags & UNKNOWN_DEV) {
- 		ret = serial_pnp_guess_board(dev);
-@@ -443,37 +444,46 @@ serial_pnp_probe(struct pnp_dev *dev, const struct pnp_device_id *dev_id)
- 	}
- 
- 	memset(&uart, 0, sizeof(uart));
--	if (pnp_irq_valid(dev, 0))
--		uart.port.irq = pnp_irq(dev, 0);
- 	if ((flags & CIR_PORT) && pnp_port_valid(dev, 2)) {
- 		uart.port.iobase = pnp_port_start(dev, 2);
--		uart.port.iotype = UPIO_PORT;
-+		iotype = UPIO_PORT;
- 	} else if (pnp_port_valid(dev, 0)) {
- 		uart.port.iobase = pnp_port_start(dev, 0);
--		uart.port.iotype = UPIO_PORT;
-+		iotype = UPIO_PORT;
- 	} else if (pnp_mem_valid(dev, 0)) {
- 		uart.port.mapbase = pnp_mem_start(dev, 0);
--		uart.port.iotype = UPIO_MEM;
-+		uart.port.mapsize = pnp_mem_len(dev, 0);
-+		iotype = UPIO_MEM;
- 		uart.port.flags = UPF_IOREMAP;
- 	} else
- 		return -ENODEV;
- 
--	dev_dbg(&dev->dev,
--		 "Setup PNP port: port %#lx, mem %#llx, irq %u, type %u\n",
--		 uart.port.iobase, (unsigned long long)uart.port.mapbase,
--		 uart.port.irq, uart.port.iotype);
-+	uart.port.uartclk = 1843200;
-+	uart.port.dev = &dev->dev;
-+	uart.port.flags |= UPF_SKIP_TEST | UPF_BOOT_AUTOCONF;
-+
-+	ret = uart_read_port_properties(&uart.port);
-+	/* no interrupt -> fall back to polling */
-+	if (ret == -ENXIO)
-+		ret = 0;
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * The previous call may not set iotype correctly when reg-io-width
-+	 * property is absent and it doesn't support IO port resource.
-+	 */
-+	uart.port.iotype = iotype;
- 
- 	if (flags & CIR_PORT) {
- 		uart.port.flags |= UPF_FIXED_PORT | UPF_FIXED_TYPE;
- 		uart.port.type = PORT_8250_CIR;
- 	}
- 
--	uart.port.flags |= UPF_SKIP_TEST | UPF_BOOT_AUTOCONF;
--	if (pnp_irq_flags(dev, 0) & IORESOURCE_IRQ_SHAREABLE)
--		uart.port.flags |= UPF_SHARE_IRQ;
--	uart.port.uartclk = 1843200;
--	device_property_read_u32(&dev->dev, "clock-frequency", &uart.port.uartclk);
--	uart.port.dev = &dev->dev;
-+	dev_dbg(&dev->dev,
-+		 "Setup PNP port: port %#lx, mem %#llx, size %#llx, irq %u, type %u\n",
-+		 uart.port.iobase, (unsigned long long)uart.port.mapbase,
-+		 (unsigned long long)uart.port.mapsize, uart.port.irq, uart.port.iotype);
- 
- 	line = serial8250_register_8250_port(&uart);
- 	if (line < 0 || (flags & CIR_PORT))
--- 
-2.17.1
+For ex: I think the issue is, somehow MSI domain is not set at the time
+of PCI host bridge registration in pci_register_host_bridge() causing
+PCI_BUS_FLAGS_NO_MSI to be set. This causes pci_alloc_irq_vectors() to
+fail. In portdrv.c, pcie_init_service_irqs() doesn't switch to INTx
+handling if MSI can not be used. It switches only if pcie_pme_no_msi()
+returns true. I couldn't find who actually sets up MSI domain bit late
+on this platform so that it somehow worked when we didn't set this flag.
+
+Unfortunately, I don't have system to root cause and fix this issue with
+confidence. Also, I don't know if any other architectures have similar
+issues which are not caught yet. Hence, I thought it may be better
+just restrict the change to RISC-V.
+
+Let me know your thoughts. If there are better ways, I will be happy to
+update.
+
+Thanks,
+Sunil
+
 
 
