@@ -1,131 +1,122 @@
-Return-Path: <linux-acpi+bounces-5070-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5071-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DA68A744D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 21:05:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1324C8A7519
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 21:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7951B1C21436
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 19:05:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89E92B219D5
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 19:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864B9137773;
-	Tue, 16 Apr 2024 19:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ve6W9IoG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B364E1386D6;
+	Tue, 16 Apr 2024 19:49:38 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B823137748;
-	Tue, 16 Apr 2024 19:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2F113792D;
+	Tue, 16 Apr 2024 19:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713294354; cv=none; b=q+HHhLLeUr2huQs7FLdQUNVzqOF5cOAb1y65IvI5wWkvOEQSoQoOZskfsKdLRpfenKbdXAb6m6pyPiWrZqdaR2LDqyir59CHtk9kIvjWWpmD6XphZV0T1vehQ8uMypueV1BsiyOynM/Lz0urvsmj8hZx5ljhVA3TUorurNLjBSc=
+	t=1713296978; cv=none; b=d6BrqrLsPYF5q1kt/Su7/WVtscjPcp93oBDzKIYXVbLN+i3InX/zwk0YwKXGCZjgOzHdQ+5d8yLmmDkGkE13iEm3jA4aGGXmhtXyScywj7GX9HUgBXK7OX6Ok4PB0ZMtukpatsSkWWDZVdnFYYCmoEOEtKVFFv8uFXVrPoUu1x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713294354; c=relaxed/simple;
-	bh=//2khB4PkoPCVtJ4LDJlzBGxfIX4c4GcIdP1vLzEsvE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ic9cQUOErcY/3oAlu/ZUbqfW96LlLLu37FfGJv1cV48YCUeDedRTC8BB/tE7RdcYrq9DJnIXHs1dMiHDGurFbQQrJxq/LeiB0ei/l+R7g+AOl4a5xxKXaJLH8QLd9trBYo3h/Zb6lSYTN7KZTjNJLQ0eJgL5R2+keb7duGqoXgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ve6W9IoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9B7C32786;
-	Tue, 16 Apr 2024 19:05:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713294353;
-	bh=//2khB4PkoPCVtJ4LDJlzBGxfIX4c4GcIdP1vLzEsvE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Ve6W9IoGJERReaqSKZfSKN9xPhMy2uek5Ds2ow6tlgLNGJL5ZUD/morWwk477RqpZ
-	 BYJzh734DTM2rYEr3d7pMAg/hHJfUYeX/+LW8bAKE9+jGUwWc/LpaJmm8HGunM2nLR
-	 IUV3ZY/2zww1DL4clTYTX7x/ZchAOaSVB2AUFyOEyT48LcbGRY9tZBdydkM2BmWOA7
-	 rLSpw/oVvU/C8iIBejDiBvlarTcSnga0gdxjHDGBRPAHDfpm5ELrvngAQETf4ThuYv
-	 Kvhe8wV7x9uDx3x9m3BqF+2sUfisi48PmcSIw9zx1s9OOLYpiwIvhGHcxwiu8ppfTz
-	 4/gJMXCYKD+Hg==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a9ef9ba998so1260875eaf.1;
-        Tue, 16 Apr 2024 12:05:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXVRtOrOKpfFs7Zh/6jU7+VqW1Vmg01s4SIHmaFvZmWd8fT8JcvOMJfIQOWsyzgCewmfaOLxGBiz+hREaSS1zHV6jE8AnEvQJ62XokxZFbNYlpw7UGXsRWlYpXr10e6redXXfSn0xFpStecinYTVKrxyrCbskmCAzCUD6AHYBXMTj2ZcWb7lw==
-X-Gm-Message-State: AOJu0YwOK2nPQKK+uhsOV+rodJkIeBrtbjQTUWSNtgTpTHGILXSIVAXl
-	ssxeHAo23UcoRxW33gvU02Y5rit1wUS4MC6cT8MnTG0SpMnjfSLeg0votr/mgdPGkklLb7jgZ1r
-	Dh4iML2CmMfrGfbAlmuMn6b6+PhQ=
-X-Google-Smtp-Source: AGHT+IG53TJDymK56MS7YszkNyUNXpVZZ4HqFtIOnyEF8FvjKYHxjNHMhP+lklujEI0wH0jJXkfV00gzQS5Ip4GpPfs=
-X-Received: by 2002:a05:6820:4187:b0:5ac:6fc1:c2cb with SMTP id
- fk7-20020a056820418700b005ac6fc1c2cbmr13625856oob.0.1713294353171; Tue, 16
- Apr 2024 12:05:53 -0700 (PDT)
+	s=arc-20240116; t=1713296978; c=relaxed/simple;
+	bh=ax3Hkz8by9sa3C0PHz6V5APRvHG6ooQ+PnH0zYUfSDw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=QG+u2WYLOhTjQb/eoyM9gcCh0bkqxwCUdAxuYVBIeR3F1v6j9lxqXHrN+7WAx2RS6HLh54J9xjGLEZv8GBGkvDd/8lqkkUIDiwNDpjlDT4NxYCUvb23AAlcKYqHVowpAFTxYa3LaN4X132J7Air9GtyuWQX+2EI9GHQkaslb+Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0143F339;
+	Tue, 16 Apr 2024 12:50:03 -0700 (PDT)
+Received: from [192.168.20.58] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 93F4F3F738;
+	Tue, 16 Apr 2024 12:49:30 -0700 (PDT)
+Message-ID: <f18251ff-979f-42bb-9db4-8f7256c4ca4a@arm.com>
+Date: Tue, 16 Apr 2024 14:49:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1713234515.git.albanhuang@tencent.com> <4e68f5557ad53b671ca8103e572163eca52a8f29.1713234515.git.albanhuang@tencent.com>
-In-Reply-To: <4e68f5557ad53b671ca8103e572163eca52a8f29.1713234515.git.albanhuang@tencent.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 16 Apr 2024 21:05:42 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0ikW4o4g-yt5SnUFvKfLS6q1tGQ+3NTOfVPvwp7hZ3t2g@mail.gmail.com>
-Message-ID: <CAJZ5v0ikW4o4g-yt5SnUFvKfLS6q1tGQ+3NTOfVPvwp7hZ3t2g@mail.gmail.com>
-Subject: Re: [PATCH v8 1/3] PNP: Add dev_is_pnp() macro
-To: Guanbing Huang <albanhuang0@gmail.com>
-Cc: gregkh@linuxfoundation.org, andriy.shevchenko@intel.com, 
-	rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, tony@atomide.com, 
-	john.ogness@linutronix.de, yangyicong@hisilicon.com, jirislaby@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	lvjianmin@loongson.cn, albanhuang@tencent.com, tombinfan@tencent.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] riscv: cacheinfo: remove the useless parameter
+ (node) of ci_leaf_init()
+Content-Language: en-US
+To: Yunhui Cui <cuiyunhui@bytedance.com>, rafael@kernel.org, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com,
+ jhugo@codeaurora.org, john.garry@huawei.com, Jonathan.Cameron@huawei.com,
+ pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
+References: <20240416031438.7637-1-cuiyunhui@bytedance.com>
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20240416031438.7637-1-cuiyunhui@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 16, 2024 at 5:16=E2=80=AFAM Guanbing Huang <albanhuang0@gmail.c=
-om> wrote:
->
-> From: Guanbing Huang <albanhuang@tencent.com>
->
-> Add dev_is_pnp() macro to determine whether the device is a PNP device.
->
-> Signed-off-by: Guanbing Huang <albanhuang@tencent.com>
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-> Reviewed-by: Bing Fan <tombinfan@tencent.com>
-> Tested-by: Linheng Du <dylanlhdu@tencent.com>
+Hi,
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Other than a comment in 2/3 this all (patches 1-3) looks sane to me. So:
 
-and please feel free to route it along with the rest of the series.
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
 
-Thanks!
+Thanks,
 
+
+On 4/15/24 22:14, Yunhui Cui wrote:
+> The implementation of the ci_leaf_init() function body and the caller
+> do not use the input parameter (struct device_node *node), so remove it.
+> 
+> Fixes: 6a24915145c9 ("Revert "riscv: Set more data to cacheinfo"")
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 > ---
-> v7 -> v8: delete a "Reviewed-by" tag, delete a "Reported-by" tag
-> v6 -> v7: add a "Reviewed-by" tag and a "Reported-by" tag, fix build erro=
-rs when CONFIG_PNP is not enabled
-> v5 -> v6: fix the issue that the cover letter is not chained with the pat=
-ch series
-> v4 -> v5: change "pnp" in the commit message to uppercase
->
->  include/linux/pnp.h | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> index ddbe7c3ca4ce..82561242cda4 100644
-> --- a/include/linux/pnp.h
-> +++ b/include/linux/pnp.h
-> @@ -469,6 +469,8 @@ int compare_pnp_id(struct pnp_id *pos, const char *id=
-);
->  int pnp_register_driver(struct pnp_driver *drv);
->  void pnp_unregister_driver(struct pnp_driver *drv);
->
-> +#define dev_is_pnp(d) ((d)->bus =3D=3D &pnp_bus_type)
-> +
->  #else
->
->  /* device management */
-> @@ -500,6 +502,8 @@ static inline int compare_pnp_id(struct pnp_id *pos, =
-const char *id) { return -E
->  static inline int pnp_register_driver(struct pnp_driver *drv) { return -=
-ENODEV; }
->  static inline void pnp_unregister_driver(struct pnp_driver *drv) { }
->
-> +#define dev_is_pnp(d) false
-> +
->  #endif /* CONFIG_PNP */
->
->  /**
-> --
+>   arch/riscv/kernel/cacheinfo.c | 13 ++++++-------
+>   1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+> index 09e9b88110d1..30a6878287ad 100644
+> --- a/arch/riscv/kernel/cacheinfo.c
+> +++ b/arch/riscv/kernel/cacheinfo.c
+> @@ -64,7 +64,6 @@ uintptr_t get_cache_geometry(u32 level, enum cache_type type)
+>   }
+>   
+>   static void ci_leaf_init(struct cacheinfo *this_leaf,
+> -			 struct device_node *node,
+>   			 enum cache_type type, unsigned int level)
+>   {
+>   	this_leaf->level = level;
+> @@ -80,11 +79,11 @@ int populate_cache_leaves(unsigned int cpu)
+>   	int levels = 1, level = 1;
+>   
+>   	if (of_property_read_bool(np, "cache-size"))
+> -		ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
+> +		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+>   	if (of_property_read_bool(np, "i-cache-size"))
+> -		ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
+> +		ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+>   	if (of_property_read_bool(np, "d-cache-size"))
+> -		ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
+> +		ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+>   
+>   	prev = np;
+>   	while ((np = of_find_next_cache_node(np))) {
+> @@ -97,11 +96,11 @@ int populate_cache_leaves(unsigned int cpu)
+>   		if (level <= levels)
+>   			break;
+>   		if (of_property_read_bool(np, "cache-size"))
+> -			ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
+> +			ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+>   		if (of_property_read_bool(np, "i-cache-size"))
+> -			ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
+> +			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+>   		if (of_property_read_bool(np, "d-cache-size"))
+> -			ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
+> +			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+>   		levels = level;
+>   	}
+>   	of_node_put(np);
+
 
