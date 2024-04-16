@@ -1,158 +1,121 @@
-Return-Path: <linux-acpi+bounces-5064-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5065-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9E78A6D2F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 16:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3291E8A6D43
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 16:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAEC628636A
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 14:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC27F287705
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 14:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9816612CD8C;
-	Tue, 16 Apr 2024 14:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53C512CD91;
+	Tue, 16 Apr 2024 14:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GLlJDBCd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44F612BF3A;
-	Tue, 16 Apr 2024 14:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D932612838C;
+	Tue, 16 Apr 2024 14:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713276013; cv=none; b=eEGzyorkpWFp9lVq/7aGMnmW0kCOboyNd/zycKBQO5T91OUFHC1NzZ+lS4RlS4uXmKf+UPDPrfP/wcSSEqIwWSl42iLqYZZ68j9bH3Fj4Bt0fr8akb1uufrhZTQN6tXdVt8O43gxNJ6PS4K79QY0tAB1csbxldiRcUH3Z998dwA=
+	t=1713276317; cv=none; b=kYGGJaSaz55BrG0+XiaH9pD+YMb9UO0G7S42ZHh7LbFfd+gR87qQygL76HJA7OtxwXcRt8vks+2udGtpEU6UwV+yxut5exFK3AkAOzV0vc2Lg6Tfiw6aPdq6Lq6X+r2rsA8lyAoU/NansjZpSRgTQRVdUHgDy2wx72mQg34xAPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713276013; c=relaxed/simple;
-	bh=b1c9Idw5WwR1wow0ywz3fwqqsRx0+1L+gWDdhubKeBU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mDTmf4a6nfiGhKVoHnZ8UMaMH6/dvigoOhlEVJx/0MXKd3ifvUJY9qytNv5RP0eD0EzRF2K4zjUtDvKzU48XJPILwqSaZ4nM0h7idcqmTTuU0HTbrmnlZe9HvKdBPjFhMaRX/ZL5lFOUSESFXw2BokpJxca7QcUsGxoC2psBAxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VJlsk53Hnz6K8xT;
-	Tue, 16 Apr 2024 21:55:06 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id DCBEF140B3C;
-	Tue, 16 Apr 2024 22:00:02 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 16 Apr
- 2024 15:00:02 +0100
-Date: Tue, 16 Apr 2024 15:00:01 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Russell King
-	<linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, "Miguel
- Luis" <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, "Salil
- Mehta" <salil.mehta@huawei.com>, Jean-Philippe Brucker
-	<jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, <linuxarm@huawei.com>
-CC: <justin.he@arm.com>, <jianyong.wu@arm.com>
-Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from
- acpi_processor_get_info()
-Message-ID: <20240416145917.00004a7b@huawei.com>
-In-Reply-To: <20240412143719.11398-4-Jonathan.Cameron@huawei.com>
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
-	<20240412143719.11398-4-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1713276317; c=relaxed/simple;
+	bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UdQax1IdkX5syaIGD5xBgJAQ8r5veI9uJn+goR6uYrpIj2zAVIZ0YXGne/r2AViYJLkGWattP4UHiY1tw8t0yB/ryGlqRwvySEkk4tToAaDC5kXYW5xnLBj3U1qzKWdeWekAAeIEGEKHQyK96QTQkDxS1k0CGQiX/iGa5v0ImvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GLlJDBCd; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713276314; x=1744812314;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
+  b=GLlJDBCdmt+Q0jAgMTSwVBo/7QpwXWZR8ywotGfw/PqUtnjbpyE0gFdV
+   QfG0iInftIqiAtQw9+F6tny4m0zuQFZMRTSGD4ajS4qpnpf0zcQ6zBfwC
+   fFlswPKv82c/ISfru0K0FwgbiU1hn5YbCWliOA3bYkocVRdghTeJQhew+
+   vOSFwrf4aE6VhkGuWQwYNQTFJ7AyfMXICqGt9QnUyyPcTiUyegufkD5t5
+   5jyR7oMkKft20trFRqxfJBwJPiTFSlBOTJhkjWAtV40aq8Hlsn0T35JR0
+   q3DcgOSZCi1qQhQ5NvzwwFzZIs8oOlXwQ6uLBE86kYH4s+Qg1+FocLuuw
+   w==;
+X-CSE-ConnectionGUID: 19haIpVuSW+ibFHqiHR1Pw==
+X-CSE-MsgGUID: LftmEfNOTvCqndEidjV8Xg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="12554253"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="12554253"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:13 -0700
+X-CSE-ConnectionGUID: Osep5OIWR6yhlH0nyEsqwg==
+X-CSE-MsgGUID: 5BAvzasNR0WOGHBLZR1yMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="22340887"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rwjQo-00000004iLg-1Y7q;
+	Tue, 16 Apr 2024 17:05:06 +0300
+Date: Tue, 16 Apr 2024 17:05:05 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
+ <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
+ <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
+ <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, 12 Apr 2024 15:37:04 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
+> On Fri, Apr 12, 2024 at 9:44 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> 
+> > IIUC include/dt-bindings/ headers should only be used by DT sources
+> > and code that parses the OF properties.
+> 
+> That's what I have come to understand as well.
+> 
+> I wonder if there is something that can be done to enforce it?
+> 
+> Ideally the code that parses OF properties should have to
+> opt in to get access to the <dt-bindings/*> namespace.
 
-> From: James Morse <james.morse@arm.com>
-> 
-> The arm64 specific arch_register_cpu() call may defer CPU registration
-> until the ACPI interpreter is available and the _STA method can
-> be evaluated.
-> 
-> If this occurs, then a second attempt is made in
-> acpi_processor_get_info(). Note that the arm64 specific call has
-> not yet been added so for now this will never be successfully
-> called.
-> 
-> Systems can still be booted with 'acpi=off', or not include an
-> ACPI description at all as in these cases arch_register_cpu()
-> will not have deferred registration when first called.
-> 
-> This moves the CPU register logic back to a subsys_initcall(),
-> while the memory nodes will have been registered earlier.
-> Note this is where the call was prior to the cleanup series so
-> there should be no side effects of moving it back again for this
-> specific case.
-> 
-> [PATCH 00/21] Initial cleanups for vCPU HP.
-> https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.org.uk/
-> 
-> e.g. 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_DEVICES")
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
-> ---
-> v5: Update commit message to make it clear this is moving the
->     init back to where it was until very recently.
-> 
->     No longer change the condition in the earlier registration point
->     as that will be handled by the arm64 registration routine
->     deferring until called again here.
-> ---
->  drivers/acpi/acpi_processor.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> index 93e029403d05..c78398cdd060 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -317,6 +317,18 @@ static int acpi_processor_get_info(struct acpi_device *device)
->  
->  	c = &per_cpu(cpu_devices, pr->id);
->  	ACPI_COMPANION_SET(&c->dev, device);
-> +	/*
-> +	 * Register CPUs that are present. get_cpu_device() is used to skip
-> +	 * duplicate CPU descriptions from firmware.
-> +	 */
-> +	if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
-> +	    !get_cpu_device(pr->id)) {
+Whatever you, guys, come up with as a solution, can it be fixed sooner than later?
+I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1 so we don't
+need to look into this again.
 
-Just a quick note to call out that this case of 'duplicate' firmware
-description needs an updated comment.  Now we are not deferring
-registration on x86 this is detecting that arch_register_cpu()
-has already been successfully called and we should not do it again.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-I've added rather more detailed comments enumerating of the paths we
-can take to hit acpi_processor_hotadd_init() in the v6 series
-(tests ongoing)
-
-Jonathan
-
-
-> +		int ret = arch_register_cpu(pr->id);
-> +
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	/*
->  	 *  Extra Processor objects may be enumerated on MP systems with
->  	 *  less than the max # of CPUs. They should be ignored _iff
 
 
