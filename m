@@ -1,174 +1,131 @@
-Return-Path: <linux-acpi+bounces-5069-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7C88A7439
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 21:03:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DA68A744D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 21:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BA4B1F21B61
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 19:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7951B1C21436
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 19:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C991C137C5B;
-	Tue, 16 Apr 2024 19:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864B9137773;
+	Tue, 16 Apr 2024 19:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsZ1iD5N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ve6W9IoG"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96926137748;
-	Tue, 16 Apr 2024 19:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B823137748;
+	Tue, 16 Apr 2024 19:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713294135; cv=none; b=J8532YG/+dSFdyWs350DZ7mlGmO8IBjXm3D6FKT9d/mg4jFJ0dEC9qcSp1eMYExbX2WxAKDPWKk/o3hr8HuN3wrXNSbVRKiQ52E9jNRTdfcFa0ju5K03jmYf80ijmBf4YI5SfvnxO0rdJfh7rgAEsrzIWlGidpo8VDOjMK7fWoA=
+	t=1713294354; cv=none; b=q+HHhLLeUr2huQs7FLdQUNVzqOF5cOAb1y65IvI5wWkvOEQSoQoOZskfsKdLRpfenKbdXAb6m6pyPiWrZqdaR2LDqyir59CHtk9kIvjWWpmD6XphZV0T1vehQ8uMypueV1BsiyOynM/Lz0urvsmj8hZx5ljhVA3TUorurNLjBSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713294135; c=relaxed/simple;
-	bh=xbskRV8m/+XN6NH2m8afNoKnmWeG0OzTrmA+SGInC2k=;
+	s=arc-20240116; t=1713294354; c=relaxed/simple;
+	bh=//2khB4PkoPCVtJ4LDJlzBGxfIX4c4GcIdP1vLzEsvE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tVse+Dfmmqt1tdelpXUrMImcUbRqJyAbR0TrJu8PFFeNncW4Klq30+eo9yXRnrUMH4bS1Ck59Xnhv9s8+DmoSElP+0s4TwXLKt1Zq2s2dqkg0h6V4SptWl9rLwh0VbyX/0zf0aDQOwKzh/WXuktWGeH/xH6IuMqJZwlnCBj+O/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsZ1iD5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5478BC4AF0E;
-	Tue, 16 Apr 2024 19:02:15 +0000 (UTC)
+	 To:Cc:Content-Type; b=Ic9cQUOErcY/3oAlu/ZUbqfW96LlLLu37FfGJv1cV48YCUeDedRTC8BB/tE7RdcYrq9DJnIXHs1dMiHDGurFbQQrJxq/LeiB0ei/l+R7g+AOl4a5xxKXaJLH8QLd9trBYo3h/Zb6lSYTN7KZTjNJLQ0eJgL5R2+keb7duGqoXgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ve6W9IoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9B7C32786;
+	Tue, 16 Apr 2024 19:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713294135;
-	bh=xbskRV8m/+XN6NH2m8afNoKnmWeG0OzTrmA+SGInC2k=;
+	s=k20201202; t=1713294353;
+	bh=//2khB4PkoPCVtJ4LDJlzBGxfIX4c4GcIdP1vLzEsvE=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BsZ1iD5Nd0d4B6HXNkBHNhwT4LiiWc88yZUQZOPWqCQret+uyX993UiVDEdXnTQpZ
-	 i+0iRxF78oS0mCLtwntmBow82cS81/MNHk/euznN+1VogyU2uvGQNlFiP3RAekV8ZZ
-	 JUyUoVCxOUgz5WA1BpUwqxv6orExQ6CEOkIl7Ln5jgg1FrwS1lxDBRn7+JLvJ5lDsn
-	 qfIZDWeWTFh5naNuIBI1NkF4/TaI7mxKxaobY5r/KUieAf/+pzCcjsTF4Wih403x9q
-	 s5GnRQ7NhXx3QnWrU9BEPwOT48kAMz7YncYjrHuetrhWT0p7Kwou0NeqRGFTJ7KbSp
-	 rFw6bdV4pLu+Q==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5acdbfa7a45so89186eaf.2;
-        Tue, 16 Apr 2024 12:02:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWpdebi6ZoqTkcKV2RNxmQnMTB4GKRTK8FXXM+4WkvGpD26OOpnf7tZyh20o/8y2g5BAt1WA1ig8oAu+N8WexL02SXP3Jf1jcWBsylmVnau1OsJE/Mygn144IbR6jEPICVdjKqaWJ4JSV0NXTg9Tf0pG0WrsHA8DUKGfxgr9E4LOEoINhmY1I0AvynvHrDWz9ENzQuBADn+adz8QOnreQ==
-X-Gm-Message-State: AOJu0YxWDSA63iSWjSmIhpoqKhX6//OKcRA2UmPem1LFr/3GzbPvo3vY
-	CGwbBeCWPqZXj2HKpc3IP8ZxQukAqgTiihHUjD6SVr3/NbVpnOKHSSMdDnNKqQtHrCBwshqdOKI
-	GI7ksXKuwVeKFeI0HXkP91QMDZY8=
-X-Google-Smtp-Source: AGHT+IGfLxmXEH+uUXC9TAUq3KwcPBawoHi+dzfu7++eeN3j3YN9GuWwKcm2PcJPtxo1jL4YEoWhIRWKjGy4htEVqRk=
-X-Received: by 2002:a05:6820:4008:b0:5aa:6b2e:36f0 with SMTP id
- fh8-20020a056820400800b005aa6b2e36f0mr16275342oob.0.1713294134546; Tue, 16
- Apr 2024 12:02:14 -0700 (PDT)
+	b=Ve6W9IoGJERReaqSKZfSKN9xPhMy2uek5Ds2ow6tlgLNGJL5ZUD/morWwk477RqpZ
+	 BYJzh734DTM2rYEr3d7pMAg/hHJfUYeX/+LW8bAKE9+jGUwWc/LpaJmm8HGunM2nLR
+	 IUV3ZY/2zww1DL4clTYTX7x/ZchAOaSVB2AUFyOEyT48LcbGRY9tZBdydkM2BmWOA7
+	 rLSpw/oVvU/C8iIBejDiBvlarTcSnga0gdxjHDGBRPAHDfpm5ELrvngAQETf4ThuYv
+	 Kvhe8wV7x9uDx3x9m3BqF+2sUfisi48PmcSIw9zx1s9OOLYpiwIvhGHcxwiu8ppfTz
+	 4/gJMXCYKD+Hg==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a9ef9ba998so1260875eaf.1;
+        Tue, 16 Apr 2024 12:05:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXVRtOrOKpfFs7Zh/6jU7+VqW1Vmg01s4SIHmaFvZmWd8fT8JcvOMJfIQOWsyzgCewmfaOLxGBiz+hREaSS1zHV6jE8AnEvQJ62XokxZFbNYlpw7UGXsRWlYpXr10e6redXXfSn0xFpStecinYTVKrxyrCbskmCAzCUD6AHYBXMTj2ZcWb7lw==
+X-Gm-Message-State: AOJu0YwOK2nPQKK+uhsOV+rodJkIeBrtbjQTUWSNtgTpTHGILXSIVAXl
+	ssxeHAo23UcoRxW33gvU02Y5rit1wUS4MC6cT8MnTG0SpMnjfSLeg0votr/mgdPGkklLb7jgZ1r
+	Dh4iML2CmMfrGfbAlmuMn6b6+PhQ=
+X-Google-Smtp-Source: AGHT+IG53TJDymK56MS7YszkNyUNXpVZZ4HqFtIOnyEF8FvjKYHxjNHMhP+lklujEI0wH0jJXkfV00gzQS5Ip4GpPfs=
+X-Received: by 2002:a05:6820:4187:b0:5ac:6fc1:c2cb with SMTP id
+ fk7-20020a056820418700b005ac6fc1c2cbmr13625856oob.0.1713294353171; Tue, 16
+ Apr 2024 12:05:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
- <20240412143719.11398-4-Jonathan.Cameron@huawei.com> <CAJZ5v0gNvy2e=hOGQQ2kLpnrDr8=QGBax-E5odEJ=7BA8qW-9A@mail.gmail.com>
- <ZhmWkE+fCEG/WFoi@shell.armlinux.org.uk> <87bk6ez4hj.ffs@tglx>
- <ZhmtO6zBExkQGZLk@shell.armlinux.org.uk> <878r1iyxkr.ffs@tglx>
- <20240415094552.000008d7@Huawei.com> <CAJZ5v0ireu4pOedLjMjK2NrLkq_2vySpdgEgGccQEiFC5=otWQ@mail.gmail.com>
- <20240415125649.00001354@huawei.com> <CAJZ5v0iNSmV6EsBOc5oYWSTR9UvFOeg8_mj8Ofhum4Tonb3kNQ@mail.gmail.com>
- <20240415132351.00007439@huawei.com> <20240416184116.0000513c@huawei.com>
-In-Reply-To: <20240416184116.0000513c@huawei.com>
+References: <cover.1713234515.git.albanhuang@tencent.com> <4e68f5557ad53b671ca8103e572163eca52a8f29.1713234515.git.albanhuang@tencent.com>
+In-Reply-To: <4e68f5557ad53b671ca8103e572163eca52a8f29.1713234515.git.albanhuang@tencent.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 16 Apr 2024 21:02:02 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iK61_ihUZX_tXoSGdhpYDWFhEBbEuFf6WFiiD0QSeTDg@mail.gmail.com>
-Message-ID: <CAJZ5v0iK61_ihUZX_tXoSGdhpYDWFhEBbEuFf6WFiiD0QSeTDg@mail.gmail.com>
-Subject: Re: [PATCH v5 03/18] ACPI: processor: Register deferred CPUs from acpi_processor_get_info()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, x86@kernel.org, Miguel Luis <miguel.luis@oracle.com>, 
-	James Morse <james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, linuxarm@huawei.com, justin.he@arm.com, 
-	jianyong.wu@arm.com
+Date: Tue, 16 Apr 2024 21:05:42 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ikW4o4g-yt5SnUFvKfLS6q1tGQ+3NTOfVPvwp7hZ3t2g@mail.gmail.com>
+Message-ID: <CAJZ5v0ikW4o4g-yt5SnUFvKfLS6q1tGQ+3NTOfVPvwp7hZ3t2g@mail.gmail.com>
+Subject: Re: [PATCH v8 1/3] PNP: Add dev_is_pnp() macro
+To: Guanbing Huang <albanhuang0@gmail.com>
+Cc: gregkh@linuxfoundation.org, andriy.shevchenko@intel.com, 
+	rafael.j.wysocki@intel.com, linux-acpi@vger.kernel.org, tony@atomide.com, 
+	john.ogness@linutronix.de, yangyicong@hisilicon.com, jirislaby@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	lvjianmin@loongson.cn, albanhuang@tencent.com, tombinfan@tencent.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 16, 2024 at 7:41=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On Tue, Apr 16, 2024 at 5:16=E2=80=AFAM Guanbing Huang <albanhuang0@gmail.c=
+om> wrote:
 >
-> On Mon, 15 Apr 2024 13:23:51 +0100
-> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> From: Guanbing Huang <albanhuang@tencent.com>
 >
-> > On Mon, 15 Apr 2024 14:04:26 +0200
-> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> Add dev_is_pnp() macro to determine whether the device is a PNP device.
+>
+> Signed-off-by: Guanbing Huang <albanhuang@tencent.com>
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Reviewed-by: Bing Fan <tombinfan@tencent.com>
+> Tested-by: Linheng Du <dylanlhdu@tencent.com>
 
-[cut]
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> > > > I'm still very much stuck on the hotadd_init flag however, so any s=
-uggestions
-> > > > on that would be very welcome!
-> > >
-> > > I need to do some investigation which will take some time I suppose.
-> >
-> > I'll do so as well once I've gotten the rest sorted out.  That whole
-> > structure seems overly complex and liable to race, though maybe suffici=
-ent
-> > locking happens to be held that it's not a problem.
->
-> Back to this a (maybe) last outstanding problem.
->
-> Superficially I think we might be able to get around this by always
-> doing the setup in the initial online. In brief that looks something the
-> below code.  Relying on the cpu hotplug callback registration calling
-> the acpi_soft_cpu_online for all instances that are already online.
->
-> Very lightly tested on arm64 and x86 with cold and hotplugged CPUs.
-> However this is all in emulation and I don't have access to any significa=
-nt
-> x86 test farms :( So help will be needed if it's not immediately obvious =
-why
-> we can't do this.
-
-AFAICS, this should work.  At least I don't see why it wouldn't.
-
-> Of course, I'm open to other suggestions!
->
-> For now I'll put a tidied version of this one is as an RFC with the rest =
-of v6.
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 06e718b650e5..97ca53b516d0 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -340,7 +340,7 @@ static int acpi_processor_get_info(struct acpi_device=
- *device)
->          */
->         per_cpu(processor_device_array, pr->id) =3D device;
->         per_cpu(processors, pr->id) =3D pr;
-> -
-> +       pr->flags.need_hotplug_init =3D 1;
->         /*
->          *  Extra Processor objects may be enumerated on MP systems with
->          *  less than the max # of CPUs. They should be ignored _iff
-> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_dri=
-ver.c
-> index 67db60eda370..930f911fc435 100644
-> --- a/drivers/acpi/processor_driver.c
-> +++ b/drivers/acpi/processor_driver.c
-> @@ -206,7 +206,7 @@ static int acpi_processor_start(struct device *dev)
->
->         /* Protect against concurrent CPU hotplug operations */
->         cpu_hotplug_disable();
-> -       ret =3D __acpi_processor_start(device);
-> +       //      ret =3D __acpi_processor_start(device);
->         cpu_hotplug_enable();
->         return ret;
->  }
-
-So it looks like acpi_processor_start() is not necessary any more, is it?
-
-> @@ -279,7 +279,7 @@ static int __init acpi_processor_driver_init(void)
->         if (result < 0)
->                 return result;
->
-> -       result =3D cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-> +       result =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
->                                            "acpi/cpu-drv:online",
->                                            acpi_soft_cpu_online, NULL);
->         if (result < 0)
-> >
-> > Jonathan
+and please feel free to route it along with the rest of the series.
 
 Thanks!
+
+> ---
+> v7 -> v8: delete a "Reviewed-by" tag, delete a "Reported-by" tag
+> v6 -> v7: add a "Reviewed-by" tag and a "Reported-by" tag, fix build erro=
+rs when CONFIG_PNP is not enabled
+> v5 -> v6: fix the issue that the cover letter is not chained with the pat=
+ch series
+> v4 -> v5: change "pnp" in the commit message to uppercase
+>
+>  include/linux/pnp.h | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+> index ddbe7c3ca4ce..82561242cda4 100644
+> --- a/include/linux/pnp.h
+> +++ b/include/linux/pnp.h
+> @@ -469,6 +469,8 @@ int compare_pnp_id(struct pnp_id *pos, const char *id=
+);
+>  int pnp_register_driver(struct pnp_driver *drv);
+>  void pnp_unregister_driver(struct pnp_driver *drv);
+>
+> +#define dev_is_pnp(d) ((d)->bus =3D=3D &pnp_bus_type)
+> +
+>  #else
+>
+>  /* device management */
+> @@ -500,6 +502,8 @@ static inline int compare_pnp_id(struct pnp_id *pos, =
+const char *id) { return -E
+>  static inline int pnp_register_driver(struct pnp_driver *drv) { return -=
+ENODEV; }
+>  static inline void pnp_unregister_driver(struct pnp_driver *drv) { }
+>
+> +#define dev_is_pnp(d) false
+> +
+>  #endif /* CONFIG_PNP */
+>
+>  /**
+> --
 
