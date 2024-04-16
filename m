@@ -1,121 +1,108 @@
-Return-Path: <linux-acpi+bounces-5065-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5066-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3291E8A6D43
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 16:05:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42A6B8A722D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 19:24:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC27F287705
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 14:05:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8CA01F21D51
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 17:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53C512CD91;
-	Tue, 16 Apr 2024 14:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03AF13342A;
+	Tue, 16 Apr 2024 17:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GLlJDBCd"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="N+VVVFIh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D932612838C;
-	Tue, 16 Apr 2024 14:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BE91332A7;
+	Tue, 16 Apr 2024 17:24:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713276317; cv=none; b=kYGGJaSaz55BrG0+XiaH9pD+YMb9UO0G7S42ZHh7LbFfd+gR87qQygL76HJA7OtxwXcRt8vks+2udGtpEU6UwV+yxut5exFK3AkAOzV0vc2Lg6Tfiw6aPdq6Lq6X+r2rsA8lyAoU/NansjZpSRgTQRVdUHgDy2wx72mQg34xAPQ=
+	t=1713288276; cv=none; b=iwHlkIJOfFmhwG2QuaEp2mSaRu2pmRtS3kOWXVv+6kWIESr7msfP1/qaSOXSZ/1TlibDTM5fdykGzzWf8FlpcnIi6NIkzkw4v/EeOzcd2yIR7A9/aisKmQJhM4UaMsa4yks/DbJq13YjX75u7Lg4qe4D9mb2XcNbblMCjHdPZvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713276317; c=relaxed/simple;
-	bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UdQax1IdkX5syaIGD5xBgJAQ8r5veI9uJn+goR6uYrpIj2zAVIZ0YXGne/r2AViYJLkGWattP4UHiY1tw8t0yB/ryGlqRwvySEkk4tToAaDC5kXYW5xnLBj3U1qzKWdeWekAAeIEGEKHQyK96QTQkDxS1k0CGQiX/iGa5v0ImvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GLlJDBCd; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713276314; x=1744812314;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
-  b=GLlJDBCdmt+Q0jAgMTSwVBo/7QpwXWZR8ywotGfw/PqUtnjbpyE0gFdV
-   QfG0iInftIqiAtQw9+F6tny4m0zuQFZMRTSGD4ajS4qpnpf0zcQ6zBfwC
-   fFlswPKv82c/ISfru0K0FwgbiU1hn5YbCWliOA3bYkocVRdghTeJQhew+
-   vOSFwrf4aE6VhkGuWQwYNQTFJ7AyfMXICqGt9QnUyyPcTiUyegufkD5t5
-   5jyR7oMkKft20trFRqxfJBwJPiTFSlBOTJhkjWAtV40aq8Hlsn0T35JR0
-   q3DcgOSZCi1qQhQ5NvzwwFzZIs8oOlXwQ6uLBE86kYH4s+Qg1+FocLuuw
-   w==;
-X-CSE-ConnectionGUID: 19haIpVuSW+ibFHqiHR1Pw==
-X-CSE-MsgGUID: LftmEfNOTvCqndEidjV8Xg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="12554253"
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="12554253"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:13 -0700
-X-CSE-ConnectionGUID: Osep5OIWR6yhlH0nyEsqwg==
-X-CSE-MsgGUID: 5BAvzasNR0WOGHBLZR1yMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
-   d="scan'208";a="22340887"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:09 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rwjQo-00000004iLg-1Y7q;
-	Tue, 16 Apr 2024 17:05:06 +0300
-Date: Tue, 16 Apr 2024 17:05:05 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-Message-ID: <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
- <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
- <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
+	s=arc-20240116; t=1713288276; c=relaxed/simple;
+	bh=XzlHoWbCewhBMWvTfN59eZpOMbP92r+tEx3PdmU5CvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FPLXFh/pVuuN06ZGeMLNO/FqtpnsHhxuTTaJl1Oh78aYivRGlbcrd+OfFYgrKfA0JfLoMAACdKOt7BCzmV+kbOlpt7IpEyEaq+H9uDz/SLmRjhWpKaMmSKIJcuhkwtA5IpAYJs0dXKgf0RW6mABk6ZZdzKloCTF2CLJ0wgQqXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=N+VVVFIh; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.192.9.210] (unknown [167.220.77.82])
+	by linux.microsoft.com (Postfix) with ESMTPSA id AB92420FD413;
+	Tue, 16 Apr 2024 10:24:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AB92420FD413
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1713288268;
+	bh=ls55kzA4NgbPtH5yXF9qjPYhHDVyOeLEqJj+MKe3bqM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=N+VVVFIhkTvl4mLN4zwmv18TFMdC9JISjm+SBtgcqQ/5V1d08QI196QyOuqKmgLgK
+	 gCwBJDk+xncjm55NHbewVDIppAYbhxBgHvN1AqDBceTG6SQy0aGsRDxg/7cxLCwjzZ
+	 kr5pbQVz9AIpAz7G1LQvGNTz83oE7ALyIynw3QIs=
+Message-ID: <cc48b26a-f67e-43bc-a29f-2e9f36cecc45@linux.microsoft.com>
+Date: Tue, 16 Apr 2024 10:24:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ "open list:ACPI" <linux-acpi@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+Cc: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+ stable@vger.kernel.org
+References: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
+Content-Language: en-CA
+From: Jarred White <jarredwhite@linux.microsoft.com>
+In-Reply-To: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
-> On Fri, Apr 12, 2024 at 9:44 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+On 4/8/2024 10:23 PM, Jarred White wrote:
+> Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
+> system memory accesses") neglected to properly wrap the bit_offset shift
+> when it comes to applying the mask. This may cause incorrect values to be
+> read and may cause the cpufreq module not be loaded.
 > 
-> > IIUC include/dt-bindings/ headers should only be used by DT sources
-> > and code that parses the OF properties.
+> [   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
+> [   11.066005] cpu_capacity: partial information: fallback to 1024 for all CPUs
 > 
-> That's what I have come to understand as well.
+> Also, corrected the bitmask generation in GENMASK (extra bit being added).
 > 
-> I wonder if there is something that can be done to enforce it?
+> Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+> Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
+> CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> CC: stable@vger.kernel.org #5.15+
+> ---
+>   drivers/acpi/cppc_acpi.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Ideally the code that parses OF properties should have to
-> opt in to get access to the <dt-bindings/*> namespace.
+> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+> index 4bfbe55553f4..00a30ca35e78 100644
+> --- a/drivers/acpi/cppc_acpi.c
+> +++ b/drivers/acpi/cppc_acpi.c
+> @@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+>   #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+>   
+>   /* Shift and apply the mask for CPC reads/writes */
+> -#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset & 			\
+> -					GENMASK(((reg)->bit_width), 0)))
+> +#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
+> +					GENMASK(((reg)->bit_width) - 1, 0))
+>   
+>   static ssize_t show_feedback_ctrs(struct kobject *kobj,
+>   		struct kobj_attribute *attr, char *buf)
 
-Whatever you, guys, come up with as a solution, can it be fixed sooner than later?
-I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1 so we don't
-need to look into this again.
+Hi Vanshi,
 
--- 
-With Best Regards,
-Andy Shevchenko
+Could you review please?
 
 
+Thanks,
+Jarred
 
