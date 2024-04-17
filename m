@@ -1,151 +1,127 @@
-Return-Path: <linux-acpi+bounces-5109-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5110-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEAA38A857A
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 16:01:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A5C8A8582
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 16:02:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977A3281F98
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 14:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CCE1C21206
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 14:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1896140E40;
-	Wed, 17 Apr 2024 14:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6F1140E3D;
+	Wed, 17 Apr 2024 14:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XOn+gjvb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B99B142636;
-	Wed, 17 Apr 2024 14:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EDF63A;
+	Wed, 17 Apr 2024 14:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713362434; cv=none; b=hsusynp8NwVH8Mn68C1dYZwMVXZneuAQ13KzqIr1hSfWT/ygBxgpmfUBg6FPqC2lJmcNoNf8trjw+/44tosrj/Q28Zjw7uB7+dTUCEESrUdvAkID8J2+xgAicwulHjM4g8oHswTfWKrqPLIRuIxDdxRZmh8UXGSW8vvNEku1h/k=
+	t=1713362520; cv=none; b=kgOuS1bY3LVtytDivwyGeNQyCGMOBJUKn/kYVFA7NjjVi0Xov3Lma4WE67lWo5k1ppZascEZyYexOVS6bnFh70qu+dUnTlyGjQCvdH28MFRHZkkraNDzdl7tgjzugIpXjR07z1BKPZDhzabX2LW6P66EmUFqCTcBDpwWbFOYqTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713362434; c=relaxed/simple;
-	bh=m6TR/ZLlLCkGO3F3ndV7pOLLTILChKbKAc0O9NR6yTE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sM5kGo3XKk3D2mWJUihEExymBTSxY0jLNEj/ylAJsr/JKIGgTm/HtuLVtllGCbQKtn8khN8SHLdvzP5dJ+EX5BnZd10Z/mLu2pm6z+Olh7k3RtqNvj0bi4V4BhYLdMOWyTJx8eXHKPZQsTr4mbGIR3ye6WjB4hPvbTNQUyIn8ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D6F9F339;
-	Wed, 17 Apr 2024 07:00:56 -0700 (PDT)
-Received: from [192.168.20.58] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 598433F738;
-	Wed, 17 Apr 2024 07:00:25 -0700 (PDT)
-Message-ID: <260d9932-bf51-43ac-8490-99c39f5e9258@arm.com>
-Date: Wed, 17 Apr 2024 09:00:23 -0500
+	s=arc-20240116; t=1713362520; c=relaxed/simple;
+	bh=GcvFtHsGPo/adYGfXVbwQgc0u1QkR/LMy1fy6H5Whzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=klcheJxNkY6Aytdgy64qsFProPSFhdTh4BtymWIn4jtbOtK1UrWl1gkU/b8/Y3m9ZyRV/8ISam2EoPjDVtY3K4bOsTdyCf32d2vCsQ4OY16u2amKsdwpKiA8H0/U9PmvjD50FgDQeK0lckNIZ+Fh80NKvTBTWZxoDbgvZ/9kuWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XOn+gjvb; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4DfjWgrkyvkic8aAP5HZNr2ZFskxZL3uphk8p5naRQc=; b=XOn+gjvbTRu7w9/J4ik571TRh1
+	WpwMuJDjUPD+eGILxTBNMdQDeSBTbLr0K8mQTS+CQ/xvO2AhXfEwwuzqRGRBExGGX3UTjr60AT5SR
+	y2QgfBy789+J1BubFE/19NAsQURnDz1ZFGJuTd+3/dsy3ONa/XUPdmKo0JTAr1YkOBP2KZBTLAg5l
+	qUAgrutp73V7VR5y4EN6C3ZN9mMoOhr6s+qJRr9gj7NGN9EKaPgb1qyT75PL9kai2RlgNSIAUDTJ6
+	ZquxXVIAW7Ft/t3rd1M3sB0pWtdr+H273fuz5rQ+XKzGEfWZ0bpWoF/g16isq6ZG3dNx8JBtoozl5
+	7eAR19nw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53384)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rx5qy-0003LA-24;
+	Wed, 17 Apr 2024 15:01:36 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rx5qv-00060f-Aq; Wed, 17 Apr 2024 15:01:33 +0100
+Date: Wed, 17 Apr 2024 15:01:33 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	James Morse <james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com,
+	justin.he@arm.com, jianyong.wu@arm.com
+Subject: Re: [PATCH v6 02/16] cpu: Do not warn on arch_register_cpu()
+ returning -EPROBE_DEFER
+Message-ID: <Zh/WPYMJYepLbST/@shell.armlinux.org.uk>
+References: <20240417131909.7925-1-Jonathan.Cameron@huawei.com>
+ <20240417131909.7925-3-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] Re: [PATCH v3 2/3] riscv: cacheinfo: initialize
- cacheinfo's level and type from ACPI PPTT
-Content-Language: en-US
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com,
- james.morse@arm.com, jhugo@codeaurora.org, john.garry@huawei.com,
- Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, sudeep.holla@arm.com,
- tiantao6@huawei.com
-References: <20240416031438.7637-1-cuiyunhui@bytedance.com>
- <20240416031438.7637-2-cuiyunhui@bytedance.com>
- <9f36bedd-1a68-43a9-826d-ce56caf01c52@arm.com>
- <CAEEQ3w=W+xLGP3WsyAQmRNaHm1xVRtqcGJ+t0TnZvJdCTR4v6w@mail.gmail.com>
-From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <CAEEQ3w=W+xLGP3WsyAQmRNaHm1xVRtqcGJ+t0TnZvJdCTR4v6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417131909.7925-3-Jonathan.Cameron@huawei.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi,
-
-On 4/16/24 22:15, yunhui cui wrote:
-> Hi Jeremy,
+On Wed, Apr 17, 2024 at 02:18:55PM +0100, Jonathan Cameron wrote:
+> For arm64 the CPU registration cannot complete until the ACPI
+> interpreter us up and running so in those cases the arch specific
+> arch_register_cpu() will return -EPROBE_DEFER at this stage and the
+> registration will be attempted later.
 > 
-> On Wed, Apr 17, 2024 at 4:04 AM Jeremy Linton <jeremy.linton@arm.com> wrote:
->>
->> Hi,
->>
->>
->> On 4/15/24 22:14, Yunhui Cui wrote:
->>> Before cacheinfo can be built correctly, we need to initialize level
->>> and type. Since RSIC-V currently does not have a register group that
->>> describes cache-related attributes like ARM64, we cannot obtain them
->>> directly, so now we obtain cache leaves from the ACPI PPTT table
->>> (acpi_get_cache_info()) and set the cache type through split_levels.
->>>
->>> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
->>> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
->>> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
->>> ---
->>>    arch/riscv/kernel/cacheinfo.c | 20 ++++++++++++++++++++
->>>    1 file changed, 20 insertions(+)
->>>
->>> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
->>> index 30a6878287ad..dc5fb70362f1 100644
->>> --- a/arch/riscv/kernel/cacheinfo.c
->>> +++ b/arch/riscv/kernel/cacheinfo.c
->>> @@ -6,6 +6,7 @@
->>>    #include <linux/cpu.h>
->>>    #include <linux/of.h>
->>>    #include <asm/cacheinfo.h>
->>> +#include <linux/acpi.h>
->>>
->>>    static struct riscv_cacheinfo_ops *rv_cache_ops;
->>>
->>> @@ -78,6 +79,25 @@ int populate_cache_leaves(unsigned int cpu)
->>>        struct device_node *prev = NULL;
->>>        int levels = 1, level = 1;
->>>
->>> +     if (!acpi_disabled) {
->>> +             int ret, idx, fw_levels, split_levels;
->>> +
->>> +             ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
->>> +             if (ret)
->>> +                     return ret;
->>> +
->>> +             for (idx = 0; level <= this_cpu_ci->num_levels &&
->>> +                  idx < this_cpu_ci->num_leaves; idx++, level++) {
->>
->> AFAIK the purpose of idx here it to assure that the number of cache
->> leaves is not overflowing. But right below we are utilizing two of them
->> at once, so this check isn't correct. OTOH, since its allocated as
->> levels + split_levels I don't think its actually possible for this to
->> cause a problem. Might be worthwhile to just hoist it before the loop
->> and revalidate the total leaves about to be utilized.
->>
-
-I think I was suggesting something along the lines of:
-
-BUG_ON((split_levels > fw_levels) || (split_levels + fw_levels > 
-this_cpu_ci->num_leaves));
-
-Then removing idx entirely. ex:
-
-for (; level <= this_cpu_ci->num_levels; level++)
-...
+> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Do you mean to modify the logic as follows to make it more complete?
-Sure that is one way to do it, but then you need to probably repeat the 
-idx check:
-> for (idx = 0; level <= this_cpu_ci->num_levels &&
->        idx < this_cpu_ci->num_leaves; level++) {
->          if (level <= split_levels) {
->                 ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
->                 idx++;
-if (idx >= this_cpu_ci->num_leaves) break;
->                 ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
->                 idx++;
->         } else {
->                 ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
->                 idx++;
->        }
-> }
+> ---
+> v6: tags
+> ---
+>  drivers/base/cpu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+> index 56fba44ba391..b9d0d14e5960 100644
+> --- a/drivers/base/cpu.c
+> +++ b/drivers/base/cpu.c
+> @@ -558,7 +558,7 @@ static void __init cpu_dev_register_generic(void)
+>  
+>  	for_each_present_cpu(i) {
+>  		ret = arch_register_cpu(i);
+> -		if (ret)
+> +		if (ret != -EPROBE_DEFER)
+>  			pr_warn("register_cpu %d failed (%d)\n", i, ret);
 
+This looks very broken to me.
 
+		if (ret && ret != -EPROBE_DEFER)
 
+surely, because we don't want to print a warning if arch_register_cpu()
+was successful?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
