@@ -1,155 +1,104 @@
-Return-Path: <linux-acpi+bounces-5086-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5091-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449E18A7E97
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 10:46:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB048A8138
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 12:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D93191F22436
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 08:46:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D16A01C20E8C
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 10:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1E4127B57;
-	Wed, 17 Apr 2024 08:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C8713C680;
+	Wed, 17 Apr 2024 10:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O4TxVyDj"
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="iSrq7iBg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F475139F;
-	Wed, 17 Apr 2024 08:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5126F13C67C;
+	Wed, 17 Apr 2024 10:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713343555; cv=none; b=mJaMjywzc+juoQ1c8vZ4KzeJO/L2Zsuf9bevbsjHehMxaCR4wMhol1AjeJXbF0mz9Yj25Cn2Szc/LRHsTGS/BZquuY/PZG/F5xHXb4gUITKCM0WUWRRq/utH1MpxIClOkp8PzW2SoP8sGMCgNfrV3VB+xhbQoRDISgX19BZLyiM=
+	t=1713350570; cv=none; b=gDq8cWbDxPUZ6C6Qf+TnEKZz9+MKyPZE2MWqN/MFCU04XP4rcSGVnT0A1E4yetG1KkeKl9hPwvnerjParjTF2tCcQYI9zXhZ8Dfb4yjYR7GHW81ILb5h3aw84dEBf9TsK4OBuqKwSaQ5fe7/SLnkWnNffOlACPqJeMd/3LVGW90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713343555; c=relaxed/simple;
-	bh=DGDR1TQ4GEjxmU4I2WPT0qXg9Na4g1DIFeR8IF/YkD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=as9avO8z9rZHw/F6aCZ/gwB8pdPExHPDYwfsoqOv7toRKZtqkyNaCsVlrC+JitdBlXsjpOEx2Ipy6XRX/jYha5kqnBmSyAYdSts/6nWtug3D0WskcJTl2/tRfyDU5gRscbFaQnYvY1ka9Pj6xrJjLeqSKnGa3eg3I/+9wJyvK2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O4TxVyDj; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713343554; x=1744879554;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=DGDR1TQ4GEjxmU4I2WPT0qXg9Na4g1DIFeR8IF/YkD0=;
-  b=O4TxVyDjf8GNGl0zqJOWEPEqjxdJ9iba+xWO6bn18OHZGAMr6VU2Odin
-   W1/W6+NlRM+FjbhnVrImw93fYzWLNhRfl/eyD6xki6HbAu0zzuS+BnloW
-   +T0o4gLEeFAU/CcLMxSrYkmr0EpcgPUOnJXKMeyGIBQJKUKLAwwtvzw94
-   N/z3DeC9cMLXonDIoYR7mA9RF1Cmtj5FslQIcGMWsL2ire0ANcUV/tztn
-   omDH857puFHCLCIy3fdIYNCIVDXM7pguBLb04knnwqE2VFiKXseTYBBCW
-   /Eee2jjB3sFVdWoNTCdanzbAr0ymiF/deLle5bsLm8zPXiRm6eO9U3Sum
-   g==;
-X-CSE-ConnectionGUID: S6D2uqSZSemEaRVoq8TyIQ==
-X-CSE-MsgGUID: lo/vW5hFT3SG50PRULtfvA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9042939"
-X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; 
-   d="scan'208";a="9042939"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 01:45:46 -0700
-X-CSE-ConnectionGUID: ECKDBFvHTOS9kjeT29b6JQ==
-X-CSE-MsgGUID: VqHYRbHcT+eYQVnX3Br7UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; 
-   d="scan'208";a="53520463"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 01:45:40 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rx0vA-00000004y1K-2EOo;
-	Wed, 17 Apr 2024 11:45:36 +0300
-Date: Wed, 17 Apr 2024 11:45:36 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-Message-ID: <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
- <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
- <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
- <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
- <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
+	s=arc-20240116; t=1713350570; c=relaxed/simple;
+	bh=IrBuKUIq8kqO1Ly/fgTiZaO7HGYVB5Ybpch6CI1Yp4o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WSY6vhF3erzijcOd6sN7FnjF9um1YJta0dhE+gM6XFn1816xnt5hmUGPdhRZXQqzGrdl2oOCBVxtMx8nsHpHzl/R1hAmLujedPOKzTBcT7l/CJPjMeIChlf+whz3Z/CpP7U8PCauG2JdFKHqpniNON8ldoOyyvOCabDI34gEW2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=iSrq7iBg; arc=none smtp.client-ip=157.90.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+Received: from wse.fritz.box (p5de45f24.dip0.t-ipconnect.de [93.228.95.36])
+	(Authenticated sender: wse@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPA id 73FE02FC005F;
+	Wed, 17 Apr 2024 12:35:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1713350118;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wCA6Haldgtd/UpE1DE6VbdPB++vH0tcbzN1r/TmSyfU=;
+	b=iSrq7iBgz0uRl3OBas4+UCDM6oF1yo4Dn0PqQP7HT9+HGvA0qDEE5ZmMbfUiW0G4scRYqg
+	h3FfGQpK3ZVBAFe74sYoOZ3xvulllVHKiXfY0Z17nQB1Qif8tt23BjJJ3QLtqlltWtmXse
+	9G7i/55mYsEevcb14znKrl5kPB2EwcA=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
+From: Werner Sembach <wse@tuxedocomputers.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
+Date: Wed, 17 Apr 2024 12:35:09 +0200
+Message-Id: <20240417103509.28657-1-wse@tuxedocomputers.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Apr 16, 2024 at 11:07:58PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Apr 16, 2024 at 4:05 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
-> > > On Fri, Apr 12, 2024 at 9:44 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> > >
-> > > > IIUC include/dt-bindings/ headers should only be used by DT sources
-> > > > and code that parses the OF properties.
-> > >
-> > > That's what I have come to understand as well.
-> > >
-> > > I wonder if there is something that can be done to enforce it?
-> > >
-> > > Ideally the code that parses OF properties should have to
-> > > opt in to get access to the <dt-bindings/*> namespace.
-> >
-> > Whatever you, guys, come up with as a solution, can it be fixed sooner than later?
-> > I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1 so we don't
-> > need to look into this again.
-> 
-> I'm not sure you got what I was saying. I don't think this can be
-> fixed quickly. This is just another bunch of technical debt that will
-> have to be addressed carefully on a case-by-case basis and run through
-> autobuilders in all possible configurations.
-> 
-> This type of include-related issues is always brittle and will lead to
-> build failures if we don't consider our moves.
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-I proposed a quick fix which was rejected. I think this is still doable in a
-few steps:
+Listed devices needs the override for keyboard to work.
 
-- align constant values in DT and enum
-- drop usage of DT in the kernel code (That's what you want IIUC, however
-  I disagree with this from technical perspective as DT constants can be used
-  in the code as long as they are mapped 1:1 to what code does. That's current
-  state of affairs. OTOH semantically this may be an issue.)
-- restore enum usage treewide (?)
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/acpi/resource.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Again, the problem now is only in open source / open drain configurations
-and there are only a few users of these flags _in kernel_. I do not see
-why it can not be done in one or two evenings time range.
-
-P.S>
-Most of the time I spent when prepared the proposed fix is digging the history
-and trying to understand how comes that we have desynchronisation of the values
-over the time. The output of that is the list of Fixes tags.
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 59423fe9d0f29..deeb4e182687a 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -558,6 +558,18 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
+ 		},
+ 	},
++	{
++		.ident = "TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD",
++		.matches = {
++			DMI_MATCH(DMI_PRODUCT_SKU, "GXxHRXx"),
++		},
++	},
++	{
++		.ident = "TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD",
++		.matches = {
++			DMI_MATCH(DMI_PRODUCT_SKU, "GMxHGxx"),
++		},
++	},
+ 	{
+ 		/* MAINGEAR Vector Pro 2 15 */
+ 		.matches = {
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
