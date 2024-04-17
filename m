@@ -1,127 +1,144 @@
-Return-Path: <linux-acpi+bounces-5110-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5111-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A5C8A8582
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 16:02:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD178A85CB
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 16:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CCE1C21206
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 14:02:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 552FC281998
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 14:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6F1140E3D;
-	Wed, 17 Apr 2024 14:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XOn+gjvb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0C51411E2;
+	Wed, 17 Apr 2024 14:18:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EDF63A;
-	Wed, 17 Apr 2024 14:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497021411CF;
+	Wed, 17 Apr 2024 14:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713362520; cv=none; b=kgOuS1bY3LVtytDivwyGeNQyCGMOBJUKn/kYVFA7NjjVi0Xov3Lma4WE67lWo5k1ppZascEZyYexOVS6bnFh70qu+dUnTlyGjQCvdH28MFRHZkkraNDzdl7tgjzugIpXjR07z1BKPZDhzabX2LW6P66EmUFqCTcBDpwWbFOYqTs=
+	t=1713363509; cv=none; b=OOf+g1t3UMwaBP0FGQDIyM+627Rdbgkj2SQjsaB2g3/MIwZ4YwrJn+7ikMvz0/HuhtNVoKblCUKnp5pUR8ISlCkZj1dtPbzac1k9RxQhEMBhe1GTG+h3YsPq1yBxMrrjUuAnzDCodwnlmnGeIholhST3IlJCxW4eVA1r7zLjbd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713362520; c=relaxed/simple;
-	bh=GcvFtHsGPo/adYGfXVbwQgc0u1QkR/LMy1fy6H5Whzo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=klcheJxNkY6Aytdgy64qsFProPSFhdTh4BtymWIn4jtbOtK1UrWl1gkU/b8/Y3m9ZyRV/8ISam2EoPjDVtY3K4bOsTdyCf32d2vCsQ4OY16u2amKsdwpKiA8H0/U9PmvjD50FgDQeK0lckNIZ+Fh80NKvTBTWZxoDbgvZ/9kuWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XOn+gjvb; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4DfjWgrkyvkic8aAP5HZNr2ZFskxZL3uphk8p5naRQc=; b=XOn+gjvbTRu7w9/J4ik571TRh1
-	WpwMuJDjUPD+eGILxTBNMdQDeSBTbLr0K8mQTS+CQ/xvO2AhXfEwwuzqRGRBExGGX3UTjr60AT5SR
-	y2QgfBy789+J1BubFE/19NAsQURnDz1ZFGJuTd+3/dsy3ONa/XUPdmKo0JTAr1YkOBP2KZBTLAg5l
-	qUAgrutp73V7VR5y4EN6C3ZN9mMoOhr6s+qJRr9gj7NGN9EKaPgb1qyT75PL9kai2RlgNSIAUDTJ6
-	ZquxXVIAW7Ft/t3rd1M3sB0pWtdr+H273fuz5rQ+XKzGEfWZ0bpWoF/g16isq6ZG3dNx8JBtoozl5
-	7eAR19nw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53384)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rx5qy-0003LA-24;
-	Wed, 17 Apr 2024 15:01:36 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rx5qv-00060f-Aq; Wed, 17 Apr 2024 15:01:33 +0100
-Date: Wed, 17 Apr 2024 15:01:33 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	James Morse <james.morse@arm.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com,
-	justin.he@arm.com, jianyong.wu@arm.com
-Subject: Re: [PATCH v6 02/16] cpu: Do not warn on arch_register_cpu()
- returning -EPROBE_DEFER
-Message-ID: <Zh/WPYMJYepLbST/@shell.armlinux.org.uk>
-References: <20240417131909.7925-1-Jonathan.Cameron@huawei.com>
- <20240417131909.7925-3-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1713363509; c=relaxed/simple;
+	bh=WaC2druakjJV+zFjmdeikwA3CiyuPhwF8v+9yEn8j10=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZpTsN9n1YIFznBF/oxG2wioPwUme4TkhyapOjjXiUs+jJTjZAiPckSDufJewJXP04sokyqCYiXzDMVNhfCVFnaNs/qhTPWX16d3Q1JWnbrYh9c5/TajJkqBLIK2JxhMtTAHdxee0QHDwtFcyolxA22gO+BFDBjrRV4J0LnjFul4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-61af74a010aso17307637b3.0;
+        Wed, 17 Apr 2024 07:18:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713363504; x=1713968304;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=avO898yqsUcNC4lZWFklgBAuRw3SczTcgwrfOeGT8Mg=;
+        b=Ncm2Yga1n56LP7oXyhMsBNhPxWhbDQSEYBs8ULP+V9Odr+RKmvYIUObx/wyL6ptUir
+         vBCaxqYyEZ2fURyhssqDHNIGKvNe4pQubEgyiEvk2EWfW9TX+xJWla37U5tW8mfCUYC2
+         GnjHtf9gHYMA6KvG9PMSmh9iM4rDptoQFIJWJKdWU/Q3s83FviT5mCJAZ80iaUcR2zXm
+         ctgP2t/1SxlafP6Hf0tR6FxNHtEhRfUjEwlDPf9fTmh1n+DoJEmfJS7VACMsMEh/wr2b
+         9zcbPhSZPkdEFLsnNCGBySOTwATza+O+01tgmBetzcaTm8d1Z4OoU0VtfHG820beSmBP
+         VITQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVSkGuH7Bdkez58ADtazhBuXlKENhvGJxNT4YQ3wjmi4pfZlnFev4+98tkjvqAFgqy/MASHnJVBUe4m70pUidsX91ML7wIB7ZCyueZmbBR4pMirqkHkezbhVe5ujY/idpenaiub1hkwUBubRFqSaBbPql/1OaYf2txi2bihEvYw7yG5UqHOeodf4FW+E/6/hHiG9rsV0xeEgwprE/2425XWJgvjMRD4LzhVP3D0wWJzdGJqN3FbIIcLg4sToWD0hs+yCAvttsdyV9sj0XSZARPWwHqkl0WaJP7NK5S1WPvZOJReDwIC4z92
+X-Gm-Message-State: AOJu0YzGCjhrCmJSG4im9P3cdJY8gQTvd0tG44uyQyx8YI+lQoRjyOZt
+	jeFr8pnJGIvUMtbc6qv2Q6cM9X0IUIGSm+k6Tn77TtbLfImle0DVktx29RAv+jA=
+X-Google-Smtp-Source: AGHT+IFNO9uc2PTPZrzIN0HtgGbUW+GpsqSP8Iw4/SFGdULVtPKSlG1+gVUNT/iY40JpD87PHMZWGA==
+X-Received: by 2002:a05:690c:d1b:b0:61b:123e:7210 with SMTP id cn27-20020a05690c0d1b00b0061b123e7210mr1232006ywb.40.1713363503429;
+        Wed, 17 Apr 2024 07:18:23 -0700 (PDT)
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com. [209.85.219.180])
+        by smtp.gmail.com with ESMTPSA id jf4-20020a05690c700400b0061129ac87fcsm2976926ywb.113.2024.04.17.07.18.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Apr 2024 07:18:23 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-de45d4ca525so55953276.0;
+        Wed, 17 Apr 2024 07:18:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUsKjbTmAezX/6x3516iFFJ8JJ1Ek8ovhwn5lHF7UI7NriWn6QKXZ9lYeTSseyxUw39gVPS1Ius+N6BQ5WSaWvJwdLAi6aCXsk5AlcGJi5XKU+NPrz5b5wVVAj2BTaB+gmF6/uSsJ6JXX4Gj/oxYmpoNIa3h8F1sULE9k7eRpa8mSUG/zAdC3LZXqsoCdKpCWoCpMYf1soi3igM960If8T5pFNOMP7/tlMLfpOaXvI+odT3cpaRBvhoCMXSYdd5Ti7ZcmLYrRr91VQ6u/l81gLboQ5qSCHv8ENaVYYQmvapHaFk2mMd5xSh
+X-Received: by 2002:a81:ff02:0:b0:618:94a6:6ca1 with SMTP id
+ k2-20020a81ff02000000b0061894a66ca1mr10536616ywn.27.1713363502402; Wed, 17
+ Apr 2024 07:18:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240417131909.7925-3-Jonathan.Cameron@huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <20240214215756.6530-1-mario.limonciello@amd.com>
+ <20240214215756.6530-4-mario.limonciello@amd.com> <Zc1JEg5mC0ww_BeU@intel.com>
+ <9831e9bc-d55f-4a72-950a-684a757af59c@amd.com> <Zc5cPjpNZydqKeS8@intel.com> <ecbaadf9-dfa1-46af-9a7e-cfd7aa1120be@amd.com>
+In-Reply-To: <ecbaadf9-dfa1-46af-9a7e-cfd7aa1120be@amd.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 17 Apr 2024 16:18:10 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV1XYpu3JeP3W-dZpO8kmN75XckuPRnw2zLW-ZqD4634g@mail.gmail.com>
+Message-ID: <CAMuHMdV1XYpu3JeP3W-dZpO8kmN75XckuPRnw2zLW-ZqD4634g@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] drm: Add support to get EDID from ACPI
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, Hans de Goede <hdegoede@redhat.com>, 
+	"open list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, amd-gfx@lists.freedesktop.org, 
+	"open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>, linux-fbdev@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	platform-driver-x86@vger.kernel.org, intel-xe@lists.freedesktop.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	Melissa Wen <mwen@igalia.com>, Mark Pearson <mpearson-lenovo@squebb.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 17, 2024 at 02:18:55PM +0100, Jonathan Cameron wrote:
-> For arm64 the CPU registration cannot complete until the ACPI
-> interpreter us up and running so in those cases the arch specific
-> arch_register_cpu() will return -EPROBE_DEFER at this stage and the
-> registration will be attempted later.
-> 
-> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
-> Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> ---
-> v6: tags
-> ---
->  drivers/base/cpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-> index 56fba44ba391..b9d0d14e5960 100644
-> --- a/drivers/base/cpu.c
-> +++ b/drivers/base/cpu.c
-> @@ -558,7 +558,7 @@ static void __init cpu_dev_register_generic(void)
->  
->  	for_each_present_cpu(i) {
->  		ret = arch_register_cpu(i);
-> -		if (ret)
-> +		if (ret != -EPROBE_DEFER)
->  			pr_warn("register_cpu %d failed (%d)\n", i, ret);
+Hi Mario,
 
-This looks very broken to me.
+On Thu, Feb 15, 2024 at 8:04=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+> On 2/15/2024 12:47, Ville Syrj=C3=A4l=C3=A4 wrote:
+> > On Thu, Feb 15, 2024 at 12:20:56PM -0600, Mario Limonciello wrote:
+> >> On 2/14/2024 17:13, Ville Syrj=C3=A4l=C3=A4 wrote:
+> >>> On Wed, Feb 14, 2024 at 03:57:54PM -0600, Mario Limonciello wrote:
+> >>>> --- a/include/drm/drm_connector.h
+> >>>> +++ b/include/drm/drm_connector.h
+> >>>> @@ -1886,6 +1886,12 @@ struct drm_connector {
+> >>>>
+> >>>>            /** @hdr_sink_metadata: HDR Metadata Information read fro=
+m sink */
+> >>>>            struct hdr_sink_metadata hdr_sink_metadata;
+> >>>> +
+> >>>> +  /**
+> >>>> +   * @acpi_edid_allowed: Get the EDID from the BIOS, if available.
+> >>>> +   * This is only applicable to eDP and LVDS displays.
+> >>>> +   */
+> >>>> +  bool acpi_edid_allowed;
+> >>>
+> >>> Aren't there other bools/small stuff in there for tighter packing?
+> >>
+> >> Does the compiler automatically do the packing if you put bools nearby
+> >> in a struct?  If so; TIL.
+> >
+> > Yes. Well, depends on the types and their alignment requirements
+> > of course, and/or whether you specified __packed or not.
+> >
+> > You can use 'pahole' to find the holes in structures.
+>
+> Thanks!  I don't see a __packed attribute on struct drm_connector, but
+> I'll put it near by other bools in case that changes in the future.
 
-		if (ret && ret != -EPROBE_DEFER)
+FTR, don't add __packed unless you have a very good reason to do so.
+With __packed, the compiler will emit multiple byte-accesses to
+access multi-byte integrals on platforms that do not support unaligned
+memory access.
 
-surely, because we don't want to print a warning if arch_register_cpu()
-was successful?
+Gr{oetje,eeting}s,
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
