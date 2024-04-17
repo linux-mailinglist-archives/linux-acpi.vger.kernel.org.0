@@ -1,61 +1,76 @@
-Return-Path: <linux-acpi+bounces-5091-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5087-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB048A8138
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 12:42:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24078A8118
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 12:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D16A01C20E8C
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 10:42:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 712CF1F21702
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 10:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C8713C680;
-	Wed, 17 Apr 2024 10:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913CA13C698;
+	Wed, 17 Apr 2024 10:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="iSrq7iBg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eL7KmI7k"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5126F13C67C;
-	Wed, 17 Apr 2024 10:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB5C13C675;
+	Wed, 17 Apr 2024 10:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713350570; cv=none; b=gDq8cWbDxPUZ6C6Qf+TnEKZz9+MKyPZE2MWqN/MFCU04XP4rcSGVnT0A1E4yetG1KkeKl9hPwvnerjParjTF2tCcQYI9zXhZ8Dfb4yjYR7GHW81ILb5h3aw84dEBf9TsK4OBuqKwSaQ5fe7/SLnkWnNffOlACPqJeMd/3LVGW90=
+	t=1713350316; cv=none; b=WBxGNSSIGIpmf966M1VuC775jghX7+ppuiMyAU1olFieMQaVtEeWHUMXeGQIaz4O7hfx9OfjEH2Ysw/G8HO5LM5sETuk2dombJSHTKRYatVaGnDu0dcuDqgJqPc+ti9Y00OdMvPorS8iFiyvfo+ooQKn5kbpbd9217jCJSTGRuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713350570; c=relaxed/simple;
-	bh=IrBuKUIq8kqO1Ly/fgTiZaO7HGYVB5Ybpch6CI1Yp4o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WSY6vhF3erzijcOd6sN7FnjF9um1YJta0dhE+gM6XFn1816xnt5hmUGPdhRZXQqzGrdl2oOCBVxtMx8nsHpHzl/R1hAmLujedPOKzTBcT7l/CJPjMeIChlf+whz3Z/CpP7U8PCauG2JdFKHqpniNON8ldoOyyvOCabDI34gEW2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=iSrq7iBg; arc=none smtp.client-ip=157.90.84.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
-Received: from wse.fritz.box (p5de45f24.dip0.t-ipconnect.de [93.228.95.36])
-	(Authenticated sender: wse@tuxedocomputers.com)
-	by mail.tuxedocomputers.com (Postfix) with ESMTPA id 73FE02FC005F;
-	Wed, 17 Apr 2024 12:35:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
-	s=default; t=1713350118;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wCA6Haldgtd/UpE1DE6VbdPB++vH0tcbzN1r/TmSyfU=;
-	b=iSrq7iBgz0uRl3OBas4+UCDM6oF1yo4Dn0PqQP7HT9+HGvA0qDEE5ZmMbfUiW0G4scRYqg
-	h3FfGQpK3ZVBAFe74sYoOZ3xvulllVHKiXfY0Z17nQB1Qif8tt23BjJJ3QLtqlltWtmXse
-	9G7i/55mYsEevcb14znKrl5kPB2EwcA=
-Authentication-Results: mail.tuxedocomputers.com;
-	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
-From: Werner Sembach <wse@tuxedocomputers.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
+	s=arc-20240116; t=1713350316; c=relaxed/simple;
+	bh=F9UqnodzBIeYgsNxxhT57u+9cZfmEUsgk8l6hGT4o+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pkpdqZIyasUy/LMiqsjpceG3yz1sWwP6R8YxuXz3UwkoeogTStnpmWZd1cnhqrXGWfUdBDUptbyLrUzh6f9a2duCPX6eEnSZjUovU9Td4P6+YjQYfCz9zH74P7MZWbxkXgxpvleYcTPhfc3D2YlQWPGUefcClj3yEraffST4Ae8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eL7KmI7k; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713350315; x=1744886315;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=F9UqnodzBIeYgsNxxhT57u+9cZfmEUsgk8l6hGT4o+8=;
+  b=eL7KmI7kEAWtw9icdmgz2Un7Qev39+BY/+rsECViqjWSDYjorNosmnIh
+   ctAoqrZO2+u41ZGCCU2dMTweZvHnq/AT3mHSZZLOxVxUceFfyufL1ucCz
+   u+wThyYmplWd9Md/uB9B0+MZ2HBO0+h/ENFGcMjw/V2dgRVfTTbk+iccA
+   SVthCzoisA5jvTZi8q9e9BBhpvu9DifpHv1e7iBpnsDvhmaN2Unm7NmaI
+   1K5UkXM9FIA+NwIhcQGWf+H5RjzxFg+HZxiOe0QPQyLKGgzZ4s2PciPn6
+   38sxrNXFgozEyqUpCfO1AVnd34QTt+Ws1fJIOBPHLyVSGckiZVCWKKC0i
+   g==;
+X-CSE-ConnectionGUID: HNuikW6wQdKj6MIDxS1YDg==
+X-CSE-MsgGUID: jwdlDio7QhKJOFHwe0fGGg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9384038"
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="9384038"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 03:38:34 -0700
+X-CSE-ConnectionGUID: wbu1214bSzKZ7VaRKKORSQ==
+X-CSE-MsgGUID: W7sFZuTHRKani18F0+sWJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="27257833"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa003.jf.intel.com with ESMTP; 17 Apr 2024 03:38:31 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 8C935491; Wed, 17 Apr 2024 13:38:30 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-gpio@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
-Date: Wed, 17 Apr 2024 12:35:09 +0200
-Message-Id: <20240417103509.28657-1-wse@tuxedocomputers.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH v1 0/2] gpiolib: acpi: Improve IRQ labeling
+Date: Wed, 17 Apr 2024 13:37:26 +0300
+Message-ID: <20240417103829.2324960-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -64,41 +79,16 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+The IRQ labeling now is quite ambiguous, improve it here.
 
-Listed devices needs the override for keyboard to work.
+Andy Shevchenko (2):
+  gpiolib: acpi: Add fwnode name to the GPIO interrupt label
+  gpiolib: acpi: Set label for IRQ only lines
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
----
- drivers/acpi/resource.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpio/gpiolib-acpi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 59423fe9d0f29..deeb4e182687a 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -558,6 +558,18 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
- 		},
- 	},
-+	{
-+		.ident = "TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD",
-+		.matches = {
-+			DMI_MATCH(DMI_PRODUCT_SKU, "GXxHRXx"),
-+		},
-+	},
-+	{
-+		.ident = "TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD",
-+		.matches = {
-+			DMI_MATCH(DMI_PRODUCT_SKU, "GMxHGxx"),
-+		},
-+	},
- 	{
- 		/* MAINGEAR Vector Pro 2 15 */
- 		.matches = {
 -- 
-2.34.1
+2.43.0.rc1.1336.g36b5255a03ac
 
 
