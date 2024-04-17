@@ -1,215 +1,167 @@
-Return-Path: <linux-acpi+bounces-5076-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5077-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC038A7672
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 23:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD878A7AF0
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 05:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6300280ED6
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Apr 2024 21:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 128FC2846DC
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 03:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47EF84E1B;
-	Tue, 16 Apr 2024 21:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E6F79C2;
+	Wed, 17 Apr 2024 03:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hw6Q1M4U"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="bpLLkZr3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3107FBD2;
-	Tue, 16 Apr 2024 21:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F692748F
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 03:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713302524; cv=none; b=CWtsUHLg852bky+EoHWE+XLr9VBZhqQdkDOgCcSKPkQWj93kwnDefsSs8Tzz9C5ZT/0QgX52KcWMiSQDOpldQTgIVJdaOaCf4xR3NXMn24NVcFI1XsOuWNDH4hWXPjJCvfEMg1zgULWmhj3d/eF6vIDvauXBSpdgK+vmPayuxz4=
+	t=1713323751; cv=none; b=JZjn4ihCpEKE89/T1nWjKxy0imj4ARQTi9gJebYGpFVti2dN8VZJGSp2Cqds8ZzKLLrDiHlWPtSijPuxxHl3cai1oRZSzgilc6cVHI8jU/umj7rbIY4L2nUZPfbYFBbfedxU1RUSVcYSVN5XVv7OltiykKaVtMyhpFsYZzq/i8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713302524; c=relaxed/simple;
-	bh=Ns4zJOKmhnvJzXIPZiEm4QRM/poJQeF7gAkGh51mMOI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9xbHH02IvjRVYh1VS63IOiGpPLMdOxoLFoGZ/YcoQnvPq5OW1QgGR1EWsf3tf6R51tJCRYR8tqBjogY1B+nq/9vCg9obZeQRBSneB/bg74F60bsI70224WV4g+AW9mE2zjOn/nyYJJ5gid5lZmHjiFxx4kvIsqgrIvsz8MUcI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hw6Q1M4U; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713302523; x=1744838523;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Ns4zJOKmhnvJzXIPZiEm4QRM/poJQeF7gAkGh51mMOI=;
-  b=Hw6Q1M4U6ZXqd8jE8Mjz3sLysBkEc1CynBY0UrZxEZrIlIdRcJFw/zJc
-   Fh+NtVTtSRtGq1g7FAgB0ya6jCkY6aTotxM4BQLKiL3Lcs2Klv38IWKu9
-   VH5CVoFdUdDe6irGv82iuB+pyJbxkbbCrBzmRe8MKavoGxHlx9n1gkjjR
-   gfU3A7EcS8RR5BtjfeffAxbU30r4az128vEOE96l1Z5d53TEEigT96upw
-   ktQ3mmwt0c0y1IbTgWU77oDKgzKyX1DaPAjVwi4rNvhmxB0nTbnHGMIxZ
-   4qO2GNT8CkAJsBdt1iD2QVhphmYVUO0VFoxGZ/tanCGXgQdjbwikvaaE8
-   g==;
-X-CSE-ConnectionGUID: Zk8qJ+OYRL6w+ThfQKbVww==
-X-CSE-MsgGUID: FY98tfZ7RbqF1FFYF/1Eeg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="19328722"
-X-IronPort-AV: E=Sophos;i="6.07,207,1708416000"; 
-   d="scan'208";a="19328722"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 14:22:03 -0700
-X-CSE-ConnectionGUID: jsQKSmcMTt+uZzKt7+9ddw==
-X-CSE-MsgGUID: J7LKk20KTIqg2jNclWRQeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,207,1708416000"; 
-   d="scan'208";a="27071893"
-Received: from agluck-desk3.sc.intel.com ([172.25.222.105])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 14:22:03 -0700
-From: Tony Luck <tony.luck@intel.com>
-To: linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Raag Jadav <raag.jadav@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Marius Hoch <mail@mariushoch.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	linux-acpi@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH v3 41/74] x86/cpu/vfm: Update drivers/acpi/x86/utils.c
-Date: Tue, 16 Apr 2024 14:22:01 -0700
-Message-ID: <20240416212201.9433-1-tony.luck@intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240416211941.9369-1-tony.luck@intel.com>
-References: <20240416211941.9369-1-tony.luck@intel.com>
+	s=arc-20240116; t=1713323751; c=relaxed/simple;
+	bh=+YZX28rHLDWuM2x05KKJCYzQLjdwZ0E/VxcDLzfvnyY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JdkPrMPhmkkiNP3sTX45BQoYhRiJAk5NphKvTP7Tl5W6t++aKsdhiVXK4ZbqNMx5iW+S/NkLfZxdwRvkNDFmgH/svSqWu4XTqtWP8SLXTTJjPyI/6m8U2G2holOAN8KTUo6kuD3Iy4BNWvxIOoYvR6fO2A5vz2satQPlM6qFk7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=bpLLkZr3; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2220a389390so175451fac.0
+        for <linux-acpi@vger.kernel.org>; Tue, 16 Apr 2024 20:15:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1713323749; x=1713928549; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R9Z++jv9thhXwuK9ebCXoyfu1FayJyWXQhF4Y4dqH70=;
+        b=bpLLkZr3p2CYlMtw9dAVizHtdbctiM+c8x3jiv7A8gq2dgXQLHfvRXDk1MCB8ymUuI
+         iG2cHLMcvU18D3adhEbSb69p9CHuotWuKdKo+jPe+v3nt9gddXwzDztS33rXs5HCETk2
+         C7bzPYO2s7sVoFOuzaGHuZ9m6IoFwS1DLvRmnR8nnlQNxXslTMdToxFdLDitz5zQqfoH
+         O9h+zE+OaTPTRxgsrnEaqGTYa7GUZWsn1UTKVrnYz4mFMDSr8R4LRBAUu+QgU+jn8FLe
+         8+Th330Ijjumleviq4xN35USCIO2AFb5l09/PSkADYm0vh6L1RXE8M/tBuLb3Mzmme2V
+         QcfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713323749; x=1713928549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R9Z++jv9thhXwuK9ebCXoyfu1FayJyWXQhF4Y4dqH70=;
+        b=ZHqDnIGWtSwANrQb0821/GALqvGNKxlK/A5tEpeq/TmafENttTCSqjmW9bbv4LOYd0
+         8wKF3g4Jn9ljt2D73hYrPa/6yTXSyAADGxaVjvmcuuhHE0T6tYtttZ7S0eIi0lD1kSx9
+         uNwfza3wLuhABhuhwnaXz7MyqO1EcZPLgH+GkDbzgSGNv/DvfP9HsN+lHSMmfqk+MziH
+         74c1zTk/MLIzFqkdGkkC2WXhncwP0weqpq5G5CDp/jXxxZpHFqXD+B+ytyDh0brDkV3Z
+         exjoO1KQhzOffbkD3csT6ExQbU8TOcRkN+kGvO4U1gw8b6gex/sV3h4nM4xcdIZy0WUx
+         Cn/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVbIwaFF2nP8+/1nCIMfgE3B65EJw++QOx2eZPINwgt4qNEwqvKLDD5At4VlI7OhncG8X/+sRIptDoUxoXNJd8hhU8gjIzgI7rJ1Q==
+X-Gm-Message-State: AOJu0YwveAgqDry7cogJNqzfwfZRxyWUqJ3RC03pR65IN7zSrbRNw/Bm
+	TN67c+yfC3KYdcH1Tn9J1+p3theehVS6h4AQoS7LmXXXt3qMu7hq3oBVpQPNyF4Mw7TWplVgjmI
+	4Lnyyip7v47D7QwwSj6b/vCFvsAyNvhza/6xiWA==
+X-Google-Smtp-Source: AGHT+IG7+SlzZiYgUQUE9mnnio01KvFFZXX0TXlXW4MiCLJOo1mTdXknFxGrqYT18e/8jaVZSK+07OkTH2bc9Zfj+IE=
+X-Received: by 2002:a05:6870:51b:b0:22a:a34a:c995 with SMTP id
+ j27-20020a056870051b00b0022aa34ac995mr1355278oao.17.1713323749172; Tue, 16
+ Apr 2024 20:15:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240416031438.7637-1-cuiyunhui@bytedance.com>
+ <20240416031438.7637-2-cuiyunhui@bytedance.com> <9f36bedd-1a68-43a9-826d-ce56caf01c52@arm.com>
+In-Reply-To: <9f36bedd-1a68-43a9-826d-ce56caf01c52@arm.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Wed, 17 Apr 2024 11:15:38 +0800
+Message-ID: <CAEEQ3w=W+xLGP3WsyAQmRNaHm1xVRtqcGJ+t0TnZvJdCTR4v6w@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v3 2/3] riscv: cacheinfo: initialize
+ cacheinfo's level and type from ACPI PPTT
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
+	james.morse@arm.com, jhugo@codeaurora.org, john.garry@huawei.com, 
+	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, sudeep.holla@arm.com, 
+	tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-New CPU #defines encode vendor and family as well as model.
+Hi Jeremy,
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
----
- drivers/acpi/x86/utils.c | 42 ++++++++++++++++++++--------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+On Wed, Apr 17, 2024 at 4:04=E2=80=AFAM Jeremy Linton <jeremy.linton@arm.co=
+m> wrote:
+>
+> Hi,
+>
+>
+> On 4/15/24 22:14, Yunhui Cui wrote:
+> > Before cacheinfo can be built correctly, we need to initialize level
+> > and type. Since RSIC-V currently does not have a register group that
+> > describes cache-related attributes like ARM64, we cannot obtain them
+> > directly, so now we obtain cache leaves from the ACPI PPTT table
+> > (acpi_get_cache_info()) and set the cache type through split_levels.
+> >
+> > Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > ---
+> >   arch/riscv/kernel/cacheinfo.c | 20 ++++++++++++++++++++
+> >   1 file changed, 20 insertions(+)
+> >
+> > diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinf=
+o.c
+> > index 30a6878287ad..dc5fb70362f1 100644
+> > --- a/arch/riscv/kernel/cacheinfo.c
+> > +++ b/arch/riscv/kernel/cacheinfo.c
+> > @@ -6,6 +6,7 @@
+> >   #include <linux/cpu.h>
+> >   #include <linux/of.h>
+> >   #include <asm/cacheinfo.h>
+> > +#include <linux/acpi.h>
+> >
+> >   static struct riscv_cacheinfo_ops *rv_cache_ops;
+> >
+> > @@ -78,6 +79,25 @@ int populate_cache_leaves(unsigned int cpu)
+> >       struct device_node *prev =3D NULL;
+> >       int levels =3D 1, level =3D 1;
+> >
+> > +     if (!acpi_disabled) {
+> > +             int ret, idx, fw_levels, split_levels;
+> > +
+> > +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_level=
+s);
+> > +             if (ret)
+> > +                     return ret;
+> > +
+> > +             for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
+> > +                  idx < this_cpu_ci->num_leaves; idx++, level++) {
+>
+> AFAIK the purpose of idx here it to assure that the number of cache
+> leaves is not overflowing. But right below we are utilizing two of them
+> at once, so this check isn't correct. OTOH, since its allocated as
+> levels + split_levels I don't think its actually possible for this to
+> cause a problem. Might be worthwhile to just hoist it before the loop
+> and revalidate the total leaves about to be utilized.
+>
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index 90c3d2eab9e9..2d8203f7bd98 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -45,37 +45,37 @@ struct override_status_id {
- 	unsigned long long status;
- };
- 
--#define ENTRY(status, hid, uid, path, cpu_model, dmi...) {		\
-+#define ENTRY(status, hid, uid, path, cpu_vfm, dmi...) {		\
- 	{ { hid, }, {} },						\
--	{ X86_MATCH_INTEL_FAM6_MODEL(cpu_model, NULL), {} },		\
-+	{ X86_MATCH_VFM(cpu_vfm, NULL), {} },				\
- 	{ { .matches = dmi }, {} },					\
- 	uid,								\
- 	path,								\
- 	status,								\
- }
- 
--#define PRESENT_ENTRY_HID(hid, uid, cpu_model, dmi...) \
--	ENTRY(ACPI_STA_DEFAULT, hid, uid, NULL, cpu_model, dmi)
-+#define PRESENT_ENTRY_HID(hid, uid, cpu_vfm, dmi...) \
-+	ENTRY(ACPI_STA_DEFAULT, hid, uid, NULL, cpu_vfm, dmi)
- 
--#define NOT_PRESENT_ENTRY_HID(hid, uid, cpu_model, dmi...) \
--	ENTRY(0, hid, uid, NULL, cpu_model, dmi)
-+#define NOT_PRESENT_ENTRY_HID(hid, uid, cpu_vfm, dmi...) \
-+	ENTRY(0, hid, uid, NULL, cpu_vfm, dmi)
- 
--#define PRESENT_ENTRY_PATH(path, cpu_model, dmi...) \
--	ENTRY(ACPI_STA_DEFAULT, "", NULL, path, cpu_model, dmi)
-+#define PRESENT_ENTRY_PATH(path, cpu_vfm, dmi...) \
-+	ENTRY(ACPI_STA_DEFAULT, "", NULL, path, cpu_vfm, dmi)
- 
--#define NOT_PRESENT_ENTRY_PATH(path, cpu_model, dmi...) \
--	ENTRY(0, "", NULL, path, cpu_model, dmi)
-+#define NOT_PRESENT_ENTRY_PATH(path, cpu_vfm, dmi...) \
-+	ENTRY(0, "", NULL, path, cpu_vfm, dmi)
- 
- static const struct override_status_id override_status_ids[] = {
- 	/*
- 	 * Bay / Cherry Trail PWM directly poked by GPU driver in win10,
- 	 * but Linux uses a separate PWM driver, harmless if not used.
- 	 */
--	PRESENT_ENTRY_HID("80860F09", "1", ATOM_SILVERMONT, {}),
--	PRESENT_ENTRY_HID("80862288", "1", ATOM_AIRMONT, {}),
-+	PRESENT_ENTRY_HID("80860F09", "1", INTEL_ATOM_SILVERMONT, {}),
-+	PRESENT_ENTRY_HID("80862288", "1", INTEL_ATOM_AIRMONT, {}),
- 
- 	/* The Xiaomi Mi Pad 2 uses PWM2 for touchkeys backlight control */
--	PRESENT_ENTRY_HID("80862289", "2", ATOM_AIRMONT, {
-+	PRESENT_ENTRY_HID("80862289", "2", INTEL_ATOM_AIRMONT, {
- 		DMI_MATCH(DMI_SYS_VENDOR, "Xiaomi Inc"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Mipad2"),
- 	      }),
-@@ -84,18 +84,18 @@ static const struct override_status_id override_status_ids[] = {
- 	 * The INT0002 device is necessary to clear wakeup interrupt sources
- 	 * on Cherry Trail devices, without it we get nobody cared IRQ msgs.
- 	 */
--	PRESENT_ENTRY_HID("INT0002", "1", ATOM_AIRMONT, {}),
-+	PRESENT_ENTRY_HID("INT0002", "1", INTEL_ATOM_AIRMONT, {}),
- 	/*
- 	 * On the Dell Venue 11 Pro 7130 and 7139, the DSDT hides
- 	 * the touchscreen ACPI device until a certain time
- 	 * after _SB.PCI0.GFX0.LCD.LCD1._ON gets called has passed
- 	 * *and* _STA has been called at least 3 times since.
- 	 */
--	PRESENT_ENTRY_HID("SYNA7500", "1", HASWELL_L, {
-+	PRESENT_ENTRY_HID("SYNA7500", "1", INTEL_HASWELL_L, {
- 		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Venue 11 Pro 7130"),
- 	      }),
--	PRESENT_ENTRY_HID("SYNA7500", "1", HASWELL_L, {
-+	PRESENT_ENTRY_HID("SYNA7500", "1", INTEL_HASWELL_L, {
- 		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Venue 11 Pro 7139"),
- 	      }),
-@@ -112,19 +112,19 @@ static const struct override_status_id override_status_ids[] = {
- 	 * was copy-pasted from the GPD win, so it has a disabled KIOX000A
- 	 * node which we should not enable, thus we also check the BIOS date.
- 	 */
--	PRESENT_ENTRY_HID("KIOX000A", "1", ATOM_AIRMONT, {
-+	PRESENT_ENTRY_HID("KIOX000A", "1", INTEL_ATOM_AIRMONT, {
- 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
- 		DMI_MATCH(DMI_BIOS_DATE, "02/21/2017")
- 	      }),
--	PRESENT_ENTRY_HID("KIOX000A", "1", ATOM_AIRMONT, {
-+	PRESENT_ENTRY_HID("KIOX000A", "1", INTEL_ATOM_AIRMONT, {
- 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
- 		DMI_MATCH(DMI_BIOS_DATE, "03/20/2017")
- 	      }),
--	PRESENT_ENTRY_HID("KIOX000A", "1", ATOM_AIRMONT, {
-+	PRESENT_ENTRY_HID("KIOX000A", "1", INTEL_ATOM_AIRMONT, {
- 		DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 		DMI_MATCH(DMI_BOARD_NAME, "Default string"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
-@@ -137,7 +137,7 @@ static const struct override_status_id override_status_ids[] = {
- 	 * method sets a GPIO causing the PCI wifi card to turn off.
- 	 * See above remark about uniqueness of the DMI match.
- 	 */
--	NOT_PRESENT_ENTRY_PATH("\\_SB_.PCI0.SDHB.BRC1", ATOM_AIRMONT, {
-+	NOT_PRESENT_ENTRY_PATH("\\_SB_.PCI0.SDHB.BRC1", INTEL_ATOM_AIRMONT, {
- 		DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
- 		DMI_EXACT_MATCH(DMI_BOARD_NAME, "Default string"),
- 		DMI_EXACT_MATCH(DMI_BOARD_SERIAL, "Default string"),
-@@ -149,7 +149,7 @@ static const struct override_status_id override_status_ids[] = {
- 	 * as both ACCL0001 and MAGN0001. As we can only ever register an
- 	 * i2c client for one of them, ignore MAGN0001.
- 	 */
--	NOT_PRESENT_ENTRY_HID("MAGN0001", "1", ATOM_SILVERMONT, {
-+	NOT_PRESENT_ENTRY_HID("MAGN0001", "1", INTEL_ATOM_SILVERMONT, {
- 		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
- 		DMI_MATCH(DMI_PRODUCT_FAMILY, "YOGATablet2"),
- 	      }),
--- 
-2.44.0
+Do you mean to modify the logic as follows to make it more complete?
+for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
+      idx < this_cpu_ci->num_leaves; level++) {
+        if (level <=3D split_levels) {
+               ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+               idx++;
+               ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+               idx++;
+       } else {
+               ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+               idx++;
+      }
+}
 
+
+Thanks,
+Yunhui
 
