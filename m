@@ -1,209 +1,209 @@
-Return-Path: <linux-acpi+bounces-5117-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5118-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075D08A87B1
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 17:33:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2DA8A87E4
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 17:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2469282E06
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 15:33:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40F761C22057
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 15:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2045D147C6F;
-	Wed, 17 Apr 2024 15:33:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="jJYQFZ88"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0370C1487FF;
+	Wed, 17 Apr 2024 15:38:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7D03E493
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 15:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13DD1487F1;
+	Wed, 17 Apr 2024 15:38:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713367996; cv=none; b=hwnMEt1W5nNCcMZZNnQCMNrHk7p5WxlKbwJGtvBXuWwhwFLBp2JpGQi6MN0+j3fZ52NuPjF5A5ybawqSfhMxvTxKLcYOHBX3e0WS6B1496GxORz1yvjJfqFMQebrLKnPPYRg+QJSBHcZyPSTLCO4EkZmoTQjZmNNS/x/hJbPB3A=
+	t=1713368329; cv=none; b=UwGM78zlH1SFT0qa/RkCosQinq/sg2+bUsLzNJu2G/pGW93bb4hXIkAn3QihgsD6ppU6WEeVp7m0coVHBWHBPZG13f5Jl7Mwz8c/mt9Vkzj2P0jwlcBF2mAJPyjZlDxgSExhMZCSNNhuLpLpvToAuMxTV4J9ddSTP0rR2t5uKQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713367996; c=relaxed/simple;
-	bh=LyasFuHZp08VqwNu42/PVIEbWPHzMUfT5uQ3KYTy324=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qikRthc/7YeToH9YX6+Tf1fVvjQdCJlW3HwCzBMqJjzDy8VN6ALkmBD46y0P/RXfGQ0naOaqyznkGIsMqRHBBpZQBYCTRhiAst2joOr7t44H2cr1l2IO9JfEYEuBRLKiDOcsyNEyd9bOl+NDHXQw3k9vEsR6OgpQk11vbbFRtP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=jJYQFZ88; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1e3f17c64daso40342705ad.3
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 08:33:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1713367993; x=1713972793; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ci0/H2jmcb2D55FJA4q2NJz7BMdC0uHP2xAuYH6nUsQ=;
-        b=jJYQFZ88TdQWsGhcrTJ6Fi1nyzHDWxH/0SGxp3FlSXhYZAR5vk5eTmiDkV4XIS1Bam
-         dYIPNcnEO1wceqW5OvoiE2wQ0suPz+QzGSqcYDepxk3JL5OoARtcQwtuaBcNT3OrEcDS
-         u0JVQN/lEx5GImrma/eVBpH+fgqEu00f1rrCBijMl1YWmkFvarsCb7HnYPoyNBUX97RH
-         cse1OBTZgLaPyW5nKHPMPlUvMrHX3WurE1k1GM/vXwyjUzERdgJIHUsLN+lHTpKPGrZs
-         wZwquGJDFaX6XSq1WgMntLnIx5yVLx2x3HjwdKTsoiNdAl6NgB4hBBJhuFq1jBQ1AZ+6
-         Grcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713367993; x=1713972793;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ci0/H2jmcb2D55FJA4q2NJz7BMdC0uHP2xAuYH6nUsQ=;
-        b=p+ywzGQh69fBtruJHLg9/a2Y2izoipysij/NoA8cTFHb99h/+jmrjU5kW0JBZIF8Ph
-         1zheFp2zYiTEtDGHKAV4bZD+3TnEKTpGdMar6XP9sZXiAfgNXCaNnRleWm0gNR4LD1+8
-         w4urxgfp0b2CaxM6FyAobz0SFCrYSAkksNeiYs0CF3ywOVqEf8emxznfOhMWmWBZanG4
-         tLiO1qlucNLkQCBvSQlCkLi7n0xF6KsxiWF2rGwrYFu7wVyWqw0tGtEEKj7kcns7zdpy
-         YyQME3RN11Y3k8Rj7qWpt8bzw3W8v1nOuvecOfW/igsTjJY7XF3S2wPhOWSGtGs/bWut
-         mS5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVkKS1R+VkmAqmbpc079yQgLty0XgTmhyk9quxBmhPL8KPwBs8ybLK9oNdaiI8i/I2y1zEITecCwTscIS18o5LQaEINGH1tn4yveQ==
-X-Gm-Message-State: AOJu0YwouS3Rxj1r402AeeEsaONYJLq2CU69fqEXvtfscmslupi7qPOv
-	b30LdpsjolH+aSmmQ3hi1mOLclxySYwYBVvkFUil29/4f/WcjVyYQt4n60hAF44iwP+Bg6bdIst
-	BA9E=
-X-Google-Smtp-Source: AGHT+IHRZkCksWn0BOoecd+0pqZBwGMmL39xcXlgwLsVriOPR0oxo+w+nj8DW8s7r0j6AcJINnUn5A==
-X-Received: by 2002:a17:902:e5c1:b0:1e4:35b9:f150 with SMTP id u1-20020a170902e5c100b001e435b9f150mr19787192plf.11.1713367993089;
-        Wed, 17 Apr 2024 08:33:13 -0700 (PDT)
-Received: from sunil-laptop ([106.51.187.230])
-        by smtp.gmail.com with ESMTPSA id j9-20020a170903024900b001e83a718d87sm1102769plh.19.2024.04.17.08.33.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 08:33:12 -0700 (PDT)
-Date: Wed, 17 Apr 2024 21:03:02 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Haibo1 Xu <haibo1.xu@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Andrei Warkentin <andrei.warkentin@intel.com>,
-	Marc Zyngier <maz@kernel.org>,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Subject: Re: [RFC PATCH v4 03/20] PCI: Make pci_create_root_bus() declare its
- reliance on MSI domains
-Message-ID: <Zh/rroBTGTq/Q/FN@sunil-laptop>
-References: <Zh41pOmtAJ0EcbiN@sunil-laptop>
- <20240416204653.GA164172@bhelgaas>
+	s=arc-20240116; t=1713368329; c=relaxed/simple;
+	bh=GEwKcew9dkrK7al83zqmzbXTl8DFGOiIto9YUHLUKgI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AENnMVv308UNu3yM9loaH62fdAS9vBwj0Nb6Rujzxr+QEZdJ1vWkWBdqGoLQxWTCv4xFFJLg6LF6kuiHXuAl0PH9ATok8lCfZMQHaGHedqhrsizK6+4NJKKZyYP2FW+iWN2LasFH9QE9aPxRNFJtPo3GIdxSeYsDvc412AqA/XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VKQ4W5nkBz6F951;
+	Wed, 17 Apr 2024 23:36:43 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 35D8B140B38;
+	Wed, 17 Apr 2024 23:38:44 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 17 Apr
+ 2024 16:38:43 +0100
+Date: Wed, 17 Apr 2024 16:38:42 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Salil Mehta <salil.mehta@huawei.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, "linux-pm@vger.kernel.org"
+	<linux-pm@vger.kernel.org>, "loongarch@lists.linux.dev"
+	<loongarch@lists.linux.dev>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-arch@vger.kernel.org"
+	<linux-arch@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, Russell King
+	<linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, "Miguel
+ Luis" <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Linuxarm <linuxarm@huawei.com>,
+	"justin.he@arm.com" <justin.he@arm.com>, "jianyong.wu@arm.com"
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v6 06/16] ACPI: processor: Register deferred CPUs from
+ acpi_processor_get_info()
+Message-ID: <20240417163842.0000415e@Huawei.com>
+In-Reply-To: <22ace9b108ee488eb017f5b3e8facb8d@huawei.com>
+References: <20240417131909.7925-1-Jonathan.Cameron@huawei.com>
+	<20240417131909.7925-7-Jonathan.Cameron@huawei.com>
+	<22ace9b108ee488eb017f5b3e8facb8d@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240416204653.GA164172@bhelgaas>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, Apr 16, 2024 at 03:46:53PM -0500, Bjorn Helgaas wrote:
-> On Tue, Apr 16, 2024 at 01:54:04PM +0530, Sunil V L wrote:
-> > Hi Bjorn,
-> > 
-> > On Mon, Apr 15, 2024 at 06:15:23PM -0500, Bjorn Helgaas wrote:
-> > > On Mon, Apr 15, 2024 at 10:30:56PM +0530, Sunil V L wrote:
-> > > > Similar to commit 9ec37efb8783 ("PCI/MSI: Make
-> > > > pci_host_common_probe() declare its reliance on MSI domains"), declare
-> > > > this dependency for PCI probe in ACPI based flow.
-> > > > 
-> > > > This is required especially for RISC-V platforms where MSI controller
-> > > > can be absent. However, setting this for all architectures seem to cause
-> > > > issues on non RISC-V architectures [1]. Hence, enabled this only for
-> > > > RISC-V.
-> > > > 
-> > > > [1] - https://lore.kernel.org/oe-lkp/202403041047.791cb18e-oliver.sang@intel.com
-> > > > 
-> > > > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > > ---
-> > > >  drivers/pci/probe.c | 3 +++
-> > > >  1 file changed, 3 insertions(+)
-> > > > 
-> > > > diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> > > > index 1325fbae2f28..e09915bee2ee 100644
-> > > > --- a/drivers/pci/probe.c
-> > > > +++ b/drivers/pci/probe.c
-> > > > @@ -3048,6 +3048,9 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
-> > > >  	bridge->sysdata = sysdata;
-> > > >  	bridge->busnr = bus;
-> > > >  	bridge->ops = ops;
-> > > > +#ifdef CONFIG_RISCV
-> > > > +	bridge->msi_domain = true;
-> > > > +#endif
-> > > 
-> > > Ugh.  I looked at [1], but that's not a very good justification for
-> > > this #ifdef.  The fault mentioned in [1] would need to be fixed, but
-> > > not this way.
-> > 
-> > Thank you again for the feedback!
-> > 
-> > I agree. This is due to my limitation with knowledge and resources to
-> > debug the issue happening on non-UEFI x86 system with some particular
-> > PCIe RC. Also, I was worried that we get into a rat hole of
-> > assumptions/quirks with various architecture/PCIe RC combinations.
+On Wed, 17 Apr 2024 16:03:51 +0100
+Salil Mehta <salil.mehta@huawei.com> wrote:
+
+> >  From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> >  Sent: Wednesday, April 17, 2024 2:19 PM
+> >  
+> >  From: James Morse <james.morse@arm.com>
+> >  
+> >  The arm64 specific arch_register_cpu() call may defer CPU registration until
+> >  the ACPI interpreter is available and the _STA method can be evaluated.
+> >  
+> >  If this occurs, then a second attempt is made in acpi_processor_get_info().
+> >  Note that the arm64 specific call has not yet been added so for now this will
+> >  be called for the original hotplug case.
+> >  
+> >  For architectures that do not defer until the ACPI Processor driver loads
+> >  (e.g. x86), for initially present CPUs there will already be a CPU device. If
+> >  present do not try to register again.
+> >  
+> >  Systems can still be booted with 'acpi=off', or not include an ACPI
+> >  description at all as in these cases arch_register_cpu() will not have
+> >  deferred registration when first called.
+> >  
+> >  This moves the CPU register logic back to a subsys_initcall(), while the
+> >  memory nodes will have been registered earlier.
+> >  Note this is where the call was prior to the cleanup series so there should be
+> >  no side effects of moving it back again for this specific case.
+> >  
+> >  [PATCH 00/21] Initial cleanups for vCPU HP.
+> >  https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.org.uk/
+> >  
+> >  e.g. 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_DEVICES")
+> >  
+> >  Signed-off-by: James Morse <james.morse@arm.com>
+> >  Reviewed-by: Gavin Shan <gshan@redhat.com>
+> >  Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> >  Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> >  Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> >  Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> >  Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >  Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+> >  ---
+> >  v6: Squash the two paths for conventional CPU Hotplug and arm64
+> >      vCPU HP.
+> >  v5: Update commit message to make it clear this is moving the
+> >      init back to where it was until very recently.
+> >  
+> >      No longer change the condition in the earlier registration point
+> >      as that will be handled by the arm64 registration routine
+> >      deferring until called again here.
+> >  ---
+> >   drivers/acpi/acpi_processor.c | 12 +++++++++++-
+> >   1 file changed, 11 insertions(+), 1 deletion(-)
+> >  
+> >  diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> >  index 7ecb13775d7f..0cac77961020 100644
+> >  --- a/drivers/acpi/acpi_processor.c
+> >  +++ b/drivers/acpi/acpi_processor.c
+> >  @@ -356,8 +356,18 @@ static int acpi_processor_get_info(struct
+> >  acpi_device *device)
+> >   	 *
+> >   	 *  NOTE: Even if the processor has a cpuid, it may not be present
+> >   	 *  because cpuid <-> apicid mapping is persistent now.
+> >  +	 *
+> >  +	 *  Note this allows 3 flows, it is up to the arch_register_cpu()
+> >  +	 *  call to reject any that are not supported on a given architecture.
+> >  +	 *  A) CPU becomes present.
+> >  +	 *  B) Previously invalid logical CPU ID (Same as becoming present)
+> >  +	 *  C) CPU already present and now being enabled (and wasn't
+> >  registered
+> >  +	 *     early on an arch that doesn't defer to here)
+> >   	 */
+> >  -	if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> >  +	if ((!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> >  +	     !get_cpu_device(pr->id)) ||
+> >  +	    invalid_logical_cpuid(pr->id) ||
+> >  +	    !cpu_present(pr->id)) {  
 > 
-> The problem is that adding #ifdefs like this leads to a rat hole
-> itself.  We need to understand and fix the underlying issue instead.
 > 
-Agree. Ideally, from my reading of code, this change should have worked
-across architectures.
+Hi Salil,
 
-> > For ex: I think the issue is, somehow MSI domain is not set at the time
-> > of PCI host bridge registration in pci_register_host_bridge() causing
-> > PCI_BUS_FLAGS_NO_MSI to be set. This causes pci_alloc_irq_vectors() to
-> > fail. In portdrv.c, pcie_init_service_irqs() doesn't switch to INTx
-> > handling if MSI can not be used. It switches only if pcie_pme_no_msi()
-> > returns true. I couldn't find who actually sets up MSI domain bit late
-> > on this platform so that it somehow worked when we didn't set this flag.
-> > 
-> > Unfortunately, I don't have system to root cause and fix this issue with
-> > confidence. Also, I don't know if any other architectures have similar
-> > issues which are not caught yet. Hence, I thought it may be better
-> > just restrict the change to RISC-V.
+Thanks for quick review!
+
+> Logic is clear but it is ugly. We should turn them into macro or inline.
+
+You've found the 'ugly' in this approach vs keeping them separate.
+
+For this version I wanted to keep it clear that indeed this condition
+is a complex mess of different things (and to let people compare
+it easily with the two paths in v5 to convinced themselves this
+is the same) 
+
+It's also a little tricky to do, so will need some thought.
+
+I don't think a simple acpi_cpu_is_hotplug() condition is useful
+as it just moves the complexity away from where a reader is looking
+and it would only be used in this one case.
+
+It doesn't separate well into finer grained subconditions because
+(C) is a messy case of the vCPU HP case and a not done
+something else earlier.  The disadvantage of only deferring for
+arm64 and not other architectures.
+
+The best I can quickly come up with is something like this:
+#define acpi_cpu_not_present(cpu) \
+	(invalid_logical_cpuid(cpu) || !cpu_present(cpu))
+#define acpi_cpu_not_enabled(cpu) \
+	(!invalid_logical_cpuid(cpu) || cpu_present(cpu))
+
+	if ((apci_cpu_not_enabled(pr->id) && !get_cpu_device(pr->id) ||
+	    acpi_cpu_not_present(pr->id))
+
+Which would still need the same amount of documentation. The
+code still isn't enough for me to immediately be able to see
+what is going on.
+
+So maybe worth it... I'm not sure.  Rafael, you get to keep this
+fun, what would you prefer?
+
+Jonathan
+
+
 > 
-> It sounds like the above is a good start on analyzing the problem.
 > 
-> I don't quite understand your statement that pcie_init_service_irqs()
-> doesn't fall back to INTx when MSI/MSI-X is not available.
-> 
-> I'm looking at this:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/pcie/portdrv.c?id=v6.8#n177
-> pcie_port_enable_irq_vec() attempts
-> pci_alloc_irq_vectors(PCI_IRQ_MSIX | PCI_IRQ_MSI) and returns 0 if
-> successful.  If it returns failure, it looks like
-> pcie_init_service_irqs() *does* fall through to trying INTx
-> (PCI_IRQ_LEGACY).
-> 
-You are right. Not sure what I was looking at :-(.
+> Thanks
+> Salil.
 
-I think fundamentally there are two issues here.
-
-1) MSI domain should have been setup properly when
-pci_register_host_bridge() is called. I see that pci_arch_init() which
-is supposed to get called early calls x86_create_pci_msi_domain().
-pci_register_host_bridge() also calls pci_set_bus_msi_domain() to setup
-the MSI domain which can walk up to host bridge to find. So, not sure
-why PCI_BUS_FLAGS_NO_MSI is getting set. Is there an issue in walking up
-the tree?
-
-2) When it switches to legacy interrupt since MSI domain is not found,
-for some reason there is an interrupt enabled without a handler. I was
-suspecting PME since it was matching the IRQ#16 but it looks like PME
-handlers are present. I am unable to find anything suspicious from the
-log alone.
-
-I really don't know how to proceed further. With my limited
-understanding, I don't get any hint what is happening from the log.
-
-Thanks,
-Sunil
 
