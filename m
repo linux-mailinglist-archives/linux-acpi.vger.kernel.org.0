@@ -1,183 +1,326 @@
-Return-Path: <linux-acpi+bounces-5129-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5130-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6234E8A8B3D
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 20:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5A28A8BB5
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 20:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850DA1C23490
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 18:40:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824B31C24034
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Apr 2024 18:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727CB10976;
-	Wed, 17 Apr 2024 18:40:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="umcjkzaV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4372E1DFF0;
+	Wed, 17 Apr 2024 18:57:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4805F51B
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 18:40:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5021BC31;
+	Wed, 17 Apr 2024 18:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713379207; cv=none; b=GcKTEoiGmrBvyfOfA/04mTMp7Ni/WB9ZyUw2EgBIq92yz2s3hkYSjUrrW2FSs/S9PCuVFjsJXLQRlRQ9nmhA4zvjKKKBtEjZwv4isla4GyLSYWEGtvMD573kgiJAfX91S0H3Tj7upiTTB7+r+K3C7m66G6K/x7cFw+cW8AKmUTw=
+	t=1713380260; cv=none; b=exnDQTQKk/OCSYvhI4mc21rr08RSyF2jf/L0IWhzsFSSyx9FrF+x3VuX3ppDe877mLuqHaw4hP4HDfdOUIiEQ+ugC/kCsBJIAfofzpQioOZv69aACVagPVGOUbT3KkKWp0k8cDO4hQIWZVtslNWCOwxUui6lnirXnZ9tXfzX+E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713379207; c=relaxed/simple;
-	bh=OhXYRkHlutJXyjU0T9+kwMcG8LQ8HZDcv6iWC6fQg0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EjoI8Pbtb+rT9DiVpfFmK9ZMIkyQLhhHZa4e9e7AZZh8EFJ+RASHojxbeVeBN+4vg4C9eOHS9tKbVX0IhdFPjN5ypR4dQLrCIgMbiStzrZZWaAN8udEpYqKPkga/TrhYAmfNpT59rRZqYoFm28qhMcMr+I1bGGfWq6Hg42H5xk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=umcjkzaV; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-518d98b9620so4973806e87.3
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 11:40:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1713379204; x=1713984004; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R07SR/oel+G1qKlnViSta7s+zv+5bXS+VJuTgJczuYo=;
-        b=umcjkzaVTNG+gtVI1EI484dB5LeE0bVaErV9j4wL7Ey9sG5qfRvnU0zPg980T5+q+T
-         jgOC2Sr3rbjdSLS470TiYqKxkxw7IjbEhzCtuuI/6rvJ9bLVE+tYM7eCQJ1xXt2y35Q4
-         U5qWq5javu4ogbMJXxWPrqmanUnJp5IrOSmGLadjLS+sUvquB3G/OftgVThInu+DHxxc
-         Cg+qZGlsKyFx9rz7sytfY2C7hMDTAoQM1uVAPm2WEgquj1FmM271rwO/qNEnm8XgIq81
-         bW2IGTOxONVs1nf3EBF6fDPRVR+eYj/MpN8zlVfPIr6TIvyIPPMVqn83LT6N9zlwm1eg
-         V3mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713379204; x=1713984004;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R07SR/oel+G1qKlnViSta7s+zv+5bXS+VJuTgJczuYo=;
-        b=EHzZ0OYas26BEhhP/OXyfWrOa1GVCFZUaphfJiwdO0SBRXtE2sPPbpUbmLACenF4AQ
-         wS4zYZPnWjX8hb+ChBAu3HgAwRLifqICrE7a3B4dUA+P9cwqUI97+lPVF18PVvdyuiN2
-         jRh8glMlC/0CK+Z8oG11ttHowyJLCl/3mN9DocoOBFGJfy5E0yvYsEslEM0t9/65cMGe
-         osTBo3aSkXl/1yRWDNSnZdti8eBwfeOcBx4A6kIQLBvtJsjOQFtMNrfwTLPhqigSfAHG
-         FjL6o5HX/QtUB79QkALoNETN/kZeAwknU7uLCTu1GuEVyD4eWee6MCJsWle2W8eSM8OH
-         n6iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsIzUaiL/2oI5hoOp1Jke8ypHHJLWe4298GO0imsLBUmWx7AXX/dTfxEb2LMXSWoNg9ByO8PR6+/cgPFQ6in/1yoFeueS3fVSHHA==
-X-Gm-Message-State: AOJu0YxBPSRZ5AeSgewBdNJ1EP5OtyyRk/FEhiAsvzwV45TMYTZrNWWp
-	2NJMX18kyJxQKbQFEGiPMjvuQS2wm4MGwHFdlfVbvklR3WgFjQ3dNrekQWM6SS/ND0wMTLLlXbT
-	YVGuEPPqXoCcyFOAPOJVm3ys/kb5YQoTOqLMUUg==
-X-Google-Smtp-Source: AGHT+IEcpfs5dpdJJqkCkXSkIR3lyitrJXuKfTPscTjfOwhlfTaeK+LO1vx1F850KkaaLSUV5ElUSJ1vut4ebqszoJs=
-X-Received: by 2002:a19:740a:0:b0:513:5fb0:c5ad with SMTP id
- v10-20020a19740a000000b005135fb0c5admr89280lfe.17.1713379203946; Wed, 17 Apr
- 2024 11:40:03 -0700 (PDT)
+	s=arc-20240116; t=1713380260; c=relaxed/simple;
+	bh=KVXA+NdTpK4SJ+PCuiRSu/BpgwGrYOPU4BiLvB8PwtM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M6opKxF0ZYJ62PhKsAsjrJpp7TOG/1IKkzjHp4vEpB0AaI3f5I+1b6z6sRWQwuNDuJnSGPJAZReCpuKRaWQqLO6vTADlkJQx7hlgS8nRjzI/YT7gyVOb1nWSYO+dPv1m0+nq8hsghuG3MvcaGt6A9kFNri6i7Z2y00ZlRZMmglw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VKVTw3ff0z6J9Th;
+	Thu, 18 Apr 2024 02:55:32 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 12A0E140519;
+	Thu, 18 Apr 2024 02:57:33 +0800 (CST)
+Received: from localhost (10.48.146.224) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 17 Apr
+ 2024 19:57:32 +0100
+Date: Wed, 17 Apr 2024 19:57:30 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Salil Mehta <salil.mehta@huawei.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, Russell King
+	<linux@armlinux.org.uk>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Linuxarm <linuxarm@huawei.com>,
+	"justin.he@arm.com" <justin.he@arm.com>, "jianyong.wu@arm.com"
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v6 06/16] ACPI: processor: Register deferred CPUs from
+ acpi_processor_get_info()
+Message-ID: <20240417195730.00006ab5@Huawei.com>
+In-Reply-To: <CAJZ5v0iFpkZZ9Ky6n5OiYsiNQ8_SRJv8hH0CLwPX=N4Ucc_snQ@mail.gmail.com>
+References: <20240417131909.7925-1-Jonathan.Cameron@huawei.com>
+	<20240417131909.7925-7-Jonathan.Cameron@huawei.com>
+	<22ace9b108ee488eb017f5b3e8facb8d@huawei.com>
+	<20240417163842.0000415e@Huawei.com>
+	<CAJZ5v0gJL0mucnN9Na2pCg0ckcTO8cNtpnAcnPD5w9eavUMQcg@mail.gmail.com>
+	<20240417180939.00003db7@huawei.com>
+	<CAJZ5v0iFpkZZ9Ky6n5OiYsiNQ8_SRJv8hH0CLwPX=N4Ucc_snQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com> <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
- <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
- <Zh6FkejXcwBTAqIR@smile.fi.intel.com> <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
- <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
-In-Reply-To: <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 17 Apr 2024 20:39:52 +0200
-Message-ID: <CAMRc=MfJdfwP7=a3govCcj8XHR7uPwCf2BA+BiWqif74pW5u8A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Kent Gibson <warthog618@gmail.com>, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Apr 17, 2024 at 10:45=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Apr 16, 2024 at 11:07:58PM +0200, Bartosz Golaszewski wrote:
-> > On Tue, Apr 16, 2024 at 4:05=E2=80=AFPM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
-> > > > On Fri, Apr 12, 2024 at 9:44=E2=80=AFPM Bartosz Golaszewski <brgl@b=
-gdev.pl> wrote:
-> > > >
-> > > > > IIUC include/dt-bindings/ headers should only be used by DT sourc=
-es
-> > > > > and code that parses the OF properties.
-> > > >
-> > > > That's what I have come to understand as well.
-> > > >
-> > > > I wonder if there is something that can be done to enforce it?
-> > > >
-> > > > Ideally the code that parses OF properties should have to
-> > > > opt in to get access to the <dt-bindings/*> namespace.
-> > >
-> > > Whatever you, guys, come up with as a solution, can it be fixed soone=
-r than later?
-> > > I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10=
--rc1 so we don't
-> > > need to look into this again.
+On Wed, 17 Apr 2024 19:59:50 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+
+> On Wed, Apr 17, 2024 at 7:09=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
 > >
-> > I'm not sure you got what I was saying. I don't think this can be
-> > fixed quickly. This is just another bunch of technical debt that will
-> > have to be addressed carefully on a case-by-case basis and run through
-> > autobuilders in all possible configurations.
+> > On Wed, 17 Apr 2024 17:59:36 +0200
+> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> > =20
+> > > On Wed, Apr 17, 2024 at 5:38=E2=80=AFPM Jonathan Cameron
+> > > <Jonathan.Cameron@huawei.com> wrote: =20
+> > > >
+> > > > On Wed, 17 Apr 2024 16:03:51 +0100
+> > > > Salil Mehta <salil.mehta@huawei.com> wrote:
+> > > > =20
+> > > > > >  From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > > > > >  Sent: Wednesday, April 17, 2024 2:19 PM
+> > > > > >
+> > > > > >  From: James Morse <james.morse@arm.com>
+> > > > > >
+> > > > > >  The arm64 specific arch_register_cpu() call may defer CPU regi=
+stration until
+> > > > > >  the ACPI interpreter is available and the _STA method can be e=
+valuated.
+> > > > > >
+> > > > > >  If this occurs, then a second attempt is made in acpi_processo=
+r_get_info().
+> > > > > >  Note that the arm64 specific call has not yet been added so fo=
+r now this will
+> > > > > >  be called for the original hotplug case.
+> > > > > >
+> > > > > >  For architectures that do not defer until the ACPI Processor d=
+river loads
+> > > > > >  (e.g. x86), for initially present CPUs there will already be a=
+ CPU device. If
+> > > > > >  present do not try to register again.
+> > > > > >
+> > > > > >  Systems can still be booted with 'acpi=3Doff', or not include =
+an ACPI
+> > > > > >  description at all as in these cases arch_register_cpu() will =
+not have
+> > > > > >  deferred registration when first called.
+> > > > > >
+> > > > > >  This moves the CPU register logic back to a subsys_initcall(),=
+ while the
+> > > > > >  memory nodes will have been registered earlier.
+> > > > > >  Note this is where the call was prior to the cleanup series so=
+ there should be
+> > > > > >  no side effects of moving it back again for this specific case.
+> > > > > >
+> > > > > >  [PATCH 00/21] Initial cleanups for vCPU HP.
+> > > > > >  https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.=
+org.uk/
+> > > > > >
+> > > > > >  e.g. 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_D=
+EVICES")
+> > > > > >
+> > > > > >  Signed-off-by: James Morse <james.morse@arm.com>
+> > > > > >  Reviewed-by: Gavin Shan <gshan@redhat.com>
+> > > > > >  Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > > > >  Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > > > > >  Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > > > > >  Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.=
+uk>
+> > > > > >  Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > >  Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > >  ---
+> > > > > >  v6: Squash the two paths for conventional CPU Hotplug and arm64
+> > > > > >      vCPU HP.
+> > > > > >  v5: Update commit message to make it clear this is moving the
+> > > > > >      init back to where it was until very recently.
+> > > > > >
+> > > > > >      No longer change the condition in the earlier registration=
+ point
+> > > > > >      as that will be handled by the arm64 registration routine
+> > > > > >      deferring until called again here.
+> > > > > >  ---
+> > > > > >   drivers/acpi/acpi_processor.c | 12 +++++++++++-
+> > > > > >   1 file changed, 11 insertions(+), 1 deletion(-)
+> > > > > >
+> > > > > >  diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi=
+_processor.c
+> > > > > >  index 7ecb13775d7f..0cac77961020 100644
+> > > > > >  --- a/drivers/acpi/acpi_processor.c
+> > > > > >  +++ b/drivers/acpi/acpi_processor.c
+> > > > > >  @@ -356,8 +356,18 @@ static int acpi_processor_get_info(struct
+> > > > > >  acpi_device *device)
+> > > > > >      *
+> > > > > >      *  NOTE: Even if the processor has a cpuid, it may not be =
+present
+> > > > > >      *  because cpuid <-> apicid mapping is persistent now.
+> > > > > >  +   *
+> > > > > >  +   *  Note this allows 3 flows, it is up to the arch_register=
+_cpu()
+> > > > > >  +   *  call to reject any that are not supported on a given ar=
+chitecture.
+> > > > > >  +   *  A) CPU becomes present.
+> > > > > >  +   *  B) Previously invalid logical CPU ID (Same as becoming =
+present)
+> > > > > >  +   *  C) CPU already present and now being enabled (and wasn't
+> > > > > >  registered
+> > > > > >  +   *     early on an arch that doesn't defer to here)
+> > > > > >      */
+> > > > > >  -  if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> > > > > >  +  if ((!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) =
+&&
+> > > > > >  +       !get_cpu_device(pr->id)) ||
+> > > > > >  +      invalid_logical_cpuid(pr->id) ||
+> > > > > >  +      !cpu_present(pr->id)) { =20
+> > > > >
+> > > > > =20
+> > > > Hi Salil,
+> > > >
+> > > > Thanks for quick review!
+> > > > =20
+> > > > > Logic is clear but it is ugly. We should turn them into macro or =
+inline. =20
+> > > >
+> > > > You've found the 'ugly' in this approach vs keeping them separate.
+> > > >
+> > > > For this version I wanted to keep it clear that indeed this conditi=
+on
+> > > > is a complex mess of different things (and to let people compare
+> > > > it easily with the two paths in v5 to convinced themselves this
+> > > > is the same)
+> > > >
+> > > > It's also a little tricky to do, so will need some thought.
+> > > >
+> > > > I don't think a simple acpi_cpu_is_hotplug() condition is useful
+> > > > as it just moves the complexity away from where a reader is looking
+> > > > and it would only be used in this one case.
+> > > >
+> > > > It doesn't separate well into finer grained subconditions because
+> > > > (C) is a messy case of the vCPU HP case and a not done
+> > > > something else earlier.  The disadvantage of only deferring for
+> > > > arm64 and not other architectures.
+> > > >
+> > > > The best I can quickly come up with is something like this:
+> > > > #define acpi_cpu_not_present(cpu) \
+> > > >         (invalid_logical_cpuid(cpu) || !cpu_present(cpu))
+> > > > #define acpi_cpu_not_enabled(cpu) \
+> > > >         (!invalid_logical_cpuid(cpu) || cpu_present(cpu))
+> > > >
+> > > >         if ((apci_cpu_not_enabled(pr->id) && !get_cpu_device(pr->id=
+) ||
+> > > >             acpi_cpu_not_present(pr->id))
+> > > >
+> > > > Which would still need the same amount of documentation. The
+> > > > code still isn't enough for me to immediately be able to see
+> > > > what is going on.
+> > > >
+> > > > So maybe worth it... I'm not sure.  Rafael, you get to keep this
+> > > > fun, what would you prefer? =20
+> > >
+> > > I would use a static inline function returning bool to carry out these
+> > > checks with comments explaining the different cases in which 'true'
+> > > needs to be returned. =20
 > >
-> > This type of include-related issues is always brittle and will lead to
-> > build failures if we don't consider our moves.
->
-> I proposed a quick fix which was rejected. I think this is still doable i=
-n a
-> few steps:
->
+> > The following makes a subtle logic change (I'll retest tomorrow) but
+> > I think that get_cpu_device(cpu) can never succeed in a path where
+> > hotadd makes sense.
+> >
+> > +/*
+> > + * Identify if the state transition indicates that hotadd_init
+> > + * should be called.
+> > + *
+> > + * For acpi_processor_add() to be called, the reported state must
+> > + * now be enabled and present. Conditions reflect prior state.
+> > + */
+> > +static inline bool acpi_processor_should_hotadd_init(int cpu)
+> > +{
+> > +       /* Already register, initial registration was not deferred */ =
+=20
+>=20
+> "Already registered." I think.
+>=20
+> > +       if (get_cpu_device(cpu))
+> > +               return false;
+> > +
+> > +       /* Processor has become present */
+> > +       if (!cpu_present(cpu))
+> > +               return true;
+> > +
+> > +       /* Logical cpuid currently invalid indicates hotadd */
+> > +       if (invalid_logical_cpuid(cpu))
+> > +               return true;
+> > +
+> > +       /*
+> > +        * Previously present and the logical cpu id is valid.
+> > +        * Deferred registration now _STA can be queries, or
+> > +        * Hotadd due to enabled becoming true on an online capable
+> > +        * CPU.
+> > +        */
+> > +       if (cpu_present(cpu))
+> > +               return true; =20
+>=20
+> It returns true for both the cpu_present(cpu) and !cpu_present(cpu)
+> cases, so will it ever return false except for when
+> get_cpu_device(cpu) returns true?
 
-You having proposed a quick fix is not a reason for me to either apply
-it immediately OR equally promptly provide a proper solution myself.
+It indeed looks suspicious. My logic is probably wrong.  Will check
+- I guess maybe pulling out the get_cpu_device(cpu) indeed flattens
+this as you point out. Kind of makes sense if true.
 
-> - align constant values in DT and enum
-> - drop usage of DT in the kernel code (That's what you want IIUC, however
->   I disagree with this from technical perspective as DT constants can be =
-used
->   in the code as long as they are mapped 1:1 to what code does. That's cu=
-rrent
->   state of affairs. OTOH semantically this may be an issue.)
+Jonathan
 
-It's against the convention of only using dt-bindings headers as I
-described before. I disagree with your proposition and it seems to me
-Linus backed me up on this.
+>=20
+> > +
+> > +       return false;
+> > +}
+> > +
+> >  static int acpi_processor_get_info(struct acpi_device *device)
+> >  {
+> >         union acpi_object object =3D { 0 };
+> > @@ -356,18 +388,8 @@ static int acpi_processor_get_info(struct acpi_dev=
+ice *device)
+> >          *
+> >          *  NOTE: Even if the processor has a cpuid, it may not be pres=
+ent
+> >          *  because cpuid <-> apicid mapping is persistent now.
+> > -        *
+> > -        *  Note this allows 3 flows, it is up to the arch_register_cpu=
+()
+> > -        *  call to reject any that are not supported on a given archit=
+ecture.
+> > -        *  A) CPU becomes present.
+> > -        *  B) Previously invalid logical CPU ID (Same as becoming pres=
+ent)
+> > -        *  C) CPU already present and now being enabled (and wasn't re=
+gistered
+> > -        *     early on an arch that doesn't defer to here)
+> >          */
+> > -       if ((!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> > -            !get_cpu_device(pr->id)) ||
+> > -           invalid_logical_cpuid(pr->id) ||
+> > -           !cpu_present(pr->id)) {
+> > +       if (acpi_processor_should_hotadd_init(pr->id)) {
+> >                 ret =3D acpi_processor_hotadd_init(pr, device);
+> > =20
 
-> - restore enum usage treewide (?)
->
-> Again, the problem now is only in open source / open drain configurations
-> and there are only a few users of these flags _in kernel_. I do not see
-> why it can not be done in one or two evenings time range.
->
-
-So you know what needs doing. I'm at a conference now, I'll be off for
-a week in April and I also have another conference scheduled for May.
-If you believe this needs addressing urgently, then I suggest you do
-it right. Otherwise, I'll get to it when I have the time.
-Unfortunately my TODO list runneth over. :(
-
-But I have to say, I suspect it won't be as easy as you present it
-because we have so many build configs that may fail.
-
-> P.S>
-> Most of the time I spent when prepared the proposed fix is digging the hi=
-story
-> and trying to understand how comes that we have desynchronisation of the =
-values
-> over the time. The output of that is the list of Fixes tags.
->
-
-Thank you, this history is useful and should make its way into git
-history when we fix this issue.
-
-Bart
 
