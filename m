@@ -1,113 +1,197 @@
-Return-Path: <linux-acpi+bounces-5138-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5139-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911BB8A9225
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 06:50:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264898A94C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 10:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF4B2837FA
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 04:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 945791F2125D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 08:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBF54E1BA;
-	Thu, 18 Apr 2024 04:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DNcGa2Cj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928D2145B3F;
+	Thu, 18 Apr 2024 08:16:40 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9006F548EA;
-	Thu, 18 Apr 2024 04:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA2513A86D;
+	Thu, 18 Apr 2024 08:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713415796; cv=none; b=cFQXHt212DCrzKkQm1m7WCH8hBLJYQqRZ0cMc/xsmPtoZtf4J3HXLEKuJSkxnw0hK9GBtMybnO8rORi42UMb4/XrtAwRj4ZpGQL4+1qUZxFls9+j99tqEaGolgqJF/6GWpcgEeuWMtzC8naZprbfUCGiKaE1gWgiQ/nFC6NMA8U=
+	t=1713428199; cv=none; b=KCgngxxqePKnhpLLT3/VgVEhqEgSfiDuErulacpcu+dFj9wDBJ5YvtvPCHitjZu4AM0Y5TfvZEh1v/C++oN520EzQVBzAYBRef8jFHqzpSQIYr3js3Z7Ti53J4Do8uy1XQkaPB1rm2+iYpFBvnmyDMcyEAXnd0CMK6ZNekEtC9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713415796; c=relaxed/simple;
-	bh=YgfbawDaEosSQPgL5ER2TNOIJpY3m3K6GdM7my7NOvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hTFTEwtkKYy2EtcVkbGqWBVht+J+3oas5Hu52ILQU5lFdTRJnESwe6s7CH06qPeN+Dt8NPdqlEVPOFcrzKrnH9zBuQWN5Q6fIMxXAFtfkyrIBeiq7ZdAd2dYM+09Ps8fw21lKi94N7MJ5YBCXZFNiJpNWgxpuOMnEVg6BTXXgXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DNcGa2Cj; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713415794; x=1744951794;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YgfbawDaEosSQPgL5ER2TNOIJpY3m3K6GdM7my7NOvk=;
-  b=DNcGa2CjCaXyB9A3LustnuHdM7UTb0uOcxG7QDkyYj7GEAbI+fO/ad5v
-   Hw6nOvAwUkOwwJIY2TDco0MHixJJVJPZrNlFixBzPeyD1qW2DkacidM1l
-   3TgvXRg27F1vAzDhYDYO3DR1uZ6tG9kchi9L1uLVGtPqQCrK03ucog/YJ
-   u980DmN92mX4xjlinPbuwV/pS2uxHJrdszohPaQ7oP+fC8B9oRfJubSUO
-   /KnsfQDkxLYwVJKcNdvzL610zodICWaHOw/KqLmFIU8XePOjA/B2hC4b/
-   E/Kn/OgP5llDZ1U7f04iamKri0+DPmrBvXVmTZC3znOodvkqm3yZP9t0l
-   A==;
-X-CSE-ConnectionGUID: LPnEL1iURNSCA8HnF6Xz1A==
-X-CSE-MsgGUID: vrerF21ZT9qcEX8Ymrm6yg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="20363074"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="20363074"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 21:49:54 -0700
-X-CSE-ConnectionGUID: 1uJNOl/URpqJCu7GMfBidA==
-X-CSE-MsgGUID: jGdWLmCmTI6fGQcrvY8OcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; 
-   d="scan'208";a="22888101"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Apr 2024 21:49:52 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 0FC5024D; Thu, 18 Apr 2024 07:49:50 +0300 (EEST)
-Date: Thu, 18 Apr 2024 07:49:50 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v1 2/2] gpiolib: acpi: Set label for IRQ only lines
-Message-ID: <20240418044950.GP112498@black.fi.intel.com>
-References: <20240417103829.2324960-1-andriy.shevchenko@linux.intel.com>
- <20240417103829.2324960-3-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1713428199; c=relaxed/simple;
+	bh=+sCIQ6w4afRiSlqasIZfv0b05YQ2xgJ9KieX+ucnx74=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XLtsxpPVTJjMz06wLKrcUebsOP/1hh7v4961F2+XSCN1clSpfSMg/UAhDwJkWkatABYJjOKmLSmFYqXMmCbaAT52b9Tgi4KwxCZVcApdj0k+/k+rgTuYtkT48jwAb01AZKL3PZdrW38XSsbcknG1YvDejmWeJdsAjMvCHqaeFxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VKr8L2MwSz6D9BV;
+	Thu, 18 Apr 2024 16:11:30 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 256E5140519;
+	Thu, 18 Apr 2024 16:16:29 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
+ 2024 09:16:28 +0100
+Date: Thu, 18 Apr 2024 09:16:27 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	<linuxarm@huawei.com>
+CC: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v6 04/16] ACPI: processor: Move checks and availability
+ of acpi_processor earlier
+Message-ID: <20240417174707.00002e86@huawei.com>
+In-Reply-To: <20240417131909.7925-5-Jonathan.Cameron@huawei.com>
+References: <20240417131909.7925-1-Jonathan.Cameron@huawei.com>
+ <20240417131909.7925-5-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240417103829.2324960-3-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Apr 17, 2024 at 01:37:28PM +0300, Andy Shevchenko wrote:
-> When line locked as IRQ it has no label assigned. Assign
-> the meaningful value to it.
+On Wed, 17 Apr 2024 14:18:57 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Same here.
-
+> Make the per_cpu(processors, cpu) entries available earlier so that
+> they are available in arch_register_cpu() as ARM64 will need access
+> to the acpi_handle to distinguish between acpi_processor_add()
+> and earlier registration attempts (which will fail as _STA cannot
+> be checked).
 > 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reorder the remove flow to clear this per_cpu() after
+> arch_unregister_cpu() has completed, allowing it to be used in
+> there as well.
+> 
+> Note that on x86 for the CPU hotplug case, the pr->id prior to
+> acpi_map_cpu() may be invalid. Thus the per_cpu() structures
+> must be initialized after that call or after checking the ID
+> is valid (not hotplug path).
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/gpio/gpiolib-acpi.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> v6: As per discussion in v5 thread, don't use the cpu->dev and
+>     make this data available earlier by moving the assignment checks
+>     int acpi_processor_get_info().
+> ---
+>  drivers/acpi/acpi_processor.c | 79 +++++++++++++++++++++--------------
+>  1 file changed, 47 insertions(+), 32 deletions(-)
 > 
-> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-> index 0b0c8729fc6e..553a5f94c00a 100644
-> --- a/drivers/gpio/gpiolib-acpi.c
-> +++ b/drivers/gpio/gpiolib-acpi.c
-> @@ -1066,6 +1066,10 @@ int acpi_dev_gpio_irq_wake_get_by(struct acpi_device *adev, const char *con_id,
->  			acpi_gpio_update_gpiod_lookup_flags(&lflags, &info);
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index ba0a6f0ac841..2c164451ab53 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -184,7 +184,35 @@ static void __init acpi_pcc_cpufreq_init(void) {}
 >  
->  			snprintf(label, sizeof(label), "%pfwP GpioInt(%d)", fwnode, index);
-> +			ret = gpiod_set_consumer_name(desc, con_id ?: label);
-> +			if (ret)
-> +				return ret;
+>  /* Initialization */
+>  #ifdef CONFIG_ACPI_HOTPLUG_CPU
+Note I messed up a rebase here.  This ifdef should come after the new function
+(see later)
+
+Will fix for v7.
+> -static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> +static DEFINE_PER_CPU(void *, processor_device_array);
 > +
->  			ret = gpiod_configure_flags(desc, label, lflags, dflags);
->  			if (ret < 0)
->  				return ret;
-> -- 
-> 2.43.0.rc1.1336.g36b5255a03ac
+> +static void acpi_processor_set_per_cpu(struct acpi_processor *pr,
+> +				       struct acpi_device *device)
+> +{
+> +	BUG_ON(pr->id >= nr_cpu_ids);
+> +	/*
+> +	 * Buggy BIOS check.
+> +	 * ACPI id of processors can be reported wrongly by the BIOS.
+> +	 * Don't trust it blindly
+> +	 */
+> +	if (per_cpu(processor_device_array, pr->id) != NULL &&
+> +	    per_cpu(processor_device_array, pr->id) != device) {
+> +		dev_warn(&device->dev,
+> +			 "BIOS reported wrong ACPI id %d for the processor\n",
+> +			 pr->id);
+> +		/* Give up, but do not abort the namespace scan. */
+> +		return;
+> +	}
+> +	/*
+> +	 * processor_device_array is not cleared on errors to allow buggy BIOS
+> +	 * checks.
+> +	 */
+> +	per_cpu(processor_device_array, pr->id) = device;
+> +	per_cpu(processors, pr->id) = pr;
+> +}
+> +
+
+The ifdef should be here as...
+
+> +static int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> +				      struct acpi_device *device)
+>  {
+>  	int ret;
+>  
+> @@ -198,6 +226,8 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>  	if (ret)
+>  		goto out;
+>  
+> +	acpi_processor_set_per_cpu(pr, device);
+> +
+>  	ret = arch_register_cpu(pr->id);
+>  	if (ret) {
+>  		acpi_unmap_cpu(pr->id);
+> @@ -217,7 +247,8 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>  	return ret;
+>  }
+>  #else
+> -static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> +static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> +					     struct acpi_device *device)
+>  {
+>  	return -ENODEV;
+>  }
+> @@ -232,6 +263,7 @@ static int acpi_processor_get_info(struct acpi_device *device)
+>  	acpi_status status = AE_OK;
+>  	static int cpu0_initialized;
+>  	unsigned long long value;
+> +	int ret;
+>  
+>  	acpi_processor_errata();
+>  
+> @@ -316,10 +348,12 @@ static int acpi_processor_get_info(struct acpi_device *device)
+>  	 *  because cpuid <-> apicid mapping is persistent now.
+>  	 */
+>  	if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> -		int ret = acpi_processor_hotadd_init(pr);
+> +		ret = acpi_processor_hotadd_init(pr, device);
+>  
+>  		if (ret)
+> -			return ret;
+> +			goto err;
+> +	} else {
+> +		acpi_processor_set_per_cpu(pr, device);
+
+This is not covered by CONFIG_ACPI_HOTPLUG_CPU
+
+>  	}
+
+
 
