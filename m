@@ -1,186 +1,139 @@
-Return-Path: <linux-acpi+bounces-5158-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5166-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4958B8A9BF8
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 15:59:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D046A8A9CEC
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 16:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00890281F76
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 13:59:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E98EB27DB4
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 14:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCF3168AFB;
-	Thu, 18 Apr 2024 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0053816D4DF;
+	Thu, 18 Apr 2024 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="EFqRllpU"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="GTbpuzB/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07004168AED
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 13:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1181165FC7
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 14:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713448747; cv=none; b=jzQt5P7n6FP9z+p5xo0C4+XpwW+3WaynWvQzfJsJz+9wZGxvUn5lfdWbGB8dJAmSFk6jwebIyF99liSvImRTjM0GseVk2wcxohl+2VVfwUA4ikEVkYl1IWBSOSksQFpWaNYsYZ+DZ9fgQlbeJQTqP1ggPTDS3Acwb+4xXM7Zqgo=
+	t=1713450056; cv=none; b=ZTKWqeU+9NVVIvgiOczX9aqxFaHFttf9Zcq4+OUKx10dVupOApMpzqQPF+WP75DNxwnZB/TuAu66LBIQh4t2KZAAe1q/4O4tArK3ttBWaOo6GuSPRX/rOGUdjWvqYxoM6kpGOyYlj+m0wg6AeQX082RvA+kinfjGuYqIAU4r2fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713448747; c=relaxed/simple;
-	bh=JT3JZZTJ2Qm1KqHFfbHbqKzfMjaDTTZGcTW42XX/i6s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3A4i6V83k6J/dKp0EMnSvtXsNk1iUdUx4aj6sp3hlQ83trfb8/yb1ZcrSKdJAxbEoT+veWqSiz4E5U1Ca6Y9xFL1PuMynwBUEtv18JYqvAxEYu0HDTkQkNmJ4nvUAIGW54w0BZn6iv+s1Ay15LILF8MHb+gTWaUuP0madFzlOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=EFqRllpU; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6edc61d0ff6so879928b3a.2
-        for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 06:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1713448745; x=1714053545; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=WZO5tEmqpe+L1U/C8UD1PE69dEQv50EfBPcTW8iw+NY=;
-        b=EFqRllpUznQCo9ebi00bs037YgXrZGTZjAcg3vZCFxw3n06tCB0+o7suTEzq38YYm6
-         yxzw20WLK+XijfWp9D7eaWDoH9woI7UjOQDKziPhgoRPp8yLx1eLshOfdnJcb8NTVuXm
-         teTu/VlH3/uj/lix7cIR5+J4+s4sTyqmfLZXK2Aj3i9h9n4Uaos/wOrBmjRrIKC8+PWG
-         UqsSBrywjrD/Erowl65CiqC5VWaISUwBe9k/wAe3NNfhsUgkVdpfXz/ac93mhI8IPavN
-         b4mgkjt++q9V0hmKlKv50Gdy+32wzph4I8FU0Q2gzRPHG08dEZaYjq33xkXHQR5KkBBw
-         LnwQ==
+	s=arc-20240116; t=1713450056; c=relaxed/simple;
+	bh=gAa7Kq1mYFyz8jqtnXVIe79COqi9Rf6W5LHAFGe3mjc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mpnp8HVDxN4UHL/qDv9yBSaRNtkmF8UeuI3Kjubtm1VrR8E76+3S3zHGxTQSelRH1eAoXPtkqRpWn0pzZ+TUTtw91v6PMi3gKLPwRv+imZgsoopcbXgDRP/6E4mdD/+zDhlZYkDy9FakVcIsVj9AVAE9b5ShvMGeeXAPwaZdWGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=GTbpuzB/; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com [209.85.167.71])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 495204017A
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 14:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1713450051;
+	bh=6MdH0R6Fh42BcaDDw8FV00JACUmgNVaSlcHYQMVpZWk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=GTbpuzB/h2uitfvhaUFa4LOPITpsbr+XDSGPySt/gvU4/8IayWsBaTxRIdj7En4Vr
+	 P61B8PnuTx6S8mdx0o8yOoLxhZyLbfaf1Cq7yyd1lXQf+r1luvX2vvHaEzB6q3+ZOr
+	 OtUYm0YzAob0q9Gy07/lsUn6gzO/SCBVNoepPiDpGxtXsz8ZgI93IM8nd4FRr7yaVm
+	 1ZnNWUpiruSdCtMgJOoLFZNMfYs7Yj87GAWhoxGcK9cP29IIJ+Tw/lNIMGr1DC2tI0
+	 TgARQbhmgjnAudJ4AjhkOiNSK5z/3Kj+s2tNUs5ChZPy+5XNqQAChkscEl0Bgd5XZp
+	 L6pQ3wST3/M+A==
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-51aaee20733so44762e87.2
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 07:20:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713448745; x=1714053545;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1713450050; x=1714054850;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WZO5tEmqpe+L1U/C8UD1PE69dEQv50EfBPcTW8iw+NY=;
-        b=GnAmhvt0akhE9cVNGuuJYkyq9pnXcFKQDjLh/4UgRMAbfGJzw9jtB6q/A8M5pSSvRZ
-         0Yc7dewplRSaQ4HHHaadJDlvDl+xgRdqGMqX47ehxenHBhyWJkfYVH13YntvGXkcuW9Q
-         FDQ/HORj9mkXenhdoImcBtyNPWVxTg7iaEXoijxmmmqQ5VSXbmCr3ODydTmEyvGKAcv+
-         TIqcd3AObkE2nyLPyIEXSlAfFm38m8yZIuUInTGtA2PXd3nKj/ry4Uy0YAvheCFO0Isj
-         /YRKJ05T3YBqJxmWL61uMrEpD7Te9OOD7Kq4+3XEUsoajV9F1ijpG7BvQ1JpenL13u7m
-         S3vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeK8YM8hznxR9zZmIhyzNnDKuoKMKPFDm89QdyA1mXo9kfwkufwwkKOCVQtR7FTLjp72LpZ9AlW2CySMxG1FwfrJgExWxspMA3zQ==
-X-Gm-Message-State: AOJu0YyBcGpsxV9/JDPISUI2bYLK/0Vav510PuwQygiTvy0EyqKeQpel
-	xiqwrMvSEDuhEOhNMdZ/zMVnJmzRsxDep6yrpg5TpD6v0NGHAWHdfjQ93Lkar/g=
-X-Google-Smtp-Source: AGHT+IGUjEe5kgj82Lo/86KEUqPTE4pNtd6avdOYxdh0NqwVwVbNQ8pG380MXUqn5yro6JHyVQnxWQ==
-X-Received: by 2002:a05:6a00:8a0f:b0:6ec:da6c:fd69 with SMTP id ic15-20020a056a008a0f00b006ecda6cfd69mr2885160pfb.7.1713448744818;
-        Thu, 18 Apr 2024 06:59:04 -0700 (PDT)
-Received: from sunil-laptop ([106.51.189.72])
-        by smtp.gmail.com with ESMTPSA id km3-20020a056a003c4300b006eaa21301a7sm1488660pfb.162.2024.04.18.06.58.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Apr 2024 06:59:04 -0700 (PDT)
-Date: Thu, 18 Apr 2024 19:28:54 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Robert Moore <robert.moore@intel.com>,
-	Haibo1 Xu <haibo1.xu@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Andrei Warkentin <andrei.warkentin@intel.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Subject: Re: [RFC PATCH v4 00/20] RISC-V: ACPI: Add external interrupt
- controller support
-Message-ID: <ZiEnHtWbT04bXYmP@sunil-laptop>
-References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
- <87a5lqsrvh.fsf@all.your.base.are.belong.to.us>
+        bh=6MdH0R6Fh42BcaDDw8FV00JACUmgNVaSlcHYQMVpZWk=;
+        b=gekntfkNf6QmbxZOZ4dt80XReAm+b+01dfeK6CPhEPHOov+N0ckGMqbXSsWQwM9spo
+         x1aJeHPbLIh/0qJwuuFKA/I7Wee+yUqVlZLz9Nrrsf43z6v4bBJwSpkpa4GByIqJr7C+
+         wgl3okc2aQybcyY4dE8LRkpLxZRiSZZO5WLnX2WmeO3nTmC824bhhNT6Y2J3NV+LZuYV
+         FuWykZ3wgj+/oGxttHmUJ9/3DoEbeKE69kvZEJwx2N/tnkpumJZzkDxBENTvwgz57XUc
+         T+uMNU5mnh6HCc3UmO1ACwY7bFcFREvc5S7UpWsiR8z1vALhEhzJsCaPgTTinuFqoUNz
+         W9yg==
+X-Forwarded-Encrypted: i=1; AJvYcCXu/JtQP4BnrPi9gvH9VIG+o6nNMDTkUmy+xrRgMqMpFmpTv2VXOnQKfY5cE8bEfmba7UWAL/vease7epd0dleTNlp9KdG4MJ48ZQ==
+X-Gm-Message-State: AOJu0Yxa5wXBtsVgAKcrCByIPdfaQlxQEOLuYD3pVl9IjlQrsH885MKv
+	dO66o+GZHknf19hR7S1IH84lBWmt6eMCXN+2PdInEGL1mNSLY57mXo/ZzCs5d4UR+2sDnYNZUnP
+	tSOKu1By8NXPrav+Z3Z2o0h6vHnIgThXdVnbHs3389TsJo7bOnRXUaWtgAfgWRPekn6L/9kVmo2
+	s=
+X-Received: by 2002:a05:600c:4e87:b0:418:d077:2cbd with SMTP id f7-20020a05600c4e8700b00418d0772cbdmr2340919wmq.40.1713450029761;
+        Thu, 18 Apr 2024 07:20:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFT2UI5195uUHY+LxtGsmAza41kuNxu3PsqfU28U6vm2gIhE1ZKzhOvItctvv3fW1IYrvOjmg==
+X-Received: by 2002:a05:600c:4e87:b0:418:d077:2cbd with SMTP id f7-20020a05600c4e8700b00418d0772cbdmr2340875wmq.40.1713450029353;
+        Thu, 18 Apr 2024 07:20:29 -0700 (PDT)
+Received: from [192.168.123.126] (ip-062-143-245-032.um16.pools.vodafone-ip.de. [62.143.245.32])
+        by smtp.gmail.com with ESMTPSA id u17-20020a05600c19d100b00416b163e52bsm6658726wmq.14.2024.04.18.07.20.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Apr 2024 07:20:28 -0700 (PDT)
+Message-ID: <ef065a0e-1996-4ca2-b6f0-3a152edd3540@canonical.com>
+Date: Thu, 18 Apr 2024 16:20:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v4 00/20] RISC-V: ACPI: Add external interrupt
+ controller support
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+ linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Anup Patel <anup@brainfault.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Robert Moore <robert.moore@intel.com>, Haibo1 Xu <haibo1.xu@intel.com>,
+ Conor Dooley <conor.dooley@microchip.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Atish Kumar Patra <atishp@rivosinc.com>,
+ Andrei Warkentin <andrei.warkentin@intel.com>, Marc Zyngier
+ <maz@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
+ <87a5lqsrvh.fsf@all.your.base.are.belong.to.us>
+ <ZiEnHtWbT04bXYmP@sunil-laptop>
+Content-Language: en-US
+From: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <ZiEnHtWbT04bXYmP@sunil-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87a5lqsrvh.fsf@all.your.base.are.belong.to.us>
 
-On Thu, Apr 18, 2024 at 03:49:22PM +0200, Björn Töpel wrote:
-> Sunil V L <sunilvl@ventanamicro.com> writes:
+On 18.04.24 15:58, Sunil V L wrote:
+> Hi Björn,
 > 
-> > This series adds support for the below ECR approved by ASWG.
-> > 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
-> >
-> > The series primarily enables irqchip drivers for RISC-V ACPI based
-> > platforms.
-> >
-> > The series can be broadly categorized like below. 
-> >
-> > 1) PCI ACPI related functions are migrated from arm64 to common file so
-> > that we don't need to duplicate them for RISC-V.
-> >
-> > 2) Added support for re-ordering the probe of interrupt controllers when
-> > IRQCHIP_ACPI_DECLARE is used.
-> >
-> > 3) To ensure probe order between interrupt controllers and devices,
-> > implicit dependency is created similar to when _DEP is present.
-> >
-> > 4) When PNP devices like Generic 16550A UART, have the dependency on the
-> > interrupt controller, they will not be added to PNP data structures. So,
-> > added second phase of pnpacpi_init to handle this.
-> >
-> > 5) ACPI support added in RISC-V interrupt controller drivers.
-> >
-> > This series is still kept as RFC to seek feedback on above design
-> > changes. Looking forward for the feedback!
-> >
-> > Changes since RFC v3:
-> > 	1) Moved to _DEP method instead of fw_devlink.
-> > 	2) PLIC/APLIC driver probe using namespace devices.
-> > 	3) Handling PNP devices as part of clearing dependency.
-> > 	4) Rebased to latest linux-next to get AIA DT drivers.
-> >
-> > Changes since RFC v2:
-> > 	1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
-> > 	2) Dropped patches in drivers which are not required due to
-> > 	   fw_devlink support.
-> > 	3) Dropped pci_set_msi() patch and added a patch in
-> > 	   pci_create_root_bus().
-> > 	4) Updated pnp_irq() patch so that none of the actual PNP
-> > 	   drivers need to change.
-> >
-> > Changes since RFC v1:
-> > 	1) Abandoned swnode approach as per Marc's feedback.
-> > 	2) To cope up with AIA series changes which changed irqchip driver
-> > 	   probe from core_initcall() to platform_driver, added patches
-> > 	   to support deferred probing.
-> > 	3) Rebased on top of Anup's AIA v11 and added tags.
-> >
-> > To test the series,
-> >
-> > 1) Qemu should be built using the riscv_acpi_namespace_v1 branch at
-> > https://github.com/vlsunil/qemu.git
-> >
-> > 2) EDK2 should be built using the instructions at:
-> > https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+> This is cool!. I was not aware that u-boot also supports ACPI on
+> RISC-V. Many thanks!
 > 
-> Hi Sunil,
-> 
-> I started playing with your work, and FYI: Using U-boot instead of EDK2
-> works out of the box (with acpi.config added to U-boot).
-> 
-> I changed my rootfs/boot tooling like [1], and it boots.
-> 
-> (For those who prefer working with U-boot UEFI instead of EDK2.)
-> 
-> 
-Hi Björn,
+> Thanks,
+> Sunil
 
-This is cool!. I was not aware that u-boot also supports ACPI on
-RISC-V. Many thanks!
+For RISC-V and ARM we have
 
-Thanks,
-Sunil
+* pass-through for QEMU ACPI tables
+* pass-through for QEMU SMBIOS tables
+* generation of SMBIOS tables
+
+Generation of ACPI tables in U-Boot has up now only been implemented for 
+x86 but would be feasible for RISC-V boards too.
+
+Cf. https://docs.u-boot.org/en/latest/board/emulation/acpi.html
+
+Best regards
+
+Heinrich
 
