@@ -1,94 +1,69 @@
-Return-Path: <linux-acpi+bounces-5146-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5147-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A858A9913
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 13:52:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8638A9B9D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 15:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85B161F21D1C
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 11:52:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15CD9B23CBA
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 13:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F6115EFBB;
-	Thu, 18 Apr 2024 11:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7FB1635C7;
+	Thu, 18 Apr 2024 13:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AiiJ4opM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9VtkE4e"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52D615ECCC;
-	Thu, 18 Apr 2024 11:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6B0160790;
+	Thu, 18 Apr 2024 13:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713441132; cv=none; b=e1G6UEtMb9E7+EnrmZBHmbzdO0XTzju2y6nff1H0p4qRWu/6H4dCgIcnI8MdBqNySylG00y1QC6N54Sn066RW0FOb+Uxw1DpbEXvjLHwZ1GKwtSq+/A1jJfoXeK6+1FYw4vFygepcrOvRhPWz8tr4pTP2+a+2ZVZT3uh4nllyAk=
+	t=1713448166; cv=none; b=tAdQeIh5fU/s2MgqoJPY5epiPlEKESR3eUu2qHh4l4brDTTQN3udXQL2VLIu5D3guMd7M14d0SD/n+5sbzx/tDJbhRfFJfL8yVhBdPER0u6HmB6icTRJIyhA00rCMi035q4SokOVmjPgiPYvoXgkdEhtPkT1YO/Zg+2TnSIhmwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713441132; c=relaxed/simple;
-	bh=NNLjt8tWDXIZVT3SCOlsS+2zQ3f4L2mZhjbwYH3fVHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XegtpbgPKDTNUl4yJBoJz8eSCuMBZuCr7QDI+vUca6643m4lr5OMh/iyhmH8yt/q6X9wkHyvuoKtCfWkfQ/WoSy77L3j1VWLZCdU9W6Ecww51fM4UQm1pbcrg8t1eugJH+NMmDQLWZnvHzGc1Eqee5YGXrhxGup3nun4tQOsAOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AiiJ4opM; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713441130; x=1744977130;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=NNLjt8tWDXIZVT3SCOlsS+2zQ3f4L2mZhjbwYH3fVHY=;
-  b=AiiJ4opMGlKAGTQ7+vdBqKchWhTjGGxHGC90tvdDz5c8xv8kvcZ0ISZt
-   46wzDYGVNmpKzvajLurrbCYseosL9E3CMnF2A0ix3ZcE3vWtz+U9c17SL
-   QGm8LFR1knx6ermiMPJ7+4JobZujKgehkzAKCS+8EWUOYSGoP96hhi8H0
-   MYxsOlvCu+hGnLBkqfCxwyEyI8KJOFp+cIMxS2qXPcCk35vASSpXmeNI2
-   7n3WG7BQ6hvnUQYP2HLI9Dz0DJSDzBQIqK8R1yLTVKtirMupX0wtVdI6+
-   4PQX87FhBhVMPkrS6GVmjB0371F3H5dkpf49LE7kkq9BwT8N6JeG6xsP6
-   Q==;
-X-CSE-ConnectionGUID: MedRW+rRS/qUqf7fXQiSiw==
-X-CSE-MsgGUID: 7yT2wxYGT86weIhOW8WxoA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="19681133"
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
-   d="scan'208";a="19681133"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 04:52:10 -0700
-X-CSE-ConnectionGUID: tFOkMf+JQ6ijNWjkG/hSmA==
-X-CSE-MsgGUID: qFJqIMf5QP2xm/Krp1j0vw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,212,1708416000"; 
-   d="scan'208";a="23567364"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2024 04:52:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rxQJ9-00000000JcA-0NbX;
-	Thu, 18 Apr 2024 14:52:03 +0300
-Date: Thu, 18 Apr 2024 14:52:02 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-Message-ID: <ZiEJYiNNnx_gYvm1@smile.fi.intel.com>
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
- <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
- <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
- <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
- <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
- <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
- <CAMRc=MfJdfwP7=a3govCcj8XHR7uPwCf2BA+BiWqif74pW5u8A@mail.gmail.com>
+	s=arc-20240116; t=1713448166; c=relaxed/simple;
+	bh=jfOQXsG4f9jvja2w3Ld4pdH6HBJIb87wPUxNL/nBu08=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=g5YmvLJ4bVwfU6ASQXopUK/5X9x5nD612pYkhZzLv9qC2/yUkLfphF4FCKqmI/yto+sOgOSK9N+2BRLK9DAxtwAYtdpUHkUQY3qcUTIHMs8gldbQwAw4sjBX/RLGry2WgtMEVV5UCLQWefyWBJFaYD8O9ks99PgCPPChy5bcLNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9VtkE4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2064AC113CC;
+	Thu, 18 Apr 2024 13:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713448165;
+	bh=jfOQXsG4f9jvja2w3Ld4pdH6HBJIb87wPUxNL/nBu08=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=o9VtkE4ePs1Kn8oRF5n8WcljMFlRPUrOeX0M2eFt0VjvDoYupdqg+8AAQrh6yexev
+	 Yy4qSEQp7xvRGROpudXwJrLUR149J8R9gYOiw3nsbjzxYJ3S6lqVZztdQ/QuTYpdJ3
+	 AMxVbS9TxBORXr4RfAOXu4hhzDZeiulUkhE2sSM9J2hTdFIwYuZMSLwTSbCRcTseiL
+	 /XcdKDNoV3E0Vbyw8q4L+3DqVfDwkbwaSK7Hv6I3jlJoEKmPAla7ufnGJiEbeGcaSr
+	 ANdzPRoT333poFim3YKZJqvnXp8FyB3JQxICibj2Ch6VqjQHtbbu4ituRhMns1bgrS
+	 7POoB7ZWa0Rrg==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Sunil V L <sunilvl@ventanamicro.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+ linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon
+ <will@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, "Rafael J
+ . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Anup Patel <anup@brainfault.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Samuel Holland <samuel.holland@sifive.com>, Robert
+ Moore <robert.moore@intel.com>, Haibo1 Xu <haibo1.xu@intel.com>, Conor
+ Dooley <conor.dooley@microchip.com>, Andrew Jones
+ <ajones@ventanamicro.com>, Atish Kumar Patra <atishp@rivosinc.com>, Andrei
+ Warkentin <andrei.warkentin@intel.com>, Marc Zyngier <maz@kernel.org>,
+ Sunil V L <sunilvl@ventanamicro.com>, Heinrich Schuchardt
+ <heinrich.schuchardt@canonical.com>
+Subject: Re: [RFC PATCH v4 00/20] RISC-V: ACPI: Add external interrupt
+ controller support
+In-Reply-To: <20240415170113.662318-1-sunilvl@ventanamicro.com>
+References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
+Date: Thu, 18 Apr 2024 15:49:22 +0200
+Message-ID: <87a5lqsrvh.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -96,38 +71,79 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MfJdfwP7=a3govCcj8XHR7uPwCf2BA+BiWqif74pW5u8A@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 17, 2024 at 08:39:52PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Apr 17, 2024 at 10:45 AM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Apr 16, 2024 at 11:07:58PM +0200, Bartosz Golaszewski wrote:
+Sunil V L <sunilvl@ventanamicro.com> writes:
 
-...
+> This series adds support for the below ECR approved by ASWG.
+> 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7=
+zR/view?usp=3Dsharing
+>
+> The series primarily enables irqchip drivers for RISC-V ACPI based
+> platforms.
+>
+> The series can be broadly categorized like below.=20
+>
+> 1) PCI ACPI related functions are migrated from arm64 to common file so
+> that we don't need to duplicate them for RISC-V.
+>
+> 2) Added support for re-ordering the probe of interrupt controllers when
+> IRQCHIP_ACPI_DECLARE is used.
+>
+> 3) To ensure probe order between interrupt controllers and devices,
+> implicit dependency is created similar to when _DEP is present.
+>
+> 4) When PNP devices like Generic 16550A UART, have the dependency on the
+> interrupt controller, they will not be added to PNP data structures. So,
+> added second phase of pnpacpi_init to handle this.
+>
+> 5) ACPI support added in RISC-V interrupt controller drivers.
+>
+> This series is still kept as RFC to seek feedback on above design
+> changes. Looking forward for the feedback!
+>
+> Changes since RFC v3:
+> 	1) Moved to _DEP method instead of fw_devlink.
+> 	2) PLIC/APLIC driver probe using namespace devices.
+> 	3) Handling PNP devices as part of clearing dependency.
+> 	4) Rebased to latest linux-next to get AIA DT drivers.
+>
+> Changes since RFC v2:
+> 	1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
+> 	2) Dropped patches in drivers which are not required due to
+> 	   fw_devlink support.
+> 	3) Dropped pci_set_msi() patch and added a patch in
+> 	   pci_create_root_bus().
+> 	4) Updated pnp_irq() patch so that none of the actual PNP
+> 	   drivers need to change.
+>
+> Changes since RFC v1:
+> 	1) Abandoned swnode approach as per Marc's feedback.
+> 	2) To cope up with AIA series changes which changed irqchip driver
+> 	   probe from core_initcall() to platform_driver, added patches
+> 	   to support deferred probing.
+> 	3) Rebased on top of Anup's AIA v11 and added tags.
+>
+> To test the series,
+>
+> 1) Qemu should be built using the riscv_acpi_namespace_v1 branch at
+> https://github.com/vlsunil/qemu.git
+>
+> 2) EDK2 should be built using the instructions at:
+> https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
 
-> > Again, the problem now is only in open source / open drain configurations
-> > and there are only a few users of these flags _in kernel_. I do not see
-> > why it can not be done in one or two evenings time range.
-> 
-> So you know what needs doing. I'm at a conference now, I'll be off for
-> a week in April and I also have another conference scheduled for May.
-> If you believe this needs addressing urgently, then I suggest you do
-> it right. Otherwise, I'll get to it when I have the time.
-> Unfortunately my TODO list runneth over. :(
+Hi Sunil,
 
-I have started already as you may have noticed.
+I started playing with your work, and FYI: Using U-boot instead of EDK2
+works out of the box (with acpi.config added to U-boot).
 
-> But I have to say, I suspect it won't be as easy as you present it
-> because we have so many build configs that may fail.
+I changed my rootfs/boot tooling like [1], and it boots.
 
-Let's see (with a hope)...
-
--- 
-With Best Regards,
-Andy Shevchenko
+(For those who prefer working with U-boot UEFI instead of EDK2.)
 
 
+Bj=C3=B6rn
+
+[1] https://github.com/bjoto/riscv-rootfs-utils/commit/c0c620131f04d0c25df1=
+504af4d0629a420b097e
 
