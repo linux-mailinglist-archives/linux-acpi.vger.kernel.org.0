@@ -1,230 +1,194 @@
-Return-Path: <linux-acpi+bounces-5132-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5133-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAE18A90FC
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 04:10:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF158A914F
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 04:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 080BC1F21B4D
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 02:10:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B59B20FFB
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 02:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024AA3A1D3;
-	Thu, 18 Apr 2024 02:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108834F1E2;
+	Thu, 18 Apr 2024 02:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BOtVTtmu"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="TtaGEZGN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6412939FD4;
-	Thu, 18 Apr 2024 02:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FBD4EB4C
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 02:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713406199; cv=none; b=UiHQQ44UsxrkVXU9SEVyrtWqBDQ+m34M0jEmntmpbz/zMqkmxdk0mKV3E12sNxjwZ0qaCUiJkmSzlr9mOu5aqLZF2/X7i+sscBKDoIfc6XD5jyKU7kGfULe8vGek2K8BdHdEyIQ905FXFr8G0V+1MZtS8ufrfRx0o+wdkIybO5I=
+	t=1713408773; cv=none; b=pswU9jp/MuwmlK8MHJpLkh3eh2XDxt6kionEk+KjipTVLJMSyGsvtn125bU0+7j1qF40lkJUrffb8bSc2E5jeJxzPzG3E5jytXlZilievSHvJEgMLftvMDXONPgpWkA6eqEUiZ029lAMzSOh0iyxLAyp+fq+QlJBQ2j27PylH/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713406199; c=relaxed/simple;
-	bh=LnFKJYdVgGel22IHnzhi3QpN4JoMDAfM5pczqyxZ6YU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ejywn3++wGD3p+DOr8w/Z4WwWEXQgqAqkkizt+Xryjj8WzJD+H75Ld3ui8zl7WFxiQUrBARLkAzJORZci/c/Yd3wVgE2XEditzQmtB7pKb/1wK2cneIjJ0c/Jr7kEw2oMKNOU8gPTrzU+fV8rE+rqXeA15kMJzASq1JpeeD3JJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BOtVTtmu; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713406198; x=1744942198;
-  h=date:from:to:cc:subject:message-id;
-  bh=LnFKJYdVgGel22IHnzhi3QpN4JoMDAfM5pczqyxZ6YU=;
-  b=BOtVTtmulUGrUameo/g4W3M8JQ++OUANPDE9koOfprkPVGRVnbMAx3OY
-   Lo175rAzS4BK/nceLVCUIvfhRSl2rzDRmf7w8Bd+4mU6g4oUDPsn2bUZu
-   u26/OxrjUi+0UnSJwEJHkvHoel2i/TJzc68AJY+cGyg90LJ52QUmZg2n3
-   6JnovLtPoWKw9oWotSRUkNUjv96/CcfYxNqqikA2yn/Qb3+7iPh5Kpwzi
-   rN4ROhBC8qDrpxuthiRFLWqqG2aoguUOFuN0QXl/81yPgf1sGsFEg+5Dk
-   PDkH5UJKdNAHIF1pWVv+QXJCHa0b9YgXhoX2jVBplCw0N5Ju16Or1jcO6
-   w==;
-X-CSE-ConnectionGUID: dhPQpjS5THSjNfOu1JdDdQ==
-X-CSE-MsgGUID: ewUrwrKHTOu81qkw5PBkWQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="8765136"
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="8765136"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 19:09:57 -0700
-X-CSE-ConnectionGUID: USqCVvQNSUuCqhhfqpo3vw==
-X-CSE-MsgGUID: QK4kqVLfQyeeH2Xe0zVFUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,210,1708416000"; 
-   d="scan'208";a="54025537"
-Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 17 Apr 2024 19:09:55 -0700
-Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rxHDk-0007BO-3A;
-	Thu, 18 Apr 2024 02:09:52 +0000
-Date: Thu, 18 Apr 2024 10:09:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- c16b1bbc2b7459976a5ddf9075c8b9e58296b3c7
-Message-ID: <202404181049.1PA6Q33A-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1713408773; c=relaxed/simple;
+	bh=Jnfaax+VThd3d1Rfm6iO+DeB5E6TecW6JeFhA8ggWIg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=reqm+MGy3srGsV8aqoL3QQ85c23kNkgWRMvSel9dCeamyKadJ7a0jkfhNrMW+puP+/yay1o6qvqIzwsFODFhcDRpoKpHDF2Vly4XjlBB+yeD0eQ1RPT2Tey11ePuR/76XsaiipXIJUSfYy/JmpMhzEHSUQRCfkPRBPBOMxjCprg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=TtaGEZGN; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2348a5d1584so233947fac.2
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 19:52:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1713408770; x=1714013570; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1KAnRFRHACv8tVuZ6WXGHdutSp2eDzczfpAG5G+ekeo=;
+        b=TtaGEZGN0MftTRasoNS0qtdKpH6dRDnI1sGIG8XFaWyzDYNYJnZnsTJjMv2TtDo0TP
+         b9CznFt8TSCwjBF6t7dMq09DLt9nix3J2E+nsnvwilJ2MN/7LED45MyUEL2MId9mCQD8
+         BZn1HPRLnY6J0Wv2ET+goprrm6tcWFtdqdzB+fSdFfbhKabuJJkdeOaZi0kFALDa4wJn
+         Q4tHVoeqMtda0ciaHbEMF5vZLBnMnYLZMGs/+/kEDum/aiCfp5FhrSNa/9AR/iy8d4Lw
+         gN2o334RkP6UAtZM9KCJqX8dN6EhKe1Cl22iBJ7HqE+9sSjREREisb9K5zloSoyXaj/4
+         Xg2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713408770; x=1714013570;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1KAnRFRHACv8tVuZ6WXGHdutSp2eDzczfpAG5G+ekeo=;
+        b=rCb5ma0lzltKXlBXG36dE22IF9O2slpPvrkI/oVTbYG0mvnwUZXFj7Yyamypu/ftg8
+         zA766leVzfdyQNO3fvrGR4VZH8+BtAQzdmsd4O6wpbVnPl+i/Kr+Em3KrBPByxs8ldm0
+         zanVwb7oMpaAl07rOekM+bIutwOHdgqzxMWn8qROWi5fu+YSXFiDTJR6SvCC4eLRgDUC
+         9EoblEkM9ce9w+CqXxmt8SduLDelwqTNrL/RDlj7JBAvRdLrqj/3GjsE5pm/5lkXyqCP
+         94gtVdbrnU2aFIs0JWqtE5iATfsBAxKpIj4fYQRFl3G6hr8qXrQdPyw4hlTvycfGf/B0
+         bDTg==
+X-Forwarded-Encrypted: i=1; AJvYcCVePZTCMglmT1HyCkn2KM3rLYjf161D6UNAJ1T4EQHFA+FWsU4mAa2c+JAYIAlgoLGPot59OuTTHsUQ75RG+PVtazMzqwq3zkyMtw==
+X-Gm-Message-State: AOJu0Yw/b+hrzlt9FZkh/wmQ2IapzyEBkDx984QJas8O0r8yJZxWjuKE
+	ue9OLOFZdGGjyJXLBrnX51wBjiasQqitBctXkTPFczGqRKVW3p/EkkmcU+OHkWCEM4plYV+gWOe
+	P5zhfFhlZUhNgTm1hsbsO+kysnYj/SQFWFGzq/w==
+X-Google-Smtp-Source: AGHT+IEz1qXw0zEwY0hM3OQNuvnvteufmwQVzsfsyl68XIgc+AN5q25yfuZ+0bnJM0H06GgffoXYWnRbvoWwM1qazsY=
+X-Received: by 2002:a05:6870:4724:b0:22e:15d2:6773 with SMTP id
+ b36-20020a056870472400b0022e15d26773mr1921626oaq.32.1713408770492; Wed, 17
+ Apr 2024 19:52:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240416031438.7637-1-cuiyunhui@bytedance.com>
+ <20240416031438.7637-2-cuiyunhui@bytedance.com> <9f36bedd-1a68-43a9-826d-ce56caf01c52@arm.com>
+ <CAEEQ3w=W+xLGP3WsyAQmRNaHm1xVRtqcGJ+t0TnZvJdCTR4v6w@mail.gmail.com> <260d9932-bf51-43ac-8490-99c39f5e9258@arm.com>
+In-Reply-To: <260d9932-bf51-43ac-8490-99c39f5e9258@arm.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Thu, 18 Apr 2024 10:52:39 +0800
+Message-ID: <CAEEQ3w=TZ8M6x0twDOcZ5iZ9O4L=bJNGFGKafZX1=e-Q8ALjYA@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v3 2/3] riscv: cacheinfo: initialize
+ cacheinfo's level and type from ACPI PPTT
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
+	james.morse@arm.com, jhugo@codeaurora.org, john.garry@huawei.com, 
+	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, sudeep.holla@arm.com, 
+	tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: c16b1bbc2b7459976a5ddf9075c8b9e58296b3c7  Merge branch 'pm-powercap' into bleeding-edge
+Hi Jeremy,
 
-elapsed time: 729m
+On Wed, Apr 17, 2024 at 10:00=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.c=
+om> wrote:
+>
+> Hi,
+>
+> On 4/16/24 22:15, yunhui cui wrote:
+> > Hi Jeremy,
+> >
+> > On Wed, Apr 17, 2024 at 4:04=E2=80=AFAM Jeremy Linton <jeremy.linton@ar=
+m.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >>
+> >> On 4/15/24 22:14, Yunhui Cui wrote:
+> >>> Before cacheinfo can be built correctly, we need to initialize level
+> >>> and type. Since RSIC-V currently does not have a register group that
+> >>> describes cache-related attributes like ARM64, we cannot obtain them
+> >>> directly, so now we obtain cache leaves from the ACPI PPTT table
+> >>> (acpi_get_cache_info()) and set the cache type through split_levels.
+> >>>
+> >>> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> >>> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+> >>> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> >>> ---
+> >>>    arch/riscv/kernel/cacheinfo.c | 20 ++++++++++++++++++++
+> >>>    1 file changed, 20 insertions(+)
+> >>>
+> >>> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cachei=
+nfo.c
+> >>> index 30a6878287ad..dc5fb70362f1 100644
+> >>> --- a/arch/riscv/kernel/cacheinfo.c
+> >>> +++ b/arch/riscv/kernel/cacheinfo.c
+> >>> @@ -6,6 +6,7 @@
+> >>>    #include <linux/cpu.h>
+> >>>    #include <linux/of.h>
+> >>>    #include <asm/cacheinfo.h>
+> >>> +#include <linux/acpi.h>
+> >>>
+> >>>    static struct riscv_cacheinfo_ops *rv_cache_ops;
+> >>>
+> >>> @@ -78,6 +79,25 @@ int populate_cache_leaves(unsigned int cpu)
+> >>>        struct device_node *prev =3D NULL;
+> >>>        int levels =3D 1, level =3D 1;
+> >>>
+> >>> +     if (!acpi_disabled) {
+> >>> +             int ret, idx, fw_levels, split_levels;
+> >>> +
+> >>> +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_lev=
+els);
+> >>> +             if (ret)
+> >>> +                     return ret;
+> >>> +
+> >>> +             for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
+> >>> +                  idx < this_cpu_ci->num_leaves; idx++, level++) {
+> >>
+> >> AFAIK the purpose of idx here it to assure that the number of cache
+> >> leaves is not overflowing. But right below we are utilizing two of the=
+m
+> >> at once, so this check isn't correct. OTOH, since its allocated as
+> >> levels + split_levels I don't think its actually possible for this to
+> >> cause a problem. Might be worthwhile to just hoist it before the loop
+> >> and revalidate the total leaves about to be utilized.
+> >>
+>
+> I think I was suggesting something along the lines of:
+>
+> BUG_ON((split_levels > fw_levels) || (split_levels + fw_levels >
+> this_cpu_ci->num_leaves));
+>
+> Then removing idx entirely. ex:
+Okay, I'll follow yours and update v4.
 
-configs tested: 136
-configs skipped: 3
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> for (; level <=3D this_cpu_ci->num_levels; level++)
+> ...
+> >
+> > Do you mean to modify the logic as follows to make it more complete?
+> Sure that is one way to do it, but then you need to probably repeat the
+> idx check:
+> > for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
+> >        idx < this_cpu_ci->num_leaves; level++) {
+> >          if (level <=3D split_levels) {
+> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+> >                 idx++;
+> if (idx >=3D this_cpu_ci->num_leaves) break;
+> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+> >                 idx++;
+> >         } else {
+> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+> >                 idx++;
+> >        }
+> > }
+>
+>
+>
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240418   gcc  
-arc                   randconfig-002-20240418   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240418   gcc  
-arm                   randconfig-002-20240418   gcc  
-arm                   randconfig-003-20240418   gcc  
-arm                   randconfig-004-20240418   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240418   clang
-arm64                 randconfig-002-20240418   gcc  
-arm64                 randconfig-003-20240418   gcc  
-arm64                 randconfig-004-20240418   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240418   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240417   clang
-i386         buildonly-randconfig-002-20240417   gcc  
-i386         buildonly-randconfig-003-20240417   clang
-i386         buildonly-randconfig-004-20240417   gcc  
-i386         buildonly-randconfig-005-20240417   gcc  
-i386         buildonly-randconfig-006-20240417   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240417   clang
-i386                  randconfig-002-20240417   gcc  
-i386                  randconfig-003-20240417   gcc  
-i386                  randconfig-004-20240417   clang
-i386                  randconfig-005-20240417   clang
-i386                  randconfig-006-20240417   clang
-i386                  randconfig-011-20240417   gcc  
-i386                  randconfig-012-20240417   gcc  
-i386                  randconfig-013-20240417   clang
-i386                  randconfig-014-20240417   gcc  
-i386                  randconfig-015-20240417   gcc  
-i386                  randconfig-016-20240417   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240418   clang
-x86_64       buildonly-randconfig-002-20240418   clang
-x86_64       buildonly-randconfig-003-20240418   clang
-x86_64       buildonly-randconfig-004-20240418   clang
-x86_64       buildonly-randconfig-005-20240418   gcc  
-x86_64       buildonly-randconfig-006-20240418   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240418   gcc  
-x86_64                randconfig-002-20240418   clang
-x86_64                randconfig-003-20240418   gcc  
-x86_64                randconfig-004-20240418   clang
-x86_64                randconfig-005-20240418   gcc  
-x86_64                randconfig-006-20240418   gcc  
-x86_64                randconfig-011-20240418   clang
-x86_64                randconfig-012-20240418   gcc  
-x86_64                randconfig-013-20240418   clang
-x86_64                randconfig-014-20240418   gcc  
-x86_64                randconfig-015-20240418   gcc  
-x86_64                randconfig-016-20240418   gcc  
-x86_64                randconfig-071-20240418   gcc  
-x86_64                randconfig-072-20240418   clang
-x86_64                randconfig-073-20240418   clang
-x86_64                randconfig-074-20240418   gcc  
-x86_64                randconfig-075-20240418   gcc  
-x86_64                randconfig-076-20240418   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Yunhui
 
