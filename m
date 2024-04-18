@@ -1,194 +1,156 @@
-Return-Path: <linux-acpi+bounces-5133-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5134-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF158A914F
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 04:52:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9D88A919D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 05:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B59B20FFB
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 02:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51E9028357A
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 03:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108834F1E2;
-	Thu, 18 Apr 2024 02:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1201753371;
+	Thu, 18 Apr 2024 03:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="TtaGEZGN"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Y2pDslNs"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FBD4EB4C
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 02:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966D64F896
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Apr 2024 03:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713408773; cv=none; b=pswU9jp/MuwmlK8MHJpLkh3eh2XDxt6kionEk+KjipTVLJMSyGsvtn125bU0+7j1qF40lkJUrffb8bSc2E5jeJxzPzG3E5jytXlZilievSHvJEgMLftvMDXONPgpWkA6eqEUiZ029lAMzSOh0iyxLAyp+fq+QlJBQ2j27PylH/8=
+	t=1713411852; cv=none; b=Aos4zVRDJQgApm87UD2L288YeJQ4Tk0CjJdEgfz9JmXYA4IfPkGCo5y7+ig6x4nWIshDZpr7Z62LJ/V/xkRk37dUSwDE/KpPUT6ClPLKhfCKJWDdz8QAFQ22CMI9pkmG/ih841SR4uvjsWX797hZP2lTAgX/0r6mGYGF111KEOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713408773; c=relaxed/simple;
-	bh=Jnfaax+VThd3d1Rfm6iO+DeB5E6TecW6JeFhA8ggWIg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=reqm+MGy3srGsV8aqoL3QQ85c23kNkgWRMvSel9dCeamyKadJ7a0jkfhNrMW+puP+/yay1o6qvqIzwsFODFhcDRpoKpHDF2Vly4XjlBB+yeD0eQ1RPT2Tey11ePuR/76XsaiipXIJUSfYy/JmpMhzEHSUQRCfkPRBPBOMxjCprg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=TtaGEZGN; arc=none smtp.client-ip=209.85.160.41
+	s=arc-20240116; t=1713411852; c=relaxed/simple;
+	bh=f1DDzJv3xHeLtz/8Uh38H6uqD2mqnmTd8LGL7fsQk2Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ruhqvG4bcR4DG5XLpw7F7dXQoLvq084nAnR9lgQFlAT/s1YUTzOIuL9eJikWe5g1klIz0MvOWZ+9lnLGqxvVszsSAOdMnvzYLYu1kVuISLnyEX2CWOAWCUPZ8GVH4qF3lZKiS/SphfyN9fJg+Y1xxAQLVTvlFKlZbraQVF2Ehtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Y2pDslNs; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2348a5d1584so233947fac.2
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 19:52:51 -0700 (PDT)
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5dca1efad59so263385a12.2
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Apr 2024 20:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1713408770; x=1714013570; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1KAnRFRHACv8tVuZ6WXGHdutSp2eDzczfpAG5G+ekeo=;
-        b=TtaGEZGN0MftTRasoNS0qtdKpH6dRDnI1sGIG8XFaWyzDYNYJnZnsTJjMv2TtDo0TP
-         b9CznFt8TSCwjBF6t7dMq09DLt9nix3J2E+nsnvwilJ2MN/7LED45MyUEL2MId9mCQD8
-         BZn1HPRLnY6J0Wv2ET+goprrm6tcWFtdqdzB+fSdFfbhKabuJJkdeOaZi0kFALDa4wJn
-         Q4tHVoeqMtda0ciaHbEMF5vZLBnMnYLZMGs/+/kEDum/aiCfp5FhrSNa/9AR/iy8d4Lw
-         gN2o334RkP6UAtZM9KCJqX8dN6EhKe1Cl22iBJ7HqE+9sSjREREisb9K5zloSoyXaj/4
-         Xg2A==
+        d=bytedance.com; s=google; t=1713411849; x=1714016649; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+aKuxY2Fk4OLcsa0CSr6w7+nYt28fnnuhVioZfggdrc=;
+        b=Y2pDslNs5o41NGzmdJJe6es0UHYGtMsHBXO3sHQGXG8g9WcEp+5HSi0l69Bar+p1q+
+         lP+bMKdv6Jl17qPwyG7D7pMcFYIKTgJYUjqmGjoSbPS08i/MmXwcXGL7Ytfo287kX+md
+         JvuRg8LdUZQfaldR+h9tGT16aqxuhrpA71ZP/oWayGANBxokw60UmgNux2s0JB6FXnuk
+         qScbX6hEOOpT25+0aTjxeQ8OPh0ao+RWpkSkGnvKmG3aQbsmLCPqQEXqyBpvQDfghCUr
+         v23phpV+DazBqW/HYVq9taJGapXxvaHh7JZToQkw8MIBZ7h/mgyrioL2wbM+D5CYxgqX
+         Ae7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713408770; x=1714013570;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1KAnRFRHACv8tVuZ6WXGHdutSp2eDzczfpAG5G+ekeo=;
-        b=rCb5ma0lzltKXlBXG36dE22IF9O2slpPvrkI/oVTbYG0mvnwUZXFj7Yyamypu/ftg8
-         zA766leVzfdyQNO3fvrGR4VZH8+BtAQzdmsd4O6wpbVnPl+i/Kr+Em3KrBPByxs8ldm0
-         zanVwb7oMpaAl07rOekM+bIutwOHdgqzxMWn8qROWi5fu+YSXFiDTJR6SvCC4eLRgDUC
-         9EoblEkM9ce9w+CqXxmt8SduLDelwqTNrL/RDlj7JBAvRdLrqj/3GjsE5pm/5lkXyqCP
-         94gtVdbrnU2aFIs0JWqtE5iATfsBAxKpIj4fYQRFl3G6hr8qXrQdPyw4hlTvycfGf/B0
-         bDTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVePZTCMglmT1HyCkn2KM3rLYjf161D6UNAJ1T4EQHFA+FWsU4mAa2c+JAYIAlgoLGPot59OuTTHsUQ75RG+PVtazMzqwq3zkyMtw==
-X-Gm-Message-State: AOJu0Yw/b+hrzlt9FZkh/wmQ2IapzyEBkDx984QJas8O0r8yJZxWjuKE
-	ue9OLOFZdGGjyJXLBrnX51wBjiasQqitBctXkTPFczGqRKVW3p/EkkmcU+OHkWCEM4plYV+gWOe
-	P5zhfFhlZUhNgTm1hsbsO+kysnYj/SQFWFGzq/w==
-X-Google-Smtp-Source: AGHT+IEz1qXw0zEwY0hM3OQNuvnvteufmwQVzsfsyl68XIgc+AN5q25yfuZ+0bnJM0H06GgffoXYWnRbvoWwM1qazsY=
-X-Received: by 2002:a05:6870:4724:b0:22e:15d2:6773 with SMTP id
- b36-20020a056870472400b0022e15d26773mr1921626oaq.32.1713408770492; Wed, 17
- Apr 2024 19:52:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713411849; x=1714016649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+aKuxY2Fk4OLcsa0CSr6w7+nYt28fnnuhVioZfggdrc=;
+        b=ZiAB8D/43PtkGXYRG5K2HZ0u9qtEzlQfOABBu7nSSHAgTwTVElnoXkXVwIc7XzloVn
+         TAQtXtbxbbz5172HK/++mvWt/wqX1VvAnKzw4dPryg7knFzM1VrYCICbOMRXWi7htQpH
+         LopvUECuCEU2h9GRkl3QLIUOVGlxTfNqiNviFh1SHCnUspw89lxCNGN/XIJ92AejSyNj
+         ay+RDQX2UnXqChZOnSr/dHXh7KpvCfOFm1jqmAEejwRr+RgRe3BVSYBkTr+DqchNT11Q
+         mOrSXJq5Yj7/iFfx0b887qTAi0+MHKc9nzQsqBVAfbaLt4kCoz5ivVVI6DDbdz0rYqzF
+         52lg==
+X-Forwarded-Encrypted: i=1; AJvYcCWcwDzf7DhcJj25B7gWeI0wIw2iS+1ZMHs8Phe6u6FcyPRyJbwXI0mcGgZttmBNnLS+7QT9BGI3VDrC3cWeRZHlEcYq1FSlOexD/A==
+X-Gm-Message-State: AOJu0Yz8AnA1ASXbtnPbr4dP0plXUWdi4wZEfPHc1frlEDcryEy2RSud
+	degG9nLSbalJx3fb7X4qXXpPB5s0tNt/N822Ylv/bJWKE+8ZpoB/8J450s1JYTc=
+X-Google-Smtp-Source: AGHT+IENnC+gIH2bbDka18v3JCTvqRUUTm8xhPk1GrdsMZSjMFsPl6ypgKPGxdD/ZPfFfCVnnmOTAQ==
+X-Received: by 2002:a05:6a21:184:b0:1a9:8834:ee7d with SMTP id le4-20020a056a21018400b001a98834ee7dmr1973589pzb.4.1713411848825;
+        Wed, 17 Apr 2024 20:44:08 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([61.213.176.13])
+        by smtp.gmail.com with ESMTPSA id lb4-20020a170902fa4400b001e88a4ebeb2sm109880plb.152.2024.04.17.20.44.00
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 17 Apr 2024 20:44:08 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org,
+	bhelgaas@google.com,
+	james.morse@arm.com,
+	jhugo@codeaurora.org,
+	jeremy.linton@arm.com,
+	john.garry@huawei.com,
+	Jonathan.Cameron@huawei.com,
+	pierre.gondois@arm.com,
+	sudeep.holla@arm.com,
+	tiantao6@huawei.com
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>
+Subject: [PATCH v4 1/3] riscv: cacheinfo: remove the useless input parameter (node) of ci_leaf_init()
+Date: Thu, 18 Apr 2024 11:43:28 +0800
+Message-Id: <20240418034330.84721-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240416031438.7637-1-cuiyunhui@bytedance.com>
- <20240416031438.7637-2-cuiyunhui@bytedance.com> <9f36bedd-1a68-43a9-826d-ce56caf01c52@arm.com>
- <CAEEQ3w=W+xLGP3WsyAQmRNaHm1xVRtqcGJ+t0TnZvJdCTR4v6w@mail.gmail.com> <260d9932-bf51-43ac-8490-99c39f5e9258@arm.com>
-In-Reply-To: <260d9932-bf51-43ac-8490-99c39f5e9258@arm.com>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Thu, 18 Apr 2024 10:52:39 +0800
-Message-ID: <CAEEQ3w=TZ8M6x0twDOcZ5iZ9O4L=bJNGFGKafZX1=e-Q8ALjYA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v3 2/3] riscv: cacheinfo: initialize
- cacheinfo's level and type from ACPI PPTT
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
-	james.morse@arm.com, jhugo@codeaurora.org, john.garry@huawei.com, 
-	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, sudeep.holla@arm.com, 
-	tiantao6@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jeremy,
+ci_leaf_init() is a declared static function. The implementation of the
+function body and the caller do not use the parameter (struct device_node
+*node) input parameter, so remove it.
 
-On Wed, Apr 17, 2024 at 10:00=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.c=
-om> wrote:
->
-> Hi,
->
-> On 4/16/24 22:15, yunhui cui wrote:
-> > Hi Jeremy,
-> >
-> > On Wed, Apr 17, 2024 at 4:04=E2=80=AFAM Jeremy Linton <jeremy.linton@ar=
-m.com> wrote:
-> >>
-> >> Hi,
-> >>
-> >>
-> >> On 4/15/24 22:14, Yunhui Cui wrote:
-> >>> Before cacheinfo can be built correctly, we need to initialize level
-> >>> and type. Since RSIC-V currently does not have a register group that
-> >>> describes cache-related attributes like ARM64, we cannot obtain them
-> >>> directly, so now we obtain cache leaves from the ACPI PPTT table
-> >>> (acpi_get_cache_info()) and set the cache type through split_levels.
-> >>>
-> >>> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
-> >>> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-> >>> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> >>> ---
-> >>>    arch/riscv/kernel/cacheinfo.c | 20 ++++++++++++++++++++
-> >>>    1 file changed, 20 insertions(+)
-> >>>
-> >>> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cachei=
-nfo.c
-> >>> index 30a6878287ad..dc5fb70362f1 100644
-> >>> --- a/arch/riscv/kernel/cacheinfo.c
-> >>> +++ b/arch/riscv/kernel/cacheinfo.c
-> >>> @@ -6,6 +6,7 @@
-> >>>    #include <linux/cpu.h>
-> >>>    #include <linux/of.h>
-> >>>    #include <asm/cacheinfo.h>
-> >>> +#include <linux/acpi.h>
-> >>>
-> >>>    static struct riscv_cacheinfo_ops *rv_cache_ops;
-> >>>
-> >>> @@ -78,6 +79,25 @@ int populate_cache_leaves(unsigned int cpu)
-> >>>        struct device_node *prev =3D NULL;
-> >>>        int levels =3D 1, level =3D 1;
-> >>>
-> >>> +     if (!acpi_disabled) {
-> >>> +             int ret, idx, fw_levels, split_levels;
-> >>> +
-> >>> +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_lev=
-els);
-> >>> +             if (ret)
-> >>> +                     return ret;
-> >>> +
-> >>> +             for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
-> >>> +                  idx < this_cpu_ci->num_leaves; idx++, level++) {
-> >>
-> >> AFAIK the purpose of idx here it to assure that the number of cache
-> >> leaves is not overflowing. But right below we are utilizing two of the=
-m
-> >> at once, so this check isn't correct. OTOH, since its allocated as
-> >> levels + split_levels I don't think its actually possible for this to
-> >> cause a problem. Might be worthwhile to just hoist it before the loop
-> >> and revalidate the total leaves about to be utilized.
-> >>
->
-> I think I was suggesting something along the lines of:
->
-> BUG_ON((split_levels > fw_levels) || (split_levels + fw_levels >
-> this_cpu_ci->num_leaves));
->
-> Then removing idx entirely. ex:
-Okay, I'll follow yours and update v4.
+Fixes: 6a24915145c9 ("Revert "riscv: Set more data to cacheinfo"")
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+---
+ arch/riscv/kernel/cacheinfo.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+index 09e9b88110d1..30a6878287ad 100644
+--- a/arch/riscv/kernel/cacheinfo.c
++++ b/arch/riscv/kernel/cacheinfo.c
+@@ -64,7 +64,6 @@ uintptr_t get_cache_geometry(u32 level, enum cache_type type)
+ }
+ 
+ static void ci_leaf_init(struct cacheinfo *this_leaf,
+-			 struct device_node *node,
+ 			 enum cache_type type, unsigned int level)
+ {
+ 	this_leaf->level = level;
+@@ -80,11 +79,11 @@ int populate_cache_leaves(unsigned int cpu)
+ 	int levels = 1, level = 1;
+ 
+ 	if (of_property_read_bool(np, "cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+ 	if (of_property_read_bool(np, "i-cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+ 	if (of_property_read_bool(np, "d-cache-size"))
+-		ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
++		ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+ 
+ 	prev = np;
+ 	while ((np = of_find_next_cache_node(np))) {
+@@ -97,11 +96,11 @@ int populate_cache_leaves(unsigned int cpu)
+ 		if (level <= levels)
+ 			break;
+ 		if (of_property_read_bool(np, "cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+ 		if (of_property_read_bool(np, "i-cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+ 		if (of_property_read_bool(np, "d-cache-size"))
+-			ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
++			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+ 		levels = level;
+ 	}
+ 	of_node_put(np);
+-- 
+2.20.1
 
-> for (; level <=3D this_cpu_ci->num_levels; level++)
-> ...
-> >
-> > Do you mean to modify the logic as follows to make it more complete?
-> Sure that is one way to do it, but then you need to probably repeat the
-> idx check:
-> > for (idx =3D 0; level <=3D this_cpu_ci->num_levels &&
-> >        idx < this_cpu_ci->num_leaves; level++) {
-> >          if (level <=3D split_levels) {
-> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
-> >                 idx++;
-> if (idx >=3D this_cpu_ci->num_leaves) break;
-> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
-> >                 idx++;
-> >         } else {
-> >                 ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
-> >                 idx++;
-> >        }
-> > }
->
->
->
-
-Thanks,
-Yunhui
 
