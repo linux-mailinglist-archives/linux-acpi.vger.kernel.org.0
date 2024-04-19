@@ -1,182 +1,166 @@
-Return-Path: <linux-acpi+bounces-5212-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5213-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7088AB3F6
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 18:57:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9C88AB4BD
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 20:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ECC2B21003
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 16:57:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 999821F22B63
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 18:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017FA13D267;
-	Fri, 19 Apr 2024 16:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2259013B598;
+	Fri, 19 Apr 2024 18:06:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767B113B5BE;
-	Fri, 19 Apr 2024 16:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44550130AC4;
+	Fri, 19 Apr 2024 18:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713545792; cv=none; b=HgqIpKWndMMylTClnNSL8a95e8ymAWzoIDldqKKvoZzS8O4zdzE/2oei9zqLhry82nbFGtYuoesLYTkG9CTq4B1VPofvM2iYXWssU7awBLo5b4T2pqXEj+SwTIlo1G/9ULtKPuaUnnOFmkcnUVRaye5GtVe2X1MnbiAQkdS2h40=
+	t=1713550013; cv=none; b=fmBVg7wy7AyYjGOUiEl65+uGunbk7ZoAWpkHJmJy1/LodO0KvdHP322sSDo5AwZpYDpwSeO+13/8HqvApGGAhdnCIT1yuCpV+0y+lIm1twpNyp35P4efSsmqtLkkuCHQm1TcTJ9zkdhMPckbkHctWGndYRplaliglqbqYlLy31Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713545792; c=relaxed/simple;
-	bh=0yp/FZZMQc5hYIr1LfFNeb5WKTxy3Na7JljiqpLCQ/E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pl/CG6OWeiuwWRDJB4lL6uYgM7Nf5NHDOMdy6UBS39IBSbBVocWp+NMOmZYTR5BRMQPmv7RNRDiJYBV0NBhPBZvcMajhC+XmVRRlyS8Mfc/92S2xVnJrkE78mwB9+romJinId/WhUY74jCZ97SHIjiGWkekB9K3vFnHepT7n8cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 414E5153B;
-	Fri, 19 Apr 2024 09:56:59 -0700 (PDT)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C0BC63F792;
-	Fri, 19 Apr 2024 09:56:28 -0700 (PDT)
-From: Robin Murphy <robin.murphy@arm.com>
-To: Will Deacon <will@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>
-Cc: linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH 4/4] iommu: Remove iommu_fwspec ops
-Date: Fri, 19 Apr 2024 17:56:02 +0100
-Message-Id: <3b8cf1725b20beccf009f7589ab4ab41447721b3.1713523251.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
-In-Reply-To: <cover.1713523251.git.robin.murphy@arm.com>
-References: <cover.1713523251.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1713550013; c=relaxed/simple;
+	bh=g6h4liwRb6pLZ6FcdagGwL8SquGArFkeky/4BcIbLcs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ngfVmq4WyA+kioPq+FjWyTpqW0JmXq2gW/X8/wAOi9QIWtrIeEkvf/f2ijw8XKaxoHG68yp1PZ5FoPVC8uRNMhuAjNd01oDAATnMbF+tDesXyHrDol7cvwrc5NWRt+gw7qQx6yrtm7TyMOBUy22sj7cDmXb7+LfWky6VFa2w2LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VLjGG1Ljkz6JBHw;
+	Sat, 20 Apr 2024 02:04:38 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 50007140447;
+	Sat, 20 Apr 2024 02:06:44 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 19 Apr
+ 2024 19:06:43 +0100
+Date: Fri, 19 Apr 2024 19:06:42 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: <shiju.jose@huawei.com>
+CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-mm@kvack.org>, <dan.j.williams@intel.com>, <dave@stgolabs.net>,
+	<dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>,
+	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<david@redhat.com>, <Vilas.Sridharan@amd.com>, <leo.duran@amd.com>,
+	<Yazen.Ghannam@amd.com>, <rientjes@google.com>, <jiaqiyan@google.com>,
+	<tony.luck@intel.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
+	<rafael@kernel.org>, <lenb@kernel.org>, <naoya.horiguchi@nec.com>,
+	<james.morse@arm.com>, <jthoughton@google.com>, <somasundaram.a@hpe.com>,
+	<erdemaktas@google.com>, <pgonda@google.com>, <duenwen@google.com>,
+	<mike.malvestuto@intel.com>, <gthelen@google.com>,
+	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
+	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <tanxiaofei@huawei.com>,
+	<prime.zeng@hisilicon.com>, <kangkang.shen@futurewei.com>,
+	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>
+Subject: Re: [RFC PATCH v8 06/10] ACPICA: Add __free() based cleanup
+ function for acpi_put_table
+Message-ID: <20240419190642.00005ee7@huawei.com>
+In-Reply-To: <20240419164720.1765-7-shiju.jose@huawei.com>
+References: <20240419164720.1765-1-shiju.jose@huawei.com>
+	<20240419164720.1765-7-shiju.jose@huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-The ops in iommu_fwspec are only needed for the early configuration and
-probe process, and by now are easy enough to derive on-demand in those
-couple of places which need them, so remove the redundant stored copy.
+On Sat, 20 Apr 2024 00:47:15 +0800
+<shiju.jose@huawei.com> wrote:
 
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/iommu/iommu-priv.h |  5 +++++
- drivers/iommu/iommu.c      | 11 ++---------
- drivers/iommu/of_iommu.c   |  4 +++-
- include/linux/iommu.h      |  2 --
- 4 files changed, 10 insertions(+), 12 deletions(-)
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Add __free() based cleanup function for acpi_put_table.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
 
-diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
-index 078cafcf49b4..a34efed2884b 100644
---- a/drivers/iommu/iommu-priv.h
-+++ b/drivers/iommu/iommu-priv.h
-@@ -19,6 +19,11 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
- 
- const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
- 
-+static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
+Reviewing (and rejecting) my own patch time ;(
+
+I was thinking this would be useful more widely but hadn't looked
+as closely as I should have done.  Sorry Shiju for sending you
+down a bad path.
+
+>  include/acpi/acpixf.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
+> index 3d90716f9522..fc64d903a703 100644
+> --- a/include/acpi/acpixf.h
+> +++ b/include/acpi/acpixf.h
+> @@ -492,6 +492,8 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+>  					    **out_table))
+>  ACPI_EXTERNAL_RETURN_VOID(void acpi_put_table(struct acpi_table_header *table))
+>  
+> +DEFINE_FREE(acpi_put_table, struct acpi_table_header *, if (!IS_ERR_OR_NULL(_T)) acpi_put_table(_T))
+
+This is reliant on acpi_get_table2() in patch 8 / below being used as acpi_get_table()
+doesn't return the table.
+
+Maybe we are better off treating acpi_get_table() / acpi_put_table() as if it were a
+conditional lock? Or change the 93 instances of acpi_get_table to deal with it returning
+a copy of the table handle pointer
+
+That would bring it inline with many other get functions in the kernel + make our life
+easier using tooling like this.
+
+
++static struct acpi_table_header *acpi_get_table2(acpi_string signature,
++						  u32 instance)
 +{
-+	return iommu_ops_from_fwnode(fwspec ? fwspec->iommu_fwnode : NULL);
++	struct acpi_table_header *header = NULL;
++	acpi_status status = acpi_get_table(signature, instance, &header);
++
++	if (ACPI_FAILURE(status))
++		return ERR_PTR(-EINVAL);
++
++	return header;
 +}
-+
- int iommu_group_replace_domain(struct iommu_group *group,
- 			       struct iommu_domain *new_domain);
- 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 07a647e34c72..996e79dc582d 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -510,7 +510,6 @@ DEFINE_MUTEX(iommu_probe_device_lock);
- static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
- {
- 	const struct iommu_ops *ops;
--	struct iommu_fwspec *fwspec;
- 	struct iommu_group *group;
- 	struct group_device *gdev;
- 	int ret;
-@@ -523,12 +522,7 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
- 	 * be present, and that any of their registered instances has suitable
- 	 * ops for probing, and thus cheekily co-opt the same mechanism.
- 	 */
--	fwspec = dev_iommu_fwspec_get(dev);
--	if (fwspec && fwspec->ops)
--		ops = fwspec->ops;
--	else
--		ops = iommu_ops_from_fwnode(NULL);
--
-+	ops = iommu_fwspec_ops(dev_iommu_fwspec_get(dev));
- 	if (!ops)
- 		return -ENODEV;
- 	/*
-@@ -2831,7 +2825,7 @@ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode)
- 		return -EPROBE_DEFER;
- 
- 	if (fwspec)
--		return ops == fwspec->ops ? 0 : -EINVAL;
-+		return ops == iommu_fwspec_ops(fwspec) ? 0 : -EINVAL;
- 
- 	if (!dev_iommu_get(dev))
- 		return -ENOMEM;
-@@ -2843,7 +2837,6 @@ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode)
- 
- 	fwnode_handle_get(iommu_fwnode);
- 	fwspec->iommu_fwnode = iommu_fwnode;
--	fwspec->ops = ops;
- 	dev_iommu_fwspec_set(dev, fwspec);
- 	return 0;
- }
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index a5d6ff8e4e72..fde3053706c0 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -17,6 +17,8 @@
- #include <linux/slab.h>
- #include <linux/fsl/mc.h>
- 
-+#include "iommu-priv.h"
-+
- static int of_iommu_xlate(struct device *dev,
- 			  struct of_phandle_args *iommu_spec)
- {
-@@ -32,7 +34,7 @@ static int of_iommu_xlate(struct device *dev,
- 	if (ret)
- 		return ret;
- 
--	ops = dev_iommu_fwspec_get(dev)->ops;
-+	ops = iommu_ops_from_fwnode(&iommu_spec->np->fwnode);
- 	if (!ops->of_xlate || !try_module_get(ops->owner))
- 		return -ENODEV;
- 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 0614b2736d66..ddfc2c9cdda4 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -965,7 +965,6 @@ extern struct iommu_group *generic_single_device_group(struct device *dev);
- 
- /**
-  * struct iommu_fwspec - per-device IOMMU instance data
-- * @ops: ops for this device's IOMMU
-  * @iommu_fwnode: firmware handle for this device's IOMMU
-  * @flags: IOMMU_FWSPEC_* flags
-  * @num_ids: number of associated device IDs
-@@ -976,7 +975,6 @@ extern struct iommu_group *generic_single_device_group(struct device *dev);
-  * consumers.
-  */
- struct iommu_fwspec {
--	const struct iommu_ops	*ops;
- 	struct fwnode_handle	*iommu_fwnode;
- 	u32			flags;
- 	unsigned int		num_ids;
--- 
-2.39.2.101.g768bb238c484.dirty
+So that we could do things like:
++	struct acpi_table_header *pAcpiTable __free(acpi_put_table) =
++						acpi_get_table2("RAS2", 0);
+
+and avoid having to call acpi_put_table() in error paths etc.
+
+The snag is that acpi_get_table() is from acpica (via this wrapper) so any
+modification would be a little messy. Also a number of cases use the status
+value via 
+const char *msg = acpi_format_exception(status);
+
+Which we'd need to return via some path (a parameter probably). We 'could'
+do that but the advantages of this are getting eroded.
+
+Upshot, this is messier than I thought, so we probably shouldn't do it.
+
+The code in ras2 can be done reasonably neatly an outer wrapper function
+that gets the table and an inner one that deals with the actual processing
+of the entries.
+
+Pity as there are some messy bits of code this would tidy up. In most of
+those a helper function also works.
+
+Jonathan
+
+p.s. Whilst looking at this I noticed that acpi_has_watchdog() if it
+succeeds doesn't put the wdat table which seems suspicious as a side
+effect.
+
+> +
+>  ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+>  			    acpi_get_table_by_index(u32 table_index,
+>  						    struct acpi_table_header
 
 
