@@ -1,125 +1,97 @@
-Return-Path: <linux-acpi+bounces-5185-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5186-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F048AB1C1
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 17:28:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261348AB1E7
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 17:33:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811311F22E1D
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 15:28:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61BC0B212A6
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 15:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E7612F38C;
-	Fri, 19 Apr 2024 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DA0130A46;
+	Fri, 19 Apr 2024 15:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oi9AiWme"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C77F184E;
-	Fri, 19 Apr 2024 15:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE30912F5AF;
+	Fri, 19 Apr 2024 15:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713540532; cv=none; b=oTdC26vYckLwB8irVTA0Tc+Tc8Z+YihI1iAqJKup78XNwQ0TdY39XU16gfZjKSTUkuBvNfA8RsyvQrngldRLSOI+eCXxm0fWmvvCn87HCg/7Cwe/Moflnq1ZHVxuU3M8lptxVBOWnr2gZ9eDmegpMAzH97xK7VGurSVmRHShzbM=
+	t=1713540795; cv=none; b=Wld/e068YB4BOVWkmtwxP0iaAiEEs+nCQN65gBl1Sx2++ZHeM1DZ1jIkK/6k6/JxJN2RxkpLCfVLc3pA7/MglwzOwtDVIAlP1SYcbwE/bhIZdAY/xHFcf1WU0n3cCc9gnWcOUzjuWUxESAln9Z/Xqy4ffSPIBTZyBwjo87UQ0IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713540532; c=relaxed/simple;
-	bh=bfF74m4I4t9XPTgeXN2m67auBjU4qnUvI02BEMhTbY4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=RtA20W5bwm24gxh526StNTeDN5ZgGNOJp8TWb+9m8VAJUt5PJGWFQwHij+Yq6aPcT26Shwbt4WLlITkgnYUnE6D8qIyG0knrxMAmBHVaijmq9R8k9SLJdGkOnqJpHIuLgBsZ1wBq90zrcbcN+6VtXeItt0QT+DIeQHATU/TIv8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4FEF2F;
-	Fri, 19 Apr 2024 08:29:17 -0700 (PDT)
-Received: from [192.168.20.58] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6820C3F64C;
-	Fri, 19 Apr 2024 08:28:46 -0700 (PDT)
-Message-ID: <d143cd11-26ea-42e3-8f32-700a34b3705e@arm.com>
-Date: Fri, 19 Apr 2024 10:28:45 -0500
+	s=arc-20240116; t=1713540795; c=relaxed/simple;
+	bh=qh3vNFBVAwBLO622Q3sbcNK0OnRPD6sqlJxOuDdcyBk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lHLEXW6gAysctb5FBXsRm2SylfW103euhhwk9eBP0DAewH8VigAxPinrIsQwN+4o9i+/uBxbIDqDLAJ3icqxQxSHOGtmwKZEYpPMwd4KykxZKkLaG2II9syIX5KMnD0eO+J2Vzlacx64Dhlu+am2wbLxTcs8wL4tL8solZvNO2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oi9AiWme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBD4C32782;
+	Fri, 19 Apr 2024 15:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713540795;
+	bh=qh3vNFBVAwBLO622Q3sbcNK0OnRPD6sqlJxOuDdcyBk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oi9AiWme+dHsshak9uz3sb7NIUWiOkX6kVzQdudCPe45QeF4RYdGtGace23uUBVO1
+	 +KgKULeNKBPI3X0vOD3cIi1EObCf4Vp9RfDHkMgC0ZXHxKz/PcGcvojcv/y5zMZqD6
+	 0/mXtMBPHXKh3f8qtqeFD4OqXblx4Z7iAamJ7Bp6a8ewKbiFE48Yb+etircx2RlgRI
+	 9L4CJoc7e5WTU7vIQNXxK4m7RjOlmPe4RBZoISSp1IT9CASZyTZ5Ne4fFI3FzHhkJ1
+	 GyFGq6BawYh1vcex9e2tclwJKcQ6BOzBiiFMv0Hx1REe/Cr81/zzU82B7d1LIBVHaM
+	 cOcTWvKYjk0Hw==
+From: Will Deacon <will@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	David Woodhouse <dwmw2@infradead.org>
+Cc: kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Len Brown <lenb@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: Re: [PATCH v2 0/2] Support clean reboot after hibernate on Arm64
+Date: Fri, 19 Apr 2024 16:32:58 +0100
+Message-Id: <171345345397.312430.3943582845307730698.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240412073530.2222496-1-dwmw2@infradead.org>
+References: <20240412073530.2222496-1-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] riscv: cacheinfo: initialize cacheinfo's level and
- type from ACPI PPTT
-Content-Language: en-US
-To: Yunhui Cui <cuiyunhui@bytedance.com>, rafael@kernel.org, lenb@kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com,
- jhugo@codeaurora.org, john.garry@huawei.com, Jonathan.Cameron@huawei.com,
- pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
-References: <20240418034330.84721-1-cuiyunhui@bytedance.com>
- <20240418034330.84721-2-cuiyunhui@bytedance.com>
-From: Jeremy Linton <jeremy.linton@arm.com>
-In-Reply-To: <20240418034330.84721-2-cuiyunhui@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hi,
-
-On 4/17/24 22:43, Yunhui Cui wrote:
-> Before cacheinfo can be built correctly, we need to initialize level
-> and type. Since RSIC-V currently does not have a register group that
-> describes cache-related attributes like ARM64, we cannot obtain them
-> directly, so now we obtain cache leaves from the ACPI PPTT table
-> (acpi_get_cache_info()) and set the cache type through split_levels.
+On Mon, 11 Mar 2024 12:19:14 +0000, David Woodhouse wrote:
+> When the hardware signature in the ACPI FACS changes, the OS is supposed
+> to perform a clean reboot instead of attempting to resume on a changed
+> platform.
 > 
-> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
-> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> ---
->   arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
+> Although these patches have a functional dependency, they could be merged
+> separately. The second patch just won't *see* a FACS table if the ACPICA
+> fix isn't present.
 > 
-> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-> index 30a6878287ad..e47a1e6bd3fe 100644
-> --- a/arch/riscv/kernel/cacheinfo.c
-> +++ b/arch/riscv/kernel/cacheinfo.c
-> @@ -6,6 +6,7 @@
->   #include <linux/cpu.h>
->   #include <linux/of.h>
->   #include <asm/cacheinfo.h>
-> +#include <linux/acpi.h>
->   
->   static struct riscv_cacheinfo_ops *rv_cache_ops;
->   
-> @@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
->   	struct device_node *prev = NULL;
->   	int levels = 1, level = 1;
->   
-> +	if (!acpi_disabled) {
-> +		int ret, fw_levels, split_levels;
-> +
-> +		ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
-> +		if (ret)
-> +			return ret;
-> +
-> +		BUG_ON((split_levels > fw_levels) ||
-> +		       (split_levels + fw_levels > this_cpu_ci->num_leaves));
-> +
-> +		for (; level <= this_cpu_ci->num_levels; level++) {
-> +			if (level <= split_levels) {
-> +				ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
-> +				ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
-> +			} else {
-> +				ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
-> +			}
-> +		}
-> +		return 0;
-> +	}
-> +
->   	if (of_property_read_bool(np, "cache-size"))
->   		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
->   	if (of_property_read_bool(np, "i-cache-size"))
+> [...]
 
-Yes, looks good.
+Applied to arm64 (for-next/acpi), thanks!
 
-Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+[1/2] ACPICA: Detect FACS even for hardware reduced platforms
+      https://git.kernel.org/arm64/c/bc5b492ac305
+[2/2] arm64: acpi: Honour firmware_signature field of FACS, if it exists
+      https://git.kernel.org/arm64/c/fbaad243b536
 
+Cheers,
+-- 
+Will
 
-
-Thanks,
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
