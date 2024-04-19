@@ -1,282 +1,246 @@
-Return-Path: <linux-acpi+bounces-5171-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5173-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841D88AA374
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 21:54:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56178AA740
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 05:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B16428843E
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Apr 2024 19:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 047671C20C63
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 03:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9C6194C6F;
-	Thu, 18 Apr 2024 19:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E37F947A;
+	Fri, 19 Apr 2024 03:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vt402P44"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FdXIN8Vz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2076.outbound.protection.outlook.com [40.107.100.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19F18412C;
-	Thu, 18 Apr 2024 19:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713469813; cv=none; b=MPgv9YSiVnfVq7eMppNbLrOeXGrhdQ77JHS9RySX1cwPGS4DnF164/VDqZwaD6GUB8fLmoRRTG5hnK0ToR7qzXN3F8tF1plEPEgKc0R57QC7JZ/CuIXmBa7MDWcX42IDEzUcuizZpr4pL2F1snEwNvC1QXXnY27kqaL+qQecosA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713469813; c=relaxed/simple;
-	bh=+mg6oNFFFf0Lxegw9N1uQpSNvXxSJ8pm7AcHBnWA7CM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4GtVIabOxVy5UvOBVTtuCr3eDyKV3NIYrJUbBAa6ifuiDtSc7LPRH2/A4RXNQU76qg2mK6aGLqLUpVv2nl2v7gScIncV9cG6qP58riT1TI/edO7Gn1Qv9wvJXP9SQdAuq81g+WXAyST3kao9WhljvTKeWDNREMrrLmZI0pHPWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vt402P44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E83C32782;
-	Thu, 18 Apr 2024 19:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713469812;
-	bh=+mg6oNFFFf0Lxegw9N1uQpSNvXxSJ8pm7AcHBnWA7CM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Vt402P44+opHalVbIXev0jcbDjlk5tc4cdr/wvSRlYxVhw9fLY9lrDjL+CODAWAcx
-	 Txh06SmYwF7dmpPVGvXhNgFBdVjT2DWDNNx7LDO5dgjZbT8weHaB7EvJNymR90aVEG
-	 rF+6RfSXfFW/rOwSJQS55pTV+Z+sQJn1xBXMLVWiNounzu7S9FqMDiLDf0CFWGN2Da
-	 uHeMWUoNEKYJJBLLbQjfr9OSG3/DrJs6VfO1AHi3je9vwz3SDkjQoyuw/RJxiGbN7M
-	 BQsWT8WHUnEwR9nlqcy9EwTQ1MfJC5gpaZZsiCtRmYMA9Azb/A1FrfkOo6K979JqJD
-	 c1vRAzoezEAwg==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5acdbfac113so36255eaf.3;
-        Thu, 18 Apr 2024 12:50:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUFqymBuUFubqhx+RUcPnGXqBQe3X/Y2OFUI+cGHeI1Yq9GsSX4VdG+dQ5tK5jhUP5XYiRoejyQLq6Vig2/JAC8xC+cSNkYRFMiVheOhinM3dfLP/5JziY7jvQ+usQMZ7WESjzC0M1Wvug6F8pAWnLS22C/pfG1kE4+cfRhR0oqIlGqyTZ4h0NQ+jzn5H0ZiSnoRmBzccoOdaqKsyNipA==
-X-Gm-Message-State: AOJu0YzUYFNSmM9L46swOaBO3GAsZT6HpvfIdG89tzHWn46EGT6tlht1
-	caVDLf1Bg73uC7MVlg98xjYxe295dWT/HHbaLBjMnGFrhM8utiTkfsfbT8dGI7SlMqgj/CZHIAl
-	qIhIqgkjRZ1niDrLxoceeRSNho/s=
-X-Google-Smtp-Source: AGHT+IG/s7EKmy2bO/y6jHP2vmvuXqsiEa+jtC+cHW9NDGnh6xeBUwc5PuTsUkwf2RmJd7g2myrEOEfTZBzH1D+lIYQ=
-X-Received: by 2002:a05:6820:ecb:b0:5a4:7790:61b4 with SMTP id
- en11-20020a0568200ecb00b005a4779061b4mr283085oob.0.1713469811684; Thu, 18 Apr
- 2024 12:50:11 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E0437C;
+	Fri, 19 Apr 2024 03:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713497804; cv=fail; b=aVBU/4XLyTPJ2Jh1fmRUeYs65tOeZR0DL/JR1i/nhsp0gJoV3fZoS6fN08ZIZFrwrUF+UwZjs4Dr1R1rcZU9BM8e+/0tqayAM69ekbjK77aW+oHt9vXI0rfnN1jcTF+WktfFSfrklWWohUTtj/y3Vxdk3SKG7Mw9b5z6q7cadyI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713497804; c=relaxed/simple;
+	bh=aR/H2YBexbSCOh/wHA1U6QJFY/RPDwvnFOl/gQy8FPQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UW9fYuAxMrWEtHd/4rEOXs1PGMy7+MgVnuQh+7kik/NcCEUyftOLgK9XsavJu5Fc1pq7Dq6X2u9hLQsK4m7+GzMZl5WMxKG98juLMsXYn9ufHxNWQybvWrY22Lw80YYhvVZmgO7ZfHqd0B7YtGXPMJxfjtNSO3UlhllMCKFG6CM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=FdXIN8Vz; arc=fail smtp.client-ip=40.107.100.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Iz+sylOrH5xpc5yCs3hTmTjcAoZRFZvEPypEw3/DUjtGeqzupzB/vsv/3Z4CA35JHIJohu/p9HtpYtwtjyhAteVb66WLVPKVR8nI/5XPJSIc6hL44hM3wrdNEzuDXP66VxZKb9xD/UtJMUMjjyZt/SdddYg778uPFqzg7zozWqLGnh9njUHdIPzw/uQmfP/Z7u0g+RW/2oCixiGnmNug4BslpqxZfo5RfZ6bh79PLuIz8pIDs8nNkUQkiePvn3qp8GBu59NchHbUiFrM2fUnF53rGX8Q692mGAcA5SwclXBvzK1oLOacLlAXJdy1FgXzjIElDpCQzmVq4kJ3kUnFBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OE3zS+divbEyPQev8eVUhdfvjNnIXK0fM+wL5pfQVW4=;
+ b=LPKKVuMRVY8fJgORhyasgvCXKzt6o0F97PmPE4YQbSFiBXsOFJOlW/Tklxc3rskCERtgxRZjb44I+eFF7L3qFEuRADJSvylT5t8xnpAHUHtZ6uv0C05/jSo+TX7D6oi650JADCDZJWI5PuzaXdHtwrwRfod2JTI3RBjNIaqGE79Ryfc6OBpusVad8Zfdp0svv58fUe/togvTjdMqGys1slxbOO7P3lmAqsHTuwXcnCBNo50dqz44IpG0tMdwtdqug54xhmvb9Oug1lLXjUe7I859TSUdxhn0YwQSf7hn80JpLjiIxKBc0FoGIXBdHRWKhSjRmjEeoLvcB8RqUEsWTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OE3zS+divbEyPQev8eVUhdfvjNnIXK0fM+wL5pfQVW4=;
+ b=FdXIN8VzjjgSuTohOQQneUBs8ezosl3vkConFj3yKz2QUBaC1l97N1XuPWG9DScr8Hq4iNtaYM2zczUtNIfTaKeuDfxZCId0fpkfuE1yFS6nkh4lAB5/Y5bARxRT9GonCGKmaqLd5s0nxxmXhgM04SpJcs2sausV2e/WbNA744g=
+Received: from BY5PR03CA0027.namprd03.prod.outlook.com (2603:10b6:a03:1e0::37)
+ by IA1PR12MB6019.namprd12.prod.outlook.com (2603:10b6:208:3d5::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.52; Fri, 19 Apr
+ 2024 03:36:35 +0000
+Received: from SJ5PEPF000001CF.namprd05.prod.outlook.com
+ (2603:10b6:a03:1e0:cafe::9c) by BY5PR03CA0027.outlook.office365.com
+ (2603:10b6:a03:1e0::37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.33 via Frontend
+ Transport; Fri, 19 Apr 2024 03:36:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ5PEPF000001CF.mail.protection.outlook.com (10.167.242.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Fri, 19 Apr 2024 03:36:35 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 18 Apr
+ 2024 22:36:31 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
+	<sstabellini@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael J .
+ Wysocki" <rafael@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
+	<roger.pau@citrix.com>
+CC: <xen-devel@lists.xenproject.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Huang Rui
+	<Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [RFC KERNEL PATCH v6 0/3] Support device passthrough when dom0 is PVH on Xen
+Date: Fri, 19 Apr 2024 11:36:13 +0800
+Message-ID: <20240419033616.607889-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 18 Apr 2024 21:50:00 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0giKShCa7AaRRmhcfTshyjDKwn487-kqRr3pqVmYJ2BrA@mail.gmail.com>
-Message-ID: <CAJZ5v0giKShCa7AaRRmhcfTshyjDKwn487-kqRr3pqVmYJ2BrA@mail.gmail.com>
-Subject: Re: [PATCH v7 00/16] ACPI/arm64: add support for virtual cpu hotplug
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
-	Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, 
-	Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com, justin.he@arm.com, 
-	jianyong.wu@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CF:EE_|IA1PR12MB6019:EE_
+X-MS-Office365-Filtering-Correlation-Id: 991c37bc-a64e-4af7-3a81-08dc6021e9ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?eBaOPBirJcWaMR8EBRKgFZFw4ZanXMvtwbymRDG1HHahPLfBfmM1lPp63Tu3?=
+ =?us-ascii?Q?f6BBOReqj9LT8FEMTn6Dj8pT2caiun7wU5PcmbZfDm2gBFyXMpFlBu8hK/Ru?=
+ =?us-ascii?Q?fbwpLRHRT4nFPQnAn3y9qJ6KU2nNkvkwjkEbX/HWob6GqzFbJqSupl//oH8S?=
+ =?us-ascii?Q?iR5Pe+/s1XAYUz6qR2KHxVvby+OG5LuIOSfpTezqCfRmlyW9zjrwJP5945oK?=
+ =?us-ascii?Q?4vsiu8f+6bT7FPtaGwGfkPJs3sjmavGGtr9x/LE34hL6nkk5Zlils6S7gDDi?=
+ =?us-ascii?Q?g7adPuupUPCp/MLpU8joR9qkkrQWj+ZHagub+XNiDa+TaLwqFT+GShrTa3+z?=
+ =?us-ascii?Q?+HR+air/SLK87ceg4DjzfZrjHx+EmZw+rS2sjyRDxhPGFzjYWTNndPS9GT5Y?=
+ =?us-ascii?Q?OZIuRSueCGuxGjzY9UrWU6lZ9On3f2JuqwBRFcUskiAjpHzZayUvbeUTDrdE?=
+ =?us-ascii?Q?lIXlCDdZRMLvcYjdnz4yeVenbs6FNPrHhQh0S7JehL2CLvEZEE0pJ6R26Y/G?=
+ =?us-ascii?Q?NRn+ByxgDnZ8OqNoQxlp5R61c1AFIVj44neEvROS+GayYFw4pKfk/zAqLGXp?=
+ =?us-ascii?Q?wS9qYxKAuLzAAuvMN2h2UWbGQbZWJws9ERz4RE6gRS1P+iEAOs7aN4NlpBFR?=
+ =?us-ascii?Q?71idHgUha/BzzdyDuao+igxMIzETMMUodEmjd9R5BlDFiYu8p1ne7+qFxfLs?=
+ =?us-ascii?Q?zXNtgaD+hiD1e4LLLGFQvmS1xoY5Q0txAsXg2YVretag294DTPEPpCzzfSVg?=
+ =?us-ascii?Q?NjlBzG2YKnP0v8jW6a7z27OY9CDJC0Fg+6F/RcTgoTJTZz8VABcAS5x2bw7E?=
+ =?us-ascii?Q?5nM4WbAaoIxDx8PH1e1F7KjjczRNhAIEPIFJvTFZQMpDWtTpUHHv0Hx8cTFJ?=
+ =?us-ascii?Q?7BmbUD7UizgqRVzp5BgESsE/YDWcO8TrFqvO8MDLDUjfOisfXK+eaOBuGsdZ?=
+ =?us-ascii?Q?uzGQQzxHDypN9/H/gwIbflCCA2xv6Rdvxq9jge8ta1M+bS1KgjHwMvszoL62?=
+ =?us-ascii?Q?7zRue+VygC+h8vInZHoR66IA8VwtVmO+iTOIkdPImLDHBhPy1Vafzhc7yBrb?=
+ =?us-ascii?Q?gceWKpmCieAai9gam3di7vJpejtOhqYDt0pJmhC8F9fVjd5dF6wKZoYerBfp?=
+ =?us-ascii?Q?rk4x5r7cwpdRY5SmWatKllAoTzfz2btIq/9CkfxumTqHSteFFWIBw79kwh2G?=
+ =?us-ascii?Q?WKZ98zGF7zBJCTh0xAvGKWA7VZwDCZN0Hv/vAkmU0g9sRv72TpQjHgWfEWog?=
+ =?us-ascii?Q?B46Ra9ZbAChjjDw/lEUDn4Ntu6OV354IvIQImsXI5CF/WESsfubhoufLQPEQ?=
+ =?us-ascii?Q?mq4PWbYloBiwYiaaqMONZ6QM/WkUttoawFmRwaRB33m1JDzmUe+5Hde2SkCL?=
+ =?us-ascii?Q?gfF5Le0q3NILIQS960pTlXdFDN9+?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 03:36:35.1311
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 991c37bc-a64e-4af7-3a81-08dc6021e9ce
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CF.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6019
 
-On Thu, Apr 18, 2024 at 3:54=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> Whilst it is a bit quick after v6, a couple of critical issues
-> were pointed out by Russell, Salil and Rafael + one build issue
-> had been missed, so it seems sensible to make sure those conducting
-> testing or further review have access to a fixed version.
->
-> v7:
->   - Fix misplaced config guard that broke bisection.
->   - Greatly simplify the condition on which we call
->     acpi_processor_hotadd_init().
->   - Improve teardown ordering.
+Hi All,
+This is v6 series to support passthrough on Xen when dom0 is PVH.
+v5->v6 change:
+* patch#3: change to add a new syscall to translate irq to gsi, instead adding a new gsi sysfs.
 
-Thank you for the update!
 
-From a quick look, patches [01-08/16] appear to be good now, but I'll
-do a more detailed review on the following days.
+Best regards,
+Jiqian Chen
 
-> Fundamental change v6+: At the level of common ACPI infrastructure, use
-> the existing hotplug path for arm64 even though what needs to be
-> done at the architecture specific level is quite different.
->
-> An explicit check in arch_register_cpu() for arm64 prevents
-> this code doing anything if Physical CPU Hotplug is signalled.
->
-> This should resolve any concerns about treating virtual CPU
-> hotplug as if it were physical and potential unwanted side effects
-> if physical CPU hotplug is added to the ARM architecture in the
-> future.
->
-> v6: Thanks to Rafael for extensive help with the approach + reviews.
-> Specific changes:
->  - Do not differentiate wrt code flow between traditional CPU HP
->    and the new ARM flow.  The conditions on performing hotplug actions
->    do need to be adjusted though to incorporate the slightly different
->    state transition
->      Added PRESENT + !ENABLED -> PRESENT + ENABLED
->      to existing !PRESENT + !ENABLED -> PRESENT + ENABLED
->  - Enable ACPI_HOTPLUG_CPU on arm64 and drop the earlier patches that
->    took various code out of the protection of that.  Now the paths
->  - New patch to drop unnecessary _STA check in hotplug code. This
->    code cannot be entered unless ENABLED + PRESENT are set.
->  - New patch to unify the flow of already onlined (at time of driver
->    load) and hotplugged CPUs in acpi/processor_driver.c.
->    This change is necessary because we can't easily distinguish the
->    2 cases of deferred vs hotplug calls of register_cpu() on arm64.
->    It is also a nice simplification.
->  - Use flags rather than a structure for the extra parameter to
->    acpi_scan_check_and_detach() - Thank to Shameer for offline feedback.
->
-> Updated version of James' original introduction.
->
-> This series adds what looks like cpuhotplug support to arm64 for use in
-> virtual machines. It does this by moving the cpu_register() calls for
-> architectures that support ACPI into an arch specific call made from
-> the ACPI processor driver.
->
-> The kubernetes folk really want to be able to add CPUs to an existing VM,
-> in exactly the same way they do on x86. The use-case is pre-booting guest=
-s
-> with one CPU, then adding the number that were actually needed when the
-> workload is provisioned.
->
-> Wait? Doesn't arm64 support cpuhotplug already!?
-> In the arm world, cpuhotplug gets used to mean removing the power from a =
-CPU.
-> The CPU is offline, and remains present. For x86, and ACPI, cpuhotplug
-> has the additional step of physically removing the CPU, so that it isn't
-> present anymore.
->
-> Arm64 doesn't support this, and can't support it: CPUs are really a slice
-> of the SoC, and there is not enough information in the existing ACPI tabl=
-es
-> to describe which bits of the slice also got removed. Without a reference
-> machine: adding this support to the spec is a wild goose chase.
->
-> Critically: everything described in the firmware tables must remain prese=
-nt.
->
-> For a virtual machine this is easy as all the other bits of 'virtual SoC'
-> are emulated, so they can (and do) remain present when a vCPU is 'removed=
-'.
->
-> On a system that supports cpuhotplug the MADT has to describe every possi=
-ble
-> CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU =
-before
-> the guest is started.
-> With these constraints, virtual-cpuhotplug is really just a hypervisor/fi=
-rmware
-> policy about which CPUs can be brought online.
->
-> This series adds support for virtual-cpuhotplug as exactly that: firmware
-> policy. This may even work on a physical machine too; for a guest the par=
-t of
-> firmware is played by the VMM. (typically Qemu).
->
-> PSCI support is modified to return 'DENIED' if the CPU can't be brought
-> online/enabled yet. The CPU object's _STA method's enabled bit is used to
-> indicate firmware's current disposition. If the CPU has its enabled bit c=
-lear,
-> it will not be registered with sysfs, and attempts to bring it online wil=
-l
-> fail. The notifications that _STA has changed its value then work in the =
-same
-> way as physical hotplug, and firmware can cause the CPU to be registered =
-some
-> time later, allowing it to be brought online.
->
-> This creates something that looks like cpuhotplug to user-space and the
-> kernel beyond arm64 architecture specific code, as the sysfs
-> files appear and disappear, and the udev notifications look the same.
->
-> One notable difference is the CPU present mask, which is exposed via sysf=
-s.
-> Because the CPUs remain present throughout, they can still be seen in tha=
-t mask.
-> This value does get used by webbrowsers to estimate the number of CPUs
-> as the CPU online mask is constantly changed on mobile phones.
->
-> Linux is tolerant of PSCI returning errors, as its always been allowed to=
- do
-> that. To avoid confusing OS that can't tolerate this, we needed an additi=
-onal
-> bit in the MADT GICC flags. This series copies ACPI_MADT_ONLINE_CAPABLE, =
-which
-> appears to be for this purpose, but calls it ACPI_MADT_GICC_CPU_CAPABLE a=
-s it
-> has a different bit position in the GICC.
->
-> This code is unconditionally enabled for all ACPI architectures, though f=
-or
-> now only arm64 will have deferred the cpu_register() calls.
->
-> If folk want to play along at home, you'll need a copy of Qemu that suppo=
-rts this.
-> https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2
->
-> Replace your '-smp' argument with something like:
->  | -smp cpus=3D1,maxcpus=3D3,cores=3D3,threads=3D1,sockets=3D1
->
->  then feed the following to the Qemu montior;
->  | (qemu) device_add driver=3Dhost-arm-cpu,core-id=3D1,id=3Dcpu1
->  | (qemu) device_del cpu1
->
-> James Morse (7):
->   ACPI: processor: Register deferred CPUs from acpi_processor_get_info()
->   ACPI: Add post_eject to struct acpi_scan_handler for cpu hotplug
->   arm64: acpi: Move get_cpu_for_acpi_id() to a header
->   irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
->   irqchip/gic-v3: Add support for ACPI's disabled but 'online capable'
->     CPUs
->   arm64: document virtual CPU hotplug's expectations
->   cpumask: Add enabled cpumask for present CPUs that can be brought
->     online
->
-> Jean-Philippe Brucker (1):
->   arm64: psci: Ignore DENIED CPUs
->
-> Jonathan Cameron (8):
->   ACPI: processor: Simplify initial onlining to use same path for cold
->     and hotplug
->   cpu: Do not warn on arch_register_cpu() returning -EPROBE_DEFER
->   ACPI: processor: Drop duplicated check on _STA (enabled + present)
->   ACPI: processor: Move checks and availability of acpi_processor
->     earlier
->   ACPI: processor: Add acpi_get_processor_handle() helper
->   ACPI: scan: switch to flags for acpi_scan_check_and_detach()
->   arm64: arch_register_cpu() variant to check if an ACPI handle is now
->     available.
->   arm64: Kconfig: Enable hotplug CPU on arm64 if ACPI_PROCESSOR is
->     enabled.
->
->  .../ABI/testing/sysfs-devices-system-cpu      |   6 +
->  Documentation/arch/arm64/cpu-hotplug.rst      |  79 ++++++++++++
->  Documentation/arch/arm64/index.rst            |   1 +
->  arch/arm64/Kconfig                            |   1 +
->  arch/arm64/include/asm/acpi.h                 |  11 ++
->  arch/arm64/kernel/acpi.c                      |  16 +++
->  arch/arm64/kernel/acpi_numa.c                 |  11 --
->  arch/arm64/kernel/psci.c                      |   2 +-
->  arch/arm64/kernel/smp.c                       |  56 ++++++++-
->  drivers/acpi/acpi_processor.c                 | 113 ++++++++++--------
->  drivers/acpi/processor_driver.c               |  44 ++-----
->  drivers/acpi/scan.c                           |  47 ++++++--
->  drivers/base/cpu.c                            |  12 +-
->  drivers/irqchip/irq-gic-v3.c                  |  32 +++--
->  include/acpi/acpi_bus.h                       |   1 +
->  include/acpi/processor.h                      |   2 +-
->  include/linux/acpi.h                          |  10 +-
->  include/linux/cpumask.h                       |  25 ++++
->  kernel/cpu.c                                  |   3 +
->  19 files changed, 357 insertions(+), 115 deletions(-)
->  create mode 100644 Documentation/arch/arm64/cpu-hotplug.rst
->
-> --
-> 2.39.2
->
->
+
+v4->v5 changes:
+* patch#1: Add Reviewed-by Stefano
+* patch#2: Add Reviewed-by Stefano
+* patch#3: No changes
+
+
+v3->v4 changes:
+* patch#1: change the comment of PHYSDEVOP_pci_device_state_reset; use a new function pcistub_reset_device_state to wrap __pci_reset_function_locked and xen_reset_device_state, and call pcistub_reset_device_state in pci_stub.c
+* patch#2: remove map_pirq from xen_pvh_passthrough_gsi
+
+
+v2->v3 changes:
+* patch#1: add condition to limit do xen_reset_device_state for no-pv domain in pcistub_init_device.
+* patch#2: Abandoning previous implementations that call unmask_irq. To setup gsi and map pirq for passthrough device in pcistub_init_device.
+* patch#3: Abandoning previous implementations that adds new syscall to get gsi from irq. To add a new sysfs for gsi, then userspace can get gsi number from sysfs.
+
+
+Below is the description of v2 cover letter:
+This series of patches are the v2 of the implementation of passthrough when dom0 is PVH on Xen.
+We sent the v1 to upstream before, but the v1 had so many problems and we got lots of suggestions.
+I will introduce all issues that these patches try to fix and the differences between v1 and v2.
+
+Issues we encountered:
+1. pci_stub failed to write bar for a passthrough device.
+Problem: when we run \u201csudo xl pci-assignable-add <sbdf>\u201d to assign a device, pci_stub will call \u201cpcistub_init_device() -> pci_restore_state() -> pci_restore_config_space() ->
+pci_restore_config_space_range() -> pci_restore_config_dword() -> pci_write_config_dword()\u201d, the pci config write will trigger an io interrupt to bar_write() in the xen, but the
+bar->enabled was set before, the write is not allowed now, and then when 
+bar->Qemu config the
+passthrough device in xen_pt_realize(), it gets invalid bar values.
+
+Reason: the reason is that we don't tell vPCI that the device has been reset, so the current cached state in pdev->vpci is all out of date and is different from the real device state.
+
+Solution: to solve this problem, the first patch of kernel(xen/pci: Add xen_reset_device_state
+function) and the fist patch of xen(xen/vpci: Clear all vpci status of device) add a new hypercall to reset the state stored in vPCI when the state of real device has changed.
+Thank Roger for the suggestion of this v2, and it is different from v1 (https://lore.kernel.org/xen-devel/20230312075455.450187-3-ray.huang@amd.com/), v1 simply allow domU to write pci bar, it does not comply with the design principles of vPCI.
+
+2. failed to do PHYSDEVOP_map_pirq when dom0 is PVH
+Problem: HVM domU will do PHYSDEVOP_map_pirq for a passthrough device by using gsi. See xen_pt_realize->xc_physdev_map_pirq and pci_add_dm_done->xc_physdev_map_pirq. Then xc_physdev_map_pirq will call into Xen, but in hvm_physdev_op(), PHYSDEVOP_map_pirq is not allowed.
+
+Reason: In hvm_physdev_op(), the variable "currd" is PVH dom0 and PVH has no X86_EMU_USE_PIRQ flag, it will fail at has_pirq check.
+
+Solution: I think we may need to allow PHYSDEVOP_map_pirq when "currd" is dom0 (at present dom0 is PVH). The second patch of xen(x86/pvh: Open PHYSDEVOP_map_pirq for PVH dom0) allow PVH dom0 do PHYSDEVOP_map_pirq. This v2 patch is better than v1, v1 simply remove the has_pirq check(xen https://lore.kernel.org/xen-devel/20230312075455.450187-4-ray.huang@amd.com/).
+
+3. the gsi of a passthrough device doesn't be unmasked
+ 3.1 failed to check the permission of pirq
+ 3.2 the gsi of passthrough device was not registered in PVH dom0
+
+Problem:
+3.1 callback function pci_add_dm_done() will be called when qemu config a passthrough device for domU.
+This function will call xc_domain_irq_permission()-> pirq_access_permitted() to check if the gsi has corresponding mappings in dom0. But it didn\u2019t, so failed. See XEN_DOMCTL_irq_permission->pirq_access_permitted, "current" is PVH dom0 and it return irq is 0.
+3.2 it's possible for a gsi (iow: vIO-APIC pin) to never get registered on PVH dom0, because the devices of PVH are using MSI(-X) interrupts. However, the IO-APIC pin must be configured for it to be able to be mapped into a domU.
+
+Reason: After searching codes, I find "map_pirq" and "register_gsi" will be done in function vioapic_write_redirent->vioapic_hwdom_map_gsi when the gsi(aka ioapic's pin) is unmasked in PVH dom0.
+So the two problems can be concluded to that the gsi of a passthrough device doesn't be unmasked.
+
+Solution: to solve these problems, the second patch of kernel(xen/pvh: Unmask irq for passthrough device in PVH dom0) call the unmask_irq() when we assign a device to be passthrough. So that passthrough devices can have the mapping of gsi on PVH dom0 and gsi can be registered. This v2 patch is different from the v1( kernel https://lore.kernel.org/xen-devel/20230312120157.452859-5-ray.huang@amd.com/,
+kernel https://lore.kernel.org/xen-devel/20230312120157.452859-5-ray.huang@amd.com/ and xen https://lore.kernel.org/xen-devel/20230312075455.450187-5-ray.huang@amd.com/),
+v1 performed "map_pirq" and "register_gsi" on all pci devices on PVH dom0, which is unnecessary and may cause multiple registration.
+
+4. failed to map pirq for gsi
+Problem: qemu will call xc_physdev_map_pirq() to map a passthrough device\u2019s gsi to pirq in function xen_pt_realize(). But failed.
+
+Reason: According to the implement of xc_physdev_map_pirq(), it needs gsi instead of irq, but qemu pass irq to it and treat irq as gsi, it is got from file /sys/bus/pci/devices/xxxx:xx:xx.x/irq in function xen_host_pci_device_get(). But actually the gsi number is not equal with irq. On PVH dom0, when it allocates irq for a gsi in function acpi_register_gsi_ioapic(), allocation is dynamic, and follow the principle of applying first, distributing first. And if you debug the kernel codes(see function __irq_alloc_descs), you will find the irq number is allocated from small to large by order, but the applying gsi number is not, gsi 38 may come before gsi 28, that causes gsi 38 get a smaller irq number than gsi 28, and then gsi != irq.
+
+Solution: we can record the relation between gsi and irq, then when userspace(qemu) want to use gsi, we can do a translation. The third patch of kernel(xen/privcmd: Add new syscall to get gsi from irq) records all the relations in acpi_register_gsi_xen_pvh() when dom0 initialize pci devices, and provide a syscall for userspace to get the gsi from irq. The third patch of xen(tools: Add new function to get gsi from irq) add a new function xc_physdev_gsi_from_irq() to call the new syscall added on kernel side.
+And then userspace can use that function to get gsi. Then xc_physdev_map_pirq() will success. This v2 patch is the same as v1( kernel https://lore.kernel.org/xen-devel/20230312120157.452859-6-ray.huang@amd.com/ and xen https://lore.kernel.org/xen-devel/20230312075455.450187-6-ray.huang@amd.com/)
+
+About the v2 patch of qemu, just change an included head file, other are similar to the v1 ( qemu https://lore.kernel.org/xen-devel/20230312092244.451465-19-ray.huang@amd.com/), just call
+xc_physdev_gsi_from_irq() to get gsi from irq.
+
+Jiqian Chen (3):
+  xen/pci: Add xen_reset_device_state function
+  xen/pvh: Setup gsi for passthrough device
+  xen/privcmd: Add new syscall to get gsi from irq
+
+ arch/x86/include/asm/apic.h        |  8 +++
+ arch/x86/include/asm/xen/pci.h     |  5 ++
+ arch/x86/kernel/acpi/boot.c        |  2 +-
+ arch/x86/pci/xen.c                 | 21 +++++++
+ arch/x86/xen/enlighten_pvh.c       | 92 ++++++++++++++++++++++++++++++
+ drivers/acpi/pci_irq.c             |  2 +-
+ drivers/xen/events/events_base.c   | 39 +++++++++++++
+ drivers/xen/pci.c                  | 12 ++++
+ drivers/xen/privcmd.c              | 19 ++++++
+ drivers/xen/xen-pciback/pci_stub.c | 26 ++++++++-
+ include/linux/acpi.h               |  1 +
+ include/uapi/xen/privcmd.h         |  7 +++
+ include/xen/acpi.h                 |  6 ++
+ include/xen/events.h               |  5 ++
+ include/xen/interface/physdev.h    |  7 +++
+ include/xen/pci.h                  |  6 ++
+ 16 files changed, 253 insertions(+), 5 deletions(-)
+
+-- 
+2.34.1
+
 
