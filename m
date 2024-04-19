@@ -1,215 +1,125 @@
-Return-Path: <linux-acpi+bounces-5181-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5185-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8B28AB01A
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 16:04:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F048AB1C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 17:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B0C2840A8
-	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 14:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811311F22E1D
+	for <lists+linux-acpi@lfdr.de>; Fri, 19 Apr 2024 15:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE24B12F581;
-	Fri, 19 Apr 2024 14:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YFy0WgYR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E7612F38C;
+	Fri, 19 Apr 2024 15:28:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2078.outbound.protection.outlook.com [40.107.244.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2530A12F38E;
-	Fri, 19 Apr 2024 14:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713535369; cv=fail; b=OMsD+8RlguGpOEjhFw3LBZ2LzijvrbqsGgyvL2kFoFL5K052tu2/C/W8F8zlDFJxC3w1TrEQtzhc922xTcbDwkh0IUGq3YEkqmEH3DGXPgrCBVKwWyOThDHpny1drH4GRkQAWs4hYsu/B9Mh14YLwVkSwnUBcyGpp/X+bh+ZVLE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713535369; c=relaxed/simple;
-	bh=hQQFn7+NPpIkhRObYyxhCTgrPcbE5sLd0PBvzCHaMKk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hq2/EfkArtDCluX6o9hDMcP7YCCrP/1qKGjP4F0LO6BWblRdHJ5xrnMSk2hhJDKX+C6LmM1RIyDL9TCEOIg48HyTSQxfvSsvh318xdo1Pu2StsVJevxemveh+wI9qZEEg0jsmDqUjFgWZD2LIo9LPaO1+d30ismjzSZJWHIYkG0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YFy0WgYR; arc=fail smtp.client-ip=40.107.244.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GSZGAf3i4YYdwBkHbl0GSz6ZC4hUigv+295NsBlSAXPBp8DEyisGPbZlxnESErf0I51Ni+nE6UDO9TFWHYsXJQSEIuF/UAWZDgib+9lUPM5r+5JHPaeIQ8zPlSTxgpZoqcxuvN7qwh0MAPxa6BLBQFCpxMjmPjenrPL6HVaitNdnW97w+hW0tua/nl1QdlsuzRjEn8HnjbT7paZEIAirihVgIuxHjQaFqHoRjJV7RmaCb9IPuTdS8EabpaYtmPvEB+fL+Y7rgFc90Qte094bsqformrivT3v4h18X18r8FhN1zSE5UYj53QAoKFp4vUTgL091JXZqoYl7SjksrgXbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sp3I68tF4fFltDVLPj2CQJCoy2aIKVULYSXEujpi/xk=;
- b=aEbk/WxPCaaOrnHhBCsYK6B0Uizrso4XBCErclrnGBPcDxz39HEuWUkS9k5TZwpamQyZEWsW+Kr34ETcsTPumq5QSub4TJQkZAy9N1f1PDp5Ov7uHK7ola453ZkGsXJbDWACiM0XrZ3FicfL9BVcYbOUUsVUFe2H1w90sfgovwf+hYKDi677Cb2vruG7aWtSTA+LtAUkrIxf8ClBLDzukFTmaobwrGM/xc2P1euWBtHKwvftm9oyFkUwGN6W+H+oyZCmWCVfrT1+DVOpCJYBGP+v8YJ4wJ07s/9wldsEsxN33v+YVY2gUdK/Yaii1eNsPLsgYzHAADHNpaJdDsYdlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sp3I68tF4fFltDVLPj2CQJCoy2aIKVULYSXEujpi/xk=;
- b=YFy0WgYRoN4q2DTNTBdu4k5795WyNNfC4FtCBOu1OQna3l4u2Y7bZxvpJfYoYHp1VOPV3yfLvksWvPORLdfs0rS0v/Es6/4/RgHpNqoN3RAdjP1gIDKQ/QT+2ax5yuCLLS1OHuAHJ8Oa+BGJZs1nMAfQG1Z8JUa3BDnfS/tcBo4=
-Received: from CH5P221CA0012.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:1f2::16)
- by DM4PR12MB5963.namprd12.prod.outlook.com (2603:10b6:8:6a::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7472.37; Fri, 19 Apr 2024 14:02:44 +0000
-Received: from CH1PEPF0000A34C.namprd04.prod.outlook.com
- (2603:10b6:610:1f2:cafe::37) by CH5P221CA0012.outlook.office365.com
- (2603:10b6:610:1f2::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7495.31 via Frontend
- Transport; Fri, 19 Apr 2024 14:02:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH1PEPF0000A34C.mail.protection.outlook.com (10.167.244.6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Fri, 19 Apr 2024 14:02:44 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 19 Apr
- 2024 09:02:37 -0500
-From: Robert Richter <rrichter@amd.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Alison Schofield <alison.schofield@intel.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, Robert Richter <rrichter@amd.com>, "kernel test
- robot" <oliver.sang@intel.com>, Len Brown <lenb@kernel.org>
-Subject: [PATCH v3 5/5] ACPI/NUMA: Squash acpi_numa_memory_affinity_init() into acpi_parse_memory_affinity()
-Date: Fri, 19 Apr 2024 16:02:03 +0200
-Message-ID: <20240419140203.1996635-6-rrichter@amd.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240419140203.1996635-1-rrichter@amd.com>
-References: <20240419140203.1996635-1-rrichter@amd.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C77F184E;
+	Fri, 19 Apr 2024 15:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713540532; cv=none; b=oTdC26vYckLwB8irVTA0Tc+Tc8Z+YihI1iAqJKup78XNwQ0TdY39XU16gfZjKSTUkuBvNfA8RsyvQrngldRLSOI+eCXxm0fWmvvCn87HCg/7Cwe/Moflnq1ZHVxuU3M8lptxVBOWnr2gZ9eDmegpMAzH97xK7VGurSVmRHShzbM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713540532; c=relaxed/simple;
+	bh=bfF74m4I4t9XPTgeXN2m67auBjU4qnUvI02BEMhTbY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=RtA20W5bwm24gxh526StNTeDN5ZgGNOJp8TWb+9m8VAJUt5PJGWFQwHij+Yq6aPcT26Shwbt4WLlITkgnYUnE6D8qIyG0knrxMAmBHVaijmq9R8k9SLJdGkOnqJpHIuLgBsZ1wBq90zrcbcN+6VtXeItt0QT+DIeQHATU/TIv8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4FEF2F;
+	Fri, 19 Apr 2024 08:29:17 -0700 (PDT)
+Received: from [192.168.20.58] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6820C3F64C;
+	Fri, 19 Apr 2024 08:28:46 -0700 (PDT)
+Message-ID: <d143cd11-26ea-42e3-8f32-700a34b3705e@arm.com>
+Date: Fri, 19 Apr 2024 10:28:45 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34C:EE_|DM4PR12MB5963:EE_
-X-MS-Office365-Filtering-Correlation-Id: cf9b0543-1c1b-442d-2dea-08dc607962d5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	X/9DjHW6FJicihtEH3RK23Rr9m1K3XCo6Q+D3nHc+BR78j8pTy6dRPsA6gEsGirJWLkfzdw3VB7oPaxzb3tmVXboNr9hsvCcH7WDWCWWJ/EjdYek1YyUwvm1PGiFjkaMvBtXlR5qtXwBSG3+ifmzeJT+fzNvykXjZR+XlJxi5owWdp+8SYMQzJAx3ckNz75pdyGboUrbOuqwy4+LW5SWL7FUotBsxGBuu6yduNFPCf6t7ZGiA7PGmNY4cJ7wfUij0kWwyHCv8a2kxUo6GuAdv1nRJ4zMG1rHUnfpWkHbd1Lr1dNSGy9NRwHPwYGZYA/n3LhFjzifCp40ojVUkKgHSEe53AXmr8Xt5ooSm4CjfXaE4I1mO2lY/h32p3riU3ge/BfcN/HFsGwc0JJD418o9j1xfjxeOIbCxYCMGJ+YSOinOGUHUNpilde/ntp84lcti4Hx7wkhp51+F0K7YgwsMytNMwXqEzdHuBLWybRDQJ/Q4Xf9tSbeRMrcA3DmDrkMStTVoloUaYiAXSH5iryFSzNogcPSXdHKSUsvQZA8FfhamihRmHpiNiPTNxhbQ9Xoy+a7wr7ZTH3wgK0klIZAE0wYcTwO0/mE4we5g6X5Kr84weALK9sYFc8RCAUcggKHNcPtK7yQLoPBItQHElVjU6YnUt+Tj+Q6twOrqP5E7J6db57+nfkh095m3pep+uUtSQWamu6dIIgjO1J2t8fEa+kyo3nap5Tiz7nxtcWMmYPe6AAYF8IcSBv6kCF7vSYX
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(36860700004)(376005)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 14:02:44.3965
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cf9b0543-1c1b-442d-2dea-08dc607962d5
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A34C.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5963
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/3] riscv: cacheinfo: initialize cacheinfo's level and
+ type from ACPI PPTT
+Content-Language: en-US
+To: Yunhui Cui <cuiyunhui@bytedance.com>, rafael@kernel.org, lenb@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com,
+ jhugo@codeaurora.org, john.garry@huawei.com, Jonathan.Cameron@huawei.com,
+ pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
+References: <20240418034330.84721-1-cuiyunhui@bytedance.com>
+ <20240418034330.84721-2-cuiyunhui@bytedance.com>
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20240418034330.84721-2-cuiyunhui@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-After removing architectural code the helper function
-acpi_numa_memory_affinity_init() is no longer needed. Squash it into
-acpi_parse_memory_affinity(). No functional changes intended.
+Hi,
 
-While at it, fixing checkpatch complaints in code moved.
+On 4/17/24 22:43, Yunhui Cui wrote:
+> Before cacheinfo can be built correctly, we need to initialize level
+> and type. Since RSIC-V currently does not have a register group that
+> describes cache-related attributes like ARM64, we cannot obtain them
+> directly, so now we obtain cache leaves from the ACPI PPTT table
+> (acpi_get_cache_info()) and set the cache type through split_levels.
+> 
+> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> ---
+>   arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
+>   1 file changed, 22 insertions(+)
+> 
+> diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
+> index 30a6878287ad..e47a1e6bd3fe 100644
+> --- a/arch/riscv/kernel/cacheinfo.c
+> +++ b/arch/riscv/kernel/cacheinfo.c
+> @@ -6,6 +6,7 @@
+>   #include <linux/cpu.h>
+>   #include <linux/of.h>
+>   #include <asm/cacheinfo.h>
+> +#include <linux/acpi.h>
+>   
+>   static struct riscv_cacheinfo_ops *rv_cache_ops;
+>   
+> @@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
+>   	struct device_node *prev = NULL;
+>   	int levels = 1, level = 1;
+>   
+> +	if (!acpi_disabled) {
+> +		int ret, fw_levels, split_levels;
+> +
+> +		ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
+> +		if (ret)
+> +			return ret;
+> +
+> +		BUG_ON((split_levels > fw_levels) ||
+> +		       (split_levels + fw_levels > this_cpu_ci->num_leaves));
+> +
+> +		for (; level <= this_cpu_ci->num_levels; level++) {
+> +			if (level <= split_levels) {
+> +				ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
+> +				ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
+> +			} else {
+> +				ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+> +			}
+> +		}
+> +		return 0;
+> +	}
+> +
+>   	if (of_property_read_bool(np, "cache-size"))
+>   		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+>   	if (of_property_read_bool(np, "i-cache-size"))
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202403220943.96dde419-oliver.sang@intel.com
-Signed-off-by: Robert Richter <rrichter@amd.com>
----
- drivers/acpi/numa/srat.c | 40 +++++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 23 deletions(-)
+Yes, looks good.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 37a0f4b3d24a..cfa1cbe4a1f5 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -243,22 +243,30 @@ static int __init acpi_parse_slit(struct acpi_table_header *table)
- 	return 0;
- }
- 
-+static int parsed_numa_memblks __initdata;
-+
- static int __init
--acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
-+acpi_parse_memory_affinity(union acpi_subtable_headers *header,
-+			   const unsigned long table_end)
- {
-+	struct acpi_srat_mem_affinity *ma;
- 	u64 start, end;
- 	u32 hotpluggable;
- 	int node, pxm;
- 
-+	ma = (struct acpi_srat_mem_affinity *)header;
-+
-+	acpi_table_print_srat_entry(&header->common);
-+
- 	if (srat_disabled())
--		goto out_err;
-+		return 0;
- 	if (ma->header.length < sizeof(struct acpi_srat_mem_affinity)) {
- 		pr_err("SRAT: Unexpected header length: %d\n",
- 		       ma->header.length);
- 		goto out_err_bad_srat;
- 	}
- 	if ((ma->flags & ACPI_SRAT_MEM_ENABLED) == 0)
--		goto out_err;
-+		return 0;
- 	hotpluggable = IS_ENABLED(CONFIG_MEMORY_HOTPLUG) &&
- 		(ma->flags & ACPI_SRAT_MEM_HOT_PLUGGABLE);
- 
-@@ -296,11 +304,15 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
- 
- 	max_possible_pfn = max(max_possible_pfn, PFN_UP(end - 1));
- 
-+	parsed_numa_memblks++;
-+
- 	return 0;
-+
- out_err_bad_srat:
-+	/* Just disable SRAT, but do not fail and ignore errors. */
- 	bad_srat();
--out_err:
--	return -EINVAL;
-+
-+	return 0;
- }
- 
- static int __init
-@@ -549,24 +561,6 @@ acpi_parse_gi_affinity(union acpi_subtable_headers *header,
- }
- #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
- 
--static int __initdata parsed_numa_memblks;
--
--static int __init
--acpi_parse_memory_affinity(union acpi_subtable_headers * header,
--			   const unsigned long end)
--{
--	struct acpi_srat_mem_affinity *memory_affinity;
--
--	memory_affinity = (struct acpi_srat_mem_affinity *)header;
--
--	acpi_table_print_srat_entry(&header->common);
--
--	/* let architecture-dependent part to do it */
--	if (!acpi_numa_memory_affinity_init(memory_affinity))
--		parsed_numa_memblks++;
--	return 0;
--}
--
- static int __init acpi_parse_srat(struct acpi_table_header *table)
- {
- 	struct acpi_table_srat *srat = (struct acpi_table_srat *)table;
--- 
-2.39.2
+Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
 
+
+
+Thanks,
 
