@@ -1,209 +1,303 @@
-Return-Path: <linux-acpi+bounces-5215-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5216-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4048ABA5B
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Apr 2024 10:42:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAD08ABB45
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Apr 2024 13:14:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C862A1C2134D
-	for <lists+linux-acpi@lfdr.de>; Sat, 20 Apr 2024 08:42:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC232B21132
+	for <lists+linux-acpi@lfdr.de>; Sat, 20 Apr 2024 11:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC3BC8C7;
-	Sat, 20 Apr 2024 08:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5DE1AAA5;
+	Sat, 20 Apr 2024 11:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CjwykDC+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnouBbUz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F8538C;
-	Sat, 20 Apr 2024 08:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2482E2563;
+	Sat, 20 Apr 2024 11:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713602572; cv=none; b=WCrUEFUPI/go/m6RSx6DO+ZGCJPTmD6LWKByyodSdKmGx5FFXUlChyyu2nb8N52trbO7cZQvXeiiYceGZJc/KxWNJoNKOmgFvjuz/Qp3B4XEOEbx9z0jYGf0ulxVTBM6t0yRVjcVbEkQnvChfC3oSyxfYkyL/nZN6Br5cTI6x2Q=
+	t=1713611637; cv=none; b=u6+zP09U+MLsq4oVPjj2bxjP2ManRjngUgnTPqrkJVqa6IXh6TiM9BRkBNN02slaP8WZsca0snPlD2SSxgLoyfVWXws7Fy6WNB/sEcDwYA4/yd0b7cWKdZ8D0eXxcORzLkqZOYtP25lEP65BOsc4NakzlBQjiG8R/swWeQhWJsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713602572; c=relaxed/simple;
-	bh=ulAUZvq09VWmvufi41gUROAERCYrwToqdQQIua7fmMw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=YchwRXvSGuO+WUNUhP5mJUMsBVrnTSTBdVyWLULkL4pTFUYSC4dy9I8WcifMVSHlcyPM/XAyOXLsAYWJsSbPToQJDS3+S7gIqZlG8O8HwF2nXnSie13IZ6rO01z3ZrPfkrT9rmoOdfLV8BM1T3RCcRhMXgOXxLG4ZhrEm3sM6WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CjwykDC+; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713602570; x=1745138570;
-  h=date:from:to:cc:subject:message-id;
-  bh=ulAUZvq09VWmvufi41gUROAERCYrwToqdQQIua7fmMw=;
-  b=CjwykDC+Oe2hXsA3ngQ1FwoiunXUSGK5G0OsDvAAycvTWcrck05EjLjm
-   KMisZ9W3jNfxAe2h1u+JunSajEj55wM3kGFu3c3etXKBfhScTBP/tg3qx
-   84dLm8DaIRXqk1dyLlv8GylDNALHe5h8MEONCzK0yuMPy94Mzyfn6rsnp
-   Nel81HBAAn7xHxzBc7x+mys8Y2l0YDKggt+z12WKjzmFJhC0hJ7IVYsuI
-   kh+HKkc0pP3FniBJ1OXDYRr9196f7kHMlUY5niQ3ksFkHPe8eVGDgDHoS
-   SA2bSEzeqoA7viWlH+4j66p/46u5UvlLGBsJ96WVSNGVByGMjSYNU2OsM
-   g==;
-X-CSE-ConnectionGUID: LiO2G8JOTraMEoUC6yMJkA==
-X-CSE-MsgGUID: sshFbSzvSzumohe+7sWP6g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="19900598"
-X-IronPort-AV: E=Sophos;i="6.07,216,1708416000"; 
-   d="scan'208";a="19900598"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2024 01:42:49 -0700
-X-CSE-ConnectionGUID: mQLhZkp9RAuS832Xt2EJNA==
-X-CSE-MsgGUID: Jld5XHqiTZCEaJBYDUE8/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,216,1708416000"; 
-   d="scan'208";a="23623859"
-Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 20 Apr 2024 01:42:48 -0700
-Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ry6J3-000AsO-1w;
-	Sat, 20 Apr 2024 08:42:45 +0000
-Date: Sat, 20 Apr 2024 16:42:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 4a144cb33ba0ff7bff6841d362e0d975d565c3ef
-Message-ID: <202404201626.scymyjLR-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1713611637; c=relaxed/simple;
+	bh=L1dFuGO/fPNJZQJV5N+sxU9LuBKwzp5GGaOXnsefV7E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c35Fjwv4MhAZYH67MWOjORHXLLf0OmSfAM6boGBTEOK0/BQRmabbk4riMeh9D+oXK5P5PQDKvrlB7oSdJj5fYzYStlLImm80yK7aL5wwufvPNgTBC5B8MYvHyFYnnhmFKA55W+2/+U9nSpakOS4c/pWs5Mfw4I5EDHa14uTbqJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnouBbUz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC16C072AA;
+	Sat, 20 Apr 2024 11:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713611636;
+	bh=L1dFuGO/fPNJZQJV5N+sxU9LuBKwzp5GGaOXnsefV7E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=MnouBbUzCzzwrabi/2GkOxhofxkUVgIcpm1EmcxIDy++YBU2ize9NWN2A+6t29FVq
+	 a/aE99f9w8kAzK1AlQic+PGXbPST1PYwtmxJYANwueDXRKoQqtx8UARuRYupNlW8HM
+	 4gwxH2nFY5poVMGOcpfZ+Q6Trlyq9Ljbf5lM1jRz0uL9SSAZmD0ZoZejRkmPoavVfm
+	 +JxPu9/Z6VhQ5Qzg3rc5moJjGXnwWtAgev3OUb23nw33w0J8mApDQMXxxI2l6p2Y1d
+	 soghhqpDFtXqT1kcYcFnIoo9+St4PCtnF6eNap4Zg43yt7VMlkgF46SfDkkU3q2iv0
+	 gFkMRZeWvM+PQ==
+Date: Sat, 20 Apr 2024 12:13:45 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Sean Rhodes
+ <sean@starlabs.systems>, linux-iio@vger.kernel.org,
+ linux-acpi@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 2/4] iio: accel: kxcjk-1013: Move ACPI ROTM parsing to
+ new acpi-helpers.h
+Message-ID: <20240420121345.26c2edf1@jic23-huawei>
+In-Reply-To: <20240417164616.74651-3-hdegoede@redhat.com>
+References: <20240417164616.74651-1-hdegoede@redhat.com>
+	<20240417164616.74651-3-hdegoede@redhat.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 4a144cb33ba0ff7bff6841d362e0d975d565c3ef  Merge branch 'thermal-core-next' into bleeding-edge
+On Wed, 17 Apr 2024 18:46:14 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-elapsed time: 727m
+> The ACPI "ROTM" rotation matrix parsing code atm is already duplicated
+> between bmc150-accel-core.c and kxcjk-1013.c and a third user of this is
+> coming.
+>=20
+> Move the ROTM parsing from kxcjk-1013.c, which has slightly better error
+> logging (and otherwise is 100% identical), into a new acpi-helpers.h file
+> so that it can be shared.
+>=20
+> Other then moving the code the only 2 other changes are:
+>=20
+> 1. Rename the function to acpi_read_mount_matrix() to make clear this
+>    is a generic ACPI mount matrix read function.
+> 2. Add a "char *acpi_method" parameter since some bmc150 dual-accel setups
+>    (360=C2=B0 hinges with 1 accel in kbd/base + 1 in display half) declar=
+e both
+>    accels in a single ACPI device with 2 different method names for
+>    the 2 matrices.
+>=20
+> Cc: Sean Rhodes <sean@starlabs.systems>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 
-configs tested: 115
-configs skipped: 3
+Tempted to ask you to rename this to
+acpi_non_standard_microsoft_extension_that_they_never_agreed_with_aswg_read=
+_mount_matrix()
+but meh, I'll cope with a reference to:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sensors-=
+acpi-entries
+and a comment saying this is not part of the ACPI standard.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I'm not grumpy at all about companies who add non standard stuff without
+at least reserving the ID space.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240420   gcc  
-arc                   randconfig-002-20240420   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240420   gcc  
-arm                   randconfig-002-20240420   gcc  
-arm                   randconfig-003-20240420   clang
-arm                   randconfig-004-20240420   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240420   clang
-arm64                 randconfig-002-20240420   clang
-arm64                 randconfig-003-20240420   gcc  
-arm64                 randconfig-004-20240420   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240420   gcc  
-csky                  randconfig-002-20240420   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240420   clang
-hexagon               randconfig-002-20240420   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240420   gcc  
-i386         buildonly-randconfig-002-20240420   clang
-i386         buildonly-randconfig-003-20240420   gcc  
-i386         buildonly-randconfig-004-20240420   gcc  
-i386         buildonly-randconfig-005-20240420   gcc  
-i386         buildonly-randconfig-006-20240420   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240420   clang
-i386                  randconfig-002-20240420   gcc  
-i386                  randconfig-003-20240420   gcc  
-i386                  randconfig-004-20240420   gcc  
-i386                  randconfig-005-20240420   clang
-i386                  randconfig-006-20240420   gcc  
-i386                  randconfig-011-20240420   clang
-i386                  randconfig-012-20240420   clang
-i386                  randconfig-013-20240420   clang
-i386                  randconfig-014-20240420   clang
-i386                  randconfig-015-20240420   clang
-i386                  randconfig-016-20240420   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
+Why isn't it a _DSM (Device Specific Method) with a microsoft defined UUID?=
+ Harrumph.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
++CC Rafael and linux-acpi as whilst this remains in IIO, it is named such t=
+hat it
+ends up in the acpi_* namespace.  They may not care, but best to check!
+
+Jonathan
+
+
+> ---
+>  drivers/iio/accel/acpi-helpers.h | 76 ++++++++++++++++++++++++++++++++
+>  drivers/iio/accel/kxcjk-1013.c   | 71 ++---------------------------
+>  2 files changed, 79 insertions(+), 68 deletions(-)
+>  create mode 100644 drivers/iio/accel/acpi-helpers.h
+>=20
+> diff --git a/drivers/iio/accel/acpi-helpers.h b/drivers/iio/accel/acpi-he=
+lpers.h
+> new file mode 100644
+> index 000000000000..a4357925bf07
+> --- /dev/null
+> +++ b/drivers/iio/accel/acpi-helpers.h
+> @@ -0,0 +1,76 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +/* ACPI helper functions for parsing ACPI rotation matrices */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/dev_printk.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/sprintf.h>
+> +
+> +#ifdef CONFIG_ACPI
+> +static inline bool acpi_read_mount_matrix(struct device *dev,
+> +					  struct iio_mount_matrix *orientation,
+> +					  char *acpi_method)
+> +{
+> +	struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };
+> +	struct acpi_device *adev =3D ACPI_COMPANION(dev);
+> +	char *str;
+> +	union acpi_object *obj, *elements;
+> +	acpi_status status;
+> +	int i, j, val[3];
+> +	bool ret =3D false;
+> +
+> +	if (!adev || !acpi_has_method(adev->handle, acpi_method))
+> +		return false;
+> +
+> +	status =3D acpi_evaluate_object(adev->handle, acpi_method, NULL, &buffe=
+r);
+> +	if (ACPI_FAILURE(status)) {
+> +		dev_err(dev, "Failed to get ACPI mount matrix: %d\n", status);
+> +		return false;
+> +	}
+> +
+> +	obj =3D buffer.pointer;
+> +	if (obj->type !=3D ACPI_TYPE_PACKAGE || obj->package.count !=3D 3) {
+> +		dev_err(dev, "Unknown ACPI mount matrix package format\n");
+> +		goto out_free_buffer;
+> +	}
+> +
+> +	elements =3D obj->package.elements;
+> +	for (i =3D 0; i < 3; i++) {
+> +		if (elements[i].type !=3D ACPI_TYPE_STRING) {
+> +			dev_err(dev, "Unknown ACPI mount matrix element format\n");
+> +			goto out_free_buffer;
+> +		}
+> +
+> +		str =3D elements[i].string.pointer;
+> +		if (sscanf(str, "%d %d %d", &val[0], &val[1], &val[2]) !=3D 3) {
+> +			dev_err(dev, "Incorrect ACPI mount matrix string format\n");
+> +			goto out_free_buffer;
+> +		}
+> +
+> +		for (j =3D 0; j < 3; j++) {
+> +			switch (val[j]) {
+> +			case -1: str =3D "-1"; break;
+> +			case 0:  str =3D "0";  break;
+> +			case 1:  str =3D "1";  break;
+> +			default:
+> +				dev_err(dev, "Invalid value in ACPI mount matrix: %d\n", val[j]);
+> +				goto out_free_buffer;
+> +			}
+> +			orientation->rotation[i * 3 + j] =3D str;
+> +		}
+> +	}
+> +
+> +	ret =3D true;
+> +
+> +out_free_buffer:
+> +	kfree(buffer.pointer);
+> +	return ret;
+> +}
+> +#else
+> +static inline bool acpi_read_mount_matrix(struct device *dev,
+> +					  struct iio_mount_matrix *orientation,
+> +					  char *acpi_method)
+> +{
+> +	return false;
+> +}
+> +#endif
+> diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-101=
+3.c
+> index bb1660667bb0..7e19278491dc 100644
+> --- a/drivers/iio/accel/kxcjk-1013.c
+> +++ b/drivers/iio/accel/kxcjk-1013.c
+> @@ -24,6 +24,8 @@
+>  #include <linux/iio/triggered_buffer.h>
+>  #include <linux/iio/accel/kxcjk_1013.h>
+> =20
+> +#include "acpi-helpers.h"
+> +
+>  #define KXCJK1013_DRV_NAME "kxcjk1013"
+>  #define KXCJK1013_IRQ_NAME "kxcjk1013_event"
+> =20
+> @@ -636,73 +638,6 @@ static int kxcjk1013_set_power_state(struct kxcjk101=
+3_data *data, bool on)
+>  	return 0;
+>  }
+> =20
+> -#ifdef CONFIG_ACPI
+> -static bool kxj1009_apply_acpi_orientation(struct device *dev,
+> -					   struct iio_mount_matrix *orientation)
+> -{
+> -	struct acpi_buffer buffer =3D { ACPI_ALLOCATE_BUFFER, NULL };
+> -	struct acpi_device *adev =3D ACPI_COMPANION(dev);
+> -	char *str;
+> -	union acpi_object *obj, *elements;
+> -	acpi_status status;
+> -	int i, j, val[3];
+> -	bool ret =3D false;
+> -
+> -	if (!adev || !acpi_has_method(adev->handle, "ROTM"))
+> -		return false;
+> -
+> -	status =3D acpi_evaluate_object(adev->handle, "ROTM", NULL, &buffer);
+> -	if (ACPI_FAILURE(status)) {
+> -		dev_err(dev, "Failed to get ACPI mount matrix: %d\n", status);
+> -		return false;
+> -	}
+> -
+> -	obj =3D buffer.pointer;
+> -	if (obj->type !=3D ACPI_TYPE_PACKAGE || obj->package.count !=3D 3) {
+> -		dev_err(dev, "Unknown ACPI mount matrix package format\n");
+> -		goto out_free_buffer;
+> -	}
+> -
+> -	elements =3D obj->package.elements;
+> -	for (i =3D 0; i < 3; i++) {
+> -		if (elements[i].type !=3D ACPI_TYPE_STRING) {
+> -			dev_err(dev, "Unknown ACPI mount matrix element format\n");
+> -			goto out_free_buffer;
+> -		}
+> -
+> -		str =3D elements[i].string.pointer;
+> -		if (sscanf(str, "%d %d %d", &val[0], &val[1], &val[2]) !=3D 3) {
+> -			dev_err(dev, "Incorrect ACPI mount matrix string format\n");
+> -			goto out_free_buffer;
+> -		}
+> -
+> -		for (j =3D 0; j < 3; j++) {
+> -			switch (val[j]) {
+> -			case -1: str =3D "-1"; break;
+> -			case 0:  str =3D "0";  break;
+> -			case 1:  str =3D "1";  break;
+> -			default:
+> -				dev_err(dev, "Invalid value in ACPI mount matrix: %d\n", val[j]);
+> -				goto out_free_buffer;
+> -			}
+> -			orientation->rotation[i * 3 + j] =3D str;
+> -		}
+> -	}
+> -
+> -	ret =3D true;
+> -
+> -out_free_buffer:
+> -	kfree(buffer.pointer);
+> -	return ret;
+> -}
+> -#else
+> -static bool kxj1009_apply_acpi_orientation(struct device *dev,
+> -					  struct iio_mount_matrix *orientation)
+> -{
+> -	return false;
+> -}
+> -#endif
+> -
+>  static int kxcjk1013_chip_update_thresholds(struct kxcjk1013_data *data)
+>  {
+>  	int ret;
+> @@ -1533,7 +1468,7 @@ static int kxcjk1013_probe(struct i2c_client *clien=
+t)
+>  	} else {
+>  		data->active_high_intr =3D true; /* default polarity */
+> =20
+> -		if (!kxj1009_apply_acpi_orientation(&client->dev, &data->orientation))=
+ {
+> +		if (!acpi_read_mount_matrix(&client->dev, &data->orientation, "ROTM"))=
+ {
+>  			ret =3D iio_read_mount_matrix(&client->dev, &data->orientation);
+>  			if (ret)
+>  				return ret;
+
 
