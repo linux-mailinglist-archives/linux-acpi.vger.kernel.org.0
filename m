@@ -1,111 +1,114 @@
-Return-Path: <linux-acpi+bounces-5251-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5252-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B028AD1D8
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:24:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7881B8AD1E2
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8191C208E3
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:24:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA3341C20ADB
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A6C153803;
-	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBB415359F;
+	Mon, 22 Apr 2024 16:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2Ac9w0n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTK0lZTm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7201E49E;
-	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C236810A20;
+	Mon, 22 Apr 2024 16:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713803048; cv=none; b=O/dRe6XhpJ7MTF+dn/aeg60YWPw5CUkZYVpJImtUSU79vmMqBp732IfnaExAGvL5Db+s4ZGvwzXYKv3JksfXVzSdwPPdzCEy0X+qEqVpF5tABtQYdFqmCXQAxOFxJyw/r/uxIYrGHfcB0eoDhiSwaH0BIEoYlHklOXOg4I1Xx60=
+	t=1713803305; cv=none; b=TtdR1LwaZqMMIKsO6hPNRqJBdpHeLtKSYXVb0yTNm20rcpaHih/iWYzFazQa3f4tpDS0iYg+Ho7ghhsGzmxc07cri5cRl5SZtBh8sJcMVD0OTj94d5AqAtiSKqtGhIvFENEd9hvuJK8rhuGsMdgJtgSqJkHVXGiMelPv3w8goHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713803048; c=relaxed/simple;
-	bh=U/rBD+zuwxM9BxP71a0HT6BXbDy9zXeKfLaS8jskugA=;
+	s=arc-20240116; t=1713803305; c=relaxed/simple;
+	bh=66/cBFmlCGcwrdzw7ekAtOoVKtVT1ZxKIozsVBVnmyo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TCWi/vJx3UZVeIa9ovxVj44iCr409lhQuh8lAyAQmFqr5Ltbj3DjgCdNTxyIh26iufhMXd7Do0QLYleer01a/zqDBZIdJP34rSQ+RIkX4jjJ6264ObKjG9/6m97y4cSdzGlUFAtTGDxrBjO3Tr3OvfH1ZvcsGvB3dnNnjUwkWW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2Ac9w0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A18DC113CC;
-	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
+	 To:Cc:Content-Type; b=KCrBvzLDwx1w2G25z7HD5/tpuM4ehmEJao0ZPCLR3lJ8M938qM9oXYwzwYIsGRcKd7w8F/8HtgiBZdevejJq8rT1L7KiXS3KKZAXUfjvMFj2SC3Fix7EngP/u6miuxZmYDS9RGS4DmeKiBWpBiRuXblaszlUmvuIzD75Wtu/edY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTK0lZTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6681DC32781;
+	Mon, 22 Apr 2024 16:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713803048;
-	bh=U/rBD+zuwxM9BxP71a0HT6BXbDy9zXeKfLaS8jskugA=;
+	s=k20201202; t=1713803305;
+	bh=66/cBFmlCGcwrdzw7ekAtOoVKtVT1ZxKIozsVBVnmyo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f2Ac9w0naqt4H5FrrWTNVvcbEA9GGD3rt/ogVMYU4YHWglLJs48cGZSwqjFM3lYI2
-	 ghUvC4/ooul+xf2iU77kJZPHkvPxtt9eordC8FDV8fQgBVW3Rl9mdq1KbZ4Lvez7N3
-	 lVZ5iG5WEO6+7cuncxSXTw4mNYaWV8bqoerjYiO365T2tt8/+dpA/5YGFuKAb2lu5y
-	 GVlS6/v7CsI+qNT3fERiTlnracEMAXH8TqLN/1VgcGRbXlbzRugD8fcNN6I6CqGdLY
-	 u3AtLYq1M9HnHKdC2bOi1A9kVxu6XoNiJkggrE+iOKXW+HTvganp7aFvucAkCKtBFp
-	 V/TdIFG4Hy0Vw==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5acdbfa7a45so1491931eaf.2;
-        Mon, 22 Apr 2024 09:24:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVh36kaPe+gn7FCQAFxaJC6J9oZTCfoe+FfkmcyqFsn6+2Xk9LeE+EwVvZlyGsQKk+JqsfkbTlEPfU3FefBmL51K/U3Znw5dTn0AA6IkxlVuuwpFsauUEXhJPAWRtbE83DcnMbjz2OA9A==
-X-Gm-Message-State: AOJu0YwgWznE1hLURixgEJU3qz/Ig++VEwmG5Mipp/uxSABr9O/PokS3
-	d+ZGxeSsunFsdqULMYcnujAuA25n2g2Dzlik1GT0VK0h4yt/V26QDXSYd3T8z14xxGKuxTZpH/s
-	4qs9OkwJBlcB/98Tt/sOf3ugetys=
-X-Google-Smtp-Source: AGHT+IHp2/+wxwVGAkGABcddJLJzdg5bU4VA7n9LIvmsHhyt4EpYdamJ34te3uwK1TRL+xbMf87x7ciCDIQgfUl5Bd0=
-X-Received: by 2002:a05:6820:2c83:b0:5aa:6b2e:36f0 with SMTP id
- dx3-20020a0568202c8300b005aa6b2e36f0mr10555703oob.0.1713803047481; Mon, 22
- Apr 2024 09:24:07 -0700 (PDT)
+	b=eTK0lZTmmwWsyiz1HcXff3mazwSmdP+zt51MNmwzrLvJtZP1HMFTgB9tSryGkgFvx
+	 hcOQIdc6JAt0iNKHpOkjiW985Pk6QVUKKkxmGjqaSvieRnjbTnfD8CXdBj9H99mSJg
+	 6NZIZ2GK08dhcIPEbLz/Cqym4WnruYwFVgodmn3eXpY8TUTc6ybybB23qxxcD2/qF3
+	 Wuqi3D+bkclD6mfnUk8eYLv8r+2LZRhqH/L8EcOUErKUFyf9K6Ql7i8t8gOGHHMH/t
+	 18e3kMeEK/ImwJT2ueQt4ok8C636HVR+Hog2D3cX1RGm49UIOm6W4Q2HDGa60ukg6h
+	 F6rfwH95BZFHQ==
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6eb7a4d64e8so1216439a34.0;
+        Mon, 22 Apr 2024 09:28:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVXet4YqYxUIoeVYudhZk8/Je7Cdv3tSMP8KjTPwx8mGoRgRHHQMxOm97IR5wvfzk7EsRqvIyXloP8ouplbBPlDHLWYAhWTBMFay5K9QlHJseTEeqby5nHkQPuRkftpZD0yKd/VLQF3Xw==
+X-Gm-Message-State: AOJu0YwPZ1jNgpsel+l6LNvoLyU2kTwb3jKuoVRjxa0vKUpRs2lFxZAN
+	Jg+yudCqMyYdsbF7XNk3TMpyBU++lsjRu2ZdlfTdIet8hCyUwhqKT7zRqOgrWrJJwSPe41b1Lh+
+	rxDN6QRiFZw2VGFkLNfeF9ZRz9RQ=
+X-Google-Smtp-Source: AGHT+IFUoTW+hFhGOBAAdye1VAeZc0XqJPoLFx9aRWabwhUzqbp/a/CO2k9v/59odbPNudADRfSC8msB/tESzbwfyMI=
+X-Received: by 2002:a05:6820:e07:b0:5aa:14ff:4128 with SMTP id
+ el7-20020a0568200e0700b005aa14ff4128mr10664225oob.1.1713803304702; Mon, 22
+ Apr 2024 09:28:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415185120.57973-1-gschafra@web.de>
-In-Reply-To: <20240415185120.57973-1-gschafra@web.de>
+References: <20240422080437.912886-1-wse@tuxedocomputers.com>
+In-Reply-To: <20240422080437.912886-1-wse@tuxedocomputers.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 18:23:51 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jmtH6+C=GcWxXLM3qXBoMvuC-Nz8fuBG=1Ha1g95atGw@mail.gmail.com>
-Message-ID: <CAJZ5v0jmtH6+C=GcWxXLM3qXBoMvuC-Nz8fuBG=1Ha1g95atGw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: Do IRQ override on GMxBGxx (XMG APEX 17 M23)
-To: Guenter Schafranek <gschafra@web.de>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Mon, 22 Apr 2024 18:28:13 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iLjEsjzOU+0it9=NVoqzsrErz1Fs_eVQg-sJgXVqf8jQ@mail.gmail.com>
+Message-ID: <CAJZ5v0iLjEsjzOU+0it9=NVoqzsrErz1Fs_eVQg-sJgXVqf8jQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: resource: Do IRQ override on TongFang GXxHRXx
+ and GMxHGxx
+To: Werner Sembach <wse@tuxedocomputers.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Christoffer Sandberg <cs@tuxedo.de>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 15, 2024 at 8:51=E2=80=AFPM Guenter Schafranek <gschafra@web.de=
-> wrote:
+On Mon, Apr 22, 2024 at 10:04=E2=80=AFAM Werner Sembach <wse@tuxedocomputer=
+s.com> wrote:
 >
-> The XM APEX 17 M23 (TongFang?) GMxBGxx (got using `sudo dmidecode -s
-> baseboard-product-name`) needs IRQ overriding for the keyboard to work.
-> Adding an entry for this laptop to the override_table makes the internal
-> keyboard functional.
-> See https://www.reddit.com/r/XMG_gg/comments/15kd5pg/xmg_apex_17_m23_keyb=
-oard_not_working_on_linux/.
-> Patch was successfully tested with Arch Linux Kernel v6.8 under
-> Manjaro Linux v23.1.4.
+> From: Christoffer Sandberg <cs@tuxedo.de>
 >
-> Signed-off-by: Guenter Schafranek <gschafra@web.de>
+> Listed devices need the override for the keyboard to work.
+>
+> Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+> Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+> Cc: stable@vger.kernel.org
 > ---
->  drivers/acpi/resource.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/acpi/resource.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 >
 > diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 59423fe9d..c9af5d2f4 100644
+> index 59423fe9d0f29..6cc8572759a3d 100644
 > --- a/drivers/acpi/resource.c
 > +++ b/drivers/acpi/resource.c
-> @@ -533,6 +533,12 @@ static const struct dmi_system_id irq1_level_low_ski=
-p_override[] =3D {
->   * to have a working keyboard.
->   */
->  static const struct dmi_system_id irq1_edge_low_force_override[] =3D {
+> @@ -630,6 +630,18 @@ static const struct dmi_system_id irq1_edge_low_forc=
+e_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "X565"),
+>                 },
+>         },
 > +       {
-> +               /* XMG APEX 17 (M23) */
+> +               /* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
 > +               .matches =3D {
-> +                       DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
 > +               },
 > +       },
->         {
->                 /* TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15=
- Gen4 AMD */
->                 .matches =3D {
+> +       {
+> +               /* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+> +               },
+> +       },
+>         { }
+>  };
+>
 > --
 
 Applied as 6.10 material, thanks!
