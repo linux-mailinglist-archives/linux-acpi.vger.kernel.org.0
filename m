@@ -1,163 +1,112 @@
-Return-Path: <linux-acpi+bounces-5250-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5251-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5355C8AD1BE
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:18:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B028AD1D8
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E4F72814AC
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:18:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8191C208E3
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DBC153803;
-	Mon, 22 Apr 2024 16:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A6C153803;
+	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kfiPqUqJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2Ac9w0n"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014A2153594;
-	Mon, 22 Apr 2024 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7201E49E;
+	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713802724; cv=none; b=XO5bLakNkrAxPR/28EWh6OcoZa7yrTgGb1UWZy+TW/oEoUs9BzQbq87mLe4O5mRF9tAMbqrjREEtfwvGaSV0sZyNCHBJ52+rlsbXlQ8ngZljVjJat6skme72WJUOTI4m4JURQ0dFEz2hSZhHZ+Iez2lyD7NOKCeSdSLETqldpa8=
+	t=1713803048; cv=none; b=O/dRe6XhpJ7MTF+dn/aeg60YWPw5CUkZYVpJImtUSU79vmMqBp732IfnaExAGvL5Db+s4ZGvwzXYKv3JksfXVzSdwPPdzCEy0X+qEqVpF5tABtQYdFqmCXQAxOFxJyw/r/uxIYrGHfcB0eoDhiSwaH0BIEoYlHklOXOg4I1Xx60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713802724; c=relaxed/simple;
-	bh=QR/kzCbyaOuRWiYV19PwDbm3SqBRCcpUe7hr5QMI4Do=;
+	s=arc-20240116; t=1713803048; c=relaxed/simple;
+	bh=U/rBD+zuwxM9BxP71a0HT6BXbDy9zXeKfLaS8jskugA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=naQeZ/cdsMzRBOxPOdARr4XHctN9aD0naKujhT/t93E/E1ky9CG9JZDO4fVna5Js8AHgfR05XvixjYylBeDuK7W/z/RDV/W92P97Rn8XQBG+w4ff7CPSFethuB3UWeWNnnEkvPi9+kR7G/iYdvoFxWUzuZQOid3mKTof/guUa70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kfiPqUqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9156EC113CC;
-	Mon, 22 Apr 2024 16:18:43 +0000 (UTC)
+	 To:Cc:Content-Type; b=TCWi/vJx3UZVeIa9ovxVj44iCr409lhQuh8lAyAQmFqr5Ltbj3DjgCdNTxyIh26iufhMXd7Do0QLYleer01a/zqDBZIdJP34rSQ+RIkX4jjJ6264ObKjG9/6m97y4cSdzGlUFAtTGDxrBjO3Tr3OvfH1ZvcsGvB3dnNnjUwkWW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2Ac9w0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A18DC113CC;
+	Mon, 22 Apr 2024 16:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713802723;
-	bh=QR/kzCbyaOuRWiYV19PwDbm3SqBRCcpUe7hr5QMI4Do=;
+	s=k20201202; t=1713803048;
+	bh=U/rBD+zuwxM9BxP71a0HT6BXbDy9zXeKfLaS8jskugA=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kfiPqUqJScrWwgk7lkUiivDNZIGJTNbNCOj/OkwFir1rjWyoXaizxSOzuvpziVcX9
-	 SNCPqN8pZseb73IbPoFap1GgpLAFILkdQQOhkyH9g7gK2ZBVyJAkuiVdoQfs8rmMLd
-	 nJH787eE6Tn9Ini1RY09TFnwC8vqu4OBzO3j8NldoEAkt1VOThuRLaVL4JZkmnlpk9
-	 GhEr1kjf2zEkzQndLJqpUR6REoc5sVjHvlZzMm5m8vc6rk3hMLbxfU6gqeZ/j59/MB
-	 cxFgdIN+XnEdR2XjVDlxp2Ab7//BObVI5UGwUFS6DctRnXEXktqid4Bb46CRqc+LqL
-	 W0m0KJ7Jak42A==
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5acf5723325so1082653eaf.0;
-        Mon, 22 Apr 2024 09:18:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV+J4Ieke1yBKlEq2Su+Rs9Ao+z5Y6gBWmsrS1BmLDGehrRsM0miaOsgyghJF5QOg5+OouLhjPg6erVck/jVwV0TIh6JBXAa9BK+xIrQFWnEeAutMbIsQfPjOxhLdVbfLNzmIWX/PvkKpj/Ott1gNQSdlSBEA5OCDUfRxOr1toInc4HTS8=
-X-Gm-Message-State: AOJu0YzteF0jy9N3gd2GrCOGUzvmWJApV2VHzbRGrjeQbcy3fyR1qHbd
-	h0TolJNVMVS/0/xyXOLt+FebeJFLwbsddxG5+IOEJwTsrhoeGT5JNWzQ/o6KXfml7W2YF6QBbva
-	jJlByIqbuNb88NHu3p1KlGAfpltw=
-X-Google-Smtp-Source: AGHT+IFESPYVINFnF2ss/dRaMfKVcLtz/mjOYNrxgkasSqC/INJSn+XkVq/aXneWpbNTIE2SYgqkZ572ytK+cUbbuJE=
-X-Received: by 2002:a4a:de19:0:b0:5a7:db56:915c with SMTP id
- y25-20020a4ade19000000b005a7db56915cmr11836041oot.1.1713802722990; Mon, 22
- Apr 2024 09:18:42 -0700 (PDT)
+	b=f2Ac9w0naqt4H5FrrWTNVvcbEA9GGD3rt/ogVMYU4YHWglLJs48cGZSwqjFM3lYI2
+	 ghUvC4/ooul+xf2iU77kJZPHkvPxtt9eordC8FDV8fQgBVW3Rl9mdq1KbZ4Lvez7N3
+	 lVZ5iG5WEO6+7cuncxSXTw4mNYaWV8bqoerjYiO365T2tt8/+dpA/5YGFuKAb2lu5y
+	 GVlS6/v7CsI+qNT3fERiTlnracEMAXH8TqLN/1VgcGRbXlbzRugD8fcNN6I6CqGdLY
+	 u3AtLYq1M9HnHKdC2bOi1A9kVxu6XoNiJkggrE+iOKXW+HTvganp7aFvucAkCKtBFp
+	 V/TdIFG4Hy0Vw==
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5acdbfa7a45so1491931eaf.2;
+        Mon, 22 Apr 2024 09:24:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVh36kaPe+gn7FCQAFxaJC6J9oZTCfoe+FfkmcyqFsn6+2Xk9LeE+EwVvZlyGsQKk+JqsfkbTlEPfU3FefBmL51K/U3Znw5dTn0AA6IkxlVuuwpFsauUEXhJPAWRtbE83DcnMbjz2OA9A==
+X-Gm-Message-State: AOJu0YwgWznE1hLURixgEJU3qz/Ig++VEwmG5Mipp/uxSABr9O/PokS3
+	d+ZGxeSsunFsdqULMYcnujAuA25n2g2Dzlik1GT0VK0h4yt/V26QDXSYd3T8z14xxGKuxTZpH/s
+	4qs9OkwJBlcB/98Tt/sOf3ugetys=
+X-Google-Smtp-Source: AGHT+IHp2/+wxwVGAkGABcddJLJzdg5bU4VA7n9LIvmsHhyt4EpYdamJ34te3uwK1TRL+xbMf87x7ciCDIQgfUl5Bd0=
+X-Received: by 2002:a05:6820:2c83:b0:5aa:6b2e:36f0 with SMTP id
+ dx3-20020a0568202c8300b005aa6b2e36f0mr10555703oob.0.1713803047481; Mon, 22
+ Apr 2024 09:24:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1713523251.git.robin.murphy@arm.com> <3ae004dfc581fa12fc9432c5008f1225882d5464.1713523251.git.robin.murphy@arm.com>
-In-Reply-To: <3ae004dfc581fa12fc9432c5008f1225882d5464.1713523251.git.robin.murphy@arm.com>
+References: <20240415185120.57973-1-gschafra@web.de>
+In-Reply-To: <20240415185120.57973-1-gschafra@web.de>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 18:18:27 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iMY1eKYgcH20Uxd1nW0yZ2xt980ob0Rcb_4n4OONWSZA@mail.gmail.com>
-Message-ID: <CAJZ5v0iMY1eKYgcH20Uxd1nW0yZ2xt980ob0Rcb_4n4OONWSZA@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ACPI: Retire acpi_iommu_fwspec_ops()
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, devicetree@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>
+Date: Mon, 22 Apr 2024 18:23:51 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jmtH6+C=GcWxXLM3qXBoMvuC-Nz8fuBG=1Ha1g95atGw@mail.gmail.com>
+Message-ID: <CAJZ5v0jmtH6+C=GcWxXLM3qXBoMvuC-Nz8fuBG=1Ha1g95atGw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: Do IRQ override on GMxBGxx (XMG APEX 17 M23)
+To: Guenter Schafranek <gschafra@web.de>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 19, 2024 at 6:56=E2=80=AFPM Robin Murphy <robin.murphy@arm.com>=
- wrote:
+On Mon, Apr 15, 2024 at 8:51=E2=80=AFPM Guenter Schafranek <gschafra@web.de=
+> wrote:
 >
-> Now that iommu_fwspec_init() can signal for probe deferral directly,
-> acpi_iommu_fwspec_ops() is unneeded and can be cleaned up.
+> The XM APEX 17 M23 (TongFang?) GMxBGxx (got using `sudo dmidecode -s
+> baseboard-product-name`) needs IRQ overriding for the keyboard to work.
+> Adding an entry for this laptop to the override_table makes the internal
+> keyboard functional.
+> See https://www.reddit.com/r/XMG_gg/comments/15kd5pg/xmg_apex_17_m23_keyb=
+oard_not_working_on_linux/.
+> Patch was successfully tested with Arch Linux Kernel v6.8 under
+> Manjaro Linux v23.1.4.
 >
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
+> Signed-off-by: Guenter Schafranek <gschafra@web.de>
 > ---
->  drivers/acpi/scan.c | 30 ++++++------------------------
->  1 file changed, 6 insertions(+), 24 deletions(-)
+>  drivers/acpi/resource.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-> index 9d36fc3dc5ac..d6b64dcbf9a6 100644
-> --- a/drivers/acpi/scan.c
-> +++ b/drivers/acpi/scan.c
-> @@ -1588,26 +1588,14 @@ int acpi_iommu_fwspec_init(struct device *dev, u3=
-2 id,
->         return ret;
->  }
->
-> -static inline const struct iommu_ops *acpi_iommu_fwspec_ops(struct devic=
-e *dev)
-> -{
-> -       struct iommu_fwspec *fwspec =3D dev_iommu_fwspec_get(dev);
-> -
-> -       return fwspec ? fwspec->ops : NULL;
-> -}
-> -
->  static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
->  {
->         int err;
-> -       const struct iommu_ops *ops;
->
->         /* Serialise to make dev->iommu stable under our potential fwspec=
- */
->         mutex_lock(&iommu_probe_device_lock);
-> -       /*
-> -        * If we already translated the fwspec there is nothing left to d=
-o,
-> -        * return the iommu_ops.
-> -        */
-> -       ops =3D acpi_iommu_fwspec_ops(dev);
-> -       if (ops) {
-> +       /* If we already translated the fwspec there is nothing left to d=
-o */
-> +       if (dev_iommu_fwspec_get(dev)) {
->                 mutex_unlock(&iommu_probe_device_lock);
->                 return 0;
->         }
-> @@ -1624,16 +1612,7 @@ static int acpi_iommu_configure_id(struct device *=
-dev, const u32 *id_in)
->         if (!err && dev->bus)
->                 err =3D iommu_probe_device(dev);
->
-> -       /* Ignore all other errors apart from EPROBE_DEFER */
-> -       if (err =3D=3D -EPROBE_DEFER) {
-> -               return err;
-> -       } else if (err) {
-> -               dev_dbg(dev, "Adding to IOMMU failed: %d\n", err);
-> -               return -ENODEV;
-> -       }
-> -       if (!acpi_iommu_fwspec_ops(dev))
-> -               return -ENODEV;
-> -       return 0;
-> +       return err;
->  }
->
->  #else /* !CONFIG_IOMMU_API */
-> @@ -1672,6 +1651,9 @@ int acpi_dma_configure_id(struct device *dev, enum =
-dev_dma_attr attr,
->         ret =3D acpi_iommu_configure_id(dev, input_id);
->         if (ret =3D=3D -EPROBE_DEFER)
->                 return -EPROBE_DEFER;
-> +       /* Ignore all other errors apart from EPROBE_DEFER */
-> +       if (ret)
-> +               dev_dbg(dev, "Adding to IOMMU failed: %d\n", ret);
->
->         arch_setup_dma_ops(dev, attr =3D=3D DEV_DMA_COHERENT);
->
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 59423fe9d..c9af5d2f4 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -533,6 +533,12 @@ static const struct dmi_system_id irq1_level_low_ski=
+p_override[] =3D {
+>   * to have a working keyboard.
+>   */
+>  static const struct dmi_system_id irq1_edge_low_force_override[] =3D {
+> +       {
+> +               /* XMG APEX 17 (M23) */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_BOARD_NAME, "GMxBGxx"),
+> +               },
+> +       },
+>         {
+>                 /* TongFang GMxRGxx/XMG CORE 15 (M22)/TUXEDO Stellaris 15=
+ Gen4 AMD */
+>                 .matches =3D {
 > --
-> 2.39.2.101.g768bb238c484.dirty
->
+
+Applied as 6.10 material, thanks!
 
