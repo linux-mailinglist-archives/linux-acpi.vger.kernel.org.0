@@ -1,115 +1,119 @@
-Return-Path: <linux-acpi+bounces-5229-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5230-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84398AC5E0
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 09:46:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6E48AC626
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 09:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFB651C21C71
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 07:46:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87271281F93
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 07:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546A74E1D9;
-	Mon, 22 Apr 2024 07:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4BE4DA0C;
+	Mon, 22 Apr 2024 07:59:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C924417C68
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 07:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2D14CB35
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 07:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713771951; cv=none; b=Byj04xVsCLPnJJcH4awpqFEm70IJ76pqrb7rEFXBGWFBW+zeZrm6C0rCuy41Qj6ePn3x1K3dbQFPYKQckg9SUvoYorq/3dGwdwBo8KlkP7dR2kc263jPvggLHQdL6AKo0Zu3khQJo/AQC4P+o3WKtHyGLV+GYCU9XiwV/KZU2f8=
+	t=1713772794; cv=none; b=NouYCmZVOqqT0rNBBf0Cnm6iEdJfPE5fbu54bAoaTfel0ai0xC8/lAvB1rWGABeDWvYQMawbPsAJBxvhRgoCwZZn1CMH7WECvv/Cg1TZV1m1Zqn+4O7xp4ybZilfwcxDwL6pyLfEpcfcgdIyzsFoD9EZyEBQ3G5T1fYP2PWnNhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713771951; c=relaxed/simple;
-	bh=0tZUCejrJ79JNWlBVqZKd9V4vKZCGo0VoibkvLVA/P8=;
+	s=arc-20240116; t=1713772794; c=relaxed/simple;
+	bh=Ucs5NG4ai/fTXTYwHyUVq+98IqHNGHHonW53H87PMV0=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iqyebP9lKA285QplUNKcIRB0YL0LfhH6n833FzRDXtnRnvaS2AtyKTLdgPDzviixL9Kc39UNaYo4juOFXq+jPQy/W7HKtlaEycMvSBq76OFOx17c3kiMxeemWb0E8wrOCoW/c6ST7lqVipghHvzL9B9pLIIpJY13k+6IRZsDeUk=
+	 Content-Type:Content-Disposition:In-Reply-To; b=rB+aX5ZoDBSBSy1L5grjETEHX3n4qBT0uVuCA9C+fOmC9QpWQJFm33MtaMwoJ0VQ14yXNETp4j/e5t4p0wWlTEEf2JN23eEortIavRzpFhoKy+0JJA5v06e0uDIMagvuhVOB38PEIZxtaP582gq2HoVJJOMO8nDlgkp8ZdC/hKU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
-	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-	id 5482aa03-007c-11ef-a9de-005056bdf889;
-	Mon, 22 Apr 2024 10:45:46 +0300 (EEST)
+	by fgw20.mail.saunalahti.fi (Halon) with ESMTP
+	id 4b5bdb2a-007e-11ef-b3cf-005056bd6ce9;
+	Mon, 22 Apr 2024 10:59:50 +0300 (EEST)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 22 Apr 2024 10:45:46 +0300
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Vidya Sagar <vidyas@nvidia.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Thota <kthota@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Vidya Sagar <sagar.tv@gmail.com>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v7-incomplete 1/3] PCI: Move PRESERVE_BOOT_CONFIG _DSM
- evaluation to pci_register_host_bridge()
-Message-ID: <ZiYVqulm8cE_FGKx@surfacebook.localdomain>
-References: <20240418174043.3750240-1-vidyas@nvidia.com>
- <20240421190914.374399-1-helgaas@kernel.org>
- <20240421190914.374399-2-helgaas@kernel.org>
+Date: Mon, 22 Apr 2024 10:59:50 +0300
+To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: local bus enumeration beyond a PCI device
+Message-ID: <ZiYY9u7uL7hnetFU@surfacebook.localdomain>
+References: <bad63409-ed2b-4cef-988b-3c143636e9fa@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240421190914.374399-2-helgaas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bad63409-ed2b-4cef-988b-3c143636e9fa@alliedtelesis.co.nz>
 
-Sun, Apr 21, 2024 at 02:09:12PM -0500, Bjorn Helgaas kirjoitti:
-> From: Bjorn Helgaas <bhelgaas@google.com>
+Thu, Apr 18, 2024 at 12:24:06AM +0000, Chris Packham kirjoitti:
+> Hi,
 > 
-> Move the PRESERVE_BOOT_CONFIG _DSM evaluation from acpi_pci_root_create()
-> to pci_register_host_bridge().
+> We've got a custom x86_64 based design that is using an ASIX9100 to 
+> provide a PCI to local bus bridge. Attached to that local bus is an FPGA 
+> which mostly provides some GPIOs accessed via registers on the local 
+> bus. Right now we've got a custom driver that bundles everything 
+> together so effectively we've got a PCI device that provides GPIOs.
 > 
-> This will help unify the ACPI _DSM path and the DT-based
-> "linux,pci-probe-only" paths.
+> But as things can change based on the FPGA program I'd like some 
+> flexibility to treat it separately from the PCI bridge.
 
-...
+Why? AFAIU the architecture, you have an FPGA with a real PCI bridge / switch,
+no? If it's the case, the software shouldn't care if the respective IP comes
+from FPGA or SoC.
 
-> +bool pci_acpi_preserve_config(struct pci_host_bridge *host_bridge)
-> +{
-> +	if (ACPI_HANDLE(&host_bridge->dev)) {
+> So really I'd 
+> like to have a PCI device driver for the ASIX9100 that provides a local 
+> bus controller and a (platform?) driver for the FPGA that provides the 
+> GPIOs where I can have different compatibles for the different 
+> implementations.
+> 
+> Then in the ACPI overlay I'd have something like
+> 
+>      Scope (\_SB.PCI0.D0B0)
+>      {
+>          Device (ASIX)
+>          {
+>              Name (_ADR, 0x0000)
+> 
+>              Device (FPGA)
+>              {
+>                          Name (_HID, "PRP0001")
+>                          Name (_DSD, Package ()
+>                          {
+> ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+>                                      Package ()
+>                                      {
+>                                                  Package () { 
+> "compatible", "my-platform-driver-for-fpga" },
+>                                      }
+>                          })
+>              }
+>          }
+>      }
+> 
+>     Scope(\_SB)
+>     {
+>          Device(OTHR)
+>          {
+>              GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionInputOnly, 
+> "\\_SB.PCI0.D0B0.ASIX.FPGA",) { 0 }
+>          }
+>     }
+> 
+> Is it even possible to register a host controller for another platform bus?
 
-Wouldn't the below looks nicer if you invert the conditional?
-
-	handle = ACPI_HANDLE(...);
-
-	if (!handle)
-		return false;
-
-	...
-
-> +		union acpi_object *obj;
-> +
-> +		/*
-> +		 * Evaluate the "PCI Boot Configuration" _DSM Function.  If it
-> +		 * exists and returns 0, we must preserve any PCI resource
-> +		 * assignments made by firmware for this host bridge.
-> +		 */
-> +		obj = acpi_evaluate_dsm_typed(ACPI_HANDLE(&host_bridge->dev),
-> +					      &pci_acpi_dsm_guid,
-> +					      1, DSM_PCI_PRESERVE_BOOT_CONFIG,
-> +					      NULL, ACPI_TYPE_INTEGER);
-> +		if (obj && obj->integer.value == 0)
-> +			return true;
-> +		ACPI_FREE(obj);
-> +	}
-> +
-> +	return false;
-> +}
-
+AFAIK there is an FPGA framework in the kernel and the idea is that each FPGA
+configuration provides a complimentary DT to describe the hardware setup. As
+Bjorn Cc'ed this to Herve you may get the answer on what's going on there much
+better as I'm not involved in the development of that topic.
 
 -- 
 With Best Regards,
