@@ -1,69 +1,69 @@
-Return-Path: <linux-acpi+bounces-5268-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5269-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC66F8AD47C
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 20:59:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E548AD48B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 21:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568FF1F24DC4
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:59:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FB3A281453
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 19:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9591552E0;
-	Mon, 22 Apr 2024 18:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42FF1552E5;
+	Mon, 22 Apr 2024 19:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JL3U4rJk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ctph9V1F"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB96219E0;
-	Mon, 22 Apr 2024 18:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F51F219E0;
+	Mon, 22 Apr 2024 19:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713812390; cv=none; b=KNM05wrHGWEmkWy5KtDCxQ3U5wqnb8xbUSp1GrWplvxhfd7BMz/pOXk4YpayGZ7OPLw02GmWxS9/ZXvrCwuMhtkl4MmN9S+LRAFUvlFGJHf4tNk7uBenLyd5XkrwbZLKPaaJZyvjUxxKwwx6GjKs1+eJrf0lzJUdoKsxD/oIo4E=
+	t=1713812560; cv=none; b=L12ZjdBu7dOEBpEIfHmWXIDtwukKDzp0fniWuNF7xpX3ooPhdrclKbsemsbSUuWfBUbCkxh1bj+os3cEYWLZVu5S7NJ2I36zYIsNaUxfi2bHekAOfX6C12jAlux+7NhCVAgLxmLT61Bpq9eG3fSdwdWgvDJT6bJuZTsp/t2QzUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713812390; c=relaxed/simple;
-	bh=6gVRWvCD43SHzW9MJNgmb/G+pTy5o5QLdvzHoFGOY8U=;
+	s=arc-20240116; t=1713812560; c=relaxed/simple;
+	bh=uwpDPbgf4hD3XZs/0tjtjcf/q9ka6d5YskWsJ2GcPNU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YmcbeFIHfOpRx8Z3TkE4lwAjsgiAYQpsbuoA8LAPWJrCBqmVoKLXxCvqz+iuzEWx1T+pz4YhkgkVqQCScThn8oJQ/GQL8yRu4PHj0drRhgJ/8bLX7DFZ+GHP6RZC8cTRr55hy069XJ76veny9TQTHNxvItyy4FVz/ALWyRvWBCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JL3U4rJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B06C4AF0F;
-	Mon, 22 Apr 2024 18:59:50 +0000 (UTC)
+	 To:Cc:Content-Type; b=X5Kf3NY5px4OG/iI2xpab1saMgJctyppjE3dRHBA64ul2WvwTKrX19Hw6k+pdqCK1cEttCrRQ02rIKVMBZnJOtYevlq9vRaFtP3tOD/hnf6wQqddGyPsIRJu2fk1d58OuN1obixOt5EN2HnVJiJ7mlgqZtbLTVQfiW3YlnSbaS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ctph9V1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45102C4AF0A;
+	Mon, 22 Apr 2024 19:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713812390;
-	bh=6gVRWvCD43SHzW9MJNgmb/G+pTy5o5QLdvzHoFGOY8U=;
+	s=k20201202; t=1713812560;
+	bh=uwpDPbgf4hD3XZs/0tjtjcf/q9ka6d5YskWsJ2GcPNU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JL3U4rJkt3X03aXzLZ0B3r/2PJUJaVAe8JCNvGQRMkjLN4zUnkzeEoHusUO3hKwaq
-	 fdxSH/N4CwP5cVsB0ZhewV9hp33WkZrrXqLRPKQ7n9inywbMAyU4ViWoIOphUMvxIl
-	 AsOIuaUe1lPqFPxDFBxGtb1vgzPVRbCGIqpIFPh56Sd8MGMYz0iKv7iwOG2c1S0XDi
-	 V83T72tHq91uOZABAe/0Z7iv9OTub+X4MYNa9Y3A6rGaz4k3Mbyb1EL0c7jh4Q2aoz
-	 hS9+OtswjShh/3YthrYzZz2JRZO9BuCzxI/PhZjHTayHBrUZemPS28ElqIObNhRoms
-	 Rzwj1eCKUr/hg==
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3c75145c6c4so81779b6e.0;
-        Mon, 22 Apr 2024 11:59:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWkL2F9/BCIqOndNEcu1KODzUXql2w3ueFz6kZy2wOT3peMYEthlNpcZwH6oB5kPCASXN4EmxXNQP0MeB03X8Sl8WidtSWUmrz5nA3sFimjqhXUYBOaqhTjuRU6/0KlUiWc6l0ELCYoAOF13dZbpR66kT2AFcIzOvktFWBypaTeI9DVobAya4wqNNDGU3Pt6jzuXABMEUNe2E8SAROshg==
-X-Gm-Message-State: AOJu0Yx7WoMqfkqtzM6IVKhq9Y38sHoCVkaDPGHqnjigWhrTFcqAEMzx
-	ATaIjbyf5EPsh+MXpQYYgJ76I/LJGBrg6h/4L+Ox5l4yDDLovp3FjXYo8bBxYQN9TECPdOJsnnh
-	q4EQbmU2OidviBv0VKerMRKS8tvo=
-X-Google-Smtp-Source: AGHT+IExK3DcdJriPUSWTCy1cAHuU7dWFQag2+82kAyKCZ3mbzTJd67vrF3319LOdQqaXIme06M3/BHhocdPIWLS1YI=
-X-Received: by 2002:a05:6820:26c3:b0:5aa:6a31:4f53 with SMTP id
- da3-20020a05682026c300b005aa6a314f53mr11947440oob.0.1713812389406; Mon, 22
- Apr 2024 11:59:49 -0700 (PDT)
+	b=Ctph9V1F0lxikX25ulm8UsuLWR1hSY+8CiVXrSH+EoyGv8NlATirnqvMwq/iCGIbV
+	 MrLbYryJ+VVyAlizPV6qyEltO4jzUEm1ibpqWQAb+CXwfseWWhGHStRK5GhN4hSgPR
+	 7XOaqfF31/pAqCDrMBe2AT2q2jO4RrMzNshKvH2Nt2vv6gUcS+MiaYdbUWmJ0UXfiS
+	 OSIzM4c68HiEIxFmvsL6VQ26j/mI/VYrA1REXhC2bLmpNSW2TLQ6s/ferikZK3ryqT
+	 ZJtQAO65uUP2WL6GmNKBdiiFRrj++Rj7g//+qR5yvH1CVKy6Inmo41pxWQ4LFWU+n5
+	 fONjygWgl5WNQ==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5acdbfac114so69307eaf.2;
+        Mon, 22 Apr 2024 12:02:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXrIdQYW8TbbE52doCPcMVasE1uz6aaKCQ5o4BiHdBoKYeF32w2fC6nL4wgqpSA4Pmfzc9aVPD6EvHLo+zGW7xn0gv/Y+NT7Yy8+jfuhekGhQCdil9KDs/6W588hYmdGlHizMUSy7NzmAwRw2H+DtAxzb0b1VLxgMincfpF6jxyRD6PCHyxQuEidz2CUnGH4bLjSdVAmDyAaBF8slKidQ==
+X-Gm-Message-State: AOJu0YzU7fWgRXD7Fhe21X8Z8/P2YJYqIjjl2W8fHW58fqRaUEMm4VEH
+	emxj5zXwT2+51gyGoHs2t3L9DfK85nMz4qu4zcUWNs/YnIvTOilI1701s5IIp58BUqCQubEadI/
+	0I41REz9DdqGZUMI7x0ZnuafWVak=
+X-Google-Smtp-Source: AGHT+IHfMJuggQNerMrgvKM5BuuCUjaZ4sXlArgCmyHHbceucLSf3gyNJ/n6QHdW+o0W+b3ed4Fd94BKproC4k9sVAM=
+X-Received: by 2002:a05:6820:2884:b0:5aa:241a:7f4b with SMTP id
+ dn4-20020a056820288400b005aa241a7f4bmr11678323oob.1.1713812559511; Mon, 22
+ Apr 2024 12:02:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com> <20240418135412.14730-6-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240418135412.14730-6-Jonathan.Cameron@huawei.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com> <20240418135412.14730-7-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20240418135412.14730-7-Jonathan.Cameron@huawei.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 20:59:38 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hox_E7UK7BQFKFiN_6vsJmE-xOPTShbcPytMifN42OJQ@mail.gmail.com>
-Message-ID: <CAJZ5v0hox_E7UK7BQFKFiN_6vsJmE-xOPTShbcPytMifN42OJQ@mail.gmail.com>
-Subject: Re: [PATCH v7 05/16] ACPI: processor: Add acpi_get_processor_handle() helper
+Date: Mon, 22 Apr 2024 21:02:28 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hkQ0zTJ3ND5tWAKEJsfthQ-ve08eZpAHMx+9iVT2QQ4w@mail.gmail.com>
+Message-ID: <CAJZ5v0hkQ0zTJ3ND5tWAKEJsfthQ-ve08eZpAHMx+9iVT2QQ4w@mail.gmail.com>
+Subject: Re: [PATCH v7 06/16] ACPI: processor: Register deferred CPUs from acpi_processor_get_info()
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org, 
 	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, 
@@ -79,84 +79,97 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 3:56=E2=80=AFPM Jonathan Cameron
+On Thu, Apr 18, 2024 at 3:57=E2=80=AFPM Jonathan Cameron
 <Jonathan.Cameron@huawei.com> wrote:
 >
-> If CONFIG_ACPI_PROCESSOR provide a helper to retrieve the
-> acpi_handle for a given CPU allowing access to methods
-> in DSDT.
+> From: James Morse <james.morse@arm.com>
 >
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> The arm64 specific arch_register_cpu() call may defer CPU registration
+> until the ACPI interpreter is available and the _STA method can
+> be evaluated.
+>
+> If this occurs, then a second attempt is made in
+> acpi_processor_get_info(). Note that the arm64 specific call has
+> not yet been added so for now this will be called for the original
+> hotplug case.
+>
+> For architectures that do not defer until the ACPI Processor
+> driver loads (e.g. x86), for initially present CPUs there will
+> already be a CPU device. If present do not try to register again.
+>
+> Systems can still be booted with 'acpi=3Doff', or not include an
+> ACPI description at all as in these cases arch_register_cpu()
+> will not have deferred registration when first called.
+>
+> This moves the CPU register logic back to a subsys_initcall(),
+> while the memory nodes will have been registered earlier.
+> Note this is where the call was prior to the cleanup series so
+> there should be no side effects of moving it back again for this
+> specific case.
+>
+> [PATCH 00/21] Initial cleanups for vCPU HP.
+> https://lore.kernel.org/all/ZVyz%2FVe5pPu8AWoA@shell.armlinux.org.uk/
+> commit 5b95f94c3b9f ("x86/topology: Switch over to GENERIC_CPU_DEVICES")
+>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
 > ---
-> v7: No change
-> v6: New patch
+> v7: Simplify the logic on whether to hotadd the CPU.
+>     This path can only be reached either for coldplug in which
+>     case all we care about is has register_cpu() already been
+>     called (identifying deferred), or hotplug in which case
+>     whether register_cpu() has been called is also sufficient.
+>     Checks on _STA related elements or the validity of the ID
+>     are no longer necessary here due to similar checks having
+>     moved elsewhere in the path.
+> v6: Squash the two paths for conventional CPU Hotplug and arm64
+>     vCPU HP.
 > ---
->  drivers/acpi/acpi_processor.c | 10 ++++++++++
->  include/linux/acpi.h          |  7 +++++++
->  2 files changed, 17 insertions(+)
+>  drivers/acpi/acpi_processor.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 >
 > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
 c
-> index ac7ddb30f10e..127ae8dcb787 100644
+> index 127ae8dcb787..4e65011e706c 100644
 > --- a/drivers/acpi/acpi_processor.c
 > +++ b/drivers/acpi/acpi_processor.c
-> @@ -35,6 +35,16 @@ EXPORT_PER_CPU_SYMBOL(processors);
->  struct acpi_processor_errata errata __read_mostly;
->  EXPORT_SYMBOL_GPL(errata);
+> @@ -350,14 +350,14 @@ static int acpi_processor_get_info(struct acpi_devi=
+ce *device)
+>         }
 >
-> +acpi_handle acpi_get_processor_handle(int cpu)
-> +{
-> +       acpi_handle handle =3D NULL;
+>         /*
+> -        *  Extra Processor objects may be enumerated on MP systems with
+> -        *  less than the max # of CPUs. They should be ignored _iff
+> -        *  they are physically not present.
+> -        *
+> -        *  NOTE: Even if the processor has a cpuid, it may not be presen=
+t
+> -        *  because cpuid <-> apicid mapping is persistent now.
+> +        *  This code is not called unless we know the CPU is present and
+> +        *  enabled. The two paths are:
+> +        *  a) Initially present CPUs on architectures that do not defer
+> +        *     their arch_register_cpu() calls until this point.
+> +        *  b) Hotplugged CPUs (enabled bit in _STA has transitioned from=
+ not
+> +        *     enabled to enabled)
+>          */
+> -       if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> +       if (!get_cpu_device(pr->id)) {
+>                 ret =3D acpi_processor_hotadd_init(pr, device);
 
-The local var looks redundant.
+Yes, this is what I thought it should boil down to, so
 
-> +       struct acpi_processor *pr =3D per_cpu(processors, cpu);;
-> +
-> +       if (pr)
-> +               handle =3D pr->handle;
-> +
-> +       return handle;
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-struct acpi_processor *pr;
-
-pr =3D per_cpu(processors, cpu);
-if (pr)
-        return pr->handle;
-
-return NULL;
-
-
-> +}
->  static int acpi_processor_errata_piix4(struct pci_dev *dev)
->  {
->         u8 value1 =3D 0;
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 34829f2c517a..9844a3f9c4e5 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -309,6 +309,8 @@ int acpi_map_cpu(acpi_handle handle, phys_cpuid_t phy=
-sid, u32 acpi_id,
->  int acpi_unmap_cpu(int cpu);
->  #endif /* CONFIG_ACPI_HOTPLUG_CPU */
 >
-> +acpi_handle acpi_get_processor_handle(int cpu);
-> +
->  #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
->  int acpi_get_ioapic_id(acpi_handle handle, u32 gsi_base, u64 *phys_addr)=
-;
->  #endif
-> @@ -1077,6 +1079,11 @@ static inline bool acpi_sleep_state_supported(u8 s=
-leep_state)
->         return false;
->  }
->
-> +static inline acpi_handle acpi_get_processor_handle(int cpu)
-> +{
-> +       return NULL;
-> +}
-> +
->  #endif /* !CONFIG_ACPI */
->
->  extern void arch_post_acpi_subsys_init(void);
+>                 if (ret)
 > --
+> 2.39.2
+>
 
