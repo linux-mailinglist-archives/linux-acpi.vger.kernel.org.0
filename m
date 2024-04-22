@@ -1,129 +1,149 @@
-Return-Path: <linux-acpi+bounces-5256-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5257-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062548AD297
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:46:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4538AD2AD
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0A11F219A0
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:46:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5112BB23DFA
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591F0155358;
-	Mon, 22 Apr 2024 16:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACC9153816;
+	Mon, 22 Apr 2024 16:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLZm4gLT"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nyJSqJyr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7DF153BDF;
-	Mon, 22 Apr 2024 16:43:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD3315358B
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 16:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713804219; cv=none; b=E8C9QimWiyEdmL8V2qH9l2Er3zAxpnruouI2Jn2TcrF50cCxZekhmT1S+Ua//qMR63oNIe4p7k/IarHN8oCLrWRFKB5x+nP5q2WBnmrCK0zq9GLt3fW9fgYc3xQbn1xotbjKbTghYujQ5RW2hqomuMzokfsMH+DK23uis6Qofp8=
+	t=1713804437; cv=none; b=lL5dwO4uKshg8sclBT6NpUO1+GvfJDKzNuUF3vj9c2jIzBroX3JOmGODv2sQw6blWBucCYXrnr8OqPRv/B1svlC22bQdNXi40RhRP9d8Y0LBH/DnZ1SxNeQJFKDNdiRel+I+aOL9OFFeya14BJHnWQT6mAdTqf2UMXlLjZuP6aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713804219; c=relaxed/simple;
-	bh=wHHpm/MlIMnUD56C0I+68LKr2Emf+Rz6l1nA6FA+p4s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jxLtjsYB0ZqYa5eLPD/sqFJl6BTvwcczZrzu9BBQgVNWMmveHhdTTFvsFjUN2w7zSt2IKO87zGo+VgFz7SfdNcu00eo3z5qBCpWpkuCmuiwMXTNGJiCtcPAdDNhg5kzetdNxRo+fqQuHHyUPGwspCjq2OG0sbyLzU2yAYz8uGJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLZm4gLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A787DC113CC;
-	Mon, 22 Apr 2024 16:43:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713804218;
-	bh=wHHpm/MlIMnUD56C0I+68LKr2Emf+Rz6l1nA6FA+p4s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kLZm4gLTCzd79EAv67FYtqqitGs1/djNHusslR7yiiTIaKsydTJYA4EWbufUHqa5H
-	 UjHTLgDTbBnp0dTouoXG1tylA9PIeeaiITC8suHtBSQw29/ssD9MNGpaGWNc3Yhujj
-	 VsRs57ehcqWBtEajQ9GU88WaNLHV6uN+u/uV3srlUr/gBthuCfV1iU7+4kHDiLAsba
-	 /U9AMu8IEd5Yzzs2twbO5+DtdhaUCVnIaI9AEHj7Kv1B23dfAo1sg3lxtEu4M21o9a
-	 EYOx5F8k213BirWvLt+T//gk8zuHblnRunMVnTLyjyNfSCXLMM5sNNqT5TIzaN+MdR
-	 jy8TvbugD6llQ==
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6ea0a6856d7so844365a34.1;
-        Mon, 22 Apr 2024 09:43:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW0SoMdZYciZ1ZMujRNt2+uM8hRTau1bxIt9bfkjD6lKTGdnh8b5nbgmaeLCIOiFWCqO63ydZ1zbSzh4qFz1qYdBQ315XIzOWC95kXOyLYnie5iwb0VYlOnsxhrgPJAjNKAjrgnUDXKJ+fxx6ntpCYcOgGJcxXowUTTwMU4jInaqQ==
-X-Gm-Message-State: AOJu0YzvlETSlQe3B9Vx65F2m5ZNU+B5bqadKcRX9otOzJuZcnOOVHil
-	k7GmbMsXJhIjvJchF1/THiMaCjdGzL8oMQlnar6ch0U8SzmJaFR1dilYNllRvRMS98I7KMh/cXA
-	45UGq3p8X53DWizfczLM1eOhMuAM=
-X-Google-Smtp-Source: AGHT+IFxhkTiGWpLI37qbMnnvDoa9HCZq+l7GBMHsvYcSFiRCIGp8GKu5oJltXjmDUMrx1tmpugYn8g6AT+C8moo+Ig=
-X-Received: by 2002:a05:6820:e07:b0:5aa:14ff:4128 with SMTP id
- el7-20020a0568200e0700b005aa14ff4128mr10710388oob.1.1713804217994; Mon, 22
- Apr 2024 09:43:37 -0700 (PDT)
+	s=arc-20240116; t=1713804437; c=relaxed/simple;
+	bh=JsuHU/uiRlbuXLGd2jq3bAmvz5bvKgsQuAwVRdaR0NM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UXcl/EKMrJc6pAT1Glm4weTqLzCf5pZWXt2RxbaatwD/DSl/CYM67bS2oIruy5XPswysubP8AjweinVL11VlAMzLGuCsFCHwxGDq4tVQVVCPZ1Gwd1CewOiJ4oP3JksubdGXmx3MMqbHKqgDMEx5upwjV5MWSVJoS+YtWd5zyvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nyJSqJyr; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1713804431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dcyoi5sOG2B7iFToO0Fnv1/d2q+P/6hiQ3YBRfUehOg=;
+	b=nyJSqJyrY26dfbyJrlebkOGESL+TILpfJMgByW5Gme7yAkGMcsxCBV/561pBkf37GgT3RY
+	gxiqUdN2qtNaxojlEvtFrjMgOozleQs22/d/dyG6n/Q9b9BypzmtAvNcVkH+6hhO7sLUrh
+	deOYvS9qGZtw0XMzcWoaJ/nThDdC3Hc=
+From: Sui Jingfeng <sui.jingfeng@linux.dev>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: dri-devel@lists.freedesktop.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH v2] software node: Implement device_get_match_data fwnode callback
+Date: Tue, 23 Apr 2024 00:46:58 +0800
+Message-Id: <20240422164658.217037-1-sui.jingfeng@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240409052310.3162495-1-jarredwhite@linux.microsoft.com> <soawdod6cpcc73wrc35bvnah5toubf2cv4x7c3e6p53xtvllrs@6dtpn2v5t3di>
-In-Reply-To: <soawdod6cpcc73wrc35bvnah5toubf2cv4x7c3e6p53xtvllrs@6dtpn2v5t3di>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 18:43:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0imiRbheOJgEf=Ua-JRhDTh1+SJ-=CjUC7vOQYffV50FA@mail.gmail.com>
-Message-ID: <CAJZ5v0imiRbheOJgEf=Ua-JRhDTh1+SJ-=CjUC7vOQYffV50FA@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: CPPC: Fix bit_offset shift in MASK_VAL macro
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>, 
-	Jarred White <jarredwhite@linux.microsoft.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Easwar Hariharan <eahariha@linux.microsoft.com>, 
-	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Apr 17, 2024 at 7:37=E2=80=AFPM Vanshidhar Konda
-<vanshikonda@os.amperecomputing.com> wrote:
->
-> Looks good to me.
->
-> Reviewed-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
->
-> On Mon, Apr 08, 2024 at 10:23:09PM -0700, Jarred White wrote:
-> >Commit 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for
-> >system memory accesses") neglected to properly wrap the bit_offset shift
-> >when it comes to applying the mask. This may cause incorrect values to b=
-e
-> >read and may cause the cpufreq module not be loaded.
-> >
-> >[   11.059751] cpu_capacity: CPU0 missing/invalid highest performance.
-> >[   11.066005] cpu_capacity: partial information: fallback to 1024 for a=
-ll CPUs
-> >
-> >Also, corrected the bitmask generation in GENMASK (extra bit being added=
-).
-> >
-> >Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for sy=
-stem memory accesses")
-> >Signed-off-by: Jarred White <jarredwhite@linux.microsoft.com>
-> >CC: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> >CC: stable@vger.kernel.org #5.15+
-> >---
-> > drivers/acpi/cppc_acpi.c | 4 ++--
-> > 1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> >diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> >index 4bfbe55553f4..00a30ca35e78 100644
-> >--- a/drivers/acpi/cppc_acpi.c
-> >+++ b/drivers/acpi/cppc_acpi.c
-> >@@ -170,8 +170,8 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs=
-, wraparound_time);
-> > #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_=
-width - 1)) : (reg)->bit_width)
-> >
-> > /* Shift and apply the mask for CPC reads/writes */
-> >-#define MASK_VAL(reg, val) ((val) >> ((reg)->bit_offset &              =
-       \
-> >-                                      GENMASK(((reg)->bit_width), 0)))
-> >+#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) &             =
-       \
-> >+                                      GENMASK(((reg)->bit_width) - 1, 0=
-))
-> >
-> > static ssize_t show_feedback_ctrs(struct kobject *kobj,
-> >               struct kobj_attribute *attr, char *buf)
-> >--
+Because the software node backend of the fwnode API framework lacks an
+implementation for the .device_get_match_data function callback. This
+makes it difficult to use(and/or test) a few drivers that originates
+from DT world on the non-DT platform.
 
-Applied as 6.9-rc material, thanks!
+Implement the .device_get_match_data fwnode callback, device drivers or
+platform setup codes are expected to provide a string property, named as
+"compatible", the value of this software node string property is used to
+match against the compatible entries in the of_device_id table.
+
+This also helps to keep the three backends of the fwnode API aligned as
+much as possible, which is a fundamential step to make device driver
+OF-independent truely possible.
+
+Fixes: ffb42e64561e ("drm/tiny/repaper: Make driver OF-independent")
+Fixes: 5703d6ae9573 ("drm/tiny/st7735r: Make driver OF-independent")
+Closes: https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Daniel Scally <djrscally@gmail.com>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Signed-off-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+---
+ V2: Update commit message
+ drivers/base/swnode.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index eb6eb25b343b..48d18a90b97b 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -14,6 +14,7 @@
+ #include <linux/init.h>
+ #include <linux/kobject.h>
+ #include <linux/kstrtox.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/list.h>
+ #include <linux/property.h>
+ #include <linux/slab.h>
+@@ -390,6 +391,30 @@ static void software_node_put(struct fwnode_handle *fwnode)
+ 	kobject_put(&swnode->kobj);
+ }
+ 
++static const void *
++software_node_get_match_data(const struct fwnode_handle *fwnode,
++			     const struct device *dev)
++{
++	struct swnode *swnode = to_swnode(fwnode);
++	const struct of_device_id *matches = dev->driver->of_match_table;
++	const char *val = NULL;
++	int ret;
++
++	ret = property_entry_read_string_array(swnode->node->properties,
++					       "compatible", &val, 1);
++	if (ret < 0 || !val)
++		return NULL;
++
++	while (matches && matches->compatible[0]) {
++		if (!strcmp(matches->compatible, val))
++			return matches->data;
++
++		matches++;
++	}
++
++	return NULL;
++}
++
+ static bool software_node_property_present(const struct fwnode_handle *fwnode,
+ 					   const char *propname)
+ {
+@@ -676,6 +701,7 @@ software_node_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ static const struct fwnode_operations software_node_ops = {
+ 	.get = software_node_get,
+ 	.put = software_node_put,
++	.device_get_match_data = software_node_get_match_data,
+ 	.property_present = software_node_property_present,
+ 	.property_read_int_array = software_node_read_int_array,
+ 	.property_read_string_array = software_node_read_string_array,
+-- 
+2.34.1
+
 
