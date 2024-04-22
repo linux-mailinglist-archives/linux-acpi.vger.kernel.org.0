@@ -1,52 +1,52 @@
-Return-Path: <linux-acpi+bounces-5224-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5225-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D1F8AC3D8
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 07:43:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FD58AC406
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 08:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADB51F2357F
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 05:43:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869BA1C21519
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 06:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAA81804E;
-	Mon, 22 Apr 2024 05:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BE91B800;
+	Mon, 22 Apr 2024 06:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="FGGVDbru"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Dvqp8S9J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1FC2F5E;
-	Mon, 22 Apr 2024 05:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FE718042;
+	Mon, 22 Apr 2024 06:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713764612; cv=none; b=kzuO2RDN8MhJ1U/+TBxfDq7BXNTtZFuRzJazp9d7ckGweA5VTXSxLoaPRAhIpSEKW/E98brtkjRYMKOC+LPc/eXs25DmljYwTuK7Jv+lDnFxQ0CDUCZKRrVg8Uumq5/dSzMhyc61WIesf9D/cUSjzlR9j3CWOXbclVZvmLURD7w=
+	t=1713766158; cv=none; b=ArMV60QQZsyIqz0UwUhvMpHvPk/WfbsgMKU6FJD4XyZMxAbbG0xNL2uN0uoOmAqJVfZnDb4CKZ+SDo1aRrDvKvQjRYyG0rlOwF6Ws0hUBQJTeuQAD+UHm4UBxd90EPjtq1X7LiU55E8HgNRcMDSvBQKqtRIfDNYhmar5utksrhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713764612; c=relaxed/simple;
+	s=arc-20240116; t=1713766158; c=relaxed/simple;
 	bh=He0zbL0PU3S3TFQfRLYChmdyE6XrqZzNgLl89NZgNZI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=glwa26jym+69GAW56NvSHWx4Lk8tuIHwy3bi7XWo5EFPSrD/p2/uGPQO0kkjYcqo2A3shQdfg0SE2kLdW2e/q5v2+Ro+X4YpiUa8CceSqO/RX/NITK11FtwxahDDRwBqVenOY1ijib1fKDyLbZ5+jMYE4Yyq9VthJtybLRGDLzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=FGGVDbru; arc=none smtp.client-ip=212.227.15.19
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n9k1ORWeENagAI1M71LSNNZ/X1WD3HOwwEhHq8mki7BTlaK/MHqR03mseEP5fTiIFx/h1/2Eok4SOflHW4FMQGbSpFwYt7rfMUHH+CO6KseDVD+Z883jIzBsPPNRoXLM0SaFFI1NHSL8ikDSkoKvrVt8Gl1bGmLvSitsR1/+21g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Dvqp8S9J; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1713764580; x=1714369380; i=w_armin@gmx.de;
+	s=s31663417; t=1713766128; x=1714370928; i=w_armin@gmx.de;
 	bh=WEN7aBRlN37FKl+bSkFenqf1s7tCuOCXoTIAUr90SiY=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
 	 MIME-Version:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=FGGVDbruynrZbtCesQ2RVIaAwXexjyO8O87KZ+kfKo2dWHf6Bv277gTiEP00vuNY
-	 w4PvW8goxQhWeU2vGMVBLB9dEWOVYuJ6y3EIrU7FAdpnT1S9fuJPDHcrAxRKHjbQy
-	 +0uGLXqPKsQ902J8UZ4dBDXVErsbsJX51tsNcUTPFO5iVhwTpHhbQ1tOj326funUq
-	 qKtGbo+hOuoGRfOG8SJoaKR/hTyJmneb7XXiwWALbgnX2YHjbtzSVXGhrOWHivKry
-	 nQx2bItw29bM/ifbJnZuyNKjyx3+XlMF9BlKNSyFFEyzmni+jWfz0+iCPK0eqPZCq
-	 U17IutvCKKSGL5wruA==
+	b=Dvqp8S9JQQVINoWKocwqKcl7/zQP5yw+GhOsXvAp6ym7oXFFD/9MClFohBFr1Jes
+	 c1rcM5khVSp3TB3WB5Voc2rcgwW8zW69GCP8KNmuEjtcZLF5aoqv3KiA5vQKDuvw8
+	 SRjLNKt9h9TKpOKQyvuS5Qmq/cro+ixONJDrRCB/q5pGcmQ0BFmsbkRPJdUZgxT5d
+	 mhLY6UxYVmhXaY6FBiOF/3brGua0PDFPK7LW9AD4SmAPJpPZ/DqBpsG/P5DeSLFB+
+	 f2lzACxtmQMlH20dec85+5kG6UdUjmWt7PeLvu2CbslM3UC/dFRBapak2RD4IaaE3
+	 ulYX48qFU7dq9mOBwA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1M1poA-1s0yJX3pYO-002DNE; Mon, 22 Apr 2024 07:42:59 +0200
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1My32F-1sv7VP04eV-00zZ98; Mon, 22 Apr 2024 08:08:48 +0200
 From: Armin Wolf <W_Armin@gmx.de>
 To: mlj@danelec.com,
 	rafael.j.wysocki@intel.com,
@@ -59,9 +59,9 @@ Cc: jdelvare@suse.com,
 	linux-hwmon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	platform-driver-x86@vger.kernel.org
-Subject: [PATCH] ACPI: fan: Add hwmon support
-Date: Mon, 22 Apr 2024 07:42:51 +0200
-Message-Id: <20240422054251.4006-1-W_Armin@gmx.de>
+Subject: [PATCH RESEND v5] ACPI: fan: Add hwmon support
+Date: Mon, 22 Apr 2024 08:08:35 +0200
+Message-Id: <20240422060835.71708-1-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -70,24 +70,24 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Sh2Myo4gEJPhKhQ1wv9rPhsWJer98VoeZpoLslc8+EINdyegc47
- EEHgjobh0mNieRw0jPuIRH3p3kkkFfQpOntcHRxoWyywOwrNOpkMD6AYGSa3vGOCtZES7+T
- LrRo3vWuzDcZu7nq7Mvy4G4HKz4+J7LPr8TuVaIZQ6RynCIF4q3WDGPFwb3Y1QLVPVrwhfX
- HKoipt70KPf/OhcakwgRw==
+X-Provags-ID: V03:K1:XymzL+xZUhXnHU/30jYAXRTwXlcY46UBJQeingUz2ca1mN4C7ge
+ yMxO8lRdlIDEFi1xD9ceAwgytRR8gzouN92WO0sIrVEvXqaAbg+pAOKWbIS3mOfxTxAS5Q/
+ eqrHqt9ugv0G5TDYrQsddsjau41ECQvSlIT7DgDHZDA6c0eP34a5fhTfzxnlKaahRO2D7aG
+ hjtbXPBGWqpuzlpRAtyJw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:EgKfE8EYO8Q=;SWbmCLiqMw5lMuiiap7O4RjIWLC
- 6ONLKNtA6tNueRgP3Jigp+D96eiT6uPfgqoVSjkc6TT565ovnJIHmzFDuvQBV9HHwiLm3h3N2
- BKm2cXBDht8FWSaX7pZ3z+D3KR+F2Y/XXaknZvalyFfDwmQv2IUrNkWl/VmzaXZK+QUIu+Gsz
- ASlROpy20QVKpzPBD5Y6zE7J+uiJbZvm9QnpZK6loiNHjtBzibp9yvyJkhjfCAJwTtxTMt0Ix
- n0FzOE9+GADUJNGReXUn24V0bAX0vOS/P2tAu4rKubD6SvQCj8H0fIt8UB5+XGlJD3yf4LW6z
- mlfgmoGIiAxGf9/D3mdd4tuYdkMrD2Y7noBZVannsuvH8wzkV90BzGrPst0etZjslll4tHdsT
- 3jO+jpp0pXY0yX42Z4OuQ9S6CSxCOLYPWBIilSBbGPaSsDvfKc8EoPdFSwhmrMCoTwS3OrNt9
- v/DxRlfj+iHIjfecQCkMaMe5G65X8Qls34+uIHuh6ulovTFbAKKHFUTvaayV2OXBDtb/GxkVP
- eHIWbYR8D/i6lNJ9eNKtZPEb2vWW4mfpCjwruBnWQ0VQfE7NTFGY7NPCRmqMBZyc6id4Dv+B6
- 4h0nqmvqIG8H1HMGAuikNkELTAjpn2dc11LOjPuQrlJWZyGSi/gilqiPI3s+TDD7JQQ0uhksx
- BCFw/LXkEnBhNRLqRIPco8rahO7Ztzy9YXGQJmnBISJYY8yYLmQtIJ5d23qF8W3U/VLVtUkGT
- Q7GvA5cxCUngVc6XzzhURO9koTiUIJcA5kpNczYxReVCteXgsGme0YA2dRPdZ8wEUV+Nn/smW
- Z18KzbXRRyf5lgEv4pFQl0wMVULIB3pbDNSAvaZYZnr9g=
+UI-OutboundReport: notjunk:1;M01:P0:BrTNafZfKhA=;hT+tE1vUPXs/Zy4yarizHRAD9NZ
+ XkdR1/7Kuk6clNTwQ3PHeiLHxN730CTpDpz0Nqgd63IL5VNqBNkRpDMPLP8/SAoe9HKH9nwpv
+ DupNjgVL6A/oAtBV4CFm9CK2vC7n3nLcJblQBSNmx1i0F7MU0IBe29hg2o/wd0A1CjY1mGNkj
+ u+lcgSwW+qVurmyUYU/rUbghsVgTSCp16w4xl9Or6Ha8Uj3hRNA4rnHuY9Yy7iqQAxTkHvs3t
+ txIq/AUEZoSavtbTteT+ImVlJVKSQE1X+T4jRK5FMjpFgET8XRqAWx1gHpUUbUASxEytxCuYp
+ Afjg4g+QHs5xSMaXHFe/aSVVHe1nQve7CxRsyjoBKtgOsNTM/yPLFkoy1F3hrAKOlu91dLShA
+ rRZLChlPNJXrIryeW1qMJGnepNecBc9nlXL9hmLGuxlF3hL/TMM2QfaqrXeWWmKqVfr/17lpp
+ F2oPAqzpEFAnZP1lAZdp/poAOlDWi8rl0xE8c7tdpo+x6R2tpp4U/bnHg7AJJcqmnNQ44NGhE
+ JLHb6AZmQNjVfM3hddwB2KnXL3EdYTG+ZCS3OSYB1vuhjgiYLTfk4N6qLEGGDQSJ338Mzjzpm
+ /avQ7cZTPnLhOnNornO2i1XPTJc5xuDl2LKW07HzeuNbTolYHAne/JGgOdcAcE/0OD5AMf8ck
+ Mk+7hojHiNDOK/E1xC06lsNZLPoas8NMKYCj/8eow11WbfQDMYsDaaFwrxQ97rShSDWsHcntf
+ 1z14famHpHhlw1n7gw1HccEAnpWadiGxmQq2A9a0eUBy+b1XcwEldZF3lsaaxzySIjRf17Aog
+ fT2RQWeQRv/KonFVAJ4Er/ZRjFnqz9kZfT+dSOlOzy8CA=
 
 Currently, the driver does only support a custom sysfs
 interface to allow userspace to read the fan speed.
