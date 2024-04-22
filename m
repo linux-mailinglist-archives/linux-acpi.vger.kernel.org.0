@@ -1,270 +1,142 @@
-Return-Path: <linux-acpi+bounces-5262-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5263-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAEC8AD2FB
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 19:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C688AD310
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 19:06:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8211B2683F
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 17:02:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A49DB21A25
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 17:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69E015444E;
-	Mon, 22 Apr 2024 17:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9PBXRja"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4AB153839;
+	Mon, 22 Apr 2024 17:06:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7770A154442;
-	Mon, 22 Apr 2024 17:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F211514E2;
+	Mon, 22 Apr 2024 17:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713805227; cv=none; b=plkWCBKSXObYZFz3VdvPaFHDQamrRwOJqKmwSUS+Ki1gR6t1rJAerYouSPL/6YaFtPlR1HV+ODIDLPvLGdTkyUjDM2Q0BUb+2TEWNNllhJQ4qHMeJbizzpGrhPp3uIDH5DYvW/63cFsl+jl5lYrDqVMNqt7ZJyqMX09FvU3mJBs=
+	t=1713805604; cv=none; b=f+8olDwujWIr0fw6rhLFQhWBO96pFFsI1JCMBrmRQgrVvpvNwXipGHTvM+p07LI+acNC29mlwGvP9sw4OdviI4ab/cRJSuJVShEZ1yE8i7jPzjt+Eq6n8+QbT+NCsTjLN16KB1VA1WKoBpcgHqkP14+J7baJi6W5AAmH5kSAH/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713805227; c=relaxed/simple;
-	bh=s1zKSecfH6FRmGi1pXDaj0RBdLhVWJQvZjaTL6GhU6w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4d18EPEWCppw6PUW2CJZDL6gH8KZvOw8QhbWjDNhstP66apzLzU54mUuIH0eoqbFKj/meaPCt8foWEgiDt8qBHnGpPjw+c4djBZAeSk/0b8FcDTDnETbpqlpBH2RUycaYmnnd5QZXkr6RmFdzR66MIIuYLKlRqpeQu/Pd+TfVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9PBXRja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126ECC32781;
-	Mon, 22 Apr 2024 17:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713805227;
-	bh=s1zKSecfH6FRmGi1pXDaj0RBdLhVWJQvZjaTL6GhU6w=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=p9PBXRja5DrqjaANoj45wR5oqP3bp+/4UZDr1Idi/pLcG6u6YCY7FQhylKRY0i125
-	 kClvfu45zFNxa5WHWWHfqk7f/H4ByJ2mVfLXyS8OXgMz6lMzzWe5iiONFsDoroeaK3
-	 8e0VRnM7RK0K1859HlwfIYg1co1IyxnAIzrP/5svFF/7Gk8aruqarQSxc94Zu6/WI3
-	 /nFx4hS6NeiEMBvTU5AMc7JRicRL6HQo6b7FTbNI0mF/NL3YzEJVnCJHFdkCeVpZqT
-	 xx2fNaYCm7HsoiynuVCUKahyTtvxXCwNT29/7eFRLqcG0DcJaeRz5jQZOFdJTIV5No
-	 l3CFRC+yCqbLQ==
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5acdbfa6e94so1233146eaf.2;
-        Mon, 22 Apr 2024 10:00:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX5GrzzTpBDChVugSAsOQAOLapXrrvJN5AxH673EV53/L4/ZLkpmPmW5/imqKtpxjWXzndv+f5ZkggCalbm68BObWrXT0YNSoqvnoquNCgiXKbJbhOqQRJgL1zk718+DiJ0xbhuw05Bq19dISt7F0OoSdKr9551zIlaJgaS4rMe3A==
-X-Gm-Message-State: AOJu0YwierBbOMy2hwz9wpaJRoMFBTqqNCWEPwJMRISs9l77nP8aoFo8
-	iEPLlI1/C/TuIg8MmIK5xmpJnyNBtdvayXX2hHPcO9EnVTamwMHc8ouqAps+u2QC18MnUdoz7hZ
-	HFbGb+aDM2QjNwyuTnBy95WGqaeY=
-X-Google-Smtp-Source: AGHT+IG5C8aadvjW5yhvWe50p/4WPry2PTf7i+PbfLKWECNBaTQZTZ7wgjS/5Q9vQx4/cCAOWukQ58biWD8awJFIDC0=
-X-Received: by 2002:a4a:de19:0:b0:5a7:db56:915c with SMTP id
- y25-20020a4ade19000000b005a7db56915cmr11975023oot.1.1713805226331; Mon, 22
- Apr 2024 10:00:26 -0700 (PDT)
+	s=arc-20240116; t=1713805604; c=relaxed/simple;
+	bh=ChT6+vPumnrJM9srWy5yUNAeeCLE5XyV4GrHRpq+9qI=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EHiAz8yeS6ajSEw5XLhUstTlBfVFNfeh7nMVnEYbHQ7yNvNiLIITR6p9S1Pqo8LZz/Ac+mfIugZBDLeQ3sWIL2qwWBdsF82c9YnDaKkDc3Jt9p5aWDtvlFzM8tjQ7P1MUY4G7NAAmKo02mqgcfgH6E5XbN2cAPhU4CqfU5DLWew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNWqt2Xlwz688p7;
+	Tue, 23 Apr 2024 01:06:34 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5779F140736;
+	Tue, 23 Apr 2024 01:06:40 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Apr
+ 2024 18:06:39 +0100
+Date: Mon, 22 Apr 2024 18:06:39 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Hans de Goede <hdegoede@redhat.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Sean Rhodes <sean@starlabs.systems>, <linux-iio@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+Subject: Re: [PATCH 2/4] iio: accel: kxcjk-1013: Move ACPI ROTM parsing to
+ new acpi-helpers.h
+Message-ID: <20240422180639.00007270@Huawei.com>
+In-Reply-To: <85ec0beb-9ec2-4360-8b53-fe65f8b6f5a8@redhat.com>
+References: <20240417164616.74651-1-hdegoede@redhat.com>
+	<20240417164616.74651-3-hdegoede@redhat.com>
+	<20240420121345.26c2edf1@jic23-huawei>
+	<85ec0beb-9ec2-4360-8b53-fe65f8b6f5a8@redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240411231844.3306037-1-vanshikonda@os.amperecomputing.com>
-In-Reply-To: <20240411231844.3306037-1-vanshikonda@os.amperecomputing.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 19:00:15 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hHbnVb8jnqd+o-GMS+Pw=UMq-7LQekBWWpNqTkBNfUWA@mail.gmail.com>
-Message-ID: <CAJZ5v0hHbnVb8jnqd+o-GMS+Pw=UMq-7LQekBWWpNqTkBNfUWA@mail.gmail.com>
-Subject: Re: [PATCH v3] ACPI: CPPC: Fix access width used for PCC registers
-To: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Cc: Jarred White <jarredwhite@linux.microsoft.com>, 
-	Easwar Hariharan <eahariha@linux.microsoft.com>, 
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "5 . 15+" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, Apr 12, 2024 at 1:18=E2=80=AFAM Vanshidhar Konda
-<vanshikonda@os.amperecomputing.com> wrote:
->
-> commit 2f4a4d63a193be6fd530d180bb13c3592052904c modified
-> cpc_read/cpc_write to use access_width to read CPC registers. For PCC
-> registers the access width field in the ACPI register macro specifies
-> the PCC subspace id. For non-zero PCC subspace id the access width is
-> incorrectly treated as access width. This causes errors when reading
-> from PCC registers in the CPPC driver.
->
-> For PCC registers base the size of read/write on the bit width field.
-> The debug message in cpc_read/cpc_write is updated to print relevant
-> information for the address space type used to read the register.
->
-> Signed-off-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> Tested-by: Jarred White <jarredwhite@linux.microsoft.com>
-> Reviewed-by: Jarred White <jarredwhite@linux.microsoft.com>
-> Reviewed-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> Cc: 5.15+ <stable@vger.kernel.org> # 5.15+
-> ---
->
-> When testing v6.9-rc1 kernel on AmpereOne system dmesg showed that
-> cpufreq policy had failed to initialize on some cores during boot because
-> cpufreq->get() always returned 0. On this system CPPC registers are in PC=
-C
-> subspace index 2 that are 32 bits wide. With this patch the CPPC driver
-> interpreted the access width field as 16 bits, causing the register read
-> to roll over too quickly to provide valid values during frequency
-> computation.
->
-> v2:
-> - Use size variable in debug print message
-> - Use size instead of reg->bit_width for acpi_os_read_memory and
->   acpi_os_write_memory
->
-> v3:
-> - Fix language in error messages in cpc_read/cpc_write
->
->  drivers/acpi/cppc_acpi.c | 53 ++++++++++++++++++++++++++++------------
->  1 file changed, 37 insertions(+), 16 deletions(-)
->
-> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-> index 4bfbe55553f4..7d476988fae3 100644
-> --- a/drivers/acpi/cppc_acpi.c
-> +++ b/drivers/acpi/cppc_acpi.c
-> @@ -1002,14 +1002,14 @@ static int cpc_read(int cpu, struct cpc_register_=
-resource *reg_res, u64 *val)
->         }
->
->         *val =3D 0;
-> +       size =3D GET_BIT_WIDTH(reg);
->
->         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
-> -               u32 width =3D GET_BIT_WIDTH(reg);
->                 u32 val_u32;
->                 acpi_status status;
->
->                 status =3D acpi_os_read_port((acpi_io_address)reg->addres=
-s,
-> -                                          &val_u32, width);
-> +                                          &val_u32, size);
->                 if (ACPI_FAILURE(status)) {
->                         pr_debug("Error: Failed to read SystemIO port %ll=
-x\n",
->                                  reg->address);
-> @@ -1018,17 +1018,22 @@ static int cpc_read(int cpu, struct cpc_register_=
-resource *reg_res, u64 *val)
->
->                 *val =3D val_u32;
->                 return 0;
-> -       } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_COMM && p=
-cc_ss_id >=3D 0)
-> +       } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_COMM && p=
-cc_ss_id >=3D 0) {
-> +               /*
-> +                * For registers in PCC space, the register size is deter=
-mined
-> +                * by the bit width field; the access size is used to ind=
-icate
-> +                * the PCC subspace id.
-> +                */
-> +               size =3D reg->bit_width;
->                 vaddr =3D GET_PCC_VADDR(reg->address, pcc_ss_id);
-> +       }
->         else if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                 vaddr =3D reg_res->sys_mem_vaddr;
->         else if (reg->space_id =3D=3D ACPI_ADR_SPACE_FIXED_HARDWARE)
->                 return cpc_read_ffh(cpu, reg, val);
->         else
->                 return acpi_os_read_memory((acpi_physical_address)reg->ad=
-dress,
-> -                               val, reg->bit_width);
-> -
-> -       size =3D GET_BIT_WIDTH(reg);
-> +                               val, size);
->
->         switch (size) {
->         case 8:
-> @@ -1044,8 +1049,13 @@ static int cpc_read(int cpu, struct cpc_register_r=
-esource *reg_res, u64 *val)
->                 *val =3D readq_relaxed(vaddr);
->                 break;
->         default:
-> -               pr_debug("Error: Cannot read %u bit width from PCC for ss=
-: %d\n",
-> -                        reg->bit_width, pcc_ss_id);
-> +               if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-> +                       pr_debug("Error: Cannot read %u bit width from sy=
-stem memory: 0x%llx\n",
-> +                               size, reg->address);
-> +               } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_C=
-OMM) {
-> +                       pr_debug("Error: Cannot read %u bit width from PC=
-C for ss: %d\n",
-> +                               size, pcc_ss_id);
-> +               }
->                 return -EFAULT;
->         }
->
-> @@ -1063,12 +1073,13 @@ static int cpc_write(int cpu, struct cpc_register=
-_resource *reg_res, u64 val)
->         int pcc_ss_id =3D per_cpu(cpu_pcc_subspace_idx, cpu);
->         struct cpc_reg *reg =3D &reg_res->cpc_entry.reg;
->
-> +       size =3D GET_BIT_WIDTH(reg);
-> +
->         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_IO) {
-> -               u32 width =3D GET_BIT_WIDTH(reg);
->                 acpi_status status;
->
->                 status =3D acpi_os_write_port((acpi_io_address)reg->addre=
-ss,
-> -                                           (u32)val, width);
-> +                                           (u32)val, size);
->                 if (ACPI_FAILURE(status)) {
->                         pr_debug("Error: Failed to write SystemIO port %l=
-lx\n",
->                                  reg->address);
-> @@ -1076,17 +1087,22 @@ static int cpc_write(int cpu, struct cpc_register=
-_resource *reg_res, u64 val)
->                 }
->
->                 return 0;
-> -       } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_COMM && p=
-cc_ss_id >=3D 0)
-> +       } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_COMM && p=
-cc_ss_id >=3D 0) {
-> +               /*
-> +                * For registers in PCC space, the register size is deter=
-mined
-> +                * by the bit width field; the access size is used to ind=
-icate
-> +                * the PCC subspace id.
-> +                */
-> +               size =3D reg->bit_width;
->                 vaddr =3D GET_PCC_VADDR(reg->address, pcc_ss_id);
-> +       }
->         else if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                 vaddr =3D reg_res->sys_mem_vaddr;
->         else if (reg->space_id =3D=3D ACPI_ADR_SPACE_FIXED_HARDWARE)
->                 return cpc_write_ffh(cpu, reg, val);
->         else
->                 return acpi_os_write_memory((acpi_physical_address)reg->a=
-ddress,
-> -                               val, reg->bit_width);
-> -
-> -       size =3D GET_BIT_WIDTH(reg);
-> +                               val, size);
->
->         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                 val =3D MASK_VAL(reg, val);
-> @@ -1105,8 +1121,13 @@ static int cpc_write(int cpu, struct cpc_register_=
-resource *reg_res, u64 val)
->                 writeq_relaxed(val, vaddr);
->                 break;
->         default:
-> -               pr_debug("Error: Cannot write %u bit width to PCC for ss:=
- %d\n",
-> -                        reg->bit_width, pcc_ss_id);
-> +               if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-> +                       pr_debug("Error: Cannot write %u bit width to sys=
-tem memory: 0x%llx\n",
-> +                               size, reg->address);
-> +               } else if (reg->space_id =3D=3D ACPI_ADR_SPACE_PLATFORM_C=
-OMM) {
-> +                       pr_debug("Error: Cannot write %u bit width to PCC=
- for ss: %d\n",
-> +                               size, pcc_ss_id);
-> +               }
->                 ret_val =3D -EFAULT;
->                 break;
->         }
-> --
+On Mon, 22 Apr 2024 11:18:26 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-Applied as 6.9-rc material, thanks!
+> Hi,
+>=20
+> On 4/20/24 1:13 PM, Jonathan Cameron wrote:
+> > On Wed, 17 Apr 2024 18:46:14 +0200
+> > Hans de Goede <hdegoede@redhat.com> wrote:
+> >  =20
+> >> The ACPI "ROTM" rotation matrix parsing code atm is already duplicated
+> >> between bmc150-accel-core.c and kxcjk-1013.c and a third user of this =
+is
+> >> coming.
+> >>
+> >> Move the ROTM parsing from kxcjk-1013.c, which has slightly better err=
+or
+> >> logging (and otherwise is 100% identical), into a new acpi-helpers.h f=
+ile
+> >> so that it can be shared.
+> >>
+> >> Other then moving the code the only 2 other changes are:
+> >>
+> >> 1. Rename the function to acpi_read_mount_matrix() to make clear this
+> >>    is a generic ACPI mount matrix read function.
+> >> 2. Add a "char *acpi_method" parameter since some bmc150 dual-accel se=
+tups
+> >>    (360=B0 hinges with 1 accel in kbd/base + 1 in display half) declar=
+e both
+> >>    accels in a single ACPI device with 2 different method names for
+> >>    the 2 matrices.
+> >>
+> >> Cc: Sean Rhodes <sean@starlabs.systems>
+> >> Signed-off-by: Hans de Goede <hdegoede@redhat.com> =20
+> >=20
+> > Tempted to ask you to rename this to
+> > acpi_non_standard_microsoft_extension_that_they_never_agreed_with_aswg_=
+read_mount_matrix()
+> > but meh, I'll cope with a reference to:
+> > https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sens=
+ors-acpi-entries
+> > and a comment saying this is not part of the ACPI standard. =20
+>=20
+> Ok, so I have added the following comment to the v2 which I will send out=
+ soon:
+>=20
+> diff --git a/drivers/iio/accel/acpi-helpers.h b/drivers/iio/accel/acpi-he=
+lpers.h
+> index a4357925bf07..4f4140694b59 100644
+> --- a/drivers/iio/accel/acpi-helpers.h
+> +++ b/drivers/iio/accel/acpi-helpers.h
+> @@ -7,6 +7,13 @@
+>  #include <linux/sprintf.h>
+> =20
+>  #ifdef CONFIG_ACPI
+> +/*
+> + * Parse mount matrixes defined in the ACPI "ROTM" format from:
+> + * https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/se=
+nsors-acpi-entries
+> + * This is a Microsoft extension and not part of the official ACPI spec.
+> + * The method name is configurable because some dual-accel setups define=
+ 2 mount
+> + * matrices in a single ACPI device using separate "ROMK" and "ROMS" met=
+hods.
+LGTM
+
+> + */
+>  static inline bool acpi_read_mount_matrix(struct device *dev,
+>  					  struct iio_mount_matrix *orientation,
+>  					  char *acpi_method)
+>=20
+> Regards,
+>=20
+> Hans
 
