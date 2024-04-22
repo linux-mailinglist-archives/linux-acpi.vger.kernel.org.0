@@ -1,157 +1,120 @@
-Return-Path: <linux-acpi+bounces-5246-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5247-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6A58ACB32
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 12:47:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 196568AD186
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6813282BC4
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 10:47:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2231F21751
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 16:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910C8145B20;
-	Mon, 22 Apr 2024 10:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D515359C;
+	Mon, 22 Apr 2024 16:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWb0EaOH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22BE14A8B;
-	Mon, 22 Apr 2024 10:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52B115358A;
+	Mon, 22 Apr 2024 16:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713782806; cv=none; b=INhdwBZkxxy/xTGn4pXr4LMN1N8lcBqEhAq/8/diPnnKzPFRL1tj0Br4M/rdkRM+E9cU/ErG5NDuAvcSEDaL9fWf5UM5iBVAiCBnhD9XVIR/WqYjDEROgk0FlDjepTvTMPvISVFXX9UBcVEIYrpGWXUkPwlozrErbd4XJO1NH9M=
+	t=1713802000; cv=none; b=Iorawpd5tg/zbvJO77KdhuA/nfO0O0Vv4T0JLgYwWwaQdySUQbaAkpNGO1y3bAp0KAZSRE/83G+fKmp/PQinCJLlZY3M/wTX9dKhl99bohn1x//OZCwBH/IMsvgNnNvtWDp9QT2TuSm0Tx80SHnXCclPFHEXaLS8QQRGYTOTXcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713782806; c=relaxed/simple;
-	bh=TBfSszjsYeu8dxmuoA7yzrZI7AlIw4uTE4Ri0Sho5Z4=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Se6ioeX757YOHIu6GxsCvU0gxaZXpeQVDFk8WxqMLHhWW/jkvaAvozVzjzvlGsVFVOpqmZqi4lXme15VljhFdGuki/v8O7LLSstJ1t05T6j7IIlLYYawFN8pCr3dZPUozQIvbEoqtlRwQCgzLDfEkFlEd7dxIJBlw3fnh9hpnmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNMPR49BXz6K9Mn;
-	Mon, 22 Apr 2024 18:46:35 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 382BF1406AC;
-	Mon, 22 Apr 2024 18:46:41 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Apr
- 2024 11:46:40 +0100
-Date: Mon, 22 Apr 2024 11:46:39 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
-	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
- Brucker <jean-philippe@linaro.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla
-	<sudeep.holla@arm.com>
-CC: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, <justin.he@arm.com>,
-	<jianyong.wu@arm.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v7 09/16] arm64: acpi: Move get_cpu_for_acpi_id() to a
- header
-Message-ID: <20240422114639.0000651a@Huawei.com>
-In-Reply-To: <20240418135412.14730-10-Jonathan.Cameron@huawei.com>
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
-	<20240418135412.14730-10-Jonathan.Cameron@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1713802000; c=relaxed/simple;
+	bh=/eV0QewYnR/TwjFPMQjJNA0f921srmGTRkXQHI3QFSE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r4jvdMHJKEWw1XHH2/yZ+yJOdCaBSKPOFPstkqXKJQB3jZFQVq4WR4IhD9bMCHGgA8sNXBOOSI1UIeMAcBoLUgSt+5gFZY12lT0sZSlCb5C8tCFCrwCcRU9KhNT/UxNUAhvCZVSsSQOsEuo0Db6MulKZSaTL8d6noTUPd+HjbHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWb0EaOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DABC4AF08;
+	Mon, 22 Apr 2024 16:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713802000;
+	bh=/eV0QewYnR/TwjFPMQjJNA0f921srmGTRkXQHI3QFSE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AWb0EaOHHQZ3W4JAUhevEr1tphSXrfkxbakZEJthQyGmohfqtjWyE6PK0m9nIsf0T
+	 JX7wzgkPvU/tlzqmr7jHmbqJCWwRyx+Dp/waWaHLPd7Fi2Qu0BOOMp0rYkar36adij
+	 tcHUJYXpPs6JPMoD4hoCLl7TLMs5OQHi5VfPf2eSaPKit5hxMeVX9cIyvrB5m6cUwG
+	 jy5VYJneH3Mnqh6sLY2rOxYvSVhrlVjCA1wUxOHBCom6G7XIxqqV+H4cMnRPJXxoFZ
+	 Qq99vW4xqdDq9oY+Az1h0IwujB/mrcmJxe1ymr6I3K5avaNxT/f1PvoLZJALQ9Sq1i
+	 OhGdaGB3phosw==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5a9ef9ba998so1057872eaf.1;
+        Mon, 22 Apr 2024 09:06:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXpmkFPckQIn2Z5DemKW5Vg7arDRB1QPnnGKTRZUnNkipFAS9pEwXaMmkbSRE31GF30uyP/XYep0lbkfTqSg1v2rlVWAUgxupLznowcXTS1CvEXbBRsAB+XVbzwa0KbUtepan6F0Q==
+X-Gm-Message-State: AOJu0YzaDpdWobzlo1ESWUHGOSC5Ye32hh8SiCnpvRqXTp7H+JGWkdq/
+	ipwLLuqauBAGfrfbPnXvsg11ho06qXhAzoncxOo7AoA0pOaIh1CIx/1gtlt9GkY+0SD0poCvyWi
+	SsmdduAWOtse5C1CePSI0KgLm+Ug=
+X-Google-Smtp-Source: AGHT+IFvGo3Yt8VKsQ4d5W7GHHGI3rINMk8s22NvSvikWf0cC7q1VGBPUSaHOolsGqrLZKyTMaYKfOG3oOeU+JaEe7I=
+X-Received: by 2002:a4a:de19:0:b0:5a7:db56:915c with SMTP id
+ y25-20020a4ade19000000b005a7db56915cmr11783826oot.1.1713801999673; Mon, 22
+ Apr 2024 09:06:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240422100218.7693-1-hdegoede@redhat.com>
+In-Reply-To: <20240422100218.7693-1-hdegoede@redhat.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 22 Apr 2024 18:06:24 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iHSiT=P4gawrvWE8y143Q-02Ps8WQKM9k9Z+TctL3kXw@mail.gmail.com>
+Message-ID: <CAJZ5v0iHSiT=P4gawrvWE8y143Q-02Ps8WQKM9k9Z+TctL3kXw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] iio: accel: Share ACPI ROTM parsing between
+ drivers and add it to mxc4005
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Sean Rhodes <sean@starlabs.systems>, "Rafael J . Wysocki" <rafael@kernel.org>, linux-iio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 18 Apr 2024 14:54:05 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+Hi Hans,
 
-> From: James Morse <james.morse@arm.com>
-> 
-> ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-> to the Linux CPU number.
-> 
-> The helper to retrieve this mapping is only available in arm64's NUMA
-> code.
-> 
-> Move it to live next to get_acpi_id_for_cpu().
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Another one where we'd been focused on the general ACPI aspects so long
-the CC list didn't include relevant maintainers.
+On Mon, Apr 22, 2024 at 12:02=E2=80=AFPM Hans de Goede <hdegoede@redhat.com=
+> wrote:
+>
+> Hi All,
+>
+> Here is v2 of the patch series to refactor the ACPI ROTM orientation matr=
+ix
+> handling in kxcjk-1013 + bmc150-accel to share the code instead of having
+> 2 copies and then also use the shared implementation in the mxc4005 drive=
+r
+> since some MXC6655 ACPI firmware nodes also include this.
+>
+> Changes in v2:
+> - Add comment about the Microsoft specification for the "ROTM" ACPI metho=
+d
+>
+> Regards,
+>
+> Hans
+>
+>
+> Hans de Goede (4):
+>   iio: accel: kxcjk-1013: Simplify ACPI ROTM mount matrix retreival
+>   iio: accel: kxcjk-1013: Move ACPI ROTM parsing to new acpi-helpers.h
+>   iio: bmc150-accel-core: Use acpi_read_mount_matrix() helper
+>   iio: accel: mxc4005: Read orientation matrix from ACPI ROTM method
+>
+>  drivers/iio/accel/acpi-helpers.h      | 83 +++++++++++++++++++++++++++
+>  drivers/iio/accel/bmc150-accel-core.c | 45 +--------------
+>  drivers/iio/accel/kxcjk-1013.c        | 82 +-------------------------
+>  drivers/iio/accel/mxc4005.c           | 24 ++++++++
+>  4 files changed, 113 insertions(+), 121 deletions(-)
+>  create mode 100644 drivers/iio/accel/acpi-helpers.h
+>
+> --
 
-+CC Lorenzo, Hanjun and Sudeep.
+The series LGTM, so please feel free to add
 
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-> ---
-> v7: No change
-> ---
->  arch/arm64/include/asm/acpi.h | 11 +++++++++++
->  arch/arm64/kernel/acpi_numa.c | 11 -----------
->  2 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index 6792a1f83f2a..bc9a6656fc0c 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -119,6 +119,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
->  	return	acpi_cpu_get_madt_gicc(cpu)->uid;
->  }
->  
-> +static inline int get_cpu_for_acpi_id(u32 uid)
-> +{
-> +	int cpu;
-> +
-> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> +		if (uid == get_acpi_id_for_cpu(cpu))
-> +			return cpu;
-> +
-> +	return -EINVAL;
-> +}
-> +
->  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
->  void __init acpi_init_cpus(void);
->  int apei_claim_sea(struct pt_regs *regs);
-> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
-> index e51535a5f939..0c036a9a3c33 100644
-> --- a/arch/arm64/kernel/acpi_numa.c
-> +++ b/arch/arm64/kernel/acpi_numa.c
-> @@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
->  	return acpi_early_node_map[cpu];
->  }
->  
-> -static inline int get_cpu_for_acpi_id(u32 uid)
-> -{
-> -	int cpu;
-> -
-> -	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> -		if (uid == get_acpi_id_for_cpu(cpu))
-> -			return cpu;
-> -
-> -	return -EINVAL;
-> -}
-> -
->  static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
->  				      const unsigned long end)
->  {
+to it.
 
+Thanks!
 
