@@ -1,72 +1,49 @@
-Return-Path: <linux-acpi+bounces-5226-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5227-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B136C8AC44A
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 08:37:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A158AC5A8
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 09:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C8E7282DF6
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 06:37:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79FC01C21C51
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 07:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CC7481B3;
-	Mon, 22 Apr 2024 06:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE3D4CE13;
+	Mon, 22 Apr 2024 07:36:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460E93F9ED;
-	Mon, 22 Apr 2024 06:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37F54C635
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 07:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713767862; cv=none; b=QPnyx0WzX/Df2OSk2+wIUff4WI8gUJzSznsVEA4co8tSl6Qu0ddVBsUYGsD8F6DXeEKflXHbPI5MFjtAk95wUn6f4vh+h9N9eQphTC5xpUkxPdebxuD6u9gJn/beROlchzGq8CTqb/yeTHid04AffG1r3x22t502H8tpAxgEqk8=
+	t=1713771374; cv=none; b=hCb91g+2xnCSjPM82jBQRJM2Qi6yrJjnGABI5cCEejrwPmFf5yIHxoJnflAZva0JwV7DxFs6MdUqJMxyNXexaK3wVPw32cRghJOdHc77Yazd8j2z43DtleHLnS+sxnJdmOuBQWPrCxVgZ1vcjdrQJ3my0uQAv3BtbFoYEvX5jKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713767862; c=relaxed/simple;
-	bh=JC1IIk6PjUEaa0fE6CEQRFVeHjWHlAFA0r0s8+x8o4E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L0UYrwxlm8p9f9GMaDNrS/ZRBsaUV9vIU7HSgYRgv4VsuACuALjQ786ydOeyvWNvKafXbaD5O7DV/gYjHBsguK8C27pALD9uYCQRLp5JdiTlbyLagTJMvK4Y94xiUZRaHNCqTxMWv+zZrYjRgrTBpsuAu7k9jdA2xdXXOC6oO88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 4A37E227A87; Mon, 22 Apr 2024 08:37:34 +0200 (CEST)
-Date: Mon, 22 Apr 2024 08:37:34 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] iommu, dma-mapping: Simplify
- arch_setup_dma_ops()
-Message-ID: <20240422063734.GA3750@lst.de>
-References: <cover.1713523152.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1713771374; c=relaxed/simple;
+	bh=PgbWEJHun8Ts3a0s4MSrzmK3KsjjTkmdPjaOC8mw7eU=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z4Hmc+ib7bK4uHAKnkWqaEVPF7BPMEe35HGWIqi0Ujp8KiioiQAUsRwJoJgFniQoGEZageU8rLTUy1Ix/Hk5BUJrw5/zXh8j8M1BJWOE5pMUhl7AbP6tDMwbEwX9h2AcglpDIwp8vpsZp8YQO/UZhV4Ucok1jam3SdOj2/JLHZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
+	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
+	id d3ab1112-007a-11ef-a9de-005056bdf889;
+	Mon, 22 Apr 2024 10:35:02 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 22 Apr 2024 10:35:00 +0300
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
+	jdelvare@suse.com, linux@roeck-us.net, linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com, linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH RESEND v5] ACPI: fan: Add hwmon support
+Message-ID: <ZiYTJOmwDVaws3lh@surfacebook.localdomain>
+References: <20240422060835.71708-1-W_Armin@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -75,18 +52,224 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1713523152.git.robin.murphy@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20240422060835.71708-1-W_Armin@gmx.de>
 
-On Fri, Apr 19, 2024 at 05:54:39PM +0100, Robin Murphy wrote:
-> v3: https://lore.kernel.org/linux-iommu/cover.1707493264.git.robin.murphy@arm.com/
+Mon, Apr 22, 2024 at 08:08:35AM +0200, Armin Wolf kirjoitti:
+> Currently, the driver does only support a custom sysfs
+> interface to allow userspace to read the fan speed.
+> Add support for the standard hwmon interface so users
+> can read the fan speed with standard tools like "sensors".
 > 
-> Hi all,
-> 
-> Since this ended up missing the boat for 6.9, here's a rebase and resend
-> with the additional tags from v3 collected.
+> Tested with a custom ACPI SSDT.
 
-And just to clarify:  I expect this to go in through the iommu tree.
-If you need further action from me, just let me know.
+...
+
+> +/*
+> + * fan_hwmon.c - hwmon interface for the ACPI Fan driver
+
+No file name in the file, it makes an unneeded burden if file is going to be
+renamed.
+
+> + *
+> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
+> + */
+
+...
+
+> +#include <linux/acpi.h>
+> +#include <linux/hwmon.h>
+
+Please, follow IWYU pronciple, e.g., missing err.h here.
+
+> +#include <linux/limits.h>
+> +#include <linux/units.h>
+
+...
+
+> +/* Returned when the ACPI fan does not support speed reporting */
+> +#define FAN_SPEED_UNAVAILABLE	0xffffffff
+> +#define FAN_POWER_UNAVAILABLE	0xffffffff
+
+Shouldn't these be rather as ~0 of the respective types or _MAX (from limits.h)
+or something like that?
+
+...
+
+> +static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan, u64 control)
+> +{
+> +	int i;
+
+unsigned
+
+> +	for (i = 0; i < fan->fps_count; i++) {
+> +		if (fan->fps[i].control == control)
+> +			return &fan->fps[i];
+> +	}
+> +
+> +	return NULL;
+> +}
+
+...
+
+> +static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
+> +				   int channel)
+> +{
+> +	const struct acpi_fan *fan = drvdata;
+> +	int i;
+
+unsigned
+
+> +	switch (type) {
+> +	case hwmon_fan:
+> +		switch (attr) {
+> +		case hwmon_fan_input:
+> +			return 0444;
+> +		case hwmon_fan_target:
+> +			/* When in fine grain control mode, not every fan control value
+> +			 * has an associated fan performance state.
+> +			 */
+> +			if (fan->fif.fine_grain_ctrl)
+> +				return 0;
+> +
+> +			return 0444;
+> +		default:
+
+> +			break;
+> +		}
+> +		break;
+
+Instead of two breaks, just return 0 from 'default' case.
+
+> +	case hwmon_power:
+> +		switch (attr) {
+> +		case hwmon_power_input:
+> +			/* When in fine grain control mode, not every fan control value
+> +			 * has an associated fan performance state.
+> +			 */
+
+/*
+ * Use correct style for multi-line
+ * comment blocks. As in this example.
+ */
+
+> +			if (fan->fif.fine_grain_ctrl)
+> +				return 0;
+> +
+> +			/* When all fan performance states contain no valid power data,
+> +			 * when the associated attribute should not be created.
+> +			 */
+> +			for (i = 0; i < fan->fps_count; i++) {
+> +				if (fan->fps[i].power != FAN_POWER_UNAVAILABLE)
+> +					return 0444;
+> +			}
+> +
+> +			return 0;
+> +		default:
+
+> +			break;
+> +		}
+> +		break;
+
+Ditto.
+
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return 0;
+
+Return from the default.
+
+With the above we got rid of 2 LoCs for free.
+
+> +}
+
+...
+
+> +	switch (type) {
+> +	case hwmon_fan:
+> +		switch (attr) {
+> +		case hwmon_fan_input:
+> +			if (fst.speed == FAN_SPEED_UNAVAILABLE)
+> +				return -ENODATA;
+> +
+> +			if (fst.speed > LONG_MAX)
+> +				return -EOVERFLOW;
+> +
+> +			*val = fst.speed;
+> +			return 0;
+> +		case hwmon_fan_target:
+> +			fps = acpi_fan_get_current_fps(fan, fst.control);
+> +			if (!fps)
+> +				return -ENODATA;
+> +
+> +			if (fps->speed > LONG_MAX)
+> +				return -EOVERFLOW;
+> +
+> +			*val = fps->speed;
+> +			return 0;
+> +		default:
+
+> +			break;
+> +		}
+> +		break;
+
+As per above.
+
+> +	case hwmon_power:
+> +		switch (attr) {
+> +		case hwmon_power_input:
+> +			fps = acpi_fan_get_current_fps(fan, fst.control);
+> +			if (!fps)
+> +				return -ENODATA;
+> +
+> +			if (fps->power == FAN_POWER_UNAVAILABLE)
+> +				return -ENODATA;
+> +
+> +			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
+> +				return -EOVERFLOW;
+> +
+> +			*val = fps->power * MICROWATT_PER_MILLIWATT;
+> +			return 0;
+> +		default:
+> +			break;
+> +		}
+> +		break;
+
+Ditto.
+
+> +	default:
+> +		break;
+> +	}
+> +
+> +	return -EOPNOTSUPP;
+
+Ditto.
+
+Again, 2 LoCs less here.
+
+> +}
+
+...
+
+> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
+> +{
+> +	struct acpi_fan *fan = acpi_driver_data(device);
+> +	struct device *hdev;
+> +
+> +	hdev = devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", fan,
+> +						    &acpi_fan_chip_info, NULL);
+
+> +
+
+Redundant blank line.
+
+> +	return PTR_ERR_OR_ZERO(hdev);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
