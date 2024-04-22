@@ -1,243 +1,370 @@
-Return-Path: <linux-acpi+bounces-5273-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5274-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826CD8AD4D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 21:28:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B233F8AD555
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 21:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5B021C20B4E
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 19:28:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D66261C20E98
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 19:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7481F15532D;
-	Mon, 22 Apr 2024 19:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75587155395;
+	Mon, 22 Apr 2024 19:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFAAzSYo"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Ji+iLSdV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446475025E;
-	Mon, 22 Apr 2024 19:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3891155388;
+	Mon, 22 Apr 2024 19:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713814117; cv=none; b=lBrgg+NmmbJmokCn6pZjxUe6HBLX/UKjkE3xGhVHgVQZu/B1+HG2IMXhUHBj1E7zedk4UNsOQ0lQ4IREXrqQUcJ3RwTAozqVpRFcuvPXEljcnBLN3t/7tbj6d6SuXB+WHKhYcddAJ0evhFrEIJWkYneX5qeIBZkrhhSgi3gZQIY=
+	t=1713815907; cv=none; b=plQIbPptdbx91+JKqzxss5W6qAlgE6yROpwROIbiGH/JbRfZusnHUNQvCmTqGTAUSsllXkVv5k7voTo4Y5VxSB4u44WoWlbm3fdZCJ3e6t7nXKo0c8Gcfw8H+8i7t+R7+jT1ut7WrbhvhcXFnv7XYnZs1qIQKV+sHXdgTXY4zGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713814117; c=relaxed/simple;
-	bh=vK0Pec9UTkueMfeAUW6DUE58gHSSShCHCCsfnjahRB0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RYTMTz495WOWkfMSD0jQq6TnCSIBXtcb65UzeyT8i7A/nNQiQKFr/m0ZFW0mKgQ7rmnWGtFEb39HzT1V6//Ckvw77UEgheqp6SjHgrwaVTFOgF6xD6CLMi4TEz2ag2mAoWuDxIIO5016NZQirBP4apH+slHJ807HDQc7Vk3sw2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFAAzSYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E4CC4AF0B;
-	Mon, 22 Apr 2024 19:28:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713814116;
-	bh=vK0Pec9UTkueMfeAUW6DUE58gHSSShCHCCsfnjahRB0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=aFAAzSYoUCQ68idR1ZV/vA+n5TvKrpHfQPoJVIiInIMpjHdQSX73yMdn8U4ksj4Fc
-	 skG6AwXlU+5fRyCJT657pU2QBb3UEFwAmP5XAc9n2XDl5Xz1uW0oJN6x4qVbmV5LTG
-	 kcxqY4j8mc7HfQsccUQl1hDRBDyntfRMXM0/5IHXrFVFiRRrSgq8OXXe/6FaB2bmSv
-	 V5PtvrBUChUucAwEXMYzqk8qPn2vYGkelEQruUnzVbFZU5IQLsQ12fMF0BQwGrjLlg
-	 pNHv2P+Atj6ifkBsSbq3ndmGR2MyN7SrutlUyMoSh4pCnCtmBSYtw+Dvvvhr4ywRAs
-	 Yn/7YHfhlPTUg==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5af12f48b72so54783eaf.3;
-        Mon, 22 Apr 2024 12:28:36 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWHKGmo7STpFRzemDOOTHy6x10AbCoTSzBSLd4NbsEKeIto/HIqXrzuJ5fFa9POKOq6hbk9OVQy/XZZsWOyheZkTD/DKNd0gbj2wfP2iCWPw7zKjuIr1P5b67yUTSsTpj7dRWJdn7fvfA4QMOu0i64r5Cpi29BwIjMlGYY7wXDPwd328g==
-X-Gm-Message-State: AOJu0YxylrhNQUSWCUsOKs9Ms+Ws27YZeUNiV2Vr3lvkdY9j6MU6CDOP
-	ouHaQoopHZ/TrQ0WA2DEXgQmBp21rtXZbmYJ15VIfmGbMmWHcYYHw9UPN/BbwoFxPKQEK7yM0is
-	I1Iy2uV/UVngIpiyVgmk6/7M7xzk=
-X-Google-Smtp-Source: AGHT+IGUETKc3TgOF4OePC5o1ZswAoxj8sQKPSP7731avzXAb+y8Q1PqVfZ8Xtb3zIuDpvt+fYwScVKj2gv5dZwOXLc=
-X-Received: by 2002:a05:6820:2884:b0:5aa:241a:7f4b with SMTP id
- dn4-20020a056820288400b005aa241a7f4bmr11757032oob.1.1713814115959; Mon, 22
- Apr 2024 12:28:35 -0700 (PDT)
+	s=arc-20240116; t=1713815907; c=relaxed/simple;
+	bh=t32HRfD9sG9xmkAj4Hx4PF6T67lBqSuSCmmzLTJAUIo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=itZ0cS2LfpA7fTvWnZzdHIh0QpWkGdcnZgfICuvFmTctCOQJX780CXKBTQL2Hbcuc5Nk8XCLWQ8dTytjdriuH+uLfEwx7freGSVBs8gbDvHeMNq802HutZ5wYgU8/AXc7rpUctz/o5Ki+JeDZrU65zyWjZBUyA/PcQSNmIz/gNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Ji+iLSdV; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1713815875; x=1714420675; i=w_armin@gmx.de;
+	bh=PhE4wvQ3An5zSU9HfwvnZfpqrDTqYFQDdw5Xps9MeoM=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Ji+iLSdVxZ3bTwTx0xhSav0a6RVqYeFFx+5OnBnZyIMK7oaJcKR9nzFxTMy4tt9G
+	 9a5RotdjAOGaOR8+F7jv1WeDcihQaHQs2skqz7UwSOIP5JKwTNIkJrNfZMXX/chcu
+	 kg+7BKVaRg1ETiBfwsTbklDxjdAD7lixZieQeaoxQrw+D+43wexiPJJbFd19DHZa0
+	 lDiNs5ASARtkrTzlXjcsn7BQs7jWrM59f9aoCxFzDkeYEjt+qHY82fQ/K68+KHVw5
+	 sirWzrQYzFV60Lo563NhvKTXr3bLjDYejc0sf390v8j/wrngoODPM2ljfq7Kbpurr
+	 XV6XT+B1BxmWI6JMHg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MBUm7-1rr4O41HOZ-00CwxP; Mon, 22 Apr 2024 21:57:55 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: mlj@danelec.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org
+Cc: jdelvare@suse.com,
+	andy.shevchenko@gmail.com,
+	linux@roeck-us.net,
+	linux@weissschuh.net,
+	ilpo.jarvinen@linux.intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH v6] ACPI: fan: Add hwmon support
+Date: Mon, 22 Apr 2024 21:57:45 +0200
+Message-Id: <20240422195745.5089-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
-In-Reply-To: <20240415170113.662318-1-sunilvl@ventanamicro.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Apr 2024 21:28:24 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gTzn3TDoh0+0UQjMeJVdU+z16dDOT_fKMhr0XrOxyRtA@mail.gmail.com>
-Message-ID: <CAJZ5v0gTzn3TDoh0+0UQjMeJVdU+z16dDOT_fKMhr0XrOxyRtA@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 00/20] RISC-V: ACPI: Add external interrupt
- controller support
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org, 
-	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Anup Patel <anup@brainfault.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Samuel Holland <samuel.holland@sifive.com>, 
-	Robert Moore <robert.moore@intel.com>, Haibo1 Xu <haibo1.xu@intel.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Andrew Jones <ajones@ventanamicro.com>, 
-	Atish Kumar Patra <atishp@rivosinc.com>, Andrei Warkentin <andrei.warkentin@intel.com>, 
-	Marc Zyngier <maz@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OSEEtXt1eeEDxjM9sk4vcubd0If84q3/I5fazq07envpqjij5qj
+ rLgNdf6A6NHcEe0atnKgoIx47o0y5igX4eHqJVk2Ij9q2oPdZC/5KZiH7oBUVGK8yoVSkTq
+ gFkwZTIOaw4HrgLHYKdScNqDdDldr3UsG715K3OxSl1rbDr1lNdDWmuxM6oDZYNWNYgAz0W
+ d2iPIa9ULBA3brhgKf02Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:exANISoh0lE=;kouWV9RiQez56XekA3xgj8BFyFo
+ zEmnEigzAQo3uL1O9rJgT/QC+OMlwhUfNvkhJkGPUFcvplnffp2VxqgbbtGUmNs+EMJ81hY8c
+ GyWQ1AfKpeoMC/EqpZDlDNlJuYCpKenDwXP7b0wzHnMxdE/1nSguPcqTElSPBjag4rBTHGY0e
+ 9JWWMzoUTBkGshJPIghjVqqJxLg2Cc7nqsiS18kHuYP+i1uJtiAHL9zgQyRqB4MKIFvu+7J3g
+ a1gjdw6qBv9cLWuR+6i5ME5BrzSjolWPzACtHlLo0mJA0ajhRva1IqHFW+f0azqnyCXBZno/O
+ pI84Q9yDFN6K52EDJ8wo7m5C/no64rZxSBVOrE7XJ0mTBLQsKkAZq4J0vjyz+L/gcP4cA7ItI
+ XrOUOWEW6/gySKvcCp47kco8FEah4y+Ytosnp5mSm4JJPfKJ+aChRLHP+Tub3lIObzq+ILZ5s
+ muq0LU4lEXPMvoM/NZIJD/guPbFj1jPSdD2gdxbru4r7FkMr3NzX+Ab8yUFU975LMmnOmLY/c
+ vURrQZTMf11bhNnf/+XIRg0exdkSrHdXUx5Q+YlDQ3YWOTERBuKtBc5xYBfHF6/jB6ooKV0JY
+ hktaMdpEO1D7ZGXNe8bbWzgMDn++CO6EGr/XQKBPvoV4lJVsz0CgOcJYa4jLdb5CbpSDTF6AW
+ GeF8HLqv/kAmfV91if0Kqo1XmcOTYR5ZnLgeS9uwgX35WqTsBoLRxwVpCWmFdKCmq6w8R1XJA
+ nc/2H4VgQQqYTi/rI7dIzqy/B9122sI5suuoNHoE7fd/rt44+sdCVU6Wcz9tT0QpsIE976z+0
+ cUNw5zQ/D5gMNdAK1/oH902XwgUIc3GB0QAv2wQ7XCmUU=
 
-On Mon, Apr 15, 2024 at 7:01=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
-> wrote:
->
-> This series adds support for the below ECR approved by ASWG.
-> 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7=
-zR/view?usp=3Dsharing
->
-> The series primarily enables irqchip drivers for RISC-V ACPI based
-> platforms.
->
-> The series can be broadly categorized like below.
->
-> 1) PCI ACPI related functions are migrated from arm64 to common file so
-> that we don't need to duplicate them for RISC-V.
->
-> 2) Added support for re-ordering the probe of interrupt controllers when
-> IRQCHIP_ACPI_DECLARE is used.
->
-> 3) To ensure probe order between interrupt controllers and devices,
-> implicit dependency is created similar to when _DEP is present.
->
-> 4) When PNP devices like Generic 16550A UART, have the dependency on the
-> interrupt controller, they will not be added to PNP data structures. So,
-> added second phase of pnpacpi_init to handle this.
->
-> 5) ACPI support added in RISC-V interrupt controller drivers.
->
-> This series is still kept as RFC to seek feedback on above design
-> changes. Looking forward for the feedback!
+Currently, the driver does only support a custom sysfs
+interface to allow userspace to read the fan speed.
+Add support for the standard hwmon interface so users
+can read the fan speed with standard tools like "sensors".
 
-I've looked at the patches and I don't see anything deeply concerning
-in them from the ACPI core code perspective.
+Tested with a custom ACPI SSDT.
 
-The changes look reasonably straightforward to me.
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+Changes since v5:
+- fix coding style issues
+- replace double break with return
+- add missing includes
 
-Thanks!
+Changes since v4:
+- fix spelling issues
+- check power values for overflow condition too
 
-> Changes since RFC v3:
->         1) Moved to _DEP method instead of fw_devlink.
->         2) PLIC/APLIC driver probe using namespace devices.
->         3) Handling PNP devices as part of clearing dependency.
->         4) Rebased to latest linux-next to get AIA DT drivers.
->
-> Changes since RFC v2:
->         1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
->         2) Dropped patches in drivers which are not required due to
->            fw_devlink support.
->         3) Dropped pci_set_msi() patch and added a patch in
->            pci_create_root_bus().
->         4) Updated pnp_irq() patch so that none of the actual PNP
->            drivers need to change.
->
-> Changes since RFC v1:
->         1) Abandoned swnode approach as per Marc's feedback.
->         2) To cope up with AIA series changes which changed irqchip drive=
-r
->            probe from core_initcall() to platform_driver, added patches
->            to support deferred probing.
->         3) Rebased on top of Anup's AIA v11 and added tags.
->
-> To test the series,
->
-> 1) Qemu should be built using the riscv_acpi_namespace_v1 branch at
-> https://github.com/vlsunil/qemu.git
->
-> 2) EDK2 should be built using the instructions at:
-> https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
->
-> 3) Build Linux using this series.
->
-> Run Qemu:
-> qemu-system-riscv64 \
->  -M virt,pflash0=3Dpflash0,pflash1=3Dpflash1,aia=3Daplic-imsic \
->  -m 2G -smp 8 \
->  -serial mon:stdio \
->  -device virtio-gpu-pci -full-screen \
->  -device qemu-xhci \
->  -device usb-kbd \
->  -blockdev node-name=3Dpflash0,driver=3Dfile,read-only=3Don,filename=3DRI=
-SCV_VIRT_CODE.fd \
->  -blockdev node-name=3Dpflash1,driver=3Dfile,filename=3DRISCV_VIRT_VARS.f=
-d \
->  -netdev user,id=3Dnet0 -device virtio-net-pci,netdev=3Dnet0 \
->  -kernel arch/riscv/boot/Image \
->  -initrd rootfs.cpio \
->  -append "root=3D/dev/ram ro console=3DttyS0 rootwait earlycon=3Duart8250=
-,mmio,0x10000000"
->
-> To boot with APLIC only, use aia=3Daplic.
-> To boot with PLIC, remove aia=3D option.
->
-> This series is also available in acpi_b2_v4_autodep_v1 branch at
-> https://github.com/vlsunil/linux.git
->
-> Based-on: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next=
-.git/tag/?h=3Dnext-20240415
->
-> Sunil V L (20):
->   arm64: PCI: Migrate ACPI related functions to pci-acpi.c
->   RISC-V: ACPI: Implement PCI related functionality
->   PCI: Make pci_create_root_bus() declare its reliance on MSI domains
->   ACPI: scan.c: Add weak arch specific function to reorder the IRQCHIP
->     probe
->   ACPI: RISC-V: Implement arch function to reorder irqchip probe entries
->   ACPI: bus: Add acpi_riscv_init function
->   RISC-V: Kconfig: Select deferred GSI probe for ACPI systems
->   ACPI: scan: Refactor dependency creation
->   drivers/acpi/scan.c: Update _DEP honor list
->   RISC-V: ACPI: Initialize GSI mapping structures
->   ACPI: scan.c: Define weak function to populate dependencies
->   RISC-V: ACPI: Implement function to add implicit dependencies
->   ACPI/PNP: Initialize PNP devices skipped due to _DEP
->   irqchip: riscv-intc: Add ACPI support for AIA
->   irqchip: riscv-imsic: Add ACPI support
->   irqchip: riscv-aplic: Add ACPI support
->   irqchip: irq-sifive-plic: Add ACPI support
->   ACPI: bus: Add RINTC IRQ model for RISC-V
->   irqchip: riscv-intc: Set ACPI irqmodel
->   ACPI: pci_link: Clear the dependencies after probe
->
->  arch/arm64/kernel/pci.c                    | 191 ------------
->  arch/riscv/Kconfig                         |   3 +
->  arch/riscv/include/asm/irq.h               |  57 ++++
->  arch/riscv/kernel/acpi.c                   |  31 +-
->  drivers/acpi/Kconfig                       |   3 +
->  drivers/acpi/bus.c                         |   4 +
->  drivers/acpi/pci_link.c                    |   3 +
->  drivers/acpi/riscv/Makefile                |   2 +-
->  drivers/acpi/riscv/init.c                  |  14 +
->  drivers/acpi/riscv/init.h                  |   4 +
->  drivers/acpi/riscv/irq.c                   | 323 +++++++++++++++++++++
->  drivers/acpi/scan.c                        |  69 +++--
->  drivers/irqchip/irq-riscv-aplic-direct.c   |  20 +-
->  drivers/irqchip/irq-riscv-aplic-main.c     |  70 +++--
->  drivers/irqchip/irq-riscv-aplic-main.h     |   1 +
->  drivers/irqchip/irq-riscv-aplic-msi.c      |   9 +-
->  drivers/irqchip/irq-riscv-imsic-early.c    |  52 +++-
->  drivers/irqchip/irq-riscv-imsic-platform.c |  32 +-
->  drivers/irqchip/irq-riscv-imsic-state.c    | 115 ++++----
->  drivers/irqchip/irq-riscv-imsic-state.h    |   2 +-
->  drivers/irqchip/irq-riscv-intc.c           | 102 ++++++-
->  drivers/irqchip/irq-sifive-plic.c          |  89 ++++--
->  drivers/pci/pci-acpi.c                     | 182 ++++++++++++
->  drivers/pci/probe.c                        |   3 +
->  drivers/pnp/pnpacpi/core.c                 |  24 +-
->  drivers/pnp/pnpacpi/rsparser.c             |  63 ++--
->  include/acpi/acpi_bus.h                    |   2 +
->  include/linux/acpi.h                       |   9 +
->  include/linux/irqchip/riscv-imsic.h        |  10 +
->  include/linux/pnp.h                        |   7 +
->  30 files changed, 1108 insertions(+), 388 deletions(-)
->  create mode 100644 drivers/acpi/riscv/init.c
->  create mode 100644 drivers/acpi/riscv/init.h
->  create mode 100644 drivers/acpi/riscv/irq.c
->
-> --
-> 2.40.1
->
->
+Changes since v3:
+- drop fault attrs
+- rework initialization
+
+Changes since v2:
+- add support for fanX_target and power attrs
+
+Changes since v1:
+- fix undefined reference error
+- fix fan speed validation
+- coding style fixes
+- clarify that the changes are compile-tested only
+- add hwmon maintainers to cc list
+=2D--
+ drivers/acpi/Makefile    |   1 +
+ drivers/acpi/fan.h       |   9 +++
+ drivers/acpi/fan_core.c  |   4 +
+ drivers/acpi/fan_hwmon.c | 169 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 183 insertions(+)
+ create mode 100644 drivers/acpi/fan_hwmon.c
+
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 39ea5cfa8326..61ca4afe83dc 100644
+=2D-- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -77,6 +77,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+=3D tiny-power-but=
+ton.o
+ obj-$(CONFIG_ACPI_FAN)		+=3D fan.o
+ fan-objs			:=3D fan_core.o
+ fan-objs			+=3D fan_attr.o
++fan-$(CONFIG_HWMON)		+=3D fan_hwmon.o
+
+ obj-$(CONFIG_ACPI_VIDEO)	+=3D video.o
+ obj-$(CONFIG_ACPI_TAD)		+=3D acpi_tad.o
+diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
+index f89d19c922dc..db25a3898af7 100644
+=2D-- a/drivers/acpi/fan.h
++++ b/drivers/acpi/fan.h
+@@ -10,6 +10,8 @@
+ #ifndef _ACPI_FAN_H_
+ #define _ACPI_FAN_H_
+
++#include <linux/kconfig.h>
++
+ #define ACPI_FAN_DEVICE_IDS	\
+ 	{"INT3404", }, /* Fan */ \
+ 	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
+@@ -57,4 +59,11 @@ struct acpi_fan {
+ int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst=
+);
+ int acpi_fan_create_attributes(struct acpi_device *device);
+ void acpi_fan_delete_attributes(struct acpi_device *device);
++
++#if IS_REACHABLE(CONFIG_HWMON)
++int devm_acpi_fan_create_hwmon(struct acpi_device *device);
++#else
++static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) =
+{ return 0; };
++#endif
++
+ #endif
+diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
+index ff72e4ef8738..7cea4495f19b 100644
+=2D-- a/drivers/acpi/fan_core.c
++++ b/drivers/acpi/fan_core.c
+@@ -336,6 +336,10 @@ static int acpi_fan_probe(struct platform_device *pde=
+v)
+ 		if (result)
+ 			return result;
+
++		result =3D devm_acpi_fan_create_hwmon(device);
++		if (result)
++			return result;
++
+ 		result =3D acpi_fan_create_attributes(device);
+ 		if (result)
+ 			return result;
+diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
+new file mode 100644
+index 000000000000..34a524c285a5
+=2D-- /dev/null
++++ b/drivers/acpi/fan_hwmon.c
+@@ -0,0 +1,169 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Hwmon interface for the ACPI Fan driver.
++ *
++ * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
++ */
++
++#include <linux/acpi.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/hwmon.h>
++#include <linux/limits.h>
++#include <linux/units.h>
++
++#include "fan.h"
++
++/* Returned when the ACPI fan does not support speed reporting */
++#define FAN_SPEED_UNAVAILABLE	U32_MAX
++#define FAN_POWER_UNAVAILABLE	U32_MAX
++
++static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan=
+, u64 control)
++{
++	unsigned int i;
++
++	for (i =3D 0; i < fan->fps_count; i++) {
++		if (fan->fps[i].control =3D=3D control)
++			return &fan->fps[i];
++	}
++
++	return NULL;
++}
++
++static umode_t acpi_fan_is_visible(const void *drvdata, enum hwmon_sensor=
+_types type, u32 attr,
++				   int channel)
++{
++	const struct acpi_fan *fan =3D drvdata;
++	unsigned int i;
++
++	switch (type) {
++	case hwmon_fan:
++		switch (attr) {
++		case hwmon_fan_input:
++			return 0444;
++		case hwmon_fan_target:
++			/*
++			 * When in fine grain control mode, not every fan control value
++			 * has an associated fan performance state.
++			 */
++			if (fan->fif.fine_grain_ctrl)
++				return 0;
++
++			return 0444;
++		default:
++			return 0;
++		}
++	case hwmon_power:
++		switch (attr) {
++		case hwmon_power_input:
++			/*
++			 * When in fine grain control mode, not every fan control value
++			 * has an associated fan performance state.
++			 */
++			if (fan->fif.fine_grain_ctrl)
++				return 0;
++
++			/*
++			 * When all fan performance states contain no valid power data,
++			 * when the associated attribute should not be created.
++			 */
++			for (i =3D 0; i < fan->fps_count; i++) {
++				if (fan->fps[i].power !=3D FAN_POWER_UNAVAILABLE)
++					return 0444;
++			}
++
++			return 0;
++		default:
++			return 0;
++		}
++	default:
++		return 0;
++	}
++}
++
++static int acpi_fan_read(struct device *dev, enum hwmon_sensor_types type=
+, u32 attr, int channel,
++			 long *val)
++{
++	struct acpi_device *adev =3D to_acpi_device(dev->parent);
++	struct acpi_fan *fan =3D dev_get_drvdata(dev);
++	struct acpi_fan_fps *fps;
++	struct acpi_fan_fst fst;
++	int ret;
++
++	ret =3D acpi_fan_get_fst(adev, &fst);
++	if (ret < 0)
++		return ret;
++
++	switch (type) {
++	case hwmon_fan:
++		switch (attr) {
++		case hwmon_fan_input:
++			if (fst.speed =3D=3D FAN_SPEED_UNAVAILABLE)
++				return -ENODATA;
++
++			if (fst.speed > LONG_MAX)
++				return -EOVERFLOW;
++
++			*val =3D fst.speed;
++			return 0;
++		case hwmon_fan_target:
++			fps =3D acpi_fan_get_current_fps(fan, fst.control);
++			if (!fps)
++				return -ENODATA;
++
++			if (fps->speed > LONG_MAX)
++				return -EOVERFLOW;
++
++			*val =3D fps->speed;
++			return 0;
++		default:
++			return -EOPNOTSUPP;
++		}
++	case hwmon_power:
++		switch (attr) {
++		case hwmon_power_input:
++			fps =3D acpi_fan_get_current_fps(fan, fst.control);
++			if (!fps)
++				return -ENODATA;
++
++			if (fps->power =3D=3D FAN_POWER_UNAVAILABLE)
++				return -ENODATA;
++
++			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
++				return -EOVERFLOW;
++
++			*val =3D fps->power * MICROWATT_PER_MILLIWATT;
++			return 0;
++		default:
++			return -EOPNOTSUPP;
++		}
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static const struct hwmon_ops acpi_fan_ops =3D {
++	.is_visible =3D acpi_fan_is_visible,
++	.read =3D acpi_fan_read,
++};
++
++static const struct hwmon_channel_info * const acpi_fan_info[] =3D {
++	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_TARGET),
++	HWMON_CHANNEL_INFO(power, HWMON_P_INPUT),
++	NULL
++};
++
++static const struct hwmon_chip_info acpi_fan_chip_info =3D {
++	.ops =3D &acpi_fan_ops,
++	.info =3D acpi_fan_info,
++};
++
++int devm_acpi_fan_create_hwmon(struct acpi_device *device)
++{
++	struct acpi_fan *fan =3D acpi_driver_data(device);
++	struct device *hdev;
++
++	hdev =3D devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", =
+fan,
++						    &acpi_fan_chip_info, NULL);
++	return PTR_ERR_OR_ZERO(hdev);
++}
+=2D-
+2.39.2
+
 
