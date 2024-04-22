@@ -1,131 +1,120 @@
-Return-Path: <linux-acpi+bounces-5222-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5223-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEB78AC33B
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 05:53:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A4A8AC38E
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 07:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A39C28122A
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 03:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 021182817B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 05:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0792101D5;
-	Mon, 22 Apr 2024 03:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d70w0kk1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FF8168BD;
+	Mon, 22 Apr 2024 05:01:32 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B93FBFC
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 03:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD0314A81
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 05:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713758012; cv=none; b=cmckWMylWwH/q7Niph2HZn/DcSp4X2aw3aVynfVCDSU77P0KaTtGpP0zKoT3M8v3Obpl1SsPC6P4nefVgqOG17YnskfrW8EYCuNNYn9avZX3UQ9w0SkE9lctql2l7UgFvDtuIEOFuufGS3Ba3OMXMMyPddy/o/P3mJS5KOz8Sjg=
+	t=1713762092; cv=none; b=LlFkj0NJoUjxzvWXnA86piPW8zb4ezs97eElsmfR2mDNhnsDCluyXJtOmOin5zthLvY/g4+WGCmGXWtrEMdw6t2gSfognx26AyShMDeDhShFYkF3yXUvlqQ7C0gmT0kjmUHdYucFTIweTdGmcW++zc+OzdgmLuWyvwbpS17pz/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713758012; c=relaxed/simple;
-	bh=tD6kiqMKmO+1my/aa9P9n8z6J8qrVBho+qlOdcCPRLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QhVEY9mYVPS0FKTwiUYQYG5j6GlRAE9kFxgtgcRKgX0Lk40BePsKWcy3ri19TRgHLRfWywLTYavDHINdIE1HzwcILMFGXgd0zq6mVXbt1LIrK7EJqzsy2O2f1Jkmz+rYcEtWM/FM/uV2GHdvinMMvkHLcSR6Qtt2+uvyZJgF/Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d70w0kk1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713758010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m0XyZSlHJbiwL8Fk8e6Ao9ghbhjrrj0okROdeEG3PeA=;
-	b=d70w0kk19VpTPCBkAaFUGai+6OlJ3t/h4Ad8vX9O3a6ullyACRzb6iU0N+wnHhXZ+SJUcm
-	PQkxDtp1A2nOu1NtjQMorTXEDYjVnWbJvwWFWHL1YNHyDsdIQbOrtzFl6ecnjqQa3hQdkB
-	DDYh+XdLKWHPkUIlMUcjfaC8nw8aTro=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-688-3Jk4sNdHMGqa9ceHF_X2lA-1; Sun, 21 Apr 2024 23:53:28 -0400
-X-MC-Unique: 3Jk4sNdHMGqa9ceHF_X2lA-1
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-3c5f32f91d4so6035694b6e.2
-        for <linux-acpi@vger.kernel.org>; Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713758007; x=1714362807;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m0XyZSlHJbiwL8Fk8e6Ao9ghbhjrrj0okROdeEG3PeA=;
-        b=NlbdhtugyAkJC2VhreCunIg8rTtPZ2kmVsMmEw5XkW2d1ZST2drosCbgDp/28eG0lc
-         jZrl7KPZAcfgHALJMTdeL8w4nH31OsVFu1LTWYFsFl/LszbFeOpI+egXmreNrRFxpzK8
-         ElPt6QyH2Zt6VsmwMEARy/xlCd92oJqJpCozWGKRP0F+dC926MhY3h1pEA4xY+JNdAq4
-         iiJrIJh6WMqRkFb7MIG3IhUUkk3OMJBOFtpacka4KXVRT7B3xfIWIaNPmGDjehdhW/fH
-         xssQPeKsX6b1593hkC2EN9MngQ62fNlF0aRXRUVSuy16ZKG7hf0WIdzxrGzUBizA55XT
-         X59w==
-X-Forwarded-Encrypted: i=1; AJvYcCVSEZYOHXYh96IW39e7eupazRIyQPUfo9BLZ4XVuKcuLQXEmps1qJ78ZeuHza2ifkyoqDwa9NMj331+wZgOpk72SsVmVshTqp1DJQ==
-X-Gm-Message-State: AOJu0Yy4p6W6VBqvPtKDdjvx71KnDKl+ecX2rLpqdxbcAVLgJrjdssRB
-	/QwJDpuPYxTobuMRHtbE2EZCNJVh/EYIUrK0Ph+fDdgrPq/t/09wUdMKyp44wjmxH0GnD35BeOi
-	KWcX6Wpyovv6TTVxf0x8UxjAxgdXr/8Q4+rEt2GOE9/pzZrhFDKWuWRF98b8=
-X-Received: by 2002:a05:6808:124a:b0:3c7:51f:156c with SMTP id o10-20020a056808124a00b003c7051f156cmr12703900oiv.29.1713758007413;
-        Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkZ3BNLKQwXsjKmL+OZ/4pqOa0EAKdoGoRtaqIZBDJxdFy4L8f2LFmwwMaKdJQp7E0m+dRqg==
-X-Received: by 2002:a05:6808:124a:b0:3c7:51f:156c with SMTP id o10-20020a056808124a00b003c7051f156cmr12703871oiv.29.1713758007141;
-        Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
-Received: from [192.168.68.51] ([43.252.115.31])
-        by smtp.gmail.com with ESMTPSA id lo8-20020a056a003d0800b006ed4823671csm7078329pfb.15.2024.04.21.20.53.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Apr 2024 20:53:26 -0700 (PDT)
-Message-ID: <8c3efa79-53ef-40d1-a701-5c88447c95cb@redhat.com>
-Date: Mon, 22 Apr 2024 13:53:16 +1000
+	s=arc-20240116; t=1713762092; c=relaxed/simple;
+	bh=pA6jdIeParIDDslb0VbpOv9iLNAFp/mbNR9RFF6IuQA=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=umwVDBJ441p8CELULeqwrlBtTtXX5ws8vdkwzFNLQEPaQxWQYbZbL3aLfZF6UXmxHsoa1Ka5DJHYgMWCysD7zkjNY4x/K4MKz/QIqlY1wDBRqBt0SjHFiKTeXVv8MgqYglCmrWy+tCNUiNeSfjA0M/W493ubqdLj45PIg5vqYds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
+	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+	id 3694bb42-0065-11ef-abf4-005056bdd08f;
+	Mon, 22 Apr 2024 08:00:19 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 22 Apr 2024 08:00:17 +0300
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [PATCH 1/4] iommu: Resolve fwspec ops automatically
+Message-ID: <ZiXu4Tk8lDroOKTA@surfacebook.localdomain>
+References: <cover.1713523251.git.robin.murphy@arm.com>
+ <ad80fed9800194f21c0fc581fec68ca3cfb5dac6.1713523251.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/18] cpu: Do not warn on arch_register_cpu()
- returning -EPROBE_DEFER
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-pm@vger.kernel.org,
- loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>,
- Salil Mehta <salil.mehta@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: linuxarm@huawei.com, justin.he@arm.com, jianyong.wu@arm.com
-References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
- <20240412143719.11398-2-Jonathan.Cameron@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240412143719.11398-2-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad80fed9800194f21c0fc581fec68ca3cfb5dac6.1713523251.git.robin.murphy@arm.com>
 
-
-On 4/13/24 00:37, Jonathan Cameron wrote:
-> For arm64 the CPU registration cannot complete until the ACPI intepretter
-> us up and running so in those cases the arch specific
-   ^^
-
-typo: s/us/is
-
-> arch_register_cpu() will return -EPROBE_DEFER at this stage and the
-> registration will be attempted later.
+Fri, Apr 19, 2024 at 05:55:59PM +0100, Robin Murphy kirjoitti:
+> There's no real need for callers to resolve ops from a fwnode in order
+> to then pass both to iommu_fwspec_init() - it's simpler and more sensible
+> for that to resolve the ops itself. This in turn means we can centralise
+> the notion of checking for a present driver, and enforce that fwspecs
+> aren't allocated unless and until we know they will be usable.
 > 
-> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> ---
-> v5: New patch.
->      Note that for now no arch_register_cpu() calls return -EPROBE_DEFER
->      so it has no impact until the arm64 one is added later in this series.
-> ---
->   drivers/base/cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+> Also we've grown a generic fwnode_handle_get() since this code was first
+> written, so may as well clear up that ugly mismatch while we're in here.
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+...
+
+> +++ b/drivers/iommu/mtk_iommu_v1.c
+
+>  	if (!fwspec) {
+> -		ret = iommu_fwspec_init(dev, &args->np->fwnode, &mtk_iommu_v1_ops);
+> +		ret = iommu_fwspec_init(dev, &args->np->fwnode);
+
+I'm wondering, while at it, if can avoid direct dereference of fwnode by using of_fwnode_handle().
+
+>  		if (ret)
+>  			return ret;
+
+...
+
+> +++ b/drivers/iommu/of_iommu.c
+
+> -	ret = iommu_fwspec_init(dev, fwnode, ops);
+> +	ret = iommu_fwspec_init(dev, &iommu_spec->np->fwnode);
+
+Ditto.
+
+> +	if (ret == -EPROBE_DEFER)
+> +		return driver_deferred_probe_check_state(dev);
+>  	if (ret)
+>  		return ret;
+
+...
+
+> --- a/drivers/iommu/tegra-smmu.c
+> +++ b/drivers/iommu/tegra-smmu.c
+
+> -	err = iommu_fwspec_init(dev, &dev->of_node->fwnode, ops);
+> +	err = iommu_fwspec_init(dev, &dev->of_node->fwnode);
+
+Ditto.
+
+>  	if (err < 0) {
+>  		dev_err(dev, "failed to initialize fwspec: %d\n", err);
+>  		return err;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
