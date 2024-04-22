@@ -1,102 +1,131 @@
-Return-Path: <linux-acpi+bounces-5221-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5222-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C15158AC0E2
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Apr 2024 21:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEB78AC33B
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 05:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B5C9280EFA
-	for <lists+linux-acpi@lfdr.de>; Sun, 21 Apr 2024 19:10:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A39C28122A
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 03:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4BB44C84;
-	Sun, 21 Apr 2024 19:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0792101D5;
+	Mon, 22 Apr 2024 03:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5oI+s6n"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d70w0kk1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF417446D6;
-	Sun, 21 Apr 2024 19:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B93FBFC
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 03:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713726573; cv=none; b=QHvcG8OY17JlhTgGn9clQK7f2BfwmRvqYZ8xE2KlkQzkh+9WPOrXourKVvUy+Dd2At8vBrrCcEPUjec6mEO8DrrQjES8o4L92Q9MyL0/qfyRx6S/ckfiwuN3ng5pKCZ7EsOZ6agIV0hv7IjKfqIwUznHCixPoSN8r78RYoSePb0=
+	t=1713758012; cv=none; b=cmckWMylWwH/q7Niph2HZn/DcSp4X2aw3aVynfVCDSU77P0KaTtGpP0zKoT3M8v3Obpl1SsPC6P4nefVgqOG17YnskfrW8EYCuNNYn9avZX3UQ9w0SkE9lctql2l7UgFvDtuIEOFuufGS3Ba3OMXMMyPddy/o/P3mJS5KOz8Sjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713726573; c=relaxed/simple;
-	bh=X4v6M4Hrc9fFqCwB6oJpOXB8AHDIlZvB7tTwVOjiIBQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VEf+a4i6mjXBhHQtencuGd6/Di7h7tGlCPlLTHxJ3Sg+AyR/CO5rxoZBIrk8elPncIOBQcRneFyNei8u/W15zFS278Ea1Q/evBteFDRytb9QiMch3Eo/ud9nyoFX3Elke0Zw8lZgUKoy7xCZMjws6ReYlvk3lgcsjEPIwB1Lvh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5oI+s6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA839C2BD11;
-	Sun, 21 Apr 2024 19:09:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713726573;
-	bh=X4v6M4Hrc9fFqCwB6oJpOXB8AHDIlZvB7tTwVOjiIBQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5oI+s6nKWpN0z3IPZBfeH924VIQIwoJZRC9V3Qr/WQ77udlfzgw42ev297ij29eZ
-	 OSZ0HZi3BRcBrYG1chpvFn9oKKB6jDegDUgL4KDux2N6SsBWgwZo3vy3NGn0tIJs1a
-	 YOXYRpuz0d+90tTAigwSsaYqZgDO/yX6BOG+HKqHjqTUVHRKjtX+JUrABiJz4+vpS5
-	 SF12280Wl6LBSxX3uJvhzgyBLrp55BbaTjVvs1E6hYuuf0IE1hraZf585B8IQ6evOz
-	 NcQOdShN+JnZCKO/xmFNHuSTxRaoB7280FLU5rPW9XZorQtD1MWa+HO1xgyiJgrzXX
-	 wnevBopS+8bFg==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Vidya Sagar <vidyas@nvidia.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Krishna Thota <kthota@nvidia.com>,
-	Manikanta Maddireddy <mmaddireddy@nvidia.com>,
-	Vidya Sagar <sagar.tv@gmail.com>,
-	linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v7-incomplete 3/3] PCI: Unify ACPI and DT 'preserve config' support
-Date: Sun, 21 Apr 2024 14:09:14 -0500
-Message-Id: <20240421190914.374399-4-helgaas@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240421190914.374399-1-helgaas@kernel.org>
-References: <20240418174043.3750240-1-vidyas@nvidia.com>
- <20240421190914.374399-1-helgaas@kernel.org>
+	s=arc-20240116; t=1713758012; c=relaxed/simple;
+	bh=tD6kiqMKmO+1my/aa9P9n8z6J8qrVBho+qlOdcCPRLg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QhVEY9mYVPS0FKTwiUYQYG5j6GlRAE9kFxgtgcRKgX0Lk40BePsKWcy3ri19TRgHLRfWywLTYavDHINdIE1HzwcILMFGXgd0zq6mVXbt1LIrK7EJqzsy2O2f1Jkmz+rYcEtWM/FM/uV2GHdvinMMvkHLcSR6Qtt2+uvyZJgF/Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d70w0kk1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713758010;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m0XyZSlHJbiwL8Fk8e6Ao9ghbhjrrj0okROdeEG3PeA=;
+	b=d70w0kk19VpTPCBkAaFUGai+6OlJ3t/h4Ad8vX9O3a6ullyACRzb6iU0N+wnHhXZ+SJUcm
+	PQkxDtp1A2nOu1NtjQMorTXEDYjVnWbJvwWFWHL1YNHyDsdIQbOrtzFl6ecnjqQa3hQdkB
+	DDYh+XdLKWHPkUIlMUcjfaC8nw8aTro=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-688-3Jk4sNdHMGqa9ceHF_X2lA-1; Sun, 21 Apr 2024 23:53:28 -0400
+X-MC-Unique: 3Jk4sNdHMGqa9ceHF_X2lA-1
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-3c5f32f91d4so6035694b6e.2
+        for <linux-acpi@vger.kernel.org>; Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713758007; x=1714362807;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m0XyZSlHJbiwL8Fk8e6Ao9ghbhjrrj0okROdeEG3PeA=;
+        b=NlbdhtugyAkJC2VhreCunIg8rTtPZ2kmVsMmEw5XkW2d1ZST2drosCbgDp/28eG0lc
+         jZrl7KPZAcfgHALJMTdeL8w4nH31OsVFu1LTWYFsFl/LszbFeOpI+egXmreNrRFxpzK8
+         ElPt6QyH2Zt6VsmwMEARy/xlCd92oJqJpCozWGKRP0F+dC926MhY3h1pEA4xY+JNdAq4
+         iiJrIJh6WMqRkFb7MIG3IhUUkk3OMJBOFtpacka4KXVRT7B3xfIWIaNPmGDjehdhW/fH
+         xssQPeKsX6b1593hkC2EN9MngQ62fNlF0aRXRUVSuy16ZKG7hf0WIdzxrGzUBizA55XT
+         X59w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSEZYOHXYh96IW39e7eupazRIyQPUfo9BLZ4XVuKcuLQXEmps1qJ78ZeuHza2ifkyoqDwa9NMj331+wZgOpk72SsVmVshTqp1DJQ==
+X-Gm-Message-State: AOJu0Yy4p6W6VBqvPtKDdjvx71KnDKl+ecX2rLpqdxbcAVLgJrjdssRB
+	/QwJDpuPYxTobuMRHtbE2EZCNJVh/EYIUrK0Ph+fDdgrPq/t/09wUdMKyp44wjmxH0GnD35BeOi
+	KWcX6Wpyovv6TTVxf0x8UxjAxgdXr/8Q4+rEt2GOE9/pzZrhFDKWuWRF98b8=
+X-Received: by 2002:a05:6808:124a:b0:3c7:51f:156c with SMTP id o10-20020a056808124a00b003c7051f156cmr12703900oiv.29.1713758007413;
+        Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkZ3BNLKQwXsjKmL+OZ/4pqOa0EAKdoGoRtaqIZBDJxdFy4L8f2LFmwwMaKdJQp7E0m+dRqg==
+X-Received: by 2002:a05:6808:124a:b0:3c7:51f:156c with SMTP id o10-20020a056808124a00b003c7051f156cmr12703871oiv.29.1713758007141;
+        Sun, 21 Apr 2024 20:53:27 -0700 (PDT)
+Received: from [192.168.68.51] ([43.252.115.31])
+        by smtp.gmail.com with ESMTPSA id lo8-20020a056a003d0800b006ed4823671csm7078329pfb.15.2024.04.21.20.53.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 21 Apr 2024 20:53:26 -0700 (PDT)
+Message-ID: <8c3efa79-53ef-40d1-a701-5c88447c95cb@redhat.com>
+Date: Mon, 22 Apr 2024 13:53:16 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/18] cpu: Do not warn on arch_register_cpu()
+ returning -EPROBE_DEFER
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-pm@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linuxarm@huawei.com, justin.he@arm.com, jianyong.wu@arm.com
+References: <20240412143719.11398-1-Jonathan.Cameron@huawei.com>
+ <20240412143719.11398-2-Jonathan.Cameron@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20240412143719.11398-2-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Bjorn Helgaas <bhelgaas@google.com>
 
----
- drivers/pci/probe.c | 3 +++
- 1 file changed, 3 insertions(+)
+On 4/13/24 00:37, Jonathan Cameron wrote:
+> For arm64 the CPU registration cannot complete until the ACPI intepretter
+> us up and running so in those cases the arch specific
+   ^^
 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index ee086d029450..2c232c22d6af 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -894,6 +894,9 @@ static bool pci_preserve_config(struct pci_host_bridge *host_bridge)
- 	if (pci_acpi_preserve_config(host_bridge))
- 		return true;
- 
-+	if (host_bridge->dev.parent && host_bridge->dev.parent->of_node)
-+		return of_pci_preserve_config(host_bridge->dev.parent->of_node);
-+
- 	return false;
- }
- 
--- 
-2.34.1
+typo: s/us/is
+
+> arch_register_cpu() will return -EPROBE_DEFER at this stage and the
+> registration will be attempted later.
+> 
+> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> ---
+> v5: New patch.
+>      Note that for now no arch_register_cpu() calls return -EPROBE_DEFER
+>      so it has no impact until the arm64 one is added later in this series.
+> ---
+>   drivers/base/cpu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 
 
