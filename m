@@ -1,129 +1,251 @@
-Return-Path: <linux-acpi+bounces-5264-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5265-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF8F8AD3B3
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 20:13:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25378AD453
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 20:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536661F21687
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:13:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E68CB26359
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 18:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5B7154424;
-	Mon, 22 Apr 2024 18:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA329157A55;
+	Mon, 22 Apr 2024 18:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L3kCcO40"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ULN97FhV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA01153BC6
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 18:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E52155334;
+	Mon, 22 Apr 2024 18:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713809630; cv=none; b=BmRp51DEwbsOLEz9XN65x3JijgxzZ4LQzC8msdectRbPJcaZl06C4edyRRH/Hktb7DY+5+5n6NcZrDxqG0minJkQuMBDLOfGPoopM8p/YhNFS2yxI8rMzYx6EoMtFmVVMGMu6jgyITbb8ME9f+EeKFx1iY7ugcN7/AWpSFhYi1w=
+	t=1713811603; cv=none; b=N0eMWHuGiKWIDzoVycrQX2wCUxeZuKUWbQOR3O8hh9eocJegKd02P7QNVZpB+daZ0HSuyVBrHlHxy2nCmCWwLDjSz10W04DXw3zKPyDRun+B/qBFhSljReEhmMc33/7IgnAp/DIS9RW18HMqxM4H66dN90w/BnCbtVr0ct+1X0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713809630; c=relaxed/simple;
-	bh=9t6GOlBjlEuT8oqPe50Lt0xgv9GpXuMIJcN0b+IFMOg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AgGtAhbxCGmfYgy91lhCcYtOK5bSAhpiRJG/ophpeijTjayFdcLqqikrhseMF8q7nEJDb5ebXvm7QljwHJLO7+YRG7PQwgGVM6zbxhVulzmGi70pzxAqbO/sLWwtpKB6wwXoSqlJfpVo38Usd7nhUbNMYr4VqOUemEnylm51jdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L3kCcO40; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713809630; x=1745345630;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9t6GOlBjlEuT8oqPe50Lt0xgv9GpXuMIJcN0b+IFMOg=;
-  b=L3kCcO4097A6s03OCdlw4V0XKcDzZsNUu2x6zCKLKzrRSoDvXwq7G+K0
-   Voppvud1Se/ZI2rRc6CHoKFLKFt5qOQ05vot0TqeQL7LHixp6C7EA8Dp1
-   gD8ERp5J42MU1rPYlTANsrQCh7N6pXsqrySbf4dQ1A/0f56b9OGDTuLkx
-   YMABvTYrm7pkW15M7JsnnkItWxOZphzVvxeiOf8aC/gGjY4zXvVYiisVk
-   kDuDN6wDG78bCTPXamtZCF4yto9q9GQ1tCuaEyogbJYt1nSNpdlGlvyhl
-   oyfjSyXSu/ATc5W7T9wmGoVLv/z9SscPD9JaYFlWsUPWoLEWl+ggbphJO
-   A==;
-X-CSE-ConnectionGUID: CvS8CiEmRYOiYMr4iW+w8A==
-X-CSE-MsgGUID: stwCG3EURAGTSy41pM+kHQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9280676"
-X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="9280676"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 11:13:49 -0700
-X-CSE-ConnectionGUID: odFGWbPpQAaTtrzIhGcYwQ==
-X-CSE-MsgGUID: K0EeJLoARTea/OFXt1MrmQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,221,1708416000"; 
-   d="scan'208";a="28884192"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 11:13:46 -0700
-Received: from svinhufvud.ger.corp.intel.com (localhost [IPv6:::1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id CBAB4120480;
-	Mon, 22 Apr 2024 21:13:42 +0300 (EEST)
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: linux-acpi@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	mika.westerberg@intel.com,
-	"Liao, Bard" <bard.liao@intel.com>,
-	"Ujfalusi, Peter" <peter.ujfalusi@intel.com>
-Subject: [PATCH 1/1] ACPI: property: Add reference to UEFI DSD Guide
-Date: Mon, 22 Apr 2024 21:13:42 +0300
-Message-Id: <20240422181342.810350-1-sakari.ailus@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1713811603; c=relaxed/simple;
+	bh=N900p0AA4Gj2ka7kPwyA1nPYs1lshTu/dBwgZ7ZyDfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DH5GvgQI8Y4YfJVA2Gs0Nbsj1VeFqX2Io74FJ9CsysqRblvFe3Vs9ZFXKSoZLg7ocuFYybtwjIT1It22Teiq9WYSOCD86FyI5egOOQUYO/oRJZGskEzM5tQxzS1Zp6+KQbkccj3pO7Jc+IsliorOCfR9u8zpfbbK9w/rn03yj0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ULN97FhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A3ADC4AF08;
+	Mon, 22 Apr 2024 18:46:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713811603;
+	bh=N900p0AA4Gj2ka7kPwyA1nPYs1lshTu/dBwgZ7ZyDfU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ULN97FhVdNfET8mkchoUJo7WdV66EI7mzFEF1lsRkSlqDG+gpAQABpRslrsJfCDBL
+	 y7oMVKEBzRwd0d6NQSI2LGavm/zJMYvb5WQfzbGSxV55zqqL9c8Hd0pKPmRZFdmInI
+	 vUUhV1FB4PEylph35IkhP2ogWn1D9fboh28UECFCYVvDVw8g2YvfwX5Y8k0ifOPNQb
+	 EXdckpeIMOCUCOMpQ7kuIAIBzQFrKtsHIfIATwGhvpwN8JzoQhqq6EIWKZhyCdOQgZ
+	 2r81mCmcIfBw4cPitlEySlY039SRZNgFlyg2C9bH8tB6bGjP6tJpAjFIUIHJO3+YZp
+	 gppskfjTrMuvg==
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c751391320so68735b6e.3;
+        Mon, 22 Apr 2024 11:46:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXoVzp9qqhDp2vIzGqEs7kvXWmClMzvJEoHUVzeLaEkh03WYhoWgWroTJ7OlSOm6sEINAy/Iw3vIXJ1lrIxMUA9dEtArKeK5LucKRwe1kWs45+rAlAwsbOEDv+p9Yddt5yIAs31BYgV2KEhPXyAPbfwA1v7B+UAlbZsB4YTV0TnJkBgc20hfbUFXVNl/AuqGywTMtP6Hnclbd2QqWmRsg==
+X-Gm-Message-State: AOJu0Yw8w93NB+Nq3uQWDARD4mOiAhu0JAlQcIGpJ5kMlzfgDdy15uSG
+	FAtDMeX5YzpZblli0yP9g6EXwrfad+RTJzAvWiJ4P+x5ZXGR/xE99V2UMCtA/MzMdsFQivJNh9c
+	57m/YJG1benyIr8rKYCyrqeDvkyc=
+X-Google-Smtp-Source: AGHT+IFPgOe8ULWuvYcbF8vz2a93mVviOXf9qv95GFOeoCEFC8u/XjGJwHUKi+S9n2GACxOH6R+xy6O8qM2nNJJ8ELU=
+X-Received: by 2002:a05:6820:e07:b0:5aa:14ff:4128 with SMTP id
+ el7-20020a0568200e0700b005aa14ff4128mr11063972oob.1.1713811602518; Mon, 22
+ Apr 2024 11:46:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com> <20240418135412.14730-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20240418135412.14730-2-Jonathan.Cameron@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 22 Apr 2024 20:46:30 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hrXHbv8JGydxwD1PP_M1GOm040=+OTDFLcpy3bmzf24A@mail.gmail.com>
+Message-ID: <CAJZ5v0hrXHbv8JGydxwD1PP_M1GOm040=+OTDFLcpy3bmzf24A@mail.gmail.com>
+Subject: Re: [PATCH v7 01/16] ACPI: processor: Simplify initial onlining to
+ use same path for cold and hotplug
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
+	Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, 
+	Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com, justin.he@arm.com, 
+	jianyong.wu@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The UEFI DSD Guide specifies a number of GUIDs supported by the _DSD
-parser. Point to the DSD Guide in the documentation.
+On Thu, Apr 18, 2024 at 3:54=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> Separate code paths, combined with a flag set in acpi_processor.c to
+> indicate a struct acpi_processor was for a hotplugged CPU ensured that
+> per CPU data was only set up the first time that a CPU was initialized.
+> This appears to be unnecessary as the paths can be combined by letting
+> the online logic also handle any CPUs online at the time of driver load.
+>
+> Motivation for this change, beyond simplification, is that ARM64
+> virtual CPU HP uses the same code paths for hotplug and cold path in
+> acpi_processor.c so had no easy way to set the flag for hotplug only.
+> Removing this necessity will enable ARM64 vCPU HP to reuse the existing
+> code paths.
+>
+> Leave noisy pr_info() in place but update it to not state the CPU
+> was hotplugged.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
- drivers/acpi/property.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+LGTM, so
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 2b73580c9f36..80a52a4e66dd 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -31,9 +31,14 @@ static int acpi_data_get_property_array(const struct acpi_device_data *data,
-  * not defined without a warning. For instance if any of the properties
-  * from different GUID appear in a property list of another, it will be
-  * accepted by the kernel. Firmware validation tools should catch these.
-+ *
-+ * References:
-+ *
-+ * [1] UEFI DSD Guide.
-+ *     https://github.com/UEFI/DSD-Guide/blob/main/src/dsd-guide.adoc
-  */
- static const guid_t prp_guids[] = {
--	/* ACPI _DSD device properties GUID: daffd814-6eba-4d8c-8a91-bc9bbf4aa301 */
-+	/* ACPI _DSD device properties GUID [1]: daffd814-6eba-4d8c-8a91-bc9bbf4aa301 */
- 	GUID_INIT(0xdaffd814, 0x6eba, 0x4d8c,
- 		  0x8a, 0x91, 0xbc, 0x9b, 0xbf, 0x4a, 0xa3, 0x01),
- 	/* Hotplug in D3 GUID: 6211e2c0-58a3-4af3-90e1-927a4e0c55a4 */
-@@ -53,12 +58,12 @@ static const guid_t prp_guids[] = {
- 		  0xa5, 0x61, 0x99, 0xa5, 0x18, 0x97, 0x62, 0xd0),
- };
- 
--/* ACPI _DSD data subnodes GUID: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
-+/* ACPI _DSD data subnodes GUID [1]: dbb8e3e6-5886-4ba6-8795-1319f52a966b */
- static const guid_t ads_guid =
- 	GUID_INIT(0xdbb8e3e6, 0x5886, 0x4ba6,
- 		  0x87, 0x95, 0x13, 0x19, 0xf5, 0x2a, 0x96, 0x6b);
- 
--/* ACPI _DSD data buffer GUID: edb12dd0-363d-4085-a3d2-49522ca160c4 */
-+/* ACPI _DSD data buffer GUID [1]: edb12dd0-363d-4085-a3d2-49522ca160c4 */
- static const guid_t buffer_prop_guid =
- 	GUID_INIT(0xedb12dd0, 0x363d, 0x4085,
- 		  0xa3, 0xd2, 0x49, 0x52, 0x2c, 0xa1, 0x60, 0xc4);
--- 
-2.39.2
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
+> ---
+> v7: No change.
+> v6: New patch.
+> RFT: I have very limited test resources for x86 and other
+> architectures that may be affected by this change.
+> ---
+>  drivers/acpi/acpi_processor.c   |  1 -
+>  drivers/acpi/processor_driver.c | 44 ++++++++++-----------------------
+>  include/acpi/processor.h        |  2 +-
+>  3 files changed, 14 insertions(+), 33 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
+c
+> index 7a0dd35d62c9..7fc924aeeed0 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -216,7 +216,6 @@ static int acpi_processor_hotadd_init(struct acpi_pro=
+cessor *pr)
+>          * gets online for the first time.
+>          */
+>         pr_info("CPU%d has been hot-added\n", pr->id);
+> -       pr->flags.need_hotplug_init =3D 1;
+>
+>  out:
+>         cpus_write_unlock();
+> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_dri=
+ver.c
+> index 67db60eda370..55782eac3ff1 100644
+> --- a/drivers/acpi/processor_driver.c
+> +++ b/drivers/acpi/processor_driver.c
+> @@ -33,7 +33,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
+>  MODULE_DESCRIPTION("ACPI Processor Driver");
+>  MODULE_LICENSE("GPL");
+>
+> -static int acpi_processor_start(struct device *dev);
+>  static int acpi_processor_stop(struct device *dev);
+>
+>  static const struct acpi_device_id processor_device_ids[] =3D {
+> @@ -47,7 +46,6 @@ static struct device_driver acpi_processor_driver =3D {
+>         .name =3D "processor",
+>         .bus =3D &cpu_subsys,
+>         .acpi_match_table =3D processor_device_ids,
+> -       .probe =3D acpi_processor_start,
+>         .remove =3D acpi_processor_stop,
+>  };
+>
+> @@ -115,12 +113,10 @@ static int acpi_soft_cpu_online(unsigned int cpu)
+>          * CPU got physically hotplugged and onlined for the first time:
+>          * Initialize missing things.
+>          */
+> -       if (pr->flags.need_hotplug_init) {
+> +       if (!pr->flags.previously_online) {
+>                 int ret;
+>
+> -               pr_info("Will online and init hotplugged CPU: %d\n",
+> -                       pr->id);
+> -               pr->flags.need_hotplug_init =3D 0;
+> +               pr_info("Will online and init CPU: %d\n", pr->id);
+>                 ret =3D __acpi_processor_start(device);
+>                 WARN(ret, "Failed to start CPU: %d\n", pr->id);
+>         } else {
+> @@ -167,9 +163,6 @@ static int __acpi_processor_start(struct acpi_device =
+*device)
+>         if (!pr)
+>                 return -ENODEV;
+>
+> -       if (pr->flags.need_hotplug_init)
+> -               return 0;
+> -
+>         result =3D acpi_cppc_processor_probe(pr);
+>         if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
+>                 dev_dbg(&device->dev, "CPPC data invalid or not present\n=
+");
+> @@ -185,32 +178,21 @@ static int __acpi_processor_start(struct acpi_devic=
+e *device)
+>
+>         status =3D acpi_install_notify_handler(device->handle, ACPI_DEVIC=
+E_NOTIFY,
+>                                              acpi_processor_notify, devic=
+e);
+> -       if (ACPI_SUCCESS(status))
+> -               return 0;
+> +       if (!ACPI_SUCCESS(status)) {
+> +               result =3D -ENODEV;
+> +               goto err_thermal_exit;
+> +       }
+> +       pr->flags.previously_online =3D 1;
+>
+> -       result =3D -ENODEV;
+> -       acpi_processor_thermal_exit(pr, device);
+> +       return 0;
+>
+> +err_thermal_exit:
+> +       acpi_processor_thermal_exit(pr, device);
+>  err_power_exit:
+>         acpi_processor_power_exit(pr);
+>         return result;
+>  }
+>
+> -static int acpi_processor_start(struct device *dev)
+> -{
+> -       struct acpi_device *device =3D ACPI_COMPANION(dev);
+> -       int ret;
+> -
+> -       if (!device)
+> -               return -ENODEV;
+> -
+> -       /* Protect against concurrent CPU hotplug operations */
+> -       cpu_hotplug_disable();
+> -       ret =3D __acpi_processor_start(device);
+> -       cpu_hotplug_enable();
+> -       return ret;
+> -}
+> -
+>  static int acpi_processor_stop(struct device *dev)
+>  {
+>         struct acpi_device *device =3D ACPI_COMPANION(dev);
+> @@ -279,9 +261,9 @@ static int __init acpi_processor_driver_init(void)
+>         if (result < 0)
+>                 return result;
+>
+> -       result =3D cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
+> -                                          "acpi/cpu-drv:online",
+> -                                          acpi_soft_cpu_online, NULL);
+> +       result =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+> +                                  "acpi/cpu-drv:online",
+> +                                  acpi_soft_cpu_online, NULL);
+>         if (result < 0)
+>                 goto err;
+>         hp_online =3D result;
+> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
+> index 3f34ebb27525..e6f6074eadbf 100644
+> --- a/include/acpi/processor.h
+> +++ b/include/acpi/processor.h
+> @@ -217,7 +217,7 @@ struct acpi_processor_flags {
+>         u8 has_lpi:1;
+>         u8 power_setup_done:1;
+>         u8 bm_rld_set:1;
+> -       u8 need_hotplug_init:1;
+> +       u8 previously_online:1;
+>  };
+>
+>  struct acpi_processor {
+> --
 
