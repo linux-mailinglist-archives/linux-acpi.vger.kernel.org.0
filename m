@@ -1,105 +1,108 @@
-Return-Path: <linux-acpi+bounces-5237-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17E58ACA0D
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 11:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E95ED8ACA22
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 12:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A384A2825A2
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 09:59:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5307A2834BC
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 10:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C4F83CD0;
-	Mon, 22 Apr 2024 09:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBD513B2BA;
+	Mon, 22 Apr 2024 10:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C/Bm7/YV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908E14317E;
-	Mon, 22 Apr 2024 09:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E16E6518F
+	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 10:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713779969; cv=none; b=PpntvZjiFjARwo+Z57uVhZkr63JhFBcMse5VoH+tfRUP/lVsMGIj5yinfPJNNWYa9NlaWZhRkBf+lkllbqywgJYHkdsS7QKXoM4aFvoboZ+JzAaniv9cI4ocz7tOL81PR9UF8rMp9r72IXH7DJ+7MJIg8iOk7Ju2P2N+0EgmNGM=
+	t=1713780146; cv=none; b=hmrgVIpoFHsBdcTRI9LAXiDnt/hzm/Ri6MqNl3QHMXxP8RpiphQiYSZ0yjteTrEBZ89WB5neDRht4Z5AY1PIAaY1mKc8g0SNmVDAsgfrvkXo9pu6zOhjrGYS7UVgU8dnN7RHNjGUqUye9bzLUCnnL5rmQ6fG+j3+KF/0LBhtt04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713779969; c=relaxed/simple;
-	bh=+7WqRKNKzT/Yy6npUWrE2yQ7/KFZ2uwmdSBIimyP7ZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MDtV0EAqAKA8vxmAF7DAyZovmeyiZKhTL1VvHEFkTre/WNFq1f3SJ05RCZ61z/L0WMJqyEURYSpaNnpKdkm85glzr6uaxAMP354yu7l6gKZTBVKPxNOp9Bz6rhGhu5EGH6diSKZKGrCsWnMx5a55t1Cc4QxmjkwsmRgzs+4csM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CC392F;
-	Mon, 22 Apr 2024 02:59:55 -0700 (PDT)
-Received: from ewhatever.cambridge.arm.com (ewhatever.cambridge.arm.com [10.1.197.1])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1FF353F64C;
-	Mon, 22 Apr 2024 02:59:25 -0700 (PDT)
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: krzysztof.kozlowski@linaro.org,
-	linux@armlinux.org.uk,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	James Clark <james.clark@arm.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-kernel@vger.kernel.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	coresight@lists.linaro.org,
+	s=arc-20240116; t=1713780146; c=relaxed/simple;
+	bh=8sOJmMJD2vQcj0/LPz0esuDxDFtO03WqDjdBe5eORY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kdyqcyu5g+oixET1qaf51v/DfcOtu8ySWGtpQwnoy4ogGbbl5eYUWVwX5cvvZv+ZdHlPomhuHo0MGjJ1VGtv0F6SacsV6cZfTGtAVl5ZYp/cEM03Le5OuwOXIWqkrLL1ZVPonRYazwPEArWWG+uIi+1BeVdCv9j+hGM0KsP1YjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C/Bm7/YV; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713780143;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M7WtTk/6/zyFIKqMmnKnMfF2rx1NzfGA5mIv03dRJRI=;
+	b=C/Bm7/YVj3eoZFH08EJeYE6m0DYlt0O3Fe65MdzV+3O/yJQBspdwOrTVs+IsNIiTsNkSGk
+	YH0KYPv9K6eStP1lDpyPeaVqzS3inh6GKtDt+rHID0CusDrVEOrdkRTf4cQNucqZAs1yp6
+	U3XGkyxtyFvzvPsMZOLyQqqn6BRIbkQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-491-YETLEgKIPHe0CrluzktLtQ-1; Mon, 22 Apr 2024 06:02:22 -0400
+X-MC-Unique: YETLEgKIPHe0CrluzktLtQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 97852812C59;
+	Mon, 22 Apr 2024 10:02:21 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.192.177])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 66BE743FB1;
+	Mon, 22 Apr 2024 10:02:19 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Sean Rhodes <sean@starlabs.systems>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-iio@vger.kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH V7 00/11] coresight: Move remaining AMBA ACPI devices into platform driver
-Date: Mon, 22 Apr 2024 10:59:18 +0100
-Message-Id: <171377975977.3331951.13760450309364725525.b4-ty@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240314055843.2625883-1-anshuman.khandual@arm.com>
-References: <20240314055843.2625883-1-anshuman.khandual@arm.com>
+Subject: [PATCH v2 0/4] iio: accel: Share ACPI ROTM parsing between drivers and add it to mxc4005
+Date: Mon, 22 Apr 2024 12:02:14 +0200
+Message-ID: <20240422100218.7693-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-On Thu, 14 Mar 2024 11:28:32 +0530, Anshuman Khandual wrote:
-> This moves remaining AMBA ACPI devices into respective platform drivers for
-> enabling ACPI based power management support. This series applies on latest
-> coresight next. This series has been built, and boot tested on a DT based
-> (RB5) and ACPI supported coresight platform (N1SDP).
-> 
-> https://git.gitlab.arm.com/linux-arm/linux-anshuman.git (amba_other_acpi_migration_v7)
-> 
-> [...]
+Hi All,
 
-Applied, thanks!
+Here is v2 of the patch series to refactor the ACPI ROTM orientation matrix
+handling in kxcjk-1013 + bmc150-accel to share the code instead of having
+2 copies and then also use the shared implementation in the mxc4005 driver
+since some MXC6655 ACPI firmware nodes also include this.
 
-[01/11] coresight: etm4x: Fix unbalanced pm_runtime_enable()
-        https://git.kernel.org/coresight/c/caa41c47dab7e1054f587e592ab21296e3a6781c
-[02/11] coresight: stm: Extract device name from AMBA pid based table lookup
-        https://git.kernel.org/coresight/c/852e9a32058a73702c016a8be10c60375276e46e
-[03/11] coresight: tmc: Extract device properties from AMBA pid based table lookup
-        https://git.kernel.org/coresight/c/3ab210297c31b8fef1cfb2aa3d85b227b9ace09b
-[04/11] coresight: Add helpers registering/removing both AMBA and platform drivers
-        https://git.kernel.org/coresight/c/075b7cd7ad7dec8651a6a6654fa5ebae436ac00f
-[05/11] coresight: replicator: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/b448c4c72ca3327232dfb20d0065b693b3fcc2e2
-[06/11] coresight: funnel: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/8e3227ddfbd7216f14186ec534f43e9dbcde717c
-[07/11] coresight: catu: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/23567323857d2073197953bb158413be1aceca8b
-[08/11] coresight: tpiu: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/3d83d4d4904a47626854b6bba44127d21a7dc713
-[09/11] coresight: tmc: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/70750e257aab4cd4d755294ae8b9834214a624bb
-[10/11] coresight: stm: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/057256aaacc862356417a75ceeb1cfa41408dbf0
-[11/11] coresight: debug: Move ACPI support from AMBA driver to platform driver
-        https://git.kernel.org/coresight/c/965edae4e6a2bca1f6e56d2c56d992417a53bba4
+Changes in v2:
+- Add comment about the Microsoft specification for the "ROTM" ACPI method
 
-Best regards,
+Regards,
+
+Hans
+
+
+Hans de Goede (4):
+  iio: accel: kxcjk-1013: Simplify ACPI ROTM mount matrix retreival
+  iio: accel: kxcjk-1013: Move ACPI ROTM parsing to new acpi-helpers.h
+  iio: bmc150-accel-core: Use acpi_read_mount_matrix() helper
+  iio: accel: mxc4005: Read orientation matrix from ACPI ROTM method
+
+ drivers/iio/accel/acpi-helpers.h      | 83 +++++++++++++++++++++++++++
+ drivers/iio/accel/bmc150-accel-core.c | 45 +--------------
+ drivers/iio/accel/kxcjk-1013.c        | 82 +-------------------------
+ drivers/iio/accel/mxc4005.c           | 24 ++++++++
+ 4 files changed, 113 insertions(+), 121 deletions(-)
+ create mode 100644 drivers/iio/accel/acpi-helpers.h
+
 -- 
-Suzuki K Poulose <suzuki.poulose@arm.com>
+2.44.0
+
 
