@@ -1,131 +1,104 @@
-Return-Path: <linux-acpi+bounces-5232-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5233-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3F18AC630
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 10:00:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777458AC63D
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 10:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD0EA1F21A7E
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 08:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C6D283188
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Apr 2024 08:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A6C4E1A2;
-	Mon, 22 Apr 2024 08:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A3C4DA1B;
+	Mon, 22 Apr 2024 08:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b="iMiMME7Y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.tuxedocomputers.com (mail.tuxedocomputers.com [157.90.84.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D296A4D58A
-	for <linux-acpi@vger.kernel.org>; Mon, 22 Apr 2024 08:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40A64D58A;
+	Mon, 22 Apr 2024 08:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=157.90.84.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713772848; cv=none; b=kwZVYjf3reTjudKm/9uoJGUbW+NLn/1qxVBC3vgD3qupoudkSz3Ie0XyNYv9uo4oBP94f27KF7SDewQUTXIYEBFmqh2v1/cQDJCCDQ+0R03CFvU/Clx7N7U+VLXajdDv/gtcaDz6Bm4jBXbnrj1K8+baeeBPL7pusF1s1h7nD5U=
+	t=1713773092; cv=none; b=Zw2iAFcVvR1i/vvBH0JDovQU4gRS6KY8nQ7p9+CoShUequLb3VMIXtUlRdqCTzWerAwqXbxm/YgLq0KTQpf7GNwdWNhxEzK2ooWMvyXFhsEHwxoLhs4HYkQ0d4uD6IOnpb9Cfh3c1dZilo6pdV2CX8cUQEUTYTzcxVDiCmbdvgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713772848; c=relaxed/simple;
-	bh=f0yd3qigJhx90p0yxgPbw6HH1vaR/nNVChrBqreGcLg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h5RP5Y/MYao7d8+QcCxQHiZtU1BXPPNptV6lHxlk4vNPSa4exUKCNV2zs2qg0EvZD6sKw4ZlcNBdQytatEmXUOV0x1WKyRGCDu/K484JpDR9uI5N/dSFrNXZ/+hoYGBZ0uswfy4UKoORJVkAgaP9Gj2hHrYLUzCPPCSSUmPIxAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-208.elisa-laajakaista.fi [88.113.25.208])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id 6b0fe1b6-007e-11ef-abf4-005056bdd08f;
-	Mon, 22 Apr 2024 11:00:43 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 22 Apr 2024 11:00:43 +0300
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: Re: local bus enumeration beyond a PCI device
-Message-ID: <ZiYZK9Jb-4qiGQ7C@surfacebook.localdomain>
-References: <bad63409-ed2b-4cef-988b-3c143636e9fa@alliedtelesis.co.nz>
- <20240418184531.GA245970@bhelgaas>
+	s=arc-20240116; t=1713773092; c=relaxed/simple;
+	bh=a/y3M4tVGVqIWndAYfIScsCyXZnjjrjZfPk1B6VQkN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MIU3d/DNrQgr8hs67zsqK/3AkcrbEqfjKJ6QGFEE4SZawnTMSHXikpI8j7me9fSQvzzH1t1bW6xHS+zaYV/Vz3XTuipXJqR2lb8yGqdEjeFYv1H4ELRqku5SlXyt178UlbXXM28DkzgZNomrQFqsOMx6iOzUeqhNgE+iRjsaKf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com; spf=pass smtp.mailfrom=tuxedocomputers.com; dkim=pass (1024-bit key) header.d=tuxedocomputers.com header.i=@tuxedocomputers.com header.b=iMiMME7Y; arc=none smtp.client-ip=157.90.84.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tuxedocomputers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxedocomputers.com
+Received: from wse.fritz.box (p5de45f24.dip0.t-ipconnect.de [93.228.95.36])
+	(Authenticated sender: wse@tuxedocomputers.com)
+	by mail.tuxedocomputers.com (Postfix) with ESMTPA id 830D12FC0064;
+	Mon, 22 Apr 2024 10:04:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tuxedocomputers.com;
+	s=default; t=1713773080;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xzuvPTfFvcjM2uMXBfD1KTqm3P/TieXDNEGrwapikE4=;
+	b=iMiMME7YXBEr1eLKoeMfeAAHzPWxFuThbCLh8j2ha8+oxJWrxE17d+RKDFKKmRBNN/QOwZ
+	/IQg5S+ALKhTXp1hAyGHf7q/oondPdoMlOFjNJ92LO4PsINeLuk3bWMMXxGmaH+BFf8nUN
+	lshj9/vUDU7+PWIq+YAtCIaaz86O8J8=
+Authentication-Results: mail.tuxedocomputers.com;
+	auth=pass smtp.auth=wse@tuxedocomputers.com smtp.mailfrom=wse@tuxedocomputers.com
+From: Werner Sembach <wse@tuxedocomputers.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ACPI: resource: Do IRQ override on TongFang GXxHRXx and GMxHGxx
+Date: Mon, 22 Apr 2024 10:04:36 +0200
+Message-Id: <20240422080437.912886-1-wse@tuxedocomputers.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240418184531.GA245970@bhelgaas>
 
-Thu, Apr 18, 2024 at 01:45:31PM -0500, Bjorn Helgaas kirjoitti:
-> On Thu, Apr 18, 2024 at 12:24:06AM +0000, Chris Packham wrote:
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-> > We've got a custom x86_64 based design that is using an ASIX9100 to 
-> > provide a PCI to local bus bridge. Attached to that local bus is an FPGA 
-> > which mostly provides some GPIOs accessed via registers on the local 
-> > bus. Right now we've got a custom driver that bundles everything 
-> > together so effectively we've got a PCI device that provides GPIOs.
-> 
-> What's the local bus?  The ASIX9100 (for which Google doesn't find any
-> details) would have a PCI interface on the primary (upstream) side.
-> What's the local bus on the secondary (downstream) side?  Below you
-> mention "PCI bridge", which normally means both the primary and
-> secondary sides are PCI buses.
-> 
-> If the local bus is not PCI, I guess the ASIX9100 would look to the OS
-> like an endpoint, i.e., PCI_HEADER_TYPE_NORMAL, and the ASIX9100
-> driver would handle any "bridge" functionality completely internally?
-> 
-> Maybe Herve's work at
-> https://lore.kernel.org/r/20240325153919.199337-1-herve.codina@bootlin.com
-> would be relevant?
+Listed devices need the override for the keyboard to work.
 
-+1 here. Thought the same when seeing the original message from Chris.
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/acpi/resource.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-> > But as things can change based on the FPGA program I'd like some 
-> > flexibility to treat it separately from the PCI bridge. So really I'd 
-> > like to have a PCI device driver for the ASIX9100 that provides a local 
-> > bus controller and a (platform?) driver for the FPGA that provides the 
-> > GPIOs where I can have different compatibles for the different 
-> > implementations.
-> > 
-> > Then in the ACPI overlay I'd have something like
-> > 
-> >      Scope (\_SB.PCI0.D0B0)
-> >      {
-> >          Device (ASIX)
-> >          {
-> >              Name (_ADR, 0x0000)
-> > 
-> >              Device (FPGA)
-> >              {
-> >                          Name (_HID, "PRP0001")
-> >                          Name (_DSD, Package ()
-> >                          {
-> > ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
-> >                                      Package ()
-> >                                      {
-> >                                                  Package () { 
-> > "compatible", "my-platform-driver-for-fpga" },
-> >                                      }
-> >                          })
-> >              }
-> >          }
-> >      }
-> > 
-> >     Scope(\_SB)
-> >     {
-> >          Device(OTHR)
-> >          {
-> >              GpioIo (Exclusive, PullUp, 0, 0, IoRestrictionInputOnly, 
-> > "\\_SB.PCI0.D0B0.ASIX.FPGA",) { 0 }
-> >          }
-> >     }
-> > 
-> > Is it even possible to register a host controller for another platform bus?
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 59423fe9d0f29..6cc8572759a3d 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -630,6 +630,18 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X565"),
+ 		},
+ 	},
++	{
++		/* TongFang GXxHRXx/TUXEDO InfinityBook Pro Gen9 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GXxHRXx"),
++		},
++	},
++	{
++		/* TongFang GMxHGxx/TUXEDO Stellaris Slim Gen1 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
