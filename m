@@ -1,103 +1,109 @@
-Return-Path: <linux-acpi+bounces-5303-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5304-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882848AE5AC
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 14:11:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B568AE744
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 15:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 280211F22E0E
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 12:11:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7995728C490
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 13:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D02C824B1;
-	Tue, 23 Apr 2024 12:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9761304A6;
+	Tue, 23 Apr 2024 13:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cfYkjj06"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B615386265;
-	Tue, 23 Apr 2024 12:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A8612C480;
+	Tue, 23 Apr 2024 13:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713874244; cv=none; b=Xh6UV/EHQNzVCaSxMh6Pi+zdkO+BpFM4LqB+3X3wNXZiZdUDi6+P8SPvWpsxC4/ucFknueq8M6co5jlcqdfAkz6dqYHq5L1WHpLvSzidSp8dSsm35ggXBCCTqdb4E2uQy3berHG9fkfYDavKz8HnffaXw+TCsw01bLLIfB+OG+s=
+	t=1713877360; cv=none; b=WMNeedjr11V9H6RbZ6LXkAHbia77cdSpTv2WaxBmHl1nImcNoGGs2T6ZyB0ASfkQGqDZ5ncdg0zvWI/4n5kc6CN296xBCusSOiEUlHpBxfm0BW3kEAPT9zzfruNZOCFdj5StaVVFWaz8UXd7YqL7wP6nGm7LqBJZcEK7eCr0Mi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713874244; c=relaxed/simple;
-	bh=Nop/hThbF2HzvuBYxmGb29cMh/jcpean0AZbibqZBiQ=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=OB2EtgKSgDidhaIgA8uTdN+H4vkNZ/J6QxU1PhwN4sbkf3amKNNSlSxz8D08mX3ORs3sXV4v5s9+MOtaqGZfaSYARzXCWkLZjpj73kbiWLNvkvbyDdYQ/1SspcaHpbRBxqJMgDxlJcNSt1dl7O/VOPE3A0x4uj8pymIcuXnEut4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4VP18W6Ktyz1R62r;
-	Tue, 23 Apr 2024 20:07:39 +0800 (CST)
-Received: from dggpemm500002.china.huawei.com (unknown [7.185.36.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2EE0C1400FD;
-	Tue, 23 Apr 2024 20:10:40 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 23 Apr 2024 20:10:39 +0800
-Subject: Re: [PATCH v7 09/16] arm64: acpi: Move get_cpu_for_acpi_id() to a
- header
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Thomas Gleixner
-	<tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
-	<linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Russell King
-	<linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, Miguel
- Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
-	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-CC: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, <linuxarm@huawei.com>,
-	<justin.he@arm.com>, <jianyong.wu@arm.com>
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
- <20240418135412.14730-10-Jonathan.Cameron@huawei.com>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <344595f8-d40e-d410-26b7-e5d9b8cb1bec@huawei.com>
-Date: Tue, 23 Apr 2024 20:10:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1713877360; c=relaxed/simple;
+	bh=Lf/VZpOXMtdpoc8yxRU42eTMQeq66xPwEA/meTc985Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=osaqWcQuSEU8IyDEopZmiw4vQLnk092yot4OphpHlEfWmdRADStv5Mkbt7S6zmetltfZRZbXfGDrDS9qG6Tbhqkcok+ZrV/NJaSjkcU6K2Fx5rcTxbRCLyymVce0fS5VQJgdYpTRDZnjp9FtIBCdu0S4wjVgMX00kCxF75QB85w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cfYkjj06; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713877356; x=1745413356;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Lf/VZpOXMtdpoc8yxRU42eTMQeq66xPwEA/meTc985Y=;
+  b=cfYkjj06KtBxmiPqAeffpY+shx3xb5/cU/0+17ItcVsn9nAgubJVF0MM
+   UeuFv1vpWeD3Ec3YBbngL8gcSTjNnwid5RuwdiR3WV3zTWNMJ4uQzO/o6
+   OPsljGvD1ulegs43RiA3IVh0caMo0ZWApKxU1HTgmYlC//JMyQxDly1hd
+   lBBjOJcvwiQqOsJnyo4p8yQGDkinvBYMiHKTR9ImaqfZCM+EmfF4u1a1C
+   bO1zVAwGKd4XOzN/SM1akTsSV0tCNmVbY/1DJi6wYabUdzJ2gjzlQWHYd
+   FEco1BCnZR8XVY8joZeMggWC+JF56PPdJg9qBzQ//h7hA1V8CDw/6ykYK
+   g==;
+X-CSE-ConnectionGUID: BSo7a4TTQNuFia3OIey9RQ==
+X-CSE-MsgGUID: WG7mHzGXTTeJAPsiH2qppg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9328505"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9328505"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 06:02:35 -0700
+X-CSE-ConnectionGUID: UiApD3IFSGKsjMEreBdFcg==
+X-CSE-MsgGUID: 8R3xj71WRL+fsTKqcnzhcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="24964845"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 06:02:34 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rzFn4-00000000L4m-2gJO;
+	Tue, 23 Apr 2024 16:02:30 +0300
+Date: Tue, 23 Apr 2024 16:02:30 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v1] ACPI: Declare acpi_blacklisted() only if CONFIG_X86
+ is enabled
+Message-ID: <ZiexZnmbLqPy11d1@smile.fi.intel.com>
+References: <20240407063341.3710801-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <CAJZ5v0hqt6+1AvDWb0BYw0z9burVQfdkOF1qUGzRRuPmvq4qQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240418135412.14730-10-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500002.china.huawei.com (7.185.36.229)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hqt6+1AvDWb0BYw0z9burVQfdkOF1qUGzRRuPmvq4qQg@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 2024/4/18 21:54, Jonathan Cameron wrote:
-> From: James Morse <james.morse@arm.com>
-> 
-> ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
-> to the Linux CPU number.
-> 
-> The helper to retrieve this mapping is only available in arm64's NUMA
-> code.
-> 
-> Move it to live next to get_acpi_id_for_cpu().
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, Apr 22, 2024 at 06:37:59PM +0200, Rafael J. Wysocki wrote:
+> On Sun, Apr 7, 2024 at 8:33 AM Kuppuswamy Sathyanarayanan
+> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
 
-Looks good to me,
+...
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
+> Applied (as 6.10 material), but it looks to me like this declaration
+> could be moved away from this header file at all, as the function is
+> only used in one place in arch-x86 code.
 
-Thanks
-Hanjun
+Yes, we probably may move it to asm/acpi.h for x86.
+
+I don't remember if I ever expressed that idea, but I definitely was thinking
+about this.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
