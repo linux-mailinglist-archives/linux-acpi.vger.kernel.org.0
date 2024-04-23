@@ -1,172 +1,137 @@
-Return-Path: <linux-acpi+bounces-5295-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5296-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A1F8AE352
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 13:04:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E278AE39E
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 13:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0641F220B4
-	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 11:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78EEE1C22608
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Apr 2024 11:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5562757EE;
-	Tue, 23 Apr 2024 11:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="WxBmPlUb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915A07BAFF;
+	Tue, 23 Apr 2024 11:13:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200B376056
-	for <linux-acpi@vger.kernel.org>; Tue, 23 Apr 2024 11:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30385762E8;
+	Tue, 23 Apr 2024 11:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713870234; cv=none; b=A14G1lc7d6KW/5zqV/3+ee2vPREqfai++/FuMwG08Sz2JhZzbPovXXwfcWGxCrd6RgMVIngs2lhC9O0PeqhQ1YoJUFXI2BtkW1ta8a8LDK3aGruRiKOevrGZItzIg9pgs5r4W3y6mr+qwv6Jw89s9G+v8gWW7mTVxv+k7Ocb9jU=
+	t=1713870833; cv=none; b=HR6PJwJM9UJUIcw1KN0jmdP7UkRlPfEPDzGLwBVDv9v3y9JHnWcCu2NC9YOuhUwTrKrL9j0cJfZ7AjbUSZxGxrpgsWChaUMDhJQbcxJfLqScitIeqhQA38wrLWvv4rv7LQz8jGzTOJmAd/eVt+6+CSN7CMscO/aWeC0Ae+uNYdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713870234; c=relaxed/simple;
-	bh=VWztZ/fe4ofdzcdbmJNDnCpV52mg/oLbJuCfL9gqkkA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uujIBSWYa1Y+5LhJa2FMbMfDQrJCUrF11Ei3VTNHmrNZrfSwdPkJ1L680EXkUvjXiZrpD0HpnIF0krwJz4o1Hhl0WOsciGjRN1xVJW2Egw96sOnsY/UVUEBAL5cgNHjLlfOGIuY8uleKq2oP/219c/Z5PyjpV3ZaYn1L9bCLQjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=WxBmPlUb; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6ea0db2727bso2963334a34.2
-        for <linux-acpi@vger.kernel.org>; Tue, 23 Apr 2024 04:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1713870231; x=1714475031; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qcipzruX2A9Yhl78blb5w8gS3iCFD8VtiVRtnpWsvs4=;
-        b=WxBmPlUbd23ljUFN/MNBxoXQDqTaM7c8N+NOmaYTneLHGxdpXVSEh1th3iEW7ey/Ah
-         VZShX24+GOAU+q18hMmss9uCMD4lgAv2yVlshJWFgZP+86HuG9n9KGLBEaUAZ8kCud/D
-         jRToRku32+FCHVk7xN/M4r7Ub0gfSvRRNGcszGYcbeupaE1LzYoZ98znxfG19eovkInP
-         Ji6idO7PYimWcMvADFt2JQbx6qzLfYk3c/x0UkVo48ldgq/B04e/Mnow1T9gr2FAKVNK
-         Ko3FWzSJeeVVv0+619PmYwFEnjrhAd5LiEgomvgpGba7BGi2b+10hjSEaS1ahqGpWHpJ
-         Omqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713870231; x=1714475031;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qcipzruX2A9Yhl78blb5w8gS3iCFD8VtiVRtnpWsvs4=;
-        b=I+eAOWzuF5iy5ETJ2j5Le4WfA9RBfaFhAeRdhtj+lzqAwQCKM/sqi92dZ1X/stssiM
-         tm+eIBI++ZCIhLeA+9ZV+AOcbqZPVjUWzoSzU37gfYX4EabWl38fLOhxvhkkYO3B8UD9
-         F6J73Tyto+rxIAcmYMQQ5/La3+VyTSIw4oVqGs+hnsGmHZRNinhsBQBzT4NfNoeNkqOG
-         rw5x5sc+AJYf7qL8sR31o4Xxa6idEYxeVenjxsabUwqDYDpjZ9oBEJEcapIu6Mn5lFaW
-         kirmhImyafg7H/4sV1Uxlr7gEH5SoOjZEX/e0cmevfrNZEqcfwBVz1yOj9Ea10Bkzy1u
-         mAAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWpv1W2XZ4ShLRf1uSElKH0tkbViJh3EXsH5N2amgtADWDnXgxEjqUUOrbFocVyYVGplbFRLIb10KlWgIjp4Ju3ZqqLdNA9zlddCw==
-X-Gm-Message-State: AOJu0YxF0N8Zh8obqSld4wFTvB+VboudFavvPcoxwSlcIQPukc5qKs3C
-	DqCVza0sIGyPyFGrsPHkIp/PvSAmLZ6HJtvl8LBvIyVuQ++tQwiN3fMul9T9XtrazSOc5t5xNJN
-	sSqltCtvHJIy4Vf6/ftTlwjzdl5AdsBM8NyDeoA==
-X-Google-Smtp-Source: AGHT+IFhGsfWfuGFv/LZLhvGKnt4RFHXPxHS5wX4JPzKOB99V9981I2BjbU0RZ8Sg5EH28NR6FPScsajfozyvhNOLIs=
-X-Received: by 2002:a05:6870:55d2:b0:21e:a839:d807 with SMTP id
- qk18-20020a05687055d200b0021ea839d807mr16500749oac.54.1713870231186; Tue, 23
- Apr 2024 04:03:51 -0700 (PDT)
+	s=arc-20240116; t=1713870833; c=relaxed/simple;
+	bh=V1BUX1QiySmoJgp9S3EXm+goKQR4Zi8n7fSWoAHAIus=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=alN8X//B8smWt+eF6wRFb1bO5cpnYctSj244riHjWHQIJwreu+FJCUpSwkkg/REgAKwmaxx2eaTnObPG1zb6A6NLeQTltcJY2ogtJZLGFgjnadwgGhLoWQbx9mHFQL5w/smznD3YpEuiidY94CGoXa5xzbwXm0YHaFla7f657uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VNztM487GzXlBp;
+	Tue, 23 Apr 2024 19:10:19 +0800 (CST)
+Received: from dggpemm500002.china.huawei.com (unknown [7.185.36.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C64A140136;
+	Tue, 23 Apr 2024 19:13:47 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemm500002.china.huawei.com (7.185.36.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Apr 2024 19:13:46 +0800
+Subject: Re: [PATCH v7 03/16] ACPI: processor: Drop duplicated check on _STA
+ (enabled + present)
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Thomas Gleixner
+	<tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+	<linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>, Russell King
+	<linux@armlinux.org.uk>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linuxarm@huawei.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+ <20240418135412.14730-4-Jonathan.Cameron@huawei.com>
+ <c13f7424-3a7f-4c3e-3e8d-81e9fcf0caf7@huawei.com>
+ <CAJZ5v0gDJzCTkUP3i8H3pivrCHdU4-qVf3SVCvTF9hQyKJHtBQ@mail.gmail.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <e867fba1-3df4-8e1d-fb5e-e19ef4e0e588@huawei.com>
+Date: Tue, 23 Apr 2024 19:13:46 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240418034330.84721-1-cuiyunhui@bytedance.com>
- <20240418034330.84721-2-cuiyunhui@bytedance.com> <d143cd11-26ea-42e3-8f32-700a34b3705e@arm.com>
-In-Reply-To: <d143cd11-26ea-42e3-8f32-700a34b3705e@arm.com>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Tue, 23 Apr 2024 19:03:40 +0800
-Message-ID: <CAEEQ3wkDMuu+jh56YB3G0vY_ENdUjDL6byMsJXd0C9aQu1FZKw@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v4 2/3] riscv: cacheinfo: initialize
- cacheinfo's level and type from ACPI PPTT
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
-	james.morse@arm.com, jhugo@codeaurora.org, john.garry@huawei.com, 
-	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, sudeep.holla@arm.com, 
-	tiantao6@huawei.com, Palmer Dabbelt <palmer@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJZ5v0gDJzCTkUP3i8H3pivrCHdU4-qVf3SVCvTF9hQyKJHtBQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500002.china.huawei.com (7.185.36.229)
 
-Hi Palmer,
+On 2024/4/23 17:31, Rafael J. Wysocki wrote:
+> On Tue, Apr 23, 2024 at 8:49 AM Hanjun Guo <guohanjun@huawei.com> wrote:
+>>
+>> On 2024/4/18 21:53, Jonathan Cameron wrote:
+>>> The ACPI bus scan will only result in acpi_processor_add() being called
+>>> if _STA has already been checked and the result is that the
+>>> processor is enabled and present.  Hence drop this additional check.
+>>>
+>>> Suggested-by: Rafael J. Wysocki <rafael@kernel.org>
+>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>
+>>> ---
+>>> v7: No change
+>>> v6: New patch to drop this unnecessary code. Now I think we only
+>>>       need to explicitly read STA to print a warning in the ARM64
+>>>       arch_unregister_cpu() path where we want to know if the
+>>>       present bit has been unset as well.
+>>> ---
+>>>    drivers/acpi/acpi_processor.c | 6 ------
+>>>    1 file changed, 6 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+>>> index 7fc924aeeed0..ba0a6f0ac841 100644
+>>> --- a/drivers/acpi/acpi_processor.c
+>>> +++ b/drivers/acpi/acpi_processor.c
+>>> @@ -186,17 +186,11 @@ static void __init acpi_pcc_cpufreq_init(void) {}
+>>>    #ifdef CONFIG_ACPI_HOTPLUG_CPU
+>>>    static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+>>>    {
+>>> -     unsigned long long sta;
+>>> -     acpi_status status;
+>>>        int ret;
+>>>
+>>>        if (invalid_phys_cpuid(pr->phys_id))
+>>>                return -ENODEV;
+>>>
+>>> -     status = acpi_evaluate_integer(pr->handle, "_STA", NULL, &sta);
+>>> -     if (ACPI_FAILURE(status) || !(sta & ACPI_STA_DEVICE_PRESENT))
+>>> -             return -ENODEV;
+>>> -
+>>>        cpu_maps_update_begin();
+>>>        cpus_write_lock();
+>>
+>> Since the status bits were checked before acpi_processor_add() being
+>> called, do we need to remove the if (!acpi_device_is_enabled(device))
+>> check in acpi_processor_add() as well?
+> 
+> No, because its caller only checks the present bit.  The function
+> itself checks the enabled bit.
 
-On Fri, Apr 19, 2024 at 11:29=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.c=
-om> wrote:
->
-> Hi,
->
-> On 4/17/24 22:43, Yunhui Cui wrote:
-> > Before cacheinfo can be built correctly, we need to initialize level
-> > and type. Since RSIC-V currently does not have a register group that
-> > describes cache-related attributes like ARM64, we cannot obtain them
-> > directly, so now we obtain cache leaves from the ACPI PPTT table
-> > (acpi_get_cache_info()) and set the cache type through split_levels.
-> >
-> > Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
-> > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > ---
-> >   arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
-> >   1 file changed, 22 insertions(+)
-> >
-> > diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinf=
-o.c
-> > index 30a6878287ad..e47a1e6bd3fe 100644
-> > --- a/arch/riscv/kernel/cacheinfo.c
-> > +++ b/arch/riscv/kernel/cacheinfo.c
-> > @@ -6,6 +6,7 @@
-> >   #include <linux/cpu.h>
-> >   #include <linux/of.h>
-> >   #include <asm/cacheinfo.h>
-> > +#include <linux/acpi.h>
-> >
-> >   static struct riscv_cacheinfo_ops *rv_cache_ops;
-> >
-> > @@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
-> >       struct device_node *prev =3D NULL;
-> >       int levels =3D 1, level =3D 1;
-> >
-> > +     if (!acpi_disabled) {
-> > +             int ret, fw_levels, split_levels;
-> > +
-> > +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_level=
-s);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             BUG_ON((split_levels > fw_levels) ||
-> > +                    (split_levels + fw_levels > this_cpu_ci->num_leave=
-s));
-> > +
-> > +             for (; level <=3D this_cpu_ci->num_levels; level++) {
-> > +                     if (level <=3D split_levels) {
-> > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_DATA=
-, level);
-> > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_INST=
-, level);
-> > +                     } else {
-> > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_UNIF=
-IED, level);
-> > +                     }
-> > +             }
-> > +             return 0;
-> > +     }
-> > +
-> >       if (of_property_read_bool(np, "cache-size"))
-> >               ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
-> >       if (of_property_read_bool(np, "i-cache-size"))
->
-> Yes, looks good.
->
-> Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
->
->
->
-> Thanks,
+Thanks for the pointer, I can see the detail in the acpi_bus_attach()
+now,
 
-Could you help review this patchset? Thanks.
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-Thanks,
-Yunhui
+Thanks
+Hanjun
 
