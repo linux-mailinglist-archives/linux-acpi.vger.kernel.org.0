@@ -1,131 +1,135 @@
-Return-Path: <linux-acpi+bounces-5331-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5332-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D6F8B0B36
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 15:39:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8278B0B54
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 15:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF68E1F22718
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 13:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AABE71C242FB
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 13:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4836515FA7D;
-	Wed, 24 Apr 2024 13:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oY+3fx0g"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E77715E7FB;
+	Wed, 24 Apr 2024 13:40:45 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48C015D5CF
-	for <linux-acpi@vger.kernel.org>; Wed, 24 Apr 2024 13:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3ACC15AABA;
+	Wed, 24 Apr 2024 13:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713965693; cv=none; b=bMGUEDz6yIzM1y8vLdzK+dOFOMoCyT+OJDuE0SvnQtjTictwgXYcaBeEhDtRoU49xJxyfnjqmgmh1srxA8or6mwyezBgP4Y3jqdvPJh68nO/b3e+ALHqi5IaUz/5U/4INi6871G8gaM1p1swsyeakTv6LlHdBhDkm9TBqid0Q1U=
+	t=1713966045; cv=none; b=P+kauMyBiF5enpF/tSSAY/WNM+TejZnZfRa7ItqiW39UqXU+BEKC/+2+y342/RVlufp0VqXEKMeI4LSoaQBHFO3dfZUuOq6zyxC3eLZnk0F8RWGgLCzj2/am0MSpUIrfXtgxhnMIMb20ecRV2/pS9Zg7MQVc9SSI8aZuYkbyLLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713965693; c=relaxed/simple;
-	bh=v5uts0F+G005dBPvbk0jOnlqwhvA4TASHvWq3ETeWdw=;
+	s=arc-20240116; t=1713966045; c=relaxed/simple;
+	bh=9DK4QJ/TCi2B/QX3H6PXVhRwQNGSFim3Fn/8J5m5l5g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tCeilAZFufcHddGcnRdw9wTiJEiq3yYRxDAhA3ov76btNU3S2mOV5+2Wej6qoyn7LLDRjVTNRmqTFNDLA/Btwg5spXDYAi/kLhOWw017cUCzs8oNIbm1OFGbiv6veM9b8aJJ84GOSjjMQhndoom24cVaSlhptKPrQkhLBFyTjHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oY+3fx0g; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-de480576c3cso6169329276.2
-        for <linux-acpi@vger.kernel.org>; Wed, 24 Apr 2024 06:34:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713965691; x=1714570491; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v5uts0F+G005dBPvbk0jOnlqwhvA4TASHvWq3ETeWdw=;
-        b=oY+3fx0gQCP4JdIzfu5YUlLxKHqmaBqlM9oZmXqM5rMYPv8WRwObnn/i/Acl2Lq9PY
-         qewv8MG2IXzRg/2YB59vw824iXr3W0KwztRRhxzubXLzsWu44yFyvIDTEiRqhjP3U/IH
-         yb3KWNb26saDPdkdn9YLVigbqTNO7ezBc2Gns+fc0iG8+UXcKW88vys5zWNVcshCaPAf
-         MhS/Yvn3wnNY+hSsA4kvwd683IV+P3PxDT+SEr9BqiAyMuA1579t5Ng5wsfBsHDETuem
-         +NhXucaYEu8wECoq47CFc8kPjVZOEcl5evjYRXJUFRTWgXZ7q+aE+lTiPU1vlzliy5LN
-         o8Nw==
+	 To:Cc:Content-Type; b=PHJrBij8k4EuKhZmNY88fvWlDWbFUYQuVYXs7Wv0grlNVwPRUPHXjTQeB5hyLrtJQymChKj0ci7pduG44TAEggGn2J7l8/5CAtPKMIvdyMvKsnCShy7jU/X74/HlK1gWLumz5qGwv4o/Ppf+Ukzkn2QaO8oADiaxjkzi+camc0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-51bae805c56so2162391e87.0;
+        Wed, 24 Apr 2024 06:40:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713965691; x=1714570491;
+        d=1e100.net; s=20230601; t=1713966040; x=1714570840;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v5uts0F+G005dBPvbk0jOnlqwhvA4TASHvWq3ETeWdw=;
-        b=vms0J4ITT+dIBE5c3liHwYXgeMOXwmkWRDKhRo2dDQcEiOAjPVLelZwEI/Gx8LBhzK
-         B671u3ox4TxArGMXWRKtDT6q2OLIq3U5T6+jclM6h2s5nr7GHVJluyQg2xP3c19fJmEy
-         0lx477s3lJpl7NbTQRCimIyfeU3vXzcbUu4OR+RalT6UZxmkzJkE6tEgL4+CaqSGHpBG
-         nuLq1q3hUdN8Hv2XSBSROaZsycSjLQ0mmTGV7A06YqnPMCVT2Ybj3Uqy8AZE3MTBZk+P
-         cYIJ6TrNfCb/VIu13ToWsw/t3BOrwMFyiyIfDNqe68gHv8zdkeEBHNS35Ts4vgRXOF8Q
-         U5zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8TZg+662rgy05So76FHpNvdIc4NWxiFgGy8fu06qagMraHangGWLbths3JWpzGrlu34CUIvsCmJFIV6XkDlDrxmoX6pWrl8baZQ==
-X-Gm-Message-State: AOJu0YxtpzKsOQgLE+89obNr4RouF4yi5suzffUkFiYc2VOFPqPgqRUn
-	K4Udy8iLczcM531s1URgoduKZ5JLe6aQlb+NIzAawhK5lcqBUsYzihxa2IhGFyIQNxmcI1e0P1F
-	TuGMAgdzr4VOEBSenUZQ7geZ/mCQaHTqWzVruSg==
-X-Google-Smtp-Source: AGHT+IHyyl3VXRzVgrpc497VuwR/tGfdtBR3F2BBQ+lp1bkMbMbay8ctwKEQp7xRENbiJ8Hez152lECflDB33HFqk9M=
-X-Received: by 2002:a25:a1a7:0:b0:de5:53a6:24ed with SMTP id
- a36-20020a25a1a7000000b00de553a624edmr2514259ybi.50.1713965690752; Wed, 24
- Apr 2024 06:34:50 -0700 (PDT)
+        bh=fZ9CwMK3wqk6+/Yp2Zsm6M08mayo4fMD+34z+UfTXVA=;
+        b=jkLGLrh436xNDxsmCX2JckyWBinR2TyqTNY0oRJHceDjdi6B34SJoBk72ZvST4l170
+         A8EHyhl0qcpcB9BGkVm6laKTqiZCCWJ6BxVxkZ69S7owNt4XSQHdhxT4a5maK/SiaU/2
+         yDag7s5/CFenbuYa6vJce3F81h08eGFBHoMSfm5olbCcD8IMFMWL6unkPyIulr4oNUQc
+         z/kc+nBnYXXEIA8wiqe1383nt+bqlE0mKAtlOxSFtjUFTifzaGShahUZ2T62xJWWWvRR
+         TxNbGrFDm2Ep1zcMVAaEWfGEMnlXWChwQLWrINOhOziQtbALWfNnavZBlN42/ICivKjL
+         jgtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUdCCaLCoqmbJK8m3WiQHMuV4/NHCxNDoRfv/ds/ccfJ7YdlCWw64A8kOtmX5UncZKFgEh81xqBfaejmG+znSSwPe73w+fHlWdDShf6cDOTMZPBw6KiNXFlIqXwwaNrLUuh0WcyBW9ddMlHpJRrJMs7tzg+52pCcT2UwsKGqNDMxyz6yDQ4Q+irxjC6T6h23pxOHPTj4auU31dzz2d/ODQLkJ+UJDEha6cVaK6ym2Q00Ox35B2R1weah3M=
+X-Gm-Message-State: AOJu0Yx1MCGIhLptptQIs/A8WSC3BMjGMYUCIT9PRtKWi9a/k+CZIYuL
+	gKL3sH7kmM0Vh9yvztjWJu4AMF9anuXrd2R7ion0VCuHQcrw3GXxqf3pYn9bvHc=
+X-Google-Smtp-Source: AGHT+IHYWH4+Gq2S646E7ld6OHN9XiwFpf56LVUY9UItsluc4weuVEZwZSnSoPv8gOpE9IcXGaMKPA==
+X-Received: by 2002:ac2:58cc:0:b0:51b:9254:91e2 with SMTP id u12-20020ac258cc000000b0051b925491e2mr1561096lfo.55.1713966039887;
+        Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id c7-20020a197607000000b00516c51b3e29sm2423139lff.143.2024.04.24.06.40.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-516d2b9cd69so8518967e87.2;
+        Wed, 24 Apr 2024 06:40:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX2fDZ0yQSj/nK3P+z/h79/2EOSA1gs417apj8Uh5FTPidqkbZWS8ybHmGkomhsDiBSVeHERhrqCZthH/VhCT9iydqSjikgVvDinHW90DeB6cS4SGRO+v17iQ1cvOwz1a3qHIYgib4E//vbS7VNnKuoBnI45qVwG/ibLNQqUJgVMu8h3PGibcHRPOWPBJGnkxQtzUzGHuzePbzVvoWVjGc4zmhBEICqGbs04fJImto3ZBmoJRasgDHqbUQ=
+X-Received: by 2002:a05:6512:3253:b0:516:dd4f:d9ea with SMTP id
+ c19-20020a056512325300b00516dd4fd9eamr1661058lfr.5.1713966039011; Wed, 24 Apr
+ 2024 06:40:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240422164658.217037-1-sui.jingfeng@linux.dev>
- <Zie3ebHOEpWHj1qV@smile.fi.intel.com> <d5bc1e73-a553-451e-ab74-f5f0ca259c6b@linux.dev>
- <hcltp2bbxxg2t7ibmzgiib7mgbwgmvzwnnq6mochdh7c4h76r3@bxj6yk5zq64e> <ZikE4qOVO7rgIs9a@smile.fi.intel.com>
-In-Reply-To: <ZikE4qOVO7rgIs9a@smile.fi.intel.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 24 Apr 2024 16:34:39 +0300
-Message-ID: <CAA8EJpr1FSjizAh6Dp5Bmux3NrGYh=BfHFL4D1fa87Og4ymY0w@mail.gmail.com>
-Subject: Re: [PATCH v2] software node: Implement device_get_match_data fwnode callback
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Sui Jingfeng <sui.jingfeng@linux.dev>, dri-devel@lists.freedesktop.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
+References: <20240411235623.1260061-1-saravanak@google.com>
+In-Reply-To: <20240411235623.1260061-1-saravanak@google.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 24 Apr 2024 15:40:24 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUS-YX7tTEF0216wk+DdCbWCJ0z1huSj8cjRXp8GxJ5gg@mail.gmail.com>
+Message-ID: <CAMuHMdUS-YX7tTEF0216wk+DdCbWCJ0z1huSj8cjRXp8GxJ5gg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] fw_devlink overlay fix
+To: Saravana Kannan <saravanak@google.com>
+Cc: Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Rob Herring <robh@kernel.org>, 
+	Mark Brown <broonie@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	kernel-team@android.com, Wolfram Sang <wsa@kernel.org>, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 24 Apr 2024 at 16:11, Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Wed, Apr 24, 2024 at 12:37:16AM +0300, Dmitry Baryshkov wrote:
-> > On Wed, Apr 24, 2024 at 12:49:18AM +0800, Sui Jingfeng wrote:
-> > > On 2024/4/23 21:28, Andy Shevchenko wrote:
-> > > > On Tue, Apr 23, 2024 at 12:46:58AM +0800, Sui Jingfeng wrote:
->
-> ...
->
-> > But let me throw an argument why this patch (or something similar) look=
-s
-> > to be necessary.
-> >
-> > Both on DT and non-DT systems the kernel allows using the non-OF based
-> > matching. For the platform devices there is platform_device_id-based
-> > matching.
-> >
-> > Currently handling the data coming from such device_ids requires using
-> > special bits of code, e.g. platform_get_device_id(pdev)->driver_data to
-> > get the data from the platform_device_id. Having such codepaths goes
-> > against the goal of unifying DT and non-DT paths via generic property /
-> > fwnode code.
-> >
-> > As such, I support Sui's idea of being able to use device_get_match_dat=
-a
-> > for non-DT, non-ACPI platform devices.
->
-> I'm not sure I buy this. We have a special helpers based on the bus type =
-to
-> combine device_get_match_data() with the respective ID table crawling, se=
-e
-> the SPI and I=C2=B2C cases as the examples.
+Hi Saravana,
 
-I was thinking that we might be able to deprecate these helpers and
-always use device_get_match_data().
+On Fri, Apr 12, 2024 at 1:56=E2=80=AFAM Saravana Kannan <saravanak@google.c=
+om> wrote:
+> Overlays don't work correctly with fw_devlink. This patch series fixes
+> it. This series is now ready for review and merging once Geert and Herve
+> give they Tested-by.
+>
+> Geert and Herve,
+>
+> This patch series should hopefully fix both of your use cases [1][2][3].
+> Can you please check to make sure the device links created to/from the
+> overlay devices are to/from the right ones?
+
+Unfortunately it doesn't, and the result is worse than v2.
+
+After applying the first patch (the revert), the issue reported in
+[1] is back, as expected.
+
+After applying both patches, that issue is not fixed, i.e. I still
+need an add/rm/add cycle to instantiate the devices from the overlay.
+
+/sys/class/devlink shows one extra link after the first add:
+platform:e6060000.pinctrl--platform:e6e90000.spi ->
+../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.=
+spi
+
+> [1] - https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=
+=3D9F9rZ+-KzjOg@mail.gmail.com/
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --=20
-With best wishes
-Dmitry
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
