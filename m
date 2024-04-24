@@ -1,536 +1,348 @@
-Return-Path: <linux-acpi+bounces-5360-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5361-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633748B148E
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 22:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C568B155A
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 23:53:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8650E1C20B6C
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 20:26:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942DE1C225BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 21:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECB913E3E4;
-	Wed, 24 Apr 2024 20:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2D7157479;
+	Wed, 24 Apr 2024 21:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HCDPwWus"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ced391AG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245B134A8;
-	Wed, 24 Apr 2024 20:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8E115696E;
+	Wed, 24 Apr 2024 21:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713990372; cv=none; b=FON9h5hKbHe8JTrkiVvX732nmYzFDxjyevboMdzyxkBJsVoRXyTpqkxIrfvgE9vRdTeW8AsL/EK/A/zwdx9ZNUTJdayz2hKLOG2AY+Xi6TFpG6T4j9FQxWkg2Jv6hA4be7LRTtYJIfdjooYmACQU4ZNZc0k7fkUAF1QXXzF+3x0=
+	t=1713995624; cv=none; b=rS71aPX0RB4KUJzQuhK1HS0hCGtNaUG5QUhsi5m0fzZQ22lNqzUT0j7tzerZ+JVQw9yE5NUY6w5wlkdk3YBeexjkrD+frzne/02QH4Rm7cKW4DrbAScpHYq+u7tftTNgohPLkskEPGyRzA9mC9zhvaG1Sueelb7YXoYsOiNngWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713990372; c=relaxed/simple;
-	bh=3E6hBRp+q6RqA9OZIcTord3rpr9d9+SPNfOfM8PyddI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ibXPlBMmMyBrrEKhSk1GK8lLg0HHQKgZno8awmZcWLfTbjIMQQFXVe4RK61fxirXucVgekv4uDM9SgqUi/Fupfqnbjbo+cxzH6jGFNaeZ6HMBQgKBOMFqZyI1PbLh3412HgdqP+Te35IBcIk4PlkjKV2ZeUVAzE8MJdHkYpkWDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HCDPwWus; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-232f2b86e4fso143320fac.3;
-        Wed, 24 Apr 2024 13:26:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713990369; x=1714595169; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=incol+l1cttU80jXk2nqyGIlECdYg5DlgRh3ZAraHcI=;
-        b=HCDPwWusnWZP1yzDJyyw8OOb6k4CHjIh65r3aEWNn0kEusm4bIxLLe6G3TJdJY9Hez
-         gA5JUDmaxQVAvflYUOad6YBX8xDB6N+n/fZzJBCGlUUxg4rHmWtnasJHMl7WHqXq2se4
-         s8Ww+Qg2Hnrdba5Vr81pCmmtj16+/bbdDYAtgXY39SMxvKNB0jry8yoa/TWxA8qrBGZi
-         T7rvJ8KFDn6QQy0YT5vdQExmZCYAmIvqg1O4lPccJZ2jBs0n0Wbnp61VPOrspkLHwwrA
-         l9epSzaE9Xri1Fhgsx1zjLZ3pAkV2jyBnCD0b2zGjFlQPn9dUlVJUIQ7/7UUX99jRolE
-         34pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713990369; x=1714595169;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=incol+l1cttU80jXk2nqyGIlECdYg5DlgRh3ZAraHcI=;
-        b=A8om7LNHM2wJ/coL25ska37ZyuxHvfLf6niz9g5KrIaNpQz9m3kROcvhMlriODmAZk
-         kQtY0chISyU5CgjdT081NEmwF1xyMbwt0Z9o3j56mVJwTsVJljge9Fp020wRRwnJJkYw
-         dUbh3BbH5SBnpC8g8EELldXdy7f52hqV6vTZLnRKGBbzSvRoO/Wy9J7jbougtKTAKX6x
-         5fQ/huwtpUQhs8emHGAmt5AUdwj/6Xc/KER4y50BJTIZYxbga516b9HfXHfwCeRIEYJf
-         6Mqlf9hmrqlyEYpVQnOAfMnV+ZehTirJiHNTo2huT8qJTmaopCNeTOb4Hp+qwwZ5wjbA
-         pk/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUxsu2zusA3iCcDvqYfh8r0TxNuMet4xuM8FNfDAyk7/QHvaTkaz47b7uUHLjIu30C0mH9MiRkGE2en4iwoqyO+46kl3vZQ8DfK+LNAHMohUNP+Jnb+QvxuwwNgJOOmwHiWMRr38ss2gjGnN8QvAUp3R0HDVr1EYLu8KCMCQUhp5UuZIPY=
-X-Gm-Message-State: AOJu0YzYvURxPyM9a5zKhDSEfigIxom/CbmQeXVYGOIsQWvTokhw/DA5
-	xvhuFFjSL3fTeOKIF90LoHIYPUYp39ZQyMDvOHVv7jCPTejxX38g
-X-Google-Smtp-Source: AGHT+IFhXCtEEypDPb+KRK/ZNKaDwjojMo4l1m6xexhGZqfv+stKhOGdYK5rdm1vBXBnystoX42XUQ==
-X-Received: by 2002:a05:6870:e245:b0:233:b5dd:471c with SMTP id d5-20020a056870e24500b00233b5dd471cmr3861498oac.51.1713990369274;
-        Wed, 24 Apr 2024 13:26:09 -0700 (PDT)
-Received: from debian ([2601:641:300:14de:b318:9476:706a:e82a])
-        by smtp.gmail.com with ESMTPSA id p5-20020a634f45000000b005f05c88c149sm11622926pgl.71.2024.04.24.13.25.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 13:26:08 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Wed, 24 Apr 2024 13:25:52 -0700
-To: shiju.jose@huawei.com
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, david@redhat.com,
-	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
-	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
-	jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	linuxarm@huawei.com
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <Zilq0ER7C8zeo3j8@debian>
-References: <20240419164720.1765-1-shiju.jose@huawei.com>
- <20240419164720.1765-2-shiju.jose@huawei.com>
+	s=arc-20240116; t=1713995624; c=relaxed/simple;
+	bh=fDVqV7SwfoOoPsBrdvMs1++E36jQ+EaKZopyeifPckw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rU9ucATpsVL/18PUfkLYFqKU5JW0g5xDfqYhQWScZ9nynMN2pdk+oA0i4Ow6EsshB1GNDFb9FBMb6NxGtwj4z8BSk9cCJCfib6b+wPynuLWfFR5wflsZyJQ+EXXbH8iyxi4Nw2HiupgA3i94t3jCxBHLvYOc30vEom0LWhEwWA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ced391AG; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1713995591; x=1714600391; i=w_armin@gmx.de;
+	bh=fDVqV7SwfoOoPsBrdvMs1++E36jQ+EaKZopyeifPckw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ced391AGMH38BmKtLodVvGGQc2Fi3t6elWZt8L+Favyg18KFFmy8GoQM9ZMYnIJn
+	 4EX06PiIdho+MMP7wIBiXnUdCjcYMOnCKhkaxJ/aUKUBkCfP2cCxQgdNjGW5ghaCe
+	 aj2yaZ8M7t3FHyn89njZ7p7calGVJWJvkMczAzIOmNZkQsase7vMtlVDghXkAhmGO
+	 oxipLoT3lHgHKbNGfTrP2o5khe4v3BBFaIHHwXl6bmqG4CmGskuhqIWRjjMGxxgvP
+	 T56xxKrQjnSi8dVdQCmurtFCMf46jDC40NTgZUrnZXftEHmvXWxR1X4Dl1owXTfAy
+	 Gj763heSGIPWFW1URw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxUrx-1ssVu33yKf-00zUyI; Wed, 24
+ Apr 2024 23:53:11 +0200
+Message-ID: <7f97fa54-8240-4b71-acff-0fc5e92cb710@gmx.de>
+Date: Wed, 24 Apr 2024 23:53:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240419164720.1765-2-shiju.jose@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] ACPI: fan: Add hwmon support
+To: Guenter Roeck <linux@roeck-us.net>, "Rafael J. Wysocki"
+ <rafael@kernel.org>
+Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
+ jdelvare@suse.com, andy.shevchenko@gmail.com, linux@weissschuh.net,
+ ilpo.jarvinen@linux.intel.com, linux-acpi@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org
+References: <20240422195745.5089-1-W_Armin@gmx.de>
+ <CAJZ5v0gLQYOWLTmpe24epb9GzV5o2qSuaP5t25eu-OXYoE2pAQ@mail.gmail.com>
+ <4c4dbcf8-5c8e-4398-a17d-be5af93f2d6c@roeck-us.net>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <4c4dbcf8-5c8e-4398-a17d-be5af93f2d6c@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:dxC/mqtSf+bnzuTxubdqDLMjtA4ZrTJa4cuR9SIMwTBPhDdnqFt
+ lArCkpiau63wXOPV81RE6H3xgGhLUDHwJ7kL+RVZe6LzoKQVBvYgk2k8tV5C1V2oHDytcTV
+ QMGPdlUddTzT3liimbNsJBLluV90slVOROIrjTKfcxCjBcLr2N+o2FAd1bBIj0re4zeVfOP
+ nFrhbmI9ksSDZ4dQs24Qg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:etJvAvL/1lA=;OtpQxthn9Qs2EuxKjWfU3vhwghv
+ lExZXltFVQNezor8khpYtEzoN9LJAyaLC+v/0KFHI+Y7U+ykEsQFtPlBOYGECJvyS5NW6KZow
+ UlXZxkJPvvFHArQe5oFHnNcjNibifQ7FCARTl4DxNzacEVd3Yzw57X/bLZTvhoWzyRJR/Ob+X
+ +5xtupn3eFw9uzZAlt4q6L17V/0WxVLYSyQTMB+wfH4+nyKXkTRNG/vraVF7FdjRNW3i3tVyC
+ eOmIzApeA/b2zuFpaAn4JZewmsCtdvJOZRBdduGE4bWu4H6CzIlTeBJpXli/lx1C7f7jpcY0W
+ hZIif7Z0Ig8ITai1hsBLIsDGE9QWOdzy2oI9O9r4Xq0Vx+rw2IGqErNN+DDNmEesnsKg+NZw1
+ 9VS91J5mPncq9S7KvmhhySjjPymequK9kCruksnjiNynTTS/DRoB2YbQDhGzKGjKDfl1AnZ0v
+ Y2FJsOK76eOEtru1z4cd/vxIn5S/uFbLwSaxwkO6OqqpGcFVvuiByeQ/r/iWg649P7DbSjxeZ
+ lP/ZQqG10NT73vSrBrMF272D2n2did3xEfZtI5wWiK4vPJyGc4Sz/beq1GbTF9bFpYvTG8BjK
+ H5Dux8NPs2hVeXKizCvSUh55ISidRYBORj+1yTti4tmSoN4XGlrJhLFhFbZCU6rLEQ4mgJNAp
+ b5hTDLOxuLZV/MDXPqiLRp/j471Zfmm71NixeTJUoun3W9c3Cx0OJbXKVVFrFKA7PfMa2j2rM
+ 9W9Jjw6W9eEejVMvVUoh0iuxER2XhmfR3c6Td1wfTlNzpOL6+xSnWC291R1qxE0mGl9i9L4VR
+ XYLLf2SG/v+Hva5nhQAvYpxGARWAzu+/Dm7IODJebBGdE=
 
-On Sat, Apr 20, 2024 at 12:47:10AM +0800, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add scrub subsystem supports configuring the memory scrubbers
-> in the system. The scrub subsystem provides the interface for
-> registering the scrub devices. The scrub control attributes
-> are provided to the user in /sys/class/ras/rasX/scrub
-> 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  .../ABI/testing/sysfs-class-scrub-configure   |  47 +++
->  drivers/ras/Kconfig                           |   7 +
->  drivers/ras/Makefile                          |   1 +
->  drivers/ras/memory_scrub.c                    | 271 ++++++++++++++++++
->  include/linux/memory_scrub.h                  |  37 +++
->  5 files changed, 363 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-class-scrub-configure
->  create mode 100755 drivers/ras/memory_scrub.c
->  create mode 100755 include/linux/memory_scrub.h
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-scrub-configure b/Documentation/ABI/testing/sysfs-class-scrub-configure
-> new file mode 100644
-> index 000000000000..3ed77dbb00ad
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-class-scrub-configure
-> @@ -0,0 +1,47 @@
-> +What:		/sys/class/ras/
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		The ras/ class subdirectory belongs to the
-> +		common ras features such as scrub subsystem.
-> +
-> +What:		/sys/class/ras/rasX/scrub/
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		The /sys/class/ras/ras{0,1,2,3,...}/scrub directories
-> +		correspond to each scrub device registered with the
-> +		scrub subsystem.
-> +
-> +What:		/sys/class/ras/rasX/scrub/name
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		(RO) name of the memory scrubber
-> +
-> +What:		/sys/class/ras/rasX/scrub/enable_background
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		(RW) Enable/Disable background(patrol) scrubbing if supported.
-> +
-> +What:		/sys/class/ras/rasX/scrub/rate_available
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		(RO) Supported range for the scrub rate by the scrubber.
-> +		The scrub rate represents in hours.
-> +
-> +What:		/sys/class/ras/rasX/scrub/rate
-> +Date:		March 2024
-> +KernelVersion:	6.9
-> +Contact:	linux-kernel@vger.kernel.org
-> +Description:
-> +		(RW) The scrub rate specified and it must be with in the
-> +		supported range by the scrubber.
-> +		The scrub rate represents in hours.
-> diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-> index fc4f4bb94a4c..181701479564 100644
-> --- a/drivers/ras/Kconfig
-> +++ b/drivers/ras/Kconfig
-> @@ -46,4 +46,11 @@ config RAS_FMPM
->  	  Memory will be retired during boot time and run time depending on
->  	  platform-specific policies.
->  
-> +config SCRUB
-> +	tristate "Memory scrub driver"
-> +	help
-> +	  This option selects the memory scrub subsystem, supports
-> +	  configuring the parameters of underlying scrubbers in the
-> +	  system for the DRAM memories.
-> +
->  endif
-> diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-> index 11f95d59d397..89bcf0d84355 100644
-> --- a/drivers/ras/Makefile
-> +++ b/drivers/ras/Makefile
-> @@ -2,6 +2,7 @@
->  obj-$(CONFIG_RAS)	+= ras.o
->  obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
->  obj-$(CONFIG_RAS_CEC)	+= cec.o
-> +obj-$(CONFIG_SCRUB)	+= memory_scrub.o
->  
->  obj-$(CONFIG_RAS_FMPM)	+= amd/fmpm.o
->  obj-y			+= amd/atl/
-> diff --git a/drivers/ras/memory_scrub.c b/drivers/ras/memory_scrub.c
-> new file mode 100755
-> index 000000000000..7e995380ec3a
-> --- /dev/null
-> +++ b/drivers/ras/memory_scrub.c
-> @@ -0,0 +1,271 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Memory scrub subsystem supports configuring the registered
-> + * memory scrubbers.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#define pr_fmt(fmt)     "MEM SCRUB: " fmt
-> +
-> +#include <linux/acpi.h>
-> +#include <linux/bitops.h>
-> +#include <linux/delay.h>
-> +#include <linux/kfifo.h>
-> +#include <linux/memory_scrub.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/spinlock.h>
-> +
-> +/* memory scrubber config definitions */
-> +#define SCRUB_ID_PREFIX "ras"
-> +#define SCRUB_ID_FORMAT SCRUB_ID_PREFIX "%d"
-> +
-> +static DEFINE_IDA(scrub_ida);
-> +
-> +struct scrub_device {
-> +	int id;
-> +	struct device dev;
-> +	const struct scrub_ops *ops;
-> +};
-> +
-> +#define to_scrub_device(d) container_of(d, struct scrub_device, dev)
-> +static ssize_t enable_background_store(struct device *dev,
-> +				       struct device_attribute *attr,
-> +				       const char *buf, size_t len)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &enable);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = scrub_dev->ops->set_enabled_bg(dev, enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t enable_background_show(struct device *dev,
-> +				      struct device_attribute *attr, char *buf)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	bool enable;
-> +	int ret;
-> +
-> +	ret = scrub_dev->ops->get_enabled_bg(dev, &enable);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%d\n", enable);
-> +}
-> +
-> +static ssize_t name_show(struct device *dev,
-> +			 struct device_attribute *attr, char *buf)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	int ret;
-> +
-> +	ret = scrub_dev->ops->get_name(dev, buf);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return strlen(buf);
-> +}
-> +
-> +static ssize_t rate_show(struct device *dev, struct device_attribute *attr,
-> +			 char *buf)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	u64 val;
-> +	int ret;
-> +
-> +	ret = scrub_dev->ops->rate_read(dev, &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "0x%llx\n", val);
-> +}
-> +
-> +static ssize_t rate_store(struct device *dev, struct device_attribute *attr,
-> +			  const char *buf, size_t len)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	long val;
-> +	int ret;
-> +
-> +	ret = kstrtol(buf, 10, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = scrub_dev->ops->rate_write(dev, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return len;
-> +}
-> +
-> +static ssize_t rate_available_show(struct device *dev,
-> +				   struct device_attribute *attr,
-> +				   char *buf)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	u64 min_sr, max_sr;
-> +	int ret;
-> +
-> +	ret = scrub_dev->ops->rate_avail_range(dev, &min_sr, &max_sr);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "0x%llx-0x%llx\n", min_sr, max_sr);
-> +}
-> +
-> +DEVICE_ATTR_RW(enable_background);
-> +DEVICE_ATTR_RO(name);
-> +DEVICE_ATTR_RW(rate);
-> +DEVICE_ATTR_RO(rate_available);
-> +
-> +static struct attribute *scrub_attrs[] = {
-> +	&dev_attr_enable_background.attr,
-> +	&dev_attr_name.attr,
-> +	&dev_attr_rate.attr,
-> +	&dev_attr_rate_available.attr,
-> +	NULL
-> +};
-> +
-> +static umode_t scrub_attr_visible(struct kobject *kobj,
-> +				  struct attribute *a, int attr_id)
-> +{
-> +	struct device *dev = kobj_to_dev(kobj);
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +	const struct scrub_ops *ops = scrub_dev->ops;
-> +
-> +	if (a == &dev_attr_enable_background.attr) {
-> +		if (ops->set_enabled_bg && ops->get_enabled_bg)
-> +			return a->mode;
-> +		if (ops->get_enabled_bg)
-> +			return 0444;
-> +		return 0;
-> +	}
-> +	if (a == &dev_attr_name.attr)
-> +		return ops->get_name ? a->mode : 0;
-> +	if (a == &dev_attr_rate_available.attr)
-> +		return ops->rate_avail_range ? a->mode : 0;
-> +	if (a == &dev_attr_rate.attr) { /* Write only makes little sense */
-> +		if (ops->rate_read && ops->rate_write)
-> +			return a->mode;
-> +		if (ops->rate_read)
-> +			return 0444;
-> +		return 0;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct attribute_group scrub_attr_group = {
-> +	.name		= "scrub",
-> +	.attrs		= scrub_attrs,
-> +	.is_visible	= scrub_attr_visible,
-> +};
-> +
-> +static const struct attribute_group *scrub_attr_groups[] = {
-> +	&scrub_attr_group,
-> +	NULL
-> +};
-> +
-> +static void scrub_dev_release(struct device *dev)
-> +{
-> +	struct scrub_device *scrub_dev = to_scrub_device(dev);
-> +
-> +	ida_free(&scrub_ida, scrub_dev->id);
-> +	kfree(scrub_dev);
-> +}
-> +
-> +static struct class scrub_class = {
-> +	.name = "ras",
-> +	.dev_groups = scrub_attr_groups,
-> +	.dev_release = scrub_dev_release,
-> +};
-> +
-> +static struct device *
-> +scrub_device_register(struct device *parent, void *drvdata,
-> +		      const struct scrub_ops *ops)
-> +{
-> +	struct scrub_device *scrub_dev;
-> +	struct device *hdev;
-> +	int err;
-> +
-> +	scrub_dev = kzalloc(sizeof(*scrub_dev), GFP_KERNEL);
-> +	if (!scrub_dev)
-> +		return ERR_PTR(-ENOMEM);
-> +	hdev = &scrub_dev->dev;
-> +
-> +	scrub_dev->id = ida_alloc(&scrub_ida, GFP_KERNEL);
-> +	if (scrub_dev->id < 0) {
-> +		kfree(scrub_dev);
-> +		return ERR_PTR(-ENOMEM);
-> +	}
-> +
-> +	scrub_dev->ops = ops;
-> +	hdev->class = &scrub_class;
-> +	hdev->parent = parent;
-> +	dev_set_drvdata(hdev, drvdata);
-> +	dev_set_name(hdev, SCRUB_ID_FORMAT, scrub_dev->id);
-
-Need to check the return value of dev_set_name?
-
-fan
-
-> +	err = device_register(hdev);
-> +	if (err) {
-> +		put_device(hdev);
-> +		return ERR_PTR(err);
-> +	}
-> +
-> +	return hdev;
-> +}
-> +
-> +static void devm_scrub_release(void *dev)
-> +{
-> +	device_unregister(dev);
-> +}
-> +
-> +/**
-> + * devm_scrub_device_register - register scrubber device
-> + * @dev: the parent device
-> + * @drvdata: driver data to attach to the scrub device
-> + * @ops: pointer to scrub_ops structure (optional)
-> + *
-> + * Returns the pointer to the new device on success, ERR_PTR() otherwise.
-> + * The new device would be automatically unregistered with the parent device.
-> + */
-> +struct device *
-> +devm_scrub_device_register(struct device *dev, void *drvdata,
-> +			   const struct scrub_ops *ops)
-> +{
-> +	struct device *hdev;
-> +	int ret;
-> +
-> +	if (!dev)
-> +		return ERR_PTR(-EINVAL);
-> +
-> +	hdev = scrub_device_register(dev, drvdata, ops);
-> +	if (IS_ERR(hdev))
-> +		return hdev;
-> +
-> +	ret = devm_add_action_or_reset(dev, devm_scrub_release, hdev);
-> +	if (ret)
-> +		return ERR_PTR(ret);
-> +
-> +	return hdev;
-> +}
-> +EXPORT_SYMBOL_GPL(devm_scrub_device_register);
-> +
-> +static int __init memory_scrub_control_init(void)
-> +{
-> +	return class_register(&scrub_class);
-> +}
-> +subsys_initcall(memory_scrub_control_init);
-> +
-> +static void memory_scrub_control_exit(void)
-> +{
-> +	class_unregister(&scrub_class);
-> +}
-> +module_exit(memory_scrub_control_exit);
-> diff --git a/include/linux/memory_scrub.h b/include/linux/memory_scrub.h
-> new file mode 100755
-> index 000000000000..f0e1657a5072
-> --- /dev/null
-> +++ b/include/linux/memory_scrub.h
-> @@ -0,0 +1,37 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Memory scrub subsystem driver supports controlling
-> + * the memory scrubbers in the system.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#ifndef __MEMORY_SCRUB_H
-> +#define __MEMORY_SCRUB_H
-> +
-> +#include <linux/types.h>
-> +
-> +struct device;
-> +
-> +/**
-> + * struct scrub_ops - scrub device operations (all elements optional)
-> + * @get_enabled_bg: check if currently performing background scrub.
-> + * @set_enabled_bg: start or stop a bg-scrub.
-> + * @get_name: get the memory scrubber name.
-> + * @rate_avail_range: retrieve limits on supported rates.
-> + * @rate_read: read the scrub rate
-> + * @rate_write: set the scrub rate
-> + */
-> +struct scrub_ops {
-> +	int (*get_enabled_bg)(struct device *dev, bool *enable);
-> +	int (*set_enabled_bg)(struct device *dev, bool enable);
-> +	int (*get_name)(struct device *dev, char *buf);
-> +	int (*rate_avail_range)(struct device *dev, u64 *min, u64 *max);
-> +	int (*rate_read)(struct device *dev, u64 *rate);
-> +	int (*rate_write)(struct device *dev, u64 rate);
-> +};
-> +
-> +struct device *
-> +devm_scrub_device_register(struct device *dev, void *drvdata,
-> +			   const struct scrub_ops *ops);
-> +#endif /* __MEMORY_SCRUB_H */
-> -- 
-> 2.34.1
-> 
+QW0gMjQuMDQuMjQgdW0gMjE6NDIgc2NocmllYiBHdWVudGVyIFJvZWNrOg0KDQo+IE9uIDQvMjQv
+MjQgMTI6MDEsIFJhZmFlbCBKLiBXeXNvY2tpIHdyb3RlOg0KPj4gT24gTW9uLCBBcHIgMjIsIDIw
+MjQgYXQgOTo1OOKAr1BNIEFybWluIFdvbGYgPFdfQXJtaW5AZ214LmRlPiB3cm90ZToNCj4+Pg0K
+Pj4+IEN1cnJlbnRseSwgdGhlIGRyaXZlciBkb2VzIG9ubHkgc3VwcG9ydCBhIGN1c3RvbSBzeXNm
+cw0KPj4+IGludGVyZmFjZSB0byBhbGxvdyB1c2Vyc3BhY2UgdG8gcmVhZCB0aGUgZmFuIHNwZWVk
+Lg0KPj4+IEFkZCBzdXBwb3J0IGZvciB0aGUgc3RhbmRhcmQgaHdtb24gaW50ZXJmYWNlIHNvIHVz
+ZXJzDQo+Pj4gY2FuIHJlYWQgdGhlIGZhbiBzcGVlZCB3aXRoIHN0YW5kYXJkIHRvb2xzIGxpa2Ug
+InNlbnNvcnMiLg0KPj4+DQo+Pj4gVGVzdGVkIHdpdGggYSBjdXN0b20gQUNQSSBTU0RULg0KPj4+
+DQo+Pj4gU2lnbmVkLW9mZi1ieTogQXJtaW4gV29sZiA8V19Bcm1pbkBnbXguZGU+DQo+Pg0KPj4g
+SSBuZWVkIEd1ZW50ZXIgdG8gdGVsbCBtZSB0aGF0IHRoaXMgaXMgZmluZSB3aXRoIGhpbS4NCj4+
+DQo+DQo+IFNvcnJ5LCBJIGhhdmUgbm8gaWRlYS4gU2UgYmVsb3cuDQo+DQo+PiBBbHNvIHBsZWFz
+ZSBzZWUgb25lIG5pdCBiZWxvdy4NCj4+DQo+Pj4gLS0tDQo+Pj4gQ2hhbmdlcyBzaW5jZSB2NToN
+Cj4+PiAtIGZpeCBjb2Rpbmcgc3R5bGUgaXNzdWVzDQo+Pj4gLSByZXBsYWNlIGRvdWJsZSBicmVh
+ayB3aXRoIHJldHVybg0KPj4+IC0gYWRkIG1pc3NpbmcgaW5jbHVkZXMNCj4+Pg0KPj4+IENoYW5n
+ZXMgc2luY2UgdjQ6DQo+Pj4gLSBmaXggc3BlbGxpbmcgaXNzdWVzDQo+Pj4gLSBjaGVjayBwb3dl
+ciB2YWx1ZXMgZm9yIG92ZXJmbG93IGNvbmRpdGlvbiB0b28NCj4+Pg0KPj4+IENoYW5nZXMgc2lu
+Y2UgdjM6DQo+Pj4gLSBkcm9wIGZhdWx0IGF0dHJzDQo+Pj4gLSByZXdvcmsgaW5pdGlhbGl6YXRp
+b24NCj4+Pg0KPj4+IENoYW5nZXMgc2luY2UgdjI6DQo+Pj4gLSBhZGQgc3VwcG9ydCBmb3IgZmFu
+WF90YXJnZXQgYW5kIHBvd2VyIGF0dHJzDQo+Pj4NCj4+PiBDaGFuZ2VzIHNpbmNlIHYxOg0KPj4+
+IC0gZml4IHVuZGVmaW5lZCByZWZlcmVuY2UgZXJyb3INCj4+PiAtIGZpeCBmYW4gc3BlZWQgdmFs
+aWRhdGlvbg0KPj4+IC0gY29kaW5nIHN0eWxlIGZpeGVzDQo+Pj4gLSBjbGFyaWZ5IHRoYXQgdGhl
+IGNoYW5nZXMgYXJlIGNvbXBpbGUtdGVzdGVkIG9ubHkNCj4+PiAtIGFkZCBod21vbiBtYWludGFp
+bmVycyB0byBjYyBsaXN0DQo+Pj4gLS0tDQo+Pj4gwqAgZHJpdmVycy9hY3BpL01ha2VmaWxlwqDC
+oMKgIHzCoMKgIDEgKw0KPj4+IMKgIGRyaXZlcnMvYWNwaS9mYW4uaMKgwqDCoMKgwqDCoCB8wqDC
+oCA5ICsrKw0KPj4+IMKgIGRyaXZlcnMvYWNwaS9mYW5fY29yZS5jwqAgfMKgwqAgNCArDQo+Pj4g
+wqAgZHJpdmVycy9hY3BpL2Zhbl9od21vbi5jIHwgMTY5IA0KPj4+ICsrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKw0KPj4+IMKgIDQgZmlsZXMgY2hhbmdlZCwgMTgzIGluc2Vy
+dGlvbnMoKykNCj4+PiDCoCBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9hY3BpL2Zhbl9od21v
+bi5jDQo+Pj4NCj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL01ha2VmaWxlIGIvZHJpdmVy
+cy9hY3BpL01ha2VmaWxlDQo+Pj4gaW5kZXggMzllYTVjZmE4MzI2Li42MWNhNGFmZTgzZGMgMTAw
+NjQ0DQo+Pj4gLS0tIGEvZHJpdmVycy9hY3BpL01ha2VmaWxlDQo+Pj4gKysrIGIvZHJpdmVycy9h
+Y3BpL01ha2VmaWxlDQo+Pj4gQEAgLTc3LDYgKzc3LDcgQEAgb2JqLSQoQ09ORklHX0FDUElfVElO
+WV9QT1dFUl9CVVRUT04pwqAgKz0gDQo+Pj4gdGlueS1wb3dlci1idXR0b24ubw0KPj4+IMKgIG9i
+ai0kKENPTkZJR19BQ1BJX0ZBTinCoMKgwqDCoMKgwqDCoMKgICs9IGZhbi5vDQo+Pj4gwqAgZmFu
+LW9ianPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCA6PSBmYW5f
+Y29yZS5vDQo+Pj4gwqAgZmFuLW9ianPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCArPSBmYW5fYXR0ci5vDQo+Pj4gK2Zhbi0kKENPTkZJR19IV01PTinCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgICs9IGZhbl9od21vbi5vDQo+Pj4NCj4+PiDCoCBvYmotJChDT05GSUdf
+QUNQSV9WSURFTynCoMKgwqDCoMKgwqAgKz0gdmlkZW8ubw0KPj4+IMKgIG9iai0kKENPTkZJR19B
+Q1BJX1RBRCnCoMKgwqDCoMKgwqDCoMKgICs9IGFjcGlfdGFkLm8NCj4+PiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9hY3BpL2Zhbi5oIGIvZHJpdmVycy9hY3BpL2Zhbi5oDQo+Pj4gaW5kZXggZjg5ZDE5
+YzkyMmRjLi5kYjI1YTM4OThhZjcgMTAwNjQ0DQo+Pj4gLS0tIGEvZHJpdmVycy9hY3BpL2Zhbi5o
+DQo+Pj4gKysrIGIvZHJpdmVycy9hY3BpL2Zhbi5oDQo+Pj4gQEAgLTEwLDYgKzEwLDggQEANCj4+
+PiDCoCAjaWZuZGVmIF9BQ1BJX0ZBTl9IXw0KPj4+IMKgICNkZWZpbmUgX0FDUElfRkFOX0hfDQo+
+Pj4NCj4+PiArI2luY2x1ZGUgPGxpbnV4L2tjb25maWcuaD4NCj4+PiArDQo+Pj4gwqAgI2RlZmlu
+ZSBBQ1BJX0ZBTl9ERVZJQ0VfSURTwqDCoMKgIFwNCj4+PiDCoMKgwqDCoMKgwqDCoMKgIHsiSU5U
+MzQwNCIsIH0sIC8qIEZhbiAqLyBcDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoCB7IklOVEMxMDQ0Iiwg
+fSwgLyogRmFuIGZvciBUaWdlciBMYWtlIGdlbmVyYXRpb24gKi8gXA0KPj4+IEBAIC01Nyw0ICs1
+OSwxMSBAQCBzdHJ1Y3QgYWNwaV9mYW4gew0KPj4+IMKgIGludCBhY3BpX2Zhbl9nZXRfZnN0KHN0
+cnVjdCBhY3BpX2RldmljZSAqZGV2aWNlLCBzdHJ1Y3QgDQo+Pj4gYWNwaV9mYW5fZnN0ICpmc3Qp
+Ow0KPj4+IMKgIGludCBhY3BpX2Zhbl9jcmVhdGVfYXR0cmlidXRlcyhzdHJ1Y3QgYWNwaV9kZXZp
+Y2UgKmRldmljZSk7DQo+Pj4gwqAgdm9pZCBhY3BpX2Zhbl9kZWxldGVfYXR0cmlidXRlcyhzdHJ1
+Y3QgYWNwaV9kZXZpY2UgKmRldmljZSk7DQo+Pj4gKw0KPj4+ICsjaWYgSVNfUkVBQ0hBQkxFKENP
+TkZJR19IV01PTikNCj4+PiAraW50IGRldm1fYWNwaV9mYW5fY3JlYXRlX2h3bW9uKHN0cnVjdCBh
+Y3BpX2RldmljZSAqZGV2aWNlKTsNCj4+PiArI2Vsc2UNCj4+PiArc3RhdGljIGlubGluZSBpbnQg
+ZGV2bV9hY3BpX2Zhbl9jcmVhdGVfaHdtb24oc3RydWN0IGFjcGlfZGV2aWNlIA0KPj4+ICpkZXZp
+Y2UpIHsgcmV0dXJuIDA7IH07DQo+Pj4gKyNlbmRpZg0KPj4+ICsNCj4+PiDCoCAjZW5kaWYNCj4+
+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL2Zhbl9jb3JlLmMgYi9kcml2ZXJzL2FjcGkvZmFu
+X2NvcmUuYw0KPj4+IGluZGV4IGZmNzJlNGVmODczOC4uN2NlYTQ0OTVmMTliIDEwMDY0NA0KPj4+
+IC0tLSBhL2RyaXZlcnMvYWNwaS9mYW5fY29yZS5jDQo+Pj4gKysrIGIvZHJpdmVycy9hY3BpL2Zh
+bl9jb3JlLmMNCj4+PiBAQCAtMzM2LDYgKzMzNiwxMCBAQCBzdGF0aWMgaW50IGFjcGlfZmFuX3By
+b2JlKHN0cnVjdCANCj4+PiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+Pj4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKHJlc3VsdCkNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIHJlc3VsdDsNCj4+Pg0KPj4+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlc3VsdCA9IGRldm1fYWNwaV9mYW5fY3JlYXRl
+X2h3bW9uKGRldmljZSk7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKHJl
+c3VsdCkNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+cmV0dXJuIHJlc3VsdDsNCj4+PiArDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgcmVzdWx0ID0gYWNwaV9mYW5fY3JlYXRlX2F0dHJpYnV0ZXMoZGV2aWNlKTsNCj4+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAocmVzdWx0KQ0KPj4+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gcmVzdWx0Ow0KPj4+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvZmFuX2h3bW9uLmMgYi9kcml2ZXJzL2FjcGkvZmFu
+X2h3bW9uLmMNCj4+PiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPj4+IGluZGV4IDAwMDAwMDAwMDAw
+MC4uMzRhNTI0YzI4NWE1DQo+Pj4gLS0tIC9kZXYvbnVsbA0KPj4+ICsrKyBiL2RyaXZlcnMvYWNw
+aS9mYW5faHdtb24uYw0KPj4+IEBAIC0wLDAgKzEsMTY5IEBADQo+Pj4gKy8vIFNQRFgtTGljZW5z
+ZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyDQo+Pj4gKy8qDQo+Pj4gKyAqIEh3bW9uIGlu
+dGVyZmFjZSBmb3IgdGhlIEFDUEkgRmFuIGRyaXZlci4NCj4+PiArICoNCj4+PiArICogQ29weXJp
+Z2h0IChDKSAyMDI0IEFybWluIFdvbGYgPFdfQXJtaW5AZ214LmRlPg0KPj4+ICsgKi8NCj4+PiAr
+DQo+Pj4gKyNpbmNsdWRlIDxsaW51eC9hY3BpLmg+DQo+Pj4gKyNpbmNsdWRlIDxsaW51eC9kZXZp
+Y2UuaD4NCj4+PiArI2luY2x1ZGUgPGxpbnV4L2Vyci5oPg0KPj4+ICsjaW5jbHVkZSA8bGludXgv
+aHdtb24uaD4NCj4+PiArI2luY2x1ZGUgPGxpbnV4L2xpbWl0cy5oPg0KPj4+ICsjaW5jbHVkZSA8
+bGludXgvdW5pdHMuaD4NCj4+PiArDQo+Pj4gKyNpbmNsdWRlICJmYW4uaCINCj4+PiArDQo+Pj4g
+Ky8qIFJldHVybmVkIHdoZW4gdGhlIEFDUEkgZmFuIGRvZXMgbm90IHN1cHBvcnQgc3BlZWQgcmVw
+b3J0aW5nICovDQo+Pj4gKyNkZWZpbmUgRkFOX1NQRUVEX1VOQVZBSUxBQkxFwqAgVTMyX01BWA0K
+Pj4+ICsjZGVmaW5lIEZBTl9QT1dFUl9VTkFWQUlMQUJMRcKgIFUzMl9NQVgNCj4+PiArDQo+Pj4g
+K3N0YXRpYyBzdHJ1Y3QgYWNwaV9mYW5fZnBzICphY3BpX2Zhbl9nZXRfY3VycmVudF9mcHMoc3Ry
+dWN0IA0KPj4+IGFjcGlfZmFuICpmYW4sIHU2NCBjb250cm9sKQ0KPj4+ICt7DQo+Pj4gK8KgwqDC
+oMKgwqDCoCB1bnNpZ25lZCBpbnQgaTsNCj4+PiArDQo+Pj4gK8KgwqDCoMKgwqDCoCBmb3IgKGkg
+PSAwOyBpIDwgZmFuLT5mcHNfY291bnQ7IGkrKykgew0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIGlmIChmYW4tPmZwc1tpXS5jb250cm9sID09IGNvbnRyb2wpDQo+Pj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAmZmFuLT5mcHNb
+aV07DQo+Pj4gK8KgwqDCoMKgwqDCoCB9DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqAgcmV0dXJu
+IE5VTEw7DQo+Pj4gK30NCj4+PiArDQo+Pj4gK3N0YXRpYyB1bW9kZV90IGFjcGlfZmFuX2lzX3Zp
+c2libGUoY29uc3Qgdm9pZCAqZHJ2ZGF0YSwgZW51bSANCj4+PiBod21vbl9zZW5zb3JfdHlwZXMg
+dHlwZSwgdTMyIGF0dHIsDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpbnQgY2hhbm5lbCkNCj4+PiArew0KPj4+
+ICvCoMKgwqDCoMKgwqAgY29uc3Qgc3RydWN0IGFjcGlfZmFuICpmYW4gPSBkcnZkYXRhOw0KPj4+
+ICvCoMKgwqDCoMKgwqAgdW5zaWduZWQgaW50IGk7DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqAg
+c3dpdGNoICh0eXBlKSB7DQo+Pj4gK8KgwqDCoMKgwqDCoCBjYXNlIGh3bW9uX2ZhbjoNCj4+PiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzd2l0Y2ggKGF0dHIpIHsNCj4+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjYXNlIGh3bW9uX2Zhbl9pbnB1dDoNCj4+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA0NDQ7DQo+Pj4g
+K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2FzZSBod21vbl9mYW5fdGFyZ2V0Og0KPj4+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKg0KPj4+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogV2hlbiBpbiBm
+aW5lIGdyYWluIGNvbnRyb2wgbW9kZSwgbm90IA0KPj4+IGV2ZXJ5IGZhbiBjb250cm9sIHZhbHVl
+DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBo
+YXMgYW4gYXNzb2NpYXRlZCBmYW4gcGVyZm9ybWFuY2Ugc3RhdGUuDQo+Pj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8NCj4+PiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGZhbi0+ZmlmLmZpbmVfZ3JhaW5f
+Y3RybCkNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHJldHVybiAwOw0KPj4+ICsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA0NDQ7DQo+Pj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgZGVmYXVsdDoNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgfQ0KPj4+ICvCoMKgwqDCoMKgwqAgY2FzZSBod21vbl9wb3dlcjoNCj4+PiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzd2l0Y2ggKGF0dHIpIHsNCj4+PiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBjYXNlIGh3bW9uX3Bvd2VyX2lucHV0Og0KPj4+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKg0KPj4+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogV2hlbiBpbiBmaW5lIGdyYWlu
+IGNvbnRyb2wgbW9kZSwgbm90IA0KPj4+IGV2ZXJ5IGZhbiBjb250cm9sIHZhbHVlDQo+Pj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBoYXMgYW4gYXNz
+b2NpYXRlZCBmYW4gcGVyZm9ybWFuY2Ugc3RhdGUuDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8NCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGZhbi0+ZmlmLmZpbmVfZ3JhaW5fY3RybCkNCj4+
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybiAwOw0KPj4+ICsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgLyoNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCAqIFdoZW4gYWxsIGZhbiBwZXJmb3JtYW5jZSBzdGF0ZXMgY29udGFp
+biANCj4+PiBubyB2YWxpZCBwb3dlciBkYXRhLA0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogd2hlbiB0aGUgYXNzb2NpYXRlZCBhdHRyaWJ1dGUg
+c2hvdWxkIG5vdCANCj4+PiBiZSBjcmVhdGVkLg0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICovDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZvciAoaSA9IDA7IGkgPCBmYW4tPmZwc19jb3VudDsgaSsr
+KSB7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBpZiAoZmFuLT5mcHNbaV0ucG93ZXIgIT0gDQo+Pj4gRkFOX1BPV0VSX1VO
+QVZBSUxBQkxFKQ0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAwNDQ0Ow0KPj4+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9DQo+DQo+IElzIHRo
+aXMgYWxsIG9yIG5vdGhpbmcgPyBEb2Vzbid0IHRoaXMgZGVwZW5kIG9uIHRoZSBjaGFubmVsID8g
+SXQgbG9va3MNCj4gYXMgaWYgdGhlIGZpcnN0IGZhbiBzdXBwb3J0cyByZXBvcnRpbmcgdGhlIHBv
+d2VyLCBhdHRyaWJ1dGVzIGFyZQ0KPiBnZW5lcmF0ZWQgZm9yIGFsbCBmYW5zIGV2ZW4gaWYgdGhl
+IG90aGVycyBkb24ndCBzdXBwb3J0IGl0DQoNCkhpLA0KDQp0aG9zZSBmcHMgZW50cmllcyBhcmUg
+ZGlmZmVyZW50IHBlcmZvcm1hbmNlIHN0YXRlcyBmb3IgYSBzaW5nbGUgZmFuLCBzZWUgQUNQSSBz
+cGVjIDExLjMuMS4yDQoobGluazogaHR0cHM6Ly91ZWZpLm9yZy9zcGVjcy9BQ1BJLzYuNS8xMV9U
+aGVybWFsX01hbmFnZW1lbnQuaHRtbCNmYW4tZGV2aWNlKS4NCg0KVGhlIGNvZGUgYmFzaWNhbGx5
+IGNoZWNrcyB0aGF0IGlmIGF0IGxlYXN0IG9uZSBwZXJmb3JtYW5jZSBzdGF0ZSBjb250YWlucyB2
+YWxpZCBwb3dlciBkYXRhLA0KdGhlIHBvd2VyWF9pbnB1dCBhdHRyaWJ1dGUgaXMgY3JlYXRlZC4N
+Cg0KPg0KPiBUbyBtZSBpdCBsb29rcyBsaWtlIHRoZXJlIGFyZSBzaXR1YXRpb25zIHdoZXJlIGlu
+ZGl2aWR1YWwNCj4gZmFucyB3aWxsIHN0aWxsIHBlcnNpc3RlbnRseSByZXBvcnQgLUVOT0RBVEEg
+Zm9yIGZhbiBzcGVlZCwgcG93ZXIsDQo+IG9yIGJvdGguIEkgZG9uJ3Qga25vdyB0aGUgc3BlY2lm
+aWNhdGlvbiB3ZWxsIGVub3VnaCAobm90IGF0IGFsbCwgcmVhbGx5KQ0KPiB0byBiZSBhYmxlIHRv
+IGRldGVybWluZSBpZiB0aGlzIG1ha2VzIHNlbnNlLiBOb3JtYWxseSwgLUVOT0RBVEEgc2hvdWxk
+IGJlDQo+IHJlc2VydmVkIGZvciAidmFsdWUgdGVtcG9yYXJpbHkgbm90IGF2YWlsYWJsZSIuIEkg
+YW0gbm90IHN1cmUgaWYgdGhhdCBpcw0KPiB0aGUgY2FzZSBoZXJlLg0KPg0KPiBHdWVudGVyDQo+
+DQpUaGUgcG93ZXIgYXR0cmlidXRlcyB3aWxsIG5vdCBiZSBjcmVhdGVkIGlmIGFsbCBwZXJmb3Jt
+YW5jZSBzdGF0ZXMgY29udGFpbiBubyB2YWxpZA0KcG93ZXIgdmFsdWVzLCBzbyAtRU5PREFUQSB3
+aWxsIG9ubHkgYmUgcmV0dXJuZWQgaWYgdGhlIGN1cnJlbnQgcGVyZm9ybWFuY2Ugc3RhdGUgY29u
+dGFpbnMNCm5vIHZhbGlkIHBvd2VyIGRhdGEgKHVubGlrZWx5IHRvIGhhcHBlbiwgYWxsIGZpcm13
+YXJlIGltcGxlbWVudGF0aW9ucyBpIGhhdmUgc2VlbiBlaXRoZXINCmNvbnRhaW4gdmFsaWQgcG93
+ZXIgdmFsdWVzIGZvciBhbGwgcGVyZm9ybWFuY2Ugc3RhdGVzIG9yIG5vbmUgYXQgYWxsKS4NCg0K
+VGhlIGZhbiBhdHRyaWJ1dGVzIGFyZSBhIGJpdCBkaWZmZXJlbnQsIGFzIEZBTl9TUEVFRF9VTkFW
+QUlMQUJMRSBjYW4gZWl0aGVyIHNpZ25hbCB0aGF0DQpmYW4gc3BlZWQgcmVwb3J0aW5nIGlzIG5v
+dCBzdXBwb3J0ZWQgX29yXyB0aGF0IHJlYWRpbmcgb2YgdGhlIGZhbiBzcGVlZCBmYWlsZWQsIHNv
+IHdlIGNhbm5vdA0KY2hlY2sgaWYgRkFOX1NQRUVEX1VOQVZBSUxBQkxFIHdhcyByZXR1cm5lZCBk
+dWUgdG8gYSB0ZW1wb3JhcnkgZXJyb3Igb3IgZHVlIHRvIG1pc3Npbmcgc3VwcG9ydC4NCg0KVGhh
+bmtzLA0KQXJtaW4gV29sZg0KDQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCBkZWZhdWx0Og0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCByZXR1cm4gMDsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB9
+DQo+Pj4gK8KgwqDCoMKgwqDCoCBkZWZhdWx0Og0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybiAwOw0KPj4+ICvCoMKgwqDCoMKgwqAgfQ0KPj4+ICt9DQo+Pj4gKw0KPj4+
+ICtzdGF0aWMgaW50IGFjcGlfZmFuX3JlYWQoc3RydWN0IGRldmljZSAqZGV2LCBlbnVtIA0KPj4+
+IGh3bW9uX3NlbnNvcl90eXBlcyB0eXBlLCB1MzIgYXR0ciwgaW50IGNoYW5uZWwsDQo+Pj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbG9uZyAqdmFsKQ0K
+Pj4+ICt7DQo+Pj4gK8KgwqDCoMKgwqDCoCBzdHJ1Y3QgYWNwaV9kZXZpY2UgKmFkZXYgPSB0b19h
+Y3BpX2RldmljZShkZXYtPnBhcmVudCk7DQo+Pj4gK8KgwqDCoMKgwqDCoCBzdHJ1Y3QgYWNwaV9m
+YW4gKmZhbiA9IGRldl9nZXRfZHJ2ZGF0YShkZXYpOw0KPj4+ICvCoMKgwqDCoMKgwqAgc3RydWN0
+IGFjcGlfZmFuX2ZwcyAqZnBzOw0KPj4+ICvCoMKgwqDCoMKgwqAgc3RydWN0IGFjcGlfZmFuX2Zz
+dCBmc3Q7DQo+Pj4gK8KgwqDCoMKgwqDCoCBpbnQgcmV0Ow0KPj4+ICsNCj4+PiArwqDCoMKgwqDC
+oMKgIHJldCA9IGFjcGlfZmFuX2dldF9mc3QoYWRldiwgJmZzdCk7DQo+Pj4gK8KgwqDCoMKgwqDC
+oCBpZiAocmV0IDwgMCkNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4g
+cmV0Ow0KPj4+ICsNCj4+PiArwqDCoMKgwqDCoMKgIHN3aXRjaCAodHlwZSkgew0KPj4+ICvCoMKg
+wqDCoMKgwqAgY2FzZSBod21vbl9mYW46DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgc3dpdGNoIChhdHRyKSB7DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2Fz
+ZSBod21vbl9mYW5faW5wdXQ6DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIGlmIChmc3Quc3BlZWQgPT0gRkFOX1NQRUVEX1VOQVZBSUxBQkxFKQ0KPj4+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgcmV0dXJuIC1FTk9EQVRBOw0KPj4+ICsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKGZzdC5zcGVlZCA+IExPTkdfTUFYKQ0KPj4+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgcmV0dXJuIC1FT1ZFUkZMT1c7DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAqdmFsID0gZnN0LnNwZWVkOw0KPj4+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gMDsNCj4+PiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjYXNlIGh3bW9uX2Zhbl90YXJnZXQ6DQo+Pj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZwcyA9IGFjcGlfZmFuX2dl
+dF9jdXJyZW50X2ZwcyhmYW4sIA0KPj4+IGZzdC5jb250cm9sKTsNCj4+PiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKCFmcHMpDQo+Pj4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1
+cm4gLUVOT0RBVEE7DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBpZiAoZnBzLT5zcGVlZCA+IExPTkdfTUFYKQ0KPj4+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJu
+IC1FT1ZFUkZMT1c7DQo+Pj4gKw0KPj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCAqdmFsID0gZnBzLT5zcGVlZDsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA7DQo+Pj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgZGVmYXVsdDoNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1FT1BOT1RTVVBQOw0KPj4+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIH0NCj4+PiArwqDCoMKgwqDCoMKgIGNhc2UgaHdtb25fcG93ZXI6DQo+
+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3dpdGNoIChhdHRyKSB7DQo+Pj4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2FzZSBod21vbl9wb3dlcl9pbnB1dDoNCj4+PiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnBzID0gYWNwaV9m
+YW5fZ2V0X2N1cnJlbnRfZnBzKGZhbiwgDQo+Pj4gZnN0LmNvbnRyb2wpOw0KPj4+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoIWZwcykNCj4+PiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHJldHVybiAtRU5PREFUQTsNCj4+PiArDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIGlmIChmcHMtPnBvd2VyID09IEZBTl9QT1dFUl9VTkFWQUlMQUJM
+RSkNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHJldHVybiAtRU5PREFUQTsNCj4+PiArDQo+Pj4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmIChmcHMtPnBvd2VyID4gTE9OR19NQVgg
+LyANCj4+PiBNSUNST1dBVFRfUEVSX01JTExJV0FUVCkNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAtRU9WRVJG
+TE9XOw0KPj4+ICsNCj4+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgKnZhbCA9IGZwcy0+cG93ZXIgKiBNSUNST1dBVFRfUEVSX01JTExJV0FUVDsNCj4+PiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIDA7DQo+
+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGVmYXVsdDoNCj4+PiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1FT1BOT1RTVVBQOw0K
+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+PiArwqDCoMKgwqDCoMKgIGRl
+ZmF1bHQ6DQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1FT1BOT1RT
+VVBQOw0KPj4+ICvCoMKgwqDCoMKgwqAgfQ0KPj4+ICt9DQo+Pj4gKw0KPj4+ICtzdGF0aWMgY29u
+c3Qgc3RydWN0IGh3bW9uX29wcyBhY3BpX2Zhbl9vcHMgPSB7DQo+Pj4gK8KgwqDCoMKgwqDCoCAu
+aXNfdmlzaWJsZSA9IGFjcGlfZmFuX2lzX3Zpc2libGUsDQo+Pj4gK8KgwqDCoMKgwqDCoCAucmVh
+ZCA9IGFjcGlfZmFuX3JlYWQsDQo+Pj4gK307DQo+Pg0KPj4gSSB3b3VsZCBhZGQgImh3bW9uIiB0
+byB0aGUgbmFtZXMgb2YgZnVuY3Rpb25zIGFuZCB2YXJpYWJsZXMgcmVsYXRlZCB0bw0KPj4gaHdt
+b24uwqAgU29tZXRoaW5nIGxpa2UNCj4+DQo+PiArc3RhdGljIGNvbnN0IHN0cnVjdCBod21vbl9v
+cHMgYWNwaV9mYW5faHdtb25fb3BzID0gew0KPj4gK8KgwqDCoMKgwqDCoCAuaXNfdmlzaWJsZSA9
+IGFjcGlfZmFuX2h3bW9uX2lzX3Zpc2libGUsDQo+PiArwqDCoMKgwqDCoMKgIC5yZWFkID0gYWNw
+aV9mYW5faHdtb25fcmVhZCwNCj4+ICt9Ow0KPj4NCj4+IE90aGVyd2lzZSwgaXQgbG9va3MgZmlu
+ZSB0byBtZS4NCj4+DQo+Pj4gKw0KPj4+ICtzdGF0aWMgY29uc3Qgc3RydWN0IGh3bW9uX2NoYW5u
+ZWxfaW5mbyAqIGNvbnN0IGFjcGlfZmFuX2luZm9bXSA9IHsNCj4+PiArwqDCoMKgwqDCoMKgIEhX
+TU9OX0NIQU5ORUxfSU5GTyhmYW4sIEhXTU9OX0ZfSU5QVVQgfCBIV01PTl9GX1RBUkdFVCksDQo+
+Pj4gK8KgwqDCoMKgwqDCoCBIV01PTl9DSEFOTkVMX0lORk8ocG93ZXIsIEhXTU9OX1BfSU5QVVQp
+LA0KPj4+ICvCoMKgwqDCoMKgwqAgTlVMTA0KPj4+ICt9Ow0KPj4+ICsNCj4+PiArc3RhdGljIGNv
+bnN0IHN0cnVjdCBod21vbl9jaGlwX2luZm8gYWNwaV9mYW5fY2hpcF9pbmZvID0gew0KPj4+ICvC
+oMKgwqDCoMKgwqAgLm9wcyA9ICZhY3BpX2Zhbl9vcHMsDQo+Pj4gK8KgwqDCoMKgwqDCoCAuaW5m
+byA9IGFjcGlfZmFuX2luZm8sDQo+Pj4gK307DQo+Pj4gKw0KPj4+ICtpbnQgZGV2bV9hY3BpX2Zh
+bl9jcmVhdGVfaHdtb24oc3RydWN0IGFjcGlfZGV2aWNlICpkZXZpY2UpDQo+Pj4gK3sNCj4+PiAr
+wqDCoMKgwqDCoMKgIHN0cnVjdCBhY3BpX2ZhbiAqZmFuID0gYWNwaV9kcml2ZXJfZGF0YShkZXZp
+Y2UpOw0KPj4+ICvCoMKgwqDCoMKgwqAgc3RydWN0IGRldmljZSAqaGRldjsNCj4+PiArDQo+Pj4g
+K8KgwqDCoMKgwqDCoCBoZGV2ID0gZGV2bV9od21vbl9kZXZpY2VfcmVnaXN0ZXJfd2l0aF9pbmZv
+KCZkZXZpY2UtPmRldiwgDQo+Pj4gImFjcGlfZmFuIiwgZmFuLA0KPj4+ICsgJmFjcGlfZmFuX2No
+aXBfaW5mbywgTlVMTCk7DQo+Pj4gK8KgwqDCoMKgwqDCoCByZXR1cm4gUFRSX0VSUl9PUl9aRVJP
+KGhkZXYpOw0KPj4+ICt9DQo+Pj4gLS0gDQo+DQo=
 
