@@ -1,123 +1,110 @@
-Return-Path: <linux-acpi+bounces-5353-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5354-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304D18B1180
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 19:55:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B9E8B11D5
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 20:15:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E771C230FD
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 17:55:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B66EE28479C
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 18:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5805416D4F2;
-	Wed, 24 Apr 2024 17:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4138716EC09;
+	Wed, 24 Apr 2024 18:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o90A0dji"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bm66JzdO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2974E16C855;
-	Wed, 24 Apr 2024 17:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AD516D9D9;
+	Wed, 24 Apr 2024 18:14:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713981354; cv=none; b=IOitGWHCEauCEapJ3QgR7cpa6r4d6WUq5SlU/VBJ5TLBJxe3dMUAWtZCzQ5qWp/wc0X2sCJGQobijC4QDY6jnoGM4HsIaPxf0mTfEM21Jo/IG07xCJ4W+RkA1FPHJ3LJIwCMsbEGd0k1lWiJnGFNHQTwlgVJPyVWKz3ErhUqasc=
+	t=1713982491; cv=none; b=kpGOCNCq1aX1JmJRGKsbYcB6Kmf2RGPraYSCuLIQ70vfM9nE6NPwxD0AQGnwR/Jv8P73V7xNn2dczUL1IbIbrPTO78IXiD8wDYHHYFKY2I6knNcfzAFIonrgnQrBHiDt9o5ODNNecLX+BOZ2fdqpYTrbE3np5rpGr+LQ+XyIv3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713981354; c=relaxed/simple;
-	bh=R4CYpHlj8jEVfIevCJyMoADNlNhxgxYKx+hnKC/6ZHQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GWh5QbQceOg18/LjGMJfMmAPLs92RJNn9a0knv04ZTVSRomN2R1ncPU3orQoc3Burkqs2LLG+IcT6xUFLujR1dj9Q88R1Qg4Hx2b9cT0R4SDzOAP/dK6H/OU1Vbb+1TCs9hHYAV/esYhriih8ZLJe6Y6J1uu/gjO8W0M68Th/PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o90A0dji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237D7C2BD10;
-	Wed, 24 Apr 2024 17:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713981353;
-	bh=R4CYpHlj8jEVfIevCJyMoADNlNhxgxYKx+hnKC/6ZHQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=o90A0dji/1C/nj8o2so91Qf2gUBarrMOTde/k9C3QoyX+SPqyPj5Rl0J4CAjtDPFv
-	 ubbWx4NO7WFN5DxKr7dtMjXqL3ifQV9ZDEk9/E1heWe6mZNCR3tAkbzNz+d03g+0BC
-	 zhW5Qh+mMI/dbfxC5jak+61K8KAWmZm2QipBZDFOJaxHU3oYUnGE53WJHMqiMA8Wln
-	 CZnyVTlkM6DAQ/XVxoGGhSPFJKd5LRyybY0tP5A/QZNStYy/3YS1hDvFw4EGJg1UXu
-	 Z8G/GpZzpGRZNQ88h30w7vNI+z8rhH0gNd5Or4YxleSamM9mFDlFo1Y4rW+NQiv4rm
-	 upnSXlJDq9F+g==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Sunil V L
- <sunilvl@ventanamicro.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
- linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
- <aou@eecs.berkeley.edu>, "Rafael J . Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Anup Patel
- <anup@brainfault.org>, Thomas Gleixner <tglx@linutronix.de>, Samuel
- Holland <samuel.holland@sifive.com>, Robert Moore
- <robert.moore@intel.com>, Haibo1 Xu <haibo1.xu@intel.com>, Conor Dooley
- <conor.dooley@microchip.com>, Andrew Jones <ajones@ventanamicro.com>,
- Atish Kumar Patra <atishp@rivosinc.com>, Andrei Warkentin
- <andrei.warkentin@intel.com>, Marc Zyngier <maz@kernel.org>
-Subject: Re: [RFC PATCH v4 00/20] RISC-V: ACPI: Add external interrupt
- controller support
-In-Reply-To: <CAJZ5v0gTzn3TDoh0+0UQjMeJVdU+z16dDOT_fKMhr0XrOxyRtA@mail.gmail.com>
-References: <20240415170113.662318-1-sunilvl@ventanamicro.com>
- <CAJZ5v0gTzn3TDoh0+0UQjMeJVdU+z16dDOT_fKMhr0XrOxyRtA@mail.gmail.com>
-Date: Wed, 24 Apr 2024 19:55:50 +0200
-Message-ID: <871q6uir15.fsf@all.your.base.are.belong.to.us>
+	s=arc-20240116; t=1713982491; c=relaxed/simple;
+	bh=qqh/VHYxTuSJACNe+DTpuXgw37TddvW3ou6MW1MJcG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=K5SY6UKYgTR3VpFeKuBt39SY0kt44S0k3Pa7CI7jGe1zQXNN+NbuEFpZ2yCgHRKy6qvUQy3huBVmbKeEfZymxWWQNTKd6sBmdk7KqY3HRiunHl5GPFAZ1WuKjJfEgHWDwZYGe4dBhi7p/OUbNwKSI+0anjl38MygxqQytQzJBQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bm66JzdO; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713982489; x=1745518489;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qqh/VHYxTuSJACNe+DTpuXgw37TddvW3ou6MW1MJcG0=;
+  b=Bm66JzdO1i2kieT4Ve/xbE+xYCeXhTF40qz7EBZ+2WMnzxITxwTe4d1N
+   htyclF55WISg8bnsf4CEcLsfeko3VFRLW6JoQtRclz9rnlLPEB2DHVjm+
+   NWUCgmqxDpWn7276q1NLIbSLJb3REvRQd7tZWyeNKi75pWQu6jEaV7/3K
+   32wooXG/TNeZZOdMOTTl1QW8xmWBTvm026Vo7fzCYCcoWmCaBxL/SRsRH
+   QAkGcBlN5TMpKb0/cUD6tsG0/yoyydgPBwlqq4kdAdUBDZwUdO4ube6Q4
+   3cbyT2jSewDRNSKLtydcASrYm9tFYG8dz5hMGy1trINAmPoSJpC1bpWHD
+   w==;
+X-CSE-ConnectionGUID: iwMu7bIIQqmxOjJ5AV4LIw==
+X-CSE-MsgGUID: vqzDdE0jS6ySzZDBtRhCgw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9481749"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="9481749"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:14:49 -0700
+X-CSE-ConnectionGUID: w/FG+NFSS2O32W04eODo/A==
+X-CSE-MsgGUID: TyV1YTNzQUOZ4tB6OMugag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="29262548"
+Received: from agluck-desk3.sc.intel.com ([172.25.222.105])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 11:14:49 -0700
+From: Tony Luck <tony.luck@intel.com>
+To: Borislav Petkov <bp@alien8.de>,
+	linux-kernel@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	patches@lists.linux.dev,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH v4 05/71] ACPI: LPSS: Switch to new Intel CPU model defines
+Date: Wed, 24 Apr 2024 11:14:48 -0700
+Message-ID: <20240424181448.41250-1-tony.luck@intel.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240424181245.41141-1-tony.luck@intel.com>
+References: <20240424181245.41141-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-"Rafael J. Wysocki" <rafael@kernel.org> writes:
+New CPU #defines encode vendor and family as well as model.
 
-> On Mon, Apr 15, 2024 at 7:01=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.c=
-om> wrote:
->>
->> This series adds support for the below ECR approved by ASWG.
->> 1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia=
-7zR/view?usp=3Dsharing
->>
->> The series primarily enables irqchip drivers for RISC-V ACPI based
->> platforms.
->>
->> The series can be broadly categorized like below.
->>
->> 1) PCI ACPI related functions are migrated from arm64 to common file so
->> that we don't need to duplicate them for RISC-V.
->>
->> 2) Added support for re-ordering the probe of interrupt controllers when
->> IRQCHIP_ACPI_DECLARE is used.
->>
->> 3) To ensure probe order between interrupt controllers and devices,
->> implicit dependency is created similar to when _DEP is present.
->>
->> 4) When PNP devices like Generic 16550A UART, have the dependency on the
->> interrupt controller, they will not be added to PNP data structures. So,
->> added second phase of pnpacpi_init to handle this.
->>
->> 5) ACPI support added in RISC-V interrupt controller drivers.
->>
->> This series is still kept as RFC to seek feedback on above design
->> changes. Looking forward for the feedback!
->
-> I've looked at the patches and I don't see anything deeply concerning
-> in them from the ACPI core code perspective.
->
-> The changes look reasonably straightforward to me.
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/acpi/acpi_lpss.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sunil, given Rafael's input, it sounds like it's time for a patch
-proper. This is really the missing piece to make ACPI usable on RISC-V!
-
-Thanks for the nice work!
-Bj=C3=B6rn
-
-FWIW,
-Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index 04e273167e92..e7b57dcce146 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -337,8 +337,8 @@ static const struct lpss_device_desc bsw_spi_dev_desc = {
+ };
+ 
+ static const struct x86_cpu_id lpss_cpu_ids[] = {
+-	X86_MATCH_INTEL_FAM6_MODEL(ATOM_SILVERMONT,	NULL),
+-	X86_MATCH_INTEL_FAM6_MODEL(ATOM_AIRMONT,	NULL),
++	X86_MATCH_VFM(INTEL_ATOM_SILVERMONT,	NULL),
++	X86_MATCH_VFM(INTEL_ATOM_AIRMONT,	NULL),
+ 	{}
+ };
+ 
+-- 
+2.44.0
 
 
