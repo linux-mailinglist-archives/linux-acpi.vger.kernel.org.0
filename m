@@ -1,153 +1,164 @@
-Return-Path: <linux-acpi+bounces-5346-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5347-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFC88B1022
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 18:45:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA128B1049
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 18:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 932982842C4
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 16:45:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0651F24B51
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 16:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C9016C423;
-	Wed, 24 Apr 2024 16:45:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lydYpDxM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D5D16C85B;
+	Wed, 24 Apr 2024 16:53:30 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EBD393;
-	Wed, 24 Apr 2024 16:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167416C6A5;
+	Wed, 24 Apr 2024 16:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713977122; cv=none; b=NLF152vAiOfGtsTtQmS2juuV22xcqf8xqsaWaPnCFiSUWazfujmWi0JElQYiNHIxB7QG9HXtDqDW+J1A+XvtWkAX6kguJ9mRSMx8cBadTR+zzH2MBRUY15THyj0jmArZ/SASEWY429V6w9WHC3s2i+jifnR9K3rpTnn5GRKi/G8=
+	t=1713977610; cv=none; b=ZWRbHBTtEgi7DHxGw0/FHFc009cacLZn8pH0nCyDdcyGEQFrL7puLwZigydr3CILUCZLXz4kaHNdKgR5e/4JudyJg8VZFonPQaqPBnsp0oY0L8kX9PanN1blX+y9JG4ymfn76FWkvUm6Bm4hRoxlFWrMxvOB/DmwQ53hmi75EWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713977122; c=relaxed/simple;
-	bh=eghjSdHfDXmpKj6KcfaxUt06aiUtkhlI0/hSTgy5dp8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HTtydFB5Bt+xmEXuP9Y5SKkBNL/Y4mzMf4hyY1ksyMn1Sc3hrQif/30CMvcAYlTa8EgGoe2oVojpKRD9rGbO7ZnLFQ9mb7eOfXCrdtgJeQOYYYihymHioAKVF2pnddcQ43Jtewrw2Ppr3K+bpzydbSBC47h+uKW4i/kjy5zowY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lydYpDxM; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713977121; x=1745513121;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=eghjSdHfDXmpKj6KcfaxUt06aiUtkhlI0/hSTgy5dp8=;
-  b=lydYpDxMrfgmYFZDTuQnvs0dx0twIksc7V3fRqryp92FJFn6LRSuYSmx
-   mivJ6L00QorrOWL94W/LOyvMSLupeMyq+2EFzJPaiZ7WGJCYLteG47cWC
-   BhRKfSnlfyLhG+ugkDuRizGy9KIF1tKFl6ob5Q/1fROX83lJaluyHemCy
-   JE040Pj725Zur5DR4LCcJh+KI8y+0xDfC/d6e+bp6WqpQ8fHhXk4X5HSp
-   VPQMC5JLjJW1BVRwDMhw382VVe/rqMBXfVcSarGkn7+OMRHO8Vdsc0hV8
-   7sMoSw2HOPZLlnj5U3tvD2ALmGcR9n7OlzOz5F0EtvmfqN/bFCxqaP84G
-   A==;
-X-CSE-ConnectionGUID: ZZSrFAiwSle+59x6cU+DCA==
-X-CSE-MsgGUID: Nj/duk39Q7OTJSKhyEXjkA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9787502"
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="9787502"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 09:45:04 -0700
-X-CSE-ConnectionGUID: XVrT5SFuTemAEufu8IGP8A==
-X-CSE-MsgGUID: 9S4Pniz5RdS1kWMPMW6MNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="24725565"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 09:44:54 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rzfjm-00000000ia8-3AYP;
-	Wed, 24 Apr 2024 19:44:50 +0300
-Date: Wed, 24 Apr 2024 19:44:50 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Sui Jingfeng <sui.jingfeng@linux.dev>, dri-devel@lists.freedesktop.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2] software node: Implement device_get_match_data fwnode
- callback
-Message-ID: <Zik3AjiWkytSVn-1@smile.fi.intel.com>
-References: <20240422164658.217037-1-sui.jingfeng@linux.dev>
- <Zie3ebHOEpWHj1qV@smile.fi.intel.com>
- <d5bc1e73-a553-451e-ab74-f5f0ca259c6b@linux.dev>
- <hcltp2bbxxg2t7ibmzgiib7mgbwgmvzwnnq6mochdh7c4h76r3@bxj6yk5zq64e>
- <ZikE4qOVO7rgIs9a@smile.fi.intel.com>
- <CAA8EJpr1FSjizAh6Dp5Bmux3NrGYh=BfHFL4D1fa87Og4ymY0w@mail.gmail.com>
- <Zikck2FJb4-PgXX0@smile.fi.intel.com>
- <kucey3jsydjye3ndflns3cqolcpizhnxgzz3fkmcatlnpbnwrk@22ulsqfh2vf6>
+	s=arc-20240116; t=1713977610; c=relaxed/simple;
+	bh=WPwWr2WPh76sy9Su1xu+shcXvVuaFuGEoKD6YmP9p5o=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ePQevhJVOavfWmJj7KirmlGbuTV3ubmll8JghFNEC0fVKi2DqegVWDt0qMEGanWUHfJEDPYZE3BJ6iqU4rswJkDfzsJHhM5T8BC9AMWu+c2EUgpBpG3fc0dHLXCckkGccmHzxQkkKzHcC+5vsVMiMjXdqNheYz8Dq1051t/edcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VPlRb3lD4z6D94P;
+	Thu, 25 Apr 2024 00:53:15 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6FF8D1406AE;
+	Thu, 25 Apr 2024 00:53:24 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 24 Apr
+ 2024 17:53:23 +0100
+Date: Wed, 24 Apr 2024 17:53:22 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Miguel Luis
+	<miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
+	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linuxarm@huawei.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v7 04/16] ACPI: processor: Move checks and availability
+ of acpi_processor earlier
+Message-ID: <20240424175322.00002b8a@Huawei.com>
+In-Reply-To: <CAJZ5v0igyOYnqAWRVeC0JrsFSDaZAaia8SLnWi0LV2OS2z9-DQ@mail.gmail.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+	<20240418135412.14730-5-Jonathan.Cameron@huawei.com>
+	<CAJZ5v0igyOYnqAWRVeC0JrsFSDaZAaia8SLnWi0LV2OS2z9-DQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <kucey3jsydjye3ndflns3cqolcpizhnxgzz3fkmcatlnpbnwrk@22ulsqfh2vf6>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Apr 24, 2024 at 07:34:54PM +0300, Dmitry Baryshkov wrote:
-> On Wed, Apr 24, 2024 at 05:52:03PM +0300, Andy Shevchenko wrote:
-> > On Wed, Apr 24, 2024 at 04:34:39PM +0300, Dmitry Baryshkov wrote:
-> > > On Wed, 24 Apr 2024 at 16:11, Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> wrote:
-> > > > On Wed, Apr 24, 2024 at 12:37:16AM +0300, Dmitry Baryshkov wrote:
-> > > > > On Wed, Apr 24, 2024 at 12:49:18AM +0800, Sui Jingfeng wrote:
-> > > > > > On 2024/4/23 21:28, Andy Shevchenko wrote:
-> > > > > > > On Tue, Apr 23, 2024 at 12:46:58AM +0800, Sui Jingfeng wrote:
+On Mon, 22 Apr 2024 20:56:55 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-...
+> On Thu, Apr 18, 2024 at 3:56=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > Make the per_cpu(processors, cpu) entries available earlier so that
+> > they are available in arch_register_cpu() as ARM64 will need access
+> > to the acpi_handle to distinguish between acpi_processor_add()
+> > and earlier registration attempts (which will fail as _STA cannot
+> > be checked).
+> >
+> > Reorder the remove flow to clear this per_cpu() after
+> > arch_unregister_cpu() has completed, allowing it to be used in
+> > there as well.
+> >
+> > Note that on x86 for the CPU hotplug case, the pr->id prior to
+> > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
+> > must be initialized after that call or after checking the ID
+> > is valid (not hotplug path).
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v7: Swap order with acpi_unmap_cpu() in acpi_processor_remove()
+> >     to keep it in reverse order of the setup path. (thanks Salil)
+> >     Fix an issue with placement of CONFIG_ACPI_HOTPLUG_CPU guards.
+> > v6: As per discussion in v5 thread, don't use the cpu->dev and
+> >     make this data available earlier by moving the assignment checks
+> >     int acpi_processor_get_info().
+> > ---
+> >  drivers/acpi/acpi_processor.c | 78 +++++++++++++++++++++--------------
+> >  1 file changed, 46 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
+r.c
+> > index ba0a6f0ac841..ac7ddb30f10e 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -183,8 +183,36 @@ static void __init acpi_pcc_cpufreq_init(void) {}
+> >  #endif /* CONFIG_X86 */
+> >
+> >  /* Initialization */
+> > +static DEFINE_PER_CPU(void *, processor_device_array);
+> > +
+> > +static void acpi_processor_set_per_cpu(struct acpi_processor *pr,
+> > +                                      struct acpi_device *device)
+> > +{
+> > +       BUG_ON(pr->id >=3D nr_cpu_ids);
+> > +       /*
+> > +        * Buggy BIOS check.
+> > +        * ACPI id of processors can be reported wrongly by the BIOS.
+> > +        * Don't trust it blindly
+> > +        */
+> > +       if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
+> > +           per_cpu(processor_device_array, pr->id) !=3D device) {
+> > +               dev_warn(&device->dev,
+> > +                        "BIOS reported wrong ACPI id %d for the proces=
+sor\n",
+> > +                        pr->id);
+> > +               /* Give up, but do not abort the namespace scan. */
+> > +               return; =20
+>=20
+> In this case the caller should make acpi_pricessor_add() return 0, I
+> think, because otherwise it will attempt to acpi_bind_one() "pr" to
+> "device" which will confuse things.
+>=20
+> So I would make this return false to indicate that.
+>=20
+> Or just fold it into the caller and do the error handling there.
 
-> > > > > But let me throw an argument why this patch (or something similar) looks
-> > > > > to be necessary.
-> > > > >
-> > > > > Both on DT and non-DT systems the kernel allows using the non-OF based
-> > > > > matching. For the platform devices there is platform_device_id-based
-> > > > > matching.
-> > > > >
-> > > > > Currently handling the data coming from such device_ids requires using
-> > > > > special bits of code, e.g. platform_get_device_id(pdev)->driver_data to
-> > > > > get the data from the platform_device_id. Having such codepaths goes
-> > > > > against the goal of unifying DT and non-DT paths via generic property /
-> > > > > fwnode code.
-> > > > >
-> > > > > As such, I support Sui's idea of being able to use device_get_match_data
-> > > > > for non-DT, non-ACPI platform devices.
-> > > >
-> > > > I'm not sure I buy this. We have a special helpers based on the bus type to
-> > > > combine device_get_match_data() with the respective ID table crawling, see
-> > > > the SPI and I²C cases as the examples.
-> > > 
-> > > I was thinking that we might be able to deprecate these helpers and
-> > > always use device_get_match_data().
-> > 
-> > True, but that is orthogonal to swnode match_data support, right?
-> > There even was (still is?) a patch series to do something like a new
-> > member to struct device_driver (? don't remember) to achieve that.
-> 
-> Maybe the scenario was not properly described in the commit message, or
-> maybe I missed something. The usecase that I understood from the commit
-> message was to use instatiated i2c / spi devices, which means
-> i2c_device_id / spi_device_id. The commit message should describe why
-> the usecase requires using 'compatible' property and swnode. Ideally it
-> should describe how these devices are instantiated at the first place.
+The bios bug mentioned in reply to patch 14 (DSDT entries for non existent =
+CPUs
+that have no _STA entries) showed me that we need to know if this succeeded
+(I'd not read this at that point).
 
-Yep. I also do not clearly understand the use case and why we need to have
-a board file, because the swnodes all are about board files that we must not
-use for the new platforms.
+I'll make it return a bool to say this succeeded and in both call sites
+return 0 if not to deal with the bios bug here.  Making sure not to clear
+the per_cpu() structures unless this we get past that call.  If we do
+and arch_register_cpu() fails we need to clear these two IDs.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Doing so means that acpi_processor_hotadd_init() is side effect free and
+hence we can return in acpi_processor_get_info() which avoids the
+need to clear pointers when we don't have a valid pr->id to do it with.
 
+So fully agree we need to bail out properly if this fails.
 
+Jonathan
 
