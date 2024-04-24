@@ -1,391 +1,216 @@
-Return-Path: <linux-acpi+bounces-5315-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5316-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE47A8B00D2
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 07:09:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F728B0100
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 07:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D490BB227AA
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 05:09:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91C411F23726
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 05:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D9D15445E;
-	Wed, 24 Apr 2024 05:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D7A15530D;
+	Wed, 24 Apr 2024 05:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="f9ycVAQP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CANq3iYR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF913C82F
-	for <linux-acpi@vger.kernel.org>; Wed, 24 Apr 2024 05:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46DC154BF3;
+	Wed, 24 Apr 2024 05:29:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713935357; cv=none; b=ZkxhfEn23SE2nSALwQuB67NPVI0bkxrRLvkXpKmd8SeQUscsJ2PYstMAa6TuBi86SQaZEEnwiLfSRW3xyOW+k9+PbQgz69DnxJ4ccgsjyguHcdIKYgdnOvNdXh9qPZqJGYEtU01rBxq+7oVAO/P9AkPuNyBQCA6PJqkl8uAfd/s=
+	t=1713936567; cv=none; b=Lctv+A8QrZrl/gStt9Do045ABEjAO3uqsMpMguQFbFZGFWlt6pUvVgr24Qrj3eyIiXXad07vOegVEqSTZwNQQIuL/WlFWy4X+M0QDf4388u0RkZM02y+3CTgiTWGPI4o49hye8R3g+bFUfxDTtHYuPITovNx2RbeeMg/byDxMJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713935357; c=relaxed/simple;
-	bh=hsPjuTbiN/dIW997zkTnai903v/BUpXXdiPKRMY47wk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EUIIKjw/huDeWgS6/BDvpv5zrb7oF5Z9JYKOZl6p81/FfLDyISLSkoMKi8aZ+QkRNDoGbwFob3OlMBI3dT1WXqE00WosaO2uX82mYPu2T357Vkr7jljFbQ7rWwm4zVtKEJAhBz1vAMUTxpX4O7zTTDIe7RZM6X2iHS0aV+qFVsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=f9ycVAQP; arc=none smtp.client-ip=91.218.175.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <22979e28-ed48-467f-a5cf-82be57bcc2f7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1713935351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Kn9GVgtEXwasErGqw/29COA8cUkcHNCt3wrEGRAtFN4=;
-	b=f9ycVAQPnotRUb3NSIfT4hkf5CwCbI7ej7CXuagnK8SRHaUqdNw1ZPAtFO9I7KmYF5PyMN
-	tUHJ2u/7m/jLqkNxC6IWf21Tza35Q7GH6LakrldMRVkHqml0fab6vK9IoBvnM5TmlvIgtJ
-	41S5HClq9Qqs5utQFiDNm+ah0biH7OE=
-Date: Wed, 24 Apr 2024 13:09:00 +0800
+	s=arc-20240116; t=1713936567; c=relaxed/simple;
+	bh=1/iIct8UGpDmuG/5bl7oWPxGoo+moxuqtVa10nZ/dok=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c4eLw4pC+u7CZnmrsGfMKrP6UiJDd04k7oXqsnBs2448BgkWrd9IUEcjSvl3DECRR5ieUrZm5Ta8QvFHCEId+EyeTML8xwTMdupzXEu6HhPU10VCJ0PiEM7dQAcf9XSelaRPzklEGf4Rm5SvTh2LSNTVNfrkK8JDetoIlH3OLnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CANq3iYR; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713936565; x=1745472565;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1/iIct8UGpDmuG/5bl7oWPxGoo+moxuqtVa10nZ/dok=;
+  b=CANq3iYRgtTv+PuBlF267u695Z6FsiYQjbf7KyP+yWkbLFEgWNw3JUF9
+   d/EIxrJzUxsxw554sFDHSBSkGdBw4tY5STtDr2UTiTiGlTj9b403zhPvY
+   PkV4+xXIL8f2FVLWlYBF5rpD/vmYrg4B8VOZ0v9Ugc457lKmcUdhfcRmQ
+   y7DKAxbFmDTweI5kyePhVUj952WttElG/jAeik2rZpDKIxfbOiKPxttF2
+   FQltoVXFzI2HERc+c/xO3Zki/+BmZtDsG3B1kclIftXGp7vyrXxBBiAd1
+   oQeUXF1MydvEZ107YF9XTVLWvW8wZlTlXh2wnKxpYX+/m0fEUNbjvAdmc
+   Q==;
+X-CSE-ConnectionGUID: xedQgt2PQR+pLavKxP9YEw==
+X-CSE-MsgGUID: ffORWlt2QmWxopnkfei0gA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="27004146"
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="27004146"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 22:29:25 -0700
+X-CSE-ConnectionGUID: TZUdjSLNSc++1OEGH/Lb4Q==
+X-CSE-MsgGUID: 4RHRlqHiSi+Bn+7xBiL3uQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; 
+   d="scan'208";a="62049672"
+Received: from unknown (HELO haibo-OptiPlex-7090.sh.intel.com) ([10.239.159.132])
+  by orviesa001.jf.intel.com with ESMTP; 23 Apr 2024 22:29:14 -0700
+From: Haibo Xu <haibo1.xu@intel.com>
+To: sunilvl@ventanamicro.com,
+	arnd@arndb.de
+Cc: xiaobo55x@gmail.com,
+	ajones@ventanamicro.com,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Guo Ren <guoren@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Baoquan He <bhe@redhat.com>,
+	Greentime Hu <greentime.hu@sifive.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Zong Li <zong.li@sifive.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Chen Jiahao <chenjiahao16@huawei.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Evan Green <evan@rivosinc.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH v3 0/6] Add ACPI NUMA support for RISC-V
+Date: Wed, 24 Apr 2024 13:46:20 +0800
+Message-Id: <cover.1713778236.git.haibo1.xu@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] software node: Implement device_get_match_data fwnode
- callback
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- dri-devel@lists.freedesktop.org, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20240422164658.217037-1-sui.jingfeng@linux.dev>
- <Zie3ebHOEpWHj1qV@smile.fi.intel.com>
- <d5bc1e73-a553-451e-ab74-f5f0ca259c6b@linux.dev>
- <hcltp2bbxxg2t7ibmzgiib7mgbwgmvzwnnq6mochdh7c4h76r3@bxj6yk5zq64e>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sui Jingfeng <sui.jingfeng@linux.dev>
-In-Reply-To: <hcltp2bbxxg2t7ibmzgiib7mgbwgmvzwnnq6mochdh7c4h76r3@bxj6yk5zq64e>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Hi,
+This patch series enable RISC-V ACPI NUMA support which was based on
+the recently approved ACPI ECR[1].
+
+Patch 1/6 is generated from the acpica PR[2] and should be merged through
+the acpica project. Due to this dependency, other 5 patches can only be
+merged after the corresponding ACPICA patch was pulled into linux.
+
+Patch 2/6 add RISC-V specific acpi_numa.c file to parse NUMA information
+from SRAT and SLIT ACPI tables.
+Patch 3/6 add the common SRAT RINTC affinity structure handler.
+Patch 4/6 remove the '#if defined(CONFIG_ARCH)' condition to make some NUMA
+related parse functions common for all current architectures that support
+ACPI_NUMA.
+Patch 5/6 change the ACPI_NUMA to a hidden option since it would be selected
+by default on all supported platform. 
+Patch 6/6 replace pr_info with pr_debug in arch_acpi_numa_init() to avoid
+potential boot noise on ACPI platforms that are not NUMA.  
+
+Based-on: https://github.com/linux-riscv/linux-riscv/tree/for-next
+
+[1] https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view?usp=sharing
+[2] https://github.com/acpica/acpica/pull/926
+
+Testing:
+Since the ACPI AIA/PLIC support patch set is still under upstream review,
+hence it is tested using the poll based HVC SBI console and RAM disk.
+1) Build latest Qemu with the following patch backported
+   https://github.com/vlsunil/qemu/commit/42bd4eeefd5d4410a68f02d54fee406d8a1269b0
+
+2) Build latest EDK-II
+   https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+
+3) Build Linux with the following configs enabled
+   CONFIG_RISCV_SBI_V01=y
+   CONFIG_SERIAL_EARLYCON_RISCV_SBI=y
+   CONFIG_NONPORTABLE=y
+   CONFIG_HVC_RISCV_SBI=y
+   CONFIG_NUMA=y
+   CONFIG_ACPI_NUMA=y
+
+4) Build buildroot rootfs.cpio
+
+5) Launch the Qemu machine
+   qemu-system-riscv64 -nographic \
+   -machine virt,pflash0=pflash0,pflash1=pflash1 -smp 4 -m 8G \
+   -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+   -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+   -object memory-backend-ram,size=4G,id=m0 \
+   -object memory-backend-ram,size=4G,id=m1 \
+   -numa node,memdev=m0,cpus=0-1,nodeid=0 \
+   -numa node,memdev=m1,cpus=2-3,nodeid=1 \
+   -numa dist,src=0,dst=1,val=30 \
+   -kernel linux/arch/riscv/boot/Image \
+   -initrd buildroot/output/images/rootfs.cpio \
+   -append "root=/dev/ram ro console=hvc0 earlycon=sbi"
+
+[    0.000000] ACPI: SRAT: Node 0 PXM 0 [mem 0x80000000-0x17fffffff]
+[    0.000000] ACPI: SRAT: Node 1 PXM 1 [mem 0x180000000-0x27fffffff]
+[    0.000000] NUMA: NODE_DATA [mem 0x17fe3bc40-0x17fe3cfff]
+[    0.000000] NUMA: NODE_DATA [mem 0x27fff4c40-0x27fff5fff]
+...
+[    0.000000] ACPI: NUMA: SRAT: PXM 0 -> HARTID 0x0 -> Node 0
+[    0.000000] ACPI: NUMA: SRAT: PXM 0 -> HARTID 0x1 -> Node 0
+[    0.000000] ACPI: NUMA: SRAT: PXM 1 -> HARTID 0x2 -> Node 1
+[    0.000000] ACPI: NUMA: SRAT: PXM 1 -> HARTID 0x3 -> Node 1
+
+---
+Changes since v2
+  - Rebase to Linux 6.9-rc1
+  - changed ACPI_NUMA to a hidden option in patch 5/6 per Arnd's suggestion
+  - Removed original 6/6 which was not needed with changes in patch 5/6
+  - Added a new patch 6/6 to replace pr_info to pr_debug in arch_acpi_numa_init
+
+Haibo Xu (6):
+  ACPICA: SRAT: Add RISC-V RINTC affinity structure
+  ACPI: RISCV: Add NUMA support based on SRAT and SLIT
+  ACPI: NUMA: Add handler for SRAT RINTC affinity structure
+  ACPI: NUMA: Make some NUMA related parse functions common
+  ACPI: NUMA: change the ACPI_NUMA to a hidden option
+  ACPI: NUMA: replace pr_info with pr_debug in arch_acpi_numa_init
+
+ arch/arm64/Kconfig            |   1 -
+ arch/loongarch/Kconfig        |   1 -
+ arch/riscv/include/asm/acpi.h |  15 +++-
+ arch/riscv/kernel/Makefile    |   1 +
+ arch/riscv/kernel/acpi.c      |   5 --
+ arch/riscv/kernel/acpi_numa.c | 131 ++++++++++++++++++++++++++++++++++
+ arch/riscv/kernel/setup.c     |   4 +-
+ arch/riscv/kernel/smpboot.c   |   2 -
+ drivers/acpi/numa/Kconfig     |   5 +-
+ drivers/acpi/numa/srat.c      |  40 ++++++++---
+ drivers/base/arch_numa.c      |   2 +-
+ include/acpi/actbl3.h         |  18 ++++-
+ include/linux/acpi.h          |   6 ++
+ 13 files changed, 204 insertions(+), 27 deletions(-)
+ create mode 100644 arch/riscv/kernel/acpi_numa.c
 
-
-On 2024/4/24 05:37, Dmitry Baryshkov wrote:
-> On Wed, Apr 24, 2024 at 12:49:18AM +0800, Sui Jingfeng wrote:
->> Hi,
->>
->> Thanks a for you reviewing my patch.
->>
->>
->> On 2024/4/23 21:28, Andy Shevchenko wrote:
->>> On Tue, Apr 23, 2024 at 12:46:58AM +0800, Sui Jingfeng wrote:
->>>> Because the software node backend of the fwnode API framework lacks an
->>>> implementation for the .device_get_match_data function callback. This
->>>> makes it difficult to use(and/or test) a few drivers that originates
->>> Missing space before opening parenthesis.
->> OK, will be fixed at the next version.
->>
->>
->>>> from DT world on the non-DT platform.
->>>>
->>>> Implement the .device_get_match_data fwnode callback, device drivers or
->>>> platform setup codes are expected to provide a string property, named as
->>>> "compatible", the value of this software node string property is used to
->>>> match against the compatible entries in the of_device_id table.
->>> Yep and again, how is this related? If you want to test a driver originating
->>> from DT, you would probably want to have a DT (overlay) to be provided.
->> There are a few reasons, please fixed me if I'm wrong.
->>
->> DT (overlay) can be possible solution, but DT (overlay) still depend on DT.
->> For example, one of my x86 computer with Ubuntu 22.04 Linux/x86 6.5.0-28-generic
->> kernel configuration do not has the DT enabled. This means that the default kernel
->> configuration is decided by the downstream OS distribution. It is not decided by
->> usual programmers. This means that out-of-tree device drivers can never utilize
->> DT or DT overlay, right?
-> No, this is not fully correct. The drivers anyway have to adopted for
-> the platforms they are used with. It is perfectly fine to have a driver
-> that supports both DT and ACPI at the same time.
->
->> I means that Linux kernel is intended to be used by both in-tree drivers and out-of-tree drivers.
->> Out-of-tree device drivers don't have a chance to alter kernel config, they can only managed to
->> get their source code compiled against the Linux kernel the host in-using.
->>
->> Some out-of-tree device drivers using DKMS to get their source code compiled,
->> with the kernel configuration already *fixed*. So they don't have a opportunity
->> to use DT overlay.
->>
->> Relying on DT overlay is *still* *DT* *dependent*, and I not seeing matured solution
->> get merged into upstream kernel yet. However, software node has *already* been merged
->> into Linux kernel. It can be used on both DT systems and non-DT systems. Software node
->> has the least requirement, it is *handy* for interact with drivers who only need a small
->> set properties.
->>
->> In short, I still think my patch maybe useful for some peoples. DT overlay support on
->> X86 is not matured yet, need some extra work. For out-of-tree kernel module on
->> downstream kernel. Select DT and DT overlay on X86 is out-of-control. And I don't want
->> to restrict the freedom of developers.
-> I don't think upstream developers care about the downstream kernels.
-
-
-Theupstream kernels are facing the same problem,by default drm-misc-x86_defconfigdon't has the CONFIG_OF and CONFIG_OF_OVERLAY  selected.
-See [1] for an example.
-  
-[1] https://cgit.freedesktop.org/drm/drm-tip/tree/drm-misc-x86_defconfig?h=rerere-cache
-
-
-> But let me throw an argument why this patch (or something similar) looks
-> to be necessary.
-
-Agreed till to here.
-
-
-> Both on DT and non-DT systems the kernel allows using the non-OF based
-> matching. For the platform devices there is platform_device_id-based
-> matching.
-
-
-Yeah, still sounds good.
-
-
-> Currently handling the data coming from such device_ids requires using
-> special bits of code,
-
-
-It get started to deviate from here, as you are going to rash onto a narrow way.
-Because you made the wrong assumption, it can be platform devices, it can *also*
-be of platform device created by the of_platform_device_create(). The patch itself
-won't put strong restrictions about its users.
-
-
-> e.g. platform_get_device_id(pdev)->driver_data to
-> get the data from the platform_device_id.
-
-Right, but you run into a narrow area and stuck yourself.
-The so called non-DT, non-ACPI platform devices are all you basis of you argument, right?
-
-There have plenty i2c device and SPI device associated with software note properties.
-After applied this patch, it means that device_get_match_data() can also works for
-those device.
-
-And the approach you provide already generate a lot of *boilerplate*...
-
-> Having such codepaths goes
-> against the goal of unifying DT and non-DT paths via generic property /
-> fwnode code.
-
-
-Who's goal? your goal or community's goal? is it documented somewhere?
-
-Andy's goal is just to make those two drivers truely DT independent,
-and I agree with Andy. I'm going to cooperate with Andy to achieve this
-small goal.
-
-However, apparently, our goal is *different* with your goal, your goal
-is a big goal. If you have such a ambitious goal, you can definitely do
-something on behalf of yourself.
-
-For example, improving DT overlay support for the FPGA device, Or making
-the of_device_id stuff truly platform neutral before telling people that
-"XXXX doesn't depend on DT". I guess task of removing the of_node member
-from the struct device already in you job list, as you want to unify
-the DT and non-DT code paths...
-
-All I want is just be able to contribute, do something useful and do the
-right thing. So please don't throw your personal goal or taste onto the
-body of other people. Thanks.
-
-
-> As such, I support Sui's idea
-
-
-OK so far. But,
-
-
-> of being able to use device_get_match_data
-> for non-DT, non-ACPI platform devices.
-
-Please *stop* the making biased assumptions!
-Please stop the making *biased* assumptions!
-Please stop the making biased *assumptions*!
-
-
-Currently, the various display drivers don't have the acpi_device_id associated.
-This means that those drivers won't probed even in ACPI enabled systems either.
-Adding acpi_device_id to those drivers is another topic. If you have that ambitious,
-you can take the job. But this again is another problem.
-
-Back to the concern itself, I didn't mention what device or what drivers will
-be benefits in my commit message. In fact, after applied this patch,
-device_get_match_data() will works for the i2c device and SPI device associated
-with software note. Hence, "non-DT, non-ACPI platform devices" are just an imaginary
-of yourself. So please stop bring you own confusion to us.
-
-> Sui, if that fits your purpose,
-
-
-That doesn't fits my purpose, please stop the recommendation, thanks.
-
-
-> please make sure that with your patch
-> (or the next iteration of it) you can get driver_data from the matched
-> platform_device_id.
-
-
-No, that's a another problem.
-
-The 'platform_get_device_id(pdev)->driver_data' you mentioned is completely
-off the domain of fwnode API framework. You are completely deviate what we
-are currently talking about.
-
-What we are talking about is something within the fwnode API framework.
-
-You can hack the device_get_match_data() function to call platform_get_device_id()
-as a fallback code path when the fwnode subsystem couldn't return a match data to
-you. But this is another problem.
-
-
->>
->>>> This also helps to keep the three backends of the fwnode API aligned as
->>>> much as possible, which is a fundamential step to make device driver
->>>> OF-independent truely possible.
->>>>
->>>> Fixes: ffb42e64561e ("drm/tiny/repaper: Make driver OF-independent")
->>>> Fixes: 5703d6ae9573 ("drm/tiny/st7735r: Make driver OF-independent")
->>> How is it a fix?
->>
->> Because the drm/tiny/repaper driver and drm/tiny/st7735r driver requires extra
->> device properties. We can not make them OF-independent simply by switching to
->> device_get_match_data(). As the device_get_match_data() is a *no-op* on non-DT
->> environment.
-> This doesn't constitute a fix.
-
-
-No, it does.
-
-> It's not that there is a bug that you are
-> fixing. You are adding new feature ('support for non-DT platforms').
-
-
-Yes, it's a bit of farfetched.
-
-But as our goal is to make driver OF-independent, as mentioned in the commit title.
-when the needed feature is missing, the goal can not be achieved. Fix the missing.
-
-
->> Hence, before my patch is applied, the two "Make driver OF-independent" patch
->> have no effect. Using device_get_match_data() itself is exactly *same* with
->> using of_device_get_match_data() as long as the .device_get_match_data hook is
->> not implemented.
->>
->>
->> See my analysis below:
->>
->> When the .device_get_match_data hook is not implemented:
->>
->> 1) On DT systems, device_get_match_data() just redirect to of_fwnode_device_get_match_data(),
->>     which is just a wrapper of of_device_get_match_data().
->>
->> 2) On Non-DT system, device_get_match_data() has *ZERO* effect, it just return NULL.
->>
->>
->> Therefore, device_get_match_data() adds *ZERO* benefits to the mentioned drivers if
->> the .device_get_match_data is not implemented.
->>
->> Only when the .device_get_match_data hook get implemented, device_get_match_data()
->> can redirect tosoftware_node_get_match_data() function in this patch.
->> Therefore, the two driver has a way to get a proper driver match data on
->> non-DT environment. Beside, the users of those two driver can provide
->> additional software node property at platform setup code. as long as at
->> somewhere before the driver is probed.
->>
->> So the two driver really became OF-independent after applied my patch.
->>
->>
->>>> Closes: https://lore.kernel.org/lkml/20230223203713.hcse3mkbq3m6sogb@skbuf/
->>> Yes, and then Reported-by, which is missing here.
->>>
->>>> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>>> Cc: Daniel Scally <djrscally@gmail.com>
->>>> Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
->>>> Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
->>>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
->>> Please, move these after the cutter '---' line (note you may have that line in
->>> your local repo).
->>>
->>> ...
->>>
->> OK, thanks a lot for teaching me.
->>
->>
->>>> +static const void *
->>>> +software_node_get_match_data(const struct fwnode_handle *fwnode,
->>>> +			     const struct device *dev)
->>>> +{
->>>> +	struct swnode *swnode = to_swnode(fwnode);
->>>> +	const struct of_device_id *matches = dev->driver->of_match_table;
->>>> +	const char *val = NULL;
->>>> +	int ret;
->>>> +	ret = property_entry_read_string_array(swnode->node->properties,
->>>> +					       "compatible", &val, 1);
->>> And if there are more than one compatible provided?
->> Nope, I think this is kind of limitation of the software node,
->> platform setup code generally could provide a compatible property.
->> No duplicate name is allowed. But we the best explanation would be
->> platform setup code should provide the "best" or "default" compatible
->> property.
-> The implementation is still incorrect.
-
-
-No, it is correct.
-
-
-> The swnode code shouldn't look
-> into the OF data. Please use non-DT match IDs.
-
-Please stop the misleading,  the software_node_get_match_data() is a mimic to (subset of)
-acpi_fwnode_device_get_match_data(), Software node is kind of complement to ACPI, it's
-definitely need to follow the code style of ACPI counterpart. The initial implementation
-choose to take a look at the dev->driver->of_match_table, which is to avoid ugly duplication.
-This introducing no *boilerplate*, and partly reflect what you goal: "Unifying".
-   
-So, please don't go against with yourself and Please read the implement
-of acpi_fwnode_device_get_match_data() before objects, thanks.
-
-
->>
->>>> +	if (ret < 0 || !val)
->>>> +		return NULL;
->>>> +	while (matches && matches->compatible[0]) {
->>> First part of the conditional is invariant to the loop. Can be simply
->>
->> Right, thanks.
->>
->>
->>> 	matches = dev->driver->of_match_table;
->>> 	if (!matches)
->>> 		return NULL;
->>>
->>> 	while (...)
->>>
->>>> +		if (!strcmp(matches->compatible, val))
->>>> +			return matches->data;
->>>> +
->>>> +		matches++;
->>>> +	}
->>>> +
->>>> +	return NULL;
->>>> +}
->> -- 
->> Best regards,
->> Sui
->>
 -- 
-Best regards,
-Sui
+2.34.1
 
 
