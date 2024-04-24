@@ -1,139 +1,244 @@
-Return-Path: <linux-acpi+bounces-5333-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5334-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F178B0D3B
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 16:52:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A6F8B0E9D
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 17:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419E91F27AA1
-	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 14:52:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF75BB2BA6C
+	for <lists+linux-acpi@lfdr.de>; Wed, 24 Apr 2024 15:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5872315ECD4;
-	Wed, 24 Apr 2024 14:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F71C16130D;
+	Wed, 24 Apr 2024 15:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ta4Pk/kP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjojJ9tv"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE0815EFDC;
-	Wed, 24 Apr 2024 14:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3998B15EFDB;
+	Wed, 24 Apr 2024 15:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713970331; cv=none; b=E0SPPwSPIjqF+QxIuJZCbnQSgh1WMz5hkgLAkSdnyvIzU2ElRZyQJToQ4dIkLAYAVxeX3dn3Z/WnzKAWQCdFw1f+rnoWwZ14NIg08KqV2fGy6CsIdEYgwTsN0Wt5HmucSGlmWZd+b8Zkn7FW/Vh5Vf/NzMsE7PfeNmwRGW1Kpdw=
+	t=1713972806; cv=none; b=jGtHUk3DDJ0GlVrrSpOQLtTnOQOSNMZHOgvJ9uveDnCem09gJrrl91d5+bDOC/mSuleGXLvB5ozn0PJWJsh76vKZv+R93n2ddOKgvLZsfkKaQ5yjVFDlpYfDIvQm7CbGCIlawDDy8ycatLP5+tPuxBBgETL4NiZTc2ehvKQjpRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713970331; c=relaxed/simple;
-	bh=pUk1fxgSgJzGkHuSvCgekaAeU9B72s05/k76ocuj9HI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LC/XTLKtfpU1NWBh8J6/+tafAZzJIw8v5zkAP/DL9hhH8vt046fqzdCOzPLwmH5ULSq/97xLY/PNkKRCSmjMpetPgEVxhFVGxh0f0CJinWDDpJ/HDIXou5t2Q4p2gUnF25vsmpfeGr0jg1TvWqdk+hsxN5v8ENCd8/7NVYArvxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ta4Pk/kP; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713970330; x=1745506330;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=pUk1fxgSgJzGkHuSvCgekaAeU9B72s05/k76ocuj9HI=;
-  b=Ta4Pk/kPOW69fZfpT964jZOh2zziIs0chAGLiEfZlnM+yBDStOxkO6RU
-   2FrWtFoWx/B/98qedre6xpz82SETdv/61uLbE/x5L/aqG5ZtBcrPqlSEJ
-   MZsVcLdPq4oDy/prO/S3Tjo/L1OKlhKxNCPVCCiWsPsQu20o2n5HQXOgJ
-   IC9C0p5hRZ9PZWB+j1Qt8NEVesQTeTHVkZkogcGdDaemZdqRoo/3elOCH
-   cMSsaRbxTnYO9VR0Ds53tasoZelROFV/81EJZI7D8cybeUq1ma8I3LOiH
-   uyfj4MSG0FbdgnYQUQLtcScaBaxPma3WX/lRw7WUYPomH7Q7tg1mgUY6M
-   A==;
-X-CSE-ConnectionGUID: mY7Bod1GQbKdabNKq/bLGw==
-X-CSE-MsgGUID: edDlUk6ZTvaH9x4189JvZA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="10143556"
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="10143556"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 07:52:09 -0700
-X-CSE-ConnectionGUID: /9NhRvYWQYWh1l8wZxDqEQ==
-X-CSE-MsgGUID: ldSIKB1vSKKI+/poZaSPIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
-   d="scan'208";a="29538283"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2024 07:52:07 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rzdyd-00000000gGH-2m3s;
-	Wed, 24 Apr 2024 17:52:03 +0300
-Date: Wed, 24 Apr 2024 17:52:03 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Sui Jingfeng <sui.jingfeng@linux.dev>, dri-devel@lists.freedesktop.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: Re: [PATCH v2] software node: Implement device_get_match_data fwnode
- callback
-Message-ID: <Zikck2FJb4-PgXX0@smile.fi.intel.com>
-References: <20240422164658.217037-1-sui.jingfeng@linux.dev>
- <Zie3ebHOEpWHj1qV@smile.fi.intel.com>
- <d5bc1e73-a553-451e-ab74-f5f0ca259c6b@linux.dev>
- <hcltp2bbxxg2t7ibmzgiib7mgbwgmvzwnnq6mochdh7c4h76r3@bxj6yk5zq64e>
- <ZikE4qOVO7rgIs9a@smile.fi.intel.com>
- <CAA8EJpr1FSjizAh6Dp5Bmux3NrGYh=BfHFL4D1fa87Og4ymY0w@mail.gmail.com>
+	s=arc-20240116; t=1713972806; c=relaxed/simple;
+	bh=eKJo5gG7zxObnBLQvdDtMfVRz5h7TuiTzRdbx1XUkHM=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q9mRk/gFAVqM9CFlAzgQ0yNpDzhvOtIiPi6q7CC9scVTAP9Nf52MKsRcHH59mI3/16QH5LCOwwZQEGdjvK6Dj1oGPf2/jcPk6Fb2X+lASUZS+zQoLfXL+q0IF4ERK/Rth0gYyYlT7LVPfuWs+DxwVnrFE0zTSJHMTo2rskdVuaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjojJ9tv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AC3C113CD;
+	Wed, 24 Apr 2024 15:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713972806;
+	bh=eKJo5gG7zxObnBLQvdDtMfVRz5h7TuiTzRdbx1XUkHM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AjojJ9tvZTHPOZR/m5u54kBnZ+v5gQoVRJnWRZb383Sp68Ye0+yfUFbFEmXumbr5M
+	 fU0B/yxWBm19YdtzwC5IAPD/LDrg3L7acdSS1QHmkF88ezMp4Cx1G007yY6CiUgS7+
+	 5qsWL2aYC1ehU1F3B12rZr+6awrFfyBSKJq++mg0YfXyrRRqS/d6R5FIgumS7w+T3i
+	 Wbg1yvs31EHYu3O2+FVP+9MhGxgi1l1CcsXkFotK9esfkKMe9wm/LKYaFYdDp9LDwX
+	 tOIIXPg6SyBNza2a5Z3gBjzNM00AJMrILFoS/KCwbC9ldyfTmKZQCyNGSNxRTvq1nH
+	 mQRYlqDADNIxw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rzecd-007acO-2E;
+	Wed, 24 Apr 2024 16:33:23 +0100
+Date: Wed, 24 Apr 2024 16:33:22 +0100
+Message-ID: <86il06rd19.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra
+	<peterz@infradead.org>,
+	<linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>,
+	<x86@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	"Rafael J . Wysocki"
+	<rafael@kernel.org>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	"James Morse"
+	<james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe
+ Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas
+	<catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	<linuxarm@huawei.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov
+	<bp@alien8.de>,
+	"Dave Hansen" <dave.hansen@linux.intel.com>,
+	<justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v7 11/16] irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs
+In-Reply-To: <20240424135438.00001ffc@huawei.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+	<20240418135412.14730-12-Jonathan.Cameron@huawei.com>
+	<20240422114020.0000294f@Huawei.com>
+	<87plugthim.wl-maz@kernel.org>
+	<20240424135438.00001ffc@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAA8EJpr1FSjizAh6Dp5Bmux3NrGYh=BfHFL4D1fa87Og4ymY0w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Jonathan.Cameron@huawei.com, tglx@linutronix.de, peterz@infradead.org, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, linux@armlinux.org.uk, rafael@kernel.org, miguel.luis@oracle.com, james.morse@arm.com, salil.mehta@huawei.com, jean-philippe@linaro.org, catalin.marinas@arm.com, will@kernel.org, linuxarm@huawei.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, justin.he@arm.com, jianyong.wu@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, Apr 24, 2024 at 04:34:39PM +0300, Dmitry Baryshkov wrote:
-> On Wed, 24 Apr 2024 at 16:11, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Wed, Apr 24, 2024 at 12:37:16AM +0300, Dmitry Baryshkov wrote:
-> > > On Wed, Apr 24, 2024 at 12:49:18AM +0800, Sui Jingfeng wrote:
-> > > > On 2024/4/23 21:28, Andy Shevchenko wrote:
-> > > > > On Tue, Apr 23, 2024 at 12:46:58AM +0800, Sui Jingfeng wrote:
-
-...
-
-> > > But let me throw an argument why this patch (or something similar) looks
-> > > to be necessary.
-> > >
-> > > Both on DT and non-DT systems the kernel allows using the non-OF based
-> > > matching. For the platform devices there is platform_device_id-based
-> > > matching.
-> > >
-> > > Currently handling the data coming from such device_ids requires using
-> > > special bits of code, e.g. platform_get_device_id(pdev)->driver_data to
-> > > get the data from the platform_device_id. Having such codepaths goes
-> > > against the goal of unifying DT and non-DT paths via generic property /
-> > > fwnode code.
-> > >
-> > > As such, I support Sui's idea of being able to use device_get_match_data
-> > > for non-DT, non-ACPI platform devices.
-> >
-> > I'm not sure I buy this. We have a special helpers based on the bus type to
-> > combine device_get_match_data() with the respective ID table crawling, see
-> > the SPI and I²C cases as the examples.
+On Wed, 24 Apr 2024 13:54:38 +0100,
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 > 
-> I was thinking that we might be able to deprecate these helpers and
-> always use device_get_match_data().
+> On Tue, 23 Apr 2024 13:01:21 +0100
+> Marc Zyngier <maz@kernel.org> wrote:
+> 
+> > On Mon, 22 Apr 2024 11:40:20 +0100,
+> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+> > > 
+> > > On Thu, 18 Apr 2024 14:54:07 +0100
+> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-True, but that is orthogonal to swnode match_data support, right?
-There even was (still is?) a patch series to do something like a new
-member to struct device_driver (? don't remember) to achieve that.
+[...]
+
+> > >   
+> > > > +	/*
+> > > > +	 * Capable but disabled CPUs can be brought online later. What about
+> > > > +	 * the redistributor? ACPI doesn't want to say!
+> > > > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
+> > > > +	 * Otherwise, prevent such CPUs from being brought online.
+> > > > +	 */
+> > > > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
+> > > > +		pr_warn_once("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
+> > > > +		set_cpu_present(cpu, false);
+> > > > +		set_cpu_possible(cpu, false);
+> > > > +		return 0;
+> > > > +	}  
+> > 
+> > It seems dangerous to clear those this late in the game, given how
+> > disconnected from the architecture code this is. Are we sure that
+> > nothing has sampled these cpumasks beforehand?
+> 
+> Hi Marc,
+> 
+> Any firmware that does this is being considered as buggy already
+> but given it is firmware and the spec doesn't say much about this,
+> there is always the possibility.
+
+There is no shortage of broken firmware out there, and I expect this
+trend to progress.
+
+> Not much happens between the point where these are setup and
+> the point where the the gic inits and this code runs, but even if careful
+> review showed it was fine today, it will be fragile to future changes.
+> 
+> I'm not sure there is a huge disadvantage for such broken firmware in
+> clearing these masks from the point of view of what is used throughout
+> the rest of the kernel. Here I think we are just looking to prevent the CPU
+> being onlined later.
+
+I totally agree on the goal, I simply question the way you get to it.
+
+> 
+> We could add a set_cpu_broken() with appropriate mask.
+> Given this is very arm64 specific I'm not sure Rafael will be keen on
+> us checking such a mask in the generic ACPI code, but we could check it in
+> arch_register_cpu() and just not register the cpu if it matches.
+> That will cover the vCPU hotplug case.
+>
+> Does that sounds sensible, or would you prefer something else?
+
+
+Such a 'broken_rdists' mask is exactly what I have in mind, just
+keeping it private to the GIC driver, and not expose it anywhere else.
+You can then fail the hotplug event early, and avoid changing the
+global masks from within the GIC driver. At least, we don't mess with
+the internals of the kernel, and the CPU is properly marked as dead
+(that mechanism should already work).
+
+I'd expect the handling side to look like this (will not compile, but
+you'll get the idea):
+
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 6fb276504bcc..e8f02bfd0e21 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1009,6 +1009,9 @@ static int __gic_populate_rdist(struct redist_region *region, void __iomem *ptr)
+ 	u64 typer;
+ 	u32 aff;
+ 
++	if (cpumask_test_cpu(smp_processor_id(), &broken_rdists))
++		return 1;
++
+ 	/*
+ 	 * Convert affinity to a 32bit value that can be matched to
+ 	 * GICR_TYPER bits [63:32].
+@@ -1260,14 +1263,15 @@ static int gic_dist_supports_lpis(void)
+ 		!gicv3_nolpi);
+ }
+ 
+-static void gic_cpu_init(void)
++static int gic_cpu_init(void)
+ {
+ 	void __iomem *rbase;
+-	int i;
++	int ret, i;
+ 
+ 	/* Register ourselves with the rest of the world */
+-	if (gic_populate_rdist())
+-		return;
++	ret = gic_populate_rdist();
++	if (ret)
++		return ret;
+ 
+ 	gic_enable_redist(true);
+ 
+@@ -1286,6 +1290,8 @@ static void gic_cpu_init(void)
+ 
+ 	/* initialise system registers */
+ 	gic_cpu_sys_reg_init();
++
++	return 0;
+ }
+ 
+ #ifdef CONFIG_SMP
+@@ -1295,7 +1301,11 @@ static void gic_cpu_init(void)
+ 
+ static int gic_starting_cpu(unsigned int cpu)
+ {
+-	gic_cpu_init();
++	int ret;
++
++	ret = gic_cpu_init();
++	if (ret)
++		return ret;
+ 
+ 	if (gic_dist_supports_lpis())
+ 		its_cpu_init();
+
+But the question is: do you rely on these masks having been
+"corrected" anywhere else?
+
+Thanks,
+
+	M.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Without deviation from the norm, progress is not possible.
 
