@@ -1,181 +1,138 @@
-Return-Path: <linux-acpi+bounces-5383-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5384-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC008B2895
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 20:57:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C0D8B289B
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 20:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E483A1F23CB6
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 18:57:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5BEFB26355
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 18:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E46039ADB;
-	Thu, 25 Apr 2024 18:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F3B1514ED;
+	Thu, 25 Apr 2024 18:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TTm6ir8d"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="O2tq0uoX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4426B14C594;
-	Thu, 25 Apr 2024 18:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA081514C0
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 18:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714071408; cv=none; b=T/MsBMKQyBsUrEz+WpFHOpedMV+jLg7pJJb3NhztWR6hPVNxoYAdl1SZBBDlGfDjbILjJG6C9saxpAwAP5jHpRetXnirnAr0cLMnQU/Ni/UP92BJNh3khiA7tmx+Tl9vq0qMpNKnic+IbRq9WjxX1a3+47uQ8tEb10zAjMEPw3M=
+	t=1714071518; cv=none; b=s3iM6kswU834s3wz4Mr+Az1wMKwDQuXmd+Yp2aKSC4KZM9HCZKRJew9n8oFGg902FUr+DTadt4wL3xQZiz86Z+NutIDubIyTXkvlYgT/0xi4McjC2Jc3//k684jV3S0mFtyOKVRGiMh2hWvEvKC158cmOdggItn8htX56gc+An4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714071408; c=relaxed/simple;
-	bh=GyYS//eJdsqAA5UfCzd5uB8wCmszHJBWWtWWa6emUxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJdrFdpwwfn4H3E0Ff7nv0Svvbx9leoInOAdRG+2oj0shcjrMfOkanIkL3o3PM412/GgDWOQkgrjJHYhYQU9C05+/mzFZJm8n2CsJX8SLFLGlDl30bUFVHH7ASi9BkPAAjHSHzo720gPELLoGuCeg9sVgbKKuwz/au9xAUJuXPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TTm6ir8d; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714071407; x=1745607407;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GyYS//eJdsqAA5UfCzd5uB8wCmszHJBWWtWWa6emUxo=;
-  b=TTm6ir8dmKYyXMVLrLtnB1BA/RDmwYYXHduej1Sb/5gGanZGYBZ/VtnF
-   dZ3+209YvO/KmUL27zdmqhJKpm2m9TKRBn0bAihQ9OcRpqph2OsOidv2W
-   ixRKPPBl1tBy6ZiLtCOc/w/I1/1IqFtQ/51pl+p+r2hBU3BvnEemrh+y8
-   jlz6nKFcPmHIFGpdLEN4tzg3vMBGSlcEifetZMl5ngDxZXiDmoeJtmUmv
-   f/7m3lKQq2XkXerZwFSMUSEJa2XYXWbLqVWirOhYvIrOEw1Wp36lnlra+
-   3Yp6t7lTr/f76QOX+ESug7RhS0JXmz8P31vT6TJzERpuOPWt69C/8bgjj
-   g==;
-X-CSE-ConnectionGUID: ioMGhpM7TyyeuKxafuHrTA==
-X-CSE-MsgGUID: cvCQ6tj8Ru+TJnUBix38pw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="27239580"
-X-IronPort-AV: E=Sophos;i="6.07,230,1708416000"; 
-   d="scan'208";a="27239580"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 11:56:47 -0700
-X-CSE-ConnectionGUID: lPC2oQ9MTN2RMZAN0mpQyw==
-X-CSE-MsgGUID: HdQYBYCPRSOOpuzne7EUOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,230,1708416000"; 
-   d="scan'208";a="25056447"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.252.128.24])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2024 11:56:47 -0700
-Date: Thu, 25 Apr 2024 11:56:44 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Robert Richter <rrichter@amd.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v4 6/7] ACPI/NUMA: Add log messages for memory ranges
- found in CEDT
-Message-ID: <ZiqnbD0CB9WUL1zu@aschofie-mobl2>
-References: <20240424154846.2152750-1-rrichter@amd.com>
- <20240424154846.2152750-7-rrichter@amd.com>
- <6629474eab671_b6e0294e8@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <ZioGhwNWQyFjRtZ-@rric.localdomain>
+	s=arc-20240116; t=1714071518; c=relaxed/simple;
+	bh=OVpsYfA8Qvyh7CR1+bvLaN9uwU+c3vdVxNAvJVeMlHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kI5iW/Of25HHbZDZnXlndIV8swK2EvfKJ69X38OVGn6vaxjMmXJybE7w95hdFD+8BfXQzVB48k+iyBlXoGBXczpA++TlT316cfAd19j+iDPd1G8XRWcMUhJxgFDGmnCTYNOl+aQh6KZf41uri3YNUnWR8nMY3lY/F0QOjkEPi78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=O2tq0uoX; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51abd9fcbf6so2346486e87.1
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 11:58:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1714071514; x=1714676314; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ce4eWZ96+PrDKbqu3JpH3mxBstfm8l4HTUGuvQBwL34=;
+        b=O2tq0uoXJdvJEReh3iYL6qanMPcCXV3+BCB4zB+04uKxo64KWrSXgHT+Fn60fRktgJ
+         oKNkwhebQN1cbviut4hcvnH+Jyp1wdWB/SinhTQPWmikxoge48vp11yDSpfvOtzayxPd
+         Fy7fcMGKmWxt9+ozmxMz5Ai6Dz/IHLI86IUZ8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714071514; x=1714676314;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ce4eWZ96+PrDKbqu3JpH3mxBstfm8l4HTUGuvQBwL34=;
+        b=MGk39ra89CHINYkGVRetJs4HuuU/kM5CrTf/w2Yhle9e4ws0x/NPCCRb7lnXH6pqfr
+         5Wfs7GIPwOeFKPrc1Gel1z41ni/aXXnMGoBNy5FihX8pryX0YhtcvDIxeoLXqPg2feGq
+         D+juc8MuhwUdS/GfpwgKNHqYvQ56ezpYqt0ozg/M9vNiDGDMS1Hw1OClFWdZ3879nuwR
+         Y7Hx4tQ9rleu6c3CZ0HxgYuVgk2zU08JedkCEvhorF93DFKYj/ljviRNY+5cA6U3vFPq
+         2T6xm3YuLaczJnoNUaN/xkiCSdbKSnLMgz62q2CoLL7gxc7kJ1yDlwpapBaEm4CYxVE2
+         k9pQ==
+X-Gm-Message-State: AOJu0YyhvZMi0k5eKGem1bXJGKQvtrNZd6MioNf7IAs1QKTwscJtjWdL
+	Ypr+Np/zhP93u+oOZnlZP/+odVGQEKy3Po33PESFo59z1uFckosuhxngECyhWkdSyxB7mrdCSk/
+	pJF8=
+X-Google-Smtp-Source: AGHT+IFPFzo6RuT6F3CehOp+xUVpNAtowCbmvTzXrCFeTGgz1ggNCMx2BkYx6cL6dUssXRKdPEvVfg==
+X-Received: by 2002:ac2:4e8e:0:b0:51a:ff87:bae with SMTP id o14-20020ac24e8e000000b0051aff870baemr185148lfr.7.1714071514670;
+        Thu, 25 Apr 2024 11:58:34 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id m14-20020a19434e000000b00516d0c24008sm2959213lfj.306.2024.04.25.11.58.33
+        for <linux-acpi@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 11:58:33 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51abd9fcbf6so2346423e87.1
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 11:58:33 -0700 (PDT)
+X-Received: by 2002:a05:6512:ba7:b0:51a:fc86:fc6d with SMTP id
+ b39-20020a0565120ba700b0051afc86fc6dmr218319lfv.22.1714071512772; Thu, 25 Apr
+ 2024 11:58:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZioGhwNWQyFjRtZ-@rric.localdomain>
+References: <CAJZ5v0iUUmMUo86vBzYJjL4NjoFzpDwD1+c292aP+T++PLv6vQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iUUmMUo86vBzYJjL4NjoFzpDwD1+c292aP+T++PLv6vQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 25 Apr 2024 11:58:16 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
+Message-ID: <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
+Subject: Re: [GIT PULL] ACPI fixes for v6.9-rc6
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 25, 2024 at 09:30:15AM +0200, Robert Richter wrote:
-> On 24.04.24 10:54:22, Dan Williams wrote:
-> > Robert Richter wrote:
-> > > Adding a pr_info() when successfully adding a CFMWS memory range.
-> > > 
-> > > Suggested-by: Alison Schofield <alison.schofield@intel.com>
-> > > Signed-off-by: Robert Richter <rrichter@amd.com>
-> > > ---
-> > >  drivers/acpi/numa/srat.c | 10 +++++++++-
-> > >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> > > index e3f26e71637a..c62e4636e472 100644
-> > > --- a/drivers/acpi/numa/srat.c
-> > > +++ b/drivers/acpi/numa/srat.c
-> > > @@ -338,8 +338,11 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
-> > >  	 * found for any portion of the window to cover the entire
-> > >  	 * window.
-> > >  	 */
-> > > -	if (!numa_fill_memblks(start, end))
-> > > +	if (!numa_fill_memblks(start, end)) {
-> > > +		pr_info("CEDT: memblk extended [mem %#010Lx-%#010Lx]\n",
-> > > +			(unsigned long long) start, (unsigned long long) end - 1);
-> > 
-> > This looks like pr_debug() material to me.
-> 
-> This should have the same log level as the message below and/or its
-> corresponding SRAT message. CEDT mem blocks wouldn't be reported
-> otherwise only because a smaller (overlapping) entry was registered
-> before. That is why I used pr_info here.
+On Thu, 25 Apr 2024 at 10:46, Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+>  - Fix bit offset computation in MASK_VAL() macro used for applying
+>    a bitmask to a new CPPC register value (Jarred White).
 
-It does feel like this message belongs but maybe it should also 
-mimic the SRAT define message and emit what node maps this range
-if memblocks were extended.
+Honestly, that code should never have used GENMASK() in the first place.
 
-But...seems this will emit a message for every CFMWS range, even those
-where no memblk needed to be extended - ie the range was fully described
-in the SRAT.
+When a helper macro is more complicated than just doing the obvious
+thing without it, it's not a helper macro any more.
 
-Sadly, numa_fill_memblks() return of 'success' has double meaning.
-It can mean memblks were extended, or that (start, end) was found fully
-described. I don't see an good place to insert the message in
-numa_fill_memblks(). 
+Doing
 
-Sorry, just stirring the pot here, with no clear suggestion on how
-to emit info.
+    GENMASK(((reg)->bit_width) - 1, 0)
 
-> 
-> > 
-> > >  		return 0;
-> > > +	}
-> > >  
-> > >  	/* No SRAT description. Create a new node. */
-> > >  	node = acpi_map_pxm_to_node(*fake_pxm);
-> > > @@ -354,8 +357,13 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
-> > >  		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
-> > >  			node, start, end);
-> > >  	}
-> > > +
-> > >  	node_set(node, numa_nodes_parsed);
-> > >  
-> > > +	pr_info("CEDT: Node %u PXM %u [mem %#010Lx-%#010Lx]\n",
-> > > +		node, *fake_pxm,
-> > > +		(unsigned long long) start, (unsigned long long) end - 1);
-> > > +
-> > 
-> > This makes sense to mirror the SRAT pr_info().
-> 
-> I evaluated this.
-> 
+is literally more work than just doing the obvious thing
 
-I read Dan's comment as simple acceptance. Like, yeah this one is good
-because it mimics the SRAT pr_info.
+    ((1ul << (reg)->bit_width) - 1)
 
+and using that "helper" macro was actually more error-prone too as
+shown by this example, because of the whole "inclusive or not" issue.
 
-> SRAT shows this:
-> 
-> 	pr_info("SRAT: Node %u PXM %u [mem %#010Lx-%#010Lx]%s%s\n",
-> 		node, pxm,
-> 		(unsigned long long) start, (unsigned long long) end - 1,
-> 		hotpluggable ? " hotplug" : "",
-> 		ma->flags & ACPI_SRAT_MEM_NON_VOLATILE ? " non-volatile" : "");
-> 
-> There is no direct mapping of SRAT memory affinity flags (acpi-6.5
-> spec, table 5.59) and something in the CFMWS entry (cxl-3.1, table
-> 9-22). There is no "hotplug" flag and the "non-volatile" part would be
-> ambiguous, as some logic must be defined to handle the "volatile" and
-> "persistent" Window Restrictions. Since the CFMWS restrictions are not
-> used at all by the kernel my conclusion was to just dropped the flag
-> for the CEDT info.
-> 
-> Note there is a mapping defined for CDAT DSMAS and SRAT entries, see
-> CDAT 1.03 spec, Table 4.
-> 
-> -Robert
+BUT!
+
+Even with that simpler model, that's still entirely buggy, since 'val'
+is 64-bit, and these GENMASK tricks only work on 'long'.
+
+Which happens to be ok on x86-64, of course, and maybe in practice all
+fields are less than 32 bits in width anyway so maybe it even works on
+32-bit, but this all smells HORRIBLY WRONG.
+
+And no, the fix is *NOT* to make that GENVAL() mindlessly just be
+GENVAL_ULL().  That fixes the immediate bug, but it shows - once again
+- how mindlessly using "helper macros" is not the right thing to do.
+
+When that macro now has had TWO independent bugs, how about you just
+write it out with explicit types and without any broken "helpers":
+
+   static inline u64 MASK_VAL(const struct cpc_reg *reg, u64 val)
+   {
+        u64 mask = (1ull << reg->bit_width)-1;
+        return (val >> reg->bit_offset) & mask;
+   }
+
+which is a few more lines, but doesn't that make it a whole lot more readable?
+
+And maybe this time, it's not a buggy mess?
+
+               Linus
 
