@@ -1,74 +1,74 @@
-Return-Path: <linux-acpi+bounces-5384-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5385-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C0D8B289B
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 20:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CC48B28A9
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 21:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5BEFB26355
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 18:58:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA72BB2119E
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 19:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F3B1514ED;
-	Thu, 25 Apr 2024 18:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD5914F9EA;
+	Thu, 25 Apr 2024 19:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="O2tq0uoX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Iq9a5Joh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA081514C0
-	for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 18:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32E439FCF
+	for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 19:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714071518; cv=none; b=s3iM6kswU834s3wz4Mr+Az1wMKwDQuXmd+Yp2aKSC4KZM9HCZKRJew9n8oFGg902FUr+DTadt4wL3xQZiz86Z+NutIDubIyTXkvlYgT/0xi4McjC2Jc3//k684jV3S0mFtyOKVRGiMh2hWvEvKC158cmOdggItn8htX56gc+An4=
+	t=1714071694; cv=none; b=fCHBgDUiGzMDT1+SdsOo5mqgri3JO9A/cBiImiLfnxBW3Mkruos1tVQ4awd3sgi4QN2W2Xkp1VDUgzjt1FNutOM1qb1iDVy3bl6fg+CiLynIrJFPzx/BJvRngo6jVStGzvYNl8NtRwUZwEa67QrIyQK4EDzFaHWhLnukSz/TJTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714071518; c=relaxed/simple;
-	bh=OVpsYfA8Qvyh7CR1+bvLaN9uwU+c3vdVxNAvJVeMlHk=;
+	s=arc-20240116; t=1714071694; c=relaxed/simple;
+	bh=JeXz2/TFeNnXiSq/81VOk+f7TlrQg/8jpIhKlDJ3Qcc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kI5iW/Of25HHbZDZnXlndIV8swK2EvfKJ69X38OVGn6vaxjMmXJybE7w95hdFD+8BfXQzVB48k+iyBlXoGBXczpA++TlT316cfAd19j+iDPd1G8XRWcMUhJxgFDGmnCTYNOl+aQh6KZf41uri3YNUnWR8nMY3lY/F0QOjkEPi78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=O2tq0uoX; arc=none smtp.client-ip=209.85.167.49
+	 To:Cc:Content-Type; b=G+2fXxGpNS810dUMbbg62jQbhiLSeVTaU6N1+w/0x0IxTpfIR1GxSZZgaXdktfrt48aD/90vr5yBNmIa7h7AbiPpJmNAzww1qJ90K8AHENjEe4Fuq0CmV7PqnzMdznCjjocgpCy2nzDhwx/z5o/QDpyqvDjAE853ISL51Y+z+dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Iq9a5Joh; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51abd9fcbf6so2346486e87.1
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 11:58:36 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a524ecaf215so174278866b.2
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 12:01:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1714071514; x=1714676314; darn=vger.kernel.org;
+        d=linux-foundation.org; s=google; t=1714071691; x=1714676491; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ce4eWZ96+PrDKbqu3JpH3mxBstfm8l4HTUGuvQBwL34=;
-        b=O2tq0uoXJdvJEReh3iYL6qanMPcCXV3+BCB4zB+04uKxo64KWrSXgHT+Fn60fRktgJ
-         oKNkwhebQN1cbviut4hcvnH+Jyp1wdWB/SinhTQPWmikxoge48vp11yDSpfvOtzayxPd
-         Fy7fcMGKmWxt9+ozmxMz5Ai6Dz/IHLI86IUZ8=
+        bh=S+CfDSUKDWMFi6696XWhw/F7Vcz9ViYAQl2uJokcaMA=;
+        b=Iq9a5JohsTpZ1Plw8lZtgNq/zWMOnM/vDa6gZR988KJL3wzjPGq9S1AdIubOwOi8CH
+         NPpmx9mtAibp77SJE81y/Z4W08avKFQ5qUZQ8IR2OfV8DUFBdPKD7igii1OzhoNYfDFr
+         PzqrW1WJmyNn5Z5FOd5FWMytOdAVjucQnXWuo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714071514; x=1714676314;
+        d=1e100.net; s=20230601; t=1714071691; x=1714676491;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ce4eWZ96+PrDKbqu3JpH3mxBstfm8l4HTUGuvQBwL34=;
-        b=MGk39ra89CHINYkGVRetJs4HuuU/kM5CrTf/w2Yhle9e4ws0x/NPCCRb7lnXH6pqfr
-         5Wfs7GIPwOeFKPrc1Gel1z41ni/aXXnMGoBNy5FihX8pryX0YhtcvDIxeoLXqPg2feGq
-         D+juc8MuhwUdS/GfpwgKNHqYvQ56ezpYqt0ozg/M9vNiDGDMS1Hw1OClFWdZ3879nuwR
-         Y7Hx4tQ9rleu6c3CZ0HxgYuVgk2zU08JedkCEvhorF93DFKYj/ljviRNY+5cA6U3vFPq
-         2T6xm3YuLaczJnoNUaN/xkiCSdbKSnLMgz62q2CoLL7gxc7kJ1yDlwpapBaEm4CYxVE2
-         k9pQ==
-X-Gm-Message-State: AOJu0YyhvZMi0k5eKGem1bXJGKQvtrNZd6MioNf7IAs1QKTwscJtjWdL
-	Ypr+Np/zhP93u+oOZnlZP/+odVGQEKy3Po33PESFo59z1uFckosuhxngECyhWkdSyxB7mrdCSk/
-	pJF8=
-X-Google-Smtp-Source: AGHT+IFPFzo6RuT6F3CehOp+xUVpNAtowCbmvTzXrCFeTGgz1ggNCMx2BkYx6cL6dUssXRKdPEvVfg==
-X-Received: by 2002:ac2:4e8e:0:b0:51a:ff87:bae with SMTP id o14-20020ac24e8e000000b0051aff870baemr185148lfr.7.1714071514670;
-        Thu, 25 Apr 2024 11:58:34 -0700 (PDT)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
-        by smtp.gmail.com with ESMTPSA id m14-20020a19434e000000b00516d0c24008sm2959213lfj.306.2024.04.25.11.58.33
+        bh=S+CfDSUKDWMFi6696XWhw/F7Vcz9ViYAQl2uJokcaMA=;
+        b=wcAWnjxmvl8sOx8L0fxGmFZWuAD/5QDhLRY5XaiU5HOJV+VH9tTHKAnFc+qNeAdxTV
+         pBdQpcY05kCa3LRUqYL32t+HXhi+IPp4Nqqfttf7jgGpjlckdEKuDaCoEf4NR6gXhD+S
+         ja3PsL+xOoBQP10/unEbbTLd2DDKkwmWMzjkOWWdzv17GluwWnXFjxc92ZfSwvYEMRy/
+         ENt5wTVGGEXHa5gUht2LJbSok5+urrMzg+gQMOaZ0Ty4GV5hy380CE+bXz5zykh8gFWG
+         8JLwu4jineWH/KtWYBAnCFS++XPprn4B85Rp9OdBSXZc++nWAkrKAnHEfmxGwVi+sfh+
+         6u4A==
+X-Gm-Message-State: AOJu0YwmJ21DN4TbsU+801DVTTbb6HCISd4/f70vKeaYlXTPAswr8HQS
+	jTDqXYXyGfJGXolaPHnbf3gtpzEQjZ8tNzB+ohiz5kqUVjCKmyXN0BhOGBmtvPsmCVDVJHbfySc
+	tKo6TEA==
+X-Google-Smtp-Source: AGHT+IH4kMMJnRJtylNwFfQenf4pVb5CPskxrLbWLUBxz3GdLvFgoVy792LrAMQH6oMUUPu2wNPAnw==
+X-Received: by 2002:a17:907:bb97:b0:a52:2d35:5e28 with SMTP id xo23-20020a170907bb9700b00a522d355e28mr419855ejc.57.1714071690763;
+        Thu, 25 Apr 2024 12:01:30 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id mm10-20020a170906cc4a00b00a58a44a4419sm1461889ejb.57.2024.04.25.12.01.28
         for <linux-acpi@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Apr 2024 11:58:33 -0700 (PDT)
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51abd9fcbf6so2346423e87.1
-        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 11:58:33 -0700 (PDT)
-X-Received: by 2002:a05:6512:ba7:b0:51a:fc86:fc6d with SMTP id
- b39-20020a0565120ba700b0051afc86fc6dmr218319lfv.22.1714071512772; Thu, 25 Apr
- 2024 11:58:32 -0700 (PDT)
+        Thu, 25 Apr 2024 12:01:29 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a51addddbd4so163388366b.0
+        for <linux-acpi@vger.kernel.org>; Thu, 25 Apr 2024 12:01:28 -0700 (PDT)
+X-Received: by 2002:a17:907:76a4:b0:a57:b828:5f4b with SMTP id
+ jw4-20020a17090776a400b00a57b8285f4bmr452572ejc.58.1714071688536; Thu, 25 Apr
+ 2024 12:01:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,63 +76,41 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <CAJZ5v0iUUmMUo86vBzYJjL4NjoFzpDwD1+c292aP+T++PLv6vQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0iUUmMUo86vBzYJjL4NjoFzpDwD1+c292aP+T++PLv6vQ@mail.gmail.com>
+ <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
+In-Reply-To: <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 25 Apr 2024 11:58:16 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
-Message-ID: <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com>
+Date: Thu, 25 Apr 2024 12:01:12 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgg2hknXUtxq8F7caSmbtRNpss0zhDwv505L25dfQBXDA@mail.gmail.com>
+Message-ID: <CAHk-=wgg2hknXUtxq8F7caSmbtRNpss0zhDwv505L25dfQBXDA@mail.gmail.com>
 Subject: Re: [GIT PULL] ACPI fixes for v6.9-rc6
 To: "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 25 Apr 2024 at 10:46, Rafael J. Wysocki <rafael@kernel.org> wrote:
+On Thu, 25 Apr 2024 at 11:58, Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
->  - Fix bit offset computation in MASK_VAL() macro used for applying
->    a bitmask to a new CPPC register value (Jarred White).
+> When that macro now has had TWO independent bugs, how about you just
+> write it out with explicit types and without any broken "helpers":
+>
+>    static inline u64 MASK_VAL(const struct cpc_reg *reg, u64 val)
+>    {
+>         u64 mask = (1ull << reg->bit_width)-1;
+>         return (val >> reg->bit_offset) & mask;
+>    }
+>
+> which is a few more lines, but doesn't that make it a whole lot more readable?
+>
+> And maybe this time, it's not a buggy mess?
 
-Honestly, that code should never have used GENMASK() in the first place.
+Just to clarify: that was written in the MUA, and entirely untested.
+Somebody should still verify it, but really, with already now two
+bugs, that macro needs fixing for good, and the "for good" should be
+looking at least _something_ like the above.
 
-When a helper macro is more complicated than just doing the obvious
-thing without it, it's not a helper macro any more.
+And despite needing fixing, I've done the pull, since bug #2 is at
+least less bad than bug#1 was.
 
-Doing
-
-    GENMASK(((reg)->bit_width) - 1, 0)
-
-is literally more work than just doing the obvious thing
-
-    ((1ul << (reg)->bit_width) - 1)
-
-and using that "helper" macro was actually more error-prone too as
-shown by this example, because of the whole "inclusive or not" issue.
-
-BUT!
-
-Even with that simpler model, that's still entirely buggy, since 'val'
-is 64-bit, and these GENMASK tricks only work on 'long'.
-
-Which happens to be ok on x86-64, of course, and maybe in practice all
-fields are less than 32 bits in width anyway so maybe it even works on
-32-bit, but this all smells HORRIBLY WRONG.
-
-And no, the fix is *NOT* to make that GENVAL() mindlessly just be
-GENVAL_ULL().  That fixes the immediate bug, but it shows - once again
-- how mindlessly using "helper macros" is not the right thing to do.
-
-When that macro now has had TWO independent bugs, how about you just
-write it out with explicit types and without any broken "helpers":
-
-   static inline u64 MASK_VAL(const struct cpc_reg *reg, u64 val)
-   {
-        u64 mask = (1ull << reg->bit_width)-1;
-        return (val >> reg->bit_offset) & mask;
-   }
-
-which is a few more lines, but doesn't that make it a whole lot more readable?
-
-And maybe this time, it's not a buggy mess?
-
-               Linus
+                   Linus
 
