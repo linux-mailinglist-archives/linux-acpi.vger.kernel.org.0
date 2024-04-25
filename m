@@ -1,284 +1,247 @@
-Return-Path: <linux-acpi+bounces-5374-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5375-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856668B1F58
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 12:38:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F788B21A6
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 14:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A91B01C21A64
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 10:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E80A41F2352F
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 12:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566661DFD2;
-	Thu, 25 Apr 2024 10:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC861448D2;
+	Thu, 25 Apr 2024 12:32:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE848182AE;
-	Thu, 25 Apr 2024 10:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9D6143894;
+	Thu, 25 Apr 2024 12:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714041513; cv=none; b=JbNyg4mafGGqReP9sjEX+xzscmukD7qx3NIdYEssC/jrcHvlzYpzks9zWOsqrK41F+sKhHL0a6o6WefPUuvQncN0l67LW05Q8JkySUJzE1anMVG7QykFWKPKstF/IKkd5nBKFUo8AznZzdFcjBc3aCffJgrV/PzZMniONXpJITc=
+	t=1714048321; cv=none; b=ZRwsdlc5iJ3bboJNEoo+OG3hKf3B6cr4iDCGDh3eTYlpp3gSRROd1T/m6VkQHjA14/2J/WstPc7HaCUNFpQvHQrLemIWkR4E/uY4wVGdIkCiuje/UeVD1xCaAnhtIuMwzRQoQvy+PVNx+L5keyBALOH88CJEKBxmi6vel5W3x04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714041513; c=relaxed/simple;
-	bh=/81wgdKSHCihIfNVNmv/eA3+L956Kz89St2UPt+Km9w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VdftvFH6XDTKGrL1n8FtZLhgaHTA8QOzWtIyOIMUhe7tehyUlFdQg8Xb+rBs3KIByEfyehWkCmsO18ldw+yQpfzNkvjNwAlXVaYRVUbFoOW79834lStFIzpwuFDQt9xN1YQPhoutDvvtAsBs0wLhFRzQSzvmxYUsS432HqY4Dfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	s=arc-20240116; t=1714048321; c=relaxed/simple;
+	bh=whSp5cqil5xFhRRdjAyrS5AlI1HyOK8o5KQbJYN9Vbw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hdrQNu6EeBUW8w1GWL9M3skVllAue6wdaHUBoz+RWvKOk8bVEWI4gnMEmHJ/M147k/PPfCsVeZh0kDQtjrmWG/gsrKR3udj2S4yRspORQArGBuLr+TqSBqvk17hhjNKO74xxOE9KyZRKyayRjyXPV0ZMQYkf3S5xoITFDhN6KUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQC1v0xR2z67LWc;
-	Thu, 25 Apr 2024 18:36:03 +0800 (CST)
-Received: from lhrpeml100003.china.huawei.com (unknown [7.191.160.210])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3AD761400DB;
-	Thu, 25 Apr 2024 18:38:28 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 25 Apr 2024 11:38:27 +0100
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
- Thu, 25 Apr 2024 11:38:27 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: fan <nifan.cxl@gmail.com>
-CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
-Subject: RE: [RFC PATCH v8 03/10] cxl/mbox: Add GET_FEATURE mailbox command
-Thread-Topic: [RFC PATCH v8 03/10] cxl/mbox: Add GET_FEATURE mailbox command
-Thread-Index: AQHaknlNjhR9ApEz/Ue7aqewzZ69irF4BeQAgADGYfA=
-Date: Thu, 25 Apr 2024 10:38:27 +0000
-Message-ID: <ac756def2c3d40afbf3c11a351942a12@huawei.com>
-References: <20240419164720.1765-1-shiju.jose@huawei.com>
- <20240419164720.1765-4-shiju.jose@huawei.com> <ZimTauNEryrxDQgF@debian>
-In-Reply-To: <ZimTauNEryrxDQgF@debian>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQFXp3b2qz6JBTq;
+	Thu, 25 Apr 2024 20:29:30 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id BF8881400DD;
+	Thu, 25 Apr 2024 20:31:52 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
+ 2024 13:31:52 +0100
+Date: Thu, 25 Apr 2024 13:31:50 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	<linuxarm@huawei.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<justin.he@arm.com>, <jianyong.wu@arm.com>
+Subject: Re: [PATCH v7 11/16] irqchip/gic-v3: Add support for ACPI's
+ disabled but 'online capable' CPUs
+Message-ID: <20240425133150.000009fa@Huawei.com>
+In-Reply-To: <86il06rd19.wl-maz@kernel.org>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+	<20240418135412.14730-12-Jonathan.Cameron@huawei.com>
+	<20240422114020.0000294f@Huawei.com>
+	<87plugthim.wl-maz@kernel.org>
+	<20240424135438.00001ffc@huawei.com>
+	<86il06rd19.wl-maz@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
->-----Original Message-----
->From: fan <nifan.cxl@gmail.com>
->Sent: 25 April 2024 00:19
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-cxl@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
->mm@kvack.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->linux-edac@vger.kernel.org; linux-kernel@vger.kernel.org; david@redhat.com=
-;
->Vilas.Sridharan@amd.com; leo.duran@amd.com; Yazen.Ghannam@amd.com;
->rientjes@google.com; jiaqiyan@google.com; tony.luck@intel.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com; rafael@kernel.org;
->lenb@kernel.org; naoya.horiguchi@nec.com; james.morse@arm.com;
->jthoughton@google.com; somasundaram.a@hpe.com;
->erdemaktas@google.com; pgonda@google.com; duenwen@google.com;
->mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>;
->kangkang.shen@futurewei.com; wanghuiqiang <wanghuiqiang@huawei.com>;
->Linuxarm <linuxarm@huawei.com>
->Subject: Re: [RFC PATCH v8 03/10] cxl/mbox: Add GET_FEATURE mailbox
->command
->
->On Sat, Apr 20, 2024 at 12:47:12AM +0800, shiju.jose@huawei.com wrote:
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add support for GET_FEATURE mailbox command.
->>
->> CXL spec 3.1 section 8.2.9.6 describes optional device specific features=
-.
->> The settings of a feature can be retrieved using Get Feature command.
->>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  drivers/cxl/core/mbox.c | 53
->+++++++++++++++++++++++++++++++++++++++++
->>  drivers/cxl/cxlmem.h    | 28 ++++++++++++++++++++++
->>  2 files changed, 81 insertions(+)
->>
->> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c index
->> 82e279b821e2..999965871048 100644
->> --- a/drivers/cxl/core/mbox.c
->> +++ b/drivers/cxl/core/mbox.c
->> @@ -1318,6 +1318,59 @@ int cxl_get_supported_features(struct
->> cxl_memdev_state *mds,  }
->> EXPORT_SYMBOL_NS_GPL(cxl_get_supported_features, CXL);
->>
->> +size_t cxl_get_feature(struct cxl_memdev_state *mds,
->> +		       const uuid_t feat_uuid, void *feat_out,
->> +		       size_t feat_out_size,
->> +		       size_t feat_out_min_size,
->> +		       enum cxl_get_feat_selection selection) {
->> +	struct cxl_dev_state *cxlds =3D &mds->cxlds;
->> +	struct cxl_mbox_get_feat_in pi;
->> +	struct cxl_mbox_cmd mbox_cmd;
->> +	size_t data_rcvd_size =3D 0;
->> +	size_t data_to_rd_size, size_out;
->> +	int rc;
->> +
->> +	if (feat_out_size < feat_out_min_size) {
->> +		dev_err(cxlds->dev,
->> +			"%s: feature out buffer size(%lu) is not big enough\n",
->> +			__func__, feat_out_size);
->> +		return 0;
->> +	}
->> +
->> +	if (feat_out_size <=3D mds->payload_size)
->> +		size_out =3D feat_out_size;
->> +	else
->> +		size_out =3D mds->payload_size;
->
->Using min() instead?
->    size_out =3D min(feat_out_size, mds->payload_size)
-Will do.
->
->> +	pi.uuid =3D feat_uuid;
->> +	pi.selection =3D selection;
->> +	do {
->> +		if ((feat_out_min_size - data_rcvd_size) <=3D mds->payload_size)
->> +			data_to_rd_size =3D feat_out_min_size - data_rcvd_size;
->> +		else
->> +			data_to_rd_size =3D mds->payload_size;
->
->data_to_rd_size =3D min(feat_out_min_size - data_rcvd_size, mds->payload_s=
-ize);
+On Wed, 24 Apr 2024 16:33:22 +0100
+Marc Zyngier <maz@kernel.org> wrote:
 
-Will do.
->
->It seems feat_out_min_size is always the same as feat_out_size in this ser=
-ies,
->what is it for? For the loop here, my understanding is we need to fill up =
-the out
->buffer multiple times if the feature cannot be held in a call, so it seems
->feat_out_min_size should be feat_out_size here.
-feat_out_size and feat_out_min_size added separately because this function =
-is a common interface
-and  it might be useful for the features like DDR5 ECS Control, where the  =
-Get feature output payload
-size is relatively high and actually required data is small, contains DDR5 =
-ECS control feature readable attributes for N number of memory media FRUs.
+> On Wed, 24 Apr 2024 13:54:38 +0100,
+> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> > 
+> > On Tue, 23 Apr 2024 13:01:21 +0100
+> > Marc Zyngier <maz@kernel.org> wrote:
+> >   
+> > > On Mon, 22 Apr 2024 11:40:20 +0100,
+> > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:  
+> > > > 
+> > > > On Thu, 18 Apr 2024 14:54:07 +0100
+> > > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:  
+> 
+> [...]
+> 
+> > > >     
+> > > > > +	/*
+> > > > > +	 * Capable but disabled CPUs can be brought online later. What about
+> > > > > +	 * the redistributor? ACPI doesn't want to say!
+> > > > > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
+> > > > > +	 * Otherwise, prevent such CPUs from being brought online.
+> > > > > +	 */
+> > > > > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
+> > > > > +		pr_warn_once("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
+> > > > > +		set_cpu_present(cpu, false);
+> > > > > +		set_cpu_possible(cpu, false);
+> > > > > +		return 0;
+> > > > > +	}    
+> > > 
+> > > It seems dangerous to clear those this late in the game, given how
+> > > disconnected from the architecture code this is. Are we sure that
+> > > nothing has sampled these cpumasks beforehand?  
+> > 
+> > Hi Marc,
+> > 
+> > Any firmware that does this is being considered as buggy already
+> > but given it is firmware and the spec doesn't say much about this,
+> > there is always the possibility.  
+> 
+> There is no shortage of broken firmware out there, and I expect this
+> trend to progress.
+> 
+> > Not much happens between the point where these are setup and
+> > the point where the the gic inits and this code runs, but even if careful
+> > review showed it was fine today, it will be fragile to future changes.
+> > 
+> > I'm not sure there is a huge disadvantage for such broken firmware in
+> > clearing these masks from the point of view of what is used throughout
+> > the rest of the kernel. Here I think we are just looking to prevent the CPU
+> > being onlined later.  
+> 
+> I totally agree on the goal, I simply question the way you get to it.
+> 
+> > 
+> > We could add a set_cpu_broken() with appropriate mask.
+> > Given this is very arm64 specific I'm not sure Rafael will be keen on
+> > us checking such a mask in the generic ACPI code, but we could check it in
+> > arch_register_cpu() and just not register the cpu if it matches.
+> > That will cover the vCPU hotplug case.
+> >
+> > Does that sounds sensible, or would you prefer something else?  
+> 
+> 
+> Such a 'broken_rdists' mask is exactly what I have in mind, just
+> keeping it private to the GIC driver, and not expose it anywhere else.
+> You can then fail the hotplug event early, and avoid changing the
+> global masks from within the GIC driver. At least, we don't mess with
+> the internals of the kernel, and the CPU is properly marked as dead
+> (that mechanism should already work).
+> 
+> I'd expect the handling side to look like this (will not compile, but
+> you'll get the idea):
+Hi Marc,
 
->
->Fan
->
->> +
->> +		pi.offset =3D cpu_to_le16(data_rcvd_size);
->> +		pi.count =3D cpu_to_le16(data_to_rd_size);
->> +
->> +		mbox_cmd =3D (struct cxl_mbox_cmd) {
->> +			.opcode =3D CXL_MBOX_OP_GET_FEATURE,
->> +			.size_in =3D sizeof(pi),
->> +			.payload_in =3D &pi,
->> +			.size_out =3D size_out,
->> +			.payload_out =3D feat_out + data_rcvd_size,
->> +			.min_out =3D data_to_rd_size,
->> +		};
->> +		rc =3D cxl_internal_send_cmd(mds, &mbox_cmd);
->> +		if (rc < 0 || mbox_cmd.size_out =3D=3D 0)
->> +			return 0;
->> +		data_rcvd_size +=3D mbox_cmd.size_out;
->> +	} while (data_rcvd_size < feat_out_min_size);
->> +
->> +	return data_rcvd_size;
->> +}
->> +EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
->> +
->>  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr)
->>  {
->> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h index
->> 06231e63373e..c822eb30e6d1 100644
->> --- a/drivers/cxl/cxlmem.h
->> +++ b/drivers/cxl/cxlmem.h
->> @@ -528,6 +528,7 @@ enum cxl_opcode {
->>  	CXL_MBOX_OP_GET_SUPPORTED_LOGS	=3D 0x0400,
->>  	CXL_MBOX_OP_GET_LOG		=3D 0x0401,
->>  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	=3D 0x0500,
->> +	CXL_MBOX_OP_GET_FEATURE		=3D 0x0501,
->>  	CXL_MBOX_OP_IDENTIFY		=3D 0x4000,
->>  	CXL_MBOX_OP_GET_PARTITION_INFO	=3D 0x4100,
->>  	CXL_MBOX_OP_SET_PARTITION_INFO	=3D 0x4101,
->> @@ -754,6 +755,28 @@ struct cxl_mbox_get_supp_feats_out {
->>  	struct cxl_mbox_supp_feat_entry feat_entries[];  } __packed;
->>
->> +/*
->> + * Get Feature CXL 3.1 Spec 8.2.9.6.2  */
->> +
->> +/*
->> + * Get Feature input payload
->> + * CXL rev 3.1 section 8.2.9.6.2 Table 8-99  */ enum
->> +cxl_get_feat_selection {
->> +	CXL_GET_FEAT_SEL_CURRENT_VALUE,
->> +	CXL_GET_FEAT_SEL_DEFAULT_VALUE,
->> +	CXL_GET_FEAT_SEL_SAVED_VALUE,
->> +	CXL_GET_FEAT_SEL_MAX
->> +};
->> +
->> +struct cxl_mbox_get_feat_in {
->> +	uuid_t uuid;
->> +	__le16 offset;
->> +	__le16 count;
->> +	u8 selection;
->> +}  __packed;
->> +
->>  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */  struct
->> cxl_mbox_poison_in {
->>  	__le64 offset;
->> @@ -888,6 +911,11 @@ int cxl_set_timestamp(struct cxl_memdev_state
->> *mds);  int cxl_get_supported_features(struct cxl_memdev_state *mds,
->>  			       u32 count, u16 start_index,
->>  			       struct cxl_mbox_get_supp_feats_out *feats_out);
->> +size_t cxl_get_feature(struct cxl_memdev_state *mds,
->> +		       const uuid_t feat_uuid, void *feat_out,
->> +		       size_t feat_out_size,
->> +		       size_t feat_out_min_size,
->> +		       enum cxl_get_feat_selection selection);
->>  int cxl_poison_state_init(struct cxl_memdev_state *mds);  int
->> cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->>  		       struct cxl_region *cxlr);
->> --
->> 2.34.1
->>
+In general this looks good - but...
+
+I haven't gotten to the bottom of why yet (and it might be a side
+effect of how I hacked the test by lying in minimal fashion and
+just frigging the MADT read functions) but the hotplug flow is only getting
+as far as calling __cpu_up() before it seems to enter an infinite loop.
+That is it never gets far enough to fail this test.
+
+Getting stuck in a psci cpu_on call.  I'm guessing something that
+we didn't get to in the earlier gicv3 calls before bailing out is blocking that?
+Looks like it gets to
+SMCCC smc
+and is never seen again.
+
+Any ideas on where to look?  The one advantage so far of the higher level
+approach is we never tried the hotplug callbacks at all so avoided hitting
+that call.  One (little bit horrible) solution that might avoid this would 
+be to add another cpuhp state very early on and fail at that stage.
+I'm not keen on doing that without a better explanation than I have so far!
+
 Thanks,
-Shiju
+
+J
+
+ 
+> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+> index 6fb276504bcc..e8f02bfd0e21 100644
+> --- a/drivers/irqchip/irq-gic-v3.c
+> +++ b/drivers/irqchip/irq-gic-v3.c
+> @@ -1009,6 +1009,9 @@ static int __gic_populate_rdist(struct redist_region *region, void __iomem *ptr)
+>  	u64 typer;
+>  	u32 aff;
+>  
+> +	if (cpumask_test_cpu(smp_processor_id(), &broken_rdists))
+> +		return 1;
+> +
+>  	/*
+>  	 * Convert affinity to a 32bit value that can be matched to
+>  	 * GICR_TYPER bits [63:32].
+> @@ -1260,14 +1263,15 @@ static int gic_dist_supports_lpis(void)
+>  		!gicv3_nolpi);
+>  }
+>  
+> -static void gic_cpu_init(void)
+> +static int gic_cpu_init(void)
+>  {
+>  	void __iomem *rbase;
+> -	int i;
+> +	int ret, i;
+>  
+>  	/* Register ourselves with the rest of the world */
+> -	if (gic_populate_rdist())
+> -		return;
+> +	ret = gic_populate_rdist();
+> +	if (ret)
+> +		return ret;
+>  
+>  	gic_enable_redist(true);
+>  
+> @@ -1286,6 +1290,8 @@ static void gic_cpu_init(void)
+>  
+>  	/* initialise system registers */
+>  	gic_cpu_sys_reg_init();
+> +
+> +	return 0;
+>  }
+>  
+>  #ifdef CONFIG_SMP
+> @@ -1295,7 +1301,11 @@ static void gic_cpu_init(void)
+>  
+>  static int gic_starting_cpu(unsigned int cpu)
+>  {
+> -	gic_cpu_init();
+> +	int ret;
+> +
+> +	ret = gic_cpu_init();
+> +	if (ret)
+> +		return ret;
+>  
+>  	if (gic_dist_supports_lpis())
+>  		its_cpu_init();
+> 
+> But the question is: do you rely on these masks having been
+> "corrected" anywhere else?
+> 
+> Thanks,
+> 
+> 	M.
+> 
+
 
