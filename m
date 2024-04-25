@@ -1,242 +1,83 @@
-Return-Path: <linux-acpi+bounces-5366-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5367-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B95B8B1E00
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 11:28:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E47C8B1E18
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 11:35:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBA0E281A07
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 09:28:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15EAF1F24035
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 09:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880C184DEA;
-	Thu, 25 Apr 2024 09:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259C485942;
+	Thu, 25 Apr 2024 09:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QyZCjowV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40E2E413;
-	Thu, 25 Apr 2024 09:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BC128F7;
+	Thu, 25 Apr 2024 09:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714037300; cv=none; b=tKPiT+tC2zGPMHws7+ltrS+r4x2Qpnz7u4XtOWTiEDTvgAHQcyyQyGK7Jy0QMjpWwk/fyIJLx5s8zs0gdxEShZuGohxvGJxQRrqSy8EPbcRwdLwDMQBim7rgCwWpi6A4ZXnOIc+uhyprFF+GQy13Mk/qC9aOUkwlN8aw/uyUpa4=
+	t=1714037682; cv=none; b=O80xLksafUvCRuTotBBsTGgwS1Q7eq74ec0lMh3PtIHml1vzJiuSFJHtV9bJ4aa2SCO/Vcu3K/LM8wwSU7DGwUaCF54+pgLDDGiw4hj0CWJKxd1g6xke/w/zEsmKAO3a0qNmxS74u9cg/yJkDz5Xu7xKtUSE2MVASnJ4DzLkrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714037300; c=relaxed/simple;
-	bh=X53gXm9/tqmyC1UcjhNK/jdNzr4IdK5+5LIjav6v2OE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fRbM/VUDAx7BrG/vu2IsGguX9qsk8yAL4k0PgEdg162Yis3Y564ghuRkPCpih823DDXfzrQI3cUN6E0RLypz7xE56VHZ1+lJ0N5ZtOUvd3tdjWx98GqBIt91UW37yDpmvv+IOtv3Qpf0dKg1bE+jF23ETfaWGgbC5mOZ4NCkn7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQ9Sl5smhz6K5yT;
-	Thu, 25 Apr 2024 17:25:43 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 39E0F140736;
-	Thu, 25 Apr 2024 17:28:09 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
- 2024 10:28:08 +0100
-Date: Thu, 25 Apr 2024 10:28:06 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Marc Zyngier <maz@kernel.org>, <linuxarm@huawei.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
-	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
- Brucker <jean-philippe@linaro.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
-Subject: Re: [PATCH v7 11/16] irqchip/gic-v3: Add support for ACPI's
- disabled but 'online capable' CPUs
-Message-ID: <20240425102806.00003683@Huawei.com>
-In-Reply-To: <20240424135438.00001ffc@huawei.com>
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
-	<20240418135412.14730-12-Jonathan.Cameron@huawei.com>
-	<20240422114020.0000294f@Huawei.com>
-	<87plugthim.wl-maz@kernel.org>
-	<20240424135438.00001ffc@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714037682; c=relaxed/simple;
+	bh=EuhJ5pCSf56nOe7Um3HD/ln5MpIugZZ8IutpRcMayJs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SRvJw99KRrK9RH5EO/AMAfnFgSZyAKHu88XviqtGXnXikB5g74pHQfnBSZm7TBy+qcCEU2YoPSC1H+so84bVIOy3A3sblDOeGvxWjPnoo+3Petqz+syQz5TPM0qbn9Jbq4HQiQ7WnZCh1ggba/rhWeTq9/haFwaMfWd0vW0YVso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QyZCjowV; arc=none smtp.client-ip=115.124.30.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1714037672; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=TlpWMGUo05cehXHx5vwtwe5vwkVUkHCY0eMZXZFb4oo=;
+	b=QyZCjowV8rtIsTmciVAGSHg9zeDtdu15ZW6sczUaiu+lYdKXHiyoobJktvnLML76Z8udUX0c0KvJgpHaqp0wFxfJiRGQWMPfeZadeCyjl67XMnVmv/63BIu5Ud0FOy+vdxMh8/ITnBYwTVPU4X0GNg0C0Tyoh4g2sinE5GBPfaM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033022160150;MF=tianruidong@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W5F1EHS_1714037668;
+Received: from localhost(mailfrom:tianruidong@linux.alibaba.com fp:SMTPD_---0W5F1EHS_1714037668)
+          by smtp.aliyun-inc.com;
+          Thu, 25 Apr 2024 17:34:31 +0800
+From: Ruidong Tian <tianruidong@linux.alibaba.com>
+To: robert.moore@intel.com,
+	rafael.j.wysocki@intel.com,
+	lenb@kernel.org,
+	rafael@kernel.org,
+	sudeep.holla@arm.com
+Cc: linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	tianruidong@linux.alibaba.com
+Subject: [PATCH v3 0/1] ACPICA: AEST: Support AEST V2
+Date: Thu, 25 Apr 2024 17:34:25 +0800
+Message-Id: <20240425093426.76130-1-tianruidong@linux.alibaba.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 24 Apr 2024 13:54:38 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+AEST V2 was published[1], add V2 support based on AEST V1.
 
-> On Tue, 23 Apr 2024 13:01:21 +0100
-> Marc Zyngier <maz@kernel.org> wrote:
-> 
-> > On Mon, 22 Apr 2024 11:40:20 +0100,
-> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:  
-> > > 
-> > > On Thu, 18 Apr 2024 14:54:07 +0100
-> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> > >     
-> > > > From: James Morse <james.morse@arm.com>
-> > > > 
-> > > > To support virtual CPU hotplug, ACPI has added an 'online capable' bit
-> > > > to the MADT GICC entries. This indicates a disabled CPU entry may not
-> > > > be possible to online via PSCI until firmware has set enabled bit in
-> > > > _STA.
-> > > > 
-> > > > This means that a "usable" GIC is one that is marked as either enabled,
-> > > > or online capable. Therefore, change acpi_gicc_is_usable() to check both
-> > > > bits. However, we need to change the test in gic_acpi_match_gicc() back
-> > > > to testing just the enabled bit so the count of enabled distributors is
-> > > > correct.
-> > > > 
-> > > > What about the redistributor in the GICC entry? ACPI doesn't want to say.
-> > > > Assume the worst: When a redistributor is described in the GICC entry,
-> > > > but the entry is marked as disabled at boot, assume the redistributor
-> > > > is inaccessible.
-> > > > 
-> > > > The GICv3 driver doesn't support late online of redistributors, so this
-> > > > means the corresponding CPU can't be brought online either. Clear the
-> > > > possible and present bits.
-> > > > 
-> > > > Systems that want CPU hotplug in a VM can ensure their redistributors
-> > > > are always-on, and describe them that way with a GICR entry in the MADT.
-> > > > 
-> > > > When mapping redistributors found via GICC entries, handle the case
-> > > > where the arch code believes the CPU is present and possible, but it
-> > > > does not have an accessible redistributor. Print a warning and clear
-> > > > the present and possible bits.
-> > > > 
-> > > > Signed-off-by: James Morse <james.morse@arm.com>
-> > > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>    
-> > > 
-> > > +CC Marc,
-> > > 
-> > > Whilst this has been unchanged for a long time, I'm not 100% sure
-> > > we've specifically drawn your attention to it before now.
-> > > 
-> > > Jonathan
-> > >     
-> > > > 
-> > > > ---
-> > > > v7: No Change.
-> > > > ---
-> > > >  drivers/irqchip/irq-gic-v3.c | 21 +++++++++++++++++++--
-> > > >  include/linux/acpi.h         |  3 ++-
-> > > >  2 files changed, 21 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-> > > > index 10af15f93d4d..66132251c1bb 100644
-> > > > --- a/drivers/irqchip/irq-gic-v3.c
-> > > > +++ b/drivers/irqchip/irq-gic-v3.c
-> > > > @@ -2363,11 +2363,25 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
-> > > >  				(struct acpi_madt_generic_interrupt *)header;
-> > > >  	u32 reg = readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PIDR2_ARCH_MASK;
-> > > >  	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
-> > > > +	int cpu = get_cpu_for_acpi_id(gicc->uid);
-> > > >  	void __iomem *redist_base;
-> > > >  
-> > > >  	if (!acpi_gicc_is_usable(gicc))
-> > > >  		return 0;
-> > > >  
-> > > > +	/*
-> > > > +	 * Capable but disabled CPUs can be brought online later. What about
-> > > > +	 * the redistributor? ACPI doesn't want to say!
-> > > > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
-> > > > +	 * Otherwise, prevent such CPUs from being brought online.
-> > > > +	 */
-> > > > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
-> > > > +		pr_warn_once("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
-> > > > +		set_cpu_present(cpu, false);
-> > > > +		set_cpu_possible(cpu, false);
-> > > > +		return 0;
-> > > > +	}    
-> > 
-> > It seems dangerous to clear those this late in the game, given how
-> > disconnected from the architecture code this is. Are we sure that
-> > nothing has sampled these cpumasks beforehand?  
-> 
-> Hi Marc,
-> 
-> Any firmware that does this is being considered as buggy already
-> but given it is firmware and the spec doesn't say much about this,
-> there is always the possibility.
-> 
-> Not much happens between the point where these are setup and
-> the point where the the gic inits and this code runs, but even if careful
-> review showed it was fine today, it will be fragile to future changes.
-> 
-> I'm not sure there is a huge disadvantage for such broken firmware in
-> clearing these masks from the point of view of what is used throughout
-> the rest of the kernel. Here I think we are just looking to prevent the CPU
-> being onlined later.
-> 
-> We could add a set_cpu_broken() with appropriate mask.
-> Given this is very arm64 specific I'm not sure Rafael will be keen on
-> us checking such a mask in the generic ACPI code, but we could check it in
-> arch_register_cpu() and just not register the cpu if it matches.
-> That will cover the vCPU hotplug case.
-> 
-> Does that sounds sensible, or would you prefer something else?
+Change from v2:
+- delete patch which not merged to ACPICA.
+- rebase on top of linux-next.
+Change from v1:
+- fix error variable name in struct acpi_aest_node_interface_64k. 
 
-Hi Marc
+[1]: https://developer.arm.com/documentation/den0085/latest/
 
-Some experiments later (faking this on a physical board - I never liked
-CPU 120 anyway!) and using a different mask brings it's own minor pain.
+Ruidong Tian (1):
+  ACPICA: AEST: Add support for the AEST V2 table
 
-When all the rest of the CPUs are brought up cpuhp_bringup_mask() is called
-on cpu_present_mask so we need to do a dance in there to use a temporary
-mask with broken cpus removed.  I think it makes sense to cut that out
-at the top of the cpuhp_bringup_mask() pile of actions rather than trying
-to paper over each actual thing that is dying... (looks like an infinite loop
-somewhere but I haven't tracked down where yet).
+ include/acpi/actbl2.h | 88 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 82 insertions(+), 6 deletions(-)
 
-I'll spin a patch so you can see what it looks like, but my concern is
-we are just moving the risk from early users of these masks to later cases
-where code assumes cpu_present_mask definitely means they are present.
-That is probably a small set of cases but not nice either.
-
-Looks like one of those cases where we need to pick the lesser of two evils
-which is probably still the cpu_broken_mask approach.
-
-On plus side if we decide to go back to the original approach having seen
-that I already have the code :)
-
-Jonathan
-
-
-
-> 
-> Jonathan
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> > 
-> > Thanks,
-> > 
-> > 	M.
-> >   
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+-- 
+2.33.1
 
 
