@@ -1,313 +1,270 @@
-Return-Path: <linux-acpi+bounces-5379-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5380-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F5D8B26E2
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 18:55:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7298B2791
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 19:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C6228536F
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 16:55:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36D94283264
+	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 17:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322E14D45D;
-	Thu, 25 Apr 2024 16:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485C414E2F8;
+	Thu, 25 Apr 2024 17:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hrK8xcgB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3982D131746;
-	Thu, 25 Apr 2024 16:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F2B14B077;
+	Thu, 25 Apr 2024 17:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714064136; cv=none; b=sKFNPQ+NmhcjdkuP62mq76Lcfd39SM8+3PtDdAp42/JFGKkdFgiRvi7jQYbeLel3My7I8e1xRN9rVbi570T9Xuu3V8uRk1YulL9RjEnw0bCwfPsbB9SxetSlQ40SYQ8ljlrb33RCiUFSYKsaURHtABZ/8WoTtsjgfO7C0Q7CVIY=
+	t=1714066023; cv=none; b=TOkp2aDocMggg5MqoF728bCjNOeNFm4G6/0L1+rEfM1bax3DjNC72MCPegOc9L+U2dGQkwH2JSGVJ2uBtC62xO4MIh1EXI8H09ZGMFwcFf8qvwcPb8ds3VDbgmIRd0A5ayXR06ya01pQ5KGVFAMqxlXIsU4CMty14nxEhcoXfwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714064136; c=relaxed/simple;
-	bh=Wv+cmZ5IUPEpcmXXIlZlfrK9jeGJtrDRrdh31P+6h9U=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sbziDiixjNWlesBeRuWW7oAr23yqeTlkDTnd60KIQ/kL8nwTHccRazXVatCRaPrM3bFHKPn+XbmghDemofpYzNk+8iub3dDC/ZFP8O3kK3dn86S5nVBogUgztTWq7JrnuaRNttRRE/gr3em984Ec/eIhiikOLFM3XZHymyLVfkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQMNv1Wtbz6K6H3;
-	Fri, 26 Apr 2024 00:53:03 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 274411400DB;
-	Fri, 26 Apr 2024 00:55:29 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
- 2024 17:55:28 +0100
-Date: Thu, 25 Apr 2024 17:55:27 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Marc Zyngier <maz@kernel.org>, <linuxarm@huawei.com>,
-	<linuxarm@huawei.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
-	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
- Brucker <jean-philippe@linaro.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
-Subject: Re: [PATCH v7 11/16] irqchip/gic-v3: Add support for ACPI's
- disabled but 'online capable' CPUs
-Message-ID: <20240425175502.00007def@huawei.com>
-In-Reply-To: <20240425155726.000063f7@huawei.com>
-References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
-	<20240418135412.14730-12-Jonathan.Cameron@huawei.com>
-	<20240422114020.0000294f@Huawei.com>
-	<87plugthim.wl-maz@kernel.org>
-	<20240424135438.00001ffc@huawei.com>
-	<86il06rd19.wl-maz@kernel.org>
-	<20240425133150.000009fa@Huawei.com>
-	<20240425155726.000063f7@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714066023; c=relaxed/simple;
+	bh=UwM45O+uiXeyA4vPnBKUJQTx2u/U7RSqQt9xERpAiq0=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qbtt7sMmW6xWtE3GW9hhytWbMXj7HzmqnqNzdc7Hs65c0XxRLCZ1uvQDnvr0lAToPwfb9AbENFKyxXZBpL+rbCVq+atYB/icfJsVYuf7VvTXS29+lDvBejMzjfnA7+HnojVfuXTVZYEpsySx5lWASCM1pDcvtmwl2nGK5PQYJH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hrK8xcgB; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1e86d56b3bcso11607365ad.1;
+        Thu, 25 Apr 2024 10:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714066021; x=1714670821; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K0g4XLw3B45byIB1RDNUY38GqRrTXx8Au6b71CzhcTY=;
+        b=hrK8xcgBVbFv3+I/Ni3ltmFcNRXXjE2Xlre1nyjT+m9eU2SB2x6NQU8AAM0aUC/e1O
+         tR4Txtn9XBxYBYwksbKE5QwiAdb+KZ3xe0ZXSzDtEo/6ePtqpKHO53KVnSs/eXChCIF+
+         eo5rh+yaqtiwxgNAlM1VPdJY4r9XZKnaFtMaLrMaaH5YwwNer5x3FBbj/tOm+NZ3PTx2
+         741ZRCnR/POrYMzgGoytzJqSEZxWJz5rcubKCjNZO4/1k2mm/Z1g/jRSikQ8hlUxRaNm
+         CF4BO/xGK4JSaq+ta2VpHIjDTdklWB9SVbuEo+pZHKcRq+Pg+sqSlX/c1XJYTnmXnheM
+         Wl2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714066021; x=1714670821;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K0g4XLw3B45byIB1RDNUY38GqRrTXx8Au6b71CzhcTY=;
+        b=QCFRW9u0UaN/uExrOmMY/aiAkPn6zUQBb4y0r1iKm6POAUrQgDU0Ns18jc2b57/b1e
+         0s73vgOX3Ft3YK16dLJVhGCBw0AdrIUB4A0KOCtrGUdhzJtf0DUIyh08neB+jaBMuUg7
+         MkwHN/mULg3R6KOP/gh0wkzl8pbVo31R/EkdjhrOvYVih+p+WYf6PYXhAx5m1Cogh3AS
+         asSY7BMIwpz8ZjW1lT1kMXG88UumZTOGAHpVJathioUuBTcaD8YCUcLt7pMQD5OTHlOT
+         FcQ4dDPH/sIeVEgnfCpL4YJvmmkr91aYja9GJ2V92IcLC9g0MJrMBYiQCKG85DSLpk3G
+         IzSw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjc39NHT4agjp6zVGZte8+Dxrh7CsflT9P9d4lOzeMYttT1h6I6QwFscwxCGalzwlwnTmtz4YgVsqPiEhcUrkPtv5/lTEgRLk4TlcHY/b9E3OoHqMWNfDRJiEoB6eC0jnfeGgykcpGgpEwj1FScUYFou/EFxW9S9J1PfRFuvdWZwmwmDY=
+X-Gm-Message-State: AOJu0YxalK7+C2Gw0LSzw9B5RcondJ5aF8mWLk1hDnY41qww/3AWKF5I
+	Jd78gsNOImsYlWCPgqx53uiL7IIwn80odpax8SmMRjTLp2Nb33G7
+X-Google-Smtp-Source: AGHT+IHw1urF2jSmmVEyN/pDFpaeHgkS2s4n3bNqIbCZc/EzsYBVznM5xl8ZZJoveHKfQd5yVAxpTA==
+X-Received: by 2002:a17:902:8e83:b0:1e0:e85b:2d30 with SMTP id bg3-20020a1709028e8300b001e0e85b2d30mr174445plb.42.1714066020873;
+        Thu, 25 Apr 2024 10:27:00 -0700 (PDT)
+Received: from debian ([2601:641:300:14de:8052:4ab9:f3ac:ce61])
+        by smtp.gmail.com with ESMTPSA id jv12-20020a170903058c00b001eab3baad5dsm1680463plb.4.2024.04.25.10.26.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Apr 2024 10:27:00 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Thu, 25 Apr 2024 10:26:54 -0700
+To: shiju.jose@huawei.com
+Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, david@redhat.com,
+	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
+	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
+	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
+	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
+	jthoughton@google.com, somasundaram.a@hpe.com,
+	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
+	mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
+	linuxarm@huawei.com
+Subject: Re: [RFC PATCH v8 04/10] cxl/mbox: Add SET_FEATURE mailbox command
+Message-ID: <ZiqSXtrV14Kglr6i@debian>
+References: <20240419164720.1765-1-shiju.jose@huawei.com>
+ <20240419164720.1765-5-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240419164720.1765-5-shiju.jose@huawei.com>
 
-On Thu, 25 Apr 2024 16:00:17 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-
-> On Thu, 25 Apr 2024 13:31:50 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Sat, Apr 20, 2024 at 12:47:13AM +0800, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> > On Wed, 24 Apr 2024 16:33:22 +0100
-> > Marc Zyngier <maz@kernel.org> wrote:
-> >   
-> > > On Wed, 24 Apr 2024 13:54:38 +0100,
-> > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:    
-> > > > 
-> > > > On Tue, 23 Apr 2024 13:01:21 +0100
-> > > > Marc Zyngier <maz@kernel.org> wrote:
-> > > >       
-> > > > > On Mon, 22 Apr 2024 11:40:20 +0100,
-> > > > > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:      
-> > > > > > 
-> > > > > > On Thu, 18 Apr 2024 14:54:07 +0100
-> > > > > > Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:      
-> > > 
-> > > [...]
-> > >     
-> > > > > >         
-> > > > > > > +	/*
-> > > > > > > +	 * Capable but disabled CPUs can be brought online later. What about
-> > > > > > > +	 * the redistributor? ACPI doesn't want to say!
-> > > > > > > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
-> > > > > > > +	 * Otherwise, prevent such CPUs from being brought online.
-> > > > > > > +	 */
-> > > > > > > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
-> > > > > > > +		pr_warn_once("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
-> > > > > > > +		set_cpu_present(cpu, false);
-> > > > > > > +		set_cpu_possible(cpu, false);
-> > > > > > > +		return 0;
-> > > > > > > +	}        
-> > > > > 
-> > > > > It seems dangerous to clear those this late in the game, given how
-> > > > > disconnected from the architecture code this is. Are we sure that
-> > > > > nothing has sampled these cpumasks beforehand?      
-> > > > 
-> > > > Hi Marc,
-> > > > 
-> > > > Any firmware that does this is being considered as buggy already
-> > > > but given it is firmware and the spec doesn't say much about this,
-> > > > there is always the possibility.      
-> > > 
-> > > There is no shortage of broken firmware out there, and I expect this
-> > > trend to progress.
-> > >     
-> > > > Not much happens between the point where these are setup and
-> > > > the point where the the gic inits and this code runs, but even if careful
-> > > > review showed it was fine today, it will be fragile to future changes.
-> > > > 
-> > > > I'm not sure there is a huge disadvantage for such broken firmware in
-> > > > clearing these masks from the point of view of what is used throughout
-> > > > the rest of the kernel. Here I think we are just looking to prevent the CPU
-> > > > being onlined later.      
-> > > 
-> > > I totally agree on the goal, I simply question the way you get to it.
-> > >     
-> > > > 
-> > > > We could add a set_cpu_broken() with appropriate mask.
-> > > > Given this is very arm64 specific I'm not sure Rafael will be keen on
-> > > > us checking such a mask in the generic ACPI code, but we could check it in
-> > > > arch_register_cpu() and just not register the cpu if it matches.
-> > > > That will cover the vCPU hotplug case.
-> > > >
-> > > > Does that sounds sensible, or would you prefer something else?      
-> > > 
-> > > 
-> > > Such a 'broken_rdists' mask is exactly what I have in mind, just
-> > > keeping it private to the GIC driver, and not expose it anywhere else.
-> > > You can then fail the hotplug event early, and avoid changing the
-> > > global masks from within the GIC driver. At least, we don't mess with
-> > > the internals of the kernel, and the CPU is properly marked as dead
-> > > (that mechanism should already work).
-> > > 
-> > > I'd expect the handling side to look like this (will not compile, but
-> > > you'll get the idea):    
-> > Hi Marc,
-> > 
-> > In general this looks good - but...
-> > 
-> > I haven't gotten to the bottom of why yet (and it might be a side
-> > effect of how I hacked the test by lying in minimal fashion and
-> > just frigging the MADT read functions) but the hotplug flow is only getting
-> > as far as calling __cpu_up() before it seems to enter an infinite loop.
-> > That is it never gets far enough to fail this test.
-> > 
-> > Getting stuck in a psci cpu_on call.  I'm guessing something that
-> > we didn't get to in the earlier gicv3 calls before bailing out is blocking that?
-> > Looks like it gets to
-> > SMCCC smc
-> > and is never seen again.
-> > 
-> > Any ideas on where to look?  The one advantage so far of the higher level
-> > approach is we never tried the hotplug callbacks at all so avoided hitting
-> > that call.  One (little bit horrible) solution that might avoid this would 
-> > be to add another cpuhp state very early on and fail at that stage.
-> > I'm not keen on doing that without a better explanation than I have so far!  
+> Add support for SET_FEATURE mailbox command.
 > 
-> Whilst it still doesn't work I suspect I'm loosing ability to print to the console
-> between that point and somewhat later and real problem is elsewhere.
-
-Hi again,
-
-Found it I think.  cpuhp calls between cpu:bringup and ap:online 
-arm made from notify_cpu_starting() are clearly marked as nofail with a comment.
-STARTING must not fail!
-
-https://elixir.bootlin.com/linux/latest/source/kernel/cpu.c#L1642
-
-Whilst I have no immediate idea why that comment is there it is pretty strong
-argument against trying to have the CPUHP_AP_IRQ_GIC_STARTING callback fail
-and expecting it to carry on working :( 
-There would have been a nice print message, but given I don't appear to have
-a working console after that stage I never see it.
-
-So the best I have yet come up with for this is the option of a new callback registered
-in gic_smp_init()
-
-cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
-			  "irqchip/arm/gicv3:checkrdist",
-			  gic_broken_rdist, NULL);
-
-with callback being simply 
-
-static int gic_broken_rdist(unsigned int cpu)
-{
-	if (cpumask_test_cpu(cpu, &broken_rdists))
-		return -EINVAL;
-
-	return 0;
-}
-
-That gets called cpuhp_up_callbacks() and is allows to fail and roll back the steps.
-
-Not particularly satisfying but keeps the logic confined to the gicv3 driver.
-
-What do you think?
-
-Jonathan
-
+> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
+> CXL devices supports features with changeable attributes.
+> The settings of a feature can be optionally modified using Set Feature
+> command.
 > 
-> Jonathan
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/cxl/core/mbox.c | 73 +++++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/cxlmem.h    | 33 +++++++++++++++++++
+>  2 files changed, 106 insertions(+)
 > 
-> > 
-> > Thanks,
-> > 
-> > J
-> > 
-> >    
-> > > diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-> > > index 6fb276504bcc..e8f02bfd0e21 100644
-> > > --- a/drivers/irqchip/irq-gic-v3.c
-> > > +++ b/drivers/irqchip/irq-gic-v3.c
-> > > @@ -1009,6 +1009,9 @@ static int __gic_populate_rdist(struct redist_region *region, void __iomem *ptr)
-> > >  	u64 typer;
-> > >  	u32 aff;
-> > >  
-> > > +	if (cpumask_test_cpu(smp_processor_id(), &broken_rdists))
-> > > +		return 1;
-> > > +
-> > >  	/*
-> > >  	 * Convert affinity to a 32bit value that can be matched to
-> > >  	 * GICR_TYPER bits [63:32].
-> > > @@ -1260,14 +1263,15 @@ static int gic_dist_supports_lpis(void)
-> > >  		!gicv3_nolpi);
-> > >  }
-> > >  
-> > > -static void gic_cpu_init(void)
-> > > +static int gic_cpu_init(void)
-> > >  {
-> > >  	void __iomem *rbase;
-> > > -	int i;
-> > > +	int ret, i;
-> > >  
-> > >  	/* Register ourselves with the rest of the world */
-> > > -	if (gic_populate_rdist())
-> > > -		return;
-> > > +	ret = gic_populate_rdist();
-> > > +	if (ret)
-> > > +		return ret;
-> > >  
-> > >  	gic_enable_redist(true);
-> > >  
-> > > @@ -1286,6 +1290,8 @@ static void gic_cpu_init(void)
-> > >  
-> > >  	/* initialise system registers */
-> > >  	gic_cpu_sys_reg_init();
-> > > +
-> > > +	return 0;
-> > >  }
-> > >  
-> > >  #ifdef CONFIG_SMP
-> > > @@ -1295,7 +1301,11 @@ static void gic_cpu_init(void)
-> > >  
-> > >  static int gic_starting_cpu(unsigned int cpu)
-> > >  {
-> > > -	gic_cpu_init();
-> > > +	int ret;
-> > > +
-> > > +	ret = gic_cpu_init();
-> > > +	if (ret)
-> > > +		return ret;
-> > >  
-> > >  	if (gic_dist_supports_lpis())
-> > >  		its_cpu_init();
-> > > 
-> > > But the question is: do you rely on these masks having been
-> > > "corrected" anywhere else?
-> > > 
-> > > Thanks,
-> > > 
-> > > 	M.
-> > >     
-> > 
-> > 
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel  
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+> index 999965871048..4ca1238e8fec 100644
+> --- a/drivers/cxl/core/mbox.c
+> +++ b/drivers/cxl/core/mbox.c
+> @@ -1371,6 +1371,79 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
+>  }
+>  EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
+>  
+> +/*
+> + * FEAT_DATA_MIN_PAYLOAD_SIZE - min extra number of bytes should be
+> + * available in the mailbox for storing the actual feature data so that
+> + * the feature data transfer would work as expected.
+> + */
+> +#define FEAT_DATA_MIN_PAYLOAD_SIZE 10
+> +int cxl_set_feature(struct cxl_memdev_state *mds,
+> +		    const uuid_t feat_uuid, u8 feat_version,
+> +		    void *feat_data, size_t feat_data_size,
+> +		    u8 feat_flag)
+> +{
+> +	struct cxl_memdev_set_feat_pi {
+> +		struct cxl_mbox_set_feat_hdr hdr;
+> +		u8 feat_data[];
+> +	}  __packed;
+> +	size_t data_in_size, data_sent_size = 0;
+> +	struct cxl_mbox_cmd mbox_cmd;
+> +	size_t hdr_size;
+> +	int rc = 0;
+> +
+> +	struct cxl_memdev_set_feat_pi *pi __free(kfree) =
+> +					kmalloc(mds->payload_size, GFP_KERNEL);
+> +	pi->hdr.uuid = feat_uuid;
+> +	pi->hdr.version = feat_version;
+> +	feat_flag &= ~CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK;
+> +	hdr_size = sizeof(pi->hdr);
+> +	/*
+> +	 * Check minimum mbox payload size is available for
+> +	 * the feature data transfer.
+> +	 */
+> +	if (hdr_size + FEAT_DATA_MIN_PAYLOAD_SIZE > mds->payload_size)
+> +		return -ENOMEM;
+> +
+> +	if ((hdr_size + feat_data_size) <= mds->payload_size) {
+> +		pi->hdr.flags = cpu_to_le32(feat_flag |
+> +				       CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER);
+> +		data_in_size = feat_data_size;
+> +	} else {
+> +		pi->hdr.flags = cpu_to_le32(feat_flag |
+> +				       CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER);
+> +		data_in_size = mds->payload_size - hdr_size;
+> +	}
+> +
+> +	do {
+> +		pi->hdr.offset = cpu_to_le16(data_sent_size);
+> +		memcpy(pi->feat_data, feat_data + data_sent_size, data_in_size);
+> +		mbox_cmd = (struct cxl_mbox_cmd) {
+> +			.opcode = CXL_MBOX_OP_SET_FEATURE,
+> +			.size_in = hdr_size + data_in_size,
+> +			.payload_in = pi,
+> +		};
+> +		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
+> +		if (rc < 0)
+> +			return rc;
+> +
+> +		data_sent_size += data_in_size;
+> +		if (data_sent_size >= feat_data_size)
+> +			return 0;
+> +
+> +		if ((feat_data_size - data_sent_size) <= (mds->payload_size - hdr_size)) {
+> +			data_in_size = feat_data_size - data_sent_size;
+> +			pi->hdr.flags = cpu_to_le32(feat_flag |
+> +					       CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER);
+> +		} else {
+> +			pi->hdr.flags = cpu_to_le32(feat_flag |
+> +					       CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER);
+> +		}
+> +	} while (true);
+> +
+> +	return rc;
+Dead code.
 
+Fan
+
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_set_feature, CXL);
+> +
+>  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+>  		       struct cxl_region *cxlr)
+>  {
+> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+> index c822eb30e6d1..1c50a3e2eced 100644
+> --- a/drivers/cxl/cxlmem.h
+> +++ b/drivers/cxl/cxlmem.h
+> @@ -529,6 +529,7 @@ enum cxl_opcode {
+>  	CXL_MBOX_OP_GET_LOG		= 0x0401,
+>  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
+>  	CXL_MBOX_OP_GET_FEATURE		= 0x0501,
+> +	CXL_MBOX_OP_SET_FEATURE		= 0x0502,
+>  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
+>  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
+>  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
+> @@ -777,6 +778,34 @@ struct cxl_mbox_get_feat_in {
+>  	u8 selection;
+>  }  __packed;
+>  
+> +/*
+> + * Set Feature CXL 3.1 Spec 8.2.9.6.3
+> + */
+> +
+> +/*
+> + * Set Feature input payload
+> + * CXL rev 3.1 section 8.2.9.6.3 Table 8-101
+> + */
+> +/* Set Feature : Payload in flags */
+> +#define CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK	GENMASK(2, 0)
+> +enum cxl_set_feat_flag_data_transfer {
+> +	CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
+> +	CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER,
+> +	CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER,
+> +	CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER,
+> +	CXL_SET_FEAT_FLAG_ABORT_DATA_TRANSFER,
+> +	CXL_SET_FEAT_FLAG_DATA_TRANSFER_MAX
+> +};
+> +#define CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET	BIT(3)
+> +
+> +struct cxl_mbox_set_feat_hdr {
+> +	uuid_t uuid;
+> +	__le32 flags;
+> +	__le16 offset;
+> +	u8 version;
+> +	u8 rsvd[9];
+> +}  __packed;
+> +
+>  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */
+>  struct cxl_mbox_poison_in {
+>  	__le64 offset;
+> @@ -916,6 +945,10 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
+>  		       size_t feat_out_size,
+>  		       size_t feat_out_min_size,
+>  		       enum cxl_get_feat_selection selection);
+> +int cxl_set_feature(struct cxl_memdev_state *mds,
+> +		    const uuid_t feat_uuid, u8 feat_version,
+> +		    void *feat_data, size_t feat_data_size,
+> +		    u8 feat_flag);
+>  int cxl_poison_state_init(struct cxl_memdev_state *mds);
+>  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
+>  		       struct cxl_region *cxlr);
+> -- 
+> 2.34.1
+> 
 
