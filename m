@@ -1,228 +1,112 @@
-Return-Path: <linux-acpi+bounces-5399-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5400-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82D38B36AD
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 13:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D81BD8B36B6
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 13:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F702281938
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 11:46:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8838B28364D
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 11:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370B3145B07;
-	Fri, 26 Apr 2024 11:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D1614534B;
+	Fri, 26 Apr 2024 11:49:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6121E13F01A;
-	Fri, 26 Apr 2024 11:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F7283A1B7;
+	Fri, 26 Apr 2024 11:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714131965; cv=none; b=JxkJSRJLKMayyT00pPpePdB2KoEJslmdGYl0iv3wGlktwxQdk7g0Q3wJT97m0P3+w8oT6ctH/i7SXu7ZlttUaIEHfqRGk2qyNG/X1TXH6252SPkXcY2DcKSJRC+DCZDInYJ2mdIy3hEdL4tz/9zjL0lnEZ4TDq7W/S7o7ieT8RA=
+	t=1714132142; cv=none; b=MYH9GDeI2quZz8MQWm8AMg19p+qWDVs7UTU+sz18jv4DEH3g2LPAn781xy5onEpWwVgqEPquw2vVl9OixWrQBTU4Z7hmIZqbcnnSX/3SLx8gyGe9dyQ6n75MLSbl41ft6bIBp3s0ACI+aude7BoapszGoudBX/gxwzUyVYGRwhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714131965; c=relaxed/simple;
-	bh=q24SSJ+T0vV9DSEUwcxv6+8o6HqVvsFTlJdIC0R2MZw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AHQupa5a8v5elso6plNES87zKVgbEA6GFfevwziTRPj1LRWtULv7m0YPy7/5qFtNxoy8p01u5h1fTn9A/Hh0knANgAXVldnuQj0N8379MVpphEkFF514WLJydtEENEFCfxcBIRNdA+7LT9Rsc7N5OmX3ARjOAdlREWR26CMJ7Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+	s=arc-20240116; t=1714132142; c=relaxed/simple;
+	bh=vuIcmnGQq4w4qRhii36oQpxwxZeKTg+NU3UP9tdpmnQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h0CLBWABBF+LonSITg0im/YxbcW6xqv//aok8O8i4miyzA7P//LhcuvK3LySuLwgZLRkzCjWHLJGRk3C9xA8LQlStUT7QUuGhSWiv6L66RkwbeCKyjXOpRTgjzmLjlg5/fAlnd/J3tkF+/Fcn/XNeJUpaRIt+0FB+wgPf83L7Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VQrS249yqzXmqd;
-	Fri, 26 Apr 2024 19:42:26 +0800 (CST)
-Received: from kwepemm000010.china.huawei.com (unknown [7.193.23.169])
-	by mail.maildlp.com (Postfix) with ESMTPS id 223C3180073;
-	Fri, 26 Apr 2024 19:45:59 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- kwepemm000010.china.huawei.com (7.193.23.169) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 26 Apr 2024 19:45:58 +0800
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.035;
- Fri, 26 Apr 2024 12:45:56 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Daniel Ferguson <danielf@os.amperecomputing.com>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse
-	<james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov
-	<bp@alien8.de>
-CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, luoshengwei
-	<luoshengwei@huawei.com>, Jason Tian <jason@os.amperecomputing.com>
-Subject: RE: [PATCH v5 2/2] RAS: Report ARM processor information to userspace
-Thread-Topic: [PATCH v5 2/2] RAS: Report ARM processor information to
- userspace
-Thread-Index: AQHae+MXvt+LT1M4gUi6zd/xMyYverF6pajQ
-Date: Fri, 26 Apr 2024 11:45:56 +0000
-Message-ID: <73d0834a539a4a69bca670141dd06bc8@huawei.com>
-References: <20240321-b4-arm-ras-error-vendor-info-v5-rc3-v5-0-850f9bfb97a8@os.amperecomputing.com>
- <20240321-b4-arm-ras-error-vendor-info-v5-rc3-v5-2-850f9bfb97a8@os.amperecomputing.com>
-In-Reply-To: <20240321-b4-arm-ras-error-vendor-info-v5-rc3-v5-2-850f9bfb97a8@os.amperecomputing.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQrbL5Lklz6DBjc;
+	Fri, 26 Apr 2024 19:48:46 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 46E26140447;
+	Fri, 26 Apr 2024 19:48:58 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
+ 2024 12:48:57 +0100
+Date: Fri, 26 Apr 2024 12:48:55 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	<linuxarm@huawei.com>
+CC: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v7 08/16] ACPI: Add post_eject to struct
+ acpi_scan_handler for cpu hotplug
+Message-ID: <20240426124836.00006cde@huawei.com>
+In-Reply-To: <20240418135412.14730-9-Jonathan.Cameron@huawei.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+	<20240418135412.14730-9-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-VGVzdGVkLWJ5OiBTaGlqdSBKb3NlIDxzaGlqdS5qb3NlQGh1YXdlaS5jb20+DQoNCkNQVSBjb3Jl
-IGlzb2xhdGlvbiBmZWF0dXJlIGluIHJhc2RhZW1vbiBoYXMgZGVwZW5kZW5jeSBvbiB0aGlzIGtl
-cm5lbCBwYXRjaC4NCg0KVGhhbmtzLA0KU2hpanUNCj4tLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0t
-LQ0KPkZyb206IERhbmllbCBGZXJndXNvbiA8ZGFuaWVsZkBvcy5hbXBlcmVjb21wdXRpbmcuY29t
-Pg0KPlNlbnQ6IDIxIE1hcmNoIDIwMjQgMjI6NTYNCj5UbzogUmFmYWVsIEouIFd5c29ja2kgPHJh
-ZmFlbEBrZXJuZWwub3JnPjsgTGVuIEJyb3duIDxsZW5iQGtlcm5lbC5vcmc+Ow0KPkphbWVzIE1v
-cnNlIDxqYW1lcy5tb3JzZUBhcm0uY29tPjsgVG9ueSBMdWNrIDx0b255Lmx1Y2tAaW50ZWwuY29t
-PjsNCj5Cb3Jpc2xhdiBQZXRrb3YgPGJwQGFsaWVuOC5kZT4NCj5DYzogbGludXgtYWNwaUB2Z2Vy
-Lmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPmVkYWNA
-dmdlci5rZXJuZWwub3JnOyBEYW5pZWwgRmVyZ3Vzb24gPGRhbmllbGZAb3MuYW1wZXJlY29tcHV0
-aW5nLmNvbT47DQo+bHVvc2hlbmd3ZWkgPGx1b3NoZW5nd2VpQGh1YXdlaS5jb20+OyBKYXNvbiBU
-aWFuDQo+PGphc29uQG9zLmFtcGVyZWNvbXB1dGluZy5jb20+DQo+U3ViamVjdDogW1BBVENIIHY1
-IDIvMl0gUkFTOiBSZXBvcnQgQVJNIHByb2Nlc3NvciBpbmZvcm1hdGlvbiB0byB1c2Vyc3BhY2UN
-Cj4NCj5Gcm9tOiBTaGVuZ3dlaSBMdW8gPGx1b3NoZW5nd2VpQGh1YXdlaS5jb20+DQo+DQo+VGhl
-IG9yaWdpbmFsIGFybV9ldmVudCB0cmFjZSBjb2RlIG9ubHkgdHJhY2VzIG91dCBBUk0gcHJvY2Vz
-c29yIGVycm9yDQo+aW5mb3JtYXRpb24gZGF0YS4gSXQncyBub3QgZW5vdWdoIGZvciB1c2VyIHRv
-IHRha2UgYXBwcm9wcmlhdGUgYWN0aW9uLg0KPg0KPkFjY29yZGluZyB0byBVRUZJXzJfOSBzcGVj
-aWZpY2F0aW9uIGNoYXB0ZXIgTjIuNC40LCB0aGUgQVJNIHByb2Nlc3NvciBlcnJvcg0KPnNlY3Rp
-b24gaW5jbHVkZXMgc2V2ZXJhbCBBUk0gcHJvY2Vzc29yIGVycm9yIGluZm9ybWF0aW9uLCBzZXZl
-cmFsIEFSTQ0KPnByb2Nlc3NvciBjb250ZXh0IGluZm9ybWF0aW9uIGFuZCBzZXZlcmFsIHZlbmRv
-ciBzcGVjaWZpYyBlcnJvciBpbmZvcm1hdGlvbg0KPnN0cnVjdHVyZXMuIEluIGFkZGl0aW9uIHRv
-IHRoZXNlIGluZm8sIHRoZXJlIGFyZSBlcnJvciBzZXZlcml0eSBhbmQgY3B1IGxvZ2ljYWwNCj5p
-bmRleCBhYm91dCB0aGUgZXZlbnQuIFJlcG9ydCBhbGwgb2YgdGhlc2UgaW5mb3JtYXRpb24gdG8g
-dXNlcnNwYWNlIHZpYSBwZXJmIGkvZi4NCj5TbyB0aGF0IHRoZSB1c2VyIGNhbiBkbyBjcHUgY29y
-ZSBpc29sYXRpb24gYWNjb3JkaW5nIHRvIGVycm9yIHNldmVyaXR5IGFuZCBvdGhlcg0KPmluZm8u
-DQo+DQo+U2lnbmVkLW9mZi1ieTogU2hlbmd3ZWkgTHVvIDxsdW9zaGVuZ3dlaUBodWF3ZWkuY29t
-Pg0KPlNpZ25lZC1vZmYtYnk6IEphc29uIFRpYW4gPGphc29uQG9zLmFtcGVyZWNvbXB1dGluZy5j
-b20+DQo+U2lnbmVkLW9mZi1ieTogRGFuaWVsIEZlcmd1c29uIDxkYW5pZWxmQG9zLmFtcGVyZWNv
-bXB1dGluZy5jb20+DQo+LS0tDQo+IGRyaXZlcnMvYWNwaS9hcGVpL2doZXMuYyB8ICAzICstLQ0K
-PiBkcml2ZXJzL3Jhcy9yYXMuYyAgICAgICAgfCA0Ng0KPisrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrLS0NCj4gaW5jbHVkZS9saW51eC9yYXMuaCAgICAgIHwgMTUg
-KysrKysrKysrKysrLS0tDQo+IGluY2x1ZGUvcmFzL3Jhc19ldmVudC5oICB8IDQ4DQo+KysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tDQo+IDQgZmlsZXMgY2hh
-bmdlZCwgMTAwIGluc2VydGlvbnMoKyksIDEyIGRlbGV0aW9ucygtKQ0KPg0KPmRpZmYgLS1naXQg
-YS9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMgYi9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMgaW5k
-ZXgNCj41ODAxNDU1OGI4ZTAuLmE5M2M4MGZlMWJhYiAxMDA2NDQNCj4tLS0gYS9kcml2ZXJzL2Fj
-cGkvYXBlaS9naGVzLmMNCj4rKysgYi9kcml2ZXJzL2FjcGkvYXBlaS9naGVzLmMNCj5AQCAtNTM1
-LDkgKzUzNSw4IEBAIHN0YXRpYyBib29sIGdoZXNfaGFuZGxlX2FybV9od19lcnJvcihzdHJ1Y3QN
-Cj5hY3BpX2hlc3RfZ2VuZXJpY19kYXRhICpnZGF0YSwNCj4gCWludCBzZWNfc2V2LCBpOw0KPiAJ
-Y2hhciAqcDsNCj4NCj4tCWxvZ19hcm1faHdfZXJyb3IoZXJyKTsNCj4tDQo+IAlzZWNfc2V2ID0g
-Z2hlc19zZXZlcml0eShnZGF0YS0+ZXJyb3Jfc2V2ZXJpdHkpOw0KPisJbG9nX2FybV9od19lcnJv
-cihlcnIsIHNlY19zZXYpOw0KPiAJaWYgKHNldiAhPSBHSEVTX1NFVl9SRUNPVkVSQUJMRSB8fCBz
-ZWNfc2V2ICE9DQo+R0hFU19TRVZfUkVDT1ZFUkFCTEUpDQo+IAkJcmV0dXJuIGZhbHNlOw0KPg0K
-PmRpZmYgLS1naXQgYS9kcml2ZXJzL3Jhcy9yYXMuYyBiL2RyaXZlcnMvcmFzL3Jhcy5jIGluZGV4
-DQo+MjQ5ZGNlMjFhNzM4Li4zZTJiZWVkMmRiMDcgMTAwNjQ0DQo+LS0tIGEvZHJpdmVycy9yYXMv
-cmFzLmMNCj4rKysgYi9kcml2ZXJzL3Jhcy9yYXMuYw0KPkBAIC01Myw5ICs1Myw1MSBAQCB2b2lk
-IGxvZ19ub25fc3RhbmRhcmRfZXZlbnQoY29uc3QgZ3VpZF90ICpzZWNfdHlwZSwNCj5jb25zdCBn
-dWlkX3QgKmZydV9pZCwgIH0NCj4NCj4gI2lmIGRlZmluZWQoQ09ORklHX0FSTSkgfHwgZGVmaW5l
-ZChDT05GSUdfQVJNNjQpIC12b2lkDQo+bG9nX2FybV9od19lcnJvcihzdHJ1Y3QgY3Blcl9zZWNf
-cHJvY19hcm0gKmVycikNCj4rdm9pZCBsb2dfYXJtX2h3X2Vycm9yKHN0cnVjdCBjcGVyX3NlY19w
-cm9jX2FybSAqZXJyLCBjb25zdCB1OCBzZXYpDQo+IHsNCj4tCXRyYWNlX2FybV9ldmVudChlcnIp
-Ow0KPisJdTMyIHBlaV9sZW47DQo+Kwl1MzIgY3R4X2xlbiA9IDA7DQo+KwlzMzIgdnNlaV9sZW47
-DQo+Kwl1OCAqcGVpX2VycjsNCj4rCXU4ICpjdHhfZXJyOw0KPisJdTggKnZlbl9lcnJfZGF0YTsN
-Cj4rCXN0cnVjdCBjcGVyX2FybV9lcnJfaW5mbyAqZXJyX2luZm87DQo+KwlzdHJ1Y3QgY3Blcl9h
-cm1fY3R4X2luZm8gKmN0eF9pbmZvOw0KPisJaW50IG4sIHN6Ow0KPisJaW50IGNwdTsNCj4rDQo+
-KwlwZWlfbGVuID0gc2l6ZW9mKHN0cnVjdCBjcGVyX2FybV9lcnJfaW5mbykgKiBlcnItPmVycl9p
-bmZvX251bTsNCj4rCXBlaV9lcnIgPSAodTggKillcnIgKyBzaXplb2Yoc3RydWN0IGNwZXJfc2Vj
-X3Byb2NfYXJtKTsNCj4rDQo+KwllcnJfaW5mbyA9IChzdHJ1Y3QgY3Blcl9hcm1fZXJyX2luZm8g
-KikoZXJyICsgMSk7DQo+KwljdHhfaW5mbyA9IChzdHJ1Y3QgY3Blcl9hcm1fY3R4X2luZm8gKiko
-ZXJyX2luZm8gKyBlcnItPmVycl9pbmZvX251bSk7DQo+KwljdHhfZXJyID0gKHU4ICopY3R4X2lu
-Zm87DQo+Kwlmb3IgKG4gPSAwOyBuIDwgZXJyLT5jb250ZXh0X2luZm9fbnVtOyBuKyspIHsNCj4r
-CQlzeiA9IHNpemVvZihzdHJ1Y3QgY3Blcl9hcm1fY3R4X2luZm8pICsgY3R4X2luZm8tPnNpemU7
-DQo+KwkJY3R4X2luZm8gPSAoc3RydWN0IGNwZXJfYXJtX2N0eF9pbmZvICopKChsb25nKWN0eF9p
-bmZvICsgc3opOw0KPisJCWN0eF9sZW4gKz0gc3o7DQo+Kwl9DQo+Kw0KPisJdnNlaV9sZW4gPSBl
-cnItPnNlY3Rpb25fbGVuZ3RoIC0gKHNpemVvZihzdHJ1Y3QgY3Blcl9zZWNfcHJvY19hcm0pICsN
-Cj4rCQkJCQkJcGVpX2xlbiArIGN0eF9sZW4pOw0KPisJaWYgKHZzZWlfbGVuIDwgMCkgew0KPisJ
-CXByX3dhcm4oRldfQlVHDQo+KwkJCSJzZWN0aW9uIGxlbmd0aDogJWRcbiIsIGVyci0+c2VjdGlv
-bl9sZW5ndGgpOw0KPisJCXByX3dhcm4oRldfQlVHDQo+KwkJCSJzZWN0aW9uIGxlbmd0aCBpcyB0
-b28gc21hbGxcbiIpOw0KPisJCXByX3dhcm4oRldfQlVHDQo+KwkJCSJmaXJtd2FyZS1nZW5lcmF0
-ZWQgZXJyb3IgcmVjb3JkIGlzIGluY29ycmVjdFxuIik7DQo+KwkJdnNlaV9sZW4gPSAwOw0KPisJ
-fQ0KPisJdmVuX2Vycl9kYXRhID0gKHU4ICopY3R4X2luZm87DQo+Kw0KPisJY3B1ID0gR0VUX0xP
-R0lDQUxfSU5ERVgoZXJyLT5tcGlkcik7DQo+KwkvKiB3aGVuIHJldHVybiB2YWx1ZSBpcyBpbnZh
-bGlkLCBzZXQgY3B1IGluZGV4IHRvIC0xICovDQo+KwlpZiAoY3B1IDwgMCkNCj4rCQljcHUgPSAt
-MTsNCj4rDQo+Kwl0cmFjZV9hcm1fZXZlbnQoZXJyLCBwZWlfZXJyLCBwZWlfbGVuLCBjdHhfZXJy
-LCBjdHhfbGVuLA0KPisJCQl2ZW5fZXJyX2RhdGEsICh1MzIpdnNlaV9sZW4sIHNldiwgY3B1KTsN
-Cj4gfQ0KPiAjZW5kaWYNCj4NCj5kaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9yYXMuaCBiL2lu
-Y2x1ZGUvbGludXgvcmFzLmggaW5kZXgNCj44MTFmZWI5ZDgxNjAuLjIwNzBlNGFlMDYyNiAxMDA2
-NDQNCj4tLS0gYS9pbmNsdWRlL2xpbnV4L3Jhcy5oDQo+KysrIGIvaW5jbHVkZS9saW51eC9yYXMu
-aA0KPkBAIC0yNSw3ICsyNSw3IEBAIHZvaWQgbG9nX25vbl9zdGFuZGFyZF9ldmVudChjb25zdCBn
-dWlkX3QgKnNlY190eXBlLA0KPiAJCQkgICAgY29uc3QgZ3VpZF90ICpmcnVfaWQsIGNvbnN0IGNo
-YXIgKmZydV90ZXh0LA0KPiAJCQkgICAgY29uc3QgdTggc2V2LCBjb25zdCB1OCAqZXJyLCBjb25z
-dCB1MzIgbGVuKTsgICNpZg0KPmRlZmluZWQoQ09ORklHX0FSTSkgfHwgZGVmaW5lZChDT05GSUdf
-QVJNNjQpIC12b2lkDQo+bG9nX2FybV9od19lcnJvcihzdHJ1Y3QgY3Blcl9zZWNfcHJvY19hcm0g
-KmVycik7DQo+K3ZvaWQgbG9nX2FybV9od19lcnJvcihzdHJ1Y3QgY3Blcl9zZWNfcHJvY19hcm0g
-KmVyciwgY29uc3QgdTggc2V2KTsNCj4gI2VuZGlmDQo+ICNlbHNlDQo+IHN0YXRpYyBpbmxpbmUg
-dm9pZA0KPkBAIC0zNSw3ICszNSw3IEBAIGxvZ19ub25fc3RhbmRhcmRfZXZlbnQoY29uc3QgZ3Vp
-ZF90ICpzZWNfdHlwZSwgIHsgcmV0dXJuOw0KPn0gICNpZiBkZWZpbmVkKENPTkZJR19BUk0pIHx8
-IGRlZmluZWQoQ09ORklHX0FSTTY0KSAgc3RhdGljIGlubGluZSB2b2lkIC0NCj5sb2dfYXJtX2h3
-X2Vycm9yKHN0cnVjdCBjcGVyX3NlY19wcm9jX2FybSAqZXJyKSB7IHJldHVybjsgfQ0KPitsb2df
-YXJtX2h3X2Vycm9yKHN0cnVjdCBjcGVyX3NlY19wcm9jX2FybSAqZXJyLCBjb25zdCB1OCBzZXYp
-IHsgcmV0dXJuOw0KPit9DQo+ICNlbmRpZg0KPiAjZW5kaWYNCj4NCj5AQCAtNTUsNSArNTUsMTQg
-QEAgc3RhdGljIGlubGluZSB2b2lkIGFtZF9yZXRpcmVfZHJhbV9yb3coc3RydWN0IGF0bF9lcnIN
-Cj4qZXJyKSB7IH0gIHN0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZw0KPmFtZF9jb252ZXJ0X3Vt
-Y19tY2FfYWRkcl90b19zeXNfYWRkcihzdHJ1Y3QgYXRsX2VyciAqZXJyKSB7IHJldHVybiAtRUlO
-VkFMOw0KPn0gICNlbmRpZiAvKiBDT05GSUdfQU1EX0FUTCAqLw0KPi0NCj4rI2lmIGRlZmluZWQo
-Q09ORklHX0FSTSkgfHwgZGVmaW5lZChDT05GSUdfQVJNNjQpICNpbmNsdWRlDQo+Kzxhc20vc21w
-X3BsYXQuaD4NCj4rLyoNCj4rICogSW5jbHVkZSBBUk0gc3BlY2lmaWMgU01QIGhlYWRlciB3aGlj
-aCBwcm92aWRlcyBhIGZ1bmN0aW9uIG1hcHBpbmcNCj4rbXBpZHIgdG8NCj4rICogY3B1IGxvZ2lj
-YWwgaW5kZXguDQo+KyAqLw0KPisjZGVmaW5lIEdFVF9MT0dJQ0FMX0lOREVYKG1waWRyKSBnZXRf
-bG9naWNhbF9pbmRleChtcGlkciAmDQo+K01QSURSX0hXSURfQklUTUFTSykgI2Vsc2UgI2RlZmlu
-ZSBHRVRfTE9HSUNBTF9JTkRFWChtcGlkcikgLUVJTlZBTA0KPisjZW5kaWYgLyogQ09ORklHX0FS
-TSB8fCBDT05GSUdfQVJNNjQgKi8NCj4gI2VuZGlmIC8qIF9fUkFTX0hfXyAqLw0KPmRpZmYgLS1n
-aXQgYS9pbmNsdWRlL3Jhcy9yYXNfZXZlbnQuaCBiL2luY2x1ZGUvcmFzL3Jhc19ldmVudC5oIGlu
-ZGV4DQo+YzAxMWVhMjM2ZTliLi5hN2Q3YjZlNzE3YjYgMTAwNjQ0DQo+LS0tIGEvaW5jbHVkZS9y
-YXMvcmFzX2V2ZW50LmgNCj4rKysgYi9pbmNsdWRlL3Jhcy9yYXNfZXZlbnQuaA0KPkBAIC0xNjgs
-MTEgKzE2OCwyNCBAQCBUUkFDRV9FVkVOVChtY19ldmVudCwNCj4gICogVGhpcyBldmVudCBpcyBn
-ZW5lcmF0ZWQgd2hlbiBoYXJkd2FyZSBkZXRlY3RzIGFuIEFSTSBwcm9jZXNzb3IgZXJyb3INCj4g
-ICogaGFzIG9jY3VycmVkLiBVRUZJIDIuNiBzcGVjIHNlY3Rpb24gTi4yLjQuNC4NCj4gICovDQo+
-KyNkZWZpbmUgQVBFSUwgIkFSTSBQcm9jZXNzb3IgRXJyIEluZm8gZGF0YSBsZW4iDQo+KyNkZWZp
-bmUgQVBFSUQgIkFSTSBQcm9jZXNzb3IgRXJyIEluZm8gcmF3IGRhdGEiDQo+KyNkZWZpbmUgQVBF
-Q0lMICJBUk0gUHJvY2Vzc29yIEVyciBDb250ZXh0IEluZm8gZGF0YSBsZW4iDQo+KyNkZWZpbmUg
-QVBFQ0lEICJBUk0gUHJvY2Vzc29yIEVyciBDb250ZXh0IEluZm8gcmF3IGRhdGEiDQo+KyNkZWZp
-bmUgVlNFSUwgIlZlbmRvciBTcGVjaWZpYyBFcnIgSW5mbyBkYXRhIGxlbiINCj4rI2RlZmluZSBW
-U0VJRCAiVmVuZG9yIFNwZWNpZmljIEVyciBJbmZvIHJhdyBkYXRhIg0KPiBUUkFDRV9FVkVOVChh
-cm1fZXZlbnQsDQo+DQo+LQlUUF9QUk9UTyhjb25zdCBzdHJ1Y3QgY3Blcl9zZWNfcHJvY19hcm0g
-KnByb2MpLA0KPisJVFBfUFJPVE8oY29uc3Qgc3RydWN0IGNwZXJfc2VjX3Byb2NfYXJtICpwcm9j
-LCBjb25zdCB1OCAqcGVpX2VyciwNCj4rCQkJY29uc3QgdTMyIHBlaV9sZW4sDQo+KwkJCWNvbnN0
-IHU4ICpjdHhfZXJyLA0KPisJCQljb25zdCB1MzIgY3R4X2xlbiwNCj4rCQkJY29uc3QgdTggKm9l
-bSwNCj4rCQkJY29uc3QgdTMyIG9lbV9sZW4sDQo+KwkJCXU4IHNldiwNCj4rCQkJaW50IGNwdSks
-DQo+DQo+LQlUUF9BUkdTKHByb2MpLA0KPisJVFBfQVJHUyhwcm9jLCBwZWlfZXJyLCBwZWlfbGVu
-LCBjdHhfZXJyLCBjdHhfbGVuLCBvZW0sIG9lbV9sZW4sIHNldiwNCj4rY3B1KSwNCj4NCj4gCVRQ
-X1NUUlVDVF9fZW50cnkoDQo+IAkJX19maWVsZCh1NjQsIG1waWRyKQ0KPkBAIC0xODAsNiArMTkz
-LDE0IEBAIFRSQUNFX0VWRU5UKGFybV9ldmVudCwNCj4gCQlfX2ZpZWxkKHUzMiwgcnVubmluZ19z
-dGF0ZSkNCj4gCQlfX2ZpZWxkKHUzMiwgcHNjaV9zdGF0ZSkNCj4gCQlfX2ZpZWxkKHU4LCBhZmZp
-bml0eSkNCj4rCQlfX2ZpZWxkKHUzMiwgcGVpX2xlbikNCj4rCQlfX2R5bmFtaWNfYXJyYXkodTgs
-IGJ1ZiwgcGVpX2xlbikNCj4rCQlfX2ZpZWxkKHUzMiwgY3R4X2xlbikNCj4rCQlfX2R5bmFtaWNf
-YXJyYXkodTgsIGJ1ZjEsIGN0eF9sZW4pDQo+KwkJX19maWVsZCh1MzIsIG9lbV9sZW4pDQo+KwkJ
-X19keW5hbWljX2FycmF5KHU4LCBidWYyLCBvZW1fbGVuKQ0KPisJCV9fZmllbGQodTgsIHNldikN
-Cj4rCQlfX2ZpZWxkKGludCwgY3B1KQ0KPiAJKSwNCj4NCj4gCVRQX2Zhc3RfYXNzaWduKA0KPkBA
-IC0xOTksMTIgKzIyMCwyOSBAQCBUUkFDRV9FVkVOVChhcm1fZXZlbnQsDQo+IAkJCV9fZW50cnkt
-PnJ1bm5pbmdfc3RhdGUgPSB+MDsNCj4gCQkJX19lbnRyeS0+cHNjaV9zdGF0ZSA9IH4wOw0KPiAJ
-CX0NCj4rCQlfX2VudHJ5LT5wZWlfbGVuID0gcGVpX2xlbjsNCj4rCQltZW1jcHkoX19nZXRfZHlu
-YW1pY19hcnJheShidWYpLCBwZWlfZXJyLCBwZWlfbGVuKTsNCj4rCQlfX2VudHJ5LT5jdHhfbGVu
-ID0gY3R4X2xlbjsNCj4rCQltZW1jcHkoX19nZXRfZHluYW1pY19hcnJheShidWYxKSwgY3R4X2Vy
-ciwgY3R4X2xlbik7DQo+KwkJX19lbnRyeS0+b2VtX2xlbiA9IG9lbV9sZW47DQo+KwkJbWVtY3B5
-KF9fZ2V0X2R5bmFtaWNfYXJyYXkoYnVmMiksIG9lbSwgb2VtX2xlbik7DQo+KwkJX19lbnRyeS0+
-c2V2ID0gc2V2Ow0KPisJCV9fZW50cnktPmNwdSA9IGNwdTsNCj4gCSksDQo+DQo+LQlUUF9wcmlu
-dGsoImFmZmluaXR5IGxldmVsOiAlZDsgTVBJRFI6ICUwMTZsbHg7IE1JRFI6ICUwMTZsbHg7ICIN
-Cj4tCQkgICJydW5uaW5nIHN0YXRlOiAlZDsgUFNDSSBzdGF0ZTogJWQiLA0KPisJVFBfcHJpbnRr
-KCJjcHU6ICVkOyBlcnJvcjogJWQ7IGFmZmluaXR5IGxldmVsOiAlZDsgTVBJRFI6ICUwMTZsbHg7
-IE1JRFI6DQo+JTAxNmxseDsgIg0KPisJCSAgInJ1bm5pbmcgc3RhdGU6ICVkOyBQU0NJIHN0YXRl
-OiAlZDsgIg0KPisJCSAgIiVzOiAlZDsgJXM6ICVzOyAlczogJWQ7ICVzOiAlczsgJXM6ICVkOyAl
-czogJXMiLA0KPisJCSAgX19lbnRyeS0+Y3B1LA0KPisJCSAgX19lbnRyeS0+c2V2LA0KPiAJCSAg
-X19lbnRyeS0+YWZmaW5pdHksIF9fZW50cnktPm1waWRyLCBfX2VudHJ5LT5taWRyLA0KPi0JCSAg
-X19lbnRyeS0+cnVubmluZ19zdGF0ZSwgX19lbnRyeS0+cHNjaV9zdGF0ZSkNCj4rCQkgIF9fZW50
-cnktPnJ1bm5pbmdfc3RhdGUsIF9fZW50cnktPnBzY2lfc3RhdGUsDQo+KwkJICBBUEVJTCwgX19l
-bnRyeS0+cGVpX2xlbiwgQVBFSUQsDQo+KwkJICBfX3ByaW50X2hleChfX2dldF9keW5hbWljX2Fy
-cmF5KGJ1ZiksIF9fZW50cnktPnBlaV9sZW4pLA0KPisJCSAgQVBFQ0lMLCBfX2VudHJ5LT5jdHhf
-bGVuLCBBUEVDSUQsDQo+KwkJICBfX3ByaW50X2hleChfX2dldF9keW5hbWljX2FycmF5KGJ1ZjEp
-LCBfX2VudHJ5LT5jdHhfbGVuKSwNCj4rCQkgIFZTRUlMLCBfX2VudHJ5LT5vZW1fbGVuLCBWU0VJ
-RCwNCj4rCQkgIF9fcHJpbnRfaGV4KF9fZ2V0X2R5bmFtaWNfYXJyYXkoYnVmMiksIF9fZW50cnkt
-Pm9lbV9sZW4pKQ0KPiApOw0KPg0KPiAvKg0KPg0KPi0tDQo+Mi40My4wDQo+DQoNCg==
+On Thu, 18 Apr 2024 14:54:04 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+
+> From: James Morse <james.morse@arm.com>
+> 
+> struct acpi_scan_handler has a detach callback that is used to remove
+> a driver when a bus is changed. When interacting with an eject-request,
+> the detach callback is called before _EJ0.
+> 
+> This means the ACPI processor driver can't use _STA to determine if a
+> CPU has been made not-present, or some of the other _STA bits have been
+> changed. acpi_processor_remove() needs to know the value of _STA after
+> _EJ0 has been called.
+> 
+> Add a post_eject callback to struct acpi_scan_handler. This is called
+> after acpi_scan_hot_remove() has successfully called _EJ0. Because
+> acpi_scan_check_and_detach() also clears the handler pointer,
+> it needs to be told if the caller will go on to call
+> acpi_bus_post_eject(), so that acpi_device_clear_enumerated()
+> and clearing the handler pointer can be deferred.
+> An extra flag is added to flags field introduced in the previous
+> patch to achieve this.
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Joanthan Cameron <Jonathan.Cameron@huawei.com>
+
+Gavin's earlier review showed I can't type.
+Fixed up by dropping this RB seeing as I signed off anyway.
+
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 
