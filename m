@@ -1,277 +1,285 @@
-Return-Path: <linux-acpi+bounces-5422-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5423-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF2C8B3C79
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:12:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCF28B3CBE
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B114FB23C67
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 16:12:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94E1E281627
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 16:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6488B1514CC;
-	Fri, 26 Apr 2024 16:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF2115623B;
+	Fri, 26 Apr 2024 16:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFWqxDGL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27979148FE1;
-	Fri, 26 Apr 2024 16:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CEE75810;
+	Fri, 26 Apr 2024 16:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714147927; cv=none; b=rEBalFM3qtO8nhDj8H+ktwjm1PmaEdmLwSZfgo7qIHPxGcw3pO9yEbFm1A52TRWdtYBfrGHBc5k+DwFhjJj6rXuJ+5oV1uhDYlQ7CYq02gfBS8BOPzDj6chUwzTDmxsGoo8YxNd/Wq5u5w7hc7QCJ1kB3nCj2mNm6mGqL6rSdDY=
+	t=1714148794; cv=none; b=HYYk911SZxi2waIp536U8Tzo4JoG64jRmVPeTNMhY+DZt326QwQWRFzWb4cN+fqQlkmpmX/j7oQxO57ZSp4QfY452ZdkEJBBzxnKDIsQPfzLxAKTmZCFN33Rzvwv7zZHLnHuNx7466IOnmBVq8/7B0k1XVovk8rhqy/aiTvYpSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714147927; c=relaxed/simple;
-	bh=VgzhTmVD5rrpMdVv+Epuseb412iscCiAD5rrfiDFg3E=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/kSu3Y5OAKVGH7e+c5eoXVdfStWmHukfJtv5QACl/QopCBvaiXurBwKRy/i+tjrK5ncCf+rZeY60lndNPq/jTnV52dVpbC4C0pOeJy6ObFt4YSt+p5v+o9GmEkk/2GDl47NGWenTY6UWLtPBE5pHLdZmHDROa8+tzk2e2MSYQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQyNC1Mh5z6K6PC;
-	Sat, 27 Apr 2024 00:09:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 36C67140B55;
-	Sat, 27 Apr 2024 00:12:00 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
- 2024 17:11:59 +0100
-Date: Fri, 26 Apr 2024 17:11:58 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-CC: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"james.morse@arm.com" <james.morse@arm.com>, "Luck, Tony"
-	<tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>, "dave@stgolabs.net"
-	<dave@stgolabs.net>, "Jiang, Dave" <dave.jiang@intel.com>, "Schofield,
- Alison" <alison.schofield@intel.com>, "Verma, Vishal L"
-	<vishal.l.verma@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
-	"bhelgaas@google.com" <bhelgaas@google.com>, "helgaas@kernel.org"
-	<helgaas@kernel.org>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
-	"oohall@gmail.com" <oohall@gmail.com>, "linmiaohe@huawei.com"
-	<linmiaohe@huawei.com>, "shiju.jose@huawei.com" <shiju.jose@huawei.com>,
-	"Preble, Adam C" <adam.c.preble@intel.com>, "leoyang.li@nxp.com"
-	<leoyang.li@nxp.com>, "lukas@wunner.de" <lukas@wunner.de>,
-	"Smita.KoralahalliChannabasappa@amd.com"
-	<Smita.KoralahalliChannabasappa@amd.com>, "rrichter@amd.com"
-	<rrichter@amd.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Tsaur, Erwin"
-	<erwin.tsaur@intel.com>, "Kuppuswamy, Sathyanarayanan"
-	<sathyanarayanan.kuppuswamy@intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "Wanyan, Feiting" <feiting.wanyan@intel.com>,
-	"Wang, Yudong" <yudong.wang@intel.com>, "Peng, Chao P"
-	<chao.p.peng@intel.com>, "qingshun.wang@linux.intel.com"
-	<qingshun.wang@linux.intel.com>
-Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
- ANFE in aer_err_info
-Message-ID: <20240426171158.000024d4@Huawei.com>
-In-Reply-To: <SJ0PR11MB6744EC971D1BE6F3119EEA9992112@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240417061407.1491361-1-zhenzhong.duan@intel.com>
-	<20240417061407.1491361-2-zhenzhong.duan@intel.com>
-	<20240422171629.00005675@Huawei.com>
-	<SJ0PR11MB6744EC971D1BE6F3119EEA9992112@SJ0PR11MB6744.namprd11.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714148794; c=relaxed/simple;
+	bh=dK6kEHqnBd/0mkKOcrKzgBRZZ55RfC+Bv0ytAehgbpQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Nu1fN5bUgrUY51qC+z22N2j51o2Q3uqVRU8nCOBP+WkWEA39+Mq00S8G6c9QOEjs73Al/PaPrpqj7KuBJDoMHkyKsMKbKrf0UM3BxPnd8voOMS8Kw833+A4YgGEPKJxdwT0MzZ8//c3QJjuTM2lXJJZbbqZAkW3T3AO9yJh921M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFWqxDGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48525C113CD;
+	Fri, 26 Apr 2024 16:26:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714148793;
+	bh=dK6kEHqnBd/0mkKOcrKzgBRZZ55RfC+Bv0ytAehgbpQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RFWqxDGLi/VS44XkgsO8nJ4SjSsgIVT+nSCTdvvYV+c/uNoE1S7/bMD+gqpEIwfzs
+	 0vGS7otQIC39++kYefton6z0I3b0nSxw7HAvPqHeovM1mGzjnxLcdTCD5zGSYHMdZH
+	 tkGlin47truNdtQtfGs2NMBL42RNwuX0tGH+vAneUNoX1HcivhunCWqpG/kYxRF+V3
+	 6tweplRPMFq09qp8l7rEP+c4SQiLcjBmrx+gW14OmOawkl0AOOhbXIp2a3Byd8X6FV
+	 DXmLgfE+JguM7KBvAfnhZckwvJASHsGV6Xv/nGupblRdNuwTuwCvrKw+KI+uzBOYOS
+	 UnGR0S8515+5g==
+Received: from [185.201.63.253] (helo=wait-a-minute.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1s0OP6-008Hsg-Vi;
+	Fri, 26 Apr 2024 17:26:30 +0100
+Date: Fri, 26 Apr 2024 17:26:09 +0100
+Message-ID: <87il04t7j2.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra
+	<peterz@infradead.org>,
+	<linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>,
+	<linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>,
+	<x86@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	"Rafael J . Wysocki"
+	<rafael@kernel.org>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	James Morse
+	<james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe
+ Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas
+	<catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave
+ Hansen <dave.hansen@linux.intel.com>,
+	<linuxarm@huawei.com>,
+	<justin.he@arm.com>,
+	<jianyong.wu@arm.com>,
+	Lorenzo Pieralisi
+	<lpieralisi@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 11/16] irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs
+In-Reply-To: <20240426135126.12802-12-Jonathan.Cameron@huawei.com>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+	<20240426135126.12802-12-Jonathan.Cameron@huawei.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.201.63.253
+X-SA-Exim-Rcpt-To: Jonathan.Cameron@huawei.com, tglx@linutronix.de, peterz@infradead.org, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, linux@armlinux.org.uk, rafael@kernel.org, miguel.luis@oracle.com, james.morse@arm.com, salil.mehta@huawei.com, jean-philippe@linaro.org, catalin.marinas@arm.com, will@kernel.org, guohanjun@huawei.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, linuxarm@huawei.com, justin.he@arm.com, jianyong.wu@arm.com, lpieralisi@kernel.org, sudeep.holla@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 23 Apr 2024 02:25:05 +0000
-"Duan, Zhenzhong" <zhenzhong.duan@intel.com> wrote:
+On Fri, 26 Apr 2024 14:51:21 +0100,
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+> 
+> From: James Morse <james.morse@arm.com>
+> 
+> To support virtual CPU hotplug, ACPI has added an 'online capable' bit
+> to the MADT GICC entries. This indicates a disabled CPU entry may not
+> be possible to online via PSCI until firmware has set enabled bit in
+> _STA.
+> 
+> This means that a "usable" GIC is one that is marked as either enabled,
 
-> >-----Original Message-----
-> >From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> >Subject: Re: [PATCH v3 1/3] PCI/AER: Store UNCOR_STATUS bits that might
-> >be ANFE in aer_err_info
-> >
-> >On Wed, 17 Apr 2024 14:14:05 +0800
-> >Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
-> >  
-> >> In some cases the detector of a Non-Fatal Error(NFE) is not the most
-> >> appropriate agent to determine the type of the error. For example,
-> >> when software performs a configuration read from a non-existent
-> >> device or Function, completer will send an ERR_NONFATAL Message.
-> >> On some platforms, ERR_NONFATAL results in a System Error, which
-> >> breaks normal software probing.
-> >>
-> >> Advisory Non-Fatal Error(ANFE) is a special case that can be used
-> >> in above scenario. It is predominantly determined by the role of the
-> >> detecting agent (Requester, Completer, or Receiver) and the specific
-> >> error. In such cases, an agent with AER signals the NFE (if enabled)
-> >> by sending an ERR_COR Message as an advisory to software, instead of
-> >> sending ERR_NONFATAL.
-> >>
-> >> When processing an ANFE, ideally both correctable error(CE) status and
-> >> uncorrectable error(UE) status should be cleared. However, there is no
-> >> way to fully identify the UE associated with ANFE. Even worse, a Fatal
-> >> Error(FE) or Non-Fatal Error(NFE) may set the same UE status bit as
-> >> ANFE. Treating an ANFE as NFE will reproduce above mentioned issue,
-> >> i.e., breaking softwore probing; treating NFE as ANFE will make us
-> >> ignoring some UEs which need active recover operation. To avoid clearing
-> >> UEs that are not ANFE by accident, the most conservative route is taken
-> >> here: If any of the FE/NFE Detected bits is set in Device Status, do not
-> >> touch UE status, they should be cleared later by the UE handler. Otherwise,
-> >> a specific set of UEs that may be raised as ANFE according to the PCIe
-> >> specification will be cleared if their corresponding severity is Non-Fatal.
-> >>
-> >> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
-> >> in aer_err_info.anfe_status. So that those bits could be printed and
-> >> processed later.
-> >>
-> >> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> >> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> >> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> >> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> >> ---
-> >>  drivers/pci/pci.h      |  1 +
-> >>  drivers/pci/pcie/aer.c | 45  
-> >++++++++++++++++++++++++++++++++++++++++++  
-> >>  2 files changed, 46 insertions(+)
-> >>
-> >> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> >> index 17fed1846847..3f9eb807f9fd 100644
-> >> --- a/drivers/pci/pci.h
-> >> +++ b/drivers/pci/pci.h
-> >> @@ -412,6 +412,7 @@ struct aer_err_info {
-> >>
-> >>  	unsigned int status;		/* COR/UNCOR Error Status */
-> >>  	unsigned int mask;		/* COR/UNCOR Error Mask */
-> >> +	unsigned int anfe_status;	/* UNCOR Error Status for ANFE */
-> >>  	struct pcie_tlp_log tlp;	/* TLP Header */
-> >>  };
-> >>
-> >> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> >> index ac6293c24976..27364ab4b148 100644
-> >> --- a/drivers/pci/pcie/aer.c
-> >> +++ b/drivers/pci/pcie/aer.c
-> >> @@ -107,6 +107,12 @@ struct aer_stats {
-> >>  					PCI_ERR_ROOT_MULTI_COR_RCV |  
-> >	\  
-> >>  					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
-> >>
-> >> +#define AER_ERR_ANFE_UNC_MASK  
-> >	(PCI_ERR_UNC_POISON_TLP |	\  
-> >> +					PCI_ERR_UNC_COMP_TIME |  
-> >	\  
-> >> +					PCI_ERR_UNC_COMP_ABORT |  
-> >	\  
-> >> +					PCI_ERR_UNC_UNX_COMP |  
-> >	\  
-> >> +					PCI_ERR_UNC_UNSUP)
-> >> +
-> >>  static int pcie_aer_disable;
-> >>  static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
-> >>
-> >> @@ -1196,6 +1202,41 @@ void aer_recover_queue(int domain, unsigned  
-> >int bus, unsigned int devfn,  
-> >>  EXPORT_SYMBOL_GPL(aer_recover_queue);
-> >>  #endif
-> >>
-> >> +static void anfe_get_uc_status(struct pci_dev *dev, struct aer_err_info  
-> >*info)  
-> >> +{
-> >> +	u32 uncor_mask, uncor_status;
-> >> +	u16 device_status;
-> >> +	int aer = dev->aer_cap;
-> >> +
-> >> +	if (pcie_capability_read_word(dev, PCI_EXP_DEVSTA,  
-> >&device_status))  
-> >> +		return;
-> >> +	/*
-> >> +	 * Take the most conservative route here. If there are
-> >> +	 * Non-Fatal/Fatal errors detected, do not assume any
-> >> +	 * bit in uncor_status is set by ANFE.
-> >> +	 */
-> >> +	if (device_status & (PCI_EXP_DEVSTA_NFED | PCI_EXP_DEVSTA_FED))
-> >> +		return;
-> >> +  
-> >
-> >Is there not a race here?  If we happen to get either an NFED or FED
-> >between the read of device_status above and here we might pick up a status
-> >that corresponds to that (and hence clear something we should not).  
-> 
-> In this scenario, info->anfe_status is 0.
+nit: "GIC" usually designs the whole HW infrastructure (distributor,
+redistributors, and ITSs). My understanding is that you are only
+referring to the redistributors.
 
-OK. In that case what is the point of the check above?
-If the code is safe to races, it's safe to go ahead without that check
-on what might race.
+> or online capable. Therefore, change acpi_gicc_is_usable() to check both
+> bits. However, we need to change the test in gic_acpi_match_gicc() back
+> to testing just the enabled bit so the count of enabled distributors is
+> correct.
+> 
+> What about the redistributor in the GICC entry? ACPI doesn't want to say.
+> Assume the worst: When a redistributor is described in the GICC entry,
+> but the entry is marked as disabled at boot, assume the redistributor
+> is inaccessible.
+> 
+> The GICv3 driver doesn't support late online of redistributors, so this
+> means the corresponding CPU can't be brought online either.
+> Rather than modifying cpu masks that may already have been used,
+> register a new cpuhp callback to fail this case. This must run earlier
+> than the main gic_starting_cpu() so that this case can be rejected
+> before the section of cpuhp that runs on the CPU that is coming up as
+> that is not allowed to fail. This solution keeps the handling of this
+> broken firmware corner case local to the GIC driver. As precise ordering
+> of this callback doesn't need to be controlled as long as it is
+> in that initial prepare phase, use CPUHP_BP_PREPARE_DYN.
+> 
+> Systems that want CPU hotplug in a VM can ensure their redistributors
+> are always-on, and describe them that way with a GICR entry in the MADT.
+> 
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> ---
+> Thanks to Marc for review and suggestions!
+> v8: Change the handling of broken rdists to fail cpuhp rather than
+>     modifying the cpu_present and cpu_possible masks.
+>     Updated commit text to reflect that.
+>     Added a sb tag for Marc given this is more or less what he put
+>     in his review comment.
+> ---
+>  drivers/irqchip/irq-gic-v3.c | 38 ++++++++++++++++++++++++++++++++++--
+>  include/linux/acpi.h         |  3 ++-
+>  2 files changed, 38 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+> index 10af15f93d4d..b4685991953e 100644
+> --- a/drivers/irqchip/irq-gic-v3.c
+> +++ b/drivers/irqchip/irq-gic-v3.c
+> @@ -44,6 +44,8 @@
+>  
+>  #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+>  
+> +static struct cpumask broken_rdists __read_mostly;
+> +
+>  struct redist_region {
+>  	void __iomem		*redist_base;
+>  	phys_addr_t		phys_base;
+> @@ -1293,6 +1295,18 @@ static void gic_cpu_init(void)
+>  #define MPIDR_TO_SGI_RS(mpidr)	(MPIDR_RS(mpidr) << ICC_SGI1R_RS_SHIFT)
+>  #define MPIDR_TO_SGI_CLUSTER_ID(mpidr)	((mpidr) & ~0xFUL)
+>  
+> +/*
+> + * gic_starting_cpu() is called after the last point where cpuhp is allowed
+> + * to fail. So pre check for problems earlier.
+> + */
+> +static int gic_check_rdist(unsigned int cpu)
+> +{
+> +	if (cpumask_test_cpu(cpu, &broken_rdists))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+>  static int gic_starting_cpu(unsigned int cpu)
+>  {
+>  	gic_cpu_init();
+> @@ -1384,6 +1398,10 @@ static void __init gic_smp_init(void)
+>  	};
+>  	int base_sgi;
+>  
+> +	cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
+> +				  "irqchip/arm/gicv3:checkrdist",
+> +				  gic_check_rdist, NULL);
+> +
+>  	cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_GIC_STARTING,
+>  				  "irqchip/arm/gicv3:starting",
+>  				  gic_starting_cpu, NULL);
+> @@ -2363,11 +2381,24 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
+>  				(struct acpi_madt_generic_interrupt *)header;
+>  	u32 reg = readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PIDR2_ARCH_MASK;
+>  	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
+> +	int cpu = get_cpu_for_acpi_id(gicc->uid);
+>  	void __iomem *redist_base;
+>  
+>  	if (!acpi_gicc_is_usable(gicc))
+>  		return 0;
+>  
+> +	/*
+> +	 * Capable but disabled CPUs can be brought online later. What about
+> +	 * the redistributor? ACPI doesn't want to say!
+> +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
+> +	 * Otherwise, prevent such CPUs from being brought online.
+> +	 */
+> +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
 
-> 
-> >
-> >Or am I missing that race being close somewhere?  
-> 
-> The bits leading to NFED or FED is masked out when assigning info->anfe_status.
-> Bits for FED is masked out by ~info->severity,
-> bit for NFED is masked out by AER_ERR_ANFE_UNC_MASK.
-> 
-> So we never clear status bits for NFED or FED in ANFE handler.
-> 
-> See below assignment of info->anfe_status.
-> 
-> Thanks
-> Zhenzhong
-> 
-> >  
-> >> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,  
-> >&uncor_status);  
-> >> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,  
-> >&uncor_mask);  
-> >> +	/*
-> >> +	 * According to PCIe Base Specification Revision 6.1,
-> >> +	 * Section 6.2.3.2.4, if an UNCOR error is raised as
-> >> +	 * Advisory Non-Fatal error, it will match the following
-> >> +	 * conditions:
-> >> +	 *	a. The severity of the error is Non-Fatal.
-> >> +	 *	b. The error is one of the following:
-> >> +	 *		1. Poisoned TLP           (Section 6.2.3.2.4.3)
-> >> +	 *		2. Completion Timeout     (Section 6.2.3.2.4.4)
-> >> +	 *		3. Completer Abort        (Section 6.2.3.2.4.1)
-> >> +	 *		4. Unexpected Completion  (Section 6.2.3.2.4.5)
-> >> +	 *		5. Unsupported Request    (Section 6.2.3.2.4.1)
-> >> +	 */
-> >> +	info->anfe_status = uncor_status & ~uncor_mask & ~info->severity  
-> >&  
-> >> +			    AER_ERR_ANFE_UNC_MASK;
-> >> +}
-> >> +
-> >>  /**
-> >>   * aer_get_device_error_info - read error status from dev and store it to  
-> >info  
-> >>   * @dev: pointer to the device expected to have a error record
-> >> @@ -1213,6 +1254,7 @@ int aer_get_device_error_info(struct pci_dev  
-> >*dev, struct aer_err_info *info)  
-> >>
-> >>  	/* Must reset in this function */
-> >>  	info->status = 0;
-> >> +	info->anfe_status = 0;
-> >>  	info->tlp_header_valid = 0;
-> >>
-> >>  	/* The device might not support AER */
-> >> @@ -1226,6 +1268,9 @@ int aer_get_device_error_info(struct pci_dev  
-> >*dev, struct aer_err_info *info)  
-> >>  			&info->mask);
-> >>  		if (!(info->status & ~info->mask))
-> >>  			return 0;
-> >> +
-> >> +		if (info->status & PCI_ERR_COR_ADV_NFAT)
-> >> +			anfe_get_uc_status(dev, info);
-> >>  	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
-> >>  		   type == PCI_EXP_TYPE_RC_EC ||
-> >>  		   type == PCI_EXP_TYPE_DOWNSTREAM ||  
-> 
-> 
+Now this makes the above acpi_gicc_is_usable() very odd. It checks for
+MADT_ENABLED *or* GICC_ONLINE_CAPABLE. But we definitely don't want to
+deal with the lack of MADT_ENABLED.
 
+So why don't we explicitly check for individual flags and get rid of
+acpi_gicc_is_usable(), as its new definition doesn't tell you anything
+useful?
+
+> +		pr_warn_once("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
+> +		cpumask_set_cpu(cpu, &broken_rdists);
+
+Given that get_cpu_for_acpi_id() can return -EINVAL, you'd want to
+check that. Also, I'd like to drop the _once on the warning.
+Indicating all the broken CPUs is useful information, and only happens
+once per boot.
+
+> +		return 0;
+> +	}
+> +
+>  	redist_base = ioremap(gicc->gicr_base_address, size);
+>  	if (!redist_base)
+>  		return -ENOMEM;
+> @@ -2413,9 +2444,12 @@ static int __init gic_acpi_match_gicc(union acpi_subtable_headers *header,
+>  
+>  	/*
+>  	 * If GICC is enabled and has valid gicr base address, then it means
+> -	 * GICR base is presented via GICC
+> +	 * GICR base is presented via GICC. The redistributor is only known to
+> +	 * be accessible if the GICC is marked as enabled. If this bit is not
+> +	 * set, we'd need to add the redistributor at runtime, which isn't
+> +	 * supported.
+>  	 */
+> -	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address)
+> +	if (gicc->flags & ACPI_MADT_ENABLED && gicc->gicr_base_address)
+>  		acpi_data.enabled_rdists++;
+>  
+>  	return 0;
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 9844a3f9c4e5..fcfb7bb6789e 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -239,7 +239,8 @@ void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+>  
+>  static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
+>  {
+> -	return gicc->flags & ACPI_MADT_ENABLED;
+> +	return gicc->flags & (ACPI_MADT_ENABLED |
+> +			      ACPI_MADT_GICC_ONLINE_CAPABLE);
+>  }
+>  
+>  /* the following numa functions are architecture-dependent */
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
 
