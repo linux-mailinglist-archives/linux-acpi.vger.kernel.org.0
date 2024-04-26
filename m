@@ -1,241 +1,381 @@
-Return-Path: <linux-acpi+bounces-5433-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5434-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D938B3F16
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 20:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5698B3F3C
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 20:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F37286C40
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E161C238B5
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B62171071;
-	Fri, 26 Apr 2024 18:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="euQvqvoX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F75016E88D;
+	Fri, 26 Apr 2024 18:29:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2085.outbound.protection.outlook.com [40.107.93.85])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D4316F839;
-	Fri, 26 Apr 2024 18:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714155300; cv=fail; b=p+yLYH9EnLzVM4ptYESPS2oFYJJh6P/o2UiZ7DMADt+lV7nWIlfyq8jcui/ealu2AtXzRsimJffpjxM53NPphW1rcMyzBGmPeFK6Dy0N/u9s8wYao8BaVo+veRWVKljMW3tvx+44Bjb9O4eSs6O+zPkRdgIyh2FKfKzWZtzVJPE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714155300; c=relaxed/simple;
-	bh=wN2r9UW40KsDk0zacFT40egJ36R/+omMezZUVmSXPKM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=vGi4BazEv+qFxsPgzopE4KHBWv9OwlZkgfrZOvl0oUmwdmJnVkawzCtSCkExjXy3IMWNmi8n8GHEFcHLJx9viHJX4DJLpcB/yRGFh12FkRALFx3Qb1MTAJXqQxQ5Ffe+uZOWslP/foo0z7Yc/JdUwlSqbQWxALEU5BFQOzTqzbA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=euQvqvoX; arc=fail smtp.client-ip=40.107.93.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VakR30HaWR+7sSgLU287U80SMrZ3l9JZ/zVV3tQ1bTANAiA4vKMVxURTSP9asZBPaeLQXEr+O7LI/QtdXvxbDeUgg0QemiOBejYNAojv/apSoQNtL32F1P/cQ0AQlpQ2H84rQnObE7MxDTjCvstc+Cy1ChhdanFjc1qD0v1nJk5KSfn8cHIz50LeMqle7HxPci5Ruee2QKmr6oaI2TInive1mQTAce6zyyX1OUYlJcZ5JvCkWjo9r+a99ua8ANjap90e90NKaV2sP4ombLOuOSK8YZbEOlTYRVQbuMwRi3qvm8o89qCLaEstU/CasVNYk6PePNvgG8TeariJLSPieQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e5eKN2Ot6cxeHkAfYnli29110WrSyXyPiFazWuM+yfI=;
- b=lvXjiNeeifeboHcbFPDqASbtFEBubiIbVbdAk3nzEQifdrRCaezZCHSsM2Oic1+CxEVi4gs14WrPFky7I4X1ZxjekgjpLMa0qoG5yn2HXzlGB5PuAbkaCa0fJ1ZIwbnflmo/WDOOWuUbv+kr/cb/rQoh+No64i5jZIVC6/llmRlbzh5wdoBXjL4PRVDagLZa5vnuVhDVlJqw5SGam5YTrTDywB5z8jmcSKF1k4DM//epCnTtBgPBmcp0rUl2u+IWk3XUWt97x32pTUs1m3bRJL0eXugjCyYSYTpL7jELssft5fu55NoeTNXfgsUO87sIG0NVcO93FLYDSXAGvT2axw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e5eKN2Ot6cxeHkAfYnli29110WrSyXyPiFazWuM+yfI=;
- b=euQvqvoXBTLYycbRLRasHzArAr6MYVMC+diE81wHdw0UNstwMOYN+tZt2fOe+stuWeKqQ3vigJidGm7kF9zlXdv6R7H5s/yBh5/KYNzfqqJjdMKO7hiw7aKEh9a05D7mqmMoIwMTN/ZcDXuc3qSLDtLmwDoFlDd4svp/u1CDE4U=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
- by LV2PR12MB5823.namprd12.prod.outlook.com (2603:10b6:408:178::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.31; Fri, 26 Apr
- 2024 18:14:54 +0000
-Received: from CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::b965:1501:b970:e60a]) by CYYPR12MB8750.namprd12.prod.outlook.com
- ([fe80::b965:1501:b970:e60a%4]) with mapi id 15.20.7519.021; Fri, 26 Apr 2024
- 18:14:54 +0000
-Date: Fri, 26 Apr 2024 20:14:48 +0200
-From: Robert Richter <rrichter@amd.com>
-To: Alison Schofield <alison.schofield@intel.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v4 6/7] ACPI/NUMA: Add log messages for memory ranges
- found in CEDT
-Message-ID: <ZivvGJcXKPN_L5fn@rric.localdomain>
-References: <20240424154846.2152750-1-rrichter@amd.com>
- <20240424154846.2152750-7-rrichter@amd.com>
- <6629474eab671_b6e0294e8@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <ZioGhwNWQyFjRtZ-@rric.localdomain>
- <ZiqnbD0CB9WUL1zu@aschofie-mobl2>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZiqnbD0CB9WUL1zu@aschofie-mobl2>
-X-ClientProxiedBy: FR0P281CA0215.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ac::19) To CYYPR12MB8750.namprd12.prod.outlook.com
- (2603:10b6:930:be::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8E5168B07;
+	Fri, 26 Apr 2024 18:29:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714156146; cv=none; b=XlaFalFo3VvxBNQAwqnbSPQkSQ3T0RuxwiikzXzQa4wkbOwCyMJa/M53mVn8APxYhnB4zRwCOskV+QyUHIOEPlfKuRbOqWC9AyMm1G423LiLXPkLIXslOK1LbkqoU2gWUIpwi3zMYgMi/EeaZltxhjHNRjwhsg3LUCjnFUkUnPw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714156146; c=relaxed/simple;
+	bh=NFuS+MSfq1noDcfC0XJN/a3ASNj0F2Kz43ByXP/YL4s=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U1ZOqZwU2yrggJTgKsu8OWarjPXHmejxha2YdZLDZuP8eEhpH4w7Pm1r5KmHgKDN91DXxIcgzZrRJxxXoJjWnbZUT67bqnqHoucpEkFyhJi8I8HiZHb5SwaYLATFWBsE+hzcH1ICVJ0goZaeWV2/plO6yZtk4PkZnrl17jFzZg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VR1QL36Mdz6JBGR;
+	Sat, 27 Apr 2024 02:26:34 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 40C2E14011D;
+	Sat, 27 Apr 2024 02:29:00 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
+ 2024 19:28:59 +0100
+Date: Fri, 26 Apr 2024 19:28:58 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Marc Zyngier <maz@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Hanjun Guo
+	<guohanjun@huawei.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>, "Lorenzo
+ Pieralisi" <lpieralisi@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 11/16] irqchip/gic-v3: Add support for ACPI's
+ disabled but 'online capable' CPUs
+Message-ID: <20240426192858.000033d9@huawei.com>
+In-Reply-To: <87il04t7j2.wl-maz@kernel.org>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+ <20240426135126.12802-12-Jonathan.Cameron@huawei.com>
+ <87il04t7j2.wl-maz@kernel.org>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|LV2PR12MB5823:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0a7c89e-da41-45f2-31c9-08dc661cc5c0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|366007|1800799015;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?5TjLmiMSNAq+CZ8nwnz0L/n+BVtHOB8jlLW/7qjygr6i6Ff3vtEd72CP2iym?=
- =?us-ascii?Q?HN+yoSP6gxXzmpQalR4plUyWaGbM4EIbmUNKvGgal2ykgQCCq/tVivapAqoF?=
- =?us-ascii?Q?lzPtFShLuhyaIV0Pm8g/8dTfrM/SbjmxuskimygdBPcrIzEWDG2A5eHKZPGK?=
- =?us-ascii?Q?OBxLFQgLlUURQSapnR9K3IdXmytMZ2AJHE0gCW9BEwr8jy0SHo2mcoIK5AyT?=
- =?us-ascii?Q?PGT92ZoxgT0lg1LZN9Blx3CfhTpTqUKuv7FBlTEjNQEWkZF60i/RuRcfA/ke?=
- =?us-ascii?Q?cTFvIyohPB05fUTHVZZ/HhLndNf5RHsUdHST+IXe9qCglPweopXHsnO+DMEy?=
- =?us-ascii?Q?2A04TUayMkGM2+WSwl9guVYpYzoUzBDQb4HbaxLLNd/MPzBxZZDLgfhF8z3F?=
- =?us-ascii?Q?r7D9J8ZaOVGIY42UgwJTC5ih5G7zUdseZ4HnR+Cfy5xTqejaA6qy9jhZYYpH?=
- =?us-ascii?Q?PWF+qp9GSQLjib73+qcmxw0sbq7KYNfiIjLOnorZLHS9z9IzIDtkoJ/nh1s8?=
- =?us-ascii?Q?flufHNFqlfY6m5I6dqkwctbo41MdEHVGirGdhM4HAkFcUDSx1a+6HXo2y9F0?=
- =?us-ascii?Q?ut60dNHqScQC44XCynoq62DFnt21B650jgaJheFhOBB8FEzSe4QxEDCNf3aL?=
- =?us-ascii?Q?fSmccnUzPxoAJ6JJBof7ctUA3ia46zIcJjYE7as74eYvRn83TYDHu5ZkwqrU?=
- =?us-ascii?Q?9GuX1JJgWJDloPFgfZS3+vwuWzQRaMwGuXi7ZJzl+Q06Njz1POo02eQvHzwd?=
- =?us-ascii?Q?JKo8UD1VragqAxvgsZlM64VKARpavlo1Cz5rys3oSMhJQqdjDDgNiW4fmmJe?=
- =?us-ascii?Q?7UcD9hE33ugRU8QcGSEssfaWVXITwWRKN48gH4+xKxlMx2Ix9vUuz7D0Eemy?=
- =?us-ascii?Q?+MatlVu0qR42HdnjmgTWWHfExQqqRWwh9iZpf67Ba8c9JziaX0nzcZNZ3svg?=
- =?us-ascii?Q?Ov1zYeU4clQ+4Mi3HI717GVjM3We8JQAJ2Ob2AvxqTlOyy9PwVHTjRywTuZ+?=
- =?us-ascii?Q?4RXq1HAtFhIHqEovw6FGLqFQTiF07HezylJXTqiUBHng3gZWzNmdo+vpZ2IW?=
- =?us-ascii?Q?hS5EKQsn1TJf3x9ZomR4xaQuB0+wSBoTRgqAg6mVtqGOD5M+zYFVjWziE4kM?=
- =?us-ascii?Q?ZBNYBKMlekn96BNw6/gwjX0/6m52nHn77/MJeLmJEQbCaSKqeHvWYKh3xPYa?=
- =?us-ascii?Q?yyTIQNNtbDSSWb/HpDFRmJqMshizQvP1ytz8/grpdDa+1oBOS2YWVsbiL1Al?=
- =?us-ascii?Q?7soDKGC9nY82OIiuFDBz/OnoPnKO9grf+S2/E4UbYA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EErnr3DKZ55sGKhr43I6sC7a9/59+xgHcQcG+FB0QRlp5D6ZmAraEoSZpGYU?=
- =?us-ascii?Q?XBEho68ejuwYircG/AYGkuHrTZFTX9oMTciLzBFMlFe4guDECpL2k2eXPrm6?=
- =?us-ascii?Q?xwTnlj61MAtk2KERcW0T0pvCcKLZyLsQvjPP0mMm87oYS4D4b2OngrHo1MiM?=
- =?us-ascii?Q?ASPx0TZjpzb/lrDQlTCjZcWJjfwffDxeipMo586ZYpm/y7E0mjn+l9KZ3CW4?=
- =?us-ascii?Q?U4yY2uATcR5v2ae5RF5i0pXbj7Jahi6xjVJYBiDi6gehLdeVDRepVIbcnwBC?=
- =?us-ascii?Q?Cz4zqXCi6Vw2RTV6P666gz0NlysCGjfSFH7t2099YrdKuvO+0E/Uhk5un1XE?=
- =?us-ascii?Q?cGFmB7ztj2m6Iclu/Deml+kj6OCyI50tXGkfeQrLByxymnucrn64P2H1Hosg?=
- =?us-ascii?Q?MuSo8UsCvxDTat3pXlcrVfB2UCH1A92/OVo5ZrswEesn7lzUPW0dEq7PJFs+?=
- =?us-ascii?Q?8CEqlu0T0ogr70eid3q954Cqnr8KKm5lr0aFO6gFtpS6x6eQPF/F3w1Smy6g?=
- =?us-ascii?Q?UwUgHnVOKFSPjtz5V9SI5h7akEhATbJTiS9i6TiojbPrGBZXg1adG2R+N07d?=
- =?us-ascii?Q?1wspCArvyhdTU82CILfG7wrvSfgghf7Ne6s+xQXqXuugcBGHH9sFdVMkLzaC?=
- =?us-ascii?Q?osA+Pni1YbQGwiOilTsKQm6F8oWolfaEKveMLifwOQ4UKfgETy8343itjDRg?=
- =?us-ascii?Q?z4dWnxcGK3swZnfrFGfYZWGwOUiaKiCcjjqrnk9ZUqc71raAZ4Zo1taqnF4k?=
- =?us-ascii?Q?7cKxJUyhspIzMpkFE1tcH1gNappWYAjdfR1AzRZf+MYcvPTjLMFfKHaafNg3?=
- =?us-ascii?Q?+xJ9iXTHwQem5sr+Y9MfvrYUP7qOPRdNJ8P3F/+VOfJY4CSxgWifJVpPlIJp?=
- =?us-ascii?Q?eNNAN3Y9ykXWwbzrxjXImC4aV9MzDFkwaeqSa/yv5MKNrvVv4PuvO6F8P4Cj?=
- =?us-ascii?Q?Tpkt1wWLnNnBOZDoN1co2ZzqtwQTBY7n3JM7vZ6wxknkUEvEEcwwbp3kjtOv?=
- =?us-ascii?Q?QEixVGzYG9gCU8Yxq4F2lvlJSeo/Oj2d5t2k6Ku1kglk6EYU3RA71Bjr/IAS?=
- =?us-ascii?Q?C4tatGQx0tXIngCPlP2qpqy3oihwsn2VFZO38dgJ/DCTOzH1ERuUHO8deom8?=
- =?us-ascii?Q?R5/tJ0zdXbItiL+IEkdMLJQCD/57HsA5EhKVQ3caebvo07Dx9WQKv0mV4dcn?=
- =?us-ascii?Q?vuhfX/K0tmETIvTKiaU5tQJlwvJLvAIsakbbMWle4QTGRxZbar9rOHZDIRNW?=
- =?us-ascii?Q?+dvryPI6O6y5kiD6Yg78vw08KDCC9ctKix8W112NfNGfNqep+kFXQCSnK5mj?=
- =?us-ascii?Q?6uxE7dFyeYMvJc3H1StL6ROksYiJFTwJsMyEYuCukxanLzl864jRXTNAYaFk?=
- =?us-ascii?Q?TsPKxVpqjDWdPqa3LavfthGhlxYeC61NdA1sy/0M8B98gXp9A89FTqqlePG1?=
- =?us-ascii?Q?05gIZQjlNJM9f/TBim04LdcgQp7Tyz/urR7Xj8qYD/yGVAY73ruIPgaff9Gp?=
- =?us-ascii?Q?Goi/YsaDnDfJuiQ4jd8Q/D2v/I0ShABRKiJzYZqWnPgR58GUObh0aVKYkk7O?=
- =?us-ascii?Q?6/GUd4hGDXWj2xYetUW89aK7qw0K/bReJIAZuAPK?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0a7c89e-da41-45f2-31c9-08dc661cc5c0
-X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 18:14:54.3931
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jeg4t6dSqIPuwfFM1kYMZYSlvFr33tHvePmVMl1Rbu8Tg/GI/O8qsSgp5KIS/zXzeGdDlv/04tHYHD6qUxcIDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5823
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 25.04.24 11:56:44, Alison Schofield wrote:
-> On Thu, Apr 25, 2024 at 09:30:15AM +0200, Robert Richter wrote:
-> > On 24.04.24 10:54:22, Dan Williams wrote:
-> > > Robert Richter wrote:
-> > > > Adding a pr_info() when successfully adding a CFMWS memory range.
-> > > > 
-> > > > Suggested-by: Alison Schofield <alison.schofield@intel.com>
-> > > > Signed-off-by: Robert Richter <rrichter@amd.com>
-> > > > ---
-> > > >  drivers/acpi/numa/srat.c | 10 +++++++++-
-> > > >  1 file changed, 9 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> > > > index e3f26e71637a..c62e4636e472 100644
-> > > > --- a/drivers/acpi/numa/srat.c
-> > > > +++ b/drivers/acpi/numa/srat.c
-> > > > @@ -338,8 +338,11 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
-> > > >  	 * found for any portion of the window to cover the entire
-> > > >  	 * window.
-> > > >  	 */
-> > > > -	if (!numa_fill_memblks(start, end))
-> > > > +	if (!numa_fill_memblks(start, end)) {
-> > > > +		pr_info("CEDT: memblk extended [mem %#010Lx-%#010Lx]\n",
-> > > > +			(unsigned long long) start, (unsigned long long) end - 1);
-> > > 
-> > > This looks like pr_debug() material to me.
-> > 
-> > This should have the same log level as the message below and/or its
-> > corresponding SRAT message. CEDT mem blocks wouldn't be reported
-> > otherwise only because a smaller (overlapping) entry was registered
-> > before. That is why I used pr_info here.
-> 
-> It does feel like this message belongs but maybe it should also 
-> mimic the SRAT define message and emit what node maps this range
-> if memblocks were extended.
-> 
-> But...seems this will emit a message for every CFMWS range, even those
-> where no memblk needed to be extended - ie the range was fully described
-> in the SRAT.
-> 
-> Sadly, numa_fill_memblks() return of 'success' has double meaning.
-> It can mean memblks were extended, or that (start, end) was found fully
-> described. I don't see an good place to insert the message in
-> numa_fill_memblks(). 
-> 
-> Sorry, just stirring the pot here, with no clear suggestion on how
-> to emit info.
 
-Ok, I have changed numa_fill_memblks() to also return if memblks have
-been modified. That information is used to print the message.
+> > @@ -2363,11 +2381,24 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_he=
+aders *header,
+> >  				(struct acpi_madt_generic_interrupt *)header;
+> >  	u32 reg =3D readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PID=
+R2_ARCH_MASK;
+> >  	u32 size =3D reg =3D=3D GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * =
+2;
+> > +	int cpu =3D get_cpu_for_acpi_id(gicc->uid);
+> >  	void __iomem *redist_base;
+> > =20
+> >  	if (!acpi_gicc_is_usable(gicc))
+> >  		return 0;
+> > =20
+> > +	/*
+> > +	 * Capable but disabled CPUs can be brought online later. What about
+> > +	 * the redistributor? ACPI doesn't want to say!
+> > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entrie=
+s.
+> > +	 * Otherwise, prevent such CPUs from being brought online.
+> > +	 */
+> > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) { =20
+>=20
+> Now this makes the above acpi_gicc_is_usable() very odd. It checks for
+> MADT_ENABLED *or* GICC_ONLINE_CAPABLE. But we definitely don't want to
+> deal with the lack of MADT_ENABLED.
+>=20
+> So why don't we explicitly check for individual flags and get rid of
+> acpi_gicc_is_usable(), as its new definition doesn't tell you anything
+> useful?
 
-> 
-> > 
-> > > 
-> > > >  		return 0;
-> > > > +	}
-> > > >  
-> > > >  	/* No SRAT description. Create a new node. */
-> > > >  	node = acpi_map_pxm_to_node(*fake_pxm);
-> > > > @@ -354,8 +357,13 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
-> > > >  		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
-> > > >  			node, start, end);
-> > > >  	}
-> > > > +
-> > > >  	node_set(node, numa_nodes_parsed);
-> > > >  
-> > > > +	pr_info("CEDT: Node %u PXM %u [mem %#010Lx-%#010Lx]\n",
-> > > > +		node, *fake_pxm,
-> > > > +		(unsigned long long) start, (unsigned long long) end - 1);
-> > > > +
-> > > 
-> > > This makes sense to mirror the SRAT pr_info().
-> > 
-> > I evaluated this.
-> > 
-> 
-> I read Dan's comment as simple acceptance. Like, yeah this one is good
-> because it mimics the SRAT pr_info.
+That does seem to have evolved to something rather odd.
 
-Ah, I misread this, thanks for clarification.
+I messed around with various reorganizations of the boolean logic
+and ended up with same 2 conditions as here as otherwise
+the indent gets deep and the code becomes fiddlier to reason about
+(see below for result)
 
--Robert
+>=20
+> > +		return 0;
+> > +	}
+> > +
+> >  	redist_base =3D ioremap(gicc->gicr_base_address, size);
+> >  	if (!redist_base)
+> >  		return -ENOMEM;
+> > @@ -2413,9 +2444,12 @@ static int __init gic_acpi_match_gicc(union acpi=
+_subtable_headers *header,
+> > =20
+> >  	/*
+> >  	 * If GICC is enabled and has valid gicr base address, then it means
+> > -	 * GICR base is presented via GICC
+> > +	 * GICR base is presented via GICC. The redistributor is only known to
+> > +	 * be accessible if the GICC is marked as enabled. If this bit is not
+> > +	 * set, we'd need to add the redistributor at runtime, which isn't
+> > +	 * supported.
+> >  	 */
+> > -	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address)
+> > +	if (gicc->flags & ACPI_MADT_ENABLED && gicc->gicr_base_address)
+> >  		acpi_data.enabled_rdists++;
+> > =20
+> >  	return 0;
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index 9844a3f9c4e5..fcfb7bb6789e 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -239,7 +239,8 @@ void acpi_table_print_madt_entry (struct acpi_subta=
+ble_header *madt);
+> > =20
+> >  static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interr=
+upt *gicc)
+> >  {
+> > -	return gicc->flags & ACPI_MADT_ENABLED;
+> > +	return gicc->flags & (ACPI_MADT_ENABLED |
+> > +			      ACPI_MADT_GICC_ONLINE_CAPABLE);
+> >  }
+> > =20
+> >  /* the following numa functions are architecture-dependent */ =20
+>=20
+> Thanks,
+
+I'll not send a formal v9 until early next week, so here is the current sta=
+te
+if you have time to take another look before then.
+
+=46rom a8a54cfbadccf1782b7cc04b93eb875dedbee7a9 Mon Sep 17 00:00:00 2001
+From: James Morse <james.morse@arm.com>
+Date: Thu, 18 Apr 2024 14:54:07 +0100
+Subject: [PATCH] irqchip/gic-v3: Add support for ACPI's disabled but 'online
+ capable' CPUs
+
+To support virtual CPU hotplug, ACPI has added an 'online capable' bit
+to the MADT GICC entries. This indicates a disabled CPU entry may not
+be possible to online via PSCI until firmware has set enabled bit in
+_STA.
+
+This means that a "usable" GIC redistributor is one that is marked as
+either enabled, or online capable. The meaning of the
+acpi_gicc_is_usable() would become less clear than just checking the
+pair of flags at call sites. As such, drop that helper function.
+The test in gic_acpi_match_gicc() remains as testing just the
+enabled bit so the count of enabled distributors is correct.
+
+What about the redistributor in the GICC entry? ACPI doesn't want to say.
+Assume the worst: When a redistributor is described in the GICC entry,
+but the entry is marked as disabled at boot, assume the redistributor
+is inaccessible.
+
+The GICv3 driver doesn't support late online of redistributors, so this
+means the corresponding CPU can't be brought online either.
+Rather than modifying cpu masks that may already have been used,
+register a new cpuhp callback to fail this case. This must run earlier
+than the main gic_starting_cpu() so that this case can be rejected
+before the section of cpuhp that runs on the CPU that is coming up as
+that is not allowed to fail. This solution keeps the handling of this
+broken firmware corner case local to the GIC driver. As precise ordering
+of this callback doesn't need to be controlled as long as it is
+in that initial prepare phase, use CPUHP_BP_PREPARE_DYN.
+
+Systems that want CPU hotplug in a VM can ensure their redistributors
+are always-on, and describe them that way with a GICR entry in the MADT.
+
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Tested-by: Miguel Luis <miguel.luis@oracle.com>
+Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+---
+v9: Thanks to Marc for quick follow up.
+Fix up description and drop the acpi_gicc_is_usable() check given that
+now doesn't actually mean they are usable.
+
+Thanks to Marc for review and suggestions!
+v8: Change the handling of broken rdists to fail cpuhp rather than
+    modifying the cpu_present and cpu_possible masks.
+    Updated commit text to reflect that.
+    Added a sb tag for Marc given this is more or less what he put
+    in his review comment.
+---
+ arch/arm64/kernel/smp.c       |  3 ++-
+ drivers/acpi/processor_core.c |  3 ++-
+ drivers/irqchip/irq-gic-v3.c  | 44 +++++++++++++++++++++++++++++++----
+ include/linux/acpi.h          |  5 ----
+ 4 files changed, 44 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index 4ced34f62dab..afe835c1cbe2 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -523,7 +523,8 @@ acpi_map_gic_cpu_interface(struct acpi_madt_generic_int=
+errupt *processor)
+ {
+ 	u64 hwid =3D processor->arm_mpidr;
+=20
+-	if (!acpi_gicc_is_usable(processor)) {
++	if (!(processor->flags &
++	      (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE))) {
+ 		pr_debug("skipping disabled CPU entry with 0x%llx MPIDR\n", hwid);
+ 		return;
+ 	}
+diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+index b203cfe28550..b04b684f3190 100644
+--- a/drivers/acpi/processor_core.c
++++ b/drivers/acpi/processor_core.c
+@@ -90,7 +90,8 @@ static int map_gicc_mpidr(struct acpi_subtable_header *en=
+try,
+ 	struct acpi_madt_generic_interrupt *gicc =3D
+ 	    container_of(entry, struct acpi_madt_generic_interrupt, header);
+=20
+-	if (!acpi_gicc_is_usable(gicc))
++	if (!(gicc->flags &
++	      (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
+ 		return -ENODEV;
+=20
+ 	/* device_declaration means Device object in DSDT, in the
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 10af15f93d4d..45272316d155 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -44,6 +44,8 @@
+=20
+ #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+=20
++static struct cpumask broken_rdists __read_mostly;
++
+ struct redist_region {
+ 	void __iomem		*redist_base;
+ 	phys_addr_t		phys_base;
+@@ -1293,6 +1295,18 @@ static void gic_cpu_init(void)
+ #define MPIDR_TO_SGI_RS(mpidr)	(MPIDR_RS(mpidr) << ICC_SGI1R_RS_SHIFT)
+ #define MPIDR_TO_SGI_CLUSTER_ID(mpidr)	((mpidr) & ~0xFUL)
+=20
++/*
++ * gic_starting_cpu() is called after the last point where cpuhp is allowed
++ * to fail. So pre check for problems earlier.
++ */
++static int gic_check_rdist(unsigned int cpu)
++{
++	if (cpumask_test_cpu(cpu, &broken_rdists))
++		return -EINVAL;
++
++	return 0;
++}
++
+ static int gic_starting_cpu(unsigned int cpu)
+ {
+ 	gic_cpu_init();
+@@ -1384,6 +1398,10 @@ static void __init gic_smp_init(void)
+ 	};
+ 	int base_sgi;
+=20
++	cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
++				  "irqchip/arm/gicv3:checkrdist",
++				  gic_check_rdist, NULL);
++
+ 	cpuhp_setup_state_nocalls(CPUHP_AP_IRQ_GIC_STARTING,
+ 				  "irqchip/arm/gicv3:starting",
+ 				  gic_starting_cpu, NULL);
+@@ -2363,11 +2381,25 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_header=
+s *header,
+ 				(struct acpi_madt_generic_interrupt *)header;
+ 	u32 reg =3D readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PIDR2_A=
+RCH_MASK;
+ 	u32 size =3D reg =3D=3D GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
++	int cpu =3D get_cpu_for_acpi_id(gicc->uid);
+ 	void __iomem *redist_base;
+=20
+-	if (!acpi_gicc_is_usable(gicc))
++	/* Neither enabled or online capable means it doesn't exist, skip it */
++	if (!(gicc->flags & (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
+ 		return 0;
+=20
++	/*
++	 * Capable but disabled CPUs can be brought online later. What about
++	 * the redistributor? ACPI doesn't want to say!
++	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
++	 * Otherwise, prevent such CPUs from being brought online.
++	 */
++	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
++		pr_warn("CPU %u's redistributor is inaccessible: this CPU can't be broug=
+ht online\n", cpu);
++		cpumask_set_cpu(cpu, &broken_rdists);
++		return 0;
++	}
++
+ 	redist_base =3D ioremap(gicc->gicr_base_address, size);
+ 	if (!redist_base)
+ 		return -ENOMEM;
+@@ -2413,9 +2445,12 @@ static int __init gic_acpi_match_gicc(union acpi_sub=
+table_headers *header,
+=20
+ 	/*
+ 	 * If GICC is enabled and has valid gicr base address, then it means
+-	 * GICR base is presented via GICC
++	 * GICR base is presented via GICC. The redistributor is only known to
++	 * be accessible if the GICC is marked as enabled. If this bit is not
++	 * set, we'd need to add the redistributor at runtime, which isn't
++	 * supported.
+ 	 */
+-	if (acpi_gicc_is_usable(gicc) && gicc->gicr_base_address)
++	if (gicc->flags & ACPI_MADT_ENABLED && gicc->gicr_base_address)
+ 		acpi_data.enabled_rdists++;
+=20
+ 	return 0;
+@@ -2474,7 +2509,8 @@ static int __init gic_acpi_parse_virt_madt_gicc(union=
+ acpi_subtable_headers *hea
+ 	int maint_irq_mode;
+ 	static int first_madt =3D true;
+=20
+-	if (!acpi_gicc_is_usable(gicc))
++	if (!(gicc->flags &
++	      (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
+ 		return 0;
+=20
+ 	maint_irq_mode =3D (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE) ?
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 9844a3f9c4e5..cf5d2a6950ec 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -237,11 +237,6 @@ acpi_table_parse_cedt(enum acpi_cedt_type id,
+ int acpi_parse_mcfg (struct acpi_table_header *header);
+ void acpi_table_print_madt_entry (struct acpi_subtable_header *madt);
+=20
+-static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt =
+*gicc)
+-{
+-	return gicc->flags & ACPI_MADT_ENABLED;
+-}
+-
+ /* the following numa functions are architecture-dependent */
+ void acpi_numa_slit_init (struct acpi_table_slit *slit);
+=20
+--=20
+2.39.2
+
+
+
+>=20
+> 	M.
+>=20
+
 
