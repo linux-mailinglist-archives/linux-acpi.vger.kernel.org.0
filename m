@@ -1,301 +1,241 @@
-Return-Path: <linux-acpi+bounces-5432-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5433-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4A78B3EE4
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 20:09:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D938B3F16
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 20:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6991DB2157A
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:09:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26F37286C40
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 18:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C3516D9DB;
-	Fri, 26 Apr 2024 18:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B62171071;
+	Fri, 26 Apr 2024 18:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="euQvqvoX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2085.outbound.protection.outlook.com [40.107.93.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F661EB5E;
-	Fri, 26 Apr 2024 18:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714154958; cv=none; b=Mxlb0/584UJX9lsH79B90Yphjc+pQDlezKnjRO1W9roWJoKfV95IlpN2MI6oKBG8YelsdejkjAqYoeu+GsHuPZlieZWDAlYFC+hmhgfn8M/HzpEiWRn/1oKyifGE/1+YjJKmR2JrGQRC3IpfmlxnrPyHiwshkt1OxwVfrgO7xJI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714154958; c=relaxed/simple;
-	bh=vylh6oaMyHYbUe0eNlx6uprvORS7R1/lEC/zt0QqiOQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qBiHMao8iv6i7i86FJkZTMRDLbiGb/PWkmHw4//JymUrLhJXa6/mb8iUwC50ZexxAZFMuuImxUR15GAY112eDjZ4hKPE7A2niWWVL+tMnWdbcFUBYODAEYuSG/noDO//LwSF2FKkrQIeOZodP/SUDsM0UtunGdv09fA+uqzurzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VR0zV4n0sz6JBCB;
-	Sat, 27 Apr 2024 02:06:46 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 70BD61408F9;
-	Sat, 27 Apr 2024 02:09:12 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
- 2024 19:09:11 +0100
-Date: Fri, 26 Apr 2024 19:09:10 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Miguel Luis <miguel.luis@oracle.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, "linux-pm@vger.kernel.org"
-	<linux-pm@vger.kernel.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-arch@vger.kernel.org"
-	<linux-arch@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, Russell King
-	<linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, "James
- Morse" <james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier
-	<maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>,
-	"justin.he@arm.com" <justin.he@arm.com>, "jianyong.wu@arm.com"
-	<jianyong.wu@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Sudeep
- Holla" <sudeep.holla@arm.com>
-Subject: Re: [PATCH v8 01/16] ACPI: processor: Simplify initial onlining to
- use same path for cold and hotplug
-Message-ID: <20240426190910.00001dcd@Huawei.com>
-In-Reply-To: <20240426184949.0000506d@Huawei.com>
-References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
-	<20240426135126.12802-2-Jonathan.Cameron@huawei.com>
-	<6347020E-CB49-44ED-87B2-3BB2AA2F59E0@oracle.com>
-	<2E688E98-F57F-444F-B326-5206FB6F5C1E@oracle.com>
-	<20240426184949.0000506d@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D4316F839;
+	Fri, 26 Apr 2024 18:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714155300; cv=fail; b=p+yLYH9EnLzVM4ptYESPS2oFYJJh6P/o2UiZ7DMADt+lV7nWIlfyq8jcui/ealu2AtXzRsimJffpjxM53NPphW1rcMyzBGmPeFK6Dy0N/u9s8wYao8BaVo+veRWVKljMW3tvx+44Bjb9O4eSs6O+zPkRdgIyh2FKfKzWZtzVJPE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714155300; c=relaxed/simple;
+	bh=wN2r9UW40KsDk0zacFT40egJ36R/+omMezZUVmSXPKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=vGi4BazEv+qFxsPgzopE4KHBWv9OwlZkgfrZOvl0oUmwdmJnVkawzCtSCkExjXy3IMWNmi8n8GHEFcHLJx9viHJX4DJLpcB/yRGFh12FkRALFx3Qb1MTAJXqQxQ5Ffe+uZOWslP/foo0z7Yc/JdUwlSqbQWxALEU5BFQOzTqzbA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=euQvqvoX; arc=fail smtp.client-ip=40.107.93.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VakR30HaWR+7sSgLU287U80SMrZ3l9JZ/zVV3tQ1bTANAiA4vKMVxURTSP9asZBPaeLQXEr+O7LI/QtdXvxbDeUgg0QemiOBejYNAojv/apSoQNtL32F1P/cQ0AQlpQ2H84rQnObE7MxDTjCvstc+Cy1ChhdanFjc1qD0v1nJk5KSfn8cHIz50LeMqle7HxPci5Ruee2QKmr6oaI2TInive1mQTAce6zyyX1OUYlJcZ5JvCkWjo9r+a99ua8ANjap90e90NKaV2sP4ombLOuOSK8YZbEOlTYRVQbuMwRi3qvm8o89qCLaEstU/CasVNYk6PePNvgG8TeariJLSPieQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e5eKN2Ot6cxeHkAfYnli29110WrSyXyPiFazWuM+yfI=;
+ b=lvXjiNeeifeboHcbFPDqASbtFEBubiIbVbdAk3nzEQifdrRCaezZCHSsM2Oic1+CxEVi4gs14WrPFky7I4X1ZxjekgjpLMa0qoG5yn2HXzlGB5PuAbkaCa0fJ1ZIwbnflmo/WDOOWuUbv+kr/cb/rQoh+No64i5jZIVC6/llmRlbzh5wdoBXjL4PRVDagLZa5vnuVhDVlJqw5SGam5YTrTDywB5z8jmcSKF1k4DM//epCnTtBgPBmcp0rUl2u+IWk3XUWt97x32pTUs1m3bRJL0eXugjCyYSYTpL7jELssft5fu55NoeTNXfgsUO87sIG0NVcO93FLYDSXAGvT2axw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e5eKN2Ot6cxeHkAfYnli29110WrSyXyPiFazWuM+yfI=;
+ b=euQvqvoXBTLYycbRLRasHzArAr6MYVMC+diE81wHdw0UNstwMOYN+tZt2fOe+stuWeKqQ3vigJidGm7kF9zlXdv6R7H5s/yBh5/KYNzfqqJjdMKO7hiw7aKEh9a05D7mqmMoIwMTN/ZcDXuc3qSLDtLmwDoFlDd4svp/u1CDE4U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com (2603:10b6:930:be::18)
+ by LV2PR12MB5823.namprd12.prod.outlook.com (2603:10b6:408:178::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.31; Fri, 26 Apr
+ 2024 18:14:54 +0000
+Received: from CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::b965:1501:b970:e60a]) by CYYPR12MB8750.namprd12.prod.outlook.com
+ ([fe80::b965:1501:b970:e60a%4]) with mapi id 15.20.7519.021; Fri, 26 Apr 2024
+ 18:14:54 +0000
+Date: Fri, 26 Apr 2024 20:14:48 +0200
+From: Robert Richter <rrichter@amd.com>
+To: Alison Schofield <alison.schofield@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v4 6/7] ACPI/NUMA: Add log messages for memory ranges
+ found in CEDT
+Message-ID: <ZivvGJcXKPN_L5fn@rric.localdomain>
+References: <20240424154846.2152750-1-rrichter@amd.com>
+ <20240424154846.2152750-7-rrichter@amd.com>
+ <6629474eab671_b6e0294e8@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <ZioGhwNWQyFjRtZ-@rric.localdomain>
+ <ZiqnbD0CB9WUL1zu@aschofie-mobl2>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZiqnbD0CB9WUL1zu@aschofie-mobl2>
+X-ClientProxiedBy: FR0P281CA0215.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ac::19) To CYYPR12MB8750.namprd12.prod.outlook.com
+ (2603:10b6:930:be::18)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CYYPR12MB8750:EE_|LV2PR12MB5823:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0a7c89e-da41-45f2-31c9-08dc661cc5c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|366007|1800799015;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5TjLmiMSNAq+CZ8nwnz0L/n+BVtHOB8jlLW/7qjygr6i6Ff3vtEd72CP2iym?=
+ =?us-ascii?Q?HN+yoSP6gxXzmpQalR4plUyWaGbM4EIbmUNKvGgal2ykgQCCq/tVivapAqoF?=
+ =?us-ascii?Q?lzPtFShLuhyaIV0Pm8g/8dTfrM/SbjmxuskimygdBPcrIzEWDG2A5eHKZPGK?=
+ =?us-ascii?Q?OBxLFQgLlUURQSapnR9K3IdXmytMZ2AJHE0gCW9BEwr8jy0SHo2mcoIK5AyT?=
+ =?us-ascii?Q?PGT92ZoxgT0lg1LZN9Blx3CfhTpTqUKuv7FBlTEjNQEWkZF60i/RuRcfA/ke?=
+ =?us-ascii?Q?cTFvIyohPB05fUTHVZZ/HhLndNf5RHsUdHST+IXe9qCglPweopXHsnO+DMEy?=
+ =?us-ascii?Q?2A04TUayMkGM2+WSwl9guVYpYzoUzBDQb4HbaxLLNd/MPzBxZZDLgfhF8z3F?=
+ =?us-ascii?Q?r7D9J8ZaOVGIY42UgwJTC5ih5G7zUdseZ4HnR+Cfy5xTqejaA6qy9jhZYYpH?=
+ =?us-ascii?Q?PWF+qp9GSQLjib73+qcmxw0sbq7KYNfiIjLOnorZLHS9z9IzIDtkoJ/nh1s8?=
+ =?us-ascii?Q?flufHNFqlfY6m5I6dqkwctbo41MdEHVGirGdhM4HAkFcUDSx1a+6HXo2y9F0?=
+ =?us-ascii?Q?ut60dNHqScQC44XCynoq62DFnt21B650jgaJheFhOBB8FEzSe4QxEDCNf3aL?=
+ =?us-ascii?Q?fSmccnUzPxoAJ6JJBof7ctUA3ia46zIcJjYE7as74eYvRn83TYDHu5ZkwqrU?=
+ =?us-ascii?Q?9GuX1JJgWJDloPFgfZS3+vwuWzQRaMwGuXi7ZJzl+Q06Njz1POo02eQvHzwd?=
+ =?us-ascii?Q?JKo8UD1VragqAxvgsZlM64VKARpavlo1Cz5rys3oSMhJQqdjDDgNiW4fmmJe?=
+ =?us-ascii?Q?7UcD9hE33ugRU8QcGSEssfaWVXITwWRKN48gH4+xKxlMx2Ix9vUuz7D0Eemy?=
+ =?us-ascii?Q?+MatlVu0qR42HdnjmgTWWHfExQqqRWwh9iZpf67Ba8c9JziaX0nzcZNZ3svg?=
+ =?us-ascii?Q?Ov1zYeU4clQ+4Mi3HI717GVjM3We8JQAJ2Ob2AvxqTlOyy9PwVHTjRywTuZ+?=
+ =?us-ascii?Q?4RXq1HAtFhIHqEovw6FGLqFQTiF07HezylJXTqiUBHng3gZWzNmdo+vpZ2IW?=
+ =?us-ascii?Q?hS5EKQsn1TJf3x9ZomR4xaQuB0+wSBoTRgqAg6mVtqGOD5M+zYFVjWziE4kM?=
+ =?us-ascii?Q?ZBNYBKMlekn96BNw6/gwjX0/6m52nHn77/MJeLmJEQbCaSKqeHvWYKh3xPYa?=
+ =?us-ascii?Q?yyTIQNNtbDSSWb/HpDFRmJqMshizQvP1ytz8/grpdDa+1oBOS2YWVsbiL1Al?=
+ =?us-ascii?Q?7soDKGC9nY82OIiuFDBz/OnoPnKO9grf+S2/E4UbYA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EErnr3DKZ55sGKhr43I6sC7a9/59+xgHcQcG+FB0QRlp5D6ZmAraEoSZpGYU?=
+ =?us-ascii?Q?XBEho68ejuwYircG/AYGkuHrTZFTX9oMTciLzBFMlFe4guDECpL2k2eXPrm6?=
+ =?us-ascii?Q?xwTnlj61MAtk2KERcW0T0pvCcKLZyLsQvjPP0mMm87oYS4D4b2OngrHo1MiM?=
+ =?us-ascii?Q?ASPx0TZjpzb/lrDQlTCjZcWJjfwffDxeipMo586ZYpm/y7E0mjn+l9KZ3CW4?=
+ =?us-ascii?Q?U4yY2uATcR5v2ae5RF5i0pXbj7Jahi6xjVJYBiDi6gehLdeVDRepVIbcnwBC?=
+ =?us-ascii?Q?Cz4zqXCi6Vw2RTV6P666gz0NlysCGjfSFH7t2099YrdKuvO+0E/Uhk5un1XE?=
+ =?us-ascii?Q?cGFmB7ztj2m6Iclu/Deml+kj6OCyI50tXGkfeQrLByxymnucrn64P2H1Hosg?=
+ =?us-ascii?Q?MuSo8UsCvxDTat3pXlcrVfB2UCH1A92/OVo5ZrswEesn7lzUPW0dEq7PJFs+?=
+ =?us-ascii?Q?8CEqlu0T0ogr70eid3q954Cqnr8KKm5lr0aFO6gFtpS6x6eQPF/F3w1Smy6g?=
+ =?us-ascii?Q?UwUgHnVOKFSPjtz5V9SI5h7akEhATbJTiS9i6TiojbPrGBZXg1adG2R+N07d?=
+ =?us-ascii?Q?1wspCArvyhdTU82CILfG7wrvSfgghf7Ne6s+xQXqXuugcBGHH9sFdVMkLzaC?=
+ =?us-ascii?Q?osA+Pni1YbQGwiOilTsKQm6F8oWolfaEKveMLifwOQ4UKfgETy8343itjDRg?=
+ =?us-ascii?Q?z4dWnxcGK3swZnfrFGfYZWGwOUiaKiCcjjqrnk9ZUqc71raAZ4Zo1taqnF4k?=
+ =?us-ascii?Q?7cKxJUyhspIzMpkFE1tcH1gNappWYAjdfR1AzRZf+MYcvPTjLMFfKHaafNg3?=
+ =?us-ascii?Q?+xJ9iXTHwQem5sr+Y9MfvrYUP7qOPRdNJ8P3F/+VOfJY4CSxgWifJVpPlIJp?=
+ =?us-ascii?Q?eNNAN3Y9ykXWwbzrxjXImC4aV9MzDFkwaeqSa/yv5MKNrvVv4PuvO6F8P4Cj?=
+ =?us-ascii?Q?Tpkt1wWLnNnBOZDoN1co2ZzqtwQTBY7n3JM7vZ6wxknkUEvEEcwwbp3kjtOv?=
+ =?us-ascii?Q?QEixVGzYG9gCU8Yxq4F2lvlJSeo/Oj2d5t2k6Ku1kglk6EYU3RA71Bjr/IAS?=
+ =?us-ascii?Q?C4tatGQx0tXIngCPlP2qpqy3oihwsn2VFZO38dgJ/DCTOzH1ERuUHO8deom8?=
+ =?us-ascii?Q?R5/tJ0zdXbItiL+IEkdMLJQCD/57HsA5EhKVQ3caebvo07Dx9WQKv0mV4dcn?=
+ =?us-ascii?Q?vuhfX/K0tmETIvTKiaU5tQJlwvJLvAIsakbbMWle4QTGRxZbar9rOHZDIRNW?=
+ =?us-ascii?Q?+dvryPI6O6y5kiD6Yg78vw08KDCC9ctKix8W112NfNGfNqep+kFXQCSnK5mj?=
+ =?us-ascii?Q?6uxE7dFyeYMvJc3H1StL6ROksYiJFTwJsMyEYuCukxanLzl864jRXTNAYaFk?=
+ =?us-ascii?Q?TsPKxVpqjDWdPqa3LavfthGhlxYeC61NdA1sy/0M8B98gXp9A89FTqqlePG1?=
+ =?us-ascii?Q?05gIZQjlNJM9f/TBim04LdcgQp7Tyz/urR7Xj8qYD/yGVAY73ruIPgaff9Gp?=
+ =?us-ascii?Q?Goi/YsaDnDfJuiQ4jd8Q/D2v/I0ShABRKiJzYZqWnPgR58GUObh0aVKYkk7O?=
+ =?us-ascii?Q?6/GUd4hGDXWj2xYetUW89aK7qw0K/bReJIAZuAPK?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0a7c89e-da41-45f2-31c9-08dc661cc5c0
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Apr 2024 18:14:54.3931
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Jeg4t6dSqIPuwfFM1kYMZYSlvFr33tHvePmVMl1Rbu8Tg/GI/O8qsSgp5KIS/zXzeGdDlv/04tHYHD6qUxcIDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5823
 
-On Fri, 26 Apr 2024 18:49:49 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-
-> On Fri, 26 Apr 2024 17:21:41 +0000
-> Miguel Luis <miguel.luis@oracle.com> wrote:
-> 
-> > Hi Jonathan, 
-> >   
-> > > On 26 Apr 2024, at 16:05, Miguel Luis <miguel.luis@oracle.com> wrote:
+On 25.04.24 11:56:44, Alison Schofield wrote:
+> On Thu, Apr 25, 2024 at 09:30:15AM +0200, Robert Richter wrote:
+> > On 24.04.24 10:54:22, Dan Williams wrote:
+> > > Robert Richter wrote:
+> > > > Adding a pr_info() when successfully adding a CFMWS memory range.
+> > > > 
+> > > > Suggested-by: Alison Schofield <alison.schofield@intel.com>
+> > > > Signed-off-by: Robert Richter <rrichter@amd.com>
+> > > > ---
+> > > >  drivers/acpi/numa/srat.c | 10 +++++++++-
+> > > >  1 file changed, 9 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> > > > index e3f26e71637a..c62e4636e472 100644
+> > > > --- a/drivers/acpi/numa/srat.c
+> > > > +++ b/drivers/acpi/numa/srat.c
+> > > > @@ -338,8 +338,11 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+> > > >  	 * found for any portion of the window to cover the entire
+> > > >  	 * window.
+> > > >  	 */
+> > > > -	if (!numa_fill_memblks(start, end))
+> > > > +	if (!numa_fill_memblks(start, end)) {
+> > > > +		pr_info("CEDT: memblk extended [mem %#010Lx-%#010Lx]\n",
+> > > > +			(unsigned long long) start, (unsigned long long) end - 1);
 > > > 
-> > > 
-> > >     
-> > >> On 26 Apr 2024, at 13:51, Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> > >> 
-> > >> Separate code paths, combined with a flag set in acpi_processor.c to
-> > >> indicate a struct acpi_processor was for a hotplugged CPU ensured that
-> > >> per CPU data was only set up the first time that a CPU was initialized.
-> > >> This appears to be unnecessary as the paths can be combined by letting
-> > >> the online logic also handle any CPUs online at the time of driver load.
-> > >> 
-> > >> Motivation for this change, beyond simplification, is that ARM64
-> > >> virtual CPU HP uses the same code paths for hotplug and cold path in
-> > >> acpi_processor.c so had no easy way to set the flag for hotplug only.
-> > >> Removing this necessity will enable ARM64 vCPU HP to reuse the existing
-> > >> code paths.
-> > >> 
-> > >> Leave noisy pr_info() in place but update it to not state the CPU
-> > >> was hotplugged.    
+> > > This looks like pr_debug() material to me.
 > > 
-> > On a second thought, do we want to keep it? Can't we just assume that no 
-> > news is good news while keeping the warn right after __acpi_processor_start ?  
+> > This should have the same log level as the message below and/or its
+> > corresponding SRAT message. CEDT mem blocks wouldn't be reported
+> > otherwise only because a smaller (overlapping) entry was registered
+> > before. That is why I used pr_info here.
 > 
-> Good question - my inclination was to keep this in place for now as removing
-> it would remove a source of information people may expect on x86 hotplug.
+> It does feel like this message belongs but maybe it should also 
+> mimic the SRAT define message and emit what node maps this range
+> if memblocks were extended.
 > 
-> Then maybe propose dropping it as overly noisy kernel as a follow up
-> patch after this series is merged.  Felt like a potential rat hole I didn't
-> want to go down if I could avoid it.
+> But...seems this will emit a message for every CFMWS range, even those
+> where no memblk needed to be extended - ie the range was fully described
+> in the SRAT.
 > 
-> If any x86 experts want to shout that no one cares then I'll happily drop
-> the print.  We've carefully made it so that on arm64 we have no way to tell
-> if this is hotplug or normal cpu bring up so we can't just print it on
-> hotplug.
-
-I'm being silly. This is just one of the messages shouting out hotplug
-happened and for that matter only occurs at online anyway which is trivially
-detected.
-
-There is a much more informative
-  ACPI: CPU3: has been hot-added message
-for example on the actual hotplug event.
-
-Let's drop it for v9.
-
-There is also a stale comment about a flag being set that is no longer
-the case that I'll drop.
-
+> Sadly, numa_fill_memblks() return of 'success' has double meaning.
+> It can mean memblks were extended, or that (start, end) was found fully
+> described. I don't see an good place to insert the message in
+> numa_fill_memblks(). 
 > 
-> Jonathan
-> 
+> Sorry, just stirring the pot here, with no clear suggestion on how
+> to emit info.
+
+Ok, I have changed numa_fill_memblks() to also return if memblks have
+been modified. That information is used to print the message.
+
 > 
 > > 
-> > Miguel
-> >   
-> > >> 
-> > >> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-> > >> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> > >> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> > >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > >> 
-> > >> ---
-> > >> v8: No change
-> > >> ---
-> > >> drivers/acpi/acpi_processor.c   |  1 -
-> > >> drivers/acpi/processor_driver.c | 44 ++++++++++-----------------------
-> > >> include/acpi/processor.h        |  2 +-
-> > >> 3 files changed, 14 insertions(+), 33 deletions(-)
-> > >> 
-> > >> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-> > >> index 7a0dd35d62c9..7fc924aeeed0 100644
-> > >> --- a/drivers/acpi/acpi_processor.c
-> > >> +++ b/drivers/acpi/acpi_processor.c
-> > >> @@ -216,7 +216,6 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
-> > >> * gets online for the first time.
-> > >> */
-> > >> pr_info("CPU%d has been hot-added\n", pr->id);
-> > >> - pr->flags.need_hotplug_init = 1;
-> > >> 
-> > >> out:
-> > >> cpus_write_unlock();
-> > >> diff --git a/drivers/acpi/processor_driver.c b/drivers/acpi/processor_driver.c
-> > >> index 67db60eda370..55782eac3ff1 100644
-> > >> --- a/drivers/acpi/processor_driver.c
-> > >> +++ b/drivers/acpi/processor_driver.c
-> > >> @@ -33,7 +33,6 @@ MODULE_AUTHOR("Paul Diefenbaugh");
-> > >> MODULE_DESCRIPTION("ACPI Processor Driver");
-> > >> MODULE_LICENSE("GPL");
-> > >> 
-> > >> -static int acpi_processor_start(struct device *dev);
-> > >> static int acpi_processor_stop(struct device *dev);
-> > >> 
-> > >> static const struct acpi_device_id processor_device_ids[] = {
-> > >> @@ -47,7 +46,6 @@ static struct device_driver acpi_processor_driver = {
-> > >> .name = "processor",
-> > >> .bus = &cpu_subsys,
-> > >> .acpi_match_table = processor_device_ids,
-> > >> - .probe = acpi_processor_start,
-> > >> .remove = acpi_processor_stop,
-> > >> };
-> > >> 
-> > >> @@ -115,12 +113,10 @@ static int acpi_soft_cpu_online(unsigned int cpu)
-> > >> * CPU got physically hotplugged and onlined for the first time:
-> > >> * Initialize missing things.
-> > >> */
-> > >> - if (pr->flags.need_hotplug_init) {
-> > >> + if (!pr->flags.previously_online) {
-> > >> int ret;
-> > >> 
-> > >> - pr_info("Will online and init hotplugged CPU: %d\n",
-> > >> - pr->id);
-> > >> - pr->flags.need_hotplug_init = 0;
-> > >> + pr_info("Will online and init CPU: %d\n", pr->id);
-> > >> ret = __acpi_processor_start(device);
-> > >> WARN(ret, "Failed to start CPU: %d\n", pr->id);
-> > >> } else {
-> > >> @@ -167,9 +163,6 @@ static int __acpi_processor_start(struct acpi_device *device)
-> > >> if (!pr)
-> > >> return -ENODEV;
-> > >> 
-> > >> - if (pr->flags.need_hotplug_init)
-> > >> - return 0;
-> > >> -
-> > >> result = acpi_cppc_processor_probe(pr);
-> > >> if (result && !IS_ENABLED(CONFIG_ACPI_CPU_FREQ_PSS))
-> > >> dev_dbg(&device->dev, "CPPC data invalid or not present\n");
-> > >> @@ -185,32 +178,21 @@ static int __acpi_processor_start(struct acpi_device *device)
-> > >> 
-> > >> status = acpi_install_notify_handler(device->handle, ACPI_DEVICE_NOTIFY,
-> > >>    acpi_processor_notify, device);
-> > >> - if (ACPI_SUCCESS(status))
-> > >> - return 0;
-> > >> + if (!ACPI_SUCCESS(status)) {
-> > >> + result = -ENODEV;
-> > >> + goto err_thermal_exit;
-> > >> + }
-> > >> + pr->flags.previously_online = 1;
-> > >> 
-> > >> - result = -ENODEV;
-> > >> - acpi_processor_thermal_exit(pr, device);
-> > >> + return 0;
-> > >> 
-> > >> +err_thermal_exit:
-> > >> + acpi_processor_thermal_exit(pr, device);
-> > >> err_power_exit:
-> > >> acpi_processor_power_exit(pr);
-> > >> return result;
-> > >> }
-> > >> 
-> > >> -static int acpi_processor_start(struct device *dev)
-> > >> -{
-> > >> - struct acpi_device *device = ACPI_COMPANION(dev);
-> > >> - int ret;
-> > >> -
-> > >> - if (!device)
-> > >> - return -ENODEV;
-> > >> -
-> > >> - /* Protect against concurrent CPU hotplug operations */
-> > >> - cpu_hotplug_disable();
-> > >> - ret = __acpi_processor_start(device);
-> > >> - cpu_hotplug_enable();
-> > >> - return ret;
-> > >> -}
-> > >> -
-> > >> static int acpi_processor_stop(struct device *dev)
-> > >> {
-> > >> struct acpi_device *device = ACPI_COMPANION(dev);
-> > >> @@ -279,9 +261,9 @@ static int __init acpi_processor_driver_init(void)
-> > >> if (result < 0)
-> > >> return result;
-> > >> 
-> > >> - result = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-> > >> -   "acpi/cpu-drv:online",
-> > >> -   acpi_soft_cpu_online, NULL);
-> > >> + result = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
-> > >> +   "acpi/cpu-drv:online",
-> > >> +   acpi_soft_cpu_online, NULL);
-> > >> if (result < 0)
-> > >> goto err;
-> > >> hp_online = result;
-> > >> diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-> > >> index 3f34ebb27525..e6f6074eadbf 100644
-> > >> --- a/include/acpi/processor.h
-> > >> +++ b/include/acpi/processor.h
-> > >> @@ -217,7 +217,7 @@ struct acpi_processor_flags {
-> > >> u8 has_lpi:1;
-> > >> u8 power_setup_done:1;
-> > >> u8 bm_rld_set:1;
-> > >> - u8 need_hotplug_init:1;
-> > >> + u8 previously_online:1;    
 > > > 
-> > > Reviewed-by: Miguel Luis <miguel.luis@oracle.com>
+> > > >  		return 0;
+> > > > +	}
+> > > >  
+> > > >  	/* No SRAT description. Create a new node. */
+> > > >  	node = acpi_map_pxm_to_node(*fake_pxm);
+> > > > @@ -354,8 +357,13 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+> > > >  		pr_warn("ACPI NUMA: Failed to add memblk for CFMWS node %d [mem %#llx-%#llx]\n",
+> > > >  			node, start, end);
+> > > >  	}
+> > > > +
+> > > >  	node_set(node, numa_nodes_parsed);
+> > > >  
+> > > > +	pr_info("CEDT: Node %u PXM %u [mem %#010Lx-%#010Lx]\n",
+> > > > +		node, *fake_pxm,
+> > > > +		(unsigned long long) start, (unsigned long long) end - 1);
+> > > > +
 > > > 
-> > > Miguel
-> > >     
-> > >> };
-> > >> 
-> > >> struct acpi_processor {
-> > >> -- 
-> > >> 2.39.2
-> > >>     
-> > >     
-> >   
+> > > This makes sense to mirror the SRAT pr_info().
+> > 
+> > I evaluated this.
+> > 
 > 
+> I read Dan's comment as simple acceptance. Like, yeah this one is good
+> because it mimics the SRAT pr_info.
 
+Ah, I misread this, thanks for clarification.
+
+-Robert
 
