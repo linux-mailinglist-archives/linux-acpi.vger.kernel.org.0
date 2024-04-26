@@ -1,142 +1,177 @@
-Return-Path: <linux-acpi+bounces-5388-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5389-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A518B291D
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 21:45:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06118B33AF
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 11:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D8E1C2100A
-	for <lists+linux-acpi@lfdr.de>; Thu, 25 Apr 2024 19:45:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F42021C218CB
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 09:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B216E15250B;
-	Thu, 25 Apr 2024 19:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726E213DDAE;
+	Fri, 26 Apr 2024 09:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMgrpv+K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bp7zUzNb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820B938FB6;
-	Thu, 25 Apr 2024 19:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA02E13D8B6
+	for <linux-acpi@vger.kernel.org>; Fri, 26 Apr 2024 09:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714074337; cv=none; b=bKWN30dCuT8XCu9IZadgJEx39TUxsmsUwK03YryMVppvqBmmp/0AmPEI3jWSoq5X4Xg9bRiqUF34CR5lA20OMLQ+ZfMCL5HyzNIh6u+FDdP9IcOivxES4QYF1lYo6vSwY1A7T0Ti14k9DvEHe5z91zPGxvtPEUhQwiX+wFbK8SE=
+	t=1714122932; cv=none; b=A0toMiN2PowVb8IanFxabGxMxfhUl3wYnMpg1fPJO+yrfmdKSYnmYCigZh+98cDllLgDgRhXduNer8fu/KP7sj71vp4M70W8cQfiIrs25SqShBHjpg/5boJPP9Yzha+57JZQBPHpKH0l8lg2nalNVsUeiVMe6fbArWILVnkp+LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714074337; c=relaxed/simple;
-	bh=ii5cdCmylSrCYuAbjnq23PCiMMHhvORNNb2ZdSUJH64=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eIEm3wofRcsKj5hxDuB/A1nlF5K5zU/xdwzx5E/qWCn5fKgFoXhXfveiANFAwIWi1Zgw6ZGA15FfyAXlcgxoXXXdVIf8AoeCHIwkV+OOOlrHuRaTcZsU0q8Q1lurAO+x5sVnrr1Aquc5GXO4myr4mwhgBk0IyFC78T9+E4TqIZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMgrpv+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553C0C113CC;
-	Thu, 25 Apr 2024 19:45:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714074337;
-	bh=ii5cdCmylSrCYuAbjnq23PCiMMHhvORNNb2ZdSUJH64=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DMgrpv+Kf3nsvrblhKu8VsgYRAyRPmTW64jjD5rLF2diiiIzhJssj1a9nB5c8D0hw
-	 DOIsOdirt2STnNGPU+fjAupf7X3Q8LTjgs1NxHPC43clhNkyf3XayU8QVYJL3e1rX6
-	 u+Z4MG/NV1sg4WTNXSAyvBwLWRKcpbjy+a14qupyddby6jO0z5GGmRlt5nJGE8OgbN
-	 ZfxpkHOvXO2+NsFULVEM4+gigs4OAlTyHLG3cA/9+FIVa2YF0FY1SDxLI0bUmIUOHr
-	 HnFmisAnqwrxGiQHvtS8rFJmQspNEsmr1z9csfNojq0PG7v4DOHeclaMX+45mVOteZ
-	 RFYOJJJMfsFzA==
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6eba841d83cso303993a34.2;
-        Thu, 25 Apr 2024 12:45:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWankNtAt05l6L3ldIumLgzgvUDTMzcFDPQHYrimyRbKLqBLVYdJBe4EpX9mU3dgBs4zeVsGQeypNEhCtd4fhIRMkAI3yXKUMRpjtoaKC76DWWYNAkYBuB+F4CEb5XXuiroQ3RiqF0ivqzfXH+gld5r/vRDoFEv69zLkfnwSgvjUItk
-X-Gm-Message-State: AOJu0Ywat8tr+F9atp0ZyR8emR1SNo0b7kjHzJ/FZUsJlUibdRkMojn4
-	rfskSN1ya21qzEK0fnHTCol+kKkJ44nl/1lRD95kgfmHslEKwcBvAr9vUJmOLgHvXOlOIZ/wa85
-	sYw1tOTl5HnciVORhIxB75ajYVrM=
-X-Google-Smtp-Source: AGHT+IFxIDxbGkjQJjrh2p4HmiS3BMkC2fEIM3VrbMZA6XO7VFQQpL3NyCDuzrN3UZFVr6EJs2EN84BZ/GiY2Gx3Nb8=
-X-Received: by 2002:a4a:ba07:0:b0:5aa:14ff:4128 with SMTP id
- b7-20020a4aba07000000b005aa14ff4128mr816756oop.1.1714074336594; Thu, 25 Apr
- 2024 12:45:36 -0700 (PDT)
+	s=arc-20240116; t=1714122932; c=relaxed/simple;
+	bh=+FjPzM84B6BX9czEfRXFDbCKq4ptfl8l7j3daLkKm1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kWeMIdustGmkuAw3fXufsq1Ry8M/V/5KuIIgB79w7d2gDPsT4YbplT4tvLZX0uE7Bv4U+KRNMNdaErB2J07tdZ8Uze0W+c7GxGAx8bySYu+0GohXOwtI6HK9upvCsdrJFuMOPr2wtaWWtL1qQl6L6sthnL+GeTaunSUIRWEcvmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bp7zUzNb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714122929;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1jkzt/L+mhv/WzsExsbPIs4x3qKy+eN4N2XWavPkUaM=;
+	b=bp7zUzNbGmpZwdfni3O+i0sqI1M6bCH2X8GzV5/GxsU+/gaTOcSfwk95jIACjF8+nAAfXL
+	SrvhcmjFicuWkTMCnvnAhhlnuWEWUY046P+O9N9z0anMqv8OaCG3MwQWLyQSZ4YdYpAtzi
+	0wOXQIiYrj8k32etxkwD3zTxlFF1PKc=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-5eP3dtbEO1KYma41SEdAsA-1; Fri, 26 Apr 2024 05:15:28 -0400
+X-MC-Unique: 5eP3dtbEO1KYma41SEdAsA-1
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-601fef07eaeso2179951a12.1
+        for <linux-acpi@vger.kernel.org>; Fri, 26 Apr 2024 02:15:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714122927; x=1714727727;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1jkzt/L+mhv/WzsExsbPIs4x3qKy+eN4N2XWavPkUaM=;
+        b=fRBEyojUFRmSoOuYk21N2h81leUUEtwXx/raqdvuHVh87S6zhP7ItiCKHumkCNoy1m
+         RBGWk8XvfmGKY8hH4dWUA8fpyIGIkimB2yH6Rq8CXg0QAVOuwtsTDQhdnisAJqqYONYc
+         GgK00kYU6itRoBUgHY1j+JLaZjBXVKqCHYXnPNRcA1ITn1HsIvE6ZvfpEPHuRZKso3M9
+         rrRIHHrP3WZql8KvvAnVJ9SiO22ziMNobvWkNCUgEIRdyYscL3rmOMglvq5kIGGBcLNY
+         CTswwwaEk0G6WqBAoGRpFrYUaYWL7qGwZMTM6U0Gw88IUfM9rYLfPv5QTEJMTLlTz2nh
+         DA6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVnNSiBxafnpg6p2EohVERGGd+razkP05nrXrycDxOUuPmLa9fIPSjVZwa2SLR10sFeJtDyfOnkjgF+/t6lFq3HiwhWoyf3Wm1CMA==
+X-Gm-Message-State: AOJu0YwpvIWGwRy930480LwuiI4xGitXgdxPzDtJ8psPmBjNlysFUp5o
+	OlUdOirDO16zZacHPkxRermPgPgX/4UOXfeGzKLio6shJJf3X+w16ePJhrpQxspk7x20IpM/iWz
+	sBT438TpGDQt+ScudWHFT/P20XWcuBBuuHurbtnYFaqaoIZ97HpFEU2FwQYw=
+X-Received: by 2002:a05:6a20:2713:b0:1a7:5425:3044 with SMTP id u19-20020a056a20271300b001a754253044mr2110986pze.62.1714122927167;
+        Fri, 26 Apr 2024 02:15:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGR4IonyI1PkhIL/Wl3B+SXVRCjKsdBxoyZhUJEblO74o+J0ratyZ96kbZ9Bo6ePHW9Uj0s2w==
+X-Received: by 2002:a05:6a20:2713:b0:1a7:5425:3044 with SMTP id u19-20020a056a20271300b001a754253044mr2110962pze.62.1714122926856;
+        Fri, 26 Apr 2024 02:15:26 -0700 (PDT)
+Received: from [192.168.68.50] ([43.252.112.88])
+        by smtp.gmail.com with ESMTPSA id bm5-20020a056a00320500b006ecf3e302ffsm14955063pfb.174.2024.04.26.02.15.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Apr 2024 02:15:26 -0700 (PDT)
+Message-ID: <4d4f1a85-7aad-4ea1-aaed-1bb744d3ef99@redhat.com>
+Date: Fri, 26 Apr 2024 19:15:16 +1000
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAJZ5v0iUUmMUo86vBzYJjL4NjoFzpDwD1+c292aP+T++PLv6vQ@mail.gmail.com>
- <CAHk-=wj8J78-12QfAoKaLdRi2g1=_U7sv02POShjotcJ6t4nzw@mail.gmail.com> <CAHk-=wj52PUZ0xtoLs79B9uar6h7FVaKC0gbD-a_wZxDjH2ViQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wj52PUZ0xtoLs79B9uar6h7FVaKC0gbD-a_wZxDjH2ViQ@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 25 Apr 2024 21:45:24 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j7Do94XvUQrLgA_mFFyxdeb2RO08JwUzL0_QErOOrrAQ@mail.gmail.com>
-Message-ID: <CAJZ5v0j7Do94XvUQrLgA_mFFyxdeb2RO08JwUzL0_QErOOrrAQ@mail.gmail.com>
-Subject: Re: [GIT PULL] ACPI fixes for v6.9-rc6
-To: Linus Torvalds <torvalds@linux-foundation.org>, 
-	Jarred White <jarredwhite@linux.microsoft.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 05/16] ACPI: processor: Add acpi_get_processor_handle()
+ helper
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
+ linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, x86@kernel.org, Russell King
+ <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>,
+ Salil Mehta <salil.mehta@huawei.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com,
+ justin.he@arm.com, jianyong.wu@arm.com
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+ <20240418135412.14730-6-Jonathan.Cameron@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20240418135412.14730-6-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 25, 2024 at 9:18=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Thu, 25 Apr 2024 at 11:58, Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > And maybe this time, it's not a buggy mess?
->
-> Actually, even with MASK_VAL() fixed, I think it's *STILL* a buggy mess.
->
-> Why? Beuse the *uses* of MASK_VAL() seem entirely bogus.
->
-> In particular, we have this in cpc_write():
->
->         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY)
->                 val =3D MASK_VAL(reg, val);
->
->         switch (size) {
->         case 8:
->                 writeb_relaxed(val, vaddr);
->                 break;
->         case 16:
->                 writew_relaxed(val, vaddr);
->                 break;
->         ...
->
-> and I strongly suspect that it needs to update the 'vaddr' too. Something=
- like
->
->         if (reg->space_id =3D=3D ACPI_ADR_SPACE_SYSTEM_MEMORY) {
->                 val =3D MASK_VAL(reg, val);
->   #ifdef __LITTLE_ENDIAN
->                 vaddr +=3D reg->bit_offset >> 3;
->                 if (reg->bit_offset & 7)
->                         return -EFAULT;
->   #else
->                 /* Fixme if we ever care */
->                 if (reg->bit_offset)
->                         return -EFAULT;
+On 4/18/24 23:54, Jonathan Cameron wrote:
+> If CONFIG_ACPI_PROCESSOR provide a helper to retrieve the
+> acpi_handle for a given CPU allowing access to methods
+> in DSDT.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v7: No change
+> v6: New patch
+> ---
+>   drivers/acpi/acpi_processor.c | 10 ++++++++++
+>   include/linux/acpi.h          |  7 +++++++
+>   2 files changed, 17 insertions(+)
+> 
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index ac7ddb30f10e..127ae8dcb787 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -35,6 +35,16 @@ EXPORT_PER_CPU_SYMBOL(processors);
+>   struct acpi_processor_errata errata __read_mostly;
+>   EXPORT_SYMBOL_GPL(errata);
+>   
+> +acpi_handle acpi_get_processor_handle(int cpu)
+> +{
+> +	acpi_handle handle = NULL;
+> +	struct acpi_processor *pr = per_cpu(processors, cpu);;
+                                                             ^^
+
+                                                             s/;;/;
+
+> +
+> +	if (pr)
+> +		handle = pr->handle;
+> +
+> +	return handle;
+> +}
+>   static int acpi_processor_errata_piix4(struct pci_dev *dev)
+>   {
+>   	u8 value1 = 0;
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 34829f2c517a..9844a3f9c4e5 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -309,6 +309,8 @@ int acpi_map_cpu(acpi_handle handle, phys_cpuid_t physid, u32 acpi_id,
+>   int acpi_unmap_cpu(int cpu);
+>   #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+>   
+> +acpi_handle acpi_get_processor_handle(int cpu);
+> +
+>   #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+>   int acpi_get_ioapic_id(acpi_handle handle, u32 gsi_base, u64 *phys_addr);
 >   #endif
->         }
->
-> *might* be changing this in the right direction, but it's unclear and
-> I neither know that CPC rules, nor did I think _that_ much about it.
-
-This is a very nice catch, thank you!
-
-> Anyway, the take-away should be that all this code is entirely broken
-> and somebody didn't think enough about it.
->
-> It's possible that that whole cpc_write() ACPI_ADR_SPACE_SYSTEM_MEMORY
-> case should be done as a 64-bit "read-mask-write" sequence.
->
-> Possibly with "reg->bit_offset =3D=3D 0" and the 8/16/32/64-bit cases as =
-a
-> special case for "just do the write".
->
-> Or, maybe writes with a non-zero bit offset shouldn't be allowed at
-> all, and there are CPC rules that aren't checked. I don't know. I only
-> know that the current code is seriously broken.
-
-In any case, this needs to be taken care of (Jared?).
+> @@ -1077,6 +1079,11 @@ static inline bool acpi_sleep_state_supported(u8 sleep_state)
+>   	return false;
+>   }
+>   
+> +static inline acpi_handle acpi_get_processor_handle(int cpu)
+> +{
+> +	return NULL;
+> +}
+> +
+>   #endif	/* !CONFIG_ACPI */
+>   
+>   extern void arch_post_acpi_subsys_init(void);
 
 Thanks,
-Rafael
+Gavin
+
 
