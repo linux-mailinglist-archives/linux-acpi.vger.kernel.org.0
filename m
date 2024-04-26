@@ -1,102 +1,153 @@
-Return-Path: <linux-acpi+bounces-5396-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5397-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6EA98B3475
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 11:50:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F262A8B34A6
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 11:57:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 830C2282B73
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 09:50:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0AC1C21C82
+	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 09:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C5313F453;
-	Fri, 26 Apr 2024 09:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BLR+h94H"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508B140E23;
+	Fri, 26 Apr 2024 09:57:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418C213EFEC;
-	Fri, 26 Apr 2024 09:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BCF140388;
+	Fri, 26 Apr 2024 09:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714125010; cv=none; b=fnL/4uOT1aPoCPyyz/TqUtbX9M0qN206iof3UOJMxXtT8NFThk3kZhKZ7QOwXWFl1HxQgTZCmdWv6pUoLSVWYPoLL7cXVtVADaELSeodIK4tThhHyqXpl1dPw8qdyz+e19TsMpJpseSoiLccmKX5g0BTjZA2riJrIoXFko6kYlw=
+	t=1714125472; cv=none; b=ZnsOooNSBcOwuNhMOBQUPlgSiu7A11gOVCVfxfXp9PMl8V7CHEqh8htrW0M257dg/XhKRuWhicGtVxyMJC3gagvn+76zVy6k7+ea/iFkgVOZY5aZ/pJAXJ9Ym5i7jgAfHmn22QoTkJBesV+ZeRy15FnVXA45VgYKj1DwlKO/a8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714125010; c=relaxed/simple;
-	bh=FtpE1Uh4JuqRnIuNg/8Z/NqWAXYxZcRvxnt2JNu7LB8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aIpNd4+Y9mrxA7Ez6MajqrHsuqK4RvXZok7zrHcHP4kFJ6lRKxj3VIrq8mrdxjuO+UaI3iC/zINkY33BMw5BkycJtn3LwTqFCmi1IjoBaV/+duxhs4PVUilKnFN5PxpLT5+uZtMR118iwzbPY/E/0EsI3jve1YfdFa+cvKDQf70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BLR+h94H; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714125008; x=1745661008;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=FtpE1Uh4JuqRnIuNg/8Z/NqWAXYxZcRvxnt2JNu7LB8=;
-  b=BLR+h94H8tpd8U5Cih1FVcIj/ooUXhIF5dDT89F2TpF6d+06ZduGwMcj
-   KWdCX8rflvoiiKMhrVFfEUrVSbQDbn1+Mb07ztFsU+eUbBs0CFGxv9rII
-   U+IMiGdNp4odk2+/v8HlRe7RZqvIq39UNUbDscG6zkbQj0Ds70zDaNl/+
-   BAXO2cZd0fkuyq7IUR3TCOwG0CW/1pVk5bqfm1XcGeh9WpdLOZyhoADG7
-   7Q7mmmkZJ9AqObivxQxKE0380D9MUU5mgJh2wUf7ZFxhCR6aIZ8d10YjP
-   QTxSbJQEBwZ9heWuNc2M0buuRf1uJ3CZxYh2SXGEx+pQ4pCOIjZbxUjov
-   g==;
-X-CSE-ConnectionGUID: X+kXbLhUT/u48r20iAstsA==
-X-CSE-MsgGUID: piOCbI5/QV29JS3gHlAgSw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="9707094"
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="9707094"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 02:50:08 -0700
-X-CSE-ConnectionGUID: MnRxalWPQCeHaUnLU6sE2A==
-X-CSE-MsgGUID: pqasDcjXRn+1m7KE3wAs2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,232,1708416000"; 
-   d="scan'208";a="25411412"
-Received: from unknown (HELO chenyu-dev.sh.intel.com) ([10.239.62.107])
-  by fmviesa008.fm.intel.com with ESMTP; 26 Apr 2024 02:50:06 -0700
-From: Chen Yu <yu.c.chen@intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc: linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Chen Yu <yu.c.chen@intel.com>
-Subject: [PATCH] ACPI: tools: pfrut: Print the update_cap field during capability query
-Date: Fri, 26 Apr 2024 17:48:50 +0800
-Message-Id: <20240426094850.757123-1-yu.c.chen@intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1714125472; c=relaxed/simple;
+	bh=YnunoMN8nkdnM17N5BzTnP4Rk0EAfSVEPkyuNjEpSow=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z10pMqm01N9HqLmtQ1Eb+SQaMDIgcMxtpyjy/w0fDWWiKtq7IBZl7M6asXHyvSHqw9rERmZv4mN+CEiy6AYtomJoXRQrH5Jn5wmi54ws3Za2ssnx7LSUwED0rydUgzbECVUyA71B0h29rWdGRZyv7y61X3ruSPySIDzYHTLT9eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VQp4K2HcZz6K6tS;
+	Fri, 26 Apr 2024 17:55:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 82256140B2A;
+	Fri, 26 Apr 2024 17:57:41 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Apr
+ 2024 10:57:40 +0100
+Date: Fri, 26 Apr 2024 10:57:39 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Gavin Shan <gshan@redhat.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, "Jean-Philippe
+ Brucker" <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linuxarm@huawei.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>
+Subject: Re: [PATCH v7 12/16] arm64: psci: Ignore DENIED CPUs
+Message-ID: <20240426105739.00007879@huawei.com>
+In-Reply-To: <e4628e32-8e76-4db4-9c85-b1246186f3be@redhat.com>
+References: <20240418135412.14730-1-Jonathan.Cameron@huawei.com>
+	<20240418135412.14730-13-Jonathan.Cameron@huawei.com>
+	<e4628e32-8e76-4db4-9c85-b1246186f3be@redhat.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-There is request from the end user to print this field to better
-query what type of update capability is supported on this platform.
+On Fri, 26 Apr 2024 19:36:10 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
----
- tools/power/acpi/tools/pfrut/pfrut.c | 2 ++
- 1 file changed, 2 insertions(+)
+> On 4/18/24 23:54, Jonathan Cameron wrote:
+> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > 
+> > When a CPU is marked as disabled, but online capable in the MADT, PSCI
+> > applies some firmware policy to control when it can be brought online.
+> > PSCI returns DENIED to a CPU_ON request if this is not currently
+> > permitted. The OS can learn the current policy from the _STA enabled bit.
+> > 
+> > Handle the PSCI DENIED return code gracefully instead of printing an
+> > error.
+> > 
+> > See https://developer.arm.com/documentation/den0022/f/?lang=en page 58.
+> > 
+> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > [ morse: Rewrote commit message ]
+> > Signed-off-by: James Morse <james.morse@arm.com>
+> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> > v7: No change
+> > ---
+> >   arch/arm64/kernel/psci.c | 2 +-
+> >   arch/arm64/kernel/smp.c  | 3 ++-
+> >   2 files changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/arm64/kernel/psci.c b/arch/arm64/kernel/psci.c
+> > index 29a8e444db83..fabd732d0a2d 100644
+> > --- a/arch/arm64/kernel/psci.c
+> > +++ b/arch/arm64/kernel/psci.c
+> > @@ -40,7 +40,7 @@ static int cpu_psci_cpu_boot(unsigned int cpu)
+> >   {
+> >   	phys_addr_t pa_secondary_entry = __pa_symbol(secondary_entry);
+> >   	int err = psci_ops.cpu_on(cpu_logical_map(cpu), pa_secondary_entry);
+> > -	if (err)
+> > +	if (err && err != -EPERM)
+> >   		pr_err("failed to boot CPU%d (%d)\n", cpu, err);
+> >   
+> >   	return err;
+> > diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+> > index 4ced34f62dab..dc0e0b3ec2d4 100644
+> > --- a/arch/arm64/kernel/smp.c
+> > +++ b/arch/arm64/kernel/smp.c
+> > @@ -132,7 +132,8 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
+> >   	/* Now bring the CPU into our world */
+> >   	ret = boot_secondary(cpu, idle);
+> >   	if (ret) {
+> > -		pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
+> > +		if (ret != -EPERM)
+> > +			pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
+> >   		return ret;
+> >   	}
+> >     
+> 
+> The changes in smp.c are based the assumption that PSCI is the only backend, which
+> isn't true. So we probably need move this error message to specific backend, which
+> could be PSCI, ACPI parking protocol, or smp_spin_table.
 
-diff --git a/tools/power/acpi/tools/pfrut/pfrut.c b/tools/power/acpi/tools/pfrut/pfrut.c
-index 388c9e3ad040..44a9ecbd91e8 100644
---- a/tools/power/acpi/tools/pfrut/pfrut.c
-+++ b/tools/power/acpi/tools/pfrut/pfrut.c
-@@ -174,6 +174,8 @@ void print_cap(struct pfru_update_cap_info *cap)
- 		exit(1);
- 	}
- 
-+	printf("update capability:%d\n", cap->update_cap);
-+
- 	uuid_unparse(cap->code_type, uuid);
- 	printf("code injection image type:%s\n", uuid);
- 	printf("fw_version:%d\n", cap->fw_version);
--- 
-2.25.1
+Do we? I'll check but I doubt other options ever return -EPERM so this change should
+not impact those at all.  If they do add support in future for rejecting on the basis
+of not having permission then this is fine anyway.
+
+Jonathan
+
+
+> 
+> Thanks,
+> Gavin
+> 
 
 
