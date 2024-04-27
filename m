@@ -1,97 +1,77 @@
-Return-Path: <linux-acpi+bounces-5435-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5436-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5738B42E2
-	for <lists+linux-acpi@lfdr.de>; Sat, 27 Apr 2024 01:57:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBEC8B43D4
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Apr 2024 04:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06B71B2208D
-	for <lists+linux-acpi@lfdr.de>; Fri, 26 Apr 2024 23:56:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EB21C21354
+	for <lists+linux-acpi@lfdr.de>; Sat, 27 Apr 2024 02:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD113BBED;
-	Fri, 26 Apr 2024 23:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB239AF4;
+	Sat, 27 Apr 2024 02:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SuyFonQx"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y1B3d83y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDAE3FB89;
-	Fri, 26 Apr 2024 23:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12E338F96;
+	Sat, 27 Apr 2024 02:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714175814; cv=none; b=E+qSV42BFEtI5v9efzn35jC2yoPvBmJGy43FFZXuyik0K4KQgBi5afneFFIwg9q0boP5ylNspRYUo7tyNNInGqNTOWqBENte82N5X9E0wYtQuZtmqugsAwJcEBNiAKCtOTZT+9FC7cCHhSOVz4826lc3x210wJtrvPpMFNZCWzM=
+	t=1714184606; cv=none; b=TVIOCym+dGyKTptPJm2eMqDABANcbGKms9mSkvyHFFBdlxa0XwY3BvtcwaiW3/VPO0iE5HdYOw3UtNCWnHiXWR3dtBZnRA6IMDVhqUrUwvcZNgs6FIWq3irKZ1JwiXSgZJWw3dONikB7TA/nA/1Bs1jAVskwtunFB/BAVg7UXMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714175814; c=relaxed/simple;
-	bh=hj5AA7HeXQoTedhoGEKLa865w8vcsTapmZBY+hDU/vw=;
-	h=From:Date:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p1q59rimkUY/UBPC9x91X5bonBcTcK6fMjaxfXatVAfzXv90s7oZk+iYKgSDYK0Df6YhjCX1gwqICpSNvndrbhIexeQZ1INfkVBJXuaVHD7kSNmYqItenxKOsaIG5nv2NUG4jCEDblEnqNFwvrXtesrlPtiCKAu0Mip/vWG5cLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SuyFonQx; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6effe9c852eso2488463b3a.3;
-        Fri, 26 Apr 2024 16:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714175812; x=1714780612; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAcldRD49exVnUdGEuC783CMnIp3NUotVJoupv9iIYI=;
-        b=SuyFonQx/HaZSzDkfinAw6L53pttMAL1S3bf8Rz6gceRRKF3vB60wG0BnnDGk8tvI/
-         UIFJQmJDc8Zzm36Xs6thDUbUJbVq/9aW0fk/ncoIHTRutGAKn7pQKgw05xDaDWYw4PP9
-         ZH7yJ4hYTV43HostaR1uZe4G0x+jHUxXoCTbZAkghQgEuPcrd1eAC62Gznj0ZF/qeQqa
-         hCuzyQh8l0/KXcS3aoFjFD+OvQzWXfLOygaKStLVT/I3XslWsqqj7CxvXBRoXQgRwnRP
-         ZlG7g7TOUedesL4kd03ssmu+jvUksXl25wrw+5y2nWFdTfEGbTpkno+xqvC1soU+ImKT
-         9A5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714175812; x=1714780612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IAcldRD49exVnUdGEuC783CMnIp3NUotVJoupv9iIYI=;
-        b=bZns1xYgkudAmnk4PNDa4QTDNGae1YsRX7AM83gGqQTnrLoPlExAN6Fi6RPaeSHZhV
-         BmVRmDSAcRrePHeHBQ2UBRf4NGqYoNgLDik68ppDe7Bb072kQa3OpIkrk1139CvQ0S57
-         73o7HOoRVt9unS7W8XVS9zvKqluvIRrBNHlfzHcFOY4GHT535Fp8yL2mSPIThvCb6xad
-         9Y0FJsJ38RqTAhjMOiug4P/n3GvB17qREW6J0+sR3S5UBgc6pDXxSAwH/t7VU5b/J7Cx
-         k+iotOpuNp1WI0cU0gsB6U2uS+t1r+HpquPUgYm8HAAPwzpQap3XXWBm1spu8TDRiqeR
-         Tzmw==
-X-Forwarded-Encrypted: i=1; AJvYcCV774A5rmhrRo6hpALXtBIB9KddhlEZisy+ipaxn6fzubsFGAPcrZWhBFlvs6+UsoneKKqKBnlkgYmfw6t3F+sSH8XMKQI/zoKYOsfx+6Bvjzda61zkZUkn3kClBACz5eU4Mw9TjrI7Gr6VSSgYmgLY7ODLzbCr44zf9PFci3DZCsDUyc4=
-X-Gm-Message-State: AOJu0Yw3/8EqLAZuYW5JYtTLx/z/kyF0MXloss6eqEFQGQ25Xe5aYdz3
-	5KlrN3POjoC24dBT0peQl19i90fTotrV5pNjLmUAFcRmnD7GP8dc9XYJdQ==
-X-Google-Smtp-Source: AGHT+IGjoC+qdhChPjRTonGyec020oo04Av8Y+SjZ600G+CuIbMRoChrNWryFEGU1/BBhUZ3sMKAkw==
-X-Received: by 2002:a05:6a21:99a6:b0:1a7:75ee:6742 with SMTP id ve38-20020a056a2199a600b001a775ee6742mr5414816pzb.2.1714175811642;
-        Fri, 26 Apr 2024 16:56:51 -0700 (PDT)
-Received: from debian ([2601:641:300:14de:3ab3:2758:b06d:d8f6])
-        by smtp.gmail.com with ESMTPSA id v12-20020a17090a778c00b002ab534866dcsm16476487pjk.26.2024.04.26.16.56.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 16:56:51 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Fri, 26 Apr 2024 16:56:30 -0700
-Cc: linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org, dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, david@redhat.com,
-	Vilas.Sridharan@amd.com, leo.duran@amd.com, Yazen.Ghannam@amd.com,
-	rientjes@google.com, jiaqiyan@google.com, tony.luck@intel.com,
-	Jon.Grimm@amd.com, dave.hansen@linux.intel.com, rafael@kernel.org,
-	lenb@kernel.org, naoya.horiguchi@nec.com, james.morse@arm.com,
-	jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com,
-	linuxarm@huawei.com
-Subject: Re: [RFC PATCH v8 05/10] cxl/memscrub: Add CXL device patrol scrub
- control feature
-Message-ID: <Ziw_Ll3vMBK1zNw4@debian>
-References: <20240419164720.1765-1-shiju.jose@huawei.com>
- <20240419164720.1765-6-shiju.jose@huawei.com>
+	s=arc-20240116; t=1714184606; c=relaxed/simple;
+	bh=s4O1cD6ur+TJfx2wOiGM9x5omp0EZuXF5lklgnxS554=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=tgI/6Zg3mAkALAZ5nMRynn2xycYoVjaIblfKjVYr+S7rSFa1fdSd9h3bH4+quj4kFeR1tZDGO3KlVA9WeVcXHUx9MAfEpCLDNApKf2TtTT5C2OXXFQhvS1zxWRXqUE+I6HRj7864ozHnqfK4VLf/O63XbOOdvzEjXKboB4jagsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y1B3d83y; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714184604; x=1745720604;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=s4O1cD6ur+TJfx2wOiGM9x5omp0EZuXF5lklgnxS554=;
+  b=Y1B3d83y2fk8RZKYRCLOJw281sgytdxKAsyTJQA+v0agx19/cImj9JH0
+   tp5/Ds8H54jtDz8cqH+gskFFeAGy9TD9+UOvEmjG+aJN1Nbynf5Z/LLDe
+   gNwtZr7UhI58N1w0ggrmD+CsDJfUQxZL554RIHnZk50Knk5dN7hSf5xOA
+   kG10jb//kDWUe8kqeVOHWJlZC9nqiH5wSkNFS/uUcyNbICSbSzWhFMOd2
+   LKbyPb1+TwBWC4+X5hMdiUZsFkgHiFdAALdsktfHMzYkf4NmtQ067aKe5
+   rNgf94SGWISTkSWKIAvicfkNIFuLuDSSJ8reqTwCqHmwb81rvIP5OlIYb
+   A==;
+X-CSE-ConnectionGUID: 9o0Uy5lBSf6aScjAmuE/7g==
+X-CSE-MsgGUID: V5lPW/x9QLClX1pDNhoJLg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10096613"
+X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
+   d="scan'208";a="10096613"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 19:23:23 -0700
+X-CSE-ConnectionGUID: i4J2JETuRNmiy5ZLEwkQhQ==
+X-CSE-MsgGUID: XjFfGcXoQm6YIfJYzfc2Gw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
+   d="scan'208";a="30242470"
+Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 26 Apr 2024 19:23:21 -0700
+Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s0Xig-0004Zi-1s;
+	Sat, 27 Apr 2024 02:23:18 +0000
+Date: Sat, 27 Apr 2024 10:22:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Perry Yuan <perry.yuan@amd.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>, Li Meng <li.meng@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>
+Subject: [rafael-pm:bleeding-edge 180/186]
+ drivers/cpufreq/amd-pstate.c:828:47: warning: variable
+ 'lowest_nonlinear_freq' set but not used
+Message-ID: <202404271038.em6nJjzy-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -100,501 +80,187 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240419164720.1765-6-shiju.jose@huawei.com>
 
-On Sat, Apr 20, 2024 at 12:47:14AM +0800, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> CXL spec 3.1 section 8.2.9.9.11.1 describes the device patrol scrub control
-> feature. The device patrol scrub proactively locates and makes corrections
-> to errors in regular cycle.
-> 
-> Allow specifying the number of hours within which the patrol scrub must be
-> completed, subject to minimum and maximum limits reported by the device.
-> Also allow disabling scrub allowing trade-off error rates against
-> performance.
-> 
-> Register with scrub subsystem to provide scrub control attributes to the
-> user.
-> 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  Documentation/scrub/scrub-configure.rst |  52 ++++
->  drivers/cxl/Kconfig                     |  19 ++
->  drivers/cxl/core/Makefile               |   1 +
->  drivers/cxl/core/memscrub.c             | 314 ++++++++++++++++++++++++
->  drivers/cxl/cxlmem.h                    |   8 +
->  drivers/cxl/mem.c                       |   6 +
->  6 files changed, 400 insertions(+)
->  create mode 100644 Documentation/scrub/scrub-configure.rst
->  create mode 100644 drivers/cxl/core/memscrub.c
-> 
-> diff --git a/Documentation/scrub/scrub-configure.rst b/Documentation/scrub/scrub-configure.rst
-> new file mode 100644
-> index 000000000000..2275366b60d3
-> --- /dev/null
-> +++ b/Documentation/scrub/scrub-configure.rst
-> @@ -0,0 +1,52 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +================
-> +Scrub subsystem
-> +================
-> +
-> +Copyright (c) 2024 HiSilicon Limited.
-> +
-> +:Author:   Shiju Jose <shiju.jose@huawei.com>
-> +:License:  The GNU Free Documentation License, Version 1.2
-> +          (dual licensed under the GPL v2)
-> +:Original Reviewers:
-> +
-> +- Written for: 6.9
-> +- Updated for:
-> +
-> +Introduction
-> +------------
-> +The scrub subsystem provides interface for controlling attributes
-> +of memory scrubbers in the system. The scrub device drivers
-> +in the system register with the scrub subsystem.The scrub subsystem
-> +driver exposes the scrub controls to the user in the sysfs.
-> +
-> +The File System
-> +---------------
-> +
-> +The control attributes of the registered scrubbers could be
-> +accessed in the /sys/class/ras/rasX/scrub/
-> +
-> +sysfs
-> +-----
-> +
-> +Sysfs files are documented in
-> +`Documentation/ABI/testing/sysfs-class-scrub-configure`.
-> +
-> +Example
-> +-------
-> +
-> +The usage takes the form shown in this example::
-> +
-> +1. CXL patrol scrubber
-> +    # cat /sys/class/ras/ras0/scrub/rate_available
-> +    # 0x1-0xff
-> +    # echo 30 > /sys/class/ras/ras0/scrub/rate
-> +    # cat /sys/class/ras/ras0/scrub/rate
-> +    # 0x1e
-> +    # echo 1 > /sys/class/ras/ras0/scrub/enable_background
-> +    # cat /sys/class/ras/ras0/scrub/enable_background
-> +    # 1
-> +    # echo 0 > /sys/class/ras/ras0/scrub/enable_background
-> +    # cat /sys/class/ras/ras0/scrub/enable_background
-> +    # 0
-> diff --git a/drivers/cxl/Kconfig b/drivers/cxl/Kconfig
-> index 5f3c9c5529b9..3621b9f27e80 100644
-> --- a/drivers/cxl/Kconfig
-> +++ b/drivers/cxl/Kconfig
-> @@ -144,4 +144,23 @@ config CXL_REGION_INVALIDATION_TEST
->  	  If unsure, or if this kernel is meant for production environments,
->  	  say N.
->  
-> +config CXL_SCRUB
-> +	bool "CXL: Memory scrub feature"
-> +	depends on CXL_PCI
-> +	depends on CXL_MEM
-> +	depends on SCRUB
-> +	help
-> +	  The CXL memory scrub control is an optional feature allows host to
-> +	  control the scrub configurations of CXL Type 3 devices, which
-> +	  supports patrol scrubbing.
-> +
-> +	  Registers with the scrub subsystem to provide control attributes
-> +	  of CXL memory device scrubber to the user.
-> +	  Provides interface functions to support configuring the CXL memory
-> +	  device patrol scrubber.
-> +
-> +	  Say 'y/n' to enable/disable control of memory scrub parameters for
-> +	  CXL.mem devices. See section 8.2.9.9.11.1 of CXL 3.1 specification
-> +	  for detailed description of CXL memory patrol scrub control feature.
-> +
->  endif
-> diff --git a/drivers/cxl/core/Makefile b/drivers/cxl/core/Makefile
-> index 9259bcc6773c..e0fc814c3983 100644
-> --- a/drivers/cxl/core/Makefile
-> +++ b/drivers/cxl/core/Makefile
-> @@ -16,3 +16,4 @@ cxl_core-y += pmu.o
->  cxl_core-y += cdat.o
->  cxl_core-$(CONFIG_TRACING) += trace.o
->  cxl_core-$(CONFIG_CXL_REGION) += region.o
-> +cxl_core-$(CONFIG_CXL_SCRUB) += memscrub.o
-> diff --git a/drivers/cxl/core/memscrub.c b/drivers/cxl/core/memscrub.c
-> new file mode 100644
-> index 000000000000..a50f6e384394
-> --- /dev/null
-> +++ b/drivers/cxl/core/memscrub.c
-> @@ -0,0 +1,314 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * CXL memory scrub driver.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + *
-> + *  - Provides functions to configure patrol scrub feature of the
-> + *    CXL memory devices.
-> + *  - Registers with the scrub subsystem driver to expose the sysfs attributes
-> + *    to the user for configuring the CXL memory patrol scrub feature.
-> + */
-> +
-> +#define pr_fmt(fmt)	"CXL_MEM_SCRUB: " fmt
-> +
-> +#include <cxlmem.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/limits.h>
-> +#include <linux/memory_scrub.h>
-> +
-> +static int cxl_mem_get_supported_feature_entry(struct cxl_memdev *cxlmd, const uuid_t *feat_uuid,
-> +					       struct cxl_mbox_supp_feat_entry *feat_entry_out)
-> +{
-> +	struct cxl_mbox_supp_feat_entry *feat_entry;
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-> +	int feat_index, feats_out_size;
-> +	int nentries, count;
-> +	int ret;
-> +
-> +	feat_index = 0;
-> +	feats_out_size = sizeof(struct cxl_mbox_get_supp_feats_out) +
-> +			  sizeof(struct cxl_mbox_supp_feat_entry);
-> +	struct cxl_mbox_get_supp_feats_out *feats_out __free(kfree) =
-> +					kmalloc(feats_out_size, GFP_KERNEL);
-> +	if (!feats_out)
-> +		return -ENOMEM;
-> +
-> +	while (true) {
-> +		memset(feats_out, 0, feats_out_size);
-> +		ret = cxl_get_supported_features(mds, feats_out_size,
-> +						 feat_index, feats_out);
-> +		if (ret)
-> +			return ret;
-> +
-> +		nentries = feats_out->nr_entries;
-> +		if (!nentries)
-> +			return -EOPNOTSUPP;
-> +
-> +		/* Check CXL memdev supports the feature */
-> +		feat_entry = feats_out->feat_entries;
-> +		for (count = 0; count < nentries; count++, feat_entry++) {
-> +			if (uuid_equal(&feat_entry->uuid, feat_uuid)) {
-> +				memcpy(feat_entry_out, feat_entry,
-> +				       sizeof(*feat_entry_out));
-> +				return 0;
-> +			}
-> +		}
-> +		feat_index += nentries;
-> +	}
-> +}
-> +
-> +/* CXL memory patrol scrub control definitions */
-> +#define CXL_MEMDEV_PS_GET_FEAT_VERSION	0x01
-> +#define CXL_MEMDEV_PS_SET_FEAT_VERSION	0x01
-> +
-> +static const uuid_t cxl_patrol_scrub_uuid =
-> +	UUID_INIT(0x96dad7d6, 0xfde8, 0x482b, 0xa7, 0x33, 0x75, 0x77, 0x4e,     \
-> +		  0x06, 0xdb, 0x8a);
-> +
-> +/* CXL memory patrol scrub control functions */
-> +struct cxl_patrol_scrub_context {
-> +	struct device *dev;
-> +	u16 get_feat_size;
-> +	u16 set_feat_size;
-> +	bool scrub_cycle_changeable;
-> +};
-> +
-> +/**
-> + * struct cxl_memdev_ps_params - CXL memory patrol scrub parameter data structure.
-> + * @enable:     [IN & OUT] enable(1)/disable(0) patrol scrub.
-> + * @scrub_cycle_changeable: [OUT] scrub cycle attribute of patrol scrub is changeable.
-> + * @rate:       [IN] Requested patrol scrub cycle in hours.
-> + *              [OUT] Current patrol scrub cycle in hours.
-> + * @min_rate:[OUT] minimum patrol scrub cycle, in hours, supported.
-> + */
-> +struct cxl_memdev_ps_params {
-> +	bool enable;
-> +	bool scrub_cycle_changeable;
-> +	u16 rate;
-> +	u16 min_rate;
-> +};
-> +
-> +enum cxl_scrub_param {
-> +	cxl_ps_param_enable,
-> +	cxl_ps_param_rate,
-> +};
-> +
-> +#define	CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK	BIT(0)
-> +#define	CXL_MEMDEV_PS_SCRUB_CYCLE_REALTIME_REPORT_CAP_MASK	BIT(1)
-> +#define	CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK	GENMASK(7, 0)
-> +#define	CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK	GENMASK(15, 8)
-> +#define	CXL_MEMDEV_PS_FLAG_ENABLED_MASK	BIT(0)
-> +
-> +struct cxl_memdev_ps_rd_attrs {
-> +	u8 scrub_cycle_cap;
-> +	__le16 scrub_cycle;
-> +	u8 scrub_flags;
-> +}  __packed;
-> +
-> +struct cxl_memdev_ps_wr_attrs {
-> +	u8 scrub_cycle_hr;
-> +	u8 scrub_flags;
-> +}  __packed;
-> +
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   d9e98e7641ce1ef34d0c33dae1f27611bd1cbcf9
+commit: 5547c0ebfc2efdab6ee93a7fd4d9c411ad87013e [180/186] cpufreq: amd-pstate: Unify computation of {max,min,nominal,lowest_nonlinear}_freq
+config: i386-buildonly-randconfig-002-20240427 (https://download.01.org/0day-ci/archive/20240427/202404271038.em6nJjzy-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240427/202404271038.em6nJjzy-lkp@intel.com/reproduce)
 
-In this patch, generally "rate" is used for cycle in hour, here we use
-scrub_cycle_hr. I am not sure whether "rate" is the proper term for the
-purpose, "interval" or "cycle" seems more straightforward for me.
-But someone else may have a different thought about it.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404271038.em6nJjzy-lkp@intel.com/
 
-> +static int cxl_mem_ps_get_attrs(struct device *dev,
-> +				struct cxl_memdev_ps_params *params)
-> +{
-> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-> +	size_t rd_data_size = sizeof(struct cxl_memdev_ps_rd_attrs);
-> +	size_t data_size;
-> +
-> +	if (!mds)
-> +		return -EFAULT;
-> +
-> +	struct cxl_memdev_ps_rd_attrs *rd_attrs __free(kfree) =
-> +						kmalloc(rd_data_size, GFP_KERNEL);
-> +	if (!rd_attrs)
-> +		return -ENOMEM;
-> +
-> +	data_size = cxl_get_feature(mds, cxl_patrol_scrub_uuid, rd_attrs,
-> +				    rd_data_size, rd_data_size,
-> +				    CXL_GET_FEAT_SEL_CURRENT_VALUE);
-> +	if (!data_size)
-> +		return -EIO;
-> +
-> +	params->scrub_cycle_changeable = FIELD_GET(CXL_MEMDEV_PS_SCRUB_CYCLE_CHANGE_CAP_MASK,
-> +						   rd_attrs->scrub_cycle_cap);
-> +	params->enable = FIELD_GET(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
-> +				   rd_attrs->scrub_flags);
-> +	params->rate = FIELD_GET(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
-> +				 rd_attrs->scrub_cycle);
-> +	params->min_rate = FIELD_GET(CXL_MEMDEV_PS_MIN_SCRUB_CYCLE_MASK,
-> +				      rd_attrs->scrub_cycle);
-> +
-> +	return 0;
-> +}
-> +
-> +static int cxl_mem_ps_set_attrs(struct device *dev, struct cxl_memdev_ps_params *params,
-> +				enum cxl_scrub_param param_type)
-> +{
-> +	struct cxl_memdev_ps_wr_attrs wr_attrs;
-> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
-> +	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-> +	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
-> +	struct cxl_memdev_ps_params rd_params;
-> +	int ret;
-> +
-> +	ret = cxl_mem_ps_get_attrs(dev, &rd_params);
-> +	if (ret) {
-> +		dev_err(dev, "Get cxlmemdev patrol scrub params failed ret=%d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	switch (param_type) {
-> +	case cxl_ps_param_enable:
-> +		wr_attrs.scrub_flags = FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
-> +						   params->enable);
-> +		wr_attrs.scrub_cycle_hr = FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
-> +						      rd_params.rate);
-> +		break;
-> +	case cxl_ps_param_rate:
-> +		if (params->rate < rd_params.min_rate) {
-> +			dev_err(dev, "Invalid CXL patrol scrub cycle(%d) to set\n",
-> +				params->rate);
-> +			dev_err(dev, "Minimum supported CXL patrol scrub cycle in hour %d\n",
-> +			       params->min_rate);
-> +			return -EINVAL;
-> +		}
-> +		wr_attrs.scrub_cycle_hr = FIELD_PREP(CXL_MEMDEV_PS_CUR_SCRUB_CYCLE_MASK,
-> +						     params->rate);
-> +		wr_attrs.scrub_flags = FIELD_PREP(CXL_MEMDEV_PS_FLAG_ENABLED_MASK,
-> +						  rd_params.enable);
-> +		break;
-> +	}
-> +
-> +	ret = cxl_set_feature(mds, cxl_patrol_scrub_uuid, CXL_MEMDEV_PS_SET_FEAT_VERSION,
-> +			      &wr_attrs, sizeof(wr_attrs),
-> +			      CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET);
-> +	if (ret)
-> +		dev_err(dev, "CXL patrol scrub set feature failed ret=%d\n",
-> +			ret);
-> +
-> +	return ret;
-> +}
-> +
-> +static int cxl_patrol_scrub_get_enabled_bg(struct device *dev, bool *enabled)
-> +{
-> +	struct cxl_memdev_ps_params params;
-> +	int ret;
-> +
-> +	ret = cxl_mem_ps_get_attrs(dev->parent, &params);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*enabled = params.enable;
-> +
-> +	return 0;
-> +}
-> +
-> +static int cxl_patrol_scrub_set_enabled_bg(struct device *dev, bool enable)
-> +{
-> +	struct cxl_memdev_ps_params params = {
-> +		.enable = enable,
-> +	};
-> +
-> +	return cxl_mem_ps_set_attrs(dev->parent, &params, cxl_ps_param_enable);
-> +}
-> +
-> +static int cxl_patrol_scrub_get_name(struct device *dev, char *name)
-> +{
-> +	struct cxl_memdev *cxlmd = to_cxl_memdev(dev->parent);
-> +
-> +	return sysfs_emit(name, "%s_%s\n", "cxl_patrol_scrub",
-> +			  dev_name(&cxlmd->dev));
-> +}
-> +
-> +static int cxl_patrol_scrub_write_rate(struct device *dev, u64 rate)
-> +{
-> +	struct cxl_memdev_ps_params params = {
-> +		.rate = rate,
-> +	};
-> +
-> +	return cxl_mem_ps_set_attrs(dev->parent, &params, cxl_ps_param_rate);
-> +}
-> +
-> +static int cxl_patrol_scrub_read_rate(struct device *dev, u64 *rate)
-> +{
-> +	struct cxl_memdev_ps_params params;
-> +	int ret;
-> +
-> +	ret = cxl_mem_ps_get_attrs(dev->parent, &params);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*rate = params.rate;
-> +
-> +	return 0;
-> +}
-> +
-> +static int cxl_patrol_scrub_read_rate_avail(struct device *dev, u64 *min, u64 *max)
-> +{
-> +	struct cxl_memdev_ps_params params;
-> +	int ret;
-> +
-> +	ret = cxl_mem_ps_get_attrs(dev->parent, &params);
-> +	if (ret)
-> +		return ret;
-> +	*min = params.min_rate;
-> +	*max = U8_MAX; /* Max set by register size */
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct scrub_ops cxl_ps_scrub_ops = {
-> +	.get_enabled_bg = cxl_patrol_scrub_get_enabled_bg,
-> +	.set_enabled_bg = cxl_patrol_scrub_set_enabled_bg,
-> +	.get_name = cxl_patrol_scrub_get_name,
-> +	.rate_read = cxl_patrol_scrub_read_rate,
-> +	.rate_write = cxl_patrol_scrub_write_rate,
-> +	.rate_avail_range = cxl_patrol_scrub_read_rate_avail,
-> +};
-> +
-> +int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
-> +{
-> +	struct cxl_patrol_scrub_context *cxl_ps_ctx;
-> +	struct cxl_mbox_supp_feat_entry feat_entry;
-> +	struct cxl_memdev_ps_params params;
-> +	struct device *cxl_scrub_dev;
-> +	int ret;
-> +
-> +	ret = cxl_mem_get_supported_feature_entry(cxlmd, &cxl_patrol_scrub_uuid,
-> +						  &feat_entry);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (!(feat_entry.attr_flags & CXL_FEAT_ENTRY_FLAG_CHANGABLE))
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = cxl_mem_ps_get_attrs(&cxlmd->dev, &params);
-> +	if (ret)
-> +		return dev_err_probe(&cxlmd->dev, ret,
-> +				     "Get CXL patrol scrub params failed\n");
-> +
-> +	cxl_ps_ctx = devm_kzalloc(&cxlmd->dev, sizeof(*cxl_ps_ctx), GFP_KERNEL);
-> +	if (!cxl_ps_ctx)
-> +		return -ENOMEM;
-> +
-> +	*cxl_ps_ctx = (struct cxl_patrol_scrub_context) {
-> +		.get_feat_size = feat_entry.get_size,
-> +		.set_feat_size = feat_entry.set_size,
-> +		.scrub_cycle_changeable =  params.scrub_cycle_changeable,
-> +	};
-> +
-> +	cxl_scrub_dev = devm_scrub_device_register(&cxlmd->dev, cxl_ps_ctx,
-> +						   &cxl_ps_scrub_ops);
-> +	if (IS_ERR(cxl_scrub_dev))
-> +		return PTR_ERR(cxl_scrub_dev);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_mem_patrol_scrub_init, CXL);
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index 1c50a3e2eced..f95e39febd73 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -956,6 +956,14 @@ int cxl_trigger_poison_list(struct cxl_memdev *cxlmd);
->  int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa);
->  int cxl_clear_poison(struct cxl_memdev *cxlmd, u64 dpa);
->  
-> +/* cxl memory scrub functions */
-> +#ifdef CONFIG_CXL_SCRUB
-> +int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd);
-> +#else
-> +static inline int cxl_mem_patrol_scrub_init(struct cxl_memdev *cxlmd)
-> +{ return 0; }
-> +#endif
-> +
->  #ifdef CONFIG_CXL_SUSPEND
->  void cxl_mem_active_inc(void);
->  void cxl_mem_active_dec(void);
-> diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-> index 0c79d9ce877c..399e43463626 100644
-> --- a/drivers/cxl/mem.c
-> +++ b/drivers/cxl/mem.c
-> @@ -117,6 +117,12 @@ static int cxl_mem_probe(struct device *dev)
->  	if (!cxlds->media_ready)
->  		return -EBUSY;
->  
-> +	rc = cxl_mem_patrol_scrub_init(cxlmd);
-> +	if (rc) {
-> +		dev_dbg(&cxlmd->dev, "CXL patrol scrub init failed\n");
-> +		return rc;
-> +	}
+All warnings (new ones prefixed by >>):
 
-If the device does not support memory patrol scrub feature, the above
-function will return -EOPNOTSUPP. Since the feature is optional, should we
-just warn it and let it go through?
+   drivers/cpufreq/amd-pstate.c: In function 'amd_pstate_cpu_init':
+>> drivers/cpufreq/amd-pstate.c:828:47: warning: variable 'lowest_nonlinear_freq' set but not used [-Wunused-but-set-variable]
+     828 |         int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+         |                                               ^~~~~~~~~~~~~~~~~~~~~
+   drivers/cpufreq/amd-pstate.c:828:33: warning: variable 'nominal_freq' set but not used [-Wunused-but-set-variable]
+     828 |         int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+         |                                 ^~~~~~~~~~~~
+   drivers/cpufreq/amd-pstate.c: In function 'amd_pstate_epp_cpu_init':
+   drivers/cpufreq/amd-pstate.c:1287:47: warning: variable 'lowest_nonlinear_freq' set but not used [-Wunused-but-set-variable]
+    1287 |         int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+         |                                               ^~~~~~~~~~~~~~~~~~~~~
+   drivers/cpufreq/amd-pstate.c:1287:33: warning: variable 'nominal_freq' set but not used [-Wunused-but-set-variable]
+    1287 |         int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+         |                                 ^~~~~~~~~~~~
+--
+>> drivers/cpufreq/amd-pstate.c:791: warning: Function parameter or struct member 'cpudata' not described in 'amd_pstate_init_freq'
 
-Fan
-> +
->  	/*
->  	 * Someone is trying to reattach this device after it lost its port
->  	 * connection (an endpoint port previously registered by this memdev was
-> -- 
-> 2.34.1
-> 
+
+vim +/lowest_nonlinear_freq +828 drivers/cpufreq/amd-pstate.c
+
+e571a5e2068ef5 Meng Li    2024-01-19  778  
+5547c0ebfc2efd Perry Yuan 2024-04-25  779  /**
+5547c0ebfc2efd Perry Yuan 2024-04-25  780   * amd_pstate_init_freq: Initialize the max_freq, min_freq,
+5547c0ebfc2efd Perry Yuan 2024-04-25  781   *                       nominal_freq and lowest_nonlinear_freq for
+5547c0ebfc2efd Perry Yuan 2024-04-25  782   *                       the @cpudata object.
+5547c0ebfc2efd Perry Yuan 2024-04-25  783   *
+5547c0ebfc2efd Perry Yuan 2024-04-25  784   *  Requires: highest_perf, lowest_perf, nominal_perf and
+5547c0ebfc2efd Perry Yuan 2024-04-25  785   *            lowest_nonlinear_perf members of @cpudata to be
+5547c0ebfc2efd Perry Yuan 2024-04-25  786   *            initialized.
+5547c0ebfc2efd Perry Yuan 2024-04-25  787   *
+5547c0ebfc2efd Perry Yuan 2024-04-25  788   *  Returns 0 on success, non-zero value on failure.
+5547c0ebfc2efd Perry Yuan 2024-04-25  789   */
+5547c0ebfc2efd Perry Yuan 2024-04-25  790  static int amd_pstate_init_freq(struct amd_cpudata *cpudata)
+5547c0ebfc2efd Perry Yuan 2024-04-25 @791  {
+5547c0ebfc2efd Perry Yuan 2024-04-25  792  	int ret;
+5547c0ebfc2efd Perry Yuan 2024-04-25  793  	u32 min_freq;
+5547c0ebfc2efd Perry Yuan 2024-04-25  794  	u32 highest_perf, max_freq;
+5547c0ebfc2efd Perry Yuan 2024-04-25  795  	u32 nominal_perf, nominal_freq;
+5547c0ebfc2efd Perry Yuan 2024-04-25  796  	u32 lowest_nonlinear_perf, lowest_nonlinear_freq;
+5547c0ebfc2efd Perry Yuan 2024-04-25  797  	u32 boost_ratio, lowest_nonlinear_ratio;
+5547c0ebfc2efd Perry Yuan 2024-04-25  798  	struct cppc_perf_caps cppc_perf;
+5547c0ebfc2efd Perry Yuan 2024-04-25  799  
+5547c0ebfc2efd Perry Yuan 2024-04-25  800  
+5547c0ebfc2efd Perry Yuan 2024-04-25  801  	ret = cppc_get_perf_caps(cpudata->cpu, &cppc_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  802  	if (ret)
+5547c0ebfc2efd Perry Yuan 2024-04-25  803  		return ret;
+5547c0ebfc2efd Perry Yuan 2024-04-25  804  
+5547c0ebfc2efd Perry Yuan 2024-04-25  805  	min_freq = cppc_perf.lowest_freq * 1000;
+5547c0ebfc2efd Perry Yuan 2024-04-25  806  	nominal_freq = cppc_perf.nominal_freq;
+5547c0ebfc2efd Perry Yuan 2024-04-25  807  	nominal_perf = READ_ONCE(cpudata->nominal_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  808  
+5547c0ebfc2efd Perry Yuan 2024-04-25  809  	highest_perf = READ_ONCE(cpudata->highest_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  810  	boost_ratio = div_u64(highest_perf << SCHED_CAPACITY_SHIFT, nominal_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  811  	max_freq = (nominal_freq * boost_ratio >> SCHED_CAPACITY_SHIFT) * 1000;
+5547c0ebfc2efd Perry Yuan 2024-04-25  812  
+5547c0ebfc2efd Perry Yuan 2024-04-25  813  	lowest_nonlinear_perf = READ_ONCE(cpudata->lowest_nonlinear_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  814  	lowest_nonlinear_ratio = div_u64(lowest_nonlinear_perf << SCHED_CAPACITY_SHIFT,
+5547c0ebfc2efd Perry Yuan 2024-04-25  815  					 nominal_perf);
+5547c0ebfc2efd Perry Yuan 2024-04-25  816  	lowest_nonlinear_freq = (nominal_freq * lowest_nonlinear_ratio >> SCHED_CAPACITY_SHIFT) * 1000;
+5547c0ebfc2efd Perry Yuan 2024-04-25  817  
+5547c0ebfc2efd Perry Yuan 2024-04-25  818  	WRITE_ONCE(cpudata->min_freq, min_freq);
+5547c0ebfc2efd Perry Yuan 2024-04-25  819  	WRITE_ONCE(cpudata->lowest_nonlinear_freq, lowest_nonlinear_freq);
+5547c0ebfc2efd Perry Yuan 2024-04-25  820  	WRITE_ONCE(cpudata->nominal_freq, nominal_freq);
+5547c0ebfc2efd Perry Yuan 2024-04-25  821  	WRITE_ONCE(cpudata->max_freq, max_freq);
+5547c0ebfc2efd Perry Yuan 2024-04-25  822  
+5547c0ebfc2efd Perry Yuan 2024-04-25  823  	return 0;
+5547c0ebfc2efd Perry Yuan 2024-04-25  824  }
+5547c0ebfc2efd Perry Yuan 2024-04-25  825  
+ec437d71db77a1 Huang Rui  2021-12-24  826  static int amd_pstate_cpu_init(struct cpufreq_policy *policy)
+ec437d71db77a1 Huang Rui  2021-12-24  827  {
+ec437d71db77a1 Huang Rui  2021-12-24 @828  	int min_freq, max_freq, nominal_freq, lowest_nonlinear_freq, ret;
+ec437d71db77a1 Huang Rui  2021-12-24  829  	struct device *dev;
+ec437d71db77a1 Huang Rui  2021-12-24  830  	struct amd_cpudata *cpudata;
+ec437d71db77a1 Huang Rui  2021-12-24  831  
+919f4557696939 Wyes Karny 2022-11-17  832  	/*
+919f4557696939 Wyes Karny 2022-11-17  833  	 * Resetting PERF_CTL_MSR will put the CPU in P0 frequency,
+919f4557696939 Wyes Karny 2022-11-17  834  	 * which is ideal for initialization process.
+919f4557696939 Wyes Karny 2022-11-17  835  	 */
+919f4557696939 Wyes Karny 2022-11-17  836  	amd_perf_ctl_reset(policy->cpu);
+ec437d71db77a1 Huang Rui  2021-12-24  837  	dev = get_cpu_device(policy->cpu);
+ec437d71db77a1 Huang Rui  2021-12-24  838  	if (!dev)
+ec437d71db77a1 Huang Rui  2021-12-24  839  		return -ENODEV;
+ec437d71db77a1 Huang Rui  2021-12-24  840  
+ec437d71db77a1 Huang Rui  2021-12-24  841  	cpudata = kzalloc(sizeof(*cpudata), GFP_KERNEL);
+ec437d71db77a1 Huang Rui  2021-12-24  842  	if (!cpudata)
+ec437d71db77a1 Huang Rui  2021-12-24  843  		return -ENOMEM;
+ec437d71db77a1 Huang Rui  2021-12-24  844  
+ec437d71db77a1 Huang Rui  2021-12-24  845  	cpudata->cpu = policy->cpu;
+ec437d71db77a1 Huang Rui  2021-12-24  846  
+f3a052391822b7 Meng Li    2024-01-19  847  	amd_pstate_init_prefcore(cpudata);
+f3a052391822b7 Meng Li    2024-01-19  848  
+ec437d71db77a1 Huang Rui  2021-12-24  849  	ret = amd_pstate_init_perf(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  850  	if (ret)
+41271016dfa4a0 Huang Rui  2021-12-24  851  		goto free_cpudata1;
+ec437d71db77a1 Huang Rui  2021-12-24  852  
+5547c0ebfc2efd Perry Yuan 2024-04-25  853  	ret = amd_pstate_init_freq(cpudata);
+5547c0ebfc2efd Perry Yuan 2024-04-25  854  	if (ret)
+5547c0ebfc2efd Perry Yuan 2024-04-25  855  		goto free_cpudata1;
+5547c0ebfc2efd Perry Yuan 2024-04-25  856  
+ec437d71db77a1 Huang Rui  2021-12-24  857  	min_freq = amd_get_min_freq(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  858  	max_freq = amd_get_max_freq(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  859  	nominal_freq = amd_get_nominal_freq(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  860  	lowest_nonlinear_freq = amd_get_lowest_nonlinear_freq(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  861  
+ec437d71db77a1 Huang Rui  2021-12-24  862  	if (min_freq < 0 || max_freq < 0 || min_freq > max_freq) {
+ec437d71db77a1 Huang Rui  2021-12-24  863  		dev_err(dev, "min_freq(%d) or max_freq(%d) value is incorrect\n",
+ec437d71db77a1 Huang Rui  2021-12-24  864  			min_freq, max_freq);
+ec437d71db77a1 Huang Rui  2021-12-24  865  		ret = -EINVAL;
+41271016dfa4a0 Huang Rui  2021-12-24  866  		goto free_cpudata1;
+ec437d71db77a1 Huang Rui  2021-12-24  867  	}
+ec437d71db77a1 Huang Rui  2021-12-24  868  
+ec437d71db77a1 Huang Rui  2021-12-24  869  	policy->cpuinfo.transition_latency = AMD_PSTATE_TRANSITION_LATENCY;
+ec437d71db77a1 Huang Rui  2021-12-24  870  	policy->transition_delay_us = AMD_PSTATE_TRANSITION_DELAY;
+ec437d71db77a1 Huang Rui  2021-12-24  871  
+ec437d71db77a1 Huang Rui  2021-12-24  872  	policy->min = min_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  873  	policy->max = max_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  874  
+ec437d71db77a1 Huang Rui  2021-12-24  875  	policy->cpuinfo.min_freq = min_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  876  	policy->cpuinfo.max_freq = max_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  877  
+ec437d71db77a1 Huang Rui  2021-12-24  878  	/* It will be updated by governor */
+ec437d71db77a1 Huang Rui  2021-12-24  879  	policy->cur = policy->cpuinfo.min_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  880  
+e059c184da47e9 Huang Rui  2021-12-24  881  	if (boot_cpu_has(X86_FEATURE_CPPC))
+1d215f0319c206 Huang Rui  2021-12-24  882  		policy->fast_switch_possible = true;
+1d215f0319c206 Huang Rui  2021-12-24  883  
+41271016dfa4a0 Huang Rui  2021-12-24  884  	ret = freq_qos_add_request(&policy->constraints, &cpudata->req[0],
+41271016dfa4a0 Huang Rui  2021-12-24  885  				   FREQ_QOS_MIN, policy->cpuinfo.min_freq);
+41271016dfa4a0 Huang Rui  2021-12-24  886  	if (ret < 0) {
+41271016dfa4a0 Huang Rui  2021-12-24  887  		dev_err(dev, "Failed to add min-freq constraint (%d)\n", ret);
+41271016dfa4a0 Huang Rui  2021-12-24  888  		goto free_cpudata1;
+41271016dfa4a0 Huang Rui  2021-12-24  889  	}
+41271016dfa4a0 Huang Rui  2021-12-24  890  
+41271016dfa4a0 Huang Rui  2021-12-24  891  	ret = freq_qos_add_request(&policy->constraints, &cpudata->req[1],
+41271016dfa4a0 Huang Rui  2021-12-24  892  				   FREQ_QOS_MAX, policy->cpuinfo.max_freq);
+41271016dfa4a0 Huang Rui  2021-12-24  893  	if (ret < 0) {
+41271016dfa4a0 Huang Rui  2021-12-24  894  		dev_err(dev, "Failed to add max-freq constraint (%d)\n", ret);
+41271016dfa4a0 Huang Rui  2021-12-24  895  		goto free_cpudata2;
+41271016dfa4a0 Huang Rui  2021-12-24  896  	}
+41271016dfa4a0 Huang Rui  2021-12-24  897  
+febab20caebac9 Wyes Karny 2023-11-17  898  	cpudata->max_limit_freq = max_freq;
+febab20caebac9 Wyes Karny 2023-11-17  899  	cpudata->min_limit_freq = min_freq;
+ec437d71db77a1 Huang Rui  2021-12-24  900  
+ec437d71db77a1 Huang Rui  2021-12-24  901  	policy->driver_data = cpudata;
+ec437d71db77a1 Huang Rui  2021-12-24  902  
+41271016dfa4a0 Huang Rui  2021-12-24  903  	amd_pstate_boost_init(cpudata);
+abd61c08ef349a Perry Yuan 2023-01-31  904  	if (!current_pstate_driver->adjust_perf)
+abd61c08ef349a Perry Yuan 2023-01-31  905  		current_pstate_driver->adjust_perf = amd_pstate_adjust_perf;
+41271016dfa4a0 Huang Rui  2021-12-24  906  
+ec437d71db77a1 Huang Rui  2021-12-24  907  	return 0;
+ec437d71db77a1 Huang Rui  2021-12-24  908  
+41271016dfa4a0 Huang Rui  2021-12-24  909  free_cpudata2:
+41271016dfa4a0 Huang Rui  2021-12-24  910  	freq_qos_remove_request(&cpudata->req[0]);
+41271016dfa4a0 Huang Rui  2021-12-24  911  free_cpudata1:
+ec437d71db77a1 Huang Rui  2021-12-24  912  	kfree(cpudata);
+ec437d71db77a1 Huang Rui  2021-12-24  913  	return ret;
+ec437d71db77a1 Huang Rui  2021-12-24  914  }
+ec437d71db77a1 Huang Rui  2021-12-24  915  
+
+:::::: The code at line 828 was first introduced by commit
+:::::: ec437d71db77a181227bf6d0ac9d4a80e58ecf0f cpufreq: amd-pstate: Introduce a new AMD P-State driver to support future processors
+
+:::::: TO: Huang Rui <ray.huang@amd.com>
+:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
