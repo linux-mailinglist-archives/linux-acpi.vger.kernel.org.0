@@ -1,164 +1,96 @@
-Return-Path: <linux-acpi+bounces-5442-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5443-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144768B4B81
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Apr 2024 13:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7408B4D03
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Apr 2024 19:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 437161C209C1
-	for <lists+linux-acpi@lfdr.de>; Sun, 28 Apr 2024 11:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED641C20A12
+	for <lists+linux-acpi@lfdr.de>; Sun, 28 Apr 2024 17:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA6E524A2;
-	Sun, 28 Apr 2024 11:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974BB7351A;
+	Sun, 28 Apr 2024 17:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Btaefxo1"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ALa1Y9AP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-20.smtpout.orange.fr [80.12.242.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FB042042;
-	Sun, 28 Apr 2024 11:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6860673505;
+	Sun, 28 Apr 2024 17:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714303690; cv=none; b=jCHu45UqSmYVQy1p7R1rEsgfmb64/oJ4CBLqjvGyFK5YDMxBwvWzkXFYFt7EWJdtuXRuNV0bBAxC4HwYgv9cxTecjZVSLF+E1VG82/1Pqr5QGX4xG5UKtjD1n5t2s5oAF4lkQdIk0G5mhBe4LuFgiwDgW2kAfS3SToKdqeT470k=
+	t=1714323781; cv=none; b=VoaM9t3j/TmT/NLJP++yIzmPxbF3hXbPAdqVe61loOcMR1X4KAMiKbBPy0NyKg2DLXoDHRCPY3hUUSjowin/1zpBrnZ+G+Et2Nk2gmIWafbkB5IQ2x78Erbe4scffmZqfCtDv6UKtHOD7nmbsGtpv2++Yw0lhi8evDWyqe/pSOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714303690; c=relaxed/simple;
-	bh=rJc04lQPGAte3sgRY0zpeVVbUDNqqGYs1de72FW6xAs=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WL7DzwBEwdT/G5ln1GRke5Ktju4Ho3ChlskFC/dSYBux9v4CPAXAEN7kOkNgkCI3r5irlc+M/YsA4iUp+rcVyKjbsgUIDCPRWgly69AK7uYz3XNy0maF0ey3q+dqN6fzy7rjmxDfuInUMYmZJHXeGjQoCtfwBaViK+9MSm5IiH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Btaefxo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E24C113CC;
-	Sun, 28 Apr 2024 11:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714303689;
-	bh=rJc04lQPGAte3sgRY0zpeVVbUDNqqGYs1de72FW6xAs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Btaefxo10uErlTPoPMBzc3QSERSMGWTlDvMlrSz90PUhcYtUja0aJH4eJKGek6fJf
-	 PtZQCrETOb541/H5bYGFFkda+JnADdkWOqXsCm5npThloYgFTJUCR0NNXroWbUx55M
-	 xYx9CyZlRwd6ZlMEOMRjD6jIeyFYgDhru/uKNcBCUB3I0WawgBPWl/7MFE1Ozy6olY
-	 AYHFd/1omU+ZP63jEkw2vtrxBrBNlvmrs5SLMZENl2ET1lAAQ1qtjk4hDgfKKMiXHD
-	 qNc1cNAs8A2HJ0CDp2o+STw+a6kt21n3Z1Fru2vOYQJ+4lTtiSX48rT2itnTVkOF8h
-	 CaJ539gHZWg4Q==
-Received: from 82-132-246-56.dab.02.net ([82.132.246.56] helo=wait-a-minute.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1s12hS-008nyp-PJ;
-	Sun, 28 Apr 2024 12:28:07 +0100
-Date: Sun, 28 Apr 2024 12:28:03 +0100
-Message-ID: <87frv5u3p8.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra
-	<peterz@infradead.org>,
-	<linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>,
-	<x86@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	"Rafael J . Wysocki"
-	<rafael@kernel.org>,
-	Miguel Luis <miguel.luis@oracle.com>,
-	"James Morse"
-	<james.morse@arm.com>,
-	Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe
- Brucker <jean-philippe@linaro.org>,
-	Catalin Marinas
-	<catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Hanjun Guo
-	<guohanjun@huawei.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov
-	<bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	<linuxarm@huawei.com>,
-	<justin.he@arm.com>,
-	<jianyong.wu@arm.com>,
-	"Lorenzo\
- Pieralisi" <lpieralisi@kernel.org>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v8 11/16] irqchip/gic-v3: Add support for ACPI's disabled but 'online capable' CPUs
-In-Reply-To: <20240426192858.000033d9@huawei.com>
-References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
-	<20240426135126.12802-12-Jonathan.Cameron@huawei.com>
-	<87il04t7j2.wl-maz@kernel.org>
-	<20240426192858.000033d9@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
- (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1714323781; c=relaxed/simple;
+	bh=NOChUkLc53HGxp6iS60sYnNJrUDWg1eYKPCqAN7ZKOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ClY4MPqikpQvMnAa5Gi/H/5kYxPupKEWyCnXtuDJLpzNsNzkxDKTJJNwdJvLZ9prVyNBR/nhZz5XAoHz8/9w0RSyqvwUUDpY3uKGoWJb5ojRiNe/yrgAJinQGUkXEezkujdahBQvU4G/HiKoX7JFSMnnUW3++dmTWqTpwdC43oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=ALa1Y9AP; arc=none smtp.client-ip=80.12.242.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 17vNsHfVWPWAk17vNsQrRM; Sun, 28 Apr 2024 19:02:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1714323771;
+	bh=1J7yKW1JH/MbhhOzTjiWOl04XoUf+ADaaRxdB9nsQNA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ALa1Y9APV4vo+Uo0/upk2/484RNc5NgIW/9a+/MJXW6W4mPT170Xhoyji7r3UEVRj
+	 WN9SURFJF8u46cy8KEwpK3AdK2GL1lDEjyYbe1dxHdGx77WN94W05YhBrTGuunm/Iq
+	 qZfdgVBu2ijj4QAmz02dFHpFoFIOyv8/JfpATgMWh5LeQ3Ggw6rA/pBGj4/tNDg1i8
+	 TXiU8qEuJvktzUjDP+jNQ/sm4nqVQpD/cc/jX6sIQz/U/j07028iEdc2VmJq3V+Ogc
+	 BSL2opShvxjXWLfHbcoHL8FFpsoxuLJIYSdXK949kC9BGH4xNaSfZgu88II6H8/L0n
+	 oLFvD4buikVEw==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 28 Apr 2024 19:02:51 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] device property: Fix a typo in the description of device_get_child_node_count()
+Date: Sun, 28 Apr 2024 19:02:37 +0200
+Message-ID: <369e7f6898c4a442d45aa15d7d969131d61e9cee.1714323747.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 82.132.246.56
-X-SA-Exim-Rcpt-To: Jonathan.Cameron@Huawei.com, tglx@linutronix.de, peterz@infradead.org, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, linux@armlinux.org.uk, rafael@kernel.org, miguel.luis@oracle.com, james.morse@arm.com, salil.mehta@huawei.com, jean-philippe@linaro.org, catalin.marinas@arm.com, will@kernel.org, guohanjun@huawei.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, linuxarm@huawei.com, justin.he@arm.com, jianyong.wu@arm.com, lpieralisi@kernel.org, sudeep.holla@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 26 Apr 2024 19:28:58 +0100,
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
-> 
-> 
-> I'll not send a formal v9 until early next week, so here is the current state
-> if you have time to take another look before then.
+s/cound/count/
 
-Don't bother resending this on my account -- you only sent it on
-Friday and there hasn't been much response to it yet. There is still a
-problem (see below), but looks otherwise OK.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/base/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[...]
-
-> @@ -2363,11 +2381,25 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
->  				(struct acpi_madt_generic_interrupt *)header;
->  	u32 reg = readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PIDR2_ARCH_MASK;
->  	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
-> +	int cpu = get_cpu_for_acpi_id(gicc->uid);
-
-I already commented that get_cpu_for_acpi_id() can...
-
->  	void __iomem *redist_base;
->  
-> -	if (!acpi_gicc_is_usable(gicc))
-> +	/* Neither enabled or online capable means it doesn't exist, skip it */
-> +	if (!(gicc->flags & (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
->  		return 0;
->  
-> +	/*
-> +	 * Capable but disabled CPUs can be brought online later. What about
-> +	 * the redistributor? ACPI doesn't want to say!
-> +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
-> +	 * Otherwise, prevent such CPUs from being brought online.
-> +	 */
-> +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
-> +		pr_warn("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
-> +		cpumask_set_cpu(cpu, &broken_rdists);
-
-... return -EINVAL, and then be passed to cpumask_set_cpu(), with
-interesting effects. It shouldn't happen, but I trust anything that
-comes from firmware tables as much as I trust a campaigning
-politician's promises. This should really result in the RD being
-considered unusable, but without affecting any CPU (there is no valid
-CPU the first place).
-
-Another question is what get_cpu_for acpi_id() returns for a disabled
-CPU. A valid CPU number? Or -EINVAL?
-
-Thanks,
-
-	M.
-
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 6a3a434d0d6f..837d77e3af2b 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -891,7 +891,7 @@ EXPORT_SYMBOL_GPL(fwnode_device_is_available);
+ 
+ /**
+  * device_get_child_node_count - return the number of child nodes for device
+- * @dev: Device to cound the child nodes for
++ * @dev: Device to count the child nodes for
+  *
+  * Return: the number of child nodes for a given device.
+  */
 -- 
-Without deviation from the norm, progress is not possible.
+2.44.0
+
 
