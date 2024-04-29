@@ -1,203 +1,176 @@
-Return-Path: <linux-acpi+bounces-5467-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5468-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1BC48B63D4
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 22:46:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDED8B6490
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 23:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D2B5B243A6
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 20:46:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8251F20F5D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 21:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A756B17966C;
-	Mon, 29 Apr 2024 20:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21147184111;
+	Mon, 29 Apr 2024 21:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FhDmLLkP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ma4fsmPq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2058.outbound.protection.outlook.com [40.107.101.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72E3179641;
-	Mon, 29 Apr 2024 20:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714423541; cv=fail; b=aT5e1fl2RRG6NvLiM2JYpthr9hukJ+LHAym0hUGp6rjVcHtCBw9IIGJsI6HrMgZP2ZZBjpCPr84k3UHj1Bq6IVROK4TquDPy0liV3MDcKFnn1+90qmOw9cMM0IOAd6q63hWAKywi1FJOZEf06VkiAYM7AFlPzJ+8lmkBqmbHdYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714423541; c=relaxed/simple;
-	bh=1ReBNU5gzSMRM7Kj69+zdJtSxFYn2bC8zS2aJcE2M1Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o/X4ps3eZbBjLpCOmBUG+tArPJEQsjv15y37o/djo7khNs0jwNktnTkasF4iek12JVe1Qg9XOH8aGHMMh10Bc1nAM4Z2B84pKb8Kxphtdm0HxC3Y2FNhU9kFnDKkp3YPR7QsDPKs0iDKYmbCz93OdS5O6IWBfxukwpVcm7GX8p4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FhDmLLkP; arc=fail smtp.client-ip=40.107.101.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OpKdz2Q0gTsOobu26lGKVm/GzWD8hqciqXNEPVMbhh1b6lOhUEexceOGRoZGR8I1FHljtRrlAw+F8rXmLfByfbcTZQOET+ZVISVL5VT5nRkBYvIIfL8jIPBh2s9U9COw6cJUJqBSwggMBJcB4WpU1UQSkmBIkpfnxIDP/ceoewayKLKJD952Z81jgFq8eJfHG2S2MN+F4ZL/gkC4MQHzxI0T4dTGoJEoEBh1QXTjb/p2+QKQ1dh81TzX5+ZgEBl0oyw/X+o9V2kUlgUSXuOaXqOmg4x1Rj2zbt6TNGqx14MjZRXLX4EO1yBe+8cnLbSGrV7f4PO4RTSkm0umr3AHCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sJ1GIu/JT7P+sCgsaRxAqmHs7qx2Nd9/svHXFW5vIFI=;
- b=nvxsItfXtXlA/gesKAK0QtrGLKuzYGGopJL7nkFxoyGyiNz05kJUy2BqdKI7+iw2BjqWZOXRTNDa96t83xp/CVpxCHrkAU/DsmWJtY4nRy7g7tyB2QlZQ+qKKlybn42LRQ7yba8Mq/Z1cydmNf+ZXyl/dUESaU6FG0poODnFebPfzSpqteH++4Rx817XLlECjw1oA1JyWQLnGh8DB4ppUXyt75CDn3a2JD7NgnVgYt36fAKChFYWYRqxf4dkaz332qlS5vqlTLFUqcMfWkMYsIPnUbNB1zM/Yz1yZwOR4rhWgj//+K8XKUvj450i4aJfl1hlqv0qUGS+wDUxYMlB/Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=collabora.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sJ1GIu/JT7P+sCgsaRxAqmHs7qx2Nd9/svHXFW5vIFI=;
- b=FhDmLLkPI3gsvHtLHJTmiPNATI/KTtgiqhNRdzJahmyUwH9P/ebru3wVysOAqBvYXAOQeQ+GWy6UAZhg+jky4PZINhmbW7WnHslZqJSoRUSaafaua8pbHWAmgAI2qA/0AY0Mn7moPUyKsiHBsny/WI2CcGUMBnRfiiFg9Q31y80QNNR9vQn+3WkcKppel+Kig3s5dxI79BgAfTJOozpisOCieXNZQ4lBNWson/WuGGID1mS3EsaNcFBilpWquqI764Vy9PK1PA8k+teRX89NYsQcC2fx23cz01G5C2S6rpMpuIhHQb/7quiPALlqU4x6hdE39EgF6yBEhCFR0w2oPw==
-Received: from BYAPR02CA0015.namprd02.prod.outlook.com (2603:10b6:a02:ee::28)
- by IA1PR12MB6457.namprd12.prod.outlook.com (2603:10b6:208:3ab::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Mon, 29 Apr
- 2024 20:45:36 +0000
-Received: from SJ1PEPF00001CE2.namprd05.prod.outlook.com
- (2603:10b6:a02:ee:cafe::8e) by BYAPR02CA0015.outlook.office365.com
- (2603:10b6:a02:ee::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35 via Frontend
- Transport; Mon, 29 Apr 2024 20:45:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- SJ1PEPF00001CE2.mail.protection.outlook.com (10.167.242.10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7544.18 via Frontend Transport; Mon, 29 Apr 2024 20:45:35 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 29 Apr
- 2024 13:45:21 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 29 Apr 2024 13:45:21 -0700
-Received: from vdi.nvidia.com (10.127.8.14) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 29 Apr 2024 13:45:20 -0700
-From: Asmaa Mnebhi <asmaa@nvidia.com>
-To: <sebastian.reichel@collabora.com>, <linux-pm@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>
-CC: Asmaa Mnebhi <asmaa@nvidia.com>
-Subject: [PATCH v1 1/1] power: reset: pwr-mlxbf: support graceful shutdown
-Date: Mon, 29 Apr 2024 16:45:19 -0400
-Message-ID: <20240429204519.1618-1-asmaa@nvidia.com>
-X-Mailer: git-send-email 2.30.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B238184104
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 21:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714426006; cv=none; b=Y9akOkfyGlP6SMr6c4kbSU0TFJuu+bhCRh71j7XlV/NO5aIv0C7tK/o0S4FqDyi9oqM3+UN0hLju29q252iBvFSXY78fzywvyKUEg5iMxJ1YheokKTS8yDAFrFxDuytLp2/iQbdMzCutheiZ+5lNFpYYwydeZRxhkxwWPjdPvX8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714426006; c=relaxed/simple;
+	bh=Dr1C3G4pbGiXPC5Ti/nKd6k7VSHbUcwlgdfOmEAfcuw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mrtdsTuNZq8bqazbzu6zjwwnKBSGSm15I0/SQz3cEuXn3ueF/WSQ5onIt0lXWFL2A5u42RfU/oOBic8LYFraYq+KHDZfw+gfa+SrZJZpuSwkSxXS6KaM2KBI/hGSYiV1sCkaqfTmju81mblHi+ZEqAoxxfn9DPJo4xuOEXCiU4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ma4fsmPq; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-de54b28c41eso5628899276.0
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 14:26:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714426003; x=1715030803; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=QU/Tws1Y+aFFVGVLoOklo9JtVUD/v/fzs2lzZlQCwNQ=;
+        b=ma4fsmPqofCCJJ9JwoRipkbZJBsYoXJ6OJhIx+xK7xV6qkhkYhy9H8I4Wwm1V5xSGa
+         OaZlx9gJbSLwB21m+AjcPPa+f9I2/z2WFaS5RsRkLaNL9Rrkm242cOpVWDJ38PGPf93v
+         Qu80w3KEPHe5KxE7JFiTiCEExdleXOB+BT5E4eyB/2geEMxXPlEF82BDWHDiCdl75i7P
+         r/1mqb05Vkra5AF91J2XX2rUbXwXwJPUzVsmWJkZp7Zo/O523xZGd57ue2TDEEZPFUEO
+         fH4XN1i+5OVucg5EaJHUduAbRzg8D7HCJil7vTSWDx+7b4QLnQe8Iu/hP9Cg61nyNYla
+         +grg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714426003; x=1715030803;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QU/Tws1Y+aFFVGVLoOklo9JtVUD/v/fzs2lzZlQCwNQ=;
+        b=GDgzeyabMFC3tSfnDbZRdrB5MA+zIbMHHMjOfK6vlt8S2Kz+0Bek02sQ8oChjaHgkL
+         TZyXVrrSqINKURq+gOtjcZIuXFWbyPB1hrat4rU91GZb0w9DC128pA6rfLARH2CDFTbE
+         usiKamYLy0AaFDnPuNngduWx5y0gQnkQtFI8GTaxVgxDeav1NRnUKQjajSs8C5Bayfdt
+         dmpTn/zEeg7fCM7p/8bGiw4xrh8v/PGEY8LrNmbh740I3pxYyOGd0r1CcdLx4wrTgVHA
+         Wvshnd+F+3tCvfHh8jg3olGoOy0Yh2feu1NNfEF4+AbDQH6AAfn4velHfHKQmwbMD3Q0
+         9iEg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3dqckOUSKb9jv+NQH8+SWRXW2zU0AM+DDgPC5U/+xbvABXbw0npTc7Vt5WNPswYD+CxrSchZPv7jKsM/l5OOOfxpK5VaSS8X/oQ==
+X-Gm-Message-State: AOJu0Yy6bN+8L5zrfRTNu8ppl5wosYcxJnpqVaXeAEw/1IiBMn59k+0z
+	rWS7zaaO8TGzKMoK9ObSLt95d68sZcJW4GxJ0tn+A/YfZXV0nfkSQSDNfPWZVxhd8sNplttgPAT
+	dBGBaMMJv8LXndMG2be7lWTBHwhqdlo9A7CYvag==
+X-Google-Smtp-Source: AGHT+IGKK3YXyDU+4ECuqi3EgUuBK4bT+CVyxZ6dH/j0Bz4fVxCMiVvjkF3hOLG0ZcsUc7l0RWVJyvbD7ONlUCh2d6s=
+X-Received: by 2002:a25:b910:0:b0:dcc:6112:f90d with SMTP id
+ x16-20020a25b910000000b00dcc6112f90dmr10901148ybj.62.1714426003134; Mon, 29
+ Apr 2024 14:26:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE2:EE_|IA1PR12MB6457:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc0836fc-b545-4684-f8d1-08dc688d523c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|82310400014|36860700004|1800799015;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HaugNHiDNBWADoua3GsxnQk+dksPnz3HNJMrMiipK8ahxAdHYCc4/9Evptuv?=
- =?us-ascii?Q?6Yr5phq7/8FJK3eOIGxf3Eg6dVJgnk7ogLNeu9b1C4G4TR9Ylipkkk4Bw7Ow?=
- =?us-ascii?Q?m+W0RQ5vJfBaTa5Jpyh/2OOal4JqCYFtLpWsgqrPym4B0PwHoD+XIYdGCJqC?=
- =?us-ascii?Q?bu3XE5fd8PKTvv2zCvk1isHzZzePpjQKZkVuU149Lo8oUZu2l1lvh8PMgbYH?=
- =?us-ascii?Q?NDAuJp3X0/DNRYhYFv0Woj8zze3W09BMG58W8IvFFyvuoJyMyJTsiRJQntJD?=
- =?us-ascii?Q?IxQe7NF/d8k7tGAcYViH0VeEhK1gps0EojZZtSl4kO8kAyHl43UM5B9dsy2d?=
- =?us-ascii?Q?d1hTwoUGL9YXCr6b7bb/G6bQ1P6lhfbQV2iEASetPiuJZyKzSKT9XwlVkk2H?=
- =?us-ascii?Q?YstBlxpASfq7KOs4dBtrou6/wamtSoeOm5g8GTBGeF2/+yYeORjyViXbex56?=
- =?us-ascii?Q?QKb2TsVR2ZuAUF8z9KTu1M5cjMVpTHQdYnxE2EL7P5rC6D3XdpXgWuuXWjfE?=
- =?us-ascii?Q?ue8WbLX59HK4jQjQopuOBYTPxXOtk+3RJKzC3FHL2JB3ObsMOhc9LplFZyD9?=
- =?us-ascii?Q?LuglnxNuDeZ+8IwweV8CRMuVYgbhAxaaTtskvgmbcqnpLdYBMspEKkRosjKp?=
- =?us-ascii?Q?l0N7Tq9PsnIEso9IgaM8Z+SgHAyCk5IU88opZCIz3ynzVMjfQ1QeeKT91ZD7?=
- =?us-ascii?Q?Vm0FwMCkKBoPDO1r8uVSfGZmg0KbgKbBJUvvjyv1HklZ5o60HhFuOT9AgegT?=
- =?us-ascii?Q?R9c5+0iXuG19zOmNQOA65AjSZCtQS2BAHvr6RxRj6yoMhWicHXvKk0Y7dpFS?=
- =?us-ascii?Q?ufOOUJ0MjgZF5XmkX7axz0Gvv4sMVE6Ua1xCavdlH0Ik2CdzuqoaAp6CQ60s?=
- =?us-ascii?Q?xuBlQCr8DCl+Jv6eDzTUybkjXUroAU2Z1omxPBo+Iql+F520HnK0+ZhdwKqi?=
- =?us-ascii?Q?eZSC1aUfcJ/P5j0r/p4kPUlAEgfmwJbY52bX9O6wrGI9X4Yr/l9T3szwGWvJ?=
- =?us-ascii?Q?d9HOXVeXhlqOC1oPjpMk7b2zeIb/iVIgMio/zA2CO72uusGBwqZ08rlQX6xG?=
- =?us-ascii?Q?dLEsyJiva2c6vHVM9MxEVxsvr3a/tJDX2l3Zl9XuC6OBM81jBQel9LsynXpk?=
- =?us-ascii?Q?vAWPU6MTGNQdbqBldWRjP63CvC2nh5TS8AQmPPtEmLed6jVzNBMSVcHOYdo0?=
- =?us-ascii?Q?dqtKsCsRB22eDbUehkChGZRgEEQDGwLZIQemK/cDoLxbcyrVXjCNkv9UKpxS?=
- =?us-ascii?Q?qvuT5jqzLyG4NWseWP9wVIOeWZMpKrhSZS3FoK6jPws5AwccKTHPoVYpvgDt?=
- =?us-ascii?Q?Ho8LsDac9Ov3e9+iwNzwIBGlTQMbL+gZep4VhnES5efbhbyxm4IFSRBKZUJn?=
- =?us-ascii?Q?14wpZlg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(82310400014)(36860700004)(1800799015);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2024 20:45:35.8860
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc0836fc-b545-4684-f8d1-08dc688d523c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6457
+References: <cover.1713523152.git.robin.murphy@arm.com> <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
+ <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
+In-Reply-To: <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Tue, 30 Apr 2024 00:26:31 +0300
+Message-ID: <CAA8EJprL8NbNfOvp17hrHoVNkKBpD39xfeu+STm6m9VObF2n9Q@mail.gmail.com>
+Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
+To: Robin Murphy <robin.murphy@arm.com>, 
+	"open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>, Vineet Gupta <vgupta@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Niklas Schnelle <schnelle@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, 
+	iommu@lists.linux.dev, devicetree@vger.kernel.org, 
+	Jason Gunthorpe <jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Replace the low power mode with a graceful shutdown.
+On Mon, 29 Apr 2024 at 19:31, Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
+> > It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
+> > ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
+> > which means there should be no harm in achieving the same order of
+> > operations by running it off the back of iommu_probe_device() itself.
+> > This then puts it in line with the x86 and s390 .probe_finalize bodges,
+> > letting us pull it all into the main flow properly. As a bonus this lets
+> > us fold in and de-scope the PCI workaround setup as well.
+> >
+> > At this point we can also then pull the call up inside the group mutex,
+> > and avoid having to think about whether iommu_group_store_type() could
+> > theoretically race and free the domain if iommu_setup_dma_ops() ran just
+> > *before* iommu_device_use_default_domain() claims it... Furthermore we
+> > replace one .probe_finalize call completely, since the only remaining
+> > implementations are now one which only needs to run once for the initial
+> > boot-time probe, and two which themselves render that path unreachable.
+> >
+> > This leaves us a big step closer to realistically being able to unpick
+> > the variety of different things that iommu_setup_dma_ops() has been
+> > muddling together, and further streamline iommu-dma into core API flows
+> > in future.
+> >
+> > Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
+> > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> > Tested-by: Hanjun Guo <guohanjun@huawei.com>
+> > Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> > ---
+> > v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
+> >     is covered as well, with bonus side-effects as above.
+> > v3: *Really* do that, remembering the other two probe_finalize sites too.
+> > ---
+> >  arch/arm64/mm/dma-mapping.c  |  2 --
+> >  drivers/iommu/amd/iommu.c    |  8 --------
+> >  drivers/iommu/dma-iommu.c    | 18 ++++++------------
+> >  drivers/iommu/dma-iommu.h    | 14 ++++++--------
+> >  drivers/iommu/intel/iommu.c  |  7 -------
+> >  drivers/iommu/iommu.c        | 20 +++++++-------------
+> >  drivers/iommu/s390-iommu.c   |  6 ------
+> >  drivers/iommu/virtio-iommu.c | 10 ----------
+> >  include/linux/iommu.h        |  7 -------
+> >  9 files changed, 19 insertions(+), 73 deletions(-)
+>
+> This patch breaks UFS on Qualcomm SC8180X Primus platform:
+>
+>
+> [    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
+> [    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
+> [    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
+> [    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
+> [    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
+> [    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+> [    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
+> [    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
+> [    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
+> [    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
+> [    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
+> [    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
+> [    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
+> [    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
+> [    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
 
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
----
- drivers/power/reset/pwr-mlxbf.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+Just to confirm: reverting f091e93306e0 ("dma-mapping: Simplify
+arch_setup_dma_ops()") and b67483b3c44e ("iommu/dma: Centralise
+iommu_setup_dma_ops()" fixes the issue for me. Please ping me if you'd
+like me to test a fix.
 
-diff --git a/drivers/power/reset/pwr-mlxbf.c b/drivers/power/reset/pwr-mlxbf.c
-index 1775b318d0ef..4f1cd1c0018c 100644
---- a/drivers/power/reset/pwr-mlxbf.c
-+++ b/drivers/power/reset/pwr-mlxbf.c
-@@ -18,7 +18,6 @@
- 
- struct pwr_mlxbf {
- 	struct work_struct reboot_work;
--	struct work_struct shutdown_work;
- 	const char *hid;
- };
- 
-@@ -27,22 +26,17 @@ static void pwr_mlxbf_reboot_work(struct work_struct *work)
- 	acpi_bus_generate_netlink_event("button/reboot.*", "Reboot Button", 0x80, 1);
- }
- 
--static void pwr_mlxbf_shutdown_work(struct work_struct *work)
--{
--	acpi_bus_generate_netlink_event("button/power.*", "Power Button", 0x80, 1);
--}
--
- static irqreturn_t pwr_mlxbf_irq(int irq, void *ptr)
- {
- 	const char *rst_pwr_hid = "MLNXBF24";
--	const char *low_pwr_hid = "MLNXBF29";
-+	const char *shutdown_hid = "MLNXBF29";
- 	struct pwr_mlxbf *priv = ptr;
- 
- 	if (!strncmp(priv->hid, rst_pwr_hid, 8))
- 		schedule_work(&priv->reboot_work);
- 
--	if (!strncmp(priv->hid, low_pwr_hid, 8))
--		schedule_work(&priv->shutdown_work);
-+	if (!strncmp(priv->hid, shutdown_hid, 8))
-+		orderly_poweroff(true);
- 
- 	return IRQ_HANDLED;
- }
-@@ -70,10 +64,6 @@ static int pwr_mlxbf_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return dev_err_probe(dev, irq, "Error getting %s irq.\n", priv->hid);
- 
--	err = devm_work_autocancel(dev, &priv->shutdown_work, pwr_mlxbf_shutdown_work);
--	if (err)
--		return err;
--
- 	err = devm_work_autocancel(dev, &priv->reboot_work, pwr_mlxbf_reboot_work);
- 	if (err)
- 		return err;
+
 -- 
-2.30.1
-
+With best wishes
+Dmitry
 
