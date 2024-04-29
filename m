@@ -1,165 +1,180 @@
-Return-Path: <linux-acpi+bounces-5464-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5465-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B388B5E9B
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 18:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFCC8B5F07
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 18:31:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F91282851
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:07:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BEA2283B21
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D85083CDE;
-	Mon, 29 Apr 2024 16:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8483E84D15;
+	Mon, 29 Apr 2024 16:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz0OvXaj"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ga7I3Ezj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8C74400;
-	Mon, 29 Apr 2024 16:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD823201
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 16:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714406868; cv=none; b=RlN4rWOfexMqZI+AMDG5Jr+X+Oh/Jurbz98e3y5rnqObvH1GxpCz91AUBrcD9R62Ujbl3NntU3syS+6+y+mK0MqK3fBf6HG7uYF5q3tNCNnWqsdQpSg123PRtNHAE6lkDhlQkUyHLMGk4X5Q0Qg3JoMkvftu5Xiz0XfKu1a9Vrk=
+	t=1714408285; cv=none; b=NiR2pyzfzQFcU1+nsaxwyhaznrKMapWY9ZFYy543P48Dy0Q2be96Mm+e8ZZdq1wchxQRhgsNGUd388rFn/16cWDS+DsqSWJb5KLamNiq5hK2XwOlWbHjBuevxC5vN0kEIsgjA5OF5+R3fXP3hiTwZel94fE5Vhe1LJl/0g93y38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714406868; c=relaxed/simple;
-	bh=vOPo2tC/GsMIJkgdLxRfFzKWoQbXSFV0p9q7pK6+vak=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gwKrXyjELRAsitkmGrLfC5AzuxJL9vkLjhI6HqPUTR0q0T2UST8wr5i2tmx2Xj2namhvFH22gc4+KkQQxa06eB4xX+bBIpYjTYbgu3PcKP7tbMziO2eWRXMXPjuH151wAf6FTDNpEy1NETLOptGMABO3CaOy/xRhtQctlnsz09o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz0OvXaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2901C113CD;
-	Mon, 29 Apr 2024 16:07:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714406867;
-	bh=vOPo2tC/GsMIJkgdLxRfFzKWoQbXSFV0p9q7pK6+vak=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Sz0OvXajBFXicFUN1iTUq/mwMrPDUuCFy/fKhcOIcu+0VbIbR8+NaMgMVHx/cqB3b
-	 Fzy17+JNPthru0hHHnfq8Ne18JtwluqXvcSoIxv9xx9QELaBgt2MZILaigf3de60OP
-	 f/JjOYysjyOmqrixKf027vbfO9v+2v3mEDFi5/yW7niHugLeNr6CMumldJlVAJsjSc
-	 mVphjrYRUo3cobtEJyYY3W5mKKVMxckoGm1CAsDhCPmn1grzyavB/JP6hDT/4r15B+
-	 oIr3mogEVLwjav8vC8zmEQRJGPzRhhrlWI2vUCgx2HUAyzynOngk5pRcWogU2t0mYv
-	 F01w85ZjZVxhg==
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5ac4470de3bso1038973eaf.0;
-        Mon, 29 Apr 2024 09:07:47 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWb0lCxCmhCbq0rcJwqkoNPVhmf8q2ZYI0PN2FKFs6DynFFxP5BHDOW4aMOzMpiBEwJBsBzOFQtBvnet0zAkiB7N4+eFqm7vSqVahfgDU0mLInaGVJvbWHCImQjC4aS81f6wPJowTmyBw==
-X-Gm-Message-State: AOJu0YxdVCEEv30gbxvzsWPYIuCjCTENj08U60vMtFbvtSaTnXg6TKLO
-	PEvvyTIFNEkDVKohrdvuv6CLlLOairkvwktjBSx5mxlNCrb7sNU+r/YBj7PpDJOZezDK66qtZvS
-	PcIUOy2fnjkVVLVL+Cvi+wDOkNsU=
-X-Google-Smtp-Source: AGHT+IHW456tHmSqaf8NxSs7TvyRn24r6Yb+BtrQOK1YLVaMdYC5m/wDrj3//nvgc1U3ilLMdhHsd1+l1osGk4YphS4=
-X-Received: by 2002:a4a:a882:0:b0:5aa:241a:7f4b with SMTP id
- q2-20020a4aa882000000b005aa241a7f4bmr12612134oom.1.1714406867234; Mon, 29 Apr
- 2024 09:07:47 -0700 (PDT)
+	s=arc-20240116; t=1714408285; c=relaxed/simple;
+	bh=eDE2L21JKW8N96Vi3ng/YDqFma0PceL01iOHHG7iHr8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VeXkpvmMXPtPGBuv560dEdcElQSNBuRUw+FfYykqHSPSKYw3I6ONGC2bEL0X7nwEgzv3I13HtWXDkl9uiU7/Ir5JrxdnM5+xM8o8xrqZO3NqucNd6AxJdOmBPLSWg/XoulG04mOQDb5d93y1nHJpfZ2Njgwc2AlJA2cPs36sLRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ga7I3Ezj; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2def3637f88so45924731fa.1
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 09:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714408282; x=1715013082; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AzGLiR69PoJGRhtxNKXAUaM6fxmHvGr503ePlBzc+m0=;
+        b=ga7I3Ezj6Bh9Y7IKjN4AkwZeUr/08cTH2ZrlL8igbsZyoeRV6Cx1FHeqLili6rrQ1w
+         EXSRdd75oqS1r+KzTKHmUV1eYFMH/BTiMaATHHnBNgUzyOeObIjmdvjzOV7ZKWuiDJW9
+         yRLlbAgn4V/1ATL3KPTmb7tqaZUzf/yTm5io6J2MJRHzeGgreX1g9L9tDVQmtE/gfI/H
+         /W09EflLcX0l+p0VmN0nVsW9fExaxu+dFFJLciZhs3kk26boNs4asiGBIYYQ3wauXOV0
+         35t4NHWVbdf1bSPu0nxlxlyhWhvSH60BEGGkD3f9GiXwTtScUf8qkcgXXUHDwP85fSqU
+         p4uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714408282; x=1715013082;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AzGLiR69PoJGRhtxNKXAUaM6fxmHvGr503ePlBzc+m0=;
+        b=Dd1MmW3i4n4eFqwBV26Mcs/rL406KYivVE166r0TqiL6Z6d8g7PV1vmdU7IL9Mo/Sy
+         fQrpAdJFF6lfG2FqvxuhoBKHvAGy2rAWYx8UKU/CrQh/8Y1m/aRj4UywqCyktb1V+hwZ
+         1zLp/mYJ/jE+PUts7P+2xDC7BgvTr5C8zNCYq/USYfyl74uNM9N65+DH9RvxKeG95ARi
+         4tx4sK8qpRmjQdGP/8RKB4UO4qCxqpw/y31GtzT5F1oKm+GeAMKL/n9VO+beoc+ccC5C
+         /mz4xQediVHd1dYj/xoApc2GulZ+PjRkadcXM89Y/ndDvmaoJ/Z7B65z7lY2aFpIGsde
+         EfuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTXT1y45jMn1ANdKo6AInfustC24rMUeqSvBKb9MO7ytTlRUbEoBmX6eu/yPzWOFdwKBdsNbEnVK2vZGDxBtIKelK4rsgqNOjKhg==
+X-Gm-Message-State: AOJu0YynqJ3Emnumg8zhKX5g8fKO4CyxGrXrj8nMdRZ/aOhFGSH6uN07
+	DWHn1pYchyfE/2haJLW9oh/baBKuAdSF3zV1ArQYX3APu47QJIKZpHSMxeHiieA=
+X-Google-Smtp-Source: AGHT+IHk3Z5XGDbb0v+Fmz92VybJVjDFdKDawu/AbXxfV/kYiZFIeb4QW5ZOrzeqL0UzpA0hXaFkSQ==
+X-Received: by 2002:a05:651c:1992:b0:2de:6f52:5c8d with SMTP id bx18-20020a05651c199200b002de6f525c8dmr53916ljb.21.1714408281677;
+        Mon, 29 Apr 2024 09:31:21 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
+        by smtp.gmail.com with ESMTPSA id h22-20020a2eb0f6000000b002dfa8b1a07asm961511ljl.111.2024.04.29.09.31.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 09:31:21 -0700 (PDT)
+Date: Mon, 29 Apr 2024 19:31:19 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	iommu@lists.linux.dev, devicetree@vger.kernel.org,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
+Message-ID: <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
+References: <cover.1713523152.git.robin.murphy@arm.com>
+ <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2741433.mvXUDI8C0e@kreacher> <20240429092942.00004c96@Huawei.com>
-In-Reply-To: <20240429092942.00004c96@Huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Apr 2024 18:07:32 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h60B=u7qDw1GOU0r=-apE76jCKLLayo8OBd+KYvWqYhA@mail.gmail.com>
-Message-ID: <CAJZ5v0h60B=u7qDw1GOU0r=-apE76jCKLLayo8OBd+KYvWqYhA@mail.gmail.com>
-Subject: Re: [PATCH v1] ACPI: scan: Avoid enumerating devices with clearly
- invalid _STA values
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux ACPI <linux-acpi@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
 
-On Mon, Apr 29, 2024 at 10:29=E2=80=AFAM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Fri, 26 Apr 2024 18:56:21 +0200
-> "Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
->
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The return value of _STA with the "present" bit unset and the "enabled"
-> > bit set is clearly invalid as per the ACPI specification, Section 6.3.7
-> > "_STA (Device Status)", so make the ACPI device enumeration code
-> > disregard devices with such _STA return values.
-> >
-> > Also, because this implies that status.enabled will only be set if
-> > status.present is set too, acpi_device_is_enabled() can be modified
-> > to simply return the value of the former.
-> >
-> > Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-=
-device-status
-> > Link: https://lore.kernel.org/linux-acpi/88179311a503493099028c12ca37d4=
-30@huawei.com/
-> > Suggested-by: Salil Mehta <salil.mehta@huawei.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Seems a sensible tidying up.  Hopefully nothing was relying on
-> this looser behavior.  One trivial thing inline.
->
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
+> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
+> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
+> which means there should be no harm in achieving the same order of
+> operations by running it off the back of iommu_probe_device() itself.
+> This then puts it in line with the x86 and s390 .probe_finalize bodges,
+> letting us pull it all into the main flow properly. As a bonus this lets
+> us fold in and de-scope the PCI workaround setup as well.
+> 
+> At this point we can also then pull the call up inside the group mutex,
+> and avoid having to think about whether iommu_group_store_type() could
+> theoretically race and free the domain if iommu_setup_dma_ops() ran just
+> *before* iommu_device_use_default_domain() claims it... Furthermore we
+> replace one .probe_finalize call completely, since the only remaining
+> implementations are now one which only needs to run once for the initial
+> boot-time probe, and two which themselves render that path unreachable.
+> 
+> This leaves us a big step closer to realistically being able to unpick
+> the variety of different things that iommu_setup_dma_ops() has been
+> muddling together, and further streamline iommu-dma into core API flows
+> in future.
+> 
+> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
+> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> Tested-by: Hanjun Guo <guohanjun@huawei.com>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
+>     is covered as well, with bonus side-effects as above.
+> v3: *Really* do that, remembering the other two probe_finalize sites too.
+> ---
+>  arch/arm64/mm/dma-mapping.c  |  2 --
+>  drivers/iommu/amd/iommu.c    |  8 --------
+>  drivers/iommu/dma-iommu.c    | 18 ++++++------------
+>  drivers/iommu/dma-iommu.h    | 14 ++++++--------
+>  drivers/iommu/intel/iommu.c  |  7 -------
+>  drivers/iommu/iommu.c        | 20 +++++++-------------
+>  drivers/iommu/s390-iommu.c   |  6 ------
+>  drivers/iommu/virtio-iommu.c | 10 ----------
+>  include/linux/iommu.h        |  7 -------
+>  9 files changed, 19 insertions(+), 73 deletions(-)
 
-Thanks!
+This patch breaks UFS on Qualcomm SC8180X Primus platform:
 
-> > ---
-> >  drivers/acpi/bus.c  |   11 +++++++++++
-> >  drivers/acpi/scan.c |    2 +-
-> >  2 files changed, 12 insertions(+), 1 deletion(-)
-> >
-> > Index: linux-pm/drivers/acpi/bus.c
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > --- linux-pm.orig/drivers/acpi/bus.c
-> > +++ linux-pm/drivers/acpi/bus.c
-> > @@ -112,6 +112,17 @@ int acpi_bus_get_status(struct acpi_devi
-> >       if (ACPI_FAILURE(status))
-> >               return -ENODEV;
-> >
-> > +     if (!device->status.present && device->status.enabled) {
-> > +             pr_info(FW_BUG "Device [%s] status [%08x]: not present an=
-d enabled\n",
-> > +                     device->pnp.bus_id, (u32)sta);
-> > +             device->status.enabled =3D 0;
-> > +             /*
-> > +              * The status is clearly invalid, so clear the enabled bi=
-t as
-> > +              * well to avoid attempting to use the device.
-> > +              */
->
-> Comment seems to be in a slightly odd place.  Perhaps one line earlier ma=
-kes
-> more sense?  Or was the intent to mention functional here?
 
-Rui has noticed this already.
+[    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
+[    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
+[    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
+[    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
+[    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
+[    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+[    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
+[    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
+[    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
+[    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
+[    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
+[    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
+[    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
+[    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
+[    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
 
-I thought "functional" and wrote "enabled".  Oh well, I'll send a v2.
-
-> > +             device->status.functional =3D 0;
-> > +     }
-> > +
-> >       acpi_set_device_status(device, sta);
-> >
-> >       if (device->status.functional && !device->status.present) {
-> > Index: linux-pm/drivers/acpi/scan.c
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > --- linux-pm.orig/drivers/acpi/scan.c
-> > +++ linux-pm/drivers/acpi/scan.c
-> > @@ -1962,7 +1962,7 @@ bool acpi_device_is_present(const struct
-> >
-> >  bool acpi_device_is_enabled(const struct acpi_device *adev)
-> >  {
-> > -     return adev->status.present && adev->status.enabled;
-> > +     return adev->status.enabled;
-> >  }
-> >
-> >  static bool acpi_scan_handler_matching(struct acpi_scan_handler *handl=
-er,
-> >
-> >
-> >
->
->
+-- 
+With best wishes
+Dmitry
 
