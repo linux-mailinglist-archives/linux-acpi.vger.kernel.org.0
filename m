@@ -1,180 +1,450 @@
-Return-Path: <linux-acpi+bounces-5465-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5466-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFCC8B5F07
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 18:31:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD4D8B5F5B
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 18:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BEA2283B21
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:31:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6DB1C20E7E
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8483E84D15;
-	Mon, 29 Apr 2024 16:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5966A85C6C;
+	Mon, 29 Apr 2024 16:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ga7I3Ezj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZSFYfTBB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD823201
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 16:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714408285; cv=none; b=NiR2pyzfzQFcU1+nsaxwyhaznrKMapWY9ZFYy543P48Dy0Q2be96Mm+e8ZZdq1wchxQRhgsNGUd388rFn/16cWDS+DsqSWJb5KLamNiq5hK2XwOlWbHjBuevxC5vN0kEIsgjA5OF5+R3fXP3hiTwZel94fE5Vhe1LJl/0g93y38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714408285; c=relaxed/simple;
-	bh=eDE2L21JKW8N96Vi3ng/YDqFma0PceL01iOHHG7iHr8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VeXkpvmMXPtPGBuv560dEdcElQSNBuRUw+FfYykqHSPSKYw3I6ONGC2bEL0X7nwEgzv3I13HtWXDkl9uiU7/Ir5JrxdnM5+xM8o8xrqZO3NqucNd6AxJdOmBPLSWg/XoulG04mOQDb5d93y1nHJpfZ2Njgwc2AlJA2cPs36sLRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ga7I3Ezj; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2def3637f88so45924731fa.1
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 09:31:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714408282; x=1715013082; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AzGLiR69PoJGRhtxNKXAUaM6fxmHvGr503ePlBzc+m0=;
-        b=ga7I3Ezj6Bh9Y7IKjN4AkwZeUr/08cTH2ZrlL8igbsZyoeRV6Cx1FHeqLili6rrQ1w
-         EXSRdd75oqS1r+KzTKHmUV1eYFMH/BTiMaATHHnBNgUzyOeObIjmdvjzOV7ZKWuiDJW9
-         yRLlbAgn4V/1ATL3KPTmb7tqaZUzf/yTm5io6J2MJRHzeGgreX1g9L9tDVQmtE/gfI/H
-         /W09EflLcX0l+p0VmN0nVsW9fExaxu+dFFJLciZhs3kk26boNs4asiGBIYYQ3wauXOV0
-         35t4NHWVbdf1bSPu0nxlxlyhWhvSH60BEGGkD3f9GiXwTtScUf8qkcgXXUHDwP85fSqU
-         p4uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714408282; x=1715013082;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AzGLiR69PoJGRhtxNKXAUaM6fxmHvGr503ePlBzc+m0=;
-        b=Dd1MmW3i4n4eFqwBV26Mcs/rL406KYivVE166r0TqiL6Z6d8g7PV1vmdU7IL9Mo/Sy
-         fQrpAdJFF6lfG2FqvxuhoBKHvAGy2rAWYx8UKU/CrQh/8Y1m/aRj4UywqCyktb1V+hwZ
-         1zLp/mYJ/jE+PUts7P+2xDC7BgvTr5C8zNCYq/USYfyl74uNM9N65+DH9RvxKeG95ARi
-         4tx4sK8qpRmjQdGP/8RKB4UO4qCxqpw/y31GtzT5F1oKm+GeAMKL/n9VO+beoc+ccC5C
-         /mz4xQediVHd1dYj/xoApc2GulZ+PjRkadcXM89Y/ndDvmaoJ/Z7B65z7lY2aFpIGsde
-         EfuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTXT1y45jMn1ANdKo6AInfustC24rMUeqSvBKb9MO7ytTlRUbEoBmX6eu/yPzWOFdwKBdsNbEnVK2vZGDxBtIKelK4rsgqNOjKhg==
-X-Gm-Message-State: AOJu0YynqJ3Emnumg8zhKX5g8fKO4CyxGrXrj8nMdRZ/aOhFGSH6uN07
-	DWHn1pYchyfE/2haJLW9oh/baBKuAdSF3zV1ArQYX3APu47QJIKZpHSMxeHiieA=
-X-Google-Smtp-Source: AGHT+IHk3Z5XGDbb0v+Fmz92VybJVjDFdKDawu/AbXxfV/kYiZFIeb4QW5ZOrzeqL0UzpA0hXaFkSQ==
-X-Received: by 2002:a05:651c:1992:b0:2de:6f52:5c8d with SMTP id bx18-20020a05651c199200b002de6f525c8dmr53916ljb.21.1714408281677;
-        Mon, 29 Apr 2024 09:31:21 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id h22-20020a2eb0f6000000b002dfa8b1a07asm961511ljl.111.2024.04.29.09.31.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 09:31:21 -0700 (PDT)
-Date: Mon, 29 Apr 2024 19:31:19 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	iommu@lists.linux.dev, devicetree@vger.kernel.org,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-Message-ID: <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
-References: <cover.1713523152.git.robin.murphy@arm.com>
- <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E804484055;
+	Mon, 29 Apr 2024 16:47:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714409265; cv=fail; b=dzfoXWVpcuz9WhKadTJJg3ZAfMycYQYDvLC5Q8/SYtGIRa/7HItPO5vefVcIrC00qCjM+0/8GLi5bu/vbVTMuNf0q4Kj7S4ifuHOOtrqYvDZ58+aNMuFVIPXfbgtZUbP4O8FmfHyDyFheAoPVQDh5CTsjP8l/zIQH01N88wYPqI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714409265; c=relaxed/simple;
+	bh=4mQ7HjCveMYiMEdXKpuWTXDQ0Mc/9JjZoWnsjeT6Wws=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=V4bPupw9TZTEQpvBuU9ndOHoVdoYNLC7ArsJGuYW3R3fvT2TzYdTiFQFUoBS1pM9nsmwH5wGYKc31UaM/ze5gKma51PAzQhCS5CfwRvEGrSsN5pM3CX7lmMNEaAQjLMiQNUVtl6OUtDL/p3arAFyKPnwNJlJV+twxoNmvshbjGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZSFYfTBB; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714409263; x=1745945263;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=4mQ7HjCveMYiMEdXKpuWTXDQ0Mc/9JjZoWnsjeT6Wws=;
+  b=ZSFYfTBBcWfid7LKrMTg447IQt8HTgTAEC7ZG1sHpsmokqGp8B5LRR3D
+   k5qlBZdOgyHNtTj6a+3Crh18CILluV5cLruWn0qfA0LcdpVty8mkstYLo
+   7jpCWTiUycYVGzYbW14h9NyaWQGNDv1N5/Ny9TYkoZKlPSLOutcNGyWw0
+   eDFRBX+sWPtX76/5x3sg/cqvUTJF/kthpH/sPRfvWqgePtmAMQfpYkJg6
+   zc6AWVhx/gWbWhY08mOeujf27kvLT6LmC366TdBZGgNP38TTX1gmyPT5Y
+   feQpceZjH2bbbSFWVKJGdN1nZUa4WkS9VtheYpxRlLs2BFn3v4xgeEQPs
+   g==;
+X-CSE-ConnectionGUID: agIAxZPvRVOs2/jtYFI2gg==
+X-CSE-MsgGUID: Icl++JMYR4iPebOKxana2A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="20767699"
+X-IronPort-AV: E=Sophos;i="6.07,240,1708416000"; 
+   d="scan'208";a="20767699"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 09:47:41 -0700
+X-CSE-ConnectionGUID: kMpML4EIQSSVc0VEQT1fsw==
+X-CSE-MsgGUID: YpHJPKdQSdOLk50VrqQKGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,240,1708416000"; 
+   d="scan'208";a="26154187"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Apr 2024 09:47:41 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 29 Apr 2024 09:47:41 -0700
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Mon, 29 Apr 2024 09:47:40 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Mon, 29 Apr 2024 09:47:40 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 29 Apr 2024 09:47:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GhlcxUmoR3uePu3BeA2CpiQrlzEKDdrZBbeC7GrQtERgeD4yYFrAhvRIP1lNaiFvbqIrgPcpInJsRB+EUjY1RBOG54xE5KCA791tK9Fom7ZHdSuXL75YPHXQQtGMO6k8CKTdXGEFaKyYU1YNS4LR8246+ZquIO977PK9reT+JHihRVcwSa1mBt7Ar/uGEzBLZHI3DZn+SG8iIHzOKxZ3EVtvqLJUGhUCHUZZMG8iATAys/SZ0navLyo2PBZ61cESRd19Xuou1t0qOb+TRQoXpTsrPrNeQ8E/7LTjLJenjHb8nmtXi06IsDvUhOLYVnTF0KPgkKwpoRuApCtw+n2+gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8PWAqL5Q0f9+yoypzpZscutOpbgXZ6pXm6Ti3inxRyU=;
+ b=TnRmgoI62GkQit5QK4lNHBw3R4aFBR4ijyUw8ex2W4GHIMMx0Y+rCTWFGMeDKMts4iZnpgzl0GYRGYsojfaIxfMKuyeFiHo8gk2kSN0dBd34RXVOpVNwxiQb9tcMNOyoNu8pE3AbJtc/YE17eTRlsLnsgJyBeIFAuqpZwF+7ZAOYwUywYHebMnkvEUHf1ukyrnBW8KOpeIFzdRN+0pxHKh7YkmDZhvmLwVUCcvzQLnLv21oyW/c3fXhNcrv70UnUq1arSmlUm3JXBO10p0fhZ7/9eNujUYneyLb14Z8INjgDsns+tLigKbmocwG6JFQRb1jUAI5Qgy2CjR/DDrw3CA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com (2603:10b6:806:25c::17)
+ by BL3PR11MB6339.namprd11.prod.outlook.com (2603:10b6:208:3b3::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Mon, 29 Apr
+ 2024 16:47:37 +0000
+Received: from SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::d543:d6c2:6eee:4ec]) by SA1PR11MB6733.namprd11.prod.outlook.com
+ ([fe80::d543:d6c2:6eee:4ec%4]) with mapi id 15.20.7519.031; Mon, 29 Apr 2024
+ 16:47:37 +0000
+Date: Mon, 29 Apr 2024 09:47:33 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Ira Weiny <ira.weiny@intel.com>, Dave Jiang <dave.jiang@intel.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>, Smita Koralahalli
+	<Smita.KoralahalliChannabasappa@amd.com>, Shiju Jose <shiju.jose@huawei.com>
+CC: Dan Carpenter <dan.carpenter@linaro.org>, Yazen Ghannam
+	<yazen.ghannam@amd.com>, Davidlohr Bueso <dave@stgolabs.net>, "Alison
+ Schofield" <alison.schofield@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, Ira Weiny <ira.weiny@intel.com>, "Rafael J.
+  Wysocki" <rafael@kernel.org>, Tony Luck <tony.luck@intel.com>, "Borislav
+ Petkov" <bp@alien8.de>, <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] acpi/ghes: Process CXL Component Events
+Message-ID: <662fcf25d0eb8_19ca3929452@iweiny-mobl.notmuch>
+References: <20240426-cxl-cper3-v4-0-58076cce1624@intel.com>
+ <20240426-cxl-cper3-v4-1-58076cce1624@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240426-cxl-cper3-v4-1-58076cce1624@intel.com>
+X-ClientProxiedBy: SJ0PR03CA0277.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::12) To SA1PR11MB6733.namprd11.prod.outlook.com
+ (2603:10b6:806:25c::17)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB6733:EE_|BL3PR11MB6339:EE_
+X-MS-Office365-Filtering-Correlation-Id: 556e00fb-2974-4efe-9ed1-08dc686c1393
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|376005|7416005|1800799015|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?WhB3+nfE03pWz6Dm808gjAhglz1vThEZcKXgRfd33f/CjhvDc/mvVy4JqluA?=
+ =?us-ascii?Q?tzg7purPgx73tE6GF0X/IU2rqD+pN/TrjKmDQHDOyKco7zmkBYiV93a0XJtR?=
+ =?us-ascii?Q?ax7GBag3A+UOvFrvz6Jb/Ai6+zfheER2n2LaVIKKE+mLVxrCqQCNWPJCZzMu?=
+ =?us-ascii?Q?U+2pvp9wVEEjLuSs5Gdg/9eBNatAhMAh7PlkmsnRMNf1N4cHHqM3Ay0ihmw5?=
+ =?us-ascii?Q?jPQhi+S11UWZWxKWQ9BQ87HO7mTkpxWSBU0E1ed7kB3Q5L+3dTRcymR4uXoV?=
+ =?us-ascii?Q?IPwRiB43MbGN/Vf5Q/0CmlkpaZBMsUDvJrZU7PZkAe6oOPF0Pn1iIxdY81oP?=
+ =?us-ascii?Q?9QOnjudGr4uZsWGXVB1lHS3151cR95oVpP+RQyfIkUEjPpWa5S63TcJP8a1P?=
+ =?us-ascii?Q?KVf65CA2EiHyacN/pVwmdbqdegT9bbjhUAqXjd+Tmuj9tg/vOt4cRya0cwPc?=
+ =?us-ascii?Q?F+o+V45JKcgDSTRGxn21+4PH+hQNMtVa/CGh0mZFx0HJv0lUzEC6kUzORuki?=
+ =?us-ascii?Q?YE3C/jgCuTWqstjnRBZZEZclwAju9SMFV4exwttzUGkHga3XFtxJIDzMTnbe?=
+ =?us-ascii?Q?GiU++FpZsNfBsdWZL3KDM7qNBJEsJG7uhgMkK8OWErH+2KevlXauG/A5Ad5C?=
+ =?us-ascii?Q?Uvl5CLfXClEFtPqcu1IPkaCiyR/aNVrIEs9NZZefPpQNK25Wsi6LVB9Et6Dr?=
+ =?us-ascii?Q?CgA7gGhzO8+WII8HGQ+ckE8Tr2aV2+eOSaYaUN/9Coi3lGsuwzXtugNkFuSA?=
+ =?us-ascii?Q?DpmwZOD6qjXaI+CIDvApGtnxh5r5fWg9xV0fNwm1QpD4oHlxEHLLjG/g3D8F?=
+ =?us-ascii?Q?Tz8f55TvLw+47IkW5/Maez9TSwc2aVTe6rXKMEPnAMeZlc41dCqa93kNe0bs?=
+ =?us-ascii?Q?LccqTBXnVCGVnav17w5QDkPpmseYwPDQZpB0HhPLVlQ7X2czph0SHMaJlLNL?=
+ =?us-ascii?Q?r+jY78tB0bQBC4afvlJNKFgursA3OrfMa6AB223Jmgn3cbGEfIWm+nroya2v?=
+ =?us-ascii?Q?vNtI3mDKr/RW8wZs1maCtmS22TDAppAUkGGirlulu3mvJOlpwJgS7ejyJbkM?=
+ =?us-ascii?Q?GtOVLPr+7UksU+0NxArmdtReSJImwQbfQgL8Ml66OaK/UsX6OZa5G52rsV9x?=
+ =?us-ascii?Q?ib0YHqp2XPxtgTv/68d6KBSITO5oCFH4MxbrHU82hnyq/7VuT39/mdAx5ua8?=
+ =?us-ascii?Q?txX9XgK1wb8zHhFhBvonv91wnTMqGmJG/PtZHDTWxqyztN7r0pO18BfDmxw?=
+ =?us-ascii?Q?=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB6733.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?mNrGyAiADKJ6H8WHy92gH3FcN2QIGbPW6Ua21zEfTJkmo4453/zUiY6C8cTK?=
+ =?us-ascii?Q?xAzIBClhqxkZpn0MCL5CEKympA93NJIN8FRcQKxRde0eTFrcyxVAelDn6gVw?=
+ =?us-ascii?Q?6qy/WwrmA0Lnl0Nn2EB2uMtZsfXrr6EyvBli6nAhRu+mzoEUmiZHtfcXpF2C?=
+ =?us-ascii?Q?cGDtD2AN7Gt7JQieDEOA8uYIXYqQM66a7ODK6kOwh3BSD7bPHM2R1QR7Lb9I?=
+ =?us-ascii?Q?4lqN4CuX/0uVK/eYA0VquBlrwLLldnH4ifwhXNJADMEN8h2CIMo0xT3p9SUv?=
+ =?us-ascii?Q?VxUZHpWOViZj3nPkKGNUX9GO25btMfpGNKiyH/pXkks9PhQbDrqsV3At6avj?=
+ =?us-ascii?Q?7ybamRo3MPFRBo3kLTB16ETKspCVl/ErwKCtup0XPr5SC6oLnhRuAIQ5uF1Y?=
+ =?us-ascii?Q?37cU36TBOZBK5H75SeC1ULhLe0XY2gVFV725FyA89VU/wNzr7hUUKLNWWInR?=
+ =?us-ascii?Q?gmuhB0KnXjMyw5J49PmwM61bfevE23e8uQR7wyAEtriFRStCsEH8XNv2FaG0?=
+ =?us-ascii?Q?UeI5S5Cur7u9GZVJV7Qa+bgii1Y7HaPtcuNEpa2rRHEbPVKDxjQt7CQeNLVf?=
+ =?us-ascii?Q?Ldoig4Q3VOU7wQfEc8mb8v9zBCnyoU52fUTAGAZhlQosRMj/gavjs394inzy?=
+ =?us-ascii?Q?DiiAXMWxuWU45Oyr6jQdeHDXcpUTdjar86ZThKGRpmD7q1EnrbXlh0EHU6RE?=
+ =?us-ascii?Q?gTWYEpDLH7ZWbfCtVvVZeaixyXdjd+ryi/ZiQEDsFEckZLAAHi5x8tLi1ia4?=
+ =?us-ascii?Q?G1nMEYuP4xErDoi8zKpgp7BGiz3NvOw+9ztPwAgnlAwYoNUg7iwA80uvrdIM?=
+ =?us-ascii?Q?pQKGl1EUfCfqEimGDUZc5O3pl4HyR1MqpWj8nc5EVjsLDqrpVZyFdE5iB6wp?=
+ =?us-ascii?Q?mNicN4cuBnPf/2aC63l/MJs//o6LzWPOgpKZDD1luz0XOHxwE3I3eCvvnRHQ?=
+ =?us-ascii?Q?HtkrEVDUCDJiaPVNPCI0EiEiBXYYbCXGgysf59oafTxdFfbYiTS62wcvRiXl?=
+ =?us-ascii?Q?GAgDDu2SoHAsD7NjWgjZfOmeWh+F4dVxQSZnatOclVHl/E33Xz4pufmZ5kRa?=
+ =?us-ascii?Q?f5PXrH0xSHW5Tal7T4bKKw0/uAOegufxQgiuzLp2fOdPLemKR05mfN5xZbLR?=
+ =?us-ascii?Q?8hzSd2+8n5V7rkiBaH5sR4bt5U4ZmFzxCXA6rS8cNTCICTvEMEyeoDWS8Msq?=
+ =?us-ascii?Q?uNQswYwDzyEMSrO3ehSE0/M1pwAkGsEXg0IzTsJHuJX9H18SYqsbi8bQOur0?=
+ =?us-ascii?Q?d/CfwNBmwfBoWH+TJjypI0068xu9t0CXIWVhkrrSawc8sHuQN/dICZNl5AQW?=
+ =?us-ascii?Q?rxf0+GkRUNVIiyBcUpnmpg++6dkknBfKrIdlckSgbBXF2R4GMz/fBMQlIyeF?=
+ =?us-ascii?Q?0UHeS++Bxxb1ubZWyBOefHnOe1vml5rwa5M/2HAaG+/P6+vJkkMfAeILKHfR?=
+ =?us-ascii?Q?ott4DTDyKeubbkxqtUFT0uP77bv7rlQxvvFi6oTmanU4OD1yq4AdCM2zmY6z?=
+ =?us-ascii?Q?IMKQnXfK1xR3ZzAgJvLcvApRq1qpSvZc6ARG7IxqUyUyeKnc4sHymQhRqNn4?=
+ =?us-ascii?Q?JSA4EkqYckVpPuKvkeZ2u6GtEsbz0UwsiR1HVkXT?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 556e00fb-2974-4efe-9ed1-08dc686c1393
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB6733.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2024 16:47:37.5483
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rAhc0qgjgMcPNNAweLBfokcIwzsLYKzEkNRx5KBz/HSVCGOZYQ9WGcxLmmYkPF5vjkZMY/ZBYOeyKO8EXeQS3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6339
+X-OriginatorOrg: intel.com
 
-On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
-> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
-> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
-> which means there should be no harm in achieving the same order of
-> operations by running it off the back of iommu_probe_device() itself.
-> This then puts it in line with the x86 and s390 .probe_finalize bodges,
-> letting us pull it all into the main flow properly. As a bonus this lets
-> us fold in and de-scope the PCI workaround setup as well.
+Ira Weiny wrote:
+> BIOS can configure memory devices as firmware first.  This will send CXL
+> events to the firmware instead of the OS.  The firmware can then inform
+> the OS of these events via UEFI.
+
++ linux-acpi
+
+[I missed adding this list.]
+
 > 
-> At this point we can also then pull the call up inside the group mutex,
-> and avoid having to think about whether iommu_group_store_type() could
-> theoretically race and free the domain if iommu_setup_dma_ops() ran just
-> *before* iommu_device_use_default_domain() claims it... Furthermore we
-> replace one .probe_finalize call completely, since the only remaining
-> implementations are now one which only needs to run once for the initial
-> boot-time probe, and two which themselves render that path unreachable.
+> UEFI v2.10 section N.2.14 defines a Common Platform Error Record (CPER)
+> format for CXL Component Events.  The format is mostly the same as the
+> CXL Common Event Record Format.  The difference lies in the use of a
+> GUID as the CPER Section Type which matches the UUID defined in CXL 3.1
+> Table 8-43.
 > 
-> This leaves us a big step closer to realistically being able to unpick
-> the variety of different things that iommu_setup_dma_ops() has been
-> muddling together, and further streamline iommu-dma into core API flows
-> in future.
+> Currently a configuration such as this will trace a non standard event
+> in the log omitting useful details of the event.  In addition the CXL
+> sub-system contains additional region and HPA information useful to the
+> user.[0]
 > 
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Tested-by: Hanjun Guo <guohanjun@huawei.com>
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> The CXL code is required to be called from process context as it needs
+> to take a device lock.  The GHES code may be in interrupt context.  This
+> complicated the use of a callback.  Dan Williams suggested the use of
+> work items as an atomic way of switching between the callback execution
+> and a default handler.[1]
+> 
+> The use of a kfifo simplifies queue processing by providing lock free
+> fifo operations.  cxl_cper_kfifo_get() allows easier management of the
+> kfifo between the ghes and cxl modules.
+> 
+> CXL 3.1 Table 8-127 requires a device to have a queue depth of 1 for
+> each of the four event logs.  A combined queue depth of 32 is chosen to
+> provide room for 8 entries of each log type.
+> 
+> Add GHES support to detect CXL CPER records.  Add the ability for the
+> CXL sub-system to register a work queue to process the events.
+> 
+> This patch adds back the functionality which was removed to fix the
+> report by Dan Carpenter[2].
+> 
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: Rafael J. Wysocki <rafael@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Link: http://lore.kernel.org/r/cover.1711598777.git.alison.schofield@intel.com [0]
+> Link: http://lore.kernel.org/r/65d111eb87115_6c745294ac@dwillia2-xfh.jf.intel.com.notmuch [1]
+> Link: http://lore.kernel.org/r/b963c490-2c13-4b79-bbe7-34c6568423c7@moroto.mountain [2]
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 > ---
-> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
->     is covered as well, with bonus side-effects as above.
-> v3: *Really* do that, remembering the other two probe_finalize sites too.
+> Changes:
+> [iweiny: pick up tag]
+> [djbw: use proper link format]
 > ---
->  arch/arm64/mm/dma-mapping.c  |  2 --
->  drivers/iommu/amd/iommu.c    |  8 --------
->  drivers/iommu/dma-iommu.c    | 18 ++++++------------
->  drivers/iommu/dma-iommu.h    | 14 ++++++--------
->  drivers/iommu/intel/iommu.c  |  7 -------
->  drivers/iommu/iommu.c        | 20 +++++++-------------
->  drivers/iommu/s390-iommu.c   |  6 ------
->  drivers/iommu/virtio-iommu.c | 10 ----------
->  include/linux/iommu.h        |  7 -------
->  9 files changed, 19 insertions(+), 73 deletions(-)
+>  drivers/acpi/apei/ghes.c  | 110 ++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/cxl-event.h |  27 ++++++++++++
+>  2 files changed, 137 insertions(+)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 512067cac170..2247a1535b52 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -26,6 +26,8 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/timer.h>
+>  #include <linux/cper.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/cxl-event.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/mutex.h>
+>  #include <linux/ratelimit.h>
+> @@ -33,6 +35,7 @@
+>  #include <linux/irq_work.h>
+>  #include <linux/llist.h>
+>  #include <linux/genalloc.h>
+> +#include <linux/kfifo.h>
+>  #include <linux/pci.h>
+>  #include <linux/pfn.h>
+>  #include <linux/aer.h>
+> @@ -673,6 +676,101 @@ static void ghes_defer_non_standard_event(struct acpi_hest_generic_data *gdata,
+>  	schedule_work(&entry->work);
+>  }
+>  
+> +/* CXL Event record UUIDs are formated as GUIDs and reported in section type */
+> +
+> +/*
+> + * General Media Event Record
+> + * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
+> + */
+> +#define CPER_SEC_CXL_GEN_MEDIA_GUID					\
+> +	GUID_INIT(0xfbcd0a77, 0xc260, 0x417f,				\
+> +		  0x85, 0xa9, 0x08, 0x8b, 0x16, 0x21, 0xeb, 0xa6)
+> +
+> +/*
+> + * DRAM Event Record
+> + * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+> + */
+> +#define CPER_SEC_CXL_DRAM_GUID						\
+> +	GUID_INIT(0x601dcbb3, 0x9c06, 0x4eab,				\
+> +		  0xb8, 0xaf, 0x4e, 0x9b, 0xfb, 0x5c, 0x96, 0x24)
+> +
+> +/*
+> + * Memory Module Event Record
+> + * CXL rev 3.0 section 8.2.9.2.1.3; Table 8-45
+> + */
+> +#define CPER_SEC_CXL_MEM_MODULE_GUID					\
+> +	GUID_INIT(0xfe927475, 0xdd59, 0x4339,				\
+> +		  0xa5, 0x86, 0x79, 0xba, 0xb1, 0x13, 0xb7, 0x74)
+> +
+> +/* Room for 8 entries for each of the 4 event log queues */
+> +#define CXL_CPER_FIFO_DEPTH 32
+> +DEFINE_KFIFO(cxl_cper_fifo, struct cxl_cper_work_data, CXL_CPER_FIFO_DEPTH);
+> +
+> +/* Synchronize schedule_work() with cxl_cper_work changes */
+> +static DEFINE_SPINLOCK(cxl_cper_work_lock);
+> +struct work_struct *cxl_cper_work;
+> +
+> +static void cxl_cper_post_event(enum cxl_event_type event_type,
+> +				struct cxl_cper_event_rec *rec)
+> +{
+> +	struct cxl_cper_work_data wd;
+> +
+> +	if (rec->hdr.length <= sizeof(rec->hdr) ||
+> +	    rec->hdr.length > sizeof(*rec)) {
+> +		pr_err(FW_WARN "CXL CPER Invalid section length (%u)\n",
+> +		       rec->hdr.length);
+> +		return;
+> +	}
+> +
+> +	if (!(rec->hdr.validation_bits & CPER_CXL_COMP_EVENT_LOG_VALID)) {
+> +		pr_err(FW_WARN "CXL CPER invalid event\n");
+> +		return;
+> +	}
+> +
+> +	guard(spinlock_irqsave)(&cxl_cper_work_lock);
+> +
+> +	if (!cxl_cper_work)
+> +		return;
+> +
+> +	wd.event_type = event_type;
+> +	memcpy(&wd.rec, rec, sizeof(wd.rec));
+> +
+> +	if (!kfifo_put(&cxl_cper_fifo, wd)) {
+> +		pr_err_ratelimited("CXL CPER kfifo overflow\n");
+> +		return;
+> +	}
+> +
+> +	schedule_work(cxl_cper_work);
+> +}
+> +
+> +int cxl_cper_register_work(struct work_struct *work)
+> +{
+> +	if (cxl_cper_work)
+> +		return -EINVAL;
+> +
+> +	guard(spinlock)(&cxl_cper_work_lock);
+> +	cxl_cper_work = work;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_cper_register_work, CXL);
+> +
+> +int cxl_cper_unregister_work(struct work_struct *work)
+> +{
+> +	if (cxl_cper_work != work)
+> +		return -EINVAL;
+> +
+> +	guard(spinlock)(&cxl_cper_work_lock);
+> +	cxl_cper_work = NULL;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_cper_unregister_work, CXL);
+> +
+> +int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
+> +{
+> +	return kfifo_get(&cxl_cper_fifo, wd);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, CXL);
+> +
+>  static bool ghes_do_proc(struct ghes *ghes,
+>  			 const struct acpi_hest_generic_status *estatus)
+>  {
+> @@ -707,6 +805,18 @@ static bool ghes_do_proc(struct ghes *ghes,
+>  		}
+>  		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+>  			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID)) {
+> +			struct cxl_cper_event_rec *rec = acpi_hest_get_payload(gdata);
+> +
+> +			cxl_cper_post_event(CXL_CPER_EVENT_GEN_MEDIA, rec);
+> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_DRAM_GUID)) {
+> +			struct cxl_cper_event_rec *rec = acpi_hest_get_payload(gdata);
+> +
+> +			cxl_cper_post_event(CXL_CPER_EVENT_DRAM, rec);
+> +		} else if (guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE_GUID)) {
+> +			struct cxl_cper_event_rec *rec = acpi_hest_get_payload(gdata);
+> +
+> +			cxl_cper_post_event(CXL_CPER_EVENT_MEM_MODULE, rec);
+>  		} else {
+>  			void *err = acpi_hest_get_payload(gdata);
+>  
+> diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
+> index 03fa6d50d46f..a0067c49e2ca 100644
+> --- a/include/linux/cxl-event.h
+> +++ b/include/linux/cxl-event.h
+> @@ -3,6 +3,8 @@
+>  #ifndef _LINUX_CXL_EVENT_H
+>  #define _LINUX_CXL_EVENT_H
+>  
+> +#include <linux/workqueue_types.h>
+> +
+>  /*
+>   * Common Event Record Format
+>   * CXL rev 3.0 section 8.2.9.2.1; Table 8-42
+> @@ -140,4 +142,29 @@ struct cxl_cper_event_rec {
+>  	union cxl_event event;
+>  } __packed;
+>  
+> +struct cxl_cper_work_data {
+> +	enum cxl_event_type event_type;
+> +	struct cxl_cper_event_rec rec;
+> +};
+> +
+> +#ifdef CONFIG_ACPI_APEI_GHES
+> +int cxl_cper_register_work(struct work_struct *work);
+> +int cxl_cper_unregister_work(struct work_struct *work);
+> +int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd);
+> +#else
+> +static inline int cxl_cper_register_work(struct work_struct *work);
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline int cxl_cper_unregister_work(struct work_struct *work);
+> +{
+> +	return 0;
+> +}
+> +static inline int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif /* _LINUX_CXL_EVENT_H */
+> 
+> -- 
+> 2.44.0
+> 
 
-This patch breaks UFS on Qualcomm SC8180X Primus platform:
 
-
-[    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
-[    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
-[    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
-[    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
-[    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
-[    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
-[    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
-[    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
-[    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
-[    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
-[    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
-[    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
-[    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
-[    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
-[    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
-
--- 
-With best wishes
-Dmitry
 
