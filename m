@@ -1,95 +1,159 @@
-Return-Path: <linux-acpi+bounces-5462-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5463-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C550D8B5C07
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:55:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006A68B5E96
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 18:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D95288829
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 14:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF73A280FA4
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 16:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7AA80058;
-	Mon, 29 Apr 2024 14:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DFE83CAE;
+	Mon, 29 Apr 2024 16:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BMTywdxk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/yelYC3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34707641B
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 14:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB66F839EB;
+	Mon, 29 Apr 2024 16:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714402506; cv=none; b=DbCgsE+rUSBFkteBK+zWHHkR2kIYa9napK6iSlIUsUUXYe9/fZe6xxJ2ifbbzQj+vCS03XGeVYyt4W4DAxRO7R1SZ0Hv2ush77s+ykSc785RW9sMgDLmznmuKkIcpuykIYAAAVxM5+nNq/nQ5OUJ/kj80jXm9Jk96/Ya1Ctaghw=
+	t=1714406790; cv=none; b=FBw5+XGaYhrzRG3s3nFq4nfxhPzLaShXMcsHUQS32DfZIP/+m0kggFw963XId+nvxY3gGuN/ZUCkgALlqmY3u4R1DZ0RLMz4/NxsX25qFRgHjuGVktd/KY75ZbjcQXEXOTivKJx3QlEAefSRQb13h/7XLri/5kL6ZpAYnvDQ9d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714402506; c=relaxed/simple;
-	bh=kqm+00gRhIZ9cVdk70Z9zqJQD734+HFtG+ZaAfUB1VU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Z9S0Kh0l2dO1aQXdNjVRjEiC9j/5dyAAy2OXvxEqQ8hIzYszPdNMUP1glxpC4nynaFtpnKb9EN4pUVni0Vl0U0T5veUiUXT+R6OgSGe8qiZUiKoTA7rRgqflTb7s8M9U6/xox9xK/WJadio1nxWBle7ehuYFvfwYGQvHA+MJ69A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BMTywdxk; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714402505; x=1745938505;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=kqm+00gRhIZ9cVdk70Z9zqJQD734+HFtG+ZaAfUB1VU=;
-  b=BMTywdxkinwSZdCrhOqohZ+eqqeWYPUO9J2WLSeuWKMIBHiCqu/9Uawr
-   ffi18wGrKkzSnXJY6s24hOnhHFim5ruZBBa2E59+cwCUTUt/KZlqzIkU5
-   hgJweKHufLm3TBfVw+lo0eUDhRoUvlvoArC3IadmAn1q+B8OLcALDUsV5
-   pZbVWe+zNGTyp43vX7hmkw9chYjye7L2d8egkbgmDt/RMX3gl2dr+akai
-   yLPSNmvaAgr+9vkJuU1tRr2fkz84n8B6HOi0Cwca+5cL768eYEGazkoO5
-   Oh/nICgzL0t/+6locPMDSCCJxaLgMnDohSwl0vr8ZlS0IVtJiH8p8u46E
-   w==;
-X-CSE-ConnectionGUID: OJNnKEtSS8Cv/FlYi//IPw==
-X-CSE-MsgGUID: 2+JTTcvBTbiGGZoFXSAXUg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="9942189"
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="9942189"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 07:55:02 -0700
-X-CSE-ConnectionGUID: 5gDVzCaeR2mUbXFibuggww==
-X-CSE-MsgGUID: vfLK2+tHTFerbMo9dHQMAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
-   d="scan'208";a="26123964"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmviesa007.fm.intel.com with SMTP; 29 Apr 2024 07:55:00 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 29 Apr 2024 17:54:58 +0300
-Date: Mon, 29 Apr 2024 17:54:58 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>
-Cc: linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Missing default handler for the EmbeddedControl OpRegion
-Message-ID: <Zi+0whTvDbAdveHq@kuha.fi.intel.com>
+	s=arc-20240116; t=1714406790; c=relaxed/simple;
+	bh=afERztb9pVx17pXtbd9iQT9EUE2xeuhnB2fps9eTU2M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=saUXrxLnuqAl56pHCTyebcxO5zwPoopYRHTwbsC80jgOCF/ibI2oZm2yTJ0r5rnC3I89SVxraorbsnFbmUlLImdMdkAIogjkxKu9pCbsK7yvpypVHafvZoibBAk5uTvy18P9Lx5wkzsxdCINBHR+zyvQVH+h2It7DD3cxUxVWCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/yelYC3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39557C4AF14;
+	Mon, 29 Apr 2024 16:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714406790;
+	bh=afERztb9pVx17pXtbd9iQT9EUE2xeuhnB2fps9eTU2M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=A/yelYC3XQWHy2t462WvCtZugMJLgKpzXy9mNaFTqXtCTN38WaZJY+s+D1hNbr3DR
+	 W87uOgUVp1h2JuRBjRspQ4TRUQgVA1qlVZV90Mipt3fsFA7sAebneGw1R/BuKfN0Zu
+	 2oDesbX775ljUihmmaC9+1HRd+Gz+5bQ8ypJxRtMajNM9HgclDh4il8FquIrirJ+ST
+	 9aY9S8LjYNFuE6fmQ/epgbkfJp6+P3d/ioBTPkcxPdrEDuxWHOXH4yjTWE/RMQUDUF
+	 URj77m7f59ZyhPeeAYZ1IRLculf0Ya3VtidaPSKQTogOBOYDdyuDlaokQkeIyVqfuY
+	 79R+4A3n9kv1g==
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5af609de0d2so452074eaf.2;
+        Mon, 29 Apr 2024 09:06:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXHZSpEmAd+BDZX4XI3aK41ZT9hcXoHeLkaR+/AblOzukJBS/q4yLgdz6/ss4ciBrdCbYffT5JzOy9SN3MNfnrVVvILUpNPyIaD8cAn4/fiYkxzmJmrvIOcmhCyb1Nhqvq4T1saJzKeyA==
+X-Gm-Message-State: AOJu0YxXiuKa9Cv2ZGvesiyxkjp+AmaIT4w4v7zmC8MFxbGL1AmfMwf/
+	o7Q11P10apsrU2js4glZbKg6C5SrV+JMbBvijQRcOG8phzCJ3ahuVdbBIXSHoEnF5BvKOpmvWgw
+	CEEluGtOa99hAtJn+2oxC1TNyNxs=
+X-Google-Smtp-Source: AGHT+IHyLxx0VBY2oJjwiSL4wBe2DRBpBa9uTPPMyX+rXpIuBc+hT9rzo9R5LOk970vfWB5Ip/O//eSUit0kTDrunuc=
+X-Received: by 2002:a4a:be9a:0:b0:5ac:6fc1:c2cb with SMTP id
+ o26-20020a4abe9a000000b005ac6fc1c2cbmr12303338oop.0.1714406789435; Mon, 29
+ Apr 2024 09:06:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <2741433.mvXUDI8C0e@kreacher> <278b47946efd7f67229e26335c419570871427cc.camel@intel.com>
+In-Reply-To: <278b47946efd7f67229e26335c419570871427cc.camel@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 29 Apr 2024 18:06:13 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0j46222cPihhkCo2Znum7f4A12sBve27Yeevv2LPdstPg@mail.gmail.com>
+Message-ID: <CAJZ5v0j46222cPihhkCo2Znum7f4A12sBve27Yeevv2LPdstPg@mail.gmail.com>
+Subject: Re: [PATCH v1] ACPI: scan: Avoid enumerating devices with clearly
+ invalid _STA values
+To: "Zhang, Rui" <rui.zhang@intel.com>
+Cc: "rjw@rjwysocki.net" <rjw@rjwysocki.net>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"salil.mehta@huawei.com" <salil.mehta@huawei.com>, 
+	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sun, Apr 28, 2024 at 6:17=E2=80=AFAM Zhang, Rui <rui.zhang@intel.com> wr=
+ote:
+>
+> On Fri, 2024-04-26 at 18:56 +0200, Rafael J. Wysocki wrote:
+> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > The return value of _STA with the "present" bit unset and the
+> > "enabled"
+> > bit set is clearly invalid as per the ACPI specification, Section
+> > 6.3.7
+> > "_STA (Device Status)", so make the ACPI device enumeration code
+> > disregard devices with such _STA return values.
+> >
+> > Also, because this implies that status.enabled will only be set if
+> > status.present is set too, acpi_device_is_enabled() can be modified
+> > to simply return the value of the former.
+> >
+> > Link:
+> > https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-device=
+-status
+> > Link:
+> > https://lore.kernel.org/linux-acpi/88179311a503493099028c12ca37d430@hua=
+wei.com/
+> > Suggested-by: Salil Mehta <salil.mehta@huawei.com>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/bus.c  |   11 +++++++++++
+> >  drivers/acpi/scan.c |    2 +-
+> >  2 files changed, 12 insertions(+), 1 deletion(-)
+> >
+> > Index: linux-pm/drivers/acpi/bus.c
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > --- linux-pm.orig/drivers/acpi/bus.c
+> > +++ linux-pm/drivers/acpi/bus.c
+> > @@ -112,6 +112,17 @@ int acpi_bus_get_status(struct acpi_devi
+> >         if (ACPI_FAILURE(status))
+> >                 return -ENODEV;
+> >
+> > +       if (!device->status.present && device->status.enabled) {
+> > +               pr_info(FW_BUG "Device [%s] status [%08x]: not
+> > present and enabled\n",
+> > +                       device->pnp.bus_id, (u32)sta);
+> > +               device->status.enabled =3D 0;
+> > +               /*
+> > +                * The status is clearly invalid, so clear the
+> > enabled bit as
+> > +                * well to avoid attempting to use the device.
+> > +                */
+>
+> seems that this comment is for the line above?
 
-There's a bug that is caused by an EmbeddedControl OpRegion which is
-declared inside the scope of a specific USB Type-C device (PNP0CA0):
-https://bugzilla.kernel.org/show_bug.cgi?id=218789
+No, I meant "functional" and wrote "enabled".  Not sure why really.
 
-It looks like that's not the only case where that OpRegion ID is used
-outside of the EC device scope. There is at least one driver in Linux
-Kernel (drivers/platform/x86/wmi.c) that already has a custom handler
-for the EmbeddedControl OpRegion, and based on a quick search, the
-problem "Region EmbeddedControl (ID=3) has no handler" has happened
-with some other devices too.
-
-
-Br,
-
--- 
-heikki
+> > +               device->status.functional =3D 0;
+> > +       }
+> > +
+> >         acpi_set_device_status(device, sta);
+> >
+> >         if (device->status.functional && !device->status.present) {
+> > Index: linux-pm/drivers/acpi/scan.c
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > --- linux-pm.orig/drivers/acpi/scan.c
+> > +++ linux-pm/drivers/acpi/scan.c
+> > @@ -1962,7 +1962,7 @@ bool acpi_device_is_present(const struct
+> >
+> >  bool acpi_device_is_enabled(const struct acpi_device *adev)
+> >  {
+> > -       return adev->status.present && adev->status.enabled;
+> > +       return adev->status.enabled;
+> >  }
+> >
+> >  static bool acpi_scan_handler_matching(struct acpi_scan_handler
+> > *handler,
+> >
+> >
+> >
+> >
+>
 
