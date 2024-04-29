@@ -1,136 +1,111 @@
-Return-Path: <linux-acpi+bounces-5449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3678B5325
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 10:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA26C8B5396
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 10:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101A31F21CE7
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 08:30:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CCFC1F21ACC
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 08:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8663017582;
-	Mon, 29 Apr 2024 08:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB90317C79;
+	Mon, 29 Apr 2024 08:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="USY0V7BX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28638EAE5;
-	Mon, 29 Apr 2024 08:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAEE17C61;
+	Mon, 29 Apr 2024 08:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714379395; cv=none; b=TtA08El8DXmZGdV0ycgGTAYpnp3NnuZVRvAJKvoSRsIcqBq0p7e4vpFfW/ffjH5lnkUQ5b2twQLCzcGTq5Ofkp7Q7XAnQfYhxdOxbfny4V+ryFKUt5fk7PQBaOcvmTZNT0kWyYxQqGPmPa6vHWptDGvHMgyR5tgdnwDa3IFabBE=
+	t=1714381083; cv=none; b=OXp89+BV6VrdkINdV4fh2NTzElg5vOs3ZS48fA0aSMRhfk1F5yrIu8Geg2zCLAK7XdpG25QEYmlsMXpzSSJe0vhwtnOQBuAULOe330LY971hlp+VGGcdEarLFR3ISAVaWb17FhHe+jy4aVT7WgVD70X+du8FRvpfmp+k4OLPcJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714379395; c=relaxed/simple;
-	bh=UjNF+WJ8bFa3h858ykeWlkf9ppOKXDAJYJklbdVa5Eg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fqgOKxMl7tOY/oAwgKqUSfcoHtAI8PojFWiNvl6DHbLw2ZgMZw93ssezDKhOMQT8zQpkJOvAkaSgKf+5g0yCSylQ+9VAGgGOJ3V5CU1sj8I2wsENB5MqZmlqyzZwrXxf0MDO4oZToP7bVXZ2obmTi5gWTYDNkUR4rlHeIF6hQ54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VSc1z0Y7Kz6K9DL;
-	Mon, 29 Apr 2024 16:29:27 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 519031406AE;
-	Mon, 29 Apr 2024 16:29:43 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
- 2024 09:29:42 +0100
-Date: Mon, 29 Apr 2024 09:29:42 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-CC: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
-	<linux-kernel@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>
-Subject: Re: [PATCH v1] ACPI: scan: Avoid enumerating devices with clearly
- invalid _STA values
-Message-ID: <20240429092942.00004c96@Huawei.com>
-In-Reply-To: <2741433.mvXUDI8C0e@kreacher>
-References: <2741433.mvXUDI8C0e@kreacher>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714381083; c=relaxed/simple;
+	bh=M4a//tB14SY34//ET05IxTBHfSZ0qWozPe6V/QGR5G0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K41i45rheVd1uotf+kmDtra4muPzJl1DrEV0KLyiv3YSk1+HH8YEqAAPNFjCV3vhXtc7CMIYr7/GYdKU7PUTDQHQ+txg8T3HZ9kgdfnoLOcozBcdL5jfBeoYjXd9zaVIksbcjNoA5Af94AHisy/8NRI0RGbxrQbgvcJvcG19p34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=USY0V7BX; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714381082; x=1745917082;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=M4a//tB14SY34//ET05IxTBHfSZ0qWozPe6V/QGR5G0=;
+  b=USY0V7BXnEai50hd5NcAB4c2cjp3aDAHETqitegFGYiJmRi3d4dS9Ez+
+   3N520+wC3GLgqplTgJBloiYq2wEUgr2Ysi3bW0kb8VwVMjIxZFdYP95rm
+   SRO9HFdVVgfH5J39EBjoeTyfvTVuPl255zam3l3+TdjycBmNszD26rQU7
+   fE9v+7GfAvoYfL7uzYWXAz/W+Si65XY8/5xtebcVxsE56wINkUf3M6sWH
+   egBdd726hmia2OOy6t3P2TiVfT5ilT/Vvpf831QDTcaiwzXMwqjeHtsOe
+   Gs+IPq0Bjti/3lmZ7x79OsMnxp+oMF2+AfZGvMdOG/JfJ96ZBftwbCgn0
+   Q==;
+X-CSE-ConnectionGUID: ZVXIlvQvQ+OTQg1NTXBnig==
+X-CSE-MsgGUID: 6Y1dhmgbQa2xdojczxBf9w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="13821087"
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="13821087"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:58:01 -0700
+X-CSE-ConnectionGUID: yOtsl2o6RJuzC0Pn19N3sg==
+X-CSE-MsgGUID: 84T2sAI1Slenx/37+HTUTg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,239,1708416000"; 
+   d="scan'208";a="26035129"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 01:58:00 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1s1Mph-00000002GMQ-2bOl;
+	Mon, 29 Apr 2024 11:57:57 +0300
+Date: Mon, 29 Apr 2024 11:57:57 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Len Brown <lenb@kernel.org>
+Subject: Re: [PATCH v2] ACPI: Move acpi_blacklisted() declaration to
+ asm/acpi.h
+Message-ID: <Zi9hFbrIfyDhrA5R@smile.fi.intel.com>
+References: <20240429040441.748479-1-sathyanarayanan.kuppuswamy@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240429040441.748479-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, 26 Apr 2024 18:56:21 +0200
-"Rafael J. Wysocki" <rjw@rjwysocki.net> wrote:
+On Sun, Apr 28, 2024 at 09:04:41PM -0700, Kuppuswamy Sathyanarayanan wrote:
+> The function acpi_blacklisted() is defined only when CONFIG_X86 is
+> enabled and is only used by X86 arch code. To align with its usage and
+> definition conditions, move its declaration to asm/acpi.h
 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> The return value of _STA with the "present" bit unset and the "enabled"
-> bit set is clearly invalid as per the ACPI specification, Section 6.3.7
-> "_STA (Device Status)", so make the ACPI device enumeration code
-> disregard devices with such _STA return values.
-> 
-> Also, because this implies that status.enabled will only be set if
-> status.present is set too, acpi_device_is_enabled() can be modified
-> to simply return the value of the former.
-> 
-> Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-device-status
-> Link: https://lore.kernel.org/linux-acpi/88179311a503493099028c12ca37d430@huawei.com/
-> Suggested-by: Salil Mehta <salil.mehta@huawei.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Seems a sensible tidying up.  Hopefully nothing was relying on
-this looser behavior.  One trivial thing inline.
+FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+...
 
-> ---
->  drivers/acpi/bus.c  |   11 +++++++++++
->  drivers/acpi/scan.c |    2 +-
->  2 files changed, 12 insertions(+), 1 deletion(-)
-> 
-> Index: linux-pm/drivers/acpi/bus.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/bus.c
-> +++ linux-pm/drivers/acpi/bus.c
-> @@ -112,6 +112,17 @@ int acpi_bus_get_status(struct acpi_devi
->  	if (ACPI_FAILURE(status))
->  		return -ENODEV;
->  
-> +	if (!device->status.present && device->status.enabled) {
-> +		pr_info(FW_BUG "Device [%s] status [%08x]: not present and enabled\n",
-> +			device->pnp.bus_id, (u32)sta);
-> +		device->status.enabled = 0;
-> +		/*
-> +		 * The status is clearly invalid, so clear the enabled bit as
-> +		 * well to avoid attempting to use the device.
-> +		 */
+>  extern char acpi_video_backlight_string[];
+>  extern long acpi_is_video_device(acpi_handle handle);
+> -extern int acpi_blacklisted(void);
 
-Comment seems to be in a slightly odd place.  Perhaps one line earlier makes
-more sense?  Or was the intent to mention functional here?
+I would replace it with a blank line (to me it seems the above and below are
+different groups from semantic point of view, but Rafael may correct me).
 
-> +		device->status.functional = 0;
-> +	}
-> +
->  	acpi_set_device_status(device, sta);
->  
->  	if (device->status.functional && !device->status.present) {
-> Index: linux-pm/drivers/acpi/scan.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/scan.c
-> +++ linux-pm/drivers/acpi/scan.c
-> @@ -1962,7 +1962,7 @@ bool acpi_device_is_present(const struct
->  
->  bool acpi_device_is_enabled(const struct acpi_device *adev)
->  {
-> -	return adev->status.present && adev->status.enabled;
-> +	return adev->status.enabled;
->  }
->  
->  static bool acpi_scan_handler_matching(struct acpi_scan_handler *handler,
-> 
-> 
-> 
+>  extern void acpi_osi_setup(char *str);
+>  extern bool acpi_osi_is_win8(void);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
