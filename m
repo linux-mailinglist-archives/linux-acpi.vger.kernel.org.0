@@ -1,122 +1,110 @@
-Return-Path: <linux-acpi+bounces-5445-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5446-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879568B501D
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 06:04:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677BD8B5023
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 06:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0758C1F220CE
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 04:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9924D1C2176D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Apr 2024 04:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131E8F5D;
-	Mon, 29 Apr 2024 04:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F90E8F6A;
+	Mon, 29 Apr 2024 04:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K+PalhWm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gd3FvGYW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA918F7A;
-	Mon, 29 Apr 2024 04:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EBE257B;
+	Mon, 29 Apr 2024 04:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714363490; cv=none; b=D+WU3bDi2daxR9HC9xS6fXbeZnhmbxJN//EzrNtG/kFV1zpYGrq4I1HWXsZkX7OHdM5EXL/RIdbAtfF8op6IhZqYeQYKkkcTXUcTnQS/CQc8WCISiRex5h1mT4vJ8aRAN8JzpZXDPn7zEdpypeijmoF9PfOtwQSqjl//5YlxUx0=
+	t=1714363598; cv=none; b=OH0k/nU1mNTu9pQRiUIg40eK+uY+wZuMBtnfbvO4PmZMgwbZZ5g7DF7v6QBOuXuaYWzApBWPx3k6N0g+SzKfzL/fUMdwMVUkgIaxPGXGPrb7+NTVI0r+iAGUBm7KWVMws4aYuFbyFpidGk4rfgb3j99aDN2Hp9RKxU3NZwrhYzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714363490; c=relaxed/simple;
-	bh=iZm0usd8atUAN8OAiOAVACJyVWUpT+dQO9Unn+MZ+fI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LP+EB5ReyugI9rNmei9CcOmnoq9y32U3BM/WErajAZ+4bGdAiPr+EDwtlGh3qSIaMy0xEx6f7zLDqmHpO0tDoonykmIZfHYJNGUtySw+54i1jpIqkvB3It+irrDTkw65yE59CUhhOMjqz7fXTGX+LsmcE3Vc2cx/Ve5+nOEQhUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K+PalhWm; arc=none smtp.client-ip=192.198.163.11
+	s=arc-20240116; t=1714363598; c=relaxed/simple;
+	bh=FD3ViZaLK0wtg7lH2KbwGb7HN39zndU5EWw+ZK7vnaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uCU66FuSXL9hSXKcziDeSDh46Qc0rw2bHBf7iv3CepMsu+IZd8Ph7ZZs5th458x0LA73tRo4BZZQyS9Ja9Jg0aVxRMRJ7pET5750DmNWB8Up29cqEmKyVMjvs2cE/iPKHKF/5ldCkWiGPhsKhxjS5DZZsEY4j7UFUAcUXEVbYZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gd3FvGYW; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714363489; x=1745899489;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iZm0usd8atUAN8OAiOAVACJyVWUpT+dQO9Unn+MZ+fI=;
-  b=K+PalhWme/5h3T9FhseMQmTtBEpgCtfiqDdDSLZVdik9IHvz2nvg067J
-   BVgUbirg1j5uVyEQgTp2H4iwOMx/GEcF/uUCWyik6VNo6s9hBuzLwAgmK
-   SdZCwSyYMva0TTpTIc4KzJ4vU/EOQYgpxArjjAEp5qWl/fgk7vAoT2E35
-   SqTIOJQCGiSQmXtfXYHvc4pBVz44/0egWwb6v1VCh3NQ6sCDk9G8GFleB
-   a+N7gDa82dACD3MocyjCgxfQ7VcZ+fwLBRAIGK2terbLLvq7w7iflDk/O
-   cSHY48DbAJfNy7OlLlrDjfxMEdozwTilhdMaGy1Rfm/A/yo15FnPqnEBH
-   w==;
-X-CSE-ConnectionGUID: Fec77ktfQWekzgtolE1dJQ==
-X-CSE-MsgGUID: KpTrUnZYSUukcL7Zl693kQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="20629045"
+  t=1714363596; x=1745899596;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FD3ViZaLK0wtg7lH2KbwGb7HN39zndU5EWw+ZK7vnaw=;
+  b=Gd3FvGYW6tIn0YnJgvu17mzgIWGQ0xRDhGLPdC7kiM7DlqkDMALfuZJE
+   kFQoPXXyCEFtKoZEhdrsiBJewBvgb65FtwNeVuzvsX6FlQc71wZZGugnp
+   cH3VidNQZodNUbP7mODAuJ+9XWUETV6KxqBVyUvP71TI7CSwCeqif1NtX
+   UlWVMjJoP3ZucsJIw/zg53r1/e0IkzaP5Q6q7iwMZsGPtWTEnnf6C0bv7
+   PSLmfeswzFdjS4MYP9emZVxJKLEhYVU+RhSFLq+MZDFFTvKCTZNXfbM8Z
+   vIEhHJJmGdUHO84ednkIgV4gmvO5WUc544fIhU9ovbjG4j5ki5EVjSS4R
+   A==;
+X-CSE-ConnectionGUID: Ks6MsBGKQOenRQES7iSdPA==
+X-CSE-MsgGUID: giSd5P3bTCKNvtNUwaTA+Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11057"; a="20565179"
 X-IronPort-AV: E=Sophos;i="6.07,238,1708416000"; 
-   d="scan'208";a="20629045"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 21:04:48 -0700
-X-CSE-ConnectionGUID: I/R3vOiNSPqt7Vk/Cr+dxw==
-X-CSE-MsgGUID: ZIUStbLiQf2ce+1tFur4UQ==
+   d="scan'208";a="20565179"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 21:06:36 -0700
+X-CSE-ConnectionGUID: fVjHxYRMQvC1b0sDcXa9Ww==
+X-CSE-MsgGUID: uFmKF7yfSqah2LD348K8LQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,238,1708416000"; 
-   d="scan'208";a="30442671"
-Received: from kscheema-mobl.amr.corp.intel.com (HELO skuppusw-mobl3.amr.corp.intel.com) ([10.251.17.13])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 21:04:48 -0700
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-To: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v2] ACPI: Move acpi_blacklisted() declaration to asm/acpi.h
-Date: Sun, 28 Apr 2024 21:04:41 -0700
-Message-Id: <20240429040441.748479-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+   d="scan'208";a="26001296"
+Received: from kscheema-mobl.amr.corp.intel.com (HELO [10.251.17.13]) ([10.251.17.13])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2024 21:06:35 -0700
+Message-ID: <228f5064-bf3d-4872-bcf7-b941f001d9dd@linux.intel.com>
+Date: Sun, 28 Apr 2024 21:06:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ACPI: Declare acpi_blacklisted() only if CONFIG_X86 is
+ enabled
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Len Brown <lenb@kernel.org>
+References: <20240407063341.3710801-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <CAJZ5v0hqt6+1AvDWb0BYw0z9burVQfdkOF1qUGzRRuPmvq4qQg@mail.gmail.com>
+ <ZiexZnmbLqPy11d1@smile.fi.intel.com>
+Content-Language: en-US
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <ZiexZnmbLqPy11d1@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The function acpi_blacklisted() is defined only when CONFIG_X86 is
-enabled and is only used by X86 arch code. To align with its usage and
-definition conditions, move its declaration to asm/acpi.h
 
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
+On 4/23/24 6:02 AM, Andy Shevchenko wrote:
+> On Mon, Apr 22, 2024 at 06:37:59PM +0200, Rafael J. Wysocki wrote:
+>> On Sun, Apr 7, 2024 at 8:33 AM Kuppuswamy Sathyanarayanan
+>> <sathyanarayanan.kuppuswamy@linux.intel.com> wrote:
+> ...
+>
+>> Applied (as 6.10 material), but it looks to me like this declaration
+>> could be moved away from this header file at all, as the function is
+>> only used in one place in arch-x86 code.
+> Yes, we probably may move it to asm/acpi.h for x86.
+>
+> I don't remember if I ever expressed that idea, but I definitely was thinking
+> about this.
+>
 
-Changes since v1:
-- v1 link: https://lore.kernel.org/lkml/ZhQS6uYmpsxFD3gn@smile.fi.intel.com/T/
-- Changed the title to "ACPI: Move acpi_blacklisted() declaration to asm/acpi.h"
-- Removed the declaration from include/linux/acpi.h
+Makes sense. I have moved it to asm/acpi.h
 
- arch/x86/include/asm/acpi.h | 2 ++
- include/linux/acpi.h        | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
+https://lore.kernel.org/lkml/20240429040441.748479-1-sathyanarayanan.kuppuswamy@linux.intel.com/T/#u
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index f896eed4516c..5af926c050f0 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -56,6 +56,8 @@ static inline void disable_acpi(void)
- 
- extern int acpi_gsi_to_irq(u32 gsi, unsigned int *irq);
- 
-+extern int acpi_blacklisted(void);
-+
- static inline void acpi_noirq_set(void) { acpi_noirq = 1; }
- static inline void acpi_disable_pci(void)
- {
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 34829f2c517a..576e75b4529a 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -421,7 +421,6 @@ extern char *wmi_get_acpi_device_uid(const char *guid);
- 
- extern char acpi_video_backlight_string[];
- extern long acpi_is_video_device(acpi_handle handle);
--extern int acpi_blacklisted(void);
- extern void acpi_osi_setup(char *str);
- extern bool acpi_osi_is_win8(void);
- 
 -- 
-2.34.1
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
 
