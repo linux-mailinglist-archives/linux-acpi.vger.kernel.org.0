@@ -1,106 +1,140 @@
-Return-Path: <linux-acpi+bounces-5542-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5543-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F288B7FF2
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 20:43:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3238B803D
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 21:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 241E4282E60
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:43:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1C64B21D15
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 19:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A89C184122;
-	Tue, 30 Apr 2024 18:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D208199EAC;
+	Tue, 30 Apr 2024 19:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Saj7fmUk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CB7181319;
-	Tue, 30 Apr 2024 18:42:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A388199E8F;
+	Tue, 30 Apr 2024 19:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714502540; cv=none; b=pgC3yyDRV4fF4sZdbXNt5z7EqbuMSoq6eQtbuEFzrcqGLUw3omjhkd93E0UiY0TupFqMM9+Nc1wUFzILlqijGfsiRzco4Y0gqqnf+62LZP3ucAXabOl2BV8W88geNHdwzRkXdBf+MqZ1Dt1zEE8cIku00BMBlCiCESd/vhEFuTY=
+	t=1714503658; cv=none; b=FHDtthbKThQUuqUIitBtxiIJuQioXa9XLpctdbYUyJSGtM1riCvDJRP09ZMzqoPzsFwwa9tOwVlYngN9b6muW57fp2GJTbSiGpV2kCH9AqmR3YihsFgV9/fbfZattXBfEiILWXK7HMywd0Z3FV4kXHbKZ3WESH3qPfSaXfjzvnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714502540; c=relaxed/simple;
-	bh=2SWBAatX6Tq6dfCeZcUL/f9RTcVf03C+StuX5KzUDEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mRFZDVX63V43lELWPkvUcI0/PdpQKP7A4FjpcR84KTeWpFwIc792Q8ZaUdJN8TyBB76EN4fuNblmjGdoooNyLLVaPR0JumBiAUylQv6emnA1g3DdfsKPIqpTYOzlzF13DZP+RrVvJr38Kkx4dXESXBaA1lSreQqDuPNJN1qE9U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=breq.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=breq.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f195.google.com with SMTP id 5614622812f47-3c75075ad30so3876362b6e.3;
-        Tue, 30 Apr 2024 11:42:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714502537; x=1715107337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9gRPPAtOqAwMAtylna7iyoPZyPLqxt58VXYi95JXmxo=;
-        b=HCh9IA1K6J2evLMzdmq8D+2tDZfjfHhKnmJCQEY0AE6MIjqKm4GZO9T2M4lpmjTuhf
-         /6QO5lCKZLJOfusE/AtAYM307wWIWGHCJZP4nxrHEDflD6gVmECA6qNpP0I9Lk0RVoLL
-         4VtOBK3Gu5Kw417zH1GrVQptkqxdzv7Ney0yAr30IUbi5vpJ68TasGR5c6TZpRhMjp3W
-         dbwqipxT3pb2J6TxekyD9/DmRP0vas5IyewnO+teR7qdOl+2+6RRRkPK0KLHnRirTa03
-         sk5W8v33SRv1E78Cha8cBSHp6d3750IgkTx38/T/LM/qOKj43ASFBQYPcGw91gBIQseE
-         Fj7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWyUvptXyN7TXXfjvEjzhRfUgWc2YCpmWdfNRDALeriL1Yd3jJVvyOq39dmN3VaSE5diXt/WxIEfh5FB4ymOBoY+lUq+DuXTEe1UlAS8OqR4a1HQ10nBbds4rbPwQSidcgoHf/FIRlguQ==
-X-Gm-Message-State: AOJu0YyubpZ+f6sZFsGfzNJC0zZnBCjTroTo7bPQEDyUmSm3CajnfVRr
-	HRK1F/rCPtT73kL12c3UQ7SbIwzmDhILIxzEHpzrxt2AEEjuzoih
-X-Google-Smtp-Source: AGHT+IGlHJ1jpHTqX1qio86LU7j9pVRajNIWRCPKuRkq5mR4t5v4o04BuxVmsz3zZrFDQ/LqY+2DTw==
-X-Received: by 2002:a05:6808:d52:b0:3c7:39f5:d3b5 with SMTP id w18-20020a0568080d5200b003c739f5d3b5mr541578oik.58.1714502537437;
-        Tue, 30 Apr 2024 11:42:17 -0700 (PDT)
-Received: from artemis.cable.rcn.com (146-115-84-170.s2975.c3-0.sbo-ubr1.sbo.ma.cable.rcncustomer.com. [146.115.84.170])
-        by smtp.googlemail.com with ESMTPSA id a15-20020a0ce90f000000b006a0e94eb3e9sm338920qvo.34.2024.04.30.11.42.16
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 30 Apr 2024 11:42:17 -0700 (PDT)
-From: Brooke Chalmers <breq@breq.dev>
-To: 
-Cc: breq@breq.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: resource: Add Asus Vivobook N6506MV to irq1_level_low_skip_override
-Date: Tue, 30 Apr 2024 14:40:52 -0400
-Message-ID: <20240430184146.66887-1-breq@breq.dev>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1714503658; c=relaxed/simple;
+	bh=6vpoXVf7eLhq/+mEugFcz1ms7uxrk4ZN8/G8lQEO6Zo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zytv6exyxhAYk2a4rBDsIN8lbdCBrd67SyahyoFzsQXdF4GL4mqfeYRW4mWU4shArjzMjF8Rq/4LNwmkwmEEti+dUEOBaNCdHAwWR8v8Wj1zdCsxGVHZ+i8XHUGzt0j3xynpAmym2i0czRstFJCIj+zdbDZBUuJd+05xWet+U8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Saj7fmUk; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714503657; x=1746039657;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=6vpoXVf7eLhq/+mEugFcz1ms7uxrk4ZN8/G8lQEO6Zo=;
+  b=Saj7fmUk8ublpLzHLZbQizDehq2/MyWfIQuOI1gwtWc7iW+hkc0l4rar
+   eIj0XcqjmII+l2RnLCBqgraJfNCmQNERIz1y+4/8kpNLmX4jdt3+Rt2TB
+   Pag/BuC/Q0YHISI1I6BARbMqaYniv3d3K1XjQgXGQaebC+q5yDCNS6TXd
+   3WiPk1xevY94JSJPStMAKYPZj6x/PvZ6qlJFQYCVf54W8iI90BaL20Irm
+   v9jnKIPROhEtDNtvkWGU9zjCROWJF+0q+Zk1RAtTJ4gL/MP+W6kvIsGCn
+   WA8mgHmP1O+K1I932nYUos7iuZOoXIrRm6ZGhs30U5mTlLx5EKC9B6plG
+   g==;
+X-CSE-ConnectionGUID: +55SzSd3QJmbnXcq2YUvQg==
+X-CSE-MsgGUID: Ee53Mr+yRSWtBaKqCVZbLg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10768721"
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; 
+   d="scan'208";a="10768721"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 12:00:56 -0700
+X-CSE-ConnectionGUID: I4auB1S+R+KhMPHolm3aSg==
+X-CSE-MsgGUID: Oj3iJeVxQxeG6oBJ649sFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,243,1708416000"; 
+   d="scan'208";a="27052817"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.251.17.48])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 12:00:56 -0700
+Date: Tue, 30 Apr 2024 12:00:53 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Dave Jiang <dave.jiang@intel.com>
+Cc: Ben Cheatham <Benjamin.Cheatham@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Subject: Re: [PATCH] MAINTAINERS: repair file entry in COMPUTE EXPRESS LINK
+Message-ID: <ZjE/5VW95v54Tv94@aschofie-mobl2>
+References: <20240411062443.47372-1-lukas.bulwahn@redhat.com>
+ <ZhgPe5mDt2ocXovz@aschofie-mobl2>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZhgPe5mDt2ocXovz@aschofie-mobl2>
 
-Override the keyboard IRQ level on Asus Vivobook N6506MV laptops to make
-the internal keyboard functional.
+On Thu, Apr 11, 2024 at 09:27:39AM -0700, Alison Schofield wrote:
+> On Thu, Apr 11, 2024 at 08:24:43AM +0200, Lukas Bulwahn wrote:
+> > Commit 12fb28ea6b1c ("EINJ: Add CXL error type support") adds the header
+> > file include/linux/einj-cxl.h, but then adds a file entry with cxl-einj.h
+> > (note the swapping of words) to the COMPUTE EXPRESS LINK (CXL) section.
+> > 
+> > Hence, ./scripts/get_maintainer.pl --self-test=patterns complains about a
+> > broken reference.
+> > 
+> > Repair the file entry in COMPUTE EXPRESS LINK (CXL).
+> 
+> How about stating the impact, something like:
+> 
+> get_maintainer.pl can only return commit_signer history for file
+> include/linux/einj-cxl.h because the entry in MAINTAINERS is wrong.
+> Correct the entry so that the full MAINTAINER list is returned.
 
-Add a new entry to the irq1_level_low_skip_override structure, similar
-to the existing ones.
+Hi Dave,
 
-Signed-off-by: Brooke Chalmers <breq@breq.dev>
----
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Perhaps you can amend the commit log with this suggestion upon applying.
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 59423fe9d0f2..1097d9dd657b 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -440,6 +440,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook N6506MV */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
-+		},
-+	},
- 	{
- 		/* Asus ExpertBook B1402CBA */
- 		.matches = {
---
-2.44.0
+With that done, you can add:
 
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+
+> 
+> It is interesting how you found it and I'm not suggesting deleting
+> that.
+> 
+> Thanks,
+> Alison
+> 
+> 
+> > 
+> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+> > ---
+> >  MAINTAINERS | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index edf6176a5530..03204db05027 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -5415,7 +5415,7 @@ M:	Dan Williams <dan.j.williams@intel.com>
+> >  L:	linux-cxl@vger.kernel.org
+> >  S:	Maintained
+> >  F:	drivers/cxl/
+> > -F:	include/linux/cxl-einj.h
+> > +F:	include/linux/einj-cxl.h
+> >  F:	include/linux/cxl-event.h
+> >  F:	include/uapi/linux/cxl_mem.h
+> >  F:	tools/testing/cxl/
+> > -- 
+> > 2.44.0
+> > 
+> > 
+> 
 
