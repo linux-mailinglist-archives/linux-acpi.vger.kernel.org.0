@@ -1,246 +1,200 @@
-Return-Path: <linux-acpi+bounces-5491-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5492-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120BB8B6F6D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:17:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416418B6F85
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC0222824EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 10:17:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6490D1C22E93
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 10:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB43129E62;
-	Tue, 30 Apr 2024 10:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uOMDnN4z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A275D129E9C;
+	Tue, 30 Apr 2024 10:21:06 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5FB128828;
-	Tue, 30 Apr 2024 10:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B94FC02;
+	Tue, 30 Apr 2024 10:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714472272; cv=none; b=dYlgXjiiA0PonDuJr0QNdU8MU/VxFQX5xIhDnHbqZM2bNperrIS7Bq2tUCgdmZ15un6CgchdK0XRCUKPWMiRyOaQsgte2O0IlpRn4AMJY/LIwA+na4it7qG8e3OUEOCXCNpGiGJiYxT9upWVQfyYLjmwSV6+3n/G1Z4zrfQwdBw=
+	t=1714472466; cv=none; b=LNSR0Bb9CgGAElJhfK8JoV4SrPGk6VTAtzYLsA9hu37H62+2bnai69DPlVXB8djXcwOo/Z0opYpjoBEfO/wM7ocJsERf4SePaLtYK4x7n2qsvjx2Pv230sIrEX5Uja2if5uDVffY763jCe1v+ky5VMBAr5r71uz321NBnsw0Ul0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714472272; c=relaxed/simple;
-	bh=gh1e1+58nQTAHuiHjenBUZr1umrL/earshHRi+u3ptQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hm5nN1Egy+DxZkg5cmGn+zR2+/ka7SuShWxlb0/5feok9YdEAJNGLUw7tAWY/vDkswIRqahJZUcPFPlPpVF6l2m9TtnAtnydCtvkDTpmNLdZBVM/juN8ZXYF0k6pxFJyxyjIR5v25GqcPVNlGiXyzK5zG48lkO/6BhkA4084Qlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uOMDnN4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7080CC4AF19;
-	Tue, 30 Apr 2024 10:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714472271;
-	bh=gh1e1+58nQTAHuiHjenBUZr1umrL/earshHRi+u3ptQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uOMDnN4z5lMd6tjSaLzA/DFWBEvDW+SBX4PpUAzvzHJkcTmyc8M7ZBmkZpLQI2Zyn
-	 BnKLXz97gHSXI+FFqxt9Q7MKB1t0bSZ5meSj4zn9x9aQbZpnTcOmwbm+FC5QBepynT
-	 C01hW+5LH2TYdPZFs916JOsvt/kLLt0ZXRmNFBJyVBLhq1F5wKFYNEwEUPiS/M7iDb
-	 SvWO3imquNMFqr9tcgL2T/t0b4mhuj5WBYR1Ln3ThRc6qVdqwl/UzBzDbm8vHLEauf
-	 +WHWwOBIkFxtumcMcwlfY9A2uMGOZCyN1V0ZE8dIcwSDKH+19pi165NhRCjz9hRE63
-	 vTPXCwUJ46PCw==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5afbcf21abdso314320eaf.1;
-        Tue, 30 Apr 2024 03:17:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXgICQFTuGScR8mdFdlMsB8kU+2gCcxNLhvQTToZAwdmHbFL+HxVmDffqPr/tBCCSkmdJ4tyFMfSqEYGpsgIr2QbfFGnP5ZQfFg96WSYSLThpyVRWhZiqNxqctVV+pFTRvAln76AscUZIUoGE8JCPB9nSeL3hGeH607VCf8tC683nRKEtOPPCcBlS1sytzY2NwcjVECftiqDnP1b/TP/w==
-X-Gm-Message-State: AOJu0YylsrJjxHFE5HEjsPb2CJBiOSYH4qTPwms0qtUR333EMTP3DxqN
-	A58+Szfxx8Zj6NfDg+MmSjJwEwdTJ8vBroLL5cSSps3Szs2bMr6NODuprcUvMxRApKW8DyQvjfo
-	wwr+gX7Nua2+NCBBwMxRU8xG7Mjg=
-X-Google-Smtp-Source: AGHT+IFbUf4jSJ2cquloo0eC1JK3eLNbPJXNhvDmh9dDYgHoYqwLG9wYGAGPLglbvHkUXR8LZA+PzrHFJeSP3syddME=
-X-Received: by 2002:a4a:d247:0:b0:5aa:6b2e:36f0 with SMTP id
- e7-20020a4ad247000000b005aa6b2e36f0mr14368609oos.0.1714472270695; Tue, 30 Apr
- 2024 03:17:50 -0700 (PDT)
+	s=arc-20240116; t=1714472466; c=relaxed/simple;
+	bh=5SgGxFTDFfPD9ogt5nacJQS8JEFOELIWLGAoJWR92JQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ws9GuEAvCJMxIA7sGNFPJpL/5y9xcDXQFg6y/t5HpPhq+oo4J0TZ/cWgUfYdv/FPMiHLuh+BQT8eujzBGGVlP72yh601CB+ML8EIdb63Bk4L0UnXmfjxepHfFQGrX02/+4yN68SIcnLhsLwKmgGFfh3dyucRvfeUkJfykh52ca8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DC432F4;
+	Tue, 30 Apr 2024 03:21:23 -0700 (PDT)
+Received: from [10.57.1.41] (unknown [10.57.1.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F27C13F73F;
+	Tue, 30 Apr 2024 03:20:50 -0700 (PDT)
+Message-ID: <20d44077-d0a8-470a-bf6f-82683db894cf@arm.com>
+Date: Tue, 30 Apr 2024 11:20:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
- <20240426135126.12802-5-Jonathan.Cameron@huawei.com> <80a2e07f-ecb2-48af-b2be-646f17e0e63e@redhat.com>
- <20240430102838.00006e04@Huawei.com> <20240430111341.00003dba@huawei.com>
-In-Reply-To: <20240430111341.00003dba@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 30 Apr 2024 12:17:38 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i5jpJswD7KV5RPm_HvzB+B=Rt3gY0s_Z3fn5wbJz0ebw@mail.gmail.com>
-Message-ID: <CAJZ5v0i5jpJswD7KV5RPm_HvzB+B=Rt3gY0s_Z3fn5wbJz0ebw@mail.gmail.com>
-Subject: Re: [PATCH v8 04/16] ACPI: processor: Move checks and availability of
- acpi_processor earlier
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gavin Shan <gshan@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, x86@kernel.org, Russell King <linux@armlinux.org.uk>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, 
-	James Morse <james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com, justin.he@arm.com, 
-	jianyong.wu@arm.com, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Sudeep Holla <sudeep.holla@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+References: <cover.1713523152.git.robin.murphy@arm.com>
+ <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
+ <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
+ <2662a5ba-3115-4fe5-9cec-bff71f703a82@arm.com>
+ <CAA8EJprxLvYEP8+ggk8fw--kHaK+_QoYan4st2wWpPicHa6_+w@mail.gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <CAA8EJprxLvYEP8+ggk8fw--kHaK+_QoYan4st2wWpPicHa6_+w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 30, 2024 at 12:13=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Tue, 30 Apr 2024 10:28:38 +0100
-> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
->
-> > On Tue, 30 Apr 2024 14:17:24 +1000
-> > Gavin Shan <gshan@redhat.com> wrote:
-> >
-> > > On 4/26/24 23:51, Jonathan Cameron wrote:
-> > > > Make the per_cpu(processors, cpu) entries available earlier so that
-> > > > they are available in arch_register_cpu() as ARM64 will need access
-> > > > to the acpi_handle to distinguish between acpi_processor_add()
-> > > > and earlier registration attempts (which will fail as _STA cannot
-> > > > be checked).
-> > > >
-> > > > Reorder the remove flow to clear this per_cpu() after
-> > > > arch_unregister_cpu() has completed, allowing it to be used in
-> > > > there as well.
-> > > >
-> > > > Note that on x86 for the CPU hotplug case, the pr->id prior to
-> > > > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
-> > > > must be initialized after that call or after checking the ID
-> > > > is valid (not hotplug path).
-> > > >
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >
-> > > > ---
-> > > > v8: On buggy bios detection when setting per_cpu structures
-> > > >      do not carry on.
-> > > >      Fix up the clearing of per cpu structures to remove unwanted
-> > > >      side effects and ensure an error code isn't use to reference t=
-hem.
-> > > > ---
-> > > >   drivers/acpi/acpi_processor.c | 79 +++++++++++++++++++++---------=
------
-> > > >   1 file changed, 48 insertions(+), 31 deletions(-)
-> > > >
-> > > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_proc=
-essor.c
-> > > > index ba0a6f0ac841..3b180e21f325 100644
-> > > > --- a/drivers/acpi/acpi_processor.c
-> > > > +++ b/drivers/acpi/acpi_processor.c
-> > > > @@ -183,8 +183,38 @@ static void __init acpi_pcc_cpufreq_init(void)=
- {}
-> > > >   #endif /* CONFIG_X86 */
-> > > >
-> > > >   /* Initialization */
-> > > > +static DEFINE_PER_CPU(void *, processor_device_array);
-> > > > +
-> > > > +static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
-> > > > +                                struct acpi_device *device)
-> > > > +{
-> > > > + BUG_ON(pr->id >=3D nr_cpu_ids);
-> > >
-> > > One blank line after BUG_ON() if we need to follow original implement=
-ation.
-> >
-> > Sure unintentional - I'll put that back.
-> >
-> > >
-> > > > + /*
-> > > > +  * Buggy BIOS check.
-> > > > +  * ACPI id of processors can be reported wrongly by the BIOS.
-> > > > +  * Don't trust it blindly
-> > > > +  */
-> > > > + if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
-> > > > +     per_cpu(processor_device_array, pr->id) !=3D device) {
-> > > > +         dev_warn(&device->dev,
-> > > > +                  "BIOS reported wrong ACPI id %d for the processo=
-r\n",
-> > > > +                  pr->id);
-> > > > +         /* Give up, but do not abort the namespace scan. */
-> > >
-> > > It depends on how the return value is handled by the caller if the na=
-mespace
-> > > is continued to be scanned. The caller can be acpi_processor_hotadd_i=
-nit()
-> > > and acpi_processor_get_info() after this patch is applied. So I think=
- this
-> > > specific comment need to be moved to the caller.
-> >
-> > Good point. This gets messy and was an unintended change.
-> >
-> > Previously the options were:
-> > 1) acpi_processor_get_info() failed for other reasons - this code was n=
-ever called.
-> > 2) acpi_processor_get_info() succeeded without acpi_processor_hotadd_in=
-it (non hotplug)
-> >    this code then ran and would paper over the problem doing a bunch of=
- cleanup under err.
-> > 3) acpi_processor_get_info() succeeded with acpi_processor_hotadd_init =
-called.
-> >    This code then ran and would paper over the problem doing a bunch of=
- cleanup under err.
-> >
-> > We should maintain that or argue cleanly against it.
-> >
-> > This isn't helped the the fact I have no idea which cases we care about=
- for that bios
-> > bug handling.  Do any of those bios's ever do hotplug?  Guess we have t=
-o try and maintain
-> > whatever protection this was offering.
-> >
-> > Also, the original code leaks data in some paths and I have limited ide=
-a
-> > of whether it is intentional or not. So to tidy the issue up that you'v=
-e identified
-> > I'll need to try and make that code consistent first.
-> >
-> > I suspect the only way to do that is going to be to duplicate the alloc=
-ations we
-> > 'want' to leak to deal with the bios bug detection.
-> >
-> > For example acpi_processor_get_info() failing leaks pr and pr->throttli=
-ng.shared_cpu_map
-> > before this series. After this series we need pr to leak because it's u=
-sed for the detection
-> > via processor_device_array.
-> >
-> > I'll work through this but it's going to be tricky to tell if we get ri=
-ght.
-> > Step 1 will be closing the existing leaks and then we will have somethi=
-ng
-> > consistent to build on.
-> >
-> I 'think' that fixing the original leaks makes this all much more straigh=
-t forward.
-> That return 0 for acpi_processor_get_info() never made sense as far as I =
-can tell.
-> The pr isn't used after this point.
->
-> What about something along lines of.
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 161c95c9d60a..97cff4492304 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -392,8 +392,10 @@ static int acpi_processor_add(struct acpi_device *de=
-vice,
->         device->driver_data =3D pr;
->
->         result =3D acpi_processor_get_info(device);
-> -       if (result) /* Processor is not physically present or unavailable=
- */
-> -               return 0;
-> +       if (result) { /* Processor is not physically present or unavailab=
-le */
-> +               result =3D 0;
+On 2024-04-30 1:41 am, Dmitry Baryshkov wrote:
+> On Tue, 30 Apr 2024 at 01:26, Robin Murphy <robin.murphy@arm.com> wrote:
+>>
+>> On 2024-04-29 5:31 pm, Dmitry Baryshkov wrote:
+>>> On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
+>>>> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
+>>>> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
+>>>> which means there should be no harm in achieving the same order of
+>>>> operations by running it off the back of iommu_probe_device() itself.
+>>>> This then puts it in line with the x86 and s390 .probe_finalize bodges,
+>>>> letting us pull it all into the main flow properly. As a bonus this lets
+>>>> us fold in and de-scope the PCI workaround setup as well.
+>>>>
+>>>> At this point we can also then pull the call up inside the group mutex,
+>>>> and avoid having to think about whether iommu_group_store_type() could
+>>>> theoretically race and free the domain if iommu_setup_dma_ops() ran just
+>>>> *before* iommu_device_use_default_domain() claims it... Furthermore we
+>>>> replace one .probe_finalize call completely, since the only remaining
+>>>> implementations are now one which only needs to run once for the initial
+>>>> boot-time probe, and two which themselves render that path unreachable.
+>>>>
+>>>> This leaves us a big step closer to realistically being able to unpick
+>>>> the variety of different things that iommu_setup_dma_ops() has been
+>>>> muddling together, and further streamline iommu-dma into core API flows
+>>>> in future.
+>>>>
+>>>> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
+>>>> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+>>>> Tested-by: Hanjun Guo <guohanjun@huawei.com>
+>>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+>>>> ---
+>>>> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
+>>>>       is covered as well, with bonus side-effects as above.
+>>>> v3: *Really* do that, remembering the other two probe_finalize sites too.
+>>>> ---
+>>>>    arch/arm64/mm/dma-mapping.c  |  2 --
+>>>>    drivers/iommu/amd/iommu.c    |  8 --------
+>>>>    drivers/iommu/dma-iommu.c    | 18 ++++++------------
+>>>>    drivers/iommu/dma-iommu.h    | 14 ++++++--------
+>>>>    drivers/iommu/intel/iommu.c  |  7 -------
+>>>>    drivers/iommu/iommu.c        | 20 +++++++-------------
+>>>>    drivers/iommu/s390-iommu.c   |  6 ------
+>>>>    drivers/iommu/virtio-iommu.c | 10 ----------
+>>>>    include/linux/iommu.h        |  7 -------
+>>>>    9 files changed, 19 insertions(+), 73 deletions(-)
+>>>
+>>> This patch breaks UFS on Qualcomm SC8180X Primus platform:
+>>>
+>>>
+>>> [    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
+>>
+>> Hmm, a context fault implies that the device did get attached to a DMA
+>> domain, thus has successfully been through __iommu_probe_device(), yet
+>> somehow still didn't get the right DMA ops (since that "IOVA" looks more
+>> like a PA to me). Do you see the "Adding to IOMMU group..." message for
+>> this device, and/or any other relevant messages or errors before this
+>> point?
+> 
+> No, nothing relevant.
+> 
+> [    8.372395] ufshcd-qcom 1d84000.ufshc: Adding to iommu group 6
+> 
+> (please ignore the timestamp, it comes before ufshc being probed).
+> 
+>> I'm guessing there's a fair chance probe deferral might be
+>> involved as well. I'd like to understand what path(s) this ends up
+>> taking through __iommu_probe_device() and of_dma_configure(), or at
+>> least the number and order of probe attempts between the UFS and SMMU
+>> drivers.
+> 
+> __iommu_probe_device() gets called twice and returns early because ops is NULL.
+> 
+> Then finally of_dma_configure_id() is called. The following branches are taken:
+> 
+> np == dev->of_node
+> of_dma_get_range() returned 0
+> bus_dma_limit and dma_range_map are set
+> __iommu_probe_device() is called, using the `!group->default_domain &&
+> !group_lis` case, then group->default_domain() is not NULL,
+> In the end, iommu_setup_dma_ops() is called.
+> 
+> Then the ufshc probe defers (most likely the PHY is not present or
+> some other device is not there yet).
 
-As per my previous message (just sent) this should be an error code,
-as returning 0 from acpi_processor_add() is generally problematic.
+Ah good, probe deferral. And indeed the half-formed hunch from last 
+night grew into a pretty definite idea by this morning... patch incoming.
 
-> +               goto err_free_throttling_mask;
-> +       }
->
->         BUG_ON(pr->id >=3D nr_cpu_ids);
->
+Thanks,
+Robin.
+
+> On the next (succeeding) try, of_dma_configure_id() is called again.
+> The call trace is more or less the same, except that
+> __iommu_probe_device() is not called
+> 
+>> I'll stare at the code in the morning and see if I can spot any
+>> overlooked ways in which what I think might be happening could happen,
+>> but any more info to help narrow it down would be much appreciated.
+>>
+>> Thanks,
+>> Robin.
+>>
+>>> [    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
+>>> [    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
+>>> [    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
+>>> [    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
+>>> [    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+>>> [    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
+>>> [    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
+>>> [    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
+>>> [    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
+>>> [    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
+>>> [    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
+>>> [    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
+>>> [    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
+>>> [    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
+>>>
+> 
+> 
+> 
 
