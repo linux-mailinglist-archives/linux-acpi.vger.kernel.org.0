@@ -1,75 +1,77 @@
-Return-Path: <linux-acpi+bounces-5530-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5531-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515E18B7C56
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 17:56:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E538C8B7C6E
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECC21F22EC6
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 15:56:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C22B26E22
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C08172BD5;
-	Tue, 30 Apr 2024 15:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AF4175540;
+	Tue, 30 Apr 2024 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAQVv/yB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SqDKC0U2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58A3770F2;
-	Tue, 30 Apr 2024 15:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C084A174EF1;
+	Tue, 30 Apr 2024 16:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714492560; cv=none; b=HrYtUwku9GjXoG5u/y2bq0Wzf11L+xpBUIRYiHIHTC2DvOZJZf9wEOE4ISeY56+hPHK11XGFg/QiaGnxCA+EvC7CxZFXfcMRFCrTV+QjOumzKRXRw/BK2+NnVtZmgQ08iFhC7FhO/58hlVGy+EV2NRTx/ErAmUL18aSE5AfiUww=
+	t=1714492877; cv=none; b=eN0Q9QEj2yyK+bp9COp2YifiHwj7WiLrNqZWiSR20JbwLtKyavxxWSX83NMCtTlxS89LqohbcECac0F2FHsrYhaFq7z3eC7Hns7av8w7f6mSTtUQrxbAT2bFGepS6gCzesVZDCiEtvV2oXRcCrgaQOt96tWCI8nodZ5X136Wcu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714492560; c=relaxed/simple;
-	bh=06vg5hqAWXs2ObK4lZQwv+TlSa8oT1+STphjUJYsuD4=;
+	s=arc-20240116; t=1714492877; c=relaxed/simple;
+	bh=MutPWEGS5St0LFaWSGKhvbLM0WV+4s3ZN5wZOEiDUdk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FBUEYejLEg//FP1uRzcOgPtuw1HTULQryzNAxNX7/x4+X8X3wLkgSwutURJE/6nM1eYhwMisK3ds7x+MluoBDLl3zy2xmyMkBeHE1kTy3k7DFe/N5j/l93nT9PGq49C6K2ihYV/j08vcsyLq44nATjndPQ8CpgsglMbijeYQjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAQVv/yB; arc=none smtp.client-ip=198.175.65.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=J4G0VkHT1cCY/19BbZQ6JsWmJan6I7bNAJe/OAVq6SWhm4rz//XHFlSMN0tW6Q2V/dffZ/6yP8ZK9hrsYePXlhFgBhHLFN4qVp2SNbeicJhfVgmAOn8lx4O3iqNc1FyjUTFzeUo+icNy0/Xjye9Uf1yEUqiRmFcEQS3AL6gcqag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SqDKC0U2; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714492558; x=1746028558;
+  t=1714492875; x=1746028875;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=06vg5hqAWXs2ObK4lZQwv+TlSa8oT1+STphjUJYsuD4=;
-  b=oAQVv/yBrExVONu+6gg5LZKg8OYbXkxXsxBAPeJYgZ17x+lMAlMrb78z
-   dPjebjQJkVCaJN+hitTQ/BcVrenpqZ7kBgIBC9XCa308z9EhgZyMhaZI8
-   sNFOjfw7drt1aeayZi/dMDQILuHmix2Y8zOX+dEJsnHA9k0HspRdIPPGk
-   bB5ZuKtmQvTAMEURPUuX6T4olGj6a8SP8G+PFM9PI1Fvo3K9q8cE5sAr9
-   LyGTQQPoskhOiETl6CmssCW7bfWZjaagn2IwJL+fDx6wy/Wfu9/8MIm/a
-   T6K6Ad+S2rjOIVLkDKzp4VY2tzLqZkwfTKjxyMwSWm3nsd0N8n47El5lS
-   w==;
-X-CSE-ConnectionGUID: gozQ3UhFR8mBLDr4UqMqQA==
-X-CSE-MsgGUID: GCs3ixI8RIeqC3CmjJZZiw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10137553"
+  bh=MutPWEGS5St0LFaWSGKhvbLM0WV+4s3ZN5wZOEiDUdk=;
+  b=SqDKC0U2x1YBOLnXwErBiU2M3XxcFe9hNe0KAEbCV3cDAa7OyMvCj/dk
+   luSrg34bYK30ujI8q/++tbheH098NZs52joB+Cumqd8Os4tPocS6T2N3S
+   7UAf4eXl39wQhVSULYMog1K3shOpIvQbze9PbPFSI6UgW9MV8SnsFUczG
+   qWXNfs+JgZxilTQV5rco1T4kCmdMXgZNR1Wuk7KtFoDw/IMNmaYYHDoKa
+   yoWuRUE9Pw3ACC2zD+vTRNgOv+wCNC3c03UPkEr8j6XHEwsoHEBfFiFHg
+   jyx+PeYLjzxIhyveU4V8CpLsLPup8PEgVO0dTKWiZjdnhWX/gF+g57rPm
+   g==;
+X-CSE-ConnectionGUID: HaOnrDFgTA22XXB52TqgQw==
+X-CSE-MsgGUID: FlK6r3ANRlytnggcEpfucg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10333418"
 X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="10137553"
+   d="scan'208";a="10333418"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:55:52 -0700
-X-CSE-ConnectionGUID: xC5bkiKpRT2AL/x9hRu/wg==
-X-CSE-MsgGUID: qZ26jGc4QVy3nOFE8y71rw==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 09:01:14 -0700
+X-CSE-ConnectionGUID: 7HSioYnhS8iEBf9AwNJcPg==
+X-CSE-MsgGUID: tzJqgvM5Rza2peDtpizCaQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="26589723"
+   d="scan'208";a="26593048"
 Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.251.17.48])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:55:52 -0700
-Date: Tue, 30 Apr 2024 08:55:49 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 09:01:08 -0700
+Date: Tue, 30 Apr 2024 09:01:06 -0700
 From: Alison Schofield <alison.schofield@intel.com>
 To: Robert Richter <rrichter@amd.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Dan Williams <dan.j.williams@intel.com>, linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>,
 	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v6 7/7] ACPI/NUMA: Print CXL Early Discovery Table (CEDT)
-Message-ID: <ZjEUhUZdcV4ZQCt6@aschofie-mobl2>
+Subject: Re: [PATCH v6 4/7] ACPI/NUMA: Squash
+ acpi_numa_memory_affinity_init() into acpi_parse_memory_affinity()
+Message-ID: <ZjEVwrTO87OHXCZ5@aschofie-mobl2>
 References: <20240430092200.2335887-1-rrichter@amd.com>
- <20240430092200.2335887-8-rrichter@amd.com>
+ <20240430092200.2335887-5-rrichter@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,150 +80,107 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430092200.2335887-8-rrichter@amd.com>
+In-Reply-To: <20240430092200.2335887-5-rrichter@amd.com>
 
-On Tue, Apr 30, 2024 at 11:22:00AM +0200, Robert Richter wrote:
-> The CEDT contains similar entries as the SRAT. For diagnostic reasons
-> print the CEDT same style as the SRAT.
-
+On Tue, Apr 30, 2024 at 11:21:57AM +0200, Robert Richter wrote:
+> After removing architectural code the helper function
+> acpi_numa_memory_affinity_init() is no longer needed. Squash it into
+> acpi_parse_memory_affinity(). No functional changes intended.
+> 
+> While at it, fixing checkpatch complaints in code moved.
+>
 
 Reviewed-by: Alison Schofield <alison.schofield@intel.com>
 
-> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202403220943.96dde419-oliver.sang@intel.com
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Robert Richter <rrichter@amd.com>
 > ---
->  drivers/acpi/numa/srat.c | 111 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 111 insertions(+)
+>  drivers/acpi/numa/srat.c | 40 +++++++++++++++++-----------------------
+>  1 file changed, 17 insertions(+), 23 deletions(-)
 > 
 > diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 34ecf2dc912f..fa21d4d5fccf 100644
+> index 430ddcfb8312..e3f26e71637a 100644
 > --- a/drivers/acpi/numa/srat.c
 > +++ b/drivers/acpi/numa/srat.c
-> @@ -320,6 +320,114 @@ acpi_parse_memory_affinity(union acpi_subtable_headers *header,
+> @@ -248,22 +248,30 @@ static int __init acpi_parse_slit(struct acpi_table_header *table)
 >  	return 0;
 >  }
 >  
-> +static int __init
-> +__acpi_table_print_cedt_entry(union acpi_subtable_headers *__header,
-> +			      void *arg, const unsigned long table_end)
-> +{
-> +	struct acpi_cedt_header *header = (struct acpi_cedt_header *)__header;
+> +static int parsed_numa_memblks __initdata;
 > +
-> +	switch (header->type) {
-> +	case ACPI_CEDT_TYPE_CHBS:
-> +		{
-> +			struct acpi_cedt_chbs *p =
-> +				(struct acpi_cedt_chbs *)header;
+>  static int __init
+> -acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+> +acpi_parse_memory_affinity(union acpi_subtable_headers *header,
+> +			   const unsigned long table_end)
+>  {
+> +	struct acpi_srat_mem_affinity *ma;
+>  	u64 start, end;
+>  	u32 hotpluggable;
+>  	int node, pxm;
+>  
+> +	ma = (struct acpi_srat_mem_affinity *)header;
 > +
-> +			if (header->length < sizeof(struct acpi_cedt_chbs)) {
-> +				pr_warn("CEDT: unsupported CHBS entry: size %d\n",
-> +					 header->length);
-> +				break;
-> +			}
+> +	acpi_table_print_srat_entry(&header->common);
 > +
-> +			pr_debug("CEDT: CHBS (0x%llx length 0x%llx uid %lu) %s (%d)\n",
-> +				(unsigned long long)p->base,
-> +				(unsigned long long)p->length,
-> +				(unsigned long)p->uid,
-> +				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL11) ?
-> +				"cxl11" :
-> +				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL20) ?
-> +				"cxl20" :
-> +				"unsupported version",
-> +				p->cxl_version);
-> +		}
-> +		break;
-> +	case ACPI_CEDT_TYPE_CFMWS:
-> +		{
-> +			struct acpi_cedt_cfmws *p =
-> +				(struct acpi_cedt_cfmws *)header;
-> +			int eiw_to_ways[] = {1, 2, 4, 8, 16, 3, 6, 12};
-> +			int targets = -1;
+>  	if (srat_disabled())
+> -		goto out_err;
+> +		return 0;
+>  	if (ma->header.length < sizeof(struct acpi_srat_mem_affinity)) {
+>  		pr_err("SRAT: Unexpected header length: %d\n",
+>  		       ma->header.length);
+>  		goto out_err_bad_srat;
+>  	}
+>  	if ((ma->flags & ACPI_SRAT_MEM_ENABLED) == 0)
+> -		goto out_err;
+> +		return 0;
+>  	hotpluggable = IS_ENABLED(CONFIG_MEMORY_HOTPLUG) &&
+>  		(ma->flags & ACPI_SRAT_MEM_HOT_PLUGGABLE);
+>  
+> @@ -301,11 +309,15 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
+>  
+>  	max_possible_pfn = max(max_possible_pfn, PFN_UP(end - 1));
+>  
+> +	parsed_numa_memblks++;
 > +
-> +			if (header->length < sizeof(struct acpi_cedt_cfmws)) {
-> +				pr_warn("CEDT: unsupported CFMWS entry: size %d\n",
-> +					header->length);
-> +				break;
-> +			}
+>  	return 0;
 > +
-> +			if (p->interleave_ways < ARRAY_SIZE(eiw_to_ways))
-> +				targets = eiw_to_ways[p->interleave_ways];
-> +			if (header->length < struct_size(
-> +					p, interleave_targets, targets))
-> +				targets = -1;
-> +
-> +			pr_debug("CEDT: CFMWS (0x%llx length 0x%llx) with %d target%s",
-> +				(unsigned long long)p->base_hpa,
-> +				(unsigned long long)p->window_size,
-> +				targets, targets > 1 ? "s" : "");
-> +			for (int i = 0; i < targets; i++)
-> +				pr_cont("%s%lu", i ? ", " : " (",
-> +					(unsigned long)p->interleave_targets[i]);
-> +			pr_cont("%s%s%s%s%s%s\n",
-> +				targets > 0 ? ")" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2) ?
-> +				" type2" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3) ?
-> +				" type3" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE) ?
-> +				" volatile" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM) ?
-> +				" pmem" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED) ?
-> +				" fixed" : "");
-> +		}
-> +		break;
-> +	case ACPI_CEDT_TYPE_CXIMS:
-> +		{
-> +			struct acpi_cedt_cxims *p =
-> +				(struct acpi_cedt_cxims *)header;
-> +
-> +			if (header->length < sizeof(struct acpi_cedt_cxims)) {
-> +				pr_warn("CEDT: unsupported CXIMS entry: size %d\n",
-> +					header->length);
-> +				break;
-> +			}
-> +
-> +			pr_debug("CEDT: CXIMS (hbig %u nr_xormaps %u)\n",
-> +				(unsigned int)p->hbig,
-> +				(unsigned int)p->nr_xormaps);
-> +		}
-> +		break;
-> +	default:
-> +		pr_warn("CEDT: Found unsupported entry (type = 0x%x)\n",
-> +			header->type);
-> +		break;
-> +	}
+>  out_err_bad_srat:
+> +	/* Just disable SRAT, but do not fail and ignore errors. */
+>  	bad_srat();
+> -out_err:
+> -	return -EINVAL;
 > +
 > +	return 0;
-> +}
-> +
-> +static void __init acpi_table_print_cedt_entry(enum acpi_cedt_type id)
-> +{
-> +	acpi_table_parse_cedt(id, __acpi_table_print_cedt_entry, NULL);
-> +}
-> +
-> +static void __init acpi_table_print_cedt(void)
-> +{
-> +	/* Print only implemented CEDT types */
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CHBS);
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CFMWS);
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CXIMS);
-> +}
-> +
->  static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
->  				   void *arg, const unsigned long table_end)
->  {
-> @@ -518,6 +626,9 @@ int __init acpi_numa_init(void)
->  	/* SLIT: System Locality Information Table */
->  	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+>  }
 >  
-> +	/* CEDT: CXL Early Discovery Table */
-> +	acpi_table_print_cedt();
-> +
->  	/*
->  	 * CXL Fixed Memory Window Structures (CFMWS) must be parsed
->  	 * after the SRAT. Create NUMA Nodes for CXL memory ranges that
+>  static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+> @@ -438,24 +450,6 @@ acpi_parse_gi_affinity(union acpi_subtable_headers *header,
+>  }
+>  #endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
+>  
+> -static int __initdata parsed_numa_memblks;
+> -
+> -static int __init
+> -acpi_parse_memory_affinity(union acpi_subtable_headers * header,
+> -			   const unsigned long end)
+> -{
+> -	struct acpi_srat_mem_affinity *memory_affinity;
+> -
+> -	memory_affinity = (struct acpi_srat_mem_affinity *)header;
+> -
+> -	acpi_table_print_srat_entry(&header->common);
+> -
+> -	/* let architecture-dependent part to do it */
+> -	if (!acpi_numa_memory_affinity_init(memory_affinity))
+> -		parsed_numa_memblks++;
+> -	return 0;
+> -}
+> -
+>  static int __init acpi_parse_srat(struct acpi_table_header *table)
+>  {
+>  	struct acpi_table_srat *srat = (struct acpi_table_srat *)table;
 > -- 
 > 2.39.2
 > 
