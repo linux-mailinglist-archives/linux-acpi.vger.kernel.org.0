@@ -1,178 +1,142 @@
-Return-Path: <linux-acpi+bounces-5533-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5534-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43668B7C73
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6198B7C77
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDEF41C22DCB
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C2A21C2283B
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:02:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF0F175541;
-	Tue, 30 Apr 2024 16:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E02E175570;
+	Tue, 30 Apr 2024 16:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m4As+Y9j"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="PvvJNeoq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABF3132C15;
-	Tue, 30 Apr 2024 16:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82361176FB2;
+	Tue, 30 Apr 2024 16:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714492923; cv=none; b=QYwqPRNe/IQ4eOVHmK6ZBlD0a+lGf82iSlRb8T5ITtlO3pWvGbFwmvtfbKXCt/TRheZ5f/zZqzRSr2lK1eq9GxdzPqH9aPoRiGtBlOOuHLRwU/2AIARtfSfb/Chc0v7xyakHSYyWANWAMWjNafaCdPF6HdhOWJ4Q8bJq4jFZWx4=
+	t=1714492945; cv=none; b=LYQOOfdmvJQ8MORYf7aRkZriGxy/j1vfoXahCOBWg7uFDJ28D4TK/7zAFbj1ennJDZx2Boe61AJVfabCPIvB9zSQrlblLUqK5HmoWliI5rxc+B0OFNeDHzkPn/gwiYXXTlICilQVTwEzbOYw8MEO8W/9guGPp0ebBsFvWtSmgYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714492923; c=relaxed/simple;
-	bh=Rvq8o5SOMZnV/X98JzqTV2YkrAzwlGrJT8jM3pq+kDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FwhL+9MGMJEYVsRlpGfYrGRiu9FgBjTmtdSrWstpVPvMtG3SXk4QXv5s2bLeORDf+O6glvIeJfwBS3tk+5/3W/mspt3NAJWhAPvXPx1+0UXOXSIUnNZLSF8Bcuuf0PDEK8Kmdrj2hX3PxvTXcAGG4bIzO7GR97rC8GIJebNEZb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m4As+Y9j; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714492922; x=1746028922;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Rvq8o5SOMZnV/X98JzqTV2YkrAzwlGrJT8jM3pq+kDE=;
-  b=m4As+Y9j7WqAAcEvCkAhEx2Z7+8BjlPhGgURFSw1C2GfNs6QFQqdP7LS
-   LxR5aOwsUk+RP1w6MN3YkdZNAxEki4TC1FioJ4WbsxCZlaaCXTlvv0Jny
-   sa8azu2Yyq4OetTuiwS7SUqqyWMoCs3b4uZ6Z8JG3iG21uChdZIVHysnZ
-   V00vs7VdSH8NsiplKzWx8s+GuolDQ2SdbUt3t5jXgtvk6Z3SNKLZHXJrK
-   ruwvx7PTzTnZNRdtfYT6QFJo1UoqTs+/yZuYyHHqIWByJHE69n1vgnXUO
-   4Ap5qukrgm1ZSZRV7oQp/OP8zaWR2jlKePdlXqV2S8yQPypdr8gOixoD7
-   w==;
-X-CSE-ConnectionGUID: 3Wh8IGiLRfS/LhpMI+uQmA==
-X-CSE-MsgGUID: PSbmpVCLR2SOGHdDfSECCA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10430370"
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="10430370"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 09:02:01 -0700
-X-CSE-ConnectionGUID: BdUsbocdSlergVihIA7U1g==
-X-CSE-MsgGUID: Vv/XCU1aSzS+vXM61pxZyA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="31322317"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2) ([10.251.17.48])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 09:01:59 -0700
-Date: Tue, 30 Apr 2024 09:01:57 -0700
-From: Alison Schofield <alison.schofield@intel.com>
-To: Robert Richter <rrichter@amd.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v6 2/7] ACPI/NUMA: Remove architecture dependent
- remainings
-Message-ID: <ZjEV9YFDMRl3j6h6@aschofie-mobl2>
-References: <20240430092200.2335887-1-rrichter@amd.com>
- <20240430092200.2335887-3-rrichter@amd.com>
+	s=arc-20240116; t=1714492945; c=relaxed/simple;
+	bh=1XpWqYY6FpW+nYEyvngkH/20vtybIC+9kZBc7rpJxEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eDXpUdpInxnF8cMRvlryoI5fsEczQ5sMjIZ7Ioyt8bpg9TAVrx3Ph2jvqnKOnO25vBkULXRgwtlYmdJeuUCM0/SlTZ91UtOuA3IkN6lljGHyvDGbDcK37NalsyNs+MPxGgt/520zWLnQWlg+s9f/gxiRu5pMuwMAOimB2ycC0f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=PvvJNeoq reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.0.0)
+ id 5ee6a7844c993097; Tue, 30 Apr 2024 18:02:21 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 0C26D66E643;
+	Tue, 30 Apr 2024 18:02:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1714492941;
+	bh=1XpWqYY6FpW+nYEyvngkH/20vtybIC+9kZBc7rpJxEQ=;
+	h=From:To:Cc:Subject:Date;
+	b=PvvJNeoqYzENUZZBlwJRp3Cfq4aS+BRbWjHBDUy5YY4y9RrtqIZa0z+yNDSEhlRTj
+	 d7I8TD6HdT1YWcstC8wrNPWmOkMQSrh7/NYT/ZwDxsGvAjzR+MTxz0P2wolkz898g5
+	 zDS2KV+vBTVbss87RlEgE90Q+jfMTKI4NVV8POA7c9g0wtNpoRYZdob1UJSILVEuUg
+	 zS49eOK7OzVIiTxMylPM+wp6wU93ILEqIcvvC1Zl1IYX3wXvvOxh42AF7HOsFe9877
+	 vkzvUMoY67EIh5FtDHc2RqXGttCWiasihhR9ADDXlseX1nVuoeRPkFByaNgVuHk4PT
+	 On7dgcmqT4xdw==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>
+Subject:
+ [PATCH v2] ACPI: scan: Avoid enumerating devices with clearly invalid _STA
+ values
+Date: Tue, 30 Apr 2024 18:02:20 +0200
+Message-ID: <12427278.O9o76ZdvQC@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430092200.2335887-3-rrichter@amd.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedgleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepueeugffhuddtueeiledukeeileffieetudfhuedtfeejgefhveeigeegleettedvnecuffhomhgrihhnpehuvghfihdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghlihhlrdhmvghhthgrsehhuhgrfigvihdrtghomhdprhgtphhtthhopehjohhnrght
+ hhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
 
-On Tue, Apr 30, 2024 at 11:21:55AM +0200, Robert Richter wrote:
-> With the removal of the Itanium architecture [1] the last architecture
-> dependent functions:
-> 
->  acpi_numa_slit_init(), acpi_numa_memory_affinity_init()
-> 
-> were removed. Remove its remainings in the header files too and make
-> them static.
-> 
-> [1] commit cf8e8658100d ("arch: Remove Itanium (IA-64) architecture")
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+The return value of _STA with the "present" bit unset and the "enabled"
+bit set is clearly invalid as per the ACPI specification, Section 6.3.7
+"_STA (Device Status)", so make the ACPI device enumeration code
+disregard devices with such _STA return values.
+
+Also, because this implies that status.enabled will only be set if
+status.present is set too, acpi_device_is_enabled() can be modified
+to simply return the value of the former.
+
+Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-device-status
+Link: https://lore.kernel.org/linux-acpi/88179311a503493099028c12ca37d430@huawei.com/
+Suggested-by: Salil Mehta <salil.mehta@huawei.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+
+v1 -> v2:
+   * Fix a confusing comment.
+   * Add R-by from Jonathan (thank you!)
+
+---
+ drivers/acpi/bus.c  |   11 +++++++++++
+ drivers/acpi/scan.c |    2 +-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+Index: linux-pm/drivers/acpi/bus.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/bus.c
++++ linux-pm/drivers/acpi/bus.c
+@@ -112,6 +112,17 @@ int acpi_bus_get_status(struct acpi_devi
+ 	if (ACPI_FAILURE(status))
+ 		return -ENODEV;
+ 
++	if (!device->status.present && device->status.enabled) {
++		pr_info(FW_BUG "Device [%s] status [%08x]: not present and enabled\n",
++			device->pnp.bus_id, (u32)sta);
++		device->status.enabled = 0;
++		/*
++		 * The status is clearly invalid, so clear the functional bit as
++		 * well to avoid attempting to use the device.
++		 */
++		device->status.functional = 0;
++	}
++
+ 	acpi_set_device_status(device, sta);
+ 
+ 	if (device->status.functional && !device->status.present) {
+Index: linux-pm/drivers/acpi/scan.c
+===================================================================
+--- linux-pm.orig/drivers/acpi/scan.c
++++ linux-pm/drivers/acpi/scan.c
+@@ -1962,7 +1962,7 @@ bool acpi_device_is_present(const struct
+ 
+ bool acpi_device_is_enabled(const struct acpi_device *adev)
+ {
+-	return adev->status.present && adev->status.enabled;
++	return adev->status.enabled;
+ }
+ 
+ static bool acpi_scan_handler_matching(struct acpi_scan_handler *handler,
 
 
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
 
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Robert Richter <rrichter@amd.com>
-> ---
->  drivers/acpi/numa/srat.c | 16 ++--------------
->  include/linux/acpi.h     |  5 -----
->  2 files changed, 2 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 3b09fd39eeb4..e4d53e3660fd 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -213,13 +213,12 @@ __weak int __init numa_fill_memblks(u64 start, u64 end)
->  	return NUMA_NO_MEMBLK;
->  }
->  
-> -#if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
->  /*
->   * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
->   * I/O localities since SRAT does not list them.  I/O localities are
->   * not supported at this point.
->   */
-> -void __init acpi_numa_slit_init(struct acpi_table_slit *slit)
-> +static void __init acpi_numa_slit_init(struct acpi_table_slit *slit)
->  {
->  	int i, j;
->  
-> @@ -241,11 +240,7 @@ void __init acpi_numa_slit_init(struct acpi_table_slit *slit)
->  	}
->  }
->  
-> -/*
-> - * Default callback for parsing of the Proximity Domain <-> Memory
-> - * Area mappings
-> - */
-> -int __init
-> +static int __init
->  acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
->  {
->  	u64 start, end;
-> @@ -345,13 +340,6 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
->  	(*fake_pxm)++;
->  	return 0;
->  }
-> -#else
-> -static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
-> -				   void *arg, const unsigned long table_end)
-> -{
-> -	return 0;
-> -}
-> -#endif /* defined(CONFIG_X86) || defined (CONFIG_ARM64) */
->  
->  static int __init acpi_parse_slit(struct acpi_table_header *table)
->  {
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 34829f2c517a..2c227b61a452 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -242,9 +242,6 @@ static inline bool acpi_gicc_is_usable(struct acpi_madt_generic_interrupt *gicc)
->  	return gicc->flags & ACPI_MADT_ENABLED;
->  }
->  
-> -/* the following numa functions are architecture-dependent */
-> -void acpi_numa_slit_init (struct acpi_table_slit *slit);
-> -
->  #if defined(CONFIG_X86) || defined(CONFIG_LOONGARCH)
->  void acpi_numa_processor_affinity_init (struct acpi_srat_cpu_affinity *pa);
->  #else
-> @@ -267,8 +264,6 @@ static inline void
->  acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa) { }
->  #endif
->  
-> -int acpi_numa_memory_affinity_init (struct acpi_srat_mem_affinity *ma);
-> -
->  #ifndef PHYS_CPUID_INVALID
->  typedef u32 phys_cpuid_t;
->  #define PHYS_CPUID_INVALID (phys_cpuid_t)(-1)
-> -- 
-> 2.39.2
-> 
 
