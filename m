@@ -1,249 +1,202 @@
-Return-Path: <linux-acpi+bounces-5478-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5479-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27168B6A15
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 07:55:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAD68B6E3F
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 11:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE771F22FB7
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 05:55:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62EC81F247BA
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 09:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44547175A7;
-	Tue, 30 Apr 2024 05:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC8B19DF49;
+	Tue, 30 Apr 2024 09:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tzq9aENM"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zF4rex7S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2067.outbound.protection.outlook.com [40.107.244.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF96617742;
-	Tue, 30 Apr 2024 05:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714456516; cv=none; b=UwZAbUau7dkihwm8xFUxz4Z6YvtrgbU8/IPbFJuBJT5oJl+/RjmDHrVvjU28Mv+Wj8ds06lrXo8VkxIcMieO29QFswMM+ihiaEDaij+HEn7nEZgUI1ng+5rMZWEIDs2zuBeUQax/f5JCsRxsY+Epg3nn2RufdBXDzZoZ1S2EJSA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714456516; c=relaxed/simple;
-	bh=Ba1kSt+5JNsI61+Sn8ep10vXRbadut8twnYrmopZMQw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=VhbfcJ5ij74pMVYLDZ9mgknwuPnzegDUc6FVYzghvPpphGRYLbjyeIwLREhMXq19Igy4tKdef2QkeR+wsdg3QhEusljqsMP/wn7hRWz2VTu6ASAYAd/La7h3Qla7q7wq2ilQdew+PqKZ/IRT9/i1/a+vmgdkU/NMYZq4tlojxw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tzq9aENM; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714456514; x=1745992514;
-  h=date:from:to:cc:subject:message-id;
-  bh=Ba1kSt+5JNsI61+Sn8ep10vXRbadut8twnYrmopZMQw=;
-  b=Tzq9aENMrs6k1/ai0V1SLBipxXInaU+uwEapwiHiyahXIgbxgv+bmm3m
-   PUSVjlPGMKKVJvWauYB5P6P6wtC3YnORIjjOQNQCuublz91UdYr/ZcrZ1
-   v3TXYQF8NxD+7JmLrPy9FBWGPnxbSeMrrYb90KOc7kNTN0AbasRDzyEMe
-   5ItkWFPAIIFXYiuWonrCgIpU61aTfok25mNcy1xK0FLRSJznqnACQ4sGW
-   /fD+pLli39WWbQ9cYIr7nHYnsaCtEPsNlh8cQh8+ySvXjS9S61f/1fVaI
-   a9hkgBiKJSbXH/l7oJnZ1lXGzpGjSF9VSnmB9q8DfeRL1UtecE+ZgqTub
-   w==;
-X-CSE-ConnectionGUID: WxOyqRWsSEWwBy1YM+HJUg==
-X-CSE-MsgGUID: z0GOKvnWSdy55AF253nOlQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="10681193"
-X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; 
-   d="scan'208";a="10681193"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 22:55:13 -0700
-X-CSE-ConnectionGUID: Lf5e3fsEQZeiVTPhkCrbBw==
-X-CSE-MsgGUID: YUx8C3adQrmylmAEZ6zUmw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; 
-   d="scan'208";a="30799594"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 29 Apr 2024 22:55:11 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s1gSL-0007mu-0u;
-	Tue, 30 Apr 2024 05:55:09 +0000
-Date: Tue, 30 Apr 2024 13:54:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 9b90da9c598279e774cc60068a24e2dc5abab26d
-Message-ID: <202404301322.eclM87Sl-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0E219DF45;
+	Tue, 30 Apr 2024 09:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714468945; cv=fail; b=VDJz4F954/l3V29gtbXNaq/yvJbXt3P0MY5QaRoNuHUDg4xbLe0e1nYPVvygd2dSHCl+8wxZXPRcOHosEqNfWI/jLp3Xu7NSsy5d+BBcwgLxYkcFhtrJlfnkt9k/JlAOXJPHLbA9nHLDCeqDveMIY+ClpRMVm3EZbaFR5VfrmNs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714468945; c=relaxed/simple;
+	bh=ALE6JfSX6aZwHJAwYpZFE/bDf1WRPDKKVVZaRFpep80=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YnQ46Au7NAoRvwIPMnvGjXX9x16IRVDlFZfj7pKSxNjpecj/3QJPmdLfs8xE/ZUlTTWyEgAUTwdVGtHVOo2ENAoLd+0NVyNIyqTa27xJCQy+CcAzdLEIKVO/ua8Tg9qYgm/ojrma7cbY4R+HcNBImb7uIs8K3lvGKRWAIBFRwSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zF4rex7S; arc=fail smtp.client-ip=40.107.244.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lf9xHi0QCNUqQDX33Edz7PDFVnGult5hCDU3pTm+f05Bq5blNXRt78AUSY41NOMuu3CedGJfJU4fUjdG969maJPXA5B/dNrd3BMiQKAjQ6q1uJnczD+6pbyPVYCf+UMqRiff8TjtLwEqnqX7KAGWui9nF/bmoKIc0/d4S+97DmDNaB3BSjQ7+kABg7+f1ieVhIY10Wbc4NlxsynsBmRcKO8jhRn3RJ5HdrRMkF/wknymyLk2LHJo4/ZAkzSEtjz5baTYXZ347TTWOH+gKdOA1s8OGyRT4VaAWPJtuYJ9rv1gF/+T1ims14q6ZogccimbsmD6wHQyciKYcE5O+GOldA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ca8AkeLuqhVtooLlvja+NozjMg+iAwH2uC8qqoY4ajw=;
+ b=BRQXlM7iusvxykDebSdRAGaMMj0MFchG3uNyWNJD+ShQe8TBflFFBV+ewQsSrAR5xSAAvtm/p4/RcjHt2JH665gKao76D53mHQ/M84PxGFFm0/wzpo4qb3AFL4oE1xZQZSRiIM4Rbw4JR5Uwu/QKlpYSmAelrnIyPxQmmG/qXwIfUG+mS21QHcFL3Ud+K6NDac/ntrvFuViVcFOznFZNV4YgcbHg2jVk8ado58iFxmrKLMk3bN49PtaV8+AN0YgTgkm7Tuo0KWrpKxT5L4JGnZsz1gVyQsi8xFE8XYkMKGN7QRZDAqNhJjwsYM8rN1loWSqWBTP/WSFa+LjnYlqX1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ca8AkeLuqhVtooLlvja+NozjMg+iAwH2uC8qqoY4ajw=;
+ b=zF4rex7SfS4XLtQK0jDVGg8hj4KY3dYhRt7yFUnU4NivtyciIqwbS74mEh4UCqtTgAB735ohT3gqBYxLH6xweomfEPwO8PTgLiS08r8LRgCazrngqOPo8+t0KWSzDiA58Ijg3aawXq9WRRvZM8OrpbZid3ox0hlX8zWfgE0CVjk=
+Received: from PH8PR02CA0023.namprd02.prod.outlook.com (2603:10b6:510:2d0::15)
+ by PH7PR12MB8106.namprd12.prod.outlook.com (2603:10b6:510:2ba::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35; Tue, 30 Apr
+ 2024 09:22:21 +0000
+Received: from CY4PEPF0000EDD4.namprd03.prod.outlook.com
+ (2603:10b6:510:2d0:cafe::2c) by PH8PR02CA0023.outlook.office365.com
+ (2603:10b6:510:2d0::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34 via Frontend
+ Transport; Tue, 30 Apr 2024 09:22:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD4.mail.protection.outlook.com (10.167.241.208) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7544.18 via Frontend Transport; Tue, 30 Apr 2024 09:22:21 +0000
+Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 30 Apr
+ 2024 04:22:18 -0500
+From: Robert Richter <rrichter@amd.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Dave Hansen <dave.hansen@linux.intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Alison Schofield <alison.schofield@intel.com>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, Robert Richter <rrichter@amd.com>
+Subject: [PATCH v6 0/7] SRAT/CEDT fixes and updates
+Date: Tue, 30 Apr 2024 11:21:53 +0200
+Message-ID: <20240430092200.2335887-1-rrichter@amd.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD4:EE_|PH7PR12MB8106:EE_
+X-MS-Office365-Filtering-Correlation-Id: 542ff614-d91a-4fe8-fef4-08dc68f70a11
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|36860700004|82310400014|1800799015|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fFR+nhZAg11RqgmaVSX9d1V/bJlkA/vkI9BqOR/rK8fbb3/VungXZsI0Gqpd?=
+ =?us-ascii?Q?sP2bZMKH9kjFJOx4gbTOPQ9W1FPkY4zFOSWFx4hIjRfoc62w97tU6Jocq5cI?=
+ =?us-ascii?Q?PMT/VCb6Cade7fLEJfrjwujZ+5jR0Gud5yqwTC6A04sAsWmEdgYOQMGAafnv?=
+ =?us-ascii?Q?kT3ghbCSyUHMs5YfS5GA2OO/iOwlZFjQYpmQAdI1SLPwMCsJQ/JFMsCSc0D8?=
+ =?us-ascii?Q?1VbvT3UOUk8s0CrBi2Bf11wCl4SA82JR5UjnMX6YUC38TnCXUGtrjt0BgNCg?=
+ =?us-ascii?Q?+LzRyK68BggnRI1p0krGxSSI6+VLaruMBKqBCLX/O7xAlB5j+qlb5HXx5yHb?=
+ =?us-ascii?Q?YmAlRvee/YmUShFX122AolUSzH9V+AMVLJnbIep9rQz8aMAux5/jWFNij19y?=
+ =?us-ascii?Q?cf+NDrTvVgbimg8BjiphPoSm577LNfZgr/S0FCF0Hn3JYvFqhla9UWe80AOa?=
+ =?us-ascii?Q?slNO+lfRrBBdxe9j8NaKy1ETpgJ7/Ola2nIvivUsZuLEFTC5RTbLysISW/GW?=
+ =?us-ascii?Q?mvc4dAEfnVw+CMblujZ/jIATdm1JRN3SVXqs4ld6giFTMYhfr6pLfMSD5b7u?=
+ =?us-ascii?Q?YX7fHyz3+XcnLY+HY4Ab03CO4js11XIYPUqeBYkxJ3qT/fWSa6Cn/V31u9fe?=
+ =?us-ascii?Q?ZVnENhV4/AMdGOn2014ufi/CkpWI/k81eFbV6qaIHN2RGXKvpUVUsZ4Zq8Uc?=
+ =?us-ascii?Q?0AwzhhKN4vnas1PhMUOy4r0yK8t5bSYq0UBeJceNu4SQaNQ/SfAbkPucaIam?=
+ =?us-ascii?Q?ZHQNfj2unAiqYk5Tpd4BAoh73GuAbrPTe33kwcoWzrXbBF43S0FdV0MuCn0+?=
+ =?us-ascii?Q?B67EtXJXlZGSDvFchtNgOOaX02GUZ/oslz/1peXOjVlfeQYbjnSvTqF8yydn?=
+ =?us-ascii?Q?gyEuYLhB404LOiczuYrSjuVxDFvSm1Nfum+/C5fnYl/pj4ipSkCT2mx4pGJZ?=
+ =?us-ascii?Q?avWadYSRQplSDsFSDkOrhaIfhVZpc/Q8QAOBroTg0k6wHmLrih6imbZEr9Ks?=
+ =?us-ascii?Q?2N58YGrjkuIMO5U4aJBe/ERH8oRXqpu29X1vmhNSX2ppkuC+O2gNDvSjyjto?=
+ =?us-ascii?Q?wtSEO5Q9ciGg6PQ912dv8DYmDVzDPRyxeWFYdHRoBhT029bWthPUiej1GQCu?=
+ =?us-ascii?Q?WxJ/LpbTwLtiYsY/Aqwdvae7j9jgWfz7b12Lgi1WWRK4DbDffa5cunzcxPKh?=
+ =?us-ascii?Q?JgL3HAUGC5aUIqshh0BJGn9l2jexg+hKzyn4E7NQEy5VuPP+L+3GpJiID2WI?=
+ =?us-ascii?Q?tlVFDBvKgp3UWmtA7B9RS62k3rRTnvyIskS0BnIJN466AS4rpAg4qiURbbfM?=
+ =?us-ascii?Q?z5L8k54EIh2ngcX9VxsxY8ihM4uCAOFDm/oeTJiiRU8zDYCYbNFl9BACfuN6?=
+ =?us-ascii?Q?lL+iDu1nosWLPldO9g3bhBe/vjZ5?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014)(1800799015)(376005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 09:22:21.3836
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 542ff614-d91a-4fe8-fef4-08dc68f70a11
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EDD4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8106
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 9b90da9c598279e774cc60068a24e2dc5abab26d  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+Some fixes and updates for SRAT/CEDT parsing code. Patches can be
+applied individually and are independent.
 
-elapsed time: 737m
+First patch fixes a page fault during boot (fix as suggested by Dan).
 
-configs tested: 155
-configs skipped: 4
+Patches 2 to 4 remove architectural code no longer needed.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Patches 5 to 7 add diagnostic printouts for CEDT.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240430   gcc  
-arc                   randconfig-002-20240430   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                         bcm2835_defconfig   clang
-arm                                 defconfig   clang
-arm                   randconfig-001-20240430   clang
-arm                   randconfig-002-20240430   clang
-arm                   randconfig-003-20240430   clang
-arm                   randconfig-004-20240430   clang
-arm                             rpc_defconfig   clang
-arm                       versatile_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240430   clang
-arm64                 randconfig-002-20240430   gcc  
-arm64                 randconfig-003-20240430   clang
-arm64                 randconfig-004-20240430   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240430   gcc  
-csky                  randconfig-002-20240430   gcc  
-hexagon                          allmodconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240430   clang
-hexagon               randconfig-002-20240430   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240430   gcc  
-i386         buildonly-randconfig-002-20240430   clang
-i386         buildonly-randconfig-003-20240430   gcc  
-i386         buildonly-randconfig-004-20240430   clang
-i386         buildonly-randconfig-005-20240430   clang
-i386         buildonly-randconfig-006-20240430   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240430   clang
-i386                  randconfig-002-20240430   gcc  
-i386                  randconfig-003-20240430   gcc  
-i386                  randconfig-004-20240430   gcc  
-i386                  randconfig-005-20240430   gcc  
-i386                  randconfig-006-20240430   gcc  
-i386                  randconfig-011-20240430   gcc  
-i386                  randconfig-012-20240430   clang
-i386                  randconfig-013-20240430   clang
-i386                  randconfig-014-20240430   gcc  
-i386                  randconfig-015-20240430   gcc  
-i386                  randconfig-016-20240430   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240430   gcc  
-loongarch             randconfig-002-20240430   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240430   gcc  
-nios2                 randconfig-002-20240430   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240430   gcc  
-parisc                randconfig-002-20240430   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      arches_defconfig   gcc  
-powerpc                     ep8248e_defconfig   gcc  
-powerpc                     kilauea_defconfig   clang
-powerpc                     kmeter1_defconfig   gcc  
-powerpc                      mgcoge_defconfig   clang
-powerpc                     mpc5200_defconfig   clang
-powerpc                      pasemi_defconfig   clang
-powerpc                     ppa8548_defconfig   gcc  
-powerpc               randconfig-001-20240430   gcc  
-powerpc               randconfig-002-20240430   gcc  
-powerpc               randconfig-003-20240430   clang
-powerpc                     stx_gp3_defconfig   clang
-powerpc64             randconfig-001-20240430   clang
-powerpc64             randconfig-002-20240430   clang
-powerpc64             randconfig-003-20240430   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                    nommu_k210_defconfig   clang
-riscv                 randconfig-001-20240430   gcc  
-riscv                 randconfig-002-20240430   clang
-s390                             alldefconfig   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240430   gcc  
-s390                  randconfig-002-20240430   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240430   gcc  
-sh                    randconfig-002-20240430   gcc  
-sh                           se7722_defconfig   gcc  
-sh                             sh03_defconfig   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240430   gcc  
-sparc64               randconfig-002-20240430   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240430   clang
-um                    randconfig-002-20240430   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240430   gcc  
-xtensa                randconfig-002-20240430   gcc  
+Changelog:
 
+v6:
+ * rebased onto cxl/fixes
+ * fixed 0day build errors in patch #1:
+   https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/x86-numa-Fix-SRAT-lookup-of-CFMWS-ranges-with-numa_fill_memblks/20240429-205337
+
+v5:
+ * dropped: "x86/numa: Fix SRAT lookup of CFMWS ranges with
+   numa_fill_memblks()"
+ * added: "ACPI/NUMA: Return memblk modification state from
+   numa_fill_memblks()"
+ * conditionally print CEDT extended memblks
+
+v4:
+ * updated SOB chains and desription
+ * added patch "x86/numa: Remove numa_fill_memblks() from sparsemem.h
+   using __weak"
+ * Reordered patches to move CEDT table printout as an option at the
+   end
+ * split print table patch and added: "ACPI/NUMA: Add log messages for
+   memory ranges found in CEDT"
+
+v3:
+ * Rebased onto v6.9-rc1
+ * Fixing x86 build error in sparsemem.h [Dan/Alison]
+ * Added CEDT node info [Alison]
+ * Use pr_debug() for table output [Dan]
+ * Refactoring split in 3 patches [Dan]
+ * Fixed performance regression introduced [kbot]
+ * Fixed checkpatch issues [Dan]
+
+Robert Richter (7):
+  x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
+  ACPI/NUMA: Remove architecture dependent remainings
+  ACPI/NUMA: Squash acpi_numa_slit_init() into acpi_parse_slit()
+  ACPI/NUMA: Squash acpi_numa_memory_affinity_init() into
+    acpi_parse_memory_affinity()
+  ACPI/NUMA: Return memblk modification state from numa_fill_memblks()
+  ACPI/NUMA: Add log messages for memory ranges found in CEDT
+  ACPI/NUMA: Print CXL Early Discovery Table (CEDT)
+
+ arch/x86/include/asm/sparsemem.h |   2 -
+ arch/x86/mm/numa.c               |  37 +++---
+ drivers/acpi/numa/srat.c         | 207 +++++++++++++++++++++++--------
+ include/linux/acpi.h             |   5 -
+ include/linux/numa.h             |   7 +-
+ 5 files changed, 176 insertions(+), 82 deletions(-)
+
+
+base-commit: 5d211c7090590033581175d6405ae40917ca3a06
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.2
+
 
