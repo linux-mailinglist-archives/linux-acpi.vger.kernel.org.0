@@ -1,216 +1,218 @@
-Return-Path: <linux-acpi+bounces-5521-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5522-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597E48B7A61
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820858B7A89
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778C11C225F9
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 14:44:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3831C282048
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 14:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3046D17F397;
-	Tue, 30 Apr 2024 14:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DbGPJRzL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9D01EB46;
+	Tue, 30 Apr 2024 14:49:05 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE3A17F39E;
-	Tue, 30 Apr 2024 14:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5D3BE49;
+	Tue, 30 Apr 2024 14:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714488047; cv=none; b=I8I27RmtjUYcoFbx/u/OJUXe1KRs7iZ6/5gwCMcc1wIugOunMZcWXJQrM+Efb3MDTIhes133Tt2jtjNEw5zFj3EKL1GfN5j+HEMHS/gf96RYKvHZOAV5uVTKw6qog1HsE9iYSFLDwjVyeGNe+wxWp+7fDN6hofUit7bYxQvBAYI=
+	t=1714488545; cv=none; b=rYk6OpSnfzu5/pSUvCrIKEuXlPRdNdus7TzhBDndEjbyU9x4OvLn6XnC14CGs3LLrJ+LmbfkDr3H0vDFISVTbhaZG0FqRWS3oJddwC0GSJcPZGEZDq3fVKMxWtBoTDdEn1GLVKNrhomh+kRBuvckiuLOG7hfdE5qmGsJIMIUbIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714488047; c=relaxed/simple;
-	bh=dIUKk66f0IRdEyY7wXyUQ30WFs9U0iW+qAtw/OVD0IQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YAt8ti7e5MsyMBh0XMIgWvV5PQxx0UQKpphr4pjepgzkB/6pkYgYx9M5y13RJADqFJJsM4X+HX18uo5SVC+qiwKMFw5JSLOePsLMn7VebUcauFnGDkrmVse6ob7m7GvGbL2oo6QQmWYVo7+uVrdaERCUAfIQO5SrenZXqJ/Cu4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DbGPJRzL; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 43UEbQni028949;
-	Tue, 30 Apr 2024 14:39:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=gndMwBNKLtfrCET3rtqphFu5D4o2y9i5AvcU6ulXyqY=;
- b=DbGPJRzL+5rno70dVktwrqRSraSgcmV4j96GLHxxWTzGdHO5BcwXVzATt/oBXIxS1CDk
- RY1egWe3hrPrDATghA60uC2kzL2+VFdUa+RENXe1ujPPc6HypoXoryxvbPT3i3CWiEGA
- lu3rJzMRJDAHZ5xw4VNQ08YwqMIHx7KzlYzo7uYHY4LmDW2oYvCApKRpupR1+5x2WmJp
- CCoaGez9gM8v8qKNFgILua0C1mZqm+rVxrn8tzekbc+vx7g4P6G2P/we5Kj/1UhvMkYi
- rtR3HIkzpo/CVrjj4wAKsgRQ7hzv/oygdlFzk5Fa2dHJX9ENcLAhxEqcFkTrE5p2eU0p Qg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu2jf80e5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 14:39:44 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43UEdhTB001353;
-	Tue, 30 Apr 2024 14:39:43 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xu2jf80e1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 14:39:43 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 43UB3OgD011742;
-	Tue, 30 Apr 2024 14:39:42 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xsdwm56rv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 14:39:42 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 43UEddMA45547818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Apr 2024 14:39:41 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E717458068;
-	Tue, 30 Apr 2024 14:39:38 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E275E5806D;
-	Tue, 30 Apr 2024 14:39:32 +0000 (GMT)
-Received: from [9.152.212.236] (unknown [9.152.212.236])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Apr 2024 14:39:32 +0000 (GMT)
-Message-ID: <1db64621fbc86d098cc9d737e539872d62967226.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Christoph Hellwig
-	 <hch@lst.de>
-Cc: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Paul Walmsley
- <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou
- <aou@eecs.berkeley.edu>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Hanjun
- Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        "K. Y.
- Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        Suravee
- Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        David Woodhouse
- <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Matthew Rosato
- <mjrosato@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Rob Herring
- <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Marek
- Szyprowski <m.szyprowski@samsung.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-        iommu@lists.linux.dev, devicetree@vger.kernel.org,
-        Jason Gunthorpe <jgg@nvidia.com>
-Date: Tue, 30 Apr 2024 16:39:32 +0200
-In-Reply-To: <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
-References: <cover.1713523152.git.robin.murphy@arm.com>
-	 <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1714488545; c=relaxed/simple;
+	bh=+jFovgvPAxrrotZHP/C8AyzL+KLYVgvSE15JleJwxyg=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C+CG555pu9TqJQzhyO2o/Nbsjax2O4icC6w6T/MBlH+iUpdpuspi/djCmy3/F00cXOW/Qb6PyHUCnPne6uD43xS7s1e7lyAMGmP44JkTXORWCT03HWrciibxFRYz29WZstvTK8KxUXeaj4wFfDv4sFcIzwEaYQwOwVNfCj03pFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTNLJ6Xj6z6J7Pl;
+	Tue, 30 Apr 2024 22:46:16 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C1DD2140A08;
+	Tue, 30 Apr 2024 22:48:57 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
+ 2024 15:48:57 +0100
+Date: Tue, 30 Apr 2024 15:48:56 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Robert Richter <rrichter@amd.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Alison Schofield <alison.schofield@intel.com>, "Dan Williams"
+	<dan.j.williams@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Derick Marks
+	<derick.w.marks@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Len Brown
+	<lenb@kernel.org>
+Subject: Re: [PATCH v6 1/7] x86/numa: Fix SRAT lookup of CFMWS ranges with
+ numa_fill_memblks()
+Message-ID: <20240430154856.00006d15@Huawei.com>
+In-Reply-To: <20240430092200.2335887-2-rrichter@amd.com>
+References: <20240430092200.2335887-1-rrichter@amd.com>
+	<20240430092200.2335887-2-rrichter@amd.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3EiAi3ceGcEZMYkBblHJKgXeQ7kydxJD
-X-Proofpoint-GUID: v0xwdAA5Fyd4xWUrvhPqmCZHJn2BdKNH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-30_08,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 lowpriorityscore=0 malwarescore=0 spamscore=0
- impostorscore=0 mlxscore=0 bulkscore=0 phishscore=0 suspectscore=0
- clxscore=1011 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404300104
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, 2024-04-19 at 17:54 +0100, Robin Murphy wrote:
-> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
-> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
-> which means there should be no harm in achieving the same order of
-> operations by running it off the back of iommu_probe_device() itself.
-> This then puts it in line with the x86 and s390 .probe_finalize bodges,
-> letting us pull it all into the main flow properly. As a bonus this lets
-> us fold in and de-scope the PCI workaround setup as well.
->=20
-> At this point we can also then pull the call up inside the group mutex,
-> and avoid having to think about whether iommu_group_store_type() could
-> theoretically race and free the domain if iommu_setup_dma_ops() ran just
-> *before* iommu_device_use_default_domain() claims it... Furthermore we
-> replace one .probe_finalize call completely, since the only remaining
-> implementations are now one which only needs to run once for the initial
-> boot-time probe, and two which themselves render that path unreachable.
->=20
-> This leaves us a big step closer to realistically being able to unpick
-> the variety of different things that iommu_setup_dma_ops() has been
-> muddling together, and further streamline iommu-dma into core API flows
-> in future.
->=20
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Tested-by: Hanjun Guo <guohanjun@huawei.com>
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+On Tue, 30 Apr 2024 11:21:54 +0200
+Robert Richter <rrichter@amd.com> wrote:
+
+> For configurations that have the kconfig option NUMA_KEEP_MEMINFO
+> disabled numa_fill_memblks() only returns with NUMA_NO_MEMBLK (-1).
+> SRAT lookup fails then because an existing SRAT memory range cannot be
+> found for a CFMWS address range. This causes the addition of a
+> duplicate numa_memblk with a different node id and a subsequent page
+> fault and kernel crash during boot.
+> 
+> Fix this by making numa_fill_memblks() always available regardless of
+> NUMA_KEEP_MEMINFO.
+> 
+> The fix also removes numa_fill_memblks() from sparsemem.h using
+> __weak.
+> 
+> From Dan:
+> 
+> """
+> It just feels like numa_fill_memblks() has absolutely no business being
+> defined in arch/x86/include/asm/sparsemem.h.
+> 
+> The only use for numa_fill_memblks() is to arrange for NUMA nodes to be
+> applied to memory ranges hot-onlined by the CXL driver.
+> 
+> It belongs right next to numa_add_memblk(), and I suspect
+> arch/x86/include/asm/sparsemem.h was only chosen to avoid figuring out
+> what to do about the fact that linux/numa.h does not include asm/numa.h
+> and that all implementations either provide numa_add_memblk() or select
+> the generic implementation.
+> 
+> So I would prefer that this do the proper fix and get
+> numa_fill_memblks() completely out of the sparsemem.h path.
+> 
+> Something like the following which boots for me.
+> """
+> 
+> Note that the issue was initially introduced with [1]. But since
+> phys_to_target_node() was originally used that returned the valid node
+> 0, an additional numa_memblk was not added. Though, the node id was
+> wrong too, a message is seen then in the logs:
+> 
+>  kernel/numa.c:  pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+> 
+> [1] commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
+>     CFMWS not in SRAT")
+> 
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> Link: https://lore.kernel.org/all/66271b0072317_69102944c@dwillia2-xfh.jf.intel.com.notmuch/
+> Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+> Cc: Derick Marks <derick.w.marks@intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+
+Whilst I'm not particularly keen on an arch specific solution for this
+and the stub is effectively pointless beyond making the build work, I guess
+this works well enough for now.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+I was aiming to post the ARM64 handling this cycle but it hasn't quite happened yet :(
+Maybe we can look at whether there is a better level share at than
+the whole function once that is done.
+
+Jonathan
+
 > ---
----8<---
-> diff --git a/drivers/iommu/s390-iommu.c b/drivers/iommu/s390-iommu.c
-> index 9a5196f523de..d8eaa7ea380b 100644
-> --- a/drivers/iommu/s390-iommu.c
-> +++ b/drivers/iommu/s390-iommu.c
-> @@ -695,11 +695,6 @@ static size_t s390_iommu_unmap_pages(struct iommu_do=
-main *domain,
->  	return size;
+> Authorship can be changed to Dan's if he wants to but that needs his
+> Signed-off-by.
+> Signed-off-by: Robert Richter <rrichter@amd.com>
+> ---
+>  arch/x86/include/asm/sparsemem.h | 2 --
+>  arch/x86/mm/numa.c               | 4 ++--
+>  drivers/acpi/numa/srat.c         | 5 +++++
+>  include/linux/numa.h             | 7 +------
+>  4 files changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
+> index 1be13b2dfe8b..64df897c0ee3 100644
+> --- a/arch/x86/include/asm/sparsemem.h
+> +++ b/arch/x86/include/asm/sparsemem.h
+> @@ -37,8 +37,6 @@ extern int phys_to_target_node(phys_addr_t start);
+>  #define phys_to_target_node phys_to_target_node
+>  extern int memory_add_physaddr_to_nid(u64 start);
+>  #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
+> -extern int numa_fill_memblks(u64 start, u64 end);
+> -#define numa_fill_memblks numa_fill_memblks
+>  #endif
+>  #endif /* __ASSEMBLY__ */
+>  
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 65e9a6e391c0..ce84ba86e69e 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -929,6 +929,8 @@ int memory_add_physaddr_to_nid(u64 start)
 >  }
-> =20
-> -static void s390_iommu_probe_finalize(struct device *dev)
-> -{
-> -	iommu_setup_dma_ops(dev, 0, U64_MAX);
-> -}
-> -
->  struct zpci_iommu_ctrs *zpci_get_iommu_ctrs(struct zpci_dev *zdev)
+>  EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+>  
+> +#endif
+> +
+>  static int __init cmp_memblk(const void *a, const void *b)
 >  {
->  	if (!zdev || !zdev->s390_domain)
-> @@ -785,7 +780,6 @@ static const struct iommu_ops s390_iommu_ops =3D {
->  	.capable =3D s390_iommu_capable,
->  	.domain_alloc_paging =3D s390_domain_alloc_paging,
->  	.probe_device =3D s390_iommu_probe_device,
-> -	.probe_finalize =3D s390_iommu_probe_finalize,
->  	.release_device =3D s390_iommu_release_device,
->  	.device_group =3D generic_device_group,
->  	.pgsize_bitmap =3D SZ_4K,
-
-I gave this whole series a test boot on s390 and also tried running a
-KVM guest with vfio-pci pass-through. For the s390 part feel free to
-add my.
-
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com> # for s390
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com> # for s390
-
-Thanks,
-Niklas
+>  	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
+> @@ -1001,5 +1003,3 @@ int __init numa_fill_memblks(u64 start, u64 end)
+>  	}
+>  	return 0;
+>  }
+> -
+> -#endif
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index e45e64993c50..3b09fd39eeb4 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -208,6 +208,11 @@ int __init srat_disabled(void)
+>  	return acpi_numa < 0;
+>  }
+>  
+> +__weak int __init numa_fill_memblks(u64 start, u64 end)
+> +{
+> +	return NUMA_NO_MEMBLK;
+> +}
+> +
+>  #if defined(CONFIG_X86) || defined(CONFIG_ARM64) || defined(CONFIG_LOONGARCH)
+>  /*
+>   * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
+> diff --git a/include/linux/numa.h b/include/linux/numa.h
+> index 915033a75731..1d43371fafd2 100644
+> --- a/include/linux/numa.h
+> +++ b/include/linux/numa.h
+> @@ -36,12 +36,7 @@ int memory_add_physaddr_to_nid(u64 start);
+>  int phys_to_target_node(u64 start);
+>  #endif
+>  
+> -#ifndef numa_fill_memblks
+> -static inline int __init numa_fill_memblks(u64 start, u64 end)
+> -{
+> -	return NUMA_NO_MEMBLK;
+> -}
+> -#endif
+> +int numa_fill_memblks(u64 start, u64 end);
+>  
+>  #else /* !CONFIG_NUMA */
+>  static inline int numa_nearest_node(int node, unsigned int state)
 
 
