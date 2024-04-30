@@ -1,210 +1,247 @@
-Return-Path: <linux-acpi+bounces-5497-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5498-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3A38B758D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 14:16:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB9C8B75A6
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 14:24:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E523F1F24F46
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:16:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82EBE284331
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB913DB92;
-	Tue, 30 Apr 2024 12:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7932313F44D;
+	Tue, 30 Apr 2024 12:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xflb2RUJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E1A168A9;
-	Tue, 30 Apr 2024 12:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470CD14039E
+	for <linux-acpi@vger.kernel.org>; Tue, 30 Apr 2024 12:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714479366; cv=none; b=adqrGyIN1D54owhvTp+TJKIrsCe7kGKiCyNN336z61Z2l8BWCCtVkV2Ex6sSG7NoZkEgwMVW2n7l0EB+DcFwHgfdZ6bggsEJqKQb2gXE2hKxV5it0VLxIEUPjaXn5UNGPK3x1cwl3YOYOgb23WGBPM/fU3a2kz6sNfRBCDxPI40=
+	t=1714479841; cv=none; b=aFH6sqD2OAsg/GFT4eceA86YQXsyRD7KSX3VVv/uCX2kmIvP4s/606vej/M6X3F8WizAJnqg26lpw4saT2DopJmyIu7vws8volAjxKDDF98/EdAvXMBSkcobG41wWmt40t4fCau6SET63HEU6TMtFcekuUa6eEtkKG2kgaOlp1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714479366; c=relaxed/simple;
-	bh=gBZiN4Mf0s2xCDPpRXTW0QpBKbKBVv/CmKr2e8bRBss=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uNOCrawEdJodA1xwmATxPOqxOP0+BGekqzexft7dW5Lxps0bI9mtXCjDDv89TWQvhY9zwddEGUjlxcVJ8q3o6ZvpnLWdRjic5OzCH/DN7DmOqUn5bJWuofg1n1c/GD5kgbIfgv5Mb+Ql38jtFh9Z+wJJX0DeC0VnC8Sl0o/WSIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTJxs1TQYz6J73T;
-	Tue, 30 Apr 2024 20:13:21 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id B3F04140B54;
-	Tue, 30 Apr 2024 20:16:01 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
- 2024 13:16:00 +0100
-Date: Tue, 30 Apr 2024 13:15:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Marc Zyngier <maz@kernel.org>, <linuxarm@huawei.com>,
-	<linuxarm@huawei.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
-	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
- Brucker <jean-philippe@linaro.org>, Catalin Marinas
-	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Hanjun Guo
-	<guohanjun@huawei.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<justin.he@arm.com>, <jianyong.wu@arm.com>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>
-Subject: Re: [PATCH v8 11/16] irqchip/gic-v3: Add support for ACPI's
- disabled but 'online capable' CPUs
-Message-ID: <20240430131540.00000930@huawei.com>
-In-Reply-To: <20240429101938.000027b2@huawei.com>
-References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
-	<20240426135126.12802-12-Jonathan.Cameron@huawei.com>
-	<87il04t7j2.wl-maz@kernel.org>
-	<20240426192858.000033d9@huawei.com>
-	<87frv5u3p8.wl-maz@kernel.org>
-	<20240429101938.000027b2@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714479841; c=relaxed/simple;
+	bh=M/fuDa4TAzKrY/SjEcNRdbZHf4Z3egbSsIA7E94Rks0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DosRpJlvJ/p2+0c6NSJ+bwvh6Jgd6hAGOO70K1V1Ek6d4G5uril2Gr51k/oxyK9/vKIXzsS8TNWNKFe/8nx9RYiJphQJ0UWYQh098KaqnApOBakYV3GPwSt6GCRmVMQAMDfVNG4OFkUckO0eSQ2ARcuerxqd2oL9SHIgj5pXODU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xflb2RUJ; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-572a092dd2dso498088a12.3
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Apr 2024 05:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1714479836; x=1715084636; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=q9pjVXVco1U/cWiglm8CxhJD4WMHoae/pXQiNWOvnas=;
+        b=xflb2RUJPzgzptSswtIBXcVfeLSs3D/PkgTqoPfuTutBlfcpezyf3JDgW+QMpwT718
+         owAX85RSnAx7xjrFhV1lJCqcR0VBtQ1LUT70JG0Pv0aozlazxCKbKOi7jUaP9BpiDOCh
+         LNy8kOJ00T3A03DWmBddv+lr1hjKbtKbw8Gooxh6bf+kjbi6kGaBQ1BUOkZ1SvsNGjiI
+         xhgfB/wtg8+22OVLPQPpVwKwkbtXDUH2kLZ8Ws6udvqGkASGbrQgVQwNKEzTbyb9MNqD
+         Tbe+1zYlyUgb6cFc3brGDWS8lhtrgE/6ZEHdrKdZpiVoDJQOYKtlU77O6goWql0NA/MP
+         kdPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714479836; x=1715084636;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q9pjVXVco1U/cWiglm8CxhJD4WMHoae/pXQiNWOvnas=;
+        b=CQ81OcopO24eHKwFrdHAaEHUi7JrTs1s4mUsnnxtMn7Ad2VD0DJa/g+nK1iPP6jDI7
+         qslFlWRWsuvqZhZJZfviUPB/egY8tohJBX8pp+HxyobW5cEZ7bLDmJbzM+UOYVAUI1AB
+         tt0k3kzvVqExACSatWhQdr/Lvb8+eT1xtWin9MqfsEhKDx/Kzn68NqNE86Y+CBImTi+y
+         YbtzSwSgUtNJjzSiXUcWvkXztddwHDP4sYJWyFL6aPSV2uz2qeyEenuWkxAk4NrBwFsE
+         dRmBrHgUJu0HZYrT4KxcGhBvbkFrtnKqWHTcc4wRnWycV/xXtD4s9PCBd916S3c6S8Wk
+         hVLw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+MiX1zwQKZyRlFVy7wRrMmSwSOJol7Aq1Ro/ghDwSxyiO13Zxd9hz87thwfeAMBYWusu/ymTEyyA0/g3jBAgMt4anK+Y/l72fXQ==
+X-Gm-Message-State: AOJu0YzL0R21Bp8HRC5ZP7wUN5S1DUO2Wjm/Ef/xlxlIO+Rqo6dC1dkc
+	GubBfySVYQcHLNqjlkLP9bcaD3TKk2qTjLar/uOUW+TmNcpF1HHS4PQvPmEQtR0=
+X-Google-Smtp-Source: AGHT+IFRl5o5P3FNRrHDdOT/8k6oUKp6QFhP/pB5nIAIkyzqp1/5FDouny6Z+ogGHJgpEKQU5HpEQA==
+X-Received: by 2002:aa7:c3d9:0:b0:572:9b20:fd with SMTP id l25-20020aa7c3d9000000b005729b2000fdmr956990edr.31.1714479836546;
+        Tue, 30 Apr 2024 05:23:56 -0700 (PDT)
+Received: from [192.168.114.15] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
+        by smtp.gmail.com with ESMTPSA id bq22-20020a056402215600b005722ce89ae2sm7404659edb.38.2024.04.30.05.23.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Apr 2024 05:23:56 -0700 (PDT)
+Message-ID: <ebc8813c-74eb-49d1-b8d0-a6f1821f711a@linaro.org>
+Date: Tue, 30 Apr 2024 14:23:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>,
+ Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Niklas Schnelle <schnelle@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+References: <cover.1713523152.git.robin.murphy@arm.com>
+ <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
+ <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
+ <CAA8EJprL8NbNfOvp17hrHoVNkKBpD39xfeu+STm6m9VObF2n9Q@mail.gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
+ BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
+ HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
+ TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
+ zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
+ MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
+ t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
+ UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
+ aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
+ kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
+ Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
+ R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
+ BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
+ yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
+ xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
+ 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
+ GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
+ mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
+ x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
+ BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
+ mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
+ Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
+ xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
+ AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
+ 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
+ jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
+ cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
+ jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
+ cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
+ bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
+ YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
+ bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
+ nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
+ izWDgYvmBE8=
+In-Reply-To: <CAA8EJprL8NbNfOvp17hrHoVNkKBpD39xfeu+STm6m9VObF2n9Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, 29 Apr 2024 10:21:31 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On 29.04.2024 11:26 PM, Dmitry Baryshkov wrote:
+> On Mon, 29 Apr 2024 at 19:31, Dmitry Baryshkov
+> <dmitry.baryshkov@linaro.org> wrote:
+>>
+>> On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
+>>> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
+>>> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
+>>> which means there should be no harm in achieving the same order of
+>>> operations by running it off the back of iommu_probe_device() itself.
+>>> This then puts it in line with the x86 and s390 .probe_finalize bodges,
+>>> letting us pull it all into the main flow properly. As a bonus this lets
+>>> us fold in and de-scope the PCI workaround setup as well.
+>>>
+>>> At this point we can also then pull the call up inside the group mutex,
+>>> and avoid having to think about whether iommu_group_store_type() could
+>>> theoretically race and free the domain if iommu_setup_dma_ops() ran just
+>>> *before* iommu_device_use_default_domain() claims it... Furthermore we
+>>> replace one .probe_finalize call completely, since the only remaining
+>>> implementations are now one which only needs to run once for the initial
+>>> boot-time probe, and two which themselves render that path unreachable.
+>>>
+>>> This leaves us a big step closer to realistically being able to unpick
+>>> the variety of different things that iommu_setup_dma_ops() has been
+>>> muddling together, and further streamline iommu-dma into core API flows
+>>> in future.
+>>>
+>>> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
+>>> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+>>> Tested-by: Hanjun Guo <guohanjun@huawei.com>
+>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+>>> ---
+>>> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
+>>>     is covered as well, with bonus side-effects as above.
+>>> v3: *Really* do that, remembering the other two probe_finalize sites too.
+>>> ---
+>>>  arch/arm64/mm/dma-mapping.c  |  2 --
+>>>  drivers/iommu/amd/iommu.c    |  8 --------
+>>>  drivers/iommu/dma-iommu.c    | 18 ++++++------------
+>>>  drivers/iommu/dma-iommu.h    | 14 ++++++--------
+>>>  drivers/iommu/intel/iommu.c  |  7 -------
+>>>  drivers/iommu/iommu.c        | 20 +++++++-------------
+>>>  drivers/iommu/s390-iommu.c   |  6 ------
+>>>  drivers/iommu/virtio-iommu.c | 10 ----------
+>>>  include/linux/iommu.h        |  7 -------
+>>>  9 files changed, 19 insertions(+), 73 deletions(-)
+>>
+>> This patch breaks UFS on Qualcomm SC8180X Primus platform:
+>>
+>>
+>> [    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
+>> [    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
+>> [    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
+>> [    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
+>> [    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
+>> [    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
+>> [    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
+>> [    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
+>> [    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
+>> [    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
+>> [    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
+>> [    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
+>> [    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
+>> [    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
+>> [    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
+> 
+> Just to confirm: reverting f091e93306e0 ("dma-mapping: Simplify
+> arch_setup_dma_ops()") and b67483b3c44e ("iommu/dma: Centralise
+> iommu_setup_dma_ops()" fixes the issue for me. Please ping me if you'd
+> like me to test a fix.
 
-> On Sun, 28 Apr 2024 12:28:03 +0100
-> Marc Zyngier <maz@kernel.org> wrote:
-> 
-> > On Fri, 26 Apr 2024 19:28:58 +0100,
-> > Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:  
-> > > 
-> > > 
-> > > I'll not send a formal v9 until early next week, so here is the current state
-> > > if you have time to take another look before then.    
-> > 
-> > Don't bother resending this on my account -- you only sent it on
-> > Friday and there hasn't been much response to it yet. There is still a
-> > problem (see below), but looks otherwise OK.
-> > 
-> > [...]
-> >   
-> > > @@ -2363,11 +2381,25 @@ gic_acpi_parse_madt_gicc(union acpi_subtable_headers *header,
-> > >  				(struct acpi_madt_generic_interrupt *)header;
-> > >  	u32 reg = readl_relaxed(acpi_data.dist_base + GICD_PIDR2) & GIC_PIDR2_ARCH_MASK;
-> > >  	u32 size = reg == GIC_PIDR2_ARCH_GICv4 ? SZ_64K * 4 : SZ_64K * 2;
-> > > +	int cpu = get_cpu_for_acpi_id(gicc->uid);    
-> > 
-> > I already commented that get_cpu_for_acpi_id() can...  
-> 
-> Indeed sorry - I blame Friday syndrome for me failing to address that.
-> 
-> >   
-> > >  	void __iomem *redist_base;
-> > >  
-> > > -	if (!acpi_gicc_is_usable(gicc))
-> > > +	/* Neither enabled or online capable means it doesn't exist, skip it */
-> > > +	if (!(gicc->flags & (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
-> > >  		return 0;
-> > >  
-> > > +	/*
-> > > +	 * Capable but disabled CPUs can be brought online later. What about
-> > > +	 * the redistributor? ACPI doesn't want to say!
-> > > +	 * Virtual hotplug systems can use the MADT's "always-on" GICR entries.
-> > > +	 * Otherwise, prevent such CPUs from being brought online.
-> > > +	 */
-> > > +	if (!(gicc->flags & ACPI_MADT_ENABLED)) {
-> > > +		pr_warn("CPU %u's redistributor is inaccessible: this CPU can't be brought online\n", cpu);
-> > > +		cpumask_set_cpu(cpu, &broken_rdists);    
-> > 
-> > ... return -EINVAL, and then be passed to cpumask_set_cpu(), with
-> > interesting effects. It shouldn't happen, but I trust anything that
-> > comes from firmware tables as much as I trust a campaigning
-> > politician's promises. This should really result in the RD being
-> > considered unusable, but without affecting any CPU (there is no valid
-> > CPU the first place).
-> > 
-> > Another question is what get_cpu_for acpi_id() returns for a disabled
-> > CPU. A valid CPU number? Or -EINVAL?  
-> It's a match function that works by iterating over 0 to nr_cpu_ids and
-> 
-> if (uid == get_acpi_id_for_cpu(cpu))
-> 
-> So the question become does get_acpi_id_for_cpu() return a valid CPU
-> number for a disabled CPU.
-> 
-> That uses acpi_cpu_get_madt_gicc(cpu)->uid so this all gets a bit circular.
-> That looks it up via cpu_madt_gicc[cpu] which after the proposed updated
-> patch is set if enabled or online capable.  There are however a few other
-> error checks in acpi_map_gic_cpu_interface() that could lead to it
-> not being set (MPIDR validity checks). I suspect all of these end up being
-> fatal elsewhere which is why this hasn't blown up before.
-> 
-> If any of those cases are possible we could get a null pointer
-> dereference.
-> 
-> Easy to harden this case via the following (which will leave us with
-> -EINVAL.  There are other call sites that might trip over this.
-> I'm inclined to harden them as a separate issue though so as not
-> to get in the way of this patch set.
-> 
-> 
-> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-> index bc9a6656fc0c..a407f9cd549e 100644
-> --- a/arch/arm64/include/asm/acpi.h
-> +++ b/arch/arm64/include/asm/acpi.h
-> @@ -124,7 +124,8 @@ static inline int get_cpu_for_acpi_id(u32 uid)
->         int cpu;
-> 
->         for (cpu = 0; cpu < nr_cpu_ids; cpu++)
-> -               if (uid == get_acpi_id_for_cpu(cpu))
-> +               if (acpi_cpu_get_madt_gicc(cpu) &&
-> +                   uid == get_acpi_id_for_cpu(cpu))
->                         return cpu;
-> 
->         return -EINVAL;
-> 
-> I'll spin an additional patch to make that change after testing I haven't
-> messed it up.
-> 
-> At the call site in gic_acpi_parse_madt_gicc() I'm not sure we can do better
-> than just skipping setting broken_rdists. I'll also pull the declaration of
-> that cpu variable down into this condition so it's more obvious we only
-> care about it in this error path.
+This also triggers a different issue (that also comes down to "ufs bad") on
+another QC platform (SM8550):
 
-Just for the record, for my deliberately broken test case it seems that it returns
-a valid CPU ID anyway. That's what I'd expect given acpi_parse_and_init_cpus()
-doesn't check if the gicc entrees are enabled or not.
+[    4.282098] scsi host0: ufshcd
+[    4.315970] ufshcd-qcom 1d84000.ufs: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
+[    4.330155] host_regs: 00000000: 3587031f 00000000 00000400 00000000
+[    4.343955] host_regs: 00000010: 01000000 00010217 00000000 00000000
+[    4.356027] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
+[    4.370136] host_regs: 00000030: 0000000f 00000003 00000000 00000000
+[    4.376662] host_regs: 00000040: 00000000 00000000 00000000 00000000
+[    4.383192] host_regs: 00000050: 85109000 00000008 00000000 00000000
+[    4.389719] host_regs: 00000060: 00000000 80000000 00000000 00000000
+[    4.396245] host_regs: 00000070: 8510a000 00000008 00000000 00000000
+[    4.402773] host_regs: 00000080: 00000000 00000000 00000000 00000000
+[    4.409298] host_regs: 00000090: 00000016 00000000 00000000 0000000c
+[    4.415900] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x8851093e0, fsynr=0x3b0001, cbfrsynra=0x60, cb=2
+[    4.416135] ufshcd-qcom 1d84000.ufs: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
+[    4.951750] ufshcd-qcom 1d84000.ufs: ufshcd_verify_dev_init: NOP OUT failed -11
+[    4.960644] ufshcd-qcom 1d84000.ufs: ufshcd_async_scan failed: -11
 
-Jonathan
+Reverting the commits Dmitry mentioned also fixes this.
 
-> 
-> Jonathan
-> 
-> 
-> 
-> 
-> 
-> > 
-> > Thanks,
-> > 
-> > 	M.
-> >   
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+Konrad
 
 
