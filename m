@@ -1,197 +1,171 @@
-Return-Path: <linux-acpi+bounces-5495-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5496-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A178B716B
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:56:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6482C8B725D
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 13:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0472F1C22280
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 10:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA122824DB
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 11:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2C812C476;
-	Tue, 30 Apr 2024 10:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jPhX06kA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BBE12D20F;
+	Tue, 30 Apr 2024 11:07:22 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C4C12C534
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Apr 2024 10:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88BC1E50A;
+	Tue, 30 Apr 2024 11:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714474582; cv=none; b=EE7wYRlNy5M49UxG3/ncjoPddZugFDof/yXBprFtcY5JyZl23dkEWsHE6q/cLaAbd3G/tVXgp71GImPed/HTLOVdLwn5rWpSGwRIueHbtntt+xv7mzMcCnMATxDtCnhCxCPRZe6HMjeHXekf8ukEenJ+nttbyFgslOOJ9ghxwH8=
+	t=1714475242; cv=none; b=JUWz8hmjhlUQBYGWWj+bWn15Q42ztMLCG9fR6Jle3FDAWiZxpC6PcJpdPgYQpZqNPyd0qMqRMHLb32bY+gNFeHYCd5Gmg86zSuNB3BfhdTdHthj9wTF2j5/Hfx0TBSgaf/DTeUDQIlKcjYdh7OPSHklpYPIKyVLnxz+/zgePwlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714474582; c=relaxed/simple;
-	bh=Z7yL0U/gcDov5K0l+LMi9J5dcrJohhCp1XV2fyheWlo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HuFPIORsNZfBYqyc+RI+/SS3Z9+fTim85+fUOipMGW7zFY+271FxJ5SCigGY8KyEawLLhxsJZ3WfrXQOqOu94N8tK9RGdVvjnAE0ecleNkJAnvspKJob2gyQOoq1Bs18QztrQRC3m+KoLdM272y/kAB6Fr7zgPqWddHTNKrMa1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jPhX06kA; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-61af74a010aso54277787b3.0
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Apr 2024 03:56:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714474579; x=1715079379; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=j3ANzOovClROUBS3Nn4nb+rVzx+/CIWtYXFgMiBCBSI=;
-        b=jPhX06kARaHPP83POVRTG9tzx8oCzL0KabBEkcfE2yAD0fx0XRmByCRBALxyybNwXn
-         2lcdeZqvmp4uALORJiCL5F/8Jli3BQql1TPq6+jgtRgjfJDEKNvUuVxzLskQrfzoSle7
-         P62908K5PW4AiRaLOvSUUkXbP+6a0cdpNLgOkeTmXiJ1hvJRBBh0f1/nn5zHGlrW8MUq
-         AUP3H4OJW7Caj1oveeo6ViSHXxwh7R8lXx8DCbJiIiLK31vj+kZfXKfqpuuQEij2sL33
-         B5I6qWr33xFAk0Xw/LjVjdfB0UWzl9cJ/eJCCFxqlBcR2+fm/P0ogeeNDLsU1w0u3xTG
-         AhAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714474579; x=1715079379;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j3ANzOovClROUBS3Nn4nb+rVzx+/CIWtYXFgMiBCBSI=;
-        b=nzF4iAJRLMDcFRQ0M37OjZvOG0d490TcOPBuXJONjnFhKt5ruE/vy5d6jLm6iSAUz6
-         4LbJ3tCYhSBcQs7MEQi9I1iOINcdo5liM9QtSQnvxPBgz4FFQ3oeVOX3/Urum/ryOPfc
-         kd8hdj8hCE6t3Dn3hpQGdMUZq6iKzQTV8QGR6pXLXucAhABRFM0yYnLGY2cTnsathVCp
-         AUige4SYqTCP/jOwR75yKVZRu0606EGitXPAs/LDYSGyakwUnN3l1zu16r9vu8TS3cEz
-         EI9xuoeM+o5VDTLiECrd7V9niJKKZ+kxrmHM0LeY7d5iBnDtoX0YBVbG5sCQ85MKSgm0
-         j9JA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpe1Yn4UiJB4DsGNOFSR8f5lnwvY0BHtP/eUY6QddT1kPovQinmRO/netrpHcftioEh8tep3snLfqf1/R6q2tA1MHIpxBVau8d2w==
-X-Gm-Message-State: AOJu0YykRvFj05JfFp+TiJJnnqigCjgmdq0SlpOm3pvtSb4s3JDCGx6L
-	JYFHgIulVQnXR1GI5yuFXgkxUszcNqSADXicQ47k+QcLU4zLca2n9+wRxKYkiFmMbTo+bsD6gDn
-	tMOXjcUuZHGmz5nrDygOfDcTWbAcwwcRnyTbLWw==
-X-Google-Smtp-Source: AGHT+IGpcUPe4PzDbKJZuWjVEt2j2YgVnBnHAeHmwYGgyhtthmZCRgI611EqUANkd2RSTrLN4sfimNVOJdo7rmRvZvI=
-X-Received: by 2002:a05:690c:14:b0:61a:fc3b:fdd3 with SMTP id
- bc20-20020a05690c001400b0061afc3bfdd3mr14804250ywb.43.1714474578907; Tue, 30
- Apr 2024 03:56:18 -0700 (PDT)
+	s=arc-20240116; t=1714475242; c=relaxed/simple;
+	bh=3qxr+TObkd/zG873vQZ3MoGhZ/M55hk6OTuRvE2QsSQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AFqv/67FPfaNyLOMxtwX9zQM/pNn412yk/TKwHAG15kh7SnhUR4X//5SGkrmGKrhFL/MPvBwfj2PozNC2BAaguatnFYWbtYkNT37Mx4z5UDRQCJXb0E6qtOneqWAJNWLQ5DpAhfGBCtupiEiuYp/bgMg2WQOjGK34ESNLGxNUTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTHQW5wKlz6J6mX;
+	Tue, 30 Apr 2024 19:04:35 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 34773140B2A;
+	Tue, 30 Apr 2024 19:07:16 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
+ 2024 12:07:15 +0100
+Date: Tue, 30 Apr 2024 12:07:14 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Gavin Shan <gshan@redhat.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, "Jean-Philippe
+ Brucker" <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier
+	<maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linuxarm@huawei.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Sudeep
+ Holla" <sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 05/16] ACPI: processor: Add
+ acpi_get_processor_handle() helper
+Message-ID: <20240430120714.00007ee3@huawei.com>
+In-Reply-To: <63f7c71a-fa01-4604-8fc6-9f52b5b31d6b@redhat.com>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+	<20240426135126.12802-6-Jonathan.Cameron@huawei.com>
+	<63f7c71a-fa01-4604-8fc6-9f52b5b31d6b@redhat.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1713523152.git.robin.murphy@arm.com> <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
- <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru> <2662a5ba-3115-4fe5-9cec-bff71f703a82@arm.com>
- <CAA8EJprxLvYEP8+ggk8fw--kHaK+_QoYan4st2wWpPicHa6_+w@mail.gmail.com> <20d44077-d0a8-470a-bf6f-82683db894cf@arm.com>
-In-Reply-To: <20d44077-d0a8-470a-bf6f-82683db894cf@arm.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 30 Apr 2024 13:56:07 +0300
-Message-ID: <CAA8EJpqu4d6G3wci7gKGhz0qBVwQ-DEJW3soG2QCyNPCg6Gq8g@mail.gmail.com>
-Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>, Vineet Gupta <vgupta@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, 
-	Sudeep Holla <sudeep.holla@arm.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, 
-	iommu@lists.linux.dev, devicetree@vger.kernel.org, 
-	Jason Gunthorpe <jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Tue, 30 Apr 2024 at 13:20, Robin Murphy <robin.murphy@arm.com> wrote:
->
-> On 2024-04-30 1:41 am, Dmitry Baryshkov wrote:
-> > On Tue, 30 Apr 2024 at 01:26, Robin Murphy <robin.murphy@arm.com> wrote:
-> >>
-> >> On 2024-04-29 5:31 pm, Dmitry Baryshkov wrote:
-> >>> On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
-> >>>> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
-> >>>> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
-> >>>> which means there should be no harm in achieving the same order of
-> >>>> operations by running it off the back of iommu_probe_device() itself.
-> >>>> This then puts it in line with the x86 and s390 .probe_finalize bodges,
-> >>>> letting us pull it all into the main flow properly. As a bonus this lets
-> >>>> us fold in and de-scope the PCI workaround setup as well.
-> >>>>
-> >>>> At this point we can also then pull the call up inside the group mutex,
-> >>>> and avoid having to think about whether iommu_group_store_type() could
-> >>>> theoretically race and free the domain if iommu_setup_dma_ops() ran just
-> >>>> *before* iommu_device_use_default_domain() claims it... Furthermore we
-> >>>> replace one .probe_finalize call completely, since the only remaining
-> >>>> implementations are now one which only needs to run once for the initial
-> >>>> boot-time probe, and two which themselves render that path unreachable.
-> >>>>
-> >>>> This leaves us a big step closer to realistically being able to unpick
-> >>>> the variety of different things that iommu_setup_dma_ops() has been
-> >>>> muddling together, and further streamline iommu-dma into core API flows
-> >>>> in future.
-> >>>>
-> >>>> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
-> >>>> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> >>>> Tested-by: Hanjun Guo <guohanjun@huawei.com>
-> >>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> >>>> ---
-> >>>> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
-> >>>>       is covered as well, with bonus side-effects as above.
-> >>>> v3: *Really* do that, remembering the other two probe_finalize sites too.
-> >>>> ---
-> >>>>    arch/arm64/mm/dma-mapping.c  |  2 --
-> >>>>    drivers/iommu/amd/iommu.c    |  8 --------
-> >>>>    drivers/iommu/dma-iommu.c    | 18 ++++++------------
-> >>>>    drivers/iommu/dma-iommu.h    | 14 ++++++--------
-> >>>>    drivers/iommu/intel/iommu.c  |  7 -------
-> >>>>    drivers/iommu/iommu.c        | 20 +++++++-------------
-> >>>>    drivers/iommu/s390-iommu.c   |  6 ------
-> >>>>    drivers/iommu/virtio-iommu.c | 10 ----------
-> >>>>    include/linux/iommu.h        |  7 -------
-> >>>>    9 files changed, 19 insertions(+), 73 deletions(-)
-> >>>
-> >>> This patch breaks UFS on Qualcomm SC8180X Primus platform:
-> >>>
-> >>>
-> >>> [    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
-> >>
-> >> Hmm, a context fault implies that the device did get attached to a DMA
-> >> domain, thus has successfully been through __iommu_probe_device(), yet
-> >> somehow still didn't get the right DMA ops (since that "IOVA" looks more
-> >> like a PA to me). Do you see the "Adding to IOMMU group..." message for
-> >> this device, and/or any other relevant messages or errors before this
-> >> point?
-> >
-> > No, nothing relevant.
-> >
-> > [    8.372395] ufshcd-qcom 1d84000.ufshc: Adding to iommu group 6
-> >
-> > (please ignore the timestamp, it comes before ufshc being probed).
-> >
-> >> I'm guessing there's a fair chance probe deferral might be
-> >> involved as well. I'd like to understand what path(s) this ends up
-> >> taking through __iommu_probe_device() and of_dma_configure(), or at
-> >> least the number and order of probe attempts between the UFS and SMMU
-> >> drivers.
-> >
-> > __iommu_probe_device() gets called twice and returns early because ops is NULL.
-> >
-> > Then finally of_dma_configure_id() is called. The following branches are taken:
-> >
-> > np == dev->of_node
-> > of_dma_get_range() returned 0
-> > bus_dma_limit and dma_range_map are set
-> > __iommu_probe_device() is called, using the `!group->default_domain &&
-> > !group_lis` case, then group->default_domain() is not NULL,
-> > In the end, iommu_setup_dma_ops() is called.
-> >
-> > Then the ufshc probe defers (most likely the PHY is not present or
-> > some other device is not there yet).
->
-> Ah good, probe deferral. And indeed the half-formed hunch from last
-> night grew into a pretty definite idea by this morning... patch incoming.
+On Tue, 30 Apr 2024 14:26:06 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
-Thanks a lot for the quick fix!
+> On 4/26/24 23:51, Jonathan Cameron wrote:
+> > If CONFIG_ACPI_PROCESSOR provide a helper to retrieve the
+> > acpi_handle for a given CPU allowing access to methods
+> > in DSDT.
+> > 
+> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > ---
+> > v8: Code simplification suggested by Rafael.
+> >      Fixup ;; spotted by Gavin
+> > ---
+> >   drivers/acpi/acpi_processor.c | 11 +++++++++++
+> >   include/linux/acpi.h          |  7 +++++++
+> >   2 files changed, 18 insertions(+)
+> >   
+> 
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> 
+Thanks,
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > index 3b180e21f325..ecc2721fecae 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -35,6 +35,17 @@ EXPORT_PER_CPU_SYMBOL(processors);
+> >   struct acpi_processor_errata errata __read_mostly;
+> >   EXPORT_SYMBOL_GPL(errata);
+> >   
+> > +acpi_handle acpi_get_processor_handle(int cpu)
+> > +{
+> > +	struct acpi_processor *pr;
+> > +
+> > +	pr = per_cpu(processors, cpu);
+> > +	if (pr)
+> > +		return pr->handle;
+> > +
+> > +	return NULL;
+> > +}
+> > +  
+> 
+> Maybe it's worthy to have more check here, something like below.
+> However, it's also fine without the extra check.
 
+We could harden this, but for now the call sites are only
+int arch_(un)register_cpu() so if we get there with either
+of these failing something went very wrong.
 
--- 
-With best wishes
-Dmitry
+Maybe if it gets used more widely this defense would be wise.
+
+Jonathan
+
+> 
+> 	if (cpu >= nr_cpu_ids || !cpu_possible(cpu))
+> 		return NULL;
+> 
+> >   static int acpi_processor_errata_piix4(struct pci_dev *dev)
+> >   {
+> >   	u8 value1 = 0;
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index 34829f2c517a..9844a3f9c4e5 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -309,6 +309,8 @@ int acpi_map_cpu(acpi_handle handle, phys_cpuid_t physid, u32 acpi_id,
+> >   int acpi_unmap_cpu(int cpu);
+> >   #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+> >   
+> > +acpi_handle acpi_get_processor_handle(int cpu);
+> > +
+> >   #ifdef CONFIG_ACPI_HOTPLUG_IOAPIC
+> >   int acpi_get_ioapic_id(acpi_handle handle, u32 gsi_base, u64 *phys_addr);
+> >   #endif
+> > @@ -1077,6 +1079,11 @@ static inline bool acpi_sleep_state_supported(u8 sleep_state)
+> >   	return false;
+> >   }
+> >   
+> > +static inline acpi_handle acpi_get_processor_handle(int cpu)
+> > +{
+> > +	return NULL;
+> > +}
+> > +
+> >   #endif	/* !CONFIG_ACPI */
+> >   
+> >   extern void arch_post_acpi_subsys_init(void);  
+> 
+> Thanks,
+> Gavin
+> 
+
 
