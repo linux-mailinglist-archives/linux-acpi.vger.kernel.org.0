@@ -1,186 +1,461 @@
-Return-Path: <linux-acpi+bounces-5499-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5500-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DB08B75CB
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 14:33:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538968B7763
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 15:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A052284461
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 12:33:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5705DB20C51
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 13:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D574C17107C;
-	Tue, 30 Apr 2024 12:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44223171E62;
+	Tue, 30 Apr 2024 13:43:00 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D9213F43D;
-	Tue, 30 Apr 2024 12:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4790171E45;
+	Tue, 30 Apr 2024 13:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714480416; cv=none; b=jd63u0s0r7LcQKQ1BzsavQNLzKucYwjiltVil678WUqLAlCKMweqeS81q/lQYvU8IcZvHAZ+iEFQkthv2I+WysEIAHShBaWZ/oES74FNyq86E9faJ2ZdK0PRsaGqlpNQEKHOYv8PAsloUCJQFWRvNGDdyjkmDFqQJIGSxgJ4f8E=
+	t=1714484580; cv=none; b=i05TZTj5OrEgW+KrZ80K9ucrU+jpIokVBC8W0z34A7qMreh18nUZ3AuQZSVgUUgvtyPSEUK809mMD2iATzPIVwiZBfEDNIXcrGoV1Myn1k1UDF1N3sGPjcGRlIVYnIuUAztovotbX1yJA18edFdPQdTX/QdSxjC0LVrzsaHHiUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714480416; c=relaxed/simple;
-	bh=XCtNuj3lTXBimhOP7jPh4zKAQ74LdIqixQXmV3pfcfc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pixCCbdDr9KhWApF6ni1bZQfQjtfUzi/OFcuoeS9gfOWJD/aq1lcO3ywqYbIRVLoEKv+BfmG4S2KbJedDU7Qs/JjSexX1IWLxWGIBKMcIgvAs3kKVJPGP+ZuiA0DRVm/unSwFRD7icz0J3N2oJxeariFG6c/vO8guPsOL6q1p0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DCD52F4;
-	Tue, 30 Apr 2024 05:33:59 -0700 (PDT)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 59BDC3F73F;
-	Tue, 30 Apr 2024 05:33:28 -0700 (PDT)
-Message-ID: <1e691960-bc52-4e5c-89d7-ecd3f7dc9f56@arm.com>
-Date: Tue, 30 Apr 2024 13:33:20 +0100
+	s=arc-20240116; t=1714484580; c=relaxed/simple;
+	bh=fHHfP3R98+26HqGgdZlRCT+RABIBzlHZU7lRM67x8cY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jf1OFLqucZpP/TqVK8u09FmszfqbudAZNV4KFpqM8jNuiN6xnQ2W/PJkLc18A7P1+DNsu8h0Nrt3u/TcNc++mvMKdvVtCeM1PSIWxyid1RuqRVNemj5McDfADR4Mqh60G/+Y1lvpu+sTyM30NWZiQlnermccigLAK77e5Ap6118=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTLt564WBz6GD6f;
+	Tue, 30 Apr 2024 21:40:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id EA1011400DC;
+	Tue, 30 Apr 2024 21:42:50 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
+ 2024 14:42:50 +0100
+Date: Tue, 30 Apr 2024 14:42:48 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Gavin Shan <gshan@redhat.com>, <linuxarm@huawei.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, "James Morse"
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier
+	<maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla
+	<sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 04/16] ACPI: processor: Move checks and availability
+ of acpi_processor earlier
+Message-ID: <20240430144217.00003bf6@huawei.com>
+In-Reply-To: <20240430111341.00003dba@huawei.com>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+	<20240426135126.12802-5-Jonathan.Cameron@huawei.com>
+	<80a2e07f-ecb2-48af-b2be-646f17e0e63e@redhat.com>
+	<20240430102838.00006e04@Huawei.com>
+	<20240430111341.00003dba@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/7] iommu/dma: Centralise iommu_setup_dma_ops()
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- "open list:DRM DRIVER FOR MSM ADRENO GPU" <linux-arm-msm@vger.kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Christoph Hellwig <hch@lst.de>,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
- <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>,
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- Matthew Rosato <mjrosato@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-acpi@vger.kernel.org, iommu@lists.linux.dev,
- devicetree@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-References: <cover.1713523152.git.robin.murphy@arm.com>
- <bebea331c1d688b34d9862eefd5ede47503961b8.1713523152.git.robin.murphy@arm.com>
- <Zi_LV28TR-P-PzXi@eriador.lumag.spb.ru>
- <CAA8EJprL8NbNfOvp17hrHoVNkKBpD39xfeu+STm6m9VObF2n9Q@mail.gmail.com>
- <ebc8813c-74eb-49d1-b8d0-a6f1821f711a@linaro.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <ebc8813c-74eb-49d1-b8d0-a6f1821f711a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 30/04/2024 1:23 pm, Konrad Dybcio wrote:
-> On 29.04.2024 11:26 PM, Dmitry Baryshkov wrote:
->> On Mon, 29 Apr 2024 at 19:31, Dmitry Baryshkov
->> <dmitry.baryshkov@linaro.org> wrote:
->>>
->>> On Fri, Apr 19, 2024 at 05:54:45PM +0100, Robin Murphy wrote:
->>>> It's somewhat hard to see, but arm64's arch_setup_dma_ops() should only
->>>> ever call iommu_setup_dma_ops() after a successful iommu_probe_device(),
->>>> which means there should be no harm in achieving the same order of
->>>> operations by running it off the back of iommu_probe_device() itself.
->>>> This then puts it in line with the x86 and s390 .probe_finalize bodges,
->>>> letting us pull it all into the main flow properly. As a bonus this lets
->>>> us fold in and de-scope the PCI workaround setup as well.
->>>>
->>>> At this point we can also then pull the call up inside the group mutex,
->>>> and avoid having to think about whether iommu_group_store_type() could
->>>> theoretically race and free the domain if iommu_setup_dma_ops() ran just
->>>> *before* iommu_device_use_default_domain() claims it... Furthermore we
->>>> replace one .probe_finalize call completely, since the only remaining
->>>> implementations are now one which only needs to run once for the initial
->>>> boot-time probe, and two which themselves render that path unreachable.
->>>>
->>>> This leaves us a big step closer to realistically being able to unpick
->>>> the variety of different things that iommu_setup_dma_ops() has been
->>>> muddling together, and further streamline iommu-dma into core API flows
->>>> in future.
->>>>
->>>> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com> # For Intel IOMMU
->>>> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
->>>> Tested-by: Hanjun Guo <guohanjun@huawei.com>
->>>> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
->>>> ---
->>>> v2: Shuffle around to make sure the iommu_group_do_probe_finalize() case
->>>>      is covered as well, with bonus side-effects as above.
->>>> v3: *Really* do that, remembering the other two probe_finalize sites too.
->>>> ---
->>>>   arch/arm64/mm/dma-mapping.c  |  2 --
->>>>   drivers/iommu/amd/iommu.c    |  8 --------
->>>>   drivers/iommu/dma-iommu.c    | 18 ++++++------------
->>>>   drivers/iommu/dma-iommu.h    | 14 ++++++--------
->>>>   drivers/iommu/intel/iommu.c  |  7 -------
->>>>   drivers/iommu/iommu.c        | 20 +++++++-------------
->>>>   drivers/iommu/s390-iommu.c   |  6 ------
->>>>   drivers/iommu/virtio-iommu.c | 10 ----------
->>>>   include/linux/iommu.h        |  7 -------
->>>>   9 files changed, 19 insertions(+), 73 deletions(-)
->>>
->>> This patch breaks UFS on Qualcomm SC8180X Primus platform:
->>>
->>>
->>> [    3.846856] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x1032db3e0, fsynr=0x130000, cbfrsynra=0x300, cb=4
->>> [    3.846880] ufshcd-qcom 1d84000.ufshc: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
->>> [    3.846929] host_regs: 00000000: 1587031f 00000000 00000300 00000000
->>> [    3.846935] host_regs: 00000010: 01000000 00010217 00000000 00000000
->>> [    3.846941] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
->>> [    3.846946] host_regs: 00000030: 0000000f 00000001 00000000 00000000
->>> [    3.846951] host_regs: 00000040: 00000000 00000000 00000000 00000000
->>> [    3.846956] host_regs: 00000050: 032db000 00000001 00000000 00000000
->>> [    3.846962] host_regs: 00000060: 00000000 80000000 00000000 00000000
->>> [    3.846967] host_regs: 00000070: 032dd000 00000001 00000000 00000000
->>> [    3.846972] host_regs: 00000080: 00000000 00000000 00000000 00000000
->>> [    3.846977] host_regs: 00000090: 00000016 00000000 00000000 0000000c
->>> [    3.847074] ufshcd-qcom 1d84000.ufshc: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
->>> [    4.406550] ufshcd-qcom 1d84000.ufshc: ufshcd_verify_dev_init: NOP OUT failed -11
->>> [    4.417953] ufshcd-qcom 1d84000.ufshc: ufshcd_async_scan failed: -11
->>
->> Just to confirm: reverting f091e93306e0 ("dma-mapping: Simplify
->> arch_setup_dma_ops()") and b67483b3c44e ("iommu/dma: Centralise
->> iommu_setup_dma_ops()" fixes the issue for me. Please ping me if you'd
->> like me to test a fix.
+On Tue, 30 Apr 2024 11:13:41 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+
+> On Tue, 30 Apr 2024 10:28:38 +0100
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 > 
-> This also triggers a different issue (that also comes down to "ufs bad") on
-> another QC platform (SM8550):
+> > On Tue, 30 Apr 2024 14:17:24 +1000
+> > Gavin Shan <gshan@redhat.com> wrote:
+> >   
+> > > On 4/26/24 23:51, Jonathan Cameron wrote:    
+> > > > Make the per_cpu(processors, cpu) entries available earlier so that
+> > > > they are available in arch_register_cpu() as ARM64 will need access
+> > > > to the acpi_handle to distinguish between acpi_processor_add()
+> > > > and earlier registration attempts (which will fail as _STA cannot
+> > > > be checked).
+> > > > 
+> > > > Reorder the remove flow to clear this per_cpu() after
+> > > > arch_unregister_cpu() has completed, allowing it to be used in
+> > > > there as well.
+> > > > 
+> > > > Note that on x86 for the CPU hotplug case, the pr->id prior to
+> > > > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
+> > > > must be initialized after that call or after checking the ID
+> > > > is valid (not hotplug path).
+> > > > 
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > 
+> > > > ---
+> > > > v8: On buggy bios detection when setting per_cpu structures
+> > > >      do not carry on.
+> > > >      Fix up the clearing of per cpu structures to remove unwanted
+> > > >      side effects and ensure an error code isn't use to reference them.
+> > > > ---
+> > > >   drivers/acpi/acpi_processor.c | 79 +++++++++++++++++++++--------------
+> > > >   1 file changed, 48 insertions(+), 31 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > > > index ba0a6f0ac841..3b180e21f325 100644
+> > > > --- a/drivers/acpi/acpi_processor.c
+> > > > +++ b/drivers/acpi/acpi_processor.c
+> > > > @@ -183,8 +183,38 @@ static void __init acpi_pcc_cpufreq_init(void) {}
+> > > >   #endif /* CONFIG_X86 */
+> > > >   
+> > > >   /* Initialization */
+> > > > +static DEFINE_PER_CPU(void *, processor_device_array);
+> > > > +
+> > > > +static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
+> > > > +				       struct acpi_device *device)
+> > > > +{
+> > > > +	BUG_ON(pr->id >= nr_cpu_ids);      
+> > > 
+> > > One blank line after BUG_ON() if we need to follow original implementation.    
+> > 
+> > Sure unintentional - I'll put that back.
+> >   
+> > >     
+> > > > +	/*
+> > > > +	 * Buggy BIOS check.
+> > > > +	 * ACPI id of processors can be reported wrongly by the BIOS.
+> > > > +	 * Don't trust it blindly
+> > > > +	 */
+> > > > +	if (per_cpu(processor_device_array, pr->id) != NULL &&
+> > > > +	    per_cpu(processor_device_array, pr->id) != device) {
+> > > > +		dev_warn(&device->dev,
+> > > > +			 "BIOS reported wrong ACPI id %d for the processor\n",
+> > > > +			 pr->id);
+> > > > +		/* Give up, but do not abort the namespace scan. */      
+> > > 
+> > > It depends on how the return value is handled by the caller if the namespace
+> > > is continued to be scanned. The caller can be acpi_processor_hotadd_init()
+> > > and acpi_processor_get_info() after this patch is applied. So I think this
+> > > specific comment need to be moved to the caller.    
+> > 
+> > Good point. This gets messy and was an unintended change.
+> > 
+> > Previously the options were:
+> > 1) acpi_processor_get_info() failed for other reasons - this code was never called.
+> > 2) acpi_processor_get_info() succeeded without acpi_processor_hotadd_init (non hotplug)
+> >    this code then ran and would paper over the problem doing a bunch of cleanup under err.
+> > 3) acpi_processor_get_info() succeeded with acpi_processor_hotadd_init called.
+> >    This code then ran and would paper over the problem doing a bunch of cleanup under err.
+> > 
+> > We should maintain that or argue cleanly against it.
+> > 
+> > This isn't helped the the fact I have no idea which cases we care about for that bios
+> > bug handling.  Do any of those bios's ever do hotplug?  Guess we have to try and maintain
+> > whatever protection this was offering.
+> > 
+> > Also, the original code leaks data in some paths and I have limited idea
+> > of whether it is intentional or not. So to tidy the issue up that you've identified
+> > I'll need to try and make that code consistent first.
+> > 
+> > I suspect the only way to do that is going to be to duplicate the allocations we
+> > 'want' to leak to deal with the bios bug detection.
+> > 
+> > For example acpi_processor_get_info() failing leaks pr and pr->throttling.shared_cpu_map
+> > before this series. After this series we need pr to leak because it's used for the detection
+> > via processor_device_array.
+> > 
+> > I'll work through this but it's going to be tricky to tell if we get right.
+> > Step 1 will be closing the existing leaks and then we will have something
+> > consistent to build on.
+> >   
+> I 'think' that fixing the original leaks makes this all much more straight forward.
+> That return 0 for acpi_processor_get_info() never made sense as far as I can tell.
+> The pr isn't used after this point.
 > 
-> [    4.282098] scsi host0: ufshcd
-> [    4.315970] ufshcd-qcom 1d84000.ufs: ufshcd_check_errors: saved_err 0x20000 saved_uic_err 0x0
-> [    4.330155] host_regs: 00000000: 3587031f 00000000 00000400 00000000
-> [    4.343955] host_regs: 00000010: 01000000 00010217 00000000 00000000
-> [    4.356027] host_regs: 00000020: 00000000 00070ef5 00000000 00000000
-> [    4.370136] host_regs: 00000030: 0000000f 00000003 00000000 00000000
-> [    4.376662] host_regs: 00000040: 00000000 00000000 00000000 00000000
-> [    4.383192] host_regs: 00000050: 85109000 00000008 00000000 00000000
-> [    4.389719] host_regs: 00000060: 00000000 80000000 00000000 00000000
-> [    4.396245] host_regs: 00000070: 8510a000 00000008 00000000 00000000
-> [    4.402773] host_regs: 00000080: 00000000 00000000 00000000 00000000
-> [    4.409298] host_regs: 00000090: 00000016 00000000 00000000 0000000c
-> [    4.415900] arm-smmu 15000000.iommu: Unhandled context fault: fsr=0x402, iova=0x8851093e0, fsynr=0x3b0001, cbfrsynra=0x60, cb=2
-> [    4.416135] ufshcd-qcom 1d84000.ufs: ufshcd_err_handler started; HBA state eh_fatal; powered 1; shutting down 0; saved_err = 131072; saved_uic_err = 0; force_reset = 0
-> [    4.951750] ufshcd-qcom 1d84000.ufs: ufshcd_verify_dev_init: NOP OUT failed -11
-> [    4.960644] ufshcd-qcom 1d84000.ufs: ufshcd_async_scan failed: -11
+> What about something along lines of.
 > 
-> Reverting the commits Dmitry mentioned also fixes this.
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index 161c95c9d60a..97cff4492304 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -392,8 +392,10 @@ static int acpi_processor_add(struct acpi_device *device,
+>         device->driver_data = pr;
+> 
+>         result = acpi_processor_get_info(device);
+> -       if (result) /* Processor is not physically present or unavailable */
+> -               return 0;
+> +       if (result) { /* Processor is not physically present or unavailable */
+> +               result = 0;
+> +               goto err_free_throttling_mask;
 
-Yeah, It'll be the same thing - doesn't really matter exactly *how* the 
-UFS goes wrong due to the SMMU blocking it, the issue is that the SMMU 
-is erroneously blocking it in the first place due to a DMA ops mixup. 
-Fix is now here:
+FWIW this is wrong, should be goto err_clear_driver_data
+(you can see it set just at the top of this block and that never fails!)
+The err_free_throttling_mask label should be unused and hence won't exist in v9.
 
-https://lore.kernel.org/linux-iommu/d4cc20cbb0c45175e98dd76bf187e2ad6421296d.1714472573.git.robin.murphy@arm.com/
+> +       }
+> 
+>         BUG_ON(pr->id >= nr_cpu_ids);
+> 
+> @@ -408,7 +410,7 @@ static int acpi_processor_add(struct acpi_device *device,
+>                         "BIOS reported wrong ACPI id %d for the processor\n",
+>                         pr->id);
+>                 /* Give up, but do not abort the namespace scan. */
+> -               goto err;
+> +               goto err_clear_driver_data;
+>         }
+>         /*
+>          * processor_device_array is not cleared on errors to allow buggy BIOS
+> @@ -420,12 +422,12 @@ static int acpi_processor_add(struct acpi_device *device,
+>         dev = get_cpu_device(pr->id);
+>         if (!dev) {
+>                 result = -ENODEV;
+> -               goto err;
+> +               goto err_clear_per_cpu;
+>         }
+> 
+>         result = acpi_bind_one(dev, device);
+>         if (result)
+> -               goto err;
+> +               goto err_clear_per_cpu;
+> 
+>         pr->dev = dev;
+> 
+> @@ -436,10 +438,12 @@ static int acpi_processor_add(struct acpi_device *device,
+>         dev_err(dev, "Processor driver could not be attached\n");
+>         acpi_unbind_one(dev);
+> 
+> - err:
+> -       free_cpumask_var(pr->throttling.shared_cpu_map);
+> -       device->driver_data = NULL;
+> + err_clear_per_cpu:
+>         per_cpu(processors, pr->id) = NULL;
+> + err_clear_driver_data:
+> +       device->driver_data = NULL;
+> + err_free_throttling_mask:
+> +       free_cpumask_var(pr->throttling.shared_cpu_map);
+>   err_free_pr:
+>         kfree(pr);
+>         return result;
+> 
+> Then the diff on this patch is simply:
+> 
+> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> index 3c49eae1e943..3b75f5aeb7ab 100644
+> --- a/drivers/acpi/acpi_processor.c
+> +++ b/drivers/acpi/acpi_processor.c
+> @@ -200,7 +200,6 @@ static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
+>                 dev_warn(&device->dev,
+>                          "BIOS reported wrong ACPI id %d for the processor\n",
+>                          pr->id);
+> -               /* Give up, but do not abort the namespace scan. */
+>                 return false;
+>         }
+>         /*
+> @@ -230,13 +229,14 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr,
+>                 goto out;
+> 
+>         if (!acpi_processor_set_per_cpu(pr, device)) {
+> +               ret = -EINVAL;
+>                 acpi_unmap_cpu(pr->id);
+>                 goto out;
+>         }
+> 
+>         ret = arch_register_cpu(pr->id);
+>         if (ret) {
+> -               /* Leave the processor device array in place to detect buggy bios */
+> +x              /* Leave the processor device array in place to detect buggy bios */
+>                 per_cpu(processors, pr->id) = NULL;
+>                 acpi_unmap_cpu(pr->id);
+>                 goto out;
+> @@ -262,7 +262,7 @@ static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+>  }
+>  #endif /* CONFIG_ACPI_HOTPLUG_CPU */
+> 
+> -static int acpi_processor_get_info(struct acpi_device *device)
+> +static int acpi_processor_get_info(struct acpi_device *device, bool bios_bug)
+>  {
+>         union acpi_object object = { 0 };
+>         struct acpi_buffer buffer = { sizeof(union acpi_object), &object };
+> @@ -361,7 +361,7 @@ static int acpi_processor_get_info(struct acpi_device *device)
+>                         return ret;
+>         } else {
+>                 if (!acpi_processor_set_per_cpu(pr, device))
+> -                       return 0;
+> +                       return -EINVAL;
+>         }
+> 
+>         /*
+> > > 
+> > > Besides, it seems acpi_processor_set_per_cpu() isn't properly called and
+> > > memory leakage can happen. More details are given below.
+> > >     
+> > > > +		return false;
+> > > > +	}
+> > > > +	/*
+> > > > +	 * processor_device_array is not cleared on errors to allow buggy BIOS
+> > > > +	 * checks.
+> > > > +	 */
+> > > > +	per_cpu(processor_device_array, pr->id) = device;
+> > > > +	per_cpu(processors, pr->id) = pr;
+> > > > +
+> > > > +	return true;
+> > > > +}
+> > > > +
+> > > >   #ifdef CONFIG_ACPI_HOTPLUG_CPU
+> > > > -static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > > > +static int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > > > +				      struct acpi_device *device)
+> > > >   {
+> > > >   	int ret;
+> > > >   
+> > > > @@ -198,8 +228,15 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > > >   	if (ret)
+> > > >   		goto out;
+> > > >   
+> > > > +	if (!acpi_processor_set_per_cpu(pr, device)) {
+> > > > +		acpi_unmap_cpu(pr->id);
+> > > > +		goto out;
+> > > > +	}
+> > > > +      
+> > > 
+> > > With the 'goto out', zero is returned from acpi_processor_hotadd_init() to acpi_processor_get_info().  
+> 
+> Indeed a bug :(
+> 
+> > > The zero return value is carried from acpi_map_cpu() in acpi_processor_hotadd_init(). If I'm correct,
+> > > we need return errno from acpi_processor_get_info() to acpi_processor_add() so that cleanup can be
+> > > done. For example, the cleanup corresponding to the 'err' tag can be done in acpi_processor_add().
+> > > Otherwise, we will have memory leakage.  
+> 
+> The confusion here was that previously acpi_processor_add() was missing error cleanup for
+> acpi_processor_get_info().  With that in place I think it's all much simpler.
+> 
+> Thanks for your eagle eyes!
+> 
+> Jonathan
+> 
+> 
+> > >     
+> > > >   	ret = arch_register_cpu(pr->id);
+> > > >   	if (ret) {
+> > > > +		/* Leave the processor device array in place to detect buggy bios */
+> > > > +		per_cpu(processors, pr->id) = NULL;
+> > > >   		acpi_unmap_cpu(pr->id);
+> > > >   		goto out;
+> > > >   	}
+> > > > @@ -217,7 +254,8 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > > >   	return ret;
+> > > >   }
+> > > >   #else
+> > > > -static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > > > +static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > > > +					     struct acpi_device *device)
+> > > >   {
+> > > >   	return -ENODEV;
+> > > >   }
+> > > > @@ -316,10 +354,13 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> > > >   	 *  because cpuid <-> apicid mapping is persistent now.
+> > > >   	 */
+> > > >   	if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> > > > -		int ret = acpi_processor_hotadd_init(pr);
+> > > > +		int ret = acpi_processor_hotadd_init(pr, device);
+> > > >   
+> > > >   		if (ret)
+> > > >   			return ret;
+> > > > +	} else {
+> > > > +		if (!acpi_processor_set_per_cpu(pr, device))
+> > > > +			return 0;
+> > > >   	}
+> > > >         
+> > > 
+> > > For non-hotplug case, we still need pass the error to acpi_processor_add() so that
+> > > cleanup corresponding 'err' tag can be done. Otherwise, we will have memory leakage.
+> > >     
+> > > >   	/*
+> > > > @@ -365,8 +406,6 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> > > >    * (cpu_data(cpu)) values, like CPU feature flags, family, model, etc.
+> > > >    * Such things have to be put in and set up by the processor driver's .probe().
+> > > >    */
+> > > > -static DEFINE_PER_CPU(void *, processor_device_array);
+> > > > -
+> > > >   static int acpi_processor_add(struct acpi_device *device,
+> > > >   					const struct acpi_device_id *id)
+> > > >   {
+> > > > @@ -395,28 +434,6 @@ static int acpi_processor_add(struct acpi_device *device,
+> > > >   	if (result) /* Processor is not physically present or unavailable */
+> > > >   		return 0;
+> > > >   
+> > > > -	BUG_ON(pr->id >= nr_cpu_ids);
+> > > > -
+> > > > -	/*
+> > > > -	 * Buggy BIOS check.
+> > > > -	 * ACPI id of processors can be reported wrongly by the BIOS.
+> > > > -	 * Don't trust it blindly
+> > > > -	 */
+> > > > -	if (per_cpu(processor_device_array, pr->id) != NULL &&
+> > > > -	    per_cpu(processor_device_array, pr->id) != device) {
+> > > > -		dev_warn(&device->dev,
+> > > > -			"BIOS reported wrong ACPI id %d for the processor\n",
+> > > > -			pr->id);
+> > > > -		/* Give up, but do not abort the namespace scan. */
+> > > > -		goto err;
+> > > > -	}
+> > > > -	/*
+> > > > -	 * processor_device_array is not cleared on errors to allow buggy BIOS
+> > > > -	 * checks.
+> > > > -	 */
+> > > > -	per_cpu(processor_device_array, pr->id) = device;
+> > > > -	per_cpu(processors, pr->id) = pr;
+> > > > -
+> > > >   	dev = get_cpu_device(pr->id);
+> > > >   	if (!dev) {
+> > > >   		result = -ENODEV;
+> > > > @@ -469,10 +486,6 @@ static void acpi_processor_remove(struct acpi_device *device)
+> > > >   	device_release_driver(pr->dev);
+> > > >   	acpi_unbind_one(pr->dev);
+> > > >   
+> > > > -	/* Clean up. */
+> > > > -	per_cpu(processor_device_array, pr->id) = NULL;
+> > > > -	per_cpu(processors, pr->id) = NULL;
+> > > > -
+> > > >   	cpu_maps_update_begin();
+> > > >   	cpus_write_lock();
+> > > >   
+> > > > @@ -480,6 +493,10 @@ static void acpi_processor_remove(struct acpi_device *device)
+> > > >   	arch_unregister_cpu(pr->id);
+> > > >   	acpi_unmap_cpu(pr->id);
+> > > >   
+> > > > +	/* Clean up. */
+> > > > +	per_cpu(processor_device_array, pr->id) = NULL;
+> > > > +	per_cpu(processors, pr->id) = NULL;
+> > > > +
+> > > >   	cpus_write_unlock();
+> > > >   	cpu_maps_update_done();
+> > > >         
+> > > 
+> > > Thanks,
+> > > Gavin
+> > >     
+> >   
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
-Thanks,
-Robin.
 
