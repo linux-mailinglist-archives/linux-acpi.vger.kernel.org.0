@@ -1,283 +1,317 @@
-Return-Path: <linux-acpi+bounces-5486-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5487-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6FE48B6E51
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 11:29:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 281A58B6E5B
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 11:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EADA31C22D52
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 09:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D337A283C2E
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 09:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9865B1BF6FF;
-	Tue, 30 Apr 2024 09:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="bavQ0b/r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDE012AAED;
+	Tue, 30 Apr 2024 09:28:51 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2071.outbound.protection.outlook.com [40.107.92.71])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CA41CB31A;
-	Tue, 30 Apr 2024 09:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714468973; cv=fail; b=FQfvLYv8nFY6i35ymtbfhB69/urv9b2f0H3tK5aH/7ATqxuCJhh3zitP7Jn2LycP4qoUCTUwqOSSQdk49iYh3GiwnLoSyiJps0AiqA8u24+8oShNnK6O/gIwdBrq3UDZqIavzd7J090xV9OyEuWZ0p6IKrrca/iD35Rz2dHdPJs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714468973; c=relaxed/simple;
-	bh=xu0ScFGHprQXGjeUjrlrMdsxsUwApZ59SWPq1CbOlj8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rzWLl1KgeYi/g8l5h4otbS2a5EDJX5XkgT4Oa6qkzXqHHhdwyu1lUO+dx6/Oio50C8uCS+NvA+Z1M2pGhY5PF8ipC7K8gEaQ9TMSwVxRB6ZvkUuk6e8ptb5sE42QSW2/Knkyq8sjFynxoivaRoJigZAX2canukxCqErDgUsik/o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=bavQ0b/r; arc=fail smtp.client-ip=40.107.92.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QKZUsnuvFjyoKzYTMx7HvEEKt7Kx16TqZY6QVgHCVtpJMcKL8QwOAD92vGYFaE3gelQ6o7FIXq9ZTsB4AYBsHTMdJZCqXr4bp2ricDmefIae0hBb81w60bO4DVQLWBpdKeyWJIWOCZvBGFTbcAH5WCM5Vs1k+J0VwledowQ6RdQJ2PvEYakZ1PQAOY+KQFNY9L90yr1N40DWBzymFdoM0wYo++PaQA6F33sRaybyPwY3pb/FKkm4IGlS1M63Mq82jtfPDBLNzRnNIpN1HLxm4kln+NnPdyw9boEflDU57/7SUIKTRHLhu5tj4Wcns9cB8yAWYBTX2SWuZ9xIJ+/l/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=auFNcIrPvH7HK9lxyY6YgTh7dndOSGd2/26TlLLxI9s=;
- b=Z2XaFPssE6NJ6nAHFCl/A7O2vCrHGcfBUtaAGBFMKlM2+13TyhjUPZJlWo8pZ63IHSHzOa5hAzq3tcnKwcblZVTOmM+qc1BRmgGmxfmKDtzAiRnwEd09sGT1hcpdKYf/NXfeTcRDN+HHSnc1qtwN7MHbHuktM6xOof3MOX7846N3qG3q+CTdt8X/UgDg+1YiSVyVU0nPpGHpHhYN+n9E4Ief/zmJVkVHbckS85ukrU9lKyLzePz3sRJ7YwshgvaTe8eLFwiy/G85AZCAQvR0tCQauJ2GykVKAbXLHmzcKfsw6rzGBNgckqmKaTfuUAxFTnIOntxvM+csy2MFVkpUkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=auFNcIrPvH7HK9lxyY6YgTh7dndOSGd2/26TlLLxI9s=;
- b=bavQ0b/rBMV5p0/2f5j9eZYKpWwWV/IWIs8P4TxzIJPaJVO8VoaxjDwmVzUOulxIOB7CTaTkRPyOWHsR/n/Jqx3BGOpBFBWpnjnDr189+pEYZCjzAXH6R+PmPcRpLUVCdNnM24iWWlYaWdme4CTORH8b8hgR+cqh7r1bYRfAr+s=
-Received: from PH0PR07CA0111.namprd07.prod.outlook.com (2603:10b6:510:4::26)
- by DM4PR12MB6616.namprd12.prod.outlook.com (2603:10b6:8:8e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.35; Tue, 30 Apr
- 2024 09:22:49 +0000
-Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
- (2603:10b6:510:4:cafe::e9) by PH0PR07CA0111.outlook.office365.com
- (2603:10b6:510:4::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.36 via Frontend
- Transport; Tue, 30 Apr 2024 09:22:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.204) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7544.18 via Frontend Transport; Tue, 30 Apr 2024 09:22:47 +0000
-Received: from rric.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 30 Apr
- 2024 04:22:43 -0500
-From: Robert Richter <rrichter@amd.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, Alison Schofield <alison.schofield@intel.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, Robert Richter <rrichter@amd.com>, Len Brown
-	<lenb@kernel.org>
-Subject: [PATCH v6 7/7] ACPI/NUMA: Print CXL Early Discovery Table (CEDT)
-Date: Tue, 30 Apr 2024 11:22:00 +0200
-Message-ID: <20240430092200.2335887-8-rrichter@amd.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240430092200.2335887-1-rrichter@amd.com>
-References: <20240430092200.2335887-1-rrichter@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998E8129A7B;
+	Tue, 30 Apr 2024 09:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714469331; cv=none; b=MgfK2jqfD+EwjMTc1dT4t4yzzpE22g5vridG94eMOcMbiQ7GJJNUFiPowqkLcKkLPrUmKJUfoO15wRn62JsQQEupger4aQ/m6EDcgmebrM7CyBIwXOm0Ng2HL/3dN6W/UQFqq9DpV3Y2s/wqd0nhGlM4lFKEUlr684z9u3VAm1o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714469331; c=relaxed/simple;
+	bh=9RpxAqlQFxPUKKUroGsIiChbOC4stBfRR+06MpzUCLw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s9OeQUhITCTn8P2yv0h5O65Za5NGijOa3L9BcxAszF0o/bwXn3F3eVUhUlqkWenDBpb0o7T0lYz47aQ+HaZLr4sgJ17+1OHXTNQj8JWvpld99QpZNhq6wiIFxIuisdVOhSeXcfoDLhDwTIRkrWOYYMtLd7DCK4msKIXptOx1OMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTFHV4Q0cz6D9dD;
+	Tue, 30 Apr 2024 17:28:22 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5AF32140A08;
+	Tue, 30 Apr 2024 17:28:40 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
+ 2024 10:28:39 +0100
+Date: Tue, 30 Apr 2024 10:28:38 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Gavin Shan <gshan@redhat.com>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, "Jean-Philippe
+ Brucker" <jean-philippe@linaro.org>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier
+	<maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linuxarm@huawei.com>, <justin.he@arm.com>,
+	<jianyong.wu@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, "Sudeep
+ Holla" <sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 04/16] ACPI: processor: Move checks and availability
+ of acpi_processor earlier
+Message-ID: <20240430102838.00006e04@Huawei.com>
+In-Reply-To: <80a2e07f-ecb2-48af-b2be-646f17e0e63e@redhat.com>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+	<20240426135126.12802-5-Jonathan.Cameron@huawei.com>
+	<80a2e07f-ecb2-48af-b2be-646f17e0e63e@redhat.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|DM4PR12MB6616:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3bddaab9-30b2-475d-ec35-08dc68f71954
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|1800799015|376005|82310400014|36860700004;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?g8sHDSGBUQMdnRpXV/xtc1i6Ljdro9c+6lpax08Pg2Cakavt3eXl0+tdxYK7?=
- =?us-ascii?Q?y3YV5S5ObJlPDO9YWV6/UOttDJ0kEtGLzPOlPMzmE+ixwgc/GgpkmohKsWMh?=
- =?us-ascii?Q?SbdIWv2i6oxfFibl2GdMMNlTvPkozsEWEXAfcqZeP1L/Yo7o+jeSrgsfINeU?=
- =?us-ascii?Q?s+xknn8iSKF+lnVViKzrCV1CtMzBBYQOIDSNlIWIZVGZ1AcyGj5rIHCL+Pql?=
- =?us-ascii?Q?GHe5ZZyPqHnpn/xYVxt/3TiNUyrAzBzO4zuvRQcX4QGxbxNtXhFTV6jc01gP?=
- =?us-ascii?Q?2g8W9l4IR0AbFStWSc1to322hCtVz0PAMWHrics6kQxzWYUmTdC92PUppUmT?=
- =?us-ascii?Q?faoM//kPoD41vL4uLaE/bknDmByZ84PqP1eCRlmdsrJ5C1AJ8KVNRDbJEskp?=
- =?us-ascii?Q?oynyklmE4iCy+E1zvIEYjwSr2VvoR3ZvHyA7BlG7kS0v7XDHe7yu1h6wtWoH?=
- =?us-ascii?Q?iSW9L3tXzGLXKCRVrC51/7bAkJPSvdClgjFL+Ff6svuTcW6A8rprhpZRHPyI?=
- =?us-ascii?Q?aNiGK88b8SAWrikxHKu8+5O4sfeJkGdRzsiGwnG3jdm8k33V86pop0wFI1vB?=
- =?us-ascii?Q?40VuoUNefvJE6vAx/yLEhT9sL6J1gmXdeXDt8WzyVd30VUVBtaoYrxZKSHtz?=
- =?us-ascii?Q?Zj1NDCpT8zUZVFH1+2ePeSipxkF3ftmBR7SxYTo2i2q24c2xkqKcfXv2L03X?=
- =?us-ascii?Q?GxfAECTBRV8KJW7Urr8Jq+eXOnVAgy4OiKlALGShAkYQJb+vrwmzRAVmzEbw?=
- =?us-ascii?Q?ut7J0BwxdCVr3KyAHP3CFT4KRARDiEclaG9ZrMEnF1mtZ06Gk2blxjliG9tq?=
- =?us-ascii?Q?Fh6NJZw9FCajYkkYuSG8Cnjf6FdXluz21kD0By0SC6YqJioznhnvFVFRW4r5?=
- =?us-ascii?Q?IdIGOtuct4b+AmPKn70IW2QzNOqb83nqhwJ4Und6Lsb3RoG6bO3kQ2G8j3F+?=
- =?us-ascii?Q?2kvLwuiC4X9ylRCkUAYiA0s69eJ3k8VuNYX9TEYwiA71Baw7RuV/JYjq4Hl4?=
- =?us-ascii?Q?98a1Z41cABD9w8uQtsJG7C8/2BODljadjvoT+ZLV4DcjDD1etzJaosITNFqm?=
- =?us-ascii?Q?N2dn0OSidvb9f7G2sW0ZnRztFgIjwvD9CiX6J5qv8d+8pZbHSGdjyabXxw3c?=
- =?us-ascii?Q?Oo7/oFGLFZqSNpBZcaODTGY1o1VR5U39E3JiDCMknscLnV61za1GUc3OkTCz?=
- =?us-ascii?Q?kRG5ikYJDpP4g/CyVCYP9LJm8U7lm002o7hZTWrpRQSmSv9mjYt4qfjfjRFI?=
- =?us-ascii?Q?TuXt3yQacz6ArTTpm8vvqQdDI+74Yn44Elx9452saTztlfYCvpt2LyyQuAK8?=
- =?us-ascii?Q?JHyePkJT4undm8TVCITKvhBJRh7nRWFmDaIiUkjk1rht7BXZJxNMhxQmbPF3?=
- =?us-ascii?Q?3V0fEUE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(376005)(82310400014)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2024 09:22:47.0037
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3bddaab9-30b2-475d-ec35-08dc68f71954
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6616
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-The CEDT contains similar entries as the SRAT. For diagnostic reasons
-print the CEDT same style as the SRAT.
+On Tue, 30 Apr 2024 14:17:24 +1000
+Gavin Shan <gshan@redhat.com> wrote:
 
-Signed-off-by: Robert Richter <rrichter@amd.com>
----
- drivers/acpi/numa/srat.c | 111 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 111 insertions(+)
+> On 4/26/24 23:51, Jonathan Cameron wrote:
+> > Make the per_cpu(processors, cpu) entries available earlier so that
+> > they are available in arch_register_cpu() as ARM64 will need access
+> > to the acpi_handle to distinguish between acpi_processor_add()
+> > and earlier registration attempts (which will fail as _STA cannot
+> > be checked).
+> > 
+> > Reorder the remove flow to clear this per_cpu() after
+> > arch_unregister_cpu() has completed, allowing it to be used in
+> > there as well.
+> > 
+> > Note that on x86 for the CPU hotplug case, the pr->id prior to
+> > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
+> > must be initialized after that call or after checking the ID
+> > is valid (not hotplug path).
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > ---
+> > v8: On buggy bios detection when setting per_cpu structures
+> >      do not carry on.
+> >      Fix up the clearing of per cpu structures to remove unwanted
+> >      side effects and ensure an error code isn't use to reference them.
+> > ---
+> >   drivers/acpi/acpi_processor.c | 79 +++++++++++++++++++++--------------
+> >   1 file changed, 48 insertions(+), 31 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > index ba0a6f0ac841..3b180e21f325 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -183,8 +183,38 @@ static void __init acpi_pcc_cpufreq_init(void) {}
+> >   #endif /* CONFIG_X86 */
+> >   
+> >   /* Initialization */
+> > +static DEFINE_PER_CPU(void *, processor_device_array);
+> > +
+> > +static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
+> > +				       struct acpi_device *device)
+> > +{
+> > +	BUG_ON(pr->id >= nr_cpu_ids);  
+> 
+> One blank line after BUG_ON() if we need to follow original implementation.
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 34ecf2dc912f..fa21d4d5fccf 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -320,6 +320,114 @@ acpi_parse_memory_affinity(union acpi_subtable_headers *header,
- 	return 0;
- }
- 
-+static int __init
-+__acpi_table_print_cedt_entry(union acpi_subtable_headers *__header,
-+			      void *arg, const unsigned long table_end)
-+{
-+	struct acpi_cedt_header *header = (struct acpi_cedt_header *)__header;
-+
-+	switch (header->type) {
-+	case ACPI_CEDT_TYPE_CHBS:
-+		{
-+			struct acpi_cedt_chbs *p =
-+				(struct acpi_cedt_chbs *)header;
-+
-+			if (header->length < sizeof(struct acpi_cedt_chbs)) {
-+				pr_warn("CEDT: unsupported CHBS entry: size %d\n",
-+					 header->length);
-+				break;
-+			}
-+
-+			pr_debug("CEDT: CHBS (0x%llx length 0x%llx uid %lu) %s (%d)\n",
-+				(unsigned long long)p->base,
-+				(unsigned long long)p->length,
-+				(unsigned long)p->uid,
-+				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL11) ?
-+				"cxl11" :
-+				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL20) ?
-+				"cxl20" :
-+				"unsupported version",
-+				p->cxl_version);
-+		}
-+		break;
-+	case ACPI_CEDT_TYPE_CFMWS:
-+		{
-+			struct acpi_cedt_cfmws *p =
-+				(struct acpi_cedt_cfmws *)header;
-+			int eiw_to_ways[] = {1, 2, 4, 8, 16, 3, 6, 12};
-+			int targets = -1;
-+
-+			if (header->length < sizeof(struct acpi_cedt_cfmws)) {
-+				pr_warn("CEDT: unsupported CFMWS entry: size %d\n",
-+					header->length);
-+				break;
-+			}
-+
-+			if (p->interleave_ways < ARRAY_SIZE(eiw_to_ways))
-+				targets = eiw_to_ways[p->interleave_ways];
-+			if (header->length < struct_size(
-+					p, interleave_targets, targets))
-+				targets = -1;
-+
-+			pr_debug("CEDT: CFMWS (0x%llx length 0x%llx) with %d target%s",
-+				(unsigned long long)p->base_hpa,
-+				(unsigned long long)p->window_size,
-+				targets, targets > 1 ? "s" : "");
-+			for (int i = 0; i < targets; i++)
-+				pr_cont("%s%lu", i ? ", " : " (",
-+					(unsigned long)p->interleave_targets[i]);
-+			pr_cont("%s%s%s%s%s%s\n",
-+				targets > 0 ? ")" : "",
-+				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2) ?
-+				" type2" : "",
-+				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3) ?
-+				" type3" : "",
-+				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE) ?
-+				" volatile" : "",
-+				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM) ?
-+				" pmem" : "",
-+				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED) ?
-+				" fixed" : "");
-+		}
-+		break;
-+	case ACPI_CEDT_TYPE_CXIMS:
-+		{
-+			struct acpi_cedt_cxims *p =
-+				(struct acpi_cedt_cxims *)header;
-+
-+			if (header->length < sizeof(struct acpi_cedt_cxims)) {
-+				pr_warn("CEDT: unsupported CXIMS entry: size %d\n",
-+					header->length);
-+				break;
-+			}
-+
-+			pr_debug("CEDT: CXIMS (hbig %u nr_xormaps %u)\n",
-+				(unsigned int)p->hbig,
-+				(unsigned int)p->nr_xormaps);
-+		}
-+		break;
-+	default:
-+		pr_warn("CEDT: Found unsupported entry (type = 0x%x)\n",
-+			header->type);
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static void __init acpi_table_print_cedt_entry(enum acpi_cedt_type id)
-+{
-+	acpi_table_parse_cedt(id, __acpi_table_print_cedt_entry, NULL);
-+}
-+
-+static void __init acpi_table_print_cedt(void)
-+{
-+	/* Print only implemented CEDT types */
-+	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CHBS);
-+	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CFMWS);
-+	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CXIMS);
-+}
-+
- static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 				   void *arg, const unsigned long table_end)
- {
-@@ -518,6 +626,9 @@ int __init acpi_numa_init(void)
- 	/* SLIT: System Locality Information Table */
- 	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
- 
-+	/* CEDT: CXL Early Discovery Table */
-+	acpi_table_print_cedt();
-+
- 	/*
- 	 * CXL Fixed Memory Window Structures (CFMWS) must be parsed
- 	 * after the SRAT. Create NUMA Nodes for CXL memory ranges that
--- 
-2.39.2
+Sure unintentional - I'll put that back.
+
+> 
+> > +	/*
+> > +	 * Buggy BIOS check.
+> > +	 * ACPI id of processors can be reported wrongly by the BIOS.
+> > +	 * Don't trust it blindly
+> > +	 */
+> > +	if (per_cpu(processor_device_array, pr->id) != NULL &&
+> > +	    per_cpu(processor_device_array, pr->id) != device) {
+> > +		dev_warn(&device->dev,
+> > +			 "BIOS reported wrong ACPI id %d for the processor\n",
+> > +			 pr->id);
+> > +		/* Give up, but do not abort the namespace scan. */  
+> 
+> It depends on how the return value is handled by the caller if the namespace
+> is continued to be scanned. The caller can be acpi_processor_hotadd_init()
+> and acpi_processor_get_info() after this patch is applied. So I think this
+> specific comment need to be moved to the caller.
+
+Good point. This gets messy and was an unintended change.
+
+Previously the options were:
+1) acpi_processor_get_info() failed for other reasons - this code was never called.
+2) acpi_processor_get_info() succeeded without acpi_processor_hotadd_init (non hotplug)
+   this code then ran and would paper over the problem doing a bunch of cleanup under err.
+3) acpi_processor_get_info() succeeded with acpi_processor_hotadd_init called.
+   This code then ran and would paper over the problem doing a bunch of cleanup under err.
+
+We should maintain that or argue cleanly against it.
+
+This isn't helped the the fact I have no idea which cases we care about for that bios
+bug handling.  Do any of those bios's ever do hotplug?  Guess we have to try and maintain
+whatever protection this was offering.
+
+Also, the original code leaks data in some paths and I have limited idea
+of whether it is intentional or not. So to tidy the issue up that you've identified
+I'll need to try and make that code consistent first.
+
+I suspect the only way to do that is going to be to duplicate the allocations we
+'want' to leak to deal with the bios bug detection.
+
+For example acpi_processor_get_info() failing leaks pr and pr->throttling.shared_cpu_map
+before this series. After this series we need pr to leak because it's used for the detection
+via processor_device_array.
+
+I'll work through this but it's going to be tricky to tell if we get right.
+Step 1 will be closing the existing leaks and then we will have something
+consistent to build on.
+
+> 
+> Besides, it seems acpi_processor_set_per_cpu() isn't properly called and
+> memory leakage can happen. More details are given below.
+> 
+> > +		return false;
+> > +	}
+> > +	/*
+> > +	 * processor_device_array is not cleared on errors to allow buggy BIOS
+> > +	 * checks.
+> > +	 */
+> > +	per_cpu(processor_device_array, pr->id) = device;
+> > +	per_cpu(processors, pr->id) = pr;
+> > +
+> > +	return true;
+> > +}
+> > +
+> >   #ifdef CONFIG_ACPI_HOTPLUG_CPU
+> > -static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > +static int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > +				      struct acpi_device *device)
+> >   {
+> >   	int ret;
+> >   
+> > @@ -198,8 +228,15 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> >   	if (ret)
+> >   		goto out;
+> >   
+> > +	if (!acpi_processor_set_per_cpu(pr, device)) {
+> > +		acpi_unmap_cpu(pr->id);
+> > +		goto out;
+> > +	}
+> > +  
+> 
+> With the 'goto out', zero is returned from acpi_processor_hotadd_init() to acpi_processor_get_info().
+> The zero return value is carried from acpi_map_cpu() in acpi_processor_hotadd_init(). If I'm correct,
+> we need return errno from acpi_processor_get_info() to acpi_processor_add() so that cleanup can be
+> done. For example, the cleanup corresponding to the 'err' tag can be done in acpi_processor_add().
+> Otherwise, we will have memory leakage.
+> 
+> >   	ret = arch_register_cpu(pr->id);
+> >   	if (ret) {
+> > +		/* Leave the processor device array in place to detect buggy bios */
+> > +		per_cpu(processors, pr->id) = NULL;
+> >   		acpi_unmap_cpu(pr->id);
+> >   		goto out;
+> >   	}
+> > @@ -217,7 +254,8 @@ static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> >   	return ret;
+> >   }
+> >   #else
+> > -static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > +static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > +					     struct acpi_device *device)
+> >   {
+> >   	return -ENODEV;
+> >   }
+> > @@ -316,10 +354,13 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> >   	 *  because cpuid <-> apicid mapping is persistent now.
+> >   	 */
+> >   	if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> > -		int ret = acpi_processor_hotadd_init(pr);
+> > +		int ret = acpi_processor_hotadd_init(pr, device);
+> >   
+> >   		if (ret)
+> >   			return ret;
+> > +	} else {
+> > +		if (!acpi_processor_set_per_cpu(pr, device))
+> > +			return 0;
+> >   	}
+> >     
+> 
+> For non-hotplug case, we still need pass the error to acpi_processor_add() so that
+> cleanup corresponding 'err' tag can be done. Otherwise, we will have memory leakage.
+> 
+> >   	/*
+> > @@ -365,8 +406,6 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> >    * (cpu_data(cpu)) values, like CPU feature flags, family, model, etc.
+> >    * Such things have to be put in and set up by the processor driver's .probe().
+> >    */
+> > -static DEFINE_PER_CPU(void *, processor_device_array);
+> > -
+> >   static int acpi_processor_add(struct acpi_device *device,
+> >   					const struct acpi_device_id *id)
+> >   {
+> > @@ -395,28 +434,6 @@ static int acpi_processor_add(struct acpi_device *device,
+> >   	if (result) /* Processor is not physically present or unavailable */
+> >   		return 0;
+> >   
+> > -	BUG_ON(pr->id >= nr_cpu_ids);
+> > -
+> > -	/*
+> > -	 * Buggy BIOS check.
+> > -	 * ACPI id of processors can be reported wrongly by the BIOS.
+> > -	 * Don't trust it blindly
+> > -	 */
+> > -	if (per_cpu(processor_device_array, pr->id) != NULL &&
+> > -	    per_cpu(processor_device_array, pr->id) != device) {
+> > -		dev_warn(&device->dev,
+> > -			"BIOS reported wrong ACPI id %d for the processor\n",
+> > -			pr->id);
+> > -		/* Give up, but do not abort the namespace scan. */
+> > -		goto err;
+> > -	}
+> > -	/*
+> > -	 * processor_device_array is not cleared on errors to allow buggy BIOS
+> > -	 * checks.
+> > -	 */
+> > -	per_cpu(processor_device_array, pr->id) = device;
+> > -	per_cpu(processors, pr->id) = pr;
+> > -
+> >   	dev = get_cpu_device(pr->id);
+> >   	if (!dev) {
+> >   		result = -ENODEV;
+> > @@ -469,10 +486,6 @@ static void acpi_processor_remove(struct acpi_device *device)
+> >   	device_release_driver(pr->dev);
+> >   	acpi_unbind_one(pr->dev);
+> >   
+> > -	/* Clean up. */
+> > -	per_cpu(processor_device_array, pr->id) = NULL;
+> > -	per_cpu(processors, pr->id) = NULL;
+> > -
+> >   	cpu_maps_update_begin();
+> >   	cpus_write_lock();
+> >   
+> > @@ -480,6 +493,10 @@ static void acpi_processor_remove(struct acpi_device *device)
+> >   	arch_unregister_cpu(pr->id);
+> >   	acpi_unmap_cpu(pr->id);
+> >   
+> > +	/* Clean up. */
+> > +	per_cpu(processor_device_array, pr->id) = NULL;
+> > +	per_cpu(processors, pr->id) = NULL;
+> > +
+> >   	cpus_write_unlock();
+> >   	cpu_maps_update_done();
+> >     
+> 
+> Thanks,
+> Gavin
+> 
 
 
