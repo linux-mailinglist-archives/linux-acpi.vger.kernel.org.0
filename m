@@ -1,248 +1,166 @@
-Return-Path: <linux-acpi+bounces-5537-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5538-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805158B7CBB
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:22:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1117C8B7D4A
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE931F25DE4
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C074B288371
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC78178CE8;
-	Tue, 30 Apr 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD5217F37A;
+	Tue, 30 Apr 2024 16:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdPI3j+f"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4140B176FB2;
-	Tue, 30 Apr 2024 16:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CA017BB2A;
+	Tue, 30 Apr 2024 16:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714494161; cv=none; b=JDvzAarAcbfLK6AtenPLVEgVR3ofCnh6wqQER/ytjEUzeaibk0PyLVRrV6zV3k00L4KHMow2QlVgAN8MUvc/Vr5dDpVOTBwCwTVYnIv3rTCaC7R2YPCmNwSJ0i6B8IIoU3cmoN9RmSQW+bPpAWw0GVg4RHMadB07+FGcYT31l4o=
+	t=1714495087; cv=none; b=JThwONKuLajeqEkc5qsvkMIqE9uT76C0v+HDooB7hjRJ4EUDjgk3PbW1X4I78eEkAXGocBpcUNWK7Y7U9iFjf1SZ9oMun2QwOGj7hXGT8FwYZyW7z+Ztdi9QwmzR41b/SDdop8h0IyTSRHCpyJDEf8u0hFObInDdYdh1gLIcY7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714494161; c=relaxed/simple;
-	bh=nHIY0JruljXXmK/rAV01B+Ul74H6SRPBbc8c8KF2kxg=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GUf05fOq+FIIvrL+fwrzcW4VO49aIKtkoi0oycTWKLO3rh6lp+o/JCEuQGE9rqkVBHqORQyAuzjCgqNS89hMFESj6/SXbWiIJW18GYyFeMGR4RY7KM8FN3ASIGupCfNDRe5suKJ7noAWbBwZ4a2NNfsxMxMIE8WZtRpcpACf4Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTQQM6t17z6GCjQ;
-	Wed,  1 May 2024 00:19:55 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 69784140B55;
-	Wed,  1 May 2024 00:22:33 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
- 2024 17:22:32 +0100
-Date: Tue, 30 Apr 2024 17:22:31 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Robert Richter <rrichter@amd.com>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Dan Williams <dan.j.williams@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Len Brown
-	<lenb@kernel.org>
-Subject: Re: [PATCH v6 7/7] ACPI/NUMA: Print CXL Early Discovery Table
- (CEDT)
-Message-ID: <20240430172231.00002bd5@Huawei.com>
-In-Reply-To: <20240430092200.2335887-8-rrichter@amd.com>
-References: <20240430092200.2335887-1-rrichter@amd.com>
-	<20240430092200.2335887-8-rrichter@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714495087; c=relaxed/simple;
+	bh=Ea+j+o7qluZ3aaBqBGHNFexj3b3TayUV5vNIzNDaABo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F5dyto/fmiYabjWx+YT4RBepLZqnJfWisOxdHm+/AhKgZaeEgH0Vjy1uRbaZzPymH+XcFvpGJlA6CgKsPxOJk6WVZXPZ2LL4xEhZ/gBMazYX8z+RmTIF7lZhB8wxKja2mVHG6uvR0xb0K3M82QjBz8HXeFpPUY8jp04Khr//Rqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdPI3j+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EA2C2BBFC;
+	Tue, 30 Apr 2024 16:38:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714495087;
+	bh=Ea+j+o7qluZ3aaBqBGHNFexj3b3TayUV5vNIzNDaABo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CdPI3j+fJEvjdlmQPVgXo3qL61z93kiPiPU0GNMO6P3czlrBXGHu0O7CqbtW1hc9l
+	 b0kfasC3XiEb1jdrIHpCbYfctwchFwn04bFT9tTFyydOPjsIVO64QoyuerTG/mtHWc
+	 f1MQmuDA1ZgE+6qtsvMJvNOYzV2vgey+Mt0Bz1ANY8ZEQSC3vcnMjGKrhPBQyybJ80
+	 FzN/GqlqNxKYAWaqTu4sGINBQ2HfbuDQG6Vu4Zn7vzfSJ7bCmjQ0yv3q+PVjVvvP6c
+	 GEEkw7yk9uFtjwpX9eM+pdS1suoz4V6eKZK+spUuRAZnIrIhqniB6yD8zKvuuR9/bp
+	 apKC0UzuqlvYQ==
+Date: Tue, 30 Apr 2024 18:37:58 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Miguel Luis <miguel.luis@oracle.com>,
+	James Morse <james.morse@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com,
+	justin.he@arm.com, jianyong.wu@arm.com,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v8 09/16] arm64: acpi: Move get_cpu_for_acpi_id() to a
+ header
+Message-ID: <ZjEeZkn5J+m086pR@lpieralisi>
+References: <20240426135126.12802-1-Jonathan.Cameron@huawei.com>
+ <20240426135126.12802-10-Jonathan.Cameron@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240426135126.12802-10-Jonathan.Cameron@huawei.com>
 
-On Tue, 30 Apr 2024 11:22:00 +0200
-Robert Richter <rrichter@amd.com> wrote:
-
-> The CEDT contains similar entries as the SRAT. For diagnostic reasons
-> print the CEDT same style as the SRAT.
+On Fri, Apr 26, 2024 at 02:51:19PM +0100, Jonathan Cameron wrote:
+> From: James Morse <james.morse@arm.com>
 > 
-> Signed-off-by: Robert Richter <rrichter@amd.com>
-I'm fairly sure the interleave ways conversion is wrong.
-Otherwise all trivial stuff.
-
-Jonathan
-
+> ACPI identifies CPUs by UID. get_cpu_for_acpi_id() maps the ACPI UID
+> to the Linux CPU number.
+> 
+> The helper to retrieve this mapping is only available in arm64's NUMA
+> code.
+> 
+> Move it to live next to get_acpi_id_for_cpu().
+> 
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
+> Tested-by: Jianyong Wu <jianyong.wu@arm.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Acked-by: Hanjun Guo <guohanjun@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
 > ---
->  drivers/acpi/numa/srat.c | 111 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 111 insertions(+)
+> v8: Picked up tags.
+> ---
+>  arch/arm64/include/asm/acpi.h | 11 +++++++++++
+>  arch/arm64/kernel/acpi_numa.c | 11 -----------
+>  2 files changed, 11 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-> index 34ecf2dc912f..fa21d4d5fccf 100644
-> --- a/drivers/acpi/numa/srat.c
-> +++ b/drivers/acpi/numa/srat.c
-> @@ -320,6 +320,114 @@ acpi_parse_memory_affinity(union acpi_subtable_headers *header,
->  	return 0;
+> diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
+> index 6792a1f83f2a..bc9a6656fc0c 100644
+> --- a/arch/arm64/include/asm/acpi.h
+> +++ b/arch/arm64/include/asm/acpi.h
+> @@ -119,6 +119,17 @@ static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
+>  	return	acpi_cpu_get_madt_gicc(cpu)->uid;
 >  }
 >  
-> +static int __init
-> +__acpi_table_print_cedt_entry(union acpi_subtable_headers *__header,
-> +			      void *arg, const unsigned long table_end)
+> +static inline int get_cpu_for_acpi_id(u32 uid)
 > +{
-> +	struct acpi_cedt_header *header = (struct acpi_cedt_header *)__header;
+> +	int cpu;
 > +
-> +	switch (header->type) {
-> +	case ACPI_CEDT_TYPE_CHBS:
-> +		{
-> +			struct acpi_cedt_chbs *p =
-> +				(struct acpi_cedt_chbs *)header;
+> +	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+> +		if (uid == get_acpi_id_for_cpu(cpu))
+> +			return cpu;
 > +
-> +			if (header->length < sizeof(struct acpi_cedt_chbs)) {
-> +				pr_warn("CEDT: unsupported CHBS entry: size %d\n",
-> +					 header->length);
-> +				break;
-
-Might as well return.
-
-> +			}
-> +
-> +			pr_debug("CEDT: CHBS (0x%llx length 0x%llx uid %lu) %s (%d)\n",
-> +				(unsigned long long)p->base,
-> +				(unsigned long long)p->length,
-
-The printk docs https://docs.kernel.org/core-api/printk-formats.html
-suggest you shouldn't need the casts though I appreciate other functions in here
-are doing this.
-
-> +				(unsigned long)p->uid,
-> +				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL11) ?
-> +				"cxl11" :
-> +				(p->cxl_version == ACPI_CEDT_CHBS_VERSION_CXL20) ?
-> +				"cxl20" :
-> +				"unsupported version",
-
-That seems harsh.  Like all ACPI tables, these should be backwards compatible.
-So not so much unsupported as "newer version".  Breakage happens, but it is rare
-and for the rest of the kernel I don' think we check this.
-
-Also can we switch to the 3.1 spec terms.  RCH etc. Though the term for 2.0+ in the
-table definition for CHBS is the nasty:
-"Host Bridge that is associated with one or more CXL root ports." 
-
-> +				p->cxl_version);
-> +		}
-> +		break;
-
-Trivial but I love early returns as they tend to avoid lots of scrolling to see where
-the break goes and it is unlikely there will ever be anything to do after this.
- 
-> +	case ACPI_CEDT_TYPE_CFMWS:
-> +		{
-> +			struct acpi_cedt_cfmws *p =
-> +				(struct acpi_cedt_cfmws *)header;
-> +			int eiw_to_ways[] = {1, 2, 4, 8, 16, 3, 6, 12};
-> +			int targets = -1;
-> +
-> +			if (header->length < sizeof(struct acpi_cedt_cfmws)) {
-> +				pr_warn("CEDT: unsupported CFMWS entry: size %d\n",
-> +					header->length);
-> +				break;
-
-Might as well return.
-
-> +			}
-> +
-> +			if (p->interleave_ways < ARRAY_SIZE(eiw_to_ways))
-> +				targets = eiw_to_ways[p->interleave_ways];
-
-That looks wrong for 3, 6, 12 as index is 0x8, 0x9, 0xA not 5 6 7
-Don't we have a function to decode this somewhere than can be reused?
-
-> +			if (header->length < struct_size(
-> +					p, interleave_targets, targets))
-> +				targets = -1;
-> +
-> +			pr_debug("CEDT: CFMWS (0x%llx length 0x%llx) with %d target%s",
-> +				(unsigned long long)p->base_hpa,
-> +				(unsigned long long)p->window_size,
-> +				targets, targets > 1 ? "s" : "");
-> +			for (int i = 0; i < targets; i++)
-> +				pr_cont("%s%lu", i ? ", " : " (",
-> +					(unsigned long)p->interleave_targets[i]);
-> +			pr_cont("%s%s%s%s%s%s\n",
-> +				targets > 0 ? ")" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE2) ?
-> +				" type2" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_TYPE3) ?
-> +				" type3" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_VOLATILE) ?
-> +				" volatile" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_PMEM) ?
-> +				" pmem" : "",
-> +				(p->restrictions & ACPI_CEDT_CFMWS_RESTRICT_FIXED) ?
-> +				" fixed" : "");
-> +		}
-> +		break;
-return 
-
-> +	case ACPI_CEDT_TYPE_CXIMS:
-> +		{
-> +			struct acpi_cedt_cxims *p =
-> +				(struct acpi_cedt_cxims *)header;
-> +
-> +			if (header->length < sizeof(struct acpi_cedt_cxims)) {
-> +				pr_warn("CEDT: unsupported CXIMS entry: size %d\n",
-> +					header->length);
-> +				break;
-return
-> +			}
-> +
-> +			pr_debug("CEDT: CXIMS (hbig %u nr_xormaps %u)\n",
-> +				(unsigned int)p->hbig,
-> +				(unsigned int)p->nr_xormaps);
-> +		}
-> +		break;
-return
-> +	default:
-> +		pr_warn("CEDT: Found unsupported entry (type = 0x%x)\n",
-> +			header->type);
-> +		break;
-return
-> +	}
-> +
-> +	return 0;
+> +	return -EINVAL;
 > +}
 > +
-> +static void __init acpi_table_print_cedt_entry(enum acpi_cedt_type id)
-> +{
-> +	acpi_table_parse_cedt(id, __acpi_table_print_cedt_entry, NULL);
-> +}
-> +
-> +static void __init acpi_table_print_cedt(void)
-> +{
-> +	/* Print only implemented CEDT types */
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CHBS);
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CFMWS);
-> +	acpi_table_print_cedt_entry(ACPI_CEDT_TYPE_CXIMS);
-> +}
-> +
->  static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
->  				   void *arg, const unsigned long table_end)
->  {
-> @@ -518,6 +626,9 @@ int __init acpi_numa_init(void)
->  	/* SLIT: System Locality Information Table */
->  	acpi_table_parse(ACPI_SIG_SLIT, acpi_parse_slit);
+>  static inline void arch_fix_phys_package_id(int num, u32 slot) { }
+>  void __init acpi_init_cpus(void);
+>  int apei_claim_sea(struct pt_regs *regs);
+> diff --git a/arch/arm64/kernel/acpi_numa.c b/arch/arm64/kernel/acpi_numa.c
+> index e51535a5f939..0c036a9a3c33 100644
+> --- a/arch/arm64/kernel/acpi_numa.c
+> +++ b/arch/arm64/kernel/acpi_numa.c
+> @@ -34,17 +34,6 @@ int __init acpi_numa_get_nid(unsigned int cpu)
+>  	return acpi_early_node_map[cpu];
+>  }
 >  
-> +	/* CEDT: CXL Early Discovery Table */
-> +	acpi_table_print_cedt();
-> +
->  	/*
->  	 * CXL Fixed Memory Window Structures (CFMWS) must be parsed
->  	 * after the SRAT. Create NUMA Nodes for CXL memory ranges that
+> -static inline int get_cpu_for_acpi_id(u32 uid)
+> -{
+> -	int cpu;
+> -
+> -	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+> -		if (uid == get_acpi_id_for_cpu(cpu))
+> -			return cpu;
+> -
+> -	return -EINVAL;
+> -}
+> -
 
+Apologies for the late reply.
+
+If anything, it may make sense to squash this patch into the commit that
+is actually needing it, lest we might end up with a change that is
+useless if it is taken stand alone.
+
+That's all there is to say so:
+
+Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+
+>  static int __init acpi_parse_gicc_pxm(union acpi_subtable_headers *header,
+>  				      const unsigned long end)
+>  {
+> -- 
+> 2.39.2
+> 
 
