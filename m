@@ -1,142 +1,81 @@
-Return-Path: <linux-acpi+bounces-5534-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5535-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6198B7C77
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:02:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9785F8B7C90
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 18:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C2A21C2283B
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5337B283FDC
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 16:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E02E175570;
-	Tue, 30 Apr 2024 16:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="PvvJNeoq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B992317554A;
+	Tue, 30 Apr 2024 16:16:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82361176FB2;
-	Tue, 30 Apr 2024 16:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07E4175560;
+	Tue, 30 Apr 2024 16:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714492945; cv=none; b=LYQOOfdmvJQ8MORYf7aRkZriGxy/j1vfoXahCOBWg7uFDJ28D4TK/7zAFbj1ennJDZx2Boe61AJVfabCPIvB9zSQrlblLUqK5HmoWliI5rxc+B0OFNeDHzkPn/gwiYXXTlICilQVTwEzbOYw8MEO8W/9guGPp0ebBsFvWtSmgYk=
+	t=1714493779; cv=none; b=hz1hk3uiyUpzlZwUW1l4wOG9iLotTl9nX2oagvhWAew6sM2V9UC0O8q9z7JxEhCL9+rEF84oxB8QoVNXvnEjd+qC2O0P1xXFJYrR6vCo+I0r9ppuLWBnmP2wERa745Aptvv/U+nogY19chA165VoQH9cIiLQTB08FTF3pgi62tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714492945; c=relaxed/simple;
-	bh=1XpWqYY6FpW+nYEyvngkH/20vtybIC+9kZBc7rpJxEQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eDXpUdpInxnF8cMRvlryoI5fsEczQ5sMjIZ7Ioyt8bpg9TAVrx3Ph2jvqnKOnO25vBkULXRgwtlYmdJeuUCM0/SlTZ91UtOuA3IkN6lljGHyvDGbDcK37NalsyNs+MPxGgt/520zWLnQWlg+s9f/gxiRu5pMuwMAOimB2ycC0f4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=PvvJNeoq reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
-Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
- by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.0.0)
- id 5ee6a7844c993097; Tue, 30 Apr 2024 18:02:21 +0200
-Received: from kreacher.localnet (unknown [195.136.19.94])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 0C26D66E643;
-	Tue, 30 Apr 2024 18:02:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1714492941;
-	bh=1XpWqYY6FpW+nYEyvngkH/20vtybIC+9kZBc7rpJxEQ=;
-	h=From:To:Cc:Subject:Date;
-	b=PvvJNeoqYzENUZZBlwJRp3Cfq4aS+BRbWjHBDUy5YY4y9RrtqIZa0z+yNDSEhlRTj
-	 d7I8TD6HdT1YWcstC8wrNPWmOkMQSrh7/NYT/ZwDxsGvAjzR+MTxz0P2wolkz898g5
-	 zDS2KV+vBTVbss87RlEgE90Q+jfMTKI4NVV8POA7c9g0wtNpoRYZdob1UJSILVEuUg
-	 zS49eOK7OzVIiTxMylPM+wp6wU93ILEqIcvvC1Zl1IYX3wXvvOxh42AF7HOsFe9877
-	 vkzvUMoY67EIh5FtDHc2RqXGttCWiasihhR9ADDXlseX1nVuoeRPkFByaNgVuHk4PT
-	 On7dgcmqT4xdw==
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>
-Subject:
- [PATCH v2] ACPI: scan: Avoid enumerating devices with clearly invalid _STA
- values
-Date: Tue, 30 Apr 2024 18:02:20 +0200
-Message-ID: <12427278.O9o76ZdvQC@kreacher>
+	s=arc-20240116; t=1714493779; c=relaxed/simple;
+	bh=cLaj4cEA+dcWsFhapRjcDitwcSh9v3HR49WdmWsq/LM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hxx31Tudr6a3IeAjMkm5lPjVj9vN34bFEgYysnqxW8MEbbahUfwU03ENDh+/s5XllB9iS4aXKkDSivpcYwVD9tL4tdZKH4p9Edy6+H3UwhusrfIK+7CgfKdrbRcT18Ku9FwiPCMi6N5HEGdQK1TOIYyG94oZmf2cIjBjUg2gm3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36A802F4;
+	Tue, 30 Apr 2024 09:16:43 -0700 (PDT)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D4DBA3F73F;
+	Tue, 30 Apr 2024 09:16:15 -0700 (PDT)
+Date: Tue, 30 Apr 2024 17:16:13 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Zhang Rui <rui.zhang@intel.com>
+Subject: Re: [PATCH v2] ACPI: scan: Avoid enumerating devices with clearly
+ invalid _STA values
+Message-ID: <ZjEZTfU-u6m5Fx7a@bogus>
+References: <12427278.O9o76ZdvQC@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="UTF-8"
-X-CLIENT-IP: 195.136.19.94
-X-CLIENT-HOSTNAME: 195.136.19.94
-X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvddufedgleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepueeugffhuddtueeiledukeeileffieetudfhuedtfeejgefhveeigeegleettedvnecuffhomhgrihhnpehuvghfihdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohephedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghlihhlrdhmvghhthgrsehhuhgrfigvihdrtghomhdprhgtphhtthhopehjohhnrght
- hhgrnhdrtggrmhgvrhhonheshhhurgifvghirdgtohhmpdhrtghpthhtoheprhhuihdriihhrghnghesihhnthgvlhdrtghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=5 Fuz1=5 Fuz2=5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12427278.O9o76ZdvQC@kreacher>
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Tue, Apr 30, 2024 at 06:02:20PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The return value of _STA with the "present" bit unset and the "enabled"
+> bit set is clearly invalid as per the ACPI specification, Section 6.3.7
+> "_STA (Device Status)", so make the ACPI device enumeration code
+> disregard devices with such _STA return values.
+> 
+> Also, because this implies that status.enabled will only be set if
+> status.present is set too, acpi_device_is_enabled() can be modified
+> to simply return the value of the former.
+>
 
-The return value of _STA with the "present" bit unset and the "enabled"
-bit set is clearly invalid as per the ACPI specification, Section 6.3.7
-"_STA (Device Status)", so make the ACPI device enumeration code
-disregard devices with such _STA return values.
+Nice!
 
-Also, because this implies that status.enabled will only be set if
-status.present is set too, acpi_device_is_enabled() can be modified
-to simply return the value of the former.
+FWIW,
 
-Link: https://uefi.org/specs/ACPI/6.5/06_Device_Configuration.html#sta-device-status
-Link: https://lore.kernel.org/linux-acpi/88179311a503493099028c12ca37d430@huawei.com/
-Suggested-by: Salil Mehta <salil.mehta@huawei.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-v1 -> v2:
-   * Fix a confusing comment.
-   * Add R-by from Jonathan (thank you!)
-
----
- drivers/acpi/bus.c  |   11 +++++++++++
- drivers/acpi/scan.c |    2 +-
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
-Index: linux-pm/drivers/acpi/bus.c
-===================================================================
---- linux-pm.orig/drivers/acpi/bus.c
-+++ linux-pm/drivers/acpi/bus.c
-@@ -112,6 +112,17 @@ int acpi_bus_get_status(struct acpi_devi
- 	if (ACPI_FAILURE(status))
- 		return -ENODEV;
- 
-+	if (!device->status.present && device->status.enabled) {
-+		pr_info(FW_BUG "Device [%s] status [%08x]: not present and enabled\n",
-+			device->pnp.bus_id, (u32)sta);
-+		device->status.enabled = 0;
-+		/*
-+		 * The status is clearly invalid, so clear the functional bit as
-+		 * well to avoid attempting to use the device.
-+		 */
-+		device->status.functional = 0;
-+	}
-+
- 	acpi_set_device_status(device, sta);
- 
- 	if (device->status.functional && !device->status.present) {
-Index: linux-pm/drivers/acpi/scan.c
-===================================================================
---- linux-pm.orig/drivers/acpi/scan.c
-+++ linux-pm/drivers/acpi/scan.c
-@@ -1962,7 +1962,7 @@ bool acpi_device_is_present(const struct
- 
- bool acpi_device_is_enabled(const struct acpi_device *adev)
- {
--	return adev->status.present && adev->status.enabled;
-+	return adev->status.enabled;
- }
- 
- static bool acpi_scan_handler_matching(struct acpi_scan_handler *handler,
-
-
-
+--
+Regards,
+Sudeep
 
