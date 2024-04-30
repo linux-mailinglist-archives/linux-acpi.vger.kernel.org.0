@@ -1,132 +1,183 @@
-Return-Path: <linux-acpi+bounces-5471-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5472-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97908B6817
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 04:55:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3A8B683B
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 05:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 696F61F22BC9
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 02:55:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 147D4B218AD
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Apr 2024 03:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4557BDF58;
-	Tue, 30 Apr 2024 02:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D51FC01;
+	Tue, 30 Apr 2024 03:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vt41SZpA"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="dZcj1YtF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6835DDA1;
-	Tue, 30 Apr 2024 02:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0901DDDA
+	for <linux-acpi@vger.kernel.org>; Tue, 30 Apr 2024 03:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714445712; cv=none; b=eA0fj3nF4m1fzwvgRtpuhbP2AzeSK2x29Xf0Kp/rubRsEpEk8WArToqaE3bzwgWmv3MxcVtDZvN8rqbD3HyZc0Ro3yAOklygfZ6cK3h3ZQ2IicsAaSd4/n/jgUZdK3hjM+XEm53rF3WJnM5kAZk3cgVQZh5dYk/7BckvV6TipOM=
+	t=1714446990; cv=none; b=WwOUhRcQvpaxqS8/H7PChSJPi4IM8KWsB3knsBXIHhNkTULAQw7Lp+TlS15sRVOiCaCGhDuCJ3bQ1LfplZpAx2734G9PYZYGWtyRW/rltYLDw7ItTsZcGJ6lOyC9xWXVAOhJZ3jXlgLVBN0H1+201kvsZcHF22y1x4W+CdV4VWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714445712; c=relaxed/simple;
-	bh=iZ6nNOe9HtBpD2tVNcHlM/SflcebPn4cUJdzsYt8o5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ai9J0+B09pGe5WCv6WBsO2dbL9xYX+xBYHPOAZXebBRgvMEHUwn61T+1ntoeX2Doyc/xpNWqmt+Y2uquv26/OnFR+dG+5GjVax1/YDoJjxqnrsFOrHDXTZh3U5eaIwVT8F/xXaHS+OniEDp9mt1vQBiMR7vZrRp4YcJbO22xwCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vt41SZpA; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714445711; x=1745981711;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iZ6nNOe9HtBpD2tVNcHlM/SflcebPn4cUJdzsYt8o5M=;
-  b=Vt41SZpA8s2iAF7e4LNfVfw2coTewpt0IIOn4ftcZf+AYjqJWeGN6lkr
-   XNBK9m5WIqu2xZd74dTPZ0SyG6qwc2Oqdu4ElrmUTNO487HySOIZRezK+
-   SjANXNhUpJvq4HWRimpoS8pvNf4ryqn/tFS5MGfQF0dChtB/ae1qQu3QU
-   TlFOxXNWbrX/JgQtVj8mflNUIwLetIq8YlCTa/QBYgTqlhEU35+6J7Rt4
-   2T+UhYGJ/zIInjS8vOL24U17fB1kZ+c4ufnAzm2q4hEuLcmVsThLsI6pp
-   vvljfYnPGzQlw4JuRve+RSjoXgf+T+6rTDNqgW4N7gaSJYSPWZ/kPje+t
-   g==;
-X-CSE-ConnectionGUID: ZzlFhlneTwu/bwLqDeDdxQ==
-X-CSE-MsgGUID: BeW712F/T9G3w3lqW3abUg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11059"; a="10299262"
-X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; 
-   d="scan'208";a="10299262"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2024 19:55:10 -0700
-X-CSE-ConnectionGUID: du8PLjy7Q7KwqHJe8LXpcg==
-X-CSE-MsgGUID: 6nbmXDibROWrmWQ+fDjV5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,241,1708416000"; 
-   d="scan'208";a="49508152"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 29 Apr 2024 19:55:06 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s1de4-0007eC-0x;
-	Tue, 30 Apr 2024 02:55:04 +0000
-Date: Tue, 30 Apr 2024 10:54:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robert Richter <rrichter@amd.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Andy Lutomirski <luto@kernel.org>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Robert Richter <rrichter@amd.com>,
-	Derick Marks <derick.w.marks@intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Len Brown <lenb@kernel.org>
-Subject: Re: [PATCH v5 1/7] x86/numa: Fix SRAT lookup of CFMWS ranges with
- numa_fill_memblks()
-Message-ID: <202404301038.2YNsO1Qn-lkp@intel.com>
-References: <20240429124955.2294014-2-rrichter@amd.com>
+	s=arc-20240116; t=1714446990; c=relaxed/simple;
+	bh=J9Uks/wSVBDMZDqvqL821ZvLl/AHfaZ2zTTwqy+dauc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N0KmXABzssZXuLDFOL9AY0gthbsdX1RSOuKFJQrAFAV7FqlMa2YiWyjreeS8t+DWo0cUerBe97Pee+u8GmVAofdsToTN6xdz36LftFfQBqm8xI+YGBI64erhgUyiA7ygsqICwzI6ZQLOwd5cXXZ+Wi8yQwmoE4+nUGGd5/VzZ7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dZcj1YtF; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-23333dddd8aso2436734fac.1
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Apr 2024 20:16:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1714446987; x=1715051787; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ewLuAUPPP39X0HCkRHtN2NHvevZusHejI+aydV0tNX4=;
+        b=dZcj1YtFnMMluykz4azkZGm9/O7ZO7Q5DPepNAohogxeowhN4VBCqIe+qz789KDMU9
+         +ry426yB4YDDXoOlqvjbCkmiK/n5ODyq7nhWkxrSKvwilm/FTIL4kmkGt2NFEaWlKk9J
+         R9wJkjNwADkJQPNb/5SeC1Gqv+tTS9FVRHFxh/ryki7uuW3N1++2+MtO8x+kvuRXwxvK
+         05ZWMl/yy9NOIIgGKliQIuxIwBpyQvNBY23zxS5B8YDqqof/WkFvt6FohflLkeJ/hVPy
+         7ReQ1vpO3c/bci5tQpDAOA+bNgJZQS7pEQg0tmumsq8oZlMvoi3x+x7/xMKeNASZ8SKG
+         OOMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714446987; x=1715051787;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ewLuAUPPP39X0HCkRHtN2NHvevZusHejI+aydV0tNX4=;
+        b=wxJF/6MLEt/FAKHojPQOFd4tV8cZ43/n48x61WxqnCYUFUbarIMjSD8VwmrfPMwCnp
+         4ttjcbY7N4rvF+sdHifE9cnpj6xr/0WqO8aekCK9t1AIcjJUU7BTzuMyapBPJGJhuZ4w
+         84hJ4cyaUUc+DzKp/qNmNXncyeeVcjaerCeQkGeFGmKnmMsIR7X4GPXgBmlWMrBnZbpV
+         9lOpJEp/LEZfxQQXwoHjWB5TxkDauhq0u8FfeGpFdN0hVu+FkcAKFqdxmjtKOCiViS85
+         /cF7PBy9uVPTxxVx/vHLtgYKdPub7dSSopedYf904tUCi+I6Q+NuciTA+vz+jk8lUD3d
+         kDfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVXH2vUhplNoMAH46uZKYjC34ybAJXoTufv6oASdqV6ZhahvMeeHPcWpLVjAFwB4C5J8g/Un4EBrFrKVZ7ArLhsN4147RVWhZOSrQ==
+X-Gm-Message-State: AOJu0YxvD8bcHe9KvlhATIqmGzpyApk7Lnzdhg5Tkuew3TiLiMP0bt+z
+	u2ctrh2iq2C9sT4Ly0FEyyecuytoHvAlEjwIIEe5LD07Lm2zEDT7r2xWBUquptOaMQ4YFflFq/b
+	SX1r9SFlACmnexMeyFWW6u3Gb3twpf57FLoNMTg==
+X-Google-Smtp-Source: AGHT+IHQZKM1ZIvOzc0BTAWTiBchrFVz/jaxMvcm4J0YS/D7nzOQrjehDvNXZEDRtLipEVRhqNLnJGXaHB+hLjHZ7EU=
+X-Received: by 2002:a05:6871:8912:b0:23c:2554:d8b7 with SMTP id
+ ti18-20020a056871891200b0023c2554d8b7mr8543686oab.20.1714446986897; Mon, 29
+ Apr 2024 20:16:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429124955.2294014-2-rrichter@amd.com>
+References: <20240418034330.84721-1-cuiyunhui@bytedance.com>
+ <20240418034330.84721-2-cuiyunhui@bytedance.com> <d143cd11-26ea-42e3-8f32-700a34b3705e@arm.com>
+ <CAEEQ3wkDMuu+jh56YB3G0vY_ENdUjDL6byMsJXd0C9aQu1FZKw@mail.gmail.com>
+In-Reply-To: <CAEEQ3wkDMuu+jh56YB3G0vY_ENdUjDL6byMsJXd0C9aQu1FZKw@mail.gmail.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Tue, 30 Apr 2024 11:16:15 +0800
+Message-ID: <CAEEQ3w=FJMzkL3_if1rQcHCUu0C9PVJzL3D3yytNLr-y3YS5nw@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v4 2/3] riscv: cacheinfo: initialize
+ cacheinfo's level and type from ACPI PPTT
+To: Jeremy Linton <jeremy.linton@arm.com>, Palmer Dabbelt <palmer@rivosinc.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, aou@eecs.berkeley.edu, 
+	linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com, 
+	john.garry@huawei.com, Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, 
+	sudeep.holla@arm.com, tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Robert,
+Hi Palmer,
 
-kernel test robot noticed the following build warnings:
+Gentle ping...
 
-[auto build test WARNING on 62dba604a4883169abf959b7d09449900e7d4537]
+On Tue, Apr 23, 2024 at 7:03=E2=80=AFPM yunhui cui <cuiyunhui@bytedance.com=
+> wrote:
+>
+> Hi Palmer,
+>
+> On Fri, Apr 19, 2024 at 11:29=E2=80=AFPM Jeremy Linton <jeremy.linton@arm=
+.com> wrote:
+> >
+> > Hi,
+> >
+> > On 4/17/24 22:43, Yunhui Cui wrote:
+> > > Before cacheinfo can be built correctly, we need to initialize level
+> > > and type. Since RSIC-V currently does not have a register group that
+> > > describes cache-related attributes like ARM64, we cannot obtain them
+> > > directly, so now we obtain cache leaves from the ACPI PPTT table
+> > > (acpi_get_cache_info()) and set the cache type through split_levels.
+> > >
+> > > Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > > ---
+> > >   arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
+> > >   1 file changed, 22 insertions(+)
+> > >
+> > > diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cachei=
+nfo.c
+> > > index 30a6878287ad..e47a1e6bd3fe 100644
+> > > --- a/arch/riscv/kernel/cacheinfo.c
+> > > +++ b/arch/riscv/kernel/cacheinfo.c
+> > > @@ -6,6 +6,7 @@
+> > >   #include <linux/cpu.h>
+> > >   #include <linux/of.h>
+> > >   #include <asm/cacheinfo.h>
+> > > +#include <linux/acpi.h>
+> > >
+> > >   static struct riscv_cacheinfo_ops *rv_cache_ops;
+> > >
+> > > @@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
+> > >       struct device_node *prev =3D NULL;
+> > >       int levels =3D 1, level =3D 1;
+> > >
+> > > +     if (!acpi_disabled) {
+> > > +             int ret, fw_levels, split_levels;
+> > > +
+> > > +             ret =3D acpi_get_cache_info(cpu, &fw_levels, &split_lev=
+els);
+> > > +             if (ret)
+> > > +                     return ret;
+> > > +
+> > > +             BUG_ON((split_levels > fw_levels) ||
+> > > +                    (split_levels + fw_levels > this_cpu_ci->num_lea=
+ves));
+> > > +
+> > > +             for (; level <=3D this_cpu_ci->num_levels; level++) {
+> > > +                     if (level <=3D split_levels) {
+> > > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_DA=
+TA, level);
+> > > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_IN=
+ST, level);
+> > > +                     } else {
+> > > +                             ci_leaf_init(this_leaf++, CACHE_TYPE_UN=
+IFIED, level);
+> > > +                     }
+> > > +             }
+> > > +             return 0;
+> > > +     }
+> > > +
+> > >       if (of_property_read_bool(np, "cache-size"))
+> > >               ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+> > >       if (of_property_read_bool(np, "i-cache-size"))
+> >
+> > Yes, looks good.
+> >
+> > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+> >
+> >
+> >
+> > Thanks,
+>
+> Could you help review this patchset? Thanks.
+>
+> Thanks,
+> Yunhui
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/x86-numa-Fix-SRAT-lookup-of-CFMWS-ranges-with-numa_fill_memblks/20240429-205337
-base:   62dba604a4883169abf959b7d09449900e7d4537
-patch link:    https://lore.kernel.org/r/20240429124955.2294014-2-rrichter%40amd.com
-patch subject: [PATCH v5 1/7] x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20240430/202404301038.2YNsO1Qn-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240430/202404301038.2YNsO1Qn-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404301038.2YNsO1Qn-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/acpi/numa/srat.c:211:19: warning: no previous prototype for 'numa_fill_memblks' [-Wmissing-prototypes]
-     211 | __weak int __init numa_fill_memblks(u64 start, u64 end)
-         |                   ^~~~~~~~~~~~~~~~~
-
-
-vim +/numa_fill_memblks +211 drivers/acpi/numa/srat.c
-
-   210	
- > 211	__weak int __init numa_fill_memblks(u64 start, u64 end)
-   212	{
-   213		return NUMA_NO_MEMBLK;
-   214	}
-   215	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Yunhui
 
