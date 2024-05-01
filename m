@@ -1,133 +1,259 @@
-Return-Path: <linux-acpi+bounces-5555-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5556-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D3E8B8945
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 May 2024 13:32:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564848B899F
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 May 2024 14:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAE0EB227ED
-	for <lists+linux-acpi@lfdr.de>; Wed,  1 May 2024 11:32:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF662856E7
+	for <lists+linux-acpi@lfdr.de>; Wed,  1 May 2024 12:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5537FBD3;
-	Wed,  1 May 2024 11:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09318529A;
+	Wed,  1 May 2024 12:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="drxtlTYy"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="mb3DeCIb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D7A6166E
-	for <linux-acpi@vger.kernel.org>; Wed,  1 May 2024 11:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A3F54FA1
+	for <linux-acpi@vger.kernel.org>; Wed,  1 May 2024 12:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714563145; cv=none; b=r3eM9doqY7ANdwDJXaNZc4nwavC3dt9OQIYkb9lRVlTn1Zqbt8z74pfhaoutWRVouAfuA7JW1xiPtKhTiI1GB+MK3huIt9LtHZVtANkaPkOMXgzr+umUPnnp4/xKqIaF/PvJ4ltLfSSzXJuPmCKgCHwTtyIykO7Xv1RtUy3pm8s=
+	t=1714565887; cv=none; b=LBzdU3OSdOz8lE4cX4IQgN/5mVf5VeHKJNiSdY9w/ypk2fBRGHFhULTTKpYgsLhf0e9yzL9sNYlOw9jffnEt/VzB/Ik7Mhwv8Pbp+yDNIKVaaIxMANRrHm5DGfgA++0byytoNbI07c3usD4A6IEruqhPK3uquBnXzi/GjmcNmY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714563145; c=relaxed/simple;
-	bh=6F3ISMAbsRLy7q+h/9yXAkPtqY1kgaNN+BV2pg4j5gI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gjb3+AMmJhL7Mu7kPALzKbA3NGZAPuQ+8vB5148HNKIiaTIwNqlELqBU/1BtmCBgNVviIZMdKKgpNMBY7vTzW2HTP4s99Tif0aTnDREtPwcf8N8rtPH27OsVdZVDfnE1VGmMS84zS+ODNb3JHqN8s/yeVv7dRwsQEJwysVSmQHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=drxtlTYy; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1714563142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NvY4677tvfuT/jSAqPXkUvL4xI6+hoEBXpkjqJe2TxE=;
-	b=drxtlTYy8YrX81DrwyzVgoqqDJ11JHAqkkRsPvV8O+49Es7ta4Go/K+44QXy5VePjotDLH
-	kfLvciMIJh7IHi9OU+JTedHkeSUU9VPL+9VXbY1QULEVBLe8EBMfo+/vHbamHfnorsArE4
-	Ef8B8sIL1DHcD/X2JYIxRchx5jfVHMI=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-8WDBjwqyO0mV4U43MbYz-Q-1; Wed, 01 May 2024 07:32:21 -0400
-X-MC-Unique: 8WDBjwqyO0mV4U43MbYz-Q-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1ec5ce555f6so13467025ad.2
-        for <linux-acpi@vger.kernel.org>; Wed, 01 May 2024 04:32:20 -0700 (PDT)
+	s=arc-20240116; t=1714565887; c=relaxed/simple;
+	bh=EWOsbQ8d8Nb/EJHNU/jBnJqaPWlguzEkjOm3OBX3Ncc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=i4RGN6F2bLbg3ttf9RfbgvVuZR66L9iHh+tTJeRDAzRmnVL8O6NKPsWn3rWOI1aS1JEQjmXmVotCqd/G/Y1nPrfpRjgHJWi6wmD+VfYY44bp9++J9/eCyMClw47oIn55uQWkOSJiOOdlEjGJKMWhgD3VCn8BKfJHKePfF35bZg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=mb3DeCIb; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1ec4dc64c6cso12442715ad.0
+        for <linux-acpi@vger.kernel.org>; Wed, 01 May 2024 05:18:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1714565884; x=1715170684; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9EhfEaMFfLrGfmVLdeaNNG6PlGGzfTCBnCOLnM+VG1c=;
+        b=mb3DeCIbbmpn3mHmnE+oFMaBcjecbbNlK/QZrkms2jJA+3UDdtWoHK2u6fd8O99oZV
+         DZBPdOibNnGXR/3fneUHY+xliWTnRI4Yk251Fr01JZPBrtLxyecpW6F6JERJZOJHfhnU
+         9VSHoa/4LO5UkRm2Cq4GDGXTbYnbX62v3YbATpAkiiC0SwS+qHzgeqWWKsrvz+muHPZx
+         a5Bem5TxCjlzNR6RyHla9iEHu2QstpVxZq5QL+K436kdbR9ARUGPE1DtoWHHOoNcgnVj
+         sP/QXa/KGts1fsgIsDV4V1xUJv/SPujSnedypd6/rUF4JVGitabA+3a0Rc4ZtYqP6hYB
+         i7eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714563140; x=1715167940;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NvY4677tvfuT/jSAqPXkUvL4xI6+hoEBXpkjqJe2TxE=;
-        b=jD7b8qtmnjACWwmAuSu5SuGQ3wr69lqCK7FvCPIT38kmQ60ORGY+OLYctLu1d46cKE
-         pP6KABBG2+FU2mNIBEOO4qg/4vNRAJ109PcrEMn8WCMcv3jGJvYW4RW+W6mIaCnVZswD
-         wbCdoT9ysKGVENYZPLL3wzyTmLrApOiG2HIx5cXC2MenMfguxcKNWAAgqj79/W8OfdzL
-         ho8MG9iTKhH6+r4QUI50O2F0wSMTTH+/X2/hId1iDIJYz41r1v/3/GnMGFnJAhG8WHS8
-         bSvZtozskJf3BDdq2FjY7jeNXCNC/j5HOd9einhzeB9+G1LuudYG4G95rXVBQHWXFFyX
-         byEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVqFuUPDRbuvP7k52O2QX1Vhjsjy3i7UDWVnSrEFwwz6JkWEZCOTUrNW/AS2y7iF1ZHfpCj79cSOtienaZ77nnA0JB64Fz/0c8Bxg==
-X-Gm-Message-State: AOJu0YwG5cXaLWWDqxqeDlBqfRmUaiv8zvvnYPcMMtA4mRGtqewdeV9L
-	zNZPtseIYzrPJnmsfNYisrd8ex7HRkS4WsAdanSIoDfel/x8rKx+XlHfEvOb6vB2zmu9p8wvm/k
-	7dD7Vd9HKTEpxxuwC3qgbpSDKn3DI3HTxzSpKCNn86HRGjsaXDyJy9x6aTs0=
-X-Received: by 2002:a17:903:22cb:b0:1dd:6ce3:7442 with SMTP id y11-20020a17090322cb00b001dd6ce37442mr2025089plg.39.1714563139918;
-        Wed, 01 May 2024 04:32:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHn/GVXiGegFVOAaktJ4SFkKCrfxZSExdPxCeZLOx/YtG8arQj1wuv7wQDNju0KSdPBov9xtA==
-X-Received: by 2002:a17:903:22cb:b0:1dd:6ce3:7442 with SMTP id y11-20020a17090322cb00b001dd6ce37442mr2025049plg.39.1714563139450;
-        Wed, 01 May 2024 04:32:19 -0700 (PDT)
-Received: from [192.168.68.50] ([43.252.112.88])
-        by smtp.gmail.com with ESMTPSA id j14-20020a170903024e00b001e4753f7715sm23973521plh.12.2024.05.01.04.32.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 May 2024 04:32:19 -0700 (PDT)
-Message-ID: <0f635267-d296-467a-a337-34192c35164b@redhat.com>
-Date: Wed, 1 May 2024 21:32:06 +1000
+        d=1e100.net; s=20230601; t=1714565884; x=1715170684;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9EhfEaMFfLrGfmVLdeaNNG6PlGGzfTCBnCOLnM+VG1c=;
+        b=iurwboF9h+lec+1gWlXuMZ0+4Zbwv4mb1Wcui1M8ncAcbdgWXtYIVoALPGxbVb+qam
+         XYH32XY3LgMmUde70XUSQtwuS8bxXDARRlF3o+Rx9VJYvSq2Io1yVp+VPhuBTF7TI/wO
+         D2LupmfbDAZfpdG0JkGCyrk9b3ZwaLn4NIPVekIPIk5l8kYoXCpp/MQPQZRnvulciDYP
+         6kBnMhhLOqbWh52vQukP/p2izmyHSUkp1cltSJ1fd1xJb4b/JTjzdOiiKWDIvFd7fP3g
+         Z8ILihC194MTaTsUYJ5BJRagQRvYX3dTtQws4tAv2fucXP1kBkX2F6MECl7D87jU/vGx
+         xOog==
+X-Forwarded-Encrypted: i=1; AJvYcCWdgBbezKD31N9t6qVgB33QzZOR3OBVp81ST+zhZr5J3A6ua/+okhJEg9pUPohUotXcsPOiseyuDhq19CI0DDgOPChTXFMYUo7aMQ==
+X-Gm-Message-State: AOJu0YyEfxoImP4VftwW7zwZteai8gBT9Ph4IQ9/Ac962/lw8i/adt3E
+	Tffunq0LvJJIS9RcJNyyV8aPjHUWKeeZSg/14C6oy2rVWOwZDyNAC1kysM87hWM=
+X-Google-Smtp-Source: AGHT+IGKp6Ma/BFy2R+UnRNFa2ZVdvrW3j2wb0D3bLNHdRHpaQg8W2PvjVIveWAJa/pc36T5TUO8jg==
+X-Received: by 2002:a17:902:efcf:b0:1e5:c06b:3330 with SMTP id ja15-20020a170902efcf00b001e5c06b3330mr2036008plb.24.1714565884004;
+        Wed, 01 May 2024 05:18:04 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.188.106])
+        by smtp.gmail.com with ESMTPSA id im15-20020a170902bb0f00b001ec8888b22esm1336900plb.65.2024.05.01.05.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 05:18:03 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Andrei Warkentin <andrei.warkentin@intel.com>,
+	Haibo1 Xu <haibo1.xu@intel.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v5 00/17] RISC-V: ACPI: Add external interrupt controller support
+Date: Wed,  1 May 2024 17:47:25 +0530
+Message-Id: <20240501121742.1215792-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 18/19] arm64: document virtual CPU hotplug's
- expectations
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, x86@kernel.org, Russell King
- <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>,
- Salil Mehta <salil.mehta@huawei.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com,
- justin.he@arm.com, jianyong.wu@arm.com
-References: <20240430142434.10471-1-Jonathan.Cameron@huawei.com>
- <20240430142434.10471-19-Jonathan.Cameron@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20240430142434.10471-19-Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 5/1/24 00:24, Jonathan Cameron wrote:
-> From: James Morse <james.morse@arm.com>
-> 
-> Add a description of physical and virtual CPU hotplug, explain the
-> differences and elaborate on what is required in ACPI for a working
-> virtual hotplug system.
-> 
-> Signed-off-by: James Morse <james.morse@arm.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> ---
-> v9: No change
-> ---
->   Documentation/arch/arm64/cpu-hotplug.rst | 79 ++++++++++++++++++++++++
->   Documentation/arch/arm64/index.rst       |  1 +
->   2 files changed, 80 insertions(+)
-> 
+This series adds support for the below ECR approved by ASWG.
+1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
 
-Reviewed-by: Gavin Shan <gshan@redhat.com>
+The series primarily enables irqchip drivers for RISC-V ACPI based
+platforms.
+
+The series can be broadly categorized like below. 
+
+1) PCI ACPI related functions are migrated from arm64 to common file so
+that we don't need to duplicate them for RISC-V.
+
+2) Added support for re-ordering the probe of interrupt controllers when
+IRQCHIP_ACPI_DECLARE is used.
+
+3) To ensure probe order between interrupt controllers and devices,
+implicit dependency is created similar to when _DEP is present.
+
+4) Added 8250 serial driver for a generic 16550 UART which is enumerated
+as ACPI platform device.
+
+5) ACPI support added in RISC-V interrupt controller drivers.
+
+Changes since RFC v4:
+	1) Removed RFC tag as the RFCv4 design looked reasonable.
+	2) Dropped PCI patch needed to avoid warning when there is no MSI
+	   controller. This will be sent later separately after the
+	   current series.
+	3) Dropped PNP handling of _DEP since there is new ACPI ID for
+	   generic 16550 UART. Added the serial driver patch instead.
+	4) Rebased to latest linux-next.
+	5) Reordered/squashed patches in the series
+
+Changes since RFC v3:
+	1) Moved to _DEP method instead of fw_devlink.
+	2) PLIC/APLIC driver probe using namespace devices.
+	3) Handling PNP devices as part of clearing dependency.
+	4) Rebased to latest linux-next to get AIA DT drivers.
+
+Changes since RFC v2:
+	1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
+	2) Dropped patches in drivers which are not required due to
+	   fw_devlink support.
+	3) Dropped pci_set_msi() patch and added a patch in
+	   pci_create_root_bus().
+	4) Updated pnp_irq() patch so that none of the actual PNP
+	   drivers need to change.
+
+Changes since RFC v1:
+	1) Abandoned swnode approach as per Marc's feedback.
+	2) To cope up with AIA series changes which changed irqchip driver
+	   probe from core_initcall() to platform_driver, added patches
+	   to support deferred probing.
+	3) Rebased on top of Anup's AIA v11 and added tags.
+
+To test the series,
+
+1) qemu should be built using the riscv_acpi_namespace_v2 branch at
+https://github.com/vlsunil/qemu.git
+
+2) EDK2 should be built using the instructions at:
+https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+
+NOTE: One should be able to use u-boot as well as per instructions from Björn.
+https://lore.kernel.org/lkml/87a5lqsrvh.fsf@all.your.base.are.belong.to.us/
+
+3) Build Linux using this series.
+
+Run Qemu:
+qemu-system-riscv64 \
+ -M virt,pflash0=pflash0,pflash1=pflash1,aia=aplic-imsic \
+ -m 2G -smp 8 \
+ -serial mon:stdio \
+ -device virtio-gpu-pci -full-screen \
+ -device qemu-xhci \
+ -device usb-kbd \
+ -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+ -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+ -netdev user,id=net0 -device virtio-net-pci,netdev=net0 \
+ -kernel arch/riscv/boot/Image \
+ -initrd rootfs.cpio \
+ -append "root=/dev/ram ro console=ttyS0 rootwait earlycon=uart8250,mmio,0x10000000"
+
+To boot with APLIC only, use aia=aplic.
+To boot with PLIC, remove aia= option.
+
+This series is also available in acpi_b2_v5 branch at
+https://github.com/vlsunil/linux.git
+
+Based-on: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tag/?h=next-20240501
+
+Sunil V L (17):
+  arm64: PCI: Migrate ACPI related functions to pci-acpi.c
+  ACPI: scan: Add a weak function to reorder the IRQCHIP probe
+  ACPI: bus: Add acpi_riscv_init function
+  ACPI: scan: Refactor dependency creation
+  ACPI: scan: Add RISC-V interrupt controllers to honor list
+  ACPI: scan: Define weak function to populate dependencies
+  ACPI: bus: Add RINTC IRQ model for RISC-V
+  ACPI: pci_link: Clear the dependencies after probe
+  ACPI: RISC-V: Implement PCI related functionality
+  ACPI: RISC-V: Implement function to reorder irqchip probe entries
+  ACPI: RISC-V: Initialize GSI mapping structures
+  ACPI: RISC-V: Implement function to add implicit dependencies
+  irqchip/riscv-intc: Add ACPI support for AIA
+  irqchip/riscv-imsic: Add ACPI support
+  irqchip/riscv-aplic: Add ACPI support
+  irqchip/sifive-plic: Add ACPI support
+  serial: 8250: Add 8250_acpi driver
+
+ arch/arm64/kernel/pci.c                    | 191 ------------
+ arch/riscv/Kconfig                         |   3 +
+ arch/riscv/configs/defconfig               |   1 +
+ arch/riscv/include/asm/irq.h               |  57 ++++
+ arch/riscv/kernel/acpi.c                   |  31 +-
+ drivers/acpi/Kconfig                       |   3 +
+ drivers/acpi/bus.c                         |   4 +
+ drivers/acpi/pci_link.c                    |   3 +
+ drivers/acpi/riscv/Makefile                |   2 +-
+ drivers/acpi/riscv/init.c                  |  14 +
+ drivers/acpi/riscv/init.h                  |   4 +
+ drivers/acpi/riscv/irq.c                   | 329 +++++++++++++++++++++
+ drivers/acpi/scan.c                        |  65 ++--
+ drivers/irqchip/irq-riscv-aplic-direct.c   |  20 +-
+ drivers/irqchip/irq-riscv-aplic-main.c     |  70 +++--
+ drivers/irqchip/irq-riscv-aplic-main.h     |   1 +
+ drivers/irqchip/irq-riscv-aplic-msi.c      |   9 +-
+ drivers/irqchip/irq-riscv-imsic-early.c    |  52 +++-
+ drivers/irqchip/irq-riscv-imsic-platform.c |  32 +-
+ drivers/irqchip/irq-riscv-imsic-state.c    | 115 ++++---
+ drivers/irqchip/irq-riscv-imsic-state.h    |   2 +-
+ drivers/irqchip/irq-riscv-intc.c           | 102 ++++++-
+ drivers/irqchip/irq-sifive-plic.c          |  89 ++++--
+ drivers/pci/pci-acpi.c                     | 182 ++++++++++++
+ drivers/tty/serial/8250/8250_acpi.c        |  96 ++++++
+ drivers/tty/serial/8250/Kconfig            |   8 +
+ drivers/tty/serial/8250/Makefile           |   1 +
+ include/acpi/acpi_bus.h                    |   2 +
+ include/linux/acpi.h                       |   9 +
+ include/linux/irqchip/riscv-imsic.h        |  10 +
+ 30 files changed, 1155 insertions(+), 352 deletions(-)
+ create mode 100644 drivers/acpi/riscv/init.c
+ create mode 100644 drivers/acpi/riscv/init.h
+ create mode 100644 drivers/acpi/riscv/irq.c
+ create mode 100644 drivers/tty/serial/8250/8250_acpi.c
+
+-- 
+2.40.1
 
 
