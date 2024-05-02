@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-5608-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5609-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718D08B9E8E
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 18:28:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012118B9EB6
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 18:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DB19281430
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 16:28:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B173E2878A3
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 16:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9C815E5A1;
-	Thu,  2 May 2024 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F6915E21D;
+	Thu,  2 May 2024 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tkwArCD5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxRP799+"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42B9154457;
-	Thu,  2 May 2024 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7797E578;
+	Thu,  2 May 2024 16:37:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714667304; cv=none; b=IxOWkWAq4SD46k2O69tP96J57kk85GoVTG5t2hSl7BUk76KmvAio+LXX6LhxHdpwWgsrFVH0cBl6riFaZuL8yU5e7QdZMV277ToxB/cVI9Xs77wI1FKHb5xK7LTsntl3ZwzE40fLh/67ZIZzVNBMeq1I1ohJxSaWjIR6Ol1DBBQ=
+	t=1714667826; cv=none; b=q2WIxJkPEG3qtjWOC/ODad9l26aUCvcUv9GX47L2quHk8VOjtdeDutwDyFOONbMomz3pQW5KgC6dv358N0Ftk9FYmojd1KUkbBgZ7qCGp6wU4nbAYsDHs5qiv1hSk1JhrTyffinSWJ5ita51S9jyADOXVTcIQcUou7CkyBjQzac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714667304; c=relaxed/simple;
-	bh=igeGofHHX03XUM7K37J588YrkNVJAkcgHSuZsnjbMRY=;
+	s=arc-20240116; t=1714667826; c=relaxed/simple;
+	bh=elIj2maOPCIQ9r6zUCBezHlRHkxdKHhoo2W0GlqZyBM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kGrKhySPDp0ZYFTdn+N3zFMKCmGfFGyeAViWPu/jc1VsaLp7XCMLRhbBQvMrFibpD2kvLle39eooAt+iVi7b9fynje4MfuKd0bYSTw+KUyPNQtoZvhm7okGb3By/47av87eE7oxu0AS4cXdvQntZZekd92VE+5JDX6nXcppunh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tkwArCD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79ADC113CC;
-	Thu,  2 May 2024 16:28:20 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=K6qTHzcWPUtNNNb6ojgUl2frqQOzPf7RRz5YuHYHy5Qqe/DXD3eCnaQEFX+azJxcJzdi/RqV0jzgEJJDhge4vYiu7iHzG3z/6qyUlvcy6HUu6ce+qRQ7P29yHyjj5KgDUnUNA+zcvGUqPVMwFPv/DgKqlG/ghjh1xxkfIoWjefw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxRP799+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D95DC4AF18;
+	Thu,  2 May 2024 16:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714667304;
-	bh=igeGofHHX03XUM7K37J588YrkNVJAkcgHSuZsnjbMRY=;
+	s=k20201202; t=1714667825;
+	bh=elIj2maOPCIQ9r6zUCBezHlRHkxdKHhoo2W0GlqZyBM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tkwArCD524hvWVLbY/B04VyZtyU2tSmLXTC+TN/3fNo1FFjhjp+e3HDRt66njqDKB
-	 wTpSEwE6jVMeS3d3xMfLLOksc1ddn7gvw3UY4Sq+w7RKVV8HA977fRZj9yYHtKwZ87
-	 9cWjCOHgQJJsrNlLKy5RoiUVP4kx4WhVE7KzStDBI+tK2S8uoslj2M0TWCE2tEOFuw
-	 /MOMN1Z0IdPcYVCAyk4jpzy6Lt6DIcv3VGgEkEUw+bWDxRaYzp9f+9vagunjJ7jQuq
-	 2+w7eY/+3Bs++xIUIgDjNo83QuObVB4VuHPezAYebaNgU0L84haFAdu+WN8hM4n2BD
-	 WaPcMNA4q+gzA==
-Date: Thu, 2 May 2024 17:28:18 +0100
+	b=mxRP799+NKBOnBmJSVVkzJV2QPQxCkVIYNJcjkfAJ75fLz2G/4x69DOChbxxDKWu0
+	 phwy483uBgXYWJ2E22vdf7f1iwHB799cpMVZmS7PJVmR3Z9Zm7SEKPh1aZYmCBcjxw
+	 AoYPhvEL47d/IquhZvRLTpsWUxzgzjZYTG0XC5T7UEPncG37oy7HWEP8uXsv+QTVaq
+	 qf8/7iUARN3BKNveOCo34fVoY/zqHyrN0J0yYiNIy4uxUEOMcdnCDiqCKe0dGIbBrn
+	 j1rxYOE+TyDcrsUhK1wqTh1kCbY96IoasRh/WYKZNkxMrtg0LrKkF2q0Ih0OoZIDO6
+	 4y9PT+rJxos9w==
+Date: Thu, 2 May 2024 17:37:00 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Yunhui Cui <cuiyunhui@bytedance.com>
 Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
@@ -51,10 +51,11 @@ Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
 	james.morse@arm.com, jhugo@codeaurora.org, jeremy.linton@arm.com,
 	john.garry@huawei.com, Jonathan.Cameron@huawei.com,
 	pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
-Subject: Re: [PATCH v4 1/3] riscv: cacheinfo: remove the useless input
- parameter (node) of ci_leaf_init()
-Message-ID: <20240502-secrecy-unleveled-e173419c54ec@spud>
+Subject: Re: [PATCH v4 2/3] riscv: cacheinfo: initialize cacheinfo's level
+ and type from ACPI PPTT
+Message-ID: <20240502-herald-catty-a03eafc4e6b1@spud>
 References: <20240418034330.84721-1-cuiyunhui@bytedance.com>
+ <20240418034330.84721-2-cuiyunhui@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -62,44 +63,44 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jCp1f9hek9NXabnN"
+	protocol="application/pgp-signature"; boundary="yO7HUsK9PhhdPt6D"
 Content-Disposition: inline
-In-Reply-To: <20240418034330.84721-1-cuiyunhui@bytedance.com>
+In-Reply-To: <20240418034330.84721-2-cuiyunhui@bytedance.com>
 
 
---jCp1f9hek9NXabnN
+--yO7HUsK9PhhdPt6D
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 11:43:28AM +0800, Yunhui Cui wrote:
-> ci_leaf_init() is a declared static function. The implementation of the
-> function body and the caller do not use the parameter (struct device_node
-> *node) input parameter, so remove it.
+On Thu, Apr 18, 2024 at 11:43:29AM +0800, Yunhui Cui wrote:
+> Before cacheinfo can be built correctly, we need to initialize level
+> and type. Since RSIC-V currently does not have a register group that
+> describes cache-related attributes like ARM64, we cannot obtain them
+> directly, so now we obtain cache leaves from the ACPI PPTT table
+> (acpi_get_cache_info()) and set the cache type through split_levels.
 >=20
-> Fixes: 6a24915145c9 ("Revert "riscv: Set more data to cacheinfo"")
-> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
-> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+> Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+: Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 
+I'm not an ACPI head, so whether or not the table is valid on RISC-V or
+w/e I do not know, but the code here looks sane to me, so
 Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-By the way, please use cover letters for multi patch patchsets. I don't
-enjoy marking previous versions "superceded" by hand in patchwork.
-
-Thanks,
+Cheers,
 Conor.
 
---jCp1f9hek9NXabnN
+--yO7HUsK9PhhdPt6D
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjO/IgAKCRB4tDGHoIJi
-0hi4AQCMArFXXQ1jipb+xchGlJ3/aeXo1IgXwQ7MxE3mxAbG9QD/UwOrcrpHE3gN
-t4eD8gxKhTy6Wmuj7HiFcstVa4iezAg=
-=jJp+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjPBLAAKCRB4tDGHoIJi
+0u7BAQDbJjVUjdxBuIPXpCPVp0rGN0S1orbltdlb/onG2hq2YgD+PpvigMyAnAWw
+3yi6hMJHbgpBnXDIv2UKS2a6xsBjxAI=
+=LkPp
 -----END PGP SIGNATURE-----
 
---jCp1f9hek9NXabnN--
+--yO7HUsK9PhhdPt6D--
 
