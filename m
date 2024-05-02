@@ -1,137 +1,158 @@
-Return-Path: <linux-acpi+bounces-5606-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5607-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B1B8B9D99
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 17:36:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D4E8B9E8A
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 18:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ABB91F247D1
-	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 15:36:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 603D2B20C89
+	for <lists+linux-acpi@lfdr.de>; Thu,  2 May 2024 16:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D65015B56A;
-	Thu,  2 May 2024 15:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WSyuE7uS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C52815E1EF;
+	Thu,  2 May 2024 16:27:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA4642078;
-	Thu,  2 May 2024 15:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A4615CD72;
+	Thu,  2 May 2024 16:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714664165; cv=none; b=B9r7PdIo5zajKEwNUkW4NJ9o1wYrfVXo2/8TTp9bRYaQu87kcMFHFlIenNPeVD1+SnzrTwF3+QdApUB/G8u5U6vIUwYfLvtrR05onmUvm+pQ2+c0j6mQsL3yJVWXvt8JpTnCXmxlSOSF1LRppca3YnbESqw0pll6jBic4/oyMw4=
+	t=1714667273; cv=none; b=KJAR+TI/TmWiR1Sqsj7gHpudBb97cl5eUZqBrfv62tFIc4zEZ54EPqSmkvYBfgkLHmG06luVu8SvNk8Q/5bwC8OeKNjDLcLV+1PTPF2CFsvpBEMQeyho9vF5c9dFhIK4m9AAI4JOEHGxCFV30aLyxScjx1JwzoJSjlLpd2Stth4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714664165; c=relaxed/simple;
-	bh=E8C2qPCeaHtiAjUVZaWnodtIyl8a3pqbTM+93AmJ71Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eHsS09wZNnrml+C/kCBpxg8Ocm6dMUBcwzfT0jcGM++KG2e5VI6F3hsU9CcXuszjtbIW+tLfUcyGvwZy4Wc3NeJ7ixMflfXZN/iDTeUUuWDHEh8rhKLqjVr1LYrbOsFKhaEi2TwQJEbbe+E1FyWFZO4u/ZGbnitlYI38auzMtPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WSyuE7uS; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714664163; x=1746200163;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=E8C2qPCeaHtiAjUVZaWnodtIyl8a3pqbTM+93AmJ71Y=;
-  b=WSyuE7uSwU5f/7bYnjCXajYcotet4DvVdtYvisV+WbZlIN+mgLRTKmu0
-   U5LrDEAujnZx5TmPTii1ZqJDqVGhqC7uESRMInvsmmtWWOL/hwn7CTauF
-   ku9hPAdmlg/j56hOeoJwBElDg9091xB+/Ex0nn+ZTIayzwdFyIc6xIAlc
-   YXi6A4qrY7833yA1gvDD5OD9LoHvFJJM2797elqGBMR4++R+jiOWg58bG
-   8D6Vmf2khptkDZyK3ck6aaZN133B80CARECS/8GsQ/eCLxY55fVZYKXG3
-   S1M+9Dv5kwE3JrfAzQyuZIH8V4VdWnQz16Fh6n8B1/Ne0z/0Mst/jbgxK
-   A==;
-X-CSE-ConnectionGUID: j/T38Oz4RBaWKUjvoQIXqA==
-X-CSE-MsgGUID: XdkusnyqSei3J51cvACd4Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="10570068"
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="10570068"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:36:03 -0700
-X-CSE-ConnectionGUID: b+Q2+7rHQo2NCSK+Z3AvIg==
-X-CSE-MsgGUID: qhp105huQHCdu0Ee90JJ7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="27208567"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:35:56 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s2YTQ-00000003Mdz-43wp;
-	Thu, 02 May 2024 18:35:52 +0300
-Date: Thu, 2 May 2024 18:35:52 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Sunil V L <sunilvl@ventanamicro.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-serial@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Anup Patel <anup@brainfault.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Atish Kumar Patra <atishp@rivosinc.com>,
-	Andrei Warkentin <andrei.warkentin@intel.com>,
-	Haibo1 Xu <haibo1.xu@intel.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-Subject: Re: [PATCH v5 17/17] serial: 8250: Add 8250_acpi driver
-Message-ID: <ZjOy2G0qN5G076i0@smile.fi.intel.com>
-References: <20240501121742.1215792-1-sunilvl@ventanamicro.com>
- <20240501121742.1215792-18-sunilvl@ventanamicro.com>
- <ZjNaR-YtVTm4pbP7@smile.fi.intel.com>
- <ZjNh0Llcx+0VHevy@sunil-laptop>
- <ZjNmdfR2J6hNnYle@smile.fi.intel.com>
- <ZjN3GQI3gegYOIgS@sunil-laptop>
+	s=arc-20240116; t=1714667273; c=relaxed/simple;
+	bh=nm7ON6oo8RB0X1OqiD304N5QacV8v6d8PFHWqL4dMw0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Goa9JWrIqCbGwiZbweYP6xsm3gZT5zZ4+DizqLXCW9ZkVq0VSFMuXIQYOAKi8dtG+j2HWA3g1PrABMaZf5vrUwIqK4NTeH5/uZj6MAPc8oC76dntbqQP5URzpXSxsHBMRLTnR96q11CtvLde0ud4oMRV19fkY7pb5ku69+4XmI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VVfV33Mz3z67Lqc;
+	Fri,  3 May 2024 00:27:23 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 913671400DB;
+	Fri,  3 May 2024 00:27:44 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 May
+ 2024 17:27:44 +0100
+Date: Thu, 2 May 2024 17:27:42 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Robert Richter <rrichter@amd.com>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Alison Schofield <alison.schofield@intel.com>, "Dan Williams"
+	<dan.j.williams@intel.com>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-cxl@vger.kernel.org>, Derick Marks
+	<derick.w.marks@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Len Brown
+	<lenb@kernel.org>
+Subject: Re: [PATCH v6 1/7] x86/numa: Fix SRAT lookup of CFMWS ranges with
+ numa_fill_memblks()
+Message-ID: <20240502172742.00002823@huawei.com>
+In-Reply-To: <ZjOAOGInZDO65b_T@rric.localdomain>
+References: <20240430092200.2335887-1-rrichter@amd.com>
+	<20240430092200.2335887-2-rrichter@amd.com>
+	<20240430154856.00006d15@Huawei.com>
+	<ZjOAOGInZDO65b_T@rric.localdomain>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZjN3GQI3gegYOIgS@sunil-laptop>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, May 02, 2024 at 04:50:57PM +0530, Sunil V L wrote:
-> On Thu, May 02, 2024 at 01:09:57PM +0300, Andy Shevchenko wrote:
-> > On Thu, May 02, 2024 at 03:20:08PM +0530, Sunil V L wrote:
-> > > On Thu, May 02, 2024 at 12:17:59PM +0300, Andy Shevchenko wrote:
+On Thu, 2 May 2024 13:59:52 +0200
+Robert Richter <rrichter@amd.com> wrote:
 
-...
-
-> > > This driver is not a duplicate of 8250_pnp. It just relies on UART
-> > > enumerated as platform device instead of using PNP interfaces.
-> > > Isn't it better and simple to have an option to enumerate as platform
-> > > device instead of PNP? 
+> On 30.04.24 15:48:56, Jonathan Cameron wrote:
+> > On Tue, 30 Apr 2024 11:21:54 +0200
+> > Robert Richter <rrichter@amd.com> wrote:
+> >   
+> > > For configurations that have the kconfig option NUMA_KEEP_MEMINFO
+> > > disabled numa_fill_memblks() only returns with NUMA_NO_MEMBLK (-1).
+> > > SRAT lookup fails then because an existing SRAT memory range cannot be
+> > > found for a CFMWS address range. This causes the addition of a
+> > > duplicate numa_memblk with a different node id and a subsequent page
+> > > fault and kernel crash during boot.
+> > > 
+> > > Fix this by making numa_fill_memblks() always available regardless of
+> > > NUMA_KEEP_MEMINFO.
+> > > 
+> > > The fix also removes numa_fill_memblks() from sparsemem.h using
+> > > __weak.
+> > > 
+> > > From Dan:
+> > > 
+> > > """
+> > > It just feels like numa_fill_memblks() has absolutely no business being
+> > > defined in arch/x86/include/asm/sparsemem.h.
+> > > 
+> > > The only use for numa_fill_memblks() is to arrange for NUMA nodes to be
+> > > applied to memory ranges hot-onlined by the CXL driver.
+> > > 
+> > > It belongs right next to numa_add_memblk(), and I suspect
+> > > arch/x86/include/asm/sparsemem.h was only chosen to avoid figuring out
+> > > what to do about the fact that linux/numa.h does not include asm/numa.h
+> > > and that all implementations either provide numa_add_memblk() or select
+> > > the generic implementation.
+> > > 
+> > > So I would prefer that this do the proper fix and get
+> > > numa_fill_memblks() completely out of the sparsemem.h path.
+> > > 
+> > > Something like the following which boots for me.
+> > > """
+> > > 
+> > > Note that the issue was initially introduced with [1]. But since
+> > > phys_to_target_node() was originally used that returned the valid node
+> > > 0, an additional numa_memblk was not added. Though, the node id was
+> > > wrong too, a message is seen then in the logs:
+> > > 
+> > >  kernel/numa.c:  pr_info_once("Unknown target node for memory at 0x%llx, assuming node 0\n",
+> > > 
+> > > [1] commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
+> > >     CFMWS not in SRAT")
+> > > 
+> > > Suggested-by: Dan Williams <dan.j.williams@intel.com>
+> > > Link: https://lore.kernel.org/all/66271b0072317_69102944c@dwillia2-xfh.jf.intel.com.notmuch/
+> > > Fixes: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+> > > Cc: Derick Marks <derick.w.marks@intel.com>
+> > > Cc: Dan Williams <dan.j.williams@intel.com>
+> > > Cc: Alison Schofield <alison.schofield@intel.com>
+> > > Signed-off-by: Robert Richter <rrichter@amd.com>  
 > > 
-> > Ah, then extract platform driver first from 8250_core.c.
+> > Whilst I'm not particularly keen on an arch specific solution for this
+> > and the stub is effectively pointless beyond making the build work, I guess
+> > this works well enough for now.
 > > 
-> Let me know if I understand your suggestion correctly. Do you mean call
-> something like serial8250_acpi_init() from serial8250_init() and
-> register the driver directly in serial8250_acpi_init()?
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > I was aiming to post the ARM64 handling this cycle but it hasn't quite happened yet :(
+> > Maybe we can look at whether there is a better level share at than
+> > the whole function once that is done.  
+> 
+> Thanks for review.
+> 
+> It seems better to change x86 to use the generic implementation of
+> numa_add_memblk() in drivers/base/arch_numa.c. That already contains
+> code to deal with and merge overlapping blocks, it also checks memory
+> attributes. But that is not scope of this patch.
+> 
+There is some history that Dan pointed me at a while back... Maybe this one is fine
+but in general people have tried and given up on unifying x86 memblock handling
+with the generic version :(
+https://lore.kernel.org/linux-mm/159457121480.754248.17292511837648775358.stgit@dwillia2-desk3.amr.corp.intel.com/
 
-Extract the code to be 8250_platform.c and update that file.
-I have locally the extraction of RSA code, I will see if I can help you
-with the rest.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> -Robert
 
 
