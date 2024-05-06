@@ -1,122 +1,113 @@
-Return-Path: <linux-acpi+bounces-5627-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5628-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD40B8BC5EE
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 04:55:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178D98BC832
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 09:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27F51C21490
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 02:55:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5282DB21391
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 07:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E2237142;
-	Mon,  6 May 2024 02:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2A750263;
+	Mon,  6 May 2024 07:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="faNzfGrJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCFC22075;
-	Mon,  6 May 2024 02:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1115C67A1A
+	for <linux-acpi@vger.kernel.org>; Mon,  6 May 2024 07:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714964117; cv=none; b=YbHnIPey6MIaVsvclrc/ysfxW9Pk/WhCEHuFenHeaYN3HprzangpX9IGnKG8am+PoS3hdPhX5+Lc8DyjRZFt9bJQBecnu2w5O2KiLH5jbIScyoOyZ9dIHye5Sj8Cjzouu2JlpPtwEzHZUZSz63fdAyGxtg8FqS035hNVuC2KRYk=
+	t=1714979825; cv=none; b=uj6OjxiowLyqsx4d5EIPOuCpUg/YJx+Axa28EYCDb/jiyOmq/018JV+CCMqv8Yhr0+C9XRaH5rFVVRuBTClkAu9U5mWAAmCxaAT6WVMPoA26XEGno1a1fqKzqRG06czcwL9pFlM1eBJWx+789vbeehg3mEvPOP2S6lemeBw2xOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714964117; c=relaxed/simple;
-	bh=KO15BVN2XvLxj8SVCAQLarwOrfH3EAsRaTUl+Hinxmk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WKq4ZzaeYJHiej/zioLHeUa8xLFpDyQ2EDG8nn3JCjxzmTSONcfMjmD4rnta9C9RQLi9atMELrWtuUYUbM7HCubP7g765wXdgfSiNkhFMb1xXvUVPXDfnPGHEk84s4r5bSdJqrkxVj7g89loH3o9TT3W1Ah4YFCEjFQfALldhnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4VXmC65TdyzxNfp;
-	Mon,  6 May 2024 10:51:46 +0800 (CST)
-Received: from dggpemm500018.china.huawei.com (unknown [7.185.36.111])
-	by mail.maildlp.com (Postfix) with ESMTPS id 52CAF140428;
-	Mon,  6 May 2024 10:55:10 +0800 (CST)
-Received: from [10.174.178.96] (10.174.178.96) by
- dggpemm500018.china.huawei.com (7.185.36.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 6 May 2024 10:55:09 +0800
-Message-ID: <df3d5556-30b1-42d9-aecc-1ad155f024bc@huawei.com>
-Date: Mon, 6 May 2024 10:55:09 +0800
+	s=arc-20240116; t=1714979825; c=relaxed/simple;
+	bh=PstHRSKOKcqxkShNbxwk8FnDsybyAX0RVodevHpQZOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jj+eB9p7o/AVqZoQBkz5VxxWAzlqqmAi5/zUwRltUwTanx8kWUkP4rBUHr2IsRXUnMlqvv3Iqpr6rjsZCfedWGMHnFyWo0Ma5qJiDrBl9M/eOFlnsfwn5Op32XRcIud3lJs/2p2cP3Qis6tLdVFJvoZR86yklIHmAN637MXJmqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=faNzfGrJ; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=PstH
+	RSKOKcqxkShNbxwk8FnDsybyAX0RVodevHpQZOg=; b=faNzfGrJryK08DJqDT0+
+	sza/CDfFUB3VaQFa5UtvfuVem6PrGtFtyDr+bk619/O/rAwLZDub04wOeq6SQre3
+	6FtmpbGhATDU7Kgw4UeZncC/rwnRi8AV0c4mJNSuDyQexYM3yCjzUrFjHdHIi5la
+	c7TT9SI5Q6v4RB/KuFx4vQZC+fosRIAn+0bofYkU262LYNs5kkhEOZl6zJY4F1HD
+	l8ydvqKcqEuRX24vPCwkZJ1vdKcXF+46qNuvdqitPPQWdU6WU/0sK2p9+elgr8Me
+	Fvz3bauXPRX/D4CJucNMa5XN2TE6+IXv0udCDGl1AhhW/kcxT1JyJnm8xSkITxsw
+	Ug==
+Received: (qmail 93991 invoked from network); 6 May 2024 09:17:01 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 6 May 2024 09:17:01 +0200
+X-UD-Smtp-Session: l3s3148p1@zlUF28MXFssgAwDPXzrfAO1ieDVkyUqz
+Date: Mon, 6 May 2024 09:17:00 +0200
+From: 
+	"wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>
+To: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>
+Cc: "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, 
+	"andi.shyti@kernel.org" <andi.shyti@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v4] i2c: acpi: Unbind mux adapters before delete
+Message-ID: <coknwfk34gwerazcxjuzcitxdijua42qrowtclo3nlp4m5q7jo@z6onvi7k6fgf>
+Mail-Followup-To: 
+	"wsa+renesas@sang-engineering.com" <wsa+renesas@sang-engineering.com>, Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>, 
+	"mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "andi.shyti@kernel.org" <andi.shyti@kernel.org>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+References: <20240312221632.859695-1-hamish.martin@alliedtelesis.co.nz>
+ <89b741977d593fc951fef662eeb798c5d0022610.camel@alliedtelesis.co.nz>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpufreq/cppc: fix perf_to_khz conversion exception
-To: Pierre Gondois <pierre.gondois@arm.com>
-CC: <linux-acpi@vger.kernel.org>, <rafael@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lenb@kernel.org>, <liwei391@huawei.com>,
-	<viresh.kumar@linaro.org>
-References: <20240430101227.2133288-1-liwei728@huawei.com>
- <0f8ccc3d-46ca-4632-9ecf-5da596ad5a1a@arm.com>
-From: "liwei (JK)" <liwei728@huawei.com>
-In-Reply-To: <0f8ccc3d-46ca-4632-9ecf-5da596ad5a1a@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500018.china.huawei.com (7.185.36.111)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dasidqqd3am2q5b2"
+Content-Disposition: inline
+In-Reply-To: <89b741977d593fc951fef662eeb798c5d0022610.camel@alliedtelesis.co.nz>
 
-Hello Pierre,
 
-Thanks for your reminder.
+--dasidqqd3am2q5b2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-在 2024/5/3 15:42, Pierre Gondois 写道:
-> Hello Liwei,
-> 
-> Thanks for the fix. I think there might be a similar issue
-> in cppc_khz_to_perf(),
-> 
-> Regards,
-> Pierre
-> 
 
-cppc_khz_to_perf() also has similar issue, I will modify the patch again.
+> I wonder if this patch has slipped through the net due to a process
+> error on my part.
 
-Liwei
+No error on your side.
 
-> On 4/30/24 12:12, liwei wrote:
->> When the nominal_freq recorded by the kernel is equal to lowest_freq and
->> the frequency reduction operation is triggered externally, there is a
->> conversion logic error in cppc_perf_to_khz(), causing the kernel to be
->> unable to feedback the true frequency.
->>
->> Fix this by adding the branch processing logic when nominal_freq is equal
->> to lowest_freq.
->>
->> Fixes: ec1c7ad47664 ("cpufreq: CPPC: Fix performance/frequency 
->> conversion")
->> Signed-off-by: liwei <liwei728@huawei.com>
->> ---
->>   drivers/acpi/cppc_acpi.c | 10 ++++++++--
->>   1 file changed, 8 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
->> index a40b6f3946ef..92aac6974e0e 100644
->> --- a/drivers/acpi/cppc_acpi.c
->> +++ b/drivers/acpi/cppc_acpi.c
->> @@ -1869,9 +1869,15 @@ unsigned int cppc_perf_to_khz(struct 
->> cppc_perf_caps *caps, unsigned int perf)
->>       u64 mul, div;
->>       if (caps->lowest_freq && caps->nominal_freq) {
->> -        mul = caps->nominal_freq - caps->lowest_freq;
->> +        /* Avoid the special case when nominal_freq is equal to 
->> lowest_freq */
->> +        if (caps->lowest_freq == caps->nominal_freq) {
->> +            mul = caps->nominal_freq;
->> +            div = caps->nominal_perf;
->> +        } else {
->> +            mul = caps->nominal_freq - caps->lowest_freq;
->> +            div = caps->nominal_perf - caps->lowest_perf;
->> +        }
->>           mul *= KHZ_PER_MHZ;
->> -        div = caps->nominal_perf - caps->lowest_perf;
->>           offset = caps->nominal_freq * KHZ_PER_MHZ -
->>                div64_u64(caps->nominal_perf * mul, div);
->>       } else {
+> I submitted this corrected v4 version on March 13th. Perhaps I should
+> have not submitted a v4 and that has screwed something up, or perhaps
+> folks are just busy ;-).
+
+The latter. It fell through the cracks, sorry about that!
+
+
+--dasidqqd3am2q5b2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmY4g+gACgkQFA3kzBSg
+KbbVTxAAmU4LveOl/7cdDzwoc4ss+ZPkXzHqqcMzzjVnH+QwTSTIlSEJrjEil4wp
+Bb1O9aUUSIBWVfcqIKaM9con7RwZ9M0Kiff2xkLiCD7mROmAlSzD08fwEy6L4ckI
+3p0bm50qQEM8tC1JX8y8f0us+mnr38q0fHIa6+z/YB78ph9ALfLssLQqDBq5S0lm
+8Si1vJZoPq80LvAZnOT0zXv1DH5k5wjiDDthrQvnZTEKsP1hRFrkIvxkxg/K/sh0
+7pAjR7JFBXTqvsnHinQz9oWkYz9/Kneq8uaMaF8Lh6lB77RC9EOgXwiO0OIC0S2o
+DTodK2xW7MnzRiWJXvxGjluii0GeNa2dEqNfIzdMCtIsFsZWgxm/+SQLzA0H09XS
+FwZKKupimX2xvvTwW5LJm466bMZqHznanJKwiLR43EtiiWMJsiXeQaQ7UeONcaiJ
+v00yBFkoJts9UcwZkmC9k42ElRGl/1UMCXMF/rn2DhVC7iejGVT84yCxE6Js/PUu
+SLc6IRYrygJ0YUezNvNdouDKVCjsmMWHVIhPuw+sDPf/Vqv6RJIlvdcjXDCKHtF/
+dctZGeUjxLckpIfEwhnO+ntN1dWRtrTuYmkakLG4dStaPjIpVqAWoceUa8WXtS3r
+GCfrLYvuFHh8FcWXGbZlzMSdUBaKky2c3XP9fwh/p6o1T2F8yE0=
+=ur/5
+-----END PGP SIGNATURE-----
+
+--dasidqqd3am2q5b2--
 
