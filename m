@@ -1,124 +1,180 @@
-Return-Path: <linux-acpi+bounces-5630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24038BC8FA
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 10:03:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A918BCC06
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 12:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EACE1C213B5
-	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 08:03:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C660B207C2
+	for <lists+linux-acpi@lfdr.de>; Mon,  6 May 2024 10:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5201420D0;
-	Mon,  6 May 2024 07:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477601DFE4;
+	Mon,  6 May 2024 10:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="lKsTAn5S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B141140E23;
-	Mon,  6 May 2024 07:59:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A206520E6;
+	Mon,  6 May 2024 10:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714982384; cv=none; b=airYsZZMiYy60v02OyaA7FZAYtTbqqeznnBwS1VxgFekyaFFIl90/+LxAMU7k2OE+C+wDBCbsyZP2e9McG+Op7zUG6b0p/rFbJYXQ3dDv+Y83X+u4PYO6gKl3JV5VyIqdLjauGPpBBl9R5EfBg38b0v9TdVFiAvBa+ZKTsOq48Q=
+	t=1714991466; cv=none; b=I3f3HFAfrm57AjIfKNq8pIUqddQ/BQ2N6yVMcQNruByN2ma2dFzxRLwm2jZ7dLUYdbXmYXODTG3dknN1fIZ7mb/IkOrq+W/76tWEcuduuCuSdsP5Skjbu7UqS+/5zex7rleoO0uHSlG8G3DXcRRXh72ngnzgA0iM6QInrTbG2TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714982384; c=relaxed/simple;
-	bh=mrMc4UwV2GXg/vdxlNdq7LIgtP98hWJIuB7PNLcVgqo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l6DI4Wtpb8a1U6L279TqQx2R7ojBdko233953HtxboC7qenhgrxUGrEfs0Cx/NdSMgCrZhsjVbd0tplErDKg700bh/KCCrSoB41kVQFYXgd13Xx+nHFBgh3e5P4ySY2Z9cvG1ncEka0hLdbwVc2wjkGOQfQJ6IlMAIudqaBK7R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4VXtzB4FXSzNw35;
-	Mon,  6 May 2024 15:56:54 +0800 (CST)
-Received: from dggpemm500018.china.huawei.com (unknown [7.185.36.111])
-	by mail.maildlp.com (Postfix) with ESMTPS id 06A7118007C;
-	Mon,  6 May 2024 15:59:39 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by dggpemm500018.china.huawei.com
- (7.185.36.111) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 6 May
- 2024 15:59:38 +0800
-From: liwei <liwei728@huawei.com>
-To: <rafael@kernel.org>, <lenb@kernel.org>, <Pierre.Gondois@arm.com>,
-	<viresh.kumar@linaro.org>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<liwei391@huawei.com>, <liwei728@huawei.com>
-Subject: [PATCH v2] cpufreq/cppc: fix perf_to_khz/khz_to_perf conversion exception
-Date: Mon, 6 May 2024 15:58:16 +0800
-Message-ID: <20240506075816.1325303-1-liwei728@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1714991466; c=relaxed/simple;
+	bh=ReZKyuVHA0NHApnlMBhen5K4UugoVceHOVNhkkvO6yE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I61x6FlickYqSRY/uetWajD3IqYoYE0aI6xxp7xnk2iCMYLuQYeKhERMqYyewenwHDqd90K4VpdQMA+yV/RVxE1e7y1/PQra7trM24dpYXaCRnaxcMQdO+P7k5aEq/JtgcEiSBP3hXSGABsqnprt4wxHKiHBRhkAweeQbfc5ntM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=lKsTAn5S; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0982D40E0249;
+	Mon,  6 May 2024 10:31:02 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id h5q6KkWXILDw; Mon,  6 May 2024 10:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1714991458; bh=snaM6UDtGtGvqvIKA47vd3NtbUZwsnUs8N0zwMuvcFA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lKsTAn5SKefD7WI+yRaq08YbIV+1ksjAPMz31FhFS97vvzMBXS/MUSbHPDQGOYxLI
+	 LJ+2OMimc4sy7QTSfhIKBn0lNu9SFSNJ0f2bSIyn8ScGMYCWGKusTnKexdk2MMJTIt
+	 Td7g2RmjqRAzSg/14n7zvDh/7WPw+Pgl6mMkHrCN/7p3nPXfN362Zj+h/bVsDdAlcz
+	 ezOsWx2t9UtC9h7lgES4p4LocFcTBtdUbSxOYmI5lfA6EwRTnMGcFES98RUed0wyxu
+	 Otf0mlBhKW65Xpf/mwJIS1Xl5zvq0WRGi/RAp7K/1YNp9BgwL+L5+mMle/M9rhV+uL
+	 j7xDXYq40aZP7/6OQ5zvn/4MgUKsGANoDTbNGXykt44NIkBmHm1Ek5fYwAG/NU6gpx
+	 LMGnd4GJhR0A2GnGOpsbNv41F7rPhN0NxKPM26Gmi5SA4e8eUqG4RA7hk+l7OiL3lc
+	 Ri6RS9Qylcb+gjR2m2RCV0wQqAmzLI4x1gSQQnL8SkhEYw1/K84kQWIaOouSMlptjy
+	 D5u+2PUKgvBSw7AxIDd5/wJVPsOEO4VZfWJtr0n1qSQh+6NoGe/lOOlkmfaEfEZCIF
+	 KfH5qVWUPM9aBMqf1Iv0fsKrvWJVp6tdASX5j2j31OB0nQ+89XRIyz77YkEtqAKej+
+	 /lR1VU/27KvCKxnUssgLwkDA=
+Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8B77840E0187;
+	Mon,  6 May 2024 10:30:15 +0000 (UTC)
+Date: Mon, 6 May 2024 12:30:14 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Shiju Jose <shiju.jose@huawei.com>
+Cc: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Message-ID: <20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
+References: <20240419164720.1765-1-shiju.jose@huawei.com>
+ <20240419164720.1765-2-shiju.jose@huawei.com>
+ <20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local>
+ <63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemm500018.china.huawei.com (7.185.36.111)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
 
-When the nominal_freq recorded by the kernel is equal to the lowest_freq,
-and the frequency adjustment operation is triggered externally, there is
-a logic error in cppc_perf_to_khz()/cppc_khz_to_perf(), resulting in perf
-and khz conversion errors.
+On Thu, Apr 25, 2024 at 06:11:13PM +0000, Shiju Jose wrote:
+> It is expected to have multiple RAS-specific functionalities other
+> than scrubbing  in long run.  Most of the classes in the kernel found
+> as  /sys/class/<class-name>/<class-name>X/
+> 
+> If not, however /sys/class/ras/<module -name>X/<feature> is more
+> suitable because there are multiple device instances such as cxl
+> devices with scrub control feature.  For example,
+> /sys/class/ras/cxlX/scrub
 
-Fix this by adding the branch processing logic when nominal_freq is equal
-to lowest_freq.
+Make it as user-friendly as possible. cxlX is not as user-friendly as
 
-Fixes: ec1c7ad47664 ("cpufreq: CPPC: Fix performance/frequency conversion")
-Signed-off-by: liwei <liwei728@huawei.com>
----
-v2:
-    - Fix similar issue in cppc_khz_to_perf()
+/sys/class/ras/cxl/<mem_accelerator>
+		  /<fancy_bla_thing>
 
- drivers/acpi/cppc_acpi.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+and so on.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index a40b6f3946ef..e3a0d6b46b24 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1869,9 +1869,15 @@ unsigned int cppc_perf_to_khz(struct cppc_perf_caps *caps, unsigned int perf)
- 	u64 mul, div;
- 
- 	if (caps->lowest_freq && caps->nominal_freq) {
--		mul = caps->nominal_freq - caps->lowest_freq;
-+		/* Avoid special case when nominal_freq is equal to lowest_freq */
-+		if (caps->lowest_freq == caps->nominal_freq) {
-+			mul = caps->nominal_freq;
-+			div = caps->nominal_perf;
-+		} else {
-+			mul = caps->nominal_freq - caps->lowest_freq;
-+			div = caps->nominal_perf - caps->lowest_perf;
-+		}
- 		mul *= KHZ_PER_MHZ;
--		div = caps->nominal_perf - caps->lowest_perf;
- 		offset = caps->nominal_freq * KHZ_PER_MHZ -
- 			 div64_u64(caps->nominal_perf * mul, div);
- 	} else {
-@@ -1892,11 +1898,17 @@ unsigned int cppc_khz_to_perf(struct cppc_perf_caps *caps, unsigned int freq)
- {
- 	s64 retval, offset = 0;
- 	static u64 max_khz;
--	u64  mul, div;
-+	u64 mul, div;
- 
- 	if (caps->lowest_freq && caps->nominal_freq) {
--		mul = caps->nominal_perf - caps->lowest_perf;
--		div = caps->nominal_freq - caps->lowest_freq;
-+		/* Avoid special case when nominal_freq is equal to lowest_freq */
-+		if (caps->lowest_freq == caps->nominal_freq) {
-+			mul = caps->nominal_perf;
-+			div = caps->nominal_freq;
-+		} else {
-+			mul = caps->nominal_perf - caps->lowest_perf;
-+			div = caps->nominal_freq - caps->lowest_freq;
-+		}
- 		/*
- 		 * We don't need to convert to kHz for computing offset and can
- 		 * directly use nominal_freq and lowest_freq as the div64_u64
+Yes, you can introduce a special category .../ras/cxl/ if there are
+multiple cxl devices which have RAS functionality on them.
+
+> Presently underlying hw driver does the check. I think this will
+> become more complex if does in the common rate_store() if we have to
+> check against either a list of possible rates or min and max rates.
+
+Ok.
+
+> >> +DEVICE_ATTR_RW(enable_background);
+> >> +DEVICE_ATTR_RO(name);
+> >> +DEVICE_ATTR_RW(rate);
+> >> +DEVICE_ATTR_RO(rate_available);
+> >
+> >static
+
+Forgot one.
+
+> This is the ras instance id (X) used for scrub control feature, /sys/class/ras/rasX/scrub/
+
+Yeah, as discussed  above.
+
+> >> +static int __init memory_scrub_control_init(void) {
+> >> +	return class_register(&scrub_class); }
+> >> +subsys_initcall(memory_scrub_control_init);
+> >
+> >You can't just blindly register this thing without checking whether there are even
+> >any hw scrubber devices on the system.
+>
+> I think it happens only when a dependent module as autoloaded based
+> on a scrub device existing with exception of memory scrub control
+> built in and who would build this in?
+
+You think or you know?
+
 -- 
-2.25.1
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
