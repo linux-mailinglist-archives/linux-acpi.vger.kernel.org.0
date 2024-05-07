@@ -1,172 +1,107 @@
-Return-Path: <linux-acpi+bounces-5644-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5647-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60A78BEC07
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 20:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7919D8BEC46
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 21:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C772284224
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 18:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B521C2155E
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 19:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7C716D9A7;
-	Tue,  7 May 2024 18:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5690316D9DF;
+	Tue,  7 May 2024 19:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E1PjAJAT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XzTJXt3u"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4042C14EC5F;
-	Tue,  7 May 2024 18:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D51316D9D2;
+	Tue,  7 May 2024 19:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715108235; cv=none; b=Ysy/dQuC9K5niB01pPvNZf0N1dT6hlWkTPEwPAOoH8kNq8EhB5UGo2KxSgDyOHbSDtW76+ueW0K2Fb528PV+uMRj1VI9wQJqF593GhF+HuhqERllUcbqmZW0vdBy3slZddpnMV1fTe3lDHca1NBn7lB66vrkjJ7h4kfMR8q3VX8=
+	t=1715108862; cv=none; b=KFmjRA+g8MBr5szvustSOhBsaGVJf+UuOZUCZ8fFj2SvXORXI6gPSk4Xi+WY+N+wk0kVlZPV4RmMshUkRtjJAYhlExar59JJuRDnBVzbLV5PA4WXV6b0Lcbx6i512LX1BvdK66bfA5hFvg+0sfUZJqPfIbnMqVg0FWBV3y43e+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715108235; c=relaxed/simple;
-	bh=7MldFMh0WRj0UvMnQBIzOVOdcBxV2CBitHg5VApEhc8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CrCPIbTxBPDMkC2MWp14jLmaWVdlvTHisWO3d85D3l/zHhtNyE8NoDERyqgDTs+lcGePVxHJ3QhVFfMCBYmdWKBHbPaE/ojrypePKMMiyk7bl9NRuvlQBFeglZchL4FQa0+2H/7VeuD8pFLod8qhsEiy2elVkzdpE7R0Tlv901I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E1PjAJAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE65DC4DDE2;
-	Tue,  7 May 2024 18:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715108234;
-	bh=7MldFMh0WRj0UvMnQBIzOVOdcBxV2CBitHg5VApEhc8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=E1PjAJATWxldderSnURjfd5HR/y8+qH1w0WIr+8S2MGugZWT4/EHbg5T+2yCdlhPJ
-	 1YZvCtvIRMdL6LDwFx0bHiaF7Vy80YYgIue5irmvWPzuhz9ZbWwRlTuHkuMWHeo7H6
-	 cq0oxGRSif7PjbmWyqU1CAE8zASFCak0QK1lSoZypeJHvgMprLl6/euUz/elG+LWWN
-	 dIgPK0l/fjyywfbs9ErgMueVxpD1uGy0/smS851r1KvY3VLjEZ2GJjWJa8ElcI0ceb
-	 m/ujPN0giZxnajz5d0LixljIgTEHKdTc/L9LQYWjexTXZmBtaVw23NTzjAfRwySQ4T
-	 UhzImpdv2U3SA==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5a9ef9ba998so796483eaf.1;
-        Tue, 07 May 2024 11:57:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXyaxOA2JSXIiVfV+QECowVW6sJPBrqTuyng2mjSJm2jqvDkvt86g4/9kkZhw6nGOZe13P8qvj0boxP5wTDZsG4Qp9Zqj3IL9zYNj48AJUEfHk71DdYTxvUl4Sz3fbO4NGnUkdq55KsYzfouTceGrhb/0VC7BFWqQza4KLzvRG5RlD8zFBXNdfygUxndyaDzucBIypGtdpbX7w84Q5S3w==
-X-Gm-Message-State: AOJu0YzcAW7TCOrKQJ77css2eLd4une7YVQVuE5CpBKyxK1eT3LwmjW2
-	PznBWgUFMKebYc9xTnN3BMGInj70hxJgSDDeYCmUVdgjV0uCCcbTCH6A1UEgd9a0h7EK6ZlnBqq
-	Ghq4fReCTe1uSPvNi0VR6vCbUo04=
-X-Google-Smtp-Source: AGHT+IEFc40TEOusB0UJmLy29APzgs2yTSEpGQKKhB7KODeTniFYUYTrhBWiV95uhhheO//w8101/x52LKU2Lo07/PI=
-X-Received: by 2002:a05:6820:1f92:b0:5ac:6fc1:c2cb with SMTP id
- 006d021491bc7-5b24caad211mr401694eaf.0.1715108234007; Tue, 07 May 2024
- 11:57:14 -0700 (PDT)
+	s=arc-20240116; t=1715108862; c=relaxed/simple;
+	bh=qtqaN9rr9Eia+Kj5bbQi1idKK6zzUOOP4FFtQwkfURk=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=WCiv2UEh4+FArbpSagz1qbZaGd1RhznkwX/4EQ9CO6ANZOa2XAamAsfOa6u8sQ8Uw+ONJrsmr6zBPHAxKQTPuM7A4ExT4SL/TjoiIXh6+dKMYFC+r/WlRDIt3ButRiwGYESSLTjYERIK0Kda8jjQ81devwl3h2xXH8cm3Hl0w+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XzTJXt3u; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715108861; x=1746644861;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qtqaN9rr9Eia+Kj5bbQi1idKK6zzUOOP4FFtQwkfURk=;
+  b=XzTJXt3uyY8rXsApfVyXz/CUTs0klInrlaHMuGQ9WfA+pX/7/K8z+iyw
+   iZXGifMXuqDjBGHY+lsW4bxXjH/EB5/qQ2TOM5zf7M5S/sXZH15hnA1i1
+   rNmqR+JouMuZkjO+jZnrJaYPAgsOsiygBTxncTF4I89beTWRp/a/Cg6sV
+   aHSN3S47iXuPkeqaI5cFTzQtX3oRNF7lNCuj2/i2P4P9qU00az9oXh6GU
+   mnVTh0k8DWM4Vctbhlnh85mchi86ILTcGZi2R93Dxnm4mKyRyQCXiQAtL
+   qsoTaIWd+0tAvOYMw7cpd503LBeokytHicI9gHtD+bTktJrq0M8sgyH6E
+   A==;
+X-CSE-ConnectionGUID: 0D7NITnZTmymV+OpcJjOEw==
+X-CSE-MsgGUID: W8eX5E7RSwW2+VWCQXOLoQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="11087450"
+X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
+   d="scan'208";a="11087450"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 12:07:40 -0700
+X-CSE-ConnectionGUID: izlBBsaRQVi3CHDR1zVxOg==
+X-CSE-MsgGUID: uLqVrdvRTACG8tNkElYvSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,143,1712646000"; 
+   d="scan'208";a="28682089"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.246.52])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 12:07:38 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>
+Subject: [RFC PATCH 0/3] ACPI: extlog: Log and trace similarly to GHES
+Date: Tue,  7 May 2024 21:02:19 +0200
+Message-ID: <20240507190724.323269-1-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240430142434.10471-1-Jonathan.Cameron@huawei.com> <20240430142434.10471-6-Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240430142434.10471-6-Jonathan.Cameron@huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 7 May 2024 20:57:02 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0j3RV-6b8sTv2GoyuSNPX863x1xp4koF7imJDgbOdWXeg@mail.gmail.com>
-Message-ID: <CAJZ5v0j3RV-6b8sTv2GoyuSNPX863x1xp4koF7imJDgbOdWXeg@mail.gmail.com>
-Subject: Re: [PATCH v9 05/19] ACPI: processor: Fix memory leaks in error paths
- of processor_add()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, linux-pm@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
-	Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, 
-	Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, Gavin Shan <gshan@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com, 
-	justin.he@arm.com, jianyong.wu@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 30, 2024 at 4:27=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> If acpi_processor_get_info() returned an error, pr and the associated
-> pr->throttling.shared_cpu_map were leaked.
->
-> The unwind code was in the wrong order wrt to setup, relying on
-> some unwind actions having no affect (clearing variables that were
-> never set etc).  That makes it harder to reason about so reorder
-> and add appropriate labels to only undo what was actually set up
-> in the first place.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+When Firmware First is enabled, BIOS handles errors first and then it
+makes them available to the kernel via the Common Platform Error Record
+(CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+via two similar paths, ELOG and GHES.
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Currently, ELOG and GHES show some inconsistencies in how they print to
+the kernel log as well as in how they report to userspace via trace
+events.
 
-Thank you!
+This short series wants to make these two competing path act similarly.
 
->
-> ---
-> v9: New patch in response to Gavin noticing a memory leak later in the
->     series.
-> ---
->  drivers/acpi/acpi_processor.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 5f062806ca40..16e36e55a560 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -393,7 +393,7 @@ static int acpi_processor_add(struct acpi_device *dev=
-ice,
->
->         result =3D acpi_processor_get_info(device);
->         if (result) /* Processor is not physically present or unavailable=
- */
-> -               return result;
-> +               goto err_clear_driver_data;
->
->         BUG_ON(pr->id >=3D nr_cpu_ids);
->
-> @@ -408,7 +408,7 @@ static int acpi_processor_add(struct acpi_device *dev=
-ice,
->                         "BIOS reported wrong ACPI id %d for the processor=
-\n",
->                         pr->id);
->                 /* Give up, but do not abort the namespace scan. */
-> -               goto err;
-> +               goto err_clear_driver_data;
->         }
->         /*
->          * processor_device_array is not cleared on errors to allow buggy=
- BIOS
-> @@ -420,12 +420,12 @@ static int acpi_processor_add(struct acpi_device *d=
-evice,
->         dev =3D get_cpu_device(pr->id);
->         if (!dev) {
->                 result =3D -ENODEV;
-> -               goto err;
-> +               goto err_clear_per_cpu;
->         }
->
->         result =3D acpi_bind_one(dev, device);
->         if (result)
-> -               goto err;
-> +               goto err_clear_per_cpu;
->
->         pr->dev =3D dev;
->
-> @@ -436,10 +436,11 @@ static int acpi_processor_add(struct acpi_device *d=
-evice,
->         dev_err(dev, "Processor driver could not be attached\n");
->         acpi_unbind_one(dev);
->
-> - err:
-> -       free_cpumask_var(pr->throttling.shared_cpu_map);
-> -       device->driver_data =3D NULL;
-> + err_clear_per_cpu:
->         per_cpu(processors, pr->id) =3D NULL;
-> + err_clear_driver_data:
-> +       device->driver_data =3D NULL;
-> +       free_cpumask_var(pr->throttling.shared_cpu_map);
->   err_free_pr:
->         kfree(pr);
->         return result;
-> --
-> 2.39.2
->
+This is an RFC mainly because of patch 3/3 which enables kernel logging
+even in precence of userspace monitoring events. I'm not sure if this
+behavior is wanted.
+
+Fabio M. De Francesco (3):
+  ACPI: extlog: Trace CPER Non-standard Section Body
+  ACPI: extlog: Trace PCI Express Error Section
+  ACPI: extlog: Make print_extlog_rcd() log unconditionally
+
+ drivers/acpi/acpi_extlog.c | 44 +++++++++++++++++++++++++++++++++-----
+ drivers/ras/debugfs.c      |  6 ------
+ include/linux/ras.h        |  2 --
+ 3 files changed, 39 insertions(+), 13 deletions(-)
+
+-- 
+2.45.0
+
 
