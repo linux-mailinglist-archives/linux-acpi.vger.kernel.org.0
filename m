@@ -1,112 +1,141 @@
-Return-Path: <linux-acpi+bounces-5641-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5642-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFCB8BE152
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 13:45:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491F58BE161
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 13:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4A0F1F22FA4
-	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 11:45:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0007128255D
+	for <lists+linux-acpi@lfdr.de>; Tue,  7 May 2024 11:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D058D153809;
-	Tue,  7 May 2024 11:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB90156232;
+	Tue,  7 May 2024 11:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njLZyg7m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzP9AeLY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EC6152DF5;
-	Tue,  7 May 2024 11:45:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D48153812;
+	Tue,  7 May 2024 11:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715082303; cv=none; b=evSyDoedgBuL5vk9BamPXO9cEZkN86S1pY/R29FG92bypy9B+edysXW+RY7UD9Xvlirht00+OJviMf9uN1HykYZTBJYl9tT7Yola8v3GSSQF5hPIuKBMjVYWx+wr5fB9lqPo3lTb0EhDnAokmTsaKFeEOwvc6IjwsWmfqDIDtGU=
+	t=1715082541; cv=none; b=tre4YSIrzaKjSTIgU+QUJpF0n+fmovr+nPHCOatNfzLMJd6COi0JCRHCPOEnLcoOGe7fg2yRlHekZYAMR1v35DFM/o3ZMm7Xg08uqvtrs5WHB//yvRniPqGfkF1IfYYRtEvUwxW0I7FX/LMF4KYcZ+TxjPvjKVUURzEnLEaKARs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715082303; c=relaxed/simple;
-	bh=yRrP8pE+cnSBCXddwAV+0wggGCo/3qBnwVjy9lG0DIc=;
+	s=arc-20240116; t=1715082541; c=relaxed/simple;
+	bh=l46mjhyiRGZnsJnxurBGbw9J+XDezpuskZK4nvwuBCM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fo3riWXcnwa/4UrWBgij8s4oxffD9BCmJ5Iz/gtREztPAZpzIveHASzViIZ4Qx0LOabxJmYBiQC0IhvyAg0rIwxQt402xUwj1l7/RchF1e0Kwf7J0HxUK0TzMDbdtMyoHKjopRUIrX/ae4Zm15Ej2N7Dm23x0pZLm/cE4p9FM6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njLZyg7m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A111C4AF63;
-	Tue,  7 May 2024 11:45:03 +0000 (UTC)
+	 To:Cc:Content-Type; b=NVO2lZteaqu8NIYAssOce+sv9zaY5spqAZpXdodYdWpo9qE0PSvSxvDoE5xWhkSTWr55DJbwX0JjFScgsOHtr7TifEU7QY196aIyVpZcVAOh2wFS+HWycF98bxtyfP24TEf2N8KznI7ZThQRlerAyE1lplyD81FI97UuWSZtv0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzP9AeLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E568CC4AF67;
+	Tue,  7 May 2024 11:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715082303;
-	bh=yRrP8pE+cnSBCXddwAV+0wggGCo/3qBnwVjy9lG0DIc=;
+	s=k20201202; t=1715082540;
+	bh=l46mjhyiRGZnsJnxurBGbw9J+XDezpuskZK4nvwuBCM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=njLZyg7mEGBsO3m/qUFsP4vDq62ehhq0lIHdF+VucBnhhXyIgj6YL0kcnufHKtsiB
-	 sk6qNur6tlRM41gCqY6WMNwXhoMDMVk0XakrkwU6REBIsmlRKFdP8UDrCYV1d1NFpI
-	 7k2N/lNme4dV6R/J6TYOwoFZjRJE+U5RqEOvZG8xNxBeCezVHu4hzT4yWzL8vlZZDf
-	 MnMpKmvqsK0qu8M0B1IYcIamQVTdFdZtjQNGKGHPAPlre+jZ8NqzmzWQNwtQv4xpmZ
-	 xNFQWICaSr6A95KGe108NGshyHDY+xa1q7tYjwGdAiTr71xTaGAq2X5qjdmB6ZwnzQ
-	 Fcjwimcgp7nmQ==
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5acdbfa7a45so940542eaf.2;
-        Tue, 07 May 2024 04:45:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUMeucH20J1wgTRf2GhMx128DVW5klLfJRLWcJ8VvQNahWjBY7vtUeqlpOIGxpbB5LOKIHk6ltWo+IGimgW0iWnr5uQZcPIvmU6ar3XZI3O6WCQpc6DC+SA55QT4kWcZhzajXzzALwAQw==
-X-Gm-Message-State: AOJu0YzBM3U5aBpAfODjz1gQCI+YcOe0LuJCh5/zDPZqNY/lStYow+yJ
-	fMBTPoMZUxYL8buUNfAw+LOaUY7hFGo2u7NqpDCXiPTuGV8vkpKwZmCLLgPmCsFMwFJVmcdex2Q
-	Ubn/oQSwOeQOt+OKZugde6LpvveE=
-X-Google-Smtp-Source: AGHT+IGujf0HE2s52vBaVtFJe+W6PCGHX/xRpuc+C1tN4ht2ZVbTCa6YrYMAqAxvip7nOK6smp2xCH+v30oZEFwW39Q=
-X-Received: by 2002:a4a:b6c2:0:b0:5aa:3e4f:f01e with SMTP id
- w2-20020a4ab6c2000000b005aa3e4ff01emr13215058ooo.1.1715082302489; Tue, 07 May
- 2024 04:45:02 -0700 (PDT)
+	b=nzP9AeLYA6p3W9EelU4oswzDMMPF/yc4VpQxUmAsmTw1mTNUOo06+51wbxrsJWMEs
+	 deGyBOL6Reh7fIJn7Dz5FAqlHTG+I2fgM9V5TqqU1RwUrZwOClG3wwCPtEvkeNxWR8
+	 slHsrj4kq7m0RcbGwcOBGdl8+RJf+/TjnXJOC3wnxVlqF36PUNNGGXBRyVRL4d4Y6n
+	 Q9uaHWPP0loI85XURzUmgWXZt49ZGAusQGm3QW/HCVEYPBS2/2/mv6zxUpg4Q5kIzE
+	 taXSd105jId1Yn/MQvQ0U+dDNMtdkxa2HV5t7dPyRKr6+rMB56EH2OvUnTuYqtFi8r
+	 LSO3JKUsdiAXw==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5ac4470de3bso871386eaf.0;
+        Tue, 07 May 2024 04:49:00 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXMfirTJaqTImPNIi5MQ800RcoA4C7cnSaOinUwUZmTJjXoGQefC4BmqNaDNlSzX7QlaKdKSXxTW4eGACsxJChgpCMWeAwj00LZ4XLwA3Ux6LEC/8U3qxaN5EJ4WvPJSqfRMHLatpwiEkquTJC852U+5V8WIyugoRN+VGjuXs5dFHBfmw==
+X-Gm-Message-State: AOJu0YzIwJI8PtTPpAwipLmI65j0cnbgGGhUQUJe0kxZR6a8N0urnHRI
+	uWzQJQF1LG2Y0UgmNyailAuIpxij+JgCRXeyoh0E0Dihfl6kUregO5yx3plF7GssKNfD09CTPK3
+	h2TZq5gbNuwzLI0Ul1IYyoJ5JEAM=
+X-Google-Smtp-Source: AGHT+IHKm+n8JrihalvSOOI3GVpZIpZ0FPm7U1eIAdmMyIBoURUnJJoIV3KskUgjHuc8gidPhYjX3eejTKtaMdtuTks=
+X-Received: by 2002:a4a:2511:0:b0:5b2:f29:93f0 with SMTP id
+ g17-20020a4a2511000000b005b20f2993f0mr5312891ooa.0.1715082540247; Tue, 07 May
+ 2024 04:49:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240506140906.26034-1-tiwai@suse.de>
-In-Reply-To: <20240506140906.26034-1-tiwai@suse.de>
+References: <20240502131012.2385725-1-rrichter@amd.com>
+In-Reply-To: <20240502131012.2385725-1-rrichter@amd.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 7 May 2024 13:44:51 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g0gaHQ1VxKgJYZTyEEd3foQXm315eWFoOM2U8mZpCQgQ@mail.gmail.com>
-Message-ID: <CAJZ5v0g0gaHQ1VxKgJYZTyEEd3foQXm315eWFoOM2U8mZpCQgQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
-To: Takashi Iwai <tiwai@suse.de>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Tue, 7 May 2024 13:48:49 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hHqbFyCARK9+OegRjdFNpq+nX+QMb+gF1w9333DOXe0g@mail.gmail.com>
+Message-ID: <CAJZ5v0hHqbFyCARK9+OegRjdFNpq+nX+QMb+gF1w9333DOXe0g@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] SRAT/CEDT fixes and updates
+To: Robert Richter <rrichter@amd.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-cxl@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 6, 2024 at 4:08=E2=80=AFPM Takashi Iwai <tiwai@suse.de> wrote:
+On Thu, May 2, 2024 at 3:10=E2=80=AFPM Robert Richter <rrichter@amd.com> wr=
+ote:
 >
-> Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
-> and Nvidia, and the backlight can't be adjusted properly unless
-> acpi_backlight=3Dnative is passed.  Although nvidia-wmi-backlight is
-> present and loaded, this doesn't work as expected at all.
+> Some fixes and updates for SRAT/CEDT parsing code. Patches can be
+> applied individually and are independent.
 >
-> For making it working as default, add the corresponding quirk entry
-> with a DMI matching "LENOVO" "82UX".
+> First patch fixes a page fault during boot (fix as suggested by Dan).
 >
-> Link: https://bugzilla.suse.com/show_bug.cgi?id=3D1217750
-> Signed-off-by: Takashi Iwai <tiwai@suse.de>
-> ---
->  drivers/acpi/video_detect.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> Patches 2 to 4 remove architectural code no longer needed.
 >
-> diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> index 9fdcc620c652..2cc3821b2b16 100644
-> --- a/drivers/acpi/video_detect.c
-> +++ b/drivers/acpi/video_detect.c
-> @@ -497,6 +497,14 @@ static const struct dmi_system_id video_detect_dmi_t=
-able[] =3D {
->                 DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
->                 },
->         },
-> +       {
-> +        .callback =3D video_detect_force_native,
-> +        /* Lenovo Slim 7 16ARH7 */
-> +        .matches =3D {
-> +               DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +               DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
-> +               },
-> +       },
->         {
->          .callback =3D video_detect_force_native,
->          /* Lenovo ThinkPad X131e (3371 AMD version) */
+> Changelog:
+>
+> v7:
+>  * added Reviewed-by tags
+>  * dropped printout patches (#5 to #7)
+>
+> v6:
+>  * rebased onto cxl/fixes
+>  * fixed 0day build errors in patch #1:
+>    https://github.com/intel-lab-lkp/linux/commits/Robert-Richter/x86-numa=
+-Fix-SRAT-lookup-of-CFMWS-ranges-with-numa_fill_memblks/20240429-205337
+>
+> v5:
+>  * dropped: "x86/numa: Fix SRAT lookup of CFMWS ranges with
+>    numa_fill_memblks()"
+>  * added: "ACPI/NUMA: Return memblk modification state from
+>    numa_fill_memblks()"
+>  * conditionally print CEDT extended memblks
+>
+> v4:
+>  * updated SOB chains and desription
+>  * added patch "x86/numa: Remove numa_fill_memblks() from sparsemem.h
+>    using __weak"
+>  * Reordered patches to move CEDT table printout as an option at the
+>    end
+>  * split print table patch and added: "ACPI/NUMA: Add log messages for
+>    memory ranges found in CEDT"
+>
+> v3:
+>  * Rebased onto v6.9-rc1
+>  * Fixing x86 build error in sparsemem.h [Dan/Alison]
+>  * Added CEDT node info [Alison]
+>  * Use pr_debug() for table output [Dan]
+>  * Refactoring split in 3 patches [Dan]
+>  * Fixed performance regression introduced [kbot]
+>  * Fixed checkpatch issues [Dan]
+>
+> Robert Richter (4):
+>   x86/numa: Fix SRAT lookup of CFMWS ranges with numa_fill_memblks()
+>   ACPI/NUMA: Remove architecture dependent remainings
+>   ACPI/NUMA: Squash acpi_numa_slit_init() into acpi_parse_slit()
+>   ACPI/NUMA: Squash acpi_numa_memory_affinity_init() into
+>     acpi_parse_memory_affinity()
+>
+>  arch/x86/include/asm/sparsemem.h |  2 -
+>  arch/x86/mm/numa.c               |  4 +-
+>  drivers/acpi/numa/srat.c         | 82 +++++++++++++-------------------
+>  include/linux/acpi.h             |  5 --
+>  include/linux/numa.h             |  7 +--
+>  5 files changed, 35 insertions(+), 65 deletions(-)
+>
+>
+> base-commit: 5d211c7090590033581175d6405ae40917ca3a06
 > --
 
-Applied as 6.10 material, thanks!
+Whole series applied as 6.10 material, thanks!
 
