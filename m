@@ -1,123 +1,160 @@
-Return-Path: <linux-acpi+bounces-5661-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5662-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8D38C0081
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 16:53:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC9B8C026C
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 18:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A038B1F24EEF
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 14:53:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93BD928516D
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 16:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B718664B;
-	Wed,  8 May 2024 14:53:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="Ov6q7lob"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C017EDDD8;
+	Wed,  8 May 2024 16:59:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CED01A2C0B
-	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 14:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218EC1A2C2D;
+	Wed,  8 May 2024 16:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715180027; cv=none; b=JfZTK5Dr3O5OVfPg+lpdvGIeiI2CS14yu3xsHNuVuhylPu6zb5Cr5VfWdj4+qxpxbYW9yoO/0n2iX2MFPHj3eaiHgw+0haHHd3k8pCdubAdfnWvMnWjGkfQ7xceu4V/UfStqiBiKr47N80BeEOYQWyNe6LVPq1hLVb6yCkyGYi0=
+	t=1715187571; cv=none; b=p0uGCls7UmBr6dFCyYllMv00tq1hwwwU2Zl52c0X1HGNtMcxxIBoZzBizsb1eudxkPwRCxhnDZ21JTo2qSwiGrtUIUfWtTP1YKzerL4qT0TEbhB73Pqbc448FlAdUYs8xNe1PTV48wBzrR8XtJuGZGZvLBtmhO09MmtjltVHAG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715180027; c=relaxed/simple;
-	bh=EJWsUtCPHpVsGcqxCXxyFT8ILSf3nB3QUf5aCnrWjcA=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=Qz+zpCUDao3N8EucUsOmp9sGvulyV0tPByH0lIutJyWoVdAbr1S8rYwJYPYGi4ntYtloFvnz8BrJ46VXFgI2oJdE/l3KTHInmg2DMNCBOF/dkEAEebDB0HPY4Tbq34Rcxws2mstr9ytkq2b0TIIp0OZvR6OPsf4x+YDGk18X9Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=Ov6q7lob; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5d8b519e438so3618155a12.1
-        for <linux-acpi@vger.kernel.org>; Wed, 08 May 2024 07:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1715180025; x=1715784825; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/jzxebwdo962PuKC2zPMaZjfMWZ4zNd6nkm5wi7u0wk=;
-        b=Ov6q7lob5JTtJ+HROPLbLJT7jKk91aqTLwi6rsJn2/IHhP1sx4Vrf8ZBd8YYRakktj
-         /wMHB1XKP9xoCFComjwQo7KBCYJAjC6i2Wa+MbIofdk5TOtUcHT0Hz6AQx5CJetVk29u
-         SfL8Wb7VN4IIQNI0pdIG50Ne//ukAvYngyKuZgKa6OcHL63b2X7yP0wOF5zVOFRhQsBb
-         Sdcv8oo4E+wDhN736kNXpf3mKzLkYZBJlAYHA/lWqMN+SDXd7WFoMEA9aj9nbMRnMV1A
-         C4oXshB910fHWngBO/icDf+ETn7Ht24vGiqKWSN4MXODtU7pc3fyZpq0/fyATkFz6S3G
-         73Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715180025; x=1715784825;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/jzxebwdo962PuKC2zPMaZjfMWZ4zNd6nkm5wi7u0wk=;
-        b=RdgdDkFSbxb2AdcjbUYBB0XKQNZY5zoy+LGTbX5AXqUYr80NIX8Jq1K8GnOAB0MVLp
-         gJNt5gmfdiTL0/0XpDf3oUiNvXvdofmvmsrO2kQqDYUCRtfeKYzFmSEYY5zkQnGR2it+
-         vxl+KBc1beKdsMQgegaM1V/Ky9OFGFhSXg+Jok6jD+GTSRgqC9r0plklldqnEDXz3BQM
-         N7Au1nemaC3wGp236d82p3paHtc6aob8+k/m46OR3Gyz6LAD4+SFfRSQJf9awBxtGb3w
-         O3uZb8Sua9iGXkDbFMD8cpKPdGG8mOYOPIJzf4DvUoCbMu+FsKDsdZ3Ei0yQVg9CnsIL
-         lKCA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7xJ4P6J1TBU8UB9J2gOTEsOShDolTD//D0ifw66QYPahx6jsZBdw4I6vYiC1J4i5Vf4myONKr5oh7eW3ZuSNQSUMLxAuq1HujTA==
-X-Gm-Message-State: AOJu0YwSdXoAdzZJOqA3ggh/1oobBf67heauHX6taPujHi/qFp1MPf5S
-	4NIts4W1mH+gYZZiKi+5ybw5VbZ4v7GReDPL+hlu8RPFwxsUtw2HWQhbIe7UUuQ=
-X-Google-Smtp-Source: AGHT+IGZA/j1I+rqQTrHxseqHOH3+r+6RDtsDRR7EHaPNdBztPL/ZrhtBo/3+SHYuBPgSM47WmrRSQ==
-X-Received: by 2002:a05:6a21:3995:b0:1af:ccd8:c118 with SMTP id adf61e73a8af0-1afccd8c21emr1558953637.22.1715180025014;
-        Wed, 08 May 2024 07:53:45 -0700 (PDT)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with ESMTPSA id p2-20020a1709027ec200b001ed9fed6f61sm8137490plb.268.2024.05.08.07.53.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 07:53:44 -0700 (PDT)
-Date: Wed, 08 May 2024 07:53:44 -0700 (PDT)
-X-Google-Original-Date: Wed, 08 May 2024 07:53:41 PDT (-0700)
-Subject:     Re: [External] Re: [PATCH v4 2/3] riscv: cacheinfo: initialize cacheinfo's level and type from ACPI PPTT
-In-Reply-To: <CAEEQ3wnthxGbrJ_qLnZUQ9w3E_1UWgMign5P=+rNP2p5xGm4Bg@mail.gmail.com>
-CC: Conor Dooley <conor@kernel.org>, rafael@kernel.org, lenb@kernel.org,
-  linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>,
-  aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com,
-  jhugo@codeaurora.org, jeremy.linton@arm.com, john.garry@huawei.com, Jonathan.Cameron@huawei.com,
-  pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: cuiyunhui@bytedance.com, Sunil V L <sunilvl@ventanamicro.com>
-Message-ID: <mhng-c1256305-0281-42c3-8469-29e3a5ee397d@palmer-ri-x1c9>
+	s=arc-20240116; t=1715187571; c=relaxed/simple;
+	bh=T9HhyAw9QuVfcCAa1mYsk+ruI8SHCojPcVW1pJa4PN8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cp4/9An9lHwgSjHz0peLTe9tK8zNsiFr/Xu1KEixYZqAP70k4d4HSPKrjHBKozdfzwuR/0xBfCEqmEeo3Oo0F0IKM6i/6aY8kcRhbgFOo4kZOOwVctPCtQ2ah++SE+E7wFJn9tdMILsKx+s/txVk8o0JvFdCEU/rEJk6/ZdHhP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZLrf6JsWz6K6J7;
+	Thu,  9 May 2024 00:56:18 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (unknown [7.191.163.213])
+	by mail.maildlp.com (Postfix) with ESMTPS id 171ED1404F4;
+	Thu,  9 May 2024 00:59:25 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 8 May 2024 17:59:18 +0100
+Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
+ lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.039;
+ Wed, 8 May 2024 17:59:18 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
+	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>
+Subject: RE: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Thread-Topic: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Thread-Index: AQHaknlLsB7DmyDvA0iAgKJhxeY8vLF4vVgAgABZuhCAEPP6AIADoMIA
+Date: Wed, 8 May 2024 16:59:18 +0000
+Message-ID: <e0ce36eb80054440ab877ccee4e606de@huawei.com>
+References: <20240419164720.1765-1-shiju.jose@huawei.com>
+ <20240419164720.1765-2-shiju.jose@huawei.com>
+ <20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local>
+ <63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
+ <20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
+In-Reply-To: <20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
 
-On Wed, 08 May 2024 04:19:01 PDT (-0700), cuiyunhui@bytedance.com wrote:
-> Hi Palmer,
->
-> Gentle ping...
-
-+Sunil, as he's the ACPI/RISC-V maintainer and I generally wait for his 
-review on this stuff.
-
->
-> On Fri, May 3, 2024 at 12:37 AM Conor Dooley <conor@kernel.org> wrote:
->>
->> On Thu, Apr 18, 2024 at 11:43:29AM +0800, Yunhui Cui wrote:
->> > Before cacheinfo can be built correctly, we need to initialize level
->> > and type. Since RSIC-V currently does not have a register group that
->> > describes cache-related attributes like ARM64, we cannot obtain them
->> > directly, so now we obtain cache leaves from the ACPI PPTT table
->> > (acpi_get_cache_info()) and set the cache type through split_levels.
->> >
->> > Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
->> > Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
->> : Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
->>
->> I'm not an ACPI head, so whether or not the table is valid on RISC-V or
->> w/e I do not know, but the code here looks sane to me, so
->
->> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
->>
->> Cheers,
->> Conor.
->
-> Thanks,
-> Yunhui
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
+bGllbjguZGU+DQo+U2VudDogMDYgTWF5IDIwMjQgMTE6MzANCj5UbzogU2hpanUgSm9zZSA8c2hp
+anUuam9zZUBodWF3ZWkuY29tPg0KPkNjOiBsaW51eC1jeGxAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC1hY3BpQHZnZXIua2VybmVsLm9yZzsgbGludXgtDQo+bW1Aa3ZhY2sub3JnOyBkYW4uai53aWxs
+aWFtc0BpbnRlbC5jb207IGRhdmVAc3Rnb2xhYnMubmV0OyBKb25hdGhhbg0KPkNhbWVyb24gPGpv
+bmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47IGRhdmUuamlhbmdAaW50ZWwuY29tOw0KPmFsaXNv
+bi5zY2hvZmllbGRAaW50ZWwuY29tOyB2aXNoYWwubC52ZXJtYUBpbnRlbC5jb207IGlyYS53ZWlu
+eUBpbnRlbC5jb207DQo+bGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2
+Z2VyLmtlcm5lbC5vcmc7IGRhdmlkQHJlZGhhdC5jb207DQo+VmlsYXMuU3JpZGhhcmFuQGFtZC5j
+b207IGxlby5kdXJhbkBhbWQuY29tOyBZYXplbi5HaGFubmFtQGFtZC5jb207DQo+cmllbnRqZXNA
+Z29vZ2xlLmNvbTsgamlhcWl5YW5AZ29vZ2xlLmNvbTsgdG9ueS5sdWNrQGludGVsLmNvbTsNCj5K
+b24uR3JpbW1AYW1kLmNvbTsgZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29tOyByYWZhZWxAa2Vy
+bmVsLm9yZzsNCj5sZW5iQGtlcm5lbC5vcmc7IG5hb3lhLmhvcmlndWNoaUBuZWMuY29tOyBqYW1l
+cy5tb3JzZUBhcm0uY29tOw0KPmp0aG91Z2h0b25AZ29vZ2xlLmNvbTsgc29tYXN1bmRhcmFtLmFA
+aHBlLmNvbTsNCj5lcmRlbWFrdGFzQGdvb2dsZS5jb207IHBnb25kYUBnb29nbGUuY29tOyBkdWVu
+d2VuQGdvb2dsZS5jb207DQo+bWlrZS5tYWx2ZXN0dXRvQGludGVsLmNvbTsgZ3RoZWxlbkBnb29n
+bGUuY29tOw0KPndzY2h3YXJ0ekBhbXBlcmVjb21wdXRpbmcuY29tOyBkZmVyZ3Vzb25AYW1wZXJl
+Y29tcHV0aW5nLmNvbTsNCj53YnNAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsgbmlmYW4uY3hsQGdt
+YWlsLmNvbTsgdGFueGlhb2ZlaQ0KPjx0YW54aWFvZmVpQGh1YXdlaS5jb20+OyBaZW5ndGFvIChC
+KSA8cHJpbWUuemVuZ0BoaXNpbGljb24uY29tPjsNCj5rYW5na2FuZy5zaGVuQGZ1dHVyZXdlaS5j
+b207IHdhbmdodWlxaWFuZyA8d2FuZ2h1aXFpYW5nQGh1YXdlaS5jb20+Ow0KPkxpbnV4YXJtIDxs
+aW51eGFybUBodWF3ZWkuY29tPg0KPlN1YmplY3Q6IFJlOiBbUkZDIFBBVENIIHY4IDAxLzEwXSBy
+YXM6IHNjcnViOiBBZGQgc2NydWIgc3Vic3lzdGVtDQo+DQo+T24gVGh1LCBBcHIgMjUsIDIwMjQg
+YXQgMDY6MTE6MTNQTSArMDAwMCwgU2hpanUgSm9zZSB3cm90ZToNCj4+IEl0IGlzIGV4cGVjdGVk
+IHRvIGhhdmUgbXVsdGlwbGUgUkFTLXNwZWNpZmljIGZ1bmN0aW9uYWxpdGllcyBvdGhlcg0KPj4g
+dGhhbiBzY3J1YmJpbmcgIGluIGxvbmcgcnVuLiAgTW9zdCBvZiB0aGUgY2xhc3NlcyBpbiB0aGUg
+a2VybmVsIGZvdW5kDQo+PiBhcyAgL3N5cy9jbGFzcy88Y2xhc3MtbmFtZT4vPGNsYXNzLW5hbWU+
+WC8NCj4+DQo+PiBJZiBub3QsIGhvd2V2ZXIgL3N5cy9jbGFzcy9yYXMvPG1vZHVsZSAtbmFtZT5Y
+LzxmZWF0dXJlPiBpcyBtb3JlDQo+PiBzdWl0YWJsZSBiZWNhdXNlIHRoZXJlIGFyZSBtdWx0aXBs
+ZSBkZXZpY2UgaW5zdGFuY2VzIHN1Y2ggYXMgY3hsDQo+PiBkZXZpY2VzIHdpdGggc2NydWIgY29u
+dHJvbCBmZWF0dXJlLiAgRm9yIGV4YW1wbGUsDQo+PiAvc3lzL2NsYXNzL3Jhcy9jeGxYL3NjcnVi
+DQo+DQo+TWFrZSBpdCBhcyB1c2VyLWZyaWVuZGx5IGFzIHBvc3NpYmxlLiBjeGxYIGlzIG5vdCBh
+cyB1c2VyLWZyaWVuZGx5IGFzDQo+DQo+L3N5cy9jbGFzcy9yYXMvY3hsLzxtZW1fYWNjZWxlcmF0
+b3I+DQo+CQkgIC88ZmFuY3lfYmxhX3RoaW5nPg0KPg0KPmFuZCBzbyBvbi4NCj4NCj5ZZXMsIHlv
+dSBjYW4gaW50cm9kdWNlIGEgc3BlY2lhbCBjYXRlZ29yeSAuLi4vcmFzL2N4bC8gaWYgdGhlcmUg
+YXJlIG11bHRpcGxlIGN4bA0KPmRldmljZXMgd2hpY2ggaGF2ZSBSQVMgZnVuY3Rpb25hbGl0eSBv
+biB0aGVtLg0KU3VyZS4NCg0KPg0KPj4gUHJlc2VudGx5IHVuZGVybHlpbmcgaHcgZHJpdmVyIGRv
+ZXMgdGhlIGNoZWNrLiBJIHRoaW5rIHRoaXMgd2lsbA0KPj4gYmVjb21lIG1vcmUgY29tcGxleCBp
+ZiBkb2VzIGluIHRoZSBjb21tb24gcmF0ZV9zdG9yZSgpIGlmIHdlIGhhdmUgdG8NCj4+IGNoZWNr
+IGFnYWluc3QgZWl0aGVyIGEgbGlzdCBvZiBwb3NzaWJsZSByYXRlcyBvciBtaW4gYW5kIG1heCBy
+YXRlcy4NCj4NCj5Pay4NCj4NCj4+ID4+ICtERVZJQ0VfQVRUUl9SVyhlbmFibGVfYmFja2dyb3Vu
+ZCk7DQo+PiA+PiArREVWSUNFX0FUVFJfUk8obmFtZSk7DQo+PiA+PiArREVWSUNFX0FUVFJfUlco
+cmF0ZSk7DQo+PiA+PiArREVWSUNFX0FUVFJfUk8ocmF0ZV9hdmFpbGFibGUpOw0KPj4gPg0KPj4g
+PnN0YXRpYw0KPg0KPkZvcmdvdCBvbmUuDQpXaWxsIGNvcnJlY3QuDQoNCj4NCj4+IFRoaXMgaXMg
+dGhlIHJhcyBpbnN0YW5jZSBpZCAoWCkgdXNlZCBmb3Igc2NydWIgY29udHJvbCBmZWF0dXJlLA0K
+Pj4gL3N5cy9jbGFzcy9yYXMvcmFzWC9zY3J1Yi8NCj4NCj5ZZWFoLCBhcyBkaXNjdXNzZWQgIGFi
+b3ZlLg0KT0suDQo+DQo+PiA+PiArc3RhdGljIGludCBfX2luaXQgbWVtb3J5X3NjcnViX2NvbnRy
+b2xfaW5pdCh2b2lkKSB7DQo+PiA+PiArCXJldHVybiBjbGFzc19yZWdpc3Rlcigmc2NydWJfY2xh
+c3MpOyB9DQo+PiA+PiArc3Vic3lzX2luaXRjYWxsKG1lbW9yeV9zY3J1Yl9jb250cm9sX2luaXQp
+Ow0KPj4gPg0KPj4gPllvdSBjYW4ndCBqdXN0IGJsaW5kbHkgcmVnaXN0ZXIgdGhpcyB0aGluZyB3
+aXRob3V0IGNoZWNraW5nIHdoZXRoZXINCj4+ID50aGVyZSBhcmUgZXZlbiBhbnkgaHcgc2NydWJi
+ZXIgZGV2aWNlcyBvbiB0aGUgc3lzdGVtLg0KPj4NCj4+IEkgdGhpbmsgaXQgaGFwcGVucyBvbmx5
+IHdoZW4gYSBkZXBlbmRlbnQgbW9kdWxlIGFzIGF1dG9sb2FkZWQgYmFzZWQgb24NCj4+IGEgc2Ny
+dWIgZGV2aWNlIGV4aXN0aW5nIHdpdGggZXhjZXB0aW9uIG9mIG1lbW9yeSBzY3J1YiBjb250cm9s
+IGJ1aWx0DQo+PiBpbiBhbmQgd2hvIHdvdWxkIGJ1aWxkIHRoaXMgaW4/DQo+DQo+WW91IHRoaW5r
+IG9yIHlvdSBrbm93Pw0KV2Uga25vdyBhcyBJIGhhZCB0ZXN0ZWQuDQoNCj4NCj4tLQ0KPlJlZ2Fy
+ZHMvR3J1c3MsDQo+ICAgIEJvcmlzLg0KPg0KPmh0dHBzOi8vcGVvcGxlLmtlcm5lbC5vcmcvdGds
+eC9ub3Rlcy1hYm91dC1uZXRpcXVldHRlDQoNClRoYW5rcywNClNoaWp1DQo=
 
