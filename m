@@ -1,273 +1,306 @@
-Return-Path: <linux-acpi+bounces-5652-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5653-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDD68BF5E1
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 08:03:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB9C8BF8FA
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 10:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB46A2852C2
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 06:03:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3834CB21E7D
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 08:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51F817BB6;
-	Wed,  8 May 2024 06:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1y/PYff"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A682952F86;
+	Wed,  8 May 2024 08:44:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8135E179A8;
-	Wed,  8 May 2024 06:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695FC9476;
+	Wed,  8 May 2024 08:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715148192; cv=none; b=BsNOM0O8V2MkYyH+6q/9vlgv2ovvRd4jmJ7zbF3zYk+82JOJVgHWE1t8dG2+2lAvKZIxMIrWS4v82nqb2jiqcg7sBThkik4+3v71S4KVzPwTIiCb7WJwTNTpnJG0TnQp7TQ9UPYAL7Z1tb1OyeXilwgaKNev9cVm7K0nd4VT9n0=
+	t=1715157864; cv=none; b=eWsJrTOETcxfyvZBZRLzfDJ+S8/Qp2nD2zcWPvwXIY029nR7SnfbM2oYpFuQ8io5XqB+OfDXNNLFjGk4Sczi7O4sMVhnWfPVO3Lrc2+jmkx27svcn0rA11g1mwFi6oRrRh8idJr6xUmdRqcWEfxD8g0QU1HydoBygf0DDxoMbck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715148192; c=relaxed/simple;
-	bh=xb/2OJywJOKPl0Mtt1eqlqutvHNKPEBLt99xDTEiaII=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=eqkvG1TV5qYjsSCVY8+7Nsqot+jx7xtqUh4+SOAEhVD3hqD/HgEWuvQl+vsnos7sLs+/+I2CEZdl0e2KALu/74PkaNXF37Cz2Qp1+SGD/HH1zf4I5VvpyJDi48YvyYKOuX2UXIGsYFDUxDF/jCIiozab5a8sezb0gC/7O6XaOkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1y/PYff; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715148190; x=1746684190;
-  h=date:from:to:cc:subject:message-id;
-  bh=xb/2OJywJOKPl0Mtt1eqlqutvHNKPEBLt99xDTEiaII=;
-  b=P1y/PYffmRQ1AYkZV+8s/WmpKFYjQkfLOR88SXbt5l/IU7jv5Uqp2m+d
-   YQFDNqWsEaAjsA1QzPJ+zwEX+3ojH5sXiM4t8uF0vWJKKF0gpOMPVo93H
-   lHAxlL2XMZTHJcIkM/n2OpHWwfVyY8H6vlBHysy9Mmy4q0dLjikDJ0rTu
-   q5D7Afck/4r5xpUIct0ZmadjVuE6owVNQB4A2r1sXXVP0h2VymsnjzwtQ
-   PZwoocXA0L9IqzP7AfMLRLrF8j1fNkPPrmqBGBsDfSKPg5T4u0f4vIOfC
-   rlSXCEF4iHVchHnYrMxcw8u/UV4DZtKtQBiN+oGeyo7b/Q4Y8maTldCtA
-   w==;
-X-CSE-ConnectionGUID: o47bIJHfRDKjyXk+j4qFcg==
-X-CSE-MsgGUID: Mf3oVjrkRxSHG/PuxWZR8g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="11145972"
-X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
-   d="scan'208";a="11145972"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 23:03:09 -0700
-X-CSE-ConnectionGUID: Iw7RNTCeShyZY8HsdFeLJw==
-X-CSE-MsgGUID: vtWPO9r1QJi41d73qqIvCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
-   d="scan'208";a="33599994"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 07 May 2024 23:03:08 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4aOP-00033Z-2x;
-	Wed, 08 May 2024 06:03:05 +0000
-Date: Wed, 08 May 2024 14:02:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- b1a788a966458325d86d7fe59e2fc0e190be607d
-Message-ID: <202405081456.FTTdtRCg-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1715157864; c=relaxed/simple;
+	bh=T5zecpj4li0OuIWBMVUt5WCfBkgXJbSbJgxIbR51vqs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SRswTxxyLC8rm9PIKjNZp+4cp1VyJ6qoFVNYchE1oZIF5QCfKiXwcpwl1PyLAexLWSFVud7jiqq8OsKCeg4HZji0EmJ5Ughbcj9x1K2hpiZpNUuICauGyl129Q6kxIxuZBMBGeKALhVGBK+C7qKT/y6MOKMQ5w5/wu/oR5Knrb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZ7sK1b83z6K6Kl;
+	Wed,  8 May 2024 16:41:09 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 44CD0140B54;
+	Wed,  8 May 2024 16:44:14 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 8 May
+ 2024 09:44:13 +0100
+Date: Wed, 8 May 2024 09:44:11 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
+	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Miguel Luis
+	<miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
+	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Marc Zyngier <maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, "Gavin
+ Shan" <gshan@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
+Subject: Re: [PATCH v9 06/19] ACPI: processor: Move checks and availability
+ of acpi_processor earlier
+Message-ID: <20240508094411.00001b92@Huawei.com>
+In-Reply-To: <CAJZ5v0g-Aenoj5H+pNPtoqTgV5U7K5RGNjdOnqobqxkyL5NMVQ@mail.gmail.com>
+References: <20240430142434.10471-1-Jonathan.Cameron@huawei.com>
+	<20240430142434.10471-7-Jonathan.Cameron@huawei.com>
+	<CAJZ5v0g-Aenoj5H+pNPtoqTgV5U7K5RGNjdOnqobqxkyL5NMVQ@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: b1a788a966458325d86d7fe59e2fc0e190be607d  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
+On Tue, 7 May 2024 21:04:26 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-elapsed time: 1000m
+> On Tue, Apr 30, 2024 at 4:27=E2=80=AFPM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > Make the per_cpu(processors, cpu) entries available earlier so that
+> > they are available in arch_register_cpu() as ARM64 will need access
+> > to the acpi_handle to distinguish between acpi_processor_add()
+> > and earlier registration attempts (which will fail as _STA cannot
+> > be checked).
+> >
+> > Reorder the remove flow to clear this per_cpu() after
+> > arch_unregister_cpu() has completed, allowing it to be used in
+> > there as well.
+> >
+> > Note that on x86 for the CPU hotplug case, the pr->id prior to
+> > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
+> > must be initialized after that call or after checking the ID
+> > is valid (not hotplug path).
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> =20
+>=20
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>=20
+> One nit below.
 
-configs tested: 179
-configs skipped: 3
+Thanks.  Given timing, this is looking like 6.11 material.
+I'll tidy this up and post a v10 in a couple of weeks (so around
+rc1 time). Maybe we'll pick up some more tags for the ARM
+specific bits in the meantime.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Thanks for all your help!
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240508   gcc  
-arc                   randconfig-002-20240508   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                       imx_v6_v7_defconfig   clang
-arm                   randconfig-001-20240508   gcc  
-arm                   randconfig-002-20240508   clang
-arm                   randconfig-003-20240508   clang
-arm                   randconfig-004-20240508   clang
-arm                         s3c6400_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240508   gcc  
-arm64                 randconfig-002-20240508   clang
-arm64                 randconfig-003-20240508   gcc  
-arm64                 randconfig-004-20240508   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240508   gcc  
-csky                  randconfig-002-20240508   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240508   clang
-hexagon               randconfig-002-20240508   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240508   clang
-i386         buildonly-randconfig-002-20240508   clang
-i386         buildonly-randconfig-003-20240508   gcc  
-i386         buildonly-randconfig-004-20240508   gcc  
-i386         buildonly-randconfig-005-20240508   clang
-i386         buildonly-randconfig-006-20240508   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240508   gcc  
-i386                  randconfig-002-20240508   clang
-i386                  randconfig-003-20240508   clang
-i386                  randconfig-004-20240508   gcc  
-i386                  randconfig-005-20240508   clang
-i386                  randconfig-006-20240508   gcc  
-i386                  randconfig-011-20240508   gcc  
-i386                  randconfig-012-20240508   gcc  
-i386                  randconfig-013-20240508   clang
-i386                  randconfig-014-20240508   clang
-i386                  randconfig-015-20240508   clang
-i386                  randconfig-016-20240508   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240508   gcc  
-loongarch             randconfig-002-20240508   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     decstation_defconfig   gcc  
-mips                           ip27_defconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-mips                          rb532_defconfig   clang
-mips                   sb1250_swarm_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240508   gcc  
-nios2                 randconfig-002-20240508   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240508   gcc  
-parisc                randconfig-002-20240508   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                        cell_defconfig   gcc  
-powerpc                      ppc40x_defconfig   clang
-powerpc                      ppc44x_defconfig   clang
-powerpc               randconfig-001-20240508   clang
-powerpc               randconfig-002-20240508   gcc  
-powerpc               randconfig-003-20240508   clang
-powerpc                     taishan_defconfig   clang
-powerpc64             randconfig-001-20240508   gcc  
-powerpc64             randconfig-002-20240508   gcc  
-powerpc64             randconfig-003-20240508   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240508   gcc  
-riscv                 randconfig-002-20240508   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240508   clang
-s390                  randconfig-002-20240508   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                        edosk7760_defconfig   gcc  
-sh                    randconfig-001-20240508   gcc  
-sh                    randconfig-002-20240508   gcc  
-sh                           se7619_defconfig   gcc  
-sparc                            alldefconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc                       sparc32_defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240508   gcc  
-sparc64               randconfig-002-20240508   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240508   gcc  
-um                    randconfig-002-20240508   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240508   clang
-x86_64       buildonly-randconfig-002-20240508   clang
-x86_64       buildonly-randconfig-003-20240508   clang
-x86_64       buildonly-randconfig-004-20240508   clang
-x86_64       buildonly-randconfig-005-20240508   gcc  
-x86_64       buildonly-randconfig-006-20240508   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240508   gcc  
-x86_64                randconfig-002-20240508   clang
-x86_64                randconfig-003-20240508   clang
-x86_64                randconfig-004-20240508   gcc  
-x86_64                randconfig-005-20240508   gcc  
-x86_64                randconfig-006-20240508   gcc  
-x86_64                randconfig-011-20240508   clang
-x86_64                randconfig-012-20240508   clang
-x86_64                randconfig-013-20240508   gcc  
-x86_64                randconfig-014-20240508   gcc  
-x86_64                randconfig-015-20240508   clang
-x86_64                randconfig-016-20240508   gcc  
-x86_64                randconfig-071-20240508   gcc  
-x86_64                randconfig-072-20240508   gcc  
-x86_64                randconfig-073-20240508   clang
-x86_64                randconfig-074-20240508   gcc  
-x86_64                randconfig-075-20240508   gcc  
-x86_64                randconfig-076-20240508   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                generic_kc705_defconfig   gcc  
-xtensa                randconfig-001-20240508   gcc  
-xtensa                randconfig-002-20240508   gcc  
+Jonathan
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>=20
+> > ---
+> > v9: Add back a blank line accidentally removed in code move.
+> >     Fix up error returns so that the new cleanup in processor_add()
+> >     is triggered on detection of the bios bug.
+> >     Combined with the previous 2 patches, should solve the leak
+> >     that Gavin identified.
+> > ---
+> >  drivers/acpi/acpi_processor.c | 80 +++++++++++++++++++++--------------
+> >  1 file changed, 49 insertions(+), 31 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
+r.c
+> > index 16e36e55a560..4a79b42d649e 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -183,8 +183,38 @@ static void __init acpi_pcc_cpufreq_init(void) {}
+> >  #endif /* CONFIG_X86 */
+> >
+> >  /* Initialization */
+> > +static DEFINE_PER_CPU(void *, processor_device_array);
+> > +
+> > +static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
+> > +                                      struct acpi_device *device)
+> > +{
+> > +       BUG_ON(pr->id >=3D nr_cpu_ids);
+> > +
+> > +       /*
+> > +        * Buggy BIOS check.
+> > +        * ACPI id of processors can be reported wrongly by the BIOS.
+> > +        * Don't trust it blindly
+> > +        */
+> > +       if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
+> > +           per_cpu(processor_device_array, pr->id) !=3D device) {
+> > +               dev_warn(&device->dev,
+> > +                        "BIOS reported wrong ACPI id %d for the proces=
+sor\n",
+> > +                        pr->id);
+> > +               return false;
+> > +       }
+> > +       /*
+> > +        * processor_device_array is not cleared on errors to allow bug=
+gy BIOS
+> > +        * checks.
+> > +        */
+> > +       per_cpu(processor_device_array, pr->id) =3D device;
+> > +       per_cpu(processors, pr->id) =3D pr;
+> > +
+> > +       return true;
+> > +}
+> > +
+> >  #ifdef CONFIG_ACPI_HOTPLUG_CPU
+> > -static int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > +static int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > +                                     struct acpi_device *device)
+> >  {
+> >         int ret;
+> >
+> > @@ -198,8 +228,16 @@ static int acpi_processor_hotadd_init(struct acpi_=
+processor *pr)
+> >         if (ret)
+> >                 goto out;
+> >
+> > +       if (!acpi_processor_set_per_cpu(pr, device)) {
+> > +               ret =3D -EINVAL;
+> > +               acpi_unmap_cpu(pr->id);
+> > +               goto out;
+> > +       }
+> > +
+> >         ret =3D arch_register_cpu(pr->id);
+> >         if (ret) {
+> > +               /* Leave the processor device array in place to detect =
+buggy bios */
+> > +               per_cpu(processors, pr->id) =3D NULL;
+> >                 acpi_unmap_cpu(pr->id);
+> >                 goto out;
+> >         }
+> > @@ -217,7 +255,8 @@ static int acpi_processor_hotadd_init(struct acpi_p=
+rocessor *pr)
+> >         return ret;
+> >  }
+> >  #else
+> > -static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
+> > +static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
+> > +                                            struct acpi_device *device)
+> >  {
+> >         return -ENODEV;
+> >  }
+> > @@ -316,10 +355,13 @@ static int acpi_processor_get_info(struct acpi_de=
+vice *device)
+> >          *  because cpuid <-> apicid mapping is persistent now.
+> >          */
+> >         if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+> > -               int ret =3D acpi_processor_hotadd_init(pr);
+> > +               int ret =3D acpi_processor_hotadd_init(pr, device);
+> >
+> >                 if (ret)
+> >                         return ret;
+> > +       } else {
+> > +               if (!acpi_processor_set_per_cpu(pr, device))
+> > +                       return -EINVAL;
+> >         } =20
+>=20
+> This looks a bit odd.
+>=20
+> I would make acpi_processor_set_per_cpu() return 0 on success and
+> -EINVAL on failure and the above would become
+>=20
+> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id))
+>          ret =3D acpi_processor_hotadd_init(pr, device);
+> else
+>         ret =3D acpi_processor_set_per_cpu(pr, device);
+>=20
+> if (ret)
+>         return ret;
+>=20
+> (and of course ret needs to be defined at the beginning of the function).
+>=20
+> >
+> >         /*
+> > @@ -365,8 +407,6 @@ static int acpi_processor_get_info(struct acpi_devi=
+ce *device)
+> >   * (cpu_data(cpu)) values, like CPU feature flags, family, model, etc.
+> >   * Such things have to be put in and set up by the processor driver's =
+.probe().
+> >   */
+> > -static DEFINE_PER_CPU(void *, processor_device_array);
+> > -
+> >  static int acpi_processor_add(struct acpi_device *device,
+> >                                         const struct acpi_device_id *id)
+> >  {
+> > @@ -395,28 +435,6 @@ static int acpi_processor_add(struct acpi_device *=
+device,
+> >         if (result) /* Processor is not physically present or unavailab=
+le */
+> >                 goto err_clear_driver_data;
+> >
+> > -       BUG_ON(pr->id >=3D nr_cpu_ids);
+> > -
+> > -       /*
+> > -        * Buggy BIOS check.
+> > -        * ACPI id of processors can be reported wrongly by the BIOS.
+> > -        * Don't trust it blindly
+> > -        */
+> > -       if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
+> > -           per_cpu(processor_device_array, pr->id) !=3D device) {
+> > -               dev_warn(&device->dev,
+> > -                       "BIOS reported wrong ACPI id %d for the process=
+or\n",
+> > -                       pr->id);
+> > -               /* Give up, but do not abort the namespace scan. */
+> > -               goto err_clear_driver_data;
+> > -       }
+> > -       /*
+> > -        * processor_device_array is not cleared on errors to allow bug=
+gy BIOS
+> > -        * checks.
+> > -        */
+> > -       per_cpu(processor_device_array, pr->id) =3D device;
+> > -       per_cpu(processors, pr->id) =3D pr;
+> > -
+> >         dev =3D get_cpu_device(pr->id);
+> >         if (!dev) {
+> >                 result =3D -ENODEV;
+> > @@ -470,10 +488,6 @@ static void acpi_processor_remove(struct acpi_devi=
+ce *device)
+> >         device_release_driver(pr->dev);
+> >         acpi_unbind_one(pr->dev);
+> >
+> > -       /* Clean up. */
+> > -       per_cpu(processor_device_array, pr->id) =3D NULL;
+> > -       per_cpu(processors, pr->id) =3D NULL;
+> > -
+> >         cpu_maps_update_begin();
+> >         cpus_write_lock();
+> >
+> > @@ -481,6 +495,10 @@ static void acpi_processor_remove(struct acpi_devi=
+ce *device)
+> >         arch_unregister_cpu(pr->id);
+> >         acpi_unmap_cpu(pr->id);
+> >
+> > +       /* Clean up. */
+> > +       per_cpu(processor_device_array, pr->id) =3D NULL;
+> > +       per_cpu(processors, pr->id) =3D NULL;
+> > +
+> >         cpus_write_unlock();
+> >         cpu_maps_update_done();
+> >
+> > --
+> > 2.39.2
+> > =20
+
 
