@@ -1,309 +1,180 @@
-Return-Path: <linux-acpi+bounces-5664-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5665-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D6F8C033C
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 19:35:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EA828C0365
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 19:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A99281237
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 17:35:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C1B2891E9
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 17:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC58C10A25;
-	Wed,  8 May 2024 17:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5E62E3E8;
+	Wed,  8 May 2024 17:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="DuUBZqIF"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YocjhnZd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2041.outbound.protection.outlook.com [40.107.220.41])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2065.outbound.protection.outlook.com [40.107.92.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A958E57F
-	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 17:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBC612A17D;
+	Wed,  8 May 2024 17:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715189746; cv=fail; b=PubezzbkeQHl/Wb1hMpY3TrjtvJKRM0LdVFuE3hyG3bP0jOacGwq8ONENJDOD7O+YGJ8cMRiv0Lr0SRrDk82RenbkdAZFQl1op7g+0GfpNXBEtyXsP+daEnuI4OCQ3YDjO9SjFqEAln54+VpJqGFvXoBn8Ws+HzEGrOq22h7WSE=
+	t=1715190132; cv=fail; b=FLCqrAGDdVD2gpDJLijnrY3vwknwoRtCI9kMuZKVaMIu6unSYkvz9V86cXob8graudt9f5yKjgRHp+sqY/HMNoNlrcc5b+Ue5pQFSejpCSpQovOE7HTr/PWzY5Z+ddhh8dE0uOVLx0IphPlfYuGRV+TnWTjcQSZhm/VLk1Vd6mY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715189746; c=relaxed/simple;
-	bh=JalSBTZteeciDLbzY8Lp0D+iJQR5bmK9myruMJPARTY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=J/T08CKjpt/es7njZxmjuMKfwhxU0LYJL5Ar+mOJG7Z27e2pYOvLqex+ydfHZH1Ibz0UTrm1VeZV/CPjkzEsU5qcqqHlGBkD/cr62LxKuJd8Id/Dq3xBKRdytteesJnxpnXRevc1PXPBJnPB5gj6BoddeEL6Hpb2ChxEXRAP1C0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=DuUBZqIF; arc=fail smtp.client-ip=40.107.220.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1715190132; c=relaxed/simple;
+	bh=ADjAz42TNw1FvPi8VO9jRgSVhs/AwY8g1NJCWVhcjGU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D7En+ALZChoMDktAm+3BuR95nHHA1VPbAAcCb44zQvSKlIqjHyU4SMCzctSOzI2FsFa3ubtlFZh+Vohf2E0Q2eZg9zEH0Krkp+ZqwSTfAjcgSaVC0cn26mNsIQwgG4d5iAtsDk2OCMqT2u541ZIlKgW93XItLa84W82KWbVsGbY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YocjhnZd; arc=fail smtp.client-ip=40.107.92.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SoeNYf9vg1CadH6XqItH0U9dpMpd0mNUDVO6p4h+WOY8xssKhFfR0a0S5lD9BedUMz4eQRa7veUYSwEhNdNGNUhAUnKMUYNhIT0NsqLxHhIZ1saY32s6AZF9MzV+X5kSkCcENb4EQ6K8aNsiC16s9Kg2WVeJGzfybr6KCAmw/+56Wra1s/nJ4damXBqWPQi6Okp4Xe7J7n71299LhvJi+KnAiyNZmHukoPQ8BbBIUjwrnjiiNeNCVW7us7cDMb/LCXSz7XfuUQLQyxIegB9S4EVdFKBwJWUvftjnYE6WcKnqaFOz5n31mXefl7+APNw7SusqdRRdswlqVucGh2l1Iw==
+ b=EyyShvuPn9D6Tb2VUyVu2pHzUQsXc3V2XrtSJUQTCz563DiMyBZUXY+50GqMBu1WGAEdEAKiQXVIxaRPbaGVQhSa6Mcombar9JJvdleJya/lj8CjyXXDDsGmvwPJrzaD060SIp7QIpVQtnGSdnsGFG1YPtPmw/uzMtBP9+nvDRq8DTak9gxY5mGkP+IyUvcI4D8nKXbR7RzQG602OVG3QMpa6OSsFTl7S7AwQoSm5BZuhHXze4HM8fiAq+t62PO/J/l9yH6Czi7TkzB71blDStP82pI9PkDn3+i4hu9tpaehjdJHg5zq5hHHxY2onLb2qawlrcF3mWidMPLTeA6YJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OGMfcTjqKupz+sUzdyG/PqkzRJ9kCFfI0qIaND7h/Bk=;
- b=maMsiLUWroddrBTGTasqBsscvMtLOH4AK3/+5oS+BwkrxpGDdfi9uJZBMohh6KKhOGiAeO6Y3wSPAOQDX+PDVRbcxkGlGZUAn+uajz9qaU2wdFHmoOQGmHJ88wETAvodyp4Iy8tKB1xGibnxwhkY86FREcFDDYLixk2uoTRcLzWJoHiRkQI1GnIE6J7FexuhY7RifkEHEfqfhGl4bsuIWdH5I6P43AD4vEV+xiBsvYvXi5/IZEWPZBMT+MyiKuRvxAOs9M4CLjD0x6goouQUyB//Ruf9KQIaJ4RcjowatC+kJvXE0QdiomDjFBVi7bg6XngNW14/++a5K2F/Izf7tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=GKJQiOLkfEh9HpwgRAIE1i5CG4HNSgWc0XmqRclezfs=;
+ b=FzPvy2RgFikm3HG8EXJUYwMuSINUdQFWO0CTi0jvTyn54VuizQF68D3LrF8qRaEM8sOGa8MFJXMewxGUlTp2d9ntceOHMOUzCakBUsnQVoyuByTyR1da5QbvB3RRs2IKj2xAXpmTY8zklmgcdMMTLfSvA99y47tC8RNrvmkq55NNIqEGrjQlHXgvWtEqri/mPnq/w8pFlZexzDqjnQoX/sTzu0gzTaDM7yRJMb8XvkdXRTytRMiEkDQn8aXbV2k1tQZVtFhYNlC67bz6lYQO0CNljYmIwWrk5DDYmpQ7MOkOMiZ6Es/VChBz7amCtC6x+JjQnm/fQIjbCJIqS9r1gA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OGMfcTjqKupz+sUzdyG/PqkzRJ9kCFfI0qIaND7h/Bk=;
- b=DuUBZqIF0z98P3weIzqkhf4cdp+jyh88irWH6RIBIC0fHXrZsb96fobbnPOT8GZ8eCCiISLKk3rG4cwsVHIGfupCMtZq0IL498hjiHs0V0Umm3pGgWbhk2F3fMjYqxBvY8Ks+LKqfPvAFP1GnE+VIfxaV9E9LyxyCzN9P+FnfrU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
- PH0PR12MB8150.namprd12.prod.outlook.com (2603:10b6:510:293::21) with
+ bh=GKJQiOLkfEh9HpwgRAIE1i5CG4HNSgWc0XmqRclezfs=;
+ b=YocjhnZd78F85usa7fvEevFhUXK4NpmAiH/YbNC2JhIIxtRjna1kNDllfioJ+HrTI1qUoZbppXrBMCPVeddNor6+QK2CaiEF6bdnAfc9elMIIxEPqgaPfXMag6Zhfa1EeJIA/TYZxC1KAvbbOaNwuU3fIlxcCCtuTtRRHVI0o3CDJ51b16nmHxjZ1SLVgf+DgfEe0J0PlkMnef3xzOM8j+KVAc8yKUExZuML2tkPjEH5/+WA03ZWmPD4DpHfSKj3zd0DY3h3jLr8xsY9orsQrxZMH9z1BUgtuT6UKDGq8ZXe2Ox2s3QFyPMci1EizaLXWU2H6bhESHRQy4j5LPggjw==
+Received: from BYAPR04CA0005.namprd04.prod.outlook.com (2603:10b6:a03:40::18)
+ by MW4PR12MB6681.namprd12.prod.outlook.com (2603:10b6:303:1e1::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.42; Wed, 8 May
- 2024 17:35:36 +0000
-Received: from DS7PR12MB6095.namprd12.prod.outlook.com
- ([fe80::f89f:6d2f:47d1:3893]) by DS7PR12MB6095.namprd12.prod.outlook.com
- ([fe80::f89f:6d2f:47d1:3893%5]) with mapi id 15.20.7544.045; Wed, 8 May 2024
- 17:35:36 +0000
-Message-ID: <3ebae911-a9aa-4bc1-b0bf-2347b0d27b92@amd.com>
-Date: Wed, 8 May 2024 12:35:34 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: Missing default handler for the EmbeddedControl OpRegion
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Robert Moore <robert.moore@intel.com>, Hans de Goede <hdegoede@redhat.com>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-References: <Zi+0whTvDbAdveHq@kuha.fi.intel.com>
- <CAJZ5v0iAMG251n6yg-h6KCUywK2vSg4sX3FTnOuxcLaEvUwFPQ@mail.gmail.com>
- <ZjtuKzqpfKFbRaUi@kuha.fi.intel.com> <5781917.DvuYhMxLoT@kreacher>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <5781917.DvuYhMxLoT@kreacher>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: DM6PR03CA0012.namprd03.prod.outlook.com
- (2603:10b6:5:40::25) To DS7PR12MB6095.namprd12.prod.outlook.com
- (2603:10b6:8:9c::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.46; Wed, 8 May
+ 2024 17:42:07 +0000
+Received: from CO1PEPF000066E7.namprd05.prod.outlook.com
+ (2603:10b6:a03:40:cafe::c8) by BYAPR04CA0005.outlook.office365.com
+ (2603:10b6:a03:40::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.42 via Frontend
+ Transport; Wed, 8 May 2024 17:42:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CO1PEPF000066E7.mail.protection.outlook.com (10.167.249.9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7544.18 via Frontend Transport; Wed, 8 May 2024 17:42:06 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 8 May 2024
+ 10:41:48 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 8 May 2024
+ 10:41:47 -0700
+Received: from vidyas-desktop.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Wed, 8 May 2024 10:41:42 -0700
+From: Vidya Sagar <vidyas@nvidia.com>
+To: <bhelgaas@google.com>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<will@kernel.org>, <lpieralisi@kernel.org>, <kw@linux.com>,
+	<robh@kernel.org>, <frowand.list@gmail.com>
+CC: <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <treding@nvidia.com>, <jonathanh@nvidia.com>,
+	<kthota@nvidia.com>, <mmaddireddy@nvidia.com>, <vidyas@nvidia.com>,
+	<sagar.tv@gmail.com>
+Subject: [PATCH V7 0/4] PCI: Add support for preserving boot configuration
+Date: Wed, 8 May 2024 23:11:34 +0530
+Message-ID: <20240508174138.3630283-1-vidyas@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|PH0PR12MB8150:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba459231-dcf5-4267-e580-08dc6f854567
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066E7:EE_|MW4PR12MB6681:EE_
+X-MS-Office365-Filtering-Correlation-Id: 30344116-f510-45de-90d2-08dc6f862e12
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|376005;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|36860700004|7416005|1800799015|82310400017;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?THFxT29RZmI0MmFwVHJzNUh0WHhIWlk2RitJNXFNamM2YmZUc3crOXdOTVNr?=
- =?utf-8?B?eTVBUE1qYnRKc3hueWVHamZZL1dzZzNSa0xodEpLbkNxL24zeWJrUVFxenBn?=
- =?utf-8?B?bmUxdEhsdE02Qk81ZEFLak9YNzhHZDBEdFJ5R29wRVE2dHlFd2FrQ2hzRGRV?=
- =?utf-8?B?ejZYQWhPRVB5a0xHd0M5dEVZZFZFd0F2UHd2M2RLZi9wSlp2cmxaZ2VwWTAz?=
- =?utf-8?B?eW8yWmZsOWlIcUx6ejhvZHB5Qlo0c09IN09GUFBxMFZMWVNadnBVc2hBYnlP?=
- =?utf-8?B?c3VWamE0RTZpUXNra2NzUm5UTlBzQWxjT0FBUnNteE5DbUFodW9PellNbXEv?=
- =?utf-8?B?MDRWNkQweXNWcTB1VmgyN2hraDcvNk9xZERCdFNXZGIvN0JUSTBpSmJwQzBF?=
- =?utf-8?B?MGVkY2hQUkRlYkF2cWZUS3l2R3NnclcxMUJTTnMzRUpQSnN6Y01uNDBveW9U?=
- =?utf-8?B?UFdDYXVzZ1F5OUVhNS9GckxiaW1yazVNZkVPOG4vMXJSQmhseXNqL0V0Umcx?=
- =?utf-8?B?d3k4clNiTno5bHoxSUxVWHFhTGc2aGxaMWFDOXRLM1MxWk9BMHo0aDdtM1la?=
- =?utf-8?B?SlRBT205bFlFMUtXVEF1QmtjU0dhNkpUT1kvYkNHSi9jbnBEbW5lU2lMRWhE?=
- =?utf-8?B?bGJCVkZUNXJIRjkxOUxHTGhKREJxc3YzSVg4Rm5nUjc0RkplUEV2cGRhU2NT?=
- =?utf-8?B?ZFZDNER3cXZTQnFsN0FnR1hsNkpmWUg4ZkxhdVl6Zjc4NFNkcWVKNXhMUnVH?=
- =?utf-8?B?NUE4dmhyMzdjWW1wUEVoYU4xbHJFcWJ5RHcvRkRoWjJwQTNyRHo2YWlpNVU3?=
- =?utf-8?B?NzcySTFLYzFnYWV3ZURnSDhDMWFrdHRyQy9kM2RpYTJUQUNEZG5QWnFmb2xZ?=
- =?utf-8?B?ZWhpKzZFam1xc2pXNU1jR3liSFI0REd6Z3kybHVZWjc0UVNjbWlmUkNkN2dH?=
- =?utf-8?B?ZVRMTGRBVWVJVWFzOG1qVXgxU1NJbWcwRGdjRWd4QU1CUFVpRmRDQllselVE?=
- =?utf-8?B?bXltT0RaT2ViRERXMVQrSG5tZ01Cb0M1ZnFmQXNvNmVndUpmbmFnRFAyUFIx?=
- =?utf-8?B?UXprVlRHaSs0YnJpais5WWdmSjlFM1hRWFllWnlqSm4ya1paSFk4VUtIRkl0?=
- =?utf-8?B?UHZQWnRoL09FRCtSNEh6WjRMY1B3L21iUi9yV3NDMXdnc2ZOMERnMW9JMnpr?=
- =?utf-8?B?MGtnM1FhKzl3dTNqemRWcHo2bXBoN2trMC8vL2l3Y1hsSFJ1K1J5T2NXZ2Vt?=
- =?utf-8?B?ZnA5TG44RW5SQ0NTZ1dhQUtYNWNDclpTd2txcjRpWmpIanArTXZQdlBFVko0?=
- =?utf-8?B?WmpsQWQrLzVHcWpneTZHL1NzQlZpZFdjdGUxOVozOHJlWndBNVpmV0w1QU50?=
- =?utf-8?B?ZllZcGd1dEVIZWpOa1JYTnErSjRmMVI4TkhyYUIydnVtNTh0bFM2dFFmM3Ur?=
- =?utf-8?B?bWNFSmlPTFcyMWI5dXMyRGptQ1BiaUZSRzM4cVNHQUhsODZsUEYzSEx2Qnoy?=
- =?utf-8?B?aU1vbXpQNmkwaTY3RXRnV3V5UVA5QmQwSVRJTWY3NlNkVEVySHh6eTI0eUVP?=
- =?utf-8?B?R2dVRFZnLzdWV1R6SE0yWWwwQ0dycE1FcDV6djhwZy9tV1AxRml3Tkd1NDJy?=
- =?utf-8?B?bUdFTjR4WlVpZk9xMUxSSXVQa0R4MGc9PQ==?=
+	=?us-ascii?Q?sbhMhLEAwLZsvlhH8UPOvpWz0gW0WYJGgdPZU6MOUolMPBe2GViHlTH39hFz?=
+ =?us-ascii?Q?5ab2+/TO6oQxBUFNUeFzotdSUBf3K4Ai6CIaX86HEEaOsb1Ae0bCGCN3JxIm?=
+ =?us-ascii?Q?tizayIGaFrgjdgZ8GuDVZuCv4BtRDUzKiSMv5miCLgW7Xrmsp3fPkQRtwVgc?=
+ =?us-ascii?Q?Swa6x0XSwJw/dM9/Yc21vkCiA8mJn0u25kMtbMPqtiWJnJO6+8KWarOKi+2y?=
+ =?us-ascii?Q?ibPkptbgSE7TMm2yFUYHOkHb/OjwCr20Vul3c2x15ANMZc5f//gq1hctymmp?=
+ =?us-ascii?Q?pQuxdBWlV4BNht9GGDjVt+TLFuQasdnxNVLiy9ApEOuDY2XjPjT5gIhVq7TH?=
+ =?us-ascii?Q?ri+p3qmJD1VXWeGtc+SDMhU96zF2RQnqa59LBV1mzmIutcD2pljMvmh9a9gf?=
+ =?us-ascii?Q?BpeIBPVsYDQTGQlqUK4LCfe5nWNcxttmv7I9bRms4jjV2ADqfE50kVQXEExO?=
+ =?us-ascii?Q?+ayjk3rjsgojV7mWWCO3HDJCKX7+yq+WeRPpAiZQLwog3QHLsvdu34iEI3GH?=
+ =?us-ascii?Q?cBw9FnTrAzyHrw89Ucn3SB2ceXZcyklWNyJU8OwoeUK5oz5EmM+z+OGn9Rm8?=
+ =?us-ascii?Q?DRkfKThxmD0/sj8wmhbPXbJIen+6qP74A8PFmGmIRYG2DEY5KaW/CuMaFR7I?=
+ =?us-ascii?Q?l1d2nrQF7RCN2tuOFQMDziWSWzPFs3flJZD2lcqVtcdleDlPFWo3tRglAjvL?=
+ =?us-ascii?Q?kloq1fJ3D1uHWhFMSq6l5OWW57sJPR4pVL6+lZawLvjz8zFxWuJUBoyrQ4E2?=
+ =?us-ascii?Q?9+eySZ44Te6fluoIArHIv8QK+TDee26nw0Yov/d5ccSYLAMKludKBY0WFJQO?=
+ =?us-ascii?Q?Xaku9NSsSamVw3QNMI8/iEno9DSZDJXnBlLaNU8PdmgwTLehJjjw3AdZZB2D?=
+ =?us-ascii?Q?NcEGZYWHTM4ENz/B8MAmheYbX+Sx6JgkgYiglraKX7zGth9l3wVbWXFXwr4N?=
+ =?us-ascii?Q?e+ktNKZJ8x9y0ii5cuC1o05X28vnZSevtjKhVxxQufV3ykYYUMG2cO2On6vC?=
+ =?us-ascii?Q?GGqGm8sB3DXAfGBJ1YOGX2hq/9UcmLNec3+Ym3+XnT79/967GpwN+balYE+x?=
+ =?us-ascii?Q?CbJ2+8zUXrgLbwZI6xhCzXGFYdx+C1fD5YDmO7mJuDRRiLrA2bqOTbMnaaZN?=
+ =?us-ascii?Q?gHFMHCJ/flBf+MIjfVPobG0Zbik6i8C/jNo2fFT4K0jaubRCOz5BGU6aqQyT?=
+ =?us-ascii?Q?vnc5gyHFhmcx2UV8afLOeXyL16VoCpaW46OnTlA8YKFQPy9GZno7JPIstsd8?=
+ =?us-ascii?Q?s8rgpr5xz49auRhkUukH/87W59UzNiyanGA18YzBlUn7sjGcPtLKcw6rYC1I?=
+ =?us-ascii?Q?cObfKBsDURn/EJxoH5reeocYMsaS83lFGqAENzRenhxkO6QdNfQ7xuK+GlmM?=
+ =?us-ascii?Q?2BhCe/F6ygyIaT5tyTUEWaQIKD/Z?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TlBSbEFjdU9ybTIyazRnVE1sMUw0dEFsSG51ZUlHZElqZzNualZEWCtTdlhL?=
- =?utf-8?B?cGJkcnU0RS9yaTdxS3ZEOG80VVRxNDZxQktLL2EvQWxTditseGNOQkhtZVdF?=
- =?utf-8?B?STdYRkVXOW5Sb0RTb2tiUUpVSlBSQ1RvQjVRMnNDRUlPVTJSZjFCcWV6TDd5?=
- =?utf-8?B?TVRxRVNPdDQ4NjN1OTZkYWdjd0JraDZ3SDJqa21GY3ZQc2pQaWJUaytUS3Yw?=
- =?utf-8?B?WElhajl3aDRmbHZrVVk1OFBNY2ZjS0RNcjgwbGc5VmozNXdpZFVBS0xObWs4?=
- =?utf-8?B?TE9sa05sL0lvcDVOb2hMaUUydTcvMElyTkczdHEzb3B3N2JYRFZwM2NmRTA3?=
- =?utf-8?B?d1Y2SEk1SGY5OXBWcmpJajRYdnBObyt5TW1tZUpPOVlRdHVuRTF1cHNacnpO?=
- =?utf-8?B?WFcvN0RqM2RyNFdQdEtNRk5JTzBmV0h1dlpQZTd5S2dEYUdyWEpGWUZBQ0hQ?=
- =?utf-8?B?bXp3eW9CSmtvdktvN0huYndmODQ3OEtEMGcwS3NhcDZSUUNlQ0tiV1FEMldl?=
- =?utf-8?B?YzU3Z2JWbFhMUkhISW5kZW55VjRrbnBFSkNDc0hQVkVIZVc3Y1hQVFNnRUV3?=
- =?utf-8?B?Y0UveEVUREJNc0VrNE9UaWh3Zmk3UlhPREdFOENTNUJ4Q2t3QkFtN1BocjMr?=
- =?utf-8?B?aVJxZU1CM05RUzJsTEV3NkpRUU56NXZtSUxweFR2QUp5VCt5ODVYeVRhcllC?=
- =?utf-8?B?bDJXVHczTUt4b1IzVVI3cFFhalN4eXdMa0F1S1UxNFFrSXFnYkhxNWJ2NWxo?=
- =?utf-8?B?Ums3cUY0SDNlTXd4SktoVDNTSWNDa3ZLTUYwVCs4a2JNT2d2QzNoallMb0Zn?=
- =?utf-8?B?bWpkSVY2V3pzbE94U3VqbUZtR0dWWEtCcFFwUml5WXduWnBTeDFoVjZGRld5?=
- =?utf-8?B?cFppRHhQOHMxemVYUnRocVprOUJqNENrY05Ja3QyNGFyYzlab3FlRTd6Q0Jr?=
- =?utf-8?B?QWdkTDh4bzBIUzZBeDhhNmFJUjF1aWpzcHdyczFFVW9CUW5HYzFyMC8zUlYv?=
- =?utf-8?B?OFpCUWsvWCs3bE5WSTBSWTUyWHFibHNNNjFwUE1OS3cxRUhNUmRqRExUTWVa?=
- =?utf-8?B?N3RaK3RZSzhrU3kyL1RZczJ0ZXMxWE9lN05JK1VZeWZmMUpzVlJpbC9IaDRM?=
- =?utf-8?B?SjNnay9TZmVqbHJTSWpiRTR2USs4N0Jzam1xK3EzczdaZmJBUmRaem1xeWV6?=
- =?utf-8?B?K1JneTBHNkkxb3BJNFdoeGIvZzZTa01hdFlrZCtTYXAvWVFhK28xNThKNWVj?=
- =?utf-8?B?NHY2UW1mb2FiWFhvQzBzTVNJTTZkYjJ1Zmxwd1hkR1JMZlpxWG9JVlMyT0dK?=
- =?utf-8?B?Ui9PcEttcDFTK0c2Uit4V2c4VTdjM1FCeVBpMGR0OFVHYjN3Zlp2Y3A3KytD?=
- =?utf-8?B?TW5UbFdJUmJYZ3FlWW5heEJ2MitrRWpGN0xxQlM4Qm5iZXBLMDFYVDExVzh0?=
- =?utf-8?B?NDlJampPamtwaExqTm1pSXhDZ3VmcGl1WDI0ME16cFFBWXpsQXVLOFEyODNV?=
- =?utf-8?B?b0hlbkpTN1h3RXI4MFJOOGpXRnBuK1ZPNDVhMkthVVdtUldIaU5uRFFOMkRU?=
- =?utf-8?B?WWNUK2QwNzdaWDdGeFpIZGRPYnI5NXp4dHJqUFNSeGNNL3RyK3RUWWZUYnVD?=
- =?utf-8?B?T2kwcHhJTnQ2K25MM0pFamNJNER5NEw3ZytEemtWUDRUcVd5T0UxWGtlUEds?=
- =?utf-8?B?cUtLMktpNVc1clZEeW9TMkIrY0h3c2RxcWU4UFpWQlAyWWFoYlY0ZTV0L054?=
- =?utf-8?B?OFNSUWRMajRhRlN5YUN3SElPUXRvZGJaSHp3cGVVcngxRWlUTzhET0ZYOXN6?=
- =?utf-8?B?dXFVcEJZYzRjdnZNWnpld0hBUFVwK25xdUtSU0lqbDhOaitZMUtWeXd4NlZj?=
- =?utf-8?B?YmFLRUJoWGdGS3ZZb3hqQUVIdlMrc2RPdm1JVy9GdTZGcHJnbDQ2Y1liMFRJ?=
- =?utf-8?B?Um1tOGtnVFFabGF1MXVzQTcvVS8wbGhubExQdFNzRTJmUGNFNk9hL0IycERm?=
- =?utf-8?B?cWNvZmZhb2s2eFp3Q0ZwWDN0MTJxTitVY0lydFFCcUdKeFVwZWgxS1AvMzcx?=
- =?utf-8?B?UGpRSkJ6d3ZFSlZueWY3Z0lTNzBnTWoxQk1ab1IvNEZ5RTEyekpQdHhXdmxJ?=
- =?utf-8?Q?sx6HHAgt2ul5HVQJpg9tRa9Kt?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba459231-dcf5-4267-e580-08dc6f854567
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2024 17:35:36.6527
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(376005)(36860700004)(7416005)(1800799015)(82310400017);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2024 17:42:06.8099
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pf1DYidox3jTAdMld8nu0p0Qx9KoE8e1f6aubIpT4GCnvcz8YCW6smEoNBJf4ZMsEQ18TT6ytmj40gijEsMRpg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8150
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30344116-f510-45de-90d2-08dc6f862e12
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066E7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6681
 
-On 5/8/2024 07:50, Rafael J. Wysocki wrote:
-> [Resending because it appears to have got lost, sorry for duplicates.]
-> 
-> On Wednesday, May 8, 2024 2:20:59 PM CEST Heikki Krogerus wrote:
->> On Mon, May 06, 2024 at 07:45:07PM +0200, Rafael J. Wysocki wrote:
->>> Hi,
->>>
->>> On Mon, Apr 29, 2024 at 4:55 PM Heikki Krogerus
->>> <heikki.krogerus@linux.intel.com> wrote:
->>>>
->>>> Hi,
->>>>
->>>> There's a bug that is caused by an EmbeddedControl OpRegion which is
->>>> declared inside the scope of a specific USB Type-C device (PNP0CA0):
->>>> https://bugzilla.kernel.org/show_bug.cgi?id=218789
->>>
->>> And in this bug you are essentially proposing to install the EC
->>> OpRegion handler at the namespace root instead of the EC device.
->>>
->>> This sounds reasonable, although AFAICS this is a matter of modifying
->>> the EC driver (before the EC OpRegion handler is installed by the EC
->>> drvier, ACPICA has no way to handle EC address space accesses anyway).
->>>
->>>> It looks like that's not the only case where that OpRegion ID is used
->>>> outside of the EC device scope. There is at least one driver in Linux
->>>> Kernel (drivers/platform/x86/wmi.c) that already has a custom handler
->>>> for the EmbeddedControl OpRegion, and based on a quick search, the
->>>> problem "Region EmbeddedControl (ID=3) has no handler" has happened
->>>> with some other devices too.
->>>
->>> AFAICS, installing the EC address space handler at the EC device
->>> object itself is not based on any sound technical arguments, it's just
->>> been always done this way in Linux.  It's quite possible that the EC
->>> address space handler should have been installed at the namespace root
->>> from the outset.
->>
->> Okay, thank you for the explanation. So can we simply change it like
->> this (I may have still misunderstood something)?
-> 
-> Roughly speaking, yes, but it is missing an analogous change around
-> the removal.
-> 
-> Please see the appended patch (which I have created independently in
-> the meantime).  It doesn't break stuff for me and Andy points out that
-> there are examples of EmbeddedControl OpRegions outside the EC device
-> scope in the spec (see Section 9.17.15 in ACPI 6.5, for instance).
-> 
-> So I think that this change can be made relatively safely (but adding Hans and
-> Mario to the CC in case they know something that might be broken by it).
+Add support for preserving the boot configuration done by the
+platform firmware per host bridge basis, based on the presence of
+'linux,pci-probe-only' property in the respective PCI host bridge
+device-tree node. It also unifies the ACPI and DT based boot flows
+in this regard.
 
-Nothing jumps out at me, it looks like a good way to handle this issue.
+This patch series is a complete version of the incomplete series
+( https://lore.kernel.org/linux-pci/20240421190914.374399-1-helgaas@kernel.org/ )
+posted by Bjorn which in turn was an attempted split work of the single V6 patch
+( https://lore.kernel.org/linux-pci/20240418174043.3750240-1-vidyas@nvidia.com/ )
+posted by me.
 
-> 
-> 
->> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
->> index 02255795b800..6b9dd27171ee 100644
->> --- a/drivers/acpi/ec.c
->> +++ b/drivers/acpi/ec.c
->> @@ -1488,7 +1488,7 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
->>   
->>          if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
->>                  acpi_ec_enter_noirq(ec);
->> -               status = acpi_install_address_space_handler_no_reg(ec->handle,
->> +               status = acpi_install_address_space_handler_no_reg(ACPI_ROOT_OBJECT,
->>                                                                     ACPI_ADR_SPACE_EC,
->>                                                                     &acpi_ec_space_handler,
->>                                                                     NULL, ec);
->> @@ -1497,7 +1497,7 @@ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
->>                          return -ENODEV;
->>                  }
->>                  set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
->> -               ec->address_space_handler_holder = ec->handle;
->> +               ec->address_space_handler_holder = ACPI_ROOT_OBJECT;
->>          }
->>   
->>          if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
->>
-> 
-> ---
->   drivers/acpi/ec.c       |   10 +++++-----
->   drivers/acpi/internal.h |    1 -
->   2 files changed, 5 insertions(+), 6 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/ec.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/ec.c
-> +++ linux-pm/drivers/acpi/ec.c
-> @@ -1488,7 +1488,7 @@ static int ec_install_handlers(struct ac
->   
->   	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
->   		acpi_ec_enter_noirq(ec);
-> -		status = acpi_install_address_space_handler_no_reg(ec->handle,
-> +		status = acpi_install_address_space_handler_no_reg(ACPI_ROOT_OBJECT,
->   								   ACPI_ADR_SPACE_EC,
->   								   &acpi_ec_space_handler,
->   								   NULL, ec);
-> @@ -1497,11 +1497,10 @@ static int ec_install_handlers(struct ac
->   			return -ENODEV;
->   		}
->   		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
-> -		ec->address_space_handler_holder = ec->handle;
->   	}
->   
->   	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
-> -		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
-> +		acpi_execute_reg_methods(ACPI_ROOT_OBJECT, ACPI_ADR_SPACE_EC);
->   		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
->   	}
->   
-> @@ -1555,8 +1554,9 @@ static void ec_remove_handlers(struct ac
->   {
->   	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
->   		if (ACPI_FAILURE(acpi_remove_address_space_handler(
-> -					ec->address_space_handler_holder,
-> -					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
-> +						ACPI_ROOT_OBJECT,
-> +						ACPI_ADR_SPACE_EC,
-> +						&acpi_ec_space_handler)))
->   			pr_err("failed to remove space handler\n");
->   		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
->   	}
-> Index: linux-pm/drivers/acpi/internal.h
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/internal.h
-> +++ linux-pm/drivers/acpi/internal.h
-> @@ -186,7 +186,6 @@ enum acpi_ec_event_state {
->   
->   struct acpi_ec {
->   	acpi_handle handle;
-> -	acpi_handle address_space_handler_holder;
->   	int gpe;
->   	int irq;
->   	unsigned long command_addr;
-> 
-> 
+Vidya Sagar (4):
+  PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to
+    pci_register_host_bridge()
+  PCI: of: Add of_pci_preserve_config() for per-host bridge support
+  PCI: Unify ACPI and DT 'preserve config' support
+  PCI: Use preserve_config in place of pci_flags
+
+ drivers/acpi/pci_root.c                  | 12 ------
+ drivers/pci/controller/pci-host-common.c |  4 --
+ drivers/pci/of.c                         | 54 +++++++++++++++++++-----
+ drivers/pci/pci-acpi.c                   | 22 ++++++++++
+ drivers/pci/pci.h                        | 12 ++++++
+ drivers/pci/probe.c                      | 34 ++++++++++-----
+ 6 files changed, 101 insertions(+), 37 deletions(-)
+
+-- 
+2.25.1
 
 
