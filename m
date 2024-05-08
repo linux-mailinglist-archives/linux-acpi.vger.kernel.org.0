@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-5660-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5658-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003298BFEC8
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 15:32:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39D28BFDA6
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 14:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CE8E1C21261
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 13:32:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EEF31F21471
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 12:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A9178C7B;
-	Wed,  8 May 2024 13:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C5855C07;
+	Wed,  8 May 2024 12:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="RD4DiQn3"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="J4sJE4HS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21E76BFA6
-	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 13:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0E522071
+	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 12:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715175137; cv=none; b=tv3V/btRsxmcpREWL7biNh67FywaBHty2QN0IwhuOUTbTWQovTM0lHXCFfFTYRbsnIomx01L/ClqPTVmtLEXiqRx+wPvopMxa172eSmC4Ynyqjnxg8Txp1RK5ngW9aO2hfVr5FUXcFN1O9NMVh3oqlHWZP7xN7RYFlvPe0MY2PI=
+	t=1715172636; cv=none; b=EkPF5bGwfcPONXnD+97Kz4UPeBdNDBNiygjiH/XqBEgsmwWOdQYTPaKBTO18KMdV2GC0t0As3pgRBJ1NFP2bN/xh/oY3EitPRFXxmS5a+2tMF0RVeICacM7syU1B/V0DviYNe8m2cTzv/Bo5lMFTHMCo/PqLtCSTDUriBHcgB2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715175137; c=relaxed/simple;
-	bh=wka9Os7kHgWEeR60L7QksAxGHNGDKFoxJqNakovt0UI=;
+	s=arc-20240116; t=1715172636; c=relaxed/simple;
+	bh=8LPvjPYcv09K7WiHOasF6M4TRjdNOzyEbd5kQH9fJfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CeKFBMEyJafYA/oeI5mFQ1Ybx/xkote/2o60y+/1O26K3zKQVmoPoUy4jEH9bslNgA15Qa1SF2ZAmz5jP1RKPLmqDXDAVTWp7EWUU2HugFSsOvxOHEi2/RCZ8j/WtGZrNXS0+0DmE5lEtaFHBaz3WtSVwE7TY7yKwgdKZTJU2kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=RD4DiQn3 reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=f4etiM3w9glAgfeLxhJEazKSiFMSNgpYFH4du8dYodvkA72LufndAilH5jjbkvl1yBuiJuv1i329XZa/nD35VpgNf2egaFLWdr5P3qqw1gdQw6UkvRRtvEJ3X0qNokYONVwR+MJUgrxSd5jDLy9l2UBdqE2GsCGZO6VGPK7QmHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=J4sJE4HS reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.0.0)
- id 0ee97e2b3c29e7ff; Wed, 8 May 2024 14:32:12 +0200
+ id 1ae4dd4514091b51; Wed, 8 May 2024 14:50:32 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id A9654A46625;
-	Wed,  8 May 2024 14:32:11 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id B5D11A46625;
+	Wed,  8 May 2024 14:50:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1715171532;
-	bh=wka9Os7kHgWEeR60L7QksAxGHNGDKFoxJqNakovt0UI=;
+	s=dkim; t=1715172632;
+	bh=8LPvjPYcv09K7WiHOasF6M4TRjdNOzyEbd5kQH9fJfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RD4DiQn3zxNq0xtieXf8B2Qr78J/CJJMbLJLweBEj5c2mOqSuE5HTANCCOnkYhZ8H
-	 iaM3rMh7dGxBpbu/PWndSKp7bh4U5E98fahPImJW5EfG0Z/ZkIHQfPEVXMXADOCT/2
-	 VPtOmPokVt23bjbpVjK76T45/y33VbJ5YqliJ8cUAqp6YVCv/MVxVdwJCAxtRTluoV
-	 E57CZzqHpd35wDaZUu+OyGfEP+DaFh4qccOY4m06rp3bivIQ1W+MG8bpF48niRyEJW
-	 uTkUGBtXhU6bWSMSPbNGo2Nkf3yqlbfwwr6KgI1WH4pEhcG9tPPOvYdVZ2nMafJFuE
-	 27vTuI7xA9M5Q==
+	b=J4sJE4HSJfX76/PDA7mDLofZUDFZYk2z98CfLPGql/GA0Q4W0uG0DhNaGGkEbcq5k
+	 lcaj9tJRCm7YkDEBoMV46ONyhBoenSaz9Ve7P/ycYn/QPv49VA4lHJXmojni9NRSKy
+	 KeTrOr6WTlf10MOhvD0o9el31cP3AY2e8yOyVWreWQyoY5QL2+VyK0pCBHVE+Q11Da
+	 XMR0cXxaalAqU8GhERqm7YXiUZcyyHaGW50YH+mPmCqsr0QV6oUcioC7QiGbWJe07z
+	 0mTtZ/HcuXwHaplDe93FLRd4ZsD7Aakr5b73ArHARrpcFOa1zVHCIJ4Cjsu8mP1RI1
+	 JjIuzgJiyLF2Q==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hans de Goede <hdegoede@redhat.com>,
- Mario Limonciello <mario.limonciello@amd.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Robert Moore <robert.moore@intel.com>, Hans de Goede <hdegoede@redhat.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
 Subject: Re: Missing default handler for the EmbeddedControl OpRegion
-Date: Wed, 08 May 2024 14:32:11 +0200
-Message-ID: <6044671.lOV4Wx5bFT@kreacher>
+Date: Wed, 08 May 2024 14:50:24 +0200
+Message-ID: <5781917.DvuYhMxLoT@kreacher>
 In-Reply-To: <ZjtuKzqpfKFbRaUi@kuha.fi.intel.com>
 References:
  <Zi+0whTvDbAdveHq@kuha.fi.intel.com>
@@ -76,9 +76,11 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvdeftddghedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepkeeileehffelfefggfdtjedvkeettdejfeevueegfedvhffgudeuteeigfeileetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtohephhgvihhkkhhirdhkrhhoghgvrhhusheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhgvnhgssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgt
- phhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvdeftddgheeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepkeeileehffelfefggfdtjedvkeettdejfeevueegfedvhffgudeuteeigfeileetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtohephhgvihhkkhhirdhkrhhoghgvrhhusheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegrnhgurhhihidrshhhvghvtghhvghnkhhosehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgv
+ rhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohephhguvghgohgvuggvsehrvgguhhgrthdrtghomh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
+
+[Resending because it appears to have got lost, sorry for duplicates.]
 
 On Wednesday, May 8, 2024 2:20:59 PM CEST Heikki Krogerus wrote:
 > On Mon, May 06, 2024 at 07:45:07PM +0200, Rafael J. Wysocki wrote:
@@ -219,7 +221,6 @@ Index: linux-pm/drivers/acpi/internal.h
  	int gpe;
  	int irq;
  	unsigned long command_addr;
-
 
 
 
