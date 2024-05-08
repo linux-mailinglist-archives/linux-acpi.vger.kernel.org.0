@@ -1,308 +1,273 @@
-Return-Path: <linux-acpi+bounces-5651-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5652-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B148C8BF548
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 06:42:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDD68BF5E1
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 08:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332BF1F22C3B
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 04:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB46A2852C2
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 06:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B389FC127;
-	Wed,  8 May 2024 04:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51F817BB6;
+	Wed,  8 May 2024 06:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="HklEkM7B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P1y/PYff"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97771364
-	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 04:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8135E179A8;
+	Wed,  8 May 2024 06:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715143343; cv=none; b=axKXD6TD70Nwnvo7ha38ItLnHLVH1AeQ2DGRcpWy3FuEPG20ajbk0sL9WFG46tI8h1oFhpxGZaT5Riwh+kG9mGxJUsjez60GE1ZXs6L2O1bL1nK47Qk3t2C1GkEByhvjgqGpCZ7dvRvkG/BrNDcz9DpXDDHP0eSofbYr28/dMVk=
+	t=1715148192; cv=none; b=BsNOM0O8V2MkYyH+6q/9vlgv2ovvRd4jmJ7zbF3zYk+82JOJVgHWE1t8dG2+2lAvKZIxMIrWS4v82nqb2jiqcg7sBThkik4+3v71S4KVzPwTIiCb7WJwTNTpnJG0TnQp7TQ9UPYAL7Z1tb1OyeXilwgaKNev9cVm7K0nd4VT9n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715143343; c=relaxed/simple;
-	bh=JkHEyvKzQaIpDlBGJ6RjhKYN8wVhkJLM1gz5BQ4HeKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A+yKNwNRsOsS6YD8KwZt7Sbdphc8YwreNeYjM7OFI7AkEFDL1kqBRukjO/UjYeyXadvU8Hj2M1KvG05uk/Md4dztczzrjYbL0cjFasQ176z4zembfO9j0c997ue4KkqJbDJ0AqQvXWM5eWtiVamDoKkvUyBYpyxPJZj6RVu7M7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=HklEkM7B; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 7614A3F129
-	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 04:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1715143338;
-	bh=HSPCqRRSwu+VBeQIW7/mpTtZkfCB1ZBdSnw3PPs81ks=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=HklEkM7BuUCZ0BADggek+I+f9HHL1zabtcRpx5ft4j7zGr6WkBmuy603Esu04xMrS
-	 1ljPokvM6neTp42DpuNgISyv5CMQXzqIBDsWYNMIeBxHm98EKu+MDyM8KbRO/0zVPg
-	 Dsi4yj0qkm/jBu4Qy2NCEqWrUh8DpsDOrI1QmjRSsn8QrkWZMXRl0BVPbKKdKoeDQ8
-	 STm6jLobFRULmwiPHwWspDNXyaIoX/lwkdDgDKfAF0Pmg/L8JBpRpPNXN7RKnYoo6I
-	 NaBeLWDJuhJLIgbh3oSVgcufRbsXQnd5NMvYOj0r6bmJ8dk46rNXLbC4Kp9AKz2UO2
-	 wFbRAtOdyBQdA==
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-61e5d65daceso3854736a12.0
-        for <linux-acpi@vger.kernel.org>; Tue, 07 May 2024 21:42:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715143337; x=1715748137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HSPCqRRSwu+VBeQIW7/mpTtZkfCB1ZBdSnw3PPs81ks=;
-        b=rABg9AmQiAbNxCM+6KBuL//k5MiMqGMd4QOV6busEGsw32BCL2G9AnHMOiv0G6PznQ
-         yBb0qNHyVj1bcMGqbmiQn56WJcb7YhvaFCLOoQ0cDm5PpCHYdSrdsmOXgFaDSo89ih2C
-         n5oHN4O7HIgcc7irEm0osjfDGUTNOEuDPxokUbOJePqZkFWfwxKC2E/+cLAG/otb5oB1
-         KgKSoTswPUk8cg2guRRjdR6mFzvAr98NVQi99+NtrSwDwvd8t1jk+oQh6VH3op2k9wL6
-         kcEt3lV+uBtQPNUH9dwYXhsdbkOm4CuGt84DfcJmi1N+rlDjTcwGTrw1DaqokzkeK+qC
-         YsAw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ+FmPm4DUSlXKsZOC90FUxcr6mUNdrST/QxX+yW6PQoGSChDupaXCdPbCTPP94lPTqXH7QTj8ylnaNJkbT1xJKcHzDdw+dM6S1g==
-X-Gm-Message-State: AOJu0YxZKhLq9/HjE65j9v8P17x0BJKYjfTOQKeb7o1L24yEZrdVyyrq
-	OzAcApO+lNerThYY5ceci/Kv5Aoegz8FmPoUs1OsXwZLaAYx+aPAByuGNptgYsVa0g6Ti1H4bsK
-	zf28GX8w7r4+61E9RbeSPFb+wlWDPEfAzUb4uBBz/EIIh7nboEqoeL/w6xFAca+ivzzSG4n0MWW
-	owRhspmp8iHSw7/XW7WWG5+8LVk/5jftfb/jO/8eGwYChIRYF2KQ==
-X-Received: by 2002:a05:6a20:551c:b0:1af:bed5:b70d with SMTP id adf61e73a8af0-1afc8d5ad05mr1552520637.28.1715143336809;
-        Tue, 07 May 2024 21:42:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+HyVNbe1dSvzu2G2nDYLP/LKDopQvqMiTGXD0qWByp4kRuYCcTnj0AU5thgSgX4K5E9Z5LKhSXCyoiI2bI+E=
-X-Received: by 2002:a05:6a20:551c:b0:1af:bed5:b70d with SMTP id
- adf61e73a8af0-1afc8d5ad05mr1552509637.28.1715143336475; Tue, 07 May 2024
- 21:42:16 -0700 (PDT)
+	s=arc-20240116; t=1715148192; c=relaxed/simple;
+	bh=xb/2OJywJOKPl0Mtt1eqlqutvHNKPEBLt99xDTEiaII=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=eqkvG1TV5qYjsSCVY8+7Nsqot+jx7xtqUh4+SOAEhVD3hqD/HgEWuvQl+vsnos7sLs+/+I2CEZdl0e2KALu/74PkaNXF37Cz2Qp1+SGD/HH1zf4I5VvpyJDi48YvyYKOuX2UXIGsYFDUxDF/jCIiozab5a8sezb0gC/7O6XaOkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P1y/PYff; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715148190; x=1746684190;
+  h=date:from:to:cc:subject:message-id;
+  bh=xb/2OJywJOKPl0Mtt1eqlqutvHNKPEBLt99xDTEiaII=;
+  b=P1y/PYffmRQ1AYkZV+8s/WmpKFYjQkfLOR88SXbt5l/IU7jv5Uqp2m+d
+   YQFDNqWsEaAjsA1QzPJ+zwEX+3ojH5sXiM4t8uF0vWJKKF0gpOMPVo93H
+   lHAxlL2XMZTHJcIkM/n2OpHWwfVyY8H6vlBHysy9Mmy4q0dLjikDJ0rTu
+   q5D7Afck/4r5xpUIct0ZmadjVuE6owVNQB4A2r1sXXVP0h2VymsnjzwtQ
+   PZwoocXA0L9IqzP7AfMLRLrF8j1fNkPPrmqBGBsDfSKPg5T4u0f4vIOfC
+   rlSXCEF4iHVchHnYrMxcw8u/UV4DZtKtQBiN+oGeyo7b/Q4Y8maTldCtA
+   w==;
+X-CSE-ConnectionGUID: o47bIJHfRDKjyXk+j4qFcg==
+X-CSE-MsgGUID: Mf3oVjrkRxSHG/PuxWZR8g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="11145972"
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="11145972"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2024 23:03:09 -0700
+X-CSE-ConnectionGUID: Iw7RNTCeShyZY8HsdFeLJw==
+X-CSE-MsgGUID: vtWPO9r1QJi41d73qqIvCg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="33599994"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 07 May 2024 23:03:08 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s4aOP-00033Z-2x;
+	Wed, 08 May 2024 06:03:05 +0000
+Date: Wed, 08 May 2024 14:02:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ b1a788a966458325d86d7fe59e2fc0e190be607d
+Message-ID: <202405081456.FTTdtRCg-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240218151533.5720-1-hdegoede@redhat.com> <CAAd53p6h3G-eHO=va11_YEODtmnpfxqhXpQ1xw3ZAKa3X5-ayQ@mail.gmail.com>
- <98f6e530-1f1b-4c4e-9f70-2f8dff74575b@redhat.com>
-In-Reply-To: <98f6e530-1f1b-4c4e-9f70-2f8dff74575b@redhat.com>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Wed, 8 May 2024 12:42:05 +0800
-Message-ID: <CAAd53p4r=+fUkmUm9dQWDm4uYhm7rgMESTtv=zZer5RB5oiHRw@mail.gmail.com>
-Subject: Re: [RFC 0/2] ACPI: Adding new acpi_driver type drivers ?
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Andy Shevchenko <andy@kernel.org>, linux-acpi@vger.kernel.org, 
-	AceLan Kao <acelan.kao@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-[+Cc AceLan]
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: b1a788a966458325d86d7fe59e2fc0e190be607d  Merge branch 'thermal/bleeding-edge' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into bleeding-edge
 
-Hi Hans,
+elapsed time: 1000m
 
-On Wed, Apr 24, 2024 at 5:58=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
- wrote:
->
-> Hi Kai-Heng Feng,
->
-> On 4/24/24 10:04 AM, Kai-Heng Feng wrote:
-> > Hi Hans,
-> >
-> > On Sun, Feb 18, 2024 at 11:15=E2=80=AFPM Hans de Goede <hdegoede@redhat=
-.com> wrote:
-> >>
-> >> Hi Rafael,
-> >>
-> >> I recently learned that some Dell AIOs (1) use a backlight controller =
-board
-> >> connected to an UART. Canonical even submitted a driver for this in 20=
-17:
-> >> https://lkml.org/lkml/2017/10/26/78
-> >>
-> >> This UART has a DELL0501 HID with CID set to PNP0501 so that the UART =
-is
-> >> still handled by 8250_pnp.c. Unfortunately there is no separate ACPI d=
-evice
-> >> with an UartSerialBusV2() resource to model the backlight-controller.
-> >>
-> >> The RFC patch 2/2 in this series uses acpi_quirk_skip_serdev_enumerati=
-on()
-> >> to still create a serdev for this for a backlight driver to bind to
-> >> instead of creating a /dev/ttyS0.
-> >>
-> >> Like other cases where the UartSerialBusV2() resource is missing or br=
-oken
-> >> this will only create the serdev-controller device and the serdev-devi=
-ce
-> >> itself will need to be instantiated by the consumer (the backlight dri=
-ver).
-> >>
-> >> Unlike existing other cases which use DMI modaliases to load on a spec=
-ific
-> >> board to work around brokeness of that board's specific ACPI tables, t=
-he
-> >> intend here is to have a single driver for all Dell AIOs using the DEL=
-L0501
-> >> HID for their UART, without needing to maintain a list of DMI matches.
-> >>
-> >> This means that the dell-uart-backlight driver will need something to =
-bind
-> >> to. The original driver from 2017 used an acpi_driver for this matchin=
-g on
-> >> and binding to the DELL0501 acpi_device.
-> >>
-> >> AFAIK you are trying to get rid of having drivers bind directly to
-> >> acpi_device-s so I assume that you don't want me to introduce a new on=
-e.
-> >> So to get a device to bind to without introducing a new acpi_driver
-> >> patch 2/2 if this series creates a platform_device for this.
-> >>
-> >> The creation of this platform_device is why this is marked as RFC,
-> >> if you are ok with this solution I guess you can merge this series
-> >> already as is. With the caveat that the matching dell-uart-backlight
-> >> driver is still under development (its progressing nicely and the
-> >> serdev-device instantation + binding a serdev driver to it already
-> >> works).
-> >
-> > I was about to work on this and found you're already working on it.
-> >
-> > Please add me to Cc list when the driver is ready to be tested, thanks!
->
-> I hope you have access to actual hw with such a backlight device ?
->
-> The driver actually has been ready for testing for quite a while now,
-> but the person who reported this backlight controller not being
-> supported to me has been testing this on a AIO of a friend of theirs
-> and this has been going pretty slow.
->
-> So if you can test the driver (attached) then that would be great :)
->
-> I even wrote an emulator to test it locally and that works, so
-> assuming I got the protocol right from the original posting of
-> the driver for this years ago then things should work.
->
-> Note this depends on the kernel also having the patches from this
-> RFC (which Rafael has already merged) applied.
+configs tested: 179
+configs skipped: 3
 
-There are newer AIO have UID other than 0, like "SIOBUAR2".
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Once change the "0" to NULL in 'get_serdev_controller("DELL0501", "0",
-0, "serial0");', everything works perfectly.
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240508   gcc  
+arc                   randconfig-002-20240508   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                       imx_v6_v7_defconfig   clang
+arm                   randconfig-001-20240508   gcc  
+arm                   randconfig-002-20240508   clang
+arm                   randconfig-003-20240508   clang
+arm                   randconfig-004-20240508   clang
+arm                         s3c6400_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240508   gcc  
+arm64                 randconfig-002-20240508   clang
+arm64                 randconfig-003-20240508   gcc  
+arm64                 randconfig-004-20240508   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240508   gcc  
+csky                  randconfig-002-20240508   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240508   clang
+hexagon               randconfig-002-20240508   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240508   clang
+i386         buildonly-randconfig-002-20240508   clang
+i386         buildonly-randconfig-003-20240508   gcc  
+i386         buildonly-randconfig-004-20240508   gcc  
+i386         buildonly-randconfig-005-20240508   clang
+i386         buildonly-randconfig-006-20240508   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240508   gcc  
+i386                  randconfig-002-20240508   clang
+i386                  randconfig-003-20240508   clang
+i386                  randconfig-004-20240508   gcc  
+i386                  randconfig-005-20240508   clang
+i386                  randconfig-006-20240508   gcc  
+i386                  randconfig-011-20240508   gcc  
+i386                  randconfig-012-20240508   gcc  
+i386                  randconfig-013-20240508   clang
+i386                  randconfig-014-20240508   clang
+i386                  randconfig-015-20240508   clang
+i386                  randconfig-016-20240508   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240508   gcc  
+loongarch             randconfig-002-20240508   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                     decstation_defconfig   gcc  
+mips                           ip27_defconfig   gcc  
+mips                      loongson3_defconfig   gcc  
+mips                          rb532_defconfig   clang
+mips                   sb1250_swarm_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240508   gcc  
+nios2                 randconfig-002-20240508   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240508   gcc  
+parisc                randconfig-002-20240508   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                        cell_defconfig   gcc  
+powerpc                      ppc40x_defconfig   clang
+powerpc                      ppc44x_defconfig   clang
+powerpc               randconfig-001-20240508   clang
+powerpc               randconfig-002-20240508   gcc  
+powerpc               randconfig-003-20240508   clang
+powerpc                     taishan_defconfig   clang
+powerpc64             randconfig-001-20240508   gcc  
+powerpc64             randconfig-002-20240508   gcc  
+powerpc64             randconfig-003-20240508   gcc  
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240508   gcc  
+riscv                 randconfig-002-20240508   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240508   clang
+s390                  randconfig-002-20240508   gcc  
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                        edosk7760_defconfig   gcc  
+sh                    randconfig-001-20240508   gcc  
+sh                    randconfig-002-20240508   gcc  
+sh                           se7619_defconfig   gcc  
+sparc                            alldefconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc                       sparc32_defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240508   gcc  
+sparc64               randconfig-002-20240508   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240508   gcc  
+um                    randconfig-002-20240508   clang
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240508   clang
+x86_64       buildonly-randconfig-002-20240508   clang
+x86_64       buildonly-randconfig-003-20240508   clang
+x86_64       buildonly-randconfig-004-20240508   clang
+x86_64       buildonly-randconfig-005-20240508   gcc  
+x86_64       buildonly-randconfig-006-20240508   clang
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240508   gcc  
+x86_64                randconfig-002-20240508   clang
+x86_64                randconfig-003-20240508   clang
+x86_64                randconfig-004-20240508   gcc  
+x86_64                randconfig-005-20240508   gcc  
+x86_64                randconfig-006-20240508   gcc  
+x86_64                randconfig-011-20240508   clang
+x86_64                randconfig-012-20240508   clang
+x86_64                randconfig-013-20240508   gcc  
+x86_64                randconfig-014-20240508   gcc  
+x86_64                randconfig-015-20240508   clang
+x86_64                randconfig-016-20240508   gcc  
+x86_64                randconfig-071-20240508   gcc  
+x86_64                randconfig-072-20240508   gcc  
+x86_64                randconfig-073-20240508   clang
+x86_64                randconfig-074-20240508   gcc  
+x86_64                randconfig-075-20240508   gcc  
+x86_64                randconfig-076-20240508   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                generic_kc705_defconfig   gcc  
+xtensa                randconfig-001-20240508   gcc  
+xtensa                randconfig-002-20240508   gcc  
 
-With that change,
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-
-Kai-Heng
-
->
-> Regards,
->
-> Hans
->
->
->
->
->
->
-> >> If you have a different idea how to handle this I'm certainly open
-> >> to suggestions.
-> >>
-> >> Regards,
-> >>
-> >> Hans
-> >>
-> >> 1) All In One a monitor with a PC builtin
-> >>
-> >>
-> >> p.s.
-> >>
-> >> I also tried this approach, but that did not work:
-> >>
-> >> This was an attempt to create both a pdev from acpi_default_enumeratio=
-n()
-> >> by making the PNP scan handler attach() method return 0 rather then 1;
-> >> and get a pnp_device created for the UART driver as well by
-> >> making acpi_is_pnp_device() return true.
-> >>
-> >> This approach does not work due to the following code in pnpacpi_add_d=
-evice():
-> >>
-> >>         /* Skip devices that are already bound */
-> >>         if (device->physical_node_count)
-> >>                 return 0;
-> >>
-> >> diff --git a/drivers/acpi/acpi_pnp.c b/drivers/acpi/acpi_pnp.c
-> >> index 01abf26764b0..847c08deea7b 100644
-> >> --- a/drivers/acpi/acpi_pnp.c
-> >> +++ b/drivers/acpi/acpi_pnp.c
-> >> @@ -353,10 +353,17 @@ static bool acpi_pnp_match(const char *idstr, co=
-nst struct acpi_device_id **matc
-> >>   * given ACPI device object, the PNP scan handler will not attach to =
-that
-> >>   * object, because there is a proper non-PNP driver in the kernel for=
- the
-> >>   * device represented by it.
-> >> + *
-> >> + * The DELL0501 ACPI HID represents an UART (CID is set to PNP0501) w=
-ith
-> >> + * a backlight-controller attached. There is no separate ACPI device =
-with
-> >> + * an UartSerialBusV2() resource to model the backlight-controller.
-> >> + * This setup requires instantiating both a pnp_device for the UART a=
-s well
-> >> + * as a platform_device for the backlight-controller driver to bind t=
-oo.
-> >>   */
-> >>  static const struct acpi_device_id acpi_nonpnp_device_ids[] =3D {
-> >>         {"INTC1080"},
-> >>         {"INTC1081"},
-> >> +       {"DELL0501"},
-> >>         {""},
-> >>  };
-> >>
-> >> @@ -376,13 +383,16 @@ static struct acpi_scan_handler acpi_pnp_handler=
- =3D {
-> >>   * For CMOS RTC devices, the PNP ACPI scan handler does not work, bec=
-ause
-> >>   * there is a CMOS RTC ACPI scan handler installed already, so we nee=
-d to
-> >>   * check those devices and enumerate them to the PNP bus directly.
-> >> + * For DELL0501 devices the PNP ACPI scan handler is skipped to creat=
-e
-> >> + * a platform_device, see the acpi_nonpnp_device_ids[] comment.
-> >>   */
-> >> -static int is_cmos_rtc_device(struct acpi_device *adev)
-> >> +static int is_special_pnp_device(struct acpi_device *adev)
-> >>  {
-> >>         static const struct acpi_device_id ids[] =3D {
-> >>                 { "PNP0B00" },
-> >>                 { "PNP0B01" },
-> >>                 { "PNP0B02" },
-> >> +               { "DELL0501" },
-> >>                 {""},
-> >>         };
-> >>         return !acpi_match_device_ids(adev, ids);
-> >> @@ -390,7 +400,7 @@ static int is_cmos_rtc_device(struct acpi_device *=
-adev)
-> >>
-> >>  bool acpi_is_pnp_device(struct acpi_device *adev)
-> >>  {
-> >> -       return adev->handler =3D=3D &acpi_pnp_handler || is_cmos_rtc_d=
-evice(adev);
-> >> +       return adev->handler =3D=3D &acpi_pnp_handler || is_special_pn=
-p_device(adev);
-> >>  }
-> >>  EXPORT_SYMBOL_GPL(acpi_is_pnp_device);
-> >>
-> >>
-> >> Hans de Goede (2):
-> >>   ACPI: x86: Move acpi_quirk_skip_serdev_enumeration() out of
-> >>     CONFIG_X86_ANDROID_TABLETS
-> >>   ACPI: x86: Add DELL0501 handling to
-> >>     acpi_quirk_skip_serdev_enumeration()
-> >>
-> >>  drivers/acpi/x86/utils.c | 38 ++++++++++++++++++++++++++++++++++----
-> >>  include/acpi/acpi_bus.h  | 22 +++++++++++-----------
-> >>  2 files changed, 45 insertions(+), 15 deletions(-)
-> >>
-> >> --
-> >> 2.43.0
-> >>
-> >
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
