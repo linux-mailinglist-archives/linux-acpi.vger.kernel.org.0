@@ -1,152 +1,110 @@
-Return-Path: <linux-acpi+bounces-5671-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5672-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A5C8C04F3
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 21:26:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565598C0719
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 00:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B25D1F24106
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 19:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0291F2362D
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 22:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE26130A48;
-	Wed,  8 May 2024 19:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC7513280C;
+	Wed,  8 May 2024 22:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="fx6/uGoa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bgDkL1UL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E4839AD6;
-	Wed,  8 May 2024 19:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48637D530;
+	Wed,  8 May 2024 22:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715196403; cv=none; b=Vy2oDGxnc8G9xOw0bwoNXEenDhIimRXUWqGx2zv8p47/WkXEmwgtVopCadejdkcIRmmWhsxW9UXVuUiRgmuTYSW8zhgfP0fs05imOK3kKyJcnGIE0iyPlANBLuGwCkX+mcvf5NF60B1WYM+bDNqlt/faFPyLu0vGXYwNi22yE6g=
+	t=1715205879; cv=none; b=E/CT7VndAwXPHpkVRIUZzOFpAEdNVfw8voI/FMl6jnoKmYvjr+rYEWdjNo9b1rEF99LUJO/EbIx+sAKabscGsFMtQOG4LkpKT3+lWLhgBNYu3Syr3U/5u/0+p5zqsl0UCRQl5V1uU7+3iWZSsG9+Hh3YCfjHQozGL8nY3PRv1cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715196403; c=relaxed/simple;
-	bh=AQ4aj6+Lyl30KBT589y0Wg9owBgdJw7PaStUeDorEOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CIfZGCUBroqe8ggeWgXYQwzn5pVpGEdiM5cvBBi3Wa2juUQtQRBsjJ+0td8XZRg12LlpzCDowkE7Xfpuv48b1wxXeZOJRmu5x47quoh/BnwtEtLmXAKyeBbrWPcgPG1LNnd+KUFwbbNWbYiHYVGvLTefN932Pz7dZfiZf2gFCAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=fx6/uGoa; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7D6BC40E0177;
-	Wed,  8 May 2024 19:26:37 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id FJBrvZdqr9td; Wed,  8 May 2024 19:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715196394; bh=MmARqp4eGq04zOmDOAjY3swGyB0SboUexwrUO+pYtb0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fx6/uGoa2vQ7dKihmWFq8nD+Z7Wd+e9d/4odS4YYXLjbSee3L+gS6hSdpGMC4UQMu
-	 aqCpPUpuCkFK2/uubhzOWl1CnYB4wCz2aeD8RgqUEfO16eWC0hWu9wSx7T48I7XSGt
-	 nXesYrDt48iheoRGqCESLoUTOKf6BL8qh87w1ViWwttCPP+chEYhkc5U1L25f+7je7
-	 n91teh1XUP8tuTlH+udSxGMS0QmC/nGr8vgXTAtJy0DNeG1y8kkev3ZS9s7IidWXGN
-	 TW0Fk6Mj1el9/f049O5DwZmq1zEoz6yl7t49yocPaf0ilbbxqG+DuzCcFLDAwP3e4k
-	 eLU/02AS8X76gLrPv+ZdqC6iDZsar/B9qWiiXwKO7B3wXaQVBGXa3GwZ69iAX/7wH6
-	 tr+s75mn6L050ZWYGRnUjsENqEtqWK+VXifF15RP0na4dC00Z+aoxMFUpLavKBA7M9
-	 b25V9A8dCTJhew6e60OiD2d+5QdVlZ+p/eS/2h58MArcaxAuTSd61UxkVC57O7NmtY
-	 XxkQtXWTVnk3/0MCmsXDxu1khQM99af0zaHJQzAEOTNdjaXS1jVCez2s9/UPxlPdwD
-	 DThHPSggIeJJY1FAddNQkYuDNe+Pwp2nXHB/fDs9rrESC7mNy6QZ/rE9xaTys4edad
-	 d+KdXyZpBf72VCLFq0CV0IYE=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C481F40E01A3;
-	Wed,  8 May 2024 19:25:51 +0000 (UTC)
-Date: Wed, 8 May 2024 21:25:46 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shiju.jose@huawei.com>
-Cc: "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
-References: <20240419164720.1765-1-shiju.jose@huawei.com>
- <20240419164720.1765-2-shiju.jose@huawei.com>
- <20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local>
- <63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
- <20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
- <e0ce36eb80054440ab877ccee4e606de@huawei.com>
- <20240508172002.GGZju0QvNfjB7Xm6qL@fat_crate.local>
- <4ceb38897d854cc095fca1220d49a4d2@huawei.com>
+	s=arc-20240116; t=1715205879; c=relaxed/simple;
+	bh=ZN+vFBI35D1ri+L+O7niU/x4x2qvaqXNVEPvYjNr4B0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ah4GAdah73BtpPukTF7EZkg9BdE4zzvYoLh0jSCX/YrbZGA7k88G/V7z626UkHCkd8dNtXcaeN4+Y40NetPDUqXNTqgfEPOFvhRJQCZRd9YpTbA4tiNuM/FURTyQKBYHLjip0IzS1crokGEbLfdw+nVNDyeNHtaKlnchCPfTv/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bgDkL1UL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8630BC113CC;
+	Wed,  8 May 2024 22:04:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715205878;
+	bh=ZN+vFBI35D1ri+L+O7niU/x4x2qvaqXNVEPvYjNr4B0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=bgDkL1UL4cUDw/bK4TvVB6BnhfDeQox+XBPdaNKVEM1LYL8gZOLSsn5Gh1ch9Lr/o
+	 ohlulgg51oRnHEmgSrqvubg2oZJBV0fv/NP0K6oHA2oceBzfZ+BtlQgP+LNgBJfzSu
+	 dDkEosJ1IH1OSmv+iGO8wTqniE0C8IdDMiykTG8P1VFm9XuE7CwN40JSG/l60gEcre
+	 sqh1DRhzCf73jGvgfUWfRVQn3Z4Invy59zKEey6PnezZ35cwLZvMX/MydyZWa0RLMk
+	 zvf6tqrAuFXJSuI6nAOzLxAWdV0X3iRsrDT8cqgOZgUxHI3LEgf3tXFHwkOxsyvjTs
+	 jMw0tS4koxC3A==
+Date: Wed, 8 May 2024 17:04:36 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+	tony.luck@intel.com, bp@alien8.de, bhelgaas@google.com,
+	robert.moore@intel.com, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	acpica-devel@lists.linux.dev, CobeChen@zhaoxin.com,
+	TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com, LeoLiu@zhaoxin.com
+Subject: Re: [PATCH v2 0/3] Parse the HEST PCIe AER and set to relevant
+ registers
+Message-ID: <20240508220436.GA1789788@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4ceb38897d854cc095fca1220d49a4d2@huawei.com>
+In-Reply-To: <20231218030430.783495-1-LeoLiu-oc@zhaoxin.com>
 
-On Wed, May 08, 2024 at 05:44:03PM +0000, Shiju Jose wrote:
-> I mean scrub subsystem module is not loaded and initialzed until
-> a dependent  device module is loaded and a device does not get
-> registered with the scrub subsystem on a machine which doesn't have
-> the corresponding scrub features.
+On Mon, Dec 18, 2023 at 11:04:27AM +0800, LeoLiu-oc wrote:
+> From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+> 
+> According to the Section 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI SPEC
+> r6.5, the register value form HEST PCI Express AER Structure should be
+> written to relevant PCIe Device's AER Capabilities.So the purpose of the
+> patch set is to extract register value from HEST PCI Express AER
+> structures and program them into PCIe Device's AER registers. Refer to the
+> ACPI SPEC r6.5 for the more detailed description. This patch is an
+> effective supplement to _HPP/_HPX method when the Firmware does not
+> support the _HPP/_HPX method and can be specially configured for the AER
+> register of the specific device.
+> 
+> ---
+> 
+> v1->v2:
+> - Move the definition of structure "hest_parse_aer_info" to file apei.h.
 
-Stop this rambling blabla please. This should *not* happen:
+Just noticed that this removes the ACPICA header dependency problem
+that Rafael pointed out.  This also applies (with minor offsets) to
+v6.9-rc1, so it's not very stale.  We're almost to the v6.9 final
+release, so when v6.10-rc1 is tagged, can you rebase to that and
+repost this?
 
-# insmod ./memory_scrub.ko
-# echo $?
-0
-# lsmod
-Module                  Size  Used by
-memory_scrub           12288  0
+I assume you have a platform that uses this.  It would be good to
+mention that in the commit log of patches 1 and 3 so we have some idea
+of where it's useful and where changes need to be tested.
 
-This is on a silly guest which has none of those dependent devices crap.
-
-Your scrub module should load only on a machine which has the hardware
-- not just for fun and on anything.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+> LeoLiuoc (3):
+>   ACPI/APEI: Add hest_parse_pcie_aer()
+>   PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+>   PCI/ACPI: Add pci_acpi_program_hest_aer_params()
+> 
+>  drivers/acpi/apei/hest.c      | 69 +++++++++++++++++++++++-
+>  drivers/pci/pci-acpi.c        | 98 +++++++++++++++++++++++++++++++++++
+>  drivers/pci/pci.h             |  9 ++++
+>  drivers/pci/probe.c           |  1 +
+>  include/acpi/apei.h           | 17 ++++++
+>  include/uapi/linux/pci_regs.h |  3 ++
+>  6 files changed, 195 insertions(+), 2 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
