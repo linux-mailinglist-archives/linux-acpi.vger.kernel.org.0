@@ -1,306 +1,155 @@
-Return-Path: <linux-acpi+bounces-5653-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5654-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB9C8BF8FA
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 10:44:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57ACF8BF9B8
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 11:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3834CB21E7D
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 08:44:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D7631C2166C
+	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 09:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A682952F86;
-	Wed,  8 May 2024 08:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CA77B3F3;
+	Wed,  8 May 2024 09:43:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695FC9476;
-	Wed,  8 May 2024 08:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2315F763EE
+	for <linux-acpi@vger.kernel.org>; Wed,  8 May 2024 09:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715157864; cv=none; b=eWsJrTOETcxfyvZBZRLzfDJ+S8/Qp2nD2zcWPvwXIY029nR7SnfbM2oYpFuQ8io5XqB+OfDXNNLFjGk4Sczi7O4sMVhnWfPVO3Lrc2+jmkx27svcn0rA11g1mwFi6oRrRh8idJr6xUmdRqcWEfxD8g0QU1HydoBygf0DDxoMbck=
+	t=1715161436; cv=none; b=fo15GivJkVSZN9fI3ncUPNLi0gIwbFwIcSFZJQB3nD6eYCOdVJ+Iewm90lr6PP0CHlBVeoSP/vTuwoJCBFpZ5m3BxfIEkyKEDD2dgIweqiySAJqtRaiuMFvUGsOW95HXv8lzzZmSPd4S4JmEgyxr0yPC/ZwWOuXg77wf1Wnc4qI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715157864; c=relaxed/simple;
-	bh=T5zecpj4li0OuIWBMVUt5WCfBkgXJbSbJgxIbR51vqs=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SRswTxxyLC8rm9PIKjNZp+4cp1VyJ6qoFVNYchE1oZIF5QCfKiXwcpwl1PyLAexLWSFVud7jiqq8OsKCeg4HZji0EmJ5Ughbcj9x1K2hpiZpNUuICauGyl129Q6kxIxuZBMBGeKALhVGBK+C7qKT/y6MOKMQ5w5/wu/oR5Knrb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZ7sK1b83z6K6Kl;
-	Wed,  8 May 2024 16:41:09 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 44CD0140B54;
-	Wed,  8 May 2024 16:44:14 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 8 May
- 2024 09:44:13 +0100
-Date: Wed, 8 May 2024 09:44:11 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra
-	<peterz@infradead.org>, <linux-pm@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Miguel Luis
-	<miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, Salil Mehta
-	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
-	Marc Zyngier <maz@kernel.org>, Hanjun Guo <guohanjun@huawei.com>, "Gavin
- Shan" <gshan@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
-Subject: Re: [PATCH v9 06/19] ACPI: processor: Move checks and availability
- of acpi_processor earlier
-Message-ID: <20240508094411.00001b92@Huawei.com>
-In-Reply-To: <CAJZ5v0g-Aenoj5H+pNPtoqTgV5U7K5RGNjdOnqobqxkyL5NMVQ@mail.gmail.com>
-References: <20240430142434.10471-1-Jonathan.Cameron@huawei.com>
-	<20240430142434.10471-7-Jonathan.Cameron@huawei.com>
-	<CAJZ5v0g-Aenoj5H+pNPtoqTgV5U7K5RGNjdOnqobqxkyL5NMVQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1715161436; c=relaxed/simple;
+	bh=Ik4juSJPP8I5eSQh6vO6XlGDWGLzp8rHEWMnoMKOT7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QM4+2cRjUf8kLbF+km9XvMMDhg7E77/eQPHsOyccYjsWLqWS8y+4eaM3/voPMyDgfUyZBWARNK4tWCAYkiEwhActJvqA6vOY4TWwSF6zIVjq63bY7cPLvZegqboIgTLH4t+blqbgtAHqVp6fwLHMN7kI8UHNFtcLdLB8yYUrvP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: NG47kxW9SCOYNVmMQHBVJQ==
+X-CSE-MsgGUID: vR2VR7v4TX+4AtLXh5fFSw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11066"; a="33517473"
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="33517473"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 02:43:54 -0700
+X-CSE-ConnectionGUID: q1l2JDPuRz+gSBlcrUunaA==
+X-CSE-MsgGUID: 6xbV7Gk9Q/G8eHLLT62seQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,144,1712646000"; 
+   d="scan'208";a="59690254"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2024 02:43:53 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andy@kernel.org>)
+	id 1s4dq2-00000005Neo-2Tuu;
+	Wed, 08 May 2024 12:43:50 +0300
+Date: Wed, 8 May 2024 12:43:50 +0300
+From: Andy Shevchenko <andy@kernel.org>
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-acpi@vger.kernel.org, AceLan Kao <acelan.kao@canonical.com>
+Subject: Re: [RFC 0/2] ACPI: Adding new acpi_driver type drivers ?
+Message-ID: <ZjtJVpWvNuusC_O9@smile.fi.intel.com>
+References: <20240218151533.5720-1-hdegoede@redhat.com>
+ <CAAd53p6h3G-eHO=va11_YEODtmnpfxqhXpQ1xw3ZAKa3X5-ayQ@mail.gmail.com>
+ <98f6e530-1f1b-4c4e-9f70-2f8dff74575b@redhat.com>
+ <CAAd53p4r=+fUkmUm9dQWDm4uYhm7rgMESTtv=zZer5RB5oiHRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAd53p4r=+fUkmUm9dQWDm4uYhm7rgMESTtv=zZer5RB5oiHRw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 7 May 2024 21:04:26 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+On Wed, May 08, 2024 at 12:42:05PM +0800, Kai-Heng Feng wrote:
+> [+Cc AceLan]
+> On Wed, Apr 24, 2024 at 5:58 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > On 4/24/24 10:04 AM, Kai-Heng Feng wrote:
+> > > On Sun, Feb 18, 2024 at 11:15 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > >>
+> > >> Hi Rafael,
+> > >>
+> > >> I recently learned that some Dell AIOs (1) use a backlight controller board
+> > >> connected to an UART. Canonical even submitted a driver for this in 2017:
+> > >> https://lkml.org/lkml/2017/10/26/78
+> > >>
+> > >> This UART has a DELL0501 HID with CID set to PNP0501 so that the UART is
+> > >> still handled by 8250_pnp.c. Unfortunately there is no separate ACPI device
+> > >> with an UartSerialBusV2() resource to model the backlight-controller.
+> > >>
+> > >> The RFC patch 2/2 in this series uses acpi_quirk_skip_serdev_enumeration()
+> > >> to still create a serdev for this for a backlight driver to bind to
+> > >> instead of creating a /dev/ttyS0.
+> > >>
+> > >> Like other cases where the UartSerialBusV2() resource is missing or broken
+> > >> this will only create the serdev-controller device and the serdev-device
+> > >> itself will need to be instantiated by the consumer (the backlight driver).
+> > >>
+> > >> Unlike existing other cases which use DMI modaliases to load on a specific
+> > >> board to work around brokeness of that board's specific ACPI tables, the
+> > >> intend here is to have a single driver for all Dell AIOs using the DELL0501
+> > >> HID for their UART, without needing to maintain a list of DMI matches.
+> > >>
+> > >> This means that the dell-uart-backlight driver will need something to bind
+> > >> to. The original driver from 2017 used an acpi_driver for this matching on
+> > >> and binding to the DELL0501 acpi_device.
+> > >>
+> > >> AFAIK you are trying to get rid of having drivers bind directly to
+> > >> acpi_device-s so I assume that you don't want me to introduce a new one.
+> > >> So to get a device to bind to without introducing a new acpi_driver
+> > >> patch 2/2 if this series creates a platform_device for this.
+> > >>
+> > >> The creation of this platform_device is why this is marked as RFC,
+> > >> if you are ok with this solution I guess you can merge this series
+> > >> already as is. With the caveat that the matching dell-uart-backlight
+> > >> driver is still under development (its progressing nicely and the
+> > >> serdev-device instantation + binding a serdev driver to it already
+> > >> works).
+> > >
+> > > I was about to work on this and found you're already working on it.
+> > >
+> > > Please add me to Cc list when the driver is ready to be tested, thanks!
+> >
+> > I hope you have access to actual hw with such a backlight device ?
+> >
+> > The driver actually has been ready for testing for quite a while now,
+> > but the person who reported this backlight controller not being
+> > supported to me has been testing this on a AIO of a friend of theirs
+> > and this has been going pretty slow.
+> >
+> > So if you can test the driver (attached) then that would be great :)
+> >
+> > I even wrote an emulator to test it locally and that works, so
+> > assuming I got the protocol right from the original posting of
+> > the driver for this years ago then things should work.
+> >
+> > Note this depends on the kernel also having the patches from this
+> > RFC (which Rafael has already merged) applied.
+> 
+> There are newer AIO have UID other than 0, like "SIOBUAR2".
+> 
+> Once change the "0" to NULL in 'get_serdev_controller("DELL0501", "0",
+> 0, "serial0");', everything works perfectly.
+> 
+> With that change,
+> Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-> On Tue, Apr 30, 2024 at 4:27=E2=80=AFPM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
-> >
-> > Make the per_cpu(processors, cpu) entries available earlier so that
-> > they are available in arch_register_cpu() as ARM64 will need access
-> > to the acpi_handle to distinguish between acpi_processor_add()
-> > and earlier registration attempts (which will fail as _STA cannot
-> > be checked).
-> >
-> > Reorder the remove flow to clear this per_cpu() after
-> > arch_unregister_cpu() has completed, allowing it to be used in
-> > there as well.
-> >
-> > Note that on x86 for the CPU hotplug case, the pr->id prior to
-> > acpi_map_cpu() may be invalid. Thus the per_cpu() structures
-> > must be initialized after that call or after checking the ID
-> > is valid (not hotplug path).
-> >
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> =20
->=20
-> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> One nit below.
+Do we have tables with _UID set to 0?
+If so, we would need more complex approach.
 
-Thanks.  Given timing, this is looking like 6.11 material.
-I'll tidy this up and post a v10 in a couple of weeks (so around
-rc1 time). Maybe we'll pick up some more tags for the ARM
-specific bits in the meantime.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks for all your help!
-
-Jonathan
-
->=20
-> > ---
-> > v9: Add back a blank line accidentally removed in code move.
-> >     Fix up error returns so that the new cleanup in processor_add()
-> >     is triggered on detection of the bios bug.
-> >     Combined with the previous 2 patches, should solve the leak
-> >     that Gavin identified.
-> > ---
-> >  drivers/acpi/acpi_processor.c | 80 +++++++++++++++++++++--------------
-> >  1 file changed, 49 insertions(+), 31 deletions(-)
-> >
-> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processo=
-r.c
-> > index 16e36e55a560..4a79b42d649e 100644
-> > --- a/drivers/acpi/acpi_processor.c
-> > +++ b/drivers/acpi/acpi_processor.c
-> > @@ -183,8 +183,38 @@ static void __init acpi_pcc_cpufreq_init(void) {}
-> >  #endif /* CONFIG_X86 */
-> >
-> >  /* Initialization */
-> > +static DEFINE_PER_CPU(void *, processor_device_array);
-> > +
-> > +static bool acpi_processor_set_per_cpu(struct acpi_processor *pr,
-> > +                                      struct acpi_device *device)
-> > +{
-> > +       BUG_ON(pr->id >=3D nr_cpu_ids);
-> > +
-> > +       /*
-> > +        * Buggy BIOS check.
-> > +        * ACPI id of processors can be reported wrongly by the BIOS.
-> > +        * Don't trust it blindly
-> > +        */
-> > +       if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
-> > +           per_cpu(processor_device_array, pr->id) !=3D device) {
-> > +               dev_warn(&device->dev,
-> > +                        "BIOS reported wrong ACPI id %d for the proces=
-sor\n",
-> > +                        pr->id);
-> > +               return false;
-> > +       }
-> > +       /*
-> > +        * processor_device_array is not cleared on errors to allow bug=
-gy BIOS
-> > +        * checks.
-> > +        */
-> > +       per_cpu(processor_device_array, pr->id) =3D device;
-> > +       per_cpu(processors, pr->id) =3D pr;
-> > +
-> > +       return true;
-> > +}
-> > +
-> >  #ifdef CONFIG_ACPI_HOTPLUG_CPU
-> > -static int acpi_processor_hotadd_init(struct acpi_processor *pr)
-> > +static int acpi_processor_hotadd_init(struct acpi_processor *pr,
-> > +                                     struct acpi_device *device)
-> >  {
-> >         int ret;
-> >
-> > @@ -198,8 +228,16 @@ static int acpi_processor_hotadd_init(struct acpi_=
-processor *pr)
-> >         if (ret)
-> >                 goto out;
-> >
-> > +       if (!acpi_processor_set_per_cpu(pr, device)) {
-> > +               ret =3D -EINVAL;
-> > +               acpi_unmap_cpu(pr->id);
-> > +               goto out;
-> > +       }
-> > +
-> >         ret =3D arch_register_cpu(pr->id);
-> >         if (ret) {
-> > +               /* Leave the processor device array in place to detect =
-buggy bios */
-> > +               per_cpu(processors, pr->id) =3D NULL;
-> >                 acpi_unmap_cpu(pr->id);
-> >                 goto out;
-> >         }
-> > @@ -217,7 +255,8 @@ static int acpi_processor_hotadd_init(struct acpi_p=
-rocessor *pr)
-> >         return ret;
-> >  }
-> >  #else
-> > -static inline int acpi_processor_hotadd_init(struct acpi_processor *pr)
-> > +static inline int acpi_processor_hotadd_init(struct acpi_processor *pr,
-> > +                                            struct acpi_device *device)
-> >  {
-> >         return -ENODEV;
-> >  }
-> > @@ -316,10 +355,13 @@ static int acpi_processor_get_info(struct acpi_de=
-vice *device)
-> >          *  because cpuid <-> apicid mapping is persistent now.
-> >          */
-> >         if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
-> > -               int ret =3D acpi_processor_hotadd_init(pr);
-> > +               int ret =3D acpi_processor_hotadd_init(pr, device);
-> >
-> >                 if (ret)
-> >                         return ret;
-> > +       } else {
-> > +               if (!acpi_processor_set_per_cpu(pr, device))
-> > +                       return -EINVAL;
-> >         } =20
->=20
-> This looks a bit odd.
->=20
-> I would make acpi_processor_set_per_cpu() return 0 on success and
-> -EINVAL on failure and the above would become
->=20
-> if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id))
->          ret =3D acpi_processor_hotadd_init(pr, device);
-> else
->         ret =3D acpi_processor_set_per_cpu(pr, device);
->=20
-> if (ret)
->         return ret;
->=20
-> (and of course ret needs to be defined at the beginning of the function).
->=20
-> >
-> >         /*
-> > @@ -365,8 +407,6 @@ static int acpi_processor_get_info(struct acpi_devi=
-ce *device)
-> >   * (cpu_data(cpu)) values, like CPU feature flags, family, model, etc.
-> >   * Such things have to be put in and set up by the processor driver's =
-.probe().
-> >   */
-> > -static DEFINE_PER_CPU(void *, processor_device_array);
-> > -
-> >  static int acpi_processor_add(struct acpi_device *device,
-> >                                         const struct acpi_device_id *id)
-> >  {
-> > @@ -395,28 +435,6 @@ static int acpi_processor_add(struct acpi_device *=
-device,
-> >         if (result) /* Processor is not physically present or unavailab=
-le */
-> >                 goto err_clear_driver_data;
-> >
-> > -       BUG_ON(pr->id >=3D nr_cpu_ids);
-> > -
-> > -       /*
-> > -        * Buggy BIOS check.
-> > -        * ACPI id of processors can be reported wrongly by the BIOS.
-> > -        * Don't trust it blindly
-> > -        */
-> > -       if (per_cpu(processor_device_array, pr->id) !=3D NULL &&
-> > -           per_cpu(processor_device_array, pr->id) !=3D device) {
-> > -               dev_warn(&device->dev,
-> > -                       "BIOS reported wrong ACPI id %d for the process=
-or\n",
-> > -                       pr->id);
-> > -               /* Give up, but do not abort the namespace scan. */
-> > -               goto err_clear_driver_data;
-> > -       }
-> > -       /*
-> > -        * processor_device_array is not cleared on errors to allow bug=
-gy BIOS
-> > -        * checks.
-> > -        */
-> > -       per_cpu(processor_device_array, pr->id) =3D device;
-> > -       per_cpu(processors, pr->id) =3D pr;
-> > -
-> >         dev =3D get_cpu_device(pr->id);
-> >         if (!dev) {
-> >                 result =3D -ENODEV;
-> > @@ -470,10 +488,6 @@ static void acpi_processor_remove(struct acpi_devi=
-ce *device)
-> >         device_release_driver(pr->dev);
-> >         acpi_unbind_one(pr->dev);
-> >
-> > -       /* Clean up. */
-> > -       per_cpu(processor_device_array, pr->id) =3D NULL;
-> > -       per_cpu(processors, pr->id) =3D NULL;
-> > -
-> >         cpu_maps_update_begin();
-> >         cpus_write_lock();
-> >
-> > @@ -481,6 +495,10 @@ static void acpi_processor_remove(struct acpi_devi=
-ce *device)
-> >         arch_unregister_cpu(pr->id);
-> >         acpi_unmap_cpu(pr->id);
-> >
-> > +       /* Clean up. */
-> > +       per_cpu(processor_device_array, pr->id) =3D NULL;
-> > +       per_cpu(processors, pr->id) =3D NULL;
-> > +
-> >         cpus_write_unlock();
-> >         cpu_maps_update_done();
-> >
-> > --
-> > 2.39.2
-> > =20
 
 
