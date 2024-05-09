@@ -1,101 +1,99 @@
-Return-Path: <linux-acpi+bounces-5691-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5692-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61AF8C0E5A
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 12:45:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA0A8C0E9A
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 12:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C23B1F22D83
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 10:45:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654361C209F5
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 10:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523A512F592;
-	Thu,  9 May 2024 10:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="spXqQJwz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC3E12FF8C;
+	Thu,  9 May 2024 10:57:57 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19B0322E;
-	Thu,  9 May 2024 10:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2368112EBC8;
+	Thu,  9 May 2024 10:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715251541; cv=none; b=OGlYIp3pJffy0s2OMmrjDOK2r3Ii0Bb+LiH5M+FtSWTgiofXNalLhrSAhml0h5a65R0H2IRpciblF/3GXsrsJPt0oSlMP7/U99DvMG4tHqkUvMyfE4SLIWfOCxaRkKqsdCtwu5G+07J96RVZV3UbvM1D9zwUKDVOP2PQapjDU4Q=
+	t=1715252277; cv=none; b=rNKEdz6+A4ZoUkr7RCLgSjoa11vAqQfB4gmSqUxRlsKb3Ki2qd7Ml6CIRB3y5WTAFe1K+p7oMoUp0/9OyUnz2+W/143cTlNoT9pBdoRDrgK1hkB2wE4I+1nQCKGxqr31XTKMUB6ANf51qE2PPdZ7xFbU4nOrO4fwnijOYjxmb/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715251541; c=relaxed/simple;
-	bh=H4jv+yatmvGeN/CSJq1fPbVdsYylD8RmnOWtmlUY5/0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PRJAd2A7j9Y7BD7jpPBNkvOuFK645yFCG+iMUwIAjnMi2ZAza5MomdL7CYAYfw5rKyDmcjSYt8T0ImbyGGyuN62L741DqpvEatYYyNubsl+NJGh5h1MlLmbYbWfDZVtqaGl6MttY1ivdJltZW2eA8aEs5v51+y5T50ubIgUv8jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=spXqQJwz; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1715251538;
-	bh=H4jv+yatmvGeN/CSJq1fPbVdsYylD8RmnOWtmlUY5/0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=spXqQJwzPgT6PKGfRZ3JPDwsnYZrDTc2M/mgjBPLt9aU10aNYgviYt+22AqKaqmQD
-	 F+YAeNAtbQ0AEP0dJXjENg9gTg2fkvwetFU4/EcB5mjR4m6Ia1ges/k8vTlbatKk7o
-	 HY9MYC2xMoVrWzgqzVn65qgxuDpHRQuyzk5CDSvyBU7O/uOcyLOk2D9yHrR6dTMnFL
-	 DfiZrcrGgcvgUc/MIiyeqYF8IiF8XL87ZoR83RtWKafnr5eid154IGOEZ8pXmydFr3
-	 WFEhKdr4H+/PyGf1qBeBljiTpwjXCMcfGSK9N7iwZEedF3Pafz3XBt1RsyXQ+BWdli
-	 P6k4I6WjEvV7Q==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6F56B3782172;
-	Thu,  9 May 2024 10:45:37 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com
-Cc: linus.walleij@linaro.org,
-	brgl@bgdev.pl,
-	kernel@collabora.com,
-	linux-kernel@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	Laura Nao <laura.nao@collabora.com>,
-	"kernelci.org bot" <bot@kernelci.org>
-Subject: [PATCH] gpiolib: acpi: Add ACPI device NULL check to acpi_can_fallback_to_crs()
-Date: Thu,  9 May 2024 12:46:05 +0200
-Message-Id: <20240509104605.538274-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1715252277; c=relaxed/simple;
+	bh=9zBnXIOJ4g31aUy09rmkWoSTOzhGnZNoRO+xhbjZ19I=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TUDjxxt89C5P23ub7qSUkFpVx/Iy9L6ztj7XljpaF9sFEgfck40vE/U3FVSuuas2B3SVzDHTn3MZ3fvFnLhTzKAFtlISuYqhF9YW923g5NOJkCBhESL5KQjfSnT3nOeM6oTnUG5oPNb1CLTd2QLx3XJ9eHk5g1jUWKK6WCC99Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZpmy6Qq3z6J6Mk;
+	Thu,  9 May 2024 18:54:42 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 786601400D9;
+	Thu,  9 May 2024 18:57:51 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 9 May
+ 2024 11:57:51 +0100
+Date: Thu, 9 May 2024 11:57:50 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: <linux@treblig.org>
+CC: <bhelgaas@google.com>, <rafael@kernel.org>, <linux-pci@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: PCI: Remove unused struct 'acpi_handle_node'
+Message-ID: <20240509115750.000078ad@Huawei.com>
+In-Reply-To: <20240509000858.204114-1-linux@treblig.org>
+References: <20240509000858.204114-1-linux@treblig.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Check ACPI device for NULL inside acpi_can_fallback_to_crs(), so callers
-won't need to.
+On Thu,  9 May 2024 01:08:58 +0100
+linux@treblig.org wrote:
 
-Signed-off-by: Laura Nao <laura.nao@collabora.com>
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Closes: https://lore.kernel.org/all/20240426154208.81894-1-laura.nao@collabora.com/
-Fixes: 49c02f6e901c ("gpiolib: acpi: Move acpi_can_fallback_to_crs() out of __acpi_find_gpio()")
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> 
+> 'acpi_handle_node' is unused since
+> Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+> Remove it.
+> 
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
----
- drivers/gpio/gpiolib-acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+FWIW, indeed unused.
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 553a5f94c00a..688aff6e51bc 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -939,7 +939,7 @@ static bool acpi_can_fallback_to_crs(struct acpi_device *adev,
- 				     const char *con_id)
- {
- 	/* Never allow fallback if the device has properties */
--	if (acpi_dev_has_props(adev) || adev->driver_gpios)
-+	if (!adev || acpi_dev_has_props(adev) || adev->driver_gpios)
- 		return false;
- 
- 	return con_id == NULL;
--- 
-2.30.2
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/acpi/pci_root.c | 5 -----
+>  1 file changed, 5 deletions(-)
+> 
+> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> index 58b89b8d950ed..59e6955e24edb 100644
+> --- a/drivers/acpi/pci_root.c
+> +++ b/drivers/acpi/pci_root.c
+> @@ -293,11 +293,6 @@ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+>  }
+>  EXPORT_SYMBOL_GPL(acpi_pci_find_root);
+>  
+> -struct acpi_handle_node {
+> -	struct list_head node;
+> -	acpi_handle handle;
+> -};
+> -
+>  /**
+>   * acpi_get_pci_dev - convert ACPI CA handle to struct pci_dev
+>   * @handle: the handle in question
 
 
