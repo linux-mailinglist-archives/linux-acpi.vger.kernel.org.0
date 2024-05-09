@@ -1,205 +1,95 @@
-Return-Path: <linux-acpi+bounces-5674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B6D8C074E
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 00:25:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCF08C083F
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 02:09:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509671F22F28
-	for <lists+linux-acpi@lfdr.de>; Wed,  8 May 2024 22:25:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC93A282D03
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 00:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607E913328D;
-	Wed,  8 May 2024 22:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7821036C;
+	Thu,  9 May 2024 00:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCjR1f+6"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="pC4Q1ZRN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F429130E4B;
-	Wed,  8 May 2024 22:25:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42665195;
+	Thu,  9 May 2024 00:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715207104; cv=none; b=JKUrQPwOLLZ0iolFF6M40S8DMOINZHfPbcKvEADhJVY0fE6thvz+/O+ttdKPfPtFX+YLONqKPM5Q3sib5Md8WtU2NrQ/TAEF1DRC5muE2FNTUIi/wnir3Hh8lsxwmZQ9bIxIzCpzcW3yXRJ87r3rFK4ByoNNYl91uYCsg0VBWOU=
+	t=1715213350; cv=none; b=Mb/iOI8rwSap3CR+f/C1v5AX1MQJ9LCOh61Ez/SzIp/ET9SFuLDCKbEx0HtRzhON9NURwg2yyz+zQAdTThu8elsCafUMd6c+68aQv0/IMBjwaFGgL3zRn+qcDh70mIs6F+WhfveYqR2+Ht7Ke9+WOXfA+GxsmjxGUfUCkMb/UBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715207104; c=relaxed/simple;
-	bh=v8DQvHY+2r78tKC2XBRoOvgdQLkOP1CAvCK2xKElKmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=SrUVz9Qbx7xfOdYEn3OOaOtR3aVVbhrJeKfjI0FKqceyFVeeJShTKVSvLd3UCL2dcxTfX2DBwlwKZWXPD/f4KDX6Pk/OfbP1+H/+ZO+rQRoTYxWckPEgT3JjgA4mnI3obaFjOeAL3ksto1AssS/3Sc0AcSJbFnkyCCLci7JIYg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCjR1f+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7E5C113CC;
-	Wed,  8 May 2024 22:25:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715207103;
-	bh=v8DQvHY+2r78tKC2XBRoOvgdQLkOP1CAvCK2xKElKmw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=fCjR1f+6ZoEAdzjfwhRhxRiNTSNrZ26+rWIfMOxL3Rs1Qn7TUEYWbOVSwKIITkbC/
-	 BVSnZxsxr1heihDdECVlpXkUHI2u6pUM+OrUCAXg4R+6vxGFsuC3/49Aa76+nXB1ta
-	 z2hIkQLVzjpI7GXUFlOD06o/fwFUXdOLbn1isLXC71gXZiYuXI/i0XD7vha0VEFzlb
-	 /8bpWSmvNcR2K8EBp1O2DrdNQIqp73+Pa6Y4DH9kP5Zcr/mC0J3BHvk4R9xjLRAqjJ
-	 ZYaub2vGZMEd2EEvPszqGlMAwY5iXAQBxwSd+fS5F1Dm4CgpZdCkzHlapBxnpwLARp
-	 hjTi3K5jb2/bg==
-Date: Wed, 8 May 2024 17:24:59 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
-	tony.luck@intel.com, bp@alien8.de, bhelgaas@google.com,
-	robert.moore@intel.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	acpica-devel@lists.linux.dev, CobeChen@zhaoxin.com,
-	TonyWWang@zhaoxin.com, ErosZhang@zhaoxin.com, LeoLiu@zhaoxin.com
-Subject: Re: [PATCH v2 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-Message-ID: <20240508222459.GA1791619@bhelgaas>
+	s=arc-20240116; t=1715213350; c=relaxed/simple;
+	bh=7HPx7ytB8yzsrqlvCHjViQu/yiO3QQK/0llEhSgBExQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ioA8sudvMLiUJTZIjz9A6BsBXFD4cl6e1bQShxVv6TEWOux7ssnxPUrFf3ZzZmu6mucDlPtS544cDyrqsAdd26CN4AbpM6vGmztz5PYRpePid0wdyw7S6tWRa8XDCr59fcn7sSYcTAV18sO2hbkwKhp63WbkRrxjaARbVuiDeRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=pC4Q1ZRN; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=y2dMD6eMEIJlGJUVSAMoOwfNsxSv8AwnivqVHzlW4IA=; b=pC4Q1ZRNqutcgQ1c
+	4FU1JpGaHK4PL+St4xWONQljBqRBNY80Ixt2dEwXgVhJ0VKwOy/279zbq6O5klyjoPnVa0Gwhs5Wr
+	FctNHUNk+7Wiz/Q3ZsXNhIeSVtSNAXG6J8KJbzHkJ9GFSB8YvlVgYnF9FxR88AKKtnmqqV7HaIDvz
+	NKu82Bm0gOI0d8PLaW695UWACQATwzLV4koShwr6ELuyZhvLbZMl1oQ7ErPgTZpkj2unxD7+34UaI
+	3ddpyePrVmoZtoh41pTchOlBzOPSsDkBvM/XxUSTK/3+A1WDZ3nSDcn38+AbROg+cmCbKXr+Vs5k6
+	rJ1Go/W+AKVQ50mvyg==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1s4rLH-0006zp-21;
+	Thu, 09 May 2024 00:09:00 +0000
+From: linux@treblig.org
+To: bhelgaas@google.com,
+	rafael@kernel.org
+Cc: linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] ACPI: PCI: Remove unused struct 'acpi_handle_node'
+Date: Thu,  9 May 2024 01:08:58 +0100
+Message-ID: <20240509000858.204114-1-linux@treblig.org>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231218030430.783495-4-LeoLiu-oc@zhaoxin.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 18, 2023 at 11:04:30AM +0800, LeoLiu-oc wrote:
-> From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-> 
-> Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
-> the purpose of this function is to extract register value from HEST PCIe
-> AER structures and program them into AER Capabilities.
-> 
-> Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-> ---
->  drivers/pci/pci-acpi.c | 98 ++++++++++++++++++++++++++++++++++++++++++
->  drivers/pci/pci.h      |  9 ++++
->  drivers/pci/probe.c    |  1 +
->  3 files changed, 108 insertions(+)
-> 
-> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-> index 004575091596..3a183d5e20cb 100644
-> --- a/drivers/pci/pci-acpi.c
-> +++ b/drivers/pci/pci-acpi.c
-> @@ -18,6 +18,7 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/pm_qos.h>
->  #include <linux/rwsem.h>
-> +#include <acpi/apei.h>
->  #include "pci.h"
->  
->  /*
-> @@ -783,6 +784,103 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
->  	return -ENODEV;
->  }
->  
-> +#ifdef CONFIG_ACPI_APEI
-> +static void program_hest_aer_endpoint(struct acpi_hest_aer_common aer_endpoint,
-> +				struct pci_dev *dev, int pos)
-> +{
-> +	u32 uncor_mask;
-> +	u32 uncor_severity;
-> +	u32 cor_mask;
-> +	u32 adv_cap;
-> +
-> +	uncor_mask = aer_endpoint.uncorrectable_mask;
-> +	uncor_severity = aer_endpoint.uncorrectable_severity;
-> +	cor_mask = aer_endpoint.correctable_mask;
-> +	adv_cap = aer_endpoint.advanced_capabilities;
-> +
-> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
-> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
-> +	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
-> +	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-This is named for "endpoint", but it is used for Root Ports,
-Endpoints, and PCIe to PCI/PCI-X bridges.  It relies on these four
-fields being in the same place for all those HEST structures.
+'acpi_handle_node' is unused since
+Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+Remove it.
 
-That makes good sense, but maybe should have a one-line hint about
-this and maybe even a compiletime_assert().
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/acpi/pci_root.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-> +}
-> +
-> +static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root, struct pci_dev *dev, int pos)
-> +{
-> +	u32 root_err_cmd;
-> +
-> +	root_err_cmd = aer_root->root_error_command;
-> +
-> +	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
-> +}
-> +
-> +static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_bridge,
-> +				struct pci_dev *dev, int pos)
-> +{
-> +	u32 uncor_mask2;
-> +	u32 uncor_severity2;
-> +	u32 adv_cap2;
-> +
-> +	uncor_mask2 = hest_aer_bridge->uncorrectable_mask2;
-> +	uncor_severity2 = hest_aer_bridge->uncorrectable_severity2;
-> +	adv_cap2 = hest_aer_bridge->advanced_capabilities2;
-> +
-> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
-> +	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
-> +	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
-> +}
-> +
-> +static void program_hest_aer_params(struct hest_parse_aer_info info)
-> +{
-> +	struct pci_dev *dev;
-> +	int port_type;
-> +	int pos;
-> +	struct acpi_hest_aer_root *hest_aer_root;
-> +	struct acpi_hest_aer *hest_aer_endpoint;
-> +	struct acpi_hest_aer_bridge *hest_aer_bridge;
-> +
-> +	dev = info.pci_dev;
-> +	port_type = pci_pcie_type(dev);
+diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+index 58b89b8d950ed..59e6955e24edb 100644
+--- a/drivers/acpi/pci_root.c
++++ b/drivers/acpi/pci_root.c
+@@ -293,11 +293,6 @@ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+ }
+ EXPORT_SYMBOL_GPL(acpi_pci_find_root);
+ 
+-struct acpi_handle_node {
+-	struct list_head node;
+-	acpi_handle handle;
+-};
+-
+ /**
+  * acpi_get_pci_dev - convert ACPI CA handle to struct pci_dev
+  * @handle: the handle in question
+-- 
+2.45.0
 
-I'd put these two initializations up at the declarations, e.g.,
-
-  struct pci_dev *dev = info.pci_dev;
-  int port_type = pci_pcie_type(dev);
-
-> +	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-> +	if (!pos)
-> +		return;
-> +
-> +	switch (port_type) {
-> +	case PCI_EXP_TYPE_ROOT_PORT:
-> +		hest_aer_root = info.hest_aer_root_port;
-> +		program_hest_aer_endpoint(hest_aer_root->aer, dev, pos);
-> +		program_hest_aer_root(hest_aer_root, dev, pos);
-> +		break;
-> +	case PCI_EXP_TYPE_ENDPOINT:
-> +		hest_aer_endpoint = info.hest_aer_endpoint;
-> +		program_hest_aer_endpoint(hest_aer_endpoint->aer, dev, pos);
-> +		break;
-> +	case PCI_EXP_TYPE_PCI_BRIDGE:
-> +	case PCI_EXP_TYPE_PCIE_BRIDGE:
-
-PCI_EXP_TYPE_PCIE_BRIDGE is a PCI/PCI-X to PCIe Bridge, also known as
-a "reverse bridge".  This has a conventional PCI or PCI-X primary
-interface and a PCIe secondary interface.  It's not clear to me that
-these bridges can support AER.  
-
-For one thing, the AER Capability must be in extended config space,
-which would only be available for PCI-X Mode 2 reverse bridges.
-
-The acpi_hest_aer_bridge certainly makes sense for
-PCI_EXP_TYPE_PCI_BRIDGE (a PCIe to PCI/PCI-X bridge), but the ACPI
-spec (r6.5, sec 18.3.2.6) is not very clear about whether it also
-applies to PCI_EXP_TYPE_PCIE_BRIDGE (a reverse bridge).
-
-Do you actually need this PCI_EXP_TYPE_PCIE_BRIDGE case?
-
-> +		hest_aer_bridge = info.hest_aer_bridge;
-> +		program_hest_aer_endpoint(hest_aer_bridge->aer, dev, pos);
-> +		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
-> +		break;
-> +	default:
-> +		return;
-> +	}
-> +}
 
