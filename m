@@ -1,70 +1,72 @@
-Return-Path: <linux-acpi+bounces-5678-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5679-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C91598C0BFA
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 09:33:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC638C0BFD
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 09:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ECAD1F2280C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 07:33:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB024B21236
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 07:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216F61494B3;
-	Thu,  9 May 2024 07:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930C8149C7B;
+	Thu,  9 May 2024 07:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="aqfQ01hI"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Rctwutpa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DE31482EA
-	for <linux-acpi@vger.kernel.org>; Thu,  9 May 2024 07:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA391494D9
+	for <linux-acpi@vger.kernel.org>; Thu,  9 May 2024 07:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715240035; cv=none; b=fqVCAz4WwFhvPzOWuxLY23njxEu2o7LiNVbKYHj0nI73iQljdz4+lvNwsF4p/dDnVusOS80EMLW9p94clf/DKs7aohiVIRERUtmKc07AJc6SNgM6Q1W1v9yq9OEqLnJFU1vVnwT1mQ754gwk+eR+HxZaYXpHXSjgI/9ZuW4yCEs=
+	t=1715240041; cv=none; b=tLR5+lCUINjbmb7gQflrCLWuiLxFiT+eE4/o0a9MxjSj3Cjx9+MJO5f3XzWTQ060m0HpJDUvwLl5Xzv9M+4xJzCv4KVSCs9ZdFM6evyPmGVkvqLwzomn2unY09Pw5OO04/3zs8JWEaE7TIKgrRGFfAjjvK0MS/lk66IbPZ0tN4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715240035; c=relaxed/simple;
-	bh=f1DDzJv3xHeLtz/8Uh38H6uqD2mqnmTd8LGL7fsQk2Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YGHF8i7IvN9ZQyVhwHbIq1EJ1dt/h2NSj+vQIf7j6tunhXYNn71z8DaQfIamgSEoOqhNtqzcxXOvN7e38C3nDaCjKYi8dO1ue1uLQdsWNkWSPx6SmKio3R8za6QDBcOrh/rvKsA3urr2ytgx2x6dMUC3gRQ+J1YRFKnslx2vp/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=aqfQ01hI; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1715240041; c=relaxed/simple;
+	bh=sCpUWY3HzIVMI3TbeegEZ/zm4GDQ+yecC/8p7PvVbno=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bUBUYi5e3EqxzzNQnofk/mqKG2E6DczW/0mqUsphuzKMePo1wUu7Cqvp3IqiJkNp7BZTvxnw5MJyVMlmbIPDyo0xyMevv2tZ0JfpKxiBy/jYOHHoibZDJEOtg3avzkdiAb5pycZWSfmIIns+uBqKL48pBTzouHc/oGHohDTYcUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Rctwutpa; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ecd3867556so4543135ad.0
-        for <linux-acpi@vger.kernel.org>; Thu, 09 May 2024 00:33:53 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1ee954e0aa6so3829495ad.3
+        for <linux-acpi@vger.kernel.org>; Thu, 09 May 2024 00:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1715240033; x=1715844833; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aKuxY2Fk4OLcsa0CSr6w7+nYt28fnnuhVioZfggdrc=;
-        b=aqfQ01hIYY6LFNp/UQ5dLvubDCRG2/sLLSALQUBi+Wlplrx5tk2Wx5rdy/FJPMWMLI
-         zjGNDZGSl8+Aay5pLWs3V1ncqpUwnPrD8B5bK1pBums+YbqOizIDpn//cX8Do0+moepi
-         nuxLZ5uU8tTJlCW5rlfmTQRuqCsEuwpE5T4gZ3mY6BGk+2ls7gNpTFYHp9ZcC49FSO1P
-         +bd0pqsih40lvi0ApqXUKbLHdHD5B+6rX89NjUbry4HeyG+ty44px2pK6tzqVqIoGnhO
-         lAvnXludBgkIgs/3LQ8O/vJDJeNw/4tFlqK01xHLE/MJR/d410QFFgJVTv7xey3gDFVB
-         dOVg==
+        d=bytedance.com; s=google; t=1715240038; x=1715844838; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7cwpsa2HL8S5jIz0x6grJAB8mOqnJkhHeKGCfgHpfOE=;
+        b=RctwutpaGCvx7q08udDRVSsO3Q3+gNTCiU23tJP2hz1rw5/i6fVG+5C57Ncpelc+Tv
+         mmufeibCLuk+luPj67E/El5R/duxtkqPnfSEK4ypc2t9NFQHxUecykK5RiSqkJG/hudE
+         ebODZcSBAkVbXYag1S1ZKpF6WjPtVoA/H5BvoWf7hf9nCAPXiuXPIt9jv5IuK8FjcD8T
+         7EBzbkOUtEV57TaS8C1iiHq+x/T4UW7l/gmMFPtK3K96wOzhLtLi2G/WLzxaPR3HcAk1
+         SzqprbkBsHweEBmV+k4oyVD2OKxmgru9V/0jUo7qBaqpCocAR82Wi/nB0f9Lf/3ZQf3V
+         eAjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715240033; x=1715844833;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+aKuxY2Fk4OLcsa0CSr6w7+nYt28fnnuhVioZfggdrc=;
-        b=VbMg3Tz+kaSZil/eFxn99BfdPmMZvT21dWwJOYNFkSMR/7MTcQSlOsPO+PF2Gna06d
-         ItOcawAXAcFtN1ItZb6Rxeg7IUqe35g4m0lOOVURT1yLs0RaPo288JFRMsNPuO7mRyp8
-         +wlQGQh0ARyz/9K2KgnmjCNrDZhaLcfAgef71dmus5utj27YsImwA4CECnAZRMEJN9wg
-         ukltO952mjlO00x3eViA2WPp9By80ZdE3H3uaZ4TBYiuP0JK8mz3F/z8sZ09zi+bdUW6
-         Isd58zo8dk62n+Xfw2Pgzr4Wbl5SEigH7cdr5XVKSqerpDnhpNm5QECmaVI9u4IM/EB1
-         pzdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKcDLb7zSfKf/IoR0BJz0ryDb8/UfIUB1rZRk5+/ovE32IndbBiwljwhqiEDvqUJ3Eu4Oa3trEiZbu9NxEtIxyNt7paklSfIYZtg==
-X-Gm-Message-State: AOJu0YxwiLHimoCA9syiyr0ne/oQWGWIsoMVaN02UgZ4aoYMHvQasJLu
-	KvSJ17cAa6GsIa+vAmj80XSObITngD1hL9pc9GDQsc2PZK4zx6mf5I993RtmOhY=
-X-Google-Smtp-Source: AGHT+IGAYwKBi2oqjWz3LiGpENreMeENH67yYk920FAgS7TcHb0bpY6oL9Li9tUP+YyE2Ur4qM9EGA==
-X-Received: by 2002:a17:903:40ce:b0:1ea:9596:11eb with SMTP id d9443c01a7336-1eeb07973fcmr50940325ad.60.1715240032758;
-        Thu, 09 May 2024 00:33:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1715240038; x=1715844838;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7cwpsa2HL8S5jIz0x6grJAB8mOqnJkhHeKGCfgHpfOE=;
+        b=WQYRuqhnRoWsbcOEf2q9Qlp+SlASYtMYHg/KgHgEsUqKhylbaK5ipH0BiZX1zfvJxj
+         iX1rbtTp8fO1m9yhgaJnvd5bMG13mIisiBwkabufUtJBb5n+RhMmiRobRlhPyhEmNjWX
+         lNEDx7Famkt26TsKn+5dwsoHKWnKK3VldSYmYiwFldZ+aBQVvVWZ64wyHmBPwWiZfmk4
+         eGDGyhfVjsBx3WUDy//0oTrD8hqifkQM5L6r3GqLZLIET7u1jUd/nUmtrLi+H4D3ySR8
+         JBKOrzZ9lviMvDvYmG1HBpbqFWay+OStHfwPi4zy2sox11pTI5kwhs9gYcOU1WfIsiJX
+         Qcug==
+X-Forwarded-Encrypted: i=1; AJvYcCVMfrqzM4uZFwcdk3Oe1h3c0KCeWySD9V/ulA0O5WRz9H3DXDnIiPuYXpEyGHmSd9w4jX9gSUD/zhy+J0WHAx018V9aznYe9RkRLQ==
+X-Gm-Message-State: AOJu0Yz92dQZLD+FiO1JvRedtjouWBXXgwpszBv2gy876ngWg0VB+3/D
+	IQhpqzpRpydKuXSCjanY1kE7pkjeVdiHf61Rpy1i40T2VTEVLX1CGynPXmUdHFc=
+X-Google-Smtp-Source: AGHT+IG/D+4lV51kE6nf+1RISOvQK/tQQrWPzktPgLKIYfH6V7gZRVDpOTsPNQO9YGcb3oeKoFgoIg==
+X-Received: by 2002:a17:903:258f:b0:1ed:1d37:267e with SMTP id d9443c01a7336-1eeb05919damr43288965ad.16.1715240038702;
+        Thu, 09 May 2024 00:33:58 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([61.213.176.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0badcbacsm7519045ad.97.2024.05.09.00.33.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0badcbacsm7519045ad.97.2024.05.09.00.33.53
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 09 May 2024 00:33:52 -0700 (PDT)
+        Thu, 09 May 2024 00:33:58 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: rafael@kernel.org,
 	lenb@kernel.org,
@@ -84,11 +86,14 @@ To: rafael@kernel.org,
 	pierre.gondois@arm.com,
 	sudeep.holla@arm.com,
 	tiantao6@huawei.com
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>
-Subject: [PATCH v5 1/3] riscv: cacheinfo: remove the useless input parameter (node) of ci_leaf_init()
-Date: Thu,  9 May 2024 15:32:58 +0800
-Message-Id: <20240509073300.4968-1-cuiyunhui@bytedance.com>
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v5 2/3] riscv: cacheinfo: initialize cacheinfo's level and type from ACPI PPTT
+Date: Thu,  9 May 2024 15:32:59 +0800
+Message-Id: <20240509073300.4968-2-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20240509073300.4968-1-cuiyunhui@bytedance.com>
+References: <20240509073300.4968-1-cuiyunhui@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -97,60 +102,61 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ci_leaf_init() is a declared static function. The implementation of the
-function body and the caller do not use the parameter (struct device_node
-*node) input parameter, so remove it.
+Before cacheinfo can be built correctly, we need to initialize level
+and type. Since RISC-V currently does not have a register group that
+describes cache-related attributes like ARM64, we cannot obtain them
+directly, so now we obtain cache leaves from the ACPI PPTT table
+(acpi_get_cache_info()) and set the cache type through split_levels.
 
-Fixes: 6a24915145c9 ("Revert "riscv: Set more data to cacheinfo"")
+Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
+Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 ---
- arch/riscv/kernel/cacheinfo.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index 09e9b88110d1..30a6878287ad 100644
+index 30a6878287ad..d6c108c50cba 100644
 --- a/arch/riscv/kernel/cacheinfo.c
 +++ b/arch/riscv/kernel/cacheinfo.c
-@@ -64,7 +64,6 @@ uintptr_t get_cache_geometry(u32 level, enum cache_type type)
- }
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2017 SiFive
+  */
  
- static void ci_leaf_init(struct cacheinfo *this_leaf,
--			 struct device_node *node,
- 			 enum cache_type type, unsigned int level)
- {
- 	this_leaf->level = level;
-@@ -80,11 +79,11 @@ int populate_cache_leaves(unsigned int cpu)
++#include <linux/acpi.h>
+ #include <linux/cpu.h>
+ #include <linux/of.h>
+ #include <asm/cacheinfo.h>
+@@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
+ 	struct device_node *prev = NULL;
  	int levels = 1, level = 1;
  
++	if (!acpi_disabled) {
++		int ret, fw_levels, split_levels;
++
++		ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
++		if (ret)
++			return ret;
++
++		BUG_ON((split_levels > fw_levels) ||
++		       (split_levels + fw_levels > this_cpu_ci->num_leaves));
++
++		for (; level <= this_cpu_ci->num_levels; level++) {
++			if (level <= split_levels) {
++				ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
++				ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
++			} else {
++				ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
++			}
++		}
++		return 0;
++	}
++
  	if (of_property_read_bool(np, "cache-size"))
--		ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
-+		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
+ 		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
  	if (of_property_read_bool(np, "i-cache-size"))
--		ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
-+		ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
- 	if (of_property_read_bool(np, "d-cache-size"))
--		ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
-+		ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
- 
- 	prev = np;
- 	while ((np = of_find_next_cache_node(np))) {
-@@ -97,11 +96,11 @@ int populate_cache_leaves(unsigned int cpu)
- 		if (level <= levels)
- 			break;
- 		if (of_property_read_bool(np, "cache-size"))
--			ci_leaf_init(this_leaf++, np, CACHE_TYPE_UNIFIED, level);
-+			ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
- 		if (of_property_read_bool(np, "i-cache-size"))
--			ci_leaf_init(this_leaf++, np, CACHE_TYPE_INST, level);
-+			ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
- 		if (of_property_read_bool(np, "d-cache-size"))
--			ci_leaf_init(this_leaf++, np, CACHE_TYPE_DATA, level);
-+			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
- 		levels = level;
- 	}
- 	of_node_put(np);
 -- 
 2.20.1
 
