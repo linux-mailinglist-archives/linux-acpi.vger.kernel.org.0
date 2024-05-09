@@ -1,249 +1,174 @@
-Return-Path: <linux-acpi+bounces-5687-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5688-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357B88C0D1D
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 11:08:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590B58C0D6B
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 11:20:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C471C20ECE
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 09:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B53441F217D6
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 09:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6C214A615;
-	Thu,  9 May 2024 09:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D1114A60C;
+	Thu,  9 May 2024 09:19:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8AD14A085
-	for <linux-acpi@vger.kernel.org>; Thu,  9 May 2024 09:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C25814A4D6;
+	Thu,  9 May 2024 09:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715245622; cv=none; b=ZLQPJqkRnJRtIOM30W/KFmynHL1F8cy87rirRyrcW+0kCmIRh8QExxtOUZuPd0S12P5GLkb26CUkXwFCFZenD/7lGPAflCeCXNEzQJ2Md8RNcLBIK4WREZi2lwL9896iDsERBJpx2Lc/ZmlC/jw4s/aCGmtPHDzyHOVEgjKNgh0=
+	t=1715246394; cv=none; b=ZiIs56Xx9c1+r/Me5bdfRydF2n/TiZ4dZm0ullirXDF7IOZQGuyXBatneD2sQPipxr2LcRrBFh+dSFXpNkCJIOi0/9N2/NOvKXshl53HCH3q5MD5aQI3IpZlJkJcNhcdeC6rFwc8xbU6yQdn5SrlNIcireJkcO4TZctSs8BUXv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715245622; c=relaxed/simple;
-	bh=5Chm87/w6gann49MFLtPr3wM+utczo7OtUCocIrYdM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=KyoJr9eL+0wiatuh8hI0psEDHbCK+kwaMhiYVv1NeuNFNBDB6St+4LMDhfHulyeBqdklhV0i67bZA33LytDrcdw/sW5WVx1GoFfGfCN/Pm2KQHt/3Msx9SOuxoTd/o1aMo/e+GYSZWCLaspTVmyo9zFM8NpFWcAlKqUQheUKbiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1715245615-086e2325ca0dbd0001-I98ny2
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx1.zhaoxin.com with ESMTP id M9WqRzFhjCh0Ezmg (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 09 May 2024 17:06:55 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 9 May
- 2024 17:06:55 +0800
-Received: from [192.168.1.204] (125.76.214.122) by ZXBJMBX03.zhaoxin.com
- (10.29.252.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 9 May
- 2024 17:06:53 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Message-ID: <b99685d9-9f3a-4c21-8d33-2eaa5de8be54@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 192.168.1.204
-Date: Thu, 9 May 2024 17:06:52 +0800
+	s=arc-20240116; t=1715246394; c=relaxed/simple;
+	bh=Wo1mgBAo3XVnCRSmoN/72bpcQl9w/zUeaNEQRe5EHhQ=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MlZiEorBIuBHuqborz2PmkpDhumRB7eopGaR6ALgDZjIoqJe8mi6ImMlF7FVf8nFpw57L392GaD/8wTRywWSm5EEWO0X31arA+/lmkA7l8wSKe0GI8MQJrB5j2ZVjH0kWKANTwl/yO9bKyZT4ijO4DdM/kN09QCPouVjDWZmKOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VZmbq6JsKz6J9rQ;
+	Thu,  9 May 2024 17:16:39 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id CF873140C98;
+	Thu,  9 May 2024 17:19:41 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 9 May
+ 2024 10:19:40 +0100
+Date: Thu, 9 May 2024 10:19:39 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Shiju Jose <shiju.jose@huawei.com>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
+	<dave@stgolabs.net>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "linux-edac@vger.kernel.org"
+	<linux-edac@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
+	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
+	<jiaqiyan@google.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
+	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Jean Delvare <jdelvare@suse.com>, Guenter Roeck
+	<linux@roeck-us.net>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Message-ID: <20240509101939.0000263a@Huawei.com>
+In-Reply-To: <20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
+References: <20240419164720.1765-1-shiju.jose@huawei.com>
+	<20240419164720.1765-2-shiju.jose@huawei.com>
+	<20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local>
+	<63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
+	<20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
+	<e0ce36eb80054440ab877ccee4e606de@huawei.com>
+	<20240508172002.GGZju0QvNfjB7Xm6qL@fat_crate.local>
+	<4ceb38897d854cc095fca1220d49a4d2@huawei.com>
+	<20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-To: Bjorn Helgaas <helgaas@kernel.org>
-X-ASG-Orig-Subj: Re: [PATCH v2 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-CC: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
-	<robert.moore@intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-	<acpica-devel@lists.linux.dev>, <CobeChen@zhaoxin.com>,
-	<TonyWWang@zhaoxin.com>, <ErosZhang@zhaoxin.com>, <LeoLiu@zhaoxin.com>
-References: <20240508222459.GA1791619@bhelgaas>
-From: LeoLiu-oc <leoliu-oc@zhaoxin.com>
-In-Reply-To: <20240508222459.GA1791619@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1715245615
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 6136
-X-Barracuda-BRTS-Status: 0
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.124626
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+
+On Wed, 8 May 2024 21:25:46 +0200
+Borislav Petkov <bp@alien8.de> wrote:
+
+> On Wed, May 08, 2024 at 05:44:03PM +0000, Shiju Jose wrote:
+> > I mean scrub subsystem module is not loaded and initialzed until
+> > a dependent  device module is loaded and a device does not get
+> > registered with the scrub subsystem on a machine which doesn't have
+> > the corresponding scrub features.  
+> 
+> Stop this rambling blabla please. This should *not* happen:
+> 
+> # insmod ./memory_scrub.ko
+> # echo $?
+> 0
+> # lsmod
+> Module                  Size  Used by
+> memory_scrub           12288  0
+> 
+> This is on a silly guest which has none of those dependent devices crap.
+> 
+> Your scrub module should load only on a machine which has the hardware
+> - not just for fun and on anything.
+
+Fundamental question seems to be:  Why should it not load?
+Shiju and I think it should, you think it shouldn't.
+Note this is only if someone deliberately ignores all the infrastructure
+intended to make sure only relevant modules probe and modprobe / insmod
+by hand.
+
++CC some driver core folk and a few other subsystem maintainers who
+ have subsystems doing the same as this one.
+
+Summary I think is:
+Borislav is asking for this new scrub subsystem core module to not
+successfully probe and call class_register() if it is manually
+inserted and there is no hardware on the particular system.
+It's a standard class type situation with core driver providing
+consistent ABI and /sys/class/ras/ with drivers hanging off various
+buses (currently ACPI and CXL) registering with that class.
+
+Many subsystem core drivers will probe and create subsystem specific
+sysfs directories on on systems that don't have any hardware needing
+drivers from that subsystem (if someone manually inserts them rather
+than relying on automatic module dependency handling.)
+I don't see why this class driver should be different and have to jump
+through hoops to satisfy this requirement.
+
+A quick look for callers of class_register() in their init functions
+found plenty of precedence.  Many of the cases that don't do this are
+single use - i.e. class that only ever has one driver. There are even
+more if we take sysfs buses into account. (edac and IIO for example) 
+
+A few examples of same handling of class registration.
+- input - that registers a lot more on class init, but sysfs class
+          registration is in there.
+- hwmon - other than some quirk setup same as the scrub driver.
 
 
+Other than embedded systems with a custom build and kernel developers,
+who actually probes modules manually?  Mostly people rely on modalias
+of the client drivers and them pulling in their dependencies.
+Modules are pretty pointless if you probe all the ones you've built
+whether or not the hardware is present.
 
-在 2024/5/9 6:24, Bjorn Helgaas 写道:
-> 
-> 
-> [这封邮件来自外部发件人 谨防风险]
-> 
-> On Mon, Dec 18, 2023 at 11:04:30AM +0800, LeoLiu-oc wrote:
->> From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
->>
->> Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
->> the purpose of this function is to extract register value from HEST PCIe
->> AER structures and program them into AER Capabilities.
->>
->> Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
->> ---
->>   drivers/pci/pci-acpi.c | 98 ++++++++++++++++++++++++++++++++++++++++++
->>   drivers/pci/pci.h      |  9 ++++
->>   drivers/pci/probe.c    |  1 +
->>   3 files changed, 108 insertions(+)
->>
->> diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
->> index 004575091596..3a183d5e20cb 100644
->> --- a/drivers/pci/pci-acpi.c
->> +++ b/drivers/pci/pci-acpi.c
->> @@ -18,6 +18,7 @@
->>   #include <linux/pm_runtime.h>
->>   #include <linux/pm_qos.h>
->>   #include <linux/rwsem.h>
->> +#include <acpi/apei.h>
->>   #include "pci.h"
->>
->>   /*
->> @@ -783,6 +784,103 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
->>        return -ENODEV;
->>   }
->>
->> +#ifdef CONFIG_ACPI_APEI
->> +static void program_hest_aer_endpoint(struct acpi_hest_aer_common aer_endpoint,
->> +                             struct pci_dev *dev, int pos)
->> +{
->> +     u32 uncor_mask;
->> +     u32 uncor_severity;
->> +     u32 cor_mask;
->> +     u32 adv_cap;
->> +
->> +     uncor_mask = aer_endpoint.uncorrectable_mask;
->> +     uncor_severity = aer_endpoint.uncorrectable_severity;
->> +     cor_mask = aer_endpoint.correctable_mask;
->> +     adv_cap = aer_endpoint.advanced_capabilities;
->> +
->> +     pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
->> +     pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
->> +     pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
->> +     pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
-> 
-> This is named for "endpoint", but it is used for Root Ports,
-> Endpoints, and PCIe to PCI/PCI-X bridges.  It relies on these four
-> fields being in the same place for all those HEST structures.
->
-Change the function name " program_hest_aer_endpoint " to
-"program_hest_aer_common" and the parameters of the function
-"aer_endpoint" to "aer_common". Do you think this is appropriate?
+It would of course be easy to do the class_register() on first driver
+use but I'm not seeing a lot of precedence + the scrub class module would
+still insmod successfully. I think preventing load would be messy and
+complex at best.
 
-> That makes good sense, but maybe should have a one-line hint about
-> this and maybe even a compiletime_assert().
-> 
+Jonathan
 
-I intend to add the following comment to the function in next
-version："/* Configure AER common registers for Root Ports, Endpoints,
-and PCIe to PCI/PCI-X bridges */", Is this description appropriate?
-
->> +}
->> +
->> +static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root, struct pci_dev *dev, int pos)
->> +{
->> +     u32 root_err_cmd;
->> +
->> +     root_err_cmd = aer_root->root_error_command;
->> +
->> +     pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
->> +}
->> +
->> +static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_bridge,
->> +                             struct pci_dev *dev, int pos)
->> +{
->> +     u32 uncor_mask2;
->> +     u32 uncor_severity2;
->> +     u32 adv_cap2;
->> +
->> +     uncor_mask2 = hest_aer_bridge->uncorrectable_mask2;
->> +     uncor_severity2 = hest_aer_bridge->uncorrectable_severity2;
->> +     adv_cap2 = hest_aer_bridge->advanced_capabilities2;
->> +
->> +     pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
->> +     pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
->> +     pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
->> +}
->> +
->> +static void program_hest_aer_params(struct hest_parse_aer_info info)
->> +{
->> +     struct pci_dev *dev;
->> +     int port_type;
->> +     int pos;
->> +     struct acpi_hest_aer_root *hest_aer_root;
->> +     struct acpi_hest_aer *hest_aer_endpoint;
->> +     struct acpi_hest_aer_bridge *hest_aer_bridge;
->> +
->> +     dev = info.pci_dev;
->> +     port_type = pci_pcie_type(dev);
-> 
-> I'd put these two initializations up at the declarations, e.g.,
-> 
->    struct pci_dev *dev = info.pci_dev;
->    int port_type = pci_pcie_type(dev);
-> 
-Okay, this will be modified in the next version.
-
->> +     pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
->> +     if (!pos)
->> +             return;
->> +
->> +     switch (port_type) {
->> +     case PCI_EXP_TYPE_ROOT_PORT:
->> +             hest_aer_root = info.hest_aer_root_port;
->> +             program_hest_aer_endpoint(hest_aer_root->aer, dev, pos);
->> +             program_hest_aer_root(hest_aer_root, dev, pos);
->> +             break;
->> +     case PCI_EXP_TYPE_ENDPOINT:
->> +             hest_aer_endpoint = info.hest_aer_endpoint;
->> +             program_hest_aer_endpoint(hest_aer_endpoint->aer, dev, pos);
->> +             break;
->> +     case PCI_EXP_TYPE_PCI_BRIDGE:
->> +     case PCI_EXP_TYPE_PCIE_BRIDGE:
-> 
-> PCI_EXP_TYPE_PCIE_BRIDGE is a PCI/PCI-X to PCIe Bridge, also known as
-> a "reverse bridge".  This has a conventional PCI or PCI-X primary
-> interface and a PCIe secondary interface.  It's not clear to me that
-> these bridges can support AER.
-> 
-> For one thing, the AER Capability must be in extended config space,
-> which would only be available for PCI-X Mode 2 reverse bridges.
-> 
-> The acpi_hest_aer_bridge certainly makes sense for
-> PCI_EXP_TYPE_PCI_BRIDGE (a PCIe to PCI/PCI-X bridge), but the ACPI
-> spec (r6.5, sec 18.3.2.6) is not very clear about whether it also
-> applies to PCI_EXP_TYPE_PCIE_BRIDGE (a reverse bridge).
-> 
-> Do you actually need this PCI_EXP_TYPE_PCIE_BRIDGE case?
-> 
-Yes, you are right. I will fix this in the next version.
-
-Yours sincerely
-Leoliu-oc
-
->> +             hest_aer_bridge = info.hest_aer_bridge;
->> +             program_hest_aer_endpoint(hest_aer_bridge->aer, dev, pos);
->> +             program_hest_aer_bridge(hest_aer_bridge, dev, pos);
->> +             break;
->> +     default:
->> +             return;
->> +     }
->> +}
 
