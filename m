@@ -1,153 +1,211 @@
-Return-Path: <linux-acpi+bounces-5697-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5698-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA598C124C
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 17:53:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75F68C14FB
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 20:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34C4C1F21ECE
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 15:53:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 760DD281532
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 18:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D60C16F287;
-	Thu,  9 May 2024 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431917BAE4;
+	Thu,  9 May 2024 18:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="JRWBagkz"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Qei5f/NB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2044.outbound.protection.outlook.com [40.107.243.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F9516F26D;
-	Thu,  9 May 2024 15:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715270008; cv=none; b=alI9heszSN2DVB15jgrV+XUnx3ZeEG5ptk8M5HvHBNH1WNlkW9FpL/qk5CEIFpc9D88qvr9IY7V5ReHtGlxQ5bcS/U089/SdrZEVcQxnxVNdATWfbvFSqiLEMzyxKSgxC3lsXa/ZtPCmJT9XPhqhgag+zsfzPy9r9iujK48ll40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715270008; c=relaxed/simple;
-	bh=ca0mhH4z2TzOV3LkiJrw68Zm27sFUEtVVsbmYGap+N8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=NDziVNIzfJYUEnHm17vOGaavVKMgnmpqZvGoefRJwiHVB+Ubv8FizE0CI+1yjGbhvS3E+2NfHG83nArFC8rCBCOFB5xAyiifF26CcIzB5XsNwhkKjOiBFnKh3wQduVHnVQ4Fq6l15wy9HfjBfzrwRB2tbtZNzhRM+Ty9Ah+DqzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=JRWBagkz; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 992CD40E0192;
-	Thu,  9 May 2024 15:53:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id EDO03DZRtCCm; Thu,  9 May 2024 15:53:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715269989; bh=9AlP4HXWvzcAtGm0OD798EDYT+YezFL+BRjA+PL3QQo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=JRWBagkz83LCvujhKF9Dp/sAwPGFUDlcxCW8ueYmVlDISZiCQ2X2M0PfMdp1vpSzT
-	 hXOELsGS2Jdc9HW+J8NcVyrlqh3cZcuPjPFThfBijyaMfcb9Rw1hQwR0AQGjRxUjLX
-	 fILr0KPoCthzrNeIdaPdjiJFUYmmie1Rrj+8gQ4ifvVTt0RB6pZjjhWfojaOVSkQuG
-	 P7vIjTyIN9JhsfK0LeTMLwjBS9gx4vsKA/LDal5pwK7iW8jlJebMYd7DgGAWTxMwBf
-	 Gz+pwTkMhH3V3asQs/nxG0I5GCSGOAc9kT3Lbh0OK011A4blYYD2ystN14in3iE29w
-	 TGIdct2oEfPCp4BBlS9TvKjmxDnqe3ggQYVbP4uQMdnRmvC+kclbI+Iyu/k/7+p0tt
-	 ZrhBx8tndOJGT9rvv68gueiR+SaFem4D5EqPfhfcb4LzqcCpMM2begGcaBl/ksA12C
-	 zs/3eFim5Ark75pZJFlla9L8OnFXA1ZOrWeCS8C5EoJpkwixBJx2xCBjSkO2d4Lzf4
-	 rE+qcu4ug3NStDthC51Ze51661C4KXb/ESlAaVKcZTJrzmpQgb2fhOOl02mnkZGgeM
-	 IvlYEMsnFT6qgHUV/Hx/o9IvVfiZsLqswDTqgxnwES5Xp1A079PWJ1Wf+bmDgE71i8
-	 h03y6BPsWt9FlKZx1JzGzsVw=
-Received: from [IPv6:::1] (unknown [IPv6:2a02:3033:20b:71c3:4495:c4f9:c73d:fb52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B623D40E0249;
-	Thu,  9 May 2024 15:52:22 +0000 (UTC)
-Date: Thu, 09 May 2024 17:52:18 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: Shiju Jose <shiju.jose@huawei.com>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
- "dave@stgolabs.net" <dave@stgolabs.net>,
- "dave.jiang@intel.com" <dave.jiang@intel.com>,
- "alison.schofield@intel.com" <alison.schofield@intel.com>,
- "vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
- "ira.weiny@intel.com" <ira.weiny@intel.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "david@redhat.com" <david@redhat.com>,
- "Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
- "leo.duran@amd.com" <leo.duran@amd.com>,
- "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
- "rientjes@google.com" <rientjes@google.com>,
- "jiaqiyan@google.com" <jiaqiyan@google.com>,
- "tony.luck@intel.com" <tony.luck@intel.com>,
- "Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
- "naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
- "james.morse@arm.com" <james.morse@arm.com>,
- "jthoughton@google.com" <jthoughton@google.com>,
- "somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
- "erdemaktas@google.com" <erdemaktas@google.com>,
- "pgonda@google.com" <pgonda@google.com>,
- "duenwen@google.com" <duenwen@google.com>,
- "mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
- "gthelen@google.com" <gthelen@google.com>,
- "wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
- "dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
- "wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
- "nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
- tanxiaofei <tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
- "kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
- wanghuiqiang <wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Jean Delvare <jdelvare@suse.com>,
- Guenter Roeck <linux@roeck-us.net>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20240509101939.0000263a@Huawei.com>
-References: <20240419164720.1765-1-shiju.jose@huawei.com> <20240419164720.1765-2-shiju.jose@huawei.com> <20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local> <63fdbe26b51f4b7c859bfb30287c8673@huawei.com> <20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local> <e0ce36eb80054440ab877ccee4e606de@huawei.com> <20240508172002.GGZju0QvNfjB7Xm6qL@fat_crate.local> <4ceb38897d854cc095fca1220d49a4d2@huawei.com> <20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local> <20240509101939.0000263a@Huawei.com>
-Message-ID: <D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806821A2C35;
+	Thu,  9 May 2024 18:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715280326; cv=fail; b=cHyrNXCMhu2lBAUIwTmWBd0TxwEQtDiE+df+LaGVJwiNDR2EWNSWZ7Wtu0uKd02AYJ8pf1yBPaRC+td5nNlk3iJYFrtEcMYFIP3VO2Dk5LSbEjmioBMyPFNmeXIHn7q2M7a2SbOptm016nQzmbz6fikcR4cmsOZJyHmbywTMYPU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715280326; c=relaxed/simple;
+	bh=+Hr1EpkuY/e95c1dA0gPWgh0GStUk7+S3RodskdbKQc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fTBvyGkuW8iymDg0spHfJISA8SlugH4T+6VLliN7ool721i67H00aNcP5x+vvVA39f9iyHKy8Af7zAEZ9opIgTvr0OhP6dkegznUmKujkqgVzLb9gebV6jQXfT6Jjl0UE0D8BKdXSUaW0SvUKSLQfS4G3GqTgflnWtmoJ7j4cXA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Qei5f/NB; arc=fail smtp.client-ip=40.107.243.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=a1An+D1fCE89q4d0Qbi0PsRMgA7J51H5b/E6J3f2WbBLhEZr23MQTt/GzsrgIKKJQtaAzn97HOxX03ujtUoHxu8zjGFPNRlFvQPvKQ8eoqCrVAYXA4A6bk2hJ3dHgWVc66FzzgJkxwad1v9MhNC2b9A6psL64xrbDF/NhPDMNX67dFpqIhacaSv4pTXF/HI+sWGwfdNnSMSMDd80/uVKl54qXJFu3JZWv2mo1Bdq+xWHhQ+Fw412brpDSohp4fiQ0zJ0SrOPGtprDzXkxfBSW9Ry/Kvyg0Q9xD8ep35XaNCL35ctCRybruOB19NdRGMe+mkD53wjubdhE94/q6ZzVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wS9c61cD+iqzMewqa2kBZ7Ae824L/NlWEGGttar6pTE=;
+ b=X/sU6/nx5+VE1cFkdyFNZPn5fSQH8WbZrV5gwh+u5XvJMbuIiLxUEdQpCKyhCifW2ssFG/XPNnSQFY0ycVS+HUvaMxVfp5u0HwOLjvFafEuikEHgO5DzU/gOvnNSWR4ZxPtvzATljug4BJRkIPhzQUrVGDKZz+KNpkIXdTW2HtpAHOhlk3qfUnyg/kdXNFc7Jp4+0+uqEcnDu6MpfpVLh8WOYqP9V4bW0MhWZ9aL3DV/yiDPbM+poYjgx95hKLRBmsTSa/6BDJruRjdp2bVBzL2UByDXJB3IuSpIxeeohRhwRDo+Pk3M342vBsTyBTNjYkA3wrawF7S+MyuNm0oo5g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wS9c61cD+iqzMewqa2kBZ7Ae824L/NlWEGGttar6pTE=;
+ b=Qei5f/NBHWj5RL7cMBxRGAY1RWjsebvK0chHh7+0zNJvYHUwGfsvakwrbJVNbSuTWkTic8j+XAqFNzzB5EGrOt/EYqde/3XiJ2qdfMOlX8rsahN++C9N0mq7o0v5lt4z1CLl+SEoi0Dt6cyo8tCJfaFYkI1tqTZ1Dgye2500aI4=
+Received: from BY3PR05CA0051.namprd05.prod.outlook.com (2603:10b6:a03:39b::26)
+ by CY8PR12MB7100.namprd12.prod.outlook.com (2603:10b6:930:60::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.47; Thu, 9 May
+ 2024 18:45:22 +0000
+Received: from CO1PEPF000066EC.namprd05.prod.outlook.com
+ (2603:10b6:a03:39b:cafe::b4) by BY3PR05CA0051.outlook.office365.com
+ (2603:10b6:a03:39b::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.46 via Frontend
+ Transport; Thu, 9 May 2024 18:45:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000066EC.mail.protection.outlook.com (10.167.249.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7544.18 via Frontend Transport; Thu, 9 May 2024 18:45:21 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 9 May
+ 2024 13:45:15 -0500
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <rafael@kernel.org>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<hdegoede@redhat.com>, <Yilin.Chen@amd.com>, <Randy.Perez@amd.com>,
+	<Michael.Chiu@amd.com>, Mario Limonciello <mario.limonciello@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] ACPI: x86: Force StorageD3Enable on more products
+Date: Thu, 9 May 2024 13:45:02 -0500
+Message-ID: <20240509184502.52480-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066EC:EE_|CY8PR12MB7100:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d1436e4-6248-4942-b267-08dc70582e4a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|376005|82310400017|36860700004;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fbVO20rG4JDhKEWCGmaFbRM3CKCXGk1JxIK5lRtpNwHYdlwFpYen16esTA1T?=
+ =?us-ascii?Q?1yy2EkWNYZ8ddmkEIjsZz7lXJDq8TmX+I/26zk35fOvFBNBm+XrRhLovoI9q?=
+ =?us-ascii?Q?1EcizxmKcUdnI44GRL3DXvcyZrC/YYCsOy1yYp7bCTGYRfFZE6jAR60ibCtQ?=
+ =?us-ascii?Q?6wDv+Kt/vbdyGgy+40JkWb7bKx9+i9uPb/cvUPtQRSPi8zQ4FEsAoEQGELUp?=
+ =?us-ascii?Q?lD86Ow48tr1svIuubbDoQ0fVMEce46Y5vDG7oVqtltul2lYBvnjIsrCQpls1?=
+ =?us-ascii?Q?ZIuqs3lYBhYIuo2G6nGPuSuljSpzVmfM4oGhuZwkt9TSPkm8vqfmzrOpZohM?=
+ =?us-ascii?Q?nKFz8hjROqNeDE//L6dRR3qKf9uHkFRuz4SEITvMMvbSH9bGdFKIA7lRRQ2G?=
+ =?us-ascii?Q?BhzgyO9V4Llv3Cd1lAJ9KBTcH72oIObzYxiUQCjqxFOQF4tCGUEmxK0pQm1o?=
+ =?us-ascii?Q?6FiPQjzjUnQnx2EbjrTCbDZc9g5YTreQCn2Xsbi93CChvtdNQADEGk1R/sya?=
+ =?us-ascii?Q?3DNyGvQwJ9uQtcF6r8JURpEhPXTQJdslw97yHZ0zXJttKeaCfIIVDPc7rKgd?=
+ =?us-ascii?Q?HsqFZBtX64B6jsvwGqkB2iNeH464AYvFr+xIaz8Wt5twtUwSsnG3/d25nmTH?=
+ =?us-ascii?Q?ozk+ruoO0cmj7RQRsAqjwwH2W183/6JFZJcDXSrOw0LitK9R68KtGYJkD1Ot?=
+ =?us-ascii?Q?MRi6sYhcJsVY7hxuYWwMg6xmLd028fGzBPipN3kInjQq+kKYA2Dz++5snPkH?=
+ =?us-ascii?Q?fPoeMMmyY0oSdaMQl91c+QKvpfpSWYuEVIgj7SkHegIFnXAeAdSbiqDvj3ZS?=
+ =?us-ascii?Q?gvYTkNZvYgrdUQVe9Ct6B86oidXfB35P58nyfPue0uZIZIxmjOMTdm9KajkO?=
+ =?us-ascii?Q?3TIHxb3228n6F+yKdLyYoiZFE9Z1Ev7OOrtabx3PfKMzZnustDgUp4Wc6MZx?=
+ =?us-ascii?Q?J0+kx8VfViKlAOMcfMZsA6/aOS16u3t6C5MZ9d4t2D/bIhTWNG8qpYKPKFet?=
+ =?us-ascii?Q?dRvoKsJAnuKpdsnjRc4iWgr7UYVAbDShrqpKDoff7+UgWnTirXzOldfEt7MK?=
+ =?us-ascii?Q?rqxkUIIB9ZTOGfyoAXNyoV6cFuqgkTpw/JifF1rgT3jY/SJCbzGqu2p329kE?=
+ =?us-ascii?Q?ZFktx2LkmYlQ5KKqqF8mf8fZ9UIS0LTN5wqlsW8TxayuZCsG9+389vjIMR3r?=
+ =?us-ascii?Q?TN58CMQ/Fv+YWxo9Mm5JNUlT8vHu4Gu2fLzMCfaNUUHmU1FDQ/9kYZYyHCeU?=
+ =?us-ascii?Q?rMrDCknVDSmxB3UwMuINFaru0r6c6kg4dIgoMC+FaS52NATCeFVp2GLfyKsJ?=
+ =?us-ascii?Q?3HZXsezeiMx4Loz3XrkXOLxvZFuEy715RiqEHyQMkdghHw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(1800799015)(376005)(82310400017)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2024 18:45:21.4285
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d1436e4-6248-4942-b267-08dc70582e4a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000066EC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7100
 
-On May 9, 2024 11:19:39 AM GMT+02:00, Jonathan Cameron <Jonathan=2ECameron@=
-Huawei=2Ecom> wrote:
->Many subsystem core drivers will probe and create subsystem specific
->sysfs directories on on systems that don't have any hardware needing
->drivers from that subsystem (if someone manually inserts them rather
->than relying on automatic module dependency handling=2E)
->I don't see why this class driver should be different and have to jump
->through hoops to satisfy this requirement=2E
+A Rembrandt-based HP thin client is reported to have problems where
+the NVME disk isn't present after resume from s2idle.
 
-You mean it should load because "Look ma, the others do it this way"=2E Do=
-es it make any sense? Of course not=2E
+This is because the NVME disk wasn't put into D3 at suspend, and
+that happened because the StorageD3Enable _DSD was missing in the BIOS.
 
-Are you arguing for the nonsensical "it should load" case because it is si=
-mply easier this way? How hard is that "jump through hoops" thing anyway?
+As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
+the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
+advertises low power idle support.
 
-You mean it should load so that when booting an allmodconfig kernel there =
-are not enough modules which are loading so lemme load one more=2E And then=
- I need to go and rmmod them all before I need to do localmodconfig and bui=
-ld a tailored kernel for the machine=2E
+This will ensure that any future products with this BIOS deficiency don't
+need to be added to the allow list of overrides.
 
-Or is there some other reason to load silly modules, use up resources for =
-no good reason whatsoever and bloat the machine?
+Cc: stable@vger.kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/acpi/x86/utils.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-You mean, f*ck it, right? Who cares=2E=2E=2E
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index 90c3d2eab9e9..7507a7706898 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -197,16 +197,16 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+ }
+ 
+ /*
+- * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * AMD systems from Renoir onwards *require* that the NVME controller
+  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
+  *
+  * This is "typically" accomplished using the `StorageD3Enable`
+  * property in the _DSD that is checked via the `acpi_storage_d3` function
+- * but this property was introduced after many of these systems launched
+- * and most OEM systems don't have it in their BIOS.
++ * but some OEM systems still don't have it in their BIOS.
+  *
+  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
+- * a hardcoded allowlist for D3 support, which was used for these platforms.
++ * a hardcoded allowlist for D3 support as well as a registry key to override
++ * the BIOS, which has been used for these cases.
+  *
+  * This allows quirking on Linux in a similar fashion.
+  *
+@@ -219,19 +219,15 @@ bool acpi_device_override_status(struct acpi_device *adev, unsigned long long *s
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
+  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
+-      disk in the system.
++ *    disk in the system.
++ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
++ *    NVME device.
+  */
+-static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+-	{}
+-};
+-
+ bool force_storage_d3(void)
+ {
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
++		return false;
++	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
+ }
+ 
+ /*
+-- 
+2.43.0
 
-Geez=2E
-
-
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
 
