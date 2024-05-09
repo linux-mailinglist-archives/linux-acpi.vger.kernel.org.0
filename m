@@ -1,376 +1,276 @@
-Return-Path: <linux-acpi+bounces-5704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC3F8C194E
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 00:20:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873718C1962
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 00:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3BD81C2220D
-	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 22:20:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1263E283644
+	for <lists+linux-acpi@lfdr.de>; Thu,  9 May 2024 22:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58B6129A78;
-	Thu,  9 May 2024 22:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A56129E76;
+	Thu,  9 May 2024 22:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="ZT70aRlT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="UlHDvFIS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7905770E0;
-	Thu,  9 May 2024 22:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01C712D210
+	for <linux-acpi@vger.kernel.org>; Thu,  9 May 2024 22:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715293227; cv=none; b=dr6Mjfd6UO2m/ZMnOCgnPb5PRvM6wURqaUvl2vL63DqBKeG6VszQQU9MpfxudFnAl/ew0iqwKxWCdGP6TO/lRW44joP2EnpFK+suQJcO07uk6Bj+YgnPs0AjYV8nES41LP0l9R3GSKzLh8SauQaqgDHLN5YNq4YWUncdbG2vqro=
+	t=1715293948; cv=none; b=oKWEgVi835mFzRD9D/fkPs2sSPKs3wyfkYxKvhvGaAfRbM4+CM2xcoQUjXjqPlWhZY6lOBGnLU2fXY2OFbiFnwIE2nG7kbKk93rWdzzfZvSxPrtZ3erj0sLMjXRj6fwuMncT6JIfGwczjyJVeYcleKqCCWx8rD/OjMRejtk8bXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715293227; c=relaxed/simple;
-	bh=eqJK/Rn6qanxxe4EBE/Fk3aejoZgpfMEjXIWxfjWGtY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KuXV0RzdWrQ/QeAN9eGZliKsEL2cnEuY3Qeid13RBLYSrLqf46j0LEBIkje2mcz+s/czNwjaChG7BGDtEAjFW4uAS8ZD7oRKW/kPk9ri1C5jp25sv2lBCMuakCjRBAvo4Zf1dmmwEtXQNgzdLAWz+og8Fx5zYM+MIMbPRpSmJ4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=ZT70aRlT; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1715293948; c=relaxed/simple;
+	bh=TtKTD4oAWa3IVTh11lBqFbprKbYh8ybw3eeOvM0XKVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R8MdyKr2JcHPnRMnYGyZXQhQq1/sppsKASddZoqYemyly80YhC+suHXCmZi0MWZWQFhFOJqt++xbREauCVO5QpZhyKf5cBomVUz+7rpsMSzUBwZudOnYO1yywwzQL8vk1YhsKwB3hkBoTqKRn4GvdgtGELuDV6v+Q10VDCHpgOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=UlHDvFIS; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1715293195; x=1715897995; i=w_armin@gmx.de;
-	bh=MHd8t9IlX0+WAwv1hPyqVWDeN40kQ7ZcdSmxKIuiwjE=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
-	 MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=ZT70aRlT959ikcadIH3YSLnmGh+qVVZ1cgqPyquw/PIZK46IH1pSz8Uzi1FlM3v3
-	 nC4Dep0Lf8s97QJYFIM4fFIiDwRiewznMT5BZR7zm8aM6QGuf8xvT03Wymqt1xjLw
-	 SNUxLGoCWjc/Fg3i+emfglbA9bQ4aGxa6UwQF0AdurSNuzelY0NpqXNlpiebBHJvk
-	 7I63xoBIbla+24QkQozRGtQ2ygjA+fu8FiwsKPHc+e2Ixnl49sQAPJKoDPi1BlCm2
-	 pokbkq0DhY5GXxFOqUvsTIjAD1GN40bkJof0UsHszgANJzJEVPxZkon7RR1BXu/1k
-	 bdg+5eG+gC+S08WVTQ==
+	s=s31663417; t=1715293920; x=1715898720; i=w_armin@gmx.de;
+	bh=6LDUHwoNG/gKj+jVWpMhSwMwZlWVySANAyd/ceMI4Fk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=UlHDvFISMQfZPrmsGRXW+2PHtwjFLBACnJiZ5VHrkRXzN8TBOv6X9Rjiw2iJek2B
+	 wExDp6kaD4BcMhapANRtlgsGQaoGc9Wu2ZC8AYUqSFpkayX6aLc+bInrUZXSSsxQn
+	 DWvZ0yJXbvjb+8Y3ZMr/KoqZQ6ESnD7xKQZtJ9m3i9HTcrXihLOyQjuUzoCQWtZr5
+	 x+cGoVQIm+Eybn0yIE9xJW1KOR8B5gc+qPniqsucG9+mAiipuozzc7SBvU1IX1ueB
+	 CBBMrHKXAeoGeJTra4yn+7NhNodQMbVgNbgWW+MloGMdaN/q6CEaUtBrX4vFsq6PO
+	 HfGWwjeDL5tFHJV0UQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1N63Ra-1sghko3FFo-015HJm; Fri, 10 May 2024 00:19:54 +0200
-From: Armin Wolf <W_Armin@gmx.de>
-To: mlj@danelec.com,
-	rafael.j.wysocki@intel.com,
-	lenb@kernel.org
-Cc: jdelvare@suse.com,
-	andy.shevchenko@gmail.com,
-	linux@roeck-us.net,
-	linux@weissschuh.net,
-	ilpo.jarvinen@linux.intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH v7] ACPI: fan: Add hwmon support
-Date: Fri, 10 May 2024 00:19:47 +0200
-Message-Id: <20240509221947.3118-1-W_Armin@gmx.de>
-X-Mailer: git-send-email 2.39.2
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHXFr-1rrmAT1KSX-00GrNh; Fri, 10
+ May 2024 00:32:00 +0200
+Message-ID: <87c1a667-b0cc-46b7-b7a8-2baead94e456@gmx.de>
+Date: Fri, 10 May 2024 00:31:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Missing default handler for the EmbeddedControl OpRegion
+To: Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
+ <rjw@rjwysocki.net>, Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Robert Moore <robert.moore@intel.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>
+References: <Zi+0whTvDbAdveHq@kuha.fi.intel.com>
+ <CAJZ5v0iAMG251n6yg-h6KCUywK2vSg4sX3FTnOuxcLaEvUwFPQ@mail.gmail.com>
+ <ZjtuKzqpfKFbRaUi@kuha.fi.intel.com> <5781917.DvuYhMxLoT@kreacher>
+ <27722d8b-ecdc-40d4-af47-8150a8a0a2e6@redhat.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <27722d8b-ecdc-40d4-af47-8150a8a0a2e6@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kGWr9AYivua3WIlxOqZJzKhqZuKoLmNEOFjE1HzE+YCKZwAr/zW
- hH8g3uN5zNpTE1R+yWnOAI2pue3u9mauL63PpvxnkzcUo/wXC+vu0fHSdqSMvr7VEm9uRKL
- 8Rh9HxEQU77s3WjhrIeConyJCO0KhOqVfXyJi5LBYxdMIBe6Uk3DgV0kS1fctpj4wV/bit/
- rhWx5sm3bezvnf30CvpIw==
+X-Provags-ID: V03:K1:Rr0SfHQExyBhC6H6AYJS5MbFe9bhWvulZD7CbBI4Ld467kDz07c
+ Y3vBa9RkQnnCLOoz+igZaWL3EpcexKGOtWr7GLh1yiYeE1JfpV5tV1fQ2Qb5aCx2UCxIWAI
+ CcFz4llRjigR9HWzx1uYu8k3+/HGDE0ZS0d3EBtLi4ctFL7cCioCBukLTmQDTSsyugsMx9E
+ Vr85vgrUT25ihwLk/Rcgw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zMXrHW4MwJM=;qZdCLMrpKgQ8AWWP5d925ZZunsw
- rgQNZfWBe/9+/KCTlKjPzZnCIicukNqsJ+hoQlAlrL8d6p3yENF7YWkqUdc0k+haEyaQ0rS5i
- dBnTpK3EtCYD195NmPuu4CgjxN8ZSqsAt6fICtiLJkRrkn8jEGzzdYCQVqH/n6PO8JdqyOl/y
- yxUR4aeiFfxEwPW9ZzJBPSaJ6S8V0VRuIVaYDHDUjHrtr+zJpjL6LG/E3BYVgvYjlb+g76iYl
- YMXEbDp3/XHtHi8Ft0QE1XMr+g8WC38p3rRPcCMDT4r1razZkoDX/8SfJLlVreIVbkrBScPM9
- VXPAN7Me/Z51xEcQPd+LzUqe3dZpBUywbnywYhWO47MCogHv2+YO2o2ZVj7jnxAPjcdA5X51C
- NhM/QxXqvowIa2SFRaKbnIeivOSZzvsLNWrkahz1o0132rKyAkuY30/tY3CppjpVO7zwD0b9s
- vixN0QD6Oao2LFTsJ0sNOoh7zyoXSvIVt3Oz2QSydDMsHcsn2oYd6ba92m5WSB1Gwf9BANogh
- r6GOVOwGX5juM/npVmtEBxJZWmlyGjXKerkV58BxMOAPFB882a7oPP/K2wiQHEK2luP8UjQ3C
- Y81NYMMbaduNEQWK4OhQwQRQyQ3yFjIFZASRQBCCqCim3Xbwo9QqvjQGd1tQuj+wDcyvPvOai
- pQZOLkf8pRcHMdAeyTcWsymtApQsdMuZM4Dk0UbXB2K3ep+PsFo4+5q5ocsSEHTSIdeg+nJZD
- eAzJJiNu9FjNJCWxvugLXwTshN9d8dlXGFV1dTXMD2+Qhrryk0SOg33ICShLBbyKwfD285Omx
- hmY0QNab80m7J9xr8bg8kJ6nJ8/2RgJDKdLoZqQ9LvLaY=
+UI-OutboundReport: notjunk:1;M01:P0:6YxWKIL8AKE=;WKmxLQ8PJhu4DoacG6NLmJM3U3g
+ UYtElhxREyJ8DS9ApAC8BaDzJ24lOkaUOrT+urdLe9ag9A6sg6yOO7hOfcqWgJgYX9EQcLv6m
+ A3xPhpMH058RuOKYbEXwAVtFqnJWpDZboBO+Rrd4eVWhLyIDKggsEowTlpgArCQvVZn6qrz0M
+ OLa7RCj+6lWniRpRbhtMxeb8NZwLdINLBhA+HaLCd9pQDhJZcQYwilRBmxkWWYgxPreWdH5lT
+ HxLj77TVh+uAJeAhA7E99dkauQTwkL5X4f9W/1zraoTr2KTCbabPMtNi+X0J3vcJ04VYvAJzZ
+ bwpHNKMq9wuXsUZBW/EqhGIas1jaLNQ4o9hvR1V70KlzzKUsqxew+hWbimR/DvDalMbKRtn3o
+ EKERlaMT2SQy45OKpHnkuhufFLr7VrMFlKIFUeDvRS/BG6UCNcUzM2VDum8ZN3WwqvOyw0L+U
+ hOz5Egz03tjvFDKhEIQc+EA0hmw8LQkWjQjffqFwd/6Njq6omkScF69gIDPJ+WTzB436cio4+
+ HfBY4eoHwwlHKeCvitKrshhoSh8FMLoj+7hPC0PebPrgADHodO2FnVSuF7GSO6OXKGzbznGtB
+ OseL5/GN9hFFubAk3tQwXZF6F0E3Jly7gkkEQCx3eiBvdTENeMtQa1CizXqAPfHqmrPoozQ8A
+ PWNdUsvhZrWGT7rNNUR3Dd2zeAINTdOlzpmOLQQWB6+gumzYc9tXRZZFzvX5Xk7hlcqhvJ+Gc
+ GmvfNbya4ZruLpArObYww185vurY7aIwDG3FzAqtmx469S2Do4+R6CwQ6x5+DjnnN9Y2LHhJM
+ pJKeslcsBsvxZwOHAvL6g8jZbGMZXMnaBOa/dgoStnGOo=
 
-Currently, the driver does only support a custom sysfs
-interface to allow userspace to read the fan speed.
-Add support for the standard hwmon interface so users
-can read the fan speed with standard tools like "sensors".
+Am 09.05.24 um 12:35 schrieb Hans de Goede:
 
-Tested with a custom ACPI SSDT.
+> Hi Rafael,
+>
+> On 5/8/24 2:50 PM, Rafael J. Wysocki wrote:
+>> [Resending because it appears to have got lost, sorry for duplicates.]
+>>
+>> On Wednesday, May 8, 2024 2:20:59 PM CEST Heikki Krogerus wrote:
+>>> On Mon, May 06, 2024 at 07:45:07PM +0200, Rafael J. Wysocki wrote:
+>>>> Hi,
+>>>>
+>>>> On Mon, Apr 29, 2024 at 4:55=E2=80=AFPM Heikki Krogerus
+>>>> <heikki.krogerus@linux.intel.com> wrote:
+>>>>> Hi,
+>>>>>
+>>>>> There's a bug that is caused by an EmbeddedControl OpRegion which is
+>>>>> declared inside the scope of a specific USB Type-C device (PNP0CA0):
+>>>>> https://bugzilla.kernel.org/show_bug.cgi?id=3D218789
+>>>> And in this bug you are essentially proposing to install the EC
+>>>> OpRegion handler at the namespace root instead of the EC device.
+>>>>
+>>>> This sounds reasonable, although AFAICS this is a matter of modifying
+>>>> the EC driver (before the EC OpRegion handler is installed by the EC
+>>>> drvier, ACPICA has no way to handle EC address space accesses anyway)=
+.
+>>>>
+>>>>> It looks like that's not the only case where that OpRegion ID is use=
+d
+>>>>> outside of the EC device scope. There is at least one driver in Linu=
+x
+>>>>> Kernel (drivers/platform/x86/wmi.c) that already has a custom handle=
+r
+>>>>> for the EmbeddedControl OpRegion, and based on a quick search, the
+>>>>> problem "Region EmbeddedControl (ID=3D3) has no handler" has happene=
+d
+>>>>> with some other devices too.
+>>>> AFAICS, installing the EC address space handler at the EC device
+>>>> object itself is not based on any sound technical arguments, it's jus=
+t
+>>>> been always done this way in Linux.  It's quite possible that the EC
+>>>> address space handler should have been installed at the namespace roo=
+t
+>>>> from the outset.
+>>> Okay, thank you for the explanation. So can we simply change it like
+>>> this (I may have still misunderstood something)?
+>> Roughly speaking, yes, but it is missing an analogous change around
+>> the removal.
+>>
+>> Please see the appended patch (which I have created independently in
+>> the meantime).  It doesn't break stuff for me and Andy points out that
+>> there are examples of EmbeddedControl OpRegions outside the EC device
+>> scope in the spec (see Section 9.17.15 in ACPI 6.5, for instance).
+>>
+>> So I think that this change can be made relatively safely (but adding H=
+ans and
+>> Mario to the CC in case they know something that might be broken by it)=
+.
+> +Cc Armin for WMI EC handler
+>
+> No objections from me against registering the EC handler at the root,
+> when I saw that the WMI driver was registering its own handler I was
+> already wondering why we did not just register the acpi/ec.c handler at
+> the root level but I did not have time to pursue this further.
+>
+> One question which I have is does the drivers/acpi/ec.c version handle
+> read/writes of a width other then 8 bits ? Armin recently added support
+> for other widths to the WMI version of the OpRegion handler to fix
+> issues on some laptop models:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
+t/?id=3Dc663b26972eae7d2a614f584c92a266fe9a2d44c
+>
+> Regards,
+>
+> Hans
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
-Changes since v6:
-- add "hwmon" to the names of functions and variables
-related to hwmon
-- replace -ENODATA with -EIO/-ENODEV
+Hi,
 
-Changes since v5:
-- fix coding style issues
-- replace double break with return
-- add missing includes
+the handling of multi-byte reads/writes was taken from the ec driver itsel=
+f, so
+using the standard ec handler should make no difference for the WMI driver=
+.
 
-Changes since v4:
-- fix spelling issues
-- check power values for overflow condition too
+Thanks,
+Armin Wolf
 
-Changes since v3:
-- drop fault attrs
-- rework initialization
-
-Changes since v2:
-- add support for fanX_target and power attrs
-
-Changes since v1:
-- fix undefined reference error
-- fix fan speed validation
-- coding style fixes
-- clarify that the changes are compile-tested only
-- add hwmon maintainers to cc list
-=2D--
- drivers/acpi/Makefile    |   1 +
- drivers/acpi/fan.h       |   9 +++
- drivers/acpi/fan_core.c  |   4 +
- drivers/acpi/fan_hwmon.c | 169 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 183 insertions(+)
- create mode 100644 drivers/acpi/fan_hwmon.c
-
-diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
-index 39ea5cfa8326..61ca4afe83dc 100644
-=2D-- a/drivers/acpi/Makefile
-+++ b/drivers/acpi/Makefile
-@@ -77,6 +77,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)	+=3D tiny-power-but=
-ton.o
- obj-$(CONFIG_ACPI_FAN)		+=3D fan.o
- fan-objs			:=3D fan_core.o
- fan-objs			+=3D fan_attr.o
-+fan-$(CONFIG_HWMON)		+=3D fan_hwmon.o
-
- obj-$(CONFIG_ACPI_VIDEO)	+=3D video.o
- obj-$(CONFIG_ACPI_TAD)		+=3D acpi_tad.o
-diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
-index f89d19c922dc..db25a3898af7 100644
-=2D-- a/drivers/acpi/fan.h
-+++ b/drivers/acpi/fan.h
-@@ -10,6 +10,8 @@
- #ifndef _ACPI_FAN_H_
- #define _ACPI_FAN_H_
-
-+#include <linux/kconfig.h>
-+
- #define ACPI_FAN_DEVICE_IDS	\
- 	{"INT3404", }, /* Fan */ \
- 	{"INTC1044", }, /* Fan for Tiger Lake generation */ \
-@@ -57,4 +59,11 @@ struct acpi_fan {
- int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst *fst=
-);
- int acpi_fan_create_attributes(struct acpi_device *device);
- void acpi_fan_delete_attributes(struct acpi_device *device);
-+
-+#if IS_REACHABLE(CONFIG_HWMON)
-+int devm_acpi_fan_create_hwmon(struct acpi_device *device);
-+#else
-+static inline int devm_acpi_fan_create_hwmon(struct acpi_device *device) =
-{ return 0; };
-+#endif
-+
- #endif
-diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
-index ff72e4ef8738..7cea4495f19b 100644
-=2D-- a/drivers/acpi/fan_core.c
-+++ b/drivers/acpi/fan_core.c
-@@ -336,6 +336,10 @@ static int acpi_fan_probe(struct platform_device *pde=
-v)
- 		if (result)
- 			return result;
-
-+		result =3D devm_acpi_fan_create_hwmon(device);
-+		if (result)
-+			return result;
-+
- 		result =3D acpi_fan_create_attributes(device);
- 		if (result)
- 			return result;
-diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
-new file mode 100644
-index 000000000000..af6365f1591a
-=2D-- /dev/null
-+++ b/drivers/acpi/fan_hwmon.c
-@@ -0,0 +1,169 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Hwmon interface for the ACPI Fan driver.
-+ *
-+ * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
-+ */
-+
-+#include <linux/acpi.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/hwmon.h>
-+#include <linux/limits.h>
-+#include <linux/units.h>
-+
-+#include "fan.h"
-+
-+/* Returned when the ACPI fan does not support speed reporting */
-+#define FAN_SPEED_UNAVAILABLE	U32_MAX
-+#define FAN_POWER_UNAVAILABLE	U32_MAX
-+
-+static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *fan=
-, u64 control)
-+{
-+	unsigned int i;
-+
-+	for (i =3D 0; i < fan->fps_count; i++) {
-+		if (fan->fps[i].control =3D=3D control)
-+			return &fan->fps[i];
-+	}
-+
-+	return NULL;
-+}
-+
-+static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwmon_=
-sensor_types type,
-+					 u32 attr, int channel)
-+{
-+	const struct acpi_fan *fan =3D drvdata;
-+	unsigned int i;
-+
-+	switch (type) {
-+	case hwmon_fan:
-+		switch (attr) {
-+		case hwmon_fan_input:
-+			return 0444;
-+		case hwmon_fan_target:
-+			/*
-+			 * When in fine grain control mode, not every fan control value
-+			 * has an associated fan performance state.
-+			 */
-+			if (fan->fif.fine_grain_ctrl)
-+				return 0;
-+
-+			return 0444;
-+		default:
-+			return 0;
-+		}
-+	case hwmon_power:
-+		switch (attr) {
-+		case hwmon_power_input:
-+			/*
-+			 * When in fine grain control mode, not every fan control value
-+			 * has an associated fan performance state.
-+			 */
-+			if (fan->fif.fine_grain_ctrl)
-+				return 0;
-+
-+			/*
-+			 * When all fan performance states contain no valid power data,
-+			 * when the associated attribute should not be created.
-+			 */
-+			for (i =3D 0; i < fan->fps_count; i++) {
-+				if (fan->fps[i].power !=3D FAN_POWER_UNAVAILABLE)
-+					return 0444;
-+			}
-+
-+			return 0;
-+		default:
-+			return 0;
-+		}
-+	default:
-+		return 0;
-+	}
-+}
-+
-+static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_type=
-s type, u32 attr,
-+			       int channel, long *val)
-+{
-+	struct acpi_device *adev =3D to_acpi_device(dev->parent);
-+	struct acpi_fan *fan =3D dev_get_drvdata(dev);
-+	struct acpi_fan_fps *fps;
-+	struct acpi_fan_fst fst;
-+	int ret;
-+
-+	ret =3D acpi_fan_get_fst(adev, &fst);
-+	if (ret < 0)
-+		return ret;
-+
-+	switch (type) {
-+	case hwmon_fan:
-+		switch (attr) {
-+		case hwmon_fan_input:
-+			if (fst.speed =3D=3D FAN_SPEED_UNAVAILABLE)
-+				return -ENODEV;
-+
-+			if (fst.speed > LONG_MAX)
-+				return -EOVERFLOW;
-+
-+			*val =3D fst.speed;
-+			return 0;
-+		case hwmon_fan_target:
-+			fps =3D acpi_fan_get_current_fps(fan, fst.control);
-+			if (!fps)
-+				return -EIO;
-+
-+			if (fps->speed > LONG_MAX)
-+				return -EOVERFLOW;
-+
-+			*val =3D fps->speed;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	case hwmon_power:
-+		switch (attr) {
-+		case hwmon_power_input:
-+			fps =3D acpi_fan_get_current_fps(fan, fst.control);
-+			if (!fps)
-+				return -EIO;
-+
-+			if (fps->power =3D=3D FAN_POWER_UNAVAILABLE)
-+				return -ENODEV;
-+
-+			if (fps->power > LONG_MAX / MICROWATT_PER_MILLIWATT)
-+				return -EOVERFLOW;
-+
-+			*val =3D fps->power * MICROWATT_PER_MILLIWATT;
-+			return 0;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static const struct hwmon_ops acpi_fan_hwmon_ops =3D {
-+	.is_visible =3D acpi_fan_hwmon_is_visible,
-+	.read =3D acpi_fan_hwmon_read,
-+};
-+
-+static const struct hwmon_channel_info * const acpi_fan_hwmon_info[] =3D =
-{
-+	HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_TARGET),
-+	HWMON_CHANNEL_INFO(power, HWMON_P_INPUT),
-+	NULL
-+};
-+
-+static const struct hwmon_chip_info acpi_fan_hwmon_chip_info =3D {
-+	.ops =3D &acpi_fan_hwmon_ops,
-+	.info =3D acpi_fan_hwmon_info,
-+};
-+
-+int devm_acpi_fan_create_hwmon(struct acpi_device *device)
-+{
-+	struct acpi_fan *fan =3D acpi_driver_data(device);
-+	struct device *hdev;
-+
-+	hdev =3D devm_hwmon_device_register_with_info(&device->dev, "acpi_fan", =
-fan,
-+						    &acpi_fan_hwmon_chip_info, NULL);
-+	return PTR_ERR_OR_ZERO(hdev);
-+}
-=2D-
-2.39.2
-
+>>> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+>>> index 02255795b800..6b9dd27171ee 100644
+>>> --- a/drivers/acpi/ec.c
+>>> +++ b/drivers/acpi/ec.c
+>>> @@ -1488,7 +1488,7 @@ static int ec_install_handlers(struct acpi_ec *e=
+c, struct acpi_device *device,
+>>>
+>>>          if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
+>>>                  acpi_ec_enter_noirq(ec);
+>>> -               status =3D acpi_install_address_space_handler_no_reg(e=
+c->handle,
+>>> +               status =3D acpi_install_address_space_handler_no_reg(A=
+CPI_ROOT_OBJECT,
+>>>                                                                     AC=
+PI_ADR_SPACE_EC,
+>>>                                                                     &a=
+cpi_ec_space_handler,
+>>>                                                                     NU=
+LL, ec);
+>>> @@ -1497,7 +1497,7 @@ static int ec_install_handlers(struct acpi_ec *e=
+c, struct acpi_device *device,
+>>>                          return -ENODEV;
+>>>                  }
+>>>                  set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
+>>> -               ec->address_space_handler_holder =3D ec->handle;
+>>> +               ec->address_space_handler_holder =3D ACPI_ROOT_OBJECT;
+>>>          }
+>>>
+>>>          if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)=
+) {
+>>>
+>> ---
+>>   drivers/acpi/ec.c       |   10 +++++-----
+>>   drivers/acpi/internal.h |    1 -
+>>   2 files changed, 5 insertions(+), 6 deletions(-)
+>>
+>> Index: linux-pm/drivers/acpi/ec.c
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> --- linux-pm.orig/drivers/acpi/ec.c
+>> +++ linux-pm/drivers/acpi/ec.c
+>> @@ -1488,7 +1488,7 @@ static int ec_install_handlers(struct ac
+>>
+>>   	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
+>>   		acpi_ec_enter_noirq(ec);
+>> -		status =3D acpi_install_address_space_handler_no_reg(ec->handle,
+>> +		status =3D acpi_install_address_space_handler_no_reg(ACPI_ROOT_OBJEC=
+T,
+>>   								   ACPI_ADR_SPACE_EC,
+>>   								   &acpi_ec_space_handler,
+>>   								   NULL, ec);
+>> @@ -1497,11 +1497,10 @@ static int ec_install_handlers(struct ac
+>>   			return -ENODEV;
+>>   		}
+>>   		set_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
+>> -		ec->address_space_handler_holder =3D ec->handle;
+>>   	}
+>>
+>>   	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+>> -		acpi_execute_reg_methods(ec->handle, ACPI_ADR_SPACE_EC);
+>> +		acpi_execute_reg_methods(ACPI_ROOT_OBJECT, ACPI_ADR_SPACE_EC);
+>>   		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+>>   	}
+>>
+>> @@ -1555,8 +1554,9 @@ static void ec_remove_handlers(struct ac
+>>   {
+>>   	if (test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
+>>   		if (ACPI_FAILURE(acpi_remove_address_space_handler(
+>> -					ec->address_space_handler_holder,
+>> -					ACPI_ADR_SPACE_EC, &acpi_ec_space_handler)))
+>> +						ACPI_ROOT_OBJECT,
+>> +						ACPI_ADR_SPACE_EC,
+>> +						&acpi_ec_space_handler)))
+>>   			pr_err("failed to remove space handler\n");
+>>   		clear_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags);
+>>   	}
+>> Index: linux-pm/drivers/acpi/internal.h
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> --- linux-pm.orig/drivers/acpi/internal.h
+>> +++ linux-pm/drivers/acpi/internal.h
+>> @@ -186,7 +186,6 @@ enum acpi_ec_event_state {
+>>
+>>   struct acpi_ec {
+>>   	acpi_handle handle;
+>> -	acpi_handle address_space_handler_holder;
+>>   	int gpe;
+>>   	int irq;
+>>   	unsigned long command_addr;
+>>
+>>
 
