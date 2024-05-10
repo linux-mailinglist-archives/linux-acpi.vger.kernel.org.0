@@ -1,232 +1,115 @@
-Return-Path: <linux-acpi+bounces-5715-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5716-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAB6E8C20DF
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 11:26:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B428C2152
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 11:53:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1FA1C21AEE
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 09:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1376F1C20AED
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 09:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E9B160877;
-	Fri, 10 May 2024 09:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238871649CF;
+	Fri, 10 May 2024 09:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="XUfzHMep"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="H5KPqkoL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B643F16132C;
-	Fri, 10 May 2024 09:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD8A1635BC
+	for <linux-acpi@vger.kernel.org>; Fri, 10 May 2024 09:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715333177; cv=none; b=OuSFi/LnkajaO3GM2/K0PViDZAebnE6RQ4cyJix8rdfFYSsANO3OTK7YbXChdR7CwlzdPAB9ZoW77OEU+/QeZmBPGVHSnVPMQI9vsJcMoHVE239asAziVqpkiEB4eME0WAPfCpjkl+9uP0f9ndXFqF6hWYzf3O6cBomLHVCZZZ0=
+	t=1715334830; cv=none; b=Aztpxo2+8hlQc9XROKy0wGfwsJ5ijpwHXGhqNJzKX6nQzY2+O1mEm6p1An8PLE7H5t4ZoArQmNK+ob4yrSI5yi9JAfdtcHbB6mHskVMMKtPUySNWrzetK7cg1o1TgswgMNsuILXkd8Qlx0ke46G9BUGNG4Urwb7pHGSnTNp9FPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715333177; c=relaxed/simple;
-	bh=y09aU3jLc3FuTNGiBAOkD/IJp3wci1UlfN8un8+6Sv4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nP4V6SDhffLEqWtr69M/k+/4L7o3yMBnBbdg4b1bfn+C9wgQ+cQH9AEPaZBEQlgk1Xh4V9RGtn62WwvD7WUV6tI0Pd0R1/VJnvuKBO3OXrDftQAT8sLS0xGbHc7I/yC0c6uxiHgdM3NpkOMSos4xSYDumOTuYbVfdjBET37CK5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=XUfzHMep; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 17A2440E0249;
-	Fri, 10 May 2024 09:26:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id plVXWEu6CSsG; Fri, 10 May 2024 09:26:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715333163; bh=fRAsiqdaxYNLWRPjqSgsM/ZnfQQhG+p8NwrR51D23nw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XUfzHMepSn4/+ARY812zuUTZb37qycJWK1yUQ/J5b0dM1vo/H4JxUPvCeFPJtXZ92
-	 4tDsOc1Gxve7TVkNl8IITGIAZTp3mCJ+0esUpdjY5h3ZfLe2exvjxxd9KxEUwEIfIb
-	 UtyEIUDSTywR16SF8+u/T8bO8Z4r3V8zHVf0NfIqKwwx3XgMKSAYHkHSVASdFtQSd0
-	 v2m3vSCRS/j7npFX/QRO9qzkWpdh6ywBiQ5Q6qnn323/AWpecrLBHX/BBAYEM0bXcE
-	 8CrYjb/Xlu5pBV7KJmCCI1D9zISrgytBG+8w0KE+QGfp+8Bx8F2xbusnHqF6+8ptB3
-	 ppUjQgSuH0QGyOcHpP7z9ykO7LWPIJkALa5s+08UjIB+WZIIdRIfzBdnJqeg9W+gjP
-	 9gx1i5OeCuBTPDZ39+2l4dJCMFm/p6p2D/d87x8KYrLjcGeHx+hf+oz4ECjUIX7XM7
-	 20wxMOHyLhstOSOvcDEBUIirXRXu5rv8UdTa+it96/mfIfoNpzXQ0Bzs4sa4ZgZOSv
-	 j7oRwPSN53LFchyK9MyjIha7+u6ObleFB20Y0TM+jvFCR9p7FyoyyebUyFps7NWjDr
-	 PjRYNWCqDrNjuQ3/QkiVrNTKVI/qx2Eo5vghzBSGYvaeFF7oyFmp/V6eQZVyGmjRNz
-	 VFI/97BiGc+9OZSKaGWZj0dA=
-Received: from zn.tnic (pd953020b.dip0.t-ipconnect.de [217.83.2.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AE34040E0187;
-	Fri, 10 May 2024 09:25:16 +0000 (UTC)
-Date: Fri, 10 May 2024 11:25:11 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
-References: <e0ce36eb80054440ab877ccee4e606de@huawei.com>
- <20240508172002.GGZju0QvNfjB7Xm6qL@fat_crate.local>
- <4ceb38897d854cc095fca1220d49a4d2@huawei.com>
- <20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
- <20240509101939.0000263a@Huawei.com>
- <D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
- <20240509200306.GAZj0r-h5Tnc0ecIOz@fat_crate.local>
- <663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
- <20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
- <663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1715334830; c=relaxed/simple;
+	bh=TkEdq8r0+/swqUjCHG6c36VrHTwqIXDZ1QgHk6NLqPI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b5kvuLW8MgPhRtjm2KVO8j72eobiPlbuXGM1+jLOuB/eebk4MJMk3bSNO4HO2hnvnAv39/tVuA0430MjjmlsUZOAvHAurzV2b3EnzBa0gc36kEDvtCSczs5wlFT9S6SoTRJaWZHl3bsWbks2oKSscwAKjds8RVElpW49RT2eOlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=H5KPqkoL; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a59cf8140d0so442118566b.3
+        for <linux-acpi@vger.kernel.org>; Fri, 10 May 2024 02:53:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1715334826; x=1715939626; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IgDr/j3I45aVQZVCtriHh098OsnX9VLTCcgYdnyh5r0=;
+        b=H5KPqkoLooNmNVNVzl9Sy8BA8PYeBQZTrvQrO4cID0CGS8Y7qHqeMvu+YnkID+2cQs
+         GRtm3zH+0H/bZ0X3UDvNR5sf6ZujFwJO3213f8QlJ+VK86IdlH71DwuX/5/fg2kJZSOg
+         b87gNL97392rVinS+mpesirADnXDGoGYCJwAzAqHlXap9xWMyBNUOmezh72tYQXXSyor
+         lXxQWqpwrYEt/HRmlixGBExcB3iAbhvGAOb5Zude7IdIDPEXMAThNztbjf2H82iEB5sx
+         kf0YJs4KTWcmLx3NxCXY1YEPdsJ76LLChJ0pR3h3kDDj4em8mTLFdFGm+fLlrV8Mk5Iq
+         znQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715334826; x=1715939626;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IgDr/j3I45aVQZVCtriHh098OsnX9VLTCcgYdnyh5r0=;
+        b=YK5rU+YauR98CNkT3sElPYaDEa+Brxxd6mW/NY5Ik4Ie7XlsE3KvA4FHpGXX4pma6q
+         pnprxQ0NGBSkPNTl71W93VIRZKf2NIFjXgsWIDy7kJyIZC/3c144OuvSEsx55MSX1am0
+         j4rCIl13DEdimgEMtZNqrXgaUlfel5mbHtMbUljBS39MkrKLsNQR3p36QcgIWacEpUhE
+         JCxzO3R3rbOJdxsYV0TGlta/kw9AUD6LM9NQ9fIIegjYMgqxbACQSSopo4kwwwLU7Jte
+         c3pabEVelhQO+CaxKA3q/BJjiSMgVKgdojPDMC142cNpgDkUMbhX3cWx/mEm4adjwM1J
+         cD0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXAj/G3Qgc7clz03+duWL3P7AwtYzw/y/oYS2AOrRtulQMNaCzz0vcBDLvV1HATH0Vm87KYON9T92xSIhL7iHWWxYYHwnd7wVaccQ==
+X-Gm-Message-State: AOJu0Yz05XBcBNc7EezLHBqdTxB9ExhFxt/RXPPbAgzK32rO98zKxvrf
+	Mg1ZbCqXOHhu8NkD5vAby/0H5PqLsgWGHI9NRy6/2NH8UIxC3xTTR1UxscVm5XE=
+X-Google-Smtp-Source: AGHT+IEKz31JvWqjAEmRomlfNgaF8EqP2HQK8r73XnIs3tomW69Tn3zJ4arHD6nbkZkJnphFIwRQPg==
+X-Received: by 2002:a17:906:134d:b0:a59:9eab:162b with SMTP id a640c23a62f3a-a5a2d5d01abmr136503366b.35.1715334826351;
+        Fri, 10 May 2024 02:53:46 -0700 (PDT)
+Received: from ?IPV6:2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c? (p200300e5873ca5006aafb7a77c29ae5c.dip0.t-ipconnect.de. [2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b01968sm164814366b.166.2024.05.10.02.53.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 May 2024 02:53:46 -0700 (PDT)
+Message-ID: <c30ebad2-1ad3-4b58-afaf-e6dc32c091fc@suse.com>
+Date: Fri, 10 May 2024 11:53:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC KERNEL PATCH v6 3/3] xen/privcmd: Add new syscall to get gsi
+ from irq
+To: "Chen, Jiqian" <Jiqian.Chen@amd.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
+ <roger.pau@citrix.com>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "Huang, Ray" <Ray.Huang@amd.com>
+References: <20240419033616.607889-1-Jiqian.Chen@amd.com>
+ <20240419033616.607889-4-Jiqian.Chen@amd.com>
+ <79666084-fc2f-4637-8f0b-3846285601b8@suse.com>
+ <BL1PR12MB58493D17E23751A06FC931DDE7E72@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+In-Reply-To: <BL1PR12MB58493D17E23751A06FC931DDE7E72@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 09, 2024 at 03:59:29PM -0700, Dan Williams wrote:
-> No, at a minimum that's a layering violation. This is a generic library
-> facility that should not care if it is being called for a CXL device or
-> an ACPI device.
-
-Really?
-
-Because this looks like creating a subsystem for those two newfangled
-scrubbing functionalities which will be present in CXL devices and
-by that ACPI RAS2 thing.
-
-Because we have a *lot* of hw scrubbing functionality already. Just do:
-
-git grep "scrub"
-
-Some of it controls hw scrubbing. If this is a generic facility, does
-this mean that all those older scrubbers should be converted to it?
-
-Or is this thing going to support only new stuff? I.e., we want to
-disable our scrubbers when doing performance-sensitive workloads and
-reenable them after that but we don't care about old systems?
-
-And all that other bla about controlling scrubbers from userspace.
-
-So which is it?
-
-> I think it works for x86 drivers because the functionality in those
-> modules is wholly contained within that one module. This scrub module is
-> a service library for other modules.
-
-Well, you have that thing in EDAC. edac_core.ko is that service module
-and the chipset-specific drivers - at least on x86 - use a match_id to
-load only on the systems they should load on.
-
-If I had a BIOS table which had "EDAC" in it, I won't load edac_core.ko
-either but there isn't one.
-
-> It is functionally the wrong place to do the check. When module_init()
-> fails it causes not only the current module to be unloaded but any
-> dependent modules will also fail to load.
-
-See above. I'm under the assumption that this is using two methods to
-detect scrubbing functionality.
-
-> Let's take an example of the CXL driver wanting to register with this
-> scrub interface to support the capability that *might* be available on
-> some CXL devices. The cxl_pci.ko module, that houses cxl_pci_driver,
-> grows a call to scrub_device_register(). That scrub_device_register()
-> call is statically present in cxl_pci.ko so that when cxl_pci.ko loads
-> symbol resolution requires scrub.ko to load.
+On 10.05.24 11:06, Chen, Jiqian wrote:
+> Hi,
 > 
-> Neither of those modules (cxl_pci.ko or scrub.ko) load automatically.
-> Either udev loads cxl_pci.ko because it sees a device that matches
-> cxl_mem_pci_tbl, or the user manually insmods those modules because they
-> think they know better. No memory wasted unless the user explicitly asks
-> for memory to be wasted.
+> On 2024/5/10 14:46, Jürgen Groß wrote:
+>> On 19.04.24 05:36, Jiqian Chen wrote:
+>>> +
+>>> +    info->type = IRQT_PIRQ;
+> I am considering whether I need to use a new type(like IRQT_GSI) here to distinguish with IRQT_PIRQ, because function restore_pirqs will process all IRQT_PIRQ.
 
-The scrub.ko goes and asks the system: "Do you have a CXL device with
-scrubbing functionality?" "Yes: load." "No: ok, won't."
+restore_pirqs() already considers gsi == 0 to be not GSI related. Isn't this
+enough?
 
-> If no CXL devices in the system have scrub capabilities, great, then
-> scrub_device_register() will never be called.
-> 
-> Now, if memory_scrub_control_init() did its own awkward and redundant
-> CXL scan, and fails with "no CXL scrub capable devices found" it would
-> not only block scrub.ko from loading, but also cxl_pci.ko since
-> cxl_pci.ko needs to resolve that symbol to load.
 
-Why would it fail the scan?
-
-Isn't this fancy GET_SUPPORTED_FEATURES command giving you all info you
-need?
-
-> I would not say "no" to a generic facility that patches out module
-> dependencies until the first call, just not sure the return on
-> investment would be worth it.
-
-From the discussion so far yeah, I think you're right, it is not worth
-the effort.
-
-> Lastly I think drivers based on ACPI tables are awkward. They really
-> need to have an ACPI device to attach so that typical automatic Linux
-> module loading machinery can be used. The fact this function is a
-> subsys_initcall() is a red-flag since nothing should be depending on the
-> load order of a little driver to control scrub parameters.
-
-Yeah, it is becoming a mess before it has even started.
-
-So I don't mind if such drivers get loaded as long as doing this is the
-best we can do given the situation. What gets me up the palms, as they
-say in .de, is "just because" and "look, the others do it too."
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Juergen
 
