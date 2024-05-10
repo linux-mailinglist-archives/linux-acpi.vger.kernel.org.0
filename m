@@ -1,195 +1,144 @@
-Return-Path: <linux-acpi+bounces-5758-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5759-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961D48C29C2
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 20:17:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0D28C2A24
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 21:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B94BB1C20D38
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 18:17:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 780C52835FD
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 19:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900C822F19;
-	Fri, 10 May 2024 18:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB02143ADF;
+	Fri, 10 May 2024 19:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n18zncT8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RhDibBVA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D80208B6;
-	Fri, 10 May 2024 18:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AA71D530;
+	Fri, 10 May 2024 19:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715365049; cv=none; b=Kg+tKbl+5JGhrHKuZzzTTPnYHOfXwvjemmxgrQClzkURGrBAMyOcA3pst+5WMnFMUBKZtE0qELld5EMP/ziZaQBu38jsyZ8oZoXNwETakMHo+/uNpxmlJSc38HkSTlCci8QcvnQ9aiqT7bShyfQs0eSFVMtVxQd2/3PHs5C6KUE=
+	t=1715367657; cv=none; b=dz5qQlRuz1i/EJF2e+BItw13bS43s8GM8/PLJyuFyo68ZocMkxcpGRB+UG48fag4q25e1NUIQphd4z/8wn5lbGfzectrLVQcAnVtYn2YORYvYrlkzWOqB3e+gjql1J/px1Taq3eIShTL/cUabrwHMB/mGNFGainHnxwzT4frkx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715365049; c=relaxed/simple;
-	bh=82edhdM9zJGPnwaQI49iZK5qejVGqXEpbziYfMdrOh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CDKJlkaj3WN/L56BMdJLT3m4B3DiMM5ya2xIn3oRVdODsfMAtkElyrH7ROo/psMeWBuzLiBfY1Y0M8o9TZLRoiD/rQec9Zh6rCCkKk057o4+irGye8diXS5Np4SaKmKqZsrOGqDklkk+zkBkuQzysPSEDClmTJZWSjk34U4hl6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n18zncT8; arc=none smtp.client-ip=198.175.65.10
+	s=arc-20240116; t=1715367657; c=relaxed/simple;
+	bh=s6ILEciIW26eOwuIRXGs/El6boV8M8kmhjL1g78NP5Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kl/yemxnN1kNYUdz8c24wJImJY24Mo+frZacIv9lPWUtjnCXwklYaRDCKk5y8EoUrxAEfKGLxQ/nDYJJ6qvUrLAIM6VunTuegaydb95z7K/oMxO7KP6ahSH7MDsf6JWcsL3mTUVraF3XFIjrRfZIaWAzGBZslwADo0GdHhggFvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RhDibBVA; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715365048; x=1746901048;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=82edhdM9zJGPnwaQI49iZK5qejVGqXEpbziYfMdrOh4=;
-  b=n18zncT8y7jiBgNUS0tyJrVGD22ELWtzc0uj7yBD4bbZOScK/EmCVpI8
-   Tj0hbzj5cRn6qZEfIy2R60JKWALkZCoUP50iiYfHEkPxxMg8EpoT5Ix2c
-   nbzz9ZH+4J8cgPUf0H2PPGSkAzRqB89WXRI9x3KEBu0flUb6/7P6YjbgL
-   Lp/BvWhK3gsentiMeiK+b6X798uidPrwwPByP7R1jEocHUeRoNGl1/Ptr
-   A/nFpWIQpkI/0hWDWFtJUZog1gsT90INn049yw/ZxSIQ9HMcMcKsKJLKh
-   ubI2cwhMGP7eXtCrbjKgVRuHHvp66MTdzH6obFWOLc7DQKSabClRBr++0
-   Q==;
-X-CSE-ConnectionGUID: acMC0syhSx+CotKoHkrXaw==
-X-CSE-MsgGUID: uuXXv1FSQjCPu2C1qt1Hbw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="28845655"
+  t=1715367641; x=1746903641;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=s6ILEciIW26eOwuIRXGs/El6boV8M8kmhjL1g78NP5Y=;
+  b=RhDibBVAbioEKD2w4jNJugXmVXuTXVhuqK7//KqE8oK0JZpItt3AVP+8
+   UxmpTdNyK7cEhyoERddhGLO9n+wlatMjKKSZWB6TtnIyWqYL5bULZXwCn
+   8RYp90jPLq8DC059SZULRPArky8SaisMr/9eu1Wbcme8OxdZJrJVTbIGS
+   dyNXA/P8TxU9AtlbTv5EofiubMNq+XQvwB2ArZ/Ys44MId1+bJei5lPJl
+   2fqnyIqwIZn1MJj2QCL6F7ga4BwoLfaeMgkbI9tnZ9ypbdBUQD2aVW6cz
+   8AfNQfY7Jmh8+sclz2m4ekG4E9M8qkVnjd8Jvm69tO7qGnvc/rxaeWqOP
+   w==;
+X-CSE-ConnectionGUID: bsHmoWZcSyyahwBUX+v1JA==
+X-CSE-MsgGUID: NBczbAh1SJut/sj5twODzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11069"; a="36742681"
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="28845655"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 11:17:27 -0700
-X-CSE-ConnectionGUID: Usd77N0wQbmu4BCB6hjg+w==
-X-CSE-MsgGUID: R6TJp3ZcQ4yn3Tde2JPziw==
+   d="scan'208";a="36742681"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 12:00:41 -0700
+X-CSE-ConnectionGUID: xvcr9McrQYOjlNzYC7TPfQ==
+X-CSE-MsgGUID: n8D6LLd2QJKk7lGohA/VyQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="60545626"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 11:17:25 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s5Uo6-00000006DJA-07o7;
-	Fri, 10 May 2024 21:17:22 +0300
-Date: Fri, 10 May 2024 21:17:21 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Linux ACPI <linux-acpi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v1 1/2] ACPI: EC: Install address space handler at the
- namespace root
-Message-ID: <Zj5ksaCzhSGN2FpE@smile.fi.intel.com>
-References: <5787281.DvuYhMxLoT@kreacher>
- <4926735.31r3eYUQgx@kreacher>
- <ac04c433-b0ac-4b82-b8eb-98ac16f872d8@gmx.de>
- <CAJZ5v0g_NjGHRvhm-N5vQFnOsqnxExSq99v8n_B_6ANoaCga0w@mail.gmail.com>
- <568291fc-fd79-4f08-9eb7-aed7f5a32345@gmx.de>
- <Zj5ZdcQeaTo9ImT4@smile.fi.intel.com>
- <0cdf0af6-851b-4781-83fe-99320c35544f@amd.com>
- <Zj5eZKgpg3LFpne8@smile.fi.intel.com>
- <CAJZ5v0geYUx6G_ZnTX7+BjEbkqdSovdwriMHBoBXMyvrPjqFmg@mail.gmail.com>
+   d="scan'208";a="34139624"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.205])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 12:00:38 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>
+Subject:
+ Re: [RFC PATCH v2 3/3] ACPI: extlog: Make print_extlog_rcd() log
+ unconditionally
+Date: Fri, 10 May 2024 21:00:34 +0200
+Message-ID: <7009544.jJDZkT8p0M@fdefranc-mobl3>
+In-Reply-To: <20240510125214.GCZj4YfluoP-mDz3_U@fat_crate.local>
+References:
+ <20240510112740.667445-1-fabio.m.de.francesco@linux.intel.com>
+ <20240510112740.667445-4-fabio.m.de.francesco@linux.intel.com>
+ <20240510125214.GCZj4YfluoP-mDz3_U@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0geYUx6G_ZnTX7+BjEbkqdSovdwriMHBoBXMyvrPjqFmg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, May 10, 2024 at 08:06:11PM +0200, Rafael J. Wysocki wrote:
-> On Fri, May 10, 2024 at 7:50 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Fri, May 10, 2024 at 12:40:05PM -0500, Mario Limonciello wrote:
-> > > On 5/10/2024 12:29, Andy Shevchenko wrote:
-> > > > On Fri, May 10, 2024 at 06:52:41PM +0200, Armin Wolf wrote:
-> > > > > Am 10.05.24 um 18:41 schrieb Rafael J. Wysocki:
-> > > > > > On Fri, May 10, 2024 at 6:10 PM Armin Wolf <W_Armin@gmx.de> wrote:
-> > > > > > > Am 10.05.24 um 16:03 schrieb Rafael J. Wysocki:
-> > > > > > >
-> > > > > > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > > > >
-> > > > > > > > It is reported that _DSM evaluation fails in ucsi_acpi_dsm() on Lenovo
-> > > > > > > > IdeaPad Pro 5 due to a missing address space handler for the EC address
-> > > > > > > > space:
-> > > > > > > >
-> > > > > > > >     ACPI Error: No handler for Region [ECSI] (000000007b8176ee) [EmbeddedControl] (20230628/evregion-130)
-> > > > > > > >
-> > > > > > > > This happens because the EC driver only registers the EC address space
-> > > > > > > > handler for operation regions defined in the EC device scope of the
-> > > > > > > > ACPI namespace while the operation region being accessed by the _DSM
-> > > > > > > > in question is located beyond that scope.
-> > > > > > > >
-> > > > > > > > To address this, modify the ACPI EC driver to install the EC address
-> > > > > > > > space handler at the root of the ACPI namespace.
-> > > > > > > >
-> > > > > > > > Note that this change is consistent with some examples in the ACPI
-> > > > > > > > specification in which EC operation regions located outside the EC
-> > > > > > > > device scope are used (for example, see Section 9.17.15 in ACPI 6.5),
-> > > > > > > > so the current behavior of the EC driver is arguably questionable.
-> > > > > > > Hi,
-> > > > > > >
-> > > > > > > the patch itself looks good to me, but i wonder what happens if multiple
-> > > > > > > ACPI EC devices are present. How would we handle such a situation?
-> > > > > > I'm wondering if this is a theoretical question or do you have any
-> > > > > > existing or planned systems in mind?
-> > > > > >
-> > > > > > ec_read(), ec_write() and ec_transaction() use only the first EC that
-> > > > > > has been found anyway.
-> > > > >
-> > > > > Its a theoretical question, i do not know of any systems which have more than
-> > > > > one ACPI EC device.
-> > > >
-> > > > The specification is clear about this case in the "ACPI Embedded Controller
-> > > > Interface Specification":
-> > > >
-> > > >   "The ACPI standard supports multiple embedded controllers in a system,
-> > > >    each with its own resources. Each embedded controller has a flat
-> > > >    byte-addressable I/O space, currently defined as 256 bytes."
-> > > >
-> > > > However, I haven't checked deeper, so it might be a leftover in the documentation.
-> > > >
-> > > > The OperationRegion() has no reference to the EC (or in general, device) which
-> > > > we need to speak to. The only possibility to declare OpRegion() for the second+
-> > > > EC is to use vendor specific RegionSpace, AFAIU. So, even if ACPI specification
-> > > > supports 2+ ECs, it doesn't support OpRegion():s for them under the same
-> > > > RegionSpace.
-> > > >
-> > > > That said, the commit message might be extended to summarize this, but at
-> > > > the same time I see no way how this series can break anything even in 2+ ECs
-> > > > environments.
-> > >
-> > > It's deviating from the patch, but in practice /why/ would you even want to
-> > > have a design with two ECs?  In general that is going to mean a much more
-> > > complex state machine with synchronizing the interaction between both of
-> > > them and the host.
-> > >
-> > > Understanding the benefit of such a design might make it easier to
-> > > hypothesize impacts.
-> >
-> > First that comes to my mind (but hypothetical), is the separate CPU/EC add-on
-> > cards. If the main firmware somehow supports all of these add-on platforms,
-> > it might need to handle 2+ ECs.
-> >
-> > Again, it might be ACPI specification issue. For instance, the cited piece
-> > doesn't tell about 16-bit EC accesses.
-> 
-> IMV this is a matter of what is testable.
-> 
-> We can only seriously say that we support 1 EC in the system, because
-> that's what we can test.
-> 
-> Now, the specification allows (theoretically) multiple ECs to be
-> supported which does not mean that it will ever be done in practice
-> and it also does not mean that this is a good idea.
+On Friday, May 10, 2024 2:52:14=E2=80=AFPM GMT+2 Borislav Petkov wrote:
+> On Fri, May 10, 2024 at 01:21:47PM +0200, Fabio M. De Francesco wrote:
+> > Make extlog_print_rcd() log unconditionally to report errors even if
+> > userspace is not consuming trace events. Remove ras_userspace_consumers=
+()
+> > because it is not anymore used.
+>=20
+> Did you do any git archeology before that?
+>=20
+> d6cae935ec5b ("trace, eMCA: Add a knob to adjust where to save event log")
+>=20
+> I can't find in this commit message why this is needed... Do share pls.=20
+>=20
+> > This change makes extlog_print() (ELOG) log consistently with ghes_proc=
+()
+> > (GHES).
 
-I briefly read the all mentions of the "Embedded Controller" in the
-specification and like 98% implies that the only one is per system. I believe
-the specification may be corrected to remove ambiguous plural forms in a couple
-(or a few) places. In any case it's a question to ASWG.
+I thought that ELOG and GHES should be modeled consistently. ghes_proc()=20
+prints to the console while ghes_do_proc() also uses ftrace. I made this sh=
+ort=20
+series an RFC mainly to ask / receive comments on this change (3/3).
 
--- 
-With Best Regards,
-Andy Shevchenko
+If we want to make ELOG and GHES act similarly, this patch is needed.=20
+Otherwise, things should be left the way they currently are.=20
+
+I'll make a v3  with a more clear explanation of why I think we should pref=
+er=20
+to make ELOG act similarly to GHES in how kernel logs are handled.
+
+> Avoid having "This patch" or "This commit" in the commit message. It is
+> tautologically useless.
+>
+> Also, do
+>=20
+> $ git grep 'This patch' Documentation/process
+>=20
+> for more details.
+>=20
+> Pls have a look at our documentation and check all your patches.
+>=20
+> Thx.
+
+Please note that I was introducing the "why" part of the message. I never=20
+refer to this patch for the "what", and I always use an imperative tone onl=
+y=20
+in the "what" part.=20
+
+However, I see why this commit message was poor. And probably also the othe=
+r=20
+two were low quality. Therefore, I'll rework this and also the other two=20
+messages.
+
+Thanks for your comments,
+
+=46abio
+
 
 
 
