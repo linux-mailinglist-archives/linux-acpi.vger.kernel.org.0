@@ -1,135 +1,93 @@
-Return-Path: <linux-acpi+bounces-5729-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5732-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A1F8C25CC
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 15:31:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9554D8C264B
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 16:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1881F25D4C
-	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 13:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EADF5285F63
+	for <lists+linux-acpi@lfdr.de>; Fri, 10 May 2024 14:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48D412C47E;
-	Fri, 10 May 2024 13:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79535172761;
+	Fri, 10 May 2024 14:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="sfMumB9T"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA173127E18;
-	Fri, 10 May 2024 13:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086A6171E54;
+	Fri, 10 May 2024 14:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715347909; cv=none; b=XbBiuOYDBvftRKYTEsQM7xrRtcR+zcibP8keAHltVmx5Jf/k9QSRHgXPzqrQ8rVL/KlM4u3AWZd0HyB1TlA69PsTbKIAdp7lDM98vdtutHMUQiRvnjP0YhZeoflpxJX7wiBgbL2dIsxqQCfZiHrZZOmKrFdFa8nhCchOx7X9N2s=
+	t=1715349905; cv=none; b=BBIKD4corvhmrtIEC47GHOx9+wrvi39iVKKTLRf3nInJfpJ2eFna54zY4C3/zdYGwAFfgV2aulHNgNDrRc/nuY8kvhxkoy5BFBuhzrZLNstrvKo2/pCONooJhvXnlyFTlzBY4RkGfT//jOpc167YhkM36i8VmtXTQq/BQHkZLK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715347909; c=relaxed/simple;
-	bh=QDeUIilVTn4GdjQ9ikQzbhB+jiyiep3X6WCQDzncYZI=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VWHJSuyLO1MdCu0b3cKrfeWJwIMB0gC4PKH+Qi/AjqVPm1m7JpFC1JwTnr0lD2pFtrgs/Rv0LGkDvrdPhr49tQ0LxoMa5JKJIBvp2klOgSO1mi22SS9OQq44YG9C3W93xYOXRr4RFMSskk1eHFsfDcQBjWWw0lVB6ppJ/mbpT0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VbV7z4xFKz6K5ks;
-	Fri, 10 May 2024 21:28:31 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id C21D61400D4;
-	Fri, 10 May 2024 21:31:43 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 10 May
- 2024 14:31:42 +0100
-Date: Fri, 10 May 2024 14:31:41 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: Shiju Jose <shiju.jose@huawei.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dan.j.williams@intel.com" <dan.j.williams@intel.com>, "dave@stgolabs.net"
-	<dave@stgolabs.net>, "dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
-	<ira.weiny@intel.com>, "linux-edac@vger.kernel.org"
-	<linux-edac@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>, "leo.duran@amd.com"
-	<leo.duran@amd.com>, "Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>, "jiaqiyan@google.com"
-	<jiaqiyan@google.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Jean Delvare
-	<jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240510143141.000042da@Huawei.com>
-In-Reply-To: <D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
-References: <20240419164720.1765-1-shiju.jose@huawei.com>
-	<20240419164720.1765-2-shiju.jose@huawei.com>
-	<20240425101542.GAZiotThrq7bOE9Ieb@fat_crate.local>
-	<63fdbe26b51f4b7c859bfb30287c8673@huawei.com>
-	<20240506103014.GHZjixNhhFkgkMhDg_@fat_crate.local>
-	<e0ce36eb80054440ab877ccee4e606de@huawei.com>
-	<20240508172002.GGZju0QvNfjB7Xm6qL@fat_crate.local>
-	<4ceb38897d854cc095fca1220d49a4d2@huawei.com>
-	<20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
-	<20240509101939.0000263a@Huawei.com>
-	<D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1715349905; c=relaxed/simple;
+	bh=M4vNfNhSkf79qU0rJCyfCBaGhDTGtuVQv5YxYiYbpwk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=COSTXNxA69AdolNlY3BVVQcIZ8F1O/rLdAtWZGgQ8vwpcZJcjdmPB9ZBa50QxpmshfoBsRZTVtAcZAx1wjajXi6FxMuCV2uIeweDY48yWOT9IQ4caf9mtaUuu3QTk4gvXnNTFoHKqdf/kpzx0ZkdL440mUiWpnBOWu9xseq2qOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=sfMumB9T reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.0.0)
+ id 0053621c028d5798; Fri, 10 May 2024 16:05:00 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 59E4D21031DA;
+	Fri, 10 May 2024 16:05:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1715349900;
+	bh=M4vNfNhSkf79qU0rJCyfCBaGhDTGtuVQv5YxYiYbpwk=;
+	h=From:To:Cc:Subject:Date;
+	b=sfMumB9TIOhpsMEjm+y7vNPkY5ILiFNdt2rkMxA7XgOzfYzoD9AOTAe9yNRqB4VS/
+	 v1Jh4j4yuWjOndXrgKCvVwFGCYnJGpmxiguLcauJ/IWz4FoWRCoUinzOl19/S6K1qZ
+	 dyauwkxVNpv6mXFiDS0/xn2X6dz105TWaJJ6BmlxfzARf++5rS6PT4Qs2il6ahPMC0
+	 AyozfpBT+Gi4cn/U+BbI0OX+sJjdrrLmTY8DB5kIr9nxhL3Hq1lbdue59TLW8l8TC7
+	 MhMkCkmLh5HK6ecXmezwlREodgDuNflRac62vXmgQBmtK7NC/Rpf21wd2Oigjm4AIH
+	 Gv1CvCEp0ZH9A==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux ACPI <linux-acpi@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, Armin Wolf <w_armin@gmx.de>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject:
+ [PATCH v1 0/2] ACPI: EC: Install EC address space handler at the namespace
+ root
+Date: Fri, 10 May 2024 16:01:41 +0200
+Message-ID: <5787281.DvuYhMxLoT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvdefkedgjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepgeffhfdujeelhfdtgeffkeetudfhtefhhfeiteethfekvefgvdfgfeeikeeigfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrihihrdhshhgvvhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehhuggv
+ ghhovgguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopeifpggrrhhmihhnsehgmhigrdguvg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=7 Fuz1=7 Fuz2=7
+
+Hi Everyone,
+
+This is a follow up for the discussion in:
+
+https://lore.kernel.org/linux-acpi/CAJZ5v0hiXdv08PRcop7oSYqgr_g5rwzRTj7HgdNCCGjXeV44zA@mail.gmail.com/T/#t
+
+Patch [1/2] is a resend of the patch posted in the thread above and patch [2/2]
+removes the custom EC address space handler from the WMI driver as it should
+not be necessary any more.
+
+Thanks!
 
 
-> How hard is that "jump through hoops" thing anyway?
 
-I'd conservatively estimate 500 lines of duplicated code from the CXL
-subsystem just to handle the setup and discovery of the mailbox, plus
-all the checks needed to establish the device is in a state to reply.
-Also locking or module load ordering constraints because we need
-to ensure mutual exclusion on that mailbox between this module and the CXL
-core. So it would approximately triple the size of this driver to
-check for CXL scrub support. Not to mention hotplug - which could
-possibly be solved with appropriate udev rules to try loading this again
-whenever a CXL memory device gets plugged in.
-
-Alternative would be to make this ras class driver dependent on the CXL
-driver stack running first. Thus if you wanted RAS2 ACPI table support, you'd
-need to load a whole bunch of CXL stuff.
-
-Add another similar driver in future and we get another few 100 lines of code
-or another dependency. To me those numbers make it unsustainable.
-
-> 
-> You mean it should load so that when booting an allmodconfig kernel there are not enough modules which are loading so lemme load one more. And then I need to go and rmmod them all before I need to do localmodconfig and build a tailored kernel for the machine.
-> 
-> Or is there some other reason to load silly modules, use up resources for no good reason whatsoever and bloat the machine?
-
-As Dan, Shiju and I observed (and Shiju tested to be sure we weren't
-getting it wrong), normal setups including your allmodconfig
-build would not even load the driver.  What are we missing?
-
-Jonathan
 
