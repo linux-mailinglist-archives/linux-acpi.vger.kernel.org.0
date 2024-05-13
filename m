@@ -1,118 +1,246 @@
-Return-Path: <linux-acpi+bounces-5785-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5784-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2858C3CD3
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2024 10:04:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156718C3CC6
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2024 09:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C961F21AEF
-	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2024 08:04:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18A6286AF4
+	for <lists+linux-acpi@lfdr.de>; Mon, 13 May 2024 07:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5FB146D51;
-	Mon, 13 May 2024 08:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521A3146D53;
+	Mon, 13 May 2024 07:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KTdARBuR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE977E777;
-	Mon, 13 May 2024 08:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4F3146D4E
+	for <linux-acpi@vger.kernel.org>; Mon, 13 May 2024 07:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715587442; cv=none; b=aiZy4gOd4ywOKHEce4DBqivO/2K3q64wirBnm5AzKjNB2n3mbPJ1XeGf2nMyhxdD6+KThxKAxw1TRuo+HQY6qklYQfLnKfAXlrt9+f2ybz1SHdcT/m5V36JQQnN0n4D2pd2lHlkEk6ew6gALf2acpUoCCBUwuLDGxkQVnBiClOg=
+	t=1715587179; cv=none; b=kF2qPAU7ymgPr510yeEaDHid0DPi/2rpIH5r0MfiKVoxlx+0dGG0ldTeCl/6u7RPUWTIcIcH1TOKHmgsRDfThg6uDQL/V5GuKUpnL4Ko8AMBZOuZafT0dyvzrVgeXtmfSzoMYk4x12NaP9ZZ0ePP3dwi4ooR38wBBU95VUXXVJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715587442; c=relaxed/simple;
-	bh=fN65sI7/R50fanyXFbOo8aZsXNpfT1Dm6SRRmg2Km1s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kfwwuhkCVNFLNoftdQymrdkChWKWYfxD1ebycoPAQN3tOXjCftQq39qPZdd/yiEHxnvvPXfzD+e39uVnTaixI4qlV7LGC+qis/JmmFZHNIcVY5kFSf3iFuDuv2I0KI2bb0IK1dvCyDMiR9E8ik3K7+5152Xe2rhsNzrDF62Z5oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4VdBk25BW5z1RJHb;
-	Mon, 13 May 2024 16:00:26 +0800 (CST)
-Received: from kwepemm600002.china.huawei.com (unknown [7.193.23.29])
-	by mail.maildlp.com (Postfix) with ESMTPS id EA83E14011B;
-	Mon, 13 May 2024 16:03:47 +0800 (CST)
-Received: from localhost.localdomain (10.90.30.45) by
- kwepemm600002.china.huawei.com (7.193.23.29) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 13 May 2024 16:03:47 +0800
-From: Devyn Liu <liudingyuan@huawei.com>
-To: <linus.walleij@linaro.org>, <brgl@bgdev.pl>
-CC: <f.fangjian@huawei.com>, <linux-gpio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <mika.westerberg@linux.intel.com>,
-	<andriy.shevchenko@linux.intel.com>, <linux-acpi@vger.kernel.org>,
-	<jonathan.cameron@huawei.com>, <yangyicong@huawei.com>,
-	<yisen.zhuang@huawei.com>, <kong.kongxinwei@hisilicon.com>,
-	<liudingyuan@huawei.com>
-Subject: [PATCH] gpiolib: acpi: Fix failed in acpi_gpiochip_find() by adding parent node match
-Date: Mon, 13 May 2024 15:59:01 +0800
-Message-ID: <20240513075901.2030293-1-liudingyuan@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	s=arc-20240116; t=1715587179; c=relaxed/simple;
+	bh=GFPwfFMhe5sT4S61UgnPsXXaA0PJ4X/HHal5OzoKZx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i6Gk2VgoAu2Y3p0IxC8YlsB5pPfDFjMnVy6zwXvn0RrWutS1s88dH8iBWM47QERrhF9kqwz32+NAVLG4uisU470Rp0GZg8qGdbSvtfyIkTIT8/V3iYmu5SdFRnFxA9Vp00xONaMPTVjgQPJQrMNPb8Xy77sVg2PUjpPzHmubo/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KTdARBuR; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a59cf8140d0so919830866b.3
+        for <linux-acpi@vger.kernel.org>; Mon, 13 May 2024 00:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1715587175; x=1716191975; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O5smVEjR/VVS0e2yObdThJN4tCbUbbAC8XLh8Tbaot0=;
+        b=KTdARBuR4AJkUzxsvx9ava5l6GhoNdIseaOa1swFbFjBuXaGIMaYZFu7baYzBvKU/K
+         y2RzUOOJnaK0i/rSxEd4u5oMJ79wBQMlEpNaX/SRDUL4CWwiISjhthGwLMQMmD3WmAa1
+         WBY6pC4SXdxeCIZTFjr03NrZjSGl2rBnz5GNzI1NEhpVE2TN3nLStMM03JBuR68ZvdBP
+         vNYgmAk1zs2HcWYm5lUiV0U83E5GcjS/RM3WFmN1TJ5bY26BZrsOMOXWZk72KhbDr6Xy
+         Lc494kVioiz6ZtRgvnasSSM1FIDiEqYLcproSQb84sX4t8qPBU98avLviFiKZZRJbHHi
+         FiTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715587175; x=1716191975;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O5smVEjR/VVS0e2yObdThJN4tCbUbbAC8XLh8Tbaot0=;
+        b=liTZdakJo6NGYM31rv4ArqiHah09r5jNQOXNtuBi+n3OP+xlmd0xFUqrFaFLffqtGI
+         3ZQIcEms7QpuR+zNFIoyfx2+O6AtfMm1wx/rpu6w6Yt0G5iH7FuWc5W18yQmbUaod9B9
+         pU42rOTz4/iNysWWUDxMn0weDYkPCnx5O8+d7G/o2aB5dlBkjn+yeB+ws/EPlLEOqfZb
+         NBNXksXEjk0E+JPrMI9yk10u5vDguayDMhHQP+D+PX/btvxKFLPom7d4dqO3Wu1kbFnu
+         Sl8fG2mQa6C1XNp372ADYz84ngaypgsD9Ysq7sTBFmbFCviTYXcQ+ILMqSagaq3lccit
+         VmoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWdlnwRpvvR32cnZGeidrdnbmJi18GUwjwbWY4incIBBa1Fi5P3VlYsdGhiTSMHqQIs/pGwX2JljXmYp1X/6eSpg/9/Vxr63HUrjA==
+X-Gm-Message-State: AOJu0Yx2CE6T7W1JUO+48wsHW9pejYvB8+i1kEHjR/9Dx7eucTNTEqB7
+	47HbaSekxuCmBiGfDOj464lA3A5vQT5ht2dt5AiScfVWtesz7xVaKBQgHH6mkjI=
+X-Google-Smtp-Source: AGHT+IFPTr9tpemxyIWdG1g9bjPz3FBmkzUXW4eLPPKVth/o3VbHpxOnuWWpwypLDHy5PoSAIltx2A==
+X-Received: by 2002:a17:906:f111:b0:a5a:28cc:ff85 with SMTP id a640c23a62f3a-a5a2d58545amr563789566b.28.1715587175252;
+        Mon, 13 May 2024 00:59:35 -0700 (PDT)
+Received: from ?IPV6:2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c? (p200300e5873ca5006aafb7a77c29ae5c.dip0.t-ipconnect.de. [2003:e5:873c:a500:6aaf:b7a7:7c29:ae5c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b18110sm561472766b.225.2024.05.13.00.59.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 May 2024 00:59:34 -0700 (PDT)
+Message-ID: <55bbd23b-d851-4274-9511-c5a7af938a07@suse.com>
+Date: Mon, 13 May 2024 09:59:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC KERNEL PATCH v6 3/3] xen/privcmd: Add new syscall to get gsi
+ from irq
+To: "Chen, Jiqian" <Jiqian.Chen@amd.com>,
+ Stefano Stabellini <sstabellini@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "Huang, Ray" <Ray.Huang@amd.com>
+References: <20240419033616.607889-1-Jiqian.Chen@amd.com>
+ <20240419033616.607889-4-Jiqian.Chen@amd.com>
+ <79666084-fc2f-4637-8f0b-3846285601b8@suse.com>
+ <BL1PR12MB58493D17E23751A06FC931DDE7E72@BL1PR12MB5849.namprd12.prod.outlook.com>
+ <BL1PR12MB5849496A5B3148D162787961E7E22@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+In-Reply-To: <BL1PR12MB5849496A5B3148D162787961E7E22@BL1PR12MB5849.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600002.china.huawei.com (7.193.23.29)
 
-Previous patch modified the standard used by acpi_gpiochip_find()
-to match device nodes. Using the device node set in gc->gpiodev->d-
-ev instead of gc->parent.
+On 13.05.24 09:47, Chen, Jiqian wrote:
+> Hi,
+> On 2024/5/10 17:06, Chen, Jiqian wrote:
+>> Hi,
+>>
+>> On 2024/5/10 14:46, Jürgen Groß wrote:
+>>> On 19.04.24 05:36, Jiqian Chen wrote:
+>>>> In PVH dom0, it uses the linux local interrupt mechanism,
+>>>> when it allocs irq for a gsi, it is dynamic, and follow
+>>>> the principle of applying first, distributing first. And
+>>>> the irq number is alloced from small to large, but the
+>>>> applying gsi number is not, may gsi 38 comes before gsi 28,
+>>>> it causes the irq number is not equal with the gsi number.
+>>>> And when passthrough a device, QEMU will use device's gsi
+>>>> number to do pirq mapping, but the gsi number is got from
+>>>> file /sys/bus/pci/devices/<sbdf>/irq, irq!= gsi, so it will
+>>>> fail when mapping.
+>>>> And in current linux codes, there is no method to translate
+>>>> irq to gsi for userspace.
+>>>>
+>>>> For above purpose, record the relationship of gsi and irq
+>>>> when PVH dom0 do acpi_register_gsi_ioapic for devices and
+>>>> adds a new syscall into privcmd to let userspace can get
+>>>> that translation when they have a need.
+>>>>
+>>>> Co-developed-by: Huang Rui <ray.huang@amd.com>
+>>>> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+>>>> ---
+>>>>    arch/x86/include/asm/apic.h      |  8 +++++++
+>>>>    arch/x86/include/asm/xen/pci.h   |  5 ++++
+>>>>    arch/x86/kernel/acpi/boot.c      |  2 +-
+>>>>    arch/x86/pci/xen.c               | 21 +++++++++++++++++
+>>>>    drivers/xen/events/events_base.c | 39 ++++++++++++++++++++++++++++++++
+>>>>    drivers/xen/privcmd.c            | 19 ++++++++++++++++
+>>>>    include/uapi/xen/privcmd.h       |  7 ++++++
+>>>>    include/xen/events.h             |  5 ++++
+>>>>    8 files changed, 105 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+>>>> index 9d159b771dc8..dd4139250895 100644
+>>>> --- a/arch/x86/include/asm/apic.h
+>>>> +++ b/arch/x86/include/asm/apic.h
+>>>> @@ -169,6 +169,9 @@ extern bool apic_needs_pit(void);
+>>>>      extern void apic_send_IPI_allbutself(unsigned int vector);
+>>>>    +extern int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
+>>>> +                    int trigger, int polarity);
+>>>> +
+>>>>    #else /* !CONFIG_X86_LOCAL_APIC */
+>>>>    static inline void lapic_shutdown(void) { }
+>>>>    #define local_apic_timer_c2_ok        1
+>>>> @@ -183,6 +186,11 @@ static inline void apic_intr_mode_init(void) { }
+>>>>    static inline void lapic_assign_system_vectors(void) { }
+>>>>    static inline void lapic_assign_legacy_vector(unsigned int i, bool r) { }
+>>>>    static inline bool apic_needs_pit(void) { return true; }
+>>>> +static inline int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
+>>>> +                    int trigger, int polarity)
+>>>> +{
+>>>> +    return (int)gsi;
+>>>> +}
+>>>>    #endif /* !CONFIG_X86_LOCAL_APIC */
+>>>>      #ifdef CONFIG_X86_X2APIC
+>>>> diff --git a/arch/x86/include/asm/xen/pci.h b/arch/x86/include/asm/xen/pci.h
+>>>> index 9015b888edd6..aa8ded61fc2d 100644
+>>>> --- a/arch/x86/include/asm/xen/pci.h
+>>>> +++ b/arch/x86/include/asm/xen/pci.h
+>>>> @@ -5,6 +5,7 @@
+>>>>    #if defined(CONFIG_PCI_XEN)
+>>>>    extern int __init pci_xen_init(void);
+>>>>    extern int __init pci_xen_hvm_init(void);
+>>>> +extern int __init pci_xen_pvh_init(void);
+>>>>    #define pci_xen 1
+>>>>    #else
+>>>>    #define pci_xen 0
+>>>> @@ -13,6 +14,10 @@ static inline int pci_xen_hvm_init(void)
+>>>>    {
+>>>>        return -1;
+>>>>    }
+>>>> +static inline int pci_xen_pvh_init(void)
+>>>> +{
+>>>> +    return -1;
+>>>> +}
+>>>>    #endif
+>>>>    #ifdef CONFIG_XEN_PV_DOM0
+>>>>    int __init pci_xen_initial_domain(void);
+>>>> diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+>>>> index 85a3ce2a3666..72c73458c083 100644
+>>>> --- a/arch/x86/kernel/acpi/boot.c
+>>>> +++ b/arch/x86/kernel/acpi/boot.c
+>>>> @@ -749,7 +749,7 @@ static int acpi_register_gsi_pic(struct device *dev, u32 gsi,
+>>>>    }
+>>>>      #ifdef CONFIG_X86_LOCAL_APIC
+>>>> -static int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
+>>>> +int acpi_register_gsi_ioapic(struct device *dev, u32 gsi,
+>>>>                        int trigger, int polarity)
+>>>>    {
+>>>>        int irq = gsi;
+>>>> diff --git a/arch/x86/pci/xen.c b/arch/x86/pci/xen.c
+>>>> index 652cd53e77f6..f056ab5c0a06 100644
+>>>> --- a/arch/x86/pci/xen.c
+>>>> +++ b/arch/x86/pci/xen.c
+>>>> @@ -114,6 +114,21 @@ static int acpi_register_gsi_xen_hvm(struct device *dev, u32 gsi,
+>>>>                     false /* no mapping of GSI to PIRQ */);
+>>>>    }
+>>>>    +static int acpi_register_gsi_xen_pvh(struct device *dev, u32 gsi,
+>>>> +                    int trigger, int polarity)
+>>>> +{
+>>>> +    int irq;
+>>>> +
+>>>> +    irq = acpi_register_gsi_ioapic(dev, gsi, trigger, polarity);
+>>>> +    if (irq < 0)
+>>>> +        return irq;
+>>>> +
+>>>> +    if (xen_pvh_add_gsi_irq_map(gsi, irq) == -EEXIST)
+>>>> +        printk(KERN_INFO "Already map the GSI :%u and IRQ: %d\n", gsi, irq);
+>>>> +
+>>>> +    return irq;
+>>>> +}
+>>>> +
+>>>>    #ifdef CONFIG_XEN_PV_DOM0
+>>>>    static int xen_register_gsi(u32 gsi, int triggering, int polarity)
+>>>>    {
+>>>> @@ -558,6 +573,12 @@ int __init pci_xen_hvm_init(void)
+>>>>        return 0;
+>>>>    }
+>>>>    +int __init pci_xen_pvh_init(void)
+>>>> +{
+>>>> +    __acpi_register_gsi = acpi_register_gsi_xen_pvh;
+>>>
+>>> No support for unregistering the gsi again?
+>> __acpi_unregister_gsi is set in function acpi_set_irq_model_ioapic.
+>> Maybe I need to use a new function to call acpi_unregister_gsi_ioapic and remove the mapping of irq and gsi from xen_irq_list_head ?
+> When I tried to support unregistering the gsi and removing the mapping during disable device,
+> I encountered that after running "xl pci-assignable-add 03:00.0", callstack pcistub_init_device->xen_pcibk_reset_device->pci_disable_device->pcibios_disable_device->acpi_pci_irq_disable->__acpi_unregister_gsi
+> removed the mapping, after that when user space called xen_gsi_from_irq to get gsi, it failed.
+> 
+> To cover above case, I want to change the implementation of xen_gsi_from_irq to pass sbdf to get the gsi instead of passing irq,
+> Because the sbdf and gsi of a device is unique and wiil not be changed even device is disabled or re-enabled.
+> 
+> Do you think this kind of change is acceptable?
 
-However, there is a situation in gpio-dwapb where the GPIO device
-driver will set gc->fwnode for each port corresponding to a child
-node under a GPIO device, so gc->gpiodev->dev will be assigned the
-value of each child node in gpiochip_add_data().
+Yes, I think so.
 
-gpio-dwapb.c:
-128,31 static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
-			       struct dwapb_port_property *pp,
-			       unsigned int offs);
-port->gc.fwnode = pp->fwnode;
 
-693,39 static int dwapb_gpio_probe;
-err = dwapb_gpio_add_port(gpio, &pdata->properties[i], i);
-
-When other drivers request GPIO pin resources through the GPIO device
-node provided by ACPI (corresponding to the parent node), the change
-of the matching object to gc->gpiodev->dev in acpi_gpiochip_find()
-only allows finding the value of each port (child node), resulting
-in a failed request.
-
-Reapply the condition of using gc->parent for match in acpi_gpio-
-chip_find() in the code can compatible with the problem of gpio-dwapb,
-and will not affect the two cases mentioned in the patch:
-1. There is no setting for gc->fwnode.
-2. The case that depends on using gc->fwnode for match.
-
-Fixes: 5062e4c14b75 ("gpiolib: acpi: use the fwnode in acpi_gpiochip_find()")
-Fixes: 067dbc1ea5ce ("gpiolib: acpi: Don't use GPIO chip fwnode in acpi_gpiochip_find()")
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
----
- drivers/gpio/gpiolib-acpi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 7f140df40f35..6078fea3e021 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -128,7 +128,8 @@ static bool acpi_gpio_deferred_req_irqs_done;
- 
- static int acpi_gpiochip_find(struct gpio_chip *gc, const void *data)
- {
--	return device_match_acpi_handle(&gc->gpiodev->dev, data);
-+	return device_match_acpi_handle(&gc->gpiodev->dev, data) ||
-+		(gc->parent && device_match_acpi_handle(gc->parent, data));
- }
- 
- /**
--- 
-2.30.0
-
+Juergen
 
