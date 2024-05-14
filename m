@@ -1,79 +1,125 @@
-Return-Path: <linux-acpi+bounces-5806-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5809-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121E88C5CD3
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2024 23:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DB88C5DB2
+	for <lists+linux-acpi@lfdr.de>; Wed, 15 May 2024 00:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E931F220BB
-	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2024 21:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 326E31F21E87
+	for <lists+linux-acpi@lfdr.de>; Tue, 14 May 2024 22:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6E0181BBF;
-	Tue, 14 May 2024 21:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AF0182C81;
+	Tue, 14 May 2024 22:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="faIToh8/"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hxA4XCe8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B310E181BA6;
-	Tue, 14 May 2024 21:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A751DDEE;
+	Tue, 14 May 2024 22:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715722225; cv=none; b=jq9OyRZbciMyarcXRi0ZVBchfhZW5cD3qNbqg0gIxvx//Tly4MRmk1LsbPG+JMo8UVr/pWeNkxutPcYdj55Qj/XZ9Hj9m5KWJeF8aP5C7EUDZZAhOWM6zvz8nKx1qupY5K7CcJKmWXdXGERP4W5UtZc1O3Ij+B9KR9zjtzPgIHw=
+	t=1715726728; cv=none; b=k4Lgo8KlKKCTmjCjQJuMg3GQc50enuUlWzhK0LJ+FaxIALlojDirH1ME++96ax/T4n10YzVSuzWifkffE9C2mdHLk0FxOKIyCOG5qvHsMcht0PDS7Xakv8KziGQPit4Tu5HtnrACTdvySTgqooctJBv/00GM/RW1bdMBghbzwq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715722225; c=relaxed/simple;
-	bh=SBM3P3u21hotsnkebaRQOakAaFVX3pO0UQwlQVSc/WE=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=B2+JefpToSm22/xl/AY8uh9KC1dTvV/wrT2A53xP/DOiFdi808o2iIpXi8nUhNzXdobcItDYfGdIZa6p3/2dyS6wFzloDhhEqbf+hKS6O91YfWYC97d6tqA5wtv+Cp2onvGpiSjkTg7o0HXl0BUJHcS0GZCBLNrhoZ7TyQ2ka8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=faIToh8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 913B7C2BD10;
-	Tue, 14 May 2024 21:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715722225;
-	bh=SBM3P3u21hotsnkebaRQOakAaFVX3pO0UQwlQVSc/WE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=faIToh8/ULvU7tSBuXf9KbC6eXm3sD2S4WsrTQIZVLDex8g/PEU32MMjIjZermYaE
-	 C9VfFyhRk+I/GfpWAFhJ/TdxQ/PcYKJLwdM0SPoNeQwU9H2sINO3eB9CKUIU6J5sM/
-	 abUj7biy1OzDqK2enubyAjK2sl73cYIgCLuYmE7FhZe+HlGSbRmWDMIKAfG02fdUlT
-	 SoV1SZA6oUBc4VFltbW27eXyeX/QN0jwlzLFMxjJRANIrbR0F2FMQMpXCOAhtHgFDw
-	 zZzFE2J4fRdzsdQ2RPQCle9zIM0UHocWmNWaftC/VMqXcBuzP8V7+9lTijH72F3att
-	 0GMlD/OC8hJkQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8390BC433A2;
-	Tue, 14 May 2024 21:30:25 +0000 (UTC)
-Subject: Re: [GIT PULL] Thermal control updates for v6.10-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAJZ5v0hjT+fR2+RuSw+XJ_KcxagUpsjdYejJcw=uTicjbm6HCA@mail.gmail.com>
-References: <CAJZ5v0hjT+fR2+RuSw+XJ_KcxagUpsjdYejJcw=uTicjbm6HCA@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAJZ5v0hjT+fR2+RuSw+XJ_KcxagUpsjdYejJcw=uTicjbm6HCA@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git thermal-6.10-rc1
-X-PR-Tracked-Commit-Id: 3a47fbdd1a750afe8c31971e7d3892f08e7390b8
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f952b6c863090464c148066df9f46cb3edd603da
-Message-Id: <171572222547.832.12070643099928235691.pr-tracker-bot@kernel.org>
-Date: Tue, 14 May 2024 21:30:25 +0000
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Linux PM <linux-pm@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
+	s=arc-20240116; t=1715726728; c=relaxed/simple;
+	bh=HHDHLSCUcDkXx2uqLNf9uPS83M7l1vBf2On96gJLrfg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j1vrtLNWT2bDERDzsIpzXWxHPQLC1+tBf8yA5GVrp9nVe+IUEdLilGNuPbaWGj/zcHp+n7pjlYau6UYPB60mOntGW+8HnPMkP69lbwEG9zBqtXFndFjtuml9vPbG+kF7sTJeAwjrYiGS4V02HKattkGT5tXB/IJpxRsdFs1B9uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=hxA4XCe8; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from xps-8930.corp.microsoft.com (unknown [131.107.160.48])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8524D2095D0A;
+	Tue, 14 May 2024 15:45:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8524D2095D0A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1715726720;
+	bh=qxYAU41ufrcEuk5MBvISwhpcVtWEJqX1bSnGVnSsBJA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hxA4XCe8Juhir+FZZpJrKKh+6AgX5CJywj6GV8Xi/9mMDaSuTJADZOUG6chVjOeoI
+	 iFIa6Lspd7PVMua/OJlt8zSCUs/T4QbGvSO/XjtyBlWqNOG/FKHivMiM5m2YwtLVoM
+	 Dmgp84jtkEDkxqeGm8kbKFXVtvJqijFdODzWecY0=
+From: Roman Kisel <romank@linux.microsoft.com>
+To: arnd@arndb.de,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	dave.hansen@linux.intel.com,
+	decui@microsoft.com,
+	haiyangz@microsoft.com,
+	hpa@zytor.com,
+	kw@linux.com,
+	kys@microsoft.com,
+	lenb@kernel.org,
+	lpieralisi@kernel.org,
+	mingo@redhat.com,
+	mhklinux@outlook.com,
+	rafael@kernel.org,
+	robh@kernel.org,
+	tglx@linutronix.de,
+	wei.liu@kernel.org,
+	will@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	x86@kernel.org
+Cc: ssengar@microsoft.com,
+	sunilmut@microsoft.com,
+	vdso@hexbites.dev
+Subject: [PATCH v2 0/6] arm64/hyperv: Support Virtual Trust Level Boot
+Date: Tue, 14 May 2024 15:43:47 -0700
+Message-ID: <20240514224508.212318-1-romank@linux.microsoft.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Mon, 13 May 2024 21:27:16 +0200:
+This patch set enables the Hyper-V code to boot on ARM64 inside a Virtual Trust
+Level. These levels are a part of the Virtual Secure Mode documented in the
+Top-Level Functional Specification available at
+https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/tlfs/vsm
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git thermal-6.10-rc1
+[V2]
+    - Decreased number of #ifdef's
+    - Updated the wording in the commit messages to adhere to the guidlines
+    - Sending to the correct set of maintainers and mail lists
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f952b6c863090464c148066df9f46cb3edd603da
+Roman Kisel (6):
+  arm64/hyperv: Support DeviceTree
+  drivers/hv: Enable VTL mode for arm64
+  drivers/hv: arch-neutral implementation of get_vtl()
+  arm64/hyperv: Boot in a Virtual Trust Level
+  drivers/hv/vmbus: Get the irq number from DeviceTree
+  drivers/pci/hyperv/arm64: vPCI MSI IRQ domain from DT
 
-Thank you!
+ arch/arm64/hyperv/Makefile          |  1 +
+ arch/arm64/hyperv/hv_vtl.c          | 19 +++++++++++++
+ arch/arm64/hyperv/mshyperv.c        | 40 +++++++++++++++++++++++----
+ arch/arm64/include/asm/mshyperv.h   |  8 ++++++
+ arch/x86/hyperv/hv_init.c           | 34 -----------------------
+ arch/x86/hyperv/hv_vtl.c            |  2 +-
+ arch/x86/include/asm/hyperv-tlfs.h  |  7 -----
+ drivers/hv/Kconfig                  |  6 ++--
+ drivers/hv/hv_common.c              | 43 +++++++++++++++++++++++++++++
+ drivers/hv/vmbus_drv.c              | 37 +++++++++++++++++++++++++
+ drivers/pci/controller/pci-hyperv.c | 13 +++++++--
+ include/asm-generic/hyperv-tlfs.h   |  7 +++++
+ include/asm-generic/mshyperv.h      |  6 ++++
+ include/linux/acpi.h                |  9 ++++++
+ 14 files changed, 179 insertions(+), 53 deletions(-)
+ create mode 100644 arch/arm64/hyperv/hv_vtl.c
 
+
+base-commit: f2580a907e5c0e8fc9354fd095b011301c64f949
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.45.0
+
 
