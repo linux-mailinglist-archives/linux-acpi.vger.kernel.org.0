@@ -1,207 +1,173 @@
-Return-Path: <linux-acpi+bounces-5878-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5879-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDBF68C8320
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 11:16:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 246B78C8565
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 13:16:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6C91F2271A
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 09:16:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77E65B213C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 11:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16B51EB3E;
-	Fri, 17 May 2024 09:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BbghCkdX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jt+OyQXy";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MSoh9Pd4";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6EmY1xnz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D6F3C489;
+	Fri, 17 May 2024 11:16:03 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8F11CFBC;
-	Fri, 17 May 2024 09:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8188B200DD;
+	Fri, 17 May 2024 11:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715937369; cv=none; b=Ky+lNV7Fit6tpsCSZZ+IIyUcItC2O4NPHXWw165C4WEpCfymGBSM1Sm+aT/2BJLH4qw2DsVGhTmfKNFNfRJYt88HrkHL2f0/AJ7lYJwKNRk/QNg5+XBuK9uzpbvyHmwu127mw83sWMxOnyBV8/i83K1r59spMnTelc+q02Gjx5Q=
+	t=1715944563; cv=none; b=V+Sx+Oqh3jv8303HBxN/Zpwzje2Rd/sOmfQvyll1aCAFQriqwEQRWtJ0vwROlmJNMPKMuRK/kYkY3wwDP30sev4I5yBJKqTRKkioT8tdrmQH9IQDB7zOYwx1CUE6N0vkwAbIHqFU88F5i1oDo43goWT1z+G4hS3w0mkBTFkx+Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715937369; c=relaxed/simple;
-	bh=wY4YgXdaqsAKUexBfgDDerI/9Bx+fOhmVvc6Lpv7OVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UsGji0P0jS7xaF5PCqyCQSv9vuD/r0tD7JSAHmqxEBulkysSJw8cq6FhuJj6eRuoBrlhV2Q9BRjul3rot/bxbm4igWOWV5UEKSKuAifZfhW4oA5b+QG+uQIJG0tYaKGOFDyhi+MI1g1teLH9Cq2iLf9UvSq5ol1Ue7ZCsw2cgW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BbghCkdX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jt+OyQXy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MSoh9Pd4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6EmY1xnz; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D221C5D1B3;
-	Fri, 17 May 2024 09:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715937362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
-	b=BbghCkdXksejkuJqJmch5Ijt4sdQZ5TDSe2a19haeMF2gXOdFAXHuIFAVy/ycjGDKXOahM
-	3s35YHDhSOBZ0DBIbMJoZwDe1zdv8qmX78wJczE5ydgpmTceUqPruOPYs17PnMEifYtyGx
-	Kf3WP8IRkhI9Qg1w1JdkXa4wR3S5njo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715937362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
-	b=jt+OyQXy4hJ1K2TSadbh5/0IARkIyYzVbNsRzT7YZJa0Y75FPbMfmoXTKJXCnAHwr/gG2B
-	W7bx/+2Y8JLZKpAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MSoh9Pd4;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6EmY1xnz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715937361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
-	b=MSoh9Pd4EH3z9qXcQcZ1OGdOiRW1eI7a9BCPHTXAOfjkWkcMJzvy2v535t1mnqA5yaLg6e
-	KIcpJzCLRWJuOmJ/gF0nIaQShxltOwTdd0B3ersi5TNR0Tlqj9WyvqXlkG2ubPrJbsH3G/
-	znOmxD/guKNiOlbjZztNkImArw9SnKE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715937361;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
-	b=6EmY1xnz1/aS9A/f+O8Sf2mvTZcnlnUMR9VLtbJP9DiseQxwfCCDwKxnhj+6NTN3hoLP9f
-	n7zleX6+JlE9M5Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57EBD13991;
-	Fri, 17 May 2024 09:16:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0dNMFFEgR2ZkfAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 17 May 2024 09:16:01 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: arnd@arndb.de,
-	chaitanya.kumar.borah@intel.com,
-	suresh.kumar.kurmi@intel.com,
-	jani.saarinen@intel.com,
-	davem@davemloft.net,
-	andreas@gaisler.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	rafael@kernel.org,
-	hdegoede@redhat.com
-Cc: linux-arch@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH] arch: Fix name collision with ACPI's video.o
-Date: Fri, 17 May 2024 11:14:33 +0200
-Message-ID: <20240517091557.25800-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1715944563; c=relaxed/simple;
+	bh=VxSDOGPhBpR+noSDaZ9gn1Vm4yDGRV5HNg3mi/hKtuU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UAs0Dc6pUuQfHhctma88Y6ACPlFoMwywvwfQRUD3k53aoqQHipjns4oQRE583U0vPHb/EXU+UyeDfWjXn0K8J2HhVtjDzwAgkYvtMMaci1bITDLPulkttLLk6uBPnt/TZKx5My4Tbm5Zn8+NeCIK0nJLWGX+pn6xkzIzZpT3Jkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vgknq1Jnvz6JBHH;
+	Fri, 17 May 2024 19:12:31 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9E417140A70;
+	Fri, 17 May 2024 19:15:56 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 17 May
+ 2024 12:15:55 +0100
+Date: Fri, 17 May 2024 12:15:54 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: Dan Williams <dan.j.williams@intel.com>, Shiju Jose
+	<shiju.jose@huawei.com>, "linux-cxl@vger.kernel.org"
+	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
+	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dave@stgolabs.net" <dave@stgolabs.net>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
+	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
+	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Jean Delvare
+	<jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Dmitry Torokhov
+	<dmitry.torokhov@gmail.com>
+Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Message-ID: <20240517121554.000031d4@Huawei.com>
+In-Reply-To: <20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
+References: <4ceb38897d854cc095fca1220d49a4d2@huawei.com>
+	<20240508192546.GHZjvRuvtu0XSJbkmz@fat_crate.local>
+	<20240509101939.0000263a@Huawei.com>
+	<D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
+	<20240509200306.GAZj0r-h5Tnc0ecIOz@fat_crate.local>
+	<663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
+	<20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
+	<663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
+	<20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
+	<663e55c59d9d_3d7b429475@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	<20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -5.01
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D221C5D1B3
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-5.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.de:+]
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Commit 2fd001cd3600 ("arch: Rename fbdev header and source files")
-renames the video source files under arch/ such that they do not
-refer to fbdev any longer. The new files named video.o conflict with
-ACPI's video.ko module. Modprobing the ACPI module can then fail with
-warnings about missing symbols, as shown below.
 
-  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_unregister (err -2)
-  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_register_backlight (err -2)
-  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol __acpi_video_get_backlight_type (err -2)
-  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_register (err -2)
+Focusing on just one bit.
 
-Fix the issue by renaming the architecture's video.o to video-common.o.
+> > Now, the question of how many legacy scrub interfaces should be
+> > considered in this design out of the gate is a worthwhile discussion. I
+> > am encouraged that this ABI is at least trying to handle more than 1
+> > backend, which makes me feel better that adding a 3rd and 4th might not
+> > be prohibitive.  
+> 
+> See above.
+> 
+> I'm perfectly fine with: "hey, we have a new scrub API interfacing to
+> RAS scrub capability and it is *the* thing to use and all other hw scrub
+> functionality should be shoehorned into it.
+> 
+> So this thing's design should at least try to anticipate supporting
+> other scrub hw.
+> 
+> Because there's EDAC too. Why isn't this scrub thing part of EDAC? Why
+> isn't this scrub API part of edac_core? I mean, this is all RAS so why
+> design a whole new thing when the required glue is already there?
+> 
+> We can just as well have a
+> 
+> 	/sys/devices/system/edac/scrub/
+> 
+> node hierarchy and have everything there.
 
-Reported-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Closes: https://lore.kernel.org/intel-gfx/9dcac6e9-a3bf-4ace-bbdc-f697f767f9e0@suse.de/T/#t
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 2fd001cd3600 ("arch: Rename fbdev header and source files")
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
----
- arch/sparc/video/Makefile                    | 2 +-
- arch/sparc/video/{video.c => video-common.c} | 0
- arch/x86/video/Makefile                      | 2 +-
- arch/x86/video/{video.c => video-common.c}   | 0
- 4 files changed, 2 insertions(+), 2 deletions(-)
- rename arch/sparc/video/{video.c => video-common.c} (100%)
- rename arch/x86/video/{video.c => video-common.c} (100%)
+A few questions about this. It seems an unusual use fake devices and a bus
+so I'm trying to understand how we might do something that looks more standard
+but perhaps also fit within the existing scheme.  I appreciate this stuff
+has evolved over a long time, so lots of backwards compatibility concerns.
 
-diff --git a/arch/sparc/video/Makefile b/arch/sparc/video/Makefile
-index fdf83a408d750..dcfbe7a5912c0 100644
---- a/arch/sparc/video/Makefile
-+++ b/arch/sparc/video/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--obj-y	+= video.o
-+obj-y	+= video-common.o
-diff --git a/arch/sparc/video/video.c b/arch/sparc/video/video-common.c
-similarity index 100%
-rename from arch/sparc/video/video.c
-rename to arch/sparc/video/video-common.c
-diff --git a/arch/x86/video/Makefile b/arch/x86/video/Makefile
-index fdf83a408d750..dcfbe7a5912c0 100644
---- a/arch/x86/video/Makefile
-+++ b/arch/x86/video/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--obj-y	+= video.o
-+obj-y	+= video-common.o
-diff --git a/arch/x86/video/video.c b/arch/x86/video/video-common.c
-similarity index 100%
-rename from arch/x86/video/video.c
-rename to arch/x86/video/video-common.c
--- 
-2.45.0
+If I follow this right the current situation is:
+
+/sys/devices/system/edac is the 'virtual' device registered on the edac bus.
+
+> 
+> Why does it have to be yet another thing?
+> 
+> And if it needs to be separate, who's going to maintain it?
+> 
+> > Which matches what I reacted to on the last posting:
+> > 
+> >    "Maybe it is self evident to others, but for me there is little in these
+> >     changelogs besides 'mechanism exists, enable it'"
+> > 
+> > ...and to me that feedback was taken to heart with much improved
+> > changelogs in this new posting.  
+> 
+> Ok.
+> 
+> > This init time feature probing discussion feels like it was born from a
+> > micommunication / misunderstanding.  
+> 
+> Yes, it seems so, thanks for clarifying things.
+> 
+> I still am unclear on the usecases and how this is supposed to be used
+> and also, as mentioned above, we have a *lot* of RAS functionality
+> spread around the kernel. Perhaps we should start unifying it instead of
+> adding more...
+> 
+> So the big picture and where we're headed to, needs to be clarified first.
+> 
+> Thx.
+> 
 
 
