@@ -1,227 +1,207 @@
-Return-Path: <linux-acpi+bounces-5877-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5878-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223FF8C80A2
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 07:35:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBF68C8320
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 11:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE7A5282700
-	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 05:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6C91F2271A
+	for <lists+linux-acpi@lfdr.de>; Fri, 17 May 2024 09:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5361170D;
-	Fri, 17 May 2024 05:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16B51EB3E;
+	Fri, 17 May 2024 09:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TF0xVBML"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BbghCkdX";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jt+OyQXy";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MSoh9Pd4";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6EmY1xnz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2055.outbound.protection.outlook.com [40.107.94.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54FB111A5;
-	Fri, 17 May 2024 05:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715924115; cv=fail; b=rKaMMm4Hs057F3KnhGLZbOCOMesczcgGzCabKemZs37BuVLz1UtsvsGUWiAym0Dy5FMcmBDcvd+3q285Y9X1lI8txca7EKdkX0G302uom7Xx8Vka2ae6QnnhaHhGw9Z7lEafurZyc6wyeE75kVESVTDABnr0ucdZ90YFJc0Y3Jc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715924115; c=relaxed/simple;
-	bh=1pp7xusKTXJyM5jLM/i1CaTZH8q4bhHYQg5GghNDcM8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UGrkpg1ODvLIGjo4XSya3ocBU25RNFAUwcI1dGijsmJUu6DBmZ8UCENT//OUfrRJWV637H679AGS/FcuN9Qx1NHedTvF8+PxQetlCVS3/vi1fF93gSL8DCfJundLlQOFbsVjhdo3bi1qAYiv1QWy2QciT4V747vzAiYq6lZaUMU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TF0xVBML; arc=fail smtp.client-ip=40.107.94.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=O90QF9RkfNEFKPRsq2UaA5FTrTq5wM9yekrXPqcW9SVWdppdiOUx1VAYdj03/G0UK3+0ljXGJsLdUCFK8YjB2PbrE81RY4bK0fll1C1KFBjWO9a8Eyg0VFfGUKdWHcLs/nmTfXwvWy7/zIMblipCYLBgL1ydEWbkCKBXsK+1z2WH7LJG+TweNTQM3U0aUnCwV8MTt77TzmsUrudb1yyUfpVtAc5n8l4fzAXaYGUKENSQ37JUnJ5b7zhi4RaetjRbBjRDV15b663GFujdODNQ0jvZJ8a9YCkWZkQHuWuMmxqujBTZUW79fSvHi25qHZUtpJAuwXwQFHG23JSJEBHS7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2QlruRmZ+y7jOgKHT3n1mkqTpH9RV5GAIcfw615a3Us=;
- b=S1fCMXZP7Wo3WUlGh2Bz3DDoI6SOoTEic4JaKfgYENpR+tTMtzU1wmhzlQPit48zLKa7tFekaKJDZyGFjAbzTpIxrEjBfp7GppuCiGCHMW+V34HblZuYJmwn79aQyudIRWlWJYFC8UjxcU8BMEc7N0X5scR2BggQI/yaolZrAVoyIs/9XbV4y0PnHe//sm4SeGagKWqY42L5+DzxL/QoC1xnKrZ2OWVvcH0R6BMy9Qs6XoJE8g3uJSzrs0VAMv3J8oLwjChtWRhxxlL9hWD+A+ppeIiOwWmhkDU+9R2p1B58LiCLGPsu2sxMUn0AunFWDhQmrXPjJCzTPYMDPmNNGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2QlruRmZ+y7jOgKHT3n1mkqTpH9RV5GAIcfw615a3Us=;
- b=TF0xVBMLuEKEx1HwZ1QZjFp1oqCFl0U43Am/7P8ei3JdTaQcM5eqqOAYu3sH31RcSWjJkSGPPhbUjQWnUcioyevNpy7ytufHDPq7Ok0EjmayeX2KmXrzGAh5qkZyLAi2aHcxiQDOYXH85XTMXBFVLdflbglw22Mn9FL76mdSJebR8QtLHglmqsBX0j9e00cXJwCKBUiwBKUiTG/HG06Hw+kRM03yRKPg3TiXFzJIYAfaTxuFacN7DZHf/GvA/ygtLygkHaGseboQPYKuph0/TmYh/6Va2CwDaBBkgcMFrc6EGKm4A1+wDP10ZRYt1l6B/09OrYqe+3gRp67cSM29eA==
-Received: from PH8PR12MB6674.namprd12.prod.outlook.com (2603:10b6:510:1c1::18)
- by DM6PR12MB4418.namprd12.prod.outlook.com (2603:10b6:5:28e::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.30; Fri, 17 May
- 2024 05:35:11 +0000
-Received: from PH8PR12MB6674.namprd12.prod.outlook.com
- ([fe80::780:77f6:e0af:5b5c]) by PH8PR12MB6674.namprd12.prod.outlook.com
- ([fe80::780:77f6:e0af:5b5c%5]) with mapi id 15.20.7587.028; Fri, 17 May 2024
- 05:35:10 +0000
-From: Vidya Sagar <vidyas@nvidia.com>
-To: "bhelgaas@google.com" <bhelgaas@google.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, "will@kernel.org"
-	<will@kernel.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kw@linux.com" <kw@linux.com>, "robh@kernel.org" <robh@kernel.org>,
-	"frowand.list@gmail.com" <frowand.list@gmail.com>
-CC: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, Thierry Reding <treding@nvidia.com>, Jon Hunter
-	<jonathanh@nvidia.com>, Krishna Thota <kthota@nvidia.com>, Manikanta
- Maddireddy <mmaddireddy@nvidia.com>, "sagar.tv@gmail.com"
-	<sagar.tv@gmail.com>
-Subject: RE: [PATCH V7 0/4] PCI: Add support for preserving boot configuration
-Thread-Topic: [PATCH V7 0/4] PCI: Add support for preserving boot
- configuration
-Thread-Index: AQHaoW8O6T9QgBu4DUGMsjcflgWlrrGa9G9g
-Date: Fri, 17 May 2024 05:35:10 +0000
-Message-ID:
- <PH8PR12MB667485001077FF106E728320B8EE2@PH8PR12MB6674.namprd12.prod.outlook.com>
-References: <20240508174138.3630283-1-vidyas@nvidia.com>
-In-Reply-To: <20240508174138.3630283-1-vidyas@nvidia.com>
-Accept-Language: en-US, en-IN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR12MB6674:EE_|DM6PR12MB4418:EE_
-x-ms-office365-filtering-correlation-id: f2e0661f-75c3-4f2d-28d3-08dc76331e56
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230031|366007|376005|7416005|1800799015|38070700009;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Afh7qSObmrYmA7knUN4ithXmPTq+9McS5w0OuWFlhhhzn4HqIa4KHGhmJsLi?=
- =?us-ascii?Q?zit6Fqj1c7lKPlDZHijkAdrM35iXs9Eub+HlDpHEQjRGW/y+dSByLYu9ml7u?=
- =?us-ascii?Q?kMq4+T+j4+6PhmXQvLKr/QMc1CkbdfDnHY5hKgMOlhlZclIk2wzzS4JNZawb?=
- =?us-ascii?Q?6SRD8uI8/LePmNt/mO7I6wP0kGETOJvwAArcnzBtERYdRShfp4pdt9S6A5m3?=
- =?us-ascii?Q?C/BS9g7bh0lIHGXKmqWTft8x+PfJSugDoUGVNf+BBFKusE812bFytzHdLSY0?=
- =?us-ascii?Q?0gU3+NN5vfHUW8nIMFvx15osv+8YZAI89dvj1G8vKk65g9MNmKoB84cNq0NW?=
- =?us-ascii?Q?Cf+v4QfaXXbnMBxueBi+wq8PEVl0DEIykDe/gQsLZ5KCpTd4FC0lhZsSzDiP?=
- =?us-ascii?Q?IorIuQ48tuyNCvNyCM0/WJ9Oup69/bplQztEqLhsgDe5nfo3zDCU4ZA/BBMY?=
- =?us-ascii?Q?hXz5Z7e9cmDLSO7AOJ6VUbY79hLR/F9ZcTSf96S/oR8RYd6C8X0YC5bI716t?=
- =?us-ascii?Q?zGpW0wIvB5T46Rdccv01Btqc67OgYv/i5kH0soS0xKjzE6asC4c8mCUlKDNO?=
- =?us-ascii?Q?rZfOox5lG91iwNIg9kWTUR2Q2RSnB1fym8MwfOz02QvYmU/cnvs0zNO91PL/?=
- =?us-ascii?Q?UsnWPAuCmOWLLMR5bMhtN2ZgO2SGM+mIESfpiFIJRVglR5jil8xB5M5+8inF?=
- =?us-ascii?Q?mY92Z+L5gmMUb2Pecb8flY8GQTz1BoENvUxbWd619uy6WMMy9KauIjc1gu9h?=
- =?us-ascii?Q?PJjO0nKX14ehXHXcw7CSbURqGojFRxCLozG0BACm9+HuiW3A5BoboWtU3td8?=
- =?us-ascii?Q?IGYO/C2VU13ajlJxh00qmw0fHsopzHfl1R8BKkG303nPoFWzcOrYHVQ24kvD?=
- =?us-ascii?Q?ev0Ava6WDIdWzlY+CNF7zp4WzACECcX2A40M4vj47fOeYroZ7oG/a63a3Keo?=
- =?us-ascii?Q?lgzJtbg8zlxu9LTVvdSOVTvERPmFPX6Qi3i+lHGcTfvXuPpphYyaTh+Qv6vX?=
- =?us-ascii?Q?Weoc8ea9FrWjx9y3M75wMbnCK0oMO3Uyp9MEtjHZfIAoMXnaXmIRYGbRtM0Z?=
- =?us-ascii?Q?cpGojZxxQKsgmNlJPBjcFZqhO2UcO8R0t1i0dBJYJm4m3DvwJP+QBV0dUvUu?=
- =?us-ascii?Q?ZFonpGSuHTrZi/k2tPTsE0VZyEWEYJBfVtan4jTClR6KTfZq+GpOx+7tUOyP?=
- =?us-ascii?Q?bEHAPKnYuBhfb6KbAOXp7PrVoqysbBc9rP5iSyZ2fuD76oPsFlaKxPcRwNs+?=
- =?us-ascii?Q?WKXuc9gWTIqVWGZUsOYx9UggaDd488FC+NZEEdca9iI+/ccZ2y/BlDZ3mpcS?=
- =?us-ascii?Q?rsE5T9Sqs23YFqEr+j03vdeLoJw8wGjsqwyseQBLR6GztQ=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB6674.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Wp+OV9tOqWbRLDKv6rBJBZUS9atyPzA7h+lQbpdn2zuWE+jYX0rN5c6Uzy8j?=
- =?us-ascii?Q?bEyQhrtWXOPKO/m9h3ggjS3OemTMfD9ifqlCufrh9/rJ7tSxs9B4xkgrftD7?=
- =?us-ascii?Q?JIcRB3znxdF0w2LaThUC16JHhFpLeJqluYA3GthmROWnVnNBGsnaPwWnP701?=
- =?us-ascii?Q?ZMFOnGydXUT+1YtiGKeTG8iIdqg5KcepTYUusGIM5AX+G5WI4KNEJjID/CuY?=
- =?us-ascii?Q?LJ8iVLk8WJZ8A3XogY0iniuwEUKk0hi2pVS+/cfrtCZxonXb2tbUG/+Y8Q0Z?=
- =?us-ascii?Q?YWNx0ZdXYZt+uhNzaqDRCLFZmLfF+tSAdvcrd30itoTVTywaRLiln/dgusVo?=
- =?us-ascii?Q?Su+45N3rXABcgtXqB1WTihcWtAZ/iObX4gqUmGByesMlwnd2831IULxQ+UDm?=
- =?us-ascii?Q?JdOqft+6T3VXFQnRvLHWwOXK8ZzBP1Qr9/ECpVn3Ew5xv+43KdFu7m7w+Kvl?=
- =?us-ascii?Q?v8drMCPEoIZKBOskP8p0q+FF1yt7PQ+AmmmTYwJJ/zELt1i/L0AyY+OLIlQR?=
- =?us-ascii?Q?sKXAGQeLLsO0xhWEDPQv2bR+qfwOHVa3UJXw5GP4GbEUsU4ak1y/fRqgF3fm?=
- =?us-ascii?Q?gMu4rYe522YN4xsf5TnTeMltzKPqnIdpT1DdAGxDuHazPyvnl6ca+MFYq2xw?=
- =?us-ascii?Q?ODO4neXanCty82BHMVQ9q5Ah1rZc2Uo3L/Es+dIrZPjFryKVw7JOcv6xagHL?=
- =?us-ascii?Q?cQbO7m9BmvS5GZgjcCBA9RVuwmyW4accvIJtpT1avU6Osvqmjg+UZm9yrGGI?=
- =?us-ascii?Q?RYly4B5Ow+BTgB7zq6Cd6pt41SwVcviztuRaWxd3jLsyq+o+g11NA159X8WA?=
- =?us-ascii?Q?xyy9yzRV0D31vz9pi0wwFGeGGyEze8FkxTcUUzqWmkjn+1iTwg24HB0foqJy?=
- =?us-ascii?Q?H018opcCU0UgQrxYMg8Vnj/p+GfxpWqUddlqrraAuBTbY08LlK9aTPjsH1cQ?=
- =?us-ascii?Q?vMbrRALONy//ONbdzH4x0P6Ji2r2NpHyt+6SgBKjmJtO7/8CbJ859cx30McN?=
- =?us-ascii?Q?vPJ1W0tjMrBiIdt5AUDDFcEXyJllycypa19cTU6kvwcIt+7EeM4jWbqfoo90?=
- =?us-ascii?Q?jTzW1JvSIhXCB5OKmMT9UPapVkoSXN2mVX0nMWAW6Sob02oAcx/NLOL+YLIZ?=
- =?us-ascii?Q?jgzpNxGH/X36a0pf+IGOpfdjI9ZSn6lUbDSCsrFOS1qbZVeOJOLGp7d7q8/y?=
- =?us-ascii?Q?ka2Gg5IO/BTGBRKe5jiV0Zl9bm4wMBPmNVb9VP2mzoLa5WOS+Dek474Mg1Yj?=
- =?us-ascii?Q?A/1Hz1wwhi0EQ0FVBszwNbv8fYxT3pnB6ANn0lWwznNvDh61uRnE7V64zzb7?=
- =?us-ascii?Q?WFXQ3Vr+t76tHL7h2PB0vGazIofVehdoKKtcGJGOP/OpsxBbRDdZH8zgVrZU?=
- =?us-ascii?Q?MxMEcR0rRqz/+A4d7YYbGgDj5wf6ms9unHJwXxCWowLZCUFGyI8xrHWiFL93?=
- =?us-ascii?Q?Y3MfB6X4WfbgM5GXEDRvsrBFh5IkqUfvJctmbY937x1OE5KJmvpgxhFRUQnN?=
- =?us-ascii?Q?wZZU3Wo5utAYM28cS8oRSAQigpdI1bCq/nWYLdmOJTmZxR7sLndla8oe8DaK?=
- =?us-ascii?Q?oRVfyEb7ByxXHW1aNjA=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8F11CFBC;
+	Fri, 17 May 2024 09:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715937369; cv=none; b=Ky+lNV7Fit6tpsCSZZ+IIyUcItC2O4NPHXWw165C4WEpCfymGBSM1Sm+aT/2BJLH4qw2DsVGhTmfKNFNfRJYt88HrkHL2f0/AJ7lYJwKNRk/QNg5+XBuK9uzpbvyHmwu127mw83sWMxOnyBV8/i83K1r59spMnTelc+q02Gjx5Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715937369; c=relaxed/simple;
+	bh=wY4YgXdaqsAKUexBfgDDerI/9Bx+fOhmVvc6Lpv7OVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UsGji0P0jS7xaF5PCqyCQSv9vuD/r0tD7JSAHmqxEBulkysSJw8cq6FhuJj6eRuoBrlhV2Q9BRjul3rot/bxbm4igWOWV5UEKSKuAifZfhW4oA5b+QG+uQIJG0tYaKGOFDyhi+MI1g1teLH9Cq2iLf9UvSq5ol1Ue7ZCsw2cgW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BbghCkdX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jt+OyQXy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MSoh9Pd4; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6EmY1xnz; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D221C5D1B3;
+	Fri, 17 May 2024 09:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715937362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
+	b=BbghCkdXksejkuJqJmch5Ijt4sdQZ5TDSe2a19haeMF2gXOdFAXHuIFAVy/ycjGDKXOahM
+	3s35YHDhSOBZ0DBIbMJoZwDe1zdv8qmX78wJczE5ydgpmTceUqPruOPYs17PnMEifYtyGx
+	Kf3WP8IRkhI9Qg1w1JdkXa4wR3S5njo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715937362;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
+	b=jt+OyQXy4hJ1K2TSadbh5/0IARkIyYzVbNsRzT7YZJa0Y75FPbMfmoXTKJXCnAHwr/gG2B
+	W7bx/+2Y8JLZKpAQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MSoh9Pd4;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6EmY1xnz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715937361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
+	b=MSoh9Pd4EH3z9qXcQcZ1OGdOiRW1eI7a9BCPHTXAOfjkWkcMJzvy2v535t1mnqA5yaLg6e
+	KIcpJzCLRWJuOmJ/gF0nIaQShxltOwTdd0B3ersi5TNR0Tlqj9WyvqXlkG2ubPrJbsH3G/
+	znOmxD/guKNiOlbjZztNkImArw9SnKE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715937361;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=9wYWAx2PYyOTbB/LCI3hz7bjDkyxOkz1uapIAToUark=;
+	b=6EmY1xnz1/aS9A/f+O8Sf2mvTZcnlnUMR9VLtbJP9DiseQxwfCCDwKxnhj+6NTN3hoLP9f
+	n7zleX6+JlE9M5Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57EBD13991;
+	Fri, 17 May 2024 09:16:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0dNMFFEgR2ZkfAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 17 May 2024 09:16:01 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	chaitanya.kumar.borah@intel.com,
+	suresh.kumar.kurmi@intel.com,
+	jani.saarinen@intel.com,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	rafael@kernel.org,
+	hdegoede@redhat.com
+Cc: linux-arch@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH] arch: Fix name collision with ACPI's video.o
+Date: Fri, 17 May 2024 11:14:33 +0200
+Message-ID: <20240517091557.25800-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB6674.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2e0661f-75c3-4f2d-28d3-08dc76331e56
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2024 05:35:10.3744
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: p7DAQC3ueG2uRovskuEwnTb+xljx9VCXPZm7ILKD93yy9o9/BJISqfNPhXZ/5xyMC2NXk1u0PEtLzBVL2MMLHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4418
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -5.01
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: D221C5D1B3
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-5.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:email];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[suse.de:+]
 
-Hi Bjorn,
-Thanks for reviewing and refactoring V6 patch.
-Could you please review this V7 series as well?
+Commit 2fd001cd3600 ("arch: Rename fbdev header and source files")
+renames the video source files under arch/ such that they do not
+refer to fbdev any longer. The new files named video.o conflict with
+ACPI's video.ko module. Modprobing the ACPI module can then fail with
+warnings about missing symbols, as shown below.
 
-Thanks,
-Vidya Sagar
+  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_unregister (err -2)
+  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_register_backlight (err -2)
+  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol __acpi_video_get_backlight_type (err -2)
+  (i915_selftest:1107) igt_kmod-WARNING: i915: Unknown symbol acpi_video_register (err -2)
 
-> -----Original Message-----
-> From: Vidya Sagar <vidyas@nvidia.com>
-> Sent: Wednesday, May 8, 2024 11:12 PM
-> To: bhelgaas@google.com; rafael@kernel.org; lenb@kernel.org; will@kernel.=
-org;
-> lpieralisi@kernel.org; kw@linux.com; robh@kernel.org; frowand.list@gmail.=
-com
-> Cc: linux-pci@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
-> devicetree@vger.kernel.org; Thierry Reding <treding@nvidia.com>; Jon Hunt=
-er
-> <jonathanh@nvidia.com>; Krishna Thota <kthota@nvidia.com>; Manikanta
-> Maddireddy <mmaddireddy@nvidia.com>; Vidya Sagar <vidyas@nvidia.com>;
-> sagar.tv@gmail.com
-> Subject: [PATCH V7 0/4] PCI: Add support for preserving boot configuratio=
-n
->=20
-> Add support for preserving the boot configuration done by the platform fi=
-rmware
-> per host bridge basis, based on the presence of 'linux,pci-probe-only' pr=
-operty in
-> the respective PCI host bridge device-tree node. It also unifies the ACPI=
- and DT
-> based boot flows in this regard.
->=20
-> This patch series is a complete version of the incomplete series (
-> https://lore.kernel.org/linux-pci/20240421190914.374399-1-
-> helgaas@kernel.org/ ) posted by Bjorn which in turn was an attempted spli=
-t work
-> of the single V6 patch ( https://lore.kernel.org/linux-
-> pci/20240418174043.3750240-1-vidyas@nvidia.com/ ) posted by me.
->=20
-> Vidya Sagar (4):
->   PCI: Move PRESERVE_BOOT_CONFIG _DSM evaluation to
->     pci_register_host_bridge()
->   PCI: of: Add of_pci_preserve_config() for per-host bridge support
->   PCI: Unify ACPI and DT 'preserve config' support
->   PCI: Use preserve_config in place of pci_flags
->=20
->  drivers/acpi/pci_root.c                  | 12 ------
->  drivers/pci/controller/pci-host-common.c |  4 --
->  drivers/pci/of.c                         | 54 +++++++++++++++++++-----
->  drivers/pci/pci-acpi.c                   | 22 ++++++++++
->  drivers/pci/pci.h                        | 12 ++++++
->  drivers/pci/probe.c                      | 34 ++++++++++-----
->  6 files changed, 101 insertions(+), 37 deletions(-)
->=20
-> --
-> 2.25.1
+Fix the issue by renaming the architecture's video.o to video-common.o.
+
+Reported-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Closes: https://lore.kernel.org/intel-gfx/9dcac6e9-a3bf-4ace-bbdc-f697f767f9e0@suse.de/T/#t
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 2fd001cd3600 ("arch: Rename fbdev header and source files")
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arch@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+---
+ arch/sparc/video/Makefile                    | 2 +-
+ arch/sparc/video/{video.c => video-common.c} | 0
+ arch/x86/video/Makefile                      | 2 +-
+ arch/x86/video/{video.c => video-common.c}   | 0
+ 4 files changed, 2 insertions(+), 2 deletions(-)
+ rename arch/sparc/video/{video.c => video-common.c} (100%)
+ rename arch/x86/video/{video.c => video-common.c} (100%)
+
+diff --git a/arch/sparc/video/Makefile b/arch/sparc/video/Makefile
+index fdf83a408d750..dcfbe7a5912c0 100644
+--- a/arch/sparc/video/Makefile
++++ b/arch/sparc/video/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-obj-y	+= video.o
++obj-y	+= video-common.o
+diff --git a/arch/sparc/video/video.c b/arch/sparc/video/video-common.c
+similarity index 100%
+rename from arch/sparc/video/video.c
+rename to arch/sparc/video/video-common.c
+diff --git a/arch/x86/video/Makefile b/arch/x86/video/Makefile
+index fdf83a408d750..dcfbe7a5912c0 100644
+--- a/arch/x86/video/Makefile
++++ b/arch/x86/video/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-obj-y	+= video.o
++obj-y	+= video-common.o
+diff --git a/arch/x86/video/video.c b/arch/x86/video/video-common.c
+similarity index 100%
+rename from arch/x86/video/video.c
+rename to arch/x86/video/video-common.c
+-- 
+2.45.0
 
 
