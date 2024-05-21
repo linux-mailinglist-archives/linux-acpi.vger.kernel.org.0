@@ -1,206 +1,108 @@
-Return-Path: <linux-acpi+bounces-5906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5907-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB788CA9A0
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 May 2024 10:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED248CAAD8
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 May 2024 11:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08B61B215BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 21 May 2024 08:07:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F8FB1F22922
+	for <lists+linux-acpi@lfdr.de>; Tue, 21 May 2024 09:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02E653E02;
-	Tue, 21 May 2024 08:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64D357C8B;
+	Tue, 21 May 2024 09:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="TbMaAm5p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m93+2wjN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E782209F;
-	Tue, 21 May 2024 08:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D08351C30;
+	Tue, 21 May 2024 09:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716278841; cv=none; b=EbN45Sws2fb3osoIY7Luk2/UIPrkJZMBsKhO7HjC3841Pm78eLeHyHFXmfYo9sPtZwjEMElTHEUpUXjpZB3YVo26S6rpoAMyOpD+Rr9NihVYw7hCw8st3XhTJUM+a7Q+xOiBhD5euuxXiy597Dp+ZwxQ1EP4l/6F8R15MMR5H+Q=
+	t=1716284138; cv=none; b=U+JrVCOwYY4ikwgtbKIlOuiXs6FlDVvF/IWwl5wbdBJ1ixmgD1EdkD5qAzqxwWgqrnVFsJx84EAFuzgDtFSGpv0vpd5Y4BIZNTJ911rt8AwOeGZ+z38ZcUi4r8C7OjHm5FBOC8zhNSpsN0GursmE7iSw9cCHd/zp8o9HYHtA74Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716278841; c=relaxed/simple;
-	bh=ckPMRuIbbfcjK4leF67Zyjh1c9FjVXVpqOAReRsiJgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KVX8lui7gfNaWAiMvscczfuJ81ZMYidiNLxcTcMHFicQWGpHbw+7CHSqNqKZWm12TuJQO2MSYiT1VjPGJeFiRmfBZt7MrpC+ETAA2ReDLGXH5H2g82wkPGb+Sd2w3xfRhTbdd++FlbLtPprlUpFX9qKMpKHw/8WKqJhInhitFHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=TbMaAm5p; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AD51140E0254;
-	Tue, 21 May 2024 08:07:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id FQIIf5xTKZTj; Tue, 21 May 2024 08:07:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1716278833; bh=bUrz/vVy5veieaUpjlFebAVZrIuR6VrAhNkZf46x+aM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TbMaAm5pqlP8mAwrgyTY1siPWBqt9Xdn3FfN+/H4eL+oqvHy69dDQYM148H7Ud3V9
-	 5ljZCdAobGwLYqllyGYk/mpW1jH1vCKur0QKIDU6DB7z0ZUNh4lpcXgibYeJLoW03p
-	 t2qrLEapGwEMIOB/xDkdN+zRn0IeVFKlFo/sKzQfophQumyLjD4lRt55TdNT46WCDE
-	 EOgKVOnCYNpEzdyk7E4CLMmUrlmDXb9Ww3ClEDBHHyBaXNk+uYfdvx18Sse4vl+AXt
-	 Jl2nVWN73SEgL8+IDfk9Kgke6QDnN7nDNG+A7kqxGEjhSZw5kjk+9sVIPL3+ien+/9
-	 Zz0rWImSt2CnDhZIlD7sVFBQvHpEwpeEyzEcrQFqWIyImymWw2dfS1L4JYmTIoOWmV
-	 anUIcAhaYFRCSoSZGeGZbsX+X0pN537YYXUNhJeFbAcMnqbvKkTh4OXPh75nOQztHc
-	 l0YXYKtmfpsJjFvNrjbqTp0l7YjuZlZkQo5gFpOzn+0fP9PNheNhdx1A2kygHA1ued
-	 XKXh2RIk+TArNwtjnkqCET45albjyozv4L2u9vHCCG/MHK9IBfdN6+WqTTuwWsCis/
-	 zq/e79l4rwRCUbc14OBhFQ6fVrzR3+XooxlVQ54/8izgmCWgAsiPtVXl8kX9/9Nj50
-	 ervES1GITMpUmD2qO8MTN1CE=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C3AF740E01A3;
-	Tue, 21 May 2024 08:06:26 +0000 (UTC)
-Date: Tue, 21 May 2024 10:06:21 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240521080621.GBZkxV_ZWnbbrq-yV_@fat_crate.local>
-References: <D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
- <20240509200306.GAZj0r-h5Tnc0ecIOz@fat_crate.local>
- <663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
- <20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
- <663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
- <20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
- <663e55c59d9d_3d7b429475@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
- <20240517121554.000031d4@Huawei.com>
- <20240517124418.00000b48@Huawei.com>
+	s=arc-20240116; t=1716284138; c=relaxed/simple;
+	bh=gaI1x49Mq0muVNOH2if68wn6RP6JS0LR/NutDzd73Ek=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=D/l7emXhfShN/j6QfFHWonb9EwyIqUvi9ZxK8RzYnp/mU+wC9wFUj7FGjWDfSSddSLyel6TJL53KSBeC0/KyDYPvtfWpuqd49oP6FkXNRfwcVc5OmPpUKCwyxV2pqN8JXck+D9/oNgje8vyfwl4U/0mayVdYgA49YE0/3UHIAd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m93+2wjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E20C2BD11;
+	Tue, 21 May 2024 09:35:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716284138;
+	bh=gaI1x49Mq0muVNOH2if68wn6RP6JS0LR/NutDzd73Ek=;
+	h=From:Date:Subject:To:Cc:From;
+	b=m93+2wjNxvL9E1PmcKgGBJRMwaxLXoB1GzjadIaG/keOXw6S85IxzhP04cfbVPWQl
+	 sB0grIBvMlh7/nxTN7EJfDRDLOYCyK9xRq40J96lNKgp7ToaMwiO6+/LEQYzXyGETT
+	 UTuUqpHky/aylgHjlB/tUySW3h0XIdChJAh153q/7Xj19KxtrVLlM6+4+PvcFJJERi
+	 n2co12NtwkICBOpcJIDqCE0+z1/s/AtH0zJCb87eybIt/nmlXIe+r4cj+nP6h5BqBf
+	 9GAkLlClk6GpfIVq5Z34HG1+1UX+jdxjaG7LbWY5CZSWWpme9MiVS/mvB5ijxIR1Ek
+	 Sgy1jYeDuMXCw==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5ac4470de3bso284129eaf.0;
+        Tue, 21 May 2024 02:35:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVfBYt0HvK784VRTGe1ha6FO+IZ6575aX651ADDb3UBBU1u8s2j38TRsnbSa32tWKPA/MnkBl0xOqhZq/Ifim4AUTfQYORMtLQgiweN
+X-Gm-Message-State: AOJu0YwQU3ZHUo2Qjh0R3jRDk9ZW2aZWoJzboyXXTPoTcBWxRClq99T8
+	wG2dPEVkZkO1TQS2dbknyH4kcTvpkFkEJbDqiTUFAtEU00rsSMl7s13GcHbfHWbMPOp2ExU3arB
+	lRbTH0yfYt6+ElCwbq3Fjrh9H9Fg=
+X-Google-Smtp-Source: AGHT+IGSrZgkMMfXBdxwsD336ftypoWzh8InmZNrBd+YLMY+qKWUXEU5HCcUvL3yE+V4vzbfLIEBXc4YrbtSKhj1rVM=
+X-Received: by 2002:a4a:d692:0:b0:5b2:f29:93f0 with SMTP id
+ 006d021491bc7-5b2815e3c4dmr35651663eaf.0.1716284137719; Tue, 21 May 2024
+ 02:35:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240517124418.00000b48@Huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 21 May 2024 11:35:26 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gPXNa+DjUbHpPYvBzt3Thdke9rvdbSXEcJ5qXPBQJtpQ@mail.gmail.com>
+Message-ID: <CAJZ5v0gPXNa+DjUbHpPYvBzt3Thdke9rvdbSXEcJ5qXPBQJtpQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.10-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 17, 2024 at 12:44:18PM +0100, Jonathan Cameron wrote:
-> Given we are talking about something new, maybe this is an opportunity
-> to not perpetuate this?
-> 
-> If we add scrub in here I'd prefer to just use the normal bus registration
-> handling rather than creating a nest of additional nodes.  So perhaps we
-> could consider
-> /sys/bus/edac/device/scrub0 (or whatever name makes sense, as per the
-> earlier discussion of cxl_scrub0 or similar).
+Hi Linus,
 
-Yes, my main worry is how this RAS functionality is going to be all
-organized in the tree. Yes, EDAC legacy methods can die but the
-user-visible part can't so we might as well use it to concentrate stuff
-there.
+Please pull from the tag
 
-> Could consider moving the bus location of mc0 etc in future to there with
-> symlinks to /sys/bus/edac/device/mc/* for backwards compatibility either
-> via setting their parents or more explicit link creation.
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ acpi-6.10-rc1-2
 
-You can ignore the mc - that's the memory controller representation EDAC
-does and that's also kind of semi-legacy considering how heterogeneous
-devices are becoming. Nowadays, scrubbing functionality can be on
-anything that has memory and that's not only a memory controller.
+with top-most commit 98a83da39b482c638954b111803906843a83a747
 
-So it would actually be the better thing to abstract that differently
-and use .../edac/device/ for the different RAS functionalities. I.e.,
-have the "device" organize it all.
+ platform/x86: wmi: Remove custom EC address space handler
 
-> These scrub0 would have their dev->parent set to who ever actually
-> registered them providing that reference cleanly and letting all the
-> normal device model stuff work more simply.
+on top of commit ea5f6ad9ad9645733b72ab53a98e719b460d36a6
 
-Ack.
+ Merge tag 'platform-drivers-x86-v6.10-1' of
+git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
 
-> If we did that with the scrub nodes, the only substantial change from
-> a separate subsystem as seen in this patch set would be to register
-> them on the edac bus rather than a separate class.
-> 
-> As you pointed out, there is a simple scrub interface in the existing
-> edac memory controller code. How would you suggest handling that?
-> Have them all register an additional device on the bus (as a child
-> of the mcX devices) perhaps?  Seems an easy step forwards and should
-> be no backwards compatibility concerns.
+to receive ACPI fixes for 6.10-rc1.
 
-Well, you guys want to control that scrubbing from userspace and those
-old things probably do not fit that model? We could just not convert
-them for now and add them later if really needed. I.e., leave sleeping
-dogs lie.
+These make the ACPI EC driver always install the EC address space handler
+at the root of the ACPI namespace which causes it to take care of all EC
+operation regions everywhere, so in particular the custom EC address
+space handler in the WMI driver is not needed any more and accordingly
+it gets removed altogether.
 
-> It absolutely doesn't as long as we can do it fairly cleanly within
-> existing code. I wasn't sure that was possible, but you know edac
-> a lot better than me and so I'll defer to you on that!
+Thanks!
 
-Meh, I'm simply maintaining it because no one else wants to. :)
 
-> Several options for that, but fair question - bringing (at least some of)
-> the RAS mess together will focus reviewer bandwidth etc better.
+---------------
 
-Review is more than appreciated, as always.
+Rafael J. Wysocki (2):
+      ACPI: EC: Install address space handler at the namespace root
+      platform/x86: wmi: Remove custom EC address space handler
 
-> I'm definitely keen on unifying things as I agree, this mixture of different
-> RAS functionality is a ever worsening mess.
+---------------
 
-Yap, it needs to be unified and reigned into something more
-user-friendly and manageable.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+ drivers/acpi/ec.c          | 25 ++++++++-----
+ drivers/acpi/internal.h    |  1 -
+ drivers/platform/x86/wmi.c | 92 ----------------------------------------------
+ 3 files changed, 16 insertions(+), 102 deletions(-)
 
