@@ -1,233 +1,145 @@
-Return-Path: <linux-acpi+bounces-5935-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5936-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582C88CBDFB
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 11:40:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6141D8CBF07
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 12:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50D51F22E58
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 09:40:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1720A285607
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 10:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781CA80C04;
-	Wed, 22 May 2024 09:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7319D81ABF;
+	Wed, 22 May 2024 10:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPNFX/11"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2FC54720;
-	Wed, 22 May 2024 09:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD471CD13;
+	Wed, 22 May 2024 10:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716370830; cv=none; b=ZIuzrVm9Eu3I4KswqAR+ExWxeinukhk3B8HrTkbF9LBHh5sR0GFy5eZNhdD2dtS83ZXAxS3wuX25unLEb+vgVHmM8C3HBQGf5qwQYxqpDemexUXVoR9M2qqgGamDO8OEgu2JMmgfe+QASz9bUdi/Pa+aYtvzYqKWElyA8hUTlnI=
+	t=1716372621; cv=none; b=sAXir3Xfxr64mmNSmwtlGOnPPw1/heFdJjJMk7QACBnMkWQcnArtLrrw50qIod3qclcoPjOhQ8tc3b4LLJZxKe8tgzQhRyJitnNWEHMmTEL4/OK8+biboao82jOxMDQIvuR0zOk/gpoPnERXL8AqDiYNtGj+u6mAY72Pq4J2bNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716370830; c=relaxed/simple;
-	bh=dI4/Xlum3q54/48w5qXC2mpJ/wMnduDUMS+A4zFT9kU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A97shix0rZ8Ctogn+HDCuokrPgwtMEXnVsHSa73SymeXyCuRFEbkEJqkqmq6UEVNCMbRguaSSpPiRHygioyfyTFVrwjX3M6WahGkmxsHiCauc8+PwrAarHcstKndEp7qQHxelKN5D2DGbpafDVMAJoqj3zlrrgAA96utBcRFZII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VkmQw2rK4z6J9Sj;
-	Wed, 22 May 2024 17:36:40 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 44E6D140A70;
-	Wed, 22 May 2024 17:40:19 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 22 May
- 2024 10:40:18 +0100
-Date: Wed, 22 May 2024 10:40:17 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Borislav Petkov <bp@alien8.de>
-CC: Dan Williams <dan.j.williams@intel.com>, Shiju Jose
-	<shiju.jose@huawei.com>, "linux-cxl@vger.kernel.org"
-	<linux-cxl@vger.kernel.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dave@stgolabs.net" <dave@stgolabs.net>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "Jon.Grimm@amd.com"
-	<Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>, wanghuiqiang
-	<wanghuiqiang@huawei.com>, Linuxarm <linuxarm@huawei.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Jean Delvare
-	<jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240522104017.00003904@Huawei.com>
-In-Reply-To: <20240521080621.GBZkxV_ZWnbbrq-yV_@fat_crate.local>
-References: <D9511DC1-1566-473A-A426-111BB1F7F9F0@alien8.de>
-	<20240509200306.GAZj0r-h5Tnc0ecIOz@fat_crate.local>
-	<663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
-	<663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
-	<663e55c59d9d_3d7b429475@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	<20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
-	<20240517121554.000031d4@Huawei.com>
-	<20240517124418.00000b48@Huawei.com>
-	<20240521080621.GBZkxV_ZWnbbrq-yV_@fat_crate.local>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1716372621; c=relaxed/simple;
+	bh=FI4zo+moBW9miEacUIAXuSGw8WkogkLoVnq2rXZ7GMI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PHEa3ZOwKop8BF1igI77XzQNmOY1VwdGqIAQwf+3h2WQupSdkoVTHcjQm3HrlL89Kb99zEARcOYldr90OTgOB38vqGCDMUlCGZilwofgvPmHwaUwbuwu4Pm3KOOh2X75A4PLniacymKrZdgjYeP9ULijxTsKBQyTRk06u0WrFPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPNFX/11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C48C2BD11;
+	Wed, 22 May 2024 10:10:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716372620;
+	bh=FI4zo+moBW9miEacUIAXuSGw8WkogkLoVnq2rXZ7GMI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lPNFX/11+47X3X4nyohE95UryamoopXx6FCkavLZaxztSI7RJjmAnROKkzLWmUI3Y
+	 I/6wess+wZmlzLQiz/t5Yi1D8kWHku10JDl2NAo1tn7mSt2jaemIFCQA7ybsWEsPqX
+	 CII039h1LGk6C2ncNQt2r9uqDBdkduZ5+eqMAwczsjKSHTMUBB8XAQYjlyd2GZEiw4
+	 d3hAq4WXzTtR5viXsGIiz93r23spQfzxJObfwlTojDKBdXePzapHp0hCKfYsc5a4aS
+	 0fZ+dz8KgwT630anyAMBfg6mkhf0KsXGxMC9qAilYYK3qwWltr0SsJzasYYly3jS3H
+	 Z0yN5yNA39EEA==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5b3356fd4f3so500807eaf.1;
+        Wed, 22 May 2024 03:10:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVtzQVoBs4x26Y5f5Fgmk0qHLPSDtJGDJ01drojCYTTZOXGWzPt5d5u5PXJ67sAEJaKNcxGwbCBBtby3X5z7PAsq/a2FSmbkvQbHwWJkyUkkhAQdqiCgdM67OuW20/lJnwRZmTZQ5XwMg==
+X-Gm-Message-State: AOJu0YxX00xU5sXIVTqhYRmXz3MiElwL+gkwRAZurNX7irFokt0qFJU8
+	Xp9uLfjkXSOFiVIdDeCUZ776ofwNa3movMmG7wj9AIu5/JGpqEXF3knwH3SEcRqrSTw+modonEC
+	fnXgEJh2MsrtTrWyPzgkX9jk6Bqo=
+X-Google-Smtp-Source: AGHT+IEarXMU3u+jUAtq8NVPIv6BfztF2G7OuMYlKS+slataKc51NNA8r5y9q6ryL1Ift+y5s/WLRi6XBrY1cZ3OSt4=
+X-Received: by 2002:a4a:bd14:0:b0:5b2:7aa7:7b29 with SMTP id
+ 006d021491bc7-5b6a32e9241mr1461779eaf.1.1716372620255; Wed, 22 May 2024
+ 03:10:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240521211036.227674-1-zaidal@os.amperecomputing.com> <20240521211036.227674-2-zaidal@os.amperecomputing.com>
+In-Reply-To: <20240521211036.227674-2-zaidal@os.amperecomputing.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 22 May 2024 12:10:07 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iEufuZugRT3ZPn=wk49E8_xACsOJX4OWPpiv0HybGKNA@mail.gmail.com>
+Message-ID: <CAJZ5v0iEufuZugRT3ZPn=wk49E8_xACsOJX4OWPpiv0HybGKNA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 1/8] ACPICA: Update values to hex to follow ACPI specs
+To: Zaid Alali <zaidal@os.amperecomputing.com>
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com, 
+	tony.luck@intel.com, bp@alien8.de, robert.moore@intel.com, 
+	Jonathan.Cameron@huawei.com, Benjamin.Cheatham@amd.com, 
+	dan.j.williams@intel.com, arnd@arndb.de, Avadhut.Naik@amd.com, 
+	u.kleine-koenig@pengutronix.de, john.allen@amd.com, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	acpica-devel@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 21 May 2024 10:06:21 +0200
-Borislav Petkov <bp@alien8.de> wrote:
+On Tue, May 21, 2024 at 11:11=E2=80=AFPM Zaid Alali
+<zaidal@os.amperecomputing.com> wrote:
+>
+> ACPI specs(1) define Error Injection Actions in hex values.
+> This commit intends to update values from decimal to hex to be
+> consistent with ACPI specs. This commit and the following one are
+> not to be merged and will come form ACPICA project(2).
+>
+> (1) https://uefi.org/specs/ACPI/6.5/18_Platform_Error_Interfaces.html
+> (2) https://lore.kernel.org/acpica-devel/20240514184150.6285-1-zaidal@os.=
+amperecomputing.com/
+>
+> Signed-off-by: Zaid Alali <zaidal@os.amperecomputing.com>
 
-> On Fri, May 17, 2024 at 12:44:18PM +0100, Jonathan Cameron wrote:
-> > Given we are talking about something new, maybe this is an opportunity
-> > to not perpetuate this?
-> > 
-> > If we add scrub in here I'd prefer to just use the normal bus registration
-> > handling rather than creating a nest of additional nodes.  So perhaps we
-> > could consider
-> > /sys/bus/edac/device/scrub0 (or whatever name makes sense, as per the
-> > earlier discussion of cxl_scrub0 or similar).  
-> 
-> Yes, my main worry is how this RAS functionality is going to be all
-> organized in the tree. Yes, EDAC legacy methods can die but the
-> user-visible part can't so we might as well use it to concentrate stuff
-> there.
+In order to modify the ACPICA code in the Linux kernel, you need to
+submit a corresponding pull request to the upstream ACPICA project on
+GitHub.  Once that pull request has been merged, please send the Linux
+patch with a Link: tag pointing to the upstream ACPICA pull request
+corresponding to it.
 
-Understood.
+Thanks!
 
-> 
-> > Could consider moving the bus location of mc0 etc in future to there with
-> > symlinks to /sys/bus/edac/device/mc/* for backwards compatibility either
-> > via setting their parents or more explicit link creation.  
-> 
-> You can ignore the mc - that's the memory controller representation EDAC
-> does and that's also kind of semi-legacy considering how heterogeneous
-> devices are becoming. Nowadays, scrubbing functionality can be on
-> anything that has memory and that's not only a memory controller.
-> 
-> So it would actually be the better thing to abstract that differently
-> and use .../edac/device/ for the different RAS functionalities. I.e.,
-> have the "device" organize it all.
-
-I'm not sure I follow this. Definitely worth ensuring we are thinking
-the same thing wrt to layout before we go further,
-
-Do you mean keep it similar to the existing device/mc device/pci
-structure so /sys/bus/edac/devices/scrub/cxl_mem0_scrub etc?
-This would rely on symlinks to paper over the dev->parent not being
-the normal parent. Hence would be similar to /sys/bus/edac/devices/pci in
-edac_pci_create_sysfs() or equivalent in edac_device_create_sysfs().
-
-Or is the ../edac/device bit about putting an extra device under edac/devices/?
-e.g.
-/sys/bus/edac/devices/cxl_memX/scrub
-/sys/bus/edac/devices/cxl_memX/other_ras_thing
-which would be fairly standard driver model stuff.
-
-This would sit alongside 'legacy'
-/sys/bus/edac/devices/mc/mcX
-/sys/bus/edac/devices/pci/pciX etc
-
-I'd prefer this second model as it's very standard and but grouping is per
-providing parent device, rather than functionality. However, it is rather
-different from the existing edac structure.
-
-Where I've used the symlink approach in the past, it has always
-been about keeping a legacy interface in place, not where I'd start
-with something new.   Hence I think this is a question of how far
-we 'breakaway' from existing edac structure.
-
-
-
-> 
-> > These scrub0 would have their dev->parent set to who ever actually
-> > registered them providing that reference cleanly and letting all the
-> > normal device model stuff work more simply.  
-> 
-> Ack.
-
-This suggests the second option above, but I wanted to confirm as Shiju
-and I read this differently.
-
-> 
-> > If we did that with the scrub nodes, the only substantial change from
-> > a separate subsystem as seen in this patch set would be to register
-> > them on the edac bus rather than a separate class.
-> > 
-> > As you pointed out, there is a simple scrub interface in the existing
-> > edac memory controller code. How would you suggest handling that?
-> > Have them all register an additional device on the bus (as a child
-> > of the mcX devices) perhaps?  Seems an easy step forwards and should
-> > be no backwards compatibility concerns.  
-> 
-> Well, you guys want to control that scrubbing from userspace and those
-> old things probably do not fit that model? We could just not convert
-> them for now and add them later if really needed. I.e., leave sleeping
-> dogs lie.
-
-Ok. There is an existing is the minimal sysfs existing interface but I'm
-fine with ignoring it for now.
- 
-> 
-> > It absolutely doesn't as long as we can do it fairly cleanly within
-> > existing code. I wasn't sure that was possible, but you know edac
-> > a lot better than me and so I'll defer to you on that!  
-> 
-> Meh, I'm simply maintaining it because no one else wants to. :)
-
-*much sympathy!*  As we ramp up more on this stuff, we'll try and
-help out where we can.
-
-> 
-> > Several options for that, but fair question - bringing (at least some of)
-> > the RAS mess together will focus reviewer bandwidth etc better.  
-> 
-> Review is more than appreciated, as always.
-> 
-> > I'm definitely keen on unifying things as I agree, this mixture of different
-> > RAS functionality is a ever worsening mess.  
-> 
-> Yap, it needs to be unified and reigned into something more
-> user-friendly and manageable.
-
-Hopefully we all agree on a unified solution being the target.
-
-Feels like we are converging. Now we are down to the details :)
-
-Thanks,
-
-Jonathan
-
-> 
-> Thx.
-> 
-
+> ---
+>  include/acpi/actbl1.h | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+>
+> diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+> index 841ef9f22795..b321d481b09a 100644
+> --- a/include/acpi/actbl1.h
+> +++ b/include/acpi/actbl1.h
+> @@ -1017,18 +1017,18 @@ struct acpi_einj_entry {
+>  /* Values for Action field above */
+>
+>  enum acpi_einj_actions {
+> -       ACPI_EINJ_BEGIN_OPERATION =3D 0,
+> -       ACPI_EINJ_GET_TRIGGER_TABLE =3D 1,
+> -       ACPI_EINJ_SET_ERROR_TYPE =3D 2,
+> -       ACPI_EINJ_GET_ERROR_TYPE =3D 3,
+> -       ACPI_EINJ_END_OPERATION =3D 4,
+> -       ACPI_EINJ_EXECUTE_OPERATION =3D 5,
+> -       ACPI_EINJ_CHECK_BUSY_STATUS =3D 6,
+> -       ACPI_EINJ_GET_COMMAND_STATUS =3D 7,
+> -       ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS =3D 8,
+> -       ACPI_EINJ_GET_EXECUTE_TIMINGS =3D 9,
+> -       ACPI_EINJ_ACTION_RESERVED =3D 10, /* 10 and greater are reserved =
+*/
+> -       ACPI_EINJ_TRIGGER_ERROR =3D 0xFF  /* Except for this value */
+> +       ACPI_EINJ_BEGIN_OPERATION =3D             0x0,
+> +       ACPI_EINJ_GET_TRIGGER_TABLE =3D           0x1,
+> +       ACPI_EINJ_SET_ERROR_TYPE =3D              0x2,
+> +       ACPI_EINJ_GET_ERROR_TYPE =3D              0x3,
+> +       ACPI_EINJ_END_OPERATION =3D               0x4,
+> +       ACPI_EINJ_EXECUTE_OPERATION =3D           0x5,
+> +       ACPI_EINJ_CHECK_BUSY_STATUS =3D           0x6,
+> +       ACPI_EINJ_GET_COMMAND_STATUS =3D          0x7,
+> +       ACPI_EINJ_SET_ERROR_TYPE_WITH_ADDRESS =3D 0x8,
+> +       ACPI_EINJ_GET_EXECUTE_TIMINGS =3D         0x9,
+> +       ACPI_EINJ_ACTION_RESERVED =3D             0xA,    /* 0xA and grea=
+ter are reserved */
+> +       ACPI_EINJ_TRIGGER_ERROR =3D               0xFF    /* Except for t=
+his value */
+>  };
+>
+>  /* Values for Instruction field above */
+> --
+> 2.34.1
+>
 
