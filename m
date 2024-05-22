@@ -1,75 +1,76 @@
-Return-Path: <linux-acpi+bounces-5932-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5933-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255538CBD97
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 11:18:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BBA8CBD9B
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 11:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B851F22E40
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 09:18:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22C781F22EE6
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 09:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780757FBAE;
-	Wed, 22 May 2024 09:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DA780BF7;
+	Wed, 22 May 2024 09:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5Dlvz+f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MB0KdTv1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C19282E2;
-	Wed, 22 May 2024 09:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407AA2D047;
+	Wed, 22 May 2024 09:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716369497; cv=none; b=H8M+iPau1mGG1EtYAQyUiC2HzKQKSsLVNPQ4iVPMewEsLKEHPX4VHq0E/5tLATGXbz9CxAERR11DAGGkVAT+z66IXM8WkIOWnjp9YXU7hZPWmlwsI9FJkZoBHPS1GbHVMv1gWUC6z669KXsQP3b9L362yuqh9Kw7hhV9jhpVDeY=
+	t=1716369498; cv=none; b=UycrAa0gg+NMFcJ0kWzk7hUSETIYmsgE7f6+cvJ6koVUXcbMAcdJ/wv5x0OuRTA1afRFChrFaszfIKWOP7m7V4wTz32Lc8Ou/TRimuE4MfrZrPySjykzosoFBIq5hLZkr7IgulJBFkG1FmpOtTGBpDt1r0XcM3ZyWkUXD0sR388=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716369497; c=relaxed/simple;
-	bh=Qr6USar02b6JYI0XqhLNAvs2zSTmqw+SpOFyKARZyC0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=k8GlyRuWFHiChms8wxzErDy96pwDDSgW+fNZ3ltzGGz7DdQOyL0aiOWK5+UATdSB5ySyTioWwAkJjFjK+F4YiSszOg2ARauk3nDbySwYRGsEIlCA8wsdOMPtoE7GVG4acq0US4tA9bGGcR2WX7/yu0dKRbXHN2XfFQw1P+cUMAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5Dlvz+f; arc=none smtp.client-ip=209.85.218.52
+	s=arc-20240116; t=1716369498; c=relaxed/simple;
+	bh=clL0rBh8NOdBwMJgT36ockVwV2WORoYm3aKRiSyAeBM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=cZW52JGVWH/fB7Vt8pyjlMAPS6FgyIHtrPLk0aqzrI7SJD1CmxcAfmZohY1pwGKVFq/VOjYoKKwP3ekvFO/k84A6B6RZpLtY3G4TTWTGqcDKrK7aNu4vgHPCooIh1+S1ItuUIze19BuqDXM9Dof5kpX2Q/BgK0PyKpq7ZW/X2as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MB0KdTv1; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59b81d087aso917513266b.3;
-        Wed, 22 May 2024 02:18:15 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-572b37afd73so11104853a12.2;
+        Wed, 22 May 2024 02:18:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716369494; x=1716974294; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=epqJO+ERpctNPXshaXqEX2wabNsS9uehY5up2W7EJXM=;
-        b=l5Dlvz+fH33aWy94tUx/IHFrD50CHNRnNtC4+g74kdkZtuXpOvAH25C3MH2pyuaqDq
-         MPgfgMgojnW0BPstFJVB9c4gtpv/VpSOj6eM9qdTtKzRibZ6Plzqne16skhoFJR43mhk
-         PHG7sO5UCmQdFr0WTJS+FiI1fVhlnppvfvyl8r2WxFS9MZUDLRIKVlWjpcT1ZBYkezdE
-         A1EBa5Fa875/c3jtsqzaqUYqUP0a3qlTI7ZtqoN5vwk+zx8uMyAfbbHhjcPntkZxNOLO
-         FzL/UUqKK/kRr/TbqpI+omteT4eoLvSyXp6YT64vSVNifhcGH3TncN7yaVukestzOJKE
-         3w0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716369494; x=1716974294;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1716369495; x=1716974295; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=epqJO+ERpctNPXshaXqEX2wabNsS9uehY5up2W7EJXM=;
-        b=vxFAse96NaELpxaOizPBKMzH1YSBa5JbMyaXPISPsLdnmHSxcGbxGEStKjQCj2KhIS
-         ER/mr/uJ9ejNp78QxGP7yCfa3r2GAQL3U5NW7dQBtwG4uBDM6l0FWIfLxnj3QMRvujTi
-         dqMcWOV4KO3OS4ljQtWG//MUGg63vY+npi8t+VxRWo8WXj011lfLo39A2XwW917eYuK1
-         tgDo7dupkpISo7kHwKy+IOzTVbpzmZLtVnM7qlokw6fPtRwGQQo2tpYixzD9J6rq2R8n
-         KdLjfcsTUNGgWcyFLuIxQGzvahVhijY/wJmsX4tZkBKozJWS9qPVXxRwZ3OmtfAPJkca
-         cHuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTg3gn/Mw7DcmTAbbnlxXUOs81lGhjM+sIYbb3wpYUlCHqQEQkwh01d6jD3gJ8xKaprNWC58Lc6VsTXD2PUxgOSjaPpuzQ+LRLIifJBGYHtvjV6DTZftVeS9OE/vGLQM50gu0yjR4jtYE=
-X-Gm-Message-State: AOJu0Yz3/tCLH7La5uea1NbOkI5S9qzZrzBU5ztsVkAdy7Vd5mPB+s18
-	AaSy+za5COy+PSuK4BBFDrIykzdInm9KUDCoZtDhp8fRdHJEeE2b
-X-Google-Smtp-Source: AGHT+IFHKz6NYWtpbZOxJZ2dVbmmDeU/KEXReIfxPv3+43K7ZjjdiDJ1Ck9ql7NsX8Lk5E5mKdnTHA==
-X-Received: by 2002:a17:906:c34d:b0:a59:ba2b:5915 with SMTP id a640c23a62f3a-a62281e11d5mr143893266b.50.1716369494032;
-        Wed, 22 May 2024 02:18:14 -0700 (PDT)
+        bh=E/SuC7+08n2vCECZ9UGktNuVdHeXOcscIV21TQ6r7Hs=;
+        b=MB0KdTv1wR7kfJkG2xQ4bj9rNVyWFNs3ud/3RkQqP6+5BnutVNwcFFg5o0lJEJ3Fl/
+         PhuLX8RLuFU5OFjx19QajgcAS0/RxiTnzUHeD5uy6XMdIwyqS/DhOdytElAwHl79e6qK
+         aSoIPrPeUxxRBmqBwYvz+T6iCxXbbwfx7A+fsnupwq4PotLCeVCIxFk2yX+sOf5VmU1r
+         L/U0BkmXHNnoXWXUUbp6/378pNJtID2ZZAG/qOZHpmprcRlLh0fOnJ7GzpqDcErx7tts
+         j072mVCheVDqtjRNgSZ6/WGsRIMwD/ewOovFYSTGNHuXZyiMO+9rRZHPP7wIXagD6lcH
+         E+5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716369495; x=1716974295;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E/SuC7+08n2vCECZ9UGktNuVdHeXOcscIV21TQ6r7Hs=;
+        b=PZtPimNIREhFGIHUhJya2B/97BOUG8R4oE3IwmEbE4eLmqn8RQqfbZ6jaFLsheSTi/
+         tjDsNV3Bjh0xtB3+7h193QP/rIS/AxFlO9ifN7RwrW7/3aLSEKLR3yBI963Ka2FjNiXe
+         N0R3IZVm4Q5Wlob02a/+HY8uCAP4LvF0qQx2K6vKXFTicvD/7hwqjj2s4dpiHTyyd/my
+         4V6g7i+nl0ALG3igrfw3lVB1QGGDiDpueXtUPgCpRIBG8kLR5STXrVdYXvT5ai/oLXhD
+         u+FR5fyvTQ5WTNmjrC6bF5nOWLYy4wb3CxpCmySEWMabAI6Vd/qqsPboasiSyyZBSnjx
+         8Lyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwQaTjRtkUURIdGTk2WQfNNjjpFXQbiD5C/3a/Hd6n8OWplwxpYj7kpvQjzW/lcR3kDtlripi9/iSO7DBBA/HSwvIPu7wtvyIwsgFwdoa1KEu3o04beXmyZIKCKu6Ji3wCfD/6xLg85Ck=
+X-Gm-Message-State: AOJu0YzHa49ZS/N5xIlEJdYjM45u8utZIC2wGwCc6TEmZIbDbC9rQkPu
+	1LCV2Im70NaUYSC3xegYclRVPuQIgqHnnEt36YbhhO/H8sQ8Rk2H
+X-Google-Smtp-Source: AGHT+IF/abuB+35BiACuJiMAWk3Vdx15AYYVtexypEh5EAJOOiGLT5XZcyn/DsstVdk3MZmt75OvYA==
+X-Received: by 2002:a17:906:b2d0:b0:a59:a977:a15b with SMTP id a640c23a62f3a-a6228170ae1mr80912766b.68.1716369495442;
+        Wed, 22 May 2024 02:18:15 -0700 (PDT)
 Received: from [127.0.1.1] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5cec3d9b5csm836678066b.16.2024.05.22.02.18.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5cec3d9b5csm836678066b.16.2024.05.22.02.18.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 May 2024 02:18:13 -0700 (PDT)
+        Wed, 22 May 2024 02:18:15 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/2] device property: introduce
+Date: Wed, 22 May 2024 11:18:07 +0200
+Subject: [PATCH 1/2] device property: introduce
  fwnode_for_each_available_child_node_scoped()
-Date: Wed, 22 May 2024 11:18:06 +0200
-Message-Id: <20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,9 +79,9 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAE64TWYC/x2N0QrDIAwAf6XkeYLaDbb9yhiSxWQGRItCNyj99
- 0ofj4O7DTo35Q7PaYPGq3atZYC7TEAJy5eNxsHgrb/am3dGfqVGDlJbYKQUcEXN+MkcKGmO4bS
- d6sLR3MWJfcQZnSUYxaWx6P+8vd77fgDv54G6fQAAAA==
+Message-Id: <20240522-fwnode_for_each_available_child_node_scoped-v1-1-1188b0da12dc@gmail.com>
+References: <20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com>
+In-Reply-To: <20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  "Rafael J. Wysocki" <rafael@kernel.org>, 
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
@@ -94,43 +95,43 @@ Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-hwmon@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716369492; l=1324;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716369492; l=1290;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=Qr6USar02b6JYI0XqhLNAvs2zSTmqw+SpOFyKARZyC0=;
- b=skBC7zUYZmBdaCrkmOdXDTE2PXaZlyW5JfOQ1Hg+XTKbj89cB73pX1/WLeRvLF9XxGkP6ksJt
- l5P3CeIJplEDwPzIAUgDjPQvFfDXwvnqeKjyZpRX5uhwDc/nFvebP9g
+ bh=clL0rBh8NOdBwMJgT36ockVwV2WORoYm3aKRiSyAeBM=;
+ b=bsLn6S4t9QZoPppi3IVSBbC3zONy3ba3SOgXnySR7A+tL92YLMD5hb+eiqmX3SHgl17fcB6Tg
+ gWm7iyGaX0iAKqNnrxExlVt8r8gYWd2doQRuv3C+A7K70zzx4UCFVoO
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The _scoped() version of the fwnode_for_each_available_child_node()
-follows the approach recently taken for other loops that handle child
-nodes like for_each_child_of_node_scoped() or
-device_for_each_child_node_scoped(), which are based on the __free()
-auto cleanup handler to remove the need for fwnode_handle_put() on
-early loop exits.
-
-This new variant has been tested with the LTC2992, which currently uses
-the non-scoped variant. There is one error path that does not decrement
-the refcount of the child node, which can be fixed by using the new
-macro. The bug was introduced in a later modification of the loop, which
-shows how useful an automatic cleanup solution can be in many uses of
-the non-scoped version.
+Add a scoped version of fwnode_for_each_available_child_node() following
+the approach recently taken for other loops that handle child nodes like
+for_each_child_of_node_scoped() or device_for_each_child_node_scoped(),
+which are based on the __free() auto cleanup handler to remove the need
+for fwnode_handle_put() on early loop exits.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (2):
-      device property: introduce fwnode_for_each_available_child_node_scoped()
-      hwmon: (ltc2992) use fwnode_for_each_available_child_node_scoped()
+ include/linux/property.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
- drivers/hwmon/ltc2992.c  | 11 +++--------
- include/linux/property.h |  5 +++++
- 2 files changed, 8 insertions(+), 8 deletions(-)
----
-base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
-change-id: 20240521-fwnode_for_each_available_child_node_scoped-8f1f09d3a10c
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 61fc20e5f81f..bcc3dda5a9d8 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -168,6 +168,11 @@ struct fwnode_handle *fwnode_get_next_available_child_node(
+ 	for (child = fwnode_get_next_available_child_node(fwnode, NULL); child;\
+ 	     child = fwnode_get_next_available_child_node(fwnode, child))
+ 
++#define fwnode_for_each_available_child_node_scoped(fwnode, child)	\
++	for (struct fwnode_handle *child __free(fwnode_handle) =	\
++		fwnode_get_next_available_child_node(fwnode, NULL);	\
++	     child; child = fwnode_get_next_available_child_node(fwnode, child))
++
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child);
+ 
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.40.1
 
 
