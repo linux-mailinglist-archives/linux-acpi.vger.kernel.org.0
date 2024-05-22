@@ -1,146 +1,201 @@
-Return-Path: <linux-acpi+bounces-5946-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5947-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B1C8CC5A7
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 19:36:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 297F78CC6BB
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 21:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F191C2104C
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 17:36:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2881C20D85
+	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 19:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D60142E8A;
-	Wed, 22 May 2024 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890C11422C6;
+	Wed, 22 May 2024 19:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="dxn/iv15"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+NLAyyB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42FD1422D5
-	for <linux-acpi@vger.kernel.org>; Wed, 22 May 2024 17:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DFC20DF4;
+	Wed, 22 May 2024 19:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716399393; cv=none; b=cQtyCGK8CX+OkWR/RD8+z9EzWXsGxtn1y0Ibophgnvfkq/PYVQZGpst+bGHcfHod+w9abNhM3uglMBPUeWHpXsvSw/YxiJ1qL3tNH3lICtom+aZAYYKdSm7wdtKeJdpbWtckLo8o/umCOqcyUSUJk+B4tod9WptuqRpsZkEsAqs=
+	t=1716404898; cv=none; b=Jl6SBMt9YpBZprZA3Cpno9JfhFOwz1amG5QTqoO5X3UIID2P65yJ+XCS7Uq68EvjMYj1byCqs0i4oSjbfa44kK3+WUJn1XxcDqE2rclkRWEbQYTbZIBHqB9C+l/KzwokjjfouaVqeDpX9sKrxS5+xJXJVpM8gb/FGGNlNLPoJAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716399393; c=relaxed/simple;
-	bh=Y48rB+eqfN+F9yAGBd3CkyYTUauUSy/FAiGo3hsm9gk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bo355MdF6XsUM/tupP5XG6AUXgdpwguo7UB0YatF+EN/6yIkpVUW1tJeGX4V0htDbLVadOpK3w68KJMMGGk7WAhvSsSQVZX1nU/86PJC5fynrD5DuBeZX3FQQ9ZAW5baI8QTckJu3toqZkHZXgmVB4fuBsBDwBLFTpco60rjvsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=dxn/iv15; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5d81b08d6f2so1238747a12.0
-        for <linux-acpi@vger.kernel.org>; Wed, 22 May 2024 10:36:31 -0700 (PDT)
+	s=arc-20240116; t=1716404898; c=relaxed/simple;
+	bh=srDestDcRngwkBYzq2+QVTUC/g+LpjcoHXg2XIj/WUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ee8aG5JWP7NFXYY8GcI4DKteNLuP4l2rsSkkgU5KzXzcKkW++EAgPnsLF9zdI8G52ekvsUEOSAxestSPvKq1G6q6wQsBEH7GpZsrnvMZQKgSQT905m8ssNi8J/zVCbl3Hvt9OV5XosfrOvf/a0CLY2sjXxeO59PECNhPfuDdrk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+NLAyyB; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6f472d550cbso2586190b3a.1;
+        Wed, 22 May 2024 12:08:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1716399391; x=1717004191; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fDl/ZkDPbSW3xCzUR/DuRNxJiVwY9Xt5ThAS5ddvXhg=;
-        b=dxn/iv1503PJaGERtZxf5ZSfdWbcX960pdOB6Rhqe46LLk6RR400elvvV1I77Z2/n3
-         aslNY7PXJ4FKRYXwbSPHZdWegVDK3DkEogCrEBPPJ8/tCgqxDxiyrBXR7jYEDcrDhNO3
-         9RpzXQjPzDcjD1z8IwqxqF4XTayDXgDMajRxvLWIImoIwcXocgFIgWA6Fu41IGg6ySLl
-         at4l1rcE76k1Wyoc7jIWuXmi2ep4j5u6ehvEr7nvzft2yqAU1NnR037y7h3sKjJDwWFL
-         8zqv5KWaF0IMS6f1vdn13x/IzVSY5upGSlnD/+9wmV8+n/T/NouE+9rh7zDR0XiLrrW5
-         4AwA==
+        d=gmail.com; s=20230601; t=1716404896; x=1717009696; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=HHe0J+axw65labUCdXoK8uIN+8G/Ed6hXruWWV5tTq0=;
+        b=Z+NLAyyB/ku+YJIn8N32UXP7Y2duZc0rl54zZftT63XIGs/rJ6OQgWpipAfmnLgEuG
+         n3PO8IiqCsrt9z3YOZ+aqI1PMSorZwYeuYHZrGAiMZyXjrvMMMMdkpQTWWq5exsmQoCs
+         y493oWd2j8IJ/J2Sk3AqqJq9HSqQMVa54ofr3zaq1BHUFhdyr+tGufrCK7Zv9jxTf5Tx
+         it3+5fRbtlqvSs2rGCTJ1XbVuSaoGC7fLgM5B1UI06YddtPN0EqaVxESxeatJQe34fSy
+         D8L11ADPuaversVKobsYraYvca2fadEvY0GTpcfc5NQHeyoUWcLbjWBx8d7gArZb0RPk
+         fQEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716399391; x=1717004191;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1716404896; x=1717009696;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fDl/ZkDPbSW3xCzUR/DuRNxJiVwY9Xt5ThAS5ddvXhg=;
-        b=quYD4B4WPNYfRiHKtIGbYDBW3ij7/JoUhc60PDk2aoYZsay5bHpy3j+VguGb4VsJFZ
-         cvLFjNr1wnHmZjMnl6D7+0k13imtE7bj1rVswO8zuT35ajVkgmLWw+7v3KW+ycGp5qWV
-         iZtqJa217uXjJZGdyePY5GYa26ohxQt11UCbb4op/A1jloBGPKBTwDEEfv7dE6QRVq5e
-         5+E7rS4XRunrXjDkHYP6Qv4cQsOYGoXL/SKTn/LMuhcq/2gIBwXBo869dcb3i86ZQ69w
-         WOSxs5p50y8tIu9whU6aP20WYbmT2XPePkIHc7neYBG1HJQhyqZlVUaxpWNFKUc5+hWO
-         k6Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWm8wR7ug5OQrBmh/Gv3xNAWAq4jUPv4/P9DjflhIZTwqFmoDnCLLNZCO40N4RqNuQq2rpMHyXeaUEtQAIeLaQZwu46gp7QIXE6Fw==
-X-Gm-Message-State: AOJu0YxA2+24qrqlpjq400xBDaTV8ynvgbOnYghUf97oZy3Y+EPLIoI5
-	yGV17iqzORbmr4+SMRJssMPN9nkeDk++nAHrIf8PA2vj+Ytpu5gI4aPLz7CkQjU=
-X-Google-Smtp-Source: AGHT+IE/Z1uXsIhp0DCO9v3F7b1s/kf5KJKCU5p/KxlUXSDW4uxdWvE53WL9qx0kDHx4AoziD5mkTw==
-X-Received: by 2002:a05:6a20:258e:b0:1ac:8824:156f with SMTP id adf61e73a8af0-1b1f88a30a9mr3119543637.33.1716399391193;
-        Wed, 22 May 2024 10:36:31 -0700 (PDT)
-Received: from sunil-laptop ([106.51.188.31])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2ae0fc9sm22689883b3a.132.2024.05.22.10.36.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 May 2024 10:36:30 -0700 (PDT)
-Date: Wed, 22 May 2024 23:06:13 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: Haibo Xu <haibo1.xu@intel.com>
-Cc: arnd@arndb.de, xiaobo55x@gmail.com, ajones@ventanamicro.com,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>, Greentime Hu <greentime.hu@sifive.com>,
-	Baoquan He <bhe@redhat.com>, Charlie Jenkins <charlie@rivosinc.com>,
-	=?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
-	Chen Jiahao <chenjiahao16@huawei.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Evan Green <evan@rivosinc.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Marc Zyngier <maz@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Yuntao Wang <ytcoode@gmail.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev
-Subject: Re: [PATCH v3 6/6] ACPI: NUMA: replace pr_info with pr_debug in
- arch_acpi_numa_init
-Message-ID: <Zk4tDa0UPL3Xo/0H@sunil-laptop>
-References: <cover.1713778236.git.haibo1.xu@intel.com>
- <70870d88a26f50677eb31ac72bd8c343f428e5b6.1713778236.git.haibo1.xu@intel.com>
+        bh=HHe0J+axw65labUCdXoK8uIN+8G/Ed6hXruWWV5tTq0=;
+        b=CFDFpBtE8VbuEjW1rwtPiBIkzXvnLM3r9RlXvJwtYJauIym1QBSTVIDfwnn4wePTzC
+         2HwnXe/BFpJhv9ZDcXC+72F6dAo9RUFlRQuBlnLdGIgythMNIqfm8hnQoBsv4IIVqeH9
+         Pwqq6UkuTnxwjxz9hIK8JUdf47eByJSBHIo8q0VIZ1SCIwNj5aAl4tUyIUa/D0zgPbhs
+         i94QG9c5ZLPi+BHPswF468ByWW2f9rMCl4Pk+V6NvhZsv4YdXVhxC00FXculYZaxtfhx
+         fa/+RYC5KPr5tafggAzY/dnc2E55yXUsN3iYmhVmNB52p/EZgsxAlhFEk+zD9En1QWTP
+         xybg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmsJ+ENDhvHdYBau40Q1IBRVvHBiAYfVLowxjb0ak5Vk1vnKd/rh7tT9duhd8LgXxuRrJ/DS+3M4AYc5Zpcb5CZXEeOdWdpQjNxxHINLnLkqp84Z+u118HDMbYqfYOquxPvKNsd914OXQ=
+X-Gm-Message-State: AOJu0YyZDKLzgApXggaQ5+iyyhhkJF+vSwW0rVB84lhKN6RMyZad4MUt
+	WBvbMYtuxB53UGELcG6R5XOTiHJOWP1/sGXGF5EWKaCkJ01KHC/6
+X-Google-Smtp-Source: AGHT+IEipXKKTiG1L46xo/nJ3t/vVfMMPrtmKPX++7PZb3z6qzXlboeQk5rOYPt5CPWAWw9tdjdGPw==
+X-Received: by 2002:a05:6a20:9194:b0:1b1:ebf2:d767 with SMTP id adf61e73a8af0-1b1f8a3fd12mr4314194637.43.1716404895884;
+        Wed, 22 May 2024 12:08:15 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2b2fb19sm22744023b3a.207.2024.05.22.12.08.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 May 2024 12:08:14 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <57645247-fb14-4180-bef0-1638e9f522fe@roeck-us.net>
+Date: Wed, 22 May 2024 12:08:12 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <70870d88a26f50677eb31ac72bd8c343f428e5b6.1713778236.git.haibo1.xu@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] hwmon: (ltc2992) use
+ fwnode_for_each_available_child_node_scoped()
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
+ <jdelvare@suse.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org
+References: <20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com>
+ <20240522-fwnode_for_each_available_child_node_scoped-v1-2-1188b0da12dc@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240522-fwnode_for_each_available_child_node_scoped-v1-2-1188b0da12dc@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 24, 2024 at 01:46:26PM +0800, Haibo Xu wrote:
-> There are lots of ACPI enabled systems that aren't NUMA and If the
-> firmware didn't provide the SRAT/SLIT, then there will be a message
-> "Failed to initialise from firmware" from arch_acpi_numa_init() which
-> adding noise to the boot on all of those kind of systems. Replace the
-> pr_info with pr_debug in arch_acpi_numa_init() to avoid it.
+On 5/22/24 02:18, Javier Carrasco wrote:
+> The error path from a zero value of the "shunt-resistor-micro-ohms"
+> property does not decrement the refcount of the child node.
 > 
-> Suggested-by: Sunil V L <sunilvl@ventanamicro.com>
-> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> Instead of adding the missing fwnode_handle_put(), a safer fix for
+> future modifications is using the _scoped version of the macro,
+> which removes the need for fwnode_handle_put() in all error paths.
+> 
+> The macro defines the child node internally, which removes the need for
+> the current child node declaration as well.
+> 
+> Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
+I really don't like fixes which depend on an API change.
+
+Guenter
+
 > ---
->  drivers/base/arch_numa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/hwmon/ltc2992.c | 11 +++--------
+>   1 file changed, 3 insertions(+), 8 deletions(-)
 > 
-> diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
-> index 5b59d133b6af..555aee3ee8e7 100644
-> --- a/drivers/base/arch_numa.c
-> +++ b/drivers/base/arch_numa.c
-> @@ -445,7 +445,7 @@ static int __init arch_acpi_numa_init(void)
->  
->  	ret = acpi_numa_init();
->  	if (ret) {
-> -		pr_info("Failed to initialise from firmware\n");
-> +		pr_debug("Failed to initialise from firmware\n");
->  		return ret;
->  	}
->  
-LGTM. Thanks.
+> diff --git a/drivers/hwmon/ltc2992.c b/drivers/hwmon/ltc2992.c
+> index 229aed15d5ca..3feee400ecf8 100644
+> --- a/drivers/hwmon/ltc2992.c
+> +++ b/drivers/hwmon/ltc2992.c
+> @@ -855,24 +855,19 @@ static const struct regmap_config ltc2992_regmap_config = {
+>   static int ltc2992_parse_dt(struct ltc2992_state *st)
+>   {
+>   	struct fwnode_handle *fwnode;
+> -	struct fwnode_handle *child;
+>   	u32 addr;
+>   	u32 val;
+>   	int ret;
+>   
+>   	fwnode = dev_fwnode(&st->client->dev);
+>   
+> -	fwnode_for_each_available_child_node(fwnode, child) {
+> +	fwnode_for_each_available_child_node_scoped(fwnode, child) {
+>   		ret = fwnode_property_read_u32(child, "reg", &addr);
+> -		if (ret < 0) {
+> -			fwnode_handle_put(child);
+> +		if (ret < 0)
+>   			return ret;
+> -		}
+>   
+> -		if (addr > 1) {
+> -			fwnode_handle_put(child);
+> +		if (addr > 1)
+>   			return -EINVAL;
+> -		}
+>   
+>   		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
+>   		if (!ret) {
+> 
 
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 
