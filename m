@@ -1,92 +1,57 @@
-Return-Path: <linux-acpi+bounces-5963-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5964-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F008CD59F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 16:23:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AE58CD6BD
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 17:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B81EBB226D2
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 14:23:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E33AA1C20BE9
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 15:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054A314B95D;
-	Thu, 23 May 2024 14:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF23B657;
+	Thu, 23 May 2024 15:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YDO0BB+N"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="YoCSnA2R"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BD014AD17;
-	Thu, 23 May 2024 14:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830A31170F;
+	Thu, 23 May 2024 15:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716474207; cv=none; b=HfWONqAJD3IKUXDJyd0NmRlS+9LHZQEFkjMgDG4i5rujKrhz4FtRTq9RxRZnCoKKYciPZT9qciDoHMrekTd/pnp5G+vDBA4ZFdVx2Ya+uEoghG0Y0BYuNqjkLdbEChgpTHrF7Bslg1g6ZjcLeNLopOkdXHHmmJxSggs18sTWkKA=
+	t=1716477019; cv=none; b=luC/FCgmM7tuz1lVwAMiwSEvg3hv9dcI1OGTpmtr3VztH+4M0jfOiv/qvhyTRbxoqXzVHZiafjNq4CT87bHkFepRAxDq9NOT7NzDgtjchP94FlF6REXI1vQ2TmRqkFRmJ+gA/86abUFoeA+LBHb00olmH0E1pEylPRXBOosptdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716474207; c=relaxed/simple;
-	bh=JJ7bmhmcdNu8MKywaSirfkV+WFbvuDMYyJFOVkiBXjE=;
+	s=arc-20240116; t=1716477019; c=relaxed/simple;
+	bh=Gkdr0xJJMLFNvdvcWADbMhaYVTxlrzgLesPt6pnCC4o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gVGwibRh6TNM7Kt8XGwjndoA4Zp5M9ckOJfUWTbYmSfZRy69lVGYHZtbOwVy8MVVNMUlByvZVxAHATUi1y7XA6CaVtdiQSI6J2KfLMzhYnExevMrdklMmhNsfs/Bo5WWlnBAR2i+oiBrJn30wJBi1kJiJQ9Vpe3G3nwdwDwmkyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YDO0BB+N; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6f44d2b3130so3432754b3a.2;
-        Thu, 23 May 2024 07:23:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716474206; x=1717079006; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t/lNADwPwr25pysfe9uC4MhtrxN5wTcZxfw/uoqzjrk=;
-        b=YDO0BB+NuwXlDvo2rV6k+PnTabfQjYkUWTwhya2kRn5s6sWfv5pR4qpoypnBo2FeQx
-         Pklz2TPD9BSqfNAQEc71JRvuxwLU043Ds67z8lFUNJJdYpWr/Ci/aCpSP0LKIE0IuV9f
-         BVLJe1AA+i9K+z0DAesYeMz325uU6uZJKq6L6I3on3sOYxgnSLm6QYr7TF5dRJ7MPya5
-         l6EuyOBU7mp3Ah4w0436OJ3hE/ihlvQlx7V026s13nL8qKGqlqAzXFQoXqGQfMArcnZ1
-         ZzKvRAxrmWoTKS/Nq4VY9zFwzmzxoTmw7ocTNAtlMhd7FnwlWDHpMSidklQ7gJN2LFFY
-         7fhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716474206; x=1717079006;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t/lNADwPwr25pysfe9uC4MhtrxN5wTcZxfw/uoqzjrk=;
-        b=NfEa19+L7gnVJuzlDoWGxSvtb86XJPEFD1TZH7owPpz1MuSQXn0svYq7zGMOGxbobG
-         8CnRZQ6LtIkrtAvFnI1tVwEouLLrBXasy2ZpXpcZ/J/5qq4rkU/ryaGkgME/QNQ4+aft
-         JweF7SXIpWcLhLIFbgC+cs0vTpH70rdjL21lWy2l9b77oSqJE5p9rS0D5Ga0+4wkZumL
-         Yiu+uX6zNDzXTDqZomytksesOGXeR+bStXQJcUIOUgzA6I+Na58k3+7XhupNW2okE9JA
-         6IGFqZF7R4w86bJzLjzyNCWR+1YBJL4J3g06mfeDIw/zsJzStnva8S9iNAPVp54AcGHU
-         bfPA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjHAE6F+VoqdoKmYRB2eJZNF81Ob33+iwkV0RXPCmQAXA1i9ToHXGTDA3YFDZKKbl3ZtYGFsQ+P3OailIiNtinE2IrzsYo6pQjiUJxWurEZAz0zeEHRT9STnnGKw1VMIKUZOW4gpUuyZjJJ+vxgmxUNAPWWDG0J8/T+SfUHsNv0jntw8jh1ZLk34REL61QGpsVx0qFcKbgrOgUgxjJ3qtPk2t7Zu7kePfzpQtxj3J/wGSGhJbF7A1o1msWHw==
-X-Gm-Message-State: AOJu0YxXqSq2QlwYUf6LiVmLHzK7pIwMewxwsg4a6BRB42bHDNMmn9kw
-	mPUKaF+5I+0nl4Z/oukfG4yGokdLcUpdSY32okVv0YeSm3zP5ZzX
-X-Google-Smtp-Source: AGHT+IEWmE003niz8KfDtTyBhJFuwL9l4X+RCaG61wMtnhF90Faa7QASay0WGaxzbP5zU+5qgt+XNg==
-X-Received: by 2002:a05:6a21:999b:b0:1b0:31c8:edfb with SMTP id adf61e73a8af0-1b1f8a8669dmr5803662637.60.1716474205714;
-        Thu, 23 May 2024 07:23:25 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a665c0sm24088995b3a.3.2024.05.23.07.23.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 07:23:24 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 23 May 2024 07:23:23 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
-	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
-	linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>,
-	Zhi Wang <zhi.wang.linux@gmail.com>,
-	intel-gvt-dev@lists.freedesktop.org,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
-	linux-modules@vger.kernel.org
-Subject: Re: [PATCH] sysfs: Unbreak the build around
- sysfs_bin_attr_simple_read()
-Message-ID: <a396a2ce-656b-4525-acee-ed7c3742b2da@roeck-us.net>
-References: <2024052334-nape-wanting-0a2a@gregkh>
- <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WhI6MnWGH1McuRGi/pW+wL7vfLOzRYQ2XDkPnjG0MqqJO1ANBOgKE16TVLMoocuM8HxjMIrxSfyxdVO8Cmru+mBkffaZaihG4RdTSB3derB/VfegYywjD8wUu8EvmQgrVzzSdP7l3dpnMnr+Uw0hsiDkjDxRSL8MXbUhkBOFyv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=YoCSnA2R; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=VKYtOUQIklTbI09gSSmqwJj42+AhQw4Yicy/NLUXnzs=; b=YoCSnA2RFj/4ROon
+	bPfV7469Btft13YOZleJG6i3GOvmXQa5XDHesXVcM2WdXrb4FBCpcJckmofOFaCeMt6MmdtOKaNab
+	/2uo2X73uPdbtZdR9PRR82QZo54VsQoNaVV1rRfl3JGz5HsdsFtVPL64HHAfXu4UC5DgV5F5wMius
+	7AT9ddsiJk4pgoFcIaWEgLWellbZLUWUxaTXzouQLXzLN7cuW1T44KyRHz+fMb5g2M5Ou/RQRrLSJ
+	VRYjafelzWkspFVCdhuzQhKuNUt6Dk04EHkjoHja27Lcs6Fq/7/QB82XlKcow9xSyd8ypHM7fDSq0
+	WulPOcA/SOcuwpz/ng==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1sAA4z-002FMq-2W;
+	Thu, 23 May 2024 15:10:05 +0000
+Date: Thu, 23 May 2024 15:10:05 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: bhelgaas@google.com, rafael@kernel.org, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: PCI: Remove unused struct 'acpi_handle_node'
+Message-ID: <Zk9cTVvPoyzM4hYm@gallifrey>
+References: <20240509000858.204114-1-linux@treblig.org>
+ <20240509115750.000078ad@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -95,52 +60,57 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
+In-Reply-To: <20240509115750.000078ad@Huawei.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 15:09:50 up 15 days,  2:23,  1 user,  load average: 0.02, 0.01, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-On Thu, May 23, 2024 at 01:00:00PM +0200, Lukas Wunner wrote:
-> Günter reports build breakage for m68k "m5208evb_defconfig" plus
-> CONFIG_BLK_DEV_INITRD=y caused by commit 66bc1a173328 ("treewide:
-> Use sysfs_bin_attr_simple_read() helper").
+* Jonathan Cameron (Jonathan.Cameron@Huawei.com) wrote:
+> On Thu,  9 May 2024 01:08:58 +0100
+> linux@treblig.org wrote:
 > 
-> The defconfig disables CONFIG_SYSFS, so sysfs_bin_attr_simple_read()
-> is not compiled into the kernel.  But init/initramfs.c references
-> that function in the initializer of a struct bin_attribute.
+> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > 
+> > 'acpi_handle_node' is unused since
+> > Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+> > Remove it.
+> > 
+> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 > 
-> Add an empty static inline to avoid the build breakage.
+> FWIW, indeed unused.
 > 
-> Fixes: 66bc1a173328 ("treewide: Use sysfs_bin_attr_simple_read() helper")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Closes: https://lore.kernel.org/r/e12b0027-b199-4de7-b83d-668171447ccc@roeck-us.net
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Thanks; any idea who would pick this up?
 
-> ---
->  include/linux/sysfs.h | 9 +++++++++
->  1 file changed, 9 insertions(+)
+Dave
+
+> > ---
+> >  drivers/acpi/pci_root.c | 5 -----
+> >  1 file changed, 5 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > index 58b89b8d950ed..59e6955e24edb 100644
+> > --- a/drivers/acpi/pci_root.c
+> > +++ b/drivers/acpi/pci_root.c
+> > @@ -293,11 +293,6 @@ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+> >  }
+> >  EXPORT_SYMBOL_GPL(acpi_pci_find_root);
+> >  
+> > -struct acpi_handle_node {
+> > -	struct list_head node;
+> > -	acpi_handle handle;
+> > -};
+> > -
+> >  /**
+> >   * acpi_get_pci_dev - convert ACPI CA handle to struct pci_dev
+> >   * @handle: the handle in question
 > 
-> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-> index a7d725fbf739..c4e64dc11206 100644
-> --- a/include/linux/sysfs.h
-> +++ b/include/linux/sysfs.h
-> @@ -750,6 +750,15 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
->  {
->  	return 0;
->  }
-> +
-> +static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
-> +						 struct kobject *kobj,
-> +						 struct bin_attribute *attr,
-> +						 char *buf, loff_t off,
-> +						 size_t count)
-> +{
-> +	return 0;
-> +}
->  #endif /* CONFIG_SYSFS */
->  
->  static inline int __must_check sysfs_create_file(struct kobject *kobj,
-> -- 
-> 2.43.0
 > 
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
