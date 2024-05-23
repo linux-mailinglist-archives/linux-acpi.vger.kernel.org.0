@@ -1,93 +1,104 @@
-Return-Path: <linux-acpi+bounces-5955-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5956-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906168CD049
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 12:24:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D238CD0D8
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 13:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03151C22290
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 10:24:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9791B21013
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 11:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECCC1411C2;
-	Thu, 23 May 2024 10:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMNTzVWf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA4E1448C9;
+	Thu, 23 May 2024 11:06:01 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC5A140391;
-	Thu, 23 May 2024 10:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C3546AF;
+	Thu, 23 May 2024 11:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716459839; cv=none; b=eJgZiUkZGdGdsR0VDQgGW2b44g8YW6QhN3ptnGbkaV3JsEc0NIOVIs8oK5OcA2sWk3k/xNF1chF+cZjyDt+IS8bRi+vvHZYXwpPPB3Ihk6lMbxOgaoraSVc63gEojyZQ1J/7it8Hbc/UzIqyqFtTj0m4gIPQEZDUtTLLm7Jpo/o=
+	t=1716462361; cv=none; b=Cw2Y4HG0bVyADl/F/Qi4rweT+5WGSPo9/g6OJYfhljI75trSCBSgsp2Fhctcw8/riS12cc7N6lXmwseALINX7wdQSIq57wjMbtfYuIFQd5gsmCvzyh7J8tUCO7jEN/LUXrRaPmPucv2TvCX+LSpBpiV4kuLtMp7YBeokp9sR/Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716459839; c=relaxed/simple;
-	bh=YcgIXnUjA3A+yAuyQ7lW1dHLA/JXl+adaMB6ljYV6YQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mathzqrsxRnKEge3/CfCEhyglq5rUViP/Nc8OrizvLii7TZ53QjpLO6Us7qMEJIzPUx2dEe9CVV5f3OPI347XzauFDcsha/ZB5+mkWbIRmbfvJtHpne6OxY/5YRVnAHOs4q6OabKwHEPdbnJ2/qCN8d+3fK2hS373m3cO5xLpZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMNTzVWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AED6C4AF0B;
-	Thu, 23 May 2024 10:23:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716459839;
-	bh=YcgIXnUjA3A+yAuyQ7lW1dHLA/JXl+adaMB6ljYV6YQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lMNTzVWfQKBowUNH7mlcQHwNvD3TG3rCRKr8XUJpPwX+niLCfJg6dPM6dkHVblvNs
-	 JxWEbbVHuHr6hdzh9zMh6eG8CCcH+ZhP0ru4vQHMc3oN+Gy2kPZaC6KcAcMRMAtHDy
-	 Agh2ozRjiKK7vem1dqBGXCJWJqL5znZdcKPi2BUEde9RjqgU8Sc1d6TCyvh6kEfRov
-	 REauqcb1Ug2+HWF7ulCKXJMIo41k7dO64SV0xqc+VkQYIN/TMJwrL/rIUfD4kBF+KI
-	 GJZmyaJZw4gwTjfVh0auMNyqNg6GMtiIqbEM9rSVqTrEDe00CejirHK7NvVS9eUq8s
-	 vkHQEj/FzzDrg==
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b27cc76e9aso398370eaf.2;
-        Thu, 23 May 2024 03:23:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW75g23Dix1V6tJ5lCuzovbmj6hj2mYJ15Ua/R7L1iF369DFgJhNrl001EoEWTl5fsSFddTXIb4p6nrY2zXODSkggdwYVSCStrhByQrPxb0r+eR3BzgH5zKo1qdpyJK2cLrZM4dKTHa1HLyvp3+sQvnO1rkBVizmmwK4GRQ8DYYhx5b4GkERgYyr3po6DFc5DCWuJeIPYvNnD1fKmFhiTIsOGxYvA4/3zw9Bg==
-X-Gm-Message-State: AOJu0Yy+WdKhZoBqEuX0X8pVQ9/NHvUGnvZJ6TkCqX64NIWbRvazRxEi
-	uw4Ki26s/Glsh06H0lNR+gqCVwo+liAv8zWlYDj1ZF/7WK4tl8AIOX6YYsQGRBEB1qo2uvI3BSh
-	XqAm4p28ddPhH/sgesLbcKmQ5I0I=
-X-Google-Smtp-Source: AGHT+IGG+qfSUk1ztfEIIHV9KTP6u2pnoBFCuOj3pNpozeuvpBsumicmoBJBQMLLvEz+J+tOY+YDRkBUfpPPHSSIc9U=
-X-Received: by 2002:a05:6820:2585:b0:5b2:7d9f:e708 with SMTP id
- 006d021491bc7-5b6a2df34f2mr5280979eaf.1.1716459838366; Thu, 23 May 2024
- 03:23:58 -0700 (PDT)
+	s=arc-20240116; t=1716462361; c=relaxed/simple;
+	bh=1iwYUuxtNs1jjZ796ZpZFQ+C43XWPyywwcrX4m2EB9A=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:MIME-Version:
+	 Content-Type:To:Cc; b=jCFA0A//+1NrV9LmRgPlTC/ZliYtEpjeS3pXnF9L67FCcB3OhUW4dxgFIK6kshM3dimmxwm1QbsEllIZX++qiDavZrW80/+sAe13WbFPpAbyFeLEx4mDSv4fgezPKS2lJQZ836HbfYpxOvY+PRdsM6EP4d9A4PRQoLODamSB9Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id BFDF41029124C;
+	Thu, 23 May 2024 13:00:02 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 6AD8F603EE84;
+	Thu, 23 May 2024 13:00:02 +0200 (CEST)
+X-Mailbox-Line: From 05f4290439a58730738a15b0c99cd8576c4aa0d9 Mon Sep 17 00:00:00 2001
+Message-ID: <05f4290439a58730738a15b0c99cd8576c4aa0d9.1716461752.git.lukas@wunner.de>
+In-Reply-To: <2024052334-nape-wanting-0a2a@gregkh>
+References: <2024052334-nape-wanting-0a2a@gregkh>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Thu, 23 May 2024 13:00:00 +0200
+Subject: [PATCH] sysfs: Unbreak the build around sysfs_bin_attr_simple_read()
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240510201242.3886-1-W_Armin@gmx.de> <9d3f6b81-c53f-4ccf-9cb7-d997ba8957c7@gmx.de>
-In-Reply-To: <9d3f6b81-c53f-4ccf-9cb7-d997ba8957c7@gmx.de>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 23 May 2024 12:23:46 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0juG+uJoE=TytF5fffWCVc8JEYi3e7E_jM+zzQVKphsdA@mail.gmail.com>
-Message-ID: <CAJZ5v0juG+uJoE=TytF5fffWCVc8JEYi3e7E_jM+zzQVKphsdA@mail.gmail.com>
-Subject: Re: [PATCH v8] ACPI: fan: Add hwmon support
-To: Armin Wolf <W_Armin@gmx.de>
-Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
-	jdelvare@suse.com, andy.shevchenko@gmail.com, linux@roeck-us.net, 
-	linux@weissschuh.net, ilpo.jarvinen@linux.intel.com, 
-	linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>, Zhi Wang <zhi.wang.linux@gmail.com>, intel-gvt-dev@lists.freedesktop.org, Daniel Lezcano <daniel.lezcano@linaro.org>, linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, linux-modules@vger.kernel.org
 
-On Wed, May 22, 2024 at 10:03=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
->
-> Am 10.05.24 um 22:12 schrieb Armin Wolf:
->
-> > Currently, the driver does only support a custom sysfs
-> > interface to allow userspace to read the fan speed.
-> > Add support for the standard hwmon interface so users
-> > can read the fan speed with standard tools like "sensors".
-> >
-> > Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> > Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->
-> Hi,
->
-> what is the current status of this?
+Günter reports build breakage for m68k "m5208evb_defconfig" plus
+CONFIG_BLK_DEV_INITRD=y caused by commit 66bc1a173328 ("treewide:
+Use sysfs_bin_attr_simple_read() helper").
 
-6.11 candidate, but not applied yet.
+The defconfig disables CONFIG_SYSFS, so sysfs_bin_attr_simple_read()
+is not compiled into the kernel.  But init/initramfs.c references
+that function in the initializer of a struct bin_attribute.
+
+Add an empty static inline to avoid the build breakage.
+
+Fixes: 66bc1a173328 ("treewide: Use sysfs_bin_attr_simple_read() helper")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/r/e12b0027-b199-4de7-b83d-668171447ccc@roeck-us.net
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ include/linux/sysfs.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+index a7d725fbf739..c4e64dc11206 100644
+--- a/include/linux/sysfs.h
++++ b/include/linux/sysfs.h
+@@ -750,6 +750,15 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
+ {
+ 	return 0;
+ }
++
++static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
++						 struct kobject *kobj,
++						 struct bin_attribute *attr,
++						 char *buf, loff_t off,
++						 size_t count)
++{
++	return 0;
++}
+ #endif /* CONFIG_SYSFS */
+ 
+ static inline int __must_check sysfs_create_file(struct kobject *kobj,
+-- 
+2.43.0
+
 
