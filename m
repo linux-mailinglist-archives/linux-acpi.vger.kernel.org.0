@@ -1,72 +1,72 @@
-Return-Path: <linux-acpi+bounces-5959-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5960-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F178CD102
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 13:14:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E898CD105
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 13:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4392AB2025F
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 11:14:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8601F21AC6
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 11:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4CF146D5C;
-	Thu, 23 May 2024 11:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77B8146D56;
+	Thu, 23 May 2024 11:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="eUNW5cfh"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="IponsUZf"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F601146D57
-	for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 11:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3341C1474B1
+	for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 11:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716462831; cv=none; b=aYyqpOm6a6ATAvWMRWPU29leiChJUIHovgY8qHzasDIiqhuaPqEapnnG69TjzrEEpo7yWb/VuGCHnamPZg89Tiz5y6HeOVGmaonKHEGkmKFcnis8AlXz/ApLmThjv467DmOHZ0PXMu2mWHnlBm/8+KbDybnGSo5pmljqLemkjm0=
+	t=1716462836; cv=none; b=S//akLENWVvf0xA/WJqkvHR50isOXsCt25gVj32B4n57gfD2OL2YnoKI9K+b1/0osLjJhHwP0J8YBFitehEXWNwTHaIZigrUFOzXAj6hN0YNSnCc7i9bGq4OBXl3qNYw6GtCI5XnIwwO2iwvRW6gmG9uoh57HIf8o3F9P+KIfuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716462831; c=relaxed/simple;
-	bh=+JzJj8ucCazBC6mptHHx0+nGx8xyX4nB++98g/I1ZdM=;
+	s=arc-20240116; t=1716462836; c=relaxed/simple;
+	bh=vniUVQGgbZH5XUSS0fWMGrRPi3jnpi6vMBuF5oFpj5c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TotPYPCNS0O2EwliOHj7bRhKSp4VWjO1OnzhmIjbAq69wnK/t8Rqe9rBtjQJxhpzpSksfxVcYx4lbG/Qh2gWbPwyOpk2J9IvpQEfbLcxRWyyXbFls8ugmpkXvx6Zw0VSPqStDhZ/teS3X9USN90EB4Joo5OxLLlxLoXICwmITv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=eUNW5cfh; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=X3mLeva6jM3GxCY9o3r6fjRl7JdIixnAeIsk2bSfTLZClbCiiQZbDCd7bfpYx7RFTOYZDXoj/LySpyTKg2GMSzV5ODwFb9vaf2+/+6OaJDcLXLdp6TQ2elnXSUR/t8aSQ07ZQ1NpRDZHqrYgqnK7LDxS5J87Rw/PbZ6i3ACtDE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=IponsUZf; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1f3421564d2so3142395ad.1
-        for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 04:13:50 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1f304533064so13856105ad.0
+        for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 04:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1716462829; x=1717067629; darn=vger.kernel.org;
+        d=bytedance.com; s=google; t=1716462834; x=1717067634; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/f2nZESk5IwUhjcBCwDQD5m6WSIwM88cL3SwI9ltT4Q=;
-        b=eUNW5cfheZqC47sMn4VqXjVInthPc9hTs9fDH0DkY5YD4ETMq7jwZHw5sDLdOawNIF
-         /9KIWy1vFY659hnNF35q+n4ySWfdWhsPag3p2Ef3doH8PRsgcrIo5zFoj2taH+HbRud9
-         /4c8cF7h8eJVWqs01Or0RKtol7PT0IJ1KuS9YYrT4FWIuXZeTtpqTEgXpJYPEoAA+E5m
-         ulYPwHcihSraBFkQj95DtRL6Amh3PqgqMxbCPbobxURdoqvK2yYMtrKIgDwy1jkEZtat
-         R9NZDH94eDjkJlXOTdzLBob/FYb0KuBM96ZZigNUlcogU1EBTjJMwHZWee8HjT4cgA3G
-         tpPQ==
+        bh=rKyIwcUjX1px2GE9S/CV6LaiV7WK04/0FO5MZQuO7/8=;
+        b=IponsUZfWWnVFxsS8C9Y2srnxHBmJBe0FJ3Xcvg/Tqi4kX8Byp7/JgU5BHzyKL9FCc
+         vDGjwKPLhk0qrZiAF7ZLzI7IgHs/Z7O9I24P5hb9DhviPdneK6TwVOKBDh+ebOKkSUWk
+         6Z/yLKaW5iv1VjH9lCdH4uk7ZhGvPMNoCwb4YIbVFBejMYeSaGCEejxSCY+ox7xey49H
+         GvoItSHrNenaq4RUsIfIJxW2Q36wE+CprS2IrmzHtUz3HUlPF8h1ibS0E1JA5j213RXZ
+         avFhdGf35sMP0KDk8hw+zPm7eK1IbzVnx1VLNO/HJ1OraYAfnX6THpxT6frKW5IHEnXZ
+         S6mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716462829; x=1717067629;
+        d=1e100.net; s=20230601; t=1716462834; x=1717067634;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/f2nZESk5IwUhjcBCwDQD5m6WSIwM88cL3SwI9ltT4Q=;
-        b=dwst4ds5rwKbJJvtCpAgpcPmfzeyB0p+3JlWOA9iTpQvCXmM2LPxYB8+cgP/ewhake
-         BxyCCixwBqJIuXuLYGLkBLRHCfHC+OLle6gm8a4qVbducIySrE9uKXklqH3GPxw183Pj
-         o3/5kwpDegi0n7EmtxjTriN92zebI+3288oFXpZdSDrN2sm0t0ZfdY5syZjcsJQvtTwD
-         EUdcvEZV1A5VU+zWRiWoiXKwXN2qK/HTOGlZW31cj6PnXnaoPfW8duQct7A2Ty1O3mA/
-         bu9t//2Q2h+OKwN3a6j9DXN98UmCjyknA+j15lyVzxHXNnuT2JZwy5uo6VvxkwkB/Zzw
-         +ktw==
-X-Forwarded-Encrypted: i=1; AJvYcCWejY/7LTGMRRXjUcrxYtpV2pJsWs0l/LMPbu3WgndwDXjE9TPriR+t59dX419TV9u2b2U5QMIfTf9Ozo4D6A4y37E760IrdtQBzA==
-X-Gm-Message-State: AOJu0YwWygfRwJgMKBEw1bXY0mSouUE3RlDGU/3izt/Q3sEkVvCSfIDx
-	lH0MjvEpIb2RZYYTnAGlb6+CEygdad/+8shTFOOgQQ0ZgfDo+tBWnepEXPjgC+c=
-X-Google-Smtp-Source: AGHT+IGZ11ZGVf2+lfQ+CO04h7/H65xj0+v0lVBzHE9gqd6ctUMXI7IPUiUEZxYjkmeoEd9vNdVmxg==
-X-Received: by 2002:a17:902:c942:b0:1f3:830:783e with SMTP id d9443c01a7336-1f339f0d128mr27457195ad.20.1716462829566;
-        Thu, 23 May 2024 04:13:49 -0700 (PDT)
+        bh=rKyIwcUjX1px2GE9S/CV6LaiV7WK04/0FO5MZQuO7/8=;
+        b=iTNOzP5U/SwRGhP2a9Da4Wfnyaoqrm/S2A12P/exHIH/wxw2LvaMA7xOUMYZoBy0kX
+         b8zyzdksmE0cfmHUfZ05R9e2iSLYdZY4X4MlzJGqL7s/7ZYtmKh/EeTxVqSU1Z7Na3Lc
+         WechBSPCx0Um1JKyg6gEzEqgx6rm7qXzsSyxJIRNaj0xJtoIV+Fq9mQEj1LcrdaN0tLS
+         lWPKzIzj7BuNdCrsgQgNc/lUSoJyFbXN/KxudiYKC4Io5xFikNtqiES32wL2oUm8ksXw
+         ohSAK+J/lzPfu+tFuU8ojELp0e+InvNPPhufp8ul3/tRw9uNCcnXICc2wr6xP2SH34OZ
+         Jnnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCkgtL3UEVJTHg2/wnf5/kYae9utS5iFW2RCgUkA+9Tc2SQhuwFw6LG4jtGTgasaq7jgVqnggSV2jQXENvKo+j0ChZMIWJfleXiw==
+X-Gm-Message-State: AOJu0YzSaGULaxmPbdxNoZWf/F7Umn4HIwA9vZ5aQmmXf/mOkPCy+Qzc
+	NlL/mqJPw18QP8GArPbbLxG1OWxPvGNR/AogbXh5eCpNSg99zoQoGrQBmD2kARg=
+X-Google-Smtp-Source: AGHT+IF28aGrHScmfXD9R1tHK/6jmVsl792vI89tw9o1F0p1t+mCK4U7dtx62wkc9E7Mq6lP3ETRug==
+X-Received: by 2002:a17:903:1245:b0:1f2:fbe5:7d62 with SMTP id d9443c01a7336-1f339f602aemr23791545ad.33.1716462834501;
+        Thu, 23 May 2024 04:13:54 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([61.213.176.14])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f2fb4ca0ebsm76399555ad.119.2024.05.23.04.13.44
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f2fb4ca0ebsm76399555ad.119.2024.05.23.04.13.49
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 23 May 2024 04:13:49 -0700 (PDT)
+        Thu, 23 May 2024 04:13:54 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: rafael@kernel.org,
 	lenb@kernel.org,
@@ -84,11 +84,10 @@ To: rafael@kernel.org,
 	pierre.gondois@arm.com,
 	sudeep.holla@arm.com,
 	tiantao6@huawei.com
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH RESEND v5 2/3] riscv: cacheinfo: initialize cacheinfo's level and type from ACPI PPTT
-Date: Thu, 23 May 2024 19:13:21 +0800
-Message-Id: <20240523111322.19243-2-cuiyunhui@bytedance.com>
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>
+Subject: [PATCH RESEND v5 3/3] RISC-V: Select ACPI PPTT drivers
+Date: Thu, 23 May 2024 19:13:22 +0800
+Message-Id: <20240523111322.19243-3-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 In-Reply-To: <20240523111322.19243-1-cuiyunhui@bytedance.com>
 References: <20240523111322.19243-1-cuiyunhui@bytedance.com>
@@ -100,63 +99,29 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Before cacheinfo can be built correctly, we need to initialize level
-and type. Since RISC-V currently does not have a register group that
-describes cache-related attributes like ARM64, we cannot obtain them
-directly, so now we obtain cache leaves from the ACPI PPTT table
-(acpi_get_cache_info()) and set the cache type through split_levels.
+After adding ACPI support to populate_cache_leaves(), RISC-V can build
+cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
+configuration.
 
-Suggested-by: Jeremy Linton <jeremy.linton@arm.com>
-Suggested-by: Sudeep Holla <sudeep.holla@arm.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
 Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
 ---
- arch/riscv/kernel/cacheinfo.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/riscv/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index 30a6878287ad..d6c108c50cba 100644
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -3,6 +3,7 @@
-  * Copyright (C) 2017 SiFive
-  */
- 
-+#include <linux/acpi.h>
- #include <linux/cpu.h>
- #include <linux/of.h>
- #include <asm/cacheinfo.h>
-@@ -78,6 +79,27 @@ int populate_cache_leaves(unsigned int cpu)
- 	struct device_node *prev = NULL;
- 	int levels = 1, level = 1;
- 
-+	if (!acpi_disabled) {
-+		int ret, fw_levels, split_levels;
-+
-+		ret = acpi_get_cache_info(cpu, &fw_levels, &split_levels);
-+		if (ret)
-+			return ret;
-+
-+		BUG_ON((split_levels > fw_levels) ||
-+		       (split_levels + fw_levels > this_cpu_ci->num_leaves));
-+
-+		for (; level <= this_cpu_ci->num_levels; level++) {
-+			if (level <= split_levels) {
-+				ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
-+				ci_leaf_init(this_leaf++, CACHE_TYPE_INST, level);
-+			} else {
-+				ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
-+			}
-+		}
-+		return 0;
-+	}
-+
- 	if (of_property_read_bool(np, "cache-size"))
- 		ci_leaf_init(this_leaf++, CACHE_TYPE_UNIFIED, level);
- 	if (of_property_read_bool(np, "i-cache-size"))
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index f961449ca077..a9ebecd72052 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -14,6 +14,7 @@ config RISCV
+ 	def_bool y
+ 	select ACPI_GENERIC_GSI if ACPI
+ 	select ACPI_REDUCED_HARDWARE_ONLY if ACPI
++	select ACPI_PPTT if ACPI
+ 	select ARCH_DMA_DEFAULT_COHERENT
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
 -- 
 2.20.1
 
