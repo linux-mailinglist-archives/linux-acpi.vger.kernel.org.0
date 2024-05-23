@@ -1,190 +1,154 @@
-Return-Path: <linux-acpi+bounces-5952-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5953-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8116E8CC933
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 00:51:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C608CCADB
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 04:51:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704DC1C21222
-	for <lists+linux-acpi@lfdr.de>; Wed, 22 May 2024 22:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A6D1F218C4
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 02:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E55B146A71;
-	Wed, 22 May 2024 22:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40BE41C6C;
+	Thu, 23 May 2024 02:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KXihOJVa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NT0xLTnf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF10B81AC6;
-	Wed, 22 May 2024 22:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336FE2AF06;
+	Thu, 23 May 2024 02:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716418273; cv=none; b=mHoc44w1yafix+SY1i2l64ZpAP3qFzADqQBlXpMUpbOY7S3QpuHSuDztVNiXkRvj41SMANoezSrF+foZoympKVFITgGTKdiWIE1vRlp7+SuyKUGH5izn964UPnScG6dkBCg5XJZ22LU9YwhJoOIRmfN4ntzam6MXOFnzQrVZ6T0=
+	t=1716432700; cv=none; b=fJ3n+qjWXFk73ToZprfduZK0fZzIhfFMvJnncmh0zLlcE5DAoi4/mgmAxKaqGLzXEagFwzyzgxCJpEP+kbK4kqUleVIifAWslHHos3QM2Q7vmHSjbCQcp1r6hBz13NdLvKfLZf5LQAmXp4ClLvP+QabRt1UiK8dAFkDwH60gx4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716418273; c=relaxed/simple;
-	bh=jPpl63O0p6Rp21ZrFjNcB9apG31h1Zk+5mFlFQjc6Q0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DDgJ3KqpaoFDAjQu4FPLab1AyERZsuYgUN8Ia1evcFTZmxqKkHvNhM6Y2rqHvpASGACJE5TioTr53rj+cyX4S+XWGpRBGQCVfdI0BRBbflGXQsK3U4dlv6MzpIFuD+4ZXNYY0nrCygGav24ruVwLHNuw08eJrV9OhfODgQVUF8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KXihOJVa; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1716432700; c=relaxed/simple;
+	bh=L4gIo40B47l110xzGHVHr6MNainA3eD8XbSrUjVcopo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LMPSkwlmC49z650tDKkiekRK4h2gRXrsL1OwWaGDRZZXWn+zJniEoAsK8MekbrO9aMSZwtncHU06EKs8cMcDqdBXjn78s+nbEmwyPM2Ud1zc6BDMnVXqOEGEPAHA7Wu1nwW7K77gZbacwuFk5WjXcy51EM2aBA0hUJIB0NX4gjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NT0xLTnf; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1ee5235f5c9so115407835ad.2;
-        Wed, 22 May 2024 15:51:11 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ba0cb1ea68so1725930a91.0;
+        Wed, 22 May 2024 19:51:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716418271; x=1717023071; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=rmJLfKJR+Q2eeJtf3DVr6zWcjm+6oeXAsT8oHQhkVro=;
-        b=KXihOJVaGQ08lAKLSKKNyiZ9DbJZ7Y4YomqtPE/WcqtRpDlALYoCXFC7p7L4pCAenc
-         DJS21B5j6PgRqsLe/+V0qEVP2+7JCxN99/Rms8mgnvOo6GdjIcao6seXPmYqzxL8Ax+F
-         MJSgcjpSY/gzEL56+lROWgymHnp0GnbNYfpahdIDj7WjKWJ2l4vecQzYmjwcw9sLW4dN
-         BvFAVDSPYAkSKZxwvPZjUiWb0NMhGdLKym6n1BHajgoRDpGkT6A0yQoMBJbxlkFVZKcd
-         TEg4rJiINePKz1hS779xFkOs8YJFRXnNI0JF5IJ+rH6sIGLEXDA808i170506iLuSZhV
-         ZhjA==
+        d=gmail.com; s=20230601; t=1716432698; x=1717037498; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2t+NNcAooBs+1uLVQmd6CHKgztQaFCVL8iN2oZTgqXk=;
+        b=NT0xLTnftZtmAu+SqQkTLsLe0FbN3NRP++yWJyPE6FAjLhyq2n5lnt4CoaBrtvmENZ
+         aQ7CU2Erfojol0oruYd+Czk3tBL6v2yRdZuUJMKi1kXGHHOWoovnbOfiAIGiVr9us0Mo
+         ImvZjGYKEuObp4doU5Q5YMoRzN7lJJmEHoInFI3rx+tYb22ZdstVObQGWEmy9x6YFtqM
+         7z0UknrdwLI+N7X9X+Mxncfw3AMSDq66KqgwI117Behw9DTGjU/zRDSC0GZFILfZ1IEX
+         goc/hKkQ8Q2t69Y6DfjMUdewwC0Y6frPk2ZV/ENBws8qzpaDi0aVmh05CJMswtKKqInV
+         cI+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716418271; x=1717023071;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rmJLfKJR+Q2eeJtf3DVr6zWcjm+6oeXAsT8oHQhkVro=;
-        b=rRRFXKRyURQSzMNy127Bj2IBwQJuQgBqRW6l9uHgybIGvN0wVFgg/wFpExkPodhufv
-         iEqMjiHLOaXJm9AAXU0ytbXt1mCugkP8zfdNqVwiqcpemp3iD0yMlQbUsdLvjW8+HvEH
-         HmL8O5poZ1pog28dpPrrdIx1tJW9fyIBt+GTb7zOn4CifZdn2KwQ6fdRVj/3/vqEU2ut
-         /6dPCrwBeqrQwU6GpJ7y64Qi32AmlBeVm2HXa7KFF1KbzKi4HIfgok2H0ii4IDGav+gM
-         5gCnZ8MxCxOHORxZHghjYTpBs0tuw4C3Z5LngM1IHShF9TiWmg+hdMriFNp76MsSohiY
-         pmHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWgZAXJPXdLI0AO/Gy1PfaiFPi24Mw7PxMhxq08Ps05k9v1krJDFXr5eMDP7Fe39q8xxPCCjYym+3tLz+J6jb3KILIUVkfo4gfZ+Jkn8i6pQCya3fnySKkrKb8VoriqesisO4WTeIvmLYQ=
-X-Gm-Message-State: AOJu0YxVzrq32+4KWgMUfspO4p1ByZ1+vNbnMJRAEybyZ3QMFQcM64ob
-	E//lxfPOe3ZzZn06mtw9hKGayCIAJ/FRyBOPPEqfxQB3kaYcr085d3lR2w==
-X-Google-Smtp-Source: AGHT+IGN6bCpQ/1b5JF85qgdzaY2hm6RPXFnet/9PvIFqu6/jyx588MWzq78YovaHHcmZ7SV1Vb0mQ==
-X-Received: by 2002:a17:902:e84c:b0:1f3:35e8:d315 with SMTP id d9443c01a7336-1f335e8d5f2mr12779395ad.63.1716418271124;
-        Wed, 22 May 2024 15:51:11 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f33d551493sm1023955ad.13.2024.05.22.15.51.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 May 2024 15:51:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716432698; x=1717037498;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2t+NNcAooBs+1uLVQmd6CHKgztQaFCVL8iN2oZTgqXk=;
+        b=APAZkw0+Rt3/Q9yZrPSCCXzNdFhfQxx/RKLoo68SB7sTnouKoaKkxSCwYKXSE7UzN/
+         CAo+xbZibhFAThAUdFvAvqe6d03bAThmY2W/txiO9JJCo/4ypXMXhNJtctSTBE3pw1J5
+         WS90ZS1rwQ8hD6js/kB2xE40WahQZonHEfBcxv5G5fV05/UXpLiUoFGYlA3g5BrI5j1j
+         N09MmF4yI52lW4DXUdDjS/jGBOMzquzEhVJQCfR4psAAuG4B9Tj77LcElZaeU18HQM/t
+         zNRVbxQvCAmO/DHHZjjZMBgAkP6rsJun50Eti3+5yLzkQnfgBoJvQB3t1DsiHtShLrq6
+         PJnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUSJWQo66Z4PnWveRbU9o/1UMxa1xEIOAqrRJ4P2LnEB0vqkK3yrA3fE5xrxxIxbYltwTWgHkJR/ds3i7tWQ/5kJDPhYP5RXeMqLGYgmg5m2ANvnR06DnJxJWCp7y+t2J7AkDA+T70MWMeUzeXezusGKVVfu2Rc4XuJEXNG4VapO5tKm+2qdceRwTNGt+p5cYz0HV1eLMwHQWbPdnnPU8KeJtGKLCwwQVtPRF9V9USUaSO1gfoxkM8kOExIfA==
+X-Gm-Message-State: AOJu0YxKPnrCsD7GymUrLl46LpPuIKf7ISkW6CokcufcJOAKjvomPRuY
+	n0VVdgnH9dYM856ubzjPOmoTF6nT/rA/3/azJRW7AmAInnJjUR4U5M6+Mg==
+X-Google-Smtp-Source: AGHT+IFkp6UpIh1AGPSwzeu7PRXoylLdjeBnYEOtYMQKu1m9NKdsV0nftrMR0T4y+aBKEkMG7hxvGw==
+X-Received: by 2002:a17:90a:a506:b0:2ad:6294:7112 with SMTP id 98e67ed59e1d1-2bd9f456c77mr4103774a91.14.1716432698305;
+        Wed, 22 May 2024 19:51:38 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bdd9f0b3d3sm575494a91.26.2024.05.22.19.51.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 May 2024 19:51:37 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <aab6fafe-e7b3-4ee0-beb3-2eaca9d1a1ed@roeck-us.net>
-Date: Wed, 22 May 2024 15:51:08 -0700
+Date: Wed, 22 May 2024 19:51:35 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+	Jean Delvare <jdelvare@suse.com>, Ard Biesheuvel <ardb@kernel.org>,
+	linux-efi@vger.kernel.org, Zhenyu Wang <zhenyuw@linux.intel.com>,
+	Zhi Wang <zhi.wang.linux@gmail.com>,
+	intel-gvt-dev@lists.freedesktop.org,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	linux-pm@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+	linux-modules@vger.kernel.org
+Subject: Re: [PATCH 2/2] treewide: Use sysfs_bin_attr_simple_read() helper
+Message-ID: <e12b0027-b199-4de7-b83d-668171447ccc@roeck-us.net>
+References: <cover.1712410202.git.lukas@wunner.de>
+ <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hwmon: (ltc2992) use
- fwnode_for_each_available_child_node_scoped()
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
- <jdelvare@suse.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org
-References: <20240522-fwnode_for_each_available_child_node_scoped-v1-0-1188b0da12dc@gmail.com>
- <20240522-fwnode_for_each_available_child_node_scoped-v1-2-1188b0da12dc@gmail.com>
- <57645247-fb14-4180-bef0-1638e9f522fe@roeck-us.net>
- <97567de0-895d-4a23-907f-506551e86362@gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <97567de0-895d-4a23-907f-506551e86362@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92ee0a0e83a5a3f3474845db6c8575297698933a.1712410202.git.lukas@wunner.de>
 
-On 5/22/24 12:46, Javier Carrasco wrote:
-> On 22/05/2024 21:08, Guenter Roeck wrote:
->> On 5/22/24 02:18, Javier Carrasco wrote:
->>> The error path from a zero value of the "shunt-resistor-micro-ohms"
->>> property does not decrement the refcount of the child node.
->>>
->>> Instead of adding the missing fwnode_handle_put(), a safer fix for
->>> future modifications is using the _scoped version of the macro,
->>> which removes the need for fwnode_handle_put() in all error paths.
->>>
->>> The macro defines the child node internally, which removes the need for
->>> the current child node declaration as well.
->>>
->>> Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
->>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->>
->> I really don't like fixes which depend on an API change.
->>
->> Guenter
->>
+Hi,
+
+On Sat, Apr 06, 2024 at 03:52:02PM +0200, Lukas Wunner wrote:
+> Deduplicate ->read() callbacks of bin_attributes which are backed by a
+> simple buffer in memory:
 > 
-> We could split the fix into two steps as suggested by Andy, where the
-> fix would simply add the missing fwnode_handle_put(), adding the
-> corresponding tag to include it in the stable kernels (the bug was
-> introduced with v6.7). By doing that, the new macro would not need to be
-> backported, which is probably a safer approach.
+> Use the newly introduced sysfs_bin_attr_simple_read() helper instead,
+> either by referencing it directly or by declaring such bin_attributes
+> with BIN_ATTR_SIMPLE_RO() or BIN_ATTR_SIMPLE_ADMIN_RO().
 > 
-> The patch with the new macro would be left as it is, and another patch
-> would convert the the loop to use the new macro to avoid that a similar
-> bug arises again. That would be this 2/2 + dropping the additional
-> fwnode_handle_put().
+> Aside from a reduction of LoC, this shaves off a few bytes from vmlinux
+> (304 bytes on an x86_64 allyesconfig).
+> 
+> No functional change intended.
 > 
 
-Please do.
+Not really; see below.
 
-Thanks,
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> ---
+...
+> index da79760..5193fae 100644
+> --- a/init/initramfs.c
+> +++ b/init/initramfs.c
+> @@ -575,15 +575,7 @@ static int __init initramfs_async_setup(char *str)
+>  #include <linux/initrd.h>
+>  #include <linux/kexec.h>
+>  
+> -static ssize_t raw_read(struct file *file, struct kobject *kobj,
+> -			struct bin_attribute *attr, char *buf,
+> -			loff_t pos, size_t count)
+> -{
+> -	memcpy(buf, attr->private + pos, count);
+> -	return count;
+> -}
+> -
+> -static BIN_ATTR(initrd, 0440, raw_read, NULL, 0);
+> +static BIN_ATTR(initrd, 0440, sysfs_bin_attr_simple_read, NULL, 0);
+>  
+
+sysfs_bin_attr_simple_read is only declared and available if CONFIG_SYSFS=y.
+With m68k:m5208evb_defconfig + CONFIG_BLK_DEV_INITRD=y, this results in
+
+/opt/buildbot/slave/qemu-m68k/build/init/initramfs.c:578:31:
+	error: 'sysfs_bin_attr_simple_read' undeclared here (not in a function)
+
+This happens because CONFIG_SYSFS=n and there is no dummy function for
+sysfs_bin_attr_simple_read(). Presumably the problem will be seen for all
+configurations with CONFIG_BLK_DEV_INITRD=y and CONFIG_SYSFS=n.
+
+On a side note, init/initramfs.c does not directly include linux/sysfs.h.
+I don't know if that might cause problems with other builds.
+
 Guenter
-
-
-> Best regards,
-> Javier Carrasco
-> 
-
 
