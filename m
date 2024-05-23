@@ -1,183 +1,205 @@
-Return-Path: <linux-acpi+bounces-5961-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5962-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D697A8CD186
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 13:50:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E588CD2CD
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 14:53:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 055191C214B5
-	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 11:50:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739DA1F216B1
+	for <lists+linux-acpi@lfdr.de>; Thu, 23 May 2024 12:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D05913BAFB;
-	Thu, 23 May 2024 11:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C380514A4DF;
+	Thu, 23 May 2024 12:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TR9RWNJo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5976B13BAF1;
-	Thu, 23 May 2024 11:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02A913B5B0
+	for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 12:50:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716464995; cv=none; b=IfA+kmd3Uo/Lzwxl+g3qPGOkqd/xs7mFYG8yeGSvlcFk5aELyRuOIFk8+u37eUULdpihNunMoh1u4n6wxnYyRSKEfhqUYwpfRooSv7WDlV+tXcgLo0FWe75ZxL5mEQm52nU1wR7IB/SslI70zGCZhHS4pKS40vFq0f4JcQ0XPAA=
+	t=1716468626; cv=none; b=qEF8R5AeNVoFef8bKmw4ztC2Zf1/f29Jd7IKTyk98MIRs6ygTV2BJnChmPYk8o6m/XfVArs95CFOIdaz0dT0rfJ116YtcGoxiucLlJ66YKOGG/kirWx4CO1yRR0X5Rr9FEKFnQtPXjkXk2RODLc72xizq5fdTeUDTAjxU/W+ol0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716464995; c=relaxed/simple;
-	bh=A52g3Xc/AtKCBKCjKIjz4Neu/2FlICZ2BJzBiYmYj+Y=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z81zAvmD6v4niak+GJP+jJvKac7eypmxin8EANZEetEPGmXGLkQbJsMZr5GwAbC+WEdIbXNr9AgLds6U3ITjiAMxHEzObGJfnF2rGKY3V/Tya+USpX9BrPhz2Bi2BXOtnGBIe7+owmFjzBdx6apRPxED1HCxyEJfsVVtKXHP+DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VlRFq4FHPz6JB3Z;
-	Thu, 23 May 2024 19:46:07 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A3C91400CA;
-	Thu, 23 May 2024 19:49:49 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 23 May
- 2024 12:49:48 +0100
-Date: Thu, 23 May 2024 12:49:47 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<mahesh.natu@intel.com>, <rafael@kernel.org>
-Subject: Re: [ACPI Code First ECN] Enumerate "Inclusive Linear Address Mode"
- memory-side caches
-Message-ID: <20240523124947.000034df@Huawei.com>
-In-Reply-To: <664cc3a76e7d_2c2629462@dwillia2-xfh.jf.intel.com.notmuch>
-References: <663ea70884cfd_db82d29414@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240517174550.0000242a@Huawei.com>
-	<6647bbf6c88e3_2c2629451@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240520125333.00007a47@Huawei.com>
-	<664cc3a76e7d_2c2629462@dwillia2-xfh.jf.intel.com.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1716468626; c=relaxed/simple;
+	bh=ibZU/Uk6VSr0voTpC9iwARL/7suVVCV2wKyJXhs8GqE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=G3/aKOeiV+jBhiC56UZhzTTa+d5aFzFt8P9h/f09CTYsrBDA7FIEcQmZ4g/sRJP32Jro2ZDT/wHVdmqzRgO/koiHfzTqXPqabTHSIPiSWTCYQ4lfT6vd1lXpQHWPWpPJnZB+gCmrXMy+tzM6BLrWmcQZtyK+eYQ8ymJbeLJeka4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TR9RWNJo; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2e271acb015so99623491fa.1
+        for <linux-acpi@vger.kernel.org>; Thu, 23 May 2024 05:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716468623; x=1717073423; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iMRosXpx6OHaMx5JGWHkEwQsj1y/M7jejw8tTuvOccA=;
+        b=TR9RWNJokP1LsSdS8/SjleoafZ7tz4h3nul/gs+WsW8KexCgzcAQHi/uB2QemW+sn3
+         4USk8CkoptOAZiXtmTR49gDMzRkxPxJF+BPghHz+YHdQpIHbgPG0VQ72Jwg9KEHpvpAy
+         bsZaThT/23hKU3Uq9OEAxkOkUmEpdgWidkbbEAIv4mbZVEFg9hKkqZTlnWWim83ElWBK
+         sb3wiMZx2PuOgBhtOJ1MxnGNUSFnaUpjYIoqqZc/rtO3oI2g0jRMuNi9HK/jL3ZrXm6X
+         0IWWV0WPruJveAaJ1UIei6ZDeFUDdf5AkKJABvocFYqd9RA2r7g2npMySuMRtUsGr6nq
+         tUWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716468623; x=1717073423;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iMRosXpx6OHaMx5JGWHkEwQsj1y/M7jejw8tTuvOccA=;
+        b=p8EcEFMmaerQc+ZGb1Mtzzx8d3AV9+7bV6rF9M00Q6y32dQFyWMQxXJZtH6dcV1muC
+         7gd1JEuYaoGoFeHZK518KgF9wKeIrU4mlWglIa1awj7ga5IkqaFDpuVz0z2panjsmgHL
+         YyGNBY4ua8OsvM/my4GNPAjcK6QpUTpIAoF9qEgaJFSpqTIkDmX/n9aJnzag3QgXUnBe
+         3mHyH3XjUlsS9wOfkCf8iKxNoUWHt0+3/bzPe4WksdtwSqskfvrqHOfGmQpQEGeVrHKx
+         QBAYU5Uxv5NImVKTWkkWSy+sx1c5x0buheoRTHvjdfkZZaZ2WJSf1SF6LPZ2mvpr7/0A
+         3bYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU87ZUqZWlrwRQ0kwwHPgxZIFbj4OtvftwEiTee4PpDBHsyXtARMB64piwbze10PwNO1LfSDN5Rlkf9hUKG6tykFSluPUNn+9J21g==
+X-Gm-Message-State: AOJu0Yynys9e2tAOo8cnMRo1My3clX2pcdSistqkLNWsfIFlSS0WmmKf
+	Lw9rDAKW084QwZsPdnBWr6ARumZ4Lt/i+UYqR6BRcxrquoCiapnTk1dbJz9QHJ8=
+X-Google-Smtp-Source: AGHT+IEYdbwkk+JyzWTXRqnous0dnxnUZ9YrXqdyIoZLDlluWrI7kO3bl7ZKTWUKoBj2mjM2eRZ/oQ==
+X-Received: by 2002:a2e:7302:0:b0:2e6:f4c1:31e5 with SMTP id 38308e7fff4ca-2e9494bb49amr32177141fa.23.1716468622636;
+        Thu, 23 May 2024 05:50:22 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-354f9ba7584sm1430381f8f.57.2024.05.23.05.50.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 05:50:22 -0700 (PDT)
+Date: Thu, 23 May 2024 15:50:18 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Viresh Kumar <viresh.kumar@linaro.org>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	linux-acpi@vger.kernel.org, devel@acpica.org,
+	linux-pm@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [rafael-pm:bleeding-edge 11/15] drivers/opp/core.c:2447
+ _opp_attach_genpd() warn: missing unwind goto?
+Message-ID: <3d73f08e-8305-4ad8-8327-adaaf96ac673@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> > > > Whilst the CXL side of things (and I assume your hardware migration engine)
-> > > > don't provide a way to recover this, it would be possible to build
-> > > > a system that otherwise looked like you describe that did provide access
-> > > > to the tag bits and so wouldn't present the aliasing problem.    
-> > > 
-> > > Aliasing problem? All direct-mapped caches have aliases, it just happens that
-> > > this address mode allows direct-addressability of at least one alias.  
-> > 
-> > As I understand this the problem is you get address A in the error record,
-> > but that actually means any of A, A + N, A + 2N etc and the issue is you
-> > have no way of recovering which alias you have. 
-> > 
-> > Another implementation might have the same aliasing in the cache, but allow
-> > for establishing which one you have (the hardware inherently has to know that
-> > but I presume in this case doesn't provide a way to look it up - or if it
-> > does, then issue here is that the OS querying of the CXL device doesn't know
-> > about that interface?).  So I think the critical here is that information is
-> > not available, not that aliasing occurs.  
-> 
-> The critical information is that the address range is extended by the cache
-> capacity compared to the typical case. Maybe "extended-linear" is the term I was
-> searching for last Friday when I could not think of a better bikeshed color?
-> 
-> The reason an "extended-linear" indicator is important is for the driver to
-> recognize that the CXL address range programmed into the decoders is only a
-> subset of the system-physical address ranges that may route traffic to CXL. So
-> when the memory-side-cache is in this "extended" mode there are more addresses
-> that may route to CXL.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   fe07fa9fa1115e0979b89a90ae8594794ac2f63f
+commit: 2a56c462fe5a2ee61d38e2d7b772bee56115a00c [11/15] OPP: Fix required_opp_tables for multiple genpds using same table
+config: i386-randconfig-141-20240517 (https://download.01.org/0day-ci/archive/20240518/202405180016.4fbn86bm-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
 
-I think we need to be careful with decoders here because the extra translation in the
-path means they aren't in HPA space as such.  They are in a new HPA+ space.
-In your case I think the translation is such that addresses are the bottom of the
-HPA window, but they could just as easily be the top of the HPA window or not
-within it at all...
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202405180016.4fbn86bm-lkp@intel.com/
 
-|     HPA window 1 - Length = Cache + CXL                 |
-|   HPA+ window 1 - Length = CXL only |
+New smatch warnings:
+drivers/opp/core.c:2447 _opp_attach_genpd() warn: missing unwind goto?
 
-or
-|     HPA window 1 - Length = Cache + CXL                |
-                   |   HPA+ window 1 - Length = CXL only |
+vim +2447 drivers/opp/core.c
 
-or for giggles
+442e7a1786e628 Viresh Kumar          2022-05-26  2394  static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+3734b9f2cee01d Dmitry Osipenko       2021-09-27  2395  			const char * const *names, struct device ***virt_devs)
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2396  {
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2397  	struct device *virt_dev, *gdev;
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2398  	struct opp_table *genpd_table;
+baea35e4db17a7 Viresh Kumar          2019-07-17  2399  	int index = 0, ret = -EINVAL;
+3734b9f2cee01d Dmitry Osipenko       2021-09-27  2400  	const char * const *name = names;
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2401  
+e37440e7e2c276 Viresh Kumar          2023-10-27  2402  	if (!opp_table->required_devs) {
+e37440e7e2c276 Viresh Kumar          2023-10-27  2403  		dev_err(dev, "Required OPPs not available, can't attach genpd\n");
+e37440e7e2c276 Viresh Kumar          2023-10-27  2404  		return -EINVAL;
+e37440e7e2c276 Viresh Kumar          2023-10-27  2405  	}
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2406  
+925141432fa4d8 Viresh Kumar          2023-11-16  2407  	/* Genpd core takes care of propagation to parent genpd */
+925141432fa4d8 Viresh Kumar          2023-11-16  2408  	if (opp_table->is_genpd) {
+925141432fa4d8 Viresh Kumar          2023-11-16  2409  		dev_err(dev, "%s: Operation not supported for genpds\n", __func__);
+925141432fa4d8 Viresh Kumar          2023-11-16  2410  		return -EOPNOTSUPP;
+925141432fa4d8 Viresh Kumar          2023-11-16  2411  	}
+925141432fa4d8 Viresh Kumar          2023-11-16  2412  
+e37440e7e2c276 Viresh Kumar          2023-10-27  2413  	/* Checking only the first one is enough ? */
+e37440e7e2c276 Viresh Kumar          2023-10-27  2414  	if (opp_table->required_devs[0])
+e37440e7e2c276 Viresh Kumar          2023-10-27  2415  		return 0;
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2416  
+6319aee10e5303 Viresh Kumar          2019-05-08  2417  	while (*name) {
+6319aee10e5303 Viresh Kumar          2019-05-08  2418  		if (index >= opp_table->required_opp_count) {
+6319aee10e5303 Viresh Kumar          2019-05-08  2419  			dev_err(dev, "Index can't be greater than required-opp-count - 1, %s (%d : %d)\n",
+6319aee10e5303 Viresh Kumar          2019-05-08  2420  				*name, opp_table->required_opp_count, index);
+6319aee10e5303 Viresh Kumar          2019-05-08  2421  			goto err;
+6319aee10e5303 Viresh Kumar          2019-05-08  2422  		}
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2423  
+6319aee10e5303 Viresh Kumar          2019-05-08  2424  		virt_dev = dev_pm_domain_attach_by_name(dev, *name);
+4ea9496cbc959e Tang Bin              2022-05-24  2425  		if (IS_ERR_OR_NULL(virt_dev)) {
+d920920f85a82c Manivannan Sadhasivam 2023-07-21  2426  			ret = virt_dev ? PTR_ERR(virt_dev) : -ENODEV;
+6319aee10e5303 Viresh Kumar          2019-05-08  2427  			dev_err(dev, "Couldn't attach to pm_domain: %d\n", ret);
+6319aee10e5303 Viresh Kumar          2019-05-08  2428  			goto err;
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2429  		}
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2430  
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2431  		/*
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2432  		 * The required_opp_tables parsing is not perfect, as the OPP
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2433  		 * core does the parsing solely based on the DT node pointers.
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2434  		 * The core sets the required_opp_tables entry to the first OPP
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2435  		 * table in the "opp_tables" list, that matches with the node
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2436  		 * pointer.
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2437  		 *
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2438  		 * If the target DT OPP table is used by multiple devices and
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2439  		 * they all create separate instances of 'struct opp_table' from
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2440  		 * it, then it is possible that the required_opp_tables entry
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2441  		 * may be set to the incorrect sibling device.
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2442  		 *
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2443  		 * Cross check it again and fix if required.
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2444  		 */
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2445  		gdev = dev_to_genpd_dev(virt_dev);
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2446  		if (IS_ERR(gdev))
+2a56c462fe5a2e Viresh Kumar          2024-04-09 @2447  			return PTR_ERR(gdev);
 
-|     HPA window 1 - Length = Cache + CXL                |
-                                                   |   HPA+ window - Length = CXL only |
+I have read the comment, but I don't have any context outside this email
+so I don't really understand it.  The error handling in this function is
+confusing to me.  What are we undoing?  So potentially this is a false
+positive.  But Smatch wants a "ret = PTR_ERR(gdev); goto err;" here.
 
-last one might seem odd but if you are packing multiple of these you might get
-|     HPA window 1 - Length = Cache + CXL      |   HPA window 2 Ln = Cache + CXL           |
-|   HPA+ window 1 - Length = CXL only |  HPA+ window 2  Len = CXL only|
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2448  
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2449  		genpd_table = _find_opp_table(gdev);
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2450  		if (!IS_ERR(genpd_table)) {
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2451  			if (genpd_table != opp_table->required_opp_tables[index]) {
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2452  				dev_pm_opp_put_opp_table(opp_table->required_opp_tables[index]);
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2453  				opp_table->required_opp_tables[index] = genpd_table;
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2454  			} else {
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2455  				dev_pm_opp_put_opp_table(genpd_table);
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2456  			}
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2457  		}
+2a56c462fe5a2e Viresh Kumar          2024-04-09  2458  
+e37440e7e2c276 Viresh Kumar          2023-10-27  2459  		/*
+e37440e7e2c276 Viresh Kumar          2023-10-27  2460  		 * Add the virtual genpd device as a user of the OPP table, so
+e37440e7e2c276 Viresh Kumar          2023-10-27  2461  		 * we can call dev_pm_opp_set_opp() on it directly.
+e37440e7e2c276 Viresh Kumar          2023-10-27  2462  		 *
+e37440e7e2c276 Viresh Kumar          2023-10-27  2463  		 * This will be automatically removed when the OPP table is
+e37440e7e2c276 Viresh Kumar          2023-10-27  2464  		 * removed, don't need to handle that here.
+e37440e7e2c276 Viresh Kumar          2023-10-27  2465  		 */
+e37440e7e2c276 Viresh Kumar          2023-10-27  2466  		if (!_add_opp_dev(virt_dev, opp_table->required_opp_tables[index])) {
+e37440e7e2c276 Viresh Kumar          2023-10-27  2467  			ret = -ENOMEM;
+e37440e7e2c276 Viresh Kumar          2023-10-27  2468  			goto err;
+e37440e7e2c276 Viresh Kumar          2023-10-27  2469  		}
+e37440e7e2c276 Viresh Kumar          2023-10-27  2470  
+e37440e7e2c276 Viresh Kumar          2023-10-27  2471  		opp_table->required_devs[index] = virt_dev;
+baea35e4db17a7 Viresh Kumar          2019-07-17  2472  		index++;
+6319aee10e5303 Viresh Kumar          2019-05-08  2473  		name++;
+6319aee10e5303 Viresh Kumar          2019-05-08  2474  	}
+6319aee10e5303 Viresh Kumar          2019-05-08  2475  
+17a8f868ae3e85 Viresh Kumar          2019-07-08  2476  	if (virt_devs)
+e37440e7e2c276 Viresh Kumar          2023-10-27  2477  		*virt_devs = opp_table->required_devs;
+4f018bc0e1cfde Viresh Kumar          2018-06-26  2478  
+442e7a1786e628 Viresh Kumar          2022-05-26  2479  	return 0;
+6319aee10e5303 Viresh Kumar          2019-05-08  2480  
+6319aee10e5303 Viresh Kumar          2019-05-08  2481  err:
+48b5aaec596d9a Viresh Kumar          2023-10-12  2482  	_opp_detach_genpd(opp_table);
+442e7a1786e628 Viresh Kumar          2022-05-26  2483  	return ret;
+6319aee10e5303 Viresh Kumar          2019-05-08  2484  
 
-To reduce decoder costs in the fabric (yeah we don't do this today but the
-bios might :)
-
-So should the text say anything about decoder address vs (SRAT / HMAT addressing)
-Maybe reasonable to say it's contained and aligned so modulo maths works?
-This is a bit odd as HMAT wouldn't typically provide this info, but this addressing
-mode already incorporates it sort of...
-
-
-
-> 
-> Again, whether the address mode is extended-linear, or "non-extended"-linear the
-> math to find aliases is the same. Rather, Linux needs this indication to break
-> its assumptions around which system-physical-address ranges may decode to CXL,
-> and avoid misinterpretations of ACPI SRAT/HMAT and CEDT.CFMWS.
-> 
-> [..]
-> > > But it is relevant. If the near memory (cache memory) is 64GB and the far memory
-> > > (backing store) is 64GB then the SRAT range is 64GB (cache-excluded). With this
-> > > new mode the SRAT range is 128GB.  
-> > 
-> > Sure, but this is a cache, not normal memory so in what people normally expect
-> > from a memory-side cache (write through / write back etc) there is no
-> > reason to ever include it in SRAT. Hence it's not 'excluded' it just has
-> > nothing to do with SRAT which is about memory, not caches. I'm not
-> > arguing it is irrelevant in your case (where it clearly is because it is part
-> > of the memory), but it is irrelevant in for example a write-through cache.
-> > Saying it was excluded is implying a lot more that 'not-included' would for
-> > example.  
-> 
-> Ok, that's starting to get through, and it seems to support the proposal to call
-> this address-mode "extended-linear".
-
-That works. 
-
-> [..]
-> > > I still disagree with the implication that "inclusion" is a property of the
-> > > cache and not the address layout for this ECN.  
-> > 
-> > It's an ECN about caches - the chance of misunderstanding is high.
-> > Maybe there isn't a better option, but it definitely makes me feel uncomfortable.  
-> [..]
-> > Maybe hyphen will help? Inclusive-linear Address mode?
-> > to avoid reading this as separate adjectives as in that this is an
-> > 'inclusive' cache that has a 'linear address' mode?  
-> 
-> Try this on for size:
-> 
-> * "When Address Mode is 1 'Extended-Linear' it indicates that the associated
->    address range (SRAT.MemoryAffinityStructure.Length) is comprised of the
->    backing store capacity extended by the cache capacity. It is arranged such
->    that there are N directly addressable aliases of a given cacheline where N is
->    the ratio of target memory proximity domain size and the memory side cache
->    size. Where the N aliased addresses for a given cacheline all share the same
->    result for the operation 'address modulo cache size'. This setting is only
->    allowed when 'Cache Associativity' is 'Direct Map'."  
-> 
-> 
-I don't promise not to change my mind, but today LGTM.
-
-> [..]
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
