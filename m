@@ -1,136 +1,141 @@
-Return-Path: <linux-acpi+bounces-5980-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5981-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135548CF62A
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 May 2024 23:40:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C188CF77A
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 04:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B2251C212DA
-	for <lists+linux-acpi@lfdr.de>; Sun, 26 May 2024 21:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FBC91C20DB6
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 02:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2555C12AAE0;
-	Sun, 26 May 2024 21:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA91D4C6C;
+	Mon, 27 May 2024 02:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="uPCdcLmE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BDwY940h"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64101EB3F;
-	Sun, 26 May 2024 21:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87EDD2107;
+	Mon, 27 May 2024 02:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716759623; cv=none; b=MBdU1JOGAIdN2FVENIpeJKEMDy0ocpNt7pX1MMPQRRhXGRrTXoneqksPje1HLiXK52eCddWeZbxKeiuCaCNMn4GnqS47urPmn9TueDaLFMr3+AZzrHLlI0JKNJU6RMftPVr2Kteo0Jcf2aRM/Xspg1c8yrWRqP7ocsbmN/ALvN8=
+	t=1716778511; cv=none; b=gX74mgT2F9YFruY2W5wQwIXLIhrHrUeCp8ppW9rJUSNe2qpF0Xlc6Pk5K4ziXhfHW8dSwgqkNNS0iKrmMiQKdBIMcBAiY0TyK0xt2ZfNpwhdacGKobUG7CwzjiWUGD+MigZyEq89Hv213Ax/IAEjiWxWu2bNKfyRh2PgjX/TGbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716759623; c=relaxed/simple;
-	bh=EQmU3js+i7J6XMtR1sPBepkOKA2uG18sojoN3Bu3988=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Wq3DHIV/XcmyjH0lQQS95y1p67vrdxPAEVmYczDsSeSVLvmJi1QND80bgp55MPKt+BVJu4Woe+75QkzzqEK4yYEANrUC9vY3bP2iiWOY9dhucdLJ56ehgHd0X66m023L5hz7D0xgRQnXFs4KLzQnKJRwirJtXkWeoQJVkMu9cWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=uPCdcLmE; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1716759617;
-	bh=EQmU3js+i7J6XMtR1sPBepkOKA2uG18sojoN3Bu3988=;
-	h=From:Date:Subject:To:Cc:From;
-	b=uPCdcLmERA64szIvlxaC24kOOSCTJL5W3sFcOEGDWtp41hfHsxnCjePoKUQGD8FkY
-	 cOkyuVcJ8VpNz4vibF3nRIv8HMDTCA9uh4Fhi30bsNgQFezDvi3GIphMGLmhrPFccS
-	 nu531i26iBay9aX8LMkN/oMu/yCQSSfkRHlKXWkQ=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 26 May 2024 23:40:01 +0200
-Subject: [PATCH] ACPI: AC: Properly notify powermanagement core about
- changes
+	s=arc-20240116; t=1716778511; c=relaxed/simple;
+	bh=07xiRVvLKBl9zaXa91uX9if9n5xwXqYEaruyBFZ/F9Y=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ijYQpBr/MTIBL12eRlqAH8dxLh3Vs7uCwzI+G3fv64va63Z/p0hpwmyEov9Kb8W0/byI+y+Iivsh4dZq7msI5a1q62J26DOzfxH8bMyQqabCt4iICwmBhibrr51+sDel94R8Q0RZs+3eCgaRDm1PY1UGjI4KLZIEb/TQCZ4psfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BDwY940h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 11B24C4AF07;
+	Mon, 27 May 2024 02:55:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716778511;
+	bh=07xiRVvLKBl9zaXa91uX9if9n5xwXqYEaruyBFZ/F9Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=BDwY940hrIlTRYiSvrV7DjcF4WViK6Bz1m2nENogiX/jsjoQpTU53nLAayvGYxmRx
+	 S8//D8w3WCl7LtC6JkCFKIpeQ+sGhWcLEsA9upx10X5fKSdByT5SqokNfq/RXqmvVK
+	 gsFMHZJUKdKBdzAAYnzGkq3gnq2Fj6v5GZ+We6POjWPgnktgdq1ziwE5sPUPsV6BOl
+	 WhYVqo0n83pBClfBABUg1sMmXYUlg9E7ek8WCtt2B6ZfPB/QRtb0OlTnGOKhMx4Ngl
+	 impThOLXRXTjIpr17ItzyT1X7U3yyBEFKHpEQycQ3UDKacT/ZfU1byIffZ/Yp49udQ
+	 bcZ/XyHmDMi0A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EFFE4CF21E0;
+	Mon, 27 May 2024 02:55:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240526-acpi-ac-changed-v1-1-f4b5997753bb@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIADCsU2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDUyMz3cTkgkwgoQuRTdFNNLBINrM0MUxMNTVUAuoqKEpNy6wAmxgdW1s
- LAOi3GvxhAAAA
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Sebastian Reichel <sre@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, Rajas Paranjpe <paranjperajas@gmail.com>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716759616; l=2189;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=EQmU3js+i7J6XMtR1sPBepkOKA2uG18sojoN3Bu3988=;
- b=j+GJCEXFVOvovJMdyQteps+Udm76p3T99Fm1QXOnLD7X1riMBs6SJH1l7KvCDX7QxLAIDjRtZ
- P6KCe0/kr+aAxkMNg3A5UGDV3056MpnEv+H/aXH/MS8qO809EDsziUX
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Subject: Re: [PATCH v2 00/19] ACPI: store owner from modules with
+ acpi_bus_register_driver()
+From: patchwork-bot+chrome-platform@kernel.org
+Message-Id: 
+ <171677851097.1901.11162373197607812420.git-patchwork-notify@kernel.org>
+Date: Mon, 27 May 2024 02:55:10 +0000
+References: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
+In-Reply-To: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
+ dmitry.torokhov@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, bleung@chromium.org, tzungbi@kernel.org,
+ corentin.chary@gmail.com, luke@ljones.dev, hdegoede@redhat.com,
+ ilpo.jarvinen@linux.intel.com, cascardo@holoscopio.com, pali@kernel.org,
+ matan@svgalib.org, malattia@linux.it, coproscefalo@gmail.com,
+ akaher@vmware.com, amakhalov@vmware.com, pv-drivers@vmware.com,
+ richardcochran@gmail.com, tytso@mit.edu, Jason@zx2c4.com,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ acpica-devel@lists.linux.dev, linux-input@vger.kernel.org,
+ netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
+ platform-driver-x86@vger.kernel.org, rafael.j.wysocki@intel.com
 
-The powermanagement core does various actions when a powersupply changes.
-It calls into notifiers, LED triggers, other power supplies and emits an uevent.
+Hello:
 
-To make sure that all these actions happen properly call power_supply_changed().
+This series was applied to chrome-platform/linux.git (for-kernelci)
+by Rafael J. Wysocki <rafael.j.wysocki@intel.com>:
 
-Reported-by: Rajas Paranjpe <paranjperajas@gmail.com>
-Closes: https://github.com/MrChromebox/firmware/issues/420#issuecomment-2132251318
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/acpi/ac.c  | 4 ++--
- drivers/acpi/sbs.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+On Thu, 28 Mar 2024 20:49:10 +0100 you wrote:
+> Changes in v2:
+> - Correct input and platform/chrome subjects.
+> - Add acks.
+> - Link to v1: https://lore.kernel.org/r/20240327-b4-module-owner-acpi-v1-0-725241a2d224@linaro.org
+> 
+> Merging
+> =======
+> All further patches depend on the first amba patch, therefore one way is
+> to ack and take it via one tree, e.g. ACPI.
+> 
+> [...]
 
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index 2d4a35e6dd18..09a87fa222c7 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -145,7 +145,7 @@ static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
- 						  dev_name(&adev->dev), event,
- 						  (u32) ac->state);
- 		acpi_notifier_call_chain(adev, event, (u32) ac->state);
--		kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-+		power_supply_changed(ac->charger);
- 	}
- }
- 
-@@ -268,7 +268,7 @@ static int acpi_ac_resume(struct device *dev)
- 	if (acpi_ac_get_state(ac))
- 		return 0;
- 	if (old_state != ac->state)
--		kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-+		power_supply_changed(ac->charger);
- 
- 	return 0;
- }
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index 94e3c000df2e..dc8164b182dc 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -610,7 +610,7 @@ static void acpi_sbs_callback(void *context)
- 	if (sbs->charger_exists) {
- 		acpi_ac_get_present(sbs);
- 		if (sbs->charger_present != saved_charger_state)
--			kobject_uevent(&sbs->charger->dev.kobj, KOBJ_CHANGE);
-+			power_supply_changed(sbs->charger);
- 	}
- 
- 	if (sbs->manager_present) {
-@@ -622,7 +622,7 @@ static void acpi_sbs_callback(void *context)
- 			acpi_battery_read(bat);
- 			if (saved_battery_state == bat->present)
- 				continue;
--			kobject_uevent(&bat->bat->dev.kobj, KOBJ_CHANGE);
-+			power_supply_changed(bat->bat);
- 		}
- 	}
- }
+Here is the summary with links:
+  - [v2,01/19] ACPI: store owner from modules with acpi_bus_register_driver()
+    https://git.kernel.org/chrome-platform/c/48b9c4862bd3
+  - [v2,02/19] Input: atlas - drop owner assignment
+    https://git.kernel.org/chrome-platform/c/726c149e0798
+  - [v2,03/19] net: fjes: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/3bdef399d00e
+  - [v2,04/19] platform/chrome: wilco_ec: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/245d97ff3473
+  - [v2,05/19] platform: asus-laptop: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/eda8304c74f0
+  - [v2,06/19] platform: classmate-laptop: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/be24e9a09337
+  - [v2,07/19] platform/x86/dell: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/1baad72e9026
+  - [v2,08/19] platform/x86/eeepc: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/4313188f8128
+  - [v2,09/19] platform/x86/intel/rst: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/68370cc2e32a
+  - [v2,10/19] platform/x86/intel/smartconnect: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/e84a761f1215
+  - [v2,11/19] platform/x86/lg-laptop: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/2929a735d92e
+  - [v2,12/19] platform/x86/sony-laptop: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/562231f34cea
+  - [v2,13/19] platform/x86/toshiba_acpi: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/b655cda9f089
+  - [v2,14/19] platform/x86/toshiba_bluetooth: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/ce69eeb2ccb7
+  - [v2,15/19] platform/x86/toshiba_haps: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/eb22f3ba0c2e
+  - [v2,16/19] platform/x86/wireless-hotkey: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/d49c09ddfbd5
+  - [v2,17/19] ptp: vmw: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/cd3eda2e3508
+  - [v2,18/19] virt: vmgenid: drop owner assignment
+    https://git.kernel.org/chrome-platform/c/00e8b52bf9f9
+  - [v2,19/19] ACPI: drop redundant owner from acpi_driver
+    https://git.kernel.org/chrome-platform/c/cc85f9c05bba
 
----
-base-commit: 6fbf71854e2ddea7c99397772fbbb3783bfe15b5
-change-id: 20240526-acpi-ac-changed-a08c6941ae51
-
-Best regards,
+You are awesome, thank you!
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
