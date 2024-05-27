@@ -1,58 +1,57 @@
-Return-Path: <linux-acpi+bounces-5994-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5995-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AAC8D031D
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 16:18:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C518D0332
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 16:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4951C222B8
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 14:18:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A91AF1F26917
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 14:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E491616E891;
-	Mon, 27 May 2024 14:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70D316F827;
+	Mon, 27 May 2024 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOJvvCWI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cggznKv3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E9E16E88B;
-	Mon, 27 May 2024 14:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE6A16F820;
+	Mon, 27 May 2024 14:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819183; cv=none; b=PxRwg1z1Xk+Mv+UQC1v8Nu/HOj61Hacm2CIKGT+SI2niTf8FQllBHl4KHzHxeV/n07EwG1ZKeCnAC6w9oKya1N7LjP3lY7BGWDhMzu2sDvGww4mlZpXepTwNqTDjPkIsw0ZO6QxD757/bDbmH201iqDXFBGSTJBEFYGGN2nPXNs=
+	t=1716819198; cv=none; b=HFpNiIg8TWdSKGE+Ggb59tQ6IOssgi+eLEGL2Rcmn8BQq/ZAdFgmP0bj8Ph8+Qkzm18kzqnkQvchptd2CEzUWapj7tWRaQW5rzt8qIqqdzKM5rtTHa/yvzIsQXcLHb/o561peFfhEFpd7IPHtVVRLOQhF511Ur13kmbadTbIotc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819183; c=relaxed/simple;
-	bh=nnl7uwuBL13OQe7+PdCqXTtXDYutmJcyZLZkPj744Qk=;
+	s=arc-20240116; t=1716819198; c=relaxed/simple;
+	bh=40t4tHjWFDuMpxRmW027bCl5BGzQoCTq6GRC2BpRg8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnSjgNviC9dyZH/krVsE+1AbCgpBTuymUQ6DmyosZomxELguYZOI5wjz72RWl+zJDjGUJh6t9/OvG63xzx6YkSEYiA1MW2Q/lcfNgwMnEKyG/HKY64JoICZ2TxaVGvdM+XZvz+LAzW9YRoUbBJXxC7JxfxhWd5FAATJKjDCQ1l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOJvvCWI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B4BC4AF07;
-	Mon, 27 May 2024 14:13:01 +0000 (UTC)
+	 MIME-Version; b=YdcxqIoFNZ4S82hmEtmuzwHkz7AF765WhjejK6TUMiLG4NUbW6+QnEp9MQrqoEGSiz7llnWhrBJjXJwORtdngLMx+lXtNumIyl1tTy3E88U6RD7ktZh+ezR+YIRz8tEyqZgUxMYkWqqBwKGMPwR0ucA9PpjG7Adm3aJo9XB4B0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cggznKv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3800FC32789;
+	Mon, 27 May 2024 14:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819182;
-	bh=nnl7uwuBL13OQe7+PdCqXTtXDYutmJcyZLZkPj744Qk=;
+	s=k20201202; t=1716819198;
+	bh=40t4tHjWFDuMpxRmW027bCl5BGzQoCTq6GRC2BpRg8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOJvvCWIMgQCgCKMHL8CtuDdd2tLZYVRwlcmSSiL1N7aIOuw8qCE6ummivSZmi3zv
-	 tx0nOUUuuBOSm8G3GhlsQnbp+rY4qvsr2GqiWpY66PhANtj8b4h3n+a6HBUET37mG9
-	 haB5PPCIll3phHaa9V8zLk30m9sCJAeY1b9xqF4cE4k5pqtLHmggEbgcTDP/RtUTjh
-	 r7idI13FXL1tmbGCr8Cmi0AkJBkQi5Rv+9I3qPgUPwxtO3lQH7PiP+Nq0r7WtAv3OH
-	 SwOQ1c2jlPMM9GmqwfBveuBvVJQuaB1bZrYUcl76clBKm1ZFTdCJjQqcAJEKtGE+9j
-	 6+XvBrcnZjKoQ==
+	b=cggznKv3BjjeYoAJu0E7TrGOZqjw9nwGjsYPOfLvecsQSCGjkzSDs07uWzfJoHgLs
+	 F7Nzc//mfb4HzTQIZzHLFd9DiaFVVcjhlURLBRy0i+40lvAUn8SbgY614J+/J12qEa
+	 ZeaAKA5RIw7BWwuxCVgoLGev7LxRt7cY2L79d+KL7tFVhRpSNphZWeUh+n+L/Qxc/f
+	 2o81L2fbgy6SCwUn/zwYv3MpzNIJjE4+T/OxD9AyLc4vORrrdAE63m5KS9BvhEWX91
+	 6aqUB4AqF49CiNqJDlVYeUuUi4u/upw6a1ijjt+ByRyYN0ZB4CvOq8PaGLppc4ZGNL
+	 YehhPfZQJzw3g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tamim Khan <tamim@fusetak.com>,
-	Gianni <gianni.casagrande.mail@gmail.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 24/35] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MV
-Date: Mon, 27 May 2024 10:11:29 -0400
-Message-ID: <20240527141214.3844331-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 30/35] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Date: Mon, 27 May 2024 10:11:35 -0400
+Message-ID: <20240527141214.3844331-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240527141214.3844331-1-sashal@kernel.org>
 References: <20240527141214.3844331-1-sashal@kernel.org>
@@ -67,43 +66,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.2
 Content-Transfer-Encoding: 8bit
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7c52c7071bd403acee8cb0064627d46c6c2a1ea3 ]
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-Like various other Asus Vivobook and Expertbook laptops, the Asus
-Vivobook Pro N6506MV has a DSDT table that describes IRQ 1 as ActiveLow
-while the kernel is overriding it to Edge_High. This prevents the internal
-keyboard from working. This patch prevents this issue by adding this laptop
-to the override table that prevents the kernel from overriding this IRQ
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218745
-Tested-by: Gianni <gianni.casagrande.mail@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index c9af5d2f4d2d7..553b043809ad5 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -517,6 +517,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 9fdcc620c6524..2cc3821b2b16e 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -497,6 +497,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
  		},
  	},
 +	{
-+		/* Asus Vivobook Pro N6506MV */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
 +		},
 +	},
  	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
 -- 
 2.43.0
 
