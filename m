@@ -1,141 +1,162 @@
-Return-Path: <linux-acpi+bounces-5982-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-5983-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55138CF7EB
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 05:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D64598CF86B
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 06:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BF491F20F4A
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 03:08:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F0C21F217F5
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 04:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996EA523A;
-	Mon, 27 May 2024 03:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D457C152;
+	Mon, 27 May 2024 04:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLwAnQh9"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="HUWtPH+B"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DD379E1;
-	Mon, 27 May 2024 03:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE8379E1
+	for <linux-acpi@vger.kernel.org>; Mon, 27 May 2024 04:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716779226; cv=none; b=bvc9+lTHmB756ghHlz60I+i0u//2iaP6Hp66xmV5UU7mjzOB9YI5l1veOY18CcI70ZeJKowpnm05CqsLuAlBE989IfUeAZ+/RjCJW6v0gmV6AFXhIJuIHUhJ3Rq9Z2Lye2YmMELEqDW1gjpfISGmQSctvsANasDP3SOFEu9CGTQ=
+	t=1716784569; cv=none; b=IsH/Nm+ldb1IaX6H+gAjXZ+5dv3c01QL9D6MA1aUnrRuyee+mQBtx7dzlxDUlIYk7h3m73TANaqceRksqVi5vQC17RdOoDDo/uu0J8XGNeLn1qRxtAPv7bQYugaJ4wqFtfQ/4KdpCVlN5VCQun/n/P/9Phqn33LYU28JPhG+33A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716779226; c=relaxed/simple;
-	bh=C33d2bsfpP85hL2H7m104ihPh1qEsm4+V/IrMSXkFww=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pOafTilqeztJzLAhF3aTaUPRyTVUqrTj1EtywS4EC53nq5F9rDDqJaY9HCDxYiSAArA0GukH3O+aZigbU3xXXF7dnftYpJYR/T3+NLHavqDWw5yPuaVgclnunhOEVSJLUCjy4e+5tgxTEnzQVJ708yAGsj4tKvm0UQnO1mA3J5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLwAnQh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E6F49C4AF07;
-	Mon, 27 May 2024 03:07:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716779226;
-	bh=C33d2bsfpP85hL2H7m104ihPh1qEsm4+V/IrMSXkFww=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZLwAnQh9aenvjcS4zJK+gncNSAqPF7Fotx1ZAW/toTfPv8ziUn9JTznwRKzKn0AMU
-	 NIKDoKB3+KPoCpFuuZHoXlYss4UxhbX5UKtkyD7FCRTfsPrIlazfbjb46ORKEiAeBn
-	 tTIAo4OM885XqO1JZUXwYHXwgRlCapLmIJxNyWpQ/h+YlafQEtrHHwJ7RfAfsu7/du
-	 4Ynt+TWRlUrwopJDAlI+9Lp+sPw8J+OccLEmdCoKE9dwF90LPK3+94zYrvJy/AIviV
-	 aFL2XskCy7W3CyIchVkCyFC6IUWG7iAf0fdhDyfWpBuTN7jII2DTO37wgINKxnLknZ
-	 TqSJ+GPIIMkkw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id CB932CF21E0;
-	Mon, 27 May 2024 03:07:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1716784569; c=relaxed/simple;
+	bh=xrShOrBMudNx1lIclZjti31jJIj1JbkTGrXCdkVq56E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DuyGcZ56Xdu1QNCk/iJtGjBCFQNImAredoSP+5NBC2TmSzrhPeEUH30L/+mAGORnXVOr5Z91qXhCx8n06thGXtOixI/us/X7XxRhKmouBkMQmkxE8N5QBx1GW/uQhgPHHjJYkeD+n7aTVBofH8IDPX4QVpG+X9/OxdSpmz8RIPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=HUWtPH+B; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1f47eb21f0aso7727935ad.1
+        for <linux-acpi@vger.kernel.org>; Sun, 26 May 2024 21:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1716784567; x=1717389367; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GCL45r5HwUdhMGMoKs1ELoA50Buz5dFrdewkzzL6SwI=;
+        b=HUWtPH+B4s9VBr7trmJFxqpU9h7juGROj+DdwSAGFXn00tLV80cqU8gE0xdMrQPnoF
+         wW5xf7Ulb0Gc9w7n2Svvv+l3z4ArPKtXXweQHSToFwHXeZAMV19FMvhYZzqpdBHJu16C
+         s3SB5DujB+Gk/1J0mnvEq6oej2Al7a+KZD778zlL9b/i129ZqDkjrjPSq7FL2S2h13Lr
+         y9vJcuuJBbmVTeS4KMzPdhfCTNxO/bU76lY96Np6AxLTYYNM6xFWuhmt3TdFS6suAHEE
+         0Lx0Ri88aVapvC4n19UGgE16go7ZxBXfBhegovEOO2yOOsFuuoD1MkYaOZPwtVZuRId/
+         CPEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716784567; x=1717389367;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GCL45r5HwUdhMGMoKs1ELoA50Buz5dFrdewkzzL6SwI=;
+        b=mGjvCzkBJ8MwgNoZ04XWIQjR1eJiXQCXhLceL9HowlDHm4CdqCbuJudwcSmkCSG/5i
+         8a1jAMn4eAFMlP/Wnw6oLnb0FrU6Ezg/M0MBoGmSWUuGbxOMSKnyrGicXYJLZBwLcpNr
+         XaVXq7emu/+l9FW9Mssv4HCLoupCSHVW8VeZoLAHzqHAm/ZnJKdcXu8rlkFtvKDxfF19
+         R4VMrZhlfnZuLEj5QsQOn64xA3mFwVvI+rOmyqGzoVKyMaavGakWQ9JwNoc2MOUR6kWS
+         tSGv1pul1XiEwuHnylKiC2F+YgsaB5ROlBVeJXTeFKHrbi9mS3WJ62iB+J03KFxmGWCE
+         I/yA==
+X-Forwarded-Encrypted: i=1; AJvYcCW/vznkoSAizrTLwP+vGmgUIKAbp63g3p8N+MPfLq4LYGdXUAbktCQcCdE0zjOvQzF0NG8pUsI0OOWmGWEOrJChBHPvTRCaWscZ9A==
+X-Gm-Message-State: AOJu0YxpdRK812dkghbW5v5/ZuOd3f1L2fCnYVY831+oXwpku2cRwdmY
+	44lsdKcXLKWhlqfb2bfSGc3AtJa0GZy8Q99LhHxvMqvL6KDfGt6K9C9/0ppvf40=
+X-Google-Smtp-Source: AGHT+IH2qTAk+H4YWdMT+3HDQ47VPDZxZ9rT9jbAlx84jUV+F91w+En1i4ZeI520OwORxw1JjKsITQ==
+X-Received: by 2002:a17:903:2306:b0:1f4:a77a:3bb9 with SMTP id d9443c01a7336-1f4a77a3ea0mr9409085ad.64.1716784566971;
+        Sun, 26 May 2024 21:36:06 -0700 (PDT)
+Received: from sunil-laptop ([106.51.188.31])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c968516sm50975975ad.179.2024.05.26.21.35.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 May 2024 21:36:06 -0700 (PDT)
+Date: Mon, 27 May 2024 10:05:54 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-serial@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Andrei Warkentin <andrei.warkentin@intel.com>,
+	Haibo1 Xu <haibo1.xu@intel.com>,
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Subject: Re: [PATCH v5 07/17] ACPI: bus: Add RINTC IRQ model for RISC-V
+Message-ID: <ZlQNqiWXNpv30AGp@sunil-laptop>
+References: <20240501121742.1215792-8-sunilvl@ventanamicro.com>
+ <20240523215903.GA138985@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 00/19] ACPI: store owner from modules with
- acpi_bus_register_driver()
-From: patchwork-bot+chrome-platform@kernel.org
-Message-Id: 
- <171677922582.1901.13180698074566654987.git-patchwork-notify@kernel.org>
-Date: Mon, 27 May 2024 03:07:05 +0000
-References: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
-In-Reply-To: <20240328-b4-module-owner-acpi-v2-0-1e5552c2c69f@linaro.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: rafael@kernel.org, lenb@kernel.org, robert.moore@intel.com,
- dmitry.torokhov@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, bleung@chromium.org, tzungbi@kernel.org,
- corentin.chary@gmail.com, luke@ljones.dev, hdegoede@redhat.com,
- ilpo.jarvinen@linux.intel.com, cascardo@holoscopio.com, pali@kernel.org,
- matan@svgalib.org, malattia@linux.it, coproscefalo@gmail.com,
- akaher@vmware.com, amakhalov@vmware.com, pv-drivers@vmware.com,
- richardcochran@gmail.com, tytso@mit.edu, Jason@zx2c4.com,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- acpica-devel@lists.linux.dev, linux-input@vger.kernel.org,
- netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
- platform-driver-x86@vger.kernel.org, rafael.j.wysocki@intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240523215903.GA138985@bhelgaas>
 
-Hello:
-
-This series was applied to chrome-platform/linux.git (for-next)
-by Rafael J. Wysocki <rafael.j.wysocki@intel.com>:
-
-On Thu, 28 Mar 2024 20:49:10 +0100 you wrote:
-> Changes in v2:
-> - Correct input and platform/chrome subjects.
-> - Add acks.
-> - Link to v1: https://lore.kernel.org/r/20240327-b4-module-owner-acpi-v1-0-725241a2d224@linaro.org
+On Thu, May 23, 2024 at 04:59:03PM -0500, Bjorn Helgaas wrote:
+> On Wed, May 01, 2024 at 05:47:32PM +0530, Sunil V L wrote:
+> > Add the IRQ model for RISC-V INTC so that acpi_set_irq_model can use this
+> > for RISC-V.
+> > 
+> > Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> > ---
+> >  drivers/acpi/bus.c   | 3 +++
+> >  include/linux/acpi.h | 1 +
+> >  2 files changed, 4 insertions(+)
+> > 
+> > diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> > index 17ee483c3bf4..6739db258a95 100644
+> > --- a/drivers/acpi/bus.c
+> > +++ b/drivers/acpi/bus.c
+> > @@ -1190,6 +1190,9 @@ static int __init acpi_bus_init_irq(void)
+> >  	case ACPI_IRQ_MODEL_LPIC:
+> >  		message = "LPIC";
+> >  		break;
+> > +	case ACPI_IRQ_MODEL_RINTC:
+> > +		message = "RINTC";
+> > +		break;
+> >  	default:
+> >  		pr_info("Unknown interrupt routing model\n");
+> >  		return -ENODEV;
+> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> > index 846a4001b5e0..c1a01fd02873 100644
+> > --- a/include/linux/acpi.h
+> > +++ b/include/linux/acpi.h
+> > @@ -107,6 +107,7 @@ enum acpi_irq_model_id {
+> >  	ACPI_IRQ_MODEL_PLATFORM,
+> >  	ACPI_IRQ_MODEL_GIC,
+> >  	ACPI_IRQ_MODEL_LPIC,
+> > +	ACPI_IRQ_MODEL_RINTC,
 > 
-> Merging
-> =======
-> All further patches depend on the first amba patch, therefore one way is
-> to ack and take it via one tree, e.g. ACPI.
+> Is the ACPI_IRQ_MODEL_RINTC value documented somewhere?  Maybe an ECR
+> for the ACPI spec?
 > 
-> [...]
+> acpi_bus_init_irq() is going to pass ACPI_IRQ_MODEL_RINTC to _PIC, and
+> ACPI r6.5, sec 5.8.1 only mentions the ACPI_IRQ_MODEL_PIC,
+> ACPI_IRQ_MODEL_IOAPIC, and ACPI_IRQ_MODEL_IOSAPIC values.
+> 
+> Even the existing ACPI_IRQ_MODEL_PLATFORM, ACPI_IRQ_MODEL_GIC, and
+> ACPI_IRQ_MODEL_LPIC values aren't mentioned in ACPI r6.5.
+> 
+Yeah, I also noticed it. I don't know the history behind this. Rafael or
+someone else might have better knowledge. IMO, it is better to update
+ACPI spec _PIC with all these values. If I don't see any objections, I
+will raise an ECR to update the spec.
 
-Here is the summary with links:
-  - [v2,01/19] ACPI: store owner from modules with acpi_bus_register_driver()
-    https://git.kernel.org/chrome-platform/c/48b9c4862bd3
-  - [v2,02/19] Input: atlas - drop owner assignment
-    https://git.kernel.org/chrome-platform/c/726c149e0798
-  - [v2,03/19] net: fjes: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/3bdef399d00e
-  - [v2,04/19] platform/chrome: wilco_ec: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/245d97ff3473
-  - [v2,05/19] platform: asus-laptop: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/eda8304c74f0
-  - [v2,06/19] platform: classmate-laptop: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/be24e9a09337
-  - [v2,07/19] platform/x86/dell: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/1baad72e9026
-  - [v2,08/19] platform/x86/eeepc: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/4313188f8128
-  - [v2,09/19] platform/x86/intel/rst: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/68370cc2e32a
-  - [v2,10/19] platform/x86/intel/smartconnect: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/e84a761f1215
-  - [v2,11/19] platform/x86/lg-laptop: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/2929a735d92e
-  - [v2,12/19] platform/x86/sony-laptop: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/562231f34cea
-  - [v2,13/19] platform/x86/toshiba_acpi: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/b655cda9f089
-  - [v2,14/19] platform/x86/toshiba_bluetooth: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/ce69eeb2ccb7
-  - [v2,15/19] platform/x86/toshiba_haps: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/eb22f3ba0c2e
-  - [v2,16/19] platform/x86/wireless-hotkey: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/d49c09ddfbd5
-  - [v2,17/19] ptp: vmw: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/cd3eda2e3508
-  - [v2,18/19] virt: vmgenid: drop owner assignment
-    https://git.kernel.org/chrome-platform/c/00e8b52bf9f9
-  - [v2,19/19] ACPI: drop redundant owner from acpi_driver
-    https://git.kernel.org/chrome-platform/c/cc85f9c05bba
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sunl
 
