@@ -1,111 +1,116 @@
-Return-Path: <linux-acpi+bounces-6003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C0F8D0493
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 16:49:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6838D0512
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 593FF1C21578
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 14:49:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A9283CD1
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFAA616EBED;
-	Mon, 27 May 2024 14:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPckxprn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F8116C440;
+	Mon, 27 May 2024 14:31:24 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8316D168C3D;
-	Mon, 27 May 2024 14:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E33115FD1B
+	for <linux-acpi@vger.kernel.org>; Mon, 27 May 2024 14:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819576; cv=none; b=QvaFG9bQAB+DbYxYO/UczXqZUZBE1LehcqdKL1UbQawzzTCWwBVINuftpgTb89hh7/tpbuuGRO1AR4blOTicByNMG6c0YS7ursv/OUu2X5Rq3Zr9E+1hzxWILwwnwPzG/zT5tGVKbmTT1P7yJjIJpExXMBSB1N/K08W/3UxZp3E=
+	t=1716820284; cv=none; b=Q+nEOaqddeNcbuX168axxtsM0CAGT1rGYUryTvSiv0RaD7aNT2wUvbSodc7F2rUeTB+MHcpDkmX+LGijnomQyc3bnQp15CQtB3gwTDvOG9BSJr7lb8PnhqFE11syJtRz++kWukhOQ2xwb/oB+JAa4dx7YR8c8L189RbKEolpnL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819576; c=relaxed/simple;
-	bh=fIgHyz1SU66HH2/03OqanKPPWhz+SgylrApj4NM5RgU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEEp4owmY7RWcJIIfiQ6O/GRBGuN1BS+FiY/OQmldHxFrTrSPksvB66m3U9H936RF4B9KvOseG+t/KWtM5YmdoJ+5nBKC7YgyssMStzyd5ivLd2kWCT/f/Ar41fq4/Desftwc14YQnt0/vJyu68GXH8EiEpwDRjLUIqXG8mffG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPckxprn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3001EC32781;
-	Mon, 27 May 2024 14:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716819576;
-	bh=fIgHyz1SU66HH2/03OqanKPPWhz+SgylrApj4NM5RgU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPckxprn9gcamZ+jlku57qFWjgtptS+/ldsYB/qvF8HDmNSv9jyyf8Dn0q67Ylqxc
-	 0XIw1ntX95Hd7ryKRlZMxRwa+B08iSnxHocuKBzX7PkgZenAgL/PZzU0QBJXrjJU2U
-	 D6MOOK/s9UKnf0ia9NKHXg0N6aR0r4BXeMaDiHTSdiHkLU2toDNLETAJyd02gWl/f8
-	 7HvtQL6Nk+TCmVpB7YgLqRI0zoTRwUxUaPtrt6HbaNF3xfYyZQ+H5VTJ+f9jNF8sk3
-	 yOE2tkyVYsyemiNvJ8/nQqNvmq6VmiMAhJs/JteZh0BQyQTGWwU1efH04n4NStNsS5
-	 U7D9gM+RaggiQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 11/13] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
-Date: Mon, 27 May 2024 10:18:48 -0400
-Message-ID: <20240527141901.3854691-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240527141901.3854691-1-sashal@kernel.org>
-References: <20240527141901.3854691-1-sashal@kernel.org>
+	s=arc-20240116; t=1716820284; c=relaxed/simple;
+	bh=zQPbdgs7RCJg4Qq0wbiVF+3cbUHM+UsGXZAKlfdrC84=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iYwnXbs76dBzO6MwzB+Pcr8j+mk3ZfLs1U0Zu/VmoTK0olZpofI4ktvjnQNrAtm4Sahkv5DaBJGlM6Ll1fJmubSRJrLdSZVY5fm+xuZC4+qurJKLgKtHU5HpPI3OJysofBqV9NaLxkn9xFHbf9nyEwowRIzLLMY+Cs6UxFF2EHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
+	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+	id 9f91693c-1c35-11ef-80bb-005056bdfda7;
+	Mon, 27 May 2024 17:30:11 +0300 (EEST)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 27 May 2024 17:30:10 +0300
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] hwmon: (ltc2992) Use
+ fwnode_for_each_available_child_node_scoped()
+Message-ID: <ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
+References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
+ <20240523-fwnode_for_each_available_child_node_scoped-v2-3-701f3a03f2fb@gmail.com>
+ <20240526144851.493dd3f2@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.218
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240526144851.493dd3f2@jic23-huawei>
 
-From: Takashi Iwai <tiwai@suse.de>
+Sun, May 26, 2024 at 02:48:51PM +0100, Jonathan Cameron kirjoitti:
+> On Thu, 23 May 2024 17:47:16 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+> > The scoped version of the fwnode_for_each_available_child_node() macro
+> > automates object recfount decrement, avoiding possible memory leaks
+> > in new error paths inside the loop like it happened when
+> > commit '10b029020487 ("hwmon: (ltc2992) Avoid division by zero")'
+> > was added.
+> > 
+> > The new macro removes the need to manually call fwnode_handle_put() in
+> > the existing error paths and in any future addition. It also removes the
+> > need for the current child node declaration as well, as it is internally
+> > declared.
+> > 
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> 
+> This looks like another instances of the lack of clarify about 
+> what device_for_each_child_node[_scoped]() guarantees about node availability.
+> On DT it guarantees the node is available as ultimately calls
+> of_get_next_available_child()
+> 
+> On ACPI it doesn't (I think).
+> For swnode, there isn't an obvious concept of available.
+> 
+> It would be much better if we reached some agreement on this and
+> hence could avoid using the fwnode variants just to get the _available_ form
+> as done here.
 
-[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
+> Or just add the device_for_each_available_child_node[_scoped]()
+> and call that in almost all cases.
 
-Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
-and Nvidia, and the backlight can't be adjusted properly unless
-acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
-present and loaded, this doesn't work as expected at all.
+device_for_each*() _implies_ availability. You need to talk to Rob about all
+this. The design of the device_for_each*() was exactly done in accordance with
+his suggestions...
 
-For making it working as default, add the corresponding quirk entry
-with a DMI matching "LENOVO" "82UX".
+> In generic code, do we ever want to walk unavailable child nodes?
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+...which are most likely like your question here, i.e. why we ever need to
+traverse over unavailable nodes.
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index a5cb9e1d48bcc..338e1f44906a9 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Slim 7 16ARH7 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
+
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 
