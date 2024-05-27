@@ -1,201 +1,131 @@
-Return-Path: <linux-acpi+bounces-6007-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6008-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312AA8D054C
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:06:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF158D05A9
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A634B289284
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:06:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8862884FC
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED2517BB0D;
-	Mon, 27 May 2024 14:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C930216EBE5;
+	Mon, 27 May 2024 14:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IpmKBUOR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tutg1n3c"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CCC17BB0A;
-	Mon, 27 May 2024 14:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902A115F30F;
+	Mon, 27 May 2024 14:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716821063; cv=none; b=qBKJOW4JysZN3YSteQZ7MPztKly3wzL6EVfTR6mUsVV4WFJuTkgB+H1wP6NBNimP/2q7qrBYKHj9K4+oLZEi2YoGPRLGxT2he/PlsBM47/5Inrt0Edo0m/DxL1xALrgnU3x8Pmc+L0zFocNto02yoGrtwa4uW8u8LxtCoW+53+M=
+	t=1716821851; cv=none; b=BffvnzxLRjsmMWG1lhzi+bYLo1WZZeEBQZGKv3uANukEbxG2cJPinzCxqnfSkHZ/ShTOl0bRWlf5BTXeQEwV1IM0nHoVFdmGSF5G6+CHTPgHluYzRzmgSJKK68tO4+s1E1dZ26147qrJVY5ORVF7AxQoUnGh1/ac9qCI/NyUBq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716821063; c=relaxed/simple;
-	bh=IXQy/KWuSXcucpOdFBz5dgMWJsMiQUwKZC+1vOSlerM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQol1s9+U1d4tySCb7p1IkxVz0TLwJZAKomqGdD097N/Nscw8Lqa/Lvs8sKXgV1gUek7BCjTgmodueqYCQp5P7x+mf9XnFZIgC+E8P6IEv3wwIkFer5swKrUiKI2BMjlcUOlroM+MNyn/SceUEisOWBVfsh0M7mm6JQkRbTxJrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IpmKBUOR; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716821062; x=1748357062;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=IXQy/KWuSXcucpOdFBz5dgMWJsMiQUwKZC+1vOSlerM=;
-  b=IpmKBUOR44jZBSZF+upHdf6C3a5SoFnUx0FHEBMOmVi4MFgh6ryedYe7
-   CFMtibam7rKVZoM4y+xVBGQmAix8kuyt4qjPdKvrCC8WybqetxpODDSXG
-   tTVz47gMkSQhKbhATVrLNELQ5xGP734OgeBMFC28fexgPOVibfSE7mE++
-   /wLnQrCiBqbOgW33G6GLxsf6iYRrzF+CGRDwYFggIrk9kGfv1o1e1WxrD
-   Kq0HLWAh1ZDMTofwuO64rtClBdKT2AtK+IpK291T4F7hzlllJGfnV+PT9
-   8pO/0fY7rfDWDPqG5RnRNCY8GlP6A64q6LMoJCPDCWheLu/X+hyHNg4GX
-   Q==;
-X-CSE-ConnectionGUID: UFHMTjbLR1OOH/NWUUFwXw==
-X-CSE-MsgGUID: VvXJXk6sSp+Zdy9hf4Dtjw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13269766"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="13269766"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:22 -0700
-X-CSE-ConnectionGUID: GtWvV7ORS/qh9CPqqni7Jg==
-X-CSE-MsgGUID: s5kI9NZRS9OyA+a/ogKfhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
-   d="scan'208";a="35279810"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.246.214])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:18 -0700
-From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	"Oliver O'Halloran" <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Subject: [PATCH 2/2] ACPI: extlog: Trace CPER PCI Express Error Section
-Date: Mon, 27 May 2024 16:43:41 +0200
-Message-ID: <20240527144356.246220-3-fabio.m.de.francesco@linux.intel.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240527144356.246220-1-fabio.m.de.francesco@linux.intel.com>
-References: <20240527144356.246220-1-fabio.m.de.francesco@linux.intel.com>
+	s=arc-20240116; t=1716821851; c=relaxed/simple;
+	bh=TPj1Ua3MXLPcEqd+42ujWJSzWinRENwbYJnUHrLZ/64=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZpW6gEDKe9UM6mUNMmod1S4ykIURFtlPXx49JZ5j3XeofRWbF2t7nLNzby3rhzUZoRz8sGY19V0QRxM45VIG05MtJr5G6XFahZqAQgjLkjj3x7Fdya3dworZ4L6vPdL0AYhMLScql5asxBeGF/gm31s6D7p16NevkgoJhoXNx1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tutg1n3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2C1C2BBFC;
+	Mon, 27 May 2024 14:57:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716821850;
+	bh=TPj1Ua3MXLPcEqd+42ujWJSzWinRENwbYJnUHrLZ/64=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Tutg1n3cW99Gf9udjFbpM6/iRV4wVDFisFeoqKaOCXPbaZ13Pi3oxi5ZeWdmPGHSf
+	 MVrKQiOqhVmxCg7nd4nIjojJAiCSKj0tKxqILXaFAPH7ZxNly3lDsZA/gFkzgxesAI
+	 1Vhuq/Zoua4NmUmCveOXlkBp8s5QWrrAoPlQl+FKUQIcre0W2N0kNq1rAuVEqd1XZZ
+	 mObSxfsldL1eBZAaMOeO3yg0uhv6aztch2dVVDTeHnHJzodsuA6g57zCFVgr1QeyVS
+	 G9a5NzKofDDpdoQVcb9RnXaHspVl9K0FMi/CsQ5hO62JGQpLFCWDMeNVgaiYWKHQlG
+	 QnTcRagqL9ENg==
+Date: Mon, 27 May 2024 15:57:17 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
+ <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, Rob Herring
+ <robh@kernel.org>, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] hwmon: (ltc2992) Use
+ fwnode_for_each_available_child_node_scoped()
+Message-ID: <20240527155717.58292509@jic23-huawei>
+In-Reply-To: <ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
+References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
+	<20240523-fwnode_for_each_available_child_node_scoped-v2-3-701f3a03f2fb@gmail.com>
+	<20240526144851.493dd3f2@jic23-huawei>
+	<ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Currently, extlog_print() (ELOG) only reports CPER PCIe section (UEFI
-v2.10, Appendix N.2.7) to the kernel log via print_extlog_rcd(). Instead,
-the similar ghes_do_proc() (GHES) prints to kernel log and calls
-pci_print_aer() to report via the ftrace infrastructure.
+On Mon, 27 May 2024 17:30:10 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Add support to report the CPER PCIe Error section also via the ftrace
-infrastructure by calling pci_print_aer() to make ELOG act consistently
-with GHES.
+> Sun, May 26, 2024 at 02:48:51PM +0100, Jonathan Cameron kirjoitti:
+> > On Thu, 23 May 2024 17:47:16 +0200
+> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> >   
+> > > The scoped version of the fwnode_for_each_available_child_node() macro
+> > > automates object recfount decrement, avoiding possible memory leaks
+> > > in new error paths inside the loop like it happened when
+> > > commit '10b029020487 ("hwmon: (ltc2992) Avoid division by zero")'
+> > > was added.
+> > > 
+> > > The new macro removes the need to manually call fwnode_handle_put() in
+> > > the existing error paths and in any future addition. It also removes the
+> > > need for the current child node declaration as well, as it is internally
+> > > declared.
+> > > 
+> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
+> > 
+> > This looks like another instances of the lack of clarify about 
+> > what device_for_each_child_node[_scoped]() guarantees about node availability.
+> > On DT it guarantees the node is available as ultimately calls
+> > of_get_next_available_child()
+> > 
+> > On ACPI it doesn't (I think).
+> > For swnode, there isn't an obvious concept of available.
+> > 
+> > It would be much better if we reached some agreement on this and
+> > hence could avoid using the fwnode variants just to get the _available_ form
+> > as done here.  
+> 
+> > Or just add the device_for_each_available_child_node[_scoped]()
+> > and call that in almost all cases.  
+> 
+> device_for_each*() _implies_ availability. You need to talk to Rob about all
+> this. The design of the device_for_each*() was exactly done in accordance with
+> his suggestions...
+> 
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
----
- drivers/acpi/acpi_extlog.c | 30 ++++++++++++++++++++++++++++++
- drivers/pci/pcie/aer.c     |  2 +-
- include/linux/aer.h        | 13 +++++++++++--
- 3 files changed, 42 insertions(+), 3 deletions(-)
+Does it imply that for ACPI? I can't find a query of _STA in the callbacks
+(which is there for the for fwnode_*available calls.
+Mind you it wouldn't be the first time I've missed something in the ACPI parsing
+code, so maybe it is there indirectly.
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e025ae390737..007ce96f8672 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -131,6 +131,32 @@ static int print_extlog_rcd(const char *pfx,
- 	return 1;
- }
- 
-+static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-+			      int severity)
-+{
-+	struct aer_capability_regs *aer;
-+	struct pci_dev *pdev;
-+	unsigned int devfn;
-+	unsigned int bus;
-+	int aer_severity;
-+	int domain;
-+
-+	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-+	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-+		aer_severity = cper_severity_to_aer(severity);
-+		aer = (struct aer_capability_regs *)pcie_err->aer_info;
-+		domain = pcie_err->device_id.segment;
-+		bus = pcie_err->device_id.bus;
-+		devfn = PCI_DEVFN(pcie_err->device_id.device,
-+				  pcie_err->device_id.function);
-+		pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-+		if (!pdev)
-+			return;
-+		pci_print_aer(pdev, aer_severity, aer);
-+		pci_dev_put(pdev);
-+	}
-+}
-+
- static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			void *data)
- {
-@@ -179,6 +205,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 			if (gdata->error_data_length >= sizeof(*mem))
- 				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
- 						       (u8)gdata->error_severity);
-+		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-+			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-+
-+			extlog_print_pcie(pcie_err, gdata->error_severity);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ac6293c24976..794aa15527ba 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -801,7 +801,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
- 			aer_severity, tlp_header_valid, &aer->header_log);
- }
--EXPORT_SYMBOL_NS_GPL(pci_print_aer, CXL);
-+EXPORT_SYMBOL_GPL(pci_print_aer);
- 
- /**
-  * add_error_device - list device to be handled
-diff --git a/include/linux/aer.h b/include/linux/aer.h
-index 4b97f38f3fcf..fbc82206045c 100644
---- a/include/linux/aer.h
-+++ b/include/linux/aer.h
-@@ -42,17 +42,26 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_log *log);
- #if defined(CONFIG_PCIEAER)
- int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
- int pcie_aer_is_native(struct pci_dev *dev);
-+void pci_print_aer(struct pci_dev *dev, int aer_severity,
-+		   struct aer_capability_regs *aer);
- #else
- static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
- {
- 	return -EINVAL;
- }
-+
- static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
-+static inline void pci_print_aer(struct pci_dev *dev, int aer_severity,
-+				 struct aer_capability_regs *aer)
-+{ }
- #endif
- 
--void pci_print_aer(struct pci_dev *dev, int aer_severity,
--		    struct aer_capability_regs *aer);
-+#if defined(CONFIG_ACPI_APEI_PCIEAER)
- int cper_severity_to_aer(int cper_severity);
-+#else
-+static inline int cper_severity_to_aer(int cper_severity) { return 0; }
-+#endif
-+
- void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
- 		       int severity, struct aer_capability_regs *aer_regs);
- #endif //_AER_H_
--- 
-2.45.1
+I know from previous discussions that the DT version was intentional, but
+I'm nervous that the same assumptions don't apply to ACPI.
+
+> > In generic code, do we ever want to walk unavailable child nodes?  
+> 
+> ...which are most likely like your question here, i.e. why we ever need to
+> traverse over unavailable nodes.
+> 
+
+Jonathan
 
 
