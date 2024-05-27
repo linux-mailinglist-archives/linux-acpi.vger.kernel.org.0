@@ -1,131 +1,111 @@
-Return-Path: <linux-acpi+bounces-6008-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6001-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF158D05A9
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:15:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552B48D08F5
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 18:50:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8862884FC
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:15:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76D0CB2B65B
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 14:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C930216EBE5;
-	Mon, 27 May 2024 14:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842A01C0DD3;
+	Mon, 27 May 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tutg1n3c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="so0qNQDe"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902A115F30F;
-	Mon, 27 May 2024 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1321C0DCE;
+	Mon, 27 May 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716821851; cv=none; b=BffvnzxLRjsmMWG1lhzi+bYLo1WZZeEBQZGKv3uANukEbxG2cJPinzCxqnfSkHZ/ShTOl0bRWlf5BTXeQEwV1IM0nHoVFdmGSF5G6+CHTPgHluYzRzmgSJKK68tO4+s1E1dZ26147qrJVY5ORVF7AxQoUnGh1/ac9qCI/NyUBq4=
+	t=1716819407; cv=none; b=WjFvw4EAyTedPcISXLw94k4m6wkasQ/2TDkEYMhgO5X+OOPVGTbvniif1oZijZMdV4hWlNlcVo8d/z1LOngIMVdlO89cYxyV67tT4XNXZ70DgB8RaXAv+LMjScU3K+c3oOZf4XVnuJM28BnH2NxbEbhdguRbrhKmtys6RtrA8AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716821851; c=relaxed/simple;
-	bh=TPj1Ua3MXLPcEqd+42ujWJSzWinRENwbYJnUHrLZ/64=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZpW6gEDKe9UM6mUNMmod1S4ykIURFtlPXx49JZ5j3XeofRWbF2t7nLNzby3rhzUZoRz8sGY19V0QRxM45VIG05MtJr5G6XFahZqAQgjLkjj3x7Fdya3dworZ4L6vPdL0AYhMLScql5asxBeGF/gm31s6D7p16NevkgoJhoXNx1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tutg1n3c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2C1C2BBFC;
-	Mon, 27 May 2024 14:57:26 +0000 (UTC)
+	s=arc-20240116; t=1716819407; c=relaxed/simple;
+	bh=194iDOSz5/fl5Of3QLCu1RQMKF0u9wdBEdM7bhOex0s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DCZ8gqh4Bhd+GrLkXWSx6mgPYw2WhHTzGVQQMjCJrfYExpNiPa4qtklTsC9eHpYBa69jsBxPx9L53acF72KwdH9YBIDbt9G4YZEHv6dQNtC6nVa2NhAs77vdVadcWBS1ZifTm8OGR47Z5452wFChtNF1tYWqyB2XeUZOucNaYOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=so0qNQDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EC4C32781;
+	Mon, 27 May 2024 14:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716821850;
-	bh=TPj1Ua3MXLPcEqd+42ujWJSzWinRENwbYJnUHrLZ/64=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Tutg1n3cW99Gf9udjFbpM6/iRV4wVDFisFeoqKaOCXPbaZ13Pi3oxi5ZeWdmPGHSf
-	 MVrKQiOqhVmxCg7nd4nIjojJAiCSKj0tKxqILXaFAPH7ZxNly3lDsZA/gFkzgxesAI
-	 1Vhuq/Zoua4NmUmCveOXlkBp8s5QWrrAoPlQl+FKUQIcre0W2N0kNq1rAuVEqd1XZZ
-	 mObSxfsldL1eBZAaMOeO3yg0uhv6aztch2dVVDTeHnHJzodsuA6g57zCFVgr1QeyVS
-	 G9a5NzKofDDpdoQVcb9RnXaHspVl9K0FMi/CsQ5hO62JGQpLFCWDMeNVgaiYWKHQlG
-	 QnTcRagqL9ENg==
-Date: Mon, 27 May 2024 15:57:17 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
- <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, Rob Herring
- <robh@kernel.org>, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] hwmon: (ltc2992) Use
- fwnode_for_each_available_child_node_scoped()
-Message-ID: <20240527155717.58292509@jic23-huawei>
-In-Reply-To: <ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
-References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
-	<20240523-fwnode_for_each_available_child_node_scoped-v2-3-701f3a03f2fb@gmail.com>
-	<20240526144851.493dd3f2@jic23-huawei>
-	<ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=k20201202; t=1716819407;
+	bh=194iDOSz5/fl5Of3QLCu1RQMKF0u9wdBEdM7bhOex0s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=so0qNQDeRBSLPGz6sYKT578IhLwNqnSJ5mLjm+rn18r+6No0Bj8Teb08I5ZgtK519
+	 ea3TtKo7bRlxW8LANG/yvIMAYbPRkn+8YZTfLHwm2mpxOMRpSZ+Znc9xoEwCOdiNOV
+	 L3sWM5DiPBnrltFD23qbhqXYoX3tkqp6PGVMwdKs2zqgeEMbtnhJiJW1lu60ciKi+m
+	 09pRY+wWiG8T0nRc0Qk/8XNoK+JcIY+ecqa7SrfcgKT4GwI7hc8PjZxfPSseTAYuvE
+	 AZ1S1ZSCqB79w19w7qlvONypy8yu578enS4T8SgoFBBmsrEirp64jzd0gB3ILcT7XH
+	 ANSG1a/G1zRig==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Takashi Iwai <tiwai@suse.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 19/21] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
+Date: Mon, 27 May 2024 10:15:30 -0400
+Message-ID: <20240527141551.3853516-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240527141551.3853516-1-sashal@kernel.org>
+References: <20240527141551.3853516-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.32
+Content-Transfer-Encoding: 8bit
 
-On Mon, 27 May 2024 17:30:10 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+From: Takashi Iwai <tiwai@suse.de>
 
-> Sun, May 26, 2024 at 02:48:51PM +0100, Jonathan Cameron kirjoitti:
-> > On Thu, 23 May 2024 17:47:16 +0200
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> >   
-> > > The scoped version of the fwnode_for_each_available_child_node() macro
-> > > automates object recfount decrement, avoiding possible memory leaks
-> > > in new error paths inside the loop like it happened when
-> > > commit '10b029020487 ("hwmon: (ltc2992) Avoid division by zero")'
-> > > was added.
-> > > 
-> > > The new macro removes the need to manually call fwnode_handle_put() in
-> > > the existing error paths and in any future addition. It also removes the
-> > > need for the current child node declaration as well, as it is internally
-> > > declared.
-> > > 
-> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
-> > 
-> > This looks like another instances of the lack of clarify about 
-> > what device_for_each_child_node[_scoped]() guarantees about node availability.
-> > On DT it guarantees the node is available as ultimately calls
-> > of_get_next_available_child()
-> > 
-> > On ACPI it doesn't (I think).
-> > For swnode, there isn't an obvious concept of available.
-> > 
-> > It would be much better if we reached some agreement on this and
-> > hence could avoid using the fwnode variants just to get the _available_ form
-> > as done here.  
-> 
-> > Or just add the device_for_each_available_child_node[_scoped]()
-> > and call that in almost all cases.  
-> 
-> device_for_each*() _implies_ availability. You need to talk to Rob about all
-> this. The design of the device_for_each*() was exactly done in accordance with
-> his suggestions...
-> 
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-Does it imply that for ACPI? I can't find a query of _STA in the callbacks
-(which is there for the for fwnode_*available calls.
-Mind you it wouldn't be the first time I've missed something in the ACPI parsing
-code, so maybe it is there indirectly.
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-I know from previous discussions that the DT version was intentional, but
-I'm nervous that the same assumptions don't apply to ACPI.
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
 
-> > In generic code, do we ever want to walk unavailable child nodes?  
-> 
-> ...which are most likely like your question here, i.e. why we ever need to
-> traverse over unavailable nodes.
-> 
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Jonathan
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 31205fee59d4a..16ab2d9ef67f3 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -505,6 +505,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
+-- 
+2.43.0
 
 
