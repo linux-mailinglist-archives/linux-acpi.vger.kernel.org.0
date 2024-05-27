@@ -1,116 +1,128 @@
-Return-Path: <linux-acpi+bounces-6004-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6005-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6838D0512
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 630188D0546
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 17:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A9283CD1
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:01:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12B5A292304
+	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 15:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F8116C440;
-	Mon, 27 May 2024 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9C917B4EF;
+	Mon, 27 May 2024 14:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BMc07xs9"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E33115FD1B
-	for <linux-acpi@vger.kernel.org>; Mon, 27 May 2024 14:31:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E5716DED5;
+	Mon, 27 May 2024 14:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716820284; cv=none; b=Q+nEOaqddeNcbuX168axxtsM0CAGT1rGYUryTvSiv0RaD7aNT2wUvbSodc7F2rUeTB+MHcpDkmX+LGijnomQyc3bnQp15CQtB3gwTDvOG9BSJr7lb8PnhqFE11syJtRz++kWukhOQ2xwb/oB+JAa4dx7YR8c8L189RbKEolpnL4=
+	t=1716821055; cv=none; b=Yg7c/19JgtpB03dBjZsTP3wtaIhjyUd34aFw1jd0GPGQOWLkAfzdpiUkTgwvkcsDp+7f/gyay3BX6YR/DtbVf34EiwgJ3SqRuX6KiLlG3VHBq62vpQ8U7D4J/CIb/+Bj8BNIrNZ93n4fbYq3F/veQvUtjco/ykdsayy0VqTHlzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716820284; c=relaxed/simple;
-	bh=zQPbdgs7RCJg4Qq0wbiVF+3cbUHM+UsGXZAKlfdrC84=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iYwnXbs76dBzO6MwzB+Pcr8j+mk3ZfLs1U0Zu/VmoTK0olZpofI4ktvjnQNrAtm4Sahkv5DaBJGlM6Ll1fJmubSRJrLdSZVY5fm+xuZC4+qurJKLgKtHU5HpPI3OJysofBqV9NaLxkn9xFHbf9nyEwowRIzLLMY+Cs6UxFF2EHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
-	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
-	id 9f91693c-1c35-11ef-80bb-005056bdfda7;
-	Mon, 27 May 2024 17:30:11 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 27 May 2024 17:30:10 +0300
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] hwmon: (ltc2992) Use
- fwnode_for_each_available_child_node_scoped()
-Message-ID: <ZlSY8tjYm5g9bEJ_@surfacebook.localdomain>
-References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
- <20240523-fwnode_for_each_available_child_node_scoped-v2-3-701f3a03f2fb@gmail.com>
- <20240526144851.493dd3f2@jic23-huawei>
+	s=arc-20240116; t=1716821055; c=relaxed/simple;
+	bh=N2BkBEfMjIfRh7g1dfIjn0MfLhYtzu3BShYG5yFIizg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=elpcgPIfv5DifaKLR+oFtak8ZTbIEctD+ebl7Zal+F85XHYh9EGTMvXk9YA7sr8sV3T2hVq2SBUJ3L2tqFxO8Xv1uUbna+Z2ezxMM6AaaKJlUI8CJfUoHvUEm0uph39a/yAUC1O+kHU9/CHx/4RYMuycQHC9vkOqa5sf1uUCx7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BMc07xs9; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716821054; x=1748357054;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=N2BkBEfMjIfRh7g1dfIjn0MfLhYtzu3BShYG5yFIizg=;
+  b=BMc07xs9fWBvYLj1oBlPak5DdUH5Q9KHPix8OVZDlCbXI4USga4VPUsr
+   caS0F1WSRhAIzw7/R8/Tg9nakOMbwf5JAyFQlq/490xBznFlMazHoMTUv
+   aWFWh7OdMiOIUrcAV9jqoyxfNzbyvCQ8D+7tkSl2A+jYHR6VjyNJ1QaJN
+   ZGioPMM3eG04Cbqor5JOahXem0teFvbJyt1ZrhTPHoJO/Y4VkEVO/wcw4
+   pvMmtnnbqBnuK2PBWDr7vW9kKLZIJcGEH2cpUc/nIvjZ1JyaXqRSoRDrs
+   +AdrMJtkCjw5GmKfn7CVUWhDZRTs50R6+RVyPi5jsEy1IFeg2/ZQIIJS5
+   g==;
+X-CSE-ConnectionGUID: WNaqFvGqSKqxbFgHYlUGIg==
+X-CSE-MsgGUID: RLae22qHSGWcJjojIvUOag==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13269742"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="13269742"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:13 -0700
+X-CSE-ConnectionGUID: Y71KIk33R0SQTM5KxhYC5w==
+X-CSE-MsgGUID: R+PV6+o1R+Oqcy6DJptl2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; 
+   d="scan'208";a="35279780"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost.localdomain) ([10.245.246.214])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 07:44:09 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	"Fabio M . De Francesco" <fabio.m.de.francesco@linux.intel.com>
+Subject: [PATCH 0/2] Make ELOG log and trace consistently with GHES
+Date: Mon, 27 May 2024 16:43:39 +0200
+Message-ID: <20240527144356.246220-1-fabio.m.de.francesco@linux.intel.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240526144851.493dd3f2@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
-Sun, May 26, 2024 at 02:48:51PM +0100, Jonathan Cameron kirjoitti:
-> On Thu, 23 May 2024 17:47:16 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
-> > The scoped version of the fwnode_for_each_available_child_node() macro
-> > automates object recfount decrement, avoiding possible memory leaks
-> > in new error paths inside the loop like it happened when
-> > commit '10b029020487 ("hwmon: (ltc2992) Avoid division by zero")'
-> > was added.
-> > 
-> > The new macro removes the need to manually call fwnode_handle_put() in
-> > the existing error paths and in any future addition. It also removes the
-> > need for the current child node declaration as well, as it is internally
-> > declared.
-> > 
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> 
-> This looks like another instances of the lack of clarify about 
-> what device_for_each_child_node[_scoped]() guarantees about node availability.
-> On DT it guarantees the node is available as ultimately calls
-> of_get_next_available_child()
-> 
-> On ACPI it doesn't (I think).
-> For swnode, there isn't an obvious concept of available.
-> 
-> It would be much better if we reached some agreement on this and
-> hence could avoid using the fwnode variants just to get the _available_ form
-> as done here.
+When Firmware First is enabled, BIOS handles errors first and then it
+makes them available to the kernel via the Common Platform Error Record
+(CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+via one of two similar paths, either ELOG or GHES.
 
-> Or just add the device_for_each_available_child_node[_scoped]()
-> and call that in almost all cases.
+Currently, ELOG and GHES show some inconsistencies in how they print to
+the kernel log as well as in how they report to userspace via trace
+events.
 
-device_for_each*() _implies_ availability. You need to talk to Rob about all
-this. The design of the device_for_each*() was exactly done in accordance with
-his suggestions...
+Make the two mentioned paths act similarly for what relates to logging
+and tracing.
 
-> In generic code, do we ever want to walk unavailable child nodes?
+--- Changes for v1 ---
 
-...which are most likely like your question here, i.e. why we ever need to
-traverse over unavailable nodes.
+	- Drop the RFC prefix and restart from PATCH v1
+	- Drop patch 3/3 because a discussion on it has not yet been
+	  settled
+	- Drop namespacing in export of pci_print_aer while() (Dan)
+	- Don't use '#ifdef' in *.c files (Dan)
+	- Drop a reference on pdev after operation is complete (Dan)
+	- Don't log an error message if pdev is NULL (Dan)
 
+--- Changes for RFC v2 ---
+	
+	- 0/3: rework the subject line and the letter.
+        - 1/3: no changes.
+        - 2/3: trace CPER PCIe Section only if CONFIG_ACPI_APEI_PCIEAER
+          is defined; the kernel test robot reported the use of two
+          undefined symbols because the test for the config option was
+          missing; rewrite the subject line and part of commit message.
+        - 3/3: no changes.
+
+Fabio M. De Francesco (2):
+  ACPI: extlog: Trace CPER Non-standard Section Body
+  ACPI: extlog: Trace CPER PCI Express Error Section
+
+ drivers/acpi/acpi_extlog.c | 35 +++++++++++++++++++++++++++++++++++
+ drivers/pci/pcie/aer.c     |  2 +-
+ include/linux/aer.h        |  9 ++++++---
+ 3 files changed, 42 insertions(+), 4 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.45.1
 
 
