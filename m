@@ -1,109 +1,107 @@
-Return-Path: <linux-acpi+bounces-6019-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6020-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFE68D13E9
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 07:31:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B708D14FB
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 09:10:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196F21C21944
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 05:31:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 407B2B21F69
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 07:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D041C68D;
-	Tue, 28 May 2024 05:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BFF6F079;
+	Tue, 28 May 2024 07:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="coYRafhQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W90IK/c4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2018A17E8FF
-	for <linux-acpi@vger.kernel.org>; Tue, 28 May 2024 05:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9A1DFEF;
+	Tue, 28 May 2024 07:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716874287; cv=none; b=nCkYf2QF9uqHZGUh+bhmuW8xL5h+OQg1ib7K6wL1RviuTLQQlhPA8fDwOXO9jM8itbBpjMIRbAqo811jF5YDsB6nfjEygZohsIgz9zWTeZqgSkRpD+ssRZk134GcQ0+ez2ByMc9gdGlsHwBajYoGcgDr70VMYEgb7R+/+btYJi4=
+	t=1716880252; cv=none; b=q5Fa0Jg/RdOrAyJLNIv2v00xRAY8fMWzsI0i5NdAcIwxdu0L9kBy2mMfiaGZKBOpWVe2HwyG2/KwHpWzzx4ZjYleHtgr3PW7/3T2jsbqt5G447HXLZ3nzvyaXrCD4qWJvu9wUNtLqKHxk1JYVz7tI0Av9EMPGkQr46wG3qU97Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716874287; c=relaxed/simple;
-	bh=HyQLjZEpd9wwdN20s4cZ6BruH/hZKkcc3iKQN6LiTVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KkzSeJsVZ6fQrFtqcpmjhvOqnDZ1UZ3Y1jML2rU29fpz1y7uz/XpueLyE0m7nheD+zHEFpW+erXj4hOohob4z34mRbnLS83MRJiw1znHgj8kEx38RVvqVfuosOJykAhkrszGfQDpDm7WBQgZORlg59+X6EKyY0P6Ewe3LEtyuyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=coYRafhQ; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2bf629ff55bso314537a91.1
-        for <linux-acpi@vger.kernel.org>; Mon, 27 May 2024 22:31:25 -0700 (PDT)
+	s=arc-20240116; t=1716880252; c=relaxed/simple;
+	bh=KkBAfogugbkW2O0LOYJjRMTGe7b+beTAQAAYCHitrSU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Fb8s9IyuTppZob7AqR7JdbB7bHy+YmBiYMXd9tCTcJgc9zpo7GwQ2wYkD4t2nivmRdgGQjrYutH55jHO+6d6MS6YmYQg/EYCtJ0qsh5yNBI0rnssJ5xJ6wOz4YF7GOCbf1onTgBnnzb/9vfjMBjla3xHZHWCXV6DDURHMpeDGoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W90IK/c4; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a61b70394c0so54521166b.1;
+        Tue, 28 May 2024 00:10:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716874285; x=1717479085; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9hvPgmffj4Wj06vdVO18Z5LSO2FFEsKmLvRZE6+/qIo=;
-        b=coYRafhQcdlkUxMpwjQWk91T7cwG/0FsJ9QyoNq08+8VJ53ZMQ/bt4WwhvQU12lGTk
-         6gU5VxqkVkoJhTu+7qMOooJM+5doGC3cfSSoZCPg1EFN5vD5Y47lAPI69EG16S74RBPH
-         VR8Ct5PEkc//IDX2Pr+teporNm51VYGs13V/o5KIXAgSwTDMntYq9FmofknRefIXPEof
-         55QyCn+kqbidwGkBTBsdt5ZMrI0SfiYjn2kqIvvj//FIaGXuWcAuFtwgyG5NiN97U5Cl
-         C/WK/Et9W93AeauutbRlLNVxK4QjhysdCmYWgu1aaG4vN/cUtPAImbA65FwMtlRbdQv2
-         SU9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716874285; x=1717479085;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1716880249; x=1717485049; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9hvPgmffj4Wj06vdVO18Z5LSO2FFEsKmLvRZE6+/qIo=;
-        b=oKItfMQxDgvCLBOZVJtl1kaRia8m8+u0BcPj63gaOnPEsUsoAWRYKqepour/kKVFnO
-         b9RbRlvrp4UWcU/4h7vxvWADtO8/1U7SPmRvRVKmunh5+APWuOT5jd+V2/Vkzt0gNlM5
-         +i1g+Jj+Pnb2END1z+pgXMOTtku3IzA0nxLZ5rKjU7uWFToSa2cx9XwJTDd68fcdqzmK
-         yegS8K4c/7blMLO/rAuvlSSojHxG+lVbDyrLWw/28kJab1FhJb79wW83wo11KG9tOSDV
-         VNN1pz/w9Mz9eODtAuA3dy3xcphVxU8Yxrvd+tadu7p9egriZDRvtrExnaGYthZ9Dq3T
-         wIpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUwFV3pnfwy6YNv9ABJqbH3in7Od3E6XtHi+YiF3aRK5ExJ1tgDPgbXl3g2V7oGIh+b8W5w4lHN6SrY3nwFxDQ8VOqvmw1UOfF7gw==
-X-Gm-Message-State: AOJu0YzbkypVPc10+KHCKR9uWSwTCqN3Qnf73LCyvMQx6hK3L/l6FfOv
-	zw6/umlzOC4kAuCGbgSq1w5v6w3N7JB32qLDyMYWGpXuFzoDaeRHG2FD74nCL5s=
-X-Google-Smtp-Source: AGHT+IH3eeCklWFIBgjuU2ajwASNK+Fln476Y1+Xt+QjngmUQhquOGzUKnaJQt7MCEQySQmbSAajXg==
-X-Received: by 2002:a17:90b:3754:b0:2b4:fcfd:780e with SMTP id 98e67ed59e1d1-2bf5f75124fmr9077103a91.49.1716874285301;
-        Mon, 27 May 2024 22:31:25 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2bf5f511a92sm6769359a91.24.2024.05.27.22.31.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 22:31:24 -0700 (PDT)
-Date: Tue, 28 May 2024 11:01:22 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-acpi@vger.kernel.org, devel@acpica.org,
-	linux-pm@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [rafael-pm:bleeding-edge 11/15] drivers/opp/core.c:2447
- _opp_attach_genpd() warn: missing unwind goto?
-Message-ID: <20240528053122.pzfkdig6k4kga2yz@vireshk-i7>
-References: <3d73f08e-8305-4ad8-8327-adaaf96ac673@moroto.mountain>
+        bh=r/s9yBRWbo/r0O8Z/cxTazxChBuiXDaKpK3jfdwE8WM=;
+        b=W90IK/c4VjF2dnf/UlLHMrNdIB1cXEXtcSJxST8HCBxejhX4Vxerz9tSt+Abchl1J3
+         XYl9Lx6K/6nIjqfkJ5+v2xXwQ0MdakzAG188xD7kzXVMw9mRnRKu/NgLpd1H5OrA6IyP
+         i8UrP0J236pPNLey40QVFTDZiORmHCuyGHPXxAzSb6hVuw7tPfBhJoKYli9jon8A1ldb
+         byIzEUUUnP3HrDsZybZHCdv4EkRLWca5O2CRLKycHeBOlhAIZ7P33CWKOh97nEHn/qsa
+         6OGDE+QCo3yPWlJkwkQSbdp+XTtJYjj/wasUeKwF8cI+SyvTUH1/TF8CKVi6aCMWw73L
+         XUzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716880249; x=1717485049;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r/s9yBRWbo/r0O8Z/cxTazxChBuiXDaKpK3jfdwE8WM=;
+        b=dmwkkf3HdtLTWeD/MFUo42fIrlG8l6BZWIZ7s9hilwSu+xUgAX0C7Lnto3kQC5MOdn
+         CgexDDMtTfhez4SXL0qBYbUQ/T2h3aPn+mBEevRQ8d+RcdMLM7ZqdXD6ZNhkAD5Xi7U2
+         Atu5Enn0gTw0/KQ69s8UFcx1SiQkbAULzsOZQNHW+E0REsL1iIkAUKcEY+TCxh3NqEJP
+         yx9Ouiv50rcX5qNuqSA0qe8C+FjJOt9kdnCgcZAu0SIJbEDu1BpkXXGq0E4GosK3HkTd
+         OPjUbhDwoSrVELBOm0r0hpHL+YRCYC+XDnaPkpyZPZtkl+zQnTpw5ky9l40YSYu/c0kK
+         m/uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4sS/Ej67S/mjJzEpF2kUTzLBRMe7Drcb8Y+Li/IgrasxmNs7wHC0IqkC9uGXmVwkMrZCVVdpGThcRBTEQXqvPpgYq9+hGlpbkvAttnSojTqIEkhsRX+coc6zXbYBhgHuOHPnlZucSrw==
+X-Gm-Message-State: AOJu0YxnfPZC2SvZwC3+1zncNizr45OeOncsbudY+J9QrD3DnrGThUz3
+	mpXnDh3BFJKrQq3uxNzJJj10XfhJCrLGFtSH8J/Zs7L5MAt3x5EWIqR/0x+mib4RRAmMMYcw1tG
+	PzdOwWOJSHVxWsmtA9/xOK6kqmZ4=
+X-Google-Smtp-Source: AGHT+IFkFqHZlMHOiiqpXeBvNmTipsaQWh1bhN4lD+r0MQrHex0I6vDSdWLTYasgp8hDatCwXWfTEctoN4qNYgqX6+M=
+X-Received: by 2002:a17:907:7412:b0:a5a:769d:1f8f with SMTP id
+ a640c23a62f3a-a6265115f1amr596143466b.68.1716880248572; Tue, 28 May 2024
+ 00:10:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d73f08e-8305-4ad8-8327-adaaf96ac673@moroto.mountain>
+References: <20240527202424.1430103-1-andy.shevchenko@gmail.com> <ZlVkgf_XCZcZd388@infradead.org>
+In-Reply-To: <ZlVkgf_XCZcZd388@infradead.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 28 May 2024 10:10:11 +0300
+Message-ID: <CAHp75VfqETdPQP2JBq+nWzZrsyeipV8cTspuTA7pt6b1P62wAQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] PNP: Export pnp_bus_type for modules
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Guanbing Huang <albanhuang@outlook.com>, 
+	Guanbing Huang <albanhuang@tencent.com>, Woody Suwalski <terraluna977@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 23-05-24, 15:50, Dan Carpenter wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-> head:   fe07fa9fa1115e0979b89a90ae8594794ac2f63f
-> commit: 2a56c462fe5a2ee61d38e2d7b772bee56115a00c [11/15] OPP: Fix required_opp_tables for multiple genpds using same table
-> config: i386-randconfig-141-20240517 (https://download.01.org/0day-ci/archive/20240518/202405180016.4fbn86bm-lkp@intel.com/config)
-> compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202405180016.4fbn86bm-lkp@intel.com/
-> 
-> New smatch warnings:
-> drivers/opp/core.c:2447 _opp_attach_genpd() warn: missing unwind goto?
+On Tue, May 28, 2024 at 7:58=E2=80=AFAM Christoph Hellwig <hch@infradead.or=
+g> wrote:
+>
+> On Mon, May 27, 2024 at 11:24:24PM +0300, Andy Shevchenko wrote:
+> > Since we have dev_is_pnp() macro that utilises the address of pnp_bus_t=
+ype
+> > variable, the users, which can be compiled as modules, will be failed t=
+o
+> > build. Export the variable to the modules to prevent build breakage.
+>
+> NAK.  Please move dev_is_pnp out of line and export it (as
+> EXPORT_SYMBOL_GPL), please.  bus types should be private unless we have
+> really good reasons for them not to be private.
 
-Sent a fix. Thanks.
+Works for me, I'll redo it in the v2, thank you for the review.
 
--- 
-viresh
+--=20
+With Best Regards,
+Andy Shevchenko
 
