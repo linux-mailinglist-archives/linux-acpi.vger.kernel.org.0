@@ -1,140 +1,154 @@
-Return-Path: <linux-acpi+bounces-6068-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6069-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB518D2551
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 21:59:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3B08D254D
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 21:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2660B279E6
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 19:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C53F1C25A9E
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 19:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3041C17837F;
-	Tue, 28 May 2024 19:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CFF178383;
+	Tue, 28 May 2024 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9ynps6a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+OAbSM0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604B17798C;
-	Tue, 28 May 2024 19:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C640D178372;
+	Tue, 28 May 2024 19:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716926144; cv=none; b=PqmGQwpIchnJjLQJhpdXM3TLZWld+ff7mkLV8qOc0P4LdT19gvDbCqXKFaKljuKcNeC1DtQ0QHm1Dsi3TOWhgo4BkrUVx5fbKcNlSKCrRmrpElBQ64KsObEYjiLbK2MyYkv9LHvmv9gdhYrT7uOxi67vEh9PBba4WFfR9cgyMbo=
+	t=1716926283; cv=none; b=qJv4HWFguycOCsXUaV1t7PVRtwh3/cZKK8hZ+My0hZMl0Res1w8LmGh2BVYnSFgoNNX9a6bBzvfSOrCUziJ9pUfQuFIgLIt4SrRyojV7xez4WHYBTltPYqnwg5Fkjw3HET+/4jBXpJ+po0x1UO0sNTc/Atva81Eseokd93x+3uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716926144; c=relaxed/simple;
-	bh=ueRDZg/EI4X7ST15DK0fbJaHhl59ANhm8a1wKKNp0z8=;
+	s=arc-20240116; t=1716926283; c=relaxed/simple;
+	bh=BZlSwuttDPw9S9+xlwtc5/DNO6T6WU/rzwVlBiGJZJY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hQrzewrteEUpkaReBsf2priID8v3RlXAQ+VJ0jiamI3yW8+Wcq+TB+yVxQO1om+xSgG1Wb5V+K1inb0wpa36ev4Zwn92TWykBi36wJZnmBYbqf6Y5OCfuiJAblltWTUwkMNFzEbbhm44bYYM4ZjQSGfwuYmotyHdAvPNjzinCoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9ynps6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E1C4AF0A;
-	Tue, 28 May 2024 19:55:43 +0000 (UTC)
+	 To:Cc:Content-Type; b=ShGq6ZyUExZAmVeO0226HWEYf8pMOsu9f2l2Yu3V4QZ15hqrQawre/e1tCURGVcYIs6qsh/wNSVeui8e6lFCVCSIyHz5O9aVynU39VWiW19y0ZK1d3Ldau8UoafartWBG4fAac3fTMj52eEeSINlUDaTkovzDspDkf6gtmGeILs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+OAbSM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC8AC32786;
+	Tue, 28 May 2024 19:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716926143;
-	bh=ueRDZg/EI4X7ST15DK0fbJaHhl59ANhm8a1wKKNp0z8=;
+	s=k20201202; t=1716926283;
+	bh=BZlSwuttDPw9S9+xlwtc5/DNO6T6WU/rzwVlBiGJZJY=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=c9ynps6aja61mjnZdCClIkomdX7xsaFmJhjZO0FPQ/fZgEzNxYVh9dpWMghD93m+U
-	 xIQZuPXbWJoMGHAmx9WPiXSGEeFrO9yPdBJfQkgGIc3k1q8u7vglMJzIcmUAEiPx+5
-	 UIEcPIvt+R35OsyKfJKVdRZGy10aAq8pyvcJvZ+zbOStLDVANwCoqss4hr/n//9af/
-	 cVDWw3heviGeFuH6PinfeA25/tgW4KRx50a/HfRw96Rqq9PPgAFAN4h+ELbvHUsFwq
-	 waajo/sFATWhQqhPVKRGh10UM2GW2I86dIvONCEEaxqzaeD4RMljyZf66jZ9b6JOiA
-	 QivJsKlvEYQ9g==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5b31337e229so141373eaf.3;
-        Tue, 28 May 2024 12:55:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUwo9hCeYu9tlLEmSybo8lIHnqmn37De6l7Yz2GhxgytfXZnj7p6ljKIRnxFVJt3L39zyGkLXFj2G9wx70sJjUr2xusfmDLVHPZeRAj
-X-Gm-Message-State: AOJu0YyAojVPygeX0k5Pe29w3rZwh3KnM4IAjGEblvMW1ffyvrihXOrW
-	LTlWdb8ewF12ou6/HXe9Ip10zydJn6Fc0sClB1PKxTX3y/Z3Y90FCBKopFwzwEFn7lZSFTwirYB
-	9zqC0dhYZTRBd19e2cqKzWJZx3pQ=
-X-Google-Smtp-Source: AGHT+IE4f1AmGg6rbLDvGcVqaxBuYGC4KHXThV6AVqrtIeBak3HsRhZR+qatPUZWZBxrmmGG7Jw8wgyjKioN5sKsCgw=
-X-Received: by 2002:a4a:e6d8:0:b0:5b2:7aa7:7b29 with SMTP id
- 006d021491bc7-5b96195f885mr13901803eaf.1.1716926142725; Tue, 28 May 2024
- 12:55:42 -0700 (PDT)
+	b=W+OAbSM0A/BaV3StQPVI1WdF2UWFKuReytJe3cR/rVYbeVX5pTYv1sUodh8WAjSac
+	 VTqwOu7uYLtO/MfClEvTFskJoPIZWxbetOMyVaV9aZ/gQOttZJ6Hc0k59F6nsUwNc3
+	 bfRwG4N/8+4N1AHKKlTkXOEKZ5IpCvf3AKDXnVeyA0zRLv00PByTXustEVm7s7X8Nv
+	 3uLtEyBEd4SSk85AMKQDjw7ulj6cBfOi9lDyWqH69TFFBrjnmQmirO+EQpCUYnigrz
+	 z9BDbe5PFQ8XaxFA8dE6Dd3JtVOrNtjYouQCWxF34HR6JbIByX5bh4FsCJ7IR64Y5G
+	 USw2t+bDMboaQ==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-24ffb6ee0f4so33807fac.0;
+        Tue, 28 May 2024 12:58:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVkTXyWD3+MX679GIohMb62YdYTiD7XsG9nBVRsjMx9rXcd+5kNLySG/V6kLOCdP23PD2zINRkPAkmQr/BahixKqkaOA9kyx85xNyc8Nbejhqbj9vxNwP4hxbYWDkA9QBB+npU98KdOMGu3EMEZF44fgrcHw+UzvWqZwgpzSm/jy822
+X-Gm-Message-State: AOJu0YyTv2qRgPGm/j2bbOYNB5+bV7IXlpTPwwE1CJ5KTYIwaaxOczhA
+	fgFo5dLIBNp6hT6lCj0dbH16D5zcyviU3YKbwlghs8OullzyGgpj5++WMIA19DImRlrA61z/09W
+	a1RfUPm8cfE04ZY9HiIS7OV3TGo8=
+X-Google-Smtp-Source: AGHT+IHhJdeeDpS76IDj68NZSHlaeZBVsNJkwgWvAhU1PNPDrzgrgarPIYTNLvW7O8ElosU15zALYFfGTD9297NASQM=
+X-Received: by 2002:a05:6870:d888:b0:24c:b2d0:bfff with SMTP id
+ 586e51a60fabf-24cb2d0c0camr12861111fac.2.1716926282655; Tue, 28 May 2024
+ 12:58:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240528102708.1451343-1-andy.shevchenko@gmail.com> <20240528102708.1451343-2-andy.shevchenko@gmail.com>
-In-Reply-To: <20240528102708.1451343-2-andy.shevchenko@gmail.com>
+References: <20240526-acpi-ac-changed-v1-1-f4b5997753bb@weissschuh.net> <r5x24fxz5cbyd4laoteq577toqfblfmy4btn4c6o6rrl7godeu@4fgsimcubzrd>
+In-Reply-To: <r5x24fxz5cbyd4laoteq577toqfblfmy4btn4c6o6rrl7godeu@4fgsimcubzrd>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 May 2024 21:55:31 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gMwTSr8NQx5my4ejZPa_S=BczeYg1tVcQ15a=djTsCmw@mail.gmail.com>
-Message-ID: <CAJZ5v0gMwTSr8NQx5my4ejZPa_S=BczeYg1tVcQ15a=djTsCmw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] PNP: Make dev_is_pnp() to be a function and export
- it for modules
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Guanbing Huang <albanhuang@outlook.com>, 
-	Guanbing Huang <albanhuang@tencent.com>, Christoph Hellwig <hch@infradead.org>, 
-	Woody Suwalski <terraluna977@gmail.com>
+Date: Tue, 28 May 2024 21:57:51 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hNs5vSMuPgtg=tbu=4Y1UHeGUnGM7Fo_LgjZmP1SqkZg@mail.gmail.com>
+Message-ID: <CAJZ5v0hNs5vSMuPgtg=tbu=4Y1UHeGUnGM7Fo_LgjZmP1SqkZg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: AC: Properly notify powermanagement core about changes
+To: Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Rajas Paranjpe <paranjperajas@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 28, 2024 at 12:27=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Mon, May 27, 2024 at 11:43=E2=80=AFPM Sebastian Reichel
+<sebastian.reichel@collabora.com> wrote:
 >
-> Since we have a dev_is_pnp() macro that utilises the address of the
-> pnp_bus_type variable, the users, which can be compiled as modules,
-> will fail to build. Convert the macro to be a function and export it
-> to the modules to prevent build breakage.
+> Hi,
 >
-> Reported-by: Woody Suwalski <terraluna977@gmail.com>
-> Closes: https://lore.kernel.org/r/cc8a93b2-2504-9754-e26c-5d5c3bd1265c@gm=
-ail.com
-> Fixes: 2a49b45cd0e7 ("PNP: Add dev_is_pnp() macro")
-> Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/pnp/driver.c | 6 ++++++
->  include/linux/pnp.h  | 4 ++--
->  2 files changed, 8 insertions(+), 2 deletions(-)
+> On Sun, May 26, 2024 at 11:40:01PM +0200, Thomas Wei=C3=9Fschuh wrote:
+> > The powermanagement core does various actions when a power-supply chang=
+es.
+> > It calls into notifiers, LED triggers, other power supplies and emits a=
+n uevent.
+> >
+> > To make sure that all these actions happen properly call power_supply_c=
+hanged().
+> >
+> > Reported-by: Rajas Paranjpe <paranjperajas@gmail.com>
+> > Closes: https://github.com/MrChromebox/firmware/issues/420#issuecomment=
+-2132251318
+> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> > ---
 >
-> diff --git a/drivers/pnp/driver.c b/drivers/pnp/driver.c
-> index 0a5d0d8befa8..3483e52e3a81 100644
-> --- a/drivers/pnp/driver.c
-> +++ b/drivers/pnp/driver.c
-> @@ -266,6 +266,12 @@ const struct bus_type pnp_bus_type =3D {
->         .dev_groups =3D pnp_dev_groups,
->  };
+> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 >
-> +bool dev_is_pnp(const struct device *dev)
-> +{
-> +       return dev->bus =3D=3D &pnp_bus_type;
-> +}
-> +EXPORT_SYMBOL_GPL(dev_is_pnp);
-> +
->  int pnp_register_driver(struct pnp_driver *drv)
->  {
->         drv->driver.name =3D drv->name;
-> diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-> index 82561242cda4..a8def1cea32c 100644
-> --- a/include/linux/pnp.h
-> +++ b/include/linux/pnp.h
-> @@ -469,7 +469,7 @@ int compare_pnp_id(struct pnp_id *pos, const char *id=
-);
->  int pnp_register_driver(struct pnp_driver *drv);
->  void pnp_unregister_driver(struct pnp_driver *drv);
+> -- Sebastian
 >
-> -#define dev_is_pnp(d) ((d)->bus =3D=3D &pnp_bus_type)
-> +bool dev_is_pnp(const struct device *dev);
->
->  #else
->
-> @@ -502,7 +502,7 @@ static inline int compare_pnp_id(struct pnp_id *pos, =
-const char *id) { return -E
->  static inline int pnp_register_driver(struct pnp_driver *drv) { return -=
-ENODEV; }
->  static inline void pnp_unregister_driver(struct pnp_driver *drv) { }
->
-> -#define dev_is_pnp(d) false
-> +static inline bool dev_is_pnp(const struct device *dev) { return false; =
-}
->
->  #endif /* CONFIG_PNP */
->
-> --
+> >  drivers/acpi/ac.c  | 4 ++--
+> >  drivers/acpi/sbs.c | 4 ++--
+> >  2 files changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+> > index 2d4a35e6dd18..09a87fa222c7 100644
+> > --- a/drivers/acpi/ac.c
+> > +++ b/drivers/acpi/ac.c
+> > @@ -145,7 +145,7 @@ static void acpi_ac_notify(acpi_handle handle, u32 =
+event, void *data)
+> >                                                 dev_name(&adev->dev), e=
+vent,
+> >                                                 (u32) ac->state);
+> >               acpi_notifier_call_chain(adev, event, (u32) ac->state);
+> > -             kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
+> > +             power_supply_changed(ac->charger);
+> >       }
+> >  }
+> >
+> > @@ -268,7 +268,7 @@ static int acpi_ac_resume(struct device *dev)
+> >       if (acpi_ac_get_state(ac))
+> >               return 0;
+> >       if (old_state !=3D ac->state)
+> > -             kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
+> > +             power_supply_changed(ac->charger);
+> >
+> >       return 0;
+> >  }
+> > diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
+> > index 94e3c000df2e..dc8164b182dc 100644
+> > --- a/drivers/acpi/sbs.c
+> > +++ b/drivers/acpi/sbs.c
+> > @@ -610,7 +610,7 @@ static void acpi_sbs_callback(void *context)
+> >       if (sbs->charger_exists) {
+> >               acpi_ac_get_present(sbs);
+> >               if (sbs->charger_present !=3D saved_charger_state)
+> > -                     kobject_uevent(&sbs->charger->dev.kobj, KOBJ_CHAN=
+GE);
+> > +                     power_supply_changed(sbs->charger);
+> >       }
+> >
+> >       if (sbs->manager_present) {
+> > @@ -622,7 +622,7 @@ static void acpi_sbs_callback(void *context)
+> >                       acpi_battery_read(bat);
+> >                       if (saved_battery_state =3D=3D bat->present)
+> >                               continue;
+> > -                     kobject_uevent(&bat->bat->dev.kobj, KOBJ_CHANGE);
+> > +                     power_supply_changed(bat->bat);
+> >               }
+> >       }
+> >  }
+> >
+> > ---
 
-Applied along with the [2/2] as 6.10-rc material, thanks!
+Applied as 6.10-rc material, thanks!
 
