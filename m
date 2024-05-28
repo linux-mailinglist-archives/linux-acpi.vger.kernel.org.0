@@ -1,70 +1,70 @@
-Return-Path: <linux-acpi+bounces-6020-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6021-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B708D14FB
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 09:10:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589CD8D1512
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 09:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 407B2B21F69
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 07:10:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B591C21431
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 07:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BFF6F079;
-	Tue, 28 May 2024 07:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6696F08E;
+	Tue, 28 May 2024 07:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W90IK/c4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLvZxd2I"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9A1DFEF;
-	Tue, 28 May 2024 07:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAF673443;
+	Tue, 28 May 2024 07:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716880252; cv=none; b=q5Fa0Jg/RdOrAyJLNIv2v00xRAY8fMWzsI0i5NdAcIwxdu0L9kBy2mMfiaGZKBOpWVe2HwyG2/KwHpWzzx4ZjYleHtgr3PW7/3T2jsbqt5G447HXLZ3nzvyaXrCD4qWJvu9wUNtLqKHxk1JYVz7tI0Av9EMPGkQr46wG3qU97Tc=
+	t=1716880390; cv=none; b=gsj7bKWjyS2YlYbOMzap8sp08VW+rd+GeAJFP2WOZf+tvABA9dWjK7LKYfSuXZySzJ76L78xbSz9s2/RkwsRVjsBS6SUQxm3hdlxtBXZhRfNhxJSOoIvZQfkjMzdPIMTwe3mZ9k5cVGl1vb9jjjSu6rP3v6wJ4c6i/TmVJIcDAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716880252; c=relaxed/simple;
-	bh=KkBAfogugbkW2O0LOYJjRMTGe7b+beTAQAAYCHitrSU=;
+	s=arc-20240116; t=1716880390; c=relaxed/simple;
+	bh=UfhkQVosL+oCl3pxeQc9cyceNU12bsBq4sjRhs/0oQo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fb8s9IyuTppZob7AqR7JdbB7bHy+YmBiYMXd9tCTcJgc9zpo7GwQ2wYkD4t2nivmRdgGQjrYutH55jHO+6d6MS6YmYQg/EYCtJ0qsh5yNBI0rnssJ5xJ6wOz4YF7GOCbf1onTgBnnzb/9vfjMBjla3xHZHWCXV6DDURHMpeDGoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W90IK/c4; arc=none smtp.client-ip=209.85.218.54
+	 To:Cc:Content-Type; b=tg03lEsDn1BuirELl3WFh+heGdif5ZPQdrDNlCdee1qgGvh1q97RvmI+MUcQl9RxheVWosWrTQAyeIzPeHT56ZvwWIoE+w/ocEYy5BVwZPFOlSFFwz1D5VDb3KL2P+rQjA/kLlyHJBEwLgLtPW3ndNs7xiMIXA+mJ9bDYD9MKaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLvZxd2I; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a61b70394c0so54521166b.1;
-        Tue, 28 May 2024 00:10:50 -0700 (PDT)
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2e6f51f9de4so5846061fa.3;
+        Tue, 28 May 2024 00:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716880249; x=1717485049; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716880387; x=1717485187; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r/s9yBRWbo/r0O8Z/cxTazxChBuiXDaKpK3jfdwE8WM=;
-        b=W90IK/c4VjF2dnf/UlLHMrNdIB1cXEXtcSJxST8HCBxejhX4Vxerz9tSt+Abchl1J3
-         XYl9Lx6K/6nIjqfkJ5+v2xXwQ0MdakzAG188xD7kzXVMw9mRnRKu/NgLpd1H5OrA6IyP
-         i8UrP0J236pPNLey40QVFTDZiORmHCuyGHPXxAzSb6hVuw7tPfBhJoKYli9jon8A1ldb
-         byIzEUUUnP3HrDsZybZHCdv4EkRLWca5O2CRLKycHeBOlhAIZ7P33CWKOh97nEHn/qsa
-         6OGDE+QCo3yPWlJkwkQSbdp+XTtJYjj/wasUeKwF8cI+SyvTUH1/TF8CKVi6aCMWw73L
-         XUzg==
+        bh=IbN8iFA5Vjgo5SuU7PH7u5E08M2Kd/8qmR0Aaqp8vOI=;
+        b=BLvZxd2Ict4bsk5jxWWfFatoXikJ5LkD5bhwdwPPr1lvZM0e5zG6LwYt/YcS3khS6K
+         Z5KgYztmW4Evks5YVTm4thvelUIK8HpyNqUNqHaH5wMGKW82CdcgfWgOg4p4M/mktpPz
+         EZmYozcvyJBxvHNLsx9gSQuRCJTR0QSiG4ijqBLSf6JjpMPXqZiqRyHnsxqadA+q2PXw
+         two0khgzhnwMnRec1Bx1M70EiNvuECyqaEHALan3FsgZIo2+9YRJ8tnwp5PWf1+ANgPh
+         C4d9lYfhLN8NAbwhzfecYbGR6+iI81GMO58H89y4ccS50DnBRYIRqoMsDqfZWuWGxWAG
+         adCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716880249; x=1717485049;
+        d=1e100.net; s=20230601; t=1716880387; x=1717485187;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r/s9yBRWbo/r0O8Z/cxTazxChBuiXDaKpK3jfdwE8WM=;
-        b=dmwkkf3HdtLTWeD/MFUo42fIrlG8l6BZWIZ7s9hilwSu+xUgAX0C7Lnto3kQC5MOdn
-         CgexDDMtTfhez4SXL0qBYbUQ/T2h3aPn+mBEevRQ8d+RcdMLM7ZqdXD6ZNhkAD5Xi7U2
-         Atu5Enn0gTw0/KQ69s8UFcx1SiQkbAULzsOZQNHW+E0REsL1iIkAUKcEY+TCxh3NqEJP
-         yx9Ouiv50rcX5qNuqSA0qe8C+FjJOt9kdnCgcZAu0SIJbEDu1BpkXXGq0E4GosK3HkTd
-         OPjUbhDwoSrVELBOm0r0hpHL+YRCYC+XDnaPkpyZPZtkl+zQnTpw5ky9l40YSYu/c0kK
-         m/uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX4sS/Ej67S/mjJzEpF2kUTzLBRMe7Drcb8Y+Li/IgrasxmNs7wHC0IqkC9uGXmVwkMrZCVVdpGThcRBTEQXqvPpgYq9+hGlpbkvAttnSojTqIEkhsRX+coc6zXbYBhgHuOHPnlZucSrw==
-X-Gm-Message-State: AOJu0YxnfPZC2SvZwC3+1zncNizr45OeOncsbudY+J9QrD3DnrGThUz3
-	mpXnDh3BFJKrQq3uxNzJJj10XfhJCrLGFtSH8J/Zs7L5MAt3x5EWIqR/0x+mib4RRAmMMYcw1tG
-	PzdOwWOJSHVxWsmtA9/xOK6kqmZ4=
-X-Google-Smtp-Source: AGHT+IFkFqHZlMHOiiqpXeBvNmTipsaQWh1bhN4lD+r0MQrHex0I6vDSdWLTYasgp8hDatCwXWfTEctoN4qNYgqX6+M=
-X-Received: by 2002:a17:907:7412:b0:a5a:769d:1f8f with SMTP id
- a640c23a62f3a-a6265115f1amr596143466b.68.1716880248572; Tue, 28 May 2024
- 00:10:48 -0700 (PDT)
+        bh=IbN8iFA5Vjgo5SuU7PH7u5E08M2Kd/8qmR0Aaqp8vOI=;
+        b=hlf3XXP7/LgmKCgqPE+94qCO77IXz8oCvaFQhIFsJ9WVAbXjsM7Llg9cWuhLkFIjaO
+         cl6k0enLXQGvlm6DZzI/61EtCwHa2zTa1QKL+HC+HlvF6wF3lYma91H84uWy2hh+DLax
+         NBbcMWABSvojWkoUeUHeT5nASxwgF8Swm0QsUPQ1JgoqZ1UmOeAT2G9w0t4AQZM8i0GT
+         ByvhWUzkmXO0IxuFj5vaG+a+0AjtrHmMWJEbza03WlwDjkBHS7L5V2hx4QcwG3urIRte
+         bhq/ZVclesYQDR/nDmu9uD5H7jRGmr7bvXZzmkpDVcFC1jeUYKHGMnjp1B8MV/BfxpOC
+         Zt7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVvnTvxDhBXnwMm8+KolRkiPFqyBYtUglK4DsrB7ECg+hjwZ++g+reQWc1WA7u4mfHqxcfTJYT8ST0vmaWy5c5rk7ymF/q9nNG6hfgSRT4LzKWT/UErWI+JiIpWH2xdrCIj+B+J88NbZA==
+X-Gm-Message-State: AOJu0YzEl3pCIUL+Tnf1lGLn2ClO9j90K8iGAMqYiJtKSRWz8gtTGP7f
+	uOnP1xepxkFnuz2Bn5RxVvb8V1/iyHF3LODds5wTsFtstpxprcoOxfN0IG3pg4uV5NY7Hq9E3zO
+	uLICxm603eDSb09TYacwLuFTLHPs=
+X-Google-Smtp-Source: AGHT+IFmtTX4poS64Oy5QVA1TRp3+Ayt3egLX2L31ik5nXCN4bjC/nAgnDwJx65RWXovKVj1vqFrVx99XSpwpXNn9TY=
+X-Received: by 2002:a2e:a403:0:b0:2e9:8852:3d16 with SMTP id
+ 38308e7fff4ca-2e9885242f1mr5984361fa.35.1716880387386; Tue, 28 May 2024
+ 00:13:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -74,8 +74,8 @@ MIME-Version: 1.0
 References: <20240527202424.1430103-1-andy.shevchenko@gmail.com> <ZlVkgf_XCZcZd388@infradead.org>
 In-Reply-To: <ZlVkgf_XCZcZd388@infradead.org>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 28 May 2024 10:10:11 +0300
-Message-ID: <CAHp75VfqETdPQP2JBq+nWzZrsyeipV8cTspuTA7pt6b1P62wAQ@mail.gmail.com>
+Date: Tue, 28 May 2024 10:12:31 +0300
+Message-ID: <CAHp75VftLmV5T9xRnirOMXbJoyvm2eUiG4bDeB6p6hY6jExFQQ@mail.gmail.com>
 Subject: Re: [PATCH v1 1/1] PNP: Export pnp_bus_type for modules
 To: Christoph Hellwig <hch@infradead.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-acpi@vger.kernel.org, 
@@ -99,7 +99,9 @@ o
 > EXPORT_SYMBOL_GPL), please.  bus types should be private unless we have
 > really good reasons for them not to be private.
 
-Works for me, I'll redo it in the v2, thank you for the review.
+FWIW, it's not private, it's just not exported to the modules. Are you
+suggesting to hide the bus type completely to make it static? If so,
+this is out of scope of this fix.
 
 --=20
 With Best Regards,
