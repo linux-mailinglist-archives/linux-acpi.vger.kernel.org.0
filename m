@@ -1,438 +1,298 @@
-Return-Path: <linux-acpi+bounces-6016-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6017-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D54FB8D103F
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 00:31:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9546A8D1331
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 06:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BD81F21DFC
-	for <lists+linux-acpi@lfdr.de>; Mon, 27 May 2024 22:31:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5CBDB20FCA
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 04:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5077815FA63;
-	Mon, 27 May 2024 22:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80129168B1;
+	Tue, 28 May 2024 04:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="EJo0LY41"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n1fijX/q"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A4017E908;
-	Mon, 27 May 2024 22:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D2E17E8E4;
+	Tue, 28 May 2024 04:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716849076; cv=none; b=iXxjlmaN76Jkoz9wvT6uPvRViuNHZyq5vVLFnpdMYLEUOOjk3tDHnS1xpRU0JpDMwX6Y++Y/qOl9YGjmw61tzbkG7jtF2lUyeBPSv0GOpzWBVHyhLFmYN1lf37wxE8ASe6fqbBK2QLH4egoGu9c6V8aw79WN86koJaNbYyLlV2M=
+	t=1716869110; cv=none; b=IOpqaz+oMGAD5Sns8LfYqaokxtqRGRgDtftHN67RglFenS9oy2Pk0DquugW5aj0165a98laPlUzK+gdiNYXRuIM7OLdH/bfurATjzc5gCE3BxQC/lvTyVH9vUNIl4B/XKPEi5AY9YJZ7Ar5r243zsfMXqtIYMXWU4FOzxRURGdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716849076; c=relaxed/simple;
-	bh=4cA13FZ9TmOAvutjahbJ8v7gnLyVEbiI7r+Y2DyYYYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q5XQxq8VkCQ7c8Waw9PIFV/dNW4ZFBxn5xRKhbST+XkoHC5y4smCThoO44fmahdcZP72jzPcUtCewGjyntgKaDAJZDyvGvtp776TgDNCX1VPlotNu2a4W1/8X+rMQHp5+I59DxNVaBNc83chfOz2+XvMniKLpvLj7Y0JsVnZBbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=EJo0LY41; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1716849043; x=1717453843; i=w_armin@gmx.de;
-	bh=66TYJSn9JptMjs+p8Jc+Zw3QLUD8iSGd2JIT9o3TlIc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=EJo0LY41898o+26Z1BP70zHRxV4sp0WAfsPdAe1RYEoY19+ioNHN+G7gBFMChyZ1
-	 8b/ETfGxJeh/2jROlehR2vlZjKkFlup4muPks5M34uLDLizEp7vDcqNjYMEzhIYbT
-	 HBCrWbSiI9DoFSBleYCYP9wOm6lPNMRCdWqM5PNqan20JLA5B2VhJnZ4hQAHMxLtk
-	 Z6HLJybHl/FSXORtJlkM+BNNAiZ3XU8br6xOlo9Q+Xsxd6EhjecD3EGHuiHlrC8zO
-	 8PHLZwcHr0zLnqnZkinBHDtJUnOYNfZJuwPu7MyMCbW1lJqpMLyipMYOGPAyoK4f0
-	 SJkpPoPDGArhU0KS1g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M26r3-1sDdbm2VZZ-002WMb; Tue, 28
- May 2024 00:30:43 +0200
-Message-ID: <92415bd8-4231-4c68-8034-e4f7a0ea5651@gmx.de>
-Date: Tue, 28 May 2024 00:30:40 +0200
+	s=arc-20240116; t=1716869110; c=relaxed/simple;
+	bh=Y41f4kf96vNZg88D5SiZsYMGRrCo34H0neH1dBHxoVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=qHJJUSPpz1IQGfpHHZvejgZ4T8gjlOREV0aRdBuiG60rjWgzb8erBFOyzNejBDvNmBAh3LbItT1Fp157VhC5Tk7YtolHkF2aYsGSCGq+M/9dnS5y/0ipgef7CI2cHLHXKVFouW+A8sRHxmybdxbk4517x6aIfGcu9BYpXaBeTUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n1fijX/q; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716869108; x=1748405108;
+  h=date:from:to:cc:subject:message-id;
+  bh=Y41f4kf96vNZg88D5SiZsYMGRrCo34H0neH1dBHxoVQ=;
+  b=n1fijX/qB1d5mSfOIGtTheae2FBYLJgQ6ErGFV4cR2kmokhnRTguNsW+
+   T5TxJxDUZHDMCtSL4TnnRNzB9bd+nFliTzdNSJqtxwGX+rmSdnQbKzdX2
+   MmddwQgzsYcgXTlhjaNe3wRA/JtS+fD67fBcZxA31zU9zgfg/TkQJ7qOa
+   tQ4QFhzZKNHvVN8f4z7u/ZCusDD+R3f8L0Fj0HzpCBSrzWpGeQ1ZO/vou
+   2gynVdItLbkKgDi4Efxy4xquXh5Kr/UeMIG3VpBkVlL0y0uCIUAr+U5hT
+   V1GsKOqt2R40YpI/CIbQehxpDcWuqrB40Byiyc6mPzIHLcDHJv50AfB3w
+   w==;
+X-CSE-ConnectionGUID: 4UQragtCR7CVh2+mBSDjDQ==
+X-CSE-MsgGUID: cOIUiJcNQcyAln0QOht2qw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="17024671"
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
+   d="scan'208";a="17024671"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 21:05:07 -0700
+X-CSE-ConnectionGUID: 6K60uMJHSjKd6WcFcktZCA==
+X-CSE-MsgGUID: L7nxAquOReecNCReRAmASg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; 
+   d="scan'208";a="34848721"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by fmviesa007.fm.intel.com with ESMTP; 27 May 2024 21:05:05 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sBo59-000BRt-21;
+	Tue, 28 May 2024 04:05:03 +0000
+Date: Tue, 28 May 2024 12:04:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ cc66adc7cf7b30134d6675c7d89237ad7204d3c1
+Message-ID: <202405281226.13BY9Pyf-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8] ACPI: fan: Add hwmon support
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: mlj@danelec.com, rafael.j.wysocki@intel.com, lenb@kernel.org,
- jdelvare@suse.com, andy.shevchenko@gmail.com, linux@roeck-us.net,
- linux@weissschuh.net, ilpo.jarvinen@linux.intel.com,
- linux-acpi@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-kernel@vger.kernel.org, platform-driver-x86@vger.kernel.org
-References: <20240510201242.3886-1-W_Armin@gmx.de>
- <CAJZ5v0gu=yvFeXH4uwHeAQZ8p1JyCs8uuiKzr6F+yNkD2E1ZAA@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0gu=yvFeXH4uwHeAQZ8p1JyCs8uuiKzr6F+yNkD2E1ZAA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Hj3rtn4ihhIVBSN/Pzecvvj2xd4xwuRfa+aBOhfYYOykb7kkt2s
- 9T0mTzLIKD/ah/FGL/uGWM7zo23tZCEhXfH2M9snStt8ATxyAxJu/PoeYRpbwMR+m0f9Heg
- oD4EOPKEquER/f3W4Q54+l+ghkizu/G6KgtZaf2ASz10pvnw8Y4/Ui6EHFJ9wNz2vCLrgBS
- 0rtmy5wqF/59l0juVjv2A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Cnb3Stt+/sk=;9pU19/U+URkSzIt0scNmrCv3Khd
- PU/4LTo7BVheKt6h1ZJ428Gd+1fqcHTGUl8BEnxuS6hwnT4iKawCGplw1nz00R5L2pr10FuEY
- lnsgRKZ3ubRXcYdb+HdjIZHAQEhBYfB6C6k4/YbI4eqREoYWNhABua5p0YMkTJSL07Q11ZK8v
- DhPQauV+t+xlH2h6oaJWlWVYdQus+NXGGzxHOG19xjC3YZN98Iy/hGs2gAWkv9STq6r52M+yc
- rHK0i/DhjG4g2gIxaYsIPzO7NKXTAuN+92uoU99OD5L3dwzqKA8z/rhQxmoG51CVtu5yHtjNY
- XAUJN/2D/fPQWpTLHc/pBjI5KqxLlIMkkEr2WD4AuaYolDRiqD645b72L5lcoxHOXyI3AZopg
- pP006fDRID3P+Az/OeJlZspJlGPkG8LGTNU34wCD2Xw2hm4GkCN26N2U0THDgtjK0XaGnfycv
- thgBMjJ36l56kS5z68QkmTW+PnVbW2Gnoeim/kXTzp827/DpnhVXdt1Eet6BJM4Q+GJm9Pxba
- V8Zcj48Hjlzh2yqTw45byItes/I7wHohVXlOGR59GXfP2DBu4RortczyHmdXL4XeIZGKuFNPG
- XydxYjteht9xT3sBhCm0YlLuBitBqtYrgrWs5poOX5qSKwk8I5YqdoKz6PEjHxclGiw6OhoBL
- /jW3lR4BqlNwkrlup0Mw7Hzbwhoi2M9ffSWgnso99nQT9JVAOds3T4xMS4LkKRtbzoyhCigIP
- xVjXqnukSH+VLLRh4BFclbbbJ/y+4bPxGPNQJv2vo+EtqPGkKTfrSrJuTe9ldmjHOoEJH2V3b
- GS8kWWurIKezuMCPeRyELMt1KDl80BDnBjqd/svlXs2gg=
 
-Am 27.05.24 um 19:29 schrieb Rafael J. Wysocki:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: cc66adc7cf7b30134d6675c7d89237ad7204d3c1  Merge branch 'thermal-core' into bleeding-edge
 
-> On Fri, May 10, 2024 at 10:13=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wro=
-te:
->> Currently, the driver does only support a custom sysfs
->> interface to allow userspace to read the fan speed.
->> Add support for the standard hwmon interface so users
->> can read the fan speed with standard tools like "sensors".
->>
->> Reviewed-by: Andy Shevchenko <andy@kernel.org>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
->> ---
->> Tested witha custom ACPI SSDT, available here:
->> https://github.com/Wer-Wolf/acpi-fan-ssdt
->>
->> Changes since v7:
->> - add Reviewed-by tag
->> - spelling fixes
->> - add missing types.h include
->>
->> Changes since v6:
->> - add "hwmon" to the names of functions and variables
->> related to hwmon
->> - replace -ENODATA with -EIO/-ENODEV
->>
->> Changes since v5:
->> - fix coding style issues
->> - replace double break with return
->> - add missing includes
->>
->> Changes since v4:
->> - fix spelling issues
->> - check power values for overflow condition too
->>
->> Changes since v3:
->> - drop fault attrs
->> - rework initialization
->>
->> Changes since v2:
->> - add support for fanX_target and power attrs
->>
->> Changes since v1:
->> - fix undefined reference error
->> - fix fan speed validation
->> - coding style fixes
->> - clarify that the changes are compile-tested only
->> - add hwmon maintainers to cc list
->> ---
->>   drivers/acpi/Makefile    |   1 +
->>   drivers/acpi/fan.h       |   9 +++
->>   drivers/acpi/fan_core.c  |   4 +
->>   drivers/acpi/fan_hwmon.c | 170 ++++++++++++++++++++++++++++++++++++++=
-+
->>   4 files changed, 184 insertions(+)
->>   create mode 100644 drivers/acpi/fan_hwmon.c
->>
->> diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
->> index 39ea5cfa8326..61ca4afe83dc 100644
->> --- a/drivers/acpi/Makefile
->> +++ b/drivers/acpi/Makefile
->> @@ -77,6 +77,7 @@ obj-$(CONFIG_ACPI_TINY_POWER_BUTTON)  +=3D tiny-power=
--button.o
->>   obj-$(CONFIG_ACPI_FAN)         +=3D fan.o
->>   fan-objs                       :=3D fan_core.o
->>   fan-objs                       +=3D fan_attr.o
->> +fan-$(CONFIG_HWMON)            +=3D fan_hwmon.o
->>
->>   obj-$(CONFIG_ACPI_VIDEO)       +=3D video.o
->>   obj-$(CONFIG_ACPI_TAD)         +=3D acpi_tad.o
->> diff --git a/drivers/acpi/fan.h b/drivers/acpi/fan.h
->> index f89d19c922dc..db25a3898af7 100644
->> --- a/drivers/acpi/fan.h
->> +++ b/drivers/acpi/fan.h
->> @@ -10,6 +10,8 @@
->>   #ifndef _ACPI_FAN_H_
->>   #define _ACPI_FAN_H_
->>
->> +#include <linux/kconfig.h>
->> +
->>   #define ACPI_FAN_DEVICE_IDS    \
->>          {"INT3404", }, /* Fan */ \
->>          {"INTC1044", }, /* Fan for Tiger Lake generation */ \
->> @@ -57,4 +59,11 @@ struct acpi_fan {
->>   int acpi_fan_get_fst(struct acpi_device *device, struct acpi_fan_fst =
-*fst);
->>   int acpi_fan_create_attributes(struct acpi_device *device);
->>   void acpi_fan_delete_attributes(struct acpi_device *device);
->> +
->> +#if IS_REACHABLE(CONFIG_HWMON)
->> +int devm_acpi_fan_create_hwmon(struct acpi_device *device);
->> +#else
->> +static inline int devm_acpi_fan_create_hwmon(struct acpi_device *devic=
-e) { return 0; };
->> +#endif
->> +
->>   #endif
->> diff --git a/drivers/acpi/fan_core.c b/drivers/acpi/fan_core.c
->> index ff72e4ef8738..7cea4495f19b 100644
->> --- a/drivers/acpi/fan_core.c
->> +++ b/drivers/acpi/fan_core.c
->> @@ -336,6 +336,10 @@ static int acpi_fan_probe(struct platform_device *=
-pdev)
->>                  if (result)
->>                          return result;
->>
->> +               result =3D devm_acpi_fan_create_hwmon(device);
->> +               if (result)
->> +                       return result;
->> +
->>                  result =3D acpi_fan_create_attributes(device);
->>                  if (result)
->>                          return result;
->> diff --git a/drivers/acpi/fan_hwmon.c b/drivers/acpi/fan_hwmon.c
->> new file mode 100644
->> index 000000000000..bd0d31a398fa
->> --- /dev/null
->> +++ b/drivers/acpi/fan_hwmon.c
->> @@ -0,0 +1,170 @@
->> +// SPDX-License-Identifier: GPL-2.0-or-later
->> +/*
->> + * hwmon interface for the ACPI Fan driver.
->> + *
->> + * Copyright (C) 2024 Armin Wolf <W_Armin@gmx.de>
->> + */
->> +
->> +#include <linux/acpi.h>
->> +#include <linux/device.h>
->> +#include <linux/err.h>
->> +#include <linux/hwmon.h>
->> +#include <linux/limits.h>
->> +#include <linux/types.h>
->> +#include <linux/units.h>
->> +
->> +#include "fan.h"
->> +
->> +/* Returned when the ACPI fan does not support speed reporting */
->> +#define FAN_SPEED_UNAVAILABLE  U32_MAX
->> +#define FAN_POWER_UNAVAILABLE  U32_MAX
->> +
->> +static struct acpi_fan_fps *acpi_fan_get_current_fps(struct acpi_fan *=
-fan, u64 control)
->> +{
->> +       unsigned int i;
->> +
->> +       for (i =3D 0; i < fan->fps_count; i++) {
->> +               if (fan->fps[i].control =3D=3D control)
->> +                       return &fan->fps[i];
->> +       }
->> +
->> +       return NULL;
->> +}
->> +
->> +static umode_t acpi_fan_hwmon_is_visible(const void *drvdata, enum hwm=
-on_sensor_types type,
->> +                                        u32 attr, int channel)
->> +{
->> +       const struct acpi_fan *fan =3D drvdata;
->> +       unsigned int i;
-> AFAICS, the code below can be rewritten as follows:
->
-> if (fan->fif.fine_grain_ctrl)
->           return 0;
+elapsed time: 977m
 
-Hi,
+configs tested: 204
+configs skipped: 3
 
-this would break hwmon_fan_input.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Thanks,
-Armin Wolf
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240527   gcc  
+arc                   randconfig-001-20240528   gcc  
+arc                   randconfig-002-20240527   gcc  
+arc                   randconfig-002-20240528   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                          collie_defconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240527   clang
+arm                   randconfig-001-20240528   gcc  
+arm                   randconfig-002-20240527   gcc  
+arm                   randconfig-002-20240528   gcc  
+arm                   randconfig-003-20240527   gcc  
+arm                   randconfig-003-20240528   clang
+arm                   randconfig-004-20240527   gcc  
+arm                   randconfig-004-20240528   clang
+arm                         s5pv210_defconfig   gcc  
+arm                         socfpga_defconfig   gcc  
+arm                       versatile_defconfig   gcc  
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240527   gcc  
+arm64                 randconfig-001-20240528   clang
+arm64                 randconfig-002-20240527   gcc  
+arm64                 randconfig-002-20240528   clang
+arm64                 randconfig-003-20240527   clang
+arm64                 randconfig-003-20240528   gcc  
+arm64                 randconfig-004-20240527   gcc  
+arm64                 randconfig-004-20240528   gcc  
+csky                             alldefconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240527   gcc  
+csky                  randconfig-001-20240528   gcc  
+csky                  randconfig-002-20240527   gcc  
+csky                  randconfig-002-20240528   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240527   clang
+hexagon               randconfig-001-20240528   clang
+hexagon               randconfig-002-20240527   clang
+hexagon               randconfig-002-20240528   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240527   gcc  
+i386         buildonly-randconfig-002-20240527   gcc  
+i386         buildonly-randconfig-003-20240527   gcc  
+i386         buildonly-randconfig-004-20240527   clang
+i386         buildonly-randconfig-005-20240527   gcc  
+i386         buildonly-randconfig-006-20240527   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240527   gcc  
+i386                  randconfig-002-20240527   clang
+i386                  randconfig-003-20240527   gcc  
+i386                  randconfig-004-20240527   gcc  
+i386                  randconfig-005-20240527   gcc  
+i386                  randconfig-006-20240527   gcc  
+i386                  randconfig-011-20240527   gcc  
+i386                  randconfig-012-20240527   clang
+i386                  randconfig-013-20240527   gcc  
+i386                  randconfig-014-20240527   clang
+i386                  randconfig-015-20240527   gcc  
+i386                  randconfig-016-20240527   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240527   gcc  
+loongarch             randconfig-001-20240528   gcc  
+loongarch             randconfig-002-20240527   gcc  
+loongarch             randconfig-002-20240528   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                            mac_defconfig   gcc  
+m68k                        mvme147_defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                  cavium_octeon_defconfig   gcc  
+mips                     cu1830-neo_defconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240527   gcc  
+nios2                 randconfig-001-20240528   gcc  
+nios2                 randconfig-002-20240527   gcc  
+nios2                 randconfig-002-20240528   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240527   gcc  
+parisc                randconfig-001-20240528   gcc  
+parisc                randconfig-002-20240527   gcc  
+parisc                randconfig-002-20240528   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc                     mpc512x_defconfig   clang
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                 mpc836x_rdk_defconfig   clang
+powerpc               randconfig-001-20240527   gcc  
+powerpc               randconfig-001-20240528   gcc  
+powerpc               randconfig-002-20240527   gcc  
+powerpc               randconfig-002-20240528   clang
+powerpc               randconfig-003-20240527   clang
+powerpc               randconfig-003-20240528   clang
+powerpc64             randconfig-001-20240527   clang
+powerpc64             randconfig-001-20240528   clang
+powerpc64             randconfig-002-20240527   gcc  
+powerpc64             randconfig-002-20240528   gcc  
+powerpc64             randconfig-003-20240527   gcc  
+powerpc64             randconfig-003-20240528   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240528   clang
+riscv                 randconfig-002-20240528   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240528   gcc  
+s390                  randconfig-002-20240528   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                          kfr2r09_defconfig   gcc  
+sh                    randconfig-001-20240528   gcc  
+sh                    randconfig-002-20240528   gcc  
+sh                          rsk7201_defconfig   gcc  
+sh                          rsk7264_defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+sparc64               randconfig-001-20240528   gcc  
+sparc64               randconfig-002-20240528   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                    randconfig-001-20240528   gcc  
+um                    randconfig-002-20240528   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240527   clang
+x86_64       buildonly-randconfig-002-20240527   gcc  
+x86_64       buildonly-randconfig-003-20240527   gcc  
+x86_64       buildonly-randconfig-004-20240527   gcc  
+x86_64       buildonly-randconfig-005-20240527   gcc  
+x86_64       buildonly-randconfig-006-20240527   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240527   clang
+x86_64                randconfig-002-20240527   gcc  
+x86_64                randconfig-003-20240527   clang
+x86_64                randconfig-004-20240527   clang
+x86_64                randconfig-005-20240527   clang
+x86_64                randconfig-006-20240527   clang
+x86_64                randconfig-011-20240527   gcc  
+x86_64                randconfig-012-20240527   gcc  
+x86_64                randconfig-013-20240527   clang
+x86_64                randconfig-014-20240527   gcc  
+x86_64                randconfig-015-20240527   gcc  
+x86_64                randconfig-016-20240527   gcc  
+x86_64                randconfig-071-20240527   gcc  
+x86_64                randconfig-072-20240527   clang
+x86_64                randconfig-073-20240527   clang
+x86_64                randconfig-074-20240527   clang
+x86_64                randconfig-075-20240527   clang
+x86_64                randconfig-076-20240527   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+xtensa                randconfig-001-20240528   gcc  
+xtensa                randconfig-002-20240528   gcc  
 
->
-> switch (type) {
-> case hwmon_fan:
->          if (attr =3D=3D hwmon_fan_input || attr =3D=3D hwmon_fan_target=
-)
->                 return 0444;
->
->          return 0;
->
-> case hwmon_power:
->          if (attr =3D=3D hwmon_power_input) {
->                 for (i =3D 0; i < fan->fps_count; i++) {
->                         if (fan->fps[i].power !=3D FAN_POWER_UNAVAILABLE=
-)
->                                 return 0444;
->                 }
->          }
->
->          fallthrough;
-> default:
->         return 0;
-> }
->
-> without changing functionality, which is both less duplication and
-> fewer lines of code.
->
->> +
->> +       switch (type) {
->> +       case hwmon_fan:
->> +               switch (attr) {
->> +               case hwmon_fan_input:
->> +                       return 0444;
->> +               case hwmon_fan_target:
->> +                       /*
->> +                        * When in fine grain control mode, not every f=
-an control value
->> +                        * has an associated fan performance state.
->> +                        */
->> +                       if (fan->fif.fine_grain_ctrl)
->> +                               return 0;
->> +
->> +                       return 0444;
->> +               default:
->> +                       return 0;
->> +               }
->> +       case hwmon_power:
->> +               switch (attr) {
->> +               case hwmon_power_input:
->> +                       /*
->> +                        * When in fine grain control mode, not every f=
-an control value
->> +                        * has an associated fan performance state.
->> +                        */
->> +                       if (fan->fif.fine_grain_ctrl)
->> +                               return 0;
->> +
->> +                       /*
->> +                        * When all fan performance states contain no v=
-alid power data,
->> +                        * when the associated attribute should not be =
-created.
->> +                        */
->> +                       for (i =3D 0; i < fan->fps_count; i++) {
->> +                               if (fan->fps[i].power !=3D FAN_POWER_UN=
-AVAILABLE)
->> +                                       return 0444;
->> +                       }
->> +
->> +                       return 0;
->> +               default:
->> +                       return 0;
->> +               }
->> +       default:
->> +               return 0;
->> +       }
->> +}
->> +
->> +static int acpi_fan_hwmon_read(struct device *dev, enum hwmon_sensor_t=
-ypes type, u32 attr,
->> +                              int channel, long *val)
->> +{
->> +       struct acpi_device *adev =3D to_acpi_device(dev->parent);
->> +       struct acpi_fan *fan =3D dev_get_drvdata(dev);
->> +       struct acpi_fan_fps *fps;
->> +       struct acpi_fan_fst fst;
->> +       int ret;
->> +
->> +       ret =3D acpi_fan_get_fst(adev, &fst);
->> +       if (ret < 0)
->> +               return ret;
->> +
->> +       switch (type) {
->> +       case hwmon_fan:
->> +               switch (attr) {
->> +               case hwmon_fan_input:
->> +                       if (fst.speed =3D=3D FAN_SPEED_UNAVAILABLE)
->> +                               return -ENODEV;
->> +
->> +                       if (fst.speed > LONG_MAX)
->> +                               return -EOVERFLOW;
->> +
->> +                       *val =3D fst.speed;
->> +                       return 0;
->> +               case hwmon_fan_target:
->> +                       fps =3D acpi_fan_get_current_fps(fan, fst.contr=
-ol);
->> +                       if (!fps)
->> +                               return -EIO;
->> +
->> +                       if (fps->speed > LONG_MAX)
->> +                               return -EOVERFLOW;
->> +
->> +                       *val =3D fps->speed;
->> +                       return 0;
->> +               default:
->> +                       return -EOPNOTSUPP;
->> +               }
->> +       case hwmon_power:
->> +               switch (attr) {
->> +               case hwmon_power_input:
->> +                       fps =3D acpi_fan_get_current_fps(fan, fst.contr=
-ol);
->> +                       if (!fps)
->> +                               return -EIO;
->> +
->> +                       if (fps->power =3D=3D FAN_POWER_UNAVAILABLE)
->> +                               return -ENODEV;
->> +
->> +                       if (fps->power > LONG_MAX / MICROWATT_PER_MILLI=
-WATT)
->> +                               return -EOVERFLOW;
->> +
->> +                       *val =3D fps->power * MICROWATT_PER_MILLIWATT;
->> +                       return 0;
->> +               default:
->> +                       return -EOPNOTSUPP;
->> +               }
->> +       default:
->> +               return -EOPNOTSUPP;
->> +       }
->> +}
->> +
->> +static const struct hwmon_ops acpi_fan_hwmon_ops =3D {
->> +       .is_visible =3D acpi_fan_hwmon_is_visible,
->> +       .read =3D acpi_fan_hwmon_read,
->> +};
->> +
->> +static const struct hwmon_channel_info * const acpi_fan_hwmon_info[] =
-=3D {
->> +       HWMON_CHANNEL_INFO(fan, HWMON_F_INPUT | HWMON_F_TARGET),
->> +       HWMON_CHANNEL_INFO(power, HWMON_P_INPUT),
->> +       NULL
->> +};
->> +
->> +static const struct hwmon_chip_info acpi_fan_hwmon_chip_info =3D {
->> +       .ops =3D &acpi_fan_hwmon_ops,
->> +       .info =3D acpi_fan_hwmon_info,
->> +};
->> +
->> +int devm_acpi_fan_create_hwmon(struct acpi_device *device)
->> +{
->> +       struct acpi_fan *fan =3D acpi_driver_data(device);
->> +       struct device *hdev;
->> +
->> +       hdev =3D devm_hwmon_device_register_with_info(&device->dev, "ac=
-pi_fan", fan,
->> +                                                   &acpi_fan_hwmon_chi=
-p_info, NULL);
->> +       return PTR_ERR_OR_ZERO(hdev);
->> +}
->> --
->> 2.39.2
->>
->>
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
