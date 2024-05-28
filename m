@@ -1,97 +1,75 @@
-Return-Path: <linux-acpi+bounces-6051-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6052-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1598D1898
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 12:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1438D18F4
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 12:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E8F9283A58
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 10:27:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16747286D92
+	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 10:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234E716C68D;
-	Tue, 28 May 2024 10:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1844916C683;
+	Tue, 28 May 2024 10:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="QdkqbSBY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E2D16B743
-	for <linux-acpi@vger.kernel.org>; Tue, 28 May 2024 10:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A440116415;
+	Tue, 28 May 2024 10:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716892045; cv=none; b=kys2TGM/fHEw+d+d7IDUHrVUL1qHqk9Av4u1K1q6oW4fbjd5U/airj0kZosh/VwUvYhAz8frvB2iAB1KCeWY6ZmUAqRqazNzADqitkh0UN5mxC1FmOX+r55BLz8BC476pRp9j1S7KMAvemmCACnlCpEdQdzRwR/cnfeRnmL5z7U=
+	t=1716893606; cv=none; b=cef0yGz067ekSevXYHGmpkCARNO0LSWNbHVW9vShXUsmIzdiQywQc4JgyQARHwB3V+POS9Ozwte8S8eJqFh9cK5YuEL0T2lym+xoV4ubfe0RoW/RRZvi/V2U0dI0YeqRGkP5+c/IHW+pbodgLIBzpKtA7H5JV2YUHgcO68+IukE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716892045; c=relaxed/simple;
-	bh=BNnZ7gYxVPG+zhntrXhysWWcp6Wfp3QG2SUsNPXf5hg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXEyNNfmlZWAYk1xX8OBCCIP5iQZ2sswcg1IOYOxeOqEV5Fuz58FfSoH5bXiYPtLysWOVpHyV6uSEAELXNPpYioW/FGT0SgK5Rm/CCeXMYwsafZ44nyBR6npgmPKfthQt964/Os7D62iHnzBKRQi1dPd4oz5mddQ7rRMOzCgljs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-26-230.elisa-laajakaista.fi [88.113.26.230])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id dd9a6722-1cdc-11ef-aaf4-005056bdd08f;
-	Tue, 28 May 2024 13:27:21 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	s=arc-20240116; t=1716893606; c=relaxed/simple;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rsyuLBo4qrZ9H/aHXYAV2PoV3SWWQCDe36duUskuIa0JVORFI4luM3PfxsJLJbqfjOjYs21eEmVV6g9+btq5O4zrMKlQjwj1YeYHpJfMStnzn6J8JH8yLSroabfhaledol/WT+MT6ZO25/V+o2WbqXBSeAal60ftZ5zLAgOtjlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=QdkqbSBY; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=QdkqbSBY0uEvqnBt+ymcmpOA4N
+	zBSdHyYLwsQ4Yi6zWeRC2f/S1YkS1/Cn7nHpAdXUDrdQiy7iXLh8NWxMy5v8THqNojQpOsYm18c3w
+	ABUCs+n7ztyj8uI0JtUf3jAOx432QyBFoqN4TlceSGTPeCXbAGG7pSpEYk8RdSosuyQqNp5gYrK1U
+	WwRAcq2yTiisVoYjlZeEf9lSXBa7Mioi1lcBQ+IkIKkaXkdAstAU2yxKq1aOYn3OQdKzwj3MRdkBN
+	IuWL1CMfviDSB6IRDC1iLh9WR7eiehLPkzTOvLQRhV72KoeeFJIsHPoGDu4xESmSt0LCBHNCrgGbz
+	fh8FBI3w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sBuSD-00000000H2R-1Nbq;
+	Tue, 28 May 2024 10:53:17 +0000
+Date: Tue, 28 May 2024 03:53:17 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Guanbing Huang <albanhuang@outlook.com>,
 	Guanbing Huang <albanhuang@tencent.com>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: [PATCH v2 2/2] PNP: Hide pnp_bus_type from the non-PNP code
-Date: Tue, 28 May 2024 13:25:03 +0300
-Message-ID: <20240528102708.1451343-3-andy.shevchenko@gmail.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240528102708.1451343-1-andy.shevchenko@gmail.com>
+	Christoph Hellwig <hch@infradead.org>,
+	Woody Suwalski <terraluna977@gmail.com>
+Subject: Re: [PATCH v2 1/2] PNP: Make dev_is_pnp() to be a function and
+ export it for modules
+Message-ID: <ZlW3nTPv6YqQBs3i@infradead.org>
 References: <20240528102708.1451343-1-andy.shevchenko@gmail.com>
+ <20240528102708.1451343-2-andy.shevchenko@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240528102708.1451343-2-andy.shevchenko@gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-The pnp_bus_type is defined only when CONFIG_PNP=y, while being
-not guarded by ifdeffery in the header. Moreover, it's not used
-outside of the PNP code. Move it to the internal header to make
-sure no-one will try to (ab)use it.
+Looks good:
 
-Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/pnp/base.h  | 1 +
- include/linux/pnp.h | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/pnp/base.h b/drivers/pnp/base.h
-index e74a0f6a3157..4e80273dfb1e 100644
---- a/drivers/pnp/base.h
-+++ b/drivers/pnp/base.h
-@@ -6,6 +6,7 @@
- 
- extern struct mutex pnp_lock;
- extern const struct attribute_group *pnp_dev_groups[];
-+extern const struct bus_type pnp_bus_type;
- 
- int pnp_register_protocol(struct pnp_protocol *protocol);
- void pnp_unregister_protocol(struct pnp_protocol *protocol);
-diff --git a/include/linux/pnp.h b/include/linux/pnp.h
-index a8def1cea32c..7f2ff95d2deb 100644
---- a/include/linux/pnp.h
-+++ b/include/linux/pnp.h
-@@ -435,8 +435,6 @@ struct pnp_protocol {
- #define protocol_for_each_dev(protocol, dev)	\
- 	list_for_each_entry(dev, &(protocol)->devices, protocol_list)
- 
--extern const struct bus_type pnp_bus_type;
--
- #if defined(CONFIG_PNP)
- 
- /* device management */
--- 
-2.45.1
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
