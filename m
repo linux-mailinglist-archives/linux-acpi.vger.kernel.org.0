@@ -1,154 +1,181 @@
-Return-Path: <linux-acpi+bounces-6074-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6075-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D13B8D32D9
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 11:22:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631C28D34BC
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 12:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EBD21C20FB6
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 09:22:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2787A28768E
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 10:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DD2169AD9;
-	Wed, 29 May 2024 09:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F62917B51B;
+	Wed, 29 May 2024 10:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b="HJi43AvB"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="B+WjQjKe"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8169615B109
-	for <linux-acpi@vger.kernel.org>; Wed, 29 May 2024 09:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9591C17B4E5;
+	Wed, 29 May 2024 10:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716974550; cv=none; b=oXOfXvzyUm7XaZZD4w4/fjye/8eqAgZtbHxNd4zDMY3trK5PHF//VdfPxUkBxh0lPeCqXbNLgs24VI+PCghn+I4Sg06Cn77rnJkDqh5i8ygtn9KdN4SZLCbU9KydvRVDdIQD9Gvz6EcKE42PHdUUcfHzdbT3C8nDfTbzXYySUBI=
+	t=1716979426; cv=none; b=MUq3iQflzkaAYmafmcmoqTs8gbfmIkn/N9SEPsnB9wFDGnguBahaRJ/EuKmADsMzM+mVlp0ep2CDQcOunrOphdPOr1RBzsVDgUzM1gw4kMth2G6nblt7poQg+1we7DvZj6asaI9DqdkAvP4ePUBk0v57GUJN1dwAlB5BTIs41LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716974550; c=relaxed/simple;
-	bh=ra1NS+9fSWdb9q8/PcT29/DwMyhQPkUZ6X8Be6pbo2c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ADSMcRoaRRNf7lDgskeSWn+DeikNAvHUrdVz6wrhCTz0i8oNAuGqucJiFQzk1mg87EutelrEvLrLM+dCWBZTGAP2+DApJFLYjCybKwyG6V1R5WZIK+gjvG+SjGfJQdkWmfl/lAF8msw3hk5F7HqjiXDI+moOsZpcZtR0fzT4N68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=cloud.com header.i=@cloud.com header.b=HJi43AvB; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-681a4427816so1424634a12.3
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2024 02:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloud.com; s=cloud; t=1716974549; x=1717579349; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ayGsdOx736/Ldjrgu8+xcuCXDa4GD/n6h1A7Kseqpio=;
-        b=HJi43AvBd+VnmdGwGfLfcRBA6Xhz0R0JVa3gYo7AmrfDQBcKBdJO9F4j0iOE8ZOpFH
-         DLH/wcP6Tm4TxMeYYtKOge9klBbvW7he+119IR5PY7Y5U8IDvt665EVts/SoWa/e52ER
-         aIZm2ujr0kkqkt+Rkm+rIK1qUjiATk6kvOo7o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716974549; x=1717579349;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ayGsdOx736/Ldjrgu8+xcuCXDa4GD/n6h1A7Kseqpio=;
-        b=KrUcphKlzw2CKE/iKK6zldVF1LvKheYHcAqZ+egVeDwO3PAkZ2xD0emeEsGfQ89kzs
-         u65/AyyLNgc3IVSnvSeE0M99yswyw+YKlZhSDQ+v5SoNt8Y99cX/ShTjVbvFn/bbwxOL
-         qL4GvPVWxDQjxkj3YGMY6FAHD9KqncqPhnxN4Vva0O7P48Ot0kDciy0xe0UA4/Fd+Wyd
-         MFIPzSHLw5iny3io5c67iDkhU9jF9pTOkJAT3eUM5xjG3BKj4wbsWiMPZ1SLMkx5UEvf
-         zA8VKorqRLTyEB4eL7EVGiexZd6u9viBvyOOG0wPHSbIZTQQvPmhPudfDjIKwnrMJuT6
-         BBxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX59SgxeWjZ11GFHlrvxz4nFiswrl5oZ5ztP6fYGKZr4OEC4ZxUrAnGci4+390lUW9ppdJuWR2Ta7S9yLTBrLpt51xQ+vx934PknA==
-X-Gm-Message-State: AOJu0Ywr0CWsh098oU8fhdDmYZr/5EiteOHgkrFeYoMLOXbDUyF7I2IV
-	rGYVSZ8wGA9eV+3C7WirV7O6gh6dIjY9oYUHDUEQOwNezBXqyMjTsn++RkyAXudcKL1YXkCxjis
-	i
-X-Google-Smtp-Source: AGHT+IHTpPNGZHMBxVEasDQE0AcmPyQY0xs7GX9k/r2GQYi+8iF3qtVD7NFoq5OWftN6Pr8hgG4yLQ==
-X-Received: by 2002:a17:90a:e501:b0:2bd:9256:8ce0 with SMTP id 98e67ed59e1d1-2bf5ea3c2f8mr13150409a91.14.1716974548681;
-        Wed, 29 May 2024 02:22:28 -0700 (PDT)
-Received: from localhost.localdomain ([103.14.255.9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c033ce1d0bsm786090a91.19.2024.05.29.02.22.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 02:22:28 -0700 (PDT)
-From: Chunjie Zhu <chunjie.zhu@cloud.com>
-To: rafael@kernel.org
-Cc: chunjie.zhu@cloud.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fix kdump kernel cannot find ACPI RSDP
-Date: Wed, 29 May 2024 09:21:15 +0000
-Message-Id: <20240529092115.375113-1-chunjie.zhu@cloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAJZ5v0gcyZM7PZPrKccLhNtNDhHvqrZsgD-+Xx+W9WesD3yhyw@mail.gmail.com>
-References: <CAJZ5v0gcyZM7PZPrKccLhNtNDhHvqrZsgD-+Xx+W9WesD3yhyw@mail.gmail.com>
+	s=arc-20240116; t=1716979426; c=relaxed/simple;
+	bh=up394OjV6Mya4etDTOCYaWlZ31SgZg4PVph4Q7LohxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pb1kEHHY6d9YmDzlkVB3BbGasBp32Wz8F8jN49tzQW8rCKh9FMiKJHyZQ1t0IBok3G1Smd5gmBKCqQuZ2QbBkaTNFKF0MU87tmTQ0nOfow0er2MXNZRfxetmt+7SnMB7YdTfsKapmjoq7ztEx+snfU7lAMu/luOyTiOvK3hh2C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=B+WjQjKe; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2054A40E02AF;
+	Wed, 29 May 2024 10:43:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id AwDXIKgAyAXx; Wed, 29 May 2024 10:43:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1716979412; bh=e1AAoC8VPH2JOJ+ljlTpXygxtyAhC2c5XbpDeQh3FuI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=B+WjQjKeqTyuu8CI7MMsYGxCJTuSJtxQJpcVNv0maCOvgyWtzobmD/5owgf8vb56c
+	 /01mD/zxJ2v/pmRbVrzodj7rSYLw3WgMDWCMa2Mon2eonhgEolnoHq3NNDDJo8OvuP
+	 7X+bJC26zES1rQyM2SFu4Osr/uUMGIlE9EQ4IaTQNWdkTrmbsXxNYGFaVfHtOe3QnO
+	 2CjOpnysup14rg3wkX13EkLKmZ61lVddVg7RBRQ0OPd+oKkzB8uLLUVkDegzNvblrm
+	 5KqASPmbnDv4UxzBpmHDLNfVX8aIMg3fi7jAsJ8VE+R0rBb614mLWKU77OtTBCb6ZN
+	 H02+Ts10dftT//q3g4bdKJHn05rKN/yoANx3s3ew6XP1/K+2dUAwnQ+4z2lXcWWaVd
+	 6DIe3crIOrv8Ntogwes2bnjdnbUlH401beIUfosBDHh/d9Lxgye+gkwimySbQyNI/E
+	 jfEqBWFwSt7zpJLEqTmxdhH5LgOoMMI6vhcSiB2oHZ+4bhOP2vo+mz0vi23xxmVJ8Q
+	 YB38fbImDcMkOOOTkOxSSu2w1pehpE/fkKPaFPmdzZmcH02c05Exm7WcMHrmIuYgb+
+	 kOM2aDXxW4yWyT62Y6fYBD3oTOfukx1d3ofe98oFoDI+W+1v8DUsHUHbUcrALP9htz
+	 uHf3ICtv+3vCpq1w51ajQHoM=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A4DA940E0241;
+	Wed, 29 May 2024 10:43:03 +0000 (UTC)
+Date: Wed, 29 May 2024 12:42:57 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	Jun Nakajima <jun.nakajima@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Kalra, Ashish" <ashish.kalra@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	"Huang, Kai" <kai.huang@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Nikolay Borisov <nik.borisov@suse.com>, Tao Liu <ltao@redhat.com>
+Subject: Re: [PATCHv11 10/19] x86/mm: Add callbacks to prepare encrypted
+ memory for kexec
+Message-ID: <20240529104257.GIZlcGsTkJHVBblkrY@fat_crate.local>
+References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
+ <20240528095522.509667-11-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240528095522.509667-11-kirill.shutemov@linux.intel.com>
 
-> From: "Rafael J. Wysocki" <rafael@kernel.org>
-> Date: Mon, 27 May 2024 12:52:19 +0200
-> Subject: Re: [PATCH] fix kdump kernel cannot find ACPI RSDP
-> To: Chunjie Zhu <chunjie.zhu@cloud.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-> 	linux-kernel@vger.kernel.org
-> 
-> On Fri, May 24, 2024 at 11:43=E2=80=AFAM Chunjie Zhu <chunjie.zhu@cloud.com=
-> > wrote:
-> >
-> > kexec/kdump must pass acpi_rsdp (physical address of ACPI RSDP table) to =
-> the
-> > crash kernel, especially in EFI case, otherwise, the crash kernel fails t=
-> o
-> > locate ACPI RSDP table. Consequently, ACPI init runs into error, and APIC
-> > mmio read page fault happens, finally crash kernel gets stuck.
-> 
-> Fair enough.
-> 
-> So has this ever worked before?  Presumably it has, in which case it
-> has regressed and so it would be prudent to say when it broke and why
-> and explain why the proposed change is the right one to make.
+On Tue, May 28, 2024 at 12:55:13PM +0300, Kirill A. Shutemov wrote:
+> diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
+> index 28ac3cb9b987..6cade48811cc 100644
+> --- a/arch/x86/include/asm/x86_init.h
+> +++ b/arch/x86/include/asm/x86_init.h
+> @@ -149,12 +149,21 @@ struct x86_init_acpi {
+>   * @enc_status_change_finish	Notify HV after the encryption status of a range is changed
+>   * @enc_tlb_flush_required	Returns true if a TLB flush is needed before changing page encryption status
+>   * @enc_cache_flush_required	Returns true if a cache flush is needed before changing page encryption status
+> + * @enc_kexec_begin		Begin the two-step process of conversion shared memory back
 
-The existing code works only if the kexec() system call (CONFIG_KEXEC) is
-enabled, however, we can enter the kdump kernel by one of the following
-methods,
+s/conversion/converting/
 
-	1. kexec_file system call (CONFIG_KEXEC_FILE)
-	2. Xen-initiated crash
+> + *				to private. It stops the new conversions from being started
+> + *				and waits in-flight conversions to finish, if possible.
 
-Instead of CONFIG_KEXEC, setup_acpi_rsdp should depend on CONFIG_KEXEC_CORE,
-which should be enabled in any case where kernel is used as a kdump kernel.
+Good.
 
-> 
-> > Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
-> > ---
-> >  drivers/acpi/osl.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> > index f725813d0cce..39474468dba1 100644
-> > --- a/drivers/acpi/osl.c
-> > +++ b/drivers/acpi/osl.c
-> > @@ -174,7 +174,7 @@ void acpi_os_vprintf(const char *fmt, va_list args)
-> >  #endif
-> >  }
-> >
-> > -#ifdef CONFIG_KEXEC
-> > +#ifdef CONFIG_KEXEC_CORE
-> >  static unsigned long acpi_rsdp;
-> >  static int __init setup_acpi_rsdp(char *arg)
-> >  {
-> > @@ -187,7 +187,7 @@ acpi_physical_address __init acpi_os_get_root_pointer=
-> (void)
-> >  {
-> >         acpi_physical_address pa;
-> >
-> > -#ifdef CONFIG_KEXEC
-> > +#ifdef CONFIG_KEXEC_CORE
-> >         /*
-> >          * We may have been provided with an RSDP on the command line,
-> >          * but if a malicious user has done so they may be pointing us
-> > --
-> > 2.34.1
-> >
-> 
+Now add "The @crash parameter denotes whether the function is being
+called in the crash shutdown path."
+
+> + * @enc_kexec_finish		Finish the two-step process of conversion shared memory to
+
+s/conversion/converting/
+
+> + *				private. All memory is private after the call.
+
+"... when the function returns."
+
+> + *				It called with all CPUs but one shutdown and interrupts
+> + *				disabled.
+
+"It is called on only one CPU while the others are shut down and with
+interrupts disabled."
+
+>   */
+>  struct x86_guest {
+>  	int (*enc_status_change_prepare)(unsigned long vaddr, int npages, bool enc);
+>  	int (*enc_status_change_finish)(unsigned long vaddr, int npages, bool enc);
+>  	bool (*enc_tlb_flush_required)(bool enc);
+>  	bool (*enc_cache_flush_required)(void);
+> +	void (*enc_kexec_begin)(bool crash);
+> +	void (*enc_kexec_finish)(void);
+>  };
+>  
+>  /**
+> diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
+> index f06501445cd9..74f6305eb9ec 100644
+> --- a/arch/x86/kernel/crash.c
+> +++ b/arch/x86/kernel/crash.c
+> @@ -128,6 +128,18 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
+>  #ifdef CONFIG_HPET_TIMER
+>  	hpet_disable();
+>  #endif
+> +
+> +	/*
+> +	 * Non-crash kexec calls enc_kexec_begin() while scheduling is still
+> +	 * active. This allows the callback to wait until all in-flight
+> +	 * shared<->private conversions are complete. In a crash scenario,
+> +	 * enc_kexec_begin() get call after all but one CPU has been shut down
+
+"gets called" ... "have been shut down"
+
+> +	 * and interrupts have been disabled. This only allows the callback to
+
+only?
+
+> +	 * detect a race with the conversion and report it.
+> +	 */
+> +	x86_platform.guest.enc_kexec_begin(true);
+> +	x86_platform.guest.enc_kexec_finish();
+> +
+
+...
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
