@@ -1,211 +1,227 @@
-Return-Path: <linux-acpi+bounces-6080-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6081-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C078D367B
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 14:33:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9628D37B6
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 15:34:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C2011F214CA
-	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 12:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADA72865AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 13:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA71718130B;
-	Wed, 29 May 2024 12:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="NSR466NE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466A812E5B;
+	Wed, 29 May 2024 13:34:53 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0479D181306
-	for <linux-acpi@vger.kernel.org>; Wed, 29 May 2024 12:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD587DDA6;
+	Wed, 29 May 2024 13:34:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716986020; cv=none; b=W5EbgxhY7Efhm64u4IC6yf5C/g7kjbo6BnJqf/rf7guDDj6PhKJgw+aF/Obuk9UIZGgyYil22oplmLMwiIH+/+p7PNw0Yi4Mxf0e64ZFwULe86CJH7XB2/gubEeb/j1D5YCuR9M14YFIy744N2Znk45Hx6PpsRXbLkZTuGVPQHs=
+	t=1716989693; cv=none; b=p6kqNLdLP0dCDSAc4d3Xyr1BcSatN+0M8jCHniWqvZSt2US/85rJfewOhcJf7f8pbie7XMS260DHX8hhpgXa6sZIqlj7r6uQwBGPwjk8BoQlnekNOaJBc3GHPpUt01NWSMXIYU1lurRWxniUO8m1/6nXeTGdEuNV8EGpf2t9nuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716986020; c=relaxed/simple;
-	bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a8rGMg+/Taw4dnyFWS8/O1PZ2w3t/WhPQFp8FRbIuW14tdCbSX3uJMJ3J2DNzX2PhmKUbw0dJxte/CN+qM14UKFf5PahRjstIqtvZyBcPuXpjV/kwt894XEUK6mjAfdWK2/T4p7zqWXAsxQoD/nl/8fhFISpR2ylBetbNjB3AP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=NSR466NE; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a59a352bbd9so142099266b.1
-        for <linux-acpi@vger.kernel.org>; Wed, 29 May 2024 05:33:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1716986017; x=1717590817; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-        b=NSR466NEIO5ofKy5wZSHd2p2r5xA5rI/OqrcOuDiNQ1+oU5dh7jX1MlQHenETSvrpA
-         tPHFfYQorYkF6ez6n1uhiIBBFlaUVdXFDgokV/c0YkSep76UHhvoislF7lbvcy7elKX2
-         oaZ+oNUk2/DC4qiJKeIxMiPeadm/9JinQlUTY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716986017; x=1717590817;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kjz4o7E9Vi+goRaYpgYsPsr72HU+LspMKlqcruc8gzU=;
-        b=K0Ixpcf7KOggyj5xq/L4HuJn6EvjXSPnngDR8cxPbps4Yh+QQyXXkRXqCreLA/1Bwb
-         5hj9PQOJAFEWsSvTqF/Mf3QR2rtT252ltI46iLKQnq+Z5P21Un9sKd6UMZOdwcswUjSn
-         0J2YnBvLtUXGqEYopZ3YmKCNRvZlkLPxk/+ne9X0Bfsn4f5p9+cMSkmlCOhQpy02twiu
-         Q1O0L8uXLvG+VruXn+HNtzZpmTQtNNy/m7Ozzmqfq7OuarcIFTUlUbBq+PLGgCq8Msvo
-         j0ggjD/2wWfy+E040QPthD181lWVCDZitxjcT5IcyGsvcrSUEYbsOrdkaUsqA0wfnR0E
-         EpwA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPNEEq0YxfCYNXBgzthHnBnuBWeBmNemaT9Thyuy9Q9dPN+byeJCZDQR9trinNvS7THC7fdMj8kNEA3+PKZtZ5fA7V+4Ri+vT7Vg==
-X-Gm-Message-State: AOJu0YzfYioTaqiAFmuQ5QrHAl1cLZiFeGrjUwE5oaDT8AsMHTCssflA
-	+eOF6f+XPWu5hbF5LFTqVWD1pncQwOAkEfMDMOxEr02OD6onjGtA+R0kIogMRnw=
-X-Google-Smtp-Source: AGHT+IGiLc7AgUl827FgV2aZOE13ynn0TtZqmMLpd+MxfDu7nEToYL/rmYy1RVA6e8sosXqFNMmqag==
-X-Received: by 2002:a17:906:40c8:b0:a62:a48c:1123 with SMTP id a640c23a62f3a-a642d2775bamr178860766b.5.1716986017274;
-        Wed, 29 May 2024 05:33:37 -0700 (PDT)
-Received: from [10.125.231.30] ([217.156.233.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a637386898bsm95138766b.220.2024.05.29.05.33.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 May 2024 05:33:37 -0700 (PDT)
-Message-ID: <55bc0649-c017-49ab-905d-212f140a403f@citrix.com>
-Date: Wed, 29 May 2024 13:33:35 +0100
+	s=arc-20240116; t=1716989693; c=relaxed/simple;
+	bh=zB7b5NyORJp2qmRvU3iIpwKz6OerfJ8zK5jEQXTn+IE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jCVgIqAcsuuf28+CvTSrM+6Bi16/edmZ8lEJ6kxDGzM6SrW3tJyuMsvpISyfot/t5BQXleZheZOhisr5tDcI3gcjsSsv36gjvzxcwJLOV88rq9bLhby2qElMWwWLdCpDE5WJkKKMtbwSWBCF0Hi7yhuk3DqeglRekQdkLPZLceM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vq9Hr02Lsz67Ct8;
+	Wed, 29 May 2024 21:30:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 24A93140A30;
+	Wed, 29 May 2024 21:34:47 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 29 May 2024 14:34:46 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>
+CC: Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, <loongarch@lists.linux.dev>,
+	<x86@kernel.org>, Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Miguel Luis <miguel.luis@oracle.com>, James Morse
+	<james.morse@arm.com>, Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Hanjun Guo <guohanjun@huawei.com>, Gavin
+ Shan <gshan@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	<linuxarm@huawei.com>, <justin.he@arm.com>, <jianyong.wu@arm.com>
+Subject: [PATCH v10 00/19] ACPI/arm64: add support for virtual cpu hotplug
+Date: Wed, 29 May 2024 14:34:27 +0100
+Message-ID: <20240529133446.28446-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv11 05/19] x86/relocate_kernel: Use named labels for less
- confusion
-To: Borislav Petkov <bp@alien8.de>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Nikolay Borisov <nik.borisov@suse.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Elena Reshetova <elena.reshetova@intel.com>,
- Jun Nakajima <jun.nakajima@intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish"
- <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>,
- "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
- linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-6-kirill.shutemov@linux.intel.com>
- <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com>
- <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5>
- <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
-Content-Language: en-GB
-From: Andrew Cooper <andrew.cooper3@citrix.com>
-Autocrypt: addr=andrew.cooper3@citrix.com; keydata=
- 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
- 6+ahAA==
-In-Reply-To: <20240529112852.GBZlcRdI3oqBtjKxAV@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 29/05/2024 12:28 pm, Borislav Petkov wrote:
-> On Wed, May 29, 2024 at 02:17:29PM +0300, Kirill A. Shutemov wrote:
->>> That jmp 1f becomes redundant now as it simply jumps 1 line below.
->>>
->> Nothing changed wrt this jump. It dates back to initial kexec
->> implementation.
->>
->> See 5234f5eb04ab ("[PATCH] kexec: x86_64 kexec implementation").
->>
->> But I don't see functional need in it.
->>
->> Anyway, it is outside of the scope of the patch.
-> Yap, Kirill did what Nikolay should've done - git archeology. Please
-> don't forget to do that next time.
->
-> And back in the day they didn't comment non-obvious things because
-> commenting is for losers. :-\
->
-> So that unconditional forward jump either flushes branch prediction on
-> some old uarch or something else weird, uarch-special.
->
-> I doubt we can remove it just like that.
->
-> Lemme add Andy - he should know.
+v10:
+- Make acpi_processor_set_per_cpu() return 0 / error rather than bool
+  to simplify error handling at the call sites.
+  (Thanks to both Rafael and Gavin who commented on this)
+- Gather tags.
+- Rebase on v6.10-rc1
 
-Seems I've gained a reputation...
+The approach to the GICv3 changes stablized very late in the 6.10 cycle.
+Subject to Marc taking a final look at those, I think we are now
+in a good state wrt to those and the ACPI parts. The remaining code
+that hasn't received review tags from the relevant maintainers
+is the arm64 specific arch_register_cpu().  Given I think this will go
+through the arm64 tree, hopefully they have just been waiting for
+everything else to be ready.
 
-jmp 1f dates back to ye olde 8086, which started the whole trend of the
-instruction pointer just being a figment of the ISA's imagination[1].
+It is only arch specific to the extent that Rafael suggested we limit
+the potential impacts of the deferred calling of these functions
+to be isolated to ARM64 for now.  This is done by having them return
+-EPROBE_DEFER, on ACPI systems, until the ACPI interpreter is
+available and can be used to query _STA.
 
-Hardware maintains the pointer to the next byte to fetch (the prefetch
-queue was up to 6 bytes), and there was a micro-op to subtract the
-current length of the prefetch queue from the accumulator.
+Thanks to everyone who has been involved in development, testing and
+review of this series - the complex tag chains reflect some of that.
+Fingers crossed we are approaching the end of this particular saga.
 
-In those days, the prefetch queue was not coherent with main memory, and
-jumps (being a discontinuity in the instruction stream) simply flushed
-the prefetch queue.
+Updated version of James' original introduction.
 
-This was necessary after modifying executable code, because otherwise
-you could end up executing stale bytes from the prefetch queue and then
-non-stale bytes thereafter.  (Otherwise known as the way to distinguish
-the 8086 from the 8088 because the latter only had a 4 byte prefetch queue.)
+This series adds what looks like cpuhotplug support to arm64 for use in
+virtual machines. It does this by moving the cpu_register() calls for
+architectures that support ACPI into an arch specific call made from
+the ACPI processor driver.
+ 
+The kubernetes folk really want to be able to add CPUs to an existing VM,
+in exactly the same way they do on x86. The use-case is pre-booting guests
+with one CPU, then adding the number that were actually needed when the
+workload is provisioned.
 
-Anyway.  It's how you used to spell "serialising operation" before that
-term ever entered the architecture.  Linux still supports CPUs prior to
-the Pentium, so still needs to care about prefetch queues in the 486.
+Wait? Doesn't arm64 support cpuhotplug already!?
+In the arm world, cpuhotplug gets used to mean removing the power from a CPU.
+The CPU is offline, and remains present. For x86, and ACPI, cpuhotplug
+has the additional step of physically removing the CPU, so that it isn't
+present anymore.
+ 
+Arm64 doesn't support this, and can't support it: CPUs are really a slice
+of the SoC, and there is not enough information in the existing ACPI tables
+to describe which bits of the slice also got removed. Without a reference
+machine: adding this support to the spec is a wild goose chase.
+ 
+Critically: everything described in the firmware tables must remain present.
+ 
+For a virtual machine this is easy as all the other bits of 'virtual SoC'
+are emulated, so they can (and do) remain present when a vCPU is 'removed'.
 
-However, this example appears to be in 64bit code and following a write
-to CR4 which will be fully serialising, so it's probably copy&paste from
-32bit code where it would be necessary in principle.
+On a system that supports cpuhotplug the MADT has to describe every possible
+CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU before
+the guest is started.
+With these constraints, virtual-cpuhotplug is really just a hypervisor/firmware
+policy about which CPUs can be brought online.
+ 
+This series adds support for virtual-cpuhotplug as exactly that: firmware
+policy. This may even work on a physical machine too; for a guest the part of
+firmware is played by the VMM. (typically Qemu).
+ 
+PSCI support is modified to return 'DENIED' if the CPU can't be brought
+online/enabled yet. The CPU object's _STA method's enabled bit is used to
+indicate firmware's current disposition. If the CPU has its enabled bit clear,
+it will not be registered with sysfs, and attempts to bring it online will
+fail. The notifications that _STA has changed its value then work in the same
+way as physical hotplug, and firmware can cause the CPU to be registered some
+time later, allowing it to be brought online.
+ 
+This creates something that looks like cpuhotplug to user-space and the
+kernel beyond arm64 architecture specific code, as the sysfs
+files appear and disappear, and the udev notifications look the same.
+ 
+One notable difference is the CPU present mask, which is exposed via sysfs.
+Because the CPUs remain present throughout, they can still be seen in that mask.
+This value does get used by webbrowsers to estimate the number of CPUs
+as the CPU online mask is constantly changed on mobile phones.
+ 
+Linux is tolerant of PSCI returning errors, as its always been allowed to do
+that. To avoid confusing OS that can't tolerate this, we needed an additional
+bit in the MADT GICC flags. This series copies ACPI_MADT_ONLINE_CAPABLE, which
+appears to be for this purpose, but calls it ACPI_MADT_GICC_CPU_CAPABLE as it
+has a different bit position in the GICC.
+ 
+This code is unconditionally enabled for all ACPI architectures, though for
+now only arm64 will have deferred the cpu_register() calls.
 
-~Andrew
+If folk want to play along at home, you'll need a copy of Qemu that supports this.
+https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2
 
-[1]
-https://www.righto.com/2023/01/inside-8086-processors-instruction.html#fn:pc
+Replace your '-smp' argument with something like:
+ | -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
+ 
+ then feed the following to the Qemu montior;
+ | (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
+ | (qemu) device_del cpu1
 
-In fact, anyone who hasn't should read the entire series on the 8086,
-https://www.righto.com/p/index.html
+James Morse (7):
+  ACPI: processor: Register deferred CPUs from acpi_processor_get_info()
+  ACPI: Add post_eject to struct acpi_scan_handler for cpu hotplug
+  arm64: acpi: Move get_cpu_for_acpi_id() to a header
+  irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
+  irqchip/gic-v3: Add support for ACPI's disabled but 'online capable'
+    CPUs
+  arm64: document virtual CPU hotplug's expectations
+  cpumask: Add enabled cpumask for present CPUs that can be brought
+    online
+
+Jean-Philippe Brucker (1):
+  arm64: psci: Ignore DENIED CPUs
+
+Jonathan Cameron (11):
+  ACPI: processor: Simplify initial onlining to use same path for cold
+    and hotplug
+  cpu: Do not warn on arch_register_cpu() returning -EPROBE_DEFER
+  ACPI: processor: Drop duplicated check on _STA (enabled + present)
+  ACPI: processor: Return an error if acpi_processor_get_info() fails in
+    processor_add()
+  ACPI: processor: Fix memory leaks in error paths of processor_add()
+  ACPI: processor: Move checks and availability of acpi_processor
+    earlier
+  ACPI: processor: Add acpi_get_processor_handle() helper
+  ACPI: scan: switch to flags for acpi_scan_check_and_detach()
+  arm64: acpi: Harden get_cpu_for_acpi_id() against missing CPU entry
+  arm64: arch_register_cpu() variant to check if an ACPI handle is now
+    available.
+  arm64: Kconfig: Enable hotplug CPU on arm64 if ACPI_PROCESSOR is
+    enabled.
+
+ .../ABI/testing/sysfs-devices-system-cpu      |   6 +
+ Documentation/arch/arm64/cpu-hotplug.rst      |  79 ++++++++++
+ Documentation/arch/arm64/index.rst            |   1 +
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/acpi.h                 |  12 ++
+ arch/arm64/kernel/acpi.c                      |  22 +++
+ arch/arm64/kernel/acpi_numa.c                 |  11 --
+ arch/arm64/kernel/psci.c                      |   2 +-
+ arch/arm64/kernel/smp.c                       |  59 +++++++-
+ drivers/acpi/acpi_processor.c                 | 141 ++++++++++--------
+ drivers/acpi/processor_core.c                 |   3 +-
+ drivers/acpi/processor_driver.c               |  43 ++----
+ drivers/acpi/scan.c                           |  47 +++++-
+ drivers/base/cpu.c                            |  12 +-
+ drivers/irqchip/irq-gic-v3.c                  |  57 +++++--
+ include/acpi/acpi_bus.h                       |   1 +
+ include/acpi/processor.h                      |   2 +-
+ include/linux/acpi.h                          |  12 +-
+ include/linux/cpumask.h                       |  25 ++++
+ kernel/cpu.c                                  |   3 +
+ 20 files changed, 404 insertions(+), 135 deletions(-)
+ create mode 100644 Documentation/arch/arm64/cpu-hotplug.rst
+
+-- 
+2.39.2
+
 
