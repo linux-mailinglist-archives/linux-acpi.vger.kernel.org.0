@@ -1,154 +1,351 @@
-Return-Path: <linux-acpi+bounces-6069-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6070-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3B08D254D
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 21:58:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A648D2C6F
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 07:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C53F1C25A9E
-	for <lists+linux-acpi@lfdr.de>; Tue, 28 May 2024 19:58:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74D9C289072
+	for <lists+linux-acpi@lfdr.de>; Wed, 29 May 2024 05:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CFF178383;
-	Tue, 28 May 2024 19:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ED415B98A;
+	Wed, 29 May 2024 05:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+OAbSM0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PU0u3z9u"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C640D178372;
-	Tue, 28 May 2024 19:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716926283; cv=none; b=qJv4HWFguycOCsXUaV1t7PVRtwh3/cZKK8hZ+My0hZMl0Res1w8LmGh2BVYnSFgoNNX9a6bBzvfSOrCUziJ9pUfQuFIgLIt4SrRyojV7xez4WHYBTltPYqnwg5Fkjw3HET+/4jBXpJ+po0x1UO0sNTc/Atva81Eseokd93x+3uo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716926283; c=relaxed/simple;
-	bh=BZlSwuttDPw9S9+xlwtc5/DNO6T6WU/rzwVlBiGJZJY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ShGq6ZyUExZAmVeO0226HWEYf8pMOsu9f2l2Yu3V4QZ15hqrQawre/e1tCURGVcYIs6qsh/wNSVeui8e6lFCVCSIyHz5O9aVynU39VWiW19y0ZK1d3Ldau8UoafartWBG4fAac3fTMj52eEeSINlUDaTkovzDspDkf6gtmGeILs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+OAbSM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC8AC32786;
-	Tue, 28 May 2024 19:58:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716926283;
-	bh=BZlSwuttDPw9S9+xlwtc5/DNO6T6WU/rzwVlBiGJZJY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=W+OAbSM0A/BaV3StQPVI1WdF2UWFKuReytJe3cR/rVYbeVX5pTYv1sUodh8WAjSac
-	 VTqwOu7uYLtO/MfClEvTFskJoPIZWxbetOMyVaV9aZ/gQOttZJ6Hc0k59F6nsUwNc3
-	 bfRwG4N/8+4N1AHKKlTkXOEKZ5IpCvf3AKDXnVeyA0zRLv00PByTXustEVm7s7X8Nv
-	 3uLtEyBEd4SSk85AMKQDjw7ulj6cBfOi9lDyWqH69TFFBrjnmQmirO+EQpCUYnigrz
-	 z9BDbe5PFQ8XaxFA8dE6Dd3JtVOrNtjYouQCWxF34HR6JbIByX5bh4FsCJ7IR64Y5G
-	 USw2t+bDMboaQ==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-24ffb6ee0f4so33807fac.0;
-        Tue, 28 May 2024 12:58:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVkTXyWD3+MX679GIohMb62YdYTiD7XsG9nBVRsjMx9rXcd+5kNLySG/V6kLOCdP23PD2zINRkPAkmQr/BahixKqkaOA9kyx85xNyc8Nbejhqbj9vxNwP4hxbYWDkA9QBB+npU98KdOMGu3EMEZF44fgrcHw+UzvWqZwgpzSm/jy822
-X-Gm-Message-State: AOJu0YyTv2qRgPGm/j2bbOYNB5+bV7IXlpTPwwE1CJ5KTYIwaaxOczhA
-	fgFo5dLIBNp6hT6lCj0dbH16D5zcyviU3YKbwlghs8OullzyGgpj5++WMIA19DImRlrA61z/09W
-	a1RfUPm8cfE04ZY9HiIS7OV3TGo8=
-X-Google-Smtp-Source: AGHT+IHhJdeeDpS76IDj68NZSHlaeZBVsNJkwgWvAhU1PNPDrzgrgarPIYTNLvW7O8ElosU15zALYFfGTD9297NASQM=
-X-Received: by 2002:a05:6870:d888:b0:24c:b2d0:bfff with SMTP id
- 586e51a60fabf-24cb2d0c0camr12861111fac.2.1716926282655; Tue, 28 May 2024
- 12:58:02 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506066AB8;
+	Wed, 29 May 2024 05:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716960778; cv=fail; b=ZyROeCMWnoNhEu39pbjkQlfNuuwxkJjO+OLuhHe6hXWYjGM9lVWwTQZSxs4pUKVENsVeuIpC4EH6JkvIQpF4R5CMmyBBsaDb80UfEhld79pd/B5Lk1CUesmgGyRkgeYFjXIGXUemkykxTiTCC0wZkJy1MbMiznrGaaKwk9cJ0fU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716960778; c=relaxed/simple;
+	bh=Squ1HrT4tteCSlz8ZqK9cqltzxzi4y69907LxSIdEFk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sgCBFHRjyWOJmUdvUAy/XgozbV0/XIf3XwASkhAoiN6M7J8IW2+PUL+ky/+pgMUBFNYFElGtwr+QJ0fe/MS5vHI1NgsPmTPPz91doSYApfZ3DIdfAjF+CrzEFjOmscSnPxASAzHWQ7DD3raQVGGoO4jlwNAonSWJDddbJSz2Szg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PU0u3z9u; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716960777; x=1748496777;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Squ1HrT4tteCSlz8ZqK9cqltzxzi4y69907LxSIdEFk=;
+  b=PU0u3z9uOyGFzH8hPAFHqFEUe7zE8Ysdx4Rzx2+FrQPRAU6wC9NtkYIk
+   eJDYAnNWL6J0MBc7IFoiXmHTpVjLK/mFg9fpew61/upNXiVeX9R7v26Z5
+   dHiqeuDTFE7MLPRnc8/kOPm9HZ7mn4eXgqH8W029Py5D78sU1SuNqgP37
+   JFpJoISU4YiDeEUOvZ7iwDMXXwPBnBz41KYfuI/nzzQTtW0ioia/9yPs4
+   idGIyxBJNtgBwqiBd+xJyOk5MIAppyQl1lwCP3OvX7Ad44+xOdJZVHcms
+   gCTwmXuCsU1RMsBbzX4C8mGUPiFWArQ0jWuaflA18gIsMJu49UJX2afcm
+   A==;
+X-CSE-ConnectionGUID: iF+Qyc4MTd6TYC+FlL+6fg==
+X-CSE-MsgGUID: hp4FSPbtRrOX29e9GraCvQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="17174714"
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; 
+   d="scan'208";a="17174714"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2024 22:32:56 -0700
+X-CSE-ConnectionGUID: jEmPkolKSRSt2KttTTNoGg==
+X-CSE-MsgGUID: jNx9bIIoRqeFvn1g2w7o/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; 
+   d="scan'208";a="58488595"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 May 2024 22:32:55 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 28 May 2024 22:32:54 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 28 May 2024 22:32:54 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 28 May 2024 22:32:54 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.40) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 28 May 2024 22:32:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A/fyz55hQ4q7DDfJ3KkhblWvgnhMC1kKRhgB+PvWrTDuHQQP36NsLq+J6FT4bfw6SlS3zXofdLW2MtcsQmE8Mz1QNu0lvBR+3ErY8SlEl6TpiCTkW48iaBD1En68I+jsjd26WOYAOm5AQi2UDzJ3UOT1zcl2YNqWAJ3zzyTPENaiGSVuGjYAx70Hoy5hVh3Kikg4lKBl8ouEDGzSP9Wvzwx6C9M3AGnLNICu2dgVnzXWIYNNBfrrkHKDRjc0Owlcih9qveaIUknbEOCxtow9IDykP651ehrAXIuQEy9/NAHojaPf/dqbgk5coLWYzPGOBpfskri4i5LJU5FKHEubig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q7JY5gVeu+W8cSUaOfirR9bgsOHBXpWfO5lYsXMVzkE=;
+ b=fmXFJker4xew3mO6fyFhX8z6EDtYo+0f+lXt5XUZ9kbNddEnveXdO7Uc8uN14GLbnY9yokf59sZg5Xp2/lPeyPmbtbmM6xJEn+MR9QuA2XzKZIQVSOJ+fJMan3gMPG2HRvZcAf1uX3ppyMkOA1wDx0MblqcuSXyCepgmxPX5fVVzeYSNeld1ZHvCyoEa2O1R5g1pjkCTqliOzGKcvqUl2pZP7yrMyVAQ3NKTyQcsNK3guZ96RziL712hqwY0dllvks+tqesyG5tp0o+94uVYFnRsYfAtmnEGZRhrLg2K1rD5e90K6iZP6ScOLiXxQuESp+nD59tAtGyvHuAzEH0a4g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by SA1PR11MB5827.namprd11.prod.outlook.com (2603:10b6:806:236::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.29; Wed, 29 May
+ 2024 05:32:51 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::fe49:d628:48b1:6091%7]) with mapi id 15.20.7633.018; Wed, 29 May 2024
+ 05:32:51 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+CC: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"james.morse@arm.com" <james.morse@arm.com>, "Luck, Tony"
+	<tony.luck@intel.com>, "bp@alien8.de" <bp@alien8.de>, "dave@stgolabs.net"
+	<dave@stgolabs.net>, "jonathan.cameron@huawei.com"
+	<jonathan.cameron@huawei.com>, "Jiang, Dave" <dave.jiang@intel.com>,
+	"Schofield, Alison" <alison.schofield@intel.com>, "Verma, Vishal L"
+	<vishal.l.verma@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, "helgaas@kernel.org"
+	<helgaas@kernel.org>, "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
+	"oohall@gmail.com" <oohall@gmail.com>, "linmiaohe@huawei.com"
+	<linmiaohe@huawei.com>, "shiju.jose@huawei.com" <shiju.jose@huawei.com>,
+	"Preble, Adam C" <adam.c.preble@intel.com>, "lukas@wunner.de"
+	<lukas@wunner.de>, "Smita.KoralahalliChannabasappa@amd.com"
+	<Smita.KoralahalliChannabasappa@amd.com>, "rrichter@amd.com"
+	<rrichter@amd.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Tsaur, Erwin"
+	<erwin.tsaur@intel.com>, "Kuppuswamy, Sathyanarayanan"
+	<sathyanarayanan.kuppuswamy@intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, "Wanyan, Feiting" <feiting.wanyan@intel.com>,
+	"Wang, Yudong" <yudong.wang@intel.com>, "Peng, Chao P"
+	<chao.p.peng@intel.com>, "qingshun.wang@linux.intel.com"
+	<qingshun.wang@linux.intel.com>
+Subject: RE: [PATCH v4 0/3] PCI/AER: Handle Advisory Non-Fatal error
+Thread-Topic: [PATCH v4 0/3] PCI/AER: Handle Advisory Non-Fatal error
+Thread-Index: AQHaoe4Ux4R4hNcGZE+MxU37vUhLVrGtzddw
+Date: Wed, 29 May 2024 05:32:50 +0000
+Message-ID: <SJ0PR11MB6744795B3426AA104D504B9992F22@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240509084833.2147767-1-zhenzhong.duan@intel.com>
+In-Reply-To: <20240509084833.2147767-1-zhenzhong.duan@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|SA1PR11MB5827:EE_
+x-ms-office365-filtering-correlation-id: d2d8943d-31c2-4f5d-82d9-08dc7fa0c83a
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|376005|1800799015|366007|7416005|38070700009;
+x-microsoft-antispam-message-info: =?us-ascii?Q?eaaRHpW2A2RJR1UzXOT/dzQl/dpWmolzzvWMaBSlRPX0im/jSJhoy2EuSvg1?=
+ =?us-ascii?Q?pg4YX4gRzxh7B9sfk7sT9xOQbw6e1ZdAAzpJI9jCkPvmwGisVgaGym9IqpMj?=
+ =?us-ascii?Q?2y+0JS4R8F8z7kYfQdOGtMmtfc0CrBuzEwDHY1oAvPwNbWdFqzoaMt3cgj1b?=
+ =?us-ascii?Q?TC1FF9Qe9EKJ/A3cToAU/5tlhABuYaUl+pw/aLPr9GDZrXP9DHp+Rc9yw+3n?=
+ =?us-ascii?Q?DM0sytKxwrZ2/YkKGDR15AY4+Ipxu/MGSG/uqO4AvmVDpLCVA46xvT6aZtF8?=
+ =?us-ascii?Q?9a7f+zns5/eDBAhVYIBtEHKxi4pmE+aNkXRO0tjaWMyG8JeltDsAdVOlnQ5r?=
+ =?us-ascii?Q?o+xVhrUrGhr2YCKczGbuzkbOdWqurocdtZw1Cc77n21Tz7IM+sF9hbEcZ7T8?=
+ =?us-ascii?Q?5Nn4xosfDtg9/2cVGDl9MYCCgZPtTsp8ZN2QXeLkALLnyLSMpmhirapZwJHS?=
+ =?us-ascii?Q?PtDfLAxn0SkGQzBH1edtr5WWd323XP9XW2Jly3EYiqEj8allozognwI+XlgM?=
+ =?us-ascii?Q?fFL+AwH6HahGlsMSOLlVQqMzGzWAEvA+UnAJdJLDbspKP7/Ki7j+hRS3Kba2?=
+ =?us-ascii?Q?eNDvbpk3AZFTYXz54Har7yVFMKmusXn059X3hvMeATWFXSzAWyhbhRoKZY4w?=
+ =?us-ascii?Q?f7Jg9w7+biwjruNTtBZWDMwdr+FXo95ofPwyrdBbkiY2dA6PRFD9GlKr5Pbc?=
+ =?us-ascii?Q?Sw9/J3NVfG5/Eo9DI2D6ov4wFl92DJL/XCgDCvGEaGmrr/ka2YuAzNEqhTjb?=
+ =?us-ascii?Q?7LbzskhPAKWtysf9Wm0ZY9TkWrX3qPdopqcUUJvEKveY76rVs07TRqg1+6R3?=
+ =?us-ascii?Q?yJrsojqatxOXsoq0Jpea1H9+Ql1t3BEgoYgcqago6gnIYIXs9Rpes9dVL2jk?=
+ =?us-ascii?Q?YWfge5zZPCkL+OKCp92LrXTdoSuAvNtjigl+BeGSoutOt0nFTEts/zm6OsTa?=
+ =?us-ascii?Q?yBunAJlzCAvt1QeBN1OfcBemML3fdijjIoDiu1Txv9ltjBi+0+LTJdj0XzgX?=
+ =?us-ascii?Q?Y9ff3nPvm8gpeoiCihin5wjZwBmqp7nkaLZs7svY+PX59l9x+FhKGpOIan3C?=
+ =?us-ascii?Q?hhoOCQ07SxmAcSdJ6LPrgfbXqfl8QmS6w6WBI/EMuziYQyPKR2SfxdR/aMmF?=
+ =?us-ascii?Q?jXNrluxgjPkrlXgzkKov3UvRQwBRUbNEFi0sId8L48WqGWphFiqGyO3ry0TU?=
+ =?us-ascii?Q?nf63rf9mDf5N/wrG+uN3mTnEKteeOq0gmEq5o6Ublmtna/Lh5rnKX5UvYbwV?=
+ =?us-ascii?Q?5fITS8pQrl9rnjTV7OuL5zuflr/XT0WhXK9UjOJ1acdVWdemmlKddlLSqjdG?=
+ =?us-ascii?Q?U+k=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6744.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(7416005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Yn/RHgP1EZnIwtCFaCkW6xI+OUbh0GYK6z5EuOTAcFJhf/PFKWdM+w6i//Gw?=
+ =?us-ascii?Q?NMpl4xp8iPN5r9PnO1Ai0S7YpFOAlBEi2hrtbUCivlDWRgCopvbbGjtMvws9?=
+ =?us-ascii?Q?rQ4GGq9Mj8Lrh0KJ7fLVA6tSV5TPqnOaBdSUJbwUGwBr/4t3jgqHGUEchrkW?=
+ =?us-ascii?Q?cTYuUgowVd4piBaQp+Q17BgssASIySFL+G05CAdjm3w1aiZy7rs3kur8/VxA?=
+ =?us-ascii?Q?gdGPnAErb0PNP8Po7utSQ3DwBBm5K7jtTiOMSkymbmhMnFVkN5kegUFxV/eh?=
+ =?us-ascii?Q?6RL8x7DO66eBIJVmw/YckNpN9hiwfDqveO9hXdBEpync85wWCncjZpyKsHHB?=
+ =?us-ascii?Q?2q906ehhfSpJ6mm1nn90KBVTZ5vOLb0Tl85IvNGoVwXCtPyzz8+4FGkzIbta?=
+ =?us-ascii?Q?DkODJ1woQAsFCikcIHK0I/tOU65aCh2rIfzaZNW36uhkkOu5ORJmSzvw4LEs?=
+ =?us-ascii?Q?YcDath5o31D0bhu3VbRg5mUGrQOV8f9218bzIuf94CmkpaAC8GtVaP/GPwsX?=
+ =?us-ascii?Q?Bz/+hM3UeHdU24QfYu+4FKtIK5EVEcGIfwldKq2mdK7rDqCk06sjZVjNtxEx?=
+ =?us-ascii?Q?z5VOmmsTYLwQ36nkCIwTGVaRzInJHVjo4D//e8zG0M2vObpANodDCVFDBhUX?=
+ =?us-ascii?Q?F6FRmrpCWa+Jag5VIVkSVMcnSszIg3haz8AOwxUaI+kcNGgQSN94tqMUMOEJ?=
+ =?us-ascii?Q?f0+RQ9yYD8z4JHRnitTaS8wCGVhnNO4IszBPP9e5xtmT8xtWhKH32JPpWoyT?=
+ =?us-ascii?Q?wrCfODI6XiTFETn6AXEZw0OoOxTy2uXIb7PiXKTpqsjwQS7Suf7dQtXAU4l7?=
+ =?us-ascii?Q?51ABGEpOrcUUBKzRcMZ39b1RotuUO6QdkEdetwC/f6bHiXLTEM006bU8y2XF?=
+ =?us-ascii?Q?Val8AAnYf3YxeAiXMAqQwpRgsKjlFdmrS3FJSwG1B1XqRA8kPSdK8VwWCD9a?=
+ =?us-ascii?Q?ZM3OhIWHrmpcCgsPSpbjcdOkvnn4p+bAsm7hMKrs3Dd7GSxOD5OPe3KXPlbQ?=
+ =?us-ascii?Q?bpLrNc28HMhW78oELI1BVR5f2cHL5jfP6FDFvDWPGxLBdpmc/HsYqr1KpKpP?=
+ =?us-ascii?Q?uwVP6XTGSIX/SDmBITr7R1D8kXBl0MEX41kDtcpWXxAOK10LJkXJ4eRKjL/z?=
+ =?us-ascii?Q?9aDhoYyrJHnALfU42aXrwuX/ROG3c9klPESAMEb5Mf4lFOos0T5k6TrJmTfD?=
+ =?us-ascii?Q?YBMHNtKXXYqlFRmK7F5DfoG7JAidoareuvpCDcokLI2y3BQ2kPPRtXT62KU4?=
+ =?us-ascii?Q?Z4JyUgOTNu273nOhKj5SSabpAPmy8bVbb4CQdUg8YQvLwZX8hy+llRAx8REt?=
+ =?us-ascii?Q?UgEV6E0uOUEY6yE6vRr+siQA9MuOeSKC/vmzCgJBIZLk7j5cvLNzB+eerEyl?=
+ =?us-ascii?Q?Gg+YaNuPWzLTntT4ve04rlUJhIdJMdEtS/z1qN9x3TepolUwreqQpHPG4pSd?=
+ =?us-ascii?Q?wB0yOU+wFe5faVynHvAWiMIHiN/DUKBNvIp49DMneBt0tjoVaoExZC7sIDyR?=
+ =?us-ascii?Q?JALBexp924HxFaSpICgxtn2aTvNjes3JXCWHjYJiRfWCKF4TGnPQ4Mtwmau3?=
+ =?us-ascii?Q?7BDMZ2OxYr26y9qXCo2DSfu2uHSuvw5JWkjwKqyQ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240526-acpi-ac-changed-v1-1-f4b5997753bb@weissschuh.net> <r5x24fxz5cbyd4laoteq577toqfblfmy4btn4c6o6rrl7godeu@4fgsimcubzrd>
-In-Reply-To: <r5x24fxz5cbyd4laoteq577toqfblfmy4btn4c6o6rrl7godeu@4fgsimcubzrd>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 28 May 2024 21:57:51 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hNs5vSMuPgtg=tbu=4Y1UHeGUnGM7Fo_LgjZmP1SqkZg@mail.gmail.com>
-Message-ID: <CAJZ5v0hNs5vSMuPgtg=tbu=4Y1UHeGUnGM7Fo_LgjZmP1SqkZg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: AC: Properly notify powermanagement core about changes
-To: Sebastian Reichel <sebastian.reichel@collabora.com>, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Rajas Paranjpe <paranjperajas@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2d8943d-31c2-4f5d-82d9-08dc7fa0c83a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2024 05:32:51.0080
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HHYGRMbUCwnMB1lPUEZ27HX9JeV3k4o7xzXIgoBz/icAG23RPgUBtWcI1hLrEWpfpRcjCH219xJwwzVskrlcOgoRFokYFKI8E37v/XX1b9Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5827
+X-OriginatorOrg: intel.com
 
-On Mon, May 27, 2024 at 11:43=E2=80=AFPM Sebastian Reichel
-<sebastian.reichel@collabora.com> wrote:
->
-> Hi,
->
-> On Sun, May 26, 2024 at 11:40:01PM +0200, Thomas Wei=C3=9Fschuh wrote:
-> > The powermanagement core does various actions when a power-supply chang=
-es.
-> > It calls into notifiers, LED triggers, other power supplies and emits a=
-n uevent.
-> >
-> > To make sure that all these actions happen properly call power_supply_c=
-hanged().
-> >
-> > Reported-by: Rajas Paranjpe <paranjperajas@gmail.com>
-> > Closes: https://github.com/MrChromebox/firmware/issues/420#issuecomment=
--2132251318
-> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> > ---
->
-> Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
->
-> -- Sebastian
->
-> >  drivers/acpi/ac.c  | 4 ++--
-> >  drivers/acpi/sbs.c | 4 ++--
-> >  2 files changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> > index 2d4a35e6dd18..09a87fa222c7 100644
-> > --- a/drivers/acpi/ac.c
-> > +++ b/drivers/acpi/ac.c
-> > @@ -145,7 +145,7 @@ static void acpi_ac_notify(acpi_handle handle, u32 =
-event, void *data)
-> >                                                 dev_name(&adev->dev), e=
-vent,
-> >                                                 (u32) ac->state);
-> >               acpi_notifier_call_chain(adev, event, (u32) ac->state);
-> > -             kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-> > +             power_supply_changed(ac->charger);
-> >       }
-> >  }
-> >
-> > @@ -268,7 +268,7 @@ static int acpi_ac_resume(struct device *dev)
-> >       if (acpi_ac_get_state(ac))
-> >               return 0;
-> >       if (old_state !=3D ac->state)
-> > -             kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-> > +             power_supply_changed(ac->charger);
-> >
-> >       return 0;
-> >  }
-> > diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-> > index 94e3c000df2e..dc8164b182dc 100644
-> > --- a/drivers/acpi/sbs.c
-> > +++ b/drivers/acpi/sbs.c
-> > @@ -610,7 +610,7 @@ static void acpi_sbs_callback(void *context)
-> >       if (sbs->charger_exists) {
-> >               acpi_ac_get_present(sbs);
-> >               if (sbs->charger_present !=3D saved_charger_state)
-> > -                     kobject_uevent(&sbs->charger->dev.kobj, KOBJ_CHAN=
-GE);
-> > +                     power_supply_changed(sbs->charger);
-> >       }
-> >
-> >       if (sbs->manager_present) {
-> > @@ -622,7 +622,7 @@ static void acpi_sbs_callback(void *context)
-> >                       acpi_battery_read(bat);
-> >                       if (saved_battery_state =3D=3D bat->present)
-> >                               continue;
-> > -                     kobject_uevent(&bat->bat->dev.kobj, KOBJ_CHANGE);
-> > +                     power_supply_changed(bat->bat);
-> >               }
-> >       }
-> >  }
-> >
-> > ---
+Hi,
 
-Applied as 6.10-rc material, thanks!
+Kindly ping.
+Appreciate comments and suggestions so I could go ahead.
+
+Thanks
+Zhenzhong
+
+>-----Original Message-----
+>From: Duan, Zhenzhong <zhenzhong.duan@intel.com>
+>Subject: [PATCH v4 0/3] PCI/AER: Handle Advisory Non-Fatal error
+>
+>Hi,
+>
+>This is a relay work of Qingshun's v2 [1], but changed to focus on ANFE
+>processing as subject suggests and drops trace-event for now. I think it's
+>a bit heavy to do extra IOes to get PCIe registers only for trace purpose
+>and not see it a community request for now.
+>
+>According to PCIe Base Specification Revision 6.1, Sections 6.2.3.2.4 and
+>6.2.4.3, certain uncorrectable errors will signal ERR_COR instead of
+>ERR_NONFATAL, logged as Advisory Non-Fatal Error(ANFE), and set bits in
+>both Correctable Error(CE) Status register and Uncorrectable Error(UE)
+>Status register. Currently, when handling AER events the kernel will only
+>look at CE status or UE status, but never both. In the ANFE case, bits set
+>in the UE status register will not be reported and cleared until the next
+>FE/NFE arrives.
+>
+>For instance, previously, when the kernel receives an ANFE with Poisoned
+>TLP in OS native AER mode, only the status of CE will be reported and
+>cleared:
+>
+>  AER: Correctable error message received from 0000:b7:02.0
+>  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
+ver ID)
+>    device [8086:0db0] error status/mask=3D00002000/00000000
+>     [13] NonFatalErr
+>
+>If the kernel receives a Malformed TLP after that, two UEs will be
+>reported, which is unexpected. The Malformed TLP Header is lost since
+>the previous ANFE gated the TLP header logs:
+>
+>  PCIe Bus Error: severity=3D"Uncorrectable (Fatal), type=3DTransaction La=
+yer,
+>(Receiver ID)
+>    device [8086:0db0] error status/mask=3D00041000/00180020
+>     [12] TLP                    (First)
+>     [18] MalfTLP
+>
+>To handle this case properly, calculate potential ANFE related status bits
+>and save in aer_err_info. Use this information to determine the status bit=
+s
+>that need to be cleared.
+>
+>Now, for the previous scenario, both CE status and related UE status will
+>be reported and cleared after ANFE:
+>
+>  AER: Correctable error message received from 0000:b7:02.0
+>  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
+ver ID)
+>    device [8086:0db0] error status/mask=3D00002000/00000000
+>     [13] NonFatalErr
+>    Uncorrectable errors that may cause Advisory Non-Fatal:
+>     [18] TLP
+>
+>Note:
+>checkpatch.pl will produce following warnings on PATCH2/3:
+>
+>WARNING: 'UE' may be misspelled - perhaps 'USE'?
+>#22:
+>uncorrectable error(UE) status should be cleared. However, there is no
+>
+>...similar warnings omitted...
+>
+>This is a false-positive, so not fixed.
+>
+>WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit
+>description?)
+>#10:
+>  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
+ver ID)
+>
+>...similar warnings omitted...
+>
+>For readability reasons, these warnings are not fixed.
+>
+>
+>
+>[1] https://lore.kernel.org/linux-pci/20240125062802.50819-1-
+>qingshun.wang@linux.intel.com
+>
+>Thanks
+>Qingshun, Zhenzhong
+>
+>Changelog:
+>v4:
+>  - Fix a race in anfe_get_uc_status() (Jonathan)
+>  - Add a comment to explain side effect of processing ANFE as NFE (Jonath=
+an)
+>  - Drop the check for PCI_EXP_DEVSTA_NFED
+>
+>v3:
+>  - Split ANFE print and processing to two patches (Bjorn)
+>  - Simplify ANFE handling, drop trace event
+>  - Polish comments and patch description
+>  - Add Tested-by
+>
+>v2:
+>  - Reference to the latest PCIe Specification in both commit messages
+>    and comments, as suggested by Bjorn Helgaas.
+>  - Describe the reason for storing additional information in
+>    aer_err_info in the commit message of PATCH 1, as suggested by Bjorn
+>    Helgaas.
+>  - Add more details of behavior changes in the commit message of PATCH
+>    2, as suggested by Bjorn Helgaas.
+>
+>v3: https://lore.kernel.org/lkml/20240417061407.1491361-1-
+>zhenzhong.duan@intel.com
+>v2: https://lore.kernel.org/linux-pci/20240125062802.50819-1-
+>qingshun.wang@linux.intel.com
+>v1: https://lore.kernel.org/linux-pci/20240111073227.31488-1-
+>qingshun.wang@linux.intel.com
+>
+>Zhenzhong Duan (3):
+>  PCI/AER: Store UNCOR_STATUS bits that might be ANFE in aer_err_info
+>  PCI/AER: Print UNCOR_STATUS bits that might be ANFE
+>  PCI/AER: Clear UNCOR_STATUS bits that might be ANFE
+>
+> drivers/pci/pci.h      |  1 +
+> drivers/pci/pcie/aer.c | 75
+>+++++++++++++++++++++++++++++++++++++++++-
+> 2 files changed, 75 insertions(+), 1 deletion(-)
+>
+>--
+>2.34.1
+
 
