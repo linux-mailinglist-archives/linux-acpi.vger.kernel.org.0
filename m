@@ -1,72 +1,72 @@
-Return-Path: <linux-acpi+bounces-6127-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6128-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05F3F8D70B7
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jun 2024 17:07:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52908D70BB
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jun 2024 17:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09A27B20EA5
-	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jun 2024 15:07:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EEE2283046
+	for <lists+linux-acpi@lfdr.de>; Sat,  1 Jun 2024 15:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747A0152E00;
-	Sat,  1 Jun 2024 15:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334631552F9;
+	Sat,  1 Jun 2024 15:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="RHJ8TfGv"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="NzoiAJng"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1205153585
-	for <linux-acpi@vger.kernel.org>; Sat,  1 Jun 2024 15:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304F915380C
+	for <linux-acpi@vger.kernel.org>; Sat,  1 Jun 2024 15:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717254348; cv=none; b=r76sEa+6/cDe2q8RzjvcdRQIEtF9Cir/gwQUfJ9Hxt2J2Q2meAhdgFXzd1o9o8PAbniyOpu3HT3xAIQln0XyKvWK7ND9i+Vyma2i5nMNFYK83BKSgfcJNgYOu7DQQur5UOE8CHPb3eSqfpLyCHod+sUjpcT7kK7F8Qu8FiySdVY=
+	t=1717254357; cv=none; b=aRDPYs5/09KnbrLabhIb8AKH3sAe89hwA0VtZiUU1I/2e4OiY514zsHtxZpam3Miy0EYcZeW6GVI9OBshrZD9NKik3kd0i1eEwkCpoI3n02ZYCbkVp9IM/88Uk9HcK73azE2geLvapbmHQi4P0IoCrNi07q4E155AEIJLpE2Nd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717254348; c=relaxed/simple;
-	bh=qhqCGi8o9IAINNxfLRxMEmmSPodYgvrNH462+zJ18l4=;
+	s=arc-20240116; t=1717254357; c=relaxed/simple;
+	bh=HduTz1DhrFN/riIadkO3PLfqAkboPSlWmc+plvBcO6E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gqbVKgJyKBIJ6Gf0bSikQHKF6vYUhYNOEuTPmWdq/nvP3DSYa8PKR7EYtQT5rSt2XqZ3emNp858DYIvHWgCZRV924ifMM1cfwehi3DtjT8A8WqUGvAuGO9ANpe4Ns/vIbIOBJlrdU/LXtCXlN7G6A+rif2HoECap2m+2v73sNyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=RHJ8TfGv; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=huinPfmCHTE15ZdKubY/jKAane8uAUOUF/Anen8i7nkjPmoALoeB3ddMw1KTSCNcyKAjCDVBhohEca0TJMHxAGswpGjC/EoLOb/65A/87jRbN8b33Vqn+3y51j8GsO2aJHZOkxR2Uh9a6gTEyukafPO9wyDRPq7R49a7FECyEko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=NzoiAJng; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7024426c75dso1594909b3a.1
-        for <linux-acpi@vger.kernel.org>; Sat, 01 Jun 2024 08:05:46 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-6c7df306e86so389403a12.2
+        for <linux-acpi@vger.kernel.org>; Sat, 01 Jun 2024 08:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1717254346; x=1717859146; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1717254353; x=1717859153; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BG93T+gcNC0mbkbP77au2VNz1Cnxnueu2TjA3uMrqLg=;
-        b=RHJ8TfGvuwYRlkH8272sfnb4OreNRjQwCYQdTuPbJPiBTQXtvjEWXXe+xGCaokNXs7
-         Z5Olt75JXfyrNal161/Vbfv7TiikbQAmCJQ/SgfyD8K2Dc5QmiV/o1loHux2A3uA0Fu4
-         HLPwbw0f76Ds0263CrCJpnmMu/VD/dzEml4ta8gKbbkSmZjISgRHoO1LEHwxZS3EWZ9U
-         ztEB/mzYlZnfiwV5ZU49bmW8qsvvA1VmlQHbrOhLll/vnMz4p2i6C/GcBELg7d5YxC2N
-         RBmMSQUAagsuznccx4i6VMWhjL+c2XThy4y+HKaVxI/YHHSag9wt5Bv2XAW9SH1dZwiB
-         TXBA==
+        bh=Ix1ya63KBdI8Z0XgPmU9L/YxtTKVM9YoT3mmPmDGYrI=;
+        b=NzoiAJngDeXUMYojC8EnYQcx/47x3i61LcvozReASTIG2B91L6zycNPMdjTTzwn5b8
+         4RpzI0iWj9xWnrin/WYYv1RG8dK/vidJs3akauU3txcD5+tvkMWyfuSw8N2w5s1GKqS8
+         KprEx4YiXLChP84SYVisUlA+PdvRRU60Ley4F4auJ7SJNuelVD0sw0Wglc5kp1oZUCvk
+         k+2NoTJGU6ps4fWAl2McwjfUPYe0SnXMFiox79YMrobKhxQv3/2rbrOGTYBk9wKa3diQ
+         qJoUZfC1MF0/x4mFuR2OQhmYpMi29fzIAPjVOQTghwrG8l4wddIbPP7rs3q5BwCrS/Rm
+         N/CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717254346; x=1717859146;
+        d=1e100.net; s=20230601; t=1717254353; x=1717859153;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BG93T+gcNC0mbkbP77au2VNz1Cnxnueu2TjA3uMrqLg=;
-        b=BtTf0M9Nl6x0WdeXwfzXAyakJ9swnSgCny4lRGxZfcz5sNKfGEiosYVreIVww4Fmn5
-         ug+JOSPuN/NfsbPVleJeqJH5DSE14w/iwvmTNznVql8FpeGBqXbphHIkAQgZY8OvMmRt
-         2N6zAF4tGW8WSKm7B9nhagdNLR2HgmroTFA9Op3/3e/AxrV92r4pDCXRr5yb0GC3U9Li
-         TYJbQeeCelHwVx8dD9L49gWLvT9RJLq7bAklHbsM9MblBYW51uAwTwU5wOJAvWqH/1Jk
-         sF+Sd1vyMdQhXdfXUq8qDkg0b3PQUu7sr9Y5/XcWU5O6f/0infUIQcZxq/aF7ZSsvzzK
-         AYaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/+pVyc9eHMwRU3RgZcq8iKzQzLXyHQAc3hEdCfR9UVTt+Sdk+HcSPnYqkr08e67DEY+/je/Inymmif5XG5fCPpbnzVj3FeOnqzQ==
-X-Gm-Message-State: AOJu0YyWWVZ+vGT+FWW1WgWn3LYkHTdkSWs0C53f6mNINHJueWgCsiX1
-	MtRW0WCnLLojMAvvnf24qMLcMyuyLBUpZyEIMObxazD/Nf62a3dr6kboc/oPMGM=
-X-Google-Smtp-Source: AGHT+IGt8M7K1Q6B0sZgxbaoEdNcJvuzpgSkdhFy04fdredDtbILIAAzArLyrTUTnKrXnoT2rN90ng==
-X-Received: by 2002:a05:6a20:f386:b0:1a7:55f2:c92c with SMTP id adf61e73a8af0-1b26f254173mr5234362637.45.1717254346265;
-        Sat, 01 Jun 2024 08:05:46 -0700 (PDT)
+        bh=Ix1ya63KBdI8Z0XgPmU9L/YxtTKVM9YoT3mmPmDGYrI=;
+        b=ngmbA2ZPnNfXVxtOfZgV2mGbA55yeKiS15nA9HLWICgycSP6N7b5U9CcHGDpsQNWJj
+         ODNs58+1FNBsYAOyt5nPDMFa7cuFRFw2KD4NFE4iu5dSKDHZcAisbn041NdLHLvW/9Vs
+         s849KH8nNdUO/SwISaPOc/mBPmH1ArWBZc50OCwB/nYwe5IUJSV2HZ3Np/njFg67gYz1
+         8BfUO21d5HJS7o+gd0JI0g18ZpoLBlIxvNTzaLm2G7EzYfj+bAoXREEJaVmYti41e3mJ
+         wuMWwhpyMBnqVhDOtHw2uARVwzLp+vprKB1ek55ZN+did74B0tPTnJroy9V23nl9OWLg
+         /8xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXW+xKPq303sN+CBtdcPlsZj5pgZ2Ks/XXBJWUZGNZTB8mm6UpVVRGvPw6WXB3btXCJ+x/+FLCHT2tnEM77XOTHqsrmVzUC0Y/qtw==
+X-Gm-Message-State: AOJu0Yzg/JycgOMp325geWxm0YqK+htD5GsIKN2kQfArqwUdGKaa3Z2p
+	oOFy16uJPYfznF/RP07QzAy0ctoSaAo1+t3TLsv2cuxtiHXAc9Bd0pCX4Nh/hWE=
+X-Google-Smtp-Source: AGHT+IFPfDTfjt04oqk3q/MnI8wec/rdNH1fBWtlh1LZy3yCp1vhuEJfNDXv5tm5xoTuwiRZpnV72g==
+X-Received: by 2002:a05:6a20:914e:b0:1af:4ea2:5424 with SMTP id adf61e73a8af0-1b26f20d7e3mr5216779637.33.1717254353608;
+        Sat, 01 Jun 2024 08:05:53 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.187.237])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6c35a4ba741sm2559410a12.85.2024.06.01.08.05.39
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6c35a4ba741sm2559410a12.85.2024.06.01.08.05.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jun 2024 08:05:45 -0700 (PDT)
+        Sat, 01 Jun 2024 08:05:52 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -94,9 +94,9 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	Haibo1 Xu <haibo1.xu@intel.com>,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
 	Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH v6 12/17] ACPI: RISC-V: Implement function to add implicit dependencies
-Date: Sat,  1 Jun 2024 20:34:06 +0530
-Message-Id: <20240601150411.1929783-13-sunilvl@ventanamicro.com>
+Subject: [PATCH v6 13/17] irqchip/riscv-intc: Add ACPI support for AIA
+Date: Sat,  1 Jun 2024 20:34:07 +0530
+Message-Id: <20240601150411.1929783-14-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240601150411.1929783-1-sunilvl@ventanamicro.com>
 References: <20240601150411.1929783-1-sunilvl@ventanamicro.com>
@@ -108,210 +108,189 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RISC-V interrupt controllers for wired interrupts are platform devices
-and hence their driver will be probed late. Also, APLIC which is one
-such interrupt controller can not be probed early since it needs MSI
-services. This needs a probing order between the interrupt controller
-driver and the device drivers.
-
-_DEP is typically used to indicate such dependencies. However, the
-dependency may be already available like GSI mapping. Hence, instead of
-an explicit _DEP, architecture can find the implicit dependencies and
-add to the dependency list.
-
-For RISC-V, add the dependencies for below use cases.
-
-1) For devices which has IRQ resource, find out the interrupt controller
-using GSI number map and add the dependency.
-
-2) For PCI host bridges:
-        a) If _PRT indicate PCI link devices, add dependency on the link
-           device.
-        b) If _PRT indicates GSI, find out the interrupt controller
-           using GSI number map and add the dependency.
+The RINTC subtype structure in MADT also has information about other
+interrupt controllers. Save this information and provide interfaces to
+retrieve them when required by corresponding drivers.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- drivers/acpi/riscv/irq.c | 155 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 155 insertions(+)
+ arch/riscv/include/asm/irq.h     | 33 ++++++++++++
+ drivers/irqchip/irq-riscv-intc.c | 90 ++++++++++++++++++++++++++++++++
+ 2 files changed, 123 insertions(+)
 
-diff --git a/drivers/acpi/riscv/irq.c b/drivers/acpi/riscv/irq.c
-index 0473428e8d1e..2878ae48131f 100644
---- a/drivers/acpi/riscv/irq.c
-+++ b/drivers/acpi/riscv/irq.c
-@@ -21,6 +21,12 @@ struct riscv_ext_intc_list {
- 	struct list_head list;
- };
+diff --git a/arch/riscv/include/asm/irq.h b/arch/riscv/include/asm/irq.h
+index 44a0b128c602..51d86f0b80d2 100644
+--- a/arch/riscv/include/asm/irq.h
++++ b/arch/riscv/include/asm/irq.h
+@@ -12,6 +12,8 @@
  
-+struct acpi_irq_dep_ctx {
-+	int rc;
-+	unsigned int index;
-+	acpi_handle handle;
-+};
+ #include <asm-generic/irq.h>
+ 
++#define INVALID_CONTEXT UINT_MAX
 +
- LIST_HEAD(ext_intc_list);
+ void riscv_set_intc_hwnode_fn(struct fwnode_handle *(*fn)(void));
  
- static int irqchip_cmp_func(const void *in0, const void *in1)
-@@ -62,6 +68,21 @@ static void riscv_acpi_update_gsi_handle(u32 gsi_base, acpi_handle handle)
- 	acpi_handle_err(handle, "failed to find the GSI mapping entry\n");
+ struct fwnode_handle *riscv_get_intc_hwnode(void);
+@@ -28,6 +30,11 @@ enum riscv_irqchip_type {
+ int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+ 			    u32 *id, u32 *nr_irqs, u32 *nr_idcs);
+ struct fwnode_handle *riscv_acpi_get_gsi_domain_id(u32 gsi);
++unsigned long acpi_get_intc_index_hartid(u32 index);
++unsigned long acpi_get_ext_intc_parent_hartid(unsigned int plic_id, unsigned int ctxt_idx);
++unsigned int acpi_get_plic_nr_contexts(unsigned int plic_id);
++unsigned int acpi_get_plic_context(unsigned int plic_id, unsigned int ctxt_idx);
++int __init acpi_get_imsic_mmio_info(u32 index, struct resource *res);
+ 
+ #else
+ static inline int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+@@ -36,6 +43,32 @@ static inline int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi
+ 	return 0;
  }
  
-+static acpi_handle riscv_acpi_get_gsi_handle(u32 gsi)
++static inline unsigned long acpi_get_intc_index_hartid(u32 index)
 +{
-+	struct riscv_ext_intc_list *ext_intc_element;
-+	struct list_head *i, *tmp;
++	return INVALID_HARTID;
++}
 +
-+	list_for_each_safe(i, tmp, &ext_intc_list) {
-+		ext_intc_element = list_entry(i, struct riscv_ext_intc_list, list);
-+		if (gsi >= ext_intc_element->gsi_base &&
-+		    gsi < (ext_intc_element->gsi_base + ext_intc_element->nr_irqs))
-+			return ext_intc_element->handle;
++static inline unsigned long acpi_get_ext_intc_parent_hartid(unsigned int plic_id,
++							    unsigned int ctxt_idx)
++{
++	return INVALID_HARTID;
++}
++
++static inline unsigned int acpi_get_plic_nr_contexts(unsigned int plic_id)
++{
++	return INVALID_CONTEXT;
++}
++
++static inline unsigned int acpi_get_plic_context(unsigned int plic_id, unsigned int ctxt_idx)
++{
++	return INVALID_CONTEXT;
++}
++
++static inline int __init acpi_get_imsic_mmio_info(u32 index, struct resource *res)
++{
++	return 0;
++}
++
+ #endif /* CONFIG_ACPI */
+ 
+ #endif /* _ASM_RISCV_IRQ_H */
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 4f3a12383a1e..3c6494f1cb02 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -250,6 +250,85 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
+ 
+ #ifdef CONFIG_ACPI
+ 
++struct rintc_data {
++	union {
++		u32		ext_intc_id;
++		struct {
++			u32	context_id	: 16,
++				reserved	:  8,
++				aplic_plic_id	:  8;
++		};
++	};
++	unsigned long		hart_id;
++	u64			imsic_addr;
++	u32			imsic_size;
++};
++
++static u32 nr_rintc;
++static struct rintc_data *rintc_acpi_data[NR_CPUS];
++
++#define for_each_matching_plic(_plic_id)				\
++	unsigned int _plic;						\
++									\
++	for (_plic = 0; _plic < nr_rintc; _plic++)			\
++		if (rintc_acpi_data[_plic]->aplic_plic_id != _plic_id)	\
++			continue;					\
++		else
++
++unsigned int acpi_get_plic_nr_contexts(unsigned int plic_id)
++{
++	unsigned int nctx = 0;
++
++	for_each_matching_plic(plic_id)
++		nctx++;
++
++	return nctx;
++}
++
++static struct rintc_data *get_plic_context(unsigned int plic_id, unsigned int ctxt_idx)
++{
++	unsigned int ctxt = 0;
++
++	for_each_matching_plic(plic_id) {
++		if (ctxt == ctxt_idx)
++			return rintc_acpi_data[_plic];
++
++		ctxt++;
 +	}
 +
 +	return NULL;
 +}
 +
- int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
- 			    u32 *id, u32 *nr_irqs, u32 *nr_idcs)
- {
-@@ -172,3 +193,137 @@ void __init riscv_acpi_init_gsi_mapping(void)
- 	if (acpi_table_parse_madt(ACPI_MADT_TYPE_APLIC, riscv_acpi_aplic_parse_madt, 0) > 0)
- 		acpi_get_devices("RSCV0002", riscv_acpi_create_gsi_map, NULL, NULL);
- }
-+
-+static acpi_status riscv_acpi_irq_get_parent(struct acpi_resource *ares, void *context)
++unsigned long acpi_get_ext_intc_parent_hartid(unsigned int plic_id, unsigned int ctxt_idx)
 +{
-+	struct acpi_irq_dep_ctx *ctx = context;
-+	struct acpi_resource_irq *irq;
-+	struct acpi_resource_extended_irq *eirq;
++	struct rintc_data *data = get_plic_context(plic_id, ctxt_idx);
 +
-+	switch (ares->type) {
-+	case ACPI_RESOURCE_TYPE_IRQ:
-+		irq = &ares->data.irq;
-+		if (ctx->index >= irq->interrupt_count) {
-+			ctx->index -= irq->interrupt_count;
-+			return AE_OK;
-+		}
-+		ctx->handle = riscv_acpi_get_gsi_handle(irq->interrupts[ctx->index]);
-+		return AE_CTRL_TERMINATE;
-+	case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
-+		eirq = &ares->data.extended_irq;
-+		if (eirq->producer_consumer == ACPI_PRODUCER)
-+			return AE_OK;
-+
-+		if (ctx->index >= eirq->interrupt_count) {
-+			ctx->index -= eirq->interrupt_count;
-+			return AE_OK;
-+		}
-+
-+		/* Support GSIs only */
-+		if (eirq->resource_source.string_length)
-+			return AE_OK;
-+
-+		ctx->handle = riscv_acpi_get_gsi_handle(eirq->interrupts[ctx->index]);
-+		return AE_CTRL_TERMINATE;
-+	}
-+
-+	return AE_OK;
++	return data ? data->hart_id : INVALID_HARTID;
 +}
 +
-+static int riscv_acpi_irq_get_dep(acpi_handle handle, unsigned int index, acpi_handle *gsi_handle)
++unsigned int acpi_get_plic_context(unsigned int plic_id, unsigned int ctxt_idx)
 +{
-+	struct acpi_irq_dep_ctx ctx = {-EINVAL, index, NULL};
++	struct rintc_data *data = get_plic_context(plic_id, ctxt_idx);
 +
-+	if (!gsi_handle)
-+		return 0;
++	return data ? data->context_id : INVALID_CONTEXT;
++}
 +
-+	acpi_walk_resources(handle, METHOD_NAME__CRS, riscv_acpi_irq_get_parent, &ctx);
-+	*gsi_handle = ctx.handle;
-+	if (*gsi_handle)
-+		return 1;
++unsigned long acpi_get_intc_index_hartid(u32 index)
++{
++	return index >= nr_rintc ? INVALID_HARTID : rintc_acpi_data[index]->hart_id;
++}
 +
++int acpi_get_imsic_mmio_info(u32 index, struct resource *res)
++{
++	if (index >= nr_rintc)
++		return -1;
++
++	res->start = rintc_acpi_data[index]->imsic_addr;
++	res->end = res->start + rintc_acpi_data[index]->imsic_size - 1;
++	res->flags = IORESOURCE_MEM;
 +	return 0;
 +}
 +
-+static u32 riscv_acpi_add_prt_dep(acpi_handle handle)
-+{
-+	struct acpi_buffer buffer = { ACPI_ALLOCATE_BUFFER, NULL };
-+	struct acpi_pci_routing_table *entry;
-+	struct acpi_handle_list dep_devices;
-+	acpi_handle gsi_handle;
-+	acpi_handle link_handle;
-+	acpi_status status;
-+	u32 count = 0;
+ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 				       const unsigned long end)
+ {
+@@ -258,6 +337,15 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 	int rc;
+ 
+ 	rintc = (struct acpi_madt_rintc *)header;
++	rintc_acpi_data[nr_rintc] = kzalloc(sizeof(*rintc_acpi_data[0]), GFP_KERNEL);
++	if (!rintc_acpi_data[nr_rintc])
++		return -ENOMEM;
 +
-+	status = acpi_get_irq_routing_table(handle, &buffer);
-+	if (ACPI_FAILURE(status)) {
-+		acpi_handle_err(handle, "failed to get IRQ routing table\n");
-+		kfree(buffer.pointer);
-+		return 0;
-+	}
-+
-+	entry = buffer.pointer;
-+	while (entry && (entry->length > 0)) {
-+		if (entry->source[0]) {
-+			acpi_get_handle(handle, entry->source, &link_handle);
-+			dep_devices.count = 1;
-+			dep_devices.handles = kcalloc(1, sizeof(*dep_devices.handles), GFP_KERNEL);
-+			if (!dep_devices.handles) {
-+				acpi_handle_err(handle, "failed to allocate memory\n");
-+				continue;
-+			}
-+
-+			dep_devices.handles[0] = link_handle;
-+			count += acpi_scan_add_dep(handle, &dep_devices);
-+		} else {
-+			gsi_handle = riscv_acpi_get_gsi_handle(entry->source_index);
-+			dep_devices.count = 1;
-+			dep_devices.handles = kcalloc(1, sizeof(*dep_devices.handles), GFP_KERNEL);
-+			if (!dep_devices.handles) {
-+				acpi_handle_err(handle, "failed to allocate memory\n");
-+				continue;
-+			}
-+
-+			dep_devices.handles[0] = gsi_handle;
-+			count += acpi_scan_add_dep(handle, &dep_devices);
-+		}
-+
-+		entry = (struct acpi_pci_routing_table *)
-+			((unsigned long)entry + entry->length);
-+	}
-+
-+	kfree(buffer.pointer);
-+	return count;
-+}
-+
-+static u32 riscv_acpi_add_irq_dep(acpi_handle handle)
-+{
-+	struct acpi_handle_list dep_devices;
-+	acpi_handle gsi_handle;
-+	u32 count = 0;
-+	int i;
-+
-+	for (i = 0;
-+	     riscv_acpi_irq_get_dep(handle, i, &gsi_handle);
-+	     i++) {
-+		dep_devices.count = 1;
-+		dep_devices.handles = kcalloc(1, sizeof(*dep_devices.handles), GFP_KERNEL);
-+		if (!dep_devices.handles) {
-+			acpi_handle_err(handle, "failed to allocate memory\n");
-+			continue;
-+		}
-+
-+		dep_devices.handles[0] = gsi_handle;
-+		count += acpi_scan_add_dep(handle, &dep_devices);
-+	}
-+
-+	return count;
-+}
-+
-+u32 arch_acpi_add_auto_dep(acpi_handle handle)
-+{
-+	if (acpi_has_method(handle, "_PRT"))
-+		return riscv_acpi_add_prt_dep(handle);
-+
-+	return riscv_acpi_add_irq_dep(handle);
-+}
++	rintc_acpi_data[nr_rintc]->ext_intc_id = rintc->ext_intc_id;
++	rintc_acpi_data[nr_rintc]->hart_id = rintc->hart_id;
++	rintc_acpi_data[nr_rintc]->imsic_addr = rintc->imsic_addr;
++	rintc_acpi_data[nr_rintc]->imsic_size = rintc->imsic_size;
++	nr_rintc++;
+ 
+ 	/*
+ 	 * The ACPI MADT will have one INTC for each CPU (or HART)
+@@ -277,6 +365,8 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
+ 	if (rc)
+ 		irq_domain_free_fwnode(fn);
++	else
++		acpi_set_irq_model(ACPI_IRQ_MODEL_RINTC, riscv_acpi_get_gsi_domain_id);
+ 
+ 	return rc;
+ }
 -- 
 2.40.1
 
