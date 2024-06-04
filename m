@@ -1,180 +1,221 @@
-Return-Path: <linux-acpi+bounces-6174-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6175-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201B98FB7ED
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jun 2024 17:50:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017088FB814
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jun 2024 17:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C30A1F2170B
-	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jun 2024 15:50:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F241C23DAE
+	for <lists+linux-acpi@lfdr.de>; Tue,  4 Jun 2024 15:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D35148FF6;
-	Tue,  4 Jun 2024 15:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YPW9AtaF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658191494CA;
+	Tue,  4 Jun 2024 15:53:26 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07485148FEC;
-	Tue,  4 Jun 2024 15:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA463148FE6;
+	Tue,  4 Jun 2024 15:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717516047; cv=none; b=Fcbz/yOcnpWVFd614kwi5qcNbsWAmLSdpn+H1Akux/jF2ASwLCRI+LSP1fy92Gz/RPQIxCgvCP2919s4KutZd8zKrJYNqBMRWSxSm/C8efYe3NrNVCBnGa8HfoQ6UmH6AY6Q6BUKlrXOnk2X7Ym52rZiPdH6QFXW0kein17ClV8=
+	t=1717516406; cv=none; b=J/ElMn9fnrAqKHj3Q04mRBprYqY+wqNGifUYyZiyMFLQLHCTS25Uj41KAD7XE06esu1IlUxJft+wyaIdDyTdhp7T/FBd6BJAtIa87svht6SR53OFyPuN5s0Fk6Vej4j+uOOzbygcSuA+kTNL5UlecU3UpWXjznFhBuuFSNTcJ7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717516047; c=relaxed/simple;
-	bh=Id5s0PIaCRkCPJFLJmSoHhlSb8MaiixVnBKq2JDaGHw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cZac9iBO+eArQuWcVhC9es7rd3a/1jx1SfsPSk0ybo+hQUV0R3tf7tLEzmsZtm0YfIEGnpXZtNBuxJI+qRgymcehKfLPPSmOY8PGW7r0dx4GKQxNkuvelPx79BLQ8vrgPkenp63KlMeDciH+S26ozpS7pMfoTmHDzVrWJMuebio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YPW9AtaF; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717516046; x=1749052046;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Id5s0PIaCRkCPJFLJmSoHhlSb8MaiixVnBKq2JDaGHw=;
-  b=YPW9AtaFDyWHTIZYqBw7o4552PAP/8FeIgOazMdjoHQEW3y53rvPdsKS
-   8ylIFDNOJip/DRX6LaeMZ8BYecTxj6OX4/LNGUZRRp38/pRXZW13xJjNO
-   L1dmjnMKOkh1SHES8uXDuaL/bwSsD2IsVAw5uqaKWTlWEKHF3QAgyT26W
-   J7igImFsKSyERnLfAYVxkoeN1aJqqUakkLVOH3IRUQNun96ufOfDF/ycl
-   i988wBzmmFz0s1+DYr9vZJ8W101X93aQRXKqpdDsR3u5rPExE6yAwVCne
-   aQ8+syLAnJb05fCqDHr+TaOx15CrjXz8k0Wl69opFd+1t6JCK5BozXwhP
-   w==;
-X-CSE-ConnectionGUID: 551QbBPaRNyHROExCizNXg==
-X-CSE-MsgGUID: /JSw070/S8yQlfJT0mu6Rw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="13880598"
-X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; 
-   d="scan'208";a="13880598"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2024 08:47:25 -0700
-X-CSE-ConnectionGUID: QXdAuQZmT2GFwoVISydTzw==
-X-CSE-MsgGUID: X8E8y0NZTz2TgIvJMAAlKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,214,1712646000"; 
-   d="scan'208";a="37354255"
-Received: from cdpresto-mobl2.amr.corp.intel.com.amr.corp.intel.com (HELO [10.125.108.218]) ([10.125.108.218])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2024 08:47:23 -0700
-Message-ID: <78d33a31-0ef2-417b-a240-b2880b64518e@intel.com>
-Date: Tue, 4 Jun 2024 08:47:22 -0700
+	s=arc-20240116; t=1717516406; c=relaxed/simple;
+	bh=jqzyU34fAZG4/WHYtSv7WuekoSVYXVRfGb6ve0icGKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p24aUvh2sK+xxHKdgy6Nsc5etRY5CTEgKo1l4S7OjdgLXzMcnrN24i2KecpeN4cQrCEo2G5nkOI5AFT/v/bN9IbHUJb2/eqkeQWsl4pHDIpZORyG//m5nc3Wva1nnddlD6cegodt4qLjznDIf8yAzGpYSrbrXWn6acFsy+qIupw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D41BC2BBFC;
+	Tue,  4 Jun 2024 15:52:38 +0000 (UTC)
+Date: Tue, 4 Jun 2024 11:52:35 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "Rafael J. Wysocki"
+ <rafael.j.wysocki@intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Corey Minyard <minyard@acm.org>, Allen Pais
+ <apais@linux.microsoft.com>, Sebastian Reichel
+ <sebastian.reichel@collabora.com>, Perry Yuan <perry.yuan@amd.com>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Nuno Sa <nuno.sa@analog.com>, Guenter Roeck
+ <linux@roeck-us.net>, Randy Dunlap <rdunlap@infradead.org>, Andi Shyti
+ <andi.shyti@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Lee Jones
+ <lee@kernel.org>, Samuel Holland <samuel@sholland.org>, Elad Nachman
+ <enachman@marvell.com>, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+ Johannes Berg <johannes.berg@intel.com>, Gregory Greenman
+ <gregory.greenman@intel.com>, Benjamin Berg <benjamin.berg@intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Robert Richter <rrichter@amd.com>,
+ Vinod Koul <vkoul@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Hans de Goede
+ <hdegoede@redhat.com>, Ilpo =?UTF-8?B?SsOkcnZpbmVu?=
+ <ilpo.jarvinen@linux.intel.com>, Nikita Kravets <teackot@gmail.com>, Jiri
+ Slaby <jirislaby@kernel.org>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Stanley Chang
+ <stanley_chang@realtek.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Abdel Alkuor <abdelalkuor@geotab.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>, Eric Biggers
+ <ebiggers@google.com>, Kees Cook <keescook@chromium.org>, Ingo Molnar
+ <mingo@kernel.org>, Daniel Bristot de Oliveira <bristot@kernel.org>, Andrew
+ Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, Abel
+ Wu <wuyun.abel@bytedance.com>, John Johansen <john.johansen@canonical.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Stefan Berger <stefanb@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>, Eric Snowberg
+ <eric.snowberg@oracle.com>, Takashi Iwai <tiwai@suse.de>, Takashi Sakamoto
+ <o-takashi@sakamocchi.jp>, Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+ Mark Brown <broonie@kernel.org>, Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-ide@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ linux-clk@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-tegra@vger.kernel.org, linux-pm@vger.kernel.org, qat-linux@intel.com,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mmc@vger.kernel.org,
+ linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-phy@lists.infradead.org,
+ linux-gpio@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-bcachefs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, alsa-devel@alsa-project.org,
+ linux-sound@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, David Howells <dhowells@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+ <lenb@kernel.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Daniel Scally
+ <djrscally@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Heiko
+ Stuebner <heiko@sntech.de>, Peter De Schrijver <pdeschrijver@nvidia.com>,
+ Prashant Gaikwad <pgaikwad@nvidia.com>, Thierry Reding
+ <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Huang
+ Rui <ray.huang@amd.com>, "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, Viresh Kumar
+ <viresh.kumar@linaro.org>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, Karol Herbst <kherbst@redhat.com>, Lyude Paul
+ <lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>, Jean Delvare
+ <jdelvare@suse.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Pavel Machek <pavel@ucw.cz>, Chen-Yu
+ Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Tony
+ Lindgren <tony@atomide.com>, Adrian Hunter <adrian.hunter@intel.com>, Hu
+ Ziji <huziji@marvell.com>, Ulf Hansson <ulf.hansson@linaro.org>, Miquel
+ Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
+ Vignesh Raghavendra <vigneshr@ti.com>, Potnuri Bharat Teja
+ <bharat@chelsio.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, Kalle Valo <kvalo@kernel.org>, Mahesh
+ J Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, Matthias Brugger
+ <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, JC Kuo <jckuo@nvidia.com>,
+ Andrew Lunn <andrew@lunn.ch>, Gregory Clement
+ <gregory.clement@bootlin.com>, Sebastian Hesselbarth
+ <sebastian.hesselbarth@gmail.com>, Sebastian Reichel <sre@kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui
+ <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Thinh Nguyen
+ <Thinh.Nguyen@synopsys.com>, Helge Deller <deller@gmx.de>, Brian Foster
+ <bfoster@redhat.com>, Zhihao Cheng <chengzhihao1@huawei.com>, Tejun Heo
+ <tj@kernel.org>, Zefan Li <lizefan.x@bytedance.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, Daniel Bristot de
+ Oliveira <bristot@redhat.com>, Valentin Schneider <vschneid@redhat.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Jason Baron <jbaron@akamai.com>, Jim
+ Cromie <jim.cromie@gmail.com>, Paul Moore <paul@paul-moore.com>, James
+ Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Dmitry
+ Kasatkin <dmitry.kasatkin@gmail.com>, Clemens Ladisch <clemens@ladisch.de>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Liam
+ Girdwood <lgirdwood@gmail.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v1 1/1] treewide: Align match_string() with
+ sysfs_match_string()
+Message-ID: <20240604115235.044acfd6@gandalf.local.home>
+In-Reply-To: <87tti9cfry.fsf@intel.com>
+References: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
+	<87tti9cfry.fsf@intel.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv11.1 11/19] x86/tdx: Convert shared memory back to private
- on kexec
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Borislav Petkov <bp@alien8.de>
-Cc: adrian.hunter@intel.com, ardb@kernel.org, ashish.kalra@amd.com,
- bhe@redhat.com, dave.hansen@linux.intel.com, elena.reshetova@intel.com,
- haiyangz@microsoft.com, hpa@zytor.com, jun.nakajima@intel.com,
- kai.huang@intel.com, kexec@lists.infradead.org, kys@microsoft.com,
- linux-acpi@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, ltao@redhat.com,
- mingo@redhat.com, peterz@infradead.org, rafael@kernel.org,
- rick.p.edgecombe@intel.com, sathyanarayanan.kuppuswamy@linux.intel.com,
- seanjc@google.com, tglx@linutronix.de, thomas.lendacky@amd.com,
- x86@kernel.org
-References: <20240531151442.GMZlnpYkDCRlg1_YS0@fat_crate.local>
- <20240602142303.3263551-1-kirill.shutemov@linux.intel.com>
- <20240603083754.GAZl2A4uXvVB5w4l9u@fat_crate.local>
- <noym2bqgxqcyhhdzoax7gvdfzhh7rtw7cv236fhzpqh3wqf76e@2jj733skv7y4>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <noym2bqgxqcyhhdzoax7gvdfzhh7rtw7cv236fhzpqh3wqf76e@2jj733skv7y4>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 6/4/24 08:32, Kirill A. Shutemov wrote:
-> What about the comment below?
+On Tue, 04 Jun 2024 10:45:37 +0300
+Jani Nikula <jani.nikula@linux.intel.com> wrote:
+
+> On Sun, 02 Jun 2024, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > Make two APIs look similar. Hence convert match_string() to be
+> > a 2-argument macro. In order to avoid unneeded churn, convert
+> > all users as well. There is no functional change intended.  
 > 
-> 			/*
-> 			 * One possible reason for the failure is if kexec raced
-> 			 * with memory conversion. In this case shared bit in
-> 			 * page table got set (or not cleared) during
-> 			 * shared<->private conversion, but the page is actually
-> 			 * private. So this failure is not going to affect the
-> 			 * kexec'ed kernel.
-> 			 *
-> 			 * The only thing one can do at this point on failure
-> 			 * at this point is panic. In absence of better options,
-> 			 * it is reasonable to proceed, hoping the failure is a
-> 			 * benign shared bit mismatch due to the race.
-> 			 *
-> 			 * Also, even if the failure is real and the page cannot
-> 			 * be touched as private, the kdump kernel will boot
-> 			 * fine as it uses pre-reserved memory. What happens
-> 			 * next depends on what the dumping process does and
-> 			 * there's a reasonable chance to produce useful dump
-> 			 * on crash.
-> 			 *
-> 			 * Regardless, the print leaves a trace in the log to
-> 			 * give a clue for debug.
-> 			 */
+> Why do we think it's a good idea to increase and normalize the use of
+> double-underscore function names across the kernel, like
+> __match_string() in this case? It should mean "reserved for the
+> implementation, not to be called directly".
+> 
+> If it's to be used directly, it should be named accordingly, right?
+> 
+> Being in line with __sysfs_match_string() isn't a great argument alone,
+> because this adds three times the number of __match_string() calls than
+> there are __sysfs_match_string() calls. It's not a good model to follow.
+> Arguably both should be renamed.
 
-It's rambling too much for my taste.
+Agreed. I want to get rid of any functions starting with an underscore
+except for those that are basically the same function used internally for
+convenience.
 
-Let's boil this down to what matters:
+Perhaps "match_string_dynamic()"? Where it is used for dynamically
+allocated arrays without known size. Or, allow a third parameter for
+dynamic arrays.
 
- 1. Failures to change encryption status here can lead a future kernel
-    to touch shared memory with a private mapping
- 2. That causes an immediate unrecoverable guest shutdown (right?)
- 3. kdump kernels should not be affected since they have their own
-    memory ranges and its encryption status is not being tweawked here
- 4. The pr_err() may help make some sense out of #2 when it happens
+#define match_string(_a, _s, ...)
+	char _______STR[] = __stringify((__VA_ARGS__));	\
+	if (sizeof(_______STR) > 3)			\
+		__match_string(_a, _s, ##__VA_ARGS__);  \
+	else						\
+		__match_string(_a, _s, ARRAY_SIZE(_a));
 
-I'm not sure the reason behind the failed conversion is important here.
+What the above stringify((__VA_ARGS__)) does is to check the size of any
+args added to match_string(). if there isn't any, it will turn into:
+"()\0", which is of size 3. If you add an argument, it will be:
+"(<arg>)\0", which will have a size greater than three.
 
-I wouldn't mention panic().
+(trace_printk() does this trick in include/linux/kernel.h).
 
-We don't need to opine about what the next kernel might or might not do.
+This way, both:
+
+ match_string(array, sting);
+
+or
+
+ match_string(array, string, size);
+
+will work.
+
+-- Steve
+
 
