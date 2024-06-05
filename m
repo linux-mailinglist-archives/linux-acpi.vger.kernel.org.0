@@ -1,131 +1,148 @@
-Return-Path: <linux-acpi+bounces-6190-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6188-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85818FC83D
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 11:45:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF278FC6C2
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 10:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CFB5B23DC2
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 09:43:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8F228144B
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 08:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AD3191466;
-	Wed,  5 Jun 2024 09:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D901946C0;
+	Wed,  5 Jun 2024 08:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="HKztHKAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8Ol6eQ8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-m32109.qiye.163.com (mail-m32109.qiye.163.com [220.197.32.109])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EECE190045;
-	Wed,  5 Jun 2024 09:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35EC1946AD;
+	Wed,  5 Jun 2024 08:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717580514; cv=none; b=s7KzfjteOZnFIrGjGWGJ/4cJaStNS7ci+ih2E8q3/QQeHfMixYC1ECpuks5oh611VsV7/zeO0bknwzifQLjITZbOlmb/TNeH+jjW3gDa/ebnIjEsz3asf+EXkSj/kCodBSW4oXT9EeTHd2HcLKtg8CYHbnpKp6u2Wcxxchnpfr4=
+	t=1717576837; cv=none; b=RQtbxKCXygHkK1G2wK7QnpBw23JfZuSuwAQVGDe4B8CvnAa5m3UhL7mXKJPoFVWXfCHKzlIox/Smv65o3gzUoVLqMfURp9jBRT0I68Ch07zzPrxTXPpGgudM25AwHTgTLbEQFi4SbEDDp2A7thVk6w6RgelbXLqV0S7gGcWOdnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717580514; c=relaxed/simple;
-	bh=aBy7vIst2FBAPwGPshMP9IQOR/ZWBTluJmQmKcqLFng=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=B1Wuc9HdBAEh1qrWOZTOhpUIVL3yX6YpnYFtiVbsn0lFEH+xavNs83nOIynYdacxyu/7Lw5salveSfAxH85Af9V71ZyPqAsa1Ekptc/glfJAr3yXjkop41hI8vzJGo5trqs8b0nJlVe9TMdPlCRt+VNXi+TxsH3oWCiG+JJCDh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=HKztHKAy; arc=none smtp.client-ip=220.197.32.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
-DKIM-Signature: a=rsa-sha256;
-	b=HKztHKAyn248J+U2sZbJUYIvNPzdyC8CP+mQ2KjqyTNYmiJhDfssPyipAMYZ5xPA/cLDR1afFNhE7W70ylj2c66NwNIfS49E1VD7eFCIEdzXNhd637fXZ8HBO+Qj2sjnt6VlG3sN7uImQPVEaJE6vZZ1JrqPCtudIeKdzg6gBO0=;
-	s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=DQv58ir20XJLj4kjCZ4hNT8DMmOKn/UVGcDrVAwYVW0=;
-	h=date:mime-version:subject:message-id:from;
-Received: from [192.168.60.56] (unknown [103.29.142.67])
-	by smtp.qiye.163.com (Hmail) with ESMTPA id 2C7771A0423;
-	Wed,  5 Jun 2024 11:06:01 +0800 (CST)
-Message-ID: <10f48a9b-d66a-439e-80d3-54f8e01f015e@rock-chips.com>
-Date: Wed, 5 Jun 2024 11:05:59 +0800
+	s=arc-20240116; t=1717576837; c=relaxed/simple;
+	bh=SSuUeQbO2I34BDzHIPG6kv2UTPDB/m4P39TM9c87s7U=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=gFr4KAVAo69vEJEsk1kc4/rCvbYj2Awxg1pybNS+YrXKxVu2d03MBICfRVkNgAFVQvb2IlMC3hHbWMiLQhGyqN3Udrc80eSz1IDLvLXpNbQtWOWUhk/BWww5scBRf+tXzifGGWNorWsfjqiGskz8Jy9jGIgGLFYnkzmYgPCY5V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8Ol6eQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6F8C4AF07;
+	Wed,  5 Jun 2024 08:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717576836;
+	bh=SSuUeQbO2I34BDzHIPG6kv2UTPDB/m4P39TM9c87s7U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=M8Ol6eQ8uwNDtxC0NQ5T5LtnOoyj9T/kgJ15LXylZws9yVCogCgIqt1iRnAu70HqR
+	 EKgizvqOq80Myld4yIAl2s2Qc3lBefOF0J+opuYC/n2F3LB+uM7GER6A3GSLZsFEFq
+	 GL0BcmY1L79oanQSiOMW3z6Y655VQCxMElhWuH+ctMhXdj7cAzzeVsvc54z9WxTsT/
+	 8GxqXFvo6yzQKV7qYAa0y7xP4v1RbLnYbRyCcikOuuZcvlZrqTsmXwcCDE3LD2VHsD
+	 DEf3GYbh7jo0TmM/Hq2dZwwo4K3lLH0r6xS5cbaOmhnEfdVL7xpnkeqY7Zqj9Euoft
+	 2ED/w2eiEXVSA==
+Received: from disco-boy.misterjones.org ([217.182.43.188] helo=www.loen.fr)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sEmCA-000r52-Af;
+	Wed, 05 Jun 2024 09:40:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: bjorn.andersson@linaro.org
-Cc: andriy.shevchenko@linux.intel.com, devicetree@vger.kernel.org,
- djrscally@gmail.com, gregkh@linuxfoundation.org, hdegoede@redhat.com,
- heikki.krogerus@linux.intel.com, krzysztof.kozlowski+dt@linaro.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, rafael@kernel.org, robh+dt@kernel.org,
- sakari.ailus@linux.intel.com, =?UTF-8?B?5ZC06Imv5bOw?=
- <william.wu@rock-chips.com>, yubing.zhang@rock-chips.com, wmc@rock-chips.com
-References: <20220422222351.1297276-6-bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v5 5/7] usb: typec: mux: Allow multiple mux_devs per mux
-Content-Language: en-US
-Reply-To: 20220422222351.1297276-1-bjorn.andersson@linaro.org
-From: Frank Wang <frank.wang@rock-chips.com>
-In-Reply-To: <20220422222351.1297276-6-bjorn.andersson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Wed, 05 Jun 2024 09:40:34 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Mark Rutland <mark.rutland@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+ acpica-devel@lists.linux.dev, Fang Xiang <fangxiang3@xiaomi.com>, Robert
+ Moore <robert.moore@intel.com>
+Subject: Re: [PATCH v5 1/1] irqchip/gic-v3: Enable non-coherent
+ redistributors/ITSes ACPI probing
+In-Reply-To: <ZmAQQVR+inUJpJ7z@lpieralisi>
+References: <20240123110332.112797-1-lpieralisi@kernel.org>
+ <20240123110332.112797-2-lpieralisi@kernel.org>
+ <ZiYi64/VBWkfM2E2@lpieralisi> <ZmAQQVR+inUJpJ7z@lpieralisi>
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <eefc3a76d6cfb3400a3d6e39e8887177@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGUtIVksaSkpLTUIZShgfGFUTARMWGhIXJBQOD1
-	lXWRgSC1lBWUpLSFVJQlVKT0lVTUxZV1kWGg8SFR0UWUFZT0tIVUpNT0lMTlVKS0tVSkJLS1kG
-X-HM-Tid: 0a8fe65c587c03abkunm2c7771a0423
-X-HM-MType: 1
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NiI6Djo*EjNMQzJDEQ8SNxAx
-	PywaCRNVSlVKTEpMTk5NTE1ISEtDVTMWGhIXVR0JGhUQVQwaFRw7CRQYEFYYExILCFUYFBZFWVdZ
-	EgtZQVlKS0hVSUJVSk9JVU1MWVdZCAFZQU9KTUI3Bg++
+X-SA-Exim-Connect-IP: 217.182.43.188
+X-SA-Exim-Rcpt-To: lpieralisi@kernel.org, linux-kernel@vger.kernel.org, rafael@kernel.org, robin.murphy@arm.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, fangxiang3@xiaomi.com, robert.moore@intel.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Bjorn,
+On 2024-06-05 08:14, Lorenzo Pieralisi wrote:
+> On Mon, Apr 22, 2024 at 10:42:19AM +0200, Lorenzo Pieralisi wrote:
+>> On Tue, Jan 23, 2024 at 12:03:32PM +0100, Lorenzo Pieralisi wrote:
+>> > The GIC architecture specification defines a set of registers for
+>> > redistributors and ITSes that control the sharebility and cacheability
+>> > attributes of redistributors/ITSes initiator ports on the interconnect
+>> > (GICR_[V]PROPBASER, GICR_[V]PENDBASER, GITS_BASER<n>).
+>> >
+>> > Architecturally the GIC provides a means to drive shareability and
+>> > cacheability attributes signals but it is not mandatory for designs to
+>> > wire up the corresponding interconnect signals that control the
+>> > cacheability/shareability of transactions.
+>> >
+>> > Redistributors and ITSes interconnect ports can be connected to
+>> > non-coherent interconnects that are not able to manage the
+>> > shareability/cacheability attributes; this implicitly makes the
+>> > redistributors and ITSes non-coherent observers.
+>> >
+>> > To enable non-coherent GIC designs on ACPI based systems, parse the MADT
+>> > GICC/GICR/ITS subtables non-coherent flags to determine whether the
+>> > respective components are non-coherent observers and force the
+>> > shareability attributes to be programmed into the redistributors and
+>> > ITSes registers.
+>> >
+>> > An ACPI global function (acpi_get_madt_revision()) is added to retrieve
+>> > the MADT revision, in that it is essential to check the MADT revision
+>> > before checking for flags that were added with MADT revision 7 so that
+>> > if the kernel is booted with an ACPI MADT table with revision < 7 it
+>> > skips parsing the newly added flags (that should be zeroed reserved
+>> > values for MADT versions < 7 but they could turn out to be buggy and
+>> > should be ignored).
+>> >
+>> > Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+>> > Cc: Robin Murphy <robin.murphy@arm.com>
+>> > Cc: Mark Rutland <mark.rutland@arm.com>
+>> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+>> > Cc: Marc Zyngier <maz@kernel.org>
+>> > ---
+>> >  drivers/acpi/processor_core.c    | 15 +++++++++++++++
+>> >  drivers/irqchip/irq-gic-v3-its.c |  4 ++++
+>> >  drivers/irqchip/irq-gic-v3.c     |  9 +++++++++
+>> >  include/linux/acpi.h             |  3 +++
+>> >  4 files changed, 31 insertions(+)
+>> 
+>> Hi Marc, Rafael,
+>> 
+>> I would kindly ask you please what to do with this patch, it still
+>> applies to v6.9-rc5 - I can resend it if needed, ACPICA changes
+>> are already merged as-per the cover letter.
+> 
+> Hi Marc, Rafael,
+> 
+> I would kindly ask please what to do with this patch, rebased to 
+> v6.10-rc1,
+> I can resend it if that's preferred, please let me know.
 
-> In the Qualcomm platforms the USB/DP PHY handles muxing and orientation
-> switching of the SuperSpeed lines, but the SBU lines needs to be
-> connected and switched by external (to the SoC) hardware.
->
-> It's therefor necessary to be able to have the TypeC controller operate
-> multiple TypeC muxes and switches. Use the newly introduced indirection
-> object to handle this, to avoid having to taint the TypeC controllers
-> with knowledge about the downstream hardware configuration.
->
-> The max number of devs per indirection is set to 3, which account for
-> being able to mux/switch the USB HS, SS and SBU lines, as per defined
-> defined in the usb-c-connector binding. This number could be grown if
-> need arrises at a later point in time.
->
-> Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> ---
->
-> Changes since v4:
-> - None
->
->   drivers/usb/typec/mux.c  <https://lore.kernel.org/all/20220422222351.1297276-6-bjorn.andersson@linaro.org/#Z31drivers:usb:typec:mux.c>  | 128 ++++++++++++++++++++++++++++++++--------
->   1 filechanged  <https://lore.kernel.org/all/20220422222351.1297276-6-bjorn.andersson@linaro.org/#related>, 102 insertions(+), 26 deletions(-)
+Please resend it with my:
 
-With this commit, TCPC device shall match *two* endpoint port both for switch device and mux device
-if they have the same parent node like the following DT. It causes the callback funtion is invoked
-twice both for switch and mux in tcpm_mux_set() process.
+Acked-by: Marc Zyngier <maz@kernel.org>
 
-arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dts
+and Cc'ing Thomas Gleixner.
 
-&usbdp_phy0 {
-         mode-switch;
-         orientation-switch;
-         [...]
-         port {
-                 #address-cells = <1>;
-                 #size-cells = <0>;
+Thanks,
 
-                 usbdp_phy0_orientation_switch: endpoint@0 {
-                         reg = <0>;
-                         remote-endpoint = <&usbc0_orien_sw>;
-                 };
-
-                 usbdp_phy0_dp_altmode_mux: endpoint@1 {
-                         reg = <1>;
-                         remote-endpoint = <&dp_altmode_mux>;
-                 };
-         };
-};
-
-BR.
-Frank
-
+         M.
+-- 
+Jazz is not dead. It just smells funny...
 
