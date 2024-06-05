@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-6194-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6195-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929838FCB9A
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 14:03:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06EE8FCBE9
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 14:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C85B1C20D5A
-	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 12:03:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241F51F20610
+	for <lists+linux-acpi@lfdr.de>; Wed,  5 Jun 2024 12:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0106C1A2FBA;
-	Wed,  5 Jun 2024 11:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EA71AED2B;
+	Wed,  5 Jun 2024 11:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qgz/BxL3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+z4nkmI"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3061A2FB3;
-	Wed,  5 Jun 2024 11:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8991AED5D;
+	Wed,  5 Jun 2024 11:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717588318; cv=none; b=ePNCxOQtwn4mbRerobLDC+a6RMBh9d6ehbRg58E+D9Sqc0/h19NdFPEdM97ce7aj0sAn3PRovGf1MfWTDSQ94o6IQlj3r2g1OvsXNUuzHq+tWfq1smUhq3trtIf6DSdzD8nMBdMnXud8/PD66heX1nbLXNm6dMooEozBl6HXfPY=
+	t=1717588395; cv=none; b=h1JAXVjASkRpjbzW0CZoIQNvrWn502rhw+MTyVvclWA/fXtN/dzuh1jayt+iLV3+Tag/WMZaBumYh4QsEBMU73zDEt9WOQjaihhnEC+nAcVM7BLd7Md6VDcUKLaiS3DwmMuWw+re3jnLqXAvYMr4T75CkHIKwyp9keFDfGArtWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717588318; c=relaxed/simple;
-	bh=ygbrL8SHL8c4+z+jKOhdq7/B1cK4xywxAADGwNROxQI=;
+	s=arc-20240116; t=1717588395; c=relaxed/simple;
+	bh=+vfbpc9tKCFPoXiCYgCWrxlT991pAAb/NbC5F4nJw0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFjBqCvEhuM/gQHYyD/Sxgi/44t1ZeVBdeIiyXHyjKbmtNAAzM6Feh/dVemPWlPf3rj30dpRaMNVTUkMSxptCfuM7DiADVaj6gcaRTgW/TdhwaiiarAQ+8tUvIGi3cboliDuTji7V7uqv5mfFvolBM2CCtSWQR3BRLCWjze5sLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qgz/BxL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F266C32786;
-	Wed,  5 Jun 2024 11:51:57 +0000 (UTC)
+	 MIME-Version; b=KMFMKkBhXUD9+bYBDQMOWVe8O3V/nvBGBkPziC9xm5J4IMYijLp3sC69n5ln5Ia11Q4fQgqYgHqp7ONAt9wnUb70dZ1y8VUMnDtQRZTdgRqClfv5RzUNaIMOhRW93aIb1Ekv8ufMlTbgkQOqmecE7QWdJDS3p6UP6hmnQIe7ieM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+z4nkmI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FED4C32781;
+	Wed,  5 Jun 2024 11:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717588318;
-	bh=ygbrL8SHL8c4+z+jKOhdq7/B1cK4xywxAADGwNROxQI=;
+	s=k20201202; t=1717588394;
+	bh=+vfbpc9tKCFPoXiCYgCWrxlT991pAAb/NbC5F4nJw0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgz/BxL31xJmnR+vghFWZY6dR56JdDomUQat2fvgrhkMT8A12IdwyrMp3UKRM4EBG
-	 t/bFGH5+Xtmbf+k3grdS9b1sxPvJVMGLA910+oVTtBoC4OgUF4+kER8CsFbdJLYghF
-	 h8RLl5xyNMTqLOk6lmXd0CVc95lJUt1iEobFo46LT9ZfR//h2S0B845yNbK/UvaIPs
-	 M6Iy0aeeROC1KjxT8ghr3Tp0qboDVgYpdPFR9kBJ6G5rc4mEG5AQbPCGOYKEi72ySu
-	 k1uI1DeNOeY2tqoDIU8HHNPcUBd8ne5+fZ3pa51QzZlst436nqxLr7gbidjMUqKBOH
-	 3hOtBmNVYrR0A==
+	b=A+z4nkmIssQ0HImiMDGrgwy1RhgZcCnoiB+hHBSwm0EDaq83xp+htFrfrZBUluoSg
+	 HVvCoVSPGFdT82jQh+qlsJlaCFOvtydzGh6SDE015k4/HCeQZEMKPCRmPXO7jdHATb
+	 SJ8tzQ2IP4vgFoPHtxrO7wLO4nwtABd3/k2ds9ewcbEcLKFnuHn80XA+g/eJPJ+QdN
+	 pgcgb5LBq/mw+ofmva0GwJCE7i1xoN32cALqwj/y3zA3u41uLkLWK08DdMYGQPV/l6
+	 51wWq1+vQADqQlZw7pFbOcwkw/zWI1Pt3FYdWVR44J/BBjtljWStAlKvtF3iVotSyw
+	 SZrPpFTuAGUQw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,12 +53,12 @@ Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.8 22/24] ACPI: EC: Install address space handler at the namespace root
-Date: Wed,  5 Jun 2024 07:50:32 -0400
-Message-ID: <20240605115101.2962372-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 19/20] ACPI: EC: Install address space handler at the namespace root
+Date: Wed,  5 Jun 2024 07:52:02 -0400
+Message-ID: <20240605115225.2963242-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240605115101.2962372-1-sashal@kernel.org>
-References: <20240605115101.2962372-1-sashal@kernel.org>
+In-Reply-To: <20240605115225.2963242-1-sashal@kernel.org>
+References: <20240605115225.2963242-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.8.12
+X-stable-base: Linux 6.6.32
 Content-Transfer-Encoding: 8bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
@@ -110,7 +110,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 16 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 02255795b800d..e7793ee9e6498 100644
+index a59c11df73754..0795f92d8927d 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
 @@ -1482,13 +1482,14 @@ static bool install_gpio_irq_event_handler(struct acpi_ec *ec)
@@ -182,10 +182,10 @@ index 02255795b800d..e7793ee9e6498 100644
  		ec->data_addr);
  
 diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 6588525c45efa..5749fbee96d92 100644
+index 866c7c4ed2331..6db1a03dd5399 100644
 --- a/drivers/acpi/internal.h
 +++ b/drivers/acpi/internal.h
-@@ -184,7 +184,6 @@ enum acpi_ec_event_state {
+@@ -167,7 +167,6 @@ enum acpi_ec_event_state {
  
  struct acpi_ec {
  	acpi_handle handle;
