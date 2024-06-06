@@ -1,169 +1,124 @@
-Return-Path: <linux-acpi+bounces-6225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CD48FF0B3
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 17:32:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175D78FF05E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 17:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F711B303BC
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 15:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 265591C22CE7
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 15:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9AC1A0B02;
-	Thu,  6 Jun 2024 14:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TIGotSiG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB8919DF53;
+	Thu,  6 Jun 2024 15:06:56 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5623E1A01BB
-	for <linux-acpi@vger.kernel.org>; Thu,  6 Jun 2024 14:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB531974FD;
+	Thu,  6 Jun 2024 15:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717685430; cv=none; b=DXyrfNtWG971eBGrSoagH+ddb+etK+ChDKrwDH8U/mhLzcLXhAeBmVsHg1t99IZCEMBrkRUUimDZfiGix5huUYQSXrt+8iMcQNHOEHp95dXy7NfikYu5SAFIHlw/a+7cTqSu4QuWfFaWSOXq63L00njQPCBaM/uot19SDFF3650=
+	t=1717686416; cv=none; b=HyE6BbKHLif6+UYGkCaxLeZVDvxZY9/hdETVCuHQfOcxeHwJvC28t2esunQtmm7m0/zr2iCmXdJxONF5+vLkVBvGXP0Zsrzw17kLcyUyGOxKNYYB8G6KGWc8Aq3T9W55SfGf/BKiQ47KZVkl4o9mCRs/4LbT6ixnyW4dgxp1tWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717685430; c=relaxed/simple;
-	bh=ZvQ1pENygtYl6o/j4xo9oIYijYCQF5WO63/exjSZDws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kCVxWnUbfZnH5zPmR+ZO27AfiavO0yrtXAkzJz+ksNenNvP2sgrvNpyK4SI3l3u6u4h0gzHM6yRfucXXNwrDgOdY3UASJjh2C0xnDE59ru8OqGvorr8of+/lLkW8d2WikTNuu0xT+MRBi5jW+n+mTKHxgOG/4Mb4SOCljbjWZTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TIGotSiG; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eaae2a6dc1so20675431fa.0
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jun 2024 07:50:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717685425; x=1718290225; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4eQN39Nkp7zX3QVgBwh8fSEqWjLG+WRfJd6VENywnME=;
-        b=TIGotSiGK97J3TK+yfmqtjjNklSBHm66MwWyCUGJXLj+XmQDPe65PDDJm6XcbruucD
-         iHmPmpcfG0Rlm6ZVsR2+EvUYW3rZh3X2NKShJ3GkgHtMFlNry/aXUDHfX51C/bAhgAN8
-         NOawqkWoe4VUw8T290hGNjFUmxBSYTnnoxuJSfmD6k2Dlsb64pWU7dxJD3YABhZFSzp5
-         Wno34xAVdS3rl9Uus8ljaa9cZH3XGZKLOij4v7m8TQs9CQbcleXtNQcrdNJ6TCYCNtx7
-         ThkV+eO2NurqGYQWx/00WnDlDlnjg06Hok/M2b5Kyghg/+nitVbiAAjyImR+c0BzQrGO
-         ZWsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717685425; x=1718290225;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4eQN39Nkp7zX3QVgBwh8fSEqWjLG+WRfJd6VENywnME=;
-        b=GToriry5gcT+H84mbRrYXJiNBVWPFmxGPfP/6JO32oeMPRCBWrEsmRBkOvAUwNaJja
-         dTK9MU4G5oh9hbaIqsHeDdgXYVwiwqTeAdYswYYiaeakXfyqmdS//R/RSgRM4zln9cca
-         wZTXVkH7zbZ6H8oG5aWRwB2qxVMx/isgSv07W30PoJQDTVN3qIITlEAut+DY4hB4cUVe
-         dgL5UsRTvXDEOqtkuZa4A7zZZzYPTCP1clOidi8YMGZNnCXbzVMSE5bDfOq4COE49aDm
-         HyfYZ4HG0NZWkPxDPW8A9ncpkQ4h8fPwmb4QPOB/X5x40nx9nLh+fS5DfvCPEUX9Eiez
-         vWpw==
-X-Forwarded-Encrypted: i=1; AJvYcCWuebbh61JaaeTTUJPjN1aXb5910hagScbGcIaJUwbHb1gTFgW29QGdcgLNoAcKoeZT8hJUMLkmjjHtN1f/44j6UFZ1CMOIXw05iw==
-X-Gm-Message-State: AOJu0YyRQd4+1XwJqBtlTFUdbHc5jb8Uqzkp58sGMeYXqAYQXKWdC++Q
-	C1+AyCdva5Ag5vmkWzgJ1prFS4oGpE36d+nteGWFrEYezvJ2lE/kgXYgo+pMv0U=
-X-Google-Smtp-Source: AGHT+IHwoVb1UEEad+fTat0R/+JZtULip8B74o83THglv5q5fWQXs+TEQMKY/3pMO+zjn8zJCmDeNw==
-X-Received: by 2002:a05:651c:1a2a:b0:2de:ca7f:c849 with SMTP id 38308e7fff4ca-2eac7a7fcd5mr50121091fa.43.1717685425433;
-        Thu, 06 Jun 2024 07:50:25 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:f9a9:3740:b905:9995? ([2a05:6e02:1041:c10:f9a9:3740:b905:9995])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a6c8070ea54sm106413366b.157.2024.06.06.07.50.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jun 2024 07:50:24 -0700 (PDT)
-Message-ID: <90a9df3e-153f-4972-8086-13c21a574763@linaro.org>
-Date: Thu, 6 Jun 2024 16:50:24 +0200
+	s=arc-20240116; t=1717686416; c=relaxed/simple;
+	bh=NVtXbfi1Fxpue1uOXHgT6xQdyJX7ERW4BwtKOGOXE6U=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NbQbje3xWCqNEzefSaTllJB4EYs/cDBPAscB6nz03i93Uxe6ZWybEcduO1nBw/O4Z4c1JAsf5yAxnLU6dVluyeyDW62VggKuMWm+MU8GBur4RXCibHn5eBdpxje1uQvCNyUMVFikEbQXvKHPrYzQedSADl3O+fcR47u2tDaPFNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vw6xw2ZG0z6HJbs;
+	Thu,  6 Jun 2024 23:02:28 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C2658140B63;
+	Thu,  6 Jun 2024 23:06:49 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Jun
+ 2024 16:06:48 +0100
+Date: Thu, 6 Jun 2024 16:06:47 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+CC: <linux-pci@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-acpi@vger.kernel.org>, <rafael@kernel.org>, <lenb@kernel.org>,
+	<james.morse@arm.com>, <tony.luck@intel.com>, <bp@alien8.de>,
+	<dave@stgolabs.net>, <dave.jiang@intel.com>, <alison.schofield@intel.com>,
+	<vishal.l.verma@intel.com>, <ira.weiny@intel.com>, <bhelgaas@google.com>,
+	<helgaas@kernel.org>, <mahesh@linux.ibm.com>, <oohall@gmail.com>,
+	<linmiaohe@huawei.com>, <shiju.jose@huawei.com>, <adam.c.preble@intel.com>,
+	<lukas@wunner.de>, <Smita.KoralahalliChannabasappa@amd.com>,
+	<rrichter@amd.com>, <linux-cxl@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<erwin.tsaur@intel.com>, <sathyanarayanan.kuppuswamy@intel.com>,
+	<dan.j.williams@intel.com>, <feiting.wanyan@intel.com>,
+	<yudong.wang@intel.com>, <chao.p.peng@intel.com>,
+	<qingshun.wang@linux.intel.com>
+Subject: Re: [PATCH v4 1/3] PCI/AER: Store UNCOR_STATUS bits that might be
+ ANFE in aer_err_info
+Message-ID: <20240606160647.0000644e@Huawei.com>
+In-Reply-To: <20240509084833.2147767-2-zhenzhong.duan@intel.com>
+References: <20240509084833.2147767-1-zhenzhong.duan@intel.com>
+	<20240509084833.2147767-2-zhenzhong.duan@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] thermal: core: Do not fail cdev registration because
- of invalid initial state
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux PM <linux-pm@vger.kernel.org>, Linux ACPI
- <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Zhang Rui <rui.zhang@intel.com>, Laura Nao <laura.nao@collabora.com>
-References: <4569763.LvFx2qVVIh@kreacher>
- <5f93f034-f781-47e0-b8ce-3c8407a709f7@linaro.org>
- <CAJZ5v0hkOvYL66D+tCRJxbp=XqV59yeZ0dA1Kxoczkcpe5X9sA@mail.gmail.com>
- <CAJZ5v0joTyOcRU0FyaHEEYEbiPbbNSFzW3P7eJJ4MM5QdhQR2w@mail.gmail.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <CAJZ5v0joTyOcRU0FyaHEEYEbiPbbNSFzW3P7eJJ4MM5QdhQR2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 06/06/2024 16:18, Rafael J. Wysocki wrote:
-> On Thu, Jun 6, 2024 at 3:42 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
->>
->> On Thu, Jun 6, 2024 at 3:07 PM Daniel Lezcano <daniel.lezcano@linaro.org> wrote:
->>>
->>> On 05/06/2024 21:17, Rafael J. Wysocki wrote:
->>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>>
->>>> It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooling
->>>> device state to thermal_debug_cdev_add()") causes the ACPI fan driver
->>>> to fail probing on some systems which turns out to be due to the _FST
->>>> control method returning an invalid value until _FSL is first evaluated
->>>> for the given fan.  If this happens, the .get_cur_state() cooling device
->>>> callback returns an error and __thermal_cooling_device_register() fails
->>>> as uses that callback after commit 31a0fa0019b0.
->>>>
->>>> Arguably, _FST should not return an inavlid value even if it is
->>>> evaluated before _FSL, so this may be regarded as a platform firmware
->>>> issue, but at the same time it is not a good enough reason for failing
->>>> the cooling device registration where the initial cooling device state
->>>> is only needed to initialize a thermal debug facility.
->>>>
->>>> Accordingly, modify __thermal_cooling_device_register() to pass a
->>>> negative state value to thermal_debug_cdev_add() instead of failing
->>>> if the initial .get_cur_state() callback invocation fails and adjust
->>>> the thermal debug code to ignore negative cooling device state values.
->>>>
->>>> Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()")
->>>> Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
->>>> Reported-by: Laura Nao <laura.nao@collabora.com>
->>>> Tested-by: Laura Nao <laura.nao@collabora.com>
->>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>>
->>> As it is a driver issue, it should be fixed in the driver, not in the
->>> core code. The resulting code logic in the core is trying to deal with
->>> bad driver behavior, it does not really seem appropriate.
+On Thu,  9 May 2024 16:48:31 +0800
+Zhenzhong Duan <zhenzhong.duan@intel.com> wrote:
+
+> In some cases the detector of a Non-Fatal Error(NFE) is not the most
+> appropriate agent to determine the type of the error. For example,
+> when software performs a configuration read from a non-existent
+> device or Function, completer will send an ERR_NONFATAL Message.
+> On some platforms, ERR_NONFATAL results in a System Error, which
+> breaks normal software probing.
 > 
-> Besides, I don't quite agree with dismissing it as a driver issue.  If
-> a driver cannot determine the cooling device state, it should not be
-> required to make it up.
+> Advisory Non-Fatal Error(ANFE) is a special case that can be used
+> in above scenario. It is predominantly determined by the role of the
+> detecting agent (Requester, Completer, or Receiver) and the specific
+> error. In such cases, an agent with AER signals the NFE (if enabled)
+> by sending an ERR_COR Message as an advisory to software, instead of
+> sending ERR_NONFATAL.
 > 
-> Because .get_cur_state() is specifically designed to be able to return
-> an error, the core should be prepared to deal with errors returned by
-> it and propagating the error is not always the best choice, like in
-> this particular case.
+> When processing an ANFE, ideally both correctable error(CE) status and
+> uncorrectable error(UE) status should be cleared. However, there is no
+> way to fully identify the UE associated with ANFE. Even worse, Non-Fatal
+> Error(NFE) may set the same UE status bit as ANFE. Treating an ANFE as
+> NFE will reproduce above mentioned issue, i.e., breaking softwore probing;
+> treating NFE as ANFE will make us ignoring some UEs which need active
+> recover operation. To avoid clearing UEs that are not ANFE by accident,
+> the most conservative route is taken here: If any of the NFE Detected
+> bits is set in Device Status, do not touch UE status, they should be
+> cleared later by the UE handler. Otherwise, a specific set of UEs that
+> may be raised as ANFE according to the PCIe specification will be cleared
+> if their corresponding severity is Non-Fatal.
 > 
->>> The core code has been clean up from the high friction it had with the
->>> legacy ACPI code. It would be nice to continue it this direction.
+> To achieve above purpose, store UNCOR_STATUS bits that might be ANFE
+> in aer_err_info.anfe_status. So that those bits could be printed and
+> processed later.
 > 
-> This isn't really ACPI specific.  Any driver can return an error from
-> .get_cur_state() if it has a good enough reason.
+> Tested-by: Yudong Wang <yudong.wang@intel.com>
+> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-We are talking about registration time, right? If the driver is 
-registering too soon, eg. the firmware is not ready, should it fix the 
-moment it is registering the cooling device when it is sure the firmware 
-completed its initialization ?
+Not my most confident review ever as this is nasty and gives
+me a headache but your description is good and I think the
+implementation looks reasonable.
 
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
->> Essentially, you are saying that .get_cur_state() should not return an
->> error even if it gets an utterly invalid value from the platform
->> firmware.
->>
->> What value should it return then?
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
 
 
