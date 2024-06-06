@@ -1,216 +1,145 @@
-Return-Path: <linux-acpi+bounces-6233-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6234-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4E68FF191
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:06:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7856F8FF1C0
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:11:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A950228345F
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08EC11F25449
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496FF197A96;
-	Thu,  6 Jun 2024 16:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2A019884A;
+	Thu,  6 Jun 2024 16:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hjXKW9Dx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="ltzYZZvt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE36197A8A;
-	Thu,  6 Jun 2024 16:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DC719882E;
+	Thu,  6 Jun 2024 16:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717689997; cv=none; b=n4DlXRTRnVIDppRkqPddYk69nPpA3+FjrpQrKmr3w3MzCVyfxVR342YO08yfj/xRJV2aOcXAHKBbTouFiCvtMd8GrOSBcvhiFD933ycZSIdZ7/wwU+UYe2tRF3/ZDJP3Hj7EbO24PMI9QkN5m4tASgLORmKtQIAZaiyDwGK6810=
+	t=1717690100; cv=none; b=LLdU4FtVAz8q6nJ2h0MsUju5HMSRswfnPc096i0K7Kt0N75vLGZfV/vah4MPSMv9L7pEOyKdj3qDeuUVaEZBVoLkqo5z6RvspDbPBYYeVpuaxQhGY+glzj89fuWpyKYM5A7Ho8BH5wsFZxdDxyPr3sh/FmoDKocUtPCGkkSDmm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717689997; c=relaxed/simple;
-	bh=4pA/6KLDnT53+vx4qMnQiKe0VoIk3n8+GEHKApSPA7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bri7gFpl+8ivHF816pDPKfHMxa58pZcmXLcq7Y0+2bjD/QCY4QqtfOzPEZ8M1Qb+/bSkd+FCVfYaY0t2xULOWhf+p1VWwD8S4YkamYYQJ0XaLwmq1jfOfSuSzIrfmyhs3HCiPm4j7L3QFjjFt04CxR/SzO0FtQFRZquR5SiCuQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hjXKW9Dx; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 59E0D40E0177;
-	Thu,  6 Jun 2024 16:06:32 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9oTyQaefmcS0; Thu,  6 Jun 2024 16:06:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1717689985; bh=yNiIiUrsriudqclFjLXJzKQ4Ttub+OIs99LR3avItYs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hjXKW9DxeUu9aYm5BTzAi4VUPIYgVK61PopErp2APevAYakJhr7CxNPIYBKp9jmbt
-	 iJ83j1nCVMNLyfCzKTC6tvsWhjeFOz4y+Nt8R9iOrHvBEAemf1jcSL6rnApKXwcuX7
-	 RCVpPSQWW5vvlDJ1+bHpKUuP2zLS8J++4Kqk1MBP9gq5JJKX+iPd8/K8DGizdE1Bu9
-	 2M3gUiSkCPJ7uYw1mTQ4AXs0Jwc0IJydwcPq4vzbz6Z+I1uc52Dts5X3+jKfFyGAAx
-	 Hm3U8Y3C47whcAX0yw0AZb/FNFqfkM+Nckf4gCaLIg9ufOuXD+YKe+l+4Ja3A/cVrc
-	 VSXevzhXxMMd5r2FFZDrlH7X+LOXPTdTvkyVa4bCzlf4N/C0KAfjLuKlnq8IUgrWY7
-	 KEs9cVxXvda/yssDlwzMrQhg9JguYckb8JwVzsZFg/eh9o0gqofKLA1y6u5HELj7fE
-	 SahSODA0/z1zHY/6o72zqI5eZLZVBf24/8JFUeQY+pEhMtQur3oN3tN1et52bONwnI
-	 NqHKhNrHI5OSHp5UkfKO0haHb/rFshLJNCGt5HyKxoUx8IoPa8ZkpnB5U/As1DTQX+
-	 v0u54Wp0hdNWX8zS+wcWOIK65Robm0iQ0TlboK1qzt8LYJCZ0IPIcAoD8eEzR1vVmt
-	 uM0W6E2TSQg6W6pgB/sdTUjQ=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	s=arc-20240116; t=1717690100; c=relaxed/simple;
+	bh=wg4h7O4jG8cXoH1WQWnL4PYOUK5fcD4JMUobVwTW6NU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NDqt7mZK87WeunA0xtS/xW1Fwubuf9i95cC2bXK22TKXp81kc/hJi3/Xkxl0hY2SdtC18RO6A5DsoSg8WzGgMK1/CWjKJWwisBs2JSCt6ddz9nGK9JBPwhNoGU1DU/YulLLa2dKxYnqwwuOOkhwyDDJxxAMtf275GOx85JPa3r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=ltzYZZvt reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.1.0)
+ id d6f453944614915e; Thu, 6 Jun 2024 18:08:15 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C995340E016A;
-	Thu,  6 Jun 2024 16:05:38 +0000 (UTC)
-Date: Thu, 6 Jun 2024 18:05:33 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Shiju Jose <shiju.jose@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"dave.jiang@intel.com" <dave.jiang@intel.com>,
-	"alison.schofield@intel.com" <alison.schofield@intel.com>,
-	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
-	"ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
-	"leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
-	"rientjes@google.com" <rientjes@google.com>,
-	"jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"tony.luck@intel.com" <tony.luck@intel.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
-	"erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>,
-	"duenwen@google.com" <duenwen@google.com>,
-	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
-	"gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
-	tanxiaofei <tanxiaofei@huawei.com>,
-	"Zengtao (B)" <prime.zeng@hisilicon.com>,
-	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
-	wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
-Message-ID: <20240606160533.GDZmHeTbhCoJYKSsD2@fat_crate.local>
-References: <663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
- <20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
- <663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
- <20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
- <663e55c59d9d_3d7b429475@dwillia2-mobl3.amr.corp.intel.com.notmuch>
- <20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
- <6645f0738ead48a79f1baf753fc709c6@huawei.com>
- <20240520125857.00007641@Huawei.com>
- <20240527092131.GBZlRQmxwFTxxyR20q@fat_crate.local>
- <20240528100645.00000765@Huawei.com>
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id B3D106A6599;
+	Thu,  6 Jun 2024 18:08:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1717690095;
+	bh=wg4h7O4jG8cXoH1WQWnL4PYOUK5fcD4JMUobVwTW6NU=;
+	h=From:To:Cc:Subject:Date;
+	b=ltzYZZvtky3E15wzle5fdHwABVgEs9FAWVjXq+U5QeAAkWmOROiPiMq0qABDwGtba
+	 AgfiO/0LEvscE/+x9T1+j5RINnieAygLZmhNdmiLKSbm3E/ruZVr/DsfMKveWLqBcU
+	 tywbu3nt9wheRwEKarJtnv1sJrREDc3uz+667jUNwZZtul2elSr19hdSNpoFcL6u2+
+	 FslzzNTe2M+YFG3j9tjQEfdjjnoGwR7FlqFzUpmEye5jKqoWgWcq2QlF8Gxx/IDFgs
+	 rX0hJo8Qn40Zl+ayfKgXvA4Dfb2Iqs9jBou6uKvtzCx0JVZ5G2jSfDW0x+JSwdkXPD
+	 v2ZwqXZVxZ1uA==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Laura Nao <laura.nao@collabora.com>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>
+Subject:
+ [PATCH v2] thermal: core: Do not fail cdev registration because of invalid
+ initial state
+Date: Thu, 06 Jun 2024 18:08:14 +0200
+Message-ID: <6056838.lOV4Wx5bFT@kreacher>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240528100645.00000765@Huawei.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvdelkedgleeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepgeffhfdujeelhfdtgeffkeetudfhtefhhfeiteethfekvefgvdfgfeeikeeigfehnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopeekpdhrtghpthhtoheplhhinhhugidqphhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrnhhivghlrdhlvgiitggrnhhosehlihhnrghrohdrohhrghdprhgtphhtthhopehlrghurhgrrdhnrghosegtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgv
+ rhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=8 Fuz1=8 Fuz2=8
 
-On Tue, May 28, 2024 at 10:06:45AM +0100, Jonathan Cameron wrote:
-> If dealing with disabling, I'd be surprised if it was a normal policy but
-> if it were udev script or boot script. If unusual event (i.e. someone is
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Yeah, I wouldn't disable it during boot but around my workload only. You
-want for automatic scrubs to still happen on the system.
+It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooling
+device state to thermal_debug_cdev_add()") causes the ACPI fan driver
+to fail probing on some systems which turns out to be due to the _FST
+control method returning an invalid value until _FSL is first evaluated
+for the given fan.  If this happens, the .get_cur_state() cooling device
+callback returns an error and __thermal_cooling_device_register() fails
+as uses that callback after commit 31a0fa0019b0.
 
-> trying to reduce jitter in a benchmark targetting something else) then
-> interface is simple enough that an admin can poke it directly.
+Arguably, _FST should not return an invalid value even if it is
+evaluated before _FSL, so this may be regarded as a platform firmware
+issue, but at the same time it is not a good enough reason for failing
+the cooling device registration where the initial cooling device state
+is only needed to initialize a thermal debug facility.
 
-Right, for benchmarks direct poking is fine.
+Accordingly, modify __thermal_cooling_device_register() to avoid calling
+thermal_debug_cdev_add() instead of returning an error if the initial
+.get_cur_state() callback invocation fails.
 
-When it is supposed to be something more involved like, dunno, HPC doing
-a heavy workload and it wants to squeeze all performance so I guess
-turning off the scrubbers would be part of the setup script. So yeah, if
-this is properly documented, scripting around it is easy.
+Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()")
+Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
+Reported-by: Laura Nao <laura.nao@collabora.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
-> To a certain extent this is bounded by what the hardware lets us
-> do but agreed we should make sure it 'works' for the usecases we know
-> about.  Starting point is some more documentation in the patch set
-> giving common flows (and maybe some example scripts).
+v1 -> v2:
+   * Instead of making the thermal debug code effectively ignore the invalid
+     initial cooling device state, simply don't register thermal debugfs for
+     a cooling device if its initial state returned by the driver's
+     .get_cur_state() is invalid (Daniel).
 
-Yap, sounds good. As in: "These are the envisioned usages at the time of
-writing... " or so.
+Laura, please test this one even though I don't see why it wouldn't work for
+you if the v1 did.
 
-> > Do you go and start a scrub cycle by hand?
-> 
-> Typically no, but the option would be there to support an admin who is
-> suspicious or who is trying to gather statistics or similar.
+---
+ drivers/thermal/thermal_core.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Ok.
+Index: linux-pm/drivers/thermal/thermal_core.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_core.c
++++ linux-pm/drivers/thermal/thermal_core.c
+@@ -1001,7 +1001,7 @@ __thermal_cooling_device_register(struct
+ 
+ 	ret = cdev->ops->get_cur_state(cdev, &current_state);
+ 	if (ret)
+-		goto out_cdev_type;
++		current_state = ULONG_MAX;
+ 
+ 	thermal_cooling_device_setup_sysfs(cdev);
+ 
+@@ -1016,7 +1016,8 @@ __thermal_cooling_device_register(struct
+ 		return ERR_PTR(ret);
+ 	}
+ 
+-	thermal_debug_cdev_add(cdev, current_state);
++	if (current_state <= cdev->max_state)
++		thermal_debug_cdev_add(cdev, current_state);
+ 
+ 	/* Add 'this' new cdev to the global cdev list */
+ 	mutex_lock(&thermal_list_lock);
 
-> That definitely makes sense for NVDIMM scrub as the model there is
-> to only ever do it on a demand as a single scrub pass.
-> For a cyclic scrub we can spin a policy in rasdaemon or similar to
-> possibly crank up the frequency if we are getting lots of 'non scrub'
-> faults (i.e. correct error reported on demand accesses).
 
-I was going to suggest that: automating stuff with rasdaemon. It would
-definitely simplify talking to that API.
 
-> Shiju is our expert on this sort of userspace stats monitoring and
-> handling so I'll leave him to come back with a proposal / PoC for doing that.
-> 
-> I can see two motivations though:
-> a) Gather better stats on suspect device by ensuring more correctable
->    error detections.
-> b) Increase scrubbing on a device which is on it's way out but not replacable
->    yet for some reason.
-> 
-> I would suggest this will be PoC level only for now as it will need
-> a lot of testing on large fleets to do anything sophisticated.
-
-Yeah, sounds like a good start.
-
-> > Do you automate it? I wanna say yes because that's miles better than
-> > having to explain yet another set of knobs to users.
-> 
-> First instance, I'd expect an UDEV policy so when a new CXL memory
-> turns up we set a default value.  A cautious admin would have tweaked
-> that script to set the default to scrub more often, an admin who 
-> knows they don't care might turn it off. We can include an example of that
-> in next version I think.
-
-Yes, and then hook into rasdaemon the moment it logs an error in some
-component to go and increase scrubbing of that component. But yeah, you
-said that above already.
-
-> Absolutely.  One area that needs to improve (Dan raised it) is
-> association with HPA ranges so we at can correlate easily error reports
-> with which scrub engine.  That can be done with existing version but
-> it's fiddlier than it needs to be. This 'might' be a userspace script
-> example, or maybe making associations tighter in kernel.
-
-Right.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
