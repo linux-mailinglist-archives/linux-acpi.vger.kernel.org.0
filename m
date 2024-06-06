@@ -1,154 +1,133 @@
-Return-Path: <linux-acpi+bounces-6217-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6218-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCA48FE5DF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 13:56:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FFE8FE6AF
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0FE11C25BFF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 11:56:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60CA11F2754A
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 12:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753641957FC;
-	Thu,  6 Jun 2024 11:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EB8195B0C;
+	Thu,  6 Jun 2024 12:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="KSuigMUZ";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="S+xZnJmI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwRFQG9r"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893BA13D28C;
-	Thu,  6 Jun 2024 11:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217A7195B08;
+	Thu,  6 Jun 2024 12:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717674962; cv=none; b=VsucdNYUVj/ZFTZTwSZOTPXOX9BTEfuudvuWcgk12UyCeeKtXaYbdNsbtq8nI0qn7WtqZM5IeDAdLgUYq5n80I7zlNQmLGz0LbHki4+gUqm9rI4v7SnQdg+OJX07fapK5lyLO9ZxJMpBAOjBRg7APGPIQ4CHmbVZ0bdebFeDk54=
+	t=1717677595; cv=none; b=E0sM+3RWgBV2o5UxQFdzIUyOL+uNYw3KaYTliEL5o6lKItLEYkWBIdsNJ2MHGBCnZL61+nkW4sUcGvI32y+bPBg1qNBTB5X0poi7F9v4Pq27jK+1bnWFuLxtt4c5Np085xmUzzHL38wFrLVehoSnygBddavRLRhAWTQW5opZB0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717674962; c=relaxed/simple;
-	bh=5TcS2L0Vunv8bQ6XHbiioGIW6DmWOl9p9toiSyHCi2U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xjm6FJtNIheugHSy0wbqqU+8RJUDx7W8fz8hgh+BtolkRsULU2AUPxwN4TrucNT4QY5xEgdFBzjZ9eP7/ihxAyz757lq0kdkcKyTO54w9+62iMoXn6tOLokE34k/J1ovCDAx16VFmH/4F8cX7mfR3Z7lquh8n1Mk8V/ma+MfkQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=KSuigMUZ; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=S+xZnJmI; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3352D21AE5;
-	Thu,  6 Jun 2024 11:55:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1717674956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jZCoYGmEJh4l+ym/XnVfcBBQBC1YxZZjqAJOP1GtJnA=;
-	b=KSuigMUZRBIcqfkAVkZAJe2+Kz4kxMP0xgEDW1yewEdpvZRLLPVjmvjrU46HhqyFkTO6/x
-	wUW2+Cz0iYRl88d2gglyM0D79ucUSMYWYRQFwlKULo2q6Hb1UhBrb+WJE/b7zs3ClU/yrz
-	W+YKy6+U0tUasIGhJGev130yd09Vqx4=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=S+xZnJmI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1717674955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jZCoYGmEJh4l+ym/XnVfcBBQBC1YxZZjqAJOP1GtJnA=;
-	b=S+xZnJmIO9S/4p9OmvLSKVLvkKVr7oLEj8ouZ27JRDBUKNJHTarj+i0ol0z6MFOr62TNVi
-	1XCcs3djAI9rdTX32Fz4WqjZuoavds1svj6eLNgA6acbdvGKkJyoatH94XmzJ+ccSFeGbW
-	Eaj/PgFkBLtDQyLGB7a5G5JnrGtTrt8=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A8D313A1E;
-	Thu,  6 Jun 2024 11:55:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dn6JAcujYWa1KQAAD6G6ig
-	(envelope-from <ptesarik@suse.com>); Thu, 06 Jun 2024 11:55:55 +0000
-From: =?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <ptesarik@suse.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <ptesarik@suse.com>
-Subject: [PATCH] ACPI: CPPC: add sysfs entry for guaranteed performance
-Date: Thu,  6 Jun 2024 13:55:41 +0200
-Message-ID: <20240606115541.2069-1-ptesarik@suse.com>
-X-Mailer: git-send-email 2.45.1
+	s=arc-20240116; t=1717677595; c=relaxed/simple;
+	bh=8j0QTwBVqBlEew+vXzNvM2j0bxIyUPIq7t89df/Ovig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rOgF8CmHDcuLH9saR+cYsD50KdUhStJ9P1g/+luhkcOkNqLI9mx8hHHtVjPUCjMLos6MBbkExHFhhL7PWBsDGods08IkKv4oBkh55WABj7+O6PjLz31NxBRTskXUx6cvs+lG0qZgGS5JmWizciQEmvAIuGTQr60tK00qBOqoaQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwRFQG9r; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717677594; x=1749213594;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8j0QTwBVqBlEew+vXzNvM2j0bxIyUPIq7t89df/Ovig=;
+  b=jwRFQG9rzCvzAebTGvIRpq64S4GhVy2/nx2NA5zPhxs7+qU2yDAkLDCK
+   NLxR9AlfQ6T8R0al2BovCpH8qEL4tdcN026MB5gu5XxiG/TN2JlFcXuig
+   wwTKS67tZfbxMBcv8sYvY1Aqhd2CVbtwNK8j0cZTBCbghEeRiauwDj1/T
+   4xYA62szx7H7+JZvh6ReADssXT4bffhUMoGneJ+ZdtyfJ1T1WLGnVJXeK
+   EK/BfTnOkq/nb9cupcd4ojzuwI1BvDc5BvBTpJa1B2xOmcH4HqgKXGRmu
+   ozcciifKEgZF4hlMyC5q7I0jCVsaEMpNJPRfqGCD+IQrNsV3ya99lyfB9
+   Q==;
+X-CSE-ConnectionGUID: mg0+IGHyS52Mj63PWZvW0w==
+X-CSE-MsgGUID: P5ETKNCfRBaPjk47uwqfOw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="31839965"
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="31839965"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 05:39:53 -0700
+X-CSE-ConnectionGUID: uwimgMbWSnCttp4dnD+tsw==
+X-CSE-MsgGUID: fBNz2Le5QS25iPTszSSU9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
+   d="scan'208";a="37812017"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 06 Jun 2024 05:39:47 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id E8F782A4; Thu, 06 Jun 2024 15:39:45 +0300 (EEST)
+Date: Thu, 6 Jun 2024 15:39:45 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@intel.com>, adrian.hunter@intel.com, 
+	ardb@kernel.org, ashish.kalra@amd.com, bhe@redhat.com, 
+	dave.hansen@linux.intel.com, elena.reshetova@intel.com, haiyangz@microsoft.com, hpa@zytor.com, 
+	jun.nakajima@intel.com, kai.huang@intel.com, kexec@lists.infradead.org, 
+	kys@microsoft.com, linux-acpi@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, ltao@redhat.com, mingo@redhat.com, 
+	peterz@infradead.org, rafael@kernel.org, rick.p.edgecombe@intel.com, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, 
+	x86@kernel.org
+Subject: Re: [PATCHv11.1 11/19] x86/tdx: Convert shared memory back to
+ private on kexec
+Message-ID: <thox3qsdozhcl3xk5zmdjhz6xdkhhz6xefknj2ib427q4qw22q@uizbc32vuu55>
+References: <20240531151442.GMZlnpYkDCRlg1_YS0@fat_crate.local>
+ <20240602142303.3263551-1-kirill.shutemov@linux.intel.com>
+ <20240603083754.GAZl2A4uXvVB5w4l9u@fat_crate.local>
+ <noym2bqgxqcyhhdzoax7gvdfzhh7rtw7cv236fhzpqh3wqf76e@2jj733skv7y4>
+ <78d33a31-0ef2-417b-a240-b2880b64518e@intel.com>
+ <u3hg3fqc2nxsjtfugjmmzlahwriyqlebnkxrbzgrxlkj6l3k36@yd3yudglgevi>
+ <20240604180554.GIZl9XgscEI3PUvR-W@fat_crate.local>
+ <alkew673cceojzmhsp3wj43yv76cek5ydh2iosfcphuv6ro26q@pj6whxcoetht>
+ <20240605162419.GJZmCRM8V6xooyvm9H@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -1.71
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 3352D21AE5
-X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.71 / 50.00];
-	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.83)[subject];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	BAYES_HAM(-0.03)[56.37%];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DKIM_TRACE(0.00)[suse.com:+]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240605162419.GJZmCRM8V6xooyvm9H@fat_crate.local>
 
-Expose the CPPC guaranteed performance as reported by the platform through
-GuaranteedPerformanceRegister.
+On Wed, Jun 05, 2024 at 06:24:19PM +0200, Borislav Petkov wrote:
+> On Wed, Jun 05, 2024 at 03:21:42PM +0300, Kirill A. Shutemov wrote:
+> > If a page can be accessed via private mapping is determined by the
+> > presence in Secure EPT. This state persist across kexec.
+> 
+> I just love it how I tickle out details each time I touch this comment
+> because we three can't write a single concise and self-contained
+> explanation. :-(
+> 
+> Ok, next version:
+> 
+> "Private mappings persist across kexec. If tdx_enc_status_changed() fails
 
-The current value is already read in cppc_get_perf_caps() and stored in
-struct cppc_perf_caps (to be used by the intel_pstate driver), so only the
-attribute itself needs to be defined.
+s/Private mappings persist /Memory encryption state persists /
 
-Signed-off-by: Petr Tesařík <ptesarik@suse.com>
----
- drivers/acpi/cppc_acpi.c | 2 ++
- 1 file changed, 2 insertions(+)
+> in the first kernel, it leaves memory in an unknown state.
+> 
+> If that memory remains shared, accessing it in the *next* kernel through
+> a private mapping will result in an unrecoverable guest shutdown.
+> 
+> The kdump kernel boot is not impacted as it uses a pre-reserved memory
+> range that is always private.  However, gathering crash information
+> could lead to a crash if it accesses unconverted memory through
+> a private mapping which is possible when accessing that memory through
+> /proc/vmcore, for example.
+> 
+> In all cases, print error info in order to leave enough bread crumbs for
+> debugging."
+> 
+> I think this is getting in the right direction as it actually makes
+> sense now.
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 1d857978f5f4..9976bb57356e 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -160,6 +160,7 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, highest_perf);
- show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_perf);
- show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_perf);
- show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_nonlinear_perf);
-+show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, guaranteed_perf);
- show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_freq);
- show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
- 
-@@ -196,6 +197,7 @@ static struct attribute *cppc_attrs[] = {
- 	&highest_perf.attr,
- 	&lowest_perf.attr,
- 	&lowest_nonlinear_perf.attr,
-+	&guaranteed_perf.attr,
- 	&nominal_perf.attr,
- 	&nominal_freq.attr,
- 	&lowest_freq.attr,
+Otherwise looks good to me.
+
 -- 
-2.45.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
