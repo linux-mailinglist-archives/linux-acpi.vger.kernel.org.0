@@ -1,206 +1,121 @@
-Return-Path: <linux-acpi+bounces-6212-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6213-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D1D8FDD93
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 05:41:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B252F8FE230
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 11:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBEE8B20B90
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 03:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B15561C23E6C
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 09:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409851D551;
-	Thu,  6 Jun 2024 03:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xe89Cy/L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B7913E05C;
+	Thu,  6 Jun 2024 09:03:50 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2619D89B;
-	Thu,  6 Jun 2024 03:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6857413E051;
+	Thu,  6 Jun 2024 09:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717645296; cv=none; b=JpqHNtC4mMzdLI5wQbMuCzHxH6t33Z++bNZUDMrabJ3aQHO7BHfdtLsGDsyBLnrZXkgYrG6rojhDFf5bT2zpiMCZScM89t4FGo744C42+h9NqmQ4SZ6Fl07FbB19G0jnY21wgGRmAw4ZOiBti8IjCSI4EPDNkgbPZsbdQS2Ahq0=
+	t=1717664630; cv=none; b=Exy+E+/jE4DVVDSgkJC2M68PsL2U+CiORoCT0uDeWpvQ3iTcH3Hi84TWQ1WeBhGI6d99wGrD34ZkWseVeBQCsLTwppelf1JYuBlMcv97fvEx+U7pPEdwoCEZpsLTELudlIfq4x4cEReH4qwoMGsaUlPHKdhUfhPw1wp0qQ32TCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717645296; c=relaxed/simple;
-	bh=7i6qlJ4MQazUo2BFSri14hrv8zTgFKAa/wwxkpGrDJs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DG0633jwNqWzRETbUtRnRWhJ/Hqk91ZULRiEd5l9uLc/MitdgKnRQKgI2uHgfpV+ClNTkhguVyaGMwl750iCZfJ2GIe0bhspvrdpjDYhZy7vWxlRLWMHhsnW1/OYzIvX4g2CcfZKBQwQjKhCpAC5wMDJnP+pf/TGa0hOa+jvK8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xe89Cy/L; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717645294; x=1749181294;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=7i6qlJ4MQazUo2BFSri14hrv8zTgFKAa/wwxkpGrDJs=;
-  b=Xe89Cy/LicprldoK/VTM7H8g3JAdQTBlVbJgYUTm8U4TlXvenqpVPIH8
-   uAvgjRbcRwKxHx4JJjBUGHlamUxjO2LXEYtvYu8v4agLxuuLBA1UNhPeK
-   N87AYK3V06319hyAilmDlFEUOJrlZo+Zhtz3w4ZUFSqeA8QuiMeLhxzzk
-   5Od/U66tOPRE4vroYaDvgDk+j78LfsqZfYS4JMgnQ2rh90KatA2e6kNRb
-   6BIWn/sBwnhWQBO+V8XhRAy8O+oezJsrS9/puJr0TJGh6YbM0ncW0AZ8z
-   voC0mNS2gfuZWn+ztpxMKa8cgptNGUIA+FQUOSn111Sp51XKe0v9UkS/c
-   Q==;
-X-CSE-ConnectionGUID: LV54aqIzSceklVXX3f6AYw==
-X-CSE-MsgGUID: FLYnXbuGQoSiC4yHM2JTtQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14248354"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="14248354"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 20:41:33 -0700
-X-CSE-ConnectionGUID: mAneGKfXSCeDwblX/sRntw==
-X-CSE-MsgGUID: 65NTedZASW2d6VIZBDyesg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
-   d="scan'208";a="37828634"
-Received: from kbommu-mobl3.gar.corp.intel.com ([10.213.76.177])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 20:41:30 -0700
-Message-ID: <cf24f2193c16ed070e5ec3b2f601650eb5b867ed.camel@linux.intel.com>
-Subject: Re: [PATCH v1] thermal: core: Do not fail cdev registration because
- of invalid initial state
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM
- <linux-pm@vger.kernel.org>
-Cc: Linux ACPI <linux-acpi@vger.kernel.org>, LKML
- <linux-kernel@vger.kernel.org>,  Lukasz Luba <lukasz.luba@arm.com>, Zhang
- Rui <rui.zhang@intel.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
- Laura Nao <laura.nao@collabora.com>
-Date: Wed, 05 Jun 2024 20:41:22 -0700
-In-Reply-To: <4569763.LvFx2qVVIh@kreacher>
-References: <4569763.LvFx2qVVIh@kreacher>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0-1 
+	s=arc-20240116; t=1717664630; c=relaxed/simple;
+	bh=2zYvUiFXb9ziA9s/CGnzNXB/lGHZdt5gQLZKHADzUqk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sIV6a2S6RxfVrc8YAC4vuKwu81eGvtALvi68bnb8Q+E9Z85I9LC2Oe448vfRMBAvwBZoX665nTenUEU4AweJ5UADdGpfSSAlraLgZwhl2YzIFR8XfNByuMN5nPh5B1YFBIHPuMiVJ7yawTbFmzJGaDslrSogecdcFoSV6w75BbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Vvyv05TkPz6JBZ1;
+	Thu,  6 Jun 2024 16:59:24 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8A07B1408F9;
+	Thu,  6 Jun 2024 17:03:45 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Jun
+ 2024 10:03:44 +0100
+Date: Thu, 6 Jun 2024 10:03:43 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Huang Ying <ying.huang@intel.com>
+CC: "Rafael J . Wysocki" <rafael@kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dave Jiang <dave.jiang@intel.com>, "Dan
+ Williams" <dan.j.williams@intel.com>, Bharata B Rao <bharata@amd.com>,
+	Alistair Popple <apopple@nvidia.com>, "Aneesh Kumar K . V"
+	<aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] acpi,hmat: Use ACCESS_COORDINATE_CPU when appropriate
+Message-ID: <20240606100343.000075ea@Huawei.com>
+In-Reply-To: <20240606022845.189710-1-ying.huang@intel.com>
+References: <20240606022845.189710-1-ying.huang@intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 2024-06-05 at 21:17 +0200, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->=20
-> It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass
-> cooling
-> device state to thermal_debug_cdev_add()") causes the ACPI fan driver
-> to fail probing on some systems which turns out to be due to the _FST
-> control method returning an invalid value until _FSL is first
-> evaluated
-> for the given fan.=C2=A0 If this happens, the .get_cur_state() cooling
-> device
-> callback returns an error and __thermal_cooling_device_register()
-> fails
-> as uses that callback after commit 31a0fa0019b0.
->=20
-> Arguably, _FST should not return an inavlid
-s/inavlid/invalid
+On Thu,  6 Jun 2024 10:28:45 +0800
+Huang Ying <ying.huang@intel.com> wrote:
 
-Thanks,
-Srinivas
+> To improve the readability of the code via replacing the magic number
+> "1" with ACCESS_COORDINATE_CPU when appropriate.  No functionality
+> change.
+> 
+> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Bharata B Rao <bharata@amd.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Good to clean this up. Thanks!
 
->  value even if it is
-> evaluated before _FSL, so this may be regarded as a platform firmware
-> issue, but at the same time it is not a good enough reason for
-> failing
-> the cooling device registration where the initial cooling device
-> state
-> is only needed to initialize a thermal debug facility.
->=20
-> Accordingly, modify __thermal_cooling_device_register() to pass a
-> negative state value to thermal_debug_cdev_add() instead of failing
-> if the initial .get_cur_state() callback invocation fails and adjust
-> the thermal debug code to ignore negative cooling device state
-> values.
->=20
-> Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to
-> thermal_debug_cdev_add()")
-> Closes:
-> https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@coll=
-abora.com
-> Reported-by: Laura Nao <laura.nao@collabora.com>
-> Tested-by: Laura Nao <laura.nao@collabora.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
-> =C2=A0drivers/thermal/thermal_core.c=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 11 +=
-++++++----
-> =C2=A0drivers/thermal/thermal_debugfs.c |=C2=A0=C2=A0=C2=A0 7 ++++++-
-> =C2=A02 files changed, 13 insertions(+), 5 deletions(-)
->=20
-> Index: linux-pm/drivers/thermal/thermal_core.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-pm.orig/drivers/thermal/thermal_core.c
-> +++ linux-pm/drivers/thermal/thermal_core.c
-> @@ -964,7 +964,8 @@ __thermal_cooling_device_register(struct
-> =C2=A0{
-> =C2=A0	struct thermal_cooling_device *cdev;
-> =C2=A0	struct thermal_zone_device *pos =3D NULL;
-> -	unsigned long current_state;
-> +	unsigned long val;
-> +	int current_state;
-> =C2=A0	int id, ret;
-> =C2=A0
-> =C2=A0	if (!ops || !ops->get_max_state || !ops->get_cur_state ||
-> @@ -1002,9 +1003,11 @@ __thermal_cooling_device_register(struct
-> =C2=A0	if (ret)
-> =C2=A0		goto out_cdev_type;
-> =C2=A0
-> -	ret =3D cdev->ops->get_cur_state(cdev, &current_state);
-> -	if (ret)
-> -		goto out_cdev_type;
-> +	ret =3D cdev->ops->get_cur_state(cdev, &val);
-> +	if (!ret && val >=3D 0 && val <=3D INT_MAX)
-> +		current_state =3D val;
-> +	else
-> +		current_state =3D -1;
-> =C2=A0
-> =C2=A0	thermal_cooling_device_setup_sysfs(cdev);
-> =C2=A0
-> Index: linux-pm/drivers/thermal/thermal_debugfs.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-pm.orig/drivers/thermal/thermal_debugfs.c
-> +++ linux-pm/drivers/thermal/thermal_debugfs.c
-> @@ -421,6 +421,8 @@ void thermal_debug_cdev_state_update(con
-> =C2=A0	cdev_dbg =3D &thermal_dbg->cdev_dbg;
-> =C2=A0
-> =C2=A0	old_state =3D cdev_dbg->current_state;
-> +	if (old_state < 0)
-> +		goto unlock;
-> =C2=A0
-> =C2=A0	/*
-> =C2=A0	 * Get the old state information in the durations list. If
-> @@ -463,6 +465,7 @@ void thermal_debug_cdev_state_update(con
-> =C2=A0
-> =C2=A0	cdev_dbg->total++;
-> =C2=A0
-> +unlock:
-> =C2=A0	mutex_unlock(&thermal_dbg->lock);
-> =C2=A0}
-> =C2=A0
-> @@ -499,7 +502,9 @@ void thermal_debug_cdev_add(struct therm
-> =C2=A0	 * duration will be printed by cdev_dt_seq_show() as
-> expected if it
-> =C2=A0	 * runs before the first state transition.
-> =C2=A0	 */
-> -	thermal_debugfs_cdev_record_get(thermal_dbg, cdev_dbg-
-> >durations, state);
-> +	if (state >=3D 0)
-> +		thermal_debugfs_cdev_record_get(thermal_dbg,
-> cdev_dbg->durations,
-> +						state);
-> =C2=A0
-> =C2=A0	debugfs_create_file("trans_table", 0400, thermal_dbg->d_top,
-> =C2=A0			=C2=A0=C2=A0=C2=A0 thermal_dbg, &tt_fops);
->=20
->=20
->=20
->=20
+>  drivers/acpi/numa/hmat.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> index 2c8ccc91ebe6..febd9e51350b 100644
+> --- a/drivers/acpi/numa/hmat.c
+> +++ b/drivers/acpi/numa/hmat.c
+> @@ -408,7 +408,7 @@ static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_px
+>  	if (target && target->processor_pxm == init_pxm) {
+>  		hmat_update_target_access(target, type, value,
+>  					  ACCESS_COORDINATE_LOCAL);
+> -		/* If the node has a CPU, update access 1 */
+> +		/* If the node has a CPU, update access ACCESS_COORDINATE_CPU */
+>  		if (node_state(pxm_to_node(init_pxm), N_CPU))
+>  			hmat_update_target_access(target, type, value,
+>  						  ACCESS_COORDINATE_CPU);
+> @@ -948,7 +948,7 @@ static int hmat_set_default_dram_perf(void)
+>  		target = find_mem_target(pxm);
+>  		if (!target)
+>  			continue;
+> -		attrs = &target->coord[1];
+> +		attrs = &target->coord[ACCESS_COORDINATE_CPU];
+>  		rc = mt_set_default_dram_perf(nid, attrs, "ACPI HMAT");
+>  		if (rc)
+>  			return rc;
+> @@ -975,7 +975,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
+>  	hmat_update_target_attrs(target, p_nodes, ACCESS_COORDINATE_CPU);
+>  	mutex_unlock(&target_lock);
+>  
+> -	perf = &target->coord[1];
+> +	perf = &target->coord[ACCESS_COORDINATE_CPU];
+>  
+>  	if (mt_perf_to_adistance(perf, adist))
+>  		return NOTIFY_OK;
 
 
