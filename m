@@ -1,113 +1,130 @@
-Return-Path: <linux-acpi+bounces-6243-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6244-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12798FF580
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 21:56:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E888FF5C9
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 22:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A635288A7F
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 19:56:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 540BBB2168F
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 20:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A906E611;
-	Thu,  6 Jun 2024 19:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C3A73453;
+	Thu,  6 Jun 2024 20:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo9p2ViJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VPY3czMJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B44C618;
-	Thu,  6 Jun 2024 19:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D538F9C
+	for <linux-acpi@vger.kernel.org>; Thu,  6 Jun 2024 20:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717703770; cv=none; b=vCmNBRUwXNjwDY/xXE9bkGilacP1HXtcvbGIDTPb5ZN3enekSEMRFDgpnC6Bjc6KipAQklXrS5ULMRk6gIbzpi+h+OWz2kWvm4PEOMwpzPDaOdLRZNSTL3Lp86G4volSqeYprvjs80BvRgx2qZxQnCry2y0OIV/ieF8SLcqLc9s=
+	t=1717705257; cv=none; b=TqOcAnXB7GGk5y1jtFtvIn28ASUHIWbl5+NxJs0QhegjnDw2p+mECL8Jg+bNbJ8j+4c5ssbZjO/sfJwkUcK18VBhxlOaD7/LHk/i09ERZKDN6fMgWfkI13T5zxVPwFew1hNaJrjEm6brE+0xysGD0Y/tUzXtcZ/uVwONIzb8BwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717703770; c=relaxed/simple;
-	bh=0IAiGnLisQODtmbVUvM/bZ5fn4fz5tUOHl97p3eYprc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=CBiBL+y20H5zPJaC6KjiH8qebNkDOAzJInIToma8zOdWMr0ArTaTk5O2oXZEdQp7U46Jr9HZ8sSMm9DieKUohkoDz90QxL6Gp01C7v5Rs2YNateQz6fK2ZmmyFMFP02SOd0Da5p/KHxRc/V1CoyQAzWMgJiWGqPzxhqjbM+ELEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo9p2ViJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895CEC2BD10;
-	Thu,  6 Jun 2024 19:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717703770;
-	bh=0IAiGnLisQODtmbVUvM/bZ5fn4fz5tUOHl97p3eYprc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=uo9p2ViJBY5udVAA0yPjZUyMc2fgHBhEq7LeErVy/2y7CBpffSjPQlAt1kVnrWTrv
-	 SG+oGEluWCCYJP6cw77rued1DgGkozJchAeRVtqvV0/0LjkC7848phDfk2BSv43G5k
-	 KVSNJ7rPwzM72dR17Vuqm0j2CLHXRGVrq+6UkAqSNvjKql0f29vfPnRZtcFUpzuNvh
-	 a0y2PWhfC3/NdHfF871o2yZ+TsWp+XOuyE63W1qG1/IsUeBm5/xCh4KqLlL9rdF2tC
-	 RA9t9sOMATpq6HUw/avxo1imCf5F1EBx+Y8NolBze277rqc6P2QZd+jYYfzYAx98FP
-	 Qe2EdoaoKcWPA==
-Date: Thu, 6 Jun 2024 14:55:58 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Dr. David Alan Gilbert" <linux@treblig.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com,
-	rafael@kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: PCI: Remove unused struct 'acpi_handle_node'
-Message-ID: <20240606195558.GA816336@bhelgaas>
+	s=arc-20240116; t=1717705257; c=relaxed/simple;
+	bh=ZhN5psr88O1rTZYnaj0Pp6eojbRqBJN+Mq+LrsdNdOI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eUk/uxueprWdkny31CErw2UbdOCPTdAKNbn/N7NL8aCU4zfX/Bvjlx/dGUVMIRdCd09/Jm1n0brtjQ/VV50uk0wPX0ty+ZbMgyCw61EVMBKkhio0VC8MZs0LdEH17P566yBs42UuPYDSWXJ13n7eT3+I5dbDxy3VEgN8HWCKj/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VPY3czMJ; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52b9dda4906so1980144e87.2
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jun 2024 13:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717705253; x=1718310053; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=83UooEInBqzhI2DlCSt/csP7JuwUOhdJysD+ewzTrGo=;
+        b=VPY3czMJ3YejXbhqCZ9aBdOLp6TvNZcxgEm59A0kdPfyU46Jc2JGICqxrFhqjmcWC0
+         G5smW9rvX8Tc4sv89t4ZZ3LKMdYltI9p9AOFpVxPWeJkTxczd189ZFZXnHATg4StWRIE
+         8i92JcUnhdWMchcVvHPFEW0i74qtynEelcagmJKlCf9ng2ruI4F6kqvQoTlHagU3qBsl
+         VLCeFwV6TGNYAfuMjyfvIC4Wi2mEu55hczNFF1KIgFYm9oWF9WMsro3qaiCQEYfwOAeT
+         G9wL6+NM+yk5pVKgxBRuuLmqU3SI7TonNHbSuJhOgRuOVSpGh4jxNNJthwmxECt9dIFO
+         LegQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717705253; x=1718310053;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=83UooEInBqzhI2DlCSt/csP7JuwUOhdJysD+ewzTrGo=;
+        b=foQGBG0HuQjiZOer4TQow30Sh+7wuI0qnwv1ACC/F6Z5EjHLNiDZeP/VihH3lr6H3h
+         r/wy3ZOjV4+PpYB9oTsWTMxv1PFBtzc9B4MourqYwe97ejA4kNmYNyJsa/yS8p2WzM7q
+         6MftRk3Dla2HoFsQqk9lBRzkSOHI2Zb7iZg092wYg3CTUyyMtuOU6/l039AJmn2Ky2Ed
+         ERjjnxhPN+vZ2d65oT+LEJlRKpgRQRh5G8oU3Oj7FgHYYruquFjjcUAds0cEVpVd5G7r
+         ZA0fvRvNFaB0xaDAhe0o29qF4GkEigZ1vZn6dS2LSmAZrzGEcC3OyIum9uPAUUxpP8p3
+         BIMQ==
+X-Gm-Message-State: AOJu0Yx1YrL3LC1aBTO/v7KMn+8+pVhzYdOmFxF/I2dUJS1uAbi1zzWd
+	CY8NfuGaZ1P0Tf2gkDzdz06mHjbmOOwqtkh4UcfyxmUFZr7g/ZNaEYT8ACLqktE=
+X-Google-Smtp-Source: AGHT+IEdG8vgcBO9N+bQsEADxiJZEJ8P0VduttpUVKLHZAp+J5ZqcCuSthLDPZi8nT7v2tqh/BTMPA==
+X-Received: by 2002:a05:6512:3e01:b0:520:ed4e:2203 with SMTP id 2adb3069b0e04-52bb9f64915mr689722e87.8.1717705253100;
+        Thu, 06 Jun 2024 13:20:53 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:f9a9:3740:b905:9995? ([2a05:6e02:1041:c10:f9a9:3740:b905:9995])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4214a4aab93sm70618805e9.0.2024.06.06.13.20.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jun 2024 13:20:52 -0700 (PDT)
+Message-ID: <710ce159-728b-4dec-854c-bbfd6b4bf6bf@linaro.org>
+Date: Thu, 6 Jun 2024 22:20:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zk9cTVvPoyzM4hYm@gallifrey>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] thermal: core: Do not fail cdev registration because
+ of invalid initial state
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>, Laura Nao <laura.nao@collabora.com>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>
+References: <12456961.O9o76ZdvQC@kreacher>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <12456961.O9o76ZdvQC@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 23, 2024 at 03:10:05PM +0000, Dr. David Alan Gilbert wrote:
-> * Jonathan Cameron (Jonathan.Cameron@Huawei.com) wrote:
-> > On Thu,  9 May 2024 01:08:58 +0100
-> > linux@treblig.org wrote:
-> > 
-> > > From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> > > 
-> > > 'acpi_handle_node' is unused since
-> > > Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
-> > > Remove it.
-> > > 
-> > > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> > 
-> > FWIW, indeed unused.
-> > 
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 06/06/2024 20:14, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Subject: [PATCH v3] thermal: core: Do not fail cdev registration because of invalid initial state
 > 
-> Thanks; any idea who would pick this up?
+> It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooling
+> device state to thermal_debug_cdev_add()") causes the ACPI fan driver
+> to fail probing on some systems which turns out to be due to the _FST
+> control method returning an invalid value until _FSL is first evaluated
+> for the given fan.  If this happens, the .get_cur_state() cooling device
+> callback returns an error and __thermal_cooling_device_register() fails
+> as uses that callback after commit 31a0fa0019b0.
+> 
+> Arguably, _FST should not return an invalid value even if it is
+> evaluated before _FSL, so this may be regarded as a platform firmware
+> issue, but at the same time it is not a good enough reason for failing
+> the cooling device registration where the initial cooling device state
+> is only needed to initialize a thermal debug facility.
+> 
+> Accordingly, modify __thermal_cooling_device_register() to avoid
+> calling thermal_debug_cdev_add() instead of returning an error if the
+> initial .get_cur_state() callback invocation fails.
+> 
+> Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()")
+> Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
+> Reported-by: Laura Nao <laura.nao@collabora.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
 
-Applied with Jonathan's reviewed-by to pci/misc for v6.11, thanks!
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Rafael, let me know if you want this instead.  Easy for me to drop if
-you do.
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
-> > > ---
-> > >  drivers/acpi/pci_root.c | 5 -----
-> > >  1 file changed, 5 deletions(-)
-> > > 
-> > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
-> > > index 58b89b8d950ed..59e6955e24edb 100644
-> > > --- a/drivers/acpi/pci_root.c
-> > > +++ b/drivers/acpi/pci_root.c
-> > > @@ -293,11 +293,6 @@ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(acpi_pci_find_root);
-> > >  
-> > > -struct acpi_handle_node {
-> > > -	struct list_head node;
-> > > -	acpi_handle handle;
-> > > -};
-> > > -
-> > >  /**
-> > >   * acpi_get_pci_dev - convert ACPI CA handle to struct pci_dev
-> > >   * @handle: the handle in question
-> > 
-> > 
-> -- 
->  -----Open up your eyes, open up your mind, open up your code -------   
-> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-> \        dave @ treblig.org |                               | In Hex /
->  \ _________________________|_____ http://www.treblig.org   |_______/
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
