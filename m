@@ -1,108 +1,165 @@
-Return-Path: <linux-acpi+bounces-6237-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6238-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73858FF2E2
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:50:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D268FF46C
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 20:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86B81C25A93
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C04AF288CA7
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB11A198E74;
-	Thu,  6 Jun 2024 16:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C138199EAA;
+	Thu,  6 Jun 2024 18:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jitzm3Gs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RzwmAboF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB53197A8E;
-	Thu,  6 Jun 2024 16:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D443B1993AB
+	for <linux-acpi@vger.kernel.org>; Thu,  6 Jun 2024 18:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717692611; cv=none; b=RqIjey/F/6HdjTiJBTfyX3aL81Cc6QSjoRh1Kl9L81p2wM7hnh84GQuCbt28LItXkbvL6y5U0DLgcnf2y9/yGgoLqUBzX+rUp0c7rFEZPEXvf50tVPGS++pobnM2T8LI9ya5TxsM0iD+n9oU2wb3JHHKX6H4MOBLE5PFZDdPsaQ=
+	t=1717697568; cv=none; b=AVLbEGH/1bYRpUoXIcVA5P20aPSJ5WjYm4rrm81WFlqka851/BcBYAvoqzqNt2klWQlfs6EJdeXSNTvQWsCWIu80R88KWP+0fuyI8dN9Ovw+tkDGgSGQvX3bJ3yURLgN/AU9aCg66BAZNntY3Wcn1oWOWsdp0Bw4FPVm4s6dFZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717692611; c=relaxed/simple;
-	bh=tlaOqTIhOPntNJcdksoYStm3FquF+/nT90DemPfbmLU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dwAbPpkkpAQL8lqJSUt09zQfSuMJVWTUOaRQgNAr5tuW5XePmxKJyT4V+pxuZQdrwzy4V1Rno68VuBM+rb8P7KFzG7eBZof9oQ4/955JkXdeGOn++5xsnSyPnYWobDn1G3Xv2HH+dwb0TWSOBq0LVWwznj+4X3o6rYHScXnZ4ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jitzm3Gs; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717692610; x=1749228610;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tlaOqTIhOPntNJcdksoYStm3FquF+/nT90DemPfbmLU=;
-  b=Jitzm3GsCl6kzm+nW9yLofnKXeVevHjqh/d6nANLexGmI4bJ2+tU9ih8
-   HqnyfZclH2EMEuxK4Lfe3NaeICYhHgjy0UGF82oktEw751uHaEGPyINNX
-   5rspd2i2poAzT1ZAK74f6HlVAH1bXd1/IoPwTwsj/iuD4zM4NyLZHRKlv
-   K4IZ2cKSw/xmlZ4UUTZ+kfkwgQEb31V28P56Bo+Q6o01LX70Swh0hvK+C
-   65csc8i821tlIYtyx3XybD4QaAGLRVJzYM4i0Mxb5HGCc7GALiuucL+UD
-   gi4Nj6JuMoJDf5gAV2J3yw0Z8i/4yajLS0XB8YI/ke9lKCyzavdtSF10z
-   Q==;
-X-CSE-ConnectionGUID: IASmFAx7TReJM+cnQmEFsg==
-X-CSE-MsgGUID: 9aFuuGaVQcKBR/G7/LIWlg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25009192"
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="25009192"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 09:50:09 -0700
-X-CSE-ConnectionGUID: DdXhLnLjRm6K4xL53TTMzg==
-X-CSE-MsgGUID: e8p8eG7JTEmDCX/ObJeFsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="38591644"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa008.jf.intel.com with ESMTP; 06 Jun 2024 09:50:08 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 1AF702A4; Thu, 06 Jun 2024 19:50:06 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] ACPI/IORT: Switch to use kmemdup_array()
-Date: Thu,  6 Jun 2024 19:50:05 +0300
-Message-ID: <20240606165005.3031490-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1717697568; c=relaxed/simple;
+	bh=g18wcZ4Vrm3OPpEKR5GaSFXC3qL8zJOqLvXNZzYFeuM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LbhCKtTG59l/LgG2H66fvhkbS6qOA8nMMBd2qviRchWEUANBTzhoWMiwLV9gMjexbJCGGrE3mmMXwW2remNpAVqpX1+Toq7m5LoqddSa+moyNemf1Y9w3NmGm77AMmW6DajTedmY58NTT/MYbFn3Q5liiL5yqr3sszUdV7pHrhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RzwmAboF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717697564;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KeMRLeH8AVI7a9rTTiY6E9/CXZa2WPt/Gto/LcU6z5E=;
+	b=RzwmAboFlUSkiM+trl8qwAkVK+wiQEtAeaVMzuABe9p3KOszICqYtlzgWLbw2E9lNaFVRx
+	PywJw/nBU2I76WL+huhLjgzd7N/Zj4GOe+fGOfbN7zsCL6TzaC5undJoDSMlTaniTzQJqo
+	lW6LxOS0VcZUYPOZYY8YlrS8jXe7Q/A=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-8RDpnzztORy1ff84etKe_w-1; Thu, 06 Jun 2024 14:12:41 -0400
+X-MC-Unique: 8RDpnzztORy1ff84etKe_w-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ea93bbf517so9858851fa.0
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jun 2024 11:12:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717697560; x=1718302360;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KeMRLeH8AVI7a9rTTiY6E9/CXZa2WPt/Gto/LcU6z5E=;
+        b=t2BtVQ5rOHmY7jBQpC7C9PRxwxRlnnPZVv34rrX+YtVXV6/m58QjGnE/lZq/H/mvPe
+         OsH6E0MCO/M9bbMosNK075P1rpfPOYJ4j63QQeC/t8fh89E45bQ87O4z+p/+gDIb/eiG
+         itwrkeZid6s3txW/cp9VS477/sYeOsc042L71YLMz0bhqZvoPe2uCj+d9irpC6xEL+A1
+         LhE2AanYHVcC4gxKqI5lpIXCNMP3nXONOw6NO0l/iQgHOHZivsZSRkfPIjBO1Mnaui8a
+         S7QSKpanbX5Z53MHspivw84qixMaFvEgOukILAofTJi3O9lGlUpJcs1IYLpQs9ovqNNs
+         Q5Og==
+X-Forwarded-Encrypted: i=1; AJvYcCWlbb09AyG+1D+9bsgJE+9WGdGDvWbNokFEU73zUiYbZRd8Cyvbc3tjJbWKlY3wclMxNRf6EYQI0eWKhIplHtRH+WGpb9slL/xMdA==
+X-Gm-Message-State: AOJu0Yylqp+PmbtDTNnSg3zH5gPUlA7Xx8Kyqw91/Lrv7501jS/H65q5
+	5pFAUAgUCfr+IOkC67oHRv16ZwSioPJtEFYjyjgiFM/MplCm0RaQhl+UApbZBQOvJU7G3GvdmTZ
+	AlM0HXPjz4lN5+UnPlL3cabp680XqRrJhYCXNWK92jUc/rJwf3Io067L++4U=
+X-Received: by 2002:a2e:be0d:0:b0:2ea:bc04:9876 with SMTP id 38308e7fff4ca-2eadce712d0mr3647981fa.38.1717697560053;
+        Thu, 06 Jun 2024 11:12:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEA8ZzHNP1/hcWkbYv2OrPty7pGVWuhlHWVUFyoEu0CW/LdPcqaEzki1tsMBhjPdaeTrSwq3Q==
+X-Received: by 2002:a2e:be0d:0:b0:2ea:bc04:9876 with SMTP id 38308e7fff4ca-2eadce712d0mr3647841fa.38.1717697559679;
+        Thu, 06 Jun 2024 11:12:39 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57aae13dc46sm1465248a12.52.2024.06.06.11.12.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jun 2024 11:12:38 -0700 (PDT)
+Message-ID: <e9062095-b312-44df-a9e3-0b09f3ec9eff@redhat.com>
+Date: Thu, 6 Jun 2024 20:12:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] ACPI: scan: Ignore Dell XPS 9320 camera graph port
+ nodes
+From: Hans de Goede <hdegoede@redhat.com>
+To: Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Genes Lists <lists@sapience.com>, "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-kernel@vger.kernel.org, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl, laurent.pinchart@ideasonboard.com,
+ wentong.wu@intel.com, linux-media@vger.kernel.org,
+ linux-acpi@vger.kernel.org,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+References: <988e48090982c89ce0c906954832fdfb09a1ce34.camel@sapience.com>
+ <20240528084413.2624435-1-sakari.ailus@linux.intel.com>
+ <a05df025-a0be-49cd-84a9-7d7fb2eeb33e@redhat.com>
+Content-Language: en-US, nl
+In-Reply-To: <a05df025-a0be-49cd-84a9-7d7fb2eeb33e@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Let the kememdup_array() take care about multiplication and possible
-overflows.
+Hi,
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/acpi/arm64/iort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
++To: Rafael since this was Cc-ed to linux-acpi but never send
+to Rafael directly.
 
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index c0b1c2c19444..e596dff20f1e 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -822,7 +822,7 @@ static struct iommu_iort_rmr_data *iort_rmr_alloc(
- 		return NULL;
- 
- 	/* Create a copy of SIDs array to associate with this rmr_data */
--	sids_copy = kmemdup(sids, num_sids * sizeof(*sids), GFP_KERNEL);
-+	sids_copy = kmemdup_array(sids, num_sids, sizeof(*sids), GFP_KERNEL);
- 	if (!sids_copy) {
- 		kfree(rmr_data);
- 		return NULL;
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+Rafael this fixes a crash in 6.10-rc1 for some users and is necessary
+to make the cameras work on the Dell XPS 13 plus 9320 .
+
+On 5/28/24 7:09 PM, Hans de Goede wrote:
+> Hi Sakari,
+> 
+> On 5/28/24 10:44 AM, Sakari Ailus wrote:
+>> Ignore camera related graph port nodes on Dell XPS 9320. They data in BIOS
+>> is buggy, just like it is for Dell XPS 9315. The corresponding software
+>> nodes are created by the ipu-bridge.
+>>
+>> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+>> ---
+>> Hi,
+>>
+>> Could you test this and see whether it fixes the warning?
+>>
+>> The camera might work with this change, too.
+> 
+> Thank you I just received a Dell XPS 13 plus 9320 myself to use
+> for VSC testing and I can confirm that with this patch 6.10.0-rc1
+> works, including giving a picture with the libcamera software ISP +
+> 3 small libcamera patches.
+
+I forgot to add:
+
+Tested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+
+>>  drivers/acpi/mipi-disco-img.c | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.c
+>> index d05413a0672a..bf9a5cee32ac 100644
+>> --- a/drivers/acpi/mipi-disco-img.c
+>> +++ b/drivers/acpi/mipi-disco-img.c
+>> @@ -732,6 +732,12 @@ static const struct dmi_system_id dmi_ignore_port_nodes[] = {
+>>  			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
+>>  		},
+>>  	},
+>> +	{
+>> +		.matches = {
+>> +			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+>> +			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9320"),
+>> +		},
+>> +	},
+>>  	{ }
+>>  };
+>>  
 
 
