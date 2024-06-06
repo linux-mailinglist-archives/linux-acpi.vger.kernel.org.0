@@ -1,65 +1,65 @@
-Return-Path: <linux-acpi+bounces-6247-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6246-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3528FF633
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 22:57:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07058FF62E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 22:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F287B1C2241E
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 20:57:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4601CB21F20
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 20:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7225C197A68;
-	Thu,  6 Jun 2024 20:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABD013B583;
+	Thu,  6 Jun 2024 20:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n1NVa/OF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NxvaJO12"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17D413A40F;
-	Thu,  6 Jun 2024 20:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BDB4AEC3;
+	Thu,  6 Jun 2024 20:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717707445; cv=none; b=q2mo4N2XTyB7chDsoH5Z0QJZxrM2fQxskLWmkMyaBy2yX3BbQ7Zb+Vojfrc9cReR2i5vfRgIr1fumoaqEkg/DTCrk1zq7EtYFbyBHXX0uTiCi1rmchQo0wjsxr84CVt0BziRighFUsFYv+w999LMWprZ+mtKUjbTjn1ecDhvpww=
+	t=1717707443; cv=none; b=mq5bgdEE+R14ho0MdDNG2Qn03nk0Jl7P7vfxdGgMDhuOx5kWxUpdFJHIY5dGCmQPLCEd7obGZoqfa0Q6yIkkAr9rlEf8TprcYIw8hkoLa39fkOMz3wZnIElF+p9B4ZeBceaFSRhpKBqj/xrDBrK1RS4768foFSagd3Kudh6PR20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717707445; c=relaxed/simple;
-	bh=LdMVV7VYjMW/QGtJELET0s9Ow3c8JeYwxFjxuDpdc1I=;
+	s=arc-20240116; t=1717707443; c=relaxed/simple;
+	bh=ngr0dpqQ8SleCp2Ne5jcEzrIZLckdn+bTl/6fh4gbMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccWAwJ6gwll4NTHtdOk+z1kphp/1T4f1aHExF823qqcS13R3HJBzBThNLskgGAyLjHzPtpai/VuQ2WHSMs61A0dC2rpKWRNZ38xfjfkYkA6pKAIt51WhLEPIvjoRgHaw/QN849Y9l1BP8dYOnt17tRZgGPULCpssIA58vsB0FK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n1NVa/OF; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=nKTvRpby7Wz0fJDYV5Umh5yYbJobP70oeT2WyHgBsp+Se5VTmA42icFF6jjekgcRqLxfUtq47DZZihOfUiGXMbvHo7L0X60CANJPMPJehwbfimAdn25uhFTKB5GZdQ0uJpmBBkIPLDuXlNlo+FVh3SbplH+UhDFHIZ+9yjlsf44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NxvaJO12; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717707444; x=1749243444;
+  t=1717707442; x=1749243442;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=LdMVV7VYjMW/QGtJELET0s9Ow3c8JeYwxFjxuDpdc1I=;
-  b=n1NVa/OFNJmqbCwvwTHnAlEr2uGX9r9tejZDIx5x3yzVuGZ/K1z0/hBZ
-   3LNhTr0bHU/IVgqdTR3kE+9LVwAZTGhLQj0090DLeO4KqpRtxypJHzF2R
-   0xNtdInqxnwaTrnJP3uyjpltBJb3hzuWCgKCwveIGMij5T59KuJiUO33A
-   roPmySORCOo8p3NhvS9aWw06wmnrXO6Ys2Enzh9Bs/ZGp6iQttquceJzT
-   S2cw2iiK0e8dYkEB4Xpuu10DmNune5UyDxwA3ABUfDTgfesbwfiNPe3qM
-   GlzGG2bU3BzeK3geBbkeFQPMDUJWG7Gkt6nwWcdKDt4qNCFhu5u7rb3W7
-   A==;
-X-CSE-ConnectionGUID: eTsRbNaISamf2w24eWj59g==
-X-CSE-MsgGUID: ufW2pL5jRBmQJO0eGyAcOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25037096"
+  bh=ngr0dpqQ8SleCp2Ne5jcEzrIZLckdn+bTl/6fh4gbMk=;
+  b=NxvaJO12v+K0kZ6nzamqKiDqRBOVbKB45gFWo6lKLccEXTNCI4v/EEIu
+   pUYYeQnHQ7L9Eq2Ti6u70kiuw9BPzW4gVbh+ZrM8PrsHfXBHby6+d9SYl
+   FmpPRld9BhY2s9zpYVHM6l3kqD/nPHogZDeUfBYE8jC3xpdc/2PAdKlnP
+   5O56BaQLMe1SIFbjRb2s/aDHod6Yfhw8rM/Pw/6dT6SYzaFanfhepSdRL
+   qlmXY2adSHhv2uUC1/BzCW9j7TRelyoaYod1bSa7qOlzlQ4gyTdfTefrQ
+   PStXaMApG5FiXVV7ZissCgSSiahb9L1twLN+VjESL5mwnmQCFx2raKeT1
+   w==;
+X-CSE-ConnectionGUID: 1qiVjW8UQD6li1L/w0iItA==
+X-CSE-MsgGUID: 6ze5cL8gTRCjmweb5tUWcQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25812556"
 X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="25037096"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 13:57:21 -0700
-X-CSE-ConnectionGUID: 520WyKoZReKiXykETOskaA==
-X-CSE-MsgGUID: NUIPwQjTQZaMlnGwMWS0RA==
+   d="scan'208";a="25812556"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 13:57:22 -0700
+X-CSE-ConnectionGUID: KdjEOdf4QaaOLJMA4lwAxg==
+X-CSE-MsgGUID: zjgdXO7wSFKo6stZcuLx7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="61304491"
+   d="scan'208";a="75570843"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa002.fm.intel.com with ESMTP; 06 Jun 2024 13:57:19 -0700
+  by orviesa001.jf.intel.com with ESMTP; 06 Jun 2024 13:57:20 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 6B4A6F7; Thu, 06 Jun 2024 23:57:18 +0300 (EEST)
+	id 75BE52CF; Thu, 06 Jun 2024 23:57:18 +0300 (EEST)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -69,9 +69,9 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Len Brown <lenb@kernel.org>,
 	Andy Shevchenko <andy@kernel.org>,
 	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH v4 1/3] ACPI: PMIC: Use sizeof() instead of hard coded value
-Date: Thu,  6 Jun 2024 23:54:14 +0300
-Message-ID: <20240606205712.3187675-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v4 2/3] ACPI: PMIC: Convert pr_*() to dev_*() printing macros
+Date: Thu,  6 Jun 2024 23:54:15 +0300
+Message-ID: <20240606205712.3187675-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 In-Reply-To: <20240606205712.3187675-1-andriy.shevchenko@linux.intel.com>
 References: <20240606205712.3187675-1-andriy.shevchenko@linux.intel.com>
@@ -83,41 +83,53 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-It's better to use sizeof() of a given buffer than spreading
-a hard coded value.
+Since we have a device pointer in the regmap, use it for
+error messages.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 ---
- drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 2 +-
- drivers/acpi/pmic/intel_pmic_xpower.c   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/pmic/intel_pmic_chtwc.c  | 5 +++--
+ drivers/acpi/pmic/intel_pmic_xpower.c | 5 +++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-index c84ef3d15181..35744a0307aa 100644
---- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-+++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
-@@ -87,7 +87,7 @@ static int chtdc_ti_pmic_get_raw_temp(struct regmap *regmap, int reg)
+diff --git a/drivers/acpi/pmic/intel_pmic_chtwc.c b/drivers/acpi/pmic/intel_pmic_chtwc.c
+index f2c42f4c79ca..25aa3e33b09a 100644
+--- a/drivers/acpi/pmic/intel_pmic_chtwc.c
++++ b/drivers/acpi/pmic/intel_pmic_chtwc.c
+@@ -236,11 +236,12 @@ static int intel_cht_wc_exec_mipi_pmic_seq_element(struct regmap *regmap,
+ 						   u32 reg_address,
+ 						   u32 value, u32 mask)
  {
- 	u8 buf[2];
++	struct device *dev = regmap_get_device(regmap);
+ 	u32 address;
  
--	if (regmap_bulk_read(regmap, reg, buf, 2))
-+	if (regmap_bulk_read(regmap, reg, buf, sizeof(buf)))
- 		return -EIO;
+ 	if (i2c_client_address > 0xff || reg_address > 0xff) {
+-		pr_warn("%s warning addresses too big client 0x%x reg 0x%x\n",
+-			__func__, i2c_client_address, reg_address);
++		dev_warn(dev, "warning addresses too big client 0x%x reg 0x%x\n",
++			 i2c_client_address, reg_address);
+ 		return -ERANGE;
+ 	}
  
- 	/* stored in big-endian */
 diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
-index 61bbe4c24d87..33c5e85294cd 100644
+index 33c5e85294cd..43c5850b4bf3 100644
 --- a/drivers/acpi/pmic/intel_pmic_xpower.c
 +++ b/drivers/acpi/pmic/intel_pmic_xpower.c
-@@ -255,7 +255,7 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
- 	if (ret)
- 		return ret;
+@@ -274,11 +274,12 @@ static int intel_xpower_exec_mipi_pmic_seq_element(struct regmap *regmap,
+ 						   u16 i2c_address, u32 reg_address,
+ 						   u32 value, u32 mask)
+ {
++	struct device *dev = regmap_get_device(regmap);
+ 	int ret;
  
--	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, 2);
-+	ret = regmap_bulk_read(regmap, AXP288_GP_ADC_H, buf, sizeof(buf));
- 	if (ret == 0)
- 		ret = (buf[0] << 4) + ((buf[1] >> 4) & 0x0f);
+ 	if (i2c_address != 0x34) {
+-		pr_err("%s: Unexpected i2c-addr: 0x%02x (reg-addr 0x%x value 0x%x mask 0x%x)\n",
+-		       __func__, i2c_address, reg_address, value, mask);
++		dev_err(dev, "Unexpected i2c-addr: 0x%02x (reg-addr 0x%x value 0x%x mask 0x%x)\n",
++			i2c_address, reg_address, value, mask);
+ 		return -ENXIO;
+ 	}
  
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
