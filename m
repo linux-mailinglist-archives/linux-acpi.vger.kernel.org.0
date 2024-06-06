@@ -1,98 +1,154 @@
-Return-Path: <linux-acpi+bounces-6216-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6217-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0216F8FE35B
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 11:48:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCA48FE5DF
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 13:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6F021F261A0
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 09:48:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0FE11C25BFF
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 11:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3317B178CE4;
-	Thu,  6 Jun 2024 09:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753641957FC;
+	Thu,  6 Jun 2024 11:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rgww0fpg"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="KSuigMUZ";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="S+xZnJmI"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047C0178CC0;
-	Thu,  6 Jun 2024 09:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893BA13D28C;
+	Thu,  6 Jun 2024 11:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717667278; cv=none; b=WCSwKGvFy7yKo9kz66Me58dyaL7+TtBAfAiZ2p9lQ36Huscm51Ibph/Y3vhp2VpLr61Zsp/8QFiT6gWV0HrVc4WP90oQ734FyWdLK7NSyjJaWkemREEHZkDcY5z8icG9UFLwdOxsWLBcmFlBXrmdBLUNy7tdedw/AE1jeIobVaI=
+	t=1717674962; cv=none; b=VsucdNYUVj/ZFTZTwSZOTPXOX9BTEfuudvuWcgk12UyCeeKtXaYbdNsbtq8nI0qn7WtqZM5IeDAdLgUYq5n80I7zlNQmLGz0LbHki4+gUqm9rI4v7SnQdg+OJX07fapK5lyLO9ZxJMpBAOjBRg7APGPIQ4CHmbVZ0bdebFeDk54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717667278; c=relaxed/simple;
-	bh=HG6f0PYnCjpQM59ffIKq4KBMG1zved47nRM+LV2Sbbk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dxZ19bNeZ79kf74yBhTxzO+aI3bvL/IX6bl+yrWnLOCcWm+X5eO50+pBYfkdSlREz9hX1QhOtD8nfmpkkNQ/kTxDybQ3kpZ/oOdX3ax/bFQecsdQDXjX55CJm7VsLgSq1rZkPa8lMKNEzPpENBWbdMz1uFd2yKvYHtCkFRGseo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rgww0fpg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841A6C2BD10;
-	Thu,  6 Jun 2024 09:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717667277;
-	bh=HG6f0PYnCjpQM59ffIKq4KBMG1zved47nRM+LV2Sbbk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Rgww0fpgGECJekwWDoHdUUpmvN6lJGmX80NKiBeY83wabYa719rzIjUwpfxCxIzZS
-	 4Eu1fmanC4u7EKqcAt0rMswJ6IwVGse08BScmV5BV7sJn3aAkIvUOtgJ40X0XVisL8
-	 MEYpLdXOCVaf4bVgLpAU32iP8LrS/K+uREI20zO4PAUhpDwJVSeEod9Q2Y5x8dMJEE
-	 g10/kobPmHosT2cxUlkXm32dvtiEgQ5wjBFSVXipNe8gYg+9hwY5vRDwrzHjApl59L
-	 Dv5/ahMpPpn5TL9qVSAS9rBlpeU9XgtKiQQ7eD/rIPDM3E659lMsf0WI4r/nvFQ7wi
-	 PMt7A51x66X5A==
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5ba84b73b6aso51986eaf.2;
-        Thu, 06 Jun 2024 02:47:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUSj4LAAEfXTftXrfLUgFDQFT+jqWwWOT3pJlNfyzblC3ZwKdnA4sk5OOhM9L5CD+bmUndQepZyGZ2LABFY3Tr/MjFOIghdl+er/yqJ0ydXk7PUTLOxETIYAqFngEVeXatKNK8Nr658u6nGqz7hwxTF1frlS29tXbf66AEnbPULV2Mj
-X-Gm-Message-State: AOJu0Yxz9AbC3YzWVPLPQFfW19YUCO0q+KrowIFOaomXRyGaT148MumD
-	P1hPXaDdQDwX3XsBkdwoBRP4g6ZOmLMzBoNK0me6MUT85MPDLI1cbW7BsCyf/2pU1MwnE8WMMhx
-	NCMi3ZWjebbu2DobZxEr9rwHBMiM=
-X-Google-Smtp-Source: AGHT+IEdvATOlntPTH8NHx0qIYfmywtahNQAT524ZRvHq2aR5YQZoqxyQ2x257hi9j6vTnfYExRDylZyhFXVUXnwHDI=
-X-Received: by 2002:a4a:dfd8:0:b0:5af:be60:ccdc with SMTP id
- 006d021491bc7-5ba78d49b7fmr5255602eaf.0.1717667276800; Thu, 06 Jun 2024
- 02:47:56 -0700 (PDT)
+	s=arc-20240116; t=1717674962; c=relaxed/simple;
+	bh=5TcS2L0Vunv8bQ6XHbiioGIW6DmWOl9p9toiSyHCi2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xjm6FJtNIheugHSy0wbqqU+8RJUDx7W8fz8hgh+BtolkRsULU2AUPxwN4TrucNT4QY5xEgdFBzjZ9eP7/ihxAyz757lq0kdkcKyTO54w9+62iMoXn6tOLokE34k/J1ovCDAx16VFmH/4F8cX7mfR3Z7lquh8n1Mk8V/ma+MfkQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=KSuigMUZ; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=S+xZnJmI; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3352D21AE5;
+	Thu,  6 Jun 2024 11:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1717674956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jZCoYGmEJh4l+ym/XnVfcBBQBC1YxZZjqAJOP1GtJnA=;
+	b=KSuigMUZRBIcqfkAVkZAJe2+Kz4kxMP0xgEDW1yewEdpvZRLLPVjmvjrU46HhqyFkTO6/x
+	wUW2+Cz0iYRl88d2gglyM0D79ucUSMYWYRQFwlKULo2q6Hb1UhBrb+WJE/b7zs3ClU/yrz
+	W+YKy6+U0tUasIGhJGev130yd09Vqx4=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=S+xZnJmI
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1717674955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jZCoYGmEJh4l+ym/XnVfcBBQBC1YxZZjqAJOP1GtJnA=;
+	b=S+xZnJmIO9S/4p9OmvLSKVLvkKVr7oLEj8ouZ27JRDBUKNJHTarj+i0ol0z6MFOr62TNVi
+	1XCcs3djAI9rdTX32Fz4WqjZuoavds1svj6eLNgA6acbdvGKkJyoatH94XmzJ+ccSFeGbW
+	Eaj/PgFkBLtDQyLGB7a5G5JnrGtTrt8=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A8D313A1E;
+	Thu,  6 Jun 2024 11:55:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dn6JAcujYWa1KQAAD6G6ig
+	(envelope-from <ptesarik@suse.com>); Thu, 06 Jun 2024 11:55:55 +0000
+From: =?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <ptesarik@suse.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Petr=20Tesa=C5=99=C3=ADk?= <ptesarik@suse.com>
+Subject: [PATCH] ACPI: CPPC: add sysfs entry for guaranteed performance
+Date: Thu,  6 Jun 2024 13:55:41 +0200
+Message-ID: <20240606115541.2069-1-ptesarik@suse.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4569763.LvFx2qVVIh@kreacher> <cf24f2193c16ed070e5ec3b2f601650eb5b867ed.camel@linux.intel.com>
-In-Reply-To: <cf24f2193c16ed070e5ec3b2f601650eb5b867ed.camel@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 6 Jun 2024 11:47:45 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jUu=i-xXnv3ECP6hdW1JFf-4-hwWVokRAHCQS958GDww@mail.gmail.com>
-Message-ID: <CAJZ5v0jUu=i-xXnv3ECP6hdW1JFf-4-hwWVokRAHCQS958GDww@mail.gmail.com>
-Subject: Re: [PATCH v1] thermal: core: Do not fail cdev registration because
- of invalid initial state
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>, Laura Nao <laura.nao@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -1.71
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 3352D21AE5
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.71 / 50.00];
+	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MIXED_CHARSET(0.83)[subject];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	BAYES_HAM(-0.03)[56.37%];
+	MX_GOOD(-0.01)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	DKIM_TRACE(0.00)[suse.com:+]
 
-On Thu, Jun 6, 2024 at 5:41=E2=80=AFAM srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> On Wed, 2024-06-05 at 21:17 +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass
-> > cooling
-> > device state to thermal_debug_cdev_add()") causes the ACPI fan driver
-> > to fail probing on some systems which turns out to be due to the _FST
-> > control method returning an invalid value until _FSL is first
-> > evaluated
-> > for the given fan.  If this happens, the .get_cur_state() cooling
-> > device
-> > callback returns an error and __thermal_cooling_device_register()
-> > fails
-> > as uses that callback after commit 31a0fa0019b0.
-> >
-> > Arguably, _FST should not return an inavlid
-> s/inavlid/invalid
+Expose the CPPC guaranteed performance as reported by the platform through
+GuaranteedPerformanceRegister.
 
-Thanks, I'll fix it up when applying the patch.
+The current value is already read in cppc_get_perf_caps() and stored in
+struct cppc_perf_caps (to be used by the intel_pstate driver), so only the
+attribute itself needs to be defined.
+
+Signed-off-by: Petr Tesařík <ptesarik@suse.com>
+---
+ drivers/acpi/cppc_acpi.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 1d857978f5f4..9976bb57356e 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -160,6 +160,7 @@ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, highest_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_nonlinear_perf);
++show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, guaranteed_perf);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, lowest_freq);
+ show_cppc_data(cppc_get_perf_caps, cppc_perf_caps, nominal_freq);
+ 
+@@ -196,6 +197,7 @@ static struct attribute *cppc_attrs[] = {
+ 	&highest_perf.attr,
+ 	&lowest_perf.attr,
+ 	&lowest_nonlinear_perf.attr,
++	&guaranteed_perf.attr,
+ 	&nominal_perf.attr,
+ 	&nominal_freq.attr,
+ 	&lowest_freq.attr,
+-- 
+2.45.1
+
 
