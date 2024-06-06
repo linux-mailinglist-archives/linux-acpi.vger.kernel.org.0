@@ -1,139 +1,216 @@
-Return-Path: <linux-acpi+bounces-6232-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6233-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543188FF176
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 17:59:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4E68FF191
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02DF71F20F20
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 15:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A950228345F
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F0019308A;
-	Thu,  6 Jun 2024 15:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496FF197A96;
+	Thu,  6 Jun 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A4yAHgot"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hjXKW9Dx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB04213C690;
-	Thu,  6 Jun 2024 15:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE36197A8A;
+	Thu,  6 Jun 2024 16:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717689559; cv=none; b=IoxMvn2+iNy5lRttPFAfM9opFpmzqCJKFo1QGQqCZQIywTnqBhUJ85rP2/w8doCtJ3GHOVLAKCxE0WuT6CceVw0LxadmU4tfHSYYKIsweE2cxRHGMSQ+M94iq+EQ2z7y9qZ7Pr6qIzpeoXvQIbL3aszBWwrI/00mvE6ayHKhbBM=
+	t=1717689997; cv=none; b=n4DlXRTRnVIDppRkqPddYk69nPpA3+FjrpQrKmr3w3MzCVyfxVR342YO08yfj/xRJV2aOcXAHKBbTouFiCvtMd8GrOSBcvhiFD933ycZSIdZ7/wwU+UYe2tRF3/ZDJP3Hj7EbO24PMI9QkN5m4tASgLORmKtQIAZaiyDwGK6810=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717689559; c=relaxed/simple;
-	bh=iqq/X15Hld5HWTihI8ZbQsjQV9XWsw2ETmVkWvF4SBE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LK+gIE4s+he+j5hm7vpxTPez0bZh0Zi7Uhy3eMx6BVWE0nbV3wVp6+w2FtCPNAjqINIZ+tVPuTuuaJO769xTUfzs+2g0yL4PdzN+Mz0wejOZcgp60ULTgQcyG7Uo+fu9m6okXEA4gXOIfPt1z4LTA7WbZDri5bMRStzNIueeHzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A4yAHgot; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717689558; x=1749225558;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iqq/X15Hld5HWTihI8ZbQsjQV9XWsw2ETmVkWvF4SBE=;
-  b=A4yAHgotXyBwEpNFeFVx0eR3GvBn1gNWcyLvh5uamepWgWyGWbxipxu9
-   b468H87Ji2IS7wexhZC5w6bF6dqEHTRzIf3I4c/PPNa+7PAH+kV30OI8h
-   Vgp0Z14OuHxchbSV53QlTRE+6Fi3ylddyyyNzptLZ54ldVXTlZ56dD1es
-   FxkDT/Mj0ZP1RhZlV5cbU8GviGi1nqa5q2QqwLcpx0iYCrrnutKHfLLbC
-   3pO7ajLGHLlmgZpci7HhAbPQ1HupoN1E4ozimZsIaXL1UVwGPlIJaz/Ma
-   IHwnOA70Ge3AwElAiFmfRSdz0E0aBYaAWqdX1vdOLHMw3ujhdAvQDHfZP
-   g==;
-X-CSE-ConnectionGUID: 44p6bXD1TTGqmbL2Mg9OcQ==
-X-CSE-MsgGUID: fZ2DJJzBRmqBg2VVfLANzg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="31866612"
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="31866612"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 08:59:17 -0700
-X-CSE-ConnectionGUID: l3igcPGLRcOTpGBJDCR8HQ==
-X-CSE-MsgGUID: ilwo1/p1R5epsYFiM7/Mvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="42472612"
-Received: from mgoodin-mobl2.amr.corp.intel.com (HELO [10.125.109.168]) ([10.125.109.168])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 08:59:17 -0700
-Message-ID: <7ad9261c-115b-451d-9b93-832f98124116@intel.com>
-Date: Thu, 6 Jun 2024 08:59:15 -0700
+	s=arc-20240116; t=1717689997; c=relaxed/simple;
+	bh=4pA/6KLDnT53+vx4qMnQiKe0VoIk3n8+GEHKApSPA7Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bri7gFpl+8ivHF816pDPKfHMxa58pZcmXLcq7Y0+2bjD/QCY4QqtfOzPEZ8M1Qb+/bSkd+FCVfYaY0t2xULOWhf+p1VWwD8S4YkamYYQJ0XaLwmq1jfOfSuSzIrfmyhs3HCiPm4j7L3QFjjFt04CxR/SzO0FtQFRZquR5SiCuQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hjXKW9Dx; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 59E0D40E0177;
+	Thu,  6 Jun 2024 16:06:32 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 9oTyQaefmcS0; Thu,  6 Jun 2024 16:06:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1717689985; bh=yNiIiUrsriudqclFjLXJzKQ4Ttub+OIs99LR3avItYs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hjXKW9DxeUu9aYm5BTzAi4VUPIYgVK61PopErp2APevAYakJhr7CxNPIYBKp9jmbt
+	 iJ83j1nCVMNLyfCzKTC6tvsWhjeFOz4y+Nt8R9iOrHvBEAemf1jcSL6rnApKXwcuX7
+	 RCVpPSQWW5vvlDJ1+bHpKUuP2zLS8J++4Kqk1MBP9gq5JJKX+iPd8/K8DGizdE1Bu9
+	 2M3gUiSkCPJ7uYw1mTQ4AXs0Jwc0IJydwcPq4vzbz6Z+I1uc52Dts5X3+jKfFyGAAx
+	 Hm3U8Y3C47whcAX0yw0AZb/FNFqfkM+Nckf4gCaLIg9ufOuXD+YKe+l+4Ja3A/cVrc
+	 VSXevzhXxMMd5r2FFZDrlH7X+LOXPTdTvkyVa4bCzlf4N/C0KAfjLuKlnq8IUgrWY7
+	 KEs9cVxXvda/yssDlwzMrQhg9JguYckb8JwVzsZFg/eh9o0gqofKLA1y6u5HELj7fE
+	 SahSODA0/z1zHY/6o72zqI5eZLZVBf24/8JFUeQY+pEhMtQur3oN3tN1et52bONwnI
+	 NqHKhNrHI5OSHp5UkfKO0haHb/rFshLJNCGt5HyKxoUx8IoPa8ZkpnB5U/As1DTQX+
+	 v0u54Wp0hdNWX8zS+wcWOIK65Robm0iQ0TlboK1qzt8LYJCZ0IPIcAoD8eEzR1vVmt
+	 uM0W6E2TSQg6W6pgB/sdTUjQ=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id C995340E016A;
+	Thu,  6 Jun 2024 16:05:38 +0000 (UTC)
+Date: Thu, 6 Jun 2024 18:05:33 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Shiju Jose <shiju.jose@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"dave@stgolabs.net" <dave@stgolabs.net>,
+	"dave.jiang@intel.com" <dave.jiang@intel.com>,
+	"alison.schofield@intel.com" <alison.schofield@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>,
+	"ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"david@redhat.com" <david@redhat.com>,
+	"Vilas.Sridharan@amd.com" <Vilas.Sridharan@amd.com>,
+	"leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>,
+	"rientjes@google.com" <rientjes@google.com>,
+	"jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"tony.luck@intel.com" <tony.luck@intel.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"naoya.horiguchi@nec.com" <naoya.horiguchi@nec.com>,
+	"james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>,
+	"somasundaram.a@hpe.com" <somasundaram.a@hpe.com>,
+	"erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>,
+	"duenwen@google.com" <duenwen@google.com>,
+	"mike.malvestuto@intel.com" <mike.malvestuto@intel.com>,
+	"gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>,
+	tanxiaofei <tanxiaofei@huawei.com>,
+	"Zengtao (B)" <prime.zeng@hisilicon.com>,
+	"kangkang.shen@futurewei.com" <kangkang.shen@futurewei.com>,
+	wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [RFC PATCH v8 01/10] ras: scrub: Add scrub subsystem
+Message-ID: <20240606160533.GDZmHeTbhCoJYKSsD2@fat_crate.local>
+References: <663d3e58a0f73_1c0a1929487@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240509215147.GBZj1Fc06Ieg8EQfnR@fat_crate.local>
+ <663d55515a2d9_db82d2941e@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240510092511.GBZj3n9ye_BCSepFZy@fat_crate.local>
+ <663e55c59d9d_3d7b429475@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <20240511101705.GAZj9FoVbThp7JUK16@fat_crate.local>
+ <6645f0738ead48a79f1baf753fc709c6@huawei.com>
+ <20240520125857.00007641@Huawei.com>
+ <20240527092131.GBZlRQmxwFTxxyR20q@fat_crate.local>
+ <20240528100645.00000765@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] acpi,hmat: Use ACCESS_COORDINATE_CPU when appropriate
-To: Huang Ying <ying.huang@intel.com>, "Rafael J . Wysocki"
- <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Dan Williams <dan.j.williams@intel.com>, Bharata B Rao <bharata@amd.com>,
- Alistair Popple <apopple@nvidia.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-References: <20240606022845.189710-1-ying.huang@intel.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20240606022845.189710-1-ying.huang@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240528100645.00000765@Huawei.com>
 
+On Tue, May 28, 2024 at 10:06:45AM +0100, Jonathan Cameron wrote:
+> If dealing with disabling, I'd be surprised if it was a normal policy but
+> if it were udev script or boot script. If unusual event (i.e. someone is
 
+Yeah, I wouldn't disable it during boot but around my workload only. You
+want for automatic scrubs to still happen on the system.
 
-On 6/5/24 7:28 PM, Huang Ying wrote:
-> To improve the readability of the code via replacing the magic number
-> "1" with ACCESS_COORDINATE_CPU when appropriate.  No functionality
-> change.
+> trying to reduce jitter in a benchmark targetting something else) then
+> interface is simple enough that an admin can poke it directly.
+
+Right, for benchmarks direct poking is fine.
+
+When it is supposed to be something more involved like, dunno, HPC doing
+a heavy workload and it wants to squeeze all performance so I guess
+turning off the scrubbers would be part of the setup script. So yeah, if
+this is properly documented, scripting around it is easy.
+
+> To a certain extent this is bounded by what the hardware lets us
+> do but agreed we should make sure it 'works' for the usecases we know
+> about.  Starting point is some more documentation in the patch set
+> giving common flows (and maybe some example scripts).
+
+Yap, sounds good. As in: "These are the envisioned usages at the time of
+writing... " or so.
+
+> > Do you go and start a scrub cycle by hand?
 > 
-> Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Bharata B Rao <bharata@amd.com>
-> Cc: Alistair Popple <apopple@nvidia.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Typically no, but the option would be there to support an admin who is
+> suspicious or who is trying to gather statistics or similar.
 
-Thanks for this. Looks like I missed a few.
+Ok.
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> That definitely makes sense for NVDIMM scrub as the model there is
+> to only ever do it on a demand as a single scrub pass.
+> For a cyclic scrub we can spin a policy in rasdaemon or similar to
+> possibly crank up the frequency if we are getting lots of 'non scrub'
+> faults (i.e. correct error reported on demand accesses).
 
-> ---
->  drivers/acpi/numa/hmat.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+I was going to suggest that: automating stuff with rasdaemon. It would
+definitely simplify talking to that API.
+
+> Shiju is our expert on this sort of userspace stats monitoring and
+> handling so I'll leave him to come back with a proposal / PoC for doing that.
 > 
-> diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-> index 2c8ccc91ebe6..febd9e51350b 100644
-> --- a/drivers/acpi/numa/hmat.c
-> +++ b/drivers/acpi/numa/hmat.c
-> @@ -408,7 +408,7 @@ static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_px
->  	if (target && target->processor_pxm == init_pxm) {
->  		hmat_update_target_access(target, type, value,
->  					  ACCESS_COORDINATE_LOCAL);
-> -		/* If the node has a CPU, update access 1 */
-> +		/* If the node has a CPU, update access ACCESS_COORDINATE_CPU */
->  		if (node_state(pxm_to_node(init_pxm), N_CPU))
->  			hmat_update_target_access(target, type, value,
->  						  ACCESS_COORDINATE_CPU);
-> @@ -948,7 +948,7 @@ static int hmat_set_default_dram_perf(void)
->  		target = find_mem_target(pxm);
->  		if (!target)
->  			continue;
-> -		attrs = &target->coord[1];
-> +		attrs = &target->coord[ACCESS_COORDINATE_CPU];
->  		rc = mt_set_default_dram_perf(nid, attrs, "ACPI HMAT");
->  		if (rc)
->  			return rc;
-> @@ -975,7 +975,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
->  	hmat_update_target_attrs(target, p_nodes, ACCESS_COORDINATE_CPU);
->  	mutex_unlock(&target_lock);
->  
-> -	perf = &target->coord[1];
-> +	perf = &target->coord[ACCESS_COORDINATE_CPU];
->  
->  	if (mt_perf_to_adistance(perf, adist))
->  		return NOTIFY_OK;
+> I can see two motivations though:
+> a) Gather better stats on suspect device by ensuring more correctable
+>    error detections.
+> b) Increase scrubbing on a device which is on it's way out but not replacable
+>    yet for some reason.
+> 
+> I would suggest this will be PoC level only for now as it will need
+> a lot of testing on large fleets to do anything sophisticated.
+
+Yeah, sounds like a good start.
+
+> > Do you automate it? I wanna say yes because that's miles better than
+> > having to explain yet another set of knobs to users.
+> 
+> First instance, I'd expect an UDEV policy so when a new CXL memory
+> turns up we set a default value.  A cautious admin would have tweaked
+> that script to set the default to scrub more often, an admin who 
+> knows they don't care might turn it off. We can include an example of that
+> in next version I think.
+
+Yes, and then hook into rasdaemon the moment it logs an error in some
+component to go and increase scrubbing of that component. But yeah, you
+said that above already.
+
+> Absolutely.  One area that needs to improve (Dan raised it) is
+> association with HPA ranges so we at can correlate easily error reports
+> with which scrub engine.  That can be done with existing version but
+> it's fiddlier than it needs to be. This 'might' be a userspace script
+> example, or maybe making associations tighter in kernel.
+
+Right.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
