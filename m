@@ -1,43 +1,43 @@
-Return-Path: <linux-acpi+bounces-6221-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6223-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559AC8FE8A1
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:09:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B48FED8D
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1D80B21CBD
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:09:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441791F22189
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F31619753C;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738E61BBBF5;
+	Thu,  6 Jun 2024 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVBhg3Zk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cB6GzN6H"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D0D197534;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447A619DF6F;
+	Thu,  6 Jun 2024 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717682917; cv=none; b=qnQFLd7+cDq34KkDtR+dTAH6jkJRlyV+vs3HCFnNJM1dehvh1VAnxlyFmK+ReJqTJJykDyipsjm6q+Z4CiCckawJfUyPKYiyvPqxQV00y3SnU0sa5N3HYxveYnm4ogUSuc9rm2kZVrn0iDNsmVhvg78Z5JDXro8zyUZB/vQ3kd0=
+	t=1717683500; cv=none; b=JRNTew2bWXEY4Ky+jcawWSAQj8tpsyrp9Jr0qSvX56u45wjEnwBn/ecUoZVpOS0rmOr/G4ymmA4ZJ0/5pqGnoSVvMSoAJ87XcqZ/tRtuVX5u/BKAynr1SrrXYwcARdFpUH/mZcqJRL8aWPiXPScm6xSdb4RFoZLtI2QmdECsPUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717682917; c=relaxed/simple;
-	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
+	s=arc-20240116; t=1717683500; c=relaxed/simple;
+	bh=M5gtKgRr3pW2i5ve7nNgNBEp5DtVGKZwRoP6Dv/xfwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9IlFuVE5BveXPXtofvLHVQwkVKLDPMIxYT+2PQfxjc9lT+ZZgryIwzFEYxnr66SAvbnO6yiYHoqGct8eybLysOSFiksRLBGcf4c9OqWirnPfOgF0bJBtwmBngUsV/vrV8CJUY+07HKxQyWAa31r/MAZohb85vlFADuTXYahH8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVBhg3Zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CFEC2BD10;
-	Thu,  6 Jun 2024 14:08:37 +0000 (UTC)
+	 MIME-Version; b=iawOW4DLzOYbkaOP1WLKlIAyjraz5p6VV28q99jI7vtSeIfPMLTDX+EE3vGT6gPbvaxc4LeCPkiGZ2lRK4B6+HiBcbS+u45jPt0k6fZIp079YN7NRUNn8eKxzm27ZQLR6Juh29mEBgxUiDNm4nOCrovU82nzUHkuxKR0KX3cph8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cB6GzN6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F9CC2BD10;
+	Thu,  6 Jun 2024 14:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717682917;
-	bh=gwBxuAl9XIkvDtF0BsEAr+TUf8kHo5riTQFuFZ/JSvY=;
+	s=korg; t=1717683500;
+	bh=M5gtKgRr3pW2i5ve7nNgNBEp5DtVGKZwRoP6Dv/xfwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVBhg3ZktcEeOYyMg3lI/0HzlGFkPkEiEwiJaR49lvwWi1lydP6lp+f29/xAYerdC
-	 nLkUPnyrRdnu9+qima359zv/47qlkjLJnoP8ZAPUEn+1kgpmzgrb5wMCIIbX8cmJl7
-	 10JAjY465d1iKnZ7pZNZjBRd/VcChePEjAtqH2JY=
+	b=cB6GzN6HOt8pZAWXHBhLb7T16BLWgYCreWDnk3vgodL9RWGg2bfp5jgtjA0Gp6viZ
+	 OxnCM1UKLR8xHsBPcnq9tg8bE/xQBezj+cLp5/LBIxbrCqiQTTLWfl1wDGciW0cg8J
+	 LvBzpbVHk8HwW3+F1yyhCxjgYtyhOIlY6VrDizps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -57,12 +57,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	coresight@lists.linaro.org,
 	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 049/374] coresight: etm4x: Fix unbalanced pm_runtime_enable()
-Date: Thu,  6 Jun 2024 16:00:28 +0200
-Message-ID: <20240606131653.457872907@linuxfoundation.org>
+Subject: [PATCH 6.6 442/744] coresight: etm4x: Fix unbalanced pm_runtime_enable()
+Date: Thu,  6 Jun 2024 16:01:54 +0200
+Message-ID: <20240606131746.671142501@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131651.683718371@linuxfoundation.org>
-References: <20240606131651.683718371@linuxfoundation.org>
+In-Reply-To: <20240606131732.440653204@linuxfoundation.org>
+References: <20240606131732.440653204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -123,10 +123,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index c2ca4a02dfce1..06a9b94b8c13e 100644
+index 18c4544f60454..003245a791a23 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2213,6 +2213,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
+@@ -2175,6 +2175,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
  	ret = etm4_probe(&pdev->dev);
  
  	pm_runtime_put(&pdev->dev);
