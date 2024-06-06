@@ -1,144 +1,145 @@
-Return-Path: <linux-acpi+bounces-6222-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6224-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714E28FECEF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:34:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63C38FEDD1
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 16:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122571F27349
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:34:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A1D1F21C8E
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBDD1B3758;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B1E1BD51B;
+	Thu,  6 Jun 2024 14:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoPRq6ZL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VF7kITSp"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845E319CCFB;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC21A1BD515;
+	Thu,  6 Jun 2024 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717683427; cv=none; b=C6kBtAaIhxAkhlPXpbEFCg2tdGlxwJRN6JuVfFx3vL/aWqIHX5q+YWP2SPde5DJ2JUlP3xowA/oxmQM6c1NPL+ac1laKsb+K9nqvNDZY4xxChb3+0ZJKNEU71Vuxz/fCevLHRFNDMlp3r6+YDrGFp5H0HiHtF/Bwnu8GfMbYZKA=
+	t=1717683529; cv=none; b=CE4H9Diw48VxjKmnT/XvTMpLKA/oilg0dML+VJWYyElflynTWIYajCuIPP/0wRVRHYy9RwBmQ8N91oyQqvIR9x7fN/U+aci4S1ZtL2z1X2W+2vFDwGHVhTyzjijpFFdGuEo/lOyoqumhpcF+osVUXQUhc83D+yb1dxD3nDB8ves=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717683427; c=relaxed/simple;
-	bh=7FPLIoOdl0Zmsq6B7Q7QW7kzcK/k4/6nu2KE144GnMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzxJnqkjW6Qwm5Vg3gEBquVUcLsM+5K00PbAgOS1ZcHk9H4VAVJuQsjSyrowaFxEhxEpt6gzJbw+xiWWslHONj4agQ5icJksniAoolJUym25lgdPojNbpvkb+IRlBt3xeM6BYfIeil3GzL3PC9UD+Vr5UBA8O81xFws8LPPRXCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoPRq6ZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56925C32781;
-	Thu,  6 Jun 2024 14:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1717683427;
-	bh=7FPLIoOdl0Zmsq6B7Q7QW7kzcK/k4/6nu2KE144GnMU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoPRq6ZLMsTyHQ/CYMS7UjlpGAGUmRDHt66Pvqfas6tKJkH5+IcU4qlUQeyU7XDE1
-	 0/ceEIqLcc9qLLqxfURFetbxPSk4s0jCjyGYCLCA4Be61QyQF+ytpavoBLnknbAqY6
-	 Ixyx+zIlP1pUpPblxmltKniClJcQ1AyDb7LAKDzE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	coresight@lists.linaro.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 313/473] coresight: etm4x: Fix unbalanced pm_runtime_enable()
-Date: Thu,  6 Jun 2024 16:04:02 +0200
-Message-ID: <20240606131710.288688254@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606131659.786180261@linuxfoundation.org>
-References: <20240606131659.786180261@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1717683529; c=relaxed/simple;
+	bh=YYYTroV05/ffOg/2MOMOK0Q5DM2WQSttah0HBo7odRE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZOry2x2Z5lACgNISTWQqV5mEtHfL0gy4xJBru44Dn9jr8xeP6/JVXB/9VJljA5BEjaxt4KYPson2Y31C01UuDDCM74AZwoZRkzThW4pdCFYQlmHfxtZ6bF/zemMqCvv3FW/GFpQ3i1m6+VFA8m0Jp817dcydoAq+aNBIFk4BxCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VF7kITSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7247AC4AF07;
+	Thu,  6 Jun 2024 14:18:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717683528;
+	bh=YYYTroV05/ffOg/2MOMOK0Q5DM2WQSttah0HBo7odRE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VF7kITSpIgY4KyL8V/XPxYu/IHtOPcdTwdWxZP2r5ILxJxElcMkknv5n3mvF93KOO
+	 ijiTMwphiy4NYiId6FlPGGZ+L10ztLFctBtLUvMFABVYnlBQVC7PQ4ZJ/qri38egdH
+	 Ati0bxx0t9CkBNXst0FYgn0BARCknxK0b98t1y+nvAsNkEXqsTtkYZF91JPn8Nm8eY
+	 nqsVVxrWeCcubzNUCXv9pZMiv7AXijdt+6n1EmBbA8QdHvYiY5bz++zNmfVosMkxmi
+	 ErabVl3pDXRUrIj0gUkmUQOY5GXXTYQyAYH0Zopgr9pGn6eqjr40W9hlJPRNSSLp6E
+	 2/SnFxRpOyNKQ==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5b3364995b4so147269eaf.0;
+        Thu, 06 Jun 2024 07:18:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWE9gmlsPhixLihakg/zgPv4kzNJlVICb0ygsTtQlXUK/rwNX6kwGe6kENBWFaJ8hMYBq08JMadRQjtdZRY8gFmAoCLcxusDyunuFTAnrSJFK4BH0Tp4a9ZPpNAoemeMrxCUwiZBJkHmZsx6oUEFFp7BNfhV1DTxQMPlMtAaLgRzXYO
+X-Gm-Message-State: AOJu0YwmzjHbDQYU2XjCvFq651WaZz7bwpM7tihqqcnVaOsxtPnub7FB
+	TKMchCsLzBJnJGG0yF74vKizsCgZ3rLGil+xZjJU+HRkanP+bjA69rfzRCQw9+tcZazfKjNPqjT
+	6dVUeOwDLued27wRFrO2njUm49k0=
+X-Google-Smtp-Source: AGHT+IEEqwqBmCZCeoe/yLOk2KEOkJIrsXRc8sijomiJ3iojMq0et9jelM+hJiW+6Z50VoXmGC2Msr9e8Srp5+thjZ8=
+X-Received: by 2002:a05:6820:2b02:b0:5b2:7e47:e914 with SMTP id
+ 006d021491bc7-5ba78d3bb71mr442464eaf.0.1717683527592; Thu, 06 Jun 2024
+ 07:18:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <4569763.LvFx2qVVIh@kreacher> <5f93f034-f781-47e0-b8ce-3c8407a709f7@linaro.org>
+ <CAJZ5v0hkOvYL66D+tCRJxbp=XqV59yeZ0dA1Kxoczkcpe5X9sA@mail.gmail.com>
+In-Reply-To: <CAJZ5v0hkOvYL66D+tCRJxbp=XqV59yeZ0dA1Kxoczkcpe5X9sA@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 6 Jun 2024 16:18:35 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0joTyOcRU0FyaHEEYEbiPbbNSFzW3P7eJJ4MM5QdhQR2w@mail.gmail.com>
+Message-ID: <CAJZ5v0joTyOcRU0FyaHEEYEbiPbbNSFzW3P7eJJ4MM5QdhQR2w@mail.gmail.com>
+Subject: Re: [PATCH v1] thermal: core: Do not fail cdev registration because
+ of invalid initial state
+To: Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
+	Linux ACPI <linux-acpi@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Lukasz Luba <lukasz.luba@arm.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Laura Nao <laura.nao@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On Thu, Jun 6, 2024 at 3:42=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.org=
+> wrote:
+>
+> On Thu, Jun 6, 2024 at 3:07=E2=80=AFPM Daniel Lezcano <daniel.lezcano@lin=
+aro.org> wrote:
+> >
+> > On 05/06/2024 21:17, Rafael J. Wysocki wrote:
+> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > >
+> > > It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooli=
+ng
+> > > device state to thermal_debug_cdev_add()") causes the ACPI fan driver
+> > > to fail probing on some systems which turns out to be due to the _FST
+> > > control method returning an invalid value until _FSL is first evaluat=
+ed
+> > > for the given fan.  If this happens, the .get_cur_state() cooling dev=
+ice
+> > > callback returns an error and __thermal_cooling_device_register() fai=
+ls
+> > > as uses that callback after commit 31a0fa0019b0.
+> > >
+> > > Arguably, _FST should not return an inavlid value even if it is
+> > > evaluated before _FSL, so this may be regarded as a platform firmware
+> > > issue, but at the same time it is not a good enough reason for failin=
+g
+> > > the cooling device registration where the initial cooling device stat=
+e
+> > > is only needed to initialize a thermal debug facility.
+> > >
+> > > Accordingly, modify __thermal_cooling_device_register() to pass a
+> > > negative state value to thermal_debug_cdev_add() instead of failing
+> > > if the initial .get_cur_state() callback invocation fails and adjust
+> > > the thermal debug code to ignore negative cooling device state values=
+.
+> > >
+> > > Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to t=
+hermal_debug_cdev_add()")
+> > > Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-la=
+ura.nao@collabora.com
+> > > Reported-by: Laura Nao <laura.nao@collabora.com>
+> > > Tested-by: Laura Nao <laura.nao@collabora.com>
+> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > As it is a driver issue, it should be fixed in the driver, not in the
+> > core code. The resulting code logic in the core is trying to deal with
+> > bad driver behavior, it does not really seem appropriate.
 
-------------------
+Besides, I don't quite agree with dismissing it as a driver issue.  If
+a driver cannot determine the cooling device state, it should not be
+required to make it up.
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+Because .get_cur_state() is specifically designed to be able to return
+an error, the core should be prepared to deal with errors returned by
+it and propagating the error is not always the best choice, like in
+this particular case.
 
-[ Upstream commit caa41c47dab7e1054f587e592ab21296e3a6781c ]
+> > The core code has been clean up from the high friction it had with the
+> > legacy ACPI code. It would be nice to continue it this direction.
 
-There is an unbalanced pm_runtime_enable() in etm4_probe_platform_dev()
-when etm4_probe() fails. This problem can be observed via the coresight
-etm4 module's (load -> unload -> load) sequence when etm4_probe() fails
-in etm4_probe_platform_dev().
+This isn't really ACPI specific.  Any driver can return an error from
+.get_cur_state() if it has a good enough reason.
 
-[   63.379943] coresight-etm4x 7040000.etm: Unbalanced pm_runtime_enable!
-[   63.393630] coresight-etm4x 7140000.etm: Unbalanced pm_runtime_enable!
-[   63.407455] coresight-etm4x 7240000.etm: Unbalanced pm_runtime_enable!
-[   63.420983] coresight-etm4x 7340000.etm: Unbalanced pm_runtime_enable!
-[   63.420999] coresight-etm4x 7440000.etm: Unbalanced pm_runtime_enable!
-[   63.441209] coresight-etm4x 7540000.etm: Unbalanced pm_runtime_enable!
-[   63.454689] coresight-etm4x 7640000.etm: Unbalanced pm_runtime_enable!
-[   63.474982] coresight-etm4x 7740000.etm: Unbalanced pm_runtime_enable!
-
-This fixes the above problem - with an explicit pm_runtime_disable() call
-when etm4_probe() fails during etm4_probe_platform_dev().
-
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Cc: Hanjun Guo <guohanjun@huawei.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: coresight@lists.linaro.org
-Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices")
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240314055843.2625883-2-anshuman.khandual@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index fda48a0afc1a5..63fe506a60314 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2053,6 +2053,9 @@ static int etm4_probe_platform_dev(struct platform_device *pdev)
- 	ret = etm4_probe(&pdev->dev, NULL, 0);
- 
- 	pm_runtime_put(&pdev->dev);
-+	if (ret)
-+		pm_runtime_disable(&pdev->dev);
-+
- 	return ret;
- }
- 
--- 
-2.43.0
-
-
-
+> Essentially, you are saying that .get_cur_state() should not return an
+> error even if it gets an utterly invalid value from the platform
+> firmware.
+>
+> What value should it return then?
 
