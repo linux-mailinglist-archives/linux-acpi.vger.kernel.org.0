@@ -1,128 +1,132 @@
-Return-Path: <linux-acpi+bounces-6210-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6211-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9181C8FDB26
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 02:07:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7648FDCC9
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 04:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A7D7B21D10
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 00:07:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76781282239
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 02:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFBC38D;
-	Thu,  6 Jun 2024 00:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8FE17BA7;
+	Thu,  6 Jun 2024 02:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="wntv7k8S"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IvamltEO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FE4364;
-	Thu,  6 Jun 2024 00:07:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BC018638;
+	Thu,  6 Jun 2024 02:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717632453; cv=none; b=jAmnpkoKqtj0g8tqoA0CLC/7kWH6cqbnYPAFNTzZPgfn/2Ttgmau5HXWAfpRxeLlE7qCIIqRfN8fT2lJl+2zs0YYfXlHY+B/0ByNz9zOfLbye16PI3roQq8IIz6Y2DJal1rzyjM8O5mNCxIR9T2X4sROxyKu+xjYNEuZsPS45IA=
+	t=1717641200; cv=none; b=eky+eLyswsK5Kkp5MaXUfmiQrsX8nMqzorq1HvdjZf++zNflft8bVucvd3Sc9QZDruRfQbAtakC/W6oHkq5zVLndosTZt2nzf0CtknT+ku6zaaOnfAKTUkZtQ9+Ou9FfAsXY6+D1mN63/3IcmVv4P/zNOwE7CXjBr5cKdMrCgEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717632453; c=relaxed/simple;
-	bh=HTGnDlVg14busy09uFE1RwMMDVeW7zepOGPbVzb22lQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZifajysTKL4DUi4fVbQ4UkAKMlco1yXPhBLu6HV1FWbhxNBAnxPoOum+wj2f5SjVYRQJoA68fZl2xqH9Q70Zv1nmpf1C4Eug8EMoUoNiOh5qQ3RgtUvqEhxO42mm6DYeKeMxJxtPAoXQrrrCnuV2rPFpqcFzSZgvrrbDXCGQD9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=wntv7k8S; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1717632449;
-	bh=HTGnDlVg14busy09uFE1RwMMDVeW7zepOGPbVzb22lQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wntv7k8SU7Cjvzy7fmO3fbAeEUIIKr/6rzXqwz/SrLoc5JOTBtA26crHqcg0LB/QN
-	 PMRT6b4X5fcBLkmneVihaqX0BCY74kSLtluox3LwWgT9kBrfv5lzG8FlZBRgOcfD6e
-	 B9u6TblodH4BFsP6jhxwOP3IJZEPt6R7agEuAdOBz3T7bWOS8qOeHfSg0POU9XONkT
-	 bpdEH25wLQHeYW2ZMUDdp6fCeXOD3iUuucywa06bB3c+jE16E746XpKePQ9bV80DDZ
-	 KNKwYcpQY6UttongPf0ALeMjvt6c9oD8cMVDUm/ztOclDuSiX72PaCABqSAw0zdj+e
-	 VX7UtRQ+GKh5g==
-Received: from mercury (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 1823837821B7;
-	Thu,  6 Jun 2024 00:07:29 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 8CECD1060501; Thu, 06 Jun 2024 02:07:28 +0200 (CEST)
-Date: Thu, 6 Jun 2024 02:07:28 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Asmaa Mnebhi <asmaa@nvidia.com>
-Cc: linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v1 1/1] power: reset: pwr-mlxbf: support graceful shutdown
-Message-ID: <j6nkeh6wyonjuwfznhanfx7i6tpxaxr2tlxami3punkukoslnx@l7w73vgebguw>
-References: <20240429204519.1618-1-asmaa@nvidia.com>
+	s=arc-20240116; t=1717641200; c=relaxed/simple;
+	bh=muKFlTEZQ/AQ40SVi7FdGPUE3Q7TaOqoPMNhx6FRIis=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pjx9NOEP/H78kAvAb6mGgjgClB9/P60kd/iysJ8nk3a8rCpBwAK6eJs7rDxRS3QIZMXNgLRhykERj/41lW3/yzey6kZD91Dff3AtNxacPGuhmyq3FCHCffIQh5Es1WR1FAQmya6lL9oqLTdkwHnNndYUK6bCiCba0spPrgooMMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IvamltEO; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717641198; x=1749177198;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=muKFlTEZQ/AQ40SVi7FdGPUE3Q7TaOqoPMNhx6FRIis=;
+  b=IvamltEOgtXMtxdEw4ntO/A1LSgGO+X15yYXIAVjxFR7fX7Pg58M6mpb
+   rbqgrMPa8+sRo1yJ7B2eUx9YPd4mn+z4OU/bIoOce/ALLng7lJKJcXmXk
+   l8GIP/uVx9IKmCDsCf3lyi8sotouyRh7z3KY0D0mKTKqG8eNTlH+pWzbo
+   5BgnzmVvug/sW0EjZ4EjTTjeouS8kgUsuc1PLDTp9V/iiP5pTa4BukFkz
+   L8pgb+LgrKlwrha+YW7H/+epocu6VReyJHDXABVibgg9J2V52lgOmWNlO
+   wAnyc5CK5HBC6kPSn1kvjbuD9mWz9joQ6VpRHdEOJ0YPspgjWih6lLqpU
+   A==;
+X-CSE-ConnectionGUID: nhMFWSdRQx63ePPHmkAb2g==
+X-CSE-MsgGUID: xe+3TQPGQeSAfoQjFuntbw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14126980"
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
+   d="scan'208";a="14126980"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 19:33:17 -0700
+X-CSE-ConnectionGUID: BrP0J7NBQcSH/Fh3z9CL0g==
+X-CSE-MsgGUID: z9U+ODy6T/WnF0YSM+WryQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; 
+   d="scan'208";a="68621101"
+Received: from unknown (HELO yhuang6-mobl2.sh.intel.com) ([10.238.6.133])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 19:33:14 -0700
+From: Huang Ying <ying.huang@intel.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Huang Ying <ying.huang@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Bharata B Rao <bharata@amd.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Subject: [PATCH] acpi,hmat: Use ACCESS_COORDINATE_CPU when appropriate
+Date: Thu,  6 Jun 2024 10:28:45 +0800
+Message-Id: <20240606022845.189710-1-ying.huang@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6txz7zmbt2uenzzr"
-Content-Disposition: inline
-In-Reply-To: <20240429204519.1618-1-asmaa@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
+To improve the readability of the code via replacing the magic number
+"1" with ACCESS_COORDINATE_CPU when appropriate.  No functionality
+change.
 
---6txz7zmbt2uenzzr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: "Huang, Ying" <ying.huang@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Bharata B Rao <bharata@amd.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ drivers/acpi/numa/hmat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Hi,
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 2c8ccc91ebe6..febd9e51350b 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -408,7 +408,7 @@ static __init void hmat_update_target(unsigned int tgt_pxm, unsigned int init_px
+ 	if (target && target->processor_pxm == init_pxm) {
+ 		hmat_update_target_access(target, type, value,
+ 					  ACCESS_COORDINATE_LOCAL);
+-		/* If the node has a CPU, update access 1 */
++		/* If the node has a CPU, update access ACCESS_COORDINATE_CPU */
+ 		if (node_state(pxm_to_node(init_pxm), N_CPU))
+ 			hmat_update_target_access(target, type, value,
+ 						  ACCESS_COORDINATE_CPU);
+@@ -948,7 +948,7 @@ static int hmat_set_default_dram_perf(void)
+ 		target = find_mem_target(pxm);
+ 		if (!target)
+ 			continue;
+-		attrs = &target->coord[1];
++		attrs = &target->coord[ACCESS_COORDINATE_CPU];
+ 		rc = mt_set_default_dram_perf(nid, attrs, "ACPI HMAT");
+ 		if (rc)
+ 			return rc;
+@@ -975,7 +975,7 @@ static int hmat_calculate_adistance(struct notifier_block *self,
+ 	hmat_update_target_attrs(target, p_nodes, ACCESS_COORDINATE_CPU);
+ 	mutex_unlock(&target_lock);
+ 
+-	perf = &target->coord[1];
++	perf = &target->coord[ACCESS_COORDINATE_CPU];
+ 
+ 	if (mt_perf_to_adistance(perf, adist))
+ 		return NOTIFY_OK;
+-- 
+2.39.2
 
-On Mon, Apr 29, 2024 at 04:45:19PM -0400, Asmaa Mnebhi wrote:
-> Replace the low power mode with a graceful shutdown.
-
-That's a summary of what the code changes, but the commit
-description is missing an important information. It's not
-obvious why this change is needed. Especially considering
-the past of this driver: It started with
-
-reset => emergency reset
-low power => poweroff HID event
-
-Then got changed to
-
-reset => reset HID event
-low power => poweroff HID event
-
-And now is further changed to
-
-reset => reset HID event
-low power => emergency poweroff
-
-I don't think it's sensible to continue this ping pong, so please
-properly describe what those IRQs are for and why further changes
-are needed.
-
-Greetings,
-
--- Sebastian
-
---6txz7zmbt2uenzzr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmZg/bwACgkQ2O7X88g7
-+pqa4Q//Ym5unYKwJvokdgmR//dfoEOOeLD5c8aj7Ptvz5ofr8Qw6yk8Cklxu2UV
-rngEmHy4hfpNN340sQ9hTvlFkVFU4xRueYWA3suk/NAzPI41m1lbbnP0pfYqJ4gA
-XrUwO3kWDFpjLmeaAVIkhWupAtTbjoFmRN6tVWNL5kjZAZrmn3K0TQj/zME3kFRm
-/iqNJ5n8pgk6YylsjVKEfIsCxguDbp4NOb9yOQIrrUyHTEF2irbo2Wkn0QWfxbwf
-d+Vf3oe/p59BTyyjH2gZ1YxrkxEXIl17G/s95XhSYpgWs5lhFLGEI72FDA9cbP+H
-tfFqw3PmVlTNMFN8w0yAvDMEjT380UOXF2eec0DJiqy+H6cS5Wi/k4cQUAY3PaD5
-JUTvnwiXsF78S57HYqnqTZnyMzxoCtfOdAsheOi3eQwdCoCESNdf7fIg5bZ9RGtR
-fX4H5eODEC0QH/FUEWevYIduM77xKSzC0UQM/yK9Rye90zyl1Um2tXN4mfj5A+gA
-pYgrSNEP6fNlWVoggWwg6ck90uX5DKpsXRcjxASg2jAggINQ+VrW0TUWn3CTTqIj
-ryb7EjFJ1uSOqZaEVqxU8bgCYNcUZJ5yQwjMHIzY7gCmPITnF2h18V/m8sJMvWsZ
-6hZvhXmKYgptmjpep6Cqg6K145/UFWqZRlsDMYB+GroljEK1moM=
-=pJhW
------END PGP SIGNATURE-----
-
---6txz7zmbt2uenzzr--
 
