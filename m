@@ -1,130 +1,113 @@
-Return-Path: <linux-acpi+bounces-6242-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6243-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A13618FF500
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 20:53:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12798FF580
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 21:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C81C61C26EC4
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 18:53:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A635288A7F
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 19:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7A4E1DD;
-	Thu,  6 Jun 2024 18:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A906E611;
+	Thu,  6 Jun 2024 19:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="W3+7CrDF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo9p2ViJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E944E1CA
-	for <linux-acpi@vger.kernel.org>; Thu,  6 Jun 2024 18:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3B44C618;
+	Thu,  6 Jun 2024 19:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717700010; cv=none; b=mmJc3vRi8tH8quVyuwKfgnwDD09yyYp5j1He/JQCl7KdQMgDG9cBoPW0V8equmXFLoIewBFK6HHWND3fuHRyiU0CSEzfYt6VB+led/hWHgtsLzAozCDdsT2MaxFXiT+JzC1elcg/+NjH0bn5TuBa4AU+bxbrs8tEADeoLIoXpFA=
+	t=1717703770; cv=none; b=vCmNBRUwXNjwDY/xXE9bkGilacP1HXtcvbGIDTPb5ZN3enekSEMRFDgpnC6Bjc6KipAQklXrS5ULMRk6gIbzpi+h+OWz2kWvm4PEOMwpzPDaOdLRZNSTL3Lp86G4volSqeYprvjs80BvRgx2qZxQnCry2y0OIV/ieF8SLcqLc9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717700010; c=relaxed/simple;
-	bh=om1n47XePQtjI/lLgidIuMniQGl6BwDPK4rXrD+4YZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sFHlq5BEGqD32vp36B2bSgfHuRDGrqel4NNgau6yUnkEXqf3FIJMqwO0w5RTeQ3YRM0zAHXab4AW0D6/cUO0FAQO7wwtjrhC130ngTKCzA4gxe2j6N8ENyDvhkTr8v1RcUM1OST379Ktjrwdu74DoP0MKNIA4CNvRbq9di13a+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=W3+7CrDF; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a68b5f18fc5so158041366b.1
-        for <linux-acpi@vger.kernel.org>; Thu, 06 Jun 2024 11:53:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1717700007; x=1718304807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zeGjTLLISyTtH1AgP/c8JS96JX38uoEOXIRqVTS6/9M=;
-        b=W3+7CrDFBe+WIVTUDyjqaVB2cREbIijKrf1Kd5fReNBbsvxx0cW3FU6Fiv9HJv3PRW
-         2E7ZTFBdt/LXGWc23rUhnvCXDUVRKIHUeK3xmJnQiVAx0OnaKAP6XY7179k9RvXSLGjS
-         ToY+xGgMlF4BgNoTXf82jitUAjzIQAggp+bFD8L5drqExRN5ajuM0cDJSAIZ7UHBmN96
-         uNcGjI2Fi9NVjoJ+zpmzfd7ikq+0alik9RMyQ5Z4vU910pUHjOgXP8wI7lS1Si4Wecqz
-         AAr3tsO7U02ALhzmOrp3C9nSWA+8nF6ggrJ162GamfcnowyBy9a+IWK5cdnDHlHgFMN7
-         lJxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717700007; x=1718304807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zeGjTLLISyTtH1AgP/c8JS96JX38uoEOXIRqVTS6/9M=;
-        b=mCAzP8tg2ELaC1KbUlitPSEeZJK8J+UvX0TwjOVVYqhHqqiRkpj6Nny+Vde3jSwwLp
-         0ZWOpgnTTWcsjtOfmEQ1Oek2cENuKI+jCG4bfN+qh3f7Hv9/XcewcRoH4WbNHozBlrY+
-         4EVUbM5zWuxd/9TtbROFoouwpLXZbOkSuKbe/9TjkCaeOJh91Y4Kok27VAEgiIEMgtiT
-         tmXGpCmgo05FsMgtujuiqdNAtb4ez3Fmr0mIQmsWyjNEIyFGeQnf3qjmuxQsHYPkfYJ/
-         SVAFO6tYE4AZXkAxYajbuK2lcQ7k3qEAJmJ+gsXfdxeymuRZfuWMFi8xlbMqa9GRfs0V
-         KMjA==
-X-Gm-Message-State: AOJu0YzFxLjtsVzCBCrYpWimOZ9mm8pqR05qmTmOuAuX5KnXwlTmczWE
-	XioxVS4OrKIUNt5V9CTuLsB+N0FJSUXEoWBnJ2HbgYx9IPVebcTCee8IJyjItic=
-X-Google-Smtp-Source: AGHT+IEx6zqhhAPgHVJ3Am/Pmt3iRNX4TeauA1h0PfHvUlHWCZBgHIV+NRaAEiIgeUrw/R2X5rdpRA==
-X-Received: by 2002:a17:906:4816:b0:a59:bdb7:73e8 with SMTP id a640c23a62f3a-a6cdad238d1mr28297666b.53.1717700006767;
-        Thu, 06 Jun 2024 11:53:26 -0700 (PDT)
-Received: from fedora.fritz.box (aftr-82-135-80-164.dynamic.mnet-online.de. [82.135.80.164])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c806ea19esm130890066b.128.2024.06.06.11.53.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 11:53:25 -0700 (PDT)
-From: Thorsten Blum <thorsten.blum@toblux.com>
-To: rafael@kernel.org,
-	lenb@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Thorsten Blum <thorsten.blum@toblux.com>
-Subject: [PATCH] ACPI/NUMA: Consolidate header includes
-Date: Thu,  6 Jun 2024 20:52:02 +0200
-Message-ID: <20240606185200.1596-3-thorsten.blum@toblux.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1717703770; c=relaxed/simple;
+	bh=0IAiGnLisQODtmbVUvM/bZ5fn4fz5tUOHl97p3eYprc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=CBiBL+y20H5zPJaC6KjiH8qebNkDOAzJInIToma8zOdWMr0ArTaTk5O2oXZEdQp7U46Jr9HZ8sSMm9DieKUohkoDz90QxL6Gp01C7v5Rs2YNateQz6fK2ZmmyFMFP02SOd0Da5p/KHxRc/V1CoyQAzWMgJiWGqPzxhqjbM+ELEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo9p2ViJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 895CEC2BD10;
+	Thu,  6 Jun 2024 19:56:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717703770;
+	bh=0IAiGnLisQODtmbVUvM/bZ5fn4fz5tUOHl97p3eYprc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=uo9p2ViJBY5udVAA0yPjZUyMc2fgHBhEq7LeErVy/2y7CBpffSjPQlAt1kVnrWTrv
+	 SG+oGEluWCCYJP6cw77rued1DgGkozJchAeRVtqvV0/0LjkC7848phDfk2BSv43G5k
+	 KVSNJ7rPwzM72dR17Vuqm0j2CLHXRGVrq+6UkAqSNvjKql0f29vfPnRZtcFUpzuNvh
+	 a0y2PWhfC3/NdHfF871o2yZ+TsWp+XOuyE63W1qG1/IsUeBm5/xCh4KqLlL9rdF2tC
+	 RA9t9sOMATpq6HUw/avxo1imCf5F1EBx+Y8NolBze277rqc6P2QZd+jYYfzYAx98FP
+	 Qe2EdoaoKcWPA==
+Date: Thu, 6 Jun 2024 14:55:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Dr. David Alan Gilbert" <linux@treblig.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, bhelgaas@google.com,
+	rafael@kernel.org, linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ACPI: PCI: Remove unused struct 'acpi_handle_node'
+Message-ID: <20240606195558.GA816336@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zk9cTVvPoyzM4hYm@gallifrey>
 
-The header file acpi/acpi_numa.h is included whether CONFIG_ACPI is
-defined or not.
+On Thu, May 23, 2024 at 03:10:05PM +0000, Dr. David Alan Gilbert wrote:
+> * Jonathan Cameron (Jonathan.Cameron@Huawei.com) wrote:
+> > On Thu,  9 May 2024 01:08:58 +0100
+> > linux@treblig.org wrote:
+> > 
+> > > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > > 
+> > > 'acpi_handle_node' is unused since
+> > > Commit 63f534b8bad9 ("ACPI: PCI: Rework acpi_get_pci_dev()")
+> > > Remove it.
+> > > 
+> > > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > 
+> > FWIW, indeed unused.
+> > 
+> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Thanks; any idea who would pick this up?
 
-Include it only once before the #ifdef/#else/#endif preprocessor
-directives and fix the following make includecheck warning:
+Applied with Jonathan's reviewed-by to pci/misc for v6.11, thanks!
 
-	acpi/acpi_numa.h is included more than once
+Rafael, let me know if you want this instead.  Easy for me to drop if
+you do.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
----
- include/linux/acpi.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 28c3fb2bef0d..bb18e7bf8826 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -24,6 +24,7 @@ struct irq_domain_ops;
- #define _LINUX
- #endif
- #include <acpi/acpi.h>
-+#include <acpi/acpi_numa.h>
- 
- #ifdef	CONFIG_ACPI
- 
-@@ -35,7 +36,6 @@ struct irq_domain_ops;
- 
- #include <acpi/acpi_bus.h>
- #include <acpi/acpi_drivers.h>
--#include <acpi/acpi_numa.h>
- #include <acpi/acpi_io.h>
- #include <asm/acpi.h>
- 
-@@ -777,8 +777,6 @@ const char *acpi_get_subsystem_id(acpi_handle handle);
- #define acpi_dev_uid_match(adev, uid2)			(adev && false)
- #define acpi_dev_hid_uid_match(adev, hid2, uid2)	(adev && false)
- 
--#include <acpi/acpi_numa.h>
--
- struct fwnode_handle;
- 
- static inline bool acpi_dev_found(const char *hid)
--- 
-2.45.2
-
+> > > ---
+> > >  drivers/acpi/pci_root.c | 5 -----
+> > >  1 file changed, 5 deletions(-)
+> > > 
+> > > diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+> > > index 58b89b8d950ed..59e6955e24edb 100644
+> > > --- a/drivers/acpi/pci_root.c
+> > > +++ b/drivers/acpi/pci_root.c
+> > > @@ -293,11 +293,6 @@ struct acpi_pci_root *acpi_pci_find_root(acpi_handle handle)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(acpi_pci_find_root);
+> > >  
+> > > -struct acpi_handle_node {
+> > > -	struct list_head node;
+> > > -	acpi_handle handle;
+> > > -};
+> > > -
+> > >  /**
+> > >   * acpi_get_pci_dev - convert ACPI CA handle to struct pci_dev
+> > >   * @handle: the handle in question
+> > 
+> > 
+> -- 
+>  -----Open up your eyes, open up your mind, open up your code -------   
+> / Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+> \        dave @ treblig.org |                               | In Hex /
+>  \ _________________________|_____ http://www.treblig.org   |_______/
 
