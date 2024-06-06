@@ -1,133 +1,137 @@
-Return-Path: <linux-acpi+bounces-6218-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6219-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FFE8FE6AF
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 14:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BE08FE724
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 15:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60CA11F2754A
-	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 12:39:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B231F262B9
+	for <lists+linux-acpi@lfdr.de>; Thu,  6 Jun 2024 13:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EB8195B0C;
-	Thu,  6 Jun 2024 12:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F842195B34;
+	Thu,  6 Jun 2024 13:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jwRFQG9r"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pxwKEkMC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217A7195B08;
-	Thu,  6 Jun 2024 12:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0B9181320
+	for <linux-acpi@vger.kernel.org>; Thu,  6 Jun 2024 13:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717677595; cv=none; b=E0sM+3RWgBV2o5UxQFdzIUyOL+uNYw3KaYTliEL5o6lKItLEYkWBIdsNJ2MHGBCnZL61+nkW4sUcGvI32y+bPBg1qNBTB5X0poi7F9v4Pq27jK+1bnWFuLxtt4c5Np085xmUzzHL38wFrLVehoSnygBddavRLRhAWTQW5opZB0Q=
+	t=1717679251; cv=none; b=I7Xp3F7HIM6lVVtYwbZSzA8XPf8F8pVoVvaLUQW6OA3LB2X7UPykyf307LSD283wzPj/7hWEiwg+QtDZGAN453UJ+an0SyFvnTrm1XyHFDqJ3snrq/GjDyfKww0bjDI1AdGmHdw6E/qzSzRavd24mQV/cdW4PF/W7/3tGlUBwcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717677595; c=relaxed/simple;
-	bh=8j0QTwBVqBlEew+vXzNvM2j0bxIyUPIq7t89df/Ovig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rOgF8CmHDcuLH9saR+cYsD50KdUhStJ9P1g/+luhkcOkNqLI9mx8hHHtVjPUCjMLos6MBbkExHFhhL7PWBsDGods08IkKv4oBkh55WABj7+O6PjLz31NxBRTskXUx6cvs+lG0qZgGS5JmWizciQEmvAIuGTQr60tK00qBOqoaQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jwRFQG9r; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717677594; x=1749213594;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8j0QTwBVqBlEew+vXzNvM2j0bxIyUPIq7t89df/Ovig=;
-  b=jwRFQG9rzCvzAebTGvIRpq64S4GhVy2/nx2NA5zPhxs7+qU2yDAkLDCK
-   NLxR9AlfQ6T8R0al2BovCpH8qEL4tdcN026MB5gu5XxiG/TN2JlFcXuig
-   wwTKS67tZfbxMBcv8sYvY1Aqhd2CVbtwNK8j0cZTBCbghEeRiauwDj1/T
-   4xYA62szx7H7+JZvh6ReADssXT4bffhUMoGneJ+ZdtyfJ1T1WLGnVJXeK
-   EK/BfTnOkq/nb9cupcd4ojzuwI1BvDc5BvBTpJa1B2xOmcH4HqgKXGRmu
-   ozcciifKEgZF4hlMyC5q7I0jCVsaEMpNJPRfqGCD+IQrNsV3ya99lyfB9
-   Q==;
-X-CSE-ConnectionGUID: mg0+IGHyS52Mj63PWZvW0w==
-X-CSE-MsgGUID: P5ETKNCfRBaPjk47uwqfOw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="31839965"
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="31839965"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 05:39:53 -0700
-X-CSE-ConnectionGUID: uwimgMbWSnCttp4dnD+tsw==
-X-CSE-MsgGUID: fBNz2Le5QS25iPTszSSU9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="37812017"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa007.fm.intel.com with ESMTP; 06 Jun 2024 05:39:47 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id E8F782A4; Thu, 06 Jun 2024 15:39:45 +0300 (EEST)
-Date: Thu, 6 Jun 2024 15:39:45 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>, adrian.hunter@intel.com, 
-	ardb@kernel.org, ashish.kalra@amd.com, bhe@redhat.com, 
-	dave.hansen@linux.intel.com, elena.reshetova@intel.com, haiyangz@microsoft.com, hpa@zytor.com, 
-	jun.nakajima@intel.com, kai.huang@intel.com, kexec@lists.infradead.org, 
-	kys@microsoft.com, linux-acpi@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, ltao@redhat.com, mingo@redhat.com, 
-	peterz@infradead.org, rafael@kernel.org, rick.p.edgecombe@intel.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, 
-	x86@kernel.org
-Subject: Re: [PATCHv11.1 11/19] x86/tdx: Convert shared memory back to
- private on kexec
-Message-ID: <thox3qsdozhcl3xk5zmdjhz6xdkhhz6xefknj2ib427q4qw22q@uizbc32vuu55>
-References: <20240531151442.GMZlnpYkDCRlg1_YS0@fat_crate.local>
- <20240602142303.3263551-1-kirill.shutemov@linux.intel.com>
- <20240603083754.GAZl2A4uXvVB5w4l9u@fat_crate.local>
- <noym2bqgxqcyhhdzoax7gvdfzhh7rtw7cv236fhzpqh3wqf76e@2jj733skv7y4>
- <78d33a31-0ef2-417b-a240-b2880b64518e@intel.com>
- <u3hg3fqc2nxsjtfugjmmzlahwriyqlebnkxrbzgrxlkj6l3k36@yd3yudglgevi>
- <20240604180554.GIZl9XgscEI3PUvR-W@fat_crate.local>
- <alkew673cceojzmhsp3wj43yv76cek5ydh2iosfcphuv6ro26q@pj6whxcoetht>
- <20240605162419.GJZmCRM8V6xooyvm9H@fat_crate.local>
+	s=arc-20240116; t=1717679251; c=relaxed/simple;
+	bh=BdMDCKYOciFtZo4PTTUMFab4UVUl6ecIp67QhNGiFxE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P/SfzIGzU4pK7o0m9fVCMAsoXxkpWBobWxnOvWqqRE+VJixlG4CG+3xyorz9CYMFgMrFYKBpnuy6IRe1D3GRDyij75ynEypik8s08dP7UiMB69oXRMiyjZl8XA8APYWnmXHk7X3bp8Ws5nEJTlcPwlIxhvLvDJ1vyByTcujT9Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pxwKEkMC; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2eaafda3b5cso11712641fa.3
+        for <linux-acpi@vger.kernel.org>; Thu, 06 Jun 2024 06:07:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717679247; x=1718284047; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9xqbTDU5EddtC0TrVAfeU+ERNe8gfqyFv4sZpg6VCoU=;
+        b=pxwKEkMCAXQ3w1PmZGCLFJPg73nrIiAPKJ09kyo49i0sr85KLCvLJ1iGVUpouQPxRK
+         VtoYUCN/QXLqsdurv1iapN+4l6ku+A7trXHNZCu3LMfJhXstzUuj+pEbAA3gqaTnQ2L3
+         yAVINfg0dsSQzCuA+ep21dnQAjJmLgzdVd1f3W/LWMzCXplErGog/26QuCbai80e5mku
+         kC7R7eJQNfDF5/w74oTXWwI9C9kE37U3apw+oFiG2ewAbScm2OVbzX5YuIsxFfxAZi/G
+         Y4L5YASTKUKdITRxEc2NoBHqk87NfI4sa5b0OL68oA6J9wKMpJ7cA7yaZKPa5+eqeZSB
+         CdVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717679247; x=1718284047;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xqbTDU5EddtC0TrVAfeU+ERNe8gfqyFv4sZpg6VCoU=;
+        b=ROcFChm+/9WZxRTJ3HsB1fS6xzuP1UIp/meg53TPGeuMm7q8vXYCyVkN1S0eRUA3mB
+         Oo5xv2SN1pJr/ahbKLET8qgR5qYEtjhlw3OO7rJgeNlIp2d0ikYWWNLUZU4hhrqYRDAF
+         6CEnsuBDc5MyTddIbXCWJITKzcfrmYS/FJ1fuRhGya2fjW2zEpL6T42C7qACcexKFSoR
+         NyabQXd7qqU0ldnVzze3DN4L7ZjqDceBfVbrL28ghuzhvFhq0KLrRHhSEgjU+QuhhEGy
+         HEkSGTVDS1MOGluu3akZyNJk4Hus2HCxdbl2IkIK4EXztKsSUnQtrxhGWa92PeqKZWQ9
+         4izg==
+X-Gm-Message-State: AOJu0YyMUch1V5dKivA/nutL4jqJ8Jg+UjwA2G0V0VTcKMRx/85vLId4
+	Hjuu8V3JyEfAzKD8q79u0zthV/1s/gm+xUOyev7bzda9eID8owJNWAzIpU5AtkI=
+X-Google-Smtp-Source: AGHT+IGlDZLXub3zByy5p0lR4DbNs9Rf06mpjjFumk2zfzKdHZ7Rvj7G7Qjl3dOWAdV+S5AdUp9Xhg==
+X-Received: by 2002:a2e:9c07:0:b0:2e9:8ac8:b0c4 with SMTP id 38308e7fff4ca-2eac7a6ed32mr28518321fa.49.1717679247427;
+        Thu, 06 Jun 2024 06:07:27 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:f9a9:3740:b905:9995? ([2a05:6e02:1041:c10:f9a9:3740:b905:9995])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4215c19e67fsm21943435e9.2.2024.06.06.06.07.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Jun 2024 06:07:26 -0700 (PDT)
+Message-ID: <5f93f034-f781-47e0-b8ce-3c8407a709f7@linaro.org>
+Date: Thu, 6 Jun 2024 15:07:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240605162419.GJZmCRM8V6xooyvm9H@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] thermal: core: Do not fail cdev registration because
+ of invalid initial state
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>
+Cc: Linux ACPI <linux-acpi@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Laura Nao <laura.nao@collabora.com>
+References: <4569763.LvFx2qVVIh@kreacher>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <4569763.LvFx2qVVIh@kreacher>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 05, 2024 at 06:24:19PM +0200, Borislav Petkov wrote:
-> On Wed, Jun 05, 2024 at 03:21:42PM +0300, Kirill A. Shutemov wrote:
-> > If a page can be accessed via private mapping is determined by the
-> > presence in Secure EPT. This state persist across kexec.
+On 05/06/2024 21:17, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 > 
-> I just love it how I tickle out details each time I touch this comment
-> because we three can't write a single concise and self-contained
-> explanation. :-(
+> It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooling
+> device state to thermal_debug_cdev_add()") causes the ACPI fan driver
+> to fail probing on some systems which turns out to be due to the _FST
+> control method returning an invalid value until _FSL is first evaluated
+> for the given fan.  If this happens, the .get_cur_state() cooling device
+> callback returns an error and __thermal_cooling_device_register() fails
+> as uses that callback after commit 31a0fa0019b0.
 > 
-> Ok, next version:
+> Arguably, _FST should not return an inavlid value even if it is
+> evaluated before _FSL, so this may be regarded as a platform firmware
+> issue, but at the same time it is not a good enough reason for failing
+> the cooling device registration where the initial cooling device state
+> is only needed to initialize a thermal debug facility.
 > 
-> "Private mappings persist across kexec. If tdx_enc_status_changed() fails
+> Accordingly, modify __thermal_cooling_device_register() to pass a
+> negative state value to thermal_debug_cdev_add() instead of failing
+> if the initial .get_cur_state() callback invocation fails and adjust
+> the thermal debug code to ignore negative cooling device state values.
+> 
+> Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()")
+> Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
+> Reported-by: Laura Nao <laura.nao@collabora.com>
+> Tested-by: Laura Nao <laura.nao@collabora.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-s/Private mappings persist /Memory encryption state persists /
+As it is a driver issue, it should be fixed in the driver, not in the 
+core code. The resulting code logic in the core is trying to deal with 
+bad driver behavior, it does not really seem appropriate.
 
-> in the first kernel, it leaves memory in an unknown state.
-> 
-> If that memory remains shared, accessing it in the *next* kernel through
-> a private mapping will result in an unrecoverable guest shutdown.
-> 
-> The kdump kernel boot is not impacted as it uses a pre-reserved memory
-> range that is always private.  However, gathering crash information
-> could lead to a crash if it accesses unconverted memory through
-> a private mapping which is possible when accessing that memory through
-> /proc/vmcore, for example.
-> 
-> In all cases, print error info in order to leave enough bread crumbs for
-> debugging."
-> 
-> I think this is getting in the right direction as it actually makes
-> sense now.
+The core code has been clean up from the high friction it had with the 
+legacy ACPI code. It would be nice to continue it this direction.
 
-Otherwise looks good to me.
+
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
