@@ -1,369 +1,218 @@
-Return-Path: <linux-acpi+bounces-6256-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6257-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F858FFD8C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 09:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4168FFD94
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 09:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25471C22F8C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 07:52:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 150411C21C7A
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 07:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7195D15B0FD;
-	Fri,  7 Jun 2024 07:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C8D15A86B;
+	Fri,  7 Jun 2024 07:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2G07Qca5"
+	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="c9YP5LzV"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2055.outbound.protection.outlook.com [40.107.92.55])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8517215B0E4;
-	Fri,  7 Jun 2024 07:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262C1C2AF;
+	Fri,  7 Jun 2024 07:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717746701; cv=fail; b=QR5pe8c0jKrBuRZ+0qF7dheBhr8alCDxXrIUIWhnFq5z7cf9lg5I86JJUXR+oe2sbZ2VPY9i4juh+co7Kp8yxeVCd9KbnYKv4LbqZ4R+6fMO1wdFJLljJeafWz2r8vzzffiv3c4oXUv5y++A8bhSuznn7V+quKhtboDMJtodqRg=
+	t=1717746871; cv=fail; b=P1YBWIbUjfrXwGKxvhpTsy3xmOyjdy8ZzuSSk9qRcLpLHI21PL5Ony4gXubt4KGrmPjr6JtEx0dBaq9G4q3rIDCcJcmwZJCJ5lhJKgr3WuWoaCcIEOJL0RBSDyu50eFRtzqCZWJwjXKeJIxCxMc1x5U4yQxCrdPeKDZFdzvxCzw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717746701; c=relaxed/simple;
-	bh=T23VkWvshxlWVWCczPRlYV6OpBVSvNBTd9na8w0qgVM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BdNS0XzLQ1qRRUje43wwNvSx+ibkiV598PH8w1t3/SD42qti2AUc/TZYy+V0Y0GkA9QPStCXtdQ4NXd9ufHMvu+z1DCljxKWtGutVxTXb16inY7Q+7cgshjiRc1Fr9IQ2qIgkhNriq3+rrmuudi4oH+lG1OGj0JhOci5k4dI2wM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2G07Qca5; arc=fail smtp.client-ip=40.107.92.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1717746871; c=relaxed/simple;
+	bh=5Fr+4VL7kFNJrLhPVYvgClcqoHcHJcJetaMqc/GzX1U=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=M97+wcKSJ6nACC2rnNIGyHSvXt6/hEydSiRP/1yZu8ka8ms4t/3CyoQ4ODE/0zzVc7XdCgYlWZDHsstqUaVk6+QmSsz68EA9QAX67nVWakSTp8pMNDt5fDCc3N9H582SveUq5qFZ9YTGXKaG8+o8keCt//lBIui5Zou/hZoU1Yc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=c9YP5LzV; arc=fail smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4575BFWH027577;
+	Fri, 7 Jun 2024 00:54:01 -0700
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3ykuu20cjt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 00:54:00 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PN8D4JTyF3+mf9JWWnT7I+aTgDsZQwjahjPtaYkaOeUx16pB0ixzCh4lTCD4X0tCUuO+0jc2TV/PwSc+D4wyKjZfjdaf2E5egV/met1TVuMzx1sHN2m7YpyfjiJZdOInOXiXtbv9gnKNIvWzWnhehxqHkoloOk5ov/pCZgH76UFXH1jo+rKJYJ9tqKZvI6Qs6PSUwqRGQgpBtURuAxUmwEj64arK7EFbE9EvXAYNTmKghJkwT7sDZokAqEIZeH8h0GQBYF+VT5OUMio8Z/bJNyXjwMSL3OcTROhcuvJ02umD6IzVTrAQbHFRwMY3u9xlIhV60FyOTjY7wC6dZFSH1A==
+ b=i74QYnpqCQEVC1pjhyWz0KlsSaUCGKPI2H6aHmo9E7O9O+cwG+5zCqw+gJjsxyJCVJQFDhiS+qfnpzoMqvm+x6aKAE/bYBS9W8VE5/99dUAXEGwaTO2hnMz74duApcOcM+NA5D3QdYIjs/SJUW8eIf+QYwNIklYEGxvmrcZtNQQuv5THbfq+RMEhl0s9ldr8Tzy+Zaz8fIkWCLk7jkPoISfTCcUXHanW3GW9ZbaaecpULkpX0sRI5pFft/CInNAVMNVdKBGcxSaRtbxGn4SqWXv7dJ6MxrJbIScj1NoHXDcRciVoVEE7cKA5KDqxGBSP3bOeIG24k2j5PHh38CpueQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qtwVEw1eqAZTxz5ZOltSmokorN9ksIbbFVkKSMPl8Yw=;
- b=FQK7f7aYZmxCjaxp5beBd9BOyzXmN/z7nbInaHAybKZraYOpQUQ6vAa8/S4Yhe7C77sgkBPuORfubel8QPXruS3CHzsQe6Hk3o+MKReOWc4iFB+Keo/ZGMEyI5MciuhIvX2nWwyfmzbU9a8Nj8GG4g/k+j80eamDQsaFc/TE2ZmK3+dghF8szPQfEnGCXwuHz7GGfzFAI+RnbtpEwKxwGKIrtGaGFvC5DG5pybh1TnOZ8mDXcn9ypTziOoDiIMhmH+QVaPtCgsLqxgM6fIkmksWztaMI1kBE8ECNVm2Tt6jBNEZnLTIPdkCgXh4n6BueMbN+0Vna5p4j4Odp5KZPrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=0C/DmWR7rTgfgh/+aYh2NCJgxVw7Mh+ObYk5rAJac3o=;
+ b=gnDmbk0lzBSlPrpOMRC0scCDKUfC+ucjHFsBe4Mk+WHuTgbCuekvMs7xkXLujEuEdYNkF6fgjY1ENahjQ40cAYbrmoimekoM4o4jaO+gxm+bGcqdQ5YQEw0GUv+o1gDPasWpIA3zya7gAl1wO2jTWF0gEk7ah3mvmdjd5UdET4kv1VLq2XgypFM5mzd4J2Z+lyrbmnuc82wFxJp1jjfoDJy6RlCG16biFf6926OS94sXZ0sRCadgdTVYY9rEcdoRRHwtVobf70WWUJgqBsbhgidnBycMQwmYb5ohOKTCoMLl5Hp9oiTipcqIBDmW/wWfeVAcoilQh+kc2zE64zpBlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qtwVEw1eqAZTxz5ZOltSmokorN9ksIbbFVkKSMPl8Yw=;
- b=2G07Qca5v/z8aLxsjbak/bX9ggG0nDq3oW2L2nTngx9L37jEjFZ5WTKatNlYuP78km67+V7ws4zi1BsKtoGCkhS6JzXnGgafDUIgIhDpvizr7L8V14hH23KB4DQpuqmGAG+YOPFG2vMeZH1Wj5VC7IMze/MHus1zUyBxHjYcpb4=
-Received: from SN6PR16CA0054.namprd16.prod.outlook.com (2603:10b6:805:ca::31)
- by MW4PR12MB6976.namprd12.prod.outlook.com (2603:10b6:303:20a::21) with
+ bh=0C/DmWR7rTgfgh/+aYh2NCJgxVw7Mh+ObYk5rAJac3o=;
+ b=c9YP5LzVHqVIyh+wbC9vhTVKZJGY3R7FH+SmfByVBMMyk2u49VaCVpGcq5EdS5Zer9a4nFe6Wp1Xx/WzE7ALSnmA/wIPXBFdv+nRYOKG+v1E5l+mXngPFywf/QIRQ7UN5E9bOtoAMBRGBylTzBHDxonwlVUYkf/kYC5v9pKiPw0=
+Received: from MW4PR18MB5084.namprd18.prod.outlook.com (2603:10b6:303:1a7::8)
+ by SJ0PR18MB4430.namprd18.prod.outlook.com (2603:10b6:a03:303::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.34; Fri, 7 Jun
- 2024 07:51:37 +0000
-Received: from SA2PEPF0000150A.namprd04.prod.outlook.com
- (2603:10b6:805:ca:cafe::89) by SN6PR16CA0054.outlook.office365.com
- (2603:10b6:805:ca::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7656.21 via Frontend
- Transport; Fri, 7 Jun 2024 07:51:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF0000150A.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7633.15 via Frontend Transport; Fri, 7 Jun 2024 07:51:36 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 7 Jun
- 2024 02:51:33 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, "Rafael J .
- Wysocki" <rafael@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?=
-	<roger.pau@citrix.com>
-CC: <xen-devel@lists.xenproject.org>, <linux-pci@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Huang Rui
-	<Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>, Huang Rui
-	<ray.huang@amd.com>
-Subject: [RFC KERNEL PATCH v8 3/3] xen/privcmd: Add new syscall to get gsi from dev
-Date: Fri, 7 Jun 2024 15:51:09 +0800
-Message-ID: <20240607075109.126277-4-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240607075109.126277-1-Jiqian.Chen@amd.com>
-References: <20240607075109.126277-1-Jiqian.Chen@amd.com>
+ 2024 07:53:57 +0000
+Received: from MW4PR18MB5084.namprd18.prod.outlook.com
+ ([fe80::1fe2:3c84:eebf:a905]) by MW4PR18MB5084.namprd18.prod.outlook.com
+ ([fe80::1fe2:3c84:eebf:a905%5]) with mapi id 15.20.7633.033; Fri, 7 Jun 2024
+ 07:53:57 +0000
+Message-ID: <02dba55e-39a3-4853-ac52-834cb1c0fc7f@marvell.com>
+Date: Fri, 7 Jun 2024 13:23:48 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/1] irqchip/gic-v3: Enable non-coherent
+ redistributors/ITSes ACPI probing
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
+        Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Rafael J. Wysocki"
+ <rafael@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+        acpica-devel@lists.linux.dev
+References: <20240123110332.112797-1-lpieralisi@kernel.org>
+ <20240606094238.757649-1-lpieralisi@kernel.org>
+ <20240606094238.757649-2-lpieralisi@kernel.org>
+ <f901fd06-3b6b-4444-a3da-2b75c59059d3@marvell.com>
+ <ZmK5Ilk37GyJ4QEa@lpieralisi>
+Content-Language: en-US
+From: Amit Singh Tomar <amitsinght@marvell.com>
+In-Reply-To: <ZmK5Ilk37GyJ4QEa@lpieralisi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN2PR01CA0220.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:ea::18) To MW4PR18MB5084.namprd18.prod.outlook.com
+ (2603:10b6:303:1a7::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF0000150A:EE_|MW4PR12MB6976:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1cd1c8d0-2273-4bef-1fff-08dc86c6a86e
+X-MS-TrafficTypeDiagnostic: MW4PR18MB5084:EE_|SJ0PR18MB4430:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4e71c7c-0f89-4d90-e8ff-08dc86c6fbd0
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|376005|36860700004|1800799015|82310400017;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?W10QbVwI0ESCViUv3Ii94tlHOF04G1t1XaKMzDJwvWIei6ZRoBVVQsF8DHAS?=
- =?us-ascii?Q?jp5FNXJaXFMzBhfZcHJGyRl1yikEpoq7gliavCNdHNnjwOircVWumM121L5Q?=
- =?us-ascii?Q?Physf5TpaOKbm2oeFPsZavDUg9h/3afwvxbam4yytxGhZ8QdJFUpZHB8z9pX?=
- =?us-ascii?Q?nhhfVxxg4vpTadv2z8gB0EqYRVgYzMrsggqrNPiOY+2Ntdg7ZtGNDGWgOAVC?=
- =?us-ascii?Q?sYQ8g5LXYH+sBY6p/uy+tbMEeGB0wYgRc830CKDP2aCXLN/HhHdSEZRQsWsE?=
- =?us-ascii?Q?PayNlfB+lOOsuynANnsRlQ6Rdpt0dhkxlvAZKg8cQLaBNANce1W4Xfcs15QU?=
- =?us-ascii?Q?xjtbZnIdO36Ge9gJODvIiKjkm1tooUvKBcOrkrBWyaz1FIXzYzLihYhzQ+J3?=
- =?us-ascii?Q?Z3oJO1altQfC36CJ/lCmISTICSJ3FFLcKKnxJiK/jXhdJe9ssO6gy/WJ9Jg7?=
- =?us-ascii?Q?KqBIlH5vmIRNnaEyqsIBToXKLVwJXaP2XgClBgledru+H3/bp8cZXt9yTuy8?=
- =?us-ascii?Q?GebOGnTV9EIOr+7Xbp5ObYLJs+DQlthjyKyDH5OqQDZky/ly9SjBLSds/7hl?=
- =?us-ascii?Q?rhxpyroXOC6GMJptQHQruVNLxvS/UNcT2N4qGcWekx8sCX4nGTcoMTmXDPwt?=
- =?us-ascii?Q?PhCMOoBDIkuD9Std0a5Vy2TR9i8ouzEytPplvPNEKQ+MXXCGc4XxM/oyf4k0?=
- =?us-ascii?Q?axz0/x6PY5sIs2BECmR0bqqfMMozOhGXfoIl2aQuBUIDirGR5rCm7WzIt5XK?=
- =?us-ascii?Q?LgX2KEJCtNbFcljF81HH6L+bOOTfXR6fk4ITjizWBkB84Nqwr9DIqXaps2qP?=
- =?us-ascii?Q?HNqZ3nnT4heeXylWF50repNLWCkKjI9Lm0GmCEtlvTsvUv3/rraF8ZplnKSG?=
- =?us-ascii?Q?Pf4IO94dCXU2YMsVntBzLBVt4mAE1pMr00N555AduSnOcDq7kL01Aw8gM1rj?=
- =?us-ascii?Q?cYGJjOW1sxGjLmeHNhOvKz4TXrigE7GmorktKb9JXIA05gcinta2qUSNIqWZ?=
- =?us-ascii?Q?yyKFSxOJV3r2KZgKlPKzrlg1gweGIkJzZfFmRdH21SwaoL5bNkeVKJv1q+Ns?=
- =?us-ascii?Q?KU16n3D3MaO69HiuG+GlTbqnDc5izn1prO2nAejwg+IcwoyeSF44GgdTBwOr?=
- =?us-ascii?Q?XSlyREjTFGrY26vzBYYBCppR7jF7VYu5P6S5h5tLwNqqEDaDdqfjtMdOPRLj?=
- =?us-ascii?Q?uChFoN1gcNpnXw7/7m+++VbgFd5H5N0DdId5lRdAwqc6xt+yiXe4/z5u+TF0?=
- =?us-ascii?Q?zNltBnHBMdbqabf1TNDt3/QLlJLx9T8j6FEteEzv/MhHkmjhH3fTDyO39zbY?=
- =?us-ascii?Q?uFVJj7PjT6Gpr1+0K3Spls/w6KuQ+MnHKh+V+Jz2LJrOYXSnMvh0kqnA3a+j?=
- =?us-ascii?Q?PpShbrfV2QFmDmPzyT+RMvSfv5mkfJpU+tizNim9u4zQ2ZzvnA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(36860700004)(1800799015)(82310400017);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 07:51:36.6266
+X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|7416005|1800799015;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?UUtJcTZSc1VTMEJwOTZVQm5IN3ZiVGNNNlRJbjJBTXQrQlFxdWZZOG1mSWc2?=
+ =?utf-8?B?aDBibUNQdTVTUU1EQk9rOEo5bGx6ejFUK3FhZG1KSElJNjBLc2t2MFY5QS81?=
+ =?utf-8?B?M1VqMCtOQk0wYlVrcy81QjdLWllrRzFzNnV4Y1AwZUE5MXRlSXJLTUpJWjQx?=
+ =?utf-8?B?RHZhRmk4TVRoS0FCVitabGN5emRvMnNHMDdDZDg2RUFTK0NUcklvK3p5dDdj?=
+ =?utf-8?B?ajc2cTZwK24vN21oTS80WFNXM0FTY2NqdTdjbWQ4Z2U5dDh0ZVM2VzVJYkl0?=
+ =?utf-8?B?WHFpVnZIeHVrNnRRdzRxa3dMUmhZT3JPa3BOTlpjUERway9TT0NrajFaOVZt?=
+ =?utf-8?B?REY5ei9NSXc1WThRMVRkSHhvb0U5aVVRWmpnMVdWZFRabVo4d0hhSHN2eUNN?=
+ =?utf-8?B?MWhjcXEvU1JMNGxnYzBXVklTZld6aXVCckIveW9Fc3pqYnZmVEFNM1pkdmxY?=
+ =?utf-8?B?T0paNThtZ2xYM2dyUXo3QjBCV1JuS2d2NWtKeGhxd01KbHpQRGtqTzZVb0g5?=
+ =?utf-8?B?RDIrMmR0ckJBYmhBbEVOTHVWbnkvTmxlR0FOOWZjakx6SUNyQVU2TkR1V3VN?=
+ =?utf-8?B?KzdDRThXeGZPUGhhMmd5NERJU092YUlML2FqazZPd0tCZUxhTGJMSVhnbXVC?=
+ =?utf-8?B?b0tuTjNRZVl4bHkyWGlqOVBRRGRrSllXN2F4ZFJpRzIxUGdIc2NjL3ZQbHQx?=
+ =?utf-8?B?MklrSVRiVVE1Ty9JODdjcVI4TFBaak5saDQydWd1UXVKWW5CZzg4NzdRc0kx?=
+ =?utf-8?B?bUNxdS8vTlNXNjZLUUNKY3IveTl5T2R5YnpTT1hQU1BldkF1K3hNaVlnTlYz?=
+ =?utf-8?B?ZG1wMFZUQW1GeS9VZTVtY1FFeFdrclBDNzRRcEExaGhWbjBWQXc3cjNHbTls?=
+ =?utf-8?B?dU1ORTdmNWJHREN0cm1Jd29pM3dxMFJSZFJ5eVBleUpaaHpodFB5cVlOTjVM?=
+ =?utf-8?B?S2tjY25aUTBHRUVLQjU1Uk1HZHRSRDFEd0VDNENWWjduaFJ6eExtUU9DUG4x?=
+ =?utf-8?B?Yi9veU9WcW9palpNT2FtdTRWR3loMDJlQytJOGI1Vjd0a1d4VjlJWGtmOVgv?=
+ =?utf-8?B?bm1tSzBibEZNanZZUXEvS0xMaVdFOEsxU2hrQXpRSnhpYVh3OTBWUnRxcGVT?=
+ =?utf-8?B?VURZalgxQ3NEUUpPTDlTMFlWcG1vYy9WcXFkZXNaelJwcitJK2RZaDI3RklV?=
+ =?utf-8?B?aldSN3ZkVU9qb1FaTzFMRVdZZUFieWIyT1hFRUJpeTJSYW1ZTTRGNmM3WlFG?=
+ =?utf-8?B?OWNSOHRTUnVyODhSbmJrcGkxaG5IV0dpNXZETmNTU1RveDJnTTh0QUV0RCtB?=
+ =?utf-8?B?cHJLQm1kUlNsbXFzajM2SGpHemFuVW9uRDFYOVV1WWJ4OUhKUzhySjhsVnZY?=
+ =?utf-8?B?cTNWejJlWFp0MU1NNFp4VXJDUVdvMzJvc3g3WE5kUCtaU05LMEtuQ1FoWHZz?=
+ =?utf-8?B?YlN4L3ExRHhmWE9jU1hkcGpHRU5SWVFqY0l0dXkvQmtURW92ZUJEMlB1ZTc2?=
+ =?utf-8?B?NnE5ZlcyekcvZHcvMzFSRlNHK3Y5bjU3WXB5bmNMMnpualVyUU1lZ0Q4NVFB?=
+ =?utf-8?B?YjBMY3NUZEZXa1k3MkpISS9xME1MODluRThnRGVGdlY4U0syeFpxUDBVWnky?=
+ =?utf-8?B?a1pzMVpyRllnWGZ0ZlREUnpvWmQwczJnOU1sWUkvV2tMZTFGSmIxVGtsakt5?=
+ =?utf-8?Q?fvzCfScLwF+n/4fbBjFd?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR18MB5084.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?SVREbXpleFFtUytldmlhRUpKYytJRVdKYkVtWlk2VG91T3JxL3AzdWdWd3l6?=
+ =?utf-8?B?RTFSbmdDOFRPdHYvMGpDMXVMREFwOXExVzFKYVJOWWxVS2Y5cld2MVo1bkFB?=
+ =?utf-8?B?R29wTWNmYkJXUWp4cVBNdjVNVHozS1B1cllUckNvTmZPbXdndUZxeXVJVDhp?=
+ =?utf-8?B?b0ZLQ3MwUHVwUGN0MXQ2VlJTTGdRSVpCRnhHR0U3dDN6dkJlU0hPTDhBNGxU?=
+ =?utf-8?B?OWZvMVlkZGhsYStKUUpYNnpuM2RSaG9KVlp4ekk2RFA1SldEZE1WOGJJOW5l?=
+ =?utf-8?B?SmtkMHl6OTlXanVINkp1cHZiWVViaUQyT2JhcGhyVGU2TjgzSUt4anAxanlh?=
+ =?utf-8?B?ZDRtMTlxSFRhd2VNdXJBajVtT3hRSlF3RjJ5S1ZYbnNiK1gyak11ZnFyMWN3?=
+ =?utf-8?B?ajlFU2w1WlNDODkySXlSNnFHZG80WkhIWjFvcFZ3dEJTcHBLdjB0Rm9EUFg4?=
+ =?utf-8?B?dXBVejJXd1RQbUFIZ1ppTDVFOGdEV3ZhUE53WVJzbDJ4Y3lQc1hJTW0rUDRv?=
+ =?utf-8?B?dTBjNmdtT2J0VGNYNUxqZlYrdzgva0hTTE5pS3gwZzBadWhVRUVKQW9zaXh2?=
+ =?utf-8?B?Vks3MlFZZ0NPeGNJRUFFTW1vcGxzRVJkOHZURTJJR2xFeExLRmV0emNwVUZC?=
+ =?utf-8?B?OE4wbXcvenZCa3drWFVsR3FheFY0T2FpbGtqd0JDdHhLbHI1NCtaQzR6bk9s?=
+ =?utf-8?B?VWd5b1dKMEVkRjViY2NTaUFabXpHbzlUZVIrQndrbEtnR3AzelRNYlNkdWNH?=
+ =?utf-8?B?RHBscjRPUHE0Y1RjUXpYOXhpamdZTWZUc0J0V0NTT0F3UjQ4R2Q3czlpYzM3?=
+ =?utf-8?B?V0FHNmxLNnVhTUNFZFpjOFNRMWNEQm8zeFgxQW5ra0Y1ZWxWV3JOVElhaStP?=
+ =?utf-8?B?dXRVdnFWa0ttOWwvbXpKMUQrNEJzQ1hpWjVWemY3NEVubFJ4K1l4Y0ZkUSth?=
+ =?utf-8?B?Zk9iVVNSeGlxK2xFUnpqaDhJMS91RGFNZERLUHpkVk5MUzNRS0xPQzRVYS9P?=
+ =?utf-8?B?cVkxQTZjL014c1dOQ3RsYk85Tytzd0hsR0V2UjgxTkdvOUZ5b3V0OEZlQ3N3?=
+ =?utf-8?B?OGJnY3VkTEJGcWpVbmE3N0JXYkQ5akpBZW4yMXdvUXY5RDlncWIxUnFuME52?=
+ =?utf-8?B?WXYwRHV6M0JqeHpZVjNWTGp1NlpJOFpFQ3BUQk5TZE1qdzVQMGhJQkJwQkh2?=
+ =?utf-8?B?Y0dUemYrM3RoclhYYjBSN2VaZlJMUmhzNHNTSklJdjk3U0JJZ1BlSFlUY3Mw?=
+ =?utf-8?B?S3N1Vy8vQWp4dDUrV0N2a1lCbHI4blh1MndLbk4xQzRPbHlucThxczlmNVlD?=
+ =?utf-8?B?UzNSbDVHRXp4SHZmTGRTSHRaeElGaGNQOFM4d1JoLys3OGV1M2xUcVp2bWlW?=
+ =?utf-8?B?dzhMMzlzdXB0eXZPSWIzcUU0VU1GLzRlR01sVm4rSGt3ZWZ2SEprMXByeURr?=
+ =?utf-8?B?cHQySlVHNnZZWXFpSVpmdUNRRnNKWExsUjZYSnlGSDV2WWYwdFRVTDBiRWlK?=
+ =?utf-8?B?QjhZeDdSSmwyYkRHYjEyRkFmY3dpT0dTWG0vSm11L1RSL0dIc002Q2lRRC9u?=
+ =?utf-8?B?NkZNall1blNoV2dTTHNORzM5aEJZMHlnZ256MkhzS25qK1VUR1RjZ1dTZ3A3?=
+ =?utf-8?B?WnNNdGl5UW1XTjNQSkk5bS9nSHJrK2lGN1I4Zmc4NEtSOXZjWE91aFNBd2Er?=
+ =?utf-8?B?RThZakhYVS9YWVJZN0RpNEczSFFQTCtrUGtsaWdaaWUvekg5NVlLb2R3c09w?=
+ =?utf-8?B?bFBqM1NiRFV3YkZ6bkdhQ050VlJvUFpVdFl3MWlwakhIT2t3TjBCL244YXNa?=
+ =?utf-8?B?QkhEMXQvc3dzR0ZGV1A5bWptYjg2MG1ESWIrVWlGenJ3VmRHUkhsSjFZSUM3?=
+ =?utf-8?B?eUNuMStWc2tUQ1NEZHhoVWUySldQOERsWDNlWmhSakxHQzZ4V2dCak9UaHVM?=
+ =?utf-8?B?eDhRWjBUcFpqNDJYOGNoVkVkUUQ5bWgzZzBLcTZJMzJ2UG5vZVpSSjBnbzc5?=
+ =?utf-8?B?R2dOR2tGZnRZT1dnNXVSV2ZWaTNJb2tVU2tvNXYrMEl4N2tJTjcyWmtGellz?=
+ =?utf-8?B?SHVPeHp3Zks4dkVJRWFJcjlDeDQvMkhsWXgyaXF0N2lYNWpMNy9vdDJGcnpK?=
+ =?utf-8?Q?Mkh+1QyffFa/8xoUGO5daT8Rz?=
+X-OriginatorOrg: marvell.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4e71c7c-0f89-4d90-e8ff-08dc86c6fbd0
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR18MB5084.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 07:53:56.9241
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1cd1c8d0-2273-4bef-1fff-08dc86c6a86e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF0000150A.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6976
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rYJ0twQc47aN4jbrBAO64YkE9i4AoAmUbI8I5cXSk6MiUQD5xeOUze3afHXfISRGlzyIHmb/VFhwaDrurlNrBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR18MB4430
+X-Proofpoint-ORIG-GUID: _0XePVrKMm0xtspbDNhDwZAE2k0YX9Hb
+X-Proofpoint-GUID: _0XePVrKMm0xtspbDNhDwZAE2k0YX9Hb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-07_02,2024-06-06_02,2024-05-17_01
 
-In PVH dom0, it uses the linux local interrupt mechanism,
-when it allocs irq for a gsi, it is dynamic, and follow
-the principle of applying first, distributing first. And
-the irq number is alloced from small to large, but the
-applying gsi number is not, may gsi 38 comes before gsi 28,
-it causes the irq number is not equal with the gsi number.
-And when passthrough a device, QEMU will use device's gsi
-number to do pirq mapping, but the gsi number is got from
-file /sys/bus/pci/devices/<sbdf>/irq, irq!= gsi, so it will
-fail when mapping.
-And in current linux codes, there is no method to get gsi
-for userspace.
+> On Fri, Jun 07, 2024 at 12:21:54AM +0530, Amit Singh Tomar wrote:
+> 
+> [...]
+> 
+>>> diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+>>> index b203cfe28550..915713c0e9b7 100644
+>>> --- a/drivers/acpi/processor_core.c
+>>> +++ b/drivers/acpi/processor_core.c
+>>> @@ -215,6 +215,21 @@ phys_cpuid_t __init acpi_map_madt_entry(u32 acpi_id)
+>>>    	return rv;
+>>>    }
+>>> +int __init acpi_get_madt_revision(void)
+>>
+>> Wondering, if we can have a generic function (acpi_get_tbl_revision) to
+>> obtain the revision number for any ACPI table, not just specific to MADT?
+> 
+> We could - I don't think there would be users other than code in this
+> patch though so I thought it would not be necessary.
+> 
 
-For above purpose, record gsi of pcistub devices when init
-pcistub and add a new syscall into privcmd to let userspace
-can get gsi when they have a need.
+Right, it might not be essential now but I see that MPAM will be another 
+user of it once the MPAM patches are out.
 
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
-RFC: it need review and need to wait for previous patch of this series to be merged.
----
- drivers/xen/privcmd.c              | 28 ++++++++++++++++++++++
- drivers/xen/xen-pciback/pci_stub.c | 38 +++++++++++++++++++++++++++---
- include/uapi/xen/privcmd.h         |  7 ++++++
- include/xen/acpi.h                 |  9 +++++++
- 4 files changed, 79 insertions(+), 3 deletions(-)
+https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/tree/drivers/acpi/arm64/mpam.c?h=mpam/snapshot/v6.7-rc2#n299
 
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index 67dfa4778864..5809b3168f25 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -45,6 +45,9 @@
- #include <xen/page.h>
- #include <xen/xen-ops.h>
- #include <xen/balloon.h>
-+#ifdef CONFIG_XEN_ACPI
-+#include <xen/acpi.h>
-+#endif
- 
- #include "privcmd.h"
- 
-@@ -842,6 +845,27 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
- 	return rc;
- }
- 
-+static long privcmd_ioctl_gsi_from_dev(struct file *file, void __user *udata)
-+{
-+#ifdef CONFIG_XEN_ACPI
-+	struct privcmd_gsi_from_dev kdata;
-+
-+	if (copy_from_user(&kdata, udata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	kdata.gsi = pcistub_get_gsi_from_sbdf(kdata.sbdf);
-+	if (kdata.gsi == -1)
-+		return -EINVAL;
-+
-+	if (copy_to_user(udata, &kdata, sizeof(kdata)))
-+		return -EFAULT;
-+
-+	return 0;
-+#else
-+	return -EINVAL;
-+#endif
-+}
-+
- #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
- /* Irqfd support */
- static struct workqueue_struct *irqfd_cleanup_wq;
-@@ -1529,6 +1553,10 @@ static long privcmd_ioctl(struct file *file,
- 		ret = privcmd_ioctl_ioeventfd(file, udata);
- 		break;
- 
-+	case IOCTL_PRIVCMD_GSI_FROM_DEV:
-+		ret = privcmd_ioctl_gsi_from_dev(file, udata);
-+		break;
-+
- 	default:
- 		break;
- 	}
-diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-index 6b22e45188f5..9d791d7a8098 100644
---- a/drivers/xen/xen-pciback/pci_stub.c
-+++ b/drivers/xen/xen-pciback/pci_stub.c
-@@ -56,6 +56,9 @@ struct pcistub_device {
- 
- 	struct pci_dev *dev;
- 	struct xen_pcibk_device *pdev;/* non-NULL if struct pci_dev is in use */
-+#ifdef CONFIG_XEN_ACPI
-+	int gsi;
-+#endif
- };
- 
- /* Access to pcistub_devices & seized_devices lists and the initialize_devices
-@@ -88,6 +91,9 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
- 
- 	kref_init(&psdev->kref);
- 	spin_lock_init(&psdev->lock);
-+#ifdef CONFIG_XEN_ACPI
-+	psdev->gsi = -1;
-+#endif
- 
- 	return psdev;
- }
-@@ -220,6 +226,25 @@ static struct pci_dev *pcistub_device_get_pci_dev(struct xen_pcibk_device *pdev,
- 	return pci_dev;
- }
- 
-+#ifdef CONFIG_XEN_ACPI
-+int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-+{
-+	struct pcistub_device *psdev;
-+	int domain = (sbdf >> 16) & 0xffff;
-+	int bus = PCI_BUS_NUM(sbdf);
-+	int slot = PCI_SLOT(sbdf);
-+	int func = PCI_FUNC(sbdf);
-+
-+	psdev = pcistub_device_find(domain, bus, slot, func);
-+
-+	if (!psdev)
-+		return -1;
-+
-+	return psdev->gsi;
-+}
-+EXPORT_SYMBOL_GPL(pcistub_get_gsi_from_sbdf);
-+#endif
-+
- struct pci_dev *pcistub_get_pci_dev_by_slot(struct xen_pcibk_device *pdev,
- 					    int domain, int bus,
- 					    int slot, int func)
-@@ -367,14 +392,20 @@ static int pcistub_match(struct pci_dev *dev)
- 	return found;
- }
- 
--static int pcistub_init_device(struct pci_dev *dev)
-+static int pcistub_init_device(struct pcistub_device *psdev)
- {
- 	struct xen_pcibk_dev_data *dev_data;
-+	struct pci_dev *dev;
- #ifdef CONFIG_XEN_ACPI
- 	int gsi, trigger, polarity;
- #endif
- 	int err = 0;
- 
-+	if (!psdev)
-+		return -EINVAL;
-+
-+	dev = psdev->dev;
-+
- 	dev_dbg(&dev->dev, "initializing...\n");
- 
- 	/* The PCI backend is not intended to be a module (or to work with
-@@ -448,6 +479,7 @@ static int pcistub_init_device(struct pci_dev *dev)
- 		dev_err(&dev->dev, "Fail to get gsi info!\n");
- 		goto config_release;
- 	}
-+	psdev->gsi = gsi;
- 
- 	if (xen_initial_domain() && xen_pvh_domain()) {
- 		err = xen_pvh_setup_gsi(gsi, trigger, polarity);
-@@ -495,7 +527,7 @@ static int __init pcistub_init_devices_late(void)
- 
- 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
- 
--		err = pcistub_init_device(psdev->dev);
-+		err = pcistub_init_device(psdev);
- 		if (err) {
- 			dev_err(&psdev->dev->dev,
- 				"error %d initializing device\n", err);
-@@ -565,7 +597,7 @@ static int pcistub_seize(struct pci_dev *dev,
- 		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
- 
- 		/* don't want irqs disabled when calling pcistub_init_device */
--		err = pcistub_init_device(psdev->dev);
-+		err = pcistub_init_device(psdev);
- 
- 		spin_lock_irqsave(&pcistub_devices_lock, flags);
- 
-diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-index 8b8c5d1420fe..220e7670a113 100644
---- a/include/uapi/xen/privcmd.h
-+++ b/include/uapi/xen/privcmd.h
-@@ -126,6 +126,11 @@ struct privcmd_ioeventfd {
- 	__u8 pad[2];
- };
- 
-+struct privcmd_gsi_from_dev {
-+	__u32 sbdf;
-+	int gsi;
-+};
-+
- /*
-  * @cmd: IOCTL_PRIVCMD_HYPERCALL
-  * @arg: &privcmd_hypercall_t
-@@ -157,5 +162,7 @@ struct privcmd_ioeventfd {
- 	_IOW('P', 8, struct privcmd_irqfd)
- #define IOCTL_PRIVCMD_IOEVENTFD					\
- 	_IOW('P', 9, struct privcmd_ioeventfd)
-+#define IOCTL_PRIVCMD_GSI_FROM_DEV				\
-+	_IOC(_IOC_NONE, 'P', 10, sizeof(struct privcmd_gsi_from_dev))
- 
- #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
-diff --git a/include/xen/acpi.h b/include/xen/acpi.h
-index 9b50027113f3..d6315fd559a9 100644
---- a/include/xen/acpi.h
-+++ b/include/xen/acpi.h
-@@ -83,4 +83,13 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
- 						  int *gsi_out,
- 						  int *trigger_out,
- 						  int *polarity_out);
-+
-+#ifdef CONFIG_XEN_PCI_STUB
-+int pcistub_get_gsi_from_sbdf(unsigned int sbdf);
-+#else
-+static inline int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-+{
-+	return -1;
-+}
-+#endif
- #endif	/* _XEN_ACPI_H */
--- 
-2.34.1
+Thanks
+-Amit
 
 
