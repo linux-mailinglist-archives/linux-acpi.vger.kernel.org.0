@@ -1,115 +1,142 @@
-Return-Path: <linux-acpi+bounces-6259-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6260-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2938FFE0C
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 10:32:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5D48FFE3D
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 10:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B059283E2A
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 08:32:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B921B239AC
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 08:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9A115B0F7;
-	Fri,  7 Jun 2024 08:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB9415B15F;
+	Fri,  7 Jun 2024 08:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kMYgB91W"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="kOSKNW0W"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784262208E;
-	Fri,  7 Jun 2024 08:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9015B136
+	for <linux-acpi@vger.kernel.org>; Fri,  7 Jun 2024 08:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717749137; cv=none; b=D1pqlCBJH26rZKmgb0829IAGxTxwtE/jCNbz6vcKzfvj74dpCg/ToJl0n9/6tG9L+7fb1FO2M5cDHA2lD9sCIDBGXTTqz42oR+FPAm7aXmM0OAkyX3ho3wWYgvICBMpHNHG/n5Jehc+TAvHDPhwahcDTazegvVfN7sE0uvWVIvE=
+	t=1717749891; cv=none; b=kKOl8TMBM58KP1Jd7Thc0DwC59cIZr0SG5QdT5tVxQ6GjLC62wQl1DprD8kNkYvJn/Qg1rmL6qj8VYNP2ey5VgQyQfpXuG6hA5UpZiMw9O1OGVkgzCqQUj/RZI5XXOfZDL10PhcY41R0CJH/MDNUVxYTLyIEZP/fSY4WY6gwZ3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717749137; c=relaxed/simple;
-	bh=A+DkgWFqywsQJPc6O6LIH/uEqKwNeM/Fe7AFbx+bek0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zo9TvfgQiSaHOIz56w8aMKcQ7gt/Sq/lGEvHk8tOeHktYX3LGzTVCJRxZizBH5mbQ44vYjpGnW4kzme/+DoHu4mSpl3ueoAhR3Q+qFvV76ACjtNk036Fv0rFCK7Pgm6jlmKwUrYuCsES+4dP8id4UicTk+LAFflzwMkbe4H9TJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kMYgB91W; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1717749133;
-	bh=A+DkgWFqywsQJPc6O6LIH/uEqKwNeM/Fe7AFbx+bek0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMYgB91W3a1jFCe2NJEZ1tl56GB4B9eujeR3L3NE0vF2c6Db54DPB8yrU4knUUa+q
-	 iIty6khh0Br6sjJ4OOOnpuzHuI57geuvFdxkE0mArnAw8PZZwmui5dQ9QjIzP2x6gj
-	 aXVvkozB7G2diJc21MzAmlMpD0RbCFPI6TSeOXZpYK7U9cpQv9IXmHbmrksRR4py87
-	 qEYJvHO/bHHIAeO5pYPuKTSNNGtCPFxwAurDTMZlLtiwQZpMgEYqu2wsJfVW9xYE2K
-	 CTvbX9QBmy9Fy61i7KrZHWBl8RlVBO0dFjulVrYdQtK9eZv3LfH9+aEE4IXcL02tjW
-	 Sv6T09U17Y8RQ==
-Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C27693781022;
-	Fri,  7 Jun 2024 08:32:12 +0000 (UTC)
-From: Laura Nao <laura.nao@collabora.com>
-To: rjw@rjwysocki.net
-Cc: daniel.lezcano@linaro.org,
-	laura.nao@collabora.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	lukasz.luba@arm.com,
-	rui.zhang@intel.com,
-	srinivas.pandruvada@linux.intel.com
-Subject: Re: [PATCH v3] thermal: core: Do not fail cdev registration
-Date: Fri,  7 Jun 2024 10:32:40 +0200
-Message-Id: <20240607083240.115295-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <12456961.O9o76ZdvQC@kreacher>
-References: <12456961.O9o76ZdvQC@kreacher>
+	s=arc-20240116; t=1717749891; c=relaxed/simple;
+	bh=+6hBIEM5DyxzhidynlmsTx8Qt+LbFMnw7Rl6jR3aSWM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=WKgFbVsMNRPPqnKPjvLeNJ/yaXGL+2I5WIIpgYn9Jgreg1hh0Fdb7j+v5LpIeyLJuM/3pX8o28lKlSNWUN0N1AKP3YX8kS2LDCX/kZ6B+RKisWHEQ4nvCsmR9wLM7d4dq4Fjb+Br3Mlf/S9zoGDK2TPJ6h38i3QlL1qUh0Jg+GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=kOSKNW0W; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-250bbae0ff6so821105fac.0
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Jun 2024 01:44:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1717749888; x=1718354688; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JBhYSibF+a35hxu2YgVd+MGY4jpXCfFZWPQQChFfVoE=;
+        b=kOSKNW0WuZplVQ2LUfwSIr//znyUPsshFDZmKwHs68+6AxeUYpWC0vqc6uSG9DHQxl
+         ZE8ybDZSroyDg5KXccseFZIKs4Qj/ADuaUl2MeDqNQdvPlur0O9qHTt7Wfl5DVKksjDh
+         VRjlsDYzsLqJOaRBRaGwpGrzqRLajEHNprasDVw7FGLMGYGJmiPhdH9qUQ/GPMTMLLzh
+         JFUyGIesVQE2if7FJyETRSZjnCmL0zukZKsNkI5FnaEBfodaqZFZIzYPgBsP1MSlJMkD
+         wUzoMEOX6XUqdynXVr9mVKEPZMiWxAhXUiruzWR/ZBKpGn/VJjVWfrW7+6lMnZD+5ase
+         zmkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717749888; x=1718354688;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JBhYSibF+a35hxu2YgVd+MGY4jpXCfFZWPQQChFfVoE=;
+        b=f3e+S8B7YYusIcesymNoUKyH88pbPnr/L4SW4GjoZXBfdXIJEtNx+j/B8vZDYSSnIV
+         lJNOAEMnE4mBpSNNJ7m/0jlq6d+87jNpl51Si1wdIE8o/jSrRQ8AdwoZVZg8C1JXVwAK
+         dHFm0mSPGNNvPxMqXFH74tEFUPUTHMaKp9ED0YYjmzngSwhJk0WGaNJLXgKzsBIv5atv
+         8gbODMbhNEuTHHa9yGIbN0AaDqvhN04XzhoN9eyKNAclkpq2D+CGM8SqF1PRToqDSBLW
+         n7h0zv44h5BAh6zLl8UkWmfBKrniMJ0W/x3Xg5d/Pon7mbU0UW98oJqnz22TLb1pboAw
+         zomg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAprrehepRLCV5J39td2aOIsPmH8+Ux+YDP0H2S5Wygzqbs3Z0KVdPrEKe4NkWVpt0d2hp2Aq/08W6vnbIGoEOhVzgkKVJNBA6pQ==
+X-Gm-Message-State: AOJu0Yw7D3Sns4rRMJL5+zZjBkl3EtcyY0vTuR+dLrFRMGfZZt1I0ot3
+	KqkC5WJQSAL7wjLgEvpIguA8zYQPe6DpeWdZZRIblMr6xOS/pRmy+B7xfUtPNVLHHR18ljsfuYl
+	iuJVaCZMl7VNKthllhnNI/3XhEm72g14iCYOVBA==
+X-Google-Smtp-Source: AGHT+IH4QZY+ZKLUXRGchLj2W3aOWavVA61yDoBIwSD9qlh7Awpft0cnk5o+nzwjFobUUAl+CGuWVVoAbw5HqZ8ZVjs=
+X-Received: by 2002:a05:6870:1690:b0:24f:c2c8:4d3e with SMTP id
+ 586e51a60fabf-254402bc340mr2461247fac.3.1717749887788; Fri, 07 Jun 2024
+ 01:44:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240523111322.19243-1-cuiyunhui@bytedance.com>
+ <20240523111322.19243-3-cuiyunhui@bytedance.com> <CAEEQ3wnE+8FXXf76zapqNnC5vruoR9C-y0qjjFw47cHYP57MmQ@mail.gmail.com>
+In-Reply-To: <CAEEQ3wnE+8FXXf76zapqNnC5vruoR9C-y0qjjFw47cHYP57MmQ@mail.gmail.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Fri, 7 Jun 2024 16:44:36 +0800
+Message-ID: <CAEEQ3w==wueTSDvEtJe+t7jamH2ERxta4uPLUFVwX2ueRLJ3Bw@mail.gmail.com>
+Subject: Re: [PATCH RESEND v5 3/3] RISC-V: Select ACPI PPTT drivers
+To: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	sunilvl@ventanamicro.com, aou@eecs.berkeley.edu, 
+	linux-riscv@lists.infradead.org, bhelgaas@google.com, james.morse@arm.com, 
+	jeremy.linton@arm.com, Jonathan.Cameron@huawei.com, pierre.gondois@arm.com, 
+	sudeep.holla@arm.com, tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/6/24 20:14, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH v3] thermal: core: Do not fail cdev registration
-> because of invalid initial state
-> 
-> It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass
-> cooling
-> device state to thermal_debug_cdev_add()") causes the ACPI fan driver
-> to fail probing on some systems which turns out to be due to the _FST
-> control method returning an invalid value until _FSL is first
-> evaluated
-> for the given fan.  If this happens, the .get_cur_state() cooling
-> device
-> callback returns an error and __thermal_cooling_device_register()
-> fails
-> as uses that callback after commit 31a0fa0019b0.
-> 
-> Arguably, _FST should not return an invalid value even if it is
-> evaluated before _FSL, so this may be regarded as a platform firmware
-> issue, but at the same time it is not a good enough reason for failing
-> the cooling device registration where the initial cooling device state
-> is only needed to initialize a thermal debug facility.
-> 
-> Accordingly, modify __thermal_cooling_device_register() to avoid
-> calling thermal_debug_cdev_add() instead of returning an error if the
-> initial .get_cur_state() callback invocation fails.
-> 
-> Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to
-> thermal_debug_cdev_add()")
-> Closes:
-> https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
-> Reported-by: Laura Nao <laura.nao@collabora.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> ---
+Hi Sunilvl,
 
-Tested-by: Laura Nao <laura.nao@collabora.com>
+
+On Mon, May 27, 2024 at 8:51=E2=80=AFPM yunhui cui <cuiyunhui@bytedance.com=
+> wrote:
+>
+> Hi Palmer,
+>
+> Gentle ping ...
+>
+> On Thu, May 23, 2024 at 7:13=E2=80=AFPM Yunhui Cui <cuiyunhui@bytedance.c=
+om> wrote:
+> >
+> > After adding ACPI support to populate_cache_leaves(), RISC-V can build
+> > cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
+> > configuration.
+> >
+> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+> > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> > ---
+> >  arch/riscv/Kconfig | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > index f961449ca077..a9ebecd72052 100644
+> > --- a/arch/riscv/Kconfig
+> > +++ b/arch/riscv/Kconfig
+> > @@ -14,6 +14,7 @@ config RISCV
+> >         def_bool y
+> >         select ACPI_GENERIC_GSI if ACPI
+> >         select ACPI_REDUCED_HARDWARE_ONLY if ACPI
+> > +       select ACPI_PPTT if ACPI
+> >         select ARCH_DMA_DEFAULT_COHERENT
+> >         select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRAT=
+ION
+> >         select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+> > --
+> > 2.20.1
+> >
+>
+> Thanks,
+> Yunhui
+
+Could you please review or ack this patchset again? Palmer did not respond.
+
+Link:
+https://lore.kernel.org/linux-riscv/20240523111322.19243-3-cuiyunhui@byteda=
+nce.com/T/
 
 Thanks,
-
-Laura
+Yunhui
 
