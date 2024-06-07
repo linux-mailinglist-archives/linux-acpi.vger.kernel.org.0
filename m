@@ -1,83 +1,88 @@
-Return-Path: <linux-acpi+bounces-6263-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6264-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4608FFF52
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 11:24:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91DE90016A
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 13:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04B21F225B2
-	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 09:24:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41FF1C219C3
+	for <lists+linux-acpi@lfdr.de>; Fri,  7 Jun 2024 11:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947EF15B96F;
-	Fri,  7 Jun 2024 09:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F9D15DBC3;
+	Fri,  7 Jun 2024 11:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dyY7035T"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ifdgd5ra"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD0813A40F;
-	Fri,  7 Jun 2024 09:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0316715CD65
+	for <linux-acpi@vger.kernel.org>; Fri,  7 Jun 2024 11:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717752285; cv=none; b=LuKnk74zOLolkf5QqMlogHMuk44FueOiAD43zywotR+qDl84fdPnT3rHpCN8nJ/vplD0zvpixydPPSmbPob6ibSsw67yf99byyM0BklwyBCcZKG5GKLRoCckNxLUIOoLOvapzDV+1vWyIs7QjLkVF8x+epLz8YDUvizSulZNTMg=
+	t=1717758097; cv=none; b=lninHiMIRtROgyd5TpvzDUvxm7vDoh0Z+sFCw4NwPHNNGV5OJnE2YqgbLf7G6lMcuizaDKuRnAAi0e2jCPou8Q9jTtVrxxCZzpbtH7g3NABXJbWg/OgA47IPhS4d55nDG1MB8Lwq5YLBiXaahPKw5w68S/iNFb2r8NA2jFyj7Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717752285; c=relaxed/simple;
-	bh=/91veDI2nMtqBub59WBSpwzgigLamN1h/2wkE6HNjH8=;
+	s=arc-20240116; t=1717758097; c=relaxed/simple;
+	bh=N7sOJlTNoiRhSTfc25d+b3OOEAnwL2reEju+8B7R8vA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aF+aiU9EIFAHGJKYhELiClbzhYZ1IBCNs/wgb34SFHpCj9OxqFcGzdJYzl+fpyJmxDXadH8EZxrwDOKPbu8ZhIeGVcftTxZ7p+WVeTNWS0Ar0uGj0ho2TNNskImGXU0vXTfrw15j64FGW7msd2gTXdrQMm7PGIGNISsE5JThvHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dyY7035T; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717752284; x=1749288284;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=/91veDI2nMtqBub59WBSpwzgigLamN1h/2wkE6HNjH8=;
-  b=dyY7035TH9RukSu+QNssgAqe28NDZbwf2EHzlaGy1kV8/UrYor2OHukr
-   K99Pc/L599CTGWwIDU0seXvtIlC93Dy2cuSUp7+TS0TBoC9r4psa1tdHt
-   TMRE1epkukyO6j/yqbb+q3xwHrcyWPEDcQzRPuMwa3tBIu+XpHij3FhcX
-   HaAnITt87fX+39C2jxuLGqq4HhZ2YeSG/DpqZ3yBH9Ut1rqOdup2ddpQZ
-   ASObWm8UuRK8u8mCY09ZbD+xm3c/8AWuSYyq2RFoKyN6dyMBhclhSQZiq
-   j/vkcIDnC1ET21zBYKgyUObM9t4T8yCa4rPVXPDPdUbCV4eyuPJkxC2aI
-   A==;
-X-CSE-ConnectionGUID: BYcNsk5bRi6uUP9DrjTA7Q==
-X-CSE-MsgGUID: zJOIYdV2RbaVLE3l78r/Lg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25038857"
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
-   d="scan'208";a="25038857"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 02:24:43 -0700
-X-CSE-ConnectionGUID: d2+XNwo6QAWxHv4YWX/UKQ==
-X-CSE-MsgGUID: XqwGMeuFTPeiu12b9mjWeQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; 
-   d="scan'208";a="38190513"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 02:24:40 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with ESMTP id 875AF12027E;
-	Fri,  7 Jun 2024 12:24:37 +0300 (EEST)
-Date: Fri, 7 Jun 2024 09:24:37 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>, Genes Lists <lists@sapience.com>,
-	linux-kernel@vger.kernel.org, mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl, laurent.pinchart@ideasonboard.com,
-	wentong.wu@intel.com, linux-media@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/1] ACPI: scan: Ignore Dell XPS 9320 camera graph port
- nodes
-Message-ID: <ZmLR1XX8ctUladp-@kekkonen.localdomain>
-References: <988e48090982c89ce0c906954832fdfb09a1ce34.camel@sapience.com>
- <20240528084413.2624435-1-sakari.ailus@linux.intel.com>
- <a05df025-a0be-49cd-84a9-7d7fb2eeb33e@redhat.com>
- <e9062095-b312-44df-a9e3-0b09f3ec9eff@redhat.com>
- <CAJZ5v0i1NxGHMKskP7W+hAusjt=5jYYWTF2vgJPR0gnrNTgFaw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nf9ww+TlkFTNJYFjbCa9A5lBGf34TnH6L5CH+dNupWv1pzRAQVVzbxBxcp212vo8L5HyQMfiKrX+q8DdO/GYC89vaE+FIcBVnxpz9YCgXyPE6xtbWGONW81chutCB+6aTEDBMSh0RBryEhtC77jcsCb7SnLly1nDBJ71Luhokhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ifdgd5ra; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70244776719so1585950b3a.2
+        for <linux-acpi@vger.kernel.org>; Fri, 07 Jun 2024 04:01:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1717758095; x=1718362895; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DI5Qf78GNH3tyySodkUT6XiaCdZX8TQYwnH9rITzZzQ=;
+        b=ifdgd5raf7Y912BX468ZFTA9UgFhullNAB7QxTNGY82fvV5yyk7kYIYuJencvdEWVg
+         bpSVt3dgbZbmPZVSIwZEdQKl9+Jl9ofAvh6YWV1AiPwwKLd6OE4FOgM6D/tpXLYEBG/i
+         urGUcUckN0q1mDnxUBd30osMv6FQYyLkF8+oG/gKBT8ckTnUCj5HeqtcZGDd9x3+9ecR
+         TbPrC2TWvBKT6DVQr6vrQIg68m8ya2nyLpIxnN4ruGUexu+SjXHRsmrLZslhkkIlx/6P
+         /ixXMUVnQr30gA1txCwfcOYxV9Y4LxT6EqYKr0VzXF+xZIotZWFmWa7d9ZZCDCEachb1
+         OArQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717758095; x=1718362895;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DI5Qf78GNH3tyySodkUT6XiaCdZX8TQYwnH9rITzZzQ=;
+        b=kg8HhYCxgyG5TjoHvyC+A1R6x4rr45yA9naaUl1Ht1UPH04wD3KNR3mkXr+OGGS0OW
+         FNvWA1CwTdEgkvYXiuOQYiEK7v92Y24plv2b5vCukZ9QDvAC2faT4lR6krxQHZy1qenZ
+         5gDIspsLIQ8Jz+/1mITea7Ktut1kFSxWku9hBG5zu394KZawXDSkkriXy9qOsLkmcZYY
+         Guwjh4Pmk8vzVvk0pQ+n5jaRBjqa7GlZRWNGsws9dErYr+xyfKFijXCtFURrWjYJt4CD
+         Fr4Xn+vggFIul32EVzWBuLm8lMjW03O4QGi94aMYT4OmnjLFXf2pFNLo9y/XxVEwPO8G
+         Dnpw==
+X-Forwarded-Encrypted: i=1; AJvYcCWW1LO5a9tcZl7Zhi7k6jY4JD0BzgV/qcsTl0BpLpjXGHNGI47xTpxgfGUjRmFi3EWRGwH+0VDZPoOHlEflTcYwIL5HTtysiAUfhA==
+X-Gm-Message-State: AOJu0Yx8EiWZpSpQ1GnBBmpm8AgqXBbSZ64hZjN7WvhnBHom8SCoIsDR
+	BLSUNdOyBe4orPPJHmc2qRWud3X6s7s4pAlxbs/nrWAP1+Z17VPdK1wTgDVcvzY=
+X-Google-Smtp-Source: AGHT+IEb2Nma4FnB/zziymAMKluh4Fz3EE1abFeJCDOUaSefKlw97fNpT7MhuwmeNDFnkSZNMABPCw==
+X-Received: by 2002:a05:6a00:982:b0:6f0:f54a:4e7a with SMTP id d2e1a72fcca58-7040c61952bmr2257589b3a.2.1717758095122;
+        Fri, 07 Jun 2024 04:01:35 -0700 (PDT)
+Received: from sunil-laptop ([106.51.187.237])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-703fd4951ffsm2371289b3a.131.2024.06.07.04.01.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 04:01:34 -0700 (PDT)
+Date: Fri, 7 Jun 2024 16:31:25 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: yunhui cui <cuiyunhui@bytedance.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org, bhelgaas@google.com,
+	james.morse@arm.com, jeremy.linton@arm.com,
+	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com,
+	sudeep.holla@arm.com, tiantao6@huawei.com
+Subject: Re: [PATCH RESEND v5 3/3] RISC-V: Select ACPI PPTT drivers
+Message-ID: <ZmLohXMgGrIvL7s7@sunil-laptop>
+References: <20240523111322.19243-1-cuiyunhui@bytedance.com>
+ <20240523111322.19243-3-cuiyunhui@bytedance.com>
+ <CAEEQ3wnE+8FXXf76zapqNnC5vruoR9C-y0qjjFw47cHYP57MmQ@mail.gmail.com>
+ <CAEEQ3w==wueTSDvEtJe+t7jamH2ERxta4uPLUFVwX2ueRLJ3Bw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -87,60 +92,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0i1NxGHMKskP7W+hAusjt=5jYYWTF2vgJPR0gnrNTgFaw@mail.gmail.com>
+In-Reply-To: <CAEEQ3w==wueTSDvEtJe+t7jamH2ERxta4uPLUFVwX2ueRLJ3Bw@mail.gmail.com>
 
-Hi Rafael,
+Hi Yunhui,
 
-On Fri, Jun 07, 2024 at 09:55:44AM +0200, Rafael J. Wysocki wrote:
-> On Thu, Jun 6, 2024 at 8:12 PM Hans de Goede <hdegoede@redhat.com> wrote:
-> >
-> > Hi,
-> >
-> > +To: Rafael since this was Cc-ed to linux-acpi but never send
-> > to Rafael directly.
-> >
-> > Rafael this fixes a crash in 6.10-rc1 for some users and is necessary
-> > to make the cameras work on the Dell XPS 13 plus 9320 .
-> >
-> > On 5/28/24 7:09 PM, Hans de Goede wrote:
-> > > Hi Sakari,
-> > >
-> > > On 5/28/24 10:44 AM, Sakari Ailus wrote:
-> > >> Ignore camera related graph port nodes on Dell XPS 9320. They data in BIOS
-> > >> is buggy, just like it is for Dell XPS 9315. The corresponding software
-> > >> nodes are created by the ipu-bridge.
-> > >>
-> > >> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> > >> ---
-> > >> Hi,
-> > >>
-> > >> Could you test this and see whether it fixes the warning?
-> > >>
-> > >> The camera might work with this change, too.
-> > >
-> > > Thank you I just received a Dell XPS 13 plus 9320 myself to use
-> > > for VSC testing and I can confirm that with this patch 6.10.0-rc1
-> > > works, including giving a picture with the libcamera software ISP +
-> > > 3 small libcamera patches.
-> >
-> > I forgot to add:
-> >
-> > Tested-by: Hans de Goede <hdegoede@redhat.com>
-> > Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+On Fri, Jun 07, 2024 at 04:44:36PM +0800, yunhui cui wrote:
+> Hi Sunilvl,
 > 
-> Applied as 6.10-rc material.
-
-Thanks!
-
 > 
-> I've also added Reported-by and Closes tags to this, but I'm not sure
-> which commit exactly is fixed by it, so the Fixes tag is missing.
+> On Mon, May 27, 2024 at 8:51 PM yunhui cui <cuiyunhui@bytedance.com> wrote:
+> >
+> > Hi Palmer,
+> >
+> > Gentle ping ...
+> >
+> > On Thu, May 23, 2024 at 7:13 PM Yunhui Cui <cuiyunhui@bytedance.com> wrote:
+> > >
+> > > After adding ACPI support to populate_cache_leaves(), RISC-V can build
+> > > cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
+> > > configuration.
+> > >
+> > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > ---
+> > >  arch/riscv/Kconfig | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > > index f961449ca077..a9ebecd72052 100644
+> > > --- a/arch/riscv/Kconfig
+> > > +++ b/arch/riscv/Kconfig
+> > > @@ -14,6 +14,7 @@ config RISCV
+> > >         def_bool y
+> > >         select ACPI_GENERIC_GSI if ACPI
+> > >         select ACPI_REDUCED_HARDWARE_ONLY if ACPI
+> > > +       select ACPI_PPTT if ACPI
+NIT: I would add this prior to ACPI_REDUCED_HARDWARE_ONLY.
 
-That's fine. We don't know which systems have faulty camera graph in DSDT
-so these are added as they're found.
+> > >         select ARCH_DMA_DEFAULT_COHERENT
+> > >         select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+> > >         select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+> > > --
+> > > 2.20.1
+> > >
+> >
+> > Thanks,
+> > Yunhui
+> 
+> Could you please review or ack this patchset again? Palmer did not respond.
+> 
+> Link:
+> https://lore.kernel.org/linux-riscv/20240523111322.19243-3-cuiyunhui@bytedance.com/T/
+> 
+My bad, I was under the impression that I had Acked already. The series
+looks good to me except the nit above.
 
--- 
-Regards,
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 
-Sakari Ailus
+Thanks,
+Sunil
 
