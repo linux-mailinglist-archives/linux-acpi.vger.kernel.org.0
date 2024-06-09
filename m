@@ -1,160 +1,147 @@
-Return-Path: <linux-acpi+bounces-6283-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6284-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7774C9015E3
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 13:13:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DD690183A
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 23:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20C231F21235
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 11:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3572F1F2122B
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 21:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577D12C190;
-	Sun,  9 Jun 2024 11:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C7C44C76;
+	Sun,  9 Jun 2024 21:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="dPVBYW5Z"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Liic4alC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A787B282E5;
-	Sun,  9 Jun 2024 11:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B4014265;
+	Sun,  9 Jun 2024 21:09:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717931619; cv=none; b=EVHJICLiMWdaeNe1GujqgbT3VnZPdK7VBW4Zox8S0edekALaujahJo2x9qTV0rmR7M1IkjFNJnhjTEsAYNf2PjQqLedZ9/In9MqLGT0HAsWKcE33ZyD6oq0YmEVxVFHjYaz2BAoBLe7O2qThII9mT29pa27JIUcox4TajIL9ix0=
+	t=1717967359; cv=none; b=BWvvmXztFW/t1IjjeOjJF3JWCtKqL8A+6lvy0Cf+XZtZZ02vqx1BGfgZzOeRhIn54cy/Gapq3dOA8BfZHgSUb5wv3ADSj+u7shNo6Y9cieN45FO8NsiDZ+brKIyYeYDMfDkSqudvpSohSM6diNWSnRwRiotdXrrdQnrqA/lTgMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717931619; c=relaxed/simple;
-	bh=BV+oswdjo+GnBuL0pDMh4r7BZxfSayoPjlLPADR1Rl8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NDlDa3nzOd6zfv0wC1aBUGB26IXWpr/3y9Hpgn3+DgXa1rQaGlt881vzpGu5HV0Y0PCAdwIO2XHNEK/1bIvsp7nDUOLshZP2KE3i4Uivq0KL5TBzkSV/rMmUQDjtA/qpBsBaMUY2opnYVpiJ2c6OK8TD7OB2vdniaOOpoXY1aTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=dPVBYW5Z; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1717931614;
-	bh=BV+oswdjo+GnBuL0pDMh4r7BZxfSayoPjlLPADR1Rl8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=dPVBYW5ZJEgEJYulhTsw4SU3sH9EC20PyGF4lecg/RyM+L1hPU9i87QUeJkPbkjUC
-	 CSYriBCNy1GWhBX1Qc4ghDQoD6paOaDeOaOLAGyvVgjSSTklk234ROX2qLmJXTQgDB
-	 6n+gKknHX8b+XyNQzCvM4mUIC0njr8eIJBvH0+bw=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 09 Jun 2024 13:13:28 +0200
-Subject: [PATCH] ACPI: SBS: manage alarm sysfs attribute through psy core
+	s=arc-20240116; t=1717967359; c=relaxed/simple;
+	bh=/E1wD/ufLPJhzP//qxEYP8D8mnf0t+I6DWJYveHX944=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=j5QsFitCt34omxbgP/tV5hOnng6jI+FLyHt0DSJx/PeNxBZpcfAluMTyWcDI1BmU0FwxkLqwmv7q3vyQuCNvofIgLhzMRjOcaUDRGFYqteFzfWIMygKPH4gawb18zPEglUdQIL5bv2vJqPu2gHYgUIXA5DQq1zLDOZwt82vMg6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Liic4alC; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1717967351; x=1718572151; i=w_armin@gmx.de;
+	bh=9SIub8og3/9ldon22F2Wdln9k3m6OqGkRm+nPBuWpm8=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Liic4alCoVq2cf/AWoqLhRhxYzSpLu1o3rNB6coKYSCSGIhXBOfHMd+bSSRpq/MS
+	 2wJBdZx+KXFSkwUDGMCnVhnkrhrTnL6tocZoY0120E2CW8Pnx52Go8al975MKm1I2
+	 v+sI2gJnYzdapyCGbqhvr4yuS0FaUrjna40LiGg6Fzj3uR2FjmmH+KShUyRwYz9aB
+	 82kLDWuQiuFfcVNj975mMi+q27SqxsK1eI6rdJhmzg5NbQ2y4CPnLSenHK9kf1ZnM
+	 T+N6tnliMWsWqH6kgGGf3av2O/vOp1j0z1PCi/aZ7zfwpdqrs4VHRxeRr/nEl6XPa
+	 OgNVtQFb3IftwTmQmQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1N1wlv-1sRv3P3ONF-00wHn8; Sun, 09 Jun 2024 23:09:10 +0200
+From: Armin Wolf <W_Armin@gmx.de>
+To: rafael@kernel.org,
+	lenb@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ACPI: acpi_pad: Still evaluate _OST when _PUR evaluation fails
+Date: Sun,  9 Jun 2024 23:09:08 +0200
+Message-Id: <20240609210908.4470-1-W_Armin@gmx.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240609-acpi-sbs-sysfs-group-v1-1-7f0bf95523e7@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAFeOZWYC/x3MTQ5AMBBA4avIrE0y6ie4ilhUTZkNTSeEiLtrL
- L/Few8oR2GFPnsg8ikq+5ZQ5Bm41W4Lo8zJYMhU1FCH1gVBnRT1Vq+4xP0IWJMtaXa1b42FlIb
- IXq5/O4zv+wE8CvH2ZgAAAA==
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717931613; l=2884;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=BV+oswdjo+GnBuL0pDMh4r7BZxfSayoPjlLPADR1Rl8=;
- b=skQzhFl1dCsplgUOI3yH040AlRupnm77EfNVRU198/eApMnR/dMPm9OpxDzMtOsOPTt9DKxdH
- 0FlB1WswbAkBpHsoFJESNL7UyCavbFmj36L6ATbppZIyAa4t2xUjA57
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:LMfD5zp++gZ8k6LdDg44V7LGkBQ5tsQKGQF2fyucr13WNqcy9Gy
+ OC/KYQSz3VuQa8TaD7MGKjqxIgxh9Z8OB55mymOiMPutaZFNs44PlBEQghdv1LqCJ0B+5+T
+ K/vRRIv6SyvYLZzm4vJKuRaiLPM8zWIxmIFwDP4PQU9GqrYxD+Eh378Es3vvdzJTBeqMXnI
+ PIefLQ58DnfqeECawck6A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:0Wr9t1P7ckI=;NM4vT9gB8wBaHD0Z2EdjLhRLG0H
+ 84tqMLX9FAWEOtSY8WzKKfvzXh3wNfipzdsQ4bknWj+zJxLhxO7MpeK+6gKOcrz2uHWV4a0h3
+ RwdNEd+3n0wPL+bRHTol4JfqfGvxkL4c7kCUJA+PojOpRs3A7hjreEY9vUixU6qGn2nkZVdjU
+ d1WydVH3jQcr9gabYMCWr4rsCCED40ruxqW8Nap7ujF+O5tjZkB2kK7MbEHBaTsl+3H0G+6Jo
+ NFTUKBumjzQ+gZcbtZCupRmH+dFzXiCkJCDQBEfQvgXH5grF5Z9geOP+CM2qVQiwqWhBs49LR
+ ZJnnfeUncfuwPkVxblfLZ+uJ9/EEFBAi9AlQ2GxPi68fISajJEkzdZUDNoGBwmuoHRyd9BLCL
+ DT2PIl1QUEqnO5i2eHp14n6vs5c9s9gsOlyEt7Yh72mAWl2yrBMUCEMq2nGCdg1JOAezxG0Ug
+ lJ+Zz8/7jhm3WouSj9njUS1Twj6gqYg7JttA/jBol14N29LVo13yTqSdv+UfU/v4Nx4bEVED8
+ d6TuURXpTO54PoUTHc0pCndKV4qFZ1SwLHuFhWlbVc0gc+gqb/AmBxZcSD89J7d9cA32ynMxA
+ 8N2UUp1WLJQH2ebpmDeZPmfuoANzIs1OUGh0zmaLpFzY+FP6hOLwOTFfHOUrdW8a7w+lN10b1
+ 1HuzlDev/XMIN+MWCUzfoUYrrgjxQ2GJS3N1GFrrmkz5ooOWOWjMaYMaCojOHB9UAn7FSMJUN
+ 7fmUDAeWfGD2/RdIEVpESMW6fvGvS8/wS/b4tWSw+/5Zgz3G0NjAcpxScYb0OY9FASV4m972k
+ sBUSWtUEJQlosZvrPfUIHmIXCJ/WotxJ3gXoVdJgxlpUA=
 
-Let the power supply core register the attribute.
-This ensures that the attribute is created before the device is
-announced to userspace, avoiding a race condition.
+The ACPI specification says that if no action was performed when
+processing the _PUR object, _OST should still be evaluated, albeit
+with a different status code.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
-Only compile-tested.
+Evaluate _OST even when evaluating _PUR fails, to signal the firmware
+that no action was performed.
 
-This is the SBS equivalent of
-"ACPI: battery: create alarm sysfs attribute atomically" [0]
+Compile-tested only.
 
-[0] https://lore.kernel.org/lkml/20240609-acpi-battery-cleanup-v1-5-344517bdca73@weisss
----
- drivers/acpi/sbs.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+=2D--
+ drivers/acpi/acpi_pad.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index dc8164b182dc..442c5905d43b 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -77,7 +77,6 @@ struct acpi_battery {
- 	u16 spec;
- 	u8 id;
- 	u8 present:1;
--	u8 have_sysfs_alarm:1;
- };
- 
- #define to_acpi_battery(x) power_supply_get_drvdata(x)
-@@ -462,12 +461,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
- 	return count;
- }
- 
--static const struct device_attribute alarm_attr = {
-+static struct device_attribute alarm_attr = {
- 	.attr = {.name = "alarm", .mode = 0644},
- 	.show = acpi_battery_alarm_show,
- 	.store = acpi_battery_alarm_store,
- };
- 
-+static struct attribute *acpi_battery_attrs[] = {
-+	&alarm_attr.attr,
-+	NULL
-+};
-+ATTRIBUTE_GROUPS(acpi_battery);
+diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+index bd1ad07f0290..350d3a892889 100644
+=2D-- a/drivers/acpi/acpi_pad.c
++++ b/drivers/acpi/acpi_pad.c
+@@ -25,6 +25,10 @@
+ #define ACPI_PROCESSOR_AGGREGATOR_CLASS	"acpi_pad"
+ #define ACPI_PROCESSOR_AGGREGATOR_DEVICE_NAME "Processor Aggregator"
+ #define ACPI_PROCESSOR_AGGREGATOR_NOTIFY 0x80
 +
- /* --------------------------------------------------------------------------
-                                  Driver Interface
-    -------------------------------------------------------------------------- */
-@@ -518,7 +523,10 @@ static int acpi_battery_read(struct acpi_battery *battery)
- static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
--	struct power_supply_config psy_cfg = { .drv_data = battery, };
-+	struct power_supply_config psy_cfg = {
-+		.drv_data = battery,
-+		.attr_grp = acpi_battery_groups,
-+	};
- 	int result;
- 
- 	battery->id = id;
-@@ -548,10 +556,6 @@ static int acpi_battery_add(struct acpi_sbs *sbs, int id)
- 		goto end;
++#define ACPI_PROCESSOR_AGGREGATOR_STATUS_SUCCESS	0
++#define ACPI_PROCESSOR_AGGREGATOR_STATUS_NO_ACTION	1
++
+ static DEFINE_MUTEX(isolated_cpus_lock);
+ static DEFINE_MUTEX(round_robin_lock);
+
+@@ -382,16 +386,23 @@ static void acpi_pad_handle_notify(acpi_handle handl=
+e)
+ 		.length =3D 4,
+ 		.pointer =3D (void *)&idle_cpus,
+ 	};
++	u32 status;
+
+ 	mutex_lock(&isolated_cpus_lock);
+ 	num_cpus =3D acpi_pad_pur(handle);
+ 	if (num_cpus < 0) {
+-		mutex_unlock(&isolated_cpus_lock);
+-		return;
++		/* The ACPI specification says that if no action was performed when
++		 * processing the _PUR object, _OST should still be evaluated, albeit
++		 * with a different status code.
++		 */
++		status =3D ACPI_PROCESSOR_AGGREGATOR_STATUS_NO_ACTION;
++	} else {
++		status =3D ACPI_PROCESSOR_AGGREGATOR_STATUS_SUCCESS;
++		acpi_pad_idle_cpus(num_cpus);
  	}
- 
--	result = device_create_file(&battery->bat->dev, &alarm_attr);
--	if (result)
--		goto end;
--	battery->have_sysfs_alarm = 1;
-       end:
- 	pr_info("%s [%s]: Battery Slot [%s] (battery %s)\n",
- 	       ACPI_SBS_DEVICE_NAME, acpi_device_bid(sbs->device),
-@@ -563,11 +567,8 @@ static void acpi_battery_remove(struct acpi_sbs *sbs, int id)
- {
- 	struct acpi_battery *battery = &sbs->battery[id];
- 
--	if (battery->bat) {
--		if (battery->have_sysfs_alarm)
--			device_remove_file(&battery->bat->dev, &alarm_attr);
-+	if (battery->bat)
- 		power_supply_unregister(battery->bat);
--	}
+-	acpi_pad_idle_cpus(num_cpus);
++
+ 	idle_cpus =3D acpi_pad_idle_cpus_num();
+-	acpi_evaluate_ost(handle, ACPI_PROCESSOR_AGGREGATOR_NOTIFY, 0, &param);
++	acpi_evaluate_ost(handle, ACPI_PROCESSOR_AGGREGATOR_NOTIFY, status, &par=
+am);
+ 	mutex_unlock(&isolated_cpus_lock);
  }
- 
- static int acpi_charger_add(struct acpi_sbs *sbs)
 
----
-base-commit: 771ed66105de9106a6f3e4311e06451881cdac5e
-change-id: 20240609-acpi-sbs-sysfs-group-50a30dc5f82a
-
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+=2D-
+2.39.2
 
 
