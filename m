@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-6281-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6282-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87AC9014CF
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 09:27:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DA59014D3
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 09:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 822FF1C21111
-	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 07:27:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C68F8B2178A
+	for <lists+linux-acpi@lfdr.de>; Sun,  9 Jun 2024 07:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D6D1CD3C;
-	Sun,  9 Jun 2024 07:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43E12C87C;
+	Sun,  9 Jun 2024 07:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="o2vTTYa/"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="eIfy82LF"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230591B28D;
-	Sun,  9 Jun 2024 07:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E22219FD;
+	Sun,  9 Jun 2024 07:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717918042; cv=none; b=DTNbFbp7knIqMLeWNtnyB9FMMIg+VJrgtiHWO8vzIHJgZLaUvEmn1eH3UOeOKaZm4ZAvK0qgNJnqHShhbW1EIfJREdafRBjCIG90Zo6E++9jbicp29CeJEDorlvhPgVWQlUf5CgoE/QrYuoJp0HOG3ELdTm/Qaz5tzmkLVa7Gso=
+	t=1717918044; cv=none; b=fqci4wl9CTXgFqz9pdryBH0V1KcQLG9YukJoVZYeWT2t5LU0C+5n9Fn6MdzDbNdJSaOQ8x3KbOPNQs9BjsLi+JmQh6Esz+zN28zL/78+vzP8hS7Y7jxcLNboKMSeL5xjYrqaH4+IGQim12ZGAZIL9T4CEhRZIUG5hDTYBLWwSZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717918042; c=relaxed/simple;
-	bh=n1WQcr0Jjs8K54pWJ570AATvW6C/bMm/V7v5t/VuBkM=;
+	s=arc-20240116; t=1717918044; c=relaxed/simple;
+	bh=crKUY1rY4xCPn07shXAjd8yyC8WWLChy41PfeTmkTLE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EdxS4mcnLsVrjLEOsf/FVj6BkmhkbOpS1MUgj/sCw4xF+ca9jCySkHtvf6AbsqUxJc6xSZDQ/3Rwww2GQWuozKO7n/aSRTqiWCnTflvRGTlPwElzAjBCg+wBkyz5tyqGRc4oHXdyMvKumDlu0zqERM6OnwSyOqJRnf1dhvQddJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=o2vTTYa/; arc=none smtp.client-ip=159.69.126.157
+	 In-Reply-To:To:Cc; b=oer0+En97CiFwCbw6NO0S+w4/ioMnXr3QJdyqZa0JEM1YvejVZrFg1NKRoRKbhgPbQfMYJwpLw9/ic6LHpJ223zuJEaE0d0v38sLLWB2Q5yOF+ftLtTCQ6TkYjsGcXL/mpk/h0MXvwDfnP774liUgEvc6mAoPvbhTQ3CDfWPgcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=eIfy82LF; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1717918035;
-	bh=n1WQcr0Jjs8K54pWJ570AATvW6C/bMm/V7v5t/VuBkM=;
+	s=mail; t=1717918036;
+	bh=crKUY1rY4xCPn07shXAjd8yyC8WWLChy41PfeTmkTLE=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=o2vTTYa/52GfwDIH50bo5k56LhILhUQZSaJcau3u0IwZMqnCNwzTQFQILPKMokNS0
-	 tz0ZOWTYzz3V5w2t4Pv7yxOIoJFmQOpZLjflPgserUW3sGgA2vNXCPBqnvU9tvBrsL
-	 aMvH+HUlkuA85AgpD0IqSPjNBJ1OAB+cvUn7wY7o=
+	b=eIfy82LF79CnPxY5a4+4mXzbxRUaYo9O4Rolis+0ggjr4mKPMj9hYi/ie0bDyqIPF
+	 C4/O1836cwGCmWXnOKa4ZjFCUBRLHWczfjX5L1s3SxQDUNm0ayrpD3OUX3uUeNThz1
+	 JoTEq98oM59wSoDzrK/O/Q6lUCc5mXVsu4ZAea8E=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 09 Jun 2024 09:27:15 +0200
-Subject: [PATCH 4/5] ACPI: battery: use sysfs_emit over sprintf
+Date: Sun, 09 Jun 2024 09:27:16 +0200
+Subject: [PATCH 5/5] ACPI: battery: create alarm sysfs attribute atomically
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,42 +49,83 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240609-acpi-battery-cleanup-v1-4-344517bdca73@weissschuh.net>
+Message-Id: <20240609-acpi-battery-cleanup-v1-5-344517bdca73@weissschuh.net>
 References: <20240609-acpi-battery-cleanup-v1-0-344517bdca73@weissschuh.net>
 In-Reply-To: <20240609-acpi-battery-cleanup-v1-0-344517bdca73@weissschuh.net>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
 Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717918035; l=770;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717918035; l=2012;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=n1WQcr0Jjs8K54pWJ570AATvW6C/bMm/V7v5t/VuBkM=;
- b=X2WU9aZZtK2pcr/wgLdCSvmY+kM+VWNyNxvaxbW1JmfNI+WIBFdfdTXNF6HALMSrEv2Oqft3J
- SGIrh7Z6uVKCoHHhTQPP92w45mr+gvZFXv2ewccYpeN04fbA0iyPHOh
+ bh=crKUY1rY4xCPn07shXAjd8yyC8WWLChy41PfeTmkTLE=;
+ b=fdI38Y5I3pGAfU1AoOjow1ssMuRGbzcNtkhpOEGqmmuWM9N3FwfjdQW62IZuTY09byfjbm44f
+ DQiAHhiP1s0BZYLt1BVHULXa8hByYQ1HePR7ctc9dZQq4ZmxmfTANYt
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-sysfs_emit validates assumptions made by sysfs and is the correct
-mechanism to format data for sysfs.
+Let the power supply core register the attribute.
+This ensures that the attribute is created before the device is
+announced to userspace, avoid a race condition.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/acpi/battery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/battery.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index 984236b95dff..5f47bd58aff3 100644
+index 5f47bd58aff3..d289b98a2cca 100644
 --- a/drivers/acpi/battery.c
 +++ b/drivers/acpi/battery.c
-@@ -661,7 +661,7 @@ static ssize_t acpi_battery_alarm_show(struct device *dev,
- {
- 	struct acpi_battery *battery = to_acpi_battery(dev_get_drvdata(dev));
- 
--	return sprintf(buf, "%d\n", battery->alarm * 1000);
-+	return sysfs_emit(buf, "%d\n", battery->alarm * 1000);
+@@ -678,12 +678,18 @@ static ssize_t acpi_battery_alarm_store(struct device *dev,
+ 	return count;
  }
  
- static ssize_t acpi_battery_alarm_store(struct device *dev,
+-static const struct device_attribute alarm_attr = {
++static struct device_attribute alarm_attr = {
+ 	.attr = {.name = "alarm", .mode = 0644},
+ 	.show = acpi_battery_alarm_show,
+ 	.store = acpi_battery_alarm_store,
+ };
+ 
++static struct attribute *acpi_battery_attrs[] = {
++	&alarm_attr.attr,
++	NULL
++};
++ATTRIBUTE_GROUPS(acpi_battery);
++
+ /*
+  * The Battery Hooking API
+  *
+@@ -823,7 +829,10 @@ static void __exit battery_hook_exit(void)
+ 
+ static int sysfs_add_battery(struct acpi_battery *battery)
+ {
+-	struct power_supply_config psy_cfg = { .drv_data = battery, };
++	struct power_supply_config psy_cfg = {
++		.drv_data = battery,
++		.attr_grp = acpi_battery_groups,
++	};
+ 	bool full_cap_broken = false;
+ 
+ 	if (!ACPI_BATTERY_CAPACITY_VALID(battery->full_charge_capacity) &&
+@@ -868,7 +877,7 @@ static int sysfs_add_battery(struct acpi_battery *battery)
+ 		return result;
+ 	}
+ 	battery_hook_add_battery(battery);
+-	return device_create_file(&battery->bat->dev, &alarm_attr);
++	return 0;
+ }
+ 
+ static void sysfs_remove_battery(struct acpi_battery *battery)
+@@ -879,7 +888,6 @@ static void sysfs_remove_battery(struct acpi_battery *battery)
+ 		return;
+ 	}
+ 	battery_hook_remove_battery(battery);
+-	device_remove_file(&battery->bat->dev, &alarm_attr);
+ 	power_supply_unregister(battery->bat);
+ 	battery->bat = NULL;
+ 	mutex_unlock(&battery->sysfs_lock);
 
 -- 
 2.45.2
