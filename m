@@ -1,128 +1,156 @@
-Return-Path: <linux-acpi+bounces-6287-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6288-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1AB902366
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2024 16:03:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFADD902608
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2024 17:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8450E1C20FBB
-	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2024 14:03:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60E7E1F22F66
+	for <lists+linux-acpi@lfdr.de>; Mon, 10 Jun 2024 15:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48322132119;
-	Mon, 10 Jun 2024 14:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7211420D5;
+	Mon, 10 Jun 2024 15:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mth3Ocsv"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="GRS4dhbB"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822BD12FF65;
-	Mon, 10 Jun 2024 14:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4BD12FF86;
+	Mon, 10 Jun 2024 15:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718028125; cv=none; b=CumOXARXhz/G6SmpQQSTJsnVX5XgBuwkN9j3n6GSsC/OVown/cBPFARrhvMZJ/pX7Eor7Q9eciVAmnyEwrKjA/ftZBZ1sFZdJ2azbYPH8Cb05BVjG8+JM4ADAiPEgcr5j+D1EcX2fJm006MfbdphnPACG7wEQnhyBdd2SNNNikc=
+	t=1718034730; cv=none; b=ltOwujYqsOcO7LmtOSDPN2SMJCfBD5Y/57rebWaT7lYF9UfD+QXLavw69URT/UR3S1FTFUTc/j2gAZ0paHI5KJ2Z3sW9BOmYc/DX2C3GN9LupNIOaFP2cBC8OrCWdkZWuTej32kC2wGATplfuI5E/PkwKL2WX645XfyL8DphOoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718028125; c=relaxed/simple;
-	bh=g0xcEy+pFWVYmhSOSWpyQFktSP+xBDDKruU8/KgTUqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n2QGWzE0YjIM8o63k8ueyac+Mx3gcnMxSs3NvRvOQPcczZ6Z7ziuvxOiLkRGdRBvoSw06bRNdBCyUyyNkXmPxCaupvc3aOZT8LVP5L6Vuvha6p+horEhPXNhlzTJy0iWRg5xSuNnvkScisKJKU5FmF00VEsJChfiHa5kVoiKCB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mth3Ocsv; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718028124; x=1749564124;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=g0xcEy+pFWVYmhSOSWpyQFktSP+xBDDKruU8/KgTUqM=;
-  b=Mth3Ocsvhu3cmKQBj+MdtjQbQKvti1mOMmDkKNADJKQSP5S5DeG2opnG
-   YHUvha0DjoCC+3l3WPWv0XUpbtD7ufyaePRV66z6JRq2QHXgKoK4EDBvT
-   P/Bh01fNQ+h5fCjmoIdrhH8XTkzy5pafz5S6DG3ubzgP/XLr8fj42Hr2r
-   4tT5aBquczFL/XtaFbB/rsYIa59nNDOY6jP5CvqSaeFsCr5S39I5k0bt3
-   NrF6Ap7un0meM2FjMhUyJKp9sHnnTZloaztO+b3wviWq3/TWgWsgxrCet
-   3eg0XcukgARNYaGYNNZpUcNVNo/Qb6QJR4/DX8WDiEadxxhmjU2waU1Yt
-   g==;
-X-CSE-ConnectionGUID: Y+ZhnCu7S7eMHancxKuZuA==
-X-CSE-MsgGUID: NIqTQJHaSze8kv3JqESw/Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="11998244"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="11998244"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 07:02:03 -0700
-X-CSE-ConnectionGUID: 9ErXJ/nuQHmHPs8IKgjiRA==
-X-CSE-MsgGUID: OUlS4SOxTGyzDSRbYOqyxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="39736967"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa007.jf.intel.com with ESMTP; 10 Jun 2024 07:01:57 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id AC1CC20B; Mon, 10 Jun 2024 17:01:55 +0300 (EEST)
-Date: Mon, 10 Jun 2024 17:01:55 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, "Kalra, Ashish" <ashish.kalra@amd.com>, 
-	Sean Christopherson <seanjc@google.com>, "Huang, Kai" <kai.huang@intel.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, 
-	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <hidvykk3yan5rtlhum6go7j3lwgrcfcgxlwyjug3osfakw2x6f@4ohvo23zaesv>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-19-kirill.shutemov@linux.intel.com>
- <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
- <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
- <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
+	s=arc-20240116; t=1718034730; c=relaxed/simple;
+	bh=B+BmXZ5qZDIVGEpUA06d7j3p6sTYhDXUE+28xZo6acc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ptj7SAbiLLqdUuXG7ChKGRfeFWgBxmNDh8eQY8frYzlryX+l5KpQbGL19qOdK8LyLVGYoeiCExPvy7LDuPNpa8v5DyUDhlzYPHHuguHsrg/pM8p2GO/E+We5+QRJZW0ZdHtAeFf27zNINaWIuDAl8BMuBbJLOoNRS6mjkFx4T4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=GRS4dhbB; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1718034726;
+	bh=B+BmXZ5qZDIVGEpUA06d7j3p6sTYhDXUE+28xZo6acc=;
+	h=From:Subject:Date:To:Cc:From;
+	b=GRS4dhbBEqLNbaCXaJFcsmkBczGuJCvGP7v3IveCU1/SJRojIktrXCt5yycFv94fg
+	 OiFWM7UtzHgXMh/7e8dMpZ90kKhXXV5H6h08gt3nxuEgkVl3xtrZgmLwq5yh3aA3Xj
+	 3Z0jFwticd2JmnBiCQtRqYx2+niR0MfpD/2/Nb08=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH v3 0/5] ChromeOS Embedded Controller charge control driver
+Date: Mon, 10 Jun 2024 17:51:05 +0200
+Message-Id: <20240610-cros_ec-charge-control-v3-0-135e37252094@weissschuh.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOkgZ2YC/3XNTQrCMBAF4KuUrI0k6U9SV95DRNp0YgKSSKZGp
+ fTupsWFIF2+ebxvJoIQHSA5FBOJkBy64HModwXRtvNXoG7ImQgmKlazhuoY8AKa5jbmVgc/xnC
+ jjaobLkHBoCTJ43sE414rfDrnbB2OIb7XP4kv1y/J2y0yccpo35mS1YOWba+OT3CIqO3D7j2MZ
+ HGT+LGE2rREthQ3vZDAtTHVnzXP8weEOHG3DQEAAA==
+To: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ Sebastian Reichel <sre@kernel.org>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ Robert Moore <robert.moore@intel.com>, Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>, 
+ Dustin Howett <dustin@howett.net>, 
+ Stephen Horvath <s.horvath@outlook.com.au>, 
+ Rajas Paranjpe <paranjperajas@gmail.com>, linux-acpi@vger.kernel.org, 
+ acpica-devel@lists.linux.dev, Matt Hartley <matt.hartley@gmail.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718034726; l=3358;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=B+BmXZ5qZDIVGEpUA06d7j3p6sTYhDXUE+28xZo6acc=;
+ b=UUGIGZ3G79lRyCnFvOXud2og3s9MLEr5TuuGr6aFbAjrqWDeKHjw3ozHGucgUcU83dnqaKyV+
+ eFjXzFwZRzrBxWbeDL3CtRw20Rpe+Jw+MbZDDIlmKImS2r+6tEC2Jhq
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Mon, Jun 10, 2024 at 03:40:20PM +0200, Borislav Petkov wrote:
-> On Fri, Jun 07, 2024 at 06:14:28PM +0300, Kirill A. Shutemov wrote:
-> >   I was able to address this issue by switching cpa_lock to a mutex.
-> >   However, this solution will only work if the callers for set_memory
-> >   interfaces are not called from an atomic context. I need to verify if
-> >   this is the case.
-> 
-> Dunno, I'd be nervous about this. Althouth from looking at
-> 
->    ad5ca55f6bdb ("x86, cpa: srlz cpa(), global flush tlb after splitting big page and before doing cpa")
-> 
-> I don't see how "So that we don't allow any other cpu" can't be done
-> with a mutex. Perhaps the set_memory* interfaces should be usable in as
-> many contexts as possible.
-> 
-> Have you run this with lockdep enabled?
+Note:
+To be useful, this series depends on
+commit 08dbad2c7c32 ("mfd: cros_ec: Register charge control subdevice")
+from the MFD tree [0].
 
-Yes, it booted to the shell just fine. However, that doesn't prove
-anything. The set_memory_* function has many obscured cases.
+Add a power supply driver that supports charge thresholds and behaviour
+configuration.
 
-> > - The function __flush_tlb_all() in kernel_(un)map_pages_in_pgd() must be
-> >   called with preemption disabled. Once again, I am unsure why this has
-> >   not caused issues in the EFI case.
-> 
-> It could be because EFI does all that setup on the BSP only before the
-> others have arrived but I don't remember anymore... It is more than
-> a decade ago when I did this...
+This is a complete rework of
+"platform/chrome: cros_ec_framework_laptop: new driver" [1], which used
+Framework specific EC commands.
 
-Are you okay with this? Disabling preemption looks strange, but I don't
-see a better option.
+The driver propsed in this series only uses upstream CrOS functionality.
 
+Tested on a Framework 13 AMD, Firmware 3.05.
+
+This driver should go through the chrome-platform tree.
+Otherwise "platform/chrome: cros_ec_proto: Introduce cros_ec_cmd_versions()"
+will conflict with
+commit a14a569a9918 ("platform/chrome: cros_ec_proto: Introduce cros_ec_cmd_readmem()")
+from chrome-platform/for-next.
+
+The patch
+"platform/chrome: cros_ec_proto: Introduce cros_ec_cmd_versions()"
+is also part of my series
+"hwmon: (cros_ec): fan target, fan pwm control and temperature thresholds"[2].
+
+Based on chrome-platform/for-next.
+
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/commit/?h=for-mfd-next&id=08dbad2c7c3275e0e79190dca139bc65ce775a92
+[1] https://lore.kernel.org/lkml/20240505-cros_ec-framework-v1-0-402662d6276b@weissschuh.net/
+[2] https://lore.kernel.org/lkml/20240608-cros_ec-hwmon-pwm-v1-0-d29dfc26fbc3@weissschuh.net/
+
+Changes in v3:
+- Drop MFD patch that was already applied
+  (therefore drop Lee from series recipients)
+- Introduce and use devm_battery_hook_register()
+- Note that the driver should go through the chrome-platform tree
+- Introduce and use cros_ec_cmd_versions()
+- Drop logging about impossible charge behaviours
+- Use sysfs_attr_init()
+- Disable probing on incompatible Framework devices by default
+- Link to v2: https://lore.kernel.org/r/20240528-cros_ec-charge-control-v2-0-81fb27e1cff4@weissschuh.net
+
+Changes in v2:
+- Accept "0" as charge_start_threshold
+- Don't include linux/kernel.h
+- Only bind to the first found battery
+- Import EC_CMD_CHARGE_CONTROL v3 headers
+- Add support for v1 and v3 commands
+- Sort mfd cell entry alphabetically
+- Link to v1: https://lore.kernel.org/r/20240519-cros_ec-charge-control-v1-0-baf305dc79b8@weissschuh.net
+
+---
+Thomas Weißschuh (5):
+      ACPI: battery: add devm_battery_hook_register()
+      platform/chrome: Update binary interface for EC-based charge control
+      platform/chrome: cros_ec_proto: Introduce cros_ec_cmd_versions()
+      power: supply: add ChromeOS EC based charge control driver
+      power: supply: cros_charge-control: don't probe if Framework control is present
+
+ MAINTAINERS                                    |   6 +
+ drivers/acpi/battery.c                         |  15 ++
+ drivers/platform/chrome/cros_ec_proto.c        |  26 ++
+ drivers/power/supply/Kconfig                   |  12 +
+ drivers/power/supply/Makefile                  |   1 +
+ drivers/power/supply/cros_charge-control.c     | 359 +++++++++++++++++++++++++
+ include/acpi/battery.h                         |   2 +
+ include/linux/platform_data/cros_ec_commands.h |  49 +++-
+ include/linux/platform_data/cros_ec_proto.h    |   2 +
+ 9 files changed, 470 insertions(+), 2 deletions(-)
+---
+base-commit: c8a4bdca928debacf49524d1b09dbf27e88e1f18
+change-id: 20240506-cros_ec-charge-control-685617e8ed87
+
+Best regards,
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thomas Weißschuh <linux@weissschuh.net>
+
 
