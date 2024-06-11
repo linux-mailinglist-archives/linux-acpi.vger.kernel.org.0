@@ -1,108 +1,94 @@
-Return-Path: <linux-acpi+bounces-6297-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6298-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6783890388E
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2024 12:15:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CF490391C
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2024 12:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC311C229EE
-	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2024 10:15:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 797212868DC
+	for <lists+linux-acpi@lfdr.de>; Tue, 11 Jun 2024 10:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F048917B403;
-	Tue, 11 Jun 2024 10:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gC2oyTXJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56388176AD4;
+	Tue, 11 Jun 2024 10:42:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAD317A92F;
-	Tue, 11 Jun 2024 10:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373CF7407C;
+	Tue, 11 Jun 2024 10:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718100886; cv=none; b=nr+jM4/FhmmFO6KSYixKvbany9mz/fb1y/ga26xNX3RSoIpvGI8O9Zba8N1c/wIWqDH3y/JO7pWWf5cUVttCM5yZCgvKlBYucVn7g7hBmZvdgQXvATTdIV7+JuGi1UD6VIZOBC/NwPjzM8zflilbSvRuvh3zwW54eBLJR8zC0G8=
+	t=1718102539; cv=none; b=AI2LiYsz/VWBGNsNe8CdZ8xbCNnFiCCrXD8hJHv37nTJV7MA5liJlOH+S4yrRJBMMjdbkFGtizH8u34YuRa5dIJyfaSyro/ClA1omcnqPvEl9jdiqHx3n3zTjlxvlc4SbL8VzwoHyhxK4/9Yr4aM9sWHF0kFEPEH9+a5Ilv3PHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718100886; c=relaxed/simple;
-	bh=rFt4XS/CgSsXIcBXqKf+lWLQ7TFyTsJ3RIR+fC805gY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ztr/z7z4+EvKPga3AffgxOtJMnpRbVFL8n1NfWXCLSH/6t61KRYkrYZCnvm8oe45lxVg8Hm/57BUrLsJiZo50DGWtCZi4jdygnEn3pOhPsDB7oJTyY7Sil24xbCYDL438ev5Bu5WSFqYLKr94SrUPpfHTo2a6O4w6EYDkb+Lgag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gC2oyTXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124C2C32786;
-	Tue, 11 Jun 2024 10:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718100885;
-	bh=rFt4XS/CgSsXIcBXqKf+lWLQ7TFyTsJ3RIR+fC805gY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gC2oyTXJJ93PfMa4I6COS1Yg9NWgvNdR2czNkZbCtykuuMziuG35k2lRQXsZ03s08
-	 KfIQQnswFEWvclKyGbEcLrzrEegkQC1BP5X/rsgCfh0aPrky0aCfZAPqBwj/vZBn+u
-	 0sXR4TwnyFy+c7pxsj6q0kaK7bD9Dq2m4f+C1nuBIkQDyDMxbrzwu8PnjYjYerRTMB
-	 jKX+myIF1qEgVrm5tO98eN+1f8g71nRoCz6TlDHkD05ySyflbHtT7Hv7HB5vohdD5a
-	 rYDqp6qB2JpPzxO4rj3wX1OIJSUa3+1hthCCqNWGiGHzM7mezIewYzWoKSnmBPzC+u
-	 EJAhgg5ScR99g==
-Date: Tue, 11 Jun 2024 10:14:41 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Dustin Howett <dustin@howett.net>,
-	Stephen Horvath <s.horvath@outlook.com.au>,
-	Rajas Paranjpe <paranjperajas@gmail.com>,
-	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
-	Matt Hartley <matt.hartley@gmail.com>
-Subject: Re: [PATCH v3 3/5] platform/chrome: cros_ec_proto: Introduce
- cros_ec_cmd_versions()
-Message-ID: <ZmgjkVXZEe6BkZzq@google.com>
-References: <20240610-cros_ec-charge-control-v3-0-135e37252094@weissschuh.net>
- <20240610-cros_ec-charge-control-v3-3-135e37252094@weissschuh.net>
- <ZmfvhvcjTbjOSp4f@google.com>
- <f2a361aa-a256-41a5-8100-703e40df975d@t-8ch.de>
+	s=arc-20240116; t=1718102539; c=relaxed/simple;
+	bh=3Izkffgpe9AwSgB3tbJpYn0cnYZH8KaRa5AJSvxQ0Ag=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=MOq2wz5uUAfJ7RwESueFeJOQ02orDzw5TLImLgBe3y+YKxK1X2n8qJCE2o8/0VOtsbf4W3sCZVgrPyeB/UTLuKr1N+pwwwRak4EG8dEGuYy9yez9uCNpoZWbgWJ5SV7OBKRBmJ+gkQ9TZifah+XnThNEgnIcFrk8wgEeIYIidac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Vz4rb6tSNz1SBpk;
+	Tue, 11 Jun 2024 18:38:07 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5081818006C;
+	Tue, 11 Jun 2024 18:42:12 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 11 Jun 2024 18:42:11 +0800
+Subject: Re: [PATCH v1 1/1] ACPI/IORT: Switch to use kmemdup_array()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla
+	<sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>
+References: <20240606165005.3031490-1-andriy.shevchenko@linux.intel.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <3a1e0ffe-db11-d18f-db33-881df7d9b18d@huawei.com>
+Date: Tue, 11 Jun 2024 18:42:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f2a361aa-a256-41a5-8100-703e40df975d@t-8ch.de>
+In-Reply-To: <20240606165005.3031490-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On Tue, Jun 11, 2024 at 09:23:24AM +0200, Thomas Weißschuh wrote:
-> On 2024-06-11 06:32:38+0000, Tzung-Bi Shih wrote:
-> > On Mon, Jun 10, 2024 at 05:51:08PM +0200, Thomas Weißschuh wrote:
-> > > If the command is not supported at all the EC returns
-> > > -EINVAL/EC_RES_INVALID_PARAMS.
-> > > 
-> > > This error is translated into an empty version mask as that is easier to
-> > > handle for callers and they don't need to know about the error details.
-> > 
-> > I'm not sure whether the behavior is what we want or not as existing
-> > EC_CMD_GET_CMD_VERSIONS usages don't have it.
+On 2024/6/7 0:50, Andy Shevchenko wrote:
+> Let the kememdup_array() take care about multiplication and possible
+> overflows.
 > 
-> At least the caller of cros_ec_get_host_command_version_mask() expects
-> it:
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>   drivers/acpi/arm64/iort.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> ret = cros_ec_get_host_command_version_mask(..., &ver_mask);
-> if (ret < 0 || ver_mask == 0)
-> ...
-> 
-> ver_mask == 0 will never happen as in that case -EINVAL would have been
-> returned.
-> 
-> Others, like cros_ec_cec_get_write_cmd_version(), expect the current
-> semantic of ver_mask != 0 but log spurious errors in case of -EINVAL.
-> cros_pchg_cmd_ver_check(), works with both semantics, but currently also
-> logs a spurious error message.
-> 
-> To me the new semantic looks more obvious and much easier to handle.
-> For each command version a bit is set. no command versions -> no bits.
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index c0b1c2c19444..e596dff20f1e 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -822,7 +822,7 @@ static struct iommu_iort_rmr_data *iort_rmr_alloc(
+>   		return NULL;
+>   
+>   	/* Create a copy of SIDs array to associate with this rmr_data */
+> -	sids_copy = kmemdup(sids, num_sids * sizeof(*sids), GFP_KERNEL);
+> +	sids_copy = kmemdup_array(sids, num_sids, sizeof(*sids), GFP_KERNEL);
+>   	if (!sids_copy) {
+>   		kfree(rmr_data);
+>   		return NULL;
 
-Ack.
+Looks good to me,
+
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
