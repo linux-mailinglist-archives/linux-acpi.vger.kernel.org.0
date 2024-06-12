@@ -1,133 +1,158 @@
-Return-Path: <linux-acpi+bounces-6316-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6317-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002D3904F4D
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 11:30:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 453ED905005
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 12:07:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA0BB21DD1
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 09:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC290282FD4
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 10:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4603F16D9C2;
-	Wed, 12 Jun 2024 09:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C64916E875;
+	Wed, 12 Jun 2024 10:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Qsc+AJ2q"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OFvsLr87"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A26016D339;
-	Wed, 12 Jun 2024 09:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9633416E869;
+	Wed, 12 Jun 2024 10:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718184625; cv=none; b=LbN6dpEabf2gawCysIl3c5BH/7h7iiT5Kn55QgkR+ld2lCSJCSgHXuBKm/Y3Z4B/rAb/Rm7hpyipFckU9AvFoPvySRAhvYGeuVJ9DLHqlGm4EW9MzA5CYQKSBYPslwiS7YAai1lv1dvH3jVonuUm3EhGJxrEKN2bVbWIBwSSWWo=
+	t=1718186827; cv=none; b=Lv3pTX00XV3rDblw505T8x6HCZHnpsRoIaSpXyFS2OyGVsDuKwALiLDGMrsRjhruFfLAzqtfjpiOoGdyhsybiN5vmgeHWY+9rJ6+LBcWH1LO5bInFfqAlBiPEFVk7s+Ax+aEyQVDWPtMAQX7HAuyIJh1KdR0R6atGy2LznWn03s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718184625; c=relaxed/simple;
-	bh=J/44THBA/dPfsljbhs1f2PJSH+f7JSY48xLWZSBEbX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RenNrPG5QkoxXh0Ds7B9awuxEMpNQblOnOOfwzrRCY8TNRpXBcqDB/8SGZMD3e/StuMOtvPJFsa4KQ8epXGit2rLKPtL6OiXWwA6PkuPp+q9B/24Awyb6zLnQzpDx+fnfkRhwqLRxfadwx/1gNWdnWxfpWkc6ssEGfSMYYTQnaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Qsc+AJ2q; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E7E8D40E0176;
-	Wed, 12 Jun 2024 09:30:20 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4kBlhHtppWTH; Wed, 12 Jun 2024 09:30:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1718184617; bh=bAaBH5qaA/JFcGMfRi72p+tRzwYREYvEMYDRH3DvGZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qsc+AJ2qmMEYH1GmdJ83828PmwbIvMP3sUK4daOukV73GEF20NSxER0+reGrO19uM
-	 enPkC9nyrprHCoS67qACrJZ6AC236TaKczMgkdfP9ndjVzVMRLBuqJpPl/zUbgIL4F
-	 j7TPT3ohwQ7tErya9eEnipyOdJEg0ctVbZWs+4m632GkVdYeVdekf/qkXvTScifNaY
-	 dX27wFRjeZKQ43p1zAbp64UfA4b/jwZsIqc6R9v1ljrqd/5holDsEmLEsEvM03Iv8d
-	 70HThSZKGtLrQyaaGH7jj9EK0D4oghYcQSt0vGljohHLJyQ+SAjaV97ukJbGIET8/X
-	 Jo9m12QCRFBdDMUXlImk41mbjLSd38G5IY8tlP1WLH3qu2eiguVk57A+GFIFhSGLG1
-	 sJXAeb5KSTM5QCxuKRIKgn7CeddxcPEVgnn0uCEMTRhmfjUyh99Y1TJ+AdytrJJXbg
-	 g7gH6jyMdp7VFB6YFc70bdkKU41w2xcKniRlcbgYbPtyvGM3H04nCbHyo7QNv/xpw7
-	 7XoPxWQnXjNhbBxnnlYyg41SnrbZyzZMjarQGWA0IIHJhMtKjxfJfHPlUZZWWHTevP
-	 3M+3mbFDLsLdTSSTsgPEc2QHFfqberzfPrWjfguIc/dgowqsvgMAtAh8XTehTAIo/L
-	 NqKts/+d049xpp32sa3U8rLY=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	s=arc-20240116; t=1718186827; c=relaxed/simple;
+	bh=X/C2WqCcPHscguVgaI/7U9QXjrr1tO8TEK9q3Vlnxgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=tb+J4kztVkk4dQbMqNIwdansBIH29dX1vVSXYFL0sl/oaMx0qd0yraOmKapzEHB/CJmQwTK3Q/BMdWKFgedtS9ObwqX+oF75nl7zIzP8JOGGW3JUuDRppzW7XDp3nu4VXtv541yCJVV6HIjcxwvpFq2NZKMfcdQVQR5C91xYZvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OFvsLr87; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1718186823;
+	bh=X/C2WqCcPHscguVgaI/7U9QXjrr1tO8TEK9q3Vlnxgk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OFvsLr874lYy7M8r62tSRG1Phh9L6X6TPJKovdXuTYTTftf9fwUfAl5xEHIDgh204
+	 dthWmaxjrjAmvr+msJD45LdFRp4x3cZQgK864ZLtFvXBO/aeK70LXLBH2N0HVHTMQ9
+	 s+lvkMqCW934EUS10Bpo5KQVkjixQh/qfKoFLMUUUxWrhUd//bxi32DMx2KPJS3v/v
+	 uVKTpEDxjLP4FcUBtPRDesSnpakZ8zWNyPbWlcAHVocJLzTySDqs6/UwLPoWND6sZp
+	 3lwvqCFJ0JrlGDMcyTZxJenxRflqEbis+ySEqpaFFDHbmBxQ1tHraMfARiw0XNTvX6
+	 LOCNs9JQ/C+Uw==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BBEAB40E0081;
-	Wed, 12 Jun 2024 09:29:49 +0000 (UTC)
-Date: Wed, 12 Jun 2024 11:29:43 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	Jun Nakajima <jun.nakajima@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Kalra, Ashish" <ashish.kalra@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	"Huang, Kai" <kai.huang@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <20240612092943.GCZmlqh7O662JB-yGu@fat_crate.local>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com>
- <20240528095522.509667-19-kirill.shutemov@linux.intel.com>
- <20240603083930.GNZl2BQk2lQ8WtcE4o@fat_crate.local>
- <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
- <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
- <hidvykk3yan5rtlhum6go7j3lwgrcfcgxlwyjug3osfakw2x6f@4ohvo23zaesv>
- <nh7cihzlsjtoddtec6m62biqdn62k3ka5svs6m64qekhpebu5z@dkplwad2urgp>
- <20240611194653.GGZmiprSNzK0JSJL17@fat_crate.local>
- <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
+	(Authenticated sender: laura.nao)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id D5F8E3780EC6;
+	Wed, 12 Jun 2024 10:07:02 +0000 (UTC)
+From: Laura Nao <laura.nao@collabora.com>
+To: laura.nao@collabora.com
+Cc: Tim.Bird@sony.com,
+	broonie@kernel.org,
+	dan.carpenter@linaro.org,
+	davidgow@google.com,
+	dianders@chromium.org,
+	groeck@chromium.org,
+	kernel@collabora.com,
+	kernelci@lists.linux.dev,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	rafael@kernel.org,
+	robh+dt@kernel.org,
+	saravanak@google.com,
+	shuah@kernel.org
+Subject: Re: [RFC PATCH v2 0/2] Add a test to verify device probing on ACPI platforms
+Date: Wed, 12 Jun 2024 12:07:36 +0200
+Message-Id: <20240612100736.149752-1-laura.nao@collabora.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20240308144933.337107-1-laura.nao@collabora.com>
+References: <20240308144933.337107-1-laura.nao@collabora.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 12, 2024 at 12:24:30PM +0300, Kirill A. Shutemov wrote:
-> I will try to deliver it in timely manner.
+Hi Shuah and Rafael,
 
-:-P
-
-> > Yeah, we have a bunch of different pagetable manipulating things, all
-> > with their peculiarities and unifying them and having a good set of APIs
-> > which everything else uses, is always a good thing.
+On 3/8/24 15:49, Laura Nao wrote:
+> Hello,
 > 
-> Will give it a try.
+> This v2 addresses some issues observed when running the ACPI probe
+> kselftest proposed in v1[1] across various devices and improves the overall
+> reliability of the test.
 > 
-> > And since we're talking cleanups, there's another thing I've been
-> > looking at critically: CONFIG_X86_5LEVEL. Maybe it is time to get rid of
-> > it and make the 5level stuff unconditional. And get rid of a bunch of
-> > code since both vendors support 5level now...
+> The acpi-extract-ids script has been improved to:
+> - Parse both .c and .h files
+> - Add an option to print only IDs matched by a driver (i.e. defined in an
+> ACPI match tables or in lists of IDs provided by the drivers)
 > 
-> Can do.
+> The test_unprobed_devices.sh script relies on sysfs information to
+> determine if a device was successfully bound to a driver. Not all devices
+> listed in /sys/devices are expected to have a driver folder, so the script
+> has been adjusted to handle these cases and avoid generating false
+> negatives.
+> 
+> The test_unprobed_devices.sh test script logic has been modified to:
+> - Check the status attribute (when available) to exclusively test hardware
+>    devices that are physically present, enabled and operational
+> - Traverse only ACPI objects with a physical_node* link, to ensure testing
+>    of correctly enumerated devices
+> - Skip devices whose HID or CID are not matched by any driver, as
+>    determined by the list generated through the acpi-extract-ids script
+> - Skip devices with HID or CID listed in the ignored IDs list. This list
+>    has been added to contain IDs of devices that don't require a driver or
+>    cannot be represented as platform devices (e.g. ACPI container and module
+>    devices).
+> - Skip devices that are natively enumerated and don't need a driver, such
+>    as certain PCI bridges
+> - Skip devices unassigned to any subsystem, devices linked to other devices
+>    and class devices
+> 
+> Some of the heuristics used by the script are suboptimal and might require
+> adjustments over time. This kind of tests would greatly benefit from a
+> dedicated interface that exposes information about devices expected to be
+> matched by drivers and their probe status. Discussion regarding this matter
+> was initiated in v1.
+> 
+> As of now, I have not identified a suitable method for exposing this
+> information; I plan on submitting a separate RFC to propose some options
+> and engage in discussion. Meanwhile, this v2 focuses on utilizing already
+> available information to provide an ACPI equivalent of the existing DT
+> kselftest [2].
+> 
+> Adding in CC the people involved in the discussion at Plumbers [3], feel
+> free to add anyone that might be interested in this.
+> 
+> This series depends on:
+> - https://lore.kernel.org/all/20240102141528.169947-1-laura.nao@collabora.com/T/#u
+> - https://lore.kernel.org/all/20240131-ktap-sh-helpers-extend-v1-0-98ffb468712c@collabora.com/
+> 
+> Thanks,
+> 
+> Laura
+> 
+> [1] https://lore.kernel.org/all/20230925155806.1812249-2-laura.nao@collabora.com/T/
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/testing/selftests/dt
+> [3] https://www.youtube.com/watch?v=oE73eVSyFXQ&t=9377s
 
-Much appreciated, thanks!
+Just wanted to gently check in on your thoughts regarding this series. 
+We've conducted some initial testing with it in KernelCI and it's proven 
+its worth by catching a driver probe regression [1] on some x86_64 
+platforms.
+Your feedback would be greatly appreciated.
 
--- 
-Regards/Gruss,
-    Boris.
+Thanks!
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Laura
+
+[1] https://lore.kernel.org/all/20240530153727.843378-1-laura.nao@collabora.com/
+
 
