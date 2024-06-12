@@ -1,186 +1,223 @@
-Return-Path: <linux-acpi+bounces-6342-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6343-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48D3905B6F
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 20:48:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C52B8905B7D
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 20:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C62B28A9B9
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 18:48:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 445F71F24AF4
+	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 18:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FA33BBEC;
-	Wed, 12 Jun 2024 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB19253E2B;
+	Wed, 12 Jun 2024 18:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="KaAWPsH0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PgxUUnk/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9361D547
-	for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2024 18:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D46EB56;
+	Wed, 12 Jun 2024 18:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718218115; cv=none; b=Pl0zUPSJAQR31k6r5Pq4QklFrGeimbM3esoTxz16Iq0kNLgKOmMXPszXPkXB+aucsoE9jAarbkGOaClk2QCruF+X4GOkrhqqNYviFANuDikHuKyKCZBDH6ZSpQvDrD3/Vm5HZpY7sYv0Jnlx2niVgYYEAUcih7TdikJYmXxxmAI=
+	t=1718218270; cv=none; b=C0V4S9K5L2lVzYUgO4JCd3d9ZaF9wVS4HCJx8Z023vL1GMwxUPE+rsFxAFCWy82qhs16HRvlorAt5Cp14PdaZdOMZ5SPpOdXEuAk+sorPV2/2lTDH7qvKqr2Xog73nxmZv0om5u9ypbyBU9S/ZRpHdk4HFeda3Fw5w8q6K/vb+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718218115; c=relaxed/simple;
-	bh=zzetqvw9rE3z6luIaQuIn5l8rk0hobL8f1wgIozEpBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=l3gK0Wly9vFNW8xFdQodHPmxiNzdWdbfmeykY5DSSFIzcdHptlwzHTx5kiMcGLprQg1+9YjH+4iSJ5WFf5KUjofx3oPfy8Fap6M69mBjpl8bcvH0V86H6JFiOiGwxY20J70z+3azsYXnJHJc91ZJJ7lSKf1j1u7vRvpH8GFKeC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=KaAWPsH0; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35f1bc63981so853479f8f.1
-        for <linux-acpi@vger.kernel.org>; Wed, 12 Jun 2024 11:48:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1718218112; x=1718822912; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cmew680A86e6P0TJ/CSWiTzW4h4Q5bXUMWdZRLFG580=;
-        b=KaAWPsH0iWi05MR3CjibinOnyUfKs6Vrjk5z1YFfhxvwb4xtWBQvS8mgsDpFbekVuZ
-         VVrEqT456Ak+f14gxTiYuTHpVVoyqkPUzJ5o9b8Snot4o3ExzEOaGq7DAC+a/DzZMu3C
-         yWjBZmYlHa0zo6d6nXxA/HP0Q3udWAFi8baG+z45q2782bletBp/HuBzgQDlSlU6N4no
-         RE8ihe6S4vVLxO4lfCjjQwRHaAcgdxQU7dN7jkGWLI+c/Zuz+ugpsT7Vgo98RB2G4SER
-         xFyOS81/IFleLfNRTnVTvMYgOVs+IgmckIZjRp39l+18sNi0gDkEeKzD7WcVVUQYcF0I
-         Y6qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718218112; x=1718822912;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cmew680A86e6P0TJ/CSWiTzW4h4Q5bXUMWdZRLFG580=;
-        b=o4BVSmkYZ0dAVvxo75k8KZ60lw7IaREbeYI4oiP/zicZuM55iCZbd6ubwTlgHXDpsC
-         oqZwacVezXu8xJNv8PHBGEd/JVA5gzGjoMKu48Lc7MK3AAb0TmnP0BxF8Jw7xo/LC/CX
-         eap9SxJQR0nkuxLaaBnDb6ebSph9lj8ersxjxZfIleoOYB71MN1ji7+t68O24OTTWJNk
-         VUrAaN9fRexjCkYecf+JfYbem9EorPBU84RvYuSDmdR3XIgrET+8GKO5hgIKJAUtD1mu
-         v6mVEsH9+NIw8oafTuugwTGlLgFlcFDkwLo4M6noGiLA5RRDSODoc90TuLKDsMIJU6NS
-         MVvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWm2Uqc1j6w46PuWtSD9APV7P0JV1cpyR+c6AeqPfgAV/ImFn1EMIpsspi7lkpUgBrKP0w7ylK3dHv5p0NWKtl+CMDP+Tdap/UMew==
-X-Gm-Message-State: AOJu0Yz2ptLygN405eI15gb1a3H+TLo8DPemF4hDudCGM5kzoDr870oi
-	Ld6LzdPRXZtFHXaJ/q9LiMAUoB5e9MuYeJjanocaK/0S2J4f73zOuOB4Jb44fkQ=
-X-Google-Smtp-Source: AGHT+IGxdz1Bzt3Q1KQfzBP7LkJlIATQ89AuIi4xcYpUyaYS13i760yEF6S1V720g/EmquCWrHrsvw==
-X-Received: by 2002:adf:e646:0:b0:35f:e890:fbe1 with SMTP id ffacd0b85a97d-360718df02amr480736f8f.19.1718218111541;
-        Wed, 12 Jun 2024 11:48:31 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:8d3:3800:a172:4e8b:453e:2f03])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35ef5fc1c77sm17147058f8f.95.2024.06.12.11.48.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 11:48:30 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH] gpiolib: put gpio_suffixes in a single compilation unit
-Date: Wed, 12 Jun 2024 20:48:21 +0200
-Message-ID: <20240612184821.58053-1-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1718218270; c=relaxed/simple;
+	bh=4H4DmsdoJKBGJmMdPbGYMAKrPkV8qJghcN/5awkWQkc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CBXxQcTGOgRbxZ+AQCDqIXcQV0zA9BwyxjzWr0cxd8zmIyU3vm94QRXTBbGoPgl2+ze83xhrDgdrIoYz0pAOkAZHvt1Xo9/u4LmeNw9VXh3H8YmmeWW1hoV/8NzPQuLilfQBsqf6BUng5rR4sXVWgHUao6JQXE/Zb3JhHkODwTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PgxUUnk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47746C4AF52;
+	Wed, 12 Jun 2024 18:51:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718218270;
+	bh=4H4DmsdoJKBGJmMdPbGYMAKrPkV8qJghcN/5awkWQkc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PgxUUnk/p1irKyt8Uz/hQX3zl6YFCkl+KlFTdlnhsGlAgn041wwM52QXtpPPbSdfT
+	 4V72M3edpKrdNfxpCsapHqMvmOXp5LPF23zskPv4XC7Z2KK6xNZILV91ChNSJjlnCb
+	 49h6x5hin4s0nHBqKbFQc/5fhAYrN0ONIPnoAk7rR27ug5D74EJYAw3BVfU8HC1bpn
+	 A+AVBOPNB2mNiMyaBeDCMdS51pUqlbxQGpc7TlHA4bCWkbzk19GyrNtUnFkVOimW89
+	 lZDKeAuzY1OiGNkzJEsbvj8VbOVJUoOwwPHDFSzuangJr7fOXk3QTHqx/F7nw5KAzG
+	 DenLNRw1NnGaA==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-254976d3327so19548fac.1;
+        Wed, 12 Jun 2024 11:51:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWD7bBO3c0v1xD9iCOlFHnUvXr+q4DkIeMm5Hm6C05xJtJ1D0okop9eLtcpBNk2Hluzimwej6TIt/H2T7s=@vger.kernel.org, AJvYcCWjJTrIvFjXLDJkbejA1WELkqn47HItg82gqfHHydbZXKuY2K5K5iNrdQXtkXxV/qWsmNe9Gr5zXwuVXaGh@vger.kernel.org, AJvYcCXEAjv9tH1DHeeLDBWs2aQq79Qj7qxinTn8Y0X/o9TmvnOQz1FnM9NiZrSHI4QHt96X5obJgKPAt9Iq@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/yU1yMXu4xjOH5/MjKzCqBDROgqgQJ9NKYmzXZE7ehMrXwmFJ
+	vVD/+MZBkF72FaSg8WG5GfVmSgGKYC3LuFFNwXUuZTKr0A8/tsPktMYacz7W5ihG5O5mJPZnyjo
+	JBPb4E5Jjm+jvbPxxCmCkDXX9xrc=
+X-Google-Smtp-Source: AGHT+IEtq+QLYCLEoPLhjiMSdNXsvIPL66kpfPyfQltBzCkynedzwfytjGdmPZCT4d4KvksfnkCFYYka4Poy9hD5/aA=
+X-Received: by 2002:a05:6870:c1cc:b0:24f:e599:9168 with SMTP id
+ 586e51a60fabf-25514b3b43dmr2877359fac.1.1718218269198; Wed, 12 Jun 2024
+ 11:51:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <e9062095-b312-44df-a9e3-0b09f3ec9eff@redhat.com>
+ <4b387b4d-f778-4891-9f07-df5fc0a093cd@redhat.com> <ZmmQLt7wB-yGQBTw@kekkonen.localdomain>
+ <CAJZ5v0ii3WFQRPdfHeeW4M9kXSWDVxxxy02zThcf25mjNwqDAw@mail.gmail.com>
+ <ZmmT56Cyvb2FCyav@kekkonen.localdomain> <CAJZ5v0hOBggQR_=uA3VuhruQnZihVxHHovpTz4=qfcbiSunsYw@mail.gmail.com>
+ <ZmmY3he9vfWVWU3I@kekkonen.localdomain> <CAJZ5v0j7HTfg1wY+B+7vhE6tBKPVHMuu_MsFHjaLK70VS_cNEw@mail.gmail.com>
+ <ZmnnFueL-Cgw5Eqp@kekkonen.localdomain> <CAJZ5v0gtK9yusimCOVV2dGkQWDwQ6=r=vfbgC-eE60Cg-5wk_Q@mail.gmail.com>
+ <ZmnrtIEla9R24egi@kekkonen.localdomain>
+In-Reply-To: <ZmnrtIEla9R24egi@kekkonen.localdomain>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 12 Jun 2024 20:50:57 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hXU62QiXxWfkbiovciNNEk0h49kRdScmz5qONTMDA+4A@mail.gmail.com>
+Message-ID: <CAJZ5v0hXU62QiXxWfkbiovciNNEk0h49kRdScmz5qONTMDA+4A@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ACPI: scan: Ignore Dell XPS 9320 camera graph port nodes
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Hans de Goede <hdegoede@redhat.com>, 
+	Genes Lists <lists@sapience.com>, linux-kernel@vger.kernel.org, mchehab@kernel.org, 
+	hverkuil-cisco@xs4all.nl, laurent.pinchart@ideasonboard.com, 
+	wentong.wu@intel.com, linux-media@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Sakari,
 
-The gpio_suffixes array is defined in the gpiolib.h header. This means
-the array is stored in .rodata of every compilation unit that includes
-it. Put the definition for the array in gpiolib.c and export just the
-symbol in the header. We need the size of the array so expose it too.
+On Wed, Jun 12, 2024 at 8:41=E2=80=AFPM Sakari Ailus
+<sakari.ailus@linux.intel.com> wrote:
+>
+> Hi Rafael,
+>
+> On Wed, Jun 12, 2024 at 08:29:21PM +0200, Rafael J. Wysocki wrote:
+> > Hi Sakari,
+> >
+> > On Wed, Jun 12, 2024 at 8:21=E2=80=AFPM Sakari Ailus
+> > <sakari.ailus@linux.intel.com> wrote:
+> > >
+> > > Hi Rafael,
+> > >
+> > > On Wed, Jun 12, 2024 at 03:06:53PM +0200, Rafael J. Wysocki wrote:
+> > > > Hi Sakari,
+> > > >
+> > > > On Wed, Jun 12, 2024 at 2:47=E2=80=AFPM Sakari Ailus
+> > > > <sakari.ailus@linux.intel.com> wrote:
+> > > > >
+> > > > > Hi Rafael,
+> > > > >
+> > > > > On Wed, Jun 12, 2024 at 02:32:26PM +0200, Rafael J. Wysocki wrote=
+:
+> > > > > > > > > > I just hit the same problem on another Dell laptop. It =
+seems that
+> > > > > > > > > > all Dell laptops with IPU6 camera from the Tiger Lake, =
+Alder Lake
+> > > > > > > > > > and Raptor Lake generations suffer from this problem.
+> > > > > > > > > >
+> > > > > > > > > > So instead of playing whack a mole with DMI matches we =
+should
+> > > > > > > > > > simply disable ACPI MIPI DISCO support on all Dell lapt=
+ops
+> > > > > > > > > > with those CPUs. I'm preparing a fix for this to replac=
+e
+> > > > > > > > > > the DMI matching now.
+> > > > > > > > >
+> > > > > > > > > DisCo for Imaging support shouldn't be dropped on these s=
+ystems, and this
+> > > > > > > > > isn't what your patch does either. Instead the ACPI graph=
+ port nodes (as
+> > > > > > > > > per Linux specific definitions) are simply dropped, i.e. =
+this isn't related
+> > > > > > > > > to DisCo for Imaging at all.
+> > > > > > > >
+> > > > > > > > So it looks like the changelog of that patch could be impro=
+ved, right?
+> > > > > > >
+> > > > > > > Well, yes. The reason the function is in the file is that nea=
+rly all camera
+> > > > > > > related parsing is located there, not that it would be relate=
+d to DisCo for
+> > > > > > > Imaging as such.
+> > > > > >
+> > > > > > So IIUC the camera graph port nodes are created by default with=
+ the
+> > > > > > help of the firmware-supplied information, but if that is defec=
+tive a
+> > > > > > quirk can be added to skip the creation of those ports in which=
+ case
+> > > > > > they will be created elsewhere.
+> > > > > >
+> > > > > > Is this correct?
+> > > > >
+> > > > > Yes.
+> > > >
+> > > > So it would be good to add a comment to this effect to
+> > > > acpi_nondev_subnode_extract() where acpi_graph_ignore_port() is
+> > > > called.
+> > > >
+> > > > And there is a somewhat tangential question that occurred to me: If
+> > > > the nodes are created elsewhere when acpi_graph_ignore_port() is tr=
+ue,
+> > > > why is it necessary to consult the platform firmware for the
+> > > > information on them at all?  Wouldn't it be better to simply always
+> > > > create them elsewhere?
+> > >
+> > > Simple answer: for the same reason why in general system specific
+> > > information comes from ACPI and not from platform data compiled into =
+the
+> > > kernel.
+> > >
+> > > Of course this is technically possible but it does not scale.
+> >
+> > While I agree in general, in this particular case the platform data
+> > compiled into the kernel needs to be present anyway, at least
+> > apparently, in case the data coming from the platform firmware is
+> > invalid.
+> >
+> > So we need to do 3 things: compile in the platform data into the
+> > kernel and expect the platform firmware to provide the necessary
+> > information, and add quirks for the systems where it is known invalid.
+> >
+> > Isn't this a bit too much?
+>
+> Isn't this pretty much how ACPI works currently?
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/gpio/gpiolib-acpi.c | 4 ++--
- drivers/gpio/gpiolib-of.c   | 4 ++--
- drivers/gpio/gpiolib.c      | 4 ++++
- drivers/gpio/gpiolib.h      | 3 ++-
- 4 files changed, 10 insertions(+), 5 deletions(-)
+No, we don't need to put platform data into the kernel for every bit
+of information that can be retrieved from the platform firmware via
+ACPI.
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index bb063b81cee6..69cd2be9c7f3 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -976,7 +976,7 @@ __acpi_find_gpio(struct fwnode_handle *fwnode, const char *con_id, unsigned int
- 	int i;
- 
- 	/* Try first from _DSD */
--	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
-+	for (i = 0; i < gpio_suffix_count; i++) {
- 		if (con_id) {
- 			snprintf(propname, sizeof(propname), "%s-%s",
- 				 con_id, gpio_suffixes[i]);
-@@ -1453,7 +1453,7 @@ int acpi_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
- 	unsigned int i;
- 
- 	/* Try first from _DSD */
--	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
-+	for (i = 0; i < gpio_suffix_count; i++) {
- 		if (con_id)
- 			snprintf(propname, sizeof(propname), "%s-%s",
- 				 con_id, gpio_suffixes[i]);
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index d75f6ee37028..49d533df2cd9 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -103,7 +103,7 @@ int of_gpio_count(const struct fwnode_handle *fwnode, const char *con_id)
- 	if (ret > 0)
- 		return ret;
- 
--	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
-+	for (i = 0; i < gpio_suffix_count; i++) {
- 		if (con_id)
- 			snprintf(propname, sizeof(propname), "%s-%s",
- 				 con_id, gpio_suffixes[i]);
-@@ -676,7 +676,7 @@ struct gpio_desc *of_find_gpio(struct device_node *np, const char *con_id,
- 	unsigned int i;
- 
- 	/* Try GPIO property "foo-gpios" and "foo-gpio" */
--	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
-+	for (i = 0; i < gpio_suffix_count; i++) {
- 		if (con_id)
- 			snprintf(prop_name, sizeof(prop_name), "%s-%s", con_id,
- 				 gpio_suffixes[i]);
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 0ec82ac7f0f4..ed620442f32c 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/acpi.h>
-+#include <linux/array_size.h>
- #include <linux/bitmap.h>
- #include <linux/cleanup.h>
- #include <linux/compat.h>
-@@ -89,6 +90,9 @@ DEFINE_STATIC_SRCU(gpio_devices_srcu);
- static DEFINE_MUTEX(gpio_machine_hogs_mutex);
- static LIST_HEAD(gpio_machine_hogs);
- 
-+const char *const gpio_suffixes[] = { "gpios", "gpio" };
-+const size_t gpio_suffix_count = ARRAY_SIZE(gpio_suffixes);
-+
- static void gpiochip_free_hogs(struct gpio_chip *gc);
- static int gpiochip_add_irqchip(struct gpio_chip *gc,
- 				struct lock_class_key *lock_key,
-diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
-index 48e086c2f416..a75635891c6f 100644
---- a/drivers/gpio/gpiolib.h
-+++ b/drivers/gpio/gpiolib.h
-@@ -90,7 +90,8 @@ static inline struct gpio_device *to_gpio_device(struct device *dev)
- }
- 
- /* gpio suffixes used for ACPI and device tree lookup */
--static __maybe_unused const char * const gpio_suffixes[] = { "gpios", "gpio" };
-+extern const char *const gpio_suffixes[];
-+extern const size_t gpio_suffix_count;
- 
- /**
-  * struct gpio_array - Opaque descriptor for a structure of GPIO array attributes
--- 
-2.43.0
+The vast majority of information in the ACPI tables is actually
+correct and if quirks are needed, they usually are limited in scope.
 
+Where it breaks is when the ACPI tables are not sufficiently validated
+by OEMs which mostly happens when the data in question are not needed
+to pass some sort of certification or admission tests.
+
+Which unfortunately is related to whether or not Windows uses those data.
+
+> We can support systems that contain correct DSDT description of cameras
+> without platform data. I was, until recently, only aware of Dell XPS 9315
+> that has incorrect camera description and that based on recent findings
+> seems to extend to other Dell systems with IPU6 (Hans's patches have the
+> details).
+>
+> Still this is not a reason to break systems that have correct camera
+> description and expect the users to report them so they can be listed as
+> such.
+
+Well, what do you mean by "break".  I thought that platform data
+needed to support them were built into the kernel, weren't they?
+
+> >
+> > > On laptops shipped with Windows some additional information is also a=
+vailable
+> > > from ACPI via custom objects but a lot of information is just hard co=
+ded into
+> > > the IPU bridge as well as the INT3472 driver.
+> >
+> > Well, that's how it goes.
+>
+> Yes, but is it desirable?
+
+No, it is not desirable, but the way to address it is to convince the
+Windows people to stop doing this and use standard-defined data from
+the ACPI tables instead.  It cannot be addressed by Linux unilaterally
+trying to do the right thing, because there are OEMs who don't care
+about Linux.
 
