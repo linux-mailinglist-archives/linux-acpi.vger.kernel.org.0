@@ -1,172 +1,96 @@
-Return-Path: <linux-acpi+bounces-6359-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6360-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A84905F2F
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 01:26:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4EA9061AC
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 04:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 277E1B20ECE
-	for <lists+linux-acpi@lfdr.de>; Wed, 12 Jun 2024 23:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C642281718
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 02:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B15A12C80F;
-	Wed, 12 Jun 2024 23:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="KF9jPSBE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA2B5103F;
+	Thu, 13 Jun 2024 02:19:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BFE84A36;
-	Wed, 12 Jun 2024 23:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0812A273FE
+	for <linux-acpi@vger.kernel.org>; Thu, 13 Jun 2024 02:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718234794; cv=none; b=VDDH/CSzUhLqCUlGimQxxUGIT5IzUdxx5cf1qu3hwXWw0skSv4Dyesa/rDJ9hkipJRNj1azq/C7foGba9z/r9xhjvYipwtnYfvmyp3sOuE5CeBU5ggbBlhxe9PoekZhGA/7iXI/cn71ySX1bCEXqERns2fQgkUe9Ap7k+ol7E3E=
+	t=1718245177; cv=none; b=MpdOmdfzIoGR139lTmaLxXTz94dtgDwYbLBJL31TL+D8iard/45MwlHw8dWB2A+YOTev5BwfG/2TQ5ypYrmDuh2N7sqQDpAr+um8Mup3EF5hoFuGB1Yjbr1ubYf+6ZI9JOj9DUd73Nfy+DR4BvwMtM/ZKhIqOuBPOhCyjCBdhNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718234794; c=relaxed/simple;
-	bh=aLnUBqPtUeBv32NbeLVNmgLi8ew95brTEfYYJlJWmEM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ISiAlt9ABRICoh5LdBwS5KuBRABhU4CLcwm/+o0dkkmiNGUwmr0Ts5z9+aNuD7qm4lavwhbyihZ1GwfJgxpwqCQKiJbg30oS88+3YtMlsc4Uis3iwJcrIccbuQfjnUVV0hmP0/Pdv69JDOhyq18LF1t4A+w/jFOo5/0BAdo07AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=KF9jPSBE; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.17.2/8.17.1) with ESMTPSA id 45CNPftp3933198
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 12 Jun 2024 16:25:42 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 45CNPftp3933198
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024051501; t=1718234743;
-	bh=SaATviG6Z81UgEioCPxN9VS+E0yDGnphYvOlmf9J1es=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=KF9jPSBE0HgW6q2T+PnT8ZrKRIq/1w1yA2lERYUpTk0mvJnKTRoZ/s6e2WTNmsBvu
-	 bane9gvKiCqNfsQZu6Zou2esQBN+Se+uKDSjd+lVt4YqhJA97uEMT0Xz1JMwHrRc78
-	 BYsmaRDenE593mlF1op7w5q31M3WCf/+F9N1ls4tDCI25tuNiqNNCi2wTn8F8ltiMI
-	 Do+1jRWckpsiW09/FKMgRroup8rCGQZ8m5s6WJrQ2LWwRFWbUBN9k2XKbwbIs0DwyR
-	 v4X8SRVrEL48m/RSHe7ElSxkO31u/qnXEYCL2t9OL1WU/nPKYGs+PAc/3EkMw2ZV4U
-	 HFEVTl5DhqKsg==
-Date: Wed, 12 Jun 2024 16:25:41 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-CC: Borislav Petkov <bp@alien8.de>, Nikolay Borisov <nik.borisov@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Elena Reshetova <elena.reshetova@intel.com>,
-        Jun Nakajima <jun.nakajima@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        "Kalra, Ashish" <ashish.kalra@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        "Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-        Baoquan He <bhe@redhat.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org,
-        linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCHv11_05/19=5D_x86/relocate=5Fkern?=
- =?US-ASCII?Q?el=3A_Use_named_labels_for_less_confusion?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <addbd29a-66dc-4180-ae45-ef038c2249d1@citrix.com>
-References: <20240528095522.509667-1-kirill.shutemov@linux.intel.com> <20240528095522.509667-6-kirill.shutemov@linux.intel.com> <1e1d1aea-7346-4022-9f5f-402d171adfda@suse.com> <t3zx4f6ynru7qp4oel4syza2alcuxz7q7hxqgf2lxusgobnsnh@vtnecqrsxci5> <748d3b70-60b4-44e0-bd81-9117f1ab699d@zytor.com> <20240604091503.GQZl7bF14qTSAjqUhN@fat_crate.local> <ehttxqgg7zhbgty5m5uxkduj3xf7soonrzfu4rfw7hccqgdydl@afki66pnree5> <5c8b3ee9-64c2-4ff3-9cca-ba2672b9635e@zytor.com> <nxllu5wfhvfvorxbbt6ll3lc2mr47lw7sduszfawhtryqgtyrd@3qgtci7ocah6> <addbd29a-66dc-4180-ae45-ef038c2249d1@citrix.com>
-Message-ID: <587E6BF3-4200-442D-95F2-156A96F6FDD8@zytor.com>
+	s=arc-20240116; t=1718245177; c=relaxed/simple;
+	bh=MVhY2fCnsIdzEkNS7RZGAmPaxB4QbpXrUcZR5NaVC6o=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kKwogl3aqubPTQDMA4Uz/YhGJ3UBiHDbsu7hSmFSL4xsbqspFNh4xur0ymwiubQKRkdn8bul0UDWumYC8kF+tSWx7Ojq7GHC2bNYR+J3SOcqeos4F/hB4oHqP281bWi3KE0yYuQzhFv8n6iUb6XDUruMOPwBRH805q3xPHWX5V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4W05fj3m4VzdcYt;
+	Thu, 13 Jun 2024 10:18:05 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 35CE51402CA;
+	Thu, 13 Jun 2024 10:19:33 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 13 Jun 2024 10:19:32 +0800
+Subject: Re: [PATCH 0/3] ACPI: arm64: some cleanups
+To: Sudeep Holla <sudeep.holla@arm.com>, <linux-acpi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+CC: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>
+References: <20240605131458.3341095-1-sudeep.holla@arm.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <46b65718-af88-05d5-24f9-1254a692ecbf@huawei.com>
+Date: Thu, 13 Jun 2024 10:19:32 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240605131458.3341095-1-sudeep.holla@arm.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
-On June 12, 2024 4:06:07 PM PDT, Andrew Cooper <andrew=2Ecooper3@citrix=2Ec=
-om> wrote:
->On 12/06/2024 10:22 am, Kirill A=2E Shutemov wrote:
->> On Tue, Jun 11, 2024 at 11:26:17AM -0700, H=2E Peter Anvin wrote:
->>> On 6/4/24 08:21, Kirill A=2E Shutemov wrote:
->>>>  From b45fe48092abad2612c2bafbb199e4de80c99545 Mon Sep 17 00:00:00 20=
-01
->>>> From: "Kirill A=2E Shutemov" <kirill=2Eshutemov@linux=2Eintel=2Ecom>
->>>> Date: Fri, 10 Feb 2023 12:53:11 +0300
->>>> Subject: [PATCHv11=2E1 06/19] x86/kexec: Keep CR4=2EMCE set during ke=
-xec for TDX guest
->>>>
->>>> TDX guests run with MCA enabled (CR4=2EMCE=3D1b) from the very start=
-=2E If
->>>> that bit is cleared during CR4 register reprogramming during boot or
->>>> kexec flows, a #VE exception will be raised which the guest kernel
->>>> cannot handle it=2E
->>>>
->>>> Therefore, make sure the CR4=2EMCE setting is preserved over kexec to=
-o and
->>>> avoid raising any #VEs=2E
->>>>
->>>> The change doesn't affect non-TDX-guest environments=2E
->>>>
->>>> Signed-off-by: Kirill A=2E Shutemov <kirill=2Eshutemov@linux=2Eintel=
-=2Ecom>
->>>> ---
->>>>   arch/x86/kernel/relocate_kernel_64=2ES | 17 ++++++++++-------
->>>>   1 file changed, 10 insertions(+), 7 deletions(-)
->>>>
->>>> diff --git a/arch/x86/kernel/relocate_kernel_64=2ES b/arch/x86/kernel=
-/relocate_kernel_64=2ES
->>>> index 085eef5c3904=2E=2E9c2cf70c5f54 100644
->>>> --- a/arch/x86/kernel/relocate_kernel_64=2ES
->>>> +++ b/arch/x86/kernel/relocate_kernel_64=2ES
->>>> @@ -5,6 +5,8 @@
->>>>    */
->>>>   #include <linux/linkage=2Eh>
->>>> +#include <linux/stringify=2Eh>
->>>> +#include <asm/alternative=2Eh>
->>>>   #include <asm/page_types=2Eh>
->>>>   #include <asm/kexec=2Eh>
->>>>   #include <asm/processor-flags=2Eh>
->>>> @@ -145,14 +147,15 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
->>>>   	 * Set cr4 to a known state:
->>>>   	 *  - physical address extension enabled
->>>>   	 *  - 5-level paging, if it was enabled before
->>>> +	 *  - Machine check exception on TDX guest, if it was enabled befor=
-e=2E
->>>> +	 *    Clearing MCE might not be allowed in TDX guests, depending on=
- setup=2E
->>>> +	 *
->>>> +	 * Use R13 that contains the original CR4 value, read in relocate_k=
-ernel()=2E
->>>> +	 * PAE is always set in the original CR4=2E
->>>>   	 */
->>>> -	movl	$X86_CR4_PAE, %eax
->>>> -	testq	$X86_CR4_LA57, %r13
->>>> -	jz	=2ELno_la57
->>>> -	orl	$X86_CR4_LA57, %eax
->>>> -=2ELno_la57:
->>>> -
->>>> -	movq	%rax, %cr4
->>>> +	andl	$(X86_CR4_PAE | X86_CR4_LA57), %r13d
->>>> +	ALTERNATIVE "", __stringify(orl $X86_CR4_MCE, %r13d), X86_FEATURE_T=
-DX_GUEST
->>>> +	movq	%r13, %cr4
->>> If this is the case, I don't really see a reason to clear MCE per se a=
-s I'm
->>> guessing a machine check here will be fatal anyway? It just changes th=
-e
->>> method of death=2E
->> Andrew had a strong opinion on method of death here=2E
->>
->> https://lore=2Ekernel=2Eorg/all/1144340e-dd95-ee3b-dabb-579f9a65b3c7@ci=
-trix=2Ecom
->
->Not sure if I intended it to come across that strongly, but given a
->choice, the !CR4=2EMCE death is cleaner because at least you're not
->interpreting garbage and trying to use it as a valid IDT=2E
->
->~Andrew
+On 2024/6/5 21:14, Sudeep Holla wrote:
+> Hi,
+> 
+> Couple of patches to move the ACPI arch specific code into
+> drivers/acpi/arm64/ as they are not strictly arch specific to
+> keep them under arch/arm64.
+> 
+> Regards,
+> Sudeep
+> 
+> Sudeep Holla (3):
+>    ACPI: arm64: Sort entries alphabetically
+>    arm64: cpuidle: Move ACPI specific code into drivers/acpi/arm64/
+>    arm64: FFH: Move ACPI specific code into drivers/acpi/arm64/
+> 
+>   arch/arm64/kernel/Makefile                    |   1 -
+>   arch/arm64/kernel/acpi.c                      | 105 -----------------
+>   drivers/acpi/arm64/Makefile                   |   6 +-
+>   .../kernel => drivers/acpi/arm64}/cpuidle.c   |   4 -
+>   drivers/acpi/arm64/ffh.c                      | 107 ++++++++++++++++++
+>   5 files changed, 111 insertions(+), 112 deletions(-)
+>   rename {arch/arm64/kernel => drivers/acpi/arm64}/cpuidle.c (97%)
+>   create mode 100644 drivers/acpi/arm64/ffh.c
 
-Zorch the IDT if it isn't valid?
+Looks good to me, and I did a successful compile test,
+
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+
+Thanks
+Hanjun
 
