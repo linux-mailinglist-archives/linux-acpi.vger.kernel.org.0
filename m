@@ -1,95 +1,119 @@
-Return-Path: <linux-acpi+bounces-6362-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6363-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8534890632C
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 06:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D811E906397
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 07:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9B902855A8
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 04:54:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CCF284BD7
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 05:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C11A132804;
-	Thu, 13 Jun 2024 04:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0138C133402;
+	Thu, 13 Jun 2024 05:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlloofCB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jnt91ElF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18322446CF;
-	Thu, 13 Jun 2024 04:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A09A18622;
+	Thu, 13 Jun 2024 05:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718254484; cv=none; b=NfkgQrJhecKoCy3P417oEuVxZxTqRNPavmvTlpTJEuWNGtoD0hsughgoTfJdBWIVUhgoTn7y2MvnP3udsIP6zniyzlkDR7MRD8o5VvcSsY7ZXn5xiZ0XhdaMsPDEfdWdAObtSTzOuBMbhwib/mwVfuWqfpYdXw0XHCBbuzqGkCs=
+	t=1718257534; cv=none; b=bNkcrAue5AuAEwg2N4lXEq6ikaRzq8NqMXcUKdyZ5pS13ZJsgrXGDreu3lg+fznPNXbitSK7FxWpV3vNJYkCSyYv7hEx691uhFzh56tE5Qp3dTMkX/GJtjOSA52OUuTpLpFq50vizRsOAbHB3KEDkKYhTCEA8bLuUlAvyBLbZ+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718254484; c=relaxed/simple;
-	bh=J+BhI/zGBK77styQbHQsQK52iwfQ8DKIrfeE1p8QhEA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UtxD1DZwSNj0bDws9d1zJG75Tuy3QE/ryo0bkWb4zLNHYTNvtjOPLcm5mhYnhgG1rpcGaA5zAzg5gdqqx8RMVpu5MpgF1E1VHhaq/8e9Zx882SSQhep3pysnQvDR2wrRvEhbc/M94OOUior3JjMgs69vnpVjhg2W7kqVK68wRrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlloofCB; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718254482; x=1749790482;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=J+BhI/zGBK77styQbHQsQK52iwfQ8DKIrfeE1p8QhEA=;
-  b=DlloofCBT7GzZkeCkfCh9mjmnRB6hDX+TOIw7aUaSqMCmReQBmmybAFl
-   363Es5YeFRkT+Yoe8h3tdoNFGmqdu01vlze1l++Vk/Sr0chA9CHFafqF3
-   834EY9M4a24o4WWZX7la+Ct6jRpIAoAfPvDNBbvP6lcPZ9CBYR0Ych+Ti
-   brj6jY55VA683WDhrkmej1okluqvIuBVCNNqnySYy22Bo1wR5lN1hNqNI
-   sNCk3j5xyRHsYGHkxYAo5nfRMhuj6Hy09inf5Kc8mRrubPB4MsiD4AKZ3
-   asfFu4aOk1CenchNdKPIKoY1nQzza0JbQXT0cIueoyOFUqxi4qy3BSLk1
-   A==;
-X-CSE-ConnectionGUID: mm3AO8wOSsuiqwLKPMqXuw==
-X-CSE-MsgGUID: Q/rJnvHfTiKh2eBwLbqBFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="40457214"
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; 
-   d="scan'208";a="40457214"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 21:54:41 -0700
-X-CSE-ConnectionGUID: OA/DktYHQE2CLCRzrZj1LA==
-X-CSE-MsgGUID: 6F+U8T/ESu2lCHcqALZ8wA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; 
-   d="scan'208";a="77465931"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 12 Jun 2024 21:54:40 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 8848612C; Thu, 13 Jun 2024 07:54:38 +0300 (EEST)
-Date: Thu, 13 Jun 2024 07:54:38 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH] gpiolib: put gpio_suffixes in a single compilation unit
-Message-ID: <20240613045438.GP1421138@black.fi.intel.com>
-References: <20240612184821.58053-1-brgl@bgdev.pl>
+	s=arc-20240116; t=1718257534; c=relaxed/simple;
+	bh=KsBXxwYITcXSdlkMS6rL3MY1wyPo+d0h2FTlBf/5jvk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=rjeVqLLNiyvC11E9IjfRyZzHfqI9ZgfhHwHgY1xBdWzK0yge4Dtk6Jax8tKAgaIBTLcNGN3E/Bz020z++auYZSOt7GqaIMlQEKafCq38L87K8iVS7Q1tVpE6/8Gkl4Tt65JdWhju9UQs7YNtqnNrCOX4gitdaEqNfn9DAmaCjm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jnt91ElF; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CKn6oZ018799;
+	Thu, 13 Jun 2024 05:45:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=PUfH8gcBQoVjuIp6zSr1uO
+	GHiSZo5qY1U/hx6A6Gfhg=; b=jnt91ElFiT7JCIYLK6tGLz/P9VXnz4Kb1q6h/J
+	HYq5jJ33OfeDQ5NQCJcCR0C7cTeEEgk1P4VNjc8px803cvadjfW0Qb44mQwHa1sq
+	KTXXhf5sUAVXmm67GbpU8KfqO3Ht1RrlqcXYLZwYhBNe7729oGK9LIXQbtsUZtJ9
+	mUWGjZr3+ilFQ5LRDEiKlJVGFMBLmiAux/Y9oQAPcI8RCUYernpiav2QUdK2Yt4f
+	gh7tRRtLpf4u1W6xeQm3DAbdPdl/O9mHUMuHyogYal+VrbJnhVRCCffj14hss9Ee
+	RyHwUhkK9yGVm6uZ2PsUiE49fdgIQhahDH5MHliFKFyGsMgQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yqbfq9pfy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 05:45:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45D5jQAw001163
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 05:45:26 GMT
+Received: from [169.254.0.1] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
+ 2024 22:45:26 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Wed, 12 Jun 2024 22:45:23 -0700
+Subject: [PATCH] PCI: hotplug: add missing MODULE_DESCRIPTION() macro
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240612184821.58053-1-brgl@bgdev.pl>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240612-md-drivers-pci-hotplug-v1-1-2b30d14d783d@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAHOHamYC/x3MQQqDMBBA0avIrDuQhBJsr1K6iMnUDGgMMyqCe
+ PemXb7F/ycoCZPCsztBaGflpTTYWwcxhzIScmoGZ9zdeOtwTpiEdxLFGhnzstZpG9G74Olhe7K
+ 9gRZXoQ8f//Hr3TwEJRwklJh/u4nLduAcdCWB6/oCiawra4cAAAA=
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: nXFxAKxtMNZO2108Dfncd7t5Tyu9lZ13
+X-Proofpoint-ORIG-GUID: nXFxAKxtMNZO2108Dfncd7t5Tyu9lZ13
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_12,2024-06-13_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ spamscore=0 phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406130038
 
-On Wed, Jun 12, 2024 at 08:48:21PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> The gpio_suffixes array is defined in the gpiolib.h header. This means
-> the array is stored in .rodata of every compilation unit that includes
-> it. Put the definition for the array in gpiolib.c and export just the
-> symbol in the header. We need the size of the array so expose it too.
-> 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+With ARCH=arm64, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pci/hotplug/acpiphp_ampere_altra.o
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Add the missing invocation of the MODULE_DESCRIPTION() macro.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/pci/hotplug/acpiphp_ampere_altra.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/pci/hotplug/acpiphp_ampere_altra.c b/drivers/pci/hotplug/acpiphp_ampere_altra.c
+index 3fddd04851b6..f5c9e741c1d4 100644
+--- a/drivers/pci/hotplug/acpiphp_ampere_altra.c
++++ b/drivers/pci/hotplug/acpiphp_ampere_altra.c
+@@ -124,4 +124,5 @@ static struct platform_driver altra_led_driver = {
+ module_platform_driver(altra_led_driver);
+ 
+ MODULE_AUTHOR("D Scott Phillips <scott@os.amperecomputing.com>");
++MODULE_DESCRIPTION("ACPI PCI Hot Plug Extension for Ampere Altra");
+ MODULE_LICENSE("GPL");
+
+---
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+change-id: 20240612-md-drivers-pci-hotplug-62a6e918e180
+
 
