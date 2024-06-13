@@ -1,116 +1,110 @@
-Return-Path: <linux-acpi+bounces-6379-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6380-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86B2907C09
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 21:07:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550E2907C10
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 21:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C141C24B7A
-	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 19:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3911F2431B
+	for <lists+linux-acpi@lfdr.de>; Thu, 13 Jun 2024 19:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E211D137905;
-	Thu, 13 Jun 2024 19:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA80014B06A;
+	Thu, 13 Jun 2024 19:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cP2izgT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oz7YBVwB"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71B9F9F8;
-	Thu, 13 Jun 2024 19:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC65514A092;
+	Thu, 13 Jun 2024 19:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718305665; cv=none; b=fY8tPkxC0Jdw0hFLmygmHpYB3cONjXX42cuJPI57IX9y2YJPgkCGrHDLe1qdNKkDwB60GcYNT1Cc8ENi6fL/7XeWtPNfPs0aJYp3ujsxFJXeXDJVxo0AzAC0DmcwMZUtU6XIX80WQVkvPTVy85z8xaiyBF2fea52vQGBHyIB9HM=
+	t=1718305884; cv=none; b=AQMa2eBBwUsZnvfDeKtliiynqfr6KQzECDor5XsQDIS0+aW8IoXqmgSTA2s5wNOSN/yrvsnH1wqu/Pt8UL1yiGA2EAlq6Lmeh/ptXZL41DwzIOpbKhps9naP9Nkt8IWvdFqEnDRDIZmzW6wZAP/vC3RDWyYMghLJ82oTVDhDTNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718305665; c=relaxed/simple;
-	bh=rBIdEYd5jFu0+smwdlfbR/AfIbyZXKk7Vhu6cLGSxZk=;
+	s=arc-20240116; t=1718305884; c=relaxed/simple;
+	bh=aSYiRz3VNxWG8/XIWBGJN3+y8R6sjrC4sTBSoiBgCak=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h/J8PYNZnwQ9BaGSkCpgQQRBlvgmhov8KMiHMe1N6M3fj7Ue5bFy9xhN9F/lJDtOE157neWp+k0O4y4S/HfhTQ8kul2GGhqg/KHgf77IUvAmeOexrtOy0++i7F4MefHnKuuEYwopIxAPD5GfclUmuI4AE+22CpWpzmJz+GktEjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cP2izgT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1BAC32786;
-	Thu, 13 Jun 2024 19:07:45 +0000 (UTC)
+	 To:Cc:Content-Type; b=di8hKlEgVRfvFOa9PgPuMUQWxHcJKODgApa/4xPb5un8jQmCUcWHRkWaqvfvFSnkOB6gvsuYs7gyxemk5LYNCb4N8Hb9YM76IVYZZ5W1o8yJX1Bt/msBnAAxpkr8Gp+symSWtFvsqwexiRIyghB51u+NB9L8sBYyZsdrzdebTEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oz7YBVwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492CDC3277B;
+	Thu, 13 Jun 2024 19:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718305665;
-	bh=rBIdEYd5jFu0+smwdlfbR/AfIbyZXKk7Vhu6cLGSxZk=;
+	s=k20201202; t=1718305884;
+	bh=aSYiRz3VNxWG8/XIWBGJN3+y8R6sjrC4sTBSoiBgCak=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cP2izgT35cGD+7lFMocFlkB/VSyZC8KX3kPDZLWLH3aWldwNIfgPDoMmYvdP1pmrH
-	 PcHFQEUbPAKyC0V2PYUyUEOcPTsOKFYGDyeD8yLBgezUeKThmmJSubnzw7BW7PMMDU
-	 Yestw4SGflGTMTixqwLiqXQo6EPSUIDo2kehVkazTKQDYjBcYfP1d0sbIYairUEBeh
-	 IfNZQOMXjrtCpk1PVtC8Kg9NofkAb7PgjKUeyCScn6kdkGFwWe77UsOtmUhJv0qr76
-	 7ytSVQqQWQfE22Yyj+8C5lZxCTfLeQUWdPBvcFLqMRt64pV9xMSevNEXbMfrDHX6Wr
-	 LPzcw0tWGhCtA==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5bb10cfe7daso93935eaf.2;
-        Thu, 13 Jun 2024 12:07:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW53A8YknTAwDjRoR19kmFJTF6vEGut+ovX2AKaSrHhfU9nRjY8WlBcvAegr5OMILgOsLK2k6vFwF65R782@vger.kernel.org, AJvYcCXe5fz7eVDEClN5J0T7kcMpAg657k1A8BapJWgVNkuKXbBojothjMx78sk1Qe/k6oaHHQlZ1PDn7RZf6Q==@vger.kernel.org, AJvYcCXwBK2L08NttabDf3PdHF29qaw98Wf9OARnh2iwYkIcrrOEXz/gy2Qjm1q9tC4yubXy88iCyzwdLV5IpdY7R78=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu1KjWDdnGsz/znwdy6FBineXqJakSFj+1Len3TxJdEEyx/nzs
-	4+1lQvU/frTyHKe+T9I0MhXhzxWdNxpYoZxE50T/ZKOIUrEFlokB3SvTunE4PEcPpBbmsd8c3j2
-	0VIDwKrUSGf9WK/kXa6wkAsL77ww=
-X-Google-Smtp-Source: AGHT+IGL1poXQ3NOZsQ6DH+8PEMCE1TZqGMdLOTA1ZPa7viW8qftegdQDE3IjM3d4DlSW0uwE7fIglsLzbnco2ThpJs=
-X-Received: by 2002:a4a:de45:0:b0:5ba:ca86:a025 with SMTP id
- 006d021491bc7-5bdad9f3f2dmr636316eaf.0.1718305664456; Thu, 13 Jun 2024
- 12:07:44 -0700 (PDT)
+	b=Oz7YBVwB41CeaIslASHo/smftghebL9mpkOUsBO+VAPKbOOirFOrOsRblBIHocN65
+	 Tno4mzlfoOaiK0Ez1afHh5dcS4gBcSQdh+c2ca1RF6/9EB2y2vwE0sPCYfU+pVoH45
+	 2CXFsCiayvG3cmXVwrgQBFbsoSfbs2HtUlenTdxPVOi8ks4UJDTQfXcHVqsBe0Bt7K
+	 fGWhdwCRxv5cFtHH1Zg9/V92Emp2dcjHebzZRpw4KssIZ4cZovtv2bab6sqoNsEz9R
+	 X7XQHTtjhsuxvQcSH80KukTtvm3xp7ECUVDvc5WYqFKaNbYGcFhZVwrvijoJv3i0Yz
+	 dJwNEG62Y7d1g==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5b3356fd4f3so100907eaf.1;
+        Thu, 13 Jun 2024 12:11:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVLTIjIMSsynkirIqlQg/2bY2U3yIpu5AO7SWciFuqyGja9oOlRcVVZF26UBkcw9RLC8u2Dxg8Eav/TbhKh@vger.kernel.org, AJvYcCVkmw3GF6Tfty5If7I/6qz1k2VxHFqLfw1IxU2v3Jhjwx4TyMOYPhjV9QV/a5ZJ3MaQKLbHyUqhVmqHrSpkNa4=@vger.kernel.org, AJvYcCVzTPpZUDerEMNkXfbF5Wm8LeJsRair3Li43fv8+6GH3C4TZk9uQgzDCqofyzZNiq0up8vlw1uIqZ/ztw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqxDDL2ogZYN8Ynn53PJkjnxBCGkQJtJO9aLAkH30ukuOJ5E1c
+	e6cZqkY4nPS5IIFKNx6SLxcL9m3ivtPM65+dCufeOCqnLtqG7uFCkJ57EhcEErxk50K1YTEayhA
+	0rGnlzSu1rKlDKUzH6O31JKE2zGA=
+X-Google-Smtp-Source: AGHT+IH5P846mxAsiqb0j5TMIN/XoIEj3UuLwuoWyyVGmZPrOQSmmDznRb8UNs4AoDtv8IXQDvuJA+KmjZC5p6mFWfs=
+X-Received: by 2002:a4a:c482:0:b0:5bd:ad72:15d3 with SMTP id
+ 006d021491bc7-5bdadc0905fmr637211eaf.1.1718305883349; Thu, 13 Jun 2024
+ 12:11:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240603-md-drivers-acpi-misc-v1-1-fd7f7de1ce19@quicinc.com>
-In-Reply-To: <20240603-md-drivers-acpi-misc-v1-1-fd7f7de1ce19@quicinc.com>
+References: <20240603-md-drivers-acpi-nfit-v1-1-11a5614a8dbe@quicinc.com> <5224f029-c156-4477-9823-54efd434af98@intel.com>
+In-Reply-To: <5224f029-c156-4477-9823-54efd434af98@intel.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 13 Jun 2024 21:07:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jCtky__pmmZoxpa6WCGVDLukmmDR01nUsSHaT6z3d4vw@mail.gmail.com>
-Message-ID: <CAJZ5v0jCtky__pmmZoxpa6WCGVDLukmmDR01nUsSHaT6z3d4vw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: add missing MODULE_DESCRIPTION() macros
+Date: Thu, 13 Jun 2024 21:11:12 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iw41pe-PbR81eQmNTQ2HDKU6PEHt1TBdsuSq55f_ceXA@mail.gmail.com>
+Message-ID: <CAJZ5v0iw41pe-PbR81eQmNTQ2HDKU6PEHt1TBdsuSq55f_ceXA@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: NFIT: add missing MODULE_DESCRIPTION() macro
 To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc: Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Len Brown <lenb@kernel.org>, nvdimm@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel-janitors@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 3, 2024 at 4:29=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc.=
-com> wrote:
+On Thu, Jun 6, 2024 at 6:10=E2=80=AFPM Dave Jiang <dave.jiang@intel.com> wr=
+ote:
 >
-> make allmodconfig && make W=3D1 C=3D1 reports:
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/acpi_tad.o
-> WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/platform_p=
-rofile.o
 >
-> Add the missing invocations of the MODULE_DESCRIPTION() macro.
 >
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> ---
->  drivers/acpi/acpi_tad.c         | 1 +
->  drivers/acpi/platform_profile.c | 1 +
->  2 files changed, 2 insertions(+)
+> On 6/3/24 6:30 AM, Jeff Johnson wrote:
+> > make allmodconfig && make W=3D1 C=3D1 reports:
+> > WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/acpi/nfit/nfi=
+t.o
+> >
+> > Add the missing invocation of the MODULE_DESCRIPTION() macro.
+> >
+> > Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 >
-> diff --git a/drivers/acpi/acpi_tad.c b/drivers/acpi/acpi_tad.c
-> index 1d670dbe4d1d..b831cb8e53dc 100644
-> --- a/drivers/acpi/acpi_tad.c
-> +++ b/drivers/acpi/acpi_tad.c
-> @@ -27,6 +27,7 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/suspend.h>
->
-> +MODULE_DESCRIPTION("ACPI Time and Alarm (TAD) Device Driver");
->  MODULE_LICENSE("GPL v2");
->  MODULE_AUTHOR("Rafael J. Wysocki");
->
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_prof=
-ile.c
-> index 4a9704730224..d2f7fd7743a1 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -217,4 +217,5 @@ int platform_profile_remove(void)
->  EXPORT_SYMBOL_GPL(platform_profile_remove);
->
->  MODULE_AUTHOR("Mark Pearson <markpearson@lenovo.com>");
-> +MODULE_DESCRIPTION("ACPI platform profile sysfs interface");
->  MODULE_LICENSE("GPL");
->
-> ---
+> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > ---
+> >  drivers/acpi/nfit/core.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > index d4595d1985b1..e8520fb8af4f 100644
+> > --- a/drivers/acpi/nfit/core.c
+> > +++ b/drivers/acpi/nfit/core.c
+> > @@ -3531,5 +3531,6 @@ static __exit void nfit_exit(void)
+> >
+> >  module_init(nfit_init);
+> >  module_exit(nfit_exit);
+> > +MODULE_DESCRIPTION("ACPI NVDIMM Firmware Interface Table (NFIT) module=
+");
+> >  MODULE_LICENSE("GPL v2");
+> >  MODULE_AUTHOR("Intel Corporation");
+> >
+> > ---
 
 Applied as 6.11 material, thanks!
 
