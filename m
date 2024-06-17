@@ -1,107 +1,172 @@
-Return-Path: <linux-acpi+bounces-6463-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6464-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A52090B180
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 16:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8C990B1B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 16:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71BFD1C218A2
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 14:20:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAB021C22CEC
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 14:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21951BD91F;
-	Mon, 17 Jun 2024 13:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2531A2C1B;
+	Mon, 17 Jun 2024 13:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckHG7j9a"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VM4l80fG"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A691BD919;
-	Mon, 17 Jun 2024 13:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C8A19A2AB;
+	Mon, 17 Jun 2024 13:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630882; cv=none; b=dWTy2tBCujn39gUnWyHxYJc3LhOqwUgK9Oi+oB6nc5IXxHdn2BbVoRtgZnO6cZ4NKxn04C0MYmQrGfJBheXAwnkPk8AFoyplanjFsW97H9GijgHBfDq0nILjxtA2YpCUPRPHG3emAFQSFrNpBqsi/Hf9Z9qbbuBjLC+BSnT41g8=
+	t=1718631274; cv=none; b=p4S/suiOUZ4H8cBlFxvqN49OiI+7KVzY+XYMfUhgFvYxh9ssDnOKsPMhGwC2LMUl0CWi0Qp+U1i6I2eDccJK5FgNRZfxjgiM38JqALgowqlltWhLqpw9ZwFwmjc7U0WcPgd4m+PaMeIRgINx0MHDojJSVkZAwLO9hSZoImFspA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630882; c=relaxed/simple;
-	bh=aZuB6AepPPnXSjNK8WfaWoiTw7MpOVW2gI63k/mnaew=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhUUwP+wyu+w9M6o0DkeO5gOsyGWuN6/+6DUZ7di5+G5Dt5jcEAIpxH2UfyQBfx7bZlWsAE246zVPxmEHhAA1dKoy3O+OpxNTSg2XmcXg6GOSn7Sy8R740oFxwTPsXzxgqIbh2jT7zKYv1psV8zXh5sL6q5tdHxZZfxWp4A07P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckHG7j9a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1A5C2BD10;
-	Mon, 17 Jun 2024 13:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630882;
-	bh=aZuB6AepPPnXSjNK8WfaWoiTw7MpOVW2gI63k/mnaew=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckHG7j9aXWCKO6CjSFG5K5s2O0hRjwINmcJAvpp3HFGfHVoZVhbiLMDw+2Hh1Ddf3
-	 PVkapAZO88YyvK29Sr71Iy/ciFbbrUeFpoymlWWBX2+tfllxp/Q+4CYVjD3zlX3j+G
-	 3XH1PYUm3f8iL8qv9wHOVz1CM1En2tu6cSGrIptDa+EzAnPj85RabNBLO1zjdf+eD3
-	 g+MYEJOpadwN+R2GWcPqE0GR7Wt+sMvp4NvTkMkCuux6OUUnrwiMD/DcQVZLADtInc
-	 a4Y3iBpE55i5rxXX4FX1wFB1tYZA72kq6ZbnzbE4PnXEoZIuGIz3iPFfZEJcQylQef
-	 qnC7OVrqPTZtw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 3/9] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Mon, 17 Jun 2024 09:27:48 -0400
-Message-ID: <20240617132757.2590643-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132757.2590643-1-sashal@kernel.org>
-References: <20240617132757.2590643-1-sashal@kernel.org>
+	s=arc-20240116; t=1718631274; c=relaxed/simple;
+	bh=B1S93Pq7+AlrwtbOQxIsMo+PTww/86FdurCQFQ0V7WI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MHTvVzLf7iKnCN7fXRq/IIfRKPpzrk66IxpH+94p4zEVXkhdNL0ULTzlbVCK8d07tnTDZrH3Ur24n88peR+i4XZm9x0rsZThse4wLnnQPQJaczaQMivd/ejLWLgZz5VhMjYdqZCRjYV7MmZ/km2x4m/6tFwizQj4nYv3Z7fYxf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VM4l80fG; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52cc14815c3so272069e87.0;
+        Mon, 17 Jun 2024 06:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718631271; x=1719236071; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xlh1MuJTyolH8Bza5fsBuYqZhmwiMHDDS1wFAKMhcW4=;
+        b=VM4l80fGB9RFdbh+5VV2pwLZwENWZqPeFRsTY9kyrP0jbeyT814MyFksAMOLho2CA9
+         mHF4ENsxe1XkStcKd6vRNYsQI4E1sh1cpr3zdzx1ksjZbDZdRKMkwT5vrSFHs5S0a2SW
+         6HisXGCKFlyp2KzjQlnUyTMkxD+pbCH/VshYyqE/b44OkJ6QX8IXM+rg5o+kMNNBeW+C
+         2tim5PdLCXvOzXDLhEbXrukkX8LNyMU/nYgkF58cMFLsLWM9QpzsJepphorcvoHvNy3/
+         Din6DHbVLKxz0G3dGR7yyFaYrER/6lrWfoB/+kBIsCAVJgZf4j0/YiWuqnCK5X3IheWr
+         WS7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718631271; x=1719236071;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xlh1MuJTyolH8Bza5fsBuYqZhmwiMHDDS1wFAKMhcW4=;
+        b=L/JzjIeE6Irr687QOBeX6QGFxV3klkVtuSjeEgGdmroF+FBWWhpkb69LUqg0jnFLrL
+         pw6x8AdS29+65CZCStbyEchhmQ+DIm/+A4pawkyWRlwfwKzbX7ESdkybdZ/SvZO/HczW
+         EOUWzNN18SiC4J+TOjCyu61PjluGsLVZ3I01ZFA9rmhga2NmLsx2mR470wb5v+LSvJn2
+         wtnjrfF1qZgeeXCmw7xekxhMdooyAp0zkpQOVQjbFqU5UlE3eAvf4VdEwh2S7AZbmQa5
+         V4Qz3OoPzJrLIQN4fpjIiQfi/lZk18gK4pxCUdfq/a7vVB/+4fdXbiX9ykdNqjcysF6Z
+         3dMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCzXVXgvpY+tka1Es2q7rCT6WcfdKWY+vNkVgVPRrsXW0pgcJEtLrkhYx62Uz7lyG67RzI31fJQxTrlvwPnM0yg0q/YUdr1stsDmsWvJ8KlKBrzrxrm4i5pJ4NuRUBPb7PknvkwdIL6w==
+X-Gm-Message-State: AOJu0Yy1aX5QGRmnAzHSeCfF+6sDPxMWyiiRXmaIfU2dDQ+RdwLK6vcH
+	ji3l/+AJUNan3VIfeiohkwlxe4lCMpSD4V4afoxGI8LW6EZ9QzWTwX4SVSV/XdIWHgBp72vmlZW
+	yHV43yhQGqjdGMIBL42ieQ2xlQlw=
+X-Google-Smtp-Source: AGHT+IGxoq/R66V25JVO/HBkhcEl96wxiJMXgGXl/k0tPpvsH4sU61K9F58Kdy+baOZ9nLjumpg95HzDP25Dn6D6uvU=
+X-Received: by 2002:ac2:5551:0:b0:52c:893c:6c2c with SMTP id
+ 2adb3069b0e04-52ca6e6e205mr5569411e87.40.1718631270478; Mon, 17 Jun 2024
+ 06:34:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.316
-Content-Transfer-Encoding: 8bit
+References: <cover.1718268003.git.haibo1.xu@intel.com> <f1f96377b8ecd6e3183f28abf5c9ac21cb9855ea.1718268003.git.haibo1.xu@intel.com>
+In-Reply-To: <f1f96377b8ecd6e3183f28abf5c9ac21cb9855ea.1718268003.git.haibo1.xu@intel.com>
+From: Haibo Xu <xiaobo55x@gmail.com>
+Date: Mon, 17 Jun 2024 21:34:18 +0800
+Message-ID: <CAJve8o=8thBhU3NyTaS6sE9rQ1VR_Qf4O8FkAxpmp1q8P-6VaQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] ACPI: NUMA: change the ACPI_NUMA to a hidden option
+To: Haibo Xu <haibo1.xu@intel.com>
+Cc: sunilvl@ventanamicro.com, arnd@arndb.de, ajones@ventanamicro.com, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Conor Dooley <conor.dooley@microchip.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Charlie Jenkins <charlie@rivosinc.com>, Evan Green <evan@rivosinc.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Zong Li <zong.li@sifive.com>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	Chen Jiahao <chenjiahao16@huawei.com>, James Morse <james.morse@arm.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Zhao Ke <ke.zhao@shingroup.cn>, 
+	Andy Chiu <andy.chiu@sifive.com>, Marc Zyngier <maz@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Alison Schofield <alison.schofield@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Robert Richter <rrichter@amd.com>, Yuntao Wang <ytcoode@gmail.com>, Dave Jiang <dave.jiang@intel.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Armin Wolf <W_Armin@gmx.de>
+@Catalin Marinas @Huacai Chen
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+Could you please have a look at this patch for the ACPI_NUMA config on
+ARM64 and LOONGARCH respectively.
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+Thanks!
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 78f8b8b5a8099..7db62dec2ee53 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1348,8 +1348,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
- 
--- 
-2.43.0
-
+On Thu, Jun 13, 2024 at 4:37=E2=80=AFPM Haibo Xu <haibo1.xu@intel.com> wrot=
+e:
+>
+> x86/arm64/loongarch would select ACPI_NUMA by default and riscv
+> would do the same thing, so change it to a hidden option and the
+> select statements except for the X86_64_ACPI_NUMA can also go away.
+>
+> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> Suggested-by: Sunil V L <sunilvl@ventanamicro.com>
+> Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/arm64/Kconfig        | 1 -
+>  arch/loongarch/Kconfig    | 1 -
+>  drivers/acpi/numa/Kconfig | 5 +----
+>  3 files changed, 1 insertion(+), 6 deletions(-)
+>
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 5d91259ee7b5..5079ad4e21a5 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1484,7 +1484,6 @@ config HOTPLUG_CPU
+>  config NUMA
+>         bool "NUMA Memory Allocation and Scheduler Support"
+>         select GENERIC_ARCH_NUMA
+> -       select ACPI_NUMA if ACPI
+>         select OF_NUMA
+>         select HAVE_SETUP_PER_CPU_AREA
+>         select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index e38139c576ee..8d9e06e4ad84 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -470,7 +470,6 @@ config NR_CPUS
+>  config NUMA
+>         bool "NUMA Support"
+>         select SMP
+> -       select ACPI_NUMA if ACPI
+>         help
+>           Say Y to compile the kernel with NUMA (Non-Uniform Memory Acces=
+s)
+>           support.  This option improves performance on systems with more
+> diff --git a/drivers/acpi/numa/Kconfig b/drivers/acpi/numa/Kconfig
+> index 849c2bd820b9..f33194d1e43f 100644
+> --- a/drivers/acpi/numa/Kconfig
+> +++ b/drivers/acpi/numa/Kconfig
+> @@ -1,9 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  config ACPI_NUMA
+> -       bool "NUMA support"
+> -       depends on NUMA
+> -       depends on (X86 || ARM64 || LOONGARCH)
+> -       default y if ARM64
+> +       def_bool NUMA && !X86
+>
+>  config ACPI_HMAT
+>         bool "ACPI Heterogeneous Memory Attribute Table Support"
+> --
+> 2.34.1
+>
 
