@@ -1,126 +1,177 @@
-Return-Path: <linux-acpi+bounces-6469-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6470-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8E290BABF
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 21:20:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306BB90BB4E
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 21:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4037B2296F
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 19:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32CD21C2148A
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 19:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7746B1990CF;
-	Mon, 17 Jun 2024 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E180C187542;
+	Mon, 17 Jun 2024 19:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp9eY0fB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCgwTQ0C"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479F81990BB;
-	Mon, 17 Jun 2024 19:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B2011CAB;
+	Mon, 17 Jun 2024 19:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718652029; cv=none; b=e2wFKwpXRfOTLhbqhtDeaDKhtiQp6uDkUUsAyvYKvEECcsRUC4MnSsztjUZpyxmRz4cxal2GCBXLivKLqECRo8w/c9BOtK94NV+iBsVgdM0OiH0chwPlC5rFZHKautluTjRWGSnaudzYko2dmcorrIl19tZBpqsVX793xmxLgSc=
+	t=1718653330; cv=none; b=CqEHw8YOEKau0ZaSMQ+ggr6zV6K6ZXEH7qxgcI75qCPlXMdYNOYMLa4tdPe3AmW5g+XSi37UzvMWpqXMxEGXMItcKIRXojPzLTVvehYOeqX7FkkiJw9b9D6ZVP3UMtqlU4JFanbtyozUbt4TO7damGLsl05gVTKLhkbhnr/MwBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718652029; c=relaxed/simple;
-	bh=UwJilHooTAwCtU+8RqLCGxT+YJhIEjdBQnPptCGsoR4=;
+	s=arc-20240116; t=1718653330; c=relaxed/simple;
+	bh=vBDskFgZmOdls58QIaWwG3DV5vl0qEwWkCN2RVnQTyk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jsSpOQ2v40QlbysOPIZp/QFR0xi0/n5Tt9IzNFQz8mY33iWFShlAXT11hh1YyW4h+z6lAzYxvIMjMhRdMKzJ4pbzQ99nnjZNpNFFonKXUkFoz7HgPKmJoMs5MUiGhW3B5frKlPSp1Q4Ea0KaS9ytGpRAG0FVp8nIZ++EpxMJJ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp9eY0fB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FD3C4AF1A;
-	Mon, 17 Jun 2024 19:20:28 +0000 (UTC)
+	 To:Cc:Content-Type; b=BRXKGuvLlb8p2cCtyHVocFhR6MLcpZBC2/TbPc8FHRzFSy6b+DQI32Uo0rkTFB1W9lkiOZyMt4QwMSWnazDdIHEj6im08mTAXiJ+BoT6RUz/CUur1Jz9vCFbUhdzvvyGbkGd3E341JBXb6PPqUxnDg/F56Hb0lVQCee+pOb1GnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCgwTQ0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99220C4AF48;
+	Mon, 17 Jun 2024 19:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718652028;
-	bh=UwJilHooTAwCtU+8RqLCGxT+YJhIEjdBQnPptCGsoR4=;
+	s=k20201202; t=1718653330;
+	bh=vBDskFgZmOdls58QIaWwG3DV5vl0qEwWkCN2RVnQTyk=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Tp9eY0fB9SepeWw16Iti4JBWXcxiRfFhGQLIt73eC2PY2IinXxz13N9YV2cCCP5Kk
-	 K0EqSl9mvIolQVc9xZ025XmZscofYirEEnPXPNGz9iH3H4iLc5Qa/iUTVWOpq3yt4N
-	 /cc3DiazhkJ4ZaNsTpIVkdl/+1K8/RMgukOk7Sskery3GtNovOQvxuK+ASM5Z//qEK
-	 Fj5LMiYcOUhp1gYLnv1UXdUto7Ni4QlACCG3vLT5I2/M4rT9+VlmyrxY/7ZWIHp80M
-	 XipWmXEsUP8wlv/a/uz9XoQy79m24ss2iNIFR30nHQZqlgjHIBEPiNCCLceEmuGG6g
-	 /oXu1WoAAmopw==
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5bb10cfe7daso353336eaf.2;
-        Mon, 17 Jun 2024 12:20:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUoRCLrRydwwQ3EIB+x8SLK3F5xfPBgvEb+erRTB9JG1DH4lQAOnkODh9jSCAR3EoenZEplUDHwG3Od/S7fMO32riKIYYDwn7UCkqzEZvcW35YM2wSjXQZtUsJppTlAJqRky8g/K8dOWQ==
-X-Gm-Message-State: AOJu0YwMFM9D453Oi5Q2ZWTqNDqPPSrnUZ8S6/8a4rbrOorlJJAp9tSb
-	WTwBDADRhm9P9M/bmBAiQ63Yn8rGDOipja0akToR/PoQKX1li3sx7/0mOSr6oinadXIX/DciO2h
-	LkaSA7hITUN7NYByCWNJioY9aHuo=
-X-Google-Smtp-Source: AGHT+IH2PQAmWZtFODds934xH9e6nUDn8Ctc7ggQgfjQk4t+2XxjLNgMOo6P4Vimpri98e0hjJt660/Tr4OiwxX4KUQ=
-X-Received: by 2002:a4a:c482:0:b0:5bd:ad72:15d3 with SMTP id
- 006d021491bc7-5bdadc0905fmr11187991eaf.1.1718652028237; Mon, 17 Jun 2024
- 12:20:28 -0700 (PDT)
+	b=DCgwTQ0C5PWT7go4sugstvNcHRawPQvRPU/LEw/gAR2YEv+fGjb0LzLNva9Yqlzmg
+	 tbV8W7swp8ATb1UdVRnWsIC9TxOCSdkxcCl2OdUN2ZFN/3d3kFrwSpT5UG/SvmA7xA
+	 6c+EPc2xlZFIyQdFolMb42kPUdFNi1ZHkngDyJRYl3fxM/qcqsB5hrhvphjE99eIsi
+	 wsWoLVl8s9vbhKRJ/3pTMmmZTs7vX8DmhJ/rVhaMQZOjZ/X8PO6Zul6OwIcXW5G3Pg
+	 B/4k1TRzdikrWezFwBrBcf4R6C3tcfmkIaVPGrt7jaiONGXW0YYuOngPxqzI2bseki
+	 DuqGqBeBjgXag==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-250aa23752dso513348fac.3;
+        Mon, 17 Jun 2024 12:42:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVZly6vNUueqTHSvudvREykfZ9eJnfHAI/sX8nIMzImqiQ0JDR6q8JoAcMxdeXLzgZaJCKO3TE+VWKSuAFkpy6YWmfHj2pjXfcRVJiaY2rNhGeP6QuoXU8OOGlbl0YKGBLJOA==
+X-Gm-Message-State: AOJu0YyE6k6140oXtAxMCynxap2avy0j4Onkrw0DTxQy9lgnJx27sm6N
+	U4L2L2ebtvjJo67FQ9M8ztG2wVnKvdLpkrZVkWhETwuAeHYCliHRNV8DqZRpQs5cPrLm//x00l8
+	MwH2CmjnHn1nYK2HBPg9SG6NI5pw=
+X-Google-Smtp-Source: AGHT+IGH4ir5exZtJaaX9vKUn92mx4ZHIRJBwLEJ4r+Z0U7OwCg3DyH27ODHTwh7wcB0fEE+Jp5zdqzepxY/0slgaoQ=
+X-Received: by 2002:a05:6870:469f:b0:254:d417:351f with SMTP id
+ 586e51a60fabf-258429511admr11464083fac.1.1718653329860; Mon, 17 Jun 2024
+ 12:42:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240613-acpi-sysfs-groups-v1-0-665e0deb052a@weissschuh.net>
- <20240613-acpi-sysfs-groups-v1-1-665e0deb052a@weissschuh.net>
- <CAJZ5v0iHB1X7WM6Lg_-vr3Kzwp65yqjvHG9CA_X8vqFBFV_F_A@mail.gmail.com>
- <CAJZ5v0gmHPBS3LE+Eo8yJkvpuavBvip-1AEEEf9nxAp2gi_adQ@mail.gmail.com> <7c0d3358-eb1f-4c71-8a09-52b5e7668e36@t-8ch.de>
-In-Reply-To: <7c0d3358-eb1f-4c71-8a09-52b5e7668e36@t-8ch.de>
+References: <20240612104220.22219-1-hdegoede@redhat.com>
+In-Reply-To: <20240612104220.22219-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 17 Jun 2024 21:20:17 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0h2wuYi0JuKGKBy2x3h71FO_n8FNAAd+9XXekHGA9d=3w@mail.gmail.com>
-Message-ID: <CAJZ5v0h2wuYi0JuKGKBy2x3h71FO_n8FNAAd+9XXekHGA9d=3w@mail.gmail.com>
-Subject: Re: [PATCH 1/5] ACPI: sysfs: convert utf-16 from _STR to utf-8 only once
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev
+Date: Mon, 17 Jun 2024 21:41:57 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
+Message-ID: <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] ACPI: scan: Ignore camera graph port nodes on all
+ Dell Tiger, Alder and Raptor Lake models
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
+	linux-acpi@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 17, 2024 at 8:57=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux@weisss=
-chuh.net> wrote:
+On Wed, Jun 12, 2024 at 12:42=E2=80=AFPM Hans de Goede <hdegoede@redhat.com=
+> wrote:
 >
-> On 2024-06-17 20:43:03+0000, Rafael J. Wysocki wrote:
-> > On Mon, Jun 17, 2024 at 8:37=E2=80=AFPM Rafael J. Wysocki <rafael@kerne=
-l.org> wrote:
-> > >
-> > > On Thu, Jun 13, 2024 at 10:15=E2=80=AFPM Thomas Wei=C3=9Fschuh <linux=
-@weissschuh.net> wrote:
-> > > >
-> > > > The ACPI _STR method returns an UTF-16 string that is converted to =
-utf-8
-> > > > before printing it in sysfs.
-> > > > Currently this conversion is performed every time the "description"
-> > > > sysfs attribute is read, which is not necessary.
-> > >
-> > > Why is it a problem, though?
+> It seems that all Dell laptops with IPU6 camera or the Tiger Lake,
+> Alder Lake and Raptor Lake generations have broken ACPI MIPI DISCO
+> information.
 >
-> It's not a real problem, mostly it made the following changes simpler.
+> Instead of adding a lot of DMI quirks for this, check for these CPU
+> generations and disable ACPI MIPI DISCO support on all Dell laptops
+> with these CPU generations.
 >
-> > > How many devices have _STR and how much of the time is it used?
-> > >
-> > > Hint: On the system I'm sitting in front of, the answer is 0 and neve=
-r.
-> >
-> > This was actually factually incorrect, sorry.
-> >
-> > The correct answer is 12 out of 247 and very rarely (if at all).
-> > Which doesn't really change the point IMO.
-> >
-> > > So Is it really worth adding an _STR string pointer to every struct a=
-cpi_device?
+> Fixes: bd721b934323 ("ACPI: scan: Extract CSI-2 connection graph from _CR=
+S")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+>  drivers/acpi/internal.h       |  4 ++++
+>  drivers/acpi/mipi-disco-img.c | 28 +++++++++++++++++++---------
+>  2 files changed, 23 insertions(+), 9 deletions(-)
 >
-> The string pointer replaces a 'union acpi_object *str_obj', so no new
-> space is used.
-> Also in case the device _STR is present the new code uses less memory, as
-> it doesn't need the full union and stores utf-8 instead of utf-16.
-> (Plus a few more cycles for the preemptive conversion)
+> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> index 2a0e9fc7b74c..601b670356e5 100644
+> --- a/drivers/acpi/internal.h
+> +++ b/drivers/acpi/internal.h
+> @@ -302,6 +302,10 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
+>  void acpi_mipi_scan_crs_csi2(void);
+>  void acpi_mipi_init_crs_csi2_swnodes(void);
+>  void acpi_mipi_crs_csi2_cleanup(void);
+> +#ifdef CONFIG_X86
+>  bool acpi_graph_ignore_port(acpi_handle handle);
+> +#else
+> +static inline bool acpi_graph_ignore_port(acpi_handle handle) { return f=
+alse; }
+> +#endif
 >
-> In case no _STR is present both CPU and memory costs are identical.
+>  #endif /* _ACPI_INTERNAL_H_ */
+> diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.=
+c
+> index d05413a0672a..0ab13751f0db 100644
+> --- a/drivers/acpi/mipi-disco-img.c
+> +++ b/drivers/acpi/mipi-disco-img.c
+> @@ -725,14 +725,20 @@ void acpi_mipi_crs_csi2_cleanup(void)
+>                 acpi_mipi_del_crs_csi2(csi2);
+>  }
+>
+> -static const struct dmi_system_id dmi_ignore_port_nodes[] =3D {
+> -       {
+> -               .matches =3D {
+> -                       DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> -                       DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
+> -               },
+> -       },
+> -       { }
+> +#ifdef CONFIG_X86
+> +#include <asm/cpu_device_id.h>
+> +#include <asm/intel-family.h>
+> +
+> +/* CPU matches for Dell generations with broken ACPI MIPI DISCO info */
+> +static const struct x86_cpu_id dell_broken_mipi_disco_cpu_gens[] =3D {
+> +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
+> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S, NULL),
+> +       {}
+>  };
+>
+>  static const char *strnext(const char *s1, const char *s2)
+> @@ -761,7 +767,10 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+>         static bool dmi_tested, ignore_port;
+>
+>         if (!dmi_tested) {
+> -               ignore_port =3D dmi_first_match(dmi_ignore_port_nodes);
+> +               if (dmi_name_in_vendors("Dell Inc.") &&
+> +                   x86_match_cpu(dell_broken_mipi_disco_cpu_gens))
+> +                       ignore_port =3D true;
+> +
+>                 dmi_tested =3D true;
+>         }
+>
+> @@ -794,3 +803,4 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+>         kfree(orig_path);
+>         return false;
+>  }
+> +#endif
+> --
 
-OK
+Applied as 6.10-rc material, along with the [2/2], with the following chang=
+elog:
 
-> Anyways, I don't really care about this and can also try to drop this
-> patch if you prefer.
-> Or drop the 'union acpi_device *' from the struct completely at your
-> preference.
+"Dell laptops with IPU6 camera (the Tiger Lake, Alder Lake and Raptor
+Lake generations) have broken ACPI MIPI DISCO information (this results
+from an OEM attempt to make Linux work by supplying it with custom data
+in the ACPI tables which has never been supported in the mainline).
 
-No, this is fine as is, thanks.
+Instead of adding a lot of DMI quirks for this, check for Dell platforms
+based on the processor generations in question and drop the ACPI graph
+port nodes, likely to be created with the help of invalid data, on all
+of them."
+
+Thanks!
 
