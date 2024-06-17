@@ -1,57 +1,57 @@
-Return-Path: <linux-acpi+bounces-6449-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6450-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD1090AF36
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 15:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B57190AF3F
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 15:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D43C51F21291
-	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 13:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9471A287B0D
+	for <lists+linux-acpi@lfdr.de>; Mon, 17 Jun 2024 13:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC1719DF53;
-	Mon, 17 Jun 2024 13:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EDD19FA64;
+	Mon, 17 Jun 2024 13:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQNCPnqq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4ATD+7L"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2365B19DF4C;
-	Mon, 17 Jun 2024 13:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13A819EEDC;
+	Mon, 17 Jun 2024 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630463; cv=none; b=axYkYykuS5JsrZHTrwUMGilcy5LRjkGkxHqfT9vcXugz9RzHFLfRjIA7Vj0veB0YkGKECpMHF6a4zI1WZ2sHMarPMklcxWO6YdwAfyzsLEoxiJyxDXMdx9p954p2vA07wj0raVXXjbJozsdXbKlzeS2aLKg6SyJz1UFldv65h7s=
+	t=1718630468; cv=none; b=pv81uiRLOc9bRx2Wwx5o6RB6OlvIf3lE/YCLvdd0FtKz9mQVI9KrrGUojEqLljIIrlg8bI6RIFvOBGLHGvlHSLVs8CmB3HK0Xi308ixMsqtwEIhgA698N1fKz3dPVFQ1MCm4RcRagA0iQ4MFN/K/a7iKSwWuHXgrfHsgnrBxcsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630463; c=relaxed/simple;
-	bh=EJEDBFxskGGeWGDfpNpIzfroP1j6OK7f85F+xWHuWGM=;
+	s=arc-20240116; t=1718630468; c=relaxed/simple;
+	bh=3yUnpElq9u7aPprB66sDbl2RJ/X8Tv4IQRyVXd8wZi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tQXMw+IncHjtJYZIzAlVuPWQGT5jEF4wd98rzVtPe/BSJ8wc0nFrsDLslJ67nd+3AjTSYDO0/oOzmQqHEzW3SYs6KvFw6/eFytCd/KLC5/9akMpVaK3W7InCnYqkPp/alzUCUA89HMsvvkxmKnJT6fJDv0PTAo5Q9nki59zgtms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQNCPnqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F05C4AF1C;
-	Mon, 17 Jun 2024 13:21:02 +0000 (UTC)
+	 MIME-Version; b=C2JayCfezPxDOC3E2LWHjZ+A2R0BiBxHLxpKESVDna6qSfgz5vaYYk/o8xx5hDbgtO7Y4tuaJYieei/6WShlGpqMpgCN9846pia5Jxy5Kz0DSJzFVen8sBtIPymxyZHsoS+9DuQmyWq2YOQlOBgN9EiN+rLkPGU5KlbVFgyxp/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4ATD+7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56BEC2BD10;
+	Mon, 17 Jun 2024 13:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630463;
-	bh=EJEDBFxskGGeWGDfpNpIzfroP1j6OK7f85F+xWHuWGM=;
+	s=k20201202; t=1718630468;
+	bh=3yUnpElq9u7aPprB66sDbl2RJ/X8Tv4IQRyVXd8wZi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQNCPnqqPWDyh7LmL99kKFEowRFn7fhWeMjiXfdZHmbJnO3Fua0dOzjXJciFULbNE
-	 C8nWXTChljNaS+f+SDsHWXFLxhkwCtqVIZQdAK56OnprEbYokMV0sdbQ2ydvz8L8fX
-	 IJv05lGSfgksypAGCCxKr68H63x0u9U77ZVNDm2pthFxg3zpV5TyAZQDYliJY5WbTT
-	 4XNgHrhKXAIcfjq1uSWcOLS66TLihncXIMT+xPiBkCdpGL2a7Kigu6wOJbpellY0Wb
-	 TlXEsbAP0HSrXWGOVZAOa17BdslDB6LgghpWfzDR1i7U1TeuZr82b5pjUDun6PcZzf
-	 UyMjSO3gHzAsQ==
+	b=q4ATD+7Lay/3mIbsRu49zUktvifBvKu+fmSxw8VYWPGrGrJ6blWjVAVA0mVivx0So
+	 VI94ROIYHTS2r6cu/pEL3/VesRrTJXQDs/1awfuXgqCaN9/ojHAnl+hxniRB4d5+kY
+	 Chv7sVQolW1W+7Zpizbv9atzQbXmnrg9uhNj4SKNKdhH89CPW9KYOjgSCwiqPAtwqy
+	 /6yTJfcy7Qlg9P4YxsvgbBlZiEsDG0IN4CBA1XR4hSd/Fz6lig6+oyC36K8IzDG6gE
+	 308kg4G4e6HsEpxZaWbdhj3G/waQwI5mfOcI1bS/zuFhN1obt2NGlpBRSFibGN/+uz
+	 rS3F3HAhov3oQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/44] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Mon, 17 Jun 2024 09:19:22 -0400
-Message-ID: <20240617132046.2587008-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 12/44] PNP: Hide pnp_bus_type from the non-PNP code
+Date: Mon, 17 Jun 2024 09:19:25 -0400
+Message-ID: <20240617132046.2587008-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -66,41 +66,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit edcde848c01eb071a91d479a6b3101d9cf48e905 ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+The pnp_bus_type is defined only when CONFIG_PNP=y, while being
+not guarded by ifdeffery in the header. Moreover, it's not used
+outside of the PNP code. Move it to the internal header to make
+sure no-one will try to (ab)use it.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
+Signed-off-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pnp/base.h  | 1 +
+ include/linux/pnp.h | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 2896330146e29..06efc15f934a6 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+diff --git a/drivers/pnp/base.h b/drivers/pnp/base.h
+index e74a0f6a31572..4e80273dfb1ec 100644
+--- a/drivers/pnp/base.h
++++ b/drivers/pnp/base.h
+@@ -6,6 +6,7 @@
  
+ extern struct mutex pnp_lock;
+ extern const struct attribute_group *pnp_dev_groups[];
++extern const struct bus_type pnp_bus_type;
+ 
+ int pnp_register_protocol(struct pnp_protocol *protocol);
+ void pnp_unregister_protocol(struct pnp_protocol *protocol);
+diff --git a/include/linux/pnp.h b/include/linux/pnp.h
+index ddbe7c3ca4ce2..314892a6de8a0 100644
+--- a/include/linux/pnp.h
++++ b/include/linux/pnp.h
+@@ -435,8 +435,6 @@ struct pnp_protocol {
+ #define protocol_for_each_dev(protocol, dev)	\
+ 	list_for_each_entry(dev, &(protocol)->devices, protocol_list)
+ 
+-extern const struct bus_type pnp_bus_type;
+-
+ #if defined(CONFIG_PNP)
+ 
+ /* device management */
 -- 
 2.43.0
 
