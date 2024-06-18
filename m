@@ -1,136 +1,109 @@
-Return-Path: <linux-acpi+bounces-6476-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6477-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C11090CB83
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 14:20:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D2490CBFD
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 14:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E212844C7
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:20:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8548BB2304F
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D32132109;
-	Tue, 18 Jun 2024 12:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F41C148820;
+	Tue, 18 Jun 2024 12:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AqsE8Afz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7fmFGHO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFCF535A3;
-	Tue, 18 Jun 2024 12:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7383813A877;
+	Tue, 18 Jun 2024 12:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718713229; cv=none; b=dfAniZIDVlYJhykYZMNj3ktd7wtvIRb9Bg8w03JGOS+cBg5/5WDSBhiPyFRUbdTdsueIi074nYZP6GuEf657dPq4fP2DSWErW8TkG0RwclYbVIg6fDshuf6Xd5ya+MsokiyKboH+v2hThjr31nIr1rHnFjo4OlXj9fh31cOmGpg=
+	t=1718714187; cv=none; b=PFc7wKk3Gz6JOyu98B5TO6qJMBdj+jVVTrwUcHG0gugvVkq5WXxzgZkqahwsUswYfTq38vIemdtF4wyvUbL+IxP8jTBeMznF8hksh4zEr+1euDtOggxXA0s27840w/Agnly7Xqo+fP6VaRIptUB3eI3zkiw5t7WR1euniCOhKNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718713229; c=relaxed/simple;
-	bh=4POtStJCjE5RRoSLSG+N/j3IB3Xj43A0ipVnukEbGJg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxwuthxfYCHDQ280Ml/KVPnBDRkJwVIvhjxbp5qZHb8ycY4LXgqrHEctESkdXxEu11ZEwfh0akhEpu3ik3kjC4oBj38IngqdYA8SMbJg2CEzOQLWDTDOg2ufkA3RasZWIChws/vzZ/F9N2cBDSo08PFqXiohvM8oBJ56CEsEUE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AqsE8Afz; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718713229; x=1750249229;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4POtStJCjE5RRoSLSG+N/j3IB3Xj43A0ipVnukEbGJg=;
-  b=AqsE8AfzsiAg98dDm5LLCK/trgzd/9MsC/v3eH7dRtq3RzU9fjxc5GmE
-   GnyDeCGGw07FLWaeqM5nHGpI4ziwIoZrG6KOMhOx0Tf8c5xBhITCC1SY2
-   x0mgx4d6N14YKk0GrdDFgKIZg+JmS0ISvXRpraHli4UR38GV1ObqdwFOF
-   UYlkDgJWioU6A18U+vz4AHyCN6I7ulcW2tuz1hhqOeHIaAigF4tgIIMg/
-   WN7DOe7Zn/oKcUCJrI1aSWNxCI2rmW2lCzyJjQyLAOSLyutEaP4tnau/u
-   IlYsdHx2RPCAwOGNk1xPiYWUkbV3nzlHVokw0lqfy7Vo14L7WoEH5Vxmc
-   g==;
-X-CSE-ConnectionGUID: Ie/mVklxRzmDhZaZbO+o9w==
-X-CSE-MsgGUID: HLX8MHSPSoKIRoxfu30ffw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26169871"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="26169871"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 05:20:28 -0700
-X-CSE-ConnectionGUID: DwcjCin0ROGMSatLBuCePA==
-X-CSE-MsgGUID: I5+5RDgfRiK1kXbdoeW9pQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="46659137"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 18 Jun 2024 05:20:22 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 381D71CB; Tue, 18 Jun 2024 15:20:20 +0300 (EEST)
-Date: Tue, 18 Jun 2024 15:20:20 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, 
-	Jun Nakajima <jun.nakajima@intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	"Kalra, Ashish" <ashish.kalra@amd.com>, Sean Christopherson <seanjc@google.com>, 
-	"Huang, Kai" <kai.huang@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	Tao Liu <ltao@redhat.com>
-Subject: Re: [PATCHv11 18/19] x86/acpi: Add support for CPU offlining for
- ACPI MADT wakeup method
-Message-ID: <noxbrmequ4inpxgnwna6drnzuymcn3k6ik2kvlbzacxvr2udgf@pximrevgcgmu>
-References: <icu4yecqfwhmbexupo4zzei4lbe5sgavsfkm27jd6t6gyjynul@c2wap3jhtik7>
- <20240610134020.GCZmcCRFxuObyv1W_d@fat_crate.local>
- <hidvykk3yan5rtlhum6go7j3lwgrcfcgxlwyjug3osfakw2x6f@4ohvo23zaesv>
- <nh7cihzlsjtoddtec6m62biqdn62k3ka5svs6m64qekhpebu5z@dkplwad2urgp>
- <20240611194653.GGZmiprSNzK0JSJL17@fat_crate.local>
- <2kc27uzrsvpevtvos2harqj3bgfkizi5dhhxkigswlylpnogr5@lk6fi2okv53i>
- <20240612092943.GCZmlqh7O662JB-yGu@fat_crate.local>
- <w6ohbffl5wwmralg255ec7nozxksge4z4nnkmwncthxzhuv46d@qq46r2wrjlog>
- <20240613145636.GGZmsIpHn16R04QlaN@fat_crate.local>
- <8efff872-7843-2025-dce2-a5dcdbf31143@amd.com>
+	s=arc-20240116; t=1718714187; c=relaxed/simple;
+	bh=3GxZABKnNxzCFT2y+l+8KtO4NBP4L+z+Tsc2aH64Q8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p7RMG2rBENXlojvLY0R+gz2JM6UqFVsZgamdlWVcE6fcAbXJt8ItJLfmM5H1HIM/3uE0gOcbD4CNzJSaa9+CoMquRCQaLoAU3O61La4dE57WZmhAaERcXpP3XNUZ9VhsztxNK5SLBHexHhzR0ywB6AubpdqKYxC0E0dIzAon18A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7fmFGHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33EE2C4AF1D;
+	Tue, 18 Jun 2024 12:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714187;
+	bh=3GxZABKnNxzCFT2y+l+8KtO4NBP4L+z+Tsc2aH64Q8c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V7fmFGHOVxRb75jO4nOQdgnM1B3cQzJd1rOs2DAskVn5KqCvwFUq9K0d3V06L/2M0
+	 5NL7+CiMeW9Uze0fpqs5MpHZl4ZE7ZU/WXmjEDLRkJKjmDy6UrlLoT9jC67TVFGzOO
+	 /nW8gU0WH7h/L9HMyjDy57a5EtzuE8wyzZVK5PWZmEaqfEJb6PmL/Mpxbyy3M4jCBL
+	 WUsDoLxA4TWcGpKbfl94l6b3Gnl8+UvpDMAd40nbfXnLu6n/TGZB7wLhujFHlFZXhl
+	 zLnzSa+UGgo1/hq6i87cenAiFYTg75T14C7sthBwKuqqT8an3pqOZANnKxXi4zXRK1
+	 zazxc8ZwYuZmg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 08/44] ACPI: EC: Abort address space access upon error
+Date: Tue, 18 Jun 2024 08:34:49 -0400
+Message-ID: <20240618123611.3301370-8-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8efff872-7843-2025-dce2-a5dcdbf31143@amd.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 14, 2024 at 09:06:30AM -0500, Tom Lendacky wrote:
-> On 6/13/24 09:56, Borislav Petkov wrote:
-> > On Thu, Jun 13, 2024 at 04:41:00PM +0300, Kirill A. Shutemov wrote:
-> > > It is easy enough to do. See the patch below.
-> > 
-> > Thanks, will have a look.
-> > 
-> > > But I am not sure if I can justify it properly. If someone doesn't really
-> > > need 5-level paging, disabling it at compile-time would save ~34K of
-> > > kernel code with the configuration.
-> > > 
-> > > Is it worth saving ~100 lines of code?
-> > 
-> > Well, it goes both ways: is it worth saving ~34K kernel text and for that make
-> > the code a lot less conditional, more readable, contain less ugly ifdeffery,
-> 
-> Won't getting rid of the config option cause 5-level to be used by default
-> on all platforms that support it? The no5lvl command line option would have
-> to be used to get 4-level paging at that point.
+From: Armin Wolf <W_Armin@gmx.de>
 
-Yes, there won't be compile-time option to disable 5-level paging.
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-Is it a problem?
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-We benchmarked it back when 5-level paging got introduced and were not able
-to see a measurable difference between 4- and 5-level paging on the same
-machine. There's some memory overhead on more page table, but it shouldn't
-be a show stopper.
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
 
-I would prefer to get 5-level paging enabled if the machine supports it.
-"no5lvl" cmdline option can be useful for debug or if your workload is
-somehow special.
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 02255795b800d..2896330146e29 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1333,10 +1333,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
+ 
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
+ 
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.43.0
+
 
