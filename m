@@ -1,173 +1,181 @@
-Return-Path: <linux-acpi+bounces-6508-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6509-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB5390DEA1
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 23:42:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ABE90DEAC
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 23:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D72C1C22D73
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 21:42:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0CF8B20F02
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 21:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E77B17836E;
-	Tue, 18 Jun 2024 21:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DB6178377;
+	Tue, 18 Jun 2024 21:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Lq8GwDFy"
+	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="nU0Tj+hA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2045.outbound.protection.outlook.com [40.107.92.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9546A1741F5;
-	Tue, 18 Jun 2024 21:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718746972; cv=fail; b=j08KbAXvcN6+4EQ7yx5pFbMMq8G6GhhH19/qpTFXzla7Wd3WOVS01WoME15QRTq4ZCEx/urOo5MU76ndciVpUskZrN7s6ilCtOioEEZVqWGzi02uLj2fmT7GDO1vU7tjIOzN1u0CTDHxCvtTtGK1k1jyqPqTYNS0gX9aXPmx1+o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718746972; c=relaxed/simple;
-	bh=0Bt8DW+pbLv5M5znzAfv8IkVl+4TChHBV6rsqybSmE0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FOEwXtcYo5K4bFEfwqfCdTDS6w5ISlRpclbTZ9alfSPaQhzASVqQiV61waDYCLPnUkz2dXE5mOxu//MYwd5ujfDelgj1jjMOewJe1YDbL7P23ZHcE5XoNsUXXv1HOO8kwTT19CHTb/++QLwc9IX9v2r4OtIx2r/6g9uZscxC1ZI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Lq8GwDFy; arc=fail smtp.client-ip=40.107.92.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=CU3FTGcWueeMd3vfJigmcrfJA5hXrvT3O+0fUGa/tw8q5h5PgMapBfh1ixRdO9chquKKeWevcGlm1KTjD1fR7+YMRbeHGEOx0IEbGEsC7/HpT1OsxUjAa1A0T9DIko7O69JSfEsJtA6rbFmGGP9HVcY/mEWgOoVXB31CGsW9MpoVhGSDzzhp416k8AVrNNpRWk0vRYyFuIdgzykldN9JZirvZztj+ZEEGlbjAT10vnBTUxHiqy2dcnebq/Yemq4NEjoADfZ6SRihZzcCSz/7Ur8J6iDz/wsJ2wDjDhl6yiEBJzANqhOdewY5E56qjrR/eRAUid9CD0pnElBiQOPcEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XCL5xGFaEJBJ1kRHx+rqDvNUM372PR9z4hSbk/nBFpg=;
- b=AEqf4w3YVVhqLFJsbYK4oEiyZPjbrB9GzxtGtYwYOIZQPqYJnap709HwCG+i+rcoHxMO3ln4HgfYba215I7N5ZNBWuNwe0LuRx5p49lGgFQh61uTqzSWQcDYFFQEgrDGEJiTnItoY931Gl+QCXzmnUQtOrKuKFK258UZaWL9iB6AmH9UfzPQl06sWj1UkvBltuZFOzNdnQ44X7PLLT2cJ8tUBKjQSa3ItOKgzGeABViB396G5ys5LFzQgMhG/IFHAgo9GXkDfWKrSZicUqQQz9KrbD+mFDD3s4XEyNopKQozRiQCjB3Fs9TgOuQTrl5nido2XaIehChMB9RBfj/ZdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XCL5xGFaEJBJ1kRHx+rqDvNUM372PR9z4hSbk/nBFpg=;
- b=Lq8GwDFyZeF26jF47mW2an+ZdYUHWrI6VFxLSilPPby0+FCtDy8TSesCdYAVsrl2YuVh0U9gpX0jRgHUj2bxrfeBRfoLHUiqf984rMc2THOGUBXbDIkCya2+sYnwyrEXe0W6JnAdyTHgOAGzyToNwM44CIQoEXCFOxTktJeIC5k=
-Received: from DM6PR14CA0067.namprd14.prod.outlook.com (2603:10b6:5:18f::44)
- by PH7PR12MB5710.namprd12.prod.outlook.com (2603:10b6:510:1e1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.27; Tue, 18 Jun
- 2024 21:42:43 +0000
-Received: from CH3PEPF00000015.namprd21.prod.outlook.com
- (2603:10b6:5:18f:cafe::f4) by DM6PR14CA0067.outlook.office365.com
- (2603:10b6:5:18f::44) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31 via Frontend
- Transport; Tue, 18 Jun 2024 21:42:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH3PEPF00000015.mail.protection.outlook.com (10.167.244.120) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7719.0 via Frontend Transport; Tue, 18 Jun 2024 21:42:42 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 18 Jun
- 2024 16:42:41 -0500
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: <rafael@kernel.org>
-CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<PradeepVineshReddy.Kodamati@amd.com>, <clin41@lenovo.com>, Mario Limonciello
-	<mario.limonciello@amd.com>
-Subject: [PATCH v2] ACPI: Downgrade Intel _OSC and _PDC messages to debug
-Date: Tue, 18 Jun 2024 16:42:25 -0500
-Message-ID: <20240618214225.50953-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81820482DA
+	for <linux-acpi@vger.kernel.org>; Tue, 18 Jun 2024 21:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718747237; cv=none; b=QtQq+EUBduSLvV+mbmPI2akwacGVHXlJSQ2XQ+R2M0jl8W/4IliNLIrOoFvkc6DxoYyG7f0Cx5FW4m3o+peCiJkcK0xRsQaGzirbPC7pT/Drjr1qjts0OkfCRSpDfcS/sEv6mpE4Rtq66BrEPTKaIRgr3c/DUITiozLbRz2tRXA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718747237; c=relaxed/simple;
+	bh=O8nbxBnAi/dpmzEyYIIUoH5D1eSn0BiZGFoC27wUa4E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kFTKoMfv9HOtZ9SQefmlQwZXV5RhEFut34ZQlZOlVT+Z7PM735JOnIWY01YZCsPJHBvHXabHfowo/9XdTBAgMfCfiO+OwmiCY9cPlwbC3cULgzqq03Pncpyi8iIbCvLCFEi2Kdm2rGMRVuVo0XbiZTdzI4xr3ldtJZ0nuGZSm6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=nU0Tj+hA; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7e21b6e98bdso228644839f.0
+        for <linux-acpi@vger.kernel.org>; Tue, 18 Jun 2024 14:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1718747234; x=1719352034; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=A/36AxVI5Kg9rJfKi/PCkX0OMQO0RBqJsC7Ok+ofUjE=;
+        b=nU0Tj+hA2MpzZC6lVBhZgsb1/M9j1nAusQa6zahN2wbDwegU097JRqdjbFY9Qxwhlx
+         hIsPXxFoekWjCsupMX64QWe7cVqCZHQj47JLZp7toqEMYdrpKAzceLEQ/Iefaa4ZF7lj
+         JoRLL+FJXMpc/tlUBVZsLRSzZI2EMmxFv2eXc1KLf/ej2cxrNa5UxQOZBwYzeojt5S2o
+         4kOF+JWYGLxy0M8g6JzKdmb7bIJI89QCwCO6NHJlkWgwTtoFk/AeUK3GPs6UfYA+LgNR
+         CUZVWL4gjHxyhc7KLnHv6XsT5FSQynNZIg32ZVlSuEKl1AtU+iwCaBIJTZOG+K4XQR1O
+         pcVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718747234; x=1719352034;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A/36AxVI5Kg9rJfKi/PCkX0OMQO0RBqJsC7Ok+ofUjE=;
+        b=p5F0jmjStUv0dyjKkDYAAidRH826EXrHxjRLhlQUuwqM0Lak3HVptpwLu5WwL+SDxp
+         Gby1DppMFhk0jvnK5oimCjOt2aZ7P+97u1Dup7RRvE/9yfyN2LHKpngMN99664b/tpU7
+         6UF7NHh2NW69zHwz1Scj1jD4lGl5G2Z1Zgh7Xz5YGuS2vQMV1u4+Ot4U5IoQVtold/TG
+         ePR3OOzGSgLidh8U58B4ydgQ1JAdb5itSGuW2ZIQw5tXT+3UOwsNfFe0kXwirzEGzQ/s
+         qsbXmKXGdvNGJKkVprXkU7S7f4gyFNsFv3PkoZIz0zvpfnA3yaByvXZTxyS/un+Q1fYY
+         6p/g==
+X-Forwarded-Encrypted: i=1; AJvYcCWpjC5sE8YJB+CgYUPcJNdO9dRcgKkWntnl2BacbOpq0ZvcnjwWQhT0Mrxz1ifutpj6PsgFGrg7eHEFspap+P6s1jk/wPjbPyNCtw==
+X-Gm-Message-State: AOJu0YwoMiN1bTc1iq/DMSevOuBxhIpconbaSusQUOBl7539qKgJmwl8
+	q7HivN9lOsBUHkWdnGq8eUsJgrnNJUEAsSbHUapATeTNwdGGP+hXT6W6pGaRnWA=
+X-Google-Smtp-Source: AGHT+IH6Hf6328sCOCn8+mJw4wcG8+kO+0Fz4jzSb3pwTOQ63zlhyvlNQ9WXloxluuoF6mjJntA2hw==
+X-Received: by 2002:a05:6602:164a:b0:7eb:8887:d6c3 with SMTP id ca18e2360f4ac-7f13ee56f08mr126705539f.11.1718747234553;
+        Tue, 18 Jun 2024 14:47:14 -0700 (PDT)
+Received: from kf-XE ([2607:fb91:111c:4643:b5f:d6ad:8a73:5578])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b956a30de2sm3365204173.153.2024.06.18.14.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 14:47:14 -0700 (PDT)
+Date: Tue, 18 Jun 2024 16:47:11 -0500
+From: Aaron Rainbolt <arainbolt@kfocus.org>
+To: Mario Limonciello <mario.limonciello@amd.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: rafael@kernel.org, lenb@kernel.org, mmikowski@kfocus.org,
+	Perry.Yuan@amd.com
+Subject: Re: [PATCH V2 RFC] acpi: Allow ignoring _OSC CPPC v2 bit via kernel
+ parameter
+Message-ID: <ZnIAX9P5XSco4cZw@kf-XE>
+References: <ZnD22b3Br1ng7alf@kf-XE>
+ <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com>
+ <ZnHSKiaYf2tIQo58@kf-XE>
+ <a7790c74-2bec-4a24-b6e5-223c4e1ed372@amd.com>
+ <ZnHXfLEwk2uRbg58@kf-XE>
+ <b4d65232-b69e-419d-9b15-d0ca64b78b26@amd.com>
+ <ZnHfNbLTgY1op3Zv@kf-XE>
+ <fb8c965a-5f1c-4975-8e7d-6f6a0eb4d02f@amd.com>
+ <ZnHtPbszYT8afOOk@kf-XE>
+ <c6bda238-166e-4de6-b0c7-4bddfb8ef6f4@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000015:EE_|PH7PR12MB5710:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9cac825-73ca-4cf9-056a-08dc8fdf9595
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|36860700010|82310400023|1800799021|376011;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?IXmLTeQwXQHykOXsVIWn9DB5kkkZholuV4ti+m3gy/A6Jvv9dz7wIKyBO132?=
- =?us-ascii?Q?t8T/jgPYvjq0tnejKH+EhQZQY262Q7PFS+ghtE/1SvpKGjYjPKSsbGsEmlkl?=
- =?us-ascii?Q?OFFGGvY7VqyGNHXp9tEYWyt773e9ISWRLML0XfWcP0sOcohW9ma3/AFsssgj?=
- =?us-ascii?Q?cTsg8XXRBrMyqgk/lcHtntQbLmlIDA5HMkN9qYU5510zL0vVwaUUSLk34/+4?=
- =?us-ascii?Q?f7zkYP6wlAkQNoPZWT2pZURCIeDxy4qfLJMRwg3q9z/uMcnLV/fgxfqe1fn7?=
- =?us-ascii?Q?5U2Sssvc8ywzcOgkDchpJo4pirUsHcy0yHQ1Egf1wEB8K4jz2+xqkwWwlboV?=
- =?us-ascii?Q?FcrZRo/AWpjlwXQ3fW0rEDi/d9Yo3ER1VlxZV9iU+kmReyVVxFSoB1pMZDng?=
- =?us-ascii?Q?LugRqXeNSrh0j/fIk5NjmxXpC9YRSac8w/9Hg3MIYALKilT7mim/SBPyGxla?=
- =?us-ascii?Q?N9JqdpAbn340iY23VxKUVybV5HCH51qUWgDHa5dsD4288FQC+S+1DvB9PTKp?=
- =?us-ascii?Q?MTP49k2l/SLsJ9EaUEPABdUeC31jV0ZZwkC1iVfo/yVrEi/7Yi3BExYKXkr7?=
- =?us-ascii?Q?ZcB3mX7Z8fF12v8PeXQT3nUO13yU2xwhjeDmV3Oyez7DZSisaSN0w4qT4o4P?=
- =?us-ascii?Q?lPag/CMEbAf9L2IhEX+wY11/n2kXZlg4JPhfGdnFIofh4+lfOucEVbDGWdE2?=
- =?us-ascii?Q?7jZOHQxgbxWIKI8TlKfx0BYrPVmg0/BjN0xkMqFseG8H7bCBk9cXCjj1MoRL?=
- =?us-ascii?Q?X6XsFYhiWYXqrgk1biQ7keWPy7kt3q5mYrWxLXJQR4muN6EyH3F4v6Q91BVP?=
- =?us-ascii?Q?3nOyTDoLIcJsSsP8l4aLqOZxjKOcSMpAnzlVeL8njjvqh2bO3E+sJzIgE64r?=
- =?us-ascii?Q?JslToyG3HOIrIuBDjaSjoMKDinINE7Ro8aZim1yg0rNHbgtwSQxjQbMAgEt5?=
- =?us-ascii?Q?GnAhR/WGqICEocUsIMeaSa2reVT25hOoL86RTVv+I+MgBfC3U/MKxqSQxH/w?=
- =?us-ascii?Q?Rgu+9izmQkr/F5/nevwEIldy/10se+tQQ8lmwU4Rmr5CpuIGcOF2wD/JVLI/?=
- =?us-ascii?Q?Z8nimbVVJmaNuzWxLLBPZBjpG5z4RRRBZbNTjQjIKi4T7fSuJgWYQCf2zNzL?=
- =?us-ascii?Q?oDYUQrWukHVZX8shqWp4v9yWen4YT80AVPq8a/p1u0+4H1xyczeQ2N3gjakA?=
- =?us-ascii?Q?s1DN2oLfi/cxnWGFNUd31vLgrf4tjxXHsrN7ErD2DUAmI79luLv9nROUhCcc?=
- =?us-ascii?Q?GpIKNtYvs+OsgBSteOE8xu5rCoO+qL5Vgw+ZDmAIrijzMHJ8q9gqwe5W6m+Z?=
- =?us-ascii?Q?QL37N1IedGDFthTpynR8Dzm5EcNHGHLerh2ysCleDfhdVgtVetF+N1lGDm9n?=
- =?us-ascii?Q?DNw66B95vEa2J1GHytGpQ92hQMr/1jvH5o5b/TcnE1FhILFQlw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230037)(36860700010)(82310400023)(1800799021)(376011);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2024 21:42:42.8880
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9cac825-73ca-4cf9-056a-08dc8fdf9595
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000015.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5710
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6bda238-166e-4de6-b0c7-4bddfb8ef6f4@amd.com>
 
-commit 95272641338a ("ACPI: processor: Use _OSC to convey OSPM processor
-support information") introduced messages related to determining processor
-support from the firmware.
+On Tue, Jun 18, 2024 at 04:24:22PM -0500, Mario Limonciello wrote:
+> On 6/18/2024 15:25, Aaron Rainbolt wrote:
+> > acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
+> > 
+> > The _OSC is supposed to contain a bit indicating whether the hardware
+> > supports CPPC v2 or not. This bit is not always set, causing CPPC v2 to
+> > be considered absent. This results in severe single-core performance
+> > issues with the EEVDF scheduler on heterogenous-core Intel processors.
+> > 
+> > To work around this, provide a new kernel parameter, "ignore_osc_cppc_bit",
+> > which may be used to ignore the _OSC CPPC v2 bit and act as if the bit was
+> > enabled. This allows CPPC to be properly detected even if not "enabled" by
+> > _OSC, allowing users with problematic hardware to obtain decent single-core
+> > performance.
+> > 
+> > Signed-off-by: Aaron Rainbolt <arainbolt@kfocus.org>
+> > 
+> > ---
+> > 
+> > V1 -> V2: Rewrite to work in cpc_supported_by_cpu.
+> > 
+> > RFC: I have not yet tested this patch to ensure it functions properly,
+> >   nor have I attempted to compile it against mainline. My system takes
+> >   a couple of hours or so to build a kernel, and I'd like to submit this
+> >   for feedback now and test once it's sent.
+> 
+> Thanks, this matches what I suggested, hopefully it works when you test it.
+> 
+> One comment below though.
+> 
+> > 
+> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> > index b600df82669d..af2d8973ba3a 100644
+> > --- a/Documentation/admin-guide/kernel-parameters.txt
+> > +++ b/Documentation/admin-guide/kernel-parameters.txt
+> > @@ -2063,6 +2063,12 @@
+> >   			could change it dynamically, usually by
+> >   			/sys/module/printk/parameters/ignore_loglevel.
+> > +	ignore_osc_cppc_bit
+> > +			Assume CPPC is present and ignore the CPPC v2 bit from
+> > +			the ACPI _OSC method. This is useful for working
+> > +			around buggy firmware where CPPC is supported, but
+> > +			_OSC incorrectly reports it as being absent.
+> > +
+> >   	ignore_rlimit_data
+> >   			Ignore RLIMIT_DATA setting for data mappings,
+> >   			print warning at first misuse.  Can be changed via
+> > diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
+> > index ff8f25faca3d..7346a25e68ce 100644
+> > --- a/arch/x86/kernel/acpi/cppc.c
+> > +++ b/arch/x86/kernel/acpi/cppc.c
+> > @@ -11,6 +11,14 @@
+> >   /* Refer to drivers/acpi/cppc_acpi.c for the description of functions */
+> > +static bool ignore_osc_cppc_bit;
+> > +static int __init parse_ignore_osc_cppc_bit(char *arg)
+> > +{
+> > +	ignore_osc_cppc_bit = true;
+> > +	return 0;
+> > +}
+> > +early_param("ignore_osc_cppc_bit", parse_ignore_osc_cppc_bit);
+> > +
+> >   bool cpc_supported_by_cpu(void)
+> >   {
+> >   	switch (boot_cpu_data.x86_vendor) {
+> > @@ -24,6 +32,10 @@ bool cpc_supported_by_cpu(void)
+> >   			return true;
+> >   		return boot_cpu_has(X86_FEATURE_CPPC);
+> >   	}
+> > +
+> > +	if (ignore_osc_cppc_bit) {
+> > +		return true;
+> > +	}
+> 
+> I think you should move this check before the switch statement.
+> The reason is that such a workaround could then apply to any CPU
+> vendors and models that are AMD or Hygon too.
 
-The UUID 4077A616-290C-47BE-9EBD-D87058713953 and _PDC methods are
-only used on Intel platforms, but all X86 platforms emit the messages.
+Oh good catch, I thought it would apply to everyone but missed an extra
+'return' in the switch statement. I'll make sure to fix that in v3.
 
-Attempting to evaluate them and showing messages on which are used is
-unnecessary for most users.  Downgrade the messages to debug instead.
-
-Cc: PradeepVineshReddy (Pradeep Vinesh Reddy) Kodamati <PradeepVineshReddy.Kodamati@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/acpi/acpi_processor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 7a0dd35d62c9..e82ec4f126bc 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -598,9 +598,9 @@ static bool __init acpi_early_processor_osc(void)
- void __init acpi_early_processor_control_setup(void)
- {
- 	if (acpi_early_processor_osc()) {
--		pr_info("_OSC evaluated successfully for all CPUs\n");
-+		pr_debug("_OSC evaluated successfully for all CPUs\n");
- 	} else {
--		pr_info("_OSC evaluation for CPUs failed, trying _PDC\n");
-+		pr_debug("_OSC evaluation for CPUs failed, trying _PDC\n");
- 		acpi_early_processor_set_pdc();
- 	}
- }
--- 
-2.43.0
-
+> >   	return false;
+> >   }
+> 
 
