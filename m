@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-6484-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6485-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D336790CCEA
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 15:00:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2650090CD3A
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 15:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23FFB28122E
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 13:00:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 384F01C220C7
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 13:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEEC1A01D2;
-	Tue, 18 Jun 2024 12:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669CA1AC454;
+	Tue, 18 Jun 2024 12:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PRiYGcq/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnTV2h3L"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D8D1A01BF;
-	Tue, 18 Jun 2024 12:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D60A1AC44B;
+	Tue, 18 Jun 2024 12:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714434; cv=none; b=TTmHAP0mSDlEYgB1xFJeBgLDQLoABx+4/gxD9yHBAqZ7OlZ5RoZDq3IBZPPoramoB3Wa3F05rwdHoL6TyHVPigIW2agX+JQZT/JXfmXfbEiDVtuaXwV3Ko9dBmPtl99TzfPjw0ic6PYbeT+Kl0ReZjauMt9fCAAoGgjmqz1x1Fo=
+	t=1718714508; cv=none; b=tq3XlL8JE1NZlxnHUQKumOEZDUg/gehELl1mkK3tuWnIoAcqlQjr9jitr3qeRZkutiNpvafA19qyvW3PVsstKKKyap5oqGp3RYbNCTYf9B1yqxbDbtrUwurmb9kgon6Unyjh37BuIZFeJRdBQLMw//CItFU/LHO2kUNCZp2FCSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714434; c=relaxed/simple;
-	bh=IfoV7rkWQ5pHnsNC+WU1ryPWD5tQEUJ+bjVLweowzzc=;
+	s=arc-20240116; t=1718714508; c=relaxed/simple;
+	bh=YIOi+92waFQ1ce33g6Wg62+s1ohyWKkoSuGKxK+hrF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsNuKUhaAtOy5WVhctkqjq9nZ+zEHb0iaftMoeKnHpnLvrWaIpjmvI4M81YYLb4fKkf7FyH2HrgW0Vu0V0JQeMqsBpR8AoI3M+G9uzHqpTXKpgQzutzTlgJdvemS1coVkY7vchF8ZUwDLRtwMi9lR4BiYx+oTxGmPq8uTy865Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PRiYGcq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C18CC4AF1D;
-	Tue, 18 Jun 2024 12:40:33 +0000 (UTC)
+	 MIME-Version; b=bmBikONfHwlwfFz8jZYoJin2A6Eb9Onvy7/Mg1LGCrFGUcUC9aL0ixYsURlTj53xXbdd0pVlUYFEQYEkRhtL8bkoQjRmLKK9UQdnsokmnSf9U+hB+9j8n518ye83UASxlR3O9TCULyKwrIvIapmcBZ8r7vr9BWairFBThkdy4U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnTV2h3L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09976C3277B;
+	Tue, 18 Jun 2024 12:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714434;
-	bh=IfoV7rkWQ5pHnsNC+WU1ryPWD5tQEUJ+bjVLweowzzc=;
+	s=k20201202; t=1718714507;
+	bh=YIOi+92waFQ1ce33g6Wg62+s1ohyWKkoSuGKxK+hrF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRiYGcq/WLUXZToSwbVSE3eK0dvUliVk6TZvbUsZ/GxtKSCHxclcb3vzQQ64S1ok+
-	 BATcNMEAt/ova27C3eJC/fhkbwGThtR4zy8dzHA+MRMeLqsNlSZbNeRdeL+97JCy1Z
-	 HRisIAngkdYGMr814OGUrzsf6lTiUd41PnfR8E7Z5ESsuA/tTcnk3tvdYe6B2R8gE5
-	 gTfZ7ChBAkzFo244cu/EJaiGENwnTS8Iuo2fGgC4GQdz7LmQo7Z0m52hHlkxNmHcbG
-	 9YtuZoGoe3kf7ovF46V+l3GYChhMTcCcveW51xeLt20xTQCAanh9ZYcqsFktPJLNxC
-	 AweuNtg1zj/nQ==
+	b=DnTV2h3LKmUkSPJtTZlfmr3fJhcjKx1Qk3qMKpNna91KndAME360z4Lwzv0FpLouz
+	 n8lK509uc01AL0J7ATFAv4NEQ4+fhX7Dk38DmpsoQeP9eHVdgp9lv/pfrOWk+uwhUQ
+	 +OupHXq7OBIeMgbHGPNcE209nP2qj3KPlbZ92UpZDlj1xnJ2MJpmchPAFUtPfeAKtZ
+	 ZP73uPYYjS9fhStzIqp1hd4Ck0rsWQLs8kdFA7s3LziHfoiWd4nyU12V9pH1lQD4J9
+	 ykHMqBKuSz9loo6hFAjNzGVhxr9oFHxTbkSiy3wg80+PyLGCG/fYlOa5Tr4jdvmbVN
+	 AQF6PeUdR+Eng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Armin Wolf <W_Armin@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 09/29] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Tue, 18 Jun 2024 08:39:35 -0400
-Message-ID: <20240618124018.3303162-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 05/21] ACPI: EC: Abort address space access upon error
+Date: Tue, 18 Jun 2024 08:41:04 -0400
+Message-ID: <20240618124139.3303801-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+In-Reply-To: <20240618124139.3303801-1-sashal@kernel.org>
+References: <20240618124139.3303801-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,44 +63,46 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
+X-stable-base: Linux 5.15.161
 Content-Transfer-Encoding: 8bit
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
 
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index fc3dc83bb8707..7589908b358e3 100644
+index 472418a0e0cab..1896ec78e88c7 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
-@@ -1332,8 +1332,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+@@ -1303,10 +1303,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
  
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
+ 
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
 2.43.0
 
