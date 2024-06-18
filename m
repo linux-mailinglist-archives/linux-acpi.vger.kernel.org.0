@@ -1,138 +1,108 @@
-Return-Path: <linux-acpi+bounces-6480-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6481-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E568290CBEA
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 14:39:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A944C90CC7B
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 14:51:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049F11C23D5E
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:39:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B63EB29183
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DB01514DD;
-	Tue, 18 Jun 2024 12:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ADC16CD01;
+	Tue, 18 Jun 2024 12:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTe1w6Ad"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmqeELXm"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE751534E9;
-	Tue, 18 Jun 2024 12:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE44916C852;
+	Tue, 18 Jun 2024 12:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714195; cv=none; b=CuYH57mXZZ1BNFz0EgE4X/K9VwTVoo8gZrOBSKbsAZkrTS+3PTTy1RknVOXwsNdRht3SR27ghNFwBv+RnaBnLuHe9PZUkcE+u+oajgq1lIwhuXz690aeXohizxICURO2jTAZ5S/gh91zfvNUaUt6EezoCxLtF/PueO5F0bYMRpI=
+	t=1718714327; cv=none; b=Oks/iSM0USavokSSkyA+ktDeyWK5cqdj9HRLMEfy3u4ZzryMOvE5NA+ocya3WOMXtADu30buU9e2VYOJVl7McaV23BCiXHLQr84Vrp4NuifqomlM/Kph9gKHU/SAPf8I5mGwEMicWeMsdaMUoYxTF8zV3sukWQYF3IKaTZcrcN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714195; c=relaxed/simple;
-	bh=oeoJwNKvryvK/Lmdw9qzBXq4NmsphNr/T/hF0R+fjTM=;
+	s=arc-20240116; t=1718714327; c=relaxed/simple;
+	bh=jYzeQib9XVD+7muscBuexXT/ekwe1EQRbnwTYZ3UFF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mEdQY73qEX33Gwxd1WryGQnfmQbm97lyEBWaJA61XPjY7B+tZibaLIo826ATL86/oPf+fT6Lx0JP4QTfj1/qDxiY7C6PylVyBAFyHo8HjgTbjvxmE9Dt1uVZC6i4H9DikpAfh/ZRQNLmWe5TvULbecMVxR9XHiQhfAoXy+c6mlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTe1w6Ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A14C32786;
-	Tue, 18 Jun 2024 12:36:34 +0000 (UTC)
+	 MIME-Version; b=CWGHf9d7cW0v9lYY+zRp5nn3L9Vsyhxvq7C1eds6adI0mhdLof9vmGoI2kMR/ickZ8R7c7twLslbDDkryztIkg43knjFM/cJPrv3ld89VHXf7fV8qSC0DrzASzJEBvn5Hn6Pwj24iHNHBBNG6tcFMJ4loJc1Em5vPTTlALGN5Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmqeELXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E444C4AF49;
+	Tue, 18 Jun 2024 12:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714195;
-	bh=oeoJwNKvryvK/Lmdw9qzBXq4NmsphNr/T/hF0R+fjTM=;
+	s=k20201202; t=1718714326;
+	bh=jYzeQib9XVD+7muscBuexXT/ekwe1EQRbnwTYZ3UFF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTe1w6Ad9pk3uSb96uxUuCgBhCsqd8grx7+cj7CYJDscx7S4/cd5Eu19WZtl2MWj+
-	 o0ix9iHTr7zywgDQntXsnb2Y5x3A/5GFqXEYntsBVKWUwsThf0gHeKssFkLYxPAwxv
-	 FAuK1814KGNfnjVd+XgrFkj/d9CNIl4yOpviPDlPOKV3rEXLB5dP6TW29h2wIT4C0p
-	 KeU3RAxjL7t2TVbfl0ctwpIuoyl2WoYfYkr6HnihNeVRe1GIDyn7NfQStpfTf4052R
-	 7gxvyr0Pw+zDdH/tFERuVF/xWP+Hn151KXaSA5ApWvyZzBl5sR0Vwks7oqQdtvGg/s
-	 QHQA+yY0gvsaw==
+	b=lmqeELXmkZjymRGI8e62uZX1Qb3sylqaTT21tuJebEYn3LCBu9rKXK/YK2ZkiCfEM
+	 AUaGxmJ8yQ7j6aQWX9C3wBx6jD8LkExP/U5+DmLarDUTF0iOf8rHirgmlRW//3f8Ts
+	 37KXvHObwi1bG4mqako0AQw3KiLMzIBJleTzdZqmGF1JBhu4R+1em4BJ/j9giVDwNQ
+	 ST+FjcEjJkLlrdKxKLAIhDRvIEN/1uznjBNA3JKU8/YBFXhNp0sBiLo7NC5XPRGC5+
+	 Yce/rfMz3ZmKwSQQBJwPnu2c3qufLRQEoqQUQ0pvy8pKAlA8dUtIgaYVd4miEVCmKr
+	 EY5Sedsoeelyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Rajas Paranjpe <paranjperajas@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 13/44] ACPI: AC: Properly notify powermanagement core about changes
-Date: Tue, 18 Jun 2024 08:34:54 -0400
-Message-ID: <20240618123611.3301370-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 08/35] ACPI: EC: Abort address space access upon error
+Date: Tue, 18 Jun 2024 08:37:28 -0400
+Message-ID: <20240618123831.3302346-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Weißschuh <linux@weissschuh.net>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit ac62f52138f752d6c74adc6321e4996d84caf5bb ]
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-The powermanagement core does various actions when a powersupply changes.
-It calls into notifiers, LED triggers, other power supplies and emits an uevent.
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-To make sure that all these actions happen properly call power_supply_changed().
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
 
-Reported-by: Rajas Paranjpe <paranjperajas@gmail.com>
-Closes: https://github.com/MrChromebox/firmware/issues/420#issuecomment-2132251318
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ac.c  | 4 ++--
- drivers/acpi/sbs.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-index 2d4a35e6dd18d..09a87fa222c78 100644
---- a/drivers/acpi/ac.c
-+++ b/drivers/acpi/ac.c
-@@ -145,7 +145,7 @@ static void acpi_ac_notify(acpi_handle handle, u32 event, void *data)
- 						  dev_name(&adev->dev), event,
- 						  (u32) ac->state);
- 		acpi_notifier_call_chain(adev, event, (u32) ac->state);
--		kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-+		power_supply_changed(ac->charger);
- 	}
- }
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index a59c11df73754..2e907800417db 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1333,10 +1333,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
  
-@@ -268,7 +268,7 @@ static int acpi_ac_resume(struct device *dev)
- 	if (acpi_ac_get_state(ac))
- 		return 0;
- 	if (old_state != ac->state)
--		kobject_uevent(&ac->charger->dev.kobj, KOBJ_CHANGE);
-+		power_supply_changed(ac->charger);
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
  
- 	return 0;
- }
-diff --git a/drivers/acpi/sbs.c b/drivers/acpi/sbs.c
-index 94e3c000df2e1..dc8164b182dcc 100644
---- a/drivers/acpi/sbs.c
-+++ b/drivers/acpi/sbs.c
-@@ -610,7 +610,7 @@ static void acpi_sbs_callback(void *context)
- 	if (sbs->charger_exists) {
- 		acpi_ac_get_present(sbs);
- 		if (sbs->charger_present != saved_charger_state)
--			kobject_uevent(&sbs->charger->dev.kobj, KOBJ_CHANGE);
-+			power_supply_changed(sbs->charger);
- 	}
- 
- 	if (sbs->manager_present) {
-@@ -622,7 +622,7 @@ static void acpi_sbs_callback(void *context)
- 			acpi_battery_read(bat);
- 			if (saved_battery_state == bat->present)
- 				continue;
--			kobject_uevent(&bat->bat->dev.kobj, KOBJ_CHANGE);
-+			power_supply_changed(bat->bat);
- 		}
- 	}
- }
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
 2.43.0
 
