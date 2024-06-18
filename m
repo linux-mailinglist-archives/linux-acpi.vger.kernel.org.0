@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-6482-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6483-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AAB690CCAC
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 14:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC2490CD10
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 15:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29096B295C2
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:50:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87BFDB2B66F
+	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 12:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6408816CD2C;
-	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C76E1A00F7;
+	Tue, 18 Jun 2024 12:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0i5WjGX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlszXGvS"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22216CD27;
-	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EBC1A00EF;
+	Tue, 18 Jun 2024 12:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714328; cv=none; b=b8k9wsVTagXJMziEdKthatkHodDm1q7fa+exMOVvq6KTJ+B9hJY/ACnNxuQx4FD5Cz8hz4LMcKsoXkRdnhHcBdfcONnkAL4EHEi7VJr+da5V+VwmRrnGDABNPYgr5ANiTXtJcTLkelEX/gDPPu4RkfOo9FUqqK9+Mr/GZf/mO3I=
+	t=1718714433; cv=none; b=qxoZqy4mZqPe40ym9CopumgYEzGTIp7RgwLbFlJHpZ3VNyBW3JLLv3eF29lMc7yaDp25T5TaPXMxMBVOrtHobUocEjAJkaDL+YVzJCZ/H8Xms8G8epgLd/qMAqiWeXzGtDv3d00XDiZwNDxAnpJrQZngW5wpH4rfRkituRhb9Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714328; c=relaxed/simple;
-	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
+	s=arc-20240116; t=1718714433; c=relaxed/simple;
+	bh=nN21iP/qqfxyiAcks/jH3Q+FVdKoWkOs6ojS1nTvEeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N41JcjVc3qy6SHkqRRRv2819S0InNHqiYLCNrCLbsYtRiQGhpzmCyJz5uuIKLze06+tl+EzKstt6k6lRof0di+BebEzssVkJpqZ/khmeV0L5xYXmV5Z6tNDAcRZTfw3KaAsT7G8qtpVbskpLrA815jXOP+L1QpfnxVpW1oriZ20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0i5WjGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48591C4AF1D;
-	Tue, 18 Jun 2024 12:38:47 +0000 (UTC)
+	 MIME-Version; b=nT66U1P10f3ax0kLgkUjuCmsqX9LPEUlOPnLlMLcl9RdodFbLX73ZaBbObFTGErgROFkQHC4rJ5mMsIVb4BKjD0FFujghZIGtN1qu3QRGqNdHcREj6Q1vwp+TNEq/KtV7h2KVL+SrQYct1dye8ZszP+BY4R8hkDNOB65wOh8LKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlszXGvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C165C32786;
+	Tue, 18 Jun 2024 12:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714328;
-	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
+	s=k20201202; t=1718714433;
+	bh=nN21iP/qqfxyiAcks/jH3Q+FVdKoWkOs6ojS1nTvEeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0i5WjGXYTPmn9TdVnf715G9hbdUFvfe03pZTUd0f7fFxsSuOpjw+UZ1rPqNwnwPY
-	 JHXqc1wI36bkZawHr0znZAWUThyyMqamdbuC9h1Lur0Y3kHTe5sDwCLAYv6H7MgmKU
-	 b/uQJoIqGo/Vtb8ZyZtt/iGM8ULVMfe4WIHVIAaDg44JDDpO9Qjx7HIA2luuDsXFgk
-	 4RlReyN78ksBxSxKglMAmSoU8pW8a0lEF6VD0JZ4wcpe0660NQvaJ7d2hc+CZBX7NX
-	 c7Q2y7otaCCYbIfPB0qS39KhEc75P8ahDw+BXmN82yT5VkF/dT+ZvGS6xaUpN97yqd
-	 HwZkFnJPHPPcg==
+	b=mlszXGvS/54WNRrklS0yqNqo7ooOZWKNoQ+qRSyioH8nh1fwmaqWkRR2cgO5YUIQV
+	 uXBYsS6YZlpCuQiR62s9TbxZ5cYdPzrOVk+VaDwCxvwxxZ17obrzNN5avdaCspNSSX
+	 E3thLfKyyK03gkg/ihYenq3l+YXWvAy8bQyuTgAFDEllQ1Pb61UqE5L7LtxBNA6nw5
+	 9HFQWWetjG5ZQwm6+jaYSR60fa5WJkYoSt6bm5akw439EGv/iIR959ZW8g5IfPCbZ7
+	 44mzZrAzrpw+1A9hgsPFd3BAouxIIcruXFAWpvfxquCc40lljRL5hAxReRm0IzNBHY
+	 2a+zXK9OtT8yA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Armin Wolf <W_Armin@gmx.de>,
 	Sasha Levin <sashal@kernel.org>,
 	rafael@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 09/35] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Tue, 18 Jun 2024 08:37:29 -0400
-Message-ID: <20240618123831.3302346-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 08/29] ACPI: EC: Abort address space access upon error
+Date: Tue, 18 Jun 2024 08:39:34 -0400
+Message-ID: <20240618124018.3303162-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,44 +63,46 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
 
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 2e907800417db..75fa23962d1d3 100644
+index 77d1f2cb89ef3..fc3dc83bb8707 100644
 --- a/drivers/acpi/ec.c
 +++ b/drivers/acpi/ec.c
-@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+@@ -1314,10 +1314,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
  
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
+ 
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
 2.43.0
 
