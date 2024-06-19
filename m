@@ -1,147 +1,90 @@
-Return-Path: <linux-acpi+bounces-6520-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6521-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AD690EA8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 14:12:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C72DD90EB2C
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 14:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942D41C23DEC
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 12:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 738481F24779
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 12:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313F9140E4D;
-	Wed, 19 Jun 2024 12:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sc38HwOX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED2013B290;
+	Wed, 19 Jun 2024 12:33:14 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A82140395;
-	Wed, 19 Jun 2024 12:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805E875817;
+	Wed, 19 Jun 2024 12:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718799111; cv=none; b=ZUqxiUsE96JXGymCuQJgMao4B1V8UXMfsYrZUcffuy9pbn0Bu3FVL3oxRdjcgE4bMaJ44kWU3Wu5t+Eco+TcIJF+aJbYraw3YB00LOWXOvCIZd8gW/pVXMKcp8d4dXML61YbyUgDXkS/w1XGhlCHR8JvaQwYaqHQYFVylZD39X0=
+	t=1718800394; cv=none; b=SFtA0x1+MWJXsxuFMCVCQgEsTKw0H4a6C6B2G4vSyzfIi5jc037pCVPSuZ9Ud/m9n4H0hYfPQ40Jzi0+JQBQ4kwEiDgwynIQWHJOPx5bbcFUwA4vA4TA65iDNjNEsaYDvvzYsoooC7meOq8oJUXMR5Nc8+YQIzZRywkdHQvR85w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718799111; c=relaxed/simple;
-	bh=8UC3dd/xs1eHvnpkbzMHjvpFYyuJFdFAOtxj21nX+eg=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qM27il8YBG3mV9MFQfqE8WilpmDWbuE1FfdchPlmcXOtpkfmBE2Le7+CgX1bESUddxdbUn/2R3tgqv2uStoeWApGvPldIzLxn13LLJNMTm0NcF8q9ioipaeiT0VtjY16U1q8ZHLXGDEK+Xx8QgUoU86HahA/0aqWFnA4scSZ6k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sc38HwOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F7C4AF1D;
-	Wed, 19 Jun 2024 12:11:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718799110;
-	bh=8UC3dd/xs1eHvnpkbzMHjvpFYyuJFdFAOtxj21nX+eg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sc38HwOXXA8zwNu1EdxnZfwAfuSgOQAgHP98hrVE8/M1bYDhPzGiO2utokmcGPh1O
-	 tUL7KmeG5lBnM5WSk8yS/X47u3Dd3UmY2teYTP7QE3Vb8AptBUIXiCRPVRJ7AjS6Zr
-	 LNs4+n7wK0e8Id0QAB6MiwNXdtY0v7B/ymqcOPu6+hrsUidSmxxRKPEpwQB/vcNMr8
-	 Yb9jHJs98KH+8M5/8tRuph9lP666N3CpqYfCuiejh8sdyMsx5eQyh5hnnuVRaQHMOd
-	 JpcDIKnRshkSsCf6s4mO7+BYH6mXPLaKKeY3HVgG37cdfWuK0Yz4VLu2NXh2TS5d9F
-	 MKgqmi0zKCfdg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sJuAG-005RXt-4M;
-	Wed, 19 Jun 2024 13:11:48 +0100
-Date: Wed, 19 Jun 2024 13:11:47 +0100
-Message-ID: <867celjfng.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Will Deacon <will@kernel.org>,
-	"Catalin\
- Marinas" <catalin.marinas@arm.com>,
-	<linux-acpi@vger.kernel.org>,
-	<linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>,
-	<linux-pm@vger.kernel.org>,
-	<linuxarm@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	<loongarch@lists.linux.dev>,
-	<x86@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	"Rafael J . Wysocki"
-	<rafael@kernel.org>,
-	"Miguel Luis" <miguel.luis@oracle.com>,
-	James Morse
-	<james.morse@arm.com>,
-	"Salil Mehta" <salil.mehta@huawei.com>,
-	Jean-Philippe
- Brucker <jean-philippe@linaro.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Gavin
- Shan <gshan@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov
-	<bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	<justin.he@arm.com>,
-	<jianyong.wu@arm.com>,
-	Karl Heubaum
-	<karl.heubaum@oracle.com>
-Subject: Re: [PATCH v10 00/19] ACPI/arm64: add support for virtual cpu hotplug
-In-Reply-To: <20240613112511.00006331@huawei.com>
-References: <20240529133446.28446-1-Jonathan.Cameron@huawei.com>
-	<20240613112511.00006331@huawei.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.2
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1718800394; c=relaxed/simple;
+	bh=lrKGpX+o18W4uBnalsCs70J5SIrWWSxlNStGVVkPopQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sZ9tgcrkfXhPNbmszguNY+zn0XM6F9cqrGNlgtXCtvJCna05iizCxz1Zvy8ModcvUmTlJiGsRJFQnYo472kHa3jjh6n9HgZ+Bh2ruyfAUxCAhnjLhKcMHO/LUuJmQtisBsnBNJwpvh4bVWm2ZsPGqcoUBgGsb1YXVJyyIl6yGGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 744FCDA7;
+	Wed, 19 Jun 2024 05:33:36 -0700 (PDT)
+Received: from bogus (unknown [10.57.89.235])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAA013F6A8;
+	Wed, 19 Jun 2024 05:33:09 -0700 (PDT)
+Date: Wed, 19 Jun 2024 13:33:08 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Youwan Wang <youwan@nfschina.com>
+Cc: lpieralisi@kernel.org, guohanjun@huawei.com,
+	Sudeep Holla <sudeep.holla@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, lenb@kernel.org,
+	rafael@kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v3] ACPI /amba: Fix meaningless code for
+ amba_register_dummy_clk()
+Message-ID: <20240619123308.ti54nduhj6cayfvl@bogus>
+References: <20240618115845.261297-1-youwan@nfschina.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Jonathan.Cameron@Huawei.com, will@kernel.org, catalin.marinas@arm.com, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org, linuxarm@huawei.com, mark.rutland@arm.com, tglx@linutronix.de, peterz@infradead.org, loongarch@lists.linux.dev, x86@kernel.org, linux@armlinux.org.uk, rafael@kernel.org, miguel.luis@oracle.com, james.morse@arm.com, salil.mehta@huawei.com, jean-philippe@linaro.org, guohanjun@huawei.com, gshan@redhat.com, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, justin.he@arm.com, jianyong.wu@arm.com, karl.heubaum@oracle.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240618115845.261297-1-youwan@nfschina.com>
 
-On Thu, 13 Jun 2024 11:25:27 +0100,
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
+On Tue, Jun 18, 2024 at 07:58:45PM +0800, Youwan Wang wrote:
+> Defining `amba_dummy_clk` as static is meaningless.
 > 
-> On Wed, 29 May 2024 14:34:27 +0100
-> Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
-> 
-> > v10:
-> > - Make acpi_processor_set_per_cpu() return 0 / error rather than bool
-> >   to simplify error handling at the call sites.
-> >   (Thanks to both Rafael and Gavin who commented on this)
-> > - Gather tags.
-> > - Rebase on v6.10-rc1
-> > 
-> > The approach to the GICv3 changes stablized very late in the 6.10 cycle.
-> > Subject to Marc taking a final look at those, I think we are now
-> > in a good state wrt to those and the ACPI parts. The remaining code
-> > that hasn't received review tags from the relevant maintainers
-> > is the arm64 specific arch_register_cpu().  Given I think this will go
-> > through the arm64 tree, hopefully they have just been waiting for
-> > everything else to be ready.
-> 
-> Marc, Will, Catalin,
-> 
-> Any comments on this series?  We definitely want to finally land this
-> in 6.11!
-> 
-> Marc, in practice I think you already gave feedback on the the GICv3
-> changes in here as part of the discussions in the earlier version threads,
-> but if you have time for a final glance through it would be much appreciated.
-> Thanks for all your earlier help on this btw.
+> The amba_register_dummy_clk() function is static and
+> is called during initialization. I think 'amba_dummy_clk'
+> should be NULL each time when initializing
+>
 
-I've had a quick look and the GICv3 parts look OK to me (you should
-now have by tags for both patches).
+Also I missed to read the commit message, please update it as follows:
 
-Thanks,
+"
+ACPI / amba: Drop unnecessary check for registered amba_dummy_clk
 
-	M.
+amba_register_dummy_clk() is called only once from acpi_amba_init()
+and acpi_amba_init() itself is called once during the initialisation.
+amba_dummy_clk cann't be initialised before this in any other code
+path and hence the check for already registered amba_dummy_clk is
+not necessary. Drop the same.
+"
 
--- 
-Without deviation from the norm, progress is not possible.
+Also few other things to note:
+1. You missed to add my Acked-by which I gave to your v2
+2. This is v3 and new reviewers of this patch have absolutely no idea
+   what got changed from v1->v2->v3. It is always good to add change log
+   across versions
+3. I asked you to add ARM64 maintainers as we would request them to pick
+   this up via ARM64 tree.
+	Catalin Marinas <catalin.marinas@arm.com
+	Will Deacon <will@kernel.org>
+
+--
+Regards,
+Sudeep
 
