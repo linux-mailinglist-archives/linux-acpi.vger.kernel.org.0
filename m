@@ -1,160 +1,146 @@
-Return-Path: <linux-acpi+bounces-6526-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6527-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE3790F4DA
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 19:09:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4340890F515
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 19:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817D71C21B2A
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 17:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7B121F216AB
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 17:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391FE155398;
-	Wed, 19 Jun 2024 17:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC8637143;
+	Wed, 19 Jun 2024 17:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5jtBk9C"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="ZJJGKneb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2211C3E;
-	Wed, 19 Jun 2024 17:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8B92139D1;
+	Wed, 19 Jun 2024 17:31:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718816987; cv=none; b=qXvthoJQ47aOiYhxb8aFW0Up/M0dBNo3y7L23sDm3UUamj3ZzBfOt1IXdYBNq30Wl8FIZ8Um6tGn+1HFwZF4aDZooJZZMie5le5xKjQBswXPKZ3k/SdEcYxX2NREOkAiRw+9NFdIFnok+06egx0an/We3XW6fKpzu1AqtJudSsM=
+	t=1718818266; cv=none; b=ks+UQhq4lbjo396/wJPygrVVkM/3shgr/YLluRfMjbMbKYH+tXjSOIHoy4KvZFmKUzuGMWPjovgcNRJHLlVyIJ35SbUnwU7B9+RdLRqfCzwU3VJBRZU1fM6nWvWyZekMALsZXlf7iTOvKKCVHHfDqvwnvZ2GT+pdhN1U3BTPozA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718816987; c=relaxed/simple;
-	bh=9CMNUv/EbEPQ8no+tR5gxROXmRGYdqZRxr+kp5I4E3U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ej/x2oeZuQg4OMafGN2XLCr12kxevyPn97pnwmfvnTdEPtfYtsIN4chNWqlhn2mB7LW1L4kjXWnxjMBhYAvUOXaX4lmgL4Y7co7HpnjdbsCRRSz7jmMhscqt4PMqp9g8NtdXXp3JnggJ+yKJgLImuQ6NBkAp9tFZKGLGhlh8rsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5jtBk9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C9C4AF07;
-	Wed, 19 Jun 2024 17:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718816986;
-	bh=9CMNUv/EbEPQ8no+tR5gxROXmRGYdqZRxr+kp5I4E3U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h5jtBk9Cyl/yP3iJt2RztG1vPVKNktYwJj09k79If4Cyt71eUgJFlHyR3Yn6EL3Ga
-	 5sQF2qKQk8qU7Ey1GfHrTE8sQyl5yzM2ZrZED91s+791DY4kIcxHmgcacvYSx+wFmi
-	 2o634Wf8+dkGlKKLQJzOLDU+wloO6EUAzJvj/ntRhCXZzr6QoRwkpYyjysouCLpaE2
-	 xEdTryNSl3kM4/BHua+7vJm5zvsTapWt//B6/JocQ6oN5+Ct0xiMjFK6R9pY9PgbXa
-	 Lm36+yvLQTAVC6c1Ol/u3kfa9nEjc4dDuxt5M3BRUcCxYIAdbMCdmylRaD1qLhqu0q
-	 j2cuCgjGXPoWQ==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-254f646b625so13861fac.0;
-        Wed, 19 Jun 2024 10:09:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXftWBX38KUOblJYRogJTZ+xsQcbLRR5bTBsqgdpMKPQk4gEf/kDNt4zcbWgHHyr3OVzldDVRZ5cjsmwFcvxj2RCBJ0BsOiQtfNE2RBgbegmieO/LJZNIeSaaqvPf5iPyZ5TUkmirDLPQ==
-X-Gm-Message-State: AOJu0YxejemIJaOlvuS2gsOdflwfBh7hpA3DPlTbt1P9o7E4gWXuFW3Y
-	OUYyiUQrphwc58lrjARap+5hWQ8HksIJhoNvNPV/vH0TckaaTigKNDvqL75GW+TJwz/mXHAAL22
-	3NhTBLlta44/1E2LmPteoGFu4w7g=
-X-Google-Smtp-Source: AGHT+IFnVIs7qSVlLi41292Pqa2L4YxENvIxso1hyO4nfZ7rk9IxBHHcak04fnlkplGBaApB+0YZgL1YINHD2KZ3qiw=
-X-Received: by 2002:a4a:7619:0:b0:5ba:ca8a:6598 with SMTP id
- 006d021491bc7-5c1ad90b829mr3531916eaf.0.1718816986143; Wed, 19 Jun 2024
- 10:09:46 -0700 (PDT)
+	s=arc-20240116; t=1718818266; c=relaxed/simple;
+	bh=JtyV6fTrNqECekypB4WJ1prctjopYH8/7+VyiVgTFAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pWZcCU4oKjSX6rjP6GzBbe1XFmPc+k2McxFjt5dwyoM0ip9O9NkRqjmVijxKNxgVwbNv5g7/GFqUk9DNmp0MwwZHdv6sSiBTAGPENRcXlEwvhqSinqe11vu8h3aYn3o+JAc2DtpZypNRy4FFpPpA4O3zEw5fj/zTwmNuvDlJgmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=ZJJGKneb reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
+ id aed01b5e3570948f; Wed, 19 Jun 2024 19:30:56 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id A63086A55B8;
+	Wed, 19 Jun 2024 19:30:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1718818256;
+	bh=JtyV6fTrNqECekypB4WJ1prctjopYH8/7+VyiVgTFAs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZJJGKnebEy6wVg1RtGUUgjmnYe4KEnxc0dywXcm0dlreilXLz9lowA/LKmJOIajhq
+	 X/8TlhtC4p/E+ImzwX4cmDBp8C7KLTaHFoRYmDC6BTXxiJ9X6FHPbiaEV/A3R4UhlR
+	 02zPcpNtG+cDGgwCIJX3UbyxV+XZvOuGJoFxwSVM+avmTkQsc4cJ3+uaTScFtHW07j
+	 Z/fk/rDd1orIlN3092pIu364rErqqMe70N5Abn1pPQ5mMEqjUpqBfdzUPNzszOsXWV
+	 q7kd/RAuDLRF453J5iEhHS0fOUU1fCH5s0gxCLWnj9kVuE2i+UcJI5ptOcTelrwbws
+	 k3zozlzPCw42Q==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Aaron Rainbolt <arainbolt@kfocus.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+ mmikowski@kfocus.org, Perry.Yuan@amd.com,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Subject:
+ Re: [PATCH V3] acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
+Date: Wed, 19 Jun 2024 19:30:55 +0200
+Message-ID: <12457165.O9o76ZdvQC@rjwysocki.net>
+In-Reply-To:
+ <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
+References:
+ <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com> <ZnJfmUXmU_tsb9pV@kf-XE>
+ <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com> <ZnHSKiaYf2tIQo58@kf-XE>
- <a7790c74-2bec-4a24-b6e5-223c4e1ed372@amd.com> <ZnHXfLEwk2uRbg58@kf-XE>
- <b4d65232-b69e-419d-9b15-d0ca64b78b26@amd.com> <ZnHfNbLTgY1op3Zv@kf-XE>
- <fb8c965a-5f1c-4975-8e7d-6f6a0eb4d02f@amd.com> <ZnHtPbszYT8afOOk@kf-XE>
- <c6bda238-166e-4de6-b0c7-4bddfb8ef6f4@amd.com> <ZnIAX9P5XSco4cZw@kf-XE> <ZnJfmUXmU_tsb9pV@kf-XE>
-In-Reply-To: <ZnJfmUXmU_tsb9pV@kf-XE>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 19 Jun 2024 19:09:35 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
-Message-ID: <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
-Subject: Re: [PATCH V3] acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
-To: Aaron Rainbolt <arainbolt@kfocus.org>
-Cc: Mario Limonciello <mario.limonciello@amd.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rafael@kernel.org, lenb@kernel.org, 
-	mmikowski@kfocus.org, Perry.Yuan@amd.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeeftddgudduvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthhqredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedtvdefgeelvdefvdevveehvdetfeefhedvueeiudekieeltdetgfdviefhgfetteenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopedutddprhgtphhtthhopegrrhgrihhnsgholhhtsehkfhhotghushdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhhiohdrlhhimhhonhgtihgvlhhlohesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghr
+ nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghnsgeskhgvrhhnvghlrdhorhhg
+X-DCC--Metrics: v370.home.net.pl 1024; Body=10 Fuz1=10 Fuz2=10
 
-On Wed, Jun 19, 2024 at 6:33=E2=80=AFAM Aaron Rainbolt <arainbolt@kfocus.or=
-g> wrote:
->
-> acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
->
-> The _OSC is supposed to contain a bit indicating whether the hardware
-> supports CPPC v2 or not. This bit is not always set, causing CPPC v2 to
-> be considered absent. This results in severe single-core performance
-> issues with the EEVDF scheduler on heterogenous-core Intel processors.
+On Wednesday, June 19, 2024 7:09:35 PM CEST Rafael J. Wysocki wrote:
+> On Wed, Jun 19, 2024 at 6:33=E2=80=AFAM Aaron Rainbolt <arainbolt@kfocus.=
+org> wrote:
+> >
+> > acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
+> >
+> > The _OSC is supposed to contain a bit indicating whether the hardware
+> > supports CPPC v2 or not. This bit is not always set, causing CPPC v2 to
+> > be considered absent. This results in severe single-core performance
+> > issues with the EEVDF scheduler on heterogenous-core Intel processors.
+>=20
+> While some things can be affected by this, I don't immediately see a
+> connection between CPPC v2, Intel hybrid processors and EEVDF.
+>=20
+> In particular, why would EEVDF alone be affected?
+>=20
+> Care to explain this?
 
-While some things can be affected by this, I don't immediately see a
-connection between CPPC v2, Intel hybrid processors and EEVDF.
+And the reason why I am asking is because I think that you really need
+something like this (untested beyond compilation):
 
-In particular, why would EEVDF alone be affected?
+=2D--
+ drivers/cpufreq/intel_pstate.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Care to explain this?
+Index: linux-pm/drivers/cpufreq/intel_pstate.c
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=2D-- linux-pm.orig/drivers/cpufreq/intel_pstate.c
++++ linux-pm/drivers/cpufreq/intel_pstate.c
+@@ -355,16 +355,16 @@ static void intel_pstate_set_itmt_prio(i
+ 	int ret;
+=20
+ 	ret =3D cppc_get_perf_caps(cpu, &cppc_perf);
+=2D	if (ret)
+=2D		return;
+=2D
+ 	/*
+=2D	 * On some systems with overclocking enabled, CPPC.highest_perf is hard=
+coded to 0xff.
+=2D	 * In this case we can't use CPPC.highest_perf to enable ITMT.
+=2D	 * In this case we can look at MSR_HWP_CAPABILITIES bits [8:0] to decid=
+e.
++	 * If CPPC is not available, fall back to MSR_HWP_CAPABILITIES bits [8:0].
++	 *
++	 * Also, on some systems with overclocking enabled, CPPC.highest_perf is
++	 * hardcoded to 0xff, so CPPC.highest_perf cannot be used to enable ITMT.
++	 * Fall back to MSR_HWP_CAPABILITIES then too.
+ 	 */
+=2D	if (cppc_perf.highest_perf =3D=3D CPPC_MAX_PERF)
+=2D		cppc_perf.highest_perf =3D HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu=
+]->hwp_cap_cached));
++	if (ret || cppc_perf.highest_perf =3D=3D CPPC_MAX_PERF)
++		cppc_perf.highest_perf =3D
++			HWP_HIGHEST_PERF(READ_ONCE(all_cpu_data[cpu]->hwp_cap_cached));
+=20
+ 	/*
+ 	 * The priorities can be set regardless of whether or not
 
-> To work around this, provide a new kernel parameter, "ignore_osc_cppc_bit=
-",
-> which may be used to ignore the _OSC CPPC v2 bit and act as if the bit wa=
-s
-> enabled. This allows CPPC to be properly detected even if not "enabled" b=
-y
-> _OSC, allowing users with problematic hardware to obtain decent single-co=
-re
-> performance.
->
-> Tested-by: Michael Mikowski <mmikowski@kfocus.org>
-> Signed-off-by: Aaron Rainbolt <arainbolt@kfocus.org>
->
-> ---
->
-> V2 -> V3: Move bit ignore to before switch.
-> V1 -> V2: Rewrite to work in cpc_supported_by_cpu.
->
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentat=
-ion/admin-guide/kernel-parameters.txt
-> index b600df82669d..af2d8973ba3a 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -2063,6 +2063,12 @@
->                         could change it dynamically, usually by
->                         /sys/module/printk/parameters/ignore_loglevel.
->
-> +       ignore_osc_cppc_bit
-> +                       Assume CPPC is present and ignore the CPPC v2 bit=
- from
-> +                       the ACPI _OSC method. This is useful for working
-> +                       around buggy firmware where CPPC is supported, bu=
-t
-> +                       _OSC incorrectly reports it as being absent.
-> +
->         ignore_rlimit_data
->                         Ignore RLIMIT_DATA setting for data mappings,
->                         print warning at first misuse.  Can be changed vi=
-a
-> diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-> index ff8f25faca3d..0ca1eac826af 100644
-> --- a/arch/x86/kernel/acpi/cppc.c
-> +++ b/arch/x86/kernel/acpi/cppc.c
-> @@ -11,8 +11,20 @@
->
->  /* Refer to drivers/acpi/cppc_acpi.c for the description of functions */
->
-> +static bool ignore_osc_cppc_bit;
-> +static int __init parse_ignore_osc_cppc_bit(char *arg)
-> +{
-> +       ignore_osc_cppc_bit =3D true;
-> +       return 0;
-> +}
-> +early_param("ignore_osc_cppc_bit", parse_ignore_osc_cppc_bit);
-> +
->  bool cpc_supported_by_cpu(void)
->  {
-> +       if (ignore_osc_cppc_bit) {
-> +               return true;
-> +       }
-> +
->         switch (boot_cpu_data.x86_vendor) {
->         case X86_VENDOR_AMD:
->         case X86_VENDOR_HYGON:
->
+
+
 
