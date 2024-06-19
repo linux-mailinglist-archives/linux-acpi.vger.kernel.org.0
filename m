@@ -1,137 +1,266 @@
-Return-Path: <linux-acpi+bounces-6522-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6523-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1035890ECD2
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 15:11:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA53390EEBD
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 15:31:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B37CB24568
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 13:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3DE11C24604
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 13:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4514900C;
-	Wed, 19 Jun 2024 13:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="d2W88XqF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377C714388B;
+	Wed, 19 Jun 2024 13:31:36 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2315E14659A
-	for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 13:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2D81E526;
+	Wed, 19 Jun 2024 13:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802669; cv=none; b=UhIgFtFbQYOx8ULzP8XZ8OKILpKtjFHFusrvFVu8wGtTw/rX2aH1oZ7FmtY5y0Rjx6AKcLetVt/TIjnQq9skda5mLKsPDy2QOrAjBan6SVNM7SGFc510mnzJTrHhkxyH3idTZjC65TR9w/qUjgitqcdpcdkbfnErMj1l/dQHktQ=
+	t=1718803896; cv=none; b=bpl2KqsRoz6ahcGKhi9A0zuthJmYj+49vCJFDYiOaIx8zxhJ1mcxTqHixtmm9/j+5Y3d3Q7yhOnlyvzJpPfSOexy1KfO9IMj8MIY1PmgFpYIMuhoVCOSi1OevUvlc2y3jUHq8NWNKjbQKiNJep+92ObsYctg2XFPQEmdqC7gJ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802669; c=relaxed/simple;
-	bh=f8D/9s2CDW3GK+4dmcg1ylCC474S4Jkf25ughKFSwm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FgwB01DHHWhvVp5XGAPrye3SezWRVBFED9VreEqgRNRr+v+fVh6IY2Ql0V6Ysyk80IELjIuugdlEhMmd8Uoxv5qlFOxGjRUlZYmEkNP5wA5K4fXjBkx6yD0PN1RH0cIeC81bxn8jAN6vcKVI1X731DnPyfq4nNVyZddAqj/x5og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=d2W88XqF; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-79a3f1d007fso342832985a.1
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 06:11:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1718802667; x=1719407467; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Kf9r27RNSYH+M0vPwe+rDP3evgG93CXIjp23HZ8WnCY=;
-        b=d2W88XqFhE2y/SDcMzT+0C0zYIMhNgK8ONGubqLwv1xRK2jb2ttXZhtsbb+JJahQa2
-         08ovHWMFjwdhUc8h1Zt6ppBnmkJSE+32wKmDmwaUZXfH9szggYb0EQJTXZw+DFCqXaLK
-         uc94N7k1ds0iPBqHw9f9npMfEp6jog0cbV4yJyJ/GrX8fCbVQrL0HEFhsXxVv8PB8a1z
-         QC+Z9qYOO9ULO0mnENQ6Y3Wdprdp6+uCSuta6myZr32riqjqk94cp/EMcJM27tu/CNB0
-         LQjHIrmUx1aIbOJ+FigU8qGTQBIbertr5xNXww2bgSnEWZuaYQHkFBgejbO2X0lO1GaE
-         qFug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718802667; x=1719407467;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kf9r27RNSYH+M0vPwe+rDP3evgG93CXIjp23HZ8WnCY=;
-        b=jlvKHYHVyiwdMu1L5vIAu5VvVvVm6A/e2U5dbeTZpH5+eh9stIu92Y7IW65t6lfqVs
-         d1rZ9SDxqZB+mOgnJHkiqvRac5MgpuEGjiVpbSZKoriejd5onAStlk8MdOTZ24Bt+ywI
-         9A9+CuG26JAnnBA/sSNvtaMVZ24qnc5k2nxx3CKf1AxrVHBsJqsiwl2/22Ztn5hIJPx+
-         oaRyabNVhKdeWtEq0P8egETGFoKuZooYVGnHOwWOUgSzq+48CyND+gU/nrk8sN9wvShC
-         8DY85crsil/vjYF6aWSqwYLBINJbVyLJIVXwh4qknO/mBFMheZ0AdCXaeDMXP9BWviUv
-         7vBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFcH9bubQN5Pe58GKqBNr6QkNIkhADQVVDOkSaYd20onavUskw7f7FYcJj2r13TUzi5X6OaIKPqa63kwEsl6cv2joImPJsG4CRwg==
-X-Gm-Message-State: AOJu0Yxws5O1/9jR8zdxamw7+cBe0mkM/eSMxCyG0GQBaYr3YPSmtRiX
-	jpuV0pGNGtGsTE5M0gngZbCg1OpWe7KtWpQTiQlUgrWDe1YbBKZD1fNnLOH+5FM=
-X-Google-Smtp-Source: AGHT+IFE11ASRWf4WYTH0x6XxeEds9PyEcIqeUwSrbCnNFW+6zWifwS2t6Yt+SRC48O2ptbYQuGPdQ==
-X-Received: by 2002:a05:620a:4308:b0:795:4e35:ea9c with SMTP id af79cd13be357-79bb3e2f4b6mr277089185a.29.1718802666926;
-        Wed, 19 Jun 2024 06:11:06 -0700 (PDT)
-Received: from sunil-laptop ([106.51.187.237])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaee575fsm605502085a.40.2024.06.19.06.11.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 06:11:06 -0700 (PDT)
-Date: Wed, 19 Jun 2024 18:40:54 +0530
-From: Sunil V L <sunilvl@ventanamicro.com>
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org, bhelgaas@google.com,
-	james.morse@arm.com, jeremy.linton@arm.com,
-	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com,
-	sudeep.holla@arm.com, tiantao6@huawei.com
-Subject: Re: [PATCH v6 3/3] RISC-V: Select ACPI PPTT drivers
-Message-ID: <ZnLY3mNxyv9QOmGn@sunil-laptop>
-References: <20240617131425.7526-1-cuiyunhui@bytedance.com>
- <20240617131425.7526-3-cuiyunhui@bytedance.com>
- <CAEEQ3wnkQsfmLbyMrG_YBvWvhHJdSTg7dG5W_mxv_wxCjatgCA@mail.gmail.com>
+	s=arc-20240116; t=1718803896; c=relaxed/simple;
+	bh=+QbUwWCPAn++iu2c2Vl3hSYdSoxIO8Gi/j1gFVZds8c=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CxDCCxFMmMDdiKqHH3a+GNdT64DrvufiYi7i/YHDdqpZuqzH66k3YcsHxMvPIfVvKaw9BO1kJwx9jKEXj+uQ50L1/tTEpk/lNFxTUGWxGYOn3dCmO51Hh0nR1Er1Zhpq8K1RU2/h6rpqaD44Uisf4AltulZy+J51mBXCLlppx/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W44JS2p9Qz6K6FZ;
+	Wed, 19 Jun 2024 21:31:04 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 943051406AE;
+	Wed, 19 Jun 2024 21:31:24 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 19 Jun
+ 2024 14:31:20 +0100
+Date: Wed, 19 Jun 2024 14:31:17 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, Shiju Jose <shiju.jose@huawei.com>, Tony
+ Luck <tony.luck@intel.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig@pengutronix.de>, "Alison Schofield"
+	<alison.schofield@intel.com>, Ard Biesheuvel <ardb@kernel.org>, Dan Williams
+	<dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>, Len Brown <lenb@kernel.org>, Shuai Xue
+	<xueshuai@linux.alibaba.com>, <linux-acpi@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, <linux-efi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] efi/cper: align ARM CPER type with UEFI 2.9A/2.10
+ specs
+Message-ID: <20240619143117.00000c9c@Huawei.com>
+In-Reply-To: <60da74c80a0b05ea4a5b4b7f2eda1b58d555edce.1718794335.git.mchehab+huawei@kernel.org>
+References: <60da74c80a0b05ea4a5b4b7f2eda1b58d555edce.1718794335.git.mchehab+huawei@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wnkQsfmLbyMrG_YBvWvhHJdSTg7dG5W_mxv_wxCjatgCA@mail.gmail.com>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Jun 19, 2024 at 07:32:18PM +0800, yunhui cui wrote:
-> Hi Sunil,
-> 
-> On Mon, Jun 17, 2024 at 9:14 PM Yunhui Cui <cuiyunhui@bytedance.com> wrote:
-> >
-> > After adding ACPI support to populate_cache_leaves(), RISC-V can build
-> > cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
-> > configuration.
-> >
-> > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
-> > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-> > ---
-> >  arch/riscv/Kconfig | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > index 9f38a5ecbee3..1b4c310a59fb 100644
-> > --- a/arch/riscv/Kconfig
-> > +++ b/arch/riscv/Kconfig
-> > @@ -13,6 +13,7 @@ config 32BIT
-> >  config RISCV
-> >         def_bool y
-> >         select ACPI_GENERIC_GSI if ACPI
-> > +       select ACPI_PPTT if ACPI
-> >         select ACPI_REDUCED_HARDWARE_ONLY if ACPI
-> >         select ARCH_DMA_DEFAULT_COHERENT
-> >         select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-> > --
-> > 2.20.1
-> >
-> 
-> Gentle ping.
-> 
-Actually, my RB is still valid. Anyway, here again.
+On Wed, 19 Jun 2024 12:52:38 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> Up to UEFI spec, the type byte of CPER struct was defined simply
+> as:
+> 
+> Type at byte offset 4:
+> 
+> 	- Cache error
+> 	- TLB Error
+> 	- Bus Error
+> 	- Micro-architectural Error
+> 	All other values are reserved
+> 
+> Yet, there was no information about how this would be encoded.
+> 
+> Spec 2.9A corrected it by defining:
+> 
+> 	- Bit 1 - Cache Error
+> 	- Bit 2 - TLB Error
+> 	- Bit 3 - Bus Error
+> 	- Bit 4 - Micro-architectural Error
+> 	All other values are reserved
+> 
+> Spec 2.10 also preserve the same encoding as 2.9A
+> 
+> See: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
+> 
+> Adjust CPER handling code for ARM to properly handle UEFI 2.9A and
+> 2.10 encoding.
 
-Thanks,
-Sunil
+Hi Mauro,
+
+I'd be tempted to use "ARM Processor" throughout this patch description
+as could in theory be something else and currently the link
+is the only way to tell!
+
+A few comments inline.
+
+Good catch on the spec change btw.
+
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> ---
+>  drivers/acpi/apei/ghes.c        | 19 +++++++++++---
+>  drivers/firmware/efi/cper-arm.c | 44 ++++++++++++++-------------------
+>  include/linux/cper.h            |  9 +++----
+>  3 files changed, 37 insertions(+), 35 deletions(-)
+> 
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index ed32bbecb4a3..365de4115508 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -546,9 +546,12 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>  	p = (char *)(err + 1);
+>  	for (i = 0; i < err->err_info_num; i++) {
+>  		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
+> -		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
+> +		bool is_cache = (err_info->type & CPER_ARM_CACHE_ERROR);
+
+Matches local style I guess but the () are unnecessary.
+
+>  		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
+> -		const char *error_type = "unknown error";
+> +		char error_type[120] = "";
+
+> +		char *s = error_type;
+> +		int len = 0;
+> +		int i;
+
+Shadowing i which is bad for readability.
+
+>  
+>  		/*
+>  		 * The field (err_info->error_info & BIT(26)) is fixed to set to
+> @@ -562,8 +565,16 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+>  			continue;
+>  		}
+>  
+> -		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
+> -			error_type = cper_proc_error_type_strs[err_info->type];
+> +		for (i = 0; i < ARRAY_SIZE(cper_proc_error_type_strs); i++) {
+> +			if (!(err_info->type & (1U << i)))
+> +				continue;
+> +
+> +			len += snprintf(s, sizeof(err_info->type) - len, "%s ", cper_proc_error_type_strs[i]);
+
+Size of the index into the type string array?  I'm confused.
+sizeof(error_type) maybe?
+
+Also, maybe break that long line of code before cper_*
+
+
+> +			s += len;
+> +		}
+> +
+> +		if (!*error_type)
+> +			strscpy(error_type, "unknown error", sizeof(error_type));
+
+Perhaps should handle multiple bits where only one is unknown?
+So maybe compare with a mask of known bits and print this on the end (perhaps
+including which bit)?
+
+>  
+>  		pr_warn_ratelimited(FW_WARN GHES_PFX
+>  				    "Unhandled processor error type: %s\n",
+> diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+> index fa9c1c3bf168..f57641eb548a 100644
+> --- a/drivers/firmware/efi/cper-arm.c
+> +++ b/drivers/firmware/efi/cper-arm.c
+> @@ -93,15 +93,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+>  	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
+>  	bool time_out, access_mode;
+>  
+> -	/* If the type is unknown, bail. */
+> -	if (type > CPER_ARM_MAX_TYPE)
+> -		return;
+> -
+>  	/*
+>  	 * Vendor type errors have error information values that are vendor
+>  	 * specific.
+>  	 */
+> -	if (type == CPER_ARM_VENDOR_ERROR)
+> +	if (type & CPER_ARM_VENDOR_ERROR)
+>  		return;
+>  
+>  	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
+> @@ -116,43 +112,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
+>  	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
+>  		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
+>  			   & CPER_ARM_ERR_OPERATION_MASK);
+> -		switch (type) {
+> -		case CPER_ARM_CACHE_ERROR:
+> +		if (type & CPER_ARM_CACHE_ERROR) {
+>  			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
+> -				printk("%soperation type: %s\n", pfx,
+> +				printk("%scache error: %s\n", pfx,
+>  				       arm_cache_err_op_strs[op_type]);
+Can we keep that this is an operation type in print?
+"%scache error, operation type: %s\n" perhaps?
+
+>  			}
+> -			break;
+> -		case CPER_ARM_TLB_ERROR:
+> +		}
+> +		if (type & CPER_ARM_TLB_ERROR) {
+>  			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
+> -				printk("%soperation type: %s\n", pfx,
+> +				printk("%sTLB error: %s\n", pfx,
+>  				       arm_tlb_err_op_strs[op_type]);
+>  			}
+> -			break;
+> -		case CPER_ARM_BUS_ERROR:
+> +		}
+> +		if (type & CPER_ARM_BUS_ERROR) {
+>  			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
+> -				printk("%soperation type: %s\n", pfx,
+> +				printk("%sbus error: %s\n", pfx,
+>  				       arm_bus_err_op_strs[op_type]);
+>  			}
+> -			break;
+>  		}
+>  	}
+>  
+>  	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
+>  		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
+>  			 & CPER_ARM_ERR_LEVEL_MASK);
+
+Not a today thing, but would be lovely to use FIELD_GET()
+for all these with appropriately fixed up mask definitions.
+Right now it is inconsistent as the valid entries are handled
+as shifted values, and we have GENMASK(X,0) plus a shift for these.
+
+> -		switch (type) {
+> -		case CPER_ARM_CACHE_ERROR:
+> +		if (type & CPER_ARM_CACHE_ERROR)
+>  			printk("%scache level: %d\n", pfx, level);
+> -			break;
+> -		case CPER_ARM_TLB_ERROR:
+> +
+> +		if (type & CPER_ARM_TLB_ERROR)
+>  			printk("%sTLB level: %d\n", pfx, level);
+> -			break;
+> -		case CPER_ARM_BUS_ERROR:
+> +
+> +		if (type & CPER_ARM_BUS_ERROR)
+>  			printk("%saffinity level at which the bus error occurred: %d\n",
+>  			       pfx, level);
+> -			break;
+> -		}
+>  	}
+
+
 
