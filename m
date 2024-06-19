@@ -1,73 +1,74 @@
-Return-Path: <linux-acpi+bounces-6531-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6532-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA78C90F58B
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 19:56:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B40F90F891
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 23:39:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C8DB28294E
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 17:56:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E181C21392
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 21:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA91015665E;
-	Wed, 19 Jun 2024 17:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA84115AD99;
+	Wed, 19 Jun 2024 21:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="qssnXKt/"
+	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="Yn0KyH3R"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B3152160
-	for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 17:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E4D1586CF
+	for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 21:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718819767; cv=none; b=emItBBfKJqCkEOI7wZgCzVHqR1lgbIlippyjO5FiD49761qn2roW9onXRFxrX5VZUhowqMX6ywI8clgeSVb0D04mr+tYP4yeatDxPPUxV/x1W+eE+qmTD/9XZ+jMxxBhqyPS8cOYwPKflh+qDI7wottb7diG1RXRt7MthtImBwc=
+	t=1718833181; cv=none; b=tkFDaDHuJVqjPAKXLuA6a0tUSE7eFcwqZKpm/AjHIiOiXxclgsIPW2cvaVQxPgokFa25+M1irmfXqqRaCTI8YD8SbqXjMPe1zqLA/UaE8pBZE3qe3iAGyj8w3cNwkfxOoGwRqozNnFxgpx+mE9eom9Jdqs8FRvhAJcEojp4B06I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718819767; c=relaxed/simple;
-	bh=qZLAW1L5M56DwbKoi1/YqdkTRNLosZQ9XhdG7pPvBuo=;
+	s=arc-20240116; t=1718833181; c=relaxed/simple;
+	bh=W+anAt20EGRZVFKzpD76Y/OqfiPApnoplAdX8AMISno=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rPQslJ5b1e4w/PMXAO6wI1+cdiFetINh579h2rNpMEz6nmIE8RcbNqopiMrvou5eDo4228p52T2RLcYDKjg6FOqkKMSLPte75Uz+dLBf1LsKgYNZt/yfMmgfsw9X4Xc0BOogkZST9rmB3cJpfcBCfYq8Bes02L8xiump61H9SCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=qssnXKt/; arc=none smtp.client-ip=209.85.166.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=azteJsyB8/Ar+hzUN+adV7UDtrvSmccLH3yfoz7RTOvcHmc67hcz8M/nOeOoRXblrHT2zX/DuYAuYwG/Jg2Eg680t2TKfDBz7PP4xl2TZHnlMHFa95ECSSZWKCPqOwz7POqP8Mv5kh7/xhnM53p00Hmk6hH4gZT3xQngDRZ2Zrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=Yn0KyH3R; arc=none smtp.client-ip=209.85.166.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7eb7a2f062cso271229339f.0
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 10:56:06 -0700 (PDT)
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7eee7728b00so6262039f.3
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 14:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1718819765; x=1719424565; darn=vger.kernel.org;
+        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1718833179; x=1719437979; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=mbjif+WJ/551UA6yF5H6wna1Ibvk9vV1Wcfn2sMlCyY=;
-        b=qssnXKt/BrjOKDUTCiK3f3cKtEd5fS30IbK3v9TaUs7so1EnQMWguUzWfM5fFHcwQv
-         aseKZb/j8S7N1OFjOjwOjpRBxI2NYptCqVeaAqZ/g2+h/dQCy4uD5HVInzvWf9TjQX3F
-         9H8EcmId/6tdxjSUS/OIvg95c3qKeDhbg3ZTY6FNEnEngG2OT8XX2jzyZoerUFpfc+hm
-         DIJCiu0Lwpqbj//+fvrRUjrpkGn6g+vjQPxVlTfgxIl/ftfKsH7711u/ahwsotzNWmVO
-         BEST826VkUWgslJrX7qqp/LB+qU+5NjSsjpT4WwtrDtsr95/oADpBi8clhtDEkHKcQkL
-         +d8w==
+        bh=c7tGRLKrGc6OgGWImJ/uYEBqxWissmKQjKNBWsuhVCQ=;
+        b=Yn0KyH3RBdXZifaNP3RnI7LPOjNnOwaK15hRjilYx+TNBo3BhG+/sJFrSxQhQT+jLs
+         PRW3sFYmDwPI9SgdE6iDvOcCdCHljGxx2dfucoYt9+qXbezW83OA9L7YpqPBTMBs7bq4
+         GVW4fcJs095evTcRQwLjOjgx3sls7VeeqaanxN9PBWTj8SexLbE/dkLeEvcU7Z6RzuAv
+         m7azuZnBF9CCvt19FMToJPp5aRCAGvGK1CcbdwJbVWmy3c/qHsTClxlOka3XCLX2u4Fb
+         1rEnZnYUozsJYi5e3FHcCugEkzIjC1VHwk2wvC5uhcOGoINyW9OJDW4CxD9Ex16YwpdQ
+         CIEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718819765; x=1719424565;
+        d=1e100.net; s=20230601; t=1718833179; x=1719437979;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mbjif+WJ/551UA6yF5H6wna1Ibvk9vV1Wcfn2sMlCyY=;
-        b=i4xxVsqASWl9GKpXdp7XgpwtMGx63ZUFUPQHMJTriD4XzNWyb1QRejWUM4vmaSRG6A
-         7sJn5Q8tM17JVu/D+hy0ZaCWfwJfKEAKC/EwAXk94j1gBVoZvNFKzOEGObrGNLo9RVW6
-         KiBm4oxSbZfbI4ugfCWlKpBxNXSpF/YiZIaFXdigNiD9iVneFtW+rQvGQuKxNokMpo+R
-         tq5JumaRRTfIi1OJ2RwfMCaEaUO6igkgppic81udKDRdsIycyTDvFpu2bBkN2VohJebr
-         g4naUVPGeX+zKu1KMldd1R9ZuVlxTG4rbYjxb8WWp3i82k6FzYCbuhbzNCVlP0awbufJ
-         gvAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXZg41tKAxnUr5PPmKN0jKb0cHxjb538GRxLxfphLWLxFyn6Z7c3MPe9XvOpcgt65nesJRwteGHyjLtoLnpWeuunk9uQhcc9f1SWw==
-X-Gm-Message-State: AOJu0Yxlb37nvhv84HzCfUe9ml+zRMp9jJuPvy4/5PbtGBVjGZ8RySIq
-	WxMOen5XyA9fedIR5sOAVG8uYvirDZbriYz8hpcbo85c2oHSzVr7JxucRWBaJC0=
-X-Google-Smtp-Source: AGHT+IF9TsY8NVv2B42kRpxvrVeMm3R5ONdANb6gDSHycKGPhfTbgx+nCs8+HifwJCTtlx5q0X8U3A==
-X-Received: by 2002:a05:6602:640c:b0:7eb:c972:dee2 with SMTP id ca18e2360f4ac-7f13ee0e286mr404164839f.3.1718819765360;
-        Wed, 19 Jun 2024 10:56:05 -0700 (PDT)
+        bh=c7tGRLKrGc6OgGWImJ/uYEBqxWissmKQjKNBWsuhVCQ=;
+        b=RgCNyeMPP0GPjKAPnIl/56NvnYi2mTe76LPJgejeTFn9P9f9BfSf+gp5szIgX9ggSq
+         TExuk3wMifX7HVO3sk8ZvEcXckBBZ/u5nJXWhP9S+mxed5DnL5kN2Dz982M4dBjuFlHk
+         MvBUz103X0pyE9QL5cGo2i9zNtUXHJ54i/BGe2DRqEuQecjpIl3dtZDBC+ZKmqLtaaVH
+         E1RbWHo5NE4OoKQrcSDqNH1kAGlyGCYSC0Xv8t7bVuh0zqtGTcstgx7XswjEbid5Oh8t
+         WKhhsbtYbr0o4vNIMFkndBvTvcC2FBarFiLxLx4elzLixv2fi05lDNx0TwwvvMIhWEdA
+         UPng==
+X-Forwarded-Encrypted: i=1; AJvYcCXTiMDGgEttrIqz7Z1mdiYMjFtNcUgOqtLQnKuBpQrTiTd4VSZk8leGLkpIad24BqDxr/FQ/snqvqjIIjyFoqJF/Y9dEIkE4ZpgtQ==
+X-Gm-Message-State: AOJu0Yxygll00AeMRYJhlWiXnjJ/OyZx83Cf8+Ov59y4L8bxHaF3U5ga
+	2a2IZtsDrwyulYFdIuCnqgXimg9DRvpH6BNZrmD1ilReqWMV3/JBJX/D4zvRxh7+RTlRV1NlEZA
+	qcNBpOg==
+X-Google-Smtp-Source: AGHT+IGkdDZC+RExE+prPoHZuIg2VP7EK/gbvWWUQwJpe6TkHACdm1Rq8oMGE5XKDlQ4aI6cGr5m1Q==
+X-Received: by 2002:a05:6602:2c8c:b0:7eb:c85b:f19b with SMTP id ca18e2360f4ac-7f13edd0004mr458718339f.7.1718833179434;
+        Wed, 19 Jun 2024 14:39:39 -0700 (PDT)
 Received: from kf-XE ([2607:fb91:111c:4643:212e:5310:572e:1126])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b957bb0c0csm3978084173.87.2024.06.19.10.56.04
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b956917131sm4119193173.44.2024.06.19.14.39.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 10:56:05 -0700 (PDT)
-Date: Wed, 19 Jun 2024 12:56:02 -0500
+        Wed, 19 Jun 2024 14:39:39 -0700 (PDT)
+Date: Wed, 19 Jun 2024 16:39:35 -0500
 From: Aaron Rainbolt <arainbolt@kfocus.org>
 To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -77,7 +78,7 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Subject: Re: [PATCH V3] acpi: Allow ignoring _OSC CPPC v2 bit via kernel
  parameter
-Message-ID: <ZnMbshMhyoSKyClb@kf-XE>
+Message-ID: <ZnNQF0ussBRSAt1g@kf-XE>
 References: <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com>
  <ZnJfmUXmU_tsb9pV@kf-XE>
  <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
@@ -113,7 +114,28 @@ On Wed, Jun 19, 2024 at 07:30:55PM +0200, Rafael J. Wysocki wrote:
 > 
 > And the reason why I am asking is because I think that you really need
 > something like this (untested beyond compilation):
-> 
+
+Alright, our team has compiled and tested the patch.
+
+Results were mixed - with my patch, both CPPC and ITMT were enabled. This
+patch appears to enable only ITMT. (To be specific, running
+"find /proc /sys | grep '(cppc|itmt)'" shows only ITMT enabled under
+/proc, and no CPPC directories under /sys.) This causes a performance hit
+in benchmarking - using my patch with 'ignore_osc_cppc_bit', we were
+getting Geekbench 5 scores of at least 1907 single-core, and 10500
+multi-core. With this patch, we only are getting approximately 1700
+single-core, and less than 9000 multi-core. (With an entirely unpatched
+kernel, we were getting less than 1000 single-core, and about 10000
+multi-core.)
+
+Ultimately this is an upgrade over unpatched performance, but a
+downgrade from the previous patch. It seems having CPPC and ITMT
+available at the same time made things work noticeably faster.
+
+Is there some way that can get both CPPC and ITMT to work with an approach
+like this? Our hardware does support both, it just has an incorrectly set
+bit in _OSC.
+
 > ---
 >  drivers/cpufreq/intel_pstate.c |   16 ++++++++--------
 >  1 file changed, 8 insertions(+), 8 deletions(-)
@@ -150,14 +172,4 @@ On Wed, Jun 19, 2024 at 07:30:55PM +0200, Rafael J. Wysocki wrote:
 > 
 > 
 > 
-
-Gah. I can't read apparently. That patch may very well work because I
-just realized the "if (ret) return;" means to return if ret is NOT 0. I
-had it confused with "return if ret is 0".
-
-That patch looks like it may very well work, and better than what I had
-because it doesn't require manually setting a kernel parameter. I'll apply
-it and test it. (That may take me a bit, I don't have access to the
-hardware with the problem, only my boss does, but I should be able to get
-it done before the end of today.)
 
