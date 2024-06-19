@@ -1,148 +1,142 @@
-Return-Path: <linux-acpi+bounces-6510-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6511-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2970A90DFDD
-	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 01:29:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060CA90E12E
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 03:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28F01C22EBC
-	for <lists+linux-acpi@lfdr.de>; Tue, 18 Jun 2024 23:29:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A68041F22650
+	for <lists+linux-acpi@lfdr.de>; Wed, 19 Jun 2024 01:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B4516FF28;
-	Tue, 18 Jun 2024 23:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608DD567F;
+	Wed, 19 Jun 2024 01:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="gQE/63zG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P/cZ55O4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j4+WH1b+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B042618C3D
-	for <linux-acpi@vger.kernel.org>; Tue, 18 Jun 2024 23:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BA263D0;
+	Wed, 19 Jun 2024 01:18:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718753343; cv=none; b=QSWD3uwiYaHonDjsHzNK5HeDP/dbOUyZG8BvaS3Jc1s/ONBmny3Wy5j7Zz6ilNCi8GIgU7NPxQxfd4M0qsB/5Dc/jdUI9YofPItuJ3+e9j8D9JGxpMylBTrcZ17/m0mob4GW3yQxhUFm7h+XI1AakQY5tNeSZOC2bCj2+PTy5jA=
+	t=1718759890; cv=none; b=UiWWam8T3Q9QpRi5OhlWb/3DTcqbeMmGjJ1VFzhIgCLlQZ74Prsle5FHLkP8S8Pe3uBlyTRGjSj5EktttIMhbiVwEWfNwMFIstNnqj8jiJZQ77tu4BuvgoZ9goy+GxeNkmgS9YkNo12eK9IH8JXM1rosC3FaeFnCCrirDvvesNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718753343; c=relaxed/simple;
-	bh=o8G1JENNT5X6dMBlnC92WwBoEzH3lImmrAlILVMCvrM=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=QtWmGindAs7pTQJaW0xEfCnORAW8XliJNsFd1qQDcuL1eyHuz1ebnmMcvzI6x4ynwDF8Y1X5/3EB5RNXLutrWFlqUN0XSc/qWp7ujVS9NOkj7qQR0OYryvzOxRMkqhoVbhH3lIagC0LdMpgBgNDCOwxzuixzFQoUOYv9l24UWdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=gQE/63zG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P/cZ55O4; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id B3B061140159;
-	Tue, 18 Jun 2024 19:29:00 -0400 (EDT)
-Received: from imap52 ([10.202.2.102])
-  by compute3.internal (MEProxy); Tue, 18 Jun 2024 19:29:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1718753340; x=1718839740; bh=4NAsDGItay
-	VAr6++h1l3+Wp1xcWii1XHGorCWaTXMI8=; b=gQE/63zGfzsR7J9xtXD7cSykkC
-	PufRpWyi5RIJA4jbX1QT7UogX+dlCPg5F7V5Fbabvh6H2rTixJGkCYuPA7RwjAMS
-	vOFTBKjtsX/PcflQJPl59hgNMoUtUiFKhtofGM05EThOdoYUTzE0AH2tujAd5p3V
-	4BxJ45lwwdTXtExiqFc/ttZHeZUQ/nscF6GpKSSu6z0zncjKYmQmcuO+ovvjv6n0
-	YLtXEmi9am/vHoGBM7LU+cjdOkJWrb3wcTn/c3w83T216Uf74Ktzo0CjbMxMlCEF
-	GwOsPDlP/f/FjbIBGrQoHy0+arRbT16OoxFU6kf19LyCsMMmFkYv7nVZqWEw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1718753340; x=1718839740; bh=4NAsDGItayVAr6++h1l3+Wp1xcWi
-	i1XHGorCWaTXMI8=; b=P/cZ55O4FsDf4/sAwTuXPTx122IQ10dBzTLTIuvaJVfD
-	eIg1UaQH8k9JEfT/RJY7QB2GIpDifXOA0hhH+Aqgk0/ycV2EJ8b6qFGwUohJ9eTD
-	ozqMBsMAW+GIbReQ9+KalED1pJbXbRa+qGOH6NqpqO66kP1H+ioAWy5+ZBR9FdFx
-	nsVR/5BM2GSi/r6ZUGPkK5lnQ9Urd3v+s9TeQPWy5M5iwVjSVD3yW7U1Cj4Oo4wP
-	9aGRMuYECK92d5vGMFkztZyQIyXahPTRgAsJDSdRx6HiryJyKJYMPc9eyVeoRKOS
-	gLfpth27CB7mBNweq+4sGcKjzeIuAbM7ufqTOn+KpA==
-X-ME-Sender: <xms:PBhyZmhnbQZNCWErPd80Ocr59q_s2HajdSpjkhoM0ISjs2H1kqbNbA>
-    <xme:PBhyZnCTUtP97lhWRH8sk4WS8PqrJCRaS6rV-rB7TWnUT05kF6c2FpG9w5eGrLkyi
-    J7ZSbVf84_9o_KZlnk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvledgvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfofgr
-    rhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssg
-    drtggrqeenucggtffrrghtthgvrhhnpeevgfevtefhteegteejleefvdejueeiteelveef
-    gfehhfeuvdevhefggfdtgeehgfenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhs
-    ohhnqdhlvghnohhvohesshhquhgvsggsrdgtrg
-X-ME-Proxy: <xmx:PBhyZuG-Py2YRZBUE5Gda2eKZKvQZNcNqc-rB7YDxCY6yke81g1TuQ>
-    <xmx:PBhyZvTX8ePvfO48eKUxUPB2SehdM5mSAq3b8OgCHsQ-mu3rrfpVbQ>
-    <xmx:PBhyZjzvMT9Wb-ew1GE0Wz5FfUySy4i5-Ws6RvL72E-49KgPctMZEA>
-    <xmx:PBhyZt5gadnkJ0rWhUWQPwQH5Lv5k5iVTwX-cTuvc0-BGDvo1Zi6tQ>
-    <xmx:PBhyZj_EfUH_3soUNdjKlB3VQaDulVbLM3WRCoefRz00YOyXY-54irjq>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 6FE82C60097; Tue, 18 Jun 2024 19:29:00 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
+	s=arc-20240116; t=1718759890; c=relaxed/simple;
+	bh=OM+FRXFB6DpgW4Mn/lTWBgeE0bTKzqdd4rxakX3c1ho=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BfEii238pGtnEBzz2cp6Ik+vJoLnuGPt8dgUVvB3qChOmakWMhKbxrblFPJ2qZGTEYLKObGE+Oyz7SOBZt4v53SJ3XgkH1g47WW+/XHixEIvWdy6EyCHIeJNAb8QZ5kPga1Qk6da/8nDVjZ8iInRM+03CVk0EY6e/eU+TFTEtSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j4+WH1b+; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ec002caf3eso100941921fa.1;
+        Tue, 18 Jun 2024 18:18:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718759887; x=1719364687; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ey5yiVQA8LBP/6zYkNpIcrvI4fFdl2/Q3IQajczTvLM=;
+        b=j4+WH1b+dbgoHgWISeILjkNLEnQtiyGV6pCN9cUhDE6BOtAflti221ZQKIqaRLCT+j
+         vtK3iJYo6oshgFTuZgQP5MK6OkR5NnbJPfmFto/PX110dzmC6TTXPT9UAmbOrHPMm1fU
+         CvmeGVPCTDtrU57UJe8dBGHXXwAAXBmSJOeaGRqA6xKsF8aX3WjMbvv15okPZz9JulIF
+         Dz4W9KITk7GLKcQ8pZZHEwS8XYq1fnUjHy4mc2izDI5bLCgRU3Yl+PltmkpLzat4cUOh
+         hrPfzI6CwzxKNy7fdH6zHS758nibEDuPg9kwUr2L4Kh5SDQFRjPrazgwp3QYLLVs4+LU
+         sftg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718759887; x=1719364687;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ey5yiVQA8LBP/6zYkNpIcrvI4fFdl2/Q3IQajczTvLM=;
+        b=dzw8tTQkRAD0xyMh40KBXp+XzE3N2aFqNKwzmb1u5TLKdETV1cptp+IC/64Hk0QMYd
+         NawZnXzfzA0bqvg2+S9uu0jvnwFWEEN999/5o5doafN3h0QTmxaPJ/rqQ9xkaK7FPmcj
+         9SKfssBVRZeLiB0JDS0au+X7zXQV3pEf/2wHJ/4+CgbAZU+BCy8P2CMil/DCM0w36WwN
+         n2Robs/hpbr9t3stPz17BuefuQVv0f2CGFWzqIEFdcFHTd5pNfr1M+YCmEopShIQuNVA
+         ePU1BuGqmF9GifE2TWb84UqlqKu+7pUmCvcktH9D3Qk0QxAJevqgyH2Ngn75hI/oZS7e
+         bpgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBX/bpkQl6B/o5XoHV9bz+oF/6QmIDpbf7/I6K6THQzJM1KlOrY0/3l0QlLFwaSA2smEMobSn7A8c9PrlruetEzKrysQLWm2OwmmrbCwu6YudQOCz5+MHMpsmQ8+eAyvBK90nrz2gl6w==
+X-Gm-Message-State: AOJu0Yy9/eu4iAtZSnr7SY9S4tQbGT6v79KDr5bdxy6I9s2HEjH6+U7A
+	bVe+BEzrmEmD3kBCx8P7WhXAf59bS2yqJTSK2yJ8n9H4oNfM9igy9siknG0SLCPp/QXofDuuLhT
+	uenSSigHXhr7LBILi/Rcc8khOO44=
+X-Google-Smtp-Source: AGHT+IFiTPEbVFgx6S7H+uJNwNOLjAFLVL5/Vnh5jjNpcZV25rpymoEhI57ECx4iXoR1vGPAbIVLdQm2Xan1iCOIji0=
+X-Received: by 2002:a2e:9f02:0:b0:2ea:ec52:f594 with SMTP id
+ 38308e7fff4ca-2ec3ced1896mr8494161fa.29.1718759886352; Tue, 18 Jun 2024
+ 18:18:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <40ec6e11-c279-44ba-993f-2f2475c15073@app.fastmail.com>
-In-Reply-To: <ZnFYpWHJ5Ml724Nv@ohnotp>
-References: <ZnFYpWHJ5Ml724Nv@ohnotp>
-Date: Tue, 18 Jun 2024 19:28:40 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Yutaro Ohno" <yutaro.ono.418@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: EC: Use ec_no_wakeup on ThinkPad T14 Gen 5
-Content-Type: text/plain
+References: <cover.1718268003.git.haibo1.xu@intel.com> <f1f96377b8ecd6e3183f28abf5c9ac21cb9855ea.1718268003.git.haibo1.xu@intel.com>
+ <CAJve8o=8thBhU3NyTaS6sE9rQ1VR_Qf4O8FkAxpmp1q8P-6VaQ@mail.gmail.com> <20240618151820.GA2354@willie-the-truck>
+In-Reply-To: <20240618151820.GA2354@willie-the-truck>
+From: Haibo Xu <xiaobo55x@gmail.com>
+Date: Wed, 19 Jun 2024 09:17:54 +0800
+Message-ID: <CAJve8o=-bZhQS289jwxG=Aq2BOXk5OzdgPKT=nFE9yw_HYYnQQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] ACPI: NUMA: change the ACPI_NUMA to a hidden option
+To: Will Deacon <will@kernel.org>
+Cc: Haibo Xu <haibo1.xu@intel.com>, sunilvl@ventanamicro.com, arnd@arndb.de, 
+	ajones@ventanamicro.com, Catalin Marinas <catalin.marinas@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Conor Dooley <conor.dooley@microchip.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+	Charlie Jenkins <charlie@rivosinc.com>, Evan Green <evan@rivosinc.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Zong Li <zong.li@sifive.com>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>, 
+	Alexandre Ghiti <alexghiti@rivosinc.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	Chen Jiahao <chenjiahao16@huawei.com>, James Morse <james.morse@arm.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, Zhao Ke <ke.zhao@shingroup.cn>, 
+	Andy Chiu <andy.chiu@sifive.com>, Marc Zyngier <maz@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Tony Luck <tony.luck@intel.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Alison Schofield <alison.schofield@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	Robert Richter <rrichter@amd.com>, Yuntao Wang <ytcoode@gmail.com>, Dave Jiang <dave.jiang@intel.com>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Yutaro,
-
-On Tue, Jun 18, 2024, at 5:51 AM, Yutaro Ohno wrote:
-> On ThinkPad T14 Gen 5, EC interrupts constantly wake up the system from
-> s2idle, resulting in high power consumption.
+On Tue, Jun 18, 2024 at 11:18=E2=80=AFPM Will Deacon <will@kernel.org> wrot=
+e:
 >
-> This sets `acpi.ec_no_wakeup=1` to fix the high power consumption issue
-> in s2idle state.
+> On Mon, Jun 17, 2024 at 09:34:18PM +0800, Haibo Xu wrote:
+> > @Catalin Marinas @Huacai Chen
+> >
+> > Could you please have a look at this patch for the ACPI_NUMA config on
+> > ARM64 and LOONGARCH respectively.
+> >
+> > Thanks!
+> >
+> > On Thu, Jun 13, 2024 at 4:37=E2=80=AFPM Haibo Xu <haibo1.xu@intel.com> =
+wrote:
+> > >
+> > > x86/arm64/loongarch would select ACPI_NUMA by default and riscv
+> > > would do the same thing, so change it to a hidden option and the
+> > > select statements except for the X86_64_ACPI_NUMA can also go away.
+> > >
+> > > Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> > > Suggested-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+> > > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > ---
+> > >  arch/arm64/Kconfig        | 1 -
+> > >  arch/loongarch/Kconfig    | 1 -
+> > >  drivers/acpi/numa/Kconfig | 5 +----
+> > >  3 files changed, 1 insertion(+), 6 deletions(-)
 >
-> Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-> ---
->  drivers/acpi/ec.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> This looks fine from an arm64 perspective:
 >
-> diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-> index 299ec653388c..c7d5231edca7 100644
-> --- a/drivers/acpi/ec.c
-> +++ b/drivers/acpi/ec.c
-> @@ -2248,6 +2248,12 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
->  			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Yoga 3rd"),
->  		},
->  	},
-> +	{
-> +		.matches = {
-> +			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad T14 Gen 5"),
-> +		},
-> +	},
->  	{
->  		.matches = {
->  			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-> -- 
-> 2.45.2
+> Acked-by: Will Deacon <will@kernel.org>
+>
 
-We're doing Linux enablement on the T14 G5 right now - and if this is an issue in the Lenovo FW I would rather fix it there instead of introducing a quirk into the kernel that might later need to be removed. This platform is getting full Linux support.
+Thank you, Will!
 
-I'd like to collect some debug details from you (if preferred you can ping me off thread using this email address):
-
- - Can I get your BIOS, EC and ME versions (easiest is to get these from the BIOS setup screen - F1 during early boot)
- - Get a report from running the Intel S0ix test tool - https://github.com/intel/S0ixSelftestTool. Run it with the -S option
- - There is a known issue if the ethernet is plugged in on this system that Intel are working on - can you confirm if you're using wired networking please?
- - Do you have WWAN enabled? If you have it can you try with WWAN disabled.
-
-I'll also highlight that Linux enablement is not complete on this platform yet, so some patience might be needed.
-
-Thanks
-Mark (Lenovo employee working on the Linux PC enablement program)
+> Will
 
