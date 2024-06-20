@@ -1,169 +1,98 @@
-Return-Path: <linux-acpi+bounces-6540-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6541-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCB690FB7D
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 05:02:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7ED90FDD9
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 09:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35EC41C20ECD
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 03:02:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1729B20B54
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 07:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AAC1EA71;
-	Thu, 20 Jun 2024 03:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD29E45C18;
+	Thu, 20 Jun 2024 07:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wr4sFejV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwIME/ux"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749542B9DB;
-	Thu, 20 Jun 2024 03:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14F21364;
+	Thu, 20 Jun 2024 07:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718852533; cv=none; b=PzZCVpoLdeIs7jtxPhIKoKwaBYc0LxKJPh4fcSW7r191YonPohuMpZIivNm1O8jQeKah/b7iqtZzLRXHcZrVmJFTgJwlqhS2+4H262Zox1vAOVdio6e0qAsjRf3J2o1idVTn+Xu4aerlB20u/ZsXGymgkfIY0MUc0XOzEXkufQE=
+	t=1718868863; cv=none; b=QCUcREFW/3Umj4yxOU6cm+WA+gUmBkpEeLQ7yplNA8WmwFMI1r8mjUuw90dhc5FRCb6X41Cx9lqpl8MhLwi80P8aHg2qvVnDaJae9xJeMbiJIGXX61nm37xMH1wHlEGsP2U5b14JM2qWDfBQ3wDjRIAl9SvGh8sm3NmKqZiiNJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718852533; c=relaxed/simple;
-	bh=pX6yLIgJt2iX60Vu88UyxHydot/8e2sqBVfmTWy6BT4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RXmMqvp82PZkk6wM384Bt21xN9e1fieleESzi8yAHvk5E5xcW0iuuFOQnH24I2JHrBF4DkI63Z3RpEJEksGfQ2IGgXLIqDhCu6fj/Eq5tSrNjUrQvEt4pF7oEaEriqKqgXrX1+BuA5mtql4RHaeuNJkrOfteQWmHKOQ3OjUhWW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wr4sFejV; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718852532; x=1750388532;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=pX6yLIgJt2iX60Vu88UyxHydot/8e2sqBVfmTWy6BT4=;
-  b=Wr4sFejVYlP0t1DHHBj/PbK8gePKtDO635zRioNUU5R+L4Ufchn2/TzE
-   8mmhphaV9sbqFkIq8rWR0WvLyiojbRA46jgvvXAQaGyndAn7eOzyTKUHN
-   /Jm3n/KBhWdxlSD8XOaRBreuL0WJ7L4YGZP0/TArdL1cLmoQa5qdre9c3
-   aDrNMavhX9ok/wUBO7y42o+QRlPOgHH5vVNcMAoZxC4MJniHjPC1IVeIf
-   LIGh296nIB9jRqwS7zLduQ6hwtMpwHnEoPB7OtuU+LiWluk6YVIbNBRsv
-   f5QIMs/3BddNBL9veNtIBg1w+1XOk8yme68zobmp1Prff8VtCAku4bJXJ
-   g==;
-X-CSE-ConnectionGUID: 36RjLfgdQyuiPSkc5OIbUQ==
-X-CSE-MsgGUID: I5VrkIJ2R86ff1FcEhzaPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="26444266"
-X-IronPort-AV: E=Sophos;i="6.08,251,1712646000"; 
-   d="scan'208";a="26444266"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2024 20:02:09 -0700
-X-CSE-ConnectionGUID: j3RjqRmeQfitApUR7+ovhg==
-X-CSE-MsgGUID: 91FXVXzXSP+7S/ROgY8EIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,251,1712646000"; 
-   d="scan'208";a="42049454"
-Received: from unknown (HELO SPR-S2600BT.bj.intel.com) ([10.240.192.127])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2024 20:02:01 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: linux-pci@vger.kernel.org
-Cc: bhelgaas@google.com,
-	mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-acpi@vger.kernel.org,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	james.morse@arm.com,
-	tony.luck@intel.com,
-	bp@alien8.de,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	helgaas@kernel.org,
-	linmiaohe@huawei.com,
-	shiju.jose@huawei.com,
-	adam.c.preble@intel.com,
-	lukas@wunner.de,
-	Smita.KoralahalliChannabasappa@amd.com,
-	rrichter@amd.com,
-	linux-cxl@vger.kernel.org,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	erwin.tsaur@intel.com,
-	sathyanarayanan.kuppuswamy@intel.com,
-	dan.j.williams@intel.com,
-	feiting.wanyan@intel.com,
-	yudong.wang@intel.com,
-	chao.p.peng@intel.com,
-	qingshun.wang@linux.intel.com,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
+	s=arc-20240116; t=1718868863; c=relaxed/simple;
+	bh=6JuMeq7sjETxb1LKNx9oEk6LalPPSLEpZS4h05xsdB4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nvdqY3CIJVGCO4Pm0vo9Rky6ymTi+LVamKAMHV8kTM9Yq2mPhFOUZoMXxndEM+Ppi00ilMONqb90EH12qisYV3Yh9AveaeoHbrIneXtDiAiU0MH/iBX56bWisimeFOazZTK2caFh2m6UyQyd+cFHODLNv+WOInVdvAxK2I1D6ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwIME/ux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DABC4AF0A;
+	Thu, 20 Jun 2024 07:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718868863;
+	bh=6JuMeq7sjETxb1LKNx9oEk6LalPPSLEpZS4h05xsdB4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iwIME/uxZah+g4jjsEsY55NmZGytI97VQKktzrRZWzmMmWfmQygY8/7fxKvOKS1KT
+	 RqeQnZPDRcNGp3SRVBsIVlWD45ACJJVtoCZWdW7YwEOrAFDCgG0RVgFAvRIZGH9kL5
+	 lGqit1ZhygGdVc5JA4xlFC63aGNNlk87BzbjFq+XOZtHPAur3lYHeMJvGohQvfddyJ
+	 IkN+e709kNje+mON574YhE2yHyxbnIWuX09boLUjKAMce7loIOR9MIJxxBGt0qqCZa
+	 EAVQRslsRw/4zfS7g/KVfYh+YYsFvgH9WyMsYGlLqcwaVYENzN2k47t6a3pY7HnPI0
+	 l+dEzkFFLtV5A==
+Received: from mchehab by mail.kernel.org with local (Exim 4.97.1)
+	(envelope-from <mchehab@kernel.org>)
+	id 1sKCJI-00000003bzz-3FRl;
+	Thu, 20 Jun 2024 09:34:20 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: 
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Tony Luck <tony.luck@intel.com>,
+	James Morse <james.morse@arm.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: [PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be ANFE
-Date: Thu, 20 Jun 2024 10:58:57 +0800
-Message-Id: <20240620025857.206647-3-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240620025857.206647-1-zhenzhong.duan@intel.com>
-References: <20240620025857.206647-1-zhenzhong.duan@intel.com>
+	Shiju Jose <shiju.jose@huawei.com>,
+	linux-efi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH v3 0/3] Fix CPER issues related to UEFI 2.9A Errata
+Date: Thu, 20 Jun 2024 09:34:11 +0200
+Message-ID: <cover.1718868693.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-When an Advisory Non-Fatal error(ANFE) triggers, both correctable error(CE)
-status and ANFE related uncorrectable error(UE) status will be printed:
+The UEFI 2.9A errata makes clear how ARM processor type encoding should
+be done: it is meant to be equal to Generic processor, using a bitmask.
 
-  AER: Correctable error message received from 0000:b7:02.0
-  PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
-    device [8086:0db0] error status/mask=00002000/00000000
-     [13] NonFatalErr
-    Uncorrectable errors that may cause Advisory Non-Fatal:
-     [12] TLP
+The current code assumes, for both generic and ARM processor types
+that this is an integer, which is an incorrect assumption.
 
-Tested-by: Yudong Wang <yudong.wang@intel.com>
-Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
- drivers/pci/pcie/aer.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Fix it. While here, also fix a compilation issue when using W=1.
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 3dcfa0191169..ba3a54092f2c 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -681,6 +681,7 @@ static void __aer_print_error(struct pci_dev *dev,
- {
- 	const char **strings;
- 	unsigned long status = info->status & ~info->mask;
-+	unsigned long anfe_status = info->anfe_status;
- 	const char *level, *errmsg;
- 	int i;
- 
-@@ -701,6 +702,20 @@ static void __aer_print_error(struct pci_dev *dev,
- 				info->first_error == i ? " (First)" : "");
- 	}
- 	pci_dev_aer_stats_incr(dev, info);
-+
-+	if (!anfe_status)
-+		return;
-+
-+	strings = aer_uncorrectable_error_string;
-+	pci_printk(level, dev, "Uncorrectable errors that may cause Advisory Non-Fatal:\n");
-+
-+	for_each_set_bit(i, &anfe_status, 32) {
-+		errmsg = strings[i];
-+		if (!errmsg)
-+			errmsg = "Unknown Error Bit";
-+
-+		pci_printk(level, dev, "   [%2d] %s\n", i, errmsg);
-+	}
- }
- 
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+Mauro Carvalho Chehab (3):
+  efi/cper: Adjust infopfx size to accept an extra space
+  efi/cper: Add a new helper function to print bitmasks
+  efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
+
+ drivers/acpi/apei/ghes.c        |  9 ++++---
+ drivers/firmware/efi/cper-arm.c | 47 ++++++++++++++-------------------
+ drivers/firmware/efi/cper.c     | 40 ++++++++++++++++++++++++++++
+ include/linux/cper.h            | 11 ++++----
+ 4 files changed, 71 insertions(+), 36 deletions(-)
+
 -- 
-2.34.1
+2.45.2
+
 
 
