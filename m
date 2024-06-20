@@ -1,82 +1,84 @@
-Return-Path: <linux-acpi+bounces-6543-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6544-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7869090FF0A
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 10:38:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4BA90FF9B
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 10:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBAEAB2436C
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 08:38:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 365CA281C26
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 08:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2538C19AD86;
-	Thu, 20 Jun 2024 08:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94901A8C36;
+	Thu, 20 Jun 2024 08:52:42 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694DB19AD65;
-	Thu, 20 Jun 2024 08:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46C82582;
+	Thu, 20 Jun 2024 08:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718872705; cv=none; b=VQwRxKrLkl43wEpaNGGwuK+weCe2i5dy+/HcZwpRXWKsR/IWHQ8atsVR6/hO5y5WKq1AfQrszOomF4orJagplpJM9RPq0HL5z9pWN/EtDz+MYYkrpKtkwgVjJlPJILQur+KUoyjwT4+1ISIPb/Z45nGDhE5FdEO4GhRMNh7ejxY=
+	t=1718873562; cv=none; b=ln4z0irWfFPhjZv6wX4qhF2g8WWIiS2t3tvUY4TAfAM/3xDuTJz0YyQCq+JFQzhWzfaBKjELTxuNMRhkOE77Uysqv0LNLhhqXdqVBml3gtCYuyPvPFBDTtCx2Evvghs2VuXzWdSogMWY3yWXQz2kbYMYe+5XpVdYZ/+4JJxtzTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718872705; c=relaxed/simple;
-	bh=jyxdmHjbgR8ugohaJv2Qwu3u2SiMkizlUi4UbwBSWyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d25NG0QRGK7G9TJRemucf5wRHtfYrRcrK73iZIdX1SnJ0bHLkNcSl3ZIMdfjxYMIhmHJdvrIoyQi/R0BUndWbNRMZxP2Y9XWTjBvw0SsrguBDIK2aJhPP/F/smOWppn2oS7uVH1Cf4oo5SGeHKyW2xMgiwBH57vijMF0V7VPcWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B7ABDA7;
-	Thu, 20 Jun 2024 01:38:47 -0700 (PDT)
-Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 504E83F64C;
-	Thu, 20 Jun 2024 01:38:21 -0700 (PDT)
-Date: Thu, 20 Jun 2024 09:38:18 +0100
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Youwan Wang <youwan@nfschina.com>
-Cc: lpieralisi@kernel.org, guohanjun@huawei.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	lenb@kernel.org, rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH] ACPI / amba: Drop unnecessary check for registered
- amba_dummy_clk
-Message-ID: <ZnPqeniNlw74MW-S@bogus>
-References: <20240620005930.295880-1-youwan@nfschina.com>
+	s=arc-20240116; t=1718873562; c=relaxed/simple;
+	bh=okCm2wVe0D8ZLfc/XFxv1YDhLYFnaLvpUiSc+s879A8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CkHf2LAuXIXUUmaSXgqhYWW8UFA7JvIcnQufDegPH1sPZ4D4li7EjduyWDVWsH1pAcioaWdprKCMbNzD4tMSZiMFvRyXPdTzVV8U71GQJ9DBLc4Z5GF9TYit+5DMmGWGIQIfteVZIr6K5f+H10OlQIWc75dZHIDpoI3D4P7Z3JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+X-QQ-mid: bizesmtp82t1718873512t4zrur79
+X-QQ-Originating-IP: 4zn7f4iOsJP4yRS/7wQCfFkZ5ba6muFzvMOR+Kmm7pA=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 20 Jun 2024 16:51:51 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11775350901938859736
+From: hongao <hongao@uniontech.com>
+To: rafael@kernel.org
+Cc: lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hongao <hongao@uniontech.com>
+Subject: [PATCH] ACPI: button: call input_free_device when input_register_device fails
+Date: Thu, 20 Jun 2024 16:51:47 +0800
+Message-Id: <20240620085147.1097187-1-hongao@uniontech.com>
+X-Mailer: git-send-email 2.33.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620005930.295880-1-youwan@nfschina.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz7a-1
 
-On Thu, Jun 20, 2024 at 08:59:30AM +0800, Youwan Wang wrote:
-> amba_register_dummy_clk() is called only once from acpi_amba_init()
-> and acpi_amba_init() itself is called once during the initialisation.
-> amba_dummy_clk can't be initialised before this in any other code
-> path and hence the check for already registered amba_dummy_clk is
-> not necessary. Drop the same.
->
+Call input_free_device when input_register_device fails.
 
-You are not reading my response correctly and fixing all the issues.
+Signed-off-by: hongao <hongao@uniontech.com>
 
-1. You had v3 and now this is again v1 ? Perhaps v4 ?
-2. You missed to add my Acked-by which I gave to your v2
-3. This is v4 and new reviewers of this patch have absolutely no idea
-   what got changed from v1->v2->v3->v4. It is always good to add change
-   log describing what changed across these versions
-4. I asked you to add ARM64 maintainers as we would request them to pick
-   this up via ARM64 tree.
-	Catalin Marinas <catalin.marinas@arm.com
-	Will Deacon <will@kernel.org>
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index cc61020756be..8765e9a64404 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -602,8 +602,10 @@ static int acpi_button_add(struct acpi_device *device)
+ 
+ 	input_set_drvdata(input, device);
+ 	error = input_register_device(input);
+-	if (error)
++	if (error) {
++		input_free_device(input);
+ 		goto err_remove_fs;
++	}
+ 
+ 	switch (device->device_type) {
+ 	case ACPI_BUS_TYPE_POWER_BUTTON:
 
-I will ignore your patches if these are not fixed, I have told you same
-thing twice now.
+base-commit: e5b3efbe1ab1793bb49ae07d56d0973267e65112
+-- 
+2.33.1
 
---
-Regards,
-Sudeep
 
