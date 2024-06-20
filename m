@@ -1,158 +1,142 @@
-Return-Path: <linux-acpi+bounces-6547-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6548-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF569109F0
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 17:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EF9910A2E
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 17:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04779283FA0
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 15:35:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45F8D1C22127
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 15:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C09D1AF6B4;
-	Thu, 20 Jun 2024 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0021B0104;
+	Thu, 20 Jun 2024 15:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="FzJMIlIu";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OdPCGoWD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFlYf4XA"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02491AED4D
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2024 15:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201301AF6B6;
+	Thu, 20 Jun 2024 15:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718897733; cv=none; b=Vcvkjm3zhGNlH/nJAkG09Jv1mayj54FN3+p6aivO49PkQbr7dTCvnFSNBqzkRQdwpA0Z6h0dVfA1cPFx6Ch2zq5YGxyggvpay4aNHQUcBY/b74MoT4U/0IHR3OsOHkE2cW/41n533waik9+zT+GE0+jvmWed4riC0wX3ug3+6s4=
+	t=1718898057; cv=none; b=AZg5hybyQaqo18ek2XxSCs6fjJHD9xgHoG7zLdOWCnvL2kXSWKc1H2UU6W8XMRwYsgGNuzHAsvk1t5hfBBkQQBqwTZhzshUQmvP+OJRhmVKOed7UGHs0nz1lpDyQzS/f0EQGBvJcr2qd9RPtdM97OxJ25LKamcM8BeiTE3vVGnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718897733; c=relaxed/simple;
-	bh=xwYc4MsnFV4bXwbJ1/KA/d4lITDjMQUMfNreDbKpI7g=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=lLIqvEJwdeiUz7fsXdrLKTVChpWJ8Hpo6t/o7Rk9/pGall09DzUL8gYzBr0eg3N3/3gjshW4+XjhEi9aNXQCO5qsPurrxr6ybu0BLX85W4ZhuIlWg3SkvePIGNu4jNRZkT8/f0iJd7LGknAljbgGqdWO8NiPlUkmGvUU5+Fy+o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=FzJMIlIu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OdPCGoWD; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfout.nyi.internal (Postfix) with ESMTP id D4B34138010A;
-	Thu, 20 Jun 2024 11:35:29 -0400 (EDT)
-Received: from imap52 ([10.202.2.102])
-  by compute3.internal (MEProxy); Thu, 20 Jun 2024 11:35:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1718897729; x=1718984129; bh=v1LdTswQvo
-	7Zh+81AN6grkXNnDOPx2tM82zsrl2yC7c=; b=FzJMIlIucUUtnUFEbyH/NDIfsG
-	Lt0toZ4aKKOO+/ln9X1hruXpO10QXGuiJ/iBXssOsLtNLdQWuLty+KmTb5Ro6CWk
-	DxT4q0uZIwMp3b8UnkffSued/qAStJ+XpNbfYSntBHfS7wSE0/O5jDcIghTDZ+6u
-	mB3CxFn9/a2J15jfsFCcoafODhE7h81KqfFY6Jv5J8VdB+wPmW0JdRCSlg2L/2gb
-	QE32g5xVyfzQbETVo0Kbz8cD39dsRjn2IH7RZoTVrA7kDmlodgN2TlqeyDJSC1iH
-	MzAtuhcnRQbNGRAzRgAfQ8LIPtwE9zNUEFCzLcZf9C/tCko829ZnYq/rE89Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1718897729; x=1718984129; bh=v1LdTswQvo7Zh+81AN6grkXNnDOP
-	x2tM82zsrl2yC7c=; b=OdPCGoWDH6ZbURmhUpC5bKE2KYR3MlCGGpzU1X8YjNoL
-	/RkICbSx+Ah/W+O03ztUer5l6wobXPwxGQRTZWVJJwjEa1pM6+sBSdUlR4/xn7s3
-	dN/2fdGJYJ8/1skwr2qfz36YZKY6VsK76PULJgpESydaPAN5oNq27wUPFROktFtf
-	bV1i181cUjbtQN/uyoQMHdlfKD3LInpozpcZTKjlgIbxo7iB1J70cAg6z/UOL/TE
-	TlCfPBSZsc8qERZGqPdHLres2wsGrR9X9L8WcPC1XrIexMe83+30xiXhTXJj7Ck0
-	3s0g+MIzGWg4g8MnZVJlEi4W2mthrq5J54UmZifNQw==
-X-ME-Sender: <xms:QUx0ZmxK5NLq8WgZzQcHCk_fmFG9wn_y7bDkoI-H6Spq_GA34M7VdA>
-    <xme:QUx0ZiTUlnF2xj8Ob7d8Lw7T6Dro7d7WNwDIZvmmJc0D3gniSbb0F8y2S-mRdQoIA
-    0B_usFjqyHuGny0N-w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeefvddgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfofgr
-    rhhkucfrvggrrhhsohhnfdcuoehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssg
-    drtggrqeenucggtffrrghtthgvrhhnpedvleevtdetteehteefheelfeefteffgeduleet
-    ueeiudfghedtieetgfetieehfeenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhfrh
-    gvvgguvghskhhtohhprdhorhhgpdgrmhgupghsvdhiughlvgdrphihnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhhpvggrrhhsohhnqdhlvg
-    hnohhvohesshhquhgvsggsrdgtrg
-X-ME-Proxy: <xmx:QUx0ZoUDYaC4Je0uLvS8I_m4_nphMS1YSyJJG0Ly3OEsb3cCYqoejQ>
-    <xmx:QUx0Zshp90smEJqBZHlnpBddr7s5h16HGIDAqC9U_dQ-0cPCJQGv4g>
-    <xmx:QUx0ZoB-BdK2qTw7hPdg93tKW8hD_rWozwniVpIM4oF_n7u5eEivYQ>
-    <xmx:QUx0ZtJ45Hppw6UDoepUyb4S6NGsUyMnburvwmLIdhd7ZsZCBklIMA>
-    <xmx:QUx0ZrNmgIiPjrqKKYpMVGyy3UOPUApdGnnQmJKNrm1RDzGEjBEwOLpm>
-Feedback-ID: ibe194615:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 7BD1CC60097; Thu, 20 Jun 2024 11:35:29 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
+	s=arc-20240116; t=1718898057; c=relaxed/simple;
+	bh=5NRg4mklmcVDLa6pAbrcinNo9L7rLC5Vfgmi7UG6vnM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F36ZF2q8CuG3TgPc16klyTK+CKsPMbn22GVbaty421c7NtntExLqTPsvmS2RSuNjm4gNc77QcMiKz2eETk4Gyv/v+yK2L0YlVaecuaxTWPjJNvEv1UNL6AKLEIRVhQY6Fys99p1glRj4pRugscV8ZDepM6Ffe1y8jRd/JMLexzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFlYf4XA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2D1C4AF0A;
+	Thu, 20 Jun 2024 15:40:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718898056;
+	bh=5NRg4mklmcVDLa6pAbrcinNo9L7rLC5Vfgmi7UG6vnM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tFlYf4XAhcnGaAocWpzl7eleVZbskpKwP9k4o8ttq2tGl5gNwLG9PGzGr20klImoK
+	 81EYkQdXGXWE0u7zOMXfjWGRdUP1dlq25X5icPS1Agh5FCEjUAZiC2Tvecj3RHf5WF
+	 U/un5hCJkG8cHXqRuaZgF6uBO+hz+x1yYqpmRiS10bP5q50louQIQwMgulsJBv9Zg3
+	 PJBXGN0x+l3WC74Tbs5shR3PoIfwOBK6cWkL4v983dTOcc8uZmzB/vBj2nVrlAjhCN
+	 KDHeL/K8OBfYRELlqfNlhrV1+1Jp7GKoISwqX1p8NHX3zG2LF6Iu5Wflj7+ojeZSiX
+	 gCgjA0ette8SQ==
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-254f646b625so152032fac.0;
+        Thu, 20 Jun 2024 08:40:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXDxDw9sOFBR4+vezddYNxGu+G3zw1xXImFgf87YOZrC6F56MyEvn3I/6Sci7x5vdXKFSD/nb9nwS3MnmhQlu+zpB+JjubEdkbnxJPwnwoV++/95JYixEA7qjlhXKvBgCtm+yRfBRRUVw==
+X-Gm-Message-State: AOJu0Yx5NzmSibkTz9jS1XY2BQAq1xJBVwaPJkpHjLMOVAPLNVoAJ52n
+	qP6s1oZKc8XcmW5+WkX6NAmk0OhPCsSCHc4AQhcjzkikQnr18bbBl3PvhgJleXa2odtvG3kJReR
+	/gID66LWfJGP8WhzC7CWbPr55+W0=
+X-Google-Smtp-Source: AGHT+IEEbjG4U4hmoaWBonQYMHv3Lm5gg+atRAh7jRjhs1Zfdqy3tNiYdXwpvPVjtLaQfuhuFLrE2TzLDSnhk6exseI=
+X-Received: by 2002:a05:6870:d1c9:b0:259:8928:85ec with SMTP id
+ 586e51a60fabf-25c9496379bmr6442865fac.2.1718898055795; Thu, 20 Jun 2024
+ 08:40:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <6b80e4cb-47fb-4467-b834-ffa04c9b4d8e@app.fastmail.com>
-In-Reply-To: <D24VBFQ86ZIA.3KHVV0P1I3MNX@gmail.com>
-References: <ZnFYpWHJ5Ml724Nv@ohnotp>
- <40ec6e11-c279-44ba-993f-2f2475c15073@app.fastmail.com>
- <D24VBFQ86ZIA.3KHVV0P1I3MNX@gmail.com>
-Date: Thu, 20 Jun 2024 11:35:08 -0400
-From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
-To: "Yutaro Ohno" <yutaro.ono.418@gmail.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>
-Cc: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: EC: Use ec_no_wakeup on ThinkPad T14 Gen 5
-Content-Type: text/plain
+References: <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com> <ZnJfmUXmU_tsb9pV@kf-XE>
+ <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
+ <12457165.O9o76ZdvQC@rjwysocki.net> <ZnNQF0ussBRSAt1g@kf-XE>
+ <ZnNZgxDaXoCqkkJq@kf-XE> <ZnOAVWdBanvocb4D@kf-XE>
+In-Reply-To: <ZnOAVWdBanvocb4D@kf-XE>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 20 Jun 2024 17:40:44 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0g87Gmsi9HoPbNXO0Fu_sy+5MNGTjr_79UNOABNLmRn2Q@mail.gmail.com>
+Message-ID: <CAJZ5v0g87Gmsi9HoPbNXO0Fu_sy+5MNGTjr_79UNOABNLmRn2Q@mail.gmail.com>
+Subject: Re: [PATCH V3] acpi: Allow ignoring _OSC CPPC v2 bit via kernel parameter
+To: Aaron Rainbolt <arainbolt@kfocus.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Mario Limonciello <mario.limonciello@amd.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lenb@kernel.org, mmikowski@kfocus.org, 
+	Perry.Yuan@amd.com, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ohno
+On Thu, Jun 20, 2024 at 3:05=E2=80=AFAM Aaron Rainbolt <arainbolt@kfocus.or=
+g> wrote:
+>
+> OK, we have done thorough benchmarking of the two patches. In summary,
+> they both seem to provide exactly the same performance improvements.
+> My initial worry that Rafael's patch didn't deliver the same performance
+> improvements was unfounded.
 
-On Thu, Jun 20, 2024, at 9:10 AM, Yutaro Ohno wrote:
-> Hi, Mark.
->
-> On Wed Jun 19, 2024 at 8:28 AM JST, Mark Pearson wrote:
->> We're doing Linux enablement on the T14 G5 right now - and if this is an issue in the Lenovo FW I would rather fix it there instead of introducing a quirk into the kernel that might later need to be removed. This platform is getting full Linux support.
->
-> That sounds wonderful! I agree that my change is more of a workaround solution.
->
->> I'd like to collect some debug details from you (if preferred you can ping me off thread using this email address):
->
-> Sure. But first, please note that my machine is AMD, not Intel.
+Good to know, thanks!
 
-Ooops - my bad! Thanks for the clarification.
+> The following are the single-core and multi-core scores from running
+> Geekbench 5 multiple times on a Carbon Systems Iridium 16 system. The
+> first batch of tests was done with an Ubuntu kernel built with with my V3
+> proposed patch, while the second batch was done with a kernel build with
+> Rafael's proposed patch.
+>
+> Links to the Geekbench 5 reports can be shared if needed.
+>
+> _OSC CPPC bit ignore patch (written by Aaron Rainbolt):
+> Kernel parameter 'ignore_osc_cppc_bit' set in
+> '/etc/default/grub.d/kfocus.cfg'.
+> '/sys/devices/system/cpu/cpu*/acpi_cppc' and
+> '/proc/sys/kernel/sched_itmt_enabled' both present
+>
+> | Run | Single | Multi  |
+> | --- | ------ | ------ |
+> |  01 |   1874 |  10475 |
+> |  02 |   1831 |  10132 |
+> |  03 |   1858 |  10348 |
+> |  04 |   1848 |  10370 |
+> |  05 |   1831 |  10413 |
+> | --- | ------ | ------ |
+> | AVG |   1848 |  10348 |
+>
+>
+> intel_pstate CPPC override patch (written by Rafael Wysocki):
+> No special kernel parameters set.
+> '/sys/devices/system/cpu/cpu*/acpi_cppc' ABSENT,
+> '/proc/sys/kernel/sched_itmt_enabled' present
+>
+> | Run | Single | Multi  |
+> | --- | ------ | ------ |
+> |  01 |   1820 |  10310 |
+> |  02 |   1870 |  10303 |
+> |  03 |   1867 |  10420 |
+> |  04 |   1844 |  10283 |
+> |  05 |   1835 |  10451 |
+> | --- | ------ | ------ |
+> | AVG |   1847 |  10353 |
 
->
->>  - Can I get your BIOS, EC and ME versions (easiest is to get these from the BIOS setup screen - F1 during early boot)
->
-> - BIOS: R2LET23W (1.04)
-> - EC:   R2LHT18W (1.01)
-> - ME:   Not applicable, as my machine is AMD, not Intel.
-Thanks
+The problem with ignoring what the platform firmware is telling (or
+not telling) the OS through ACPI is that only it knows the reason why
+it is doing that.
 
->
->>  - Get a report from running the Intel S0ix test tool - https://github.com/intel/S0ixSelftestTool. Run it with the -S option
->
-> It may not work as my machine is not Intel, but here's the output:
-<snip>
+It may be by mistake, but it also may be on purpose and it is hard to say.
 
-Yeah - that won't work. The AMD test tool is here:
-https://gitlab.freedesktop.org/drm/amd/-/blob/master/scripts/amd_s2idle.py
-Can you try that please?
+However, intel_pstate already knows that HWP is enabled on the
+processor, so it can be used directly regardless of whether or not
+CPPC is enabled.  That is more appropriate and does not require users
+to modify their kernel command line.
 
->
->>  - There is a known issue if the ethernet is plugged in on this system that Intel are working on - can you confirm if you're using wired networking please?
->
-> I haven't used the ethernet on my machine. It's not plugged in.
->
->>  - Do you have WWAN enabled? If you have it can you try with WWAN disabled.
->
-> No, I don't. My machine doesn't have a WWAN module.
->
-One more question - which Wifi module do you have? The Qualcomm NCM825 Wifi7 device still has a lot of problems (it's currently the main thing gating our Linux certification of the platform).
+I'll add a changelog to the patch and submit it properly.
 
->> I'll also highlight that Linux enablement is not complete on this platform yet, so some patience might be needed.
->
-> Sure!
->
-> Please let me know if there's anything else I can do.
->
-Thanks for the details. I've created internal ticket LO-3140 for tracking and we'll see if we can reproduce
-
-Mark
+Thanks!
 
