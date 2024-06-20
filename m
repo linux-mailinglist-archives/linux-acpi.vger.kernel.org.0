@@ -1,140 +1,146 @@
-Return-Path: <linux-acpi+bounces-6536-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6537-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D76590FAC2
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 03:05:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E547690FAF2
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 03:28:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F3DD2830BA
-	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 01:05:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ABB11F217C3
+	for <lists+linux-acpi@lfdr.de>; Thu, 20 Jun 2024 01:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C8EB66F;
-	Thu, 20 Jun 2024 01:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6B610A3D;
+	Thu, 20 Jun 2024 01:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b="I5RqrGVT"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Ac3vsA+J"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AF9DDB8
-	for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2024 01:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81C712B6C
+	for <linux-acpi@vger.kernel.org>; Thu, 20 Jun 2024 01:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718845531; cv=none; b=YRb9l2BQ+UhzVvTLuf9aa0/2JB+4nM/GHJ3vmg19onEut8C0zMnBIzRWbyj6OtLef7E7oHOQasjGkiw99P8B1rYd7UHfHCaqUHWysLr2WZujYL5rHUgx+pweYtp33W9MAm1ngKSisSqJ0qv2qDaxKUYQID3i8gpE2Qf1hTkBFyA=
+	t=1718846912; cv=none; b=MnilVBdzgunTjU8qu1cFWiLgp8rniQ8bYT5EcFWKS0js8YsUaqwJcFhUghcx2L+OJ4KWZGd7KYaEZVRDnQMiBvVYdXI03+q/jSxTmePEDOpILDTJ8Vc9jT+BW2jVq7wa01PTm0rsp9Wvzvas6KeF+5tkSfswttlh4BMeWGpWRc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718845531; c=relaxed/simple;
-	bh=o+AtFRKSppPVchIcAIk8QIOiTYfGveuSXbYBE9byyqA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YpIRj2OP24Qc4ccyC82+ZeQHBYxoIwNuJl2V8XEIfp4RloRwYstHJAFt8h22KCdtndShP79Mg+iolAf2DWv4vhY5Yp59CA0A/04m4GxcO+5QBpvMizL/swniawsMtBPHCL7n+q5JT9WlLpvy5uzJ3X5Zm29ukDRWL8l/BYJx3qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org; spf=pass smtp.mailfrom=kfocus.org; dkim=pass (2048-bit key) header.d=kfocus-org.20230601.gappssmtp.com header.i=@kfocus-org.20230601.gappssmtp.com header.b=I5RqrGVT; arc=none smtp.client-ip=209.85.166.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kfocus.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kfocus.org
-Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-7ebe019b9cdso10966839f.0
-        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 18:05:29 -0700 (PDT)
+	s=arc-20240116; t=1718846912; c=relaxed/simple;
+	bh=H6vCEco6jQVwaOX7xUNWdQhOvu/xshILozEhAN0RF6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XXvCBXpIO7iC/6k3/cbs/uefoStLYWlHZQES6Ka5YCzvEepzX0nacrj9M/LmvCNjpBL3qOqAtg3juYdqmf1EBl7PET0dMMPKFYZnGhoTslT6N6D6b5TKwzcZnbQWt2BHPDUwSDdJ5PjYrO02D7jsGQvZRkWWqFAGMm1LkuIQOx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Ac3vsA+J; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7005c84e525so223019a34.3
+        for <linux-acpi@vger.kernel.org>; Wed, 19 Jun 2024 18:28:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kfocus-org.20230601.gappssmtp.com; s=20230601; t=1718845529; x=1719450329; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbSKc+TrggUrHTort2/p62nHWU+tnCEwH+LIOaDUnMY=;
-        b=I5RqrGVTQ1jV9PG8nwDy0sX5HXJia0KHbPxH1S8jzy4Q11HkoMx9CTZTtwHWnXKD/y
-         tfG5x18ua3/HXERRb13rzw7j+BYBtHQGgKuxHHfdlnLMPSpveqAN6UfKU/5gW73E14Na
-         dT9lpmGBfnYh+VWkf9lILUWvzeqq7WAy0gPruWl8JKULQhAk2upS9vvyTmzaUJMXtZx1
-         6RqUu16tYoKM+gUIrys8LB/aCBfz4Kjc71Ui/MYCUmYYTuJ2DeTmxepMYMxpvQumVDC0
-         V+UIVA8LqPrSvtGP/HYxaNE4M5CeFtrRMKyYVjUBmNw/XxSJGxVLnU+u6utOn++OtdWk
-         Tetw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718845529; x=1719450329;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1718846909; x=1719451709; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qbSKc+TrggUrHTort2/p62nHWU+tnCEwH+LIOaDUnMY=;
-        b=qyty1LOOxHtkiv62q15JxRJV9QyR89dKejQp98fqMCk3CjzH6muc+NUCj2A6i4tVi6
-         JZQmlHtQrU/fruymOCWCDlUSWsNpCPKWCNqWSNquDbXnSvAcrcaAMtplcfWVkRi2md8N
-         z+YhAcT5q9wj/kDlK6Il4nI0Kx3poejiPR3y6h1118/rnvQWFN4Ei+QRZes6AIAF9S6N
-         XqSoRreNX0eq00nJwfcgteN8mDMbMUkF19wARdeV0kKCzFmm5VgZ0lEUDF2f4OUptts9
-         lnuWwI7KUJOvOWcSPoekT+IAACdbBP0WnXB7Lf/qGlygnvKMw4nDnNKf3VA02UgaoqcV
-         RuHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXp9+YhCMTBXdSz9tzPJpyNPnrgDmUz1XdCdM8iaiV9pDxor4i1ivk3lm5J2uPFoZWV9YH4+4x6DbA5yOsthxWiizsMce2GBmQkbg==
-X-Gm-Message-State: AOJu0YzG9iXKc9XvrwW3K81dr/uYzPAXBdFfq/o74hA39sVP6by2D90y
-	Mk/3z9CeOFfJ+dSlZECFZUW5FhheM2UvQODMRE2VE2843XKXcJLvcwEqaeaqubc=
-X-Google-Smtp-Source: AGHT+IFWukuy+yK0xWq0jQOureLprn4ZulWF8/CzRIJtzl9V0bK6pRZbTWtBrXeLa/MkYQC02Cg15g==
-X-Received: by 2002:a05:6602:6b84:b0:7eb:687f:66a5 with SMTP id ca18e2360f4ac-7f13ee8fc06mr435515539f.21.1718845529168;
-        Wed, 19 Jun 2024 18:05:29 -0700 (PDT)
-Received: from kf-XE ([2607:fb91:111c:4643:212e:5310:572e:1126])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-7ebdb74cd1asm358910539f.0.2024.06.19.18.05.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 18:05:28 -0700 (PDT)
-Date: Wed, 19 Jun 2024 20:05:25 -0500
-From: Aaron Rainbolt <arainbolt@kfocus.org>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lenb@kernel.org, mmikowski@kfocus.org, Perry.Yuan@amd.com,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [PATCH V3] acpi: Allow ignoring _OSC CPPC v2 bit via kernel
- parameter
-Message-ID: <ZnOAVWdBanvocb4D@kf-XE>
-References: <b516084f-909e-4ea4-b450-3ee15c5e3527@amd.com>
- <ZnJfmUXmU_tsb9pV@kf-XE>
- <CAJZ5v0gOBH7OKF3KXwxYfWkGkC45rzDguR4VmSnoZDKpm+KPSg@mail.gmail.com>
- <12457165.O9o76ZdvQC@rjwysocki.net>
- <ZnNQF0ussBRSAt1g@kf-XE>
- <ZnNZgxDaXoCqkkJq@kf-XE>
+        bh=h/ekbBeZLQlbT2zg5ACeIcCnuktUUqjjWBwu4AREAPo=;
+        b=Ac3vsA+J4TlIo9yDoKGnepxJthAbJFF0JQm1AEG1fEXrJK/RYhXxYJFd7+CeA4/XJY
+         3kgeJHqOHcoqP9spKzmGjCA0PHoI1QNvsm87rSltLoV+1J3UTDZKZ+eeXwBVSdAm/6p+
+         6Iju8rQg2atR4hkcBF1Yk0Rtp0gLumoUXq72wjnwl2qV2A/JpKfedhfPjbEdiwVqDUAw
+         aAT6FvsB/LTgylH4RgA/+1vASpwkrtVEPw99+FSKm2zLce89HwMxDwAHIPWYP4ACKtYn
+         RQDBpoOwtW06vR/krk96mIUP7kYrqNAOUWo4OZYr2nEsU2xs3vZWErbrVHs0jdGPYtCm
+         RWhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718846909; x=1719451709;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h/ekbBeZLQlbT2zg5ACeIcCnuktUUqjjWBwu4AREAPo=;
+        b=YG5KaoKGBY0ct22NyiYbXTFjGcNRxLTN0wxDEdQfwXLrZFGCznNuJM8y+JEoRmXDzH
+         t9CSLw49eaJLUKdyoUNzI8WdgyZ+EzPb/2aE/HN6RqEmOI7Xk0gngC0yCe+4sLdfduJP
+         rOZImSONYCCKZoGOHn+9sy2+lQirVOermrCWfajOumIu7A0fYIBaIbXk/dyElbil/IlA
+         4+1Gj/2+UmQSzygNSSoAKOT+9IeCRbRHpT305WDIKiN5zNCFCUJ12Xfwc32lOfDRpS18
+         FaaHgosYRps8DMQqeoGiH8IzrIXKU4PW0L0bwqhu7xQIGez3BfmnPgSdBNATOUAXd9xQ
+         MhdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpXXJ814lnCnlfNOqisCDiH9D3E/mXsT2YsMuDQIdO6W0KLp27m6oVcse6SNakEUhy4Y37fC1PKnWMmY5CqmzQrjAK7d95ey7ZrA==
+X-Gm-Message-State: AOJu0YxdViEZ2xXbz7QZbuy+tNRorI6SC6j3+8YPj/PXjXds0Q/EKy/M
+	hGlOXSSWBcYBCcibrWnJFVBBn1kkFc0D3voo7SUB6ev1DipTmKAm/fNVhzrQ4qG/xkJlGtEFo7J
+	1aT/z7NOREQXBXdYbdd0GvgyRPye/Z1oQuv+cxw==
+X-Google-Smtp-Source: AGHT+IGBBD4sgjyzChNhQD41x5cYm6++WrkWNpZZqXfJd6go6IeSymufFhAE2wLDdg5D7Zri2qLbf+MT7kpvOJiYs18=
+X-Received: by 2002:a05:6870:148d:b0:259:8b2f:8d76 with SMTP id
+ 586e51a60fabf-25c9498dc84mr4604434fac.20.1718846909622; Wed, 19 Jun 2024
+ 18:28:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZnNZgxDaXoCqkkJq@kf-XE>
+References: <20240617131425.7526-1-cuiyunhui@bytedance.com>
+ <20240617131425.7526-3-cuiyunhui@bytedance.com> <CAEEQ3wnkQsfmLbyMrG_YBvWvhHJdSTg7dG5W_mxv_wxCjatgCA@mail.gmail.com>
+ <ZnLY3mNxyv9QOmGn@sunil-laptop>
+In-Reply-To: <ZnLY3mNxyv9QOmGn@sunil-laptop>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Thu, 20 Jun 2024 09:28:18 +0800
+Message-ID: <CAEEQ3wmarOoWWYrdpf7YNQdZG4rf_O4dHkeiO3W1cuavVh8TMQ@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v6 3/3] RISC-V: Select ACPI PPTT drivers
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com, 
+	aou@eecs.berkeley.edu, linux-riscv@lists.infradead.org, bhelgaas@google.com, 
+	james.morse@arm.com, jeremy.linton@arm.com, Jonathan.Cameron@huawei.com, 
+	pierre.gondois@arm.com, sudeep.holla@arm.com, tiantao6@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-OK, we have done thorough benchmarking of the two patches. In summary,
-they both seem to provide exactly the same performance improvements.
-My initial worry that Rafael's patch didn't deliver the same performance
-improvements was unfounded.
+Hi Sunil,
 
-The following are the single-core and multi-core scores from running
-Geekbench 5 multiple times on a Carbon Systems Iridium 16 system. The
-first batch of tests was done with an Ubuntu kernel built with with my V3
-proposed patch, while the second batch was done with a kernel build with
-Rafael's proposed patch.
+On Wed, Jun 19, 2024 at 9:11=E2=80=AFPM Sunil V L <sunilvl@ventanamicro.com=
+> wrote:
+>
+> On Wed, Jun 19, 2024 at 07:32:18PM +0800, yunhui cui wrote:
+> > Hi Sunil,
+> >
+> > On Mon, Jun 17, 2024 at 9:14=E2=80=AFPM Yunhui Cui <cuiyunhui@bytedance=
+.com> wrote:
+> > >
+> > > After adding ACPI support to populate_cache_leaves(), RISC-V can buil=
+d
+> > > cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
+> > > configuration.
+> > >
+> > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+> > > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
+> > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+> > > ---
+> > >  arch/riscv/Kconfig | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> > > index 9f38a5ecbee3..1b4c310a59fb 100644
+> > > --- a/arch/riscv/Kconfig
+> > > +++ b/arch/riscv/Kconfig
+> > > @@ -13,6 +13,7 @@ config 32BIT
+> > >  config RISCV
+> > >         def_bool y
+> > >         select ACPI_GENERIC_GSI if ACPI
+> > > +       select ACPI_PPTT if ACPI
+> > >         select ACPI_REDUCED_HARDWARE_ONLY if ACPI
+> > >         select ARCH_DMA_DEFAULT_COHERENT
+> > >         select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGR=
+ATION
+> > > --
+> > > 2.20.1
+> > >
+> >
+> > Gentle ping.
+> >
+> Actually, my RB is still valid. Anyway, here again.
+>
+> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+>
+> Thanks,
+> Sunil
 
-Links to the Geekbench 5 reports can be shared if needed.
-
-_OSC CPPC bit ignore patch (written by Aaron Rainbolt):
-Kernel parameter 'ignore_osc_cppc_bit' set in
-'/etc/default/grub.d/kfocus.cfg'.
-'/sys/devices/system/cpu/cpu*/acpi_cppc' and
-'/proc/sys/kernel/sched_itmt_enabled' both present
-
-| Run | Single | Multi  |
-| --- | ------ | ------ |
-|  01 |   1874 |  10475 |
-|  02 |   1831 |  10132 |
-|  03 |   1858 |  10348 |
-|  04 |   1848 |  10370 |
-|  05 |   1831 |  10413 |
-| --- | ------ | ------ |
-| AVG |   1848 |  10348 |
+Okay, thank you. BTW, when will this patchset be picked up to linux-next?
 
 
-intel_pstate CPPC override patch (written by Rafael Wysocki):
-No special kernel parameters set.
-'/sys/devices/system/cpu/cpu*/acpi_cppc' ABSENT,
-'/proc/sys/kernel/sched_itmt_enabled' present
-
-| Run | Single | Multi  |
-| --- | ------ | ------ |
-|  01 |   1820 |  10310 |
-|  02 |   1870 |  10303 |
-|  03 |   1867 |  10420 |
-|  04 |   1844 |  10283 |
-|  05 |   1835 |  10451 |
-| --- | ------ | ------ |
-| AVG |   1847 |  10353 |
+Thanks,
+Yunhui
 
