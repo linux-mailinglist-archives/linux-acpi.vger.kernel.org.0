@@ -1,163 +1,117 @@
-Return-Path: <linux-acpi+bounces-6570-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6571-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFDD912998
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 17:26:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E0D912BFE
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 18:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B7F28193A
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 15:26:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8468A1F22B9A
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 16:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8870F6EB4C;
-	Fri, 21 Jun 2024 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885E31607BB;
+	Fri, 21 Jun 2024 16:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jjgfR2pS"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="TkTSgJpZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587C92C859;
-	Fri, 21 Jun 2024 15:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8855DDDC4;
+	Fri, 21 Jun 2024 16:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718983611; cv=none; b=iIFYURNzEKe1hvd0nklpZVEo3PQS/x1lSX1orU+7XP3aieceu8xRreYq0lKTyh5iXSJ5KnyahLxqYW4TJ/R+6GAPDegq+6QVI/CTCeY0059wgW+UVSkpaqD5QAmC/AA1io9JeuznP09sptpXwPLTEK58Db+ivPsC4AT2hZJn1sk=
+	t=1718989129; cv=none; b=stOGKYPnqE1QMJ7ackWm0RkZqYF7ylSPC0ZoHUGjLZ9eOLdzHNHjFu+RQZfG3FycsjTrRfF1sIkF9l7JMgbx+R9uFcBFUuPCD5dvN0koVZx3+8TS4JZ0gHCOOxwsQ9klf90/WW3iQ+hHw7mYpDNHCkE8rIGGU06CGV4akoL8o7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718983611; c=relaxed/simple;
-	bh=VZvSfmYm+YYVRqepGXv0DdjyARWDuL62j88rb4mTLp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hcbMj0QPi4mdUpEbLW9LNNRl6LXavnVzV1zlkRBSyRsGyetM2JglMCIgbgVuUXgZPAfRvrhIlHce6WSr8Yjrzw3R3RhkwdIZt7Qg26yf47jMiqcMPWxSsBn1LLyIcRjWIWgFkLpZTzKhqOAUk1wMBEkwIlFFpjVsSB6DHdiWKnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jjgfR2pS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800DBC2BBFC;
-	Fri, 21 Jun 2024 15:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718983610;
-	bh=VZvSfmYm+YYVRqepGXv0DdjyARWDuL62j88rb4mTLp0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jjgfR2pS0CHoifVSOF1onh/LnD0rkt0ywgTtfPTp8Z/ExNi3fEMRKXheQljQ5MD+0
-	 0SxeOr7K2dbNDaIl7JA2t4EpQq38fKOCioK9Wv/ldlMFLtrgnVWk7hsfJfRYwJmDpN
-	 U0An75uWq4M4cOkVAWKwfBYJQCqFzGHmbKzcuY0/q85PPfraFxrJLorSjN8DlKAQFi
-	 sQA0movE0zwX+WiW7wsKA4EmWQRdAqobO+Lwggjw9Ik97hTdnHqubZ4WyRaG0x9Sa1
-	 j+z5y+EEJsP88ECJj0iUm5/rlNISaqWL7g4vHkvPGu5hNYit8dKI4Fb8cZ1MlqPlpt
-	 M2sONNaQa/3NA==
-Date: Fri, 21 Jun 2024 17:26:45 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, James
- Morse <james.morse@arm.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Shiju Jose <shiju.jose@huawei.com>,
- linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-edac@vger.kernel.org, Len Brown <lenb@kernel.org>,
- linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] Fix CPER issues related to UEFI 2.9A Errata
-Message-ID: <20240621172645.21082af3@coco.lan>
-In-Reply-To: <CAMj1kXHsyAhmV9K__pRh8cYJy-ed2-s5VLDE4GwMqNajvJE46w@mail.gmail.com>
-References: <cover.1718906288.git.mchehab+huawei@kernel.org>
-	<CAMj1kXHsyAhmV9K__pRh8cYJy-ed2-s5VLDE4GwMqNajvJE46w@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1718989129; c=relaxed/simple;
+	bh=BelYWAGbMn4jpSekV3NProDOBKu/yC+Hvmtq4elyLnw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WpiUZ0sOUgOVBDeyIT1DS+hFCsjw+gX5f86j72dHQpFkHYwNS8pnof3r3/wtpxE51vTAkWMy2wBVIupx69Hsronc3aSbq+cVRTOkGALMGy98fmV1z6deVWt8uhdZRJKDtODwUUfr0UgRdJ+UQekUlIR7qWhZZRivAHfwsdfLj2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=TkTSgJpZ; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 465E940E01F9;
+	Fri, 21 Jun 2024 16:58:45 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id TM-OOgscWArZ; Fri, 21 Jun 2024 16:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1718989122; bh=XpompesGEa9CpbxVGr5wphiZrAV9WGI7UwouSa3Si0c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TkTSgJpZQTP6pKW9IlD4oIyo4R1nADDX+IScZd1+FhZ03+q2Td3Hiz0Cv1NPIDGwt
+	 ONY4rZBy3hRdklza5yUwOwpAAhLGViU6BotKskrGYkcvEfIIiGWV0SMpn6FlolzNqe
+	 A/VlX0nCfWhHZL8o5s50sG1/aobpkBJKB/k2rK1d/YplmCdQ2/M+WYnZ2NrtvGY69U
+	 yzKABfZ+8CoUB3RUY/WHbTIp6QpB8zBcVbzpYsLTHkmLgW85FnqxyY6yZkuwe1vFHl
+	 EFSHmghg/h0snZu1Yeqzr+/gwFzDrO++eUiVoqbJaY3QSbkXQsVQZNerONcE5S7Jpc
+	 aQ9ZbSCR06yveceRP//B07yjuxUzgXD74CFw+ViZ0rl5MOQCuQX0Q8lehPoPCwv6Y+
+	 8PIEMG19n3fNU+objFgbtcE5WIdgTa2djdA5irBn1Al4fC5kM8OVF8cAb5endqAdoO
+	 jFftGpbH3XwRNs2fAqKn0cBm/l/fkykXte7zleEsWreOsXsoHpDDgc+/r5g91N2mWo
+	 Q7BPugQrT7hDuTEFYZwtyROGqByWVvTHdamMHU9LfrwKrLJUW0EE5g6p25Pu+8qePa
+	 FWr0NMkPSnEbOo3xeIIbIfFcsQ0hJooTvFtuyHbo6i0MMb+pJr3Tq8+dLJRbN29ldF
+	 gWJFLLWIeshRzzASQKuTTPkE=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 00DA440E01A5;
+	Fri, 21 Jun 2024 16:58:23 +0000 (UTC)
+Date: Fri, 21 Jun 2024 18:58:23 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Avadhut Naik <avadhut.naik@amd.com>
+Cc: x86@kernel.org, linux-edac@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	rostedt@goodmis.org, lenb@kernel.org, mchehab@kernel.org,
+	james.morse@arm.com, airlied@gmail.com, yazen.ghannam@amd.com,
+	john.allen@amd.com, avadnaik@amd.com
+Subject: Re: [PATCH 0/4] MCE wrapper and support for new SMCA syndrome MSRs
+Message-ID: <20240621165823.GJZnWxLxd9BVhQDBUU@fat_crate.local>
+References: <20240530211620.1829453-1-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240530211620.1829453-1-avadhut.naik@amd.com>
 
-Hi Ard,
+On Thu, May 30, 2024 at 04:16:16PM -0500, Avadhut Naik wrote:
+>  arch/x86/include/asm/mce.h              |  20 ++-
+>  arch/x86/kernel/cpu/mce/apei.c          | 111 ++++++++++----
+>  arch/x86/kernel/cpu/mce/core.c          | 191 ++++++++++++++----------
+>  arch/x86/kernel/cpu/mce/dev-mcelog.c    |   2 +-
+>  arch/x86/kernel/cpu/mce/genpool.c       |  20 +--
+>  arch/x86/kernel/cpu/mce/inject.c        |   4 +-
+>  arch/x86/kernel/cpu/mce/internal.h      |   4 +-
+>  drivers/acpi/acpi_extlog.c              |   2 +-
+>  drivers/acpi/nfit/mce.c                 |   2 +-
+>  drivers/edac/i7core_edac.c              |   2 +-
+>  drivers/edac/igen6_edac.c               |   2 +-
+>  drivers/edac/mce_amd.c                  |  27 +++-
+>  drivers/edac/pnd2_edac.c                |   2 +-
+>  drivers/edac/sb_edac.c                  |   2 +-
+>  drivers/edac/skx_common.c               |   2 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |   2 +-
+>  drivers/ras/amd/fmpm.c                  |   2 +-
+>  drivers/ras/cec.c                       |   2 +-
+>  include/trace/events/mce.h              |  51 ++++---
+>  19 files changed, 286 insertions(+), 164 deletions(-)
 
-Em Fri, 21 Jun 2024 09:45:16 +0200
-Ard Biesheuvel <ardb@kernel.org> escreveu:
+This doesn't apply anymore - please redo this ontop of the latest tip/master.
 
-> On Thu, 20 Jun 2024 at 20:01, Mauro Carvalho Chehab
-> <mchehab+huawei@kernel.org> wrote:
-> >
-> > The UEFI 2.9A errata makes clear how ARM processor type encoding should
-> > be done: it is meant to be equal to Generic processor, using a bitmask.
-> >
-> > The current code assumes, for both generic and ARM processor types
-> > that this is an integer, which is an incorrect assumption.
-> >
-> > Fix it. While here, also fix a compilation issue when using W=1.
-> >
-> > After the change, Kernel will properly decode receiving two errors at the same
-> > message, as defined at UEFI spec:
-> >
-> > [   75.282430] Memory failure: 0x5cdfd: recovery action for free buddy page: Recovered
-> > [   94.973081] {2}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-> > [   94.973770] {2}[Hardware Error]: event severity: recoverable
-> > [   94.974334] {2}[Hardware Error]:  Error 0, type: recoverable
-> > [   94.974962] {2}[Hardware Error]:   section_type: ARM processor error
-> > [   94.975586] {2}[Hardware Error]:   MIDR: 0x000000000000cd24
-> > [   94.976202] {2}[Hardware Error]:   Multiprocessor Affinity Register (MPIDR): 0x000000000000ab12
-> > [   94.977011] {2}[Hardware Error]:   error affinity level: 2
-> > [   94.977593] {2}[Hardware Error]:   running state: 0x1
-> > [   94.978135] {2}[Hardware Error]:   Power State Coordination Interface state: 4660
-> > [   94.978884] {2}[Hardware Error]:   Error info structure 0:
-> > [   94.979463] {2}[Hardware Error]:   num errors: 3
-> > [   94.979971] {2}[Hardware Error]:    first error captured
-> > [   94.980523] {2}[Hardware Error]:    propagated error captured
-> > [   94.981110] {2}[Hardware Error]:    overflow occurred, error info is incomplete
-> > [   94.981893] {2}[Hardware Error]:    error_type: 0x0006: cache error|TLB error
-> > [   94.982606] {2}[Hardware Error]:    error_info: 0x000000000091000f
-> > [   94.983249] {2}[Hardware Error]:     transaction type: Data Access
-> > [   94.983891] {2}[Hardware Error]:     cache error, operation type: Data write
-> > [   94.984559] {2}[Hardware Error]:     TLB error, operation type: Data write
-> > [   94.985215] {2}[Hardware Error]:     cache level: 2
-> > [   94.985749] {2}[Hardware Error]:     TLB level: 2
-> > [   94.986277] {2}[Hardware Error]:     processor context not corrupted
-> >
-> > And the error code is properly decoded according with table N.17 from UEFI 2.10
-> > spec:
-> >
-> >         [   94.981893] {2}[Hardware Error]:    error_type: 0x0006: cache error|TLB error
-> >
-> > Mauro Carvalho Chehab (3):
-> >   efi/cper: Adjust infopfx size to accept an extra space
-> >   efi/cper: Add a new helper function to print bitmasks
-> >   efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-> >  
-> 
-> Hello Mauro,
-> 
-> How this is v4 different from the preceding 3 revisions that you sent
-> over the past 2 days?
-> 
-> I would expect an experienced maintainer like yourself to be familiar
-> with the common practice here: please leave some time between sending
-> revisions so people can take a look. And if there is a pressing need
-> to deviate from this rule, at least put an explanation in the commit
-> log of how the series differs from the preceding one.
+Thx.
 
-Sorry, I'll add a version review on that. Basically I was missing a
-test environment to do error injection. When I got it enabled, and fixed
-to cope with UEFI 2.9A/2.10 expected behavior, I was able to discover 
-some issues and to do some code improvements.
+-- 
+Regards/Gruss,
+    Boris.
 
-v1: 
-- (tagged as RFC) was mostly to give a heads up that the current 
-  implementation is not following the spec. It also touches
-  only cper code.
-
-v2:
-- It fixes the way printks are handled on both cper_arm and ghes
-  drivers;
-
-v3:
-- It adds a helper function to produce a buffer describing the
-  error bits at cper's printk and ghes pr_warn_bitrated. It also
-  fixes a W=1 error while building cper;
-
-v4:
-- The print function had some bugs on it, which was discovered with
-  the help of an error injection tool I'm now using.
-
-I have already another version ready to send. It does some code
-cleanup and address the issues pointed by Tony and Jonathan. If you
-prefer, I can hold it until Monday to give you some time to look
-at it.
-
-Thanks,
-Mauro
+https://people.kernel.org/tglx/notes-about-netiquette
 
