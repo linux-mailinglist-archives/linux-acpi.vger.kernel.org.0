@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-6567-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6568-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F100F9125B7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 14:43:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D607F9125A2
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 14:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 872FAB253CB
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 12:37:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78E7C1F2432F
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 12:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9605A1552E0;
-	Fri, 21 Jun 2024 12:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B9715A49F;
+	Fri, 21 Jun 2024 12:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sRpj/cf9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MDZrxKG3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A10153835;
-	Fri, 21 Jun 2024 12:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB39615533B;
+	Fri, 21 Jun 2024 12:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718973431; cv=none; b=r2Rs8RdGcVtjPYsB3EFKkvtj9vNy6Sh+MHek+pMUIpwSO+zvipnvr3wQ4JloQL1poSfiCthyiL8gdBJJfvrBUaRXDtv3aYL8ga4T/3IlAx5w9OgKG6p/JUADPVbsYK9Mv8OP8NwsN0i+fQMCnil4FejQjSGJIpxGfUFAp7e4DNo=
+	t=1718973487; cv=none; b=lWSgNipU6XGvkNa9qVh4VN61tah2KFW1D+viWke7Iw3NPRyUAs1eRbGd7J7VUwRQfL1bZH+ciJ5f+9FS79DytxxeLVXmm0ituj1/B0PsESoyeMWLKDHud7dq8sHNq7mQhAHiJPwptpe19zatUtI6fAQ60OL8eLEXfZmuY/uOebo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718973431; c=relaxed/simple;
-	bh=dfAf4n5zBsx+imv+loa9ssfMA5UD+vIQUx1NK297QuU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gTOvXNN3qbj1DHel9txlpY02+3U/vNBd+SCjCtdr21iKsOb8O0FVEII+xLeSSDT4uMvw4nX2fsQVIrFui6XqmUvETPEIRCPLY7ftOndkk07LfzLAPuVnwWUF/eHKtIeGkA5huRxJP1XbFCyQzO0EYiAUvXB9ameWir0AXejKtgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sRpj/cf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BDFC3277B;
-	Fri, 21 Jun 2024 12:37:10 +0000 (UTC)
+	s=arc-20240116; t=1718973487; c=relaxed/simple;
+	bh=fAXK1QgzF7LJbbeA5R35QOZgboVtLdgjHBnUyDFNMHI=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qnv/synegcJPphA0NeFTzEuEYtm78C/7OcfAnasOx+YeUaJHJ1G+pj/PaYmyHKRHc6xFjzZz5NxTEJEaYBsmRHAfbm+GHsJx4ZJJP24mDOHCIcoN8oASm0idQtwmah3bX010zOKxERaxg4g+PoMVI1XWYE3JdtrU02T5BOsziyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MDZrxKG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E638C4AF08;
+	Fri, 21 Jun 2024 12:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718973431;
-	bh=dfAf4n5zBsx+imv+loa9ssfMA5UD+vIQUx1NK297QuU=;
+	s=k20201202; t=1718973487;
+	bh=fAXK1QgzF7LJbbeA5R35QOZgboVtLdgjHBnUyDFNMHI=;
 	h=From:Date:Subject:To:Cc:From;
-	b=sRpj/cf9RhYo3yfzLEw8eVCFG53aRIJezpB8o/NYBl9S6Mol2EmtBa5VTrqH3BLU7
-	 INgBjrLJk9Q5KDoVxVN4J1rlLLhWDW8jSdOk9IYc8KxdIdmE8s5A0BRuT/XZXc3ZZB
-	 je3DJLLb7GxJrF8zKHwc/fpXeXnjCfPuaKyyl7RyRGUcbJLbka2+/6rN2M105ZLY81
-	 SJ9O6t7qcuBKRntbOyz3qg9XpxoQ0aD/Xdppga3BV2uS8KFFqgC7HtihdOWQ4fCweX
-	 2i/YBah9W17+9Vv9nX3pOvUtQuzU+7V6Q//YhgYc4Yt10QO+1FQrM6DvW69/Hxmzzc
-	 qqIdTpB3ikpUg==
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7009a3976ebso41160a34.1;
-        Fri, 21 Jun 2024 05:37:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUF5Hg6TLpzK66QWMaVzeupX5ZvgF5IpzFiRH4QCkhvF6SOqLCeeldyDKWDU0afGPKjuL8+lDdsFacpSdZXqtsR5gztYlirO53xllPAyNpGuDJ2XSUqhiL8TZ7sJ/PtC7aflmC2YeMKMw==
-X-Gm-Message-State: AOJu0YxTIxhQysMztlk+44jJisi9CTZttKFBTiQaoVVV/V3phrMtaUnw
-	IrBIdOBFJ9lgHrzHxKmljzVlxkqkadJ6VNHGbM1tQvNYBUjNwxuMw/eotuY9NUzN9iFq2Ou/OPb
-	zmgTo48xwM9P9L6H2ip+7SJoWsfk=
-X-Google-Smtp-Source: AGHT+IHNCFPtqPAAzOCR2CLR1rtu6Ka+NEYQjHYSykg5gQz5SdIJ6OdifqEO/OuapdZvKNi/i+e11lzAnqbcszdhvi8=
-X-Received: by 2002:a05:6870:1714:b0:258:4ae8:4aec with SMTP id
- 586e51a60fabf-25c94d411damr9008077fac.3.1718973430228; Fri, 21 Jun 2024
- 05:37:10 -0700 (PDT)
+	b=MDZrxKG3ns/oTJqeoBXfR1rQqkcAdIS4h37JVmcwJoK1k3TN3mhI+CmJEogD6wiqF
+	 cLeXi+74szx2yJscg3PcC7MATIcE49fSKMJure1AR619OWjUJuB8hi/VLkf9jxAzq7
+	 TfoHTTruGJkQigl9EcwwD8d1z8k67rXIHXgrfhXwtFTT/mZ6JS8l/TjcdXi94AfXS9
+	 pX/u2W7D5ju8BaHrIUnYz8ZpfLvunGa6tnyaQ8Csz5nd2ksttEPTkFiMHNZ3iV6rxH
+	 cYrCUeuudf1Knp7JaPAby0MmU07PaumM4sNhjRsXvajJ36pYl0HxpfaR1kELTNdu/U
+	 l4vjpbz/TH+qQ==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-25989f87e20so105390fac.1;
+        Fri, 21 Jun 2024 05:38:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVtBj6SS5Cw+imr+ykC8myruQlKc4MMlaYPva19ACm+FCe+1qdKuTr4FAUYABE+qbTHAWSnMSu38Yz3ZsLqIa+Xvi6iT9r4gIIroczt
+X-Gm-Message-State: AOJu0YzHRQ6dtbIOyCN+tYOpFvhjuwf3Y1PDD2+tGrzh7clc05TqXg+5
+	dGln5MhvagxnLpoNLBgWM7lo4oiK5jSWU9xbJv8hk2BECmHmytRP/LmS+RUCnviugeWe/BHSHIz
+	WBO1QC8ivoo55TLBNEN0Ns0qGLHc=
+X-Google-Smtp-Source: AGHT+IEvK1oAnwrbimNpWmSccBMH9H+LvKSnFMn7lW1TvK4q5pvihD8xYvOK49umzp6s0L8Qngo3N5L3uyX2xssuk0g=
+X-Received: by 2002:a05:6870:148d:b0:258:476d:a781 with SMTP id
+ 586e51a60fabf-25c94d52e3emr8982429fac.3.1718973486633; Fri, 21 Jun 2024
+ 05:38:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,14 +57,13 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 21 Jun 2024 14:36:59 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g0_idYr5VhHc_Uy6h2PQBf7ekFVAygUOOKiui1QkRUSQ@mail.gmail.com>
-Message-ID: <CAJZ5v0g0_idYr5VhHc_Uy6h2PQBf7ekFVAygUOOKiui1QkRUSQ@mail.gmail.com>
-Subject: [GIT PULL] Thermal control fixes for v6.10-rc5
+Date: Fri, 21 Jun 2024 14:37:55 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jiAQKKgOdqwmWGTMHWoz2Cf_P8ASU9KxWbFCN=7EgnnQ@mail.gmail.com>
+Message-ID: <CAJZ5v0jiAQKKgOdqwmWGTMHWoz2Cf_P8ASU9KxWbFCN=7EgnnQ@mail.gmail.com>
+Subject: [GIT PULL] ACPI fixes for v6.10-rc5
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	ACPI Devel Maling List <linux-acpi@vger.kernel.org>
+Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
 Hi Linus,
@@ -72,60 +71,54 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.10-rc5
+ acpi-6.10-rc5
 
-with top-most commit 096597cfe4ea08b1830e775436d76d7c9d6d3037
+with top-most commit 5e409a29171c5ce22d21d5b0ae88bfce780643ad
 
- thermal: int340x: processor_thermal: Support shared interrupts
+ Merge branch 'acpi-scan'
 
-on top of commit 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+on top of commit 6ba59ff4227927d3a8530fc2973b80e94b54d58f
 
- Linux 6.10-rc3
+ Linux 6.10-rc4
 
-to receive thermal control fixes for 6.10-rc5.
+to receive ACPI fixes for 6.10-rc5.
 
-These fix the Mediatek lvts_thermal driver, the Intel int340x driver,
-and the thermal core (two issues related to system suspend).
+These address a possible NULL pointer dereference in the ACPICA code and
+quirk camera enumeration on multiple platforms where incorrect data are
+present in the platform firmware.
 
 Specifics:
 
- - Remove the filtered mode for mt8188 from lvts_thermal as it is not
-   supported on this platform and fail the lvts_thermal initialization
-   when the golden temperature is zero as that means the efuse data is
-   not correctly set (Julien Panis).
+ - Undo an ACPICA code change that attempted to keep operation regions
+   within a page boundary, but allowed accesses to unmapped memory to
+   occur (Raju Rangoju).
 
- - Update the processor_thermal part of the Intel int340x driver to
-   support shared interrupts as the processor thermal device interrupt
-   may in fact be shared with PCI devices (Srinivas Pandruvada).
+ - Ignore MIPI camera graph port nodes created with the help of the
+   information from the ACPI tables on all Dell Tiger, Alder and Raptor
+   Lake models as that information is reported to be invalid on the
+   platforms in question (Hans de Goede).
 
- - Synchronize the suspend-prepare and post-suspend actions of the
-   thermal PM notifier to avoid a destructive race condition and
-   change the priority of that notifier to the minimum to avoid
-   interference between the work items spawned by it and the other
-   PM notifiers during system resume (Rafael Wysocki).
+ - Use new Intel CPU model matching macros in the MIPI DisCo for Imaging
+   part of ACPI device enumeration (Hans de Goede).
 
 Thanks!
 
 
 ---------------
 
-Julien Panis (2):
-      thermal/drivers/mediatek/lvts_thermal: Remove filtered mode for mt8188
-      thermal/drivers/mediatek/lvts_thermal: Return error in case of
-invalid efuse data
+Hans de Goede (2):
+      ACPI: scan: Ignore camera graph port nodes on all Dell Tiger,
+Alder and Raptor Lake models
+      ACPI: mipi-disco-img: Switch to new Intel CPU model defines
 
-Rafael J. Wysocki (2):
-      thermal: core: Synchronize suspend-prepare and post-suspend actions
-      thermal: core: Change PM notifier priority to the minimum
-
-Srinivas Pandruvada (1):
-      thermal: int340x: processor_thermal: Support shared interrupts
+Raju Rangoju (1):
+      ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your
+kernel is fine."
 
 ---------------
 
- .../int340x_thermal/processor_thermal_device_pci.c |  3 ++-
- drivers/thermal/mediatek/lvts_thermal.c            | 12 ++++------
- drivers/thermal/thermal_core.c                     | 27 ++++++++++++++++++++++
- drivers/thermal/thermal_core.h                     |  4 ++++
- 4 files changed, 38 insertions(+), 8 deletions(-)
+ drivers/acpi/acpica/exregion.c | 23 ++---------------------
+ drivers/acpi/internal.h        |  4 ++++
+ drivers/acpi/mipi-disco-img.c  | 28 +++++++++++++++++++---------
+ 3 files changed, 25 insertions(+), 30 deletions(-)
 
