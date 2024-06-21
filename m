@@ -1,173 +1,95 @@
-Return-Path: <linux-acpi+bounces-6564-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6565-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086609121A7
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 12:09:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89238912211
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 12:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8003DB21E6D
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 10:09:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B95E51C236C2
+	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 10:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018CE176233;
-	Fri, 21 Jun 2024 10:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631CA173346;
+	Fri, 21 Jun 2024 10:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ooct2TjO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pC4Yxdrq"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA54217106D;
-	Fri, 21 Jun 2024 10:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B029173338;
+	Fri, 21 Jun 2024 10:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964406; cv=none; b=NAtsF1/kDhNAACymeekPqQftQ8SIGxg5OcMF6H/dmJFC+FB4p1+pnHBv4WTRL/JfbJQcgCDaUVRdMh+mIusG0vUccGonxYcNUoz8ByRUmJRR6wYrcqMlgOy0Bm6t7V7TXeqwfI2OqkbPZciU7ytkc4yThYoEU1CCPChQyhkXH00=
+	t=1718964979; cv=none; b=Y/DeucfKf+ypSBsEOZCRLHctIzd314nP3dkvM1xSvWHmqvUIES+0beMVWAr0wIDJbQCBP9sJK6KvRgFi4Akgm/8G/GdJIO5YL8ClARu+0RtBFz/ABqzqTHhvNFtq1Zf+HRzCUxyD3T+M8G2j4a74DFZ2P0kb12//VxeralGJmxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964406; c=relaxed/simple;
-	bh=L6eYXPIPPhgP0qC3Tjf8Pjxd20/lkYjctHCuQ+kiEmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yn1HIx56Bsg1362BnKT2vpzPZmGO2jD0TKFlkMtAr+p1LLlePDGOfOD3nQtGAGOlBByGFfhv27edKkMhmJoFY6jRRy0GwmQk+SZ918i2d08eXAlnvcAWcLAzSKfxKGN6uZxuMu/9KYCKSy87KxoSNpq+ualJFpJMqT9LeEqcrSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ooct2TjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5CBC4AF08;
-	Fri, 21 Jun 2024 10:06:42 +0000 (UTC)
+	s=arc-20240116; t=1718964979; c=relaxed/simple;
+	bh=A0J53uMMX8HJS2MDtBNVrL68qeXtbtsy57wU79YR4bY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o6JKoCH17CaScdntSFFNsOHiQ6s1QH6MaoojaxxEOQRd4EcMDzF4MzVyusfzCg4nqIaf1x9O/5BNKqHHkjrcbjbGG9mBIyWK/IF8cCjEPbuB67WSJvia/S2+trOVL28+XKpJ7/g2p/JVsO7F6zcXlNV34GuPgq/lRFSUuHBJXqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pC4Yxdrq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196F0C4AF08;
+	Fri, 21 Jun 2024 10:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718964406;
-	bh=L6eYXPIPPhgP0qC3Tjf8Pjxd20/lkYjctHCuQ+kiEmc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ooct2TjOrG7BRZof/lAee0MjE2cqy9jLtv4uwJQKPA1JH98uLHGfl1F4UAYJRZcC6
-	 a8pwDXinvB4cx5g42wNY40pJwyNp30IGcbOgfkrRMeRs2j6th0guZhc0goGpDCg1Zt
-	 mnPGQ+vgIu3TtvpKYRN9hCyHGolT5zyc/YhLnswYFotXS+iv4UOk0im1z5CeKT1lZi
-	 7IOaq0Ig4giQFrvlL/IwkRVuB4Ehd0iG1bYcwckhsc9VAthHq+py0cQ4AJX8RExo34
-	 R5vNH21zGBlmCbdlwY6+9osSdIaG1Hwin9YuL0taTy593G8jUmFs/WoNVLeYtRgTe2
-	 iTViONJogcH3g==
-Date: Fri, 21 Jun 2024 10:47:15 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Shiju Jose
- <shiju.jose@huawei.com>, Tony Luck <tony.luck@intel.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>, "Alison
- Schofield" <alison.schofield@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Len Brown <lenb@kernel.org>, Shuai Xue
- <xueshuai@linux.alibaba.com>, <linux-acpi@vger.kernel.org>,
- <linux-edac@vger.kernel.org>, <linux-efi@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 3/3] efi/cper: align ARM CPER type with UEFI
- 2.9A/2.10 specs
-Message-ID: <20240621104706.19063944@sal.lan>
-In-Reply-To: <20240621103050.00004ec0@Huawei.com>
-References: <cover.1718906288.git.mchehab+huawei@kernel.org>
-	<d808b8b76c58054ccd4a8c49dcc2d23fee5ed397.1718906288.git.mchehab+huawei@kernel.org>
-	<20240621103050.00004ec0@Huawei.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+	s=k20201202; t=1718964979;
+	bh=A0J53uMMX8HJS2MDtBNVrL68qeXtbtsy57wU79YR4bY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=pC4Yxdrq3iWtH4DzBLsuwci0qV+sQsmJfmft3fsqVrz0RPgqy4zh9SritXzjWxymZ
+	 E4VjxxWNSo+cDZoUWBh9r9OVRzdasVIIN65pJr3A6EA9LsffJelF7U5luWWl8qvCwN
+	 c7bZ4i9T0/LiKG1TJyi3C6yHqASAiOp98EwlCfPU/KUdZYiiXdLQjtFd/zZlVZkbgN
+	 dHYR4c5xawQ1HY1f6imiKJUXs56QpIaXK1MwHIjN3M1rw7HeBhYgFfq85gqxPT9mYF
+	 3PCwrPr9aDBPZIkuuXXdEb6wjEzoMBScFNSRuItYjC0DA9G7VzNU+oGEpLCFzD5uWw
+	 OqKS+waw+TORg==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-25cc44857a1so71568fac.3;
+        Fri, 21 Jun 2024 03:16:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU6iA1WPGCQr7T+aHcY5KVF7wAwNsn+MuwjI0iKjYjVQ1Km6tjgI09oqlqN92fQYWUtBvY6qKdaXFKpQ0Tqf7K5prSvKWH7LSUlzsw4py1MeiZnhptpvwVfut/TxdjuK8ZJRlGctHH9wQ==
+X-Gm-Message-State: AOJu0YwOEMPVMLx1fDWXHQY3JA2ygKcJ9fey2spJWp7oX0kmBUjl3fZp
+	jeSI3lvbs+/w2+gaR/ME+l5+fWz8C/nE5d35J2zZayhCTjTxRZCO96htyzUiDgUZfLftFxjrrQW
+	S4YTO0/wWESMKyEvUATpMT7D2cps=
+X-Google-Smtp-Source: AGHT+IH96NlTGboWpZ1N8t19sfFHYnm26QATqImDEh465B33eF7aJh7HyDzkRvLVqlDInBVxkFj2sZ1BUawrXWlI+p8=
+X-Received: by 2002:a05:6870:a2cc:b0:254:affe:5a08 with SMTP id
+ 586e51a60fabf-25c94983780mr8402996fac.2.1718964978445; Fri, 21 Jun 2024
+ 03:16:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240606115541.2069-1-ptesarik@suse.com> <20240621104848.3f14d60e@mordecai.tesarici.cz>
+In-Reply-To: <20240621104848.3f14d60e@mordecai.tesarici.cz>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 21 Jun 2024 12:16:06 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hBR1qGgSq3+sYU_7ChphHuL_R7E1-LBjXE3FdWUPkWpg@mail.gmail.com>
+Message-ID: <CAJZ5v0hBR1qGgSq3+sYU_7ChphHuL_R7E1-LBjXE3FdWUPkWpg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: CPPC: add sysfs entry for guaranteed performance
+To: Petr Tesarik <petr.tesarik@suse.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Em Fri, 21 Jun 2024 10:30:50 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
+On Fri, Jun 21, 2024 at 10:49=E2=80=AFAM Petr Tesarik <petr.tesarik@suse.co=
+m> wrote:
+>
+> On Thu,  6 Jun 2024 13:55:41 +0200
+> Petr Tesarik <ptesarik@suse.com> wrote:
+>
+> > Expose the CPPC guaranteed performance as reported by the platform thro=
+ugh
+> > GuaranteedPerformanceRegister.
+> >
+> > The current value is already read in cppc_get_perf_caps() and stored in
+> > struct cppc_perf_caps (to be used by the intel_pstate driver), so only =
+the
+> > attribute itself needs to be defined.
+>
+> Are there any objections to exposing this CPPC register through sysfs?
+> I mean, if everybody is OK with it, the patch could be acked and queued
+> for 6.11, right?
 
-> On Thu, 20 Jun 2024 20:01:46 +0200
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
-> 
-> > Up to UEFI spec, the type byte of CPER struct for ARM processor was
-> > defined simply as:
-> > 
-> > Type at byte offset 4:
-> > 
-> > 	- Cache error
-> > 	- TLB Error
-> > 	- Bus Error
-> > 	- Micro-architectural Error
-> > 	All other values are reserved
-> > 
-> > Yet, there was no information about how this would be encoded.
-> > 
-> > Spec 2.9A errata corrected it by defining:
-> > 
-> > 	- Bit 1 - Cache Error
-> > 	- Bit 2 - TLB Error
-> > 	- Bit 3 - Bus Error
-> > 	- Bit 4 - Micro-architectural Error
-> > 	All other values are reserved
-> > 
-> > That actually aligns with the values already defined on older
-> > versions at N.2.4.1. Generic Processor Error Section.
-> > 
-> > Spec 2.10 also preserve the same encoding as 2.9A
-> > 
-> > See: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-> > 
-> > Adjust CPER and GHES handling code for both generic and ARM
-> > processors to properly handle UEFI 2.9A and 2.10 encoding.
-> > 
-> > Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>  
-> 
-> I think you can avoid complexity of your masking solution.
-> Cost is we don't have that function print that there were reserved bits
-> set, but that could be easily handled at the caller including notifying
-> on bits above the defined range which might be helpful.
-> 
-> > diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-> > index d9bbcea0adf4..4c101a09fd80 100644
-> > --- a/drivers/firmware/efi/cper-arm.c
-> > +++ b/drivers/firmware/efi/cper-arm.c  
-> ...
-> 
-> >  	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-> > @@ -241,6 +232,7 @@ void cper_print_proc_arm(const char *pfx,
-> >  	struct cper_arm_err_info *err_info;
-> >  	struct cper_arm_ctx_info *ctx_info;
-> >  	char newpfx[64], infopfx[65];
-> > +	char error_type[120];
-> >  
-> >  	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
-> >  
-> > @@ -289,9 +281,11 @@ void cper_print_proc_arm(const char *pfx,
-> >  				       newpfx);
-> >  		}
-> >  
-> > -		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
-> > -			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
-> > -			cper_proc_error_type_strs[err_info->type] : "unknown");
-> > +		cper_bits_to_str(error_type, sizeof(error_type), err_info->type,
-> > +				 cper_proc_error_type_strs,
-> > +				 ARRAY_SIZE(cper_proc_error_type_strs),
-> > +				 CPER_ARM_ERR_TYPE_MASK);  
-> 
-> Maybe drop this mask complexity and just use
-> FIELD_GET() to extract the relevant field with no shift from 0.
+It actually has been queued already, sorry for the missing notice.
 
-IMO not using the function will make the code here more complex, as the
-same code needs to be duplicated on two places: here and at ghes, where
-the error bits are printed using pr_warn_ratelimited():
-
-                cper_bits_to_str(error_type, sizeof(error_type), err_info->type,
-                                 cper_proc_error_type_strs,
-                                 ARRAY_SIZE(cper_proc_error_type_strs),
-                                 CPER_ARM_ERR_TYPE_MASK);
- 
-                pr_warn_ratelimited(FW_WARN GHES_PFX
-                                    "Unhandled processor error type: %s\n",
-
-
-Also, other parts of CPER uses cper_bits_print() for the same reason:
-to have the common print code handled inside a function instead of
-repeating the same print pattern everywhere.
-
-> > +		printk("%serror_type: %s\n", newpfx, error_type);
-> >  		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
-> >  			printk("%serror_info: 0x%016llx\n", newpfx,
-> >  			       err_info->error_info);  
-> 
-> 
-Regards,
-Mauro
+It's been in linux-next for some time even.
 
