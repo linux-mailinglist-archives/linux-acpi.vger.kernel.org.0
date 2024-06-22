@@ -1,144 +1,112 @@
-Return-Path: <linux-acpi+bounces-6582-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6583-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E7F912EEB
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 22:52:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16D691316D
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2024 03:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C145D1F22B3C
-	for <lists+linux-acpi@lfdr.de>; Fri, 21 Jun 2024 20:52:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F722865D9
+	for <lists+linux-acpi@lfdr.de>; Sat, 22 Jun 2024 01:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444BF17BB37;
-	Fri, 21 Jun 2024 20:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91414A04;
+	Sat, 22 Jun 2024 01:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="asThEooi"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sDqwaRZL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0A817BB2C
-	for <linux-acpi@vger.kernel.org>; Fri, 21 Jun 2024 20:51:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1327FB;
+	Sat, 22 Jun 2024 01:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719003119; cv=none; b=CxB/Isq0n6j0bSLACrLkR6oBnjJ0nVE/eYy6Zs+pxhmHUBWrxL+tOQ2hothcLXC/u4w0O4qIqUuuSEU8vXXtQ1UcQ2V0nStC4p91YsM7tD9gjziP5J8wiBEP03Ew6Z7B2CE5gVw4hn219FFAV1nYPYujWXE430p8bs8W8r3etFk=
+	t=1719020055; cv=none; b=sWqy5NVu9MRc0WWqD+ad4weneu6WRifTe41dWztKgRpI4GIKP18sILCkfRsV+NSlnf5dsoUcGc4gTFC8T3ywRs07pGDMf8BiNkZleIPNPvG2VX7wVHuWUHlIXTCojNngHGZNgjkPi8pNH0+131YxCiFk3ksPvpjNBsg1Ktu60MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719003119; c=relaxed/simple;
-	bh=Oh3fHeV4znlvxEw6zOAQuavyv3NjqYzTMJ90QD3QnrM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DQ1xiHdDFPKghWlYZpsw5Ydqw1XLg9u9+v/Orp+czf2M9S7chvpkAHl7Dny9EN1dF3nqpJEMzppKeHVLNdWv+hBw1+b3AlYa0yUMdfTRW9G3nLPyE6aYn600Nrs+om2zN2CpKKqFa61YfmdCR1JitLNDxrt2m0tMhDhO4wz7MFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=asThEooi; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-44056f72257so537891cf.0
-        for <linux-acpi@vger.kernel.org>; Fri, 21 Jun 2024 13:51:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719003115; x=1719607915; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lArdc/1wZ6cGMV0ZmDn9MYnxqrFzIsvvBqrD/IAOOXM=;
-        b=asThEooimGIB6lT3goXLdKHmwSc/SexKaLdfRQ89jrkN2j7W2kdBbo6Cq8EqTJeXv3
-         JJrv1GebWy6p+I6zmr4lWjudBJYQ/uKXP1veHlItPqcqzJXAzCzKKBdD3s+cyD5pVHa7
-         1cO5wO0kusRMpB5yrV8GcNbZBmvuDp0eUi3L+K2brgvLvougSmhfnY0rMMVEEP1iXzhV
-         LrJ7NdScLT0Ebak/MqjSF4tD6+xM6Voaa+0qt6sVPLCueBN5acqcxn5OaSx71MAVNY+C
-         FfMGhv9rDe/wSq3+YCmB+gq/k1SZimdwns9C30ZCzf72qqT8eH+5B6auKTaQXcxAdo30
-         TaJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719003115; x=1719607915;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lArdc/1wZ6cGMV0ZmDn9MYnxqrFzIsvvBqrD/IAOOXM=;
-        b=nfZJJ9VDWn4m/85cIFJjCUbSKwt51bZmy42G0zb2uj7WumSrba6wp8GwBOu+OQc43y
-         i6L+LnDQSPlAyMxT+/DMNl7eQqEZFbfV56dWsVVlr8F6b+0l0FijKwXUQYHapvtCACFV
-         B2zyT5I4Ia+b2zvb6XGYQmB3bCvss67aV7YMQnFnLQcZIl279ZoalhFLF7/iulRmeJxM
-         GCLc3yO/SAk+XgSt4vSVbTnxt2h9xj+TiQZyHyvCvLsDCU/4FWvhtl7/RcW22LylArQg
-         wJbtLaUE+K9xOzZ18hUmClPq0SzKDr9n97f7W4d+nnh6e46i3QaVBGsKGrqxWy0ivpCs
-         cdjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVl4XhdUGYdHg8wzNeMrKaPu9Cg8pRG3J549uM1cak5oCnHMtwliaDQvu5XIBkXZyDHUrWDM1VXYsdRB8IaZzVcFwQO/RUK0Pza/g==
-X-Gm-Message-State: AOJu0YxsqOdYpbLQ6YXHTWCd6mm5ryU2e1WSDKWwDpyvUaQokN4RtBxz
-	UUOEDpIUQ4y7BWIlmxHeHyaEZZfqAMR7afsthAXlALdFF2BGLk6ug/KtTTnhmFIWrPg0D2lnwk+
-	/+QVin3K1o+4u5mMa4dnOFNHFH1/QdtUsarUJ
-X-Google-Smtp-Source: AGHT+IH5yoYBlppb4JsqH83QVq/VXvffOxaxcg76w1huEHrI0GcDKG80KYq2O785kln/S9G/4ZJBzT5QZpUnTZkr5kA=
-X-Received: by 2002:a05:622a:1a01:b0:444:92a6:188a with SMTP id
- d75a77b69052e-444ce2be63dmr496101cf.9.1719003115301; Fri, 21 Jun 2024
- 13:51:55 -0700 (PDT)
+	s=arc-20240116; t=1719020055; c=relaxed/simple;
+	bh=qm2vMyK4qA3/y0Ko7/pKvfxx5RuC8dDvYU8t1o6RE0M=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tFzZbpX1LXLF5ag+fBEksV6EeMWy+XpO5/VrwUlDFUPD4efR99mluUY0pKAHeVl7ylXhklPrjHZDzyfDgR9JUikHZjxWKA4HqpIBCbLBnGrFcnSaaeP6uHj8iS59jtqiLrgOpPxdy47pZEvuJNLhDzczG9pCw7i34+aBa3/FTVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sDqwaRZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16263C2BBFC;
+	Sat, 22 Jun 2024 01:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719020055;
+	bh=qm2vMyK4qA3/y0Ko7/pKvfxx5RuC8dDvYU8t1o6RE0M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=sDqwaRZLFfHd0f1KM1T9LFUkgNQ3fBnIJdbjPE/4sd9gdDOOCgF2/9GQpF8iF2ZlL
+	 gnrSdzqtK3iQ4xxFCtE49X5p5HjU0AFeCnkcB+Juai0z+YfstoWZyvB4nG/fTZcDFt
+	 4rOwheB3ecFSZ+f7JM2Z6NNVqXqvsmNczKzfjZ4E=
+Date: Fri, 21 Jun 2024 18:34:13 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>
+Cc: "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>, "Huang, Ying"
+ <ying.huang@intel.com>, "Gregory Price" <gourry.memverge@gmail.com>,
+ aneesh.kumar@linux.ibm.com, mhocko@suse.com, tj@kernel.org,
+ john@jagalactic.com, "Eishan Mirakhur" <emirakhur@micron.com>,
+ "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>, "Ravis OpenSrc"
+ <Ravis.OpenSrc@micron.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>, "SeongJae Park"
+ <sj@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+ <lenb@kernel.org>, Dave Jiang <dave.jiang@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>, "Ho-Ren (Jack) Chuang"
+ <horenchuang@gmail.com>, linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v1] memory tier: consolidate the initialization of
+ memory tiers
+Message-Id: <20240621183413.1638e7453a0bed2af5f44273@linux-foundation.org>
+In-Reply-To: <20240621044833.3953055-1-horen.chuang@linux.dev>
+References: <20240621044833.3953055-1-horen.chuang@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1718994350.git.robin.murphy@arm.com>
-In-Reply-To: <cover.1718994350.git.robin.murphy@arm.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Fri, 21 Jun 2024 22:51:16 +0200
-Message-ID: <CAGETcx-nBb43181Rd4HC6HQF-6=XOufA05e8Zda+LBBfhwvagw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] iommu: Remove iommu_fwspec ops
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	iommu@lists.linux.dev, devicetree@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 21, 2024 at 8:46=E2=80=AFPM Robin Murphy <robin.murphy@arm.com>=
- wrote:
->
-> v1: https://lore.kernel.org/linux-iommu/cover.1713523251.git.robin.murphy=
-@arm.com
->
+On Fri, 21 Jun 2024 04:48:30 +0000 "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev> wrote:
+
+> If we simply move the set_node_memory_tier() from memory_tier_init() to
+> late_initcall(), it will result in HMAT not registering the
+> mt_adistance_algorithm callback function,
+
+Immediate reaction: then don't do that!
+
+> because set_node_memory_tier()
+> is not performed during the memory tiering initialization phase,
+> leading to a lack of correct default_dram information.
+> 
+> Therefore, we introduced a nodemask to pass the information of the
+> default DRAM nodes. The reason for not choosing to reuse
+> default_dram_type->nodes is that it is not clean enough. So in the end,
+> we use a __initdata variable, which is a variable that is released once
+> initialization is complete, including both CPU and memory nodes for HMAT
+> to iterate through.
+> 
+> Besides, since default_dram_type may be checked/used during the
+> initialization process of HMAT and drivers, it is better to keep the
+> allocation of default_dram_type in memory_tier_init().
+
+What is this patch actually aiming to do?  Is it merely a code cleanup,
+or are there functional changes?
+
+> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
+> ---
 > Hi all,
->
-> Here's v2 of this little cleanup, with acks and the additional cosmetic
-> tweak suggested by Andy. There were some slightly non-trivial changes in
-> the rebase so I've left off Jean-Philippe's tested-by from v1, but I've
-> given it a quick spin on arm64 ACPI and DT and all seems well still.
+> 
+> The current memory tier initialization process is distributed across two
+> different functions, memory_tier_init() and memory_tier_late_init(). This
+> design is hard to maintain. Thus, this patch is proposed to reduce the
+> possible code paths by consolidating different initialization patches into one.
 
-Hi Robin,
+Ah, there it is.  Please make this the opening paragraph, not an aside
+buried below the ^---$.
 
-I see in this series you talk about figuring out if a device has a
-driver that could match. There has been a "can_match" flag in every
-device that's set if a driver that match it is present, but hasn't
-probed the device yet (for whatever reason). Just pointing that out in
-case that makes things a lot easier for you. As of now, we don't
-handle clearing it when the driver is unregistered, but if that really
-needs to be handled, that shouldn't be too difficult.
-
--Saravana
-
->
-> Thanks,
-> Robin.
->
->
-> Robin Murphy (4):
->   iommu: Resolve fwspec ops automatically
->   ACPI: Retire acpi_iommu_fwspec_ops()
->   OF: Simplify of_iommu_configure()
->   iommu: Remove iommu_fwspec ops
->
->  drivers/acpi/arm64/iort.c             | 19 +++-------
->  drivers/acpi/scan.c                   | 36 +++++--------------
->  drivers/acpi/viot.c                   | 11 ++----
->  drivers/iommu/arm/arm-smmu/arm-smmu.c |  3 +-
->  drivers/iommu/iommu-priv.h            |  7 ++++
->  drivers/iommu/iommu.c                 | 20 +++++------
->  drivers/iommu/mtk_iommu_v1.c          |  2 +-
->  drivers/iommu/of_iommu.c              | 50 ++++++++++-----------------
->  drivers/iommu/tegra-smmu.c            |  2 +-
->  drivers/of/device.c                   | 30 ++++++----------
->  include/acpi/acpi_bus.h               |  3 +-
->  include/linux/iommu.h                 | 15 ++------
->  12 files changed, 65 insertions(+), 133 deletions(-)
->
-> --
-> 2.39.2.101.g768bb238c484.dirty
->
+I'll await review input before proceeding with this, thanks.
 
