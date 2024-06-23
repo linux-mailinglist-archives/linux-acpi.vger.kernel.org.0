@@ -1,194 +1,230 @@
-Return-Path: <linux-acpi+bounces-6589-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6590-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCFF9138D8
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2024 09:58:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5AC913917
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2024 10:54:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83D89281452
-	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2024 07:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 390F5281C03
+	for <lists+linux-acpi@lfdr.de>; Sun, 23 Jun 2024 08:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0DE288A4;
-	Sun, 23 Jun 2024 07:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64051364A0;
+	Sun, 23 Jun 2024 08:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="guPUoAxY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5mCzG/i"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E4E1758E;
-	Sun, 23 Jun 2024 07:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4894D6E5ED;
+	Sun, 23 Jun 2024 08:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719129510; cv=none; b=H/qW9QWiz6ZMvN0+yu6b49YQb7FzWs/mxMoR9Zs5b19SLUVjSTtQVsAS2rTH9hpH/npJo08C/w4GnY/YVi+vB8gTjrCx6uoSrBi6D8ryDCoRAyztZ91NcT9JQJXd1rdZTxdRfo8L8yAJ2JF3lCPSZaRNvEn9YRKYH9BncGe+fRM=
+	t=1719132863; cv=none; b=WvpYg8hgRU/+YEVio17vCMMwf3iSNUuRFjWOOeyg81rMLNgbFnRoryRmVC7QxeQMDPVooUjLyKedsG4tkwymKNRGn0t6NORNxmqjZiR7J9ldNf+4GiHwJB/g8hubMrFEpmENoYd8DR23Q+KFcRWMdK9gtGcFCBuJFJNlhPH3pvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719129510; c=relaxed/simple;
-	bh=a6KNXhusZlGB9SXt+4RuMY0cEgs/mQtHIhf1RjFFZ2w=;
+	s=arc-20240116; t=1719132863; c=relaxed/simple;
+	bh=NK+GSlkQYz6auxu2HnNKbWueXrURc2LeDnNadxDvjFo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X5TCvHB4G07xuL9M3VVohTghkHt7nxRcXUdHKwnV8CvG8gdy9VRcREG0m9bQ/W0uchh+Oa8CGaJ3bYl4xoYvfZcyKIA9OcP6KCrjIBB1fGYEsK0fGWEqfN7n1G0rpySBNDteNIzBeA4wpI6rpXSnz6+V5qEjZS7jK4ecJy8ZvVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=guPUoAxY; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1f480624d10so28199545ad.1;
-        Sun, 23 Jun 2024 00:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719129509; x=1719734309; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tzKNaXqjYLYXB0OpmzE6jKXefCOFO+eG6hhbZpLsjY8=;
-        b=guPUoAxY9aruD0i3m2Zw66a3QmLnq74NqGuBWZoogt84aiF1FXfKKauWVDwBvxLaCg
-         cacXtdTEb51WjkJURBSsehMzJtWMquBbsU8ws3j2/X7LYJJw8UK8Uv8vb7DBB+26vtqh
-         Wwj2CglBYYIMxG1ywYt1KfcqzNXJuQ0iGJ8pxO3P02Wpk9/7UTjLGPXQ5k9kGfkFMaSP
-         zu6Iz07v1XtWlctqBhK7ukSzT4Jsc5Pw5xlYbjRWs7mfyBLyB7gSZyvKQ4s71CphfHmG
-         NcZWcL4H5Q2MUXfwOrfvdO0zA8oEqxtDia68eQGK595uXxENuGF+VydA4dX41UWSx7vL
-         dhmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719129509; x=1719734309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tzKNaXqjYLYXB0OpmzE6jKXefCOFO+eG6hhbZpLsjY8=;
-        b=KJCkxm9yXYTxlTzHCDNhLRL7fwZk4HOLvtpVTvhf4z0zozthZM4ugfSoDoLMvnLmL+
-         Y7G42anaaTJ+/mkhZA1borxnZ5cqQnj78oFkR/Znu8zsn7U87Tub4Uz/KG2xUjfNzGeB
-         Iq5RlRQZG5FbJhojUZU82jaC+V2oMnn3fYQBmAhVEB8lGE84MQnG6F/z27slsnrTZ9th
-         JvbOQNdFJ1tk/BrERtsozJokXE33i5KluiWKsNdYV4O8mw96oewLTDuwyK+QmEaCcqrt
-         3DoWASoS8i+SZmlPTg4O8QeFAYbJ3ufQLfapSklou28RtGucMIYDHOpctqwDaZYA8zFh
-         2WbA==
-X-Forwarded-Encrypted: i=1; AJvYcCWSz2vDVOskcE5fEoh64jaMmC/f+aIdgB2JUJRI+92XFZExpl05FDBHa7ZrXplgRNP2a0lRtY63bM3gJwa6NkLUw23ugRN949JX+9xqB4Md1W2FY14cNZi9xtprvzce04iKC6S9rrOeqQ==
-X-Gm-Message-State: AOJu0YxivwEZ9oJVjJ7Z8SfagY2UC/qTk5QXZkku2z1xh3nO3SAb0ZMS
-	eLqGYJItSN5DvxkOd8BDZoajfj+d2r6NhOJWjtNnj0NGlme50i4F
-X-Google-Smtp-Source: AGHT+IGEpWbbny726Q3htn6XKcMmi4++Fu3v9DNQtTRzF7a9NIY1QXUPMWFlEmnWJ72ew/+300ULFA==
-X-Received: by 2002:a17:902:f648:b0:1f9:cbe1:ae9 with SMTP id d9443c01a7336-1fa1d66823fmr31602725ad.44.1719129508450;
-        Sun, 23 Jun 2024 00:58:28 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:c8b4:4b16:721a:ce0f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb2f02f0sm41610825ad.7.2024.06.23.00.58.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jun 2024 00:58:28 -0700 (PDT)
-Date: Sun, 23 Jun 2024 00:58:25 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Sui Jingfeng <sui.jingfeng@linux.dev>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v3] software node: Implement device_get_match_data fwnode
- callback
-Message-ID: <ZnfVoQmCE-wJbIYU@google.com>
-References: <20240427203650.582989-1-sui.jingfeng@linux.dev>
- <ZnXbaubPVAUdDIu0@google.com>
- <7b5305b6-78b0-4add-9e70-271159cfad95@linux.dev>
- <Zncl_O-NjMRZYGeA@google.com>
- <ee4e8724-4a19-4814-9b7e-9eb6eb0ac6a3@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UkMmGwCP/TxPa8I3ueQWoGIlXm1VBffik40yCPPHyJd1YicEoMiYo5l7HVd8b13XShptkir4orXgUoyc9jF5MmiYez/vw+mSNXraMzHR8EvBDMiEKDMRdBA5+3dOPAydzuAk4qXOqvShZxQM2xa55LRLpEsIOZDUCwNGt0tgGK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5mCzG/i; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719132861; x=1750668861;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=NK+GSlkQYz6auxu2HnNKbWueXrURc2LeDnNadxDvjFo=;
+  b=B5mCzG/isdOhEs6iJX/sQ4DxqtQGKbz/YRprVYjQFOjlTffzTd8UxDow
+   nD9VlbmaKKLxkbvvKJIkBYH9JGhn13uL96KQvJXV+fxP7g5uBvWLtcF00
+   NM01eRbOq3iTu7MPfFBOMlfetzzZg7YT71pq1k7BUcwZ9cmAWVGcUCeni
+   uAiZmCTVPbZBGzpFoy0H+qqh0kCBlWamNd9UE4p5dvufZ48HAS0RuiEh+
+   85tC5wRop8bZLwNCkzp8DQwgvn8OIE6tXlKNACP7guIg+1bfWkYNu/KDz
+   X0+iMagYtfLmBzldUNAVzm7QvuWWKUV4Jh3QBWqxs4NELYFTh0Ri3k0vZ
+   g==;
+X-CSE-ConnectionGUID: JANSssXNR/i1ILvkjnYDLg==
+X-CSE-MsgGUID: kZPgHcNHTmiy+tNpGlDszw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="26707221"
+X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
+   d="scan'208";a="26707221"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 01:54:21 -0700
+X-CSE-ConnectionGUID: /yL1qXlkTaKXiBTvwO9Tsw==
+X-CSE-MsgGUID: KW9gJ6q7QDSLGlx5Eu8bEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
+   d="scan'208";a="43123308"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 01:54:19 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 058F711FA94;
+	Sun, 23 Jun 2024 11:54:17 +0300 (EEST)
+Date: Sun, 23 Jun 2024 08:54:16 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] ACPI: scan: Ignore camera graph port nodes on all
+ Dell Tiger, Alder and Raptor Lake models
+Message-ID: <ZnfiuExIpLh-Nw-S@kekkonen.localdomain>
+References: <20240612104220.22219-1-hdegoede@redhat.com>
+ <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
+ <ZnCYwPFyIM1HYkt3@kekkonen.localdomain>
+ <CAJZ5v0hg-EMzgce5FH10uQqY1d37sGW3dyyZ-P8Uizg2i8+MOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ee4e8724-4a19-4814-9b7e-9eb6eb0ac6a3@linux.dev>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hg-EMzgce5FH10uQqY1d37sGW3dyyZ-P8Uizg2i8+MOA@mail.gmail.com>
 
-On Sun, Jun 23, 2024 at 03:38:23PM +0800, Sui Jingfeng wrote:
-> Hi,
-> 
-> On 6/23/24 03:29, Dmitry Torokhov wrote:
-> > > In case of non-OF match (which
-> > > > includes the case where you use software nodes) the match data is coming
-> > > > from matching spi_device_id entry in the driver.
-> > > 
-> > > We don't care about much how it is probed now, rather, after the driver
-> > > probed by a non-OF way, how does the additional devices properties
-> > > can be get?
-> > > 
-> > > 
-> > > Say:
-> > > 
-> > > 1) "device_property_read_u32(dev, "rotation", &rotation);" and
-> > > 2) "!device_property_read_string(dev, "pervasive,thermal-zone",
-> > > &thermal_zone))"
-> > > 
-> > > 
-> > > For those spi/i2c/platform devices, what we argues are that
-> > > those drivers really should just depend on "OF" before we have
-> > > a reliable fwnode API backend to redirect to.
-> > They are working fine without such restriction now,
-> 
-> 
-> You still *NOT* answer where the additional devices properties[1][2]
-> can be acquire.
-> 
-> [1] device_property_read_u32(dev, "rotation", &rotation)
-> 
-> [2] device_property_read_string(dev, "pervasive,thermal-zone",
-> &thermal_zone))
-> 
-> 
-> > so I see absolutely no reason imposing this restriction.
-> 
-> The reason is rigorous.
-> 
-> You are acclaiming that works by hardcode or by ignoring the flaws
-> is fine, then all driver are working fine by *your* standard.
-> 
-> Your personal standard has nothing to do with this patch.
-> 
-> > > Where the additional device_property_read_xxxx() calls redirect to?
-> > > 
-> > > What if users want to invoke more device_property_read_xxxx() function?
-> > They are being directed to first the primary FW node instance, which may
-> > be either OF, ACPI, or SW node, and then, if property is not present
-> > there, to the secondary FW node, which can be either again.
-> 
-> 
-> What I'm asking is, on the non-OF and no-ACPI cases, where's those
-> device_property_read_xxx() calls can be directed to?
-> 
-> > At no point ->device_get_match_data() callback in involved in this
-> > process.
-> > 
-> 
-> The patch is written for people who need it, not for people who don't.
-> 
-> It will be involved if the device is associated with software node.
-> Its for fwnode API user to get a consistent experience, that is
-> to get a matching data without introduce extra/duplicated match
-> mechanism.
-> 
-> The patch is focus on fixing the undefined behavior, is discussing
-> the correct way to consolidate the fwnode API. Its not going to
-> discuss how does the those *old" and/or how does those non-fwnode
-> systems works.
-> 
-> Its NOT discussing how does the driver itself can be probed, a driver
-> can be probed multiple way and is another question. Being probed and
-> extract matching data can two different thing and is perfectly valid.
-> 
-> Your problem is that you are not fully understand what other people
-> does before you rush into the discussion. You are putting restrictions
-> onto other people, while leaving the problem itself there unsolved.
-> 
-> Its not a place to express your personal value or you personal status,
-> such as, you are "ready" or "not ready" for something. Or persuading
-> somebody should get used to what or teaching people to talks with a
-> whatever tone like a God.
-> 
-> None of those junk words are technical, I can not see constructive
-> ideas.
+Hi Rafael,
 
-Yes, indeed, it appears that further discussion is pointless at this
-point.
+On Tue, Jun 18, 2024 at 02:49:25PM +0200, Rafael J. Wysocki wrote:
+> Hi Sakari,
+> 
+> On Mon, Jun 17, 2024 at 10:12 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Mon, Jun 17, 2024 at 09:41:57PM +0200, Rafael J. Wysocki wrote:
+> > > On Wed, Jun 12, 2024 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > > >
+> > > > It seems that all Dell laptops with IPU6 camera or the Tiger Lake,
+> > > > Alder Lake and Raptor Lake generations have broken ACPI MIPI DISCO
+> > > > information.
+> > > >
+> > > > Instead of adding a lot of DMI quirks for this, check for these CPU
+> > > > generations and disable ACPI MIPI DISCO support on all Dell laptops
+> > > > with these CPU generations.
+> > > >
+> > > > Fixes: bd721b934323 ("ACPI: scan: Extract CSI-2 connection graph from _CRS")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > > > ---
+> > > >  drivers/acpi/internal.h       |  4 ++++
+> > > >  drivers/acpi/mipi-disco-img.c | 28 +++++++++++++++++++---------
+> > > >  2 files changed, 23 insertions(+), 9 deletions(-)
+> > > >
+> > > > diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> > > > index 2a0e9fc7b74c..601b670356e5 100644
+> > > > --- a/drivers/acpi/internal.h
+> > > > +++ b/drivers/acpi/internal.h
+> > > > @@ -302,6 +302,10 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
+> > > >  void acpi_mipi_scan_crs_csi2(void);
+> > > >  void acpi_mipi_init_crs_csi2_swnodes(void);
+> > > >  void acpi_mipi_crs_csi2_cleanup(void);
+> > > > +#ifdef CONFIG_X86
+> > > >  bool acpi_graph_ignore_port(acpi_handle handle);
+> > > > +#else
+> > > > +static inline bool acpi_graph_ignore_port(acpi_handle handle) { return false; }
+> > > > +#endif
+> > > >
+> > > >  #endif /* _ACPI_INTERNAL_H_ */
+> > > > diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.c
+> > > > index d05413a0672a..0ab13751f0db 100644
+> > > > --- a/drivers/acpi/mipi-disco-img.c
+> > > > +++ b/drivers/acpi/mipi-disco-img.c
+> > > > @@ -725,14 +725,20 @@ void acpi_mipi_crs_csi2_cleanup(void)
+> > > >                 acpi_mipi_del_crs_csi2(csi2);
+> > > >  }
+> > > >
+> > > > -static const struct dmi_system_id dmi_ignore_port_nodes[] = {
+> > > > -       {
+> > > > -               .matches = {
+> > > > -                       DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> > > > -                       DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
+> > > > -               },
+> > > > -       },
+> > > > -       { }
+> > > > +#ifdef CONFIG_X86
+> > > > +#include <asm/cpu_device_id.h>
+> > > > +#include <asm/intel-family.h>
+> > > > +
+> > > > +/* CPU matches for Dell generations with broken ACPI MIPI DISCO info */
+> > > > +static const struct x86_cpu_id dell_broken_mipi_disco_cpu_gens[] = {
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S, NULL),
+> > > > +       {}
+> > > >  };
+> > > >
+> > > >  static const char *strnext(const char *s1, const char *s2)
+> > > > @@ -761,7 +767,10 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+> > > >         static bool dmi_tested, ignore_port;
+> > > >
+> > > >         if (!dmi_tested) {
+> > > > -               ignore_port = dmi_first_match(dmi_ignore_port_nodes);
+> > > > +               if (dmi_name_in_vendors("Dell Inc.") &&
+> > > > +                   x86_match_cpu(dell_broken_mipi_disco_cpu_gens))
+> > > > +                       ignore_port = true;
+> > > > +
+> > > >                 dmi_tested = true;
+> > > >         }
+> > > >
+> > > > @@ -794,3 +803,4 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+> > > >         kfree(orig_path);
+> > > >         return false;
+> > > >  }
+> > > > +#endif
+> > > > --
+> > >
+> > > Applied as 6.10-rc material, along with the [2/2], with the following changelog:
+> > >
+> > > "Dell laptops with IPU6 camera (the Tiger Lake, Alder Lake and Raptor
+> > > Lake generations) have broken ACPI MIPI DISCO information (this results
+> > > from an OEM attempt to make Linux work by supplying it with custom data
+> > > in the ACPI tables which has never been supported in the mainline).
+> >
+> > I was expecting to see v2 with fixed changelog from Hans.
+> 
+> Hans asked me offline to take care of this.
 
-Andy, Heikki, Greg, and others: FWIW this is a NAK from me.
+Ok.
 
-Thanks.
+> 
+> > These issues with these (full list unknown) Dell laptops have nothing to do
+> > with DisCo for Imaging, not the spec nor the implementation. Instead the
+> > DSDT partially aligns with Documentation/firmware-guide/acpi/dsd/graph.rst
+> > but lacks e.g. IVSC from the graph as well as ACPI power resources for
+> > devices related to camera. IOW it's always been unusable.
+> 
+> The code related to DisCo for Imaging ends up using them and failing,
+> though, IIUC.
+> 
+> So what should I change in the paragraph quoted above?
+
+How about this:
+
+Many Dell laptops, possibly all of them with IPU6 camera (the Tiger Lake,
+Alder Lake and Raptor Lake generations) have Linux ACPI graph describing
+camera connections only partially while the rest of what would be required
+for the cameras to function in these systems is simply missing in DSDT.
+
+> 
+> > >
+> > > Instead of adding a lot of DMI quirks for this, check for Dell platforms
+> > > based on the processor generations in question and drop the ACPI graph
+> > > port nodes, likely to be created with the help of invalid data, on all
+> > > of them."
+> 
+> Am I guessing correctly that the remaining part of it is fine?
+
+Seems good to me.
 
 -- 
-Dmitry
+Kind regards,
+
+Sakari Ailus
 
