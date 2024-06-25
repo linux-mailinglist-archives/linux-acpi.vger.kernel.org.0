@@ -1,159 +1,194 @@
-Return-Path: <linux-acpi+bounces-6600-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6601-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572D4915931
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jun 2024 23:45:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9090C915EDC
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2024 08:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B9021C212A3
-	for <lists+linux-acpi@lfdr.de>; Mon, 24 Jun 2024 21:45:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E7AF1F22FA6
+	for <lists+linux-acpi@lfdr.de>; Tue, 25 Jun 2024 06:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75D51311B5;
-	Mon, 24 Jun 2024 21:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F30145FE6;
+	Tue, 25 Jun 2024 06:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lscD1rUp"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CN5gE+Eq"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC7B4962C;
-	Mon, 24 Jun 2024 21:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B4B143889
+	for <linux-acpi@vger.kernel.org>; Tue, 25 Jun 2024 06:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719265548; cv=none; b=kJ4YFCL5B9n3AwQWbUQeDTseaxodVG2RlgWuo661ePsTlr1Aux9BO+/508yZm/HDVJwkIX2mnFZa59yWqh38GEliJEpOlBWbz8ykAy9EGZawz16FsmC11wsMyEGVx7ejAmWduy67Wu8/UMb2sIynWZkX56hq5avbwFi+JAxADgk=
+	t=1719296659; cv=none; b=UjpObYnfrd57roU6bUCnUwNs2hojImUsiOvuT7Mvjvb/iSFN2gI6dTLaklgj7fSbzCSd8kamVLCb1wcJfWYr1ITX7uyMt99jpqBcyaEheF4DTiT6ldyqJ9vEjIRiJIOeqpDPy/ZgcFiD7bst3hvVYQa5pvSKx3ElyIerE0K+Rho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719265548; c=relaxed/simple;
-	bh=5LDOUY5x0WIdNRBUPnBNwAdwzAxdcTUC+9ltGMgcDz8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EWchOw3CwyfQbZCfC0GUqnl8Nszlw+Q17Dhz/4ZSu1hkoJwuv6qNGz+qxZklZJL+F8zcsf30g4e8kEFd0vFH28veE/oM+14+HnhrfkiHLOwMeybq/4ASb9cn5xRUSlayxN2jiX1OJ1KFqIszdyN9gpw3WjZxvD58UrPrvZXJ/hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lscD1rUp; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-363bd55bcc2so4046361f8f.2;
-        Mon, 24 Jun 2024 14:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719265545; x=1719870345; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BPPDvN7v6IiPVFVviCh6dtINUu1WsSok2eDdprbo4Ic=;
-        b=lscD1rUpUDEzrjwp3Iycpv2avGpTiwpo5fxcaZF3G4dKBs7EMLw9CmijAkwTdvH9Qd
-         7bbMdF7LqWAyN6OtgN3Jyhol/FldtwZpu6bOCdRwW4LmQobMchXqx5J7C731AV7BXgvc
-         YOvuhfvRBdKINkX5o3jiAb8r9AuQbeMorT+Di9rwPo82hs/tswNNeseeinstL0rKtuP5
-         iaVmCcb5dpWIp1zYIANeFI+AX7y3yr32hCnGxhxfBSTBnyOv3CXBeqY3ekl/ngxe6IpH
-         /1yIZRV7jhMxM6cZkJuTURjdIVMzC86ujzebDTK4Kz6YugDEBJFD+GJfC3luEC0NrfxV
-         JRKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719265545; x=1719870345;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BPPDvN7v6IiPVFVviCh6dtINUu1WsSok2eDdprbo4Ic=;
-        b=xIfeAmrkGOUvQPIxJqAZ3L3snzYgt81xg01vx/oUSMTsqMPTwwLiTDhpz1RBftM5+3
-         hTW2fl8Ia6+1ojs3PwPgIyNQ6QnP+7245qoWimzGSIvaqIuo1d4bHSdTH6x5/pR+PYfs
-         y400V92tMoAUZb35P2womyItFQVyoS2VZMJ5UZ2HlZQkbgernFLzVMRCV8ofB4kRpghc
-         SxyMzwS+vpPCW56/7E8M7CA5AD5q0cJho0E1ImNVMzKU6eYaFPk17GsfSXXvtAhr+Y6d
-         1ryU7D7lRdy3ErMnwVY0TsmuddXwDZ1d64XOnxQUsugFiV9D3xOJjlbOIH0DuwneS3/2
-         UH9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXnZCnWp66mYLUNbvf+Ppl5qiJok7SMvGMYl5jJAG8bW91Ups1KLcQpSLSWVgM242C+wSNPDAa8i/5NLMLLbV+fzNlDU1h9qi652arAvC8zoF1XQq9TIHJRIiBPx0eAL1doEsmSpbCNYc8ZwJZW9wet3EiOkubh5RfFy8LQ+qG95BTGed16G357J3GgFH2W32X2DW9UVBF9dHhZzECxnPOFJA==
-X-Gm-Message-State: AOJu0YzOcslpTbKFaA9Me1l6Y3P2pAdn/HDanMTV1EKlKIsY/kLaP+iS
-	+0g7ak/1Wfib23GEUKsyDctTVyOlaJGQ0tvy/wyl9p/rObL04z8+
-X-Google-Smtp-Source: AGHT+IHomXUaIVhT/771lPLn9rwX6XcDNC8dy89avGpfMRSOgnyNEQVProIVICbppqDUT8SI6DtKJg==
-X-Received: by 2002:a5d:400a:0:b0:363:107d:8385 with SMTP id ffacd0b85a97d-366e94cbca0mr4071088f8f.34.1719265545301;
-        Mon, 24 Jun 2024 14:45:45 -0700 (PDT)
-Received: from [192.168.0.31] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-366383f65easm11118821f8f.23.2024.06.24.14.45.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 14:45:43 -0700 (PDT)
-Message-ID: <3a16dc06-81df-4493-bac6-216e9c6ea16e@gmail.com>
-Date: Mon, 24 Jun 2024 23:45:42 +0200
+	s=arc-20240116; t=1719296659; c=relaxed/simple;
+	bh=fEXCEnroSXAYBbJBA50IuH7sIV8SQp85V0rc8smZn84=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=Ujm9EhjU2MDYAtRKfBY9hJg4XLci4DoIeGzlYIoXRJOrZNqnYLKgHD5Ell5I5UfpGlEyDH0K9tSbG5bJ4VWfpCZs1y4au2QWaxfrsuYpxabQleQGsCxLvZFNQKAj9p+VLxJ6VfBG35naH/9zDNCKMu2QBXbQKzhai/ogWSIiiYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CN5gE+Eq; arc=none smtp.client-ip=95.215.58.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: akpm@linux-foundation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1719296654;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j4bxxUAJuq2rr3KPobPQOBQilwLNETOz0MjNzojnBtM=;
+	b=CN5gE+Eq2magNWdd8QrK1zOC3R8bf1KbPZ3NH9ELjsQfumrMQ5gnwKYAZAkzWgr2EYAqBM
+	2yVj5cKUrvfKzBc8H6TkGnWbAf8q9duzXXHPtXGf69fs6rCVGhRFZQqAgEZE11RZLM6GES
+	5MsvgxqkJjLjP90OPOw5Zo/n8pxt1uM=
+X-Envelope-To: jonathan.cameron@huawei.com
+X-Envelope-To: ying.huang@intel.com
+X-Envelope-To: gourry.memverge@gmail.com
+X-Envelope-To: aneesh.kumar@linux.ibm.com
+X-Envelope-To: mhocko@suse.com
+X-Envelope-To: tj@kernel.org
+X-Envelope-To: john@jagalactic.com
+X-Envelope-To: emirakhur@micron.com
+X-Envelope-To: vtavarespetr@micron.com
+X-Envelope-To: ravis.opensrc@micron.com
+X-Envelope-To: apopple@nvidia.com
+X-Envelope-To: sthanneeru@micron.com
+X-Envelope-To: sj@kernel.org
+X-Envelope-To: rafael@kernel.org
+X-Envelope-To: lenb@kernel.org
+X-Envelope-To: dave.jiang@intel.com
+X-Envelope-To: dan.j.williams@intel.com
+X-Envelope-To: linux-acpi@vger.kernel.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: horenc@vt.edu
+X-Envelope-To: horenchuang@bytedance.com
+X-Envelope-To: horenchuang@gmail.com
+X-Envelope-To: linux-cxl@vger.kernel.org
+X-Envelope-To: qemu-devel@nongnu.org
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] hwmon: (ltc2992) Use
- fwnode_for_each_available_child_node_scoped()
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, linux-acpi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org
-References: <20240523-fwnode_for_each_available_child_node_scoped-v2-0-701f3a03f2fb@gmail.com>
- <20240523-fwnode_for_each_available_child_node_scoped-v2-3-701f3a03f2fb@gmail.com>
- <20240526144851.493dd3f2@jic23-huawei>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240526144851.493dd3f2@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 25 Jun 2024 06:24:11 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: horen.chuang@linux.dev
+Message-ID: <acf41fe2246f3696a6fe267b8a23bdb4f855cb4e@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v1] memory tier: consolidate the initialization of memory
+ tiers
+To: "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>, "Huang, Ying"
+ <ying.huang@intel.com>, "Gregory Price" <gourry.memverge@gmail.com>,
+ aneesh.kumar@linux.ibm.com, mhocko@suse.com, tj@kernel.org,
+ john@jagalactic.com, "Eishan Mirakhur" <emirakhur@micron.com>, "Vinicius
+ Tavares Petrucci" <vtavarespetr@micron.com>, "Ravis OpenSrc"
+ <Ravis.OpenSrc@micron.com>, "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>, "SeongJae Park"
+ <sj@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Len Brown"
+ <lenb@kernel.org>, "Dave Jiang" <dave.jiang@intel.com>, "Dan Williams"
+ <dan.j.williams@intel.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, "Ho-Ren (Jack) Chuang"
+ <horenc@vt.edu>, "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
+ linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
+In-Reply-To: <20240621183413.1638e7453a0bed2af5f44273@linux-foundation.org>
+References: <20240621044833.3953055-1-horen.chuang@linux.dev>
+ <20240621183413.1638e7453a0bed2af5f44273@linux-foundation.org>
+X-Migadu-Flow: FLOW_OUT
 
-On 26/05/2024 15:48, Jonathan Cameron wrote:
-> On Thu, 23 May 2024 17:47:16 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> The scoped version of the fwnode_for_each_available_child_node() macro
->> automates object recfount decrement, avoiding possible memory leaks
->> in new error paths inside the loop like it happened when
->> commit '10b029020487 ("hwmon: (ltc2992) Avoid division by zero")'
->> was added.
->>
->> The new macro removes the need to manually call fwnode_handle_put() in
->> the existing error paths and in any future addition. It also removes the
->> need for the current child node declaration as well, as it is internally
->> declared.
->>
->> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> 
-> This looks like another instances of the lack of clarify about 
-> what device_for_each_child_node[_scoped]() guarantees about node availability.
-> On DT it guarantees the node is available as ultimately calls
-> of_get_next_available_child()
-> 
-> On ACPI it doesn't (I think).
-> For swnode, there isn't an obvious concept of available.
-> 
-> It would be much better if we reached some agreement on this and
-> hence could avoid using the fwnode variants just to get the _available_ form
-> as done here.  Or just add the device_for_each_available_child_node[_scoped]()
-> and call that in almost all cases.
-> 
-> In generic code, do we ever want to walk unavailable child nodes?
-> 
-> Jonathan
-> 
+June 21, 2024 at 6:34 PM, "Andrew Morton" <akpm@linux-foundation.org> wro=
+te:
 
-Hi,
+Hi Andrew,
 
-if I did not miss anything, the discussion about the convenience of the
-fwnode_for_each_available_child_node_scoped() macro stalled without a
-clear outcome.
+Thanks for the feedback. I will send a v2 with the patch description
+written in a cover letter.
 
-At this point there are multiple users of both
-fwnode_for_each_child_node() and fwnode_for_each_available_child_node(),
-and I wonder how many of them use the non-scoped version for a different
-reason than not having/knowing the _available_ variant back then.
-
-Maybe touching that now could turn into regressions if someone is just
-ignoring that some nodes are actually disabled. Their bad, but still
-painful. But maybe there is a better reason to have both macros I don't
-know.
-
-As I am still interested in this matter for new users that only want to
-iterate over available nodes, and I want to have a scoped solution, I
-would like to revive this discussion.
-
-Thanks and best regards,
-Javier Carrasco
+>=20
+>=20On Fri, 21 Jun 2024 04:48:30 +0000 "Ho-Ren (Jack) Chuang" <horen.chua=
+ng@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> If we simply move the set_node_memory_tier() from memory_tier_init(=
+) to
+> >=20
+>=20>  late_initcall(), it will result in HMAT not registering the
+> >=20
+>=20>  mt_adistance_algorithm callback function,
+> >=20
+>=20
+> Immediate reaction: then don't do that!
+>=20
+>=20>=20
+>=20> because set_node_memory_tier()
+> >=20
+>=20>  is not performed during the memory tiering initialization phase,
+> >=20
+>=20>  leading to a lack of correct default_dram information.
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  Therefore, we introduced a nodemask to pass the information of the
+> >=20
+>=20>  default DRAM nodes. The reason for not choosing to reuse
+> >=20
+>=20>  default_dram_type->nodes is that it is not clean enough. So in the=
+ end,
+> >=20
+>=20>  we use a __initdata variable, which is a variable that is released=
+ once
+> >=20
+>=20>  initialization is complete, including both CPU and memory nodes fo=
+r HMAT
+> >=20
+>=20>  to iterate through.
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  Besides, since default_dram_type may be checked/used during the
+> >=20
+>=20>  initialization process of HMAT and drivers, it is better to keep t=
+he
+> >=20
+>=20>  allocation of default_dram_type in memory_tier_init().
+> >=20
+>=20
+> What is this patch actually aiming to do? Is it merely a code cleanup,
+>=20
+>=20or are there functional changes?
+>=20
+>=20>=20
+>=20> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
+> >=20
+>=20>  ---
+> >=20
+>=20>  Hi all,
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  The current memory tier initialization process is distributed acro=
+ss two
+> >=20
+>=20>  different functions, memory_tier_init() and memory_tier_late_init(=
+). This
+> >=20
+>=20>  design is hard to maintain. Thus, this patch is proposed to reduce=
+ the
+> >=20
+>=20>  possible code paths by consolidating different initialization patc=
+hes into one.
+> >=20
+>=20
+> Ah, there it is. Please make this the opening paragraph, not an aside
+>=20
+>=20buried below the ^---$.
+>=20
+>=20I'll await review input before proceeding with this, thanks.
+>
 
