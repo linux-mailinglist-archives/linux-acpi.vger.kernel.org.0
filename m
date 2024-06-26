@@ -1,107 +1,178 @@
-Return-Path: <linux-acpi+bounces-6620-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6621-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE2A917F57
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 13:15:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E6C918059
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 13:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C2B61C23575
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 11:15:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DD702844DA
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 11:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6317E45B;
-	Wed, 26 Jun 2024 11:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862C01802C1;
+	Wed, 26 Jun 2024 11:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZnqDa5Zy"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OlSDsUWb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E19016631D
-	for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 11:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E28149E06;
+	Wed, 26 Jun 2024 11:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719400515; cv=none; b=mk2WZprz64JYxuW0lK8QFZNZvgxWwWM3QNYfdz5hSYdkUZcVYcu117mzGbyqUo19sFbZoQT5fJ8r/qmwcVyvMo7AUMSYBewXU1UvSShSiRakPrc72HeyF3UEGRiJV5u3MaQ5bpWpLSp+nKybpC2WS+c6fk4UMT0leArqu3aTnX4=
+	t=1719403078; cv=none; b=puSIxl/4LIbgN2GVs/PMuWQNAkufIg3QVfxuXTOZViV1vnds/BuzEPBErXO7ivRPdoYKqoW0LbjhR1z8ENE3ojN+fiOrkNFvQZXMD4zMumWhAwmUhRm4Arl7LjVC7b0B87vRle/amVpqoOlB7MjP0pyP9EKbGsz7FGCRU/o1g+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719400515; c=relaxed/simple;
-	bh=0GMiRghiL0posL3lrMPp5WIHVaYiKqjyKnFHan3H/Js=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McVieuHJd4LFP7bnFfO3kVTmA98BYi9Ynvn9Q6YrDaGmq+vlpPX9Qqrb6yELVAUZ/4GPdFq1vUlaIqUJhgR8eHlp9Xahuoei9WpBVfk/XEadfIuOgdImZaqKAa33go2GMm0MwHaVPT16X/ZZo4SKZqOi4MPZ4EdReJTIqI7GTvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZnqDa5Zy; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-706683e5249so3275346b3a.2
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 04:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719400513; x=1720005313; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1FeCRNCHw66f5uF47Aw5id6R8f6m2JpOZR2R+WLXG7U=;
-        b=ZnqDa5ZyhrqzkDQq6gbAau/czLvHuhAsimLrIeMsAvyVj99WnVo7Qkb9Dv1lC2jtEP
-         oWG1mgEt4/NW12Mh6sHrhwukLq0WeDyTfYdim8ax6Lu1RX6qU++z0/ZNlXhw5banp/yJ
-         JxJ6FeETPtwv1mNiMQH7TIKuCDDUnc2QCu9ilOLV3ARVVLM2ce3Gi8CIc2kBS0ZDsM8A
-         6wxM5fHDBSo3xIsF6nBQSuc6UxytTgbyqTy33dczYVfCEe8eCVpCGj95KTaeijZoJ5aG
-         ZwcztAQYGB/FKda2IdV7mfUFMgipdsm4bHFOHhcuC/ij3RW8rwnDz+FsziliohUE3/cB
-         S6KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719400513; x=1720005313;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1FeCRNCHw66f5uF47Aw5id6R8f6m2JpOZR2R+WLXG7U=;
-        b=IUYQ2S3EnsbIWpggLeGwONoO+g4Xi8Md57AWyWV6xjmDWFqJcclw5JuIUiv3/CGglT
-         sHqt93mlnjBSY3ZSA3ooZwVGS/zmX+9X+iL0smA6N90NHT2+9HevF6ShflAmKJnqJkZn
-         UI8GK7zN0sjvFj+6dS6BVLlLYkmV653/+pOak01BP9RnW8nCQDesPVKeYQiS/3vEPqYG
-         8FW7tJImKfIChIwYjF3QCUzqFt8/9WmtmQOlWbxcoKeLe9MDRPXUhlqHpywx1a8lGFy0
-         9HrfsWdV1Y3od3ZfDsXuPd9RL0VsBGOAXAOjgCxP62Pvcqc/RBzTpq0YTSYVIqkcA2hZ
-         pWqA==
-X-Gm-Message-State: AOJu0Yx4WQbWixjCxTClJAzQRnfk6X5Rzw/VZqx93C03HLWVyoIqgJGi
-	WRabv7Ie14ronBsbV8oD8gnZXPNIvf1wnQWFaw5Gj1VgLEUNXvMY5xr5Cw==
-X-Google-Smtp-Source: AGHT+IEDVs6vvf60mfM6VSGvOdX60QXmye7nFMxSaJ6V2R+pIAnLaD9ovty2RPqt+2XDIFdFu2Gxqg==
-X-Received: by 2002:a05:6a00:1796:b0:705:c0a1:61c5 with SMTP id d2e1a72fcca58-706745ab97cmr11489880b3a.20.1719400513082;
-        Wed, 26 Jun 2024 04:15:13 -0700 (PDT)
-Received: from localhost.localdomain.oslab.amer.dell.com ([139.167.223.130])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-71893794615sm6368185a12.88.2024.06.26.04.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 04:15:12 -0700 (PDT)
-From: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
-To: linux-acpi@vger.kernel.org
-Cc: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
-Subject: [PATCH 2/2] ACPI: PM: Use max() for clearer D3 state selection in acpi_dev_pm_get_state
-Date: Wed, 26 Jun 2024 07:14:46 -0400
-Message-ID: <20240626111446.1445111-3-prabhakar.pujeri@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240626111446.1445111-1-prabhakar.pujeri@gmail.com>
-References: <20240626111446.1445111-1-prabhakar.pujeri@gmail.com>
+	s=arc-20240116; t=1719403078; c=relaxed/simple;
+	bh=N4l6MEM8Kb0sl/tgaxpPhxXwDu9KIcUXzbA5ENyc4Pg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fHW3pfO1pxDEaYlkx7KKLtVLsnSY/Gk6w6NMYYp01XnFT146tnnGU4eszu59mdjb0PW6tBFtKJn5bJTxArpLxk4IG7h0rGKiHKH9ZsKo1RbOG1oKU6jjBP6rkT0+Yf+6n1vjh4qiJXJ6p2yK2CHQZk5L2JepRHKQUct7h+XwTEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OlSDsUWb; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E03D640E0219;
+	Wed, 26 Jun 2024 11:57:53 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 3BoJPFucZedR; Wed, 26 Jun 2024 11:57:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1719403069; bh=r49OXr3owHtWkbfriGJWueL5gi1+VE3lZHu88Kq8SVA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OlSDsUWbpR1ckeVIt9DRoVmraS5ScvD0SdcsdlzdJDyhdg+qnsStSjIEAoD+C0Bqt
+	 MWKu6ac4ZOsK8bW8kry0XHTaFVqigwkPYBHsOlMBIIHB9EUGuayIEpe1alGG25NrEM
+	 vb1CHn4yFj7a3/LGHPa38fa2UAgWXw5MZrGwCXR1EduRaRHppGdPqc5hZiyGGgkGjv
+	 FlRL/hzLaJfaaVR1O2l0LrbnBMRQoo0NKnI6/1q36ss9Kbfz3FSFHYI6CsWuojyQJB
+	 p9I4LtngJMrlZKfNPEADovMRU10VPAQKNIKYkDErbGQbU6We/CE6usih2z4EMA0AVJ
+	 qhZt5ea3oQFVAdNVBQmHyZLvVoYBO46I3WNrH2FW669elDEtAE1yuZLP8Jgj3Lo/Hu
+	 /PVR8tdPXpy0FU6eJ+RddI/kXUfN+Sh3xsmpW0D5KL3wI2Qt7PQpo1dpOBfLaxxYA+
+	 cuKNB9JJWXgZMQNTr72gTIYg5H9VQsJIdHBvdiLpKcbAfyqPkM/+OPMfWdLR/W3Mnf
+	 PJcV0mWKe6sEdmKP8R5b77OWNxwqht20t0AW75yt7PmtzYmheuEtssQ8arAPjuQ961
+	 uHjYZ2P+HC5inOFoRfoM3H0YmfkUmeCEqFU7rM0qtvPscjOTPbow/UQTFH3RjsT9zp
+	 Vcn287CjQbUSHqpSg3KMwbhQ=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4E11340E0218;
+	Wed, 26 Jun 2024 11:57:31 +0000 (UTC)
+Date: Wed, 26 Jun 2024 13:57:24 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Avadhut Naik <avadhut.naik@amd.com>
+Cc: x86@kernel.org, linux-edac@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	rostedt@goodmis.org, lenb@kernel.org, mchehab@kernel.org,
+	james.morse@arm.com, airlied@gmail.com, yazen.ghannam@amd.com,
+	john.allen@amd.com, avadnaik@amd.com
+Subject: Re: [PATCH v2 3/4] x86/mce/apei: Handle variable register array size
+Message-ID: <20240626115641.GPZnwB-QEGYCoI_Fv3@fat_crate.local>
+References: <20240625195624.2565741-1-avadhut.naik@amd.com>
+ <20240625195624.2565741-4-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240625195624.2565741-4-avadhut.naik@amd.com>
 
-Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
----
- drivers/acpi/device_pm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Jun 25, 2024 at 02:56:23PM -0500, Avadhut Naik wrote:
+> From: Yazen Ghannam <yazen.ghannam@amd.com>
+> 
+> ACPI Boot Error Record Table (BERT) is being used by the kernel to
+> report errors that occurred in a previous boot. On some modern AMD
+> systems, these very errors within the BERT are reported through the
+> x86 Common Platform Error Record (CPER) format which consists of one
+> or more Processor Context Information Structures. These context
+> structures provide a starting address and represent an x86 MSR range
+> in which the data constitutes a contiguous set of MSRs starting from,
+> and including the starting address.
+> 
+> It's common, for AMD systems that implement this behavior, that the
+> MSR range represents the MCAX register space used for the Scalable MCA
+> feature. The apei_smca_report_x86_error() function decodes and passes
+> this information through the MCE notifier chain. However, this function
+> assumes a fixed register size based on the original HW/FW implementation.
+> 
+> This assumption breaks with the addition of two new MCAX registers viz.
+> MCA_SYND1 and MCA_SYND2. These registers are added at the end of the
+> MCAX register space, so they won't be included when decoding the CPER
+> data.
+> 
+> Rework apei_smca_report_x86_error() to support a variable register array
+> size. This covers any case where the MSR context information starts at
+> the MCAX address for MCA_STATUS and ends at any other register within
+> the MCAX register space.
+> 
+> Add code comments indicating the MCAX register at each offset.
+> 
+> [Yazen: Add Avadhut as co-developer for wrapper changes.]
+> 
+> Co-developed-by: Avadhut Naik <avadhut.naik@amd.com>
+> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index 3b4d048c4941..a90ae059fb60 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -760,7 +760,7 @@ static int acpi_dev_pm_get_state(struct device *dev, struct acpi_device *adev,
- 			if (!adev->power.states[ret].flags.valid)
- 				ret = ACPI_STATE_D3_COLD;
+This needs Avadhut's SOB after Yazen's.
+
+Touchups ontop:
+
+diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
+index 7a15f0ca1bd1..6bbeb29125a9 100644
+--- a/arch/x86/kernel/cpu/mce/apei.c
++++ b/arch/x86/kernel/cpu/mce/apei.c
+@@ -69,7 +69,7 @@ EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
+ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+ {
+ 	const u64 *i_mce = ((const u64 *) (ctx_info + 1));
+-	unsigned int cpu, num_registers;
++	unsigned int cpu, num_regs;
+ 	struct mce_hw_err err;
+ 	struct mce *m = &err.m;
  
--			d_max = ret > d_min ? ret : d_min;
-+			d_max = max(ret, d_min);
- 		} else {
- 			return -ENODATA;
- 		}
--- 
-2.45.2
+@@ -93,10 +93,10 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+ 	/*
+ 	 * The number of registers in the register array is determined by
+ 	 * Register Array Size/8 as defined in UEFI spec v2.8, sec N.2.4.2.2.
+-	 * Ensure that the array size includes at least 1 register.
++	 * Sanity-check registers array size.
+ 	 */
+-	num_registers = ctx_info->reg_arr_size >> 3;
+-	if (!num_registers)
++	num_regs = ctx_info->reg_arr_size >> 3;
++	if (!num_regs)
+ 		return -EINVAL;
+ 
+ 	mce_setup(m);
+@@ -118,13 +118,12 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
+ 	/*
+ 	 * The SMCA register layout is fixed and includes 16 registers.
+ 	 * The end of the array may be variable, but the beginning is known.
+-	 * Switch on the number of registers. Cap the number of registers to
+-	 * expected max (15).
++	 * Cap the number of registers to expected max (15).
+ 	 */
+-	if (num_registers > 15)
+-		num_registers = 15;
++	if (num_regs > 15)
++		num_regs = 15;
+ 
+-	switch (num_registers) {
++	switch (num_regs) {
+ 	/* MCA_SYND2 */
+ 	case 15:
+ 		err.vi.amd.synd2 = *(i_mce + 14);
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
