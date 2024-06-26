@@ -1,156 +1,155 @@
-Return-Path: <linux-acpi+bounces-6615-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6616-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C0CE917B1C
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 10:38:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0866E917EA5
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 12:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0EB1C23478
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 08:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363911C20D3E
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 10:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C730215D5DE;
-	Wed, 26 Jun 2024 08:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4018617BB2C;
+	Wed, 26 Jun 2024 10:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="PdlZ4x6+"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9979813B78F;
-	Wed, 26 Jun 2024 08:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607B2176AAB;
+	Wed, 26 Jun 2024 10:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719391126; cv=none; b=fqAjnLhs5SD7mrfep82v77tJVgjbYGa2Uj65vM/Xvml/A9p20r013C4RrCETPFjPbGYT0HCzGNE38LoUNx1NAlvQRiBtKkuGF+wNfHDnrtbXoBjKxJemV8R+1qSLOtBcbG69lEDbGqoQMrGrLwl0YnAi2DNo4lQZmEh5FgT0lSM=
+	t=1719398702; cv=none; b=eSMV6Iw8t1oF5TN/PDTyqheGaC0MhTzW3nm9QchOa2/uXZg/WNOSCil/Rd8z0f3ICIhIML9DWx3BGu776HKy2kctVhj9vyUxnHsXBD9e0zMwkTZa0G81lcE0x5MEs+ZejV8sV2gGlBtq+5thFBH2WxP7Tj2owe0bk/Ux2PJ+E7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719391126; c=relaxed/simple;
-	bh=x66Rh0wYxbl1wMrelc5Hg4gRCofkzrUK9eT8THP9DA4=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KXUjvsMu1+8U1JdFpVRvvCnrFYvBshp4+eRth+3oh9XX/Q/jcQ15riY7U4U4TnFuRdMLscbnATKzlgsg5Ob9YmGbMNK6OJgWR+/amcqj0Pu9lmYVu6phE8R2Xo/6kkHtfE6llpXKRjbvbOO0RZLFgsqtafvylnMNhiFmlY7aY/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W8FRt1rtrz6K7Fc;
-	Wed, 26 Jun 2024 16:36:58 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id EE69B140F09;
-	Wed, 26 Jun 2024 16:38:39 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 26 Jun
- 2024 09:38:39 +0100
-Date: Wed, 26 Jun 2024 09:38:38 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: <linux-cxl@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<mahesh.natu@intel.com>, <rafael@kernel.org>
-Subject: Re: [ACPI Code First ECN] "Extended-linear" addressing for
- direct-mapped memory-side caches
-Message-ID: <20240626093838.000007dc@Huawei.com>
-In-Reply-To: <66747a1d7d4b0_1daf294c1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-References: <6650e4f835a0e_195e294a8@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	<20240605101012.000041e4@Huawei.com>
-	<6670c5b267a79_3101294e2@dwillia2-xfh.jf.intel.com.notmuch>
-	<20240620183701.00000029@Huawei.com>
-	<66747a1d7d4b0_1daf294c1@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1719398702; c=relaxed/simple;
+	bh=N5HUNnSxF52LqTiTZ4MD/cgKDig5Sbo0lMVYyZgGD88=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ihsH59JUNRvr+UT65RmL5+qC3iBJJ0dfLO/63b1nKVaPhx+dZE1CQ3Z2/zc7PNaEJ6w4xiw6iLYBdSoR0wIqg7NaLIlm3h1+QhoN3wRUIdbfMC6s+XnXIxeZMFJMbN4S+msj9JqqIV4H+/pTFZxZKINqgdOSMYRIiujhJbI5PxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=PdlZ4x6+; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 959C240E021E;
+	Wed, 26 Jun 2024 10:44:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id WLfKgW4WQVYn; Wed, 26 Jun 2024 10:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1719398691; bh=Y2MsjGLfE7g1SN+DJyJWLxEAOzeLgB4denA5+ilckE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PdlZ4x6+xF4IrjgXiJynmbDOih/0s7toOMtXLZexV6s3QxDY98m4u1/H2vKjvjtEv
+	 tI5sWZO46M14fnZ+XHwS/52/LRKqnXyHF6aRFKoD/5ruHdG+NykZ9oK3yKxpI8MnQ3
+	 2YtACds0AjJ5WyAIQZ06a4/vQFEombCbYoipqZE6b9dWlzS2v/KXBD67MZpBgp/hLS
+	 fRbLZxqAr+KZMgfhVRMfuKl3eInAaYnimzGafclexXnBtzX/e93FXuXFK8jq2Txypd
+	 NYq78OrHTmLia/vXFeC01Nw7FoHImiSkFqIrbAviM/n//OOzZB2uAhIhI/3lbACkm3
+	 2RRl1AkELgqoZDTlj4sU/xnYD6Lxv/88Iuz6eeI/NaZfbAfxer4fEEexmPPA37KUyx
+	 r0xbm2Ffj4ltVMcE282lMtQB2x1YirE7DJzqCasfumzNNgxL51+hOgPLjg+dbzSVco
+	 uP/UVXU3Y+DljvRiz9sIVnKQ2wOW6xNxB5iY612TPgBBz0E12fZhUIHGnKqjBuRnR5
+	 /4GgmObWcU2zXNrFQrZ0tLvggkp16vQpsI3k7TzQUrQ54iNLQDgO/LRnLY59Lx8aA7
+	 5HMDGdyV6M8GBHusBC04GUmGLNXAtI1BiXpPexdISG/b4uhbOMB5Krhcaarh/Ds8bp
+	 9hVabBrD9DHO04wnwhnhlLM4=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8562440E01D6;
+	Wed, 26 Jun 2024 10:44:33 +0000 (UTC)
+Date: Wed, 26 Jun 2024 12:44:27 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: tony.luck@intel.com
+Cc: Avadhut Naik <avadhut.naik@amd.com>, x86@kernel.org,
+	linux-edac@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rafael@kernel.org, tglx@linutronix.de, mingo@redhat.com,
+	rostedt@goodmis.org, lenb@kernel.org, mchehab@kernel.org,
+	james.morse@arm.com, airlied@gmail.com, yazen.ghannam@amd.com,
+	john.allen@amd.com, avadnaik@amd.com
+Subject: Re: [PATCH v2 1/4] x86/mce: Add wrapper for struct mce to export
+ vendor specific info
+Message-ID: <20240626104427.GNZnvxC1JHclKwwKQU@fat_crate.local>
+References: <20240625195624.2565741-1-avadhut.naik@amd.com>
+ <20240625195624.2565741-2-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240625195624.2565741-2-avadhut.naik@amd.com>
 
-On Thu, 20 Jun 2024 11:51:09 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
-
-> Jonathan Cameron wrote:
-> [..]
-> > > > I'd drop the 'may assume'  Also after this change it's not reserved.
-> > > > 0 explicitly means transparent cache addressing.    
-> > > 
-> > > I am just going to switch the parenthetical to "(Unknown Address Mode)"
-> > > because "transparent" does not give any actionable information about
-> > > alias layout in the SRAT address space. So system-software can make no
-> > > assumptions about layout without consulting implementation specific
-> > > documentation.  
-> > 
-> > I'd like an option to indicate that we know reported errors will not
-> > involve problems with aliases. Something like...
-> > 
-> > 0 - Unknown (all bets are off, read the manual).
-> > 1 - No aliases.
-> > 2 - your one.
-> > 
-> > A simple write-through or write-back cache would not result in aliases
-> > for errors reported by the backing memory.  
+On Tue, Jun 25, 2024 at 02:56:21PM -0500, Avadhut Naik wrote:
+> Currently, exporting new additional machine check error information
+> involves adding new fields for the same at the end of the struct mce.
+> This additional information can then be consumed through mcelog or
+> tracepoint.
 > 
-> This seems a separate proposal, and needs more discussion because there
-> *are* aliases. While there is no HPA aliasing, there is a FRU
-> (field-replaceable-unit) aliasing. So if system-software wants to
-> determine what indicators to fire (i.e. replace cache-mem, replace
-> backing-mem, or both) to the tech servicing the node it needs some ACPI
-> help.
-
-There is  a case for FW first CPER etc (or a side cache specific driver,
-ideally binding to a suitable ACPIXXXX but that's a different ECN :))
-having to identify errors coming from a memory-side cache but I don't
-see it as an issue that sits in this place in the spec (or even this spec).
-
-For the CXL case, the event record tells you enough info on where poison
-originated to rule out or in the CXL device as the problem.  There is
-a gap I think in errors for memory-side cache and agreed that's a
-different ECN.
-
+> However, as new MSRs are being added (and will be added in the future)
+> by CPU vendors on their newer CPUs with additional machine check error
+> information to be exported, the size of struct mce will balloon on some
+> CPUs, unnecessarily, since those fields are vendor-specific. Moreover,
+> different CPU vendors may export the additional information in varying
+> sizes.
 > 
-> I would be ok to do:
+> The problem particularly intensifies since struct mce is exposed to
+> userspace as part of UAPI. It's bloating through vendor-specific data
+> should be avoided to limit the information being sent out to userspace.
 > 
->  0 - Unknown (all bets are off, read the manual).
->  1 - Reserved
->  2 - Extended linear
+> Add a new structure mce_hw_err to wrap the existing struct mce. The same
+> will prevent its ballooning since vendor-specifc data, if any, can now be
+> exported through a union within the wrapper structure and through
+> __dynamic_array in mce_record tracepoint.
 > 
-> ...just to try to keep the list ordered by complexity for now.
+> Furthermore, new internal kernel fields can be added to the wrapper
+> struct without impacting the user space API.
 > 
-> However, I am also worried about the case where folks want to do "noisy
-> neighbor mitigation", which is something that has been attempted with
-> PMEM caches. This involves knowing the layout of cache conflicts which
-> need not be linear and involves reading the manual. So, I am not sure
-> defining a "no aliases" indicator now improves the Extended Linear
-> proposal, or is an improvement upon "read the manual".
-
-
-It tells you if you are trying to do poison repair you only need to write
-one 'cacheline etc' from the host, not several.   I wouldn't attempt
-to take it any further than that due the sort of trickery you mention.
-
-
+> Note: Some Checkpatch checks have been ignored to maintain coding style.
 > 
-> > Assuming we don't get an address corruption (in which case everything
-> > dead anyway as uncontainable error), then poison can come from:
-> > 1) poison happens in the memory itself (fine, the DPA in CXL is enough)
-> > 2) poison happens in cache and is written back to memory. (fine
-> >    the DPA in CXL is enough).
-> > 3) poison happens in cache and is read by host. Synchronous handling and
-> >    the HPA is available and enough.
-> > 
-> > Not much we can do with 0, but 1 at least lets us know we have the
-> > single right answer.  
+> [Yazen: Add last commit message paragraph.]
 > 
-> That is, assuming that this is caching CXL. With CXL, the DPA
-> information is available to disambiguate the source of the poison, but
-> for memory-side-caches that are not backed by CXL, what does
-> system-software do with that "1" case?
+> Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+> ---
+>  arch/x86/include/asm/mce.h              |   6 +-
+>  arch/x86/kernel/cpu/mce/amd.c           |  29 ++--
+>  arch/x86/kernel/cpu/mce/apei.c          |  54 +++----
+>  arch/x86/kernel/cpu/mce/core.c          | 178 +++++++++++++-----------
+>  arch/x86/kernel/cpu/mce/dev-mcelog.c    |   2 +-
+>  arch/x86/kernel/cpu/mce/genpool.c       |  20 +--
+>  arch/x86/kernel/cpu/mce/inject.c        |   4 +-
+>  arch/x86/kernel/cpu/mce/internal.h      |   4 +-
+>  drivers/acpi/acpi_extlog.c              |   2 +-
+>  drivers/acpi/nfit/mce.c                 |   2 +-
+>  drivers/edac/i7core_edac.c              |   2 +-
+>  drivers/edac/igen6_edac.c               |   2 +-
+>  drivers/edac/mce_amd.c                  |   2 +-
+>  drivers/edac/pnd2_edac.c                |   2 +-
+>  drivers/edac/sb_edac.c                  |   2 +-
+>  drivers/edac/skx_common.c               |   2 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c |   2 +-
+>  drivers/ras/amd/fmpm.c                  |   2 +-
+>  drivers/ras/cec.c                       |   2 +-
+>  include/trace/events/mce.h              |  42 +++---
+>  20 files changed, 199 insertions(+), 162 deletions(-)
 
-If it got an HPA it does an arch specific poison clear on the HPA address
-or isolates the page with that single address. If it didn't you have
-no useful info - wait for synchronous poison.
+Ok, did some minor massaging but otherwise looks ok now.
 
-Jonathan
+Tony, any comments? You ok with this, would that fit any Intel-specific vendor
+fields too or do you need some additional Intel-specific changes?
 
+Thx.
 
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
