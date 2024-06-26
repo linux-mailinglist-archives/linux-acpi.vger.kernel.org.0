@@ -1,75 +1,75 @@
-Return-Path: <linux-acpi+bounces-6629-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6630-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2C1918356
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 15:53:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609A8918357
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 15:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 176B8284DF1
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 13:53:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F18B284E3A
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 13:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792931850BE;
-	Wed, 26 Jun 2024 13:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D905E18732E;
+	Wed, 26 Jun 2024 13:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dWY+OUFo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a65vOW3p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC251849DB
-	for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 13:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00A1849DB
+	for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 13:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719409865; cv=none; b=E+qSqiRjeEzm2oRQk89qkn4IpD0C1OU33RrAZqERCTlSg3FjCYvGmEr5id01c3j1LPKTwM7OoPgADNNU6Xkm1fzIH2icbOIZvsgPWuUhegdtIJNIC7UVaFhGQNwR7mAgFQd5hvL/Kdnm23Psb/HIQ9ZAOnVrkUbG6NVuXQvs2VI=
+	t=1719409883; cv=none; b=E6DZvFJnYYXZaKQR2vjlrzmn8mn+2V477E/rCLtzAYsZ9+k1KVXHXbmDJRH3UGpFmbA3T9fYs8RwIiSJfgwbP4WVyaZBDmQKveeVhGOM1HZIY/RHvflLrvqw4DJ0Q1cuwK4Dm6ZpdtUIyqlSRmeazyYI7e3wi7KuiG/bWT8tucQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719409865; c=relaxed/simple;
-	bh=v5AXw9ngrZzxjUnqanBftiFqoJoIIacEF1b+tXN8T1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GM9kpFJMKizxTLEcbZrdl73I97jnm8IFKEFmmnq9fPzTyF3Qwrpc8dYXlo3gvC0KiKKc2CBg3qkGLVlOP+lFUMjNcJjUV4aXLP+YR59AcSkfynNVjpDLW7b9hRVz0gdi7gIbiSqRs2aLt14DpqeJylD33nt4sH8WCqfcDB8t1Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dWY+OUFo; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1719409883; c=relaxed/simple;
+	bh=3ooqx0hGmFDZreTzc9ufv5w0ZvgD+eVwbGz3Trc8IU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fsSK93MU8ABE/QnQf8IHTt+Y2F5k7bX4ZDkxn7mYik+uMifFuEZ3pIjxtei2fdQhFNvJoh+AQt9IfrSg26BDcq3Cqyi+Bw/Dy52Sv/EISnFSXwvcq3p3HlTyFmMjoe8IhDw0fG1f8YbHf2qu/Qjwn5XG3ZsPv2nK0WQo9TM+nFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a65vOW3p; arc=none smtp.client-ip=209.85.210.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1fa9ecfb321so2526725ad.0
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 06:51:03 -0700 (PDT)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-700a6853664so2660719a34.1
+        for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 06:51:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719409863; x=1720014663; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719409881; x=1720014681; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QOGTEl+2bbGCtMrHBRY0Flc71bTsOam5EB0Z8nUYJEg=;
-        b=dWY+OUFo+0nmvNZWOCH7xhIH+kYB7A10Ohenu9ZBTa4+Nl9KGxUtdsHDWjppIAe1x+
-         fu67BOvOj+IgGFNOwxs1O/28PtWLCrQnfJ7WPNtcgQl7S/tGEVjxBTXOpj/tl8I9r6KB
-         EIK8X1wDD2yaY9uhkXA/t9QkZ4teEoFrgc/pzN6ff854Tveb/R76/3k5O5cs/wnMDOL0
-         /hdLH0JyKv1Fakqfdd/8P1bXaYsp9UeKCMuM01D8G2XtwzO0KjRY6UKalFj5+zEnDvsR
-         KTh3MQLGY3b2FVznS0UtrWBR5JWUjxX4qksoYYFzPRtFrwr7VYYgwWtDlWpMswNd1pZn
-         Gceg==
+        bh=6Fglha3zsHTnOmAct7LCmJkomz3+nHKecoSkTynKNvk=;
+        b=a65vOW3py+Y/KV0bQnqAWeXnP5p45S6dnu6s+rQ95tli1XhOcwLmi9JjLPcm7lOTsx
+         +StBBCKXyiGYeKM/LORwIHasFr/AXT4+6mr+7HsDOF8oY4P46/YuZKZXEWxyui9e3ddJ
+         1FSGQD8OJWYcnoZqKl/2w5wM4wcDCGPeVDNsadnOoV0oet7V3gHPi1LNS7zeJlBYIVzn
+         gkj4L9jdkV401gWCuF+rkMLWFBe8Qkj8yI+xCkxzgfM3qYmHNB7vf63e9PIKgHU/Zvsw
+         Y4M53PLTyYyUrReTuNciNNfm7yWsIqsp7ArlPvwDKmmKNXTe35IALE2AvAOgVORajyru
+         L4Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719409863; x=1720014663;
+        d=1e100.net; s=20230601; t=1719409881; x=1720014681;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QOGTEl+2bbGCtMrHBRY0Flc71bTsOam5EB0Z8nUYJEg=;
-        b=KpDensP73luviI5KOg7sovobcLSM0WlJtkPs22SuFUHb1Sf09s+Vtf0CBzlrfT2Dfe
-         FxmwAtYwv5MtllA9Gp155VC9/i6bM0GyLSe66CjtsC9uXBsJ90JVaBvgL5zY0l9jqSJT
-         RV++qjHXGoOWphnLlS02YZujYTon6YsW6y3Zft9JWWsIBpKbyuAnpHUrdIy/MOuh17/J
-         /nns1SbF0rV39rXBLkf5l45OHV6gps1oDglWdATmiKpf5srowZp6sOvN3/9jW6mKX5sF
-         540Ro4/F8N7isE+czHq3/bG27R57rW1i2IH63CR01+rP3jvzjN75LNN4tMebF3dgRNTz
-         NJrg==
-X-Gm-Message-State: AOJu0YzQWm7CtINEoBA29rfkRcLPTz2OLHr8brM9cXh5QtPHW6QQsnRO
-	I71zgL8dNqLEmlL1I0k3Cbad/OjFBZ75UyJ1KWqcNupFCxIGJ0wdW/S0WA==
-X-Google-Smtp-Source: AGHT+IGn7pMEZKO6Wqpa2Z9s3I/xCcDj2PgiijbI2jdqZVoZCg7ccnjYKXMKIRxbPbY8g9d/5lcg6Q==
-X-Received: by 2002:a17:902:f54e:b0:1f8:5a60:842c with SMTP id d9443c01a7336-1fa1d3b6eeemr130012985ad.5.1719409863106;
-        Wed, 26 Jun 2024 06:51:03 -0700 (PDT)
+        bh=6Fglha3zsHTnOmAct7LCmJkomz3+nHKecoSkTynKNvk=;
+        b=Bn5yYKLWyw1wzhnrqzyhxgnUrlVoDJQIs6JseoZJ6Fat6YBiYCAgCZcPiXkZcJtal0
+         2oVRvmmdcLnrL5LbTN20MzOkOT52NemxpJUz5n7QIHWo+8b6DnGdoQWCSYKa1Kl2sz+m
+         sBYDYNjAASOHxqHWT1xXwz6tL7f62EB3MmTC4S4jWVT5QdPQ/P0UWUHq4nBe7R0v67Pd
+         7pxnwdXqpHMNzfVIcrqPif7JWXegtwuce0zCqYu9zT5I+3Xn0mPeVSkZ85ecRAxfn2so
+         ohSHN12M+D9KBUFDx6eYv6b/mtYtzXuSFHjFA4tRsJwjcKDRNCwH9Zs0RCPh53d3s33o
+         Xkdg==
+X-Gm-Message-State: AOJu0Yx9bJ3uQLUBNK8cDpxTvej1a4GhI6SgjY7n1gBbiWl4QVoefcrU
+	7GeZqYi1Bdwx2bIFH03BM4/O6Ph8Gn7lBrgJ1rAnCv3iw+nNPwYcyhQXQA==
+X-Google-Smtp-Source: AGHT+IGKZl7Kgyut4q7u84GVyHPurTR9LlchepHuzeSBWRFOlVBQtag1/NJNYQZLFmQvdUww/aRmmw==
+X-Received: by 2002:a05:6870:40c8:b0:250:7a8d:1756 with SMTP id 586e51a60fabf-25d0163e8d0mr11629239fac.12.1719409881177;
+        Wed, 26 Jun 2024 06:51:21 -0700 (PDT)
 Received: from localhost.localdomain.oslab.amer.dell.com ([139.167.223.130])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb2f02e3sm99999105ad.62.2024.06.26.06.51.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7069eb83d7fsm2796088b3a.99.2024.06.26.06.51.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 06:51:02 -0700 (PDT)
+        Wed, 26 Jun 2024 06:51:20 -0700 (PDT)
 From: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
 To: linux-acpi@vger.kernel.org
 Cc: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
-Subject: [PATCH] ACPI: Optimize Namespace List Sorting in nsrepair2.c
-Date: Wed, 26 Jun 2024 09:50:54 -0400
-Message-ID: <20240626135054.1527935-1-prabhakar.pujeri@gmail.com>
+Subject: [PATCH] ACPI: Use str_plural() Function for Argument List Handling
+Date: Wed, 26 Jun 2024 09:51:13 -0400
+Message-ID: <20240626135113.1527954-1-prabhakar.pujeri@gmail.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -79,45 +79,32 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch optimizes the namespace list sorting in acpi_ns_sort_list by 
-replacing the direct element swap with the swap() helper function. This 
-approach maintains functionality while improving code clarity and 
-potentially enhancing performance.
+
+This patch enhances acpi_ut_display_predefined_method by using the str_plural()
+function to handle argument pluralization. It improves readability and 
+maintains consistency in displaying argument counts.
 
 this patch generated using coccinelle.
 
 
 Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
 ---
- drivers/acpi/acpica/nsrepair2.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/acpi/acpica/utpredef.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepair2.c
-index 1bb7b71f07f1..5d56b2fd9151 100644
---- a/drivers/acpi/acpica/nsrepair2.c
-+++ b/drivers/acpi/acpica/nsrepair2.c
-@@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
- {
- 	union acpi_operand_object *obj_desc1;
- 	union acpi_operand_object *obj_desc2;
--	union acpi_operand_object *temp_obj;
- 	u32 i;
- 	u32 j;
+diff --git a/drivers/acpi/acpica/utpredef.c b/drivers/acpi/acpica/utpredef.c
+index 29d2977d0746..5f148715f316 100644
+--- a/drivers/acpi/acpica/utpredef.c
++++ b/drivers/acpi/acpica/utpredef.c
+@@ -248,7 +248,7 @@ acpi_ut_display_predefined_method(char *buffer,
+ 	printf("%4.4s    Requires %s%u argument%s",
+ 	       this_name->info.name,
+ 	       (this_name->info.argument_list & ARG_COUNT_IS_MINIMUM) ?
+-	       "(at least) " : "", arg_count, arg_count != 1 ? "s" : "");
++	       "(at least) " : "", arg_count, str_plural(arg_count));
  
-@@ -891,11 +890,8 @@ acpi_ns_sort_list(union acpi_operand_object **elements,
- 			      obj_desc2->integer.value))
- 			    || ((sort_direction == ACPI_SORT_DESCENDING)
- 				&& (obj_desc1->integer.value <
--				    obj_desc2->integer.value))) {
--				temp_obj = elements[j - 1];
--				elements[j - 1] = elements[j];
--				elements[j] = temp_obj;
--			}
-+				    obj_desc2->integer.value)))
-+				swap(elements[j - 1], elements[j]);
- 		}
- 	}
- }
+ 	/* Display the types for any arguments */
+ 
 -- 
 2.45.2
 
