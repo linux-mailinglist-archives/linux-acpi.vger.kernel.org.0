@@ -1,111 +1,109 @@
-Return-Path: <linux-acpi+bounces-6630-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6631-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609A8918357
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 15:53:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A6D91860B
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 17:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F18B284E3A
-	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 13:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5561F21259
+	for <lists+linux-acpi@lfdr.de>; Wed, 26 Jun 2024 15:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D905E18732E;
-	Wed, 26 Jun 2024 13:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD07818C350;
+	Wed, 26 Jun 2024 15:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a65vOW3p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiRfV30b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A00A1849DB
-	for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 13:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907B918C34A;
+	Wed, 26 Jun 2024 15:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719409883; cv=none; b=E6DZvFJnYYXZaKQR2vjlrzmn8mn+2V477E/rCLtzAYsZ9+k1KVXHXbmDJRH3UGpFmbA3T9fYs8RwIiSJfgwbP4WVyaZBDmQKveeVhGOM1HZIY/RHvflLrvqw4DJ0Q1cuwK4Dm6ZpdtUIyqlSRmeazyYI7e3wi7KuiG/bWT8tucQ=
+	t=1719416357; cv=none; b=b9wFLZPSoV78Yl7A72jjk0Z2sHDWdAU6SqJck1dTybgXW6hi0dCoYEIxnPw3izIuSixogOVuCL229N/3aCs+Qp6Ns3/XKykgIL6maWmFfY/cG0ruWlALhL7imWXeY8HZwbeyl6AfQkIGHsOBSvC8f3KAoVbnX5RqWQvVu8GAXb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719409883; c=relaxed/simple;
-	bh=3ooqx0hGmFDZreTzc9ufv5w0ZvgD+eVwbGz3Trc8IU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fsSK93MU8ABE/QnQf8IHTt+Y2F5k7bX4ZDkxn7mYik+uMifFuEZ3pIjxtei2fdQhFNvJoh+AQt9IfrSg26BDcq3Cqyi+Bw/Dy52Sv/EISnFSXwvcq3p3HlTyFmMjoe8IhDw0fG1f8YbHf2qu/Qjwn5XG3ZsPv2nK0WQo9TM+nFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a65vOW3p; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-700a6853664so2660719a34.1
-        for <linux-acpi@vger.kernel.org>; Wed, 26 Jun 2024 06:51:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719409881; x=1720014681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Fglha3zsHTnOmAct7LCmJkomz3+nHKecoSkTynKNvk=;
-        b=a65vOW3py+Y/KV0bQnqAWeXnP5p45S6dnu6s+rQ95tli1XhOcwLmi9JjLPcm7lOTsx
-         +StBBCKXyiGYeKM/LORwIHasFr/AXT4+6mr+7HsDOF8oY4P46/YuZKZXEWxyui9e3ddJ
-         1FSGQD8OJWYcnoZqKl/2w5wM4wcDCGPeVDNsadnOoV0oet7V3gHPi1LNS7zeJlBYIVzn
-         gkj4L9jdkV401gWCuF+rkMLWFBe8Qkj8yI+xCkxzgfM3qYmHNB7vf63e9PIKgHU/Zvsw
-         Y4M53PLTyYyUrReTuNciNNfm7yWsIqsp7ArlPvwDKmmKNXTe35IALE2AvAOgVORajyru
-         L4Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719409881; x=1720014681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6Fglha3zsHTnOmAct7LCmJkomz3+nHKecoSkTynKNvk=;
-        b=Bn5yYKLWyw1wzhnrqzyhxgnUrlVoDJQIs6JseoZJ6Fat6YBiYCAgCZcPiXkZcJtal0
-         2oVRvmmdcLnrL5LbTN20MzOkOT52NemxpJUz5n7QIHWo+8b6DnGdoQWCSYKa1Kl2sz+m
-         sBYDYNjAASOHxqHWT1xXwz6tL7f62EB3MmTC4S4jWVT5QdPQ/P0UWUHq4nBe7R0v67Pd
-         7pxnwdXqpHMNzfVIcrqPif7JWXegtwuce0zCqYu9zT5I+3Xn0mPeVSkZ85ecRAxfn2so
-         ohSHN12M+D9KBUFDx6eYv6b/mtYtzXuSFHjFA4tRsJwjcKDRNCwH9Zs0RCPh53d3s33o
-         Xkdg==
-X-Gm-Message-State: AOJu0Yx9bJ3uQLUBNK8cDpxTvej1a4GhI6SgjY7n1gBbiWl4QVoefcrU
-	7GeZqYi1Bdwx2bIFH03BM4/O6Ph8Gn7lBrgJ1rAnCv3iw+nNPwYcyhQXQA==
-X-Google-Smtp-Source: AGHT+IGKZl7Kgyut4q7u84GVyHPurTR9LlchepHuzeSBWRFOlVBQtag1/NJNYQZLFmQvdUww/aRmmw==
-X-Received: by 2002:a05:6870:40c8:b0:250:7a8d:1756 with SMTP id 586e51a60fabf-25d0163e8d0mr11629239fac.12.1719409881177;
-        Wed, 26 Jun 2024 06:51:21 -0700 (PDT)
-Received: from localhost.localdomain.oslab.amer.dell.com ([139.167.223.130])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7069eb83d7fsm2796088b3a.99.2024.06.26.06.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 06:51:20 -0700 (PDT)
-From: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
-To: linux-acpi@vger.kernel.org
-Cc: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
-Subject: [PATCH] ACPI: Use str_plural() Function for Argument List Handling
-Date: Wed, 26 Jun 2024 09:51:13 -0400
-Message-ID: <20240626135113.1527954-1-prabhakar.pujeri@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1719416357; c=relaxed/simple;
+	bh=IhtfoX2xoWChAu+Pe7FH52ll/R7Au3OdYNJJdaxYtFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kg8xYPdyJCZSsokLTKiyiRJgC3dwgoTV+//QRrQl7dXF1JrqjGrgs/3QdmlASeGGT3ri/bbrTlkG+C/q3wH0vLgnE1bhulpTpop5D6ebZn+FKuITOTmUlazS+T9N1U137+a5YBKEygco95krlyNEVJBbG8G3z8/x102/Ysatmn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiRfV30b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCC5C32789;
+	Wed, 26 Jun 2024 15:39:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719416357;
+	bh=IhtfoX2xoWChAu+Pe7FH52ll/R7Au3OdYNJJdaxYtFE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aiRfV30bum5kTG4yK4BM1hS8H8MOrxY3vfMduOAdKjNjmmOwAcwjnzTKHHMVJGiZd
+	 OSSyMAY5XgVtDyvACP2ZpyI9eDelZimE7s3/4se8wSj9yaGRlNqEJlk8H/VvcXE6Ax
+	 q1uOphO8cUPZl+I+URTXP8zLdyl6m3JiTE3I37SFHLwcGSbCr/ooxbVhWW/Q6QQzXy
+	 5HPCuDCEiii+trR0Dje2IuCYx9KTq2nqjaKebQro7R9cFzeUTSGAIFuuqbdCdrD3RE
+	 fwK/a+4WT7gYy2S6zrMdBL6TyAR/U/G+W+96JRPyQZZQXzbLcePsQeuhR/FfXuUyV/
+	 Ht0uuIJ6Amq4w==
+Date: Wed, 26 Jun 2024 16:39:10 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
+	Aishwarya.TCV@arm.com
+Subject: Re: [PATCH 2/5] ACPI: sysfs: use device lifecycle for _STR result
+Message-ID: <d599e864-9961-44e3-8b9b-bc41a8044319@sirena.org.uk>
+References: <20240613-acpi-sysfs-groups-v1-0-665e0deb052a@weissschuh.net>
+ <20240613-acpi-sysfs-groups-v1-2-665e0deb052a@weissschuh.net>
+ <a72495c3-c996-4be7-bc64-ba10d5400971@sirena.org.uk>
+ <111f7a2c-403b-40b3-9e25-8c4a040d8dfb@t-8ch.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ThsiVx38b9ZxGlco"
+Content-Disposition: inline
+In-Reply-To: <111f7a2c-403b-40b3-9e25-8c4a040d8dfb@t-8ch.de>
+X-Cookie: Results vary by individual.
 
 
-This patch enhances acpi_ut_display_predefined_method by using the str_plural()
-function to handle argument pluralization. It improves readability and 
-maintains consistency in displaying argument counts.
+--ThsiVx38b9ZxGlco
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-this patch generated using coccinelle.
+On Tue, Jun 25, 2024 at 11:56:18PM +0200, Thomas Wei=DFschuh wrote:
+> On 2024-06-25 21:57:13+0000, Mark Brown wrote:
 
+> > <2>[   50.236703] acpi LNXTHERM:08: Resources present before probing
 
-Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@gmail.com>
----
- drivers/acpi/acpica/utpredef.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This does make sense, the device is not yet bound to a driver.
+> Which apparently precludes the usage of devres.
 
-diff --git a/drivers/acpi/acpica/utpredef.c b/drivers/acpi/acpica/utpredef.c
-index 29d2977d0746..5f148715f316 100644
---- a/drivers/acpi/acpica/utpredef.c
-+++ b/drivers/acpi/acpica/utpredef.c
-@@ -248,7 +248,7 @@ acpi_ut_display_predefined_method(char *buffer,
- 	printf("%4.4s    Requires %s%u argument%s",
- 	       this_name->info.name,
- 	       (this_name->info.argument_list & ARG_COUNT_IS_MINIMUM) ?
--	       "(at least) " : "", arg_count, arg_count != 1 ? "s" : "");
-+	       "(at least) " : "", arg_count, str_plural(arg_count));
- 
- 	/* Display the types for any arguments */
- 
--- 
-2.45.2
+Oh, yes - I really wouldn't expect that to work at all, devres is all
+about tying things to the device being bound so trying to use it outside
+of that is not something I'd expect to go well.
 
+> I'm also wondering why the _STR attribute behaved differently in the
+> first place.
+> Does the patch below work better?
+
+That patch applied on top of -next appears to resolve the issue.
+
+--ThsiVx38b9ZxGlco
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ8Nh4ACgkQJNaLcl1U
+h9D87wf/VyUjV4W7+iYgqIYNd/24zKKwbxyauIimxphLw7n6u+synEimAReZyfYK
+HI/AFPsvBAYPcEoxXpNKI7P9fglF57aZiPZ9sVDYen2eu0TzVMzoHb9ulBVldtjD
+v8ZIyVuLR+I2dML06fiCtu2ILNvj64qogHCPdYx5VwAfCifR0upX4WHVKVMHxO14
+QsfvS26j4ltxXJaBCZUaLvdEDnUS5lcwdo2t/c3Nz2Ghi0i43SUoYCD5RpDVlojh
+fCB0Vv5m7UFZ82nRW/rcziIZiemckDIu2mx+TLEH5frIuj5eJNQeD4XGbtb06Y2e
+x8e1qU7j1Qq1ctHhaTsuJIt9frRlrw==
+=Vt/1
+-----END PGP SIGNATURE-----
+
+--ThsiVx38b9ZxGlco--
 
