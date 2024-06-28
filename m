@@ -1,293 +1,187 @@
-Return-Path: <linux-acpi+bounces-6663-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6664-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37ADB91B6BE
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2024 08:10:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8DA91B8B8
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2024 09:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78F91F21516
-	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2024 06:10:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA885B21037
+	for <lists+linux-acpi@lfdr.de>; Fri, 28 Jun 2024 07:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A9F4DA0E;
-	Fri, 28 Jun 2024 06:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D423B142E7C;
+	Fri, 28 Jun 2024 07:45:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ozNmNKLx"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="T15y8IUk"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6E94CE04
-	for <linux-acpi@vger.kernel.org>; Fri, 28 Jun 2024 06:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA925C89;
+	Fri, 28 Jun 2024 07:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719554986; cv=none; b=h0JeOiSbFe1Fg7yUmm18NT+TeJeVWptlrd4Hkyy9bbhSkVM08wRmlIyDs09Jw3pnPlMaLbw6KFGNdIHzlnLWKFqkgYf+Ju7+gq8t//6B7Lx7AvDBi4AVH6NWvmvyPIq9tGTHnmPPEkd3eVgtx8hYS3QIoYuB/4fOHH70SeHyJjI=
+	t=1719560711; cv=none; b=nCIEYye7WbS+fr+7YMJAEJPZGv7B8uEGiola2kJLLIaWtM6UsB5cWGN53vTq5esEpfstlAGcwq9q2+I+EHR95kSlfD2Dd7uVotlezXULNh1g9RctzRp1aNM+wyzUcEbY6p4n7KyPVOqRGrACILPKbw2YnCDYY92YPtLVn8QfZ+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719554986; c=relaxed/simple;
-	bh=rJbP0H6zcyNnEPT7nMCo+39TVYBfeqvk4CvyUuvHmhM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PJAmT8Vw9xZ6z4ZcwVNw2GaT/uHQK05uQNmcwe/tOukO0999iHCfjyP3m/qVBbPEZ1txyi11OVILdAv2WX/+ao55v2k2tsIr+v671VmX7hIn0wrHxPBNOm0yCxCOtCcaRccMxZt22XCZe2gBHmEENQFXUfD3iLxP913EfDC8CYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ozNmNKLx; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: jonathan.cameron@huawei.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1719554982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/wXQWGav/NessrnFMRHKMQL87wUrpOC9eqQBIItt68=;
-	b=ozNmNKLx7zHsfjGoKtTomX6lQR3xt4PbhMXFd8+/mQLV7/CTmKoDozleczUMPTB7/2URCA
-	bJoZ4hvC8inLmZOIMrtIoltwu3L3JUXgkNLZaOV5fWa5q8EAkQizAhl00ojXGtM0CK/tnT
-	KnuB2zFDjyF2eMZLo9Y6cbO0VB3/Eo0=
-X-Envelope-To: ying.huang@intel.com
-X-Envelope-To: gourry.memverge@gmail.com
-X-Envelope-To: aneesh.kumar@linux.ibm.com
-X-Envelope-To: mhocko@suse.com
-X-Envelope-To: tj@kernel.org
-X-Envelope-To: john@jagalactic.com
-X-Envelope-To: emirakhur@micron.com
-X-Envelope-To: vtavarespetr@micron.com
-X-Envelope-To: ravis.opensrc@micron.com
-X-Envelope-To: apopple@nvidia.com
-X-Envelope-To: sthanneeru@micron.com
-X-Envelope-To: sj@kernel.org
-X-Envelope-To: rafael@kernel.org
-X-Envelope-To: lenb@kernel.org
-X-Envelope-To: akpm@linux-foundation.org
-X-Envelope-To: dave.jiang@intel.com
-X-Envelope-To: dan.j.williams@intel.com
-X-Envelope-To: jonathan.cameron@huawei.com
-X-Envelope-To: horen.chuang@linux.dev
-X-Envelope-To: linux-acpi@vger.kernel.org
-X-Envelope-To: linux-kernel@vger.kernel.org
-X-Envelope-To: linux-mm@kvack.org
-X-Envelope-To: horenc@vt.edu
-X-Envelope-To: horenchuang@bytedance.com
-X-Envelope-To: horenchuang@gmail.com
-X-Envelope-To: linux-cxl@vger.kernel.org
-X-Envelope-To: qemu-devel@nongnu.org
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>
-To: "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	"Gregory Price" <gourry.memverge@gmail.com>,
-	aneesh.kumar@linux.ibm.com,
-	mhocko@suse.com,
-	tj@kernel.org,
-	john@jagalactic.com,
-	"Eishan Mirakhur" <emirakhur@micron.com>,
-	"Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
-	"Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
-	"Alistair Popple" <apopple@nvidia.com>,
-	"Srinivasulu Thanneeru" <sthanneeru@micron.com>,
-	"SeongJae Park" <sj@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
-	"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
-	"Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
-	linux-cxl@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v2 1/1] memory tier: consolidate the initialization of memory tiers
-Date: Fri, 28 Jun 2024 06:09:23 +0000
-Message-Id: <20240628060925.303309-2-horen.chuang@linux.dev>
-In-Reply-To: <20240628060925.303309-1-horen.chuang@linux.dev>
-References: <20240628060925.303309-1-horen.chuang@linux.dev>
+	s=arc-20240116; t=1719560711; c=relaxed/simple;
+	bh=p0jV8ElzLovC8PJpEjbIBYA1mtu9/RdPJD4TfKMl0XE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R6L0FvJ6wxVjTw2+7pMluzV/gM9M+1roYPEMvsGm1BWQJ0OvBS6edai/FLTyc0WZlEsRxlmAYN+WHK94uN7jZEzpFfuF6zqHmvZYDR8XM28eNNCce24w/qzTeaKmE3pfAgDy9UeDotBKDCn/UWRXeUPXfMWmoBbf6pxiSbSM0vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=T15y8IUk reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F07A140E0192;
+	Fri, 28 Jun 2024 07:45:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id sSMyDzu3hfvb; Fri, 28 Jun 2024 07:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1719560702; bh=7ldIwKtvzJ9yyJaNutYVVLJe0u6aE/RpeHC5fXaXUi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T15y8IUk+bsQfYjGmcY6To0pwblhcpGHNswc+3j5JXhvAbRzNuPlqQSefH/AHnwCc
+	 eOMQextITsSwFSnuTNoE9ab/AKH1XQn/07Y25ZVWhUisN6nzF7/LwFFb/eSuOSUxOe
+	 e8/I1A91o32iVgoTaRyjnNmIqNW1NRiathWQAr5S/njI/LQEgxrRrFBqgnd9yT5OSq
+	 92CkTxXPPdPY4E8pwZohAFPu1rEQE/pvgCyptIHRXVIlJDe6G6mqW/87VUvDVIKb7J
+	 qj0LrRfo3Fod96P3U0aDYzK9H0SdH90izxcANNjyDdXOwmo25pfDqUC4jNrLczlwpQ
+	 2smMW5CWnky12/0duRZKbNiQvj7vTrA6cM/xtJBNv3YLJaIRqkZLSTI3C/QLjiDdLA
+	 JeLJIhCYWHrxCWVNr/F6KlbGUIEzL4UsuCUESovO1GQ0bgYtUPSgS52SjZzltvvU+D
+	 AYbw7wvJsnHv/9UN8GjUzPSqDB/NJHZs2UAyEbkYE1hZQSVopJ526hncioN2IDsFNN
+	 xzkXkGijGLzCq3+SjZwJDCeBkZuvOvQxIUczCy5zRhIsRt57hL6r4jnmJyGlAfmT8+
+	 M459T/gYSYKXbnif4ygRocX5If+eZoqGGJeUR18T0vAuvQ2cWnmHjCim6x4GvncNGT
+	 r5KcbGjeg1Wf22a5cNHvvm3w=
+Received: from nazgul.tnic (business-24-134-159-81.pool2.vodafone-ip.de [24.134.159.81])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4FB9340E021A;
+	Fri, 28 Jun 2024 07:44:55 +0000 (UTC)
+Date: Fri, 28 Jun 2024 09:45:22 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: John Allen <john.allen@amd.com>
+Cc: rafael@kernel.org, lenb@kernel.org, yazen.ghannam@amd.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-edac@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] RAS/AMD/ATL: Translate normalized to system
+ physical addresses using PRM
+Message-ID: <20240628074522.GDZn5qEkTXG0EvQ4Lv@fat_crate.local>
+References: <20240506174721.72018-1-john.allen@amd.com>
+ <20240506174721.72018-3-john.allen@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240506174721.72018-3-john.allen@amd.com>
+Content-Transfer-Encoding: quoted-printable
 
-If we simply move the set_node_memory_tier() from memory_tier_init()
-to late_initcall(), it will result in HMAT not registering
-the mt_adistance_algorithm callback function, because
-set_node_memory_tier() is not performed during the memory tiering
-initialization phase, leading to a lack of correct default_dram
-information.
+On Mon, May 06, 2024 at 05:47:21PM +0000, John Allen wrote:
+> Future AMD platforms will provide a UEFI PRM module that implements a
+> number of address translation PRM handlers. This will provide an
+> interface for the OS to call platform specific code without requiring
+> the use of SMM or other heavy firmware operations.
+>=20
+> AMD Zen-based systems report memory error addresses through Machine
+> Check banks representing Unified Memory Controllers (UMCs) in the form
+> of UMC relative "normalized" addresses. A normalized address must be
+> converted to a system physical address to be usable by the OS.
 
-Therefore, we introduced a nodemask to pass the information of the
-default DRAM nodes. The reason for not choosing to reuse
-default_dram_type->nodes is that it is not clean enough. So in the end,
-we use a __initdata variable, which is a variable that is released once
-initialization is complete, including both CPU and memory nodes for HMAT
-to iterate through.
+This should be your first paragraph.
 
-Besides, since default_dram_type may be checked/used during the
-initialization process of HMAT and drivers, it is better to keep the
-allocation of default_dram_type in memory_tier_init().
+> Add support for the normalized to system physical address translation
+> PRM handler in the AMD Address Translation Library and prefer it over
+> native code if available. The GUID and parameter buffer structure are
+> specific to the normalized to system physical address handler provided
+> by the address translation PRM module included in future AMD systems.
+>=20
+> The address translation PRM module is documented in chapter 22 of the
+> publicly available "AMD Family 1Ah Models 00h=E2=80=930Fh and Models 10=
+h=E2=80=931Fh
+> ACPI v6.5 Porting Guide":
+> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/pr=
+ogrammer-references/58088-0.75-pub.pdf
 
-Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/acpi/numa/hmat.c     |  5 +--
- include/linux/memory-tiers.h |  2 ++
- mm/memory-tiers.c            | 59 +++++++++++++++---------------------
- 3 files changed, 28 insertions(+), 38 deletions(-)
+Those URLs are flaky and become invalid over time. When you quote
+a document, quote it in such a way so that searching for it on the web,
+can find it. The name above works for me so that's good.
 
-diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
-index 2c8ccc91ebe6..a2f9e7a4b479 100644
---- a/drivers/acpi/numa/hmat.c
-+++ b/drivers/acpi/numa/hmat.c
-@@ -940,10 +940,7 @@ static int hmat_set_default_dram_perf(void)
- 	struct memory_target *target;
- 	struct access_coordinate *attrs;
- 
--	if (!default_dram_type)
--		return -EIO;
--
--	for_each_node_mask(nid, default_dram_type->nodes) {
-+	for_each_node_mask(nid, default_dram_nodes) {
- 		pxm = node_to_pxm(nid);
- 		target = find_mem_target(pxm);
- 		if (!target)
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 0d70788558f4..fa61ad9c4d75 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -38,6 +38,7 @@ struct access_coordinate;
- #ifdef CONFIG_NUMA
- extern bool numa_demotion_enabled;
- extern struct memory_dev_type *default_dram_type;
-+extern nodemask_t default_dram_nodes __initdata;
- struct memory_dev_type *alloc_memory_type(int adistance);
- void put_memory_type(struct memory_dev_type *memtype);
- void init_node_memory_type(int node, struct memory_dev_type *default_type);
-@@ -76,6 +77,7 @@ static inline bool node_is_toptier(int node)
- 
- #define numa_demotion_enabled	false
- #define default_dram_type	NULL
-+#define default_dram_nodes NODE_MASK_NONE
- /*
-  * CONFIG_NUMA implementation returns non NULL error.
-  */
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 6632102bd5c9..a19a90c3ad36 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -43,6 +43,7 @@ static LIST_HEAD(memory_tiers);
- static LIST_HEAD(default_memory_types);
- static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
- struct memory_dev_type *default_dram_type;
-+nodemask_t default_dram_nodes __initdata = NODE_MASK_NONE;
- 
- static const struct bus_type memory_tier_subsys = {
- 	.name = "memory_tiering",
-@@ -671,28 +672,38 @@ EXPORT_SYMBOL_GPL(mt_put_memory_types);
- 
- /*
-  * This is invoked via `late_initcall()` to initialize memory tiers for
-- * CPU-less memory nodes after driver initialization, which is
-- * expected to provide `adistance` algorithms.
-+ * memory nodes, both with and without CPUs. After the initialization of
-+ * firmware and devices, adistance algorithms are expected to be provided.
-  */
- static int __init memory_tier_late_init(void)
- {
- 	int nid;
-+	struct memory_tier *memtier;
- 
-+	get_online_mems();
- 	guard(mutex)(&memory_tier_lock);
-+	/*
-+	 * Look at all the existing and uninitialized N_MEMORY nodes and
-+	 * add them to default memory tier or to a tier if we already have
-+	 * memory types assigned.
-+	 */
- 	for_each_node_state(nid, N_MEMORY) {
- 		/*
--		 * Some device drivers may have initialized memory tiers
--		 * between `memory_tier_init()` and `memory_tier_late_init()`,
--		 * potentially bringing online memory nodes and
--		 * configuring memory tiers. Exclude them here.
-+		 * Some device drivers may have initialized
-+		 * memory tiers, potentially bringing memory nodes
-+		 * online and configuring memory tiers.
-+		 * Exclude them here.
- 		 */
- 		if (node_memory_types[nid].memtype)
- 			continue;
- 
--		set_node_memory_tier(nid);
-+		memtier = set_node_memory_tier(nid);
-+		if (IS_ERR(memtier))
-+			/* Continue with memtiers we are able to setup. */
-+			break;
- 	}
--
- 	establish_demotion_targets();
-+	put_online_mems();
- 
- 	return 0;
- }
-@@ -875,8 +886,7 @@ static int __meminit memtier_hotplug_callback(struct notifier_block *self,
- 
- static int __init memory_tier_init(void)
- {
--	int ret, node;
--	struct memory_tier *memtier;
-+	int ret;
- 
- 	ret = subsys_virtual_register(&memory_tier_subsys, NULL);
- 	if (ret)
-@@ -887,7 +897,8 @@ static int __init memory_tier_init(void)
- 				GFP_KERNEL);
- 	WARN_ON(!node_demotion);
- #endif
--	mutex_lock(&memory_tier_lock);
-+
-+	guard(mutex)(&memory_tier_lock);
- 	/*
- 	 * For now we can have 4 faster memory tiers with smaller adistance
- 	 * than default DRAM tier.
-@@ -897,29 +908,9 @@ static int __init memory_tier_init(void)
- 	if (IS_ERR(default_dram_type))
- 		panic("%s() failed to allocate default DRAM tier\n", __func__);
- 
--	/*
--	 * Look at all the existing N_MEMORY nodes and add them to
--	 * default memory tier or to a tier if we already have memory
--	 * types assigned.
--	 */
--	for_each_node_state(node, N_MEMORY) {
--		if (!node_state(node, N_CPU))
--			/*
--			 * Defer memory tier initialization on
--			 * CPUless numa nodes. These will be initialized
--			 * after firmware and devices are initialized.
--			 */
--			continue;
--
--		memtier = set_node_memory_tier(node);
--		if (IS_ERR(memtier))
--			/*
--			 * Continue with memtiers we are able to setup
--			 */
--			break;
--	}
--	establish_demotion_targets();
--	mutex_unlock(&memory_tier_lock);
-+	/* Record nodes with memory and CPU to set default DRAM performance. */
-+	nodes_and(default_dram_nodes, node_states[N_MEMORY],
-+		  node_states[N_CPU]);
- 
- 	hotplug_memory_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI);
- 	return 0;
--- 
-Ho-Ren (Jack) Chuang
+> +#include "internal.h"
+> +
+> +#if defined(CONFIG_ACPI_PRMT)
 
+Instead of that ifdeffery you could do:
+
+config AMD_ATL_PRM
+	depends on AMD_ATL && ACPI_PRMT
+
+and it'll get enabled automatically and then you don't need the empty
+stub either.
+
+> +#include <linux/prmt.h>
+> +
+> +struct prm_umc_param_buffer_norm {
+
+What's a prm_umc_param_buffer_norm?
+
+> +	u64 norm_addr;
+> +	u8 socket;
+> +	u64 umc_bank_inst_id;
+> +	void *output_buffer;
+
+Use the usual short versions for such standard names: "out_buf"
+
+> +} __packed;
+> +
+> +static const guid_t norm_to_sys_prm_handler_guid =3D GUID_INIT(0xE7180=
+659, 0xA65D,
+> +							     0x451D, 0x92, 0xCD,
+> +							     0x2B, 0x56, 0xF1, 0x2B,
+> +							     0xEB, 0xA6);
+
+When you define such long variable names, your lines stick out
+unnecessarily. Shorten pls.
+
+> +unsigned long prm_umc_norm_to_sys_addr(u8 socket_id, u64 umc_bank_inst=
+_id, unsigned long addr)
+
+bank_id is fine.
+
+> +{
+> +	struct prm_umc_param_buffer_norm param_buffer;
+
+... p_buf;
+
+> +	unsigned long ret_addr;
+> +	int ret;
+> +
+> +	param_buffer.norm_addr        =3D addr;
+> +	param_buffer.socket           =3D socket_id;
+> +	param_buffer.umc_bank_inst_id =3D umc_bank_inst_id;
+> +	param_buffer.output_buffer    =3D &ret_addr;
+> +
+> +	ret =3D acpi_call_prm_handler(norm_to_sys_prm_handler_guid, &param_bu=
+ffer);
+> +	if (!ret)
+> +		return ret_addr;
+> +
+> +	if (ret =3D=3D -ENODEV)
+> +		pr_debug("PRM module/handler not available\n");
+> +	else
+> +		pr_notice_once("PRM address translation failed\n");
+> +
+> +	return ret;
+> +}
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
