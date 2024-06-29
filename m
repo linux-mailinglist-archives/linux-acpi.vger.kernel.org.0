@@ -1,123 +1,232 @@
-Return-Path: <linux-acpi+bounces-6674-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6675-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE6B91CB28
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jun 2024 07:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D8191CB76
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jun 2024 08:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB8B1C20EA2
-	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jun 2024 05:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A751F22C9E
+	for <lists+linux-acpi@lfdr.de>; Sat, 29 Jun 2024 06:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8271A18EAB;
-	Sat, 29 Jun 2024 05:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F58364AE;
+	Sat, 29 Jun 2024 06:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Z7bjp8LG"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="RFdThJhf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-15.smtpout.orange.fr [80.12.242.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E3D1878;
-	Sat, 29 Jun 2024 05:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282E01CF9B;
+	Sat, 29 Jun 2024 06:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719637446; cv=none; b=KQI/Dwr+iIEQ38fNb7KKjNFVWrD2/SJGXwY8EqM68fQhBaevfJUn+0GHE5gzwMeiPrY9x0FWAMWDAUsDYnTyuugIKEvltSrkKX0bPtw0hhuTqVEC62ckaDwO4tut8eNP0ex72dqdAOCZnodEkF85koYKbkjWK9cTkEAJBSj9u0o=
+	t=1719644347; cv=none; b=mbSb+Fvp8wRd8rAfCe2HbEys4sG/fF5XF1fIF8H/+KdnJKnccErAc8wjZjzHrsNRNxnWMINJGY5VjJjc8Yi7m62eHbibyvh4RY9ts65bVCEuCoHNmFzQ9ezQq4uBgBSELrmbeRLo1E8gQ1bkpjC4NMUh3Jd4jLG6d3XjMyUcwoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719637446; c=relaxed/simple;
-	bh=Ew3CzrP4sds7rkfWAmQRF2bIaPS0r7QoSeNAlsAKIvI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iFapu9I5FPIM4ZTn6U+TuqU2aPTmpjvBHTggGxhq/7J8UwV8pVigjLeK+elff+SHAiDaPBaRRoF4E+HJ3ipXMmnPb2UHFH4qdW8KsXQUwi1msmwsrxvnFnOg55shJrSJj0gGd1WHw5OpcQEDGwvZrA2cwl8LfbLWWpu2Rt2JgUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Z7bjp8LG; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=oPJwtSUem7PZa4g8UE7kzgB6Pml8aKz79buErMxrQ74=;
-	t=1719637444; x=1720069444; b=Z7bjp8LG65/VL36YFcuh+4PWIi14bsC8cb7zao98EFTDFyH
-	cXc2ufpqXvpE4qi1JbsTZvd/8MWYcq9TZ86qm3cD3vLjIWeViSeiV40CWWlySX3wovRxEfHwpi2nJ
-	+WL1C0KFEzfV8kTKw+3Z1Ta0MP0Y9ok4cSkLV63cCqLurCCuwhv6iWALAEDllpLorApVQW6Huocbr
-	VaT5ZSpI20Q1e+r91ZQUu3EfuzipSy34dpl7GQ/ZnT3USFiPX0mJCKtamdHwlrnOUP5LySp96Xbc7
-	l9wT3uEuaL/mUEseNWH5lAqBk2pO6FquDR9BsCWlHCJDGJQNzNnDsMH6r6dUqmLg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sNQFk-0003YK-DT; Sat, 29 Jun 2024 07:04:00 +0200
-Message-ID: <c6f4cca2-9258-4dc9-8d4e-96ab7c587783@leemhuis.info>
-Date: Sat, 29 Jun 2024 07:03:59 +0200
+	s=arc-20240116; t=1719644347; c=relaxed/simple;
+	bh=6KyjtX5hOxB5LlFjn7fgJk+/s9NXrVzZ9ltFbNSFa2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c2rOU53onIwN8wRks1YDYeRXIbfsEoKNTkneepKAONJS6u8aUPAIk8AHyXDlMJpgJZkuCC/VEPs0bJofbsq3F4WUBPI7nhSsar1BAWtUvqZs7Ih/s4sxGNWdJGUjNWnK8k1ERcDJQFc5XS5gUlC0uIH7Xxplm4mLP/jWRRJ9rew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=RFdThJhf; arc=none smtp.client-ip=80.12.242.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.222.230])
+	by smtp.orange.fr with ESMTPA
+	id NS2ussK9tE745NS2vs6O5R; Sat, 29 Jun 2024 08:58:56 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1719644336;
+	bh=7ZffAGKYDmgIjO3VVxySPyiErhAqXhow8CsGzx+lLxE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=RFdThJhfv4vP0hsVXmPTV5moPfCdjkgSOtnIqkWMriydYqth15YzuIU7lvY7cYBYD
+	 SxTULNmD8MBCbXjHJUwQy0f3hk1hMCh6uWVJykx9fay1rYE8U52k0tRgmWUNx9okxd
+	 YfebuiBFrfp+8CjStf3Y9/L6y6x6olhY2w7w9HYLqq1lKvOETEIg8iW+8K1altibgl
+	 6+/JosxD5GUz4zE9v23oRPFn13dL3ZE/LIlxRWXzpowNqG4NC+zyPnIH4rBMitnHVQ
+	 4JK8CLFEeZ5kuvWKjI+RchpY5MS84JOMNC117wT5DfMXRFnQ8IgOacLOiGjQ/LI/bL
+	 usaVooEKFjHIA==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 29 Jun 2024 08:58:56 +0200
+X-ME-IP: 86.243.222.230
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH] ACPI: PMIC: Constify struct pmic_table
+Date: Sat, 29 Jun 2024 08:58:42 +0200
+Message-ID: <a6c9b1bcdf259adabbcaf91183d3f5ab87a98600.1719644292.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] lib/sort: Optimize heapsort with double-pop variation
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: akpm@linux-foundation.org, jserv@ccns.ncku.edu.tw,
- linux-kernel@vger.kernel.org, lkml@sdf.org, alexdeucher@gmail.com,
- Julian Sikorski <belegdol@gmail.com>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- Kuan-Wei Chiu <visitorckw@gmail.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <20240113031352.2395118-3-visitorckw@gmail.com>
- <70674dc7-5586-4183-8953-8095567e73df@gmail.com>
- <61f43bdd-7f73-4605-96e7-843483a53bca@leemhuis.info>
- <Zn7umr/VHtZ/Nhcu@visitorckw-System-Product-Name>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <Zn7umr/VHtZ/Nhcu@visitorckw-System-Product-Name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1719637444;c90b5135;
-X-HE-SMSGID: 1sNQFk-0003YK-DT
+Content-Transfer-Encoding: 8bit
 
-On 28.06.24 19:10, Kuan-Wei Chiu wrote:
-> On Fri, Jun 28, 2024 at 05:15:15PM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
->> On 20.06.24 17:36, Julian Sikorski wrote:
->>>
->>> it appears that this patch has caused suspend-to-idle regression:
->>>
->>> https://gitlab.freedesktop.org/drm/amd/-/issues/3436
->>>
->>> In brief, my laptop fails to suspend completely with the following error
->>> in the log:
->>>
->>> Jun 18 12:42:20 kernel: amd_pmc AMDI0005:00: Last suspend didn't reach
->>> deepest state
->>>
->>> Power consumption remains high enough that my battery has already
->>> unexpectedly drained twice before I noticed something was off.
->>> I am not entirely sure how changes to sorting function can influence
->>> suspend, but it is what it is. 6.9.5 as shipped by Fedora 40 exhibits
->>> the issue, 6.9.5 as shipped by Fedora with the patch reverted does not.
-> [...]
-> I apologize for the regression caused by the patch. I am not familiar
-> with the power management domain. I would guess there might be some
-> side effects in the compare or swap functions that I was not aware of.
-> 
-> While reviewing the sort calls that could potentially cause the error,
-> I noticed that the compare function used in the sort call within
-> drivers/acpi/processor_idle.c might not satisfy the transitive
-> relation. Although I'm not sure if this is the root cause of the
-> problem, specifically, if there are two valid acpi_processor_cx
-> elements A and B, and an invalid element C, there could be a scenario
-> where A < B but simultaneously A = C and B = C.
+'struct pmic_table' is not modified in these drivers.
 
-Let's bring in Rafael, he might be able to help us out here.
+Constifying this structure moves some data to a read-only section, so
+increase overall security.
 
-> However, if I
-> understand correctly, this issue should have existed before this patch
-> but might not have been triggered previously. My patch might have
-> exposed this issue by changing the order of comparisons and swaps.
+On a x86_64, with allmodconfig, as an example:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+   3811	    786	      0	   4597	   11f5	drivers/acpi/pmic/intel_pmic_xpower.o
 
-Yeah, these things happen. But when it comes to the Linux kernel's "no
-regressions" rule that does not matter much; what matters more is which
-change exposed the problem.
+   text	   data	    bss	    dec	    hex	filename
+   4147	    450	      0	   4597	   11f5	drivers/acpi/pmic/intel_pmic_xpower.o
 
-Ciao, Thorsten
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested-only
+---
+ drivers/acpi/pmic/intel_pmic.c          | 2 +-
+ drivers/acpi/pmic/intel_pmic.h          | 4 ++--
+ drivers/acpi/pmic/intel_pmic_bxtwc.c    | 4 ++--
+ drivers/acpi/pmic/intel_pmic_bytcrc.c   | 4 ++--
+ drivers/acpi/pmic/intel_pmic_chtdc_ti.c | 4 ++--
+ drivers/acpi/pmic/intel_pmic_chtwc.c    | 2 +-
+ drivers/acpi/pmic/intel_pmic_xpower.c   | 4 ++--
+ 7 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/acpi/pmic/intel_pmic.c b/drivers/acpi/pmic/intel_pmic.c
+index f20dbda1a831..134e9ca8eaa2 100644
+--- a/drivers/acpi/pmic/intel_pmic.c
++++ b/drivers/acpi/pmic/intel_pmic.c
+@@ -31,7 +31,7 @@ struct intel_pmic_opregion {
+ 
+ static struct intel_pmic_opregion *intel_pmic_opregion;
+ 
+-static int pmic_get_reg_bit(int address, struct pmic_table *table,
++static int pmic_get_reg_bit(int address, const struct pmic_table *table,
+ 			    int count, int *reg, int *bit)
+ {
+ 	int i;
+diff --git a/drivers/acpi/pmic/intel_pmic.h b/drivers/acpi/pmic/intel_pmic.h
+index d956b03a6ca0..006f0780ffab 100644
+--- a/drivers/acpi/pmic/intel_pmic.h
++++ b/drivers/acpi/pmic/intel_pmic.h
+@@ -21,9 +21,9 @@ struct intel_pmic_opregion_data {
+ 					  u32 reg_address, u32 value, u32 mask);
+ 	int (*lpat_raw_to_temp)(struct acpi_lpat_conversion_table *lpat_table,
+ 				int raw);
+-	struct pmic_table *power_table;
++	const struct pmic_table *power_table;
+ 	int power_table_count;
+-	struct pmic_table *thermal_table;
++	const struct pmic_table *thermal_table;
+ 	int thermal_table_count;
+ 	/* For generic exec_mipi_pmic_seq_element handling */
+ 	int pmic_i2c_address;
+diff --git a/drivers/acpi/pmic/intel_pmic_bxtwc.c b/drivers/acpi/pmic/intel_pmic_bxtwc.c
+index e247615189fa..c332afbf82bd 100644
+--- a/drivers/acpi/pmic/intel_pmic_bxtwc.c
++++ b/drivers/acpi/pmic/intel_pmic_bxtwc.c
+@@ -24,7 +24,7 @@
+ #define VSWITCH1_OUTPUT         BIT(4)
+ #define VUSBPHY_CHARGE          BIT(1)
+ 
+-static struct pmic_table power_table[] = {
++static const struct pmic_table power_table[] = {
+ 	{
+ 		.address = 0x0,
+ 		.reg = 0x63,
+@@ -177,7 +177,7 @@ static struct pmic_table power_table[] = {
+ 	} /* MOFF -> MODEMCTRL Bit 0 */
+ };
+ 
+-static struct pmic_table thermal_table[] = {
++static const struct pmic_table thermal_table[] = {
+ 	{
+ 		.address = 0x00,
+ 		.reg = 0x4F39
+diff --git a/drivers/acpi/pmic/intel_pmic_bytcrc.c b/drivers/acpi/pmic/intel_pmic_bytcrc.c
+index 2b09f8da5400..b4c21a75294a 100644
+--- a/drivers/acpi/pmic/intel_pmic_bytcrc.c
++++ b/drivers/acpi/pmic/intel_pmic_bytcrc.c
+@@ -16,7 +16,7 @@
+ 
+ #define PMIC_A0LOCK_REG		0xc5
+ 
+-static struct pmic_table power_table[] = {
++static const struct pmic_table power_table[] = {
+ /*	{
+ 		.address = 0x00,
+ 		.reg = ??,
+@@ -134,7 +134,7 @@ static struct pmic_table power_table[] = {
+ 	}, /* V105 -> V1P05S, L2 SRAM */
+ };
+ 
+-static struct pmic_table thermal_table[] = {
++static const struct pmic_table thermal_table[] = {
+ 	{
+ 		.address = 0x00,
+ 		.reg = 0x75
+diff --git a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+index 79f9df552524..ecb36fbc1e7f 100644
+--- a/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
++++ b/drivers/acpi/pmic/intel_pmic_chtdc_ti.c
+@@ -23,7 +23,7 @@
+ #define CHTDC_TI_BPTHERM	0x58
+ #define CHTDC_TI_GPADC		0x5a
+ 
+-static struct pmic_table chtdc_ti_power_table[] = {
++static const struct pmic_table chtdc_ti_power_table[] = {
+ 	{ .address = 0x00, .reg = 0x41 }, /* LDO1 */
+ 	{ .address = 0x04, .reg = 0x42 }, /* LDO2 */
+ 	{ .address = 0x08, .reg = 0x43 }, /* LDO3 */
+@@ -39,7 +39,7 @@ static struct pmic_table chtdc_ti_power_table[] = {
+ 	{ .address = 0x30, .reg = 0x4e }, /* LD14 */
+ };
+ 
+-static struct pmic_table chtdc_ti_thermal_table[] = {
++static const struct pmic_table chtdc_ti_thermal_table[] = {
+ 	{
+ 		.address = 0x00,
+ 		.reg = CHTDC_TI_GPADC
+diff --git a/drivers/acpi/pmic/intel_pmic_chtwc.c b/drivers/acpi/pmic/intel_pmic_chtwc.c
+index 25aa3e33b09a..81caede51ca2 100644
+--- a/drivers/acpi/pmic/intel_pmic_chtwc.c
++++ b/drivers/acpi/pmic/intel_pmic_chtwc.c
+@@ -70,7 +70,7 @@
+  * "regulator: whiskey_cove: implements Whiskey Cove pmic VRF support"
+  * https://github.com/intel-aero/meta-intel-aero/blob/master/recipes-kernel/linux/linux-yocto/0019-regulator-whiskey_cove-implements-WhiskeyCove-pmic-V.patch
+  */
+-static struct pmic_table power_table[] = {
++static const struct pmic_table power_table[] = {
+ 	{
+ 		.address = 0x0,
+ 		.reg = CHT_WC_V1P8A_CTRL,
+diff --git a/drivers/acpi/pmic/intel_pmic_xpower.c b/drivers/acpi/pmic/intel_pmic_xpower.c
+index 43c5850b4bf3..49bda5e0c8aa 100644
+--- a/drivers/acpi/pmic/intel_pmic_xpower.c
++++ b/drivers/acpi/pmic/intel_pmic_xpower.c
+@@ -26,7 +26,7 @@
+ #define AXP288_ADC_TS_CURRENT_ON_ONDEMAND		(2 << 0)
+ #define AXP288_ADC_TS_CURRENT_ON			(3 << 0)
+ 
+-static struct pmic_table power_table[] = {
++static const struct pmic_table power_table[] = {
+ 	{
+ 		.address = 0x00,
+ 		.reg = 0x13,
+@@ -129,7 +129,7 @@ static struct pmic_table power_table[] = {
+ };
+ 
+ /* TMP0 - TMP5 are the same, all from GPADC */
+-static struct pmic_table thermal_table[] = {
++static const struct pmic_table thermal_table[] = {
+ 	{
+ 		.address = 0x00,
+ 		.reg = XPOWER_GPADC_LOW
+-- 
+2.45.2
+
 
