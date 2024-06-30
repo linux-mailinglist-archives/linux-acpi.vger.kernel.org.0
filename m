@@ -1,147 +1,176 @@
-Return-Path: <linux-acpi+bounces-6688-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6689-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CAF991D40F
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 22:58:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5486991D41E
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 23:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA52A1F21130
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 20:58:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9303DB20C0F
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 21:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAD67F7DB;
-	Sun, 30 Jun 2024 20:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FFD4EB45;
+	Sun, 30 Jun 2024 21:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="ejWDZHRf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHMiPA88"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783A06A33B;
-	Sun, 30 Jun 2024 20:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6D42AE68
+	for <linux-acpi@vger.kernel.org>; Sun, 30 Jun 2024 21:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719781029; cv=none; b=qZx/2HbqfY8zXUCQ8v5IG+p4W8bCF4mL8eXcuAd+nKDkfGNCiPILI6CXfZobouIk6boPeK3+mulLSpV0lyEX9eIB7ZMiPJ5Nr+CFGWqIHTRz038EdPNlxmzX0YKHsovTATjvsoE9NVw+v+yMYhd6YgKa1bb3zRGT7ESJOtxat+4=
+	t=1719781698; cv=none; b=dFMIqp2eM+IOPyOAnJwAty6g0g7qYgyWgOD4DQr7bxRecFmuZCy0QhMyan3DJwVDAQIstsWEGJdCscwoXQbMpNGb+5dNk13V8rUP6z4FBrCO+AyY7123R3tqJ7D1ehha+M27oJW9y7sPaoCVzW4gYenoX2eM+v8bRrnMWD0qe7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719781029; c=relaxed/simple;
-	bh=FHswT/YC3w5l89/ylaLvEiW7spavPfr3VgQBUJELu3s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VAR2Jd+6dX6gxgsHBy64AiHKarcd1zPNGxK5D5hVD8dPx8nivYTsx2NDx9F35CI/hbzMFYXSWY/dE1EFFTy37RCbxdYnmscDpQL0s1pVjTCVVM7SIj+bkYJaBIakEolKkeW64s5VmuShNPh7cZWI/0GvSWZq8sOGq984d8LEZs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=ejWDZHRf; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1719781014;
-	bh=FHswT/YC3w5l89/ylaLvEiW7spavPfr3VgQBUJELu3s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ejWDZHRfukisKwAihu3IBKvVmRI2U3XVHjJJhiKuB2hP4u4h7a1MfWKyCfjKzpzn3
-	 XYY+AyxYMPfEUXIFrks+w0A/FaPIBbB+UcwH9IH4dRLkPflPrxte+pKs7fu+sIdDew
-	 gyeQCt49lMuafdri87CdHR2KJYCYg8WqN7DqfjeY=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 30 Jun 2024 22:54:12 +0200
-Subject: [PATCH v5 5/5] power: supply: cros_charge-control: don't load if
- Framework control is present
+	s=arc-20240116; t=1719781698; c=relaxed/simple;
+	bh=gW6wjF5GOLahrzuOysh1WJhPgwoMMR9hDIpX5WU8BEQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=RDQ/6t2hSpu3C9djGpWXF4c62ZVdczLOg31KRgFNh095kn3nOTl116j/uEtlnsIAs0olsfTd4K9aIOkxpc3+7vMch1sUmC+v7ELUDfXYaVl7TJfiEKmtLQm4JWE6vKu0UfUeicYgKnU/3+sAvl7zbAfQTu93uxyVv8PZvLRZF2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHMiPA88; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2c7aafe3094so461894a91.0
+        for <linux-acpi@vger.kernel.org>; Sun, 30 Jun 2024 14:08:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719781696; x=1720386496; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Qsf4cNEXFIzXVY/Vaf+nuaEFn++A84g+B4+21rN0Vs=;
+        b=NHMiPA8850S7o0F4/K2glEUQzxmrFGKnBJYoaVWL44wDyykdVhRsMhY4whD50I7/BU
+         GUJjoHrEXLn9yrywAZe0az+SVEYXOjD0FgsEU5O2Z62vrrQB/Yka1JM4+bU+VMg1VOPB
+         hxBxixJR2mamomrXqzypIrDV8v8CGy3OciYKBcFf0PDHMolGdVP6zslrqy6wjIj14fCQ
+         AhqCDSY5Cr+Oh8Gb63dYaHIY0hOmmgXHPtuT61UyilZIW2dH7O+VzHuCvilhhpIY9jCq
+         alRxXBYRk4itWEM4IYS+4FAJ/6vAIdnP5FsKHGq+6NZCdVLs1qO4bqvwLr13velbZz11
+         qeIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719781696; x=1720386496;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0Qsf4cNEXFIzXVY/Vaf+nuaEFn++A84g+B4+21rN0Vs=;
+        b=ifMppDmHXIv/m5IhPpUqbXvoA09RFOzxMheUKQ6q8RUxvQltV8+jgRX3zDhImnJMz+
+         9qs33cAP2NBWYkfq43pF8n3rVGpjFnJ0zxLt33q9o26nrBJInnLQnOfaZTWSB+Y3gqof
+         sQ/RtSORDg1yzRWwvh9RDDrox5wBGdKITG+7Ga1c3CoeEwM1kSFAERnDGWYR5YLKJNyE
+         mSCyGcuELzeeRpZFh0Z/+WYZT53j7OeaI2kz7MMiJUgSsaeTsiTLVK0cfhthNbM2ekxf
+         sbhLo18Mkn63/eBIyovOn9e2id7AYLo1C0Av6O/7yg4Xarcq9YFBfy7GOWBnmNru7AXI
+         3eeA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvZCd93LiCyigUswlsfZVT/sRh2m52AW1YxyYOBO/YqAmqPEgVB2NfTwEoQBRxQoZRuhv9o2iFR17BgmAWDhZM9q5/B06QyV+qsw==
+X-Gm-Message-State: AOJu0YyaRnGTWfz/23GuafvbexK6Zl9rZ9zVEEyAO4KJg3aBAV30I3yT
+	qV01QlxQ3k15Y//BWhVHouXgQOtmgKR9yFwDOvSPA3jQuxZJeJGUbuYNZw==
+X-Google-Smtp-Source: AGHT+IHjBYp4uSX/3uoBSi3ABmPv0+VJCt6NLbnG/jpShcdoCDMhbXjGAwQewuZvLkKnyxHyUoNwTw==
+X-Received: by 2002:a05:6a20:da8a:b0:1be:e53c:7f87 with SMTP id adf61e73a8af0-1bef626b560mr6400422637.3.1719781695895;
+        Sun, 30 Jun 2024 14:08:15 -0700 (PDT)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-72c6c7f72a7sm3972046a12.63.2024.06.30.14.08.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Jun 2024 14:08:15 -0700 (PDT)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: rafael@kernel.org
+Cc: lenb@kernel.org,
+	mario.limonciello@amd.com,
+	akpm@linux-foundation.org,
+	jserv@ccns.ncku.edu.tw,
+	alexdeucher@gmail.com,
+	belegdol@gmail.com,
+	linux-acpi@vger.kernel.org,
+	regressions@lists.linux.dev,
+	regressions@leemhuis.info,
+	Kuan-Wei Chiu <visitorckw@gmail.com>
+Subject: [PATCH] ACPI: processor_idle: Fix invalid comparison with insertion sort for latency
+Date: Mon,  1 Jul 2024 05:08:09 +0800
+Message-Id: <20240630210809.37550-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <c6f4cca2-9258-4dc9-8d4e-96ab7c587783@leemhuis.info>
+References: <c6f4cca2-9258-4dc9-8d4e-96ab7c587783@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240630-cros_ec-charge-control-v5-5-8f649d018c52@weissschuh.net>
-References: <20240630-cros_ec-charge-control-v5-0-8f649d018c52@weissschuh.net>
-In-Reply-To: <20240630-cros_ec-charge-control-v5-0-8f649d018c52@weissschuh.net>
-To: Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
- Sebastian Reichel <sre@kernel.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Robert Moore <robert.moore@intel.com>, Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>, 
- Dustin Howett <dustin@howett.net>, 
- Stephen Horvath <s.horvath@outlook.com.au>, 
- Rajas Paranjpe <paranjperajas@gmail.com>, linux-acpi@vger.kernel.org, 
- acpica-devel@lists.linux.dev, Matt Hartley <matt.hartley@gmail.com>, 
- Kieran Levin <ktl@framework.net>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719781012; l=2327;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=FHswT/YC3w5l89/ylaLvEiW7spavPfr3VgQBUJELu3s=;
- b=1QB20YP670zdAMsu+gSGB/2BNGtpNQBitzKUlDkaUW00pP/1MiQeShLkXCRsGogQyDekRu7nJ
- vjZV5uosjOECbDQD/3zZ6EaE39KCofha3E0CyEfdUPoeCn1cO0bwOFm
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Framework laptops implement a custom charge control EC command.
-The upstream CrOS EC command is also present and functional but can get
-overridden by the custom one.
+The acpi_cst_latency_cmp comparison function currently used for sorting
+C-state latencies does not satisfy transitivity, causing incorrect
+sorting results. Specifically, if there are two valid acpi_processor_cx
+elements A and B and one invalid element C, it may occur that A < B,
+A = C, and B = C. Sorting algorithms assume that if A < B and A = C,
+then C < B, leading to incorrect ordering.
 
-Until Framework make both commands compatible or remove their custom
-one, don't load the driver on those machines.
+Given the small size of the array (<=8), we replace the library sort
+function with a simple insertion sort that properly ignores invalid
+elements and sorts valid ones based on latency. This change ensures
+correct ordering of the C-state latencies.
 
-If the user knows they are not going to use the custom command they can
-use a module parameter to load cros_charge-control anyways.
-
-Note that the UEFI setup configuration for battery control also uses
-their custom command.
-
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not ordered")
+Reported-by: Julian Sikorski <belegdol@gmail.com>
+Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df@gmail.com/
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
 ---
- drivers/power/supply/cros_charge-control.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+I do not have the appropriate AMD hardware to reproduce this issue and
+test the patch. However, if the aforementioned reason is indeed the
+source of the problem, I believe this patch might help.
 
-diff --git a/drivers/power/supply/cros_charge-control.c b/drivers/power/supply/cros_charge-control.c
-index 521b0eb4ff3b..73d7f2dc0fa3 100644
---- a/drivers/power/supply/cros_charge-control.c
-+++ b/drivers/power/supply/cros_charge-control.c
-@@ -6,6 +6,7 @@
-  */
- #include <acpi/battery.h>
- #include <linux/container_of.h>
-+#include <linux/dmi.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
-@@ -256,6 +257,19 @@ static int cros_chctl_remove_battery(struct power_supply *battery, struct acpi_b
- 	return 0;
+ drivers/acpi/processor_idle.c | 33 ++++++++++++---------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
+index bd6a7857ce05..d58a7c64d80b 100644
+--- a/drivers/acpi/processor_idle.c
++++ b/drivers/acpi/processor_idle.c
+@@ -386,25 +386,19 @@ static void acpi_processor_power_verify_c3(struct acpi_processor *pr,
+ 	acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
  }
  
-+static bool probe_with_fwk_charge_control;
-+module_param(probe_with_fwk_charge_control, bool, 0644);
-+MODULE_PARM_DESC(probe_with_fwk_charge_control,
-+		 "Probe the driver in the presence of the custom Framework EC charge control");
-+
-+static int cros_chctl_fwk_charge_control_versions(struct cros_ec_device *cros_ec)
-+{
-+	if (!dmi_match(DMI_SYS_VENDOR, "Framework"))
-+		return 0;
-+
-+	return cros_ec_get_cmd_versions(cros_ec, 0x3E03 /* FW_EC_CMD_CHARGE_LIMIT */);
-+}
-+
- static int cros_chctl_probe(struct platform_device *pdev)
+-static int acpi_cst_latency_cmp(const void *a, const void *b)
++static void acpi_cst_latency_sort(struct acpi_processor_cx *arr, size_t length)
  {
- 	struct device *dev = &pdev->dev;
-@@ -265,6 +279,14 @@ static int cros_chctl_probe(struct platform_device *pdev)
- 	size_t i;
- 	int ret;
+-	const struct acpi_processor_cx *x = a, *y = b;
++	int i, j, k;
  
-+	ret = cros_chctl_fwk_charge_control_versions(cros_ec);
-+	if (ret < 0)
-+		return ret;
-+	if (ret > 0 && !probe_with_fwk_charge_control) {
-+		dev_info(dev, "Framework charge control detected, preventing load\n");
-+		return -ENODEV;
+-	if (!(x->valid && y->valid))
+-		return 0;
+-	if (x->latency > y->latency)
+-		return 1;
+-	if (x->latency < y->latency)
+-		return -1;
+-	return 0;
+-}
+-static void acpi_cst_latency_swap(void *a, void *b, int n)
+-{
+-	struct acpi_processor_cx *x = a, *y = b;
+-
+-	if (!(x->valid && y->valid))
+-		return;
+-	swap(x->latency, y->latency);
++	for (i = 1; i < length; i++) {
++		for (j = i - 1, k = i; j >= 0; j--) {
++			if (!arr[j].valid)
++				continue;
++			if (arr[j].latency > arr[k].latency)
++				swap(arr[j].latency, arr[k].latency);
++			k = j;
++		}
 +	}
-+
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-
+ }
+ 
+ static int acpi_processor_power_verify(struct acpi_processor *pr)
+@@ -449,10 +443,7 @@ static int acpi_processor_power_verify(struct acpi_processor *pr)
+ 
+ 	if (buggy_latency) {
+ 		pr_notice("FW issue: working around C-state latencies out of order\n");
+-		sort(&pr->power.states[1], max_cstate,
+-		     sizeof(struct acpi_processor_cx),
+-		     acpi_cst_latency_cmp,
+-		     acpi_cst_latency_swap);
++		acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
+ 	}
+ 
+ 	lapic_timer_propagate_broadcast(pr);
 -- 
-2.45.2
+2.34.1
 
 
