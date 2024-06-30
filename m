@@ -1,111 +1,251 @@
-Return-Path: <linux-acpi+bounces-6680-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6681-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E30091D1A8
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 14:49:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB0991D1AA
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 14:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2AA41C20AAD
-	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 12:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32188281E47
+	for <lists+linux-acpi@lfdr.de>; Sun, 30 Jun 2024 12:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4937013C3E6;
-	Sun, 30 Jun 2024 12:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3094013D516;
+	Sun, 30 Jun 2024 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0O3ir7O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFql/Uwh"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86781E535;
-	Sun, 30 Jun 2024 12:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A1413C685;
+	Sun, 30 Jun 2024 12:54:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719751767; cv=none; b=Xg0qFHuwRGWNDfVLOBAAoVcEmFe7IfOpZth6iRVgsQSRQjgHv3OJF49mB1tT1x2UtlXmXNPwYqgRd9aUAuz1fdULPToSRB5dAd362+s3O2JIuV9O/9ULFv74BJxGx0PrOYWgvMqep3Y30V6kmnE/KUg35zOOZsZeBGd7rR0Ejz8=
+	t=1719752046; cv=none; b=hNdLybCWFRg2rc9CZ1cXG/tUWsrpTkFgN0E3IP7K/T1qWUG8ymYsHEy0pYnk1yKoAQ5wm1G131IuvhlY2craoBIQyKatowhQmERX2hrKkqht1H17r12H2GEnWwn0n+8Iw8rbu95RqFk31R9H1pX+ijIRicZDKduzC5pTh8k9NNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719751767; c=relaxed/simple;
-	bh=a9O/NzgMe8+fDWtOKPMlEACFmvGKExpbZLnMk8fchX8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lTOWYBurfa0EK/qWojiUNFLww2sCUa6gfmsWyIcjJT+jn3b/HPOvsigEsbJ9o4ER4sLWfcY3Rq+67yLN4UnL9tWj1iXHvJOY6iQwrl0ABimNk9fk1yIyVU6D2ivWTwMcCbRSG30qSFXHnAa2Wp4YOtkPEr5rg83M/OPY/WomoNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0O3ir7O; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42564a0d3ceso13491315e9.0;
-        Sun, 30 Jun 2024 05:49:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719751764; x=1720356564; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tg5zNNEzFCoSVGWs3dv8lzrslyjqsfj67eSpfY5+Gsc=;
-        b=J0O3ir7O716oOagJt4U4Rpz8fNcMoT8WoIQMFy0LsQInK8/63M8bxGtYFLU+93UZRF
-         PDwm0jZIzQ8snn2JGP5c5hSgx+8rr89/R1QrSB44n6Z8xuHhhhyYYctxnpKn53Mv5Qrh
-         vPeB2kbRUz3PpxutHYHhROB1dj+9KR5W/I6aY+5vRzRMs7XGRXu6fjOaQzk1BN7Ax/5m
-         8w/EyRtmQLevJ/REnmnIxG0mYol86X7Y965d0v9e1fwDXmu2HNABwcoeowZiC6BLxDXj
-         kq8qfVBPdsSuQKGLbUxXGC03WsKxtBDS4/5sOhTNJtSDUMsEnvq2OelE8zVHfBAE41vt
-         5E/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719751764; x=1720356564;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tg5zNNEzFCoSVGWs3dv8lzrslyjqsfj67eSpfY5+Gsc=;
-        b=UEDherPfoexamCRXiWAeDRIrkCoRulpjlcJcrWfKwcZKVSEQrzrb7L8wuM6qWNXG3q
-         zAmK7yqWu1WMh69cZ7QGrD7hHWdyTmQFUOWcXOCvBmK63oOlvbhlcDXUWL6lx3nCsuDa
-         xuD0/Sr1gZ5Hs5n2czo6wAaDvHl3fJje5uxgiTAPR/sSTig3qhg4UKnA1peASB+ImjFR
-         oPN3DP39ULmKfg2aFynvzVnOTpRJSggSYFYNVuv86GeHZmJcULDTcZumYJJodMew+SSH
-         5GiifgTxRu8KXWmMzhzm5yTPdE7/BsQ9ZnyCoU/oV66AY5CXi2EFh40PwubzITr9A1g6
-         Rh6w==
-X-Forwarded-Encrypted: i=1; AJvYcCVcWqNLuCG0k3f1uzpIbxYCUaCiPeTQyKzyI5ihd25W1XzfNK6z5ugKjfM0XSu0Kf99wu8Y5vMlsmaCj3DE7NZ98g8rxr8uuElj4SZdgk3Dhi7EJ9yrJRoXJ55j2JZDtLSJ5jlulxo20Q==
-X-Gm-Message-State: AOJu0Yyl42IY68fU5etDEQu7mfzG/9gCi0pIrOkE2Gt2NdxHkdsJM+2d
-	HlkXgfWot07Av4g4LvewfY2uOSRr5m1hF8FjW0KTQcBxVLW5pAGA
-X-Google-Smtp-Source: AGHT+IE+vPZwRbkYpYEM7vADTRG1SV+oBbAzMmcCt28aKRwgND0NVkVoELN8evaf0L1tyHCz8L3Z5A==
-X-Received: by 2002:a05:600c:63c8:b0:424:a48a:99ff with SMTP id 5b1f17b1804b1-4257a0257cemr19983065e9.8.1719751763580;
-        Sun, 30 Jun 2024 05:49:23 -0700 (PDT)
-Received: from qamajeed.Home ([39.45.181.116])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b097bd6sm112411665e9.30.2024.06.30.05.49.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jun 2024 05:49:23 -0700 (PDT)
-From: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
-To: rafael@kernel.org,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
-Subject: [PATCH] Updating a vulnerable use of strcpy.
-Date: Sun, 30 Jun 2024 17:48:29 +0500
-Message-Id: <20240630124829.189869-1-qasim.majeed20@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1719752046; c=relaxed/simple;
+	bh=MTLcAa4+Z4K8Qu34a7IYdMmh1nWwrZWGHcm39mzOztw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lfD0ChH99L3ixy9oeI2yZFwo/sBQ740hv1XNztSQVzFGjWskObpUN+TRrRzTWlSoFvW7uJpOnwU3hJbbEQ60w7wljQwaQGYNelvTTcVooxQmO/UmgwFvL0Aqde9PxRdXKrByPXNpF81o96naH+c+q13qaZzt2URj30GE4lEpg1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFql/Uwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7D3C4AF12;
+	Sun, 30 Jun 2024 12:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719752045;
+	bh=MTLcAa4+Z4K8Qu34a7IYdMmh1nWwrZWGHcm39mzOztw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WFql/UwhlU5AToM7jPrbjpsP0ocEKkBfI273nUf/54QtBqLOCni0+4ewvUdpAM4rs
+	 c7j055sGIRAxASoXbTafztQ5p2b9cnYwWJYLgjHRPFhDmFGpX9yPOdJmfwbhQITKkf
+	 b00fdV+8rpQBjZY0UbmDdapfnHyzV3+w0hQaiJ4ylnWe9ETTcUu0bP2U7kjescUL8p
+	 NgkhNvNoH3RkEeriqmG+Hv8PFtKivz88Ao8iVnMcnCFC0bL1h3GRw25ybR7vB5otXx
+	 I6/li3xaaBJGcfea+zX/Rno4N3pcsYgoytH8PsL0986MuEm15TTkWjjhMjnmf82nM1
+	 In7CwbzaFF/jw==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ec17eb4493so29512911fa.2;
+        Sun, 30 Jun 2024 05:54:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU/92KMCkxtAgp215YDgpm9n8N9yiEtnrNs0vSnQUf1ANBcV81HSVuWVBLKCvw0Std1Uto6CHh2FUtQfB7cMpEGs9VZBfgr92dMOOy+gQ7qZ4RX49vm/kJCBiGFZ0wMvPbb7loObzDerZnePUnY68lVPr+tLHtphaxmg6WNKw/cjSnNTdD/1RTbzAYNVAAq06WevUZZBpe2OeHiAXtRsQ==
+X-Gm-Message-State: AOJu0Yw0qQ4c8d9XcEAdMNKmUh8wFlB58XbHJ8X8O1+TBkUaJo1Y36H2
+	vZ9n89SGGyWXLWN6obfv5qAKAMY/6MTLu7G/AWX/+jJ/BjQojCCJeuje01KwaaAROa/6PH1SoCW
+	JxBF4Hhgh2B+me8sbFB+TBF8SeJs=
+X-Google-Smtp-Source: AGHT+IFs/7YAIZFxyyiGE2KYpKMUZ55m6O8zrTccnHK16hMcQAymlwwDLAPtEzNvFMCMrpX/LTlCq4HsY8kMRZ2jPd4=
+X-Received: by 2002:a05:651c:81d:b0:2ec:5502:b2f4 with SMTP id
+ 38308e7fff4ca-2ee5e707762mr20716781fa.45.1719752043665; Sun, 30 Jun 2024
+ 05:54:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240529133446.28446-1-Jonathan.Cameron@huawei.com> <20240529133446.28446-19-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20240529133446.28446-19-Jonathan.Cameron@huawei.com>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sun, 30 Jun 2024 20:53:51 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6Ghfj74hcOQCn6yz4t-_p=WkYdmWRrw=v8FK6t+f_EkA@mail.gmail.com>
+Message-ID: <CAAhV-H6Ghfj74hcOQCn6yz4t-_p=WkYdmWRrw=v8FK6t+f_EkA@mail.gmail.com>
+Subject: Re: [PATCH v10 18/19] arm64: document virtual CPU hotplug's expectations
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, linux-acpi@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org, 
+	Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, loongarch@lists.linux.dev, x86@kernel.org, 
+	Russell King <linux@armlinux.org.uk>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Miguel Luis <miguel.luis@oracle.com>, James Morse <james.morse@arm.com>, 
+	Salil Mehta <salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+	Hanjun Guo <guohanjun@huawei.com>, Gavin Shan <gshan@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, linuxarm@huawei.com, 
+	justin.he@arm.com, jianyong.wu@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Replacing strcpy with strscpy with memory bound.
+Hi, Jonathan,
 
-Signed-off-by: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
----
- drivers/acpi/acpi_video.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, May 29, 2024 at 9:44=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> From: James Morse <james.morse@arm.com>
+>
+> Add a description of physical and virtual CPU hotplug, explain the
+> differences and elaborate on what is required in ACPI for a working
+> virtual hotplug system.
+>
+> Signed-off-by: James Morse <james.morse@arm.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> Reviewed-by: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  Documentation/arch/arm64/cpu-hotplug.rst | 79 ++++++++++++++++++++++++
+>  Documentation/arch/arm64/index.rst       |  1 +
+>  2 files changed, 80 insertions(+)
+>
+> diff --git a/Documentation/arch/arm64/cpu-hotplug.rst b/Documentation/arc=
+h/arm64/cpu-hotplug.rst
+> new file mode 100644
+> index 000000000000..76ba8d932c72
+> --- /dev/null
+> +++ b/Documentation/arch/arm64/cpu-hotplug.rst
+> @@ -0,0 +1,79 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +.. _cpuhp_index:
+> +
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +CPU Hotplug and ACPI
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +CPU hotplug in the arm64 world is commonly used to describe the kernel t=
+aking
+> +CPUs online/offline using PSCI. This document is about ACPI firmware all=
+owing
+> +CPUs that were not available during boot to be added to the system later=
+.
+> +
+> +``possible`` and ``present`` refer to the state of the CPU as seen by li=
+nux.
+> +
+> +
+> +CPU Hotplug on physical systems - CPUs not present at boot
+> +----------------------------------------------------------
+> +
+> +Physical systems need to mark a CPU that is ``possible`` but not ``prese=
+nt`` as
+> +being ``present``. An example would be a dual socket machine, where the =
+package
+> +in one of the sockets can be replaced while the system is running.
+> +
+> +This is not supported.
+> +
+> +In the arm64 world CPUs are not a single device but a slice of the syste=
+m.
+> +There are no systems that support the physical addition (or removal) of =
+CPUs
+> +while the system is running, and ACPI is not able to sufficiently descri=
+be
+> +them.
+> +
+> +e.g. New CPUs come with new caches, but the platform's cache toplogy is
+> +described in a static table, the PPTT. How caches are shared between CPU=
+s is
+> +not discoverable, and must be described by firmware.
+> +
+> +e.g. The GIC redistributor for each CPU must be accessed by the driver d=
+uring
+> +boot to discover the system wide supported features. ACPI's MADT GICC
+> +structures can describe a redistributor associated with a disabled CPU, =
+but
+> +can't describe whether the redistributor is accessible, only that it is =
+not
+> +'always on'.
+> +
+> +arm64's ACPI tables assume that everything described is ``present``.
+> +
+> +
+> +CPU Hotplug on virtual systems - CPUs not enabled at boot
+> +---------------------------------------------------------
+In my opinion "enabled" is not a good description here. It is too
+general and confusing. For example, in enable_nonboot_cpus(), "enable"
+means make a "present" CPU "online", while in ACPI MADT, "enabled"
+means "possible" but not "present". So I suggest rename "enabled" to
+"pending" or "usable" or some other better words. Thanks.
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 1fda30388297..700f0e8fdba2 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1128,8 +1128,8 @@ static int acpi_video_bus_get_one_device(struct acpi_device *device, void *arg)
- 		return -ENOMEM;
- 	}
- 
--	strcpy(acpi_device_name(device), ACPI_VIDEO_DEVICE_NAME);
--	strcpy(acpi_device_class(device), ACPI_VIDEO_CLASS);
-+	strscpy(acpi_device_name(device), ACPI_VIDEO_DEVICE_NAME, strlen(ACPI_VIDEO_DEVICE_NAME));
-+	strscpy(acpi_device_class(device), ACPI_VIDEO_CLASS, strlen(ACPI_VIDEO_CLASS));
- 
- 	data->device_id = device_id;
- 	data->video = video;
--- 
-2.34.1
+Huacai.
 
+> +
+> +Virtual systems have the advantage that all the properties the system wi=
+ll
+> +ever have can be described at boot. There are no power-domain considerat=
+ions
+> +as such devices are emulated.
+> +
+> +CPU Hotplug on virtual systems is supported. It is distinct from physica=
+l
+> +CPU Hotplug as all resources are described as ``present``, but CPUs may =
+be
+> +marked as disabled by firmware. Only the CPU's online/offline behaviour =
+is
+> +influenced by firmware. An example is where a virtual machine boots with=
+ a
+> +single CPU, and additional CPUs are added once a cloud orchestrator depl=
+oys
+> +the workload.
+> +
+> +For a virtual machine, the VMM (e.g. Qemu) plays the part of firmware.
+> +
+> +Virtual hotplug is implemented as a firmware policy affecting which CPUs=
+ can be
+> +brought online. Firmware can enforce its policy via PSCI's return codes.=
+ e.g.
+> +``DENIED``.
+> +
+> +The ACPI tables must describe all the resources of the virtual machine. =
+CPUs
+> +that firmware wishes to disable either from boot (or later) should not b=
+e
+> +``enabled`` in the MADT GICC structures, but should have the ``online ca=
+pable``
+> +bit set, to indicate they can be enabled later. The boot CPU must be mar=
+ked as
+> +``enabled``.  The 'always on' GICR structure must be used to describe th=
+e
+> +redistributors.
+> +
+> +CPUs described as ``online capable`` but not ``enabled`` can be set to e=
+nabled
+> +by the DSDT's Processor object's _STA method. On virtual systems the _ST=
+A method
+> +must always report the CPU as ``present``. Changes to the firmware polic=
+y can
+> +be notified to the OS via device-check or eject-request.
+> +
+> +CPUs described as ``enabled`` in the static table, should not have their=
+ _STA
+> +modified dynamically by firmware. Soft-restart features such as kexec wi=
+ll
+> +re-read the static properties of the system from these static tables, an=
+d
+> +may malfunction if these no longer describe the running system. Linux wi=
+ll
+> +re-discover the dynamic properties of the system from the _STA method la=
+ter
+> +during boot.
+> diff --git a/Documentation/arch/arm64/index.rst b/Documentation/arch/arm6=
+4/index.rst
+> index d08e924204bf..78544de0a8a9 100644
+> --- a/Documentation/arch/arm64/index.rst
+> +++ b/Documentation/arch/arm64/index.rst
+> @@ -13,6 +13,7 @@ ARM64 Architecture
+>      asymmetric-32bit
+>      booting
+>      cpu-feature-registers
+> +    cpu-hotplug
+>      elf_hwcaps
+>      hugetlbpage
+>      kdump
+> --
+> 2.39.2
+>
+>
 
