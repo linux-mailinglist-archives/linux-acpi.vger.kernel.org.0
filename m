@@ -1,153 +1,138 @@
-Return-Path: <linux-acpi+bounces-6695-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6696-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE6491D7A8
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 07:50:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7D391D7B3
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 07:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51211F22B91
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 05:50:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E85B1C22205
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 05:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEC7433D8;
-	Mon,  1 Jul 2024 05:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9211A28D;
+	Mon,  1 Jul 2024 05:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="NQCaENbu"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="CpEu1hZC"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD143D96D
-	for <linux-acpi@vger.kernel.org>; Mon,  1 Jul 2024 05:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6C638397
+	for <linux-acpi@vger.kernel.org>; Mon,  1 Jul 2024 05:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719812989; cv=none; b=Oq7+38ogRnx6JxS0/uStpX9zPCuEL1KCr/CsGijJrQKaWEXY2vmkbVBcmZwijlE+8KR/pYoc++DC3umWwxGbMYFrV0gKrvSp+kpMGyLtWDhgZcvX4Ke7Dxm1mF74pSeNaU5CDPEeQeCl1HZkzE/ZYKN8g60/Of4JafzZUto91bk=
+	t=1719813143; cv=none; b=BKT4gdYSV8z1JreQ97BgxsLrpZf9Bb3c6ZvV6359BTfecIbQE8T+BDVsZGA5BnbFFaJQEEP+1Mq3IFG21OFEznIu3R7v/p/q3pMPerq6d6YUgWvVS76o++IyDeB3whdy7SBWR+tGpO7aWYonut7jIZIzTgD/Ar7+yUSfcuYzfpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719812989; c=relaxed/simple;
-	bh=mqqGdxTAEmXRIjGTDLRjrJRNNyk8TOJ/9inqH08rFms=;
+	s=arc-20240116; t=1719813143; c=relaxed/simple;
+	bh=vZGko0eoNLnj84zRoOPdlydINGSPQ6fYtJo/KDahuY4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uruBEOI00HGH27yOkm3QvwSqEhK3phZaaXXfTKMT+5IYzDdlQQtPy1XoxwkkkwOSOB1G2nRR1gP/4ADAUFXPwXXkD1fOPLhh6zFNKfb9sHGYoP9kPiPX7cDRrvPRA/v0t2MS/C1jafusyY4bvRgG0iecWnwGILfI1foJAzFwu74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=NQCaENbu; arc=none smtp.client-ip=209.85.167.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNm4wdFwcAYdk6a/BLPCqtWcex4cnlm+3xWVH+ADjFcY9PL1OnoRRdO60yLKvfXAYTDBryCqxmdEwlxdA6J5Th2so0dsXqJnwDOCX56Q9xQlD+VJaPBOeMw3gTWlPX1mYxywkaxwV5ynIooLGAePFI85/4T0dCN8Wzp+6FR/Nl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=CpEu1hZC; arc=none smtp.client-ip=209.85.210.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3c9cc66c649so1656668b6e.1
-        for <linux-acpi@vger.kernel.org>; Sun, 30 Jun 2024 22:49:46 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-702052976f7so1105189a34.1
+        for <linux-acpi@vger.kernel.org>; Sun, 30 Jun 2024 22:52:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1719812986; x=1720417786; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4s/WBvVl/dst1lHjWFZpMEMdrWEWEKJym4uGaWtNax0=;
-        b=NQCaENbuY22ees4p2Z4dKnlXLHK1hiHxuS9HYo2/1vL/sRXH050PwZ3ArdngMJXiXG
-         MfI+vlsmVSiPqFC5tV/87IkP63vgZbpQEb5yBcP8CaOXWrnIYWyF1DdD6FpQQFTsE0+0
-         5hFRhtuggvSMadFf3KYbsMoPsuKvs+KXPN4m2Tsd18KxC2SPEeuoCifdkR1pXrOyBwy7
-         TsOOV9gMR9gpPdbhU9jT3e2Zv65URBKh5gYmbZkDvXQL83UX0goK/I7CnWDL6P51biZ+
-         V40W9vLc/h/FsNyRMA153bl7Pce4Qg0setvvwND8aGQD/URWU1sT/+dw+uyFgJBhpabZ
-         do8A==
+        d=ventanamicro.com; s=google; t=1719813141; x=1720417941; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aKMU8DKIWEClgPDBnmDjtT7Ao2B1dNYMjzwF2iFrrjI=;
+        b=CpEu1hZCoRVZqXhtpRCFV7/VZ4tUIUEaOQTxBIG4rA9LQvmcuZn+UZBbHFdE13kyZi
+         4XCjy6vPsX9WCOA0m5PbhVqIEJDMoNnmHGcZfVQCvTRbdAJgS70RmEPSomNcy5D+pugp
+         wjQdPHLQXyg4cxrxz0gnFsWDYJKw7nIi6qt+UBwUIphXz9blveDHDUM+jPQnlB7s+1EP
+         mzHFsoDt3Ulf/ru4hdUtcFuDD+yukWX7ccTwfUnoqRX6BBHWniQGV6rAXmbVPshlpCMK
+         1KNT8NFAYsbe/7OP5JySlZyPLAr/fLzu3b4wal6zXkbfkulDNBj0HLSJfJS8KhiouGSm
+         Kjfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719812986; x=1720417786;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4s/WBvVl/dst1lHjWFZpMEMdrWEWEKJym4uGaWtNax0=;
-        b=RnKjX6nM9uqFbpEcNka86z/CSJEfJQA++EjXfbzitJDQ1HPVOa1A3tJG9LDYDMZ4xN
-         cWif5YDQsanmyxThlLBOTHqhWD5ewXipDUVqvoaN0e9A47I5cBZelVSfwM+XRzysun6o
-         IEOX8ksmswPCmwODajwjC4UmLZllaREMRZ+Mvf3NlWZq/PU72e7drPeCZuX9bm2Hlz7T
-         L5FEPTFv0c1mng18tpAY37cb01I0uDHcjeeoX+G5kDfBaTDt/pSvxx78zna38NE8hnrF
-         bXcpuVGugEgJzN8F/GiA9EN97i0SK3x7pUzYREhv+N9OPaJTbax/xDZSqLZ8ti3FcS2O
-         54QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBRqpwoGJKpcaevo38/iWln5lmPr7p7LMFodDJttyoDhVYbtLwvVO4AehlhWeHfWhn4/sk48vDo8UENVKQg1dvRuoglIpWAh/hzQ==
-X-Gm-Message-State: AOJu0Yz6Nz7Ie/neU1DHi1yIXC9Eo+wsQU3LnWqA5guwdtaV4mQMNbtO
-	CmltGFNV0y0ylA/TgD6CL5anfT5lLK4jDhd/vVBZv+QyVXcH75CPMhU43wZ0c18=
-X-Google-Smtp-Source: AGHT+IFkbfzSyeGbbMoYBWXleU/NPIjZpuMJZvhBR4F8gn5oN8vBjv/YM3Be+WxqxSc8Jn7yn+W2+w==
-X-Received: by 2002:a05:6808:1706:b0:3d6:32d2:2c15 with SMTP id 5614622812f47-3d6b5686a2dmr6011108b6e.59.1719812985837;
-        Sun, 30 Jun 2024 22:49:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719813141; x=1720417941;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aKMU8DKIWEClgPDBnmDjtT7Ao2B1dNYMjzwF2iFrrjI=;
+        b=qJmlKxpSKId16X+WJ0wv3GDzhjl4iTGJm4QoT9un3CT1ls7aWSpXe1CSnbna1w7XgZ
+         SN/eljUs8HeRw0g5i/yIfJHiSUALJJcl4sgvBs60FXb5xyBhL2QiSUuytST6q2WQHce5
+         7S8O44pEk/7OPIJhaHPhpodAQ9qybyT8gFO7Nt+nySITpokhAIOHlUtoNAypOUC4osH1
+         957ZvhlK+1lCVLbBPL3APEBUHDXG05mAE7Dhs6nKUbJTg/6rhg8yBDowMx/Bd/3xj9ng
+         DtgdWhOkAICI+NJ0SzXaUUKEF5eNaEmFpxLUf3nUqUu/+lvOpaLGxhVlS+N69RExQB1M
+         8ZaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW6VcbUXTRV5yC05VovSNpCWJY64XjMd66/ykvre8YuVgdZS8PuPWde9op5BidzR4izd5fpEpIGyLILO/1XC1C5qC9v3orh7Tq0fA==
+X-Gm-Message-State: AOJu0Yz2d0cCvepNoNqb1xVOjq7jUZDmCat8g/iStBPiyUwSyJN8qkJg
+	W8ep42wmNHy9PIdDV4xze+gCB1Tu4b0eVryrp29Fa1NyoXULkVvCbGNzRuF365o=
+X-Google-Smtp-Source: AGHT+IGm7YJAgZMyphMx4GQMzsUKLII+YHeZwD23+Ey+akRFhATjAn/ybArgYnMmQp/igw9JEjVJmw==
+X-Received: by 2002:a05:6830:903:b0:702:1d8:4d08 with SMTP id 46e09a7af769-702076a4d47mr8000813a34.35.1719813141012;
+        Sun, 30 Jun 2024 22:52:21 -0700 (PDT)
 Received: from sunil-laptop ([106.51.187.237])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d62fb48ab1sm1228661b6e.54.2024.06.30.22.49.39
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7a9b2d9sm1167621a34.6.2024.06.30.22.52.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jun 2024 22:49:45 -0700 (PDT)
-Date: Mon, 1 Jul 2024 11:19:35 +0530
+        Sun, 30 Jun 2024 22:52:20 -0700 (PDT)
+Date: Mon, 1 Jul 2024 11:22:03 +0530
 From: Sunil V L <sunilvl@ventanamicro.com>
-To: yunhui cui <cuiyunhui@bytedance.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org, bhelgaas@google.com,
-	james.morse@arm.com, jeremy.linton@arm.com,
-	Jonathan.Cameron@huawei.com, pierre.gondois@arm.com,
-	sudeep.holla@arm.com, tiantao6@huawei.com
-Subject: Re: [External] Re: [PATCH v6 3/3] RISC-V: Select ACPI PPTT drivers
-Message-ID: <ZoJDb9PQX2oEISrI@sunil-laptop>
-References: <20240617131425.7526-1-cuiyunhui@bytedance.com>
- <20240617131425.7526-3-cuiyunhui@bytedance.com>
- <CAEEQ3wnkQsfmLbyMrG_YBvWvhHJdSTg7dG5W_mxv_wxCjatgCA@mail.gmail.com>
- <ZnLY3mNxyv9QOmGn@sunil-laptop>
- <CAEEQ3wmarOoWWYrdpf7YNQdZG4rf_O4dHkeiO3W1cuavVh8TMQ@mail.gmail.com>
+To: Haibo Xu <haibo1.xu@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>
+Cc: arnd@arndb.de, xiaobo55x@gmail.com, ajones@ventanamicro.com,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Charlie Jenkins <charlie@rivosinc.com>, Baoquan He <bhe@redhat.com>,
+	Evan Green <evan@rivosinc.com>,
+	=?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>,
+	Zong Li <zong.li@sifive.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Chen Jiahao <chenjiahao16@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	James Morse <james.morse@arm.com>, Andy Chiu <andy.chiu@sifive.com>,
+	Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Robert Richter <rrichter@amd.com>, Yuntao Wang <ytcoode@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] Add ACPI NUMA support for RISC-V
+Message-ID: <ZoJEA85utEK6u36t@sunil-laptop>
+References: <cover.1718268003.git.haibo1.xu@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEEQ3wmarOoWWYrdpf7YNQdZG4rf_O4dHkeiO3W1cuavVh8TMQ@mail.gmail.com>
+In-Reply-To: <cover.1718268003.git.haibo1.xu@intel.com>
 
-On Thu, Jun 20, 2024 at 09:28:18AM +0800, yunhui cui wrote:
-> Hi Sunil,
+On Thu, Jun 13, 2024 at 04:54:32PM +0800, Haibo Xu wrote:
+> This patch series enable RISC-V ACPI NUMA support which was based on
+> the recently approved ACPI ECR[1].
 > 
-> On Wed, Jun 19, 2024 at 9:11 PM Sunil V L <sunilvl@ventanamicro.com> wrote:
-> >
-> > On Wed, Jun 19, 2024 at 07:32:18PM +0800, yunhui cui wrote:
-> > > Hi Sunil,
-> > >
-> > > On Mon, Jun 17, 2024 at 9:14 PM Yunhui Cui <cuiyunhui@bytedance.com> wrote:
-> > > >
-> > > > After adding ACPI support to populate_cache_leaves(), RISC-V can build
-> > > > cacheinfo through the ACPI PPTT table, thus enabling the ACPI_PPTT
-> > > > configuration.
-> > > >
-> > > > Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> > > > Reviewed-by: Jeremy Linton <jeremy.linton@arm.com>
-> > > > Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-> > > > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-> > > > ---
-> > > >  arch/riscv/Kconfig | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > >
-> > > > diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> > > > index 9f38a5ecbee3..1b4c310a59fb 100644
-> > > > --- a/arch/riscv/Kconfig
-> > > > +++ b/arch/riscv/Kconfig
-> > > > @@ -13,6 +13,7 @@ config 32BIT
-> > > >  config RISCV
-> > > >         def_bool y
-> > > >         select ACPI_GENERIC_GSI if ACPI
-> > > > +       select ACPI_PPTT if ACPI
-> > > >         select ACPI_REDUCED_HARDWARE_ONLY if ACPI
-> > > >         select ARCH_DMA_DEFAULT_COHERENT
-> > > >         select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
-> > > > --
-> > > > 2.20.1
-> > > >
-> > >
-> > > Gentle ping.
-> > >
-> > Actually, my RB is still valid. Anyway, here again.
-> >
-> > Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-> >
-> > Thanks,
-> > Sunil
+> Patch 1/4 add RISC-V specific acpi_numa.c file to parse NUMA information
+> from SRAT and SLIT ACPI tables.
+> Patch 2/4 add the common SRAT RINTC affinity structure handler.
+> Patch 3/4 change the ACPI_NUMA to a hidden option since it would be selected
+> by default on all supported platform.
+> Patch 4/4 replace pr_info with pr_debug in arch_acpi_numa_init() to avoid
+> potential boot noise on ACPI platforms that are not NUMA.
 > 
-> Okay, thank you. BTW, when will this patchset be picked up to linux-next?
+> Based-on: https://github.com/linux-riscv/linux-riscv/tree/for-next
 > 
+> [1] https://drive.google.com/file/d/1YTdDx2IPm5IeZjAW932EYU-tUtgS08tX/view?usp=sharing
+
 Hi Palmer,
 
-Can this series be picked up for -next? Looks like it has got sufficient
-reviews.
+Can this series be taken for -next?
 
 Thanks,
 Sunil
