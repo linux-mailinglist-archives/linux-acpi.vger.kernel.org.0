@@ -1,64 +1,65 @@
-Return-Path: <linux-acpi+bounces-6698-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6699-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83B191DFA2
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 14:43:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4758091DFA4
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 14:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9D0D1C2156D
-	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 12:43:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02EB328321D
+	for <lists+linux-acpi@lfdr.de>; Mon,  1 Jul 2024 12:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB47158D8B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0000158DAE;
 	Mon,  1 Jul 2024 12:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eo5HqoFc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eh6xH8wH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999B977115;
-	Mon,  1 Jul 2024 12:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5851113213D;
+	Mon,  1 Jul 2024 12:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719837828; cv=none; b=dy73FMz8HwfqXyRBu3eUskYtZsZGNAdhkaWg1FXlDgHaxrWXvZaLnZYuboovmZTN7A/PeeMIh9ICB/5sdomTB/rKC2hTkoch889xF4KV7b4ceSpZxC0ZYoc5pD36asNH+gMTuXc5aO6N/dcmvzAhmuj+tiEjQoufGRQRu8SOwoA=
+	t=1719837828; cv=none; b=O4VSeCj2/64S8D/FtePBMLkFAkzcHK6mO+dnY+KmJ+IcY6ndkSPxkB8uST+/g6f8byy8D7tgqwTTnVWLyzk3flaE1uJYgEOCQcIvF28189E6rj42yegi9nsC2vv6Mt2NUVDfO6OtHTkMGSq2r9Rc4DQ07idd3A3FQskYLMYegA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719837828; c=relaxed/simple;
-	bh=fuZHtYepSjJ+dKAML5RqYEDMwlfQw1MHuNoSf5j7xF4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Oh8FCbZkVknzrP+VGlnFZKJdFPa91ORQPWZecKUjgGvJBLJECZmcvsI9x0isR0esnhxZ59kRk4CzZ/2B0CDHGIkVUXBQgPuaQEz6xY9xpszJZ3JHbfNnDqK8czuj7SYlV7tWvVw1i3HMNmEEqFNysWxIVC2X6bODlEg7FOw5Vs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eo5HqoFc; arc=none smtp.client-ip=198.175.65.15
+	bh=4dJPOn2wSzjYPHEtO815W8ilxheAN85kZevrftGA81Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AzlVtBBNVWGeQy3e/c8jeTTI5g9Y1OnKUhNtl8Ddc2xZ1beadgJQIQBOZVE5ATdWD9ImFhfGVdbf+GHSdTcGCBlRDLSRJwFkICCEdpf7/txj7qTw59iF+pQ1wZV3HLsiFSdNjIgsOSFgx0nO1PcmL4VS8PS7Erg1uQXLh0Tt+mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eh6xH8wH; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1719837827; x=1751373827;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fuZHtYepSjJ+dKAML5RqYEDMwlfQw1MHuNoSf5j7xF4=;
-  b=Eo5HqoFcdUb9hYVr91ZRgXiR/NCa/oBU4iCSMHmTuKAuzn3mO4MVoWgn
-   WL4+hMBDIj6VKhfQBtKtA3VQkeuIWD1McN2UmAXzhSS5/kkQcyvDtRLAK
-   vVaQeNeq54/PTUYQaWITCUQIlutJA+mBOBf9yI3fAwGoGPY0RoU0mlEnR
-   RC5UAlXYdcEZsPtTDOERwXeG0NJuWr3Pfl6kDUznllj9GSFOPZseSJIjW
-   l0HRCZMAilq2NSHxnfB6HKK99mno3mJzlvmJJ1OzDQYfXrNXeIguu86ED
-   2Z+NM67Kx8l9zzT9qSX/qErPG5yUtfImQJBX49d8bkMyy/0WFWHiOT5I9
-   Q==;
-X-CSE-ConnectionGUID: 4zTatBpMRO+AANSc5WEm0Q==
-X-CSE-MsgGUID: jU9SInQ+SL6+YKX3cxavsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="20717559"
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=4dJPOn2wSzjYPHEtO815W8ilxheAN85kZevrftGA81Q=;
+  b=Eh6xH8wHzwQ2aD9QN1wVJul0slVt+96W7+KhpcazrN/epEw13wsnKiNx
+   HWsGUbqj/oyYg81B4jiPvDGxN133ajeSBK/xQDJ+1Gm3fP+sf83J1R7dM
+   0NuDZusSI6yB6DOC4lXF6REwdhdKNXJ6WS8fEWg4QaslrL6VOPyIJX7YR
+   QFvCJ33MedmYufYo2WQ7USzes5DV9O4SUnbMzPWl+4CHXN8k3jQQKI7lE
+   B3WKFh/xkFbJ+P5xsp+Wjp0IrpDc4hlyTWnHHMH5YTMlIR3/KKqERyiPT
+   a4CUp6uAQXHL4wlh9YKSBAjrfbr5oB2wKlemJFQqZF36oUvYqkBzq5T25
+   A==;
+X-CSE-ConnectionGUID: RDBo2FdDQe62xWDFbinb8g==
+X-CSE-MsgGUID: LEG5JaTLSuiILunrTwRlhw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="16797983"
 X-IronPort-AV: E=Sophos;i="6.09,176,1716274800"; 
-   d="scan'208";a="20717559"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 05:43:46 -0700
-X-CSE-ConnectionGUID: G9gf8jThQLa1r9xw+cDMjg==
-X-CSE-MsgGUID: gMdY0FQ4RDGnKzBUvYHueg==
+   d="scan'208";a="16797983"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2024 05:43:46 -0700
+X-CSE-ConnectionGUID: o4r0dtA6Q9aj4qTAi6Fxkw==
+X-CSE-MsgGUID: 4+Ce8L5lRwmRcq5kDIRvfA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,176,1716274800"; 
-   d="scan'208";a="49971716"
+   d="scan'208";a="50469588"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa005.fm.intel.com with ESMTP; 01 Jul 2024 05:43:42 -0700
+  by orviesa005.jf.intel.com with ESMTP; 01 Jul 2024 05:43:43 -0700
 Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 3C686341; Mon, 01 Jul 2024 15:43:41 +0300 (EEST)
+	id 4BD70330; Mon, 01 Jul 2024 15:43:41 +0300 (EEST)
 From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
@@ -78,10 +79,12 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 0/3] x86: Reduce code duplication on page table initialization
-Date: Mon,  1 Jul 2024 15:43:31 +0300
-Message-ID: <20240701124334.1855981-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 1/3] x86/mm/ident_map: Fix virtual address wrap to zero
+Date: Mon,  1 Jul 2024 15:43:32 +0300
+Message-ID: <20240701124334.1855981-2-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240701124334.1855981-1-kirill.shutemov@linux.intel.com>
+References: <20240701124334.1855981-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -90,22 +93,58 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use kernel_ident_mapping_init() to initialize kernel page tables where
-possible, replacing manual initialization, reducing code duplication.
+Calculation of 'next' virtual address doesn't protect against wrapping
+to zero. It can result in page table corruption and hang. The
+problematic case is possible if user sets high x86_mapping_info::offset.
 
-Kirill A. Shutemov (3):
-  x86/mm/ident_map: Fix virtual address wrap to zero
-  x86/acpi: Replace manual page table initialization with
-    kernel_ident_mapping_init()
-  x86/64/kexec: Rewrite init_transition_pgtable() with
-    kernel_ident_mapping_init()
+Replace manual 'next' calculation with p?d_addr_and() which handles
+wrapping correctly.
 
- arch/x86/include/asm/kexec.h       |  5 +-
- arch/x86/kernel/acpi/madt_wakeup.c | 73 +++++-------------------
- arch/x86/kernel/machine_kexec_64.c | 89 +++++++++++-------------------
- arch/x86/mm/ident_map.c            | 15 +----
- 4 files changed, 50 insertions(+), 132 deletions(-)
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+---
+ arch/x86/mm/ident_map.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
+diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
+index c45127265f2f..7422146b0dc9 100644
+--- a/arch/x86/mm/ident_map.c
++++ b/arch/x86/mm/ident_map.c
+@@ -100,10 +100,7 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
+ 		pud_t *pud = pud_page + pud_index(addr);
+ 		pmd_t *pmd;
+ 
+-		next = (addr & PUD_MASK) + PUD_SIZE;
+-		if (next > end)
+-			next = end;
+-
++		next = pud_addr_end(addr, end);
+ 		if (info->direct_gbpages) {
+ 			pud_t pudval;
+ 
+@@ -141,10 +138,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
+ 		p4d_t *p4d = p4d_page + p4d_index(addr);
+ 		pud_t *pud;
+ 
+-		next = (addr & P4D_MASK) + P4D_SIZE;
+-		if (next > end)
+-			next = end;
+-
++		next = p4d_addr_end(addr, end);
+ 		if (p4d_present(*p4d)) {
+ 			pud = pud_offset(p4d, 0);
+ 			result = ident_pud_init(info, pud, addr, next);
+@@ -186,10 +180,7 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
+ 		pgd_t *pgd = pgd_page + pgd_index(addr);
+ 		p4d_t *p4d;
+ 
+-		next = (addr & PGDIR_MASK) + PGDIR_SIZE;
+-		if (next > end)
+-			next = end;
+-
++		next = pgd_addr_end(addr, end);
+ 		if (pgd_present(*pgd)) {
+ 			p4d = p4d_offset(pgd, 0);
+ 			result = ident_p4d_init(info, p4d, addr, next);
 -- 
 2.43.0
 
