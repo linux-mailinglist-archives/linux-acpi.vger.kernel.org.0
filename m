@@ -1,132 +1,187 @@
-Return-Path: <linux-acpi+bounces-6740-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6741-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE207924176
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 16:54:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF1292475D
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 20:38:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26E921C23BD5
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 14:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DC491C245B6
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 18:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E141BA89C;
-	Tue,  2 Jul 2024 14:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0011C9EC2;
+	Tue,  2 Jul 2024 18:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tbxW6LU5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVsrmKKN"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF3E1BA892;
-	Tue,  2 Jul 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6AD158DD1;
+	Tue,  2 Jul 2024 18:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719932070; cv=none; b=Y26RK/3QjKLfVB6IY2Dos1DxIg6s+PaPuLug7uvhV6Q1rffQ1j6/TDoxwLoLTZWvhWZBaB8VBXKI0oWB+zwA1/2zUDdBi/Bf5mCZP1NxNUmvb4OXG8+MPoT9GbqjrG3Ph9Hi5gtxZ184WTJGF0RMN65uSeHC7mUJU5bjCTIFEgY=
+	t=1719945526; cv=none; b=oVXEE4v8Qjarto6S0S6q82WHxpJIxEVlFWkpDG71r6Id3oXQvxX9zAEb3urT1hu03mmxMmNAhJUX7PwE80DCO6H0yu3dwD0CnhIj9UCyo9T8T1rbUYK46W/rut02T8CyQrY+khKO6KLb3SBfCwzrjmmXtRWK0W1t4kVza+vkxyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719932070; c=relaxed/simple;
-	bh=TaI+nB0ZJGeSrYMleXJBRusDkseeq1JKf+GsAnw96SU=;
+	s=arc-20240116; t=1719945526; c=relaxed/simple;
+	bh=uAwmHr9SLo21MJ+46qLqwlvwev386jzirLkNTASJ850=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=COLGd7FdaSJlK6Ti0//jLo28tR6erkhIjke6kSgno/2q1H8FXnPlFyTwd+aRmy+MRAhbn49BG+MXyDpIaEbGb5pvSlJl/mr47873AIIIOZ3zobU5LB3CvcSqB2w88Y1mCXBBm+aPzUjicJRD5fsATYTpRk2NLlrJak4JIDuxj6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tbxW6LU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7CBC4AF0C;
-	Tue,  2 Jul 2024 14:54:29 +0000 (UTC)
+	 To:Cc:Content-Type; b=TEMo9ZRp/IVk/oOD0B4eXHm+yifW5X1gKxWR98KM8v3OJIlivXX19gL2HDDn6q7Nbg6zfm01DIxnOvC4CWN0wE5udDxbnyfoLkFWndkfohji1zcUq1FUrFAN+FD+9yR1NoJqxy+uAWP5GGMcLEqbI5Lrocsju6+Sv6eCjTKeTc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVsrmKKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFC5C4AF12;
+	Tue,  2 Jul 2024 18:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719932069;
-	bh=TaI+nB0ZJGeSrYMleXJBRusDkseeq1JKf+GsAnw96SU=;
+	s=k20201202; t=1719945526;
+	bh=uAwmHr9SLo21MJ+46qLqwlvwev386jzirLkNTASJ850=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tbxW6LU5ep5erzNL3EiwJb+I50M0eCWr/UImQXOVTgGMJtJgHDPRC2MfuK07nS0xH
-	 eeVGsFvai1Zvii6pfTYF1VtduyU2jqSNxcqnqeKsWO4lgbYijb++YuaxLG+WFGu3ET
-	 8A7l9Ap8Il3oNDN4scdS5i5Q593Cbs3u8tDedWkYBDYVqw5hi+sB+QAD0S2pcF1ZHd
-	 ixUm8vwNEcREa2VT8zU15+oFFvj/EW5f3HqBwj1jluIUctY7kh2j61jSA+zqnNIfic
-	 KceDooX7q1j/9aqszl4kbzxx5E/c/ayWQ1citKeVtCuT+kmgoKhHNuxI1m17dzXbJT
-	 Q+Q5cn/tUZXVQ==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee75ffce77so10538291fa.3;
-        Tue, 02 Jul 2024 07:54:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXWSwLSneNtf8RBJuYQU5z58asbqapyeWwZLpPMVyURDdrW4xKeiZRRXEpsI36rml/k1/c8pnc+8tYM4khx5YffDvQZFtJI5HvHcX7WsY9mM5MOBXXfjk0ePIhkk/aJcKDM4UrwYu0DQ+KTUerYQouYZmTxPbrUgrbk1UcPVB1GsibiLRXQwV93OxftsFejO57goQwWmjx4DBwD1jvHoao=
-X-Gm-Message-State: AOJu0YxE02DI9gI3Ea9lM3buFJK3N/jhRivN1wgHUe8+tFfa+7h/n/Si
-	RuR8lzB5gBFZCdXlA1fmH7/eMW2bcaTbuxyEvA39ywN4VY34faYRqO7I3WjD+W8lxhyQ+NXB/Kp
-	yDwl5ac5dYscH2HOskBdL7/Ps/J0=
-X-Google-Smtp-Source: AGHT+IHb3CV0ugaADa64FK+5hltnQPwSgB/QJrId5Rv7Zs0zSjmG+9VdS1AjRSt9LsoPkH80k6BYiK1TmI/EB8+bIx4=
-X-Received: by 2002:a05:651c:b14:b0:2ec:5488:cc9e with SMTP id
- 38308e7fff4ca-2ee5e3bbd14mr72964281fa.26.1719932068120; Tue, 02 Jul 2024
- 07:54:28 -0700 (PDT)
+	b=LVsrmKKNbiFg4S4kUGs6bUi9H9GAYGPsZRlzox88UeEMfh6td6pwacbSoQRxhUANX
+	 jiD1qNCoj30YX5QnY8OON0pGSoIuZClhx7tVTCPICOzihA5L5UPb50G2Dh7t7ZBreg
+	 X4EHi1lY1IqzEERrqK81N3iNvwFsYaabSJTeP4nxuDOpqtxDisthm1ctzKCFpBpKNi
+	 DVR/7a2nXVmmvVUDzvdCBltw5RKsk7mb62lrsV/xlTFsGECckmxIwU8l/j/KwB35GC
+	 JolrqtqU3cYukRG90OWW0gggj/AWonFpe9py4MkGNuzQBEx65u1ikQMbFYaHZYOytj
+	 v+iYYn+4IpVUw==
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5c411d037b3so103932eaf.2;
+        Tue, 02 Jul 2024 11:38:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWg5w6Qs8JqYQykfiQWI1UAqPALm4iEn0fdP+KXHK8h59dUsMwsl0praVupBmLl2Uvz7wLdIU99ISdEPjWqNeTKWBdUl+lop/hMNoGs4U/HeARsu9K1bqA3epvBfmBIq2+BBe232/7FZq8MKw3piJnmTuTTdvAD+YpvLL50pHkS3w==
+X-Gm-Message-State: AOJu0YxuIGT1Fng8hKH8nqz05qtfqiZh4nKOf4fX0pg+M4Lnyc5beiLg
+	IFHKznqe2Jzm+fjXb1c7e2NpFwuUvIcaMn/NCDMba62YuwP8sUt+xc9OwAxPDPRox4lSEo/G1Ax
+	MBS0aE4/aO00wMWop8rLuXajlkjo=
+X-Google-Smtp-Source: AGHT+IEGZaz0dhzEOPrGPinIraLvKWqZp3vSG9m+75+eb78BO5DkX/qAj5bvNyyPM2whqBQC6B6rCfMqFgPfeLiYAYs=
+X-Received: by 2002:a4a:b3c4:0:b0:5c2:20aa:db25 with SMTP id
+ 006d021491bc7-5c438e43fa9mr9084162eaf.1.1719945525318; Tue, 02 Jul 2024
+ 11:38:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240506174721.72018-1-john.allen@amd.com> <20240506174721.72018-2-john.allen@amd.com>
- <20240627080801.GDZn0d4Sr9y0B6zvPh@fat_crate.local>
-In-Reply-To: <20240627080801.GDZn0d4Sr9y0B6zvPh@fat_crate.local>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 2 Jul 2024 16:54:17 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXF534YBft=a9X=RwBthEuPb4j7usQ+F-j2PHCjFhmeZxg@mail.gmail.com>
-Message-ID: <CAMj1kXF534YBft=a9X=RwBthEuPb4j7usQ+F-j2PHCjFhmeZxg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPI: PRM: Add PRM handler direct call support
-To: Borislav Petkov <bp@alien8.de>
-Cc: John Allen <john.allen@amd.com>, linux-efi <linux-efi@vger.kernel.org>, rafael@kernel.org, 
-	lenb@kernel.org, yazen.ghannam@amd.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-edac@vger.kernel.org
+References: <CAJZ5v0iY=S+WKWvDAAWxLcOwvpOG5Cck1gQv4p+FfW1Nca0Yqw@mail.gmail.com>
+ <20240701205639.117194-1-visitorckw@gmail.com>
+In-Reply-To: <20240701205639.117194-1-visitorckw@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 2 Jul 2024 20:38:34 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gKqH83dedAxOfK9b7bym8ApjnF7kLAME37Lqss+FwrwQ@mail.gmail.com>
+Message-ID: <CAJZ5v0gKqH83dedAxOfK9b7bym8ApjnF7kLAME37Lqss+FwrwQ@mail.gmail.com>
+Subject: Re: [PATCH v4] ACPI: processor_idle: Fix invalid comparison with
+ insertion sort for latency
+To: Kuan-Wei Chiu <visitorckw@gmail.com>
+Cc: rafael@kernel.org, lenb@kernel.org, mario.limonciello@amd.com, 
+	akpm@linux-foundation.org, jserv@ccns.ncku.edu.tw, alexdeucher@gmail.com, 
+	belegdol@gmail.com, regressions@leemhuis.info, linux-acpi@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 27 Jun 2024 at 10:08, Borislav Petkov <bp@alien8.de> wrote:
+On Mon, Jul 1, 2024 at 10:56=E2=80=AFPM Kuan-Wei Chiu <visitorckw@gmail.com=
+> wrote:
 >
-> On Mon, May 06, 2024 at 05:47:20PM +0000, John Allen wrote:
-> > Platform Runtime Mechanism (PRM) handlers can be invoked from either the
-> > AML interpreter or directly by an OS driver. Implement the direct call
-> > method.
-> >
-> > Export the symbol as this will be used by modules such as the AMD
-> > Address Translation Library and likely others in the future.
-> >
-> > Signed-off-by: John Allen <john.allen@amd.com>
-> > Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> > ---
-> > v2:
-> >   - Align statements setting fields in context buffer on '='
-> > ---
-> >  drivers/acpi/prmt.c  | 24 ++++++++++++++++++++++++
-> >  include/linux/prmt.h |  5 +++++
-> >  2 files changed, 29 insertions(+)
-> >
-> > diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
-> > index c78453c74ef5..1cfaa5957ac4 100644
-> > --- a/drivers/acpi/prmt.c
-> > +++ b/drivers/acpi/prmt.c
-> > @@ -214,6 +214,30 @@ static struct prm_handler_info *find_prm_handler(const guid_t *guid)
-> >  #define UPDATE_LOCK_ALREADY_HELD     4
-> >  #define UPDATE_UNLOCK_WITHOUT_LOCK   5
-> >
-> > +int acpi_call_prm_handler(guid_t handler_guid, void *param_buffer)
-> > +{
-> > +     struct prm_handler_info *handler = find_prm_handler(&handler_guid);
-> > +     struct prm_module_info *module = find_prm_module(&handler_guid);
-> > +     struct prm_context_buffer context;
-> > +     efi_status_t status;
-> > +
-> > +     if (!module || !handler)
-> > +             return -ENODEV;
-> > +
-> > +     memset(&context, 0, sizeof(context));
-> > +     ACPI_COPY_NAMESEG(context.signature, "PRMC");
-> > +     context.identifier         = handler->guid;
-> > +     context.static_data_buffer = handler->static_data_buffer_addr;
-> > +     context.mmio_ranges        = module->mmio_info;
-> > +
-> > +     status = efi_call_acpi_prm_handler(handler->handler_addr,
-> > +                                        (u64)param_buffer,
-> > +                                        &context);
-> > +
-> > +     return efi_status_to_err(status);
-> > +}
+> The acpi_cst_latency_cmp comparison function currently used for sorting
+> C-state latencies does not satisfy transitivity, causing incorrect
+> sorting results. Specifically, if there are two valid acpi_processor_cx
+> elements A and B and one invalid element C, it may occur that A < B,
+> A =3D C, and B =3D C. Sorting algorithms assume that if A < B and A =3D C=
+,
+> then C < B, leading to incorrect ordering.
 >
-> + linux-efi as Rafael wanted to make sure the environment is created properly
-> for the EFI runtime services call...
+> Given the small size of the array (<=3D8), we replace the library sort
+> function with a simple insertion sort that properly ignores invalid
+> elements and sorts valid ones based on latency. This change ensures
+> correct ordering of the C-state latencies.
 >
+> Fixes: 65ea8f2c6e23 ("ACPI: processor idle: Fix up C-state latency if not=
+ ordered")
+> Cc: stable@vger.kernel.org
+> Reported-by: Julian Sikorski <belegdol@gmail.com>
+> Closes: https://lore.kernel.org/lkml/70674dc7-5586-4183-8953-8095567e73df=
+@gmail.com/
+> Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> ---
+> v3 -> v4:
+> - Rename the parameter 'arr' to 'states'.
+> - Add empty lines to enhance readability.
+>
+> Note: I only performed a build test and a simple unit test to ensure
+>       the latency of valid elements is correctly sorted in the randomly
+>       generated data.
+>
+>  drivers/acpi/processor_idle.c | 37 +++++++++++++++--------------------
+>  1 file changed, 16 insertions(+), 21 deletions(-)
+>
+> diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.=
+c
+> index bd6a7857ce05..831fa4a12159 100644
+> --- a/drivers/acpi/processor_idle.c
+> +++ b/drivers/acpi/processor_idle.c
+> @@ -16,7 +16,6 @@
+>  #include <linux/acpi.h>
+>  #include <linux/dmi.h>
+>  #include <linux/sched.h>       /* need_resched() */
+> -#include <linux/sort.h>
+>  #include <linux/tick.h>
+>  #include <linux/cpuidle.h>
+>  #include <linux/cpu.h>
+> @@ -386,25 +385,24 @@ static void acpi_processor_power_verify_c3(struct a=
+cpi_processor *pr,
+>         acpi_write_bit_register(ACPI_BITREG_BUS_MASTER_RLD, 1);
+>  }
+>
+> -static int acpi_cst_latency_cmp(const void *a, const void *b)
+> +static void acpi_cst_latency_sort(struct acpi_processor_cx *states, size=
+_t length)
+>  {
+> -       const struct acpi_processor_cx *x =3D a, *y =3D b;
+> +       int i, j, k;
+>
+> -       if (!(x->valid && y->valid))
+> -               return 0;
+> -       if (x->latency > y->latency)
+> -               return 1;
+> -       if (x->latency < y->latency)
+> -               return -1;
+> -       return 0;
+> -}
+> -static void acpi_cst_latency_swap(void *a, void *b, int n)
+> -{
+> -       struct acpi_processor_cx *x =3D a, *y =3D b;
+> +       for (i =3D 1; i < length; i++) {
+> +               if (!states[i].valid)
+> +                       continue;
+>
+> -       if (!(x->valid && y->valid))
+> -               return;
+> -       swap(x->latency, y->latency);
+> +               for (j =3D i - 1, k =3D i; j >=3D 0; j--) {
+> +                       if (!states[j].valid)
+> +                               continue;
+> +
+> +                       if (states[j].latency > states[k].latency)
+> +                               swap(states[j].latency, states[k].latency=
+);
+> +
+> +                       k =3D j;
+> +               }
+> +       }
+>  }
+>
+>  static int acpi_processor_power_verify(struct acpi_processor *pr)
+> @@ -449,10 +447,7 @@ static int acpi_processor_power_verify(struct acpi_p=
+rocessor *pr)
+>
+>         if (buggy_latency) {
+>                 pr_notice("FW issue: working around C-state latencies out=
+ of order\n");
+> -               sort(&pr->power.states[1], max_cstate,
+> -                    sizeof(struct acpi_processor_cx),
+> -                    acpi_cst_latency_cmp,
+> -                    acpi_cst_latency_swap);
+> +               acpi_cst_latency_sort(&pr->power.states[1], max_cstate);
+>         }
+>
+>         lapic_timer_propagate_broadcast(pr);
+> --
 
-This looks fine to me.
-
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Applied as 6.10-rc material, thanks!
 
