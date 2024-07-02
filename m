@@ -1,155 +1,120 @@
-Return-Path: <linux-acpi+bounces-6736-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6738-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F04923E1A
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 14:45:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC727923E43
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 15:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8A71C219C1
-	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 12:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD7212823F9
+	for <lists+linux-acpi@lfdr.de>; Tue,  2 Jul 2024 13:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658FD1509BC;
-	Tue,  2 Jul 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EC516EB6A;
+	Tue,  2 Jul 2024 13:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ik3s/CRH"
+	dkim=pass (2048-bit key) header.d=fusetak.com header.i=@fusetak.com header.b="Of8YU+EF"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DF59470;
-	Tue,  2 Jul 2024 12:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40D916D316
+	for <linux-acpi@vger.kernel.org>; Tue,  2 Jul 2024 13:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719924350; cv=none; b=C2U1z4Ae9+uVSR6/5LCYlbYdmq/NOFbmgvhoEl6hZ38JbpJ9U50JFF7R2Q5SpA3NBzDY5LeZk+NSSLwFjViNOerlD7nlOHPmTKiHYU/8Qnn4dmslqCaid49pM2M6o1HsN+5GLy7TwGZbxc1xbbCPvXXKyQo5j/+5j1V5wig2PQk=
+	t=1719925211; cv=none; b=sFdx8O9Lqm6iTs7qzMDYiAoLe70tnaNJkIFP3YIqKJLmZcl0ME6+ZWD6F7ZBP1v1gZROICb/8D3VgSajvML3pcREogkeICft/GzxynXkFD/b3qe2dLZbyRztntBqoIUyO4Pdb/NLidWhW7GYN8lUfYk6CJFhHra8i7OJHGrIqTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719924350; c=relaxed/simple;
-	bh=6MxOCjaZBfyhMv8du5omxW8oPy/q2TFH9X6JuMNqPjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TS/r6J98nauKIOVcCuH/Sd5YaCstUOFpzTIKzSP8+dEcD7Tv+veUnpmEvTjqZmXLUq116i7ac5FyJ+FknqaXR25aSBbGC6Pe2ia2JxGrNclBFYvozB8q21nTzXV6rDDdfwbY7GpQOFuMrCg/iVrI4HA27TfKPd6iwgipaF2CSIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ik3s/CRH; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 37F8B40E0185;
-	Tue,  2 Jul 2024 12:45:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id yDrurNuZkDgg; Tue,  2 Jul 2024 12:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1719924341; bh=ijZkZE9XznnApp6up4UcjQQ75hPC45pe2q9sFxxaCZQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ik3s/CRHtyfWtp3Gj8m+o/DrBiNBlAESRzya4ZShBaVclzri05XQoLmxeLeV+xd2H
-	 KbVGekNohy70doRGqxfRx06Uvndh7piOLm4rd2u5Tyg4bvBdHk2gH9ejSPiv4dz1AC
-	 AAsoW3y37gIS88FsmVh5lHfemsHjDqlZAtKZw7ZiStA3hV78K2Ridxw3q/Di174CE+
-	 oqeDypiECwEoEaRzryxlQG4QLgpRQePAY4gitDPGZKHyiIvxp24AYJ79ItWWDx/uGn
-	 jfcLtKOdsPaOxnkRTlTMH30jb/FRKn10cfEVLBRVolvX1z5b+gS54Itif8exwPbZnh
-	 D91EXhkaG2vcPdarTxyixGj4OGRmPIHNHfo93HlhTg34ZF10dhOqgQ1/5eqWkbNnUN
-	 MCBzocbo1oFQKZgGbt1P/Y0/6+QPTDjDET1ILGrVaVx3zs4r8bpvbT3GV9I0UwL35x
-	 sl7W91zcf1RuOQejgvpH30h2d/4yiACK9pJBNYId46JfumGpp2TODpla8pHzr8psMf
-	 KJ7ENF/ee/M9ZhIo5gm1anStDpYuufLgcS5fENsFYt9hXXn4LJa8hR4rJlqcWkeUBo
-	 X7+Kv8L3flPO/KB+39aZXRv31xm9xz+WoG5ushF10ZEAbs5WoIno1AzwJwlG4zqcim
-	 f3IOlQSMLifHy5+q/Di9iHK4=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DD80B40E0192;
-	Tue,  2 Jul 2024 12:45:29 +0000 (UTC)
-Date: Tue, 2 Jul 2024 14:45:24 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
-	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-	"Li, Zhiquan1" <zhiquan1.li@intel.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"hpa@zytor.com" <hpa@zytor.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: Re: [PATCH v3] x86/acpi: fix panic while AP online later with kernel
- parameter maxcpus=1
-Message-ID: <20240702124524.GEZoP2ZKcTcKl1ca1R@fat_crate.local>
-References: <20240702005800.622910-1-zhiquan1.li@intel.com>
- <41ee5438e8059c299f5722e386cdc1457ddc16eb.camel@intel.com>
+	s=arc-20240116; t=1719925211; c=relaxed/simple;
+	bh=6cW1OOupuN0t4GT+kU86RYQiWiaMVegwZV8ABdLxQTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pbzX8LUjzvDMMoUIT1HmLHzVjDEZ/o1F/EN20zE3FrSXKO4Cinq7SSpweXv++gsPyhe8/UFcJ3oHAOF932swkaoTtAsSAdcpHhQUoJLMh66dxAjvApwo7R4LDlVTwM8Ht9gHDNMXvtjsKfhlr+0z0YBNsvew58FgYcvfSaaorHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fusetak.com; spf=pass smtp.mailfrom=fusetak.com; dkim=pass (2048-bit key) header.d=fusetak.com header.i=@fusetak.com header.b=Of8YU+EF; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fusetak.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fusetak.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-79c03dbddb8so392715285a.1
+        for <linux-acpi@vger.kernel.org>; Tue, 02 Jul 2024 06:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fusetak.com; s=google; t=1719925208; x=1720530008; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kb47TtTb9W9xZLtu/KLNSD3b7BbY25Ysou+rBKGBTNc=;
+        b=Of8YU+EF7SKawwTmqmiSvzCpcCqhzsDaOsMyHMpof7bgrBEUblUAisOoQoBWnv9tKT
+         r9g21ExemsU+EHLkZDQo47uCCaNQVj6UcsjQLY11MBNJ/JlPPw/zccC1LUKFU4FcZ4i0
+         iLtt1+Qom3G23x8mB2ShSakH5k23EYRnVVoGAwq2fmi/uFlCqoO8cm5eoc7T73uLJf2f
+         FFuT8WJj7PMDGLmeXkzyb4gXHBZTMigLTmOuy9TyP0odkrOTtF9Afs7jA3fc5XEX4dIA
+         rI/MIRewK9/nhdPMRuJ9Yrz2VkzH0L6bMcS/xZmZcURGCFBKYs1/jmG7umq65JVvv3rR
+         SDhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719925208; x=1720530008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kb47TtTb9W9xZLtu/KLNSD3b7BbY25Ysou+rBKGBTNc=;
+        b=ettmPIuGkTLlh32fs4ghoSZ3nC/ta7LaZIzoMtM5MRF90RMKl02EUtLfRE5gWvJe7e
+         nvRljFjd5JsYXvEJj30Q1j0JupvmKy6z1p9PPwSf7XvqSaOi0SWTOHAPR0ALe1Ahmlk7
+         lC3hdSh8L4dVgDEL2I3ny3NbLaCSRwKA702KAxA2gxMzl1y6HiAiwXXJn6NC7XzZJhqa
+         8wQRS8QV4ij36HqTgVEnA5InzgGujSgRBn+lfP69yjzcBUaNc8nX3Y/+cleEyb8KbBUV
+         cFXlJaP0CJFUC11VlXQ1/VKVdSyWlzIoBawElbOVJX9akeqfXfwQ70bShn5BdJn/qkS6
+         iWHA==
+X-Gm-Message-State: AOJu0YyP/S8zwqCB/JNZSk8XURPy5ybNZHoirAXytjW5hVjgFcb7TlSF
+	AXbXSzCRNwWqbQT92nVQPW0gd3D74Jvy7v/63s5eCkFZ6DSX32WSTaTNJRYNQinxMAWynwPJYj0
+	iP1k=
+X-Google-Smtp-Source: AGHT+IGndDHoxuxivK30khxxlY9Ols6DM6ZXNPhZXatEMEKm+OixAXFdAVbQkiIzLqaCtlYBtwXc0A==
+X-Received: by 2002:ad4:5aec:0:b0:6b5:9146:6251 with SMTP id 6a1803df08f44-6b5b7059d58mr81660626d6.12.1719925208459;
+        Tue, 02 Jul 2024 06:00:08 -0700 (PDT)
+Received: from fusetakDesktop.internal.fusetak.net ([2607:fea8:4d9f:ec87::103b])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b5d8fa573fsm4535156d6.37.2024.07.02.06.00.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jul 2024 06:00:08 -0700 (PDT)
+From: Tamim Khan <tamim@fusetak.com>
+To: linux-acpi@vger.kernel.org
+Cc: rafael@kernel.org,
+	lenb@kernel.org,
+	Tamim Khan <tamim@fusetak.com>,
+	Lefteris <eleftherios.giapitzakis@gmail.com>
+Subject: [PATCH] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MU
+Date: Tue,  2 Jul 2024 08:58:06 -0400
+Message-ID: <20240702125918.34683-1-tamim@fusetak.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <41ee5438e8059c299f5722e386cdc1457ddc16eb.camel@intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 02, 2024 at 12:05:38PM +0000, Huang, Kai wrote:
-> On Tue, 2024-07-02 at 08:58 +0800, Zhiquan Li wrote:
-> > The issue was found on the platform that using "Multiprocessor Wakeup
-> > Structure"[1] to startup secondary CPU, which is usually used by
-> > encrypted guest.  When restrict boot time CPU to 1 with the kernel
-> > parameter "maxcpus=1" and bring other CPUs online later, there will be
-> > a kernel panic.
-> > 
-> > The variable acpi_mp_wake_mailbox, which holds the virtual address of
-> > the MP Wakeup Structure mailbox, will be set as read-only after init.
-> > If the first AP gets online later, after init, the attempt to update
-> > the variable results in panic.
-> > 
-> > The memremap() call that initializes the variable cannot be moved into
-> > acpi_parse_mp_wake() because memremap() is not functional at that point
-> > in the boot process.
-> > 
-> > [1] Details about the MP Wakeup structure can be found in ACPI v6.4, in
-> >     the "Multiprocessor Wakeup Structure" section.
-> > 
-> > Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
-> > Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> 
-> Seems this changelog only mentions the problem, but doesn't say how to fix:
-> 
->   Remove the __ro_after_init annotation of acpi_mp_wake_mailbox to fix.
+Like various other Asus laptops, the Asus Vivobook Pro N6506MV has a
+DSDT table that describes IRQ 1 as ActiveLow while the kernel is overriding
+it to Edge_High. This prevents the internal keyboard from working. This patch
+prevents this issue by adding this laptop to the override table that prevents
+the kernel from overriding this IRQ
 
-Do not talk about *what* the patch is doing in the commit message - that
-should be obvious from the diff itself. Rather, concentrate on the *why*
-it needs to be done.
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218954
+Tested-by: Lefteris <eleftherios.giapitzakis@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Imagine one fine day you're doing git archeology, you find the place in
-the code about which you want to find out why it was changed the way it 
-is now.
-
-You do git annotate <filename> ... find the line, see the commit id and
-you do:
-
-git show <commit id>
-
-You read the commit message and there's just gibberish and nothing's
-explaining *why* that change was done. And you start scratching your
-head, trying to figure out why. Because the damn commit message is worth
-sh*t.
-
-This happens to us maintainers at least once a week. Well, I don't want
-that to happen in my tree anymore.
-
-So none of this text above still doesn't explain to me *why* this is
-happening.
-
-Why do APs need to update acpi_mp_wake_mailbox?
-
-Which patch is this fixing?
-
-See Documentation/process/submitting-patches.rst
-
-Questions over questions...
-
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index b5bf8b81a050..b3ae5f9ac551 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -524,6 +524,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook Pro N6506MU */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "N6506MU"),
++		},
++	},
+ 	{
+ 		/* LG Electronics 17U70P */
+ 		.matches = {
 -- 
-Regards/Gruss,
-    Boris.
+2.45.2
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
