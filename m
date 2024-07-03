@@ -1,277 +1,553 @@
-Return-Path: <linux-acpi+bounces-6750-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6751-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD1B924DF0
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2024 04:40:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96245925570
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2024 10:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3B3D1C24EA9
-	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2024 02:40:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 537B2282074
+	for <lists+linux-acpi@lfdr.de>; Wed,  3 Jul 2024 08:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4574683;
-	Wed,  3 Jul 2024 02:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E01131BDD;
+	Wed,  3 Jul 2024 08:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hFxDlmOL"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DyDgFpCr"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D331146B5;
-	Wed,  3 Jul 2024 02:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719974422; cv=fail; b=gKxYzH055tH4b7Q+Ukxh4cbEzgirWlI6GLR0opx90vk3pKMxPlhY4MxwKidgsd+TPp+KzWU0+xhiv/awrgHxzqRIV33Qxu3dEWK6xQT7kAMQveW0VAyg3DxQJH7KmGgAPxEaWE8vMMBsdK2DqLtoprzLcxK7miyNRR9EPcBEgpE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719974422; c=relaxed/simple;
-	bh=kpXJqWwneebVeYtNAJJ8Jd2QPLnvnArffFFAt/pAjxM=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fJD4qdr2gmUDQiorIuDo4r3s/F6C50PV68McGrUnTWWL5u6oy1eDvjhYi+e1U69pFnBzkKHjftcu//dBhJ1u3LwsWMJ9DvYmMBNx2F1R9AWkNgRlpScWbl7xNWxb/FcGJcghw+r3hXPQaqRhph7XiHFPhjVGHM80cX/3ky5qcj0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hFxDlmOL; arc=fail smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719974420; x=1751510420;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=kpXJqWwneebVeYtNAJJ8Jd2QPLnvnArffFFAt/pAjxM=;
-  b=hFxDlmOL5wokRLdLyDnY7DuzuzgIdLMKQMhGDjEhRu3Kbfom2UKe6xX1
-   cT+68GevQyzXmdZMe30idJ2uBZk/4f3Xz7CTdSQlWJNri0rpO1Ckyu5dK
-   R8U3ovsdWN0loyHJvTDeDGTSL86l4oEpaopt3VSEYqrRA8U3y3Wd6rE3N
-   JL2PdD3lMyh5IQmxdoF3F266MXFfqe6C2LvTkcJ/eysXva6gSI5IJsRqb
-   Doir0F/o8iM/QZWC8fWa0/gg/ei5TNthOtRtXFJomkM6yhOR4a9zA0JaN
-   hqzfecwxscWutmcMTmR7FZpkwv8aZKLH7300XeHns3WEwsky4yRWpo4+q
-   w==;
-X-CSE-ConnectionGUID: JrkuODtlT9aDZOdIXUlAfw==
-X-CSE-MsgGUID: ambTPP1uRzCW+eEZTuJXaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="16839048"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; 
-   d="scan'208";a="16839048"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 19:40:19 -0700
-X-CSE-ConnectionGUID: NV//HrizQy+mQgXnLmcEUQ==
-X-CSE-MsgGUID: GLRxK2cDQS6GjMpcIp98Iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; 
-   d="scan'208";a="46837159"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 02 Jul 2024 19:40:20 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 2 Jul 2024 19:40:18 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 2 Jul 2024 19:40:18 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 2 Jul 2024 19:40:18 -0700
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.40) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 19:40:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EF568CSiPVwEcGHWngOgZ1b+JDetFQRxYEBxYgF0bn6TXx/hhgbFp8ci+HFnFd2ieTWwpvJqI5J9CpfWJdM7gJCkuE4pWwQaSc4ceWYoJ0+guI4GcfLrWPIDTS124yIZseI9QwP6LK8xmlNXYlso+mmFQVfKRmRlKiUWvVSi50quRtggQKDcupxmJueeNG6UMmhE44tPJBZ8Q3JY1dK4aIqXgkZMIwP3zKaJKu+dZsEFl3P+CaShSfd4gc2lbkik5dL3JsEAuPCrRngIFR3P6Zuk4CUPVdc47L8y/ksaM2MY+aN+i8CufybZFMWU1jiVCu8SnTRGfdRK3cXmxfzKww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rdENCG3RMa/SgYpbYliRWWfxYfZ8TYeXkbOdfp0sq60=;
- b=Do8Q56Ilfc6kLuGdXG3Uc4fJq2OSgO03qk6B6D5YWYQS3/V3k+rivV5rZBlTgOy8a/IJer4wH17/Biz1NegYzYWjfSnbakEkpYDdsDRDJJlO2DYgixc53+d0+rDCHF4SZfmW4fhjPgZv/Ez7vAiHd8QlcLIAEROI7LQZTjIqwLG83RwEwhUkq/PjuIkfJG9vIoVI6FdECRNbLifmpwaG9fl5ns+RN0UvBM7okJRwnKpJfVWfbCM6yiA01WZouq757YPdSj4fuZHxJJjFUhWKmJ81d3Lrn0AC4bR/+RqLmNdEtEoXtQxspg8NGLhlsCFXWVyXmfeON3gNMkshZkc3wg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB8478.namprd11.prod.outlook.com (2603:10b6:510:308::11)
- by SA1PR11MB5827.namprd11.prod.outlook.com (2603:10b6:806:236::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.25; Wed, 3 Jul
- 2024 02:40:15 +0000
-Received: from PH7PR11MB8478.namprd11.prod.outlook.com
- ([fe80::6961:eda0:dc93:5b4d]) by PH7PR11MB8478.namprd11.prod.outlook.com
- ([fe80::6961:eda0:dc93:5b4d%6]) with mapi id 15.20.7741.017; Wed, 3 Jul 2024
- 02:40:15 +0000
-Message-ID: <2ce73ea8-bd1e-4148-8206-ffac8926a5d1@intel.com>
-Date: Wed, 3 Jul 2024 10:39:43 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/acpi: fix panic while AP online later with kernel
- parameter maxcpus=1
-To: "Huang, Kai" <kai.huang@intel.com>, "bp@alien8.de" <bp@alien8.de>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"mingo@redhat.com" <mingo@redhat.com>, "tglx@linutronix.de"
-	<tglx@linutronix.de>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20240702005800.622910-1-zhiquan1.li@intel.com>
- <41ee5438e8059c299f5722e386cdc1457ddc16eb.camel@intel.com>
- <20240702124524.GEZoP2ZKcTcKl1ca1R@fat_crate.local>
- <1b716b14c52a89c254108df1cee85306c786c52b.camel@intel.com>
-From: Zhiquan Li <zhiquan1.li@intel.com>
-Content-Language: en-US
-In-Reply-To: <1b716b14c52a89c254108df1cee85306c786c52b.camel@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0029.apcprd02.prod.outlook.com
- (2603:1096:4:195::6) To PH7PR11MB8478.namprd11.prod.outlook.com
- (2603:10b6:510:308::11)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689AF13A3F7
+	for <linux-acpi@vger.kernel.org>; Wed,  3 Jul 2024 08:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719995624; cv=none; b=Bd9QRCwi7JkDphEoMM3ZWEXFueXbGOppu5JtKKg5ukRyCcoBJnv293ZbVFCGeJtNLtu0Hgd4o5DVzTh2d12SVEBb63h2sbm4sCvw7U1qL/9FeEchsHEFS7M2WooV8tCzEcCKt1ZdfuTqFZs5tTwXQhgrRCC5wlPOL5xSRDR1xl8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719995624; c=relaxed/simple;
+	bh=gh8cWkz+uZr7Fy+OxS6J+nBZ4z94uHhOoDTE8BsIX8c=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=UKk8p2gI6Z51UeTCD8jluO7+4fwcUWMAbitw545w/d7gGxkwZvLOn5zAXkTjqu4dshEoN1vUfQX052DRKY+lXCG3TdaSDbGXl4uswb+lvUFB7SgP7nLN3mVR3+oGWvR0IOGqHNfP9PLyVKQfb+aOVfzH9l2/PPhsOQhSjj0TikQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DyDgFpCr; arc=none smtp.client-ip=91.218.175.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: jonathan.cameron@huawei.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1719995618;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GYdbIFqgvxSKSTx5OuR/O8uY7V3pnvwxeIXq3ufogpU=;
+	b=DyDgFpCreZvB2lwahGshIF3DBrO6FntRG7C+76zi8xGu8aDbz1/RfGKqsK25a+L38OLXUS
+	C11DOr3doHhqMokKBE+sXmq2txvQ4z0LGm/h0D7KFMyNmEsWMW9J1COhSZL4mOf76vOM/K
+	3UMDQ2MRjHJKMQrDlJTMKOEATkS3Wug=
+X-Envelope-To: ying.huang@intel.com
+X-Envelope-To: gourry.memverge@gmail.com
+X-Envelope-To: aneesh.kumar@linux.ibm.com
+X-Envelope-To: mhocko@suse.com
+X-Envelope-To: tj@kernel.org
+X-Envelope-To: john@jagalactic.com
+X-Envelope-To: emirakhur@micron.com
+X-Envelope-To: vtavarespetr@micron.com
+X-Envelope-To: ravis.opensrc@micron.com
+X-Envelope-To: apopple@nvidia.com
+X-Envelope-To: sthanneeru@micron.com
+X-Envelope-To: sj@kernel.org
+X-Envelope-To: rafael@kernel.org
+X-Envelope-To: lenb@kernel.org
+X-Envelope-To: akpm@linux-foundation.org
+X-Envelope-To: dave.jiang@intel.com
+X-Envelope-To: dan.j.williams@intel.com
+X-Envelope-To: linux-acpi@vger.kernel.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: horenc@vt.edu
+X-Envelope-To: horenchuang@bytedance.com
+X-Envelope-To: horenchuang@gmail.com
+X-Envelope-To: linux-cxl@vger.kernel.org
+X-Envelope-To: qemu-devel@nongnu.org
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB8478:EE_|SA1PR11MB5827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8040b3ef-0f92-4d9b-342f-08dc9b097860
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?RFBvV0Y1VzhSbmlYSzFhcStWTzdhY044eStJbStRWktpSjMxYmo4bHdYNTBT?=
- =?utf-8?B?WFFMTlF3c0xuQnc3YmlPYnZlOXBvMk4xek9IYm4rczdCRDY2M205dlFBYVFX?=
- =?utf-8?B?ZWZ3NEV2SE5URW4xSnBmRVh4azBRZm93aitVTFhmTDVJcWFNdko2K1c1N0tO?=
- =?utf-8?B?K0libXV3c1pvdGJQQ3MrT3ZjQk5OT2VhNTRpMlBOMTZkbmlvMmxTaThqYm5M?=
- =?utf-8?B?TjhlbVlzUmRlclVKRmI1SGg1T21Gd0NRY29QWitrWVFlZFc4RzF2alNsU1lG?=
- =?utf-8?B?Q1EyOXVCYnorcmdZNmx3YkxrbExCR1JRb2RJVzB0NVNvMGZ2bmtHZmFOeXdw?=
- =?utf-8?B?UXBsaThZd0J4OGc1MlFaSktIc0cvOStzT01wVXkwLzY3QVNrUU92a2IrVHRN?=
- =?utf-8?B?YXBaYmNXc0FIU0ZMZVg5SU4rL1VPZmgzL3NoZXdheW43Y09FSXpRUGxzOGps?=
- =?utf-8?B?STZJcWExRG52V05UdUxRaU9uNnpGZ2lSWDJKY2w5cGFSZ0JTQVVvcjBaYnZ3?=
- =?utf-8?B?TjU3NlZxWGNwbEg1SSswZXA3c1RjMWIvU3FCOGthaVErTW9nZHlGN2w2WTc1?=
- =?utf-8?B?Y1JQZjBkTnZoc2MwckdNcFZJUU9VekR1SzVxaFd3TDVWelZCTU1uOEJHWWl6?=
- =?utf-8?B?dDY1U2gzVXJvdFU4RGdzb21Sd2pwY1lyajQzcDV6NjBoTHk2ZXBOYXpXSE5S?=
- =?utf-8?B?NGlXY1ZTWjRObEJFTlNvdWl2UFJBQm5WeWdnRW0vRFpsSUMrVWljZkQxa2xG?=
- =?utf-8?B?cExRK2JpWVhJZG9KU0k0ZUdGM0Zib3luMTRMelhxcmltSWlxVnNxRjZ3V2cx?=
- =?utf-8?B?RmI3SFk2bU05ekIxRlpXZ0g0ZDJCaW9QUkpRcmlkZ09mVlVtOU11cmUwVnd4?=
- =?utf-8?B?WWZzUVlPQjJMbS9nK1lvTUVTczlOdElKT0krOUZjaWNqcnZQZnpqMElhV0kv?=
- =?utf-8?B?b09hUFViczlKZ3J3ZlR2VDlpOUlCVWhPdVk1Mnc4WFVrRk1MOG0xMXRscktT?=
- =?utf-8?B?c0pwR0o5ZjF0V0FRcXhmRWZVaGcwTWdhMUVJZUo3SGNOMFpmZ2dQZ3pIaTlX?=
- =?utf-8?B?KzJKNkxFRWo4ZVhZanFUcHNMTm1VSWQ2WW42NUdBTVJ6VldMSlNhT1R4WnpZ?=
- =?utf-8?B?RkFaUVJjRXFnUEROY0srUXBtN25IMHBsNWp4K1hMR2hEWUZsVFVIY0V2R2N6?=
- =?utf-8?B?c1lMSnk1OXk5a0NnR1VrbU1vMnpDV3RlcFdnbnd0Y3liR1A0MmtOS0dKS0xz?=
- =?utf-8?B?cG81MUJORkRkTVgzTkpXSmE4Qjl1NytlN1RPWVRybUpCUS9aR1kvOG9xWG1O?=
- =?utf-8?B?cmZCeGJ1WTJCV21VY2Q4RTJpc2tyVVI4MkR5b0gxRk9lQ0xlbmx2Q21icE5F?=
- =?utf-8?B?L2N0SEkxZGYwMC9zcnZ4cWFHdWJQbzhkMTBLd2N3blNtd2JCSklmVkkxK0dn?=
- =?utf-8?B?bzg0Q3BuRmVTdmtWaXhhclRINDhKbC83SDBxcWxCQ25yZ3IybjZDbDFiOU13?=
- =?utf-8?B?NkRGYk9MRzM5cjRTLzBlWHFZWG9FNzVBZy9FaEdxOHRlOEJMOWw2N3pxMUIr?=
- =?utf-8?B?UVppbXcrTlZZMHY4S0tmMWNudXRSWWo5STkrc0wvdVVDVjBsc1FKSE4zQ3Ny?=
- =?utf-8?B?ZnQ3RlZudDdRNU8zZTVuWTkwRjJPd3BlZFFtSk9tcnFoQXcvS1dXWFh5ZWY4?=
- =?utf-8?B?WisyQW9hSEU3R1ppVjBsL1Bod29RWjBVbWVQTXh2aytFZWpQZjdvMXZGdkx1?=
- =?utf-8?B?K25iZUVaVit1dzh3VVhOM2g5Qm9BcWRRa2IvSEJWbjdPVEpvcnBuQmt4VXlm?=
- =?utf-8?B?RTJYMzE4cHJpQ090QU5mdz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB8478.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZDFGSC9aeEhCaVAzUGxQWFZmQkx0Y0dEeHhodllpdGg3Z0pSeUdHM2N1Q3J1?=
- =?utf-8?B?NmFrTEk1N2MxOUdJSE1sUm9WdFRTdldIRjNveG9uei9MUVBXS3BPbjhCZWI1?=
- =?utf-8?B?TzdZNUVlL0VBcUgvZ0Y4cXZKZDFKS21SR2JEME9BQ29xd1hmVHJscVUybFUx?=
- =?utf-8?B?bG9nSmNQUDF2YkVoMnVaWi9TS0xHajA2TFpNcHZBeThxQnVvUkFBYlFXaTJW?=
- =?utf-8?B?NWM3djNDWVNPanlHZFZGVURqekloN05kb21BUHNjVldjTUQ4OHd6VE84NzZn?=
- =?utf-8?B?VzJTdzQxUXUyMHVNaytaTjNnSmxQMHVnVHVYVXo0TG81cWtaTjUwMytPOS80?=
- =?utf-8?B?UVd1RWhSa3NlUjVZLzNreWN1bHdKZXY0Z0ZIZjZGUEVOSWsxTjdyNVpidUJH?=
- =?utf-8?B?RnhpWSt5V3hCV3ZpWm83Z2dZWjV1S0c5SzFINGw1Q0s5VDFSMHduRnN4UTV1?=
- =?utf-8?B?WU56T2RvWUFRbzZ0Zlp4dE5GV2R3emxjMmRuMlBHUG9Fazk4SERpK1lFOS9k?=
- =?utf-8?B?RGRWOG9oSmhDVmdFY1h3b0ppQ1lwNFpXOERCL0ozSEI2ajFrOWxoVHdtVkwx?=
- =?utf-8?B?ZHNicDM1YUtmUCs3ckE2Yk9WTzlSaFcrNTY3N2M5S0Rya2I2cForeVhGN1Rr?=
- =?utf-8?B?WDJoa29nOSt6K0kvSVNObFBlSnNMMVl4RE5OSHljM2l4VmlkOVZCYk5vZUpv?=
- =?utf-8?B?L1pDVTVTaEhoWG1KTTZQaXVOaFcxUUFid0VFT0Rra3FmRlRrWWdxOUE3VkNo?=
- =?utf-8?B?U0VaOGQ2bTJnRWVheWpma2dlVzg4QVJjaUU4a1JjNVkwbjlPZlVEeHpVMDZh?=
- =?utf-8?B?R0xNaDNRODlqbkQrZDloMEtYc2g4azVOcDQ1am9rZlA1RlIrQXpDd3FrdTYx?=
- =?utf-8?B?WVNLczJvUEpyNVV4OVdxK2NlYTVseGJ4MGw1T2VZbmlPN21xTG9SdnVTUmJ5?=
- =?utf-8?B?Wm5yZk9ZSW5iWEZMVnZUSDBoU0lXMGRta1FJK1MzT3BIWXZSNXF5ckI0ZUh0?=
- =?utf-8?B?bXdiaC9WSURmQWl1M0lWS2NDWE9KVHdKRS9zb09CZk9hQkY1MC9rNFJTSEhp?=
- =?utf-8?B?bFVVOWVrNVdCTEV5SE1lMXJxVTNFWlVRa0MzMGNWOW1VOHBTZHZyei93S0ZG?=
- =?utf-8?B?UXZlcGZHR1Z0MmNpelRIUU81U0tXUU03QzRIZmgyTWhTTmdQckMyMVNqRDZQ?=
- =?utf-8?B?WXU0T1lNYWFSa1hpOHhjclJ5T3NzNCtpZ1ByUW9yVlk1VXprczVTRjNKSHYv?=
- =?utf-8?B?bWxCbjgrdGMzbWkydFUvNjRBS2FUOWZqM2VQMTVhb0xGNlI1OGhWQUt4QXVN?=
- =?utf-8?B?UHZhQU5XeFVUc3JmSWVjWEJBcitGZGN3ZjVUWkRLTW9JS1VBSmtQbmM2bXhZ?=
- =?utf-8?B?dFZvQlpydFRPWG1vVGVQTlN2U081K0p3QU5MYWFaaWRRWFAvblVXUnh4blRH?=
- =?utf-8?B?V094dmZLMkRKUnlGUTE1K0FpMUVLZGxUeUdLTXBtaTFnSmxDdC9rR0dPN3Jr?=
- =?utf-8?B?aWRtbzRaZmlzV2RCbEJtK203SnVGSEVFNmFVRXFEZWVuUFR1QXc0ajAxQ1dj?=
- =?utf-8?B?REJhcUN5MmRtYnBtVXlNbnNhOTNld1Y1WFBKUHpxdVZ3VW42UFE1NFBmUUQw?=
- =?utf-8?B?OS9HKzc4UGdBRVlrL2svTkhpcDRBMk9OV096MWRSZFNmdmVYMU1UWmtZaG84?=
- =?utf-8?B?RTJpZFNoRFB3TytkbXN4MWFSbFdjdzFDTmM1MFV1VUFHNE9IRVBweld3VTZh?=
- =?utf-8?B?YjZ5bVE1WU1pU09oYlUxZkNEYjc4YWdiUjVGZUh3NXVIdEMwaUJhMGU5Ni9s?=
- =?utf-8?B?anRJbHVxSmwyQ3plMzdzYzcvVWcxMi9ZeFNVcHlScXJpeGJ1bkh5Unl1OXh5?=
- =?utf-8?B?aThWZDFVbDZoMmdwWng5NlJUc3FSNnJOQlkzNG1oNjhPNWxQNWVXOXhPT1Zo?=
- =?utf-8?B?VTlqQXQ5ZUZHNGluemZEYm9XajZiZ1F5M0ZPbXRCQVhmdFdjTnJVSzFqdmpa?=
- =?utf-8?B?am5sWmlmZ2pIWHdXeEhybkFYM20zaHV3R0tmc3QrK2xYaWc1TlpDRVp4UWVr?=
- =?utf-8?B?YWlnYVFaSWI0a2JPVnJieGJRcTk0QlNUbVFMUkpYSTBrWCtRV3cvSnpGS3E3?=
- =?utf-8?Q?klcrs7VFNy8OFFoxIisAtzgbu?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8040b3ef-0f92-4d9b-342f-08dc9b097860
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8478.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2024 02:40:15.7566
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2g2IBCuqLr7GWZg0pxVPUrKPJbZcqk4c8fCxUekG+vK0saLO6Ou8/dnurBAs0hXQOqFzBWMdAiAcwUZmnUFb8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB5827
-X-OriginatorOrg: intel.com
+Date: Wed, 03 Jul 2024 08:33:34 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev>
+Message-ID: <84b43294411bb1fe0ed58f2da59abf554ef48f7d@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v2 1/1] memory tier: consolidate the initialization of
+ memory tiers
+To: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>, "Gregory Price"
+ <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com, mhocko@suse.com,
+ tj@kernel.org, john@jagalactic.com, "Eishan Mirakhur"
+ <emirakhur@micron.com>, "Vinicius Tavares Petrucci"
+ <vtavarespetr@micron.com>, "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+ "Alistair Popple" <apopple@nvidia.com>, "Srinivasulu Thanneeru"
+ <sthanneeru@micron.com>, "SeongJae  Park" <sj@kernel.org>, "Rafael J.
+ Wysocki" <rafael@kernel.org>, "Len Brown" <lenb@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Dave Jiang" <dave.jiang@intel.com>,
+ "Dan Williams" <dan.j.williams@intel.com>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, "Ho-Ren (Jack) Chuang"
+ <horenc@vt.edu>, "Ho-Ren (Jack)  Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
+ linux-cxl@vger.kernel.org, qemu-devel@nongnu.org
+In-Reply-To: <20240702142535.00003dc0@Huawei.com>
+References: <20240628060925.303309-1-horen.chuang@linux.dev>
+ <20240628060925.303309-2-horen.chuang@linux.dev>
+ <20240702142535.00003dc0@Huawei.com>
+X-Migadu-Flow: FLOW_OUT
+
+Hi Jonathan,
+
+I appreciate your feedback and valuable suggestions. Replies inlined.
 
 
-On 2024/7/3 07:55, Huang, Kai wrote:
->> This happens to us maintainers at least once a week. Well, I don't want
->> that to happen in my tree anymore.
->>
->> So none of this text above still doesn't explain to me *why* this is
->> happening.
->>
->> Why do APs need to update acpi_mp_wake_mailbox?
+July 2, 2024 at 6:25 AM, "Jonathan Cameron" <Jonathan.Cameron@huawei.com>=
+ wrote:
+>=20
+>=20On Fri, 28 Jun 2024 06:09:23 +0000
+>=20
+>=20"Ho-Ren (Jack) Chuang" <horen.chuang@linux.dev> wrote:
+>=20
+>=20>=20
+>=20> If we simply move the set_node_memory_tier() from memory_tier_init(=
+)
+> >=20
+>=20>  to late_initcall(), it will result in HMAT not registering
+> >=20
+>=20>  the mt_adistance_algorithm callback function, because
+> >=20
+>=20>  set_node_memory_tier() is not performed during the memory tiering
+> >=20
+>=20>  initialization phase, leading to a lack of correct default_dram
+> >=20
+>=20>  information.
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  Therefore, we introduced a nodemask to pass the information of the
+> >=20
+>=20>  default DRAM nodes. The reason for not choosing to reuse
+> >=20
+>=20>  default_dram_type->nodes is that it is not clean enough. So in the=
+ end,
+> >=20
+>=20>  we use a __initdata variable, which is a variable that is released=
+ once
+> >=20
+>=20>  initialization is complete, including both CPU and memory nodes fo=
+r HMAT
+> >=20
+>=20>  to iterate through.
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  Besides, since default_dram_type may be checked/used during the
+> >=20
+>=20>  initialization process of HMAT and drivers, it is better to keep t=
+he
+> >=20
+>=20>  allocation of default_dram_type in memory_tier_init().
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
+> >=20
+>=20>  Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >=20
+>=20>  ---
+> >=20
+>=20>  drivers/acpi/numa/hmat.c | 5 +--
+> >=20
+>=20>  include/linux/memory-tiers.h | 2 ++
+> >=20
+>=20>  mm/memory-tiers.c | 59 +++++++++++++++---------------------
+> >=20
+>=20>  3 files changed, 28 insertions(+), 38 deletions(-)
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+> >=20
+>=20>  index 2c8ccc91ebe6..a2f9e7a4b479 100644
+> >=20
+>=20>  --- a/drivers/acpi/numa/hmat.c
+> >=20
+>=20>  +++ b/drivers/acpi/numa/hmat.c
+> >=20
+>=20>  @@ -940,10 +940,7 @@ static int hmat_set_default_dram_perf(void)
+> >=20
+>=20>  struct memory_target *target;
+> >=20
+>=20>  struct access_coordinate *attrs;
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  - if (!default_dram_type)
+> >=20
+>=20>  - return -EIO;
+> >=20
+>=20>  -
+> >=20
+>=20>  - for_each_node_mask(nid, default_dram_type->nodes) {
+> >=20
+>=20>  + for_each_node_mask(nid, default_dram_nodes) {
+> >=20
+>=20
+> As below. Do we care if the combination of RAM + CPU wasn't true
+>=20
+>=20earlier and is true by this point? If not, why not just
+>=20
+>=20compute the node mask in here and not store it.
+>=20
 
-Not AP needs to update acpi_mp_wake_mailbox, but BSP might need to
-update it after the init stage.  In the encrypted guest CPU hot-plug
-scenario, BSP memremap() the acpi_mp_wake_mailbox_paddr, and writes APIC
-ID of APs, wakeup vector and the ACPI_MP_WAKE_COMMAND_WAKEUP command
-into mailbox.  Firmware will listen on mailbox command address, and once
-it receives the wakeup command, the CPU associated with the given apicid
-will be booted.
+It=20makes sense to me. I think we can move the computation to here
+and remove the global node mask.
 
-We cannot assume that all APs will be brought up in the init stage.
+> >=20
+>=20> pxm =3D node_to_pxm(nid);
+> >=20
+>=20>  target =3D find_mem_target(pxm);
+> >=20
+>=20>  if (!target)
+> >=20
+>=20>  diff --git a/include/linux/memory-tiers.h b/include/linux/memory-t=
+iers.h
+> >=20
+>=20>  index 0d70788558f4..fa61ad9c4d75 100644
+> >=20
+>=20>  --- a/include/linux/memory-tiers.h
+> >=20
+>=20>  +++ b/include/linux/memory-tiers.h
+> >=20
+>=20>  @@ -38,6 +38,7 @@ struct access_coordinate;
+> >=20
+>=20>  #ifdef CONFIG_NUMA
+> >=20
+>=20>  extern bool numa_demotion_enabled;
+> >=20
+>=20>  extern struct memory_dev_type *default_dram_type;
+> >=20
+>=20>  +extern nodemask_t default_dram_nodes __initdata;
+> >=20
+>=20>  struct memory_dev_type *alloc_memory_type(int adistance);
+> >=20
+>=20>  void put_memory_type(struct memory_dev_type *memtype);
+> >=20
+>=20>  void init_node_memory_type(int node, struct memory_dev_type *defau=
+lt_type);
+> >=20
+>=20>  @@ -76,6 +77,7 @@ static inline bool node_is_toptier(int node)
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  #define numa_demotion_enabled false
+> >=20
+>=20>  #define default_dram_type NULL
+> >=20
+>=20>  +#define default_dram_nodes NODE_MASK_NONE
+> >=20
+>=20>  /*
+> >=20
+>=20>  * CONFIG_NUMA implementation returns non NULL error.
+> >=20
+>=20>  */
+> >=20
+>=20>  diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+> >=20
+>=20>  index 6632102bd5c9..a19a90c3ad36 100644
+> >=20
+>=20>  --- a/mm/memory-tiers.c
+> >=20
+>=20>  +++ b/mm/memory-tiers.c
+> >=20
+>=20>  @@ -43,6 +43,7 @@ static LIST_HEAD(memory_tiers);
+> >=20
+>=20>  static LIST_HEAD(default_memory_types);
+> >=20
+>=20>  static struct node_memory_type_map node_memory_types[MAX_NUMNODES]=
+;
+> >=20
+>=20>  struct memory_dev_type *default_dram_type;
+> >=20
+>=20>  +nodemask_t default_dram_nodes __initdata =3D NODE_MASK_NONE;
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  static const struct bus_type memory_tier_subsys =3D {
+> >=20
+>=20>  .name =3D "memory_tiering",
+> >=20
+>=20>  @@ -671,28 +672,38 @@ EXPORT_SYMBOL_GPL(mt_put_memory_types);
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  /*
+> >=20
+>=20>  * This is invoked via `late_initcall()` to initialize memory tiers=
+ for
+> >=20
+>=20>  - * CPU-less memory nodes after driver initialization, which is
+> >=20
+>=20>  - * expected to provide `adistance` algorithms.
+> >=20
+>=20>  + * memory nodes, both with and without CPUs. After the initializa=
+tion of
+> >=20
+>=20>  + * firmware and devices, adistance algorithms are expected to be =
+provided.
+> >=20
+>=20>  */
+> >=20
+>=20>  static int __init memory_tier_late_init(void)
+> >=20
+>=20>  {
+> >=20
+>=20>  int nid;
+> >=20
+>=20>  + struct memory_tier *memtier;
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  + get_online_mems();
+> >=20
+>=20>  guard(mutex)(&memory_tier_lock);
+> >=20
+>=20>  + /*
+> >=20
+>=20>  + * Look at all the existing and uninitialized N_MEMORY nodes and
+> >=20
+>=20>  + * add them to default memory tier or to a tier if we already hav=
+e
+> >=20
+>=20>  + * memory types assigned.
+> >=20
+>=20>  + */
+> >=20
+>=20>  for_each_node_state(nid, N_MEMORY) {
+> >=20
+>=20>  /*
+> >=20
+>=20>  - * Some device drivers may have initialized memory tiers
+> >=20
+>=20>  - * between `memory_tier_init()` and `memory_tier_late_init()`,
+> >=20
+>=20>  - * potentially bringing online memory nodes and
+> >=20
+>=20>  - * configuring memory tiers. Exclude them here.
+> >=20
+>=20>  + * Some device drivers may have initialized
+> >=20
+>=20>  + * memory tiers, potentially bringing memory nodes
+> >=20
+>=20>  + * online and configuring memory tiers.
+> >=20
+>=20>  + * Exclude them here.
+> >=20
+>=20>  */
+> >=20
+>=20>  if (node_memory_types[nid].memtype)
+> >=20
+>=20>  continue;
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  - set_node_memory_tier(nid);
+> >=20
+>=20>  + memtier =3D set_node_memory_tier(nid);
+> >=20
+>=20>  + if (IS_ERR(memtier))
+> >=20
+>=20>  + /* Continue with memtiers we are able to setup. */
+> >=20
+>=20
+> Might later ones be possible if we just continued this loop?
+>=20
 
-> They don't need to if acpi_mp_wake_mailbox can be setup before smp_init()
-> once for all.
-> 
-> But currently the setup of acpi_mp_wake_mailbox is done when the first AP is
-> brought up because memremap() doesn't work in acpi_parse_mp_wake(), as
-> mentioned in the changelog of this patch.
-> 
-> I also feel it's not ideal to setup acpi_mp_wake_mailbox when bringing up
-> the first AP, so I provided my diff.  IIUC, if memremap() works for
-> acpi_mp_wake_mailbox when bringing up the first AP, then it should also work
-> in
-> the early_initcall().
+I=20agree with you that theoretically, it=E2=80=99s possible
+for later attempts to succeed. I also agree that
+there is no harm in iterating through all possibilities.
+Therefore, we can do a continue here.
 
-Besides the factor that whether memremap() is functional at the point in
-the boot process, another reason I can think of is, if the intention is
-just to work with BSP, then the remapping is a redundant step.
-Especially in the kexec & kdump case, the capture kernel only needs
-single CPU to work usually with the "maxcpus=1" option.
+Since it's legacy code.
+I would also like to hear Huang, Ying=E2=80=99s thoughts about this.
 
-IMHO, the solution that postpone the remapping while really needs to
-bring up APs is reasonable, just don't make acpi_mp_wake_mailbox
-read-only.  The APs might be brought up later, might be never.
+> >=20
+>=20> + break;
+> >=20
+>=20>  }
+> >=20
+>=20>  -
+> >=20
+>=20
+> White space was harmless - I'd leave it there rather than adding noise =
+to this diff.
+>=20
 
+Thanks!=20Got it. I will roll it back in the v3.
 
-> 
->> Which patch is this fixing?
-> It fiexes below commit AFAICT:
-> 
->   24dd05da8c79 ("x86/apic: Mark acpi_mp_wake_* variables as
-> __ro_after_init")
-> 
-> Which didn't consider 'maxvcpus=xx' case.
-> 
+> >=20
+>=20> establish_demotion_targets();
+> >=20
+>=20>  + put_online_mems();
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  return 0;
+> >=20
+>=20>  }
+> >=20
+>=20>  @@ -875,8 +886,7 @@ static int __meminit memtier_hotplug_callback(=
+struct notifier_block *self,
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  static int __init memory_tier_init(void)
+> >=20
+>=20>  {
+> >=20
+>=20>  - int ret, node;
+> >=20
+>=20>  - struct memory_tier *memtier;
+> >=20
+>=20>  + int ret;
+> >=20
+>=20>=20=20
+>=20>=20
+>=20>  ret =3D subsys_virtual_register(&memory_tier_subsys, NULL);
+> >=20
+>=20>  if (ret)
+> >=20
+>=20>  @@ -887,7 +897,8 @@ static int __init memory_tier_init(void)
+> >=20
+>=20>  GFP_KERNEL);
+> >=20
+>=20>  WARN_ON(!node_demotion);
+> >=20
+>=20>  #endif
+> >=20
+>=20>  - mutex_lock(&memory_tier_lock);
+> >=20
+>=20>  +
+> >=20
+>=20>  + guard(mutex)(&memory_tier_lock);
+> >=20
+>=20
+> If this was safe to do without the rest of the change (I think so)
+>=20
+>=20then better to pull that out as a trivial precursor so less noise
+>=20
+>=20in here.
+>=20
 
-Thanks a lot for checking this, Kai.
+Do=20you mean instead of using guard(mutex)(),
+use mutex_lock() as it was? or?
 
-> 
-> But I will leave to Kirill to confirm.
+> >=20
+>=20> /*
+> >=20
+>=20>  * For now we can have 4 faster memory tiers with smaller adistance
+> >=20
+>=20>  * than default DRAM tier.
+> >=20
+>=20>  @@ -897,29 +908,9 @@ static int __init memory_tier_init(void)
+> >=20
+>=20>  if (IS_ERR(default_dram_type))
+> >=20
+>=20>  panic("%s() failed to allocate default DRAM tier\n", __func__);
+> >=20
+>=20>=20=20
+>=20>=20=0D
+> >  - /*
+> >=20
+>=20>  - * Look at all the existing N_MEMORY nodes and add them to
+> >=20
+>=20>  - * default memory tier or to a tier if we already have memory
+> >=20
+>=20>  - * types assigned.
+> >=20
+>=20>  - */
+> >=20
+>=20>  - for_each_node_state(node, N_MEMORY) {
+> >=20
+>=20>  - if (!node_state(node, N_CPU))
+> >=20
+>=20>  - /*
+> >=20
+>=20>  - * Defer memory tier initialization on
+> >=20
+>=20>  - * CPUless numa nodes. These will be initialized
+> >=20
+>=20>  - * after firmware and devices are initialized.
+> >=20
+>=20>  - */
+> >=20
+>=20>  - continue;
+> >=20
+>=20>  -
+> >=20
+>=20>  - memtier =3D set_node_memory_tier(node);
+> >=20
+>=20>  - if (IS_ERR(memtier))
+> >=20
+>=20>  - /*
+> >=20
+>=20>  - * Continue with memtiers we are able to setup
+> >=20
+>=20>  - */
+> >=20
+>=20>  - break;
+> >=20
+>=20>  - }
+> >=20
+>=20>  - establish_demotion_targets();
+> >=20
+>=20>  - mutex_unlock(&memory_tier_lock);
+> >=20
+>=20>  + /* Record nodes with memory and CPU to set default DRAM performa=
+nce. */
+> >=20
+>=20>  + nodes_and(default_dram_nodes, node_states[N_MEMORY],
+> >=20
+>=20>  + node_states[N_CPU]);
+> >=20
+>=20
+> There are systems where (for various esoteric reasons, such as describi=
+ng an
+>=20
+>=20association with some other memory that isn't DRAM where the granular=
+ity
+>=20
+>=20doesn't match) the CPU nodes contain no DRAM but rather it's one node=
+ away.
+>=20
+>=20Handling that can be a job for another day though.
+>=20
 
+Thank=20you for informing me of this situation.
+Sounds like handling that also requires a mapping table between
+the CPU and the corresponding DRAM.
+
+> Why does this need to be computed here? Why not do it in
+>=20
+>=20hmat_set_default_dram_perf? Doesn't seem to be used anywhere else.
+>=20
+Replied=20above.
+> >=20
+> > hotplug_memory_notifier(memtier_hotplug_callback, MEMTIER_HOTPLUG_PRI=
+);
+> >=20
+>=20>  return 0;
+> >
+>
+
+--
 Best Regards,
-Zhiquan
+Ho-Ren (Jack) Chuang
 
