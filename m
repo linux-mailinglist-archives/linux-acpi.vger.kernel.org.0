@@ -1,144 +1,111 @@
-Return-Path: <linux-acpi+bounces-6767-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6768-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB0A92775C
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 15:44:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654A3927826
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 16:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 674361F222FD
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 13:44:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E3401C225F3
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113D81AED2F;
-	Thu,  4 Jul 2024 13:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A242D1B1426;
+	Thu,  4 Jul 2024 14:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1BsKCVL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9KKVb4z"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4733528373;
-	Thu,  4 Jul 2024 13:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727AA1B121F;
+	Thu,  4 Jul 2024 14:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720100653; cv=none; b=OPsNSXCej3FKKwG3MwbNZ9mzjcvAtmM0lEgeTKXMBY5XVu1p7GMlZGsLP+E+yvpZnyE9wI7nMp2A8mPPYjcIGjzUnTNF5bTrmlgGYYkzavSCC226Sjxk2XiMxwKZx1sUkzt49NSwJOFaNtDsHR4TO/i5N32XXY0JkvdGheVsUKw=
+	t=1720102766; cv=none; b=nqR4RKz75iDRwUHNqgpCunNaWK9A8sztO4s+F2hlsbXWkuK+dobj3xTpOr/9GvA9lgO9/tr/Maztw87psmF1zbJdZa0f6xnrTWCqWBVqH+QVQZEEFFftk8jGSSP++WkSvLu3Hv69W4k3AfPO6fDna/WnVw4J5BxqW8ulI4Sg0Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720100653; c=relaxed/simple;
-	bh=vd6ZMMbCUn2U39zAqJ5QeXI+KZCVWJVSSyj9T80YrJM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N7eXiBO2Z+wGDxsczAe/Eh263vZAPnb93RRxf0N9a+Oth8pK9CdjXJXjWtpSqW0EGM0hwktZInfdXy9nMcubcxzgg41iYFqCSzrtpON3IXvIIn2j3DHGYcGkx2U7EvxkxanhgVP5Qexi0dsLgjSJnvUstl6kzQEF+dXe1gXeOSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1BsKCVL; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720100651; x=1751636651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vd6ZMMbCUn2U39zAqJ5QeXI+KZCVWJVSSyj9T80YrJM=;
-  b=h1BsKCVLBIFomz0G1tr0EVcKOg38JREn0mewiY/9myKYmnFM/Cz0LBd+
-   VmWztR19ExBSJ3XUlGnZnxBrCKay8mRUgq5c/sBDYtkUToNp9Ng3bBKUr
-   DToyhrr/Roe+Rn47a9opXSFfBZumo95lP+R5+VJ74wZrcSQ5sSq3SSNhJ
-   7Y6Bu6Pqte1rSldEGzNdgT+frCgDyiHW3m/dThByvyowG5a2WlETyKU+v
-   sFzvX62B1RDkpdxUc1qRui7Zev3qX9Sj6cLsWtBVKvQwFsleG8ZvbYzDR
-   CDst7kDdA/JPDEdoFadpkiNKLg8XNn2Q9XeWO4DdJ/+LDfToIBeKPlJpV
-   Q==;
-X-CSE-ConnectionGUID: GIjmXhWyRIutQvBdJ9/qag==
-X-CSE-MsgGUID: XkSV36XVRYyNPNG+Ey0b8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17217109"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
-   d="scan'208";a="17217109"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2024 06:44:09 -0700
-X-CSE-ConnectionGUID: XeQQC8IgQiOO66rDYk+aYw==
-X-CSE-MsgGUID: qAyT9sa+TaKk8jCwTK5edw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; 
-   d="scan'208";a="77734900"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 04 Jul 2024 06:44:05 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id C66B160D; Thu, 04 Jul 2024 16:44:03 +0300 (EEST)
-Date: Thu, 4 Jul 2024 16:44:03 +0300
-From: "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
-To: "Huang, Kai" <kai.huang@intel.com>
-Cc: "luto@kernel.org" <luto@kernel.org>, 
-	"rafael@kernel.org" <rafael@kernel.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"bp@alien8.de" <bp@alien8.de>, "peterz@infradead.org" <peterz@infradead.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
-	"tglx@linutronix.de" <tglx@linutronix.de>, "bhe@redhat.com" <bhe@redhat.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"ardb@kernel.org" <ardb@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "tzimmermann@suse.de" <tzimmermann@suse.de>
-Subject: Re: [PATCH 3/3] x86/64/kexec: Rewrite init_transition_pgtable() with
- kernel_ident_mapping_init()
-Message-ID: <vyvbvham7qcj2pnotfn4mocozx6x33zkvuks63w3ymzk4w6sjc@2gk5xbtb5xrb>
-References: <20240701124334.1855981-1-kirill.shutemov@linux.intel.com>
- <20240701124334.1855981-4-kirill.shutemov@linux.intel.com>
- <cd655676d5e81ca9b1de0a66f5f5c719ef816c89.camel@intel.com>
+	s=arc-20240116; t=1720102766; c=relaxed/simple;
+	bh=rhtBhS/CBJwV8ITSg9IDBvbJbDtnj2UkM1J450xWCtY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H2fklJapiKaU6Ibw9psOBetkRUYEhXHofWjsPYWqQvK82wUyMbQ5h+TwH0ai2v4uTNiwMoQySiWRaT2RAJQovY3TL93VF3WOpOeUDSRN8ilfFniKNuQFGBrGGTsQlddK+9yKRa9c0bWjkUnYjINHanZ7/lJbQ83unI0f5iUPICg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9KKVb4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70D0C4AF0D;
+	Thu,  4 Jul 2024 14:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720102766;
+	bh=rhtBhS/CBJwV8ITSg9IDBvbJbDtnj2UkM1J450xWCtY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=S9KKVb4zR4ws4a4Ey1hdFcsOGe8qLy0xkejIdZvgG7OAEoXgzdWX6TM+hXVjmmTN1
+	 fsL4p1AEIEFJLKQckvIuKUih+RFCofhKka9wfVtybFfnFskAC7rJbXF/+2fRY+wh0t
+	 UWSWBycthso418WA90A344JZ5WEQzTuWVSka4VsRTtG6E6cvzCUnRZNUCFx7wDHEKN
+	 mEasV/UwQMeWeEmPZAQ1FA+CNd+DmU7r3dZtXmrGxMpsNZF5myzfp8NLTcuOwQ09zM
+	 nG5b03J68sPWoEpUeNgPn3T3Eq9wPeyw2jVQebxT1yp5pxa6Th0aPjCLRdRf7bSq2f
+	 obUBrjWV6kAfg==
+From: Will Deacon <will@kernel.org>
+To: Joerg Roedel <joro@8bytes.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Yong Wu <yong.wu@mediatek.com>
+Subject: Re: [PATCH v3 0/5] iommu: Remove iommu_fwspec ops
+Date: Thu,  4 Jul 2024 15:19:01 +0100
+Message-Id: <172010016495.204079.11503801872554345950.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <cover.1719919669.git.robin.murphy@arm.com>
+References: <cover.1719919669.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd655676d5e81ca9b1de0a66f5f5c719ef816c89.camel@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 03, 2024 at 11:06:21AM +0000, Huang, Kai wrote:
-> >  static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
-> >  {
-> > -	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
-> > -	unsigned long vaddr, paddr;
-> > -	int result = -ENOMEM;
-> > -	p4d_t *p4d;
-> > -	pud_t *pud;
-> > -	pmd_t *pmd;
-> > -	pte_t *pte;
-> > +	struct x86_mapping_info info = {
-> > +		.alloc_pgt_page	= alloc_transition_pgt_page,
-> > +		.context	= image,
-> > +		.page_flag	= __PAGE_KERNEL_LARGE_EXEC,
-> > +		.kernpg_flag	= _KERNPG_TABLE_NOENC,
-> > +		.offset = __START_KERNEL_map - phys_base,
-> > +	};
-> > +	unsigned long mstart = PAGE_ALIGN_DOWN(__pa(relocate_kernel));
-> > +	unsigned long mend = mstart + PAGE_SIZE;
-> >  
-> > -	vaddr = (unsigned long)relocate_kernel;
-> > -	paddr = __pa(page_address(image->control_code_page)+PAGE_SIZE);
+On Tue, 02 Jul 2024 12:40:46 +0100, Robin Murphy wrote:
+> v2: https://lore.kernel.org/linux-iommu/cover.1718994350.git.robin.murphy@arm.com/
 > 
-> Perhaps I am missing something, but this seems a functional change to me.
+> Hi all,
 > 
-> IIUC the page after image->control_code_page is allocated when loading the
-> kexec kernel image.  It is a different page from the page where the
-> relocate_kernel code resides in.
+> Just a quick update with an extra patch to avoid the mediatek-v1 driver
+> breaking (and I have now build-tested ARCH=arm to make sure, apologies
+> for being lazy before...)
 > 
-> The old code maps relocate_kernel kernel VA to the page after the
-> control_code_page.  Later in machine_kexec(), the relocate_kernel code is
-> copied to that page so the mapping can work for that:
-> 
-> 	control_page = page_address(image->control_code_page) + PAGE_SIZE;
-> 	__memcpy(control_page, relocate_kernel,
-> KEXEC_CONTROL_CODE_MAX_SIZE);
-> 
-> The new code in this patch, however, seems just maps the relocate_kernel VA
-> to the PA of the relocate_kernel, which should be different from the old
-> mapping.
+> [...]
 
-Yes, original code maps at relocate_kernel() VA the page with copy of the
-relocate_kernel() in control_code_page. But it is safe to map original
-relocate_kernel() page there as well as it is not going to be overwritten
-until swap_pages(). We are not going to use original relocate_kernel()
-page after RET at the end of relocate_kernel().
+Applied to arm64 (fwspec-ops-removal), thanks!
 
-Does it make any sense?
+[1/5] iommu/mediatek-v1: Clean up redundant fwspec checks
+      https://git.kernel.org/iommu/c/e7acc36f26b0
+[2/5] iommu: Resolve fwspec ops automatically
+      https://git.kernel.org/iommu/c/3f7c32091628
+[3/5] ACPI: Retire acpi_iommu_fwspec_ops()
+      https://git.kernel.org/iommu/c/78596b5c321c
+[4/5] OF: Simplify of_iommu_configure()
+      https://git.kernel.org/iommu/c/5f937bc48a6a
+[5/5] iommu: Remove iommu_fwspec ops
+      https://git.kernel.org/iommu/c/3e36c15fc1cc
 
-I will try to explain it in the commit message in the next version.
-
+Cheers,
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
