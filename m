@@ -1,166 +1,184 @@
-Return-Path: <linux-acpi+bounces-6764-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6765-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E992927523
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 13:31:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1049275C2
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 14:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCE285262
-	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 11:31:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E8BD1F2387A
+	for <lists+linux-acpi@lfdr.de>; Thu,  4 Jul 2024 12:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6428D191F6E;
-	Thu,  4 Jul 2024 11:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FAB1A0AEA;
+	Thu,  4 Jul 2024 12:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Xp6zJVhH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9uDYZNz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD05E1DA30D;
-	Thu,  4 Jul 2024 11:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F015A11D;
+	Thu,  4 Jul 2024 12:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720092682; cv=none; b=OaY0Qaw4n2FKFFabLozer9vS+CRLuFDMLoy/u1Y/ckSeJMXBlA4Gqf13JATBlGU5yDjIAS1rJESwOy8SU2J8bBA1MHy8a5XokzgTvN6wLXGmb48T5fcO92Q/YzmpMaFVFK+I13EtBrnS+u/FSakseHCq7rZc2iP01klakl6I+Rc=
+	t=1720095390; cv=none; b=f3O2JLWfqMa3GZJBiWAnC2/0fahkUqQfvrC4h0EhbhJEMsfnLevFrsx1Y9e22YZhW/b+b0n3/kBnDu4eF9qvTuzP9/vrhvyENHfRPwJrKe07XdGh56dMGDS+kj4yJOGXCmBJ6qmMekxf2v9rVzdI13AKJ82D9JN2CY6hQVg55+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720092682; c=relaxed/simple;
-	bh=gA0QjNnLmRhml1iZJ2B3tlltYB33iuMEn55tUD0Hj4A=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=NPOOK0BTK7rqCrurN4yw1dPaetTXheEKiC4uR8savBkYdsazII9MBQhHppgUweBrY50zmZXUEeFPIY4u8D7EoqbTtuUIrtO+1rWxbuHeEU9Sxo9W5MhdLJ2DcLXCXecv0x8R8r/6jO5TjPkg1mbKMZMsfVCcfAEGcHmIkzdgRig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Xp6zJVhH; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8588940E019C;
-	Thu,  4 Jul 2024 11:31:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9ur-PWNcwGlc; Thu,  4 Jul 2024 11:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720092674; bh=OHMquNuMMQHx7ddHPRPVlHWYBUhFIjdeJqDW7Swm+ao=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=Xp6zJVhHNfzZ8NGkEedT5qPUXiqUTwG5hUg51+bSAX41c6etMHOABF3jL0u9LL3Ps
-	 hRqOphLkVKy9RzMH3H7ukwcGlEdBsDOLaGF6RfvBbPugAOy2WFgedoZujFlnmVoCxt
-	 HH0csMBU3JuOoDOlTUnHN4ePT1haEjza7itj43GlZTxxfAeFuHk2JUPtmRNxTD0tTl
-	 9EvnQU6yPkTOfFn+5arY60A1eOG2itqHrS7OSeORihxG0HWzwWGb7B/iO2ElwssJ0D
-	 5XtSxTGhX8Cqra0TK2wlOYfWrGcTUXrG9DkeEWdz4rHUrlcHy3CXOh079BxUJFDjxV
-	 uVMua+x0fQz+bHMG5UOJUGX9A8Aqs0xe4V+CBZUtk75a+fWDslUkZ+0x2hAJxR4Aar
-	 ISi7mmXhRBeX9s8tVXLlhZxKbJwcICXnYL4D3EqmjbxgL8aBcLoXlUGZNayctCydx1
-	 FqOMbTp+kgtq+VxYGFoHlp+JNO/Gr5Sa4zgCL90Xs8Ovbwn8l/8+HX9r0vw0IXVK5o
-	 vD0BZa6ATLfnKPI8Bzz0oHHzLHzS7YSrhx8ri0cfKZjf0zKht0KlDIVDoqonU7NIBb
-	 PewBDzOxXlLEnOYwe3njLuLwP10n6FWHBjEjVhVaOqoF9oP5444UYtFyaVR5aO9Wvc
-	 lshbJgvQbP8qynZWXgTQLSgA=
-Received: from [127.0.0.1] (business-24-134-159-81.pool2.vodafone-ip.de [24.134.159.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C04440E0187;
-	Thu,  4 Jul 2024 11:31:02 +0000 (UTC)
-Date: Thu, 04 Jul 2024 13:31:00 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Zhiquan Li <zhiquan1.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_x86/acpi=3A_fix_panic_while_AP_?=
- =?US-ASCII?Q?online_later_with_kernel_parameter_maxcpus=3D1?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <2ce73ea8-bd1e-4148-8206-ffac8926a5d1@intel.com>
-References: <20240702005800.622910-1-zhiquan1.li@intel.com> <41ee5438e8059c299f5722e386cdc1457ddc16eb.camel@intel.com> <20240702124524.GEZoP2ZKcTcKl1ca1R@fat_crate.local> <1b716b14c52a89c254108df1cee85306c786c52b.camel@intel.com> <2ce73ea8-bd1e-4148-8206-ffac8926a5d1@intel.com>
-Message-ID: <9774DEAE-8E9E-40CD-B5A5-0A19243BB432@alien8.de>
+	s=arc-20240116; t=1720095390; c=relaxed/simple;
+	bh=W31QLCmsBH+N23WsVFp6vLfxTlySqxr6oI2EDkb0Bxs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TF23Ljg7/D+2L3f82ZUuuErYqTLgTZ5U8yGCGkpP2DL9FD5enMq/2Mc+O1u/vZeoxX2dcpUVhVtWIICz6OpnaEV0APWI5ADTUZ75Quq4qvo7n/b2afJUkbCMqRQSLkne8G9gPhlF8Q6cFVTR2nXZPGreyAnhj9/eiDPriU/bG60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9uDYZNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D25FC4AF0A;
+	Thu,  4 Jul 2024 12:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720095390;
+	bh=W31QLCmsBH+N23WsVFp6vLfxTlySqxr6oI2EDkb0Bxs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=O9uDYZNzfjbL20BPce0SBXAc/6RLb5luVbNL9iCTQkFLPB99LpWgM5nctRQ/1XVji
+	 nshJkaGwdzZDbyDUMoQHt/xAifrlNytJgUgH6VnItp/6hHsVmsGSLvWiDX9FRgYiWJ
+	 pjXcA7iVvKNESo3x4n19MGOsweMqlzElVf8p8SpN/ndYxkPx6CNZyT5m2ejHEsMNDq
+	 MJMpk2qp981GKj6XP19yo4c7GEZjxVCQmGhtXwTjsllc4b+11ALcxgMT/6Qvtxbrty
+	 ogK2aquxqjOS0h2jxDo1XXCmGHd4yeZDgS6s+QAvgeok/s4MCOIPUh5rq3q/uM+rzT
+	 qyQVilGGdzmvA==
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-25989f87e20so86127fac.1;
+        Thu, 04 Jul 2024 05:16:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVFlMKkWyhXBGzcp8xsFWTbCpvO6FDEgdQHbUVFlY2hBKuI6/fckHSB8fYTKPpimPWAyJx7R0LAyQwMDKcGywlRp4tvKnLRn6uHKtKsWFSz2QxwYOeixDF3xS7vAm4utocSOwiDjv8IvCHnsqc/X4y4fDqnPpWoqfP+4cLKTS4FEw==
+X-Gm-Message-State: AOJu0Yzj7jIcyr7B0PlmQSOWbgyBsvteSe6HL7ddYYIkr+JRoHuUcMKk
+	AXYW2z/H9yzrw/Hbb3iKSvYv9eQbDH8HICeXTKGUZOMTbyj/a7ji5NUrYurxftEd3sbF1hKgyYZ
+	qvUl9zTJ3sAG+3zcyHNImmg90CIA=
+X-Google-Smtp-Source: AGHT+IFtXfqhDha8ognSJPCS7ZjL1umAb0rhhN7ePNkKKBtyEecApBtNtccw9KOd6T0xU7AAFVDa0ziWjPibVSlRSUc=
+X-Received: by 2002:a05:6820:2c07:b0:5c4:5cbc:b1b4 with SMTP id
+ 006d021491bc7-5c646a91827mr1360390eaf.0.1720095389853; Thu, 04 Jul 2024
+ 05:16:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+References: <20240613211011.413120-1-surajjs@amazon.com> <CAJZ5v0iLtYOWc0w202kq8Tb-n=8ToQj2xHQ2_socwqqTyXufSw@mail.gmail.com>
+ <703fd8504ca9541898ec920e15c05d673233218f.camel@amazon.com>
+In-Reply-To: <703fd8504ca9541898ec920e15c05d673233218f.camel@amazon.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 4 Jul 2024 14:16:19 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hXADyd57jAujYSb5gXWoPJpEAyUPXi_mcJdpORcpg7KQ@mail.gmail.com>
+Message-ID: <CAJZ5v0hXADyd57jAujYSb5gXWoPJpEAyUPXi_mcJdpORcpg7KQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi: Support CONFIG_ACPI without CONFIG_PCI
+To: "Jitindar Singh, Suraj" <surajjs@amazon.com>
+Cc: "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>, 
+	"acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "okaya@kernel.org" <okaya@kernel.org>, 
+	"rafael.j.wysocki@intel.com" <rafael.j.wysocki@intel.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "robert.moore@intel.com" <robert.moore@intel.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On July 3, 2024 4:39:43 AM GMT+02:00, Zhiquan Li <zhiquan1=2Eli@intel=2Ecom=
-> wrote:
+On Wed, Jul 3, 2024 at 1:01=E2=80=AFAM Jitindar Singh, Suraj <surajjs@amazo=
+n.com> wrote:
 >
->On 2024/7/3 07:55, Huang, Kai wrote:
->>> This happens to us maintainers at least once a week=2E Well, I don't w=
-ant
->>> that to happen in my tree anymore=2E
->>>
->>> So none of this text above still doesn't explain to me *why* this is
->>> happening=2E
->>>
->>> Why do APs need to update acpi_mp_wake_mailbox?
+> On Fri, 2024-06-14 at 13:08 +0200, Rafael J. Wysocki wrote:
+> > On Thu, Jun 13, 2024 at 11:10=E2=80=AFPM Suraj Jitindar Singh
+> > <surajjs@amazon.com> wrote:
+> > >
+> > > Make is possible to use ACPI without having CONFIG_PCI set.
+> > >
+> > > When initialising ACPI the following call chain occurs:
+> > >
+> > >   acpi_init() ->
+> > >     acpi_bus_init() ->
+> > >       acpi_load_tables() ->
+> > >         acpi_ev_install_region_handlers() ->
+> > >
+> > > acpi_ev_install_region_handlers() calls
+> > > acpi_ev_install_space_handler() on
+> > > each of the default address spaces defined as:
+> > >
+> > >   u8 acpi_gbl_default_address_spaces[ACPI_NUM_DEFAULT_SPACES] =3D {
+> > >           ACPI_ADR_SPACE_SYSTEM_MEMORY,
+> > >           ACPI_ADR_SPACE_SYSTEM_IO,
+> > >           ACPI_ADR_SPACE_PCI_CONFIG,
+> > >           ACPI_ADR_SPACE_DATA_TABLE
+> > >   };
+> > >
+> > > However in acpi_ev_install_space_handler() the case statement for
+> > > ACPI_ADR_SPACE_PCI_CONFIG is ifdef'd as:
+> > >
+> > >   #ifdef ACPI_PCI_CONFIGURED
+> > >                   case ACPI_ADR_SPACE_PCI_CONFIG:
+> > >
+> > >                           handler =3D
+> > > acpi_ex_pci_config_space_handler;
+> > >                           setup =3D acpi_ev_pci_config_region_setup;
+> > >                           break;
+> > >   #endif
+> > >
+> > > ACPI_PCI_CONFIGURED is not defined if CONFIG_PCI is not enabled,
+> > > thus the
+> > > attempt to install the handler fails.
+> > >
+> > > Fix this by ifdef'ing ACPI_ADR_SPACE_PCI_CONFIG in the list of
+> > > default
+> > > address spaces.
+> >
+> > What if there are PCI operation regions in the AML on the platform?
+> > How are they going to be handled?
 >
->Not AP needs to update acpi_mp_wake_mailbox, but BSP might need to
->update it after the init stage=2E  In the encrypted guest CPU hot-plug
->scenario, BSP memremap() the acpi_mp_wake_mailbox_paddr, and writes APIC
->ID of APs, wakeup vector and the ACPI_MP_WAKE_COMMAND_WAKEUP command
->into mailbox=2E  Firmware will listen on mailbox command address, and onc=
-e
->it receives the wakeup command, the CPU associated with the given apicid
->will be booted=2E
+> Hi,
 >
->We cannot assume that all APs will be brought up in the init stage=2E
+> Appreciate the response.
 >
->> They don't need to if acpi_mp_wake_mailbox can be setup before smp_init=
-()
->> once for all=2E
->>=20
->> But currently the setup of acpi_mp_wake_mailbox is done when the first =
-AP is
->> brought up because memremap() doesn't work in acpi_parse_mp_wake(), as
->> mentioned in the changelog of this patch=2E
->>=20
->> I also feel it's not ideal to setup acpi_mp_wake_mailbox when bringing =
-up
->> the first AP, so I provided my diff=2E  IIUC, if memremap() works for
->> acpi_mp_wake_mailbox when bringing up the first AP, then it should also=
- work
->> in
->> the early_initcall()=2E
->
->Besides the factor that whether memremap() is functional at the point in
->the boot process, another reason I can think of is, if the intention is
->just to work with BSP, then the remapping is a redundant step=2E
->Especially in the kexec & kdump case, the capture kernel only needs
->single CPU to work usually with the "maxcpus=3D1" option=2E
->
->IMHO, the solution that postpone the remapping while really needs to
->bring up APs is reasonable, just don't make acpi_mp_wake_mailbox
->read-only=2E  The APs might be brought up later, might be never=2E
->
->
->>=20
->>> Which patch is this fixing?
->> It fiexes below commit AFAICT:
->>=20
->>   24dd05da8c79 ("x86/apic: Mark acpi_mp_wake_* variables as
->> __ro_after_init")
->>=20
->> Which didn't consider 'maxvcpus=3Dxx' case=2E
->>=20
->
->Thanks a lot for checking this, Kai=2E
->
->>=20
->> But I will leave to Kirill to confirm=2E
->
->Best Regards,
->Zhiquan
+> I think the short answer is that if there are PCI operation regions in
+> the AML on the platform then the kernel will need to be built with PCI
+> support (CONFIG_PCI) and if it isn't then there won't be a handler
+> installed and the operation will error.
 
-Then please extend the commit message with the "why", add the Fixes tag an=
-d resend=2E
+A problem with this approach is that AML has no good way of handling
+such errors.  It accesses a location in an address space of some sort
+and expects the access to be successful.
 
-Thx=2E
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
+The interpreter can catch them, but then the only thing it can do is
+to abort the AML which then may lead to all sorts of unexpected
+behavior of the platform.
+
+> Correct me if I'm wrong but it seems the intention of the patch series:
+>
+> 36ad7d2b9e9b ACPI: Move PCI reset to a separate function
+> 86689776878f ACPI: Allow CONFIG_PCI to be unset for reboot
+> bd23fac3eaaa ACPICA: Remove PCI bits from ACPICA when CONFIG_PCI is
+> unset
+> 5d32a66541c4 PCI/ACPI: Allow ACPI to be built without CONFIG_PCI set
+>
+> was to decouple the dependency between CONFIG_PCI and CONFIG_ACPI.
+
+Yes, and as per the above, it was a mistake.
+
+> bd23fac3eaaa ("ACPICA: Remove PCI bits from ACPICA when CONFIG_PCI is
+> unset") added an ifdef around the code to install the handler for the
+> PCI CONFIG region making it dependent on ACPI_PCI_CONFIGURED (and thus
+> CONFIG_PCI). Thus it is not possible to install the default handler for
+> the PCI CONFIG region unless CONFIG_PCI is set meaning it makes no
+> sense to have it in the list of default address spaces.
+>
+> I can gather that this leads to 2 possibilities:
+>
+> 1. If there are PCI operation regions in the AML on the platform then
+> these will error on a kernel not compiled with CONFIG_PCI.
+
+But as I said, there is no good way of handling such errors.
+Basically, the kernel should panic() in those cases.
+
+> or,
+>
+> 2. The code to install the handler for the PCI CONFIG region should not
+> be ifdef'ed and should be executed irrespective of if the kernel is
+> compiled with CONFIG_PCI to allow for PCI CONFIG regions in the AML.
+
+That doesn't work either because the PCI config address space may not
+be really accessible without CONFIG_PCI.
+
+IOW, I don't see how this can be made work.
+
+Can you please remind me what the use case for ACPI without PCI is?
 
