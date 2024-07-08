@@ -1,99 +1,166 @@
-Return-Path: <linux-acpi+bounces-6861-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6862-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B83392E5EF
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 13:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C02092EA7A
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 16:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E3681C22076
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 11:18:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F5D1C215E2
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 14:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2293715B0E6;
-	Thu, 11 Jul 2024 11:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FCC167271;
+	Thu, 11 Jul 2024 14:16:30 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [46.235.227.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE4A15A862
-	for <linux-acpi@vger.kernel.org>; Thu, 11 Jul 2024 11:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6DD80BF8;
+	Thu, 11 Jul 2024 14:16:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720696265; cv=none; b=I5Xk5nQFOUIQeHXoeywhIjXtvZye2s6CmKcbOM0mvXyaCmWWOiIF98Q/NxTuBIwKAxZ+gH5y8CEDjB+v8O1ViGMNXMs8t1WU3TG9/ae6oJqqdS5BWrhxTaSgNUd3VfU0ybcbLpOYZlTw+/4SVDFTmd05ArKyru6wmhqmA6pxFqo=
+	t=1720707389; cv=none; b=NcpzENcfta8t+jw81Rqjga925Zt4O5E4svvVH3WjeDj9TT1W9nJuwspSyaAo6BfRyZ83uzKeSL8E3oGb9KCupoINcA4dSp5CjnrtpaHxbHd61yIGIL/QIb7tycOPDmlgRLvjGKXqr0WeDA1SECHC7R/me+UsKZ2CyxkF7jEmQy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720696265; c=relaxed/simple;
-	bh=0ZwX0N6cmTcPU6cUOhbMilU6Yelh76r3rbVgmSzYq0s=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=h5zUySlR6wZVgrdepv/dDFxw61QjWAy984keNusBgKZVumYw4/BLb2kfryzV3S6ZyQ7GjdUhofzfGKA5rFjyw6C77AmbTJcvfUJFf04oU33NXBGInp/DnXUW/5IcwX4caq3pcIvX91kNwgZkEMaOHtzAwyN7uwWIGe8yW1oU728=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7ebd11f77d8so82597939f.1
-        for <linux-acpi@vger.kernel.org>; Thu, 11 Jul 2024 04:11:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720696263; x=1721301063;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hxg3UJPkzx7M07gbZ9SOx2eod/ecUaN/p77xgE8W3KQ=;
-        b=CCYLskYfCdztACniAlyMmJDyBlwcayp6WNylzZcyn+1YFcKtu140iuVq6UHzxIs06b
-         rzgJPgXyvdMqak0j5/o3Kzqmg5pq8MZ5EnU3qykDFy6OBo2PNTGE1ks9bkrXTG5CCOeG
-         pQRahMJZ+FB0TUGdmQRCN/g0lPsafIXhZxPkpxRNUkEVknEPKBCkG4+koRnTHnUK5MNl
-         ny4VObwHHTWcywQbjwrGsEZP4t2Yn+xi+EtujDDUtt5BFDUMcWCnL7sobwGwXO0MqXo/
-         q0BvVkqNKNXIMVQDAw6FjvZ3SIxqQzObbrOYdmahGfcdKr+biKdl46KQgWoffbnfPK0D
-         583w==
-X-Forwarded-Encrypted: i=1; AJvYcCW6qO5YzhZKS/pR0zHo3VkwyIU46vHW37O08BV3X/qrX29zExsBcshYBJnQVX5P7XpsJR0eO57nHh7CRi/qteBQVj5mlwxj+E7itA==
-X-Gm-Message-State: AOJu0Yym4MTzCbad/Tl067Vcq9/K27lgU3QEyzXV0Jrt/5z6yLfmp0Hv
-	QU4UMQuMqyx3DLcUWEAU/4FBeh5j9NkILVaJO/HTSYhD93fCMm83y9LQzap5NItUSTu6iOa83ah
-	CNJfqVDUxsJWknXZIA3fyrswyJrqhOqlWs1cYNkuPKpUrifcOJ68et9Q=
-X-Google-Smtp-Source: AGHT+IGBjGi2u0vQwkoJ9T1yTRI18dBxcqWGmgtHOfjU9ZTmOOpU364A1mpSXTEejum4DWNhNasVTJ0VRDyOX29dVNI3xFSozQ7R
+	s=arc-20240116; t=1720707389; c=relaxed/simple;
+	bh=a9pdGR6wfxP8Mqh0V6yErEEF9QRi8fjHjcnxSjYsoJk=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=ia/J7COLeWXcGAc2RHB/kU3RYJtdjXqBYlci/Z3v/RmOIlVka7q/td3i6tDCcu+7f2LHf9WZpzwTOHNp+PXavO1c3itR8+bPuyvIMBcfgCY5NBTGBRAmggCQEQ6o7Qq+X44HNFgeFGMgWwP/BvpjesfKBbqYHsIvpf3VlzKXLE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk; arc=none smtp.client-ip=46.235.227.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk
+Received: by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <jic23@jic23.retrosnub.co.uk>)
+	id 1sRuaU-002GpR-2F; Thu, 11 Jul 2024 15:15:58 +0100
+Date: Mon, 08 Jul 2024 09:28:18 +0100
+From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rob Herring <robh@kernel.org>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+ Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_3/6=5D_leds=3A_bd2606mvv=3A_use_device=5Ffor?=
+ =?US-ASCII?Q?=5Feach=5Fchild=5Fnode=28=29_to_access_device_child_nodes?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <4cf71de7-dc47-475c-bba0-a9e755f66d49@gmail.com>
+References: <20240706-device_for_each_child_node-available-v1-0-8a3f7615e41c@gmail.com> <20240706-device_for_each_child_node-available-v1-3-8a3f7615e41c@gmail.com> <20240707175713.4deb559f@jic23-huawei> <4cf71de7-dc47-475c-bba0-a9e755f66d49@gmail.com>
+Message-ID: <6119CC81-5F47-4DA3-8C9C-98C7C87C9734@jic23.retrosnub.co.uk>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:8601:b0:4c0:9a05:44c4 with SMTP id
- 8926c6da1cb9f-4c0b24e9f62mr482571173.0.1720696262760; Thu, 11 Jul 2024
- 04:11:02 -0700 (PDT)
-Date: Thu, 11 Jul 2024 04:11:02 -0700
-In-Reply-To: <0000000000008ac77c0615d60760@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000822b8b061cf6d171@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in sys_wait4 (4)
-From: syzbot <syzbot+6969434de600a6ba9f07@syzkaller.appspotmail.com>
-To: alsa-devel-bounces@alsa-project.org, alsa-devel@alsa-project.org, 
-	broonie@kernel.org, davem@davemloft.net, dcaratti@redhat.com, 
-	edumazet@google.com, jhs@mojatatu.com, jiri@resnulli.us, kuba@kernel.org, 
-	lenb@kernel.org, lgirdwood@gmail.com, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, netdev@vger.kernel.org, oder_chiou@realtek.com, 
-	pabeni@redhat.com, pctammela@mojatatu.com, perex@perex.cz, rafael@kernel.org, 
-	shuah@kernel.org, shumingf@realtek.com, syzkaller-bugs@googlegroups.com, 
-	tiwai@suse.com, vinicius.gomes@intel.com, vladimir.oltean@nxp.com, 
-	xiyou.wangcong@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-BlackCat-Spam-Score: 36
 
-syzbot suspects this issue was fixed by commit:
+No
 
-commit fb66df20a7201e60f2b13d7f95d031b31a8831d3
-Author: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date:   Mon May 27 15:39:55 2024 +0000
+On 8 July 2024 09:14:44 BST, Javier Carrasco <javier=2Ecarrasco=2Ecruz@gma=
+il=2Ecom> wrote:
+>On 07/07/2024 18:57, Jonathan Cameron wrote:
+>> On Sat, 06 Jul 2024 17:23:35 +0200
+>> Javier Carrasco <javier=2Ecarrasco=2Ecruz@gmail=2Ecom> wrote:
+>>=20
+>>> The iterated nodes are direct children of the device node, and the
+>>> `device_for_each_child_node()` macro accounts for child node
+>>> availability=2E
+>>>
+>>> `fwnode_for_each_available_child_node()` is meant to access the child
+>>> nodes of an fwnode, and therefore not direct child nodes of the device
+>>> node=2E
+>>>
+>>> Use `device_for_each_child_node()` to indicate device's direct child
+>>> nodes=2E
+>>>
+>>> Signed-off-by: Javier Carrasco <javier=2Ecarrasco=2Ecruz@gmail=2Ecom>
+>> Why not the scoped variant?
+>> There look to be two error paths in there which would be simplified=2E
+>>=20
+>
+>I did not use the scoped variant because "child" is used outside the loop=
+=2E
 
-    net/sched: taprio: extend minimum interval restriction to entire cycle too
+Ah missed that=2E  Good sign that things are wrong=2E=2E=2E
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10593441980000
-start commit:   fe46a7dd189e Merge tag 'sound-6.9-rc1' of git://git.kernel..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=fe78468a74fdc3b7
-dashboard link: https://syzkaller.appspot.com/bug?extid=6969434de600a6ba9f07
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1091a5f6180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17a22c13180000
+>
+>On the other hand, I think an fwnode_handle_get() is missing for every
+>"led_fwnodes[reg] =3D child" because a simple assignment does not
+>increment the refcount=2E
 
-If the result looks correct, please mark the issue as fixed by replying with:
+Yes=2E Looks like a bug to me as well=2E
 
-#syz fix: net/sched: taprio: extend minimum interval restriction to entire cycle too
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+>
+>After adding fwnode_handle_get(), the scoped variant could be used, and
+>the call to fwnode_handle_put() would act on led_fwnodes[reg] instead=2E
+
+There looks to be another bug as it only frees one handle on error=2E  Rig=
+ht now it shouldnt free any but once you fix that you will need to free any=
+ not freed otherwise=2E
+
+Can it be squashed into one loop?
+
+J
+
+
+>
+>>> ---
+>>>  drivers/leds/leds-bd2606mvv=2Ec | 7 +++----
+>>>  1 file changed, 3 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/leds/leds-bd2606mvv=2Ec b/drivers/leds/leds-bd260=
+6mvv=2Ec
+>>> index 3fda712d2f80=2E=2E4f38b7b4d9d1 100644
+>>> --- a/drivers/leds/leds-bd2606mvv=2Ec
+>>> +++ b/drivers/leds/leds-bd2606mvv=2Ec
+>>> @@ -69,7 +69,7 @@ static const struct regmap_config bd2606mvv_regmap =
+=3D {
+>>> =20
+>>>  static int bd2606mvv_probe(struct i2c_client *client)
+>>>  {
+>>> -	struct fwnode_handle *np, *child;
+>>> +	struct fwnode_handle *child;
+>>>  	struct device *dev =3D &client->dev;
+>>>  	struct bd2606mvv_priv *priv;
+>>>  	struct fwnode_handle *led_fwnodes[BD2606_MAX_LEDS] =3D { 0 };
+>>> @@ -77,8 +77,7 @@ static int bd2606mvv_probe(struct i2c_client *client=
+)
+>>>  	int err, reg;
+>>>  	int i;
+>>> =20
+>>> -	np =3D dev_fwnode(dev);
+>>> -	if (!np)
+>>> +	if (!dev_fwnode(dev))
+>>>  		return -ENODEV;
+>>> =20
+>>>  	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+>>> @@ -94,7 +93,7 @@ static int bd2606mvv_probe(struct i2c_client *client=
+)
+>>> =20
+>>>  	i2c_set_clientdata(client, priv);
+>>> =20
+>>> -	fwnode_for_each_available_child_node(np, child) {
+>>> +	device_for_each_child_node(dev, child) {
+>>>  		struct bd2606mvv_led *led;
+>>> =20
+>>>  		err =3D fwnode_property_read_u32(child, "reg", &reg);
+>>>
+>>=20
+>
 
