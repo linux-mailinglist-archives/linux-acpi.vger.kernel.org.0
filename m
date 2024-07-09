@@ -1,47 +1,47 @@
-Return-Path: <linux-acpi+bounces-6830-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6832-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8BC592C4AE
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 22:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6D092C4B6
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 22:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72DA0284215
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 20:39:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADE628413C
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 20:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0318563C;
-	Tue,  9 Jul 2024 20:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0146E18D4B2;
+	Tue,  9 Jul 2024 20:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="C6iWCBvL"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="EA3+0yB2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1096417B04F;
-	Tue,  9 Jul 2024 20:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C39918C16D;
+	Tue,  9 Jul 2024 20:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720557504; cv=none; b=tjl3R1dQSoH0y8dy1YPa3FsrLplSnVaKRJ2geybY0wZTRvg+2UshvFgtX0Sjvifi0YKSj8lZz6gNNryGlDwC1wS29e3X49TUElHv99ywCzEFcjRYbjUDL9cWWM1VufJqiAbrKJ0G3XmX/yTsSi789P/HA4OaYcWSygG2l9IxRV8=
+	t=1720557507; cv=none; b=GWEFAHMKrDDb/U4ko+HItF6Nt9Zl5iznu7Fgoe1on+ffWd7i6BMiqgpzZShM8FCqGVg+zw/CkYQhe31flFheyAhli6LEDrIQc0JoWMJzzHPO1K/TsMO0U5mU0+5lcUDTEVUhQM65LNHFUU9Q6N4GVMA2wyUIhWnTop1o77SPDEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720557504; c=relaxed/simple;
-	bh=UKdBAWRdJurn3EAUsp76SpgIaDEnD12ErHFCnETITyU=;
+	s=arc-20240116; t=1720557507; c=relaxed/simple;
+	bh=Sp5DrYzmn3EazYQ2PC86K+raUE9JkwKEQCb8FTClzrs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dBJFkqa1+hkkxrWt8k77uYtOo+r+SSetC45VhNUB6oKWNpkp1fklVo2LTsxPbvirgZbaLZ+j9ABzBRT+sEOFzwJrfLKOdznd3PVbcBXcKRh15Mlq/bDEKrqi82oKF9Xac5+GrAEy+7bRYHBcsW6svls8B4h2c26A95pUXGcuRA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=C6iWCBvL; arc=none smtp.client-ip=159.69.126.157
+	 In-Reply-To:To:Cc; b=l+8YXT8+brpXlr+kD9CpA3yZDTmeoyo7n2NkQMQrckD1+CzysFEVR3zwFQ4S+JCRKoi6S65DO0hyu/SeJniW8AzhCqLUnj09uG/fhq4QcpoPmLs4snn658C9NzEpW/d7eKKdW9hNMVJ5DwFbOXaf0M78xDcXaejA5ZvoTs2lvZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=EA3+0yB2; arc=none smtp.client-ip=159.69.126.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1720557499;
-	bh=UKdBAWRdJurn3EAUsp76SpgIaDEnD12ErHFCnETITyU=;
+	s=mail; t=1720557500;
+	bh=Sp5DrYzmn3EazYQ2PC86K+raUE9JkwKEQCb8FTClzrs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=C6iWCBvL2B9UpP94EfRbGsY/0hoUDM/ojOGBTvFA0Q75auCVq2LinWgtaF9kfAXyB
-	 oPXFplKKaiou9o2vMp7TJyM1FtrtAM/v0CT0Fdx/aBhGypdQheIw9n/QAXX/XBuwt7
-	 lnG7TA5LhkebGzV1uE9u+YYSjrsmJsHzluGSdnqQ=
+	b=EA3+0yB2PHIBJKtW+y3CQIBw5APR8fXUtu2+dS0wz0E0csy5gCyo8wh+a+jMwogjp
+	 ZthHyPewjWYNfkTtvKxFGW0ZpG7cVfdTUAyAQFSWw1x5Bbr2uAKP2j2zxDCIT2s2Hv
+	 7IRMtJ0bGjU9XZmK/+8ZJf/POcSUZlYRbwS1m4qs=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 09 Jul 2024 22:37:27 +0200
-Subject: [PATCH v2 4/5] ACPI: sysfs: manage sysfs attributes through device
- core
+Date: Tue, 09 Jul 2024 22:37:28 +0200
+Subject: [PATCH v2 5/5] ACPI: sysfs: remove return value of
+ acpi_device_setup_files()
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240709-acpi-sysfs-groups-v2-4-058ab0667fa8@weissschuh.net>
+Message-Id: <20240709-acpi-sysfs-groups-v2-5-058ab0667fa8@weissschuh.net>
 References: <20240709-acpi-sysfs-groups-v2-0-058ab0667fa8@weissschuh.net>
 In-Reply-To: <20240709-acpi-sysfs-groups-v2-0-058ab0667fa8@weissschuh.net>
 To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
@@ -59,79 +59,71 @@ Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
  acpica-devel@lists.linux.dev, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720557498; l=2513;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720557498; l=2071;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=UKdBAWRdJurn3EAUsp76SpgIaDEnD12ErHFCnETITyU=;
- b=AAIJkN+pFjK5krlVuFD+yFRS+7724cbJsJFZ0i3GH52IA12jh/g1JVtPAcLPqV5r2BNbLZlTq
- UZDGdUBeH5HDA1AM2BMr9ZQRwcY4FZscVYMO7RUrrhewKZuvwQ7vygd
+ bh=Sp5DrYzmn3EazYQ2PC86K+raUE9JkwKEQCb8FTClzrs=;
+ b=7EuhOxj3EfzvjJ6IlNBC3jBTFhZv8oaD26FNHK1WVARBYCgFBEcOl4P9HVJcVh6FfMc8j+xOj
+ ESnbwQWGUJ6AtnqHUsLtobZ0QUa3XboUCwZ5xRAsgYpcc0W0/JjI0qj
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-Now that the acpi sysfs attributes are organized around an
-attribute_group the device core can manage them.
+The function can not fail anymore, so drop its return value.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/acpi/device_sysfs.c | 8 +++++---
- drivers/acpi/internal.h     | 1 +
- drivers/acpi/scan.c         | 1 +
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/acpi/device_sysfs.c | 6 +-----
+ drivers/acpi/internal.h     | 2 +-
+ drivers/acpi/scan.c         | 5 +----
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index 4afc773383ad..0bff4a1654ed 100644
+index 0bff4a1654ed..3961fc47152c 100644
 --- a/drivers/acpi/device_sysfs.c
 +++ b/drivers/acpi/device_sysfs.c
-@@ -596,6 +596,11 @@ static const struct attribute_group acpi_group = {
- 	.is_visible = acpi_attr_is_visible,
- };
- 
-+const struct attribute_group *acpi_groups[] = {
-+	&acpi_group,
-+	NULL
-+};
-+
- /**
+@@ -605,13 +605,9 @@ const struct attribute_group *acpi_groups[] = {
   * acpi_device_setup_files - Create sysfs attributes of an ACPI device.
   * @dev: ACPI device object.
-@@ -604,8 +609,6 @@ int acpi_device_setup_files(struct acpi_device *dev)
+  */
+-int acpi_device_setup_files(struct acpi_device *dev)
++void acpi_device_setup_files(struct acpi_device *dev)
  {
- 	int result = 0;
- 
--	result = device_add_group(&dev->dev, &acpi_group);
+-	int result = 0;
 -
  	acpi_expose_nondev_subnodes(&dev->dev.kobj, &dev->data);
- 
- 	return result;
-@@ -618,5 +621,4 @@ int acpi_device_setup_files(struct acpi_device *dev)
- void acpi_device_remove_files(struct acpi_device *dev)
- {
- 	acpi_hide_nondev_subnodes(&dev->data);
--	device_remove_group(&dev->dev, &acpi_group);
+-
+-	return result;
  }
+ 
+ /**
 diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-index 601b670356e5..8e1c21e45d0e 100644
+index 8e1c21e45d0e..ca712a7fde21 100644
 --- a/drivers/acpi/internal.h
 +++ b/drivers/acpi/internal.h
-@@ -120,6 +120,7 @@ int acpi_tie_acpi_dev(struct acpi_device *adev);
+@@ -118,7 +118,7 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
+ 			     int type, void (*release)(struct device *));
+ int acpi_tie_acpi_dev(struct acpi_device *adev);
  int acpi_device_add(struct acpi_device *device);
- int acpi_device_setup_files(struct acpi_device *dev);
+-int acpi_device_setup_files(struct acpi_device *dev);
++void acpi_device_setup_files(struct acpi_device *dev);
  void acpi_device_remove_files(struct acpi_device *dev);
-+extern const struct attribute_group *acpi_groups[];
+ extern const struct attribute_group *acpi_groups[];
  void acpi_device_add_finalize(struct acpi_device *device);
- void acpi_free_pnp_ids(struct acpi_device_pnp *pnp);
- bool acpi_device_is_enabled(const struct acpi_device *adev);
 diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index 503773707e01..c15fffefca0a 100644
+index c15fffefca0a..49a8172fe0de 100644
 --- a/drivers/acpi/scan.c
 +++ b/drivers/acpi/scan.c
-@@ -1813,6 +1813,7 @@ void acpi_init_device_object(struct acpi_device *device, acpi_handle handle,
- 	device->dev.parent = parent ? &parent->dev : NULL;
- 	device->dev.release = release;
- 	device->dev.bus = &acpi_bus_type;
-+	device->dev.groups = acpi_groups;
- 	fwnode_init(&device->fwnode, &acpi_device_fwnode_ops);
- 	acpi_set_device_status(device, ACPI_STA_DEFAULT);
- 	acpi_device_get_busid(device);
+@@ -766,10 +766,7 @@ int acpi_device_add(struct acpi_device *device)
+ 		goto err;
+ 	}
+ 
+-	result = acpi_device_setup_files(device);
+-	if (result)
+-		pr_err("Error creating sysfs interface for device %s\n",
+-		       dev_name(&device->dev));
++	acpi_device_setup_files(device);
+ 
+ 	return 0;
+ 
 
 -- 
 2.45.2
