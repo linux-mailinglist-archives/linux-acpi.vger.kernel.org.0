@@ -1,137 +1,114 @@
-Return-Path: <linux-acpi+bounces-6824-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6825-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850C992BF6E
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 18:14:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC0E92BF78
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 18:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6EB287D9B
-	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 16:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0DF1283BA1
+	for <lists+linux-acpi@lfdr.de>; Tue,  9 Jul 2024 16:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E007519EEB1;
-	Tue,  9 Jul 2024 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C4519DF50;
+	Tue,  9 Jul 2024 16:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/OaSfPw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V26PpVon"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B770C19E809;
-	Tue,  9 Jul 2024 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB4D19D89F;
+	Tue,  9 Jul 2024 16:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720541298; cv=none; b=jxchVQNwSKVqDfJRb7I0fr3zKjULWHQZjezFhC+sXRuPm0IIkQ9Cmiiqvm74ag6U+oDZJT4E8wr24R3nVvZRc49yj1ub672ZOCPKlWIZTlE5IL4BJfI7haKtYR4wcAeotx87U0dheYVkLnkdBFRK9z2EelKzZkhtem/AuQYE1Gk=
+	t=1720541481; cv=none; b=p2NQfT5Fsquae/DwjLWBpR4C+GL5vmuzmfhoAEyYUE0SsSCgvUFzM2s94T/e1ctbigyiYqP/q3uW/yg6b2/XbsmJDiUNbYNXcNt31JoBZBy82kK/1JPrBeOngLZjtaVpTUCwv78CgDo/ia+yak9B0xovk+JwuCLZl+ollBZaWnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720541298; c=relaxed/simple;
-	bh=ttnEqOC4kIPh4A+V9kLYrPRwCk06/JuvxNJo4wCJ644=;
+	s=arc-20240116; t=1720541481; c=relaxed/simple;
+	bh=pvfRHHMEyM4nFW2ey50I0mDkZd5H1y+Ryq0X74YEc8Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gA2qh+njaSiQNmf9X1HUlhChpDIBd/F0s+c7Z3Ei17XfmvsPYJEZffIgrWLwUwxsCXegxFLW/LPQc5nK9FfgUdduNfCnATTIIQSMpErmFebgNLUTqocfUUb19Ewc1WpfSPz0tpbFOxgW8gM2Vv6RKO1V45ap5JUznCwXf4Ze768=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/OaSfPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55CB3C32782;
-	Tue,  9 Jul 2024 16:08:18 +0000 (UTC)
+	 To:Cc:Content-Type; b=eCoR5N7ujOGhwZiJxVc+eVblg+bSPpG5eUOSISzq70ok1jMjGkZlSS1uj+B21JBoKM8XZ1gOFRffYLT2VO9xtBkSqT6Y4dFi1vj4Yb42wj54bf80ZLw7CImOrNaIhl5hamc0K0S2F4qMBUtPAErKPvfmE5SXGkT/wutapUXccHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V26PpVon; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021FFC32782;
+	Tue,  9 Jul 2024 16:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720541298;
-	bh=ttnEqOC4kIPh4A+V9kLYrPRwCk06/JuvxNJo4wCJ644=;
+	s=k20201202; t=1720541481;
+	bh=pvfRHHMEyM4nFW2ey50I0mDkZd5H1y+Ryq0X74YEc8Q=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f/OaSfPwZNPbFg7LVAWYtxKr5Jf+MJgxBR8/ozKEkeAFbqApj2bxHY0pxGOvpfaCB
-	 NUWWFDF9ZMb57LiwrGXnsTWBbKzAtukZGW5AYgipXN0oiJsLC5rr1cwuSlmoMZPUN2
-	 zO1lCjAdwBpw8YoIm9vuuLwUM7T3qaXeBUpeWSa+zF6NG7wA+WqvR7gPVOQ2AQt0Oq
-	 /nDqIyHm85QJQh1RFAPqwHbliV6/+948/Zgpg6Rn7UXEw0yLsQZ5mDu2SYE8Qlsgjp
-	 rILfgmTBknUgr0RgaQx6oPbBqB8mJdvbiWuPK+FDvS8dwMzegJtStuZGUAevCYCq2H
-	 brYUWNN0cBo9w==
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3d92531469fso140441b6e.3;
-        Tue, 09 Jul 2024 09:08:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV+xBV+iBoHamcYIY30W1UiGr0eoQOjNjTBFQO0tfAaQln4KuX/okeyYpmTR2fwNgnuzGQy83w/d4s/QumCnY+2LL0KkPkr4MUh6W/DQtwc+zP2LHH8iCq22WfuafP29HufIlh6CoivoQ==
-X-Gm-Message-State: AOJu0YwRJfXPdxGXVC6M2TyLfz5ovUhoRx3kbX9kDqqXiK59bHfQ693p
-	EkkF9y/FwEsbckIE+W1z5KP+ueoiz2uGLBXqvq+axQ20Plw3o+TeBT/ucm9T5mM5dEc0wSxIeJg
-	Tt0L5sXjw+9bTCMbuzvK7E5hbWtI=
-X-Google-Smtp-Source: AGHT+IGhosfelexhYexlV83ag1X5V315poRJX3kSksgClwNnQhmc60skdRAC+hnUw2BgrPedzGxbE28zV878LMpVP6U=
-X-Received: by 2002:a05:6808:19a8:b0:3d9:30a2:f8e4 with SMTP id
- 5614622812f47-3d93c099e30mr2974065b6e.4.1720541297654; Tue, 09 Jul 2024
- 09:08:17 -0700 (PDT)
+	b=V26PpVongjNya1kz3lRNhrzSK2NW+jIW7dVqbEaGJZ1GAZu/GaE7SctU7MkBfNkT3
+	 Vu2muCiJk/ZUwhlklWGK2nnQds85/d8LiDbfkr87O5G7M/30PcEFDumPKE2O4/3KC1
+	 x6gVSAxFOZMgebHc6SoJv2BqBeImEzsQIt4xPx7Fe+44o3t92cBCk2Zx/PPzdHBllW
+	 Kj7B25C8iD+LEYdYrM13xlNrVQjInaIBXvauz4UvQ6FdJr6LOMNcSaf2HO3mgAdGL4
+	 ltuuyRasJVwkV7gzQyePXDpykHSiSQo4QsRO9KoQGL6Y5RJQwuy7fFzUY9vkmZkDNA
+	 IVbdd6QEuuXkg==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5c6927d1969so24969eaf.3;
+        Tue, 09 Jul 2024 09:11:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUNOdGVXghVHj/9o+KrXk6GUVJE4KyUmJwReMp6LaZRNvhaAoFr2Khdyn4aigaNenwBmwYf6Uf4bNhicosae43qewKtfP2XtuRD0ie2r3lXRIkVnZIGvAtMdLPxkvMhcfm/fe4CA5aK3A==
+X-Gm-Message-State: AOJu0YxYc7igQwmSdHaDi3M0+xnzK6LCJIbZeEzPzrqru8MN50qgLHFn
+	zlNF0B5KHo5IT7Tu3Jja7oDOT917Zww70UtnSM3u2A8mlL3yng+bFzYDId1ySSmfCe8bD6x2fGL
+	N+v0rV9uq0x/y0+tTsmSRcF9Lwvc=
+X-Google-Smtp-Source: AGHT+IEjFhar5iSXGYsbrr8yTaAt03wty+C0y+fzLa16Zwp5Jlz/ssboxHdbqYeG7dM2MHL+s5c5uOR7zXkZAt+BYfE=
+X-Received: by 2002:a4a:a28d:0:b0:5c6:6abd:b46 with SMTP id
+ 006d021491bc7-5c68e12a3efmr2835317eaf.1.1720541480321; Tue, 09 Jul 2024
+ 09:11:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <3DA0EAE3-9EB7-492B-96FC-988503BBDCCC@live.com> <b2f69fb8-d87a-4cf4-8d45-11cf1a396e54@redhat.com>
-In-Reply-To: <b2f69fb8-d87a-4cf4-8d45-11cf1a396e54@redhat.com>
+References: <20240705191835.152189-1-thomas.andreatta2000@gmail.com>
+In-Reply-To: <20240705191835.152189-1-thomas.andreatta2000@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 9 Jul 2024 18:08:06 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gg=Fj-RqY9zGPWLJ8E-CzWps=mMvrHdpDComndXGCOdw@mail.gmail.com>
-Message-ID: <CAJZ5v0gg=Fj-RqY9zGPWLJ8E-CzWps=mMvrHdpDComndXGCOdw@mail.gmail.com>
-Subject: Re: [PATCH] acpi video: force native for some T2 macbooks
-To: Hans de Goede <hdegoede@redhat.com>, Aditya Garg <gargaditya08@live.com>
-Cc: Lukas Wunner <lukas@wunner.de>, "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Orlando Chamberlain <orlandoch.dev@gmail.com>
+Date: Tue, 9 Jul 2024 18:11:09 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iDPiz3Q-eu5AaKmi39xfxUNYPnWvpjCQCvgK_evEJ8-w@mail.gmail.com>
+Message-ID: <CAJZ5v0iDPiz3Q-eu5AaKmi39xfxUNYPnWvpjCQCvgK_evEJ8-w@mail.gmail.com>
+Subject: Re: [PATCH] Staging: acpi: fixed a coding style issue moving from
+ strcpy to strscpy.
+To: Thomas Andreatta <thomasandreatta2000@gmail.com>
+Cc: rafael@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Thomas Andreatta <thomas.andreatta2000@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 8, 2024 at 12:13=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
- wrote:
+On Fri, Jul 5, 2024 at 9:18=E2=80=AFPM Thomas Andreatta
+<thomasandreatta2000@gmail.com> wrote:
 >
-> Hi,
->
-> On 7/5/24 3:56 PM, Aditya Garg wrote:
-> > From: Orlando Chamberlain <orlandoch.dev@gmail.com>
-> >
-> > The intel backlight is needed for these, previously users had nothing i=
-n
-> > /sys/class/backlight.
-> >
-> > Signed-off-by: Orlando Chamberlain <orlandoch.dev@gmail.com>
-> > Signed-off-by: Aditya Garg <gargaditya08@live.com>
->
-> Thanks, patch looks good to me:
->
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> fixed a coding style issue moving from strcpy to strscpy.
 
-Applied as 6.11 material, thanks!
+This is not a coding style issue and the change below is not a fix.
 
-> > ---
-> >  drivers/acpi/video_detect.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-> > index 442396f6ed1f..baf7264d7b94 100644
-> > --- a/drivers/acpi/video_detect.c
-> > +++ b/drivers/acpi/video_detect.c
-> > @@ -513,6 +513,14 @@ static const struct dmi_system_id video_detect_dmi=
-_table[] =3D {
-> >               DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
-> >               },
-> >       },
-> > +     {
-> > +      .callback =3D video_detect_force_native,
-> > +      /* Apple MacBook Air 9,1 */
-> > +      .matches =3D {
-> > +             DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-> > +             DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir9,1"),
-> > +             },
-> > +     },
-> >       {
-> >        /* https://bugzilla.redhat.com/show_bug.cgi?id=3D1217249 */
-> >        .callback =3D video_detect_force_native,
-> > @@ -522,6 +530,14 @@ static const struct dmi_system_id video_detect_dmi=
-_table[] =3D {
-> >               DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro12,1"),
-> >               },
-> >       },
-> > +     {
-> > +      .callback =3D video_detect_force_native,
-> > +      /* Apple MacBook Pro 16,2 */
-> > +      .matches =3D {
-> > +             DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-> > +             DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro16,2"),
-> > +             },
-> > +     },
-> >       {
-> >        .callback =3D video_detect_force_native,
-> >        /* Dell Inspiron N4010 */
+It just replaces strcpy() with strscpy() which is preferred (for some
+reason that needs to be mentioned).
+
+> Signed-off-by: Thomas Andreatta <thomas.andreatta2000@gmail.com>
+> ---
+>  drivers/acpi/ac.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >
+> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
+> index 09a87fa222c7..f4b5ba033df8 100644
+> --- a/drivers/acpi/ac.c
+> +++ b/drivers/acpi/ac.c
+> @@ -213,8 +213,11 @@ static int acpi_ac_probe(struct platform_device *pde=
+v)
+>                 return -ENOMEM;
+>
+>         ac->device =3D adev;
+> -       strcpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME);
+> -       strcpy(acpi_device_class(adev), ACPI_AC_CLASS);
+> +       char *device_class =3D acpi_device_class(adev);
+> +       char *device_name =3D acpi_device_name(adev);
+> +
+> +       strscpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME, strlen(devic=
+e_name));
+> +       strscpy(device_class, ACPI_AC_CLASS, strlen(device_class));
+
+The last argument of strscpy() is not necessary in both cases.
+
+>
+>         platform_set_drvdata(pdev, ac);
+>
+> --
 
