@@ -1,101 +1,169 @@
-Return-Path: <linux-acpi+bounces-6841-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6842-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0A992D101
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 13:50:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 380F892D286
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 15:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47E3AB26153
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 11:50:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B3F1F25B09
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 13:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B52919048D;
-	Wed, 10 Jul 2024 11:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A002192495;
+	Wed, 10 Jul 2024 13:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="BY6u0s20"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFfyB67p"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8642818FC89;
-	Wed, 10 Jul 2024 11:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7263919249F;
+	Wed, 10 Jul 2024 13:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720612195; cv=none; b=WwIiEF+hWXdY+XwGZxYKbeh4MLkvC9S8hNWP90X6BO5B9KFTH/lZ+/dVuan1rcTs0jfOucrQAMoEMjLa2u35OlVqqi4TGp8aF6qII41Hbi8eclJ7ucBdDXJ6T1AUvaZaXMz562kEdbYpb/RBt1smxe8VOno2liFnUkFRCf44nh8=
+	t=1720617201; cv=none; b=JA6d9wW5zkaR6KvHAbuTOlDzqPIWDNSQO26YDkPNv3AU5unJeQK5t003/AmWeck7nr+buQKoso/EknmrRibUnTvGtQLpW5xQ5j6O8TJaUiZ1z0cFuA+w+hsrsmnOXulTTqKFADWL6tEBd2D49vvLGy1sumHZdgog7jub+gg1ENA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720612195; c=relaxed/simple;
-	bh=Icr0XLd+tOg3lAw80ex57lRQGN7ul6Qtxts5UDyAvg4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kukZJ1F+EVT2xQEmLsCGG9BJYd7V1DGJoj6amFxgcrSxgcFhWdJ18QUcaygzV7e4FlHXuXE6PEqIaVzzeNnTcj7yPhuxkO5+tysHMh8CL2GQU9u9SxZUATTQ2qK8gUMbNul/GeT5QiPpwDyrfnXSgJLWpHTbZtlx7e9ZUE5yTGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=BY6u0s20; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1720612187;
-	bh=Icr0XLd+tOg3lAw80ex57lRQGN7ul6Qtxts5UDyAvg4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BY6u0s20vMPLvcKT8EiZ6u51jA8aJYTsyIkn4AkC5LcNxsPUrSEOB+KykKQ89LYBO
-	 KWxkdaiat01fNaAzJXVBhz9VuKPdfRSNCxtoHTPtgdGz3zAUAGbchs9TSExoK7zmM8
-	 zRlwzky5ISAMHdXmGuEkOKFs+3bMJMEJHBLdBGPY=
-Date: Wed, 10 Jul 2024 13:49:47 +0200
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Len Brown <lenb@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	Lance Ortiz <lance.ortiz@hp.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] ACPI: sysfs: manage sysfs attributes through
- device core
-Message-ID: <8c5c7067-7954-4fad-be3b-3b5a22cfbd5c@t-8ch.de>
-References: <20240709-acpi-sysfs-groups-v2-0-058ab0667fa8@weissschuh.net>
- <CAJZ5v0iR4r6BFTd5fPEdoCVBv=c=HqyoV239Bd99tbO0gFihLw@mail.gmail.com>
+	s=arc-20240116; t=1720617201; c=relaxed/simple;
+	bh=huUNhhTJhWFtjsInUEv7wh3a987qL/8BId3TQ7pKYso=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OOdnrDbo5bfITkpwkByO8/hn3c5Wk5pttTlOC6OPEt8UaWle3xkfryyVVm0Ga6+lEfEddSN6DoVeJTyK/cH5S4HWgM5ALfgMNMaeL7qaUDu+aMbXVt9OQMtAB2Kv5GTmVrch3LRjwHaovZz3sE3TmeMFc/pHfKoFHhtMuJvt3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFfyB67p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06155C4AF07;
+	Wed, 10 Jul 2024 13:13:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720617201;
+	bh=huUNhhTJhWFtjsInUEv7wh3a987qL/8BId3TQ7pKYso=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QFfyB67pfrArc/YSAZmhXQa585RK3v8YkxzG7BSr2h1//0jKCv0ASOCvYpNkOCazg
+	 gYHXFuovFgDM8Isq8gBwKnGZzHOfsctCNO8ipr8W/e84BNhYTCgoMFdqdkME45ZDsv
+	 f86A7wM01Wckpb0gAJFIyWJiHkv2cWOgUIUQ7uAMnCIWhaH5td4GJWDrNkwAGxomGC
+	 qhciIfHSypgh+9ciECLWnV0TgpaHk8YjhBT+5/M6RPYHpO+a+dj5RtzodCP+2a36Uq
+	 m915b7qGhzXIBoggnYAIh8Eq5aqK7SbBQfUsu376GqQA3Sy9ag/bbnNb7h/NJ6cHV7
+	 17GBMed6HVCCg==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5c7aff2005bso22716eaf.2;
+        Wed, 10 Jul 2024 06:13:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWvU38mTARVsfxixBvliZ9D/mQv/K4XP2J+Q5YVbgsEeaLighp61yoOxRzmhm2F2M7VLNm+oB07yek5/vyfoiueuJwwBEoFAxNrOw==
+X-Gm-Message-State: AOJu0YxIHbmOdvHQKeXAnkCwPcqyy1P9wfuxUMSvozen29z0Mgq6Gmp6
+	wCV2u0pM1s9+wzTMHjeWjxvqlFrGaJnUTLXJEvy+zfr4pJTzTQTok49ETkbmLALXMceWHm4fWTv
+	C3xjo85E01yasRdLbuSY5B+5RtlE=
+X-Google-Smtp-Source: AGHT+IHsJZjuZ8j57DYvMIy9ZN5zAAF9UpBAeroiul+VAjZIQYW74gb6rUlf8Jz7HB9fp726J4USbwLXE+GLRaP7hM0=
+X-Received: by 2002:a4a:a6cc:0:b0:5c6:6aae:b5f5 with SMTP id
+ 006d021491bc7-5c68df9c85emr5607255eaf.0.1720617200161; Wed, 10 Jul 2024
+ 06:13:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0iR4r6BFTd5fPEdoCVBv=c=HqyoV239Bd99tbO0gFihLw@mail.gmail.com>
+References: <205bd84a-fe8e-4963-968e-0763285f35ba@message-id.googlemail.com> <67d74985-7be5-4e29-aab2-97a08208ca3f@intel.com>
+In-Reply-To: <67d74985-7be5-4e29-aab2-97a08208ca3f@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 10 Jul 2024 15:13:08 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i0jJBDqYjp+9_Bmhhf67SrWNXaRY1ZfDx6GEKfCLcGVQ@mail.gmail.com>
+Message-ID: <CAJZ5v0i0jJBDqYjp+9_Bmhhf67SrWNXaRY1ZfDx6GEKfCLcGVQ@mail.gmail.com>
+Subject: Re: Regression in 6.8 from "ACPI: OSL: Use a threaded interrupt
+ handler for SCI"
+To: Stefan Seyfried <stefan.seyfried@googlemail.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: multipart/mixed; boundary="00000000000002bab2061ce46990"
 
-On 2024-07-10 13:43:57+0000, Rafael J. Wysocki wrote:
-> On Tue, Jul 9, 2024 at 10:38 PM Thomas Weißschuh <linux@weissschuh.net> wrote:
-> >
-> > Simplify the lifecycle of the sysfs attributes by letting the device
-> > core manage them.
-> >
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > ---
-> > Changes in v2:
-> > - Add fix to validate buffer type validation (patch 1)
-> > - Drop usage of devm-APIs as these are unusable for unbound devices
-> > - Evaluate _STR on each sysfs access
-> > - Link to v1: https://lore.kernel.org/r/20240613-acpi-sysfs-groups-v1-0-665e0deb052a@weissschuh.net
-> >
-> > ---
-> > Thomas Weißschuh (5):
-> >       ACPI: sysfs: validate return type of _STR method
-> >       ACPI: sysfs: evaluate _STR on each sysfs access
-> >       ACPI: sysfs: manage attributes as attribute_group
-> >       ACPI: sysfs: manage sysfs attributes through device core
-> >       ACPI: sysfs: remove return value of acpi_device_setup_files()
-> >
-> >  drivers/acpi/device_sysfs.c | 196 +++++++++++++++++++-------------------------
-> >  drivers/acpi/internal.h     |   3 +-
-> >  drivers/acpi/scan.c         |   6 +-
-> >  include/acpi/acpi_bus.h     |   1 -
-> >  4 files changed, 89 insertions(+), 117 deletions(-)
-> > ---
-> 
-> If this is not urgent, and I don't think it is, I'd rather defer it to
-> the 6.12 cycle (that is, I'd apply it after the upcoming 6.11 merge
-> window).
+--00000000000002bab2061ce46990
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sounds good to me.
+On Mon, Jul 8, 2024 at 3:51=E2=80=AFPM Wysocki, Rafael J
+<rafael.j.wysocki@intel.com> wrote:
+>
+> Hi,
+>
+> On 7/8/2024 10:07 AM, Stefan Seyfried wrote:
+> > Hi all,
+> >
+> > any kernels after 6.7 break my trusty old Toughbook CF-51 by rendering
+> > many PCI devices unusable.
+> >
+> > I did first notice that i915 did no longer work and filed
+> > https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11437, there I
+> > was pointed to commit
+> >
+> > commit 7a36b901a6eb0e9945341db71ed3c45c7721cfa9
+> > Author: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Date:   Mon Nov 27 20:57:43 2023 +0100
+> >
+> >     ACPI: OSL: Use a threaded interrupt handler for SCI
+> >
+> > which I verified with a week-long bisecting from 6.7 to 6.8 (just for
+> > fun :-)
+> >
+> Thanks for reporting this, although it would be nice to put linux-acpi
+> on the CC.
+>
+>
+> > Just reverting this commit top of 6.10-rc5 (sorry, this machine is not
+> > very powerful so I did not try the latest git master) makes everything
+> > work fine again.
+> >
+> > I get these messages in dmesg when running the broken kernels:
+> >
+> > [  T308] genirq: Flags mismatch irq 9. 00000080 (yenta) vs. 00002080
+> > (acpi)
+> > [  T305] genirq: Flags mismatch irq 9. 00000080 (uhci_hcd:usb1) vs.
+> > 00002080 (acpi)
+> > [  T305] genirq: Flags mismatch irq 9. 00000080 (uhci_hcd:usb1) vs.
+> > 00002080 (acpi)
+> > [   T46] genirq: Flags mismatch irq 9. 00000080 (ehci_hcd:usb1) vs.
+> > 00002080 (acpi)
+> > [  T312] genirq: Flags mismatch irq 9. 00000080 (firewire_ohci) vs.
+> > 00002080 (acpi)
+> > [  T305] genirq: Flags mismatch irq 9. 00000080 (uhci_hcd:usb1) vs.
+> > 00002080 (acpi)
+> > [  T308] genirq: Flags mismatch irq 9. 00000080 (yenta) vs. 00002080
+> > (acpi)
+> > [  T592] genirq: Flags mismatch irq 9. 00000080 (snd_intel8x0) vs.
+> > 00002080 (acpi)
+> > [  T581] genirq: Flags mismatch irq 9. 00000080 (i915) vs. 00002080
+> > (acpi)
+> > [  T874] genirq: Flags mismatch irq 9. 00000080 (enp2s1) vs. 00002080
+> > (acpi)
+> >
+> > These are not present with that commit reverted.
+> >
+> So all of the drivers above attempt to share the IRQ with the SCI and
+> they don't use IRQF_ONESHOT and because they all are threaded, there is
+> a flags conflict.
+>
+> They all need to be made pass IRQF_COND_ONESHOT when requesting
+> interrupts and it will all work again.
+>
+> I'll send you a patch for this (hopefully later today), but I guess it
+> will take a while until it gets absorbed.
+>
+> Thanks!
 
+So can you please check if the attached patch helps?
 
-Thanks,
-Thomas
+--00000000000002bab2061ce46990
+Content-Type: text/x-patch; charset="US-ASCII"; name="irq-flags-mismatch-fixes.patch"
+Content-Disposition: attachment; filename="irq-flags-mismatch-fixes.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lyfv0amz0>
+X-Attachment-Id: f_lyfv0amz0
+
+LS0tCiBpbmNsdWRlL2xpbnV4L2ludGVycnVwdC5oIHwgICAgMyArKy0KIDEgZmlsZSBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCkluZGV4OiBsaW51eC1wbS9pbmNsdWRl
+L2xpbnV4L2ludGVycnVwdC5oCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
+PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KLS0tIGxpbnV4LXBtLm9yaWcvaW5jbHVkZS9s
+aW51eC9pbnRlcnJ1cHQuaAorKysgbGludXgtcG0vaW5jbHVkZS9saW51eC9pbnRlcnJ1cHQuaApA
+QCAtMTY4LDcgKzE2OCw4IEBAIHN0YXRpYyBpbmxpbmUgaW50IF9fbXVzdF9jaGVjawogcmVxdWVz
+dF9pcnEodW5zaWduZWQgaW50IGlycSwgaXJxX2hhbmRsZXJfdCBoYW5kbGVyLCB1bnNpZ25lZCBs
+b25nIGZsYWdzLAogCSAgICBjb25zdCBjaGFyICpuYW1lLCB2b2lkICpkZXYpCiB7Ci0JcmV0dXJu
+IHJlcXVlc3RfdGhyZWFkZWRfaXJxKGlycSwgaGFuZGxlciwgTlVMTCwgZmxhZ3MsIG5hbWUsIGRl
+dik7CisJcmV0dXJuIHJlcXVlc3RfdGhyZWFkZWRfaXJxKGlycSwgaGFuZGxlciwgTlVMTCwKKwkJ
+CQkgICAgZmxhZ3MgfCBJUlFGX0NPTkRfT05FU0hPVCwgbmFtZSwgZGV2KTsKIH0KIAogZXh0ZXJu
+IGludCBfX211c3RfY2hlY2sK
+--00000000000002bab2061ce46990--
 
