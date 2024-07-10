@@ -1,141 +1,321 @@
-Return-Path: <linux-acpi+bounces-6836-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6837-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EBA92CE55
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 11:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E584E92CFBC
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 12:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9D628536E
-	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 09:39:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C57E28A833
+	for <lists+linux-acpi@lfdr.de>; Wed, 10 Jul 2024 10:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D953D17B41C;
-	Wed, 10 Jul 2024 09:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D489318FC90;
+	Wed, 10 Jul 2024 10:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Pj4UUZzD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ul/DvtK2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A2F17FD;
-	Wed, 10 Jul 2024 09:38:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A018D13AD22;
+	Wed, 10 Jul 2024 10:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720604337; cv=none; b=Gm7aa93Q8Mc4hVFIKIP1IehzyBziEUu/NBPcnMoCy0gFE/8BWd3/nmCZSEpvKWPpMNQbtiQl71CZg9c2da+x583i+1RasKqD5db4SLwA55VykYiU0z8Z8xzC521l07lM7vYu7/zzOGCOI7EkFbraumvHLc5wuOctXW60QnjOyL4=
+	t=1720608314; cv=none; b=AkIYdZTxhaKAEIDktLUO+sPDk1dfzS5KDk1qIu8Z1ieifotcdJJeYvISUZJ5yK1lZijpllZXTyl895mNuQAoQeKn3se9rO/tzLuro3SJhrS/z8Ed5ztt1EAClK0fX7ujh5Ufv9UTr2qWBqwurlySnhw4CY20zki6x3xG4sMvrWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720604337; c=relaxed/simple;
-	bh=BytwbyifiKESLkwzNohBtpgLDUZDoGmKbGcw/9M/2/w=;
+	s=arc-20240116; t=1720608314; c=relaxed/simple;
+	bh=LE/oYnTYJnZzNSZjVdRZsuFUBrpiaPaP6arHr61Ezs0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BKci7hso2bjcQAAAEDwY4M/tPzOhCHnjl5Yze2gFgUmmoNDoo7mt2YGZ96fUG4EQWO3iis/tV5Nj+5mQhtdJNE8SV2eFni/n79luHxvdydnlKbHe1fUwIqqnS/bdZEuq0xxFkXL6g31qF06xjE+YuySLmJBgLxVt8mTYeZsw0pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Pj4UUZzD; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D881940E019C;
-	Wed, 10 Jul 2024 09:38:53 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ZUC_3agCiurD; Wed, 10 Jul 2024 09:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1720604327; bh=4tD55kRk58dzBkcPyPWKImU3k357bp6g9dUEFXRiH5s=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=PoOM2yd5+b7fpm2A1BmwzgCbtMxjBpcaT9GnjrRmO9cQlLhJubgZHxKppTHDzL6ugZQwlM8kn9zSyH7SnmiIaqpYkgCUjH2bjHFVLf80i+InfoSIs+jTEy/6xcclM28n4cJqr05WT4phEJBB9rDw4ybEkF8MHf8bDCmg8B1sy5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ul/DvtK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBE4C32781;
+	Wed, 10 Jul 2024 10:45:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720608314;
+	bh=LE/oYnTYJnZzNSZjVdRZsuFUBrpiaPaP6arHr61Ezs0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pj4UUZzD3z8BN3ScRN0bDvLplYjALfVoYh3H4FoAWcjoklLMm/Ibbl0ZdPlS5IFFw
-	 ouLNVb7H/H8KYCPtM63E4bN4qpeW4GYUqZNvoHE8AAkf0lSKN3UZMtIrq+f52ANGti
-	 Set4pCeQu/dAf8OsKNbXUHRFC5t2uzkp6uxkRf7kq9wtgiKzVvTi4SzXsZGFHX61DF
-	 XsOieiXltD7d8US6ccBWrW6JZptU3A/NkBpcRvt5EDAaSL5+YcspcPi2PnGZvrtwYx
-	 rtrPsyW8TzJt1OVuiCyEgpoweOkTrF1pBohA+idpm1GZzuTb8KJGcbzCsjGEynvy0x
-	 PY0wS3MjeESBrQCjAYhExEAQmYge/xqabxnaPgN1Qb1ehMBQRjc57hcLYNC03GFoBE
-	 UCgXv13WkJYt96YwuTARB3bDoklfU8tNocMlPdeGw4qklW0EWaYnhlxTrojbu2KTGL
-	 XxlZ8Sc7cbo1b7QdX9W5Haj+/SBXQnhZl2xgn1ld9x2NZUzVKVtOLJytZ3djQ2lUzr
-	 c1aY0ZLuxAlok9Tr88YqCnNkbKAe1w+91nM2BDvEDWX0IV7mT6cuawx+qQ11mmPNZW
-	 YB9LGO9XkK+33kWbuYR82elmqT6ruXSg1JkDFjIhFIyXRn7aXdNIrGWFJvxtuQKb4i
-	 7u+qClYOlf/gq9G3Fb8iGQRg=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 52FB640E019D;
-	Wed, 10 Jul 2024 09:38:29 +0000 (UTC)
-Date: Wed, 10 Jul 2024 11:38:28 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: "Naik, Avadhut" <avadnaik@amd.com>
-Cc: x86@kernel.org, linux-edac@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, tony.luck@intel.com,
-	rafael@kernel.org, tglx@linutronix.de, mingo@redhat.com,
-	rostedt@goodmis.org, lenb@kernel.org, mchehab@kernel.org,
-	james.morse@arm.com, airlied@gmail.com, yazen.ghannam@amd.com,
-	john.allen@amd.com, Avadhut Naik <avadhut.naik@amd.com>
-Subject: Re: [PATCH v2 2/4] x86/mce, EDAC/mce_amd: Add support for new
- MCA_SYND{1,2} registers
-Message-ID: <20240710093828.GDZo5WlPrXLg-SbBHd@fat_crate.local>
-References: <20240625195624.2565741-1-avadhut.naik@amd.com>
- <20240625195624.2565741-3-avadhut.naik@amd.com>
- <20240626111036.GOZnv3LFCPnYfrRYSE@fat_crate.local>
- <6c318161-9ae4-4965-b8f3-e38bf1393628@amd.com>
- <20240626181805.GDZnxbXRJlCecNeDGW@fat_crate.local>
- <17bba31a-9bb0-40e5-be7e-96ac6d421066@amd.com>
+	b=ul/DvtK2rX+5FMBNGck+kBMzIRGpz4orkB2r1kF3F5/H/AeS899Ul9hgipFnF2Lsm
+	 fqhIZOiv0leypARDaRmv+aZkXZtcOvdUsj+5wap2S1ZSPRJLotPgXA81bc6A5UAr0z
+	 z5VHQSdaDORQpwUmL9AwWVjobHdkprOWnNJAWDyejM5upkZwlW91BAuftToNssIxV9
+	 EPNxe6DUirVuysfk8vJy1WkTXiFl6rFYV46XNiVG+oPrdlwGwMZBTH8vZCI8bMMe5G
+	 /7D7ufOL9UNFYDutNSZl10IpjTK0gCefF+Rg+k1DThhxQ1VVYHUolVBiV04f72Jh8X
+	 OofIXEtB5nDgQ==
+Date: Wed, 10 Jul 2024 12:45:06 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Sunil V L <sunilvl@ventanamicro.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Haibo1 Xu <haibo1.xu@intel.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
+Subject: Re: [PATCH v6 11/17] ACPI: RISC-V: Initialize GSI mapping structures
+Message-ID: <Zo5mMiWbEtKEeZ2r@lpieralisi>
+References: <20240601150411.1929783-1-sunilvl@ventanamicro.com>
+ <20240601150411.1929783-12-sunilvl@ventanamicro.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <17bba31a-9bb0-40e5-be7e-96ac6d421066@amd.com>
+In-Reply-To: <20240601150411.1929783-12-sunilvl@ventanamicro.com>
 
-On Tue, Jul 09, 2024 at 01:27:25AM -0500, Naik, Avadhut wrote:
-> IIUC, its an abbreviation of a Latin word and is used as a synonym for "namely"
-> or "that is to say".
-> Might not be the best choice in this case. Will change it.
-
-I learn new stuff every day:
-
-https://en.wikipedia.org/wiki/Viz.
-
-> Userspace error decoding tools like the rasdaemon gather related hardware error
-> information through the tracepoints. As such, its important to have these two
-> registers in the tracepoint so that the tools like rasdaemon can parse them
-> and output the supplemental error information like FRU Text contained in them.
-
-Put *that* in the commit message - do not explain what the patch does.
-
-> Got it. The first SoB entry is of the primary author. The successive SoB's are
-> from the people handling and transporting the patch.
-
-Exactly!
-
-> IOW, the route taken by a patch, as its propagated, to maintainers and eventually
-> to Linus, should be evident from the SoB chain.
-
-You got it.
-
-> With this set, the first two elements of the vendor data dynamic array are SYND 1/2
-> registers while the third element is MCA_CONFIG (added through patch 4 of the set).
-> Now, in rasdaemon, SYND1/2 register contents (i.e. first two fields) are interpreted
-> as FRU Text only if BIT(9) of MCA_CONFIG (third field) is set.
+On Sat, Jun 01, 2024 at 08:34:05PM +0530, Sunil V L wrote:
+> RISC-V has PLIC and APLIC in MADT as well as namespace devices.
+> Initialize the list of those structures using MADT and namespace devices
+> to create mapping between the ACPI handle and the GSI ranges. This will
+> be used later to add dependencies.
 > 
-> Thus, we depend on array's layout for accurate FRU Text decoding in the rasdaemon.
+> Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+> ---
+>  arch/riscv/include/asm/irq.h |  22 ++++++
+>  drivers/acpi/riscv/init.c    |   2 +
+>  drivers/acpi/riscv/init.h    |   4 +
+>  drivers/acpi/riscv/irq.c     | 142 +++++++++++++++++++++++++++++++++++
+>  4 files changed, 170 insertions(+)
+>  create mode 100644 drivers/acpi/riscv/init.h
+> 
+> diff --git a/arch/riscv/include/asm/irq.h b/arch/riscv/include/asm/irq.h
+> index 8e10a94430a2..44a0b128c602 100644
+> --- a/arch/riscv/include/asm/irq.h
+> +++ b/arch/riscv/include/asm/irq.h
+> @@ -16,4 +16,26 @@ void riscv_set_intc_hwnode_fn(struct fwnode_handle *(*fn)(void));
+>  
+>  struct fwnode_handle *riscv_get_intc_hwnode(void);
+>  
+> +#ifdef CONFIG_ACPI
+> +
+> +enum riscv_irqchip_type {
+> +	ACPI_RISCV_IRQCHIP_INTC		= 0x00,
+> +	ACPI_RISCV_IRQCHIP_IMSIC	= 0x01,
+> +	ACPI_RISCV_IRQCHIP_PLIC		= 0x02,
+> +	ACPI_RISCV_IRQCHIP_APLIC	= 0x03,
+> +};
+> +
+> +int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+> +			    u32 *id, u32 *nr_irqs, u32 *nr_idcs);
+> +struct fwnode_handle *riscv_acpi_get_gsi_domain_id(u32 gsi);
+> +
+> +#else
+> +static inline int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+> +					  u32 *id, u32 *nr_irqs, u32 *nr_idcs)
+> +{
+> +	return 0;
+> +}
+> +
+> +#endif /* CONFIG_ACPI */
+> +
+>  #endif /* _ASM_RISCV_IRQ_H */
+> diff --git a/drivers/acpi/riscv/init.c b/drivers/acpi/riscv/init.c
+> index 5f7571143245..22db97f7a772 100644
+> --- a/drivers/acpi/riscv/init.c
+> +++ b/drivers/acpi/riscv/init.c
+> @@ -6,7 +6,9 @@
+>   */
+>  
+>  #include <linux/acpi.h>
+> +#include "init.h"
+>  
+>  void __init acpi_riscv_init(void)
+>  {
+> +	riscv_acpi_init_gsi_mapping();
+>  }
+> diff --git a/drivers/acpi/riscv/init.h b/drivers/acpi/riscv/init.h
+> new file mode 100644
+> index 000000000000..0b9a07e4031f
+> --- /dev/null
+> +++ b/drivers/acpi/riscv/init.h
+> @@ -0,0 +1,4 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#include <linux/init.h>
+> +
+> +void __init riscv_acpi_init_gsi_mapping(void);
+> diff --git a/drivers/acpi/riscv/irq.c b/drivers/acpi/riscv/irq.c
+> index f56e103a501f..0473428e8d1e 100644
+> --- a/drivers/acpi/riscv/irq.c
+> +++ b/drivers/acpi/riscv/irq.c
+> @@ -7,6 +7,21 @@
+>  
+>  #include <linux/acpi.h>
+>  #include <linux/sort.h>
+> +#include <linux/irq.h>
+> +
+> +#include "init.h"
+> +
+> +struct riscv_ext_intc_list {
+> +	acpi_handle handle;
+> +	u32 gsi_base;
+> +	u32 nr_irqs;
+> +	u32 nr_idcs;
+> +	u32 id;
+> +	u32 type;
+> +	struct list_head list;
+> +};
+> +
+> +LIST_HEAD(ext_intc_list);
+>  
+>  static int irqchip_cmp_func(const void *in0, const void *in1)
+>  {
+> @@ -30,3 +45,130 @@ void arch_sort_irqchip_probe(struct acpi_probe_entry *ap_head, int nr)
+>  		return;
+>  	sort(ape, nr, sizeof(*ape), irqchip_cmp_func, NULL);
+>  }
+> +
+> +static void riscv_acpi_update_gsi_handle(u32 gsi_base, acpi_handle handle)
+> +{
+> +	struct riscv_ext_intc_list *ext_intc_element;
+> +	struct list_head *i, *tmp;
+> +
+> +	list_for_each_safe(i, tmp, &ext_intc_list) {
+> +		ext_intc_element = list_entry(i, struct riscv_ext_intc_list, list);
+> +		if (gsi_base == ext_intc_element->gsi_base) {
+> +			ext_intc_element->handle = handle;
+> +			return;
+> +		}
+> +	}
+> +
+> +	acpi_handle_err(handle, "failed to find the GSI mapping entry\n");
+> +}
+> +
+> +int riscv_acpi_get_gsi_info(struct fwnode_handle *fwnode, u32 *gsi_base,
+> +			    u32 *id, u32 *nr_irqs, u32 *nr_idcs)
+> +{
+> +	struct riscv_ext_intc_list *ext_intc_element;
+> +	struct list_head *i, *tmp;
+> +
+> +	list_for_each_safe(i, tmp, &ext_intc_list) {
+> +		ext_intc_element = list_entry(i, struct riscv_ext_intc_list, list);
+> +		if (ext_intc_element->handle == ACPI_HANDLE_FWNODE(fwnode)) {
+> +			*gsi_base = ext_intc_element->gsi_base;
+> +			*id = ext_intc_element->id;
+> +			*nr_irqs = ext_intc_element->nr_irqs;
+> +			if (nr_idcs)
+> +				*nr_idcs = ext_intc_element->nr_idcs;
+> +
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	return -ENODEV;
+> +}
+> +
+> +struct fwnode_handle *riscv_acpi_get_gsi_domain_id(u32 gsi)
+> +{
+> +	struct riscv_ext_intc_list *ext_intc_element;
+> +	struct acpi_device *adev;
+> +	struct list_head *i, *tmp;
+> +
+> +	list_for_each_safe(i, tmp, &ext_intc_list) {
+> +		ext_intc_element = list_entry(i, struct riscv_ext_intc_list, list);
+> +		if (gsi >= ext_intc_element->gsi_base &&
+> +		    gsi < (ext_intc_element->gsi_base + ext_intc_element->nr_irqs)) {
+> +			adev = acpi_fetch_acpi_dev(ext_intc_element->handle);
+> +			if (!adev)
+> +				return NULL;
+> +
+> +			return acpi_fwnode_handle(adev);
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static int __init riscv_acpi_register_ext_intc(u32 gsi_base, u32 nr_irqs, u32 nr_idcs,
+> +					       u32 id, u32 type)
+> +{
+> +	struct riscv_ext_intc_list *ext_intc_element;
+> +
+> +	ext_intc_element = kzalloc(sizeof(*ext_intc_element), GFP_KERNEL);
+> +	if (!ext_intc_element)
+> +		return -ENOMEM;
+> +
+> +	ext_intc_element->gsi_base = gsi_base;
+> +	ext_intc_element->nr_irqs = nr_irqs;
+> +	ext_intc_element->nr_idcs = nr_idcs;
+> +	ext_intc_element->id = id;
+> +	list_add_tail(&ext_intc_element->list, &ext_intc_list);
+> +	return 0;
+> +}
+> +
+> +static acpi_status __init riscv_acpi_create_gsi_map(acpi_handle handle, u32 level,
+> +						    void *context, void **return_value)
+> +{
+> +	acpi_status status;
+> +	u64 gbase;
+> +
+> +	if (!acpi_has_method(handle, "_GSB")) {
+> +		acpi_handle_err(handle, "_GSB method not found\n");
+> +		return AE_OK;
+> +	}
+> +
+> +	status = acpi_evaluate_integer(handle, "_GSB", NULL, &gbase);
+> +	if (ACPI_FAILURE(status)) {
+> +		acpi_handle_err(handle, "failed to evaluate _GSB method\n");
+> +		return AE_OK;
+> +	}
+> +
+> +	riscv_acpi_update_gsi_handle((u32)gbase, handle);
+> +	return AE_OK;
+> +}
+> +
+> +static int __init riscv_acpi_aplic_parse_madt(union acpi_subtable_headers *header,
+> +					      const unsigned long end)
+> +{
+> +	struct acpi_madt_aplic *aplic = (struct acpi_madt_aplic *)header;
+> +
+> +	return riscv_acpi_register_ext_intc(aplic->gsi_base, aplic->num_sources, aplic->num_idcs,
+> +					    aplic->id, ACPI_RISCV_IRQCHIP_APLIC);
+> +}
+> +
+> +static int __init riscv_acpi_plic_parse_madt(union acpi_subtable_headers *header,
+> +					     const unsigned long end)
+> +{
+> +	struct acpi_madt_plic *plic = (struct acpi_madt_plic *)header;
+> +
+> +	return riscv_acpi_register_ext_intc(plic->gsi_base, plic->num_irqs, 0,
+> +					    plic->id, ACPI_RISCV_IRQCHIP_PLIC);
+> +}
+> +
+> +void __init riscv_acpi_init_gsi_mapping(void)
+> +{
+> +	/* There can be either PLIC or APLIC */
+> +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_PLIC, riscv_acpi_plic_parse_madt, 0) > 0) {
+> +		acpi_get_devices("RSCV0001", riscv_acpi_create_gsi_map, NULL, NULL);
+> +		return;
+> +	}
+> +
+> +	if (acpi_table_parse_madt(ACPI_MADT_TYPE_APLIC, riscv_acpi_aplic_parse_madt, 0) > 0)
+> +		acpi_get_devices("RSCV0002", riscv_acpi_create_gsi_map, NULL, NULL);
+> +}
 
-So it sounds to me like we want to document and thus freeze the
-vendor-specific blob layout because tools are going to be using and parsing
-it. And this will spare us the kernel version checks.
+I don't know if it is needed in RISC-V - it is a question - but how would you
+resolve a GSI mapping before the ACPI intepreter is initialized ?
 
-And new additions to that AMD-specific blob will come at the end and will
-have to be documented too.
+This model relies on the _GSB method to be called on the interrupt controller
+device to discover the GSI range it actually covers, I was wondering how this
+works for "devices" (eg components described in static table, eg timers)
+that require a GSI mapping before you are able to retrieve the required
+information from the namespace devices.
 
-That sounds like an ok compromise to me...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Lorenzo
 
