@@ -1,166 +1,155 @@
-Return-Path: <linux-acpi+bounces-6862-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6863-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C02092EA7A
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 16:16:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6CA92EB97
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 17:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F5D1C215E2
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 14:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 185CA1C231EE
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 15:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FCC167271;
-	Thu, 11 Jul 2024 14:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4475216B739;
+	Thu, 11 Jul 2024 15:24:19 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [46.235.227.24])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6DD80BF8;
-	Thu, 11 Jul 2024 14:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31DF166317;
+	Thu, 11 Jul 2024 15:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720707389; cv=none; b=NcpzENcfta8t+jw81Rqjga925Zt4O5E4svvVH3WjeDj9TT1W9nJuwspSyaAo6BfRyZ83uzKeSL8E3oGb9KCupoINcA4dSp5CjnrtpaHxbHd61yIGIL/QIb7tycOPDmlgRLvjGKXqr0WeDA1SECHC7R/me+UsKZ2CyxkF7jEmQy0=
+	t=1720711459; cv=none; b=DskRsRuzYh+3pUkF8GE30t/sXOWUo8RIt/Y8Ol16yr8Wuk+5dJV5nMf/e+jXrHBbW4Kc5bvLLAWEJEVaXf8XinlTTsMC4SO+jKKENCe3SD/LUNCmosi3w4G0G4tfheBWER52Ujr7gM7/SIS/MhVBkK7LUUQNtIDk35alHTDriXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720707389; c=relaxed/simple;
-	bh=a9pdGR6wfxP8Mqh0V6yErEEF9QRi8fjHjcnxSjYsoJk=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ia/J7COLeWXcGAc2RHB/kU3RYJtdjXqBYlci/Z3v/RmOIlVka7q/td3i6tDCcu+7f2LHf9WZpzwTOHNp+PXavO1c3itR8+bPuyvIMBcfgCY5NBTGBRAmggCQEQ6o7Qq+X44HNFgeFGMgWwP/BvpjesfKBbqYHsIvpf3VlzKXLE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk; arc=none smtp.client-ip=46.235.227.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk
-Received: by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <jic23@jic23.retrosnub.co.uk>)
-	id 1sRuaU-002GpR-2F; Thu, 11 Jul 2024 15:15:58 +0100
-Date: Mon, 08 Jul 2024 09:28:18 +0100
-From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
- Marcin Wojtas <marcin.s.wojtas@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_3/6=5D_leds=3A_bd2606mvv=3A_use_device=5Ffor?=
- =?US-ASCII?Q?=5Feach=5Fchild=5Fnode=28=29_to_access_device_child_nodes?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <4cf71de7-dc47-475c-bba0-a9e755f66d49@gmail.com>
-References: <20240706-device_for_each_child_node-available-v1-0-8a3f7615e41c@gmail.com> <20240706-device_for_each_child_node-available-v1-3-8a3f7615e41c@gmail.com> <20240707175713.4deb559f@jic23-huawei> <4cf71de7-dc47-475c-bba0-a9e755f66d49@gmail.com>
-Message-ID: <6119CC81-5F47-4DA3-8C9C-98C7C87C9734@jic23.retrosnub.co.uk>
+	s=arc-20240116; t=1720711459; c=relaxed/simple;
+	bh=P6XElzflGdE/upeKRCqdTNgR6yj/DyxIK7hMeVukaBY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NdTbm7dxfD5bUZeWd3XY0qlTZAcPI2tKULWO1dnkLv/qZfV758zfC66ZzqyEraWEPBhMkpgwmM1HWu8mRv/qQV/qxuEgVNVuvvqgb25NzI1/V3ZXzK5SqsHRTHLGKXClVySZZftysBNjh6vjDZ8WIXH02/lEtz+DBOH9qGFv+NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WKdlf53MJz67KPG;
+	Thu, 11 Jul 2024 23:23:10 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 57F301400C9;
+	Thu, 11 Jul 2024 23:24:12 +0800 (CST)
+Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Jul
+ 2024 16:24:11 +0100
+Date: Thu, 11 Jul 2024 16:24:11 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+CC: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, James Morse <james.morse@arm.com>, "Len Brown"
+	<lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Shiju Jose"
+	<shiju.jose@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Dave
+ Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	<linux-acpi@vger.kernel.org>, <linux-edac@vger.kernel.org>,
+	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 3/5] efi/cper: Add a new helper function to print
+ bitmasks
+Message-ID: <20240711162411.00007e5e@Huawei.com>
+In-Reply-To: <5bb5f806a763b295401972fdff17bb455bee2e82.1720679234.git.mchehab+huawei@kernel.org>
+References: <cover.1720679234.git.mchehab+huawei@kernel.org>
+	<5bb5f806a763b295401972fdff17bb455bee2e82.1720679234.git.mchehab+huawei@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-BlackCat-Spam-Score: 36
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-No
+On Thu, 11 Jul 2024 08:28:54 +0200
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
 
-On 8 July 2024 09:14:44 BST, Javier Carrasco <javier=2Ecarrasco=2Ecruz@gma=
-il=2Ecom> wrote:
->On 07/07/2024 18:57, Jonathan Cameron wrote:
->> On Sat, 06 Jul 2024 17:23:35 +0200
->> Javier Carrasco <javier=2Ecarrasco=2Ecruz@gmail=2Ecom> wrote:
->>=20
->>> The iterated nodes are direct children of the device node, and the
->>> `device_for_each_child_node()` macro accounts for child node
->>> availability=2E
->>>
->>> `fwnode_for_each_available_child_node()` is meant to access the child
->>> nodes of an fwnode, and therefore not direct child nodes of the device
->>> node=2E
->>>
->>> Use `device_for_each_child_node()` to indicate device's direct child
->>> nodes=2E
->>>
->>> Signed-off-by: Javier Carrasco <javier=2Ecarrasco=2Ecruz@gmail=2Ecom>
->> Why not the scoped variant?
->> There look to be two error paths in there which would be simplified=2E
->>=20
->
->I did not use the scoped variant because "child" is used outside the loop=
-=2E
+> Sometimes it is desired to produce a single log line for errors.
+> Add a new helper function for such purpose.
+> 
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+LGTM
 
-Ah missed that=2E  Good sign that things are wrong=2E=2E=2E
+Reviewed-by; Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
->
->On the other hand, I think an fwnode_handle_get() is missing for every
->"led_fwnodes[reg] =3D child" because a simple assignment does not
->increment the refcount=2E
+> ---
+>  drivers/firmware/efi/cper.c | 43 +++++++++++++++++++++++++++++++++++++
+>  include/linux/cper.h        |  2 ++
+>  2 files changed, 45 insertions(+)
+> 
+> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+> index 7d2cdd9e2227..462d739e8dd1 100644
+> --- a/drivers/firmware/efi/cper.c
+> +++ b/drivers/firmware/efi/cper.c
+> @@ -106,6 +106,49 @@ void cper_print_bits(const char *pfx, unsigned int bits,
+>  		printk("%s\n", buf);
+>  }
+>  
+> +/**
+> + * cper_bits_to_str - return a string for set bits
+> + * @buf: buffer to store the output string
+> + * @buf_size: size of the output string buffer
+> + * @bits: bit mask
+> + * @strs: string array, indexed by bit position
+> + * @strs_size: size of the string array: @strs
+> + *
+> + * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
+> + * add the corresponding string describing the bit in @strs to @buf.
+> + *
+> + * Return: number of bytes stored or an error code if lower than zero.
+> + */
+> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
+> +		     const char * const strs[], unsigned int strs_size)
+> +{
+> +	int len = buf_size;
+> +	char *str = buf;
+> +	int i, size;
+> +
+> +	*buf = '\0';
+> +
+> +	for_each_set_bit(i, &bits, strs_size) {
+> +		if (!(bits & (1U << (i))))
+> +			continue;
+> +
+> +		if (*buf && len > 0) {
+> +			*str = '|';
+> +			len--;
+> +			str++;
+> +		}
+> +
+> +		size = strscpy(str, strs[i], len);
+> +		if (size < 0)
+> +			return size;
+> +
+> +		len -= size;
+> +		str += size;
+> +	}
+> +	return len - buf_size;
+> +}
+> +EXPORT_SYMBOL_GPL(cper_bits_to_str);
+> +
+>  static const char * const proc_type_strs[] = {
+>  	"IA32/X64",
+>  	"IA64",
+> diff --git a/include/linux/cper.h b/include/linux/cper.h
+> index 265b0f8fc0b3..25858a7608b7 100644
+> --- a/include/linux/cper.h
+> +++ b/include/linux/cper.h
+> @@ -584,6 +584,8 @@ const char *cper_mem_err_type_str(unsigned int);
+>  const char *cper_mem_err_status_str(u64 status);
+>  void cper_print_bits(const char *prefix, unsigned int bits,
+>  		     const char * const strs[], unsigned int strs_size);
+> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
+> +		     const char * const strs[], unsigned int strs_size);
+>  void cper_mem_err_pack(const struct cper_sec_mem_err *,
+>  		       struct cper_mem_err_compact *);
+>  const char *cper_mem_err_unpack(struct trace_seq *,
 
-Yes=2E Looks like a bug to me as well=2E
-
-
->
->After adding fwnode_handle_get(), the scoped variant could be used, and
->the call to fwnode_handle_put() would act on led_fwnodes[reg] instead=2E
-
-There looks to be another bug as it only frees one handle on error=2E  Rig=
-ht now it shouldnt free any but once you fix that you will need to free any=
- not freed otherwise=2E
-
-Can it be squashed into one loop?
-
-J
-
-
->
->>> ---
->>>  drivers/leds/leds-bd2606mvv=2Ec | 7 +++----
->>>  1 file changed, 3 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/leds/leds-bd2606mvv=2Ec b/drivers/leds/leds-bd260=
-6mvv=2Ec
->>> index 3fda712d2f80=2E=2E4f38b7b4d9d1 100644
->>> --- a/drivers/leds/leds-bd2606mvv=2Ec
->>> +++ b/drivers/leds/leds-bd2606mvv=2Ec
->>> @@ -69,7 +69,7 @@ static const struct regmap_config bd2606mvv_regmap =
-=3D {
->>> =20
->>>  static int bd2606mvv_probe(struct i2c_client *client)
->>>  {
->>> -	struct fwnode_handle *np, *child;
->>> +	struct fwnode_handle *child;
->>>  	struct device *dev =3D &client->dev;
->>>  	struct bd2606mvv_priv *priv;
->>>  	struct fwnode_handle *led_fwnodes[BD2606_MAX_LEDS] =3D { 0 };
->>> @@ -77,8 +77,7 @@ static int bd2606mvv_probe(struct i2c_client *client=
-)
->>>  	int err, reg;
->>>  	int i;
->>> =20
->>> -	np =3D dev_fwnode(dev);
->>> -	if (!np)
->>> +	if (!dev_fwnode(dev))
->>>  		return -ENODEV;
->>> =20
->>>  	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
->>> @@ -94,7 +93,7 @@ static int bd2606mvv_probe(struct i2c_client *client=
-)
->>> =20
->>>  	i2c_set_clientdata(client, priv);
->>> =20
->>> -	fwnode_for_each_available_child_node(np, child) {
->>> +	device_for_each_child_node(dev, child) {
->>>  		struct bd2606mvv_led *led;
->>> =20
->>>  		err =3D fwnode_property_read_u32(child, "reg", &reg);
->>>
->>=20
->
 
