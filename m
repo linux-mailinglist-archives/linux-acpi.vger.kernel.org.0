@@ -1,155 +1,89 @@
-Return-Path: <linux-acpi+bounces-6863-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6864-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6CA92EB97
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 17:24:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092DD92F051
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 22:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 185CA1C231EE
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 15:24:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B808728382F
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 20:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4475216B739;
-	Thu, 11 Jul 2024 15:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731E613D626;
+	Thu, 11 Jul 2024 20:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DYI7twYS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eozyysvx"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31DF166317;
-	Thu, 11 Jul 2024 15:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B7751004;
+	Thu, 11 Jul 2024 20:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720711459; cv=none; b=DskRsRuzYh+3pUkF8GE30t/sXOWUo8RIt/Y8Ol16yr8Wuk+5dJV5nMf/e+jXrHBbW4Kc5bvLLAWEJEVaXf8XinlTTsMC4SO+jKKENCe3SD/LUNCmosi3w4G0G4tfheBWER52Ujr7gM7/SIS/MhVBkK7LUUQNtIDk35alHTDriXs=
+	t=1720729945; cv=none; b=ctgboncvRS4WVKY+w0EGlQrF03wgjlsFobIX5Y816BZD5A6DS6nawFjv5KUFcS+JyK/c2SNU4Ot06t6u1eD+bC+btk4Q0KO07eb/NrLhRn58qCB7783zmgEyCfcR5/hrfMYnSeTK0THSBZYgzS0kd8zJrK1wAZyjAZg4AiWIVn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720711459; c=relaxed/simple;
-	bh=P6XElzflGdE/upeKRCqdTNgR6yj/DyxIK7hMeVukaBY=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NdTbm7dxfD5bUZeWd3XY0qlTZAcPI2tKULWO1dnkLv/qZfV758zfC66ZzqyEraWEPBhMkpgwmM1HWu8mRv/qQV/qxuEgVNVuvvqgb25NzI1/V3ZXzK5SqsHRTHLGKXClVySZZftysBNjh6vjDZ8WIXH02/lEtz+DBOH9qGFv+NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WKdlf53MJz67KPG;
-	Thu, 11 Jul 2024 23:23:10 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 57F301400C9;
-	Thu, 11 Jul 2024 23:24:12 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 11 Jul
- 2024 16:24:11 +0100
-Date: Thu, 11 Jul 2024 16:24:11 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-CC: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, James Morse <james.morse@arm.com>, "Len Brown"
-	<lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Shiju Jose"
-	<shiju.jose@huawei.com>, Alison Schofield <alison.schofield@intel.com>, Dave
- Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	<linux-acpi@vger.kernel.org>, <linux-edac@vger.kernel.org>,
-	<linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 3/5] efi/cper: Add a new helper function to print
- bitmasks
-Message-ID: <20240711162411.00007e5e@Huawei.com>
-In-Reply-To: <5bb5f806a763b295401972fdff17bb455bee2e82.1720679234.git.mchehab+huawei@kernel.org>
-References: <cover.1720679234.git.mchehab+huawei@kernel.org>
-	<5bb5f806a763b295401972fdff17bb455bee2e82.1720679234.git.mchehab+huawei@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1720729945; c=relaxed/simple;
+	bh=DVUra7e6MiJ9K709Q7LckMZjZdMsEgUqxtsJ+GklD6I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sQH2DhK1s0E1omlfW4DRhLrjhNNMuANhRjQCrj9OZ6uSv78n5E+Id9SdH9KrJtGg+8ucMMm7hCfaSqY/o0Tb8po8EsXj3PhwV9JpoxmL031H2WsCP3IzZXl00vvZFU9ToczUbLgf2Ptj6Vu2eZ6gGKlUt8tYIGd0RMJVR+fbwmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DYI7twYS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eozyysvx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1720729942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JZMjCRDqkz7b+klfdvCcAfVnksBty1HBVIGMIEucNdQ=;
+	b=DYI7twYST48K96/FHtARtvi+zDISF+X6DqfYliZezoAD0AKg0Epff8brPqOihgTREQB+Lp
+	o1uJrUTiLu3S+xItwrSUdWmA4yaMMtEQx2N4RuYf+03pt25I698tTgONg0v+T2tErJVt5k
+	I62MTOpg21c8dfX9KwGEFZJoOuCgFPwuIuCKuN8H9prnRj3IisOZur01ostaByH7fPHZwH
+	zRkVkFH814SpYF3q9x0kthZQp9aIYgHF+TCvIMg5yAZlXkDO31D3RCK242nEsiCccH6Aba
+	5FXdVy+bZGA23BL33ljSYWdMUUK+/9eVaMFUkkhPbKS2xnd16VMwxm/wZvF2XA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1720729942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JZMjCRDqkz7b+klfdvCcAfVnksBty1HBVIGMIEucNdQ=;
+	b=eozyysvxa5I+qHMppDs4wqGGafob7UqDvZYxnstcKjgHnTvK4iTE36px5RCQxlnAW4VHAF
+	jr7bm7YDlgXDVVAg==
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux ACPI
+ <linux-acpi@vger.kernel.org>, Stefan Seyfried
+ <stefan.seyfried@googlemail.com>
+Subject: Re: [PATCH v1] irq: Set IRQF_COND_ONESHOT in request_irq()
+In-Reply-To: <5800834.DvuYhMxLoT@rjwysocki.net>
+References: <5800834.DvuYhMxLoT@rjwysocki.net>
+Date: Thu, 11 Jul 2024 22:32:21 +0200
+Message-ID: <877cdru0tm.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain
 
-On Thu, 11 Jul 2024 08:28:54 +0200
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
+On Thu, Jul 11 2024 at 12:20, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>
+> The callers of request_irq() don't care about IRQF_ONESHOT because they
+> don't provide threaded handlers, but if they happen to share the IRQ
+> with the ACPI SCI, which has a threaded handler and sets IRQF_ONESHOT,
+> request_irq() will fail for them due to a flags mismatch.
+>
+> Address this by making request_irq() add IRQF_COND_ONESHOT to the flags
+> passed to request_threaded_irq() for all of its callers.
 
-> Sometimes it is desired to produce a single log line for errors.
-> Add a new helper function for such purpose.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-LGTM
+In principle that should work. We'll see whether there are dragons
+lurking :)
 
-Reviewed-by; Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thanks,
 
-> ---
->  drivers/firmware/efi/cper.c | 43 +++++++++++++++++++++++++++++++++++++
->  include/linux/cper.h        |  2 ++
->  2 files changed, 45 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 7d2cdd9e2227..462d739e8dd1 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -106,6 +106,49 @@ void cper_print_bits(const char *pfx, unsigned int bits,
->  		printk("%s\n", buf);
->  }
->  
-> +/**
-> + * cper_bits_to_str - return a string for set bits
-> + * @buf: buffer to store the output string
-> + * @buf_size: size of the output string buffer
-> + * @bits: bit mask
-> + * @strs: string array, indexed by bit position
-> + * @strs_size: size of the string array: @strs
-> + *
-> + * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
-> + * add the corresponding string describing the bit in @strs to @buf.
-> + *
-> + * Return: number of bytes stored or an error code if lower than zero.
-> + */
-> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-> +		     const char * const strs[], unsigned int strs_size)
-> +{
-> +	int len = buf_size;
-> +	char *str = buf;
-> +	int i, size;
-> +
-> +	*buf = '\0';
-> +
-> +	for_each_set_bit(i, &bits, strs_size) {
-> +		if (!(bits & (1U << (i))))
-> +			continue;
-> +
-> +		if (*buf && len > 0) {
-> +			*str = '|';
-> +			len--;
-> +			str++;
-> +		}
-> +
-> +		size = strscpy(str, strs[i], len);
-> +		if (size < 0)
-> +			return size;
-> +
-> +		len -= size;
-> +		str += size;
-> +	}
-> +	return len - buf_size;
-> +}
-> +EXPORT_SYMBOL_GPL(cper_bits_to_str);
-> +
->  static const char * const proc_type_strs[] = {
->  	"IA32/X64",
->  	"IA64",
-> diff --git a/include/linux/cper.h b/include/linux/cper.h
-> index 265b0f8fc0b3..25858a7608b7 100644
-> --- a/include/linux/cper.h
-> +++ b/include/linux/cper.h
-> @@ -584,6 +584,8 @@ const char *cper_mem_err_type_str(unsigned int);
->  const char *cper_mem_err_status_str(u64 status);
->  void cper_print_bits(const char *prefix, unsigned int bits,
->  		     const char * const strs[], unsigned int strs_size);
-> +int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
-> +		     const char * const strs[], unsigned int strs_size);
->  void cper_mem_err_pack(const struct cper_sec_mem_err *,
->  		       struct cper_mem_err_compact *);
->  const char *cper_mem_err_unpack(struct trace_seq *,
-
+        tglx
 
