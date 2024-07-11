@@ -1,334 +1,111 @@
-Return-Path: <linux-acpi+bounces-6858-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6859-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E6792E3B8
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 11:48:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96F792E45F
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 12:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 976731C21289
-	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 09:48:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 581671F22641
+	for <lists+linux-acpi@lfdr.de>; Thu, 11 Jul 2024 10:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915781509AE;
-	Thu, 11 Jul 2024 09:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D947A15ADA4;
+	Thu, 11 Jul 2024 10:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eeJwDfwB"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="UndiOja3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983DB7EEE7;
-	Thu, 11 Jul 2024 09:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA53515A87C;
+	Thu, 11 Jul 2024 10:20:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720691302; cv=none; b=sBUSu0fJu8YqvyNXmm4H6DTDQptNccb9j5VAF6rHJ2opnt5X3eLwgA0c99it4PY8NL7yITFqVdDgMpUYKvVlg9wsJLvwvrGH2LrQoyIGdiAt+IJtSo8z0Dd9uUmaQ91GCqkrc21BELnF3DHXfqp5MbNmpKMOnPm2T8w7kC7Nf3Q=
+	t=1720693215; cv=none; b=ujvTVVb95uEIftOOgkDx+HjaIkFljkqPrTwf8C0yENCpODfDFwwESO3GCUpMrXmO+wGhnRUq5v3rEJfTi4941niBMj7s3UYXxhYOIWJww2tqkqCsU6+F02ML35eKie8AEhZjfxDNTiWXZ/yE+7hwXKbGiP3mi1J+t+K1HLcXyU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720691302; c=relaxed/simple;
-	bh=+MoSjA0p9IblJXh2kiCUht1U0WEbUqVEJc+uPnviA2M=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=rDZDpVPOL2OwYs8t/z6okGr9A7yr3/TPUEODeFCZWyPChDRXTZFvQYRXwE9GYNQsYaT4kFxMJRUZ3/uuCQediHwuhhJJqyr7pAeq+sdU4feVqmqn/UcrXY0XsJGyL/jmoxUxcQ1a5s4IiBIOEN4zryasVewhEt+pqsx6bNOWbUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eeJwDfwB; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720691301; x=1752227301;
-  h=date:from:to:cc:subject:message-id;
-  bh=+MoSjA0p9IblJXh2kiCUht1U0WEbUqVEJc+uPnviA2M=;
-  b=eeJwDfwBG+FV+a3zcrSVc/o2LWLFWxDHhqQy4x1u8nd3u6qGk0GzhhPY
-   U4Q2UsrThqQtkw5EEBRMQVpVH8Mvq9D7YOiXDSIOcvH9GVL7m4bkA1HDo
-   VG4zIfTTt3pit1EkkiPPIrWKxe/4oCguCupLRliRulk5bzonZzJDhIopW
-   FkYWiqPNnBQH7d8zanZS3eUtb+SWdc7LPLLzSMDVGLrXkUKsI70QryQHC
-   ckwCBmZkHL6pY2suW7d+xQUjr13IQNguQZgDuB+4GJQ0XmAGUhxAvfCJP
-   t5Wh4vmljv3/GwTXkhEttRqiHn6UaJIXzECs1MSAk4newe8KKcURIEgGW
-   w==;
-X-CSE-ConnectionGUID: FNt7itjHRKafx8tpFG+hZw==
-X-CSE-MsgGUID: yIHNudszRZCmsqH0hytW3w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18194682"
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="18194682"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jul 2024 02:48:21 -0700
-X-CSE-ConnectionGUID: B22k1LNsRJ+GdHW/63943w==
-X-CSE-MsgGUID: 3mj3TerSStemJ3QmKydITQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; 
-   d="scan'208";a="71725763"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Jul 2024 02:48:19 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sRqPQ-000Z73-0n;
-	Thu, 11 Jul 2024 09:48:16 +0000
-Date: Thu, 11 Jul 2024 17:47:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- ecea71f32ac764472931531d00cff6f94b56cc22
-Message-ID: <202407111747.LJINPudI-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1720693215; c=relaxed/simple;
+	bh=bXkbx4XI9S8xRoGMmjvhk/F6NhSDbNwIV9TJqHXo5uA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ry2zm9QOKddlQL1DQ2nSmRykQfMNQpmTeDyblndBsbxgdQQ2rqMsIxZRggt/gWA1B9mvrMbyYy6ANMwS4pnjS+RiQw26uQYIhUraTEnFhwXo9eC/hpUElgGNvqmSApc/QPDUbfGxR/aXU8LVGApSQGQouDo/jiMDYmXdYNo7fdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=UndiOja3; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
+ id 952ffbbb51c44c8d; Thu, 11 Jul 2024 12:20:05 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 9C185A05B88;
+	Thu, 11 Jul 2024 12:20:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1720693205;
+	bh=bXkbx4XI9S8xRoGMmjvhk/F6NhSDbNwIV9TJqHXo5uA=;
+	h=From:To:Cc:Subject:Date;
+	b=UndiOja3SPB9b5Tn/U6FgzBq5jzVoLISHeHDa+v4TXNX/lJQFZqDNz61/EFcy7euU
+	 QWTq5RnaDd970QEn9NjBAMb4eZ/4QwYXOptIOn7SJMWadxiO7/SELsyLhWDLfTUxuN
+	 uoOecNFLxAonU1iSSyIVoPyhTLwf2e858tQAHXfwLIlIinKjvGFCkeEB+zFA5dZW4h
+	 mGfMPw6axU69raDv4ICEi5dydH1Ae4iK8vOgvX7yXUFE6bdS2+jrEdTha14JivxWFP
+	 gqXnkjR4e+pXfxFsOI2KE3CH5837cKYF1W9tEtMuL/2YJAQmtdrWj+/iLf3DMgq0Ae
+	 t5pPNrySDfN1g==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ Stefan Seyfried <stefan.seyfried@googlemail.com>
+Subject: [PATCH v1] irq: Set IRQF_COND_ONESHOT in request_irq()
+Date: Thu, 11 Jul 2024 12:20:04 +0200
+Message-ID: <5800834.DvuYhMxLoT@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrfeeggddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeegfffhudejlefhtdegffekteduhfethffhieettefhkeevgfdvgfefieekiefgheenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepgedprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgvfhgrnhdrshgvhihfrhhivggusehgohho
+ ghhlvghmrghilhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: ecea71f32ac764472931531d00cff6f94b56cc22  Merge branch 'thermal-core-next' into bleeding-edge
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Warning ids grouped by kconfigs:
+The callers of request_irq() don't care about IRQF_ONESHOT because they
+don't provide threaded handlers, but if they happen to share the IRQ
+with the ACPI SCI, which has a threaded handler and sets IRQF_ONESHOT,
+request_irq() will fail for them due to a flags mismatch.
 
-recent_errors
-|-- alpha-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- alpha-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arc-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arc-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm64-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm64-defconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm64-randconfig-002-20240711
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- arm64-randconfig-004-20240711
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- i386-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- i386-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- loongarch-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- loongarch-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- loongarch-randconfig-002-20240711
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- m68k-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- m68k-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- microblaze-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- microblaze-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- mips-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- mips-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- openrisc-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- parisc-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- parisc-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- powerpc-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- powerpc-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- riscv-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- riscv-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- s390-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- s390-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- sh-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- sh-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- sparc-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- sparc-allyesconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- sparc64-randconfig-002-20240711
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-|-- x86_64-allmodconfig
-|   `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
-`-- x86_64-allyesconfig
-    `-- drivers-thermal-tegra-soctherm.c:warning:unused-variable-ret
+Address this by making request_irq() add IRQF_COND_ONESHOT to the flags
+passed to request_threaded_irq() for all of its callers.
 
-elapsed time: 1249m
+Fixes: 7a36b901a6eb ("ACPI: OSL: Use a threaded interrupt handler for SCI")
+Closes: https://lore.kernel.org/lkml/205bd84a-fe8e-4963-968e-0763285f35ba@message-id.googlemail.com
+Reported-by: Stefan Seyfried <stefan.seyfried@googlemail.com>
+Tested-by: Stefan Seyfried <stefan.seyfried@googlemail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ include/linux/interrupt.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-configs tested: 162
-configs skipped: 3
+Index: linux-pm/include/linux/interrupt.h
+===================================================================
+--- linux-pm.orig/include/linux/interrupt.h
++++ linux-pm/include/linux/interrupt.h
+@@ -168,7 +168,8 @@ static inline int __must_check
+ request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,
+ 	    const char *name, void *dev)
+ {
+-	return request_threaded_irq(irq, handler, NULL, flags, name, dev);
++	return request_threaded_irq(irq, handler, NULL,
++				    flags | IRQF_COND_ONESHOT, name, dev);
+ }
+ 
+ extern int __must_check
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
 
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                   randconfig-001-20240711   gcc-13.2.0
-arc                   randconfig-002-20240711   gcc-13.2.0
-arm                              allmodconfig   gcc-13.3.0
-arm                               allnoconfig   clang-19
-arm                               allnoconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-13.3.0
-arm                       aspeed_g4_defconfig   clang-19
-arm                            mps2_defconfig   clang-19
-arm                            qcom_defconfig   clang-19
-arm                   randconfig-001-20240711   clang-19
-arm                   randconfig-002-20240711   gcc-13.3.0
-arm                   randconfig-003-20240711   clang-19
-arm                   randconfig-004-20240711   gcc-13.3.0
-arm                          sp7021_defconfig   gcc-13.3.0
-arm64                            allmodconfig   clang-19
-arm64                             allnoconfig   gcc-13.2.0
-arm64                               defconfig   gcc-13.3.0
-arm64                 randconfig-001-20240711   clang-19
-arm64                 randconfig-002-20240711   gcc-13.2.0
-arm64                 randconfig-003-20240711   gcc-13.2.0
-arm64                 randconfig-004-20240711   gcc-13.2.0
-csky                              allnoconfig   gcc-13.2.0
-csky                              allnoconfig   gcc-13.3.0
-csky                  randconfig-001-20240711   gcc-13.3.0
-csky                  randconfig-002-20240711   gcc-13.3.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon               randconfig-001-20240711   clang-19
-hexagon               randconfig-002-20240711   clang-19
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240711   gcc-13
-i386         buildonly-randconfig-002-20240711   gcc-10
-i386         buildonly-randconfig-003-20240711   gcc-13
-i386         buildonly-randconfig-004-20240711   gcc-8
-i386         buildonly-randconfig-005-20240711   gcc-10
-i386         buildonly-randconfig-006-20240711   gcc-13
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240711   gcc-13
-i386                  randconfig-002-20240711   gcc-10
-i386                  randconfig-003-20240711   gcc-8
-i386                  randconfig-004-20240711   gcc-13
-i386                  randconfig-005-20240711   clang-18
-i386                  randconfig-006-20240711   gcc-13
-i386                  randconfig-011-20240711   gcc-9
-i386                  randconfig-012-20240711   clang-18
-i386                  randconfig-013-20240711   gcc-13
-i386                  randconfig-014-20240711   clang-18
-i386                  randconfig-015-20240711   clang-18
-i386                  randconfig-016-20240711   gcc-9
-loongarch                        allmodconfig   gcc-13.3.0
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                         allnoconfig   gcc-13.3.0
-loongarch             randconfig-001-20240711   gcc-13.3.0
-loongarch             randconfig-002-20240711   gcc-13.3.0
-m68k                             allmodconfig   gcc-13.3.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                              allnoconfig   gcc-13.3.0
-m68k                             allyesconfig   gcc-13.3.0
-m68k                            mac_defconfig   gcc-13.3.0
-microblaze                       allmodconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                       allyesconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.3.0
-mips                         db1xxx_defconfig   clang-19
-nios2                             allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-13.3.0
-nios2                 randconfig-001-20240711   gcc-13.3.0
-nios2                 randconfig-002-20240711   gcc-13.3.0
-openrisc                          allnoconfig   gcc-13.3.0
-openrisc                         allyesconfig   gcc-13.3.0
-openrisc                            defconfig   gcc-13.3.0
-parisc                           allmodconfig   gcc-13.3.0
-parisc                            allnoconfig   gcc-13.3.0
-parisc                           allyesconfig   gcc-13.3.0
-parisc                              defconfig   gcc-13.3.0
-parisc                randconfig-001-20240711   gcc-13.3.0
-parisc                randconfig-002-20240711   gcc-13.3.0
-powerpc                          allmodconfig   gcc-13.3.0
-powerpc                           allnoconfig   gcc-13.3.0
-powerpc                          allyesconfig   clang-19
-powerpc                       ebony_defconfig   clang-19
-powerpc                      obs600_defconfig   clang-14
-powerpc               randconfig-001-20240711   gcc-13.3.0
-powerpc               randconfig-002-20240711   clang-19
-powerpc               randconfig-003-20240711   clang-19
-powerpc                     stx_gp3_defconfig   clang-19
-powerpc64             randconfig-001-20240711   gcc-13.3.0
-powerpc64             randconfig-002-20240711   clang-16
-powerpc64             randconfig-003-20240711   gcc-13.3.0
-riscv                            allmodconfig   clang-19
-riscv                             allnoconfig   gcc-13.3.0
-riscv                            allyesconfig   clang-19
-riscv                               defconfig   clang-19
-riscv                 randconfig-001-20240711   clang-14
-riscv                 randconfig-002-20240711   gcc-13.3.0
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                             allyesconfig   gcc-13.2.0
-s390                                defconfig   clang-19
-s390                  randconfig-001-20240711   clang-19
-s390                  randconfig-002-20240711   gcc-13.2.0
-sh                               allmodconfig   gcc-13.3.0
-sh                                allnoconfig   gcc-13.2.0
-sh                                allnoconfig   gcc-13.3.0
-sh                               allyesconfig   gcc-13.3.0
-sh                                  defconfig   gcc-13.3.0
-sh                    randconfig-001-20240711   gcc-13.3.0
-sh                    randconfig-002-20240711   gcc-13.3.0
-sparc                            allmodconfig   gcc-13.3.0
-sparc64                             defconfig   gcc-13.3.0
-sparc64               randconfig-001-20240711   gcc-13.3.0
-sparc64               randconfig-002-20240711   gcc-13.3.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                    randconfig-001-20240711   gcc-8
-um                    randconfig-002-20240711   gcc-8
-um                           x86_64_defconfig   clang-15
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240711   clang-18
-x86_64       buildonly-randconfig-002-20240711   clang-18
-x86_64       buildonly-randconfig-003-20240711   clang-18
-x86_64       buildonly-randconfig-004-20240711   clang-18
-x86_64       buildonly-randconfig-005-20240711   gcc-13
-x86_64       buildonly-randconfig-006-20240711   gcc-13
-x86_64                              defconfig   gcc-13
-x86_64                randconfig-001-20240711   gcc-13
-x86_64                randconfig-002-20240711   gcc-13
-x86_64                randconfig-003-20240711   gcc-11
-x86_64                randconfig-004-20240711   gcc-9
-x86_64                randconfig-005-20240711   clang-18
-x86_64                randconfig-006-20240711   gcc-13
-x86_64                randconfig-011-20240711   gcc-13
-x86_64                randconfig-012-20240711   clang-18
-x86_64                randconfig-013-20240711   gcc-13
-x86_64                randconfig-014-20240711   clang-18
-x86_64                randconfig-015-20240711   clang-18
-x86_64                randconfig-016-20240711   gcc-10
-x86_64                randconfig-071-20240711   gcc-13
-x86_64                randconfig-072-20240711   gcc-13
-x86_64                randconfig-073-20240711   clang-18
-x86_64                randconfig-074-20240711   gcc-13
-x86_64                randconfig-075-20240711   clang-18
-x86_64                randconfig-076-20240711   gcc-8
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                            allnoconfig   gcc-13.3.0
-xtensa                randconfig-001-20240711   gcc-13.3.0
-xtensa                randconfig-002-20240711   gcc-13.3.0
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
