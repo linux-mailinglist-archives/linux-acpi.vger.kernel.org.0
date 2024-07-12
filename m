@@ -1,273 +1,226 @@
-Return-Path: <linux-acpi+bounces-6871-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6872-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CDC792FD14
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 16:59:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C18A92FD75
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 17:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40F131C20E52
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 14:59:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD1B1F230C0
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 15:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FF8171E74;
-	Fri, 12 Jul 2024 14:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B0B17332B;
+	Fri, 12 Jul 2024 15:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OCIEgAZq"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gROLU/xD"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2048.outbound.protection.outlook.com [40.107.93.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EED16F27E
-	for <linux-acpi@vger.kernel.org>; Fri, 12 Jul 2024 14:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720796395; cv=none; b=ZRn45ALZYeNepciPsDmCfaOqqVj3m1itvIiCs6ex4uZ4PCQ4CFePaHLHX+BWn9Gr7HjpS0CHAyuc1Q82iaAe7+/5IUFT6Vrsr6RSh+KtNIdjFY5uMsc2FNiHHcwyrI/E20QHfw29/l8bXqCmTSYO/7mOUckBMijyIT4Rc/4jNos=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720796395; c=relaxed/simple;
-	bh=njc0Tryaj+gnTabFhoUKQb0tdpkfmgAYkSWyWDBz2hs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OQ/nGuXGhDFzwnldVVhbPWNcbNWimr0au7f6k84Qq6NiOiwdP8tSc8h0Hb0MK4U5m2q/xQqbHmUeJRxVRw1JtiPWi2xy8gl1UTFsqfGZ4WC4L/EfNuFUC6n4c1gnDO8FdBRY7NPv9mslg7tzeXQV3cYTPFOyB19Oz7e7+Sj1cPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OCIEgAZq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720796392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a1pbDIwqRwH2CzZyij/gklhjZFHA6b2MOhWlqjxKvJ0=;
-	b=OCIEgAZqdV7X1x6Agvb9GENnfGVN43iD4OtODXf9MJS0fyhj0SbrdihyM46ytJdOsASIoV
-	o1SPMThDFx3q3ZetlUYINHEwGvtLEGjzyR9H9MpY0jvAl+T91pGWmXie2CfH8YmIfDDlEs
-	amor8NDFRRH/DpMnjedB5U8o7boeLJ8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-427-1uyW1fAUMYq8hW3mIPCFHw-1; Fri, 12 Jul 2024 10:59:50 -0400
-X-MC-Unique: 1uyW1fAUMYq8hW3mIPCFHw-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a77e499d040so141420866b.1
-        for <linux-acpi@vger.kernel.org>; Fri, 12 Jul 2024 07:59:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720796389; x=1721401189;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a1pbDIwqRwH2CzZyij/gklhjZFHA6b2MOhWlqjxKvJ0=;
-        b=BeabfVGGGXzvVq5z7AcaGWzLXFYavhhYdUjEcFPXcvH65crx51NO1IaJoNdstKPtKn
-         9j+fTKUgyab3omMoajVzkpJV/ZBcrYiykPJqvEcFbHrnN15VuhG7jGopZvdyDdoVA7E0
-         rswGExgHmFJYLsxwh2LcbuzFSceUN9IHTTGZCytEUVifkltKsHfUqkwg0tsgiSGsBTxM
-         XUwmxhBxzeSZzv5RLMHJfNmBcrwBhpHO0WA/pXnq5IhbN0EbFXTUrKb2+cXo6pj2DS5B
-         PXtl84YMXRATJocKGJazAsX92kTFgGMmAIvBTXPxV4cnozraz9l8PFOcqmMkheLJC92H
-         RoZw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpcJNts8t/J+kM8n3fghJ6rTbVRxO6E+yF7cRq2OjHseGiQ8BewUUCb/Nz1Q2gQzVEzdwytAUYTkW+iHiusG2KqQVVLdCwlJZT6g==
-X-Gm-Message-State: AOJu0YxnyxD4NjqwW8dbOSjgCLqnpEmZiZ/gIF/gai2h70gGXwPIgIct
-	s1R0Sz3TBZy2NcAeu3dZ88UNIhxsqxdohhuKMaouULScYXP2BkFysStfZJPcVckR2BjS0x5x8Bh
-	bTZXEC6Hee2/GWxoCqG6AjrNLhCaP85uB45cnCa9MkPqfEVrAj+usuVdr1bk=
-X-Received: by 2002:a17:907:6d26:b0:a77:e0ed:8b8 with SMTP id a640c23a62f3a-a780b6891c0mr1165752266b.9.1720796389619;
-        Fri, 12 Jul 2024 07:59:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFjvOoLvnH8hxFK6vCDs4ol5qAbiKmziXZz+dsbtgEWxwWXDvs1Kzyh6Z49EzYanK92V2IYqQ==
-X-Received: by 2002:a17:907:6d26:b0:a77:e0ed:8b8 with SMTP id a640c23a62f3a-a780b6891c0mr1165750266b.9.1720796389171;
-        Fri, 12 Jul 2024 07:59:49 -0700 (PDT)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a871ea8sm352811666b.193.2024.07.12.07.59.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jul 2024 07:59:48 -0700 (PDT)
-Message-ID: <bfe71ef4-2fa2-406b-927d-5b045204dacc@redhat.com>
-Date: Fri, 12 Jul 2024 16:59:48 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE2D17107F;
+	Fri, 12 Jul 2024 15:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1720797905; cv=fail; b=ixSjKDgo+8TPFD2poIhC+vjnTKqzRvmau0aGgEJ//s6giGYvXQSKoIFsN2WhwUEuxfswPwGO35Jr2udTdZBhpgf30ATj3ME+IoWEX3l+4/cyxkpylXrjjjgKZ15hOgNdgHxqmdSkIqwciRCkDRTP7x715dBaI0jBToB1JswtHf8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1720797905; c=relaxed/simple;
+	bh=s6F9pXgxhnoyATbr4f8Md9pCbHxhKV6732uU4MnBUKc=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=NgzsieEl4h0wL6IxQaPoXKQgr7jtHdLVOIO/K/bD7QeI0S1vCUjoMKjpmHTKArjvojQKkM4fO/d8pZiWINxmnfQkugGRYho62H0RbMKOF7+8L7aPfwJLqf57AnHO+QJUiWcibeir78AQpd0AP0XKhwNBBVybE8DCWV6hm8XysS4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gROLU/xD; arc=fail smtp.client-ip=40.107.93.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eSXc3TtlscOlzVOiwzLSWQJj5Vu1x+zh/nk5WngsdwpoJFyBk0NhconGUqurO8rRv5ZAygS5pLuLxPnIMjxxnxssAtuAV5P0rabHQrUUCg6CmwUytm1R5Bf5VpfwKiv/KDTs4bs+JUo3kkAw3MRZ10vLmPaYiVcRmdHz3KbdVUoKjLSzQgz3ylglL1OFtUkynqfEonJR8vQr8Y2LqNfjgaXQ89Pin/2HHzlBJiVN+4Od4+lYfzQC/8sl8lP62jCikLVuTNu7ruynT9cCiuMl98nRtLDjSLC7t0YDxHKLFNKYQQECb+mLQZCFeuZPRBDLS1GEWjB8iCZ7DENLBWXzEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Zi0hUuH7ynz54Rmv2C3XVf0m+pkNuODp3QP/Zv+iSYo=;
+ b=DpyZx7lsWcX7cvwBSJSn6hwt9rBapCiu7WotgjJpPKiIzSbR4/L0MwxWqJOrDMhfCtIA9uTyoSkgF++x2rJwe6ZHTzJYO8ZbVffsD7LKAJ7WRIHaRf8TZhG2kIEggtn5Id5FVJi+9f4yEHVGrVbkJ/BXc0J0psU5/huxcIc+eNNE3gzHOMj+jGRZnUXKxSW9FqM4Nm68tTyuUge600iiIK403Tp1lBHyysNGJjJDqoLncUOvE0Og4dNRacPVHiCCVZeUxBEKhEz0H5gRMEpVzhE9eXQaXmthN8ReftDM3Ob5aHCnmQq9dJwwS9BI0qDX7JqiXUDU8Fid/RrvhG7kdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Zi0hUuH7ynz54Rmv2C3XVf0m+pkNuODp3QP/Zv+iSYo=;
+ b=gROLU/xDM/m9hLplwN88UeEz/bSmG2Dz0XbjZU6KsDhl23wbBzix38L747Zp0zRwg/SeN5acGfHC0PUbu79uUZ/ufzl4DHNnT75QkvFX0d6lXlPpU/gy9OovBKApK3y81ezVqs5nVSyaZVJ8sP03qfMaGJBzc6SnFAq6mXs7BE37g2Jhl0oM+64QQucL/aIzDIGoOmtqAxiSgtyD8em1wv8H6T4bO9QZInm4BgmiOB2o6YfYkjM6vxtPoGfG9dcIk+Yqejk+6Ro9VeHRmKWASJVygepHTz6PTqCYwaRWCyfqePJ4BDkAHRzmK8I7UzBAWHS+J75209OpMFXhb3K7wQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com (2603:10b6:5:35e::8) by
+ IA1PR12MB6212.namprd12.prod.outlook.com (2603:10b6:208:3e4::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7762.23; Fri, 12 Jul 2024 15:24:56 +0000
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::ae68:3461:c09b:e6e3]) by CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::ae68:3461:c09b:e6e3%6]) with mapi id 15.20.7762.016; Fri, 12 Jul 2024
+ 15:24:56 +0000
+Message-ID: <ee24cb5f-d170-41d3-9928-5507b8ab22a7@nvidia.com>
+Date: Fri, 12 Jul 2024 16:24:48 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] iommu: Resolve fwspec ops automatically
+To: Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>
+Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Yong Wu <yong.wu@mediatek.com>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <cover.1719919669.git.robin.murphy@arm.com>
+ <0e2727adeb8cd73274425322f2f793561bdc927e.1719919669.git.robin.murphy@arm.com>
+ <0eec5f84-6b39-43ba-ab2f-914688a5cf45@nvidia.com>
+ <01c05fb2-16ce-450c-befb-8a92ac2a8af9@arm.com>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <01c05fb2-16ce-450c-befb-8a92ac2a8af9@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P123CA0336.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18c::17) To CO6PR12MB5444.namprd12.prod.outlook.com
+ (2603:10b6:5:35e::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ACPI: EC: Do not release locks during operation region
- accesses
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux ACPI <linux-acpi@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Armin Wolf <w_armin@gmx.de>
-References: <12473338.O9o76ZdvQC@rjwysocki.net>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <12473338.O9o76ZdvQC@rjwysocki.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5444:EE_|IA1PR12MB6212:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c5cb6cb-0323-49b4-c865-08dca286c900
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Zjc1U0VQZU9JTTRROGFLQlNjWWE1VDdLanc1RVZhZW1vUG03MmY0WUNXdEsw?=
+ =?utf-8?B?QWdLcnI0NkFQMXhCMk12OFlGenNnTE4ySTAwNFVDYlVEZExUSWd2M0ZZY1dn?=
+ =?utf-8?B?RGpBVXVkWjNudlFXM09jbGdSUCszUlpmS0xjVk1XWnYzcnpacGxQSjJMWGdT?=
+ =?utf-8?B?UFVOTmE3UmFPbTBPMjFvVTFnZ2c4KzhiekVEMThkNmNLS3RLdDJOcmhkeVFB?=
+ =?utf-8?B?QUd6ZFcrYXJ5YmsxLzlyazhEVmoxdER3djJsaTJhOTU0LzFXQW1KSU1CN2JU?=
+ =?utf-8?B?T0FjTWVnNFpBUHZxeEdsUlJSMEZkN0VXdWRLNVhJYmlTbmlQNit5NVN6VXY5?=
+ =?utf-8?B?YytHa042a25aQTk1RDFFN0JhdVIwOEUxQURFSjhJUEU4YVpjM1BNNFhNUTVr?=
+ =?utf-8?B?alBaWTFYZ2l4aHFnbVRIOWg1SVowTmxRWi9lZ0ZldmM5UEZobWg2b3l4cEVa?=
+ =?utf-8?B?RUs4UFlhcTRIOXhuY1VwR0VMVEpSbkZ6eTlkTk9CT1ZmeC9aWVRzNytXZ2lv?=
+ =?utf-8?B?a0NCUWtzdzRTMGY3VGtPcXpYZ1Z1eU5ESE5NdmdYbjNZWVVSc3EweTJXV2o3?=
+ =?utf-8?B?c2ZEV0htS3lHbGhVQWY3U3FIUS84R2I3RVlDMTU3cFhNdlBtek05a1dtVlB3?=
+ =?utf-8?B?bFB5dUJpYm1Dd0tKeGNaZkpmcERyNWFEZHZEdktSYWpNYTZTQ0ZLY0hFYnZC?=
+ =?utf-8?B?dWpKcERTbml3NFl0ZE4wazYyQmhCelpxYmtBMzN1NjhiZ01XVTRRK1RkUnFl?=
+ =?utf-8?B?VDdSUWFHWWh1VWxuKytxNUVOWWhGNnZHMTdVY3B4eldNdkNZUnZ4eXlENlBa?=
+ =?utf-8?B?Wi9wQ3YzTnFOMHJhZTR1TmxPR3pCRkF3b2hHemtIdVhYR3QyMGdvSng2dVBK?=
+ =?utf-8?B?YU1Rb3dDR2NXTndqbFZ0L0pFR3pKOStFMFRFZE1vTG5jRkdrU0VpSHBxWXMz?=
+ =?utf-8?B?dEJxa0pwMVJKSkdibGZYRzhIQ1loWk01cUxxenNKTEJacVV3Q3RVZmsxNzZX?=
+ =?utf-8?B?dzhSeHhVMjNtbmovTVNvdEFYVVdrOE53dkZ2OTBOWkwxR2RnbXZFeHFGRlVK?=
+ =?utf-8?B?QjhSTi81aURqMlNHd2htQVoxYU5KMW13QXNKa3Z3Q1lEQUdvcWNCTWFZbkh2?=
+ =?utf-8?B?VEJGRlhESXovdWMxYTlRV2krMTFxV3d1azZ1aTk3YmhsRVdOS1RaYzVsNW5m?=
+ =?utf-8?B?VC8xYlZ3aEwyK28yNkJHUjZTSDhqbWxKcmtzVlZkN1Rtbm5lNnppcWlIUmdh?=
+ =?utf-8?B?YVNGOTFxWUlqYmVHS3NUVVBEVmZLZ1RRT1JUejlQakMzS3IwMngzZ3VXdVZr?=
+ =?utf-8?B?TnBZUmd2UXNQdGtxWk4wRU54cldIZWp3VGphNUtaVlJGYlFiVEtrRXRIMnZ4?=
+ =?utf-8?B?ZWxxUFZ4Z2xZOFU5clpZamt3alRzMVYrdTdROHUvSEwxQXFjdHNsWWRJb2dt?=
+ =?utf-8?B?aUhlaitFYU50dVk4NGRTeXgrNnJNa3RnRzFsZWlhNDlKelRCZWtUQmpETWVt?=
+ =?utf-8?B?VHlaN253Y3R0OVM0NWdjVnNGZnozUkQxZ2ZJQ1o2c3Y3MlczZ0ZNMVpOS0px?=
+ =?utf-8?B?a0x0MUNUZ1M3UWdvbldTSjVveW5Kbm0yWTV0Qk1aWWZaOTlpR01ISXNjRldh?=
+ =?utf-8?B?Q211dWRUUDk4MjFNcXN3ZURqNlRYVVFYVUFRaWZUazBEd2puUStOa1NhM2Nn?=
+ =?utf-8?B?bHlMQmh3bGdvTkgyYS9yOXVJY0pTaWpWbGZDb21rdXJUT1d0U3NObjRZZGxN?=
+ =?utf-8?B?a09rTzI5MHJhdjRiczAyTFQ0b1VTRnNnVldNKzE1cVNxc1lOd05jL1ErbWhC?=
+ =?utf-8?B?YVg0S3B2aUcwcVRiVlVKQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5444.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OStXUVZrUXI0U0JxMDdxSHFzc2J1SGFHM0ZCR1R4Nmc5c1VqSG1QRnBDMFRh?=
+ =?utf-8?B?UGVwWHZQU1BsYVRScng4L3lkcmR1ekV3cmVJdlBpTWloeGZodkY1UnJOWVM4?=
+ =?utf-8?B?alJ2T1dIbks4L0ZoTFdYMVJTTUdWck5Mb2d2M2JueEhQZVFFZm9tTHA2SFd3?=
+ =?utf-8?B?NHFxdlRrR1pZaTliOFB2R2VOdGtGZmVmM0NOVnp1alY5T2pPTktKTkRmYXY1?=
+ =?utf-8?B?b3NLSVdOcG9DT2FnU3FzT29HenlheVVKUTZBb3dkNWcxb3g4ZEs1a3JTbTFN?=
+ =?utf-8?B?OTk2NFZKT0cwbEY3TFJ3SkRsTXY4Qk1FYVovaGVrQU53bmkrZnF3endLOWpE?=
+ =?utf-8?B?dWdFOGhYZGVKQ0NxQnB5MWtVK2FOZndZNnkwMGN5RzZIK00wR0J5dWpid05Q?=
+ =?utf-8?B?eEVOYm16MzJ1N25aSmRSQjVzeFNQd2VucENIOXZ4VWROM2JONXVqVGJWVE50?=
+ =?utf-8?B?RllnMkZ1RWZsYW5rMVFZNWVRTG4vMktlcTBEUngvaXVXKy80ckhYd2FLalEw?=
+ =?utf-8?B?cDh0aXZDQkh4dlZpLzFNQWRRWmhIa0VJUnRLTDVIeEdXZDBYSTJmazJiOWU0?=
+ =?utf-8?B?Z1R1dzlCelJlaGxjVmNpRHh0YzArT3J6SXgzQm9tT3RJeS9EVkNxRis3ZWVD?=
+ =?utf-8?B?V0Z0enlaeUxFS1oxc0xjbUdWd1diUE9TSHZkNEFuRzBsQVNoTVBTN1ZidGZ0?=
+ =?utf-8?B?TlhlTlJQNnhqbitLSDM1eUt1dTI2RTdJdGRvUlRod2ZyeTZEK0Q5SG85bmhM?=
+ =?utf-8?B?UjVNU3p0d3FZa0k2NVBESmh0UzJJbC85MVBFZm5uTWN1dGVrY1BVSmlmZmpN?=
+ =?utf-8?B?RlN4VXR4OGNkU3QxVXZrUWdVR2NYbnZzYk9ZM0pJUTJSa3hPQXRkNzhQZHcx?=
+ =?utf-8?B?b1lTZk5lUmtRSit4c1o5dnFjSThjZUVlRnQ4WCtxemNJTmR2Z2J0R0tBUkJP?=
+ =?utf-8?B?aFVFUVZrZHpOL2dpT3NPb3JIUkNFQURDSW8vMGdJa1VMQlNlZkpSaGZBbVM4?=
+ =?utf-8?B?YmxmMUVBZUJiUU5TaDY1cnpBZHNIVFliUDUwN1ZHNDdOeVhhenJkTWVaeFNP?=
+ =?utf-8?B?em9KSVo3bHB1eVRYTEszMHZhMFNIZUM2R2NhMFFXa1krTmV2WHJid0NUc0sz?=
+ =?utf-8?B?MTl3TUhlZjI2TXRKUEpaOTA1YkZrcTdtWXcydzQ3ZjBzVU14U0tJblgyMEVr?=
+ =?utf-8?B?a3R5OXVKN0pBbUhWeVlROVRpT2ZHYngvMm15R3EzaW0rdzNkcFh3V2RXbnhI?=
+ =?utf-8?B?RnVPNVhua0pXUCtBZW56dmFxYVl4eVBraExRbithOGNtRU1EdmpSc1ZyWm0x?=
+ =?utf-8?B?QkVTMjBoSXduQ1JtUUxvMnh6RmlJMFlvWndCMm1GK0dWVlJXMG1jM0V6NENr?=
+ =?utf-8?B?TFNuQXJML0NXSmdQZkh3OFZmT3UyRFY0dno2ZTBCc0NPRnBXMHhtSzAzRVF3?=
+ =?utf-8?B?RGdUaWI0VnN1UkppUWlrL1V4RWtrcit2YnJUYkZNWHpTSldDOENPcFpPcVBE?=
+ =?utf-8?B?K2xpUWpRdkVjYW9XaVFsN1Y2MzdMQXJrN3U1UGV0UWFRam1SNlFkUzZCMkdO?=
+ =?utf-8?B?ZjJRMHBmTk9BUFdxdVdUM3pmajVxeG85bUxlVWhSN1M0Ti9Mckh2c1VqREpF?=
+ =?utf-8?B?OEN5N0JzRFhlM3MzZHAzUGFNU1J6cHNVLzV4OEVCNGlaVjZ0aTNubUdHU0ox?=
+ =?utf-8?B?RURaWVNMTGJwb21ySFlML2x0aDRKcW44TXdWZDlXZHE4ZmsxQitqZ3J3ekFR?=
+ =?utf-8?B?c3VVNGtHMDRBYjZ2THlSUU5lMDdOS21jaVZyL2V4anRqTDhhdjFWczRWWUlM?=
+ =?utf-8?B?bTdoZ3N5N3djdzNoUnNPa3pKNEx2bmlzT3JHTnlkZUh1UWFVbjFPdURnZ0Ur?=
+ =?utf-8?B?VExWQ1dCUzlNVXFucVZxa3JCNldRazVWMHpwTG5QbUF0cHBTc0RjRmdJelJq?=
+ =?utf-8?B?R2hOT0FhMjJhOUdINFJqVlJBVzVURUl6aDZrSlBQUnFTem10SVRhMldRbmFG?=
+ =?utf-8?B?TnF2QmN0SlRQazZWZFdSTlowRVNLcjVXa0dzbC9zM0NlNWN6LzFtV1FCMUhK?=
+ =?utf-8?B?RTVrL1graFRKL09XWGNZU3U2UnUxSnBvOEJFVHFFMy91UFlMamxXbXB1RDhy?=
+ =?utf-8?B?NzlWZ3VMQmtocWpRcUtUUU8rQmpPNlRSVnYxbVdWa0k1eXdlUC9aOTRXV1BR?=
+ =?utf-8?B?WXNmV1Q5NzNnK3RrVlkvbnBNM0ZpZXJOWTN0aVNaS0dlMktJdE5jMVZLVDVp?=
+ =?utf-8?B?aE4rdlRQRndSOUFBNko1eHZhTTJRPT0=?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c5cb6cb-0323-49b4-c865-08dca286c900
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5444.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 15:24:56.5209
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fy56+NfKLx2GNZ4OKxMpD6Q7i24DtURF6RvzBAqZaChefmI62rakPtSFcWevgT+6jSa0kiwEQwSGQsFtIC/8bg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6212
 
-Hi,
 
-On 7/4/24 6:26 PM, Rafael J. Wysocki wrote:
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> It is not particularly useful to release locks (the EC mutex and the
-> ACPI global lock, if present) and re-acquire them immediately thereafter
-> during EC address space accesses in acpi_ec_space_handler().
-> 
-> First, releasing them for a while before grabbing them again does not
-> really help anyone because there may not be enough time for another
-> thread to acquire them.
-> 
-> Second, if another thread successfully acquires them and carries out
-> a new EC write or read in the middle if an operation region access in
-> progress, it may confuse the EC firmware, especially after the burst
-> mode has been enabled.
-> 
-> Finally, manipulating the locks after writing or reading every single
-> byte of data is overhead that it is better to avoid.
-> 
-> Accordingly, modify the code to carry out EC address space accesses
-> entirely without releasing the locks.
-> 
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 12/07/2024 12:48, Robin Murphy wrote:
 
-Thanks, patch looks good to me:
+...
 
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
+>> I am seeing some failures on -next with some of our devices. Bisect is 
+>> pointing to this commit. Looks like the host1x device is no longer 
+>> probing successfully. I see the following ...
+>>
+>>   tegra-host1x 50000000.host1x: failed to initialize fwspec: -517
+>>   nouveau 57000000.gpu: failed to initialize fwspec: -517
+>>
+>> The probe seems to be deferred forever. The above is seen on Tegra210 
+>> but Tegra30 and Tegra194 are also having the same problem. 
+>> Interestingly it is not all devices and so make me wonder if we are 
+>> missing something on these devices? Let me know if you have any thoughts.
+> 
+> Ugh, tegra-smmu has been doing a complete nonsense this whole time - on 
+> closer inspection, it's passing the fwnode of the *client device* where 
+> it should be that of the IOMMU device :(
+> 
+> I *think* it should probably just be a case of:
+> 
+> -    err = iommu_fwspec_init(dev, of_fwnode_handle(dev->of_node));
+> +    err = iommu_fwspec_init(dev, of_fwnode_handle(smmu->dev->of_node));
+> 
+> since smmu->dev appears to be the same one initially passed to 
+> iommu_device_register(), so it at least ought to match and work, but the 
+> SMMU device vs. MC device thing leaves me mildly wary of how correct it 
+> might be overall.
+> 
+> (Also now I'm wondering why I didn't just use dev_fwnode() there...)
 
 
+Yes making that change in the tegra-smmu driver does fix it.
 
-> ---
-> 
-> For 6.12.
-> 
-> ---
->  drivers/acpi/ec.c |   55 ++++++++++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 49 insertions(+), 6 deletions(-)
-> 
-> Index: linux-pm/drivers/acpi/ec.c
-> ===================================================================
-> --- linux-pm.orig/drivers/acpi/ec.c
-> +++ linux-pm/drivers/acpi/ec.c
-> @@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(
->  	unsigned long tmp;
->  	int ret = 0;
->  
-> +	if (t->rdata)
-> +		memset(t->rdata, 0, t->rlen);
-> +
->  	/* start transaction */
->  	spin_lock_irqsave(&ec->lock, tmp);
->  	/* Enable GPE for command processing (IBF=0/OBF=1) */
-> @@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct ac
->  
->  	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
->  		return -EINVAL;
-> -	if (t->rdata)
-> -		memset(t->rdata, 0, t->rlen);
->  
->  	mutex_lock(&ec->mutex);
->  	if (ec->global_lock) {
-> @@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct a
->  				.wdata = NULL, .rdata = &d,
->  				.wlen = 0, .rlen = 1};
->  
-> -	return acpi_ec_transaction(ec, &t);
-> +	return acpi_ec_transaction_unlocked(ec, &t);
->  }
->  
->  static int acpi_ec_burst_disable(struct acpi_ec *ec)
-> @@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct
->  				.wlen = 0, .rlen = 0};
->  
->  	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
-> -				acpi_ec_transaction(ec, &t) : 0;
-> +				acpi_ec_transaction_unlocked(ec, &t) : 0;
->  }
->  
->  static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
-> @@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *
->  	return result;
->  }
->  
-> +static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
-> +{
-> +	int result;
-> +	u8 d;
-> +	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
-> +				.wdata = &address, .rdata = &d,
-> +				.wlen = 1, .rlen = 1};
-> +
-> +	result = acpi_ec_transaction_unlocked(ec, &t);
-> +	*data = d;
-> +	return result;
-> +}
-> +
->  static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
->  {
->  	u8 wdata[2] = { address, data };
-> @@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec
->  	return acpi_ec_transaction(ec, &t);
->  }
->  
-> +static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
-> +{
-> +	u8 wdata[2] = { address, data };
-> +	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
-> +				.wdata = wdata, .rdata = NULL,
-> +				.wlen = 2, .rlen = 0};
-> +
-> +	return acpi_ec_transaction_unlocked(ec, &t);
-> +}
-> +
->  int ec_read(u8 addr, u8 *val)
->  {
->  	int err;
-> @@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi
->  	struct acpi_ec *ec = handler_context;
->  	int result = 0, i, bytes = bits / 8;
->  	u8 *value = (u8 *)value64;
-> +	u32 glk;
->  
->  	if ((address > 0xFF) || !value || !handler_context)
->  		return AE_BAD_PARAMETER;
-> @@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi
->  	if (function != ACPI_READ && function != ACPI_WRITE)
->  		return AE_BAD_PARAMETER;
->  
-> +	mutex_lock(&ec->mutex);
-> +
-> +	if (ec->global_lock) {
-> +		acpi_status status;
-> +
-> +		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
-> +		if (ACPI_FAILURE(status)) {
-> +			result = -ENODEV;
-> +			goto unlock;
-> +		}
-> +	}
-> +
->  	if (ec->busy_polling || bits > 8)
->  		acpi_ec_burst_enable(ec);
->  
->  	for (i = 0; i < bytes; ++i, ++address, ++value) {
->  		result = (function == ACPI_READ) ?
-> -			acpi_ec_read(ec, address, value) :
-> -			acpi_ec_write(ec, address, *value);
-> +			acpi_ec_read_unlocked(ec, address, value) :
-> +			acpi_ec_write_unlocked(ec, address, *value);
->  		if (result < 0)
->  			break;
->  	}
-> @@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi
->  	if (ec->busy_polling || bits > 8)
->  		acpi_ec_burst_disable(ec);
->  
-> +	if (ec->global_lock)
-> +		acpi_release_global_lock(glk);
-> +
-> +unlock:
-> +	mutex_unlock(&ec->mutex);
-> +
->  	switch (result) {
->  	case -EINVAL:
->  		return AE_BAD_PARAMETER;
-> 
-> 
-> 
+Thanks!
+Jon
 
+-- 
+nvpublic
 
