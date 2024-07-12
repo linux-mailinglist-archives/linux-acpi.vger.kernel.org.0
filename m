@@ -1,359 +1,504 @@
-Return-Path: <linux-acpi+bounces-6866-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6867-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA8992F884
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 11:56:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF80B92F935
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 13:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 182A8B20CFB
-	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 09:56:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D33591C21F1B
+	for <lists+linux-acpi@lfdr.de>; Fri, 12 Jul 2024 11:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8CB146D79;
-	Fri, 12 Jul 2024 09:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F60155C81;
+	Fri, 12 Jul 2024 11:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/zPYY/4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Qu/Pxr6V"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2070.outbound.protection.outlook.com [40.107.243.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C15143C5D;
-	Fri, 12 Jul 2024 09:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61234145B09;
+	Fri, 12 Jul 2024 11:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720778208; cv=fail; b=j/ceko0KdSx7GvmdD73QfOYsLVXV3f16JVl83pVO0WIv0Pj4cqKrJP9WHS5ExBQk1UQkKn0nzO1RDQSAc5Ps9QqcKvdxq6AMRWjH9kDzoKLl3o+SuHtxl3mM6lejlOvfmnyxShqooJEBdCHOzEWAroVtK+POPytEtP7RYFad4Bs=
+	t=1720782111; cv=fail; b=IkoPh7qdkrIVZxTqjg5sz/b5KtwfrULeZLT57ISzBiJvhEXncsMnCp/rllZT26BWN6SrHKsMux777fuEhnViMf+VVQV+lsH2nx111TDI192KabFireRxJw9E8UgkWY4AZbkYOwrF7bCXWPk6qZwP+touSxRK6UdVQOe6jQuVQJU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720778208; c=relaxed/simple;
-	bh=g31dHeMcIYnb7/8nJCuTOOgxuCyTberdv9OLsqdPn0k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NNIXrxCMpyXDTqoM+0RuyLLH85jxlITx8mgnqOPOOpuKQUIfZEC2OojvBCKYYsK4yJmI53mKGn7VMr1G1m88oey35mYKzo2C/Bq7io6kPvJgdkZ6P8mRBBl6oCWRISLpm6GeC555vnafuVTlBNatd6cC+j+pHHoFp7RtP1gPYwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/zPYY/4; arc=fail smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720778207; x=1752314207;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=g31dHeMcIYnb7/8nJCuTOOgxuCyTberdv9OLsqdPn0k=;
-  b=i/zPYY/4AxxH40ZMGZHSdFXbogC/H5AkkPgX+3l8IX9yWBB1nM6Q6anL
-   GhVjtB/EenFR0rtzhv+THOW1WfFvCLX31BEcGwT8efH5wmJAYBht9xvNV
-   jYwZF2GeqX+nnrjPhfA/hkOGk24+MUkTQJXxi4n/VdZaCNynGRtx9kVnP
-   nAIOPn6E0eCq4iAmXW6v5e94LsVXFWkae5OyHMPu189ACuQHA0qbE5h7W
-   XlhMJa7UYr0RnOaZnIVc5yS/t8PTOJz1R2BbzRT69Ca9OhN8aDiiw5PoU
-   gvS8NNwgTTgG2D5kwMe9bXpirn6djCJHJVcFhpYF6JRshikRjEM2+a9e8
-   Q==;
-X-CSE-ConnectionGUID: doKerV3wRZmBXSRFnPzrow==
-X-CSE-MsgGUID: VihsKWLIQeS31eV3IrdKIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="17921502"
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
-   d="scan'208";a="17921502"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jul 2024 02:56:46 -0700
-X-CSE-ConnectionGUID: cJ5ee0wWRJeWAiLHXpLZxw==
-X-CSE-MsgGUID: +NZzCbrVStiAbyVRD+eeNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; 
-   d="scan'208";a="48963957"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Jul 2024 02:56:45 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 12 Jul 2024 02:56:44 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 12 Jul 2024 02:56:44 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 12 Jul 2024 02:56:44 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 12 Jul 2024 02:56:44 -0700
+	s=arc-20240116; t=1720782111; c=relaxed/simple;
+	bh=vWdvfRsg/E3nXcMnS8DzIPnjU0TW+opAZf0+lU6IpRM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=auYMV5G4EQBEi+npeOm2M8Skm8y1yieGcBoFNXUMncZizjFMrlHXufdJADarkyfd6OROa1319m0sFNxh+KyJ3TtbsLsYk7CDHKrapGIFNO/Eo+LLCLbkzWhSGVVibCO0KszU2L24uZyophKsShYbn3CI1XDraSR3SCgjOw2wdSQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Qu/Pxr6V; arc=fail smtp.client-ip=40.107.243.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZtjZ6kfJKQJlDsrmCa7GE6o++GyUbijlHoaZm0XSQRkoQlqAcFfLToSaSMMZluYuKJXdmzDO4NRoW3FIuCCLnPdV+KsPhTPsyZjqJoCiDjUVGMbxQDLy1mo7rMwriTxiXsIwgDkCdNBaWrMIBDccqrxyiwb5c1d9T0ux6XLWeVAJ5Hgicru1j4lfM5V4xg9Nkq3UT5ZqIbrRmsi8UO1a3zLr71smSvOyDvcyZjY0ezcOFQpOqzDKknzAH+X6uJSKzQ1ZfbL9oG9x0wcog6uRM45l2T94V3pUe1uhDYiHGBRYSZ0ii3a/T3okHNVR/91BLsGGXYhBoHVFbBqa7foJw==
+ b=BFl7rEaU6boVDhrNmafAiuteFo1m5CU/K243q10an60vvM/25SylQHJaCFvgm/ypsVPbpBnGTmGH4ADhvzJCNiwDOfIkRxxjAH61w3JLi/AFS1K0wcPbPHrS5MEg30er7gLNBqHUa+8FQJJ1522X0elH6HW0AlqC4aj69w55V6mNP+p1NEfGaGM/QOA78gae8CuPHZcXUGvTWo930lguq7iN+U2oRMCUpRyjPQOrUddebFyhdfBjRRSl/mHFizT+hdyRrYHZR/JUcjmk+9F0WeABO3tfrLtYZ1WI9YMJ42Bg8mR4K8gPemee8xrL6l3ty30QRhGZWt8yM31ihajJfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wO1BrZOsyaZacw3gkhsgXRe939CvdqL6KFUJxsplhy8=;
- b=Lk+pdgJ+5HVtp8wOLj1s/Xu1U3o19CvYgFkh38o/igSQmiM3lbfLUq+z0nZayofoygAyhUPlRiK/eOS7ALsIL2pSMd6D7H6t9PILLIe7lUMVLjfZnH/LDHp9KyFOkUm1XE1U4apIRaV4it5j90ZAUpl60qQnrdn1VSeqeeb+4kXaxJD3gH0x167mlWwa1JCZTByaM5PA0hX7dm7c0lmStch9W1Nm8ikk6/5XxeWljqe1iboT6fOVqSqWZAdhCz+uFJm6Td4QJHVObGR1cYp43QKWIO8XOUJyy9qU7cwkvxktvfQUKDQJpUcF9ihivn74/bXo5XROgPwk19fvx1S6+w==
+ bh=sNm6bc0NP/rklWxUDoDBPMbgrEzxFgXVGXR0b0fpb0A=;
+ b=RCIqhyTAlrMsoiAADG53ftxcXng0bpQydirn6pOinOLQUbPVtbcp4BxQwj2+/94Yv0ncbNIeP9OUbi6P6cXqA2jpcUQ8gGwzOEN7P9BpyLiV28rHUbpCG4yBjdC7d0RmS4pnEwtV6214WcFO5Qc0mtFK4Tp96iI4oU1e6PUj5xfC/OJSCatmdUqB8hI0k1kuNtZugx9itShI3HJaJvRp0ooL1fFRw/mNv7EDAH2Bwl2RLnvTyNZISzqWMCnODyGlpRdwDXhKwMqdEBz3ZcSpbyp47XLyZDnr5/5bYEtpUJcNa1kAsxCEGmxgil4g+fxY3Q8ABtsv5g8nsqSkjw6tzA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
- by PH0PR11MB5206.namprd11.prod.outlook.com (2603:10b6:510:3f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Fri, 12 Jul
- 2024 09:56:37 +0000
-Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091]) by SJ0PR11MB6744.namprd11.prod.outlook.com
- ([fe80::fe49:d628:48b1:6091%7]) with mapi id 15.20.7762.020; Fri, 12 Jul 2024
- 09:56:37 +0000
-From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-To: "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>
-CC: "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "oohall@gmail.com"
-	<oohall@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "rafael@kernel.org" <rafael@kernel.org>,
-	"lenb@kernel.org" <lenb@kernel.org>, "james.morse@arm.com"
-	<james.morse@arm.com>, "Luck, Tony" <tony.luck@intel.com>, "bp@alien8.de"
-	<bp@alien8.de>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>, "Jiang, Dave"
-	<dave.jiang@intel.com>, "Schofield, Alison" <alison.schofield@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>, "Weiny, Ira"
-	<ira.weiny@intel.com>, "helgaas@kernel.org" <helgaas@kernel.org>,
-	"linmiaohe@huawei.com" <linmiaohe@huawei.com>, "shiju.jose@huawei.com"
-	<shiju.jose@huawei.com>, "Preble, Adam C" <adam.c.preble@intel.com>,
-	"lukas@wunner.de" <lukas@wunner.de>, "Smita.KoralahalliChannabasappa@amd.com"
-	<Smita.KoralahalliChannabasappa@amd.com>, "rrichter@amd.com"
-	<rrichter@amd.com>, "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Tsaur, Erwin"
-	<erwin.tsaur@intel.com>, "Kuppuswamy, Sathyanarayanan"
-	<sathyanarayanan.kuppuswamy@intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "Wanyan, Feiting" <feiting.wanyan@intel.com>,
-	"Wang, Yudong" <yudong.wang@intel.com>, "Peng, Chao P"
-	<chao.p.peng@intel.com>, "qingshun.wang@linux.intel.com"
-	<qingshun.wang@linux.intel.com>
-Subject: RE: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
-Thread-Topic: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
-Thread-Index: AQHawr41SN+Mhr/ECEeuzsossoYQIbHy+4Gw
-Date: Fri, 12 Jul 2024 09:56:36 +0000
-Message-ID: <SJ0PR11MB67441DAC71325558C8881EEF92A62@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <20240620025857.206647-1-zhenzhong.duan@intel.com>
-In-Reply-To: <20240620025857.206647-1-zhenzhong.duan@intel.com>
-Accept-Language: en-US
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sNm6bc0NP/rklWxUDoDBPMbgrEzxFgXVGXR0b0fpb0A=;
+ b=Qu/Pxr6VlDr5oQqzonjSf+Je2weF1tnIdfzppLPgp3IEmXJUxFzOBbJpM4jAxWV/u+RcdcKo3JtR4bE7fzcokwdQu6DbvhfAZ8nqNlwOmDkVd3+TRX6fOxEPlw4YJJTYvhmnAwPRRwqGxY9VVn1tbKPCaTCTTL0MBg2HeFAb24hU5wB7JgaV6Csn8MUbuoASRxrOBWVIYiYS0Qc0UVlmjvON0TCbAzEDuanXPIiFkmim7le4syj6oeYgiLb5dfrBmgvAb2F+CBN1IUujknl2hQ2Ye506Gptn7bw5bUFsUs8vrDU+v1Afc0w1RgZ1SnkKOyiuPuGXyFOk1txnKSSSWw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com (2603:10b6:5:35e::8) by
+ DS7PR12MB6190.namprd12.prod.outlook.com (2603:10b6:8:99::22) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7762.21; Fri, 12 Jul 2024 11:01:45 +0000
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::ae68:3461:c09b:e6e3]) by CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::ae68:3461:c09b:e6e3%6]) with mapi id 15.20.7762.016; Fri, 12 Jul 2024
+ 11:01:44 +0000
+Message-ID: <0eec5f84-6b39-43ba-ab2f-914688a5cf45@nvidia.com>
+Date: Fri, 12 Jul 2024 12:01:35 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] iommu: Resolve fwspec ops automatically
+To: Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>
+Cc: linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+ devicetree@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ Saravana Kannan <saravanak@google.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Hanjun Guo
+ <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@arm.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Yong Wu <yong.wu@mediatek.com>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <cover.1719919669.git.robin.murphy@arm.com>
+ <0e2727adeb8cd73274425322f2f793561bdc927e.1719919669.git.robin.murphy@arm.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|PH0PR11MB5206:EE_
-x-ms-office365-filtering-correlation-id: 2f3e8ba6-6cdd-461b-1649-08dca258eb60
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?0HjW5Oe7PBuvKUoMdO4cNumnc01kwxgugvnV8wZJ9mGuv3QEV3Sc1v8Etbl7?=
- =?us-ascii?Q?NUlUiPx8jhPUXOJHt0Nz+FRaCpKWRc2pItWbqB9KGvjESmYKMqSITm7gbjKC?=
- =?us-ascii?Q?3EiuTPtf5NhKO63sKOCLqYNy8JEIsZV5dx1eslhMxyy7L3AEqTNjty/HACso?=
- =?us-ascii?Q?Vuivx3oihLhhZk4Q1SgvghQSoNcu9d35oAjarre1OXXsrpahwQy2mJi8Qwfl?=
- =?us-ascii?Q?a+PBvlPeMs47QPPvCoN+Y4StvzerT+Etc4DBf5S5Jv1XWKZyiZHhOxAYMZuw?=
- =?us-ascii?Q?xETpwEOgcB0KjG6H8jgZriL8Wih0rwGxjP5/CZWwrMW2EaWx+pJjPeDSQcru?=
- =?us-ascii?Q?K8thh4UVEfTWL0CMLUIL7DomLKMMeodIUXwJ9YgIS2l9+uoPlnIRJRzayCHJ?=
- =?us-ascii?Q?+sbbfTswLj6pgfTWR+iHrg1pSq40mbiynHDVHg6otLDKhHnhx51C7Fm3Rt80?=
- =?us-ascii?Q?SCXWEhPniLtT46iRXWwsADI/DXTXTUPDuFxO0wzZ1yy1TnQvf7dHlezAiLPB?=
- =?us-ascii?Q?7gSjJMOx3xKZQxTQIWpFNYtF6KxqmlnL3PUJTfR5H682sLnkR6MReiPrACb3?=
- =?us-ascii?Q?Ei73f0Lf/dU1gpVOl+pi4VqkHfKstQCeTHtkrLj9GiVoLQ1eDVFdoedi+Mnx?=
- =?us-ascii?Q?HXRziofUpbdX29uS2FE4GRnQIOxwKtuS6yHHMhaAzreZKOApcKtKu7v+j74S?=
- =?us-ascii?Q?0DQxfpQdKKlpjZoG++1361o+yyY5juQw4z2JTZi4tgBtmIUVLHQR+MIvNL9J?=
- =?us-ascii?Q?Q9XbH1gRtUICd3jAilaVTaAdTne8I94Vt6A0QgiyTAada8QMiUap78R+G81t?=
- =?us-ascii?Q?rgQvlyfXJ0uT9qO5tOl0M/d8L3029xHbqChEANU3h8fuYHtazxkBE9X/Eay8?=
- =?us-ascii?Q?1UfRVRcHoCETGBrvNEwqpJjKkJvond3Jpfs61MmY0StVY+RimQqtxOwX7Utr?=
- =?us-ascii?Q?hUIABscQ8r7eajm1u5cce+Pf5f8gIy8q9rFoOEcyXdwfmH6K4D7eQWpJsQEx?=
- =?us-ascii?Q?yZOAEfiS6nHm/qP9UjgmkcptmoqaSoh4qacnBLfYh/gEpOsw0JvYnC1ZViEh?=
- =?us-ascii?Q?XQl5SMLs6KRnicLUWtxk7e9P0FXpc9fCiSvrmUC5BPCzSB5vE4CTVgMDfiNE?=
- =?us-ascii?Q?l6oPv8iTzOQ+Yfs+RfsVggdTRwE6YE8006ghCiX3xk3nN+CWZ4nPLy2+YiOD?=
- =?us-ascii?Q?J67Z4QZEYrcndNtunFObj+HP7jNkBY33lMjfRg9NTvHi65w26QXmZHo7h3fw?=
- =?us-ascii?Q?MS8gRlQZvD3lmab2o0BrTUp2Ic6muazxGsTqqewJV03tV6z4XICs3JdbX0yA?=
- =?us-ascii?Q?1NBzI4Ae+nBVN6M75QV4x4/BSfGXl0YiPuUojvK/PdjCN52NRIw5LLgdWZUc?=
- =?us-ascii?Q?NrWA2Yg=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB6744.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?QY6e1qlq0LmHyZPX6T/bmCDoiMgKJ2QSTz9L3ZSMuWkh7/OJe722FHowyi33?=
- =?us-ascii?Q?FUmxwhFiki8DTYkhIFVw3sq+/HR+MIbM9IWPJzjM+/I4lyZiOMU/cNyQhny1?=
- =?us-ascii?Q?lrP8zWnFox6dQatJKcF5HswDiWOcGSf1hjZzoG1JUFu+ZLqad/tHTHTyR1jB?=
- =?us-ascii?Q?tNjz6GVLUlZ4QpllLDewbqE/m31kchcriheMMBKLUq8MphYOnqkHHMXsq/VW?=
- =?us-ascii?Q?1uMNgw8PYhYFeMRC1FBhIoRCsciF9gKPQeho2Hx3WrtTk6T8e4R3K0XZClHL?=
- =?us-ascii?Q?H+UvWZAoS9eU86yx12oJkF3e/e/lWYcByaguvk8z8LBAroj8tiOSXpyIZeEd?=
- =?us-ascii?Q?mSMlInEwbqDKJwZQaYk0AVyCcQPTFFylhlFs2nGKyR0aezHLL3e9jEMMcYMO?=
- =?us-ascii?Q?XPrCmCLr71dMK4BxkehjedyviutHKaeqe/1Ga/JL2E5rD9qC7Jp+uYIkM+GX?=
- =?us-ascii?Q?puiTCzUoieC7P56o4VjMKU25uyKcs1EU7xHWEt4CQpgthi/oAjGDGpTkMQP/?=
- =?us-ascii?Q?xDOo6db3La9IlNV3EQ3z2xQ37OGxGuoZwiG0UZN9mFQZ+JbQslWe3Z83h0qF?=
- =?us-ascii?Q?VtCA1OSE8foljtJRR3zLs7woM/Ltfd+qvTnDK+ptB1dUfB+Xs+sO2vIA4d7M?=
- =?us-ascii?Q?0WX6T7KdqQpkILS/FWfVoTOueN6hw3+GRdfizhYxu6wIHi5YfNespSg3zv5K?=
- =?us-ascii?Q?ndFNY5mItP1cJkH4aHtiXoiuwoL1GG0RfwzSvr74IpmHELVoeQG5RkNFtq4V?=
- =?us-ascii?Q?ek6+UbdvJ9LfDsSDtGhLjHM62Ods2Gw8UwAnikC4q292TLRTst5cb0k9V4P4?=
- =?us-ascii?Q?BVYUbw6tLmrbD0idBw+U+gdbYCetupOOBrQ5gVeTzEL4y+5s5vVW5Gb7AY2q?=
- =?us-ascii?Q?mXvc0ZA/NcuVvNgj5sZqbYaZR9mQKf9fgJNumaHJw6GBvdXOXat/ncQm7LMu?=
- =?us-ascii?Q?Pd17tMWgGHvABfhAXx0XF3h9mqJklSPXqJnySjJsFZQMI+C0IiesHYf+Avl0?=
- =?us-ascii?Q?enwAltVrlKE1xKF447pf+8GX1yJigwih3Wj06CZeetFp8i9XID6F4/KyOQIY?=
- =?us-ascii?Q?YIKkvPOUqO6dOtJhimOr/KfUGOsICVs4d+LNYQ0RxhmOvpctY3gGpBSw4t9a?=
- =?us-ascii?Q?6gTT+4jMlliFSD/YQ6VIv2tX3SgE/Wm93VOPWtbE3mOcXQXIJ/EmY1gZuj5J?=
- =?us-ascii?Q?JjkmDy3j1F71ZbJQ7h2gnDGoj2xM1naa/u6vDmOyLj0ALkJA+0ncLrNj2z+p?=
- =?us-ascii?Q?XFmMYJpN6PsfSL4IeCkEQACVxzMgKRxOzTNO1OsA6DjJZs17RIs3uXS6KKoz?=
- =?us-ascii?Q?HW+YCKe2a9d9rL5P6T+UdAFDWvt/LVB15cB4GF8zdQSa/DCVWzVqyJKvWRjl?=
- =?us-ascii?Q?7shUcHNM1dhtlQ8dkhrE4e26wjnnAdFRxp+fmdj/sSPUsogChkFv5jA6FaRG?=
- =?us-ascii?Q?l0+7gu0pYOYi1JJ1jtGoZG9pUnVZiyIId9nyzk+LfSX4DROpMW62THTtd2I1?=
- =?us-ascii?Q?9rzmyTrKs5Yo4aX5fy0+U4HB33cuZIMj4F9mvBx5sQ50CVDq4ylr7ORNX+Ta?=
- =?us-ascii?Q?gnnaMDfCuCKM/XFwzwJwC5IyiH2xRPL91LejG5r6?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <0e2727adeb8cd73274425322f2f793561bdc927e.1719919669.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0162.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c7::20) To CO6PR12MB5444.namprd12.prod.outlook.com
+ (2603:10b6:5:35e::8)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5444:EE_|DS7PR12MB6190:EE_
+X-MS-Office365-Filtering-Correlation-Id: 239126b5-1712-49f0-4051-08dca262043e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VC8rbUR1dEpZSWxuczlRZDZyRXd5Mjc4cE9Rem9HSVJaVkFrZXFObGJ6d1ZO?=
+ =?utf-8?B?WGFob1ZmZHd5MU1tbGhOQVNvUUJCOWZZMjNXRTNwQXp6V0RCV2V2VTI1cklK?=
+ =?utf-8?B?elZiR3dVd2MxbHFTSEJBUWVwMmFmY0J5SkZ5U0RKUWJQUUdIVTViZEJJV1VZ?=
+ =?utf-8?B?MG9nTnpoWHFqSmFHWHRpUkl1d0Z4UFFzd0RUeGVxZFdnVE5LNGxoczI0bzBa?=
+ =?utf-8?B?bFhxTUsxVEhtVzVqOEdiQ0NQaFZRRjBjTmg4TDcrcDgySmJTcnZJR3k2ZlEy?=
+ =?utf-8?B?eDFuazVuMFRVTDB2MEN3bFdNWHI3QzNwZmJKRzBEc2d4OUR2L1cvMG5SWVNp?=
+ =?utf-8?B?VjlZbHJBWldhT2JHQzQrWHFEUUhqSWQxMEsrSFpVRWlnYVBncWdObm1oRTAx?=
+ =?utf-8?B?WkNPUHRFbVEveXNZOGlrMndPRXQwY05qNGphdDF3QXEyYThPa3ZBUVBuT1VE?=
+ =?utf-8?B?aEJuT1FrQ0NnQncvcGhZMFI1S2Z3emM2Y3gwdk5PQ1B4OS94b0tDZS95N1Zz?=
+ =?utf-8?B?dld5anRYZHRkaTQ5Sm5LUTRTWG5SSkEvNFhTVHB6OW1Nb3BIamhGcC9pSS9B?=
+ =?utf-8?B?eEtEVUYyRUJvTVhtZWNJaE9CUVJjbURVMlRYOXlCK1IzbzVsN2FMR3VrbXUr?=
+ =?utf-8?B?QXdQampheElNa0pGZXpHc1dQTE03bXorR1NRMVplTUxIUi9aRmlFUmtFbW1R?=
+ =?utf-8?B?RmdKaktUR3RJclpmbjRFSmtTdi9xZkRVamxJZy96L090aHUwQ1NaWEg2d2cx?=
+ =?utf-8?B?KytkUE96WEV3dlZCVzIySWo1ZUtMR09scUVDOG5vL09MYkNVZkdOWWIzV1Zr?=
+ =?utf-8?B?b0xWTWRTV2dndXV1OUZPZ1pOR3JqWWkzcFVUcEc0Q2JPRFpuSWt6eG1BWUcr?=
+ =?utf-8?B?U0pydWw1czE4YlN2Y3M3RzlhQkgwdjAxdW9OcUo1YitiTFRWWFhEeXFtdGpa?=
+ =?utf-8?B?d1FIaXNJWVEzN2N2U0FyNHVITC9ES285RC93N3hpRW9lVjN1dndxekRLSUNz?=
+ =?utf-8?B?enVPeDllaW9NbDdKODRhVzhrNmxmMzc4bEZnZ1F4c0NCRzJ4WDF6bExCbSsz?=
+ =?utf-8?B?SUxUZlJKdW4vRXNZbUo5amd2ZjZlODV6cXZ0MldiUTU4cVo5RFl0NTBJREV1?=
+ =?utf-8?B?ckR3c2VjQjJpUlFGcXRDZHZlUCtJK3F3MnByUTQrMWVlakt4V0JKYVBtOW1X?=
+ =?utf-8?B?cmRCTDhNa0JkRHpZZ0xibWN5bktCTVZRQVl0VEdXUGhjUVdydjRvRFFPdzFE?=
+ =?utf-8?B?aG12dllvK1hvNkdwcDcwUHBjeEo3bFk4N2pNNGRvK3BjUFBhQVBiZi92QUR6?=
+ =?utf-8?B?T3IwUUVuVERnMExPWnVQMEgrdU40TzhtaVIxcWUvMzl6OTV1NlI3MHJ4WVJi?=
+ =?utf-8?B?VDFGOVhOWkRuQ0dEL2dhZkRSMEpWQkNWQWN6enNIMnVKN2hDT3lIVDFnUVVu?=
+ =?utf-8?B?cUs1djgwdGx2QktGWmdsMWZhb2V1VWNEdU9kWHFMaG5icCtNQWZnZ3VlVGcv?=
+ =?utf-8?B?NzZTVGZiOU5PS29kLy9ZeTU3bGREZ3U0NUhRQkFrUTIyTERFN3o0R2t4Qy90?=
+ =?utf-8?B?ZEZ5TVVEQlYzL2J4YTQ3aTdIc1N5bmVQT3YxUFFsOGFxY2lwVmc4cXdNc1Fw?=
+ =?utf-8?B?MFU0VEVoMTRsTlFGVlA5WDF3WmcxdjFZeDJWVldHNXBGei96NTV5WjhBWFhk?=
+ =?utf-8?B?eXU0cnZrRkVIc1ExV0lQaWZMcDU5SHg3VnVidGhoMzkyRDlwcFJtcFZnWXZE?=
+ =?utf-8?B?Wnl2L1RESDM2cGw2WVZnOEo4R2pNaXlEVW95TU9JR015aWVZT1RsRkt2NGxS?=
+ =?utf-8?B?Z3E5azJ6eWVBaFF2Q0U5Zz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5444.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aUZqVTRHMmhUZDMyb01YOHVNV3dPcFRNQ0k0Z3FvUnFOUkcxN0NnWURXZERs?=
+ =?utf-8?B?cXk2Q1J0ZDhNcmNPZTY4N0FFakswbStyQVZJcnJ5YjE3cFhVblJMOVhhK0U4?=
+ =?utf-8?B?d1lXSFMzZStRR2hHRkZ5UjFtVTRCTDJXUXpDa0NwK01TTGI3OWVsYjZqd3Fi?=
+ =?utf-8?B?U2dDLzV1Z3B5ZHRKaU9WRG1XK0R4RUtDRUE1MDR1b21yS295b2haZ1VkY3Yv?=
+ =?utf-8?B?TFdxZGhDKzNHaUd5TXdQdmtYYlZFa01MbWdJWFg5OGRSSlNGcURkbW1IVFRR?=
+ =?utf-8?B?QTZDdHk0V0dCTGM3ZkpkSXhBaFFWYVhDRjE1czRvMnZOTGRoTmNoWEplZC8r?=
+ =?utf-8?B?OG82NzRUNGk1bjN0MXJJTVNHaWZGVVpJdHJ2OXp3ZEdZcUsxczVmUWRMZUVr?=
+ =?utf-8?B?UVFtMTVzMDUwOGtDMTlaMkZtRmJ3STVIeE5WT3hmemszZUl4MGNDMGZjWGhK?=
+ =?utf-8?B?ZlBvOGU4S0NDc3pEUHFYdzl1Mkt4cysxK3A3R20ybTBSNTYvZ3VNZndETUFO?=
+ =?utf-8?B?RnJQd0Z6T0ZJKzY0L2R1akZvRW5hZnA4bEw2WUxWRFZqU2V2ZVNFS0g0cFRp?=
+ =?utf-8?B?bFlOWXcxM2hFTzJTUFV4UXFFQm13WkpPTTAyb2hDTDEyRkF3RllJeEwzdm9I?=
+ =?utf-8?B?TTJacElKdTZzTHRlRXVzYU8vUmVud2Y2anlmMjdUWnczTzNmWC9JU1lqaVFW?=
+ =?utf-8?B?cXJRZjZ3YXRYQy9tVnZtbDRRV0pJT1EyQUxWOE9oZGQwYVNUekt3RXVqNzEz?=
+ =?utf-8?B?YU9QTkdFTFhYMWhvYS93OEVEV0YyOVFEZ2J4U2tLN01wYnQwL2xldnpEQTY4?=
+ =?utf-8?B?SEpNSnA0ZUFnZnpiQkhwUFRkcEV6N0tTOEN1Z2JYdHgvZjZRQjIyRXg1MlRn?=
+ =?utf-8?B?cnY5eUNaSkZWS255aVNsWjdjeUJoaURyZmYwZC91TnNwRnFOVDY5VFk1bWt1?=
+ =?utf-8?B?U1ZPSm9tU2diK3Mzbi94K0R2UkRqL1NaOTVZTkxKcDZRQXEyWityK1hDWmxM?=
+ =?utf-8?B?ZlVzdVZkUlhucHAya1llbXBZbld6a2J5N2tZb0U1cXhYTWppMGsxRGh1WHpn?=
+ =?utf-8?B?ekl0VDZDRUUzMUJjTkJHdVhpQllTWC9FUEFkd1E5UlQxZXEyM0JwNXlTSmFT?=
+ =?utf-8?B?djhUbWhSUGh3cTdNRmJwWTRGV1RiK0sweXA1Y0IwbnJqaEtPWW9mY1BxZUMr?=
+ =?utf-8?B?aTdONFdtd1pZbjM1NXk4RUVxaWVKOEgrMWZxYitsek1zS2VYNEl6SFlCc1d6?=
+ =?utf-8?B?eXYxL0E0emx6OVRjU25Pa1BTV3dGWnVGNERMbkQ0UGc0cTJuOFBBcFNvbDlQ?=
+ =?utf-8?B?L2Exdm93TlpzdDFHakZVUmM2TDFybitpZTR4WkRBQjBiZGh3cEVqZWorT2RX?=
+ =?utf-8?B?eWt6NHVqTHU4ZDNJOFkxL1lZaW5hY05NY1QyYWlvMmVvWE05MUpIZ1NTNm53?=
+ =?utf-8?B?ZjlYd29qbmRNQklmWmF3SGlEZU9GR1RvOElCK1Y4ektLYklBYTNweVhPN2NU?=
+ =?utf-8?B?SFBxRFEwdTFUcDVQRU1GQUlEbVF2TlF5SGtJTmVGNWx4M3N2eS9jdGlQS0t3?=
+ =?utf-8?B?QnVBdnhxQ1daNWFZV0RZZHNZYndYR0p0Tm1lQUNMNjBOOTZYUCtlbWE4bGxj?=
+ =?utf-8?B?TzRwdFpCWDhoaHRJQ0lPZHdTZmlMR1hhWmgybTFUUXpyanlmU21SWGNrbGlF?=
+ =?utf-8?B?NnozTFRBYXBlcGdNMVE2VURySWJmdWo3QzRyMEM5TnRKZ2RLL2tWa2h4ZmV1?=
+ =?utf-8?B?dlZaZC9kWjJMU0xiUDM3YnRhTDU5ck5rOHNrSkhSY2UxNnUxUGRBRzNLem5Q?=
+ =?utf-8?B?cEtvb0JNNmFYVEw4Y2FkZ1BmTiszNVpxRGxlTjJrRGJ6OXljaTcrcWdhRURq?=
+ =?utf-8?B?TkYyM2VTQzQveUw2SWt2cHRoSFF2RUgycDB1czhaNTVWc2VtazV4NTg0SGlI?=
+ =?utf-8?B?ZjdFazJlVWRrU2lsWUh0cm1PVEV1bDdaSWkwTHk1K3FXTkhIMXN6TkJjSmhm?=
+ =?utf-8?B?TVdpeUNNODNGMTBMNVlneDhOSjgvUWx0TVRuUVluZ0oxQld0dkVzaU54M1ZB?=
+ =?utf-8?B?NkVWZ05ZQWxJZVg1Qm0ycjc1bzZxRnluQXU2VE1ZekpQY1lud081RXlXUnJT?=
+ =?utf-8?B?aDJiUnB4aXJTQ1hybG9ub1JZUE5sa2l1LzBkeUF4dlM4Nmo4MzNjMEtTZE40?=
+ =?utf-8?Q?xwK7AxHk+VpvZdmyXMtgCvjhGArqEitx2jAC+XWbDjik?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 239126b5-1712-49f0-4051-08dca262043e
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5444.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f3e8ba6-6cdd-461b-1649-08dca258eb60
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jul 2024 09:56:36.8951
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2024 11:01:44.5924
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BanIRRhVlsg3gglK9WIBT8X0h0/hmUopTWgr+HBc76WPzA/La/fcWUNXJUcPvGiTtDzQYeXqkI5n7wnUng6jAutYt40BHJK3KPlyxsK71b8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5206
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bkc0OkF8SgCpBAZ+fgdyuS+DFgUa6G5AQx4KkT/xZ0x8hB6NJQ8XV9ENkAgJz8WWwmwR31NYv9xaFC7wpGnwDQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6190
 
-Hi Bjorn,
+Hi Robin,
 
-Kindly ping, this series got Reviewed-by and no comments for a month.
-Will you think about picking it or further improvements are needed.
-Look forward to your suggestions.
+On 02/07/2024 12:40, Robin Murphy wrote:
+> There's no real need for callers to resolve ops from a fwnode in order
+> to then pass both to iommu_fwspec_init() - it's simpler and more sensible
+> for that to resolve the ops itself. This in turn means we can centralise
+> the notion of checking for a present driver, and enforce that fwspecs
+> aren't allocated unless and until we know they will be usable.
+> 
+> Also use this opportunity to modernise with some "new" helpers that
+> arrived shortly after this code was first written; the generic
+> fwnode_handle_get() clears up that ugly get/put mismatch, while
+> of_fwnode_handle() can now abstract those open-coded dereferences.
+> 
+> Tested-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> v2: Add of_fwnode_handle() cleanup as well
+> ---
+>   drivers/acpi/arm64/iort.c             | 19 +++++--------------
+>   drivers/acpi/scan.c                   |  8 +++-----
+>   drivers/acpi/viot.c                   | 11 ++---------
+>   drivers/iommu/arm/arm-smmu/arm-smmu.c |  3 +--
+>   drivers/iommu/iommu-priv.h            |  2 ++
+>   drivers/iommu/iommu.c                 |  9 ++++++---
+>   drivers/iommu/mtk_iommu_v1.c          |  2 +-
+>   drivers/iommu/of_iommu.c              | 19 ++++++-------------
+>   drivers/iommu/tegra-smmu.c            |  2 +-
+>   include/acpi/acpi_bus.h               |  3 +--
+>   include/linux/iommu.h                 | 13 ++-----------
+>   11 files changed, 30 insertions(+), 61 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+> index c0b1c2c19444..1b39e9ae7ac1 100644
+> --- a/drivers/acpi/arm64/iort.c
+> +++ b/drivers/acpi/arm64/iort.c
+> @@ -1221,10 +1221,10 @@ static bool iort_pci_rc_supports_ats(struct acpi_iort_node *node)
+>   static int iort_iommu_xlate(struct device *dev, struct acpi_iort_node *node,
+>   			    u32 streamid)
+>   {
+> -	const struct iommu_ops *ops;
+>   	struct fwnode_handle *iort_fwnode;
+>   
+> -	if (!node)
+> +	/* If there's no SMMU driver at all, give up now */
+> +	if (!node || !iort_iommu_driver_enabled(node->type))
+>   		return -ENODEV;
+>   
+>   	iort_fwnode = iort_get_fwnode(node);
+> @@ -1232,19 +1232,10 @@ static int iort_iommu_xlate(struct device *dev, struct acpi_iort_node *node,
+>   		return -ENODEV;
+>   
+>   	/*
+> -	 * If the ops look-up fails, this means that either
+> -	 * the SMMU drivers have not been probed yet or that
+> -	 * the SMMU drivers are not built in the kernel;
+> -	 * Depending on whether the SMMU drivers are built-in
+> -	 * in the kernel or not, defer the IOMMU configuration
+> -	 * or just abort it.
+> +	 * If the SMMU drivers are enabled but not loaded/probed
+> +	 * yet, this will defer.
+>   	 */
+> -	ops = iommu_ops_from_fwnode(iort_fwnode);
+> -	if (!ops)
+> -		return iort_iommu_driver_enabled(node->type) ?
+> -		       -EPROBE_DEFER : -ENODEV;
+> -
+> -	return acpi_iommu_fwspec_init(dev, streamid, iort_fwnode, ops);
+> +	return acpi_iommu_fwspec_init(dev, streamid, iort_fwnode);
+>   }
+>   
+>   struct iort_pci_alias_info {
+> diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+> index 503773707e01..8d5a589db141 100644
+> --- a/drivers/acpi/scan.c
+> +++ b/drivers/acpi/scan.c
+> @@ -1577,12 +1577,11 @@ int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map)
+>   
+>   #ifdef CONFIG_IOMMU_API
+>   int acpi_iommu_fwspec_init(struct device *dev, u32 id,
+> -			   struct fwnode_handle *fwnode,
+> -			   const struct iommu_ops *ops)
+> +			   struct fwnode_handle *fwnode)
+>   {
+>   	int ret;
+>   
+> -	ret = iommu_fwspec_init(dev, fwnode, ops);
+> +	ret = iommu_fwspec_init(dev, fwnode);
+>   	if (ret)
+>   		return ret;
+>   
+> @@ -1639,8 +1638,7 @@ static int acpi_iommu_configure_id(struct device *dev, const u32 *id_in)
+>   #else /* !CONFIG_IOMMU_API */
+>   
+>   int acpi_iommu_fwspec_init(struct device *dev, u32 id,
+> -			   struct fwnode_handle *fwnode,
+> -			   const struct iommu_ops *ops)
+> +			   struct fwnode_handle *fwnode)
+>   {
+>   	return -ENODEV;
+>   }
+> diff --git a/drivers/acpi/viot.c b/drivers/acpi/viot.c
+> index c8025921c129..2aa69a2fba73 100644
+> --- a/drivers/acpi/viot.c
+> +++ b/drivers/acpi/viot.c
+> @@ -307,21 +307,14 @@ void __init acpi_viot_init(void)
+>   static int viot_dev_iommu_init(struct device *dev, struct viot_iommu *viommu,
+>   			       u32 epid)
+>   {
+> -	const struct iommu_ops *ops;
+> -
+> -	if (!viommu)
+> +	if (!viommu || !IS_ENABLED(CONFIG_VIRTIO_IOMMU))
+>   		return -ENODEV;
+>   
+>   	/* We're not translating ourself */
+>   	if (device_match_fwnode(dev, viommu->fwnode))
+>   		return -EINVAL;
+>   
+> -	ops = iommu_ops_from_fwnode(viommu->fwnode);
+> -	if (!ops)
+> -		return IS_ENABLED(CONFIG_VIRTIO_IOMMU) ?
+> -			-EPROBE_DEFER : -ENODEV;
+> -
+> -	return acpi_iommu_fwspec_init(dev, epid, viommu->fwnode, ops);
+> +	return acpi_iommu_fwspec_init(dev, epid, viommu->fwnode);
+>   }
+>   
+>   static int viot_pci_dev_iommu_init(struct pci_dev *pdev, u16 dev_id, void *data)
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> index 87c81f75cf84..c200e6d3aed5 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+> @@ -178,8 +178,7 @@ static int arm_smmu_register_legacy_master(struct device *dev,
+>   		it.cur_count = 1;
+>   	}
+>   
+> -	err = iommu_fwspec_init(dev, &smmu_dev->of_node->fwnode,
+> -				&arm_smmu_ops);
+> +	err = iommu_fwspec_init(dev, NULL);
+>   	if (err)
+>   		return err;
+>   
+> diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+> index 5f731d994803..078cafcf49b4 100644
+> --- a/drivers/iommu/iommu-priv.h
+> +++ b/drivers/iommu/iommu-priv.h
+> @@ -17,6 +17,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
+>   	return dev->iommu->iommu_dev->ops;
+>   }
+>   
+> +const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
+> +
+>   int iommu_group_replace_domain(struct iommu_group *group,
+>   			       struct iommu_domain *new_domain);
+>   
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 9df7cc75c1bc..7618c4285cf9 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -2822,11 +2822,14 @@ const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode
+>   	return ops;
+>   }
+>   
+> -int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode,
+> -		      const struct iommu_ops *ops)
+> +int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode)
+>   {
+> +	const struct iommu_ops *ops = iommu_ops_from_fwnode(iommu_fwnode);
+>   	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
+>   
+> +	if (!ops)
+> +		return -EPROBE_DEFER;
+> +
+>   	if (fwspec)
+>   		return ops == fwspec->ops ? 0 : -EINVAL;
+>   
+> @@ -2838,7 +2841,7 @@ int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode,
+>   	if (!fwspec)
+>   		return -ENOMEM;
+>   
+> -	of_node_get(to_of_node(iommu_fwnode));
+> +	fwnode_handle_get(iommu_fwnode);
+>   	fwspec->iommu_fwnode = iommu_fwnode;
+>   	fwspec->ops = ops;
+>   	dev_iommu_fwspec_set(dev, fwspec);
+> diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
+> index 2b64ea46318f..c6ea5b4baff3 100644
+> --- a/drivers/iommu/mtk_iommu_v1.c
+> +++ b/drivers/iommu/mtk_iommu_v1.c
+> @@ -412,7 +412,7 @@ static int mtk_iommu_v1_create_mapping(struct device *dev,
+>   		return -EINVAL;
+>   	}
+>   
+> -	ret = iommu_fwspec_init(dev, &args->np->fwnode, &mtk_iommu_v1_ops);
+> +	ret = iommu_fwspec_init(dev, of_fwnode_handle(args->np));
+>   	if (ret)
+>   		return ret;
+>   
+> diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+> index 3afe0b48a48d..08c523ad55ad 100644
+> --- a/drivers/iommu/of_iommu.c
+> +++ b/drivers/iommu/of_iommu.c
+> @@ -21,26 +21,19 @@ static int of_iommu_xlate(struct device *dev,
+>   			  struct of_phandle_args *iommu_spec)
+>   {
+>   	const struct iommu_ops *ops;
+> -	struct fwnode_handle *fwnode = &iommu_spec->np->fwnode;
+>   	int ret;
+>   
+> -	ops = iommu_ops_from_fwnode(fwnode);
+> -	if ((ops && !ops->of_xlate) ||
+> -	    !of_device_is_available(iommu_spec->np))
+> +	if (!of_device_is_available(iommu_spec->np))
+>   		return -ENODEV;
+>   
+> -	ret = iommu_fwspec_init(dev, fwnode, ops);
+> +	ret = iommu_fwspec_init(dev, of_fwnode_handle(iommu_spec->np));
+> +	if (ret == -EPROBE_DEFER)
+> +		return driver_deferred_probe_check_state(dev);
+>   	if (ret)
+>   		return ret;
+> -	/*
+> -	 * The otherwise-empty fwspec handily serves to indicate the specific
+> -	 * IOMMU device we're waiting for, which will be useful if we ever get
+> -	 * a proper probe-ordering dependency mechanism in future.
+> -	 */
+> -	if (!ops)
+> -		return driver_deferred_probe_check_state(dev);
+>   
+> -	if (!try_module_get(ops->owner))
+> +	ops = dev_iommu_fwspec_get(dev)->ops;
+> +	if (!ops->of_xlate || !try_module_get(ops->owner))
+>   		return -ENODEV;
+>   
+>   	ret = ops->of_xlate(dev, iommu_spec);
+> diff --git a/drivers/iommu/tegra-smmu.c b/drivers/iommu/tegra-smmu.c
+> index f86c7ae91814..4365d9936e68 100644
+> --- a/drivers/iommu/tegra-smmu.c
+> +++ b/drivers/iommu/tegra-smmu.c
+> @@ -837,7 +837,7 @@ static int tegra_smmu_configure(struct tegra_smmu *smmu, struct device *dev,
+>   	const struct iommu_ops *ops = smmu->iommu.ops;
+>   	int err;
+>   
+> -	err = iommu_fwspec_init(dev, &dev->of_node->fwnode, ops);
+> +	err = iommu_fwspec_init(dev, of_fwnode_handle(dev->of_node));
+>   	if (err < 0) {
+>   		dev_err(dev, "failed to initialize fwspec: %d\n", err);
+>   		return err;
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 1a4dfd7a1c4a..9d815837e297 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -736,8 +736,7 @@ struct iommu_ops;
+>   bool acpi_dma_supported(const struct acpi_device *adev);
+>   enum dev_dma_attr acpi_get_dma_attr(struct acpi_device *adev);
+>   int acpi_iommu_fwspec_init(struct device *dev, u32 id,
+> -			   struct fwnode_handle *fwnode,
+> -			   const struct iommu_ops *ops);
+> +			   struct fwnode_handle *fwnode);
+>   int acpi_dma_get_range(struct device *dev, const struct bus_dma_region **map);
+>   int acpi_dma_configure_id(struct device *dev, enum dev_dma_attr attr,
+>   			   const u32 *input_id);
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 17b3f36ad843..81893aad9ee4 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+> @@ -1005,11 +1005,9 @@ struct iommu_mm_data {
+>   	struct list_head	sva_handles;
+>   };
+>   
+> -int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode,
+> -		      const struct iommu_ops *ops);
+> +int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode);
+>   void iommu_fwspec_free(struct device *dev);
+>   int iommu_fwspec_add_ids(struct device *dev, const u32 *ids, int num_ids);
+> -const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
+>   
+>   static inline struct iommu_fwspec *dev_iommu_fwspec_get(struct device *dev)
+>   {
+> @@ -1315,8 +1313,7 @@ static inline void iommu_device_unlink(struct device *dev, struct device *link)
+>   }
+>   
+>   static inline int iommu_fwspec_init(struct device *dev,
+> -				    struct fwnode_handle *iommu_fwnode,
+> -				    const struct iommu_ops *ops)
+> +				    struct fwnode_handle *iommu_fwnode)
+>   {
+>   	return -ENODEV;
+>   }
+> @@ -1331,12 +1328,6 @@ static inline int iommu_fwspec_add_ids(struct device *dev, u32 *ids,
+>   	return -ENODEV;
+>   }
+>   
+> -static inline
+> -const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode)
+> -{
+> -	return NULL;
+> -}
+> -
+>   static inline int
+>   iommu_dev_enable_feature(struct device *dev, enum iommu_dev_features feat)
+>   {
 
-Thanks
-Zhenzhong
 
->-----Original Message-----
->From: Duan, Zhenzhong <zhenzhong.duan@intel.com>
->Subject: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
->
->Hi,
->
->This is a relay work of Qingshun's v2 [1], but changed to focus on ANFE
->processing as subject suggests and drops trace-event for now. I think it's
->a bit heavy to do extra IOes to get PCIe registers only for trace purpose
->and not see it a community request for now.
->
->According to PCIe Base Specification Revision 6.1, Sections 6.2.3.2.4 and
->6.2.4.3, certain uncorrectable errors will signal ERR_COR instead of
->ERR_NONFATAL, logged as Advisory Non-Fatal Error(ANFE), and set bits in
->both Correctable Error(CE) Status register and Uncorrectable Error(UE)
->Status register. Currently, when handling AER events the kernel will only
->look at CE status or UE status, but never both. In the ANFE case, bits set
->in the UE status register will not be reported and cleared until the next
->FE/NFE arrives.
->
->For instance, previously, when the kernel receives an ANFE with Poisoned
->TLP in OS native AER mode, only the status of CE will be reported and
->cleared:
->
->  AER: Correctable error message received from 0000:b7:02.0
->  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
-ver ID)
->    device [8086:0db0] error status/mask=3D00002000/00000000
->     [13] NonFatalErr
->
->If the kernel receives a Malformed TLP after that, two UEs will be
->reported, which is unexpected. The Malformed TLP Header is lost since
->the previous ANFE gated the TLP header logs:
->
->  PCIe Bus Error: severity=3D"Uncorrectable (Fatal), type=3DTransaction La=
-yer,
->(Receiver ID)
->    device [8086:0db0] error status/mask=3D00041000/00180020
->     [12] TLP                    (First)
->     [18] MalfTLP
->
->To handle this case properly, calculate potential ANFE related status bits
->and save in aer_err_info. Use this information to determine the status bit=
-s
->that need to be cleared.
->
->Now, for the previous scenario, both CE status and related UE status will
->be reported and cleared after ANFE:
->
->  AER: Correctable error message received from 0000:b7:02.0
->  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
-ver ID)
->    device [8086:0db0] error status/mask=3D00002000/00000000
->     [13] NonFatalErr
->    Uncorrectable errors that may cause Advisory Non-Fatal:
->     [12] TLP
->
->Note:
->checkpatch.pl will produce following warnings on PATCH1&2:
->
->WARNING: 'UE' may be misspelled - perhaps 'USE'?
->#22:
->uncorrectable error(UE) status should be cleared. However, there is no
->
->...similar warnings omitted...
->
->This is a false-positive, so not fixed.
->
->WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit
->description?)
->#10:
->  PCIe Bus Error: severity=3DCorrectable, type=3DTransaction Layer, (Recei=
-ver ID)
->
->...similar warnings omitted...
->
->For readability reasons, these warnings are not fixed.
->
->
->
->[1] https://lore.kernel.org/linux-pci/20240125062802.50819-1-
->qingshun.wang@linux.intel.com
->
->Thanks
->Qingshun, Zhenzhong
->
->Changelog:
->v5:
-> - squash patch 1 and 3 (Kuppuswamy)
-> - add comment about avoiding race and fix typo error (Kuppuswamy)
-> - collect Jonathan and Kuppuswamy's R-b
->
->v4:
->  - Fix a race in anfe_get_uc_status() (Jonathan)
->  - Add a comment to explain side effect of processing ANFE as NFE (Jonath=
-an)
->  - Drop the check for PCI_EXP_DEVSTA_NFED
->
->v3:
->  - Split ANFE print and processing to two patches (Bjorn)
->  - Simplify ANFE handling, drop trace event
->  - Polish comments and patch description
->  - Add Tested-by
->
->v2:
->  - Reference to the latest PCIe Specification in both commit messages
->    and comments, as suggested by Bjorn Helgaas.
->  - Describe the reason for storing additional information in
->    aer_err_info in the commit message of PATCH 1, as suggested by Bjorn
->    Helgaas.
->  - Add more details of behavior changes in the commit message of PATCH
->    2, as suggested by Bjorn Helgaas.
->
->v4: https://lkml.org/lkml/2024/5/9/247
->v3: https://lore.kernel.org/lkml/20240417061407.1491361-1-
->zhenzhong.duan@intel.com
->v2: https://lore.kernel.org/linux-pci/20240125062802.50819-1-
->qingshun.wang@linux.intel.com
->v1: https://lore.kernel.org/linux-pci/20240111073227.31488-1-
->qingshun.wang@linux.intel.com
->
->
->Zhenzhong Duan (2):
->  PCI/AER: Clear UNCOR_STATUS bits that might be ANFE
->  PCI/AER: Print UNCOR_STATUS bits that might be ANFE
->
-> drivers/pci/pci.h      |  1 +
-> drivers/pci/pcie/aer.c | 79
->+++++++++++++++++++++++++++++++++++++++++-
-> 2 files changed, 79 insertions(+), 1 deletion(-)
->
->--
->2.34.1
+I am seeing some failures on -next with some of our devices. Bisect is 
+pointing to this commit. Looks like the host1x device is no longer 
+probing successfully. I see the following ...
 
+  tegra-host1x 50000000.host1x: failed to initialize fwspec: -517
+  nouveau 57000000.gpu: failed to initialize fwspec: -517
+
+The probe seems to be deferred forever. The above is seen on Tegra210 
+but Tegra30 and Tegra194 are also having the same problem. Interestingly 
+it is not all devices and so make me wonder if we are missing something 
+on these devices? Let me know if you have any thoughts.
+
+Cheers
+Jon
+
+-- 
+nvpublic
 
