@@ -1,55 +1,55 @@
-Return-Path: <linux-acpi+bounces-6885-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6886-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43EA931B27
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 21:41:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2838F931B2B
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 21:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E32DB224D1
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 19:41:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66511B22508
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 19:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BDE136E1D;
-	Mon, 15 Jul 2024 19:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7440E139584;
+	Mon, 15 Jul 2024 19:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwz/Dg8T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jW77Yp0S"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB386E61B;
-	Mon, 15 Jul 2024 19:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474191292CE;
+	Mon, 15 Jul 2024 19:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721072477; cv=none; b=NSJ4w8+RUB8DZW8lXPgLE5EJB97D3YLpzU9lZyGqsTRtC0DXGDuJVqNbhfObQWBwO2oH3MxtFrT5jUCcWxmkZAmfG9MPEhJ9qnvFIVFX1MglQBnyWmi73IhhAQR1chM9dA42RUxgLBto639Bp1C2HsZgWaIg3ZtCnHDG65twxtw=
+	t=1721072585; cv=none; b=S1NLIyhe2SOa/WKWVG67+ZMnE/nKLDN5H6ZsBvXCFAoDCAeSEPWTkCG6IWBnP9WbgwUcc1UZjY66f2GfpXSws4uYtLh+KkO6/Fk8z8RK7buQTvwUFuTfuge96+XXnTScoPs9YZgUkDF5oIXhCakxlAnapKX7A3GYKmRCct641+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721072477; c=relaxed/simple;
-	bh=V5BZB48Gz3N4as/aSfFIyDl48y+kPgPMrhXFfaW5l+c=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DzaMJ3UY375qEBU5iO7KhvseSQaUILKRzlALQ1OtogW4y0RVTTqDGsggOFSKpaaijQ4yQ6UzxeTMN3EcxI0WjtyIbS3LViXTUma6deNeWjJ42zxFhP6tKX6Jq8QZ8wJekHt9c2zxt+OhJGSzG6hc1Dzl/ehSKX9YFdmpxVMzndo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwz/Dg8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0411EC4AF0A;
-	Mon, 15 Jul 2024 19:41:16 +0000 (UTC)
+	s=arc-20240116; t=1721072585; c=relaxed/simple;
+	bh=myDbQmknU/mmYnlOayc48mTzzQ4kyqn8YK5ExNq9sg0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=SihfxPO6MBWZoHD0MLs4/1rEUNHMLFKIYj4b7HAoONtDpLz1CeNfSWjMF3gikxoKC1t9Cvsry7+U31N062jzpgcWoba6P1xu1LwbMRBuI4X3KSW5AkJQOdvRcal1/u3qk4XQ9oUDmoOuVySman9DIh5IwamO97apuKzO9eyiSZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jW77Yp0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB89DC4AF0A;
+	Mon, 15 Jul 2024 19:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721072477;
-	bh=V5BZB48Gz3N4as/aSfFIyDl48y+kPgPMrhXFfaW5l+c=;
+	s=k20201202; t=1721072585;
+	bh=myDbQmknU/mmYnlOayc48mTzzQ4kyqn8YK5ExNq9sg0=;
 	h=From:Date:Subject:To:Cc:From;
-	b=hwz/Dg8Tho8ZFlCGJUbv5J5cb/oPcNMba/IW9M0YkMdCdxr4ZUSHU0Y4HJvXAm5A0
-	 SuRqWT7w1Rw/wj2wI76Z3SpAHaLe5ttuu/vCagnrLK53ZFiCFisitydVtnl5e0fIsw
-	 oS/vPhvj0csYJ0rjKLtF4MEdx8qoDIDmaeRLsOySl0gmtPCgSH8ytRlo3QflMAc+/c
-	 nE02/EweGGN48FhyY0CaZh7L8jLjR4fOzlrgpI6Zkj5YaLmfnYTzV26XI76E1zzoWv
-	 5lg02vt2TRLUXi4ogk2rfr5sVtJeEh1eYmHE7cJ+x6d3MgaOfAcA4asZPaKwgPjhED
-	 6NIi9EVeULQxQ==
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-254c411d816so543515fac.1;
-        Mon, 15 Jul 2024 12:41:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWlYDJYed4t0WPae/ksxog7J88fVxMPQrhIh66gHWCighszKujAPYC9a6fRHoIz13JwfagI+0xyO2No4Bxjaek6mInBAk96tpUeKeJSwUqQ7ehGSaEFmT+jp9h+FHWr2btR6lwXnhl/yA==
-X-Gm-Message-State: AOJu0Yxuzvta8/aXe/CsNjQPpiEnGLWQyO+yB4lDWuzaMB4QdISm2H3a
-	UUSnunrBy78PW41RsxILt8RMp6zgOmnu5/iq3XeQjxI04o1lciKNJjcKvYfwAm53fdH/8cDerAu
-	FUaXn4xSkBK86Rjdwz27krkhUTMM=
-X-Google-Smtp-Source: AGHT+IHFqTo2Br5MMUHuhTpLrQLAhOJIPHdDjgLOhNKjMYgK87aIXUUvyKQH50wiEO57iox9G6sVgbRedsqKYc3I6NU=
-X-Received: by 2002:a4a:4308:0:b0:5c6:67b7:41dd with SMTP id
- 006d021491bc7-5d25035c588mr563647eaf.0.1721072476196; Mon, 15 Jul 2024
- 12:41:16 -0700 (PDT)
+	b=jW77Yp0SUlT49FNpBRurL4dgIrCArq8Fx3AI0SZCzPWbZ5IPT7sEvm09KtF/j0MBy
+	 uVnqfOXOzsvqJ+pAYwOl1dw97kL7IqZ8m+pWz98c+1t6zY/eVqrDB72FWzV/61pzoR
+	 Uvvy3w827lS/NSEAUefr+M/V42zDHPBMQjCLa7mf05jr0jzCNbKdB6sX+3rbIWdDVT
+	 lgqNkoi5lDtySwnsQOet+nNB19E9MwcYvjvvQCdHUbP4M5WnbwvZWYlpVlZ65kzwYZ
+	 EK4KvvVGpd2ziT+aOb5HpxuBoC1U/ruuTipOF5wEVFdw9NdBaALYmlf54/QzNlLTfm
+	 4mAJh5383AmPw==
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7036c788e2aso317224a34.3;
+        Mon, 15 Jul 2024 12:43:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXsv3NYBWgSOvIeMaa1e4lPjSKV5BNi3clDyq2h8w9DCxEBfZHxoOxB/oP224CdsNQ0T5dH2ZQmNDil0A73/fHbKy5RNWTSwpYvIyA0J6GLnewk30WrzPmyp7PkL1lCEh6/A5PRMWhtAg==
+X-Gm-Message-State: AOJu0YxLnkj+7G+/VQn8M2ErlFe82BiJdhJiYiT/6OWL3Sng/Vk0JVqd
+	GqfL0NHwa3NeUiq6FXTwK1G++hb3Z9lKwlpl7C6WE+vP5ryluoZ/c6s+IsfwwpN5dZKegfuh7u0
+	a7JyPX2jumx1gtmsIvqHxW8NrS/w=
+X-Google-Smtp-Source: AGHT+IF4pgiA5VkY862jTIF7htzUsfBcG7AUH1JeIW2AEaEKmr1a0Wh9mPd25Eet7CjLG0WvmhcBXmY9RGSh+MoTK0g=
+X-Received: by 2002:a4a:d0a2:0:b0:5cd:13e0:b0d3 with SMTP id
+ 006d021491bc7-5d254ef812emr483721eaf.2.1721072583746; Mon, 15 Jul 2024
+ 12:43:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -57,14 +57,14 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Jul 2024 21:41:04 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0guQr816kzz88G8XUjC7fnV9psTVdR_HWyt9D7evA27LA@mail.gmail.com>
-Message-ID: <CAJZ5v0guQr816kzz88G8XUjC7fnV9psTVdR_HWyt9D7evA27LA@mail.gmail.com>
-Subject: [GIT PULL] Thermal control updates for v6.11-rc1
+Date: Mon, 15 Jul 2024 21:42:52 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h7OHR7ipj6ubgTLEz238JZkTshh93CYe_gDx5j+zBwfA@mail.gmail.com>
+Message-ID: <CAJZ5v0h7OHR7ipj6ubgTLEz238JZkTshh93CYe_gDx5j+zBwfA@mail.gmail.com>
+Subject: [GIT PULL] Power management updates for v6.11-rc1
 To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Linux PM <linux-pm@vger.kernel.org>, 
 	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -73,335 +73,311 @@ Hi Linus,
 Please pull from the tag
 
  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- thermal-6.11-rc1
+ pm-6.11-rc1
 
-with top-most commit 281cfec53b4484ce2092c89b6909f5573cb23443
+with top-most commit a02bed4183c48d42a2855a4e70867b6239c45770
 
- Merge branch 'thermal-intel'
+ Merge branches 'pm-opp' and 'pm-tools'
 
-on top of commit 94eacc1c583dd2ba51a2158fb13285f5dc42714b
+on top of commit 130abfe9a1841189975f3770e825e441acd3c87c
 
- thermal: core: Fix list sorting in __thermal_zone_device_update()
+ Merge tag 'pm-6.10-rc8' of
+git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-to receive thermal control updates for 6.11-rc1.
+to receive power management updates for 6.11-rc1.
 
-These add some new hardware support (notably, the Lunar Lake platform
-support in int340x and X1E80100 temperature sensor), continue to rework
-the thermal driver interface to eliminate trip point IDs from it, update
-DT bindings for a number of platforms and simplify probe in a number of
-thermal drivers, address issues and clean up code.
+These add a new cpufreq driver for Loongson-3, add support for new
+features in the intel_pstate (Lunar Lake and Arrow Lake platforms,
+OOB mode for Emerald Rapids, highest performance change interrupt),
+amd-pstate (fast CPPC) and sun50i (Allwinner H700 speed bin) cpufreq
+drivers, simplify the cpufreq driver interface, simplify the teo cpuidle
+governor, adjust the pm-graph utility for a new version of Python,
+address issues and clean up code.
 
 Specifics:
 
- - Add DLVR and MSI interrupt support for the Lunar Lake platform to the
-   int340x thermal driver (Srinivas Pandruvada).
+ - Add Loongson-3 CPUFreq driver support (Huacai Chen).
 
- - Enable workload type hints (WLT) support and power floor interrupt
-   support for the Lunar Lake platform in int340x ((Srinivas Pandruvada).
+ - Add support for the Arrow Lake and Lunar Lake platforms and
+   the out-of-band (OOB) mode on Emerald Rapids to the intel_pstate
+   cpufreq driver, make it support the highest performance change
+   interrupt and clean it up (Srinivas Pandruvada).
 
- - Switch Intel thermal drivers to new Intel CPU model defines (Tony
+ - Switch cpufreq to new Intel CPU model defines (Tony Luck).
+
+ - Simplify the cpufreq driver interface by switching the .exit() driver
+   callback to the void return data type (Lizhe, Viresh Kumar).
+
+ - Make cpufreq_boost_enabled() return bool (Dhruva Gole).
+
+ - Add fast CPPC support to the amd-pstate cpufreq driver, address
+   multiple assorted issues in it and clean it up (Perry Yuan, Mario
+   Limonciello, Dhananjay Ugwekar, Meng Li, Xiaojian Du).
+
+ - Add Allwinner H700 speed bin to the sun50i cpufreq driver (Ryan
+   Walklin).
+
+ - Fix memory leaks and of_node_put() usage in the sun50i and qcom-nvmem
+   cpufreq drivers (Javier Carrasco).
+
+ - Clean up the sti and dt-platdev cpufreq drivers (Jeff Johnson,
+   Raphael Gallais-Pou).
+
+ - Fix deferred probe handling in the TI cpufreq driver and wrong return
+   values of ti_opp_supply_probe(), and add OPP tables for the AM62Ax and
+   AM62Px SoCs to it (Bryan Brattlof, Primoz Fiser).
+
+ - Avoid overflow of target_freq in .fast_switch() in the SCMI cpufreq
+   driver (Jagadeesh Kona).
+
+ - Use dev_err_probe() in every error path in probe in the Mediatek
+   cpufreq driver (N=C3=ADcolas Prado).
+
+ - Fix kernel-doc param for longhaul_setstate in the longhaul cpufreq
+   driver (Yang Li).
+
+ - Fix system resume handling in the CPPC cpufreq driver (Riwen Lu).
+
+ - Improve the teo cpuidle governor and clean up leftover comments from
+   the menu cpuidle governor (Christian Loehle).
+
+ - Clean up a comment typo in the teo cpuidle governor (Atul Kumar
+   Pant).
+
+ - Add missing MODULE_DESCRIPTION() macro to cpuidle haltpoll (Jeff
+   Johnson).
+
+ - Switch the intel_idle driver to new Intel CPU model defines (Tony
    Luck).
 
- - Clean up the int3400 and int3403 drivers (Erick Archer and David Alan
-   Gilbert).
+ - Switch the Intel RAPL driver new Intel CPU model defines (Tony Luck).
 
- - Improve intel_pch_thermal kernel log messages printed during suspend
-   to idle (Zhang Rui).
+ - Simplify if condition in the idle_inject driver (Thorsten Blum).
 
- - Make the intel_tcc_cooling driver use a model-specific bitmask for
-   TCC offset (Ricardo Neri).
+ - Fix missing cleanup on error in _opp_attach_genpd() (Viresh Kumar).
 
- - Redesign the .set_trip_temp() thermal zone callback to take a trip
-   pointer instead of a trip ID and update its users (Rafael Wysocki).
+ - Introduce an OF helper function to inform if required-opps is used
+   and drop a redundant in-parameter to _set_opp_level() (Ulf Hansson).
 
- - Avoid using invalid combinations of polling_delay and passive_delay
-   thermal zone parameters (Rafael Wysocki).
+ - Update pm-graph to v5.12 which includes fixes and major code revamp
+   for python3.12 (Todd Brandt).
 
- - Update a cooling device registration function to take a const
-   argument (Krzysztof Kozlowski).
-
- - Make the uniphier thermal driver use thermal_zone_for_each_trip() for
-   walking trip points (Rafael Wysocki).
-
- - Fix and clean up several minor shortcomings in thermal debug (Rafael
-   Wysocki).
-
- - Rename __thermal_zone_set_trips() to thermal_zone_set_trips() and
-   make it use trip thresholds (Rafael Wysocki).
-
- - Use READ_ONCE() for lockless access to trip temperature and
-   hysteresis (Rafael Wysocki).
-
- - Drop unnecessary cooling device target state checks from the
-   Bang-Bang thermal governor (Rafael Wysocki).
-
- - Avoid invoking thermal governor .trip_crossed() callback for critical
-   and hot trip points (Rafael Wysocki).
-
- - Group all Renesas drivers inside a dedicated sub directory and add
-   the missing dependency to OF (Niklas S=C3=B6derlund).
-
- - Add suspend/resume support on k3_j72xx_bandgap and take the
-   opportunity to remove an unneeded delay in the init time code
-   path (Th=C3=A9o Lebrun).
-
- - Fix thermal zone definition for MT8186 and MT8188 (Julien Panis).
-
- - Convert hisilicon-thermal.txt to dt-schema (Abdulrasaq Lawani).
-
- - Add DT bindings for the X1E80100 temperature sensor (Abel Vesa).
-
- - Fix the thermal zone node name regular expression in the DT schema
-   (Krzysztof Kozlowski).
-
- - Avoid failing thermal control initialization by using default values
-   on some platforms where calibration data is missing  (Chen-Yu Tsai).
-
- - Fix the sensor cell size in DT for the Exynos platform (Krzysztof
-   Kozlowski).
-
- - Bring the common definition of '#thermal-sensor-cells' property in
-   order to simplify the bindings on all the platforms where this
-   change makes sense and do some minor cleanups (Krzysztof Kozlowski).
-
- - Fix a race between removal and clock disable in the broadcom thermal
-   driver (Krzysztof Kozlowski).
-
- - Drop 'trips' DT node as required from the thermal zone bindings in
-   order to fix the remaining warnings appearing for thermal zones
-   without trip points (Rob Herring).
-
- - Simplify all the drivers where dev_err_probe() can apply (Krzysztof
-   Kozlowski).
-
- - Clean up code related to stih416 as this platform is not described
-   anywhere (Raphael Gallais-Pou).
+ - Address several assorted issues in the cpupower utility (Roman
+   Storozhenko).
 
 Thanks!
 
 
 ---------------
 
-Abdulrasaq Lawani (1):
-      dt-bindings: thermal: convert hisilicon-thermal.txt to dt-schema
+Atul Kumar Pant (1):
+      cpuidle: governors: teo: Fix a typo in a comment
 
-Abel Vesa (1):
-      dt-bindings: thermal: qcom-tsens: Document the X1E80100 Temperature S=
-ensor
+Bryan Brattlof (2):
+      cpufreq: ti: update OPP table for AM62Ax SoCs
+      cpufreq: ti: update OPP table for AM62Px SoCs
 
-Chen-Yu Tsai (1):
-      thermal/drivers/mediatek/lvts_thermal: Provide default calibration da=
-ta
+Christian Loehle (4):
+      cpuidle: menu: Cleanup after loadavg removal
+      Revert: "cpuidle: teo: Introduce util-awareness"
+      cpuidle: teo: Remove recent intercepts metric
+      cpuidle: teo: Don't count non-existent intercepts
 
-Dr. David Alan Gilbert (1):
-      thermal: int3403: remove unused struct 'int3403_performance_state'
+Dhananjay Ugwekar (2):
+      cpufreq/amd-pstate-ut: Convert nominal_freq to khz during comparisons
+      cpufreq/amd-pstate: Fix the scaling_max_freq setting on shared
+memory CPPC systems
 
-Erick Archer (1):
-      thermal: int3400: Use sizeof(*pointer) instead of sizeof(type)
+Dhruva Gole (1):
+      cpufreq: make cpufreq_boost_enabled() return bool
 
-Julien Panis (2):
-      dt-bindings: thermal: mediatek: Fix thermal zone definition for MT818=
-6
-      dt-bindings: thermal: mediatek: Fix thermal zone definitions for MT81=
-88
+Huacai Chen (1):
+      cpufreq: Add Loongson-3 CPUFreq driver support
 
-Krzysztof Kozlowski (36):
-      thermal: core: constify 'type' in
-devm_thermal_of_cooling_device_register()
-      dt-bindings: thermal: correct thermal zone node name limit
-      dt-bindings: thermal: samsung,exynos: specify cells
-      dt-bindings: thermal: amlogic: reference thermal-sensor schema
-      dt-bindings: thermal: allwinner,sun8i-a83t-ths: reference
-thermal-sensor schema
-      dt-bindings: thermal: brcm,avs-ro: reference thermal-sensor schema
-      dt-bindings: thermal: generic-adc: reference thermal-sensor schema
-      dt-bindings: thermal: imx8mm: reference thermal-sensor schema
-      dt-bindings: thermal: nvidia,tegra186-bpmp: reference
-thermal-sensor schema
-      dt-bindings: thermal: nvidia,tegra30-tsensor: reference
-thermal-sensor schema
-      dt-bindings: thermal: qcom-spmi-adc-tm-hc: reference thermal-sensor s=
-chema
-      dt-bindings: thermal: qcom-spmi-adc-tm5: reference thermal-sensor sch=
-ema
-      dt-bindings: thermal: qcom-tsens: reference thermal-sensor schema
-      dt-bindings: thermal: rcar-gen3: reference thermal-sensor schema
-      dt-bindings: thermal: rockchip: reference thermal-sensor schema
-      dt-bindings: thermal: rzg2l: reference thermal-sensor schema
-      dt-bindings: thermal: socionext,uniphier: reference thermal-sensor sc=
-hema
-      dt-bindings: thermal: sprd: reference thermal-sensor schema
-      dt-bindings: thermal: st,stm32: reference thermal-sensor schema
-      dt-bindings: thermal: ti,am654: reference thermal-sensor schema
-      dt-bindings: thermal: ti,j72xx: reference thermal-sensor schema
-      dt-bindings: thermal: simplify few bindings
-      dt-bindings: thermal: cleanup examples indentation
-      dt-bindings: thermal: qoriq: reference thermal-sensor schema
-      thermal/drivers/broadcom: Fix race between removal and clock disable
-      thermal/drivers/broadcom: Simplify probe() with local dev variable
-      thermal/drivers/broadcom: Simplify with dev_err_probe()
-      thermal/drivers/exynos: Simplify probe() with local dev variable
-      thermal/drivers/exynos: Simplify with dev_err_probe()
-      thermal/drivers/hisi: Simplify with dev_err_probe()
-      thermal/drivers/imx: Simplify probe() with local dev variable
-      thermal/drivers/imx: Simplify with dev_err_probe()
-      thermal/drivers/qcom-spmi-adc-tm5: Simplify with dev_err_probe()
-      thermal/drivers/qcom-tsens: Simplify with dev_err_probe()
-      thermal/drivers/generic-adc: Simplify probe() with local dev variable
-      thermal/drivers/generic-adc: Simplify with dev_err_probe()
+Jagadeesh Kona (1):
+      cpufreq: scmi: Avoid overflow of target_freq in fast switch
 
-Niklas S=C3=B6derlund (2):
-      thermal/drivers/renesas: Group all renesas thermal drivers together
-      thermal/drivers/renesas/rcar: Add dependency on OF
+Javier Carrasco (4):
+      cpufreq: sun50i: fix memory leak in dt_has_supported_hw()
+      cpufreq: sun50i: replace of_node_put() with automatic cleanup handler
+      cpufreq: qcom-nvmem: fix memory leaks in probe error paths
+      cpufreq: qcom-nvmem: eliminate uses of of_node_put()
 
-Rafael J. Wysocki (21):
-      thermal/debugfs: Use helper to update trip point overstepping duratio=
-n
-      thermal/debugfs: Do not extend mitigation episodes beyond system resu=
-me
-      thermal/debugfs: Print mitigation timestamp value in milliseconds
-      thermal/debugfs: Fix up units in "mitigations" files
-      thermal/debugfs: Adjust check for trips without statistics in
-tze_seq_show()
-      thermal/debugfs: Compute maximum temperature for mitigation
-episode as a whole
-      thermal/debugfs: Move some statements from under thermal_dbg->lock
-      thermal: trip: Use common set of trip type names
-      thermal: trip: Rename __thermal_zone_set_trips() to
-thermal_zone_set_trips()
-      thermal: trip: Make thermal_zone_set_trips() use trip thresholds
-      thermal: trip: Use READ_ONCE() for lockless access to trip properties
-      thermal: gov_bang_bang: Drop unnecessary cooling device target
-state checks
-      thermal: core: Avoid calling .trip_crossed() for critical and hot tri=
-ps
-      thermal: uniphier: Use thermal_zone_for_each_trip() for walking
-trip points
-      thermal: core: Change passive_delay and polling_delay data type
-      thermal: helpers: Introduce thermal_trip_is_bound_to_cdev()
-      thermal: trip: Add conversion macros for thermal trip priv field
-      thermal: imx: Drop critical trip check from imx_set_trip_temp()
-      thermal: trip: Pass trip pointer to .set_trip_temp() thermal zone cal=
-lback
-      thermal: trip: Fold __thermal_zone_get_trip() into its caller
-      thermal: core: Add sanity checks for polling_delay and passive_delay
+Jeff Johnson (2):
+      cpufreq: dt-platdev: add missing MODULE_DESCRIPTION() macro
+      cpuidle: haltpoll: add missing MODULE_DESCRIPTION() macro
 
-Raphael Gallais-Pou (1):
-      thermal/drivers/sti: Cleanup code related to stih416
+Lizhe (1):
+      cpufreq: Make cpufreq_driver->exit() return void
 
-Ricardo Neri (2):
-      thermal: intel: intel_tcc: Add model checks for temperature registers
-      thermal: intel: intel_tcc_cooling: Use a model-specific bitmask
-for TCC offset
+Mario Limonciello (3):
+      cpufreq: amd-pstate: Allow users to write 'default' EPP string
+      cpufreq: amd-pstate: Make amd-pstate unit tests depend on amd-pstate
+      cpufreq: amd-pstate: Don't create attributes when registration fails
 
-Rob Herring (Arm) (1):
-      dt-bindings: thermal: Drop 'trips' node as required
+Meng Li (1):
+      cpufreq/amd-pstate: fix setting policy current frequency value
 
-Srinivas Pandruvada (6):
-      thermal: intel: int340x: Cleanup of DLVR sysfs on driver remove
-      thermal: intel: int340x: Capability to map user space to firmware val=
-ues
-      thermal: intel: int340x: Add DLVR support for Lunar Lake
-      thermal: intel: int340x: Remove unnecessary calls to free irq
-      thermal: intel: int340x: Support MSI interrupt for Lunar Lake
-      thermal: intel: int340x: Enable WLT and power floor support for Lunar=
- Lake
+N=C3=ADcolas F. R. A. Prado (1):
+      cpufreq: mediatek: Use dev_err_probe in every error path in probe
 
-Th=C3=A9o Lebrun (1):
-      thermal/drivers/k3_j72xx_bandgap: Implement suspend/resume support
+Perry Yuan (15):
+      x86/cpufeatures: Add AMD FAST CPPC feature flag
+      cpufreq: update to sysfs_emit() for safer buffer handling
+      cpufreq: amd-pstate: optimize the initial frequency values verificati=
+on
+      cpufreq: amd-pstate: remove unused variable nominal_freq
+      cpufreq: amd-pstate: show CPPC debug message if CPPC is not supported
+      cpufreq: amd-pstate: add debug message while CPPC is supported
+and disabled by SBIOS
+      Documentation: PM: amd-pstate: add guided mode to the Operation mode
+      cpufreq: amd-pstate: switch boot_cpu_has() to cpu_feature_enabled()
+      cpufreq: amd-pstate: enable shared memory type CPPC by default
+      cpufreq: amd-pstate: auto-load pstate driver by default
+      cpufreq: simplify boolean parsing with kstrtobool in store function
+      cpufreq: acpi: move MSR_K7_HWCR_CPB_DIS_BIT into msr-index.h
+      cpufreq: amd-pstate: initialize core precision boost state
+      cpufreq: amd-pstate: Cap the CPPC.max_perf to nominal_perf if CPB is =
+off
+      Documentation: cpufreq: amd-pstate: update doc for Per CPU boost
+control method
 
-Tony Luck (2):
-      thermal: intel: intel_tcc_cooling: Switch to new Intel CPU model defi=
-nes
-      thermal: intel: intel_soc_dts_thermal: Switch to new Intel CPU
-model defines
+Primoz Fiser (2):
+      cpufreq: ti-cpufreq: Handle deferred probe with dev_err_probe()
+      OPP: ti: Fix ti_opp_supply_probe wrong return values
 
-Zhang Rui (2):
-      thermal: intel: intel_pch: Improve cooling log
-      thermal: intel: hfi: Give HFI instances package scope
+Raphael Gallais-Pou (3):
+      cpufreq: sti: add missing MODULE_DEVICE_TABLE entry for stih418
+      cpufreq: docs: Add missing scaling_available_frequencies description
+      cpufreq: sti: fix build warning
+
+Riwen Lu (1):
+      cpufreq/cppc: Don't compare desired_perf in target()
+
+Roman Storozhenko (7):
+      cpupower: Replace a dead reference link with working ones
+      cpupower: Add 'help' target to the main Makefile
+      cpupower: Improve cpupower build process description
+      cpupower: Remove absent 'v' parameter from monitor man page
+      cpupower: Change the var type of the 'monitor' subcommand display mod=
+e
+      cpupower: Disable direct build of the 'bench' subproject
+      cpupower: fix lib default installation path
+
+Ryan Walklin (1):
+      cpufreq: sun50i: add Allwinner H700 speed bin
+
+Srinivas Pandruvada (8):
+      cpufreq: intel_pstate: Update Meteor Lake EPPs
+      cpufreq: intel_pstate: Use Meteor Lake EPPs for Arrow Lake
+      cpufreq: intel_pstate: Support Emerald Rapids OOB mode
+      cpufreq: intel_pstate: Update Arrow Lake hybrid scaling factor
+      cpufreq: intel_pstate: Update Lunar Lake hybrid scaling factor
+      cpufreq: intel_pstate: Replace boot_cpu_has()
+      x86/cpufeatures: Add HWP highest perf change feature flag
+      cpufreq: intel_pstate: Support highest performance change interrupt
+
+Thorsten Blum (1):
+      powercap: idle_inject: Simplify if condition
+
+Todd Brandt (2):
+      pm-graph: v5.12, fixes
+      pm-graph: v5.12, code revamp for python3.12
+
+Tony Luck (5):
+      cpufreq: Switch to new Intel CPU model defines
+      cpufreq: intel_pstate: Switch to new Intel CPU model defines
+      intel_idle: Switch to new Intel CPU model defines
+      powercap: intel_rapl_msr: Switch to new Intel CPU model defines
+      powercap: intel_rapl: Switch to new Intel CPU model defines
+
+Ulf Hansson (2):
+      OPP: Drop a redundant in-parameter to _set_opp_level()
+      OPP: Introduce an OF helper function to inform if required-opps is us=
+ed
+
+Viresh Kumar (4):
+      OPP: Fix missing cleanup on error in _opp_attach_genpd()
+      cpufreq: nforce2: Remove empty exit() callback
+      cpufreq: loongson2: Remove empty exit() callback
+      cpufreq: pcc: Remove empty exit() callback
+
+Xiaojian Du (1):
+      cpufreq: amd-pstate: change cpu freq transition delay for some models
+
+Yang Li (1):
+      cpufreq: longhaul: Fix kernel-doc param for longhaul_setstate
 
 ---------------
 
- .../bindings/thermal/allwinner,sun8i-a83t-ths.yaml |   6 +-
- .../bindings/thermal/amlogic,thermal.yaml          |  22 +--
- .../bindings/thermal/brcm,avs-ro-thermal.yaml      |  24 +--
- .../devicetree/bindings/thermal/brcm,avs-tmon.yaml |  17 +-
- .../bindings/thermal/brcm,bcm2835-thermal.yaml     |   1 -
- .../bindings/thermal/fsl,scu-thermal.yaml          |   1 -
- .../bindings/thermal/generic-adc-thermal.yaml      |   5 +-
- .../bindings/thermal/hisilicon,tsensor.yaml        |  57 +++++++
- .../bindings/thermal/hisilicon-thermal.txt         |  32 ----
- .../bindings/thermal/imx8mm-thermal.yaml           |   5 +-
- .../bindings/thermal/loongson,ls2k-thermal.yaml    |   1 -
- .../bindings/thermal/mediatek,lvts-thermal.yaml    |   1 -
- .../bindings/thermal/nvidia,tegra124-soctherm.yaml |   1 -
- .../thermal/nvidia,tegra186-bpmp-thermal.yaml      |  12 +-
- .../bindings/thermal/nvidia,tegra30-tsensor.yaml   |   9 +-
- .../bindings/thermal/qcom,spmi-temp-alarm.yaml     |   1 -
- .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml      |   8 +-
- .../bindings/thermal/qcom-spmi-adc-tm5.yaml        |   8 +-
- .../devicetree/bindings/thermal/qcom-tsens.yaml    |  97 ++++++-----
- .../devicetree/bindings/thermal/qoriq-thermal.yaml |   5 +-
- .../bindings/thermal/rcar-gen3-thermal.yaml        |  71 +++++----
- .../devicetree/bindings/thermal/rcar-thermal.yaml  |  64 ++++----
- .../bindings/thermal/rockchip-thermal.yaml         |   5 +-
- .../devicetree/bindings/thermal/rzg2l-thermal.yaml |  43 ++---
- .../bindings/thermal/samsung,exynos-thermal.yaml   |   3 +-
- .../thermal/socionext,uniphier-thermal.yaml        |   5 +-
- .../devicetree/bindings/thermal/sprd-thermal.yaml  |  49 +++---
- .../bindings/thermal/st,stm32-thermal.yaml         |   5 +-
- .../devicetree/bindings/thermal/thermal-zones.yaml |   6 +-
- .../bindings/thermal/ti,am654-thermal.yaml         |  15 +-
- .../bindings/thermal/ti,j72xx-thermal.yaml         |   5 +-
- MAINTAINERS                                        |   4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tt.c        |   2 +-
- drivers/thermal/Kconfig                            |  28 +---
- drivers/thermal/Makefile                           |   4 +-
- drivers/thermal/broadcom/bcm2835_thermal.c         |  49 ++----
- drivers/thermal/gov_bang_bang.c                    |  14 +-
- drivers/thermal/hisi_thermal.c                     |   9 +-
- drivers/thermal/imx_thermal.c                      |  55 +++----
- .../intel/int340x_thermal/int3400_thermal.c        |   2 +-
- .../intel/int340x_thermal/int3403_thermal.c        |  11 --
- .../intel/int340x_thermal/int340x_thermal_zone.c   |  22 +--
- .../int340x_thermal/processor_thermal_device.c     |   3 +-
- .../int340x_thermal/processor_thermal_device.h     |   1 +
- .../int340x_thermal/processor_thermal_device_pci.c | 118 +++++++++++---
- .../intel/int340x_thermal/processor_thermal_rfim.c | 113 ++++++++++++-
- drivers/thermal/intel/intel_hfi.c                  |  30 ++--
- drivers/thermal/intel/intel_pch_thermal.c          |   5 +
- drivers/thermal/intel/intel_quark_dts_thermal.c    |  28 +++-
- drivers/thermal/intel/intel_soc_dts_iosf.c         |  15 +-
- drivers/thermal/intel/intel_soc_dts_thermal.c      |   2 +-
- drivers/thermal/intel/intel_tcc.c                  | 177 +++++++++++++++++=
-+++-
- drivers/thermal/intel/intel_tcc_cooling.c          |  32 ++--
- drivers/thermal/intel/x86_pkg_temp_thermal.c       |   9 +-
- drivers/thermal/k3_j72xx_bandgap.c                 | 111 +++++++++----
- drivers/thermal/mediatek/lvts_thermal.c            |  46 ++++--
- drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |   9 +-
- drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  10 +-
- drivers/thermal/qcom/tsens.c                       |   8 +-
- drivers/thermal/renesas/Kconfig                    |  28 ++++
- drivers/thermal/renesas/Makefile                   |   5 +
- drivers/thermal/{ =3D> renesas}/rcar_gen3_thermal.c  |   2 +-
- drivers/thermal/{ =3D> renesas}/rcar_thermal.c       |   2 +-
- drivers/thermal/{ =3D> renesas}/rzg2l_thermal.c      |   2 +-
- drivers/thermal/samsung/exynos_tmu.c               |  54 +++----
- drivers/thermal/st/st_thermal_memmap.c             |  10 --
- drivers/thermal/tegra/soctherm.c                   |  15 +-
- drivers/thermal/thermal-generic-adc.c              |  27 ++--
- drivers/thermal/thermal_core.c                     |  21 ++-
- drivers/thermal/thermal_core.h                     |   4 +-
- drivers/thermal/thermal_debugfs.c                  | 110 ++++++++-----
- drivers/thermal/thermal_debugfs.h                  |   2 +
- drivers/thermal/thermal_helpers.c                  |  47 ++++--
- drivers/thermal/thermal_sysfs.c                    |  21 +--
- drivers/thermal/thermal_trip.c                     |  53 +++---
- drivers/thermal/uniphier_thermal.c                 |  39 +++--
- .../dt-bindings/thermal/mediatek,lvts-thermal.h    |  12 +-
- include/linux/intel_tcc.h                          |   1 +
- include/linux/platform_data/x86/soc.h              |  12 +-
- include/linux/thermal.h                            |  18 ++-
- 80 files changed, 1207 insertions(+), 779 deletions(-)
+ Documentation/admin-guide/pm/amd-pstate.rst        |   18 +-
+ Documentation/admin-guide/pm/cpufreq.rst           |    4 +
+ MAINTAINERS                                        |    1 +
+ arch/x86/include/asm/cpufeatures.h                 |    2 +
+ arch/x86/include/asm/msr-index.h                   |    2 +
+ arch/x86/kernel/cpu/scattered.c                    |    1 +
+ drivers/cpufreq/Kconfig                            |   12 +
+ drivers/cpufreq/Kconfig.x86                        |    1 +
+ drivers/cpufreq/Makefile                           |    1 +
+ drivers/cpufreq/acpi-cpufreq.c                     |    6 +-
+ drivers/cpufreq/amd-pstate-ut.c                    |   12 +-
+ drivers/cpufreq/amd-pstate.c                       |  357 +++++--
+ drivers/cpufreq/amd-pstate.h                       |    2 +
+ drivers/cpufreq/apple-soc-cpufreq.c                |    4 +-
+ drivers/cpufreq/bmips-cpufreq.c                    |    4 +-
+ drivers/cpufreq/cppc_cpufreq.c                     |   12 +-
+ drivers/cpufreq/cpufreq-dt-platdev.c               |    1 +
+ drivers/cpufreq/cpufreq-dt.c                       |    3 +-
+ drivers/cpufreq/cpufreq-nforce2.c                  |    6 -
+ drivers/cpufreq/cpufreq.c                          |   50 +-
+ drivers/cpufreq/e_powersaver.c                     |    3 +-
+ drivers/cpufreq/intel_pstate.c                     |  131 ++-
+ drivers/cpufreq/longhaul.c                         |    5 +-
+ drivers/cpufreq/loongson2_cpufreq.c                |    6 -
+ drivers/cpufreq/loongson3_cpufreq.c                |  395 +++++++
+ drivers/cpufreq/mediatek-cpufreq-hw.c              |    4 +-
+ drivers/cpufreq/mediatek-cpufreq.c                 |   76 +-
+ drivers/cpufreq/omap-cpufreq.c                     |    3 +-
+ drivers/cpufreq/pasemi-cpufreq.c                   |    6 +-
+ drivers/cpufreq/pcc-cpufreq.c                      |    6 -
+ drivers/cpufreq/powernow-k6.c                      |    5 +-
+ drivers/cpufreq/powernow-k7.c                      |    3 +-
+ drivers/cpufreq/powernow-k8.c                      |    6 +-
+ drivers/cpufreq/powernv-cpufreq.c                  |    4 +-
+ drivers/cpufreq/ppc_cbe_cpufreq.c                  |    3 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c                  |    4 +-
+ drivers/cpufreq/qcom-cpufreq-nvmem.c               |   12 +-
+ drivers/cpufreq/qoriq-cpufreq.c                    |    4 +-
+ drivers/cpufreq/scmi-cpufreq.c                     |    8 +-
+ drivers/cpufreq/scpi-cpufreq.c                     |    4 +-
+ drivers/cpufreq/sh-cpufreq.c                       |    4 +-
+ drivers/cpufreq/sparc-us2e-cpufreq.c               |    3 +-
+ drivers/cpufreq/sparc-us3-cpufreq.c                |    3 +-
+ drivers/cpufreq/speedstep-centrino.c               |   18 +-
+ drivers/cpufreq/sti-cpufreq.c                      |    3 +-
+ drivers/cpufreq/sun50i-cpufreq-nvmem.c             |   30 +-
+ drivers/cpufreq/tegra194-cpufreq.c                 |    4 +-
+ drivers/cpufreq/ti-cpufreq.c                       |   96 +-
+ drivers/cpufreq/vexpress-spc-cpufreq.c             |    5 +-
+ drivers/cpuidle/cpuidle-haltpoll.c                 |    1 +
+ drivers/cpuidle/governors/menu.c                   |   17 +-
+ drivers/cpuidle/governors/teo.c                    |  194 +---
+ drivers/idle/intel_idle.c                          |  116 +--
+ drivers/opp/core.c                                 |   15 +-
+ drivers/opp/of.c                                   |   32 +
+ drivers/opp/ti-opp-supply.c                        |    6 +-
+ drivers/powercap/idle_inject.c                     |    2 +-
+ drivers/powercap/intel_rapl_common.c               |  120 +--
+ drivers/powercap/intel_rapl_msr.c                  |   16 +-
+ include/linux/cpufreq.h                            |    8 +-
+ include/linux/pm_opp.h                             |    6 +
+ tools/power/cpupower/Makefile                      |   47 +-
+ tools/power/cpupower/README                        |  160 ++-
+ tools/power/cpupower/bench/Makefile                |    5 +
+ tools/power/cpupower/man/cpupower-monitor.1        |   13 +-
+ .../cpupower/utils/idle_monitor/cpupower-monitor.c |    2 +-
+ tools/power/pm-graph/bootgraph.py                  |   16 +-
+ tools/power/pm-graph/sleepgraph.py                 | 1098 ++++++++++------=
+----
+ 68 files changed, 1958 insertions(+), 1269 deletions(-)
 
