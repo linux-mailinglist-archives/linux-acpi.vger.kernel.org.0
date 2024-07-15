@@ -1,222 +1,407 @@
-Return-Path: <linux-acpi+bounces-6884-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6885-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021DC9317BA
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 17:35:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43EA931B27
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 21:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC271282C1F
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 15:35:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E32DB224D1
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 19:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02EC19247A;
-	Mon, 15 Jul 2024 15:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BDE136E1D;
+	Mon, 15 Jul 2024 19:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="tBMksm9R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwz/Dg8T"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DABD190698
-	for <linux-acpi@vger.kernel.org>; Mon, 15 Jul 2024 15:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB386E61B;
+	Mon, 15 Jul 2024 19:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721057632; cv=none; b=nw7QrYRKUa0esmOgvKFAmvetXbEHzMXpx2cLcAnYRVm361OSdaqXCK94SMlcS040vPm3c/R7/2+Q8RbZ0BYkaij2Pa804Eu3rC72CSVmj9pLLCzV9xzWBZfhOm/orYlOnD6+UkDy3xR0x4qJel6/SAuhmX0ILW2mwbHj3FZ+CUw=
+	t=1721072477; cv=none; b=NSJ4w8+RUB8DZW8lXPgLE5EJB97D3YLpzU9lZyGqsTRtC0DXGDuJVqNbhfObQWBwO2oH3MxtFrT5jUCcWxmkZAmfG9MPEhJ9qnvFIVFX1MglQBnyWmi73IhhAQR1chM9dA42RUxgLBto639Bp1C2HsZgWaIg3ZtCnHDG65twxtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721057632; c=relaxed/simple;
-	bh=O17oVYZHosGaaJhlD2MlU5PTYcT36bEOgqEoMy9Lp+g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RbyMozwXPtVdTNVgz2nV9ER0Nh8cGIMWIFe/d9866fqICXjIA0PwjWrQRoWzAWkjbYsr6wzmCVy6rAKXrGwpTJ1xFNQRYdyOt+9crpYr8zPwUaUJjGfrLFi730SC4IVzbTdjjqm/o79e/XVrntcFq+c5Be6swDHg74lC9Fv0tNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=tBMksm9R; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1fb761b1f8bso2928955ad.1
-        for <linux-acpi@vger.kernel.org>; Mon, 15 Jul 2024 08:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1721057628; x=1721662428; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nNrBKwYTcdYHsoBHljeLphuQCOZ/YFIVZ+KLTOSWsAs=;
-        b=tBMksm9R3VMCr1eWe6f7oerChBH24oyqE9gpHbGX/GDHSPyFQePYwlAtESFSc6725L
-         6eXjTemeaVyZXWnBLOvxWBIbS5g5CvdnCAH9HXExZT/OP2Ti2q7bAtpDqvB869Ao6VOI
-         ArEc7DhfdpWpajlxLy5P5wxbTWc7h6K2FpQ110bJnAgHhBiFiEeJeusPu2b7dHbvSw+I
-         KPLeC58Ndrbozl5DpsSr4Ud1ppFywpjmiYBrLWkfPevgF4Z2IgTrFm+wgb91GzV/y2+6
-         TKGNCY5jUZqfDUgIs6iW7ZRz7DN0XPu6lLt48f1e7ofj641YxMR9N5v2Vgtz2Ga/u70p
-         wDtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721057628; x=1721662428;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nNrBKwYTcdYHsoBHljeLphuQCOZ/YFIVZ+KLTOSWsAs=;
-        b=SQtCY4oK2PK1Pzmks5g1v2VGtSulRqdUAKCa9aHTy5H0TbePR6Ruzlw/29hehzPWMI
-         lkza+6PcgHRr+MHDvUVfw2y1I733CJ1OSQvvWY8W6jyvRu5ZCXpvJnzndKXXg0KvI8E7
-         qDdZOohY/eBSkyHBsSwSx53ic6Cjqf0fcD1R+/lktGGvIqWPYkZ1/2UhzeDSnEkNEn5R
-         AaupCdFTz0qPi46A5UlOrsnxgeA27wlF82Gk5Z6qHZhFp2Czcq8RGqK32VNQ/W9ghJnC
-         kDMB2UaULKXgmu0zRMxBZK4bKI5jb0v8nZ8uLjUSMzKdPd+ljW3VU8GEBDyviPdN/5aw
-         W15g==
-X-Forwarded-Encrypted: i=1; AJvYcCUst95YA2ew/sZ0g9tieUZm9wpOUH2+3CuX5hO+8SnBq/cJwdT3POYWmdUMLh1cD4LCntTfubdm2LPMYwrtg9+9mrzj992zBgS9WA==
-X-Gm-Message-State: AOJu0YyWDr8yFnLrOl3+nCoNN3IwvdN+y9q92cRoKSMjlKarnD1G4Yu3
-	Kini4yjT22WyNd32vnI9S17PBqjm9zGPcJMW4ZEyu8YjMCga8LQ5tLLmEJt+AX8=
-X-Google-Smtp-Source: AGHT+IFBGQtaMboH87ZiITDVDC8NxVYCRbzN4TT71saPPYRoOL+WvGv7Cmx1qWcc0JUtTQaQgm2X2w==
-X-Received: by 2002:a17:903:2348:b0:1fb:3c1:cb26 with SMTP id d9443c01a7336-1fbdc45a9a0mr120691815ad.1.1721057628613;
-        Mon, 15 Jul 2024 08:33:48 -0700 (PDT)
-Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fc0bc2736dsm42303825ad.159.2024.07.15.08.33.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jul 2024 08:33:47 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Robert Moore <robert.moore@intel.com>
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH] ACPI: CPPC: Fix MASK_VAL() usage
-Date: Mon, 15 Jul 2024 17:33:35 +0200
-Message-ID: <20240715153336.3720653-1-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1721072477; c=relaxed/simple;
+	bh=V5BZB48Gz3N4as/aSfFIyDl48y+kPgPMrhXFfaW5l+c=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DzaMJ3UY375qEBU5iO7KhvseSQaUILKRzlALQ1OtogW4y0RVTTqDGsggOFSKpaaijQ4yQ6UzxeTMN3EcxI0WjtyIbS3LViXTUma6deNeWjJ42zxFhP6tKX6Jq8QZ8wJekHt9c2zxt+OhJGSzG6hc1Dzl/ehSKX9YFdmpxVMzndo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwz/Dg8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0411EC4AF0A;
+	Mon, 15 Jul 2024 19:41:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721072477;
+	bh=V5BZB48Gz3N4as/aSfFIyDl48y+kPgPMrhXFfaW5l+c=;
+	h=From:Date:Subject:To:Cc:From;
+	b=hwz/Dg8Tho8ZFlCGJUbv5J5cb/oPcNMba/IW9M0YkMdCdxr4ZUSHU0Y4HJvXAm5A0
+	 SuRqWT7w1Rw/wj2wI76Z3SpAHaLe5ttuu/vCagnrLK53ZFiCFisitydVtnl5e0fIsw
+	 oS/vPhvj0csYJ0rjKLtF4MEdx8qoDIDmaeRLsOySl0gmtPCgSH8ytRlo3QflMAc+/c
+	 nE02/EweGGN48FhyY0CaZh7L8jLjR4fOzlrgpI6Zkj5YaLmfnYTzV26XI76E1zzoWv
+	 5lg02vt2TRLUXi4ogk2rfr5sVtJeEh1eYmHE7cJ+x6d3MgaOfAcA4asZPaKwgPjhED
+	 6NIi9EVeULQxQ==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-254c411d816so543515fac.1;
+        Mon, 15 Jul 2024 12:41:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWlYDJYed4t0WPae/ksxog7J88fVxMPQrhIh66gHWCighszKujAPYC9a6fRHoIz13JwfagI+0xyO2No4Bxjaek6mInBAk96tpUeKeJSwUqQ7ehGSaEFmT+jp9h+FHWr2btR6lwXnhl/yA==
+X-Gm-Message-State: AOJu0Yxuzvta8/aXe/CsNjQPpiEnGLWQyO+yB4lDWuzaMB4QdISm2H3a
+	UUSnunrBy78PW41RsxILt8RMp6zgOmnu5/iq3XeQjxI04o1lciKNJjcKvYfwAm53fdH/8cDerAu
+	FUaXn4xSkBK86Rjdwz27krkhUTMM=
+X-Google-Smtp-Source: AGHT+IHFqTo2Br5MMUHuhTpLrQLAhOJIPHdDjgLOhNKjMYgK87aIXUUvyKQH50wiEO57iox9G6sVgbRedsqKYc3I6NU=
+X-Received: by 2002:a4a:4308:0:b0:5c6:67b7:41dd with SMTP id
+ 006d021491bc7-5d25035c588mr563647eaf.0.1721072476196; Mon, 15 Jul 2024
+ 12:41:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 15 Jul 2024 21:41:04 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0guQr816kzz88G8XUjC7fnV9psTVdR_HWyt9D7evA27LA@mail.gmail.com>
+Message-ID: <CAJZ5v0guQr816kzz88G8XUjC7fnV9psTVdR_HWyt9D7evA27LA@mail.gmail.com>
+Subject: [GIT PULL] Thermal control updates for v6.11-rc1
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, 
+	ACPI Devel Maling List <linux-acpi@vger.kernel.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-MASK_VAL() was added a way to handle bit_offset and bit_width for
-registers located in system memory address space. However, while suited
-for reading, it does not work for writing and result in corrupted
-registers when writing values with bit_offset > 0. Moreover, when a
-register is collocated with another one at the same address but with a
-different mask, the current code results in the other registers being
-overwritten with 0s. The write procedure for SYSTEM_MEMORY registers
-should actually read the value, mask it, update it and write it with the
-updated value. Moreover, since registers can be located in the same
-word, we must take care of locking the access before doing it. We should
-potentially use a global lock since we don't know in if register
-addresses aren't shared with another _CPC package but better not
-encourage vendors to do so. Assume that registers can use the same word
-inside a _CPC package and thus, use a per _CPC package lock.
+Hi Linus,
 
-Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Please pull from the tag
 
----
- drivers/acpi/cppc_acpi.c | 44 ++++++++++++++++++++++++++++++++++++----
- include/acpi/cppc_acpi.h |  2 ++
- 2 files changed, 42 insertions(+), 4 deletions(-)
+ git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+ thermal-6.11-rc1
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 1d857978f5f4..2e99cf1842ee 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -170,8 +170,11 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
- #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
- 
- /* Shift and apply the mask for CPC reads/writes */
--#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
-+#define MASK_VAL_READ(reg, val) (((val) >> (reg)->bit_offset) &				\
- 					GENMASK(((reg)->bit_width) - 1, 0))
-+#define MASK_VAL_WRITE(reg, prev_val, val)						\
-+	((((val) & GENMASK(((reg)->bit_width) - 1, 0)) << (reg)->bit_offset) |		\
-+	((prev_val) & ~(GENMASK(((reg)->bit_width) - 1, 0) << (reg)->bit_offset)))	\
- 
- static ssize_t show_feedback_ctrs(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
-@@ -857,6 +860,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
- 
- 	/* Store CPU Logical ID */
- 	cpc_ptr->cpu_id = pr->id;
-+	spin_lock_init(&cpc_ptr->rmw_lock);
- 
- 	/* Parse PSD data for this CPU */
- 	ret = acpi_get_psd(cpc_ptr, handle);
-@@ -1062,7 +1066,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
- 	}
- 
- 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		*val = MASK_VAL(reg, *val);
-+		*val = MASK_VAL_READ(reg, *val);
- 
- 	return 0;
- }
-@@ -1071,9 +1075,11 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- {
- 	int ret_val = 0;
- 	int size;
-+	u64 prev_val;
- 	void __iomem *vaddr = NULL;
- 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
- 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
-+	struct cpc_desc *cpc_desc;
- 
- 	size = GET_BIT_WIDTH(reg);
- 
-@@ -1106,8 +1112,34 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		return acpi_os_write_memory((acpi_physical_address)reg->address,
- 				val, size);
- 
--	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
--		val = MASK_VAL(reg, val);
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
-+		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
-+		if (!cpc_desc) {
-+			pr_debug("No CPC descriptor for CPU:%d\n", cpu);
-+			return -ENODEV;
-+		}
-+
-+		spin_lock(&cpc_desc->rmw_lock);
-+		switch (size) {
-+		case 8:
-+			prev_val = readb_relaxed(vaddr);
-+			break;
-+		case 16:
-+			prev_val = readw_relaxed(vaddr);
-+			break;
-+		case 32:
-+			prev_val = readl_relaxed(vaddr);
-+			break;
-+		case 64:
-+			prev_val = readq_relaxed(vaddr);
-+			break;
-+		default:
-+			ret_val = -EFAULT;
-+			goto out_unlock;
-+		};
-+		val = MASK_VAL_WRITE(reg, prev_val, val);
-+		val |= prev_val;
-+	}
- 
- 	switch (size) {
- 	case 8:
-@@ -1134,6 +1166,10 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
- 		break;
- 	}
- 
-+out_unlock:
-+	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
-+		spin_unlock(&cpc_desc->rmw_lock);
-+
- 	return ret_val;
- }
- 
-diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
-index 930b6afba6f4..e1720d930666 100644
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -64,6 +64,8 @@ struct cpc_desc {
- 	int cpu_id;
- 	int write_cmd_status;
- 	int write_cmd_id;
-+	/* Lock used for RMW operations in cpc_write() */
-+	spinlock_t rmw_lock;
- 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
- 	struct acpi_psd_package domain_info;
- 	struct kobject kobj;
--- 
-2.45.2
+with top-most commit 281cfec53b4484ce2092c89b6909f5573cb23443
 
+ Merge branch 'thermal-intel'
+
+on top of commit 94eacc1c583dd2ba51a2158fb13285f5dc42714b
+
+ thermal: core: Fix list sorting in __thermal_zone_device_update()
+
+to receive thermal control updates for 6.11-rc1.
+
+These add some new hardware support (notably, the Lunar Lake platform
+support in int340x and X1E80100 temperature sensor), continue to rework
+the thermal driver interface to eliminate trip point IDs from it, update
+DT bindings for a number of platforms and simplify probe in a number of
+thermal drivers, address issues and clean up code.
+
+Specifics:
+
+ - Add DLVR and MSI interrupt support for the Lunar Lake platform to the
+   int340x thermal driver (Srinivas Pandruvada).
+
+ - Enable workload type hints (WLT) support and power floor interrupt
+   support for the Lunar Lake platform in int340x ((Srinivas Pandruvada).
+
+ - Switch Intel thermal drivers to new Intel CPU model defines (Tony
+   Luck).
+
+ - Clean up the int3400 and int3403 drivers (Erick Archer and David Alan
+   Gilbert).
+
+ - Improve intel_pch_thermal kernel log messages printed during suspend
+   to idle (Zhang Rui).
+
+ - Make the intel_tcc_cooling driver use a model-specific bitmask for
+   TCC offset (Ricardo Neri).
+
+ - Redesign the .set_trip_temp() thermal zone callback to take a trip
+   pointer instead of a trip ID and update its users (Rafael Wysocki).
+
+ - Avoid using invalid combinations of polling_delay and passive_delay
+   thermal zone parameters (Rafael Wysocki).
+
+ - Update a cooling device registration function to take a const
+   argument (Krzysztof Kozlowski).
+
+ - Make the uniphier thermal driver use thermal_zone_for_each_trip() for
+   walking trip points (Rafael Wysocki).
+
+ - Fix and clean up several minor shortcomings in thermal debug (Rafael
+   Wysocki).
+
+ - Rename __thermal_zone_set_trips() to thermal_zone_set_trips() and
+   make it use trip thresholds (Rafael Wysocki).
+
+ - Use READ_ONCE() for lockless access to trip temperature and
+   hysteresis (Rafael Wysocki).
+
+ - Drop unnecessary cooling device target state checks from the
+   Bang-Bang thermal governor (Rafael Wysocki).
+
+ - Avoid invoking thermal governor .trip_crossed() callback for critical
+   and hot trip points (Rafael Wysocki).
+
+ - Group all Renesas drivers inside a dedicated sub directory and add
+   the missing dependency to OF (Niklas S=C3=B6derlund).
+
+ - Add suspend/resume support on k3_j72xx_bandgap and take the
+   opportunity to remove an unneeded delay in the init time code
+   path (Th=C3=A9o Lebrun).
+
+ - Fix thermal zone definition for MT8186 and MT8188 (Julien Panis).
+
+ - Convert hisilicon-thermal.txt to dt-schema (Abdulrasaq Lawani).
+
+ - Add DT bindings for the X1E80100 temperature sensor (Abel Vesa).
+
+ - Fix the thermal zone node name regular expression in the DT schema
+   (Krzysztof Kozlowski).
+
+ - Avoid failing thermal control initialization by using default values
+   on some platforms where calibration data is missing  (Chen-Yu Tsai).
+
+ - Fix the sensor cell size in DT for the Exynos platform (Krzysztof
+   Kozlowski).
+
+ - Bring the common definition of '#thermal-sensor-cells' property in
+   order to simplify the bindings on all the platforms where this
+   change makes sense and do some minor cleanups (Krzysztof Kozlowski).
+
+ - Fix a race between removal and clock disable in the broadcom thermal
+   driver (Krzysztof Kozlowski).
+
+ - Drop 'trips' DT node as required from the thermal zone bindings in
+   order to fix the remaining warnings appearing for thermal zones
+   without trip points (Rob Herring).
+
+ - Simplify all the drivers where dev_err_probe() can apply (Krzysztof
+   Kozlowski).
+
+ - Clean up code related to stih416 as this platform is not described
+   anywhere (Raphael Gallais-Pou).
+
+Thanks!
+
+
+---------------
+
+Abdulrasaq Lawani (1):
+      dt-bindings: thermal: convert hisilicon-thermal.txt to dt-schema
+
+Abel Vesa (1):
+      dt-bindings: thermal: qcom-tsens: Document the X1E80100 Temperature S=
+ensor
+
+Chen-Yu Tsai (1):
+      thermal/drivers/mediatek/lvts_thermal: Provide default calibration da=
+ta
+
+Dr. David Alan Gilbert (1):
+      thermal: int3403: remove unused struct 'int3403_performance_state'
+
+Erick Archer (1):
+      thermal: int3400: Use sizeof(*pointer) instead of sizeof(type)
+
+Julien Panis (2):
+      dt-bindings: thermal: mediatek: Fix thermal zone definition for MT818=
+6
+      dt-bindings: thermal: mediatek: Fix thermal zone definitions for MT81=
+88
+
+Krzysztof Kozlowski (36):
+      thermal: core: constify 'type' in
+devm_thermal_of_cooling_device_register()
+      dt-bindings: thermal: correct thermal zone node name limit
+      dt-bindings: thermal: samsung,exynos: specify cells
+      dt-bindings: thermal: amlogic: reference thermal-sensor schema
+      dt-bindings: thermal: allwinner,sun8i-a83t-ths: reference
+thermal-sensor schema
+      dt-bindings: thermal: brcm,avs-ro: reference thermal-sensor schema
+      dt-bindings: thermal: generic-adc: reference thermal-sensor schema
+      dt-bindings: thermal: imx8mm: reference thermal-sensor schema
+      dt-bindings: thermal: nvidia,tegra186-bpmp: reference
+thermal-sensor schema
+      dt-bindings: thermal: nvidia,tegra30-tsensor: reference
+thermal-sensor schema
+      dt-bindings: thermal: qcom-spmi-adc-tm-hc: reference thermal-sensor s=
+chema
+      dt-bindings: thermal: qcom-spmi-adc-tm5: reference thermal-sensor sch=
+ema
+      dt-bindings: thermal: qcom-tsens: reference thermal-sensor schema
+      dt-bindings: thermal: rcar-gen3: reference thermal-sensor schema
+      dt-bindings: thermal: rockchip: reference thermal-sensor schema
+      dt-bindings: thermal: rzg2l: reference thermal-sensor schema
+      dt-bindings: thermal: socionext,uniphier: reference thermal-sensor sc=
+hema
+      dt-bindings: thermal: sprd: reference thermal-sensor schema
+      dt-bindings: thermal: st,stm32: reference thermal-sensor schema
+      dt-bindings: thermal: ti,am654: reference thermal-sensor schema
+      dt-bindings: thermal: ti,j72xx: reference thermal-sensor schema
+      dt-bindings: thermal: simplify few bindings
+      dt-bindings: thermal: cleanup examples indentation
+      dt-bindings: thermal: qoriq: reference thermal-sensor schema
+      thermal/drivers/broadcom: Fix race between removal and clock disable
+      thermal/drivers/broadcom: Simplify probe() with local dev variable
+      thermal/drivers/broadcom: Simplify with dev_err_probe()
+      thermal/drivers/exynos: Simplify probe() with local dev variable
+      thermal/drivers/exynos: Simplify with dev_err_probe()
+      thermal/drivers/hisi: Simplify with dev_err_probe()
+      thermal/drivers/imx: Simplify probe() with local dev variable
+      thermal/drivers/imx: Simplify with dev_err_probe()
+      thermal/drivers/qcom-spmi-adc-tm5: Simplify with dev_err_probe()
+      thermal/drivers/qcom-tsens: Simplify with dev_err_probe()
+      thermal/drivers/generic-adc: Simplify probe() with local dev variable
+      thermal/drivers/generic-adc: Simplify with dev_err_probe()
+
+Niklas S=C3=B6derlund (2):
+      thermal/drivers/renesas: Group all renesas thermal drivers together
+      thermal/drivers/renesas/rcar: Add dependency on OF
+
+Rafael J. Wysocki (21):
+      thermal/debugfs: Use helper to update trip point overstepping duratio=
+n
+      thermal/debugfs: Do not extend mitigation episodes beyond system resu=
+me
+      thermal/debugfs: Print mitigation timestamp value in milliseconds
+      thermal/debugfs: Fix up units in "mitigations" files
+      thermal/debugfs: Adjust check for trips without statistics in
+tze_seq_show()
+      thermal/debugfs: Compute maximum temperature for mitigation
+episode as a whole
+      thermal/debugfs: Move some statements from under thermal_dbg->lock
+      thermal: trip: Use common set of trip type names
+      thermal: trip: Rename __thermal_zone_set_trips() to
+thermal_zone_set_trips()
+      thermal: trip: Make thermal_zone_set_trips() use trip thresholds
+      thermal: trip: Use READ_ONCE() for lockless access to trip properties
+      thermal: gov_bang_bang: Drop unnecessary cooling device target
+state checks
+      thermal: core: Avoid calling .trip_crossed() for critical and hot tri=
+ps
+      thermal: uniphier: Use thermal_zone_for_each_trip() for walking
+trip points
+      thermal: core: Change passive_delay and polling_delay data type
+      thermal: helpers: Introduce thermal_trip_is_bound_to_cdev()
+      thermal: trip: Add conversion macros for thermal trip priv field
+      thermal: imx: Drop critical trip check from imx_set_trip_temp()
+      thermal: trip: Pass trip pointer to .set_trip_temp() thermal zone cal=
+lback
+      thermal: trip: Fold __thermal_zone_get_trip() into its caller
+      thermal: core: Add sanity checks for polling_delay and passive_delay
+
+Raphael Gallais-Pou (1):
+      thermal/drivers/sti: Cleanup code related to stih416
+
+Ricardo Neri (2):
+      thermal: intel: intel_tcc: Add model checks for temperature registers
+      thermal: intel: intel_tcc_cooling: Use a model-specific bitmask
+for TCC offset
+
+Rob Herring (Arm) (1):
+      dt-bindings: thermal: Drop 'trips' node as required
+
+Srinivas Pandruvada (6):
+      thermal: intel: int340x: Cleanup of DLVR sysfs on driver remove
+      thermal: intel: int340x: Capability to map user space to firmware val=
+ues
+      thermal: intel: int340x: Add DLVR support for Lunar Lake
+      thermal: intel: int340x: Remove unnecessary calls to free irq
+      thermal: intel: int340x: Support MSI interrupt for Lunar Lake
+      thermal: intel: int340x: Enable WLT and power floor support for Lunar=
+ Lake
+
+Th=C3=A9o Lebrun (1):
+      thermal/drivers/k3_j72xx_bandgap: Implement suspend/resume support
+
+Tony Luck (2):
+      thermal: intel: intel_tcc_cooling: Switch to new Intel CPU model defi=
+nes
+      thermal: intel: intel_soc_dts_thermal: Switch to new Intel CPU
+model defines
+
+Zhang Rui (2):
+      thermal: intel: intel_pch: Improve cooling log
+      thermal: intel: hfi: Give HFI instances package scope
+
+---------------
+
+ .../bindings/thermal/allwinner,sun8i-a83t-ths.yaml |   6 +-
+ .../bindings/thermal/amlogic,thermal.yaml          |  22 +--
+ .../bindings/thermal/brcm,avs-ro-thermal.yaml      |  24 +--
+ .../devicetree/bindings/thermal/brcm,avs-tmon.yaml |  17 +-
+ .../bindings/thermal/brcm,bcm2835-thermal.yaml     |   1 -
+ .../bindings/thermal/fsl,scu-thermal.yaml          |   1 -
+ .../bindings/thermal/generic-adc-thermal.yaml      |   5 +-
+ .../bindings/thermal/hisilicon,tsensor.yaml        |  57 +++++++
+ .../bindings/thermal/hisilicon-thermal.txt         |  32 ----
+ .../bindings/thermal/imx8mm-thermal.yaml           |   5 +-
+ .../bindings/thermal/loongson,ls2k-thermal.yaml    |   1 -
+ .../bindings/thermal/mediatek,lvts-thermal.yaml    |   1 -
+ .../bindings/thermal/nvidia,tegra124-soctherm.yaml |   1 -
+ .../thermal/nvidia,tegra186-bpmp-thermal.yaml      |  12 +-
+ .../bindings/thermal/nvidia,tegra30-tsensor.yaml   |   9 +-
+ .../bindings/thermal/qcom,spmi-temp-alarm.yaml     |   1 -
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml      |   8 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml        |   8 +-
+ .../devicetree/bindings/thermal/qcom-tsens.yaml    |  97 ++++++-----
+ .../devicetree/bindings/thermal/qoriq-thermal.yaml |   5 +-
+ .../bindings/thermal/rcar-gen3-thermal.yaml        |  71 +++++----
+ .../devicetree/bindings/thermal/rcar-thermal.yaml  |  64 ++++----
+ .../bindings/thermal/rockchip-thermal.yaml         |   5 +-
+ .../devicetree/bindings/thermal/rzg2l-thermal.yaml |  43 ++---
+ .../bindings/thermal/samsung,exynos-thermal.yaml   |   3 +-
+ .../thermal/socionext,uniphier-thermal.yaml        |   5 +-
+ .../devicetree/bindings/thermal/sprd-thermal.yaml  |  49 +++---
+ .../bindings/thermal/st,stm32-thermal.yaml         |   5 +-
+ .../devicetree/bindings/thermal/thermal-zones.yaml |   6 +-
+ .../bindings/thermal/ti,am654-thermal.yaml         |  15 +-
+ .../bindings/thermal/ti,j72xx-thermal.yaml         |   5 +-
+ MAINTAINERS                                        |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c        |   2 +-
+ drivers/thermal/Kconfig                            |  28 +---
+ drivers/thermal/Makefile                           |   4 +-
+ drivers/thermal/broadcom/bcm2835_thermal.c         |  49 ++----
+ drivers/thermal/gov_bang_bang.c                    |  14 +-
+ drivers/thermal/hisi_thermal.c                     |   9 +-
+ drivers/thermal/imx_thermal.c                      |  55 +++----
+ .../intel/int340x_thermal/int3400_thermal.c        |   2 +-
+ .../intel/int340x_thermal/int3403_thermal.c        |  11 --
+ .../intel/int340x_thermal/int340x_thermal_zone.c   |  22 +--
+ .../int340x_thermal/processor_thermal_device.c     |   3 +-
+ .../int340x_thermal/processor_thermal_device.h     |   1 +
+ .../int340x_thermal/processor_thermal_device_pci.c | 118 +++++++++++---
+ .../intel/int340x_thermal/processor_thermal_rfim.c | 113 ++++++++++++-
+ drivers/thermal/intel/intel_hfi.c                  |  30 ++--
+ drivers/thermal/intel/intel_pch_thermal.c          |   5 +
+ drivers/thermal/intel/intel_quark_dts_thermal.c    |  28 +++-
+ drivers/thermal/intel/intel_soc_dts_iosf.c         |  15 +-
+ drivers/thermal/intel/intel_soc_dts_thermal.c      |   2 +-
+ drivers/thermal/intel/intel_tcc.c                  | 177 +++++++++++++++++=
++++-
+ drivers/thermal/intel/intel_tcc_cooling.c          |  32 ++--
+ drivers/thermal/intel/x86_pkg_temp_thermal.c       |   9 +-
+ drivers/thermal/k3_j72xx_bandgap.c                 | 111 +++++++++----
+ drivers/thermal/mediatek/lvts_thermal.c            |  46 ++++--
+ drivers/thermal/qcom/qcom-spmi-adc-tm5.c           |   9 +-
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c        |  10 +-
+ drivers/thermal/qcom/tsens.c                       |   8 +-
+ drivers/thermal/renesas/Kconfig                    |  28 ++++
+ drivers/thermal/renesas/Makefile                   |   5 +
+ drivers/thermal/{ =3D> renesas}/rcar_gen3_thermal.c  |   2 +-
+ drivers/thermal/{ =3D> renesas}/rcar_thermal.c       |   2 +-
+ drivers/thermal/{ =3D> renesas}/rzg2l_thermal.c      |   2 +-
+ drivers/thermal/samsung/exynos_tmu.c               |  54 +++----
+ drivers/thermal/st/st_thermal_memmap.c             |  10 --
+ drivers/thermal/tegra/soctherm.c                   |  15 +-
+ drivers/thermal/thermal-generic-adc.c              |  27 ++--
+ drivers/thermal/thermal_core.c                     |  21 ++-
+ drivers/thermal/thermal_core.h                     |   4 +-
+ drivers/thermal/thermal_debugfs.c                  | 110 ++++++++-----
+ drivers/thermal/thermal_debugfs.h                  |   2 +
+ drivers/thermal/thermal_helpers.c                  |  47 ++++--
+ drivers/thermal/thermal_sysfs.c                    |  21 +--
+ drivers/thermal/thermal_trip.c                     |  53 +++---
+ drivers/thermal/uniphier_thermal.c                 |  39 +++--
+ .../dt-bindings/thermal/mediatek,lvts-thermal.h    |  12 +-
+ include/linux/intel_tcc.h                          |   1 +
+ include/linux/platform_data/x86/soc.h              |  12 +-
+ include/linux/thermal.h                            |  18 ++-
+ 80 files changed, 1207 insertions(+), 779 deletions(-)
 
