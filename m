@@ -1,202 +1,153 @@
-Return-Path: <linux-acpi+bounces-6882-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6883-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D51293077C
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Jul 2024 23:37:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C658E9311FE
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 12:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5BA41F21B4D
-	for <lists+linux-acpi@lfdr.de>; Sat, 13 Jul 2024 21:37:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2CC285BDE
+	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 10:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E692143C52;
-	Sat, 13 Jul 2024 21:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD6E187336;
+	Mon, 15 Jul 2024 10:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iaG37Zjk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iwE1qXGb"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5083715E;
-	Sat, 13 Jul 2024 21:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510A6187323;
+	Mon, 15 Jul 2024 10:09:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720906673; cv=none; b=Oqr4kSX01GC0r+hx9IZ5vjMzJJDels7G1V4KkmuzSbfJ5R1oLF/sbtJhOm8Afrkmfinm0qV0qOlPJsKk+KwckAQJHCxlNo3pHYELHxtaaniWRX3fDQjOu3511GC7729B1Jv3BLc+U6tPedakRGmtwyM2sx6vTDngQsg8wgo9ZuM=
+	t=1721038150; cv=none; b=lYmlGgeCpO28zqMTctkrGVglzTU3uklb4QS0xPrjAFIf3AY2qnQIWcpqVkki8WOArmuupxHD3tKORKoB17hv4gX1093uU1SExaaTJ4TUhTi2fC3fOo+BKUVMeukNVsdHXqQy1GIhVgj5bgCYxSMBuK29WyC5aF0Hd7qzfOdgbQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720906673; c=relaxed/simple;
-	bh=br048+ZCXEeV7hh8d9XnZQzMv7EjLwJDK7Qz+EMEaqo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hWi+ztxSb4VRrXk7roQxrqKz2O5YT3uU8vLqbvoW33y0RKwD5aQuU54gjf87kQsw5+iKpPo5wnom+abC9a5Q916W7EnWEjIA7OGN1iEiutRQwW8IW08GXqRR1o6pfb4fyHObv1ldpE+Ro/aY6c0oj4C1aue3N4LBZOymmVWzszA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iaG37Zjk; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3679f806223so2446714f8f.0;
-        Sat, 13 Jul 2024 14:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720906670; x=1721511470; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jWge+wPKweF2GBCVBIBv2ygG3wKeTixMcFo1aegvcvI=;
-        b=iaG37ZjkG7x67v9JqiZubumxkPiJNT/6GwdOSHMAdBGlhUjVBgA7u7VtGK/BqwC7Nc
-         I6UXryvWltp0zv3UUPuG+9UouUiUdc+XilR62hCR+9BXHqZP82QXxXX8LilP8exXmV36
-         DVEAW9WeBQ/iezwVcjpbzomzRzoOF7HH+7AU3oDzDOUD5YcSYS4v2x9EyGdbG+XnqWo/
-         3sCfhaHUsX5CycCbTI2qOC/4J6PzkU8LEEhH0YO9WaNW4g27hHT9L/yXRYAsNAx5xKnJ
-         2Xx7iRrVfXnhLmGfMZoDpb0QHp0rJFnJYro00K9zEsKGmYD5ivlXuGhOHW4f7PDOr0oS
-         UjKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720906670; x=1721511470;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jWge+wPKweF2GBCVBIBv2ygG3wKeTixMcFo1aegvcvI=;
-        b=gOU7B9vosYTv7ePvkabC6Rf7dHZ9XbgAx9ZMv8jWq98uBc0Ij160f+/7ey6xspPs0Q
-         C9ktw7CEyBhKD0YeEnWlz5RraqCs3ir7zWpS9lMGT2N7DZ4EPEb1ZsSiWk/Ln6JgjaDa
-         IfgRniH75EXcWWv9E+uAPojWybU3qziuqNF9sBlf69BDKK4Krw2vJZ3oMxVgzvvO364P
-         d64V80zgzcU4gbH2qv6p+AXp/VlZ0REQm2Y4Zmy1e8Dnb4CsPuRo5pGml8Y2mp0EWMy2
-         A8+UCHV6ULMS8x33AYVGw9wtL6uKJVBWeV7b62c8AzOTeYvB3A4dXK5S53YGo4ODvDyW
-         lQiw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHK2sqKphHPgaAtbKeQ8R2FWSCTcX3yVgYFGCv+BXkcTRTMNtpmoLFIS8qFu4tq3MJAiTTB8yKKspAXMh+U3AqN4j9gLaK8ZoR/ntV9/qcjzaYloYXzQkFDPnWUlt3csRRFdVGa1ee9PDiALQR9BQwrihB7bz33JlBOnGO5WvMxzguBTsPH7Iq7Q8qNX5G4y3878JHuwcxjBffhmiCCY7JOmMbB13XuJCDbZQr5PV6yHULJ8tmb4z0iQ==
-X-Gm-Message-State: AOJu0YwI4dbiFmJDEHiVe3CbUTLfvQEptNzR5uvd+rFpQt886Vu7BPbl
-	JbIgFIuTMeCTTqci84hGfw6+s4aVVGt9dI+5rzr9fDcXF7mdyg77
-X-Google-Smtp-Source: AGHT+IFtFHfQbEmui8gyv0uER4jCDezZch9KaAtTQYCcQnH2LXfnaNOUq0m3eU4lltdgXGU4ehxnsQ==
-X-Received: by 2002:adf:f8d2:0:b0:367:40eb:a3c3 with SMTP id ffacd0b85a97d-36804fec57emr4637223f8f.34.1720906669552;
-        Sat, 13 Jul 2024 14:37:49 -0700 (PDT)
-Received: from ?IPV6:2a02:8389:41cf:e200:8180:f721:f9cb:10b2? (2a02-8389-41cf-e200-8180-f721-f9cb-10b2.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:8180:f721:f9cb:10b2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3680dab3b41sm2426542f8f.5.2024.07.13.14.37.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Jul 2024 14:37:49 -0700 (PDT)
-Message-ID: <4f996369-2959-4e17-917d-f2de48d22064@gmail.com>
-Date: Sat, 13 Jul 2024 23:37:46 +0200
+	s=arc-20240116; t=1721038150; c=relaxed/simple;
+	bh=BlPnXXaG0MPVBPZx1o0DOll7X8gCj7KLAbpU80OhlvE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B5wXQW5HZCsfOyZA6uQMbZLHAlgZBMAp6tG8WqQk3xb1uODfu5vIrT/rrSbdJLCfdc4V1zER3Zw2oGZTJw0mEk9TDVz1LmwPH4HBc/D0Uckb0S4MNs9CpKcDQVKkrcPSLwp+4idgVnUj16spmvjPH3dy9jLHGHWW4R6VMkKe2zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iwE1qXGb; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721038149; x=1752574149;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BlPnXXaG0MPVBPZx1o0DOll7X8gCj7KLAbpU80OhlvE=;
+  b=iwE1qXGbysYlU4j0j6JvOADJjyfpCxw2OPdoIwHQj0M/vC3bZ1rW7MPo
+   j/x3NhVM2TpEh93t4tTKEw6I3QchmQRCR8aVB5G4D7EF096JjUy3Fwoq9
+   0yXcskQqCeDZG/PQrJin3xjCy0g4ajmjnX87xjq1hdZu3E4tStA7sLGb+
+   +8LNd1OnQoAxPLldLP1yFeTiiABionumAL6jgP6Qa5vpXfjoZfPNDxMWe
+   USaSX/o4P4gjXKlqrjbyaB9PLrAfZ3tbORWAOQ6+IMC7KEx/smPRQNaFU
+   c7BCzZuEVBoSMZ6uQhOY9ermWGjcVDs0+/zb9L7GrmTDhL7VqvO6iKuQq
+   w==;
+X-CSE-ConnectionGUID: gEtHNMDfRvm7s0bkZDYFdA==
+X-CSE-MsgGUID: hMjJ3VrHThSehJUvbQoywQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11133"; a="18524485"
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; 
+   d="scan'208";a="18524485"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 03:09:08 -0700
+X-CSE-ConnectionGUID: JGyEEKk/R/qkbfvZ3mdaPQ==
+X-CSE-MsgGUID: zpGyAoR9R+euIeoX4wrDeg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; 
+   d="scan'208";a="49663398"
+Received: from unknown (HELO zhiquan-linux-dev.bj.intel.com) ([10.238.156.102])
+  by fmviesa010.fm.intel.com with ESMTP; 15 Jul 2024 03:09:04 -0700
+From: Zhiquan Li <zhiquan1.li@intel.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	kirill.shutemov@linux.intel.com,
+	x86@kernel.org
+Cc: rafael@kernel.org,
+	hpa@zytor.com,
+	kai.huang@intel.com,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhiquan1.li@intel.com
+Subject: [PATCH v4] x86/acpi: fix panic while AP online later with kernel parameter maxcpus=1
+Date: Mon, 15 Jul 2024 18:08:35 +0800
+Message-Id: <20240715100835.1817344-1-zhiquan1.li@intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] leds: bd2606mvv: use device_for_each_child_node() to
- access device child nodes
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rob Herring <robh@kernel.org>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
- Marcin Wojtas <marcin.s.wojtas@gmail.com>,
- Russell King <linux@armlinux.org.uk>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240706-device_for_each_child_node-available-v1-0-8a3f7615e41c@gmail.com>
- <20240706-device_for_each_child_node-available-v1-3-8a3f7615e41c@gmail.com>
- <20240707175713.4deb559f@jic23-huawei>
- <4cf71de7-dc47-475c-bba0-a9e755f66d49@gmail.com>
- <2cd45260-e737-43e9-9bf6-c267d6f86ad3@gmail.com>
- <20240712230656.67e89eb2@akphone>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240712230656.67e89eb2@akphone>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/07/2024 23:06, Andreas Kemnade wrote:
-> On Mon, 8 Jul 2024 17:45:43 +0200
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> On 08/07/2024 10:14, Javier Carrasco wrote:
->> What was the reason for this modification? Apparently, similar drivers
->> do everything in one loop to avoid such issues.
->>
-> The reason for two loops is that we check in the first loop whether
-> broghtness can be individually controlled so we can set max_brightness
-> in the second loop. I had the assumption that max_brightness should be
-> set before registering leds.
-> 
-> Some LEDs share brightness register, in the case where leds are defined
-> with a shared register, we revert to on-off.
-> 
->> Maybe refactoring to have a single loop again (if possible) would be
->> the cleanest solution. Otherwise a get/put mechanism might be
->> necessary.
->>
-> I had no idea how to do it the time I wrote the patch.
-> 
-> Regards,
-> Andreas
+The issue was found on the platform that using "Multiprocessor Wakeup
+Structure"[1] to startup secondary CPU, which is usually used by
+encrypted guest.  Before waking up the APs, BSP should memremap() the
+physical address of the MP Wakeup Structure mailbox to the variable
+acpi_mp_wake_mailbox, which holds the virtual address of mailbox.  When
+BSP needs to wake up the APs, it writes the APIC ID of APs, wakeup
+vector, and the ACPI_MP_WAKE_COMMAND_WAKEUP command into the mailbox.
 
-Then we could leave the two loops, and fix them. I am thinking of something
-like this:
+Current implementation doesn't consider the case that restrict boot time
+CPU to 1 with the kernel parameter "maxcpus=1" and bring other CPUs
+online later, the variable acpi_mp_wake_mailbox will be set as read-only
+after init.  So when the first AP gets online after init, the attempt to
+update the variable results in panic.
 
- static int bd2606mvv_probe(struct i2c_client *client)
- {
--	struct fwnode_handle *child;
- 	struct device *dev = &client->dev;
- 	struct bd2606mvv_priv *priv;
- 	struct fwnode_handle *led_fwnodes[BD2606_MAX_LEDS] = { 0 };
- 	int active_pairs[BD2606_MAX_LEDS / 2] = { 0 };
- 	int err, reg;
--	int i;
-+	int i, j;
+The memremap() call that initializes the variable cannot be moved into
+acpi_parse_mp_wake() because memremap() is not functional at that point
+in the boot process.  Moreover, the APs might never be brought up, keep
+the memremap() call in acpi_wakeup_cpu() so that the operation only
+takes place on demand.
 
- 	if (!dev_fwnode(dev))
- 		return -ENODEV;
-@@ -93,20 +92,18 @@ static int bd2606mvv_probe(struct i2c_client *client)
+[1] Details about the MP Wakeup structure can be found in ACPI v6.4, in
+    the "Multiprocessor Wakeup Structure" section.
 
- 	i2c_set_clientdata(client, priv);
+Fixes: 24dd05da8c79 ("x86/apic: Mark acpi_mp_wake_* variables as __ro_after_init")
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		struct bd2606mvv_led *led;
+---
 
- 		err = fwnode_property_read_u32(child, "reg", &reg);
--		if (err) {
--			fwnode_handle_put(child);
-+		if (err)
- 			return err;
--		}
--		if (reg < 0 || reg >= BD2606_MAX_LEDS || led_fwnodes[reg]) {
--			fwnode_handle_put(child);
-+
-+		if (reg < 0 || reg >= BD2606_MAX_LEDS || led_fwnodes[reg])
- 			return -EINVAL;
--		}
-+
- 		led = &priv->leds[reg];
--		led_fwnodes[reg] = child;
-+		led_fwnodes[reg] = fwnode_handle_get(child);
- 		active_pairs[reg / 2]++;
- 		led->priv = priv;
- 		led->led_no = reg;
-@@ -129,7 +126,8 @@ static int bd2606mvv_probe(struct i2c_client *client)
- 						     &priv->leds[i].ldev,
- 						     &init_data);
- 		if (err < 0) {
--			fwnode_handle_put(child);
-+			for (j = i; j < BD2606_MAX_LEDS; j++)
-+				fwnode_handle_put(led_fwnodes[j]);
- 			return dev_err_probe(dev, err,
- 					     "couldn't register LED %s\n",
- 					     priv->leds[i].ldev.name);
+V3: https://lore.kernel.org/all/20240702005800.622910-1-zhiquan1.li@intel.com/
 
+Changes since V3:
+- Add Fixes tag for the commit found by Kai.
+- Extend the commit message for the root cause and solution.
 
+V2: https://lore.kernel.org/all/20240628082119.357735-1-zhiquan1.li@intel.com/
 
-Thanks to the call to fwnode_get_handle(child), the child nodes get their
-refcount incremented to be used in the second loop, where all child nodes that
-have not been registered are released in case of error.
+Changes since V2:
+- Modify the commit log as suggested by Kirill.
+- Add Kirill's Reviewed-by tag.
 
-The first loop becomes a scoped one, keeping the `child` variable from being
-accessed anywhere else.
+V1: https://lore.kernel.org/all/20240626073920.176471-1-zhiquan1.li@intel.com/
 
-Any feedback before I send a v2 with this is very welcome.
+Changes since V1:
+- Amend the commit message as per Kirill's comments.
+- Remove the oops message.
+---
+ arch/x86/kernel/acpi/madt_wakeup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
-Javier Carrasco
+diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/madt_wakeup.c
+index 6cfe762be28b..d5ef6215583b 100644
+--- a/arch/x86/kernel/acpi/madt_wakeup.c
++++ b/arch/x86/kernel/acpi/madt_wakeup.c
+@@ -19,7 +19,7 @@
+ static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
+ 
+ /* Virtual address of the Multiprocessor Wakeup Structure mailbox */
+-static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox __ro_after_init;
++static struct acpi_madt_multiproc_wakeup_mailbox *acpi_mp_wake_mailbox;
+ 
+ static u64 acpi_mp_pgd __ro_after_init;
+ static u64 acpi_mp_reset_vector_paddr __ro_after_init;
+
+base-commit: c1ef42a985f0244201ca589f9e5b814b1dc63a07
+-- 
+2.25.1
+
 
