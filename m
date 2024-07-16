@@ -1,221 +1,229 @@
-Return-Path: <linux-acpi+bounces-6887-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6888-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFED931B32
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 21:44:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B739324AF
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 13:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13E1E283750
-	for <lists+linux-acpi@lfdr.de>; Mon, 15 Jul 2024 19:44:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD511F227F2
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 11:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29FE139D00;
-	Mon, 15 Jul 2024 19:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F831990B5;
+	Tue, 16 Jul 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djAFJ9xZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0VhN6dJ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62BF137930;
-	Mon, 15 Jul 2024 19:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969EB196C7C;
+	Tue, 16 Jul 2024 11:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721072685; cv=none; b=tgxbSLcEfKKbSY01AvU1/YJqEYsqi7IbZS6po7k3QvjX6XeVWNZ191wvqxREpT9WbsrJJxzQdGGCXx4kQgYYbusRRRY2B2emOb1MfcKE8VGR7Y2I8DeQxXsRQDwSFdPD23RlNaKHZ2fAT2q5YVZnXsK7GldESS1stqjkNAH0QpY=
+	t=1721128446; cv=none; b=PGmDqMMbtRy9CAWz7D1zktLqh1NaOcCne1iZTw5GPB/+LfyMPhMWyB0wW6640ARlSHo97dYKk4i4+YVbkI+wuABOVJj0vE5nFdAwOBy6AB2kwGDNTMKmMG76ehF1ec+RDuLV3AXkQ8u9Xb3H9s6+1Aodp0jlTAEAeg7fV9H1DAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721072685; c=relaxed/simple;
-	bh=09tIpSCUoyvI4+y9Yb5wCfNrTwUwNt31dEg9O12cLao=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=tsKtzuhfl9T/B/Fu0T92pKXysEcfCjvcIgu5FVctXEukWZUL0pJWyqLb6GUm6qiysRGwlidWokq/zP5ml0Tc6DZkEB+ADtNWD63HGo7OrVzcbXvlj8xnANS7YAwjCm0lFDeG2XQYbEqvi14E6fmuwM44ro+WoK6yqciRU8xKlj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djAFJ9xZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F90C32782;
-	Mon, 15 Jul 2024 19:44:45 +0000 (UTC)
+	s=arc-20240116; t=1721128446; c=relaxed/simple;
+	bh=if+tcTirPJEjQZ9+hNu3pbhZeoosE+eYDqBL2iUCmhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rHy1+azpywQVftRFwwIaCKDX/5CtPveQ5O7R0NTs8TBe4J5CRr5eXXGb7qbbJSDcKL1ulgHrcaPPCMSIr7sArLtLSbJNFHHdT+3Kcuyk4R/GN5i3YA0wMHlizmy/ZhAZU8VIKqISD5UhBNfYEfdB3evuspQWQ7OySAM0i1nKDBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0VhN6dJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C31C116B1;
+	Tue, 16 Jul 2024 11:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721072685;
-	bh=09tIpSCUoyvI4+y9Yb5wCfNrTwUwNt31dEg9O12cLao=;
-	h=From:Date:Subject:To:Cc:From;
-	b=djAFJ9xZevJrWgFAyPK2lktJZKoqSxCYdiZPf34kah2vaDWF1PSxURlAG7cS0UABB
-	 Vsc00wHgJG56PZrJDPNAVY+4y4/9VB03Mitbu2Ikv9VxkFOl2A9KNdydfUlRVo54C+
-	 t0SLilwt+qtaP96DrMz3rblDbfKfWtq1BrPzGloFnkQSBFu2f88p99Scx5rzLmcjYR
-	 /faK+9G/axGfoDKs+wZBwBzGD9yWbzIJwM2PYFDb0ULDbrzUmL6Rso+d3KXCEj4nCo
-	 B95eHb0EgaCUs71fFDwlW2Wv7+0EabuOfCpJNNMuLMwbGxkDpenN55I/CNh+0c41e/
-	 3wqJeInfLJGfA==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-25e55d0f551so512181fac.0;
-        Mon, 15 Jul 2024 12:44:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVh8OjRGfXePOAo4xCw7JTa2SZVkR/ilegJi97NIWSzFQNzmt4z2/tVovOqPGw6fceAXa8QDsL45Nif33EXVhcdPrAWOfDbId4GfFhpLxG7OQIA1AOXiBGWFHgw6oOCiLN9caWSa40=
-X-Gm-Message-State: AOJu0YwYRKqkLZwNMmkVgBj0XHvfiGgNm6WlZyVDZHQl2MR3GGwFdS2a
-	l3YmIlhEq1FaGGvzYEU/p2wGv/N5VkcQ7DvoU68+QtprIcm/HaT6kFNlKAnZzQf9uMi4jqfYz5G
-	rGJqpaLBGxDTWov8ySHuOCUY4xm0=
-X-Google-Smtp-Source: AGHT+IFdIhzpgKkUMCjoh8gI5MBHJP2G7iuYSazD2Fp6Iml/DUP8CiBuNRK0lKCnTGMMg6TYcUY+d+sfQbSH0SlI8/Y=
-X-Received: by 2002:a05:6871:e2d1:b0:254:a7df:721b with SMTP id
- 586e51a60fabf-260b8d512cdmr365105fac.5.1721072684522; Mon, 15 Jul 2024
- 12:44:44 -0700 (PDT)
+	s=k20201202; t=1721128446;
+	bh=if+tcTirPJEjQZ9+hNu3pbhZeoosE+eYDqBL2iUCmhY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X0VhN6dJqtR1KjO/1/PYElok6T5zjLlAKyzAypL4irsN/XbVAZy4V4Ko34zh46mCO
+	 InPiqKaVQ28tbxcwQ4aVimRVIlcIG7FVByt+0X2HkmQfxKOSXpmdUg7tVXXoPVH3O7
+	 BbMLzCEmNdPLheUOe2MVcpjILhanEbMxkyz6KTiQZpDiolKr6j+cpBRJ2wk7C/sjqQ
+	 hk60jD7l8cR3gBkksbgwjOCoU9d6TY2/m3y2t9kHZ617IrSe3LuiYwKTxaVw+SfXFM
+	 /XDwcDu/Py0vDadDsPVCXJ0VUNSQL7zgFwuHdJEjuK5Diy7HEvAJBTt1a5YVs8Sy7X
+	 kjipDXq1Ftupw==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Rapoport <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	x86@kernel.org
+Subject: [PATCH 00/17] mm: introduce numa_memblks
+Date: Tue, 16 Jul 2024 14:13:29 +0300
+Message-ID: <20240716111346.3676969-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 15 Jul 2024 21:44:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jtWq5kTmM_DRPwFZZCziqY11TMP8rYtj8UQHHfRKX6tg@mail.gmail.com>
-Message-ID: <CAJZ5v0jtWq5kTmM_DRPwFZZCziqY11TMP8rYtj8UQHHfRKX6tg@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v6.11-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Please pull from the tag
+Hi,
 
- git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
- acpi-6.11-rc1
+Following the discussion about handling of CXL fixed memory windows on
+arm64 [1] I decided to bite the bullet and move numa_memblks from x86 to
+the generic code so they will be available on arm64/riscv and maybe on
+loongarch sometime later.
 
-with top-most commit b77b0bc85b117119764107f3ee76e8877bf826ab
+While it could be possible to use memblock to describe CXL memory windows,
+it currently lacks notion of unpopulated memory ranges and numa_memblks
+does implement this.
 
- Merge branch 'acpi-misc'
+Another reason to make numa_memblks generic is that both arch_numa (arm64
+and riscv) and loongarch use trimmed copy of x86 code although there is no
+fundamental reason why the same code cannot be used on all these platforms.
+Having numa_memblks in mm/ will make it's interaction with ACPI and FDT
+more consistent and I believe will reduce maintenance burden.
 
-on top of commit 233323f9b9f828cd7cd5145ad811c1990b692542
+And with generic numa_memblks it is (almost) straightforward to enable NUMA
+emulation on arm64 and riscv.
 
- ACPI: processor_idle: Fix invalid comparison with insertion sort for laten=
-cy
+The first 5 commits in this series are cleanups that are not strictly
+related to numa_memblks.
 
-to receive ACPI updates for 6.11-rc1.
+Commits 6-11 slightly reorder code in x86 to allow extracting numa_memblks
+and NUMA emulation to the generic code.
 
-The only kind of new feature added by these is the hwmon interface
-support in the ACPI fan driver.  Apart from that, they mostly address
-issues and clean up code.
+Commits 12-14 actually move the code from arch/x86/ to mm/ and commit 15
+does some aftermath cleanups.
 
-Specifics:
+Commit 16 switches arch_numa to numa_memblks.
 
- - Switch the ACPI x86 utility code and the ACPI LPSS driver to new
-   Intel CPU model defines (Tony Luck).
+Commit 17 enables usage of phys_to_target_node() and
+memory_add_physaddr_to_nid() with numa_memblks.
 
- - Add hwmon interface support to the ACPI fan driver (Armin Wolf).
+[1] https://lore.kernel.org/all/20240529171236.32002-1-Jonathan.Cameron@huawei.com/
 
- - Add sysfs entry for guaranteed performance to the ACPI CPPC library
-   and replace a ternary operator with umax() in it (Petr Tesa=C5=99=C3=ADk=
-,
-   Prabhakar Pujeri).
+Mike Rapoport (Microsoft) (17):
+  mm: move kernel/numa.c to mm/
+  MIPS: sgi-ip27: make NODE_DATA() the same as on all other
+    architectures
+  MIPS: loongson64: rename __node_data to node_data
+  arch, mm: move definition of node_data to generic code
+  arch, mm: pull out allocation of NODE_DATA to generic code
+  x86/numa: simplify numa_distance allocation
+  x86/numa: move FAKE_NODE_* defines to numa_emu
+  x86/numa_emu: simplify allocation of phys_dist
+  x86/numa_emu: split __apicid_to_node update to a helper function
+  x86/numa_emu: use a helper function to get MAX_DMA32_PFN
+  x86/numa: numa_{add,remove}_cpu: make cpu parameter unsigned
+  mm: introduce numa_memblks
+  mm: move numa_distance and related code from x86 to numa_memblks
+  mm: introduce numa_emulation
+  mm: make numa_memblks more self-contained
+  arch_numa: switch over to numa_memblks
+  mm: make range-to-target_node lookup facility a part of numa_memblks
 
- - Clean up the ACPI PMIC driver in multiple ways (Andy Shevchenko,
-   Christophe JAILLET).
+ arch/arm64/include/asm/Kbuild                 |   1 +
+ arch/arm64/include/asm/mmzone.h               |  13 -
+ arch/arm64/include/asm/topology.h             |   1 +
+ arch/loongarch/include/asm/Kbuild             |   1 +
+ arch/loongarch/include/asm/mmzone.h           |  16 -
+ arch/loongarch/include/asm/topology.h         |   1 +
+ arch/loongarch/kernel/numa.c                  |  21 -
+ arch/mips/include/asm/mach-ip27/mmzone.h      |   1 -
+ .../mips/include/asm/mach-loongson64/mmzone.h |   4 -
+ arch/mips/loongson64/numa.c                   |  20 +-
+ arch/mips/sgi-ip27/ip27-memory.c              |   2 +-
+ arch/powerpc/include/asm/mmzone.h             |   6 -
+ arch/powerpc/mm/numa.c                        |  26 +-
+ arch/riscv/include/asm/Kbuild                 |   1 +
+ arch/riscv/include/asm/mmzone.h               |  13 -
+ arch/riscv/include/asm/topology.h             |   4 +
+ arch/s390/include/asm/Kbuild                  |   1 +
+ arch/s390/include/asm/mmzone.h                |  17 -
+ arch/s390/kernel/numa.c                       |   3 -
+ arch/sh/include/asm/mmzone.h                  |   3 -
+ arch/sh/mm/init.c                             |   7 +-
+ arch/sh/mm/numa.c                             |   3 -
+ arch/sparc/include/asm/mmzone.h               |   4 -
+ arch/sparc/mm/init_64.c                       |  11 +-
+ arch/x86/Kconfig                              |   9 +-
+ arch/x86/include/asm/Kbuild                   |   1 +
+ arch/x86/include/asm/mmzone.h                 |   6 -
+ arch/x86/include/asm/mmzone_32.h              |  17 -
+ arch/x86/include/asm/mmzone_64.h              |  18 -
+ arch/x86/include/asm/numa.h                   |  24 +-
+ arch/x86/include/asm/sparsemem.h              |   9 -
+ arch/x86/mm/Makefile                          |   1 -
+ arch/x86/mm/amdtopology.c                     |   1 +
+ arch/x86/mm/numa.c                            | 618 +-----------------
+ arch/x86/mm/numa_internal.h                   |  24 -
+ drivers/acpi/numa/srat.c                      |   1 +
+ drivers/base/Kconfig                          |   1 +
+ drivers/base/arch_numa.c                      | 223 ++-----
+ drivers/cxl/Kconfig                           |   2 +-
+ drivers/dax/Kconfig                           |   2 +-
+ drivers/of/of_numa.c                          |   1 +
+ include/asm-generic/mmzone.h                  |   5 +
+ include/asm-generic/numa.h                    |   6 +-
+ include/linux/numa.h                          |   5 +
+ include/linux/numa_memblks.h                  |  58 ++
+ kernel/Makefile                               |   1 -
+ kernel/numa.c                                 |  26 -
+ mm/Kconfig                                    |  11 +
+ mm/Makefile                                   |   3 +
+ mm/numa.c                                     |  57 ++
+ {arch/x86/mm => mm}/numa_emulation.c          |  42 +-
+ mm/numa_memblks.c                             | 565 ++++++++++++++++
+ 52 files changed, 847 insertions(+), 1070 deletions(-)
+ delete mode 100644 arch/arm64/include/asm/mmzone.h
+ delete mode 100644 arch/loongarch/include/asm/mmzone.h
+ delete mode 100644 arch/riscv/include/asm/mmzone.h
+ delete mode 100644 arch/s390/include/asm/mmzone.h
+ delete mode 100644 arch/x86/include/asm/mmzone.h
+ delete mode 100644 arch/x86/include/asm/mmzone_32.h
+ delete mode 100644 arch/x86/include/asm/mmzone_64.h
+ create mode 100644 include/asm-generic/mmzone.h
+ create mode 100644 include/linux/numa_memblks.h
+ delete mode 100644 kernel/numa.c
+ create mode 100644 mm/numa.c
+ rename {arch/x86/mm => mm}/numa_emulation.c (94%)
+ create mode 100644 mm/numa_memblks.c
 
- - Add support for charge limiting state to the ACPI battery driver
-   and update _OSC to indicate support for it (Armin Wolf).
 
- - Clean up the sysfs interface in the ACPI battery, SBS (smart battery
-   subsystem) and AC drivers (Thomas Wei=C3=9Fschuh).
+base-commit: 22a40d14b572deb80c0648557f4bd502d7e83826
+-- 
+2.43.0
 
- - Coordinate header includes in the ACPI NUMA code and make it use
-   ACCESS_COORDINATE_CPU when appropriate (Huang Ying, Thorsten Blum).
-
- - Downgrade Intel _OSC and _PDC messages in the ACPI processor driver
-   to debug to reduce log noise (Mario Limonciello).
-
- - Still evaluate _OST when _PUR evaluation fails in the ACPI PAD
-   (processor aggregator) driver as per the spec (Armin Wolf).
-
- - Skip ACPI IRQ override on Asus Vivobook Pro N6506MJ and N6506MU
-   platforms (Tamim Khan).
-
- - Force native mode on some T2 macbooks in the ACPI backlight driver
-   and replace strcpy() with strscpy() in it (Orlando Chamberlain,
-   Muhammad Qasim Abdul Majeed).
-
- - Add missing MODULE_DESCRIPTION() macros in two places (Jeff Johnson).
-
-Thanks!
-
-
----------------
-
-Andy Shevchenko (3):
-      ACPI: PMIC: Use sizeof() instead of hard coded value
-      ACPI: PMIC: Convert pr_*() to dev_*() printing macros
-      ACPI: PMIC: Replace open coded be16_to_cpu()
-
-Armin Wolf (4):
-      ACPI: fan: Add hwmon support
-      ACPI: acpi_pad: Still evaluate _OST when _PUR evaluation fails
-      ACPI: battery: Add support for charge limiting state
-      ACPI: bus: Indicate support for battery charge limiting thru _OSC
-
-Christophe JAILLET (1):
-      ACPI: PMIC: Constify struct pmic_table
-
-Huang Ying (1):
-      ACPI: HMAT: Use ACCESS_COORDINATE_CPU when appropriate
-
-Jeff Johnson (1):
-      ACPI: add missing MODULE_DESCRIPTION() macros
-
-Mario Limonciello (1):
-      ACPI: processor: Downgrade Intel _OSC and _PDC messages to debug
-
-Muhammad Qasim Abdul Majeed (1):
-      ACPI: video: Use strscpy() instead of strcpy()
-
-Orlando Chamberlain (1):
-      ACPI: video: force native for some T2 macbooks
-
-Petr Tesa=C5=99=C3=ADk (1):
-      ACPI: CPPC: add sysfs entry for guaranteed performance
-
-Prabhakar Pujeri (1):
-      ACPI: CPPC: Replace ternary operator with umax()
-
-Tamim Khan (2):
-      ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MU
-      ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MJ
-
-Thomas Wei=C3=9Fschuh (6):
-      ACPI: AC: constify powersupply properties
-      ACPI: SBS: constify powersupply properties
-      ACPI: battery: constify powersupply properties
-      ACPI: battery: use sysfs_emit over sprintf
-      ACPI: battery: create alarm sysfs attribute atomically
-      ACPI: SBS: manage alarm sysfs attribute through psy core
-
-Thorsten Blum (1):
-      ACPI: NUMA: Consolidate header includes
-
-Tony Luck (2):
-      ACPI: LPSS: Switch to new Intel CPU model defines
-      ACPI: x86: Switch to new Intel CPU model defines
-
----------------
-
- drivers/acpi/Makefile                   |   1 +
- drivers/acpi/ac.c                       |   2 +-
- drivers/acpi/acpi_pad.c                 |  19 +++-
- drivers/acpi/acpi_processor.c           |   4 +-
- drivers/acpi/acpi_tad.c                 |   1 +
- drivers/acpi/acpi_video.c               |   8 +-
- drivers/acpi/battery.c                  |  37 ++++---
- drivers/acpi/bus.c                      |   2 +
- drivers/acpi/cppc_acpi.c                |   4 +-
- drivers/acpi/fan.h                      |   9 ++
- drivers/acpi/fan_core.c                 |   4 +
- drivers/acpi/fan_hwmon.c                | 170 ++++++++++++++++++++++++++++=
-++++
- drivers/acpi/numa/hmat.c                |   6 +-
- drivers/acpi/platform_profile.c         |   1 +
- drivers/acpi/pmic/intel_pmic.c          |   2 +-
- drivers/acpi/pmic/intel_pmic.h          |   4 +-
- drivers/acpi/pmic/intel_pmic_bxtwc.c    |   4 +-
- drivers/acpi/pmic/intel_pmic_bytcrc.c   |   4 +-
- drivers/acpi/pmic/intel_pmic_chtdc_ti.c |  17 ++--
- drivers/acpi/pmic/intel_pmic_chtwc.c    |   7 +-
- drivers/acpi/pmic/intel_pmic_xpower.c   |  11 ++-
- drivers/acpi/resource.c                 |  14 +++
- drivers/acpi/sbs.c                      |  29 +++---
- drivers/acpi/video_detect.c             |  16 +++
- drivers/acpi/x86/lpss.c                 |   4 +-
- drivers/acpi/x86/utils.c                |  44 ++++-----
- include/linux/acpi.h                    |   5 +-
- 27 files changed, 338 insertions(+), 91 deletions(-)
 
