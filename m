@@ -1,252 +1,378 @@
-Return-Path: <linux-acpi+bounces-6920-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6921-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBFE932A4D
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 17:20:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC207932F96
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 20:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9618280FDC
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 15:20:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D37D1F23AE5
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 18:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD4919D88D;
-	Tue, 16 Jul 2024 15:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1ED1A01A0;
+	Tue, 16 Jul 2024 18:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V8PQqKx1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIcoFejX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9542198E80;
-	Tue, 16 Jul 2024 15:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F25319DF50;
+	Tue, 16 Jul 2024 18:01:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721143205; cv=none; b=bG/C58+da4BFxcb12rUMLdh/HIsxHWCM2BOhZH3LLYfw2BD1Rt4NAetLSjZe9s49BOYtfH87rf4hWn46wLj8f0B1Sr2klAljSzBu3tyfH8ONgs4W8Rv6gRurC15aan4hG5aB9nBnPa7c05fZHTvfVtqSQ0q14JB7IjTK9dPo42I=
+	t=1721152869; cv=none; b=gpfmeDxO3P5VGaUWluJTZdN15+JuqIPyO+XXcHVCYsPouVxWkbGMRyUURdqkU6vI+lFP7b79G7TdpJc1AHepS7+vn0AAOLWruphrVzmAhg5VCKXY80wbDvA4xxGuYtE80qcGv1uDKSSC6YVhccHReW36Gx1TecF73pXueM9qodo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721143205; c=relaxed/simple;
-	bh=WjBM5G+GY8e/kh9YkVNFE9Gx2GSX+r2vEHO6noqqA+w=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=pO3FLZ3oaeCky+1+TtpTva+h6QIGjZ1wv+vrxiym5XL+ASN5SoWI9kegA+b+3xjgv+/wHgmobUsNs7Ou1NIiKhbfucjX4xg6M5IIIdrcraUgWdmnkoHbubmBK2XyQauYEbtTNPdkipFQBnTyMI0xNpvg1fcJFau4oeXTJniZCd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V8PQqKx1; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721143204; x=1752679204;
-  h=date:from:to:cc:subject:message-id;
-  bh=WjBM5G+GY8e/kh9YkVNFE9Gx2GSX+r2vEHO6noqqA+w=;
-  b=V8PQqKx1t79NyUKUTinTxA/AjGp85QzZPpd//C4QKY8+GI4jRXIPzuNT
-   liaMrW8uHpFEA8/pxZ1+jWOp7sOYtQdYScx6rj25tQSnEiLb79Cm3IP2R
-   IeR4/teje+xqHu1ffC5nDT0i5pg6iyIshtTWYlGELI0CEpQPFiE7y8Oxu
-   mH95eYVXIV6X6lOPa5kbvZY9RQ97SoIIhfjFaYycBPvskL748ULUKT8X4
-   iZWeDXQClalStItV9TZaDLGRAexspS0/Ji2JGxZJpte93TqwWUZUXBxhy
-   peb0EZGCLKWbZqXyA5mIpf6vhK/ri42sWNv2PAdYWpLDLE8P3BeuImm8Z
-   Q==;
-X-CSE-ConnectionGUID: LMfYt++yRK23/dKI8mDwDw==
-X-CSE-MsgGUID: rpa0D0FmQzS93Tkf4MR7HQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18785189"
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="18785189"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 08:20:03 -0700
-X-CSE-ConnectionGUID: Ttssp2f4TyeAQOv18cOJ5A==
-X-CSE-MsgGUID: FZDlUIHkRi2RKgnv3iB54w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="55200220"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 16 Jul 2024 08:20:02 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sTjyB-000fNT-1r;
-	Tue, 16 Jul 2024 15:19:59 +0000
-Date: Tue, 16 Jul 2024 23:19:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 218ca41f1f26732bf9b2d041ba0e7e52a1c29ad2
-Message-ID: <202407162315.2xwWE5Tl-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1721152869; c=relaxed/simple;
+	bh=KR/9+FSOLnHKUZvGl6uia0Q1acLO/mzhJgsAr7JoUoM=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7z7gYwZsRnHttfMV04nOVo1au0gkKK6Wmfz/VRvlQeMSDvXknLZaqgdZfCKsTawxvoWFimUjGQpV1LzFsFc2A4WgyL+KIyE1FJS63L8qRCi/IzhWN2XkDBT8I8V41GRRtot+x+6U2+E+O3r8LdWDpOoJ5xARIHtLRU8+bScpvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIcoFejX; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-71871d5e087so4313310a12.1;
+        Tue, 16 Jul 2024 11:01:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721152867; x=1721757667; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=n1C1Q6iQjSP7jJaIPmzSv+qHxYtW3M+ElpgX8xl2QsM=;
+        b=XIcoFejXsus21r7IqF95bZlAqGz9vP8XwuS/eaJLAUUdYHcW0Ap56mzaYJywWmhEX1
+         gyOVJnXx3pTrKD5pRl5P3ePhC15jLU/TGCwp5moASa+3BZNQ3T+JC0+ogkUE15fDS0XZ
+         fJHOKmwxi6Yty9CuqMX48MBIJZ/OMrAMEHjz9tZTlXYhZvV7520+5RfDXxtZH31pi1JG
+         KobUokUiP/cOBcvEpa+rdcdHrTSgpOGUCI337Sa/uuZ3vQtxoHGfZb/yPwi7tIHy6Blc
+         kB0wB+vMO0V4o6HqWa5a1kGWDEV+cSF6lHC1pClXiin4th9w3ArKEMCnuIgnYkp+V2MU
+         FEdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721152867; x=1721757667;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n1C1Q6iQjSP7jJaIPmzSv+qHxYtW3M+ElpgX8xl2QsM=;
+        b=N2b/jm8wNMOIajoapwEsNbtHgNe89bPg6z7CJuQiNswKC2wq5VXILaTcJSRayei/zS
+         r/CK9HM210kYfnmpaRze9/cRkUxo0BT1jc0Cfmr2rfrGN9p/eo7CCkvnSRzFXLscCzpU
+         hz1lZzsNNStIMk+73q2Zzb1YHo0bVBALdnkHyU03Kqgk5WtP+qRTqMgLQ6XqwbbxK1eJ
+         qMlfKeK+ECpr8LeZQpPYBxBhpdocouvv2kqx/1G97uTe/fmmWxSXBn5B/wh4KgbTc26z
+         co6UgbKc2AqejSfrXsuhrmxjaTka/ZywoDivTntg9KSb/OF+s54PypJpqP8crggjHtRO
+         NY3w==
+X-Forwarded-Encrypted: i=1; AJvYcCUf5iIdsIybEiuYBFxfnzCtW7hxPCNEfdIP4NhCqF+wrzJ0zqNJj6kbmm3qDu++BA42vvOhfNQFunFfORFQtXco3sT281XCHNPxEihKDL4HRYe96xETx2aC6Thx+sVlhK4bObsbxLgI55YjdA6XqOxSHj9CqsEni2Zxnm4LYcNTg09OtA==
+X-Gm-Message-State: AOJu0YxNlEIhmCq93IWga9G4So5tvxN5fkfMg5W3VbFP7jnvif4nQRpg
+	x+RhdqiF9kSfKxE3Ev50zHCwPGxEwTEhCYcWvtrxfc2N3y+dtBhH
+X-Google-Smtp-Source: AGHT+IFtDdCXzBbpOEOVaX0vdT2j/8BHFC/NJmlOuKch/r1HJV8JlFsde906AZeDoj+jcBOzp4et2Q==
+X-Received: by 2002:a05:6a20:72a6:b0:1c0:e4d6:9bec with SMTP id adf61e73a8af0-1c3f11f31e9mr3823389637.7.1721152867104;
+        Tue, 16 Jul 2024 11:01:07 -0700 (PDT)
+Received: from debian ([2601:646:8f03:9fee:9e58:7df9:6d36:6c31])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b81972f56sm6398629b3a.84.2024.07.16.11.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jul 2024 11:01:06 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Tue, 16 Jul 2024 11:00:48 -0700
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [RFC PATCH v9 01/11] EDAC: Add generic EDAC RAS feature driver
+Message-ID: <Zpa1UNTOcJgcq2q5@debian>
+References: <20240716150336.2042-1-shiju.jose@huawei.com>
+ <20240716150336.2042-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716150336.2042-2-shiju.jose@huawei.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 218ca41f1f26732bf9b2d041ba0e7e52a1c29ad2  Merge branch 'thermal' into linux-next
+On Tue, Jul 16, 2024 at 04:03:25PM +0100, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
+> 
+> Add generic EDAC driver supports registering RAS features supported
+> in the system. The driver exposes feature's control attributes to the
+> userspace in /sys/bus/edac/devices/<dev-name>/<ras-feature>/
+> 
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/edac/Makefile            |   1 +
+>  drivers/edac/edac_ras_feature.c  | 155 +++++++++++++++++++++++++++++++
+>  include/linux/edac_ras_feature.h |  66 +++++++++++++
+>  3 files changed, 222 insertions(+)
+>  create mode 100755 drivers/edac/edac_ras_feature.c
+>  create mode 100755 include/linux/edac_ras_feature.h
+> 
+> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+> index 9c09893695b7..c532b57a6d8a 100644
+> --- a/drivers/edac/Makefile
+> +++ b/drivers/edac/Makefile
+> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
+>  
+>  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
+>  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
+> +edac_core-y	+= edac_ras_feature.o
+>  
+>  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
+>  
+> diff --git a/drivers/edac/edac_ras_feature.c b/drivers/edac/edac_ras_feature.c
+> new file mode 100755
+> index 000000000000..24a729fea66f
+> --- /dev/null
+> +++ b/drivers/edac/edac_ras_feature.c
+> @@ -0,0 +1,155 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * EDAC RAS control feature driver supports registering RAS
+> + * features with the EDAC and exposes the feature's control
+> + * attributes to the userspace in sysfs.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#define pr_fmt(fmt)     "EDAC RAS CONTROL FEAT: " fmt
+> +
+> +#include <linux/edac_ras_feature.h>
+> +
+> +static void edac_ras_dev_release(struct device *dev)
+> +{
+> +	struct edac_ras_feat_ctx *ctx =
+> +		container_of(dev, struct edac_ras_feat_ctx, dev);
+> +
+> +	kfree(ctx);
+> +}
+> +
+> +const struct device_type edac_ras_dev_type = {
+> +	.name = "edac_ras_dev",
+> +	.release = edac_ras_dev_release,
+> +};
+> +
+> +static void edac_ras_dev_unreg(void *data)
+> +{
+> +	device_unregister(data);
+> +}
+> +
+> +static int edac_ras_feat_scrub_init(struct device *parent,
+> +				    struct edac_scrub_data *sdata,
+> +				    const struct edac_ras_feature *sfeat,
+> +				    const struct attribute_group **attr_groups)
+> +{
+> +	sdata->ops = sfeat->scrub_ops;
+> +	sdata->private = sfeat->scrub_ctx;
+> +
+> +	return 1;
+> +}
+> +
+> +static int edac_ras_feat_ecs_init(struct device *parent,
+> +				  struct edac_ecs_data *edata,
+> +				  const struct edac_ras_feature *efeat,
+> +				  const struct attribute_group **attr_groups)
+> +{
+> +	int num = efeat->ecs_info.num_media_frus;
+> +
+> +	edata->ops = efeat->ecs_ops;
+> +	edata->private = efeat->ecs_ctx;
+> +
+> +	return num;
+> +}
+> +
+> +/**
+> + * edac_ras_dev_register - register device for ras features with edac
+> + * @parent: client device.
+> + * @name: client device's name.
+> + * @private: parent driver's data to store in the context if any.
+> + * @num_features: number of ras features to register.
+> + * @ras_features: list of ras features to register.
+> + *
+> + * Returns 0 on success, error otherwise.
+> + * The new edac_ras_feat_ctx would be freed automatically.
+> + */
+> +int edac_ras_dev_register(struct device *parent, char *name,
+> +			  void *private, int num_features,
+> +			  const struct edac_ras_feature *ras_features)
+> +{
+> +	const struct attribute_group **ras_attr_groups;
+> +	struct edac_ras_feat_ctx *ctx;
+> +	int attr_gcnt = 0;
+> +	int ret, feat;
+> +
+> +	if (!parent || !name || !num_features || !ras_features)
+> +		return -EINVAL;
+> +
+> +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+> +	if (!ctx)
+> +		return -ENOMEM;
+> +
+> +	ctx->dev.parent = parent;
+> +	ctx->private = private;
+> +
+> +	/* Double parse so we can make space for attributes */
+> +	for (feat = 0; feat < num_features; feat++) {
+> +		switch (ras_features[feat].feat) {
+> +		case ras_feat_scrub:
+> +			attr_gcnt++;
+> +			break;
+> +		case ras_feat_ecs:
+> +			attr_gcnt += ras_features[feat].ecs_info.num_media_frus;
+> +			break;
+> +		default:
+> +			ret = -EINVAL;
+> +			goto ctx_free;
+> +		}
+> +	}
+> +
+> +	ras_attr_groups = devm_kzalloc(parent,
+> +				       (attr_gcnt + 1) * sizeof(*ras_attr_groups),
+> +				       GFP_KERNEL);
+> +	if (!ras_attr_groups) {
+> +		ret = -ENOMEM;
+> +		goto ctx_free;
+> +	}
+> +
+> +	attr_gcnt = 0;
+> +	for (feat = 0; feat < num_features; feat++, ras_features++) {
+> +		if (ras_features->feat == ras_feat_scrub) {
+> +			if (!ras_features->scrub_ops)
+> +				continue;
+> +			ret = edac_ras_feat_scrub_init(parent, &ctx->scrub,
+> +						       ras_features, &ras_attr_groups[attr_gcnt]);
+> +			if (ret < 0)
+> +				goto ctx_free;
+> +
+> +			attr_gcnt += ret;
+> +		} else if (ras_features->feat == ras_feat_ecs) {
+> +			if (!ras_features->ecs_ops)
+> +				continue;
+> +			ret = edac_ras_feat_ecs_init(parent, &ctx->ecs,
+> +						     ras_features, &ras_attr_groups[attr_gcnt]);
+> +			if (ret < 0)
+> +				goto ctx_free;
+> +
+> +			attr_gcnt += ret;
+> +		} else {
+> +			ret = -EINVAL;
+> +			goto ctx_free;
+We already check this in the first pass, cannot be reached in the second
+pass.
+> +		}
+Why use if/else instead of using switch/case as above?
+> +	}
+> +	ras_attr_groups[attr_gcnt] = NULL;
+> +	ctx->dev.bus = edac_get_sysfs_subsys();
+> +	ctx->dev.type = &edac_ras_dev_type;
+> +	ctx->dev.groups = ras_attr_groups;
+> +	dev_set_drvdata(&ctx->dev, ctx);
+> +	ret = dev_set_name(&ctx->dev, name);
+> +	if (ret)
+> +		goto ctx_free;
+> +
+> +	ret = device_register(&ctx->dev);
+> +	if (ret) {
+> +		put_device(&ctx->dev);
+need to free ctx?
+> +		return ret;
+> +	}
+> +
+> +	return devm_add_action_or_reset(parent, edac_ras_dev_unreg, &ctx->dev);
+> +
+> +ctx_free:
+> +	kfree(ctx);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(edac_ras_dev_register);
+> diff --git a/include/linux/edac_ras_feature.h b/include/linux/edac_ras_feature.h
+> new file mode 100755
+> index 000000000000..000e99141023
+> --- /dev/null
+> +++ b/include/linux/edac_ras_feature.h
+> @@ -0,0 +1,66 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * EDAC RAS control features.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#ifndef __EDAC_RAS_FEAT_H
+> +#define __EDAC_RAS_FEAT_H
+> +
+> +#include <linux/types.h>
+> +#include <linux/edac.h>
+> +
+> +#define EDAC_RAS_NAME_LEN	128
+> +
+> +enum edac_ras_feat {
+> +	ras_feat_scrub,
+> +	ras_feat_ecs,
+> +	ras_feat_max
+> +};
+Use uppercase for the strings.
 
-elapsed time: 1451m
-
-configs tested: 158
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                        nsim_700_defconfig   gcc-13.2.0
-arc                   randconfig-001-20240716   gcc-13.2.0
-arc                   randconfig-002-20240716   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-19
-arm                              allyesconfig   gcc-14.1.0
-arm                           imxrt_defconfig   clang-19
-arm                         nhk8815_defconfig   clang-19
-arm                   randconfig-001-20240716   gcc-14.1.0
-arm                   randconfig-002-20240716   clang-19
-arm                   randconfig-003-20240716   gcc-14.1.0
-arm                   randconfig-004-20240716   gcc-14.1.0
-arm                        shmobile_defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-19
-arm64                             allnoconfig   gcc-14.1.0
-arm64                 randconfig-001-20240716   gcc-14.1.0
-arm64                 randconfig-002-20240716   clang-19
-arm64                 randconfig-003-20240716   gcc-14.1.0
-arm64                 randconfig-004-20240716   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                  randconfig-001-20240716   gcc-14.1.0
-csky                  randconfig-002-20240716   gcc-14.1.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon               randconfig-001-20240716   clang-19
-hexagon               randconfig-002-20240716   clang-19
-i386                             allmodconfig   gcc-13
-i386                              allnoconfig   gcc-13
-i386                             allyesconfig   gcc-13
-i386         buildonly-randconfig-001-20240716   clang-18
-i386         buildonly-randconfig-002-20240716   clang-18
-i386         buildonly-randconfig-003-20240716   clang-18
-i386         buildonly-randconfig-004-20240716   clang-18
-i386         buildonly-randconfig-005-20240716   clang-18
-i386         buildonly-randconfig-006-20240716   clang-18
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240716   clang-18
-i386                  randconfig-002-20240716   clang-18
-i386                  randconfig-003-20240716   gcc-9
-i386                  randconfig-004-20240716   gcc-7
-i386                  randconfig-005-20240716   clang-18
-i386                  randconfig-006-20240716   gcc-9
-i386                  randconfig-011-20240716   gcc-8
-i386                  randconfig-012-20240716   clang-18
-i386                  randconfig-013-20240716   gcc-8
-i386                  randconfig-014-20240716   clang-18
-i386                  randconfig-015-20240716   clang-18
-i386                  randconfig-016-20240716   gcc-10
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch             randconfig-001-20240716   gcc-14.1.0
-loongarch             randconfig-002-20240716   gcc-14.1.0
-m68k                             alldefconfig   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                       m5475evb_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                      mmu_defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                 randconfig-001-20240716   gcc-14.1.0
-nios2                 randconfig-002-20240716   gcc-14.1.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240716   gcc-14.1.0
-parisc                randconfig-002-20240716   gcc-14.1.0
-powerpc                    adder875_defconfig   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-19
-powerpc                      arches_defconfig   gcc-14.1.0
-powerpc                      pmac32_defconfig   clang-19
-powerpc               randconfig-001-20240716   clang-19
-powerpc               randconfig-002-20240716   clang-19
-powerpc               randconfig-003-20240716   clang-19
-powerpc64             randconfig-001-20240716   clang-19
-powerpc64             randconfig-002-20240716   clang-19
-powerpc64             randconfig-003-20240716   gcc-14.1.0
-riscv                            allmodconfig   clang-19
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-19
-riscv                               defconfig   clang-19
-riscv                 randconfig-001-20240716   clang-19
-riscv                 randconfig-002-20240716   clang-19
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-19
-s390                  randconfig-001-20240716   gcc-14.1.0
-s390                  randconfig-002-20240716   clang-15
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                        apsh4ad0a_defconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                               j2_defconfig   gcc-14.1.0
-sh                    randconfig-001-20240716   gcc-14.1.0
-sh                    randconfig-002-20240716   gcc-14.1.0
-sh                        sh7757lcr_defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc                       sparc64_defconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240716   gcc-14.1.0
-sparc64               randconfig-002-20240716   gcc-14.1.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                    randconfig-001-20240716   gcc-13
-um                    randconfig-002-20240716   clang-19
-um                           x86_64_defconfig   clang-15
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240716   gcc-13
-x86_64       buildonly-randconfig-002-20240716   clang-18
-x86_64       buildonly-randconfig-003-20240716   clang-18
-x86_64       buildonly-randconfig-004-20240716   clang-18
-x86_64       buildonly-randconfig-005-20240716   clang-18
-x86_64       buildonly-randconfig-006-20240716   clang-18
-x86_64                              defconfig   gcc-13
-x86_64                randconfig-001-20240716   gcc-13
-x86_64                randconfig-002-20240716   gcc-8
-x86_64                randconfig-003-20240716   gcc-8
-x86_64                randconfig-004-20240716   clang-18
-x86_64                randconfig-005-20240716   gcc-12
-x86_64                randconfig-006-20240716   clang-18
-x86_64                randconfig-011-20240716   clang-18
-x86_64                randconfig-012-20240716   gcc-9
-x86_64                randconfig-013-20240716   gcc-13
-x86_64                randconfig-014-20240716   gcc-13
-x86_64                randconfig-015-20240716   gcc-7
-x86_64                randconfig-016-20240716   clang-18
-x86_64                randconfig-071-20240716   clang-18
-x86_64                randconfig-072-20240716   clang-18
-x86_64                randconfig-073-20240716   clang-18
-x86_64                randconfig-074-20240716   clang-18
-x86_64                randconfig-075-20240716   clang-18
-x86_64                randconfig-076-20240716   clang-18
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                  audio_kc705_defconfig   gcc-14.1.0
-xtensa                randconfig-001-20240716   gcc-14.1.0
-xtensa                randconfig-002-20240716   gcc-14.1.0
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Fan
+> +
+> +struct edac_ecs_ex_info {
+> +	u16 num_media_frus;
+> +};
+> +
+> +/*
+> + * EDAC RAS feature information structure
+> + */
+> +struct edac_scrub_data {
+> +	const struct edac_scrub_ops *ops;
+> +	void *private;
+> +};
+> +
+> +struct edac_ecs_data {
+> +	const struct edac_ecs_ops *ops;
+> +	void *private;
+> +};
+> +
+> +struct device;
+> +
+> +struct edac_ras_feat_ctx {
+> +	struct device dev;
+> +	void *private;
+> +	struct edac_scrub_data scrub;
+> +	struct edac_ecs_data ecs;
+> +};
+> +
+> +struct edac_ras_feature {
+> +	enum edac_ras_feat feat;
+> +	union {
+> +		const struct edac_scrub_ops *scrub_ops;
+> +		const struct edac_ecs_ops *ecs_ops;
+> +	};
+> +	union {
+> +		struct edac_ecs_ex_info ecs_info;
+> +	};
+> +	union {
+> +		void *scrub_ctx;
+> +		void *ecs_ctx;
+> +	};
+> +};
+> +
+> +int edac_ras_dev_register(struct device *parent, char *dev_name,
+> +			  void *parent_pvt_data, int num_features,
+> +			  const struct edac_ras_feature *ras_features);
+> +#endif /* __EDAC_RAS_FEAT_H */
+> -- 
+> 2.34.1
+> 
 
