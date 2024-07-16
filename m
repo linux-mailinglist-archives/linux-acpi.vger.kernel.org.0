@@ -1,589 +1,252 @@
-Return-Path: <linux-acpi+bounces-6919-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6920-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29455932A0F
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 17:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBFE932A4D
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 17:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D29822862DE
-	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 15:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9618280FDC
+	for <lists+linux-acpi@lfdr.de>; Tue, 16 Jul 2024 15:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACA61A2548;
-	Tue, 16 Jul 2024 15:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD4919D88D;
+	Tue, 16 Jul 2024 15:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V8PQqKx1"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768D1A0B19;
-	Tue, 16 Jul 2024 15:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9542198E80;
+	Tue, 16 Jul 2024 15:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721142292; cv=none; b=V4m3uCsxqFWsjEaqX4ygsLQxqGN42fX1gmDhx7N6Q2pGRfpWTjhfTgV3A5pl+njXCGTWQ5JPyEa4jua2m9SPpYiF4iDcaEOOJb/umTCw5LAhqq9lRytg4tXCEQBz/d1RelEGK/ROlcaJlAyakXSQUtB2y4tv528bG2mLPCoRIr0=
+	t=1721143205; cv=none; b=bG/C58+da4BFxcb12rUMLdh/HIsxHWCM2BOhZH3LLYfw2BD1Rt4NAetLSjZe9s49BOYtfH87rf4hWn46wLj8f0B1Sr2klAljSzBu3tyfH8ONgs4W8Rv6gRurC15aan4hG5aB9nBnPa7c05fZHTvfVtqSQ0q14JB7IjTK9dPo42I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721142292; c=relaxed/simple;
-	bh=t0H5faxQpagibVmtvmpAlRDs0gzoxzJby371Z0TZOTA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OcDMAtIFkRwVLJhYajuXwAyvshrVons3dTm0I4tN1N5faNTgAM9hf1JA0rznJ6jYZWM4ohtkAdmAHpSa8igq95hTN9E0zxQyxhNM9zB26ptSu8BoN4RYWJeh9UWGVF/0MwdjwQqSui6ctcUqqqV+CAVEw4paahPZndFsSmrVma8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WNj473gJ3z67M9n;
-	Tue, 16 Jul 2024 23:03:03 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (unknown [7.191.161.198])
-	by mail.maildlp.com (Postfix) with ESMTPS id 618D61400CF;
-	Tue, 16 Jul 2024 23:04:48 +0800 (CST)
-Received: from P_UKIT01-A7bmah.china.huawei.com (10.48.159.153) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 16 Jul 2024 16:04:46 +0100
-From: <shiju.jose@huawei.com>
-To: <linux-edac@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <bp@alien8.de>, <tony.luck@intel.com>, <rafael@kernel.org>,
-	<lenb@kernel.org>, <mchehab@kernel.org>, <dan.j.williams@intel.com>,
-	<dave@stgolabs.net>, <jonathan.cameron@huawei.com>, <dave.jiang@intel.com>,
-	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
-	<ira.weiny@intel.com>, <david@redhat.com>, <Vilas.Sridharan@amd.com>,
-	<leo.duran@amd.com>, <Yazen.Ghannam@amd.com>, <rientjes@google.com>,
-	<jiaqiyan@google.com>, <Jon.Grimm@amd.com>, <dave.hansen@linux.intel.com>,
-	<naoya.horiguchi@nec.com>, <james.morse@arm.com>, <jthoughton@google.com>,
-	<somasundaram.a@hpe.com>, <erdemaktas@google.com>, <pgonda@google.com>,
-	<duenwen@google.com>, <mike.malvestuto@intel.com>, <gthelen@google.com>,
-	<wschwartz@amperecomputing.com>, <dferguson@amperecomputing.com>,
-	<wbs@os.amperecomputing.com>, <nifan.cxl@gmail.com>, <yazen.ghannam@amd.com>,
-	<tanxiaofei@huawei.com>, <prime.zeng@hisilicon.com>,
-	<roberto.sassu@huawei.com>, <kangkang.shen@futurewei.com>,
-	<wanghuiqiang@huawei.com>, <linuxarm@huawei.com>, <shiju.jose@huawei.com>
-Subject: [RFC PATCH v9 11/11] ras: scrub: ACPI RAS2: Add memory ACPI RAS2 driver
-Date: Tue, 16 Jul 2024 16:03:35 +0100
-Message-ID: <20240716150336.2042-12-shiju.jose@huawei.com>
-X-Mailer: git-send-email 2.43.0.windows.1
-In-Reply-To: <20240716150336.2042-1-shiju.jose@huawei.com>
-References: <20240716150336.2042-1-shiju.jose@huawei.com>
+	s=arc-20240116; t=1721143205; c=relaxed/simple;
+	bh=WjBM5G+GY8e/kh9YkVNFE9Gx2GSX+r2vEHO6noqqA+w=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=pO3FLZ3oaeCky+1+TtpTva+h6QIGjZ1wv+vrxiym5XL+ASN5SoWI9kegA+b+3xjgv+/wHgmobUsNs7Ou1NIiKhbfucjX4xg6M5IIIdrcraUgWdmnkoHbubmBK2XyQauYEbtTNPdkipFQBnTyMI0xNpvg1fcJFau4oeXTJniZCd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V8PQqKx1; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721143204; x=1752679204;
+  h=date:from:to:cc:subject:message-id;
+  bh=WjBM5G+GY8e/kh9YkVNFE9Gx2GSX+r2vEHO6noqqA+w=;
+  b=V8PQqKx1t79NyUKUTinTxA/AjGp85QzZPpd//C4QKY8+GI4jRXIPzuNT
+   liaMrW8uHpFEA8/pxZ1+jWOp7sOYtQdYScx6rj25tQSnEiLb79Cm3IP2R
+   IeR4/teje+xqHu1ffC5nDT0i5pg6iyIshtTWYlGELI0CEpQPFiE7y8Oxu
+   mH95eYVXIV6X6lOPa5kbvZY9RQ97SoIIhfjFaYycBPvskL748ULUKT8X4
+   iZWeDXQClalStItV9TZaDLGRAexspS0/Ji2JGxZJpte93TqwWUZUXBxhy
+   peb0EZGCLKWbZqXyA5mIpf6vhK/ri42sWNv2PAdYWpLDLE8P3BeuImm8Z
+   Q==;
+X-CSE-ConnectionGUID: LMfYt++yRK23/dKI8mDwDw==
+X-CSE-MsgGUID: rpa0D0FmQzS93Tkf4MR7HQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18785189"
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
+   d="scan'208";a="18785189"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2024 08:20:03 -0700
+X-CSE-ConnectionGUID: Ttssp2f4TyeAQOv18cOJ5A==
+X-CSE-MsgGUID: FZDlUIHkRi2RKgnv3iB54w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
+   d="scan'208";a="55200220"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 16 Jul 2024 08:20:02 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sTjyB-000fNT-1r;
+	Tue, 16 Jul 2024 15:19:59 +0000
+Date: Tue, 16 Jul 2024 23:19:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
+ linux-pm@vger.kernel.org
+Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
+ 218ca41f1f26732bf9b2d041ba0e7e52a1c29ad2
+Message-ID: <202407162315.2xwWE5Tl-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500006.china.huawei.com (7.191.161.198)
 
-From: Shiju Jose <shiju.jose@huawei.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+branch HEAD: 218ca41f1f26732bf9b2d041ba0e7e52a1c29ad2  Merge branch 'thermal' into linux-next
 
-Memory ACPI RAS2 driver binds to the platform device add by the
-ACPI RAS2 table parser.
+elapsed time: 1451m
 
-Driver uses a PCC subspace for communicating with the ACPI compliant
-platform to provide control of memory scrub parameters to the userspace
-via the edac scrub.
+configs tested: 158
+configs skipped: 4
 
-Get the scrub attr descriptors from the EDAC scrub and register with EDAC
-RAS feature driver to expose sysfs scrub control attributes to the userspace.
-For example scrub control for the RAS2 memory device is exposed in
-/sys/bus/edac/devices/acpi_ras2_mem0/scrub/
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
----
- Documentation/scrub/edac-scrub.rst |  37 +++
- drivers/ras/Kconfig                |  10 +
- drivers/ras/Makefile               |   1 +
- drivers/ras/acpi_ras2.c            | 401 +++++++++++++++++++++++++++++
- 4 files changed, 449 insertions(+)
- create mode 100644 drivers/ras/acpi_ras2.c
+tested configs:
+alpha                             allnoconfig   gcc-13.3.0
+alpha                            allyesconfig   gcc-13.3.0
+arc                              allmodconfig   gcc-13.2.0
+arc                               allnoconfig   gcc-13.2.0
+arc                              allyesconfig   gcc-13.2.0
+arc                        nsim_700_defconfig   gcc-13.2.0
+arc                   randconfig-001-20240716   gcc-13.2.0
+arc                   randconfig-002-20240716   gcc-13.2.0
+arm                              allmodconfig   gcc-14.1.0
+arm                               allnoconfig   clang-19
+arm                              allyesconfig   gcc-14.1.0
+arm                           imxrt_defconfig   clang-19
+arm                         nhk8815_defconfig   clang-19
+arm                   randconfig-001-20240716   gcc-14.1.0
+arm                   randconfig-002-20240716   clang-19
+arm                   randconfig-003-20240716   gcc-14.1.0
+arm                   randconfig-004-20240716   gcc-14.1.0
+arm                        shmobile_defconfig   gcc-14.1.0
+arm64                            allmodconfig   clang-19
+arm64                             allnoconfig   gcc-14.1.0
+arm64                 randconfig-001-20240716   gcc-14.1.0
+arm64                 randconfig-002-20240716   clang-19
+arm64                 randconfig-003-20240716   gcc-14.1.0
+arm64                 randconfig-004-20240716   gcc-14.1.0
+csky                              allnoconfig   gcc-14.1.0
+csky                  randconfig-001-20240716   gcc-14.1.0
+csky                  randconfig-002-20240716   gcc-14.1.0
+hexagon                          allmodconfig   clang-19
+hexagon                           allnoconfig   clang-19
+hexagon                          allyesconfig   clang-19
+hexagon               randconfig-001-20240716   clang-19
+hexagon               randconfig-002-20240716   clang-19
+i386                             allmodconfig   gcc-13
+i386                              allnoconfig   gcc-13
+i386                             allyesconfig   gcc-13
+i386         buildonly-randconfig-001-20240716   clang-18
+i386         buildonly-randconfig-002-20240716   clang-18
+i386         buildonly-randconfig-003-20240716   clang-18
+i386         buildonly-randconfig-004-20240716   clang-18
+i386         buildonly-randconfig-005-20240716   clang-18
+i386         buildonly-randconfig-006-20240716   clang-18
+i386                                defconfig   clang-18
+i386                  randconfig-001-20240716   clang-18
+i386                  randconfig-002-20240716   clang-18
+i386                  randconfig-003-20240716   gcc-9
+i386                  randconfig-004-20240716   gcc-7
+i386                  randconfig-005-20240716   clang-18
+i386                  randconfig-006-20240716   gcc-9
+i386                  randconfig-011-20240716   gcc-8
+i386                  randconfig-012-20240716   clang-18
+i386                  randconfig-013-20240716   gcc-8
+i386                  randconfig-014-20240716   clang-18
+i386                  randconfig-015-20240716   clang-18
+i386                  randconfig-016-20240716   gcc-10
+loongarch                        allmodconfig   gcc-14.1.0
+loongarch                         allnoconfig   gcc-14.1.0
+loongarch             randconfig-001-20240716   gcc-14.1.0
+loongarch             randconfig-002-20240716   gcc-14.1.0
+m68k                             alldefconfig   gcc-14.1.0
+m68k                             allmodconfig   gcc-14.1.0
+m68k                              allnoconfig   gcc-14.1.0
+m68k                             allyesconfig   gcc-14.1.0
+m68k                       m5475evb_defconfig   gcc-14.1.0
+microblaze                       allmodconfig   gcc-14.1.0
+microblaze                        allnoconfig   gcc-14.1.0
+microblaze                       allyesconfig   gcc-14.1.0
+microblaze                      mmu_defconfig   gcc-14.1.0
+mips                              allnoconfig   gcc-14.1.0
+nios2                             allnoconfig   gcc-14.1.0
+nios2                 randconfig-001-20240716   gcc-14.1.0
+nios2                 randconfig-002-20240716   gcc-14.1.0
+openrisc                          allnoconfig   gcc-14.1.0
+openrisc                         allyesconfig   gcc-14.1.0
+openrisc                            defconfig   gcc-14.1.0
+parisc                           allmodconfig   gcc-14.1.0
+parisc                            allnoconfig   gcc-14.1.0
+parisc                           allyesconfig   gcc-14.1.0
+parisc                              defconfig   gcc-14.1.0
+parisc                randconfig-001-20240716   gcc-14.1.0
+parisc                randconfig-002-20240716   gcc-14.1.0
+powerpc                    adder875_defconfig   gcc-14.1.0
+powerpc                          allmodconfig   gcc-14.1.0
+powerpc                           allnoconfig   gcc-14.1.0
+powerpc                          allyesconfig   clang-19
+powerpc                      arches_defconfig   gcc-14.1.0
+powerpc                      pmac32_defconfig   clang-19
+powerpc               randconfig-001-20240716   clang-19
+powerpc               randconfig-002-20240716   clang-19
+powerpc               randconfig-003-20240716   clang-19
+powerpc64             randconfig-001-20240716   clang-19
+powerpc64             randconfig-002-20240716   clang-19
+powerpc64             randconfig-003-20240716   gcc-14.1.0
+riscv                            allmodconfig   clang-19
+riscv                             allnoconfig   gcc-14.1.0
+riscv                            allyesconfig   clang-19
+riscv                               defconfig   clang-19
+riscv                 randconfig-001-20240716   clang-19
+riscv                 randconfig-002-20240716   clang-19
+s390                             allmodconfig   clang-19
+s390                              allnoconfig   clang-19
+s390                             allyesconfig   gcc-14.1.0
+s390                                defconfig   clang-19
+s390                  randconfig-001-20240716   gcc-14.1.0
+s390                  randconfig-002-20240716   clang-15
+sh                               allmodconfig   gcc-14.1.0
+sh                                allnoconfig   gcc-14.1.0
+sh                               allyesconfig   gcc-14.1.0
+sh                        apsh4ad0a_defconfig   gcc-14.1.0
+sh                                  defconfig   gcc-14.1.0
+sh                               j2_defconfig   gcc-14.1.0
+sh                    randconfig-001-20240716   gcc-14.1.0
+sh                    randconfig-002-20240716   gcc-14.1.0
+sh                        sh7757lcr_defconfig   gcc-14.1.0
+sparc                            allmodconfig   gcc-14.1.0
+sparc                       sparc64_defconfig   gcc-14.1.0
+sparc64                             defconfig   gcc-14.1.0
+sparc64               randconfig-001-20240716   gcc-14.1.0
+sparc64               randconfig-002-20240716   gcc-14.1.0
+um                               allmodconfig   clang-19
+um                                allnoconfig   clang-17
+um                               allyesconfig   gcc-13
+um                                  defconfig   clang-19
+um                             i386_defconfig   gcc-13
+um                    randconfig-001-20240716   gcc-13
+um                    randconfig-002-20240716   clang-19
+um                           x86_64_defconfig   clang-15
+x86_64                            allnoconfig   clang-18
+x86_64                           allyesconfig   clang-18
+x86_64       buildonly-randconfig-001-20240716   gcc-13
+x86_64       buildonly-randconfig-002-20240716   clang-18
+x86_64       buildonly-randconfig-003-20240716   clang-18
+x86_64       buildonly-randconfig-004-20240716   clang-18
+x86_64       buildonly-randconfig-005-20240716   clang-18
+x86_64       buildonly-randconfig-006-20240716   clang-18
+x86_64                              defconfig   gcc-13
+x86_64                randconfig-001-20240716   gcc-13
+x86_64                randconfig-002-20240716   gcc-8
+x86_64                randconfig-003-20240716   gcc-8
+x86_64                randconfig-004-20240716   clang-18
+x86_64                randconfig-005-20240716   gcc-12
+x86_64                randconfig-006-20240716   clang-18
+x86_64                randconfig-011-20240716   clang-18
+x86_64                randconfig-012-20240716   gcc-9
+x86_64                randconfig-013-20240716   gcc-13
+x86_64                randconfig-014-20240716   gcc-13
+x86_64                randconfig-015-20240716   gcc-7
+x86_64                randconfig-016-20240716   clang-18
+x86_64                randconfig-071-20240716   clang-18
+x86_64                randconfig-072-20240716   clang-18
+x86_64                randconfig-073-20240716   clang-18
+x86_64                randconfig-074-20240716   clang-18
+x86_64                randconfig-075-20240716   clang-18
+x86_64                randconfig-076-20240716   clang-18
+x86_64                          rhel-8.3-rust   clang-18
+xtensa                            allnoconfig   gcc-14.1.0
+xtensa                  audio_kc705_defconfig   gcc-14.1.0
+xtensa                randconfig-001-20240716   gcc-14.1.0
+xtensa                randconfig-002-20240716   gcc-14.1.0
 
-diff --git a/Documentation/scrub/edac-scrub.rst b/Documentation/scrub/edac-scrub.rst
-index cf7d8b130204..da9cd2e73687 100644
---- a/Documentation/scrub/edac-scrub.rst
-+++ b/Documentation/scrub/edac-scrub.rst
-@@ -68,3 +68,40 @@ root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub/enable_background
- root@localhost:~# echo 0 > /sys/bus/edac/devices/cxl_region0/scrub/enable_background
- root@localhost:~# cat /sys/bus/edac/devices/cxl_region0/scrub/enable_background
- 0
-+
-+2. RAS2
-+2.1 On demand scrubbing for a specific memory region.
-+root@localhost:~# echo 0x120000 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/addr_range_base
-+root@localhost:~# echo 0x150000 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/addr_range_size
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours_range
-+0x1-0x18
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+0xa
-+root@localhost:~# echo 15 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+root@localhost:~# echo 1 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/enable_on_demand
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/enable_on_demand
-+1
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+0xf
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/addr_range_base
-+0x120000
-+root@localhost:~# cat //sys/bus/edac/devices/acpi_ras2_mem0/scrub/addr_range_size
-+0x150000
-+root@localhost:~# echo 0 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/enable_on_demand
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/enable_on_demand
-+0
-+
-+2.2 Background scrubbing the entire memory
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours_range
-+0x1-0x18
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+0xa
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/enable_background
-+0
-+root@localhost:~# echo 3 > /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+root@localhost:~# echo 1 > /sys/bus/edac/devices/acpi_ras2_mem0/enable_background
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/enable_background
-+1
-+root@localhost:~# cat /sys/bus/edac/devices/acpi_ras2_mem0/scrub/cycle_in_hours
-+0x3
-+root@localhost:~# echo 0 > /sys/bus/edac/devices/acpi_ras2_mem0/enable_background
-diff --git a/drivers/ras/Kconfig b/drivers/ras/Kconfig
-index fc4f4bb94a4c..a2635017d80d 100644
---- a/drivers/ras/Kconfig
-+++ b/drivers/ras/Kconfig
-@@ -46,4 +46,14 @@ config RAS_FMPM
- 	  Memory will be retired during boot time and run time depending on
- 	  platform-specific policies.
- 
-+config MEM_ACPI_RAS2
-+	tristate "Memory ACPI RAS2 driver"
-+	depends on ACPI_RAS2
-+	depends on EDAC
-+	help
-+	  The driver binds to the platform device added by the ACPI RAS2
-+	  table parser. Use a PCC channel subspace for communicating with
-+	  the ACPI compliant platform to provide control of memory scrub
-+	  parameters to the user via the edac scrub.
-+
- endif
-diff --git a/drivers/ras/Makefile b/drivers/ras/Makefile
-index 11f95d59d397..a0e6e903d6b0 100644
---- a/drivers/ras/Makefile
-+++ b/drivers/ras/Makefile
-@@ -2,6 +2,7 @@
- obj-$(CONFIG_RAS)	+= ras.o
- obj-$(CONFIG_DEBUG_FS)	+= debugfs.o
- obj-$(CONFIG_RAS_CEC)	+= cec.o
-+obj-$(CONFIG_MEM_ACPI_RAS2)	+= acpi_ras2.o
- 
- obj-$(CONFIG_RAS_FMPM)	+= amd/fmpm.o
- obj-y			+= amd/atl/
-diff --git a/drivers/ras/acpi_ras2.c b/drivers/ras/acpi_ras2.c
-new file mode 100644
-index 000000000000..49703d8bc4fa
---- /dev/null
-+++ b/drivers/ras/acpi_ras2.c
-@@ -0,0 +1,401 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * ACPI RAS2 memory driver
-+ *
-+ * Copyright (c) 2024 HiSilicon Limited.
-+ *
-+ */
-+
-+#define pr_fmt(fmt)	"MEMORY ACPI RAS2: " fmt
-+
-+#include <linux/edac_ras_feature.h>
-+#include <linux/platform_device.h>
-+#include <acpi/ras2_acpi.h>
-+
-+#define RAS2_DEV_NUM_RAS_FEATURES	1
-+
-+#define RAS2_SUPPORT_HW_PARTOL_SCRUB	BIT(0)
-+#define RAS2_TYPE_PATROL_SCRUB	0x0000
-+
-+#define RAS2_GET_PATROL_PARAMETERS	0x01
-+#define	RAS2_START_PATROL_SCRUBBER	0x02
-+#define	RAS2_STOP_PATROL_SCRUBBER	0x03
-+
-+#define RAS2_PATROL_SCRUB_SCHRS_IN_MASK	GENMASK(15, 8)
-+#define RAS2_PATROL_SCRUB_EN_BACKGROUND	BIT(0)
-+#define RAS2_PATROL_SCRUB_SCHRS_OUT_MASK	GENMASK(7, 0)
-+#define RAS2_PATROL_SCRUB_MIN_SCHRS_OUT_MASK	GENMASK(15, 8)
-+#define RAS2_PATROL_SCRUB_MAX_SCHRS_OUT_MASK	GENMASK(23, 16)
-+#define RAS2_PATROL_SCRUB_FLAG_SCRUBBER_RUNNING	BIT(0)
-+
-+#define RAS2_SCRUB_NAME_LEN      128
-+
-+struct acpi_ras2_ps_shared_mem {
-+	struct acpi_ras2_shared_memory common;
-+	struct acpi_ras2_patrol_scrub_parameter params;
-+};
-+
-+static int ras2_is_patrol_scrub_support(struct ras2_scrub_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_shared_memory __iomem *common = (void *)
-+				ras2_ctx->pcc_subspace->pcc_comm_addr;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	common->set_capabilities[0] = 0;
-+
-+	return common->features[0] & RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+}
-+
-+static int ras2_update_patrol_scrub_params_cache(struct ras2_scrub_ctx *ras2_ctx)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = (void *)
-+					ras2_ctx->pcc_subspace->pcc_comm_addr;
-+	int ret;
-+
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.patrol_scrub_command = RAS2_GET_PATROL_PARAMETERS;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	ras2_ctx->schrs_min = FIELD_GET(RAS2_PATROL_SCRUB_MIN_SCHRS_OUT_MASK,
-+					ps_sm->params.scrub_params_out);
-+	ras2_ctx->schrs_max = FIELD_GET(RAS2_PATROL_SCRUB_MAX_SCHRS_OUT_MASK,
-+					ps_sm->params.scrub_params_out);
-+	if (!ras2_ctx->bg) {
-+		ras2_ctx->base = ps_sm->params.actual_address_range[0];
-+		ras2_ctx->size = ps_sm->params.actual_address_range[1];
-+	}
-+	ras2_ctx->schrs = FIELD_GET(RAS2_PATROL_SCRUB_SCHRS_OUT_MASK,
-+				    ps_sm->params.scrub_params_out);
-+
-+	return 0;
-+}
-+
-+/* Context - lock must be held */
-+static int ras2_get_patrol_scrub_running(struct ras2_scrub_ctx *ras2_ctx,
-+					 bool *running)
-+{
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = (void *)
-+					ras2_ctx->pcc_subspace->pcc_comm_addr;
-+	int ret;
-+
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ps_sm->params.patrol_scrub_command = RAS2_GET_PATROL_PARAMETERS;
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to read parameters\n");
-+		return ret;
-+	}
-+
-+	*running = ps_sm->params.flags & RAS2_PATROL_SCRUB_FLAG_SCRUBBER_RUNNING;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_write_schrs(struct device *dev, void *drv_data, u64 schrs)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (schrs < ras2_ctx->schrs_min || schrs > ras2_ctx->schrs_max)
-+		return -EINVAL;
-+
-+	ras2_ctx->schrs = schrs;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_schrs(struct device *dev, void *drv_data, u64 *schrs)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	*schrs = ras2_ctx->schrs;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_schrs_range(struct device *dev, void *drv_data, u64 *min, u64 *max)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	*min = ras2_ctx->schrs_min;
-+	*max = ras2_ctx->schrs_max;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_read_range(struct device *dev, void *drv_data, u64 *base, u64 *size)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	/*
-+	 * When BG scrubbing is enabled the actual address range is not valid.
-+	 * Return -EBUSY now unless findout a method to retrieve actual full PA range.
-+	 */
-+	if (ras2_ctx->bg)
-+		return -EBUSY;
-+
-+	*base = ras2_ctx->base;
-+	*size = ras2_ctx->size;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_write_range(struct device *dev, void *drv_data, u64 base, u64 size)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+	bool running;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &running);
-+	if (ret)
-+		return ret;
-+
-+	if (running)
-+		return -EBUSY;
-+
-+	if (!base || !size) {
-+		dev_warn(dev, "%s: Invalid address range, base=0x%llx size=0x%llx\n",
-+			 __func__, base, size);
-+		return -EINVAL;
-+	}
-+
-+	ras2_ctx->base = base;
-+	ras2_ctx->size = size;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_bg(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = (void *)
-+					ras2_ctx->pcc_subspace->pcc_comm_addr;
-+	bool enabled;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &enabled);
-+	if (ret)
-+		return ret;
-+	if (enable) {
-+		if (ras2_ctx->bg || enabled)
-+			return -EBUSY;
-+		ps_sm->params.requested_address_range[0] = 0;
-+		ps_sm->params.requested_address_range[1] = 0;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_SCHRS_IN_MASK;
-+		ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_SCHRS_IN_MASK,
-+							    ras2_ctx->schrs);
-+		ps_sm->params.patrol_scrub_command = RAS2_START_PATROL_SCRUBBER;
-+	} else {
-+		if (!ras2_ctx->bg)
-+			return -EPERM;
-+		if (!ras2_ctx->bg && enabled)
-+			return -EBUSY;
-+		ps_sm->params.patrol_scrub_command = RAS2_STOP_PATROL_SCRUBBER;
-+	}
-+	ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_EN_BACKGROUND;
-+	ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_EN_BACKGROUND,
-+						    enable);
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "%s: failed to enable(%d) background scrubbing\n",
-+			__func__, enable);
-+		return ret;
-+	}
-+	if (enable) {
-+		ras2_ctx->bg = true;
-+		/* Update the cache to account for rounding of supplied parameters and similar */
-+		ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	} else {
-+		ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+		ras2_ctx->bg = false;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ras2_hw_scrub_get_enabled_bg(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	*enabled = ras2_ctx->bg;
-+
-+	return 0;
-+}
-+
-+static int ras2_hw_scrub_set_enabled_od(struct device *dev, void *drv_data, bool enable)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+	struct acpi_ras2_ps_shared_mem __iomem *ps_sm = (void *)
-+					ras2_ctx->pcc_subspace->pcc_comm_addr;
-+	bool enabled;
-+	int ret;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	ps_sm->common.set_capabilities[0] = RAS2_SUPPORT_HW_PARTOL_SCRUB;
-+	if (ras2_ctx->bg)
-+		return -EBUSY;
-+	ret = ras2_get_patrol_scrub_running(ras2_ctx, &enabled);
-+	if (ret)
-+		return ret;
-+	if (enable) {
-+		if (!ras2_ctx->base || !ras2_ctx->size) {
-+			dev_warn(ras2_ctx->dev,
-+				 "%s: Invalid address range, base=0x%llx "
-+				 "size=0x%llx\n", __func__,
-+				 ras2_ctx->base, ras2_ctx->size);
-+			return -ERANGE;
-+		}
-+		if (enabled)
-+			return -EBUSY;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_SCHRS_IN_MASK;
-+		ps_sm->params.scrub_params_in |= FIELD_PREP(RAS2_PATROL_SCRUB_SCHRS_IN_MASK,
-+							    ras2_ctx->schrs);
-+		ps_sm->params.requested_address_range[0] = ras2_ctx->base;
-+		ps_sm->params.requested_address_range[1] = ras2_ctx->size;
-+		ps_sm->params.scrub_params_in &= ~RAS2_PATROL_SCRUB_EN_BACKGROUND;
-+		ps_sm->params.patrol_scrub_command = RAS2_START_PATROL_SCRUBBER;
-+	} else {
-+		if (!enabled)
-+			return 0;
-+		ps_sm->params.patrol_scrub_command = RAS2_STOP_PATROL_SCRUBBER;
-+	}
-+
-+	ret = ras2_send_pcc_cmd(ras2_ctx, RAS2_PCC_CMD_EXEC);
-+	if (ret) {
-+		dev_err(ras2_ctx->dev, "failed to enable(%d) the demand scrubbing\n", enable);
-+		return ret;
-+	}
-+
-+	return ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+}
-+
-+static int ras2_hw_scrub_get_enabled_od(struct device *dev, void *drv_data, bool *enabled)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	guard(mutex)(&ras2_ctx->lock);
-+	if (ras2_ctx->bg) {
-+		*enabled = false;
-+		return 0;
-+	}
-+
-+	return ras2_get_patrol_scrub_running(ras2_ctx, enabled);
-+}
-+
-+static int ras2_hw_scrub_get_name(struct device *dev, void *drv_data, char *name)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = drv_data;
-+
-+	return sysfs_emit(name, "acpi_ras2_mem%d_scrub\n", ras2_ctx->id);
-+}
-+
-+static const struct edac_scrub_ops ras2_scrub_ops = {
-+	.read_range = ras2_hw_scrub_read_range,
-+	.write_range = ras2_hw_scrub_write_range,
-+	.get_enabled_bg = ras2_hw_scrub_get_enabled_bg,
-+	.set_enabled_bg = ras2_hw_scrub_set_enabled_bg,
-+	.get_enabled_od = ras2_hw_scrub_get_enabled_od,
-+	.set_enabled_od = ras2_hw_scrub_set_enabled_od,
-+	.get_name = ras2_hw_scrub_get_name,
-+	.cycle_in_hours_range = ras2_hw_scrub_read_schrs_range,
-+	.cycle_in_hours_read = ras2_hw_scrub_read_schrs,
-+	.cycle_in_hours_write = ras2_hw_scrub_write_schrs,
-+};
-+
-+static DEFINE_IDA(ras2_ida);
-+
-+static void ida_release(void *ctx)
-+{
-+	struct ras2_scrub_ctx *ras2_ctx = ctx;
-+
-+	ida_free(&ras2_ida, ras2_ctx->id);
-+}
-+
-+static int ras2_probe(struct platform_device *pdev)
-+{
-+	struct edac_ras_feature ras_features[RAS2_DEV_NUM_RAS_FEATURES];
-+	char scrub_name[RAS2_SCRUB_NAME_LEN];
-+	struct ras2_scrub_ctx *ras2_ctx;
-+	int num_ras_features = 0;
-+	int ret, id;
-+
-+	/* RAS2 PCC Channel and Scrub specific context */
-+	ras2_ctx = devm_kzalloc(&pdev->dev, sizeof(*ras2_ctx), GFP_KERNEL);
-+	if (!ras2_ctx)
-+		return -ENOMEM;
-+
-+	ras2_ctx->dev = &pdev->dev;
-+	mutex_init(&ras2_ctx->lock);
-+
-+	ret = devm_ras2_register_pcc_channel(&pdev->dev, ras2_ctx,
-+					     *((int *)dev_get_platdata(&pdev->dev)));
-+	if (ret < 0) {
-+		dev_dbg(ras2_ctx->dev,
-+			"failed to register pcc channel ret=%d\n", ret);
-+		return ret;
-+	}
-+	if (!ras2_is_patrol_scrub_support(ras2_ctx))
-+		return -EOPNOTSUPP;
-+
-+	ret = ras2_update_patrol_scrub_params_cache(ras2_ctx);
-+	if (ret)
-+		return ret;
-+
-+	id = ida_alloc(&ras2_ida, GFP_KERNEL);
-+	if (id < 0)
-+		return id;
-+
-+	ras2_ctx->id = id;
-+
-+	ret = devm_add_action_or_reset(&pdev->dev, ida_release, ras2_ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	snprintf(scrub_name, sizeof(scrub_name), "acpi_ras2_mem%d",
-+		 ras2_ctx->id);
-+
-+	ras_features[num_ras_features].feat = ras_feat_scrub;
-+	ras_features[num_ras_features].scrub_ops = &ras2_scrub_ops;
-+	ras_features[num_ras_features].scrub_ctx = ras2_ctx;
-+	num_ras_features++;
-+
-+	return edac_ras_dev_register(&pdev->dev, scrub_name, NULL,
-+				     num_ras_features, ras_features);
-+}
-+
-+static const struct platform_device_id ras2_id_table[] = {
-+	{ .name = "acpi_ras2", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(platform, ras2_id_table);
-+
-+static struct platform_driver ras2_driver = {
-+	.probe = ras2_probe,
-+	.driver = {
-+		.name = "acpi_ras2",
-+	},
-+	.id_table = ras2_id_table,
-+};
-+module_driver(ras2_driver, platform_driver_register, platform_driver_unregister);
-+
-+MODULE_IMPORT_NS(ACPI_RAS2);
-+MODULE_DESCRIPTION("ACPI RAS2 memory driver");
-+MODULE_LICENSE("GPL");
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
