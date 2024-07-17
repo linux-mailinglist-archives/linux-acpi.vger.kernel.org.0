@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-6933-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6934-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB891933E8D
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 16:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7285D933E97
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 16:35:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C53E1F212CD
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 14:34:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA54E1F21327
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 14:35:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7313C181B93;
-	Wed, 17 Jul 2024 14:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF12181333;
+	Wed, 17 Jul 2024 14:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HtUznS8/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XckOrP3r"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000F2181B81
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 14:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036FE181328
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721226821; cv=none; b=rgD9UPKR++Dg5TTR7+Tf1nLWa01PR4nMXqWhVQL7mx/hgY7mUjHTW57tY85ONvzXdSREZSHqFys4H5iSRn2Uh3dSrt3WYvMPf+fK4HWbXCv2HkZTjVHux6iiBX2Ei2RqRfJYHRA4xtuDVs36vqzVUw2qmSuzg4bBY1fXgsGksO8=
+	t=1721226912; cv=none; b=uZ35PuIZdc6jEW1z9XnCJOTeXeeSMr8PmvBw5/ICV8ZOgDK4JNIPIKflztanyVJo+8RiqJrtLQdZEI4SJna5CQLR8ul8/bGlCoLFZ+KjBEyac3XC7h1PRV1gIcxWMRKS3QwlKIX0d4TXZSjrWms8K3RL1Ircb96/MbfhjUOG4aQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721226821; c=relaxed/simple;
-	bh=UKE4C3ChcQCqvqZtO8WYSa+lxSVP5PaklsSxUaTSpEg=;
+	s=arc-20240116; t=1721226912; c=relaxed/simple;
+	bh=fnm4iemd7xvqFvDqI1KPJ1+UlIwFqVX26iV0ULfsN98=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pYJHwQ/btOPkzBo3W6YHt5aCrqs6jZtIzuRHp7GAAzxIILmaX+/Tdr4dK3G1FQipZxM2FemIa5+XeoMWjdbC9AgwFySEj5HrV8+n6l8B+HJhLdJr9w7W87WC09FN9s901C8mZ/1AZWfGahCEzEXOzGLaDS8+aDJD8MgMW5ggZ/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HtUznS8/; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=FHTB4fHYE2jibaaj6tfp8PxnCEOSFsmEl8LYcmW6OSrnix4iuc5vDNgj9zsV44yuNsXBKB5VmkSWpXRTN2ePI+zetQYtStjSsWb2oSH7ExAJlFOlNG1VH0uT5If2ZXcwBvujVRKvEG7gI4C/224V4kBrWhoevwJYDBlrsPDFxow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XckOrP3r; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721226819;
+	s=mimecast20190719; t=1721226910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=mXBB0qjMEXfzqVaUDcGt6NXANeyKiUeQZZAQu7kGYb4=;
-	b=HtUznS8/lthoPWMgj0++d/cYVURwjmerM9SzHvr3KhnPBJxSWnX3JUtvurw9GKfJ7rou7l
-	cU64HW92S00DwD/jal4Fo5b6gtNvuWu+iZoRDvp4tlR+BSwKiQe727tNf4XuAfiZvgcfBA
-	iEulSnnbQzgvQdFDQJQbMm3QlWvUMNQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=bQ+fqkZTCVbwQr6DwGYo0tiSadNAEaaTmdSJdfMrkK4=;
+	b=XckOrP3r0ZoqjB5ImUMK5DB/Va78uZp+Ajri1O6PgHcCbflP2wzd3e/3kGSAmhf2s9Ohi+
+	+Yk8S/A/AUd+hwjhj1/U0CRGaMlnkvBY+slV9g7gNTI1HdsFVO87bfHIAxLIqWhgv6wkMR
+	sFCkpSjbGq6zHP2QYUypKj3sNhXJi4E=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-495-VOt9hs9gN8e_GZv2f9wREg-1; Wed, 17 Jul 2024 10:33:35 -0400
-X-MC-Unique: VOt9hs9gN8e_GZv2f9wREg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-426624f4ce3so45417455e9.1
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 07:33:34 -0700 (PDT)
+ us-mta-563-Y5bGQU4CPI-wECUuQBfv_A-1; Wed, 17 Jul 2024 10:35:06 -0400
+X-MC-Unique: Y5bGQU4CPI-wECUuQBfv_A-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ee92048377so77336011fa.2
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 07:35:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721226813; x=1721831613;
+        d=1e100.net; s=20230601; t=1721226905; x=1721831705;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=mXBB0qjMEXfzqVaUDcGt6NXANeyKiUeQZZAQu7kGYb4=;
-        b=RCq/gsKnnjudPjlk5mtLShZQm0w1qJFWTdveS00adx1RH00J4WfLsvnUU6D1QHinBe
-         WmE8ZT9yHU3yPORKJVSQTvwqvQ43F8zDgYd27f3GRluQHT/5+jU/tbMxAiOSEEKIu59h
-         ghx0uuN3wH6Ae8TXL2zZJVVmbgoySo3UuQ+a8ogxBjvBjHWo+JXuLY5rADyxPxEO+GWy
-         L7hsy/z511Mracu8aAGdAfUQUwMMzaezljUHOrB3uPYeu2/O4vCwC0m6xYfBZanEuBXl
-         xahQTZrsIeeSI/M3Sx64vahNv9lDmO7Pg8jTikemuS46Fgv89U9ssf07zp5i0Sg9s0Vu
-         R+6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUkruoY8U6kTTWHH6nKi5pbF+etuVVl7pTqAo+LuQbOOBCNsLEuxrOebbOYDgb1U79myqdoSd/tgwPCGNuV5B/n1iIqOHyjeABjiw==
-X-Gm-Message-State: AOJu0YwsjECwebUx6k+o1E4rYPSSdEwCKAQQovggWoXXgf7GOK4FS2pl
-	m9lYYgN6332FRmP5XNIPG1a6umM+UDqjepnQgD0vWgn7AMh889LcJn/gi4DmIrm90nMO5VP4NbK
-	OoQ7/68hjwHGIsZd2iskqB+dfLnEX3h/vWkIkFVaQALNh4jbnWrEu5SW+zsA=
-X-Received: by 2002:a05:600c:3d96:b0:426:6f81:d235 with SMTP id 5b1f17b1804b1-427c303a321mr14977105e9.15.1721226813638;
-        Wed, 17 Jul 2024 07:33:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgu8rq663eT8ufhgNgCFLg21tSPwYTS9ihkX5BMsdTSuq5GcoEgyv7xkCuRjh9w8LzVIxZFg==
-X-Received: by 2002:a05:600c:3d96:b0:426:6f81:d235 with SMTP id 5b1f17b1804b1-427c303a321mr14976865e9.15.1721226813241;
-        Wed, 17 Jul 2024 07:33:33 -0700 (PDT)
+        bh=bQ+fqkZTCVbwQr6DwGYo0tiSadNAEaaTmdSJdfMrkK4=;
+        b=AlYRU2P6F6pM3ucyvwM5qvrJSWyCXLBAPBy3w96OKZbiQb8NiA1ebn0M2TYf3anWFg
+         2xxJTfiMCkIUK/7X2pNg9RwGMymTdltwqQ2NmBKy0s+OcDooIqKmYTbiUMtpTDh4kw0G
+         hSEvOXYcBPgX0AxGISJOpeJd9CcPhEX3QY9RF2SY//jxsDenMwKd/XUrG4Bc+mqdBzAm
+         qWIzEHJ9kdBI9hV7fmMZaVM034AIdhgqYsv7LgHuTFXhZu7lunDwA3DHBupl50BQhlQK
+         /LFDDuL+eqwpAVCqkVOKxkJyUDx5Z3OiwZN7ON35Ma62cC2tHvzeq6n0T9MZPkIisGb2
+         sCPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGldjHiWXxL8YKhYA9ZTV7nEi3a6p6fygQuvmYATeAyNsDZ+4QJdT+IxxmWbJHCSIwJqgg6cqCyYd54xD3RIZtmJTrpKHTDDDFJw==
+X-Gm-Message-State: AOJu0YyLJHvcSZB6FuzqClNZHMnzNmMoHjpPy0cXf64+DplV+FOKH7N0
+	n3K+lSX+i5qsqEb6zmTNc7jWOW/ovI/fV+argBI26RENe6vXpLw6f895hHfcZ5iAJXTW6rFP7j/
+	E9QyvDRgB7EyZjKp0dfqKCMlVomnYNeA2WBPjfpkS7oxFmFZ0CrqclKXjUvU=
+X-Received: by 2002:a05:6512:1316:b0:52e:a60e:3a04 with SMTP id 2adb3069b0e04-52ee542a129mr1866184e87.59.1721226905227;
+        Wed, 17 Jul 2024 07:35:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH04Gq57875HpWPakTIyYyIvXlTOyNbE9pUtdgazlRW5m2Y5upStMZ+SEMfPLUpoxgxOiDOHQ==
+X-Received: by 2002:a05:6512:1316:b0:52e:a60e:3a04 with SMTP id 2adb3069b0e04-52ee542a129mr1866156e87.59.1721226904762;
+        Wed, 17 Jul 2024 07:35:04 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c714:c00:b08b:a871:ce99:dfde? (p200300cbc7140c00b08ba871ce99dfde.dip0.t-ipconnect.de. [2003:cb:c714:c00:b08b:a871:ce99:dfde])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c77bffa1sm74815e9.18.2024.07.17.07.33.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c779847asm301165e9.8.2024.07.17.07.35.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jul 2024 07:33:32 -0700 (PDT)
-Message-ID: <f73022b4-20d4-4358-9b15-949934d52b5e@redhat.com>
-Date: Wed, 17 Jul 2024 16:33:30 +0200
+        Wed, 17 Jul 2024 07:35:04 -0700 (PDT)
+Message-ID: <11c4ffb9-ea48-44d0-8a58-2c705c7176de@redhat.com>
+Date: Wed, 17 Jul 2024 16:35:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,7 +83,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/17] MIPS: loongson64: rename __node_data to node_data
+Subject: Re: [PATCH 04/17] arch, mm: move definition of node_data to generic
+ code
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -111,7 +112,7 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
  devicetree@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
  x86@kernel.org
 References: <20240716111346.3676969-1-rppt@kernel.org>
- <20240716111346.3676969-4-rppt@kernel.org>
+ <20240716111346.3676969-5-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -159,21 +160,71 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240716111346.3676969-4-rppt@kernel.org>
+In-Reply-To: <20240716111346.3676969-5-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 16.07.24 13:13, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Make definition of node_data match other architectures.
-> This will allow pulling declaration of node_data to the generic mm code in
-> the following commit.
+> Every architecture that supports NUMA defines node_data in the same way:
+> 
+> 	struct pglist_data *node_data[MAX_NUMNODES];
+> 
+> No reason to keep multiple copies of this definition and its forward
+> declarations, especially when such forward declaration is the only thing
+> in include/asm/mmzone.h for many architectures.
+> 
+> Add definition and declaration of node_data to generic code and drop
+> architecture-specific versions.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
+>   arch/arm64/include/asm/Kbuild                  |  1 +
+>   arch/arm64/include/asm/mmzone.h                | 13 -------------
+>   arch/arm64/include/asm/topology.h              |  1 +
+>   arch/loongarch/include/asm/Kbuild              |  1 +
+>   arch/loongarch/include/asm/mmzone.h            | 16 ----------------
+>   arch/loongarch/include/asm/topology.h          |  1 +
+>   arch/loongarch/kernel/numa.c                   |  3 ---
+>   arch/mips/include/asm/mach-ip27/mmzone.h       |  4 ----
+>   arch/mips/include/asm/mach-loongson64/mmzone.h |  4 ----
+>   arch/mips/loongson64/numa.c                    |  2 --
+>   arch/mips/sgi-ip27/ip27-memory.c               |  3 ---
+>   arch/powerpc/include/asm/mmzone.h              |  6 ------
+>   arch/powerpc/mm/numa.c                         |  2 --
+>   arch/riscv/include/asm/Kbuild                  |  1 +
+>   arch/riscv/include/asm/mmzone.h                | 13 -------------
+>   arch/riscv/include/asm/topology.h              |  4 ++++
+>   arch/s390/include/asm/Kbuild                   |  1 +
+>   arch/s390/include/asm/mmzone.h                 | 17 -----------------
+>   arch/s390/kernel/numa.c                        |  3 ---
+>   arch/sh/include/asm/mmzone.h                   |  3 ---
+>   arch/sh/mm/numa.c                              |  3 ---
+>   arch/sparc/include/asm/mmzone.h                |  4 ----
+>   arch/sparc/mm/init_64.c                        |  2 --
+>   arch/x86/include/asm/Kbuild                    |  1 +
+>   arch/x86/include/asm/mmzone.h                  |  6 ------
+>   arch/x86/include/asm/mmzone_32.h               | 17 -----------------
+>   arch/x86/include/asm/mmzone_64.h               | 18 ------------------
+>   arch/x86/mm/numa.c                             |  3 ---
+>   drivers/base/arch_numa.c                       |  2 --
+>   include/asm-generic/mmzone.h                   |  5 +++++
+>   include/linux/numa.h                           |  3 +++
+>   mm/numa.c                                      |  3 +++
+>   32 files changed, 22 insertions(+), 144 deletions(-)
+>   delete mode 100644 arch/arm64/include/asm/mmzone.h
+>   delete mode 100644 arch/loongarch/include/asm/mmzone.h
+>   delete mode 100644 arch/riscv/include/asm/mmzone.h
+>   delete mode 100644 arch/s390/include/asm/mmzone.h
+>   delete mode 100644 arch/x86/include/asm/mmzone.h
+>   delete mode 100644 arch/x86/include/asm/mmzone_32.h
+>   delete mode 100644 arch/x86/include/asm/mmzone_64.h
+>   create mode 100644 include/asm-generic/mmzone.h
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Nice!
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Cheers,
