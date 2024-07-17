@@ -1,745 +1,240 @@
-Return-Path: <linux-acpi+bounces-6931-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6932-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ACA1933E29
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 16:07:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE978933E78
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 16:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46FDA28476F
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 14:07:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DD01C20EBD
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 14:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AF5180A8D;
-	Wed, 17 Jul 2024 14:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72111802DC;
+	Wed, 17 Jul 2024 14:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JMEfvWln"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E0717E911;
-	Wed, 17 Jul 2024 14:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3080B181313
+	for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 14:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721225251; cv=none; b=JEc+b8yq/dVk45BSEOsxNoauG16xgVr2Aekcy7IwVDpdFrNdxKdsJJJHrHIT/qK1bqQUWUbntdkHSY/LbdJCdQH2JrsVr6D4s875zJGxjgq+hp1p6acbWp3RqoDLdkDMBMG1cNW0mMME7+w/kPQXFjErkW5aqVakiMjbOA+XSMw=
+	t=1721226788; cv=none; b=qhzUxWQK1Nv9v/zri0aSOT+/caIcOBkEIl3POCNwul0JFBwiw30Ja2AZTgev2G0Wobe6P4UCN8PzA1LC6/s0iOUjstxIAhb2eafiQ1M1hxfiEyHOgeaJabrJkbVDfkWDkO0Y+lNF5mS2Ab6LfLWgx+c2IpgG0/24ddR5S3Cnr7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721225251; c=relaxed/simple;
-	bh=V7cy78k7KeOXFbggPP7dPeLu5wFandjrvC6gu/zOGss=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=p6158oh6FzK/pyLidJKQ5jvyC7ZW84g2YZbcyfBjlURsfU6g871HJ09wMoxehmQZW+Z+etzwSKSkTl+bZAL/zMkuEuCbZPXjTG2rrWmJq3prDKkbPHMVMcJ/SpzRV4u5iaPSb5lX5Pl4bjQ0+Slpg9qp9cIOkUopzmTtzgQd5qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPHkY04YLz6DB7F;
-	Wed, 17 Jul 2024 22:04:53 +0800 (CST)
-Received: from lhrpeml100001.china.huawei.com (unknown [7.191.160.183])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4DB74140CB9;
-	Wed, 17 Jul 2024 22:07:07 +0800 (CST)
-Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
- lhrpeml100001.china.huawei.com (7.191.160.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 17 Jul 2024 15:07:05 +0100
-Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
- lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.039;
- Wed, 17 Jul 2024 15:07:05 +0100
-From: Shiju Jose <shiju.jose@huawei.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
-	"tony.luck@intel.com" <tony.luck@intel.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
-	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
-	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
-	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
-	<dave.jiang@intel.com>, "alison.schofield@intel.com"
-	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
-	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
-	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
-	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
-	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
-	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
-	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
-	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
-	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
-	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
-	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
-	<duenwen@google.com>, "mike.malvestuto@intel.com"
-	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
-	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
-	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
-	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
-	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
-	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
- Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
-	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
-	Linuxarm <linuxarm@huawei.com>
-Subject: RE: [RFC PATCH v9 02/11] EDAC: Add EDAC scrub control driver
-Thread-Topic: [RFC PATCH v9 02/11] EDAC: Add EDAC scrub control driver
-Thread-Index: AQHa15FzxBoF3WxYI026PkKugXi7mbH60ZgAgAAUPxA=
-Date: Wed, 17 Jul 2024 14:07:05 +0000
-Message-ID: <ff37e3dd6f804964b7d15d1f917359fb@huawei.com>
-References: <20240716150336.2042-1-shiju.jose@huawei.com>
-	<20240716150336.2042-3-shiju.jose@huawei.com>
- <20240717145632.436a0cb0@foz.lan>
-In-Reply-To: <20240717145632.436a0cb0@foz.lan>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1721226788; c=relaxed/simple;
+	bh=CrDDYOcmyPQoZCPC1i4Y1DcAZ3+d7HcTSETFYRrG8VQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CCzeV3DGLvjgMjuuChd5T3IfJWznASLyC6AdulYq6L037BvZpnCK0/RLhb9HELqeHo6+EdMjSxCj0NXyE2rqrRc/ideoowl65R6BSlXA9fUSQ3qHnP59Emq9KBMa4wfiUD/f+5AYbUS9QMq243cMqhvn/5SoM98bLnektwHAx60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JMEfvWln; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721226786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=GICXT0BFVJy0QIZX9VPtiCc3OM2RPQjhgUFSA0WTx1U=;
+	b=JMEfvWlnEYvA5xaJH8O5qWmlSQsva64M29x7yJ8vPxQhiKCEsn1MsY4+WSkYBCrqCqhyc5
+	6V2DvodGPWZ+n1xdgI3gcywN5jQ0+YI9+dTNvybTmE7qh6/NIeTTRCnNzWKI/QXpN1QOLx
+	PW+zcSdIgnOHo+1OfBByOrVqU+X+onQ=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-351-_JCeUhzoNTGFf81XBW6pCQ-1; Wed, 17 Jul 2024 10:33:05 -0400
+X-MC-Unique: _JCeUhzoNTGFf81XBW6pCQ-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52ea883187cso6547137e87.3
+        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 07:33:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721226782; x=1721831582;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GICXT0BFVJy0QIZX9VPtiCc3OM2RPQjhgUFSA0WTx1U=;
+        b=hX/h29X4FCj668DfHioPxHcaCuRsQpnyuzKXQL8agFfw+JJ9uoI4VfOqPOcYZJ5mZo
+         kRM/67DY29qA8o3Zge8NKcVyaPDjkIUOu60rMrN67N3WvPpv8fuHCd8M8H10Hjt9ylUr
+         l4H1CO2YbGGBVlbIFSc2UIpkELMHagq8sUffCRXdQ3NHV1jKSycRIQ66gNVVitOTPFWF
+         XZyPAGfnCgp6nyR4APrWGUTZil3YSKDAediafVZ5oSfK3u2rJwxI9jE4hDBpZnoleg03
+         LHMx/LzQJx1wzVQsuFjpP0qxYndxpPaLMlnrucXklNhHgFMJ7Nzif1Ad3IAa81N3Tz5c
+         kMXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXBqwrg/NPIQZteqVjjcw/DDqor8Ix/kjty6Ei+sUMIirF7ZR8lF/SnKPVcxAkD0llxDSeGM/6qJRXvYunL6n56aaCwclHKhU9rKg==
+X-Gm-Message-State: AOJu0YzBDIKKDd4iGbYlxLSsjqDrKJq0wVsSMcepbsfuW39bcNxn72UI
+	+EC1BgsaNZuf4qryqp5K0cYqsnujM/4uAXao1x3oxq43VlvKk7A/p026wsRXy9wrWuVbAkPxXYu
+	AiyuELnQe2owLfeSwzzLhLHoGHTOhI0jUs1u3gs2/yYro2LHU1Hrm/5LGW24=
+X-Received: by 2002:a05:6512:33c5:b0:52c:ec68:6165 with SMTP id 2adb3069b0e04-52ee53cc00bmr1663753e87.33.1721226782339;
+        Wed, 17 Jul 2024 07:33:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrqpAiEHpfyNE8LzYLpjmIqAoQj/aWWnfve8BOPOkkfeVMrwCw7kn1k4etYvjz09EiWJN/XQ==
+X-Received: by 2002:a05:6512:33c5:b0:52c:ec68:6165 with SMTP id 2adb3069b0e04-52ee53cc00bmr1663731e87.33.1721226781780;
+        Wed, 17 Jul 2024 07:33:01 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c714:c00:b08b:a871:ce99:dfde? (p200300cbc7140c00b08ba871ce99dfde.dip0.t-ipconnect.de. [2003:cb:c714:c00:b08b:a871:ce99:dfde])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427c77a5804sm92385e9.16.2024.07.17.07.32.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Jul 2024 07:33:01 -0700 (PDT)
+Message-ID: <e57eca18-b66d-4b5d-9e73-8ab22f6bc747@redhat.com>
+Date: Wed, 17 Jul 2024 16:32:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/17] MIPS: sgi-ip27: make NODE_DATA() the same as on all
+ other architectures
+To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ x86@kernel.org
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-3-rppt@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240716111346.3676969-3-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 16.07.24 13:13, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> sgi-ip27 is the only system that defines NODE_DATA() differently than
+> the rest of NUMA machines.
+> 
+> Add node_data array of struct pglist pointers that will point to
+> __node_data[node]->pglist and redefine NODE_DATA() to use node_data
+> array.
+> 
+> This will allow pulling declaration of node_data to the generic mm code
+> in the next commit.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
+>   arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
+>   2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
+> index 08c36e50a860..629c3f290203 100644
+> --- a/arch/mips/include/asm/mach-ip27/mmzone.h
+> +++ b/arch/mips/include/asm/mach-ip27/mmzone.h
+> @@ -22,7 +22,10 @@ struct node_data {
+>   
+>   extern struct node_data *__node_data[];
+>   
+> -#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
+>   #define hub_data(n)		(&__node_data[(n)]->hub)
+>   
+> +extern struct pglist_data *node_data[];
+> +
+> +#define NODE_DATA(nid)		(node_data[nid])
+> +
+>   #endif /* _ASM_MACH_MMZONE_H */
+> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> index b8ca94cfb4fe..c30ef6958b97 100644
+> --- a/arch/mips/sgi-ip27/ip27-memory.c
+> +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> @@ -34,8 +34,10 @@
+>   #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
+>   #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
+>   
+> -struct node_data *__node_data[MAX_NUMNODES];
+> +struct pglist_data *node_data[MAX_NUMNODES];
+> +EXPORT_SYMBOL(node_data);
+>   
+> +struct node_data *__node_data[MAX_NUMNODES];
+>   EXPORT_SYMBOL(__node_data);
+>   
+>   static u64 gen_region_mask(void)
+> @@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
+>   	 */
+>   	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+>   	memset(__node_data[node], 0, PAGE_SIZE);
+> +	node_data[node] = &__node_data[node]->pglist;
+>   
+>   	NODE_DATA(node)->node_start_pfn = start_pfn;
+>   	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;
 
->-----Original Message-----
->From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
->Sent: 17 July 2024 13:57
->To: Shiju Jose <shiju.jose@huawei.com>
->Cc: linux-edac@vger.kernel.org; linux-cxl@vger.kernel.org; linux-
->acpi@vger.kernel.org; linux-mm@kvack.org; linux-kernel@vger.kernel.org;
->bp@alien8.de; tony.luck@intel.com; rafael@kernel.org; lenb@kernel.org;
->mchehab@kernel.org; dan.j.williams@intel.com; dave@stgolabs.net; Jonathan
->Cameron <jonathan.cameron@huawei.com>; dave.jiang@intel.com;
->alison.schofield@intel.com; vishal.l.verma@intel.com; ira.weiny@intel.com;
->david@redhat.com; Vilas.Sridharan@amd.com; leo.duran@amd.com;
->Yazen.Ghannam@amd.com; rientjes@google.com; jiaqiyan@google.com;
->Jon.Grimm@amd.com; dave.hansen@linux.intel.com;
->naoya.horiguchi@nec.com; james.morse@arm.com; jthoughton@google.com;
->somasundaram.a@hpe.com; erdemaktas@google.com; pgonda@google.com;
->duenwen@google.com; mike.malvestuto@intel.com; gthelen@google.com;
->wschwartz@amperecomputing.com; dferguson@amperecomputing.com;
->wbs@os.amperecomputing.com; nifan.cxl@gmail.com; tanxiaofei
-><tanxiaofei@huawei.com>; Zengtao (B) <prime.zeng@hisilicon.com>; Roberto
->Sassu <roberto.sassu@huawei.com>; kangkang.shen@futurewei.com;
->wanghuiqiang <wanghuiqiang@huawei.com>; Linuxarm
-><linuxarm@huawei.com>
->Subject: Re: [RFC PATCH v9 02/11] EDAC: Add EDAC scrub control driver
->
->Em Tue, 16 Jul 2024 16:03:26 +0100
-><shiju.jose@huawei.com> escreveu:
->
->> From: Shiju Jose <shiju.jose@huawei.com>
->>
->> Add generic EDAC scrub control driver supports configuring the memory
->> scrubbers in the system. The device with scrub feature, get the scrub
->> descriptor from the EDAC scrub and registers with the EDAC RAS feature
->> driver, which adds the sysfs scrub control interface. The scrub
->> control attributes are available to the userspace in
->/sys/bus/edac/devices/<dev-name>/scrub/.
->>
->> Generic EDAC scrub driver and the common sysfs scrub interface
->> promotes unambiguous access from the userspace irrespective of the
->> underlying scrub devices.
->>
->> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
->> ---
->>  Documentation/ABI/testing/sysfs-edac-scrub |  64 +++++
->>  drivers/edac/Makefile                      |   2 +-
->>  drivers/edac/edac_ras_feature.c            |   1 +
->>  drivers/edac/edac_scrub.c                  | 312 +++++++++++++++++++++
->>  include/linux/edac_ras_feature.h           |  28 ++
->>  5 files changed, 406 insertions(+), 1 deletion(-)  create mode 100644
->> Documentation/ABI/testing/sysfs-edac-scrub
->>  create mode 100755 drivers/edac/edac_scrub.c
->>
->> diff --git a/Documentation/ABI/testing/sysfs-edac-scrub
->> b/Documentation/ABI/testing/sysfs-edac-scrub
->> new file mode 100644
->> index 000000000000..dd19afd5e165
->> --- /dev/null
->> +++ b/Documentation/ABI/testing/sysfs-edac-scrub
->> @@ -0,0 +1,64 @@
->> +What:		/sys/bus/edac/devices/<dev-name>/scrub
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		The sysfs edac bus devices /<dev-name>/scrub subdirectory
->> +		belongs to the memory scrub control feature, where <dev-
->name>
->> +		directory corresponds to a device/memory region registered
->> +		with the edac scrub driver and thus registered with the
->> +		generic edac ras driver too.
->> +
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/addr_range_base
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RW) The base of the address range of the memory region
->> +		to be scrubbed (on-demand scrubbing).
->> +
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/addr_range_size
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RW) The size of the address range of the memory region
->> +		to be scrubbed (on-demand scrubbing).
->> +
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/enable_background
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RW) Start/Stop background(patrol) scrubbing if supported.
->> +
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/enable_on_demand
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RW) Start/Stop on-demand scrubbing the memory region
->> +		if supported.
->
->This is a generic comment for all sysfs calls: what happens if not support=
-ed?
->
->There are a couple of ways to implement it, like:
->
->1. Don't create the attribute;
->2. return an error code (-ENOENT? -EINVAL?) if trying to read or
->   write to the devnode - please detail the used error code(s);
->
->In any case, please define the behavior and document it.
->
->From what I see, you're setting 0x444 on RW nodes when write is not enable=
-d,
->but still it is possible to not have RO supported. This is specially true =
-as
->technology evolves, as memory controllers and different types of memories =
-may
->have very different ways to control it[1].
+I was assuming we could get rid of __node_data->pglist.
 
-It is not true. If the parent device does not support and define callbacks =
-for both read and write,
-then return 0 as you can see in the scrub_attr_visible() and the attribute
-would not be present for that device in the sysfs.
-For e.g. attributes addr_range_base and addr_range_size does not support by=
- CXL patrol
-scrub feature, but supported by ACPI RAS2 scrub feature. =20
->
->[1] If you're curious enough, one legacy example of memories
->    implemented on a very different way was Fully Buffered DIMMs
->    where each DIMM had its own internal chipset to offload
->    certain tasks, including scrubbing and ECC implementation.
->    It ended not being succeeded long term, as it required
->    special DIMMs for server's market, reducing the production
->    scale, but it is an interesting example about how hardware
->    designs could be innovative breaking existing paradigms.
->    The FB-DIMM design actually forced a redesign at the EDAC
->    subsystem, as it was too centered on how an specific type
->    of memory controllers.
->
->> +
->> +What:		/sys/bus/edac/devices/<dev-name>/scrub/name
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RO) name of the memory scrubber
->> +
->
->
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/cycle_in_hours_available
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RO) Supported range for the scrub cycle in hours by the
->> +		memory scrubber.
->> +
->> +What:		/sys/bus/edac/devices/<dev-
->name>/scrub/cycle_in_hours
->> +Date:		Oct 2024
->> +KernelVersion:	6.12
->> +Contact:	linux-edac@vger.kernel.org
->> +Description:
->> +		(RW) The scrub cycle in hours specified and it must be with in
->the
->> +		supported range by the memory scrubber.
->
->Why specifying it in hours? I would use seconds, as it is easy to represen=
-t one
->hour as 3600 seconds, but you can't specify a cycle of, let's say, 30min, =
-if the
->minimum range value is one hour.
-For the CXL patrol scrub, scrub cycle defined in hours(CXL spec 3.1 Table 8=
--208. Device Patrol Scrub
-Control Feature Writable Attributes), but ACPI RAS2 does not define the uni=
-t for the scrub cycle.
-Thus proposed  represent scrub cycle in hours in common.
-Not sure how convenient to set the scrub cycle in seconds from the user per=
-spective and
-also is it require to finish the background scrubbing in such short time?
+But now I am confused where that is actually set.
 
->
->I mean, we never know how technology will evolve nor how manufacturers wil=
-l
->implement support for scrubbing cycle on their chipsets.
->
->> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile index
->> c532b57a6d8a..de56cbd039eb 100644
->> --- a/drivers/edac/Makefile
->> +++ b/drivers/edac/Makefile
->> @@ -10,7 +10,7 @@ obj-$(CONFIG_EDAC)			:=3D edac_core.o
->>
->>  edac_core-y	:=3D edac_mc.o edac_device.o edac_mc_sysfs.o
->>  edac_core-y	+=3D edac_module.o edac_device_sysfs.o wq.o
->> -edac_core-y	+=3D edac_ras_feature.o
->> +edac_core-y	+=3D edac_ras_feature.o edac_scrub.o
->>
->>  edac_core-$(CONFIG_EDAC_DEBUG)		+=3D debugfs.o
->>
->> diff --git a/drivers/edac/edac_ras_feature.c
->> b/drivers/edac/edac_ras_feature.c index 24a729fea66f..48927f868372
->> 100755
->> --- a/drivers/edac/edac_ras_feature.c
->> +++ b/drivers/edac/edac_ras_feature.c
->> @@ -36,6 +36,7 @@ static int edac_ras_feat_scrub_init(struct device
->> *parent,  {
->>  	sdata->ops =3D sfeat->scrub_ops;
->>  	sdata->private =3D sfeat->scrub_ctx;
->> +	attr_groups[0] =3D edac_scrub_get_desc();
->>
->>  	return 1;
->>  }
->> diff --git a/drivers/edac/edac_scrub.c b/drivers/edac/edac_scrub.c new
->> file mode 100755 index 000000000000..0b07eafd3551
->> --- /dev/null
->> +++ b/drivers/edac/edac_scrub.c
->> @@ -0,0 +1,312 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * Generic EDAC scrub driver supports controlling the memory
->> + * scrubbers in the system and the common sysfs scrub interface
->> + * promotes unambiguous access from the userspace.
->> + *
->> + * Copyright (c) 2024 HiSilicon Limited.
->> + */
->> +
->> +#define pr_fmt(fmt)     "EDAC SCRUB: " fmt
->> +
->> +#include <linux/edac_ras_feature.h>
->> +
->> +static ssize_t addr_range_base_show(struct device *ras_feat_dev,
->> +				    struct device_attribute *attr,
->> +				    char *buf)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 base, size;
->> +	int ret;
->> +
->> +	ret =3D ops->read_range(ras_feat_dev->parent, ctx->scrub.private, &bas=
-e,
->&size);
->> +	if (ret)
->> +		return ret;
->
->Also a generic comment applied to all devnodes: what if ops->read_range is
->NULL? Shouldn't it be checked? Btw, you could use read_range =3D=3D NULL i=
-f to
->implement error handling for unsupported features.
-If ops->read_range is NULL, scrub_attr_visible() return 0 and then the corr=
-esponding attributes
-addr_range_base and addr_range_size  would not be added in the sysfs.
-Same for other attributes.
->
->> +
->> +	return sysfs_emit(buf, "0x%llx\n", base); }
->> +
->> +static ssize_t addr_range_size_show(struct device *ras_feat_dev,
->> +				    struct device_attribute *attr,
->> +				    char *buf)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 base, size;
->> +	int ret;
->> +
->> +	ret =3D ops->read_range(ras_feat_dev->parent, ctx->scrub.private, &bas=
-e,
->&size);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return sysfs_emit(buf, "0x%llx\n", size); }
->> +
->> +static ssize_t addr_range_base_store(struct device *ras_feat_dev,
->> +				     struct device_attribute *attr,
->> +				     const char *buf, size_t len) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 base, size;
->> +	int ret;
->> +
->> +	ret =3D ops->read_range(ras_feat_dev->parent, ctx->scrub.private, &bas=
-e,
->&size);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret =3D kstrtou64(buf, 16, &base);
->
->I would use base 0, letting the parser expect "0x" for hexadecimal values.
->Same for other *_store methods.
-Will check.
+Anyhow
 
->
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret =3D ops->write_range(ras_feat_dev->parent, ctx->scrub.private, bas=
-e,
->size);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return len;
->> +}
->> +
->> +static ssize_t addr_range_size_store(struct device *ras_feat_dev,
->> +				     struct device_attribute *attr,
->> +				     const char *buf,
->> +				     size_t len)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 base, size;
->> +	int ret;
->> +
->> +	ret =3D ops->read_range(ras_feat_dev->parent, ctx->scrub.private, &bas=
-e,
->&size);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret =3D kstrtou64(buf, 16, &size);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret =3D ops->write_range(ras_feat_dev->parent, ctx->scrub.private, bas=
-e,
->size);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return len;
->> +}
->> +
->> +static ssize_t enable_background_store(struct device *ras_feat_dev,
->> +				       struct device_attribute *attr,
->> +				       const char *buf, size_t len) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	bool enable;
->> +	int ret;
->> +
->> +	ret =3D kstrtobool(buf, &enable);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret =3D ops->set_enabled_bg(ras_feat_dev->parent, ctx->scrub.private,
->enable);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return len;
->> +}
->> +
->> +static ssize_t enable_background_show(struct device *ras_feat_dev,
->> +				      struct device_attribute *attr, char *buf) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	bool enable;
->> +	int ret;
->> +
->> +	ret =3D ops->get_enabled_bg(ras_feat_dev->parent, ctx->scrub.private,
->&enable);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return sysfs_emit(buf, "%d\n", enable); }
->> +
->> +static ssize_t enable_on_demand_show(struct device *ras_feat_dev,
->> +				     struct device_attribute *attr, char *buf) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	bool enable;
->> +	int ret;
->> +
->> +	ret =3D ops->get_enabled_od(ras_feat_dev->parent, ctx->scrub.private,
->&enable);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return sysfs_emit(buf, "%d\n", enable); }
->> +
->> +static ssize_t enable_on_demand_store(struct device *ras_feat_dev,
->> +				      struct device_attribute *attr,
->> +				      const char *buf, size_t len) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	bool enable;
->> +	int ret;
->> +
->> +	ret =3D kstrtobool(buf, &enable);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret =3D ops->set_enabled_od(ras_feat_dev->parent, ctx->scrub.private,
->enable);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return len;
->> +}
->> +
->> +static ssize_t name_show(struct device *ras_feat_dev,
->> +			 struct device_attribute *attr, char *buf) {
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	int ret;
->> +
->> +	ret =3D ops->get_name(ras_feat_dev->parent, ctx->scrub.private, buf);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return strlen(buf);
->> +}
->> +
->> +static ssize_t cycle_in_hours_show(struct device *ras_feat_dev, struct
->device_attribute *attr,
->> +				   char *buf)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 val;
->> +	int ret;
->> +
->> +	ret =3D ops->cycle_in_hours_read(ras_feat_dev->parent, ctx-
->>scrub.private, &val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return sysfs_emit(buf, "0x%llx\n", val); }
->> +
->> +static ssize_t cycle_in_hours_store(struct device *ras_feat_dev, struct
->device_attribute *attr,
->> +				    const char *buf, size_t len)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	long val;
->> +	int ret;
->> +
->> +	ret =3D kstrtol(buf, 10, &val);
->
->Even here, I would be using base=3D0, but if you only want to support base=
- 10,
->please document it at the sysfs ABI.
-Will do.
->
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret =3D ops->cycle_in_hours_write(ras_feat_dev->parent, ctx-
->>scrub.private, val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return len;
->> +}
->> +
->> +static ssize_t cycle_in_hours_range_show(struct device *ras_feat_dev,
->> +					 struct device_attribute *attr,
->> +					 char *buf)
->> +{
->> +	struct edac_ras_feat_ctx *ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	const struct edac_scrub_ops *ops =3D ctx->scrub.ops;
->> +	u64 min_schrs, max_schrs;
->> +	int ret;
->> +
->> +	ret =3D ops->cycle_in_hours_range(ras_feat_dev->parent, ctx-
->>scrub.private,
->> +					&min_schrs, &max_schrs);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return sysfs_emit(buf, "0x%llx-0x%llx\n", min_schrs, max_schrs);
->
->Hmm... you added the store in decimal, but here you're showing in hexa...
-Will check for store and show decimal.
->
->Btw, don't group multiple values on a single sysfs node. Instead, implemen=
-t two
->separate devnodes:
-Here we are showing the supported range for the scrub cycle.=20
-I am wondering any opinion on this from others?
->
->	min-scrub-cycle
->	max-scrub-cycle
->
->(see the note above about "hours")
->
->
->> +}
->> +
->> +static DEVICE_ATTR_RW(addr_range_base); static
->> +DEVICE_ATTR_RW(addr_range_size); static
->> +DEVICE_ATTR_RW(enable_background);
->> +static DEVICE_ATTR_RW(enable_on_demand); static
->DEVICE_ATTR_RO(name);
->> +static DEVICE_ATTR_RW(cycle_in_hours); static
->> +DEVICE_ATTR_RO(cycle_in_hours_range);
->> +
->> +static struct attribute *scrub_attrs[] =3D {
->> +	&dev_attr_addr_range_base.attr,
->> +	&dev_attr_addr_range_size.attr,
->> +	&dev_attr_enable_background.attr,
->> +	&dev_attr_enable_on_demand.attr,
->> +	&dev_attr_name.attr,
->> +	&dev_attr_cycle_in_hours.attr,
->> +	&dev_attr_cycle_in_hours_range.attr,
->> +	NULL
->> +};
->> +
->> +static umode_t scrub_attr_visible(struct kobject *kobj,
->> +				  struct attribute *a, int attr_id) {
->> +	struct device *ras_feat_dev =3D kobj_to_dev(kobj);
->> +	struct edac_ras_feat_ctx *ctx;
->> +	const struct edac_scrub_ops *ops;
->> +
->> +	ctx =3D dev_get_drvdata(ras_feat_dev);
->> +	if (!ctx)
->> +		return 0;
->> +
->> +	ops =3D ctx->scrub.ops;
->> +	if (a =3D=3D &dev_attr_addr_range_base.attr ||
->> +	    a =3D=3D &dev_attr_addr_range_size.attr) {
->> +		if (ops->read_range && ops->write_range)
->> +			return a->mode;
->> +		if (ops->read_range)
->> +			return 0444;
->> +		return 0;
->> +	}
->> +	if (a =3D=3D &dev_attr_enable_background.attr) {
->> +		if (ops->set_enabled_bg && ops->get_enabled_bg)
->> +			return a->mode;
->> +		if (ops->get_enabled_bg)
->> +			return 0444;
->> +		return 0;
->> +	}
->> +	if (a =3D=3D &dev_attr_enable_on_demand.attr) {
->> +		if (ops->set_enabled_od && ops->get_enabled_od)
->> +			return a->mode;
->> +		if (ops->get_enabled_od)
->> +			return 0444;
->> +		return 0;
->> +	}
->> +	if (a =3D=3D &dev_attr_name.attr)
->> +		return ops->get_name ? a->mode : 0;
->> +	if (a =3D=3D &dev_attr_cycle_in_hours_range.attr)
->> +		return ops->cycle_in_hours_range ? a->mode : 0;
->> +	if (a =3D=3D &dev_attr_cycle_in_hours.attr) { /* Write only makes litt=
-le sense
->*/
->> +		if (ops->cycle_in_hours_read && ops->cycle_in_hours_write)
->> +			return a->mode;
->> +		if (ops->cycle_in_hours_read)
->> +			return 0444;
->> +		return 0;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static const struct attribute_group scrub_attr_group =3D {
->> +	.name		=3D "scrub",
->> +	.attrs		=3D scrub_attrs,
->> +	.is_visible	=3D scrub_attr_visible,
->> +};
->> +
->> +/**
->> + * edac_scrub_get_desc - get edac scrub's attr descriptor
->> + *
->> + * Returns attribute_group for the scrub feature.
->> + */
->> +const struct attribute_group *edac_scrub_get_desc(void) {
->> +	return &scrub_attr_group;
->> +}
->> diff --git a/include/linux/edac_ras_feature.h
->> b/include/linux/edac_ras_feature.h
->> index 000e99141023..462f9ecbf9d4 100755
->> --- a/include/linux/edac_ras_feature.h
->> +++ b/include/linux/edac_ras_feature.h
->> @@ -19,6 +19,34 @@ enum edac_ras_feat {
->>  	ras_feat_max
->>  };
->>
->> +/**
->> + * struct scrub_ops - scrub device operations (all elements optional)
->> + * @read_range: read base and offset of scrubbing range.
->> + * @write_range: set the base and offset of the scrubbing range.
->> + * @get_enabled_bg: check if currently performing background scrub.
->> + * @set_enabled_bg: start or stop a bg-scrub.
->> + * @get_enabled_od: check if currently performing on-demand scrub.
->> + * @set_enabled_od: start or stop an on-demand scrub.
->> + * @cycle_in_hours_range: retrieve limits on supported cycle in hours.
->> + * @cycle_in_hours_read: read the scrub cycle in hours.
->> + * @cycle_in_hours_write: set the scrub cycle in hours.
->> + * @get_name: get the memory scrubber's name.
->> + */
->> +struct edac_scrub_ops {
->> +	int (*read_range)(struct device *dev, void *drv_data, u64 *base, u64
->*size);
->> +	int (*write_range)(struct device *dev, void *drv_data, u64 base, u64
->size);
->> +	int (*get_enabled_bg)(struct device *dev, void *drv_data, bool *enable=
-);
->> +	int (*set_enabled_bg)(struct device *dev, void *drv_data, bool enable)=
-;
->> +	int (*get_enabled_od)(struct device *dev, void *drv_data, bool *enable=
-);
->> +	int (*set_enabled_od)(struct device *dev, void *drv_data, bool enable)=
-;
->> +	int (*cycle_in_hours_range)(struct device *dev, void *drv_data,  u64
->*min, u64 *max);
->> +	int (*cycle_in_hours_read)(struct device *dev, void *drv_data, u64
->*schrs);
->> +	int (*cycle_in_hours_write)(struct device *dev, void *drv_data, u64
->schrs);
->> +	int (*get_name)(struct device *dev, void *drv_data, char *buf); };
->> +
->> +const struct attribute_group *edac_scrub_get_desc(void);
->> +
->>  struct edac_ecs_ex_info {
->>  	u16 num_media_frus;
->>  };
->
->
->
->Thanks,
->Mauro
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Thanks,
-Shiju
+-- 
+Cheers,
+
+David / dhildenb
 
 
