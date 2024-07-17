@@ -1,258 +1,641 @@
-Return-Path: <linux-acpi+bounces-6936-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6937-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BA4933EBD
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 16:43:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F5C93413E
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 19:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36858284032
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 14:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDB81F220C9
+	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C833181B81;
-	Wed, 17 Jul 2024 14:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B631181B9A;
+	Wed, 17 Jul 2024 17:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TEJC5mgE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkIF3E48"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74BF181324
-	for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 14:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C793FB1B;
+	Wed, 17 Jul 2024 17:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721227377; cv=none; b=F/mRj6v/CyDTEjlBUCeNTOVLJ+vcgJnjvTGxDkmtqwjCiaVa4IyTimaingswLJrUZRwXHWURz+Is1fP3NroavW4Tveb8ing0unly7FCzy4upmT4jL+t4U5UKIPAZq4ny/j0JLiyqMOYP5PqaCe8l/A2ezwmjj3+GXZPJzpKsKRk=
+	t=1721236467; cv=none; b=mM3bsW//spBmeajBc+WeI+K4Pt3tO3B5pdA4G9js6qLStVaU+o0uVcDos6OAJ4WvMoQrvgup13vKn2oaZKECylDLVfVuE+BXHM1eh4UiVPNKcO/jO4iDiXLzh+Y+yCJYrBSddJkklJ8qzP0AG1Nrdk1LHe4cU3K8RPmv5rlclTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721227377; c=relaxed/simple;
-	bh=zUVIvHCsTCCXlgAEsrezINakY7JgduDyy2tKWsIjEJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rdoEnqgnz3XWWI4QWVSR1Qj8hK5YNBK3UwhAfzwuc3Zp6O81wpRLzOwvQwTyzX8nexFGTcHHZ2Mj4pGh9CygkXbM69M6O1xSJ1VHlgasYpZ94RXkEY647Z846hmJjfAUKrU3fZu4bMZhXkZnsCR9VhVloiyshUCKsm3R8SEXjV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TEJC5mgE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721227374;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M2vL8rRc69gotddfUAFMWYk4nVzDmp9tj4adCdBDziU=;
-	b=TEJC5mgEqqLu+j5SkvTipJT3CBFqO6gWUNsYjXWc1qS5Jju1GXl9Kp3enqyRCML9siWLCM
-	3tlfqdFwQONyuuPuC+PT2rcmqBF86/tquI2PeGpCTG61OcSUrcGDaqcRULov4+YKvDkOyp
-	WyCZ5Nw5Rgk180NYLALDBdlgSgQH+S8=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-1wzvUQKlMqO3sXrTR37HEA-1; Wed, 17 Jul 2024 10:42:53 -0400
-X-MC-Unique: 1wzvUQKlMqO3sXrTR37HEA-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a77f48f2118so133666066b.1
-        for <linux-acpi@vger.kernel.org>; Wed, 17 Jul 2024 07:42:53 -0700 (PDT)
+	s=arc-20240116; t=1721236467; c=relaxed/simple;
+	bh=tEXdaulW2f20dXpuenXh8bUFdqo+7Z1BGL9pU1HsRqQ=;
+	h=Message-ID:From:Date:To:Cc:Subject:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L4YKDMy5cFNmn/5zcM1U83Uwlt+ugvsSZP1LUAHbEu6yMeDy2RWTVmqh9Vk5Ocfiu1cCQC5ffn8ydtiw1N+1IiL1V9tqmkqwSAUm+CDjPF52QIWky1gKsAwodxWqzfop7lIRHFDTYxTzAwo0eBWxY6orTCoz3gjtdy9s46+mEA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkIF3E48; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-651da7c1531so252227b3.0;
+        Wed, 17 Jul 2024 10:14:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721236464; x=1721841264; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:date:from:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kLkXS4JNkxJPRpT02NgFAng+HVvSx9yoDRGZiEauZGI=;
+        b=CkIF3E48+59cM9p+H71bikoUITx8tq1Lte+WQ5md7n4VG54fjOBRSqJgMvX5nOD4l7
+         shqIsKZcdwpRh7vxayhItL/1bs49Qklo7NZH/oakiO+09jDZ2q04GVBUr7xs86XSfuz9
+         h5T8nXOfMu7eq30TAOOrF3d3hdqs1JX/5x8y+H9UUFywsmqFuHuqNWp0CwI3Wft1th3W
+         lU4ZuQ79kcpgQSilh9O+NtgZFtwKPBaR+jY/0UyKUObmNtX/dViII8f+LFJ9vP+xDSPg
+         XduQtRzjTxIYGjYPyMfKEehphqSJvvhLOOu2HvV0GxfmHVdvrrW94Id4I35rBDx6h/R/
+         Vx+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721227372; x=1721832172;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=M2vL8rRc69gotddfUAFMWYk4nVzDmp9tj4adCdBDziU=;
-        b=QNMAgLElpIzm4GjmnnVDVUYJV7OVVmBdI6Nc7jczYrLbWDDTyh9TuSQQZYIYwQG2W8
-         95qyG+OqZL61ET7ItZBkaVILukvBQ5krvBDvMzUEafsF+a8evV97V0kb7zu8lV+OwpWH
-         ztVSy30+fy2Hna6oFqcdBIk2eLtrDKyMZ6DD870BmSGPitnRR4Dm7lz7Z0B3Zklewaai
-         HpaKkNiAxPp8PXVV9NMee544KW0eWg24Vs7a8lddh9upCc59VyIVH3NVXZS+VEYIOdz2
-         6U2Jz9zLrjAS1cmPOE5FYPaHdJcb8rmWOj7MA7KdLyVvMBNNfEvk9ZzD/vUUUvQFVLnq
-         IYiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVm3CADvuh/rXuHL0EUhEUdFKIP0WvPGmoYRE8x1UNLzzmN5mVlLO749bGjjLAzgCoPsZs5cLzQV0cAPm6Y8WgSiP/vTPrr1grh3g==
-X-Gm-Message-State: AOJu0Yzv8E+fhrfGQ3mf5AngtUVBuNJ6zMfEs3sR0uqpmt+vN8z5jMZv
-	EoDi83AWn5qtr2zaaTeOBHAyR5P2OmUJ2/iq8SkSqygrsA8IIxog/TrijbDiQHK5JurFgmxrXD7
-	BAzt/zC5/mFU3jOmuA2QTKy3oEFXSd4gvEqLYVA7ftRRAuyjMZpxvanM1AhE=
-X-Received: by 2002:a17:906:1c0f:b0:a6f:46f1:5434 with SMTP id a640c23a62f3a-a79eda04168mr521686466b.6.1721227372352;
-        Wed, 17 Jul 2024 07:42:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEi6DrDSqxxObcD+4KvqZEIVIf6XCAhrJ0LWIBdtNZjezxwhMU5bcwwGQ0tRJ1krbBOftaEqw==
-X-Received: by 2002:a17:906:1c0f:b0:a6f:46f1:5434 with SMTP id a640c23a62f3a-a79eda04168mr521682366b.6.1721227371866;
-        Wed, 17 Jul 2024 07:42:51 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c714:c00:b08b:a871:ce99:dfde? (p200300cbc7140c00b08ba871ce99dfde.dip0.t-ipconnect.de. [2003:cb:c714:c00:b08b:a871:ce99:dfde])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d2018sm453924466b.85.2024.07.17.07.42.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jul 2024 07:42:51 -0700 (PDT)
-Message-ID: <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
-Date: Wed, 17 Jul 2024 16:42:48 +0200
+        d=1e100.net; s=20230601; t=1721236464; x=1721841264;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:date:from:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kLkXS4JNkxJPRpT02NgFAng+HVvSx9yoDRGZiEauZGI=;
+        b=BxTzNSCQqDgSvfLIg97tzZyW7D+Aknd7qdP8bV9dzqeBHe7DxunMQ3tLBg7AgsrkMy
+         nrEIlH8vAhi7LyVfEEz+XOQLqQrb5JNpnMMNOCjGxerOqCD1+Lf4UmB/cifR2B+n7Owy
+         ctuTQncCM6bUlyPqaBQqNWJz9rJcrc3IwtvaoYe5iZfoAy30r/zpAWb23V1X99Lr5XPs
+         ItpInRC2UxKbFCWCZGS0LtRgPBooea9dSylm2sB9oVDwZdickpnPZ0MfJhG42800LK96
+         6CvSSV23nemcUfQV6nogUJOUZaTuyxsmmA5ONRsX/os2bf7CtT75DGtCvZEB4sGsKIaN
+         GDXA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5MwPSimeKSEsv5gjNzm+RsyMSCoCRqLzdYVibZfB9RYP0d/2Ny2pPPgZt+A6VKo/K75KmifcOqvzs4bn4JoOgzAZYeOkvlKBW0QrsVcoAoUn7edn4OgYYQl/yH/te8obh+sdkwc4wYP8tH2E9iJsrkO+tVudmzdrpMFCiBulBahLs7g==
+X-Gm-Message-State: AOJu0YzFIgK4JYvZi1elp4A20To/LT0XbhqbfAV0t2AXHf0d8qMf8bYM
+	6yw+I76zFrOFlQuGyDzsmLS6TVZBGtR6MprrGZnuqbDIVE4Idndp
+X-Google-Smtp-Source: AGHT+IGv0Fp8VtqtaEbxPcnhkeI+TU2IkWi0U9x446wbrGVqb0eUoIkz99EP6B5DwE3+FcxH0Eyo1Q==
+X-Received: by 2002:a05:6902:1614:b0:e05:e1d5:8852 with SMTP id 3f1490d57ef6-e05ed6de401mr2844209276.13.1721236464289;
+        Wed, 17 Jul 2024 10:14:24 -0700 (PDT)
+Received: from gpd. ([50.205.20.42])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e05fea266desm6231276.22.2024.07.17.10.14.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jul 2024 10:14:23 -0700 (PDT)
+Message-ID: <6697fbef.250a0220.24877d.00a7@mx.google.com>
+X-Google-Original-Message-ID: <Zpf7tF5678aZwus_@gpd.>
+From: nifan.cxl@gmail.com
+X-Google-Original-From: fan@gpd.
+Date: Wed, 17 Jul 2024 10:13:24 -0700
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [RFC PATCH v9 03/11] EDAC: Add EDAC ECS control driver
+References: <20240716150336.2042-1-shiju.jose@huawei.com>
+ <20240716150336.2042-4-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/17] arch, mm: pull out allocation of NODE_DATA to
- generic code
-To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dan Williams <dan.j.williams@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
- x86@kernel.org
-References: <20240716111346.3676969-1-rppt@kernel.org>
- <20240716111346.3676969-6-rppt@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20240716111346.3676969-6-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716150336.2042-4-shiju.jose@huawei.com>
 
-On 16.07.24 13:13, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Tue, Jul 16, 2024 at 04:03:27PM +0100, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> Architectures that support NUMA duplicate the code that allocates
-> NODE_DATA on the node-local memory with slight variations in reporting
-> of the addresses where the memory was allocated.
+> Add EDAC ECS (Error Check Scrub) control driver supports configuring
+> the memory device's ECS feature.
 > 
-> Use x86 version as the basis for the generic alloc_node_data() function
-> and call this function in architecture specific numa initialization.
+> The Error Check Scrub (ECS) is a feature defined in JEDEC DDR5 SDRAM
+> Specification (JESD79-5) and allows the DRAM to internally read, correct
+> single-bit errors, and write back corrected data bits to the DRAM array
+> while providing transparency to error counts.
 > 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> The DDR5 device contains number of memory media FRUs per device. The
+> DDR5 ECS feature and thus the ECS control driver supports configuring
+> the ECS parameters per FRU.
+> 
+> The memory devices supports ECS feature register with the EDAC ECS driver
+> and thus with the generic EDAC RAS feature driver, which adds the sysfs
+> ECS control interface. The ECS control attributes are exposed to the
+> userspace in /sys/bus/edac/devices/<dev-name>/ecs_fruX/.
+> 
+> Generic EDAC ECS driver and the common sysfs ECS interface promotes
+> unambiguous control from the userspace irrespective of the underlying
+> devices, support ECS feature.
+> 
+> The support for ECS feature is added separately because the DDR5 ECS
+> feature's control attributes are dissimilar from those of the scrub
+> feature.
+> 
+> Note: Documentation can be added if necessary.
+> 
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
 > ---
+>  drivers/edac/Makefile            |   2 +-
+>  drivers/edac/edac_ecs.c          | 396 +++++++++++++++++++++++++++++++
+>  drivers/edac/edac_ras_feature.c  |   5 +
+>  include/linux/edac_ras_feature.h |  36 +++
+>  4 files changed, 438 insertions(+), 1 deletion(-)
+>  create mode 100755 drivers/edac/edac_ecs.c
+> 
+> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+> index de56cbd039eb..c1412c7d3efb 100644
+> --- a/drivers/edac/Makefile
+> +++ b/drivers/edac/Makefile
+> @@ -10,7 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
+>  
+>  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
+>  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
+> -edac_core-y	+= edac_ras_feature.o edac_scrub.o
+> +edac_core-y	+= edac_ras_feature.o edac_scrub.o edac_ecs.o
+>  
+>  edac_core-$(CONFIG_EDAC_DEBUG)		+= debugfs.o
+>  
+> diff --git a/drivers/edac/edac_ecs.c b/drivers/edac/edac_ecs.c
+> new file mode 100755
+> index 000000000000..37dabd053c36
+> --- /dev/null
+> +++ b/drivers/edac/edac_ecs.c
+> @@ -0,0 +1,396 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ECS driver supporting controlling on die error check scrub
+> + * (e.g. DDR5 ECS). The common sysfs ECS interface promotes
+> + * unambiguous access from the userspace.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#define pr_fmt(fmt)     "EDAC ECS: " fmt
+> +
+> +#include <linux/edac_ras_feature.h>
+> +
+> +#define EDAC_ECS_FRU_NAME "ecs_fru"
+> +
+> +enum edac_ecs_attributes {
+> +	ecs_log_entry_type,
+> +	ecs_log_entry_type_per_dram,
+> +	ecs_log_entry_type_per_memory_media,
+> +	ecs_mode,
+> +	ecs_mode_counts_rows,
+> +	ecs_mode_counts_codewords,
+> +	ecs_reset,
+> +	ecs_name,
+> +	ecs_threshold,
+> +	ecs_max_attrs
+> +};
 
-[...]
+As mentioned in other review, use uppercase.
 
-> diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-> index 9208eaadf690..909f6cec3a26 100644
-> --- a/arch/mips/loongson64/numa.c
-> +++ b/arch/mips/loongson64/numa.c
-> @@ -81,12 +81,8 @@ static void __init init_topology_matrix(void)
->   
->   static void __init node_mem_init(unsigned int node)
->   {
-> -	struct pglist_data *nd;
->   	unsigned long node_addrspace_offset;
->   	unsigned long start_pfn, end_pfn;
-> -	unsigned long nd_pa;
-> -	int tnid;
-> -	const size_t nd_size = roundup(sizeof(pg_data_t), SMP_CACHE_BYTES);
+Fan
 
-One interesting change is that we now always round up to full pages on 
-architectures where we previously rounded up to SMP_CACHE_BYTES.
-
-I assume we don't really expect a significant growth in memory 
-consumption that we care about, especially because most systems with 
-many nodes also have  quite some memory around.
-
-
-> -/* Allocate NODE_DATA for a node on the local memory */
-> -static void __init alloc_node_data(int nid)
-> -{
-> -	const size_t nd_size = roundup(sizeof(pg_data_t), PAGE_SIZE);
-> -	u64 nd_pa;
-> -	void *nd;
-> -	int tnid;
-> -
-> -	/*
-> -	 * Allocate node data.  Try node-local memory and then any node.
-> -	 * Never allocate in DMA zone.
-> -	 */
-> -	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
-> -	if (!nd_pa) {
-> -		pr_err("Cannot find %zu bytes in any node (initial node: %d)\n",
-> -		       nd_size, nid);
-> -		return;
-> -	}
-> -	nd = __va(nd_pa);
-> -
-> -	/* report and initialize */
-> -	printk(KERN_INFO "NODE_DATA(%d) allocated [mem %#010Lx-%#010Lx]\n", nid,
-> -	       nd_pa, nd_pa + nd_size - 1);
-> -	tnid = early_pfn_to_nid(nd_pa >> PAGE_SHIFT);
-> -	if (tnid != nid)
-> -		printk(KERN_INFO "    NODE_DATA(%d) on node %d\n", nid, tnid);
-> -
-> -	node_data[nid] = nd;
-> -	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
-> -
-> -	node_set_online(nid);
-> -}
-> -
->   /**
->    * numa_cleanup_meminfo - Cleanup a numa_meminfo
->    * @mi: numa_meminfo to clean up
-> @@ -571,6 +538,7 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
->   			continue;
->   
->   		alloc_node_data(nid);
-> +		node_set_online(nid);
->   	}
-
-I can spot that we only remove a single node_set_online() call from x86.
-
-What about all the other architectures? Will there be any change in 
-behavior for them? Or do we simply set the nodes online later once more?
-
--- 
-Cheers,
-
-David / dhildenb
-
+> +
+> +struct edac_ecs_dev_attr {
+> +	struct device_attribute dev_attr;
+> +	int fru_id;
+> +};
+> +
+> +struct edac_ecs_fru_context {
+> +	char name[EDAC_RAS_NAME_LEN];
+> +	struct edac_ecs_dev_attr ecs_dev_attr[ecs_max_attrs];
+> +	struct attribute *ecs_attrs[ecs_max_attrs + 1];
+> +	struct attribute_group group;
+> +};
+> +
+> +struct edac_ecs_context {
+> +	u16 num_media_frus;
+> +	struct edac_ecs_fru_context *fru_ctxs;
+> +};
+> +
+> +#define to_ecs_dev_attr(_dev_attr)	\
+> +	container_of(_dev_attr, struct edac_ecs_dev_attr, dev_attr)
+> +
+> +static ssize_t log_entry_type_show(struct device *ras_feat_dev,
+> +				   struct device_attribute *attr,
+> +				   char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_log_entry_type(ras_feat_dev->parent, ctx->ecs.private,
+> +				      ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t log_entry_type_store(struct device *ras_feat_dev,
+> +				    struct device_attribute *attr,
+> +				    const char *buf, size_t len)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	long val;
+> +	int ret;
+> +
+> +	ret = kstrtol(buf, 10, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->set_log_entry_type(ras_feat_dev->parent, ctx->ecs.private,
+> +				      ecs_dev_attr->fru_id, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t log_entry_type_per_dram_show(struct device *ras_feat_dev,
+> +					    struct device_attribute *attr,
+> +					    char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_log_entry_type_per_dram(ras_feat_dev->parent, ctx->ecs.private,
+> +					       ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t log_entry_type_per_memory_media_show(struct device *ras_feat_dev,
+> +						    struct device_attribute *attr,
+> +						    char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_log_entry_type_per_memory_media(ras_feat_dev->parent,
+> +						       ctx->ecs.private,
+> +						       ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t mode_show(struct device *ras_feat_dev,
+> +			 struct device_attribute *attr,
+> +			 char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_mode(ras_feat_dev->parent, ctx->ecs.private,
+> +			    ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t mode_store(struct device *ras_feat_dev,
+> +			  struct device_attribute *attr,
+> +			  const char *buf, size_t len)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	long val;
+> +	int ret;
+> +
+> +	ret = kstrtol(buf, 10, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->set_mode(ras_feat_dev->parent, ctx->ecs.private,
+> +			    ecs_dev_attr->fru_id, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t mode_counts_rows_show(struct device *ras_feat_dev,
+> +				     struct device_attribute *attr,
+> +				     char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_mode_counts_rows(ras_feat_dev->parent, ctx->ecs.private,
+> +					ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t mode_counts_codewords_show(struct device *ras_feat_dev,
+> +					  struct device_attribute *attr,
+> +					  char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	u64 val;
+> +	int ret;
+> +
+> +	ret = ops->get_mode_counts_codewords(ras_feat_dev->parent, ctx->ecs.private,
+> +					     ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t reset_store(struct device *ras_feat_dev,
+> +			   struct device_attribute *attr,
+> +			   const char *buf, size_t len)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	long val;
+> +	int ret;
+> +
+> +	ret = kstrtol(buf, 10, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->reset(ras_feat_dev->parent, ctx->ecs.private,
+> +			 ecs_dev_attr->fru_id, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static ssize_t name_show(struct device *ras_feat_dev,
+> +			 struct device_attribute *attr, char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	int ret;
+> +
+> +	ret = ops->get_name(ras_feat_dev->parent, ctx->ecs.private,
+> +			    ecs_dev_attr->fru_id, buf);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return strlen(buf);
+> +}
+> +
+> +static ssize_t threshold_show(struct device *ras_feat_dev,
+> +			      struct device_attribute *attr, char *buf)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	int ret;
+> +	u64 val;
+> +
+> +	ret = ops->get_threshold(ras_feat_dev->parent, ctx->ecs.private,
+> +				 ecs_dev_attr->fru_id, &val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return sysfs_emit(buf, "0x%llx\n", val);
+> +}
+> +
+> +static ssize_t threshold_store(struct device *ras_feat_dev,
+> +			       struct device_attribute *attr,
+> +			       const char *buf, size_t len)
+> +{
+> +	struct edac_ecs_dev_attr *ecs_dev_attr = to_ecs_dev_attr(attr);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +	long val;
+> +	int ret;
+> +
+> +	ret = kstrtol(buf, 10, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = ops->set_threshold(ras_feat_dev->parent, ctx->ecs.private,
+> +				 ecs_dev_attr->fru_id, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return len;
+> +}
+> +
+> +static umode_t ecs_attr_visible(struct kobject *kobj,
+> +				struct attribute *a, int attr_id)
+> +{
+> +	struct device *ras_feat_dev = kobj_to_dev(kobj);
+> +	struct edac_ras_feat_ctx *ctx = dev_get_drvdata(ras_feat_dev);
+> +	const struct edac_ecs_ops *ops = ctx->ecs.ops;
+> +
+> +	switch (attr_id) {
+> +	case ecs_log_entry_type:
+> +		if (ops->get_log_entry_type && ops->set_log_entry_type)
+> +			return a->mode;
+> +		if (ops->get_log_entry_type)
+> +			return 0444;
+> +		return 0;
+> +	case ecs_log_entry_type_per_dram:
+> +		return ops->get_log_entry_type_per_dram ? a->mode : 0;
+> +	case ecs_log_entry_type_per_memory_media:
+> +		return ops->get_log_entry_type_per_memory_media ? a->mode : 0;
+> +	case ecs_mode:
+> +		if (ops->get_mode && ops->set_mode)
+> +			return a->mode;
+> +		if (ops->get_mode)
+> +			return 0444;
+> +		return 0;
+> +	case ecs_mode_counts_rows:
+> +		return ops->get_mode_counts_rows ? a->mode : 0;
+> +	case ecs_mode_counts_codewords:
+> +		return ops->get_mode_counts_codewords ? a->mode : 0;
+> +	case ecs_reset:
+> +		return ops->reset ? a->mode : 0;
+> +	case ecs_name:
+> +		return ops->get_name ? a->mode : 0;
+> +	case ecs_threshold:
+> +		if (ops->get_threshold && ops->set_threshold)
+> +			return a->mode;
+> +		if (ops->get_threshold)
+> +			return 0444;
+> +		return 0;
+> +	default:
+> +		return 0;
+> +	}
+> +}
+> +
+> +#define EDAC_ECS_ATTR_RO(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RO(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +#define EDAC_ECS_ATTR_WO(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_WO(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +#define EDAC_ECS_ATTR_RW(_name, _fru_id)       \
+> +	((struct edac_ecs_dev_attr) { .dev_attr = __ATTR_RW(_name), \
+> +				     .fru_id = _fru_id })
+> +
+> +static int ecs_create_desc(struct device *ecs_dev,
+> +			   const struct attribute_group **attr_groups,
+> +			   u16 num_media_frus)
+> +{
+> +	struct edac_ecs_context *ecs_ctx;
+> +	u32 fru;
+> +
+> +	ecs_ctx = devm_kzalloc(ecs_dev, sizeof(*ecs_ctx), GFP_KERNEL);
+> +	if (!ecs_ctx)
+> +		return -ENOMEM;
+> +
+> +	ecs_ctx->num_media_frus = num_media_frus;
+> +	ecs_ctx->fru_ctxs = devm_kcalloc(ecs_dev, num_media_frus,
+> +					 sizeof(*ecs_ctx->fru_ctxs),
+> +					 GFP_KERNEL);
+> +	if (!ecs_ctx->fru_ctxs)
+> +		return -ENOMEM;
+> +
+> +	for (fru = 0; fru < num_media_frus; fru++) {
+> +		struct edac_ecs_fru_context *fru_ctx = &ecs_ctx->fru_ctxs[fru];
+> +		struct attribute_group *group = &fru_ctx->group;
+> +		int i;
+> +
+> +		fru_ctx->ecs_dev_attr[0] = EDAC_ECS_ATTR_RW(log_entry_type, fru);
+> +		fru_ctx->ecs_dev_attr[1] = EDAC_ECS_ATTR_RO(log_entry_type_per_dram, fru);
+> +		fru_ctx->ecs_dev_attr[2] = EDAC_ECS_ATTR_RO(log_entry_type_per_memory_media, fru);
+> +		fru_ctx->ecs_dev_attr[3] = EDAC_ECS_ATTR_RW(mode, fru);
+> +		fru_ctx->ecs_dev_attr[4] = EDAC_ECS_ATTR_RO(mode_counts_rows, fru);
+> +		fru_ctx->ecs_dev_attr[5] = EDAC_ECS_ATTR_RO(mode_counts_codewords, fru);
+> +		fru_ctx->ecs_dev_attr[6] = EDAC_ECS_ATTR_WO(reset, fru);
+> +		fru_ctx->ecs_dev_attr[7] = EDAC_ECS_ATTR_RO(name, fru);
+> +		fru_ctx->ecs_dev_attr[8] = EDAC_ECS_ATTR_RW(threshold, fru);
+> +		for (i = 0; i < ecs_max_attrs; i++)
+> +			fru_ctx->ecs_attrs[i] = &fru_ctx->ecs_dev_attr[i].dev_attr.attr;
+> +
+> +		sprintf(fru_ctx->name, "%s%d", EDAC_ECS_FRU_NAME, fru);
+> +		group->name = fru_ctx->name;
+> +		group->attrs = fru_ctx->ecs_attrs;
+> +		group->is_visible  = ecs_attr_visible;
+> +
+> +		attr_groups[fru] = group;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * edac_ecs_get_desc - get edac ecs descriptors
+> + * @ecs_dev: client ecs device
+> + * @attr_groups: pointer to attrribute group container
+> + * @num_media_frus: number of media FRUs in the device
+> + *
+> + * Returns 0 on success, error otherwise.
+> + */
+> +int edac_ecs_get_desc(struct device *ecs_dev,
+> +		      const struct attribute_group **attr_groups,
+> +		      u16 num_media_frus)
+> +{
+> +	if (!ecs_dev || !attr_groups || !num_media_frus)
+> +		return -EINVAL;
+> +
+> +	return ecs_create_desc(ecs_dev, attr_groups, num_media_frus);
+> +}
+> diff --git a/drivers/edac/edac_ras_feature.c b/drivers/edac/edac_ras_feature.c
+> index 48927f868372..a02ffbcc1c1e 100755
+> --- a/drivers/edac/edac_ras_feature.c
+> +++ b/drivers/edac/edac_ras_feature.c
+> @@ -47,10 +47,15 @@ static int edac_ras_feat_ecs_init(struct device *parent,
+>  				  const struct attribute_group **attr_groups)
+>  {
+>  	int num = efeat->ecs_info.num_media_frus;
+> +	int ret;
+>  
+>  	edata->ops = efeat->ecs_ops;
+>  	edata->private = efeat->ecs_ctx;
+>  
+> +	ret = edac_ecs_get_desc(parent, attr_groups, num);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return num;
+>  }
+>  
+> diff --git a/include/linux/edac_ras_feature.h b/include/linux/edac_ras_feature.h
+> index 462f9ecbf9d4..153f8a3557f1 100755
+> --- a/include/linux/edac_ras_feature.h
+> +++ b/include/linux/edac_ras_feature.h
+> @@ -47,10 +47,46 @@ struct edac_scrub_ops {
+>  
+>  const struct attribute_group *edac_scrub_get_desc(void);
+>  
+> +/**
+> + * struct ecs_ops - ECS device operations (all elements optional)
+> + * @get_log_entry_type: read the log entry type value.
+> + * @set_log_entry_type: set the log entry type value.
+> + * @get_log_entry_type_per_dram: read the log entry type per dram value.
+> + * @get_log_entry_type_memory_media: read the log entry type per memory media value.
+> + * @get_mode: read the mode value.
+> + * @set_mode: set the mode value.
+> + * @get_mode_counts_rows: read the mode counts rows value.
+> + * @get_mode_counts_codewords: read the mode counts codewords value.
+> + * @reset: reset the ECS counter.
+> + * @get_threshold: read the threshold value.
+> + * @set_threshold: set the threshold value.
+> + * @get_name: get the ECS's name.
+> + */
+> +struct edac_ecs_ops {
+> +	int (*get_log_entry_type)(struct device *dev, void *drv_data, int fru_id, u64 *val);
+> +	int (*set_log_entry_type)(struct device *dev, void *drv_data, int fru_id, u64 val);
+> +	int (*get_log_entry_type_per_dram)(struct device *dev, void *drv_data,
+> +					   int fru_id, u64 *val);
+> +	int (*get_log_entry_type_per_memory_media)(struct device *dev, void *drv_data,
+> +						   int fru_id, u64 *val);
+> +	int (*get_mode)(struct device *dev, void *drv_data, int fru_id, u64 *val);
+> +	int (*set_mode)(struct device *dev, void *drv_data, int fru_id, u64 val);
+> +	int (*get_mode_counts_rows)(struct device *dev, void *drv_data, int fru_id, u64 *val);
+> +	int (*get_mode_counts_codewords)(struct device *dev, void *drv_data, int fru_id, u64 *val);
+> +	int (*reset)(struct device *dev, void *drv_data, int fru_id, u64 val);
+> +	int (*get_threshold)(struct device *dev, void *drv_data, int fru_id, u64 *threshold);
+> +	int (*set_threshold)(struct device *dev, void *drv_data, int fru_id, u64 threshold);
+> +	int (*get_name)(struct device *dev, void *drv_data, int fru_id, char *buf);
+> +};
+> +
+>  struct edac_ecs_ex_info {
+>  	u16 num_media_frus;
+>  };
+>  
+> +int edac_ecs_get_desc(struct device *ecs_dev,
+> +		      const struct attribute_group **attr_groups,
+> +		      u16 num_media_frus);
+> +
+>  /*
+>   * EDAC RAS feature information structure
+>   */
+> -- 
+> 2.34.1
+> 
 
