@@ -1,173 +1,138 @@
-Return-Path: <linux-acpi+bounces-6956-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6957-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8FF935163
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 19:55:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BB9937035
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 23:46:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E6C21F22181
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 17:55:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF7A282781
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 21:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D021459E8;
-	Thu, 18 Jul 2024 17:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C32C145B21;
+	Thu, 18 Jul 2024 21:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YmgOcFNc"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="U+I4x50K"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A01145356;
-	Thu, 18 Jul 2024 17:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4500975804
+	for <linux-acpi@vger.kernel.org>; Thu, 18 Jul 2024 21:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721325295; cv=none; b=WgM2yTURSFpMF4f7oKdK9dvpUojFW2K4D4gpDenq2+7KWR4Xua+QERBM7BmL8ssxz4cbsSfMkYmlRJ/HcQk6rB0IMcG47OBOa/yJIYbiA84HbzODhx23035dNNBosxw2XLHaRt0e+DS44OJ2Gdmno5VM9iOFlyUI8aB3ovGBX4k=
+	t=1721339184; cv=none; b=H3QsJqfni2Qr0W2LRkXhr2NmRj3U1JKWas6dstSx6/JgUZyj48sMpQuVyjnOOZE5ZTlteKOFnxqOxMUUX3eBAH+L5u2llbX/wbK3u6BaSyQNjEuwTR4eiGk7Sl5r1wdOr6RO9Dr3DsxNq6eJD5FVdlhXOc11uMEIyyz3j2zTf4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721325295; c=relaxed/simple;
-	bh=X6jIlfRKMPKmywDaK5B+vu56+DcG5UEkdLppnfbwn9A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EqOThebVCh5kq6WI8auICdbd/dAsmfMDue7N2llQFw3xoYR3yExPbdFgYGo3oc+btpsQshNPEKJHHkJJ1BusqT71kqOzKIgYtl8nPe6uePZgX57lX0ZSO1BQ4ffVi3njSD3wcnN8OkiYzNaDFx+wB2qqgYnhc0ciRnJZesSQ5yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YmgOcFNc; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721325294; x=1752861294;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=X6jIlfRKMPKmywDaK5B+vu56+DcG5UEkdLppnfbwn9A=;
-  b=YmgOcFNchRrZL1FMwzsAV7awQOnjkgKYlITUwJTgq6KO2oTldx5nDqRS
-   UMKQ81xIbizHqk4IXaVIZfJHKZjrOntgczVd2qAGETR99UY31OUSH6FfR
-   XneohxTVEZTH97eqSWgx/A3b2R+0QPmyzOlX6GZDWQQsVf1FMsF7sN2yN
-   dPIOQauBuJt+AsBBlc98ajByQ7qV0pRFiST2VSdd3zca67kUritvKSCuG
-   C/PXpRw3ic5HkD4XCUhGE27XwvCDI5jjHV62AhBzycm0IUckdjmsQuR0u
-   4RgrXt9wq1IIK7aljhRP87m+RIj17Ud5Wq6gLXgo7CU6KFBV50QjDij5a
-   A==;
-X-CSE-ConnectionGUID: jlP5v9jpR4aUQVrheE2Qzg==
-X-CSE-MsgGUID: odVTBz95QSu3Om7p6VVC5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="30067124"
-X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; 
-   d="scan'208";a="30067124"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2024 10:54:53 -0700
-X-CSE-ConnectionGUID: DmbDazKDTIujuQlms22ytw==
-X-CSE-MsgGUID: 6HtGeUCMTcSNafbbvmS4HQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; 
-   d="scan'208";a="50606615"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 18 Jul 2024 10:54:48 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sUVL4-000hUQ-1g;
-	Thu, 18 Jul 2024 17:54:46 +0000
-Date: Fri, 19 Jul 2024 01:53:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-	bhelgaas@google.com, robert.moore@intel.com, yazen.ghannam@amd.com,
-	avadhut.naik@amd.com, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, CobeChen@zhaoxin.com, TimGuo@zhaoxin.com,
-	TonyWWang-oc@zhaoxin.com, leoliu-oc@zhaoxin.com
-Subject: Re: [PATCH v3 1/3] ACPI/APEI: Add hest_parse_pcie_aer()
-Message-ID: <202407190133.KRXYQI5m-lkp@intel.com>
-References: <20240718062405.30571-2-LeoLiu-oc@zhaoxin.com>
+	s=arc-20240116; t=1721339184; c=relaxed/simple;
+	bh=QIe/2kbFHCA11Q9TL7mLMduOjYNsGQd/Tv+tn4jIdAA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o88TpfJ6TvzOhFTXNB2cGN8DzahoTPDnS8VI3acMYtcIHf9Eh/t5+NkZcRZu2+35gQjtp1Toy7DPW9F45VzmopSvoQiI1i7VzJUqhbZIe3QN6mozUxPOQo7jdzZt+wDa3kaMroCAt6TQwT12t609b7pehCygmb8JhZX7bA64dv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=U+I4x50K; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7f684af6af1so53054539f.2
+        for <linux-acpi@vger.kernel.org>; Thu, 18 Jul 2024 14:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1721339181; x=1721943981; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b/3KVXgmf69sNo7YCAFBU75fVyP3kLvsv8BGm2iEjzc=;
+        b=U+I4x50KPl4X8RHNN5WKXgaZlEHjW1XglGeBCiLPeDrA3B+KPiBhvahd+FDuWPjb3+
+         87XEXsm4pfnSHwtps3MIP+TEfZCsdspc+yTjRy2CuGXrEoam95Al6g0CygaBSnC7ExCA
+         RyHihQX9Zo7+MvnRzEr8pj4uCXjohr23/SwVBcsrkRfsRX2fqDkhdWkK11O/eSelP+eL
+         /d3uDT3c4Ryb2bL0kMYavtCuYoMYn2E5sOc6EGM3M2zuFmF625pNWCLDfHfN8m1dypcR
+         YCbJlYmcrqMljxJYDSm/J4J+WSao69397c5/M406TScUTHCJTPHsBmberRIPN7VbEQzd
+         3+aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721339181; x=1721943981;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b/3KVXgmf69sNo7YCAFBU75fVyP3kLvsv8BGm2iEjzc=;
+        b=PLlf9EwObGjtXTI/1H2zia4qP3KqNm0K/ANCklqx8be2bofZAFkC5Ddkk3YOSrUMsB
+         2py5otg4pOXnuAKHWZer+hQwu9ekIC4XuGxyTtnAUI47j/yY3MiuYD23V2VtVLreQpqD
+         XotrY47uxh/idLdDLHuFibZxRE36Q/k+Iqm1mGYSdpZRN/B4EHfeOfrL04EGRcbySmSM
+         pX3cIIMtPSEGelKkOIuXasdUpKUZH5mooPT+45M9lMMhC+ox7dnzSHZIFfs5J2wdIqUs
+         dPFnvy3WqAguROHVk6cFSs3PTkrJiEAunFAcYgfk2pkJ+SEKv2NN5wmpNySKXeaYN+Dp
+         co+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXnDqup07pU1CfNJ5EdCVeGCbrxBQX9bcn44ENv+uFC4TCkbIKMpYQo1NKNTfayiu246edNMTkaErA2xQ08gH7wE+iAotLGB7E2dw==
+X-Gm-Message-State: AOJu0Yw9N2RM5mdUjpC+QF08HhaFIadE9xHTyTim8CO1C/YCMZU554ma
+	tTeUCja8aAQCRrHK8E2klTe18rBv9dKdymLa7ofkFqtYWJ3Q3wxRSQCWYryVPf4=
+X-Google-Smtp-Source: AGHT+IFfmYe/UsMSfgkCsdMUFOYZdCp937Ia8bMlaDCUPuHT0PtpOJmSb9jac6FVvVir80F2WXRXbQ==
+X-Received: by 2002:a05:6602:26c7:b0:806:7f5a:1fb7 with SMTP id ca18e2360f4ac-81710605dacmr801576939f.5.1721339181354;
+        Thu, 18 Jul 2024 14:46:21 -0700 (PDT)
+Received: from [100.64.0.1] ([147.124.94.167])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4c2342f164esm35433173.69.2024.07.18.14.46.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jul 2024 14:46:20 -0700 (PDT)
+Message-ID: <8b402e92-d874-4b30-9108-f521bd20d36c@sifive.com>
+Date: Thu, 18 Jul 2024 16:46:17 -0500
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240718062405.30571-2-LeoLiu-oc@zhaoxin.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/17] mm: move numa_distance and related code from x86 to
+ numa_memblks
+To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt <palmer@dabbelt.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring <robh@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ x86@kernel.org
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-14-rppt@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <20240716111346.3676969-14-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi LeoLiu-oc,
+On 2024-07-16 6:13 AM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Move code dealing with numa_distance array from arch/x86 to
+> mm/numa_memblks.c
+> 
+> This code will be later reused by arch_numa.
+> 
+> No functional changes.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/x86/mm/numa.c                   | 101 ---------------------------
+>  arch/x86/mm/numa_internal.h          |   2 -
+>  include/linux/numa_memblks.h         |   4 ++
+>  {arch/x86/mm => mm}/numa_emulation.c |   0
+>  mm/numa_memblks.c                    | 101 +++++++++++++++++++++++++++
+>  5 files changed, 105 insertions(+), 103 deletions(-)
+>  rename {arch/x86/mm => mm}/numa_emulation.c (100%)
 
-kernel test robot noticed the following build warnings:
+The numa_emulation.c rename looks like it should be part of the next commit, not
+this one.
 
-[auto build test WARNING on pci/for-linus]
-[also build test WARNING on rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v6.10 next-20240718]
-[cannot apply to pci/next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/LeoLiu-oc/ACPI-APEI-Add-hest_parse_pcie_aer/20240718-144218
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git for-linus
-patch link:    https://lore.kernel.org/r/20240718062405.30571-2-LeoLiu-oc%40zhaoxin.com
-patch subject: [PATCH v3 1/3] ACPI/APEI: Add hest_parse_pcie_aer()
-config: x86_64-randconfig-161-20240718 (https://download.01.org/0day-ci/archive/20240719/202407190133.KRXYQI5m-lkp@intel.com/config)
-compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240719/202407190133.KRXYQI5m-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407190133.KRXYQI5m-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/acpi/apei/hest.c: In function 'hest_source_is_pcie_aer':
->> drivers/acpi/apei/hest.c:155:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-     155 |                 if (pcie_type != PCI_EXP_TYPE_ROOT_PORT)
-         |                    ^
-   drivers/acpi/apei/hest.c:157:9: note: here
-     157 |         case ACPI_HEST_TYPE_AER_ENDPOINT:
-         |         ^~~~
-   drivers/acpi/apei/hest.c:158:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-     158 |                 if (pcie_type != PCI_EXP_TYPE_ENDPOINT)
-         |                    ^
-   drivers/acpi/apei/hest.c:160:9: note: here
-     160 |         case ACPI_HEST_TYPE_AER_BRIDGE:
-         |         ^~~~
-   drivers/acpi/apei/hest.c:161:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-     161 |                 if (pcie_type != PCI_EXP_TYPE_PCI_BRIDGE && pcie_type != PCI_EXP_TYPE_PCIE_BRIDGE)
-         |                    ^
-   drivers/acpi/apei/hest.c:163:9: note: here
-     163 |         default:
-         |         ^~~~~~~
-
-
-vim +155 drivers/acpi/apei/hest.c
-
-   144	
-   145	static bool hest_source_is_pcie_aer(struct acpi_hest_header *hest_hdr, struct pci_dev *dev)
-   146	{
-   147		u16 hest_type = hest_hdr->type;
-   148		u8 pcie_type = pci_pcie_type(dev);
-   149		struct acpi_hest_aer_common *common;
-   150	
-   151		common = (struct acpi_hest_aer_common *)(hest_hdr + 1);
-   152	
-   153		switch (hest_type) {
-   154		case ACPI_HEST_TYPE_AER_ROOT_PORT:
- > 155			if (pcie_type != PCI_EXP_TYPE_ROOT_PORT)
-   156				return false;
-   157		case ACPI_HEST_TYPE_AER_ENDPOINT:
-   158			if (pcie_type != PCI_EXP_TYPE_ENDPOINT)
-   159				return false;
-   160		case ACPI_HEST_TYPE_AER_BRIDGE:
-   161			if (pcie_type != PCI_EXP_TYPE_PCI_BRIDGE && pcie_type != PCI_EXP_TYPE_PCIE_BRIDGE)
-   162				return false;
-   163		default:
-   164			return false;
-   165		}
-   166	
-   167		if (common->flags & ACPI_HEST_GLOBAL)
-   168			return true;
-   169	
-   170		if (hest_match_pci_devfn(common, dev))
-   171			return true;
-   172	
-   173		return false;
-   174	}
-   175	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
