@@ -1,275 +1,107 @@
-Return-Path: <linux-acpi+bounces-6940-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6941-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B564C93430C
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 22:14:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E761A9347DD
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 08:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A8B3281A59
-	for <lists+linux-acpi@lfdr.de>; Wed, 17 Jul 2024 20:14:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F59FB2218D
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 06:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6544018308A;
-	Wed, 17 Jul 2024 20:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79F453E22;
+	Thu, 18 Jul 2024 06:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mtoj9gkj"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="sTuhT3YZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from qq.com (ec2-54-164-151-162.compute-1.amazonaws.com [54.164.151.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC715179AD;
-	Wed, 17 Jul 2024 20:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D218D4D8AF;
+	Thu, 18 Jul 2024 06:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.164.151.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721247259; cv=none; b=V1UaS1fhlAAsL9N+KzSlwDgbnVYBWJmpxPVXGavN/ZVKqeTu3rgYsI3vgf1Xz/xYn32o9YSjOtBSFs4Q9iFtgQsJStJa1NA2fr4hcxfzs4kyTOskgXVDx5ubWHdtI9OeSRxzmavPwP7GZ+QQg4LeK7vreto91tvBG8RFHDdlLBE=
+	t=1721283158; cv=none; b=VRUdzmaT3IowEGr4/5hD9QSTSBF3TKeu8XekbKnu1YsH8dmX36lOQwGmlTZlA14S4LLnLT3W64A7ZgDi3MjYOLlxlA2HzfEl/24V0/pT0iv6A5LRSgqrCG9sj6hJqg0hSDM8rquyk05XqhmdCb6KMbTHyooSySDjS7k5bKKLl10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721247259; c=relaxed/simple;
-	bh=xNNbEltvBNstAuzXBHYrUPFYJmSVyE1LGy8LE3b3HnA=;
-	h=Message-ID:From:Date:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZyJiPzKycMzSBjk6SK0vL8mGcZT8oxmoZJoVBOahuUdPkWYrMcZdZ3loDX3fo/d87x71zxRH4gDk3EBwlv0iE8cnFiMJI0pOdGouKIVvE7GDncE5rs5unGCHqG1YoiyCsV68I9Vnjp7/eO/hPuX2PqTw5PcaPLQnuKTehp52Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mtoj9gkj; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-70af5fbf0d5so31837b3a.1;
-        Wed, 17 Jul 2024 13:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721247257; x=1721852057; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:date:from:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=daNuErFTSxwNgtYvkZnLX9Xo2Y1uZdZanNQORu0umVM=;
-        b=mtoj9gkjhYVKlIQgsg0OVlH9+taaCUaJeK2INVPsW7kvJiU0lmcvSNphewtrv0rEsN
-         lY0JOF8VjmzCp8b8fMoriMgFYbgWXE1d807uYb0mqUXdI+Qd7oMRaOAxy1VI2qeKQ3BK
-         Y3CLQwKSwDQuabsfqRyEvoq/i41c+d3k5F2Um0pUD9TFgHgXVZ6V0CaEGqFztd00a2fC
-         pi0Fw3tjkJlPKoAXly/jU7HUELt2/Esrtp7hOGy8NUi6+PG0RO7h7PnLE0yUhk21yVhh
-         /eYQfZhEDaZTSmpf3fIZqvBEnzfNqHmdf08ngNAK1jCUBgnA4yHTHnGJCTUTMo14Hmfo
-         +uKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721247257; x=1721852057;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:date:from:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=daNuErFTSxwNgtYvkZnLX9Xo2Y1uZdZanNQORu0umVM=;
-        b=eUbZSV4ImaA4jI0nbuZ7nN05BJCUcuXU6t/gNtrBRx4MkCb5Rwdy+vXOspqTh6D5Ny
-         RYLhI2JL2hOEQSRCA4H7UTNcY7gb0fCuBnjKtZcU4rBum+hVJzpCoSy/0Exr5wAktntW
-         K+9B/6nd+3iFrA/zHkxz90ZysgjyJyI/ZhiVLAsCCRekWN9YKGP8ybi+gK05KT/Z6sJZ
-         GlYi7q1qj38PykUADf+klCZJ/s/+dZDnWV222AK43M3bi5o08Aqi2Pk5Wl8oh0Xvyuko
-         C/1NEmhPROOnIX2LXxxkg1KsDAxu5P88AbCaEHSVVohXYLzF5NeKbJGZVj1JF6NG3K59
-         DZUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcevZ6JuZY6wze4bxtGZrnncyAMWu8ecQTThGE0xIU1b+lffO3tUJTPJ/kUWHdW3K6A7tdLWGkOph3k/kyxGBjWkBKEE15a6aNy0YvvEFDGjCmKuRSZFY2LdO7ItKPQJ5dAFiYuqtdbuc//LanhDfXfVyeyt7Bj1Cb8vmHt7/WvR0sJA==
-X-Gm-Message-State: AOJu0YwXwLRnsuiyW43xUs1OLnm/k8TnCwCb3ZsfkTWBvidK1rVhC1Ln
-	peasey7SOejTYHPkwVU9t61HP7hsWd41xHFMuEbHGeIm1YV2MWDdmjyvGM7Lm7o=
-X-Google-Smtp-Source: AGHT+IF5kHZANzfmOuN3NHMVCFtUNfv4eZvOTbdQnE/ovfd+OsiFk9AgplhBsKw31KkgMYYXs29mag==
-X-Received: by 2002:a05:6a00:1ace:b0:705:ade3:2e79 with SMTP id d2e1a72fcca58-70ceebbff83mr1025900b3a.13.1721247256867;
-        Wed, 17 Jul 2024 13:14:16 -0700 (PDT)
-Received: from gpd. ([179.61.150.6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7eb9c861sm8516650b3a.24.2024.07.17.13.13.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jul 2024 13:14:16 -0700 (PDT)
-Message-ID: <66982618.050a0220.e9611.19eb@mx.google.com>
-X-Google-Original-Message-ID: <Zpgl7gWUJcOeFMPm@gpd.>
-From: nifan.cxl@gmail.com
-X-Google-Original-From: fan@gpd.
-Date: Wed, 17 Jul 2024 13:13:34 -0700
-To: shiju.jose@huawei.com
-Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, bp@alien8.de, tony.luck@intel.com,
-	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
-	dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com, linuxarm@huawei.com
-Subject: Re: [RFC PATCH v9 06/11] cxl/mbox: Add SET_FEATURE mailbox command
-References: <20240716150336.2042-1-shiju.jose@huawei.com>
- <20240716150336.2042-7-shiju.jose@huawei.com>
+	s=arc-20240116; t=1721283158; c=relaxed/simple;
+	bh=7JUm4p+EuPVcOm1o3oLVGCkZZPHSDs3UrfRpHozmgvw=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=DWpg/mf4lF0y/BOekA1KJSavICsI3eT20TjXxZLpzPVWFTdFIeIq0EPQHWFreK7mZIY2y/DBfkZn31Xv2GC4/XV7g5lhdNHpC2tQy/f0FpM9XMT6H3CZn2AFNYIwFfAOyPbDWwQ7xq8nPu4/Ri/R50XVZsKro+YcjLcfH1EZyds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=sTuhT3YZ; arc=none smtp.client-ip=54.164.151.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1721283151;
+	bh=/7iSlBFI9MY1Y4PScPXpFxG9gotJAJRZJot1OTuuAO4=;
+	h=From:To:Cc:Subject:Date;
+	b=sTuhT3YZZ0w834jLJzowFUsweOOA6PtU6o5edzrkwEiaC5/xSFZeo7R8ZnU7Xn0ZW
+	 1/2/yrhKVk/eQ8vlT4zVWsGni9B4l5zedXbG5D4YXGszBfzuqmZ/OpAUuTuCfjV+BX
+	 ruyx1n0546ceAl8lPaYL66mB1mjnQ/8k+qqKNDE0=
+Received: from xp-virtual-machine.. ([111.48.58.13])
+	by newxmesmtplogicsvrszc5-2.qq.com (NewEsmtp) with SMTP
+	id 172BCE40; Thu, 18 Jul 2024 14:05:50 +0800
+X-QQ-mid: xmsmtpt1721282750tsh8h88qb
+Message-ID: <tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com>
+X-QQ-XMAILINFO: NY3HYYTs4gYS7OOWi8VYXIKN4SmPNanHlFkl9M5hD6udx6uGqWXekcsBDUflRr
+	 8KTN6NXcomSsq+VpYWOngnszoM6c4U+0iVmxxpYcH1PgR0BIqlbBdrY5jKrls5/qeZFsxCMCkcfB
+	 WiJmTrupuW5qhCae0maNRwA4X+4SBX+RS9gDPpVIXawM5hzXur8pTfHliCmD5FsF/Qsii1qBdMH4
+	 pftNc37JpPApe4y3pgz//n1CM4YCK0bz4d32l3aj5oIaeb1nU1KGGIJ3LrNhFrtQ6J7tS+TaBcnL
+	 HVT1wnxGdLrXwEVSnWdmj4aZ9DQulwh3rQRVQUY/kRGilOXd+JYRMzZjCFtg+rR7CKrUZ4d+gKbB
+	 R8vO+Xf/lcCQbQxw5ySCj/QEqXfArnP5W8jYkYqsCJLqjv2hCMXsAyC39wfyjxIwpMipLJnu/PQt
+	 zjJs2TLS0OtUkVOnKWnW6J+9qyMgGQQ9zdBi3AXN7f6qaWbUQ21mFMxnf6p1N87gWsyPmp5YJzaE
+	 v9K7aCcLUn6pG4TeHn/x6HmHAPvkm0czYHKShGvagq8v05q5Hh8zsjcVmhgpWShI6ryZELmMcEa+
+	 FrhylYHCeOh2OiAwCBEy7ZU66BS28zmND+mNT0ih0GQtUBEiWnFNYQH4spbmGTzPuxQI6cQ3gyRr
+	 0CJb0fui5mkHKWS9mpp7x6AxHdp6FW4+3O49MZf0DTAUtBaIknRqA4rL8564M929xpU5Z50EVnwS
+	 Ndp5E/0nr3mmGHfrrONi68cUoJ9vuypjm/b0pjE9h6c+4rVdKEC/wMTx19KBudu+opO1LlY7ffUo
+	 CqnszrHtSmirAvhivFfaoHXZRT+dv0LhMBu560m+/Y236W5QDAJaJzdv+ZhoV1dpYpQdW0Hz9S9F
+	 7LhPuseEtngoekBPkb3AMkhtEexAZ2dyWgccZ458E6oikL5izpD7NkSaKV9byYsBrqGS3n+HEDYg
+	 PWKlOLA38rBcnxAquusPXigWb6YD5WNLDIz3SrZve+PyTU13n0ckXOS0QVzGgAWP+QRb9uMMf5tx
+	 jufyIg0BLzDEoQMNHitn2mAYVuZWZ+0IAa3GYhh1OTeRxlE4gTPtcm2qrM5bA=
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+From: xiaopeitux@foxmail.com
+To: robert.moore@intel.com,
+	rafael.j.wysocki@intel.com
+Cc: acpica-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	xiaopei01@kylinos.cn
+Subject: [PATCH] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED in acpi_db_convert_to_package ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
+Date: Thu, 18 Jul 2024 14:05:48 +0800
+X-OQ-MSGID: <3e39c54f8278e163691d629f1cf89bffcf4c6031.1721280951.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240716150336.2042-7-shiju.jose@huawei.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 16, 2024 at 04:03:30PM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
-> 
-> Add support for SET_FEATURE mailbox command.
-> 
-> CXL spec 3.1 section 8.2.9.6 describes optional device specific features.
-> CXL devices supports features with changeable attributes.
-> The settings of a feature can be optionally modified using Set Feature
-> command.
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-Add more specific spec reference to the command here: 8.2.9.6.3.
-The same suggestions for get supported features and get feature commands.
+ACPI_ALLOCATE_ZEROED may fails, elements might be null and will cause
+null pointer dereference later.
 
-> 
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/cxl/core/mbox.c | 71 +++++++++++++++++++++++++++++++++++++++++
->  drivers/cxl/cxlmem.h    | 33 +++++++++++++++++++
->  2 files changed, 104 insertions(+)
-> 
-> diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-> index b1eeed508459..50ecd2bd7372 100644
-> --- a/drivers/cxl/core/mbox.c
-> +++ b/drivers/cxl/core/mbox.c
-> @@ -1388,6 +1388,77 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
->  }
->  EXPORT_SYMBOL_NS_GPL(cxl_get_feature, CXL);
->  
-> +/*
-> + * FEAT_DATA_MIN_PAYLOAD_SIZE - min extra number of bytes should be
-> + * available in the mailbox for storing the actual feature data so that
-> + * the feature data transfer would work as expected.
-> + */
-> +#define FEAT_DATA_MIN_PAYLOAD_SIZE 10
-> +int cxl_set_feature(struct cxl_memdev_state *mds,
-> +		    const uuid_t feat_uuid, u8 feat_version,
-> +		    void *feat_data, size_t feat_data_size,
-> +		    u8 feat_flag)
-> +{
-> +	struct cxl_memdev_set_feat_pi {
-> +		struct cxl_mbox_set_feat_hdr hdr;
-> +		u8 feat_data[];
-> +	}  __packed;
-> +	size_t data_in_size, data_sent_size = 0;
-> +	struct cxl_mbox_cmd mbox_cmd;
-> +	size_t hdr_size;
-> +	int rc = 0;
-> +
-> +	struct cxl_memdev_set_feat_pi *pi __free(kfree) =
-> +					kmalloc(mds->payload_size, GFP_KERNEL);
-> +	pi->hdr.uuid = feat_uuid;
-> +	pi->hdr.version = feat_version;
-> +	feat_flag &= ~CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK;
+Link: https://github.com/acpica/acpica/commit/4d4547cf
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/acpi/acpica/dbconvert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Although we may not support it yet, should we set bit[3] (saved across reset) 
-since we already defined CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET and
-it is not used?
+diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
+index 2b84ac093698..8dbab6932049 100644
+--- a/drivers/acpi/acpica/dbconvert.c
++++ b/drivers/acpi/acpica/dbconvert.c
+@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
+ 	elements =
+ 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+ 				 sizeof(union acpi_object));
++	if (!elements)
++		return (AE_NO_MEMORY);
+ 
+ 	this = string;
+ 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+-- 
+2.34.1
 
-Fan
-> +	hdr_size = sizeof(pi->hdr);
-> +	/*
-> +	 * Check minimum mbox payload size is available for
-> +	 * the feature data transfer.
-> +	 */
-> +	if (hdr_size + FEAT_DATA_MIN_PAYLOAD_SIZE > mds->payload_size)
-> +		return -ENOMEM;
-> +
-> +	if ((hdr_size + feat_data_size) <= mds->payload_size) {
-> +		pi->hdr.flags = cpu_to_le32(feat_flag |
-> +				       CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER);
-> +		data_in_size = feat_data_size;
-> +	} else {
-> +		pi->hdr.flags = cpu_to_le32(feat_flag |
-> +				       CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER);
-> +		data_in_size = mds->payload_size - hdr_size;
-> +	}
-> +
-> +	do {
-> +		pi->hdr.offset = cpu_to_le16(data_sent_size);
-> +		memcpy(pi->feat_data, feat_data + data_sent_size, data_in_size);
-> +		mbox_cmd = (struct cxl_mbox_cmd) {
-> +			.opcode = CXL_MBOX_OP_SET_FEATURE,
-> +			.size_in = hdr_size + data_in_size,
-> +			.payload_in = pi,
-> +		};
-> +		rc = cxl_internal_send_cmd(mds, &mbox_cmd);
-> +		if (rc < 0)
-> +			return rc;
-> +
-> +		data_sent_size += data_in_size;
-> +		if (data_sent_size >= feat_data_size)
-> +			return 0;
-> +
-> +		if ((feat_data_size - data_sent_size) <= (mds->payload_size - hdr_size)) {
-> +			data_in_size = feat_data_size - data_sent_size;
-> +			pi->hdr.flags = cpu_to_le32(feat_flag |
-> +					       CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER);
-> +		} else {
-> +			pi->hdr.flags = cpu_to_le32(feat_flag |
-> +					       CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER);
-> +		}
-> +	} while (true);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(cxl_set_feature, CXL);
-> +
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr)
->  {
-> diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-> index 25698a6fbe66..c3cb8e2736b5 100644
-> --- a/drivers/cxl/cxlmem.h
-> +++ b/drivers/cxl/cxlmem.h
-> @@ -532,6 +532,7 @@ enum cxl_opcode {
->  	CXL_MBOX_OP_GET_SUP_LOG_SUBLIST = 0x0405,
->  	CXL_MBOX_OP_GET_SUPPORTED_FEATURES	= 0x0500,
->  	CXL_MBOX_OP_GET_FEATURE		= 0x0501,
-> +	CXL_MBOX_OP_SET_FEATURE		= 0x0502,
->  	CXL_MBOX_OP_IDENTIFY		= 0x4000,
->  	CXL_MBOX_OP_GET_PARTITION_INFO	= 0x4100,
->  	CXL_MBOX_OP_SET_PARTITION_INFO	= 0x4101,
-> @@ -780,6 +781,34 @@ struct cxl_mbox_get_feat_in {
->  	u8 selection;
->  }  __packed;
->  
-> +/*
-> + * Set Feature CXL 3.1 Spec 8.2.9.6.3
-> + */
-> +
-> +/*
-> + * Set Feature input payload
-> + * CXL rev 3.1 section 8.2.9.6.3 Table 8-101
-> + */
-> +/* Set Feature : Payload in flags */
-> +#define CXL_SET_FEAT_FLAG_DATA_TRANSFER_MASK	GENMASK(2, 0)
-> +enum cxl_set_feat_flag_data_transfer {
-> +	CXL_SET_FEAT_FLAG_FULL_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_INITIATE_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_CONTINUE_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_FINISH_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_ABORT_DATA_TRANSFER,
-> +	CXL_SET_FEAT_FLAG_DATA_TRANSFER_MAX
-> +};
-> +#define CXL_SET_FEAT_FLAG_DATA_SAVED_ACROSS_RESET	BIT(3)
-> +
-> +struct cxl_mbox_set_feat_hdr {
-> +	uuid_t uuid;
-> +	__le32 flags;
-> +	__le16 offset;
-> +	u8 version;
-> +	u8 rsvd[9];
-> +}  __packed;
-> +
->  /* Get Poison List  CXL 3.0 Spec 8.2.9.8.4.1 */
->  struct cxl_mbox_poison_in {
->  	__le64 offset;
-> @@ -918,6 +947,10 @@ size_t cxl_get_feature(struct cxl_memdev_state *mds,
->  		       const uuid_t feat_uuid, void *feat_out,
->  		       size_t feat_out_size,
->  		       enum cxl_get_feat_selection selection);
-> +int cxl_set_feature(struct cxl_memdev_state *mds,
-> +		    const uuid_t feat_uuid, u8 feat_version,
-> +		    void *feat_data, size_t feat_data_size,
-> +		    u8 feat_flag);
->  int cxl_poison_state_init(struct cxl_memdev_state *mds);
->  int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
->  		       struct cxl_region *cxlr);
-> -- 
-> 2.34.1
-> 
 
