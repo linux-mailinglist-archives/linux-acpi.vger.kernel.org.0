@@ -1,256 +1,199 @@
-Return-Path: <linux-acpi+bounces-6943-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-6948-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208BF934812
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 08:24:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B869093488C
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 09:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74497B22460
-	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 06:24:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE5DFB21C6C
+	for <lists+linux-acpi@lfdr.de>; Thu, 18 Jul 2024 07:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0C073451;
-	Thu, 18 Jul 2024 06:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6293574BF8;
+	Thu, 18 Jul 2024 07:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUgbLYcY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33E462A02
-	for <linux-acpi@vger.kernel.org>; Thu, 18 Jul 2024 06:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1630874058;
+	Thu, 18 Jul 2024 07:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721283867; cv=none; b=stDi51urMQronsHspyLvshx4L6OycKQa7ATVr/XtQV0eXrUqdUXb+tVDQ3PqxDx+100LecDr54TZnKD7Y8mB8lLEimXlg9lFWAOx4nIz8Lz2U2W1jmMeNOaXbbkcvz+p9uviw9gqx0bymZyXYmWcF2AMuTcl0xjktiq1XqfrVO8=
+	t=1721286358; cv=none; b=FvHe2v8sP6Y/Tl7c2rJt90rBErMZ+mXSfrMbxrfNTfGQV1fsFzXfXXXJaP3vFIYa6w2FZjRZd47DmWfkdFbeNXG0/ytz/WaoBtdNRzizB4V2cTHiFwyay8K9XZjzgXEGFKsIW1AmHfmtg+4puiGwE2MG8YQ3NwCg4ILx9jN9fTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721283867; c=relaxed/simple;
-	bh=MOLtsCdEYmFWYJf/WDR3CpjTzHaMsnGa+p1Ce7Ah/j0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u/oWdRXkEZ8ZY01D+HaX9zUq6p6j2cZ4Ael/xNBit2bRIfwZt2actV7d1NjvXidWdjWN37HnXeWEAQy2IAw8c4NTrU0AGK8yfNxTbvp3CrdiFK9k4hvLaVvOKtA8ucqsPz1JbNO0zx0uNhdqSdLW32NzEUvZ6KN9tbZdlMNp2Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1721283854-086e2311051c8fb0001-I98ny2
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx1.zhaoxin.com with ESMTP id 7t3wzscZeRPh1psd (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 18 Jul 2024 14:24:14 +0800 (CST)
-X-Barracuda-Envelope-From: LeoLiu-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from ZXBJMBX03.zhaoxin.com (10.29.252.7) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 18 Jul
- 2024 14:24:13 +0800
-Received: from xin.lan (10.32.64.1) by ZXBJMBX03.zhaoxin.com (10.29.252.7)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 18 Jul
- 2024 14:24:11 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-From: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.7
-To: <rafael@kernel.org>, <lenb@kernel.org>, <james.morse@arm.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <bhelgaas@google.com>,
-	<robert.moore@intel.com>, <yazen.ghannam@amd.com>, <avadhut.naik@amd.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <acpica-devel@lists.linux.dev>
-CC: <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>, <TonyWWang-oc@zhaoxin.com>,
-	<leoliu-oc@zhaoxin.com>, LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-Subject: [PATCH v3 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-Date: Thu, 18 Jul 2024 14:24:05 +0800
-X-ASG-Orig-Subj: [PATCH v3 3/3] PCI/ACPI: Add pci_acpi_program_hest_aer_params()
-Message-ID: <20240718062405.30571-4-LeoLiu-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240718062405.30571-1-LeoLiu-oc@zhaoxin.com>
-References: <b99685d9-9f3a-4c21-8d33-2eaa5de8be54@zhaoxin.com>
- <20240718062405.30571-1-LeoLiu-oc@zhaoxin.com>
+	s=arc-20240116; t=1721286358; c=relaxed/simple;
+	bh=whHsob4RS5v2GdrWHkkMKcRLrbELb7YOdJDyppVzr6A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K23DeYFKovNpaD5mEMyu/CsQUGz3nTVXnlCQvS8EUZzVdlp278HW17owub9cJmIOtaMXi7A6evYrKaleGaz3EkTPXXC9DGVa4wq4EHJppAbw7nFhvfjwG3GXqZ1AFPUFnSxLKe1V3aFKGWDJbKyy/7FJON9I9HWzVQk28RJQ26E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUgbLYcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD529C116B1;
+	Thu, 18 Jul 2024 07:05:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721286357;
+	bh=whHsob4RS5v2GdrWHkkMKcRLrbELb7YOdJDyppVzr6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kUgbLYcYkFi+yM5DNGWYkc6mZnNnUffrZs2ftic6RoJlQJ7E8d8XWB5uF1VxaloMN
+	 2pI7IBqElMjV0qmk4el5sVZlUVx1UwdD/P/sQY2CWDd738D2psQymoIvRySGsgmXuk
+	 ZUck602iq5YkHci1Vyu9rFtlsvRJpdSEkMm+v+2VIQWc/AzrdgqrSUiCL4vEDXKVee
+	 8A9PZCK5pqB7fQmK9zQfZYL2C8lRMzESmGfyxSOLFBGVMQZpNwRh+NK+wlWHkdZfdM
+	 jaUarx/bIXxsaGX38yt2XwW4s4VTuawsNrk9K8J+JTbrZLoL9aVyqQB8FzZnTP9IQn
+	 +gP4pgv5FiIEw==
+Date: Thu, 18 Jul 2024 10:02:52 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 05/17] arch, mm: pull out allocation of NODE_DATA to
+ generic code
+Message-ID: <Zpi-HAb7EBxrZBtK@kernel.org>
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-6-rppt@kernel.org>
+ <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- ZXBJMBX03.zhaoxin.com (10.29.252.7)
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1721283854
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5203
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.127785
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <220da8ed-337a-4b1e-badf-2bff1d36e6c3@redhat.com>
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+On Wed, Jul 17, 2024 at 04:42:48PM +0200, David Hildenbrand wrote:
+> On 16.07.24 13:13, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Architectures that support NUMA duplicate the code that allocates
+> > NODE_DATA on the node-local memory with slight variations in reporting
+> > of the addresses where the memory was allocated.
+> > 
+> > Use x86 version as the basis for the generic alloc_node_data() function
+> > and call this function in architecture specific numa initialization.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> 
+> [...]
+> 
+> > diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+> > index 9208eaadf690..909f6cec3a26 100644
+> > --- a/arch/mips/loongson64/numa.c
+> > +++ b/arch/mips/loongson64/numa.c
+> > @@ -81,12 +81,8 @@ static void __init init_topology_matrix(void)
+> >   static void __init node_mem_init(unsigned int node)
+> >   {
+> > -	struct pglist_data *nd;
+> >   	unsigned long node_addrspace_offset;
+> >   	unsigned long start_pfn, end_pfn;
+> > -	unsigned long nd_pa;
+> > -	int tnid;
+> > -	const size_t nd_size = roundup(sizeof(pg_data_t), SMP_CACHE_BYTES);
+> 
+> One interesting change is that we now always round up to full pages on
+> architectures where we previously rounded up to SMP_CACHE_BYTES.
 
-Call the func pci_acpi_program_hest_aer_params() for every PCIe device,
-the purpose of this function is to extract register value from HEST PCIe
-AER structures and program them into AER Capabilities. This function
-applies to all hardware platforms that has a PCI Express AER structure
-in HEST.
+On my workstation struct pglist_data take 174400, cachelines: 2725, members: 43 */
+ 
+> I assume we don't really expect a significant growth in memory consumption
+> that we care about, especially because most systems with many nodes also
+> have  quite some memory around.
 
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
----
- drivers/pci/pci-acpi.c | 101 +++++++++++++++++++++++++++++++++++++++++
- drivers/pci/pci.h      |   9 ++++
- drivers/pci/probe.c    |   1 +
- 3 files changed, 111 insertions(+)
+With Debian kernel configuration for 6.5 struct pglist data takes 174400
+bytes so the increase here is below 1%.
 
-diff --git a/drivers/pci/pci-acpi.c b/drivers/pci/pci-acpi.c
-index 004575091596..b522e8b226b8 100644
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -18,6 +18,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/pm_qos.h>
- #include <linux/rwsem.h>
-+#include <acpi/apei.h>
- #include "pci.h"
+For NUMA systems with a lot of nodes that shouldn't be a problem.
+
+> > -/* Allocate NODE_DATA for a node on the local memory */
+> > -static void __init alloc_node_data(int nid)
+> > -{
+> > -	const size_t nd_size = roundup(sizeof(pg_data_t), PAGE_SIZE);
+> > -	u64 nd_pa;
+> > -	void *nd;
+> > -	int tnid;
+> > -
+> > -	/*
+> > -	 * Allocate node data.  Try node-local memory and then any node.
+> > -	 * Never allocate in DMA zone.
+> > -	 */
+> > -	nd_pa = memblock_phys_alloc_try_nid(nd_size, SMP_CACHE_BYTES, nid);
+> > -	if (!nd_pa) {
+> > -		pr_err("Cannot find %zu bytes in any node (initial node: %d)\n",
+> > -		       nd_size, nid);
+> > -		return;
+> > -	}
+> > -	nd = __va(nd_pa);
+> > -
+> > -	/* report and initialize */
+> > -	printk(KERN_INFO "NODE_DATA(%d) allocated [mem %#010Lx-%#010Lx]\n", nid,
+> > -	       nd_pa, nd_pa + nd_size - 1);
+> > -	tnid = early_pfn_to_nid(nd_pa >> PAGE_SHIFT);
+> > -	if (tnid != nid)
+> > -		printk(KERN_INFO "    NODE_DATA(%d) on node %d\n", nid, tnid);
+> > -
+> > -	node_data[nid] = nd;
+> > -	memset(NODE_DATA(nid), 0, sizeof(pg_data_t));
+> > -
+> > -	node_set_online(nid);
+> > -}
+> > -
+> >   /**
+> >    * numa_cleanup_meminfo - Cleanup a numa_meminfo
+> >    * @mi: numa_meminfo to clean up
+> > @@ -571,6 +538,7 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+> >   			continue;
+> >   		alloc_node_data(nid);
+> > +		node_set_online(nid);
+> >   	}
+> 
+> I can spot that we only remove a single node_set_online() call from x86.
+> 
+> What about all the other architectures? Will there be any change in behavior
+> for them? Or do we simply set the nodes online later once more?
+
+On x86 node_set_online() was a part of alloc_node_data() and I moved it
+outside so it's called right after alloc_node_data(). On other
+architectures the allocation didn't include that call, so there should be
+no difference there.
  
- /*
-@@ -783,6 +784,106 @@ int pci_acpi_program_hp_params(struct pci_dev *dev)
- 	return -ENODEV;
- }
- 
-+#ifdef CONFIG_ACPI_APEI
-+/*
-+ * program_hest_aer_common() - configure AER common registers for Root Ports,
-+ * Endpoints and PCIe to PCI/PCI-X bridges
-+ */
-+static void program_hest_aer_common(struct acpi_hest_aer_common aer_common, struct pci_dev *dev,
-+				    int pos)
-+{
-+	u32 uncor_mask;
-+	u32 uncor_severity;
-+	u32 cor_mask;
-+	u32 adv_cap;
-+
-+	uncor_mask = aer_common.uncorrectable_mask;
-+	uncor_severity = aer_common.uncorrectable_severity;
-+	cor_mask = aer_common.correctable_mask;
-+	adv_cap = aer_common.advanced_capabilities;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, uncor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER, uncor_severity);
-+	pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, cor_mask);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP, adv_cap);
-+}
-+
-+static void program_hest_aer_root(struct acpi_hest_aer_root *aer_root, struct pci_dev *dev, int pos)
-+{
-+	u32 root_err_cmd;
-+
-+	root_err_cmd = aer_root->root_error_command;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND, root_err_cmd);
-+}
-+
-+static void program_hest_aer_bridge(struct acpi_hest_aer_bridge *hest_aer_bridge,
-+				    struct pci_dev *dev, int pos)
-+{
-+	u32 uncor_mask2;
-+	u32 uncor_severity2;
-+	u32 adv_cap2;
-+
-+	uncor_mask2 = hest_aer_bridge->uncorrectable_mask2;
-+	uncor_severity2 = hest_aer_bridge->uncorrectable_severity2;
-+	adv_cap2 = hest_aer_bridge->advanced_capabilities2;
-+
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK2, uncor_mask2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_SEVER2, uncor_severity2);
-+	pci_write_config_dword(dev, pos + PCI_ERR_CAP2, adv_cap2);
-+}
-+
-+static void program_hest_aer_params(struct hest_parse_aer_info info)
-+{
-+	struct pci_dev *dev;
-+	int port_type;
-+	int pos;
-+	struct acpi_hest_aer_root *hest_aer_root;
-+	struct acpi_hest_aer *hest_aer_endpoint;
-+	struct acpi_hest_aer_bridge *hest_aer_bridge;
-+
-+	dev = info.pci_dev;
-+	port_type = pci_pcie_type(dev);
-+	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-+	if (!pos)
-+		return;
-+
-+	switch (port_type) {
-+	case PCI_EXP_TYPE_ROOT_PORT:
-+		hest_aer_root = info.hest_aer_root_port;
-+		program_hest_aer_common(hest_aer_root->aer, dev, pos);
-+		program_hest_aer_root(hest_aer_root, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_ENDPOINT:
-+		hest_aer_endpoint = info.hest_aer_endpoint;
-+		program_hest_aer_common(hest_aer_endpoint->aer, dev, pos);
-+		break;
-+	case PCI_EXP_TYPE_PCI_BRIDGE:
-+		hest_aer_bridge = info.hest_aer_bridge;
-+		program_hest_aer_common(hest_aer_bridge->aer, dev, pos);
-+		program_hest_aer_bridge(hest_aer_bridge, dev, pos);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	struct hest_parse_aer_info info = {
-+		.pci_dev = dev
-+	};
-+
-+	if (!pci_is_pcie(dev))
-+		return -ENODEV;
-+
-+	if (apei_hest_parse(hest_parse_pcie_aer, &info) == 1)
-+		program_hest_aer_params(info);
-+
-+	return 0;
-+}
-+#endif
-+
- /**
-  * pciehp_is_native - Check whether a hotplug port is handled by the OS
-  * @bridge: Hotplug port to check
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index fd44565c4756..03b5339f399f 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -731,6 +731,15 @@ static inline void pci_save_aer_state(struct pci_dev *dev) { }
- static inline void pci_restore_aer_state(struct pci_dev *dev) { }
- #endif
- 
-+#ifdef CONFIG_ACPI_APEI
-+int pci_acpi_program_hest_aer_params(struct pci_dev *dev);
-+#else
-+static inline int pci_acpi_program_hest_aer_params(struct pci_dev *dev)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_ACPI
- int pci_acpi_program_hp_params(struct pci_dev *dev);
- extern const struct attribute_group pci_dev_acpi_attr_group;
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 4c367f13acdc..f7d80b2a9d1d 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2267,6 +2267,7 @@ static void pci_configure_device(struct pci_dev *dev)
- 	pci_configure_serr(dev);
- 
- 	pci_acpi_program_hp_params(dev);
-+	pci_acpi_program_hest_aer_params(dev);
- }
- 
- static void pci_release_capabilities(struct pci_dev *dev)
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
+> 
+
 -- 
-2.34.1
-
+Sincerely yours,
+Mike.
 
