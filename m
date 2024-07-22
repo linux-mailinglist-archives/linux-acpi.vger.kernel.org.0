@@ -1,114 +1,204 @@
-Return-Path: <linux-acpi+bounces-7001-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7002-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA2E9389E6
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 09:16:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FF4938A28
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 09:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99BE01F217F6
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 07:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 214E61C20CD5
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 07:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5081B27D;
-	Mon, 22 Jul 2024 07:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D047B14AD3F;
+	Mon, 22 Jul 2024 07:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="chPfJ5gE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5rEoxjJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF1D1803D;
-	Mon, 22 Jul 2024 07:16:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84311125C0;
+	Mon, 22 Jul 2024 07:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721632600; cv=none; b=cHHbcvGiyEAJGzG8bT5/Ur3KPOe7jRj8EQJ1H8CRp7fa+VB4ruQ00ZRhI3SPXS7DsaDF+qnha6dZ9iwJNDXEvIrUfMNucN6288gxAt++pI89WZuTZNIb0qIeMPDGiM7LJTarn7HAefi69arceG7elBd7wvhYmoKZ5QrsMJY+Rbc=
+	t=1721633837; cv=none; b=AHbM73RsVE6mxgK4klzOTbjeVOBfDTg3XDbbIromD+I+xe6iHZJr9osxe5BDGP67E2nDpU9sU5v7NVhd7LmvLC+NLqTSR2XNH043iOs+QCY9mZdv+q3hC7PPegBE/iU95Mh5x8P50WpYFt1xYLTENDWcqRnob+bZGrzofFsZrBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721632600; c=relaxed/simple;
-	bh=YFLDcKIC9Uv+Lpa4xHklsR0hcUKSD5CTzcyTHP2K3cg=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=pAeiTYYueGt8PPJ8AjNI75pfet1yoOb7L9msesyJsNMYuJdcoNvTdtSNiRA6DHeg5J5ouJEliUNKTEtkwq3wFKm30P8lQ6U3JEzUc3zbg8p3m6DYcynH/smaLUY4KAs/KVSr/kBZfq3oVOF3jx7GE8B2EpYTrauIZUO6nWKXDK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=chPfJ5gE; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721632549; x=1722237349; i=markus.elfring@web.de;
-	bh=YFLDcKIC9Uv+Lpa4xHklsR0hcUKSD5CTzcyTHP2K3cg=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=chPfJ5gED78UP1PqTnS3A5EvhZm66glsEl179SG9fF3bYUYn9hrH+SvhFzSjfviF
-	 dmw9E9bRufBnGCAKR7QiiLKdkcjcj2GgonDp8J8g0Ta9kFfup8fkB5dCBQLn/JlM0
-	 WOfmc2GoUZHsEunOZseDovcV4FC7imZiZtXeUTyvGNseV4jPwWkhHsTvtPTp0Z/CJ
-	 D0ZAdW2bOJkvplk00RVrAMMIFTmK1W/F27kBdW/k41ebAVLORlOFYyBKDAC9dsTYL
-	 JxfNEGunqg1BovEZSa9oHGPNqo+mERdOJ7KP3qonlNDUUljMf2qDhSckuj/Q8Tbzn
-	 PQUDNNlHxbOH8gvH4g==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.89.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mvbik-1sCkHj1MIQ-014vrz; Mon, 22
- Jul 2024 09:15:49 +0200
-Message-ID: <73b3e14a-c1c3-4f7b-aea8-2108912e21ca@web.de>
-Date: Mon, 22 Jul 2024 09:15:26 +0200
+	s=arc-20240116; t=1721633837; c=relaxed/simple;
+	bh=Dxslf8J1nw2EoO1825aVEeJAxLrpHgQU1wjgg+XF/0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bEHEYwVMD4zmSR2Inx8/xm+5BTYzhC4bDJ/TAbB/G44qnfxWJgfmFDCOK7ISqp/jz6DC8z26w7sunC5Bio++y2Tj1wkUnVbS7zJKPc6TDvB7GUJa0FSTsvwwUzbg413uxr/jVw5iIyeyn/rTSBJHhYFp2OI5ZW6KGfa3j9jHK8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5rEoxjJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C14EC116B1;
+	Mon, 22 Jul 2024 07:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721633837;
+	bh=Dxslf8J1nw2EoO1825aVEeJAxLrpHgQU1wjgg+XF/0U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V5rEoxjJyp8Si4Ol1tKmDHfxujD1M6arK5yB3md41TgtMqzL7133QUbpMAiRqALI8
+	 zHqP2jnhANmIGx1K6HRYtObkAQqmVJ2vQFti7pCzHaOzz0dds7xFt2urt534cJHiXw
+	 CurmUQ1pi3n/TpSSCUqTSIn7TV/EpAfGuHiiiLk6U01osyb6JXJ0yznQ72y9r7YmE5
+	 p6fsNYiqRdEsZWZ4qQtfi/2IxHr6rbbdo6JlW+fM0tWjobtA9os1Uj3kz7eGY4SLEa
+	 ISuNDqsn9MvH468ghs8RFDYohLKYRIm2o5BjdJ/Ni63NJJU1x+XnEdyepZgDkMsXF7
+	 by+28UouvqBSA==
+Date: Mon, 22 Jul 2024 10:34:06 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 02/17] MIPS: sgi-ip27: make NODE_DATA() the same as on
+ all other architectures
+Message-ID: <Zp4Lbh20_IHZ2I5n@kernel.org>
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-3-rppt@kernel.org>
+ <e57eca18-b66d-4b5d-9e73-8ab22f6bc747@redhat.com>
+ <20240719153852.00003f44@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
- linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
- Andreas Kemnade <andreas@kemnade.info>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?B?R8O8bnRlciBSw7Zjaw==?= <linux@roeck-us.net>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Jean Delvare <jdelvare@suse.com>,
- Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
- Marcin Wojtas <marcin.s.wojtas@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Pavel Machek <pavel@ucw.cz>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240721-device_for_each_child_node-available-v2-1-f33748fd8b2d@gmail.com>
-Subject: Re: [PATCH v2 1/6] device property: document
- device_for_each_child_node macro
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240721-device_for_each_child_node-available-v2-1-f33748fd8b2d@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xrBbMiLw9ljoQaybd5Se9hN78cCxX8gDvnFpicc5JDnMeWgJvPk
- I9c1qD+hb5e2+8SYdeOWSoirnR5QykLuGUfqKU19dYt+OFOkUCbHbLvk8uZJwIVOsEhA45r
- bmuq0ILq/mW+lUo7jhu/zAHi3b4m7iMpuTipe4yCUzmsGvCimtPrY6s+9G396RYaV89DxEp
- jqghjWTIaFtL7/Mi4dFRA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:zMXmFfshu/w=;jAInkgB3vloWqW9kgqI8uWOuokM
- n5IXptcGeplXc/NaEZxVWLFa/Io9spgPH3TH2rzipw06aXs3s4jLjf8OdtwNUg3FjAhRA3Hql
- DwBz+TKODiNo8fLGqR6eT+RKe1fOWVw7n7M36LjzBOqI9yBTMPJTsaoz9nKAMZYO1YW2vPT1D
- Ijp7TUQbDQKs38m5li9TRE8vNg3/ncd/TRO+svPdwVNSK4sd8rH0o5JApRiCsMLQjt1pIwbqW
- YMXWDphWozW0ZAsch2EBNC2g6oyN2Jfmf40LjUEmste+oeuxLkDaLDfrgM1aw0Pq/oy0K9wEo
- 339RvtJ4EbCF0j7wXp+saUmj14wfnd4AILUNn4X50XyzhkMepw5BFqE5CFrCPMbRdatCnQWX0
- 8zNTWLMhx0GRNz6Dv6Ev5THZjS4SpmDN+XmfOFeridUqaF0PDe1Jzkf8fRrTj8SFHgoHMkuAr
- p1brIA/TFz8FsNK1FCQjrj/cTGlcX6CuNQln1AE4LbluuAul6BaLb7jpPnD1ywRFIPO/UO0rW
- TmW/SicScUoXAnQ6rj/S6t2RPfI0hJNmg8w8m0wZjwH/n+G/lYTATCSRXy8w8xcu4OtBV8rzs
- yiPg+aJpgaMs22MOv+XLlQuQ7Icot43zQ/MT/qp5WIpGDqZ8Xas+1b96QAjhINwkqRG10k8kV
- 76dR8pUGfLUk/+/tlXvDzLRtkoGkoWrpMk+14HDfMa8pzQ/TDNREQ3xcwSZkB78JSL9iygLRK
- wUQ0CGFNDAHufOB/UEJNuef3c7g5bD6IGNikxvOrEjXiA52fFGiyM5sHRpM8ys0dOL7nLU0YE
- egEY/c+H7mNDTsMF0eKES1PA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240719153852.00003f44@Huawei.com>
 
-=E2=80=A6
-> + * Unavailable nodes are skipped i.e. this macro is implicitly _availab=
-le_.
-=E2=80=A6
+On Fri, Jul 19, 2024 at 03:38:52PM +0100, Jonathan Cameron wrote:
+> On Wed, 17 Jul 2024 16:32:59 +0200
+> David Hildenbrand <david@redhat.com> wrote:
+> 
+> > On 16.07.24 13:13, Mike Rapoport wrote:
+> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > > 
+> > > sgi-ip27 is the only system that defines NODE_DATA() differently than
+> > > the rest of NUMA machines.
+> > > 
+> > > Add node_data array of struct pglist pointers that will point to
+> > > __node_data[node]->pglist and redefine NODE_DATA() to use node_data
+> > > array.
+> > > 
+> > > This will allow pulling declaration of node_data to the generic mm code
+> > > in the next commit.
+> > > 
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > ---
+> > >   arch/mips/include/asm/mach-ip27/mmzone.h | 5 ++++-
+> > >   arch/mips/sgi-ip27/ip27-memory.c         | 5 ++++-
+> > >   2 files changed, 8 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/arch/mips/include/asm/mach-ip27/mmzone.h b/arch/mips/include/asm/mach-ip27/mmzone.h
+> > > index 08c36e50a860..629c3f290203 100644
+> > > --- a/arch/mips/include/asm/mach-ip27/mmzone.h
+> > > +++ b/arch/mips/include/asm/mach-ip27/mmzone.h
+> > > @@ -22,7 +22,10 @@ struct node_data {
+> > >   
+> > >   extern struct node_data *__node_data[];
+> > >   
+> > > -#define NODE_DATA(n)		(&__node_data[(n)]->pglist)
+> > >   #define hub_data(n)		(&__node_data[(n)]->hub)
+> > >   
+> > > +extern struct pglist_data *node_data[];
+> > > +
+> > > +#define NODE_DATA(nid)		(node_data[nid])
+> > > +
+> > >   #endif /* _ASM_MACH_MMZONE_H */
+> > > diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+> > > index b8ca94cfb4fe..c30ef6958b97 100644
+> > > --- a/arch/mips/sgi-ip27/ip27-memory.c
+> > > +++ b/arch/mips/sgi-ip27/ip27-memory.c
+> > > @@ -34,8 +34,10 @@
+> > >   #define SLOT_PFNSHIFT		(SLOT_SHIFT - PAGE_SHIFT)
+> > >   #define PFN_NASIDSHFT		(NASID_SHFT - PAGE_SHIFT)
+> > >   
+> > > -struct node_data *__node_data[MAX_NUMNODES];
+> > > +struct pglist_data *node_data[MAX_NUMNODES];
+> > > +EXPORT_SYMBOL(node_data);
+> > >   
+> > > +struct node_data *__node_data[MAX_NUMNODES];
+> > >   EXPORT_SYMBOL(__node_data);
+> > >   
+> > >   static u64 gen_region_mask(void)
+> > > @@ -361,6 +363,7 @@ static void __init node_mem_init(nasid_t node)
+> > >   	 */
+> > >   	__node_data[node] = __va(slot_freepfn << PAGE_SHIFT);
+> > >   	memset(__node_data[node], 0, PAGE_SIZE);
+> > > +	node_data[node] = &__node_data[node]->pglist;
+> > >   
+> > >   	NODE_DATA(node)->node_start_pfn = start_pfn;
+> > >   	NODE_DATA(node)->node_spanned_pages = end_pfn - start_pfn;  
+> > 
+> > I was assuming we could get rid of __node_data->pglist.
+> > 
+> > But now I am confused where that is actually set.
+> 
+> It looks nasty... 
 
-How good does presented information fit together in this comment line?
+Nasty indeed :)
 
-Regards,
-Markus
+> Cast in arch_refresh_nodedata() takes incoming pg_data_t * and casts it
+> to the local version of struct node_data * which I think is this one
+> 
+> struct node_data {
+> 	struct pglist_data pglist; (which is pg_data_t pglist)
+> 	struct hub_data hub;
+> };
+> 
+> https://elixir.bootlin.com/linux/v6.10/source/arch/mips/sgi-ip27/ip27-memory.c#L432
+> 
+> Now that pg_data_t is allocated by 
+> arch_alloc_nodedata() which might be fine (though types could be handled in a more
+> readable fashion via some container_of() magic.
+> https://elixir.bootlin.com/linux/v6.10/source/arch/mips/sgi-ip27/ip27-memory.c#L427
+> 
+> However that call is:
+> pg_data_t * __init arch_alloc_nodedata(int nid)
+> {
+> 	return memblock_alloc(sizeof(pg_data_t), SMP_CACHE_BYTES);
+> }
+> 
+> So doesn't seem to allocate enough space to me as should be sizeof(struct node_data)
+
+Well, it's there to silence a compiler error (commit f8f9f21c7848 ("MIPS:
+Fix build error for loongson64 and sgi-ip27")), but this is not a proper
+fix :(
+Luckily nothing calls cpumask_of_node() for offline nodes...
+ 
+> Worth cleaning up whilst here?  Proper handling of types would definitely
+> help.
+
+Worth cleanup indeed, but I'd rather drop arch_alloc_nodedata() on MIPS
+altogether.
+ 
+> Jonathan
+
+-- 
+Sincerely yours,
+Mike.
 
