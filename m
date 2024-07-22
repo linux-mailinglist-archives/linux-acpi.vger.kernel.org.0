@@ -1,107 +1,196 @@
-Return-Path: <linux-acpi+bounces-7003-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7004-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD7C938A42
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 09:40:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C9A938A76
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 09:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6B52819DD
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 07:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57401C20FB0
+	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 07:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F7613E02A;
-	Mon, 22 Jul 2024 07:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9AD1607AC;
+	Mon, 22 Jul 2024 07:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdxOoj9F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oG5YJpR0"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33883770E6;
-	Mon, 22 Jul 2024 07:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5B1381BA;
+	Mon, 22 Jul 2024 07:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721634012; cv=none; b=EZO8XB0HoSaxwIHv+CriAq6Sy4Rpgc6dkX0n96AV53y3kx3BYv1Tlv3rYIClMLdnMZe6/YxkLrcoMA83GVUMPU2KiebuY00XFfy9T9agNh3YJjnZvUlhhyzYybKodfixV+pa50LIQZDGfJ66UH8j58SoPFWUMxbOplrFPUqlQqc=
+	t=1721634874; cv=none; b=PWx5w94DjJ+OmYsFyKGi1Dhc/1F2mnsmv03FhZB6bd9bVY8OhZmm5KU+WOPJVEo/xAYcVTkHDeoqKyn5VwlwLBH7KFZq61JIp5/9EPBVELQ3gG/QMQ57ZwTa/R2BPaUo/Dow6zRYoVzqqkIr0iM2gSRq8NB0WyQSbKM2oKK2GS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721634012; c=relaxed/simple;
-	bh=Gds3YGJhwEOU78oLrFElHnVTEhE1tgxeRJe3NKZ8Gpo=;
+	s=arc-20240116; t=1721634874; c=relaxed/simple;
+	bh=OYRHdXxfKMdclKQlgCt5VIPfcSGA+/ROfi++yX8letM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KM7/QrR4f3dVlF1Wcyk9+/3DBNHM+cRLvcKBQCUaYoNCwJ7bIjYLdK+646DYTLs8AkwzQ4N1yDwkbZUb3pcpNqVZpa1/4h1Y5zs7auxuF5PaoptUTJFnn8SynCoAW6HudNLRR2kJYE0iBYQbgzix2IR0+9gOgpoun2x3njRXsrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdxOoj9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B84BC116B1;
-	Mon, 22 Jul 2024 07:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721634011;
-	bh=Gds3YGJhwEOU78oLrFElHnVTEhE1tgxeRJe3NKZ8Gpo=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=S5OrWN4lxF8Ys2G+6UO9msJS3gWDmTSgfIkoB2arYHaDMAglXnhb6azaF89O1LtyaRRY46tIkQ8borFUmkThGiK75jVsRS7jJaK0oQ4QKuBj0SLP6wYFME0mxCyt7aUvUWg4lbJEth5PJyi/nKRa3HxF9keA1njAYXWajVOE4vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oG5YJpR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDAAC116B1;
+	Mon, 22 Jul 2024 07:54:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721634874;
+	bh=OYRHdXxfKMdclKQlgCt5VIPfcSGA+/ROfi++yX8letM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mdxOoj9FPY8C+BCuN42ENUA2/9pA0cg0lsa+aoLUeXx8AicRmp5ZZ27oDRIec6zJU
-	 KqMVc6ztS1/K4aJmnzriiAWzzh0jag02HX3PAEpmm3xEw6FzAAFBQT99HqirhlWaS8
-	 zkZWqwKJbB7Qqq27dwtbxg641Awi8YTSz+oeMhSM=
-Date: Mon, 22 Jul 2024 09:40:08 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-acpi@vger.kernel.org, netdev@vger.kernel.org,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
+	b=oG5YJpR0vvG3aK5NTi3fHWDP8/wPCXQEHPpVI03jXrmGjAqE/3ek11pgDez93GupD
+	 MYY5cht8NtUour0LZG0EOmrqfl/+OGAQSwhfArqnV9dkDfvXzt+BYN0GoRqQLdf0w8
+	 YDUR98pajEJ8JNfue+NyDcAaZ9Iwtukzez1OaHeCmGruaLhg9UE9Wgr4pPcIvv5uiw
+	 dIFU4pKtQYikq/zjd4jZhqdwQH73y8o8PB2Iwv4e6pw08hibJoHxG/W9t5i5ZVahkj
+	 dZ6r/bQd4gp9OtjoJH+9/yH+xOhOU700mNl2aycElgfDFiCdhzErMhj4jiW1C3Hzxx
+	 qgTOP+LBC9IQQ==
+Date: Mon, 22 Jul 2024 10:51:25 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-kernel@vger.kernel.org,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	=?iso-8859-1?Q?G=FCnter_R=F6ck?= <linux@roeck-us.net>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jean Delvare <jdelvare@suse.com>,
-	Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 1/6] device property: document
- device_for_each_child_node macro
-Message-ID: <2024072204-jester-exploit-d249@gregkh>
-References: <20240721-device_for_each_child_node-available-v2-1-f33748fd8b2d@gmail.com>
- <73b3e14a-c1c3-4f7b-aea8-2108912e21ca@web.de>
+	Rob Herring <robh@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+	nvdimm@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 06/17] x86/numa: simplify numa_distance allocation
+Message-ID: <Zp4PfVZKAg3djFOu@kernel.org>
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-7-rppt@kernel.org>
+ <20240719172849.000019a0@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <73b3e14a-c1c3-4f7b-aea8-2108912e21ca@web.de>
+In-Reply-To: <20240719172849.000019a0@Huawei.com>
 
-On Mon, Jul 22, 2024 at 09:15:26AM +0200, Markus Elfring wrote:
-> …
-> > + * Unavailable nodes are skipped i.e. this macro is implicitly _available_.
-> …
+On Fri, Jul 19, 2024 at 05:28:49PM +0100, Jonathan Cameron wrote:
+> On Tue, 16 Jul 2024 14:13:35 +0300
+> Mike Rapoport <rppt@kernel.org> wrote:
 > 
-> How good does presented information fit together in this comment line?
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Allocation of numa_distance uses memblock_phys_alloc_range() to limit
+> > allocation to be below the last mapped page.
+> > 
+> > But NUMA initializaition runs after the direct map is populated and
+> 
+> initialization (one too many 'i's)
 
+Thanks.
+ 
+> > there is also code in setup_arch() that adjusts memblock limit to
+> > reflect how much memory is already mapped in the direct map.
+> > 
+> > Simplify the allocation of numa_distance and use plain memblock_alloc().
+> > This makes the code clearer and ensures that when numa_distance is not
+> > allocated it is always NULL.
+> Doesn't this break the comment in numa_set_distance() kernel-doc?
+> "
+>  * If such table cannot be allocated, a warning is printed and further
+>  * calls are ignored until the distance table is reset with
+>  * numa_reset_distance().
+> "
+> 
+> Superficially that looks to be to avoid repeatedly hitting the
+> singleton bit at the top of numa_set_distance() as SRAT or similar
+> parsing occurs.
 
-Hi,
+I believe it's there to avoid allocation of numa_distance in the middle of
+distance parsing (SLIT or DT numa-distance-map).
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+If the allocation fails for the first element in the table, the
+numa_distance and numa_distance_cnt remain zero and node_distance() falls
+back to
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
+	return from == to ? LOCAL_DISTANCE : REMOTE_DISTANCE;
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
+It's different from arch_numa that always tries to allocate MAX_NUMNODES *
+MAX_NUMNODES for numa_distance and treats the allocation failure as a
+failure to initialize NUMA.
 
-thanks,
+I like the general approach x86 uses more, i.e. in case distance parsing
+fails in some way NUMA is still initialized with probably suboptimal
+distances between nodes.
 
-greg k-h's patch email bot
+I'm going to restore that "singleton" behavior for now and will look into
+making this all less cumbersome later.
+ 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  arch/x86/mm/numa.c | 12 +++---------
+> >  1 file changed, 3 insertions(+), 9 deletions(-)
+> > 
+> > diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> > index 5e1dde26674b..ab2d4ecef786 100644
+> > --- a/arch/x86/mm/numa.c
+> > +++ b/arch/x86/mm/numa.c
+> > @@ -319,8 +319,7 @@ void __init numa_reset_distance(void)
+> >  {
+> >  	size_t size = numa_distance_cnt * numa_distance_cnt * sizeof(numa_distance[0]);
+> >  
+> > -	/* numa_distance could be 1LU marking allocation failure, test cnt */
+> > -	if (numa_distance_cnt)
+> > +	if (numa_distance)
+> >  		memblock_free(numa_distance, size);
+> >  	numa_distance_cnt = 0;
+> >  	numa_distance = NULL;	/* enable table creation */
+> > @@ -331,7 +330,6 @@ static int __init numa_alloc_distance(void)
+> >  	nodemask_t nodes_parsed;
+> >  	size_t size;
+> >  	int i, j, cnt = 0;
+> > -	u64 phys;
+> >  
+> >  	/* size the new table and allocate it */
+> >  	nodes_parsed = numa_nodes_parsed;
+> > @@ -342,16 +340,12 @@ static int __init numa_alloc_distance(void)
+> >  	cnt++;
+> >  	size = cnt * cnt * sizeof(numa_distance[0]);
+> >  
+> > -	phys = memblock_phys_alloc_range(size, PAGE_SIZE, 0,
+> > -					 PFN_PHYS(max_pfn_mapped));
+> > -	if (!phys) {
+> > +	numa_distance = memblock_alloc(size, PAGE_SIZE);
+> > +	if (!numa_distance) {
+> >  		pr_warn("Warning: can't allocate distance table!\n");
+> > -		/* don't retry until explicitly reset */
+> > -		numa_distance = (void *)1LU;
+> >  		return -ENOMEM;
+> >  	}
+> >  
+> > -	numa_distance = __va(phys);
+> >  	numa_distance_cnt = cnt;
+> >  
+> >  	/* fill with the default distances */
+> 
+> 
+
+-- 
+Sincerely yours,
+Mike.
 
