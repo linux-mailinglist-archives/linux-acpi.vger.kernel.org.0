@@ -1,299 +1,168 @@
-Return-Path: <linux-acpi+bounces-7008-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7009-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A92593957E
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 23:30:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC53939759
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jul 2024 02:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DEA01C21171
-	for <lists+linux-acpi@lfdr.de>; Mon, 22 Jul 2024 21:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBDD51F2273B
+	for <lists+linux-acpi@lfdr.de>; Tue, 23 Jul 2024 00:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4175838DD2;
-	Mon, 22 Jul 2024 21:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B691849;
+	Tue, 23 Jul 2024 00:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M/gTu0O/"
+	dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b="FU5sqAql"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from donkey.ash.relay.mailchannels.net (donkey.ash.relay.mailchannels.net [23.83.222.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C15C2FD;
-	Mon, 22 Jul 2024 21:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721683851; cv=none; b=HrzgqiOWCjPYwP/zMVQ0j2OnYRv/5D9xrH2doUYtnj1lCbxoU7vwHaX8W3TxY7GGk6cnRxhGHzRecL3k35sGURlz+u4FTm5TiZoLNS6wv6cpnLjgWKDYap9DoYIGZzV+phhZPFkFBCd0nII8WQxDUKykJcj1knz365i3zbVM4Hc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721683851; c=relaxed/simple;
-	bh=v2sonCVqGjpGXag0Jb6VPks8bVvtizl2cT0DH9S8f8I=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=FxyX/Oc+HjPuwXXKnRQUWEwuGxD+UhQMvnhU1zVCoX7Wv3FbajvTc42FYkrDO51aleWeCQNant71A601Hgao+snucsEFkC2dXjUNhr2UuWXvnuWn0XUOg28QA6V25/YoGL4rKHG+6g970rUd2WkHg36b0iKjl105mLyhiivMxnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M/gTu0O/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367D3C116B1;
-	Mon, 22 Jul 2024 21:30:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721683850;
-	bh=v2sonCVqGjpGXag0Jb6VPks8bVvtizl2cT0DH9S8f8I=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=M/gTu0O/fsCWf0yAF/e9ksNF7AtzQ8sI7IBf1Z26/uuvRpxVlQEDrfcHDlpY93t/X
-	 SWWNHGELxFQVA+m5/tiqL+glkGbvsvMnNk9caLotyWGE/7I93AUe0TguFafW54ULGh
-	 WXdFI1kaUsOi+1Ue+qSqDxWBUgohGR+xuYkgwKT10lKJXDxuh0TcQ4KY7WYEYVKVMb
-	 AWlqHarMTeyeaQyUUvfBpA4igCZeDY2ZkeoNyjEE+j3xSEXqSZvpZ1Vg7euKo4z8o3
-	 INhpJ+KxcPZesmlDwXSlG4p6DMStZd/l7k0BiC3p+W1phG0UHSmwsDbFhDPCgeDVqb
-	 f+784j3Wm6I5g==
-Date: Mon, 22 Jul 2024 14:30:47 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Jiqian Chen <Jiqian.Chen@amd.com>
-cc: Juergen Gross <jgross@suse.com>, 
-    Stefano Stabellini <sstabellini@kernel.org>, 
-    Bjorn Helgaas <bhelgaas@google.com>, 
-    "Rafael J . Wysocki" <rafael@kernel.org>, 
-    =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
-    xen-devel@lists.xenproject.org, linux-pci@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
-    Huang Rui <Ray.Huang@amd.com>, Huang Rui <ray.huang@amd.com>
-Subject: Re: [RFC KERNEL PATCH v8 3/3] xen/privcmd: Add new syscall to get
- gsi from dev
-In-Reply-To: <20240607075109.126277-4-Jiqian.Chen@amd.com>
-Message-ID: <alpine.DEB.2.22.394.2407221430380.4857@ubuntu-linux-20-04-desktop>
-References: <20240607075109.126277-1-Jiqian.Chen@amd.com> <20240607075109.126277-4-Jiqian.Chen@amd.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897BB7F;
+	Tue, 23 Jul 2024 00:15:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.222.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721693744; cv=pass; b=GuKc7UIS72lGIt3XeL+nEvvIhvLtFTZr1tRGev7f7FRblMQWH5ul8QqdR4YqIeF74/+xfBOwQbpMrOc0kmqrQnHJGKZDKkNPscB/nOd2Trv7e+hAmYh1yPIZ4v7weWea2zGqJ0gzs6bft4KqUCUBBo9Yt/oZU0oyeQl41DYkBOs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721693744; c=relaxed/simple;
+	bh=oGJXC3r3PI/KSS4LiF2oAD9/jmrZBfw5xkD6Sq3/Le0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AmYgwI9yqK8vEiPweErBwTbGlieaSX/BZH9zI9FydMurJwWgfOkz//7XvmgeNSDvRvQQFteABRLqj97mF+IOZJEph8sQrQSz4UHsBy1Fc/gxD2cMuLSgezziutZu1zOrhwUDdAoGxmodVS1l2DycCYbfDBnEow5xtKCde0Y5Ol4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net; spf=pass smtp.mailfrom=stgolabs.net; dkim=pass (2048-bit key) header.d=stgolabs.net header.i=@stgolabs.net header.b=FU5sqAql; arc=pass smtp.client-ip=23.83.222.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stgolabs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 1E086805A36;
+	Tue, 23 Jul 2024 00:15:39 +0000 (UTC)
+Received: from pdx1-sub0-mail-a214.dreamhost.com (unknown [127.0.0.6])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 4A384806031;
+	Tue, 23 Jul 2024 00:15:38 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1721693738; a=rsa-sha256;
+	cv=none;
+	b=NT/VuLPGSsXIS+33VS9VsqvYIMvRYDDuKR7jGAo1uczzflAGxyy0dq8IzLuBXAUoCF/A5o
+	r0dUQSRQwV0cGgh5kT4NsYiRkj7qRJ3SUqjV+hVTET1wLEVqagAZ6BMufpiCU60vxhTIHG
+	UiwgbCQaussisE3yLEVZeHmpAtoBjdg07DpL8KGqH+amyJLjzn4SNXrWInTsHOVKK6O13a
+	qxlp8722ii2v/+YIvG9YRD1PYeR6ohGVzZyRhEjiUMQMePf7apiR9KsZSQf3oxZ8HamAIl
+	yqzyfnZ5cru80vvBbNejM9uPRTG9x53YJP47GMbYztpBrW0c20m4P3OkS6sdNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1721693738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BfrsTF3PjDyketH5sAvV75FgyXiYN8/JjDAq8vHafIY=;
+	b=E2ZM2eRjdopLhRqJ0qkfxrHZlZAsVY66TXjoXe6dr3bDm3AABn4cDR12NX7RXY0R1JoBVM
+	bCSZqgizyBERW3jZ/jul91PwZ5i20Q78rmORhjyNFw0OwG/VEQHwqYaMRLqg3pGqqDNWVk
+	NbiQv6TvMfq1yYQAmrCxYS8G09Tt7xc+74qJ6IArlOoMy/MD6C/lJGZLMEIgSj4PjS2uOy
+	1d1WKJzIHp9QF/4p/tI+9TqjK1jYZXXeDWqukjxduieiW7xDncLGKeQtO1tfLCd93aveOD
+	Cfg0m8teciQcZOjYG5n7Uhlgs1/fgszgOFydcfaGWi4oJJNm4ZsEh89c7a9j4g==
+ARC-Authentication-Results: i=1;
+	rspamd-587dc898b6-9fwgf;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Fearful-Macabre: 125d6dc84c6e5729_1721693738922_585174325
+X-MC-Loop-Signature: 1721693738922:3890902801
+X-MC-Ingress-Time: 1721693738922
+Received: from pdx1-sub0-mail-a214.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.121.241.7 (trex/7.0.2);
+	Tue, 23 Jul 2024 00:15:38 +0000
+Received: from offworld (ip72-199-50-187.sd.sd.cox.net [72.199.50.187])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a214.dreamhost.com (Postfix) with ESMTPSA id 4WSd2v6Krhz2K;
+	Mon, 22 Jul 2024 17:15:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1721693738;
+	bh=BfrsTF3PjDyketH5sAvV75FgyXiYN8/JjDAq8vHafIY=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=FU5sqAqlnBAYPEJ1amDjGSFoog2KTuxMpl2bRre6zYepul8zS777HtjxiV/Ti470X
+	 7tTal7LNWT5qzdwm/Kgi3LJXNinfroiFwVnE6WJGEz2W/hH5jx9Nn61DcPRQ7jOeGJ
+	 QG2H/imfq2kX6wbJ1Wx+WC82p9fLQZ3CQU7UUqDOyiXQ8yVnFmdTaulAI/+6MeA0Ly
+	 TdXIhGuabrciys+H/4aPga+ApM7IEMPP6W7QeZajTtwkoraSNUOE2DuNdBwtLT8juH
+	 ND031tUJHkyvIA/KoaxhVv/myZsSqprEhkI80zrbBDsKfaVGCL4giJ+3VB8gTxKhgo
+	 bf18mBD7JAeog==
+Date: Mon, 22 Jul 2024 17:15:32 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Dan Williams <dan.j.williams@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 04/17] arch, mm: move definition of node_data to generic
+ code
+Message-ID: <vwofm2kcltxn4ysrf4lefe2zdqvo2upxdyntatmnh3sywcnjlq@4c6wlllurfn5>
+Mail-Followup-To: Mike Rapoport <rppt@kernel.org>, 
+	linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Dan Williams <dan.j.williams@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+References: <20240716111346.3676969-1-rppt@kernel.org>
+ <20240716111346.3676969-5-rppt@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240716111346.3676969-5-rppt@kernel.org>
+User-Agent: NeoMutt/20240425
 
-On Fri, 7 Jun 2024, Jiqian Chen wrote:
-> In PVH dom0, it uses the linux local interrupt mechanism,
-> when it allocs irq for a gsi, it is dynamic, and follow
-> the principle of applying first, distributing first. And
-> the irq number is alloced from small to large, but the
-> applying gsi number is not, may gsi 38 comes before gsi 28,
-> it causes the irq number is not equal with the gsi number.
-> And when passthrough a device, QEMU will use device's gsi
-> number to do pirq mapping, but the gsi number is got from
-> file /sys/bus/pci/devices/<sbdf>/irq, irq!= gsi, so it will
-> fail when mapping.
-> And in current linux codes, there is no method to get gsi
-> for userspace.
-> 
-> For above purpose, record gsi of pcistub devices when init
-> pcistub and add a new syscall into privcmd to let userspace
-> can get gsi when they have a need.
-> 
-> Signed-off-by: Huang Rui <ray.huang@amd.com>
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+On Tue, 16 Jul 2024, Mike Rapoport wrote:\n
+>From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+>Every architecture that supports NUMA defines node_data in the same way:
+>
+>	struct pglist_data *node_data[MAX_NUMNODES];
+>
+>No reason to keep multiple copies of this definition and its forward
+>declarations, especially when such forward declaration is the only thing
+>in include/asm/mmzone.h for many architectures.
+>
+>Add definition and declaration of node_data to generic code and drop
+>architecture-specific versions.
+>
+>Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Nice cleanup.
 
-
-> ---
-> RFC: it need review and need to wait for previous patch of this series to be merged.
-> ---
->  drivers/xen/privcmd.c              | 28 ++++++++++++++++++++++
->  drivers/xen/xen-pciback/pci_stub.c | 38 +++++++++++++++++++++++++++---
->  include/uapi/xen/privcmd.h         |  7 ++++++
->  include/xen/acpi.h                 |  9 +++++++
->  4 files changed, 79 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-> index 67dfa4778864..5809b3168f25 100644
-> --- a/drivers/xen/privcmd.c
-> +++ b/drivers/xen/privcmd.c
-> @@ -45,6 +45,9 @@
->  #include <xen/page.h>
->  #include <xen/xen-ops.h>
->  #include <xen/balloon.h>
-> +#ifdef CONFIG_XEN_ACPI
-> +#include <xen/acpi.h>
-> +#endif
->  
->  #include "privcmd.h"
->  
-> @@ -842,6 +845,27 @@ static long privcmd_ioctl_mmap_resource(struct file *file,
->  	return rc;
->  }
->  
-> +static long privcmd_ioctl_gsi_from_dev(struct file *file, void __user *udata)
-> +{
-> +#ifdef CONFIG_XEN_ACPI
-> +	struct privcmd_gsi_from_dev kdata;
-> +
-> +	if (copy_from_user(&kdata, udata, sizeof(kdata)))
-> +		return -EFAULT;
-> +
-> +	kdata.gsi = pcistub_get_gsi_from_sbdf(kdata.sbdf);
-> +	if (kdata.gsi == -1)
-> +		return -EINVAL;
-> +
-> +	if (copy_to_user(udata, &kdata, sizeof(kdata)))
-> +		return -EFAULT;
-> +
-> +	return 0;
-> +#else
-> +	return -EINVAL;
-> +#endif
-> +}
-> +
->  #ifdef CONFIG_XEN_PRIVCMD_EVENTFD
->  /* Irqfd support */
->  static struct workqueue_struct *irqfd_cleanup_wq;
-> @@ -1529,6 +1553,10 @@ static long privcmd_ioctl(struct file *file,
->  		ret = privcmd_ioctl_ioeventfd(file, udata);
->  		break;
->  
-> +	case IOCTL_PRIVCMD_GSI_FROM_DEV:
-> +		ret = privcmd_ioctl_gsi_from_dev(file, udata);
-> +		break;
-> +
->  	default:
->  		break;
->  	}
-> diff --git a/drivers/xen/xen-pciback/pci_stub.c b/drivers/xen/xen-pciback/pci_stub.c
-> index 6b22e45188f5..9d791d7a8098 100644
-> --- a/drivers/xen/xen-pciback/pci_stub.c
-> +++ b/drivers/xen/xen-pciback/pci_stub.c
-> @@ -56,6 +56,9 @@ struct pcistub_device {
->  
->  	struct pci_dev *dev;
->  	struct xen_pcibk_device *pdev;/* non-NULL if struct pci_dev is in use */
-> +#ifdef CONFIG_XEN_ACPI
-> +	int gsi;
-> +#endif
->  };
->  
->  /* Access to pcistub_devices & seized_devices lists and the initialize_devices
-> @@ -88,6 +91,9 @@ static struct pcistub_device *pcistub_device_alloc(struct pci_dev *dev)
->  
->  	kref_init(&psdev->kref);
->  	spin_lock_init(&psdev->lock);
-> +#ifdef CONFIG_XEN_ACPI
-> +	psdev->gsi = -1;
-> +#endif
->  
->  	return psdev;
->  }
-> @@ -220,6 +226,25 @@ static struct pci_dev *pcistub_device_get_pci_dev(struct xen_pcibk_device *pdev,
->  	return pci_dev;
->  }
->  
-> +#ifdef CONFIG_XEN_ACPI
-> +int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-> +{
-> +	struct pcistub_device *psdev;
-> +	int domain = (sbdf >> 16) & 0xffff;
-> +	int bus = PCI_BUS_NUM(sbdf);
-> +	int slot = PCI_SLOT(sbdf);
-> +	int func = PCI_FUNC(sbdf);
-> +
-> +	psdev = pcistub_device_find(domain, bus, slot, func);
-> +
-> +	if (!psdev)
-> +		return -1;
-> +
-> +	return psdev->gsi;
-> +}
-> +EXPORT_SYMBOL_GPL(pcistub_get_gsi_from_sbdf);
-> +#endif
-> +
->  struct pci_dev *pcistub_get_pci_dev_by_slot(struct xen_pcibk_device *pdev,
->  					    int domain, int bus,
->  					    int slot, int func)
-> @@ -367,14 +392,20 @@ static int pcistub_match(struct pci_dev *dev)
->  	return found;
->  }
->  
-> -static int pcistub_init_device(struct pci_dev *dev)
-> +static int pcistub_init_device(struct pcistub_device *psdev)
->  {
->  	struct xen_pcibk_dev_data *dev_data;
-> +	struct pci_dev *dev;
->  #ifdef CONFIG_XEN_ACPI
->  	int gsi, trigger, polarity;
->  #endif
->  	int err = 0;
->  
-> +	if (!psdev)
-> +		return -EINVAL;
-> +
-> +	dev = psdev->dev;
-> +
->  	dev_dbg(&dev->dev, "initializing...\n");
->  
->  	/* The PCI backend is not intended to be a module (or to work with
-> @@ -448,6 +479,7 @@ static int pcistub_init_device(struct pci_dev *dev)
->  		dev_err(&dev->dev, "Fail to get gsi info!\n");
->  		goto config_release;
->  	}
-> +	psdev->gsi = gsi;
->  
->  	if (xen_initial_domain() && xen_pvh_domain()) {
->  		err = xen_pvh_setup_gsi(gsi, trigger, polarity);
-> @@ -495,7 +527,7 @@ static int __init pcistub_init_devices_late(void)
->  
->  		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
->  
-> -		err = pcistub_init_device(psdev->dev);
-> +		err = pcistub_init_device(psdev);
->  		if (err) {
->  			dev_err(&psdev->dev->dev,
->  				"error %d initializing device\n", err);
-> @@ -565,7 +597,7 @@ static int pcistub_seize(struct pci_dev *dev,
->  		spin_unlock_irqrestore(&pcistub_devices_lock, flags);
->  
->  		/* don't want irqs disabled when calling pcistub_init_device */
-> -		err = pcistub_init_device(psdev->dev);
-> +		err = pcistub_init_device(psdev);
->  
->  		spin_lock_irqsave(&pcistub_devices_lock, flags);
->  
-> diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-> index 8b8c5d1420fe..220e7670a113 100644
-> --- a/include/uapi/xen/privcmd.h
-> +++ b/include/uapi/xen/privcmd.h
-> @@ -126,6 +126,11 @@ struct privcmd_ioeventfd {
->  	__u8 pad[2];
->  };
->  
-> +struct privcmd_gsi_from_dev {
-> +	__u32 sbdf;
-> +	int gsi;
-> +};
-> +
->  /*
->   * @cmd: IOCTL_PRIVCMD_HYPERCALL
->   * @arg: &privcmd_hypercall_t
-> @@ -157,5 +162,7 @@ struct privcmd_ioeventfd {
->  	_IOW('P', 8, struct privcmd_irqfd)
->  #define IOCTL_PRIVCMD_IOEVENTFD					\
->  	_IOW('P', 9, struct privcmd_ioeventfd)
-> +#define IOCTL_PRIVCMD_GSI_FROM_DEV				\
-> +	_IOC(_IOC_NONE, 'P', 10, sizeof(struct privcmd_gsi_from_dev))
->  
->  #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
-> diff --git a/include/xen/acpi.h b/include/xen/acpi.h
-> index 9b50027113f3..d6315fd559a9 100644
-> --- a/include/xen/acpi.h
-> +++ b/include/xen/acpi.h
-> @@ -83,4 +83,13 @@ int xen_acpi_get_gsi_info(struct pci_dev *dev,
->  						  int *gsi_out,
->  						  int *trigger_out,
->  						  int *polarity_out);
-> +
-> +#ifdef CONFIG_XEN_PCI_STUB
-> +int pcistub_get_gsi_from_sbdf(unsigned int sbdf);
-> +#else
-> +static inline int pcistub_get_gsi_from_sbdf(unsigned int sbdf)
-> +{
-> +	return -1;
-> +}
-> +#endif
->  #endif	/* _XEN_ACPI_H */
-> -- 
-> 2.34.1
-> 
+Acked-by: Davidlohr Bueso <dave@stgolabs.net>
 
