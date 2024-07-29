@@ -1,146 +1,127 @@
-Return-Path: <linux-acpi+bounces-7111-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7112-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9398F93F513
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 14:21:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4DE93F60D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 15:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B56701C21672
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 12:21:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 713791C21C1C
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 13:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249A31474B9;
-	Mon, 29 Jul 2024 12:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DD0146584;
+	Mon, 29 Jul 2024 13:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afct/Vda"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="1GSkuUcM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0090A1D69E
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Jul 2024 12:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9691DFCF;
+	Mon, 29 Jul 2024 13:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722255671; cv=none; b=Ujc/QsOQPZnzY/uKH9Q6ItRM8wxOP+mm+A45ih3qUTI/WizlefL5h3IvTxeWuFd/83ljd6twgKEBt0btnEXraBnHKM22kvrMwlfYd90VS8Nk4KKxwNzzaZQa9wFcO+KtF1MFfVAR/zfL7fBqHeu2q0capb4jfUuQf7BuXkxEZxI=
+	t=1722258095; cv=none; b=LGMeNvUqNnjRWDaMICGzivPB+kD60QQD2jCMZZ1UMS8d7C8EaK8D8Zw1VyiKg12Hy2nDAz+OOlX94do2Qm6swrRNAno1QqySj4dfwvbiG/KYVkwhDpbEUV97cHvbQB4tXX1hOuP7qUCHHKSlslCrmMU6NC7+PtXTyVn+JuPkv5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722255671; c=relaxed/simple;
-	bh=xmcN7xiV63JRnpxWPpqS0T0nv+OSPPKUtjHq4rWabHQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jlr7+r4CaVVSKnzpjGtt+DRS8C3obrLyiJR9NoNWZgw9hkunnxoWGrjzpTLcYGJwKyXAPZw8MelCcLOXP/Y4Arh0ac6PfMglfEYcgx4RD3iPh5Vz7J5SeBtfX+DDGw5tToEYa3sqfL3SH4LSjzuFy0OEPA23z+JDLJpjoFtKxVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afct/Vda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FD6C32786
-	for <linux-acpi@vger.kernel.org>; Mon, 29 Jul 2024 12:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722255670;
-	bh=xmcN7xiV63JRnpxWPpqS0T0nv+OSPPKUtjHq4rWabHQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=afct/VdaIf/KjLGhj9lyIYiVTOaH2+PmsTV0w4+iKefogJoiapz396/l0Oveg+zfD
-	 PfESMRua3ixkQdUj5ut2nwrntr/ZaiUzGQFxAdeqcThUSH1JBF1sLl1z7N88BEaboY
-	 f9g9bTjJLTH1NiyTlHDbHmUaWZkC0tQF4/WZTJZeetwTen8ZBzJJ+gnsDDGj+XH9Bo
-	 D3bWKdSCVAsKW6djDWcu9RDmKF2UiNeuE1ki9/6g1uQXsZ8cYWwBmtgW/fi3+YHo33
-	 IrAp68lzRzqqSm5LUEAb9ev2Hkcaxr02qN6ITz8btqKT35Bzy42g9dm06sqZfoLfI3
-	 W5SZsbFK0Kszg==
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3db37444230so58589b6e.1
-        for <linux-acpi@vger.kernel.org>; Mon, 29 Jul 2024 05:21:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVal10JhOF/kG39q2J88CRtAlKmAk+GP2S5rthjW0eE1NQ4W27RCstSf0MjYevfX4vawSaX1E+AMSVn@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxmqyXho2JP1LF72u7ZCKGifFaWuYq0udS5up29mr/kUeTuVzx
-	GHvFV+gWmRgrWkTHjaeUbpF2J8GGEskPWZR2nIRzpBTSvNHJdTEuFIcFzIiPPk+b8t9drzV55s8
-	UZpWMHlmgeuGz1nmyx1a5iM37TMg=
-X-Google-Smtp-Source: AGHT+IEAmOggp2rQJqqkSPOoJnuj6oMaQV5f3FZDqtkJJvmo2bicxbzPXOD99/Uk7sZySmsMRZI9W0jwjtUJNJpaY0U=
-X-Received: by 2002:a05:6808:d4a:b0:3db:10c2:6008 with SMTP id
- 5614622812f47-3db1214167fmr8860835b6e.5.1722255670076; Mon, 29 Jul 2024
- 05:21:10 -0700 (PDT)
+	s=arc-20240116; t=1722258095; c=relaxed/simple;
+	bh=lyMQxeeEfari71/LaXTaod34URVqznPpnYytJZ6gTr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bfAPWDRQpOVFW2mEdObYXU8jOpLkrhfN49Qrk/CmHpnL3GlMM434p1cdU6Zpz3YPjCP5jg62JMsO3rNHMk1kYuwXjdRkM0c9H76MyS71URzMacDAvXOPlSprLwRWflzfxAO6o/QCxp5uPKkIs/3BPTreUqR1bJ8+FTeQw3h+Q9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=1GSkuUcM; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dCor073xQJijp8I3RK3+ty7FjGp2GGPrVnPyb5mRIYg=; b=1GSkuUcMy+MnQlrUUZPZiL0Ly1
+	wOJOpFW9Dt0n42j9nsc0LVGkc3G+6GPbXxx+ZDe53eeqx673xKGuCnzOrTx4epdFvaYwzMsxkTSRR
+	gLtYX28JoCoPRJ87N0XRwsvLOCpF6My7Oj2j7wen56JhKivm+CKuH/au6IXd/PC6kmGAzWZRBSz5r
+	ozwMLyEdlI8UkrK5WHK8xSjQRp9/SQvCCUzUGatWht/0O3UNm5r29E2wr3+ccshTiNNn/Ec79Nrfl
+	iV9EgtQoX1Tj0DeCd/h9othUdgE6IGfc9O8kKzYQh4O/c4Kcvoqru5wAqHlb2WW2nGzbFeMChzKlR
+	f0BFD+Mw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46248)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1sYPzP-0004Lu-1R;
+	Mon, 29 Jul 2024 14:00:35 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1sYPzQ-0004L5-68; Mon, 29 Jul 2024 14:00:36 +0100
+Date: Mon, 29 Jul 2024 14:00:36 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>, Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 6/6] net: mvpp2: use device_for_each_child_node() to
+ access device child nodes
+Message-ID: <ZqeSdMMOk+GbVzHj@shell.armlinux.org.uk>
+References: <20240706-device_for_each_child_node-available-v1-0-8a3f7615e41c@gmail.com>
+ <20240706-device_for_each_child_node-available-v1-6-8a3f7615e41c@gmail.com>
+ <ZqdRgDkK1PzoI2Pf@shell.armlinux.org.uk>
+ <aa440f7c-0ccc-443c-8435-50c864edd1c2@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com> <6dfb58d7-0b36-4414-bc01-75697077fd27@redhat.com>
-In-Reply-To: <6dfb58d7-0b36-4414-bc01-75697077fd27@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 29 Jul 2024 14:20:54 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gs-qrywWyF7PXC7_b0zAfBz=8xoc5V83nkuWgt0RdV9A@mail.gmail.com>
-Message-ID: <CAJZ5v0gs-qrywWyF7PXC7_b0zAfBz=8xoc5V83nkuWgt0RdV9A@mail.gmail.com>
-Subject: Re: "EC: Install address space handler at the namespace root" causing
- issues for some users
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi <linux-acpi@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa440f7c-0ccc-443c-8435-50c864edd1c2@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Hans,
+On Mon, Jul 29, 2024 at 11:23:47AM +0200, Javier Carrasco wrote:
+> Apart from that, there is a suspicious check towards the end of the same
+> function:
+> 
+>  if (is_acpi_node(port_fwnode))
+> 		return;
+> 
+> At the point it is called in the current implementation, port_fwnode
+> could have been cleaned. And after removing the loop, it is simply
+> uninitialized. Was that meant to be pdev->dev->fwnode?
 
-On Mon, Jul 29, 2024 at 1:29=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
- wrote:
->
-> Hi,
->
-> On 7/29/24 1:15 PM, Hans de Goede wrote:
-> > Hi Rafael,
-> >
-> > There are 2 bug reports:
-> >
-> > 1. Brightness up/down key-presses no longer working on LG laptop (acpi-=
-video related):
-> > https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject=
-.org/thread/V2KWAGZIAX4TOWPCH6A6FSIT66PR3KMZ/
-> >
-> > 2. EC related ACPI errors and bad performance:
-> > https://bugzilla.redhat.com/show_bug.cgi?id=3D2298938
-> >
-> > Both of which started with 6.9.7 which has the 2 commits related to "EC=
-: Install
-> > address space handler at the namespace root" from 6.10 backported:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/drivers/acpi?h=3Dv6.9.7&id=3D2b2b0ac1533d790690d6d28899f01a2924d54d4d
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/drivers/acpi?h=3Dv6.9.7&id=3D9750135f2f326879889ed60ccd68b96572dfa6ee
-> >
-> > i have build a test 6.9.9 kernel with these 2 reverted and 1. is confir=
-med to be fixed
-> > by reverting these 2 commits. Although the user does report an IRQ stor=
-m on the ACPI IRQ
-> > (IRQ 9) related to thunderbolt after this.
-> >
-> > I have not yet got confirmation that the second bug is also resolved by=
- the commits.
->
-> ... resolved by *reverting* the commits.
->
-> > Either way it looks like we need to dig into this and figure out what i=
-s causing
-> > these EC related regressions.
+If you're referring to the one before the clk_disable_unprepare() calls,
+it's only slightly suspicious:
 
-Right, so I looked at the dmesg output in 2. and saw that the EC
-errors were reported right after enabling the EC for the first time in
-acpi_ec_dsdt_probe().
+These clocks are setup in a:
 
-Because acpi_ec_dsdt_probe() passes true as the last argument to
-acpi_ec_setup(), it will evaluate _REG everywhere at this point, but
-previously it only evaluated _REG in the EC scope.
+        if (dev_of_node(&pdev->dev)) {
+		...
+	}
 
-In the ECDT case, the _REG evaluation is deferred until the EC has
-been found in the namespace, so maybe that's the right time to
-evaluate EC opregions _REG in general.
+block, so they're only setup if we have device tree. So, avoiding it
+for ACPI is entirely reasonable. However, we also have software nodes
+as well, so the test should be:
 
-So one thing to try may be to pass "false" to acpi_ec_setup() in
-acpi_ec_dsdt_probe().
+	if (!dev_of_node(&pdev->dev))
+		return;
 
-> I'm wondering if maybe this is also somewhat related to commit e2ffcda162=
-90 ("ACPI: OSL:
-> Allow Notify () handlers to run on all CPUs") ?
->
-> I guess not though since this started in 6.9.7 and 6.9.6 is fine.
->
-> I did recently submit an unrelated fix caused by e2ffcda16290:
->
-> https://lore.kernel.org/platform-driver-x86/20240729110030.8016-1-hdegoed=
-e@redhat.com/
+to match what the probe function is doing.
 
-None of the above look like they are processor-related, though.
+Thanks.
 
-Thanks!
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
