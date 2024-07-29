@@ -1,74 +1,77 @@
-Return-Path: <linux-acpi+bounces-7108-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7109-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665BA93F0EB
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 11:23:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0498893F3C9
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 13:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55090282E8A
-	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 09:23:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71652B20F5D
+	for <lists+linux-acpi@lfdr.de>; Mon, 29 Jul 2024 11:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CFC13DDAF;
-	Mon, 29 Jul 2024 09:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC2413EFEE;
+	Mon, 29 Jul 2024 11:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lN9CfDdA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C2X4XCQf"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5776E13B783;
-	Mon, 29 Jul 2024 09:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE95C2837B
+	for <linux-acpi@vger.kernel.org>; Mon, 29 Jul 2024 11:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722245033; cv=none; b=ug38GetPSZs6V32S+0LGzx63G5KdY7diP9l1LeHKEReQvE0mtEMittEUjCvBndvBASj9b6xGzgbroqF+g0CAquU5nXZ5yy6qyzJ9Hmlpq5Dy7TEgDEdqFcpu3OciqV7fiJNFaBfwiDXyyevlqyIwgEdIudR32bdUGwF6V7ZAPw4=
+	t=1722251736; cv=none; b=sYMy8F73bjVaG7rQMfcuRY4rrytTHZ71WkumUpV59qSAGQOyz+oWVZocj3dMZSHcQb1e8L4RUBj6vc+nlZLT4ClFQDyvlAbuE/sVgIYXBQ/JLG4PIbywimV/oZh9I/yCFstC7cBrL1tHDcF6zqzEpgyYC0TXMXJzxQ/BJd6MdiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722245033; c=relaxed/simple;
-	bh=XKN7XFfEIp2MjF6RtZI622rgCm1T1kZTq0UGNj31nmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iEhCyPM4wEfHnILQ5ko7MgsV1LJzT7SxoXKanwKKjDeZvGa8GjUOIerJuQS3Dch/xsuFJLuMDR9gqxUUzC/Zf0U4BlLtb8GzET9vJIQ8byD5zDXuGmPmtxSKXF5GzFVrLFkci6uikg7X76sMkkqKQ04pVPokN/UVSN29i+vym2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lN9CfDdA; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5a1337cfbb5so5697503a12.3;
-        Mon, 29 Jul 2024 02:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722245029; x=1722849829; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+fTK+lSGaCTp89FJAQ+TaUZXly+QdYorHRE6pRbkPRc=;
-        b=lN9CfDdA3JJd0lYYF1mUfIm+SQX3gu48XtzC2xf/4+dTSwaWj2YNkKPxr3PUeGAgDG
-         CWxm8Cb5G8u4N+meR89/eInhHnlqr6jZsGFxTXhl+eyTYMAhHlpUtvtVpxI/gDbK2GHb
-         6/iUKzsu5XzknwkbiGCw9ADCElZoz3+rqbXRtrGu477GYjt6f2ZHfeFJ9olKFD3SjPjd
-         mHDO0CMCzhEC+7dDKJMrdwV2NL4eUoyWabknJnXXq5qrwANjw4Pa26LWAEzsKw8x48gH
-         mFJp32lxBUuTdf82MMGNolGcWVtK9rOw2Gg9qIKBbS4GHoO2lRj5kyo84PkixGBTafCz
-         cIag==
+	s=arc-20240116; t=1722251736; c=relaxed/simple;
+	bh=E+PLCJ9yZEg5A6q0q7lw+rUF/kija8svyZwxz1HL8QM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=WjszJ2F2xez/xu2A9aS0GhXiOGD3zm3Tz8ZR4/VVqdh/WCznFiOd4tMwNN9uqRZ4QOpaCwJ+5FyzxqLPQWjoaKfYLnFWQyVdGZNj+q1Sk5Qpj8hfXdOOw+dr/X6AeWnMKnfvJ9Pd7k7udqUk/fGXDcBorJx6d3Oaiea/2Wnvewc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C2X4XCQf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722251733;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=E+PLCJ9yZEg5A6q0q7lw+rUF/kija8svyZwxz1HL8QM=;
+	b=C2X4XCQfqw2HhZ1HGOf959uQEDZlJnCQXEE9MS7ZnTwRZKGJZ3wwFyyWKaWTITrdf3QgUQ
+	JGM0bJ/fOtDlm8Zfr9BdXJjcmnj2frOSUxRKXuan//HyCCp4dppr/ttnfvhAZOAev9HFTV
+	LcjmdzrcsI5EoKkioZlpITmbRhCx1x8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-VaDtNPpKPoeakzVSWuvy-w-1; Mon, 29 Jul 2024 07:15:29 -0400
+X-MC-Unique: VaDtNPpKPoeakzVSWuvy-w-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3685e0df024so1467072f8f.0
+        for <linux-acpi@vger.kernel.org>; Mon, 29 Jul 2024 04:15:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722245029; x=1722849829;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+fTK+lSGaCTp89FJAQ+TaUZXly+QdYorHRE6pRbkPRc=;
-        b=F5YwS7vj5SvIhGY7MusxJWJLEsE0FNOExZAy14E23sC7kDL5jfeJpEWlK6fZBuSWvQ
-         bIDk6wjBwSPTUEmelJgUQwZ39vlevuP2N/JmamoBJPk5BSPViF3Jsbfzk+WENgQks6dF
-         Fe9LJmpLY2C0Qwc9YPVsdOjIq1H9S1UOy0v81t7xTVkssbIB+EpUY6Rovd1FqOtQc4ge
-         3QMw7AyM7ipST9b2pV5geD6Iyp4xJRJ/3tnkIrEXDBfhJlyEjAJ9trlCYwgxMqHORjWx
-         1lC0DcoXTRLveONXj+l5YENu3B69vzOdH5aQ1O4BT237j2VtMhoz6HASVRakRFddgnWW
-         4OSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHSJB+MqJN3LixKrOLkx3B1PNhZJMYq8z4+/JHJ2tg8ahb2FM5jrrCdTASopEHtqjTl2kUdcVH+sp07tPLds26VWKodCV/F4yqM2kRqKpR2+RXDrKOpECftZUPqSfSwsrnutr9yLXyhU2q+Ju/dJAF66BCPOo0XV1n5czwiuC6hcPl4zY9xjTtwMJcJRTyEvljyNRgO1Ykanp6V3Ffhsy+IY4KK/TDxY0RHnBjInKtNBlnrpVp+iGM3w==
-X-Gm-Message-State: AOJu0Yy5IGFU+hBDgLbPIdDKtxiSJAU3qVadtPdKt01W9sDRtRGyR8Si
-	BAyihPk0oRqkhDvx3BoQ0Wi5Mn3aHZwbPBvMA3YvnfxhnXLRKnqT
-X-Google-Smtp-Source: AGHT+IGUtqllS+X3QoqebDkqy6SK7g6E4MjjUsj4CDEh9KNQatJAye5U4PR+9MmRZtHaOIJp66JhIQ==
-X-Received: by 2002:a05:6402:3487:b0:5a3:b45:3979 with SMTP id 4fb4d7f45d1cf-5b020ba8a06mr4708013a12.17.1722245029234;
-        Mon, 29 Jul 2024 02:23:49 -0700 (PDT)
-Received: from [10.10.12.27] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac631b0491sm5493664a12.8.2024.07.29.02.23.47
+        d=1e100.net; s=20230601; t=1722251726; x=1722856526;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=E+PLCJ9yZEg5A6q0q7lw+rUF/kija8svyZwxz1HL8QM=;
+        b=UTj6v8ellKzUqohF96CahqGW0CDw7nEpxLhuBjQgcNzNahe+jvtKJx0wK0vA31XUOu
+         jCaRUeZ7+6HOelJKVjGhinDCPJ2/I/6wugPBa8Vc1HzOQ6hctlBQPhdZWQOkNft5M6sB
+         Inwl7vem8yzJjuanDTTVmH/4TjGkMUgNfF/2fbh3YsG5mKXwiQeryDn9ztNNBFutxIuj
+         3I6S7IFAEiTkYoOdWnuQHVvSn9bKj0NnAVM9//vjCpFA8456Jt7MBewNx2VffIQwceVh
+         5VkLjlXOkrGq76Yp2zubwFiHyS+lx8wrvJQxm1iVMibtgV02UfEd8G3+hWenPpiL+GOF
+         GCgQ==
+X-Gm-Message-State: AOJu0YxzI9Fs8bNkTFQw1MDLOHDDybTN6QulFWW3h9VGr74kQXUlCG6b
+	U+2cqgyZ5j9GNDsv1Sixw0rHGxiI4Vq6zVe/ZoMdmWH6L5zra5LPuKMb7a7c4tqHHvEDsnH47xI
+	ou5+pMVk9Ytlg/Oki2IYEK+OpPI7YycqDW/2XeIQADXS0QI43dQMFmQG4rwaj10OuZm0=
+X-Received: by 2002:a5d:598b:0:b0:368:7e26:38d1 with SMTP id ffacd0b85a97d-36b5cee21fbmr6321946f8f.21.1722251725756;
+        Mon, 29 Jul 2024 04:15:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVcJwHjxN83eTLxwGtjGZ46uMxi9PI8WLm7xLuQlgfKgkqmQEgbVyDsIFUNeKw20NDnNb3EA==
+X-Received: by 2002:a5d:598b:0:b0:368:7e26:38d1 with SMTP id ffacd0b85a97d-36b5cee21fbmr6321917f8f.21.1722251725215;
+        Mon, 29 Jul 2024 04:15:25 -0700 (PDT)
+Received: from [172.18.228.53] (ip-185-104-138-47.ptr.icomera.net. [185.104.138.47])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36b367c0113sm11970104f8f.14.2024.07.29.04.15.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 02:23:48 -0700 (PDT)
-Message-ID: <aa440f7c-0ccc-443c-8435-50c864edd1c2@gmail.com>
-Date: Mon, 29 Jul 2024 11:23:47 +0200
+        Mon, 29 Jul 2024 04:15:24 -0700 (PDT)
+Message-ID: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com>
+Date: Mon, 29 Jul 2024 13:15:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -76,168 +79,42 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] net: mvpp2: use device_for_each_child_node() to
- access device child nodes
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
- <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
- Marcin Wojtas <marcin.s.wojtas@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240706-device_for_each_child_node-available-v1-0-8a3f7615e41c@gmail.com>
- <20240706-device_for_each_child_node-available-v1-6-8a3f7615e41c@gmail.com>
- <ZqdRgDkK1PzoI2Pf@shell.armlinux.org.uk>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <ZqdRgDkK1PzoI2Pf@shell.armlinux.org.uk>
+Content-Language: en-US
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi <linux-acpi@vger.kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
+Subject: "EC: Install address space handler at the namespace root" causing
+ issues for some users
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29/07/2024 10:23, Russell King (Oracle) wrote:
-> On Sat, Jul 06, 2024 at 05:23:38PM +0200, Javier Carrasco wrote:
->> The iterated nodes are direct children of the device node, and the
->> `device_for_each_child_node()` macro accounts for child node
->> availability.
->>
->> `fwnode_for_each_available_child_node()` is meant to access the child
->> nodes of an fwnode, and therefore not direct child nodes of the device
->> node.
->>
->> The child nodes within mvpp2_probe are not accessed outside the lopps,
-> 
-> "lopps" ?
-> 
->> and the socped version of the macro can be used to automatically
-> 
-> "socped" ?
-> 
+Hi Rafael,
 
-I'll fix the typos for v3.
+There are 2 bug reports:
 
->> decrement the refcount on early exits.
->>
->> Use `device_for_each_child_node()` and its scoped variant to indicate
->> device's direct child nodes.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->> ---
->>  drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 13 ++++---------
->>  1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
->> index 9adf4301c9b1..97f1faab6f28 100644
->> --- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
->> +++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
->> @@ -7417,8 +7417,6 @@ static int mvpp2_get_sram(struct platform_device *pdev,
->>  
->>  static int mvpp2_probe(struct platform_device *pdev)
->>  {
->> -	struct fwnode_handle *fwnode = pdev->dev.fwnode;
->> -	struct fwnode_handle *port_fwnode;
->>  	struct mvpp2 *priv;
->>  	struct resource *res;
->>  	void __iomem *base;
->> @@ -7591,7 +7589,7 @@ static int mvpp2_probe(struct platform_device *pdev)
->>  	}
->>  
->>  	/* Map DTS-active ports. Should be done before FIFO mvpp2_init */
->> -	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
->> +	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
->>  		if (!fwnode_property_read_u32(port_fwnode, "port-id", &i))
->>  			priv->port_map |= BIT(i);
->>  	}
->> @@ -7614,7 +7612,7 @@ static int mvpp2_probe(struct platform_device *pdev)
->>  		goto err_axi_clk;
->>  
->>  	/* Initialize ports */
->> -	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
->> +	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
->>  		err = mvpp2_port_probe(pdev, port_fwnode, priv);
->>  		if (err < 0)
->>  			goto err_port_probe;
->> @@ -7653,10 +7651,8 @@ static int mvpp2_probe(struct platform_device *pdev)
->>  	return 0;
->>  
->>  err_port_probe:
->> -	fwnode_handle_put(port_fwnode);
->> -
->>  	i = 0;
->> -	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
->> +	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
->>  		if (priv->port_list[i])
->>  			mvpp2_port_remove(priv->port_list[i]);
->>  		i++;
->> @@ -7677,13 +7673,12 @@ static int mvpp2_probe(struct platform_device *pdev)
->>  static void mvpp2_remove(struct platform_device *pdev)
->>  {
->>  	struct mvpp2 *priv = platform_get_drvdata(pdev);
->> -	struct fwnode_handle *fwnode = pdev->dev.fwnode;
->>  	int i = 0, poolnum = MVPP2_BM_POOLS_NUM;
->>  	struct fwnode_handle *port_fwnode;
->>  
->>  	mvpp2_dbgfs_cleanup(priv);
->>  
->> -	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
->> +	device_for_each_child_node(&pdev->dev, port_fwnode) {
->>  		if (priv->port_list[i]) {
->>  			mutex_destroy(&priv->port_list[i]->gather_stats_lock);
->>  			mvpp2_port_remove(priv->port_list[i]);
-> 
-> This loop is just silly. There is no need to iterate the child nodes.
-> port_fwnode is not used, and the loop boils down to:
-> 
-> 	for (i = 0; i < priv->port_count; i++) {
-> 		mutex_destroy(&priv->port_list[i]->gather_stats_lock);
-> 		mvpp2_port_remove(priv->port_list[i]);
-> 	}
-> 
-> Not only is walking the child nodes not necessary, but checking whether
-> the pointer is NULL is also unnecessary. mvpp2_port_probe() populates
-> the array using:
-> 
->         priv->port_list[priv->port_count++] = port;
-> 
-> and "port" can not be NULL here, so we're guaranteed that all port_list
-> entries for 0..priv->port_count will be non-NULL, and the driver makes
-> this assumption in multiple places.
-> 
-> In fact, I'd say that using fwnode_for_each_available_child_node() or
-> device_for_each_child_node() is buggy here if the availability of the
-> children change - it could leave ports not cleaned up.
-> 
+1. Brightness up/down key-presses no longer working on LG laptop (acpi-video related):
+https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/V2KWAGZIAX4TOWPCH6A6FSIT66PR3KMZ/
 
-I will add your suggestions in a separate patch with the corresponding
-Suggested-by: tag. In that case, and taking into account that the
-pointer check is unnecessary, the loop after a goto err_port_probe will
-turn into this:
+2. EC related ACPI errors and bad performance:
+https://bugzilla.redhat.com/show_bug.cgi?id=2298938
 
-err_port_probe:
-	for (i = 0; i < priv->port_count; i++)
-		mvpp2_port_remove(priv->port_list[i]);
+Both of which started with 6.9.7 which has the 2 commits related to "EC: Install
+address space handler at the namespace root" from 6.10 backported:
 
-and the loop in mvpp2_remove() will be exactly the one you suggested.
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/acpi?h=v6.9.7&id=2b2b0ac1533d790690d6d28899f01a2924d54d4d
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/acpi?h=v6.9.7&id=9750135f2f326879889ed60ccd68b96572dfa6ee
 
-Apart from that, there is a suspicious check towards the end of the same
-function:
+i have build a test 6.9.9 kernel with these 2 reverted and 1. is confirmed to be fixed
+by reverting these 2 commits. Although the user does report an IRQ storm on the ACPI IRQ
+(IRQ 9) related to thunderbolt after this.
 
- if (is_acpi_node(port_fwnode))
-		return;
+I have not yet got confirmation that the second bug is also resolved by the commits.
 
-At the point it is called in the current implementation, port_fwnode
-could have been cleaned. And after removing the loop, it is simply
-uninitialized. Was that meant to be pdev->dev->fwnode?
+Either way it looks like we need to dig into this and figure out what is causing
+these EC related regressions.
 
-Thanks and best regards,
-Javier Carrasco
+Regards,
+
+Hans
 
 
