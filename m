@@ -1,196 +1,196 @@
-Return-Path: <linux-acpi+bounces-7123-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7122-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678B69413C0
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 15:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019CB9412EA
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 15:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBB6283DD3
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 13:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 230941C22A24
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 13:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA881A08AF;
-	Tue, 30 Jul 2024 13:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC9819E825;
+	Tue, 30 Jul 2024 13:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="U6/GSkaM"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SFbNY/iz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8324E1A08A2
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 13:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47BB2CA7;
+	Tue, 30 Jul 2024 13:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722347921; cv=none; b=NAfEfCFoN9u2uk/+wbsKHmKNxEpQGMRpcSRfFJSoL/CCs/M9k+fQKxJdJcgjctogTpe+NfF0LW4axkouJB2mzKUkJfhom46AHxeO/5zVKQohyR5TKLiGa968tSGYRCZww2tUIFGQDAaK3HFthepm9KjsLGJuoab6kPHdkTdUw+Q=
+	t=1722345433; cv=none; b=RSsmBq/ZHeH2hyBEMCoYgIdJA0axbVNqsdIKOZHm2lhRvtlKmzfI3o2qYGNOLN0N5eCGFdnRbKowoGtX9YFRwlS4eDUx78eUHnPrZlsowVSVA9usrHZ5xnAnfgDpCkdMPjY1E1BQJzTrIIG+59hcL6/e4Ickuq48vj0xi/Az7PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722347921; c=relaxed/simple;
-	bh=qMDI8Txx2njAcU5Reye0dNUUUWTOOVW/fJ23UzgpSTQ=;
+	s=arc-20240116; t=1722345433; c=relaxed/simple;
+	bh=PpgPcz4mJgFasB7hcoUur2pfvf6LkgH1ozOGEkjpKPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KHMTXm0cCwcf4lLYaxuMUnVKmYfYxgShC//tq7KJ+4LglUiSdW149TlkvuBr8XO04I8E8pbu/Pub1LqEYtmwSkhyz0jc7i+1rW0p3HNTnQ8+VTrNaJIbEVy5foCpriMFk0qH0FT3QJW42j7k32F2IA3WWJyqc61Yeo5iKniiwNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=U6/GSkaM; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d608060241so329255eaf.1
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 06:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1722347918; x=1722952718; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATUTooqDMnWGW5E1fYr0Sr3nb1EzdDxUUFedVVh1pgc=;
-        b=U6/GSkaMCEB27M8VYG2xUPbq33iqFrQwj1EcWK1evY4Rh99MvrImPQqH4sxo/no35M
-         ZnZBOQzYeEe0xETz4P40zTjkzTHnWRwjkQTOht4MRg7ZLwrXrPXeghmPy7Gcxwvgiv7P
-         nDd68dcK1RqJGZ6qr4Q80/bHkFyVXm2NZau45I1xaOge8EhF2a+/JlW2BMUotRH0RRia
-         tgqO0+e9DKflk5sQbDHnGqj5d3VIH6wUgOns6xzn4yPGg+w5CHwbH5STjeZ3dKLpDhqn
-         edajALYzOH+XgyrtSdcYIWGs8VnTEZq7pMvHZMrFc86flyyCb937RynVeO+5QcmcY3Wo
-         3I2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722347918; x=1722952718;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ATUTooqDMnWGW5E1fYr0Sr3nb1EzdDxUUFedVVh1pgc=;
-        b=L0FfzGcW5/Wk6p1m1sFWhraBf2+4LvEb8uDPTG8zfXaKgFhWuX+2mB9baxzJwNvfZt
-         JYIN3+oZhrfmlC1InsK3XppZ7Rpal6fpaGfsapWI0am49djP3D4Edbk2UJTDP4nS50gY
-         GAqRQUwvcbqei3msvj+YSnqhx+81sRDn3dpjWZtTDeGEF0FdLSx/9GiGTfXZpAQ+dWXO
-         7eSpPYNNLNNTi94siybnKOruFBGTbrpzqKtyfLnwKC+Lrd7sLRi5q7yhwhAH8+cLJEFr
-         6WWcSasS1LidBSLdzdRzq6XqmM6s0q0EJR9NmqP4prCXh89xkLEo+9XRFTBYIhPEohiU
-         Ulrg==
-X-Forwarded-Encrypted: i=1; AJvYcCWx9AmMmf/QHdax6jqdIXhxgsIfkddxIBve8PQCkfGT4SUqxXz5SlmXo2+nPtkR3lOc7O0iVSnD3CQeEay/6nr9DxyY1G4LVMOWaA==
-X-Gm-Message-State: AOJu0YwOSAX0L2pLdJFtsZTttqYjtBSFpF2e4dhg95ldgzHraBXFCiA6
-	cPCYA1Dq9M+cSS8vk+4CUcxaOCt8ij198IUwjRL7/wWIR03EiuHUT6uf7qmJKQuT/PddaDvVigy
-	hZxU=
-X-Google-Smtp-Source: AGHT+IEB0R02KAtBKOdEuupPo31Ehi9o3/bH6CEDRLJQE5M2iZ8R1f9GZvJTLTFz9X93WcC0w11tfg==
-X-Received: by 2002:a05:6358:761c:b0:1aa:b8ba:6d with SMTP id e5c5f4694b2df-1adc06d8458mr1901148955d.23.1722347918310;
-        Tue, 30 Jul 2024 06:58:38 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f9407c3sm63534996d6.71.2024.07.30.06.58.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 06:58:38 -0700 (PDT)
-Date: Mon, 29 Jul 2024 23:18:16 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, dave.jiang@intel.com,
-	Jonathan.Cameron@huawei.com, horenchuang@bytedance.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	dan.j.williams@intel.com, lenb@kernel.org,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
- calculation callback
-Message-ID: <ZqhbePA9Egcxyx7o@PC2K9PVX.TheFacebook.com>
-References: <20240726215548.10653-1-gourry@gourry.net>
- <87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
- <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZTJ8upowNsTNRH2SBL1Gzu2FIqTnzU1D64Fr6CdGQuie+nOYP/dyEzntXSnSXYObf2z5Y3TViuFeG/W25NgrXqcPm464dkE1KtHyK86mXFIfDgDGKHMZV02FXfEECzQ+kVjEPbv4+dakagKFb8IDseqPGeMMzeJzwdS50MOaR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SFbNY/iz; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A4B1940E01CD;
+	Tue, 30 Jul 2024 13:17:05 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id t4KCJeA0thJX; Tue, 30 Jul 2024 13:17:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1722345421; bh=3mmWlxNZdjshKUX8r4jOpJ3VKzvjNoDxxlHvf6e8xD8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SFbNY/iz5BcDMeQbxp+X3vfPiEdb2t4PxqUSRoXozRWhAmaBtlRDGuE08MO8YNiHd
+	 0kWk3d4kQ/jr9kIeS6dQJXMe5sWFb8iuXKz0+Wj0F9/iv63K5PmspTFI8gzv32bKeX
+	 G4NZNegTN3fny0rb7f/4VXsAzxTCriaoLrIFj+97x0hkLjB/LYxiwju7zwiR6+Anp4
+	 3TZYTkAeB1pArVh3DaSjjIK+pUuiAsHAvA+7Br2lJT1DCdMOAyjKZnwIhx6DzxcPDQ
+	 rXUVdcyDcYBHJCuduN7ee6Q21ZTKrh+eODkc7zm60TqMNWa4ygLVjpLgCnxz+Cqo5o
+	 mlNHN1sQ6B7IvLFGQ3vEdwIdWROgKr/ojk87Vf7/PW9a3ScLuYhU+D6BadXeJr1RNx
+	 7//S/hoxIa9wg6ng3iAxCcdwF+Sep8dyJEEzietrnQgH1E8GlngfVhkbpwtkJYNpGO
+	 yaxScn/BQtyomvosHryIu6U0RFg9TtoCMyfcRal5cUIk72/6Y6xpHKne7Bq+kH3Xxy
+	 164Zd9i193avNZ1IsrsL1Vbo8QrNYKfktbGsQjg7ym1U193nMYcqeGo7U69xU3dLXC
+	 Oatzf5Oq8aqMAzWOR0rnvLY6E63LmKMrPj7oSi0EdjRzJt3h+Kd2dIIdUAfH0IqvwJ
+	 tXYi7emc/bZwNzvSN1hU2JXU=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BAD0840E01A8;
+	Tue, 30 Jul 2024 13:16:16 +0000 (UTC)
+Date: Tue, 30 Jul 2024 15:16:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: shiju.jose@huawei.com
+Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, tony.luck@intel.com,
+	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
+	dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
+	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
+	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
+	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com, linuxarm@huawei.com
+Subject: Re: [PATCH v10 01/11] EDAC: Add generic EDAC RAS control feature
+ driver
+Message-ID: <20240730131611.GAZqjnm9D4ZJoGBIuZ@fat_crate.local>
+References: <20240726160556.2079-1-shiju.jose@huawei.com>
+ <20240726160556.2079-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
+In-Reply-To: <20240726160556.2079-2-shiju.jose@huawei.com>
 
-On Tue, Jul 30, 2024 at 09:12:55AM +0800, Huang, Ying wrote:
-> Gregory Price <gourry@gourry.net> writes:
+On Fri, Jul 26, 2024 at 05:05:45PM +0100, shiju.jose@huawei.com wrote:
+> From: Shiju Jose <shiju.jose@huawei.com>
 > 
-> > On Mon, Jul 29, 2024 at 09:02:33AM +0800, Huang, Ying wrote:
-> >> Gregory Price <gourry@gourry.net> writes:
-> >> 
-> >> > In the event that hmat data is not available for the DRAM tier,
-> >> > or if it is invalid (bandwidth or latency is 0), we can still register
-> >> > a callback to calculate the abstract distance for non-cpu nodes
-> >> > and simply assign it a different tier manually.
-> >> >
-> >> > In the case where DRAM HMAT values are missing or not sane we
-> >> > manually assign adist=(MEMTIER_ADISTANCE_DRAM + MEMTIER_CHUNK_SIZE).
-> >> >
-> >> > If the HMAT data for the non-cpu tier is invalid (e.g. bw = 0), we
-> >> > cannot reasonable determine where to place the tier, so it will default
-> >> > to MEMTIER_ADISTANCE_DRAM (which is the existing behavior).
-> >> 
-> >> Why do we need this?  Do you have machines with broken HMAT table?  Can
-> >> you ask the vendor to fix the HMAT table?
-> >>
-> >
-> > It's a little unclear from the ACPI specification whether HMAT is
-> > technically optional or not (given that the kernel handles missing HMAT
-> > gracefully, it certainly seems optional). In one scenario I have seen
-> > incorrect data, and in another scenario I have seen the HMAT omitted
-> > entirely. In another scenario I have seen the HMAT-SLLBI omitted while
-> > the CDAT is present.
+> Add generic EDAC driver supports registering RAS features supported
+> in the system. The driver exposes feature's control attributes to the
+> userspace in /sys/bus/edac/devices/<dev-name>/<ras-feature>/
 > 
-> IIUC, HMAT is optional.  Is it possible for you to ask the system vendor
-> to fix the broken HMAT table.
+> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+> ---
+>  drivers/edac/Makefile            |   1 +
+>  drivers/edac/edac_ras_feature.c  | 181 +++++++++++++++++++++++++++++++
+>  include/linux/edac_ras_feature.h |  66 +++++++++++
+>  3 files changed, 248 insertions(+)
+>  create mode 100755 drivers/edac/edac_ras_feature.c
+>  create mode 100755 include/linux/edac_ras_feature.h
 > 
+> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+> index 9c09893695b7..c532b57a6d8a 100644
+> --- a/drivers/edac/Makefile
+> +++ b/drivers/edac/Makefile
+> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
+>  
+>  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
+>  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
+> +edac_core-y	+= edac_ras_feature.o
 
-In this case we are (BW=0), but in the other cases, there is technically
-nothing broken.  That's my concern.
+EDAC and RAS and feature?!
 
-> > In all scenarios the result is the same: all nodes in the same tier.
-> 
-> I don't think so, in drivers/dax/kmem.c, we will put memory devices
-> onlined by kmem.c in another tier by default.
-> 
+Oh boy.
 
-This presumes driver configured devices, which is not always the case.
+EDAC == RAS.
 
-kmem.c will set MEMTIER_DEFAULT_DAX_ADISTANCE
+"feature" is silly.
 
-but if BIOS/EFI has set up the node instead, you get the default of
-MEMTIER_ADISTANCE_DRAM if HMAT is not present or otherwise not sane.
+Looking at the code below, you're registering an EDAC device.
+- edac_ras_dev_register().
 
-Not everyone is going to have the ability to get a platform vendor to
-fix a BIOS bug, and I've seen this in production.
+So why isn't this thing in edac_device.c?
 
-> > The HMAT is explicitly described as "A hint" in the ACPI spec.
-> >
-> > ACPI 5.2.28.1 HMAT Overview
-> >
-> > "The software is expected to use this information as a hint for
-> > optimization, or when the system has heterogeneous memory"
-> >
-> > If something is "a hint", then it should not be used prescriptively.
-> >
-> > Right now HMAT appears to be used prescriptively, this despite the fact
-> > that there was a clear intent to separate CPU-nodes and non-CPU-nodes in
-> > the memory-tier code. So this patch simply realizes this intent when the
-> > hints are not very reasonable.
-> 
-> If HMAT isn't available, it's hard to put memory devices to
-> appropriate memory tiers without other information.
+> diff --git a/include/linux/edac_ras_feature.h b/include/linux/edac_ras_feature.h
+> new file mode 100755
+> index 000000000000..8f0e0c47a617
+> --- /dev/null
+> +++ b/include/linux/edac_ras_feature.h
+> @@ -0,0 +1,66 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * EDAC RAS control features.
+> + *
+> + * Copyright (c) 2024 HiSilicon Limited.
+> + */
+> +
+> +#ifndef __EDAC_RAS_FEAT_H
+> +#define __EDAC_RAS_FEAT_H
+> +
+> +#include <linux/types.h>
+> +#include <linux/edac.h>
+> +
+> +#define EDAC_RAS_NAME_LEN	128
+> +
+> +enum edac_ras_feat {
+> +	RAS_FEAT_SCRUB,
+> +	RAS_FEAT_ECS,
+> +	RAS_FEAT_MAX
+> +};
+> +
+> +struct edac_ecs_ex_info {
+> +	u16 num_media_frus;
+> +};
+> +
+> +/*
+> + * EDAC RAS feature information structure
+> + */
+> +struct edac_scrub_data {
+> +	const struct edac_scrub_ops *ops;
+> +	void *private;
+> +};
+> +
+> +struct edac_ecs_data {
+> +	const struct edac_ecs_ops *ops;
+> +	void *private;
+> +};
 
-Not having a CPU is "other information".  What tier a device belongs to
-is really arbitrary, "appropriate" is at best a codified opinion.
+So each "feature" would require a separate struct type?
 
-> In commit
-> 992bf77591cb ("mm/demotion: add support for explicit memory tiers"),
-> Aneesh pointed out that it doesn't work for his system to put
-> non-CPU-nodes in lower tier.
-> 
+Why don't you define a *single* struct which accomodates any RAS
+functionality?
 
-This seems like a bug / something else incorrect.  I will investigate.
+Thx.
 
-> Even if we want to use other information to put memory devices to memory
-> tiers, we can register another adist calculation callback instead of
-> reusing hmat callback.
-> 
+-- 
+Regards/Gruss,
+    Boris.
 
-I suppose during init, we could register a default adist callback with
-CPU/non-CPU checks if HMAT is not sane. I can look at that.
-
-It might also be worth having some kind of modal mechanism, like:
-
-echo "auto" > /sys/.../memory_tiering/mode     # Auto select mode
-echo "hmat" > /sys/.../memory_tiering/mode     # Use HMAT Info
-echo "simple" > /sys/.../memory_tiering/mode   # CPU vs non-CPU Node
-echo "topology" > /sys/.../memory_tiering/mode # More complex
-
-To abstract away the hardware complexities as best as possible.
-
-But the first step here would be creating two modes.  HMAT-is-sane and
-CPU/Non-CPU seems reasonable to me but open to opinions.
-
-~Gregory
+https://people.kernel.org/tglx/notes-about-netiquette
 
