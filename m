@@ -1,152 +1,178 @@
-Return-Path: <linux-acpi+bounces-7128-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7129-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C09D941BA0
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 18:57:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08170941BF7
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 19:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 465EBB26BEE
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 16:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B19E3283B08
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 17:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071A11898ED;
-	Tue, 30 Jul 2024 16:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="jjKXsW7s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645AB189913;
+	Tue, 30 Jul 2024 17:01:29 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401B31898E0
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 16:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4087C156F30;
+	Tue, 30 Jul 2024 17:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722358372; cv=none; b=l8fzgNvBYKNKW3+1jkcCzdzw5upvZU6zZ5jNKwtAUNgU5TABmTAptNn2mwIy7uRVni3g83SEr3ok6iZaK4vdFvqZK5n50oX0Rm6R9R8EifY4LnmgrxcSnNx0IHLgBfTT0lrhbZhWFFfiBwGErKMnhH+ScDu4d5ycvxVK0YAsPfA=
+	t=1722358889; cv=none; b=j/w0ZqSILbYMftvqHH5YqxEdq0KKflG+w5PIR1LkcP1AcuJwARNL8+OMWOiOSPIgSbo0fTb2PEt0B4hXN+WvKKZGzDCkACxgpV/yErVcAcXLMetirh8xTAU2xL3xgi0Tcw3vcNCHXeCKEWKBk987be/aCfY4k89Mr6HBe/BsHI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722358372; c=relaxed/simple;
-	bh=TehCO6G3NPKwIsnaiRX5ZLITMc67uRfDAWuQytzPkGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W0UpOf+M1uERjim0nwkTq4S+89IVsEEokFj02NMF0RtGxCnN/ihuGls5CvDBVpefC2txIkO9yeI+d/mWFjPHeyF1tzOXdhlypECj7Hir5FEgTNactsLmTf7Q8HXyiFexOoCymU1CarUVVwWxau+kyyI/iZmJtzp1VQWBaIZh0uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=jjKXsW7s; arc=none smtp.client-ip=209.85.222.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-8225a1f4d5fso1145740241.0
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 09:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1722358370; x=1722963170; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7KQVeJhA8Nc1kr8jYgp61vZfNk5AG6Jp03s6AWyvfdM=;
-        b=jjKXsW7sXtoDmwGhf1Qnci431qaUuQEAsXwBMqHqupN01FAY/321TFfEdqu/FgVZ8L
-         rEhXvvBlwWnOqG6mx/kZIdQSHetHHY67XNBF7Tf288HeYrxpUtBWn8R+MsGG+EXIahRT
-         dLcEYU95DZDvTkhxrNBY4zmkdifJvn7oXrx4a/1pCvnb8r3eFUI94/MCOn8SFNr/b/zB
-         JnBSYHFoRtMAHJEBJ3HjR2OEA+OoyEnOERUmfltT1nB1NlMr0sC4d5j+JqUVEUcuQbqg
-         a0Uxewp6TNDuRajr75sAHHYTmOC9MGzCPWTQgnfYcTP45spfbEfkk6Do1qu9jdyoRy7f
-         aWxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722358370; x=1722963170;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7KQVeJhA8Nc1kr8jYgp61vZfNk5AG6Jp03s6AWyvfdM=;
-        b=HhaRX/+YWNj1KylUxxXlGzbT1ldSkYQJgx4iDBBmVlDDn1yZ7oHzlSjhLgeemHwWOl
-         n4R9bjECj9s3+CXDBtPsxRZbtzGpYqvGC2RRTZZYO3q7ZpDILxrYVcFktPsv7Ejyr4ol
-         yby8sBMosaX+TVMp1VIVGgsPul0BRWBa2nQi0hBMN97qPQR8aL/BUQf0fs3TngCUBnqt
-         5S6JK9qZohBzo50B/h9oc2zh0TwemXnqvjEJNSuBGeaVchhMtfuj2up+eNfX2UiSbKoa
-         xRqyr+HQkymNxYlHHbAwdGExyUJiLxMPNr+4OfjbpxTS8IO6yLb0AklMldXf7h5LsqHr
-         kI0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX+kg/f4UxYqOurVqYvzzXlnTZwD2jsfmViypdvbSh7G1j0SxZqDxzb3qbMsAjJKARnMmgmYP0EeExdh0frQpvllDcRkKbzz//3qg==
-X-Gm-Message-State: AOJu0YxCuz/jtAMsG2yzuKB39cRWQegCDIGk3NTQzC5jVtNee765u3hw
-	2W46zGoKiQmH6tN9e46qINZztwdeZ45C6YYGInJjJ07tBplzLV97fjWeFxfcDlU=
-X-Google-Smtp-Source: AGHT+IG3kXzdFLdaIqxcSYNO6QXWKyhicCB56NAmLiiFCX5C4mUyPUoLIOyykWtzvpmjpM43ScoJaw==
-X-Received: by 2002:a05:6102:548b:b0:493:bbd7:3ec0 with SMTP id ada2fe7eead31-493fad0d470mr9105172137.23.1722358370045;
-        Tue, 30 Jul 2024 09:52:50 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73b8837sm657515485a.48.2024.07.30.09.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 09:52:49 -0700 (PDT)
-Date: Tue, 30 Jul 2024 02:12:27 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, dave.jiang@intel.com,
-	Jonathan.Cameron@huawei.com, horenchuang@bytedance.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	dan.j.williams@intel.com, lenb@kernel.org,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
- calculation callback
-Message-ID: <ZqiES1T6PTQHD2Bl@PC2K9PVX.TheFacebook.com>
-References: <20240726215548.10653-1-gourry@gourry.net>
- <87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
- <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com>
+	s=arc-20240116; t=1722358889; c=relaxed/simple;
+	bh=Fl4YpwZG65rsVJag5s7RbOquj1urRIGQ0o3YX2Yzlp0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SRRx6MwXoBVODab8j4xWnCb6BvSUegp2YI+FYZLfM22H5u2hAxbgLMu/k4Rbduacj0M5ImKFKhT6+wL+iAOAr8Gbn2H3cI6Zg2UzXJqnk9nSzATMhLF5Dqu9nhmpGiWVYvV1vQJGxzjG3nu1zdklMkXkigt2BmkN6ROD3i41V5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WYLz82CnZz6K8qR;
+	Wed, 31 Jul 2024 00:58:44 +0800 (CST)
+Received: from lhrpeml100003.china.huawei.com (unknown [7.191.160.210])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8C0C8140A70;
+	Wed, 31 Jul 2024 01:01:17 +0800 (CST)
+Received: from lhrpeml500006.china.huawei.com (7.191.161.198) by
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 30 Jul 2024 18:01:17 +0100
+Received: from lhrpeml500006.china.huawei.com ([7.191.161.198]) by
+ lhrpeml500006.china.huawei.com ([7.191.161.198]) with mapi id 15.01.2507.039;
+ Tue, 30 Jul 2024 18:01:17 +0100
+From: Shiju Jose <shiju.jose@huawei.com>
+To: Borislav Petkov <bp@alien8.de>
+CC: "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "tony.luck@intel.com" <tony.luck@intel.com>,
+	"rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"mchehab@kernel.org" <mchehab@kernel.org>, "dan.j.williams@intel.com"
+	<dan.j.williams@intel.com>, "dave@stgolabs.net" <dave@stgolabs.net>,
+	"Jonathan Cameron" <jonathan.cameron@huawei.com>, "dave.jiang@intel.com"
+	<dave.jiang@intel.com>, "alison.schofield@intel.com"
+	<alison.schofield@intel.com>, "vishal.l.verma@intel.com"
+	<vishal.l.verma@intel.com>, "ira.weiny@intel.com" <ira.weiny@intel.com>,
+	"david@redhat.com" <david@redhat.com>, "Vilas.Sridharan@amd.com"
+	<Vilas.Sridharan@amd.com>, "leo.duran@amd.com" <leo.duran@amd.com>,
+	"Yazen.Ghannam@amd.com" <Yazen.Ghannam@amd.com>, "rientjes@google.com"
+	<rientjes@google.com>, "jiaqiyan@google.com" <jiaqiyan@google.com>,
+	"Jon.Grimm@amd.com" <Jon.Grimm@amd.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "naoya.horiguchi@nec.com"
+	<naoya.horiguchi@nec.com>, "james.morse@arm.com" <james.morse@arm.com>,
+	"jthoughton@google.com" <jthoughton@google.com>, "somasundaram.a@hpe.com"
+	<somasundaram.a@hpe.com>, "erdemaktas@google.com" <erdemaktas@google.com>,
+	"pgonda@google.com" <pgonda@google.com>, "duenwen@google.com"
+	<duenwen@google.com>, "mike.malvestuto@intel.com"
+	<mike.malvestuto@intel.com>, "gthelen@google.com" <gthelen@google.com>,
+	"wschwartz@amperecomputing.com" <wschwartz@amperecomputing.com>,
+	"dferguson@amperecomputing.com" <dferguson@amperecomputing.com>,
+	"wbs@os.amperecomputing.com" <wbs@os.amperecomputing.com>,
+	"nifan.cxl@gmail.com" <nifan.cxl@gmail.com>, tanxiaofei
+	<tanxiaofei@huawei.com>, "Zengtao (B)" <prime.zeng@hisilicon.com>, "Roberto
+ Sassu" <roberto.sassu@huawei.com>, "kangkang.shen@futurewei.com"
+	<kangkang.shen@futurewei.com>, wanghuiqiang <wanghuiqiang@huawei.com>,
+	Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH v10 01/11] EDAC: Add generic EDAC RAS control feature
+ driver
+Thread-Topic: [PATCH v10 01/11] EDAC: Add generic EDAC RAS control feature
+ driver
+Thread-Index: AQHa33XRsQYYvx89v0isWis2IAG8f7IPNZuAgABNybA=
+Date: Tue, 30 Jul 2024 17:01:17 +0000
+Message-ID: <f83a17db2c054483a450af73f7b9966b@huawei.com>
+References: <20240726160556.2079-1-shiju.jose@huawei.com>
+	<20240726160556.2079-2-shiju.jose@huawei.com>
+ <20240730131611.GAZqjnm9D4ZJoGBIuZ@fat_crate.local>
+In-Reply-To: <20240730131611.GAZqjnm9D4ZJoGBIuZ@fat_crate.local>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com>
 
-On Tue, Jul 30, 2024 at 01:19:53AM -0400, Gregory Price wrote:
-> On Tue, Jul 30, 2024 at 09:12:55AM +0800, Huang, Ying wrote:
-> > > Right now HMAT appears to be used prescriptively, this despite the fact
-> > > that there was a clear intent to separate CPU-nodes and non-CPU-nodes in
-> > > the memory-tier code. So this patch simply realizes this intent when the
-> > > hints are not very reasonable.
-> > 
-> > If HMAT isn't available, it's hard to put memory devices to
-> > appropriate memory tiers without other information.  In commit
-> > 992bf77591cb ("mm/demotion: add support for explicit memory tiers"),
-> > Aneesh pointed out that it doesn't work for his system to put
-> > non-CPU-nodes in lower tier.
-> > 
-> 
-> Per Aneesh in 992bf77591cb - The code explicitly states the intent is
-> to put non-CPU-nodes in a lower tier by default.
-> 
-> 
->     The current implementation puts all nodes with CPU into the highest
->     tier, and builds the tier hierarchy by establishing the per-node
->     demotion targets based on the distances between nodes.
-> 
-> This is accurate for the current code
-> 
-> 
->     The current tier initialization code always initializes each
->     memory-only NUMA node into a lower tier.
-> 
-> This is *broken* for the currently upstream code.
-> 
-> This appears to be the result of the hmat adistance callback introduction
-> (though it may have been broken before that).
-> 
-> ~Gregory
-
-Digging into the history further for the sake of completeness
-
-6c542ab ("mm/demotion: build demotion targets based on ...")
-
-    mm/demotion: build demotion targets based on explicit memory tiers
-
-    This patch switch the demotion target building logic to use memory
-    tiers instead of NUMA distance.  All N_MEMORY NUMA nodes will be placed
-    in the default memory tier and additional memory tiers will be added by
-    drivers like dax kmem.
-
-The decision made in this patch breaks memory-tiers.c for all BIOS
-configured CXL devices that generate a DRAM node during early boot,
-but for which HMAT is absent or otherwise broken - the new HMAT code
-addresses the situation for when HMAT is present.
-
-Hardware supporting this style of configuration has been around for at
-least a few years now. I think we should at the very least consider adding
-an option to restore this (!N_CPU)=Lower Tier behavior - if not
-defaulting to the behavior when HMAT data is not present.
-
-~Gregory
+Pi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQm9yaXNsYXYgUGV0a292IDxicEBh
+bGllbjguZGU+DQo+U2VudDogMzAgSnVseSAyMDI0IDE0OjE2DQo+VG86IFNoaWp1IEpvc2UgPHNo
+aWp1Lmpvc2VAaHVhd2VpLmNvbT4NCj5DYzogbGludXgtZWRhY0B2Z2VyLmtlcm5lbC5vcmc7IGxp
+bnV4LWN4bEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LQ0KPmFjcGlAdmdlci5rZXJuZWwub3JnOyBs
+aW51eC1tbUBrdmFjay5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+dG9ueS5s
+dWNrQGludGVsLmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7IGxlbmJAa2VybmVsLm9yZzsNCj5tY2hl
+aGFiQGtlcm5lbC5vcmc7IGRhbi5qLndpbGxpYW1zQGludGVsLmNvbTsgZGF2ZUBzdGdvbGFicy5u
+ZXQ7IEpvbmF0aGFuDQo+Q2FtZXJvbiA8am9uYXRoYW4uY2FtZXJvbkBodWF3ZWkuY29tPjsgZGF2
+ZS5qaWFuZ0BpbnRlbC5jb207DQo+YWxpc29uLnNjaG9maWVsZEBpbnRlbC5jb207IHZpc2hhbC5s
+LnZlcm1hQGludGVsLmNvbTsgaXJhLndlaW55QGludGVsLmNvbTsNCj5kYXZpZEByZWRoYXQuY29t
+OyBWaWxhcy5TcmlkaGFyYW5AYW1kLmNvbTsgbGVvLmR1cmFuQGFtZC5jb207DQo+WWF6ZW4uR2hh
+bm5hbUBhbWQuY29tOyByaWVudGplc0Bnb29nbGUuY29tOyBqaWFxaXlhbkBnb29nbGUuY29tOw0K
+Pkpvbi5HcmltbUBhbWQuY29tOyBkYXZlLmhhbnNlbkBsaW51eC5pbnRlbC5jb207DQo+bmFveWEu
+aG9yaWd1Y2hpQG5lYy5jb207IGphbWVzLm1vcnNlQGFybS5jb207IGp0aG91Z2h0b25AZ29vZ2xl
+LmNvbTsNCj5zb21hc3VuZGFyYW0uYUBocGUuY29tOyBlcmRlbWFrdGFzQGdvb2dsZS5jb207IHBn
+b25kYUBnb29nbGUuY29tOw0KPmR1ZW53ZW5AZ29vZ2xlLmNvbTsgbWlrZS5tYWx2ZXN0dXRvQGlu
+dGVsLmNvbTsgZ3RoZWxlbkBnb29nbGUuY29tOw0KPndzY2h3YXJ0ekBhbXBlcmVjb21wdXRpbmcu
+Y29tOyBkZmVyZ3Vzb25AYW1wZXJlY29tcHV0aW5nLmNvbTsNCj53YnNAb3MuYW1wZXJlY29tcHV0
+aW5nLmNvbTsgbmlmYW4uY3hsQGdtYWlsLmNvbTsgdGFueGlhb2ZlaQ0KPjx0YW54aWFvZmVpQGh1
+YXdlaS5jb20+OyBaZW5ndGFvIChCKSA8cHJpbWUuemVuZ0BoaXNpbGljb24uY29tPjsgUm9iZXJ0
+bw0KPlNhc3N1IDxyb2JlcnRvLnNhc3N1QGh1YXdlaS5jb20+OyBrYW5na2FuZy5zaGVuQGZ1dHVy
+ZXdlaS5jb207DQo+d2FuZ2h1aXFpYW5nIDx3YW5naHVpcWlhbmdAaHVhd2VpLmNvbT47IExpbnV4
+YXJtDQo+PGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2MTAgMDEv
+MTFdIEVEQUM6IEFkZCBnZW5lcmljIEVEQUMgUkFTIGNvbnRyb2wgZmVhdHVyZQ0KPmRyaXZlcg0K
+Pg0KPk9uIEZyaSwgSnVsIDI2LCAyMDI0IGF0IDA1OjA1OjQ1UE0gKzAxMDAsIHNoaWp1Lmpvc2VA
+aHVhd2VpLmNvbSB3cm90ZToNCj4+IEZyb206IFNoaWp1IEpvc2UgPHNoaWp1Lmpvc2VAaHVhd2Vp
+LmNvbT4NCj4+DQo+PiBBZGQgZ2VuZXJpYyBFREFDIGRyaXZlciBzdXBwb3J0cyByZWdpc3Rlcmlu
+ZyBSQVMgZmVhdHVyZXMgc3VwcG9ydGVkIGluDQo+PiB0aGUgc3lzdGVtLiBUaGUgZHJpdmVyIGV4
+cG9zZXMgZmVhdHVyZSdzIGNvbnRyb2wgYXR0cmlidXRlcyB0byB0aGUNCj4+IHVzZXJzcGFjZSBp
+biAvc3lzL2J1cy9lZGFjL2RldmljZXMvPGRldi1uYW1lPi88cmFzLWZlYXR1cmU+Lw0KPj4NCj4+
+IENvLWRldmVsb3BlZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2FtZXJvbkBodWF3
+ZWkuY29tPg0KPj4gU2lnbmVkLW9mZi1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2Ft
+ZXJvbkBodWF3ZWkuY29tPg0KPj4gU2lnbmVkLW9mZi1ieTogU2hpanUgSm9zZSA8c2hpanUuam9z
+ZUBodWF3ZWkuY29tPg0KPj4gLS0tDQo+PiAgZHJpdmVycy9lZGFjL01ha2VmaWxlICAgICAgICAg
+ICAgfCAgIDEgKw0KPj4gIGRyaXZlcnMvZWRhYy9lZGFjX3Jhc19mZWF0dXJlLmMgIHwgMTgxDQo+
+PiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrICBpbmNsdWRlL2xpbnV4L2VkYWNfcmFz
+X2ZlYXR1cmUuaCB8DQo+PiA2NiArKysrKysrKysrKw0KPj4gIDMgZmlsZXMgY2hhbmdlZCwgMjQ4
+IGluc2VydGlvbnMoKykNCj4+ICBjcmVhdGUgbW9kZSAxMDA3NTUgZHJpdmVycy9lZGFjL2VkYWNf
+cmFzX2ZlYXR1cmUuYyAgY3JlYXRlIG1vZGUNCj4+IDEwMDc1NSBpbmNsdWRlL2xpbnV4L2VkYWNf
+cmFzX2ZlYXR1cmUuaA0KPj4NCj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2VkYWMvTWFrZWZpbGUg
+Yi9kcml2ZXJzL2VkYWMvTWFrZWZpbGUgaW5kZXgNCj4+IDljMDk4OTM2OTViNy4uYzUzMmI1N2E2
+ZDhhIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9lZGFjL01ha2VmaWxlDQo+PiArKysgYi9kcml2
+ZXJzL2VkYWMvTWFrZWZpbGUNCj4+IEBAIC0xMCw2ICsxMCw3IEBAIG9iai0kKENPTkZJR19FREFD
+KQkJCTo9IGVkYWNfY29yZS5vDQo+Pg0KPj4gIGVkYWNfY29yZS15CTo9IGVkYWNfbWMubyBlZGFj
+X2RldmljZS5vIGVkYWNfbWNfc3lzZnMubw0KPj4gIGVkYWNfY29yZS15CSs9IGVkYWNfbW9kdWxl
+Lm8gZWRhY19kZXZpY2Vfc3lzZnMubyB3cS5vDQo+PiArZWRhY19jb3JlLXkJKz0gZWRhY19yYXNf
+ZmVhdHVyZS5vDQo+DQo+RURBQyBhbmQgUkFTIGFuZCBmZWF0dXJlPyENCj4NCj5PaCBib3kuDQo+
+DQo+RURBQyA9PSBSQVMuDQo+DQo+ImZlYXR1cmUiIGlzIHNpbGx5Lg0KPg0KPkxvb2tpbmcgYXQg
+dGhlIGNvZGUgYmVsb3csIHlvdSdyZSByZWdpc3RlcmluZyBhbiBFREFDIGRldmljZS4NCj4tIGVk
+YWNfcmFzX2Rldl9yZWdpc3RlcigpLg0KPg0KPlNvIHdoeSBpc24ndCB0aGlzIHRoaW5nIGluIGVk
+YWNfZGV2aWNlLmM/DQpTdXJlLiBUaGVuIGNhbiBJIGFkZCBkZWZpbml0aW9ucyBpbiBlZGFjX3Jh
+c19mZWF0dXJlLmggdG8gL2xpbnV4L2VkYWMuaD8gICAgDQoNCj4NCj4+IGRpZmYgLS1naXQgYS9p
+bmNsdWRlL2xpbnV4L2VkYWNfcmFzX2ZlYXR1cmUuaA0KPj4gYi9pbmNsdWRlL2xpbnV4L2VkYWNf
+cmFzX2ZlYXR1cmUuaA0KPj4gbmV3IGZpbGUgbW9kZSAxMDA3NTUNCj4+IGluZGV4IDAwMDAwMDAw
+MDAwMC4uOGYwZTBjNDdhNjE3DQo+PiAtLS0gL2Rldi9udWxsDQo+PiArKysgYi9pbmNsdWRlL2xp
+bnV4L2VkYWNfcmFzX2ZlYXR1cmUuaA0KPj4gQEAgLTAsMCArMSw2NiBAQA0KPj4gKy8qIFNQRFgt
+TGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wICovDQo+PiArLyoNCj4+ICsgKiBFREFDIFJBUyBj
+b250cm9sIGZlYXR1cmVzLg0KPj4gKyAqDQo+PiArICogQ29weXJpZ2h0IChjKSAyMDI0IEhpU2ls
+aWNvbiBMaW1pdGVkLg0KPj4gKyAqLw0KPj4gKw0KPj4gKyNpZm5kZWYgX19FREFDX1JBU19GRUFU
+X0gNCj4+ICsjZGVmaW5lIF9fRURBQ19SQVNfRkVBVF9IDQo+PiArDQo+PiArI2luY2x1ZGUgPGxp
+bnV4L3R5cGVzLmg+DQo+PiArI2luY2x1ZGUgPGxpbnV4L2VkYWMuaD4NCj4+ICsNCj4+ICsjZGVm
+aW5lIEVEQUNfUkFTX05BTUVfTEVOCTEyOA0KPj4gKw0KPj4gK2VudW0gZWRhY19yYXNfZmVhdCB7
+DQo+PiArCVJBU19GRUFUX1NDUlVCLA0KPj4gKwlSQVNfRkVBVF9FQ1MsDQo+PiArCVJBU19GRUFU
+X01BWA0KPj4gK307DQo+PiArDQo+PiArc3RydWN0IGVkYWNfZWNzX2V4X2luZm8gew0KPj4gKwl1
+MTYgbnVtX21lZGlhX2ZydXM7DQo+PiArfTsNCj4+ICsNCj4+ICsvKg0KPj4gKyAqIEVEQUMgUkFT
+IGZlYXR1cmUgaW5mb3JtYXRpb24gc3RydWN0dXJlICAqLyBzdHJ1Y3QgZWRhY19zY3J1Yl9kYXRh
+DQo+PiArew0KPj4gKwljb25zdCBzdHJ1Y3QgZWRhY19zY3J1Yl9vcHMgKm9wczsNCj4+ICsJdm9p
+ZCAqcHJpdmF0ZTsNCj4+ICt9Ow0KPj4gKw0KPj4gK3N0cnVjdCBlZGFjX2Vjc19kYXRhIHsNCj4+
+ICsJY29uc3Qgc3RydWN0IGVkYWNfZWNzX29wcyAqb3BzOw0KPj4gKwl2b2lkICpwcml2YXRlOw0K
+Pj4gK307DQo+DQo+U28gZWFjaCAiZmVhdHVyZSIgd291bGQgcmVxdWlyZSBhIHNlcGFyYXRlIHN0
+cnVjdCB0eXBlPw0KPg0KPldoeSBkb24ndCB5b3UgZGVmaW5lIGEgKnNpbmdsZSogc3RydWN0IHdo
+aWNoIGFjY29tb2RhdGVzIGFueSBSQVMNCj5mdW5jdGlvbmFsaXR5Pw0KRG9uZS4NCg0KPg0KPlRo
+eC4NCj4NCj4tLQ0KPlJlZ2FyZHMvR3J1c3MsDQo+ICAgIEJvcmlzLg0KPg0KPmh0dHBzOi8vcGVv
+cGxlLmtlcm5lbC5vcmcvdGdseC9ub3Rlcy1hYm91dC1uZXRpcXVldHRlDQo+DQoNClRoYW5rcywN
+ClNoaWp1DQo=
 
