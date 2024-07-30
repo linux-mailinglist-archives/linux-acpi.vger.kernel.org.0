@@ -1,55 +1,54 @@
-Return-Path: <linux-acpi+bounces-7130-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7131-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EEF941F5D
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 20:17:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07673941F62
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 20:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 443A31C228B5
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 18:17:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B4A1F248B0
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 18:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327B718B468;
-	Tue, 30 Jul 2024 18:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F1118A6AB;
+	Tue, 30 Jul 2024 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="vP3XFBnN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="BfvPq/d6"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFF8187FF9;
-	Tue, 30 Jul 2024 18:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E29A187FF9;
+	Tue, 30 Jul 2024 18:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722363439; cv=none; b=K7128NheArvC4nwZgw+qDkddP2VkIDEj28Mg3RaG8UnNqsZuPBtI9aNs4xRXEeSX88bzlcxF8+5xk1LpgCMeYXCQMHXdRhvdHe91/rEtS2Kbjonad5cq6NLBCj5B8vfUXByWg0EFNVonl4GCGtxGieOVSK+Hz/ZCftU/5wiH4H0=
+	t=1722363533; cv=none; b=DM7UL1Uk9ohofYhMclvveZQoZaoeNvs2Zhrgfi+V/bTGnnAQ978eAOv1aXh7p3clQNczZa0DUpQH0DcLY7tg/SvZse9/tKSKAEniOw1lsyh0mJgLh5PbYg75dDiuT54AFdEvpsYw2qmpDvsJTWU5ceEhqF4FHR7BlTO0q1a277o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722363439; c=relaxed/simple;
-	bh=c9eTD1l1BXML5l9sgGPaC0hgzN5RssSinVU7S9llI8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LD/LpBaaTLbjT73k8sTUqyyIr+vRkDcYe1qKG93P4XrTt+SY8A0p/ZQ43zHUBf7knLXZRRYh+qu3FyQWN4brhFUqni4ltUk17joZasz3Dlk5GB27dFKS3oksHM1yC++dLuCx3EaxXLm5c0OMAL4BRZUunO2kuIeQRxT+X7uguec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=vP3XFBnN reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+	s=arc-20240116; t=1722363533; c=relaxed/simple;
+	bh=HlNdxc0Cjz172GnJ9aaT2a3Nq9FEmkCQ2qJkCCm7QdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kNnFZno9MUlATTDpt+taUj4XAre7kCUyPNSLHcFhMYOf/3UmJbaFXhgVpKaVpK79ZRm0BtEiNELi6vZ7PwY765v9jtTTzn8ShYNmIQnBcoboi0p6Wc4zeooNoytw9xvw7OastuMCRnvk7GB5bPPNgcCJ9KML0YQ5Jegt/MCGaYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=BfvPq/d6 reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
- id a344f6141c964dfd; Tue, 30 Jul 2024 20:17:08 +0200
+ id 8afbd045dad971ee; Tue, 30 Jul 2024 20:18:48 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C1E40956ED0;
-	Tue, 30 Jul 2024 20:17:07 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 77AD3956ED1;
+	Tue, 30 Jul 2024 20:18:47 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1722363428;
-	bh=c9eTD1l1BXML5l9sgGPaC0hgzN5RssSinVU7S9llI8s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=vP3XFBnNO0NyIWlkfESY7GPxhQErGbTfo6ezXEi5HEykC6ItuxJT/wXBooX/SV600
-	 vWfhYvTuESzPbgNda4733Z/W2GdV+hGwI13sBGqBUF+rhKqOgMrj0AFBkxxu8/m3ZR
-	 ATuR7As/bibxCkOyuhdliFMgIQhfvInTbbHjXJs5sD0lahkHh+q3fqLtOVpnFYHOpW
-	 NpzYLPnGOFY/dipO21FqSAbZpE3w2nucZ0MMy2f3o0VEuasFjVB/BxPB4r2XbbvVVZ
-	 QbCsOFx/5h8h9UDEACB5e6uF7RAiNEs7b0Y++m+QtZ7xoCZ1wyBE3u8hbWQVD9a++f
-	 gEYgZqPetHyrA==
+	s=dkim; t=1722363528;
+	bh=HlNdxc0Cjz172GnJ9aaT2a3Nq9FEmkCQ2qJkCCm7QdE=;
+	h=From:To:Cc:Subject:Date;
+	b=BfvPq/d6KZX8aAGRquaukZgOjfH06Qpy5se8l7JbJbTftCb472hMpW1VogHjxXamx
+	 IzgglovUlf8HlaY/9A3kneS94lvXpGY0jafO1QWvnT4JCUm0aBUTqpjkhBh554F9mf
+	 KBWhkotHyld/Xy7tm/k83Ybu79rH9KNfis9TMNUp932cazJByD7qHraYDmIvZ5RiuE
+	 /JzD+GoG69uNN+IDTYlGWt98vPROUPFLIIU1HWlLX7VgUpIo+BNK0HqVnZ5chbktcJ
+	 DiWr7qssg9JwLSltlh4y053pUJvH+IlRDfZ0SOMaemGiOl9ICxt2/ztYE+DsWRaIRu
+	 nbTd61IMhne4g==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
@@ -57,12 +56,9 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
  Daniel Lezcano <daniel.lezcano@linaro.org>,
  Lukasz Luba <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>
 Subject:
- [PATCH v1 17/17] thermal: code: Pass trip descriptors to trip bind/unbind
- functions
-Date: Tue, 30 Jul 2024 20:16:48 +0200
-Message-ID: <3134863.CbtlEUcBR6@rjwysocki.net>
-In-Reply-To: <1922131.tdWV9SEqCh@rjwysocki.net>
-References: <1922131.tdWV9SEqCh@rjwysocki.net>
+ [PATCH v1 00/17] thermal: Rework binding cooling devices to trip points
+Date: Tue, 30 Jul 2024 20:18:46 +0200
+Message-ID: <5038376.0VBMTVartN@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -74,130 +70,61 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: spam:low
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeggdduvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuphgrmhfkphculdeftddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffueeitdfgvddtudegueejtdffteetgeefkeffvdeftddttdeuhfegfedvjefhnecukfhppeduleehrddufeeirdduledrleegnecuufhprghmkfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
- rhgtphhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
-X-DCC--Metrics: v370.home.net.pl 1024; Body=6 Fuz1=6 Fuz2=6
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeggdduvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffqoffgrffnpdggtffipffknecuuegrihhlohhuthemucduhedtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuphgrmhfkphculdeftddtmdenucfjughrpefhvfevufffkfgggfgtsehtufertddttdejnecuhfhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqnecuggftrfgrthhtvghrnhepffffffekgfehheffleetieevfeefvefhleetjedvvdeijeejledvieehueevueffnecukfhppeduleehrddufeeirdduledrleegnecuufhprghmkfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqedpnhgspghrtghpthhtohepiedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
+ phhtthhopegurghnihgvlhdrlhgviigtrghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopehruhhirdiihhgrnhhgsehinhhtvghlrdgtohhm
+X-DCC--Metrics: v370.home.net.pl 1024; Body=18 Fuz1=18 Fuz2=18
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Hi Everyone,
 
-The code is somewhat cleaner if struct thermal_trip_desc pointers are
-passed to thermal_bind_cdev_to_trip(), thermal_unbind_cdev_from_trip(),
-and print_bind_err_msg() instead of struct thermal_trip pointers, so
-modify it accordingly.
+The code for binding cooling devices to trip points (and unbinding them from
+trip point) is one of the murkiest pieces of the thermal subsystem.  It is
+convoluted, bloated with unnecessary code doing questionable things, and it
+works backwards.
 
-No intentional functional impact.
+The idea is to bind cooling devices to trip points in accordance with some
+information known to the thermal zone owner (thermal driver).  This information
+is not known to the thermal core when the thermal zone is registered, so the
+driver needs to be involved, but instead of just asking the driver whether
+or not the given cooling device should be bound to a given trip point, the
+thermal core expects the driver to carry out all of the binding process
+including calling functions specifically provided by the core for this
+purpose which is cumbersome and counter-intuitive.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/thermal/thermal_core.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+Because the driver has no information regarding the representation of the trip
+points at the core level, it is forced to walk them (and it has to avoid some
+locking traps while doing this), or it needs to make questionable assumptions
+regarding the ordering of the trips in the core.  There are drivers doing both
+these things.
 
-Index: linux-pm/drivers/thermal/thermal_core.c
-===================================================================
---- linux-pm.orig/drivers/thermal/thermal_core.c
-+++ linux-pm/drivers/thermal/thermal_core.c
-@@ -759,9 +759,9 @@ struct thermal_zone_device *thermal_zone
- /**
-  * thermal_bind_cdev_to_trip - bind a cooling device to a thermal zone
-  * @tz:		pointer to struct thermal_zone_device
-- * @trip:	trip point the cooling devices is associated with in this zone.
-+ * @td:		descriptor of the trip point to bind @cdev to
-  * @cdev:	pointer to struct thermal_cooling_device
-- * @c:		cooling specification for @trip and @cdev
-+ * @c:		cooling specification for the trip point and @cdev
-  *
-  * This interface function bind a thermal cooling device to the certain trip
-  * point of a thermal zone device.
-@@ -770,11 +770,10 @@ struct thermal_zone_device *thermal_zone
-  * Return: 0 on success, the proper error value otherwise.
-  */
- static int thermal_bind_cdev_to_trip(struct thermal_zone_device *tz,
--				     struct thermal_trip *trip,
-+				     struct thermal_trip_desc *td,
- 				     struct thermal_cooling_device *cdev,
- 				     struct cooling_spec *c)
- {
--	struct thermal_trip_desc *td = trip_to_trip_desc(trip);
- 	struct thermal_instance *dev, *instance;
- 	bool upper_no_limit;
- 	int result;
-@@ -805,7 +804,7 @@ static int thermal_bind_cdev_to_trip(str
- 
- 	dev->tz = tz;
- 	dev->cdev = cdev;
--	dev->trip = trip;
-+	dev->trip = &td->trip;
- 	dev->upper = c->upper;
- 	dev->upper_no_limit = upper_no_limit;
- 	dev->lower = c->lower;
-@@ -878,7 +877,7 @@ free_mem:
- /**
-  * thermal_unbind_cdev_from_trip - unbind a cooling device from a thermal zone.
-  * @tz:		pointer to a struct thermal_zone_device.
-- * @trip:	trip point the cooling devices is associated with in this zone.
-+ * @td:		descriptor of the trip point to unbind @cdev from
-  * @cdev:	pointer to a struct thermal_cooling_device.
-  *
-  * This interface function unbind a thermal cooling device from the certain
-@@ -886,10 +885,9 @@ free_mem:
-  * This function is usually called in the thermal zone device .unbind callback.
-  */
- static void thermal_unbind_cdev_from_trip(struct thermal_zone_device *tz,
--					  struct thermal_trip *trip,
-+					  struct thermal_trip_desc *td,
- 					  struct thermal_cooling_device *cdev)
- {
--	struct thermal_trip_desc *td = trip_to_trip_desc(trip);
- 	struct thermal_instance *pos, *next;
- 
- 	lockdep_assert_held(&tz->lock);
-@@ -945,11 +943,11 @@ static struct class *thermal_class;
- 
- static inline
- void print_bind_err_msg(struct thermal_zone_device *tz,
--			const struct thermal_trip *trip,
-+			const struct thermal_trip_desc *td,
- 			struct thermal_cooling_device *cdev, int ret)
- {
- 	dev_err(&tz->device, "binding cdev %s to trip %d failed: %d\n",
--		cdev->type, thermal_zone_trip_id(tz, trip), ret);
-+		cdev->type, thermal_zone_trip_id(tz, &td->trip), ret);
- }
- 
- static void thermal_zone_cdev_binding(struct thermal_zone_device *tz,
-@@ -963,7 +961,6 @@ static void thermal_zone_cdev_binding(st
- 	mutex_lock(&tz->lock);
- 
- 	for_each_trip_desc(tz, td) {
--		struct thermal_trip *trip = &td->trip;
- 		struct cooling_spec c = {
- 			.upper = THERMAL_NO_LIMIT,
- 			.lower = THERMAL_NO_LIMIT,
-@@ -971,12 +968,12 @@ static void thermal_zone_cdev_binding(st
- 		};
- 		int ret;
- 
--		if (!tz->ops.should_bind(tz, trip, cdev, &c))
-+		if (!tz->ops.should_bind(tz, &td->trip, cdev, &c))
- 			continue;
- 
--		ret = thermal_bind_cdev_to_trip(tz, trip, cdev, &c);
-+		ret = thermal_bind_cdev_to_trip(tz, td, cdev, &c);
- 		if (ret)
--			print_bind_err_msg(tz, trip, cdev, ret);
-+			print_bind_err_msg(tz, td, cdev, ret);
- 	}
- 
- 	mutex_unlock(&tz->lock);
-@@ -1287,7 +1284,7 @@ static void thermal_zone_cdev_unbinding(
- 	mutex_lock(&tz->lock);
- 
- 	for_each_trip_desc(tz, td)
--		thermal_unbind_cdev_from_trip(tz, &td->trip, cdev);
-+		thermal_unbind_cdev_from_trip(tz, td, cdev);
- 
- 	mutex_unlock(&tz->lock);
- }
+But there's more.  The size of the binding/unbinding code can be reduced by
+simply moving some parts of it around.  Some checks in it are overkill or
+redundant.  White space is used inconsistently in it.  Its locking can be
+made more straightforward.
+
+Moreover, overhead can be reduced, especially in governors, if the lists of
+thermal instances representing the bindings between cooling devices and trip
+points are moved from thermal zone objects to trip descriptors.
+
+The first 7 patches in the series deal with the minor issues listed above in
+preparation for a more substantial change which is the introduction of a new
+thermal operation, called .should_bind(), that will allow the core to do
+exactly what it needs: as the driver whether or not the given cooling device
+should be bound to a given trip, in patch [08/17].
+
+Patch [09/17] makes the ACPI thermal driver use .should_bind() instead of
+the .bind() and .unbind() operations which is a substantial simplification.
+
+Patch [10/17] unexports two core functions previously used by the ACPI driver
+that can be static now.
+
+Patches [11-14/17] modify the remaining drivers implementing .bind() and
+.undind() to use .should_bind() instead of them which results in significant
+simplifications of the code.
+
+The remaining 3 patches carry out cleanups that can be done after all of the
+previous changes, resulting if further code size reductions.
+
+Thanks!
 
 
 
