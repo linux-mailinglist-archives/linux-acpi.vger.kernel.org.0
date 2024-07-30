@@ -1,196 +1,127 @@
-Return-Path: <linux-acpi+bounces-7122-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7127-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019CB9412EA
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 15:17:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8E941676
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 18:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 230941C22A24
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 13:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E917283FF0
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 16:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC9819E825;
-	Tue, 30 Jul 2024 13:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA61BE862;
+	Tue, 30 Jul 2024 16:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SFbNY/iz"
+	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="nyuzWyqJ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47BB2CA7;
-	Tue, 30 Jul 2024 13:17:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909431BE84B
+	for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 16:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722345433; cv=none; b=RSsmBq/ZHeH2hyBEMCoYgIdJA0axbVNqsdIKOZHm2lhRvtlKmzfI3o2qYGNOLN0N5eCGFdnRbKowoGtX9YFRwlS4eDUx78eUHnPrZlsowVSVA9usrHZ5xnAnfgDpCkdMPjY1E1BQJzTrIIG+59hcL6/e4Ickuq48vj0xi/Az7PU=
+	t=1722355219; cv=none; b=fcydYytNY0U9kpc+XcQ7mdwDqsvuzfJ0Hr/B5pJ0lCBHd7Z3E6zJjbgG9PsPhPxaBV0YZu2Fdg/So31drNpfRuWylbNzthdW4obbqlIDkMydEhSTK3BV9EG+I4gO9jyzdSP2CXWmyssUz7CQWSS5dyAGo2+oN9yL9MBjC3k4BEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722345433; c=relaxed/simple;
-	bh=PpgPcz4mJgFasB7hcoUur2pfvf6LkgH1ozOGEkjpKPE=;
+	s=arc-20240116; t=1722355219; c=relaxed/simple;
+	bh=mCh601FrRtPxjpmD6wTsae7FGFqTSFvvavFvDhd9LnI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZTJ8upowNsTNRH2SBL1Gzu2FIqTnzU1D64Fr6CdGQuie+nOYP/dyEzntXSnSXYObf2z5Y3TViuFeG/W25NgrXqcPm464dkE1KtHyK86mXFIfDgDGKHMZV02FXfEECzQ+kVjEPbv4+dakagKFb8IDseqPGeMMzeJzwdS50MOaR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SFbNY/iz; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A4B1940E01CD;
-	Tue, 30 Jul 2024 13:17:05 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id t4KCJeA0thJX; Tue, 30 Jul 2024 13:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1722345421; bh=3mmWlxNZdjshKUX8r4jOpJ3VKzvjNoDxxlHvf6e8xD8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SFbNY/iz5BcDMeQbxp+X3vfPiEdb2t4PxqUSRoXozRWhAmaBtlRDGuE08MO8YNiHd
-	 0kWk3d4kQ/jr9kIeS6dQJXMe5sWFb8iuXKz0+Wj0F9/iv63K5PmspTFI8gzv32bKeX
-	 G4NZNegTN3fny0rb7f/4VXsAzxTCriaoLrIFj+97x0hkLjB/LYxiwju7zwiR6+Anp4
-	 3TZYTkAeB1pArVh3DaSjjIK+pUuiAsHAvA+7Br2lJT1DCdMOAyjKZnwIhx6DzxcPDQ
-	 rXUVdcyDcYBHJCuduN7ee6Q21ZTKrh+eODkc7zm60TqMNWa4ygLVjpLgCnxz+Cqo5o
-	 mlNHN1sQ6B7IvLFGQ3vEdwIdWROgKr/ojk87Vf7/PW9a3ScLuYhU+D6BadXeJr1RNx
-	 7//S/hoxIa9wg6ng3iAxCcdwF+Sep8dyJEEzietrnQgH1E8GlngfVhkbpwtkJYNpGO
-	 yaxScn/BQtyomvosHryIu6U0RFg9TtoCMyfcRal5cUIk72/6Y6xpHKne7Bq+kH3Xxy
-	 164Zd9i193avNZ1IsrsL1Vbo8QrNYKfktbGsQjg7ym1U193nMYcqeGo7U69xU3dLXC
-	 Oatzf5Oq8aqMAzWOR0rnvLY6E63LmKMrPj7oSi0EdjRzJt3h+Kd2dIIdUAfH0IqvwJ
-	 tXYi7emc/bZwNzvSN1hU2JXU=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BAD0840E01A8;
-	Tue, 30 Jul 2024 13:16:16 +0000 (UTC)
-Date: Tue, 30 Jul 2024 15:16:11 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tony.luck@intel.com,
-	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
-	dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com, linuxarm@huawei.com
-Subject: Re: [PATCH v10 01/11] EDAC: Add generic EDAC RAS control feature
- driver
-Message-ID: <20240730131611.GAZqjnm9D4ZJoGBIuZ@fat_crate.local>
-References: <20240726160556.2079-1-shiju.jose@huawei.com>
- <20240726160556.2079-2-shiju.jose@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=V/i6U5en8hcQVO7pjpbInxOhJy8rwyMmNyiJj/fpRF9ZqCY9lkco+yFHFeQNKvHe31hbd7gpW80iYevF8yNqwhCXpXALDAZzf1ZsB2D5p3h811yMsh8yY0pXB6jQxC0DfGIqxykBaTKhfPlsBKX12CHhPz7oLNQbkOX/JOLsB0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=nyuzWyqJ; arc=none smtp.client-ip=209.85.222.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-81ff6a80cbbso1316385241.1
+        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 09:00:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1722355216; x=1722960016; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ebSu3UElL8dKrK505UtfSRAh4jbtzC8DMHGUOIQGm/A=;
+        b=nyuzWyqJID1+9n4yHSdJ8yP0dcTZQrXCr+yT6oD2PBfMFklD2z9JCBubRwnGxCZC93
+         FlOqMi0PMh6oZvMH/40Ul7+kzE5yB0jws7Nuk1fySJEAwpzG5wmbIzM8DR+wU8edIGPJ
+         6c2fcej1jARgTQ0hcZI6H/Fil1nNsJlqN+lG2zeH065UtJ9WWA7FBaBJxV8iYIiAJ/cV
+         hZOnK3UmgKTF6Blban3ZvcWHcdWNMock4tNMzUMFlo7Dia0/D9BRDEZA5Uks4kIAhl5Z
+         eerUqmd5Twu2HVfNXVXDXRUmw+VjlXtooIYHzX1E8Cln7cXA7+XpAf2aoAhJ8/0AP8/Q
+         ActQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722355216; x=1722960016;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ebSu3UElL8dKrK505UtfSRAh4jbtzC8DMHGUOIQGm/A=;
+        b=hnu5a3xlxDMy4IBxyq10ICsDvwmZgTp7fYEzjqG31AMg+7dKLVdJMmraOp/TpBtb/n
+         YwX/AhmqUDTh1XyuYtUIPwSCwB0uyKB0yE+3dy4BeCQQMUKcQMm4RGJOhgejOVYdxUn9
+         QFcyxH55zKVHtGUWLoQD+HEzk3FE2GKJUz82ZCjD+yEjwnsg2zKZIP6bEjmRMlKLlnJs
+         wMfItkWNZMU1rF3n/npz8Gt+uEPDtrbulFxoA/DRubJydptLOlBRP16Y3paO59HjeBgJ
+         lXRxVGGsii3DbE/ejJ9QoMG3UoeWBUHxk1qY+GH8hl4+1PkXoys8qT6PBZx3BJBxtHwO
+         1e5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWaNSqrKBqUyOPyQ3ncRSyki7b+L/8iehqk20mTs1M0olKxF8nIfveDZV8OjcSdpxj9WPkiZhWBSKGxxOqbKI3cPWBAahCameEDxA==
+X-Gm-Message-State: AOJu0Ywu8/KO/4fCOjxKsMfM8W2wmX4HJ4i9u9diOZIZQFeUChsaQx1f
+	oLddbuk18r8QVHwtUvcqJ5N/17MTH9xPYL4YsQyyH9OUUq/eF3XNxCG7GwiVOp0=
+X-Google-Smtp-Source: AGHT+IG64oD/0BAxRTYSk9Um5ejrwHurtyJiWine+vs8I2db0quwR2iEnh/I3UfX946vZydcmQjuVg==
+X-Received: by 2002:a05:6102:3ec2:b0:493:b2b4:3708 with SMTP id ada2fe7eead31-493fad54e1fmr12048280137.27.1722355216237;
+        Tue, 30 Jul 2024 09:00:16 -0700 (PDT)
+Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73b2036sm653148085a.38.2024.07.30.09.00.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 09:00:15 -0700 (PDT)
+Date: Tue, 30 Jul 2024 01:19:53 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, dave.jiang@intel.com,
+	Jonathan.Cameron@huawei.com, horenchuang@bytedance.com,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	dan.j.williams@intel.com, lenb@kernel.org,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
+ calculation callback
+Message-ID: <Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com>
+References: <20240726215548.10653-1-gourry@gourry.net>
+ <87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
+ <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240726160556.2079-2-shiju.jose@huawei.com>
+In-Reply-To: <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
 
-On Fri, Jul 26, 2024 at 05:05:45PM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
+On Tue, Jul 30, 2024 at 09:12:55AM +0800, Huang, Ying wrote:
+> > Right now HMAT appears to be used prescriptively, this despite the fact
+> > that there was a clear intent to separate CPU-nodes and non-CPU-nodes in
+> > the memory-tier code. So this patch simply realizes this intent when the
+> > hints are not very reasonable.
 > 
-> Add generic EDAC driver supports registering RAS features supported
-> in the system. The driver exposes feature's control attributes to the
-> userspace in /sys/bus/edac/devices/<dev-name>/<ras-feature>/
+> If HMAT isn't available, it's hard to put memory devices to
+> appropriate memory tiers without other information.  In commit
+> 992bf77591cb ("mm/demotion: add support for explicit memory tiers"),
+> Aneesh pointed out that it doesn't work for his system to put
+> non-CPU-nodes in lower tier.
 > 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/edac/Makefile            |   1 +
->  drivers/edac/edac_ras_feature.c  | 181 +++++++++++++++++++++++++++++++
->  include/linux/edac_ras_feature.h |  66 +++++++++++
->  3 files changed, 248 insertions(+)
->  create mode 100755 drivers/edac/edac_ras_feature.c
->  create mode 100755 include/linux/edac_ras_feature.h
-> 
-> diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
-> index 9c09893695b7..c532b57a6d8a 100644
-> --- a/drivers/edac/Makefile
-> +++ b/drivers/edac/Makefile
-> @@ -10,6 +10,7 @@ obj-$(CONFIG_EDAC)			:= edac_core.o
->  
->  edac_core-y	:= edac_mc.o edac_device.o edac_mc_sysfs.o
->  edac_core-y	+= edac_module.o edac_device_sysfs.o wq.o
-> +edac_core-y	+= edac_ras_feature.o
 
-EDAC and RAS and feature?!
+Per Aneesh in 992bf77591cb - The code explicitly states the intent is
+to put non-CPU-nodes in a lower tier by default.
 
-Oh boy.
 
-EDAC == RAS.
+    The current implementation puts all nodes with CPU into the highest
+    tier, and builds the tier hierarchy by establishing the per-node
+    demotion targets based on the distances between nodes.
 
-"feature" is silly.
+This is accurate for the current code
 
-Looking at the code below, you're registering an EDAC device.
-- edac_ras_dev_register().
 
-So why isn't this thing in edac_device.c?
+    The current tier initialization code always initializes each
+    memory-only NUMA node into a lower tier.
 
-> diff --git a/include/linux/edac_ras_feature.h b/include/linux/edac_ras_feature.h
-> new file mode 100755
-> index 000000000000..8f0e0c47a617
-> --- /dev/null
-> +++ b/include/linux/edac_ras_feature.h
-> @@ -0,0 +1,66 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * EDAC RAS control features.
-> + *
-> + * Copyright (c) 2024 HiSilicon Limited.
-> + */
-> +
-> +#ifndef __EDAC_RAS_FEAT_H
-> +#define __EDAC_RAS_FEAT_H
-> +
-> +#include <linux/types.h>
-> +#include <linux/edac.h>
-> +
-> +#define EDAC_RAS_NAME_LEN	128
-> +
-> +enum edac_ras_feat {
-> +	RAS_FEAT_SCRUB,
-> +	RAS_FEAT_ECS,
-> +	RAS_FEAT_MAX
-> +};
-> +
-> +struct edac_ecs_ex_info {
-> +	u16 num_media_frus;
-> +};
-> +
-> +/*
-> + * EDAC RAS feature information structure
-> + */
-> +struct edac_scrub_data {
-> +	const struct edac_scrub_ops *ops;
-> +	void *private;
-> +};
-> +
-> +struct edac_ecs_data {
-> +	const struct edac_ecs_ops *ops;
-> +	void *private;
-> +};
+This is *broken* for the currently upstream code.
 
-So each "feature" would require a separate struct type?
+This appears to be the result of the hmat adistance callback introduction
+(though it may have been broken before that).
 
-Why don't you define a *single* struct which accomodates any RAS
-functionality?
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+~Gregory
 
