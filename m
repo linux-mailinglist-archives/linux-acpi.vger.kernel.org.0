@@ -1,127 +1,191 @@
-Return-Path: <linux-acpi+bounces-7127-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7124-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA8E941676
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 18:00:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4AD941552
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 17:19:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E917283FF0
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 16:00:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CFFF1C2323B
+	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 15:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA61BE862;
-	Tue, 30 Jul 2024 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD811A2C24;
+	Tue, 30 Jul 2024 15:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b="nyuzWyqJ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rNdixRy4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2041.outbound.protection.outlook.com [40.107.243.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909431BE84B
-	for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 16:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355219; cv=none; b=fcydYytNY0U9kpc+XcQ7mdwDqsvuzfJ0Hr/B5pJ0lCBHd7Z3E6zJjbgG9PsPhPxaBV0YZu2Fdg/So31drNpfRuWylbNzthdW4obbqlIDkMydEhSTK3BV9EG+I4gO9jyzdSP2CXWmyssUz7CQWSS5dyAGo2+oN9yL9MBjC3k4BEg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355219; c=relaxed/simple;
-	bh=mCh601FrRtPxjpmD6wTsae7FGFqTSFvvavFvDhd9LnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V/i6U5en8hcQVO7pjpbInxOhJy8rwyMmNyiJj/fpRF9ZqCY9lkco+yFHFeQNKvHe31hbd7gpW80iYevF8yNqwhCXpXALDAZzf1ZsB2D5p3h811yMsh8yY0pXB6jQxC0DfGIqxykBaTKhfPlsBKX12CHhPz7oLNQbkOX/JOLsB0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net; spf=pass smtp.mailfrom=gourry.net; dkim=pass (2048-bit key) header.d=gourry.net header.i=@gourry.net header.b=nyuzWyqJ; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gourry.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gourry.net
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-81ff6a80cbbso1316385241.1
-        for <linux-acpi@vger.kernel.org>; Tue, 30 Jul 2024 09:00:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1722355216; x=1722960016; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ebSu3UElL8dKrK505UtfSRAh4jbtzC8DMHGUOIQGm/A=;
-        b=nyuzWyqJID1+9n4yHSdJ8yP0dcTZQrXCr+yT6oD2PBfMFklD2z9JCBubRwnGxCZC93
-         FlOqMi0PMh6oZvMH/40Ul7+kzE5yB0jws7Nuk1fySJEAwpzG5wmbIzM8DR+wU8edIGPJ
-         6c2fcej1jARgTQ0hcZI6H/Fil1nNsJlqN+lG2zeH065UtJ9WWA7FBaBJxV8iYIiAJ/cV
-         hZOnK3UmgKTF6Blban3ZvcWHcdWNMock4tNMzUMFlo7Dia0/D9BRDEZA5Uks4kIAhl5Z
-         eerUqmd5Twu2HVfNXVXDXRUmw+VjlXtooIYHzX1E8Cln7cXA7+XpAf2aoAhJ8/0AP8/Q
-         ActQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722355216; x=1722960016;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ebSu3UElL8dKrK505UtfSRAh4jbtzC8DMHGUOIQGm/A=;
-        b=hnu5a3xlxDMy4IBxyq10ICsDvwmZgTp7fYEzjqG31AMg+7dKLVdJMmraOp/TpBtb/n
-         YwX/AhmqUDTh1XyuYtUIPwSCwB0uyKB0yE+3dy4BeCQQMUKcQMm4RGJOhgejOVYdxUn9
-         QFcyxH55zKVHtGUWLoQD+HEzk3FE2GKJUz82ZCjD+yEjwnsg2zKZIP6bEjmRMlKLlnJs
-         wMfItkWNZMU1rF3n/npz8Gt+uEPDtrbulFxoA/DRubJydptLOlBRP16Y3paO59HjeBgJ
-         lXRxVGGsii3DbE/ejJ9QoMG3UoeWBUHxk1qY+GH8hl4+1PkXoys8qT6PBZx3BJBxtHwO
-         1e5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWaNSqrKBqUyOPyQ3ncRSyki7b+L/8iehqk20mTs1M0olKxF8nIfveDZV8OjcSdpxj9WPkiZhWBSKGxxOqbKI3cPWBAahCameEDxA==
-X-Gm-Message-State: AOJu0Ywu8/KO/4fCOjxKsMfM8W2wmX4HJ4i9u9diOZIZQFeUChsaQx1f
-	oLddbuk18r8QVHwtUvcqJ5N/17MTH9xPYL4YsQyyH9OUUq/eF3XNxCG7GwiVOp0=
-X-Google-Smtp-Source: AGHT+IG64oD/0BAxRTYSk9Um5ejrwHurtyJiWine+vs8I2db0quwR2iEnh/I3UfX946vZydcmQjuVg==
-X-Received: by 2002:a05:6102:3ec2:b0:493:b2b4:3708 with SMTP id ada2fe7eead31-493fad54e1fmr12048280137.27.1722355216237;
-        Tue, 30 Jul 2024 09:00:16 -0700 (PDT)
-Received: from PC2K9PVX.TheFacebook.com (pool-173-79-56-208.washdc.fios.verizon.net. [173.79.56.208])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73b2036sm653148085a.38.2024.07.30.09.00.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 09:00:15 -0700 (PDT)
-Date: Tue, 30 Jul 2024 01:19:53 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, dave.jiang@intel.com,
-	Jonathan.Cameron@huawei.com, horenchuang@bytedance.com,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	dan.j.williams@intel.com, lenb@kernel.org,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
- calculation callback
-Message-ID: <Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com>
-References: <20240726215548.10653-1-gourry@gourry.net>
- <87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
- <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA2829A2;
+	Tue, 30 Jul 2024 15:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722352758; cv=fail; b=FCvKbo7Xuf1WWcD4eOcH+qpE3Bl5CD4KVjROYXn6T74FjuVl54Xi2fLO8EFVum0xLF8nsEfUWkEpmlqJhTkQmyNzXBKl8eoGUGHWtBeMpFsZiguRjF82tMoD0wGNrL/MEQ0mwkHfUQ+5tqFFyVy2L9ASp/POhZVjuORW3AEZUsk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722352758; c=relaxed/simple;
+	bh=ED4JtKXJBKAk1HoxfUuGEQW3Hcc1pF8VaREvraqxOHw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EOyVdZiyWBINO26DvclETI89SVFZQnY9lpaFxITaGkEX8LXZTe1Xt1f94/Bfcx2wbUiV5uzKORLvwtQN9XevWwoLQW22NAmZT4yQ81RPU2VwCk8k9T7Ih3HaEo/4xo7H29qRXO4VzSbd5MLw/kCUHKqnTfej5V1fGISEbvjyPcQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rNdixRy4; arc=fail smtp.client-ip=40.107.243.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ClSY/0fljpbBRozgXmgNwRKmc8zM+N5gSlCsx9R1nwu6gLJ8xXaLXZ+h+pPzHRbhkYHFoxDzIU6qXlfsf2hjZ4VczMqGIA14Y5XHPnHP4+CUSDfmkIu+JiKWy2qXKuLXC6JZ0zbdclBEvCDTI2SyIL6Vi4A8tA/Ru+irOQvqqyNFcAVvcnPzPAjPiaeqXCHMSSe2qr9UTnGn8K9RU7y7hUY/WN/sH/5CEYeldvU31kkGsps/l6FhOecL2NUibzCkPsub5uXoEe0TRPEo+4S9eQxeF/7T7VFBaI5PE1G+MY8E6UMuL+r1VQhP9BtLVZrPy/sDlcqL/ECDxiATYQhmPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C8nNzDQee8m8jkTEC+SyDo3WN7IxKeN1hiG6mNbVXxI=;
+ b=UbdMssWHM5bGiYXFpqQki8MUleS70PgMyk71bjMZ8MiuTfHrTUsFzUJejppe75wfMyKUhVm5CEskXemQHvKUb2ceeLqokUGmxF97P+8dZbFVgn6B9UlPl6LY1gnhIIrF/0B5lTfVe2CLjv4l7seZ2gqom++/Nv+SCkYORPnddR9kEhwwm/tioDJS4MCJS+WbD5YGXcFlmLp+WbN8/sBBDdYAGcJyHLJGJd8NTIj9AuidTZUptiumPXNsXKScKHNH464ZcePpkjrRiLvRcugkOuhEnz5fJ5/smLZ8FRPlR/SjSsmkbUFaxJoQLdPY0OHgcvHngjKMZdPl5KYeriXtMA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C8nNzDQee8m8jkTEC+SyDo3WN7IxKeN1hiG6mNbVXxI=;
+ b=rNdixRy4tKpVhVErwtSCY5k6/fK2ZBgLMdOa5NEQ+mx3NbV3eSjkRV8f6ELSOgvSWQTVn3yfYdC4vvizHuNwvuLCAaZuL4bZtDZxrIR9Mf4VacmbtrXQlu3NEsUbEwfkR9GRUN2iEvW6z1DJAFvTWveoRVU8JIGwLRJIfVFCF4c=
+Received: from BYAPR05CA0044.namprd05.prod.outlook.com (2603:10b6:a03:74::21)
+ by LV8PR12MB9334.namprd12.prod.outlook.com (2603:10b6:408:20b::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
+ 2024 15:19:13 +0000
+Received: from SJ1PEPF00002312.namprd03.prod.outlook.com
+ (2603:10b6:a03:74:cafe::11) by BYAPR05CA0044.outlook.office365.com
+ (2603:10b6:a03:74::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.19 via Frontend
+ Transport; Tue, 30 Jul 2024 15:19:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00002312.mail.protection.outlook.com (10.167.242.166) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7828.19 via Frontend Transport; Tue, 30 Jul 2024 15:19:12 +0000
+Received: from jallen-jump-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 30 Jul
+ 2024 10:19:11 -0500
+From: John Allen <john.allen@amd.com>
+To: <rafael@kernel.org>, <lenb@kernel.org>, <bp@alien8.de>,
+	<yazen.ghannam@amd.com>
+CC: <linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-edac@vger.kernel.org>, John Allen <john.allen@amd.com>
+Subject: [PATCH v3 0/2] PRM handler direct call interface
+Date: Tue, 30 Jul 2024 15:17:29 +0000
+Message-ID: <20240730151731.15363-1-john.allen@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002312:EE_|LV8PR12MB9334:EE_
+X-MS-Office365-Filtering-Correlation-Id: 625a32e7-9187-41e7-c17b-08dcb0aaf790
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VXZNdHExNVFVdk5XZ0hJR2FVcytoT01JZktaWjFuNmkvVXFVaE90bVg1Y1E0?=
+ =?utf-8?B?TUNqRG1iZmV1V29rSnE3RzVibmZtWU5abytaa25tZ0VtcjJpeFhWbkJhaTZt?=
+ =?utf-8?B?MEc0MEJzVU5vUWswZkJwWEgxWnlVQnlXQ0FiRk1XMVgybjZnYjZVdjhOaktq?=
+ =?utf-8?B?Y0hyTytNejFlaVZHYktmOG15eHhQSnM3YWVCTGQxZHNMR2lLZk1KN2lBU0s3?=
+ =?utf-8?B?WmV2VVZLa0hBU080Tm9TMFVmUzBZcEw4M0tmSHdhZmVNQ2tTdDd6NEJ4NjY4?=
+ =?utf-8?B?TkFoMEpTMVVrbWZ5cElKR0J4VExnTWtKVk93ZjU4TkZrVmZLclArQUw3SHpM?=
+ =?utf-8?B?OGZJOEZHc2VjdlByMWxFQmZDV2lDQlI5MHI2eWpTN2NDVDFzYm9lV2hJRnp6?=
+ =?utf-8?B?a2p5bmp3ZGJYWDU0dXhoRWgwei9HeEhXd1JndnRmUlpCUGFJNjg1Y2hJZmZU?=
+ =?utf-8?B?aVhGajI4UTZmeVdsRDlDQ3lTMW9iK0VzUG8xL2RvMUlBaUYrUUZOSkhIU0gx?=
+ =?utf-8?B?eElrbnY0KzNXS1BFcFZsNGdJNGNTdzRoc1FWKzF0a3pmb3FRSm9LTk5tdDVX?=
+ =?utf-8?B?UUFJRUorS1oxa3NPU1NaVlpXeGw0U1ovaDhsQzJ0OU1DcFkrZitnaFcrOWln?=
+ =?utf-8?B?MXpEb1F4cmYzdWRPbURmZ094dExlamlJOGt3OW45d3puV1pIcnpuZGh2SWhx?=
+ =?utf-8?B?RUNIUXUxMHZqVThrYVZGdzA5Y0FqSlNTVld4VHhVSXQ3ZWR2cGpuaS9YcFpV?=
+ =?utf-8?B?c1IwL1ZBTUhyVjR3dzdPTUdUTzZPK0lqVStKeTZQczFhbEV5eUNnSFlRM3kz?=
+ =?utf-8?B?TzRLbGRJb3docUtaK1c5Q2R1ZFpuODNoc0J5K0NFWlVHK244SUdRQy9Tak96?=
+ =?utf-8?B?Vk82VXR5K05xY3lXNklsVU54dU16SHY4STZ0alArcjhHSjRxUGY1UVVtRnZ6?=
+ =?utf-8?B?U1JuK2hPNHhJbEIxUnNaaW1zMk5rcFQ2ZU5mOTJ2eFRDU0ZZVVUveEppSWYr?=
+ =?utf-8?B?MVZnTWNIZTlOZ09ZbHhpVEtOdW90VFUyRlRic0x1bVIzMWlGSEdhU3ZkY013?=
+ =?utf-8?B?WStSNU9ORXBtTUZPcnAwVWRQOEVLVnBQMWhLK0FEZm5FQXFPY01wc3NJYVZV?=
+ =?utf-8?B?OUtjTVVaczc0TFY4d0tPS0sybzBjUzJTcFZTY0ZqZ3gvQjl2VVNvV2RJcHE3?=
+ =?utf-8?B?K2xiRFp1TXZEcHZoSmsvbDBwNkJhUytvV3JUb0drT1Fhb0pEd1RjYWE5Tnl5?=
+ =?utf-8?B?UWZjd2xncFN0YmJIWDIxeEMrWHA1bENMRTNmZFZ0bWRmM3RVK01OR0JDNWt4?=
+ =?utf-8?B?N0J3NlFGM0RIYzlnNkV6QmhyRHhSVUVNc1duY1FqQUdKaGdqMUFGZ1dETlhu?=
+ =?utf-8?B?UEpRVk9JL3p6RkhJbERPcmV6a2tmeDZGYVZXRm9iNGw1Z2czSkFDS1NtaFRw?=
+ =?utf-8?B?OWRCc2x1MWtnWXl0S0JFK20xSjlOMzlJOFNmM1kzOXlLcVE4cmtSajhhcys4?=
+ =?utf-8?B?NUlKdHk1MHlORkR3VkhteDNFOFJPMUdoQ1ozVVFrU1lrT3hBV1d0bDNXTE0w?=
+ =?utf-8?B?KzRreU9MNFA5N2Eyek1lcEQ3STJ1VzhXaVIvZ3V2SFU3MDQrQ2o4eGNRallw?=
+ =?utf-8?B?YS9XK0RYZFhycDNvQnFYT0hFL3dCZTR1SkVFM0VORFlxK2JqTlZhdmNGQ1V3?=
+ =?utf-8?B?YWJDSkNnOHh5K3VpN1Z4V0NJZnh6eHR2LzRIeDVQZHNteFduaWthVVkwWHNW?=
+ =?utf-8?B?TzZ2YUpMQ2R2Nk1ESDZLb1FldTNYQmI4bFkwbElzdytBemhzbGM1OURrcjhG?=
+ =?utf-8?B?QnVXSnJ4dHE0R3doS1kyRnNnemVGV1dVZkRJR1dRQ0dFRFFFeU1jU2ppTm45?=
+ =?utf-8?Q?bs/IKpKkWbGq5?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2024 15:19:12.2749
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 625a32e7-9187-41e7-c17b-08dcb0aaf790
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002312.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9334
 
-On Tue, Jul 30, 2024 at 09:12:55AM +0800, Huang, Ying wrote:
-> > Right now HMAT appears to be used prescriptively, this despite the fact
-> > that there was a clear intent to separate CPU-nodes and non-CPU-nodes in
-> > the memory-tier code. So this patch simply realizes this intent when the
-> > hints are not very reasonable.
-> 
-> If HMAT isn't available, it's hard to put memory devices to
-> appropriate memory tiers without other information.  In commit
-> 992bf77591cb ("mm/demotion: add support for explicit memory tiers"),
-> Aneesh pointed out that it doesn't work for his system to put
-> non-CPU-nodes in lower tier.
-> 
+Platform Runtime Mechanism (PRM) introduces a means for the AML
+interpreter and OS drivers to invoke runtime handlers from platform
+firmware in order to remove the need for certain classes of SMIs.
+Further details can be seen in the PRM specification[1].
 
-Per Aneesh in 992bf77591cb - The code explicitly states the intent is
-to put non-CPU-nodes in a lower tier by default.
+Future AMD platforms will implement a PRM module in firmware that will
+include handlers for performing various types of address translation.
+The address translation PRM module is documented in chapter 22 of the
+publicly available "AMD Family 1Ah Models 00h–0Fh and Models 10h–1Fh
+ACPI v6.5 Porting Guide"[2].
 
+While the kernel currently has support for calling PRM handlers from the
+AML interpreter, it does not support calling PRM handlers directly from
+OS drivers. This series implements the direct call interface and uses it
+for translating normalized addresses to system physical addresses.
 
-    The current implementation puts all nodes with CPU into the highest
-    tier, and builds the tier hierarchy by establishing the per-node
-    demotion targets based on the distances between nodes.
+Thanks,
+John
 
-This is accurate for the current code
+[1]:
+https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mechanism%20-%20with%20legal%20notice.pdf
+[2]:
+https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/programmer-references/58088-0.75-pub.pdf
 
+Tree: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+Base commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
 
-    The current tier initialization code always initializes each
-    memory-only NUMA node into a lower tier.
+John Allen (2):
+  ACPI: PRM: Add PRM handler direct call support
+  RAS/AMD/ATL: Translate normalized to system physical addresses using
+    PRM
 
-This is *broken* for the currently upstream code.
+ drivers/acpi/prmt.c            | 24 ++++++++++++++
+ drivers/ras/amd/atl/Kconfig    |  4 +++
+ drivers/ras/amd/atl/Makefile   |  2 ++
+ drivers/ras/amd/atl/internal.h | 10 ++++++
+ drivers/ras/amd/atl/prm.c      | 57 ++++++++++++++++++++++++++++++++++
+ drivers/ras/amd/atl/umc.c      |  5 +++
+ include/linux/prmt.h           |  5 +++
+ 7 files changed, 107 insertions(+)
+ create mode 100644 drivers/ras/amd/atl/prm.c
 
-This appears to be the result of the hmat adistance callback introduction
-(though it may have been broken before that).
+-- 
+2.34.1
 
-~Gregory
 
