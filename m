@@ -1,145 +1,115 @@
-Return-Path: <linux-acpi+bounces-7161-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7162-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B6E9427C6
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 09:24:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09958942A98
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 11:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE76F1F2207C
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 07:24:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 813E4B24736
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 09:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E781A720A;
-	Wed, 31 Jul 2024 07:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SpZzX1nO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421641AAE2C;
+	Wed, 31 Jul 2024 09:33:16 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF4C1A71EA;
-	Wed, 31 Jul 2024 07:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC991A7F7B
+	for <linux-acpi@vger.kernel.org>; Wed, 31 Jul 2024 09:33:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722410654; cv=none; b=aTnaEtiMomtox6othGHtTKHkU5MBxIlQe+skadE0cpe8bRqD4E9uDXEUg6MR/40B+CkaF/EsIC+aV6Cn1RvHOxGqmGP8cIU6CkbJtavIfqSiI7nVJqLEFe7Od8EhTsYf6+SVIz7Oj8ebYmQXnmhOMWDJnoQzVWFZEcK/PLjl2co=
+	t=1722418396; cv=none; b=iZvN9hK/Y9e+WTy2Rtz3KfqQ9nK7P1BXuj0qpCjK9srma6ogaDPQD3WtNoe7TQ3uNJqQBhLbbZYkcGcTGxs8qPaSRXS8crRjaGdvCXVZkmsKktibbbJ3XXhyDz9o0LWCjR/XgoGX7txc2DrJr0fgBe3++DH7KTCO5rrxkn336nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722410654; c=relaxed/simple;
-	bh=+RxA06oYCh2UbrzIR0pUSBtDnMy+8VwtTACTDRrlDd4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=stsd5IHZZPtL6qfWAf7Hpmx6JecRrFINg3uVXqHf3zqoKV31Mpx8fHcWNyrLTn+6kKR6fz68NojUYtU+j5gD7J5vGCkKvT+s+/0oSOmq+Bt3DMjreUoiyVfUmD3H3pDSW9UHFVX42kXyjmprc3qGgVxip50TzrGccrmKKHoi6Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SpZzX1nO; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722410653; x=1753946653;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=+RxA06oYCh2UbrzIR0pUSBtDnMy+8VwtTACTDRrlDd4=;
-  b=SpZzX1nOKrATvWJCoeOnPRGefNJSfdMY47EiJJaDMgnUqe3mJPHLUZrC
-   yZz5rOwpij9dWGsmrI0H12pMJpUDZG774XNGLbTkidxhp+kOhPF/TRT3G
-   MP190del3TzYVmGXDN275PfLoP0B2dISss7KgJgfHIl9W91g1DkxlX4mC
-   spaWm3bImbnF8ZcmLjwS3RiVqCrK6mlxCdIk/Vn4hJBdGixSBSoFQnU9b
-   7lhEpiONdAsQTDA8THHGPfvETag3Lv1ZH0uFUCKyv/q3FUPMrQawBAlhc
-   3P6Ra/Q4XsHBMA5RKsR5cjD6elRuR1bjJuymsPojjGCsmDgp2wTv4A13b
-   Q==;
-X-CSE-ConnectionGUID: RpBPpdTcTDaZBjrbZqI6TA==
-X-CSE-MsgGUID: +bU8Iy9pQxGWWpr0p1NyNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="37784021"
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
-   d="scan'208";a="37784021"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 00:24:12 -0700
-X-CSE-ConnectionGUID: CV578NcQS3GWlq23JdJ6+Q==
-X-CSE-MsgGUID: 8jrySnJVSk2QjPs9EjQBHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
-   d="scan'208";a="54594416"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 00:24:10 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org,  akpm@linux-foundation.org,  dave.jiang@intel.com,
-  Jonathan.Cameron@huawei.com,  horenchuang@bytedance.com,
-  linux-kernel@vger.kernel.org,  linux-acpi@vger.kernel.org,
-  dan.j.williams@intel.com,  lenb@kernel.org,  "Aneesh Kumar K.V"
- <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
- calculation callback
-In-Reply-To: <ZqlF0hn6Jh4Ybl-p@PC2K9PVX.TheFacebook.com> (Gregory Price's
-	message of "Tue, 30 Jul 2024 15:58:10 -0400")
-References: <20240726215548.10653-1-gourry@gourry.net>
-	<87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
-	<877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<ZqhbePA9Egcxyx7o@PC2K9PVX.TheFacebook.com>
-	<87cymupd7r.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<ZqlF0hn6Jh4Ybl-p@PC2K9PVX.TheFacebook.com>
-Date: Wed, 31 Jul 2024 15:20:37 +0800
-Message-ID: <878qxiowmy.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1722418396; c=relaxed/simple;
+	bh=s8M69EafkyAZlI7GT6lfcKGVxfb5YAnU7ExI2BVZIGw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H6MwXQ5LlOXa82+/HoJ0EKc13Rb0aGRPwFWkkXm/tqWBCXyyUulO9yFat1nBRzw9T16etZ6g0VpeD9yZNgcOCMJbRz5M03+wpxerpxbbXb9oNGTVtRY3zA9qA+uOXpVZRfHuARF49/I6vSzIO6E7k5FeLWeYkvAx3Os5fbQ2tpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4WYmxC3ym2z28fyP;
+	Wed, 31 Jul 2024 17:28:31 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 42430180042;
+	Wed, 31 Jul 2024 17:33:05 +0800 (CST)
+Received: from localhost.localdomain (10.50.165.33) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Wed, 31 Jul 2024 17:33:04 +0800
+From: Yicong Yang <yangyicong@huawei.com>
+To: <will@kernel.org>, <catalin.marinas@arm.com>, <corbet@lwn.net>,
+	<lpieralisi@kernel.org>, <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
+	<rafael@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-acpi@vger.kernel.org>
+CC: <linuxarm@huawei.com>, <prime.zeng@hisilicon.com>,
+	<jonathan.cameron@huawei.com>, <shameerali.kolothum.thodi@huawei.com>,
+	<xuwei5@huawei.com>, <yangyicong@hisilicon.com>, <hejunhao3@huawei.com>,
+	<wanghuiqiang@huawei.com>
+Subject: [PATCH] ACPI/IORT: Add PMCG platform information for HiSilicon HIP10/11
+Date: Wed, 31 Jul 2024 17:26:58 +0800
+Message-ID: <20240731092658.11012-1-yangyicong@huawei.com>
+X-Mailer: git-send-email 2.31.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
 
-Gregory Price <gourry@gourry.net> writes:
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-> On Wed, Jul 31, 2024 at 09:22:32AM +0800, Huang, Ying wrote:
->> Gregory Price <gourry@gourry.net> writes:
->> 
->> > This presumes driver configured devices, which is not always the case.
->> >
->> > kmem.c will set MEMTIER_DEFAULT_DAX_ADISTANCE
->> >
->> > but if BIOS/EFI has set up the node instead, you get the default of
->> > MEMTIER_ADISTANCE_DRAM if HMAT is not present or otherwise not sane.
->> 
->> "efi_fake_mem=" kernel parameter can be used to add "EFI_MEMORY_SP" flag
->> to the memory range, so that kmem.c can manage it.
->> 
->
-> In this case, the system is configured explicitly so that kmem does not
-> manage it. In fact, some systems still cannot be managed with
-> EFI_MEMORY_SP due to hpa!=spa issues that the driver cannot manage.
+HiSilicon HIP10/11 platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
-Sorry, I don't understand.  IIUC, kmem.c can manage almost any memory
-range via drivers/dax/hmem.  Please check
+Update the silicon-errata.rst as well.
 
-drivers/dax/hmem/device.c
-drivers/dax/hmem/hmem.c
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+---
+ Documentation/arch/arm64/silicon-errata.rst | 4 ++--
+ drivers/acpi/arm64/iort.c                   | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-Could you elaborate why kmem.c doesn't work for some memory range?
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index bb83c5d8c675..70634e56cedd 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -231,8 +231,8 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
+-|                | Hip09 SMMU PMCG |                 |                             |
++| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
++|                | ,11} SMMU PMCG  |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 1b39e9ae7ac1..d76197bf350e 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1703,6 +1703,13 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
++	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP10C  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP11   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	{ }
+ };
+ 
+-- 
+2.24.0
 
->> > Not everyone is going to have the ability to get a platform vendor to
->> > fix a BIOS bug, and I've seen this in production.
->> 
->> So, some vendor build a machine with broken/missing HMAT/CDAT and wants
->> users to use CXL memory devices in it?  Have the vendor tested whether
->> CXL memory devices work?
->>
->
-> As I mentioned, the broken aspect is being fixed, however there are
-> existing production hardware which do not have HMAT entries.
->
->> > But the first step here would be creating two modes.  HMAT-is-sane and
->> > CPU/Non-CPU seems reasonable to me but open to opinions.
->> 
->> IMHO, we should reduce user configurable knobs unless we can prove it
->> is really necessary.
->>
->
-> That's fair and valid.
->
-> But I think a feature that worked in 5.x should work in 6.x, and right
-> now the change in node placement breaks hardware that worked with 5.x
-> which happened to have broken or missing HMAT.
-
---
-Best Regards,
-Huang, Ying
 
