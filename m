@@ -1,134 +1,136 @@
-Return-Path: <linux-acpi+bounces-7156-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7157-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D76D942358
-	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 01:13:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB8D942417
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 03:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D1E02855BA
-	for <lists+linux-acpi@lfdr.de>; Tue, 30 Jul 2024 23:13:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9351C22559
+	for <lists+linux-acpi@lfdr.de>; Wed, 31 Jul 2024 01:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C57D191F8C;
-	Tue, 30 Jul 2024 23:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0034748F;
+	Wed, 31 Jul 2024 01:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="mWT+LnCY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VUvlHVRE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28160192B79;
-	Tue, 30 Jul 2024 23:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425F98BE0;
+	Wed, 31 Jul 2024 01:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722381209; cv=none; b=cWZ32sT842C931oTqU4zIS+K8p8Jll/5EakEYGXzB8uPa6AfeoSiBlbFC3iFEoKAMP6bjVbLk4CvyqXXw7AkU7rTFcdernr9Q4o0ei7N+iSVH4noqgALxe+wewoMN5wiWBjXl0iJa1jWbXHKOrMZ0ELTDCGB/wKeUlxmk8BwDZk=
+	t=1722388437; cv=none; b=IMzQL1blVVMzstpCo2kW09kMYm2Y4pSTGisYIO3/t6VobpQzoMXp9SuYpQReQji1yAk++XiYZ3PDOZeK2miqllUyxNK8atrT1MrkXQjIWuXM/DFRDXvwUu7vnfbKGE79NBGofD/dSw3sFs7zYyQdLi3y/j/rF8Y5VB/MsUDV3vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722381209; c=relaxed/simple;
-	bh=+Igrn3YHKKDduHZRjsbpHipGVP0H7ZrPakV8Vvm3yM0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSttXKIx0uQlmNK2uirS47ZVVdlmw037pPZqxeScd4z+fWvDGdsh6ATStMLsAHjAYg93sA7XkVgHWfRDcwVP1wwPT9q82h+ZHSGfKgjK2fixqEQaZtoXpQsJg88PqPif3XJduBAWHLrW0WMQ9H+K01B1oCkrSUPKn67TSROqCyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=mWT+LnCY; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id 4C5AC100002;
-	Wed, 31 Jul 2024 01:56:27 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1722380187; bh=PqddTe+P5ky+cShWwTOgAT+7APBFNLskDUN2Tg6jGhg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=mWT+LnCY42lepv13X/X2gn0BM7qn7I/A3WBm2Xf1vMUzCVAkzGDF2STUOE838brN8
-	 WDDKm76XMTVrZZTuoj/n+kx+4zVXaYptP2ii+vh7OlOkv1pu9xkPzotTekVEOoLn4U
-	 kG102IIrEMYumVacDcgZ96Te7MVHNvWa/LvUSyzfpxD2b3XIMnkruDykHZrxoq0VAG
-	 t8v+Kz8tDJNXbYWN7BJJD97UnjxSBA8mpyZWCsVbGE87ynTVl44K990WGvl7X3PY7A
-	 jJyfavqRBdBgT4PlGjyEPNO0jxZMXqKyuNX5THR/jzLSfA2gjwKizC5lXSk3/45gYf
-	 VohPllA0Mt0TQ==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Wed, 31 Jul 2024 01:54:31 +0300 (MSK)
-Received: from localhost.localdomain (172.17.215.5) by ta-mail-02
- (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 31 Jul
- 2024 01:54:10 +0300
-From: Aleksandr Mishin <amishin@t-argos.ru>
-To: Rajmohan Mani <rajmohan.mani@intel.com>
-CC: Aleksandr Mishin <amishin@t-argos.ru>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Andy Shevchenko
-	<andy@kernel.org>, Mika Westerberg <mika.westerberg@linux.intel.com>, Sakari
- Ailus <sakari.ailus@linux.intel.com>, <linux-acpi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Andy
- Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v2] ACPI / PMIC: Remove unneeded check in tps68470_pmic_opregion_probe()
-Date: Wed, 31 Jul 2024 01:53:39 +0300
-Message-ID: <20240730225339.13165-1-amishin@t-argos.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240705113434.17249-1-amishin@t-argos.ru>
-References: 
+	s=arc-20240116; t=1722388437; c=relaxed/simple;
+	bh=78yMmcZVlmd5TrKBTEgQshl8q07jNsjdTZNobhmCpJc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=C4CejOeYwe3r718cN3faEsK+ul1IaoYXLIsLiCTmx8qljM12P2YcLIMErDX5HUif/D2c9mCAK8r4zDpE2UwraU5k/JGV92cZCIsJAgncXkHJU9LxWH+6hx2d+lK4rLafkaaWGLTKmHq9U6JAxJgumDCz0cdVYabxTrNsIpU96yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VUvlHVRE; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722388436; x=1753924436;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=78yMmcZVlmd5TrKBTEgQshl8q07jNsjdTZNobhmCpJc=;
+  b=VUvlHVREwEmZmAzCJ0byLTIyXG9daLQ8CLNzocZZiqiEkzjrt6kkKnh5
+   4QZIJFoIW3vIo9EXD/qy4GDtzSf349bFEgA/FEXyoJC+1sJFvftpYwYj1
+   Jul03nPvv5o3hYajpJvdgU3L6geO2klV+KEunfpcdoXShABCjlHtVeNRo
+   Nj4KqwQcc/Y2YZeWOV0/FXO3+/CwEF13NIA5E51ZtIq3uBuQ85t++K8Kt
+   FwYk7t6dO4qlvCMgkMIUM0G23RmXROxUASMaIAAGLSgQBe0m3kmP2zLPy
+   qb7BxsC7S4oepg1kX4Tl+RBr1g6ucoNcMBXoeYXGunnRSHLD+dMMsMOvC
+   g==;
+X-CSE-ConnectionGUID: YBuZtQi7S22zy/KUDy9Rpw==
+X-CSE-MsgGUID: XSEdjM0vTQuM5Mf1bMqxhA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="20397516"
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
+   d="scan'208";a="20397516"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 18:13:55 -0700
+X-CSE-ConnectionGUID: 65vHl553Q8esf4wM6tUaew==
+X-CSE-MsgGUID: vL7bv7S2RJuHoCdf/QA5iA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; 
+   d="scan'208";a="54561071"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2024 18:13:53 -0700
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org,  akpm@linux-foundation.org,  dave.jiang@intel.com,
+  Jonathan.Cameron@huawei.com,  horenchuang@bytedance.com,
+  linux-kernel@vger.kernel.org,  linux-acpi@vger.kernel.org,
+  dan.j.williams@intel.com,  lenb@kernel.org,  "Aneesh Kumar K.V"
+ <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH] acpi/hmat,mm/memtier: always register hmat adist
+ calculation callback
+In-Reply-To: <Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com> (Gregory Price's
+	message of "Tue, 30 Jul 2024 01:19:53 -0400")
+References: <20240726215548.10653-1-gourry@gourry.net>
+	<87ttg91046.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<ZqelvPwM2MIG26wY@PC2K9PVX.TheFacebook.com>
+	<877cd3u1go.fsf@yhuang6-desk2.ccr.corp.intel.com>
+	<Zqh3-TWBkhyY5kPw@PC2K9PVX.TheFacebook.com>
+Date: Wed, 31 Jul 2024 09:10:19 +0800
+Message-ID: <87h6c6pds4.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 186797 [Jul 30 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 24 0.3.24 186c4d603b899ccfd4883d230c53f273b80e467f, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, t-argos.ru:7.1.1;127.0.0.199:7.1.2;mx1.t-argos.ru.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/07/30 22:04:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/07/30 18:43:00 #26185698
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset=ascii
 
-In tps68470_pmic_opregion_probe() pointer 'dev' is compared to NULL which
-is useless.
+Gregory Price <gourry@gourry.net> writes:
 
-Fix this issue by removing unneeded check.
+> On Tue, Jul 30, 2024 at 09:12:55AM +0800, Huang, Ying wrote:
+>> > Right now HMAT appears to be used prescriptively, this despite the fact
+>> > that there was a clear intent to separate CPU-nodes and non-CPU-nodes in
+>> > the memory-tier code. So this patch simply realizes this intent when the
+>> > hints are not very reasonable.
+>> 
+>> If HMAT isn't available, it's hard to put memory devices to
+>> appropriate memory tiers without other information.  In commit
+>> 992bf77591cb ("mm/demotion: add support for explicit memory tiers"),
+>> Aneesh pointed out that it doesn't work for his system to put
+>> non-CPU-nodes in lower tier.
+>> 
+>
+> Per Aneesh in 992bf77591cb - The code explicitly states the intent is
+> to put non-CPU-nodes in a lower tier by default.
+>
+>
+>     The current implementation puts all nodes with CPU into the highest
+>     tier, and builds the tier hierarchy by establishing the per-node
+>     demotion targets based on the distances between nodes.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This describe the behavior before the commit.  That is, to be changed in
+the commit.  One of the most important issues he want to fix is,
 
-Fixes: e13452ac3790 ("ACPI / PMIC: Add TI PMIC TPS68470 operation region driver")
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
----
-v1->v2:
-  - Add Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-    (https://lore.kernel.org/all/Zokw6XRZxv0YqIiZ@kekkonen.localdomain/)
-  - Update log message and its level as suggested by Andy
-    (https://lore.kernel.org/all/CAHp75Vefw5FB1mK8v-FJ5MBeSo_N9fgiAFPdYw2w_OCX5UxrAA@mail.gmail.com/)
+    * The current tier initialization code always initializes each
+      memory-only NUMA node into a lower tier.  But a memory-only NUMA node
+      may have a high performance memory device (e.g.  a DRAM-backed
+      memory-only node on a virtual machine) and that should be put into a
+      higher tier.
 
- drivers/acpi/pmic/tps68470_pmic.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> This is accurate for the current code
+>
+>
+>     The current tier initialization code always initializes each
+>     memory-only NUMA node into a lower tier.
+>
+> This is *broken* for the currently upstream code.
+>
+> This appears to be the result of the hmat adistance callback introduction
+> (though it may have been broken before that).
 
-diff --git a/drivers/acpi/pmic/tps68470_pmic.c b/drivers/acpi/pmic/tps68470_pmic.c
-index ebd03e472955..0d1a82eeb4b0 100644
---- a/drivers/acpi/pmic/tps68470_pmic.c
-+++ b/drivers/acpi/pmic/tps68470_pmic.c
-@@ -376,10 +376,8 @@ static int tps68470_pmic_opregion_probe(struct platform_device *pdev)
- 	struct tps68470_pmic_opregion *opregion;
- 	acpi_status status;
- 
--	if (!dev || !tps68470_regmap) {
--		dev_warn(dev, "dev or regmap is NULL\n");
--		return -EINVAL;
--	}
-+	if (!tps68470_regmap)
-+		return dev_err_probe(dev, -EINVAL, "regmap is missing\n");
- 
- 	if (!handle) {
- 		dev_warn(dev, "acpi handle is NULL\n");
--- 
-2.30.2
+No, this was changed in Aneesh's commit 992bf77591cb.
 
+--
+Best Regards,
+Huang, Ying
 
