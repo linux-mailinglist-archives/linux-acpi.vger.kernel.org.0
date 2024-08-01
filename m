@@ -1,140 +1,124 @@
-Return-Path: <linux-acpi+bounces-7205-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7206-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D719944BAE
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 14:50:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC26944E06
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 16:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A58288A4C
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 12:49:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0328B249A3
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 14:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CA8189B95;
-	Thu,  1 Aug 2024 12:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABB11A617D;
+	Thu,  1 Aug 2024 14:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OsO1PX+T"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iqt3pYMz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702BA158A2C;
-	Thu,  1 Aug 2024 12:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A81A57DD
+	for <linux-acpi@vger.kernel.org>; Thu,  1 Aug 2024 14:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722516595; cv=none; b=AXOucdzwtIn13D84c4xGmNvi480EuaYTIke3EeIcFY/0R/Nc3We4LtFP1A8MLbrkkPuqTh1OWPhWgosZs0EomgoTNd39M8ERKgBgLHB6aR2ZIA8ypOusxAqyStx5sG2C+V/9rffIfFj6j7jzhvwOwEtfjVE2LJcGigmUEUNtyFk=
+	t=1722522518; cv=none; b=GhhQha4sp5vWsZitkFQzaFok258wBe4VznR5Qh+c8TXlos4oVXxQQEUBTPFJEKillZ4oycMpT9rItjrNOo0ANDjqB/g8ZnEP26pNwP1zvDMs+q0iEgTaixvXNvbaZaKmMRN3HnkUSv3z//9QpS7GK9c+TJQSQstpBuDxqxZWQD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722516595; c=relaxed/simple;
-	bh=RWQBIe+xnVoeZ9aYDA6LAf37L+tJ1auBW0Qc1C3LMEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nG+518zn5dHHiDZMbbgUF+gaDVCmRmGb5qQBtGATUjuAOb/0aK1f7B1F7zlk4+tiJdPdLrQFdQnRIe9XBIJTxh3KXjSinOBuG+tUY+XMairkNBrWD/z8VoHhNMXuVwlfjpUBdwdIIgG85lccYI5FnRMqEiuixf9wzaQK51cU2cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OsO1PX+T reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3B82E40E0263;
-	Thu,  1 Aug 2024 12:49:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wbMWD6ErtCFa; Thu,  1 Aug 2024 12:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1722516579; bh=zBGTII34GS3yMqdHYLabA9kg+jbzaHk0f06t8Adhu7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OsO1PX+TfzuDbNZMq4D7bnm1X/fCgYM4iyvUaM6GyAMXwo2typOoZlpZZU5Q4HeLi
-	 1zxBr6/xz3vffERFSxgH0DxaSK5tys5zB++aKYrqkV1j6DLl9Nr39oN1kPyMoe52CP
-	 w3B3/xHAm7XG8IvdPyNVedsO7/95oRSRRzNfW+xiSQG3cfzD6A1WBSxXjELJAfdlA3
-	 GkZAZJf5m3JKNW/3M8p18S10SYNhZ0mbw1RqprdAtNDQd+iubZe5PmpYTvDX93wzAc
-	 KbC7qZQad/TVrXX+ivRiOJmd3Qdsu/gpMDkR8QObSowwpahmOmkiKquJcdAmPha2p3
-	 sPilXm7UNOnsCXo/5WZZtBNwW/jQI8bhWITCucBZSIC3komaYeDmjNDonNvACFRkv0
-	 vZ5YeNx76ChiCzMuIsg/jEm0kKtWYXeN3xuLhdR5hTwrapaFmlrznqCQdLclxS1Gh0
-	 caDHv0dOzoDzRclDN+wtai+WySwEGkTdkN9NONOgVk0SAWQ7REfgvRTkVzMOwKlNgV
-	 uFw5GYv0wmEQjjs9jgagaWeRJdSiBBDDTqJHbog9dLaKhA10zbPU7Cj0zKnxsU+csm
-	 jWimYOWlD94pH17oKmbothkLzahpdrrksAf6gN4tSGoi2vnvbsyjn5S272NClEeDHd
-	 F/3GrrKJzWO9fYlTE30CQ/Sg=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 20FA740E026B;
-	Thu,  1 Aug 2024 12:49:32 +0000 (UTC)
-Date: Thu, 1 Aug 2024 14:49:26 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: John Allen <john.allen@amd.com>
-Cc: rafael@kernel.org, lenb@kernel.org, yazen.ghannam@amd.com,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-edac@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] PRM handler direct call interface
-Message-ID: <20240801124926.GBZquEVgG3y2PhefHT@fat_crate.local>
-References: <20240730151731.15363-1-john.allen@amd.com>
+	s=arc-20240116; t=1722522518; c=relaxed/simple;
+	bh=arM8Ro9K7nuVuspECh3ENyDIwChnNoKIe9VGYvhA6gI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=VHoAyhNOv2YDvDYxUhFRJdpHEAEBlM/14+iICwktSWeY+fPGqJlYw6wliaBaElOj5G96nTpuKsnGsvUE7A11HyOzgbkfppe34ih7hsASv1hq5P84ZvSKqK5ZM5bGKXzAQONMBpmyZIgjwMEBxxIhh7KTgEq+pTup01Xhla5TI34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iqt3pYMz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722522515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ks44jOOs7IUb4zvzyqaWExcTin/vOFoDTeSRZLlKCCg=;
+	b=iqt3pYMzK0LsnALHglEUD7gn0NeoSb7wSglEaFzEmSpptRtz7sGeGKMNmWUC14wFMl6Ka2
+	IFGPdjRc6h2OxQ2F1kHgRalXDl6udbgOWDjdfP8M8eToXhcpRnC1HrWgRPfuAFEfcXcNvj
+	2sWt8ZiMNfUNIkBXlzcnrPvkR7lLzto=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-133-Sw4vhgjIMpujcAuwOh3vnQ-1; Thu, 01 Aug 2024 10:28:34 -0400
+X-MC-Unique: Sw4vhgjIMpujcAuwOh3vnQ-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52efe4c2261so9403203e87.1
+        for <linux-acpi@vger.kernel.org>; Thu, 01 Aug 2024 07:28:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722522512; x=1723127312;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ks44jOOs7IUb4zvzyqaWExcTin/vOFoDTeSRZLlKCCg=;
+        b=wQrpVs6g9oDG+rdfbCV+c+GBeFHiCnmE5PE0nQgIbOP5zdxNGCHlMwm4w/1lWiAf/7
+         jNwFd7Tqd5gKx9pqGazZDsObTSYxpUmzJ0l5iISn4QRAIVUWrODwskGMjlqa75CtW584
+         hQBLjmCo/kQPM1h/AZ6piKFwISaszy4SwN/z/oqPYRHUJaWGUpdpyVixc+S2lLbkQZZp
+         KHEihzfOf1yOdDitY0gME/NTcBaV+1zvVU/hUOFpE/o91acRA+P7qCpdwfA80AYd3uHi
+         cYehu9uK1xBZTTEgdOCFZCQ6cYjLu/lOduk3lrMsSGyc7d3aawa6f9xH9mE/Y2HNM8Na
+         /QdA==
+X-Gm-Message-State: AOJu0YwHxv55YgbhzHKgMbgn72vM+UYnNZcoXxlaZjbPKV9ihSgYEhEm
+	rNAd+VwTRt21ApAb8SdUDwhgXrsJHR3ulFDk/aQwOU8UQQbb0EVcC/Rc6JGMiE/C96n6VAQCfUi
+	uwhBfqrPgFF2cFgTnV7Nvz+/2hBiM3Fw2xg3DvL7Fk/U+AMERyJP5xbXmfvc=
+X-Received: by 2002:a05:6512:2387:b0:52c:d5ac:d42 with SMTP id 2adb3069b0e04-530bb373067mr65962e87.9.1722522512551;
+        Thu, 01 Aug 2024 07:28:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzzdyLbl1W8pm0/Ez33Fzvo6k7SoGibqkn8s2HgvC6eEe1Hp/DwngwV0qza3H0lA/U6gRUaA==
+X-Received: by 2002:a05:6512:2387:b0:52c:d5ac:d42 with SMTP id 2adb3069b0e04-530bb373067mr65950e87.9.1722522511979;
+        Thu, 01 Aug 2024 07:28:31 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab50cbfsm903350266b.47.2024.08.01.07.28.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Aug 2024 07:28:31 -0700 (PDT)
+Message-ID: <c0e5414a-ec7b-44e3-980c-e71889150767@redhat.com>
+Date: Thu, 1 Aug 2024 16:28:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240730151731.15363-1-john.allen@amd.com>
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: "EC: Install address space handler at the namespace root" causing
+ issues for some users
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi <linux-acpi@vger.kernel.org>
+References: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com>
+Content-Language: en-US, nl
+In-Reply-To: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 30, 2024 at 03:17:29PM +0000, John Allen wrote:
-> Platform Runtime Mechanism (PRM) introduces a means for the AML
-> interpreter and OS drivers to invoke runtime handlers from platform
-> firmware in order to remove the need for certain classes of SMIs.
-> Further details can be seen in the PRM specification[1].
->=20
-> Future AMD platforms will implement a PRM module in firmware that will
-> include handlers for performing various types of address translation.
-> The address translation PRM module is documented in chapter 22 of the
-> publicly available "AMD Family 1Ah Models 00h=E2=80=930Fh and Models 10=
-h=E2=80=931Fh
-> ACPI v6.5 Porting Guide"[2].
->=20
-> While the kernel currently has support for calling PRM handlers from th=
-e
-> AML interpreter, it does not support calling PRM handlers directly from
-> OS drivers. This series implements the direct call interface and uses i=
-t
-> for translating normalized addresses to system physical addresses.
->=20
-> Thanks,
-> John
->=20
-> [1]:
-> https://uefi.org/sites/default/files/resources/Platform%20Runtime%20Mec=
-hanism%20-%20with%20legal%20notice.pdf
-> [2]:
-> https://www.amd.com/content/dam/amd/en/documents/epyc-technical-docs/pr=
-ogrammer-references/58088-0.75-pub.pdf
->=20
-> Tree: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
-> Base commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
->=20
-> John Allen (2):
->   ACPI: PRM: Add PRM handler direct call support
->   RAS/AMD/ATL: Translate normalized to system physical addresses using
->     PRM
->=20
->  drivers/acpi/prmt.c            | 24 ++++++++++++++
->  drivers/ras/amd/atl/Kconfig    |  4 +++
->  drivers/ras/amd/atl/Makefile   |  2 ++
->  drivers/ras/amd/atl/internal.h | 10 ++++++
->  drivers/ras/amd/atl/prm.c      | 57 ++++++++++++++++++++++++++++++++++
->  drivers/ras/amd/atl/umc.c      |  5 +++
->  include/linux/prmt.h           |  5 +++
->  7 files changed, 107 insertions(+)
->  create mode 100644 drivers/ras/amd/atl/prm.c
->=20
-> --=20
+Hi,
 
-Applied, thanks.
+On 7/29/24 1:15 PM, Hans de Goede wrote:
+> Hi Rafael,
+> 
+> There are 2 bug reports:
+> 
+> 1. Brightness up/down key-presses no longer working on LG laptop (acpi-video related):
+> https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/V2KWAGZIAX4TOWPCH6A6FSIT66PR3KMZ/
 
---=20
-Regards/Gruss,
-    Boris.
+I have filed:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+https://bugzilla.redhat.com/show_bug.cgi?id=2302253
+
+to track this now and an acpidump of the troublesome LG laptop
+is attached there. I have also requested dmesg output of
+a non working kernel to be attached there.
+
+As a reminder this is the bug where it has been confirmed that
+reverting "EC: Install address space handler at the namespace root"
+helps, with the caveat that there is a Thunderbolt related IRQ
+storm on the ACPI event IRQ after the revert ...
+
+Regards,
+
+Hans
+
+
+
 
