@@ -1,60 +1,58 @@
-Return-Path: <linux-acpi+bounces-7213-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7214-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D519454B6
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 01:05:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC04794550B
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 01:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B1D12850BC
-	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 23:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 833931F22A8A
+	for <lists+linux-acpi@lfdr.de>; Thu,  1 Aug 2024 23:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C1314A627;
-	Thu,  1 Aug 2024 23:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28D214D70F;
+	Thu,  1 Aug 2024 23:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="td8TtUsk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="taHRRej3"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2743ED2F5;
-	Thu,  1 Aug 2024 23:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB3D13E04C;
+	Thu,  1 Aug 2024 23:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722553508; cv=none; b=NAcISH7ooyPp3N5ebKkkW52CZgGnTSnX6qxUVcqSUTv1SeSx/rsWu17vGyWmVceTkZlfILkJQ1b4UHDzGyfivvx7g4mB5kBtN72Xu2X/Pds25dnGDeuvCuIMv/8xjO2N07Tn2pVrd/1VUQgI4pu8B6Xq7EMZB7xG9afuM8W5H0U=
+	t=1722556674; cv=none; b=jymn90CMJIxatP6/3g03ZkfZ/1ZodZ8i0ftjDmqST1MZXpzA1znk8pKi7FRRjJDL4XDVwc3FgFpk3DWiigevrLzBDS4bj0mRjHsagMovkHkCxMqEnmkAnTqzt8EgERi0u8LlPQRScDyel32ZMsJGvCq5GsH6YCaXy9oYWF1zj+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722553508; c=relaxed/simple;
-	bh=NgjJZVwF78QFOXnlTZN3l5y3pDbWwaW0cG0FwDmENu0=;
+	s=arc-20240116; t=1722556674; c=relaxed/simple;
+	bh=NJ5xjYh4vu5N0CFN9vwh+aQ8qN3AxM5GyydRpZOCIvE=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZoP3ZwEgPGdDrIAeF76awRtzrx+MtUg0i+JR4iPVLnnT3oy5aDK6498APHCUJD6V6hbUGiLeQ25DCpTZwQ+COXlgJ9wHbbFNLMFe1XC6KKjXvERR4kTAdULyNKZxQDfoGnAGfp3pPbKQmNO5hz404bQgQwd5MbinMThKi9fJMKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=td8TtUsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB86C32786;
-	Thu,  1 Aug 2024 23:05:07 +0000 (UTC)
+	 Content-Disposition:In-Reply-To; b=N0Ss8/efvv+ISXJaWVLJtyx17SCHKabRj244EeN4K9oQwPUY611buMJbPFsxXV4ovCoH6rzk2cMlSNXutc4gfbVc/tQ7pqfZmAfElZP/B0t9wldKDFUq2mQeUk5WVWvbPL17yFVrd7UVjTNmQCw1T4TXRjrBovGr6Ie5PD8ov7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=taHRRej3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD92C32786;
+	Thu,  1 Aug 2024 23:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722553507;
-	bh=NgjJZVwF78QFOXnlTZN3l5y3pDbWwaW0cG0FwDmENu0=;
+	s=k20201202; t=1722556674;
+	bh=NJ5xjYh4vu5N0CFN9vwh+aQ8qN3AxM5GyydRpZOCIvE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=td8TtUskaqZ1B/4IbtWpcGGOCbY01Fz1jMlLtTstWqA9YrDVkYqZ/ZNWHMopkSMau
-	 jDt+opSz/1UaCHQP4timwKgqQxHXV4JaGuz38qCOu7khKYGS8ih+MERsLooqYP+YA9
-	 TSGSCqKs1KqV2xFjIf5n0N5HY9K+TX9wylxdCSvoOaZbZuwDXzuos4cQuXdeDQgoQP
-	 QP5y+MJm3/jWFiEPwTb/zi5mQ+KtPu+KuOKSdWBE2q+sJXlOJD9f6ZnzV0r2Bs79TD
-	 vAeps9/6vuVXsh8YLgSqCT+DdSq9gFeJOilKsQ32m+hLut0QTFQu2tQk6r1XIG/38x
-	 g2WdFOIOwr0cw==
-Date: Thu, 1 Aug 2024 18:05:05 -0500
+	b=taHRRej3xlM327yIOchm3zAl+K/qSRW8YYeDoaMPLx6u9Ab3Kqq3ZZOsfGrbXqDQi
+	 uKQLhjUmOSwBxriuhDCx0s5EtSDz/JgcMrOcDuWWkNRSbHt9zYFUebT8zc4TLSDgj5
+	 vyv1ni0M16DEGA+pQ30hWDsiMLVm+tPlpx2tf56RahbUKYCEY0yOneDM3AmBpm/o76
+	 Ztzy9hfxlbD2qK5xn+0/Wc9TUXzBRIRq3Ew8ZV5De+8ROOzgPoV+aH5rBR1zc0rGYq
+	 oKL1oGhUlPVMHTsbbdM2W/matl6h0Y/yl4uRPtUEffS06ZLn/FN3OLTHoZvep7T8uN
+	 fCxOkA1ZD5MQQ==
+Date: Thu, 1 Aug 2024 18:57:52 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J . Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, Jianmin Lv <lvjianmin@loongson.cn>,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Huacai Chen <chenhuacai@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Haowei Zheng <zhenghaowei@loongson.cn>
-Subject: Re: [PATCH] PCI/ACPI: Increase the number of Loongson's PCI host up
- to 8
-Message-ID: <20240801230505.GA127410@bhelgaas>
+To: LeoLiu-oc <LeoLiu-oc@zhaoxin.com>
+Cc: rafael@kernel.org, lenb@kernel.org, james.morse@arm.com,
+	tony.luck@intel.com, bp@alien8.de, bhelgaas@google.com,
+	robert.moore@intel.com, yazen.ghannam@amd.com, avadhut.naik@amd.com,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, acpica-devel@lists.linux.dev,
+	CobeChen@zhaoxin.com, TimGuo@zhaoxin.com, TonyWWang-oc@zhaoxin.com
+Subject: Re: [PATCH v3 0/3] Parse the HEST PCIe AER and set to relevant
+ registers
+Message-ID: <20240801235752.GA129276@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,46 +61,51 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240726092911.2042656-1-chenhuacai@loongson.cn>
+In-Reply-To: <20240718062405.30571-1-LeoLiu-oc@zhaoxin.com>
 
-On Fri, Jul 26, 2024 at 05:29:11PM +0800, Huacai Chen wrote:
-> Begin with Loongson-3C6000, the number of PCI host can be as many as 8
-> for multi-chip machines. To support these machines we also increase the
-> number of entries in mcfg_quirks up to 8.
+On Thu, Jul 18, 2024 at 02:24:02PM +0800, LeoLiu-oc wrote:
+> From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 > 
-> Signed-off-by: Haowei Zheng <zhenghaowei@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> According to the Section 18.3.2.4, 18.3.2.5 and 18.3.2.6 in ACPI SPEC
+> r6.5, the register value form HEST PCI Express AER Structure should be
+> written to relevant PCIe Device's AER Capabilities. So the purpose of the
+> patch set is to extract register value from HEST PCI Express AER
+> structures and program them into PCIe Device's AER registers.
+> Refer to the ACPI SPEC r6.5 for the more detailed description. This patch
+> is an effective supplement to _HPP/_HPX method when the Firmware does not
+> support the _HPP/_HPX method and can be specially configured for the AER
+> register of the specific device.
 
-Applied to pci/controller/loongson for v6.12, thanks!
+Just to close the loop on this, I'm assuming you'll rebase to
+v6.11-rc1, fix the warnings from the robot, address Yazen's comment
+and post a v4.
 
-> ---
->  drivers/acpi/pci_mcfg.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> v1->v2:
+> - Move the definition of structure "hest_parse_aer_info" to file apei.h.
 > 
-> diff --git a/drivers/acpi/pci_mcfg.c b/drivers/acpi/pci_mcfg.c
-> index 860014b89b8e..58e10a980114 100644
-> --- a/drivers/acpi/pci_mcfg.c
-> +++ b/drivers/acpi/pci_mcfg.c
-> @@ -181,6 +181,18 @@ static struct mcfg_fixup mcfg_quirks[] = {
->  	LOONGSON_ECAM_MCFG("LOONGSON", 0),
->  	LOONGSON_ECAM_MCFG("\0", 1),
->  	LOONGSON_ECAM_MCFG("LOONGSON", 1),
-> +	LOONGSON_ECAM_MCFG("\0", 2),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 2),
-> +	LOONGSON_ECAM_MCFG("\0", 3),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 3),
-> +	LOONGSON_ECAM_MCFG("\0", 4),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 4),
-> +	LOONGSON_ECAM_MCFG("\0", 5),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 5),
-> +	LOONGSON_ECAM_MCFG("\0", 6),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 6),
-> +	LOONGSON_ECAM_MCFG("\0", 7),
-> +	LOONGSON_ECAM_MCFG("LOONGSON", 7),
->  #endif /* LOONGARCH */
->  };
->  
+> v2->v3:
+> - The applicable hardware for this patch is added to the commit
+>   information.
+> - Change the function name "program_hest_aer_endpoint" to
+>   "program_hest_aer_common".
+> - Add the comment to function "program_hest_aer_common".
+> - Remove the "PCI_EXP_TYPE_PCIE_BRIDGE" branch handling in function
+>   "program_hest_aer_params".
+> 
+> LeoLiuoc (3):
+>   ACPI/APEI: Add hest_parse_pcie_aer()
+>   PCI: Add AER bits #defines for PCIe to PCI/PCI-X Bridge
+>   PCI/ACPI: Add pci_acpi_program_hest_aer_params()
+> 
+>  drivers/acpi/apei/hest.c      |  66 +++++++++++++++++++++-
+>  drivers/pci/pci-acpi.c        | 101 ++++++++++++++++++++++++++++++++++
+>  drivers/pci/pci.h             |   9 +++
+>  drivers/pci/probe.c           |   1 +
+>  include/acpi/apei.h           |  17 ++++++
+>  include/uapi/linux/pci_regs.h |   3 +
+>  6 files changed, 195 insertions(+), 2 deletions(-)
+> 
 > -- 
-> 2.43.5
+> 2.34.1
 > 
 
