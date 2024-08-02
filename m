@@ -1,104 +1,108 @@
-Return-Path: <linux-acpi+bounces-7241-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7242-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C689945FCA
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 17:01:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BA4945FDF
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 17:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45D3C28363C
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 15:01:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC441F23BB9
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 15:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321B021C170;
-	Fri,  2 Aug 2024 15:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fk4hneuP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085E82139B6;
+	Fri,  2 Aug 2024 15:08:02 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FD214D2B1;
-	Fri,  2 Aug 2024 15:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E4B1E2898;
+	Fri,  2 Aug 2024 15:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722610855; cv=none; b=U40Cnj099LZ/CBstP04zAACLxY4WrMiyLYssDOtcUo08zT2ToyKP9NOisoXNZT+PjHxXjXFEtZquw9R1mfLUHq9UG3W1UVn7mi/sUvSITUL9e8vOIfgbu3l2C5m3/ohLpZqrjdQGfybUTgN4hbUguXGUb8WBwiBQGeHRsLdCHGc=
+	t=1722611281; cv=none; b=O+b/lJgGjLN42u1j04EgVTRsZ0G31d6WVivu66yrVDpEoW6SxMkZ2ESTUyTjGXn2ciTpqbFlQQJUMRXINWDUcEuZvN0D9peGPoLfgwmoK415CNjibJY+gMS/7ZdILagyQzDnnpb+z7UPzLfZD8vqYQEsBd0xrAA4PXms5g9NAQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722610855; c=relaxed/simple;
-	bh=2ELiqG08xZ0LVQMoVoxBT2tDnoWcCGTYUiKxCU2w+5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AfNPA6g4Cvbx3PzZk118C/KjyVRGwI3LZ12p5Cu6yztz7EA5DB//QRRxWY+ATmjKTwFY9vglneXlk+K1f5nltCE105NJAWUhbJE7aKR/zylG0lmWSYu4OMsoVta563O93o+mqozLZFwFSj9ouCI4YdSPbBb3++4CmED8WJ+VJbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fk4hneuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0DAC32782;
-	Fri,  2 Aug 2024 15:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722610854;
-	bh=2ELiqG08xZ0LVQMoVoxBT2tDnoWcCGTYUiKxCU2w+5g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fk4hneuP+MQJnzmWN/EVZhIG0hIMPbAzRrzjCZTx7R5Kz7NDz4PxYXqiTlIh9wEr7
-	 0gHP+3gw1fMqqjDHZ30AK1eRNe9s9wl0cIhAhhflN/J2s4EbVjl1G+31o7ChM9QTlb
-	 bI2aAnZR42E+QckE7I9BgKS0e06P9IG+5rU0zeVBtwNyt2L9NOHjxTLdIzIRq0jJXk
-	 b1tJl0JGN1ap954E7/lvggf8zfp6CYJfU1ur3uF+iWWPrJk/JyVATAARaiP+C4wzGl
-	 mWWghU4/LYk0gSCVnC9Gb98/s8uehLpkKoLsYEVmj2GOpB7AVid7ftkDq6laZcG4Qw
-	 2bOQq4wJmtrgQ==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2635abdc742so1202041fac.2;
-        Fri, 02 Aug 2024 08:00:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUBnPHZ5S74bep3pZCjLVJsWh1FmyI6k+4H+opaAO/DJNV1pYC1j7WIVdpTSJ+Cw049iP6KOinFrFD7KuRX@vger.kernel.org, AJvYcCULc/ptWTR81XQN2mNEbqLcIcIoIocewfngMva0GsDIItrg8n+cduWGooKvTKeKSw5vCprKj7QRDLKB@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+p3JdmZWzR8+lPjf4GbjzQVJkI4+syyK+gP/iO8E7Y3sYFR/9
-	ySDbzwBhmSBEIlkNTJhEDhrfkk57VvFcwgQjr+TcADV+W3ZF3ZDUEnBvPMGnOxeHGyUCM3NUioA
-	X5SfbkGSb5AXwzxB8Ark0nerGTgI=
-X-Google-Smtp-Source: AGHT+IFil9pYtmy806vMRAxxrPLbT21xjDWO7nO5I3lpA8dnUVKCrF7typyrR8Zta02XxEzmjqHf9wKk+cPl6EFymK8=
-X-Received: by 2002:a05:6870:2054:b0:260:e5e1:2411 with SMTP id
- 586e51a60fabf-26891e9f598mr2318205fac.6.1722610854101; Fri, 02 Aug 2024
- 08:00:54 -0700 (PDT)
+	s=arc-20240116; t=1722611281; c=relaxed/simple;
+	bh=dE2tw65wybbwVSofl+zPz2Gn5VirG4tlVL3m+9Ybn1I=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jOv49mfUkXohkt0/AAKvl+glIdaDt8sqOE0iss/veqj51wU9918JU0lMTxbP9ySGzNiU+SZTWXlSQ0uuRwCXyptWnBNXge7+ItrqbhY3nfJECiKDj6W6l5cJDaY0ectREStA94pmw+xzFqXftSlPnD22VlnM0lf8f+2ld1AOKRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb8JQ56Vvz6K6RP;
+	Fri,  2 Aug 2024 23:04:54 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 959BE140A08;
+	Fri,  2 Aug 2024 23:07:33 +0800 (CST)
+Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
+ 2024 16:07:32 +0100
+Date: Fri, 2 Aug 2024 16:07:31 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Mike Rapoport <rppt@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, Alexander Gordeev
+	<agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, "Borislav
+ Petkov" <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand
+	<david@redhat.com>, "David S. Miller" <davem@davemloft.net>, Davidlohr Bueso
+	<dave@stgolabs.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, Heiko
+ Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, "John Paul
+ Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, Jonathan Corbet
+	<corbet@lwn.net>, Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt
+	<palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring
+	<robh@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
+	<tglx@linutronix.de>, "Vasily Gorbik" <gor@linux.ibm.com>, Will Deacon
+	<will@kernel.org>, Zi Yan <ziy@nvidia.com>, <devicetree@vger.kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-cxl@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
+	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <loongarch@lists.linux.dev>,
+	<nvdimm@lists.linux.dev>, <sparclinux@vger.kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v3 24/26] arch_numa: switch over to numa_memblks
+Message-ID: <20240802160731.00005f79@Huawei.com>
+In-Reply-To: <20240801060826.559858-25-rppt@kernel.org>
+References: <20240801060826.559858-1-rppt@kernel.org>
+	<20240801060826.559858-25-rppt@kernel.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240719145330.9430-1-lirongqing@baidu.com>
-In-Reply-To: <20240719145330.9430-1-lirongqing@baidu.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 2 Aug 2024 17:00:43 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gUfsaUej19ts-M0ueB3GyvKQ2vPk-pqc7uk1+G-f7cew@mail.gmail.com>
-Message-ID: <CAJZ5v0gUfsaUej19ts-M0ueB3GyvKQ2vPk-pqc7uk1+G-f7cew@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: processor: Silence per-cpu acpi_handle_info about
- idle states
-To: Li RongQing <lirongqing@baidu.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Fri, Jul 19, 2024 at 4:53=E2=80=AFPM Li RongQing <lirongqing@baidu.com> =
-wrote:
->
-> This made the CPU bootup faster, otherwise Linux spends lots
-> of time to printing nonsense information for each CPU when
-> there are lots of CPUs
->
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> ---
->  drivers/acpi/acpi_processor.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.=
-c
-> index 9916cc7..a19ace9 100644
-> --- a/drivers/acpi/acpi_processor.c
-> +++ b/drivers/acpi/acpi_processor.c
-> @@ -985,7 +985,7 @@ int acpi_processor_evaluate_cst(acpi_handle handle, u=
-32 cpu,
->                 memcpy(&info->states[++last_index], &cx, sizeof(cx));
->         }
->
-> -       acpi_handle_info(handle, "Found %d idle states\n", last_index);
-> +       acpi_handle_debug(handle, "Found %d idle states\n", last_index);
->
->         info->count =3D last_index;
->
-> --
+On Thu,  1 Aug 2024 09:08:24 +0300
+Mike Rapoport <rppt@kernel.org> wrote:
 
-Applied (with edited subject) as 6.12 material, thanks!
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Until now arch_numa was directly translating firmware NUMA information
+> to memblock.
+> 
+> Using numa_memblks as an intermediate step has a few advantages:
+> * alignment with more battle tested x86 implementation
+> * availability of NUMA emulation
+> * maintaining node information for not yet populated memory
+> 
+> Replace current functionality related to numa_add_memblk() and
+> __node_distance() with the implementation based on numa_memblks and add
+> functions required by numa_emulation.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
