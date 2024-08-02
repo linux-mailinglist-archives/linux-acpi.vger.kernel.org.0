@@ -1,106 +1,105 @@
-Return-Path: <linux-acpi+bounces-7234-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7235-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F467945D1E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 13:20:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5DA945D98
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 14:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED09F1F2241A
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 11:20:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE6E1C21C62
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 12:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E631E212C;
-	Fri,  2 Aug 2024 11:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA141DE867;
+	Fri,  2 Aug 2024 12:01:52 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E2A1DF66B;
-	Fri,  2 Aug 2024 11:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBFB14B09F;
+	Fri,  2 Aug 2024 12:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722597611; cv=none; b=rqJB8JPYJgybQpRtc/lVMuFEm8s/x4sZ1LH5sEN1RfnldyF4j+bd6lIvOKuZLVFWR6e1ALgx7ZOT+nS+FCf0xa3w52BW/4vAiNOuuFeT19qfOQcGsV2HMgHnOr4sblatS1lwtWRxZPHXPZ2mkyp2WKpxxhyCQXllhKzKfXnqPt8=
+	t=1722600112; cv=none; b=Ulfy8T39Yo1U/YsuAePLMO22IApuCCi1rE99WUrmE9/W7fYBLYYCz3mCIjKsDuvi5iso5ptPAJbd1NWZGvZZkWEsLPF+k9Gk4Mt5jA+bstrsNEXky3MI661wY7fITx+6/HIOkTR7eSqFOc8XKq5f1sp3mod4c1hZvSUbYpYMRIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722597611; c=relaxed/simple;
-	bh=4xShjOftd4+pZBV2l+SeEhAEEaYdoitSomtoKS3Umuk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a/J/9r5J+geqS9SXUaJnXGxC9yy1Ot9uvOF92HypWHNh2kDBk4B5DocvsPc4EaHvd5E2ywqG0qKbJFz/uiA2l5HKrB/fmf1+dG3rzXpq9XBX/55cjmZgjnP5z78RVYsOr9OSSmxN7Mk5dUO+vJYsYSC5WZfsXHBXvzDa+cU7HtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb3Ft71Q0z6K6GR;
-	Fri,  2 Aug 2024 19:17:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 653A91400D9;
-	Fri,  2 Aug 2024 19:20:01 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 12:20:00 +0100
-Date: Fri, 2 Aug 2024 12:19:59 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, Alexander Gordeev
-	<agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, "Borislav
- Petkov" <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand
-	<david@redhat.com>, "David S. Miller" <davem@davemloft.net>, Davidlohr Bueso
-	<dave@stgolabs.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, Heiko
- Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, "John Paul
- Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, Jonathan Corbet
-	<corbet@lwn.net>, Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt
-	<palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring
-	<robh@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
-	<tglx@linutronix.de>, "Vasily Gorbik" <gor@linux.ibm.com>, Will Deacon
-	<will@kernel.org>, Zi Yan <ziy@nvidia.com>, <devicetree@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-cxl@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
-	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <loongarch@lists.linux.dev>,
-	<nvdimm@lists.linux.dev>, <sparclinux@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v3 19/26] mm: introduce numa_emulation
-Message-ID: <20240802121959.00003c18@Huawei.com>
-In-Reply-To: <20240801060826.559858-20-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-20-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1722600112; c=relaxed/simple;
+	bh=raWuv0skPOWoOjKvJaMx51HTs9/zlRz6O1m2f1EMPZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Uou+6ZRIPJY+6lSGRQ4USmxUr4uAsfWjMuWoUh7Yt4PCSAG79fbRlc+1fuYeMP2MbAn9ZygJticbv+xDS7Lby2e5eAyJg3QN6Ivt45gbJYlN1JPsLZfwqj9Hjtu2EwaAskBDZWkQs2AH+Jdqrm90YTYZ9bB2psFdY/4QFk044fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C50BC1007;
+	Fri,  2 Aug 2024 05:02:15 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 642163F64C;
+	Fri,  2 Aug 2024 05:01:46 -0700 (PDT)
+Message-ID: <f43e0424-c58a-4895-a2e7-2ec403ea3519@arm.com>
+Date: Fri, 2 Aug 2024 13:01:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 07/10] iommu/arm-smmu-v3: Maintain a SID->device
+ structure
+To: niliqiang <ni_liqiang@126.com>, jean-philippe@linaro.org
+Cc: Jonathan.Cameron@huawei.com, baolu.lu@linux.intel.com,
+ devicetree@vger.kernel.org, eric.auger@redhat.com, guohanjun@huawei.com,
+ iommu@lists.linux-foundation.org, jacob.jun.pan@linux.intel.com,
+ joro@8bytes.org, kevin.tian@intel.com, lenb@kernel.org,
+ linux-accelerators@lists.ozlabs.org, linux-acpi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, lorenzo.pieralisi@arm.com,
+ rjw@rjwysocki.net, robh+dt@kernel.org, shameerali.kolothum.thodi@huawei.com,
+ sudeep.holla@arm.com, vivek.gautam@arm.com, wangzhou1@hisilicon.com,
+ will@kernel.org, zhangfei.gao@linaro.org, zhukeqian1@huawei.com,
+ ni.liqiang@zte.com.cn, li.zhichao@zte.com.cn
+References: <20210401154718.307519-8-jean-philippe@linaro.org>
+ <20240801152922.5605-1-ni_liqiang@126.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20240801152922.5605-1-ni_liqiang@126.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu,  1 Aug 2024 09:08:19 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On 01/08/2024 4:29 pm, niliqiang wrote:
+>> +static int arm_smmu_insert_master(struct arm_smmu_device *smmu,
+>> +				  struct arm_smmu_master *master)
+>> +{
+>> +	int i;
+>> +	int ret = 0;
+>> +	struct arm_smmu_stream *new_stream, *cur_stream;
+>> +	struct rb_node **new_node, *parent_node = NULL;
+>> +	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(master->dev);
+>> +
+>> +	master->streams = kcalloc(fwspec->num_ids, sizeof(*master->streams),
+>> +				  GFP_KERNEL);
+>> +	if (!master->streams)
+>> +		return -ENOMEM;
+>> +	master->num_streams = fwspec->num_ids;
+>> +
+>> +	mutex_lock(&smmu->streams_mutex);
+>> +	for (i = 0; i < fwspec->num_ids; i++) {
+> 
+> Hi all experts,
+> 
+> Recently, I have been debugging the smmuv3 code in the Linux kernel,
+> and I have some questions regarding the `mutex_lock(&smmu->streams_mutex)`
+> statement in the `arm_smmu_insert_master` function.
+> I would like to understand why streams_mutex is being locked here.
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Move numa_emulation codfrom arch/x86 to mm/numa_emulation.c
-> 
-> This code will be later reused by arch_numa.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-I ran some basic tests on ARM with this. Seems to do the job.
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Because the "streams" rbtree is being modified, so it would be pretty 
+bad if another thread tried to walk or modify it concurrently. I'd hope 
+that was obvious from the code everywhere "streams" and "streams_mutex" 
+are referenced.
 
-Works on both ACPI and dsdt boots.
+> Is it to handle different types of PF under a single EP, each with its own device ID?
 
+It is expected that a single SMMU instance is highly likely to have more 
+than one device behind it, and therefore more than one StreamID to keep 
+track of.
+
+Thanks,
+Robin.
 
