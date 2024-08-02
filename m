@@ -1,114 +1,106 @@
-Return-Path: <linux-acpi+bounces-7239-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7240-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D934945F7F
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 16:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FBA945FA7
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 16:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508501C21375
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 14:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFEC51C216F9
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 14:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4C1210191;
-	Fri,  2 Aug 2024 14:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974C321019A;
+	Fri,  2 Aug 2024 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kmggag30"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diBQ6K9g"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9091613C914;
-	Fri,  2 Aug 2024 14:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF731C693;
+	Fri,  2 Aug 2024 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722609441; cv=none; b=RVkM0vfRPCKTRaEy3bUIgkTk99UJXZgWzi47R8ocxT9UXsusnP7dL1y/U8YDTXCRZBjE47ABbBfFP9zx+T5YQ9fx1xMJTYLZHhMvxmy1J3bNnj7hSEZu8l02DE3PZR2G//FOicyb4sg2ZX/+1tKrAQSNYCbcqL5FDgqkZ7r9plo=
+	t=1722610361; cv=none; b=edgeJ3mQhoGefJztY/3m5QoHD/r473B1YZc17LlXadN7DXfYSL4rxLWJGXtLQ5oXWRmFvZE2p1PbiQoP8FQeKW+dSRN1ADYJ0sQDQXOM5vQ0waHLIsgMJhe/F8GVEZRa1cRbWTajoxKcGc+bhzV4rv7licvnLiW+EwMLEUUmPcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722609441; c=relaxed/simple;
-	bh=84ATkB8B4asG5M+/R80ikVc1JWFsWZfU8RMxzyrfnOU=;
+	s=arc-20240116; t=1722610361; c=relaxed/simple;
+	bh=7fW4SVY1AD5MyHTSqymQgAUot2hO/fMcw3Ygn74bn4I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BmkK5jofJ04SbhbFVt5qz57AQUKudhNYgcSNPI4DfG3g8GVGL0QhQJDD5t7VXkRIM0rj7MCJ/c2Pf40k7f/v7rnf7IPR9ULenlaIcynNG2q7a12WOSt1sFSsr9ZjL79oF0aaBmoXc77wgA3ib8+gLJCAJs3+VKUT5+PtqHfbzIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kmggag30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D15CC32782;
-	Fri,  2 Aug 2024 14:37:21 +0000 (UTC)
+	 To:Cc:Content-Type; b=ewKyVJy5gpeyJ8f+VMeiMDmcPZOQ/+NqzufVyR1WLo3p7VjzWc70leOI68X/R+O7qGgc2hsyMNJ487qgPyosiJx1Ux0Kefav4OxLwE3ijlqpg8MhRhcb5Hq1grpRAHDYtQr1o79sI3Xg+YqoYXq9Dx8YmzQIZNa2cSWmjAr8SGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diBQ6K9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECCA3C4AF0A;
+	Fri,  2 Aug 2024 14:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722609441;
-	bh=84ATkB8B4asG5M+/R80ikVc1JWFsWZfU8RMxzyrfnOU=;
+	s=k20201202; t=1722610361;
+	bh=7fW4SVY1AD5MyHTSqymQgAUot2hO/fMcw3Ygn74bn4I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Kmggag30gsrlRr88nKmFQkK4M1V7p49eZWjoq/7CR7mjIXsuH4gmGBPjXPEGeeGOt
-	 1bvvSG7bwZjPvmjPSlPFltQD0y5Dyn08mH5gRTAdNIZWqTKS7Tf43iRtQ2DogkV86S
-	 6bVrzkAU1J6dDEFEamgFLBavCPoEG0FMS2D78fl9p/CVbz+3Tq1JslAIvxgcF4Qekb
-	 ASbQJdrltwFfS2yppTkzPh9P7QwOowGZhlhxyvsN7GssleHPrzRSvuvE82G3Ds3DM2
-	 oHK5ZSpYjxBaDN2Ni+FivxMgBHMWh4RDswaRvAevnHh+tGJ9q2nOXgsiYuidgia2Vt
-	 7GL2ChB8+5zwA==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-26123e59c8aso988362fac.1;
-        Fri, 02 Aug 2024 07:37:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWm0tpZuuXPck8GyLOlKuLV0U6O4NLDPjOdyE4kXttcd2r+g0EM7+G4WGNPL2/+487BvOajYqZqXHH0@vger.kernel.org, AJvYcCXHoatYI3gE4NEx8r4Z3w9Es4BDE4gKwJbbB0rHUN+0hB/Pa6WpV677IwOQwwWqXJTFiuelNnPG6f/FipUX@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCVX959NZTeXalOVqabXX/kNUkx5e7wPWxQ+7LK9jjf5ScJoWE
-	BPhL5EFdMsqH0GcGKiRt/taOHGYXYjK+R0U+og9qzmYCVDyXUQkwu/ILLfSnaCIDge9f1P6A2ir
-	YsiHfInKRkAHvQdADmnVKjXEty58=
-X-Google-Smtp-Source: AGHT+IGslD5DoBw3k9PPMxNqR1gezjEN7LyvsIkTN4/ytQ5GDbMHGLz7buiM7LDYdhidiDdjpgH4yf0eZ1L9OlabtNA=
-X-Received: by 2002:a05:6870:506:b0:260:eb27:1b83 with SMTP id
- 586e51a60fabf-26891e95c16mr2801876fac.5.1722609440720; Fri, 02 Aug 2024
- 07:37:20 -0700 (PDT)
+	b=diBQ6K9gl9IzCkPjvuCK6NjgDdc+uTBSbcRInNQPutN3N3JVodBs0K1pODujq8oCh
+	 QrCRVYLhU87B1IOwOFo9PpcLqTLfXwIouRUZUkCBwPqvjsa49IYyFwStxZcppprvHs
+	 2ZoLlQKyONzKvPvOtCF8z/6oHAokYkWi3uq/ydNhCzEYvqg2nB/uatDEkLCZ+OJ/jM
+	 +WUHQ0DOs2qBImNtGZkzhm3tnAG0L/G9qPwyYazWIqKpxzCVb4o9WO/7m/5gB+ZrXo
+	 gcT6+1i2zrMIADvUu2m2hqLtdyykXpB3WeFZkWK38HaP4o8V8bDLoY3vAo0MPzri0V
+	 EJb/dDEjy37AA==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-26117c006c7so299260fac.1;
+        Fri, 02 Aug 2024 07:52:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUBUtEbw4b9yK5fNSaAbQdFykM5qDjkT4Knz/o2C1/CyTj0vt6l7++T/KF2W6b1xwxBcbthsD6pKYlLOCzwP644UbHKEG6IarkKLXpeZksr09PkMUhFQtkZBfpKh7ZeWq9n18GdnIOcRQ==
+X-Gm-Message-State: AOJu0YwBGGm6reJ75QGQS8hpiuZ4L6nYKtDlpj37uFZDpFgcrjjLPnca
+	if/EoC4BNguiO7+XGzpf88lQuGsM324eNRFt8YP/ugc43+nEJW22+282xzZi0xy6I6imbSfbPNS
+	FSttGbQ5d+VVuoCb1vrzMgeRYYR0=
+X-Google-Smtp-Source: AGHT+IFRwhlT5f1teywL2mMHVX2BhO378lznK7c5J3JEzN35Ix0lj/6e/en8VJKsWBhA9ktlFXeZl2ABL7W252HiR40=
+X-Received: by 2002:a05:6870:ac10:b0:260:23eb:5669 with SMTP id
+ 586e51a60fabf-26891a9437fmr2379024fac.2.1722610360309; Fri, 02 Aug 2024
+ 07:52:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240706074505.9885-1-qasim.majeed20@gmail.com>
-In-Reply-To: <20240706074505.9885-1-qasim.majeed20@gmail.com>
+References: <tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com>
+In-Reply-To: <tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 2 Aug 2024 16:37:09 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hK7JgS5UemkjE2sipvdeHA=jTqcgbj2gZTKH2kYsO8jQ@mail.gmail.com>
-Message-ID: <CAJZ5v0hK7JgS5UemkjE2sipvdeHA=jTqcgbj2gZTKH2kYsO8jQ@mail.gmail.com>
-Subject: Re: [PATCH] Updating a deprecated use of strcpy in ac.c file.
-To: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
-Cc: rafael@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 2 Aug 2024 16:52:29 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iw6v+X_UM0QNzj0MC7hdvmoqUK2mt3caOn-4YbbQRkeg@mail.gmail.com>
+Message-ID: <CAJZ5v0iw6v+X_UM0QNzj0MC7hdvmoqUK2mt3caOn-4YbbQRkeg@mail.gmail.com>
+Subject: Re: [PATCH] ACPICA: ACPICA: check null return of ACPI_ALLOCATE_ZEROED
+ in acpi_db_convert_to_package ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
+To: xiaopeitux@foxmail.com
+Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, 
+	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, xiaopei01@kylinos.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 6, 2024 at 9:48=E2=80=AFAM Muhammad Qasim Abdul Majeed
-<qasim.majeed20@gmail.com> wrote:
+On Thu, Jul 18, 2024 at 8:12=E2=80=AFAM <xiaopeitux@foxmail.com> wrote:
 >
-> Replacing strcpy with strscpy.
-> strcpy is a deprecated function.
-> It should be removed from the kernel source.
+> From: Pei Xiao <xiaopei01@kylinos.cn>
 >
-> Link: https://github.com/KSPP/linux/issues/88
+> ACPI_ALLOCATE_ZEROED may fails, elements might be null and will cause
+> null pointer dereference later.
 >
-> Signed-off-by: Muhammad Qasim Abdul Majeed <qasim.majeed20@gmail.com>
+> Link: https://github.com/acpica/acpica/commit/4d4547cf
+> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
 > ---
->  drivers/acpi/ac.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/acpi/acpica/dbconvert.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/drivers/acpi/ac.c b/drivers/acpi/ac.c
-> index 09a87fa222c7..ad1427a384e4 100644
-> --- a/drivers/acpi/ac.c
-> +++ b/drivers/acpi/ac.c
-> @@ -213,8 +213,8 @@ static int acpi_ac_probe(struct platform_device *pdev=
-)
->                 return -ENOMEM;
+> diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconv=
+ert.c
+> index 2b84ac093698..8dbab6932049 100644
+> --- a/drivers/acpi/acpica/dbconvert.c
+> +++ b/drivers/acpi/acpica/dbconvert.c
+> @@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, =
+union acpi_object *object)
+>         elements =3D
+>             ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
+>                                  sizeof(union acpi_object));
+> +       if (!elements)
+> +               return (AE_NO_MEMORY);
 >
->         ac->device =3D adev;
-> -       strcpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME);
-> -       strcpy(acpi_device_class(adev), ACPI_AC_CLASS);
-> +       strscpy(acpi_device_name(adev), ACPI_AC_DEVICE_NAME);
-> +       strscpy(acpi_device_class(adev), ACPI_AC_CLASS);
->
->         platform_set_drvdata(pdev, ac);
->
+>         this =3D string;
+>         for (i =3D 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
 > --
 
-Please see this commit:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/commit/=
-?h=3Dbleeding-edge&id=3D142acc42a7443f377b1a452ce906dc3adec91f70
-
-and format the subjects and changelogs of all of your ACPI patches
-that replace strcpy() with strscpy() in analogy with it.
-
-Thanks!
+Applied (with edited subject and changelog) as 6.12 material, thanks!
 
