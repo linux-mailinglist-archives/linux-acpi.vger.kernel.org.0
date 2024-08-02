@@ -1,141 +1,159 @@
-Return-Path: <linux-acpi+bounces-7219-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7221-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1D09457D0
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 07:55:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133A7945905
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 09:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 886AA283FB6
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 05:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1A302865A1
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 07:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCE54655F;
-	Fri,  2 Aug 2024 05:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E481BE86E;
+	Fri,  2 Aug 2024 07:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fknCQwrK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i8pNbQAP"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBDB3D97F;
-	Fri,  2 Aug 2024 05:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A64E45020;
+	Fri,  2 Aug 2024 07:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722578119; cv=none; b=f9R4AnNxg/v7SFQ7liAAxTViFzEkKUjfbUx7sTh+yRfqZljgZ8fXVEaJRovfGVVn7EXgksVrnOv12Uh76//ZZUfxe+vQjdX7LW6SCJtMOWhp398Av0u4YVXDnLbrQm2bQ8t+NjmpzYHC+EAtUSLqPozB8u+0zdE6UhrDJi3C6cA=
+	t=1722584275; cv=none; b=s5dpsZu8k4gAOMX3dQIKIauC2JouxnoAVSmpWRbEqhpysBXefnOG0lQBPP6NjlDPAh7+xeo04LYLTei4phlrdseMudxh/GJKJhSfhxDOFRfksbBfYwNid+lYaeT7e+2VvDS5Yu2KXGKbJ6/TNac7eVS4vJpxUbbTfamFVJGcKls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722578119; c=relaxed/simple;
-	bh=oJ3IlqSiPUE/6vfvESym8bB1B3xRl0UDxfzGbgXtDaQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Lml+LHInJ3w55NI+969lNlMh9rOyrIFewCE7LZPUZwNw5Tq1kaCm8tGN6OtR1AlHlGVL8rpZqY3mAF6yBSCHXRbKGrgENsY70rij2lzYZuHW+78t2KSgOLy8/gH0hL+N4ObPMxZGTVnCDwzmVCZzXJT1kkAc0Y9Q+rl5WHWTozA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fknCQwrK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5DDA3C4AF14;
-	Fri,  2 Aug 2024 05:55:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722578119;
-	bh=oJ3IlqSiPUE/6vfvESym8bB1B3xRl0UDxfzGbgXtDaQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fknCQwrKbaeH+FLdDZ4sQrJDl+LtRbdRuC8NQss+/xaIMaAyf/+0v0ya3F6fwSeQ1
-	 K3aZGf0RZ4FInf1OCJ9yYED6CmGzVflUgkuDE6K6F7gk7bDkmtfs8kQRT1okAeNabP
-	 emQdoF2PwfEGVTkpLCDJUC9CQGt8BUTra1h+0y5R1SVZBfhTgTbJ1z66REsTgBBmfW
-	 YM5gh+7gxAjLquTZO73PwqTYBqvq56fPHjwN5AgjBZ27s4/kiWDaR8fQpxHYR3IN6/
-	 H5s2Xo+hTACWMntame/2jhoS99yw64smB6S4oPD42UPPoyLtMiAmwUTChGzqw5Euts
-	 cGgnzGFmropbQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 510CCC52D73;
-	Fri,  2 Aug 2024 05:55:19 +0000 (UTC)
-From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Fri, 02 Aug 2024 11:25:03 +0530
-Subject: [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all
- Devicetree based platforms
+	s=arc-20240116; t=1722584275; c=relaxed/simple;
+	bh=442BEwgQZkNvyntWB/mlPJnY/PPnoqx1uEiiossTppU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uP2VJSMlEepnkrg+K9rwj8kpn/Dzo/5zVzVvy7CJ/l8D7/skxYGM+4JovN7ctYIYi7k9PQkfvIf+ASZvDWZ00cd/LinzARHGNRcqfJIX5eiL6bQYai8jp3edR1AICxSRNkAbfLiXba1UpRickH+xKeaBVrS+Leqt6D2JYFVW2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i8pNbQAP; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52f01b8738dso8089125e87.1;
+        Fri, 02 Aug 2024 00:37:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722584271; x=1723189071; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VEul01c7Y76/vYgRcbl6yWvRBJXnnoj1/y3jzSU/8/8=;
+        b=i8pNbQAPDnn8RzniPSV4nRDgHa3MTkwnKDwB4Ts4KWgJNKmN/mTiOSFBM7x7Jf2/Sg
+         5FJkEOyvtCPDQzy1l3+CXTWLUCh/gnN4OBTEEXkJcXw/UaYSO/QBHUChyG1IhCp9t50E
+         RjMJ/FdSzAwex8GKGKnQMpnxX/PZPhGLi/sd4HW5bGkNv1dd7FR+UlV75WoFnYQotgrT
+         iAQLTIvld+1/Y5Mhn4e6IvAU0CQvSiRGSfdB7lROmoX3dpyYaiCALXl/sDq5s8QpN9gb
+         ztfnaPNxZK8yTBI9OMi6u4w1IefkKlXkhSLSyjkzqDjQ2SoxOF9yPULnDkz0EIGXwchO
+         qzfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722584271; x=1723189071;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VEul01c7Y76/vYgRcbl6yWvRBJXnnoj1/y3jzSU/8/8=;
+        b=TXrMBbJK8EKHMwiA6RHjrUpbgzCaylfiUhGG2+CB7W4yOIs04iZwX5S58QXVk0xSK1
+         du+83NjSb1IjsVQEQ9DOjmnp8KNGVGSsgAKkoENWlNTT9vv3ZCQEYEKWfs0elbkc8Ehq
+         j3DFww3NTuh62p7tcw1a0rUJhG5povrdkmUncomDu7Cw6GSMQYBRLGWI7YTf5hebauv0
+         NRYRtBKdQAC3dQ0pDkQo8I/JegokO4FVTPkiEbE8VoeHb802Qsu2WQ9hD/zOXPXE5bYW
+         m+pZX9rtOT3y51/+lKfsy6ccFImQQxvh0CSMu76uPzF5Pzy9GucEQdS5ZeO9qunwbpT/
+         Xkcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ6uMFjmkNQ8YLT9bnwb3hx16+FhPWOEXM7eqqtX6d4jQQTcJQYqo4URFnIjGN6h/pEuDR+SDeuIxJAYlutExT0/kNIrfWC8cUwguBFOzoBF8Jpf2M3zuqnQuXao+eudLU3Dr18JFyJh2zDkrp3kD6vL3orCdDDHZ+vLFBUEn7Jxd800iSJOad1tBpxf78+IlisNkIV3u/SXATMWZnr9QAjR55kPd7yincrKJhJtS4beTN4UmtHR/bnQ==
+X-Gm-Message-State: AOJu0YzRnkQ18SbQqMOu5LPZH83VObSqufhBVsgO6D2lIduTGKk37z1v
+	9w9qfigc7gMn6djLxSUP1Z2YF7Zn4yNWpVWB1nXjSABu515HvFWK
+X-Google-Smtp-Source: AGHT+IEHnlmTy7PUXPtQ9CQBEllQgwVpgIZH7F4dD5CQheEpZWQkcMNTvJS4jYPpRUf+JDphV9EeJw==
+X-Received: by 2002:a05:6512:b1a:b0:52e:9c69:b25b with SMTP id 2adb3069b0e04-530bb37c2a5mr1274908e87.28.1722584271076;
+        Fri, 02 Aug 2024 00:37:51 -0700 (PDT)
+Received: from [192.168.0.31] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd06df9esm1247001f8f.100.2024.08.02.00.37.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Aug 2024 00:37:50 -0700 (PDT)
+Message-ID: <9083938c-c2df-4429-904d-700e5021331c@gmail.com>
+Date: Fri, 2 Aug 2024 09:37:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
-References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
-In-Reply-To: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
-To: Bjorn Helgaas <bhelgaas@google.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-acpi@vger.kernel.org, lukas@wunner.de, 
- mika.westerberg@linux.intel.com, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Hsin-Yi Wang <hsinyi@chromium.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1909;
- i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=ysTqE45coqPvykQRZRe0VeyavgQ9+sgZKnMnxkXaMrs=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBmrHTDk+wYKSA4ReZo++MT1k+y+mL9mpBeuq5iS
- rN1qLy+ebqJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZqx0wwAKCRBVnxHm/pHO
- 9bj2B/9CHofWJVlPBG6X2dbdioyUIDnUxWxbrl1XR2oQVu+HOTwlWR1Jk7diQuhO3z4OjhGUR0w
- R9l3pknbtJ982jDRmJDsHMK3y4rQj3hHflT9zMSeF4qnzGmHEk8V06arY61nfyDQYN8scYnz+hx
- 8Jf1GktYNZKDlyfF5+oRkJcn3YYLd5pawJ/G21JvXgsmyUI01CKXjpXewgKJoRpanKDt8+YkZHv
- MY41deRlZ1Crer5imiCiS8WGeEA3Hq9mVA9W4VLS1+2qpAPpM4gQ4+PV1TcqeUPQd7PH7OJoqy/
- r6+Zldu8WZQpd8iKpFFT/uIcKjLIyuq6EMKvXh0Iw0+ZKF6d
-X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
- fpr=C668AEC3C3188E4C611465E7488550E901166008
-X-Endpoint-Received: by B4 Relay for
- manivannan.sadhasivam@linaro.org/default with auth_id=185
-X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reply-To: manivannan.sadhasivam@linaro.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: (subset) [PATCH v2 0/6] use device_for_each_child_node() to
+ access device child nodes
+To: Lee Jones <lee@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Jean Delvare
+ <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
+ Pavel Machek <pavel@ucw.cz>, Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andreas Kemnade <andreas@kemnade.info>, linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-leds@vger.kernel.org, netdev@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240721-device_for_each_child_node-available-v2-0-f33748fd8b2d@gmail.com>
+ <172192488125.1053789.17350723750885690064.b4-ty@kernel.org>
+ <094c7d7f-749f-4d8f-9254-f661090e4350@gmail.com>
+ <20240801123901.GC6756@google.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240801123901.GC6756@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+On 01/08/2024 14:39, Lee Jones wrote:
+> On Mon, 29 Jul 2024, Javier Carrasco wrote:
+> 
+>> On 25/07/2024 18:28, Lee Jones wrote:
+>>> On Sun, 21 Jul 2024 17:19:00 +0200, Javier Carrasco wrote:
+>>>> This series aims to clarify the use cases of:
+>>>>
+>>>> - device_for_each_child_node[_scoped]()
+>>>> - fwnode_for_each_available_child_node[_scoped]()
+>>>>
+>>>> to access firmware nodes.
+>>>>
+>>>> [...]
+>>>
+>>> Applied, thanks!
+>>>
+>>> [3/6] leds: bd2606mvv: fix device child node usage in bd2606mvv_probe()
+>>>       commit: 75d2a77327c4917bb66163eea0374bb749428e9c
+>>> [4/6] leds: is31fl319x: use device_for_each_child_node_scoped() to access child nodes
+>>>       commit: 0f5a3feb60aba5d74f0b655cdff9c35aca03e81b
+>>> [5/6] leds: pca995x: use device_for_each_child_node() to access device child nodes
+>>>       (no commit info)
+>>>
+>>> --
+>>> Lee Jones [李琼斯]
+>>>
+>>
+>> Hi Lee,
+>>
+>> could you please tell me where you applied them? I rebased onto
+>> linux-next to prepare for v3, and these patches are still added on top
+>> of it. Can I find them in some leds/ branch? Thank you.
+> 
+> Sorry, I was side-tracked before pushing.
+> 
+> Pushed now.  They should be in -next tomorrow.
+> 
 
-Unlike ACPI based platforms, there are no known issues with D3Hot for the
-PCI bridges in the Devicetree based platforms. So let's allow the PCI
-bridges to go to D3Hot during runtime. It should be noted that the bridges
-need to be defined in Devicetree for this to work.
+Thanks, I see
 
-Currently, D3Cold is not allowed since Vcc supply which is required for
-transitioning the device to D3Cold is not exposed on all Devicetree based
-platforms.
+[3/6] leds: bd2606mvv: fix device child node usage in bd2606mvv_probe()
 
-Tested-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/pci/pci.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+[4/6] leds: is31fl319x: use device_for_each_child_node_scoped() to
+access child nodes
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index c7a4f961ec28..bc1e1ca673f1 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2992,6 +2992,18 @@ static bool pci_bridge_d3_allowed(struct pci_dev *bridge, pci_power_t state)
- 		if (pci_bridge_d3_force)
- 			return true;
- 
-+		/*
-+		 * Allow D3Hot for all Devicetree based platforms having a
-+		 * separate node for the bridge. We don't allow D3Cold for now
-+		 * since not all platforms are exposing the Vcc supply in
-+		 * Devicetree which is required for transitioning the bridge to
-+		 * D3Cold.
-+		 *
-+		 * NOTE: The bridge is expected to be defined in Devicetree.
-+		 */
-+		if (state == PCI_D3hot && dev_of_node(&bridge->dev))
-+			return true;
-+
- 		/* Even the oldest 2010 Thunderbolt controller supports D3. */
- 		if (bridge->is_thunderbolt)
- 			return true;
-@@ -3042,7 +3054,7 @@ bool pci_bridge_d3cold_allowed(struct pci_dev *bridge)
-  *
-  * This function checks if the bridge is allowed to move to D3Hot.
-  * Currently we only allow D3Hot for recent enough PCIe ports on ACPI based
-- * platforms and Thunderbolt.
-+ * platforms, Thunderbolt and Devicetree based platforms.
-  */
- bool pci_bridge_d3hot_allowed(struct pci_dev *bridge)
- {
+applied to -next, but
 
--- 
-2.25.1
+[5/6] leds: pca995x: use device_for_each_child_node() to access device
+child nodes
 
-
+has not been applied yet.
 
