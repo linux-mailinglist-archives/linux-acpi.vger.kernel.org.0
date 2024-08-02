@@ -1,107 +1,106 @@
-Return-Path: <linux-acpi+bounces-7225-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7226-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17B4945B9E
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 11:57:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B03945BDA
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 12:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA0661C22B24
-	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 09:57:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D6A282CBE
+	for <lists+linux-acpi@lfdr.de>; Fri,  2 Aug 2024 10:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49EA1DB457;
-	Fri,  2 Aug 2024 09:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAA91DB43B;
+	Fri,  2 Aug 2024 10:13:37 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BDE1DB442;
-	Fri,  2 Aug 2024 09:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0496E134B6;
+	Fri,  2 Aug 2024 10:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722592619; cv=none; b=avn8dSeC+eIo7iHt0Ewno9WCKk0/3GTi1VFMGabJQvTXsFZgG3TP4/NAoUu5XX5JchrfQGciYseULKhz6/Wr/rbLpcNJRgpXHEiKFBxv5lO56Ekzdjxn08ttjoEQP/4Zja2j99zRzCIghiUK3nV5YaHQ4ovYues3ROsB9P37xOE=
+	t=1722593617; cv=none; b=dBz9WBcQd4CBe7e5e+mnKVUoC5f3UnN+5ZusjQqFOg8TyDgxYtTRocost2QRetjIYkf7w+ssA9h05BAmCFLIU6hHHT4PeU80Ezdc9Z5B4WnY3vWGdRLA0hRjA/qGDj2EPI+hBwX7h5h+58tWnDvHheSFCh8SFtWcj5Fovz2ZXS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722592619; c=relaxed/simple;
-	bh=eKEtTbJBtNuE4PPmEUyxxjLRQZmXUAyUm/daUMyw9cE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hp+76BgjtEksT4QVtmDWmPn5zoSepfnJqsvUe3xUmXz3RYYvLmTqEKbofEVSOySBoKncRRk5j0orhlvYj2+F7za1ayzaGUBZ6dhdtGZE2dKMi9IsXDfWZREfZtmqSutFzBtq6JAc9zX/AcKgMZoYFtl3uh0RgROJUa3VRRwOeQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Wb1Q24SDxz6K975;
-	Fri,  2 Aug 2024 17:54:18 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id E41C6140A08;
-	Fri,  2 Aug 2024 17:56:55 +0800 (CST)
-Received: from localhost (10.203.177.66) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 2 Aug
- 2024 10:56:54 +0100
-Date: Fri, 2 Aug 2024 10:56:54 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Mike Rapoport <rppt@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, Alexander Gordeev
-	<agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>, "Borislav
- Petkov" <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Dan Williams <dan.j.williams@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand
-	<david@redhat.com>, "David S. Miller" <davem@davemloft.net>, Davidlohr Bueso
-	<dave@stgolabs.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, Heiko
- Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, "John Paul
- Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>, Jonathan Corbet
-	<corbet@lwn.net>, Michael Ellerman <mpe@ellerman.id.au>, Palmer Dabbelt
-	<palmer@dabbelt.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob Herring
-	<robh@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner
-	<tglx@linutronix.de>, "Vasily Gorbik" <gor@linux.ibm.com>, Will Deacon
-	<will@kernel.org>, Zi Yan <ziy@nvidia.com>, <devicetree@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-cxl@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-riscv@lists.infradead.org>,
-	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <loongarch@lists.linux.dev>,
-	<nvdimm@lists.linux.dev>, <sparclinux@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH v3 10/26] x86/numa: simplify numa_distance allocation
-Message-ID: <20240802105654.00004752@Huawei.com>
-In-Reply-To: <20240801060826.559858-11-rppt@kernel.org>
-References: <20240801060826.559858-1-rppt@kernel.org>
-	<20240801060826.559858-11-rppt@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1722593617; c=relaxed/simple;
+	bh=CGgO4c4usttTcvDWQPDRc8NVgRBTwg+m6dDsG/vP5mI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ry26MRBS60IPZChxXSUXved8ZNCthqsho8MO0c8Z9tFJmpmDNfZneEk6ginwoEx134BabL+G17fF/nGv9joan1BNDPE/E0VyDaw63ltEraBhBDwa7v42pajbA8stMzEJwJ4rrfj7llFDJCPuFB109XOOjuLQBn2/NZsIm3m8NJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id D8088100DA1B8;
+	Fri,  2 Aug 2024 12:13:31 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id AD1C81135EE; Fri,  2 Aug 2024 12:13:31 +0200 (CEST)
+Date: Fri, 2 Aug 2024 12:13:31 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: manivannan.sadhasivam@linaro.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	mika.westerberg@linux.intel.com, Hsin-Yi Wang <hsinyi@chromium.org>
+Subject: Re: [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all
+ Devicetree based platforms
+Message-ID: <ZqyxS8spZ-ohsP3R@wunner.de>
+References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
+ <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
 
-On Thu,  1 Aug 2024 09:08:10 +0300
-Mike Rapoport <rppt@kernel.org> wrote:
+On Fri, Aug 02, 2024 at 11:25:03AM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> Unlike ACPI based platforms, there are no known issues with D3Hot for the
+> PCI bridges in the Devicetree based platforms. So let's allow the PCI
+> bridges to go to D3Hot during runtime. It should be noted that the bridges
+> need to be defined in Devicetree for this to work.
+[...]
+> +		if (state == PCI_D3hot && dev_of_node(&bridge->dev))
+> +			return true;
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> Allocation of numa_distance uses memblock_phys_alloc_range() to limit
-> allocation to be below the last mapped page.
-> 
-> But NUMA initializaition runs after the direct map is populated and
-> there is also code in setup_arch() that adjusts memblock limit to
-> reflect how much memory is already mapped in the direct map.
-> 
-> Simplify the allocation of numa_distance and use plain memblock_alloc().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
-Seems sensible. FWIW (which might just be me not bothering to
-read this one again ;) 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
- 
+For such a simple change which several parties are interested in,
+I think it would be better to move it to the front of the series.
+
+Patch [1/4] looks like an optimization (using a cached value)
+which this patch doesn't depend on.  Patch [2/4] looks like a
+change of bikeshed color which isn't strictly necessary for
+this fourth patch either.  If you want to propose those changes,
+fine, but by making this fourth patch depend on them, you risk
+delaying its acceptance.  As an upstreaming strategy it's usually
+smarter to move potentially controversial or unnecessary material
+to the back of the series, or submit it separately if it can be
+applied standalone.
+
+
+> Currently, D3Cold is not allowed since Vcc supply which is required for
+> transitioning the device to D3Cold is not exposed on all Devicetree based
+> platforms.
+
+The PCI core cannot put devices into D3cold without help from the
+platform.  Checking whether D3cold is possible (or allowed or
+whatever) thus requires asking platform support code via
+platform_pci_power_manageable(), platform_pci_choose_state() etc.
+
+I think patch [3/4] is a little confusing because it creates
+infrastructure to decide whether D3cold is supported (allowed?)
+but we already have that in the platform_pci_*() functions.
+So I'm not sure if patch [3/4] adds value.  I think generally
+speaking if D3hot isn't possible (allowed?), D3cold is assumed
+to not be possible either.
+
+Thanks,
+
+Lukas
 
