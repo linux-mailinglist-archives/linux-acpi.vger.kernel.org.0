@@ -1,172 +1,106 @@
-Return-Path: <linux-acpi+bounces-7252-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7253-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C149466BE
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Aug 2024 03:22:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A44C9468A5
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Aug 2024 10:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7D52B21DC7
-	for <lists+linux-acpi@lfdr.de>; Sat,  3 Aug 2024 01:22:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BF7C1C20C88
+	for <lists+linux-acpi@lfdr.de>; Sat,  3 Aug 2024 08:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FBFF519;
-	Sat,  3 Aug 2024 01:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B6614D71A;
+	Sat,  3 Aug 2024 08:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="ljLNh0DE"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37CDEF9EB;
-	Sat,  3 Aug 2024 01:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722648127; cv=none; b=gdGKUCTHAYhJod7SWCXji9pSk7utUK90jLhh61rEMtHVngQoJBMcIYZJKdGhdq3XKfd/uLRIyBxKFrbQw188t9oKpGk8v90IYew3I19+iyswgbb0JuW8PFaBPW7Vs5oYcroM8a69dVxlivonKvzrvWv5NEwxsYy4yNqK6/XSmoY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722648127; c=relaxed/simple;
-	bh=QlCsaxkmkBO+k1bZHDH4/wNRZHvnphdyZIE2BlUfQE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=esJvtFqF+9xWuawM2JCH9qy4/5K9IjVUUFqnAeNFdQA+nl3QHPRpIxRiHdOWWTTXu2UqcoBq+bkwHGLxRB514HMEAMFXkqzY54P9PjWvYIFTQtyoOcxY6OwGYSMcDVSyHr4JOMkaR80jOhcUQwcp6EUSoqCozix86D+yRu19Z60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fc4fcbb131so76093015ad.3;
-        Fri, 02 Aug 2024 18:22:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722648125; x=1723252925;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qBd1wMelZARBCVInJl3VCnspXuIwi7xicjkRlzE9arc=;
-        b=uCBruZ4slQxTNJpnvDkKbGVW4X0SE8Lfkp9LulvogbA6+qvim04ngCBx/B4kHxk65u
-         1qIQvbgYzON+94leSbvCEUqEZxflAV9p/1QhuM1THxjYlN4QNzZHFg1LYJt5dWyKD77n
-         KsJUhgi9XEcpTyFozPIKqGRRS/gXcAYVy6jkG+47SW1dSQAcP7D0ORfIowebenWcZBSB
-         AuBSq9gf+HXzj7Oz5mS65UAyBn1fYwxWWx+bsJxNMGTvm/Ls5j1W/rn+0o40+lUyJ3yZ
-         G373oa80VvjY9DAKpgfl/2xXWeoqBug11gxnIhoCAadlf61dgSnMGdB+NWo0VvhQH2Gu
-         VIUw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOzDAFVKoaga7o1IAgWziDzezmqGavqJaKrus1adftzfKbOVlTgIK5W4yV3Ki6Dl5Voc3yZlE2mqPmioAJ5y/bCb9pK+66VhU5oq/faLvbKT2+H3KmHKOD2MPq2fO9Yc4VBHUMicTLij84HIdOZ7eC1a5d9rWc9X9d6uubJD5nQmSFcf3jixrpgumpD7QWd04amzSbBwz1yEuxxn40+fvgVB4JgBC0lfs2L1KJ3LIhpI0IEhCvdwu+Wewf/sE=
-X-Gm-Message-State: AOJu0YxwZybdp/7yTfau7iOxhlQuMhnti/W9ZD3aggR0MRWfse8sc5hf
-	MToQgQJuxG6s54w5D9hcpnkFLuCH2Qdl3cVFynDTL8dAChOt79oZ
-X-Google-Smtp-Source: AGHT+IEh3GRCAvALzlvd4U+F1tShJABMMoDoWNowR82KjXH9xwxziEaiwqMzhpgj6M2OlmS1YgXMiA==
-X-Received: by 2002:a17:902:ecc5:b0:1fd:8f66:b070 with SMTP id d9443c01a7336-1ff57464d40mr74676445ad.57.1722648125527;
-        Fri, 02 Aug 2024 18:22:05 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff58f6093fsm23731485ad.114.2024.08.02.18.22.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 18:22:05 -0700 (PDT)
-Date: Sat, 3 Aug 2024 01:22:03 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Roman Kisel <romank@linux.microsoft.com>
-Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
-	catalin.marinas@arm.com, dave.hansen@linux.intel.com,
-	decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
-	kw@linux.com, kys@microsoft.com, lenb@kernel.org,
-	lpieralisi@kernel.org, mingo@redhat.com, rafael@kernel.org,
-	robh@kernel.org, tglx@linutronix.de, wei.liu@kernel.org,
-	will@kernel.org, linux-acpi@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
-	benhill@microsoft.com, ssengar@microsoft.com,
-	sunilmut@microsoft.com, vdso@hexbites.dev
-Subject: Re: [PATCH v3 4/7] arm64: hyperv: Boot in a Virtual Trust Level
-Message-ID: <Zq2GOzYAC8WdaUTk@liuwe-devbox-debian-v2>
-References: <20240726225910.1912537-1-romank@linux.microsoft.com>
- <20240726225910.1912537-5-romank@linux.microsoft.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5447173C;
+	Sat,  3 Aug 2024 08:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722672830; cv=pass; b=UIegl+vmWbkPm4lLdUVjH83L/lg6jQfAfrois0ndnwZJsIGKZ5HSGzLgEHQxp+n4HLO7V4q7qfUH4gKS8KNGVyjOg7xxeiKRFr84h8YuEJwXoO/L9psdUxnV9DmnDzYrHy2nkls/NTVaOCRpfglhpUPQ6FdjLsALFIqC9IG8SX8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722672830; c=relaxed/simple;
+	bh=mFYiVa4XGiKmiaSpR2LuKMXD3VTAjxLCPeMcK9T3w8s=;
+	h=Date:Message-ID:From:To:Subject:MIME-Version:Content-Type; b=BPEoEsv6Ht56jHasvfn5txqmjxmRDGOVjqoj8jhMOUsA2MMi92qsMzWkiWwoYxvQ+lTQpr6LspXaw84W8TZtZOlpud6CCReJ8A00PocVDwUBoxOre+sd+DOUqkMALmndE/uy24mmVYXyv0EnZIdMQvHzbmpgB/AlzzGH7QMtqZA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=ljLNh0DE; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
+ARC-Seal: i=1; a=rsa-sha256; t=1722672823; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=gnhhU8pTanAysBGJJGA5GZuRDcGdRpz1BVHMh06PrKqfrvQkctiGWCdD0MQp+4dc0IF/ULJ37T7BWy4PMIfRaKjOyRda1J6/pLHwcMkpChKiHRzjDV7xZ19c4yJf1djQqYTGRZjbdfutVOZXi/p/udAuT3+tpB/AMJHAFCykPnA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1722672823; h=Content-Type:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=nxj7A3zjeJj0tAOInqsZYuK+DPDzGB1OZ+OlZ2a/Zfw=; 
+	b=UJt42KgShwDse7rRhRzs+PQHnO25bGl5fMY/S84BPU4gJ7bOMGKEO67J4te8YykxTcH783rMpvN6su+a45SZh+CWlzbKx7yMPyNc4USizQOg+FqNGMPxqa4QevskWWXRKt7F6yGPfFkaCa4kfnDRHv2IpkniLlbAL7DQf/Zpe7Y=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1722672823;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=Date:Date:Message-ID:From:From:To:To:Subject:Subject:MIME-Version:Content-Type:Message-Id:Reply-To:Cc;
+	bh=nxj7A3zjeJj0tAOInqsZYuK+DPDzGB1OZ+OlZ2a/Zfw=;
+	b=ljLNh0DEA/IbLHn6rKnEt4YaACuzoDN/7wz+MxZqk63kWDV8TwMDjsrLoIMy+qaw
+	yNgF39bB6aTtwzQW3dwnMHpv/u+o4Ha42W1tAwLWfGDxMdGQlqK0SMsmahgEZcTcqGZ
+	mSa9dmQ4nBLcvzNB083ACfJBsVuWaTGeP3hIN28A=
+Received: by mx.zohomail.com with SMTPS id 1722672822456428.6425515706311;
+	Sat, 3 Aug 2024 01:13:42 -0700 (PDT)
+Date: Sat, 03 Aug 2024 16:13:18 +0800
+Message-ID: <87y15e6n35.wl-me@linux.beauty>
+From: Li Chen <me@linux.beauty>
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org> (reviewer:ACPI), linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V2] ACPI: resource: Do IRQ override on MECHREV GM7XG0M
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240726225910.1912537-5-romank@linux.microsoft.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-ZohoMailClient: External
 
-On Fri, Jul 26, 2024 at 03:59:07PM -0700, Roman Kisel wrote:
-> To run in the VTL mode, Hyper-V drivers have to know what
-> VTL the system boots in, and the arm64/hyperv code does not
-> update the variable that stores the value.
-> 
-> Update the variable to enable the Hyper-V drivers to boot
-> in the VTL mode and print the VTL the code runs in.
-> 
-> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-> ---
->  arch/arm64/hyperv/Makefile        |  1 +
->  arch/arm64/hyperv/hv_vtl.c        | 13 +++++++++++++
->  arch/arm64/hyperv/mshyperv.c      |  4 ++++
->  arch/arm64/include/asm/mshyperv.h |  7 +++++++
->  4 files changed, 25 insertions(+)
->  create mode 100644 arch/arm64/hyperv/hv_vtl.c
-> 
-> diff --git a/arch/arm64/hyperv/Makefile b/arch/arm64/hyperv/Makefile
-> index 87c31c001da9..9701a837a6e1 100644
-> --- a/arch/arm64/hyperv/Makefile
-> +++ b/arch/arm64/hyperv/Makefile
-> @@ -1,2 +1,3 @@
->  # SPDX-License-Identifier: GPL-2.0
->  obj-y		:= hv_core.o mshyperv.o
-> +obj-$(CONFIG_HYPERV_VTL_MODE)	+= hv_vtl.o
-> diff --git a/arch/arm64/hyperv/hv_vtl.c b/arch/arm64/hyperv/hv_vtl.c
-> new file mode 100644
-> index 000000000000..38642b7b6be0
-> --- /dev/null
-> +++ b/arch/arm64/hyperv/hv_vtl.c
-> @@ -0,0 +1,13 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2024, Microsoft, Inc.
-> + *
-> + * Author : Roman Kisel <romank@linux.microsoft.com>
-> + */
-> +
-> +#include <asm/mshyperv.h>
-> +
-> +void __init hv_vtl_init_platform(void)
-> +{
-> +	pr_info("Linux runs in Hyper-V Virtual Trust Level\n");
-> +}
-> diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.c
-> index 341f98312667..8fd04d6e4800 100644
-> --- a/arch/arm64/hyperv/mshyperv.c
-> +++ b/arch/arm64/hyperv/mshyperv.c
-> @@ -98,6 +98,10 @@ static int __init hyperv_init(void)
->  		return ret;
->  	}
->  
-> +	/* Find the VTL */
-> +	ms_hyperv.vtl = get_vtl();
-> +	hv_vtl_init_platform();
 
-It doesn't make sense to me because this function unconditionally prints
-Linux runs in Hyper-V Virtual Trust Level.
+Listed device need the override for the keyboard to work.
 
-Thanks,
-Wei.
+Cc: stable@vger.kernel.org
+Fixes: 9946e39fe8d0 ("ACPI: resource: skip IRQ override on AMD Zen platforms")
+Signed-off-by: Li Chen <me@linux.beauty>
+---
+Changes since V1: 
+[1] https://lore.kernel.org/lkml/MN0PR12MB610178FBE11426B042C61A24E22AA@MN0PR12MB6101.namprd12.prod.outlook.com/T/
 
-> +
->  	ms_hyperv_late_init();
->  
->  	hyperv_initialized = true;
-> diff --git a/arch/arm64/include/asm/mshyperv.h b/arch/arm64/include/asm/mshyperv.h
-> index a7a3586f7cb1..63d6bb6998fc 100644
-> --- a/arch/arm64/include/asm/mshyperv.h
-> +++ b/arch/arm64/include/asm/mshyperv.h
-> @@ -49,6 +49,13 @@ static inline u64 hv_get_msr(unsigned int reg)
->  				ARM_SMCCC_OWNER_VENDOR_HYP,	\
->  				HV_SMCCC_FUNC_NUMBER)
->  
-> +#ifdef CONFIG_HYPERV_VTL_MODE
-> +void __init hv_vtl_init_platform(void);
-> +int __init hv_vtl_early_init(void);
-> +#else
-> +static inline void __init hv_vtl_init_platform(void) {}
-> +#endif
-> +
->  #include <asm-generic/mshyperv.h>
->  
->  #define ARM_SMCCC_VENDOR_HYP_UID_HYPERV_REG_0	0x7948734d
-> -- 
-> 2.34.1
-> 
+- replace DMI_SYS_VENDOR + DMI_PRODUCT_NAME with DMI_BOARD_NAME
+- rebase on top of next-20240802
+
+ drivers/acpi/resource.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index df5d5a554b388..aa9990507f34c 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -554,6 +554,12 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+  * to have a working keyboard.
+  */
+ static const struct dmi_system_id irq1_edge_low_force_override[] = {
++	{
++		/* MECHREV Jiaolong17KS Series GM7XG0M */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
++		},
++	},
+ 	{
+ 		/* XMG APEX 17 (M23) */
+ 		.matches = {
+-- 
+2.46.0
+
 
