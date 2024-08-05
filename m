@@ -1,153 +1,150 @@
-Return-Path: <linux-acpi+bounces-7277-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7278-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2546894750E
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 08:09:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336AF94753B
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 08:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D565428140F
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 06:09:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5581C20ECB
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 06:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A519148FE3;
-	Mon,  5 Aug 2024 06:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826C714290C;
+	Mon,  5 Aug 2024 06:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mEtV1RFs"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ln0nDgh3"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F66145B2C;
-	Mon,  5 Aug 2024 06:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 185581DFF7;
+	Mon,  5 Aug 2024 06:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722838127; cv=none; b=GI5+/8EzO3o85/YdQGb03ZFdxVuK4JUPhNURjU6bbJPnQXf5HU3GMeEe2PVGZW2hoiyxJdopVuaoqYDv8UM739wgrdxYrN4wNGDmHktd4XPwoDChjzrvr36vpFhHLgAVNCHO8bdiXxcPxElcw4amYshYo0l6AmBLp8Otfd7uUsg=
+	t=1722839303; cv=none; b=NxJLf2Jq6e3zddYL2h65RjQ0616rIxUgWUIpnHUKnkTpr0ZBTFVQZEAWTB+z1UDK8zpbKyTOXp4c+X2rxYFMoXqS1Pqew3ZdGeywBTP2NhhIe0VzLmPkBkUpuzz8SZDksy4Za2EaR3HxN0GDqKhoHQX7f35/oy37fAKTo25YngY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722838127; c=relaxed/simple;
-	bh=MGahE53/xciKSDi5AfqYOyKwYWzKT+vXGLdiEURlXFg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tnnav9mOxJBFUaYujHC+L+9Axv8+OUOykpysCdHgjSzaui0+afNeDlQXRMGEOcZJVRzLOuNR1d5iTGhuhwZe4x33T+Gqc0aC7nD56xBCUlGSVCCqfvKDwjz/4PMUMBiFls8H+6XMJJTRhOErAGFDPfDqORct1UMuyLi29V2Pjnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mEtV1RFs; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722838126; x=1754374126;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=MGahE53/xciKSDi5AfqYOyKwYWzKT+vXGLdiEURlXFg=;
-  b=mEtV1RFsxAw8CxAm4vBRjE6ErZCqD3ekus2t+7K0uNWbVZLSbW9XwUO4
-   AE5nHhaf+I+xeveHy2ZPD1LwTYbm8LbwfgcSByUKv+6bUy+7tE71EDLJh
-   sFD/cXJ1XhNwIf3gnn3Y32PPVqI9l0yZtq+PCF9IUSm/70FPK336BWPa1
-   M0VimBCkrwtIxC24gA4U7YCtUcJav0aOhza5HCYUc14y0eoQT1sqOi/Sb
-   6s3WhfumKb/4bJ9QWiCifPBb4PhCmcXrRXsJz2+xWD7OHJI+oEzdSg9Xl
-   l6R+xbqpUUE+jk8v9GdkPN8Mwd6Fk/kmTW9z8tAO0/OfvokpD+3h4X6kC
-   Q==;
-X-CSE-ConnectionGUID: Owyo2DQiTlS8lH+EhDEr/g==
-X-CSE-MsgGUID: U7+XzWdeQSylxc+Q46m8EA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="31360138"
-X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; 
-   d="scan'208";a="31360138"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2024 23:08:45 -0700
-X-CSE-ConnectionGUID: 1dUzj8iCREy30I467iieQQ==
-X-CSE-MsgGUID: Rg46K8n+TTKsTzVXcwE7Jg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,263,1716274800"; 
-   d="scan'208";a="61028957"
-Received: from unknown (HELO jiaqingz-acrn-container.sh.intel.com) ([10.239.43.235])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Aug 2024 23:08:43 -0700
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-To: Robert Moore <robert.moore@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Subject: [PATCH 2/2] ACPICA: Allow setting waking vector in reduced hardware model
-Date: Mon,  5 Aug 2024 06:08:13 +0000
-Message-ID: <20240805060812.1002004-4-jiaqing.zhao@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240805060812.1002004-2-jiaqing.zhao@linux.intel.com>
-References: <20240805060812.1002004-2-jiaqing.zhao@linux.intel.com>
+	s=arc-20240116; t=1722839303; c=relaxed/simple;
+	bh=9GIoyi3vCEXFFyYGEr0wsqBNa4FTgGkvni+KwMAQ9PM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O5oAvqbxxlibk9IdYvKb+W7kX2La5wRS/FhisS7rYNBxTMreAbEcfEvaRjrvID3pbNjQsNIzGcDL1BpK9/4eoAv2aqzvGEbzVg7Vmw7OIaYS8cX9wh5U96kWUgZSrHjE/SrN6Dqy8cHqPsXZoBPj+I0/s5aL6wpdjk5OsRjoOQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ln0nDgh3; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id A8D5620B7127; Sun,  4 Aug 2024 23:28:21 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A8D5620B7127
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1722839301;
+	bh=0EyiuCQjwZtY7cc05nIywrStY+vcE+GzimaJl2ixH/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ln0nDgh3lc7pJQo8FjqGY8IN1/FyLkrqKolSABpiRTvjgfYGDRnNJEzS0ZK7I9HHj
+	 3JIYAot8yUVGgXWyTWlAGsTsK1dp8sh/SbBEn+1BdklnDXSc782yGRwYJALhiQtSr5
+	 fY3J6G2Gtw+B7ixfgjDVy7cym63u8h/xkypUyAMI=
+Date: Sun, 4 Aug 2024 23:28:21 -0700
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To: Roman Kisel <romank@linux.microsoft.com>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+	catalin.marinas@arm.com, dave.hansen@linux.intel.com,
+	decui@microsoft.com, haiyangz@microsoft.com, hpa@zytor.com,
+	kw@linux.com, kys@microsoft.com, lenb@kernel.org,
+	lpieralisi@kernel.org, mingo@redhat.com, rafael@kernel.org,
+	robh@kernel.org, tglx@linutronix.de, wei.liu@kernel.org,
+	will@kernel.org, linux-acpi@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, x86@kernel.org, apais@microsoft.com,
+	benhill@microsoft.com, ssengar@microsoft.com,
+	sunilmut@microsoft.com, vdso@hexbites.dev
+Subject: Re: [PATCH v3 4/7] arm64: hyperv: Boot in a Virtual Trust Level
+Message-ID: <20240805062821.GA31897@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240726225910.1912537-1-romank@linux.microsoft.com>
+ <20240726225910.1912537-5-romank@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240726225910.1912537-5-romank@linux.microsoft.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Allow setting waking vector in FACS table on hardware-reduced
-platforms to support S3 wakeup on such platform.
+On Fri, Jul 26, 2024 at 03:59:07PM -0700, Roman Kisel wrote:
+> To run in the VTL mode, Hyper-V drivers have to know what
+> VTL the system boots in, and the arm64/hyperv code does not
+> update the variable that stores the value.
+> 
+> Update the variable to enable the Hyper-V drivers to boot
+> in the VTL mode and print the VTL the code runs in.
+> 
+> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+> ---
+>  arch/arm64/hyperv/Makefile        |  1 +
+>  arch/arm64/hyperv/hv_vtl.c        | 13 +++++++++++++
+>  arch/arm64/hyperv/mshyperv.c      |  4 ++++
+>  arch/arm64/include/asm/mshyperv.h |  7 +++++++
+>  4 files changed, 25 insertions(+)
+>  create mode 100644 arch/arm64/hyperv/hv_vtl.c
+> 
+> diff --git a/arch/arm64/hyperv/Makefile b/arch/arm64/hyperv/Makefile
+> index 87c31c001da9..9701a837a6e1 100644
+> --- a/arch/arm64/hyperv/Makefile
+> +++ b/arch/arm64/hyperv/Makefile
+> @@ -1,2 +1,3 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-y		:= hv_core.o mshyperv.o
+> +obj-$(CONFIG_HYPERV_VTL_MODE)	+= hv_vtl.o
+> diff --git a/arch/arm64/hyperv/hv_vtl.c b/arch/arm64/hyperv/hv_vtl.c
+> new file mode 100644
+> index 000000000000..38642b7b6be0
+> --- /dev/null
+> +++ b/arch/arm64/hyperv/hv_vtl.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2024, Microsoft, Inc.
+> + *
+> + * Author : Roman Kisel <romank@linux.microsoft.com>
+> + */
+> +
+> +#include <asm/mshyperv.h>
+> +
+> +void __init hv_vtl_init_platform(void)
+> +{
+> +	pr_info("Linux runs in Hyper-V Virtual Trust Level\n");
+> +}
+> diff --git a/arch/arm64/hyperv/mshyperv.c b/arch/arm64/hyperv/mshyperv.c
+> index 341f98312667..8fd04d6e4800 100644
+> --- a/arch/arm64/hyperv/mshyperv.c
+> +++ b/arch/arm64/hyperv/mshyperv.c
+> @@ -98,6 +98,10 @@ static int __init hyperv_init(void)
+>  		return ret;
+>  	}
+>  
+> +	/* Find the VTL */
+> +	ms_hyperv.vtl = get_vtl();
+> +	hv_vtl_init_platform();
+> +
+>  	ms_hyperv_late_init();
+>  
+>  	hyperv_initialized = true;
+> diff --git a/arch/arm64/include/asm/mshyperv.h b/arch/arm64/include/asm/mshyperv.h
+> index a7a3586f7cb1..63d6bb6998fc 100644
+> --- a/arch/arm64/include/asm/mshyperv.h
+> +++ b/arch/arm64/include/asm/mshyperv.h
+> @@ -49,6 +49,13 @@ static inline u64 hv_get_msr(unsigned int reg)
+>  				ARM_SMCCC_OWNER_VENDOR_HYP,	\
+>  				HV_SMCCC_FUNC_NUMBER)
+>  
+> +#ifdef CONFIG_HYPERV_VTL_MODE
+> +void __init hv_vtl_init_platform(void);
+> +int __init hv_vtl_early_init(void);
+> +#else
+> +static inline void __init hv_vtl_init_platform(void) {}
+> +#endif
+> +
 
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
----
- drivers/acpi/acpica/hwxfsleep.c | 21 ++++++---------------
- include/acpi/acpixf.h           |  8 ++++----
- 2 files changed, 10 insertions(+), 19 deletions(-)
+These functions are defined in x86 header as well. We can move it to generic header.
 
-diff --git a/drivers/acpi/acpica/hwxfsleep.c b/drivers/acpi/acpica/hwxfsleep.c
-index 36ea48f64110..1bf7520a0b18 100644
---- a/drivers/acpi/acpica/hwxfsleep.c
-+++ b/drivers/acpi/acpica/hwxfsleep.c
-@@ -15,21 +15,6 @@
- #define _COMPONENT          ACPI_HARDWARE
- ACPI_MODULE_NAME("hwxfsleep")
- 
--/* Local prototypes */
--#if (!ACPI_REDUCED_HARDWARE)
--static acpi_status
--acpi_hw_set_firmware_waking_vector(struct acpi_table_facs *facs,
--				   acpi_physical_address physical_address,
--				   acpi_physical_address physical_address64);
--#endif
--
--/*
-- * These functions are removed for the ACPI_REDUCED_HARDWARE case:
-- *      acpi_set_firmware_waking_vector
-- *      acpi_enter_sleep_state_s4bios
-- */
--
--#if (!ACPI_REDUCED_HARDWARE)
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_hw_set_firmware_waking_vector
-@@ -115,6 +100,12 @@ acpi_set_firmware_waking_vector(acpi_physical_address physical_address,
- 
- ACPI_EXPORT_SYMBOL(acpi_set_firmware_waking_vector)
- 
-+/*
-+ * These functions are removed for the ACPI_REDUCED_HARDWARE case:
-+ *      acpi_enter_sleep_state_s4bios
-+ */
-+
-+#if (!ACPI_REDUCED_HARDWARE)
- /*******************************************************************************
-  *
-  * FUNCTION:    acpi_enter_sleep_state_s4bios
-diff --git a/include/acpi/acpixf.h b/include/acpi/acpixf.h
-index 80dc36f9d527..99bb45a46600 100644
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -881,10 +881,10 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_leave_sleep_state_prep(u8 sleep_state))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status acpi_leave_sleep_state(u8 sleep_state))
- 
--ACPI_HW_DEPENDENT_RETURN_STATUS(acpi_status
--				acpi_set_firmware_waking_vector
--				(acpi_physical_address physical_address,
--				 acpi_physical_address physical_address64))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_set_firmware_waking_vector
-+			    (acpi_physical_address physical_address,
-+			     acpi_physical_address physical_address64))
- /*
-  * ACPI Timer interfaces
-  */
--- 
-2.43.0
-
+- Saurabh
 
