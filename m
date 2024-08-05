@@ -1,47 +1,44 @@
-Return-Path: <linux-acpi+bounces-7332-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7333-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAE7948518
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 23:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803FC94854F
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 00:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E619B208FE
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 21:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A772B22404
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 22:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4C116B39C;
-	Mon,  5 Aug 2024 21:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="qqvFjCss"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E9416C696;
+	Mon,  5 Aug 2024 22:10:44 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698B114A099;
-	Mon,  5 Aug 2024 21:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from sxb1plsmtpa01-05.prod.sxb1.secureserver.net (sxb1plsmtpa01-05.prod.sxb1.secureserver.net [188.121.53.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C11155351
+	for <linux-acpi@vger.kernel.org>; Mon,  5 Aug 2024 22:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.121.53.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722894939; cv=none; b=CAB1r5dwq9lzq4SSpWiI15Wu6M9XOApx5LfySby05tRYS08pl+MzvEp033bafKWrQF+R1DPXwToi5RLFQL09cv10GSk77Go5ZROGV7AFkcVdHN0ECmzZJLnLxxDVonQSOfcbGutKefkakaDoP5H3JzT4qQAO/kVFNgREpbH0pAE=
+	t=1722895844; cv=none; b=aCFumtYJUKEPp1NYDpr5cWCA/KAAS0sfl+bWXfMQ/DEo2lbDw0tHVI1NQX3r7fLgGBFPPAK8TAg79wluJ7wjlgF1YajvN5aT6ctozJzFcvP1dw9g6ApD124NeHohIlkHBlRX+84DqOrezUlPO6J7JwMA1vfMGQ4ekl3g4enGosA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722894939; c=relaxed/simple;
-	bh=DXbYLfLgSrqqIHrQTmgZ6iU+iz4R0x9ItApuIWwVLE8=;
+	s=arc-20240116; t=1722895844; c=relaxed/simple;
+	bh=TtLcqYXwVhu+R2JWp+iyvK/c1zI8jIP13UtKKstNsgk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i3ZafQpi5AzsXVmeqR9wul90+Gb7qNwoozwJsEwSFoDCQAxoRpniPZp76J0YAWZ8F7cFt3/62011D69CiVc89wimAlO4amanyTwEEw3UU8RSCKvUm45cjF4bYZUK9ZN8Q0LJCGPQPmrfUsxcwULAaLkvZKO8OhBCEtNP5yn4FhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=qqvFjCss; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.137.186.190] (unknown [131.107.159.62])
-	by linux.microsoft.com (Postfix) with ESMTPSA id A208C20B7165;
-	Mon,  5 Aug 2024 14:55:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A208C20B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1722894937;
-	bh=VJoVZsfYenFh8ZsF1uS3QBiSncBJfFtzA2OwFWvN3sU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qqvFjCss8XUUuxfv0siquASw69kkQua1uyVqTAPTAGMfj4JCkT0WIiqrwX4KQ3imm
-	 MPNfVEUGF6T6IEQZ1Ff2Dp5v2yuvTmXR+J777mfHV+/1LRyjz9VEMZVVMBDxMOo49w
-	 bx9DnR2Lw4Bm4T1/6EsAf5ij+dvHZARCNYNDvHIY=
-Message-ID: <3c10189e-4a04-4b67-9cdf-37e24e3086a5@linux.microsoft.com>
-Date: Mon, 5 Aug 2024 14:55:38 -0700
+	 In-Reply-To:Content-Type; b=E6CZ9SsCcaGZwGXf1xycJgepeT8ZlzRyoD96Xwql4Iq89W0q+ZJDkxhJ4xL/gmrgA4onRfYFZahl5Q1aMnlaNkYAvIFvcMjzwOycy2tOx3928vgZC8KeUcKrzW5TzGGQxb9xHmO7eAnZRcYmhDYXQg8T3J59HopbkBOhqD0kGfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=piie.net; spf=pass smtp.mailfrom=piie.net; arc=none smtp.client-ip=188.121.53.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=piie.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piie.net
+Received: from [192.168.1.27] ([109.90.180.58])
+	by :SMTPAUTH: with ESMTPSA
+	id b5c7sufgD5nw9b5c9sKsOA; Mon, 05 Aug 2024 14:51:38 -0700
+X-CMAE-Analysis: v=2.4 cv=NqsacNdJ c=1 sm=1 tr=0 ts=66b1496b
+ a=ujCVow8R4Y5jPCx6COW8WA==:117 a=ujCVow8R4Y5jPCx6COW8WA==:17
+ a=IkcTkHD0fZMA:10 a=M51BFTxLslgA:10 a=pGLkceISAAAA:8 a=QyXUC8HyAAAA:8
+ a=JXrB-i05ymQu8u1lf2kA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-SECURESERVER-ACCT: peter@piie.net
+Message-ID: <1bfbbae5-42b0-4c7d-9544-e98855715294@piie.net>
+Date: Mon, 5 Aug 2024 23:51:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -49,219 +46,103 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] Drivers: hv: Provide arch-neutral implementation
- of get_vtl()
-To: Michael Kelley <mhklinux@outlook.com>, "arnd@arndb.de" <arnd@arndb.de>,
- "bhelgaas@google.com" <bhelgaas@google.com>, "bp@alien8.de" <bp@alien8.de>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "decui@microsoft.com" <decui@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "hpa@zytor.com" <hpa@zytor.com>, "kw@linux.com" <kw@linux.com>,
- "kys@microsoft.com" <kys@microsoft.com>, "lenb@kernel.org"
- <lenb@kernel.org>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>, "will@kernel.org"
- <will@kernel.org>, "linux-acpi@vger.kernel.org"
- <linux-acpi@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>
-Cc: "apais@microsoft.com" <apais@microsoft.com>,
- "benhill@microsoft.com" <benhill@microsoft.com>,
- "ssengar@microsoft.com" <ssengar@microsoft.com>,
- "sunilmut@microsoft.com" <sunilmut@microsoft.com>,
- "vdso@hexbites.dev" <vdso@hexbites.dev>
-References: <20240726225910.1912537-1-romank@linux.microsoft.com>
- <20240726225910.1912537-4-romank@linux.microsoft.com>
- <SN6PR02MB415759676AEF931F030430FDD4BE2@SN6PR02MB4157.namprd02.prod.outlook.com>
- <8df77874-0852-4bc2-bf8d-aa7dca031736@linux.microsoft.com>
- <SN6PR02MB415780EB5A50A1AB769CA657D4BE2@SN6PR02MB4157.namprd02.prod.outlook.com>
+Subject: Re: [PATCH v1 12/17] platform/x86: acerhdf: Use the .should_bind()
+ thermal zone callback
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Lukasz Luba
+ <lukasz.luba@arm.com>, Zhang Rui <rui.zhang@intel.com>,
+ Peter Kaestle <peter@piie.net>, platform-driver-x86@vger.kernel.org
+References: <1922131.tdWV9SEqCh@rjwysocki.net>
+ <2242500.C4sosBPzcN@rjwysocki.net>
+ <a0c639d1-4f21-47f1-bb66-92f185e828a9@gmail.com>
+ <CAJZ5v0jDQLJWGCj73DXQe3+k+Zaq9Z71LJbFSvRjcuE85+J+mQ@mail.gmail.com>
 Content-Language: en-US
-From: Roman Kisel <romank@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB415780EB5A50A1AB769CA657D4BE2@SN6PR02MB4157.namprd02.prod.outlook.com>
+From: =?UTF-8?Q?Peter_K=C3=A4stle?= <peter@piie.net>
+In-Reply-To: <CAJZ5v0jDQLJWGCj73DXQe3+k+Zaq9Z71LJbFSvRjcuE85+J+mQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfJWPR2+yiOWfZF1NN1S8YQgNKg47YkfBXB1nfxoLS0fZ3rnhmIi6a5t1zj9QzI4OACJP2WuBqRdHHFEjn4wK14uS9dO/T/x2eLlOv5L1sVMFzEhcP5IU
+ hIn/yHFJYo1svGlnqYa9TkcDG55epHQmXWg36d91MYfdBW0ZLODWbvUJ94qiEMvJmNWFyeERLrmC44A4xTj3DOuWRv1dRItHK9QRicWnosSJslsxnPlXFwRw
+ QUxlszm5dv0kty+bc7+WllK/j+k/mnF8gsxKOOG5GKwaqlAodwTv/8xyK5tovV5CAf5Y6AJwmr7Wt2g4BHrVNszQZTdPAwPog1sQjPbXGlMGRyQPT55LX8Up
+ aPFUMcyS5fG1dCOM4C1So+FLOgx5/6WEY+MoAn493VwP941dKCVQWCOhVNEjUIiiBbtHIqa33yXUgURRMAwcoPXa+uQaqZ5vh00klOOM6wbQQNmi70oeHpKI
+ 8dl8xK69f5gZ9HFWEp8DiQc3PnHuIsKdZoM1OQ==
 
+Hi Rafael,
 
-
-On 8/5/2024 1:13 PM, Michael Kelley wrote:
-> From: Roman Kisel <romank@linux.microsoft.com> Sent: Monday, August 5, 2024 9:20 AM
+On 01.08.24 12:14, Rafael J. Wysocki wrote:
+> Hi Peter,
+> 
+> On Wed, Jul 31, 2024 at 10:50 PM Peter Kästle <xypiie@gmail.com> wrote:
 >>
->> On 8/4/2024 8:02 PM, Michael Kelley wrote:
->>> From: Roman Kisel <romank@linux.microsoft.com> Sent: Friday, July 26, 2024 3:59
->> PM
->>>>
->>>> To run in the VTL mode, Hyper-V drivers have to know what
->>>> VTL the system boots in, and the arm64/hyperv code does not
->>>> have the means to compute that.
->>>>
->>>> Refactor the code to hoist the function that detects VTL,
->>>> make it arch-neutral to be able to employ it to get the VTL
->>>> on arm64. Fix the hypercall output address in `get_vtl(void)`
->>>> not to overlap with the hypercall input area to adhere to
->>>> the Hyper-V TLFS.
->>>>
->>>> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
->>>> ---
->>>>    arch/x86/hyperv/hv_init.c          | 34 ---------------------
->>>>    arch/x86/include/asm/hyperv-tlfs.h |  7 -----
->>>>    drivers/hv/hv_common.c             | 47 ++++++++++++++++++++++++++++--
->>>>    include/asm-generic/hyperv-tlfs.h  |  7 +++++
->>>>    include/asm-generic/mshyperv.h     |  6 ++++
->>>>    5 files changed, 58 insertions(+), 43 deletions(-)
->>>>
->>>> diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
->>>> index 17a71e92a343..c350fa05ee59 100644
->>>> --- a/arch/x86/hyperv/hv_init.c
->>>> +++ b/arch/x86/hyperv/hv_init.c
->>>> @@ -413,40 +413,6 @@ static void __init hv_get_partition_id(void)
->>>>    	local_irq_restore(flags);
->>>>    }
->>>>
->>>> -#if IS_ENABLED(CONFIG_HYPERV_VTL_MODE)
->>>> -static u8 __init get_vtl(void)
->>>> -{
->>>> -	u64 control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_REGISTERS;
->>>> -	struct hv_get_vp_registers_input *input;
->>>> -	struct hv_get_vp_registers_output *output;
->>>> -	unsigned long flags;
->>>> -	u64 ret;
->>>> -
->>>> -	local_irq_save(flags);
->>>> -	input = *this_cpu_ptr(hyperv_pcpu_input_arg);
->>>> -	output = (struct hv_get_vp_registers_output *)input;
->>>> -
->>>> -	memset(input, 0, struct_size(input, element, 1));
->>>> -	input->header.partitionid = HV_PARTITION_ID_SELF;
->>>> -	input->header.vpindex = HV_VP_INDEX_SELF;
->>>> -	input->header.inputvtl = 0;
->>>> -	input->element[0].name0 = HV_X64_REGISTER_VSM_VP_STATUS;
->>>> -
->>>> -	ret = hv_do_hypercall(control, input, output);
->>>> -	if (hv_result_success(ret)) {
->>>> -		ret = output->as64.low & HV_X64_VTL_MASK;
->>>> -	} else {
->>>> -		pr_err("Failed to get VTL(error: %lld) exiting...\n", ret);
->>>> -		BUG();
->>>> -	}
->>>> -
->>>> -	local_irq_restore(flags);
->>>> -	return ret;
->>>> -}
->>>> -#else
->>>> -static inline u8 get_vtl(void) { return 0; }
->>>> -#endif
->>>> -
->>>>    /*
->>>>     * This function is to be invoked early in the boot sequence after the
->>>>     * hypervisor has been detected.
->>>> diff --git a/arch/x86/include/asm/hyperv-tlfs.h b/arch/x86/include/asm/hyperv-tlfs.h
->>>> index 3787d26810c1..9ee68eb8e6ff 100644
->>>> --- a/arch/x86/include/asm/hyperv-tlfs.h
->>>> +++ b/arch/x86/include/asm/hyperv-tlfs.h
->>>> @@ -309,13 +309,6 @@ enum hv_isolation_type {
->>>>    #define HV_MSR_STIMER0_CONFIG	(HV_X64_MSR_STIMER0_CONFIG)
->>>>    #define HV_MSR_STIMER0_COUNT	(HV_X64_MSR_STIMER0_COUNT)
->>>>
->>>> -/*
->>>> - * Registers are only accessible via HVCALL_GET_VP_REGISTERS hvcall and
->>>> - * there is not associated MSR address.
->>>> - */
->>>> -#define	HV_X64_REGISTER_VSM_VP_STATUS	0x000D0003
->>>> -#define	HV_X64_VTL_MASK			GENMASK(3, 0)
->>>> -
->>>>    /* Hyper-V memory host visibility */
->>>>    enum hv_mem_host_visibility {
->>>>    	VMBUS_PAGE_NOT_VISIBLE		= 0,
->>>> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
->>>> index 9c452bfbd571..7d6c1523b0b5 100644
->>>> --- a/drivers/hv/hv_common.c
->>>> +++ b/drivers/hv/hv_common.c
->>>> @@ -339,8 +339,8 @@ int __init hv_common_init(void)
->>>>    	hyperv_pcpu_input_arg = alloc_percpu(void  *);
->>>>    	BUG_ON(!hyperv_pcpu_input_arg);
->>>>
->>>> -	/* Allocate the per-CPU state for output arg for root */
->>>> -	if (hv_root_partition) {
->>>> +	/* Allocate the per-CPU state for output arg for root or a VTL */
->>>> +	if (hv_root_partition || IS_ENABLED(CONFIG_HYPERV_VTL_MODE)) {
->>>>    		hyperv_pcpu_output_arg = alloc_percpu(void *);
->>>>    		BUG_ON(!hyperv_pcpu_output_arg);
->>>>    	}
->>>> @@ -656,3 +656,46 @@ u64 __weak hv_tdx_hypercall(u64 control, u64 param1, u64 param2)
->>>>    	return HV_STATUS_INVALID_PARAMETER;
->>>>    }
->>>>    EXPORT_SYMBOL_GPL(hv_tdx_hypercall);
->>>> +
->>>> +#if IS_ENABLED(CONFIG_HYPERV_VTL_MODE)
->>>> +u8 __init get_vtl(void)
->>>> +{
->>>> +	u64 control = HV_HYPERCALL_REP_COMP_1 | HVCALL_GET_VP_REGISTERS;
->>>> +	struct hv_get_vp_registers_input *input;
->>>> +	struct hv_get_vp_registers_output *output;
->>>> +	unsigned long flags;
->>>> +	u64 ret;
->>>> +
->>>> +	local_irq_save(flags);
->>>> +	input = *this_cpu_ptr(hyperv_pcpu_input_arg);
->>>> +	output = *this_cpu_ptr(hyperv_pcpu_output_arg);
->>>
->>> Rather than use the hyperv_pcpu_output_arg here, it's OK to
->>> use a different area of the hyperv_pcpu_input_arg page.  For
->>> example,
->>>
->>> 	output = (void *)input + HV_HYP_PAGE_SIZE/2;
->>>
->>> The TLFS does not require that the input and output be in
->>> separate pages.
->>>
->>> While using the hyperv_pcpu_output_arg is conceptually a
->>> bit cleaner, doing so requires allocating a 4K page per CPU that
->>> is not otherwise used. The VTL 2 code wants to be frugal with
->>> memory, and this seems like a good step in that direction. :-)
->>>
->> I agree on the both counts: the code looks conceptually cleaner now and
->> VTL2 wants to be frugal with memory, esp that the output hypercall page
->> is per-CPU so we have O(n) as the CPU count increases. Still, the output
->> page will be needed for VTL2 (say to get/set registers just as done
->> here). That said, with this patch we can achieve both the conceptual
->> cleanliness and being ready to grow more on the primitives being built
->> out in the VTL support patches.
+>> Hi Rafael,
 >>
+>> On 30.07.24 20:33, Rafael J. Wysocki wrote:
+>>> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>>
+>>> Make the acerhdf driver use the .should_bind() thermal zone
+>>> callback to provide the thermal core with the information on whether or
+>>> not to bind the given cooling device to the given trip point in the
+>>> given thermal zone.  If it returns 'true', the thermal core will bind
+>>> the cooling device to the trip and the corresponding unbinding will be
+>>> taken care of automatically by the core on the removal of the involved
+>>> thermal zone or cooling device.
+>>>
+>>> The previously existing acerhdf_bind() function bound cooling devices
+>>> to thermal trip point 0 only, so the new callback needs to return 'true'
+>>> for trip point 0.  However, it is straightforward to observe that trip
+>>> point 0 is an active trip point and the only other trip point in the
+>>> driver's thermal zone is a critical one, so it is sufficient to return
+>>> 'true' from that callback if the type of the given trip point is
+>>> THERMAL_TRIP_ACTIVE.
+>>>
+>>> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+>>
+>> Thanks for including me on the review.
+>> I'm working on it, but unfortunately the refactoring of the thermal layer
+>> around gov_bang_bang.c earlier this year broke acerhdf.
 > 
-> Could you elaborate further on why the output page is needed for
-> VTL2? The get/set register hypercalls can operate with just the input
-> page (again, splitting it into two halves for input and output args) as
-> long as the number of registers acted on by a single hypercall isn't
-> more than a few dozen.
-> 
-> If you really *do* need the output page in VTL2 for other reasons
-> that I'm not aware of, then my suggestion isn't relevant and there's
-> no memory to be saved.
-VTL2 might potentially use any hypercalls being in some sense an exclave 
-of the hypervisor living inside the guest quite similarly to the 
-VBS/VTL1/SecureKernel.
+> Well, sorry about that.
 
-The tradeoff here would be to save a page per processor at the cost of 
-specializing the hypercall issuing code that would use a part of the 
-input page to save memory (quite likely limiting which hypercalls can be 
-used), or use the common implementation at the cost of spending one more 
-page per processor. Less code means less maintenance usually so seems 
-beneficial to choose the latter option although at the cost of using 
-more memory.
+I already fixed the main problem, which caused full malfunction of acerhdf:
 
+The new functionality of .trip_crossed in the gov_bang_bang is missing an
+initial check, whether the temperature is below the fanoff temperature
+(trip_point.temperature - hysteresis) and by that it did not turn the
+fan off.  This then caused that the system will never heat up as much to
+cross the upper temperature. As a consequence it could never cross the
+lower temperature to turn the fan off. -> Fan was locked always on.
+And that's obviously not what we want.
+As I didn't find any API call, to ask the governor doing that for me, I
+added an "acerhdf_init_fan()" functionality into acerhdf init function right
+after registering the thermal zone (and on resume from suspend) which turns
+the fan off if the temperature is lower than the fanoff parameter.
+Probably not the nicest solution, but maybe the most pragmatic one without
+touching the thermal layer.
+
+>> This needs some debugging and refactoring.  I think I can finish it on
+>> upcoming weekend.
 > 
-> Michael
+> Thank you!
+
+I'll need some more time to check why other features of acerhdf broke:
+* interval cannot be changed to longer than one second.
+   No idea yet, do you have any idea?  Maybe I'll simply drop this
+   functionality, as there's no big overhead by polling every second.
+* changing /sys/module/acerhdf/parameters/{fanon,fanoff} at runtime
+   to change the trip point settings stopped working.  This needs some
+   restructuring using module_param_cb callbacks.
+
+> I'll be offline next week, so I'll go back to this material in two
+> weeks or so anyway.
+
+I still need some time to fix the remaining part anyhow.  Once this is
+done, I'll check your latest patch series and send my acerhdf rework for
+review / submission.
 
 -- 
-Thank you,
-Roman
-
+regards,
+--peter;
 
