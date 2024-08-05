@@ -1,75 +1,76 @@
-Return-Path: <linux-acpi+bounces-7297-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7298-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD685947D2D
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 16:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DBE947D32
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 16:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D11FD1C20F5F
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 14:51:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36E01C21B4E
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 14:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9292115B54E;
-	Mon,  5 Aug 2024 14:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142FF15C124;
+	Mon,  5 Aug 2024 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CA2z+YSK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4ufaUuX"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20BB15B104;
-	Mon,  5 Aug 2024 14:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C40D15B153;
+	Mon,  5 Aug 2024 14:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722869419; cv=none; b=hhd/MeRV4OoJU/lLf/OuZLDWoqbLgn3W2r9VfFXdJkQysQOL/NcLr8ofrmKVX3hmDPsgMgX1OL7edKlCH1r5tDh6Ewqyb9efLFMntI8hz8mx8ZFgDag/kXFbaN9oXdse5rSUEJ4qk5FURWNICZv6R8ovu6hsYRAtHRGx2joOCgw=
+	t=1722869421; cv=none; b=GMGbLCVaYJ9dukx5HT3nhxVB/l4CLugeNjCiLJ8ZGFr1QAFpUX+RnP680vc+GJm/vQPMAYW4eQPPx76QWC5iTiv1yQHKVKd+G74A6PN9MbZDSOGXanhMNCiWd0Y+nRoSZaHzRtB5E/CAfXnGUPO2Vo5bmGAueVjrHCB1S2ieNDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722869419; c=relaxed/simple;
-	bh=TXubFA9EPG3koYRbq3Z+pWro6cSdZQFPedoTNgHKsIQ=;
+	s=arc-20240116; t=1722869421; c=relaxed/simple;
+	bh=Gs9fUy9yW4JBBaoGjjHZoItLt9sngv838Y8XASfxmd0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aBfGW3aPDQWkQCSVpjMIaMOVW0pyqu8E1Kej/leBoNuH/dEvKaeVk10KIFvLLSLN7LhIV+5OYzpoBVaL5EUrmgFHTTj17QDQyP7+92g+TnItYoefXgf9BeuCf5zPVvZaMvmSEJszAkFpFxs9b0R+h54os9GhKF/RHe3MR2A5VOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CA2z+YSK; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:To:Cc; b=PfPGelbSkakV0eQAzZ1Kz2FWhBfB/dh7stMGqUZ5qnFsqN1Tc63qOHuIybq1imVJaxNz3VqfpihcBDCazay2FC5nqXxXs1w5BONSvIpDoFko2PHJjf2HCV7ZXDSYnzKBT03QvNA3kL1QiG6R9zLzqNe3T3tkEHRiDUI3hTv6nSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4ufaUuX; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52efd530a4eso16375425e87.0;
-        Mon, 05 Aug 2024 07:50:17 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5b8c2a611adso3413983a12.1;
+        Mon, 05 Aug 2024 07:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722869415; x=1723474215; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722869417; x=1723474217; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tPSBgbm3jpAmX4JgIT8jji/q0J8YfDHNM8+2dXWfMBo=;
-        b=CA2z+YSK4I89eqiCNkzhQfrRuiTWaDixk9wsdftZW6rxwvYK16jauDpclOJa3fY/E+
-         S1ujTgLyiPl8jl5yUVn7PK0oH+/gT8z2a1qXZiIp6dJAKYiXwkA1M9Q91lihCsWCmnKn
-         KE75xb3E4YqVwvFw6NypkDjjNdKhV0ig5WUwZfYW6AFj9wSkb6rcruTVye02q/WTM8GK
-         MKVKxsNoti1bjoet+7CSYLX2dOk22vIKzCYBHDeTGQGuC+HjcDq7VDMGNehBaNe2bBxO
-         qfV76KQLX8ikGgmwVdOnIF/OpVlkKZxSCjTG/Us/yMl4uu5BegDrz70yx5CHxbxaDTxO
-         E4Bg==
+        bh=ni7itzdtEe2jfSTKg6OGqBXNu0xuqssIDqqXlEDVBsA=;
+        b=a4ufaUuX/pM/iqtA6lccvy3jXjNL1tyC/LEcrkqBHJ7Wmi2o4/+N2RP4YoQpSKztHr
+         4rigSN0vt89qJyA/MAOrUuI+cvtmsIJlB2Ti2uzZgkWWR5w+fW7LhTSkXK56gMvxbu2U
+         OvJ5l/cp/3cgaLeBOEnHywva7aI1tFOfA58K69w4XzETNAg1Hh+hwbfEND6OtvdpTRNu
+         QPB+7oAjyR/a/h0NLoDVEEo5AkImvGAiNyReLA5RKIHTnGZeyAAfmsn0TUb6096HuA1k
+         +7mkME2bBBjlrTIQmjofayPRAMhVSAkDGXlgPoEWK5tSYqy/XgJXzJ7bUWwyWBnHuf8J
+         Nqag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722869415; x=1723474215;
+        d=1e100.net; s=20230601; t=1722869417; x=1723474217;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tPSBgbm3jpAmX4JgIT8jji/q0J8YfDHNM8+2dXWfMBo=;
-        b=W2IBthzwbG7KryPij5PrWO8rX9fi5EQoX4M7nwK+Sau6bvABu/VHLD1VWsDQCiFf5x
-         pVkxRk/sFW5f3NL89O5k+9FBi1juqO4p4tSgWMaoqsIOUGK/14svx8JfL+ZN4Xsd5VT+
-         J9DRIAdV+bBNqRik/f2ytrOszNMo+QjWd1S8/pDVMAXHdycpcgapgWQaaX8gbnV75WJR
-         kf3iZo7UOrs+sU4CvNfUM2rFCEI5JSltXQJk4RXpS1iOPH52sPySxSxWg9VhqCRPGg5q
-         TxH/01pGYouSlCDbQwdM1APEfCXHZQXqCOpUPLCbCXm4B73CyKSOEMNR9mkM4OWyryD0
-         vA9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVmMRmU+zlq7mKKvJMOsAwE1AP24co36Ly9+/u6cvYETXhK9PoczsSgO2jOusTxU4ZmBjyf/ETpom8999SppVJY92uor3PnJD+uwRI8KXsn6IweVKfMIpDZbhTrC8t6d2w6QHSNb+m1F0Z+O2xMzwYvlGgjatQoeQALajvZsrkBZT7PW6QuTTozNawvPy3iDh3WBOnpAOQBY/8c0DrE
-X-Gm-Message-State: AOJu0Yxl7ol6astPjhS47r+ihErpYB2ks2IfH59RIEDd8WZeNXW3FvDv
-	bwCv7khvE+BJ2CwKZjKShnP07Q0O9j+0+UU5Sc2cMiO8rn66YZVpNDV8Qfwp
-X-Google-Smtp-Source: AGHT+IHGH9JX2RR9KngT55yV5101rsh+ddZ2QIAfLNa3pkQMsbItoMIF1Z9NpTiCFZd1aGc4XVB13w==
-X-Received: by 2002:a05:6512:3da8:b0:52f:413:7e8c with SMTP id 2adb3069b0e04-530bb373e93mr8499417e87.14.1722869414972;
-        Mon, 05 Aug 2024 07:50:14 -0700 (PDT)
+        bh=ni7itzdtEe2jfSTKg6OGqBXNu0xuqssIDqqXlEDVBsA=;
+        b=ovNEqOASOtivpjQRbw1ySD9+VtUq2eisJZc1eTS8RXCMlSQalY2atqJUGUWMh6FqSb
+         iud9rsXuR+Uf+qH9jaHT4rKpoYuO9lLK6GOWgCRkEKeTURIkoFo5GCBdirtx73VQgVec
+         lI2xWklSz4ujB9RgKK2nWJfcAkrQOuH8kMruN/Ng0qbAWRHIbZ1isGbK1kOJ27hvRgrJ
+         wejomZzSKwLURYVjsQag97/1OI+6YQ7ykGMvx65ggsSGq9BMNfCYpFGC1jcGnCKUXRvP
+         4HAvtOIZqYw3NKAKLcbC20k4DifwyHLYAKnmrBrGZnveSBCCCpNlUIHu8SAAzYpIpDvi
+         AFqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfR/wJ/a+0TaD1Zta2qvB/QSnCEKIWThi0lbHFN3D8d7hvoUaOnf+dzNz4jM227xNn5D//3aVjdFEehQ==@vger.kernel.org, AJvYcCVH1jb5DLipSGrUGX1e3wcGJ6Om2M1ffGq7A6SjFHTD2fZFE8FLYoj7mHEM81bnkWkFAl3PoALI@vger.kernel.org, AJvYcCWtsFdWjuI+r5VoHkFMeSxv2kkO8nxPWjzt6E2mO5MWQfhIQZOjMkAZwVhWrmJ/Ue8vy+jey7b0wBl5eQ==@vger.kernel.org, AJvYcCXZCKIcfE9sYNYYpRA269ttkyB68sJcOoAcsGGPkmK/aO6DSmaL3cQJ6qC3KS2GbSLylFhwTnk6ImHFoV3k@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhtkiB6rD1e+dR6nYDYar/Q5kzmr5HpnSHcat2rpONPh8LupFj
+	fW2GxuD54Cu7R9sjDNmkMK9lBuuNT09Pd1Yz6CREOPvHf/tuWjfa0bGqud/v
+X-Google-Smtp-Source: AGHT+IEu7RnD//aEIHLSrf4o/e/BoWMlA3ETDJKKor1UP/ki+rOUQeZH+Has9o+RgFalA/2S8xJoVw==
+X-Received: by 2002:a50:ee17:0:b0:5a2:a0d9:c1a6 with SMTP id 4fb4d7f45d1cf-5b7f3cc7429mr8033257a12.11.1722869417114;
+        Mon, 05 Aug 2024 07:50:17 -0700 (PDT)
 Received: from [127.0.1.1] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83b82f308sm5004088a12.63.2024.08.05.07.50.13
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83b82f308sm5004088a12.63.2024.08.05.07.50.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 07:50:14 -0700 (PDT)
+        Mon, 05 Aug 2024 07:50:16 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 05 Aug 2024 16:49:46 +0200
-Subject: [PATCH v3 3/4] net: mvpp2: use port_count to remove ports
+Date: Mon, 05 Aug 2024 16:49:47 +0200
+Subject: [PATCH v3 4/4] net: mvpp2: use device_for_each_child_node() to
+ access device child nodes
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -78,7 +79,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240805-device_for_each_child_node-available-v3-3-48243a4aa5c0@gmail.com>
+Message-Id: <20240805-device_for_each_child_node-available-v3-4-48243a4aa5c0@gmail.com>
 References: <20240805-device_for_each_child_node-available-v3-0-48243a4aa5c0@gmail.com>
 In-Reply-To: <20240805-device_for_each_child_node-available-v3-0-48243a4aa5c0@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -97,82 +98,78 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Andreas Kemnade <andreas@kemnade.info>
 Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org, 
- netdev@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+ netdev@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722869407; l=2455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722869407; l=2385;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=TXubFA9EPG3koYRbq3Z+pWro6cSdZQFPedoTNgHKsIQ=;
- b=c3q9MLjk2l9gK8uPqdN47FDouKz245XtE1QkVU7bUIc10J/nfciAxZqoXVodF6xXJEOSjulxq
- xtZ/XGFpzl+DGZXFlKVUC6pT7IDt5SrTEbcYqoZjzPieWoKRY9wluuG
+ bh=Gs9fUy9yW4JBBaoGjjHZoItLt9sngv838Y8XASfxmd0=;
+ b=ihHIaYtp6T390sCfrty1YjNtAYZGThIeMtguLLHG6L01jXTjdSZMRrfQVtNCN4wVYLLhSbRXX
+ /RuF4YN2ObTAcdrI40NuECuErDk+DxTOna13wsTN0raOuLMubO8ZQZG
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-As discussed in [1], there is no need to iterate over child nodes to
-remove the list of ports. Instead, a loop up to `port_count` ports can
-be used, and is in fact more reliable in case the child node
-availability changes.
+The iterated nodes are direct children of the device node, and the
+`device_for_each_child_node()` macro accounts for child node
+availability.
 
-The suggested approach removes the need for the `fwnode` and
-`port_fwnode` variables in mvpp2_remove() as well.
+`fwnode_for_each_available_child_node()` is meant to access the child
+nodes of an fwnode, and therefore not direct child nodes of the device
+node.
 
-Link: https://lore.kernel.org/all/ZqdRgDkK1PzoI2Pf@shell.armlinux.org.uk/ [1]
-Suggested-by: Russell King <linux@armlinux.org.uk>
+The child nodes within mvpp2_probe are not accessed outside the loops,
+and the scoped version of the macro can be used to automatically
+decrement the refcount on early exits.
+
+Use `device_for_each_child_node()` and its scoped variant to indicate
+device's direct child nodes.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 0d62a33afa80..0b5b2425de12 100644
+index 0b5b2425de12..216cc7b860d6 100644
 --- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
 +++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -7655,12 +7655,8 @@ static int mvpp2_probe(struct platform_device *pdev)
- err_port_probe:
- 	fwnode_handle_put(port_fwnode);
+@@ -7417,8 +7417,6 @@ static int mvpp2_get_sram(struct platform_device *pdev,
  
--	i = 0;
--	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
--		if (priv->port_list[i])
--			mvpp2_port_remove(priv->port_list[i]);
--		i++;
--	}
-+	for (i = 0; i < priv->port_count; i++)
-+		mvpp2_port_remove(priv->port_list[i]);
- err_axi_clk:
- 	clk_disable_unprepare(priv->axi_clk);
- err_mg_core_clk:
-@@ -7677,18 +7673,13 @@ static int mvpp2_probe(struct platform_device *pdev)
- static void mvpp2_remove(struct platform_device *pdev)
+ static int mvpp2_probe(struct platform_device *pdev)
  {
- 	struct mvpp2 *priv = platform_get_drvdata(pdev);
 -	struct fwnode_handle *fwnode = pdev->dev.fwnode;
--	int i = 0, poolnum = MVPP2_BM_POOLS_NUM;
 -	struct fwnode_handle *port_fwnode;
-+	int i, poolnum = MVPP2_BM_POOLS_NUM;
+ 	struct mvpp2 *priv;
+ 	struct resource *res;
+ 	void __iomem *base;
+@@ -7591,7 +7589,7 @@ static int mvpp2_probe(struct platform_device *pdev)
+ 	}
  
- 	mvpp2_dbgfs_cleanup(priv);
- 
+ 	/* Map DTS-active ports. Should be done before FIFO mvpp2_init */
 -	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
--		if (priv->port_list[i]) {
--			mutex_destroy(&priv->port_list[i]->gather_stats_lock);
--			mvpp2_port_remove(priv->port_list[i]);
--		}
--		i++;
-+	for (i = 0; i < priv->port_count; i++) {
-+		mutex_destroy(&priv->port_list[i]->gather_stats_lock);
-+		mvpp2_port_remove(priv->port_list[i]);
++	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
+ 		if (!fwnode_property_read_u32(port_fwnode, "port-id", &i))
+ 			priv->port_map |= BIT(i);
  	}
+@@ -7614,7 +7612,7 @@ static int mvpp2_probe(struct platform_device *pdev)
+ 		goto err_axi_clk;
  
- 	destroy_workqueue(priv->stats_queue);
-@@ -7711,7 +7702,7 @@ static void mvpp2_remove(struct platform_device *pdev)
- 				  aggr_txq->descs_dma);
- 	}
+ 	/* Initialize ports */
+-	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
++	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
+ 		err = mvpp2_port_probe(pdev, port_fwnode, priv);
+ 		if (err < 0)
+ 			goto err_port_probe;
+@@ -7653,8 +7651,6 @@ static int mvpp2_probe(struct platform_device *pdev)
+ 	return 0;
  
--	if (is_acpi_node(port_fwnode))
-+	if (!dev_of_node(&pdev->dev))
- 		return;
- 
- 	clk_disable_unprepare(priv->axi_clk);
+ err_port_probe:
+-	fwnode_handle_put(port_fwnode);
+-
+ 	for (i = 0; i < priv->port_count; i++)
+ 		mvpp2_port_remove(priv->port_list[i]);
+ err_axi_clk:
 
 -- 
 2.43.0
