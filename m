@@ -1,177 +1,229 @@
-Return-Path: <linux-acpi+bounces-7298-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7299-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DBE947D32
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 16:51:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33241947D3A
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 16:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36E01C21B4E
-	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 14:51:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B894B2134E
+	for <lists+linux-acpi@lfdr.de>; Mon,  5 Aug 2024 14:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142FF15C124;
-	Mon,  5 Aug 2024 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224E513AA45;
+	Mon,  5 Aug 2024 14:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4ufaUuX"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="X8ffdVm0"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C40D15B153;
-	Mon,  5 Aug 2024 14:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0150813C684;
+	Mon,  5 Aug 2024 14:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722869421; cv=none; b=GMGbLCVaYJ9dukx5HT3nhxVB/l4CLugeNjCiLJ8ZGFr1QAFpUX+RnP680vc+GJm/vQPMAYW4eQPPx76QWC5iTiv1yQHKVKd+G74A6PN9MbZDSOGXanhMNCiWd0Y+nRoSZaHzRtB5E/CAfXnGUPO2Vo5bmGAueVjrHCB1S2ieNDQ=
+	t=1722869481; cv=none; b=teCxQbrishUMDt6x4zyV4Fkc1XYI7VRkeo9oRA5fUfWh2XtSll1HaV57EM/GSWD0hulKI+jen5ExCt59RnXFA7zB39M6fkwe6DhrdDp/YTd/ww7FIGiKxiVES48oMPY6UR5c5o+tyOXlLaWBQYLPImCsxO4HjOiimTVG9VLtIdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722869421; c=relaxed/simple;
-	bh=Gs9fUy9yW4JBBaoGjjHZoItLt9sngv838Y8XASfxmd0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PfPGelbSkakV0eQAzZ1Kz2FWhBfB/dh7stMGqUZ5qnFsqN1Tc63qOHuIybq1imVJaxNz3VqfpihcBDCazay2FC5nqXxXs1w5BONSvIpDoFko2PHJjf2HCV7ZXDSYnzKBT03QvNA3kL1QiG6R9zLzqNe3T3tkEHRiDUI3hTv6nSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4ufaUuX; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5b8c2a611adso3413983a12.1;
-        Mon, 05 Aug 2024 07:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722869417; x=1723474217; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ni7itzdtEe2jfSTKg6OGqBXNu0xuqssIDqqXlEDVBsA=;
-        b=a4ufaUuX/pM/iqtA6lccvy3jXjNL1tyC/LEcrkqBHJ7Wmi2o4/+N2RP4YoQpSKztHr
-         4rigSN0vt89qJyA/MAOrUuI+cvtmsIJlB2Ti2uzZgkWWR5w+fW7LhTSkXK56gMvxbu2U
-         OvJ5l/cp/3cgaLeBOEnHywva7aI1tFOfA58K69w4XzETNAg1Hh+hwbfEND6OtvdpTRNu
-         QPB+7oAjyR/a/h0NLoDVEEo5AkImvGAiNyReLA5RKIHTnGZeyAAfmsn0TUb6096HuA1k
-         +7mkME2bBBjlrTIQmjofayPRAMhVSAkDGXlgPoEWK5tSYqy/XgJXzJ7bUWwyWBnHuf8J
-         Nqag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722869417; x=1723474217;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ni7itzdtEe2jfSTKg6OGqBXNu0xuqssIDqqXlEDVBsA=;
-        b=ovNEqOASOtivpjQRbw1ySD9+VtUq2eisJZc1eTS8RXCMlSQalY2atqJUGUWMh6FqSb
-         iud9rsXuR+Uf+qH9jaHT4rKpoYuO9lLK6GOWgCRkEKeTURIkoFo5GCBdirtx73VQgVec
-         lI2xWklSz4ujB9RgKK2nWJfcAkrQOuH8kMruN/Ng0qbAWRHIbZ1isGbK1kOJ27hvRgrJ
-         wejomZzSKwLURYVjsQag97/1OI+6YQ7ykGMvx65ggsSGq9BMNfCYpFGC1jcGnCKUXRvP
-         4HAvtOIZqYw3NKAKLcbC20k4DifwyHLYAKnmrBrGZnveSBCCCpNlUIHu8SAAzYpIpDvi
-         AFqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfR/wJ/a+0TaD1Zta2qvB/QSnCEKIWThi0lbHFN3D8d7hvoUaOnf+dzNz4jM227xNn5D//3aVjdFEehQ==@vger.kernel.org, AJvYcCVH1jb5DLipSGrUGX1e3wcGJ6Om2M1ffGq7A6SjFHTD2fZFE8FLYoj7mHEM81bnkWkFAl3PoALI@vger.kernel.org, AJvYcCWtsFdWjuI+r5VoHkFMeSxv2kkO8nxPWjzt6E2mO5MWQfhIQZOjMkAZwVhWrmJ/Ue8vy+jey7b0wBl5eQ==@vger.kernel.org, AJvYcCXZCKIcfE9sYNYYpRA269ttkyB68sJcOoAcsGGPkmK/aO6DSmaL3cQJ6qC3KS2GbSLylFhwTnk6ImHFoV3k@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhtkiB6rD1e+dR6nYDYar/Q5kzmr5HpnSHcat2rpONPh8LupFj
-	fW2GxuD54Cu7R9sjDNmkMK9lBuuNT09Pd1Yz6CREOPvHf/tuWjfa0bGqud/v
-X-Google-Smtp-Source: AGHT+IEu7RnD//aEIHLSrf4o/e/BoWMlA3ETDJKKor1UP/ki+rOUQeZH+Has9o+RgFalA/2S8xJoVw==
-X-Received: by 2002:a50:ee17:0:b0:5a2:a0d9:c1a6 with SMTP id 4fb4d7f45d1cf-5b7f3cc7429mr8033257a12.11.1722869417114;
-        Mon, 05 Aug 2024 07:50:17 -0700 (PDT)
-Received: from [127.0.1.1] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83b82f308sm5004088a12.63.2024.08.05.07.50.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 07:50:16 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 05 Aug 2024 16:49:47 +0200
-Subject: [PATCH v3 4/4] net: mvpp2: use device_for_each_child_node() to
- access device child nodes
+	s=arc-20240116; t=1722869481; c=relaxed/simple;
+	bh=7ykty8/x0wz5UdqrPTbpaCVE/KB7yVy+KsHezueQZPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JZfO4wqSAWHw8B4wapcrT5vC9yBpv6P9zDyvDhIV7zhHksQiFcSSus/A+220W8YFz8nDdgg+6C8BLWmSJLYz6OG21KSZuhMk/njrhrg54k9NbPYacwhLR4OBmSUj33a94fWBcShHLpKHF0z4ATUrVAN9kiNUqilBN/hs/SL2FmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=X8ffdVm0; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.186.190] (unknown [131.107.159.62])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3F41B20B7165;
+	Mon,  5 Aug 2024 07:51:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3F41B20B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1722869478;
+	bh=pauF332H9RYtwbTh4jt8TXNF4EdtpJCWqYxBIdY4ptU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=X8ffdVm0EwvH9cISLR9ZZZRKprEo04Um0VqddaKwHaaG5FXXTy/B3AVHowWL2FIkF
+	 vn6mm0I6ZO0vdpHX+1dlYa6XsD2FOGm9nrXMQFEXjkEePfTn662n16Sr99C7sAz/Ii
+	 ACauUgAQ7XzRLcxcOjk8N8fMfsudY9DdAsBUfPJI=
+Message-ID: <2679199c-3f73-4326-85ee-622541d26153@linux.microsoft.com>
+Date: Mon, 5 Aug 2024 07:51:18 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/7] PCI: hv: Get vPCI MSI IRQ domain from DT
+To: Wei Liu <wei.liu@kernel.org>
+Cc: arnd@arndb.de, bhelgaas@google.com, bp@alien8.de,
+ catalin.marinas@arm.com, dave.hansen@linux.intel.com, decui@microsoft.com,
+ haiyangz@microsoft.com, hpa@zytor.com, kw@linux.com, kys@microsoft.com,
+ lenb@kernel.org, lpieralisi@kernel.org, mingo@redhat.com, rafael@kernel.org,
+ robh@kernel.org, tglx@linutronix.de, will@kernel.org,
+ linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, x86@kernel.org,
+ apais@microsoft.com, benhill@microsoft.com, ssengar@microsoft.com,
+ sunilmut@microsoft.com, vdso@hexbites.dev
+References: <20240726225910.1912537-1-romank@linux.microsoft.com>
+ <20240726225910.1912537-8-romank@linux.microsoft.com>
+ <Zq2F-l2FWIrQ2Jt1@liuwe-devbox-debian-v2>
+Content-Language: en-US
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <Zq2F-l2FWIrQ2Jt1@liuwe-devbox-debian-v2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240805-device_for_each_child_node-available-v3-4-48243a4aa5c0@gmail.com>
-References: <20240805-device_for_each_child_node-available-v3-0-48243a4aa5c0@gmail.com>
-In-Reply-To: <20240805-device_for_each_child_node-available-v3-0-48243a4aa5c0@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Daniel Scally <djrscally@gmail.com>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
- Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
- Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andreas Kemnade <andreas@kemnade.info>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hwmon@vger.kernel.org, linux-leds@vger.kernel.org, 
- netdev@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722869407; l=2385;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=Gs9fUy9yW4JBBaoGjjHZoItLt9sngv838Y8XASfxmd0=;
- b=ihHIaYtp6T390sCfrty1YjNtAYZGThIeMtguLLHG6L01jXTjdSZMRrfQVtNCN4wVYLLhSbRXX
- /RuF4YN2ObTAcdrI40NuECuErDk+DxTOna13wsTN0raOuLMubO8ZQZG
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The iterated nodes are direct children of the device node, and the
-`device_for_each_child_node()` macro accounts for child node
-availability.
 
-`fwnode_for_each_available_child_node()` is meant to access the child
-nodes of an fwnode, and therefore not direct child nodes of the device
-node.
 
-The child nodes within mvpp2_probe are not accessed outside the loops,
-and the scoped version of the macro can be used to automatically
-decrement the refcount on early exits.
+On 8/2/2024 6:20 PM, Wei Liu wrote:
+> On Fri, Jul 26, 2024 at 03:59:10PM -0700, Roman Kisel wrote:
+>> The hyperv-pci driver uses ACPI for MSI IRQ domain configuration on
+>> arm64. It won't be able to do that in the VTL mode where only DeviceTree
+>> can be used.
+>>
+>> Update the hyperv-pci driver to get vPCI MSI IRQ domain in the DeviceTree
+>> case, too.
+>>
+>> Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+>> ---
+>>   drivers/hv/vmbus_drv.c              | 23 +++++++-----
+>>   drivers/pci/controller/pci-hyperv.c | 55 +++++++++++++++++++++++++++--
+>>   include/linux/hyperv.h              |  2 ++
+>>   3 files changed, 69 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+>> index 7eee7caff5f6..038bd9be64b7 100644
+>> --- a/drivers/hv/vmbus_drv.c
+>> +++ b/drivers/hv/vmbus_drv.c
+>> @@ -45,7 +45,8 @@ struct vmbus_dynid {
+>>   	struct hv_vmbus_device_id id;
+>>   };
+>>   
+>> -static struct device  *hv_dev;
+>> +/* VMBus Root Device */
+>> +static struct device  *vmbus_root_device;
+> 
+> You're changing the name of the variable. That should preferably be done
+> in a separate patch. That's going to make this patch shorter and easier
+> to review.
+> 
+Will fix in v4, thanks!
 
-Use `device_for_each_child_node()` and its scoped variant to indicate
-device's direct child nodes.
-
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 0b5b2425de12..216cc7b860d6 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -7417,8 +7417,6 @@ static int mvpp2_get_sram(struct platform_device *pdev,
- 
- static int mvpp2_probe(struct platform_device *pdev)
- {
--	struct fwnode_handle *fwnode = pdev->dev.fwnode;
--	struct fwnode_handle *port_fwnode;
- 	struct mvpp2 *priv;
- 	struct resource *res;
- 	void __iomem *base;
-@@ -7591,7 +7589,7 @@ static int mvpp2_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Map DTS-active ports. Should be done before FIFO mvpp2_init */
--	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
-+	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
- 		if (!fwnode_property_read_u32(port_fwnode, "port-id", &i))
- 			priv->port_map |= BIT(i);
- 	}
-@@ -7614,7 +7612,7 @@ static int mvpp2_probe(struct platform_device *pdev)
- 		goto err_axi_clk;
- 
- 	/* Initialize ports */
--	fwnode_for_each_available_child_node(fwnode, port_fwnode) {
-+	device_for_each_child_node_scoped(&pdev->dev, port_fwnode) {
- 		err = mvpp2_port_probe(pdev, port_fwnode, priv);
- 		if (err < 0)
- 			goto err_port_probe;
-@@ -7653,8 +7651,6 @@ static int mvpp2_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_port_probe:
--	fwnode_handle_put(port_fwnode);
--
- 	for (i = 0; i < priv->port_count; i++)
- 		mvpp2_port_remove(priv->port_list[i]);
- err_axi_clk:
+>>   
+>>   static int hyperv_cpuhp_online;
+>>   
+>> @@ -80,9 +81,15 @@ static struct resource *fb_mmio;
+>>   static struct resource *hyperv_mmio;
+>>   static DEFINE_MUTEX(hyperv_mmio_lock);
+>>   
+>> +struct device *get_vmbus_root_device(void)
+>> +{
+>> +	return vmbus_root_device;
+>> +}
+>> +EXPORT_SYMBOL_GPL(get_vmbus_root_device);
+> 
+> I would like you to add "hv_" prefix to this exported symbol, or rename
+> it to "vmbus_get_root_device()".
+> 
+>> +
+>>   static int vmbus_exists(void)
+>>   {
+>> -	if (hv_dev == NULL)
+>> +	if (vmbus_root_device == NULL)
+>>   		return -ENODEV;
+>>   
+>>   	return 0;
+>> @@ -861,7 +868,7 @@ static int vmbus_dma_configure(struct device *child_device)
+>>   	 * On x86/x64 coherence is assumed and these calls have no effect.
+>>   	 */
+>>   	hv_setup_dma_ops(child_device,
+>> -		device_get_dma_attr(hv_dev) == DEV_DMA_COHERENT);
+>> +		device_get_dma_attr(vmbus_root_device) == DEV_DMA_COHERENT);
+>>   	return 0;
+>>   }
+>>   
+>> @@ -1892,7 +1899,7 @@ int vmbus_device_register(struct hv_device *child_device_obj)
+>>   		     &child_device_obj->channel->offermsg.offer.if_instance);
+>>   
+>>   	child_device_obj->device.bus = &hv_bus;
+>> -	child_device_obj->device.parent = hv_dev;
+>> +	child_device_obj->device.parent = vmbus_root_device;
+>>   	child_device_obj->device.release = vmbus_device_release;
+>>   
+>>   	child_device_obj->device.dma_parms = &child_device_obj->dma_parms;
+>> @@ -2253,7 +2260,7 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+>>   	struct acpi_device *ancestor;
+>>   	struct acpi_device *device = ACPI_COMPANION(&pdev->dev);
+>>   
+>> -	hv_dev = &device->dev;
+>> +	vmbus_root_device = &device->dev;
+>>   
+>>   	/*
+>>   	 * Older versions of Hyper-V for ARM64 fail to include the _CCA
+>> @@ -2342,7 +2349,7 @@ static int vmbus_device_add(struct platform_device *pdev)
+>>   	struct device_node *np = pdev->dev.of_node;
+>>   	int ret;
+>>   
+>> -	hv_dev = &pdev->dev;
+>> +	vmbus_root_device = &pdev->dev;
+>>   
+>>   	ret = of_range_parser_init(&parser, np);
+>>   	if (ret)
+>> @@ -2675,7 +2682,7 @@ static int __init hv_acpi_init(void)
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> -	if (!hv_dev) {
+>> +	if (!vmbus_root_device) {
+>>   		ret = -ENODEV;
+>>   		goto cleanup;
+>>   	}
+>> @@ -2706,7 +2713,7 @@ static int __init hv_acpi_init(void)
+>>   
+>>   cleanup:
+>>   	platform_driver_unregister(&vmbus_platform_driver);
+>> -	hv_dev = NULL;
+>> +	vmbus_root_device = NULL;
+>>   	return ret;
+>>   }
+>>   
+>> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+>> index 5992280e8110..cdecefd1f9bd 100644
+>> --- a/drivers/pci/controller/pci-hyperv.c
+>> +++ b/drivers/pci/controller/pci-hyperv.c
+>> @@ -50,6 +50,7 @@
+>>   #include <linux/irqdomain.h>
+>>   #include <linux/acpi.h>
+>>   #include <linux/sizes.h>
+>> +#include <linux/of_irq.h>
+>>   #include <asm/mshyperv.h>
+>>   
+>>   /*
+>> @@ -887,6 +888,35 @@ static const struct irq_domain_ops hv_pci_domain_ops = {
+>>   	.activate = hv_pci_vec_irq_domain_activate,
+>>   };
+>>   
+>> +#ifdef CONFIG_OF
+>> +
+>> +static struct irq_domain *hv_pci_of_irq_domain_parent(void)
+>> +{
+>> +	struct device_node *parent;
+>> +	struct irq_domain *domain;
+>> +
+>> +	parent = of_irq_find_parent(to_platform_device(get_vmbus_root_device())->dev.of_node);
+>> +	domain = NULL;
+>> +	if (parent) {
+>> +		domain = irq_find_host(parent);
+>> +		of_node_put(parent);
+>> +	}
+>> +
+> 
+> I cannot really comment on the ARM side of things around how this system
+> is set up. I will leave that to someone who's more familiar with the
+> matter to review.
+> 
+> Thanks,
+> Wei.
 
 -- 
-2.43.0
+Thank you,
+Roman
 
 
