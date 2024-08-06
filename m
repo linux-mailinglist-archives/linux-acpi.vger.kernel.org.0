@@ -1,260 +1,156 @@
-Return-Path: <linux-acpi+bounces-7364-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7365-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26C59492E2
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 16:23:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F92949360
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 16:41:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53C8B1F24F9C
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 14:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFC9B288AD1
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 14:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C147E18D64C;
-	Tue,  6 Aug 2024 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38CC71C462C;
+	Tue,  6 Aug 2024 14:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XceokrfW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E163B18D624;
-	Tue,  6 Aug 2024 14:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A355320127D
+	for <linux-acpi@vger.kernel.org>; Tue,  6 Aug 2024 14:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722954204; cv=none; b=qMpHmYL51W/v4SZwiOVQ6NTR6kkwvkLkP1vE0amMh4020comf7rNTf75JzZOHDCqQm+APHhKbnx+rqUrtBdwOx0DME9N4R2nAemEsiC5uzPMe0i+azvMrxnh8dMTzfMHsv4sK5duHfJEQhtlInW0WN+HJcJvLRqdYy7qDluT0EI=
+	t=1722955168; cv=none; b=G4MMcyiujmUugepW1iZ3jL/nIW/z4s2E94KyAZodDkW9BDqJwbGxjIhM+T/XLOz6f2grshFHwpV0yjU9eL5ST/75XPMV8FSLHyf7G1/z2PLD+Nfxxj6gmGddlu9CovDv8Y7ll8/MI/lrvUJrBhnc5+dG8QTTBgHgAsLZkJpYn5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722954204; c=relaxed/simple;
-	bh=U91EeTuop3DyOCAzp3imMwkzZUlrRzys7Mo8oCZ2ESI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lzu6GRfvqp14XpLB0ym/Ea59MXpVpaqGCVidcQMXmEAnaq0NlZMNoWWYLqiPtV3oqETi8F7XtmPMaPy8VdNsWZa/rXz43Fhkn+jtYgIyPfzolpEjuunbUbFmOb3QFfPtMxMQ/M+nmsIDtwZQYiA+0q9C7mJnhOuT1mmvqdjpzgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 250AFFEC;
-	Tue,  6 Aug 2024 07:23:47 -0700 (PDT)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DEB23F6A8;
-	Tue,  6 Aug 2024 07:23:19 -0700 (PDT)
-Message-ID: <2d3dc395-58f1-47bc-8d95-c8c65b474988@arm.com>
-Date: Tue, 6 Aug 2024 15:23:18 +0100
+	s=arc-20240116; t=1722955168; c=relaxed/simple;
+	bh=7oknU6DGKYF5IvjWgkJ9pfIXoZcCEanwoQfqqdPzX3s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9R4TKdchLWmw1mKwM2YcNZADsWiUbQs9FzmhTutj+75V0bp9cDOVt1Wg+6IOuKx2AqPN0/ZUQJaBYOuXsmQ7SvM2oLtYDlqFRcTJ2tD+hyAj5H1/vD4TyTIjTvcFA9Up+LfbYl6agnUCnw1f1R2i7ypnwp5B5Il3WaW4gi1q4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XceokrfW; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fd70ba6a15so5310905ad.0
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Aug 2024 07:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1722955166; x=1723559966; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=z4EeH0lY+Ewy/pWDk6E3bMS6Wq7uVbNGOBf9b/txebg=;
+        b=XceokrfWz4sOtlr9SvB0GGIC8srXx+pJq6Ki9mU7DPxJNv8bwTzxIZw8ZjVS0xAZwq
+         LxXrf6KOirC1OU2i2wDZodzJftKZcfFk0Brn0MFiyb15elECPTyu9Bzn3BK/nDJw62mN
+         zy8vJHQfvjpRxmxflI7nED5LQCbBI5kc0+ikAtaVk+IvMqCDOLxWKe4BBdOXvabADo91
+         vRRBvT4NYFC7qBvZQjkTgI4uQnM3c9pWB+7Y4L/PlLYQG9INNJdmAJOi4mkUkqjgSZ9l
+         HLU6O1+WfnPUK1p337FobOT9sDW/QxkjKc7GkRZjXHmOg1hra1TYE/yRfKbMoZ5tTLAF
+         OmXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722955166; x=1723559966;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z4EeH0lY+Ewy/pWDk6E3bMS6Wq7uVbNGOBf9b/txebg=;
+        b=pNKSJqeqAY/ZrHo1eITof5YN8SULnch8h/2NEl5bWW8YwB0vU0Bi0xmhhK8FqhrFV9
+         o+5Py3h1Jj23Nr0qEY47hIcVNnic+kdq70fSI56gWZ6KoyTMMX7JK70W6cN2QqUoblaX
+         vdHDufO9G/IRP7HNw+nLZ5WHGvSAZ2DwJ1ANCU6szuMjUh2N4DfOJL9YU46kxvcSBIBz
+         CkjLa8eVBRJiLFuRLC+yDJy9g5Z9DzbJRm2XTPtwuKeqlUOipTlvIVw9nvqQB36n5lG7
+         fePdmsE2K4tL8fc2WZmGmNVMynViVWjwV8pHPEbHidXbe/YsOj4o1CCRpaCrldxxH9Sf
+         BrFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUW1kE02X3VPoAexoEZq6lor8P0oKw4DofLpqLm8iYkgSec35/pTtQpKmvZmvqjtoVyidVtcCAqVhh6N4VcoHALLqiaACVNm8EGbQ==
+X-Gm-Message-State: AOJu0Yx9d2K1hm2+ooe50uRargldhAY+hVqoIzeo8c8sqBYYi2ddjcir
+	6h3kTVExhZXOMyt9QWY2bxdo3MiWAlJeARZ5l5aSsfWkx8ioHGMAvBrXUvlboA==
+X-Google-Smtp-Source: AGHT+IEt+B2fM5winuaW+nvnzWqWUM+4wQ9VRXuPNs4sBBxJsLRqx4kYyRLSWtsgj2ZxvObCS1514A==
+X-Received: by 2002:a17:903:1207:b0:1f6:fcd9:5b86 with SMTP id d9443c01a7336-1ff5722e771mr156566585ad.12.1722955165862;
+        Tue, 06 Aug 2024 07:39:25 -0700 (PDT)
+Received: from thinkpad ([120.60.72.69])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff591786b3sm88483375ad.214.2024.08.06.07.39.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 07:39:25 -0700 (PDT)
+Date: Tue, 6 Aug 2024 20:09:18 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	mika.westerberg@linux.intel.com, Hsin-Yi Wang <hsinyi@chromium.org>
+Subject: Re: [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all
+ Devicetree based platforms
+Message-ID: <20240806143918.GC2968@thinkpad>
+References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
+ <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
+ <ZqyxS8spZ-ohsP3R@wunner.de>
+ <20240805133555.GC7274@thinkpad>
+ <ZrHITXLkKrDbQKQp@wunner.de>
+ <20240806124107.GB2968@thinkpad>
+ <ZrIe70Z7uFven8HH@wunner.de>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG REPORT]net: page_pool: kernel crash at
- iommu_get_dma_domain+0xc/0x20
-To: Jesper Dangaard Brouer <hawk@kernel.org>,
- Yonglong Liu <liuyonglong@huawei.com>,
- Somnath Kotur <somnath.kotur@broadcom.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, pabeni@redhat.com, ilias.apalodimas@linaro.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alexander Duyck <alexander.duyck@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, linyunsheng <linyunsheng@huawei.com>,
- "shenjian (K)" <shenjian15@huawei.com>, Salil Mehta
- <salil.mehta@huawei.com>, iommu@lists.linux.dev,
- Jean-Philippe Brucker <jean-philippe@linaro.org>, linux-acpi@vger.kernel.org
-References: <0e54954b-0880-4ebc-8ef0-13b3ac0a6838@huawei.com>
- <8743264a-9700-4227-a556-5f931c720211@huawei.com>
- <e980d20f-ea8a-43e3-8d3f-179a269b5956@kernel.org>
- <CAOBf=musxZcjYNHjdD+MGp0y6epnNO5ryC6JgeAJbP6YQ+sVUA@mail.gmail.com>
- <d385bdba-65a0-4776-b950-9e62392f5115@huawei.com>
- <f09f7df6-9d5e-410d-8409-006c3b6e995a@huawei.com>
- <8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <8067f204-1380-4d37-8ffd-007fc6f26738@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZrIe70Z7uFven8HH@wunner.de>
 
-On 06/08/2024 10:51 am, Jesper Dangaard Brouer wrote:
-[...]
->> The iommu_group will release whether the page_pool is using it or not, 
->> so if once page_pool_return_page() was called(why does this occur when 
->> the device is reloaded and packets are transmitted?) , this crash will 
->> happen.
->>
->> I try the follow patch, but doesn't work :(
->>
+On Tue, Aug 06, 2024 at 03:02:39PM +0200, Lukas Wunner wrote:
+> On Tue, Aug 06, 2024 at 06:11:07PM +0530, Manivannan Sadhasivam wrote:
+> > On Tue, Aug 06, 2024 at 08:53:01AM +0200, Lukas Wunner wrote:
+> > > AFAICS we always program the device to go to D3hot and the platform
+> > > then cuts power, thereby putting it into D3cold.  So D3hot is never
+> > > skipped.  See __pci_set_power_state():
+> > > 
+> > > 	if (state == PCI_D3cold) {
+> > > 		/*
+> > > 		 * To put the device in D3cold, put it into D3hot in the native
+> > > 		 * way, then put it into D3cold using platform ops.
+> > > 		 */
+> > > 		error = pci_set_low_power_state(dev, PCI_D3hot, locked);
+> > > 
+> > > 		if (pci_platform_power_transition(dev, PCI_D3cold))
+> > > 			return error;
+> > > 
+> > 
+> > This is applicable only to pci_set_power_state(), but AFAIK PCIe spec
+> > doesn't mandate switching to D3Hot for entering D3Cold.
 > 
-> The idea of taking a refcnt on IOMMU to avoid dev->iommu_group getting
-> freed, make sense to me.
+> Per PCI Bus Power Management Interface Specification r1.2 sec 5.5 fig 5-1,
+> the only supported state transition to D3cold is from D3hot.
 > 
-> The question is if API iommu_group_get() and iommu_group_put() is the
-> correct API to use in this case?
+> Per PCIe r6.2 sec 5.2, "PM is compatible with the PCI Bus Power Management
+> Interface Specification".
 > 
->> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
->> index f4444b4e39e6..d03a87407ca8 100644
->> --- a/net/core/page_pool.c
->> +++ b/net/core/page_pool.c
->> @@ -21,6 +21,7 @@
->>   #include <linux/poison.h>
->>   #include <linux/ethtool.h>
->>   #include <linux/netdevice.h>
->> +#include <linux/iommu.h>
->>
+> Granted, PCI-PM is an ancient spec, so I think anyone can be forgiven
+> for not knowing its intricacies off-the-cuff. :)
 > 
-> The page_pool already have a system/workqueue that waits for inflight
-> "packet" pages, and calls struct device API get_device() and put_device().
-> 
-> Why didn't the patch add code together with struct device API?
-> Like this:
 
-Now do the one where there is no IOMMU, and dma_unmap_page() corrupts 
-random unrelated memory because the mapped DMA address was relative to 
-dev->dma_range_map which has since become NULL.
-
-In other words, no, hacking one particular IOMMU API symptom does not 
-solve the fundamental lifecycle problem that you have here.
-
-Thanks,
-Robin.
+Ah, the grand old PCI-PM... I don't remember the last time I looked into it :)
 
 > 
-> $ git diff
-> diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-> index 2abe6e919224..686ff1d31aff 100644
-> --- a/net/core/page_pool.c
-> +++ b/net/core/page_pool.c
-> @@ -265,8 +265,10 @@ static int page_pool_init(struct page_pool *pool,
->          /* Driver calling page_pool_create() also call 
-> page_pool_destroy() */
->          refcount_set(&pool->user_cnt, 1);
+> > So the PCIe host controller drivers (especically non-ACPI platforms)
+> > may just send PME_Turn_Off followed by removing the slot power
+> > (which again is not controlled by pci_set_power_state())
+> > as there are no non-ACPI related hooks as of now.
 > 
-> -       if (pool->dma_map)
-> +       if (pool->dma_map) {
-> +               iommu_group_get(pool->p.dev);
->                  get_device(pool->p.dev);
-> +       }
+> Ideally, devicetree-based platforms should be brought into the
+> platform_pci_*() fold to align them with ACPI and get common
+> behavior across all platforms.
 > 
->          return 0;
->   }
-> @@ -275,8 +277,10 @@ static void page_pool_uninit(struct page_pool *pool)
->   {
->          ptr_ring_cleanup(&pool->ring, NULL);
-> 
-> -       if (pool->dma_map)
-> +       if (pool->dma_map) {
-> +               iommu_group_put(pool->p.dev->iommu_group);
->                  put_device(pool->p.dev);
-> +       }
-> 
-> 
-> --Jesper
-> 
->>   #include <trace/events/page_pool.h>
->>  > @@ -306,6 +307,9 @@ page_pool_create_percpu(const struct
->> page_pool_params *params, int cpuid)
->>          if (err)
->>                  goto err_uninit;
->>
->> +       if (pool->dma_map)
->> +               iommu_group_get(pool->p.dev);
->> +
->>          return pool;
->>
->>   err_uninit:
->> @@ -974,8 +978,11 @@ static int page_pool_release(struct page_pool *pool)
->>
->>          page_pool_scrub(pool);
->>          inflight = page_pool_inflight(pool, true);
->> -       if (!inflight)
->> +       if (!inflight) {
->>                  __page_pool_destroy(pool);
->> +               if (pool->dma_map)
->> + iommu_group_put(pool->p.dev->iommu_group);
->> +       }
->>
->>          return inflight;
->>   }
->>
->>
->>>>> The page_pool bumps refcnt via get_device() + put_device() on the DMA
->>>>> 'struct device', to avoid it going away, but I guess there is also 
->>>>> some
->>>>> IOMMU code that we need to make sure doesn't go away (until all 
->>>>> inflight
->>>>> pages are returned) ???
->>>>>
->>>>>
->>>>>> [ 4407.212119] process_one_work+0x164/0x3e0
->>>>>> [ 4407.216116]  worker_thread+0x310/0x420
->>>>>> [ 4407.219851]  kthread+0x120/0x130
->>>>>> [ 4407.223066]  ret_from_fork+0x10/0x20
->>>>>> [ 4407.226630] Code: ffffc318 aa1e03e9 d503201f f9416c00 (f9405400)
->>>>>> [ 4407.232697] ---[ end trace 0000000000000000 ]---
->>>>>>
->>>>>>
->>>>>> The hns3 driver use page pool like this, just call once when the 
->>>>>> driver
->>>>>> initialize:
->>>>>>
->>>>>> static void hns3_alloc_page_pool(struct hns3_enet_ring *ring)
->>>>>> {
->>>>>>       struct page_pool_params pp_params = {
->>>>>>           .flags = PP_FLAG_DMA_MAP | PP_FLAG_PAGE_FRAG |
->>>>>>                   PP_FLAG_DMA_SYNC_DEV,
->>>>>>           .order = hns3_page_order(ring),
->>>>>>           .pool_size = ring->desc_num * hns3_buf_size(ring) /
->>>>>>                   (PAGE_SIZE << hns3_page_order(ring)),
->>>>>>           .nid = dev_to_node(ring_to_dev(ring)),
->>>>>>           .dev = ring_to_dev(ring),
->>>>>>           .dma_dir = DMA_FROM_DEVICE,
->>>>>>           .offset = 0,
->>>>>>           .max_len = PAGE_SIZE << hns3_page_order(ring),
->>>>>>       };
->>>>>>
->>>>>>       ring->page_pool = page_pool_create(&pp_params);
->>>>>>       if (IS_ERR(ring->page_pool)) {
->>>>>>           dev_warn(ring_to_dev(ring), "page pool creation failed: 
->>>>>> %ld\n",
->>>>>>                PTR_ERR(ring->page_pool));
->>>>>>           ring->page_pool = NULL;
->>>>>>       }
->>>>>> }
->>>>>>
->>>>>> And call page_pool_destroy(ring->page_pool)  when the driver 
->>>>>> uninitialized.
->>>>>>
->>>>>>
->>>>>> We use two devices, the net port connect directory, and the step 
->>>>>> of the
->>>>>> test case like below:
->>>>>>
->>>>>> 1. enable a vf of '7d:00.0':  echo 1 >
->>>>>> /sys/class/net/eno1/device/sriov_numvfs
->>>>>>
->>>>>> 2. use iperf to produce some flows(the problem happens to the side 
->>>>>> which
->>>>>> runs 'iperf -s')
->>>>>>
->>>>>> 3. use ifconfig down/up to the vf
->>>>>>
->>>>>> 4. kill iperf
->>>>>>
->>>>>> 5. disable the vf: echo 0 > /sys/class/net/eno1/device/sriov_numvfs
->>>>>>
->>>>>> 6. run 1~5 with another port bd:00.0
->>>>>>
->>>>>> 7. repeat 1~6
->>>>>>
->>>>>>
->>>>>> And when running this test case, we can found another related 
->>>>>> message (I
->>>>>> replaced pr_warn() to dev_warn()):
->>>>>>
->>>>>> pci 0000:7d:01.0: page_pool_release_retry() stalled pool shutdown: id
->>>>>> 949, 98 inflight 1449 sec
->>>>>>
->>>>>>
->>>>>> Even when stop the traffic, stop the test case, disable the vf, this
->>>>>> message is still being printed.
->>>>>>
->>>>>> We must run the test case for about two hours to reproduce the 
->>>>>> problem.
->>>>>> Is there some advise to solve or debug the problem?
->>>>>>
->>>
-> 
+
+Yeah, that would be the ideal case. Unfortunately, there is no ideal ground for
+DT :/ We do not even have the supplies populated properly. But with the advent
+of power sequencing framework, I think this can be fixed.
+
+Regarding your comment on patch 3/4, we already have the sysfs attribute to
+control whether the device can be put into D3Cold or not and that is directly
+coming from userspace. So there is no guarantee to assume that D3Hot support is
+considered.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
