@@ -1,60 +1,58 @@
-Return-Path: <linux-acpi+bounces-7335-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7336-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C7B948995
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 08:46:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889C79489A1
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 08:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 541B31C23422
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 06:46:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB99BB22B02
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 06:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE141BBBF0;
-	Tue,  6 Aug 2024 06:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0B41BC9F4;
+	Tue,  6 Aug 2024 06:53:07 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D712A94A;
-	Tue,  6 Aug 2024 06:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF1D15B147;
+	Tue,  6 Aug 2024 06:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722926815; cv=none; b=nH9KMoROdABak+pP0VaLARyl+e2sNUHbhG0rxH6qBVQpGnuRtHSAWv11+icwGMP7bYL+WRynJUEgwuuhS9p6dPsI9Vc7Qd4lH3ogAGZK8OWNbTL2ODfjsimHLQwBkvTbZTGU04QFKbiYef1u2tX/ULz+Iq3XLSLFhB/rYncxKlY=
+	t=1722927187; cv=none; b=JZk5P2vk6o+ilSvBLCw0BCCFPBnkFoqQtgZM6o2kwgrrrIOCiugt1fQ/prMzX5UaQHshWUAOK3nHbL4loyxT3lmck+wh3SaacmV9ysC1aKXI3Qhrf6v2kDMcsuGVMLEglSuv4I2wBuJb88gx0T2vvM4mEGzgJzBEJ9tNgQFcCf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722926815; c=relaxed/simple;
-	bh=kN7qcnABhS2q2AECR1b9x9XPc876WEwD39LAyyVhTp4=;
+	s=arc-20240116; t=1722927187; c=relaxed/simple;
+	bh=XqxcGCRMECyTsBkrwwKzGy9qu0WpXUhddQXpzpKFkPI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cHZ4cCmwUZJZjVjwoFV8+OZB/OXUX0eEBo4PVOox0D1cpyEV/HIjxsUQJo+a8e8L3t92xNXCpCuvL9K++8AN+j3UJDoA/3uUCIDHH4QGEsHWkhEHfqdFIdfHDj8fX2CV1/ZONtUR/QfRUFVc4pfH6bhrJnyaMM2bzmQjDl6/ZWc=
+	 Content-Type:Content-Disposition:In-Reply-To; b=WaxOc7aMJ+y0S9hGNglJ14XWreWmH0EOLWdg/sW30ZmUegmt12m/ojJncSeAXZKdVQx36PKkUfI5TPyDUycNJsL6mvRL09RfO4ZOq/xH9IUXxIrIHnubUflKmhlam+I7qMSlcVqFe2+MCqTlkauJfff1arePqyOh7/7F3brCm0U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 2FE5C300002A5;
-	Tue,  6 Aug 2024 08:46:48 +0200 (CEST)
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id BCBC8300002A5;
+	Tue,  6 Aug 2024 08:53:01 +0200 (CEST)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 18F30366AB; Tue,  6 Aug 2024 08:46:48 +0200 (CEST)
-Date: Tue, 6 Aug 2024 08:46:48 +0200
+	id A884E323E0; Tue,  6 Aug 2024 08:53:01 +0200 (CEST)
+Date: Tue, 6 Aug 2024 08:53:01 +0200
 From: Lukas Wunner <lukas@wunner.de>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, mika.westerberg@linux.intel.com,
-	Hsin-Yi Wang <hsinyi@chromium.org>
-Subject: Re: [PATCH v5 1/4] PCI/portdrv: Make use of pci_dev::bridge_d3 for
- checking the D3 possibility
-Message-ID: <ZrHG2KnGp9N00mV_@wunner.de>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	mika.westerberg@linux.intel.com, Hsin-Yi Wang <hsinyi@chromium.org>
+Subject: Re: [PATCH v5 4/4] PCI: Allow PCI bridges to go to D3Hot on all
+ Devicetree based platforms
+Message-ID: <ZrHITXLkKrDbQKQp@wunner.de>
 References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
- <20240802-pci-bridge-d3-v5-1-2426dd9e8e27@linaro.org>
- <Zqyro5mW-1kpFGQd@wunner.de>
- <CAJZ5v0hw7C2dHC3yXAwya-KAjzYxU+QgavO_MkR9Rscsm_YHvg@mail.gmail.com>
- <Zq08i2i_ETHsJiKW@wunner.de>
- <20240805132442.GA7274@thinkpad>
+ <20240802-pci-bridge-d3-v5-4-2426dd9e8e27@linaro.org>
+ <ZqyxS8spZ-ohsP3R@wunner.de>
+ <20240805133555.GC7274@thinkpad>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -63,24 +61,38 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240805132442.GA7274@thinkpad>
+In-Reply-To: <20240805133555.GC7274@thinkpad>
 
-On Mon, Aug 05, 2024 at 06:54:42PM +0530, Manivannan Sadhasivam wrote:
-> So what is wrong in using pci_dev::bridge_d3?
+On Mon, Aug 05, 2024 at 07:05:55PM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Aug 02, 2024 at 12:13:31PM +0200, Lukas Wunner wrote:
+> > The PCI core cannot put devices into D3cold without help from the
+> > platform.  Checking whether D3cold is possible (or allowed or
+> > whatever) thus requires asking platform support code via
+> > platform_pci_power_manageable(), platform_pci_choose_state() etc.
+> > 
+> > I think patch [3/4] is a little confusing because it creates
+> > infrastructure to decide whether D3cold is supported (allowed?)
+> > but we already have that in the platform_pci_*() functions.
+> > So I'm not sure if patch [3/4] adds value.  I think generally
+> > speaking if D3hot isn't possible (allowed?), D3cold is assumed
+> > to not be possible either.
+> 
+> Why? D3Hot is useful for runtime PM and if the platform doesn't want to do
+> runtime PM, it can always skip D3Hot (not ideal though).
 
-The bridge_d3 flag may change at runtime, e.g. when writing to the
-d3cold_allowed attribute in sysfs.
+AFAICS we always program the device to go to D3hot and the platform
+then cuts power, thereby putting it into D3cold.  So D3hot is never
+skipped.  See __pci_set_power_state():
 
-If e.g. bridge_d3 is set when pcie_portdrv_probe() runs but no longer
-set when pcie_portdrv_remove() runs, there would be a runtime PM ref
-imbalance.  (Ref would be dropped on probe, but not reacquired on remove.)
+	if (state == PCI_D3cold) {
+		/*
+		 * To put the device in D3cold, put it into D3hot in the native
+		 * way, then put it into D3cold using platform ops.
+		 */
+		error = pci_set_low_power_state(dev, PCI_D3hot, locked);
 
-
-> Again, pci_bridge_d3_possible() is not making use of values that could change
-> dynamically.
-
-Which is precisely the reason why it (and not the bridge_d3 flag) is
-used by pcie_portdrv_{probe,remove,shutdown}().
+		if (pci_platform_power_transition(dev, PCI_D3cold))
+			return error;
 
 Thanks,
 
