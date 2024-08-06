@@ -1,81 +1,81 @@
-Return-Path: <linux-acpi+bounces-7358-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7359-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7BD949115
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 15:23:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB3B94911C
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 15:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 017AA2848DC
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 13:23:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C021F2297C
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 13:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98E31D2795;
-	Tue,  6 Aug 2024 13:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B7B1D27A3;
+	Tue,  6 Aug 2024 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NTnUpJ3I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cBa2HyqD"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5931D2789
-	for <linux-acpi@vger.kernel.org>; Tue,  6 Aug 2024 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4741D1F47
+	for <linux-acpi@vger.kernel.org>; Tue,  6 Aug 2024 13:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722950560; cv=none; b=Qm/oL1ERFLGihG+y1FMAXyEDc412ILu5Ulc58ujbJG4ZlbgZC0iybS3OavLSkzoFM3joAzf1TAYud9kobfjiU7Gr0wE1V9MflGz3QvvvzwqipA+KBv26jvNLgzMiHx4dr/qsDVm/9HbSkHju37p7F9Qris6UsUbhWy5AXaRfAxs=
+	t=1722950604; cv=none; b=t49Ok9ZsQjBAogeFstPs2n3aggDxBzU3adK016YDTZ2651VFAE1AZ7dBei1bLxUyG6Ub1FNW4OV+8tNHyNA+d/DIFgbReRohsprykr9HEE2MqVnK3fm4FevcFCe0+cFAi4Eo5Vz87BkHWVz7S3MnEXGygVpFOAMGXi8iG0JAHnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722950560; c=relaxed/simple;
-	bh=5KxYZzY8WIiWBVgxbpPtJNfFlrGgNJ8x1uaxjJSoqAU=;
+	s=arc-20240116; t=1722950604; c=relaxed/simple;
+	bh=rU255xyhAb7brULso+fTqDh4oBnAsC0sHUaLBv1rRPI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KaxllTF1n0umfdrFPxmQdaqTjiTu+TOjPUkQMN88wwXp+Kz4rQu2nBUwoPf5JRMammo1SKhxIPa2eZGDL24nRwtQbx2SCAU1bybPfhwxNCy+P4hr5+q3RvFgSOZaIkwkFrJ9Wile70NM+CYKJKJV15nzC85QR4jtu5eJE/xnEk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NTnUpJ3I; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=ivltuww1x4iVtHK78UABq9qoD2ClyPH96buP9GAJUFjCraq6LHlWTn4nIXbqGNJoW1rXFTNHoigzoxie+WuO9YDkvm3C8SZWsczK/4hGgbRlEyjFoBDlwjTqcz4auU7ZzXw/5MayhRy+KseeC7ZclVhfFUM5kwBj3qNtxNvdB7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cBa2HyqD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722950558;
+	s=mimecast20190719; t=1722950602;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=aUPI5Z9XiSx+9SiMnINjfle2D1fEt5tFfjywP/Y3Qhk=;
-	b=NTnUpJ3IDSPWpn50qLzzp1CULdUAMZZLnSdP/EK9o+rTskYAwvGA5nqGhk8n2/nBEb/jh1
-	fd9m53aJ+t+A7Cpr79ZAp6qt2f4G8dLW4WFpks7UfUdF/FxoE9jKnzQo0E9+YnGaN5LUjw
-	u8xvMDB79rBXQ2LUhUKW2baBPxON5Z8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZB/Nz+T68lcjdmx6jQYY05PBs50un9o0yFuZF5Y14W0=;
+	b=cBa2HyqDKfgmQznJbYsoIsNCGoQWJCS8w7qDDLxYQ9UvRGP7hXhffrSvXklzfNZSpcPAgm
+	9yL5C//elBgE8TH1sWq/ImHgBo6FrBY6uQCY2dJLXM+/iqCa7aEphyHjHv3O3+rPEI8mRP
+	bh06CFwmUG8B8/k4Rk/cUE6RNK4qIP4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-282-188SK0eKNIWCXb-MHY6KLw-1; Tue, 06 Aug 2024 09:22:36 -0400
-X-MC-Unique: 188SK0eKNIWCXb-MHY6KLw-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-36871eb0a8eso442786f8f.3
-        for <linux-acpi@vger.kernel.org>; Tue, 06 Aug 2024 06:22:36 -0700 (PDT)
+ us-mta-496-3AVKZIfuOl-gS6dMNN6yHw-1; Tue, 06 Aug 2024 09:23:21 -0400
+X-MC-Unique: 3AVKZIfuOl-gS6dMNN6yHw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-428ea5b1479so5073865e9.0
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Aug 2024 06:23:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722950555; x=1723555355;
+        d=1e100.net; s=20230601; t=1722950600; x=1723555400;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=aUPI5Z9XiSx+9SiMnINjfle2D1fEt5tFfjywP/Y3Qhk=;
-        b=obtfMth71k3WNXPYMUrrWTYr3W49OquYVFm1q/g4RnbOug/EO9w15orEyU1vB+vyq8
-         ZpJU+w9DzzlQvIla52rz0WKHp1cPfLJtDU9ajmLO3Idjo/CP4zCQHrWc8kv8ppe7iaq0
-         x+JPvqL2hf+I3jsO7+8iulWMmTfMO4hbZ5TK7u5cTSf4zxx1jiZUCjupy1Qkq7aAqmWB
-         M5yEKe/O4Jh1ddOJG+gkwJsCNloGKFQEQtT3OR4VMQMeuwxFIrDmDYro1E6zXh+py6f0
-         RWjicaWLCjYfwF+b8kLGJmDGf2mM/vFRM3lt3x6j0UhLyyVacjc74E6GOiYaGXgVmMk3
-         vQnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXn0UuxtAsDM8uBro3B1PqRJyOUWKKn1nQWzKpoMWxMd9Q9TRWFWBxcAxT3eLcJshw6Ft4P5iwu2jnujq869uB4B9PsEiMXHO4q0Q==
-X-Gm-Message-State: AOJu0YwAfep6RA1Da0cV2nQSnJ6mIu4nbJuoDQHl02p5T6s4Y5zv8eiN
-	c/9lvjYbjoFbCSk4g2BkVJ3PJpY4F1zb7vmwy+bpCCcEzUwA6Bc3macELECo9nB8zKWXcMeW92d
-	ZXIbwz+GYVElVs56WpLLJPvIqrx1M1dokgJHfvqjlsCAVvOvDHqeMZDvrTGE=
-X-Received: by 2002:a05:6000:1c6:b0:35f:cd7:5ba1 with SMTP id ffacd0b85a97d-36bbc1c2390mr9820221f8f.60.1722950555085;
-        Tue, 06 Aug 2024 06:22:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHv//6jPDUe4crSuXPshdQ5kLXizB2Ben7qczAJn6l9IDqh84P49LgZsou2hMuD1GL16UWNvQ==
-X-Received: by 2002:a05:6000:1c6:b0:35f:cd7:5ba1 with SMTP id ffacd0b85a97d-36bbc1c2390mr9820153f8f.60.1722950554541;
-        Tue, 06 Aug 2024 06:22:34 -0700 (PDT)
+        bh=ZB/Nz+T68lcjdmx6jQYY05PBs50un9o0yFuZF5Y14W0=;
+        b=grRPs3xIxlqlIQCawuDhd6HIukPoTgSq1A2k44/Qi1TlLOgXUfenoSNMjK47ZBkgDi
+         bEhJnZi3ClKRuBBkMQdACzD32YTMoGUxOiNdb1XojQ8+2dVUEBsFfN1GrJRrNkbHpgIB
+         QCqM/vMJo0iNjiZ2lYaqmdxSkG262CU5ITsfY7dtx7Dpsmwa7IRJpJcwEeOXmKhlPIER
+         fmTEh12Ghw44b0JNtSmhapVcBBzgIT9eILsm8BjqSFUAnaAnuJyaMVWZo2ILe/i+8xQf
+         9GXO8xC6E964QELpkxTEIMgCseOjoG41mVZW45ztTuFKReBxOKSaNaHF3K1TgriwDFLD
+         syfg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEsMNEubU+0Q+pEq1XDW0Sq0IHGa0htntNmtTYFiW00aIWlT5/RrDyxoWVpTYD5aY3TAP0/j/vc2IYDu7MrBIrIuk0LydWLL7z8g==
+X-Gm-Message-State: AOJu0YwGf9uWbxPr6r4o1faZ4NV6Df0ccNQNutRy0rs/NGB5fvh+BhKB
+	Rdzo/mHFyMI4DZTjBUplzsjazpV763jb5D0b5MVXdk9yVNGYbctrevK1KqxMEkr29o8MrdFCqsg
+	iej/3wQxK68WHIW/GnVMtDa1BBN26TGjCniY/t88PBs+4CNHxWzXatb6LLH8=
+X-Received: by 2002:a05:600c:1906:b0:426:686f:cb4c with SMTP id 5b1f17b1804b1-428e6b96b3bmr118640365e9.32.1722950600105;
+        Tue, 06 Aug 2024 06:23:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHGnLFmt3qZaTRVeNpAWHRxvq5JQmQg7WtAtzN+rNgpMvX+m7w9zDhJGl/mp8SOyNMjpKdqIw==
+X-Received: by 2002:a05:600c:1906:b0:426:686f:cb4c with SMTP id 5b1f17b1804b1-428e6b96b3bmr118639805e9.32.1722950599607;
+        Tue, 06 Aug 2024 06:23:19 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c73f:8500:f83c:3602:5300:88af? (p200300cbc73f8500f83c3602530088af.dip0.t-ipconnect.de. [2003:cb:c73f:8500:f83c:3602:5300:88af])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbd02b15csm13167951f8f.65.2024.08.06.06.22.32
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282bba3249sm242378295e9.48.2024.08.06.06.23.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 06:22:34 -0700 (PDT)
-Message-ID: <ad34babe-9dc3-4aa5-96a3-88349e510a54@redhat.com>
-Date: Tue, 6 Aug 2024 15:22:31 +0200
+        Tue, 06 Aug 2024 06:23:19 -0700 (PDT)
+Message-ID: <14bf500e-e0a0-4217-9c50-7676543adc33@redhat.com>
+Date: Tue, 6 Aug 2024 15:23:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/26] mm: numa_memblks: use
- memblock_{start,end}_of_DRAM() when sanitizing meminfo
+Subject: Re: [PATCH v3 23/26] of, numa: return -EINVAL when no numa-node-id is
+ found
 To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -115,7 +115,7 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
  loongarch@lists.linux.dev, nvdimm@lists.linux.dev,
  sparclinux@vger.kernel.org, x86@kernel.org
 References: <20240801060826.559858-1-rppt@kernel.org>
- <20240801060826.559858-23-rppt@kernel.org>
+ <20240801060826.559858-24-rppt@kernel.org>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -163,22 +163,28 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <20240801060826.559858-23-rppt@kernel.org>
+In-Reply-To: <20240801060826.559858-24-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 01.08.24 08:08, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> numa_cleanup_meminfo() moves blocks outside system RAM to
-> numa_reserved_meminfo and it uses 0 and PFN_PHYS(max_pfn) to determine
-> the memory boundaries.
+> Currently of_numa_parse_memory_nodes() returns 0 if no "memory" node in
+> device tree contains "numa-node-id" property. This makes of_numa_init()
+> to return "success" despite no NUMA nodes were actually parsed and set
+> up.
 > 
-> Replace the memory range boundaries with more portable
-> memblock_start_of_DRAM() and memblock_end_of_DRAM().
+> arch_numa workarounds this by returning an error if numa_nodes_parsed is
+> empty.
+> 
+> numa_memblks however would WARN() in such case and since it will be used
+> by arch_numa shortly, such warning is not desirable.
+> 
+> Make sure of_numa_init() returns -EINVAL when no NUMA node information
+> was found in the device tree.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Tested-by: Zi Yan <ziy@nvidia.com> # for x86_64 and arm64
 > ---
 
 Acked-by: David Hildenbrand <david@redhat.com>
