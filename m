@@ -1,236 +1,220 @@
-Return-Path: <linux-acpi+bounces-7368-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7369-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD77949821
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 21:22:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5436949867
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 21:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71EEF1C212AA
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 19:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C3F1F21B03
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 19:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F90780BFF;
-	Tue,  6 Aug 2024 19:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1768154C05;
+	Tue,  6 Aug 2024 19:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CQdpH0XR"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QyAM3BLt"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C0D47F4D;
-	Tue,  6 Aug 2024 19:22:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722972126; cv=fail; b=LoqBibv+kkSfll7YDxbfQNOcLdAi5z6ES9qg2yZXDE9m5A8QBC+Mez1vnbmB5DIEb7iSenhbMfbVVzy2jFu2hvye2+Qe5UenVopTkKKY8bbzga2a4kfvfIFGXenDG1EVCfpGai9oK7ky2rJQJlPopcFVVsSSLNSQ3j55FJPTZhI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722972126; c=relaxed/simple;
-	bh=AUMs3IX5x4G0WUUmJkQK5+pCE5e0C8e+M1MyqlXq11U=;
-	h=Date:From:To:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LN4H+YBYlzUpVOMtBI8eJH3F0hctzgQWbCOI++UkVH8+nZI2tqyVr+rKkIzQAdRyooKsjbz9cpudQAwpgq288OO1GDF+bLZfdtr59zY2+sdlswRxhcxl0SsJEVeBjfvd0Q3caMqN+JFfaIE7pa7cLuWXnNvmv6fVILTRV6AHYTI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CQdpH0XR; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722972124; x=1754508124;
-  h=date:from:to:subject:message-id:references:in-reply-to:
-   mime-version;
-  bh=AUMs3IX5x4G0WUUmJkQK5+pCE5e0C8e+M1MyqlXq11U=;
-  b=CQdpH0XR6wSy4buNW8j40WLz0TzPZkNzovoRWowIkaDSpMoWsuEQobbx
-   nTQEftXl8Riibe7dRa0MITh0CwTYtv5rxgVa4bu0PEPwyKJIwdP8LMpSu
-   lshWJs1oKRqVmjueZTNZcWzTUFy7X/PMq/ntta6o08tloYxkTCIIrDefM
-   8hMZqh/vzd1wI8FkF0LM4Wkci89MVm4Zl+cDnN4RVENs8vQyBmZiPQgD5
-   MLUOlU+s4ADDBem3LnqsctqGrXyhBZYY5dbGKz2tz83vIbDyzlz5HUlpz
-   395lvwY5aQBsOyRORNXZbcEYVuY2yeWgwEg/QrQIRrh7X6WwuKp5ueevA
-   Q==;
-X-CSE-ConnectionGUID: Q2smx1UTQy+QjGSFP6jLGw==
-X-CSE-MsgGUID: CcgccJCaRiyQ2abjrr4ncg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="24779221"
-X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; 
-   d="scan'208";a="24779221"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 12:22:02 -0700
-X-CSE-ConnectionGUID: 3SwlQ9ZXQYS2urGVJleTSg==
-X-CSE-MsgGUID: VAqaaWHlQrKUetCzT6BmuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; 
-   d="scan'208";a="79864109"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Aug 2024 12:22:03 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 6 Aug 2024 12:22:01 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 6 Aug 2024 12:22:01 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 6 Aug 2024 12:22:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Gt/dH4jIGIpxyaLM3Xp1uL78dl1l3yA/YiWB/fv1A45CkSQrz+ehc9CD3sWbxLxYN/ng/tGORFVeFMwwhO9Pey25qTwWpGnBZNr/GMLUKMrfxDEgFe4V+7p8p5CDbH2C4yu0GrwxKx6cRrIMs++Qo6jXorJZe13HBBLQk10afxmAH8hJ1axIxS8A/l9VE6gBNyAk5u9ykYnnMSunqDj0C22ffwt6w9ynheSVKabe/AN7MaQIJK2D08Nmj/pQwc5FPtpMq0f+ExK4v15Ugh/ScUv1jhqQ/6IGlv5lPRI75eSQREXx5aNtfPxqvq5zaGseq7lM1W8AXeevNPQILEPTWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hq7S1d28daJr+c06oBR5PZZBP0zl9lGti3eVKRqWqco=;
- b=H5UVaZGDIzcE5CuVlSG8LRmoY8v04L1TNUZWDnZPszKuL9LebEPbPtv1RmYNeK+JIuRYOoi1TfXuJK8zSJ7Y/E2ODm2MPyu6pmyF5akoSl2DNUxf4Wm2GZelBtyYEpi65OknPbe94IYDHbimBZdZVGoF/SLBHPi6xs50yAfo5oSzejblbSc1kiHXdwBUVtj8BfH3xx/KTFUA2z+dHO8PijItj5DIGqruUn3twaiwJxdHxDCDlE9tpIr5oUsZV2WIJTBo3pvinBOXYV81iWcjYTykprzwEzbM49sSWJQZeGyaU3yWGaVQwyZ2YKIhtGm5ptkWHqZmeCm7xv1L+SlqXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA1PR11MB6616.namprd11.prod.outlook.com (2603:10b6:806:257::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.23; Tue, 6 Aug
- 2024 19:21:59 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.7828.021; Tue, 6 Aug 2024
- 19:21:58 +0000
-Date: Tue, 6 Aug 2024 12:21:56 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>, "Rafael J.
- Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, "Mahesh J
- Salgaonkar" <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, <linux-kernel@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-pci@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 1/2] ACPI: extlog: Trace CPER Non-standard Section Body
-Message-ID: <66b277d4ed6f_c144829421@dwillia2-xfh.jf.intel.com.notmuch>
-References: <20240527144356.246220-1-fabio.m.de.francesco@linux.intel.com>
- <20240527144356.246220-2-fabio.m.de.francesco@linux.intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240527144356.246220-2-fabio.m.de.francesco@linux.intel.com>
-X-ClientProxiedBy: MW2PR16CA0054.namprd16.prod.outlook.com
- (2603:10b6:907:1::31) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21D51547D2
+	for <linux-acpi@vger.kernel.org>; Tue,  6 Aug 2024 19:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722972919; cv=none; b=QHKoehxJngnUrVxlpBFwJAfobCg1hbnxFMQSgMS4w8lDGHe3Gau0EyDNxI8A67np/fJaMEkE1Zis8PS+cpcTN+u87jWBKK6BWS9mikw6HU4FNQbb0Nao14jXmz/aHkKTQL0y1N9CBLPx1rnk1atl8/71ZKc9cu2AVrgHTmH/kiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722972919; c=relaxed/simple;
+	bh=Mi3krm6qKlcXMFdQvEFj4HhJT1E3mVvwjBP6EDvEadY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MMiTM5DE6e9K19hwpoJJHyOZoTGQrx1jrtDSZZmM6FVqN4FaucAqfIVxIts7FThST2q8YXv7IMChh1Ysb/bdKtt09P63occ/a/xH4CdFMi10NjRCPeS2asYg/fkXu5H+tHnM9TAiWIlydHX1BWB1kayAEmIqSIVfnFvHouwYlSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QyAM3BLt; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52f025ab3a7so1437480e87.2
+        for <linux-acpi@vger.kernel.org>; Tue, 06 Aug 2024 12:35:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1722972916; x=1723577716; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=65V64CMleR7tjOpduSpYXGNLWYO2WeeBKGktESkyjrI=;
+        b=QyAM3BLtRzzt1fLzC2n9awYKai8a+0CJQgSfwOnb4a5mGeTaOs9C587JnS9ypeM2No
+         RgT3wMYEuam+7B6nc+GLf6ZHiW9qr4h/Fvd/ghh5QeMkJnIW4nvLGgBouvdAqZian1a4
+         DquJ16YULhaEH0Tlleufv6UnGJNizJtzEWv90=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722972916; x=1723577716;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=65V64CMleR7tjOpduSpYXGNLWYO2WeeBKGktESkyjrI=;
+        b=TqnWUr1WBFIO8RDGm2/IWdo3ImylWl8PasF/wSLaFuNXmpTQpgeeX12bAysdOnTNJq
+         ATBYaGImHca8OUW9tvWvjBLiFkziQKoFQ4B8UOFfrss2l+eAYvOpAGXloI+IvsfPq8D0
+         QKnQj/bwrbI1alaO0pw9o7BMiqKziLJzSDoLF7/CM3CBcSzFpfgTe/piZR3KJlgqB9Of
+         Rnru1mDBHE4SteCzIPIMDiLKO27q4sdkDOy0g/g4JpE4Xc6Li6SiQbcd4U1ZJSQEUZEe
+         LEz1wWd47tnRtZ2jbg+T+bL270tF6SsBGxFYXL/U4cR4qjSbeuqBhVzVRd+0dfxSnXXq
+         2tdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNd3+o4fHcdll33gSSVDZhYbvcsNlsvcHMLfnhCep5zzhPe8dZl00P1l7AzOAabSVw9H1Y1VrlHKlTdgVO2Cl6sYlE/A3vaKK3uQ==
+X-Gm-Message-State: AOJu0Yxk0pr5uUrXXB6mwDcZcvZBOyV42bHIIVtqazdf+lg3yTejOmFI
+	93oERSqaXWY4vFQXGN+xDjV0skDYbbvH413p2SEjH92/2dWRvuQBMqiPitX3NUVoXo6LVu2nWGl
+	jHhaI2/qwkMIw1NweniSasRm1JS4kPe/RMpawW0vlsjGNZzk=
+X-Google-Smtp-Source: AGHT+IHSs9543k/zOW9WqMKpwH9LrWuH6uHqfIQ8NSfc6Ur/yfVVd9I9UN8S9btPzYqNYkV8bgO4aucquSvU5cwCLc8=
+X-Received: by 2002:ac2:58d5:0:b0:530:db85:e02a with SMTP id
+ 2adb3069b0e04-530db85e1camr307895e87.22.1722972915814; Tue, 06 Aug 2024
+ 12:35:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA1PR11MB6616:EE_
-X-MS-Office365-Filtering-Correlation-Id: edc02064-6e78-4fc7-df92-08dcb64d0aa7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?Q3KKaD+JTuJ6a2tRvzX8tY7lzIfqn0jCbwuirK6XKe410B2S1p++OmPhO+V9?=
- =?us-ascii?Q?JdKPxGzQZe+f5D2rsLsxeedlKj51s3nudiOuxselvaYqbYPj/fTNjCM9nQvd?=
- =?us-ascii?Q?rDC4ANmD1gWAbsFvE0pzk9/oO7IGcJkJfkkUYCkX5V9b3T4UV/XHXSpU93nn?=
- =?us-ascii?Q?ZJojD/MkWB8K0PJwhvf3WvnKgY1ZE0z46exIhQv2Pz/c1e535/U8UWnutEpb?=
- =?us-ascii?Q?3cOUWJgsiFJ849W/1J8rAqQvAdffc6WO+B2KNaVxKzq2ViHyqpUyRmPEUQoc?=
- =?us-ascii?Q?ajiXAbpgt3T/2Hwy1Lm9v5A4ot1WPMgzAr/XYUcxZe2qtAi8yRWGPwo5GhuP?=
- =?us-ascii?Q?K3OtDep2o9OFooF3KoKIErEF36agbXjg2zDv+3CROQo4R3eMJSks+0JSecFG?=
- =?us-ascii?Q?eHnKdEmYnLGxr4oO2nB+IPeR7xg0HHuyEAdCOQjGWIuHdVhJGTWQ1isY74X4?=
- =?us-ascii?Q?RMoRYq922TaL3rcyczCazgciajadZ+NL1pM8DgFQX9vmWTjfOHv6S2TThslu?=
- =?us-ascii?Q?JdiR4mQvYnKRkViwqZrcvJOaUbz/0khnrYF1GF47gw2LBeGm45J2SHwQvTky?=
- =?us-ascii?Q?cbcFBSLvST6N42fymFu5s4ZufL8nwe9LZ7iayq0eHTiWGQzBKeExnrdnGQoG?=
- =?us-ascii?Q?ne6ftNiYnSijfS5uRZCy4/WeULZvBndX73wASx8s0voKrFcsf37Jajhy9YcF?=
- =?us-ascii?Q?6OJtdxTLczjnRLNnw/AVEHijk54dFoEnGpazdLxyuh3++aEDD1R//DMivddk?=
- =?us-ascii?Q?24cAebiFGrDWtlhSfMcJcrd7lCHN41aPEiEpBMr7whQW0MS8SlGhkWAi5S8+?=
- =?us-ascii?Q?ZS1QgRfhpU94melRbr3Ne7I8sGVbFtN5OR7Hi9s2Bz/mqJa9dgPIWFsiFMSf?=
- =?us-ascii?Q?wB65td5mJgIGm7wGH1GLNrxcKI1tXETA/Jyfq3Ub6O4d2LxQiojECvc+clX5?=
- =?us-ascii?Q?jLNiItdKCZhpHwpURD1RgfiQSOElu25svFGixoCCR9WNJFEZFtKvuhw3MHst?=
- =?us-ascii?Q?4XjDbu2drFx8xLP9qmhPWYwm7EMDArUD4aRB7t1JdnRwJ7oeM4w19vV1BgUk?=
- =?us-ascii?Q?JCtYhG+S8YJ2e5VeABwO03tFHvnn7SKvrytG9eAwPfsoa6drY1NuOQ3UCYUH?=
- =?us-ascii?Q?W7eWRFWXAiX8Jx5aJJgbko+8cadBSJA+oxodYyQMb9ghb2+bljgN3XhBUTeE?=
- =?us-ascii?Q?Vgk9q4rTbT2SM9fn7AhSZuyTHfifiSYm8yFUbedHJ/eOYzVJdKveDIGX9YzV?=
- =?us-ascii?Q?Z60Aav3aq23qhGqSzPcXb53RcrvdxU5W4MMwm/QpaItxdI/6YKxAmPpVKTw4?=
- =?us-ascii?Q?MjIbeHd+ZLKJQrOGXD5DyTqeSg1kgRIDKcB5lT9xE0toRzO1xrZU538Rl4I2?=
- =?us-ascii?Q?y3CJWNjt1JwzVo/XeqUaLPmIj2i5?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?rESFE4ljys8qOy1XFixg0VH1rvwkDRtSvVaccoSbG9fvGbTBI9mT6Yfqg8/H?=
- =?us-ascii?Q?ZSMva5XQLJhctzpUDkrNRyJy89NxeYqWDo271UxN/UK0KlY5kAg+wOWCaZ8o?=
- =?us-ascii?Q?abjxyqR8Og0l7A0/lBDurZdkvFmguSI/YbSmgJElhM2gaObxLOG9Wf654N5W?=
- =?us-ascii?Q?DG5LedQhb9anOXLRVwWJHCDz4/H2wyCn0C6AA46Te3OGAJU4xFBPVwphBT20?=
- =?us-ascii?Q?dvhQC3/LhCXk7bHrCx318ICPXo/mRiX9sCBvC6KCudthLqF9Y8ICB7aZygNc?=
- =?us-ascii?Q?AD24cIU6NKEvLaPHt4X02UwtDJBdMmYngJdVCf2JKbpBCyvyKbcfwTcPTxQd?=
- =?us-ascii?Q?Tw+L5v2iflqwZeGkQOuNUGUoCFqSkCz4My5nJszwRmEff35yGyZlCmviWnDR?=
- =?us-ascii?Q?3wq0W9aOUCTGfd1Up1Q6J0gF1LzqfVwdqO8CRIpNmQwC/vI5vM1qFA4vez9c?=
- =?us-ascii?Q?acMeLDGTxDIW7i7GPYHjahYP9/Qz86WfaT2fnBSdqX7m9ebkXMy5cTgW8QcP?=
- =?us-ascii?Q?4d/muqkh2jxljqMzvW6+mXXW5r/J2KoH9kqUahfp0YmDMdOqun/YLQPPsFGl?=
- =?us-ascii?Q?Eg6MPLu7Y9yNKoV3YVhgvDpVIuiQ4XibDgHWYYaxVJmYaXgW66FZ3KWsgDIE?=
- =?us-ascii?Q?sijD3WdFP80H9B+IytfiNtRP+b3XxZ+OPuuSUnH1K6/1Z5xuSgMha/Ow65tm?=
- =?us-ascii?Q?h1yb7t4tD9tXd4CzxaibwmE/iNijYbPbhgmqU16QKLm/3ouMEqNM47cbEv4V?=
- =?us-ascii?Q?/1On/eevAqZAbRTTObAmo7iVC3ghUdMKPQqGAxqpK2aNiMVXir3QaNW/G29h?=
- =?us-ascii?Q?LiebJhGY31/DIGlXB189ipVYxzkmbiB5VKqoQ37+mHC798qiBohXDiXKfdWy?=
- =?us-ascii?Q?u2EAEGz5QXhUEumfaxHcMyCgQKgq7wXH2yjZIStNtT0xe2acpVAVpFP3j/0S?=
- =?us-ascii?Q?J0M4XmI/8LnIFrGVaTDmMgtLBfxDsJew1jJUU0CzykLnVwm9v8Ml8A29khtg?=
- =?us-ascii?Q?wUNvfw8oM7PEaNi1C18z7W4HeQ4T9yg8TDZ7miQLeo/St7JMqkZmvi9z5yAn?=
- =?us-ascii?Q?+v49o7fHfxRwmjbSxNhn36lwmaKgh36m0ocBup70725Bvr8XDuDD3WsAZo7i?=
- =?us-ascii?Q?/YnF5m26JISwgThzd3JoZfdtwRAshJ0IhCyXOMxYCWXOhCtfGiLIHCzX93Y4?=
- =?us-ascii?Q?zXQfTc/UqpaA3u5sLoYjo2FNgKCN421Tkgfz+DKVZN35nWfH45yr2NB7rN1x?=
- =?us-ascii?Q?dV0Mxle0FMIWngr55IvUyYtAFw5KB+w7rNrSPds4OR9OUSjol7z8HdwbjbuP?=
- =?us-ascii?Q?J8HeJmkEjJUwx1Zk+YxksSJotAau1InrV+pLOJNK+yyYuaDDXokyJsqtItO9?=
- =?us-ascii?Q?K4O5e0EFRWjJhF2wPEX12WaZIggtizk8mIABX6U/AakJaWWGmIt4kYZKG/1J?=
- =?us-ascii?Q?AjQkClVUEKCrLq22zYEPGvdg9rsP9u97Ki3cqCgx3VREdt45o/Cs+NXLEWXD?=
- =?us-ascii?Q?/fiH3EzNVlYgZmNUMGbpkHlk4ANPG8Xn9J2XCdsGnuNOqn1Fzb82e01nNPgL?=
- =?us-ascii?Q?s27bDYMNg59ix2OgYFquqob7Mk1kp2qz1UxRF/QmgTvjBN5dfEL0rTuc9ZDS?=
- =?us-ascii?Q?tQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: edc02064-6e78-4fc7-df92-08dcb64d0aa7
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2024 19:21:58.8900
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GFONW5VZk9SlJ9sO3ubsaAIUtnR93HSNpaVrZ0Rab8P0B8RgcUww2GdDMtu8GNy1qo5HwnSobNuT5azxEnOJ3z2/uUXP7mOwfKB+/IiiHQU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6616
-X-OriginatorOrg: intel.com
+References: <20240326-pci-bridge-d3-v4-0-f1dce1d1f648@linaro.org>
+ <20240326-pci-bridge-d3-v4-3-f1dce1d1f648@linaro.org> <CAJMQK-hu+FrVtYaUiwfp=uuYLT_xBRcHb0JOfMBz5TYaktV6Ow@mail.gmail.com>
+ <20240802053302.GB4206@thinkpad> <CAJMQK-gtPo4CVEXFDfRU9o+UXgZrsxZvroVsGorvLAdkzfjYmg@mail.gmail.com>
+ <20240805153546.GE7274@thinkpad> <CAJMQK-iZ6s0UmsT91TCRe6E9RMZ-3BndDFtXqCUxdWGcyxPSTA@mail.gmail.com>
+ <20240806150250.GD2968@thinkpad>
+In-Reply-To: <20240806150250.GD2968@thinkpad>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
+Date: Tue, 6 Aug 2024 12:34:49 -0700
+Message-ID: <CAJMQK-jMPJUfyKyEwmYxKX3+NykkP9EzP3-knMp=NyY-vczVRA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] PCI: Decouple D3Hot and D3Cold handling for bridges
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, lukas@wunner.de, mika.westerberg@linux.intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fabio M. De Francesco wrote:
-> In extlog_print(), trace "Non-standard Section Body" reported by firmware
-> to the OS via Common Platform Error Record (CPER) (UEFI v2.10 Appendix N
-> 2.3) to add further debug information and so to make ELOG log
-> consistently with ghes_do_proc() (GHES).
+On Tue, Aug 6, 2024 at 8:03=E2=80=AFAM Manivannan Sadhasivam
+<manivannan.sadhasivam@linaro.org> wrote:
+>
+> On Mon, Aug 05, 2024 at 12:17:13PM -0700, Hsin-Yi Wang wrote:
+> > On Mon, Aug 5, 2024 at 8:35=E2=80=AFAM Manivannan Sadhasivam
+> > <manivannan.sadhasivam@linaro.org> wrote:
+> > >
+> > > On Fri, Aug 02, 2024 at 12:53:42PM -0700, Hsin-Yi Wang wrote:
+> > >
+> > > [...]
+> > >
+> > > > > > [   42.202016] mt7921e 0000:01:00.0: PM: calling
+> > > > > > pci_pm_suspend_noirq+0x0/0x300 @ 77, parent: 0000:00:00.0
+> > > > > > [   42.231681] mt7921e 0000:01:00.0: PCI PM: Suspend power stat=
+e: D3hot
+> > > > >
+> > > > > Here I can see that the port entered D3hot
+> > > > >
+> > > > This one is the wifi device connected to the port.
+> > > >
+> > >
+> > > Ah, okay. You could've just shared the logs for the bridge/rootport.
+> > >
+> > > > > > [   42.238048] mt7921e 0000:01:00.0: PM:
+> > > > > > pci_pm_suspend_noirq+0x0/0x300 returned 0 after 26583 usecs
+> > > > > > [   42.247083] pcieport 0000:00:00.0: PM: calling
+> > > > > > pci_pm_suspend_noirq+0x0/0x300 @ 3196, parent: pci0000:00
+> > > > > > [   42.296325] pcieport 0000:00:00.0: PCI PM: Suspend power sta=
+te: D0
+> > > > >
+> > > > This is the port suspended with D0. If we hack power_manageable to
+> > > > only consider D3hot, the state here for pcieport will become D3hot
+> > > > (compared in below).
+> > > >
+> > > > If it's D0 (and s2idle), in resume it won't restore config:
+> > > > https://elixir.bootlin.com/linux/v6.10/source/drivers/pci/pci-drive=
+r.c#L959,
+> > > > and in resume it would be an issue.
+> > > >
+> > > > Comparison:
+> > > > 1. pcieport can go to D3:
+> > > > (suspend)
+> > > > [   61.645809] mt7921e 0000:01:00.0: PM: calling
+> > > > pci_pm_suspend_noirq+0x0/0x2f8 @ 1139, parent: 0000:00:00.0
+> > > > [   61.675562] mt7921e 0000:01:00.0: PCI PM: Suspend power state: D=
+3hot
+> > > > [   61.681931] mt7921e 0000:01:00.0: PM:
+> > > > pci_pm_suspend_noirq+0x0/0x2f8 returned 0 after 26502 usecs
+> > > > [   61.690959] pcieport 0000:00:00.0: PM: calling
+> > > > pci_pm_suspend_noirq+0x0/0x2f8 @ 3248, parent: pci0000:00
+> > > > [   61.755359] pcieport 0000:00:00.0: PCI PM: Suspend power state: =
+D3hot
+> > > > [   61.761832] pcieport 0000:00:00.0: PM:
+> > > > pci_pm_suspend_noirq+0x0/0x2f8 returned 0 after 61345 usecs
+> > > >
+> > >
+> > > Why the device state is not saved? Did you skip those logs?
+> > >
+> > Right, I only showed the power state of pcieport and the device here
+> > to show the difference of 1 and 2.
+> >
+> > > > (resume)
+> > > > [   65.243981] pcieport 0000:00:00.0: PM: calling
+> > > > pci_pm_resume_noirq+0x0/0x190 @ 3258, parent: pci0000:00
+> > > > [   65.253122] mtk-pcie-phy 16930000.phy: CKM_38=3D0x13040500,
+> > > > GLB_20=3D0x0, GLB_30=3D0x0, GLB_38=3D0x30453fc, GLB_F4=3D0x1453b000
+> > > > [   65.262725] pcieport 0000:00:00.0: PM:
+> > > > pci_pm_resume_noirq+0x0/0x190 returned 0 after 175 usecs
+> > > > [   65.273159] mtk-pcie-phy 16930000.phy: No calibration info
+> > > > [   65.281903] mt7921e 0000:01:00.0: PM: calling
+> > > > pci_pm_resume_noirq+0x0/0x190 @ 3259, parent: 0000:00:00.0
+> > > > [   65.297108] mt7921e 0000:01:00.0: PM: pci_pm_resume_noirq+0x0/0x=
+190
+> > > > returned 0 after 329 usecs
+> > > >
+> > > >
+> > > > 2. pcieport stays at D0 due to power_manageable returns false:
+> > > > (suspend)
+> > > > [   52.435375] mt7921e 0000:01:00.0: PM: calling
+> > > > pci_pm_suspend_noirq+0x0/0x300 @ 2040, parent: 0000:00:00.0
+> > > > [   52.465235] mt7921e 0000:01:00.0: PCI PM: Suspend power state: D=
+3hot
+> > > > [   52.471610] mt7921e 0000:01:00.0: PM:
+> > > > pci_pm_suspend_noirq+0x0/0x300 returned 0 after 26602 usecs
+> > > > [   52.480674] pcieport 0000:00:00.0: PM: calling
+> > > > pci_pm_suspend_noirq+0x0/0x300 @ 143, parent: pci0000:00
+> > > > [   52.529876] pcieport 0000:00:00.0: PCI PM: Suspend power state: =
+D0
+> > > >                 <-- port is still D0
+> > > > [   52.536056] pcieport 0000:00:00.0: PCI PM: Skipped
+> > > >
+> > > > (resume)
+> > > > [   56.026298] pcieport 0000:00:00.0: PM: calling
+> > > > pci_pm_resume_noirq+0x0/0x190 @ 3243, parent: pci0000:00
+> > > > [   56.035379] mtk-pcie-phy 16930000.phy: CKM_38=3D0x13040500,
+> > > > GLB_20=3D0x0, GLB_30=3D0x0, GLB_38=3D0x30453fc, GLB_F4=3D0x1453b000
+> > > > [   56.044776] pcieport 0000:00:00.0: PM:
+> > > > pci_pm_resume_noirq+0x0/0x190 returned 0 after 13 usecs
+> > > > [   56.055409] mtk-pcie-phy 16930000.phy: No calibration info
+> > > > [   56.064098] mt7921e 0000:01:00.0: PM: calling
+> > > > pci_pm_resume_noirq+0x0/0x190 @ 3244, parent: 0000:00:00.0
+> > > > [   56.078962] mt7921e 0000:01:00.0: Unable to change power state f=
+rom
+> > > > D3hot to D0, device inaccessible                    <-- resume fail=
+ed.
+> > >
+> > > This means the port entered D3Cold? This is not expected during s2idl=
+e. During
+> > > s2idle, devices should be put into low power state and their power sh=
+ould be
+> > > preserved.
+> > >
+> > > Who is pulling the plug here?
+> >
+> > In our system's use case, after the kernel enters s2idle then ATF (arm
+> > trusted firmware) will turn off the power (similar to suspend to ram).
+> >
+>
+> This is not acceptable IMO. S2IDLE !=3D S2RAM. Even if you fix the portdr=
+v, rest
+> of the PCIe client drivers may fail (hint: have you checked the NVMe driv=
+er)?
+>
 
-I think this description could be clearer, how about:
+NVMe and its port stays at D0. We won't power off them.
 
----
-
-ghes_do_proc() has a catch-all for unknown or unhandled CPER formats
-(UEFI v2.10 Appendix N 2.3), extlog_print() does not. This gap was
-noticed by a RAS test that injected CXL protocol errors which were
-notified to extlog_print() via the IOMCA (I/O Machine Check
-Architecture) mechanism. Bring parity to the extlog_print() path by
-including a similar trace_non_standard_event().
-
----
-
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
->  drivers/acpi/acpi_extlog.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index f055609d4b64..e025ae390737 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -179,6 +179,12 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else {
-> +			void *err = acpi_hest_get_payload(gdata);
-> +
-> +			trace_non_standard_event(sec_type, fru_id, fru_text,
-> +						 gdata->error_severity, err,
-> +						 gdata->error_data_length);
->  		}
-
-...with the above changelog update the code change looks good to me, you
-can add:
-
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> - Mani
+>
+> --
+> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
+=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
+=E0=AF=8D
 
