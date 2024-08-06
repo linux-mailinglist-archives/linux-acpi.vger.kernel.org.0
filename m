@@ -1,238 +1,160 @@
-Return-Path: <linux-acpi+bounces-7376-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7377-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880B2949A34
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 23:31:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D6E949B09
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Aug 2024 00:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F30928413B
-	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 21:31:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7621F220E9
+	for <lists+linux-acpi@lfdr.de>; Tue,  6 Aug 2024 22:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6982180043;
-	Tue,  6 Aug 2024 21:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E86D17335C;
+	Tue,  6 Aug 2024 22:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZQKUccB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N8OhLlYj"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382F0374C4;
-	Tue,  6 Aug 2024 21:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64242172BAE;
+	Tue,  6 Aug 2024 22:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722979882; cv=none; b=siCMllTsoDp/3HFcxPpAzYa5dZuXqRr+wfwrmRvnqidgAzdCS0GS9hacasKr0wA5FfFY/Q2PJIeuva4s9v3E2LcELVypt/mmtTtZixvcItrQJIuMybdeAPCoC7Z5im4uWvc9SrPcT++jDuTtB/Kp3eSfE52XsOoPXTLvCROqdoM=
+	t=1722982382; cv=none; b=Ra/dYh6+KoxQ+EYvuD8OPiUOBzacDJaZKhImPy8alOlUrHoMlFJ4vC/H56nXVqfhhXxgj1ZkZaogSNVFTcd3abhpHlv0qVilWTXh+l6iE1ttYT+ATHF0EgRkAg5rax+60q4St6rZj8i0iHvUQaVqO0oOPSSvXm0Ww8dSumXbmMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722979882; c=relaxed/simple;
-	bh=VXxnYAXbd0tH8wNBXyr5xoQiqrp06Fe5NipXt7zMffg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=FMJQwOAw993DTASVYAJGdeiVUmJoCuNK/uiYh5besPpObJHKZ14srYIHXqBgR6s2WIXOx1YT8GsjOeNox1UsEixq+IYK5gez8ZIREOUOw11nQTlY9SrRcM2jmYG10ugZf/ZHwSUEkJ7uGFkXn9t4VrrXOXivNBx78B5rvt35+N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZQKUccB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F69EC32786;
-	Tue,  6 Aug 2024 21:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722979881;
-	bh=VXxnYAXbd0tH8wNBXyr5xoQiqrp06Fe5NipXt7zMffg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=gZQKUccBftAz4FMArWnleyNoM4GvWjaFRRteMBtBaZdXEPS8nK/E0Zo6S1m8GfSFY
-	 ZXyTU62WJ1wPJe2qbjGfMw4GCHQXgYHhR78nu90h3jIANHnDG8Nanu1LyaAEjLg0e2
-	 Cotomg9CDKJXsNc4AASSPqxINhh5QdXgTSeHHiOAC0xzV1IsHhLAtDuaSZB2LGJdVs
-	 otiUHmW3bmOlWsi8uiH/oiVQN4JBrUPcrdEqqFkE8ZQpW3eYldD9ZQp4tcF21wAjAg
-	 Gy9CSTb2NZGcMz8FDh4fC9YWfRYz7OSgFZO32uRwAPetmTmrCq5I4JjMoo29FQt2fH
-	 0Kkc1szLgYw5Q==
-Date: Tue, 6 Aug 2024 16:31:18 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/2] ACPI: extlog: Trace CPER PCI Express Error Section
-Message-ID: <20240806213118.GA78822@bhelgaas>
+	s=arc-20240116; t=1722982382; c=relaxed/simple;
+	bh=eMfTwuERrN+nNbChcSkoO5cgQetqoZ0j/xiy1nJlAp4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hoovj2R14BpCS/wInwz3eTP4NOujjxwx3QAP0WtcocS2bd4xKTa8FLjAyaEhTOwjr1ujZa2jD51/mkAFm8qn0JmsDzZBCpxmgniYtwzXR+1E2AQQXNwLXSHQvebdUX15Qj23l3xFJ4nNfQQOh3vm969/0gy8vDFaIP1UOpS7Xt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N8OhLlYj; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1722982381; x=1754518381;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=eMfTwuERrN+nNbChcSkoO5cgQetqoZ0j/xiy1nJlAp4=;
+  b=N8OhLlYjVsoNhVKNI0LMSsP4BDN4XASjjkvbIQv9F43cXHoTIoclr74T
+   MEsfvuNIaYF8Uwy8pvw6LWo6A1Gfj13gGTPqy1MwZjhaH9rJpIaeKAh6m
+   F4gxGPCt6NKynUpYa8R9UEmSHrrWGBNxoBkaDgA5A1l+BzlvFSorWHhq7
+   dttaritPOP2nynW+O1APmP/IBceJ1Zq0ieNOwcT72qDh4ijvXHxS1g4fG
+   1rcd9n1wQ156Mymwj/TzrwZGe2VsyA8usWFqZ4V8eDNcu2oAcC7hg0MTW
+   1Uhw7MB4NhcdaSXN+2rmJ/X2E2xbdCmVCWl2yNwj7faz9utwq+zwxlXaw
+   g==;
+X-CSE-ConnectionGUID: C2sAS/ogTSWYZ6hotc33vg==
+X-CSE-MsgGUID: 6qMAiggeQaW06gYR9F69mA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="38534349"
+X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; 
+   d="scan'208";a="38534349"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 15:13:00 -0700
+X-CSE-ConnectionGUID: 21E0rOI9RbmLk7d1OXS1gQ==
+X-CSE-MsgGUID: 5Uaa+pBPQIu50xZSqL7CNA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; 
+   d="scan'208";a="61465620"
+Received: from yjiang5-dev1.sc.intel.com ([172.25.103.134])
+  by orviesa003.jf.intel.com with ESMTP; 06 Aug 2024 15:12:58 -0700
+From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+To: tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	rafael@kernel.org,
+	lenb@kernel.org,
+	kirill.shutemov@linux.intel.com
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	yunhong.jiang@linux.intel.com
+Subject: [PATCH 0/7] x86/acpi: Move ACPI MADT wakeup to generic code
+Date: Tue,  6 Aug 2024 15:12:30 -0700
+Message-Id: <20240806221237.1634126-1-yunhong.jiang@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240527144356.246220-3-fabio.m.de.francesco@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 27, 2024 at 04:43:41PM +0200, Fabio M. De Francesco wrote:
-> Currently, extlog_print() (ELOG) only reports CPER PCIe section (UEFI
-> v2.10, Appendix N.2.7) to the kernel log via print_extlog_rcd(). Instead,
-> the similar ghes_do_proc() (GHES) prints to kernel log and calls
-> pci_print_aer() to report via the ftrace infrastructure.
-> 
-> Add support to report the CPER PCIe Error section also via the ftrace
-> infrastructure by calling pci_print_aer() to make ELOG act consistently
-> with GHES.
-> 
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> ---
->  drivers/acpi/acpi_extlog.c | 30 ++++++++++++++++++++++++++++++
->  drivers/pci/pcie/aer.c     |  2 +-
->  include/linux/aer.h        | 13 +++++++++++--
->  3 files changed, 42 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index e025ae390737..007ce96f8672 100644
-> --- a/drivers/acpi/acpi_extlog.c
-> +++ b/drivers/acpi/acpi_extlog.c
-> @@ -131,6 +131,32 @@ static int print_extlog_rcd(const char *pfx,
->  	return 1;
->  }
->  
-> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-> +			      int severity)
-> +{
-> +	struct aer_capability_regs *aer;
-> +	struct pci_dev *pdev;
-> +	unsigned int devfn;
-> +	unsigned int bus;
-> +	int aer_severity;
-> +	int domain;
-> +
-> +	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-> +	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-> +		aer_severity = cper_severity_to_aer(severity);
-> +		aer = (struct aer_capability_regs *)pcie_err->aer_info;
-> +		domain = pcie_err->device_id.segment;
-> +		bus = pcie_err->device_id.bus;
-> +		devfn = PCI_DEVFN(pcie_err->device_id.device,
-> +				  pcie_err->device_id.function);
-> +		pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-> +		if (!pdev)
-> +			return;
-> +		pci_print_aer(pdev, aer_severity, aer);
-> +		pci_dev_put(pdev);
-> +	}
+This set of patches add ACPI multiprocessor wakeup support to TDX VMs
+booting with device tree instead of ACPI.
 
-I'm 100% in favor of making error reporting work and look the same
-across GHES and ELOG.  But I do have to gripe a bit...
+Historically, x86 platforms have booted secondary processors (APs) using
+INIT followed by the start up IPI (SIPI) messages. However, TDX VMs
+can't use this protocol because this protocol requires assistance from
+VMMs while VMMs are not trusted by TDX guest.
 
-It's already unfortunate that GHES and the native AER handling are
-separate paths that lead to the same place (__aer_print_error()).
+ACPI specification version 6.4 introduced a new wakeup mailbox model to
+address this issue. A "Multiprocessor Wakeup Structure" has been added to
+an existing ACPI table (MADT). This structure provides the physical of a
+"Multiprocessor Wakeup Mailbox Structure". Message written to the mailbox
+structure steers the APs to the boot code.
 
-I'm sorry that we need to add a third path that again does
-fundamentally the same thing.  The fact that they're separate means
-all the design, reviewing, testing, and maintenance effort is diluted,
-and error handling always gets too little love in the first place.
-I think this is a recipe for confusion.
+With this new wakeup model, TDX VMs with ACPI support boot the APs
+securely. However, TDX VMs with the device tree have no ACPI support and
+still face the challenge.
 
-  ghes_do_proc                                        # GHES
-    apei_estatus_for_each_section
-      ...
-      if (guid_equal(sec_type, &CPER_SEC_PCIE))
-        ghes_handle_aer
-          cper_severity_to_aer
-          aer_recover_queue
-            kfifo_in_spinlocked(&aer_recover_ring)    # add to queue
-          aer_recover_work_func                       # another thread
-            kfifo_get(&aer_recover_ring)              # remove from queue
-            pci_print_aer
-              __aer_print_error         <---
+To fix this challenge, either a new mechanism from scratch is
+introduced, or the TDX VMs with device tree can utilize the ACPI wakeup
+model.
 
-  aer_irq                                             # native AER
-    kfifo_put(&aer_fifo)                              # add to queue
-  aer_isr                                             # another thread
-    kfifo_get(&aer_fifo)                              # remove from queue
-    ...
-    aer_isr_one_error
-      aer_process_err_devices
-        aer_print_error
-          __aer_print_error             <---
+By reusing the ACPI wakeup mailbox model, the Multiprocessor Wakeup Mailbox
+Structure will be kept and the message mechanism will be the same as ACPI.
+This will reduce maintenance effort in the long term.
 
-  extlog_print                                        # extlog (x86 only)
-    apei_estatus_for_each_section
-      ...
-      if (guid_equal(sec_type, &CPER_SEC_PCIE))
-        extlog_print_pcie
-          cper_severity_to_aer
-          pci_get_domain_bus_and_slot
-          pci_print_aer
-            __aer_print_error           <---
+The first patch moves the madt wakeup implementation to generic code.
 
-And we also have CXL paths that lead to __aer_print_error(), although
-it seems like they at least start in the native AER (and maybe GHES?)
-path and branch out somewhere.  My head is spinning.
+The second/third patches add the mailbox support to the device tree.
 
-Do I *object* to this patch?  No, not really; it's a trivial change in
-drivers/pci/, and Rafael can add my
+The last four patches apply the mailbox support to the hyper-v TDX VMs
+with device tree.
 
-  Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Yunhong Jiang (7):
+  x86/acpi: Move ACPI MADT wakeup to generic code
+  dt-bindings: x86: Add ACPI wakeup mailbox
+  x86/dt: Support the ACPI multiprocessor wakeup for device tree
+  x86/hyperv: Parse the ACPI wakeup mailbox
+  x86/hyperv: Mark ACPI wakeup mailbox page as private
+  x86/hyperv: Reserve real mode when ACPI wakeup mailbox is available
+  x86/hyperv: Use the ACPI wakeup mailbox for VTL2 guests when available
 
-as needed.  But I am afraid we're making ourselves a maintenance
-headache.
+ .../devicetree/bindings/x86/wakeup.yaml       | 41 ++++++++++++++++
+ MAINTAINERS                                   |  3 ++
+ arch/x86/Kconfig                              |  2 +-
+ arch/x86/hyperv/hv_vtl.c                      | 43 +++++++++++++++--
+ arch/x86/include/asm/acpi.h                   |  1 -
+ arch/x86/include/asm/madt_wakeup.h            | 16 +++++++
+ arch/x86/include/asm/mshyperv.h               |  3 ++
+ arch/x86/kernel/Makefile                      |  1 +
+ arch/x86/kernel/acpi/Makefile                 |  1 -
+ arch/x86/kernel/cpu/mshyperv.c                |  2 +
+ arch/x86/kernel/{acpi => }/madt_playdead.S    |  0
+ arch/x86/kernel/{acpi => }/madt_wakeup.c      | 47 ++++++++++++++++++-
+ drivers/hv/hv_common.c                        |  8 ++++
+ 13 files changed, 159 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/x86/wakeup.yaml
+ create mode 100644 arch/x86/include/asm/madt_wakeup.h
+ rename arch/x86/kernel/{acpi => }/madt_playdead.S (100%)
+ rename arch/x86/kernel/{acpi => }/madt_wakeup.c (87%)
 
-> +}
-> +
->  static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			void *data)
->  {
-> @@ -179,6 +205,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-> +			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
-> +
-> +			extlog_print_pcie(pcie_err, gdata->error_severity);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index ac6293c24976..794aa15527ba 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -801,7 +801,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
->  	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
->  			aer_severity, tlp_header_valid, &aer->header_log);
->  }
-> -EXPORT_SYMBOL_NS_GPL(pci_print_aer, CXL);
-> +EXPORT_SYMBOL_GPL(pci_print_aer);
->  
->  /**
->   * add_error_device - list device to be handled
-> diff --git a/include/linux/aer.h b/include/linux/aer.h
-> index 4b97f38f3fcf..fbc82206045c 100644
-> --- a/include/linux/aer.h
-> +++ b/include/linux/aer.h
-> @@ -42,17 +42,26 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_log *log);
->  #if defined(CONFIG_PCIEAER)
->  int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
->  int pcie_aer_is_native(struct pci_dev *dev);
-> +void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> +		   struct aer_capability_regs *aer);
->  #else
->  static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
->  {
->  	return -EINVAL;
->  }
-> +
->  static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
-> +static inline void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> +				 struct aer_capability_regs *aer)
-> +{ }
->  #endif
->  
-> -void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> -		    struct aer_capability_regs *aer);
-> +#if defined(CONFIG_ACPI_APEI_PCIEAER)
->  int cper_severity_to_aer(int cper_severity);
-> +#else
-> +static inline int cper_severity_to_aer(int cper_severity) { return 0; }
-> +#endif
-> +
->  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
->  		       int severity, struct aer_capability_regs *aer_regs);
->  #endif //_AER_H_
-> -- 
-> 2.45.1
-> 
+
+base-commit: 9ebdc7589cbb5c976e6c8807cbe13f263d70d32c
+-- 
+2.25.1
+
 
