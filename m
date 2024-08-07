@@ -1,180 +1,165 @@
-Return-Path: <linux-acpi+bounces-7425-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7426-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A0494A13B
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Aug 2024 08:59:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1A694A446
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Aug 2024 11:28:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B64031F28092
-	for <lists+linux-acpi@lfdr.de>; Wed,  7 Aug 2024 06:59:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5E771C20B0F
+	for <lists+linux-acpi@lfdr.de>; Wed,  7 Aug 2024 09:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7321B86DE;
-	Wed,  7 Aug 2024 06:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C661C9DFD;
+	Wed,  7 Aug 2024 09:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="kPhH75tf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DJX1D3Qs"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ST1pbZZM"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from flow8-smtp.messagingengine.com (flow8-smtp.messagingengine.com [103.168.172.143])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f171.google.com (mail-il1-f171.google.com [209.85.166.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC311B1428;
-	Wed,  7 Aug 2024 06:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BD96D1B4
+	for <linux-acpi@vger.kernel.org>; Wed,  7 Aug 2024 09:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723013966; cv=none; b=Djwwn5ID35CIECNpUEBLHlIg/F+awIPJcLokkrPze4fCY8ziIvZETyYqYUwtaAI/1gSWvEoknux5BQwTbzn1rKgcgxgWHtGHVjE6fUawToKWH73j6XGhs37EEyR1irjJI3GOPNE60hzxhnz1waIe5m5zNVz5GfxQantv55CpJhA=
+	t=1723022930; cv=none; b=HjHh/HawFiqvy/F32mC8aMIDprMhTJPICLuBmG2vRUyquVx7IujZvmBvtg8F9GrT/4TAIeBm9Hww7FupNfwqh48+UwyMf9kXPe5fq2iYq8RX0oCSwhpvS3joQ3KvdlIjmJu9FzG3Xu5VIIrDqYNA65Iopa3Q/WCEuMNwAAiIZsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723013966; c=relaxed/simple;
-	bh=Fl9m4Ozj+CcNQwpmEsdVmp/IsQZeCxwz9aNRBuKAPk8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=ddeDM9gzmaGsvmTz0WxFzbp/kujBz8HqHAHq0igOUSmHwGZE7x2g8AkRiqMdhBu0dvCoBr331ecwIe39BTPdsrMDG/YtONXlo0KcB770RMLpx9C+iAz2x5VYHvtHdjGFG4MyQaZ6b8iW2ZPgOrEL3QDzsQXwzItrWGlk+O1/Yfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=kPhH75tf; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DJX1D3Qs; arc=none smtp.client-ip=103.168.172.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 52279201084;
-	Wed,  7 Aug 2024 02:59:23 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute4.internal (MEProxy); Wed, 07 Aug 2024 02:59:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1723013963;
-	 x=1723021163; bh=FeNTTWWA5ehqGUK/ykoVQRn5aOHJYvmKcULV7Bb3w+o=; b=
-	kPhH75tfZYNQZZn5b4ZTyTUJkEwDswZvtVxsA4I1kYYHJT9hm6Y1VWq1tWoRdBr2
-	5gcBvejk5u6w6xKKbpBKwnhLRlsLhO9eQUqJWCA+btbwX9ngh+x0EMbsvrrTdurE
-	xpzX7LS9Lhl1ZeTCcGI88lLtBUG3WdAQOw0MkNqzmyryl38Rfs0Hxm5tgzSKr4jP
-	FndM/8x4bIHcTFdnwjdTaScHkNMTMQT6UWqmZgTXDn+FulQ3eTrzHm2J2m2zT0hd
-	lWadi0s/oUZYjUbYUYH3dBNHYNH5Hgd9tJnC9YxtPeG49Jb50z1u1bvmjUjO5Rw1
-	0pmH62zjtpVTK4nq8eJMFA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723013963; x=
-	1723021163; bh=FeNTTWWA5ehqGUK/ykoVQRn5aOHJYvmKcULV7Bb3w+o=; b=D
-	JX1D3Qss3Ge1TnNidK/zkvKY/8JNrKtEIApToVgGiC42kGtqI8ow6AGVUOAMbazW
-	itBUjWk7aqA8yzNfj892AZR3IHGTb9zwLEgUzS+hIBK5Li2OvlE3ONpYl/0zE/5z
-	h3soTk1czdmBNxcV5RI4Do6avSG2cQvjSpC45gT6FmO3Qj+xS+dn/cKTfw+I2rct
-	z4jv6Eo5QqHEbksHHHuWMRpE/t4bFAn3fb2+Ygv0oUrdld/RpBq9urHfN3Vqc9tJ
-	gfZUDZDJt0uvrtjpGSdhW8XAeAu6OeyUi0Jj4EJz55jsk1Of/gddMR0clliKyyiD
-	Dz/tJMxY0o+kqe5Jqh2CQ==
-X-ME-Sender: <xms:SRuzZpFLEGrL01CvOzZ7NicPwEvIcv3ZOSAEwfT0KIc13xEWibFx_g>
-    <xme:SRuzZuWOdnwVN62CY7TMMAVOQnMMo0UnpkJQhkqGvrgUGWhp1vAWaBOYOG7_0rIRv
-    GBMBRlfs0GZCyqUvYc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeelgdduudekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefh
-    vdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:SRuzZrLtWMsNgz7w87FJP8TbwXCRbvNB3tiVt8c9qWjaR5ujVwWSEg>
-    <xmx:SRuzZvGMZjtlTl2iioVuNelCvksPQt_NUQQ8oxahwjUInjv5odRUjA>
-    <xmx:SRuzZvVMupVgHTmvlEfTDZFTFuqoKesigKTc9co5c2CZoJ90OcfE1g>
-    <xmx:SRuzZqN-OQqNrinlJf78x4O8VL12d16J4HsptuQe5s0rO9OiA3XUXg>
-    <xmx:SxuzZpwYl7eOyL1UyDIm9UU-ZJT7YdfL_32mlOGPjpZKCsOuYKvqpDmx>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 97D26B6008D; Wed,  7 Aug 2024 02:59:21 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1723022930; c=relaxed/simple;
+	bh=0KRdcQMjdm9x6CHQf2eXXB1QhdvR6b+8UEvgQ0kVBEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iXWjWzjPZb0dR5mMy69PVEUWxoNJino2ptb2dHMqZ5+2/9g9wEPLYMsgVkGmO22dQc5e2kiM/SpXE6VqJQBD9doSR4mbARb1CcCvhWNhqxCR0lpwi9ZyyFHNZw346TI2esyCbAfwyqvOGVdQ4VZH4Xp0EHptII6OkLhF7nqBpWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ST1pbZZM; arc=none smtp.client-ip=209.85.166.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-39adbfafde5so6226395ab.0
+        for <linux-acpi@vger.kernel.org>; Wed, 07 Aug 2024 02:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1723022928; x=1723627728; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=alrAEwTk/9ZGL+1f7lSqNYp1lnxaGoa+HaCOobuYYh0=;
+        b=ST1pbZZMohKGSIuM0a2Qbs0pjDyCfY9v8jP/PCBDlCK7ugQM6hUlDF+kfZaIhLcLIx
+         6COg0zYjbSlaDmEP1QvuYcEcpAEnecWYSk11CWSeMpORLN2l9uxlHpZ907MW3MAELG72
+         y2woh/4fA7gghv0WTmdZkF3Hj/wqaPm7kWzNOeSt/ap2I74VALHVp1msXfXa8Fplz04M
+         uZiLtI+ne/ORZrcvUcaXF6iL3SQdM4GiggWVigs5XbadPsqc/l2fVMAvsB2EHeTeBNa+
+         DjNkym67BoNDmnVrgeGgaxM/n2HkxQvWfq6ovy0KWCx1dCcZDM/KfIk1TrBNFijHeNC9
+         Wl9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723022928; x=1723627728;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=alrAEwTk/9ZGL+1f7lSqNYp1lnxaGoa+HaCOobuYYh0=;
+        b=uUtgdsF2AtsnAp0S2WAZw3ElaEJKVS0BYagGun/Gx14feseIeHd08FXzqD/Dhdxc7U
+         KwM40yoB74Xye+yB8e3iyp8e8Qrcgg9wKxzybvJzCwK5pDYCjf4Oz0fBCXp5pB0AtJo/
+         bAJrfE10ilZ5ZEqCeqknrhGMUu8V69nWJKYGfUZEdsnnCOfResEDajCjbQ7WOof9iNmw
+         yWjE+IyqlpVxrPXlokmaPWklXgfReB0jjWgNzpyvYMY2SD5Bvf+CY+YaJFYneLI3gMv0
+         UsD/aaOo05eslSI/Bl+WxPfHw7PKb9jz5/ylJhY5zuA9xgHC7k4QajmwlN3B3udA8zb/
+         vrOw==
+X-Forwarded-Encrypted: i=1; AJvYcCXp8Ns5AzGVu3a0Ujd0T58irSmKFKG9wvWEyHx4IV+B/Q7ZSAOfwr4Zq2YbLs3F2owGXxVihFmUCvLi4v54I7MSamO8pBQqVlxITA==
+X-Gm-Message-State: AOJu0YxixCv/kHVxYI1aHuwNp62OOD1B1CzTEopJaa3TYjKWQM9E5Tc5
+	XuFyGu6yN3zvkk4/oCfbaj5btThjJzgDl0fgh/itl/wPhyaZLy70VKj8AMX1jaM=
+X-Google-Smtp-Source: AGHT+IGFi2yTi8mjGa/JDQgJ5ePUMCC2uiP0+ISk+Z8ei9aOJgQKjnFm1sJATScT5YUF9A+EBCrw2g==
+X-Received: by 2002:a92:d8d1:0:b0:39a:e9c4:6baf with SMTP id e9e14a558f8ab-39b1fc37596mr158866065ab.26.1723022927664;
+        Wed, 07 Aug 2024 02:28:47 -0700 (PDT)
+Received: from sunil-laptop ([106.51.198.16])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7b762e9f5aasm8091871a12.6.2024.08.07.02.28.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Aug 2024 02:28:47 -0700 (PDT)
+Date: Wed, 7 Aug 2024 14:58:42 +0530
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: shankerwangmiao@gmail.com
+Cc: Hanjun Guo <guohanjun@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] ACPI: introduce acpi_arch_init
+Message-ID: <ZrM-SmLGpgO0gLsg@sunil-laptop>
+References: <20240807-intro-acpi-arch-init-v2-1-9231e23a7721@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 07 Aug 2024 08:58:37 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Mike Rapoport" <rppt@kernel.org>, linux-kernel@vger.kernel.org
-Cc: "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Andreas Larsson" <andreas@gaisler.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Borislav Petkov" <bp@alien8.de>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Dan Williams" <dan.j.williams@intel.com>,
- "Dave Hansen" <dave.hansen@linux.intel.com>,
- "David Hildenbrand" <david@redhat.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Davidlohr Bueso" <dave@stgolabs.net>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Huacai Chen" <chenhuacai@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Jonathan Cameron" <jonathan.cameron@huawei.com>,
- "Jonathan Corbet" <corbet@lwn.net>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Rob Herring" <robh@kernel.org>,
- "Samuel Holland" <samuel.holland@sifive.com>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "Vasily Gorbik" <gor@linux.ibm.com>, "Will Deacon" <will@kernel.org>,
- "Zi Yan" <ziy@nvidia.com>, devicetree@vger.kernel.org,
- linux-acpi@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- nvdimm@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
-Message-Id: <1befc540-8904-4c23-b0e6-e2c556fe22b9@app.fastmail.com>
-In-Reply-To: <20240807064110.1003856-25-rppt@kernel.org>
-References: <20240807064110.1003856-1-rppt@kernel.org>
- <20240807064110.1003856-25-rppt@kernel.org>
-Subject: Re: [PATCH v4 24/26] arch_numa: switch over to numa_memblks
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240807-intro-acpi-arch-init-v2-1-9231e23a7721@gmail.com>
 
-On Wed, Aug 7, 2024, at 08:41, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->
-> Until now arch_numa was directly translating firmware NUMA information
-> to memblock.
-
-I get a link time warning from this:
-
-    WARNING: modpost: vmlinux: section mismatch in reference: numa_set_cpumask+0x24 (section: .text.unlikely) -> early_cpu_to_node (section: .init.text)
-
-> @@ -142,7 +144,7 @@ void __init early_map_cpu_to_node(unsigned int cpu, int nid)
->  unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
->  EXPORT_SYMBOL(__per_cpu_offset);
+On Wed, Aug 07, 2024 at 02:36:12PM +0800, Miao Wang via B4 Relay wrote:
+> From: Miao Wang <shankerwangmiao@gmail.com>
 > 
-> -int __init early_cpu_to_node(int cpu)
-> +int early_cpu_to_node(int cpu)
+> To avoid arch-specific code in general ACPI initialization flow,
+> we introduce a weak symbol acpi_arch_init. Currently, arm64 can
+> utillize this to insert its specific flow. In the future,
+> other architectures can also have chance to define their own
+> arch-specific acpi initialization process if necessary.
+> 
+> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+> ---
+> Changes from v1
+> - Change acpi_arch_init from a static inline stub to a weak function
+>   according to Haijun Guo's advice
+> ---
+>  drivers/acpi/arm64/init.c | 2 +-
+>  drivers/acpi/bus.c        | 4 +++-
+>  include/linux/acpi.h      | 6 +-----
+>  3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/acpi/arm64/init.c b/drivers/acpi/arm64/init.c
+> index d0c8aed90fd1..7a47d8095a7d 100644
+> --- a/drivers/acpi/arm64/init.c
+> +++ b/drivers/acpi/arm64/init.c
+> @@ -2,7 +2,7 @@
+>  #include <linux/acpi.h>
+>  #include "init.h"
+>  
+> -void __init acpi_arm_init(void)
+> +void __init acpi_arch_init(void)
 >  {
->  	return cpu_to_node_map[cpu];
+>  	if (IS_ENABLED(CONFIG_ACPI_AGDI))
+>  		acpi_agdi_init();
+> diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
+> index 284bc2e03580..b47541e45a5a 100644
+> --- a/drivers/acpi/bus.c
+> +++ b/drivers/acpi/bus.c
+> @@ -1431,6 +1431,8 @@ static int __init acpi_bus_init(void)
+>  struct kobject *acpi_kobj;
+>  EXPORT_SYMBOL_GPL(acpi_kobj);
+>  
+> +void __weak acpi_arch_init(void) { }
+> +
+>  static int __init acpi_init(void)
+>  {
+>  	int result;
+> @@ -1458,7 +1460,7 @@ static int __init acpi_init(void)
+>  	acpi_viot_early_init();
+>  	acpi_hest_init();
+>  	acpi_ghes_init();
+> -	acpi_arm_init();
+> +	acpi_arch_init();
+>  	acpi_scan_init();
+>  	acpi_ec_init();
+>  	acpi_debugfs_init();
+> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+> index 0687a442fec7..52862c377747 100644
+> --- a/include/linux/acpi.h
+> +++ b/include/linux/acpi.h
+> @@ -1523,11 +1523,7 @@ static inline int find_acpi_cpu_topology_hetero_id(unsigned int cpu)
 >  }
+>  #endif
+>  
+> -#ifdef CONFIG_ARM64
+> -void acpi_arm_init(void);
+> -#else
+> -static inline void acpi_arm_init(void) { }
+> -#endif
+> +void acpi_arch_init(void);
+>  
+LGTM.
 
-early_cpu_to_node() can no longer be __init here
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
 
-> +#endif /* CONFIG_NUMA_EMU */
-> diff --git a/include/asm-generic/numa.h b/include/asm-generic/numa.h
-> index c32e0cf23c90..c2b046d1fd82 100644
-> --- a/include/asm-generic/numa.h
-> +++ b/include/asm-generic/numa.h
-> @@ -32,8 +32,6 @@ static inline const struct cpumask *cpumask_of_node(int node)
-> 
->  void __init arch_numa_init(void);
->  int __init numa_add_memblk(int nodeid, u64 start, u64 end);
-> -void __init numa_set_distance(int from, int to, int distance);
-> -void __init numa_free_distance(void);
->  void __init early_map_cpu_to_node(unsigned int cpu, int nid);
->  int __init early_cpu_to_node(int cpu);
->  void numa_store_cpu_info(unsigned int cpu);
-
-but is still declared as __init in the header, so it is
-still put in that section and discarded after boot.
-
-I was confused by this at first, since the 'early' name
-seems to imply that you shouldn't call it once the system
-is up, but now you do.
-
-     Arnd
+Thanks,
+Sunil
 
