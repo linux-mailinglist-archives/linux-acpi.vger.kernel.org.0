@@ -1,280 +1,318 @@
-Return-Path: <linux-acpi+bounces-7476-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7477-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4F794D5F3
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2024 20:03:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E3F94D5F4
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2024 20:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93C9282928
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2024 18:03:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C731F21E16
+	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2024 18:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE121CA94;
-	Fri,  9 Aug 2024 18:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEC674413;
+	Fri,  9 Aug 2024 18:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="YFpvrpRZ"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="oXD9YIBd"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2046.outbound.protection.outlook.com [40.107.223.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7025D23DE
-	for <linux-acpi@vger.kernel.org>; Fri,  9 Aug 2024 18:03:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723226587; cv=none; b=NMjKXrv8vAeRsBKLpQcJ2fI92o3HmQiVhBzknQwE72IvS6wppLYrRrBEM2F3SE8KIHr0jrsjjeZvuE3wavp5NLP3ti1THQCo0/moH6o6g6TfB7rC/XM9Dg1PBoiCnQCfglgLOvYHEghe+QbxjWBWsG0YQiYI7sGam+O28ptvrtA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723226587; c=relaxed/simple;
-	bh=oFpxUn2+xOdD+iX1VZOBfkurzlOm5vsgMNwpVxcXRQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QMiVGsi2RvAakb+1pf9cBjqIb1jSlZNZrgUfYDlwHMHEVRGImx5EAPa42IZIznUExMxcRLLM/dHGCsusQaXi1ur7SJ6Mc13eOF4Le51p15xp4eyNwLA1vPSV4TzqCvdQZqNoStZWh0SiclJi3e5caS5Yr0zFpj07tyxiOFFDUQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=YFpvrpRZ; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1723226576; x=1723831376; i=w_armin@gmx.de;
-	bh=GuAbt0EneKlnfVDcinUXqRUwwcvthi7sU+w6R1XcqmM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=YFpvrpRZYgTFY5MptDPDflXzgGPieT3RFCdC3MVI6LLH5r0Q2zhOgL5qm4yKbZUm
-	 DoRutn0c1sA+iOwFj+VDe2KZ6bYGoTe7kmhe1UcDyxesm6lRhP/gDv+P7fuCA0D2e
-	 Yg1qcroIlToegBF24z+jQxl+EY/s+tmuisSdPkCj1S23NJfDwzSFf+ZqM0rHYwev4
-	 qVijvET4iIoQtvR8tXBm8k4TWgvInBQfShrjJUJVUlP6EMY5QJEOgXCFwnc7J50Fi
-	 oGU9tEu+/5qHYOI+mpN8UNNo1r45dGV5+5mcWhH0SvobxyYOdeioO8ov4Q/+9pD2a
-	 uzUsvyLLMTlEIx6VHQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mq2nA-1rpgwM046k-00mz2B; Fri, 09
- Aug 2024 20:02:56 +0200
-Message-ID: <4dea0fef-d9f9-416a-b554-cc46ee6c2197@gmx.de>
-Date: Fri, 9 Aug 2024 20:02:55 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7D523DE;
+	Fri,  9 Aug 2024 18:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723226602; cv=fail; b=Xmi9pQxaLDGirmCtGr0JYbd47DYu9weCbC9jouWijEqxLQi3xKf+fvLSSCMJBVlMULxk0/Trcbo7la9H74MPwOSv8i9P/I1OAH2rm489+iGWIwreQNa+b54j2S1u/U0DYiAKH31EMKuXBBrMll7iLkeEYZG/sGcCSVKSgWbVTNA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723226602; c=relaxed/simple;
+	bh=BQABcOpJdiB6lr2JxuX9mcH7gnMOC4E6BdFeHL514Ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sYRH5gVGEW4Z23hLltkAQMzBEOpTZnoPQ/C/gfp9enJ9nW7du+r860xPN82caAOhty+LtxNw4heuvqsTU8LlA9UZcNHtAV8oUxKtIGhmHPv8PaceFfVmIlvTMDFTIX3xB6sV6whNEVgrjhmSsvakFG8CDs7/nn6yCnjxPPHKO08=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=oXD9YIBd; arc=fail smtp.client-ip=40.107.223.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QnjMX/C5109VUPLZhI9iLgpyM7iQCTv/9QDV5B2mc+Cg5hFFSWBUsdH5mjFQlOb8hPLFpe86oyuDWANA5T1uWXwHy9Fs+PcHxPbDpZNjHPlSaP+UpnjNHliPqboolLiHKJFPH2gZYQydN9WLrw11qgBPPgTkVNrjdwFTv0+9zgt5zYEWX9Oat1tfEoiXTB83NFUFRczDl05w7sfppDITSvjWsPXp/SVQhrnE8xdiE9zkNCxBGuwvos7bTo1vmTgUg+HjRt8ZxyGJQSZJzDcnuScsPR7sH+zAcJnLU7sfemE0NukLGKgCzl+CiCypgsl2R+AD7feVo1JpQ4ilfU5DZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xuiQPMlB+Dwf/qhC9VxlPCsKgu/tsCcohJeYPkxvFt0=;
+ b=x5yhYLDScRoTO+kSxxchCrhbJQcCA4vWM6L+Aelwj2jkQwFCExe8Ihgicge9J4eK/8ARje6aCe6/Tb9TzguRC8rAXiKNh2/LnKspcQ1G47073qiryXqjDUC6UC6F1E61V8JXL0axTjedIPsOjFoA5PQNbrTF8w/W4zFnirWgPsQ2Ui9KyLT+mKehlX3t/d2T1M3Gg6MZLIb69K5vDAW2l9Fn/SvnJ4ywrUregkDy5/GB4qET59pOtPvX10LAYbxapxmMpz0Vzs7zoE7zlzugn/nDKta6C8C1YAZrsO3n7OaGl9BcBBUg9DZ4NO+D2tTF6PRBUxnxMryOh4ptfky1/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xuiQPMlB+Dwf/qhC9VxlPCsKgu/tsCcohJeYPkxvFt0=;
+ b=oXD9YIBdzsqrg++ml5dT+PlZYhJr4JZ9A5nzBtY20D2NLaO1nSS3yfkX2h4xSLJD2zzQorIH8hfqX7f9UIGkzDRseh40wdzc7bC4kq6yXFdvfYVxoGesELSoXvY+gmihUc+CZfFizC87hc+J0XO6QwOHGNVCz6JJ3QP3axV4TGU2n+rTXoJLOy/0LIt57V+c++4n1SRjV9jnNypLaa4owqpEkxQe7CUYxHkPahJGtYZZVfCTB7uO4WeL7O4HiA8zjnIYoPPGXgZfePu6eB5kPrO84btUEWDfFKo5rjhktaRLbEGYhUZAloHn96hN19Ju1Xk8+cA3u4rzFrqoUA4FKg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB7763.namprd12.prod.outlook.com (2603:10b6:610:145::10)
+ by LV2PR12MB5800.namprd12.prod.outlook.com (2603:10b6:408:178::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Fri, 9 Aug
+ 2024 18:03:11 +0000
+Received: from CH3PR12MB7763.namprd12.prod.outlook.com
+ ([fe80::8b63:dd80:c182:4ce8]) by CH3PR12MB7763.namprd12.prod.outlook.com
+ ([fe80::8b63:dd80:c182:4ce8%3]) with mapi id 15.20.7849.014; Fri, 9 Aug 2024
+ 18:03:11 +0000
+Date: Fri, 9 Aug 2024 15:03:08 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: acpica-devel@lists.linux.dev,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Hanjun Guo <guohanjun@huawei.com>, iommu@lists.linux.dev,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
+	Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Moritz Fischer <mdf@kernel.org>,
+	Michael Shavit <mshavit@google.com>,
+	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH 7/8] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
+Message-ID: <20240809180308.GK8378@nvidia.com>
+References: <7-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com>
+ <506de4bc-8beb-4cd3-be2b-86de004d6129@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <506de4bc-8beb-4cd3-be2b-86de004d6129@arm.com>
+X-ClientProxiedBy: MN0P220CA0021.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:208:52e::11) To CH3PR12MB7763.namprd12.prod.outlook.com
+ (2603:10b6:610:145::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: "EC: Install address space handler at the namespace root" causing
- issues for some users
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>
-Cc: linux-acpi <linux-acpi@vger.kernel.org>
-References: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com>
- <c0e5414a-ec7b-44e3-980c-e71889150767@redhat.com>
- <0abc1a17-e155-4587-ada9-13f9ce5f358b@redhat.com>
- <1a426f61-1454-4a77-8262-612ab1d0d265@redhat.com>
- <CAJZ5v0iWy6oXRJ2mxhOLyWsmgp1akVjoo0i2pqDDMOg-TvWLPA@mail.gmail.com>
- <CAJZ5v0gAdAYvx=qwmQd9_tUc-d=LJW5KDzLns2eDDn=ZtCQCMw@mail.gmail.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <CAJZ5v0gAdAYvx=qwmQd9_tUc-d=LJW5KDzLns2eDDn=ZtCQCMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dnTKEcPzLwsQnJZxDoZpa9NplW0eZb9N7TyWOeI8/vFtzlHFsbb
- tqleM+01SxkGNUwr7T/7dC8Gu52I7jAEhfB+HHF0CUQH3DrA6eLs6hUqyEJdDPHbjnWMTvW
- VRfLwZnKN5drnxPUQjfaZ2/5NirZB/DjHMbk4zUs6xWVG+lt/j5FFFLKJkr+yjX9UFPKFxo
- ozgX+gzS09qwvqh8Rc2Bw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:t0gXtuWmS9c=;eM0vGaDHbWogqSLYuhX0HKidH8t
- Qk8+HECT4pcu+k7tcMVkikUc1f1puVpatbcLY/tTubZV/xK0wZkdrpk9u7cWAzpRXK87N2JOs
- lHsJ0fLCor2Ea2jvCL+ALYRNity46YhYkDX0a6sOxkGIgZ1MGOUO9XHlnlKbMTTsS4taSjBL5
- Q1bnUdrbKtGEHrw0sdYJ9Vheon7yaO2h9dEx/Z0m8hOFMJPWSs5WREW7QmS539PE0xWh/eMMo
- 7RTD+WAhFT6+uGbbxCF72hyb94pAUjlzFkw9Di7lacfT6uWZHaqOUqtoz3TZmp+ANnUlGpAsA
- 5GoRzeo6G6w4xJ8L8vaKlVlQwYdw0BuPTTCPTYJEU6ELFESdd1nRysb12GOzB/S/2o/WtC1yd
- a3T/4N+UsE4QDgXkfpn5wMnkjNWBJ4YEvg6EKKaywAxfW56A5OiIrvQpPRsRXU4O4+iDEW038
- 8UFatJpQCvvCTVelIZUDXwi/f2zrmP3g0v96IeqsMXLcoPSiGVRSptEINVfDg33GoVY32GwcD
- 6PhPS5U1O5zcFk8asufWaT2AGcN9Kw3HBm1kYrH7RVIvKq1IQf/aku3ZtFIul4X39Y3AadS/v
- v2AeWh6xsj09QeUoWETFDG9ww2j8iH8Ar4LJ5C27EQJv5WdaH45crkca7cByMCUjPIFI1ZY6v
- hs93B5bBJRgSRRHi9vfSdlYvYhwWbnIPtY8gGJ1AqKl+ssmUQYjAbHHm9WOcisC6OiUW6l0/i
- IdtQzkmpBu1ou4uGSmXet6lBxs2sf6pXLcP/dnJ7w7aK/sq/aJtqXUILGw2qpAvyQzgnAEe5n
- DeAFRmrUxylqAtse+j+biix9sPbu4eusw/elVa2SHxrUM=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB7763:EE_|LV2PR12MB5800:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c4567d9-ad91-40f2-3704-08dcb89d87f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?G0itM+vqy37L39l3o1xh272KXO8/tIpHb8JM3PNuXJEULc+TEa4LajsKNr1g?=
+ =?us-ascii?Q?PQ2BJIaYfE/qoF8X43/OxiAcscKX8hB6J1p03eoTpKG2BIEi0gx2BzPVudjX?=
+ =?us-ascii?Q?KwGXi4W5tDPVyBzj25PEiVeXHU/HBA7iCN/qHwu2W6y83TDRMSmu1ONuuZtc?=
+ =?us-ascii?Q?ElpJChCMe8lF7cD6756ugRkOvkpUVO01OhxfjJ6zZuzTC+gBcKQBzvonuQuB?=
+ =?us-ascii?Q?OWWW/XH3cBZefVglf/4uHqeEO3tkGndUeSq0z0EUMI3Dr4sV4LA6xSO0iCjr?=
+ =?us-ascii?Q?qYWzquN03VD/xoBBwLdBvrkCFTFPyYLv+CNkw7M9Ayb3NUlsYiVsp6C7ZGTA?=
+ =?us-ascii?Q?rDEblE0GvlmjVVVnO1+DAhVFgGWoAbXqOOLsk8j9RJQ7PNkSWb3/eq52JY67?=
+ =?us-ascii?Q?OYwmBBYG0ZT4SFdBpsiPNe6OO7nSrIOIobM9x5Uju6EhE6tfNRre6mLISl2e?=
+ =?us-ascii?Q?ys4HZACoxigc+WnZZAW/IkYWVCOsphwmG44JoHVnrgYAZsE/++o2RHWiqk3T?=
+ =?us-ascii?Q?5eE9e4OtnOBHKqm8//YC3ewRl3GLZiV3Q084I897ZNxlJ/HNwomK3id2KsxY?=
+ =?us-ascii?Q?KrYQCDlZphoqwYjkks6+EbjG1oW/SiRzCSUyIcLc2jwafeUwSHTk44BYMEWh?=
+ =?us-ascii?Q?L/ixeixzWW+Tje7qV2qpCxhUA/M5J45jJOv0C90/Sfbb/qzbc4+59WZQmgP9?=
+ =?us-ascii?Q?DZ2wvX4n1ny3oXdf6Vulyj8fhUNVfX6r15USkUovOqZxb/xpu1KC3RL0LPm5?=
+ =?us-ascii?Q?Tv+3HBRPTnnTBsATAeTW4ORxNsUvWmp9Ge5rPlQDXRE4eFwWzdUyLmLFbeTh?=
+ =?us-ascii?Q?pxxgCEUI/MUPmjCwjDcHQOvj2qVj4v/BC0nHjZcrw9uzwqguywP/We+LCIsI?=
+ =?us-ascii?Q?iQIMMP//m0nPj4wpQ4nwk+3vbUiOrxY3krCpEiwOPrnHR3D3Qp9HkO6ezPsd?=
+ =?us-ascii?Q?NY88MIApSV1D/bZRr1T071EIyzgzVwjMlg77uMcK++OPVtKn64UcEJHYLASF?=
+ =?us-ascii?Q?u0uDWungROssnjAfjJzbrfOA6tHJhPpkebv3Vnni7vp4cXdQKeHHeGKLqLnh?=
+ =?us-ascii?Q?z1u1VCPLFz+dQrZIPk63KMFp8YQTrm3rinVy9TRoUwIsssLV7nair8Zhxxei?=
+ =?us-ascii?Q?xDFIkVH+TyxeqO9+5BmeuA8jW4gsjSQyYo235KImgmf2oq9PXQToAoZxqXOM?=
+ =?us-ascii?Q?+8fpY3LOWjtl9NHpZC1ls9S/nnlaqTDJ1Aqx95LUV9rfams6x3C+uDs/s35+?=
+ =?us-ascii?Q?DM3YnBvCsTG2jj9LYQc4q0NtDqycQA3r9SJNE7doinvLVaAbtTXq9U0PblHK?=
+ =?us-ascii?Q?K7SOVYiy6JoT1IRC/KoOWhOn0dcznupCaspcM4fwSa94JA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB7763.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qvGJghG5n3ZF3YaDp68apn8QsRca8+SJOoRpHiHpcbuwTQl/muzTWORqPB70?=
+ =?us-ascii?Q?KWHRoTa+ykJBpm3rTGkEXOlneWKfZhUg5EDlv0WoDHkmIHE99EKyvkH/hTXu?=
+ =?us-ascii?Q?tv0HU0V8SAtv3/4CQW3LQ810Wsekwa5H0s6VolRIqD0dTFhvuzbCutOwb5RF?=
+ =?us-ascii?Q?6OpTQDlXBzYF9ivWGmQ7L2VVmm1gt/WAoBJEz+SO8T7ALD/CXXOOq67wOfQz?=
+ =?us-ascii?Q?0OQ3dz19s8oBP7jNnh8snUH/e4/zaw9aodtITuj+4nGsfgl/t05cG4GnKmPM?=
+ =?us-ascii?Q?DEkpYGedgMzZQQa2ksb6es3rtH68VHWNeVII5tOZHBhmc45oOr47SwAW+T39?=
+ =?us-ascii?Q?QXw/h+V/ffV+jU4viggP/cpCHEI7paQ9d9sjxqeGPh4XBbUdFCGEomqJSB4q?=
+ =?us-ascii?Q?0O3wQJFQ3lYfhn7+WtB6ez6/CWDcchS02GQf1Sh0s9M9CyfJ/1ZEFN9ztzoP?=
+ =?us-ascii?Q?pyWhU1FHs+TSq4fy8EjBJGFAE/B+QkD8D1m50wnAXQd2hOAoNxqzGr2PoEKn?=
+ =?us-ascii?Q?cTEzlPKKNc2Wi/ndRMR4WW/Uy2KMJ1l9Cyyj9MCXaAZwgjIMcnPFFwhzM7JL?=
+ =?us-ascii?Q?j0jV8bvzO+D7fU3BHtL974L691d8ULpKjaOhcuN4v9s3uMx41OXzHC9mrGir?=
+ =?us-ascii?Q?4aADecZJP4dUi1bv9lChTCy0Gwyc7muAr4KeWn/EU56nEjZ/XDHME6hp+hnX?=
+ =?us-ascii?Q?WkiqLrxJKw7wEBnjWt3aldMOVzbgW1OVt0WAog6n0ulb+N9s6cXbR5IGCFCI?=
+ =?us-ascii?Q?ln+GFBH+bES2FkS35W8wj/LflNl7TEd43/ipO9fwQuRXngw4ocVsEcMXnyxc?=
+ =?us-ascii?Q?8uBLBPIdGLbb4dy4BFSyYuVvsWlDSEymbHsr4JEhNNvbRx1jP/rCOrRKTp/i?=
+ =?us-ascii?Q?QxfmxJpIMK20/4+wGeHNlu/dz/zMu0Yq/FgubrvgkL4YwvlihAeOPnklzdkU?=
+ =?us-ascii?Q?Fdt9pOkkKHXoAfu7JMcoKkTXPro4CjX26LlFaS60L7ZK38HHldRIugHmjU0S?=
+ =?us-ascii?Q?djZv21FpszGrNTzdfs0lEiO62t24764DcXtS0Pz8fS18GMMNyc69iITEdL0E?=
+ =?us-ascii?Q?sITGDBSw9ZxR8EhIre4qKJBeOaAgCtDwN3HRZcm8D4sGiD4519dJ6Tcy8+x+?=
+ =?us-ascii?Q?pbg6ahyZETPRFCXFJdej8VosYfIndpNzgNYm39k14qnYqwY16eIRJqXucbRr?=
+ =?us-ascii?Q?s0cWB5CdmijsXpNG6ehLkP0VCmsxdddz3+4+Ig/uyHDp7n/3Fxz7IrrhxEMA?=
+ =?us-ascii?Q?jSKBsnVoYpW9GeRz2oj/07FoY6U0cIitubALVM0fpCjTnLXXZUKNjDK4qsCP?=
+ =?us-ascii?Q?dg/x4mCHwrem3Fk6AKtVqb/4ZvpDw4hLrZPJi5rs3JysWnfOFd9YKUUIU4vp?=
+ =?us-ascii?Q?wE3A0gC4VzjYCT0iZqUAdZL8S65OMOnNWkC98BAfTCoXDb+Xb8USXCQilx3j?=
+ =?us-ascii?Q?5kGqMJGyuDPB7QWUamnKU0ZreFuH1j4id4SHHtSzFImkpNyn415bUhobMjxB?=
+ =?us-ascii?Q?p8Is3RtqaRrTP1rQQij2LbwmGNdpqay/UZOmVdcVVOAU36ftBTnaFqnbDeBR?=
+ =?us-ascii?Q?YYgantWNzMXYKQYzkPQ=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c4567d9-ad91-40f2-3704-08dcb89d87f9
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB7763.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 18:03:11.2043
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SzmP7necSjc7nXR2pxN54dcVX8qQe0tfl75Hl8fpBBLsFfDOzgnv13ZN5XW8sDK6
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5800
 
-Am 09.08.24 um 15:17 schrieb Rafael J. Wysocki:
+On Fri, Aug 09, 2024 at 05:05:36PM +0100, Robin Murphy wrote:
+> > +static void arm_smmu_make_nested_domain_ste(
+> > +	struct arm_smmu_ste *target, struct arm_smmu_master *master,
+> > +	struct arm_smmu_nested_domain *nested_domain, bool ats_enabled)
+> > +{
+> > +	/*
+> > +	 * Userspace can request a non-valid STE through the nesting interface.
+> > +	 * We relay that into a non-valid physical STE with the intention that
+> > +	 * C_BAD_STE for this SID can be delivered to userspace.
+> 
+> NAK, that is a horrible idea. If userspace really wants to emulate that it
+> can install a disabled S1 context or move the device to an empty s2 domain,
+> get translation faults signalled through the normal path, and synthesise
+> C_BAD_STE for itself because it knows what it's done. 
 
-> On Thu, Aug 8, 2024 at 7:22=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.=
-org> wrote:
->> Hi,
->>
->> On Mon, Aug 5, 2024 at 2:47=E2=80=AFPM Hans de Goede <hdegoede@redhat.c=
-om> wrote:
->>> Hi,
->>>
->>> On 8/5/24 1:28 PM, Hans de Goede wrote:
->>>> Hi,
->>>>
->>>> On 8/1/24 4:28 PM, Hans de Goede wrote:
->>>>> Hi,
->>>>>
->>>>> On 7/29/24 1:15 PM, Hans de Goede wrote:
->>>>>> Hi Rafael,
->>>>>>
->>>>>> There are 2 bug reports:
->>>>>>
->>>>>> 1. Brightness up/down key-presses no longer working on LG laptop (a=
-cpi-video related):
->>>>>> https://lists.fedoraproject.org/archives/list/devel@lists.fedorapro=
-ject.org/thread/V2KWAGZIAX4TOWPCH6A6FSIT66PR3KMZ/
->>>>> I have filed:
->>>>>
->>>>> https://bugzilla.redhat.com/show_bug.cgi?id=3D2302253
->>>>>
->>>>> to track this now and an acpidump of the troublesome LG laptop
->>>>> is attached there. I have also requested dmesg output of
->>>>> a non working kernel to be attached there.
->>>>>
->>>>> As a reminder this is the bug where it has been confirmed that
->>>>> reverting "EC: Install address space handler at the namespace root"
->>>>> helps, with the caveat that there is a Thunderbolt related IRQ
->>>>> storm on the ACPI event IRQ after the revert ...
->>>> Ok, so the bugzilla now has 2 different dmesg outputs:
->>>>
->>>> 1. 6.9.6, this kernel works without problems
->>>>
->>>> 2. 6.9.12 with the following patch you suggested on top:
->>>>
->>>> --- a/drivers/acpi/ec.c
->>>> +++ b/drivers/acpi/ec.c
->>>> @@ -1788,7 +1788,7 @@ void __init acpi_ec_dsdt_probe(void)
->>>>         * At this point, the GPE is not fully initialized, so do not =
-to
->>>>         * handle the events.
->>>>         */
->>>> -     ret =3D acpi_ec_setup(ec, NULL, true);
->>>> +     ret =3D acpi_ec_setup(ec, NULL, false);
->>>>        if (ret) {
->>>>                acpi_ec_free(ec);
->>>>                return;
->>>>
->>>> Unfortunately this does not help. dmesg shows some EC _REG errors, wh=
-ich
->>>> are now (with the above diff applied) shown just before the
->>>> "Boot DSDT EC initialization complete" message, which shows that _REG=
- now
->>>> runs from acpi_ec_add() rather then before:
->>>>
->>>> [    1.007566] ACPI BIOS Error (bug): Could not resolve symbol [\_TZ.=
-FN00._OFF], AE_NOT_FOUND (20230628/psargs-330)
->>>> [    1.007576] ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC.EREG d=
-ue to previous error (AE_NOT_FOUND) (20230628/psparse-52
->>>> [    1.007580] ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC._REG d=
-ue to previous error (AE_NOT_FOUND) (20230628/psparse-52
->>>> [    1.007639] ACPI: EC: interrupt unblocked
->>>> [    1.007640] ACPI: EC: event unblocked
->>>> [    1.007675] ACPI: EC: EC_CMD/EC_SC=3D0x66, EC_DATA=3D0x62
->>>> [    1.007676] ACPI: EC: GPE=3D0x6e
->>>> [    1.007677] ACPI: \_SB_.PC00.LPCB.LGEC: Boot DSDT EC initializatio=
-n complete
->>>> [    1.007679] ACPI: \_SB_.PC00.LPCB.LGEC: EC: Used to handle transac=
-tions and events
->>>>
->>>> Note that the errors are from calling _REG on \_SB.PC00.LPCB.H_EC, wh=
-ere as the actual
->>>> EC (and the only acpi_device on which _REG would get called for the E=
-C Opregion before) is:
->>>> \_SB_.PC00.LPCB.LGEC.
->>>>
->>>> Looking at the DSDT it seems that the H_EC is not used and is leftove=
-r from a copy/paste
->>>> from some reference design DSDT. Its _REG however does write to the E=
-C before hitting the error
->>>> and I think that that write may be causing the issue...
->>>>
->>>> The H_EC device does have an _STA method and looking closer the troub=
-lesome EREG method is
->>>> also called from _INI. So I guess that _STA is returning 0 causing _I=
-NI to not run and
->>>> that is the reason why we are not seeing the same EREG errors with ke=
-rnel 6.9.6 where _REG is
->>>> only called for the EC opregion on \_SB_.PC00.LPCB.LGEC and not for t=
-he entire ACPI device
->>>> hierarchy as is done with >=3D 6.9.7 .
->>>>
->>>> Maybe we should only call _REG for the EC opregion on present devices=
- (and devices without
->>>> a _STA)?
->>>>
->>>> Also note that both LGEC and H_EC use the same cmd + data ports.
->>>>
->>>> I'll go and ask the reporter to retrieve the status of both LGEC and =
-H_EC and then see
->>>> from there.
->>> The reporter has confirmed that of the 2 EC devices ( H_EC / LGEC ) on=
-ly LGEC returns
->>> a _STA of non 0:
->>>
->>>> Here it is, with kernel 6.9.6:
->>>>
->>>> $ cat /sys/bus/acpi/devices/PNP0C09\:00/path
->>>> \_SB_.PC00.LPCB.H_EC
->>>> $ cat /sys/bus/acpi/devices/PNP0C09\:00/status
->>>> 0
->>>> $ cat /sys/bus/acpi/devices/PNP0C09\:01/path
->>>> \_SB_.PC00.LPCB.LGEC
->>>> $ cat /sys/bus/acpi/devices/PNP0C09\:01/status
->>>> 15
->>> And taking a second look at the other bug:
->>> https://bugzilla.redhat.com/show_bug.cgi?id=3D2298938
->>>
->>> That one also has 2 EC ACPI devices and the errors come from calling _=
-REG on the one
->>> which is not picked as the boot_ec :
->>>
->>> jul 19 17:33:41 kernel: ACPI: EC: EC started
->>> jul 19 17:33:41 kernel: ACPI: EC: interrupt blocked
->>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.H_E=
-C.ECMD due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
->>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_TZ.FNCL due to p=
-revious error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
->>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_TZ.FN00._OFF due=
- to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
->>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.H_E=
-C._REG due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
->>> jul 19 17:33:41 kernel: ACPI: EC: EC_CMD/EC_SC=3D0x66, EC_DATA=3D0x62
->>> jul 19 17:33:41 kernel: ACPI: \_SB_.PCI0.LPCB.EC0_: Boot DSDT EC used =
-to handle transactions
->>>
->>> Note the H_EC vs EC0_ in the errors vs the "Boot DSDT EC used to
->>> handle transactions" message.
->>>
->>> So the issue in both cases seems to be calling _REG on an unused EC ac=
-pi_device.
->>> Not sure how to best fix this though ...
->> I have created an experimental acpi-ec-fixes branch:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log=
-/?h=3Dacpi-ec-fixes
->>
->> for this which illustrates my idea (untested so far).
-> This has just been updated to actually register the EC _REG for all
-> devices (which would have been skipped for the majority of them due to
-> the previous location of the relevant function call).
+The main point is that we need the VIOMMU to become linked to the SID
+though a IOMMU_DOMAIN_NESTED attachment so we know how to route events
+to userspace. Some of these options won't allow that.
 
-Hi,
+> Otherwise, how do you propose we would actually tell whether a real
+> C_BAD_STE is due to a driver
 
-i will ask the reporter https://bugzilla.kernel.org/show_bug.cgi?id=3D2190=
-75 to try out your patches.
-His LG Gram seems to be affected by this problem (it has two overlapping E=
-C devices ...).
+It is the same as every other SID based event, you lookup the SID, see
+there is an IOMMU_DOMAIN_NESTED attached, extract the VIOMMU and route
+the whole event to the VIOMMU's event queue.
+
+For C_BAD_STE you'd want to also check that the STE is all zeros
+before doing this to detect hypervisor driver bugs. It is not perfect,
+but it is not wildly unworkable either.
+
+> Yes, userspace can spam up the event queue with translation/permission etc.
+> faults, but those are at least clearly attributable and an expected part of
+> normal operation; giving it free reign to spam up the event queue with what
+> are currently considered *host kernel errors*, with no handling or
+> mitigation, is another thing entirely.
+
+Let's use arm_smmu_make_abort_ste():
+
+	if (!(nested_domain->ste[0] & cpu_to_le64(STRTAB_STE_0_V))) {
+		arm_smmu_make_abort_ste(target);
+		return;
+	}
+
+We can look into how to transform that into a virtual C_BAD_STE as
+part of the event infrastructure patches?
+
+> > @@ -2192,6 +2255,16 @@ static void arm_smmu_tlb_inv_range_domain(unsigned long iova, size_t size,
+> >   	}
+> >   	__arm_smmu_tlb_inv_range(&cmd, iova, size, granule, smmu_domain);
+> > +	if (smmu_domain->stage == ARM_SMMU_DOMAIN_S2 &&
+> > +	    smmu_domain->nesting_parent) {
+> 
+> Surely nesting_parent must never be set on anything other than S2 domains in
+> the first place?
+
+Done
+
+> > @@ -2608,13 +2681,15 @@ arm_smmu_find_master_domain(struct arm_smmu_domain *smmu_domain,
+> >   			    ioasid_t ssid)
+> >   {
+> >   	struct arm_smmu_master_domain *master_domain;
+> > +	bool nested_parent = smmu_domain->domain.type == IOMMU_DOMAIN_NESTED;
+> >   	lockdep_assert_held(&smmu_domain->devices_lock);
+> >   	list_for_each_entry(master_domain, &smmu_domain->devices,
+> >   			    devices_elm) {
+> >   		if (master_domain->master == master &&
+> > -		    master_domain->ssid == ssid)
+> > +		    master_domain->ssid == ssid &&
+> > +		    master_domain->nested_parent == nested_parent)
+> 
+> As if nested_parent vs. nesting parent wasn't bad enough, 
+
+Done - we used IOMMU_HWPT_ALLOC_NEST_PARENT so lets call them all nest_parent
+
+> why would we need additional disambiguation here?
+
+Oh there is mistake here, that is why it looks so weird, the
+smmu_domain here is the S2 always we are supposed to be testing the
+attaching domain:
+
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -2677,11 +2677,10 @@ static void arm_smmu_disable_pasid(struct arm_smmu_master *master)
+ 
+ static struct arm_smmu_master_domain *
+ arm_smmu_find_master_domain(struct arm_smmu_domain *smmu_domain,
+-                           struct arm_smmu_master *master,
+-                           ioasid_t ssid)
++                           struct arm_smmu_master *master, ioasid_t ssid,
++                           bool nest_parent)
+ {
+        struct arm_smmu_master_domain *master_domain;
+-       bool nested_parent = smmu_domain->domain.type == IOMMU_DOMAIN_NESTED;
+ 
+        lockdep_assert_held(&smmu_domain->devices_lock);
+ 
+@@ -2689,7 +2688,7 @@ arm_smmu_find_master_domain(struct arm_smmu_domain *smmu_domain,
+                            devices_elm) {
+                if (master_domain->master == master &&
+                    master_domain->ssid == ssid &&
+-                   master_domain->nest_parent == nested_parent)
++                   master_domain->nest_parent == nest_parent)
+                        return master_domain;
+        }
+        return NULL;
+@@ -2727,7 +2726,8 @@ static void arm_smmu_remove_master_domain(struct arm_smmu_master *master,
+                return;
+ 
+        spin_lock_irqsave(&smmu_domain->devices_lock, flags);
+-       master_domain = arm_smmu_find_master_domain(smmu_domain, master, ssid);
++       master_domain = arm_smmu_find_master_domain(
++               smmu_domain, master, ssid, domain->type == IOMMU_DOMAIN_NESTED);
+        if (master_domain) {
+                list_del(&master_domain->devices_elm);
+                kfree(master_domain);
+
+> How could more than one attachment to the same SID:SSID exist at the
+> same time?
+
+The attachment logic puts both the new and old domain in this list
+while it works on invalidating caches. This ensures we don't loose any
+invalidation. We also directly put the S2 into the list when attaching
+an IOMMU_DOMAIN_NESTED.
+
+Thus, it is possible for the same S2 to be in the list twice for a
+short time as switching between the S2 to an IOMMU_DOMAIN_NESTED will
+cause it. They are not the same as one will have nest_parent set to do
+heavier ATC invalidation.
+
+It is an optimization to allow the naked S2 to be used as an identity
+translation with less expensive ATC invalidation.
+
+> > @@ -792,6 +803,14 @@ struct arm_smmu_domain {
+> >   	u8				enforce_cache_coherency;
+> >   	struct mmu_notifier		mmu_notifier;
+> > +	bool				nesting_parent : 1;
+> 
+> Erm, please use bool consistently, or use integer bitfields consistently,
+> but not a deranged mess of bool bitfields while also assigning true/false to
+> full u8s... :/
+
+I made it like this:
+
+	struct list_head		devices;
+	spinlock_t			devices_lock;
+	bool				enforce_cache_coherency : 1;
+	bool				nest_parent : 1;
 
 Thanks,
-Armin Wolf
-
->> The underlying observation is that _REG only needs to be evaluated for
->> EC operation regions located in the scopes of ACPI device objects
->> representing valid devices, so it is better to do it for each of these
->> objects individually in acpi_bus_attach().
->>
->> For the EC itself, it is better to do what was done before the
->> $subject commit, so evaluate _REG for the EC operation regions in the
->> EC scope (including the "orphan" _REG).
->>
->> Accordingly, commit 0e6b6dedf168 ("Revert "ACPI: EC: Evaluate orphan
->> _REG under EC device") is reverted, acpi_execute_reg_methods() is
->> modified to take an additional depth argument and it is called for
->> each device object representing a valid device with that argument
->> equal to 1.
+Jason
 
