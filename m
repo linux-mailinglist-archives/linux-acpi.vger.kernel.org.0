@@ -1,49 +1,50 @@
-Return-Path: <linux-acpi+bounces-7488-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7489-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D4E94D9C3
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 03:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D543F94D9CB
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 03:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B384A1F224F8
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 01:29:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BD0C1F22DB9
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 01:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052FA62171;
-	Sat, 10 Aug 2024 01:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759B913211F;
+	Sat, 10 Aug 2024 01:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/AEc//R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbcuNSF2"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B892959B71;
-	Sat, 10 Aug 2024 01:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6324087C;
+	Sat, 10 Aug 2024 01:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723253339; cv=none; b=Zc2C5lXR1IvIZeOWMhXJzw2M3i/PsqbHNGAFoorwneJ/4+gco1bhGXWkGJlg28zDjvpvNjpePIxYZnzWIf6QATIBbLwFCxWiID9XNbJzq1BibS8aAY49X9OwPeMeJAZgMmmmaWyE2GtBGCzlNCmYkW1vPUNvUaEiE71cF3Tw+U8=
+	t=1723253346; cv=none; b=H7MRe99RoRtOnCQMMkP0x/SYU3O4R0jSAoWfZarjIPQppkt1E0USI+YeS9MiBdjROeNjTBvBRnPY+dBP6X/3NkcOPEVMVRDIGY3RudtVaCWTNFtQnq+5b6bLTRKbV/ZCi8qMKtqrg4vHujCHe7OhHbLp1A2xCndNmGsHWhgQMeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723253339; c=relaxed/simple;
-	bh=rA+01Z/gLFkM+gmZBJbSpxummam/O2KWdZZBGUwIzDo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MRyZwhenJ6ztkRQTqcvp559drb0dv2wku0XIA5AgaM23steCRcPxCZMkZ7deNt7EBlgs/6VaooP7cX7P+ahT4iCXwFjmLTvYiNRR5WQiqMTiDZLawZ88liY3GnAxlHK0ri1wwUek4z2a4TwZZf3DJWjRlxdhxwfD6iTYI0lCJTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/AEc//R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A665C32782;
-	Sat, 10 Aug 2024 01:28:53 +0000 (UTC)
+	s=arc-20240116; t=1723253346; c=relaxed/simple;
+	bh=4SyE3li13fjLPwavf6bHMoEU85A4KFBeN5v2ikNfOS4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J2XFjo+2HJY0tk/yMjJNIGmPftEHRL52KqCHpyNXXVWWN91ezcrT58A/EvrUv/P8tSlwD5Hy8i6BmL1IWuzFlMaN7ELa2x8mE1hA2/Ye9CWlZrX96ca74wCy/i0gVdNJxo7BgBPVpXQ5a/NS8mlvZFg0ImOkePRkG1meej9hze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbcuNSF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE224C4AF09;
+	Sat, 10 Aug 2024 01:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723253339;
-	bh=rA+01Z/gLFkM+gmZBJbSpxummam/O2KWdZZBGUwIzDo=;
-	h=From:Subject:Date:To:Cc:From;
-	b=S/AEc//R0IiQj9gdajGt2URd3kuCRBgJegG80maIbnf7Bk0I95AykHGyOvPYkakq5
-	 H7wEhywvP0qweb+ecV6lIGcuEmjc9Jg8DHaXTt1bbdpqBVy2OUPiv/6aEj2tMlpQmt
-	 f4RTu0nfJ03tiFLNDENHO/C1qmJUCajaD22rV1FSPQbSBBYg7JdVibyLYX+uJ87TzV
-	 ZQS8JW2aHReGl7WTwyVSaUqjb4tdoMS+uqYTkmiSjK8h49Z0AEteJf9dItD9ZK4L38
-	 ir+UVX8GS/spzrhK73LTa957ppFUdqppEHtb6fX7vcc+cunsR6QV5tidBaNE8HKZnE
-	 Ih7I+syV59Qqw==
+	s=k20201202; t=1723253345;
+	bh=4SyE3li13fjLPwavf6bHMoEU85A4KFBeN5v2ikNfOS4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=NbcuNSF2DYNYYRKJG94vXh75HLxGijtUjeQPLc0td6ayqya1vCCOr8n1hFkZXBdn4
+	 FXSIluZ8fkoW+UiBqzx3HcKnXwHRU2YmCAgoA7ZbIVM6z8XPWg2mmz6FhNQWdmL/go
+	 2omjwGmk0FwrWm+CYvMpq6UtWQbgqSUbVHDv+B5G5YOtgn7U53gFSCghJMD4/NDkNu
+	 wD4HTMRW1AENQ2Uj4oNnnKWgUjYWi8h2FLNhESLM6QZkDe3kiL+Jx8wOnLibOEJqlg
+	 mJh/k6RUdLjmheaUA6DrJ1ELhdprAMJJ100ooAUOTp02h0/lVdUmFcF62sKAHiMI3U
+	 y8QRkBrQ9gsdw==
 From: Konrad Dybcio <konradybcio@kernel.org>
-Subject: [PATCH v2 0/3] OF support for Surface System Aggregator Module
-Date: Sat, 10 Aug 2024 03:28:37 +0200
-Message-Id: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
+Date: Sat, 10 Aug 2024 03:28:38 +0200
+Subject: [PATCH v2 1/3] dt-bindings: serial: Allow embedded-controller as
+ child node
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -52,9 +53,9 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEXCtmYC/23MQQ6CMBCF4auQWVszLaDiynsYFnUYZBZQaLHRk
- N7dytrl//LybRDYCwe4Fht4jhLETTnMoQAa7PRkJV1uMGgqvGCjVjcLqWBHVXdsemRqyjNC/s+
- ee3nv1r3NPUhYnf/sdNS/9Z8StUKF9YOsbkpz0tVteQnJREdyI7QppS9fBI3KpAAAAA==
+Message-Id: <20240810-topic-sam-v2-1-8a8eb368a4f0@quicinc.com>
+References: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
+In-Reply-To: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
 To: Rob Herring <robh@kernel.org>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -69,52 +70,43 @@ Cc: Marijn Suijten <marijn.suijten@somainline.org>,
  platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <quic_kdybcio@quicinc.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1723253333; l=1552;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1723253333; l=1007;
  i=quic_kdybcio@quicinc.com; s=20230215; h=from:subject:message-id;
- bh=rA+01Z/gLFkM+gmZBJbSpxummam/O2KWdZZBGUwIzDo=;
- b=bbxPQPQxEc1SzVvbdKB8s3Eji8+geAwKHbptIaeMd2fw1gWk5Z2bfdrpFM+WXlKzO60dCv89n
- 0YcjUG71acKB3dLaicCYBiN+fOGbAJ170tcb0XjBYawzdNYFlVLqOfe
+ bh=iPyhH97sgWQSvAYoTnYt3DadKCYesRP4ToQqaY07uPk=;
+ b=9lKKuIOOp7WYVX3w6+26X30PFGf1TkRIosBETn9SmIYEgw1Lf0wYmj/9Egt8VM5VfBFwzmpaz
+ IEb2KalqmRgAeidDtPBDG+oIxXR5NWUbrADH0a/TVCFwbjJgNe7FUGq
 X-Developer-Key: i=quic_kdybcio@quicinc.com; a=ed25519;
  pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 
-Wire up OF support for SSAM drivers, to use with Surface Laptop 7 and
-other Qualcomm-based devices.
+From: Konrad Dybcio <quic_kdybcio@quicinc.com>
 
-Patch 3 references compatible strings introduced in [1]
+There exist some embedded controllers (like Microsoft SAM found on
+Surface devices or Apple Oscar found on old iPhones) that connect to
+the host device via serial.
 
-[1] https://lore.kernel.org/linux-arm-msm/20240809-topic-sl7-v1-1-2090433d8dfc@quicinc.com/T/#u
+Allow that class of devices to exist under serial interface controller
+nodes.
 
 Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
 ---
-Changes in v2:
-- Fix kerneldoc
-- Drop the drivers/acpi change (oops)
-- Style fixes
-- Don't assign int to acpi_status
-- Don't scan the bus twice in SAM core probe
-- Link to v1: https://lore.kernel.org/r/20240809-topic-sam-v1-0-05bca1932614@quicinc.com
+ Documentation/devicetree/bindings/serial/serial.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----
-Konrad Dybcio (3):
-      dt-bindings: serial: Allow embedded-controller as child node
-      dt-bindings: platform: Add Surface System Aggregator Module
-      platform/surface: Add OF support
+diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
+index ffc9198ae214..9b2c94796371 100644
+--- a/Documentation/devicetree/bindings/serial/serial.yaml
++++ b/Documentation/devicetree/bindings/serial/serial.yaml
+@@ -88,7 +88,7 @@ properties:
+       TX FIFO threshold configuration (in bytes).
+ 
+ patternProperties:
+-  "^(bluetooth|bluetooth-gnss|gnss|gps|mcu|onewire)$":
++  "^(bluetooth|bluetooth-gnss|embedded-controller|gnss|gps|mcu|onewire)$":
+     if:
+       type: object
+     then:
 
- .../bindings/platform/microsoft,surface-sam.yaml   | 50 +++++++++++++
- .../devicetree/bindings/serial/serial.yaml         |  2 +-
- drivers/platform/surface/aggregator/bus.c          |  2 +
- drivers/platform/surface/aggregator/controller.c   | 67 ++++++++++++++----
- drivers/platform/surface/aggregator/core.c         | 82 +++++++++++++++++-----
- drivers/platform/surface/surface3_power.c          |  4 +-
- drivers/platform/surface/surface_acpi_notify.c     |  4 +-
- .../platform/surface/surface_aggregator_registry.c | 44 ++++++++++--
- 8 files changed, 215 insertions(+), 40 deletions(-)
----
-base-commit: 1e391b34f6aa043c7afa40a2103163a0ef06d179
-change-id: 20240809-topic-sam-5de2f0ec9370
-
-Best regards,
 -- 
-Konrad Dybcio <quic_kdybcio@quicinc.com>
+2.46.0
 
 
