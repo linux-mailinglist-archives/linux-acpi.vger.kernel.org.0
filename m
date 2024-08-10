@@ -1,74 +1,74 @@
-Return-Path: <linux-acpi+bounces-7494-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7495-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B136494DC71
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 13:21:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC1794DCFD
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 15:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D0C1C20CAE
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 11:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 414011F218AF
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 13:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF00157488;
-	Sat, 10 Aug 2024 11:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176EC158551;
+	Sat, 10 Aug 2024 13:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XxshvrE6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VePmWphN"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EC7146D75;
-	Sat, 10 Aug 2024 11:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EE84502F;
+	Sat, 10 Aug 2024 13:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723288909; cv=none; b=YriLNIPkyMwpEp/Sn6LqCP7Axe7qjK6P5L8F18sQA14lfZhSpYnyqkHXp+n/zjJUodjEBDALBWxV+l0qTy0q30HJCd31wwTfUJKUEayQLXLl2sPIi4KcOpEOoBvuu98K3Di4j9/PnWb1HG6EhsTsV/HuWEoqANqy1v/ObpinDs8=
+	t=1723294826; cv=none; b=o11PtUwAjyI6SyCSXn+LB2/BBfVr0n31wV+0ttswB0AD+rBS6lXG9IsrcJzcw1G6bYs9YCiHJUIX7lFhF1d4TTd74ckVuRgJ4z05cvVThKT5nuQLBlQW3Oiw4/Xml406Oq91ZoMIzPAKmLjMG9mW5n/Fayc7GkbMCTMPPSVZ07Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723288909; c=relaxed/simple;
-	bh=wLPOcrQJc9FeMQqebv2m9OcS09IY4lRJtR9nrEtBRl4=;
+	s=arc-20240116; t=1723294826; c=relaxed/simple;
+	bh=Y56S0sBS1zQqgakZZtSHCy7NQwyEusp9WFU6p/amnQI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E4jbsg6DBjmYFnYmmOYFkNCeA+Vn0SxM7D+k9otHvf9fp2aKTTEC2HFjzyH6v0Bn+qkvAtXhUIreifAI5SFyWd6e8pJN4zpNul5DmsCjZzKvKMzLOskFElTVEgdIx0DnXZ881to7L/x9Kq5iuX8ywmpie+eTCXWyYEE4K9OCYag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XxshvrE6; arc=none smtp.client-ip=209.85.208.51
+	 In-Reply-To:Content-Type; b=SNkbKk2tCBTREDN6PG6LA7ErZ4iwehFmimeyXc8ftZjjdWHg+WqKOR670kE7saCjn0oTbZFYMMmK4zmWFNuWU4DBgVt94jv/bBiWla4VVarvE6mYPy+/ztQRPZyDQEw1h4S5MXLqVMvXZOxIkSmELTmGyWtFFJr/2amrgUqlSEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VePmWphN; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5b8c2a6135dso3564623a12.1;
-        Sat, 10 Aug 2024 04:21:47 -0700 (PDT)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-368526b1333so2366050f8f.1;
+        Sat, 10 Aug 2024 06:00:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723288906; x=1723893706; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723294823; x=1723899623; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=sF0hj7C/4NCQYLu5xK63NUdOHcybLZHrNwCQSR6snIE=;
-        b=XxshvrE62w04Y/J1P76A4ntyU0IS287a+jMEy6g01DC+F3HxfR91Y6v04ECVM5X1gO
-         dZO81XZ2e3SW3JyITi4e6pPDMgjxBnzg1cHKWKk2bbJ2F6PGvv39qBAeZkhJvQUD61Bw
-         HlnKp5GtmyzG7N094exy2sY4/hXJOAVjtIzVeu6iYcJ/ji6WDiY45kfDp1f52kmViyhb
-         4J+i18Jf+PMYwPMfmcmZ5R0+psq4P1pvUOdbq53XgpXxy0SyDPYK+ESVx9M3mMr+47jT
-         AMtVf4gD7cIUBkcxSZIsIJBewyw1Sio6ARTyCo3g7QSOznESd7Fka2kxfv6NUVR1bOs6
-         BonQ==
+        bh=4hlcd1ZI65AoS9FRvn9neICSMrd89SuM+q6xLvHuMA8=;
+        b=VePmWphNkxfHV/gPw115IoFTK3jBEGDU/wg1+EzUx8BlNeCL3j4/6+6DHNYwEw/SQ8
+         QJFJWORyXJPSewfEm73QTlpMu3zFzXt7ON0ltZrfanuGWjLU/IKvvkCByZpCe6rLbd/F
+         gMLFSENH3sLaiJ/FB506Bb1EfySiGRQgb0BOQVwkuHDY1X67ObsLUNwHbTAMBJHZd0hV
+         8fJYSKOxjonq/NdDiy06g9ECSv3fNgtG67WQJ2FkNt1OXUxNjDDPyvSNBXWvS2o6/I/o
+         LIgF+vK+6PYSiXfi3nbVLHgASWcYtxQARVw7M2ns5j2KIaHkIY9N8FtR+4qp0rYlHX2a
+         jgtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723288906; x=1723893706;
+        d=1e100.net; s=20230601; t=1723294823; x=1723899623;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sF0hj7C/4NCQYLu5xK63NUdOHcybLZHrNwCQSR6snIE=;
-        b=h+qdGblTlkdCcoKimuSUIwzGZCTr4w8ij/FavJUeKOgf+t/iTGeUtpVorZFfTfxOBN
-         I1wQL3Z2pY5lzMCpIG1XkrRk+t7XhP7GsMTXVms1gu9y53a4kRBoAFmkkpwVyOaLe9W9
-         NOjNfyf26IhI+b/gPFDZ+RiTjgZ54GJbvTdIH6mijDY2oKpDdq4W2qk2F4NYWCjszUUh
-         zX8Tdo+8FnhNBKLIP2jsesRi95eF3UnN1cRADbud/iO7OvtOjyGtQ95PvrxfpAZFDvif
-         RIW2jzMnBKjz9tcwXIRX1BZtPEBULXjvUta906Lq+Rw2Nr9gzYnNDwYVRsGge5pQlNy+
-         fOzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmQCqwUBils4vdZW6SjhCfKm8MK+ULfZqn7j+Z1Uvc/Nl4qps8k0+WO5VyuFsJUoTnVrMY48wmp40eC+x2dyz5N+GuM63IZSi6qTtcdmhDoXLxPklK6ZWqxFVuBgCjA3oiWBdwGrClPQN6iC8ftRN73A3wj5kiBgcS7YpxMPEaAfwFd2lvfumUqqXZzJQDr8QbKMO2OhEmBzpAqSe9ommDm9EIWSVywsY0Lgyjn79F2Vur5wJVfWPrUcWvZC9aIlglV1NXgMy1
-X-Gm-Message-State: AOJu0YzwiBXbVKC9OlpmMVkBTMUYm44wOe72Ulmj3nBfOUqHdSgjPEGg
-	GZCqv9PtXoduv2T7X29wC8CYI1ToDFQdj79B090ZFzEZi1FUFoYH
-X-Google-Smtp-Source: AGHT+IFiMn5l0mYrV3pmmOEjFgDtqUkKKjZO23fLTyfw2nrpYHDA+qyn7nI8r77AsCjGuJgW4dPkEQ==
-X-Received: by 2002:a17:906:bc1a:b0:a7a:b385:37c8 with SMTP id a640c23a62f3a-a80aa54fb24mr316599766b.5.1723288905274;
-        Sat, 10 Aug 2024 04:21:45 -0700 (PDT)
-Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb08fe5dsm61155666b.3.2024.08.10.04.21.42
+        bh=4hlcd1ZI65AoS9FRvn9neICSMrd89SuM+q6xLvHuMA8=;
+        b=DXlktfMEW7eua0K217NaV8LvJIpd0imQf334H6C36TgDM4FXUtLKRsG3Q1XLQnIS9R
+         pJaxtxHAxOQvh/7ipSYi1Q/X/gXPFKHEOrwWx/LrLqbixIhEgkxSnjcPyzE023bfEAus
+         0tfhUcSh3Gyr/qGts8fSv7b2Xf5ihF/dHGGJQt07KNht4YZ7OlBhTo+3Z8b3AtwyjQ6S
+         jWYhPlwbQ8vK64mdoHiFWr0YwMiutAUqAAancPFvo/EbpjVSDYtmIODHO1xfHBldCB4d
+         gzWxLaJts9ytiGLJAhd0g6TRC0hQwN2o55ZZrAGEXlNA4XZLpnHWeDGF1438yDJSVfu9
+         7UXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyDrOHbzYiSxj2rIIUes49k3DDcwFSfSkI1diQA2usLxNaiF44iiOla1uD3+fj5v9yvdI/KHmHKvj2@vger.kernel.org, AJvYcCWJLzk2FlgzUcB89vsJHgfSIcRVufIG6dnD5cZAwXaQjSfnYDpZ9T21Fi6T246iCdqCAcUSMegJdOOY+Cct@vger.kernel.org, AJvYcCX7Sp9HgNU8W22GmAWw/ouhjQvgjZ9KCb1qRNW9Ap2KyTa90SQwjLvytfzIQHv2QkIT4OS5DWGJPUvMcOVM@vger.kernel.org, AJvYcCXnHR7vKNfzoj16NDb74JJ+B2P9Lxm/kPO+d7ZU75bk22ElZoC9i56wjFMVMa3QHkICuLw3+uFd3d28FA==@vger.kernel.org, AJvYcCXpn29FgZHsQ7K41aMvQV94R9eX0BEsm/ahlnolN6XpXosI3a3+hKdrPOuL6Qf/g3jo6pstiyoT4YjyZUBLbI47Mood6g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu/7MxxBd8SoChnaYT2AO9MItOgBxEjgh+HtbsNYXebPeFJrnU
+	tV9O49BDtp0z6Xpb3vR0iuQgZbUGAM7QtyrcTEsAtsd+M0EubgLP
+X-Google-Smtp-Source: AGHT+IHrDBbl0TwMtFUoaVBCUF+rb5vjaVYOgyKQKJUvVhETJDXj15C3rNpG6T8goqOIyo6sHHzQKw==
+X-Received: by 2002:adf:fc4c:0:b0:363:ac4d:c44f with SMTP id ffacd0b85a97d-36d6907bcc5mr3253936f8f.17.1723294822404;
+        Sat, 10 Aug 2024 06:00:22 -0700 (PDT)
+Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4ebd35c8sm2234733f8f.107.2024.08.10.06.00.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Aug 2024 04:21:44 -0700 (PDT)
-Message-ID: <d01c19a3-dc76-46f5-bca4-f5fdc7bd8798@gmail.com>
-Date: Sat, 10 Aug 2024 13:21:41 +0200
+        Sat, 10 Aug 2024 06:00:21 -0700 (PDT)
+Message-ID: <f3feeda2-81cf-44d6-8c9c-f489eebd8ebd@gmail.com>
+Date: Sat, 10 Aug 2024 15:00:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 3/3] platform/surface: Add OF support
-To: Maximilian Luz <luzmaximilian@gmail.com>,
+To: Konrad Dybcio <konradybcio@gmail.com>,
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -92,38 +92,43 @@ Cc: Marijn Suijten <marijn.suijten@somainline.org>,
 References: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
  <20240810-topic-sam-v2-3-8a8eb368a4f0@quicinc.com>
  <c4b23a43-7ff6-450a-bdc8-3348cc935145@gmail.com>
+ <d01c19a3-dc76-46f5-bca4-f5fdc7bd8798@gmail.com>
 Content-Language: en-US
-From: Konrad Dybcio <konradybcio@gmail.com>
-In-Reply-To: <c4b23a43-7ff6-450a-bdc8-3348cc935145@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+From: Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <d01c19a3-dc76-46f5-bca4-f5fdc7bd8798@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10.08.2024 3:47 AM, Maximilian Luz wrote:
-> On 8/10/24 3:28 AM, Konrad Dybcio wrote:
->> From: Konrad Dybcio <quic_kdybcio@quicinc.com>
+On 8/10/24 1:21 PM, Konrad Dybcio wrote:
+> On 10.08.2024 3:47 AM, Maximilian Luz wrote:
+>> On 8/10/24 3:28 AM, Konrad Dybcio wrote:
+>>> From: Konrad Dybcio <quic_kdybcio@quicinc.com>
+>>
+>> [...]
+>>
+>>> @@ -299,7 +302,7 @@ static const struct attribute_group ssam_sam_group = {
+>>>    };
+>>>      -/* -- ACPI based device setup. ---------------------------------------------- */
+>>> +/* -- Serial device setup. ------------------------------------------------- */
+>>
+>> One more :)
+> 
+> Right, cursor at 80 != 80-long :P
 > 
 > [...]
 > 
->> @@ -299,7 +302,7 @@ static const struct attribute_group ssam_sam_group = {
->>   };
->>     -/* -- ACPI based device setup. ---------------------------------------------- */
->> +/* -- Serial device setup. ------------------------------------------------- */
+>> Are these two changes required? Surface 3 power and SAN should AFAIK be
+>> fairly "legacy" and ACPI-only drivers, which I don't expect to be used
+>> on any of the new ARM devices (apart from there probably being other
+>> changes required to make them work with DT).
+>>
+>> I think with that addressed, it should be fine. I'll give it a spin
+>> tomorrow and send in my r-b and t-b (assuming everything goes well).
 > 
-> One more :)
+> No, I went overly defensive here. Will drop for v3 next week.
 
-Right, cursor at 80 != 80-long :P
+Perfect, Thank you!
 
-[...]
-
-> Are these two changes required? Surface 3 power and SAN should AFAIK be
-> fairly "legacy" and ACPI-only drivers, which I don't expect to be used
-> on any of the new ARM devices (apart from there probably being other
-> changes required to make them work with DT).
-> 
-> I think with that addressed, it should be fine. I'll give it a spin
-> tomorrow and send in my r-b and t-b (assuming everything goes well).
-
-No, I went overly defensive here. Will drop for v3 next week.
-
-Konrad
+Best regards,
+Max
 
