@@ -1,118 +1,176 @@
-Return-Path: <linux-acpi+bounces-7485-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7486-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DCB94D91E
-	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 01:29:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F74794D9B0
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 03:15:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D9681F2116B
-	for <lists+linux-acpi@lfdr.de>; Fri,  9 Aug 2024 23:29:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA6C8B21FC7
+	for <lists+linux-acpi@lfdr.de>; Sat, 10 Aug 2024 01:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7652B16D4D9;
-	Fri,  9 Aug 2024 23:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F182347C7;
+	Sat, 10 Aug 2024 01:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EEwZei4z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDXFdJk4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF01026AE4;
-	Fri,  9 Aug 2024 23:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDD81E4A9;
+	Sat, 10 Aug 2024 01:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723246171; cv=none; b=MdUcSLBbh7IdZfKW7+p30O/zIhfoeu9K2WZltWNnO/bV7g79qTsayU85gwHdpv7U2nhDfGe4N5UvJb6in+GjywVkxldqBNGPb134qgtr7rbdfgXQ3IHWu6ZlasttlUSo6Bi7L+/HF6W1y62V0Nkdy9XV1ur1INGN4zN1I7BM9Qg=
+	t=1723252526; cv=none; b=TeWN360jWfLZRvzYklVYjS10Iixyx8yODDC/qns0SDUGImnLcOO6xGOjOWWMlC670ds+4g1xSnnjLWhh8jFFbWP9Ncp9Sp80YMTYyqVGHC3/Zxt6GXXa5f3ULr/pTgV0MlCH4YfpfuXrXmJnLCEULCqM1zRJu55w1eIIagU3Jr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723246171; c=relaxed/simple;
-	bh=t0PCcCq04qC6ZwgyjpVfF+3cDG+djSZndkmy/cwOAJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iHCfAgyIBQDUBpX6TJCdyVOyyF9aOTFO2cMBCJdCvU6A9XeQmga99Ry173KHKU3nEkHWPAsdIzci1TVze1Qm5wYFrDKceSxkxeQppcwqciUvnGeHzQvLToZrRTsC9hk5YeBIlPJ7mlXQizzgDzB5NPjwv6B5gibbpDb7lfZ3HGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EEwZei4z; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723246170; x=1754782170;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t0PCcCq04qC6ZwgyjpVfF+3cDG+djSZndkmy/cwOAJc=;
-  b=EEwZei4zB+9bj0Lr2C5s6Kv7S2sUhzI79hgfWOVFMRbhn5DS5Dj2i7y3
-   KUWlU1RRMqCpthXCH6UKv0O0hA5aJdg3+g6Xz9dCWFT/f1Tgj7YHX7Diw
-   G9MmGl0h+ia8JuK4J1Qv2X8z4t6ffOhBVlhrQ3sW/OqYrzOgkE8xGuqqg
-   OBncXnY44pPRzPpQ07zdqef+NuDxkNF3RMSUCC2xCIvanytV8RbUDBQsK
-   uXOfcY7i3gynOiRRyREeUnyR/VtuXWpJIk0OYA4AxHNaNLUUPlnl9oNic
-   JCAiPyD35yjS02L8wCvcA32oIugRaLZBCWYB75/45e1KHcsyFg/3xRool
-   A==;
-X-CSE-ConnectionGUID: H5O+j3lISDuJPZGrTucxUw==
-X-CSE-MsgGUID: 15RPW8bMTsCQc6G8TYK2oQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="32829886"
-X-IronPort-AV: E=Sophos;i="6.09,277,1716274800"; 
-   d="scan'208";a="32829886"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 16:29:30 -0700
-X-CSE-ConnectionGUID: qeTveLK/TU+9bL0BsyK2ng==
-X-CSE-MsgGUID: zLQtiumFQ4ezGkmOfk85sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,277,1716274800"; 
-   d="scan'208";a="62551834"
-Received: from unknown (HELO localhost) ([10.79.232.122])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 16:29:29 -0700
-Date: Fri, 9 Aug 2024 16:29:28 -0700
-From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
-	kirill.shutemov@linux.intel.com, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 2/7] dt-bindings: x86: Add ACPI wakeup mailbox
-Message-ID: <20240809232928.GB25056@yjiang5-mobl.amr.corp.intel.com>
-References: <20240806221237.1634126-1-yunhong.jiang@linux.intel.com>
- <20240806221237.1634126-3-yunhong.jiang@linux.intel.com>
- <ce4903f2-2a9d-45c4-bd4d-ac5165211a83@kernel.org>
- <20240807165658.GA17382@yjiang5-mobl.amr.corp.intel.com>
- <624e1985-7dd2-4abe-a918-78cb43556967@kernel.org>
+	s=arc-20240116; t=1723252526; c=relaxed/simple;
+	bh=eVrnEkymkgWiw4KUnaEUL7rO4ydgXHlWRyNSdxlmzIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n+3fWGIvnlwzjFYkBJGU9TOnrbbFQ1flDk8TqRgW93jGHKdkKhgCpmn7Zl6BWJRmlzYLT1dL/kK0Shaqjp94ywJS6ZQBtwWrhD02qLdIcwDw1w38UUQQC+oqBqRA1ao0S+OuMJQdY/HTIzuBlyp4OB1w2ZMDcGnSo9H/Ec+evTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDXFdJk4; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3683f56b9bdso1679724f8f.1;
+        Fri, 09 Aug 2024 18:15:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723252523; x=1723857323; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j9zfo4WEzF3z/bIMKMHgf7itqTEdxPVPMEvEU0eIHiQ=;
+        b=RDXFdJk4E21r2nHYpzwajofnDFQDcScLJLsDDkfC4GGYpq+vyzRcxPGdRPyHVVib+b
+         rIsXdebNacPFmrgJJwG/KO4p1Uki20sZn+n/58+hn1xDfMOPdJC0eMWsiQe3JGF15/PP
+         UYPCffcMGNWGWV0i2U+th//w7nw3XVI8CFZY4V83K/SKishfVO2CHJ1/ii40/B6fo/Mn
+         YCFuvuFqLnWzSZM1sfl04QUE4exBsAeN1VH2GGtxbMJi4t2mvFBl5nEnzWZ1ZQdh+CyQ
+         SqNLW9yB+GWhM1BHY4n7WQYrymClEOgpzHfHBCc7DyXi49mgozAwIoj6SEQeHcLM2pMy
+         tMkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723252523; x=1723857323;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j9zfo4WEzF3z/bIMKMHgf7itqTEdxPVPMEvEU0eIHiQ=;
+        b=SbP5ygb3XFEOt5deV51GFw9WBVIMN6bG1ZH9Ln7x6/oCQ0Yk/UUN2JTEejO5uHCVGn
+         QIslSvrb04JEQuSTihHGpq4xuLpZo7/TOsCkMkKsCsK46Ph6CdoZ7jZzSwFA8MMasaGk
+         ppBfx9T1RgtEZ8hzhkkWVuLng5CEnSnKL8ROkLBtlKlfCSzJQZX/2FXjFLYSVFhPG16u
+         ThGW3HxvkESsbx1RI5ro5aVNNRUpRLCcxVfydzgeWbGzUD6geXHMUtRIsNg9cSL1fHDP
+         XdQ7rJXN6idDp4gcwk/PAHYkPp2OwsIQKpxGCxZEXTv94BFRXaYfwQatkHbTlceJ9Hul
+         nC+A==
+X-Forwarded-Encrypted: i=1; AJvYcCUVlcn9FoVgqu94nr1cvUCJuzczO6ZeU+MI/mE92SAvwZX8L5SrZVRANsVVOn2okhzQyNLwdmxyb4JF2osMcAxwmKRG7saIWkcTxJuQVjWpa7FIIcZO634JvAghtQSMOBpv4RsSQ51MIo0fo0rdPbd1OC/8sL4B8vKZjb7502Ui1cJZfleqwd1OKHrli77MZNs66m6VqfDeVCYOX+p0q6iLWFWrP2R/Ap+6S4vYsoLyPcvamhPXwc7OfwTOR/13R+lNn1H4+g+M
+X-Gm-Message-State: AOJu0Yxlp/601sGM1Wubm2UqtNrb6Qoozp01UMqzVNg0h0mppQvOC8Xx
+	+sU2rovlLE2JgnNP/kt/+m/KikgdZYcRMFNvwPn6xR01e9WZLNwX
+X-Google-Smtp-Source: AGHT+IHXVUdEv2O5ohO9bAXTgJVklt0jhTkgNxeU/ElF7JfiC68zZmaHSF+BCSkgHtUC/zTurdLJHg==
+X-Received: by 2002:a05:6000:bce:b0:366:f041:935d with SMTP id ffacd0b85a97d-36d61cd285cmr2223176f8f.60.1723252522595;
+        Fri, 09 Aug 2024 18:15:22 -0700 (PDT)
+Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4f0a6d76sm796094f8f.115.2024.08.09.18.15.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Aug 2024 18:15:22 -0700 (PDT)
+Message-ID: <f9c9601b-737b-42d1-9449-2072afdec580@gmail.com>
+Date: Sat, 10 Aug 2024 03:15:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <624e1985-7dd2-4abe-a918-78cb43556967@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] platform/surface: Add OF support
+To: Konrad Dybcio <konradybcio@gmail.com>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <quic_kdybcio@quicinc.com>
+References: <20240809-topic-sam-v1-0-05bca1932614@quicinc.com>
+ <20240809-topic-sam-v1-3-05bca1932614@quicinc.com>
+ <9ee8eb9d-1e1c-439f-a382-c003fbd7259c@gmail.com>
+ <ea348f62-49e9-4b5e-9041-b0a696aaa736@gmail.com>
+Content-Language: en-US
+From: Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <ea348f62-49e9-4b5e-9041-b0a696aaa736@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 08, 2024 at 09:41:16AM +0200, Krzysztof Kozlowski wrote:
-> On 07/08/2024 18:56, Yunhong Jiang wrote:
-> > On Wed, Aug 07, 2024 at 07:57:43AM +0200, Krzysztof Kozlowski wrote:
-> >> On 07/08/2024 00:12, Yunhong Jiang wrote:
-> >>> Add the binding to use the ACPI wakeup mailbox mechanism to bringup APs.
-> >>
-> >> We do not have bindings for ACPI. I think in the past it was mentioned
-> >> pretty clear - we do not care what ACPI has in the wild.
-> > 
-> > Thank you for review.
-> > Can you please give a bit more information on "do not have bindings for ACPI"?
-> > We don't put the ACPI table into the device tree, but reuse some existing ACPI
-> > mailbox mechanism. Is this acceptable for you?
+On 8/10/24 12:44 AM, Konrad Dybcio wrote:
+> On 9.08.2024 8:09 PM, Maximilian Luz wrote:
+>>>    +static int ssam_serdev_setup(struct acpi_device *ssh, struct serdev_device *serdev)
+>>> +{
+>>> +    if (ssh)
+>>> +        return ssam_serdev_setup_via_acpi(serdev, ssh->handle);
+>>> +
+>>> +    /* TODO: these values may differ per board/implementation */
+>>> +    serdev_device_set_baudrate(serdev, 4 * HZ_PER_MHZ);
+>>
+>> Isn't this defined in the DT spec that you're adding as "current-speed"
+>> in patch 2? Why not load it from there?
 > 
-> I understood that rationale behind this patch is "ACPI" thus that reply.
-> This one sentence in commit msg is not helping. Entire binding
-> description speaks about ACPI, so yeah - I don't care what ACPI does.
-> Provide proper explanation/description of firmware or hardware, then
-> sure. But the patch saying ACPI is doing something, so bindings will be
-> doing the same is for me NAK. Whatever ACPI is doing is never a reason
-> alone to do the same in Devicetree.
+> Yeah and it's not under `required:`.. i added it for future proofing
 
-Thank you for the explanation. I will make the description as ACPI independent.
+Okay.
+
+[...]
+
+>>> +static const struct software_node *ssam_node_group_sl7[] = {
+>>> +    &ssam_node_root,
+>>> +    &ssam_node_bat_ac,
+>>> +    &ssam_node_bat_main,
+>>> +    &ssam_node_tmp_perf_profile_with_fan,
+>>> +    &ssam_node_fan_speed,
+>>> +    &ssam_node_hid_sam_keyboard,
+>>
+>> Did you check if there are any other HID devices connected? In the past,
+>> keyboard and touchpad have been split into two separate devices, so is
+>> it a combo keyboard + touchpad device this time? Some models also had
+>> HID-based sensor and other devices.
+> 
+> No, touchpad is wired directly to the SoC via QSPI, same for the touch
+> panel
+
+Ah I see. So somewhat similar to the SLS2 I believe. Does it work with
+multiple fingers out-of-the-box? Or does it send raw heatmaps like on
+the SLS2 that require post-processing?
+
+Maybe some background: Since quite some time, the touchscreens on
+Surface devices operate in two modes: Basic single-touch no-post-
+processing-required mode or multi-touch mode where it sends raw touch
+heatmaps to be processed by some driver or user-space application. So
+basically, the whole touch processing stack is shifted to the software
+side. And with the SLS2, they now even applied that same thing to the
+touchpad... We're trying to replicate that (user-space) processing
+with the IPTSd daemon, but there's still a bit of work to be done to
+make this reliable.
 
 > 
-> Best regards,
-> Krzysztof
+>>
+>> Would just be good to know if this can be assumed to be complete or if
+>> we're maybe missing something here.
+>>
+>>> +    /* TODO: evaluate thermal sensors devices when we get a driver for that */
+>>
+>> FYI I've posted the driver at [1]. It needs a small Kbuild dependency
+>> fix but apart from that I think it should be final, if you want to give
+>> that a try.
+>>
+>> [1]: https://lore.kernel.org/lkml/20240804230832.247852-1-luzmaximilian@gmail.com/T/
 > 
+> I'll give it a shot, thanks
 > 
+>>
+>> The rest looks fine. I'll try to find some time to update my SPX branch
+>> this weekend and give it a spin.
+> 
+> About time that thing lands upstream ;)
+
+Agreed :) Thanks for taking this up!
+
+Best regards,
+Max
 
