@@ -1,48 +1,48 @@
-Return-Path: <linux-acpi+bounces-7503-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7504-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D45794E172
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 15:33:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD45594E1A5
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 16:28:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315561F213CC
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 13:33:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7265DB20DF7
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 14:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9093148FF7;
-	Sun, 11 Aug 2024 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07F114882D;
+	Sun, 11 Aug 2024 14:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCFpbobL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpYJemsQ"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21895336B;
-	Sun, 11 Aug 2024 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C56511CAB;
+	Sun, 11 Aug 2024 14:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723383226; cv=none; b=jKOXstKIFD/y/tZAgUFeHM1J/DA4Dfi//pUhkVy6pDaF5sVkFtYT91T2NetXe7ksT7zJGSIPvJ8AV3BiwoUuprfrufqFI7HxtUbtxW4yAnm4MHsxU2KuQlyu4EYfltRT9AxBspxepdznXAtlbcShJ0JMKQYOMzecSPNlC7hPh2I=
+	t=1723386520; cv=none; b=P4CTYw14Fp6kC8uu+bbrTerulDAPIsFx32TKV0oRoNcp7VOslk26OQNg/l5bYobpMB+u1mfH+9BZHPISsZohKCBFuKkAchdy0YqWGVSG5le9lh7hyu+uD5pWEQ+yPKROLFi6/qI6DV90f33ZhQn3x+PQgzqn2L3lGGtzvjhIIp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723383226; c=relaxed/simple;
-	bh=P3TiR38u5zb98PNMkm4vuY+lMtoH4iKqWrcrYeZOZDE=;
+	s=arc-20240116; t=1723386520; c=relaxed/simple;
+	bh=6HrA4soHlOgUdKJ4+WhSNv/k/WNmpMWWLBiIQhn2hko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G8UhKS7V4OcZshDbKZF3Sb2HjqFpNGYxIm3hdabRT0YPgEev9rYwf1+s7uZE5ma40G3rfZtAUCFnGEnpArgeIKcFJ6I0tn+ZZTmHb2sIQ48/WO5OdzLMn/3IBYj7cOYnUSp8erDq5RSWQZxbMLBTZPeLeC8v7Yjw6an4tZpDc4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCFpbobL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FBC32786;
-	Sun, 11 Aug 2024 13:33:39 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=omEwVBSySGhLy44XLjuoWcCQSAzMqPexseBmUx1Dubxnsfg/ZnozzFLrIyWFAcz0DnM8b+N8/+c5RrdnJJlTB1kfamr+cM+tDTQ6VQkjP2xGAGHMVNXNhbPWRubu9X19XkDUlsgatD+rSkciFmNmYaGx032hqaZLpngyfokGcb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpYJemsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67220C32786;
+	Sun, 11 Aug 2024 14:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723383226;
-	bh=P3TiR38u5zb98PNMkm4vuY+lMtoH4iKqWrcrYeZOZDE=;
+	s=k20201202; t=1723386520;
+	bh=6HrA4soHlOgUdKJ4+WhSNv/k/WNmpMWWLBiIQhn2hko=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sCFpbobLZcEgG9xrOtzF0DF/7wBWd/Q9vChEx8GV8GKgZMRy3G1lNijbsjmJWhkOX
-	 vZosAho2gb2oFgbU/K01aaHGFLvyjzC6vrMEH1nHGNBnH0OaYmgKbubB0PIxgVJQ8C
-	 l5tWW+B38WGCe4YpGU1YeYlM/pUB6PkhZ+n5F89t24doDdCLLEoeLobrbxz3SQYpK1
-	 zLHecFmJY5hxcI2apzKjTRSIi8w73of7kl7Xs0ns7hHVXH4hxumOHDoiOO/jVly7P4
-	 NPBOnbMQb4ZyJJiyG5CsoTqqlH+ovrE84exflNsv8SoGuEfLE3qrxYc+CXJjoneO3e
-	 6AMva0wFBnPDw==
-Message-ID: <d7d379d3-6a5c-4452-9791-7f18d1ed19c8@kernel.org>
-Date: Sun, 11 Aug 2024 15:33:37 +0200
+	b=LpYJemsQRHdGP/rekSYvazikIBMTjecjZuL7Ty1bkvLb7Abt3YwT0OlT7nT7bV5ea
+	 U1nK6bzv5usb+bTLlhYOXICkg5it9EMHX25JIpIqajLZ43YTinZL8KBEunZuhOUKhE
+	 nXcNvn9JMwvb6gMkMowiN+WTz9emIqQxn8uD1esUKQ8oonRPHemRFUzbiZeBVbF8kK
+	 zu3LJhwectEU8nIMvYMmxIIgLjvfAxW2G8/eGetXwJqxREffY2WevdVVcf68x5PoFl
+	 /cb4s+iOiMDfi0LEJM32ImL7u2gueBrVksH8+mg2gwqC+muSb6Dpb7huuEufcWay+j
+	 vve2OyuXnU+6A==
+Message-ID: <1a6ebc27-95ca-4f56-9971-b2a8d03f270a@kernel.org>
+Date: Sun, 11 Aug 2024 16:28:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: serial: Allow embedded-controller as
- child node
+Subject: Re: [PATCH v2 2/3] dt-bindings: platform: Add Surface System
+ Aggregator Module
 To: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -65,7 +65,7 @@ Cc: Marijn Suijten <marijn.suijten@somainline.org>,
  platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <quic_kdybcio@quicinc.com>
 References: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
- <20240810-topic-sam-v2-1-8a8eb368a4f0@quicinc.com>
+ <20240810-topic-sam-v2-2-8a8eb368a4f0@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -111,24 +111,69 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240810-topic-sam-v2-1-8a8eb368a4f0@quicinc.com>
+In-Reply-To: <20240810-topic-sam-v2-2-8a8eb368a4f0@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/08/2024 03:28, Konrad Dybcio wrote:
 > From: Konrad Dybcio <quic_kdybcio@quicinc.com>
 > 
-> There exist some embedded controllers (like Microsoft SAM found on
-> Surface devices or Apple Oscar found on old iPhones) that connect to
-> the host device via serial.
+> Add bindings for the Surface System Aggregator Module (SAM/SSAM), the
+> Microsoft Surface-standard Embedded Controller, used on both x86- and
+> Qualcomm-based devices.
 > 
-> Allow that class of devices to exist under serial interface controller
-> nodes.
+> It provides a plethora of functions, depending on what's wired up to
+> it. That includes but is not limited to: fan control, keyboard/touchpad
+> support, thermal sensors, power control, special buttons, tablet mode.
 > 
 > Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
+> ---
+>  .../bindings/platform/microsoft,surface-sam.yaml   | 50 ++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml b/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml
+> new file mode 100644
+> index 000000000000..f613738aa31d
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml
+> @@ -0,0 +1,50 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/platform/microsoft,surface-sam.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Surface System Aggregator Module (SAM, SSAM)
+> +
+> +maintainers:
+> +  - Konrad Dybcio <konradybcio@kernel.org>
+> +
+> +description: |
+
+No need for |
+
+> +  Surface devices use a standardized embedded controller to let the
+> +  operating system interface with various hardware functions. The
+> +  specific functionalities are modeled as subdevices and matched on
+> +  five levels: domain, category, target, instance and function.
+> +
+> +properties:
+> +  compatible:
+> +    const: microsoft,surface-sam
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  current-speed:
+> +    description: The baudrate in bits per second of the device as it comes
+> +      online, current active speed.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+
+This should be just "current-speed: true", because the type will be
+brought by serial schema. We should however have some schema with
+peripheral properties for serial devices. I'll come with something.
 
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
 Best regards,
 Krzysztof
