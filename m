@@ -1,146 +1,136 @@
-Return-Path: <linux-acpi+bounces-7502-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7503-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EBE94DFFD
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 06:23:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D45794E172
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 15:33:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544C82819D4
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 04:23:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315561F213CC
+	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 13:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E96D14AA9;
-	Sun, 11 Aug 2024 04:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9093148FF7;
+	Sun, 11 Aug 2024 13:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCFpbobL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231291171C
-	for <linux-acpi@vger.kernel.org>; Sun, 11 Aug 2024 04:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21895336B;
+	Sun, 11 Aug 2024 13:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723350215; cv=none; b=pQsFulgf1rN+LecIebxncVS5ioTW9w87E+3Pa7z69ORFsxPdEtinBN6SijdZ2mh7iPkVfyYFNDjcdsgEVnmSmrXhRD+apzvMV2NB9x/dWyMb9Xd9KOLVS7xz5DrcRQl4Eu84ZZD26+UZwkULmGw4KVvBBMNu2EB9+1MBrHwwOLs=
+	t=1723383226; cv=none; b=jKOXstKIFD/y/tZAgUFeHM1J/DA4Dfi//pUhkVy6pDaF5sVkFtYT91T2NetXe7ksT7zJGSIPvJ8AV3BiwoUuprfrufqFI7HxtUbtxW4yAnm4MHsxU2KuQlyu4EYfltRT9AxBspxepdznXAtlbcShJ0JMKQYOMzecSPNlC7hPh2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723350215; c=relaxed/simple;
-	bh=37p30hmVwlYYjNuW+Hxc5jsFpZWdhlpW3NjHuwz5kR8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NwhWroYHZSImAoZjJifVwXfI+4S1IH04eU1tT6d7Tscg5n9GV05ie58zFOiOCe/yUtlHVJdRxtKXq3ZShNkBtpTYgjrX7Qx02fthD8pafIgVuBa8JDxkfYa6xRg+kVLebwTe8W+F0/pfljteXGDM9qqKwChewGOFnA8bkkv6cgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WhPXs5GyxzQpWs;
-	Sun, 11 Aug 2024 12:18:53 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A98714022E;
-	Sun, 11 Aug 2024 12:23:24 +0800 (CST)
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sun, 11 Aug 2024 12:23:24 +0800
-From: Hanjun Guo <guohanjun@huawei.com>
-To: Sudeep Holla <sudeep.holla@arm.com>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>
-CC: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, Hanjun
- Guo <guohanjun@huawei.com>
-Subject: [PATCH v2 4/4] ARM64: ACPI: Move the NUMA code to drivers/acpi/arm64/
-Date: Sun, 11 Aug 2024 12:23:03 +0800
-Message-ID: <20240811042303.3498761-5-guohanjun@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240811042303.3498761-1-guohanjun@huawei.com>
-References: <20240811042303.3498761-1-guohanjun@huawei.com>
+	s=arc-20240116; t=1723383226; c=relaxed/simple;
+	bh=P3TiR38u5zb98PNMkm4vuY+lMtoH4iKqWrcrYeZOZDE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G8UhKS7V4OcZshDbKZF3Sb2HjqFpNGYxIm3hdabRT0YPgEev9rYwf1+s7uZE5ma40G3rfZtAUCFnGEnpArgeIKcFJ6I0tn+ZZTmHb2sIQ48/WO5OdzLMn/3IBYj7cOYnUSp8erDq5RSWQZxbMLBTZPeLeC8v7Yjw6an4tZpDc4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCFpbobL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FBC32786;
+	Sun, 11 Aug 2024 13:33:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723383226;
+	bh=P3TiR38u5zb98PNMkm4vuY+lMtoH4iKqWrcrYeZOZDE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=sCFpbobLZcEgG9xrOtzF0DF/7wBWd/Q9vChEx8GV8GKgZMRy3G1lNijbsjmJWhkOX
+	 vZosAho2gb2oFgbU/K01aaHGFLvyjzC6vrMEH1nHGNBnH0OaYmgKbubB0PIxgVJQ8C
+	 l5tWW+B38WGCe4YpGU1YeYlM/pUB6PkhZ+n5F89t24doDdCLLEoeLobrbxz3SQYpK1
+	 zLHecFmJY5hxcI2apzKjTRSIi8w73of7kl7Xs0ns7hHVXH4hxumOHDoiOO/jVly7P4
+	 NPBOnbMQb4ZyJJiyG5CsoTqqlH+ovrE84exflNsv8SoGuEfLE3qrxYc+CXJjoneO3e
+	 6AMva0wFBnPDw==
+Message-ID: <d7d379d3-6a5c-4452-9791-7f18d1ed19c8@kernel.org>
+Date: Sun, 11 Aug 2024 15:33:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] dt-bindings: serial: Allow embedded-controller as
+ child node
+To: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <quic_kdybcio@quicinc.com>
+References: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
+ <20240810-topic-sam-v2-1-8a8eb368a4f0@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240810-topic-sam-v2-1-8a8eb368a4f0@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The ARM64 ACPI NUMA code can be moved out of arm64 arch code
-as it just related to ACPI NUMA table parsing, mappings for
-ACPI numa node and cpu, so move the ACPI NUMA code to
-drivers/acpi/arm64/.
+On 10/08/2024 03:28, Konrad Dybcio wrote:
+> From: Konrad Dybcio <quic_kdybcio@quicinc.com>
+> 
+> There exist some embedded controllers (like Microsoft SAM found on
+> Surface devices or Apple Oscar found on old iPhones) that connect to
+> the host device via serial.
+> 
+> Allow that class of devices to exist under serial interface controller
+> nodes.
+> 
+> Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
 
-Since arm64 selects ACPI_NUMA by default if ACPI=y, just move the
-function definitions under CONFIG_ARM64 in linux/acpi.h, as the
-caller of acpi_map_cpus_to_nodes() is only with ACPI selected, so
-no inline function is needed, this will solve the conflict with
-riscv implementation as well.
 
-Signed-off-by: Hanjun Guo <guohanjun@huawei.com>
----
- arch/arm64/include/asm/acpi.h                         | 6 ------
- arch/arm64/kernel/Makefile                            | 1 -
- drivers/acpi/arm64/Makefile                           | 1 +
- {arch/arm64/kernel => drivers/acpi/arm64}/acpi_numa.c | 0
- include/linux/acpi.h                                  | 1 +
- 5 files changed, 2 insertions(+), 7 deletions(-)
- rename {arch/arm64/kernel => drivers/acpi/arm64}/acpi_numa.c (100%)
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-diff --git a/arch/arm64/include/asm/acpi.h b/arch/arm64/include/asm/acpi.h
-index 40a501e1f26b..572355783971 100644
---- a/arch/arm64/include/asm/acpi.h
-+++ b/arch/arm64/include/asm/acpi.h
-@@ -174,12 +174,6 @@ static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
- }
- #endif /* CONFIG_ACPI_APEI */
- 
--#ifdef CONFIG_ACPI_NUMA
--void acpi_map_cpus_to_nodes(void);
--#else
--static inline void acpi_map_cpus_to_nodes(void) { }
--#endif /* CONFIG_ACPI_NUMA */
--
- #define ACPI_TABLE_UPGRADE_MAX_PHYS MEMBLOCK_ALLOC_ACCESSIBLE
- 
- #endif /*_ASM_ACPI_H*/
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index 2b112f3b7510..c7d09c6348a4 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -52,7 +52,6 @@ obj-$(CONFIG_EFI)			+= efi.o efi-rt-wrapper.o
- obj-$(CONFIG_PCI)			+= pci.o
- obj-$(CONFIG_ARMV8_DEPRECATED)		+= armv8_deprecated.o
- obj-$(CONFIG_ACPI)			+= acpi.o
--obj-$(CONFIG_ACPI_NUMA)			+= acpi_numa.o
- obj-$(CONFIG_ARM64_ACPI_PARKING_PROTOCOL)	+= acpi_parking_protocol.o
- obj-$(CONFIG_PARAVIRT)			+= paravirt.o
- obj-$(CONFIG_RANDOMIZE_BASE)		+= kaslr.o
-diff --git a/drivers/acpi/arm64/Makefile b/drivers/acpi/arm64/Makefile
-index 05ecde9eaabe..9aeed2e4ebde 100644
---- a/drivers/acpi/arm64/Makefile
-+++ b/drivers/acpi/arm64/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_ACPI_APMT) 	+= apmt.o
- obj-$(CONFIG_ACPI_FFH)		+= ffh.o
- obj-$(CONFIG_ACPI_GTDT) 	+= gtdt.o
- obj-$(CONFIG_ACPI_IORT) 	+= iort.o
-+obj-$(CONFIG_ACPI_NUMA)		+= acpi_numa.o
- obj-$(CONFIG_ACPI_PROCESSOR_IDLE) += cpuidle.o
- obj-$(CONFIG_ARM_AMBA)		+= amba.o
- obj-y				+= dma.o init.o
-diff --git a/arch/arm64/kernel/acpi_numa.c b/drivers/acpi/arm64/acpi_numa.c
-similarity index 100%
-rename from arch/arm64/kernel/acpi_numa.c
-rename to drivers/acpi/arm64/acpi_numa.c
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 0687a442fec7..09e0c2ad8c43 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -253,6 +253,7 @@ static inline void acpi_arch_dma_setup(struct device *dev) { }
- #endif
- 
- #ifdef CONFIG_ARM64
-+void acpi_map_cpus_to_nodes(void);
- void acpi_numa_gicc_affinity_init(struct acpi_srat_gicc_affinity *pa);
- #else
- static inline void
--- 
-2.25.1
+Best regards,
+Krzysztof
 
 
