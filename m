@@ -1,181 +1,260 @@
-Return-Path: <linux-acpi+bounces-7504-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7505-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD45594E1A5
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 16:28:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D14094E441
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 02:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7265DB20DF7
-	for <lists+linux-acpi@lfdr.de>; Sun, 11 Aug 2024 14:28:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6731F21BC5
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 00:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07F114882D;
-	Sun, 11 Aug 2024 14:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8889546B8;
+	Mon, 12 Aug 2024 00:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LpYJemsQ"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="dNeTuGyK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C56511CAB;
-	Sun, 11 Aug 2024 14:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0904A1D
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Aug 2024 00:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723386520; cv=none; b=P4CTYw14Fp6kC8uu+bbrTerulDAPIsFx32TKV0oRoNcp7VOslk26OQNg/l5bYobpMB+u1mfH+9BZHPISsZohKCBFuKkAchdy0YqWGVSG5le9lh7hyu+uD5pWEQ+yPKROLFi6/qI6DV90f33ZhQn3x+PQgzqn2L3lGGtzvjhIIp8=
+	t=1723424384; cv=none; b=koZ1PD8g+f1ZkbiEe/wCtpH4sRL4TOcUxLxGzBeIRnj6pRocjUpdsxnaCelJwCc8UEG7x46UP40W8iixmUvDcZFchZ2SGV24lBlL31mQt+UGzX1dECD1HyLEDtPFC2X9kp5ZVI4wZOFDQSdtGPB0A0R9oIMoKi7Yr+eIYNOl9WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723386520; c=relaxed/simple;
-	bh=6HrA4soHlOgUdKJ4+WhSNv/k/WNmpMWWLBiIQhn2hko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=omEwVBSySGhLy44XLjuoWcCQSAzMqPexseBmUx1Dubxnsfg/ZnozzFLrIyWFAcz0DnM8b+N8/+c5RrdnJJlTB1kfamr+cM+tDTQ6VQkjP2xGAGHMVNXNhbPWRubu9X19XkDUlsgatD+rSkciFmNmYaGx032hqaZLpngyfokGcb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LpYJemsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67220C32786;
-	Sun, 11 Aug 2024 14:28:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723386520;
-	bh=6HrA4soHlOgUdKJ4+WhSNv/k/WNmpMWWLBiIQhn2hko=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LpYJemsQRHdGP/rekSYvazikIBMTjecjZuL7Ty1bkvLb7Abt3YwT0OlT7nT7bV5ea
-	 U1nK6bzv5usb+bTLlhYOXICkg5it9EMHX25JIpIqajLZ43YTinZL8KBEunZuhOUKhE
-	 nXcNvn9JMwvb6gMkMowiN+WTz9emIqQxn8uD1esUKQ8oonRPHemRFUzbiZeBVbF8kK
-	 zu3LJhwectEU8nIMvYMmxIIgLjvfAxW2G8/eGetXwJqxREffY2WevdVVcf68x5PoFl
-	 /cb4s+iOiMDfi0LEJM32ImL7u2gueBrVksH8+mg2gwqC+muSb6Dpb7huuEufcWay+j
-	 vve2OyuXnU+6A==
-Message-ID: <1a6ebc27-95ca-4f56-9971-b2a8d03f270a@kernel.org>
-Date: Sun, 11 Aug 2024 16:28:33 +0200
+	s=arc-20240116; t=1723424384; c=relaxed/simple;
+	bh=JGKUKC6ddll/HQbcX29Sm7QYBwZDAAanOpcgaEl4Qts=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fhJloONCCtt0kWaPDANCwymcmgV9Gqj4DRt022+hQxXEn1Ean8J0Oe5gIbVUMl6jbjXBrcmXju2Oim88O3ZlfQtYSHUTmtxm7ocRNaYO8QT4/T2xWf9FOsIdXtPswBmEwknyor9L0a1ZHqdgNVKJX2NdHSbXevzNkeuGYgWHcC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=dNeTuGyK; arc=none smtp.client-ip=209.85.210.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
+Received: by mail-ot1-f65.google.com with SMTP id 46e09a7af769-709428a9469so2520369a34.3
+        for <linux-acpi@vger.kernel.org>; Sun, 11 Aug 2024 17:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ventanamicro.com; s=google; t=1723424382; x=1724029182; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u1t+DOBtWVw6p1QzV6tpA79/Z/soEYYlKfO1cj75JM4=;
+        b=dNeTuGyK5kX14qG9KNXzzrtPy7+fevMHTlV487CwixLUx/6B+DWOBCyn9qQc8YnVRp
+         BaKUZvcRQmIvwxGDGNPJhzgchnVhufKIKSzgs6ft5FmHJfPhcQ+FA83snh53ZTZawyFN
+         uIwyrws8GfhcEvfM0/rRQA8VwVrak/E4C2uWTnPlgZ3jBAEV6XRf035t5NslY56w6lTC
+         kiLrrA38K4UIBjmqdeB3QLLOApZKnDzqqJyPzfzh+VPoVYKgThcGx/FoPOkq0bqxeKPH
+         xtixTKR1iR5zx4EMA7kTZDFavA2fmY4YJzyV1me26ikoypIp5yD6MBbAUqgAmeCYDt4s
+         msKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723424382; x=1724029182;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u1t+DOBtWVw6p1QzV6tpA79/Z/soEYYlKfO1cj75JM4=;
+        b=WW+gDvgWxVjkjOvzDKqIdBZ9Uvgd0c9CdS2s1MLcJa00ShpK8u0YU1F0l01Q/mwS3f
+         3JQDw1A0isx83CD7PlVtwKTIZiDVp5quoPgSUDfrFgyTc7fXBP/uNlqdzzHcz/OBt/Hy
+         +/MJ0s02xlqmHwUHAB8OmloX+6yOajaK2C324+alcv2MjiQwKHacC/jW+8HENgXUe3Za
+         dpWX/GlenNRE6hWD0sXDwkzHR9/IOf1Cn03P8pcHdmwJM6a0dkdOlD6O2TP39JQlJyNF
+         lfJDQgLFqwElQUc/ol6vpSJyIYyZx3Gy4VFbTUVnvnh/KDEK8oSZMkSlhwqwnog6w677
+         L3sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyz+fqjENwajPxvaikGZGazUYfKJTc/+U/ETqWvMvgcKzPLZCUDFHqoNGdV24QaioiBfaioLybWAXE@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZyKc/mLs4hctMfUkH/BGRhrNOQzp/0jdPNh1y8OKYigUZpTrd
+	PdgpNN8PjhPg2SlGL0sPfeePU9L4999omrMkqdavsJq11QZUjeAE3wqGqGNzRB8=
+X-Google-Smtp-Source: AGHT+IFvFD40j/75g0OMKTR99Jntdlb7KnjOCvOc/WzAwYbyCYwYB5yIZakN6YXoCdPddNyZ+Lnt1Q==
+X-Received: by 2002:a05:6830:6f04:b0:709:488f:b632 with SMTP id 46e09a7af769-70b74862b47mr12731861a34.25.1723424381262;
+        Sun, 11 Aug 2024 17:59:41 -0700 (PDT)
+Received: from sunil-pc.tail07344b.ts.net ([106.51.198.16])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c3dbe8cbdcsm3074062a12.61.2024.08.11.17.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Aug 2024 17:59:40 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Cc: Will Deacon <will@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Anup Patel <anup@brainfault.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Atish Kumar Patra <atishp@rivosinc.com>,
+	Drew Fustini <dfustini@tenstorrent.com>,
+	Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH v8 00/17] RISC-V: ACPI: Add external interrupt controller support
+Date: Mon, 12 Aug 2024 06:29:12 +0530
+Message-ID: <20240812005929.113499-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] dt-bindings: platform: Add Surface System
- Aggregator Module
-To: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Maximilian Luz <luzmaximilian@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>,
- linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <quic_kdybcio@quicinc.com>
-References: <20240810-topic-sam-v2-0-8a8eb368a4f0@quicinc.com>
- <20240810-topic-sam-v2-2-8a8eb368a4f0@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240810-topic-sam-v2-2-8a8eb368a4f0@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/08/2024 03:28, Konrad Dybcio wrote:
-> From: Konrad Dybcio <quic_kdybcio@quicinc.com>
-> 
-> Add bindings for the Surface System Aggregator Module (SAM/SSAM), the
-> Microsoft Surface-standard Embedded Controller, used on both x86- and
-> Qualcomm-based devices.
-> 
-> It provides a plethora of functions, depending on what's wired up to
-> it. That includes but is not limited to: fan control, keyboard/touchpad
-> support, thermal sensors, power control, special buttons, tablet mode.
-> 
-> Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
-> ---
->  .../bindings/platform/microsoft,surface-sam.yaml   | 50 ++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml b/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml
-> new file mode 100644
-> index 000000000000..f613738aa31d
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/platform/microsoft,surface-sam.yaml
-> @@ -0,0 +1,50 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/platform/microsoft,surface-sam.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Surface System Aggregator Module (SAM, SSAM)
-> +
-> +maintainers:
-> +  - Konrad Dybcio <konradybcio@kernel.org>
-> +
-> +description: |
+This series adds support for the below ECR approved by ASWG.
+1) MADT - https://drive.google.com/file/d/1oMGPyOD58JaPgMl1pKasT-VKsIKia7zR/view?usp=sharing
 
-No need for |
+The series primarily enables irqchip drivers for RISC-V ACPI based
+platforms.
 
-> +  Surface devices use a standardized embedded controller to let the
-> +  operating system interface with various hardware functions. The
-> +  specific functionalities are modeled as subdevices and matched on
-> +  five levels: domain, category, target, instance and function.
-> +
-> +properties:
-> +  compatible:
-> +    const: microsoft,surface-sam
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  current-speed:
-> +    description: The baudrate in bits per second of the device as it comes
-> +      online, current active speed.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+The series can be broadly categorized like below. 
 
-This should be just "current-speed: true", because the type will be
-brought by serial schema. We should however have some schema with
-peripheral properties for serial devices. I'll come with something.
+1) PCI ACPI related functions are migrated from arm64 to common file so
+that we don't need to duplicate them for RISC-V.
 
+2) Added support for re-ordering the probe of interrupt controllers when
+IRQCHIP_ACPI_DECLARE is used.
 
+3) To ensure probe order between interrupt controllers and devices,
+implicit dependency is created similar to when _DEP is present.
 
-Best regards,
-Krzysztof
+4) ACPI support added in RISC-V interrupt controller drivers.
+
+Changes since v7:
+	1) Updated commit messages as per feedback from Bjorn on patches 2, 3 and 8.
+	2) Addressed Anup Patel's comments.
+	3) Added Tested-by tag from Björn Töpe which I missed to add in previous version.
+	4) Rebased to 6.11-rc3 and updated the RB tags from Anup.
+
+Changes since v6:
+	1) Update to commit message/code comments as per feedback from Bjorn.
+	2) Rebased to 6.11-rc1.
+
+Changes since v5:
+	1) Addressed feedback from Thomas.
+	2) Created separate patch for refactoring DT code in IMSIC
+	3) Separated a fix in riscv-intc irqchip driver and sent
+	   separately. This series depends on that patch [1].
+	4) Dropped serial driver patch since it depends on Andy's
+	   refactoring series [2]. RISC-V patches will be sent
+	   separately later once Andy series get accepted.
+	5) Rebased to v6.10-rc1 which has AIA DT patches.
+	6) Updated tags.
+
+Changes since RFC v4:
+	1) Removed RFC tag as the RFCv4 design looked reasonable.
+	2) Dropped PCI patch needed to avoid warning when there is no MSI
+	   controller. This will be sent later separately after the
+	   current series.
+	3) Dropped PNP handling of _DEP since there is new ACPI ID for
+	   generic 16550 UART. Added the serial driver patch instead.
+	4) Rebased to latest linux-next.
+	5) Reordered/squashed patches in the series
+
+Changes since RFC v3:
+	1) Moved to _DEP method instead of fw_devlink.
+	2) PLIC/APLIC driver probe using namespace devices.
+	3) Handling PNP devices as part of clearing dependency.
+	4) Rebased to latest linux-next to get AIA DT drivers.
+
+Changes since RFC v2:
+	1) Introduced fw_devlink for ACPI nodes for IRQ dependency.
+	2) Dropped patches in drivers which are not required due to
+	   fw_devlink support.
+	3) Dropped pci_set_msi() patch and added a patch in
+	   pci_create_root_bus().
+	4) Updated pnp_irq() patch so that none of the actual PNP
+	   drivers need to change.
+
+Changes since RFC v1:
+	1) Abandoned swnode approach as per Marc's feedback.
+	2) To cope up with AIA series changes which changed irqchip driver
+	   probe from core_initcall() to platform_driver, added patches
+	   to support deferred probing.
+	3) Rebased on top of Anup's AIA v11 and added tags.
+
+To test the series,
+
+1) qemu should be built using the latest master branch.
+
+2) EDK2 should be built using the instructions at:
+https://github.com/tianocore/edk2/blob/master/OvmfPkg/RiscVVirt/README.md
+
+NOTE: One should be able to use u-boot as well as per instructions from Björn.
+https://lore.kernel.org/lkml/87a5lqsrvh.fsf@all.your.base.are.belong.to.us/
+
+3) Build Linux using this series (+ serial driver patches which are already in linux-next).
+aia_b2_v8 branch in https://github.com/vlsunil/linux.git all these patches.
+
+Run Qemu:
+qemu-system-riscv64 \
+ -M virt,pflash0=pflash0,pflash1=pflash1,aia=aplic-imsic \
+ -m 2G -smp 8 \
+ -serial mon:stdio \
+ -device virtio-gpu-pci -full-screen \
+ -device qemu-xhci \
+ -device usb-kbd \
+ -blockdev node-name=pflash0,driver=file,read-only=on,filename=RISCV_VIRT_CODE.fd \
+ -blockdev node-name=pflash1,driver=file,filename=RISCV_VIRT_VARS.fd \
+ -netdev user,id=net0 -device virtio-net-pci,netdev=net0 \
+ -kernel arch/riscv/boot/Image \
+ -initrd rootfs.cpio \
+ -append "root=/dev/ram ro console=ttyS0 rootwait earlycon=sbi"
+
+To boot with APLIC only, use aia=aplic.
+To boot with PLIC, remove aia= option.
+
+Sunil V L (17):
+  arm64: PCI: Migrate ACPI related functions to pci-acpi.c
+  ACPI: scan: Add a weak arch_sort_irqchip_probe() to order the IRQCHIP
+    probe
+  ACPI: bus: Add acpi_riscv_init() function
+  ACPI: scan: Refactor dependency creation
+  ACPI: scan: Add RISC-V interrupt controllers to honor list
+  ACPI: scan: Define weak function to populate dependencies
+  ACPI: bus: Add RINTC IRQ model for RISC-V
+  ACPI: pci_link: Clear the dependencies after probe
+  ACPI: RISC-V: Implement PCI related functionality
+  ACPI: RISC-V: Implement function to reorder irqchip probe entries
+  ACPI: RISC-V: Initialize GSI mapping structures
+  ACPI: RISC-V: Implement function to add implicit dependencies
+  irqchip/riscv-intc: Add ACPI support for AIA
+  irqchip/riscv-imsic-state: Create separate function for DT
+  irqchip/riscv-imsic: Add ACPI support
+  irqchip/riscv-aplic: Add ACPI support
+  irqchip/sifive-plic: Add ACPI support
+
+ arch/arm64/kernel/pci.c                    | 191 ------------
+ arch/riscv/Kconfig                         |   2 +
+ arch/riscv/include/asm/irq.h               |  55 ++++
+ arch/riscv/kernel/acpi.c                   |  33 +-
+ drivers/acpi/bus.c                         |   4 +
+ drivers/acpi/pci_link.c                    |   2 +
+ drivers/acpi/riscv/Makefile                |   2 +-
+ drivers/acpi/riscv/init.c                  |  13 +
+ drivers/acpi/riscv/init.h                  |   4 +
+ drivers/acpi/riscv/irq.c                   | 335 +++++++++++++++++++++
+ drivers/acpi/scan.c                        | 103 ++++---
+ drivers/irqchip/irq-riscv-aplic-direct.c   |  22 +-
+ drivers/irqchip/irq-riscv-aplic-main.c     |  69 +++--
+ drivers/irqchip/irq-riscv-aplic-main.h     |   1 +
+ drivers/irqchip/irq-riscv-aplic-msi.c      |   9 +-
+ drivers/irqchip/irq-riscv-imsic-early.c    |  64 +++-
+ drivers/irqchip/irq-riscv-imsic-platform.c |  32 +-
+ drivers/irqchip/irq-riscv-imsic-state.c    | 160 +++++-----
+ drivers/irqchip/irq-riscv-imsic-state.h    |   2 +-
+ drivers/irqchip/irq-riscv-intc.c           |  90 ++++++
+ drivers/irqchip/irq-sifive-plic.c          |  95 ++++--
+ drivers/pci/pci-acpi.c                     | 182 +++++++++++
+ include/acpi/acpi_bus.h                    |   2 +
+ include/linux/acpi.h                       |   9 +
+ include/linux/irqchip/riscv-imsic.h        |   9 +
+ 25 files changed, 1113 insertions(+), 377 deletions(-)
+ create mode 100644 drivers/acpi/riscv/init.c
+ create mode 100644 drivers/acpi/riscv/init.h
+ create mode 100644 drivers/acpi/riscv/irq.c
+
+-- 
+2.43.0
 
 
