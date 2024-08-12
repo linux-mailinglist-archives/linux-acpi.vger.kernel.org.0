@@ -1,72 +1,72 @@
-Return-Path: <linux-acpi+bounces-7521-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7522-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B385694E463
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 03:03:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CA494E465
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 03:03:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B75F280992
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 01:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDF461C21123
+	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 01:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13DC762F7;
-	Mon, 12 Aug 2024 01:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE291292CE;
+	Mon, 12 Aug 2024 01:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="geb3wDs9"
+	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="ICNYrSl2"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9B374040
-	for <linux-acpi@vger.kernel.org>; Mon, 12 Aug 2024 01:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6607B7D07D
+	for <linux-acpi@vger.kernel.org>; Mon, 12 Aug 2024 01:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723424484; cv=none; b=JpXmmn4or0vQzw7H6LZP0S55Epm2EAqO7qWQLU1zpQ7optxAkLUwyJxsgTDUrcZe0QEClCwBAAy8ZIK0cu9MyMLh5FpUhUuGxGkSuKK4Q1icQQzYpl6syyDKpzmf/oKgwWBn4hRD5/122OmB6e4cpIl73gdXOhdU+lURQbQQBDc=
+	t=1723424491; cv=none; b=keBNstmwCdWyVazg/f/luoBKBoFhqYmapCsgXYZO4V4fN9LcNtcvEXrwhyRttQHwm5ZZCGZmgZyWZmGFV/tePQpp9X9vMgsoseL6Vlx49/5fNIWwKfpgIEGZydtp8W6jKOnjqmGX8kPZmryjrPjCxG1ayqrPp2v7ihk4Bf09WTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723424484; c=relaxed/simple;
-	bh=W+5wPYRyiEMTqdJlSnn47qe/NPZNGjm56TM6xxTbs9Q=;
+	s=arc-20240116; t=1723424491; c=relaxed/simple;
+	bh=jjQu2jdS/HNK9a4N33zsmxheaJY85iZag0mOYvZYXqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATtkgZaL4id8wHRpBNL1wKgsy8/Si01re6eVJcFEWoekT0YdxP1TVnSctdZOlR+VQEKgAW4wi1tdS7GUJIcm3ieHhxNGhUqkz6/qgGci2mCtxAeiQLIewu1FzQmyPQiklSMERSUeYeqv/UUZiv8YgpLoJLEFSL6W62nuOdD6SII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=geb3wDs9; arc=none smtp.client-ip=209.85.160.50
+	 MIME-Version:Content-Type; b=SHIAC1S4wPhHFD44ZsaWFbCkDmPMX+wLnp6uO5hf4ovEIkZEPRplPwzWb09QZLPs9qzLTuX2cwBkqP6Wrl3TwS0MV6jLHH73XqMdiidtkb6fWcQZ5PASwKlTuZjJ1lvl22FZYyyYBPTyyR/wc8pSzDYpbOuDy/kNGerwyQjAk4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=ICNYrSl2; arc=none smtp.client-ip=209.85.166.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-260f1664fdfso2197553fac.1
-        for <linux-acpi@vger.kernel.org>; Sun, 11 Aug 2024 18:01:22 -0700 (PDT)
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-81fe38c7255so221685239f.1
+        for <linux-acpi@vger.kernel.org>; Sun, 11 Aug 2024 18:01:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1723424482; x=1724029282; darn=vger.kernel.org;
+        d=ventanamicro.com; s=google; t=1723424488; x=1724029288; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TMzQ3ciSNyAJUT1sxzxGDbpLjSEaz3yLiVcKcHEYKY4=;
-        b=geb3wDs9/6yr3ZP7TovtZqQk7//JL+Lm49ngGCtbiTL0/+LxebVExKrRfxUgHPufC1
-         hQ/0QDP5BYjs0i0iyGhle8QnC8iNMMzHvSmf0R771oedmyEKMgIwmCaYmKuOrsRY0AE4
-         iNrGPt6AX+9b/8AS8+oLtvz+lkT1Yjk6AC06LMOr4oe0aEu+cwJGcuwRiKa71Uha0GDl
-         THRE2ZiDsGZ0AQuoZvPQnb0c2iGHws8bzmlFAkw3HbC+7cXjloF5EoEnhEI8a0rRh+YG
-         6WxTaM8MAXH8byK73hTgAofdB7k5pUE716gVqTiTG0CpIGmOEOEhvhUquPVm/aq5uN2P
-         fI2g==
+        bh=cNLSK7wTLWm4CwE5KqZAhFa5+nxzSyIB3H2xsiVowu8=;
+        b=ICNYrSl2jshsEWRsq2Glql3cDgQiaQh4SN0IRfKVs7qjozVD8tsvFyD3RZZenWU5E0
+         r7AChhgyKll0HFWNB1hxU1jDAAWSgzCeGqqS6DwOF6eZ1k/Z7+jtIlpwm87ipozmpzmk
+         FcHBXGgp+YvJtxdWvoJEYFbv41+GVH3U3uqN/Wnh+dtZgu9zcZktgtAgHNwZqrPd1EP/
+         3fVrZub8jwkuxep3q2b4Tr5xBxWJ2kEyUh2TUgwpFEdPRRkpiDjL/+Cg0GrJGBgOTJzi
+         uGZMttdhxfdwEjLl5W6ZY+dSrQBoUzeo0jcLTDUqK4555WhyU5PiO1qlpvtwd9W37pAi
+         O3JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723424482; x=1724029282;
+        d=1e100.net; s=20230601; t=1723424488; x=1724029288;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TMzQ3ciSNyAJUT1sxzxGDbpLjSEaz3yLiVcKcHEYKY4=;
-        b=RFU+v9hzz7Lez2PmatGyXXfN/v2j3S7+KlhrI1gJkvztk1siwrjNSi1/iUJ3lby9+m
-         AT8Idj3DGfzZb/KTRSHpPiGVeQpXU4qSgomcUnbe94FKc2YrPYSKCs8RRKLr7pY4nUJO
-         5pyRfUhJXcG17twJuKVP9l63e7tgf6b5XPu/H5EQ3SDLxwtukqoPf8+Wyy+5eCjJaOlf
-         x/KPZT2jJ/57NtbHljxP6e8jGVRw1bZFO3hph9QJDmn1kkM6Uq/4i34OUpIjUzp4ZjBO
-         Tl/UCEftVPnak5Qvggmp3P2N1+X9g26A4IW+JsH4DLrLripyLDv2iTDt3x8LnqK6TJjC
-         OsYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdXBrDy4js367VMJ//oxsY1vh5WuxXzk9TtYaPyLGfAX0nyd8AZJJprfmXrKcp/Ua4g3qLmLJomeoVMIqG4M5IQ2UGGVKVd2TgXg==
-X-Gm-Message-State: AOJu0Yxx2BCkP/1sdbzzDkz3pzoFrze4P0fvrdLXKOp9SkTXcUz2AnXR
-	p3FpR1bYAQTNA1tuD3ek8/gMS5ckJHdp4I7JV7Hf1NY8YhYNop3RNhapQmoz5zY=
-X-Google-Smtp-Source: AGHT+IHvjLsKNVgfioV52ZJQ6mkbTpTRo5xo8Ywht9O8CCjHZJ+ipOfWkzdibzywTZdRtlaqHgD09g==
-X-Received: by 2002:a05:6870:e38f:b0:261:2357:5a29 with SMTP id 586e51a60fabf-26c62f9f8admr6644942fac.46.1723424482033;
-        Sun, 11 Aug 2024 18:01:22 -0700 (PDT)
+        bh=cNLSK7wTLWm4CwE5KqZAhFa5+nxzSyIB3H2xsiVowu8=;
+        b=YcBngfBQaW3ZSODYGQlE5ykOIl7lfwPAEfwu6sUnBC3SqSDT++GGW25klcM2tQXosl
+         17LUa2ufPGkXtmEKN+5aSswr03sOf7oXV5Ddm2hTA6aV1hg/WTK9kylKoaCt4jWfgrH1
+         ZRvmAPXb7KmJEafslp0FEUxwIMcfoC+qqhfxMDLCIdm2m6318o8bvlYHT+Oy27Xeisi1
+         u044N0bkf14Ej1H60RqROjs3n8omEDXrED4BLzmUoJF3yfkVK0hgPZVTwgjDFEHpwNY1
+         eFnC41RTqFhymctHusfyDm2y8nGrTTOzGtyH5UHQOPqlH0sgjmz6cPlFiYe3ijanspM8
+         V7cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcBic9P5SAVXmP+S5hBinqpDm60eGL9KTCT8xfhjwOLRVY7kNdH+PrkyotWStEWMd6phMPcikkoFmDO8cPWvZ7nl0R2qF8VIGy6A==
+X-Gm-Message-State: AOJu0YxoYPyvNgvZAbuAVVysP5wDnR9AhJpGJRGEprxFZdegI7ZjeWJb
+	quYjLzWWrIW9lcHLN1+5NRGOm5oNkOk5ihIpkl3EvMDRQ/7miUJ80pLeCKtnmT4=
+X-Google-Smtp-Source: AGHT+IF383Ow04ACkTQv23O0jExDAeidajffTjgaukCfUfErQcvrXz/vXlnALl3G0O0SzK4yssEykg==
+X-Received: by 2002:a05:6602:15d3:b0:805:3d47:19cf with SMTP id ca18e2360f4ac-8225eedb1e2mr1121775039f.15.1723424488343;
+        Sun, 11 Aug 2024 18:01:28 -0700 (PDT)
 Received: from sunil-pc.tail07344b.ts.net ([106.51.198.16])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c3dbe8cbdcsm3074062a12.61.2024.08.11.18.01.16
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c3dbe8cbdcsm3074062a12.61.2024.08.11.18.01.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Aug 2024 18:01:21 -0700 (PDT)
+        Sun, 11 Aug 2024 18:01:27 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
@@ -91,9 +91,9 @@ Cc: Will Deacon <will@kernel.org>,
 	Drew Fustini <dfustini@tenstorrent.com>,
 	Sunil V L <sunilvl@ventanamicro.com>,
 	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>
-Subject: [PATCH v8 16/17] irqchip/riscv-aplic: Add ACPI support
-Date: Mon, 12 Aug 2024 06:29:28 +0530
-Message-ID: <20240812005929.113499-17-sunilvl@ventanamicro.com>
+Subject: [PATCH v8 17/17] irqchip/sifive-plic: Add ACPI support
+Date: Mon, 12 Aug 2024 06:29:29 +0530
+Message-ID: <20240812005929.113499-18-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240812005929.113499-1-sunilvl@ventanamicro.com>
 References: <20240812005929.113499-1-sunilvl@ventanamicro.com>
@@ -106,41 +106,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=cp1252
 Content-Transfer-Encoding: 8bit
 
-Add ACPI support in APLIC drivers. Use the mapping created early during
-boot to get the details about the APLIC.
+Add ACPI support in PLIC driver. Use the mapping created early during
+boot to get details about the PLIC.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Co-developed-by: Haibo Xu <haibo1.xu@intel.com>
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
 Reviewed-by: Anup Patel <anup@brainfault.org>
 Tested-by: Björn Töpel <bjorn@rivosinc.com>
 ---
- drivers/irqchip/irq-riscv-aplic-direct.c | 22 +++++---
- drivers/irqchip/irq-riscv-aplic-main.c   | 69 ++++++++++++++++--------
- drivers/irqchip/irq-riscv-aplic-main.h   |  1 +
- drivers/irqchip/irq-riscv-aplic-msi.c    |  9 +++-
- 4 files changed, 69 insertions(+), 32 deletions(-)
+ drivers/irqchip/irq-sifive-plic.c | 95 ++++++++++++++++++++++++-------
+ 1 file changed, 74 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-aplic-direct.c b/drivers/irqchip/irq-riscv-aplic-direct.c
-index 4a3ffe856d6c..7cd6b646774b 100644
---- a/drivers/irqchip/irq-riscv-aplic-direct.c
-+++ b/drivers/irqchip/irq-riscv-aplic-direct.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2022 Ventana Micro Systems Inc.
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+index 9e22f7e378f5..207cfe18ec7f 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -3,6 +3,7 @@
+  * Copyright (C) 2017 SiFive
+  * Copyright (C) 2018 Christoph Hellwig
   */
- 
 +#include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
  #include <linux/cpu.h>
-@@ -189,17 +190,22 @@ static int aplic_direct_starting_cpu(unsigned int cpu)
- }
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+@@ -70,6 +71,8 @@ struct plic_priv {
+ 	unsigned long plic_quirks;
+ 	unsigned int nr_irqs;
+ 	unsigned long *prio_save;
++	u32 gsi_base;
++	int acpi_plic_id;
+ };
  
- static int aplic_direct_parse_parent_hwirq(struct device *dev, u32 index,
--					   u32 *parent_hwirq, unsigned long *parent_hartid)
-+					   u32 *parent_hwirq, unsigned long *parent_hartid,
-+					   struct aplic_priv *priv)
+ struct plic_handler {
+@@ -324,6 +327,10 @@ static int plic_irq_domain_translate(struct irq_domain *d,
  {
- 	struct of_phandle_args parent;
-+	unsigned long hartid;
+ 	struct plic_priv *priv = d->host_data;
+ 
++	/* For DT, gsi_base is always zero. */
++	if (fwspec->param[0] >= priv->gsi_base)
++		fwspec->param[0] = fwspec->param[0] - priv->gsi_base;
++
+ 	if (test_bit(PLIC_QUIRK_EDGE_INTERRUPT, &priv->plic_quirks))
+ 		return irq_domain_translate_twocell(d, fwspec, hwirq, type);
+ 
+@@ -424,18 +431,37 @@ static const struct of_device_id plic_match[] = {
+ 	{}
+ };
+ 
++#ifdef CONFIG_ACPI
++
++static const struct acpi_device_id plic_acpi_match[] = {
++	{ "RSCV0001", 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(acpi, plic_acpi_match);
++
++#endif
+ static int plic_parse_nr_irqs_and_contexts(struct platform_device *pdev,
+-					   u32 *nr_irqs, u32 *nr_contexts)
++					   u32 *nr_irqs, u32 *nr_contexts,
++					   u32 *gsi_base, u32 *id)
+ {
+ 	struct device *dev = &pdev->dev;
  	int rc;
  
 -	/*
@@ -150,187 +178,164 @@ index 4a3ffe856d6c..7cd6b646774b 100644
 -	if (!is_of_node(dev->fwnode))
 -		return -EINVAL;
 +	if (!is_of_node(dev->fwnode)) {
-+		hartid = acpi_rintc_ext_parent_to_hartid(priv->acpi_aplic_id, index);
-+		if (hartid == INVALID_HARTID)
-+			return -ENODEV;
++		rc = riscv_acpi_get_gsi_info(dev->fwnode, gsi_base, id, nr_irqs, NULL);
++		if (rc) {
++			dev_err(dev, "failed to find GSI mapping\n");
++			return rc;
++		}
 +
-+		*parent_hartid = hartid;
-+		*parent_hwirq = RV_IRQ_EXT;
++		*nr_contexts = acpi_rintc_get_plic_nr_contexts(*id);
++		if (WARN_ON(!*nr_contexts)) {
++			dev_err(dev, "no PLIC context available\n");
++			return -EINVAL;
++		}
++
 +		return 0;
 +	}
  
- 	rc = of_irq_parse_one(to_of_node(dev->fwnode), index, &parent);
- 	if (rc)
-@@ -237,7 +243,7 @@ int aplic_direct_setup(struct device *dev, void __iomem *regs)
- 	/* Setup per-CPU IDC and target CPU mask */
- 	current_cpu = get_cpu();
- 	for (i = 0; i < priv->nr_idcs; i++) {
--		rc = aplic_direct_parse_parent_hwirq(dev, i, &hwirq, &hartid);
-+		rc = aplic_direct_parse_parent_hwirq(dev, i, &hwirq, &hartid, priv);
- 		if (rc) {
- 			dev_warn(dev, "parent irq for IDC%d not found\n", i);
- 			continue;
-diff --git a/drivers/irqchip/irq-riscv-aplic-main.c b/drivers/irqchip/irq-riscv-aplic-main.c
-index 28dd175b5764..cbe97886364c 100644
---- a/drivers/irqchip/irq-riscv-aplic-main.c
-+++ b/drivers/irqchip/irq-riscv-aplic-main.c
-@@ -4,8 +4,10 @@
-  * Copyright (C) 2022 Ventana Micro Systems Inc.
-  */
+ 	rc = of_property_read_u32(to_of_node(dev->fwnode), "riscv,ndev", nr_irqs);
+ 	if (rc) {
+@@ -449,23 +475,29 @@ static int plic_parse_nr_irqs_and_contexts(struct platform_device *pdev,
+ 		return -EINVAL;
+ 	}
  
-+#include <linux/acpi.h>
- #include <linux/bitfield.h>
- #include <linux/irqchip/riscv-aplic.h>
-+#include <linux/irqchip/riscv-imsic.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_irq.h>
-@@ -125,39 +127,50 @@ static void aplic_init_hw_irqs(struct aplic_priv *priv)
- 	writel(0, priv->regs + APLIC_DOMAINCFG);
++	*gsi_base = 0;
++	*id = 0;
++
+ 	return 0;
  }
  
-+#ifdef CONFIG_ACPI
-+static const struct acpi_device_id aplic_acpi_match[] = {
-+	{ "RSCV0002", 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(acpi, aplic_acpi_match);
-+
-+#endif
-+
- int aplic_setup_priv(struct aplic_priv *priv, struct device *dev, void __iomem *regs)
+ static int plic_parse_context_parent(struct platform_device *pdev, u32 context,
+-				     u32 *parent_hwirq, int *parent_cpu)
++				     u32 *parent_hwirq, int *parent_cpu, u32 id)
  {
- 	struct device_node *np = to_of_node(dev->fwnode);
+ 	struct device *dev = &pdev->dev;
  	struct of_phandle_args parent;
+ 	unsigned long hartid;
  	int rc;
  
 -	/*
 -	 * Currently, only OF fwnode is supported so extend this
 -	 * function for ACPI support.
 -	 */
--	if (!np)
+-	if (!is_of_node(dev->fwnode))
 -		return -EINVAL;
--
- 	/* Save device pointer and register base */
- 	priv->dev = dev;
- 	priv->regs = regs;
++	if (!is_of_node(dev->fwnode)) {
++		hartid = acpi_rintc_ext_parent_to_hartid(id, context);
++		if (hartid == INVALID_HARTID)
++			return -EINVAL;
++
++		*parent_cpu = riscv_hartid_to_cpuid(hartid);
++		*parent_hwirq = RV_IRQ_EXT;
++		return 0;
++	}
  
--	/* Find out number of interrupt sources */
--	rc = of_property_read_u32(np, "riscv,num-sources", &priv->nr_irqs);
--	if (rc) {
--		dev_err(dev, "failed to get number of interrupt sources\n");
--		return rc;
--	}
-+	if (np) {
-+		/* Find out number of interrupt sources */
-+		rc = of_property_read_u32(np, "riscv,num-sources", &priv->nr_irqs);
-+		if (rc) {
-+			dev_err(dev, "failed to get number of interrupt sources\n");
-+			return rc;
-+		}
+ 	rc = of_irq_parse_one(to_of_node(dev->fwnode), context, &parent);
+ 	if (rc)
+@@ -489,6 +521,8 @@ static int plic_probe(struct platform_device *pdev)
+ 	u32 nr_irqs, parent_hwirq;
+ 	struct plic_priv *priv;
+ 	irq_hw_number_t hwirq;
++	int id, context_id;
++	u32 gsi_base;
  
--	/*
--	 * Find out number of IDCs based on parent interrupts
--	 *
--	 * If "msi-parent" property is present then we ignore the
--	 * APLIC IDCs which forces the APLIC driver to use MSI mode.
--	 */
--	if (!of_property_present(np, "msi-parent")) {
--		while (!of_irq_parse_one(np, priv->nr_idcs, &parent))
--			priv->nr_idcs++;
-+		/*
-+		 * Find out number of IDCs based on parent interrupts
-+		 *
-+		 * If "msi-parent" property is present then we ignore the
-+		 * APLIC IDCs which forces the APLIC driver to use MSI mode.
-+		 */
-+		if (!of_property_present(np, "msi-parent")) {
-+			while (!of_irq_parse_one(np, priv->nr_idcs, &parent))
-+				priv->nr_idcs++;
-+		}
-+	} else {
-+		rc = riscv_acpi_get_gsi_info(dev->fwnode, &priv->gsi_base, &priv->acpi_aplic_id,
-+					     &priv->nr_irqs, &priv->nr_idcs);
-+		if (rc) {
-+			dev_err(dev, "failed to find GSI mapping\n");
-+			return rc;
-+		}
+ 	if (is_of_node(dev->fwnode)) {
+ 		const struct of_device_id *id;
+@@ -498,7 +532,7 @@ static int plic_probe(struct platform_device *pdev)
+ 			plic_quirks = (unsigned long)id->data;
  	}
  
- 	/* Setup initial state APLIC interrupts */
-@@ -184,7 +197,11 @@ static int aplic_probe(struct platform_device *pdev)
- 	 * If msi-parent property is present then setup APLIC MSI
- 	 * mode otherwise setup APLIC direct mode.
- 	 */
--	msi_mode = of_property_present(to_of_node(dev->fwnode), "msi-parent");
-+	if (is_of_node(dev->fwnode))
-+		msi_mode = of_property_present(to_of_node(dev->fwnode), "msi-parent");
-+	else
-+		msi_mode = imsic_acpi_get_fwnode(NULL) ? 1 : 0;
+-	error = plic_parse_nr_irqs_and_contexts(pdev, &nr_irqs, &nr_contexts);
++	error = plic_parse_nr_irqs_and_contexts(pdev, &nr_irqs, &nr_contexts, &gsi_base, &id);
+ 	if (error)
+ 		return error;
+ 
+@@ -509,6 +543,8 @@ static int plic_probe(struct platform_device *pdev)
+ 	priv->dev = dev;
+ 	priv->plic_quirks = plic_quirks;
+ 	priv->nr_irqs = nr_irqs;
++	priv->gsi_base = gsi_base;
++	priv->acpi_plic_id = id;
+ 
+ 	priv->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (WARN_ON(!priv->regs))
+@@ -519,12 +555,23 @@ static int plic_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < nr_contexts; i++) {
+-		error = plic_parse_context_parent(pdev, i, &parent_hwirq, &cpu);
++		error = plic_parse_context_parent(pdev, i, &parent_hwirq, &cpu,
++						  priv->acpi_plic_id);
+ 		if (error) {
+ 			dev_warn(dev, "hwirq for context%d not found\n", i);
+ 			continue;
+ 		}
+ 
++		if (is_of_node(dev->fwnode)) {
++			context_id = i;
++		} else {
++			context_id = acpi_rintc_get_plic_context(priv->acpi_plic_id, i);
++			if (context_id == INVALID_CONTEXT) {
++				dev_warn(dev, "invalid context id for context%d\n", i);
++				continue;
++			}
++		}
 +
- 	if (msi_mode)
- 		rc = aplic_msi_setup(dev, regs);
- 	else
-@@ -192,6 +209,11 @@ static int aplic_probe(struct platform_device *pdev)
- 	if (rc)
- 		dev_err(dev, "failed to setup APLIC in %s mode\n", msi_mode ? "MSI" : "direct");
+ 		/*
+ 		 * Skip contexts other than external interrupts for our
+ 		 * privilege level.
+@@ -562,10 +609,10 @@ static int plic_probe(struct platform_device *pdev)
+ 		cpumask_set_cpu(cpu, &priv->lmask);
+ 		handler->present = true;
+ 		handler->hart_base = priv->regs + CONTEXT_BASE +
+-			i * CONTEXT_SIZE;
++			context_id * CONTEXT_SIZE;
+ 		raw_spin_lock_init(&handler->enable_lock);
+ 		handler->enable_base = priv->regs + CONTEXT_ENABLE_BASE +
+-			i * CONTEXT_ENABLE_SIZE;
++			context_id * CONTEXT_ENABLE_SIZE;
+ 		handler->priv = priv;
+ 
+ 		handler->enable_save = devm_kcalloc(dev, DIV_ROUND_UP(nr_irqs, 32),
+@@ -581,8 +628,8 @@ static int plic_probe(struct platform_device *pdev)
+ 		nr_handlers++;
+ 	}
+ 
+-	priv->irqdomain = irq_domain_add_linear(to_of_node(dev->fwnode), nr_irqs + 1,
+-						&plic_irqdomain_ops, priv);
++	priv->irqdomain = irq_domain_create_linear(dev->fwnode, nr_irqs + 1,
++						   &plic_irqdomain_ops, priv);
+ 	if (WARN_ON(!priv->irqdomain))
+ 		goto fail_cleanup_contexts;
+ 
+@@ -619,13 +666,18 @@ static int plic_probe(struct platform_device *pdev)
+ 		}
+ 	}
  
 +#ifdef CONFIG_ACPI
 +	if (!acpi_disabled)
 +		acpi_dev_clear_dependencies(ACPI_COMPANION(dev));
 +#endif
 +
- 	return rc;
- }
+ 	dev_info(dev, "mapped %d interrupts with %d handlers for %d contexts.\n",
+ 		 nr_irqs, nr_handlers, nr_contexts);
+ 	return 0;
  
-@@ -204,6 +226,7 @@ static struct platform_driver aplic_driver = {
+ fail_cleanup_contexts:
+ 	for (i = 0; i < nr_contexts; i++) {
+-		if (plic_parse_context_parent(pdev, i, &parent_hwirq, &cpu))
++		if (plic_parse_context_parent(pdev, i, &parent_hwirq, &cpu, priv->acpi_plic_id))
+ 			continue;
+ 		if (parent_hwirq != RV_IRQ_EXT || cpu < 0)
+ 			continue;
+@@ -644,6 +696,7 @@ static struct platform_driver plic_driver = {
  	.driver = {
- 		.name		= "riscv-aplic",
- 		.of_match_table	= aplic_match,
-+		.acpi_match_table = ACPI_PTR(aplic_acpi_match),
+ 		.name		= "riscv-plic",
+ 		.of_match_table	= plic_match,
++		.acpi_match_table = ACPI_PTR(plic_acpi_match),
  	},
- 	.probe = aplic_probe,
+ 	.probe = plic_probe,
  };
-diff --git a/drivers/irqchip/irq-riscv-aplic-main.h b/drivers/irqchip/irq-riscv-aplic-main.h
-index 4393927d8c80..b0ad8cde69b1 100644
---- a/drivers/irqchip/irq-riscv-aplic-main.h
-+++ b/drivers/irqchip/irq-riscv-aplic-main.h
-@@ -28,6 +28,7 @@ struct aplic_priv {
- 	u32			gsi_base;
- 	u32			nr_irqs;
- 	u32			nr_idcs;
-+	u32			acpi_aplic_id;
- 	void __iomem		*regs;
- 	struct aplic_msicfg	msicfg;
- };
-diff --git a/drivers/irqchip/irq-riscv-aplic-msi.c b/drivers/irqchip/irq-riscv-aplic-msi.c
-index d7773f76e5d0..945bff28265c 100644
---- a/drivers/irqchip/irq-riscv-aplic-msi.c
-+++ b/drivers/irqchip/irq-riscv-aplic-msi.c
-@@ -175,6 +175,7 @@ static const struct msi_domain_template aplic_msi_template = {
- int aplic_msi_setup(struct device *dev, void __iomem *regs)
- {
- 	const struct imsic_global_config *imsic_global;
-+	struct irq_domain *msi_domain;
- 	struct aplic_priv *priv;
- 	struct aplic_msicfg *mc;
- 	phys_addr_t pa;
-@@ -257,8 +258,14 @@ int aplic_msi_setup(struct device *dev, void __iomem *regs)
- 		 * IMSIC and the IMSIC MSI domains are created later through
- 		 * the platform driver probing so we set it explicitly here.
- 		 */
--		if (is_of_node(dev->fwnode))
-+		if (is_of_node(dev->fwnode)) {
- 			of_msi_configure(dev, to_of_node(dev->fwnode));
-+		} else {
-+			msi_domain = irq_find_matching_fwnode(imsic_acpi_get_fwnode(dev),
-+							      DOMAIN_BUS_PLATFORM_MSI);
-+			if (msi_domain)
-+				dev_set_msi_domain(dev, msi_domain);
-+		}
- 	}
- 
- 	if (!msi_create_device_irq_domain(dev, MSI_DEFAULT_DOMAIN, &aplic_msi_template,
 -- 
 2.43.0
 
