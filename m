@@ -1,255 +1,274 @@
-Return-Path: <linux-acpi+bounces-7542-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7543-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586C394F9C0
-	for <lists+linux-acpi@lfdr.de>; Tue, 13 Aug 2024 00:38:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA85950041
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Aug 2024 10:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13890281139
-	for <lists+linux-acpi@lfdr.de>; Mon, 12 Aug 2024 22:38:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AEF3B23D2F
+	for <lists+linux-acpi@lfdr.de>; Tue, 13 Aug 2024 08:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE80192B8A;
-	Mon, 12 Aug 2024 22:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EF8143889;
+	Tue, 13 Aug 2024 08:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eCUBlF3F"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="doGiiuno"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA661953B9;
-	Mon, 12 Aug 2024 22:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639C614A086
+	for <linux-acpi@vger.kernel.org>; Tue, 13 Aug 2024 08:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723502327; cv=none; b=TN59yckulpjamtrX9J9ktDVwPEIkwHp/hpr9df3idinPd+5gV0RbpswjtSF3r/d0FtbKoU4o/xjxduC1pk5k6+HjGQQjhJECZONza4dZgid9oWgCtD0HgpcFy5uoQ8hx2ZlbtPVbUpR/T0HKSZn1Wyu7fIbAmj2olnORM0l4Vic=
+	t=1723538771; cv=none; b=TiHL922mmaQ5ZoFD9q58rreWqTwoIV1kublk2gfNnKwFDt8RPRJYvTlJfhDbRhbd20BCC8aZf3IK5OxdPq8NysN81a1Gb85avER5EC9SUj/yCZpnn/xod2oNO1IVZOgNz58VZnD1V8/1NZhCIh059cmzbvLg/LoMber/lCEyJDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723502327; c=relaxed/simple;
-	bh=fs9uWawbxdntjCij/irgiHxw3d98pqFhpJ0sn3rktHs=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=cjjF2XQ2E0NLg5VNpIiZ9ssDZphz1C6fBvNKzxruF8/n/+gxksSYGUV00xlOftgJSgdZHlpTE8NtTQUrVgltgbPWQiNa4k2iAthvyQHnH0M6KcF5Y0poX3Yb7kGPeniWBb3UDOawmYj8nodQiVz9H1qQ8BbzWlets2ufKzgr0Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eCUBlF3F; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723502325; x=1755038325;
-  h=date:from:to:cc:subject:message-id;
-  bh=fs9uWawbxdntjCij/irgiHxw3d98pqFhpJ0sn3rktHs=;
-  b=eCUBlF3Fv1cjGfLevFqYQKMgrIqGXDUluF0rlKBqQYumAMlTQMx4qQkV
-   cbC8U08r3osd8y+WPzgXJpv0xqxpohEW8nkCtqIJ2RpVh/5f3jgIpvCxH
-   l/flu1UbJ8g8dpngliFYWZcNiQmZxlMT2FWMakk4OiWLhwiOIo7j3Mnjx
-   MyK2UNBbl1WCMezo8dfPUS4B1+yjDJD1kK/sgtHDABsod8zIJfnUCJDIt
-   a8ibwdPeohH1fwiWym9r+g9NKozgdGXkAMODkQ6s9Xcr6awaA3sOfDCyF
-   xGTjTpYcO8/hKUBztZWGxdkP+suzBFWnlM4qPFXqvP7nOaBssTsYqwas4
-   A==;
-X-CSE-ConnectionGUID: OIzD7uq5RZS8FNd3BDfl1w==
-X-CSE-MsgGUID: YAdUlPUnQUKbyNcCsCHyXg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="33040534"
-X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
-   d="scan'208";a="33040534"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 15:38:45 -0700
-X-CSE-ConnectionGUID: tHc6yA2ATxyNXfpo9TfrTw==
-X-CSE-MsgGUID: 7EAKI2ySToquUqOADwXmmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; 
-   d="scan'208";a="59006416"
-Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 12 Aug 2024 15:38:43 -0700
-Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sddgW-000CDz-1l;
-	Mon, 12 Aug 2024 22:38:40 +0000
-Date: Tue, 13 Aug 2024 06:38:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: linux-acpi@vger.kernel.org, devel@acpica.org,
- linux-pm@vger.kernel.org
-Subject: [rafael-pm:bleeding-edge] BUILD SUCCESS
- 808a033fe41be80da178cbe47a1b013eb6d048a6
-Message-ID: <202408130625.kHisL31h-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1723538771; c=relaxed/simple;
+	bh=JPuq1+yB5yPvOm8O5F7tdm2UjcyMq3y9042g7oRTYpg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=IuAjjJj0+6OaQThDB6fhx9oFbl67Ugg1Zn7U9VoUuOmKc1we14o/+LQI9VZO7gH9wIb0frLmgi7TsdZ8cMS3qhJLjkvAi21NzCMzLiRnn2Xce7IjksHl8UocbBz78Q9bgCgz6AkDs/88snR524ptbTxqU4o59PuTdJATYcXRpxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=doGiiuno; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723538768;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sXSbhG9F2gedklgPwrpHbOiav1xlkW0kCqjp6KUkdQg=;
+	b=doGiiuno/W9ZRsPoXwBBeHILf/S/VFtLmCkKBllfkeoKBBT9iiU8ZApZQCBEsNHCYie0wf
+	ZLW5Mx2SWrJVNZu/HH9Kn53JRNSL9nVWAJ+cfO9AXV81xOcgxm4E6XG32vnhiuitJSUmd+
+	Ip1+Am/Nqx+NM9/U94vFDrnEEM3OTwc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-nc0BO2AkNhmD_8Flw53mOQ-1; Tue, 13 Aug 2024 04:46:06 -0400
+X-MC-Unique: nc0BO2AkNhmD_8Flw53mOQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a77f0eca75bso449329966b.1
+        for <linux-acpi@vger.kernel.org>; Tue, 13 Aug 2024 01:46:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723538755; x=1724143555;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sXSbhG9F2gedklgPwrpHbOiav1xlkW0kCqjp6KUkdQg=;
+        b=qnfxx8Pqq7yLh/UYL6m/bGQtg52uF6AgsJYckPYBrXIvpBIQkBt3i7y3Zh4olptHRZ
+         XCTD9hC+BJBUsFnkXF47nL9ggKoMaFnkyL9VBjovXBRaeJy3x1gZFhzk7CM1p+BnsbaK
+         DkOD+qOFii+eSVh4xLRaEz6kAvahVnSKt0XSeCuYzCcDODeCYOskY3KLqpe4RxsyFdub
+         2JjnI7rClHvMLjn1Df4s1cQdg+mvFiwxbtKLVMGNqNcUU+1g58mTYvYfesFNNCJBFLKY
+         CF+xCncyZWLQdyvCNrE4frAMXsvSNr5yJTjMebUevtlWWOmfpdBdj5XI1QkjWRCXYuEz
+         uLQw==
+X-Gm-Message-State: AOJu0YzocqHCLCBRQIWS7PeFp3DrgpfhrFgao0iB2QsEPVn38a2yet73
+	RdAVSJIpA/DBHtoR4eGlKaiTCBcG4tikX6yIxSkZI2lksu2q6r+Nqz66HDNf0JG369a9HjL1dmM
+	t5GZ2eRAHjU3H1qzdWzKcGKsGUCoTx2qF62cIOtOPo6cwupeE0zsN+L8ui/4u/N/4Axk=
+X-Received: by 2002:a17:907:1c26:b0:a6f:6126:18aa with SMTP id a640c23a62f3a-a80ed2d5a41mr193487566b.67.1723538755181;
+        Tue, 13 Aug 2024 01:45:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkIXEFazKZ2e7IrtoO9eTsIR4non/nX+CtH37dZvGgn/MqKpsMzOuV8IadVro6wAiFPJPIHg==
+X-Received: by 2002:a17:907:1c26:b0:a6f:6126:18aa with SMTP id a640c23a62f3a-a80ed2d5a41mr193485966b.67.1723538754603;
+        Tue, 13 Aug 2024 01:45:54 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80f414e31bsm49992266b.152.2024.08.13.01.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Aug 2024 01:45:53 -0700 (PDT)
+Message-ID: <d7ea226a-24b1-42e9-80d7-039729d93d34@redhat.com>
+Date: Tue, 13 Aug 2024 10:45:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: "EC: Install address space handler at the namespace root" causing
+ issues for some users
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-acpi <linux-acpi@vger.kernel.org>
+References: <1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com>
+ <c0e5414a-ec7b-44e3-980c-e71889150767@redhat.com>
+ <0abc1a17-e155-4587-ada9-13f9ce5f358b@redhat.com>
+ <1a426f61-1454-4a77-8262-612ab1d0d265@redhat.com>
+ <CAJZ5v0iWy6oXRJ2mxhOLyWsmgp1akVjoo0i2pqDDMOg-TvWLPA@mail.gmail.com>
+ <a0f54ea3-5830-4420-b4e7-73ea8c146bcd@redhat.com>
+Content-Language: en-US, nl
+In-Reply-To: <a0f54ea3-5830-4420-b4e7-73ea8c146bcd@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
-branch HEAD: 808a033fe41be80da178cbe47a1b013eb6d048a6  Merge branch 'thermal-core-testing' into bleeding-edge
+Hi,
 
-elapsed time: 733m
+On 8/12/24 1:28 PM, Hans de Goede wrote:
+> Hi,
+> 
+> On 8/8/24 7:22 PM, Rafael J. Wysocki wrote:
+>> Hi,
+>>
+>> On Mon, Aug 5, 2024 at 2:47 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>>>
+>>> Hi,
+>>>
+>>> On 8/5/24 1:28 PM, Hans de Goede wrote:
+>>>> Hi,
+>>>>
+>>>> On 8/1/24 4:28 PM, Hans de Goede wrote:
+>>>>> Hi,
+>>>>>
+>>>>> On 7/29/24 1:15 PM, Hans de Goede wrote:
+>>>>>> Hi Rafael,
+>>>>>>
+>>>>>> There are 2 bug reports:
+>>>>>>
+>>>>>> 1. Brightness up/down key-presses no longer working on LG laptop (acpi-video related):
+>>>>>> https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/V2KWAGZIAX4TOWPCH6A6FSIT66PR3KMZ/
+>>>>>
+>>>>> I have filed:
+>>>>>
+>>>>> https://bugzilla.redhat.com/show_bug.cgi?id=2302253
+>>>>>
+>>>>> to track this now and an acpidump of the troublesome LG laptop
+>>>>> is attached there. I have also requested dmesg output of
+>>>>> a non working kernel to be attached there.
+>>>>>
+>>>>> As a reminder this is the bug where it has been confirmed that
+>>>>> reverting "EC: Install address space handler at the namespace root"
+>>>>> helps, with the caveat that there is a Thunderbolt related IRQ
+>>>>> storm on the ACPI event IRQ after the revert ...
+>>>>
+>>>> Ok, so the bugzilla now has 2 different dmesg outputs:
+>>>>
+>>>> 1. 6.9.6, this kernel works without problems
+>>>>
+>>>> 2. 6.9.12 with the following patch you suggested on top:
+>>>>
+>>>> --- a/drivers/acpi/ec.c
+>>>> +++ b/drivers/acpi/ec.c
+>>>> @@ -1788,7 +1788,7 @@ void __init acpi_ec_dsdt_probe(void)
+>>>>        * At this point, the GPE is not fully initialized, so do not to
+>>>>        * handle the events.
+>>>>        */
+>>>> -     ret = acpi_ec_setup(ec, NULL, true);
+>>>> +     ret = acpi_ec_setup(ec, NULL, false);
+>>>>       if (ret) {
+>>>>               acpi_ec_free(ec);
+>>>>               return;
+>>>>
+>>>> Unfortunately this does not help. dmesg shows some EC _REG errors, which
+>>>> are now (with the above diff applied) shown just before the
+>>>> "Boot DSDT EC initialization complete" message, which shows that _REG now
+>>>> runs from acpi_ec_add() rather then before:
+>>>>
+>>>> [    1.007566] ACPI BIOS Error (bug): Could not resolve symbol [\_TZ.FN00._OFF], AE_NOT_FOUND (20230628/psargs-330)
+>>>> [    1.007576] ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC.EREG due to previous error (AE_NOT_FOUND) (20230628/psparse-52
+>>>> [    1.007580] ACPI Error: Aborting method \_SB.PC00.LPCB.H_EC._REG due to previous error (AE_NOT_FOUND) (20230628/psparse-52
+>>>> [    1.007639] ACPI: EC: interrupt unblocked
+>>>> [    1.007640] ACPI: EC: event unblocked
+>>>> [    1.007675] ACPI: EC: EC_CMD/EC_SC=0x66, EC_DATA=0x62
+>>>> [    1.007676] ACPI: EC: GPE=0x6e
+>>>> [    1.007677] ACPI: \_SB_.PC00.LPCB.LGEC: Boot DSDT EC initialization complete
+>>>> [    1.007679] ACPI: \_SB_.PC00.LPCB.LGEC: EC: Used to handle transactions and events
+>>>>
+>>>> Note that the errors are from calling _REG on \_SB.PC00.LPCB.H_EC, where as the actual
+>>>> EC (and the only acpi_device on which _REG would get called for the EC Opregion before) is:
+>>>> \_SB_.PC00.LPCB.LGEC.
+>>>>
+>>>> Looking at the DSDT it seems that the H_EC is not used and is leftover from a copy/paste
+>>>> from some reference design DSDT. Its _REG however does write to the EC before hitting the error
+>>>> and I think that that write may be causing the issue...
+>>>>
+>>>> The H_EC device does have an _STA method and looking closer the troublesome EREG method is
+>>>> also called from _INI. So I guess that _STA is returning 0 causing _INI to not run and
+>>>> that is the reason why we are not seeing the same EREG errors with kernel 6.9.6 where _REG is
+>>>> only called for the EC opregion on \_SB_.PC00.LPCB.LGEC and not for the entire ACPI device
+>>>> hierarchy as is done with >= 6.9.7 .
+>>>>
+>>>> Maybe we should only call _REG for the EC opregion on present devices (and devices without
+>>>> a _STA)?
+>>>>
+>>>> Also note that both LGEC and H_EC use the same cmd + data ports.
+>>>>
+>>>> I'll go and ask the reporter to retrieve the status of both LGEC and H_EC and then see
+>>>> from there.
+>>>
+>>> The reporter has confirmed that of the 2 EC devices ( H_EC / LGEC ) only LGEC returns
+>>> a _STA of non 0:
+>>>
+>>>> Here it is, with kernel 6.9.6:
+>>>>
+>>>> $ cat /sys/bus/acpi/devices/PNP0C09\:00/path
+>>>> \_SB_.PC00.LPCB.H_EC
+>>>> $ cat /sys/bus/acpi/devices/PNP0C09\:00/status
+>>>> 0
+>>>> $ cat /sys/bus/acpi/devices/PNP0C09\:01/path
+>>>> \_SB_.PC00.LPCB.LGEC
+>>>> $ cat /sys/bus/acpi/devices/PNP0C09\:01/status
+>>>> 15
+>>>
+>>> And taking a second look at the other bug:
+>>> https://bugzilla.redhat.com/show_bug.cgi?id=2298938
+>>>
+>>> That one also has 2 EC ACPI devices and the errors come from calling _REG on the one
+>>> which is not picked as the boot_ec :
+>>>
+>>> jul 19 17:33:41 kernel: ACPI: EC: EC started
+>>> jul 19 17:33:41 kernel: ACPI: EC: interrupt blocked
+>>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.H_EC.ECMD due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+>>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_TZ.FNCL due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+>>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_TZ.FN00._OFF due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+>>> jul 19 17:33:41 kernel: ACPI Error: Aborting method \_SB.PCI0.LPCB.H_EC._REG due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+>>> jul 19 17:33:41 kernel: ACPI: EC: EC_CMD/EC_SC=0x66, EC_DATA=0x62
+>>> jul 19 17:33:41 kernel: ACPI: \_SB_.PCI0.LPCB.EC0_: Boot DSDT EC used to handle transactions
+>>>
+>>> Note the H_EC vs EC0_ in the errors vs the "Boot DSDT EC used to
+>>> handle transactions" message.
+>>>
+>>> So the issue in both cases seems to be calling _REG on an unused EC acpi_device.
+>>> Not sure how to best fix this though ...
+>>
+>> I have created an experimental acpi-ec-fixes branch:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=acpi-ec-fixes
+>>
+>> for this which illustrates my idea (untested so far).
+> 
+> Thank you. I believe that the approach taken here is good and I also
+> like the code (of the current version) so you may add my:
+> 
+> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+> 
+> to all 3 patches.
+> 
+> I have started a test Fedora 40 6.10.4 kernel build with the patches from
+> the acpi-ec-fixes branch added:
+> 
+> https://koji.fedoraproject.org/koji/taskinfo?taskID=121834209
+> 
+> and I have asked the reporters of both bugs:
+> 
+>     2298938 - Multiple ACPI errors resulting in incorrect thermal readings and misleading CPU 
+>     2302253 - ACPI: EC: LG gram laptop brightness keys stop working with kernel >= 6.9.7
+> 
+> to test this. I expect a good turn around time from the reporter
+> of bug 2302253. So far the reporter of 2298938 is not really
+> responsive (holidays?).
 
-configs tested: 161
-configs skipped: 2
+The reporter of 2302253 has reported that the patches from:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git/log/?h=acpi-ec-fixes
 
-tested configs:
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                   randconfig-001-20240812   gcc-13.2.0
-arc                   randconfig-002-20240812   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-20
-arm                              allyesconfig   gcc-14.1.0
-arm                        mvebu_v7_defconfig   clang-15
-arm                   randconfig-001-20240812   clang-15
-arm                   randconfig-002-20240812   clang-20
-arm                   randconfig-003-20240812   clang-20
-arm                   randconfig-004-20240812   clang-20
-arm                           tegra_defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-20
-arm64                             allnoconfig   gcc-14.1.0
-arm64                 randconfig-001-20240812   gcc-14.1.0
-arm64                 randconfig-002-20240812   clang-20
-arm64                 randconfig-003-20240812   gcc-14.1.0
-arm64                 randconfig-004-20240812   clang-20
-csky                              allnoconfig   gcc-14.1.0
-csky                  randconfig-001-20240812   gcc-14.1.0
-csky                  randconfig-002-20240812   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   clang-20
-hexagon                          allyesconfig   clang-20
-hexagon               randconfig-001-20240812   clang-20
-hexagon               randconfig-002-20240812   clang-20
-i386                             allmodconfig   gcc-12
-i386                              allnoconfig   gcc-12
-i386                             allyesconfig   gcc-12
-i386         buildonly-randconfig-001-20240812   clang-18
-i386         buildonly-randconfig-002-20240812   clang-18
-i386         buildonly-randconfig-003-20240812   clang-18
-i386         buildonly-randconfig-004-20240812   clang-18
-i386         buildonly-randconfig-005-20240812   gcc-12
-i386         buildonly-randconfig-006-20240812   clang-18
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240812   gcc-12
-i386                  randconfig-002-20240812   gcc-12
-i386                  randconfig-003-20240812   gcc-12
-i386                  randconfig-004-20240812   clang-18
-i386                  randconfig-005-20240812   clang-18
-i386                  randconfig-006-20240812   gcc-12
-i386                  randconfig-011-20240812   gcc-12
-i386                  randconfig-012-20240812   clang-18
-i386                  randconfig-013-20240812   clang-18
-i386                  randconfig-014-20240812   clang-18
-i386                  randconfig-015-20240812   clang-18
-i386                  randconfig-016-20240812   clang-18
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch             randconfig-001-20240812   gcc-14.1.0
-loongarch             randconfig-002-20240812   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                       m5208evb_defconfig   gcc-14.1.0
-m68k                        mvme16x_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-mips                      loongson3_defconfig   gcc-13.2.0
-mips                          rb532_defconfig   clang-20
-mips                        vocore2_defconfig   clang-15
-nios2                             allnoconfig   gcc-14.1.0
-nios2                 randconfig-001-20240812   gcc-14.1.0
-nios2                 randconfig-002-20240812   gcc-14.1.0
-openrisc                         alldefconfig   gcc-14.1.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240812   gcc-14.1.0
-parisc                randconfig-002-20240812   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-20
-powerpc                 canyonlands_defconfig   clang-20
-powerpc                        cell_defconfig   gcc-14.1.0
-powerpc                    ge_imp3a_defconfig   gcc-14.1.0
-powerpc                        icon_defconfig   gcc-14.1.0
-powerpc                  iss476-smp_defconfig   gcc-14.1.0
-powerpc                      pasemi_defconfig   clang-20
-powerpc                       ppc64_defconfig   clang-20
-powerpc               randconfig-001-20240812   gcc-14.1.0
-powerpc               randconfig-002-20240812   gcc-14.1.0
-powerpc               randconfig-003-20240812   gcc-14.1.0
-powerpc                     tqm8560_defconfig   gcc-14.1.0
-powerpc64             randconfig-001-20240812   clang-20
-powerpc64             randconfig-002-20240812   clang-15
-powerpc64             randconfig-003-20240812   clang-20
-riscv                            allmodconfig   clang-20
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-20
-riscv                               defconfig   clang-20
-riscv                 randconfig-001-20240812   gcc-14.1.0
-riscv                 randconfig-002-20240812   clang-20
-s390                             allmodconfig   clang-20
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-20
-s390                  randconfig-001-20240812   gcc-14.1.0
-s390                  randconfig-002-20240812   gcc-14.1.0
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                    randconfig-001-20240812   gcc-14.1.0
-sh                    randconfig-002-20240812   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240812   gcc-14.1.0
-sparc64               randconfig-002-20240812   gcc-14.1.0
-um                               allmodconfig   clang-20
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-12
-um                                  defconfig   clang-20
-um                             i386_defconfig   gcc-12
-um                    randconfig-001-20240812   clang-20
-um                    randconfig-002-20240812   gcc-12
-um                           x86_64_defconfig   clang-15
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240812   clang-18
-x86_64       buildonly-randconfig-002-20240812   clang-18
-x86_64       buildonly-randconfig-003-20240812   gcc-12
-x86_64       buildonly-randconfig-004-20240812   clang-18
-x86_64       buildonly-randconfig-005-20240812   clang-18
-x86_64       buildonly-randconfig-006-20240812   clang-18
-x86_64                              defconfig   gcc-11
-x86_64                randconfig-001-20240812   clang-18
-x86_64                randconfig-002-20240812   clang-18
-x86_64                randconfig-003-20240812   gcc-12
-x86_64                randconfig-004-20240812   gcc-12
-x86_64                randconfig-005-20240812   gcc-11
-x86_64                randconfig-006-20240812   clang-18
-x86_64                randconfig-011-20240812   clang-18
-x86_64                randconfig-012-20240812   gcc-12
-x86_64                randconfig-013-20240812   clang-18
-x86_64                randconfig-014-20240812   clang-18
-x86_64                randconfig-015-20240812   gcc-12
-x86_64                randconfig-016-20240812   gcc-12
-x86_64                randconfig-071-20240812   gcc-12
-x86_64                randconfig-072-20240812   gcc-12
-x86_64                randconfig-073-20240812   gcc-12
-x86_64                randconfig-074-20240812   clang-18
-x86_64                randconfig-075-20240812   gcc-12
-x86_64                randconfig-076-20240812   gcc-12
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                randconfig-001-20240812   gcc-14.1.0
-xtensa                randconfig-002-20240812   gcc-14.1.0
+resolve the issue; and as mentioned before the reporter of 2298938
+is not responsive atm. So I believe that with it confirmed that this
+at least fixes the issues on the LG Gram laptops (1) these patches are
+ready to be merged now.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+
+Hans
+
+
+
+1) And based on dmesg with a regressed kernel likely / hopefully also
+the issue from RH bugzilla 2298938.
+
 
