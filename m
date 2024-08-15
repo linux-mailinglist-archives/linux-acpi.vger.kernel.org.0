@@ -1,101 +1,122 @@
-Return-Path: <linux-acpi+bounces-7598-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7600-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C91952D10
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 12:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835DF952EBF
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 15:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4801C23269
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 10:58:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363D0281B44
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 13:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CB11AC8A0;
-	Thu, 15 Aug 2024 10:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB0419DF60;
+	Thu, 15 Aug 2024 13:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fNHIL7NF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hBt6hR7X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv7HjBoR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5756D1AC88C;
-	Thu, 15 Aug 2024 10:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B191619D89D;
+	Thu, 15 Aug 2024 13:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723719473; cv=none; b=Aa7nJxkSeTJs1frqjhxik73BPzkPbYcr18TbPEM083kpS9iQTyr/oSoc6FarAMb0axCf1/ILT5K60Fz2kF/TCW7w0dAvNUJnDuWTqXUFlMsmYbesDPgQoHGPC7hYg1uAmlLTPpSa/DUY0RqQMGgkleBJ+DjihfgX+k0w9BzdfIs=
+	t=1723727083; cv=none; b=poUamoVqiOp0bCZbhXcKsCY1GO0wVcmu1xU45StTw2krgi2uwOCt2T5yKQrZMdqkQ1ahiKtk+fzrIKWG+weY9zZzNOQeU/RG2ViFtyZw5XxyyRJOHGqLZO1EUuDLcTasM+1Uafoq8fXUwLSj5g1Vhw50FK81Iqv2b5ii8X4PE4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723719473; c=relaxed/simple;
-	bh=OR897adyomGx6ta2gTUOROeKGS/AwcNG/7KEA8caKhw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=H+eFr3wld2MLRXK+RpIWVS1IGm5xkBZlVbLM7k2K60B8foNcTsrqOqndrmKfgkSNQ9e4N1ABexoU62Zvw7r9Q7tZBYVrGOFIZU+o0tf2bBm1O7giEGifYXC4mUI6kQ5oD8m5hEiHJIg03tYte9MEYz/VKSZb5ctJ5jQGBKCvf8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fNHIL7NF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hBt6hR7X; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723719470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A8ebSU8/6XZn/8ULIh3Q/WZP2fvFGkPefnWFmwKN9UM=;
-	b=fNHIL7NFy3j+g1DPbddkuRqf4tichpEWQzTSwt6b6rliU183ZQD9rSaVnUWWNOHOw8HxGJ
-	iNfUp5aUvemQt+MO8csAQlcO/EouyMWWMrhOHxQxgZqSGyI21RRhRlKOGB6L8eglJt8euy
-	+M8zDp1lPZV9eHiatQ5k9ufmnewcYyd9ieo5ztSsqKES9aDTHfwZop0zV7//44hr42pGB4
-	ODsD2FgLM95i76U73TJXduX/DDhMthuu/wAsnrmo6N9rSJgXUXMt3jlw7UtT+bM5Hdok9D
-	WJw1vKd1TQOHi+MbRI28f63aV51DOu2xsi1ZvYbNT1CKY23Dt2Yg3DGp5OqdvA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723719470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A8ebSU8/6XZn/8ULIh3Q/WZP2fvFGkPefnWFmwKN9UM=;
-	b=hBt6hR7XhsC4/kP0g8rbOg1cvUe/nPv9tT3CbjPUmAXR2oeyPOnkbfwScKFrED+4Dc/IcZ
-	VDvjKRn8LLEx34CA==
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Baoquan He
- <bhe@redhat.com>, Ard Biesheuvel <ardb@kernel.org>, Tom Lendacky
- <thomas.lendacky@amd.com>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Sean Christopherson
- <seanjc@google.com>, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCHv2 1/4] x86/mm/ident_map: Fix virtual address wrap to zero
-In-Reply-To: <5iijyqzxd3ccranzvmfgvf3mvkesfbjsuggtuppa5wf6z444dd@ft5h2m6u2ggw>
-References: <20240814124613.2632226-1-kirill.shutemov@linux.intel.com>
- <20240814124613.2632226-2-kirill.shutemov@linux.intel.com>
- <87cymaoqj4.ffs@tglx>
- <5iijyqzxd3ccranzvmfgvf3mvkesfbjsuggtuppa5wf6z444dd@ft5h2m6u2ggw>
-Date: Thu, 15 Aug 2024 12:57:49 +0200
-Message-ID: <87wmkim4sy.ffs@tglx>
+	s=arc-20240116; t=1723727083; c=relaxed/simple;
+	bh=CDgGq5qU3Wr0Pir/YqVs7Al/PZ/iVw/ki/I4EssR9Gs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oxh2i9Rki4tB9HqnNUIzTnX64cC0i0ZJR8nNbthAoHD/bwDGO8PGE5xVn37iFspLi6CPDQ1y4zcFxGblVTHXE4RptgdZgKpWif1nnNcfrmWf+0NL1BQP+z2EOHTEBc/45vuJFBrHT9OPKlLHpn7HVTTposuG/qhDYEN4e7BxGUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv7HjBoR; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2d3c05dc63eso642036a91.0;
+        Thu, 15 Aug 2024 06:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723727081; x=1724331881; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ia3t2Va5NtSu3BetvUd2KwI5mB/axZOmAEnZeyG3umQ=;
+        b=Bv7HjBoRSkwYJp+afAgm6m9wEWXbr+lydKjFjFAa5HCHVOUCx3KwjAblF6ATDo5AP5
+         uXdCWcwcEje2tCelFYELBx2tu9tljmjPvyu8UwUqtgy+eVKJaOr3CCQTjRrIN7ELPCbv
+         2Ry2sBgojVaVT9p0tSBJvFSa8Htk27q693stQ4xMvxh6GWyAGxJJtENnRD84oafH59SY
+         hRdqHXq8v5F6usr6mTG7uC4VL6LnEhMundc3qYuZkf1ZggiouBCH/g/ZiH3q9DelIa/3
+         EhnCpGxXtvpxWKuiVdVnPmFrSGJ0iDvaxMtCbwizePEDPLfzlcXZ7YAU3zLucaHfyuRV
+         mkCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723727081; x=1724331881;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ia3t2Va5NtSu3BetvUd2KwI5mB/axZOmAEnZeyG3umQ=;
+        b=XnKKUyIxCiQn8o/8F5TvfqqXPG22iITBKEbSSkT9jQNXdpbpXAK2PwDJKCreGhqSlz
+         I+3Z/jkuY2Zv5j/4fBWhf42DgOlbtEo9XEVlxucD8gvQz/LB+fiKFiUKCQVAmS9oz4W7
+         NYqzxXs6B9RjUpSPNlUW06YCiptSlU4qLb2yRgz+zXA8MmfB/K8mgTE1fFO4Oa8MXupv
+         GkQxwfKoBeQ4nQEll8ENGWiJr93/JbL2yoscFbJs9MYp7xNRsN6dw64bZEPDbvhkrqwg
+         YjqRAs8lCeQZVvAacjIMjbyY6RFr34rBkQKIBULxgsY1t1kfD3kjx/6hVzTWhvBt/Q8p
+         52ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVO3/J3XugBVcGsbYotU8ZkeeJmM2c9RYCMUaX5ok/0csKBl6wZwezFljuo0v/Np6244SW6BF+S3Ql6YjvCv6F2QTfHaZPlgc9ajOjUdnLzTPhLpJWSNhgV+CNOsc+tydCZsFZA7buLQFEveG+Pge7IKzLHqsDEBtPIrsTeNdhteM3k2CY=
+X-Gm-Message-State: AOJu0YyCMo9iH6K0frof48ic4gF7tsxSbEUzSBclENggs20cj3wvd9Gl
+	VVfFdVu+RhH5++XbC7RADng9z+6GtDaaUbJ8XHxQ7y7uD+JBOGDSN4UNYC/Nt2FebgGpV+iEZ26
+	8d7k8y+MIyGWTrl8+dsf/IrCFZtPTpp2rBwk=
+X-Google-Smtp-Source: AGHT+IGSrLrwuM5RhDoD7uxpi1mK7ij3LB5lI6V4fRyA+cAlhCiR6Vgro+l7Mk/y4jnJPGmGy0vvDkvDt+x+XsPj1nk=
+X-Received: by 2002:a17:90b:4c51:b0:2d3:d0b7:da4 with SMTP id
+ 98e67ed59e1d1-2d3d0b70f31mr1146539a91.19.1723727080832; Thu, 15 Aug 2024
+ 06:04:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240815082916.1210110-1-pierre.gondois@arm.com> <20240815082916.1210110-7-pierre.gondois@arm.com>
+In-Reply-To: <20240815082916.1210110-7-pierre.gondois@arm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 15 Aug 2024 15:04:27 +0200
+Message-ID: <CANiq72mjvE7h_aH5tYnuuzdPHAzDUpioMi-h44HNCro8qFfDSw@mail.gmail.com>
+Subject: Re: [RFC PATCH 6/6] rust: cpufreq: Add rust implementation of
+ cppc_cpufreq driver
+To: Pierre Gondois <pierre.gondois@arm.com>
+Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Robert Moore <robert.moore@intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Thomas Bertschinger <tahbertschinger@gmail.com>, 
+	Danilo Krummrich <dakr@redhat.com>, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	acpica-devel@lists.linux.dev, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15 2024 at 12:15, Kirill A. Shutemov wrote:
-> On Wed, Aug 14, 2024 at 09:25:35PM +0200, Thomas Gleixner wrote:
->> On Wed, Aug 14 2024 at 15:46, Kirill A. Shutemov wrote:
->> > Calculation of 'next' virtual address doesn't protect against wrapping
->> > to zero. It can result in page table corruption and hang. The
->> > problematic case is possible if user sets high x86_mapping_info::offset.
->> 
->> So this should have a Fixes tag, right?
+On Thu, Aug 15, 2024 at 10:31=E2=80=AFAM Pierre Gondois <pierre.gondois@arm=
+.com> wrote:
 >
-> Well, I guess we can add
->
-> Fixes: e4630fdd4763 ("x86/power/64: Always create temporary identity mapping correctly")
->
-> but the bug is not triggirable with current upstream code.
->
-> It only wraps to zero if you touch top PGD entry. There's no such users in
-> upstream. Only hibernate_64.c uses x86_mapping_info::offset and it works
-> on direct mapping range which is not top PGD entry.
+> In an effort to add test/support the cpufreq framework in rust,
+> add a rust implementation of the cppc_cpufreq driver named:
+> `rcppc_cpufreq`.
 
-Fair enough, but please mention that in the change log.
+Similar to what Greg said -- is this intended to be something like a
+"Rust reference driver" [1] for the subsystem?
+
+[1] https://rust-for-linux.com/rust-reference-drivers
+
+> +       depends on ACPI_PROCESSOR
+> +       depends on ARM || ARM64 || RISCV
+
+`depends on RUST`?
+
+Also, I imagine you skipped all safety comments etc. since it is an
+RFC, but I thought I would mention it nevertheless.
+
+Thanks for experimenting with Rust!
+
+Cheers,
+Miguel
 
