@@ -1,477 +1,108 @@
-Return-Path: <linux-acpi+bounces-7595-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7596-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C642D952B1D
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 11:18:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07697952BFE
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 12:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A9A1F227CB
-	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 09:18:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 616F6B23693
+	for <lists+linux-acpi@lfdr.de>; Thu, 15 Aug 2024 10:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4A81C233D;
-	Thu, 15 Aug 2024 08:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE8119B3DD;
+	Thu, 15 Aug 2024 09:15:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ber7Jhzn"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDA019D8BA;
-	Thu, 15 Aug 2024 08:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC15762D2;
+	Thu, 15 Aug 2024 09:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723710667; cv=none; b=lWzJatIB2/8vRt/+vYoMUaX/HoB95BgImPA+Kc7cAuF0WhUt2rfQAYLzhUL45sSJXBBonJ85Mv66TcitzeWzcwgo7SE9QJ0l+du8FWLjgXA1UL1o66ZcbkUKSDIo7G5g3mw9EwW3it3MGKtYK+p17XBKyAe17INl3UBrD/3BHR0=
+	t=1723713322; cv=none; b=IB4GhD83ZGNuM8FtxQm4lv7ufEag/QWIsbLVSRXaI5OdLQANpSyJur0PN7XkR3Vc70ecBwuXM3bgWNgdK3irTNlUpSz1MN+cwomHcASYusescthtQNQKzTOeFJiObRCx/lvXHScDDi1O4KI+4PeimPTqChIttqK3tlnmSlZbRlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723710667; c=relaxed/simple;
-	bh=yCf+HKHuM6f2qoMtzJkk0v/WG1j9KRG1+IxcRU8fI0g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TZRVXnOk9jRpSkruxnboQ/j7BDFisBV0xfKSPNkPgptG5bPdgQdjrQvycyguK7ZesXbXa8vKqfObqHHdrRzAXh0SSLnVJsCOps6xhLn6b02njuYXIQ5GlJeJ9qZ25nYdd2AG+J85o3JxmU61mftxITpVC30R0n+G1Y7+m3/e8EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAEE81756;
-	Thu, 15 Aug 2024 01:31:30 -0700 (PDT)
-Received: from e126645.nice.arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E6A7B3F6A8;
-	Thu, 15 Aug 2024 01:30:59 -0700 (PDT)
-From: Pierre Gondois <pierre.gondois@arm.com>
-To: linux-kernel@vger.kernel.org
-Cc: Pierre Gondois <pierre.gondois@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH 6/6] rust: cpufreq: Add rust implementation of cppc_cpufreq driver
-Date: Thu, 15 Aug 2024 10:29:10 +0200
-Message-Id: <20240815082916.1210110-7-pierre.gondois@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240815082916.1210110-1-pierre.gondois@arm.com>
-References: <20240815082916.1210110-1-pierre.gondois@arm.com>
+	s=arc-20240116; t=1723713322; c=relaxed/simple;
+	bh=UfEXHlzZQsk8l12u4I9X0Umo/RqjKKUaZjTPiP5cdGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P/n7uECG1eXtJdTKFACchjH8Z/V3mTT88oz1Y4Gir6OglM3i/SVgQb+XQgY3EVDQhlN1U2jo44vpAdt2+ZqcKirQRdN/9fe6jv1s/XJ8+OA+ARoqb97IeCqPl3TBocQtwp92GB2xV+sdKBBtppIFpsbwL70K4fvfrCyk0iGgyMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ber7Jhzn; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723713321; x=1755249321;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UfEXHlzZQsk8l12u4I9X0Umo/RqjKKUaZjTPiP5cdGE=;
+  b=Ber7Jhzn6voLDh2XlI0WG0qGcJ9ozNKA5XFYhwhKTLl3S8mOLvHvQdSI
+   Xjfc6LuiACyQKhqPP7p3jCWS4aylrEr+TuDlmZb9YMD5rO8zTr9w2OEcH
+   Q2F53XV0YOnFjDkP9GBF1aPy7ysjcbOXKWsAg6PF4tC8Vc92Gc6id5tSA
+   xXhvoe9O+SUqm1EyHpt+5PFTOsQ1Cqjuj3dxWG5ludrRIaA9TsKuPKHNP
+   r+HgUy9mw2uI+LIEGXnNYGe4DGrow5vRnWUlAaRQKzYD/thBdntndXIAU
+   bw3lq/XaQQDa9qrUe5InZX1SCw51mqDOH4leu2JzDHOF+s/eUDVvVuC6H
+   A==;
+X-CSE-ConnectionGUID: f0Yi4TAXTTKps4g8njUGqg==
+X-CSE-MsgGUID: 6BUJQHsWT1Wkd/ZENW9+LQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="32536934"
+X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
+   d="scan'208";a="32536934"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2024 02:15:19 -0700
+X-CSE-ConnectionGUID: QBisctmWQieMfAMXXUVPew==
+X-CSE-MsgGUID: v4YNdVhJShmO/O2c7MAEOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,148,1719903600"; 
+   d="scan'208";a="58962580"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 15 Aug 2024 02:15:15 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 252F939D; Thu, 15 Aug 2024 12:15:14 +0300 (EEST)
+Date: Thu, 15 Aug 2024 12:15:14 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Sean Christopherson <seanjc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, Kai Huang <kai.huang@intel.com>
+Subject: Re: [PATCHv2 1/4] x86/mm/ident_map: Fix virtual address wrap to zero
+Message-ID: <5iijyqzxd3ccranzvmfgvf3mvkesfbjsuggtuppa5wf6z444dd@ft5h2m6u2ggw>
+References: <20240814124613.2632226-1-kirill.shutemov@linux.intel.com>
+ <20240814124613.2632226-2-kirill.shutemov@linux.intel.com>
+ <87cymaoqj4.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87cymaoqj4.ffs@tglx>
 
-In an effort to add test/support the cpufreq framework in rust,
-add a rust implementation of the cppc_cpufreq driver named:
-`rcppc_cpufreq`.
+On Wed, Aug 14, 2024 at 09:25:35PM +0200, Thomas Gleixner wrote:
+> On Wed, Aug 14 2024 at 15:46, Kirill A. Shutemov wrote:
+> > Calculation of 'next' virtual address doesn't protect against wrapping
+> > to zero. It can result in page table corruption and hang. The
+> > problematic case is possible if user sets high x86_mapping_info::offset.
+> 
+> So this should have a Fixes tag, right?
 
-This implementation doesn't support/implement:
-- vendor specific workarounds
-- Frequency Invariance Engine (FIE)
-- artificial Energy Model (EM)
-- (struct cpufreq_driver).attr field
-- QoS requests
+Well, I guess we can add
 
-Basic support is provided to get/set the frequency on a platform
-implementing the CPPC section of the ACPI spec.
+Fixes: e4630fdd4763 ("x86/power/64: Always create temporary identity mapping correctly")
 
-Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
----
- drivers/cpufreq/Kconfig          |  16 ++
- drivers/cpufreq/Makefile         |   1 +
- drivers/cpufreq/rcppc_cpufreq.rs | 333 +++++++++++++++++++++++++++++++
- 3 files changed, 350 insertions(+)
- create mode 100644 drivers/cpufreq/rcppc_cpufreq.rs
+but the bug is not triggirable with current upstream code.
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index eb9359bd3c5c..57130d0789b0 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -343,4 +343,20 @@ config ACPI_CPPC_CPUFREQ_FIE
- 
- 	  If in doubt, say N.
- 
-+config ACPI_CPPC_CPUFREQ_RUST
-+	tristate "Rust based CPUFreq driver based on the ACPI CPPC spec"
-+	depends on ACPI_PROCESSOR
-+	depends on ARM || ARM64 || RISCV
-+	select ACPI_CPPC_LIB
-+	help
-+	  This adds a Rust based CPUFreq driver based on the ACPI CPPC spec.
-+	  Basic support is only available for now, i.e. the following are
-+	  not supported:
-+	  - vendor specific workarounds
-+	  - Frequency Invariance Engine (FIE)
-+	  - artificial Energy Model (EM)
-+	  - QoS requests
-+
-+	  If in doubt, say N.
-+
- endmenu
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 4981d908b803..5e17db481a50 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
- 
- obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
- obj-$(CONFIG_CPUFREQ_DT_RUST)		+= rcpufreq_dt.o
-+obj-$(CONFIG_ACPI_CPPC_CPUFREQ_RUST)	+= rcppc_cpufreq.o
- obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
- 
- # Traces
-diff --git a/drivers/cpufreq/rcppc_cpufreq.rs b/drivers/cpufreq/rcppc_cpufreq.rs
-new file mode 100644
-index 000000000000..198857a5b966
---- /dev/null
-+++ b/drivers/cpufreq/rcppc_cpufreq.rs
-@@ -0,0 +1,333 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust based implementation of the cppc_cpufreq driver.
-+
-+use core::format_args;
-+
-+use kernel::prelude::*;
-+
-+use kernel::{
-+    bindings, c_str, cpufreq,
-+    cpumask::Cpumask,
-+    error::{to_result, Result},
-+    sync::Arc,
-+};
-+
-+/// 2 usec delay between sampling
-+const COUNTERS_SAMPLING_DELAY_US: u64 = 2;
-+
-+// Whether boost is supported
-+static mut BOOST_SUPPORTED: bool = false;
-+
-+struct CPUFreqCppcDriver {
-+    _drv: cpufreq::Registration<Self>,
-+}
-+
-+struct CPUFreqCppcData {
-+    perf_caps: bindings::cppc_perf_caps,
-+    perf_ctrls: bindings::cppc_perf_ctrls,
-+    shared_type: u32,
-+    shared_cpu_map: Cpumask,
-+}
-+
-+impl CPUFreqCppcData {
-+    fn new(cpu: u32) -> Result<Self> {
-+        let mut shared_type = bindings::CPUFREQ_SHARED_TYPE_NONE;
-+        let mut perf_caps = bindings::cppc_perf_caps::default();
-+        let mut shared_cpu_map = Cpumask::new()?;
-+
-+        match acpi_get_psd_map(cpu, &mut shared_cpu_map, &mut shared_type) {
-+            Err(e) => {
-+                pr_debug!("Err parsing CPU{cpu} PSD data: err:{e:?}\n");
-+                return Err(e);
-+            }
-+            _ => {}
-+        }
-+
-+        match cppc_get_perf_caps(cpu as i32, &mut perf_caps) {
-+            Err(e) => {
-+                pr_debug!("Err reading CPU{cpu} perf caps: e:{e:?}\n");
-+                return Err(e);
-+            }
-+            _ => {}
-+        }
-+
-+        Ok(Self {
-+            perf_caps: perf_caps,
-+            perf_ctrls: bindings::cppc_perf_ctrls::default(),
-+            shared_type: shared_type,
-+            shared_cpu_map: shared_cpu_map,
-+        })
-+    }
-+}
-+
-+fn acpi_get_psd_map(cpu: u32, shared_cpu_map: &mut Cpumask, shared_type: &mut u32) -> Result<()> {
-+    unsafe {
-+        to_result(bindings::acpi_get_psd_map(
-+            cpu,
-+            shared_cpu_map.as_mut_ptr(),
-+            shared_type,
-+        ))
-+    }
-+}
-+
-+fn cppc_get_perf_caps(cpu: i32, perf_caps: &mut bindings::cppc_perf_caps) -> Result<()> {
-+    unsafe { to_result(bindings::cppc_get_perf_caps(cpu, perf_caps)) }
-+}
-+
-+fn cppc_perf_to_khz(caps: &mut bindings::cppc_perf_caps, perf: u32) -> u32 {
-+    unsafe { bindings::cppc_perf_to_khz(caps, perf) }
-+}
-+
-+fn cppc_khz_to_perf(caps: &mut bindings::cppc_perf_caps, freq: u32) -> u32 {
-+    unsafe { bindings::cppc_khz_to_perf(caps, freq) }
-+}
-+
-+fn cppc_set_perf(cpu: u32, perf_ctrls: &mut bindings::cppc_perf_ctrls) -> Result<()> {
-+    unsafe { to_result(bindings::cppc_set_perf(cpu as i32, perf_ctrls)) }
-+}
-+
-+fn cpufreq_freq_transition_begin(
-+    policy: &mut cpufreq::Policy,
-+    freqs: &mut bindings::cpufreq_freqs,
-+) {
-+    unsafe { bindings::cpufreq_freq_transition_begin(policy.as_raw(), freqs) }
-+}
-+
-+fn cpufreq_freq_transition_end(
-+    policy: &mut cpufreq::Policy,
-+    freqs: &mut bindings::cpufreq_freqs,
-+    transition_failed: bool,
-+) {
-+    unsafe {
-+        bindings::cpufreq_freq_transition_end(policy.as_raw(), freqs, transition_failed as i32)
-+    }
-+}
-+
-+fn cppc_get_perf_ctrs(cpu: u32, fb_ctrs: &mut bindings::cppc_perf_fb_ctrs) -> Result<()> {
-+    unsafe { to_result(bindings::cppc_get_perf_ctrs(cpu as i32, fb_ctrs)) }
-+}
-+
-+fn cppc_perf_from_fbctrs(
-+    desired_perf: u32,
-+    fb_ctrs_t0: bindings::cppc_perf_fb_ctrs,
-+    fb_ctrs_t1: bindings::cppc_perf_fb_ctrs,
-+) -> u32 {
-+    let reference_perf = fb_ctrs_t0.reference_perf;
-+    let delta_reference = fb_ctrs_t1.reference.wrapping_sub(fb_ctrs_t0.reference);
-+    let delta_delivered = fb_ctrs_t1.delivered.wrapping_sub(fb_ctrs_t0.delivered);
-+
-+    if delta_reference == 0 || delta_delivered == 0 {
-+        return desired_perf;
-+    }
-+
-+    return ((reference_perf - delta_delivered) / delta_reference) as u32;
-+}
-+
-+#[vtable]
-+impl cpufreq::Driver for CPUFreqCppcDriver {
-+    type Data = ();
-+    type PData = Arc<CPUFreqCppcData>;
-+
-+    fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
-+        let cpu = policy.cpu();
-+        let mut data = CPUFreqCppcData::new(cpu)?;
-+
-+        // Set min to lowest nonlinear perf to avoid any efficiency penalty
-+        // (see Section 8.4.7.1.1.5 of ACPI 6.1 spec)
-+        policy
-+            .set_min(data.perf_caps.lowest_nonlinear_perf)
-+            .set_max(data.perf_caps.nominal_perf);
-+
-+        let lowest_nonlinear_perf = data.perf_caps.lowest_nonlinear_perf;
-+        let nominal_perf = data.perf_caps.nominal_perf;
-+        let highest_perf = data.perf_caps.highest_perf;
-+
-+        // Set cpuinfo.min_freq to Lowest to make the full range of performance
-+        // available if userspace wants to use any perf between lowest & lowest
-+        // nonlinear perf
-+        policy
-+            .set_cpuinfo_min_freq(cppc_perf_to_khz(&mut data.perf_caps, lowest_nonlinear_perf))
-+            .set_cpuinfo_max_freq(cppc_perf_to_khz(&mut data.perf_caps, nominal_perf));
-+
-+        policy
-+            .set_transition_delay_us(unsafe { bindings::cppc_get_transition_latency(cpu as i32) })
-+            .set_shared_type(data.shared_type);
-+
-+        match data.shared_type {
-+            bindings::CPUFREQ_SHARED_TYPE_HW => {}
-+            bindings::CPUFREQ_SHARED_TYPE_NONE => {}
-+            bindings::CPUFREQ_SHARED_TYPE_ANY => {
-+                // All CPUs in the domain will share a policy and all cpufreq
-+                // operations will use the same CPUFreqCppcData struct.
-+                let cpus = policy.cpus();
-+                data.shared_cpu_map.copy(cpus);
-+            }
-+            default => {
-+                pr_err!("Unsupported CPU co-ord type: {default}\n");
-+                return Err(EFAULT);
-+            }
-+        }
-+
-+        if unsafe { bindings::cppc_allow_fast_switch() } {
-+            policy.set_fast_switch_possible(true);
-+        }
-+
-+        // If 'highest_perf' is greater than 'nominal_perf', we assume CPU Boost
-+        // is supported.
-+        if highest_perf > nominal_perf {
-+            unsafe { BOOST_SUPPORTED = true };
-+        }
-+
-+        // Set policy->cur to max now. The governors will adjust later.
-+        policy
-+            .set_dvfs_possible_from_any_cpu()
-+            .set_cur(cppc_perf_to_khz(&mut data.perf_caps, highest_perf));
-+
-+        cppc_set_perf(cpu, &mut data.perf_ctrls)?;
-+
-+        Ok(Arc::new(data, GFP_KERNEL)?)
-+    }
-+
-+    fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn verify(policy_data: &mut cpufreq::PolicyData) -> Result<()> {
-+        unsafe { bindings::cpufreq_verify_within_cpu_limits(policy_data.as_raw()) };
-+        Ok(())
-+    }
-+
-+    fn target(
-+        policy: &mut cpufreq::Policy,
-+        target_freq: u32,
-+        _relation: cpufreq::Relation,
-+    ) -> Result<()> {
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+
-+        let mut perf_ctrls: bindings::cppc_perf_ctrls = data.perf_ctrls;
-+        let mut perf_caps: bindings::cppc_perf_caps = data.perf_caps;
-+        let desired_perf: u32 = cppc_khz_to_perf(&mut perf_caps, target_freq);
-+        let cpu = policy.cpu();
-+
-+        // Return if it is exactly the same perf.
-+        if desired_perf == perf_ctrls.desired_perf {
-+            return Ok(());
-+        }
-+
-+        perf_ctrls.desired_perf = desired_perf;
-+
-+        let mut freqs = bindings::cpufreq_freqs::default();
-+        freqs.old = policy.cur();
-+        freqs.new = target_freq;
-+
-+        cpufreq_freq_transition_begin(policy, &mut freqs);
-+        let ret = cppc_set_perf(cpu, &mut perf_ctrls);
-+        let transition_failed = match ret {
-+            Ok(_) => false,
-+            Err(e) => {
-+                pr_debug!("Failed to set target on CPU:{cpu}. err:{e:?}\n");
-+                true
-+            }
-+        };
-+        cpufreq_freq_transition_end(policy, &mut freqs, transition_failed);
-+
-+        ret
-+    }
-+
-+    fn fast_switch(policy: &mut cpufreq::Policy, target_freq: u32) -> u32 {
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return 0,
-+        };
-+
-+        let mut perf_caps = data.perf_caps;
-+        let mut perf_ctrls = data.perf_ctrls;
-+        let desired_perf = cppc_khz_to_perf(&mut perf_caps, target_freq);
-+        let cpu = policy.cpu();
-+
-+        perf_ctrls.desired_perf = desired_perf;
-+
-+        if let Err(ret) = cppc_set_perf(cpu, &mut perf_ctrls) {
-+            pr_debug!("Failed to set target on CPU:{cpu}. ret:{ret:?}\n");
-+            return 0;
-+        }
-+
-+        return target_freq;
-+    }
-+
-+    fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
-+        let mut fb_ctrs_t0 = bindings::cppc_perf_fb_ctrs::default();
-+        let mut fb_ctrs_t1 = bindings::cppc_perf_fb_ctrs::default();
-+        let cpu = policy.cpu();
-+
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+
-+        let mut perf_caps = data.perf_caps;
-+        let desired_perf = data.perf_ctrls.desired_perf;
-+
-+        cppc_get_perf_ctrs(cpu, &mut fb_ctrs_t0)?;
-+        unsafe { bindings::__udelay(COUNTERS_SAMPLING_DELAY_US) };
-+        cppc_get_perf_ctrs(cpu, &mut fb_ctrs_t1)?;
-+
-+        let delivered_perf = cppc_perf_from_fbctrs(desired_perf, fb_ctrs_t0, fb_ctrs_t1);
-+        let freq = cppc_perf_to_khz(&mut perf_caps, delivered_perf);
-+
-+        Ok(freq)
-+    }
-+
-+    fn set_boost(policy: &mut cpufreq::Policy, state: i32) -> Result<()> {
-+        if unsafe { !BOOST_SUPPORTED } {
-+            pr_err!("BOOST not supported by CPU or firmware\n");
-+            return Err(EINVAL);
-+        }
-+
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+        let mut caps = data.perf_caps;
-+        let highest_perf = caps.highest_perf;
-+        let nominal_perf = caps.nominal_perf;
-+
-+        let max_freq = if state != 0 {
-+            cppc_perf_to_khz(&mut caps, highest_perf)
-+        } else {
-+            cppc_perf_to_khz(&mut caps, nominal_perf)
-+        };
-+
-+        policy
-+            .set_max(max_freq)
-+            .set_cpuinfo_max_freq(max_freq);
-+
-+        Ok(())
-+    }
-+}
-+
-+module! {
-+    type: CPUFreqCppcDriver,
-+    name: "cppc_cpufreq",
-+    author: "Pierre Gondois",
-+    description: "CPPC cpufreq driver",
-+    license: "GPL v2",
-+    initcall: ".initcall7.init",
-+}
-+
-+impl kernel::Module for CPUFreqCppcDriver {
-+    fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
-+        let drv = cpufreq::Registration::<CPUFreqCppcDriver>::register(
-+            c_str!("rcppc-cpufreq"),
-+            (),
-+            cpufreq::flags::CONST_LOOPS,
-+            false,
-+        )?;
-+
-+        Ok(CPUFreqCppcDriver { _drv: drv })
-+    }
-+}
+It only wraps to zero if you touch top PGD entry. There's no such users in
+upstream. Only hibernate_64.c uses x86_mapping_info::offset and it works
+on direct mapping range which is not top PGD entry.
+
 -- 
-2.25.1
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
