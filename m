@@ -1,125 +1,142 @@
-Return-Path: <linux-acpi+bounces-7632-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7633-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E393E9550BA
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Aug 2024 20:23:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD8009550DA
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Aug 2024 20:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205EA1C20B42
-	for <lists+linux-acpi@lfdr.de>; Fri, 16 Aug 2024 18:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEBC1C2165A
+	for <lists+linux-acpi@lfdr.de>; Fri, 16 Aug 2024 18:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41D21C233D;
-	Fri, 16 Aug 2024 18:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA5C1C37A1;
+	Fri, 16 Aug 2024 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BXjI6/u/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uS7y/KyZ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442FC2F43;
-	Fri, 16 Aug 2024 18:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FBE1BE258;
+	Fri, 16 Aug 2024 18:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723832598; cv=none; b=jUXJvs8Nna+QdBoNcPDv63nJUh4BSqWGW4pEswlTZaZkopNgW04oQFWmxpNwREfJVIWtt2D+qIggKp+/yBzQR885w8FgSZSN8cm7VZh+YYcpLRsT0CvGbf25XUyf6BCVRsW5ziwwEiPEH1Z3RYPDuOP+/RRQHBnoW/REk7QfAw8=
+	t=1723832971; cv=none; b=UHlUPwFa95pca/rWl7w3mycZa6VKujyw/sbK6VSpcZQKc2vFTaPaRFow8UeCiwHRdytG4CWkF9C/m8HTQTftl28kjeVg4rgQLUaFGDKOeKDMcTzzk1Rw+91oJXzPbVyy2qbJXv4KI9OVZfr8AtFiQswYACN/ReXRhfFF75vBS5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723832598; c=relaxed/simple;
-	bh=9nBk+OVqT2U6ithIdAtJd6yyta5mV3miRfL5OUOo/Uw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p02zA/QGYjgc4MgCL24CUCERnKL/Hi7MKE7MUZscnXT104Soo69ys1PoNmuyyfMPAYk5oehH0DTLdFRlg2FWjChvXDhyZNw+qIJUrZTtkes8Fnug6BTvADPHxldNwlj+2OeDdhwHjg0C0sITf0B+x7sL5eQvpQpXUS5wP0greK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BXjI6/u/; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-428243f928cso16554225e9.3;
-        Fri, 16 Aug 2024 11:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723832595; x=1724437395; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tt1M3N9em0+Z01XyYhLmbINqjYflUEk+VUJQL5UpS3Q=;
-        b=BXjI6/u/B0bv1FsM1LeJkdIypUl8J1D7nm3Yt9p8PwASQ4TJQQSe6lv9E6zhfcvVcS
-         ISR0QkxuU4Ce0R4WYwobdZp2RIKjxxXXTsjLFZ9ZErGZuChKW0p7fB04Orb2zy41YgaO
-         YEXtNc6Cy+4vUWv33XEPUgwDSU0nEVnT8SoJ3ffO1Aq741WFAYXPlQO7bbcjJeqi105Q
-         nX+BpCCDPACMdU/BjifTS5kBRQJBb9zfYkGsnlNOnV0q8n/MdmOCcPuOmNS76JReMvlI
-         byKVik5y7Z+yWrFqYGL3jglGBGJZYO+My6anfUgwOUPG81D3DLhNHuzC8wgedPLMVOVv
-         6sqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723832595; x=1724437395;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tt1M3N9em0+Z01XyYhLmbINqjYflUEk+VUJQL5UpS3Q=;
-        b=ksKvWRz2esc5ivfXMcXX9s4JrDpbOE3TN6NjpVLV46lef1YEOS7bc+a7/2M03kU6t2
-         T8baLvvAZzjnwOpKP/K5SafYoHXTwwjxsmzclH4cEyssXzipFEzkAnR41IxMgcjqb4fJ
-         3+US6/Tm+y0nXpAVX+pwVo3yM57fC9AcJsoc75N+XYgN7gLc/qQpsHOzAwaFI2MUJOoA
-         J6Y7YZs5nv8x3S9NYBRmoS1k4spwFmhryY1I9S3vwf0QSVQicA5rOO04Zu0/ooD2V8vV
-         RNI1XzXind0soats61fU1bwrq0k4l0YZxRhCm67X9a8b0BbOe+pbHXbcKZvaLd1uIxPB
-         KxJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0yQdrAJ5pfi3P4Xy7l+wM8EFKBaJcdtAgcd/JPOCGZyge8swI2e7CV/klvrST+TIv9VHNpwVN9kfOuTEpb77s7WtQSG4D/mR2y/NWB6YDG17tFJDCaWFU/ZNHcg8puFVW7h+8kWQ4l8qvIJqJeO52/uJnLvwxxu/OfXbhCk37NQF0sYzbK+W0hlH0KN0zAHIsHg/57JCSPbC4mIyXHY/xCRWqsy27tocg4v24A0BAQkLlvl89HCYvH+cMTkiW0ujQsYGd/iSw
-X-Gm-Message-State: AOJu0YzToEltElSQjxUsh+r4rZTly1PpfGfeh/Bog4yH2HkKAOQorEk8
-	i4fIVuKpL7AurwMDt+6THSASnTNvZ8GbesGwCFbW6a0T5j1FtcsC
-X-Google-Smtp-Source: AGHT+IGe7kGpO1ikYBDLyoCv4FPzIfHwsornnyTjsVTL0wNifZExOmpdSgtf+WuYd8hTh3t/puS2HA==
-X-Received: by 2002:a05:600c:5029:b0:426:59fc:cdec with SMTP id 5b1f17b1804b1-429ed7af8f1mr28923365e9.21.1723832595196;
-        Fri, 16 Aug 2024 11:23:15 -0700 (PDT)
-Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded35991sm82383415e9.21.2024.08.16.11.23.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Aug 2024 11:23:14 -0700 (PDT)
-Message-ID: <03af1025-f946-4eb2-a41e-28f0436e60e6@gmail.com>
-Date: Fri, 16 Aug 2024 20:23:12 +0200
+	s=arc-20240116; t=1723832971; c=relaxed/simple;
+	bh=MEnY5dW4BizxQHSga1Zlxnjl7jRyw2lRpBPUuQnt3L8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SrjcmLCBSlguBCrS+bLSM+Fua0bIHtPECdXaJpwtVoKniKIyTqzjPxQWAt8eb6oDCh4S6gZq/B4mfEnZCq1rogn2ygYBf04Rp5hIh7s/w6bn9Ic2iC/+BuWD9nzmI1hdAR1/CAKGOt3C8aJkM4Jvmg7P2bUUDjoxN2n4gyxDUbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uS7y/KyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860A5C4AF0C;
+	Fri, 16 Aug 2024 18:29:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723832971;
+	bh=MEnY5dW4BizxQHSga1Zlxnjl7jRyw2lRpBPUuQnt3L8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=uS7y/KyZXlRijF3o9ceCHJPXPE11rMuJwUEaJLAFd7YjEf7vCckXUK9zoQ44eFrDJ
+	 zO0ucI14dhHGShenGp0Vhe27e0714oplQfhVgaY/yItZEMKvSTEWTFuyPSGTQwA6TP
+	 ES7kWZ02qRk9yK2nX/ws+iau4WpOgMVIHqj5OdQy7Azfx6m07pCjLfnCAxCKt7sZH+
+	 vi+6h1mX1fJCRCdST0JdWLOWnTyyjg4aErIJFqDnkZopWyVwRc/PC4ao/f5J9ya9YP
+	 H815+Y9bQKw36couhgiGgrKCt2SBZyr34xWhnqeWfTBzaN4t7rA4SG5gM8SEp50Rt9
+	 FyScAN1GxhF2A==
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5d5bcccb372so320484eaf.3;
+        Fri, 16 Aug 2024 11:29:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVPsESp4YNX2QD/4xWRuOIVBEvNxYBpSWEqVd9j+Wz1+c8c5dgA2dlwl/N5UZIQ4ygRZWw0Aw+3S1IFT4paiFTLx8KgDrz506j0aHMDHlWxZY1wJ3P8j851LPBfThvCmNWtE5ec0sL9ag==
+X-Gm-Message-State: AOJu0YyIXmXdPTMfBaR6E/cQB/AckWudPMcRCsKmw2RZV8YLyp1U/MlJ
+	SFTj7qWc3ONS2/YKAqaamO3uMgfP9U9W7wxaTKRBXtDyUGcaz5rvHzTNtLQkykVltoZ4H8NQRll
+	H8OjAmJnIgTzEcQaIqSdLa4zcC4k=
+X-Google-Smtp-Source: AGHT+IEQDtDifU/ay61Nag/OTb/NwAraSufQacFl3Jwy2M6bzQypfkwBuAVU6h0dCTMxUWcXykK68NNUvQD7CXN0GAY=
+X-Received: by 2002:a05:6870:b4a4:b0:268:2075:a41d with SMTP id
+ 586e51a60fabf-2701c5235a6mr2356726fac.6.1723832970816; Fri, 16 Aug 2024
+ 11:29:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] platform/surface: Add OF support
-To: Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Hans de Goede <hdegoede@redhat.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>,
- linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <quic_kdybcio@quicinc.com>
-References: <20240814-topic-sam-v3-0-a84588aad233@quicinc.com>
- <20240814-topic-sam-v3-3-a84588aad233@quicinc.com>
-Content-Language: en-US
-From: Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <20240814-topic-sam-v3-3-a84588aad233@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <60ac8988-ace4-4cf0-8c44-028ca741c0a1@kernel.org> <bd149809-f670-4b5d-a18a-f1f63624265f@kernel.org>
+In-Reply-To: <bd149809-f670-4b5d-a18a-f1f63624265f@kernel.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 16 Aug 2024 20:29:18 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jrgC+cvjDfw+vQ1jyVz1oj28uTf9k+-Kk2EAPJj3VmdQ@mail.gmail.com>
+Message-ID: <CAJZ5v0jrgC+cvjDfw+vQ1jyVz1oj28uTf9k+-Kk2EAPJj3VmdQ@mail.gmail.com>
+Subject: Re: ACPI IRQ storm with 6.10
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	Linux kernel mailing list <linux-kernel@vger.kernel.org>, 
+	Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/14/24 12:27 PM, Konrad Dybcio wrote:
-> From: Konrad Dybcio <quic_kdybcio@quicinc.com>
-> 
-> Add basic support for registering the aggregator module on Device Tree-
-> based platforms. These include at least three generations of Qualcomm
-> Snapdragon-based Surface devices:
-> 
-> - SC8180X / SQ1 / SQ2: Pro X,
-> - SC8280XP / SQ3: Devkit 2023, Pro 9
-> - X Elite: Laptop 7 / Pro11
-> 
-> Thankfully, the aggregators on these seem to be configured in an
-> identical way, which allows for using these settings as defaults and
-> no DT properties need to be introduced (until that changes, anyway).
-> 
-> Based on the work done by Maximilian Luz, largely rewritten.
-> 
-> Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
-> ---
+On Wed, Aug 14, 2024 at 8:48=E2=80=AFAM Jiri Slaby <jirislaby@kernel.org> w=
+rote:
+>
+> On 14. 08. 24, 7:22, Jiri Slaby wrote:
+> > Hi,
+> >
+> > one openSUSE's user reported that with 6.10, he sees one CPU under an
+> > IRQ storm from ACPI (sci_interrupt):
+> >     9:   20220768          ...  IR-IO-APIC    9-fasteoi   acpi
+> >
+> > At:
+> > https://bugzilla.suse.com/show_bug.cgi?id=3D1229085
+> >
+> > 6.9 was OK.
+> >
+> > With acpi.debug_level=3D0x08000000 acpi.debug_layer=3D0xffffffff, there=
+ is a
+> > repeated load of:
+> >> evgpe-0673 ev_detect_gpe         : Read registers for GPE 6D:
+> >> Status=3D20, Enable=3D00, RunEnable=3D4A, WakeEnable=3D00
+>
+> 0x6d seems to count excessively (10 snapshots every 1 second):
+> > /sys/firmware/acpi/interrupts/gpe6D:   82066  EN STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:   86536  EN STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:   90990     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:   95468  EN STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  100282  EN STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  105187     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  110014     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  114852     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  119682     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  124194     STS enabled      unmas=
+ked
+> > /sys/firmware/acpi/interrupts/gpe6D:  128641  EN STS enabled      unmas=
+ked
+>
+> acpidump:
+> https://bugzilla.suse.com/attachment.cgi?id=3D876677
+>
+> DSDT:
+> https://bugzilla.suse.com/attachment.cgi?id=3D876678
+>
+> > Any ideas?
 
-Looks good to me and works without issues on my Surface Pro X.
+GPE 6D is listed in _PRW for some devices, so maybe one of them
+continues to trigger wakeup events?
 
-Thanks again for picking this up!
+You can ask the reporter to mask that GPE via "echo mask >
+/sys/firmware/acpi/interrupts/gpe6D" and see if the storm goes away
+then.
 
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
+The only ACPI core issue introduced between 6.9 and 6.10 I'm aware of
+is the one addressed by this series
+
+https://lore.kernel.org/linux-acpi/22385894.EfDdHjke4D@rjwysocki.net/
+
+but this is about the EC and the problem here doesn't appear to be
+EC-related.  It may be worth trying anyway, though.
 
