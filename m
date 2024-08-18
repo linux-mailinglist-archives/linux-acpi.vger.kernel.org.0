@@ -1,173 +1,166 @@
-Return-Path: <linux-acpi+bounces-7638-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7639-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A6E955938
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Aug 2024 19:57:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C85955BBD
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Aug 2024 09:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410DF1F21B7A
-	for <lists+linux-acpi@lfdr.de>; Sat, 17 Aug 2024 17:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2CE1C20E52
+	for <lists+linux-acpi@lfdr.de>; Sun, 18 Aug 2024 07:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0231E154BEC;
-	Sat, 17 Aug 2024 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABB51401C;
+	Sun, 18 Aug 2024 07:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=jevklidu.cz header.i=petr@jevklidu.cz header.b="W1UaxZjz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mwq/ntlL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from sender4-of-o55.zoho.com (sender4-of-o55.zoho.com [136.143.188.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C54C133;
-	Sat, 17 Aug 2024 17:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723917464; cv=pass; b=mPbcauIDqtrE3pzLft/Qth3LCE5OwWnVya1Rg7/7aXUwOnGeJzn/76vU/b0nITi40pueKJ9xRbRYL0YipKara+njToOmyuOnpqZkoLPkQ9fPr2ftvMCZBNDfn1rvzefGFJ1HYA8mp1Scs6O2MVeIKQWjfJWIpQpmAbv5r4ij6nk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723917464; c=relaxed/simple;
-	bh=ofA6MwBB9myYSOX62CFyfawqJEj8oehsD1BG4ehoB18=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=REb3aB9LjpWmqJbtBwZq3aVDX0JD+KljV9jOCJv8ML87MnYKxkr3HjlFpgZ0RI9ec2IEWlSJ2BVNTysxZ+K48M1ZcV+Dx8W+epjTB64VL6FC+11q/obJUpThC74itXw1cc2hjGKwhVAcdFYV9FMDK4blzSrvmK+xszilj6icqTE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jevklidu.cz; spf=pass smtp.mailfrom=jevklidu.cz; dkim=pass (1024-bit key) header.d=jevklidu.cz header.i=petr@jevklidu.cz header.b=W1UaxZjz; arc=pass smtp.client-ip=136.143.188.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jevklidu.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jevklidu.cz
-ARC-Seal: i=1; a=rsa-sha256; t=1723917451; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Fjjt0jYToWMT9OoGJmKva7yfjhbiNkBiriB8tWAH8Un5iuKT4OqgS2UkchG0h6gMzEDeaRV9bwawq/LVEfXUEn6J8rENVf6ZEuojvsXKfPW/FQyTp/OAA6i4nlpl1CzVOcIpJnx5eIEiX0uUukLe2FDkkYKyY2BZzbGvDMVObL0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1723917451; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=V227+9OZSU+cAq7GWLgJgCLEHnyka3YBMISfs8NB9lU=; 
-	b=foyAm2g4DguzyHVxz5SjZBbYX7IXFlqliGwwspri5tMEorhu83F9AVki05OcX+4OceXRq4zmeTynxO2pf66CWec6y1w7lpQ7TzCbwea71Yt5r9hFmHqpz5BzZJDZrzqvy4lKmNa6x3Go9Jc89bKS4OeMNUzOAPiLwe+eEYhNfB4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=jevklidu.cz;
-	spf=pass  smtp.mailfrom=petr@jevklidu.cz;
-	dmarc=pass header.from=<petr@jevklidu.cz>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723917451;
-	s=zoho; d=jevklidu.cz; i=petr@jevklidu.cz;
-	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=V227+9OZSU+cAq7GWLgJgCLEHnyka3YBMISfs8NB9lU=;
-	b=W1UaxZjzAkJ4PNRu58CEyvRjXGPY7tsjoAmCl/nU7iJkZ4GsV/BN4n1SBZtoEgIb
-	7KhI/ry6fWeHEIpumeXAfgqM5EBiwHQyl6GOLa8fpZSuVZEWYs3QOIvu7GLAyS65Gtn
-	t7hNDh6/1awZUWNFlm3fE0YyWXIu+ZUjvZKRQ3Yw=
-Received: by mx.zohomail.com with SMTPS id 172391745003275.63577164506398;
-	Sat, 17 Aug 2024 10:57:30 -0700 (PDT)
-Message-ID: <6eac5c37-a5a8-4ccf-aef6-62a4a0bfcea0@jevklidu.cz>
-Date: Sat, 17 Aug 2024 19:57:24 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB32A11CBD;
+	Sun, 18 Aug 2024 07:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723965133; cv=none; b=rxNRl3fyhgqYbqgz++b4H1gC4tGaF4nBHoh0vOSHgVdAnbB+3X8TtncNlFbk31jw8z22aYsMhIyR2Va3lDh3uK3CmTkdGywdWJjHF1ivjnO+MUnpqXnEUPOMeHopebqgksDhkGAPdJjcDt5PZxI7UVl6K06aOG8L+ARQn1lnxts=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723965133; c=relaxed/simple;
+	bh=3v8UlkRh1iRwxBPgNEZQJ8RnyX/t0heq6u2dovh+q6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xbch5ttSOF2q2eTB+uo+82BgcXRd+gmuKCvPfD8a2JgAnCVdHyGW96zKQCB3X3+eLjAE0FFpZxSE0ImNDrHkgGyyK8zS7QDHPtCXwQRgFaCZXDEMKnALbBsNWDVAyg9lVUTBpDy/qYR4uyU4WuR499OQf4AQfB7YzGqyO8WAEPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mwq/ntlL; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723965131; x=1755501131;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3v8UlkRh1iRwxBPgNEZQJ8RnyX/t0heq6u2dovh+q6Q=;
+  b=mwq/ntlL+fAhgg1nd/97yA2AkqqzxYYsaI6/vU6KrD6PT7cNQ7z0lFbt
+   E87OxnI1spXNv8qtVejLfS4pb66WHTs5K6PjtwlJV4MqZf8M1t6ikKP27
+   apJ1a3rC7/+2Tuj+k5NR/HZ+GbYAPrg2DysEKwpeT0Fr87TES2ZZfcSL5
+   RqMTdQhBigwI/eHXTC0m0Nvnw/FGKldrqLvDKHBGK+PO3b6+iQozHNXap
+   5yjEjME0hW7ne0K2MMxXG6zcssoDe18DsDawoIubCmpa5R+wlke/ltWP1
+   3cUnZy1lpNJIIrNCOzKs0WOBWrkQXZpDQwilapqXhY3UgtG7SKKcSNj4T
+   A==;
+X-CSE-ConnectionGUID: W4SGjMc+RYKt2BRiiNTbUg==
+X-CSE-MsgGUID: qNtZFX4dT+OS/c/2PMIEtA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11167"; a="22364808"
+X-IronPort-AV: E=Sophos;i="6.10,156,1719903600"; 
+   d="scan'208";a="22364808"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2024 00:12:10 -0700
+X-CSE-ConnectionGUID: 2rhuFNx/QMaezaya1vqJxQ==
+X-CSE-MsgGUID: ot1K6YpISzK/7X1phX+Cjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,156,1719903600"; 
+   d="scan'208";a="59773962"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 18 Aug 2024 00:12:03 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sfa52-000852-2f;
+	Sun, 18 Aug 2024 07:12:00 +0000
+Date: Sun, 18 Aug 2024 15:11:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: shiju.jose@huawei.com, linux-edac@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, bp@alien8.de,
+	tony.luck@intel.com, rafael@kernel.org, lenb@kernel.org,
+	mchehab@kernel.org, dan.j.williams@intel.com, dave@stgolabs.net,
+	jonathan.cameron@huawei.com, dave.jiang@intel.com,
+	alison.schofield@intel.com, vishal.l.verma@intel.com,
+	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
+	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
+	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
+	somasundaram.a@hpe.com, erdemaktas@google.com
+Subject: Re: [PATCH v11 01/14] EDAC: Add support for EDAC device feature's
+ control
+Message-ID: <202408181416.PD0B8fMf-lkp@intel.com>
+References: <20240816164238.1902-2-shiju.jose@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ACPI IRQ storm with 6.10
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Jiri Slaby <jirislaby@kernel.org>
-Cc: Len Brown <lenb@kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- Linux kernel mailing list <linux-kernel@vger.kernel.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <60ac8988-ace4-4cf0-8c44-028ca741c0a1@kernel.org>
- <bd149809-f670-4b5d-a18a-f1f63624265f@kernel.org>
- <CAJZ5v0jrgC+cvjDfw+vQ1jyVz1oj28uTf9k+-Kk2EAPJj3VmdQ@mail.gmail.com>
-Content-Language: cs-CZ, en-US
-From: Petr Valenta <petr@jevklidu.cz>
-In-Reply-To: <CAJZ5v0jrgC+cvjDfw+vQ1jyVz1oj28uTf9k+-Kk2EAPJj3VmdQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240816164238.1902-2-shiju.jose@huawei.com>
+
+Hi,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on ras/edac-for-next]
+[also build test WARNING on rafael-pm/linux-next rafael-pm/bleeding-edge cxl/next linus/master cxl/pending v6.11-rc3 next-20240816]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/shiju-jose-huawei-com/EDAC-Add-support-for-EDAC-device-feature-s-control/20240817-004442
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git edac-for-next
+patch link:    https://lore.kernel.org/r/20240816164238.1902-2-shiju.jose%40huawei.com
+patch subject: [PATCH v11 01/14] EDAC: Add support for EDAC device feature's control
+config: i386-buildonly-randconfig-003-20240818 (https://download.01.org/0day-ci/archive/20240818/202408181416.PD0B8fMf-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240818/202408181416.PD0B8fMf-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408181416.PD0B8fMf-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/edac/edac_device.c:608: warning: Function parameter or struct member 'ras_feat' not described in 'edac_dev_feat_init'
+>> drivers/edac/edac_device.c:608: warning: expecting prototype for edac_dev_feature_init(). Prototype was for edac_dev_feat_init() instead
 
 
+vim +608 drivers/edac/edac_device.c
 
-Dne 16. 08. 24 v 20:29 Rafael J. Wysocki napsal(a):
-> On Wed, Aug 14, 2024 at 8:48 AM Jiri Slaby <jirislaby@kernel.org> wrote:
->>
->> On 14. 08. 24, 7:22, Jiri Slaby wrote:
->>> Hi,
->>>
->>> one openSUSE's user reported that with 6.10, he sees one CPU under an
->>> IRQ storm from ACPI (sci_interrupt):
->>>      9:   20220768          ...  IR-IO-APIC    9-fasteoi   acpi
->>>
->>> At:
->>> https://bugzilla.suse.com/show_bug.cgi?id=1229085
->>>
->>> 6.9 was OK.
->>>
->>> With acpi.debug_level=0x08000000 acpi.debug_layer=0xffffffff, there is a
->>> repeated load of:
->>>> evgpe-0673 ev_detect_gpe         : Read registers for GPE 6D:
->>>> Status=20, Enable=00, RunEnable=4A, WakeEnable=00
->>
->> 0x6d seems to count excessively (10 snapshots every 1 second):
->>> /sys/firmware/acpi/interrupts/gpe6D:   82066  EN STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:   86536  EN STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:   90990     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:   95468  EN STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  100282  EN STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  105187     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  110014     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  114852     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  119682     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  124194     STS enabled      unmasked
->>> /sys/firmware/acpi/interrupts/gpe6D:  128641  EN STS enabled      unmasked
->>
->> acpidump:
->> https://bugzilla.suse.com/attachment.cgi?id=876677
->>
->> DSDT:
->> https://bugzilla.suse.com/attachment.cgi?id=876678
->>
->>> Any ideas?
-> 
-> GPE 6D is listed in _PRW for some devices, so maybe one of them
-> continues to trigger wakeup events?
-> 
+   593	
+   594	/**
+   595	 * edac_dev_feature_init - Init a ras feature
+   596	 * @parent: client device.
+   597	 * @dev_data: pointer to struct edac_dev_data.
+   598	 * @feat: pointer to struct edac_dev_feature.
+   599	 * @attr_groups: pointer to attribute group's container.
+   600	 *
+   601	 * Returns number of scrub feature's attribute groups on success,
+   602	 * error otherwise.
+   603	 */
+   604	static int edac_dev_feat_init(struct device *parent,
+   605				      struct edac_dev_data *dev_data,
+   606				      const struct edac_dev_feature *ras_feat,
+   607				      const struct attribute_group **attr_groups)
+ > 608	{
+   609		int num;
+   610	
+   611		switch (ras_feat->feat) {
+   612		case RAS_FEAT_SCRUB:
+   613			dev_data->scrub_ops = ras_feat->scrub_ops;
+   614			dev_data->private = ras_feat->scrub_ctx;
+   615			return 1;
+   616		case RAS_FEAT_ECS:
+   617			num = ras_feat->ecs_info.num_media_frus;
+   618			dev_data->ecs_ops = ras_feat->ecs_ops;
+   619			dev_data->private = ras_feat->ecs_ctx;
+   620			return num;
+   621		case RAS_FEAT_PPR:
+   622			dev_data->ppr_ops = ras_feat->ppr_ops;
+   623			dev_data->private = ras_feat->ppr_ctx;
+   624			return 1;
+   625		default:
+   626			return -EINVAL;
+   627		}
+   628	}
+   629	
 
-Disabling powertop service (which calls /usr/sbin/powertop --auto-tune) 
-solves problem completely. After some search I have found this is the cause:
-
-# causes IRQ storm on 6.10.x
-# kernel 6.9.9 is immune
-echo 'auto' > /sys/bus/pci/devices/0000:00:1f.6/power/control
-
-lspci | grep 1f.6
-00:1f.6 Ethernet controller: Intel Corporation Device 550b (rev 20)
-
-journalctl -b | grep 1f.6
-srp 17 19:44:17 e14 kernel: pci 0000:00:1f.6: [8086:550b] type 00 class 
-0x020000 conventional PCI endpoint
-srp 17 19:44:17 e14 kernel: pci 0000:00:1f.6: BAR 0 [mem 
-0x9c300000-0x9c31ffff]
-srp 17 19:44:17 e14 kernel: pci 0000:00:1f.6: PME# supported from D0 
-D3hot D3cold
-srp 17 19:44:17 e14 kernel: pci 0000:00:1f.6: Adding to iommu group 12
-srp 17 19:44:19 e14 kernel: e1000e 0000:00:1f.6: Interrupt Throttling 
-Rate (ints/sec) set to dynamic conservative mode
-srp 17 19:44:19 e14 kernel: e1000e 0000:00:1f.6 0000:00:1f.6 
-(uninitialized): registered PHC clock
-srp 17 19:44:20 e14 kernel: e1000e 0000:00:1f.6 eth0: (PCI 
-Express:2.5GT/s:Width x1) fc:5c:ee:b0:13:74
-srp 17 19:44:20 e14 kernel: e1000e 0000:00:1f.6 eth0: Intel(R) PRO/1000 
-Network Connection
-srp 17 19:44:20 e14 kernel: e1000e 0000:00:1f.6 eth0: MAC: 16, PHY: 12, 
-PBA No: FFFFFF-0FF
-srp 17 19:44:20 e14 kernel: e1000e 0000:00:1f.6 enp0s31f6: renamed from eth0
-srp 17 19:44:24 e14 ModemManager[1434]: <info>  [base-manager] couldn't 
-check support for device '/sys/devices/pci0000:00/0000:00:1f.6': not 
-supported by any plugin
-
-
-
-> You can ask the reporter to mask that GPE via "echo mask >
-> /sys/firmware/acpi/interrupts/gpe6D" and see if the storm goes away
-> then.
-> 
-> The only ACPI core issue introduced between 6.9 and 6.10 I'm aware of
-> is the one addressed by this series
-> 
-> https://lore.kernel.org/linux-acpi/22385894.EfDdHjke4D@rjwysocki.net/
-> 
-> but this is about the EC and the problem here doesn't appear to be
-> EC-related.  It may be worth trying anyway, though.
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
