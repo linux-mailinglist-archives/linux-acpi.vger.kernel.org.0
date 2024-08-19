@@ -1,159 +1,135 @@
-Return-Path: <linux-acpi+bounces-7676-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7677-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207D8957548
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 22:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6F4957673
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 23:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458EA1C21F47
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 20:07:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE3181C21216
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 21:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DB41DD392;
-	Mon, 19 Aug 2024 20:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402FE15A851;
+	Mon, 19 Aug 2024 21:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DupjDfdW"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DtT2Pe2n"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CEE187FF1;
-	Mon, 19 Aug 2024 20:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89F21598F4
+	for <linux-acpi@vger.kernel.org>; Mon, 19 Aug 2024 21:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724098071; cv=none; b=LfbUwGx3IWE27zd31UEP6yLlRNT1LKW+g5yX9ZVB/sg0Z7CiCEw+ubLKIh86J1nQ6sd3FypOkv4GMaW+KsmrIb0wucJGc14lTJaMts0Fg4hQrkhk/Es/jIw2AuSQf9v7NIOsS4r6SneAZskO//Hejnrie/68A/WE14dGpG/+94s=
+	t=1724102671; cv=none; b=h7fNe79PZAXedaKsWTvofnXJXsYGlsRTtbQQVxdlalp6PsOqpRHU5quNX4Tr9If5rDjP7Xz8fP5D37m/myS+xr09AM4uzAqXNdIvSHrADJFLtgnVIII5qAwiVy6uZeVd3hrCak5GGs0Lk3ZVvFvL2FzNQhc1dYgDm+vCI3gH8DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724098071; c=relaxed/simple;
-	bh=rAPCRlcod+pfbPu210SomC+sQBvMBit2CDwdTkZs9WA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k+xXNaWBF9vTtXdJjnFBhoRvGqNtXHdWLd9FxG7KsaSHdAaXUjnxnUM+S/C2CBBLEXZj10bhY1UWTyk+OfJk+IqfQ8Xgl3aibTKQ1VZ0PoGN5SQsbvBRwnGVzoSxqaZZKdxBtX6HxOsAci4S9kJtkihLfKsURCPcYY2WuuQ63PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DupjDfdW; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5bef295a2b4so922571a12.0;
-        Mon, 19 Aug 2024 13:07:49 -0700 (PDT)
+	s=arc-20240116; t=1724102671; c=relaxed/simple;
+	bh=u+0m0US3QFw84sTqEbjna9w6FE0gpMTeeaVLynF5j9c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UMVB0nEz7BmAKvGROxnvEBkDr1zG7odDkUkvCnPuQtPO3S/tMo+rE78DSGEnQydJlLnmpGdOpr6/ZU4mus72t7JWfp5AmfKRdU2qQ/1gSwg4Pq2MIVw/Kz6l6ZnbLsWFSuyxYtNFTer5D6X4rcablTCZJX1R18UryXGbh/QDLBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DtT2Pe2n; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-842fdb1afb1so1610549241.1
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Aug 2024 14:24:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724098068; x=1724702868; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AXG6IXtrOjPM85KujCO90THzzqzY1pavUqqhKYUalFU=;
-        b=DupjDfdWerMwK5w3VidWTMW/SnbAzPXMPMu5hmhYPukmYW4C0Xp4ouyoiZhdrFr0df
-         3dhYfrh3WJoTWDtLNDoQVo2w5RZJfmdKNwCgEB6jguQ7ItPpkYvZntRcfRnpsTPwhkrg
-         QSBHZ5I3PYDyRPD2AhYLQJMhkwXzbWfgUs5XmMe4JM+tXQ6Vy5nmLKeV/zhoD9TgDRzJ
-         hyT8VhUCWbDCsOMS8SnOmaP3K44TpvMEcHVPwSDDAhFQcRnwKYYkthqDC9G22zSd2khP
-         n8qPOebCEi1x9UdpMvwcILerJaODruxmBj7Mb7pN1EIqau51o6SAeWf6NzOuyT7+Fh7x
-         xkLQ==
+        d=google.com; s=20230601; t=1724102668; x=1724707468; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JiPuVEIARbs7nZfPRgac3ucMDQpztOtq3lJp2GBYRco=;
+        b=DtT2Pe2nLR8VRYk0rzMM5mkYnn7GTF2EUNu+8domdSg4KxZeqI11Xr/cxFMlfc/KAh
+         mMU133RBG1J3pUjS3ctF3SRH/Def2K3meDQDnUqVIOf84YjiqPpwUKff0hlF1ZNsTpcz
+         xBbdIYoignoJ2+JXnD6Pf7qwvRLjtsTqcbjWDR6jVwN8hTrr2Cq/6vayKOI9MZlUVpZ3
+         +OQHciyI/stwtWAKCzNvsU1DEgSSyp+d99Xjq18T5KTZ64cIRRos5ax/tUJFUyWVKvg2
+         /Y29uijJjsczD5QAnAGvHOXEpHoj5tAeze44gDdiNPA7vCwttJTMmZ9wUHcmmYlD4trp
+         4LUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724098068; x=1724702868;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AXG6IXtrOjPM85KujCO90THzzqzY1pavUqqhKYUalFU=;
-        b=NxDX3LfcAtRtaQqUuEbtR7fT+ZkJJQsU9Z7lUUAXZxrtNVe7pDbm5UQYYe6khIIMp9
-         BHMzN0VYYyWoVQO9flE3yGvd1gD05M5tbMsCqEmuMr1RXiLJlv3FpFhfNiWw5Jzlb7Ym
-         FIN8Fw1YEE9/EKVgBesfONYBuOXop17mXtqot03/gy5Ll88pPF7498vid2QxeFU1kVvl
-         VwlZUI/H3SeAKKHsddRkJuOrYsz9A7/2JADt8oeC0vOn+znXE6c43kuibdAYs8hvin17
-         la3fzSFURSUhI/8RVPuAkRP7ECATugEsh6RB+Q7Ff4gmajDAdkU2ehYhDkkMAUX0CUXp
-         Yh4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVGyvbbjxIFllUp2yG0gdkVBFsUk+7lQ3EZZ9vUk5fMKb2LOmq0cG6U3cOiPugCJ8LxiRZKdAFIREU3MIc3PLZP3tNTw+OJwtCYDD8irOqDQfzVjCdAoUsV6G4aorX+5jPfKGjtOIV54XBzUPXVr9BWuWbx02unt+srQGMdf2mafeQ9m6+NpKEOO0tq16Qz7cOs+z2wd2pPPdjL2O1V3RfdWbzXSgZ+oSy3z0bRC37nrETzbvmOHz2331+/fA34zRWH2sPmYqdx
-X-Gm-Message-State: AOJu0YxxQNwsMAx5LjX8okw57/NavCixE2jgTv4tSx9OnVzqmsErCZsW
-	MS/VEry/4yr/yf/BM7pr2bKOtyDUYI3+bznBwDfpyOSzAynM9MFD
-X-Google-Smtp-Source: AGHT+IGJ+Gfht/qOvEgwrpTVPJu3XY+E8gChTgsY9fwcJajAIgQx/hjZADakWsaqM4RF1z+rkUv/TQ==
-X-Received: by 2002:a05:6402:51c6:b0:58c:b2b8:31b2 with SMTP id 4fb4d7f45d1cf-5bf0ac5b251mr753759a12.17.1724098067404;
-        Mon, 19 Aug 2024 13:07:47 -0700 (PDT)
-Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5becfc7cc93sm4516920a12.3.2024.08.19.13.07.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 13:07:46 -0700 (PDT)
-Message-ID: <6406891b-e116-4f10-99c7-1d434d7e8410@gmail.com>
-Date: Mon, 19 Aug 2024 22:07:45 +0200
+        d=1e100.net; s=20230601; t=1724102668; x=1724707468;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JiPuVEIARbs7nZfPRgac3ucMDQpztOtq3lJp2GBYRco=;
+        b=PT16qHNF3IXQIEtyHETw/YBH/FZtTYpcpv7qroHnt4zTkqYeR+q0wxGF9Thhy3fhCq
+         t92eDk1LzIy+oCv+og54vhumYbhCHpLX9UYFLZuDVifPdWfQ6N5g3u3kJuDeGo11xm1R
+         yoet6FDSItTOQcb+xJPgS+W292t0TRoe8F6NTUXpRh0+mB3f4XCoFI/V2vTZVQ6AnWD/
+         es9bfCArWL095+kGeB9YMzIUIaPEIDhuqHiLX2kz2nRERIk/dqVMC1QXnOTNUtRpE3W2
+         Wt5QTC+Xb6YSIANS+h8vNPIQFD7zfoUWA1/9SbrHnwOwTPdbCgYhzVuwQIK/6j5REq2/
+         whog==
+X-Forwarded-Encrypted: i=1; AJvYcCWVio3OixmHbK9UNChtgWFKoMz2U0G+bPb6aVMp1nTkFsa9sNxlr5NTwo2oMUXF2W7f47HGntPY5LAZJgNwsySe6d7evM1uWQ5iJg==
+X-Gm-Message-State: AOJu0YxWL0thvno+vljLJnk0X7/tEbakKh7bsM8dX4DdDnk8xeZ9evDQ
+	h+03usnNUkPNReEQkwZQpbImkiNfPNCR+YIJav4H4kF9ChdSRKqvUyTCk7CSETokI+Dwat0Jrf2
+	UmsFNmx8Ad2r1QBEXwHW25XgZ90KKnG1R4qvo
+X-Google-Smtp-Source: AGHT+IE+E6VJ5JvA7Lqq7iQmAIRzeQu5arI3TDl9cLtuS06laSaYx2Gcf5jbf18gxD5V1/WytLtXiNijQYFV+DdrRxA=
+X-Received: by 2002:a05:6102:304d:b0:48f:8ead:7b7 with SMTP id
+ ada2fe7eead31-4977997fc1fmr14487889137.21.1724102667560; Mon, 19 Aug 2024
+ 14:24:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/3] OF support for Surface System Aggregator Module
-To: Hans de Goede <hdegoede@redhat.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>,
- linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <quic_kdybcio@quicinc.com>,
- Krzysztof Kozlowski <krzk@kernel.org>
-References: <20240814-topic-sam-v3-0-a84588aad233@quicinc.com>
- <1edadffb-67d9-476e-b0f7-7f3fc34e9592@redhat.com>
-Content-Language: en-US
-From: Maximilian Luz <luzmaximilian@gmail.com>
-In-Reply-To: <1edadffb-67d9-476e-b0f7-7f3fc34e9592@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+In-Reply-To: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 19 Aug 2024 14:23:49 -0700
+Message-ID: <CABCJKue4NgOVxfjcU=oE23rogqgfiiJMqLHp-NSoSs=o1=22kg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	Hans de Goede <hdegoede@redhat.com>, Mark Pearson <markpearson@lenovo.com>, 
+	Kees Cook <kees@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
+	John Rowley <lkml@johnrowley.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/19/24 1:57 PM, Hans de Goede wrote:
-> Hi,
-> 
-> On 8/14/24 12:27 PM, Konrad Dybcio wrote:
->> Wire up OF support for SSAM drivers, to use with Surface Laptop 7 and
->> other Qualcomm-based devices.
->>
->> Patch 3 references compatible strings introduced in [1]
->>
->> [1] https://lore.kernel.org/linux-arm-msm/20240809-topic-sl7-v1-1-2090433d8dfc@quicinc.com/T/#u
->>
->> Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
-> 
-> Thank you for your patch-series, I've applied the series to my
-> review-hans branch:
-> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
-> 
-> I did notice the following compiler warning when test building:
-> 
-> drivers/platform/surface/surface_aggregator_registry.c:278:36: warning: ‘ssam_node_group_sl7’ defined but not used [-Wunused-variable]
->    278 | static const struct software_node *ssam_node_group_sl7[] = {
->        |                                    ^~~~~~~~~~~~~~~~~~~
-> 
-> One way to fix this would be add #ifdef CONFIG_OF around the definition
-> of ssam_node_group_sl7, but then future devicetree based surface devices
-> would need more #ifdef-s so instead I've solved it by squashing in this fix:
-> 
-> diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
-> index 495cb4300617..ac96e883cb57 100644
-> --- a/drivers/platform/surface/surface_aggregator_registry.c
-> +++ b/drivers/platform/surface/surface_aggregator_registry.c
-> @@ -415,14 +415,12 @@ static const struct acpi_device_id ssam_platform_hub_acpi_match[] = {
->   };
->   MODULE_DEVICE_TABLE(acpi, ssam_platform_hub_acpi_match);
->   
-> -#ifdef CONFIG_OF
-> -static const struct of_device_id ssam_platform_hub_of_match[] = {
-> +static const struct of_device_id ssam_platform_hub_of_match[] __maybe_unused = {
->   	/* Surface Laptop 7 */
->   	{ .compatible = "microsoft,romulus13", (void *)ssam_node_group_sl7 },
->   	{ .compatible = "microsoft,romulus15", (void *)ssam_node_group_sl7 },
->   	{ },
->   };
-> -#endif
->   
->   static int ssam_platform_hub_probe(struct platform_device *pdev)
->   {
-> 
-> Once I've run some tests on this branch the patches there will be
-> added to the platform-drivers-x86/for-next branch and eventually
-> will be included in the pdx86 pull-request to Linus for the next
-> merge-window.
+Hi Nathan,
 
-I agree with Konrad, this looks like the best way to address this.
-Thanks!
+On Mon, Aug 19, 2024 at 12:09=E2=80=AFPM Nathan Chancellor <nathan@kernel.o=
+rg> wrote:
+>
+> When an attribute group is created with sysfs_create_group(), the
+> ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+> and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+> respectively. These functions use container_of() to get the respective
+> callback from the passed attribute, meaning that these callbacks need to
+> be the same type as the callbacks in 'struct kobj_attribute'.
+>
+> However, the platform_profile sysfs functions have the type of the
+> ->show() and ->store() callbacks in 'struct device_attribute', which
+> results a CFI violation when accessing platform_profile or
+> platform_profile_choices under /sys/firmware/acpi because the types do
+> not match:
+>
+>   CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choic=
+es_show+0x0/0x140; expected type: 0x7a69590c)
+>
+> This happens to work because the layout of 'struct kobj_attribute' and
+> 'struct device_attribute' are the same, so the container_of() cast
+> happens to allow the callbacks to still work.
+>
+> Change the type of platform_profile_choices_show() and
+> platform_profile_{show,store}() to match the callbacks in
+> 'struct kobj_attribute' and update the attribute variables to match,
+> which resolves the CFI violation.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+> Reported-by: John Rowley <lkml@johnrowley.me>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+> Tested-by: John Rowley <lkml@johnrowley.me>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  drivers/acpi/platform_profile.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 
-Best regards,
-Max
+Looks good to me, thanks for fixing this!
+
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+
+Sami
 
