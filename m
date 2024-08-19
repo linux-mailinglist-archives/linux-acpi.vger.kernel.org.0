@@ -1,225 +1,159 @@
-Return-Path: <linux-acpi+bounces-7675-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7676-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40806957472
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 21:28:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207D8957548
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 22:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE9181F23855
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 19:28:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458EA1C21F47
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 20:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6331DF695;
-	Mon, 19 Aug 2024 19:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DB41DD392;
+	Mon, 19 Aug 2024 20:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ab0ysEiI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DupjDfdW"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618271DD389;
-	Mon, 19 Aug 2024 19:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CEE187FF1;
+	Mon, 19 Aug 2024 20:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724095620; cv=none; b=l85a685zk7qCJXK9FEeuBYmehxGOnouuc637nNP4eN9rWAvxDMHaOUm6fWm55hQm+44nysuyFaHughqkVg2tDpOte7k1U5bhqi/6Gi6edZi1n+R6gDwL6g51J+q8Qvv+9SwmImyvba85biWK/u59LfEDiB/s1MWvnQCp8/XoANo=
+	t=1724098071; cv=none; b=LfbUwGx3IWE27zd31UEP6yLlRNT1LKW+g5yX9ZVB/sg0Z7CiCEw+ubLKIh86J1nQ6sd3FypOkv4GMaW+KsmrIb0wucJGc14lTJaMts0Fg4hQrkhk/Es/jIw2AuSQf9v7NIOsS4r6SneAZskO//Hejnrie/68A/WE14dGpG/+94s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724095620; c=relaxed/simple;
-	bh=RhQG3+5QvIBcDMyvpZvXMVI3HKjSuVTO/dQjDa3Ckag=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f3Z+A1zSZmhq+j7ZeFJbWhXtGTJyLZ29Zi6hOd+G8VVFhxuq5pitHdcRvXZedQLw0WITBWBnkoMXoMNtbJ7N+DfWUTytZH1h7MT9MK2Ylk8tPny55vnqSJJtV8K4Dmv8n6sY/kWkDF7EHpM3buZhH0skFQL6iK2Zg5TbvvMN2wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ab0ysEiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC18CC4AF1B;
-	Mon, 19 Aug 2024 19:26:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724095618;
-	bh=RhQG3+5QvIBcDMyvpZvXMVI3HKjSuVTO/dQjDa3Ckag=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ab0ysEiIJtw2hGcVK56Ge+bDCV3g/xHbvtVF2a9tuF6c5m2pjsPaIYjL4UwIAPwHx
-	 pmEqMPX0fW/sxInj/Eu/CL5hXki96I9GpV9WSxA1q22EB9cMiT0N5bOdQGdxgIlPge
-	 spq09rmavppo7BEfSWHeWoT83ReoDhRREBdZdcOYkTbqLf3Xxg8neupG/tT9cRtHrP
-	 0vxfHd2JrI18NPtMqmlb8uNj1dGxaHjiv7ckKyXy6G+T7aFceq2OduIexKdzbcEl+v
-	 oF0JZKYs42gcFrbkdasSfU+HZJ3C2wyWxW/Wj3CN5Zm9FU/AsFKCY7vqbNGFG3DDKG
-	 E370/pRaod/ng==
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-268e0b13471so654575fac.2;
-        Mon, 19 Aug 2024 12:26:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXUmM8gSilsIbUwSHedkRDR2MJZqGUIQJeN2HjN6L0mfVEZpVRts7pwgnhRRQBRaGa42CjlY3e39Je2YSnFWTvpwONwkf416vg5fJtF1jzj3GAOovjRosjMyIVjWWVvsn2um0JbZu+z5g==
-X-Gm-Message-State: AOJu0YzpI/QM/9BSYX04tOMgMVEY0st1tAI4Qm1mJTzAabr9Bwa54vQ3
-	O7sOfQLUDL2KddW/Ttwhn48oBvyxVQ5NMwi7OpYG04bYvrMZUsyyKZeEyIML8zt+FBrSzURb4ce
-	5OfCABI98Ct7nR/aqQ9Ea3oQKzt8=
-X-Google-Smtp-Source: AGHT+IG9np/OdfXLQsEwBXl36PxM0+tZIfv8EhtHrVPeVC+a0R+i7GLo6DzF3FddPjFmq/RSeJyyID1GHABHnSL3l7E=
-X-Received: by 2002:a05:6870:7b4b:b0:25e:14d9:da27 with SMTP id
- 586e51a60fabf-2701c0a0273mr6552882fac.0.1724095618076; Mon, 19 Aug 2024
- 12:26:58 -0700 (PDT)
+	s=arc-20240116; t=1724098071; c=relaxed/simple;
+	bh=rAPCRlcod+pfbPu210SomC+sQBvMBit2CDwdTkZs9WA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k+xXNaWBF9vTtXdJjnFBhoRvGqNtXHdWLd9FxG7KsaSHdAaXUjnxnUM+S/C2CBBLEXZj10bhY1UWTyk+OfJk+IqfQ8Xgl3aibTKQ1VZ0PoGN5SQsbvBRwnGVzoSxqaZZKdxBtX6HxOsAci4S9kJtkihLfKsURCPcYY2WuuQ63PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DupjDfdW; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5bef295a2b4so922571a12.0;
+        Mon, 19 Aug 2024 13:07:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724098068; x=1724702868; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AXG6IXtrOjPM85KujCO90THzzqzY1pavUqqhKYUalFU=;
+        b=DupjDfdWerMwK5w3VidWTMW/SnbAzPXMPMu5hmhYPukmYW4C0Xp4ouyoiZhdrFr0df
+         3dhYfrh3WJoTWDtLNDoQVo2w5RZJfmdKNwCgEB6jguQ7ItPpkYvZntRcfRnpsTPwhkrg
+         QSBHZ5I3PYDyRPD2AhYLQJMhkwXzbWfgUs5XmMe4JM+tXQ6Vy5nmLKeV/zhoD9TgDRzJ
+         hyT8VhUCWbDCsOMS8SnOmaP3K44TpvMEcHVPwSDDAhFQcRnwKYYkthqDC9G22zSd2khP
+         n8qPOebCEi1x9UdpMvwcILerJaODruxmBj7Mb7pN1EIqau51o6SAeWf6NzOuyT7+Fh7x
+         xkLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724098068; x=1724702868;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AXG6IXtrOjPM85KujCO90THzzqzY1pavUqqhKYUalFU=;
+        b=NxDX3LfcAtRtaQqUuEbtR7fT+ZkJJQsU9Z7lUUAXZxrtNVe7pDbm5UQYYe6khIIMp9
+         BHMzN0VYYyWoVQO9flE3yGvd1gD05M5tbMsCqEmuMr1RXiLJlv3FpFhfNiWw5Jzlb7Ym
+         FIN8Fw1YEE9/EKVgBesfONYBuOXop17mXtqot03/gy5Ll88pPF7498vid2QxeFU1kVvl
+         VwlZUI/H3SeAKKHsddRkJuOrYsz9A7/2JADt8oeC0vOn+znXE6c43kuibdAYs8hvin17
+         la3fzSFURSUhI/8RVPuAkRP7ECATugEsh6RB+Q7Ff4gmajDAdkU2ehYhDkkMAUX0CUXp
+         Yh4g==
+X-Forwarded-Encrypted: i=1; AJvYcCVGyvbbjxIFllUp2yG0gdkVBFsUk+7lQ3EZZ9vUk5fMKb2LOmq0cG6U3cOiPugCJ8LxiRZKdAFIREU3MIc3PLZP3tNTw+OJwtCYDD8irOqDQfzVjCdAoUsV6G4aorX+5jPfKGjtOIV54XBzUPXVr9BWuWbx02unt+srQGMdf2mafeQ9m6+NpKEOO0tq16Qz7cOs+z2wd2pPPdjL2O1V3RfdWbzXSgZ+oSy3z0bRC37nrETzbvmOHz2331+/fA34zRWH2sPmYqdx
+X-Gm-Message-State: AOJu0YxxQNwsMAx5LjX8okw57/NavCixE2jgTv4tSx9OnVzqmsErCZsW
+	MS/VEry/4yr/yf/BM7pr2bKOtyDUYI3+bznBwDfpyOSzAynM9MFD
+X-Google-Smtp-Source: AGHT+IGJ+Gfht/qOvEgwrpTVPJu3XY+E8gChTgsY9fwcJajAIgQx/hjZADakWsaqM4RF1z+rkUv/TQ==
+X-Received: by 2002:a05:6402:51c6:b0:58c:b2b8:31b2 with SMTP id 4fb4d7f45d1cf-5bf0ac5b251mr753759a12.17.1724098067404;
+        Mon, 19 Aug 2024 13:07:47 -0700 (PDT)
+Received: from ?IPV6:2a02:8071:b783:140:927c:82ba:d32d:99c1? ([2a02:8071:b783:140:927c:82ba:d32d:99c1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5becfc7cc93sm4516920a12.3.2024.08.19.13.07.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 13:07:46 -0700 (PDT)
+Message-ID: <6406891b-e116-4f10-99c7-1d434d7e8410@gmail.com>
+Date: Mon, 19 Aug 2024 22:07:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819070827.3620020-1-kirill.shutemov@linux.intel.com> <20240819070827.3620020-3-kirill.shutemov@linux.intel.com>
-In-Reply-To: <20240819070827.3620020-3-kirill.shutemov@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 19 Aug 2024 21:26:47 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gE=iqsJVPrihox0JYpC4-q08p3ELnNst0g+ExYNYWT5g@mail.gmail.com>
-Message-ID: <CAJZ5v0gE=iqsJVPrihox0JYpC4-q08p3ELnNst0g+ExYNYWT5g@mail.gmail.com>
-Subject: Re: [PATCHv3 2/4] x86/acpi: Replace manual page table initialization
- with kernel_ident_mapping_init()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Baoquan He <bhe@redhat.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Sean Christopherson <seanjc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] OF support for Surface System Aggregator Module
+To: Hans de Goede <hdegoede@redhat.com>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?=
+ <ilpo.jarvinen@linux.intel.com>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>,
+ linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <quic_kdybcio@quicinc.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>
+References: <20240814-topic-sam-v3-0-a84588aad233@quicinc.com>
+ <1edadffb-67d9-476e-b0f7-7f3fc34e9592@redhat.com>
+Content-Language: en-US
+From: Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <1edadffb-67d9-476e-b0f7-7f3fc34e9592@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 19, 2024 at 9:08=E2=80=AFAM Kirill A. Shutemov
-<kirill.shutemov@linux.intel.com> wrote:
->
-> The function init_transition_pgtable() maps the page with
-> asm_acpi_mp_play_dead() into an identity mapping.
->
-> Replace manual page table initialization with kernel_ident_mapping_init()
-> to avoid code duplication. Use x86_mapping_info::offset to get the page
-> mapped at the correct location.
->
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> ---
->  arch/x86/kernel/acpi/madt_wakeup.c | 73 ++++++------------------------
->  1 file changed, 15 insertions(+), 58 deletions(-)
->
-> diff --git a/arch/x86/kernel/acpi/madt_wakeup.c b/arch/x86/kernel/acpi/ma=
-dt_wakeup.c
-> index d5ef6215583b..78960b338be9 100644
-> --- a/arch/x86/kernel/acpi/madt_wakeup.c
-> +++ b/arch/x86/kernel/acpi/madt_wakeup.c
-> @@ -70,58 +70,6 @@ static void __init free_pgt_page(void *pgt, void *dumm=
-y)
->         return memblock_free(pgt, PAGE_SIZE);
->  }
->
-> -/*
-> - * Make sure asm_acpi_mp_play_dead() is present in the identity mapping =
-at
-> - * the same place as in the kernel page tables. asm_acpi_mp_play_dead() =
-switches
-> - * to the identity mapping and the function has be present at the same s=
-pot in
-> - * the virtual address space before and after switching page tables.
-> - */
-> -static int __init init_transition_pgtable(pgd_t *pgd)
-> -{
-> -       pgprot_t prot =3D PAGE_KERNEL_EXEC_NOENC;
-> -       unsigned long vaddr, paddr;
-> -       p4d_t *p4d;
-> -       pud_t *pud;
-> -       pmd_t *pmd;
-> -       pte_t *pte;
-> -
-> -       vaddr =3D (unsigned long)asm_acpi_mp_play_dead;
-> -       pgd +=3D pgd_index(vaddr);
-> -       if (!pgd_present(*pgd)) {
-> -               p4d =3D (p4d_t *)alloc_pgt_page(NULL);
-> -               if (!p4d)
-> -                       return -ENOMEM;
-> -               set_pgd(pgd, __pgd(__pa(p4d) | _KERNPG_TABLE));
-> -       }
-> -       p4d =3D p4d_offset(pgd, vaddr);
-> -       if (!p4d_present(*p4d)) {
-> -               pud =3D (pud_t *)alloc_pgt_page(NULL);
-> -               if (!pud)
-> -                       return -ENOMEM;
-> -               set_p4d(p4d, __p4d(__pa(pud) | _KERNPG_TABLE));
-> -       }
-> -       pud =3D pud_offset(p4d, vaddr);
-> -       if (!pud_present(*pud)) {
-> -               pmd =3D (pmd_t *)alloc_pgt_page(NULL);
-> -               if (!pmd)
-> -                       return -ENOMEM;
-> -               set_pud(pud, __pud(__pa(pmd) | _KERNPG_TABLE));
-> -       }
-> -       pmd =3D pmd_offset(pud, vaddr);
-> -       if (!pmd_present(*pmd)) {
-> -               pte =3D (pte_t *)alloc_pgt_page(NULL);
-> -               if (!pte)
-> -                       return -ENOMEM;
-> -               set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
-> -       }
-> -       pte =3D pte_offset_kernel(pmd, vaddr);
-> -
-> -       paddr =3D __pa(vaddr);
-> -       set_pte(pte, pfn_pte(paddr >> PAGE_SHIFT, prot));
-> -
-> -       return 0;
-> -}
-> -
->  static int __init acpi_mp_setup_reset(u64 reset_vector)
->  {
->         struct x86_mapping_info info =3D {
-> @@ -130,6 +78,7 @@ static int __init acpi_mp_setup_reset(u64 reset_vector=
-)
->                 .page_flag      =3D __PAGE_KERNEL_LARGE_EXEC,
->                 .kernpg_flag    =3D _KERNPG_TABLE_NOENC,
->         };
-> +       unsigned long mstart, mend;
->         pgd_t *pgd;
->
->         pgd =3D alloc_pgt_page(NULL);
-> @@ -137,8 +86,6 @@ static int __init acpi_mp_setup_reset(u64 reset_vector=
-)
->                 return -ENOMEM;
->
->         for (int i =3D 0; i < nr_pfn_mapped; i++) {
-> -               unsigned long mstart, mend;
-> -
->                 mstart =3D pfn_mapped[i].start << PAGE_SHIFT;
->                 mend   =3D pfn_mapped[i].end << PAGE_SHIFT;
->                 if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) =
-{
-> @@ -147,14 +94,24 @@ static int __init acpi_mp_setup_reset(u64 reset_vect=
-or)
->                 }
->         }
->
-> -       if (kernel_ident_mapping_init(&info, pgd,
-> -                                     PAGE_ALIGN_DOWN(reset_vector),
-> -                                     PAGE_ALIGN(reset_vector + 1))) {
-> +       mstart =3D PAGE_ALIGN_DOWN(reset_vector);
-> +       mend =3D mstart + PAGE_SIZE;
-> +       if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
->                 kernel_ident_mapping_free(&info, pgd);
->                 return -ENOMEM;
->         }
->
-> -       if (init_transition_pgtable(pgd)) {
-> +       /*
-> +        * Make sure asm_acpi_mp_play_dead() is present in the identity m=
-apping
-> +        * at the same place as in the kernel page tables.
-> +        * asm_acpi_mp_play_dead() switches to the identity mapping and t=
-he
-> +        * function has be present at the same spot in the virtual addres=
-s space
+On 8/19/24 1:57 PM, Hans de Goede wrote:
+> Hi,
+> 
+> On 8/14/24 12:27 PM, Konrad Dybcio wrote:
+>> Wire up OF support for SSAM drivers, to use with Surface Laptop 7 and
+>> other Qualcomm-based devices.
+>>
+>> Patch 3 references compatible strings introduced in [1]
+>>
+>> [1] https://lore.kernel.org/linux-arm-msm/20240809-topic-sl7-v1-1-2090433d8dfc@quicinc.com/T/#u
+>>
+>> Signed-off-by: Konrad Dybcio <quic_kdybcio@quicinc.com>
+> 
+> Thank you for your patch-series, I've applied the series to my
+> review-hans branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
+> 
+> I did notice the following compiler warning when test building:
+> 
+> drivers/platform/surface/surface_aggregator_registry.c:278:36: warning: ‘ssam_node_group_sl7’ defined but not used [-Wunused-variable]
+>    278 | static const struct software_node *ssam_node_group_sl7[] = {
+>        |                                    ^~~~~~~~~~~~~~~~~~~
+> 
+> One way to fix this would be add #ifdef CONFIG_OF around the definition
+> of ssam_node_group_sl7, but then future devicetree based surface devices
+> would need more #ifdef-s so instead I've solved it by squashing in this fix:
+> 
+> diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+> index 495cb4300617..ac96e883cb57 100644
+> --- a/drivers/platform/surface/surface_aggregator_registry.c
+> +++ b/drivers/platform/surface/surface_aggregator_registry.c
+> @@ -415,14 +415,12 @@ static const struct acpi_device_id ssam_platform_hub_acpi_match[] = {
+>   };
+>   MODULE_DEVICE_TABLE(acpi, ssam_platform_hub_acpi_match);
+>   
+> -#ifdef CONFIG_OF
+> -static const struct of_device_id ssam_platform_hub_of_match[] = {
+> +static const struct of_device_id ssam_platform_hub_of_match[] __maybe_unused = {
+>   	/* Surface Laptop 7 */
+>   	{ .compatible = "microsoft,romulus13", (void *)ssam_node_group_sl7 },
+>   	{ .compatible = "microsoft,romulus15", (void *)ssam_node_group_sl7 },
+>   	{ },
+>   };
+> -#endif
+>   
+>   static int ssam_platform_hub_probe(struct platform_device *pdev)
+>   {
+> 
+> Once I've run some tests on this branch the patches there will be
+> added to the platform-drivers-x86/for-next branch and eventually
+> will be included in the pdx86 pull-request to Linus for the next
+> merge-window.
 
-s/has be/must/
+I agree with Konrad, this looks like the best way to address this.
+Thanks!
 
-Otherwise LGTM
-
-> +        * before and after switching page tables.
-> +        */
-> +       info.offset =3D __START_KERNEL_map - phys_base;
-> +       mstart =3D PAGE_ALIGN_DOWN(__pa(asm_acpi_mp_play_dead));
-> +       mend =3D mstart + PAGE_SIZE;
-> +       if (kernel_ident_mapping_init(&info, pgd, mstart, mend)) {
->                 kernel_ident_mapping_free(&info, pgd);
->                 return -ENOMEM;
->         }
-> --
-> 2.43.0
->
+Best regards,
+Max
 
