@@ -1,118 +1,173 @@
-Return-Path: <linux-acpi+bounces-7673-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7674-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED909570B1
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 18:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E1095742A
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 21:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF2228329B
-	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 16:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A70F628552B
+	for <lists+linux-acpi@lfdr.de>; Mon, 19 Aug 2024 19:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B628117557E;
-	Mon, 19 Aug 2024 16:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321CD1D54DA;
+	Mon, 19 Aug 2024 19:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFx7RQGD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K23Tcdhw"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2A81422D2;
-	Mon, 19 Aug 2024 16:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E372F26AD3;
+	Mon, 19 Aug 2024 19:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724086062; cv=none; b=Cxm3fpg34nZBvYQU+fsaF8ecC5iVcW5TQikc3iMqqTzk9jKNiwlQ9m248BG/HBC3dnVLOv0o3idUDKcJ02x9GBIhLD4P7kUDLVMPa1uDnETnWcHqF0EAXKe26RgmtkiodWYq6axc25Us/1AOUWlxdQk9Z7RQ8Lw5aJp9r0rmVTI=
+	t=1724094572; cv=none; b=EjVJs8S6g3rnAkS9OmGqEpo9G4UgwjVhipqPP0thyHyOnv+PNYmEfFIZDq5TLuopCBgGP/BdpTml5Sh+qa5AS1A5a+5VXo4mLOUm8mVkGVLr5EAIMirRfgFPLqoGX2/rEZY9U5aAQKOnfZOf4Z/Td/eFsIfvFGQrpY/CmWua8ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724086062; c=relaxed/simple;
-	bh=AKwTNHLgA+6APIxNBMqNwEfniEaV2liiz8suz5WwnOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=sxGff6YyVDUqchnOsrIUhan/hjfFmnne7FOkCimzBLn0XL70tagKc/Trgg8Wj1/3y8Ca/TWeIUuqt954oJSOaG0OayKrkMV0umMN0RhX0mLstvzy/5QyJ/4qHTvpgh8TYqj7iW9VwRzbZYCvCNMQEcQVI/dNAyzV1L1j4HKess0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFx7RQGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2481AC32782;
-	Mon, 19 Aug 2024 16:47:40 +0000 (UTC)
+	s=arc-20240116; t=1724094572; c=relaxed/simple;
+	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YfmKR2vLYolwXbpssIP3hMZZMPEeluOd9BbKrl035u+OkzhFo6MH/X9ts4aXofWzqL9FYe06vrDqP87jrvFJ02sZUP1N656SOlDGnAFyhUv2e2zlTQEDqpURSLsgwrvK5LJ+w/2iG2EYcn2Dd1yrP6pXLnN9TaIl2E01l/ZRQlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K23Tcdhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA725C32782;
+	Mon, 19 Aug 2024 19:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724086062;
-	bh=AKwTNHLgA+6APIxNBMqNwEfniEaV2liiz8suz5WwnOA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=tFx7RQGDu+Zz+KfB/IrBweL3kUJ2q2YhPRjG7fSZHNJ3623goj1a3Cfc2776b54lz
-	 MGZwj1ZPBI13XK5Kwi81RG8lPEdnJMfos100gGtfSp8t0ktd9kxSnYa9/tzkF28yxY
-	 hXzjwFWvual5Cu4kWDKv8JgzMNenIX3SaqtnxqpUqRrx5lFez06ZqCMNLZk8djrsr2
-	 kA5uKCEaLfjXw+qzqD618LYzZ0MxiHLitm3MpmACVNjFmbn+a4I5WEsOUvmLwlPrEj
-	 aNSIDClhbwtpQghtCT3SZoBwwZGwHHzMXCTNMWzDq0ViK4HfjmQ+uBnlSIzt3w7Jjo
-	 Rd6JPMsYC2y9A==
-Date: Mon, 19 Aug 2024 11:47:39 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	przemyslaw.kitszel@intel.com, intel-wired-lan@lists.osuosl.org,
-	jesse.brandeburg@intel.com, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Petr Valenta <petr@jevklidu.cz>
-Subject: Re: ACPI IRQ storm with 6.10
-Message-ID: <20240819164739.GA160626@bhelgaas>
+	s=k20201202; t=1724094570;
+	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=K23Tcdhww1EkxB49+rm3W650EQEZDN1DZ4pOCr70a90bg1W+mWxNTIBGEWrzOsxdQ
+	 /EMvooiFf+IIqBl8ZSoQCK8gk7stYV/9fyjK02RANiVANd/6bgf7+Q5IrHJjrna605
+	 3sfHSfexgVMRk/2N4SkoZbxhj8+tC6DqFIWHxeBXqQycXeOOgo/FgAXugNSB5QqnQd
+	 BGm7TQf7Psk8yCRfi2AJ47B1ggcOG9vOBhF0CqU7QPKErO3V2LFOMe5HDklGyEDSNZ
+	 eDL8qvPfw/Z5Alg22hFsgjYJiusCxk9w5Ue/Q5gJ7AZag2sYHD3Sl9TdjiH5tIFs9a
+	 1v5qjV10mlL+A==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 19 Aug 2024 12:09:22 -0700
+Subject: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <782b7159-076a-4064-8333-69c454972b29@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGGYw2YC/x2N0QqDMAxFf0XyvIB2E52/Msbo2sQF1JZ0iCD+u
+ 8HHw7mcu0MhFSowVDsorVIkLQbNrYLw88tIKNEYXO0edd880YcsmCf/56TzJ2timQhZNgwsuEo
+ yZQ2M5Lq+a+/f2DJYLSvZ6Hp6vY/jBPDv3sd5AAAA
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, 
+ Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, John Rowley <lkml@johnrowley.me>, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3849; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGmHZ2T2TtC8LPzCnU3tVVZbYM1K5QeVO3XXH7z8tl5qm
+ ZXRmVnrO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEToQzMlzhUrrvE5x5tJHp
+ V6pu56JiJXVdg/zMql8a0md81XYt+M/IsLj3AuOdt5MmRYmFBQg+OKRncsTvgeXsCesluSUjrvv
+ P4AQA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Mon, Aug 19, 2024 at 07:23:42AM +0200, Jiri Slaby wrote:
-> On 19. 08. 24, 6:50, Jiri Slaby wrote:
-> > CC e1000e guys + Jesse (due to 75a3f93b5383) + Bjorn (due to b2c289415b2b)
-> 
-> Bjorn,
-> 
-> I am confused by these changes:
-> ==========================================
-> @@ -291,16 +288,13 @@ static int e1000_set_link_ksettings(struct net_device
-> *net
-> dev,
->          * duplex is forced.
->          */
->         if (cmd->base.eth_tp_mdix_ctrl) {
-> -               if (hw->phy.media_type != e1000_media_type_copper) {
-> -                       ret_val = -EOPNOTSUPP;
-> -                       goto out;
-> -               }
-> +               if (hw->phy.media_type != e1000_media_type_copper)
-> +                       return -EOPNOTSUPP;
-> 
->                 if ((cmd->base.eth_tp_mdix_ctrl != ETH_TP_MDI_AUTO) &&
->                     (cmd->base.autoneg != AUTONEG_ENABLE)) {
->                         e_err("forcing MDI/MDI-X state is not supported when
-> lin
-> k speed and/or duplex are forced\n");
-> -                       ret_val = -EINVAL;
-> -                       goto out;
-> +                       return -EINVAL;
->                 }
->         }
-> 
-> @@ -347,7 +341,6 @@ static int e1000_set_link_ksettings(struct net_device
-> *netde
-> v,
->         }
-> 
->  out:
-> -       pm_runtime_put_sync(netdev->dev.parent);
->         clear_bit(__E1000_RESETTING, &adapter->state);
->         return ret_val;
->  }
-> ==========================================
-> 
-> So no more clear_bit(__E1000_RESETTING in the above fail paths. Is that
-> intentional?
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be the same type as the callbacks in 'struct kobj_attribute'.
 
-No, not intentional, looks like I just blew it, sorry.  Will post a
-fix soon.  Thanks a lot for debugging this.
+However, the platform_profile sysfs functions have the type of the
+->show() and ->store() callbacks in 'struct device_attribute', which
+results a CFI violation when accessing platform_profile or
+platform_profile_choices under /sys/firmware/acpi because the types do
+not match:
 
-Bjorn
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+
+This happens to work because the layout of 'struct kobj_attribute' and
+'struct device_attribute' are the same, so the container_of() cast
+happens to allow the callbacks to still work.
+
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to match,
+which resolves the CFI violation.
+
+Cc: stable@vger.kernel.org
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/acpi/platform_profile.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index d2f7fd7743a1..11278f785526 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -22,8 +22,8 @@ static const char * const profile_names[] = {
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+ 
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	int len = 0;
+@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
+ 	return len;
+ }
+ 
+-static ssize_t platform_profile_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
+ 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+ }
+ 
+-static ssize_t platform_profile_store(struct device *dev,
+-			    struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int err, i;
+@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
+
+---
+base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
+change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
