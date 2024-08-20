@@ -1,158 +1,117 @@
-Return-Path: <linux-acpi+bounces-7697-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7698-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1AE957C50
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 06:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC19A957D35
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 08:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0BC61C22FC7
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 04:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEC5A1C23F7E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 06:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF4641C79;
-	Tue, 20 Aug 2024 04:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ACA14A4DC;
+	Tue, 20 Aug 2024 06:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib9BUAFd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SVubNwED"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101DD2F5E;
-	Tue, 20 Aug 2024 04:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EB161FDF
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 06:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724127365; cv=none; b=TVAl4QcWwRvVA7QpJ76jUUXN2kIR3lK2+sx18gRnE2IjgRPSsffdWuO7GVDy7zE7wJnVK4ht4LVPORBf7trlLgGFD5vUCmQbpHcuqLXjWzjG1VQvtdDN11byiB33+0euYbgrZaYLni113MrI2JPh5/ORF0cnNFcczuAdMhwvHlQ=
+	t=1724133627; cv=none; b=aoC1vP4CQjdjcC15dRxzAShB8bbgetPAei/L1Wv8OlsAewO5hQuWfCWl4tn+jwImTGSO606FJa2n5pxMjosGGvYvBsYUSoS8kfigCmZEri/1IZbUMsHjSBAPFuX+49t/EBPQpFZaIeYj0e/GAI7y6wdMF4hvnGh3p5+mYutFmds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724127365; c=relaxed/simple;
-	bh=AGa3YhfBqQHIC8r3pvSt8hZ1jUBw1AJBBqGQCs2wo98=;
+	s=arc-20240116; t=1724133627; c=relaxed/simple;
+	bh=sF3PRRiLeL/D5znM6gXQZ3NeF2qGdjIeuDfpPWTothE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QsY8IDDm05Ru/HObBEad6Phnhon6PpgniNf9/BOHa98YQiabKluZi4dNQeoIVmgrzxhnyINM+iGRPpGf+IelplcBuPw2jdkLUZC34FLrT4qYjgg0Ujz12bZK9SIVfkiGi8Mklz8Noa+qQJ+qi6S9UiyNgNDPRh5TpX/QA22wL1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib9BUAFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C98C4AF09;
-	Tue, 20 Aug 2024 04:16:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724127364;
-	bh=AGa3YhfBqQHIC8r3pvSt8hZ1jUBw1AJBBqGQCs2wo98=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ib9BUAFdVkVdBgf92ngVXaz9/zKAZE+WtXLpxOj5r/PuW0XRmqPX8rTqYGWkv0MC7
-	 sgk8KQo/vj6VGCdUkMkZfY3D7OVXThlaPhtqY4AM3Vv+hY4Cn15RpD6mhz8shSGIDb
-	 gi/nHa3aFCQwyI2yentY9SjEj4nIuSkYpkrfX/OQ=
-Date: Tue, 20 Aug 2024 06:15:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org,
-	John Rowley <lkml@johnrowley.me>
-Subject: Re: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
- sysfs files
-Message-ID: <2024082034-bullfight-pureness-3ada@gregkh>
-References: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=B9rgkepD21Xfx+Z9n7N9DIAP38d76TwhIKSHTNFpdbDQMGLWBe8SbAGRU5Hm2Z51Tdl+cz0UrO4prhTieo3TP0zK6QKjQY1UPnQ3Ukl4QUw6cheFBqFmuhAKY4SoP+WqnExqf6tACzbKclhTZZs/g1j7dy63+QwSGHFOXOAi16U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SVubNwED; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7140ff4b1e9so93208b3a.3
+        for <linux-acpi@vger.kernel.org>; Mon, 19 Aug 2024 23:00:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724133624; x=1724738424; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lgLMdruNV2huc5fRfMZfd6Ggx0Cp1DwK5971y3VUjeQ=;
+        b=SVubNwED69a/mXs1SjT0rjRq1WPUZ0detoMNm4mzDGId+IuW7LsyU2+8mJDHN+9UlA
+         +Nx/n7yOYkzbra1aXxdICCB7VeAhcGjs4eiffZ4DMFoY5PfvTxmrwZdxjZJ2ZAOjBDuy
+         1xH7H1ATRN1fS8wAPKD8+wPkj6bCyDkmaqGGsazK0s24NwHvvFMlSKBCq8FnYAW36SxP
+         7WBW996b0+s+utBRglB49u7IN5L2eTAwYreXxnKJKKlWS/d6byeBo0Gh4vWdQoTwlUcu
+         c0Bvmlkv/mSLa7IhS1JwoGUC55GNXa9dbnpoicKz2LFo2vBJ7npsHBTHpi4osoRh5njv
+         xO6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724133624; x=1724738424;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lgLMdruNV2huc5fRfMZfd6Ggx0Cp1DwK5971y3VUjeQ=;
+        b=i+vJgIEjMNNuNh65v8TQ/Tfxz68rGaYwaAtChZBRDQWukss5Rao5fPGJ1gGU8v3Zi5
+         aPPDvf5lD0q3t+AnUspJf4w725Mzu4elpxkScIlAPcUINI0EcNiOOFjpJc7yvV5Ua7AL
+         Kg6SIhrCVQvT2xzNKfMRXJ84fvwJLfH7Qh5fIzkF2XubYamgawncHhmuWrFEMRiJn7X0
+         VVT21mcQHB2hDIdPreEOen2cJPip6o0ImHXVLjtgyqyxoqZ0Qf/1YPKaEZvQcbQ3jwad
+         hjfk9NNIl+JBBjDWx6DrOD8SzomVMJz6AB6DYdcUNIYesVIlp6xMNBwNBEX9Ulhzi4Au
+         oQ/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVA9GCz14Y6HGlNCXJCALB9yW7kzzSVqfhaTBgabe2lqh/x+sT5x6n7x9bl/9MLQ0y0ijsLQ3OpiJztOFgfZrXC91SpuuGq74VUJQ==
+X-Gm-Message-State: AOJu0YxaLBbQoBArE/ufy67PA4KXjQK9gz5VC+DKszR/dU30CONIVr6s
+	eDulKgD4zyGeXOIL6NF1rF6IwRyMkZMjOGArcwFCjyyy/wDnJX5wzUnMGufZQg==
+X-Google-Smtp-Source: AGHT+IGMZLlXvU8CAUAv9DT+q3r5OtQYUBhXTxRSLpbUg/fgZlURHFtLGiA10dUYE7hx79M25yG/rA==
+X-Received: by 2002:a05:6a00:928e:b0:706:74b7:9d7d with SMTP id d2e1a72fcca58-713c4f19e9amr15133166b3a.25.1724133624443;
+        Mon, 19 Aug 2024 23:00:24 -0700 (PDT)
+Received: from thinkpad ([120.60.128.138])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127af3c380sm7489929b3a.203.2024.08.19.23.00.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 23:00:24 -0700 (PDT)
+Date: Tue, 20 Aug 2024 11:30:08 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	lukas@wunner.de, mika.westerberg@linux.intel.com,
+	Hsin-Yi Wang <hsinyi@chromium.org>
+Subject: Re: [PATCH v5 3/4] PCI: Decouple D3Hot and D3Cold handling for
+ bridges
+Message-ID: <20240820060008.jbghpqibbohbemfz@thinkpad>
+References: <20240802-pci-bridge-d3-v5-0-2426dd9e8e27@linaro.org>
+ <20240802-pci-bridge-d3-v5-3-2426dd9e8e27@linaro.org>
+ <2c5dd04f-8ac0-41eb-a11d-cc48c898c8f3@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2c5dd04f-8ac0-41eb-a11d-cc48c898c8f3@suse.com>
 
-On Mon, Aug 19, 2024 at 12:09:22PM -0700, Nathan Chancellor wrote:
-> When an attribute group is created with sysfs_create_group(), the
-> ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
-> and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
-> respectively. These functions use container_of() to get the respective
-> callback from the passed attribute, meaning that these callbacks need to
-> be the same type as the callbacks in 'struct kobj_attribute'.
+On Mon, Aug 19, 2024 at 02:44:43PM +0200, Oliver Neukum wrote:
+> On 02.08.24 07:55, Manivannan Sadhasivam via B4 Relay wrote:
 > 
-> However, the platform_profile sysfs functions have the type of the
-> ->show() and ->store() callbacks in 'struct device_attribute', which
-> results a CFI violation when accessing platform_profile or
-> platform_profile_choices under /sys/firmware/acpi because the types do
-> not match:
+> > --- a/drivers/pci/pci-acpi.c
+> > +++ b/drivers/pci/pci-acpi.c
+> > @@ -1434,7 +1434,7 @@ void pci_acpi_setup(struct device *dev, struct acpi_device *adev)
+> >   	 * reason is that the bridge may have additional methods such as
+> >   	 * _DSW that need to be called.
+> >   	 */
+> > -	if (pci_dev->bridge_d3_allowed)
+> > +	if (pci_dev->bridge_d3cold_allowed && pci_dev->bridge_d3hot_allowed)
 > 
->   CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+> Are you sure you want to require both capabilities here?
 > 
-> This happens to work because the layout of 'struct kobj_attribute' and
-> 'struct device_attribute' are the same, so the container_of() cast
-> happens to allow the callbacks to still work.
 
-Please note that this was an explicit design decision all those years
-ago, it's not just "happening" to work by some accident.  It was just
-done way before anyone thought of CFI-like things.
+Wakeup is common for both D3Hot and D3Cold, isn't it?
 
-> 
-> Change the type of platform_profile_choices_show() and
-> platform_profile_{show,store}() to match the callbacks in
-> 'struct kobj_attribute' and update the attribute variables to match,
-> which resolves the CFI violation.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
-> Reported-by: John Rowley <lkml@johnrowley.me>
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
-> Tested-by: John Rowley <lkml@johnrowley.me>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->  drivers/acpi/platform_profile.c | 20 ++++++++++----------
->  1 file changed, 10 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-> index d2f7fd7743a1..11278f785526 100644
-> --- a/drivers/acpi/platform_profile.c
-> +++ b/drivers/acpi/platform_profile.c
-> @@ -22,8 +22,8 @@ static const char * const profile_names[] = {
->  };
->  static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
->  
-> -static ssize_t platform_profile_choices_show(struct device *dev,
-> -					struct device_attribute *attr,
-> +static ssize_t platform_profile_choices_show(struct kobject *kobj,
-> +					struct kobj_attribute *attr,
->  					char *buf)
->  {
->  	int len = 0;
-> @@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
->  	return len;
->  }
->  
-> -static ssize_t platform_profile_show(struct device *dev,
-> -					struct device_attribute *attr,
-> +static ssize_t platform_profile_show(struct kobject *kobj,
-> +					struct kobj_attribute *attr,
->  					char *buf)
->  {
->  	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-> @@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
->  	return sysfs_emit(buf, "%s\n", profile_names[profile]);
->  }
->  
-> -static ssize_t platform_profile_store(struct device *dev,
-> -			    struct device_attribute *attr,
-> +static ssize_t platform_profile_store(struct kobject *kobj,
-> +			    struct kobj_attribute *attr,
->  			    const char *buf, size_t count)
->  {
->  	int err, i;
-> @@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
->  	return count;
->  }
->  
-> -static DEVICE_ATTR_RO(platform_profile_choices);
-> -static DEVICE_ATTR_RW(platform_profile);
-> +static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
-> +static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+- Mani
 
-I understand your need/want for this, but ick, is there any way to get
-back to using 'struct device' and not "raw" kobjects here?  That's what
-the code should be using really.
-
-thanks,
-
-greg k-h
+-- 
+மணிவண்ணன் சதாசிவம்
 
