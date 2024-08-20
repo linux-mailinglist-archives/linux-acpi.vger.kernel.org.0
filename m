@@ -1,124 +1,170 @@
-Return-Path: <linux-acpi+bounces-7704-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7705-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F791958112
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 10:33:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D50E95835A
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 11:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1542C1C243E7
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 08:33:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B461C23EF1
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 09:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA28F18A6D3;
-	Tue, 20 Aug 2024 08:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FC418C35D;
+	Tue, 20 Aug 2024 09:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="L1zCUkdl"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AT+Ey2qg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB2518A6BD
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 08:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C35318C32E
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 09:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724142829; cv=none; b=TKv8duSNHnOwWT8krTWA+7L/AR4ksOiJQn5oGVW9ad6QULPX3vT/3/uGVLAqNM0jgQkM0YOQHVAp5NHPOGgMkaTLt9LcodeWgbNgvwuXNxZsWwdDwAm/hu4jERFVi0l6GX9XF+ubXl7YdRLf8tC8bae5x6tSTgIohsbQvDUxsOI=
+	t=1724147785; cv=none; b=mXGROx0Jnej2snarzG8mkBgayoNWnWiHb6G2wlQ4/LwavFd4KarLan2RZ4a1XhZgMng8zJTdq5gWCySu+IrTcz/pdUH/FYA8VFQ+5PrOPBNzkBwVgLK13JRzZZnwlJ8nr/JEIC8Gk+vnUd1BytkZ0Cs9nXkP5z2FOWct04FFt3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724142829; c=relaxed/simple;
-	bh=1LtjsPFrjjd6hYsPJu9b0vm4sQPyFxCduIQ0ZLAHK1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=shVHOo00DdrJwvLCgE9fa5waWDGlWRZq27s/u5MFqjbBwLI4X4rhELJ+vFTXq4dOwtgXi+oEpXbe6T5SX3yuZaWhRJ2SkkhjvkEKk0aQl3Esz3dJM3WsPYmwjCCZJURU81+upL9A23DjPjqhGlJIqDPKrH4ebjiwd3yomGMQk98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=L1zCUkdl; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428178fc07eso39578925e9.3
-        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 01:33:47 -0700 (PDT)
+	s=arc-20240116; t=1724147785; c=relaxed/simple;
+	bh=AT2XFkT4wDbUyhV+U8SUKVJbCNxM8heu+SNR0vvuUKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cHoIcnVHLBUnpZgBvGGDU7s6kqHMyqyS2AfBLZhJQBjIVjz5+XrQcATu8N1iZb6BUZTXH8VjJQJPROJ/UuOaVeObrjVyOgy3apufTiktqdT0QTXga3696i8iT8yPhx7Gj9DLvXqCrpALJjiJojO8x7aqYrcN5KYdj63Ku1nnYHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AT+Ey2qg; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53345604960so77400e87.3
+        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 02:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1724142826; x=1724747626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jEL7tQD7GbeuTlapz5M/BtFYtXhOkUzJpx0LAanx7Mw=;
-        b=L1zCUkdlkz0LTAP9emCVCeq6n6u4uoBBO6bRqPp+rFao/f5mLfExKKl7IJUk7m8+Am
-         jlnWEFWDmvbE3Q/vQyH+g7mijE5tAmK5aW/6WrtM51j5ApN2FbUCqY/H09YBItlDqJBd
-         3XlLv/kQJ/xagDcXqRZG8UNi+Ix305NYpADtwkHuTcxLy+CNoFdMUhfPnGZAnOnA3w5E
-         47mRFptK4bSu0MVVWXteFx4HdGQeBPxLdtrl12bT9nabNJZdE6VCB/jN75SFiwQWLIdT
-         i68YZLBlrhu0kldvveyhMxqD76oxbO7axOuZmFiuPZ9ql1UZhaslqwXmeScYpPpMnEDw
-         5+ng==
+        d=suse.com; s=google; t=1724147780; x=1724752580; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=O22wnNYOCBxaZUWUifSw34IZJjKrxoUhdzvzmYoIV68=;
+        b=AT+Ey2qgRtb8xnbdAjLfwBz3INyvyo/YEpMJH3UbjmqgZZqU2xtAXODr0HbGRVUAgC
+         DoHpc5/zTgIYUxdOC45g10HrbPbmKqRLfG8MCiJl9XZjDY/4i6Xcqp6F5gdAWotbwOyi
+         v6QqLEO7HoUPx6nk08XSpqbAAiORzJuUXFlkD9aaKYLfW2QqzTSzX879gj/mktkw4aU1
+         i9X3IZStjmany5ABdGxZ8tyAjUgzIO2fQUiFW4PK1aoH2sTR+fyWwO5uK2a6rnp3CPhM
+         /1WERKwF9KEs0qfnMr4U4cDtFJqQ5lHgExiO+CXGzO1n/Zqm9b7M5S9EuF1z/mRWJV3/
+         5Obw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724142826; x=1724747626;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jEL7tQD7GbeuTlapz5M/BtFYtXhOkUzJpx0LAanx7Mw=;
-        b=IbK2vSfm5fyDzsl+obenGjojM4T5NU8a9sieCRIX4djVVbwjGzq+8DsZ8kYY952h0p
-         RzRPxGItBi8jsiOuR3I4lN+3Lu0cOsrIy2XhWB/OfwDmaBh2WYPq5cNe+ACzdM4m5Nxb
-         iq7HmMsflvbht7H7yZ/XvhtjSaLGN6Z8YkCBeEl2ucpRndpWjZOm3ACbF42EGOv4hb8R
-         JF1w6//mCoPhCnTEWuk8gYwWgFmqm5DtTbUKmnMObgayQYI3rwGVOaxilxWB90A1XAeo
-         G8VN8d7fXIWCOKF+G1nPyIToKqyku0yqpzXLJD75vP/K9FlbE9A5uObeRGd+Z/E7Me9S
-         IDQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWx1kLa0mJfOsdablJ6KfoUOzM2S0/HWp2R7du66h5kZU+s/TyxB+xMAl7jVw55gm8TsbgyzOc9O3z@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1HSOQ4FBTu8L1ktHE/RqbGkyRCgVneBg3N2EKSBTWfPFg1rA3
-	Ls/4WKTXBnhPSfc45jfqFBNIQr4A5hSnzv3HZpPXtl1dzAs5m0TMPk4VxwnaeUY=
-X-Google-Smtp-Source: AGHT+IHnn/RvdT8xKBMoBdrZ1Ash1eRln9exy4n1RN2NlwHjGcXkKlMk+nXjGb9x8VTio5VKmPJ2+Q==
-X-Received: by 2002:adf:ee0d:0:b0:367:8a87:ada2 with SMTP id ffacd0b85a97d-371946501f1mr10050186f8f.26.1724142825520;
-        Tue, 20 Aug 2024 01:33:45 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:ddce:8248:19a9:4bf6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3718985a8fcsm12468056f8f.63.2024.08.20.01.33.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 01:33:45 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: linux-gpio@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v2 0/5] gpiolib: Add and utilise for_each_gpio_property_name()
-Date: Tue, 20 Aug 2024 10:33:43 +0200
-Message-ID: <172414281950.19982.294912238748441566.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
-References: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
+        d=1e100.net; s=20230601; t=1724147780; x=1724752580;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O22wnNYOCBxaZUWUifSw34IZJjKrxoUhdzvzmYoIV68=;
+        b=uleRNU1Op5W8LJXVTE5uifP1V8a0fguhZYb5Ov1OpqVc6WRNozsenKyY0+Au3RbqGz
+         HVsXABqF7tooo88XReJvKJ2JGfVOvXlTxoGUp/i0RNEmZRDrw1dqXf+u6VSkdpl3dBuH
+         MYdWWBWJD9lV8GDSJBpm7ra1u9Gm+Wb4P4jV+YuKvZJqrwqyLWCLdPSDmZHKzin2TKmf
+         xS/wtexz2B73mca+3d87cBIbxVSAf67m+ycsuIVCSl1WM3RrCl/rZp0apGbWBDPoW+vT
+         WzLDE+GqLSI+5FbTicqwjRwiEc90qLoH2/iUdpbB4lriKlUSLF7ieAYr1MziaUArZYKT
+         Ytog==
+X-Forwarded-Encrypted: i=1; AJvYcCVSqT1Gu7XE4Y3Qej9oMSSTgE5HcKXC8cnCK3DWgCmTjWN+SJGXYGSvTK6XzUSGVzBvK5XuM447h4jR@vger.kernel.org
+X-Gm-Message-State: AOJu0YybW9b7z+K+JTDsvHaKOg2fUIQk/LOwIKtwIwl3vIbSE3pvN8Nt
+	tkObCSyAILyPWjPtlgm7/fG3A6CXrMaVIveLm9jJfPPNIoeUiiiUH6GtNQsszvPAKBJRr7HBhwo
+	=
+X-Google-Smtp-Source: AGHT+IFrsPT4hsY3MVuzsaum359JeocN124iERr4tvRuSUdtykAH993mPaa7xKBT+WQaa6tnUfu4FA==
+X-Received: by 2002:a05:6512:3085:b0:533:809:a970 with SMTP id 2adb3069b0e04-5331c6a20e1mr8788954e87.14.1724147779985;
+        Tue, 20 Aug 2024 02:56:19 -0700 (PDT)
+Received: from [10.156.60.236] (ip-037-024-206-209.um08.pools.vodafone-ip.de. [37.24.206.209])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838c66e2sm739681766b.3.2024.08.20.02.56.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Aug 2024 02:56:19 -0700 (PDT)
+Message-ID: <607602c3-5199-4326-8676-d28a8b42b4b5@suse.com>
+Date: Tue, 20 Aug 2024 11:56:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 6/7] xen: allow mapping ACPI data using a different
+ physical address
+To: Juergen Gross <jgross@suse.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
+ x86@kernel.org, linux-acpi@vger.kernel.org
+References: <20240820082012.31316-1-jgross@suse.com>
+ <20240820082012.31316-7-jgross@suse.com>
+Content-Language: en-US
+From: Jan Beulich <jbeulich@suse.com>
+Autocrypt: addr=jbeulich@suse.com; keydata=
+ xsDiBFk3nEQRBADAEaSw6zC/EJkiwGPXbWtPxl2xCdSoeepS07jW8UgcHNurfHvUzogEq5xk
+ hu507c3BarVjyWCJOylMNR98Yd8VqD9UfmX0Hb8/BrA+Hl6/DB/eqGptrf4BSRwcZQM32aZK
+ 7Pj2XbGWIUrZrd70x1eAP9QE3P79Y2oLrsCgbZJfEwCgvz9JjGmQqQkRiTVzlZVCJYcyGGsD
+ /0tbFCzD2h20ahe8rC1gbb3K3qk+LpBtvjBu1RY9drYk0NymiGbJWZgab6t1jM7sk2vuf0Py
+ O9Hf9XBmK0uE9IgMaiCpc32XV9oASz6UJebwkX+zF2jG5I1BfnO9g7KlotcA/v5ClMjgo6Gl
+ MDY4HxoSRu3i1cqqSDtVlt+AOVBJBACrZcnHAUSuCXBPy0jOlBhxPqRWv6ND4c9PH1xjQ3NP
+ nxJuMBS8rnNg22uyfAgmBKNLpLgAGVRMZGaGoJObGf72s6TeIqKJo/LtggAS9qAUiuKVnygo
+ 3wjfkS9A3DRO+SpU7JqWdsveeIQyeyEJ/8PTowmSQLakF+3fote9ybzd880fSmFuIEJldWxp
+ Y2ggPGpiZXVsaWNoQHN1c2UuY29tPsJgBBMRAgAgBQJZN5xEAhsDBgsJCAcDAgQVAggDBBYC
+ AwECHgECF4AACgkQoDSui/t3IH4J+wCfQ5jHdEjCRHj23O/5ttg9r9OIruwAn3103WUITZee
+ e7Sbg12UgcQ5lv7SzsFNBFk3nEQQCACCuTjCjFOUdi5Nm244F+78kLghRcin/awv+IrTcIWF
+ hUpSs1Y91iQQ7KItirz5uwCPlwejSJDQJLIS+QtJHaXDXeV6NI0Uef1hP20+y8qydDiVkv6l
+ IreXjTb7DvksRgJNvCkWtYnlS3mYvQ9NzS9PhyALWbXnH6sIJd2O9lKS1Mrfq+y0IXCP10eS
+ FFGg+Av3IQeFatkJAyju0PPthyTqxSI4lZYuJVPknzgaeuJv/2NccrPvmeDg6Coe7ZIeQ8Yj
+ t0ARxu2xytAkkLCel1Lz1WLmwLstV30g80nkgZf/wr+/BXJW/oIvRlonUkxv+IbBM3dX2OV8
+ AmRv1ySWPTP7AAMFB/9PQK/VtlNUJvg8GXj9ootzrteGfVZVVT4XBJkfwBcpC/XcPzldjv+3
+ HYudvpdNK3lLujXeA5fLOH+Z/G9WBc5pFVSMocI71I8bT8lIAzreg0WvkWg5V2WZsUMlnDL9
+ mpwIGFhlbM3gfDMs7MPMu8YQRFVdUvtSpaAs8OFfGQ0ia3LGZcjA6Ik2+xcqscEJzNH+qh8V
+ m5jjp28yZgaqTaRbg3M/+MTbMpicpZuqF4rnB0AQD12/3BNWDR6bmh+EkYSMcEIpQmBM51qM
+ EKYTQGybRCjpnKHGOxG0rfFY1085mBDZCH5Kx0cl0HVJuQKC+dV2ZY5AqjcKwAxpE75MLFkr
+ wkkEGBECAAkFAlk3nEQCGwwACgkQoDSui/t3IH7nnwCfcJWUDUFKdCsBH/E5d+0ZnMQi+G0A
+ nAuWpQkjM1ASeQwSHEeAWPgskBQL
+In-Reply-To: <20240820082012.31316-7-jgross@suse.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 20.08.2024 10:20, Juergen Gross wrote:
+> @@ -838,6 +839,31 @@ void __init xen_do_remap_nonram(void)
+>  	pr_info("Remapped %u non-RAM page(s)\n", remapped);
+>  }
+>  
+> +/*
+> + * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
+> + * regions into acount.
+> + * Any attempt to map an area crossing a remap boundary will produce a
+> + * WARN() splat.
+> + */
+> +static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
+> +					 acpi_size size)
+> +{
+> +	unsigned int i;
+> +	struct nonram_remap *remap = xen_nonram_remap;
 
+const (also in one of the functions in patch 5)?
 
-On Mon, 19 Aug 2024 17:28:55 +0300, Andy Shevchenko wrote:
-> There are a few of duplication of the same for-loop against GPIO
-> suffixes. This series addresses that along with proposal to eliminate
-> the exported gpio_suffix_count by converting the array to be
-> NULL-terminated.
-> 
-> v2:
-> - fixed a rebase issue (LKP)
-> 
-> [...]
+> +	for (i = 0; i < nr_nonram_remap; i++) {
+> +		if (phys + size > remap->maddr &&
+> +		    phys < remap->maddr + remap->size) {
+> +			WARN_ON(phys < remap->maddr ||
+> +				phys + size > remap->maddr + remap->size);
+> +			phys = remap->paddr + phys - remap->maddr;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return x86_acpi_os_ioremap(phys, size);
+> +}
 
-Applied, thanks!
+At least this, perhaps also what patch 5 adds, likely wants to be limited
+to the XEN_DOM0 case? Or else I wonder whether ...
 
-[1/5] gpiolib: Introduce for_each_gpio_property_name() helper
-      commit: ef3d4b94d2d88b160887ff9ca737a5f8ec101579
-[2/5] gpiolib: swnode: Unify return code variable name
-      commit: e42fce0ff99658b5b43e8dae4f7acc43d38a00ef
-[3/5] gpiolib: swnode: Introduce swnode_gpio_get_reference() helper
-      commit: 7fd6809888a82055fcca9d14417d5e2675f0acc5
-[4/5] gpiolib: swnode: Make use of for_each_gpio_property_name()
-      commit: a975a64692c39991fdde2f1d990b7bdd48d183fc
-[5/5] gpiolib: Replace gpio_suffix_count with NULL-terminated array
-      commit: 4b91188dced811e2d867574b672888406cb7114c
+> @@ -850,6 +876,10 @@ void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
+>  		BUG();
+>  	}
+>  
+> +	/* Switch to the Xen acpi_os_ioremap() variant. */
+> +	if (nr_nonram_remap == 0)
+> +		acpi_os_ioremap = xen_acpi_os_ioremap;
 
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+... this would actually build when XEN_DOM0=n.
+
+I'm actually surprised there's no Dom0-only code section in this file,
+where the new code could then simply be inserted.
+
+Jan
 
