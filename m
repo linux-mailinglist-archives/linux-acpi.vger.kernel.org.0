@@ -1,217 +1,185 @@
-Return-Path: <linux-acpi+bounces-7719-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7720-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052E6958A4F
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 16:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0171D958B21
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 17:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 256011C21B79
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 14:57:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254011C21EED
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 15:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F884191F90;
-	Tue, 20 Aug 2024 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB11E194C6F;
+	Tue, 20 Aug 2024 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgK1iQh4"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Nlxq7flw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2076.outbound.protection.outlook.com [40.107.237.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351A2190477;
-	Tue, 20 Aug 2024 14:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724165753; cv=none; b=fnrzFbQDA7bmSWjZJc+FztsquCLtEVAT/958OwI4QpmmppGTWRrKFbhH6jMQxh5uXArM8LCXaF4Bsuc9YWGNyGD4dPsa1MupzO9U7dlqIEwLtd2BQPmb/ixSW/OXMSPreRIFHqKAFilHdYgVB7al5lkRf2RBiPaq/MnNyOh9DJY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724165753; c=relaxed/simple;
-	bh=0ZOu3inMv6TGg0c6P8Xpu2xNmZ613jQlAGBpZEN8z08=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=srw/aj9W21t1OCqdPrHL0J7sTgYr12E7jzfGyNB2LOz9u1oqjlt+CwC78nQ7On7LyS/toLVQZxgGvbPLObqix0v5aEwfaMlLF5pyPmza2NgFeQk32Xy2ar7zHvvyjR7SBca0ia0hqpKAhgOsdOhdUsAvuO8xYGQZHwwbnNGc6h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgK1iQh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DD2C4AF13;
-	Tue, 20 Aug 2024 14:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724165753;
-	bh=0ZOu3inMv6TGg0c6P8Xpu2xNmZ613jQlAGBpZEN8z08=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FgK1iQh4RWOwOelEdQ9jeGUfZx+WnxkwYkczIBVkqVFn+rL0ri4YWp2O6ORwfc1ea
-	 CL5XwX3vt8+v1vt9XBn/xqqX5AhV/lYdYFYW/MhJV1YakNKndJoR7TAzRpelgDBMjk
-	 xIb4elNsp7Zs+v2W0bs4IaEoIPXsP1iDO3HYsulZIyRhKqmvTFxmgEutE0c3dc3Ulz
-	 /R2zGjFVEbGOYJlQ8VEU7kvDApqiGy0WgE7DdcXNvpK28+WdjUnFADogi1IQNJwp6T
-	 es6qiLQTaBjLi2C1nJiI7pWy8bn23WbY7CIF1qccAK0hWshPl4i2ncl0NH9sSBvsTs
-	 pUVuhK1V/UkXg==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5d5c324267aso3280473eaf.0;
-        Tue, 20 Aug 2024 07:55:53 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUHg866YW+kMQRwYzxlduzvqYY2VnHjkJY5odGpyI6dasqtsDAABSXkJHwaaU+WGFgUkPYY5WDfuUfex3Hb@vger.kernel.org, AJvYcCVHBjMs9xkQ7xElXPsivEQqmbdKXpd0dN5ewkW31/HaZXyxfYG1w0fRjbGN6fI0EPyehkISCHEByKCe@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxcd3O/mrVBxDRoZdsR2cfC4wXTq2MfHZ2IULlwo2PgzJ0wRtN
-	G0UTvrbnI5t28pLPzfEBell4dJvAL8eim/wLNNgc8pOkZw2qSLNYotIQaORkdin8sja58TZ/mD5
-	6Kf1OMZEAJm50VXxygTR0hjzzWnE=
-X-Google-Smtp-Source: AGHT+IERmvMStpESs9VrqArXN+cb5EeE1Fq/0gAmtGZ11naWDvaXrGCSH5qncYXRCTOyrCOPzq+Yoeo8p8V7jLtU6NI=
-X-Received: by 2002:a05:6820:1a0d:b0:5c4:e8d:58be with SMTP id
- 006d021491bc7-5da98896595mr14771765eaf.3.1724165752262; Tue, 20 Aug 2024
- 07:55:52 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02256194AEB;
+	Tue, 20 Aug 2024 15:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724167490; cv=fail; b=J96OXdIFCxRYVicfOpDrTk+TkFm1jFq6Lj+IqXMVF831Ycwkvtl4u4CXjiz+dMBYStM2CqdmvDZEforU/u2TEdDbaHQ5FtQnIdXOLqoPhBu9BE+Bb0w69VYVFE7V26ujVziFfvUSh32fOnD1s5ZrGQH0ahZE0LXS5d9exaZYYpw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724167490; c=relaxed/simple;
+	bh=CHApj+NsBDBGlhR+rA2Fen91D0NPeqkhvzBg2tUP+VM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=taNwcllvyJo37Twxfjqb6fXFWSe3ywKj7ar+OndqrxNM2KXHT29EZKm3/IHmR3JJObLCo5mTDljJtabPm0LKw4RX3HBOxKPTe5s4OOTZVig+UtWJ4Fg/c4ICI0ve8/IpB4vvfKwmI71ZgSkJ1s53VKwWJH4B0CLtgmDKkJwyCk0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Nlxq7flw; arc=fail smtp.client-ip=40.107.237.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VmUUs5A0LsyhLmiBjNKidwfKarZYy5hzcGCD4rQ6Upwsb8/BG3MbMhryu7Aw8M/uDZlF8MM6MZT6mB58HZJFRdpgXfgPrgXMXmCkrNXFk8GrEPK/uWQD551UTPI889OsSjXg+lPDCZBm1fLAXP45hBxzqOZgOtDdoz67rXB/bFuwtuNEZ3yBpZLcF+UK3eakSZCjB55JZeW1T1Q9Ho0NMCWWWP/bm0tT1DUgHxIhQkeHBLPP8ZFwrWIucTwOMwSJr+zQa/OjdVhFP2QOKUJzY0H9dow/OD1QfCIFfBZ49H1iWFNVxvONfFAesVYybfBHG4MaeRsKe/CrVjgRX/oF9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OkYHJ+mPRtYm3B59wrDzysbRo9Q3GZfAi30cd56mtGg=;
+ b=Tv9ZpBuIsqjlKH8PZSX6F+VbtyN8JMYyJob9mbO2f8R/wZwYOzzH66R6j7zdnZEc+L9yaUtszY8NEaNmz3/H+G0pRDz9YdouX+Z5hMCFdScZiDH07dzCcqP6gHX7xDcRHXsjKr6En/ltZfMd3UqYZv8SyWUq02hcxyLreNjOWJsNhFf+5geYF4gb3AlTkEOPvCoG90TZvSXLYdWTeiONvnnV+gkOg6G/jVD6NkLf6NMxD2mgZqBQMtzHwXdGKph/HgyJJU8IQmXQojv38dOzRWfZoD1TXJM3GuzoKUyizelbsTuEIkaZeKakYqxi6kj7SIWBdO9/ZA2F6iI7bokYlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OkYHJ+mPRtYm3B59wrDzysbRo9Q3GZfAi30cd56mtGg=;
+ b=Nlxq7flw4hpTYFUu3b9ggwaBy25czMVD16sf4xKWYfzUooPA4e9z81342nDNteb2F1XHDS0rKLcszTL5cEtbZUqD0SnFdHk2L+iShVbtal+NPtl2VXMdwvw17VIOl9uUR5ez9b18JdTkev751JyvTtL13cpsoiFUYRe8+C98ujEr9FPlwtSHbVxdfaj+m452XAxg0VaSpTNw1hkyil5awZRJsee12ejEN59iNi7a8cQY7GV6WP3dA0ss7GvvutNRFB4DLZruNVoi8sxN81fduiLueoN4lx/Jls0/u8cYlDbE+pA/hAxgcqFY5/6YoYN8AGbX396kmE2MblAknThhzQ==
+Received: from DS7PR05CA0009.namprd05.prod.outlook.com (2603:10b6:5:3b9::14)
+ by CY8PR12MB7435.namprd12.prod.outlook.com (2603:10b6:930:51::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.16; Tue, 20 Aug
+ 2024 15:24:43 +0000
+Received: from DS1PEPF00017099.namprd05.prod.outlook.com
+ (2603:10b6:5:3b9:cafe::14) by DS7PR05CA0009.outlook.office365.com
+ (2603:10b6:5:3b9::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.13 via Frontend
+ Transport; Tue, 20 Aug 2024 15:24:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DS1PEPF00017099.mail.protection.outlook.com (10.167.18.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7897.11 via Frontend Transport; Tue, 20 Aug 2024 15:24:43 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 20 Aug
+ 2024 08:24:33 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 20 Aug 2024 08:24:32 -0700
+Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Tue, 20 Aug 2024 08:24:31 -0700
+Date: Tue, 20 Aug 2024 08:24:30 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Mostafa Saleh <smostafa@google.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, <acpica-devel@lists.linux.dev>, "Alex
+ Williamson" <alex.williamson@redhat.com>, Hanjun Guo <guohanjun@huawei.com>,
+	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
+	<kevin.tian@intel.com>, <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	"Lorenzo Pieralisi" <lpieralisi@kernel.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, Robin Murphy
+	<robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Will Deacon
+	<will@kernel.org>, "Eric Auger" <eric.auger@redhat.com>, Jean-Philippe
+ Brucker <jean-philippe@linaro.org>, Moritz Fischer <mdf@kernel.org>, Michael
+ Shavit <mshavit@google.com>, <patches@lists.linux.dev>, Shameerali Kolothum
+ Thodi <shameerali.kolothum.thodi@huawei.com>
+Subject: Re: [PATCH 0/8] Initial support for SMMUv3 nested translation
+Message-ID: <ZsS1Lsd5ORJOlRJQ@Asurada-Nvidia>
+References: <0-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com>
+ <ZsRR0MUHPz23zxu3@google.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812054647.1194716-1-jiaqing.zhao@linux.intel.com> <20240812054647.1194716-2-jiaqing.zhao@linux.intel.com>
-In-Reply-To: <20240812054647.1194716-2-jiaqing.zhao@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 20 Aug 2024 16:55:40 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hPtvVRM=Te2oPzCvE3tOy_rXYGJwaoQOfNc71z+pmkvA@mail.gmail.com>
-Message-ID: <CAJZ5v0hPtvVRM=Te2oPzCvE3tOy_rXYGJwaoQOfNc71z+pmkvA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPICA: Detect FACS in reduced hardware build
-To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Cc: Robert Moore <robert.moore@intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZsRR0MUHPz23zxu3@google.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017099:EE_|CY8PR12MB7435:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4ce7730-607d-4695-b882-08dcc12c3789
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Ysgs677FBIKJ3kF2J6Wcd+XnIPCbURPbVPVb4hb0jhyli3eMh0kdIrCIGdLm?=
+ =?us-ascii?Q?6/CMT9BFLn38jHh1dOhxkf4TmpKOB3dWL7BdyqKzqmt5Pn/1Bxyy/GGTft9e?=
+ =?us-ascii?Q?mfM7KbHqZGrUiqDr5gHtJByKso/OEEgWdlBW04FaL2WwUKG9KPwEigR4eWuS?=
+ =?us-ascii?Q?gdy5Hm/Ropnu9B4T3UIx9rfq26JrNGRbukqmTPD3TmhGpFJhPQEqeK4nJk+E?=
+ =?us-ascii?Q?dnveeRHeI4F7g2kq6zSib7S9nM6R293qQl2iGw4PMpLzyYblLiigbA9jS3mB?=
+ =?us-ascii?Q?7CzZZUUv2CzBhI3SZqgziE0+aDYV5acAh4BnJOXMoiZ8wnWbtTz2Q3pLbkd2?=
+ =?us-ascii?Q?t0rfXF7NDqy9MClvKj/zzNAt1TdI/ksvVaRakwQJDAA6rqNSMRl/Z5loViij?=
+ =?us-ascii?Q?ecDqeVYU/uEapeYCOVetDFsCG6s8fHhLiOoLr1yroP+60eXrkGh1UknbZRdC?=
+ =?us-ascii?Q?0a2j2GUr3gwhpKrTYqTm50lUDP0cn8nkYWoGKKkfID15XgJ6CacepMGD9Z8M?=
+ =?us-ascii?Q?YJ3eUmLbZinoYq482B0jpu0a2ip6eJcscW8O3nZzUJfEe7G7ul5TK+KSRitf?=
+ =?us-ascii?Q?QNlhmF1KhtKw7OKrHO23eys0kjXMZRl83iCsei8KpG2iJsyKha0ZFtyxn2RR?=
+ =?us-ascii?Q?O5D+gOJA0BABZ1dQqtLv/hhmQIGQAySpR1ek2wm0+dFsKYQHunoPsYMuNVGG?=
+ =?us-ascii?Q?lRkWEsjo678jSdLboCAmQGk95CntOmbejooCO5bGheai0BELpj6D4LIbkGLp?=
+ =?us-ascii?Q?UgWP8zb5ZSuMFpPcWhkJjLvZ+zTQn7S2uAeosk1PU1YkBKFjD8k5HhnLW07N?=
+ =?us-ascii?Q?ZwJiMr7F+Z/QdXMmTBrjEF7Q7YQ7EXMaUJ8Qy7ASLxUui9J6udt7xgu5kGoc?=
+ =?us-ascii?Q?OqlPCS80+vRBUvh4D6Rqc9+Uxg7nWG0M4kfyqLgLrYkmIzxFQ0Ycd9OZyi9M?=
+ =?us-ascii?Q?+OR3f7QnRJCIBwDqWx4b7h8WvLWfaKBl/66r1QqDhN0dV87ZomTJZ4fK3unH?=
+ =?us-ascii?Q?u2DtHeVwdJ+5e1DxOc79j+iguRVeUCKtQxjsyLgmKrDyxhzn+AwOnNZSuQvH?=
+ =?us-ascii?Q?WTAe9YO2ZYHUqDGT+q/RjQt9U2MzUpA9yWx+lFgIttZC++Q73kWJFmdKlgXx?=
+ =?us-ascii?Q?ubTinpod29avs/E/T7dcrnhbE+324RwiIQo/v6xv40Kr+BaZflJpgWRPnWH8?=
+ =?us-ascii?Q?cVObn2/n+uQr5mw6bv16wKt2yRqqcNZ7xEqnea/IgixjTkQERE7flp8YaRwx?=
+ =?us-ascii?Q?YOlR6uaJTggmTNaJWbHdZzrYxRux7ahKXSE2tpkelLsSh/3JbZ2QVPvYyR81?=
+ =?us-ascii?Q?9zoWV9/rbJijBnFxLNnT4eGCjmYxh9daPUmCCwnJzAf1ZNIFJKVo/3a1P1zR?=
+ =?us-ascii?Q?cE1xsBSdQT6cCqEItMi1Kml4UtmFP9Y0uS7cqhn+jKX/w+qseEtdPpfYR1ba?=
+ =?us-ascii?Q?0V4kZ8rzgzsVnIy/+tLUWvTEWIfuM9mm?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 15:24:43.2855
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4ce7730-607d-4695-b882-08dcc12c3789
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF00017099.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7435
 
-On Mon, Aug 12, 2024 at 7:47=E2=80=AFAM Jiaqing Zhao
-<jiaqing.zhao@linux.intel.com> wrote:
->
-> According to Section 5.2.10 of ACPI Specification, FACS is optional
-> in reduced hardware model. Enable the detection for "Hardware-reduced
-> ACPI support only" build (CONFIG_ACPI_REDUCED_HARDWARE_ONLY=3Dy) also.
->
-> Link: https://github.com/acpica/acpica/commit/ee53ed6b5452612bb44af542b68=
-d605f8b2b1104
-> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-> ---
->  drivers/acpi/acpica/acglobal.h |  6 +-----
->  drivers/acpi/acpica/tbutils.c  |  5 +----
->  drivers/acpi/acpica/utxfinit.c | 24 ++++++++++++------------
->  include/acpi/acconfig.h        |  1 -
->  4 files changed, 14 insertions(+), 22 deletions(-)
->
-> diff --git a/drivers/acpi/acpica/acglobal.h b/drivers/acpi/acpica/acgloba=
-l.h
-> index f4c90fc99be2..309ce8efb4f6 100644
-> --- a/drivers/acpi/acpica/acglobal.h
-> +++ b/drivers/acpi/acpica/acglobal.h
-> @@ -29,11 +29,7 @@ ACPI_INIT_GLOBAL(u32, acpi_gbl_dsdt_index, ACPI_INVALI=
-D_TABLE_INDEX);
->  ACPI_INIT_GLOBAL(u32, acpi_gbl_facs_index, ACPI_INVALID_TABLE_INDEX);
->  ACPI_INIT_GLOBAL(u32, acpi_gbl_xfacs_index, ACPI_INVALID_TABLE_INDEX);
->  ACPI_INIT_GLOBAL(u32, acpi_gbl_fadt_index, ACPI_INVALID_TABLE_INDEX);
-> -
-> -#if (!ACPI_REDUCED_HARDWARE)
-> -ACPI_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS);
-> -
-> -#endif                         /* !ACPI_REDUCED_HARDWARE */
-> +ACPI_INIT_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS, NULL);
->
->  /* These addresses are calculated from the FADT Event Block addresses */
->
-> diff --git a/drivers/acpi/acpica/tbutils.c b/drivers/acpi/acpica/tbutils.=
-c
-> index 15fa68a5ea6e..356700349b45 100644
-> --- a/drivers/acpi/acpica/tbutils.c
-> +++ b/drivers/acpi/acpica/tbutils.c
-> @@ -18,7 +18,6 @@ ACPI_MODULE_NAME("tbutils")
->  static acpi_physical_address
->  acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size);
->
-> -#if (!ACPI_REDUCED_HARDWARE)
->  /***********************************************************************=
-********
->   *
->   * FUNCTION:    acpi_tb_initialize_facs
-> @@ -37,8 +36,7 @@ acpi_status acpi_tb_initialize_facs(void)
->         struct acpi_table_facs *facs;
->
->         if (acpi_gbl_FADT.Xfacs &&
-> -                  (!acpi_gbl_FADT.facs
-> -                   || !acpi_gbl_use32_bit_facs_addresses)) {
-> +           (!acpi_gbl_FADT.facs || !acpi_gbl_use32_bit_facs_addresses)) =
-{
->                 (void)acpi_get_table_by_index(acpi_gbl_xfacs_index,
->                                               ACPI_CAST_INDIRECT_PTR(stru=
-ct
->                                                                      acpi=
-_table_header,
+On Tue, Aug 20, 2024 at 08:20:32AM +0000, Mostafa Saleh wrote:
+> > This is the first series in what will be several to complete nesting
+> > support. At least:
+> >  - IOMMU_RESV_SW_MSI related fixups
+> >  - VIOMMU object support to allow ATS invalidations
+> >  - vCMDQ hypervisor support for direct invalidation queue assignment
+> >  - KVM pinned VMID using VIOMMU for vBTM
+> >  - Cross instance S2 sharing
+> >  - Virtual Machine Structure using VIOMMU (for vMPAM?)
+> >  - Fault forwarding support through IOMMUFD's fault fd for vSVA
+> >
+> > It is enough to allow significant amounts of qemu work to progress.
+> >
 
-I'm not sure how this change is related to the rest of the patch.
+> Are there any qemu patches to tests this?
+> As I am confused with some of the user space bits and that would help.
 
-It doesn't appear to be present in the original commit pointed to by
-the Link tag.
+I have the qemu patches, but am running some backlogs to keep it
+updated, and don't have one exactly fitting to test this series.
 
-> @@ -56,7 +54,6 @@ acpi_status acpi_tb_initialize_facs(void)
->
->         return (AE_OK);
->  }
-> -#endif                         /* !ACPI_REDUCED_HARDWARE */
->
->  /***********************************************************************=
-********
->   *
-> diff --git a/drivers/acpi/acpica/utxfinit.c b/drivers/acpi/acpica/utxfini=
-t.c
-> index 1915bec2b279..70ae0afa7939 100644
-> --- a/drivers/acpi/acpica/utxfinit.c
-> +++ b/drivers/acpi/acpica/utxfinit.c
-> @@ -120,6 +120,18 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem=
-(u32 flags)
->          */
->         acpi_gbl_early_initialization =3D FALSE;
->
-> +       /*
-> +        * Obtain a permanent mapping for the FACS. This is required for =
-the
-> +        * Global Lock and the Firmware Waking Vector
-> +        */
-> +       if (!(flags & ACPI_NO_FACS_INIT)) {
-> +               status =3D acpi_tb_initialize_facs();
-> +               if (ACPI_FAILURE(status)) {
-> +                       ACPI_WARNING((AE_INFO, "Could not map the FACS ta=
-ble"));
-> +                       return_ACPI_STATUS(status);
-> +               }
-> +       }
-> +
->  #if (!ACPI_REDUCED_HARDWARE)
->
->         /* Enable ACPI mode */
-> @@ -137,18 +149,6 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem=
-(u32 flags)
->                 }
->         }
->
-> -       /*
-> -        * Obtain a permanent mapping for the FACS. This is required for =
-the
-> -        * Global Lock and the Firmware Waking Vector
-> -        */
-> -       if (!(flags & ACPI_NO_FACS_INIT)) {
-> -               status =3D acpi_tb_initialize_facs();
-> -               if (ACPI_FAILURE(status)) {
-> -                       ACPI_WARNING((AE_INFO, "Could not map the FACS ta=
-ble"));
-> -                       return_ACPI_STATUS(status);
-> -               }
-> -       }
-> -
->         /*
->          * Initialize ACPI Event handling (Fixed and General Purpose)
->          *
-> diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
-> index d768d9c568cf..2da5f4a6e814 100644
-> --- a/include/acpi/acconfig.h
-> +++ b/include/acpi/acconfig.h
-> @@ -67,7 +67,6 @@
->   *      General Purpose Events (GPEs)
->   *      Global Lock
->   *      ACPI PM timer
-> - *      FACS table (Waking vectors and Global Lock)
->   */
->  #ifndef ACPI_REDUCED_HARDWARE
->  #define ACPI_REDUCED_HARDWARE           FALSE
-> --
-> 2.43.0
->
->
+I collected a few remarks from Jason regarding the VIOMMU series.
+And I am reworking on it. I plan to post a testable QEMU branch
+with the next VIOMMU version. Will CC you and more folks.
+
+Thanks
+Nicolin
 
