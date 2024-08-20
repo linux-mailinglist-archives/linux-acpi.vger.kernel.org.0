@@ -1,110 +1,61 @@
-Return-Path: <linux-acpi+bounces-7725-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7726-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED813958D0B
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 19:18:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FDB958D0E
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 19:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1081C222CF
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 17:18:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1660285F14
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 17:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDE61C0DD2;
-	Tue, 20 Aug 2024 17:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59061C3F2B;
+	Tue, 20 Aug 2024 17:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XDGJSjkp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+9Ng/g4"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9F11B9B41;
-	Tue, 20 Aug 2024 17:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABED11BA87C;
+	Tue, 20 Aug 2024 17:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724174280; cv=none; b=W8hEFuV3u5VPKB2rTv3b9Y2Pgu4HW0OusYmmmSo69FtOEBwoUvBK6cUBREyTErmvbCoeY1jRxmT4T+tARkJNEj3mFLmY0u8AKNRuAw4oA2GKMkUVuSeqKQ5um3r3ZMfAi3TiQHthrIW/XzXAqnW/VB35NQmqo6vN4F31rXlv0vw=
+	t=1724174290; cv=none; b=qdqHOCI0SlJwscZWW4GnTXLjAnVYBgQr8r7hOQB03DB6nUtcbrZXAycIgVhSPqSGi51K/rNEeVpXNuORZ/bnAU8CualQpT/5GGXZXxOZCjBRbX1RZmLS5NHSA/sUavgqPthOXRSBQZ7q34SGTu+BeR7pNXJdHhz/rTn7ifuFsD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724174280; c=relaxed/simple;
-	bh=OxdLYrw3Fv4z03xq74l/9FObGzEEUxYeWrEJIG/DXRY=;
+	s=arc-20240116; t=1724174290; c=relaxed/simple;
+	bh=slz9l2RX+N0FmQXjCf6NH6EUr44XL+MqY2t/iaXXVa4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TzHFFzaQpfJ4HTCvgGTll15xMA6rli1UY9yXRh/04DsvKw0h+OcBKbMjcwo3jGJZOUEo2oqfrQM9JqlC7fWB88n9durW0o0UhBLowFtnZ8gmlloTfNc+ZGGJK6Ov3XoLWJy83pKoUMH6QXOsUEWcV+cSZPBAG9TzDsE7dOzDq6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XDGJSjkp; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724174279; x=1755710279;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OxdLYrw3Fv4z03xq74l/9FObGzEEUxYeWrEJIG/DXRY=;
-  b=XDGJSjkpHrVg3kbWNEivfPy5XXlReVRJaeoWkblEdCHcmf0IMH+4ewUd
-   tnhdK2sQL3qac/6MEXPJAX+j55cw8J2+uNZIT4Vl1LSSkyemo8OYXbgU7
-   7Ma+Qqvc280N0tq9NVBrayFUqSfgDWmgTDua+SY93cnrgEzW2xN4c/07T
-   hEyyKpeAgKgt3f2kxPLV3ysugmczFw4BWr1N4uRFhurdUXwzAWmteOzPX
-   OURbVb7TbySFp1H5aB7vcrq1G8KlkXQss1/f6GnvMU7U33XrmQ9x13nGX
-   kqgF5EpxNvRskOoX0eJs65cyt/hpRnxAJwwT5URnlFdtY48XElVAdlm/A
-   Q==;
-X-CSE-ConnectionGUID: Ac8cRQKTSOWcSHSD+OfcbA==
-X-CSE-MsgGUID: 3zX+d2YXT4GBw3BuxOUNkA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="39949998"
-X-IronPort-AV: E=Sophos;i="6.10,162,1719903600"; 
-   d="scan'208";a="39949998"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 10:17:58 -0700
-X-CSE-ConnectionGUID: xJWUE69HSnCyTK9IAsxu8w==
-X-CSE-MsgGUID: WQyr+7NyRB+hSvQh/sg7og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,162,1719903600"; 
-   d="scan'208";a="64998703"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 10:17:50 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sgSUM-0000000HNmN-3fcK;
-	Tue, 20 Aug 2024 20:17:46 +0300
-Date: Tue, 20 Aug 2024 20:17:46 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Stephen Boyd <swboyd@chromium.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev, devicetree@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	Guenter Roeck <groeck@chromium.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Lee Jones <lee@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH v3 02/17] drm/bridge: Verify lane assignment is going to
- work during atomic_check
-Message-ID: <ZsTPuvoTIFVFHw6o@smile.fi.intel.com>
-References: <20240819223834.2049862-1-swboyd@chromium.org>
- <20240819223834.2049862-3-swboyd@chromium.org>
- <ZsRrWfoPPVGC4Dqy@smile.fi.intel.com>
- <CAE-0n536OWtoOoRSM=6u=wA75A+0WtBktiY=6Y6VjKKTQWPcNw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PpXHC8oMoWvBaDUD9i5s+cZQgtPoM/NXMa6BTIY6uRnlp3zPnZS3aDKZrDknigqxmUdisUdtA8ZLLsO/R534K0FJN/hlXRRg7v/93p+ejE6HwIEKj6aNHgsbZvFwL/eAEnIdKTPL3aT7V8Wk1CTq5NAE0d5D9YvlCcsa0/YapWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+9Ng/g4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B5AFC4AF0E;
+	Tue, 20 Aug 2024 17:18:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724174289;
+	bh=slz9l2RX+N0FmQXjCf6NH6EUr44XL+MqY2t/iaXXVa4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H+9Ng/g4B4rsICd68chNTDeL5s7L1YFbZ/Fd/tCMJVQHCM8wN0AAMSIC9qH1yBAt5
+	 +J5HcY0lntOU4Ea4jTTpVPWeo6h9+Of3J78Zz9mSqWiQszVjLFGtAspjN5ZpiXgD05
+	 r+0sitG/UC+gvt22Ommdtae8oDXSdhp2adT5o6kgUDvsQaEJuu4MhhPIAqet5nqssR
+	 CIvp8+vDMLrYPr9Zz/Vz6gO2FTrnEQNvtqJraR9yhb4Dt6adBkbUXEcXLXCn/Txiu1
+	 55snEzTBLR8afBJwT88ibIZzwW1w3iKjjYJWgfYAkJjok3kEOhMGFQ3uPtvv5MzPcZ
+	 Tvx6v6p1kzaOQ==
+Date: Tue, 20 Aug 2024 10:18:06 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev, stable@vger.kernel.org,
+	John Rowley <lkml@johnrowley.me>
+Subject: Re: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
+Message-ID: <20240820171806.GA4065547@thelio-3990X>
+References: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+ <2024082034-bullfight-pureness-3ada@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -113,45 +64,122 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAE-0n536OWtoOoRSM=6u=wA75A+0WtBktiY=6Y6VjKKTQWPcNw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <2024082034-bullfight-pureness-3ada@gregkh>
 
-On Tue, Aug 20, 2024 at 10:12:55AM -0700, Stephen Boyd wrote:
-> Quoting Andy Shevchenko (2024-08-20 03:09:29)
-> > On Mon, Aug 19, 2024 at 03:38:16PM -0700, Stephen Boyd wrote:
+Hi Greg,
 
-...
-
-> > Yeah, I really think that the appearance of this thousandth time in the Git
-> > history has almost no value and just pollutes the commit message makes it not
-> > very well readable. The only outcome is exercising the compression algo used
-> > by Git.
+On Tue, Aug 20, 2024 at 06:15:52AM +0200, Greg KH wrote:
+> On Mon, Aug 19, 2024 at 12:09:22PM -0700, Nathan Chancellor wrote:
+> > When an attribute group is created with sysfs_create_group(), the
+> > ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+> > and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+> > respectively. These functions use container_of() to get the respective
+> > callback from the passed attribute, meaning that these callbacks need to
+> > be the same type as the callbacks in 'struct kobj_attribute'.
+> > 
+> > However, the platform_profile sysfs functions have the type of the
+> > ->show() and ->store() callbacks in 'struct device_attribute', which
+> > results a CFI violation when accessing platform_profile or
+> > platform_profile_choices under /sys/firmware/acpi because the types do
+> > not match:
+> > 
+> >   CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+> > 
+> > This happens to work because the layout of 'struct kobj_attribute' and
+> > 'struct device_attribute' are the same, so the container_of() cast
+> > happens to allow the callbacks to still work.
 > 
-> I'll leave the decision up to the maintainers.
+> Please note that this was an explicit design decision all those years
+> ago, it's not just "happening" to work by some accident.  It was just
+> done way before anyone thought of CFI-like things.
 
-Sure!
+Ack, thanks for the additional context! I can shore up this block with
+something like (wording improvements welcome):
 
-...
+  There is no functional issue from the type mismatch because the layout
+  of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+  so the container_of() cast does not break anything aside from CFI.
 
-> > > +     /*
-> > > +      * Ensure this bridge is aware that the next bridge wants to
-> > > +      * reassign lanes.
-> > > +      */
-> > > +     for (i = 0; i < num_input_lanes; i++)
-> > > +             if (i != input_lanes[i].logical && !num_output_lanes)
-> > > +                     return -ENOTSUPP;
-> >
-> > Besides missing {} this code is internal to the Linux kernel. Is it okay?
+which might sound less accusatory (not my intention). I just remember
+getting feedback on a patch similar to this a long time ago (perhaps
+from Kees?) around "why does this even work as is if the types are
+wrong?".
+
+> > 
+> > Change the type of platform_profile_choices_show() and
+> > platform_profile_{show,store}() to match the callbacks in
+> > 'struct kobj_attribute' and update the attribute variables to match,
+> > which resolves the CFI violation.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+> > Reported-by: John Rowley <lkml@johnrowley.me>
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+> > Tested-by: John Rowley <lkml@johnrowley.me>
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> >  drivers/acpi/platform_profile.c | 20 ++++++++++----------
+> >  1 file changed, 10 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> > index d2f7fd7743a1..11278f785526 100644
+> > --- a/drivers/acpi/platform_profile.c
+> > +++ b/drivers/acpi/platform_profile.c
+> > @@ -22,8 +22,8 @@ static const char * const profile_names[] = {
+> >  };
+> >  static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+> >  
+> > -static ssize_t platform_profile_choices_show(struct device *dev,
+> > -					struct device_attribute *attr,
+> > +static ssize_t platform_profile_choices_show(struct kobject *kobj,
+> > +					struct kobj_attribute *attr,
+> >  					char *buf)
+> >  {
+> >  	int len = 0;
+> > @@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
+> >  	return len;
+> >  }
+> >  
+> > -static ssize_t platform_profile_show(struct device *dev,
+> > -					struct device_attribute *attr,
+> > +static ssize_t platform_profile_show(struct kobject *kobj,
+> > +					struct kobj_attribute *attr,
+> >  					char *buf)
+> >  {
+> >  	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+> > @@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
+> >  	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+> >  }
+> >  
+> > -static ssize_t platform_profile_store(struct device *dev,
+> > -			    struct device_attribute *attr,
+> > +static ssize_t platform_profile_store(struct kobject *kobj,
+> > +			    struct kobj_attribute *attr,
+> >  			    const char *buf, size_t count)
+> >  {
+> >  	int err, i;
+> > @@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
+> >  	return count;
+> >  }
+> >  
+> > -static DEVICE_ATTR_RO(platform_profile_choices);
+> > -static DEVICE_ATTR_RW(platform_profile);
+> > +static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
+> > +static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
 > 
-> ENOTSUPP is used by select_bus_fmt_recursive() so I simply followed that
-> style.
+> I understand your need/want for this, but ick, is there any way to get
+> back to using 'struct device' and not "raw" kobjects here?  That's what
+> the code should be using really.
 
-Okay, just be aware of that side effect of that code, also checkpatch may
-complain (however it might be false positive).
+Not sure, I did not write this driver and I am unfamiliar with the
+'struct device' infrastructure. I see some other drivers in drivers/acpi
+and drivers/firmware that use raw kobjects due to sysfs_create_group()
+under firmware_kobj, so this does not necessarily feel out of place. If
+I got some hints, I could potentially try to do that conversion and have
+John test it with CFI (since I do not have this hardware) but I would
+think this could still be necessary for stable depending on how that
+conversion turns out.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Cheers,
+Nathan
 
