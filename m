@@ -1,83 +1,84 @@
-Return-Path: <linux-acpi+bounces-7722-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7723-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7B7958CAA
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 19:01:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCCA958CE7
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 19:13:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F7841C2215D
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 17:01:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44701C21EB8
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 17:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52B01BC080;
-	Tue, 20 Aug 2024 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB961BBBE8;
+	Tue, 20 Aug 2024 17:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lkoYVUoW"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Y4ne9org"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C1F1B8EA8
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 17:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A7018C92C
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 17:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724173271; cv=none; b=JQmvbeh7QCnryORlXzylj2/W9sKgnYtrintkImhaT0JVt/PLCrEBL2sMp2aiesiRgxsL1eiwCxOp9Rl/NKmnJAC87dXCdDrM9fEKpT6EGpLadoQx8oZ28c8u0rQLAuv1720jNVlntRqZ8cMhZvBB8G1L9PNbZ/yGtd6abNPpeW0=
+	t=1724173979; cv=none; b=LbCNn/g39tBtUnYX6xwp+5RWS/Ax6cbb88IFnyA4F3FybdgYogs3c0zSINPC9z73mRjL4VF32JIYQQKUNaGXLBkMn5eHBYbKmwbLNjKYtDHCBw4zCv07TnGVGB7pVnGufGdKWXigqlbYPaC8ynJq0l1eC2vgAwwQkDWAfGE+5Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724173271; c=relaxed/simple;
-	bh=La7oWIUhSUge3ERKvxgz51d9R1GNWxKb2F4RDC0zKH4=;
+	s=arc-20240116; t=1724173979; c=relaxed/simple;
+	bh=XdOxPTcpa9GhR0x1RxpvIyQuwRfTAKkoPNe3BAG2ReM=;
 	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nGtuz2FBreJ33XiMAkAnyeogy8+X0cXnQj3fOhI2BjUlMRTmr5sDLOiMFVi7lNPb5XR4erZ69WsQNnmRle8Zd47I1/MQdpD3AR9m0u78CVydVatOwKiiGMd3VYJZBfiPUd/hCc6ohv2g6uwR8ITFmky0grjiPxAbhaJQ8M5tXTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lkoYVUoW; arc=none smtp.client-ip=209.85.222.175
+	 To:Cc:Content-Type; b=TpX47XSZ/wh7m5jH0RsC0zybwu7sD4UOjVolWHkuk6r4H6piMRmCOOwH9cTy8wuFZj6g1z1Rf7UVqyM3b7TyRBeuiF1dpNg5pG8F56bgywhgQCAU/RA5ZEOrpu+iy4wmBU150u0MOgVKThApzVCrFaZexsDQg9YcgPiYjuIcJhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Y4ne9org; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7a1d3e93cceso635289185a.1
-        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 10:01:09 -0700 (PDT)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7a1d42da3e9so377673685a.1
+        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 10:12:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724173269; x=1724778069; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1724173976; x=1724778776; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:user-agent:from:references
          :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JCcO6kIoHTHBJk3fFwoj4wvVEMn4emufplXdO/fW0XM=;
-        b=lkoYVUoWkiGZYr9SquzbnoxkjOdRsf5I7kqbzgibDW1Ouo6ffuZQoZzRIEdpR7zJvj
-         BU1BUhrq97VK3fnN9cUyg7UWKShBDV5S9qKXyQUa249TOsQqGYce4gprYYxMbczd2QPM
-         PXrrZMGC1i1jYgf707fRwmQEWYDOfqf8S6JV0=
+        bh=Az1A9NMBsWL3/7vKt/sApr3R4UF7scT2PZ3fQljPcaU=;
+        b=Y4ne9orgDHt6eOerqA15sPK1fQzMDjHMhKt8gk1JaOuJox/gr1snIuGV5KLjwquEnH
+         9uEXhX1/tILUfvU6LH/dJmR9Uin9izskdk0K6N2EFfC9Tt248T99izMfJhpe/yJE5GLx
+         j7ZqrbB5qY67CE/AEasNamuNNLoTpgEI8uDQI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724173269; x=1724778069;
+        d=1e100.net; s=20230601; t=1724173976; x=1724778776;
         h=cc:to:subject:message-id:date:user-agent:from:references
          :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JCcO6kIoHTHBJk3fFwoj4wvVEMn4emufplXdO/fW0XM=;
-        b=DUNAuwmtVJeO0j+haslEo8kqNeDADfQHqon2K+skQuLd/RrDwpDslyrS38eW0t8d7u
-         OV4BmnAkfhYFaUX4TH41nES7s4KHpZ1UZMjTcRx++iOjqXV8dPGjErFcxlhtMeNgULxo
-         Bp3u2gzInU4lCrw3kYaE4z6H4/ssrOOkCLhbp1xiTgTWykWd2kwArojDqIpowQoI4vld
-         oISI6fbo9N2PSRZO5vD9pVZBEkUW84h7NAcg92ZLFuEi4IcpCbpZVuDBQDy/93ruqsAo
-         /eWR542eF+c5Ze4frDQm0USKjszH8LzdWVg9ZQQu9QjTM+qMIDk+3/ng/6j3D1IvK0g/
-         b2iw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+LBFCpGCZAf36rTztK6cM1UOrocj19Y2+8A/xdw3ijrh0bw/mBqazkuUPZtm36FaCrVSp6shP6GZ9@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/zZSsFGuY5mvdtF9LXsRABZtIChv5yejVE+7fsUPg2GSNwbLd
-	LjTE90z3ZE8ZZReemibyhnXpmBjdb3elUk1SB2W/TN6GwUaC3ekpxVRwXYyJINWBc4m7lPeBrW2
-	gEWue2PeaF4JkCXU/rWwZxQs/NOqUAz9r2tlf
-X-Google-Smtp-Source: AGHT+IExsG5zHtAEYfaM6InbVgUuGomzcusJF6tz1OfpCX6Xn6bckfcEN/xUs+8krdfm3hDwFaOzE5atXUvwN9QFkzg=
-X-Received: by 2002:a05:620a:3942:b0:7a5:1e9:7ff6 with SMTP id
- af79cd13be357-7a667c53799mr601135385a.34.1724173268451; Tue, 20 Aug 2024
- 10:01:08 -0700 (PDT)
+        bh=Az1A9NMBsWL3/7vKt/sApr3R4UF7scT2PZ3fQljPcaU=;
+        b=sNCxi//BEw7gtDcUIdTW5cwhGyLs8YB8nZs0h/ikdjUUV7yYZhZFF8+aAcrFRCmUVV
+         obUOz6PSQKV4JcORl+BKSByove0Gxz3bcWQfSEz0quM6tMU4HWX1Fi/LSwBXmVcgyDCK
+         q8Pk0X2p1vhmtGssqBEIy4Ws5Kq8hlPbfc1dIhltcVzroNX1i9PTm/AtPkp7FkJX6dIR
+         AlOsgzovy7t1n9TAcaANEAOSR9K0EoK86Ecw+w5HGTozq6I4nk6ycMiJ60UR42mFz85X
+         i9rYjdwxw0kKnykXgZ4syobFU9s+rGhdwoH9NdyoyG3gJ3nGEGNRDaF8ljYM0vZEYDM5
+         OxEA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Gi2viAi+cCKaREne7BS9Z1IU5gvjyl5InntADQM1yJcKv5dm34CaHDCffzYf2q6m810MyGD7YivQpJ/MdF7dovNTrJr8okaQ7A==
+X-Gm-Message-State: AOJu0YxetE4+QHdToXZGm3ReMz27VGJKsVIC4QLEmcipM86rUmdGvrcw
+	jmLDM5cl00LuSRA06eox/h5MBeEB75eH0FE3NEbct6GL6lI2W9lYvU2IJwY9Or37VRvQP/QFZgx
+	/13cHn+eaSTMVTpjbaqe0OLOB//YuSDf8iJ42
+X-Google-Smtp-Source: AGHT+IFkHKjFejZjAs941sgh7G6biMuTuBjyP76WiW4rgqwMwtsqslDT56RN+7cjrZMCdxIwmDbG7BvU7jfkGLOLSTI=
+X-Received: by 2002:a05:620a:4245:b0:79f:5d5:1bc1 with SMTP id
+ af79cd13be357-7a669685ff7mr335452285a.58.1724173976423; Tue, 20 Aug 2024
+ 10:12:56 -0700 (PDT)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 20 Aug 2024 10:01:07 -0700
+ HTTPREST; Tue, 20 Aug 2024 10:12:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ZsRs6d6uOMb4DqQQ@smile.fi.intel.com>
-References: <20240819223834.2049862-1-swboyd@chromium.org> <20240819223834.2049862-6-swboyd@chromium.org>
- <ZsRs6d6uOMb4DqQQ@smile.fi.intel.com>
+In-Reply-To: <ZsRrWfoPPVGC4Dqy@smile.fi.intel.com>
+References: <20240819223834.2049862-1-swboyd@chromium.org> <20240819223834.2049862-3-swboyd@chromium.org>
+ <ZsRrWfoPPVGC4Dqy@smile.fi.intel.com>
 From: Stephen Boyd <swboyd@chromium.org>
 User-Agent: alot/0.10
-Date: Tue, 20 Aug 2024 10:01:07 -0700
-Message-ID: <CAE-0n52O01UgrDT2=-JJpZj39BOJNyyQC4w_pgDUmKDmcN=8Yw@mail.gmail.com>
-Subject: Re: [PATCH v3 05/17] usb: typec: Add device managed typec_switch_register()
+Date: Tue, 20 Aug 2024 10:12:55 -0700
+Message-ID: <CAE-0n536OWtoOoRSM=6u=wA75A+0WtBktiY=6Y6VjKKTQWPcNw@mail.gmail.com>
+Subject: Re: [PATCH v3 02/17] drm/bridge: Verify lane assignment is going to
+ work during atomic_check
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	patches@lists.linux.dev, devicetree@vger.kernel.org, 
@@ -101,24 +102,51 @@ Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
 	Vinod Koul <vkoul@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Quoting Andy Shevchenko (2024-08-20 03:16:09)
-> On Mon, Aug 19, 2024 at 03:38:19PM -0700, Stephen Boyd wrote:
-> > +     ptr = devres_alloc(devm_typec_switch_unregister, sizeof(*ptr), GFP_KERNEL);
-> > +     if (!ptr)
-> > +             return ERR_PTR(-ENOMEM);
-> > +
-> > +     switch_dev = typec_switch_register(parent ,desc);
-> > +     if (!IS_ERR(switch_dev)) {
-> > +             *ptr = switch_dev;
-> > +             devres_add(parent, ptr);
-> > +     } else {
-> > +             devres_free(ptr);
-> > +     }
+Quoting Andy Shevchenko (2024-08-20 03:09:29)
+> On Mon, Aug 19, 2024 at 03:38:16PM -0700, Stephen Boyd wrote:
+> > Verify during drm_atomic_bridge_check() that the lane assignment set in
+> > a bridge's atomic_check() callback is going to be satisfied by the
+> > previous bridge. If the next bridge is requiring something besides the
+> > default 1:1 lane assignment on its input then there must be an output
+> > lane assignment on the previous bridge's output. Otherwise the next
+> > bridge won't get the lanes assigned that it needs.
 >
-> devm_add_action_or_reset() ?
+> > Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> > Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> > Cc: Robert Foss <rfoss@kernel.org>
+> > Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> > Cc: Jonas Karlman <jonas@kwiboo.se>
+> > Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: Maxime Ripard <mripard@kernel.org>
+> > Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> > Cc: David Airlie <airlied@gmail.com>
+> > Cc: Daniel Vetter <daniel@ffwll.ch>
+> > Cc: <dri-devel@lists.freedesktop.org>
+> > Cc: Pin-yen Lin <treapking@chromium.org>
+> > Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>
+> Yeah, I really think that the appearance of this thousandth time in the Git
+> history has almost no value and just pollutes the commit message makes it not
+> very well readable. The only outcome is exercising the compression algo used
+> by Git.
+
+I'll leave the decision up to the maintainers.
+
+>
+> ...
+>
+> > +     /*
+> > +      * Ensure this bridge is aware that the next bridge wants to
+> > +      * reassign lanes.
+> > +      */
+> > +     for (i = 0; i < num_input_lanes; i++)
+> > +             if (i != input_lanes[i].logical && !num_output_lanes)
+> > +                     return -ENOTSUPP;
+>
+> Besides missing {} this code is internal to the Linux kernel. Is it okay?
 >
 
-No. We don't want to call the 'action' devm_typec_switch_unregister()
-when it fails because that would unregister a switch that has never been
-registered.
+ENOTSUPP is used by select_bus_fmt_recursive() so I simply followed that
+style.
 
