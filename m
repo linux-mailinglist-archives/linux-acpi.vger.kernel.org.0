@@ -1,272 +1,124 @@
-Return-Path: <linux-acpi+bounces-7703-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7704-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12719580FD
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 10:30:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F791958112
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 10:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8710B2451E
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 08:30:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1542C1C243E7
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 08:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7BE18A92D;
-	Tue, 20 Aug 2024 08:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA28F18A6D3;
+	Tue, 20 Aug 2024 08:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pKn9DcGL"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="L1zCUkdl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE4718A6A8
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 08:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB2518A6BD
+	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 08:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724142614; cv=none; b=tf3huFn+pns/n5r3kBC2s4V/O9Xg/lGRy0+UE4ESkDtSY4z0Dg7GrxQdrh6vRqeND6XHGw/XjoH905q29mqctlq2hNocYZ5pUn1TaParo7EwzO812uTm/snM10lTquMLpciFLpVx3VYpt5Y1Vc39az+FweDEl4QI/rTmLfKprVs=
+	t=1724142829; cv=none; b=TKv8duSNHnOwWT8krTWA+7L/AR4ksOiJQn5oGVW9ad6QULPX3vT/3/uGVLAqNM0jgQkM0YOQHVAp5NHPOGgMkaTLt9LcodeWgbNgvwuXNxZsWwdDwAm/hu4jERFVi0l6GX9XF+ubXl7YdRLf8tC8bae5x6tSTgIohsbQvDUxsOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724142614; c=relaxed/simple;
-	bh=C97kW6GO0b184jP3Z6JLzvY+X/IbBXrnJu7dwpjsKjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8Z8mHUA/iSi/zWAu37+y8oIFmtfGQAK0IlyQqqFB4QvzjmV/Tz1unlbAAYDdEuE4owie/kzQTAwjQbOX1nhOZl/APYtLl46souLjlKTNJUM9iOkAMm1zFEzWRyOiuoGz47FalbCSQz89v0EPcwPUzJxKrNX7aLIkZvnj1TWwck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pKn9DcGL; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5bebc830406so5566a12.0
-        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 01:30:12 -0700 (PDT)
+	s=arc-20240116; t=1724142829; c=relaxed/simple;
+	bh=1LtjsPFrjjd6hYsPJu9b0vm4sQPyFxCduIQ0ZLAHK1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=shVHOo00DdrJwvLCgE9fa5waWDGlWRZq27s/u5MFqjbBwLI4X4rhELJ+vFTXq4dOwtgXi+oEpXbe6T5SX3yuZaWhRJ2SkkhjvkEKk0aQl3Esz3dJM3WsPYmwjCCZJURU81+upL9A23DjPjqhGlJIqDPKrH4ebjiwd3yomGMQk98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=L1zCUkdl; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428178fc07eso39578925e9.3
+        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 01:33:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724142611; x=1724747411; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Nmtk1HP3ErSXQsoJaqLN7JzX8v0kJjj6aEOiqGrjDL0=;
-        b=pKn9DcGLLiviww6ifTB3Ix+x8us8PEWmpDLYmggg9LDImdTqz2/3ecCuuSpPFiD0Dv
-         vU05sSGYpwywwsU4C5cZ3IeONctAoNDyDd+SbXpApgTjjet9lXNCi1T+fIlAYoITNaTP
-         ditfMIsBhC/S8EDuDmt2NaVe93ew6tAT56s8zZ2fyhiFLCjFCp3HLNC+oE+2fIRJUtFJ
-         IY31ks3cDD6UlRUHq0zPqAamWMoDjbOfAfngi2Hq52dcdB9JpOTNX8U9n9bLykMn/YGS
-         041hGgOxWZtN2OQu+MnGRtc8Q41j14thW9ylyHr4/3cNIcNpUZw+64vvGgnRh0Z3Dr0D
-         Sc4g==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1724142826; x=1724747626; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jEL7tQD7GbeuTlapz5M/BtFYtXhOkUzJpx0LAanx7Mw=;
+        b=L1zCUkdlkz0LTAP9emCVCeq6n6u4uoBBO6bRqPp+rFao/f5mLfExKKl7IJUk7m8+Am
+         jlnWEFWDmvbE3Q/vQyH+g7mijE5tAmK5aW/6WrtM51j5ApN2FbUCqY/H09YBItlDqJBd
+         3XlLv/kQJ/xagDcXqRZG8UNi+Ix305NYpADtwkHuTcxLy+CNoFdMUhfPnGZAnOnA3w5E
+         47mRFptK4bSu0MVVWXteFx4HdGQeBPxLdtrl12bT9nabNJZdE6VCB/jN75SFiwQWLIdT
+         i68YZLBlrhu0kldvveyhMxqD76oxbO7axOuZmFiuPZ9ql1UZhaslqwXmeScYpPpMnEDw
+         5+ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724142611; x=1724747411;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nmtk1HP3ErSXQsoJaqLN7JzX8v0kJjj6aEOiqGrjDL0=;
-        b=Z88hc0sfrabF/7d8p10ooqEprzvoBrr1YSlPYO/gBotKnMKp8SqD4wHGLlSxAeW6Va
-         7MymCOrXPkmAPn+m65M3/K3esL+eVT3zqKXAGrFgn07CrHuzN7Y7ggq6VaSMmdSNr5nX
-         K6jKUOIF0vMvYz2zLgS155m3R0zW6qa1+laqnlh7sl6I4TQfeEnK1WEVIavnxXqJt9F5
-         norQt4tbXA9iHjiveaVV9So1AH9TJuNvD0Mus2Bko2SJ10VjgZSX1R/L2PF/0tXeBZR7
-         7SwSa1AICE8KPhWqocOjvDRbAAzUhqO3Hj5J3LotXIM3+SBAxBiWTfW5YN0muxUlSIgf
-         H5Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVKCLpIBhkIWCy828dU/OyDtDC9SuTvWhBGmg/AP53KRGO3DBoo9vLk2pidUTBFgT5zAKG2rrx7sChL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy9YqXrYn1Kmx7nt3bjNHoys5X7JiXFQInStzE0oWpmEuhOFqZ
-	pLGGbM5tiFqvEFf7eYfvey8AdppWKByZp3pZug59iOiFET4UUbZcFl35sxOgzw==
-X-Google-Smtp-Source: AGHT+IGPziUVy8HDcHfDeem3AWflQvAYWNj8eBFcuwDV7RIOne/5+5CR2e95OR/3zOh5eRn0jG6aJw==
-X-Received: by 2002:a05:6402:3546:b0:5be:c28a:97cf with SMTP id 4fb4d7f45d1cf-5bf0e5a28eemr37487a12.5.1724142610293;
-        Tue, 20 Aug 2024 01:30:10 -0700 (PDT)
-Received: from google.com (203.75.199.104.bc.googleusercontent.com. [104.199.75.203])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ed7945b8sm135707085e9.44.2024.08.20.01.30.09
+        d=1e100.net; s=20230601; t=1724142826; x=1724747626;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jEL7tQD7GbeuTlapz5M/BtFYtXhOkUzJpx0LAanx7Mw=;
+        b=IbK2vSfm5fyDzsl+obenGjojM4T5NU8a9sieCRIX4djVVbwjGzq+8DsZ8kYY952h0p
+         RzRPxGItBi8jsiOuR3I4lN+3Lu0cOsrIy2XhWB/OfwDmaBh2WYPq5cNe+ACzdM4m5Nxb
+         iq7HmMsflvbht7H7yZ/XvhtjSaLGN6Z8YkCBeEl2ucpRndpWjZOm3ACbF42EGOv4hb8R
+         JF1w6//mCoPhCnTEWuk8gYwWgFmqm5DtTbUKmnMObgayQYI3rwGVOaxilxWB90A1XAeo
+         G8VN8d7fXIWCOKF+G1nPyIToKqyku0yqpzXLJD75vP/K9FlbE9A5uObeRGd+Z/E7Me9S
+         IDQg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWx1kLa0mJfOsdablJ6KfoUOzM2S0/HWp2R7du66h5kZU+s/TyxB+xMAl7jVw55gm8TsbgyzOc9O3z@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1HSOQ4FBTu8L1ktHE/RqbGkyRCgVneBg3N2EKSBTWfPFg1rA3
+	Ls/4WKTXBnhPSfc45jfqFBNIQr4A5hSnzv3HZpPXtl1dzAs5m0TMPk4VxwnaeUY=
+X-Google-Smtp-Source: AGHT+IHnn/RvdT8xKBMoBdrZ1Ash1eRln9exy4n1RN2NlwHjGcXkKlMk+nXjGb9x8VTio5VKmPJ2+Q==
+X-Received: by 2002:adf:ee0d:0:b0:367:8a87:ada2 with SMTP id ffacd0b85a97d-371946501f1mr10050186f8f.26.1724142825520;
+        Tue, 20 Aug 2024 01:33:45 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:ddce:8248:19a9:4bf6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3718985a8fcsm12468056f8f.63.2024.08.20.01.33.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 01:30:09 -0700 (PDT)
-Date: Tue, 20 Aug 2024 08:30:05 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Hanjun Guo <guohanjun@huawei.com>, iommu@lists.linux.dev,
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
-	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Message-ID: <ZsRUDaFLd85O8u4Z@google.com>
-References: <0-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com>
- <2-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com>
+        Tue, 20 Aug 2024 01:33:45 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v2 0/5] gpiolib: Add and utilise for_each_gpio_property_name()
+Date: Tue, 20 Aug 2024 10:33:43 +0200
+Message-ID: <172414281950.19982.294912238748441566.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
+References: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2-v1-54e734311a7f+14f72-smmuv3_nesting_jgg@nvidia.com>
 
-Hi Jason,
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-On Tue, Aug 06, 2024 at 08:41:15PM -0300, Jason Gunthorpe wrote:
-> Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
-> works. When S2FWB is supported and enabled the IOPTE will force cachable
-> access to IOMMU_CACHE memory and deny cachable access otherwise.
-> 
-> This is not especially meaningful for simple S2 domains, it apparently
-> doesn't even force PCI no-snoop access to be coherent.
-> 
-> However, when used with a nested S1, FWB has the effect of preventing the
-> guest from choosing a MemAttr that would cause ordinary DMA to bypass the
-> cache. Consistent with KVM we wish to deny the guest the ability to become
-> incoherent with cached memory the hypervisor believes is cachable so we
-> don't have to flush it.
-> 
-> Turn on S2FWB whenever the SMMU supports it and use it for all S2
-> mappings.
 
-I have been looking into this recently from the KVM side as it will
-use FWB for the CPU stage-2 unconditionally for guests(if supported),
-however that breaks for non-coherent devices when assigned, and
-limiting assigned devices to be coherent seems too restrictive.
-I have been looking into ways to notify KVM from VFIO as early as
-possible so it can configure the page table properly.
-
-But for SMMUv3, S2FWB is per stream, can’t we just use it if the master
-is DMA coherent?
-
-Thanks,
-Mostafa
-
+On Mon, 19 Aug 2024 17:28:55 +0300, Andy Shevchenko wrote:
+> There are a few of duplication of the same for-loop against GPIO
+> suffixes. This series addresses that along with proposal to eliminate
+> the exported gpio_suffix_count by converting the array to be
+> NULL-terminated.
 > 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c |  6 ++++++
->  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |  3 +++
->  drivers/iommu/io-pgtable-arm.c              | 24 +++++++++++++++++----
->  include/linux/io-pgtable.h                  |  2 ++
->  4 files changed, 31 insertions(+), 4 deletions(-)
+> v2:
+> - fixed a rebase issue (LKP)
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 531125f231b662..7fe1e27d11586c 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -1612,6 +1612,8 @@ void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
->  		FIELD_PREP(STRTAB_STE_1_EATS,
->  			   ats_enabled ? STRTAB_STE_1_EATS_TRANS : 0));
->  
-> +	if (smmu->features & ARM_SMMU_FEAT_S2FWB)
-> +		target->data[1] |= cpu_to_le64(STRTAB_STE_1_S2FWB);
->  	if (smmu->features & ARM_SMMU_FEAT_ATTR_TYPES_OVR)
->  		target->data[1] |= cpu_to_le64(FIELD_PREP(STRTAB_STE_1_SHCFG,
->  							  STRTAB_STE_1_SHCFG_INCOMING));
-> @@ -2400,6 +2402,8 @@ static int arm_smmu_domain_finalise(struct arm_smmu_domain *smmu_domain,
->  		pgtbl_cfg.oas = smmu->oas;
->  		fmt = ARM_64_LPAE_S2;
->  		finalise_stage_fn = arm_smmu_domain_finalise_s2;
-> +		if (smmu->features & ARM_SMMU_FEAT_S2FWB)
-> +			pgtbl_cfg.quirks |= IO_PGTABLE_QUIRK_ARM_S2FWB;
->  		break;
->  	default:
->  		return -EINVAL;
-> @@ -4189,6 +4193,8 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
->  
->  	/* IDR3 */
->  	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
-> +	if (FIELD_GET(IDR3_FWB, reg))
-> +		smmu->features |= ARM_SMMU_FEAT_S2FWB;
->  	if (FIELD_GET(IDR3_RIL, reg))
->  		smmu->features |= ARM_SMMU_FEAT_RANGE_INV;
->  
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> index 8851a7abb5f0f3..7e8d2f36faebf3 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-> @@ -55,6 +55,7 @@
->  #define IDR1_SIDSIZE			GENMASK(5, 0)
->  
->  #define ARM_SMMU_IDR3			0xc
-> +#define IDR3_FWB			(1 << 8)
->  #define IDR3_RIL			(1 << 10)
->  
->  #define ARM_SMMU_IDR5			0x14
-> @@ -258,6 +259,7 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
->  #define STRTAB_STE_1_S1CSH		GENMASK_ULL(7, 6)
->  
->  #define STRTAB_STE_1_S1STALLD		(1UL << 27)
-> +#define STRTAB_STE_1_S2FWB		(1UL << 25)
->  
->  #define STRTAB_STE_1_EATS		GENMASK_ULL(29, 28)
->  #define STRTAB_STE_1_EATS_ABT		0UL
-> @@ -700,6 +702,7 @@ struct arm_smmu_device {
->  #define ARM_SMMU_FEAT_ATTR_TYPES_OVR	(1 << 20)
->  #define ARM_SMMU_FEAT_HA		(1 << 21)
->  #define ARM_SMMU_FEAT_HD		(1 << 22)
-> +#define ARM_SMMU_FEAT_S2FWB		(1 << 23)
->  	u32				features;
->  
->  #define ARM_SMMU_OPT_SKIP_PREFETCH	(1 << 0)
-> diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
-> index f5d9fd1f45bf49..62bbb6037e1686 100644
-> --- a/drivers/iommu/io-pgtable-arm.c
-> +++ b/drivers/iommu/io-pgtable-arm.c
-> @@ -106,6 +106,18 @@
->  #define ARM_LPAE_PTE_HAP_FAULT		(((arm_lpae_iopte)0) << 6)
->  #define ARM_LPAE_PTE_HAP_READ		(((arm_lpae_iopte)1) << 6)
->  #define ARM_LPAE_PTE_HAP_WRITE		(((arm_lpae_iopte)2) << 6)
-> +/*
-> + * For !FWB these code to:
-> + *  1111 = Normal outer write back cachable / Inner Write Back Cachable
-> + *         Permit S1 to override
-> + *  0101 = Normal Non-cachable / Inner Non-cachable
-> + *  0001 = Device / Device-nGnRE
-> + * For S2FWB these code:
-> + *  0110 Force Normal Write Back
-> + *  0101 Normal* is forced Normal-NC, Device unchanged
-> + *  0001 Force Device-nGnRE
-> + */
-> +#define ARM_LPAE_PTE_MEMATTR_FWB_WB	(((arm_lpae_iopte)0x6) << 2)
->  #define ARM_LPAE_PTE_MEMATTR_OIWB	(((arm_lpae_iopte)0xf) << 2)
->  #define ARM_LPAE_PTE_MEMATTR_NC		(((arm_lpae_iopte)0x5) << 2)
->  #define ARM_LPAE_PTE_MEMATTR_DEV	(((arm_lpae_iopte)0x1) << 2)
-> @@ -458,12 +470,16 @@ static arm_lpae_iopte arm_lpae_prot_to_pte(struct arm_lpae_io_pgtable *data,
->  	 */
->  	if (data->iop.fmt == ARM_64_LPAE_S2 ||
->  	    data->iop.fmt == ARM_32_LPAE_S2) {
-> -		if (prot & IOMMU_MMIO)
-> +		if (prot & IOMMU_MMIO) {
->  			pte |= ARM_LPAE_PTE_MEMATTR_DEV;
-> -		else if (prot & IOMMU_CACHE)
-> -			pte |= ARM_LPAE_PTE_MEMATTR_OIWB;
-> -		else
-> +		} else if (prot & IOMMU_CACHE) {
-> +			if (data->iop.cfg.quirks & IO_PGTABLE_QUIRK_ARM_S2FWB)
-> +				pte |= ARM_LPAE_PTE_MEMATTR_FWB_WB;
-> +			else
-> +				pte |= ARM_LPAE_PTE_MEMATTR_OIWB;
-> +		} else {
->  			pte |= ARM_LPAE_PTE_MEMATTR_NC;
-> +		}
->  	} else {
->  		if (prot & IOMMU_MMIO)
->  			pte |= (ARM_LPAE_MAIR_ATTR_IDX_DEV
-> diff --git a/include/linux/io-pgtable.h b/include/linux/io-pgtable.h
-> index f9a81761bfceda..aff9b020b6dcc7 100644
-> --- a/include/linux/io-pgtable.h
-> +++ b/include/linux/io-pgtable.h
-> @@ -87,6 +87,7 @@ struct io_pgtable_cfg {
->  	 *	attributes set in the TCR for a non-coherent page-table walker.
->  	 *
->  	 * IO_PGTABLE_QUIRK_ARM_HD: Enables dirty tracking in stage 1 pagetable.
-> +	 * IO_PGTABLE_QUIRK_ARM_S2FWB: Use the FWB format for the MemAttrs bits
->  	 */
->  	#define IO_PGTABLE_QUIRK_ARM_NS			BIT(0)
->  	#define IO_PGTABLE_QUIRK_NO_PERMS		BIT(1)
-> @@ -95,6 +96,7 @@ struct io_pgtable_cfg {
->  	#define IO_PGTABLE_QUIRK_ARM_TTBR1		BIT(5)
->  	#define IO_PGTABLE_QUIRK_ARM_OUTER_WBWA		BIT(6)
->  	#define IO_PGTABLE_QUIRK_ARM_HD			BIT(7)
-> +	#define IO_PGTABLE_QUIRK_ARM_S2FWB		BIT(8)
->  	unsigned long			quirks;
->  	unsigned long			pgsize_bitmap;
->  	unsigned int			ias;
-> -- 
-> 2.46.0
-> 
+> [...]
+
+Applied, thanks!
+
+[1/5] gpiolib: Introduce for_each_gpio_property_name() helper
+      commit: ef3d4b94d2d88b160887ff9ca737a5f8ec101579
+[2/5] gpiolib: swnode: Unify return code variable name
+      commit: e42fce0ff99658b5b43e8dae4f7acc43d38a00ef
+[3/5] gpiolib: swnode: Introduce swnode_gpio_get_reference() helper
+      commit: 7fd6809888a82055fcca9d14417d5e2675f0acc5
+[4/5] gpiolib: swnode: Make use of for_each_gpio_property_name()
+      commit: a975a64692c39991fdde2f1d990b7bdd48d183fc
+[5/5] gpiolib: Replace gpio_suffix_count with NULL-terminated array
+      commit: 4b91188dced811e2d867574b672888406cb7114c
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
