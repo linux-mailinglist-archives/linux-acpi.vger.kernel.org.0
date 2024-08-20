@@ -1,170 +1,168 @@
-Return-Path: <linux-acpi+bounces-7705-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7706-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D50E95835A
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 11:56:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5279583B2
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 12:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B461C23EF1
-	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 09:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B59C1C20D02
+	for <lists+linux-acpi@lfdr.de>; Tue, 20 Aug 2024 10:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FC418C35D;
-	Tue, 20 Aug 2024 09:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA8618C917;
+	Tue, 20 Aug 2024 10:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AT+Ey2qg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="grkfMJ+n"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C35318C32E
-	for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 09:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9AB18A957;
+	Tue, 20 Aug 2024 10:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724147785; cv=none; b=mXGROx0Jnej2snarzG8mkBgayoNWnWiHb6G2wlQ4/LwavFd4KarLan2RZ4a1XhZgMng8zJTdq5gWCySu+IrTcz/pdUH/FYA8VFQ+5PrOPBNzkBwVgLK13JRzZZnwlJ8nr/JEIC8Gk+vnUd1BytkZ0Cs9nXkP5z2FOWct04FFt3I=
+	t=1724148582; cv=none; b=a5Op2KS1JmbvaBM/9frz09kSIgIsLXXCqvYeDH5qM60u2fVXVV0xDM77sewQvyhyNdvPWs0gGM3hujw/+JWOMbvQW7iNrCdHQb5QswfhsbcbvrZ6W1LiMbEklxA+lbwswtqy3ivoKaYz059h0Ih2ke5HPRI2uEWu9j5fmEt+dhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724147785; c=relaxed/simple;
-	bh=AT2XFkT4wDbUyhV+U8SUKVJbCNxM8heu+SNR0vvuUKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cHoIcnVHLBUnpZgBvGGDU7s6kqHMyqyS2AfBLZhJQBjIVjz5+XrQcATu8N1iZb6BUZTXH8VjJQJPROJ/UuOaVeObrjVyOgy3apufTiktqdT0QTXga3696i8iT8yPhx7Gj9DLvXqCrpALJjiJojO8x7aqYrcN5KYdj63Ku1nnYHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AT+Ey2qg; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53345604960so77400e87.3
-        for <linux-acpi@vger.kernel.org>; Tue, 20 Aug 2024 02:56:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1724147780; x=1724752580; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=O22wnNYOCBxaZUWUifSw34IZJjKrxoUhdzvzmYoIV68=;
-        b=AT+Ey2qgRtb8xnbdAjLfwBz3INyvyo/YEpMJH3UbjmqgZZqU2xtAXODr0HbGRVUAgC
-         DoHpc5/zTgIYUxdOC45g10HrbPbmKqRLfG8MCiJl9XZjDY/4i6Xcqp6F5gdAWotbwOyi
-         v6QqLEO7HoUPx6nk08XSpqbAAiORzJuUXFlkD9aaKYLfW2QqzTSzX879gj/mktkw4aU1
-         i9X3IZStjmany5ABdGxZ8tyAjUgzIO2fQUiFW4PK1aoH2sTR+fyWwO5uK2a6rnp3CPhM
-         /1WERKwF9KEs0qfnMr4U4cDtFJqQ5lHgExiO+CXGzO1n/Zqm9b7M5S9EuF1z/mRWJV3/
-         5Obw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724147780; x=1724752580;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O22wnNYOCBxaZUWUifSw34IZJjKrxoUhdzvzmYoIV68=;
-        b=uleRNU1Op5W8LJXVTE5uifP1V8a0fguhZYb5Ov1OpqVc6WRNozsenKyY0+Au3RbqGz
-         HVsXABqF7tooo88XReJvKJ2JGfVOvXlTxoGUp/i0RNEmZRDrw1dqXf+u6VSkdpl3dBuH
-         MYdWWBWJD9lV8GDSJBpm7ra1u9Gm+Wb4P4jV+YuKvZJqrwqyLWCLdPSDmZHKzin2TKmf
-         xS/wtexz2B73mca+3d87cBIbxVSAf67m+ycsuIVCSl1WM3RrCl/rZp0apGbWBDPoW+vT
-         WzLDE+GqLSI+5FbTicqwjRwiEc90qLoH2/iUdpbB4lriKlUSLF7ieAYr1MziaUArZYKT
-         Ytog==
-X-Forwarded-Encrypted: i=1; AJvYcCVSqT1Gu7XE4Y3Qej9oMSSTgE5HcKXC8cnCK3DWgCmTjWN+SJGXYGSvTK6XzUSGVzBvK5XuM447h4jR@vger.kernel.org
-X-Gm-Message-State: AOJu0YybW9b7z+K+JTDsvHaKOg2fUIQk/LOwIKtwIwl3vIbSE3pvN8Nt
-	tkObCSyAILyPWjPtlgm7/fG3A6CXrMaVIveLm9jJfPPNIoeUiiiUH6GtNQsszvPAKBJRr7HBhwo
-	=
-X-Google-Smtp-Source: AGHT+IFrsPT4hsY3MVuzsaum359JeocN124iERr4tvRuSUdtykAH993mPaa7xKBT+WQaa6tnUfu4FA==
-X-Received: by 2002:a05:6512:3085:b0:533:809:a970 with SMTP id 2adb3069b0e04-5331c6a20e1mr8788954e87.14.1724147779985;
-        Tue, 20 Aug 2024 02:56:19 -0700 (PDT)
-Received: from [10.156.60.236] (ip-037-024-206-209.um08.pools.vodafone-ip.de. [37.24.206.209])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838c66e2sm739681766b.3.2024.08.20.02.56.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Aug 2024 02:56:19 -0700 (PDT)
-Message-ID: <607602c3-5199-4326-8676-d28a8b42b4b5@suse.com>
-Date: Tue, 20 Aug 2024 11:56:18 +0200
+	s=arc-20240116; t=1724148582; c=relaxed/simple;
+	bh=3tVTMBl8GkEdITq3AfFty1yHWAX+Rf+21JgHphAFdlY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jz0HpEofvt6YgUw+9sbN23or69JosojFwzi98YL0/u5f7sLnsU4dsNF3TbArIGIJst0i1aD+lboSM5GK+4CSy9Ua4sGNK2UdW7zW13f2EBwrrFov5qOIJXsB8O6eF6OEpBZTjHrKEKwnw+USuGGJH1T80nqkYSF0DEsAb2CiXkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=grkfMJ+n; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724148581; x=1755684581;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3tVTMBl8GkEdITq3AfFty1yHWAX+Rf+21JgHphAFdlY=;
+  b=grkfMJ+n6kEMEHJVyEhqiFYtMqXkMM9G+o/Nq+F7IOu/LILISKevyz4j
+   NuEaS9Bo9IzfJroHXr2EDymnZeNHyD3hSjdCWDBaPMv/GYOPxFaenYBRc
+   RvAjNdybh4/r4kYgZLUTTpYWDKVDF7rtnvCUwZzoe0ihwWB4eF6yqPkcI
+   oFwNvdVYC+d4kbWu/XccT9/9kttSI9/Y/qlA47zlHYV5F+LpE1F7i0SKw
+   97gr++Qjzz7da1bYNeT28hNw4pNW1mRMiBJr3SGNNXKXuKZvMFeIAE+ZV
+   aOJ35Sb1DQB9seU1q4N2Fr5ltQpSHE4whvE2qnoTSW9yotpiQPbXmUnBa
+   A==;
+X-CSE-ConnectionGUID: dePjUSGKRR+D6WxrasWAtw==
+X-CSE-MsgGUID: XaHSV8ijTP2VSgf0G7Frjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="39942824"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="39942824"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 03:09:40 -0700
+X-CSE-ConnectionGUID: CmRgePgTRQ+WeEPu8CBnhw==
+X-CSE-MsgGUID: vcfqOtI4S6mOAnzISwJg/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="83887188"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 03:09:33 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sgLnt-0000000HG4x-1BmJ;
+	Tue, 20 Aug 2024 13:09:29 +0300
+Date: Tue, 20 Aug 2024 13:09:29 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Stephen Boyd <swboyd@chromium.org>
+Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev, devicetree@vger.kernel.org,
+	Douglas Anderson <dianders@chromium.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Benson Leung <bleung@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	dri-devel@lists.freedesktop.org,
+	Guenter Roeck <groeck@chromium.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Lee Jones <lee@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH v3 02/17] drm/bridge: Verify lane assignment is going to
+ work during atomic_check
+Message-ID: <ZsRrWfoPPVGC4Dqy@smile.fi.intel.com>
+References: <20240819223834.2049862-1-swboyd@chromium.org>
+ <20240819223834.2049862-3-swboyd@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/7] xen: allow mapping ACPI data using a different
- physical address
-To: Juergen Gross <jgross@suse.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org,
- x86@kernel.org, linux-acpi@vger.kernel.org
-References: <20240820082012.31316-1-jgross@suse.com>
- <20240820082012.31316-7-jgross@suse.com>
-Content-Language: en-US
-From: Jan Beulich <jbeulich@suse.com>
-Autocrypt: addr=jbeulich@suse.com; keydata=
- xsDiBFk3nEQRBADAEaSw6zC/EJkiwGPXbWtPxl2xCdSoeepS07jW8UgcHNurfHvUzogEq5xk
- hu507c3BarVjyWCJOylMNR98Yd8VqD9UfmX0Hb8/BrA+Hl6/DB/eqGptrf4BSRwcZQM32aZK
- 7Pj2XbGWIUrZrd70x1eAP9QE3P79Y2oLrsCgbZJfEwCgvz9JjGmQqQkRiTVzlZVCJYcyGGsD
- /0tbFCzD2h20ahe8rC1gbb3K3qk+LpBtvjBu1RY9drYk0NymiGbJWZgab6t1jM7sk2vuf0Py
- O9Hf9XBmK0uE9IgMaiCpc32XV9oASz6UJebwkX+zF2jG5I1BfnO9g7KlotcA/v5ClMjgo6Gl
- MDY4HxoSRu3i1cqqSDtVlt+AOVBJBACrZcnHAUSuCXBPy0jOlBhxPqRWv6ND4c9PH1xjQ3NP
- nxJuMBS8rnNg22uyfAgmBKNLpLgAGVRMZGaGoJObGf72s6TeIqKJo/LtggAS9qAUiuKVnygo
- 3wjfkS9A3DRO+SpU7JqWdsveeIQyeyEJ/8PTowmSQLakF+3fote9ybzd880fSmFuIEJldWxp
- Y2ggPGpiZXVsaWNoQHN1c2UuY29tPsJgBBMRAgAgBQJZN5xEAhsDBgsJCAcDAgQVAggDBBYC
- AwECHgECF4AACgkQoDSui/t3IH4J+wCfQ5jHdEjCRHj23O/5ttg9r9OIruwAn3103WUITZee
- e7Sbg12UgcQ5lv7SzsFNBFk3nEQQCACCuTjCjFOUdi5Nm244F+78kLghRcin/awv+IrTcIWF
- hUpSs1Y91iQQ7KItirz5uwCPlwejSJDQJLIS+QtJHaXDXeV6NI0Uef1hP20+y8qydDiVkv6l
- IreXjTb7DvksRgJNvCkWtYnlS3mYvQ9NzS9PhyALWbXnH6sIJd2O9lKS1Mrfq+y0IXCP10eS
- FFGg+Av3IQeFatkJAyju0PPthyTqxSI4lZYuJVPknzgaeuJv/2NccrPvmeDg6Coe7ZIeQ8Yj
- t0ARxu2xytAkkLCel1Lz1WLmwLstV30g80nkgZf/wr+/BXJW/oIvRlonUkxv+IbBM3dX2OV8
- AmRv1ySWPTP7AAMFB/9PQK/VtlNUJvg8GXj9ootzrteGfVZVVT4XBJkfwBcpC/XcPzldjv+3
- HYudvpdNK3lLujXeA5fLOH+Z/G9WBc5pFVSMocI71I8bT8lIAzreg0WvkWg5V2WZsUMlnDL9
- mpwIGFhlbM3gfDMs7MPMu8YQRFVdUvtSpaAs8OFfGQ0ia3LGZcjA6Ik2+xcqscEJzNH+qh8V
- m5jjp28yZgaqTaRbg3M/+MTbMpicpZuqF4rnB0AQD12/3BNWDR6bmh+EkYSMcEIpQmBM51qM
- EKYTQGybRCjpnKHGOxG0rfFY1085mBDZCH5Kx0cl0HVJuQKC+dV2ZY5AqjcKwAxpE75MLFkr
- wkkEGBECAAkFAlk3nEQCGwwACgkQoDSui/t3IH7nnwCfcJWUDUFKdCsBH/E5d+0ZnMQi+G0A
- nAuWpQkjM1ASeQwSHEeAWPgskBQL
-In-Reply-To: <20240820082012.31316-7-jgross@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819223834.2049862-3-swboyd@chromium.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 20.08.2024 10:20, Juergen Gross wrote:
-> @@ -838,6 +839,31 @@ void __init xen_do_remap_nonram(void)
->  	pr_info("Remapped %u non-RAM page(s)\n", remapped);
->  }
->  
-> +/*
-> + * Xen variant of acpi_os_ioremap() taking potentially remapped non-RAM
-> + * regions into acount.
-> + * Any attempt to map an area crossing a remap boundary will produce a
-> + * WARN() splat.
-> + */
-> +static void __iomem *xen_acpi_os_ioremap(acpi_physical_address phys,
-> +					 acpi_size size)
-> +{
-> +	unsigned int i;
-> +	struct nonram_remap *remap = xen_nonram_remap;
+On Mon, Aug 19, 2024 at 03:38:16PM -0700, Stephen Boyd wrote:
+> Verify during drm_atomic_bridge_check() that the lane assignment set in
+> a bridge's atomic_check() callback is going to be satisfied by the
+> previous bridge. If the next bridge is requiring something besides the
+> default 1:1 lane assignment on its input then there must be an output
+> lane assignment on the previous bridge's output. Otherwise the next
+> bridge won't get the lanes assigned that it needs.
 
-const (also in one of the functions in patch 5)?
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Robert Foss <rfoss@kernel.org>
+> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+> Cc: Jonas Karlman <jonas@kwiboo.se>
+> Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: <dri-devel@lists.freedesktop.org>
+> Cc: Pin-yen Lin <treapking@chromium.org>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-> +	for (i = 0; i < nr_nonram_remap; i++) {
-> +		if (phys + size > remap->maddr &&
-> +		    phys < remap->maddr + remap->size) {
-> +			WARN_ON(phys < remap->maddr ||
-> +				phys + size > remap->maddr + remap->size);
-> +			phys = remap->paddr + phys - remap->maddr;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return x86_acpi_os_ioremap(phys, size);
-> +}
+Yeah, I really think that the appearance of this thousandth time in the Git
+history has almost no value and just pollutes the commit message makes it not
+very well readable. The only outcome is exercising the compression algo used
+by Git.
 
-At least this, perhaps also what patch 5 adds, likely wants to be limited
-to the XEN_DOM0 case? Or else I wonder whether ...
+...
 
-> @@ -850,6 +876,10 @@ void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
->  		BUG();
->  	}
->  
-> +	/* Switch to the Xen acpi_os_ioremap() variant. */
-> +	if (nr_nonram_remap == 0)
-> +		acpi_os_ioremap = xen_acpi_os_ioremap;
+> +	int i;
 
-... this would actually build when XEN_DOM0=n.
+unsigned?
 
-I'm actually surprised there's no Dom0-only code section in this file,
-where the new code could then simply be inserted.
+...
 
-Jan
+> +	/*
+> +	 * Ensure this bridge is aware that the next bridge wants to
+> +	 * reassign lanes.
+> +	 */
+> +	for (i = 0; i < num_input_lanes; i++)
+> +		if (i != input_lanes[i].logical && !num_output_lanes)
+> +			return -ENOTSUPP;
+
+Besides missing {} this code is internal to the Linux kernel. Is it okay?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
