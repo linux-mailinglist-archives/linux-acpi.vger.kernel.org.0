@@ -1,390 +1,270 @@
-Return-Path: <linux-acpi+bounces-7750-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7751-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC0895937E
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2024 06:01:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CDC9593AF
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2024 06:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDF81F22062
-	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2024 04:01:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06AA284CDB
+	for <lists+linux-acpi@lfdr.de>; Wed, 21 Aug 2024 04:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1672A15746A;
-	Wed, 21 Aug 2024 04:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E10315852C;
+	Wed, 21 Aug 2024 04:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="hg2HSgI1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/sbYVJl"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2043.outbound.protection.outlook.com [40.107.96.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180573D8E;
-	Wed, 21 Aug 2024 04:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724212877; cv=fail; b=AxgJoYcxydpNm//XpLRGYtgIPjQMU8AMF4BQaBtulGtZeItrAus7qbTMoazjzcPHQoIV8JwsU8atR1wx5n27dHR7GHegsWUqOjiihZi9VqYqRQnmeFVVLp8qaj1SK/F8DMM9htrQ2v7jigqUn7kdIh+4yDIlquNHt1vgxlpOUvY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724212877; c=relaxed/simple;
-	bh=aM7pUhu7UfOSibWFRlDf/npZORbUVRyf1X/1PaVZGQw=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BXcbgPQ6Pf6uhtrfAXH1YxcdRqgrRQ5hELNR5wLE40/vTTuGFAyaF6H6tdcVY7PNS6S26+sJ4KValIbLiBoJ5UmImfncNFt52YVezeUYyh/TViJ7xRGuGi//bT2SPVQtBVKCyuLzACupkPNDaeTD3WroqeEnbQmJUUaIsuW8Xx8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=hg2HSgI1; arc=fail smtp.client-ip=40.107.96.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GMrgALsJrXpdXmgDJqLKAukUEdEOHDqLDqpqdd8CoaZpy/VixhL0juhbdlorHv2tAAKCRrVGyVyoSVe07o2Pjp9dxxG2vQOl6e3+etLLkXref3dkD7Bv2U8gaRKMFpmL9Snr5m5e7Q7dlV2sH08RoKukqhiLgPCB3nM4IbfdEZvG48sHnTJYN7or1yBdAOyoSre5VBODIgjtKHg6keRZWSoRGoPLw9ZnGVCZXas8ctWUw2Ye0KoVH8Ke99zKlJTANnR8jP14xmpRnjdSoIhEOAakWBv1x3ksAiG7AHVHRX3pbvmvUasvVIOshaS+6jFuDVw1d3HF987LVs0+FoQPKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P+bbRZkE+ty0weaAtCy8hjg0yfEk1SQ27sxemGqVqXY=;
- b=UCTP97SJ8KYt3PP/+NYw35n7gBqqEUiMwgzlr/+G+vUklFQR0uoaoAOKOPTNPnTJw5b6o26kkGYjYt3OrxS/zvHnFsmcuA+hHTyjFsFJztok4Oohtx4hyBLS/uZqFo7XH6zTi7iRarjf8xrmbODSFKn4V+Y1GykIoo6g6quAgBFP5gffl7g2wSETlOOW6Q71QQ7mKemsOAkh2N2yr0GQ4o1QayOh2JHKZirJCtGRb7LbEE/K+QhyK72kFsjDgDQJkB61Xbp4MdkB1SPPsZClSdQQD88SfEf31TKxiwbp91x7WAZmT3RICe3yaMbkhsuxjYSRbhti1eD5tB1fehmFvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P+bbRZkE+ty0weaAtCy8hjg0yfEk1SQ27sxemGqVqXY=;
- b=hg2HSgI1alrKieiaihvoLe4/4vJ45tSJ5mmr2lu7aqeNmTUzqpM9YMvTq2OYoWxn9j9iveNLO7ioM7HgI4KZiKAYwSXASDtGTgtqmeRDJE44Tv873gs+4TkHUtpNLUFunQyJpUA2h9vJUsnNS3rkMTFrR6HABm9+FBVYFRfmcD9zkdHcpbtvLLDeoEXRQ9v1YxZ5RLB5oHLkJRmbUiOIbcND/v6QoP+tk71ibDh9+R5CV9OgZ7yakOE6ujAyX6h23eYRNX1gvI2k0TfchrYPWxiEVx+92qEAkk/efWdIMFERHgC6Sf+z9+jLl7SjfzsvezfTsugFvenoK3X5eXgldg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB8297.namprd12.prod.outlook.com (2603:10b6:930:79::18)
- by CY8PR12MB8339.namprd12.prod.outlook.com (2603:10b6:930:7e::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.20; Wed, 21 Aug
- 2024 04:01:12 +0000
-Received: from CY8PR12MB8297.namprd12.prod.outlook.com
- ([fe80::b313:73f4:6e6b:74a4]) by CY8PR12MB8297.namprd12.prod.outlook.com
- ([fe80::b313:73f4:6e6b:74a4%5]) with mapi id 15.20.7897.014; Wed, 21 Aug 2024
- 04:01:12 +0000
-Message-ID: <678e2e3b-4c45-4c10-8af0-32e17c7b3bd4@nvidia.com>
-Date: Wed, 21 Aug 2024 12:01:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] acpi/prmt: find block with specific type
-To: "Zhang, Rui" <rui.zhang@intel.com>, "mochs@nvidia.com"
- <mochs@nvidia.com>, "james.morse@arm.com" <james.morse@arm.com>,
- "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "erik.kaneda@intel.com" <erik.kaneda@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
-References: <20240801014853.1594699-1-kobak@nvidia.com>
- <6cce5245bb569f30d73ac8ec1d217d70a11925e3.camel@intel.com>
-Content-Language: en-US
-From: Koba Ko <kobak@nvidia.com>
-In-Reply-To: <6cce5245bb569f30d73ac8ec1d217d70a11925e3.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR06CA0017.namprd06.prod.outlook.com
- (2603:10b6:a03:d4::30) To CY8PR12MB8297.namprd12.prod.outlook.com
- (2603:10b6:930:79::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C57486AFA;
+	Wed, 21 Aug 2024 04:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724215432; cv=none; b=riSm9x+tDOGF7DFmc7SioDYQj9XiHPWUeZcNJVXz6cBiETiJaxsmUm25Yb5Pnz7Kt+OelFbaZja/bMsUcwMoq0szEeDfrKpIpUBlhY8yGH7b6maIwDkrxoFcm9nfVckE6yMwoArN+Vnvf18M+fUgsBExJSIDUg1BYV8fDFSPSU0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724215432; c=relaxed/simple;
+	bh=BUl4WZIOTp6bRjoAcLxbr7UyBflCBjbx7CEstH05xZM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UeP5nG1Dbwx4toW7G8orQ9j937XXX6E6iGTOPGtV/meXB5fsmWG9IQb5AGk/pNUiHhPR479Eaix2gcYCAxPdSGiWWs95DgUWaHtYNKBZIobWBC5zzaCqqBmnpCZ5LN5XWUAH6xon1oPninuoPqrXfkFlek3O3qlHXg+antQK4j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/sbYVJl; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7cd894e2adfso10025a12.2;
+        Tue, 20 Aug 2024 21:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724215430; x=1724820230; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3P3Hk9XNXX67Z9XxlANZXs0svzlSvZih1xysLj6CbmM=;
+        b=Y/sbYVJlFZxTX3oThZIboCR5RSl50Kl/tc4h1RstX3ght+ue8dwYI4UME6M9NDRhkO
+         9LkmwLu0xX5L48rOVkl+e41jC4opWgZFqDw9PmAOLBcsyzRmkPYbr5RuJ4usmalrUFY8
+         x/Sm4Ol5hrciUWewAKHAYw3CBy9COu6Nb+yhuLXt54n1ZOYJgu3cGaZwWb7LfLA1xhL/
+         JUEGEnLqn86bcBZHs2VZh8QM8g0Kb6aKTH8krri5wDMciW/vo6RywHkEPB/EW+s3FzQL
+         akIGvKWAihSJu6A1XR3kDJb9Jjn09zUBBXlncG9AzsS5IPnRyC+G5DCUeoqU1jhlkiwQ
+         7Few==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724215430; x=1724820230;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3P3Hk9XNXX67Z9XxlANZXs0svzlSvZih1xysLj6CbmM=;
+        b=tajJBa63tFSsChv569eu0lWVYGzNHzd6+W11/TbTjI8r/CTHCWg0oJrhFpvxvxrex1
+         su5xE5YMRE4CeY3PyAYeXh6aHYqDv3yS22zNKbMJAa8QrU1VB0ZjgzIjKsK3gPakSmkn
+         XPlD3WckX65AJJRzpVhabzmyp9Gr6waeiS4f4z3ywes0SpQk+3unlIt2nobwHat3AyfI
+         XIU7MJALtV3AU1+LQh3516u8bVA6CEh9t9b5TYT/B5LLY3zfm9FXQo+98dXRiI6cgBvX
+         JimXxRaaHbv/UKo/RZNx5EvCLUtsPIQ79Ijo3KjcWxxDsk2N2SbDhJr7C9CLPaz7UMqz
+         0ywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGt1yRj4WROo/GkA0+8vOfkeIK/bFbvEqj7WVln/MfL6jH/vdkHUjIwhfyqo2PbPTdX8nwzXce4M+p@vger.kernel.org, AJvYcCUL/DpzFE6Mt3U4uqpV/CfYwnoKc4lG4GZCM1EcYqOsQq7frb+0Yem2kAfxKsi4bmXdNnAjiNoMeX8T@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuGU2CCZ82pDNYJoC4hld9ZWQP/oJkF+zxK4QW8JQbvr8lVWXV
+	kKV8/mCtaqEEMMLclLc2TQsbcAp/6PjrjNvvYan/9MH7v7kLmkZN
+X-Google-Smtp-Source: AGHT+IH+ozAZ+jz6m72kC+HtpaDsVUaOzExvPIGhiOIYtJTBStrUt/otPT/jHSUZPA+86wGWbG9jHQ==
+X-Received: by 2002:a05:6a20:3951:b0:1c4:84ee:63d1 with SMTP id adf61e73a8af0-1cad82e8cf0mr944326637.9.1724215429403;
+        Tue, 20 Aug 2024 21:43:49 -0700 (PDT)
+Received: from smtpclient.apple (v133-130-115-230.a046.g.tyo1.static.cnode.io. [133.130.115.230])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f038b43dsm85164685ad.210.2024.08.20.21.43.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Aug 2024 21:43:48 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB8297:EE_|CY8PR12MB8339:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34e506a6-e0e4-4f2e-d0b9-08dcc195e53c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N3ZDeTF1MGdWbFhqWnNNN2VaMnNTUmEwTnFGVWhOWGVwdlRJSzFWVFlaT2sx?=
- =?utf-8?B?WUVuVXRXQlg3cU5ZMkNObFY1cFJDMllndGIwUnBEQ3hoYmxYSUFWY0RLTkxl?=
- =?utf-8?B?YU1XRGN2eTZjRDRnSXZSTmtuUG9ISmUvZ2RmWlV3TVNHTGluTjRjRlQydFRR?=
- =?utf-8?B?QTh5Mm9PUWZ4NFQwVlkvS3dlTk8zdXpLKzlqZnZ0a2MvSlFRUDNSclMreUZB?=
- =?utf-8?B?MW1mdnNZZ1JXa1RjaURqZm42NlY4MTFlVDZPaklNSDNqTW9ucksyU0xQQ3Vq?=
- =?utf-8?B?V3h4NTVGTkJDb3E2aEVmQVRQei9OTDJxZjQ5YWtSdFVFa3Y0bUxUSnlINkgy?=
- =?utf-8?B?WnRpVDdqeHY5aVlTaWRTL0IzWlIwQzQvK1owcGVxVVdWUG13dEZieHpiS2h4?=
- =?utf-8?B?ditzZU1YbjlpNTFma1E3R2UrbFU4N3Q5MExzSXYyZ0xOOGpaYTdRYmJGVHdn?=
- =?utf-8?B?UDJ2M29ldWxCQlBFb0l2QUlXeTl2YVdGNXpxZjNsK3BVekZaOEtIUDRjTVhm?=
- =?utf-8?B?YURpUWJhQVFzbHVUb1pSN1hmYmZnZDdXSEtlMWxDZk5McmljZUR3b0R1dzZl?=
- =?utf-8?B?R0JvSHV4ZTBWV2ZEYncxV2RoRzR6L0lhZ3NJUzkrZnVrMnNHbnNGbG8vWita?=
- =?utf-8?B?R00zbDhOTDZhTEh5eGJnKytBcE9WdmlyakpiNVNVWXF3cHBqY1ljTEEzbXRH?=
- =?utf-8?B?WFZ6eUNiYitQWEVXUTJ0Z0VZM0dCL2l1MDZqVjhTUzJyb2I1bHQxWnhnUlB0?=
- =?utf-8?B?akQwQ0VWd3ljR25zUEpBSWN2aXp4UmJnc1R4a2NhRDNHVFNhaFhjTEpNOG1O?=
- =?utf-8?B?NGYxbmRIZ1NPMmF3YWhtam5MaDJCb1luckFSSlMzVEJlN3ZrTkwyNnZGcmdX?=
- =?utf-8?B?WmM4cHIyVzl1TEVEZWxOeDU1aTZWNkxqd1RMMmhKZnZ6a2hCTTBxUzhKRjRW?=
- =?utf-8?B?US9JRE5GMjlxWW1OaENkd0xtbUFQaE14QWhCWE5wOUJBdTV0MGgzaTFVb3Jw?=
- =?utf-8?B?QjY2ZStma3JPQjBjb2VFeWNqZnA0MEpXMjJIR1NqYmFMUHpKVSs5c3I5dEMx?=
- =?utf-8?B?aVFsejVOV29BS011OUJVSG1KVkdyemdZK29hV1QxUmIvRGhhbXFKdWhyMlVV?=
- =?utf-8?B?dXg1T21qWG55Y2M4MWVVQ0pPRkVTcFBpV2w4VnNxU1h5eExnc2orN1hYc3BC?=
- =?utf-8?B?RVM2N3NJVHFCaGgzZTduODdWUDBqY3Z5WDROK0RCY2xkUmtoYWlPYmFhcEcw?=
- =?utf-8?B?UVNMa0tWRW9QOXFqRnpJdWRvSmZYMnR2MnRQb0dyd0NoOUIwQWxaL1l4UFFz?=
- =?utf-8?B?eHA5K0hEUEhsQU5Vc3FtRXVGS1dkV1hsZFVGNUpvNmlhS3NEQlNQVE1BbEh3?=
- =?utf-8?B?dnVUR25XRDUvWFFHb3pxYmp0b1A1UzMzcDJoY2RLZ1k1YjRGTUhxMlYvYlB5?=
- =?utf-8?B?aFVlUTN0TEY0MlYzWGhJRXE5bG0vdW1zTDZhQmVrMndOUlJIcEpSYzdFdk5T?=
- =?utf-8?B?VWYreWhPVDNzSE9sRUZ2aDQ0REhJOWhnVmoxdE55b3JXNFhTNzlGNGhaeFBK?=
- =?utf-8?B?bk5KdTFJOHhjUWNGYk0rVXZqVFo4S0hEVkd0TmpJWGpGTDlYZ3FaSVhZTnRL?=
- =?utf-8?B?RHJNNjRFZ0RGYmRmNzlsNFpkV0VrOSsxa3ZXOHlJT3hQbllsVXRBVk5KODVV?=
- =?utf-8?B?aE5VcVgzcm1GcjBKNGVEZjlVVHFUdDd2SW9tK3dLNThrc2J6dnZJZzVRWUVw?=
- =?utf-8?B?aTA0TzZEYk1Ub2RTQUQrUDFjZ2JGaTh1VWh5NUMvNUtPaEFXUjkxR2VWQ1gy?=
- =?utf-8?Q?3jkDZh0hDXm48zOFHmUL5M/N+pyTqqBoPtKwg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB8297.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WGE0MHhCMUxwbGRkVmRObXlONnBnQlRuZWh3anE4dnBPTHV0MmdaamVuekpH?=
- =?utf-8?B?OTBGamhjMWQ5MjVVbXBDWmwwL0JYRWVSaGFRTnE0WUlWNnpVOVZNMSs0SGVW?=
- =?utf-8?B?L3JrTUJFWkk5czFzN2RST1J2ODRnMzV4UENLUnpVZzdBN1pqZUQ2K2NuWHNw?=
- =?utf-8?B?dVVvNHh3NUg4R3ErTXV2WHBNTlBoQlNCSVVCN1JVc09IZnprQnJjbTZncFZ4?=
- =?utf-8?B?SmhtRnVvR2p2eEhtcW40eVp0YzlLTlNDOHVUVVVlbU45TlROYUozNFptODRN?=
- =?utf-8?B?N2Q1YSswSXNaNm9QU0JnNkl2RHVRVFBaRjRmUmRxTGQ0elZTZWpGRFhlRGtR?=
- =?utf-8?B?cjVZcnN3MTQ3VGRtRXdBTDVwYmU1bGd1YXN1WjRHYUJFNnRUYjdNRWltaHZH?=
- =?utf-8?B?OTZPc0RVcjNvU3lrQzU2MVgrR1o1MTlpNGNkY2hPd2tiNlR1NFgzbEFmNWFj?=
- =?utf-8?B?UHMrME5DV1I4aDVGSFRUeUtJdW90WEdyTnRheWhtck82UmNzMkJGbVhZRXB1?=
- =?utf-8?B?Rm4yUk5KV1BUYUdrWXlqdjM1a0ZUTnl4bkI0YXRObWFzTExaamtPNVgvTkFt?=
- =?utf-8?B?elpiazJvVHRzTEQ2Y1hXOXNueHRtclpsK1ZKRG9RS3NNZ3JzaVR2SkY5ZmRa?=
- =?utf-8?B?cWUzYjk0VEVMM1pHV2hhYVRWS2Z5RFQzYjNaRW9vU0VpNXVVSDVMbEoxM3pB?=
- =?utf-8?B?MUcveFhrVkZ4TWJjcjlEN3pCeG9HaFhGZHZIMWlMVjVVelhrYmVRZHVhVjZU?=
- =?utf-8?B?d3F5cEJUd0w3ZFVwcDlOa2tiNjd6WTFvYWNRYVFxb080NlVHZDVqSmJCSGVB?=
- =?utf-8?B?dGFFb0haNU1XQjcxcEtxSVhlZzc5UFVqV2pWeTBqK2JpQTBhSkVyclBDbEJa?=
- =?utf-8?B?eU16VVkzN1kveDZBeFlFbXRVTXhwUlJRc3JGcFVhbzZxd3BnRFZNTUNRb2lv?=
- =?utf-8?B?TWdBUHZtaEZVN0hjeG9VSmpCWDMxTTUyazlXakNUWCttUVlwQVZEOEhlZ2tJ?=
- =?utf-8?B?dHpKaWtjUWlRd1FzeDNaRFJYaUJvaTE1d2dKY0ZLZnZkU0JLYmxjd0NLSDhw?=
- =?utf-8?B?R2pVNHgvNWFHNnVzcWZuNkIweDZxaUpUaFhDc0IyTnRhQWVlVUR5SlFQVUdm?=
- =?utf-8?B?ak50ZXAycFJlMjhPRmsrbkxCREpzeFJubWZRTzlxUldPRytpbHJQcnBqZWIr?=
- =?utf-8?B?YmR3V2RyUmF3RC9Lc2tCMFp6MEpHU1N0TzUreWN5OWduelhLRTZVeTJxZ2Iz?=
- =?utf-8?B?b292OE1QL2hLbjV1eVU1WGVZMzhnbFJpT3lRcFFES1F1aGZ2RWZISUszbE8r?=
- =?utf-8?B?R0ZORHgrclM5Q201YUNoRDk5dEE1YlNwU3kzanJSSnB5dlpPb0xwRDFNSFpj?=
- =?utf-8?B?NndRaXhTMTFDcjJ4ZzlhdHM0SkIvcHNjVE5rNjV3Y2lTY3lmbmdiVDFtaldn?=
- =?utf-8?B?dWpEbitBUHVVMm9mNDZwU3gxaXl4MWtFZ1QrR2lMZmpDNVdwZDBMd3poaGo3?=
- =?utf-8?B?RTFDOFJ5WTU5a093TVFYUTVhU0pXbTMxSmk4bkN4TGpIS0xqWHlxak1mLzNU?=
- =?utf-8?B?dktaZmxxT2JSVlNGZFhMK2hNSnI2aTIrbkJRd3IyR1ZObVJZTVBvNmVTWWFI?=
- =?utf-8?B?TEZ3VjNSdnU0Qkk2YVRYU01VTTl5QmM1L21uYXhZTm5rZldvZHFONXpzQWYw?=
- =?utf-8?B?bkdodzEyaDVGczQ5K2NxeEJBeHNZZ09YbFpwYTk5ak5adE5OakxIQ1N2QmtP?=
- =?utf-8?B?UlFDZ2hCODVXR2M3UVBHNHAraVdVQUpaNHBwUmJqdm12em41RHBJT0pwQUhP?=
- =?utf-8?B?UjZnaXNWTFdNNlZIenBkeFRzNDFCQis5QTNSZFQxcEZGelZUM0RwaytUNnM4?=
- =?utf-8?B?YmIwUkxPNnVnTGY3WnNtdFcrZW9yb3d2UFM3RWpwQTJmMlBsTGM1YkFHTnBJ?=
- =?utf-8?B?a0NSUkhvWXpCbnFobjZIelVRa3M4R2RqZjBzd1liK2dyUmhiY0xTc3Byd3hS?=
- =?utf-8?B?eFErelpPeVJNcENpb3hJNTdMS1ZRckZvS2E4YzEwKzkyTGYvaGJEV04zZDE4?=
- =?utf-8?B?ckREOVRHNS9rSnVCK0xPdlNYbWhxbGNhQTN3MEJvTlJ4ZnJxNGkwYlFxNEJI?=
- =?utf-8?Q?uQIu/3mPS+BPlwYQ3ee9uI8bp?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34e506a6-e0e4-4f2e-d0b9-08dcc195e53c
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB8297.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 04:01:12.1188
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NrwgK/S/gIhc3TV4up/XQPUQc+GyKw3yxmANcI9VAzu9KF9BqaMD73xAbylI1DfyMDXI0rJ2jTz2BVsg6Et6+w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8339
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH v3] ACPI: PCI: check if the root io space is page aligned
+From: Miao Wang <shankerwangmiao@gmail.com>
+In-Reply-To: <86348A3F-6AF4-4DC0-ACF5-08EC52E3828C@gmail.com>
+Date: Wed, 21 Aug 2024 12:43:32 +0800
+Cc: =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>,
+ linux-pci@vger.kernel.org,
+ linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F6307927-BCC8-4F61-A089-B26555D51E45@gmail.com>
+References: <20240814163711.GA351420@bhelgaas>
+ <86348A3F-6AF4-4DC0-ACF5-08EC52E3828C@gmail.com>
+To: Bjorn Helgaas <helgaas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+X-Mailer: Apple Mail (2.3776.700.51)
 
-On 8/21/24 11:20, Zhang, Rui wrote:
-> External email: Use caution opening links or attachments
->
->
-> On Thu, 2024-08-01 at 09:48 +0800, KobaK wrote:
->> PRMT needs to find the correct type of block to
->> translate the PA-VA mapping for EFI runtime services.
->>
->> The issue arises because the PRMT is finding a block of type
->> EFI_CONVENTIONAL_MEMORY,
->> which is not appropriate for runtime services as described in Section
->> 2.2.2 (Runtime
->> Services) of the UEFI Specification [1]. Since the PRM handler is a
->> type of runtime
->> service, this causes an exception when the PRM handler is called.
->>
-> Too many characters in one line.
-> https://docs.kernel.org/process/submitting-patches.html#the-canonical-patch-format
-will fix this in the description.
->
->
->>      [Firmware Bug]: Unable to handle paging request in EFI runtime
->> service
->>      WARNING: CPU: 22 PID: 4330 at drivers/firmware/efi/runtime-
->> wrappers.c:341 __efi_queue_work+0x11c/0x170
->>      Call trace:
->>        __efi_queue_work+0x11c/0x170
->>        efi_call_acpi_prm_handler+0x68/0xd0
->>        acpi_platformrt_space_handler+0x198/0x258
->>        acpi_ev_address_space_dispatch+0x144/0x388
->>        acpi_ex_access_region+0x9c/0x118
->>        acpi_ex_write_serial_bus+0xc4/0x218
->>        acpi_ex_write_data_to_field+0x168/0x218
->>        acpi_ex_store_object_to_node+0x1a8/0x258
->>        acpi_ex_store+0xec/0x330
->>        acpi_ex_opcode_1A_1T_1R+0x15c/0x618
->>        acpi_ds_exec_end_op+0x274/0x548
->>        acpi_ps_parse_loop+0x10c/0x6b8
->>        acpi_ps_parse_aml+0x140/0x3b0
->>        acpi_ps_execute_method+0x12c/0x2a0
->>        acpi_ns_evaluate+0x210/0x310
->>        acpi_evaluate_object+0x178/0x358
->>        acpi_proc_write+0x1a8/0x8a0 [acpi_call]
->>        proc_reg_write+0xcc/0x150
->>        vfs_write+0xd8/0x380
->>        ksys_write+0x70/0x120
->>        __arm64_sys_write+0x24/0x48
->>        invoke_syscall.constprop.0+0x80/0xf8
->>        do_el0_svc+0x50/0x110
->>        el0_svc+0x48/0x1d0
->>        el0t_64_sync_handler+0x15c/0x178
->>        el0t_64_sync+0x1a8/0x1b0
->>
->> Find a block with specific type to fix this.
->> prmt find a block with EFI_RUNTIME_SERVICES_DATA for prm handler.
->> prmt find a block with EFI_RUNTIME_SERVICES_CODE for prm context.
->> By using the correct memory types for runtime services,
->> we can ensure that the PRM handler and
->> its context are properly mapped in the virtual address space during
->> runtime,
->> preventing the paging request error.
-> some general rules to follow when writing a changelog
-> https://docs.kernel.org/process/maintainer-tip.html 4.2.3. Changelog
-will decorate this.
->
->> [1]
->> https://uefi.org/sites/default/files/resources/UEFI_Spec_2_10_Aug29.pdf
->>
->> Fixes: cefc7ca46235 ("ACPI: PRM: implement OperationRegion handler
->> for the PlatformRtMechanism subtype")
->> Signed-off-by: KobaK <kobak@nvidia.com>
->> Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
->> ---
->>   drivers/acpi/prmt.c | 46 ++++++++++++++++++++++++++++++-------------
->> --
->>   1 file changed, 31 insertions(+), 15 deletions(-)
->>
->> diff --git a/drivers/acpi/prmt.c b/drivers/acpi/prmt.c
->> index c78453c74ef5..e2f0bdd81013 100644
->> --- a/drivers/acpi/prmt.c
->> +++ b/drivers/acpi/prmt.c
->> @@ -72,17 +72,21 @@ struct prm_module_info {
->>          struct prm_handler_info handlers[]
->> __counted_by(handler_count);
->>   };
->>
->> -static u64 efi_pa_va_lookup(u64 pa)
->> +static u64 efi_pa_va_lookup(u64 pa, u32 type)
->>   {
->>          efi_memory_desc_t *md;
->>          u64 pa_offset = pa & ~PAGE_MASK;
->>          u64 page = pa & PAGE_MASK;
->>
->>          for_each_efi_memory_desc(md) {
->> -               if (md->phys_addr < pa && pa < md->phys_addr +
->> PAGE_SIZE * md->num_pages)
->> +               if ((md->type == type) &&
->> +                       (md->phys_addr < pa && pa < md->phys_addr +
->> PAGE_SIZE * md->num_pages)) {
->>                          return pa_offset + md->virt_addr + page - md-
->>> phys_addr;
->> +               }
->>          }
->>
->> +       pr_err("PRM: Failed to find a block for pa: %lx type %u\n",
->> pa, type);
->> +
-> If it is a pr_err, why not error out?
-> or what is the proper handling for such failures?
->
->>          return 0;
->>   }
->>
->> @@ -148,9 +152,12 @@ acpi_parse_prmt(union acpi_subtable_headers
->> *header, const unsigned long end)
->>                  th = &tm->handlers[cur_handler];
->>
->>                  guid_copy(&th->guid, (guid_t *)handler_info-
->>> handler_guid);
->> -               th->handler_addr = (void
->> *)efi_pa_va_lookup(handler_info->handler_address);
->> -               th->static_data_buffer_addr =
->> efi_pa_va_lookup(handler_info->static_data_buffer_address);
->> -               th->acpi_param_buffer_addr =
->> efi_pa_va_lookup(handler_info->acpi_param_buffer_address);
->> +               th->handler_addr =
->> +                       (void *)efi_pa_va_lookup(handler_info-
->>> handler_address, EFI_RUNTIME_SERVICES_CODE);
->> +               th->static_data_buffer_addr =
->> +                       efi_pa_va_lookup(handler_info-
->>> static_data_buffer_address, EFI_RUNTIME_SERVICES_DATA);
->> +               th->acpi_param_buffer_addr =
->> +                       efi_pa_va_lookup(handler_info-
->>> acpi_param_buffer_address, EFI_RUNTIME_SERVICES_DATA);
->>          } while (++cur_handler < tm->handler_count && (handler_info =
->> get_next_handler(handler_info)));
->>
->>          return 0;
->> @@ -250,8 +257,16 @@ static acpi_status
->> acpi_platformrt_space_handler(u32 function,
->>
->>                  handler = find_prm_handler(&buffer->handler_guid);
->>                  module = find_prm_module(&buffer->handler_guid);
->> -               if (!handler || !module)
->> -                       goto invalid_guid;
->> +               if (!handler || !module) {
->> +                       buffer->prm_status =
->> PRM_HANDLER_GUID_NOT_FOUND;
->> +                       goto error;
-> I think it is okay to return AE_OK directly, right?
->
-> thanks,
-> rui
+Sorry for directly looping Andrew in. I think Andrew may be familiar =
+with
+the code in question.
 
-I'm also good for this.
-I followed the convention in this block.
-If change to "return", i will change all "goto error".
-How do you think?
+Some backgrounds: Mis-aligned addresses from ACPI table can pass along=20=
 
->> +               }
->> +
->> +               if (!handler->handler_addr || !handler-
->>> static_data_buffer_addr ||
->> +                       !handler->acpi_param_buffer_addr) {
->> +                       buffer->prm_status = PRM_HANDLER_ERROR;
->> +                       goto error;
->> +               }
->>
->>                  ACPI_COPY_NAMESEG(context.signature, "PRMC");
->>                  context.revision = 0x0;
->> @@ -274,8 +289,10 @@ static acpi_status
->> acpi_platformrt_space_handler(u32 function,
->>          case PRM_CMD_START_TRANSACTION:
->>
->>                  module = find_prm_module(&buffer->handler_guid);
->> -               if (!module)
->> -                       goto invalid_guid;
->> +               if (!module) {
->> +                       buffer->prm_status =
->> PRM_HANDLER_GUID_NOT_FOUND;
->> +                       goto error;
->> +               }
->>
->>                  if (module->updatable)
->>                          module->updatable = false;
->> @@ -286,8 +303,10 @@ static acpi_status
->> acpi_platformrt_space_handler(u32 function,
->>          case PRM_CMD_END_TRANSACTION:
->>
->>                  module = find_prm_module(&buffer->handler_guid);
->> -               if (!module)
->> -                       goto invalid_guid;
->> +               if (!module) {
->> +                       buffer->prm_status =
->> PRM_HANDLER_GUID_NOT_FOUND;
->> +                       goto error;
->> +               }
->>
->>                  if (module->updatable)
->>                          buffer->prm_status =
->> UPDATE_UNLOCK_WITHOUT_LOCK;
->> @@ -301,10 +320,7 @@ static acpi_status
->> acpi_platformrt_space_handler(u32 function,
->>                  break;
->>          }
->>
->> -       return AE_OK;
->> -
->> -invalid_guid:
->> -       buffer->prm_status = PRM_HANDLER_GUID_NOT_FOUND;
->> +error:
->>          return AE_OK;
->>   }
->>
+pci_remap_iospace() -> vmap_page_range() -> vmap_pte_range() path, =
+leading to a
+loop overrun in vmap_pte_range(). Bjorn and I wonder why all those
+vmap_*_range() functions don't validate the alignment, assuming the =
+addresses
+page-aligned. We want to know the best place to do this check.
+
+> 2024=E5=B9=B48=E6=9C=8815=E6=97=A5 12:28=EF=BC=8CMiao Wang =
+<shankerwangmiao@gmail.com> =E5=86=99=E9=81=93=EF=BC=9A
+>=20
+> Hi,
+>=20
+>> 2024=E5=B9=B48=E6=9C=8815=E6=97=A5 00:37=EF=BC=8CBjorn Helgaas =
+<helgaas@kernel.org> =E5=86=99=E9=81=93=EF=BC=9A
+>>=20
+>> [+cc linux-mm for vmap page alignment checking question]
+>>=20
+>> On Wed, Aug 14, 2024 at 08:09:15PM +0800, Miao Wang via B4 Relay =
+wrote:
+>>> From: Miao Wang <shankerwangmiao@gmail.com>
+>>>=20
+>>> When the IO resource given by _CRS method is not page aligned, =
+especially
+>>> when the page size is larger than 4KB, serious problems will happen
+>>> because the misaligned address is passed down to =
+pci_remap_iospace(),
+>>> then to vmap_page_range(), and finally to vmap_pte_range(), where =
+the
+>>> length between addr and end is expected to be divisible by =
+PAGE_SIZE, or
+>>> the loop will overrun till the pfn_none check fails.
+>>=20
+>> What does this problem look like to a user?  Panic, oops, hang,
+>> warning backtrace?  I assume this is not a regression, but maybe
+>> something you tripped over because of a BIOS defect?  Does this need
+>> to be backported to stable kernels?
+>=20
+> Panic, or actually BUG in vmap_pte_range() at the =
+!pte_none(ptep_get(pte))
+> check, since misaligned addresses will cause the loop in =
+vmap_pte_range
+> overrun and finally reach one of the already mapped pages. This =
+happens on
+> a LS2k2000 machine, the buggy firmware of which declares the IO space =
+of
+> the PCI root controller as follows:
+>=20
+>  QWordIO (ResourceProducer, MinFixed, MaxFixed, PosDecode, =
+EntireRange,
+>      0x0000000000000000, // Granularity
+>      0x0000000000004000, // Range Minimum
+>      0x0000000000009FFF, // Range Maximum
+>      0x000000FDFC000000, // Translation Offset
+>      0x0000000000006000, // Length
+>      ,, , TypeStatic, DenseTranslation)
+>=20
+> At first, I thought there might be some overlapping address spaces. =
+But when
+> I added some debug output in vmap_page_range(), I realized that it was
+> because a loop overrun.
+>=20
+> Normally, loongarch64 kernel is compiled using 16K page size, and thus =
+the
+> length here is not page aligned. I tested my patch using a virtual =
+machine
+> with a deliberately modified DSDT table to reproduce this issue.
+>=20
+>> It seems sort of weird to me that all those vmap_*_range() functions
+>> take the full page address (not a PFN) and depend on the addr/size
+>> being page-aligned, but they don't validate the alignment.  But I'm
+>> not a VM person and I suppose there's a reason for passing the full
+>> address.
+> Ah, I also have this question.
+>>=20
+>> But it does mean that other users of vmap_page_range() are also
+>> potentially susceptible to this issue, e.g., vmap(), vm_map_ram(),
+>> ioremap_page_range(), etc., so I'm not sure that
+>> acpi_pci_root_remap_iospace() is the best place to check the
+>> alignment.
+> My first idea was that the misaligned address is introduced from DSDT
+> table and the check would be better to be done inside the ACPI system.
+> However, lets wait for replies from  linux-mm to decide where should =
+be
+> the best place.
+>>=20
+>>> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+>>> ---
+>>> Changes in v3:
+>>> - Adjust code formatting.
+>>> - Reword the commit message for further description of the possible =
+reason
+>>> leading to misaligned IO resource addresses.
+>>> - Link to v2: =
+https://lore.kernel.org/r/20240814-check_pci_probe_res-v2-1-a03c8c9b498b@g=
+mail.com
+>>>=20
+>>> Changes in v2:
+>>> - Sorry for posting out the draft version in V1, fixed a silly =
+compiling issue.
+>>> - Link to v1: =
+https://lore.kernel.org/r/20240814-check_pci_probe_res-v1-1-122ee07821ab@g=
+mail.com
+>>> ---
+>>> drivers/acpi/pci_root.c | 14 +++++++++++---
+>>> 1 file changed, 11 insertions(+), 3 deletions(-)
+>>>=20
+>>> diff --git a/drivers/acpi/pci_root.c b/drivers/acpi/pci_root.c
+>>> index d0bfb3706801..a425e93024f2 100644
+>>> --- a/drivers/acpi/pci_root.c
+>>> +++ b/drivers/acpi/pci_root.c
+>>> @@ -858,7 +858,7 @@ static void =
+acpi_pci_root_validate_resources(struct device *dev,
+>>> }
+>>> }
+>>>=20
+>>> -static void acpi_pci_root_remap_iospace(struct fwnode_handle =
+*fwnode,
+>>> +static void acpi_pci_root_remap_iospace(struct acpi_device *device,
+>>> struct resource_entry *entry)
+>>> {
+>>> #ifdef PCI_IOBASE
+>>> @@ -868,7 +868,15 @@ static void acpi_pci_root_remap_iospace(struct =
+fwnode_handle *fwnode,
+>>> resource_size_t length =3D resource_size(res);
+>>> unsigned long port;
+>>>=20
+>>> - if (pci_register_io_range(fwnode, cpu_addr, length))
+>>> + if (!PAGE_ALIGNED(cpu_addr) || !PAGE_ALIGNED(length) ||
+>>> +     !PAGE_ALIGNED(pci_addr)) {
+>>> + dev_err(&device->dev,
+>>> + FW_BUG "I/O resource %pR or its offset %pa is not page aligned\n",
+>>> + res, &entry->offset);
+>>> + goto err;
+>>> + }
+>>> +
+>>> + if (pci_register_io_range(&device->fwnode, cpu_addr, length))
+>>> goto err;
+>>=20
+>> This change verifies alignment for the ACPI case that leads to the
+>> pci_remap_iospace() -> vmap_page_range() -> vmap_pte_range() path, =
+but=20
+>> there are others even in drivers/pci/, e.g., pci_remap_iospace() is
+>> also used in the DT path, where I suppose a defective DT could cause =
+a
+>> similar issue.
+>>=20
+>>> port =3D pci_address_to_pio(cpu_addr);
+>>> @@ -910,7 +918,7 @@ int acpi_pci_probe_root_resources(struct =
+acpi_pci_root_info *info)
+>>> else {
+>>> resource_list_for_each_entry_safe(entry, tmp, list) {
+>>> if (entry->res->flags & IORESOURCE_IO)
+>>> - acpi_pci_root_remap_iospace(&device->fwnode,
+>>> + acpi_pci_root_remap_iospace(device,
+>>> entry);
+>>>=20
+>>> if (entry->res->flags & IORESOURCE_DISABLED)
+>>>=20
+>>> ---
+>>> base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+>>> change-id: 20240813-check_pci_probe_res-27e3e6df72b2
+>>>=20
+>>> Best regards,
+>>> --=20
+>>> Miao Wang <shankerwangmiao@gmail.com>
+
+
 
