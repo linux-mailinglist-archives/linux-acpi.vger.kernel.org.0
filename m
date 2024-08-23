@@ -1,84 +1,84 @@
-Return-Path: <linux-acpi+bounces-7800-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7801-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B86595D7FD
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 22:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056AC95D806
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 22:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E5391C20B1B
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 20:47:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389A11C20C41
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 20:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8A61BA296;
-	Fri, 23 Aug 2024 20:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AA81C7B85;
+	Fri, 23 Aug 2024 20:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="K55m7jiK"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="F+uS055S"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690CA18CC0F
-	for <linux-acpi@vger.kernel.org>; Fri, 23 Aug 2024 20:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B4A1A08A9
+	for <linux-acpi@vger.kernel.org>; Fri, 23 Aug 2024 20:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724446046; cv=none; b=lXo2HGKuHOpnZAFOHsNna3v8BcM6WqU4WhAY+z1dRR9BvI8ZIg/CKOZSqh6VJ/PXLa3+8n+oKvlm7Ne0CdqwFYJAmBW48JmD+bMCHJ7sA1M7DhnQ9cNtglEqlCeVgf/lvoGI8E6wVTJIw/9OBiSqRB9chvLGfPxKwSyKnCs+JDo=
+	t=1724446078; cv=none; b=tS5AxticuFxxkEKhAt+CXtsUzJjSQWtPNl6W+/ua0erXdVfN5zkikXAPyfFdcwGPzOmWa+rPphWIlHOsTc9hWtGnNk7B9x5JQ8BdFbFaiYjZiymqkq84vQ8Y6tSjZMmef2MRYQ+5okUX6drssK7JlQyYhxsqebJ7s0R7CouJhgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724446046; c=relaxed/simple;
-	bh=0/5plbUShzyN0Lwayk1yBVoG0xyAy2FiSidykukxaik=;
+	s=arc-20240116; t=1724446078; c=relaxed/simple;
+	bh=id4PXH6g6b5ygcEfz+3/ImyFmiTcss8b3qGEx/u76XI=;
 	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RJC/+ACYI+COEFVJtk2X1/in1SOpnDuEQNQ9ca6Y/fT4JBVhkOCqIvG5na7kRsjFzH8bLbTVP8CoZ+avJPxoiPK6O4AbMQynOYkqQuq8F/yAH7/MB45D0VJIjJJWbRCk/lIYaT9ao2D+Ml2c+cEdBbIRlGsiGtnRVd3cXHNYYu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=K55m7jiK; arc=none smtp.client-ip=209.85.161.42
+	 To:Cc:Content-Type; b=S9GHDgj6lmhF5JxoO/a4yvniZCEkbci9x6PIagAavgNCvjvE48EecGJFcLm/Qk1Bf9kx9asxAGyp/Z/lGKjNmRMWuvXPajAzO4S1OzNIONBMhqRwdrplhOPSSV7aBvnuWI8B4vQzpSe4bQp24frpthKFH6+KMXRXj1d0HUzzww8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=F+uS055S; arc=none smtp.client-ip=209.85.160.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5dcad98e8acso1775866eaf.3
-        for <linux-acpi@vger.kernel.org>; Fri, 23 Aug 2024 13:47:25 -0700 (PDT)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-270596dbf59so1748615fac.3
+        for <linux-acpi@vger.kernel.org>; Fri, 23 Aug 2024 13:47:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724446044; x=1725050844; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1724446076; x=1725050876; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:user-agent:from:references
          :in-reply-to:mime-version:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qZiKFaKcOy5uMCUP9iI4bnV8rWlMx58uhQ+Bp65JxBY=;
-        b=K55m7jiKORwK9gNRm8ITJ8V6FL50HWA2hx3IbFO7Y7zq5rXi4LqoMas334EKg39gyE
-         H9Saxz+P3kpTXLy3AVFqZqfdl5Cun+PIYiK/ZntuoPp2hg8rIX60LoUuY0Ok9YiZDlUb
-         gnmS0Z+YWIQ1YLyxSjcerOOtmX3VyCnKhsHZs=
+        bh=id4PXH6g6b5ygcEfz+3/ImyFmiTcss8b3qGEx/u76XI=;
+        b=F+uS055S12NP2Kony/nPVKKoKjsOH7ZsvBgTNRKb3qx0X6Mbb477oFFq7h0FEu6pKP
+         19IJcjZCqQzwVJT0SdLP1++QJaYh1H1bn+5Xq6yAil4qwvepDnJ+cRETGtLfGkBLrIJL
+         uCu5GGrwvKMclN8sv54029VYY29imxExd3hf8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724446044; x=1725050844;
+        d=1e100.net; s=20230601; t=1724446076; x=1725050876;
         h=cc:to:subject:message-id:date:user-agent:from:references
          :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qZiKFaKcOy5uMCUP9iI4bnV8rWlMx58uhQ+Bp65JxBY=;
-        b=N/W4z29FKK+aQWz5mmuOwHHLDa5RkkeHYrgPEoFnbyKkJ37qTMV86iPw9fUz9IBmHq
-         Df0anAdDHvITc3A/w7u9Y62JqsSZdl1z/j0BHOcpc8+2ItfAUbQN+ev4rDf6Tfpg9Vuw
-         LkqI0Q6CaUILboXIVP5Cz5sIsHLsUyHzr6CdMaGVERTZt7W9I9tg727M4kmQ4gG4No0y
-         RXPSAsYabKUD7Jg+lG816tjsgV6Xm5Flvv2D780aBpiEXQj+90vLxNUmUp153LakA2BW
-         oq7x9vV7wgqrxajNmeIwRoN66NY/+Be9WY7IVPymIs5VqzIYjM2Au/MMu5oaSsMhD4tt
-         kUeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVh2zbEyU8qZvfr98pSBnfcTbGe3FSeGF2MRkbEdpPD5v88XuDG0Rwns1eWHHxjRmytpngft8nmtWEA@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgHOuS8kb58pceiWHg7MOt6JA9lRnKqc/ChjPnLLdFdOZ1qNtD
-	1rt8aGlxpYASj5sgb5gdEla07p80AVcSNr2WuZeYzyGYLq6Dbsm7Y2AbStozVSiixmWHhcrhjbj
-	80/WE/aWBLaz09wmNGXhvIuCpjc4ny8Cu+4oX
-X-Google-Smtp-Source: AGHT+IGtmJ+gyuELHaRH+RZ4qvsU8Rp6JLHoxTqxGD2FO8wzaNQZtxGnVU0BhE1HT6iEWRSosj9gW6Yp+4g8GcNpGbY=
-X-Received: by 2002:a05:6358:248b:b0:1b1:aca7:dad6 with SMTP id
- e5c5f4694b2df-1b5c3a4e8abmr336937055d.11.1724446044234; Fri, 23 Aug 2024
- 13:47:24 -0700 (PDT)
+        bh=id4PXH6g6b5ygcEfz+3/ImyFmiTcss8b3qGEx/u76XI=;
+        b=a3M+Ae5tiglojtaLJXHoH/gpIdIXGMbhCoYQpAIMaIC3bd9DNg9yWg8eD8nWT5xjQ7
+         PDkCm5siZsbZ9IEehHS1s2DWOj3hg3tGwX5PLttTS0ncuPGokVA0RLfcyXbYmINwgXSM
+         GIMiPInfZhyLc2WeWUiqMikj6cVfC0WCe4mWQ4jDQ1A4VvhMCFcEmeyOUFdGAYPLVccO
+         IwAYzxTCVRNDbY344cknPkoc1a+7VEVqoeMgMg5lJ8Pib8pU066WD5ptlbYRYHJmkKX6
+         JtCVu/FLE2ynuNvk0O2MxtkdQs7VF7PBiYYYp/qM8b9L/GWXKuu4/l7oSQXh4oDIHp/g
+         NXRA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2v+rqkNHHsNlpBXcGe2wXs1ZawoYG+0HtmLHUJDniADrSzyRVO3TD+M2kzdz1uymnSylla2AUmFi0@vger.kernel.org
+X-Gm-Message-State: AOJu0YypTRnJgY/0IxhjNWX4SAIQSgsIb3uWrIx8G+TWBk9FjjDHywMs
+	LouRz7BJzu2AoZVnrHcUr9YaBP7WMAvF+0n0boG+zfnOb4eMtzR4F97ZL2zD4rwXKD9KkhWiIzp
+	HXVu8Ie3Ja6WUXqUGonqESuaRCbJOrW9tI5ug
+X-Google-Smtp-Source: AGHT+IFTlK1vgqPsQn2j9voF5J39I5gTTTzWpu4wouRlEDJLxZNqlw4ZgBfIqTn3IqcZNBM8n7tlqF0zt3kueWkW4Ac=
+X-Received: by 2002:a05:687c:2be9:b0:265:b32b:c45f with SMTP id
+ 586e51a60fabf-273e60835d0mr3142337fac.0.1724446075865; Fri, 23 Aug 2024
+ 13:47:55 -0700 (PDT)
 Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 23 Aug 2024 13:47:23 -0700
+ HTTPREST; Fri, 23 Aug 2024 13:47:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ZsdMoRpwv5twOwqx@tzungbi-laptop>
-References: <20240819223834.2049862-1-swboyd@chromium.org> <20240819223834.2049862-16-swboyd@chromium.org>
- <ZsdMoRpwv5twOwqx@tzungbi-laptop>
+In-Reply-To: <ZsdMd7Ywa2b-GDT6@tzungbi-laptop>
+References: <20240819223834.2049862-1-swboyd@chromium.org> <20240819223834.2049862-14-swboyd@chromium.org>
+ <ZsdMd7Ywa2b-GDT6@tzungbi-laptop>
 From: Stephen Boyd <swboyd@chromium.org>
 User-Agent: alot/0.10
-Date: Fri, 23 Aug 2024 13:47:23 -0700
-Message-ID: <CAE-0n50MVaU2dmRLdLVFWT9KWPO_BK-L7eEqGRSb8TKm1KtPNQ@mail.gmail.com>
-Subject: Re: [PATCH v3 15/17] platform/chrome: cros_ec_typec: Add support for
- signaling DP HPD via drm_bridge
+Date: Fri, 23 Aug 2024 13:47:55 -0700
+Message-ID: <CAE-0n53zPV8QHf7DxSDO8E4-kvsP=unFvevjo7i1ZjE1v6UgAA@mail.gmail.com>
+Subject: Re: [PATCH v3 13/17] dt-bindings: Move google,cros-ec-typec binding
+ to usb
 To: Tzung-Bi Shih <tzungbi@kernel.org>
 Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
 	patches@lists.linux.dev, devicetree@vger.kernel.org, 
@@ -99,36 +99,15 @@ Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
 	linux-acpi@vger.kernel.org, linux-usb@vger.kernel.org, 
 	Mika Westerberg <mika.westerberg@linux.intel.com>, 
 	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Vinod Koul <vkoul@kernel.org>
+	Vinod Koul <vkoul@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Quoting Tzung-Bi Shih (2024-08-22 07:35:13)
-> On Mon, Aug 19, 2024 at 03:38:29PM -0700, Stephen Boyd wrote:
-> > +struct cros_typec_dp_bridge {
-> > +     struct cros_typec_data *typec_data;
-> > +     struct drm_dp_typec_bridge_dev *dev;
-> > +};
+Quoting Tzung-Bi Shih (2024-08-22 07:34:31)
+> On Mon, Aug 19, 2024 at 03:38:27PM -0700, Stephen Boyd wrote:
+> > -title: Google Chrome OS EC(Embedded Controller) Type C port driver.
+> > +title: Google Chrome OS Embedded Controller (EC) USB type-c port driver
 >
-> It looks like structs are all defined in cros_ec_typec.h.  I think this struct
-> definition can be also moved there.
+> Given that it gets chance to modify, how about s/Chrome OS/ChromeOS/?
 
-I put it here because it wasn't used by any other driver. Maybe I can
-skip the entire struct though and add what I need directly to 'struct
-cros_typec_data'.
-
->
-> > diff --git a/drivers/platform/chrome/cros_ec_typec.h b/drivers/platform/chrome/cros_ec_typec.h
-> > index deda180a646f..73d300427140 100644
-> > --- a/drivers/platform/chrome/cros_ec_typec.h
-> > +++ b/drivers/platform/chrome/cros_ec_typec.h
-> > @@ -27,6 +27,8 @@ struct cros_typec_altmode_node {
-> >       struct list_head list;
-> >  };
-> >
-> > +struct cros_typec_dp_bridge;
->
-> If the struct definition moves here, it doesn't need to declare forward.
-
-But then we have to forward declare 'struct cros_typec_data'? There's no
-escape.
+Sure!
 
