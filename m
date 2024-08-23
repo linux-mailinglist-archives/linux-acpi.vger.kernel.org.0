@@ -1,123 +1,79 @@
-Return-Path: <linux-acpi+bounces-7811-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7812-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE46195D9B2
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 01:25:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A365E95D9CE
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 01:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3812858B2
-	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 23:25:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D48B11C23689
+	for <lists+linux-acpi@lfdr.de>; Fri, 23 Aug 2024 23:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982FD1D1727;
-	Fri, 23 Aug 2024 23:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC311C945A;
+	Fri, 23 Aug 2024 23:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bIql0v+T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8GX6W7K"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8DE1CEAAF;
-	Fri, 23 Aug 2024 23:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDEF71C93B4;
+	Fri, 23 Aug 2024 23:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724455440; cv=none; b=anzgomAqzQmxCbv6s1ZXM5ezLxdSQqbQkMVKmK4VW9g4x9ox9i+4ksH6Kp+WsZYcdlX4Trl2ZhCNw0M/OsyeAPHiLEaJnrF0gwCaAWc3nhpw5nzlHW6TvkJeG2IbASuH8xY2PsREfO2MjkrqcixategGuENd0l5FcUdF1hzCNa8=
+	t=1724456722; cv=none; b=C+AoX7MBgBKaArpK3PsXLY1u6klYUvP8AsNwRtVxojggM08i5HGtd7M5gZkyKeBT73YT9deh9I/L8QjJK994TGxdd6zTGbtsQquUTA7V470AkQLi4zHAgDnaASjPutbYbxeR53GcEztvSpMC79k7Znr5cpOSHSLuxJYCYti0UNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724455440; c=relaxed/simple;
-	bh=aTUjSPlr92miH9hNP8IzSsf9aHifGfF00lLQKGCBga4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MiauqthRHV8/LEIuhTKoYg3Dh6tjdkLmXrJYju5CzLeqtQpoWxjC6ke3GHJpsTP1VWGH2sL6GaxY8Cct5G/EEeBHwfxdOLPxaFVSXpgwBP4tw4btwO0qKvHKeuYLwPjG6xESdd5TsamNfMOBWGxtqurjkk25EkgSFphNoM4Y6Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bIql0v+T; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724455439; x=1755991439;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=aTUjSPlr92miH9hNP8IzSsf9aHifGfF00lLQKGCBga4=;
-  b=bIql0v+T3jTMT83Vm2a80WYNVWUmvtAGR5+o585GgsXpcmiIyeu7SLt+
-   XjmV+Q/C7fsQs+SyzI4MYlSyh9sDL+tqmeNrtzrD/OxEW7xj4Mh7KGmFi
-   NCnFHj2fgbP7WG0MVK2g0Mrz9N+aIhZXJ770Bp6OzE9PAfRub/pU8M3ve
-   pxL1MkufCKuSq6mTmBWUPRuiwEFePX4WJpXRdu/Zrn6CMCp2/WCm7afbg
-   Si5bJXk6hyfPEonHBG7OfGW9oq2vsaBnpOQiPY27AMeb/YYic4EHY3s+I
-   ieHyWn8L1/J0Lhv40FdJ8Kfy4ck0NmUCZjWkX9zuKeK/AOeDiemSL9nmi
-   Q==;
-X-CSE-ConnectionGUID: 62DVpbivRvSI636M3eNHqQ==
-X-CSE-MsgGUID: n63CMfyXQ4y9qRkOSxkMDA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11173"; a="33619333"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="33619333"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 16:23:55 -0700
-X-CSE-ConnectionGUID: qrmX1Uw4Spq3Z0u+YjRdCA==
-X-CSE-MsgGUID: fZMgbovvQMmEl3hmHT6qxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="61641020"
-Received: from yjiang5-dev1.sc.intel.com ([172.25.103.134])
-  by fmviesa007.fm.intel.com with ESMTP; 23 Aug 2024 16:23:55 -0700
-From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	kirill.shutemov@linux.intel.com,
-	yunhong.jiang@linux.intel.com
-Cc: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH v2 9/9] x86/hyperv: Use wakeup mailbox for VTL2 guests if available
-Date: Fri, 23 Aug 2024 16:23:27 -0700
-Message-Id: <20240823232327.2408869-10-yunhong.jiang@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
-References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+	s=arc-20240116; t=1724456722; c=relaxed/simple;
+	bh=YZ7B+h+ctI0YdPLpK9id50AuFg2bLLAtUi1/9abrzxY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=IFrp9R+ymvdAfWg/K7yfSj6B2YKFrdfWwu27ilFofMNQTNG5WTZz8hpdB5eHPKPETiHg0GzUAIi4KrVv45Y+aGKhIqTaAiE3wA6EesllVbJ2sy/f8c6rwGNkUoYdf5M7ykl6mbKbnOJO5Swdj5Eu/2KvUuknvOrMcuNd23zKxJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8GX6W7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC76FC32786;
+	Fri, 23 Aug 2024 23:45:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724456721;
+	bh=YZ7B+h+ctI0YdPLpK9id50AuFg2bLLAtUi1/9abrzxY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=K8GX6W7Kle6KahdSuXi+stDBZmANtz+PEEmxr1oxLb6MOjvPDMZB0lnr9rBAcCLAL
+	 ADihmB2K9WMRylR78Ntzi4rxsoEz5S4D2lK/3WyxtNpNIh6yb2tXQ9rB4BQ27iN7oL
+	 ph+ngsaUhI8mBRYv5FSyaazHtHbosj9gRJpNuIkCIKqgligMM/HFeU9vNYekvM8rPk
+	 SWtB4PZa76j2R73ZKT7CBUUypoH2HMjko1SuxTI0ylc7esh5qNfedA80Ee/klWoMD+
+	 AY920eGEZ+8U2rDe/fEF+qmx1GNn0nGBfUuSW0Kpx/+gWzr95sontij/zMQNcDffDk
+	 +9j3s0roT3Zfw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE09B3804C87;
+	Fri, 23 Aug 2024 23:45:22 +0000 (UTC)
+Subject: Re: [GIT PULL] ACPI fix for v6.11-rc5
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0hJobeqPY7fZCQAiZg-fP=Vyeak-6mEt5Rt2cdat5ChvQ@mail.gmail.com>
+References: <CAJZ5v0hJobeqPY7fZCQAiZg-fP=Vyeak-6mEt5Rt2cdat5ChvQ@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-acpi.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0hJobeqPY7fZCQAiZg-fP=Vyeak-6mEt5Rt2cdat5ChvQ@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.11-rc5
+X-PR-Tracked-Commit-Id: 5c7bb62cb8f53de71d8ab3d619be22740da0b837
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b09f6ca99c46e4a561ac943253aca9beae8c1146
+Message-Id: <172445672130.3112782.2943562548215395003.pr-tracker-bot@kernel.org>
+Date: Fri, 23 Aug 2024 23:45:21 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-For VTL2 hyperv guest with wakeup mailbox in device tree, don't
-overwrite wakeup_secondary_cpu_64 so that the acpi_wakeup_cpu will be
-used to bring up the APs.
+The pull request you sent on Fri, 23 Aug 2024 16:32:56 +0200:
 
-Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
----
- arch/x86/hyperv/hv_vtl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-6.11-rc5
 
-diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
-index 5829aac74f80..09a7410200ba 100644
---- a/arch/x86/hyperv/hv_vtl.c
-+++ b/arch/x86/hyperv/hv_vtl.c
-@@ -264,7 +264,8 @@ int __init hv_vtl_early_init(void)
- 		panic("XSAVE has to be disabled as it is not supported by this module.\n"
- 			  "Please add 'noxsave' to the kernel command line.\n");
- 
--	apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
-+	if (!wakeup_mailbox_addr)
-+		apic_update_callback(wakeup_secondary_cpu_64, hv_vtl_wakeup_secondary_cpu);
- 
- 	return 0;
- }
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b09f6ca99c46e4a561ac943253aca9beae8c1146
+
+Thank you!
+
 -- 
-2.25.1
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
