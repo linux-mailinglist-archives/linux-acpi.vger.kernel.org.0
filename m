@@ -1,226 +1,99 @@
-Return-Path: <linux-acpi+bounces-7813-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7814-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64F395DA36
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 02:17:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872DE95DE7F
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 16:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E74411C216EB
-	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 00:17:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E8F282E7D
+	for <lists+linux-acpi@lfdr.de>; Sat, 24 Aug 2024 14:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0851878;
-	Sat, 24 Aug 2024 00:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D421617A5A6;
+	Sat, 24 Aug 2024 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lDYN8CSY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RCvKE3Kw"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AE1195;
-	Sat, 24 Aug 2024 00:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A48DEEC0
+	for <linux-acpi@vger.kernel.org>; Sat, 24 Aug 2024 14:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724458666; cv=none; b=ZHUyFv0aVY2DgaI6mfJHdZ3kjU6beMoYnos+cr0/hynO9nFwgi9Psh50A3oZH6VQedXt70vZb8gw1JS9op8IBa22Fv4CWxW9PSLG+bA+P20jqcvspF64KZZoOYYsyuqZyT/qE9xIajkv1OdVN1k6drciAoN+hMoGJnThCwuK6hQ=
+	t=1724510623; cv=none; b=Cbv77kz4CgVFBCcrTKL624btBEtISkSbV6C1P/jHteoqexboF128h86r1Hra2KEuH7QwEOxo5krmJu4KsH56aU1EG1X0XSJUMbe/JqoQr60MxupDnzi3w/EUFe1njeixFI+7yinpAWimtnyCmKj1TbtqqNBWhqg8CMIVZtIZ4vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724458666; c=relaxed/simple;
-	bh=wljoqGsA0TkAmF4SO4AeWOB8Rba0g9hk5wE0vU3p57Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LmCNJvHv+rBejnpGrx5U5silzVJYVnZcgDIElXaRkfqgByjJPrwdBwKVLGz+lq9pKsVXqHXninTxBu8yQcubWt3P1yTHXBoHzsQogrV6GQULSdMY0NV77kjrMtNB1aW1fh/LfzHFQyoDi6VHAJARZH9UrOR4v8R12fsgjBLOMhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lDYN8CSY; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724458665; x=1755994665;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wljoqGsA0TkAmF4SO4AeWOB8Rba0g9hk5wE0vU3p57Q=;
-  b=lDYN8CSYFnnqC5DzUh/oDXvhuvaQFI7a+B6LVSECynZz5pBnOs0+onwC
-   47Jm3WzvlFHbN9a2k/CocWOmCKjECvdWwVx9v2LYzUjlVtcaoTsNZ2Tz6
-   WW0PeI+McDSVXEwon7LDdGlllzOnAWU7j6Pnp3toWcPVohvGOe0+lVFaA
-   puTw2nbh8OlnSfvi+0Ey9dWpOMf7heNS+louMHF6HGLpeKVjta6xtGxyF
-   7oy7FhVmkUKz6jSVJmp8Z9TNcYs4vDks6JgZbKfJsNfMxOlYmvKLuQaEL
-   Sifdy5prpON35iXjqovJakkoFajizR/MExdx/A0WvW8a8DV51cwcAE5Em
-   Q==;
-X-CSE-ConnectionGUID: 9AachcCeQIa92mfMnoS7uw==
-X-CSE-MsgGUID: hJ0v65llSc2Sy/UC5DmHAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11173"; a="33574154"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="33574154"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 17:17:44 -0700
-X-CSE-ConnectionGUID: vp96dOqhTYKR2q1SNV/1bQ==
-X-CSE-MsgGUID: E8vsjnpvQe2h08pJXqsk9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; 
-   d="scan'208";a="99466060"
-Received: from yjiang5-mobl.amr.corp.intel.com (HELO localhost) ([10.124.1.48])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 17:17:42 -0700
-Date: Fri, 23 Aug 2024 17:17:42 -0700
-From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
-	wei.liu@kernel.org, decui@microsoft.com, rafael@kernel.org,
-	lenb@kernel.org, kirill.shutemov@linux.intel.com,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-hyperv@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH 6/7] x86/hyperv: Reserve real mode when ACPI wakeup
- mailbox is available
-Message-ID: <20240824001742.GA424@yjiang5-mobl.amr.corp.intel.com>
-References: <20240806221237.1634126-1-yunhong.jiang@linux.intel.com>
- <20240806221237.1634126-7-yunhong.jiang@linux.intel.com>
- <87a5ho2q6x.ffs@tglx>
+	s=arc-20240116; t=1724510623; c=relaxed/simple;
+	bh=TG/Q635uFGX6ibz3TtyerVGS3vHIeINHxFOb8QYWcCg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AaKJ1VgAh9F3A17R0n5uZpLRQo71xq+JCVrBzj/mg2RoqVadCE6WtG/4YQXUWpIPXuJy/YIp9lkmKv+SKEg16chlOlqdurkwQKwqQVGFDTw7/9ItOGZTzH9JcIxvlhiqypWB1wpc8AUDNCpvl6UTyDxJNjoS5Gu7mZ5MENnsv0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RCvKE3Kw; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53351642021so3176495e87.3
+        for <linux-acpi@vger.kernel.org>; Sat, 24 Aug 2024 07:43:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724510620; x=1725115420; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TG/Q635uFGX6ibz3TtyerVGS3vHIeINHxFOb8QYWcCg=;
+        b=RCvKE3KwgPp+3R2Y5oyMruspdUzBEqtT1uyl4YorwiWu1H/kaGpX0FSc8+LbySgNfq
+         eVyFMSmIOUmQ5QVJt1Wt46AgfFSgWajs8mRDQaNr4AcWJax5KseAdzBd5uUCC6659EA+
+         GHWGEhl8LNoDIV48zIdNaYfm2HzahTKZhUrEhJSM4JR50yXGUM/1oFP7tjr5X4/Jr8J7
+         K2OdnHByzsfo/Mw1MhwzyR/fj/KqhUSKU5oOIAsuK16C1Kns+5urqajgWraxZmrNE1t9
+         Qw+kb4IeVBJ9lPU7YZ0X1FA5iFIUP8WTE9QTQS+Mm/Konm+WwqxNXQ+eyvZZhBdlTTOs
+         BRcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724510620; x=1725115420;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TG/Q635uFGX6ibz3TtyerVGS3vHIeINHxFOb8QYWcCg=;
+        b=kf6HpJgGMZX/3gLQyrWoLw044NGroEHfZxq8R4w1+XPJBkq5qvAFyPETAt0CH10C8G
+         +52yY3D8OX+OJg0nefubFl4li9EsxUj4YpTbfuMFjWy23UDPVEbNKLikTq+bRrGhYVZV
+         g+Lw4lrBUhskXPKrDuKGiqBy/7EICLEFzvs6h3M6yDwR/93IQ11zUNXqzBrF/UYtEFFG
+         F/LxPOLLcgbSB4CQWZ2aY1qooSlBXl/7XZEuufsAy1byoT5yWi6TfU0iENk9r07wtr99
+         u9PbK36w7b7I7z0GZLrHaspf4QCO18+v5/zaq7I7rSmLU6HvYiIh+6R3nMBJSgnC4JzI
+         tYMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuP19Iy+mTyrxqBEMwfhFRzrxtY8vS95KXoU7ClB5uOmOz6SknbQ9Mq5zJAlRd03MMIFW6h6ldF14p@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAZiBzCRIdhcqFX+JpYJ3DFCC2D/mO3je5XJk6BnX5mgFcO1pe
+	AjVPz5llba1p+KgLdKRsegD2PsVmX97DeX4/NkMSppWLTBBVzEwKTpRgJIAybmk1kOU25VMYWVa
+	tPsz9oGDh7wdNLO2kCpagcYby5BqZafgon+vnQg==
+X-Google-Smtp-Source: AGHT+IF1Lb1IYekbSwByfy+rWqqhhcaUglxVrpppACcE9AnsPrA9/GqTgMiYryV6a1z6VO0NT+wvEAYG/Ss8+fd6IzM=
+X-Received: by 2002:a05:6512:b1c:b0:52e:987f:cfe4 with SMTP id
+ 2adb3069b0e04-5343878551bmr3688925e87.30.1724510619375; Sat, 24 Aug 2024
+ 07:43:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5ho2q6x.ffs@tglx>
+References: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240819142945.327808-1-andriy.shevchenko@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Sat, 24 Aug 2024 16:43:28 +0200
+Message-ID: <CACRpkdZosbVKr9nY91oMTQUcn2zrm2t6ZjxQiyQbwQx-kt71Pg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] gpiolib: Add and utilise for_each_gpio_property_name()
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Bartosz Golaszewski <brgl@bgdev.pl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 07, 2024 at 07:33:26PM +0200, Thomas Gleixner wrote:
-> On Tue, Aug 06 2024 at 15:12, Yunhong Jiang wrote:
-> > +static void __init hv_reserve_real_mode(void)
-> > +{
-> > +	phys_addr_t mem;
-> > +	size_t size = real_mode_size_needed();
-> > +
-> > +	/*
-> > +	 * We only need the memory to be <4GB since the 64-bit trampoline goes
-> > +	 * down to 32-bit mode.
-> > +	 */
-> > +	mem = memblock_phys_alloc_range(size, PAGE_SIZE, 0, SZ_4G);
-> > +	if (!mem)
-> > +		panic("No sub-4G memory is available for the trampoline\n");
-> > +	set_real_mode_mem(mem);
-> > +}
-> 
-> We really don't need another copy of reserve_real_mode(). See uncompiled
-> patch below. It does not panic when the allocation fails, but why do you
-> want to panic in that case? If it's not there then the system boots with
-> a single CPU, so what.
+On Mon, Aug 19, 2024 at 4:29=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-I created a separated patch on my v2 patch set with "Originally-by:" tag
-following suggestion at
-https://lore.kernel.org/lkml/20240711081317.GD4587@noisy.programming.kicks-ass.net/
+> There are a few of duplication of the same for-loop against GPIO
+> suffixes. This series addresses that along with proposal to eliminate
+> the exported gpio_suffix_count by converting the array to be
+> NULL-terminated.
 
-Please let me know if that's not the appropriate solution.
- 
-> 
-> >  void __init hv_vtl_init_platform(void)
-> >  {
-> >  	pr_info("Linux runs in Hyper-V Virtual Trust Level\n");
-> >  
-> >  	if (wakeup_mailbox_addr) {
-> >  		x86_platform.hyper.is_private_mmio = hv_is_private_mmio_tdx;
-> > +		x86_platform.realmode_reserve = hv_reserve_real_mode;
-> >  	} else {
-> >  		x86_platform.realmode_reserve = x86_init_noop;
-> >  		x86_platform.realmode_init = x86_init_noop;
-> > @@ -259,7 +276,8 @@ int __init hv_vtl_early_init(void)
-> >  		panic("XSAVE has to be disabled as it is not supported by this module.\n"
-> >  			  "Please add 'noxsave' to the kernel command line.\n");
-> >  
-> > -	real_mode_header = &hv_vtl_real_mode_header;
-> > +	if (!wakeup_mailbox_addr)
-> > +		real_mode_header = &hv_vtl_real_mode_header;
-> 
-> Why is that not suffient to be done in hv_vtl_init_platform() inside the
-> condition which clears x86_platform.realmode_reserve/init?
-> 
-> x86_platform.realmode_init() is invoked from an early initcall while
-> hv_vtl_init_platform() is called during early boot.
+Too late to the show, but excellent patches Andy!
 
-I created a separated patch for this change on my v2 patch set, since it's a
-a separated logic change. I added a Suggested-by: tag to the patch, hope it's
-ok.
-
-Thanks
---jyh
-
-> 
-> Thanks,
-> 
->         tglx
-> ---
-> --- a/arch/x86/include/asm/x86_init.h
-> +++ b/arch/x86/include/asm/x86_init.h
-> @@ -31,12 +31,18 @@ struct x86_init_mpparse {
->   *				platform
->   * @memory_setup:		platform specific memory setup
->   * @dmi_setup:			platform specific DMI setup
-> + * @realmode_limit:		platform specific address limit for the realmode trampoline
-> + *				(default 1M)
-> + * @reserve_bios:		platform specific address limit for reserving the BIOS area
-> + *				(default 1M)
->   */
->  struct x86_init_resources {
->  	void (*probe_roms)(void);
->  	void (*reserve_resources)(void);
->  	char *(*memory_setup)(void);
->  	void (*dmi_setup)(void);
-> +	unsigned long realmode_limit;
-> +	unsigned long reserve_bios;
->  };
->  
->  /**
-> --- a/arch/x86/kernel/x86_init.c
-> +++ b/arch/x86/kernel/x86_init.c
-> @@ -8,6 +8,7 @@
->  #include <linux/ioport.h>
->  #include <linux/export.h>
->  #include <linux/pci.h>
-> +#include <linux/sizes.h>
->  
->  #include <asm/acpi.h>
->  #include <asm/bios_ebda.h>
-> @@ -68,6 +69,8 @@ struct x86_init_ops x86_init __initdata
->  		.reserve_resources	= reserve_standard_io_resources,
->  		.memory_setup		= e820__memory_setup_default,
->  		.dmi_setup		= dmi_setup,
-> +		.realmode_limit		= SZ_1M,
-> +		.reserve_bios		= SZ_1M,
->  	},
->  
->  	.mpparse = {
-> --- a/arch/x86/realmode/init.c
-> +++ b/arch/x86/realmode/init.c
-> @@ -45,7 +45,7 @@ void load_trampoline_pgtable(void)
->  
->  void __init reserve_real_mode(void)
->  {
-> -	phys_addr_t mem;
-> +	phys_addr_t mem, limit = x86_init.resources.realmode_limit;
->  	size_t size = real_mode_size_needed();
->  
->  	if (!size)
-> @@ -54,17 +54,15 @@ void __init reserve_real_mode(void)
->  	WARN_ON(slab_is_available());
->  
->  	/* Has to be under 1M so we can execute real-mode AP code. */
-> -	mem = memblock_phys_alloc_range(size, PAGE_SIZE, 0, 1<<20);
-> +	mem = memblock_phys_alloc_range(size, PAGE_SIZE, 0, limit);
->  	if (!mem)
-> -		pr_info("No sub-1M memory is available for the trampoline\n");
-> +		pr_info("No memory below %lluM for the real-mode trampoline\n", limit >> 20);
->  	else
->  		set_real_mode_mem(mem);
->  
-> -	/*
-> -	 * Unconditionally reserve the entire first 1M, see comment in
-> -	 * setup_arch().
-> -	 */
-> -	memblock_reserve(0, SZ_1M);
-> +	/* Reserve the entire first 1M, if enabled. See comment in setup_arch(). */
-> +	if (x86_init.resources.reserve_bios)
-> +		memblock_reserve(0, x86_init.resources.reserve_bios);
->  }
->  
->  static void __init sme_sev_setup_real_mode(struct trampoline_header *th)
+Yours,
+Linus Walleij
 
