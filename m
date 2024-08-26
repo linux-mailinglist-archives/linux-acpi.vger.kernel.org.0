@@ -1,84 +1,104 @@
-Return-Path: <linux-acpi+bounces-7836-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7837-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CF795FB0D
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 22:55:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1E895FB51
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 23:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B8A1B23A31
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 20:55:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 136FB1F22DA5
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 21:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD7B19AA58;
-	Mon, 26 Aug 2024 20:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4861613D53F;
+	Mon, 26 Aug 2024 21:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KddIm9DK"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from fgw20-7.mail.saunalahti.fi (fgw20-7.mail.saunalahti.fi [62.142.5.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460B8199E98
-	for <linux-acpi@vger.kernel.org>; Mon, 26 Aug 2024 20:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053EA28DC1;
+	Mon, 26 Aug 2024 21:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724705704; cv=none; b=UZHJBBiWegh0jBgAbwWTe/2IeO61d9gtvgv01Ob6o1nWRU0J/vmpSabe+DFIvkQk5+cKFVJpOOAJuWuyETxzaZpTyglItV3PpRZNhcUYkmNEskbDwRAvBaR3CfRnq3P/PwAAjgYHMfZYsr+UrDeGk/Ci6v0rHewrY8eHTVubJew=
+	t=1724706844; cv=none; b=VtMmiBe0VdXjZl2q7Bppyym4v3WFLpgvBdG4d03rhVsjrl5kpY7n32dWhXs2YlCns6OugOH38No4YGZmCtEVj6gJZY45YVNwZJuJ1M+33xNEXOGrTPBtxsPBcLfpCOWN53/n6OYqsh3gmHymrD4mgQ0uJReyq+2WA/Q8VcBnTho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724705704; c=relaxed/simple;
-	bh=7NXtnwmvCIhyA32Y9cVSO9Z9Tqjqcf1blkjdopyxGR8=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rzHUOovumkBUnBheKnN4I6nPlS8rqo+Lflfh6p6Y0BVgRwmh9NMy47gsRYjjZ2qPJmeMPsu5GRxK7HW4cH6lLxhhHVnaIlP/xG771M4gkefQlijIxMO+Eilsglr3aXvESPmNMvaKWCxKYEHnZMnLhgYtJ5YXoMB7UkwAEGP0+Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
-Received: from localhost (88-113-25-87.elisa-laajakaista.fi [88.113.25.87])
-	by fgw22.mail.saunalahti.fi (Halon) with ESMTP
-	id 75ac7369-63ed-11ef-8ec2-005056bdf889;
-	Mon, 26 Aug 2024 23:55:00 +0300 (EEST)
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 26 Aug 2024 23:55:00 +0300
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Rob Herring <robh@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <quic_kdybcio@quicinc.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v3 0/3] OF support for Surface System Aggregator Module
-Message-ID: <ZszrpJrltlUsdPv7@surfacebook.localdomain>
-References: <20240814-topic-sam-v3-0-a84588aad233@quicinc.com>
+	s=arc-20240116; t=1724706844; c=relaxed/simple;
+	bh=uLMVArZ6y0tlxqv3+lKj7kR71rCBGeCWWF4hC6WxrGk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OMQw7BjIt/rYPp0zAEVUSsB+kFceh6SKGEN7kSdM7r9yd0+sr5OjzDiQA9gD/pjVufdDJZ4t+HVkKsDcKdVH9/0scl/Ik+mZ1QjF6NYlAwssA8NftJx9I19gTHXc7zlrgvj2O9wSrTpVwWwwjmtsx07m7UH2VEJBabXR6F/mvcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KddIm9DK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB3AC8B7D2;
+	Mon, 26 Aug 2024 21:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724706843;
+	bh=uLMVArZ6y0tlxqv3+lKj7kR71rCBGeCWWF4hC6WxrGk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KddIm9DKI8h3oXexJgaFSaQBBBcvi9Ru3ACvRrVPFbyBniL6nYjdYkfSrUlN5et2r
+	 Nk5NhBVVdTiS/PRjCsTFGTYsOArY2ygC0obFIrtaVhyug7XKrzWWCtPlgm7BilFrih
+	 n//G/VYPq3bJldGZ4CZQsqauqchTj5YM8xM+1vWfypTtQC+ttQi3/pOYF3kyP+lckj
+	 OHXBE1Fs4svx8thQa2Gvbq4q/MoUluWbnpcjjFzt30yRWbcTMbPoJ1qqPINm4QZNL/
+	 Bqy/LdbsDLTY39tIIUZkXV8qrDbXeZ0aruhEYH/KGxWG7tkSz5TYSs5dJBtfq7HIdd
+	 Ysx5I6dl6YLzw==
+From: Mario Limonciello <superm1@kernel.org>
+To: Borislav Petkov <bp@alien8.de>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>
+Cc: x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	linux-acpi@vger.kernel.org (open list:ACPI),
+	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 0/8] Adjustments for preferred core detection
+Date: Mon, 26 Aug 2024 16:13:50 -0500
+Message-ID: <20240826211358.2694603-1-superm1@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814-topic-sam-v3-0-a84588aad233@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-Wed, Aug 14, 2024 at 12:27:24PM +0200, Konrad Dybcio kirjoitti:
-> Wire up OF support for SSAM drivers, to use with Surface Laptop 7 and
-> other Qualcomm-based devices.
-> 
-> Patch 3 references compatible strings introduced in [1]
-> 
-> [1] https://lore.kernel.org/linux-arm-msm/20240809-topic-sl7-v1-1-2090433d8dfc@quicinc.com/T/#u
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-Please, Cc to me the v4.
+Preferred core detection is fragile in that any CPU that reports
+less than 255 for any core is assumed to be a preferred core design.
+This might not always be true, so it's better to check all CPUs and
+see that varying values are actually reported.
+
+Furthermore, preferred core detection isn't used by acpi-cpufreq. So
+incorrect frequencies are used unless amd-pstate is active.
+
+This series moves preferred core detection out of amd-pstate in a more
+robust fashion.  It also removes some tech debt of hardcoded values for
+platforms that are actually preferred core platforms.
+
+This branch is based off v6.11-rc5.
+
+Mario Limonciello (8):
+  x86/amd: Move amd_get_highest_perf() from amd.c to cppc.c
+  x86/amd: Rename amd_get_highest_perf() to
+    amd_get_boost_ratio_numerator()
+  ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn
+  x86/amd: Move amd_get_highest_perf() out of amd-pstate
+  x86/amd: Detect preferred cores in amd_get_boost_ratio_numerator()
+  cpufreq: amd-pstate: Merge amd_pstate_highest_perf_set() into
+    amd_get_boost_ratio_numerator()
+  cpufreq: amd-pstate: Optimize amd_pstate_update_limits()
+  cpufreq: amd-pstate: Drop some uses of cpudata->hw_prefcore
+
+ arch/x86/include/asm/processor.h |  14 +--
+ arch/x86/kernel/acpi/cppc.c      | 159 ++++++++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/amd.c        |  16 ----
+ drivers/cpufreq/acpi-cpufreq.c   |  12 ++-
+ drivers/cpufreq/amd-pstate.c     | 132 ++++++-------------------
+ include/acpi/cppc_acpi.h         |  10 ++
+ 6 files changed, 203 insertions(+), 140 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
