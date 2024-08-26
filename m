@@ -1,163 +1,225 @@
-Return-Path: <linux-acpi+bounces-7824-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7825-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A9195EDE6
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 12:00:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA9D95EE4E
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 12:17:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6D5D1C21713
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 10:00:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9211C2152F
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 10:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A2B148308;
-	Mon, 26 Aug 2024 10:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A8E146D6D;
+	Mon, 26 Aug 2024 10:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNz97goA"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="nj9aw4lz"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0C4146D6F;
-	Mon, 26 Aug 2024 10:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A95146A69
+	for <linux-acpi@vger.kernel.org>; Mon, 26 Aug 2024 10:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724666405; cv=none; b=pxax3MT+UAFhKa63VQSVmjgbRfmw92RBI0yBecz/rKA4q4PWpPCAT3vsMfdjZhYjAA/z6J4AQObvw/Arxj9L7dpgZTZS2xB+XDVbQoWOHUxuvisu96d3LgHLPQcD49zaFf7xWkpxTVBVcyLNLJwftSvbYpc1s+no0VaLy304I1Y=
+	t=1724667427; cv=none; b=DN9xOJnRhBCMjHPZabpBanolJ9GIRrtqA4VJUsVYbulZRs0koPArhT1M7fSSnPf6RDN4er4iUgMruxkFIbIml2nglfkPX/x4mprhX2QKs2ouBx4kGwhdxSXuMUTRXEO80EWVtuoCkYzYCbhBF5jaQeevmJ3ac73SNFsU1OpEuKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724666405; c=relaxed/simple;
-	bh=H1gNBBAhMfSVZg5l3P5whjBb1DwypNUyP7q+iCqtEic=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ePuFuEWs7M9zjV1N98veJF4e8oBQf+ISnXBFYFjN43mDQ0+Kg3icOwnxWsfnYXAm3y/EgjKkEPxbDtRHRwoF6mvSV57Ab1tgozkgeYD812eMCLkQOP8FqibDwpK4uswx2+XGuRV+fonm7BC3OZPAax4/WQAVLZ++rRE7AGRVP8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNz97goA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9AEC51406;
-	Mon, 26 Aug 2024 10:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724666405;
-	bh=H1gNBBAhMfSVZg5l3P5whjBb1DwypNUyP7q+iCqtEic=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DNz97goArRKajiUSlAKrRRaoClpMoTnOt8x/+hX8n82Zo6PjgfYEMxbcyBeFxGttI
-	 CEwIWjIh/uktlZ96ssxyQdPAbqYzMx2pm7830eQQGW5y9fAvDh187Roy78l9f0tfsk
-	 wxdujRN6IJajlLDH8sgaKYO26v4j63QLeBdheFlb6k9Dc4hEIVbbNjWmSLv+ylyckc
-	 7xfcn20wqrrnGBVfNKX8TzmlVIXawkP+lxwiG/o1Ah5E6rSVi46pbc2lZcj7+a+Ugp
-	 X6HJFLHNJkeBibmf3NHBbwtfrht3qOVZV8qJ7KdzRic0u7plQjNv/sAmaUKQhnogJR
-	 1e2jBf3Jv6k4w==
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5d5c8c1006eso3065633eaf.3;
-        Mon, 26 Aug 2024 03:00:05 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU4JzbqtglOlRZckje9UO4ThmfDSmem7AOHdH9f27o8NJ2eYH5fyi3AjJQyWFGSzH2vLTIAvdQWLKEY@vger.kernel.org, AJvYcCVxLvu6ySicTJwsOWj2Il/DGYHaNo6orHsxsLQYZokEs4ELaEcFPHvWLDCpkIJca2xDsqUY7ayT8YStXKQp@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIHjGpplhOFW3cZI8UVhhn/UFX9UfNHaakh3Qe4J5Gi1NUKkMe
-	EDGKVOAqnWttp+lOvC5NTa9fWUXTkiOsa3SlKFuIt+Ja/AT3n9pzIsXtWvDL5QHo2nQdB6Wj2ww
-	ivwmhUxNcjBBWCcKG/V+iLVgPEZQ=
-X-Google-Smtp-Source: AGHT+IE/OB3jlh4F+GyGtLPrVPwvZucEs/pMxOW+5WBT9V6UxnSH23wxYVwVZbDNTz/44qsbbGiYgj4B49GU+4egfGQ=
-X-Received: by 2002:a05:6871:29b:b0:270:4dbb:195a with SMTP id
- 586e51a60fabf-273e6476a16mr11161053fac.15.1724666404545; Mon, 26 Aug 2024
- 03:00:04 -0700 (PDT)
+	s=arc-20240116; t=1724667427; c=relaxed/simple;
+	bh=KBfQwLewyvP6KNpc8e1AId0s4PlpqFUiRzhSKGSgMd8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=B+FsIMBuxHpf+Lwq6dVQT6ydVLNW9vmhhWUPhZLa3l3wQ2mv2gO8qf6d4lnconjCXp0/F4Bk6gHxbjUUmnU4n13GPvdIa/rOOfWMFtEhoaHMcFBygfs0+DwJL9e23gVQyFaL9RM/zVVwZ82hGZF7Ws8KxvLigb+Zw4zusUrFfx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=nj9aw4lz; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71433cba1b7so2936345b3a.0
+        for <linux-acpi@vger.kernel.org>; Mon, 26 Aug 2024 03:17:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724667425; x=1725272225; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gLgW3Nno8j/HWiI/ORNdumHtmXTis5U7evz5O6UH5Ko=;
+        b=nj9aw4lzlmgoerxN6uBkKX60W7QqWeJx+dQ6TE0x1a4d1cgojXm8vqrGgguYmhpnGN
+         Y0u7MoncIsluHzhSvX2IUwqg2gDcfWcWiVacM/r7OKOiHBMMUD2U1mqRaVW9ctwi3++B
+         5rln3GnnzikUziMrZNXIitnP8AiBQxDfNFafhAHbrS9uTL5ouYiBO2mj14PZScS18MCK
+         +o4WnqUfYBBxpKuBZPxdxuqVhqdYAGf5prQWUbgMihpfgLm53zv3lIUDN0kjfhsy/hej
+         4PEnG1HqsAfWIUTaVU9cwiR7TJBBgn9KkR3UG0jyZYda7pyWNKA9NfxCUr05bcanJ2yb
+         0SSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724667425; x=1725272225;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gLgW3Nno8j/HWiI/ORNdumHtmXTis5U7evz5O6UH5Ko=;
+        b=HXG+KU9v9lY/EBHey/wtQE8uCRrBnuTqfz+YKQU3gVII981RykijBMU0JThr0VmQTJ
+         4L3UekqA50Kv6A3UBBWlVfj1itFqABOBrxwjHRINXRvZF2BaE3YDFdCU5U1u/USmcQGC
+         Sor44n/e+jmSpJ3aoHNYpKdPlo5g/5MGAthq5Bu6wyeaDkos8+9LZOijhLLqAhE77aRr
+         +N0gY8I8ScQ0bnUXm4tzON/PXn2uQTrJllCOBmCZazO5FpnkKkUcGm2p4ySO9b0vHeDS
+         eglEVL/b8F7ovGCN5a0meQnhriHSrjgNKKH1HG/CUcrYGZMvhooJLuTCrruJX66RLUKs
+         dZNg==
+X-Forwarded-Encrypted: i=1; AJvYcCWut7rmwNoLl6Ofnv04Iuw7LuiESVSCIvvHBzyMnaMKFoGa/86M5f05Vi2Fb29cjMTwBvrvdvn59kCR@vger.kernel.org
+X-Gm-Message-State: AOJu0Yycn6T0fMAoMqG9X7Yx53YBjuNmXpwLqwp/pwZ29ka8wvIpC1o/
+	AaNVtk1S19e2nPJB0MRiAHV+GDe8rUrwwpMu1mVbpA/dydIFbTl3mDTMgngb5EqtFzJIctRFo0U
+	ndLg=
+X-Google-Smtp-Source: AGHT+IHSsC0JqVh+geherMgxBVNXYODT22o0nph4S95PbbfN/+vFBujCiOXed2OLcAJMFXakXgbguA==
+X-Received: by 2002:a05:6a21:3102:b0:1ca:dbda:48f7 with SMTP id adf61e73a8af0-1cc89d1980emr8761307637.1.1724667424785;
+        Mon, 26 Aug 2024 03:17:04 -0700 (PDT)
+Received: from carbon-x1.. ([2a01:e0a:e17:9700:16d2:7456:6634:9626])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-714342e0e18sm6719920b3a.104.2024.08.26.03.16.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Aug 2024 03:17:04 -0700 (PDT)
+From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Robert Moore <robert.moore@intel.com>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	acpica-devel@lists.linux.dev
+Subject: [PATCH v2] ACPI: CPPC: Fix MASK_VAL() usage
+Date: Mon, 26 Aug 2024 12:16:44 +0200
+Message-ID: <20240826101648.95654-1-cleger@rivosinc.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812054647.1194716-1-jiaqing.zhao@linux.intel.com>
- <20240812054647.1194716-2-jiaqing.zhao@linux.intel.com> <CAJZ5v0hPtvVRM=Te2oPzCvE3tOy_rXYGJwaoQOfNc71z+pmkvA@mail.gmail.com>
- <f2fd62f7-3fe3-4bea-8c9e-6343d2cce8b7@linux.intel.com>
-In-Reply-To: <f2fd62f7-3fe3-4bea-8c9e-6343d2cce8b7@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 26 Aug 2024 11:59:51 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gBk+vVKd1zXN7+4fX_-T-enmGMT=BD5R8CU_1C+xdQDw@mail.gmail.com>
-Message-ID: <CAJZ5v0gBk+vVKd1zXN7+4fX_-T-enmGMT=BD5R8CU_1C+xdQDw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] ACPICA: Detect FACS in reduced hardware build
-To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 26, 2024 at 3:10=E2=80=AFAM Jiaqing Zhao
-<jiaqing.zhao@linux.intel.com> wrote:
->
-> On 2024-08-20 22:55, Rafael J. Wysocki wrote:
-> > On Mon, Aug 12, 2024 at 7:47=E2=80=AFAM Jiaqing Zhao
-> > <jiaqing.zhao@linux.intel.com> wrote:
-> >>
-> >> According to Section 5.2.10 of ACPI Specification, FACS is optional
-> >> in reduced hardware model. Enable the detection for "Hardware-reduced
-> >> ACPI support only" build (CONFIG_ACPI_REDUCED_HARDWARE_ONLY=3Dy) also.
-> >>
-> >> Link: https://github.com/acpica/acpica/commit/ee53ed6b5452612bb44af542=
-b68d605f8b2b1104
-> >> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-> >> ---
-> >>  drivers/acpi/acpica/acglobal.h |  6 +-----
-> >>  drivers/acpi/acpica/tbutils.c  |  5 +----
-> >>  drivers/acpi/acpica/utxfinit.c | 24 ++++++++++++------------
-> >>  include/acpi/acconfig.h        |  1 -
-> >>  4 files changed, 14 insertions(+), 22 deletions(-)
-> >>
-> >> diff --git a/drivers/acpi/acpica/acglobal.h b/drivers/acpi/acpica/acgl=
-obal.h
-> >> index f4c90fc99be2..309ce8efb4f6 100644
-> >> --- a/drivers/acpi/acpica/acglobal.h
-> >> +++ b/drivers/acpi/acpica/acglobal.h
-> >> @@ -29,11 +29,7 @@ ACPI_INIT_GLOBAL(u32, acpi_gbl_dsdt_index, ACPI_INV=
-ALID_TABLE_INDEX);
-> >>  ACPI_INIT_GLOBAL(u32, acpi_gbl_facs_index, ACPI_INVALID_TABLE_INDEX);
-> >>  ACPI_INIT_GLOBAL(u32, acpi_gbl_xfacs_index, ACPI_INVALID_TABLE_INDEX)=
-;
-> >>  ACPI_INIT_GLOBAL(u32, acpi_gbl_fadt_index, ACPI_INVALID_TABLE_INDEX);
-> >> -
-> >> -#if (!ACPI_REDUCED_HARDWARE)
-> >> -ACPI_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS);
-> >> -
-> >> -#endif                         /* !ACPI_REDUCED_HARDWARE */
-> >> +ACPI_INIT_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS, NULL);
-> >>
-> >>  /* These addresses are calculated from the FADT Event Block addresses=
- */
-> >>
-> >> diff --git a/drivers/acpi/acpica/tbutils.c b/drivers/acpi/acpica/tbuti=
-ls.c
-> >> index 15fa68a5ea6e..356700349b45 100644
-> >> --- a/drivers/acpi/acpica/tbutils.c
-> >> +++ b/drivers/acpi/acpica/tbutils.c
-> >> @@ -18,7 +18,6 @@ ACPI_MODULE_NAME("tbutils")
-> >>  static acpi_physical_address
-> >>  acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size);
-> >>
-> >> -#if (!ACPI_REDUCED_HARDWARE)
-> >>  /********************************************************************=
-***********
-> >>   *
-> >>   * FUNCTION:    acpi_tb_initialize_facs
-> >> @@ -37,8 +36,7 @@ acpi_status acpi_tb_initialize_facs(void)
-> >>         struct acpi_table_facs *facs;
-> >>
-> >>         if (acpi_gbl_FADT.Xfacs &&
-> >> -                  (!acpi_gbl_FADT.facs
-> >> -                   || !acpi_gbl_use32_bit_facs_addresses)) {
-> >> +           (!acpi_gbl_FADT.facs || !acpi_gbl_use32_bit_facs_addresses=
-)) {
-> >>                 (void)acpi_get_table_by_index(acpi_gbl_xfacs_index,
-> >>                                               ACPI_CAST_INDIRECT_PTR(s=
-truct
-> >>                                                                      a=
-cpi_table_header,
-> >
-> > I'm not sure how this change is related to the rest of the patch.
-> >
-> > It doesn't appear to be present in the original commit pointed to by
-> > the Link tag.
->
-> This change here is just indention fix, in original acpica, the indention=
- is just fine.
->
-> Shall I remove this change?
+MASK_VAL() was added as a way to handle bit_offset and bit_width for
+registers located in system memory address space. However, while suited
+for reading, it does not work for writing and result in corrupted
+registers when writing values with bit_offset > 0. Moreover, when a
+register is collocated with another one at the same address but with a
+different mask, the current code results in the other registers being
+overwritten with 0s. The write procedure for SYSTEM_MEMORY registers
+should actually read the value, mask it, update it and write it with the
+updated value. Moreover, since registers can be located in the same
+word, we must take care of locking the access before doing it. We should
+potentially use a global lock since we don't know in if register
+addresses aren't shared with another _CPC package but better not
+encourage vendors to do so. Assume that registers can use the same word
+inside a _CPC package and thus, use a per _CPC package lock.
 
-Yes, please.
+Fixes: 2f4a4d63a193 ("ACPI: CPPC: Use access_width over bit_width for system memory accesses")
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
 
-If you send a Linux counterpart of an ACPICA change, it should not
-contain any changes in addition to what was there in the original
-ACPICA commit.
+---
+v2:
+ - Remove label and unlock the spinlock earlier.
 
-Thanks!
+ drivers/acpi/cppc_acpi.c | 43 ++++++++++++++++++++++++++++++++++++----
+ include/acpi/cppc_acpi.h |  2 ++
+ 2 files changed, 41 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 1d857978f5f4..4a47e08704d9 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -170,8 +170,11 @@ show_cppc_data(cppc_get_perf_ctrs, cppc_perf_fb_ctrs, wraparound_time);
+ #define GET_BIT_WIDTH(reg) ((reg)->access_width ? (8 << ((reg)->access_width - 1)) : (reg)->bit_width)
+ 
+ /* Shift and apply the mask for CPC reads/writes */
+-#define MASK_VAL(reg, val) (((val) >> (reg)->bit_offset) & 			\
++#define MASK_VAL_READ(reg, val) (((val) >> (reg)->bit_offset) &				\
+ 					GENMASK(((reg)->bit_width) - 1, 0))
++#define MASK_VAL_WRITE(reg, prev_val, val)						\
++	((((val) & GENMASK(((reg)->bit_width) - 1, 0)) << (reg)->bit_offset) |		\
++	((prev_val) & ~(GENMASK(((reg)->bit_width) - 1, 0) << (reg)->bit_offset)))	\
+ 
+ static ssize_t show_feedback_ctrs(struct kobject *kobj,
+ 		struct kobj_attribute *attr, char *buf)
+@@ -857,6 +860,7 @@ int acpi_cppc_processor_probe(struct acpi_processor *pr)
+ 
+ 	/* Store CPU Logical ID */
+ 	cpc_ptr->cpu_id = pr->id;
++	spin_lock_init(&cpc_ptr->rmw_lock);
+ 
+ 	/* Parse PSD data for this CPU */
+ 	ret = acpi_get_psd(cpc_ptr, handle);
+@@ -1062,7 +1066,7 @@ static int cpc_read(int cpu, struct cpc_register_resource *reg_res, u64 *val)
+ 	}
+ 
+ 	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+-		*val = MASK_VAL(reg, *val);
++		*val = MASK_VAL_READ(reg, *val);
+ 
+ 	return 0;
+ }
+@@ -1071,9 +1075,11 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ {
+ 	int ret_val = 0;
+ 	int size;
++	u64 prev_val;
+ 	void __iomem *vaddr = NULL;
+ 	int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+ 	struct cpc_reg *reg = &reg_res->cpc_entry.reg;
++	struct cpc_desc *cpc_desc;
+ 
+ 	size = GET_BIT_WIDTH(reg);
+ 
+@@ -1106,8 +1112,34 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		return acpi_os_write_memory((acpi_physical_address)reg->address,
+ 				val, size);
+ 
+-	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+-		val = MASK_VAL(reg, val);
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
++		cpc_desc = per_cpu(cpc_desc_ptr, cpu);
++		if (!cpc_desc) {
++			pr_debug("No CPC descriptor for CPU:%d\n", cpu);
++			return -ENODEV;
++		}
++
++		spin_lock(&cpc_desc->rmw_lock);
++		switch (size) {
++		case 8:
++			prev_val = readb_relaxed(vaddr);
++			break;
++		case 16:
++			prev_val = readw_relaxed(vaddr);
++			break;
++		case 32:
++			prev_val = readl_relaxed(vaddr);
++			break;
++		case 64:
++			prev_val = readq_relaxed(vaddr);
++			break;
++		default:
++			spin_unlock(&cpc_desc->rmw_lock);
++			return -EFAULT;
++		};
++		val = MASK_VAL_WRITE(reg, prev_val, val);
++		val |= prev_val;
++	}
+ 
+ 	switch (size) {
+ 	case 8:
+@@ -1134,6 +1166,9 @@ static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+ 		break;
+ 	}
+ 
++	if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
++		spin_unlock(&cpc_desc->rmw_lock);
++
+ 	return ret_val;
+ }
+ 
+diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+index 930b6afba6f4..e1720d930666 100644
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -64,6 +64,8 @@ struct cpc_desc {
+ 	int cpu_id;
+ 	int write_cmd_status;
+ 	int write_cmd_id;
++	/* Lock used for RMW operations in cpc_write() */
++	spinlock_t rmw_lock;
+ 	struct cpc_register_resource cpc_regs[MAX_CPC_REG_ENT];
+ 	struct acpi_psd_package domain_info;
+ 	struct kobject kobj;
+-- 
+2.45.2
+
 
