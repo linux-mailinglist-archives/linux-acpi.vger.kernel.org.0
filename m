@@ -1,217 +1,108 @@
-Return-Path: <linux-acpi+bounces-7820-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7821-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCAA95E62C
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 03:10:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAB795E7B3
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 06:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E3F31F21130
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 01:10:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94CEC2818D2
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 04:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70F2139D;
-	Mon, 26 Aug 2024 01:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120A555769;
+	Mon, 26 Aug 2024 04:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gEaii0uP"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="iDPO314m"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6122913;
-	Mon, 26 Aug 2024 01:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAEC10A0D;
+	Mon, 26 Aug 2024 04:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724634623; cv=none; b=B9WTfpR6EQn78zoJq5QY/DEcxWezMWWvEzQMCYuZtqGdNbfheEjfOg+UC+munqCzXVdGvm5iLwVkieM+F9btJs7vlw7pcud7EngHzj4aWx/H40z7njDzRLxC4JeKpUXHeBsUh5wB4L4fRQYjapKhnkNdw3NF6ES7yDNkdG4hQ9Y=
+	t=1724647204; cv=none; b=pxAJziuxEPvCA3UWtGLsxDN7zTJE0LAsffVIMLR5rA7bewynMS4L1ayQAveSW4kYRVnuVC03on+zZBt7LcmaxyHqmZQxBR7lrdWKqsRtbAVobP2fRpW9EaN4qlu4QDknhjYNElPG3KwOWW2PaNka43FYGXBp0JApIoUfyTO3LWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724634623; c=relaxed/simple;
-	bh=7tye6QropyoxCiVWsCw2kMvEiF7Zsxv+8zMJkehhxvM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XouUsELcRPRMIpxm398gnemhiv4mzAhIv8yD7I/j6OUT5KFfzKmo0Mp8eWLLy1ngogrXcika99rK7pwZPkyZKFW5xjHZUeqbQtnBGQs3DSKwkWDeUx4abTRJMr30bGTZDUy1PjQX+O+l311zeYrmM9hFiNk5KpIRMk+oq2GDv1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gEaii0uP; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724634622; x=1756170622;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7tye6QropyoxCiVWsCw2kMvEiF7Zsxv+8zMJkehhxvM=;
-  b=gEaii0uP/DwlFIr6gbrShwbv4+LiboCKoUiHdqvw9jqHBtEZLDqWdJA9
-   p2VMWA4tqT0olpS6/klDDZzdX1PiN9+KVD6Z3j3YlS3y9XaJGEfAAGLfn
-   5AQvHXbopYpacGIP9pf6LCr0a63yDfwG0c/4dLF8/3Ttw4vzIWdOg4kWL
-   F5CAIA5MpFZG+wAKhdWeE6k+ql4N1u5GWF3ejmcnRS1aFivse4uPLHnwu
-   Mtym7fFEBIWw9X/VJYkFGPyQNyTjYxIsD3F5mB77u/b8wUx4diGY0QfmA
-   LrkXnxB/kBq87KY7Qwvb7+azUIEIDT+QzkLiJdWPRo4pRm7WAdU++FNfD
-   w==;
-X-CSE-ConnectionGUID: L6azZ+bvR5qmA2CBW1CQWg==
-X-CSE-MsgGUID: 6AekM9dXQTm348qgdaNJqA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="48427837"
-X-IronPort-AV: E=Sophos;i="6.10,176,1719903600"; 
-   d="scan'208";a="48427837"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 18:10:21 -0700
-X-CSE-ConnectionGUID: REkBD5B8Sfyt12aeVZWTmw==
-X-CSE-MsgGUID: rTRRKj90RkK/2hbpiZByKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,176,1719903600"; 
-   d="scan'208";a="62499766"
-Received: from zhedache-mobl1.ccr.corp.intel.com (HELO [10.125.240.83]) ([10.125.240.83])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 18:10:19 -0700
-Message-ID: <f2fd62f7-3fe3-4bea-8c9e-6343d2cce8b7@linux.intel.com>
-Date: Mon, 26 Aug 2024 09:09:00 +0800
+	s=arc-20240116; t=1724647204; c=relaxed/simple;
+	bh=HEGIzKWKJ7IG4OFpKSVNJ5CgBc9G23tKsyI1TMhlzN0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iBIHfUjHGCzofU8JGGRciik0BG1FiMvBm+5jUmdsskVT2cgmtbJtORcuoZN4YIF8S+aNYe+bpMYRUaR+h4u3BphRJUNTZnmH1mnKF/L2JCdW0yCCtbf7HapdsRk9/v1r+iDTVr0ZZnrpSeTNmdKabe03f093HL5dEAIiWLYf0NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=iDPO314m; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=skg/G
+	bgcj2UpLV3GCSqZRKnfH2ijhdcsH4t+eKIUUEw=; b=iDPO314mdS+0G6T2e+ZeT
+	0jo5eGF4RBfKTPszscR92RemqoLMLCqRv+YZwwbZwzJDN6vazAsjS36d75nxfKM9
+	CddaJx5thb0CzHDzIToeSrUYCeN5LZv08TcVX93QYjSpJKVtM11nVWdB/pT8GliB
+	dLEwyd0YXRIjh9Gl2pFwWc=
+Received: from localhost.localdomain (unknown [111.35.190.113])
+	by gzga-smtp-mta-g3-2 (Coremail) with SMTP id _____wCn_rD3BsxmIuujFg--.61239S4;
+	Mon, 26 Aug 2024 12:39:34 +0800 (CST)
+From: David Wang <00107082@163.com>
+To: rafael@kernel.org,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	David Wang <00107082@163.com>
+Subject: [PATCH] Add rev and func to warning message when acpi_evaluate_dsm failed.
+Date: Mon, 26 Aug 2024 12:38:58 +0800
+Message-Id: <20240826043858.4292-1-00107082@163.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] ACPICA: Detect FACS in reduced hardware build
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Robert Moore <robert.moore@intel.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Len Brown
- <lenb@kernel.org>, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20240812054647.1194716-1-jiaqing.zhao@linux.intel.com>
- <20240812054647.1194716-2-jiaqing.zhao@linux.intel.com>
- <CAJZ5v0hPtvVRM=Te2oPzCvE3tOy_rXYGJwaoQOfNc71z+pmkvA@mail.gmail.com>
-Content-Language: en-US
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-In-Reply-To: <CAJZ5v0hPtvVRM=Te2oPzCvE3tOy_rXYGJwaoQOfNc71z+pmkvA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCn_rD3BsxmIuujFg--.61239S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tFWxKry8ZryfAF4UurWkXrb_yoW8KFW3pF
+	y7Zr4jkr9rZayUtwnrt3yIgw1S9a9xW39I9w4xGFyUX34DWr929rW5GrnFyayDAw17Xa45
+	Z3W2qF1jgr4kZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pE1vVZUUUUU=
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiMxFHqmXAnathGwABsn
 
-On 2024-08-20 22:55, Rafael J. Wysocki wrote:
-> On Mon, Aug 12, 2024 at 7:47 AM Jiaqing Zhao
-> <jiaqing.zhao@linux.intel.com> wrote:
->>
->> According to Section 5.2.10 of ACPI Specification, FACS is optional
->> in reduced hardware model. Enable the detection for "Hardware-reduced
->> ACPI support only" build (CONFIG_ACPI_REDUCED_HARDWARE_ONLY=y) also.
->>
->> Link: https://github.com/acpica/acpica/commit/ee53ed6b5452612bb44af542b68d605f8b2b1104
->> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
->> ---
->>  drivers/acpi/acpica/acglobal.h |  6 +-----
->>  drivers/acpi/acpica/tbutils.c  |  5 +----
->>  drivers/acpi/acpica/utxfinit.c | 24 ++++++++++++------------
->>  include/acpi/acconfig.h        |  1 -
->>  4 files changed, 14 insertions(+), 22 deletions(-)
->>
->> diff --git a/drivers/acpi/acpica/acglobal.h b/drivers/acpi/acpica/acglobal.h
->> index f4c90fc99be2..309ce8efb4f6 100644
->> --- a/drivers/acpi/acpica/acglobal.h
->> +++ b/drivers/acpi/acpica/acglobal.h
->> @@ -29,11 +29,7 @@ ACPI_INIT_GLOBAL(u32, acpi_gbl_dsdt_index, ACPI_INVALID_TABLE_INDEX);
->>  ACPI_INIT_GLOBAL(u32, acpi_gbl_facs_index, ACPI_INVALID_TABLE_INDEX);
->>  ACPI_INIT_GLOBAL(u32, acpi_gbl_xfacs_index, ACPI_INVALID_TABLE_INDEX);
->>  ACPI_INIT_GLOBAL(u32, acpi_gbl_fadt_index, ACPI_INVALID_TABLE_INDEX);
->> -
->> -#if (!ACPI_REDUCED_HARDWARE)
->> -ACPI_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS);
->> -
->> -#endif                         /* !ACPI_REDUCED_HARDWARE */
->> +ACPI_INIT_GLOBAL(struct acpi_table_facs *, acpi_gbl_FACS, NULL);
->>
->>  /* These addresses are calculated from the FADT Event Block addresses */
->>
->> diff --git a/drivers/acpi/acpica/tbutils.c b/drivers/acpi/acpica/tbutils.c
->> index 15fa68a5ea6e..356700349b45 100644
->> --- a/drivers/acpi/acpica/tbutils.c
->> +++ b/drivers/acpi/acpica/tbutils.c
->> @@ -18,7 +18,6 @@ ACPI_MODULE_NAME("tbutils")
->>  static acpi_physical_address
->>  acpi_tb_get_root_table_entry(u8 *table_entry, u32 table_entry_size);
->>
->> -#if (!ACPI_REDUCED_HARDWARE)
->>  /*******************************************************************************
->>   *
->>   * FUNCTION:    acpi_tb_initialize_facs
->> @@ -37,8 +36,7 @@ acpi_status acpi_tb_initialize_facs(void)
->>         struct acpi_table_facs *facs;
->>
->>         if (acpi_gbl_FADT.Xfacs &&
->> -                  (!acpi_gbl_FADT.facs
->> -                   || !acpi_gbl_use32_bit_facs_addresses)) {
->> +           (!acpi_gbl_FADT.facs || !acpi_gbl_use32_bit_facs_addresses)) {
->>                 (void)acpi_get_table_by_index(acpi_gbl_xfacs_index,
->>                                               ACPI_CAST_INDIRECT_PTR(struct
->>                                                                      acpi_table_header,
-> 
-> I'm not sure how this change is related to the rest of the patch.
-> 
-> It doesn't appear to be present in the original commit pointed to by
-> the Link tag.
+When acpi_evaluate_dsm failed, the warning message lacks the rev
+and func information which is available and helpful. For example,
+iwlwifi would make DSM queries for lari config, and with some HW,
+DSM error would return:
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+With this patch, the warning would be more informative:
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:1 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:6 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:7 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:8 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:3 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:9 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:10 (0x1001)
+	ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade rev:0 func:12 (0x1001)
 
-This change here is just indention fix, in original acpica, the indention is just fine.
+Signed-off-by: David Wang <00107082@163.com>
+---
+ drivers/acpi/utils.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Shall I remove this change?
+diff --git a/drivers/acpi/utils.c b/drivers/acpi/utils.c
+index ae9384282273..6de542d99518 100644
+--- a/drivers/acpi/utils.c
++++ b/drivers/acpi/utils.c
+@@ -801,7 +801,8 @@ acpi_evaluate_dsm(acpi_handle handle, const guid_t *guid, u64 rev, u64 func,
+ 
+ 	if (ret != AE_NOT_FOUND)
+ 		acpi_handle_warn(handle,
+-				 "failed to evaluate _DSM %pUb (0x%x)\n", guid, ret);
++				 "failed to evaluate _DSM %pUb rev:%lld func:%lld (0x%x)\n",
++				 guid, rev, func, ret);
+ 
+ 	return NULL;
+ }
+-- 
+2.39.2
 
->> @@ -56,7 +54,6 @@ acpi_status acpi_tb_initialize_facs(void)
->>
->>         return (AE_OK);
->>  }
->> -#endif                         /* !ACPI_REDUCED_HARDWARE */
->>
->>  /*******************************************************************************
->>   *
->> diff --git a/drivers/acpi/acpica/utxfinit.c b/drivers/acpi/acpica/utxfinit.c
->> index 1915bec2b279..70ae0afa7939 100644
->> --- a/drivers/acpi/acpica/utxfinit.c
->> +++ b/drivers/acpi/acpica/utxfinit.c
->> @@ -120,6 +120,18 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem(u32 flags)
->>          */
->>         acpi_gbl_early_initialization = FALSE;
->>
->> +       /*
->> +        * Obtain a permanent mapping for the FACS. This is required for the
->> +        * Global Lock and the Firmware Waking Vector
->> +        */
->> +       if (!(flags & ACPI_NO_FACS_INIT)) {
->> +               status = acpi_tb_initialize_facs();
->> +               if (ACPI_FAILURE(status)) {
->> +                       ACPI_WARNING((AE_INFO, "Could not map the FACS table"));
->> +                       return_ACPI_STATUS(status);
->> +               }
->> +       }
->> +
->>  #if (!ACPI_REDUCED_HARDWARE)
->>
->>         /* Enable ACPI mode */
->> @@ -137,18 +149,6 @@ acpi_status ACPI_INIT_FUNCTION acpi_enable_subsystem(u32 flags)
->>                 }
->>         }
->>
->> -       /*
->> -        * Obtain a permanent mapping for the FACS. This is required for the
->> -        * Global Lock and the Firmware Waking Vector
->> -        */
->> -       if (!(flags & ACPI_NO_FACS_INIT)) {
->> -               status = acpi_tb_initialize_facs();
->> -               if (ACPI_FAILURE(status)) {
->> -                       ACPI_WARNING((AE_INFO, "Could not map the FACS table"));
->> -                       return_ACPI_STATUS(status);
->> -               }
->> -       }
->> -
->>         /*
->>          * Initialize ACPI Event handling (Fixed and General Purpose)
->>          *
->> diff --git a/include/acpi/acconfig.h b/include/acpi/acconfig.h
->> index d768d9c568cf..2da5f4a6e814 100644
->> --- a/include/acpi/acconfig.h
->> +++ b/include/acpi/acconfig.h
->> @@ -67,7 +67,6 @@
->>   *      General Purpose Events (GPEs)
->>   *      Global Lock
->>   *      ACPI PM timer
->> - *      FACS table (Waking vectors and Global Lock)
->>   */
->>  #ifndef ACPI_REDUCED_HARDWARE
->>  #define ACPI_REDUCED_HARDWARE           FALSE
->> --
->> 2.43.0
->>
->>
 
