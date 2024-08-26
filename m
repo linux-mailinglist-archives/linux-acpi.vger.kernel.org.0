@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-7840-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7841-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8E095FB5A
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 23:14:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540F895FB5E
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 23:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A341E1F22FFC
-	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 21:14:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B401F2314F
+	for <lists+linux-acpi@lfdr.de>; Mon, 26 Aug 2024 21:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFE019CD02;
-	Mon, 26 Aug 2024 21:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB76619D075;
+	Mon, 26 Aug 2024 21:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="brrNHkBd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evDp0xMY"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AF919CCF4;
-	Mon, 26 Aug 2024 21:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D9319D06A;
+	Mon, 26 Aug 2024 21:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724706847; cv=none; b=pnjUVvEphN6vplHhm88qX6hvrAmaM1EKn5PmMdxxt8u0l9ek5MuhpeBrD1RhNdfsyqYdxUh185zZH0Qo4pIMWzty897wAUqc3b4L/+p2nJNdvumctKRTy3EWkTs/gvDlgpvmuQJOMWi1hXCpFts4NLQmb7JASOMN8zsbjUL2bZY=
+	t=1724706848; cv=none; b=HwJalZ3P35rGJn9AF8d15ZIlYyFJKGK46a9isUU4Jqu5CB0QTalib2o72kJ/nBhLKs8ng8Y8bkYqAnq6m1X1foF7ckBuP4lURFceN/q8pvcdccmmxLyKjlrdmpgSVNo8WR8XTYUd45vdM9CmkI15cILehG926GbcgIKIe7M1itA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724706847; c=relaxed/simple;
-	bh=8JbbZmmWdd0t2niiYJuglfiAJbNZ1lEzfLsYW1gZrg4=;
+	s=arc-20240116; t=1724706848; c=relaxed/simple;
+	bh=0K9IRUvCtBRV7Jmvx4IeBFO0vuipHE8D7dtiZfLwYqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otQLl0GeG2O5A8onUJWW9ArdCVtlVKkdU25xyz91qvunzZHc9jtKLtg13TPP4kn70d6aR4gl9NoiakzJ9E23oNAfsEAMS/Pj+BH0fiOKRrIVAB0wt8lQpsc4hvxTFEQUqULAEakCEyrfQwTMxxGgE8WAuyem9ofT3yTbVxu9AS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=brrNHkBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F68C4DE0F;
-	Mon, 26 Aug 2024 21:14:06 +0000 (UTC)
+	 MIME-Version; b=qc4MrFttqAVpxIaa6BuV63srlQ6lS/epve11nLu+h99jOaKSluDv12pLVTG5EujaUET+tyutec171Y0kiK2ntvcggWc1ZL+sGttfltDkoUnXREeFz+nC/m+BcALNkLgGTpRDBjfYPa3ANOKnPyCO2Cimi4HDX5scbwyqRg8rxvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evDp0xMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7789BC4E699;
+	Mon, 26 Aug 2024 21:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724706847;
-	bh=8JbbZmmWdd0t2niiYJuglfiAJbNZ1lEzfLsYW1gZrg4=;
+	s=k20201202; t=1724706848;
+	bh=0K9IRUvCtBRV7Jmvx4IeBFO0vuipHE8D7dtiZfLwYqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=brrNHkBdrnvs/NQ90nEZamzQ9H1sguuseFRvNknbVoZaYgxU5m1slJqcGyw1+h/43
-	 4fxPYHlVbJbAQm38mH549G58eOaEusi39lSIRBlf2dxgWYvApA+n/edeWbq+ZSpLzb
-	 srVkYUvkUtRW36yO2r/8qcwwC8dkCY+2RWdZ1OLOyBlfM70NcZ5VxZchjFdtBnW686
-	 QqIKjWlyPapSu+P/yPOrIeW/edYkaieaJUxsSdEe27ASWI5cmy22qMUquziSBjJobv
-	 9whCOOQkqUt6qmvZ7/iHbGafUkmS9uV+qWt3+nlustagGPAsqNDqC3pRp1vaSrIT0L
-	 jnGfZJHs/9I+g==
+	b=evDp0xMYuBjknja+kHmGtkrSz1L7eERx9+UOpxRmwMxuREaGFDlAI9bPDebcTo3Yo
+	 /xc9y9BN10VOYpoUoRf9hQpVicSqg4p/RaY5XAE01BONGSIbF/fNc+3BMPZKq8jKRu
+	 CqcsoJ8Mk+AtaVXzg4ibZcZ0NvX2Z2QsOX7ykbnMxL3iSOD5oXx6TKb5ZNwrjefu7s
+	 G1NQPsi3foIqNJDMOWrhP6/rV6AQEgV4DzMKGG7kOVvV8m9XeMnLDduIOCiyFsigc3
+	 Plbq5tZwWot7lZBN9uYH7G9f+uLuoXloy2vybt7x7L3vxW3f1aqaDtVu1Fad9mys02
+	 6anmlZblovNtA==
 From: Mario Limonciello <superm1@kernel.org>
 To: Borislav Petkov <bp@alien8.de>,
 	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
@@ -50,11 +50,10 @@ Cc: x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
 	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
 	linux-acpi@vger.kernel.org (open list:ACPI),
 	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Perry Yuan <Perry.Yuan@amd.com>
-Subject: [PATCH 3/8] ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn
-Date: Mon, 26 Aug 2024 16:13:53 -0500
-Message-ID: <20240826211358.2694603-4-superm1@kernel.org>
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 4/8] x86/amd: Move amd_get_highest_perf() out of amd-pstate
+Date: Mon, 26 Aug 2024 16:13:54 -0500
+Message-ID: <20240826211358.2694603-5-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240826211358.2694603-1-superm1@kernel.org>
 References: <20240826211358.2694603-1-superm1@kernel.org>
@@ -68,50 +67,133 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-If the boost ratio isn't calculated properly for the system for any
-reason this can cause other problems that are non-obvious.
+amd_get_highest_perf() is a helper used to get the highest perf
+value on AMD systems.  It's used in amd-pstate as part of preferred
+core handling, but applicable for acpi-cpufreq as well.
 
-Raise all messages to warn instead.
+Move it out to cppc handling code.
 
-Suggested-by: Perry Yuan <Perry.Yuan@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- arch/x86/kernel/acpi/cppc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/acpi/cppc.c  | 30 ++++++++++++++++++++++++++++++
+ drivers/cpufreq/amd-pstate.c | 34 ++--------------------------------
+ include/acpi/cppc_acpi.h     |  2 ++
+ 3 files changed, 34 insertions(+), 32 deletions(-)
 
 diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index 1d631ac5ec328..e94507110ca24 100644
+index e94507110ca24..5a6c01a1b0d95 100644
 --- a/arch/x86/kernel/acpi/cppc.c
 +++ b/arch/x86/kernel/acpi/cppc.c
-@@ -75,17 +75,17 @@ static void amd_set_max_freq_ratio(void)
+@@ -119,6 +119,36 @@ void init_freq_invariance_cppc(void)
+ 	mutex_unlock(&freq_invariance_lock);
+ }
  
- 	rc = cppc_get_perf_caps(0, &perf_caps);
- 	if (rc) {
--		pr_debug("Could not retrieve perf counters (%d)\n", rc);
-+		pr_warn("Could not retrieve perf counters (%d)\n", rc);
++/*
++ * Get the highest performance register value.
++ * @cpu: CPU from which to get highest performance.
++ * @highest_perf: Return address for highest performance value.
++ *
++ * Return: 0 for success, negative error code otherwise.
++ */
++int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf)
++{
++	u64 val;
++	int ret;
++
++	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
++		ret = rdmsrl_safe_on_cpu(cpu, MSR_AMD_CPPC_CAP1, &val);
++		if (ret)
++			goto out;
++
++		val = AMD_CPPC_HIGHEST_PERF(val);
++	} else {
++		ret = cppc_get_highest_perf(cpu, &val);
++		if (ret)
++			goto out;
++	}
++
++	WRITE_ONCE(*highest_perf, (u32)val);
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(amd_get_highest_perf);
++
+ /**
+  * amd_get_boost_ratio_numerator: Get the numerator to use for boost ratio calculation
+  * @cpu: CPU to get numerator for.
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 89bda7a2bb8d1..f470b5700db58 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -803,36 +803,6 @@ static void amd_pstste_sched_prefcore_workfn(struct work_struct *work)
+ }
+ static DECLARE_WORK(sched_prefcore_work, amd_pstste_sched_prefcore_workfn);
+ 
+-/*
+- * Get the highest performance register value.
+- * @cpu: CPU from which to get highest performance.
+- * @highest_perf: Return address.
+- *
+- * Return: 0 for success, -EIO otherwise.
+- */
+-static int amd_pstate_get_highest_perf(int cpu, u32 *highest_perf)
+-{
+-	int ret;
+-
+-	if (cpu_feature_enabled(X86_FEATURE_CPPC)) {
+-		u64 cap1;
+-
+-		ret = rdmsrl_safe_on_cpu(cpu, MSR_AMD_CPPC_CAP1, &cap1);
+-		if (ret)
+-			return ret;
+-		WRITE_ONCE(*highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
+-	} else {
+-		u64 cppc_highest_perf;
+-
+-		ret = cppc_get_highest_perf(cpu, &cppc_highest_perf);
+-		if (ret)
+-			return ret;
+-		WRITE_ONCE(*highest_perf, cppc_highest_perf);
+-	}
+-
+-	return (ret);
+-}
+-
+ #define CPPC_MAX_PERF	U8_MAX
+ 
+ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
+@@ -840,7 +810,7 @@ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
+ 	int ret, prio;
+ 	u32 highest_perf;
+ 
+-	ret = amd_pstate_get_highest_perf(cpudata->cpu, &highest_perf);
++	ret = amd_get_highest_perf(cpudata->cpu, &highest_perf);
+ 	if (ret)
  		return;
- 	}
  
- 	rc = amd_get_boost_ratio_numerator(0, &highest_perf);
- 	if (rc)
--		pr_debug("Could not retrieve highest performance\n");
-+		pr_warn("Could not retrieve highest performance\n");
- 	nominal_perf = perf_caps.nominal_perf;
+@@ -879,7 +849,7 @@ static void amd_pstate_update_limits(unsigned int cpu)
+ 	if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
+ 		goto free_cpufreq_put;
  
- 	if (!nominal_perf) {
--		pr_debug("Could not retrieve nominal performance\n");
-+		pr_warn("Could not retrieve nominal performance\n");
- 		return;
- 	}
+-	ret = amd_pstate_get_highest_perf(cpu, &cur_high);
++	ret = amd_get_highest_perf(cpu, &cur_high);
+ 	if (ret)
+ 		goto free_cpufreq_put;
  
-@@ -93,7 +93,7 @@ static void amd_set_max_freq_ratio(void)
- 	/* midpoint between max_boost and max_P */
- 	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
- 	if (!perf_ratio) {
--		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
-+		pr_warn("Non-zero highest/nominal perf values led to a 0 ratio\n");
- 		return;
- 	}
+diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+index f25a881cd46dd..2246ce0630362 100644
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -137,8 +137,10 @@ struct cppc_cpudata {
+ };
+ 
+ #ifdef CONFIG_CPU_SUP_AMD
++extern int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf);
+ extern int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator);
+ #else /* !CONFIG_CPU_SUP_AMD */
++static inline int amd_get_highest_perf(unsigned int cpu, u32 *highest_perf) { return -ENODEV; }
+ static inline int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator) { return -ENODEV; }
+ #endif /* !CONFIG_CPU_SUP_AMD */
  
 -- 
 2.43.0
