@@ -1,166 +1,270 @@
-Return-Path: <linux-acpi+bounces-7855-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7856-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC495FFE2
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 05:36:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CDC9601C1
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 08:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4912F1F22C71
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 03:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CD51C22D4D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 06:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C821BDDF;
-	Tue, 27 Aug 2024 03:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E4E149C7A;
+	Tue, 27 Aug 2024 06:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPOgMgtb"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HMUpKqiO"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-il1-f177.google.com (mail-il1-f177.google.com [209.85.166.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2071.outbound.protection.outlook.com [40.107.244.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC417D2;
-	Tue, 27 Aug 2024 03:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724729806; cv=none; b=K+i8U6t5ltQ8lT2zSQtDZjgggvtE89QG1pRHy9ml0EtCjAB806bZqn+aJ6mxVitK3ISmWPN6R1u6W7CtI/2LEUm/IyUrwbEGIQX7N9NF6j0Kix7UbK/uc99typJI/vb9arkT/HkS9KYF+cHuGGsEBULJ7vKtPDb8/YWoxawBje0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724729806; c=relaxed/simple;
-	bh=Ho1s9vK6WS5ven3f+MOaOZfoDticBN/hl5aZNrTSOik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J7IGzjpvIuB4DFpcLIZGuEskmH7QoJaJvTeBJbz8wSq0hOKAcZr0hqA4GvKfDwYI7ikwiHvMxdv92h8PlnylLYgMpVv5+nMoRveeGoM9K+UpWovfNWhjhOZ9qzSReF1wBbgA6RzS5bOK+WwfS9Ydbc8ZLFkwQh2oYRWhScJECGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPOgMgtb; arc=none smtp.client-ip=209.85.166.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f177.google.com with SMTP id e9e14a558f8ab-39d4161c398so20876785ab.3;
-        Mon, 26 Aug 2024 20:36:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724729804; x=1725334604; darn=vger.kernel.org;
-        h=content-transfer-encoding:organization:reply-to:mime-version
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vn0NLpEW1bw02AkAxFS5IlEL/ge7VBPrGJvvCAfuQds=;
-        b=dPOgMgtb93g6xfblisNBcOol8Bq6mC6tBlKVgP81CIV4JRKrb4IC+6lDdOk6hw51B3
-         cV/4L8qkUXUVsr9L1YXa3m4J5TbjKlIbJclq0qvb7qrQZeVMeEneJs21wp3LskuxaqDA
-         b5FowLmU4o/iCHuVLuwUE3v4tIa+DjPNkkv4qGxltwAk5O4en6Yt4SNAXvIxGnoARR5g
-         CpNQkP64lsOPMVWPMmMLOKABHMcypqZCDnJO90Q3F/6OiP0I8YXFsypc/g6t5EMiBNru
-         VHHbVu/IeVx3NUhasbk2H3yRdKurZ45xvIfqcNO6ZGjIHVIhfcxAdU6HQDTChZX9HwMD
-         vqWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724729804; x=1725334604;
-        h=content-transfer-encoding:organization:reply-to:mime-version
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Vn0NLpEW1bw02AkAxFS5IlEL/ge7VBPrGJvvCAfuQds=;
-        b=cVHHgaQcfXuW/UqdxEqr3rFMuiSUGfeqU0J63qIOv0BEvSMrIk+o0UchGrHOcEVoHt
-         aG1uD30vHn30YLJ/yboTBgp/R1IrBY+GC1DRSJNVw+YdN1i2w8JUtOC48P77Zq3vf+1/
-         8B49dinXVmqbz/4sDEjcllzLZAjsvt1wE+Nc3V17Lq3dnWJimpYfdEdL5K3/dfVrrSxQ
-         wdKp8AYfxrGjskdLoyjbphX7ocx8BePGdVXL/iYs3ZXUkECShYKkZHJTOHiy1xhMrHxw
-         v1s3PxUW6AqG1QDStSBJ5H3NQF/GRP5Fgfelg71OnF14orQccrStogFb/kqykRtNDp94
-         agFA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9w2T9g0GZo/en0D2hAR0bYo8YjMJne8PFcOIJ5D4x9YpTgl3QMLChCFXv8VKbuOZbmKyxfI5hsk0=@vger.kernel.org, AJvYcCXaZNjURMq8q84R4rtizLNh4lCuu+me3hxEQVMAgnnBXVbVK8JgNmjvtBYCQbUHyeoJrVngnf5TfbD+q3U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKPvGdSVSgGroIcVSyftCKX+PSmUpBXLsZ/Mx4aw/Nn28fHJVk
-	gYqur66y/Vl23wsVuxMeAb6kcr7zIvL66UYmAfNS0rp092akCWTi
-X-Google-Smtp-Source: AGHT+IF0TZOLF1C0ImuoTX6dAmT09pp9NxxO4tGq4K0QSXsUlhCDWz+2GZxDBkSU5ZjTpy6nzB7g0Q==
-X-Received: by 2002:a92:c261:0:b0:39a:ea4c:8c26 with SMTP id e9e14a558f8ab-39e63dd8ee2mr19389265ab.1.1724729803867;
-        Mon, 26 Aug 2024 20:36:43 -0700 (PDT)
-Received: from lenb-intel-nuc8i7hvkva.. (h75-100-80-185.cntcnh.broadband.dynamic.tds.net. [75.100.80.185])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-39d73e7c20csm37054335ab.40.2024.08.26.20.36.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 20:36:43 -0700 (PDT)
-Sender: Len Brown <lenb417@gmail.com>
-From: Len Brown <lenb@kernel.org>
-To: rjw@rjwysocki.net
-Cc: linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Len Brown <len.brown@intel.com>,
-	Arjan van de Ven <arjan@linux.intel.com>,
-	Todd Brandt <todd.e.brandt@intel.com>
-Subject: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
-Date: Mon, 26 Aug 2024 23:35:18 -0400
-Message-ID: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8961482E6;
+	Tue, 27 Aug 2024 06:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724740164; cv=fail; b=KnHb3U02LRWE24CbacnjsstW01syRhDXbyPkdjlqcr1l6xQM4Mr8L8dmiH7O5doCfYP250QelMfn6ZHQHNBAR5tg0hO4zVTt+zTCOf3M0eABC2Lxq21SQQkyf0A8kPQs+XGzN+LGu08D/YkFqWxHqvcGV7P1d6bjhLFmadbk0BI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724740164; c=relaxed/simple;
+	bh=WItSRT20Mi2GAVYZ7dcFFvHeFdvCZLuirAUy4SP9i2I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YwuI/gQKoqC8FTzX6370UV0CQ5eUqQ2BiQthDN1ulXvU/4VI4tAZolu+eLe3PSLsDl31W/BEgnMwzr6ibo3HGa/AfL5XsOrIcs78/djvfLlKZ+/43dGleT+bn01BAm1yK7863qmvYKKrPhH5GSbWwGWcdnY6I0zBEgjBT5yiczw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HMUpKqiO; arc=fail smtp.client-ip=40.107.244.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JC3QIs/h4qW2l+2IogfnaNAXWCNkhXjfOEOicEbGbEn1hVwW0lMndbFFpGdI24gOC/pm9bDRxba0bxPeNvS6qstaf2lElEPw/RojTlERX1V3yTNL1FI70xy6rVTr3ObJ60IUKD2QgFfgrI9IKtRHM/Wg2M9vnkCeutrazwYOwyodJoe6cjTLFdS+la37vX5AFXqfntX+LZJmWQ9Rbz4OnTe6yc/hQR3jTgugeq/KDTy3MSqjROsGZRDZhneIsJAxd6CeB+snKGibTpITEoZuwHlK/m8IdxEbtHUU1+e/XxU4/n4tG9n0eJI4Wml/5Hvs4n8ezVKW/7LEGoWC7rQ0WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jutqPppDTK2N0CIn9NX/VcMpxOovWEp8gAuxoM+J8BE=;
+ b=cnlHe/bEA1K9/01e/hVzmtyHc76d3otXwVQHCcRgF5v/DyvPxAclfXCOJXXQFFwh9eaTAESa2iH3Ot+JlI3wPqt6eOoNFQz9uVZrjjuJz3taJo1hG45/NjDDkOgIixukbT8QIaz78xqidCkMJxTM+3yNlS+Vp4WyEB5X+tSanTRo1loX/2cENdq19qTWE1ZUYV48pL5Oqf2vx7UThOvRfbYBCdSU4erhj2dP1isZ2kGYiQmKlQa/RDtIHRuS7MIbbEupB/PS41NUGLboYL5y1fMlVxu+Oblm5VO6vY0zqHvX1wedrYBbvs3GtK8Bl1ZMGDzuHkguQdIdyKBwEMkXUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jutqPppDTK2N0CIn9NX/VcMpxOovWEp8gAuxoM+J8BE=;
+ b=HMUpKqiOajkdehRAY8xjFACmHtHBeaZeKKjM0IixbWMc4Ccof5IhXJ/giLjdZEjFlvW9dKgLJ/s0Koa+791M+ljJKk9rUYX1Ewv0y2Wu9zLML247Wp0mMV94GioEd/HslrX0oYQaHF2jYWUVNnemdGkeVkEztdFWUoxOt41b6TQ=
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com (2603:10b6:930:c4::19)
+ by CH3PR12MB8187.namprd12.prod.outlook.com (2603:10b6:610:125::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Tue, 27 Aug
+ 2024 06:29:19 +0000
+Received: from CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::7fa2:65b3:1c73:cdbf]) by CYYPR12MB8655.namprd12.prod.outlook.com
+ ([fe80::7fa2:65b3:1c73:cdbf%7]) with mapi id 15.20.7897.021; Tue, 27 Aug 2024
+ 06:29:19 +0000
+From: "Yuan, Perry" <Perry.Yuan@amd.com>
+To: Mario Limonciello <superm1@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	"Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>
+CC: "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>, "open list:X86 ARCHITECTURE (32-BIT
+ AND 64-BIT)" <linux-kernel@vger.kernel.org>, "open list:ACPI"
+	<linux-acpi@vger.kernel.org>, "open list:CPU FREQUENCY SCALING FRAMEWORK"
+	<linux-pm@vger.kernel.org>, "Limonciello, Mario" <Mario.Limonciello@amd.com>
+Subject: RE: [PATCH 1/8] x86/amd: Move amd_get_highest_perf() from amd.c to
+ cppc.c
+Thread-Topic: [PATCH 1/8] x86/amd: Move amd_get_highest_perf() from amd.c to
+ cppc.c
+Thread-Index: AQHa9/zsEf+g0+H19U6yFtwJGcW/qLI6pHnQ
+Date: Tue, 27 Aug 2024 06:29:19 +0000
+Message-ID:
+ <CYYPR12MB8655396ADBB331E00D74C6BA9C942@CYYPR12MB8655.namprd12.prod.outlook.com>
+References: <20240826211358.2694603-1-superm1@kernel.org>
+ <20240826211358.2694603-2-superm1@kernel.org>
+In-Reply-To: <20240826211358.2694603-2-superm1@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ActionId=6e8ca469-4364-4f75-b807-bd3d737230c5;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=true;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution
+ Only;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2024-08-27T06:27:44Z;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CYYPR12MB8655:EE_|CH3PR12MB8187:EE_
+x-ms-office365-filtering-correlation-id: 8524d856-3c0c-436c-d790-08dcc661952a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?PKQ5WSBkIdmx3DRCxLZMHAb1ykW7x1eKFTrdppIJNUT7S+rCDWJCme1gWjHb?=
+ =?us-ascii?Q?ddX451arF+xYm32/dyFDZOfyD4mXqMK+7VRVqxU8QT3p3KxdEIwXs1YOlX29?=
+ =?us-ascii?Q?Jy6n05Go5VW6uULLztDCGqumWxb7u+GWII5cMiLj5SKy92k0ObjQ935VYCve?=
+ =?us-ascii?Q?R8b6oTxHtzfgk6YUoqFjhFtK24kDQ6fvI/K3xiO5CQEUMTgvQHhvNNJ5Fvdt?=
+ =?us-ascii?Q?CkyEJrMBGl28E/jKD+AW4rajXdlOdrx6Jx5dDybFV97SYjDx7yZfU718LOUt?=
+ =?us-ascii?Q?5/4GtFX57DetLdvbCK+kaxF1MCchMG3/8hCgqCjeSJeeb5wnshJdHuLhJaad?=
+ =?us-ascii?Q?W3k2EGiMQXSRyCq8G+82DdBP1+CRaGm2FF541797HFs2u78Tn7upNv5YhS+A?=
+ =?us-ascii?Q?rS9SFYaoSON1YanOCpsrDlIQaHnl6Lt7TA8v/UEDzAY79op7AaFYpoa2ldsp?=
+ =?us-ascii?Q?rVjz+MhA2p3pfqa1OowPP7OVZ+qcmqRsLuHEt/JLu3Zh7n/oD0DvjnfKZTIc?=
+ =?us-ascii?Q?ldSDPlBaTnWfwLww+lcrDlY8cWOnWV+voRZXKQdplKbl0o1hOjP9Ub+728nl?=
+ =?us-ascii?Q?SdY6/58J1J3UulY4MuWQMrBcagW5yNmKUxSDy7K+F2Nmupop+BRlOZg5Mwlv?=
+ =?us-ascii?Q?4zKtcFqjB/Hswvg3OjRMGsRvRhfcIGzzJDK/uXvMG3XV6cChHLMsZ5TeJ2pJ?=
+ =?us-ascii?Q?pTGOhidUrUV5IOPuL+4GUBxVxKFV05IBbymmg/XwzqlN02gjE0hqy752QvVb?=
+ =?us-ascii?Q?ZzaUsdObPVfNQyyF5n0btDKRPsECEUYFlYT/8P9eW9UhnnjADCMibMRVuczE?=
+ =?us-ascii?Q?oEynFlYFhfQgB6FuIHp1/TnUjFWR2ANVSAk9/YIh+UwRRykkhn4mbBUkdj/6?=
+ =?us-ascii?Q?UiSPKFTS8LPXnB4/GR37fNQw9PsXT8w9mLpvyQhIgx725cQi6OPzTEldZVbR?=
+ =?us-ascii?Q?cmDk1IZCwQ9hxORaXqkPxCnmEldKqz4zIPb9IO0po2fUUAscjNd+dVWm/rcA?=
+ =?us-ascii?Q?k+ArNsX5iYxdW1lPOAl7Y4yRaocbq8/82WuzcWBt1VHiHlxbJFGL4T3J3HdW?=
+ =?us-ascii?Q?4KkJIljIoLqYf/bSdwKiWzSRUeGiA0kWIHshJRbOQzrL4GIlzaOttYvmVAlz?=
+ =?us-ascii?Q?MoDS1zk7Y9ceYAPGPrVYPSuyA+cw/OgqstDbnjQQr4OtUGl2boNeThvlurKR?=
+ =?us-ascii?Q?02+Fb1qdjJG8yzQyOqkFa4yjuByX8NLewm5KwwzicZmzRcoq5e00ZkqFKwVI?=
+ =?us-ascii?Q?DNQdJnewA7qG/TQJ8gkXDc1nMk7F4nCACupL5K1P0CsAeDGed3aNh3nCy4WX?=
+ =?us-ascii?Q?Pm/shVoYm7m7ajYit6wIL6Ot655rHOQ7LoAI0ZE+xCzSK7773mw+HC/oRbJX?=
+ =?us-ascii?Q?WConOmUXBHm9Nbp7OPOucJOcCDCnzwtADBgdNkRGyMlCODUh7A=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYYPR12MB8655.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?8keX0hhY2zuxs8QMMS/roDUMTuP+TNrh96AXCx7Z35aMMKwIgZNqvtJpJT1m?=
+ =?us-ascii?Q?vzL94SMJYa/Cte/uWijfzoGZLB15g+zBiOKjvORMXnor08+yRKNXhO6V3/yt?=
+ =?us-ascii?Q?cJ8ArFlQEVpIG937e2F7s+bIN0qja6fpP1oFOmaUHsXrWIGP35n8T1Kh1p6Q?=
+ =?us-ascii?Q?ZJcZNLDbnqceAP62ZOgguVNJh+5GR9nUXAtInZAdbN2fti0uPr20PBBmQXet?=
+ =?us-ascii?Q?+fNpCqb7tJqEy3dunPs8Xw1OaWN39DFHKI9SS85gV/qOlRoIN4fly5rqH3uS?=
+ =?us-ascii?Q?6NQOVDUXMadJUgBBu3ALqC6PvHIarIjQW0LTZPz8luSKeLjxPztrh/7o1Fmv?=
+ =?us-ascii?Q?KoMxIk/RevmTigA5hAFaYUYOknWAX7pUzGCCUgg8HJUC3RPVDnQXHwDKg/qt?=
+ =?us-ascii?Q?jpuuLxOcodSf4PSTX8TkndBeJfkQ/5CwpA4YXYjR31e1dtPDhEnwUKo0QBdD?=
+ =?us-ascii?Q?hrLpos7qvUcWoJRVy0DHNNUtT93mbaP5pLvwwxrQvLQJOi+fzJW4aV/sPQZp?=
+ =?us-ascii?Q?vmiIsKnILoUHvPQ7Iv39CQA8BsGX51K5423a908UGcs2sMyKGKol+5aWizeE?=
+ =?us-ascii?Q?rLHwZT4eMbmNEsbIZdZrSD23yTqcabqkPIb30DFlxrEdWUwEpuU8tssThcPS?=
+ =?us-ascii?Q?X+NoPZ36KKQrN/8V0aKiwMLb3B6vr8afqf0MghhQh31gF+6Cxu0+H2lDZCH2?=
+ =?us-ascii?Q?unuV1QvqlwkWtH/669zcyRJHBcIksZF3+rVMRxkcYeW4okMPfQpHhAeFxyO+?=
+ =?us-ascii?Q?pp3X5T7RSvevUPYLQM34mn3WfhEt/jqaatStRqZiBV1F+hmejKJZpiqnfWSh?=
+ =?us-ascii?Q?L5FAD+wf00Xaxiqmhd2AKgIBx2l3xCT6N0j0SkybAGVDoRv2NUCRWiFlK+wi?=
+ =?us-ascii?Q?6rJ1BTQSlBilHSmk4K5iRqOk/MS7heDd1TNBJ74ktBzIPqJ7D6WN/1/C8Em1?=
+ =?us-ascii?Q?fYZrpR9gISu8UJf6H3tQn8mv9ycqo5ezlQZT/IBGyByUbw2Nmnn17GJoBpev?=
+ =?us-ascii?Q?iVGmReleU8in+NacXv4UQYDDZ6HJVdhcUq6+/mU57UHeyq74fAD1IO/ffDW/?=
+ =?us-ascii?Q?EAbyZM58DzwU80HYY0Nb/6W4fprnhbbyFdtvVYTdV88He8pqbXVYkZUzZJVD?=
+ =?us-ascii?Q?wxx8U/cmYKNLjf64WM8k/tlYzvT8+lFdqnCkzD3Kx9NZiOQizWMkkyqHW7v2?=
+ =?us-ascii?Q?7ST+1oXlhi0Wlr/9D/oX0dCC6ubdth60EvHnItoAya/V7MTqsqDJ3PzeUQMa?=
+ =?us-ascii?Q?uXyzYCpnjGtqGpQaXP+56f0aX4QZxGU6uM9+jloGfDmwy6gyok/O10Zt5gZR?=
+ =?us-ascii?Q?RhFM371XnKAMaurLxDhdCIx3YzDAN8BH4eYLi5iTZwBgMsI1Y7kE0To/VlAp?=
+ =?us-ascii?Q?vTeUvyfD9u9lrWTzxOoTYQTR4lgYxP/ez7Rt7Uhw9IMnik02GEyrBE+CsVFX?=
+ =?us-ascii?Q?6yekpqQdC3rNHNFnztLqF4pIzABkNVbvlQcynp1fO7/Zk2xUdRlVtn6dwK/E?=
+ =?us-ascii?Q?c01Bc4j5+DTnZPlFGtsv4blfuX/OU7g5igGDoZoVluj9SXmaHdOTV+0ZSWkq?=
+ =?us-ascii?Q?W+PBlOzIk+KurA+/dXo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: Len Brown <lenb@kernel.org>
-Organization: Intel Open Source Technology Center
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CYYPR12MB8655.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8524d856-3c0c-436c-d790-08dcc661952a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Aug 2024 06:29:19.6369
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JFgzLjR4Xgko/i/zuAcQzbQIFAX7WzYtBjRaVA0Fe0TKZNnTfa5yjFddtOAKjOrQOcQHi85aJKigVc6QyeQT1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8187
 
-From: Len Brown <len.brown@intel.com>
+[AMD Official Use Only - AMD Internal Distribution Only]
 
-Optimize acpi_os_sleep(ms) using usleep_range(floor, ceiling).
-The floor of the range is the exact requested ms,
-with an additional 1ms of slack for sleeps above 20ms.
+> -----Original Message-----
+> From: Mario Limonciello <superm1@kernel.org>
+> Sent: Tuesday, August 27, 2024 5:14 AM
+> To: Borislav Petkov <bp@alien8.de>; Shenoy, Gautham Ranjal
+> <gautham.shenoy@amd.com>; Yuan, Perry <Perry.Yuan@amd.com>
+> Cc: maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT) <x86@kernel.org>;
+> Rafael J . Wysocki <rafael@kernel.org>; open list:X86 ARCHITECTURE (32-BI=
+T
+> AND 64-BIT) <linux-kernel@vger.kernel.org>; open list:ACPI <linux-
+> acpi@vger.kernel.org>; open list:CPU FREQUENCY SCALING FRAMEWORK
+> <linux-pm@vger.kernel.org>; Limonciello, Mario
+> <Mario.Limonciello@amd.com>
+> Subject: [PATCH 1/8] x86/amd: Move amd_get_highest_perf() from amd.c to
+> cppc.c
+>
+> From: Mario Limonciello <mario.limonciello@amd.com>
+>
+> To prepare to let amd_get_highest_perf() detect preferred cores it will r=
+equire
+> CPPC functions. Move amd_get_highest_perf() to cppc.c to prepare for
+> 'preferred core detection' rework.
+>
+> No functional changes intended.
+>
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  arch/x86/kernel/acpi/cppc.c | 16 ++++++++++++++++
+>  arch/x86/kernel/cpu/amd.c   | 16 ----------------
+>  2 files changed, 16 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c in=
+dex
+> ff8f25faca3dd..7ec8f2ce859c8 100644
+> --- a/arch/x86/kernel/acpi/cppc.c
+> +++ b/arch/x86/kernel/acpi/cppc.c
+> @@ -116,3 +116,19 @@ void init_freq_invariance_cppc(void)
+>       init_done =3D true;
+>       mutex_unlock(&freq_invariance_lock);
+>  }
+> +
+> +u32 amd_get_highest_perf(void)
+> +{
+> +     struct cpuinfo_x86 *c =3D &boot_cpu_data;
+> +
+> +     if (c->x86 =3D=3D 0x17 && ((c->x86_model >=3D 0x30 && c->x86_model =
+<
+> 0x40) ||
+> +                            (c->x86_model >=3D 0x70 && c->x86_model <
+> 0x80)))
+> +             return 166;
+> +
+> +     if (c->x86 =3D=3D 0x19 && ((c->x86_model >=3D 0x20 && c->x86_model =
+<
+> 0x30) ||
+> +                            (c->x86_model >=3D 0x40 && c->x86_model <
+> 0x70)))
+> +             return 166;
+> +
+> +     return 255;
+> +}
+> +EXPORT_SYMBOL_GPL(amd_get_highest_perf);
+> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c index
+> 1e0fe5f8ab84e..015971adadfc7 100644
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -1190,22 +1190,6 @@ unsigned long amd_get_dr_addr_mask(unsigned
+> int dr)  }  EXPORT_SYMBOL_GPL(amd_get_dr_addr_mask);
+>
+> -u32 amd_get_highest_perf(void)
+> -{
+> -     struct cpuinfo_x86 *c =3D &boot_cpu_data;
+> -
+> -     if (c->x86 =3D=3D 0x17 && ((c->x86_model >=3D 0x30 && c->x86_model =
+<
+> 0x40) ||
+> -                            (c->x86_model >=3D 0x70 && c->x86_model <
+> 0x80)))
+> -             return 166;
+> -
+> -     if (c->x86 =3D=3D 0x19 && ((c->x86_model >=3D 0x20 && c->x86_model =
+<
+> 0x30) ||
+> -                            (c->x86_model >=3D 0x40 && c->x86_model <
+> 0x70)))
+> -             return 166;
+> -
+> -     return 255;
+> -}
+> -EXPORT_SYMBOL_GPL(amd_get_highest_perf);
+> -
+>  static void zenbleed_check_cpu(void *unused)  {
+>       struct cpuinfo_x86 *c =3D &cpu_data(smp_processor_id());
+> --
+> 2.43.0
+>
 
-This reduces  the kernel resume time of the Dell 9300
-to 1,124 ms from 2,471 ms.
+LGTM, thanks!
 
-The ACPI AML Sleep(ms) method calls acpi_os_sleep(ms),
-which has invoked msleep(ms) since 2013.
-
-But msleep(ms) is based on jiffies, and the rounding-up
-logic to convert to jiffies on a HZ=250 system causes
-msleep(5) to bloat to a minimum of a 12ms delay.
-msleep(5) typically takes over 15ms!
-
-As a result, AML delay loops with small Sleep() inside
-magnify the entire loop.  A particularly painful example
-is ACPI support for powering-on ICL and TGL
-thunderbolt/pcie_ports during system resume.
-
-Regarding jiffy-based msleep() being inexpensive
-and hrtimer-based usleep_range() being expensive.
-ACPI AML timer invocations are rare, and so it
-is unlikely the hrtimer cost will be noticible,
-or even measurable.  At the same time, the msleep()
-timer duration bloat is significant enough to
-be noticed by end users.
-
-Regarding usleep_range() timer coalescing.
-It virtually never works during ACPI flows, which
-commonly run when there are few coalescing
-opportunities. As a result, the timers almost
-always expire at the maximum end of their specified range.
-
-It was tempting to use usleep_range(us, us)
-for all values of us.  But 1 ms is added to the
-range for timers over 20ms on the reasoning that
-the AML Sleep interface has a granularity of 1ms,
-most costly loops use duration under 20ms inside,
-and singular long sleeps are unlitly to notice an
-additiona 1ms, so why not allow some coalescing...
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216263
-Signed-off-by: Len Brown <len.brown@intel.com>
-Suggested-by: Arjan van de Ven <arjan@linux.intel.com>
-Tested-by: Todd Brandt <todd.e.brandt@intel.com>
----
- drivers/acpi/osl.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 70af3fbbebe5..c4c76f86cd7a 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -607,7 +607,13 @@ acpi_status acpi_os_remove_interrupt_handler(u32 gsi, acpi_osd_handler handler)
- 
- void acpi_os_sleep(u64 ms)
- {
--	msleep(ms);
-+	u64 us = ms * 1000;
-+
-+	if (us <= 20000)
-+		usleep_range(us, us);
-+	else
-+		usleep_range(us, us + 1000);
-+
- }
- 
- void acpi_os_stall(u32 us)
--- 
-2.43.0
+Reviewed-by: Perry Yuan <perry.yuan@amd.com>
 
 
