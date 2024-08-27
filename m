@@ -1,175 +1,134 @@
-Return-Path: <linux-acpi+bounces-7910-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7911-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275B2961946
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 23:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105469619E7
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 00:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BDAF1C23033
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 21:32:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB751C2162D
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 22:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7F41D4141;
-	Tue, 27 Aug 2024 21:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427131D2F78;
+	Tue, 27 Aug 2024 22:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iIgZ+diQ"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="WnjcOj3y"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06531BF329;
-	Tue, 27 Aug 2024 21:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE1194A6C;
+	Tue, 27 Aug 2024 22:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724794342; cv=none; b=GgR+aSLPShAHeCj3u5mEO3zR6W8kjvrHxu1DmyZP9PnuoCYCWDtKtN3R3/IZTMIGEq+6xzWtG4kLfFNzZYVzmTr509bzkdksa7xR3LnlNncw36ETnl69H06qHfhgNPtzO2TC9soOyPYldU3a3cyjlNkUfHVDBVbQt6oSR5So7fc=
+	t=1724796713; cv=none; b=eNSPgFPgKGMz5d617d3CWwnFjXN26ItB8pN39Oc5tHUBQ3El7WIcFMWsDO1yRm9X8d90arhhNln6V1JMxVDHmjgHrMT2Ci1hvYlNiy2cgrnR9xmxJ+tQ0VyQhyi8dznw4jBBfQt7WMePDOUllbC6+ymJtJKemGCLL81Ssj4Kn2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724794342; c=relaxed/simple;
-	bh=VdVuzOa4xQiigr1kVsf2HhAJLMDzuQOG906kdRtZLLE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CjrZPammHwevJn+RVIEbVmQ4Hl5zcjnc29G88ssRVyTwAL4Skq9hmkZmxLfwBaZjzujagwwNuRoYwAvZXXilb+3s8MtG3v84LFnhVU3cUqU0D7qImEQfqiZDFNwgqMAenyCxtpNNU9e3ShSxhm/GzOGMMiT/zwKx9EP0fHzIEYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iIgZ+diQ; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724794341; x=1756330341;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VdVuzOa4xQiigr1kVsf2HhAJLMDzuQOG906kdRtZLLE=;
-  b=iIgZ+diQSJzSuLBdBtDP3aNTk2l9cedWz8OTKMeZVVlOH/xLx373ESCc
-   o2cW++bCFh0K5qywcItI9oKEWhNm7elBlynazYtw5cZ8O4VrZC56uqZe4
-   LpgyuUJYYmZ8rwj39uIV0866fiKWxzGAW5WmIaF/umhb9G4AirdFh0BAq
-   BDWqSpDgGMoaEI25vkyjNTLnhxWdAPCz7OnVd93J5VqQaRxVymxpXRDDq
-   v5pB0Kp3dX1nvN9FrZtsrQPYwVzuDrcamTPtnRth7P70KjzMiWu8XwfPW
-   qYp8DslE060fe8Fv98pyoGo8DsdmATDo8S09JAWgFznb3qOXL0WJvzblg
-   Q==;
-X-CSE-ConnectionGUID: mJWmn+WFSdirAyh0HS8Jpw==
-X-CSE-MsgGUID: 8I16g1ziQRWsUEZ6smiG+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="33872128"
-X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
-   d="scan'208";a="33872128"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 14:32:21 -0700
-X-CSE-ConnectionGUID: 3VdZZa3MQnW+VHfgLQcVWg==
-X-CSE-MsgGUID: YYZZ2Kn0SP6K3hJLALdGlA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
-   d="scan'208";a="67152953"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Aug 2024 14:32:17 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sj3nT-000K6E-0K;
-	Tue, 27 Aug 2024 21:32:15 +0000
-Date: Wed, 28 Aug 2024 05:31:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mario Limonciello <superm1@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	"(open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <linux-kernel@vger.kernel.org>,
-	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH 6/8] cpufreq: amd-pstate: Merge
- amd_pstate_highest_perf_set() into amd_get_boost_ratio_numerator()
-Message-ID: <202408280553.k4hXRtZy-lkp@intel.com>
-References: <20240826211358.2694603-7-superm1@kernel.org>
+	s=arc-20240116; t=1724796713; c=relaxed/simple;
+	bh=2aRkULfSU9AzagsP0qiU8aDKlhnBG97zGMg4RSuUxLU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PVMLtpioEPfrW7Y1s0lMLyhyf+zfXFMswAREi6PAVfBnfD+eD6VfQZLfLeSHTizQZqbg+knDo0etEEclGxexQ/ug/KIRJi1zVyKtYRmC9Wrc8QG/RIwKey8aXQc9bMzDIzS0LaqxiC0ZRibyx/Vkt4WkdK0UwOw4p3mN9NLryD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=WnjcOj3y; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1724796694; x=1725401494; i=w_armin@gmx.de;
+	bh=CUbnzYEtHJfLP1VcoboGTihEXYQaXcwV41vG7Efm3V8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=WnjcOj3y6Z/mBoiw3tXOdjT5dd4vvbf7oUoSmRaBlzkfaGXGH1iIstF0Fe8A9rG8
+	 K2BpE6af+qM0ddgXWnK+DaKbK8wvJbNclm186adOgSbvXnE1W2i8+UrgEAk3ffQjD
+	 +Hs62U2hV0IMR8d4BWvnJ+eymoICwmU3G4SJOU0duzoR8k0VLk1UodhyeT5suoU0z
+	 Md+kEUBQr0XBbuWKnxvVWT20u3vi+E9j4/M2BcLhx06roERU/5iyurToiEC6/qMDN
+	 S0GHEtyEeAFfOGwtNW+l4+/Zb22J+f6pq2u3oKo0/aQn5l8mh8B72lfwBL016UWnG
+	 7Jh/Ydm5/opQQCXgGg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhD6W-1sDsJw2FQQ-00c1UX; Wed, 28
+ Aug 2024 00:11:34 +0200
+Message-ID: <1b84518a-9f6b-4083-a26b-c85188e23cff@gmx.de>
+Date: Wed, 28 Aug 2024 00:11:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240826211358.2694603-7-superm1@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] hwmon: (hp-wmi-sensors) Check if WMI event data
+ exists
+To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: james@equiv.tech, jlee@suse.com, corentin.chary@gmail.com,
+ luke@ljones.dev, matan@svgalib.org, coproscefalo@gmail.com,
+ Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, lenb@kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-acpi@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <20240822173810.11090-1-W_Armin@gmx.de>
+ <20240822173810.11090-3-W_Armin@gmx.de>
+ <e791f8ed-f6af-d433-5c9b-a68fc9598dcc@linux.intel.com>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <e791f8ed-f6af-d433-5c9b-a68fc9598dcc@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1://U4Sw6iSSfjz3bI8Qyz5EOyGLzZPQwwffGRQNyCBIeBUoN+RHB
+ ciJsCDkPhD9XpLTq0N8+H+kYxdh5qbKP88bZTPUiNP/VFtd4/6XFiqkeaszWc89VdDRa/9n
+ GoRNyByoi/GuOsS/VDN9bKpkBGFyLE+v+M7RiB7zrkCdSaXunopYbkGAN2O1JBfgoNEN2m7
+ fogMuE4u0bJWINGUQGdUA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:l3P7y/s2z6I=;S0J3w75s6//IgmFTPtwHNrBQQ/J
+ RVJcItIr+PqrCw33o9/7w1T0SGphk82+2f21HgAWtp+B8IUKBlFvnRDTrh+I13nDgDYyGjsmb
+ YauEb52w5eF4SuCZ3/rCo32AFJuf5WYwtx/k4y91zNWGZkvVftwyJPJ7r27f0kS5wV8G+ggGr
+ i5nb3LVEyPYy9+WXAs2/yKBcL4RaLEZridbg1YUUDBaCol1j5a62P1A8Tn21fPzoQKJdy+MPm
+ 9TszEQ1T5RvHMByhWZZQVPkosnG6o5jNNqK0HS8IMabbjo3qa4j1avCOKnlZtkn+DH1Mz1eQG
+ xipYvWnxfZy40DL6fTfjrDDpGvQ082l/2lF2fu+aLVqhIyG79Y09V1UecGcZmjSxf6/oBiVe1
+ J5mSnXMRrxzl6PWvAo0806Jd77JXbqNzWKOJbxUbeFGL5XbnA6sIvQXfkIhpH+26b07VPJBSf
+ bZzNRYOP86XqmDyhZqFMj+9bRzudPmvtNJGQ953q43Zcn6Mh+XVmCuqVVwCW9tk1n0Xk3x6Ef
+ BssKLTpmGE9rCnrVC6NMsEDv6x7gV2mcwQ90cFd2wh3CS0h+koHXi4ebC4Ch9+2if2ldqhPDd
+ 0A6ODFdW2F9d8pnzlhgo0A8iF9r1U61G0fcfg7BVNS2xOiARSVAmUY984FhUJBTXi1V0T5V81
+ t8yiIXe2B2VFdlPTcqrGZKgnnxM29KUMoT2r+xnipUsbvWYG3U26Zd1Ckeykp67w0asZpd+15
+ lYLog01LNvUquHs/Hnn0o/htIR4S6uIIWtbXIpYNVOZHFH9asxD5LWclFwkDmAmbYBd+HAgCf
+ TGtPPCEvxLK6shwrIZLTHlVQ==
 
-Hi Mario,
+Am 27.08.24 um 10:20 schrieb Ilpo J=C3=A4rvinen:
 
-kernel test robot noticed the following build warnings:
+> On Thu, 22 Aug 2024, Armin Wolf wrote:
+>
+>> The BIOS can choose to return no event data in response to a
+>> WMI event, so the ACPI object passed to the WMI notify handler
+>> can be NULL.
+>>
+>> Check for such a situation and ignore the event in such a case.
+>>
+>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>> ---
+>>   drivers/hwmon/hp-wmi-sensors.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/hwmon/hp-wmi-sensors.c b/drivers/hwmon/hp-wmi-sens=
+ors.c
+>> index 6892518d537c..d6bdad26feb1 100644
+>> --- a/drivers/hwmon/hp-wmi-sensors.c
+>> +++ b/drivers/hwmon/hp-wmi-sensors.c
+>> @@ -1628,6 +1628,9 @@ static void hp_wmi_notify(union acpi_object *wobj=
+, void *context)
+>>   	 * HPBIOS_BIOSEvent instance.
+>>   	 */
+>>
+>> +	if (!wobj)
+>> +		return;
+>> +
+> I'm left to wonder why is this patch is not placed first? Can't this
+> happen regardless who gets the wobj? And in that case, should this have
+> a Fixes tag?
+>
+Good point, i will send a v2 series to correct this.
 
-[auto build test WARNING on rafael-pm/linux-next]
-[also build test WARNING on rafael-pm/bleeding-edge tip/x86/core tip/master linus/master v6.11-rc5 next-20240827]
-[cannot apply to tip/auto-latest]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks,
+Armin Wolf
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/x86-amd-Move-amd_get_highest_perf-from-amd-c-to-cppc-c/20240827-051648
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
-patch link:    https://lore.kernel.org/r/20240826211358.2694603-7-superm1%40kernel.org
-patch subject: [PATCH 6/8] cpufreq: amd-pstate: Merge amd_pstate_highest_perf_set() into amd_get_boost_ratio_numerator()
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20240828/202408280553.k4hXRtZy-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240828/202408280553.k4hXRtZy-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408280553.k4hXRtZy-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/cpufreq/amd-pstate.c:402:38: warning: variable 'highest_perf' is uninitialized when used here [-Wuninitialized]
-     402 |         WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
-         |                                             ^~~~~~~~~~~~
-   include/asm-generic/rwonce.h:61:18: note: expanded from macro 'WRITE_ONCE'
-      61 |         __WRITE_ONCE(x, val);                                           \
-         |                         ^~~
-   include/asm-generic/rwonce.h:55:33: note: expanded from macro '__WRITE_ONCE'
-      55 |         *(volatile typeof(x) *)&(x) = (val);                            \
-         |                                        ^~~
-   drivers/cpufreq/amd-pstate.c:395:18: note: initialize the variable 'highest_perf' to silence this warning
-     395 |         u32 highest_perf;
-         |                         ^
-         |                          = 0
-   1 warning generated.
-
-
-vim +/highest_perf +402 drivers/cpufreq/amd-pstate.c
-
-ec437d71db77a1 Huang Rui         2021-12-24  391  
-e059c184da47e9 Huang Rui         2021-12-24  392  static int cppc_init_perf(struct amd_cpudata *cpudata)
-e059c184da47e9 Huang Rui         2021-12-24  393  {
-e059c184da47e9 Huang Rui         2021-12-24  394  	struct cppc_perf_caps cppc_perf;
-bedadcfb011fef Perry Yuan        2022-08-30  395  	u32 highest_perf;
-e059c184da47e9 Huang Rui         2021-12-24  396  
-e059c184da47e9 Huang Rui         2021-12-24  397  	int ret = cppc_get_perf_caps(cpudata->cpu, &cppc_perf);
-e059c184da47e9 Huang Rui         2021-12-24  398  	if (ret)
-e059c184da47e9 Huang Rui         2021-12-24  399  		return ret;
-e059c184da47e9 Huang Rui         2021-12-24  400  
-347b3754cc9780 Mario Limonciello 2024-08-26  401  	WRITE_ONCE(cpudata->highest_perf, cppc_perf.highest_perf);
-febab20caebac9 Wyes Karny        2023-11-17 @402  	WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
-e059c184da47e9 Huang Rui         2021-12-24  403  	WRITE_ONCE(cpudata->nominal_perf, cppc_perf.nominal_perf);
-e059c184da47e9 Huang Rui         2021-12-24  404  	WRITE_ONCE(cpudata->lowest_nonlinear_perf,
-e059c184da47e9 Huang Rui         2021-12-24  405  		   cppc_perf.lowest_nonlinear_perf);
-e059c184da47e9 Huang Rui         2021-12-24  406  	WRITE_ONCE(cpudata->lowest_perf, cppc_perf.lowest_perf);
-e571a5e2068ef5 Meng Li           2024-01-19  407  	WRITE_ONCE(cpudata->prefcore_ranking, cppc_perf.highest_perf);
-febab20caebac9 Wyes Karny        2023-11-17  408  	WRITE_ONCE(cpudata->min_limit_perf, cppc_perf.lowest_perf);
-e059c184da47e9 Huang Rui         2021-12-24  409  
-2dd6d0ebf74049 Wyes Karny        2023-03-07  410  	if (cppc_state == AMD_PSTATE_ACTIVE)
-2dd6d0ebf74049 Wyes Karny        2023-03-07  411  		return 0;
-2dd6d0ebf74049 Wyes Karny        2023-03-07  412  
-2dd6d0ebf74049 Wyes Karny        2023-03-07  413  	ret = cppc_get_auto_sel_caps(cpudata->cpu, &cppc_perf);
-2dd6d0ebf74049 Wyes Karny        2023-03-07  414  	if (ret) {
-2dd6d0ebf74049 Wyes Karny        2023-03-07  415  		pr_warn("failed to get auto_sel, ret: %d\n", ret);
-e059c184da47e9 Huang Rui         2021-12-24  416  		return 0;
-e059c184da47e9 Huang Rui         2021-12-24  417  	}
-e059c184da47e9 Huang Rui         2021-12-24  418  
-2dd6d0ebf74049 Wyes Karny        2023-03-07  419  	ret = cppc_set_auto_sel(cpudata->cpu,
-2dd6d0ebf74049 Wyes Karny        2023-03-07  420  			(cppc_state == AMD_PSTATE_PASSIVE) ? 0 : 1);
-2dd6d0ebf74049 Wyes Karny        2023-03-07  421  
-2dd6d0ebf74049 Wyes Karny        2023-03-07  422  	if (ret)
-2dd6d0ebf74049 Wyes Karny        2023-03-07  423  		pr_warn("failed to set auto_sel, ret: %d\n", ret);
-2dd6d0ebf74049 Wyes Karny        2023-03-07  424  
-2dd6d0ebf74049 Wyes Karny        2023-03-07  425  	return ret;
-2dd6d0ebf74049 Wyes Karny        2023-03-07  426  }
-2dd6d0ebf74049 Wyes Karny        2023-03-07  427  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
