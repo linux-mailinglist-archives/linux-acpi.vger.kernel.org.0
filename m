@@ -1,136 +1,171 @@
-Return-Path: <linux-acpi+bounces-7906-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7907-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9589618A2
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 22:40:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35DA59618AE
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 22:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA96E1C234F8
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 20:40:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0B6E28423A
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 20:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37BDD185B77;
-	Tue, 27 Aug 2024 20:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A79F1D363C;
+	Tue, 27 Aug 2024 20:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DTpfk9sT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LnXLVpa8"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAB1537F5
-	for <linux-acpi@vger.kernel.org>; Tue, 27 Aug 2024 20:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3445679945;
+	Tue, 27 Aug 2024 20:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724791249; cv=none; b=b7Vkglyp1rg/wu3AQBKCDBBZQoo2aE9T1kmvCQlM0L01dZorN3o9CbcmNYgBLRjP9smQ4DrYVLCdvEXGZ2NOkJRK98ZzJlaCo44dhau2UnKWkOA+TP7LOjJn0hQgNWhOH33/CrczbTBR82SVS2Ti90rbqho1wHtEWJGbyZCll2I=
+	t=1724791554; cv=none; b=FM/g/j6uEkXuuHO8agp7Z3aHJJiVtbUOcLxrcSARFTqyssz731yfZrDcLiF2Y9KDOnFBXk/iYJmakwtIV5tnvJEV2r5iminhb0baEAEDCmxwSsMNleenxLhGSaAbkoS19Ru8MT7vkfdv6Vwe/QZHAQm/QTDhhvJ2OOS1wOud7ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724791249; c=relaxed/simple;
-	bh=xmBYTg+6ZwnT9hfAgbarpSCBsjxKw785Do4JxLfL7c4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=n8qL0K1W5+pA3cRyDHkbQznyF+bFva1fA/9XYjSaEgDALxCKome0IL64ahmJTrouxQPxzY+hFv5B7NPIoMz12+XAvsp8j8JvAAEhCHKYMXOUTt+0ORvUDav2PHViqvhIJo5ywQNeLXhCJvJeOADrQWyBE5fhYkEaPlEbsD5AjsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DTpfk9sT; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71446767885so430021b3a.1
-        for <linux-acpi@vger.kernel.org>; Tue, 27 Aug 2024 13:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724791247; x=1725396047; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2ruXfsY/DRqP7G7TuTXo05oFFghbiT2PiLz+d8ewe1g=;
-        b=DTpfk9sT3cZT45hETtpUVYJi6swDdlrhstczPHK3866ivfj3P4KfyelHh1zcE9H9zE
-         /hblAGhRS4wW3iMMLMVjxqnb5worBQ6o0u0/Z35oGV65h14S5ZgggFZBZq5Y7SM7ibFT
-         44jJY+kLhBjUCuuOE4KB/mUVhQ0ytaORhicfsUxvpydCNlo5bcObK+q4BJy8Hk56bR3N
-         cpUMBWjPxLHyX0EI0mabGrq3nf3gJkZfCrCZ8Q9MDKBBl2iEuKl4c/FckpQrqKeEusHq
-         RR+uFeiec/BAwNl9qMR5QGvdRhYhKIkH9m4uQUrac6R3Q/jUYViaFPFtc1dNYjbsdS3D
-         f7tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724791247; x=1725396047;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2ruXfsY/DRqP7G7TuTXo05oFFghbiT2PiLz+d8ewe1g=;
-        b=dPLkGL4EvdWIphPQzT2PJf3gK3jXNJx+8Sed3wcIAezU2xG0DoAJuAFD/q/FTbYUI5
-         GAXKB9cic0xxKK5iKhD8dEucaIXePJLiVYwBAq32BvE/3fCTC+Fbx/U6DgKzcJBnukbO
-         TUpY1Sf9HAPT9iTsXe/i2PJnwPQqDmMojLMR3WQ6fauDEoPOuLwUaIDOTen+MZo5+T+W
-         3TexbXdsQsZ8e7DjCLj3Re9RUoAV3tY7Qoz72L164bTECC6hIPTHWDPXZV5pW9ePbhTz
-         CmqC6KTGwOUj7+wdV8Ro215N/6HFUKhsFjgkxzJeo6W68r4hdL6huBbn+LVk0vfzn4ur
-         lSjg==
-X-Gm-Message-State: AOJu0YwUi7mC/c90cVBuJbuwke2IJvaWxTuWsNypPKUfrb2hhjX6qM3A
-	NabWehsptF/+FlUcRl/vx9+G8mt6VNlYYTOEApLdfyc/OMg8lS3B
-X-Google-Smtp-Source: AGHT+IFrk4+yKAQfCIOTy8YmJLF3vRaIDkwOMDAZZxw5lN/DyH5pVgxRx7XQFoc2sSNZIsm1aFHc7w==
-X-Received: by 2002:a17:902:c40d:b0:1fc:6d15:478e with SMTP id d9443c01a7336-2039e46dc69mr103810425ad.1.1724791246813;
-        Tue, 27 Aug 2024 13:40:46 -0700 (PDT)
-Received: from smtpclient.apple (va133-130-115-230-f.a04e.g.tyo1.static.cnode.io. [2400:8500:1301:747:a133:130:115:230f])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d5ebbd9b0asm14891173a91.50.2024.08.27.13.40.43
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Aug 2024 13:40:46 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1724791554; c=relaxed/simple;
+	bh=1cA7NWIoKf453mPwbKoIelgbAeoo+9Zyhe+bdYmd4ew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tKKP0d/es6Z7mgtQtQr3z5PyOaGiTo9PVGNZSbVcLf8VhKUwjVpX0xNabe9mmez/IyOOAaWrYV3ucu6Ev+bk8eBQcKcevLnMugeqtfZ0jiBdqNATOubYYBIguYSp8ZvOTaKxyFaK8R4jBFqR48jH5kUikrfqX05OxxV5azTHApA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LnXLVpa8; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724791552; x=1756327552;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1cA7NWIoKf453mPwbKoIelgbAeoo+9Zyhe+bdYmd4ew=;
+  b=LnXLVpa8fbUzWQsJxhDXhWEeknFds5+otnPhFE5YEKFrRGASh4B7Rbgf
+   gMvwrx3X11ptl+4rMkK5Q48EsWolfUvXbeVN+TJpS6tyjI5Q9XD9KaPZC
+   0iKdWNnTLBA3UtOpWUpDozdLaIeA1jOm4L1Y7sGSxfct1xqQ+Yq9xdYzo
+   NMK42JHCuIoJfhr8sLuGm//f744t5eTizyuzTsQMCm8IZVEqex/sMZ4Ru
+   vmXtzHqXuQOcZOw0mz2888WDOjGL6VgTCZSIi0kwkJQ4x1cdk0AGoK9eq
+   QfWqV9m+o3NfRUszKdNjSVdF31oeCj6KmE18/r69HrGqb+1JpplbJl+aI
+   A==;
+X-CSE-ConnectionGUID: aB037YuuTfun4p+Pumbl3Q==
+X-CSE-MsgGUID: WGAf8Dy1TPqVfVy/eHDa+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="13246653"
+X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
+   d="scan'208";a="13246653"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 13:45:51 -0700
+X-CSE-ConnectionGUID: g2alJnmwR9KimVAeHOfSng==
+X-CSE-MsgGUID: wHEWNCmyRjaVEj+daww94A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
+   d="scan'208";a="93782943"
+Received: from yjiang5-mobl.amr.corp.intel.com (HELO localhost) ([10.124.129.65])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 13:45:50 -0700
+Date: Tue, 27 Aug 2024 13:45:49 -0700
+From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, rafael@kernel.org, lenb@kernel.org,
+	kirill.shutemov@linux.intel.com, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2 2/9] dt-bindings: x86: Add a binding for x86 wakeup
+ mailbox
+Message-ID: <20240827204549.GA4545@yjiang5-mobl.amr.corp.intel.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-3-yunhong.jiang@linux.intel.com>
+ <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH v3] ACPI: introduce acpi_arch_init
-From: Miao Wang <shankerwangmiao@gmail.com>
-In-Reply-To: <64bd9991-61a9-5cb5-60fe-941cb4171290@huawei.com>
-Date: Wed, 28 Aug 2024 04:40:29 +0800
-Cc: linux-acpi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4EC8AF0D-321F-437B-93C6-E597E4D4BB34@gmail.com>
-References: <20240808-intro-acpi-arch-init-v3-1-ba510859baff@gmail.com>
- <64bd9991-61a9-5cb5-60fe-941cb4171290@huawei.com>
-To: Hanjun Guo <guohanjun@huawei.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>,
- Sunil V L <sunilvl@ventanamicro.com>,
- Sudeep Holla <sudeep.holla@arm.com>
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ujfqrllrii6iijlhbwx3bltpjogiosw4xx5pqbcddgpxjobrzh@xqqrfxi5lv3i>
 
+On Sun, Aug 25, 2024 at 09:10:01AM +0200, Krzysztof Kozlowski wrote:
+> On Fri, Aug 23, 2024 at 04:23:20PM -0700, Yunhong Jiang wrote:
+> > Add the binding to use mailbox wakeup mechanism to bringup APs.
+> > 
+> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > ---
+> >  .../devicetree/bindings/x86/wakeup.yaml       | 64 +++++++++++++++++++
+> >  1 file changed, 64 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/x86/wakeup.yaml
+> > 
+> > diff --git a/Documentation/devicetree/bindings/x86/wakeup.yaml b/Documentation/devicetree/bindings/x86/wakeup.yaml
+> > new file mode 100644
+> > index 000000000000..cb84e2756bca
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/x86/wakeup.yaml
+> > @@ -0,0 +1,64 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +# Copyright (C) 2024 Intel Corporation
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/x86/wakeup.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: x86 mailbox wakeup
+> > +maintainers:
+> > +  - Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > +
+> > +description: |
+> > +  The x86 mailbox wakeup mechanism defines a mechanism to let the bootstrap
+> > +  processor (BSP) to wake up application processors (APs) through a wakeup
+> > +  mailbox.
+> > +
+> > +  The "wakeup-mailbox-addr" property specifies the wakeup mailbox address. The
+> > +  wakeup mailbox is a 4K-aligned 4K-size memory block allocated in the reserved
+> > +  memory.
+> > +
+> > +  The wakeup mailbox structure is defined as follows.
+> > +
+> > +    uint16_t command;
+> > +    uint16_t reserved;
+> > +    uint32_t apic_id;
+> > +    uint64_t wakeup_vector;
+> > +    uint8_t  reservedForOs[2032];
+> > +
+> > +  The memory after reservedForOs field is reserved and OS should not touch it.
+> > +
+> > +  To wakes up a AP, the BSP prepares the wakeup routine, fills the wakeup
+> > +  routine's address into the wakeup_vector field, fill the apic_id field with
+> > +  the target AP's APIC_ID, and write 1 to the command field. After receiving the
+> > +  wakeup command, the target AP will jump to the wakeup routine.
+> > +
+> > +  For each AP, the mailbox can be used only once for the wakeup command. After
+> > +  the AP jumps to the wakeup routine, the mailbox will no longer be checked by
+> > +  this AP.
+> > +
+> > +  The wakeup mailbox structure and the wakeup process is the same as
+> > +  the Multiprocessor Wakeup Mailbox Structure defined in ACPI spec version 6.5,
+> > +  section 5.2.12.19 [1].
+> > +
+> > +  References:
+> > +
+> > +  [1] https://uefi.org/specs/ACPI/6.5/05_ACPI_Software_Programming_Model.html
+> > +
+> > +select: false
+> 
+> This schema is still a no-op because of this false.
+> 
+> What is the point of defining one property if it is not placed anywhere?
+> Every device node can have it? Seems wrong...
+> 
+> You need to come with proper schema. Lack of an example is another thing
+> - this cannot be even validated by the tools. 
+> 
+> Best regards,
+> Krzysztof
 
+Thank you for the feedback. Will update the schema file on next round
+submission.
 
-> 2024=E5=B9=B48=E6=9C=888=E6=97=A5 17:43=EF=BC=8CHanjun Guo =
-<guohanjun@huawei.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On 2024/8/8 17:00, Miao Wang via B4 Relay wrote:
->> From: Miao Wang <shankerwangmiao@gmail.com>
->> To avoid arch-specific code in general ACPI initialization flow,
->> we introduce a weak symbol acpi_arch_init. Currently, arm64 can
->> utillize this to insert its specific flow. In the future,
->> other architectures can also have chance to define their own
->> arch-specific acpi initialization process if necessary.
->> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
->> Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
->> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
->> ---
->> Changes from v1
->> - Change acpi_arch_init from a static inline stub to a weak function
->>   according to Haijun Guo's advice
->> ---
->> Changes from v2:
->> - Add __init attribute to the weak acpi_arch_init stub
->> - Link to v2: =
-https://lore.kernel.org/r/20240807-intro-acpi-arch-init-v2-1-9231e23a7721@=
-gmail.com
->=20
-> Thanks for the quick update,
->=20
-> Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Thanks
+--jyh
 
-Hi, all. I wonder whether this patch is good to be applied or
-any improvement is needed.
-
-Cheers,
-
-Miao Wang
-
->=20
-> Thanks
-> Hanjun
-
-
+> 
 
