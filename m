@@ -1,224 +1,175 @@
-Return-Path: <linux-acpi+bounces-7909-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7910-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3AE961942
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 23:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275B2961946
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 23:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B271C230F6
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 21:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BDAF1C23033
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 21:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40E6197A7E;
-	Tue, 27 Aug 2024 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7F41D4141;
+	Tue, 27 Aug 2024 21:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="CTjdfyxe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iIgZ+diQ"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2064.outbound.protection.outlook.com [40.107.102.64])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9485198E89;
-	Tue, 27 Aug 2024 21:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724794304; cv=fail; b=K0trud0RmbZ1uYzcCQQ2A0VGGavl1Q3yjXLW0Z8ZQ2xzCGR/UvONt7pR8tcsipiX6oRGr89MKrM2ymWTe0WUdvBk/8GKerjx2jyyX0flnfHQpl8MC5lu2Ik39uigln3K2+xVT2fZoOyIhM0gWKhf58tbIf6jXKZcYlYa1b1wZvw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724794304; c=relaxed/simple;
-	bh=YR0BG1p2Bz1YXuta3vG0N5Gz2wjf8pv21S9iF1CvQzM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UC740k3rHUr0aMJ7i8PBnqsjpg8ddvIOIPuIuVVicWEI07+0Cxo4WtKQqSn+Z3qr//iteH8ws+8p0+7EO9lMWNH+bgMjS1UcaEJ6g4dJPawMmw84+O0YqQjtQLF5Yv/+JTYg+yw34T6qz9bx077OhU8jQH9ESGQCbwk6+bCIVDs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=CTjdfyxe; arc=fail smtp.client-ip=40.107.102.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dBQsW10lqpxzmN0wg6cD7XYD90DzUZqt6HnQ6hRs4kB4fqu6c49Cu/ZZpVVa9xfXcBnt9RwhzJHXntHwslfiqHKDtBQPjpwNOuR1JZ+jdGVOz+6eqJzUwT7e4ObZVFE0o/tUH5aoCTfbx1LQCgDsmXa+drGtswhY04a+v33jFcweOU4saAQz5oDF5/RM1Yk3bMw9rCNkRSK2z7dTE1sTvYNyQGkEj601xelom5GZCBR2cbCWQwI2m6504Z2k9SoYhDP0tGOD7c5A1hFTipwZ+5FnptMOXCDoiFTbMQv9yNGtuzizc91zXUbtqk00kvahU0kpX82PmSHTXHAchTPmGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hEDzPDTQfF3hHzWpXH3yZYmaCtHWQs1uC9TatCgB3Gk=;
- b=lQdYnkCDCi62xirdke8okA3ZoI6AIGI7/xKE+rk2BwHXeBphFOY6dP88QoWE2Hdg/fJacaXuPlfCJe5SwZi3nuZb+jyiQ0msYu0yhLTXoJJBK6aJUFGZQalPWdnazCxenNGjslp6JbpauQjqHMZCqi8/ZW0JQeUXsdD2XWZ7NJBcM1+8tfc6hUZp3vggptW/tIMFk26qyT0eWzwV5FVhE2crCjtcWOVMzeEsw20lAx+5w8yJwnS3Rq1Hxa7+1qubScA5UyeFuAHbLphZsgs9vOoZ9LDCbT6sgYVca+bIBeYL4Rq4fHkwePZ3hewCW5IOrNlKvFFC+hTgDPOKBv4poQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hEDzPDTQfF3hHzWpXH3yZYmaCtHWQs1uC9TatCgB3Gk=;
- b=CTjdfyxeRodRP7TqoQb0rX8cB0IJ/f8EMxs6x4njYO5VotkI/ZjNrhMaKOT/GhhlzeU0M40gliwx+zzovUQufCKEs5KDiaR3Gw7WHUAMbS5V/WBwmTr/9kW4Bm0LkiUi9owhQxgnFNzxW21itdZNrm1QKzQ0xZACt51k0TyOhKGCKm2p43TixPXldGyk5zR2G+47nLY07zIk00urAQA5/N585L1NYlCtOd3BNPZ/7tcXh6vWsp2ZK+83AntfkmnDM2FwDcs7CB+luYSmfDCoGQzLeS7e7EIkn5bs1qTzXeUnjttpwoLqgS1oO3xC3xNMn8CPtgAO5qNQrEv2RfPuiQ==
-Received: from SJ0PR03CA0167.namprd03.prod.outlook.com (2603:10b6:a03:338::22)
- by DM4PR12MB6040.namprd12.prod.outlook.com (2603:10b6:8:af::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.26; Tue, 27 Aug
- 2024 21:31:37 +0000
-Received: from SJ1PEPF00001CE5.namprd03.prod.outlook.com
- (2603:10b6:a03:338:cafe::72) by SJ0PR03CA0167.outlook.office365.com
- (2603:10b6:a03:338::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.33 via Frontend
- Transport; Tue, 27 Aug 2024 21:31:35 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00001CE5.mail.protection.outlook.com (10.167.242.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.13 via Frontend Transport; Tue, 27 Aug 2024 21:31:34 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 27 Aug
- 2024 14:31:18 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 27 Aug
- 2024 14:31:17 -0700
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Tue, 27 Aug 2024 14:31:16 -0700
-Date: Tue, 27 Aug 2024 14:31:14 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <acpica-devel@lists.linux.dev>, Hanjun Guo <guohanjun@huawei.com>,
-	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
-	<kevin.tian@intel.com>, <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	"Lorenzo Pieralisi" <lpieralisi@kernel.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, Robin Murphy
-	<robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Will Deacon
-	<will@kernel.org>, "Alex Williamson" <alex.williamson@redhat.com>, Eric Auger
-	<eric.auger@redhat.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
-	<patches@lists.linux.dev>, Shameerali Kolothum Thodi
-	<shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
-Message-ID: <Zs5Fom+JFZimFpeS@Asurada-Nvidia>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06531BF329;
+	Tue, 27 Aug 2024 21:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724794342; cv=none; b=GgR+aSLPShAHeCj3u5mEO3zR6W8kjvrHxu1DmyZP9PnuoCYCWDtKtN3R3/IZTMIGEq+6xzWtG4kLfFNzZYVzmTr509bzkdksa7xR3LnlNncw36ETnl69H06qHfhgNPtzO2TC9soOyPYldU3a3cyjlNkUfHVDBVbQt6oSR5So7fc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724794342; c=relaxed/simple;
+	bh=VdVuzOa4xQiigr1kVsf2HhAJLMDzuQOG906kdRtZLLE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CjrZPammHwevJn+RVIEbVmQ4Hl5zcjnc29G88ssRVyTwAL4Skq9hmkZmxLfwBaZjzujagwwNuRoYwAvZXXilb+3s8MtG3v84LFnhVU3cUqU0D7qImEQfqiZDFNwgqMAenyCxtpNNU9e3ShSxhm/GzOGMMiT/zwKx9EP0fHzIEYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iIgZ+diQ; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724794341; x=1756330341;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VdVuzOa4xQiigr1kVsf2HhAJLMDzuQOG906kdRtZLLE=;
+  b=iIgZ+diQSJzSuLBdBtDP3aNTk2l9cedWz8OTKMeZVVlOH/xLx373ESCc
+   o2cW++bCFh0K5qywcItI9oKEWhNm7elBlynazYtw5cZ8O4VrZC56uqZe4
+   LpgyuUJYYmZ8rwj39uIV0866fiKWxzGAW5WmIaF/umhb9G4AirdFh0BAq
+   BDWqSpDgGMoaEI25vkyjNTLnhxWdAPCz7OnVd93J5VqQaRxVymxpXRDDq
+   v5pB0Kp3dX1nvN9FrZtsrQPYwVzuDrcamTPtnRth7P70KjzMiWu8XwfPW
+   qYp8DslE060fe8Fv98pyoGo8DsdmATDo8S09JAWgFznb3qOXL0WJvzblg
+   Q==;
+X-CSE-ConnectionGUID: mJWmn+WFSdirAyh0HS8Jpw==
+X-CSE-MsgGUID: 8I16g1ziQRWsUEZ6smiG+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="33872128"
+X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
+   d="scan'208";a="33872128"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2024 14:32:21 -0700
+X-CSE-ConnectionGUID: 3VdZZa3MQnW+VHfgLQcVWg==
+X-CSE-MsgGUID: YYZZ2Kn0SP6K3hJLALdGlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,181,1719903600"; 
+   d="scan'208";a="67152953"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 27 Aug 2024 14:32:17 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sj3nT-000K6E-0K;
+	Tue, 27 Aug 2024 21:32:15 +0000
+Date: Wed, 28 Aug 2024 05:31:25 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mario Limonciello <superm1@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
+	Perry Yuan <perry.yuan@amd.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"(maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <x86@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"(open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))" <linux-kernel@vger.kernel.org>,
+	linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH 6/8] cpufreq: amd-pstate: Merge
+ amd_pstate_highest_perf_set() into amd_get_boost_ratio_numerator()
+Message-ID: <202408280553.k4hXRtZy-lkp@intel.com>
+References: <20240826211358.2694603-7-superm1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE5:EE_|DM4PR12MB6040:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f5cb918-c102-4fc0-cf1f-08dcc6dfa064
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?B7p4ohQzGwPgiepBi1jlgTzkc0pnT4jSKL605EkFeI7k+fwhHHS5lBdJR9Hq?=
- =?us-ascii?Q?Ud7+ZQQWJ4nVWt4UP7r69wMhy5EpEoBfYzlQ0tsvL8KdpABCi7h/7pmkCuG4?=
- =?us-ascii?Q?C9PwhEB+T3CxoqNiVoHxjGE1zs4wRuvRUf1oFzlNihrlvVg9wEFSTkY9EjYF?=
- =?us-ascii?Q?GXN0+1llBveZ3JTg7o/KLc+TC+dAA2lmfm4EU/BqPyESxvuNLDsTwmtSXvoj?=
- =?us-ascii?Q?UcVGsQEiMZojAs5jJ0DVSARVtOCWE5yziO547CTlaYnzQQr0TxA8rwWlJ6P8?=
- =?us-ascii?Q?QCJ17JCZpxuE0brjA/MX2ziBXKWvgBUTYpNlQKtuKHqaFcKtrk4bXAkorOl3?=
- =?us-ascii?Q?WB0aDZ1LC1EUwRjaLBSIYk5cNxbqtoCf5zBdRGJ59nZjLl7GSJjE7hQ9ZJwd?=
- =?us-ascii?Q?WOkFkE0J2XxbbRFUmMlG0jR5AhOYpKguO63M1tAK7Rxky7e3l+ndg2G6BzSi?=
- =?us-ascii?Q?mzqbNMDHjW66NOYX3fEj9e1lzhwHUGXek6/i+3FsGxjDuixWbr6aBQzXiZW2?=
- =?us-ascii?Q?JvAmHkSEhVqTsgcPzOblgxzRdLA1vY1+PodUyuWrO5fCblOgmZ/IVGgH8PXx?=
- =?us-ascii?Q?8XaPzXhIF3Zm0EYUeyhJ+BGH30jZ+9ktXlAQHUD1zoEf+odif7G3e8IM0/5q?=
- =?us-ascii?Q?GMEPppkBTtd6QG9CcNErd93Bv+Yo3gCd/v0wtNBg5tCtcUd6GsrzUHVfuPHN?=
- =?us-ascii?Q?nb27v8ycy3S2EpV1z37ScTPRLFvoYHMcLy9TY6tHSX+UH+s83k4Ns59fDojn?=
- =?us-ascii?Q?rftX1A5nX7mAGomRLSSw0pWzURMU+yo6IvmZ3Xipn2yhzouP4z5ERIYeu4QF?=
- =?us-ascii?Q?4Vh9TjFTI5AuDX5JnSF4jKX22gRKjHW+QKN82dYA3nsep9+uRPWfOuPCLz2a?=
- =?us-ascii?Q?DuhikwNj3wi/5DRXGWWqvjLVUwbX6x9N1Ofi9hzq2U0PxG1OFDAGbvMdFp/h?=
- =?us-ascii?Q?HoFHDdo784AtuYtCZwwyyKBXD0WMEbz12KCReQsn+do0Lo7XojZWSCS27Nvr?=
- =?us-ascii?Q?r+i10HumAw1ahXCGNcz0Hz2Izp3kZJm2KJPdt4YSHhK4vomXIl7KPX08aDlw?=
- =?us-ascii?Q?a2wr+Mw+pO8beT7m22k0BhinMN5ekdUU074Z7r8KCTaNhQ7tl79/V8FOgMnh?=
- =?us-ascii?Q?mu+rIXEhyE3+m2GyZWIDDcc0RykwN7TQjDvNykORqVgTiH7PnSus2hWAsg9R?=
- =?us-ascii?Q?+7X5HY/cg74X+lF8LMxwpGWzrsMIKCGbSGvMItDlGIPSqe3BKVq24brDxSEz?=
- =?us-ascii?Q?0lwCN8UPqGKgLNcm+KXunhQY0TRbbb6T9A+aIG0oRSlKUch2vfq05IGVaVUU?=
- =?us-ascii?Q?edAhHQTFMSGt5I36ybmkQz3MGrKscac5sVt2928ypZtKxfcsZNy7NzyLKdrL?=
- =?us-ascii?Q?JZKKJ6zYgx+lrRrzBcntqt5kMV8CekFbE/HHUriEZzBXGo8i0oehG9v2LIv9?=
- =?us-ascii?Q?wFxMbvwnrS46m8dMVuCVvEuBIpugM1Aj?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 21:31:34.9485
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f5cb918-c102-4fc0-cf1f-08dcc6dfa064
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE5.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6040
+In-Reply-To: <20240826211358.2694603-7-superm1@kernel.org>
 
-On Tue, Aug 27, 2024 at 12:51:30PM -0300, Jason Gunthorpe wrote:
-> This brings support for the IOMMFD ioctls:
-> 
->  - IOMMU_GET_HW_INFO
->  - IOMMU_HWPT_ALLOC_NEST_PARENT
->  - IOMMU_DOMAIN_NESTED
->  - ops->enforce_cache_coherency()
-> 
-> This is quite straightforward as the nested STE can just be built in the
-> special NESTED domain op and fed through the generic update machinery.
-> 
-> The design allows the user provided STE fragment to control several
-> aspects of the translation, including putting the STE into a "virtual
-> bypass" or a aborting state. This duplicates functionality available by
-> other means, but it allows trivially preserving the VMID in the STE as we
-> eventually move towards the VIOMMU owning the VMID.
-> 
-> Nesting support requires the system to either support S2FWB or the
-> stronger CANWBS ACPI flag. This is to ensure the VM cannot bypass the
-> cache and view incoherent data, currently VFIO lacks any cache flushing
-> that would make this safe.
-> 
-> Yan has a series to add some of the needed infrastructure for VFIO cache
-> flushing here:
-> 
->  https://lore.kernel.org/linux-iommu/20240507061802.20184-1-yan.y.zhao@intel.com/
-> 
-> Which may someday allow relaxing this further.
-> 
-> Remove VFIO_TYPE1_NESTING_IOMMU since it was never used and superseded by
-> this.
-> 
-> This is the first series in what will be several to complete nesting
-> support. At least:
->  - IOMMU_RESV_SW_MSI related fixups
->     https://lore.kernel.org/linux-iommu/cover.1722644866.git.nicolinc@nvidia.com/
->  - VIOMMU object support to allow ATS and CD invalidations
->     https://lore.kernel.org/linux-iommu/cover.1723061377.git.nicolinc@nvidia.com/
->  - vCMDQ hypervisor support for direct invalidation queue assignment
->     https://lore.kernel.org/linux-iommu/cover.1712978212.git.nicolinc@nvidia.com/
->  - KVM pinned VMID using VIOMMU for vBTM
->     https://lore.kernel.org/linux-iommu/20240208151837.35068-1-shameerali.kolothum.thodi@huawei.com/
->  - Cross instance S2 sharing
->  - Virtual Machine Structure using VIOMMU (for vMPAM?)
->  - Fault forwarding support through IOMMUFD's fault fd for vSVA
-> 
-> The VIOMMU series is essential to allow the invalidations to be processed
-> for the CD as well.
-> 
-> It is enough to allow qemu work to progress.
-> 
-> This is on github: https://github.com/jgunthorpe/linux/commits/smmuv3_nesting
-> 
-> v2:
+Hi Mario,
 
-As mentioned above, the VIOMMU series would be required to test
-the entire nesting feature, which now has a v2 rebasing on this
-series. I tested it with a paring QEMU branch. Please refer to:
-https://lore.kernel.org/linux-iommu/cover.1724776335.git.nicolinc@nvidia.com/
-Also, there is another new VIRQ series on top of the VIOMMU one
-and this nesting series. And I tested it too. Please refer to:
-https://lore.kernel.org/linux-iommu/cover.1724777091.git.nicolinc@nvidia.com/
+kernel test robot noticed the following build warnings:
 
-With that,
+[auto build test WARNING on rafael-pm/linux-next]
+[also build test WARNING on rafael-pm/bleeding-edge tip/x86/core tip/master linus/master v6.11-rc5 next-20240827]
+[cannot apply to tip/auto-latest]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/Mario-Limonciello/x86-amd-Move-amd_get_highest_perf-from-amd-c-to-cppc-c/20240827-051648
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git linux-next
+patch link:    https://lore.kernel.org/r/20240826211358.2694603-7-superm1%40kernel.org
+patch subject: [PATCH 6/8] cpufreq: amd-pstate: Merge amd_pstate_highest_perf_set() into amd_get_boost_ratio_numerator()
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20240828/202408280553.k4hXRtZy-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240828/202408280553.k4hXRtZy-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408280553.k4hXRtZy-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/cpufreq/amd-pstate.c:402:38: warning: variable 'highest_perf' is uninitialized when used here [-Wuninitialized]
+     402 |         WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
+         |                                             ^~~~~~~~~~~~
+   include/asm-generic/rwonce.h:61:18: note: expanded from macro 'WRITE_ONCE'
+      61 |         __WRITE_ONCE(x, val);                                           \
+         |                         ^~~
+   include/asm-generic/rwonce.h:55:33: note: expanded from macro '__WRITE_ONCE'
+      55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+         |                                        ^~~
+   drivers/cpufreq/amd-pstate.c:395:18: note: initialize the variable 'highest_perf' to silence this warning
+     395 |         u32 highest_perf;
+         |                         ^
+         |                          = 0
+   1 warning generated.
+
+
+vim +/highest_perf +402 drivers/cpufreq/amd-pstate.c
+
+ec437d71db77a1 Huang Rui         2021-12-24  391  
+e059c184da47e9 Huang Rui         2021-12-24  392  static int cppc_init_perf(struct amd_cpudata *cpudata)
+e059c184da47e9 Huang Rui         2021-12-24  393  {
+e059c184da47e9 Huang Rui         2021-12-24  394  	struct cppc_perf_caps cppc_perf;
+bedadcfb011fef Perry Yuan        2022-08-30  395  	u32 highest_perf;
+e059c184da47e9 Huang Rui         2021-12-24  396  
+e059c184da47e9 Huang Rui         2021-12-24  397  	int ret = cppc_get_perf_caps(cpudata->cpu, &cppc_perf);
+e059c184da47e9 Huang Rui         2021-12-24  398  	if (ret)
+e059c184da47e9 Huang Rui         2021-12-24  399  		return ret;
+e059c184da47e9 Huang Rui         2021-12-24  400  
+347b3754cc9780 Mario Limonciello 2024-08-26  401  	WRITE_ONCE(cpudata->highest_perf, cppc_perf.highest_perf);
+febab20caebac9 Wyes Karny        2023-11-17 @402  	WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
+e059c184da47e9 Huang Rui         2021-12-24  403  	WRITE_ONCE(cpudata->nominal_perf, cppc_perf.nominal_perf);
+e059c184da47e9 Huang Rui         2021-12-24  404  	WRITE_ONCE(cpudata->lowest_nonlinear_perf,
+e059c184da47e9 Huang Rui         2021-12-24  405  		   cppc_perf.lowest_nonlinear_perf);
+e059c184da47e9 Huang Rui         2021-12-24  406  	WRITE_ONCE(cpudata->lowest_perf, cppc_perf.lowest_perf);
+e571a5e2068ef5 Meng Li           2024-01-19  407  	WRITE_ONCE(cpudata->prefcore_ranking, cppc_perf.highest_perf);
+febab20caebac9 Wyes Karny        2023-11-17  408  	WRITE_ONCE(cpudata->min_limit_perf, cppc_perf.lowest_perf);
+e059c184da47e9 Huang Rui         2021-12-24  409  
+2dd6d0ebf74049 Wyes Karny        2023-03-07  410  	if (cppc_state == AMD_PSTATE_ACTIVE)
+2dd6d0ebf74049 Wyes Karny        2023-03-07  411  		return 0;
+2dd6d0ebf74049 Wyes Karny        2023-03-07  412  
+2dd6d0ebf74049 Wyes Karny        2023-03-07  413  	ret = cppc_get_auto_sel_caps(cpudata->cpu, &cppc_perf);
+2dd6d0ebf74049 Wyes Karny        2023-03-07  414  	if (ret) {
+2dd6d0ebf74049 Wyes Karny        2023-03-07  415  		pr_warn("failed to get auto_sel, ret: %d\n", ret);
+e059c184da47e9 Huang Rui         2021-12-24  416  		return 0;
+e059c184da47e9 Huang Rui         2021-12-24  417  	}
+e059c184da47e9 Huang Rui         2021-12-24  418  
+2dd6d0ebf74049 Wyes Karny        2023-03-07  419  	ret = cppc_set_auto_sel(cpudata->cpu,
+2dd6d0ebf74049 Wyes Karny        2023-03-07  420  			(cppc_state == AMD_PSTATE_PASSIVE) ? 0 : 1);
+2dd6d0ebf74049 Wyes Karny        2023-03-07  421  
+2dd6d0ebf74049 Wyes Karny        2023-03-07  422  	if (ret)
+2dd6d0ebf74049 Wyes Karny        2023-03-07  423  		pr_warn("failed to set auto_sel, ret: %d\n", ret);
+2dd6d0ebf74049 Wyes Karny        2023-03-07  424  
+2dd6d0ebf74049 Wyes Karny        2023-03-07  425  	return ret;
+2dd6d0ebf74049 Wyes Karny        2023-03-07  426  }
+2dd6d0ebf74049 Wyes Karny        2023-03-07  427  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
