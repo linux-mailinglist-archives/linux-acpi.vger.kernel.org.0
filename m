@@ -1,66 +1,66 @@
-Return-Path: <linux-acpi+bounces-7898-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7899-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C4D961715
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 20:37:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498E396173E
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 20:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C21071F24BC5
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 18:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B14A1C234B4
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 18:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D151D2F40;
-	Tue, 27 Aug 2024 18:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8611D2F72;
+	Tue, 27 Aug 2024 18:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3DQWT0ok"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ogXNj1uo"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2041.outbound.protection.outlook.com [40.107.212.41])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2041.outbound.protection.outlook.com [40.107.94.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DC11D27AC;
-	Tue, 27 Aug 2024 18:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D3D1A08AD;
+	Tue, 27 Aug 2024 18:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724783815; cv=fail; b=I/HsZU9icsBCAIkuy0XNyWU8yf3hQbkVVwSkmX/XkM/n82Wjcs9+FS4fEbTddg9a0EKpCRLYwGK0K0FpDKJGmcJBkYiCwoMLiVpW7wOBVk6p52xaTH/wKPuNQXXBfI51eTQCRWtwKIb+ahrbg2KqDAvoT5BMyVsoHEaGqh9EJQI=
+	t=1724784532; cv=fail; b=q9U6CyxPT5DCvWQiLRrVki1xT2PbotdHpxCNXXkQcmLvnQ/7o+aq4kb6WIyB03rPPPEoyq0YoLepDF0cKkXCwPxv27kr/axn5f8nhfoMv2fK2q5rmO4B3LKpxlIr0vurS8FQb4cdQj2w8WCz6RzoW6rIr06Xqb8ULNWRNQ0Z7ns=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724783815; c=relaxed/simple;
-	bh=nmo0+ClngcLiQW3T+0/n+xiigJ7DDJAhIpFDwuwzFpc=;
+	s=arc-20240116; t=1724784532; c=relaxed/simple;
+	bh=mOOaBei/FRqz3ZxO3QeENnckux2DFiI5trrO7qzoF5o=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ly1gr8h7/jYN8/VVwalwaktA/DeM9t6fXxxU835tZkSKQHNwMFeuxxk07yiEuiSFSUygDf45NEh9nRtd2VMTls/ZoCLzz/zPYT14/Nb9OOSsEbsuZ3gPJCs+nWG4auBaAQ4AL8H5tE/S8pmRFqmW0DypaYk4CnM4rFDow5OG008=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3DQWT0ok; arc=fail smtp.client-ip=40.107.212.41
+	 Content-Type:MIME-Version; b=cjzWFgTGUc8QPNhV7zMj1wVUAmdOlDAk0iK4UQmEDtf1wUubW/Xa9QOi6k06ayykqmHYf/WlNRBBJB8roNwKz9GpmHOXW5mzLcyd0OR+D8xCO7Eb0U0tEhdsEm8D2XBV1srpzAziT8g9VcIV/SSKVr4a/gRH0pmNuiajz/4Ax+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ogXNj1uo; arc=fail smtp.client-ip=40.107.94.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uDnI14elK+yrBcQOv6vqDbO6D6JsdH6k0ZLYC4rYQsOI65bybmgnaYX6x8jX1a6kJzPa4vq2lOtGK8xVxyl+/BS4J+Ttu1M3jQE2gzB4eHBXiHE9AP//00cW2UISfnzL3MHQHsw54cgHLC38UmpuzZDxUpcvL50dJ3GhCt788EgUhNbudlbuSDHs7Mi4AHH+rOms9wD3Asr6FFdhzr3qnX9hoRKT+gw0SLaOJ2bSwVdcvkHH5EpSfv7Xw7JohNesqWVrm0aoI5OqDVQYAMG2XGeTU6NxI/WG3u7rMOzz2RsQgS5UGExIQq2qqmnX42NESb3VkzHRCn6+mQiSFQFBiw==
+ b=rgW6WJEbHUYCkHHBM631NuSUwsH/cqi5ot6xPiEtC3F8b8xF1+ognMdAq8BGcg3WgziW8gU9qsq51gFViVCh69fzCDeIQZxObIFjS/qtHHN9UV5lSHSFmsVR/qPZn3fj1BtErxOZsZMaC8sEeue53XNIUX/X0S2ULre+v30aGUWuhsBNOpGdXI/tJE+ZN4JUrZv7i9sEstNThMU6jTWhDKbECR+0oiUS/6fUtLNZ8TOtQregmRuhyLkicBsHWYS45T0LoHkd4ccyzlROL3uHNSRdheKMBibEVOzqs/4zs7hXZXskZIN/njBQeGdvKVWfvmBeWBNi0a9NSkpKW9rp0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OgxPQInzDleRZl1Q+ClhdOrLUOCUdfT7JHPg+OVSKmM=;
- b=LuJs+0V8yIVAvtSg1GEG0OYFFlwqQhBxgWVIgyNC2mD0wLjoDZPscfsiwRMaFcamQA+2RpcutvtfqPdkp9t2mywYfRq9C1W1leFuoeQC+RW2hX3mvkw01iNmiO+b5FUNpQjcs+XyeJzFcBCKi6vFyoXJcfuypbm45Gi3e8eiChHDMPyZkmFsKF54N0YD9cAA91X5bwklH7OjuovHPO0JS7RrzVaL36MeNiu30dWWWfvkVclFczPFz8PqvTIkIlgvA6i0vUCMionqk6ZQezyXj3haXODX+AV9X0fizNQBoDiQXlmhkm6r0B0Fhba84VMvoYbrM05KnpUVKUv8/q14pg==
+ bh=0AI6o57CwPuMwqEzfHazVeSua/qBxIw1Sz/6d+Chlhs=;
+ b=DC+ePIKXwtvQhtmlCMwZpkeC9Nm4IejcwkwACRN2V8eFRWE9RpjVeMP8GpojCBAvdaWqn5XRhamvbtx0KzRiEONJHJOKzsC3PkGhu/Ls6ZMjjkRTRRb6YxcZFmPLdp13BwovFcZSyf96MqdD5b2YXVeFu75m+gQNxwozc1RYc0qdlbaNf4BbnphpQj1zj/PuNs/jmgZHG4RfYh6vtu/4E+qDuhf8JqFb/NEdAMw+6ny6OVuR8sL0c/5j8A9+r6arqUIDbXXeS5ltPImxXFNszqc7CQmXz19PA828WOZdlhVv4eGhEC5TlZdYQjzcrAselOKBen9J8LY1Vj7+kvlswQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OgxPQInzDleRZl1Q+ClhdOrLUOCUdfT7JHPg+OVSKmM=;
- b=3DQWT0okVBNskI3ffQqgL2m92cYNmwkzlzYiaApPTyUkfVZQ7K7/7nO9Xz3aqYiEFJi7iql8HiqXEHbd5erxleoFkQbq6zYjKXIx8uQZ0kAOcKncnY4kJgWJwo56CZxZNAlIhR03LffDD8rnuXgKKRm4AXOJG8lk0dC0+gM1C9M=
+ bh=0AI6o57CwPuMwqEzfHazVeSua/qBxIw1Sz/6d+Chlhs=;
+ b=ogXNj1uoUQ3LLoM7wFI01NccYKs2T7oeI2VnyFG/FNCJSk/ORwJl6qhY/d1xvswDarKb3TzZi8u9APp6BRWDy+7WRM+qxGbDbxAUJNNqcSM7iFyy9uMGgmGpKPMY+KUqDA5iYn+o3TRcVscVcWATJ94z9l6pi9nSW+dBxWJ9LrY=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by PH7PR12MB6884.namprd12.prod.outlook.com (2603:10b6:510:1ba::12) with
+ by SN7PR12MB7371.namprd12.prod.outlook.com (2603:10b6:806:29a::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.26; Tue, 27 Aug
- 2024 18:36:50 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.23; Tue, 27 Aug
+ 2024 18:48:49 +0000
 Received: from MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
  ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.7875.016; Tue, 27 Aug 2024
- 18:36:49 +0000
-Message-ID: <2091c274-00b7-40ed-a27a-83850130df46@amd.com>
-Date: Tue, 27 Aug 2024 13:36:47 -0500
+ 18:48:48 +0000
+Message-ID: <d1222c30-114b-4f56-8805-600236b2684c@amd.com>
+Date: Tue, 27 Aug 2024 13:48:47 -0500
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] cpufreq: amd-pstate: Merge
- amd_pstate_highest_perf_set() into amd_get_boost_ratio_numerator()
+Subject: Re: [PATCH 3/8] ACPI: CPPC: Adjust debug messages in
+ amd_set_max_freq_ratio() to warn
 To: "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
  Mario Limonciello <superm1@kernel.org>
 Cc: Borislav Petkov <bp@alien8.de>, Perry Yuan <perry.yuan@amd.com>,
@@ -71,15 +71,15 @@ Cc: Borislav Petkov <bp@alien8.de>, Perry Yuan <perry.yuan@amd.com>,
  <linux-acpi@vger.kernel.org>,
  "open list:CPU FREQUENCY SCALING FRAMEWORK" <linux-pm@vger.kernel.org>
 References: <20240826211358.2694603-1-superm1@kernel.org>
- <20240826211358.2694603-7-superm1@kernel.org>
- <Zs4EW7s3Z32UAFNI@BLRRASHENOY1.amd.com>
+ <20240826211358.2694603-4-superm1@kernel.org>
+ <Zs3np8AeARzbMVSB@BLRRASHENOY1.amd.com>
 Content-Language: en-US
 From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <Zs4EW7s3Z32UAFNI@BLRRASHENOY1.amd.com>
+In-Reply-To: <Zs3np8AeARzbMVSB@BLRRASHENOY1.amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN6PR08CA0027.namprd08.prod.outlook.com
- (2603:10b6:805:66::40) To MN0PR12MB6101.namprd12.prod.outlook.com
+X-ClientProxiedBy: SA9P221CA0013.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:806:25::18) To MN0PR12MB6101.namprd12.prod.outlook.com
  (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
@@ -88,248 +88,157 @@ List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|PH7PR12MB6884:EE_
-X-MS-Office365-Filtering-Correlation-Id: b307f896-7df5-42e6-a861-08dcc6c736a6
+X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SN7PR12MB7371:EE_
+X-MS-Office365-Filtering-Correlation-Id: bd328bbd-3d16-4343-dc9c-08dcc6c8e338
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TDJXamQ2cHB1YzVsR3JzY3JhcUtBTTRxR3E4WHVjd2VBTXBWMlp2R011QUxn?=
- =?utf-8?B?T1N0ZDFsMGxuSHI4Z2h3ajR2bFhiTnBPaEMzVGhLWUw0RHMvTlZ5NTRHbWov?=
- =?utf-8?B?cXZEYXlUM0ZUVndmZWREQ3pBeHdhdDMwdUdNWENwakZOUE9reFlEbGVlaGZq?=
- =?utf-8?B?ZEFtU1NMNE9pRnV6R3JvVFAvOG01SzQ1bm9tZS9YYVg2bUduckZOTzVXZ2R4?=
- =?utf-8?B?TU5xSndUVXd2U1RnRDBLTU4xM2Q2TU00bEtaK1RRWEJWYkZwNDZacTNPb3Nk?=
- =?utf-8?B?cE9KdTdDV1Fka09JMFlKaGRuMVlCYnpBYkR5WTlqY2ZUbVBzTjVwa3VJVTJr?=
- =?utf-8?B?VHJWTG4zQzcvUDYvRHRaanN3TThCT2NyK0RmZC9aQlNCcys2K3dRYnUrN3Bl?=
- =?utf-8?B?U3pYWkZCS1FsOEM4SlA5VElQOXAwOTVSeCtUUXJySitkd1FZUXdVNmJIRG9K?=
- =?utf-8?B?Q3dpVWtDcHM1Q0E1ZWVETjNmWWdJMGNZMTM0QW5KM0xQeHExbXJiRk9uSmhU?=
- =?utf-8?B?S0tLVGxtTTYvdjIvOGh2VVFCTDY1OG96WHhCYVk3WTFyRnppTzZ2R0VYRUQy?=
- =?utf-8?B?bERsOHY5cTFVOW80MnlyZ2NWWm8yUUJoNmJsRHlNejFxdlg1Z1ZUYVpLRW1i?=
- =?utf-8?B?aDkzWUVFYkNRcmM2bVZCUWVtbmR4NGFyRHFGUGxyNDlvSk4rZ0lWYklDTHpp?=
- =?utf-8?B?YnZCaVd3L2Y1Mzczc1c4TVU3M1NoVTlRMWhBb29JM0lLdzBPSmdxNkM1YVIx?=
- =?utf-8?B?YjhLdFo3Rk5hRStmUlU5elpxbTVMVDJFR1pydlA5MElZYUo5SDJubW9nSFYw?=
- =?utf-8?B?QzJyczE3TlJEb0x2VTBrbEg3RWpPMEVqbmVHMGxIZmdzd2JXeWRzeFpPdEs0?=
- =?utf-8?B?R016NDBTY2JVb2ozWEE5d1poZFdhN0h6bnlZbk96UkI0VUZGS1BPN0J5d29k?=
- =?utf-8?B?cXROTDZickZPRU1PblRXVDdvYVdQWmxmUGJrckVQTExpRkt3YjEvaExsWnFz?=
- =?utf-8?B?QjB5UkRLMWFoN25hYVFLT2ladXcyamgvcTFtUmEwdUxNbnk2Vmh1a0NzRW1B?=
- =?utf-8?B?Ukd2OUpUM2RaYVVnQ2MvNE01aVNIVVZyc0FkY0FRQlpXK0FvUFhRenJUcjhV?=
- =?utf-8?B?eEV4STJnQWNaMUlBTTRMUDA1WHpIL0lVQlZha3hZY1V0ak1qaXhsYmJDandO?=
- =?utf-8?B?ZEtOcWpOcnRqSWl4T2d3VmQ3dkcyVUlSUkl6WllEdVJNL2RaTktoQUJpdk5P?=
- =?utf-8?B?MEl0RnpubTEvNzVNNHM4NmV2eXdCWmpwSjVkUEk1aDFHUkpUbklqbXBLd2NE?=
- =?utf-8?B?d2EzdE9hOVFIcUYvOXdJS21kR3dQVEZ6aEcyeGlzWnlRRDI1YXZUayt2Nk81?=
- =?utf-8?B?NDF3MUwxbVFHNWN6ODk1eGhOd0YvSHZsU25jeVZiNkdKQmxMS1NlNm1MS2Np?=
- =?utf-8?B?cFl6Q0dlbkorM1BERkk0RDRMMlB6am9ZQW1ZaVV6RGJuYk0yQlMvK0IxcnlJ?=
- =?utf-8?B?TWswWi85REkvRGhXZlVLckNPd0YzNlRZS1JSVUM2TjZ6cm03eEhrYWJjYVlV?=
- =?utf-8?B?OTNnbENDbkpXaHBFU2hsMEtCZ2x6VWV1b3VGd0NmSUpCT3FLZDhXRmtlNXRJ?=
- =?utf-8?B?NXBkekRPM0QzekpDQndJVTdlaVN2ci85WittTkZRNERpeWp4Zm0yS05nclVy?=
- =?utf-8?B?Um94RDVoWTZCMHRIRkQyWlJRM0ltMWhhVjA1V1dYQ2x6U2ZKZUo2TDNPNVkr?=
- =?utf-8?B?ZHRiUVVQVXdhZnJrSUpSbExUVmZueEVNNlVtUHM5blcrWnJKc1BtYVorRS9u?=
- =?utf-8?Q?0A7b5s4a6UVDDxrPN7qhti1JiJKfuCJsmfT/U=3D?=
+	=?utf-8?B?b0luaEZUcHJwTWNNeW9jSjZPV25wZ2FNSnFxZWFDM1FkRHZwT0doYnpXVWZv?=
+ =?utf-8?B?anQ2SER3bndDenUxd09XaDhJdjFvbnZ3cUpRZjRxektoUVRXd2tiWDk4QlJT?=
+ =?utf-8?B?NzhoYzN4RXVGQ1lDeXQ2dTBHUEhsaHNSUDA2Z3I0OHp5TjUzRGtvcmVCeVNa?=
+ =?utf-8?B?YzFrUlZBakRkN20rMVlaL2EwU3ZyeHJHWXdub09ZZ2NTRVJSbHh6K2l6Y252?=
+ =?utf-8?B?NWhBTzhIb0JGd0JCa3ZQeFEvWnliVTZTYUJzQjcyek5hMzl0UUdSdGJ5MkpD?=
+ =?utf-8?B?THlDbU9UMEhkQXJGRnpvb3ZyeVFQSDRFbWFZNkFza3ZkYWZzbGZmcDdQNHhR?=
+ =?utf-8?B?anh6NlVIcUlsTkFQWFR2WVZTM0pzUzNVdEladmQyaXlNNTRla0NLajN5RndO?=
+ =?utf-8?B?QVpTdkVLNGZ5RW5tcXpGbHF3UUc1elRsTnlON0l1YzBQU0Zsck1VTWRPd3p0?=
+ =?utf-8?B?VThsUnloNG00cGJUWk5hTHdRblVQTUFaMFkvbUg5Z1JGd2RUY2J0a2xYQk9m?=
+ =?utf-8?B?dVArL3NVNHF2cThTNTlRVk9oUHJ3OUJQM1hIbzRPaStBeVZGZ0JzeHZIUEE1?=
+ =?utf-8?B?WXBxWnlRZExGSHphVFBMeWtqMEJmamw0RHZxVUZLT3RUU0MweS94N0VnZjQ5?=
+ =?utf-8?B?cWlkU0Z5UlpBazkwOE96cEhCVkdHUENaUFEvT3F2NVVFa05RRlBXOFVWanp2?=
+ =?utf-8?B?N21NdWpuWDN1b1h0U2tET0tVOHZxcHZsNmJobzExNmhxVHRjSXBya1FHSzc5?=
+ =?utf-8?B?SXdaNHk4NHNWWEZyR1UxdU9tNXo1S2RZcTgzR040WElWcjJGM241R1BqbW1Q?=
+ =?utf-8?B?V1RpWENLc2h0dkw5OWdBcGhwcEhabDZ6OFp5VnNkVm1OMG5iUmR2c01uMlJk?=
+ =?utf-8?B?ZGVuQWRJejVnS3RQVVFJeE5PWEh5NmJQSVg0TWJ1TEZmM2RkU2hHWmhmOFhQ?=
+ =?utf-8?B?ZVpXZ0hGWGdKOTNtRjhLTVU0VFhGUkZOTHlBRm9ML291NzhoVDF5eXQ0cnkx?=
+ =?utf-8?B?ZnA5eDl0NHZlUzR2MURZa21QTG5odngxOGc0WERWWE51OXBGOUFGNEtYV08r?=
+ =?utf-8?B?OVJyZFVsekZDbmtjTngxeHV1Q0NtZUJFeE4zcWZpTjk0ZVdjRDJWcC9kQjJG?=
+ =?utf-8?B?Sng0Yk9kMGt6Wng3aTI4d2ZGaXExYnEvMVhnSlFNNjNHWG5GUWRHSVRpNTVO?=
+ =?utf-8?B?M3FVWXEwSGdReUFPNm9RcjVyN3NMVk1DSVdVdGN0eHBxclo2VTl5Ylhydm9S?=
+ =?utf-8?B?NGNoM3JZcWJKL1YwdWUwa1pZaVJ6RG1la1AyWWs3VXJFMWYvaEFLanJJK0tv?=
+ =?utf-8?B?SUc5OEE4cjdKY3N2L0hGUUM2Yy9SQ25iZzY2YUsyUDBuQjlVWUs5dTNoa1pB?=
+ =?utf-8?B?cnBpNGlXOVVBT096YklvNVVUcTN6RVREOFJUaEp0NW5ZZkd1aDdjQWNXY3Iy?=
+ =?utf-8?B?OTRKTVU1cVdRRW1UcUFOaUpKTmNtTktPYmdhcXpyNmFJZVBTdnFCM25vaDRY?=
+ =?utf-8?B?SlplQllXcHdTR1lLbEVCdlhyQ1FxeGlsT1BLUXNBK2ZvY1BlSGNCemN5QlN4?=
+ =?utf-8?B?Ukhvd1JvUWlPUVl2ZDB4WDZFT3RJd1cxVmxOV0hRVG1wQlpoYklRajZXdEdW?=
+ =?utf-8?B?bEkwbU1idkYvOHg2dEsvZnlCVkJxSXgxMXQyNjhNRm9FeERZekNIdXlBSnpm?=
+ =?utf-8?B?YTU0c1dSdzdGMjdqd0NuMmxDZVNUa0JyZWVkZzlsZVhTM1FjSXR4a0RtSlJD?=
+ =?utf-8?B?SmpXd1NpUjZkUk9QcllWRUhPN1Y4eEFPWnRnQ296aDR5SjMrajk3eVVUNmlC?=
+ =?utf-8?B?T0U2clEydUhFY2hhcUJKQT09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SmlUWHVLUTlHY3crNkJqS1E2d1duRm5rTHF4YnB1QUZkeWdqSFhpeUc4QkhS?=
- =?utf-8?B?d09LK2hNT1IxSzdWVVczb0hEWVFPTGQwbjVlcy9JNzR4c2wyOVVSUkNDa0sv?=
- =?utf-8?B?OWc5MjJrUzlRa29ieUZmcDV2WlhrNkhiR0dQYVBlNmZOOGkyeG9uZUkwaUpG?=
- =?utf-8?B?cE0wSWpFYUhmUGF0YnRnMEdzVVQxd2FhTFp6ejlxRUlTMUVRL1lzb1phMFMr?=
- =?utf-8?B?dDJ5cHd4cXhRM2w4TDR2MDkycTdSWTd1dnoyMGhDbTNabHQrcjVWQVpSSjBV?=
- =?utf-8?B?aDZwNWNxazQ5NzJCMHNjMFNFYmVIQXlJanMxODJNQ0k5emVqVWRZM1FTVWt1?=
- =?utf-8?B?MjM5U2pvc1E1REs4ZjdBQ2NRQStJMlRTRzhwa0NNWVdKYjgvN25tSFQ5TE9q?=
- =?utf-8?B?US9NL25HQ0lSdzJSUlF3RHEydXJGNEE0dG93K3hwVHdWa2lIOE5wdnkxcS9Y?=
- =?utf-8?B?cGVYbGpVUjRpMndoK0wvSnlGYVZlYVVzeG9ZazBQcHVadjZvYnBFTkFvRFRU?=
- =?utf-8?B?a2Vsb256dVB0bnZwN1diNy9xU0pURk1iRDZFMGQzNk9tOE4zYnlRZUVZblVT?=
- =?utf-8?B?c0NFa2JSY2NpYk4zbnBlTUtpb01aRHNYaVhZRFRyL0RlRjhQNUt4UXF1NWU0?=
- =?utf-8?B?UEIvdEVxbktlZ0tGV1UrNDBCdldFR0JmR2tzQ2liWTM5QVY4UlQ1WEFja1ZZ?=
- =?utf-8?B?N1V4bERNWUFxWWtweWJvSG81NTI1L3l6SDJSWGZwOTZ4RUJCbDF0SUxPRlJJ?=
- =?utf-8?B?ekYxS2JDZjh3dWFER3JpOHlsQm1ISmZneHkya0RMSm1lK21xZllxMjVLTVor?=
- =?utf-8?B?M3RLMHg5eEhPQUV0bTFJaTlSdkpZQldCYWh6YzdvZnFWZFdQb0RKaEttMHpD?=
- =?utf-8?B?eUMzNVlzVHhNa0w4WHZVeWRURFFZR0tIRmhkaXRVN04vSEhMNzR4MTRkTWMr?=
- =?utf-8?B?N3NKc0pYQ0NYbGRIODZHcWZtcjhlQ1ZQNnR5TDM4Nkl6V0JLQ1pmMlJmdEU2?=
- =?utf-8?B?NDBYR3RGSThNQldzZ3ZMRmNIR1ZaWDFNUEhpTXI0K0J6alVMQkwvN3ZqQ3Bz?=
- =?utf-8?B?Z2liOExDR3hJTUxqZmFoek81dllXWCtjc0FLMlhvRnJ3MFZVVFlHbXRPUy80?=
- =?utf-8?B?TUViOXUvUW1rbXJWcUdWaGhkK0xBcXhaUWRxRi9STkJvM1c0Z291SU5RbmVD?=
- =?utf-8?B?aXNTcEJvWVM0V3l5ZTBiRGJZS0RoRU4vb21veXRqVlMvaHNKTW1JSVQ4TmEx?=
- =?utf-8?B?ZkszWmV0ZHhpZjNRVkx4Mlh0NjM3bDNaOG44TXRpd0wvM0drYWpQcVFFbnNN?=
- =?utf-8?B?Q3lYVURINWJQbDkwZkF4OGJKVWo1TXZVVktJZ3FQY0RxVlp4UjhtTXBIWEoy?=
- =?utf-8?B?OFIwM3F4WDNqZ3d3V0FUSmlEMXNiVFJ4M1V0TW9KeW9jdExFSGhPNXV1ckJu?=
- =?utf-8?B?bEJtdXNsVHNLYXVNMVhDUVR6UytrNnJsL2dsVCtPczRCcDAyWmlPMjlxSnFl?=
- =?utf-8?B?RjdKS3cyMG9Lam82ckxCWkp1a2p2ZkVYalJITStaQ0lHY3dkNFoyQVlaMTg3?=
- =?utf-8?B?b3dHTE9BYnhYNFJvQ1ROTFJBd3RId1RrWE8yNEU1alh0ZmMrK1NXY0ZSVFU0?=
- =?utf-8?B?NENOOUcrR00vNStSU2J6T3pWZmt0QXVWN2gvU2szbGM0K0JuT3AvZVFhb3Fi?=
- =?utf-8?B?dXZUV2c4SXA5OXFDZVhRR1lOTGVMRmxrRDlSNDFrTGd2MTZQV0E0L1kyVC83?=
- =?utf-8?B?Yk5wcjQvd2IvNjduZXNuak9TWjBDSkZLclNuNDRNamc5SlUxQ01LNjZmYjhZ?=
- =?utf-8?B?dGthejdLNHdCZFZRNmtQTE1sdmkybzFGYzE4a09oK1pkbGVmbU1CaFJHaTMx?=
- =?utf-8?B?N3V6b3NIQUlVcTlWazl4eEFJTjNOdUxUdkJpbERwVUlObHBvQkZHRXp0Ulg3?=
- =?utf-8?B?RHZZZ1B0K1NhOFVMRTRwYUY1ZkpiSXVaVGdRSzk2elFxRkk3REl6a0pNUU1p?=
- =?utf-8?B?NlFoTWsydkZ0UE16b1dkWWYwTW1XOENnZGdSSTJqdHU2SUtDRXh0eEdCMXhB?=
- =?utf-8?B?TFhKaGo4N0w1K0ZQR3cwSW1EaE5pMkVrTm4veDI1eTBGVk82OFFVUzFCUnZN?=
- =?utf-8?Q?e/Qe1hlE/oRUOcJweq0dGiWUi?=
+	=?utf-8?B?Rk1VVmRvcVl0QWZ2bEZob3VrdEFHY1ovbkx0Vjh1ekVLcktGaEF6SVN5Zy84?=
+ =?utf-8?B?ZmZiUE5VT2xta0tHVG9ONllkTlB3Um5Bb2RaOXJyMDdOeTQzZlJseHF6SmE1?=
+ =?utf-8?B?aW5WY0d3Si9zamNSTkFSWDVBbjhta2RhMkZ0TzJxemEzZjN4Z3hhZFBhaVlj?=
+ =?utf-8?B?MGtYRURLT1Zyd3NHb3dmMm5wc1MwbithOWxPVHVaWE9OaWNsS3VHcU55NHp0?=
+ =?utf-8?B?anhJTmxqZTgrV2FKTHA0UDhmd2lJckJFOTduOUcwSWpIVFBIZU1BcnNYRlhI?=
+ =?utf-8?B?YjIvWEc4eFp5RlI4UUFCd2lQRTBlSXhMRlRnaTl5b29tVlZBOEhHSmt3U2FT?=
+ =?utf-8?B?TEFKTnZjMDRUSXBBaFU2SlQ0WWdrc1FsRnREUDVaSGlacUF2WG4yZmpQRHN2?=
+ =?utf-8?B?a0lEWVF2NkhTSlZRQythUG9RT1V0bGxEUDgvTGllMWtXdVlkbm0zZm1ZZGN0?=
+ =?utf-8?B?LytuUzljb3hOSXYvV00wRWUwSDhkOU5XMmJSNk5MU0VUM2hWdEw4Y1VuYk9h?=
+ =?utf-8?B?OEpRU2pDbU9nd1UwNC9zenRrM0wzSHk2dVdjQUF2WFMwZDZaZDlUZmkrekxP?=
+ =?utf-8?B?Zy9nNW5vNDhtZHMrZUo1SmI2R00xN2RMMTFIUjlJZDdINy9pczZpTnJEbFM0?=
+ =?utf-8?B?RVNraWxRM3BjYUg3NlZtbE5mcFArWWg3bFVtOHJXWlI0OExHMVBqTXNsUUtn?=
+ =?utf-8?B?bG5OeGZrR25LQWhMOWM4OGdxM3FXK3ZVNGtmQ01NR0c2Y1Y4a2RIczFkOWZQ?=
+ =?utf-8?B?Z1NxU09LejZIOWdBVnlNWXQrWWVveEZtOEQwMThiMnVQMzlRcUhORkVPQ2E2?=
+ =?utf-8?B?UmtLOFhGb2lzWlVyci9vVGprQmt1Qld5U2RzdU5NbHdBR0hhOEIwZXltUEt1?=
+ =?utf-8?B?RytJaVVYUVVkZk5tNE92b3JyTkxqell6ZXpWcU5VMEhwUmxnTVVxZVNHNGh3?=
+ =?utf-8?B?T3RBV1VtZnIzcVhSZjhObUpVSUdDMXNXa3NXdzcvcFhuSTVEWmtaQXVPMTA3?=
+ =?utf-8?B?UkdBM0hhNXpVcy9hSTJ4N2hFTFZrQ21Da2tEZjBIZnJ1YTNPdCtSQnJLTVkw?=
+ =?utf-8?B?RisxcnFSUTZITEIzQ251NTk2eE1MbFJTMCtldjB5UDhjcWxKU1piK2pHcTVk?=
+ =?utf-8?B?Y0hFWVhpNHIzM3N2Q0JWbUJvQzFuSVMxaTZwWThlcERYcmx3QUJ5U0FiMG5p?=
+ =?utf-8?B?Y3ZEL2crcHpwZDhBWWtaUmo4d3NzWVhuVm1FeXRSZ1lyTHZqZGxBalFRWHZH?=
+ =?utf-8?B?UUxaU3BqZW1kZWJPdUVIWE9FRXkva1RQYlZQMDh4ZzJua3ltNUx3Y3dCY2tH?=
+ =?utf-8?B?VWVUYXpmWjF5S2I5MVdlS1pWbEhsakdKOHQ2V3VNeTlMY3d0Q0RoVTdVdDBp?=
+ =?utf-8?B?NENoS0poMHpOcDVZVkgxb3NIVFBuMk4zUlZBRTBqZk9JNHJ1SlY2RWZOL3l3?=
+ =?utf-8?B?bVZ3STAvVW5DZ0xnM3lPNHg0NWN6d0xqRlg1YSsrZnV4d3p5b0FydjljYTNQ?=
+ =?utf-8?B?cnBVNmNXNEFMNEhXcThsNUQxaXd0a3l5MUxud3FzME4zM040SVBUM3lIWUVH?=
+ =?utf-8?B?MTV4eVI3QWY4cW5zYjVaMXJFaDRHY0txL0o3eCs2SVFYNlRWWk9kTldKdTFz?=
+ =?utf-8?B?M1U1WGdNRExoMFdqdnJaNWd2WXo2RWt1YkxsbUNEbCtVNHE0UXYyTERaOC9K?=
+ =?utf-8?B?SmVieWR4dzBDN0hrdXdJbVFLZERuOVdmYks2YWRGSFhsbXQ0WTZpNWdyVnl4?=
+ =?utf-8?B?N21kOUEvQkwyUkh4N2pEV254dmJwOVJwaWx5Q3pQZ3YxMlc5VGk4REhzdHZ6?=
+ =?utf-8?B?Nk94RjRpY2lwM25YVDYzdC9NZUZsLzRIRXVqbnU4eGFOMElhVnNBWEtSV3dq?=
+ =?utf-8?B?b21kMjEvakJVWkZxbjNUMmJXVmp1VEl1cDVEblBVeXpJa2dtVFdHOWN1NW10?=
+ =?utf-8?B?Qi8vL0RMMnhNdEJsUmQvMWNUaU1Pdm16dFk2VmdwdFh2MzlKL1UyMFBHRjBm?=
+ =?utf-8?B?cGd6NjhJUFBySjFoMTZXcEdIQXkvb1A1eGtGVEQzRmpLMHRNNVQ4cHJiV1VN?=
+ =?utf-8?B?dzNGKy9jZ0VJUmRFOERyQU91eTQ3QWw3OEw4cFNMWTNpRWNKdExXa0JBcW81?=
+ =?utf-8?Q?lDXXQa0j4vaQMeknQ6HZXApbT?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b307f896-7df5-42e6-a861-08dcc6c736a6
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd328bbd-3d16-4343-dc9c-08dcc6c8e338
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 18:36:49.8947
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 18:48:48.9012
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dxnwu1DJdS+wQQcdso2GLZJM01M9oo/oDvvSW01W+E8L+XRyd4himldpuuQICpySALBIcm6piDZidTxEDrHz1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6884
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2nh8o8f3mRUnwRWxcU2vLp1vxqS86nfPIbh1QflRauAAWGZEnwDw1GNd4Yn7K7rn7o4gUeRIRi+EGDK0sW30aQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7371
 
-On 8/27/2024 11:52, Gautham R. Shenoy wrote:
-> Hello Mario,
-> 
-> 
-> On Mon, Aug 26, 2024 at 04:13:56PM -0500, Mario Limonciello wrote:
+On 8/27/2024 09:50, Gautham R. Shenoy wrote:
+> On Mon, Aug 26, 2024 at 04:13:53PM -0500, Mario Limonciello wrote:
 >> From: Mario Limonciello <mario.limonciello@amd.com>
 >>
->> The special case in amd_pstate_highest_perf_set() is the value used
->> for calculating the boost numerator.  Merge this into
->> amd_get_boost_ratio_numerator() and then use that to calculate boost
->> ratio.
+>> If the boost ratio isn't calculated properly for the system for any
+>> reason this can cause other problems that are non-obvious.
 >>
->> This allows dropping more special casing of the highest perf value.
+>> Raise all messages to warn instead.
 >>
+>> Suggested-by: Perry Yuan <Perry.Yuan@amd.com>
 >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 >> ---
->>   arch/x86/kernel/acpi/cppc.c  | 16 ++++++++++++
->>   drivers/cpufreq/amd-pstate.c | 49 +++++++-----------------------------
->>   2 files changed, 25 insertions(+), 40 deletions(-)
+>>   arch/x86/kernel/acpi/cppc.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
 >>
 >> diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
->> index 729b35e84f5eb..44b13a4e28740 100644
+>> index 1d631ac5ec328..e94507110ca24 100644
 >> --- a/arch/x86/kernel/acpi/cppc.c
 >> +++ b/arch/x86/kernel/acpi/cppc.c
->> @@ -9,6 +9,7 @@
->>   #include <asm/processor.h>
->>   #include <asm/topology.h>
+>> @@ -75,17 +75,17 @@ static void amd_set_max_freq_ratio(void)
 >>   
->> +#define CPPC_HIGHEST_PERF_PERFORMANCE	196
->>   #define CPPC_HIGHEST_PERF_PREFCORE	166
->>   
->>   enum amd_pref_core {
->> @@ -244,6 +245,21 @@ int amd_get_boost_ratio_numerator(unsigned int cpu, u64 *numerator)
->>   		*numerator = boost_numerator;
->>   		return 0;
+>>   	rc = cppc_get_perf_caps(0, &perf_caps);
+>>   	if (rc) {
+>> -		pr_debug("Could not retrieve perf counters (%d)\n", rc);
+>> +		pr_warn("Could not retrieve perf counters (%d)\n", rc);
+>>   		return;
 >>   	}
->> +
->> +	/*
->> +	 * For AMD CPUs with Family ID 19H and Model ID range 0x70 to 0x7f,
->> +	 * the highest performance level is set to 196.
->> +	 * https://bugzilla.kernel.org/show_bug.cgi?id=218759
->> +	 */
->> +	if (cpu_feature_enabled(X86_FEATURE_ZEN4)) {
->> +		switch (boot_cpu_data.x86_model) {
->> +		case 0x70 ... 0x7f:
->> +			*numerator = CPPC_HIGHEST_PERF_PERFORMANCE;
->> +			return 0;
->> +		default:
->> +			break;
->> +		}
->> +	}
->>   	*numerator = CPPC_HIGHEST_PERF_PREFCORE;
 >>   
->>   	return 0;
->> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
->> index ec32c830abc1d..75568d0f84623 100644
->> --- a/drivers/cpufreq/amd-pstate.c
->> +++ b/drivers/cpufreq/amd-pstate.c
->> @@ -52,8 +52,6 @@
->>   #define AMD_PSTATE_TRANSITION_LATENCY	20000
->>   #define AMD_PSTATE_TRANSITION_DELAY	1000
->>   #define AMD_PSTATE_FAST_CPPC_TRANSITION_DELAY 600
->> -#define CPPC_HIGHEST_PERF_PERFORMANCE	196
->> -#define CPPC_HIGHEST_PERF_DEFAULT	166
+>>   	rc = amd_get_boost_ratio_numerator(0, &highest_perf);
+>>   	if (rc)
+>> -		pr_debug("Could not retrieve highest performance\n");
+>> +		pr_warn("Could not retrieve highest performance\n");
+>>   	nominal_perf = perf_caps.nominal_perf;
 >>   
->>   #define AMD_CPPC_EPP_PERFORMANCE		0x00
->>   #define AMD_CPPC_EPP_BALANCE_PERFORMANCE	0x80
->> @@ -372,43 +370,17 @@ static inline int amd_pstate_enable(bool enable)
->>   	return static_call(amd_pstate_enable)(enable);
->>   }
+>>   	if (!nominal_perf) {
+>> -		pr_debug("Could not retrieve nominal performance\n");
+>> +		pr_warn("Could not retrieve nominal performance\n");
+>>   		return;
+>>   	}
 >>   
->> -static u32 amd_pstate_highest_perf_set(struct amd_cpudata *cpudata)
->> -{
->> -	struct cpuinfo_x86 *c = &cpu_data(0);
->> -
->> -	/*
->> -	 * For AMD CPUs with Family ID 19H and Model ID range 0x70 to 0x7f,
->> -	 * the highest performance level is set to 196.
->> -	 * https://bugzilla.kernel.org/show_bug.cgi?id=218759
->> -	 */
->> -	if (c->x86 == 0x19 && (c->x86_model >= 0x70 && c->x86_model <= 0x7f))
->> -		return CPPC_HIGHEST_PERF_PERFORMANCE;
->> -
->> -	return CPPC_HIGHEST_PERF_DEFAULT;
->> -}
->> -
->>   static int pstate_init_perf(struct amd_cpudata *cpudata)
->>   {
->>   	u64 cap1;
->> -	u32 highest_perf;
->>   
->>   	int ret = rdmsrl_safe_on_cpu(cpudata->cpu, MSR_AMD_CPPC_CAP1,
->>   				     &cap1);
->>   	if (ret)
->>   		return ret;
->>   
->> -	/* For platforms that do not support the preferred core feature, the
->> -	 * highest_pef may be configured with 166 or 255, to avoid max frequency
->> -	 * calculated wrongly. we take the AMD_CPPC_HIGHEST_PERF(cap1) value as
->> -	 * the default max perf.
->> -	 */
->> -	if (cpudata->hw_prefcore)
->> -		highest_perf = amd_pstate_highest_perf_set(cpudata);
->> -	else
->> -		highest_perf = AMD_CPPC_HIGHEST_PERF(cap1);
->> -
->> -	WRITE_ONCE(cpudata->highest_perf, highest_perf);
->> -	WRITE_ONCE(cpudata->max_limit_perf, highest_perf);
->> +	WRITE_ONCE(cpudata->highest_perf, AMD_CPPC_HIGHEST_PERF(cap1));
->> +	WRITE_ONCE(cpudata->max_limit_perf, AMD_CPPC_HIGHEST_PERF(cap1));
+>> @@ -93,7 +93,7 @@ static void amd_set_max_freq_ratio(void)
+>>   	/* midpoint between max_boost and max_P */
+>>   	perf_ratio = (perf_ratio + SCHED_CAPACITY_SCALE) >> 1;
+>>   	if (!perf_ratio) {
+>> -		pr_debug("Non-zero highest/nominal perf values led to a 0 ratio\n");
+>> +		pr_warn("Non-zero highest/nominal perf values led to a 0 ratio\n");
+>>   		return;
 > 
+> Aside:
+> perf_ratio is a u64, and SCHED_CAPACITY_SCALE is (1L << 10). Thus, is
+> it even possible to have !perf_ratio?
 > 
-> So henceforth, cpudata->highest_perf is expected to cache the value of
-> CPPC.highest_perf and not the boost_ratio_numerator. There are couple
-> of user-visible changes due to this.
-> 
-> 
-> 1.  On platforms where preferred-core is supported, previously the
->      sysfs file
->      /sys/devices/system/cpu/cpuX/cpufreq/amd_pstate_highest_perf would
->      report the boost_ratio_numerator. Henceforth it will report
->      CPPC.highest_perf.
-> 
->      I hope there are no userspace tools that compute the boost_ratio
->      using the syfs amd_pstate_highest_perf/amd_pstate_nominal_perf.
-> 
-> 2. The amd_pstate_prefcore_ranking and amd_pstate_highest_perf will
->     show the same values on all platforms, and henceforth are
->     redundant.
-> 
+> Otherwise, I am ok with this promotion of pr_debug to pr_warn.
 
-Good observations here.  I'm not aware of any tools trying to replicate 
-this calculation.
-With the redundancy I would actually argue we should just drop the sysfs 
-file 'amd_pstate_prefcore_ranking'.
-
-Thoughts?
+You're right; I don't see this is possible.  I'll tear it out in a 
+prerequisite patch in v2.
 
 > 
-> Shouldn't this be documented?
-
-I noticed amd_pstate_prefcore_ranking wasn't properly documented in 
-amd-pstate.rst in the first place.  If the decision is not to drop the 
-sysfs file, then I'll add a section for it.
-
-> 
-> The rest of the patch looks good to me.
-> 
-> 
+> Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 > 
 > --
 > Thanks and Regards
 > gautham.
-> 
 
 
