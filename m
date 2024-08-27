@@ -1,132 +1,173 @@
-Return-Path: <linux-acpi+bounces-7868-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7869-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743FC96075A
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 12:23:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2949608AC
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 13:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A7A1F22C0F
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 10:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF73A2822F2
+	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 11:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4270F199EB4;
-	Tue, 27 Aug 2024 10:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016BB19F467;
+	Tue, 27 Aug 2024 11:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oh1CYYRF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puV1QpwR"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1238F8F54;
-	Tue, 27 Aug 2024 10:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73C315535A;
+	Tue, 27 Aug 2024 11:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724754222; cv=none; b=IPSoXJC8QWIHBXm9+zFKp+ciig/7Ql2crnc9NU8JSxKdlQCUeSCo8ZCZtNKYaf/Pj9nUJuMaxOduJQfZs4o0KIq4sgqgQ+yNkRnBFG7WS9uwgVBnFS99xFfIeMbCB3d7AOzjpLLRhgwDWliTpQWSksZombJb71xsmFJass/Oyg8=
+	t=1724758152; cv=none; b=BvPzpOEgCyn4IqrydiYwDeDnhLYC72dRqPtxpWX1pETyS/2AC4jsWgY/GTbqwHkrQ8MP8nLTEzu3sFCIT8JZCh9dtEkp5qoC4qJm/w/z65MGsox0HW8V8m+Izbfb5O1USFVENlpu48ajsrn7CMUrLjrYk49SH2804z+thOIUshI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724754222; c=relaxed/simple;
-	bh=FmVs2H9fVl8fLd76/0s13jcKNXHjR7KwW4GTUDCgZwI=;
+	s=arc-20240116; t=1724758152; c=relaxed/simple;
+	bh=7hG0IYA1h2hw7SvTKbJ20PPbF9uHd2tn3lDRrv/IAX8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bwvG/gLlmM1ZFOrUoH6NauseVlv/KrlfYML3Qaassh69eWKg/uT874JRp8/KmIXnhm2RMyEb4TXzjwb1o6Lhd367XRz+39Tx0IGnk5J+sgCm7SsEEzssZBbIC3yFBEDVgaE1goJTyzuSv+ddcKIviTLjZHM2/kfArhPTdN59w1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oh1CYYRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95322C8B7A0;
-	Tue, 27 Aug 2024 10:23:40 +0000 (UTC)
+	 To:Cc:Content-Type; b=OYwIteYMuQWzjfyO8rEtZY9ZsOnjWIwomnRTxzCGFmoQDHeObXHtFUGmbD6uIvZvkfFPKlK4Lx4QCqhbMzQEsuAw5g7Ry+VmQh+iwLvyl4MWRnsVg0QoxxPQXpPoaKNc+4pYJ3jDKOw/+S2YK+vGXUXrQsuWmQax8PobjSSg7V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puV1QpwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B55AC58282;
+	Tue, 27 Aug 2024 11:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724754220;
-	bh=FmVs2H9fVl8fLd76/0s13jcKNXHjR7KwW4GTUDCgZwI=;
+	s=k20201202; t=1724758152;
+	bh=7hG0IYA1h2hw7SvTKbJ20PPbF9uHd2tn3lDRrv/IAX8=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oh1CYYRFQwf5jTLB4Z/z0FIiLTnD8Te0npL99FxV8r3sxNKXsbJvXjS98Si2TR2WJ
-	 T6ZlRX3GYyjvyQLEMAwzzccsVQCTW9qXzOyZjtSWupPJ4enIaYPK0kXuSNeKy7J9EY
-	 el08cH5eJpAgvdapcX2pfiYyJahSXBvKG/Wo9VazQbQo0e5ZaWvP4hR25wg51MkLbP
-	 pe99biHsx6BeBlLPYaXKLBj/K47cYG0a7RzFxT9eQj8FYOn1reTJFCbzTo4UTm8jR0
-	 zP3BdzMCt0z/Mv5lnguS1p/e3P7JOgd1uP7MzoS5gxffo3EW9Sce0/8rwiVP4NwLWz
-	 BVaEEEQLQYItg==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ef27bfd15bso53759681fa.2;
-        Tue, 27 Aug 2024 03:23:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUVKl8uInj5xOlBhhvvYE4a8MM9fS31eMwclhOTqQ4NreP4VZIouTneGMzVnKddipBer0zWhQw1Qqvv@vger.kernel.org, AJvYcCVEBXoNqDA5u1tUekbW843QR4svF5sVf53s3xBl9pi0oByRUezddkK1qdJ8/8CIxER0+5hkfFC2eNUp@vger.kernel.org, AJvYcCWrQtO18ozlOyKT8+H4MYvrr8jrDUP0yIHpK7D1l1qz4GHXJTjqauL1tbXxYJDMRSOm0hW0oMndXS6ZFy/T@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTnqzH4VCcBlnSIjf7YqtRpfBFUIkECEigOULWjKeACitvWu3a
-	uasOHUWM4EvknAdcBptSqt/NeN5XOYc/Pte6fywwhY8O7PBc9+9GWICCxgVN/SMa8t74rT+4awJ
-	9zsHcnSq6zhUHObazxsnMRbns8AU=
-X-Google-Smtp-Source: AGHT+IG8JqpafPZFJda1gwsxLaFO95Z3if+yPodfh+gkWBoK4uXw0HSkZtO/iat3COUmo3EiHSR2/ZVuezlgoUt1lak=
-X-Received: by 2002:a2e:a547:0:b0:2f0:1d51:a8fa with SMTP id
- 38308e7fff4ca-2f514b987f9mr18065741fa.30.1724754218921; Tue, 27 Aug 2024
- 03:23:38 -0700 (PDT)
+	b=puV1QpwRLkXJWyL/TTeIrYISl/Lb67ZLV10fHXiwc6YbxzTDFPzhWZOylvmTkxycm
+	 5aqIC2m1iatFIFOejCAKb1qVL6UkY4giFq0PQgV1lyhDir/q7SlOX07P7V+nvdBj9N
+	 ks6C1S496BpufxwVYMSMH3I35Nu50TlaC1jYFZCt5uT1S2oyEmh6rZdIdVllnCYIP7
+	 UZlDRGwmId+wCvbKGX4tojGsn3s8jsQQECdNULbWhKUEiKa6Se3TUL4EXfwYqCac0E
+	 0+mIsa7WSDGnpLvn8umW1pd+kDClbVKApotcoX5ojl8eFAEt1uRXDyJkuZY25PMg3/
+	 tJNYU8ztVo7Iw==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-27018df4ff3so4170999fac.1;
+        Tue, 27 Aug 2024 04:29:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWISJIhe1Zn2yj8Xq/ntEnb+w+vmGh9j9MNxrx/bUG3bRQKQ2Mu9fRGFbboPqnJ9BLd38m1YP2ifiWv@vger.kernel.org, AJvYcCWkfdxR8idPeBkrh6Xo9k85eCVI/R27jZk0+Q06XmN7zWnHJUR8CeTh2YLD9euwyuWqq933LBGgftCSpPY0@vger.kernel.org, AJvYcCXJMnqBtZWxvb+bQgDFwnQS0GGA2xlMin+luLTzJ17atfbgo5LRym5L1YjHXbJ81sdLO+04Y64L4PY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0xzVCdW+4qodctTmeZGg4APq1SdFXxhwTKzns9YsmsbLt1fGv
+	39FAW1WJhHvpQecdoguFfcn7dAdtGiVk1+uXyt8Efs0zS/mCDkha94F9FtiQAK+3r62ZGqo9ZDl
+	3hkFlx/IB5P/cPfAc5BtBY8O+LiA=
+X-Google-Smtp-Source: AGHT+IGluB8OUXeTRU3WcYxq/C0TwAoctiKqmpfkrFvtB9qB6quMRK/TPKl3uIB6H0P84Ellf2rtm+5yWQAKmr67UFc=
+X-Received: by 2002:a05:6870:8993:b0:254:994b:5e6b with SMTP id
+ 586e51a60fabf-273e66f290fmr14818695fac.44.1724758151783; Tue, 27 Aug 2024
+ 04:29:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240823002422.3056599-1-avadhut.naik@amd.com>
-In-Reply-To: <20240823002422.3056599-1-avadhut.naik@amd.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Tue, 27 Aug 2024 12:23:27 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFUDy3qSp5q3UxWkuSCLwJ3O3SaFN25f+9tojJL=sFNJQ@mail.gmail.com>
-Message-ID: <CAMj1kXFUDy3qSp5q3UxWkuSCLwJ3O3SaFN25f+9tojJL=sFNJQ@mail.gmail.com>
-Subject: Re: [PATCH] efi/cper: Print correctable AER information
-To: Avadhut Naik <avadhut.naik@amd.com>
-Cc: linux-efi@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, bp@alien8.de, 
-	james.morse@arm.com, tony.luck@intel.com, ilpo.jarvinen@linux.intel.com, 
-	ira.weiny@intel.com, yazen.ghannam@amd.com, avadnaik@amd.com
+References: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
+In-Reply-To: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 27 Aug 2024 13:29:00 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
+Message-ID: <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
+To: Len Brown <lenb@kernel.org>
+Cc: rjw@rjwysocki.net, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
+	Arjan van de Ven <arjan@linux.intel.com>, Todd Brandt <todd.e.brandt@intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Frederic Weisbecker <frederic@kernel.org>, Peter Zijlstra <peterz@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 23 Aug 2024 at 02:24, Avadhut Naik <avadhut.naik@amd.com> wrote:
+First, let me add a few people who know more about timers than I do.
+
+On Tue, Aug 27, 2024 at 5:42=E2=80=AFAM Len Brown <lenb@kernel.org> wrote:
 >
-> From: Yazen Ghannam <yazen.ghannam@amd.com>
+> From: Len Brown <len.brown@intel.com>
 >
-> Currently, cper_print_pcie() only logs Uncorrectable Error Status, Mask
-> and Severity registers along with the TLP header.
+> Optimize acpi_os_sleep(ms) using usleep_range(floor, ceiling).
+> The floor of the range is the exact requested ms,
+> with an additional 1ms of slack for sleeps above 20ms.
 >
-> If a correctable error is received immediately preceding or following an
-> Uncorrectable Fatal Error, its information is lost since Correctable
-> Error Status and Mask registers are not logged.
+> This reduces  the kernel resume time of the Dell 9300
+> to 1,124 ms from 2,471 ms.
 >
-> As such, to avoid skipping any possible error information, Correctable
-> Error Status and Mask registers should also be logged.
+> The ACPI AML Sleep(ms) method calls acpi_os_sleep(ms),
+> which has invoked msleep(ms) since 2013.
 >
-> Additionally, ensure that AER information is also available through
-> cper_print_pcie() for Correctable and Uncorrectable Non-Fatal Errors.
+> But msleep(ms) is based on jiffies, and the rounding-up
+> logic to convert to jiffies on a HZ=3D250 system causes
+> msleep(5) to bloat to a minimum of a 12ms delay.
+> msleep(5) typically takes over 15ms!
 >
-> Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-> Tested-by: Avadhut Naik <avadhut.naik@amd.com>
-> Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+> As a result, AML delay loops with small Sleep() inside
+> magnify the entire loop.  A particularly painful example
+> is ACPI support for powering-on ICL and TGL
+> thunderbolt/pcie_ports during system resume.
+>
+> Regarding jiffy-based msleep() being inexpensive
+> and hrtimer-based usleep_range() being expensive.
+> ACPI AML timer invocations are rare, and so it
+> is unlikely the hrtimer cost will be noticible,
+> or even measurable.  At the same time, the msleep()
+> timer duration bloat is significant enough to
+> be noticed by end users.
+
+I'm not sure why you are refusing to follow the implementation of
+fsleep() and Documentation/timers/timers-howto.rst and still use
+msleep() for sleep durations longer than 20 ms.
+
+Why should usleep_range() be used for 100 ms sleeps, for instance?
+This goes against the recommendation in the above document, so is
+there a particular reason?
+
+> Regarding usleep_range() timer coalescing.
+> It virtually never works during ACPI flows, which
+> commonly run when there are few coalescing
+> opportunities. As a result, the timers almost
+> always expire at the maximum end of their specified range.
+
+I don't think that's the main point of using a nonzero range in
+usleep_range().  AFAICS, this is about letting the timekeeping
+subsystem know how much you care about timer precision so it can
+arrange things to meet everyone's needs.
+
+> It was tempting to use usleep_range(us, us)
+> for all values of us.  But 1 ms is added to the
+> range for timers over 20ms on the reasoning that
+> the AML Sleep interface has a granularity of 1ms,
+> most costly loops use duration under 20ms inside,
+> and singular long sleeps are unlitly to notice an
+> additiona 1ms, so why not allow some coalescing...
+
+So again, why not use msleep() for sleeps longer than 20 ms?
+
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D216263
+> Signed-off-by: Len Brown <len.brown@intel.com>
+> Suggested-by: Arjan van de Ven <arjan@linux.intel.com>
+> Tested-by: Todd Brandt <todd.e.brandt@intel.com>
 > ---
->  drivers/firmware/efi/cper.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  drivers/acpi/osl.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 >
-
-Queued for v6.12 - thanks.
-
-
-> diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
-> index 7d2cdd9e2227..b69e68ef3f02 100644
-> --- a/drivers/firmware/efi/cper.c
-> +++ b/drivers/firmware/efi/cper.c
-> @@ -434,12 +434,17 @@ static void cper_print_pcie(const char *pfx, const struct cper_sec_pcie *pcie,
->         "%s""bridge: secondary_status: 0x%04x, control: 0x%04x\n",
->         pfx, pcie->bridge.secondary_status, pcie->bridge.control);
+> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+> index 70af3fbbebe5..c4c76f86cd7a 100644
+> --- a/drivers/acpi/osl.c
+> +++ b/drivers/acpi/osl.c
+> @@ -607,7 +607,13 @@ acpi_status acpi_os_remove_interrupt_handler(u32 gsi=
+, acpi_osd_handler handler)
 >
-> -       /* Fatal errors call __ghes_panic() before AER handler prints this */
-> -       if ((pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) &&
-> -           (gdata->error_severity & CPER_SEV_FATAL)) {
-> +       /*
-> +        * Print all valid AER info. Record may be from BERT (boot-time) or GHES (run-time).
-> +        *
-> +        * Fatal errors call __ghes_panic() before AER handler prints this.
-> +        */
-> +       if (pcie->validation_bits & CPER_PCIE_VALID_AER_INFO) {
->                 struct aer_capability_regs *aer;
+>  void acpi_os_sleep(u64 ms)
+>  {
+> -       msleep(ms);
+> +       u64 us =3D ms * 1000;
+> +
+> +       if (us <=3D 20000)
+> +               usleep_range(us, us);
+> +       else
+> +               usleep_range(us, us + 1000);
+> +
+>  }
 >
->                 aer = (struct aer_capability_regs *)pcie->aer_info;
-> +               printk("%saer_cor_status: 0x%08x, aer_cor_mask: 0x%08x\n",
-> +                      pfx, aer->cor_status, aer->cor_mask);
->                 printk("%saer_uncor_status: 0x%08x, aer_uncor_mask: 0x%08x\n",
->                        pfx, aer->uncor_status, aer->uncor_mask);
->                 printk("%saer_uncor_severity: 0x%08x\n",
->
-> base-commit: fdf969bbceb389f5a7c69e226daf2cb724ea66ba
+>  void acpi_os_stall(u32 us)
 > --
-> 2.34.1
->
+
+While I agree with using usleep_range() for sleeps up to 20 ms in
+acpi_os_sleep(), I disagree with the patch as is.
+
+Thanks!
 
