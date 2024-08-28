@@ -1,293 +1,219 @@
-Return-Path: <linux-acpi+bounces-7926-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7927-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882F99628C1
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 15:35:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26553962AEB
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 16:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4C831C2122E
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 13:35:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61B8BB2169B
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8947178399;
-	Wed, 28 Aug 2024 13:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E1718DF8A;
+	Wed, 28 Aug 2024 14:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UoKrnfFe"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Nh2vnKTH"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2063.outbound.protection.outlook.com [40.107.243.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E9B16BE35;
-	Wed, 28 Aug 2024 13:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724852131; cv=none; b=GL8Tj4wfsAuDowBuWFp/T/hwfaSG1Ww3CuE5xKkWhQdfoAP5DYSMvF9fANmYnho/7FvnaCdpO687H+VKhqRU3VUnh/YxZqrAp4EMoXRSwo7JrawOYFRvRkfOLcWoznfYGxq5ydqGW/rxh9LGNwj6PXfK9QAlZMzHGakHIiDPfw4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724852131; c=relaxed/simple;
-	bh=hb8ivNeFPyAij0EIKV0xA4CtdUN4vdwVdI3d4INdBLg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S0/BXy259xrdmSlgTUmRUnJ064C+EVKNuq0F48pkMVhLt3eqzAkA58mXZULWThcNh/i3M/KEPiXErqfMOWfZySpf0bR5qKqpsGErcfICDaXAT+G7n5+MWLJg6EVP/+etNNKHObyXrKP7dY9xtCa/57Lo0xWdc4uGTZRQXzknees=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UoKrnfFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A686C51EEF;
-	Wed, 28 Aug 2024 13:35:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724852131;
-	bh=hb8ivNeFPyAij0EIKV0xA4CtdUN4vdwVdI3d4INdBLg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UoKrnfFeeyuEb0VHx4AuPeoinLMhdjdvVTK44V0QyxGePe4czkdb9zF3oYSdmBomj
-	 f2W6ivRw0y/MYa8ViWZDUlL84VcxGd99qKa544Bp+WthvEF6XVgyNb+Fgb9Hbew/aS
-	 q8nfWI4cplklpyCCV3S2Qf6Ki8VF5kowg/9Oj+JZT53HRFk82e/a757r61GQqG50b9
-	 VTBt6bkQkEkVllbGYraUlEgiHaHTeqAhFmsHKhEuhramNso/hzHmFWyhAuSjvHRtPV
-	 iFCm3IIbgwBNvzbsTw6SLSNNQuN+/8KEtggZsLvs7lFC+bh0IkS+zIrUbdt+dRaZ8P
-	 SoCSvXhIwbJKA==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-27032e6dbf2so4290038fac.1;
-        Wed, 28 Aug 2024 06:35:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUXQcS6a0mo5V2pb9Nx0MHmaX+GleNRMVVXRKt2T5dXoXbSgoLY1DKHi8uQsxR9tOAfKCu0xXprhSty@vger.kernel.org, AJvYcCVKOtyGLWLEQFGqFw4NpWaIags7vKqRBYgq+zs9tLE2CfCg9LNlodXsqjFJfmaJuIhsEId4UXP2+ixAsn3Z@vger.kernel.org, AJvYcCXJ04GtfZ61e3XWvsEZfFPxrId1vcPg0mYqI++O9EUv4tHVvsEtdZp1OfWzBfcj2hGrwC62X7iCNEM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykaVtMFKOCiVO3EmY5UL38u8o3Btx5NUnY23++zfHqmod+NdGy
-	7LxkjfMB+MoinK9Y+A3qZJjV5L9a54H94dF2td7QTD1QPsEtEz/J7oi68ciUApnzaC3dwgQNypp
-	8q4PWp23BsTZyCZ3AVJDRMsbKvMg=
-X-Google-Smtp-Source: AGHT+IETmWZY8t+lmbkR74cl6UbZGgBGOoxMRK8SeLAxqV4G/3UE+2wPnGqQngjPp233gHccxvtic7bRPaNhsaA15wM=
-X-Received: by 2002:a05:6870:e310:b0:259:ae64:9234 with SMTP id
- 586e51a60fabf-273e64d7798mr17601995fac.13.1724852130425; Wed, 28 Aug 2024
- 06:35:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04352868B;
+	Wed, 28 Aug 2024 14:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724857081; cv=fail; b=Ksm6clBGD+wkWOlYKtML7sso8UjTD/Z1Ov2GaBHKmMbunRG3k1dCiCObfgwCc9bDLmGfYhKpWGQOj3Jo8C21dWE577mPOACP+d9Tahr1Gro5/kPSOYP7mG/drRyLNaM+A037nA4Cdm0BiSNK91SuElDMtJXHsjf4bAUzO0c3YVk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724857081; c=relaxed/simple;
+	bh=NV/Bcr/Rq3XerId6L3q0NeMOa7qOMwIJvI1R4CtpSvc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nYCXR/u4YgR6oNVIe79MnBodIGg1IUYFdXsWQLKJZ96WGSbubakxlKudA8FD08UBk9JfKS9XwvKg1DNk9zRQt20YVelCd9KMofLrRX1mNL/b8Pn4GiL1lXlDFJcUpO2oRW24fuL+Nb78ZT3BuuIZj13QxPe1rK4j6c/s02Peuis=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Nh2vnKTH; arc=fail smtp.client-ip=40.107.243.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gS5ZkCyICV2KgC+xiHqmRC+X9+1MC8/LslJjnm+EBWuhGc2uBEgvXOyzH8vow7kD1GUbktuQ82OgY6wSDOzTjvzsjhUUKkHwvrb35sC1ea5lkQWRlJBpM6byWVtpAjOC/26i+XVG/cJ2w46qYLH35+Espw1xomLjpNUQ3IReVOLogtUOvm9BExX3TzA70gOY7pnfM44TPZjk8HftZuwy48mNTX6EOgxKm6+X2cRMFnqVZcAozsILAQWRt75sUC0dtjBX5FFtQITdZX+GoDfffpUW+WMMlGgc8TTHbFYaNVahGxNH6qKDuv/bncHRpP4ABDI5/j7ebBf833tRpYU4rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mzSGQBG9E/canutsc6ozDYDgw1eV8Fw70IEU9fZ+w2Q=;
+ b=RK+VegrzWpyZBxcKR/d/tIgIrRONHRNfYIpR5xgnDHLDq14m2rWW3DTvYl/T1NFJBMtUHQnCr8ngU58PyMe8wyOoLCstb9e2Sjlo7oDDMkkcXrH/4Owo/zpPNw9/WhOSNl7h1fM3P95vPRex4sFWpcLoA3Otu8xNwLJxIyMJL3oKizMS28zqyA6MbwgaVftlV0e4/g7ojAiWc4aPIwFyRXlBsmQCZBjKRpfYFLrf6f16rzO6RU2qz4Amwx8liqd+LIqR/X7NbwUyeNSaXBbrbH0IoAfJoY+R5WL8pGpctgyRbpH8l1q4eO4dLFD9ZzcrW5X/ER9HcXhJNUIYFankUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mzSGQBG9E/canutsc6ozDYDgw1eV8Fw70IEU9fZ+w2Q=;
+ b=Nh2vnKTHi5PZSLMduaJcs2aUE1cWwPdbT1xZRl3V2yFrnNScfuV1Pe6YnW59P6feCKvuRK6xv0O+1U41fyBIc2bFEmjEUgIIxdekGuu1qmpno1OqX1tLN71TOgqzD1zByE0awwo2wzTv1s8sQMxrrcZ/CCoD5vJZzgr/h/834NU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB8252.namprd12.prod.outlook.com (2603:10b6:8:ee::7) by
+ LV3PR12MB9188.namprd12.prod.outlook.com (2603:10b6:408:19b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28; Wed, 28 Aug
+ 2024 14:57:56 +0000
+Received: from DS7PR12MB8252.namprd12.prod.outlook.com
+ ([fe80::2d0c:4206:cb3c:96b7]) by DS7PR12MB8252.namprd12.prod.outlook.com
+ ([fe80::2d0c:4206:cb3c:96b7%4]) with mapi id 15.20.7897.027; Wed, 28 Aug 2024
+ 14:57:56 +0000
+Date: Wed, 28 Aug 2024 20:27:44 +0530
+From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+To: Andrea Righi <andrea.righi@linux.dev>
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Mario Limonciello <superm1@kernel.org>,
+	Borislav Petkov <bp@alien8.de>, Perry Yuan <perry.yuan@amd.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	"open list:ACPI" <linux-acpi@vger.kernel.org>,
+	"open list:CPU FREQUENCY SCALING FRAMEWORK" <linux-pm@vger.kernel.org>,
+	changwoo@igalia.com, David Vernet <void@manifault.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH 8/8] cpufreq: amd-pstate: Drop some uses of
+ cpudata->hw_prefcore
+Message-ID: <Zs866Myvbs0ByoAK@BLRRASHENOY1.amd.com>
+References: <20240826211358.2694603-1-superm1@kernel.org>
+ <20240826211358.2694603-9-superm1@kernel.org>
+ <Zs4G084+7MmzdYjU@BLRRASHENOY1.amd.com>
+ <61b96549-2969-4b64-a40d-f91f614ec3ab@amd.com>
+ <Zs6w3RktAb6fJrJ+@BLRRASHENOY1.amd.com>
+ <Zs7Bwh6T3HCGlR9C@gpd3>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zs7Bwh6T3HCGlR9C@gpd3>
+X-ClientProxiedBy: MA0PR01CA0065.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ad::9) To DS7PR12MB8252.namprd12.prod.outlook.com
+ (2603:10b6:8:ee::7)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
- <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
- <CAJvTdKkucaRVDZm6EVeUxwyrQexyuYd7ECUBSkpP0nC9PwzspA@mail.gmail.com> <CAJZ5v0jvYitb7DLyLkqTRv0TT=6yBHDvEvb8tJLzAOVKa3hqnQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0jvYitb7DLyLkqTRv0TT=6yBHDvEvb8tJLzAOVKa3hqnQ@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 28 Aug 2024 15:35:18 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gxVqrASiuJq=UX9jyZsG=XvriFn2=7CPmG6-1sKbmPEQ@mail.gmail.com>
-Message-ID: <CAJZ5v0gxVqrASiuJq=UX9jyZsG=XvriFn2=7CPmG6-1sKbmPEQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
-To: Len Brown <lenb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
-Cc: rjw@rjwysocki.net, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Len Brown <len.brown@intel.com>, 
-	Arjan van de Ven <arjan@linux.intel.com>, Todd Brandt <todd.e.brandt@intel.com>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB8252:EE_|LV3PR12MB9188:EE_
+X-MS-Office365-Filtering-Correlation-Id: c80d3466-4ad5-4f29-e433-08dcc771ccf2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?IVoPo6L4LESt2a8AQMT7MjfZSfxdiy0uCKB1df7tjvO9ROAdSdTxyfpNQrLJ?=
+ =?us-ascii?Q?ZVtrXytdAtU2ZXlLZkfLtXTjeakAP+UDsndMRaVZLaq5Np7PAU1BPq6lm9zS?=
+ =?us-ascii?Q?mBnjpsqDZbjAKz8hiPVHQBIl9suNq/Wc3xZuu/aEw7rsws2wHJp0gjzvuPqT?=
+ =?us-ascii?Q?xRfRxUdhgNM7JX3QpSl3/isoTmcMqMl+lEsym4vHiDxq6m77fi93kwlbZlFJ?=
+ =?us-ascii?Q?rA6hdERG58uf3ZpmuDwKY+AXc1nBagOTMI5ArjqN2wGU1NU/eVbndNuTYzq6?=
+ =?us-ascii?Q?RKYyoe32o3Yocc8WhGvQNPrLWqcEyQQ1bgDEUoTUSR/S8hXa1LyBnxs1Tcus?=
+ =?us-ascii?Q?bwdR9DAwGFtOX95ETEu4VVJiOSUhTGDAoQwNAljkTAxDxOYVeeSdH2gkxazz?=
+ =?us-ascii?Q?9SiHAYHecA8AAeC3Y7cauMBmFKi18N8kTuV/g52NpSN/fBSA7ItB1SEaeVgt?=
+ =?us-ascii?Q?8n2vt9lda+RkayMa1bPrTN0dbkinVnSyu7k51FaPZO977J0ppir2sngytI1t?=
+ =?us-ascii?Q?szshX4lZnujhvxZYZuqnXTx/kzOPebsaqrpV6aBKaSFXp26ID8Yq3j17gCre?=
+ =?us-ascii?Q?kO1LyixmEnDCZlKV9oY7g0hEvgpOaMs9OUZGL2d7l3MYxrxC7JfbpO6iAOhb?=
+ =?us-ascii?Q?MRMzWbXEij2gN8y8tMv4wxJw6ZsHsLjotFTpb4V6Xqjl2Vb01Ozs2f+/p61z?=
+ =?us-ascii?Q?QwxYlL1mQ8gHIKDwxQlSesoVh0n9j4SE5ELL0HmlR3zJvmIvLTVyfUfSGODW?=
+ =?us-ascii?Q?QLBxkoJGGmIz1/fsbixH5qS9d173nPQipdJRyhqS2tKUPF1u5MdBguOH8JmE?=
+ =?us-ascii?Q?UCY7iSk6XAdCQdj8QLf8N0Q7SmXxT7AkHVKdyu/MrxMw7lintztmRFegim+T?=
+ =?us-ascii?Q?SJjzGI8tk2IcyH5Eu7/q7APwnPaykVz4FPWmr3qZj4iXtuz0/pOrPuEIo33e?=
+ =?us-ascii?Q?7SVr3KYCwl4LbMg2c5AY8jap/fBkwrejmnxmwwHmzLXtxj3B/q5DsKrUjecZ?=
+ =?us-ascii?Q?iyaLM9nQVOev8GFg5ODO5E0EgfGO06JmzItDoTDte1r725x6vtdE86azyZcE?=
+ =?us-ascii?Q?sQOOvZ9ZBa99dW2bIOzJ12w0GRSSWxxdfZFb8levXPrrYh7VzyPCWrGbIXsq?=
+ =?us-ascii?Q?XS3Gxs3fdiKwQzYAl3mAZZscpnbltYpykAeLArLzjU5VB0eBzQcQJ3I1l5bH?=
+ =?us-ascii?Q?uZuCVun+5YlNkDGrB9gsSaYTHQdnRsMFko3S4jIOA9ArSNj689tX0oUCQHXs?=
+ =?us-ascii?Q?NshnI5/wcJmYdNCztIpLfR7+zDsNDUnLnGlOWlYPHVoUMzMXhZSGlFMPANIy?=
+ =?us-ascii?Q?NTh61wzsj0obyMLEs0kZfwCjZboNIdLctJLfvYf7FspVNg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8252.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?I9KKnYnoMXg+x2wTs3fk8wyIs4o9Vbyrm3l+RC0a/K66YcXHPSaiXtzj/aut?=
+ =?us-ascii?Q?I9j2qd7ZDL/h0ndkXWMPvaPQ1z0+WGYQoKUUo03U099jolsSpUq/FkWlqP1C?=
+ =?us-ascii?Q?su8Hb1bzlSFGYt2WqgCYALrLggjKwe7tW2QtXGiPJ2Qo6eonFZrs1HuehvYD?=
+ =?us-ascii?Q?zk+abQqwIF/ZtPqZKELU0Ur7nlQUxmpZ7IJWVyydLfyGcM4eYTb4uPeq8dTK?=
+ =?us-ascii?Q?BpO5jMnx184vZN0rGWFp2Swo7uI4PCGEKCSTyW2hwZNKbHlqKQlr66fwzIj0?=
+ =?us-ascii?Q?am1xnm+uC3R1m56UxCXN7dolLgWzLG2jeRkjQDc7sE+9MXd+NF1WiLc4ZZv+?=
+ =?us-ascii?Q?TkhkFtwOJHqF2Bd9cs4QoMzMbus3zS3WVu1Zblw9ZZXa32yB7rreEYO5ORUO?=
+ =?us-ascii?Q?c89erBt5ptb64yltLyhFJwVY8Uj/i+DxIBdyk487sXxU2IJyTSYkft+zfydp?=
+ =?us-ascii?Q?wYKMMLU2Qi3Ao2AxoctRe8BvSkQg7ri9+ejzTCVAZIokRobEMqGVJ5BIXLS6?=
+ =?us-ascii?Q?WYVRmA9L7D7rCIGJbq1Qj5szVAVv8qwzfJfxtU/fVY3dRVn5LIX0m8odohAH?=
+ =?us-ascii?Q?MUBjq7buzQpD1Luc89q/jyEBzRQ+h0tNWjZnk0R6xhIhsGPkG520CvVxFVJI?=
+ =?us-ascii?Q?McXQNKzKob21TchTl5gW8LE1jjTc5IYaV6q5j5kJBRYyW/Pv2wRvqwiDd0PB?=
+ =?us-ascii?Q?0ovDQcB7VSSg6ZnUNXaoV2spRBgWKBamvNIdvyGrdjMtC55zWTONXrB70uSE?=
+ =?us-ascii?Q?bhHQCILy8b+HZB0vfb15sYbkhUC+217UJkZOd0jk5gL+AgMLFalLK8FsN5eE?=
+ =?us-ascii?Q?yzJUffisKprf2k1iyh1k9to5VrhsGPW88To5MUjZK/nd80yhqW3FuQE6+k8c?=
+ =?us-ascii?Q?eK3B6LrFiHRQKXYb6iU4tx5dtje9cxsDLJP4l3WQJANDW0YLsQs8ncHv1AW1?=
+ =?us-ascii?Q?cOXtax5Z3kYZ7MT7n3AEddt0beyC3akZ0DZqnM5Ni4AVHOqBxjzJpafXTXew?=
+ =?us-ascii?Q?Kmsfj+BGBNKYRPn7z1bhqfSBQ+EXSsFOBFmmUNVgPBzic+wmj+bwNJW19TS6?=
+ =?us-ascii?Q?Wp6JsUX9WwZlxCoEZEn2SKMisdBudXCToWKKUls0kUIDi2XKLqLS450jr5iJ?=
+ =?us-ascii?Q?Fgbhw0VWHSZau570fW9y9ZY82kumP9iKMKIabtNBuZ/YeCNTDzQ4ftroeJXD?=
+ =?us-ascii?Q?VhM4SWus4ZfAL56ZzgKqx5Q0uepHbGWSbpBIZkfaBloF+nQpnUhhJHGwTppc?=
+ =?us-ascii?Q?FnggNCw/J5sTWMCZBQnd0DZncPwnyoNYx56PiXO8f6o5BwqA42ZOK+aldJB8?=
+ =?us-ascii?Q?ow+TPrqpzK6kX9W/ChcXigKWOfycKCk6+td5/ETC/J2//WfUoiPwaXjsHFH+?=
+ =?us-ascii?Q?fEq8+BnmGBXI5ZXGDrF5uogQb6x4yspESh4NWjhkdVaZgLYIYgE6iAq46OoV?=
+ =?us-ascii?Q?5PIQh/xqfuoZDbM41+CXXtkCkS9QmnWue0BPfJDMD5nPg43VVV5Xu3kDhZLN?=
+ =?us-ascii?Q?cJWyseZjkg3a9tPauFR9kdz7YqwnJDMrH/2/zvytHaqYeruZpXkhFzqU/lsd?=
+ =?us-ascii?Q?MaXSSArySaRd81lw7oWoAJK3qBWEaYVuSIGUDQVB?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c80d3466-4ad5-4f29-e433-08dcc771ccf2
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8252.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 14:57:56.7011
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a9kIoE3fyy4Mb/BWq9k36FT/ejGfQQG+nKdlhKpoQrHKmXZL0KDF3JEYZ/D+DrST0tTANxDF/jtNsKX9Rttaew==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9188
 
-On Wed, Aug 28, 2024 at 12:58=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.o=
-rg> wrote:
->
-> On Wed, Aug 28, 2024 at 6:12=E2=80=AFAM Len Brown <lenb@kernel.org> wrote=
-:
-> >
-> > On Tue, Aug 27, 2024 at 7:29=E2=80=AFAM Rafael J. Wysocki <rafael@kerne=
-l.org> wrote:
-> > >
-> > > First, let me add a few people who know more about timers than I do.
-> > >
-> > > On Tue, Aug 27, 2024 at 5:42=E2=80=AFAM Len Brown <lenb@kernel.org> w=
-rote:
-> > > >
-> > > > From: Len Brown <len.brown@intel.com>
-> > > >
-> > > > Optimize acpi_os_sleep(ms) using usleep_range(floor, ceiling).
-> > > > The floor of the range is the exact requested ms,
-> > > > with an additional 1ms of slack for sleeps above 20ms.
-> > > >
-> > > > This reduces  the kernel resume time of the Dell 9300
-> > > > to 1,124 ms from 2,471 ms.
-> > > >
-> > > > The ACPI AML Sleep(ms) method calls acpi_os_sleep(ms),
-> > > > which has invoked msleep(ms) since 2013.
-> > > >
-> > > > But msleep(ms) is based on jiffies, and the rounding-up
-> > > > logic to convert to jiffies on a HZ=3D250 system causes
-> > > > msleep(5) to bloat to a minimum of a 12ms delay.
-> > > > msleep(5) typically takes over 15ms!
-> > > >
-> > > > As a result, AML delay loops with small Sleep() inside
-> > > > magnify the entire loop.  A particularly painful example
-> > > > is ACPI support for powering-on ICL and TGL
-> > > > thunderbolt/pcie_ports during system resume.
-> > > >
-> > > > Regarding jiffy-based msleep() being inexpensive
-> > > > and hrtimer-based usleep_range() being expensive.
-> > > > ACPI AML timer invocations are rare, and so it
-> > > > is unlikely the hrtimer cost will be noticible,
-> > > > or even measurable.  At the same time, the msleep()
-> > > > timer duration bloat is significant enough to
-> > > > be noticed by end users.
-> > >
-> > > I'm not sure why you are refusing to follow the implementation of
-> > > fsleep() and Documentation/timers/timers-howto.rst and still use
-> > > msleep() for sleep durations longer than 20 ms.
-> >
-> > timers_howto.rst could use an update to reflect reality.
->
-> Maybe it could.
->
-> > It doesn't disclose how toxic msleep actually is for small values.
-> > msleep(1) takes 11ms on a HZ=3D250 system.
-> >
-> > Linux/ACPI has to support any random AML Sleep(ms) call,
-> > and sometimes we see timeout loops implemented around
-> > an inner Sleep(1ms).  If we use msleep those loops explode
-> > by 11x and aggregate durations that are noticed by end users.
->
-> So this is all about short sleeps.
->
-> You don't need to argue with me about short sleeps, I'm convinced.
->
-> Thus I'm going to skip all arguments regarding short sleeps going forward=
-.
->
-> > fsleep does three things -- and none of them are a good fit
-> > for acpi_os_sleep:
-> >
-> > static inline void fsleep(unsigned long usecs)
-> > {
-> >         if (usecs <=3D 10)
-> >                 udelay(usecs);
-> >         else if (usecs <=3D 20000)
-> >                 usleep_range(usecs, 2 * usecs);
-> >         else
-> >                 msleep(DIV_ROUND_UP(usecs, 1000));
-> > }
-> >
-> > > udelay(usecs);
-> > will never execute in the ACPI case, as the minimum delay is 1000 usec.
-> >
-> > > usleep_range(usecs, 2 * usecs);
-> >
-> > timers-howto.rst says this:
-> >
-> >                         "With the introduction of a range, the schedule=
-r is
-> >                         free to coalesce your wakeup with any other wak=
-eup
-> >                         that may have happened for other reasons, or at=
- the
-> >                         worst case, fire an interrupt for your upper bo=
-und."
-> >
-> > But the way usleep_range works is it sets the timer for the
-> > upper bound, and opportunistically wakes/cancels if another timer
-> > fires after the lower bound and before the upper bound.
->
-> Yes, that's how it works.
->
-> > It calls it a "worst case" that the timer fires at the upper bound.
-> >
-> > But when ACPI suspend/resume flows are running the only other
-> > timer is the tick, and so the "worst case" happens effectively ALWAYS.
->
-> Arguably though, ACPI suspend/resume flows are not the only case in
-> which AML skeeps.
->
-> > So when fsleep does a usleep_range(usecs, 2 * usecs), it is effectively
-> > DOUBLING the duration of all timers 20 ms and smaller.
-> > There may be scenarios where doing this makes sense,
-> > but acpi_os_sleep() is not one of them.
->
-> It would be good to actually try this.
->
-> However, I'm not arguing that usleep_range(usecs, 2 * usecs) is
-> suitable for ACPI sleeps.  I'm saying that it is friendly with respect
-> to the timekeeping subsystem to give it a nonzero range if it is
-> affordable.
->
-> And I do think that it is affordable in the ACPI sleep case.
->
-> > > msleep(DIV_ROUND_UP(usecs, 1000));
-> >
-> > msleep(50) takes 59.8ms -- a 20% penalty.
->
-> I guess you mean on a HZ=3D250 system system and I guess this is a
-> measured number.
->
-> > We have loops with AML Sleep(50) in the middle,
-> > and this  code would bloat them by 20%, while
-> > the user is waiting -- for no benefit. o
->
-> If this happens during system suspend/resume and if this is the only
-> thing that is waited for (ie. nothing runs in parallel with it).
->
-> So your resume time is 20% longer than it can be in theory if every
-> Sleep() causes an extra timer interrupt to be programmed.  Is this
-> extra overhead justified?
->
-> > Again, there may be scenarios where doing this makes sense,
-> > but acpi_os_sleep() is not one of them.
->
-> I'm not convinced.
->
-> > > Why should usleep_range() be used for 100 ms sleeps, for instance?
-> > > This goes against the recommendation in the above document, so is
-> > > there a particular reason?
-> >
-> > The document doesn't say *why* msleep is recommended.
-> > One would assume that when there are many timers, msleep
-> > is efficient because it consolidates them to jiffy boundaries,
-> > and if they are long duration timers, perhaps the assumption is
-> > that they don't care so much about the additional delays?
-> >
-> > Again, there are certainly scenarios where that makes sense,
-> > but at the end of the day, msleep(100) takes 106 msec.
->
-> And is this a big deal really?  Is a user really going to notice the
-> 6% difference and even if they do, would they care?  For one, I
-> wouldn't.
->
-> Arguably, it all depends on the intention of the developer who uses
-> the msleep(), os Sleep() in the AML case.
->
-> Do they mean "exactly 100 ms" or do they mean "at least 100 ms"?  If
-> the latter is the case, the whole argument is moot if not misguided.
->
-> As a side note, I generally think that if a developer puts Sleep(n) in
-> their code they need to assume that the sleep will be slightly longer
-> than n for reasons related to scheduling etc. so I don't believe that
-> they ever mean "exactly n".  However, they probably don't think that
-> it may take 3 times longer, so it is better to make that not happen.
->
-> > ACPI is not a heavy timer user, so the msleep efficiency justification
-> > for making the user wait longer holds no weight.
-> >
-> > Now that we realize that end-users notice timer bloat in acp_os_sleep,
-> > it is clear that msleep is simply a poor choice for acpi_os_sleep.
->
-> For short sleeps, yes.
->
-> For long sleeps, using an hrtimer generally ends up in programming an
-> extra timer interrupt unless the range is really wide, but then
-> msleep() gets better again.  So is the extra timer interrupt really
-> justified every time AML evaluates Sleep()?  And again, system
-> suspend/resume are not the only cases when that happens.
->
-> Honestly, I don't think so and that's why I prefer msleep() to be used
-> for longer sleeps even though it is "slacky".
+Hello Andrea,
 
-That being said, I've read the thread mentioned in timers-howto.rst
-and it turns out to be interesting in the context of this patch.
+On Wed, Aug 28, 2024 at 08:20:50AM +0200, Andrea Righi wrote:
+> On Wed, Aug 28, 2024 at 10:38:45AM +0530, Gautham R. Shenoy wrote:
+> ...
+> > > I had thought this was a malfunction in the behavior that it reflected the
+> > > current status, not the hardware /capability/.
+> > > 
+> > > Which one makes more sense for userspace?  In my mind the most likely
+> > > consumer of this information would be something a sched_ext based userspace
+> > > scheduler.  They would need to know whether the scheduler was using
+> > > preferred cores; not whether the hardware supported it.
+> > 
+> > The commandline parameter currently impacts only the fair sched-class
+> > tasks since the preference information gets used only during
+> > load-balancing.
+> > 
+> > IMO, the same should continue with sched-ext, i.e. if the user has
+> > explicitly disabled prefcore support via commandline, the no sched-ext
+> > scheduler should use the preference information to make task placement
+> > decisions. However, I would like to see what the sched-ext folks have
+> > to say. Adding some of them to the Cc list.
+> 
+> IMHO it makes more sense to reflect the real state of prefcore support
+> from a "system" perspective, more than a "hardware" perspective, so if
+> it's disabled via boot command line it should show disabled.
+> 
+> From a user-space scheduler perspective we should be fine either way, as
+> long as the ABI is clearly documented, since we also have access to
+> /proc/cmdline and we would be able to figure out if the user has
+> disabled it via cmdline (however, the preference is still to report the
+> actual system status).
 
-So Jon attempted to reimplement msleep() with the help of hrtimers and
-it basically worked except that it broke USB mouse hotplug for Andrew.
-IIUC, this issue was the reason why that patch was not applied.
+Thank you for confirming this.
 
-But this appears to mean that there are no fundamental objections to
-using hrtimers for long sleeps even though it is still recommended to
-use msleep() in that case.  So it all boils down to the question: If a
-sleep is relatively long, say 100 ms or longer, why exactly is
-msleep(delay) more suitable for it than usleep_range(delay, delay +
-delta), where delta is of the order of 1 jiffy?
+> 
+> Question: having prefcore enabled affects also the value of
+> scaling_max_freq? Like an `lscpu -e`, for example, would show a higher
+> max frequency for the specific preferred cores? (this is another useful
+> information from a sched_ext scheduler perspective).
 
-I get that msleep() is based on tick and so it does not require an
-extra hrtimer (which leads to programming an additional timer
-interrupt in many cases), but is it worth the trouble of checking the
-delay and using msleep() instead of usleep_range() if the sleep is
-long enough?
+Since the scaling_max_freq is computed based on the boost-numerator,
+at least from this patchset, the numerator would be the same across
+all kinds of cores, and thus the scaling_max_freq reported will be the
+same across all the cores.
 
-I'm not sure now TBH.
+> 
+> Thanks,
+> -Andrea
+
+--
+Thanks and Regards
+gautham.
 
