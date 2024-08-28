@@ -1,181 +1,232 @@
-Return-Path: <linux-acpi+bounces-7944-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7945-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53224963146
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 21:51:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6609631C6
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 22:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790111C225DC
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 19:51:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AF64285654
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 20:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDD31AC429;
-	Wed, 28 Aug 2024 19:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5951ABED5;
+	Wed, 28 Aug 2024 20:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jzA1AgRn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tDCxxbhR"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2059.outbound.protection.outlook.com [40.107.237.59])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A2A1A4F06;
-	Wed, 28 Aug 2024 19:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724874666; cv=fail; b=S9f2v4/0q0s/byjva5CU3MVF7abvOs1g8zMyB3R9wGQrEbAQ2EAk/Lhymnxgzd5t+Aehwe0N63NV1FPBch/N/xmyRy1OeAl0GQN4Y1n6w3ad3BCThMvK6usZJAoERkgjzikvJ0XmVmHgUlX45/38g57GVBgBfa5BTAf99dFaIbE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724874666; c=relaxed/simple;
-	bh=xMnDpBjke+DzFt2lBozl/M3sOwxXFyiw356zSBD4qNA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rh/6ge2OE6AiRpl5lgHOlUFGCOw8rRvFU/IZ2xugIHOy4a6ww4mmClVOyJjxm76HOPeL8kSTzAv4iEQ0BqjiDxeOwT+RnR34MHRToc3w7S53xSaMvdnLnHa4X2vyLxJxI7oFlg/dKV2JZXb1b+F86dB06ePrL4brLellpHk5e5Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jzA1AgRn; arc=fail smtp.client-ip=40.107.237.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gYLxHD3/SNqVLf4twuCyiFZBLSRd2UyceeULbznamR25csM56Uul93iNIBio+Z1s+KG8IDe5KVy3JFrqv7Rrn87uIEhRD9nLKsAyd5zyIgJONzT469ZiMZnL7sittZnecKZhX4XWpO0B77JrLTOa2ZGYkyEs4ryfj4QHu+UmpVPUUZbQ8VprS1iRg5TKGg58PPnEyKyD9u4Ojjk05BA3ZCfB2iaIBGj0Jbtx2f8uKfP3LylIEJhjicqy1RTtGOUkSt1kLz6AEowIHGXLBqUmLMqtPcFN7tPi8yzxTFZx1yYIiUKZnIBPYjO1NHRcPLm/oh/vG1bGt2r1u0mxkG5c8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qIfLOEqZdjO5vhwpjtzk69BI8Y9ZU6ucW9WPeMH9qQo=;
- b=PeeFqNWq7ou6sVMFcvDMcYvoaP3xDuyiNyADKGy44F7mzoAPdYaSa3nlvPX2+dmTncOE32CKpvqwyr4cZZ42Ast7jvvEp4b/xtkuK01YDk2E81DqPndUFqVDbqY9ArCH2pT9FIhRW+zrDUpzHjTuIPeGsAO8ca4TpsUnmcM8SPmAzPEp2I/WI0YyjfcepUPBSOEcEay1X6PCmd2XTzK3yTjwasb/UImpcGLR6kfs69UlasdxJUe5RbNTMkzJK3JoQqyOX0JanVVDprD5E+X+c93siTlabBGBiK03djxoeXdxGm5+C1a4nkbGi4R84D5NqxXWaiohNoaOExmdL9PHFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qIfLOEqZdjO5vhwpjtzk69BI8Y9ZU6ucW9WPeMH9qQo=;
- b=jzA1AgRn3UhIMD4NHhPJZBVJKJZkQgwxUqbttbsT+vCJmQ4KZheW87it6hPp0jWDrHwoPbO+bL4KiXiwHsH5Q8FwJme7/D/puBsCq5Um9xGBarYWta9BVl6Ra55vabz7W/Z3w//tvtMJ6lBXTTOCqH7rxYmYeKJ5H3xGNyH1j5CUYO7ESfVKwJIyKQUT4CVwUjBr67LO2YETXUHts9LRFgOAaobKnL+uy3UT50l2s5iabVf9Kk7W7yygYvDsN6ezytdBgA3VUHDzbLiHj6x+6sZS4lUs8FyaZb683aMSpSOB0e64wr0+jdG1yrpLRRG7264Lr+McQZjpaNZmpsFFAQ==
-Received: from DM6PR02CA0099.namprd02.prod.outlook.com (2603:10b6:5:1f4::40)
- by SN7PR12MB8169.namprd12.prod.outlook.com (2603:10b6:806:32f::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27; Wed, 28 Aug
- 2024 19:51:01 +0000
-Received: from DS1PEPF0001709A.namprd05.prod.outlook.com
- (2603:10b6:5:1f4:cafe::44) by DM6PR02CA0099.outlook.office365.com
- (2603:10b6:5:1f4::40) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28 via Frontend
- Transport; Wed, 28 Aug 2024 19:51:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- DS1PEPF0001709A.mail.protection.outlook.com (10.167.18.104) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.13 via Frontend Transport; Wed, 28 Aug 2024 19:51:00 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 28 Aug
- 2024 12:50:47 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 28 Aug
- 2024 12:50:47 -0700
-Received: from Asurada-Nvidia (10.127.8.13) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Wed, 28 Aug 2024 12:50:45 -0700
-Date: Wed, 28 Aug 2024 12:50:44 -0700
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: <acpica-devel@lists.linux.dev>, Hanjun Guo <guohanjun@huawei.com>,
-	<iommu@lists.linux.dev>, Joerg Roedel <joro@8bytes.org>, Kevin Tian
-	<kevin.tian@intel.com>, <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	"Lorenzo Pieralisi" <lpieralisi@kernel.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Robert Moore <robert.moore@intel.com>, Robin Murphy
-	<robin.murphy@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, Will Deacon
-	<will@kernel.org>, "Alex Williamson" <alex.williamson@redhat.com>, Eric Auger
-	<eric.auger@redhat.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
-	<patches@lists.linux.dev>, Shameerali Kolothum Thodi
-	<shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
-Subject: Re: [PATCH v2 2/8] iommu/arm-smmu-v3: Use S2FWB when available
-Message-ID: <Zs9/lIKtlQhjLN1z@Asurada-Nvidia>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA1315749A;
+	Wed, 28 Aug 2024 20:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724876980; cv=none; b=dfRR8nbkvkkbsV6osDLDkty8VsoNx+n7HGqLuC7ryJ7udzNbv5t4z7O1h+qIwAG4LnPEOgb3rO44un9CYm1hDhqZpRTaTI2IdKhMSjDTK6eCExtxqYAhg/guFIXhfAJxzRn5V4nrVSRSZP8Hfdc+z6Tco5lAoim/wKQQY2YJfxY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724876980; c=relaxed/simple;
+	bh=azla9j7SvfXf5E/LUqTju1Q975rI+Hm7+VD9P/FTuZo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=orw6eDNeY5mA9/eCu1YlvpHSAj2e525bYJNuQNRRRmfn35UJniJBRyBelgXx8eLYEM31eakIfEpg+5mz/7vraOUlduSCFZZHLz9eN+ovxubIc6b1PX32bVa1v9Ujhy+JrWz0ip3fxNrFuoKVnXN5arpXPRW1nG4GwjRkW75paQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tDCxxbhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC71C4CEC4;
+	Wed, 28 Aug 2024 20:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724876979;
+	bh=azla9j7SvfXf5E/LUqTju1Q975rI+Hm7+VD9P/FTuZo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=tDCxxbhR/tcblt5YNnWwIljVgXJjWEVHfashkX0mupaPy6BogB36ASk9TOqV6Tclv
+	 vkrJANfvzMNB7dQgkY2La8kI0fD4SdkGrvr5zWioQz+lRVx7y/BmBLbX66rEbIjnN9
+	 S9CDh24cuzNWGz8FFvA+nd325bEP5KudgoqijbCRyWYG37evBslhPSBdSst/fDuJhz
+	 KIha/B1XUiiSxkoL/hWVwFAV9iL572IZO7ji6K/qQdgiR9oplAfwcE9ArRVTnQjteb
+	 6HlvgcB3J3zQ7BX5vag/h6qLbautx1cUQ/XgbnI2/3/Kmo41VgNP2LMc5zyBclaKHw
+	 TRoTqpnPdYsWg==
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5de8ca99d15so2864200eaf.0;
+        Wed, 28 Aug 2024 13:29:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUwwXGAipcaC1BTB6ianIdYi0juEmFvXQ+eUTpUR96WacjWt4Pbjx8tz68LAEzbp/O3HdBTN1Fs6YqL@vger.kernel.org, AJvYcCVVAefjz+JY0YTVcI2N6TeguA4rJSeJZISo1SxwmysvX2iucxTBEsZpcSziNtdvPfW42aQ/XRjveh4CxpHC@vger.kernel.org, AJvYcCXVBaMn2gKWjnnRSRIhyaX+dAaXxHtSAwP8f+T8uOi1Xf/mYjI4bdTH99PNjZD8L6734ezjT6zf6xg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbYJzGpW10CZFYkeZF7BckzUmK1TRbH/Nd9ce1jMp4MRERvyQ5
+	EZeledoO98hqRWUcpMRa1XF3ZHvzFxpsuuIKwdvpMW5xJX0+dXj1FOYUNJdBVXdYk24+YU28PaX
+	fIZnTChot5t71imONIImWoRiq/+8=
+X-Google-Smtp-Source: AGHT+IHdxhwilfNMZYk5jyWDcmblg73Gl4saFCoHc4TM5Oii1pF4Pnt87+a6kg5n8RG0mV517MK6bTRTPjPHiCXMBzk=
+X-Received: by 2002:a05:6820:22a6:b0:5c6:9320:53a3 with SMTP id
+ 006d021491bc7-5df97f88e20mr1100040eaf.4.1724876978849; Wed, 28 Aug 2024
+ 13:29:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF0001709A:EE_|SN7PR12MB8169:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc67e7c7-a334-4a74-87db-08dcc79abdfe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mCEofK+ilSDG1rc35qVpdFxWMZ/6eTvxoPkS63giLUo1sGeSCz74Vr+aJSsd?=
- =?us-ascii?Q?ljML949mF/YeUUEYwehoLVLFftfy5rODFENVKpzJqFT5hwaprCkkiPLxKzE3?=
- =?us-ascii?Q?eQJ2y8/jXgJaL3qTZQ9osoNGThcg/hjs/KFI9meZM0U4JLiE+sbUAWz8fzIz?=
- =?us-ascii?Q?2TWREZcixCnGZcoKdnss9vptwPM2t5fKFzjAHekuM08FLICKD0Ugy/CpcKgf?=
- =?us-ascii?Q?7jx4hiTiDTQpha9cG1kyiKYGCoNLJPm9BAYuWQtH1rJshGzL3VWzA8g+Ekf3?=
- =?us-ascii?Q?vX9qxWP43+8eBkVDQPETu5JERT5SpsvGZ5PUmZMZ7vBchiEz+uj3pPc3hYIl?=
- =?us-ascii?Q?JR8nN8PfR4JT8yoXjv3VY6NAWpMn3oejj5fD29a5BBQSrYAznm1oT7bTKS65?=
- =?us-ascii?Q?ecWVYww15VBr+LrXKTKAk8xnPMEfpQbHx50cUCETJQFIRK+L0lP63fygp0pi?=
- =?us-ascii?Q?3Id9qV+7uxlDZclFdrZsM3NQ+79WuIVz2F0wq9gZkI5D3QgQ5qbKcNQ1rMEj?=
- =?us-ascii?Q?FDZnMzV2Mj/nA8O02qDVRC4PvdhrVCxvIWASn5+ZgnR/bigVDyTT1oAd9Osh?=
- =?us-ascii?Q?BHdMwFunfpVIDKaHw6iqmROJGRxRTdEFwzvZXC4U1S5/NgaFuq1Cp5hw3YDU?=
- =?us-ascii?Q?pqc0XIq7tTNCkaTvno2TqoSM5tQXQGYUk8SXos8+NOb99fxGjZbDZomGsCoj?=
- =?us-ascii?Q?bRxiOAE0A7X8syvccYp0DO3sEJRObIV71EFqHIVa5++VE+dOAQENM2FNJRKd?=
- =?us-ascii?Q?/mQwE6s89XkqV4jQXB5Q/MFH/5wsNHi3UDh/IMuS9rrqhldtAr8RBcHPZWoF?=
- =?us-ascii?Q?0W9tl/tfDm9kuuyzGoDhy1wcuhrriATjDQ4AjCFeRhRsDvU52TaIYHqLWkd5?=
- =?us-ascii?Q?zAnsaydpw+MJGqVb0qHcw1AEDKEaCZSZY13Dj26tyoL/rLvwKtrIG0gosrOJ?=
- =?us-ascii?Q?4eE9hMWAQcRKU56WZrt6g7TrdrWoL4gEabfifOnqe+kwEi+HKi+T/OV78L5R?=
- =?us-ascii?Q?786b3MYfnfmLCHg8fIiDtL4NjeT/IxK8e1kTPhdP9v0Knwm5Q3MXWSyIbw/M?=
- =?us-ascii?Q?vHAqT0Ae7hVyMNOoK9Ct0k0rwXJh/5whHW+nmstSGQDGtp88TKDq2It41tmt?=
- =?us-ascii?Q?QMftRcH6pionT5gXnY/46d5CCEQM9sBnC5URID9zfrmD8xNlgoKplN+Hl8l8?=
- =?us-ascii?Q?6hw1V0eOkrsPrBITXCAjMS+KXYDsbIYd79rU/h9L8XTQZGPJ3VEWSrc3e8j+?=
- =?us-ascii?Q?CjMNX0L5UQe2JjP65eArEuQTDFI+6DGhn0q5BrTjDNf5wlf9kIYK4ZMRvJcp?=
- =?us-ascii?Q?q+Zy3El7OYTbY87tOrXM20kdOatyKOwl9c66PjaH2zLiOO3oZjj7517Z3Ijb?=
- =?us-ascii?Q?4tAFEztV+OmLnjwwoSL4fdJ08CQcTICGaGuR0CfcdSlqjib8ojM1tLhKpHhw?=
- =?us-ascii?Q?JdzSKjSairbVsaKrOLeCLawCFc72y7p8?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 19:51:00.4671
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc67e7c7-a334-4a74-87db-08dcc79abdfe
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS1PEPF0001709A.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8169
+References: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
+ <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
+ <CAJvTdKkucaRVDZm6EVeUxwyrQexyuYd7ECUBSkpP0nC9PwzspA@mail.gmail.com>
+ <CAJZ5v0jvYitb7DLyLkqTRv0TT=6yBHDvEvb8tJLzAOVKa3hqnQ@mail.gmail.com>
+ <CAJZ5v0gxVqrASiuJq=UX9jyZsG=XvriFn2=7CPmG6-1sKbmPEQ@mail.gmail.com>
+ <CAJvTdK=-ETniiwzwLYH14+TeU0kA49gvTnqyRxH7-Hc6tzTBUw@mail.gmail.com>
+ <CAJvTdKmpfs_nh4J0R8T=1P9WaAJ-nJ+mKj=rT3tqMpmvpUTisA@mail.gmail.com> <87frqoig98.fsf@somnus>
+In-Reply-To: <87frqoig98.fsf@somnus>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 28 Aug 2024 22:29:27 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0gTfhTQ4AMZ+ukuJZEG=RRo-wbPsf7NPbWA0snDeA5ivQ@mail.gmail.com>
+Message-ID: <CAJZ5v0gTfhTQ4AMZ+ukuJZEG=RRo-wbPsf7NPbWA0snDeA5ivQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Frederic Weisbecker <frederic@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 27, 2024 at 12:51:32PM -0300, Jason Gunthorpe wrote:
-> Force Write Back (FWB) changes how the S2 IOPTE's MemAttr field
-> works. When S2FWB is supported and enabled the IOPTE will force cachable
-> access to IOMMU_CACHE memory when nesting with a S1 and deny cachable
-> access otherwise.
-> 
-> When using a single stage of translation, a simple S2 domain, it doesn't
-> change anything as it is just a different encoding for the exsting mapping
-> of the IOMMU protection flags to cachability attributes.
-> 
-> However, when used with a nested S1, FWB has the effect of preventing the
-> guest from choosing a MemAttr in it's S1 that would cause ordinary DMA to
-> bypass the cache. Consistent with KVM we wish to deny the guest the
-> ability to become incoherent with cached memory the hypervisor believes is
-> cachable so we don't have to flush it.
-> 
-> Turn on S2FWB whenever the SMMU supports it and use it for all S2
-> mappings.
-> 
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Hi,
 
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+On Wed, Aug 28, 2024 at 9:44=E2=80=AFPM Anna-Maria Behnsen
+<anna-maria@linutronix.de> wrote:
+>
+> Hi,
+>
+> I try to give some input from the timer perspective and maybe it helps
+> to clarify which should be the proper way to go for acpi_os_sleep(). It
+> also identifies some problems with the current documentation and
+> implementation of msleep/fsleep.
+>
+> Len Brown <lenb@kernel.org> writes:
+>
+> > Attempting to grab all the loose ends from this discussion
+> > and put them into a list of 4 things:
+> >
+> > 1. Is it time to re-visit Jon's proposal to fix msleep, especially for
+> > small sleep values?
+>
+> Lets have a deeper look to msleep() internals: msleep() uses timer list
+> timers. Because of the design of the timer wheel (granularity of buckets
+> increases with the levels) and because of the granularity of jiffies the
+> sleep values will be longer as specified. Let's assume we are executing
+> a msleep(1) on a HZ=3D250 system:
+>
+> First msecs are mapped on jiffies, so this results in a 4ms timeout
+> value, as there is nothing shorter than 1 jiffie. Then the jiffie value
+> is handed over to timer code and msleep() adds another jiffie to the
+> timeout. The timeout is then 2 jiffies or 8ms. With this timeout a timer
+> list timer is queued. To make sure that timers will not fire early or
+> race with a concurrent incrementation of jiffie, timers are queued
+> always into the next bucket. As the timer will end up in the first level
+> of the timer wheel the granularity of the buckets is 1 jiffies. This
+> means that the timeout would be 3 jiffies in worst case.
+>
+> The additional jiffie in msleep() is the historical prevention that the
+> sleep time is at least the specified time. This is handled by timer
+> wheel core code itself, so this extra jiffie could be removed. I will
+> provide a patch for it.
+>
+> But even with this change, the worst case sleep length will be 8ms
+> instead of 1ms.
+>
+> For comparison, see here a table with the values for all the steps
+> explained above taking some different msleep values. I already dropped
+> the addition of the extra jiffie. The granularity of the timer wheel
+> levels can be found at the first long comment in kernel/time/timer.c.
+>
+> This is still a HZ=3D250 system:
+>
+> msleep()   | msecs_to_jiffies() | worst case delay after | timer wheel
+>            |                    | enqueue (next bucket)  | level
+> -------------------------------------------------------------------------=
+-
+> 1 ms       | 1 jiffie           | 2 jiffies, 8 ms        | 0
+> 256 ms     | 64 jiffies         | 72 jiffies, 288 ms     | 1
+> 257 ms     | 65 jiffies         | 72 jiffies, 288 ms     | 1
+> 2048 ms    | 513 jiffies        | 576 jiffies, 2304 ms   | 2
+> 2300 ms    | 575 jiffies        | 576 jiffies, 2304 ms   | 2
+> 4096 ms    | 1024 jiffies       | 1088 jiffies, 4352 ms  | 2
+>
+> The same values on a HZ=3D1000 system:
+>
+> msleep()   | msecs_to_jiffies() | worst case delay after | timer wheel
+>            |                    | enqueue (next bucket)  | level
+> -------------------------------------------------------------------------=
+-
+> 1 ms       | 1 jiffie           | 2 jiffies, 2 ms        | 0
+> 256 ms     | 256 jiffies        | 264 jiffies, 264 ms    | 1
+> 257 ms     | 257 jiffies        | 264 jiffies, 264 ms    | 1
+> 2048 ms    | 2048 jiffies       | 2112 jiffies, 2112 ms  | 2
+> 2300 ms    | 2300 jiffies       | 2304 jiffies, 2304 ms  | 2
+> 4096 ms    | 4096 jiffies       | 4608 jiffies, 4608 ms  | 3
+>
+>
+> The documentation states, that msleep is not valid for short sleep
+> values. But as demonstrated with the two tables, this is not enirely
+> true. So the descision whether msleep() is suitable for the usecase is
+> not as simple as documented. It depends on the HZ configuration in
+> combination with the timeout value, and on the request how precise the
+> timeout has to be. And another important point is: hrtimers are more
+> expensive then timer list timers...
+>
+> The documentation was originally written back in 2010 where the non
+> cascading timer wheel wasn't in place yet. So is has to be updated.
+>
+> > 2. We agree that usleep_range() is appropriate for short acpi_os_sleep(=
+)
+> > due to ASL loops with small Sleep() values.
+> > But if we do something different for large and small values,
+> > where is the line between small and large?
+>
+> As pointed out above - this depends on HZ and what the requirements of
+> the callsite are.
+>
+> > fsleep anointed 20ms, but didn't document why.
+> > (and it made both short sleeps *and* long sleeps too slow to be useful
+> > here, IMO)
+>
+> fsleep() just implements what the outdated documentation states. And it
+> adds a magic max value for usleep_range(). It seems to me, that fsleep()
+> somehow accidentially found the way into the kernel in 2020. As it is
+> now there this needs to be fixed and should take the above things into
+> account in some generic way.
+>
+> > 3. Is usleep_range(min, max) with min=3D max bad?
+> > If it is good, why is virtually nobody else using min=3Dmax?
+>
+> It's not bad to use it. It depends on your use case. If you really need
+> the precise sleep length, then it should be valid to use min =3D max.
+>
+> I hope the timer information will help to find the proper solution for
+> acpi_os_sleep().
+
+Yes, it is useful, thank you!
+
+The main difficulty is that acpi_os_sleep() really works on behalf of
+AML code (it is called when the Sleep() operator is evaluated in AML)
+and it is hard to say what behavior is intended there.
+
+We know that the msleep() precision is not sufficient at least in some
+cases (for example, a high-count loop in AML that sleeps for 5 ms in
+every iteration), but we don't really know what precision is needed.
+
+IMV it generally is reasonable to assume that firmware developers
+would not expect the exact sleep time (and the ACPI specification is
+not very precise regarding this either), but they wouldn't also expect
+sleep times much longer (in relative terms) than requested.  So
+roughly speaking they probably assume something between t and t + t/4,
+where t is the requested sleep time in milliseconds, regardless of the
+HZ value.
+
+Also, you said above that hrtimers were more expensive than the timer
+wheel timers, which we all agree with, but it is not clear to me what
+exactly the difference is.  For example, if there is a loop of 1000
+iterations in AML that each sleep for 5 ms, how much more overhead
+from using hrtimers would be there relative to using timer-wheel
+timers?
+
+Generally speaking, Len's idea of using usleep_range() for all sleep
+lengths in acpi_os_sleep() is compelling because it leads to simple
+code, but it is not clear to me how much more it would cost relative
+to msleep() (or what issues it may provoke for that matter) and what
+delta value to use in there.  One idea is to derive the delta from the
+sleep length (say, take 1/4 of it like I did above), but the
+counter-argument is that this would cause the loops in AML in question
+to take measurably more time and there may be no real reason for it.
+
+Thanks!
 
