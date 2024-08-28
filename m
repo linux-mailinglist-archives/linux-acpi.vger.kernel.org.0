@@ -1,134 +1,129 @@
-Return-Path: <linux-acpi+bounces-7911-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7912-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105469619E7
-	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 00:11:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517F6961C02
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 04:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DB751C2162D
-	for <lists+linux-acpi@lfdr.de>; Tue, 27 Aug 2024 22:11:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0CCC1F240B0
+	for <lists+linux-acpi@lfdr.de>; Wed, 28 Aug 2024 02:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427131D2F78;
-	Tue, 27 Aug 2024 22:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="WnjcOj3y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61A626AD4;
+	Wed, 28 Aug 2024 02:19:34 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEE1194A6C;
-	Tue, 27 Aug 2024 22:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1399460;
+	Wed, 28 Aug 2024 02:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724796713; cv=none; b=eNSPgFPgKGMz5d617d3CWwnFjXN26ItB8pN39Oc5tHUBQ3El7WIcFMWsDO1yRm9X8d90arhhNln6V1JMxVDHmjgHrMT2Ci1hvYlNiy2cgrnR9xmxJ+tQ0VyQhyi8dznw4jBBfQt7WMePDOUllbC6+ymJtJKemGCLL81Ssj4Kn2E=
+	t=1724811574; cv=none; b=jpY+Kkd//T7Wyrz6UtXLVjTpfqaR+HiMV3invZk3pgyJAz37W8O6iYNGWZP4itynWDad4PMZaU7kNe7I7o/LhH19ru1RwGXWNjM/KH9RiSzYNMHT/Spoc9rTSEBQa1rC7O3PxoeMcE9O0/9rCIkUW7Go6at+XJPFRsE7+QJy5Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724796713; c=relaxed/simple;
-	bh=2aRkULfSU9AzagsP0qiU8aDKlhnBG97zGMg4RSuUxLU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PVMLtpioEPfrW7Y1s0lMLyhyf+zfXFMswAREi6PAVfBnfD+eD6VfQZLfLeSHTizQZqbg+knDo0etEEclGxexQ/ug/KIRJi1zVyKtYRmC9Wrc8QG/RIwKey8aXQc9bMzDIzS0LaqxiC0ZRibyx/Vkt4WkdK0UwOw4p3mN9NLryD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=WnjcOj3y; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1724796694; x=1725401494; i=w_armin@gmx.de;
-	bh=CUbnzYEtHJfLP1VcoboGTihEXYQaXcwV41vG7Efm3V8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=WnjcOj3y6Z/mBoiw3tXOdjT5dd4vvbf7oUoSmRaBlzkfaGXGH1iIstF0Fe8A9rG8
-	 K2BpE6af+qM0ddgXWnK+DaKbK8wvJbNclm186adOgSbvXnE1W2i8+UrgEAk3ffQjD
-	 +Hs62U2hV0IMR8d4BWvnJ+eymoICwmU3G4SJOU0duzoR8k0VLk1UodhyeT5suoU0z
-	 Md+kEUBQr0XBbuWKnxvVWT20u3vi+E9j4/M2BcLhx06roERU/5iyurToiEC6/qMDN
-	 S0GHEtyEeAFfOGwtNW+l4+/Zb22J+f6pq2u3oKo0/aQn5l8mh8B72lfwBL016UWnG
-	 7Jh/Ydm5/opQQCXgGg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MhD6W-1sDsJw2FQQ-00c1UX; Wed, 28
- Aug 2024 00:11:34 +0200
-Message-ID: <1b84518a-9f6b-4083-a26b-c85188e23cff@gmx.de>
-Date: Wed, 28 Aug 2024 00:11:31 +0200
+	s=arc-20240116; t=1724811574; c=relaxed/simple;
+	bh=OL+FIAIOhnYv/IjQNawi/ZfJ25d4QP9pmODTkv735pg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=H2c5z9KE23DjpGu8Unc1oKBoC2nBzt9u0GqAomCkYuVVhKZb9jKL5/6rnSkI5KEULqr6voNf6hPPTYAyw/861qRdGl3nwKiDQ6RXz2VHrSEdLiZpkRL5lhO/z4r+w49cXyqg0h5t7JEMoVL0z6swrhvMXtLeobdU8eRvyFVnsOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wtp520rKPz1j7Rc;
+	Wed, 28 Aug 2024 10:19:18 +0800 (CST)
+Received: from dggpeml500019.china.huawei.com (unknown [7.185.36.137])
+	by mail.maildlp.com (Postfix) with ESMTPS id C7E4E1A0188;
+	Wed, 28 Aug 2024 10:19:28 +0800 (CST)
+Received: from [10.67.121.58] (10.67.121.58) by dggpeml500019.china.huawei.com
+ (7.185.36.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 28 Aug
+ 2024 10:19:28 +0800
+Message-ID: <0e3afec5-1c12-622d-b8f5-7a774e43632f@hisilicon.com>
+Date: Wed, 28 Aug 2024 10:19:28 +0800
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] hwmon: (hp-wmi-sensors) Check if WMI event data
- exists
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: james@equiv.tech, jlee@suse.com, corentin.chary@gmail.com,
- luke@ljones.dev, matan@svgalib.org, coproscefalo@gmail.com,
- Hans de Goede <hdegoede@redhat.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, lenb@kernel.org, platform-driver-x86@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-acpi@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-References: <20240822173810.11090-1-W_Armin@gmx.de>
- <20240822173810.11090-3-W_Armin@gmx.de>
- <e791f8ed-f6af-d433-5c9b-a68fc9598dcc@linux.intel.com>
-Content-Language: en-US
-From: Armin Wolf <W_Armin@gmx.de>
-In-Reply-To: <e791f8ed-f6af-d433-5c9b-a68fc9598dcc@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1://U4Sw6iSSfjz3bI8Qyz5EOyGLzZPQwwffGRQNyCBIeBUoN+RHB
- ciJsCDkPhD9XpLTq0N8+H+kYxdh5qbKP88bZTPUiNP/VFtd4/6XFiqkeaszWc89VdDRa/9n
- GoRNyByoi/GuOsS/VDN9bKpkBGFyLE+v+M7RiB7zrkCdSaXunopYbkGAN2O1JBfgoNEN2m7
- fogMuE4u0bJWINGUQGdUA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:l3P7y/s2z6I=;S0J3w75s6//IgmFTPtwHNrBQQ/J
- RVJcItIr+PqrCw33o9/7w1T0SGphk82+2f21HgAWtp+B8IUKBlFvnRDTrh+I13nDgDYyGjsmb
- YauEb52w5eF4SuCZ3/rCo32AFJuf5WYwtx/k4y91zNWGZkvVftwyJPJ7r27f0kS5wV8G+ggGr
- i5nb3LVEyPYy9+WXAs2/yKBcL4RaLEZridbg1YUUDBaCol1j5a62P1A8Tn21fPzoQKJdy+MPm
- 9TszEQ1T5RvHMByhWZZQVPkosnG6o5jNNqK0HS8IMabbjo3qa4j1avCOKnlZtkn+DH1Mz1eQG
- xipYvWnxfZy40DL6fTfjrDDpGvQ082l/2lF2fu+aLVqhIyG79Y09V1UecGcZmjSxf6/oBiVe1
- J5mSnXMRrxzl6PWvAo0806Jd77JXbqNzWKOJbxUbeFGL5XbnA6sIvQXfkIhpH+26b07VPJBSf
- bZzNRYOP86XqmDyhZqFMj+9bRzudPmvtNJGQ953q43Zcn6Mh+XVmCuqVVwCW9tk1n0Xk3x6Ef
- BssKLTpmGE9rCnrVC6NMsEDv6x7gV2mcwQ90cFd2wh3CS0h+koHXi4ebC4Ch9+2if2ldqhPDd
- 0A6ODFdW2F9d8pnzlhgo0A8iF9r1U61G0fcfg7BVNS2xOiARSVAmUY984FhUJBTXi1V0T5V81
- t8yiIXe2B2VFdlPTcqrGZKgnnxM29KUMoT2r+xnipUsbvWYG3U26Zd1Ckeykp67w0asZpd+15
- lYLog01LNvUquHs/Hnn0o/htIR4S6uIIWtbXIpYNVOZHFH9asxD5LWclFwkDmAmbYBd+HAgCf
- TGtPPCEvxLK6shwrIZLTHlVQ==
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH] cpufreq: CPPC: Return desired perf in ->get() if feedback
+ counters are 0
+To: <rafael@kernel.org>, <viresh.kumar@linaro.org>
+CC: <linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+	<linuxarm@huawei.com>, <liaochang1@huawei.com>, <wanghuiqiang@huawei.com>,
+	<prime.zeng@hisilicon.com>, <fanghao11@huawei.com>,
+	<jonathan.cameron@huawei.com>, <linux-arm-kernel@lists.infradead.org>
+References: <20240819035147.2239767-1-zhanjie9@hisilicon.com>
+ <d32acf92-b8a3-234a-948f-7ccceea85a45@hisilicon.com>
+From: Jie Zhan <zhanjie9@hisilicon.com>
+In-Reply-To: <d32acf92-b8a3-234a-948f-7ccceea85a45@hisilicon.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500019.china.huawei.com (7.185.36.137)
 
-Am 27.08.24 um 10:20 schrieb Ilpo J=C3=A4rvinen:
+Can anyone take a look at this additional error handling of cppc_cpufreq?
+Thanks!
 
-> On Thu, 22 Aug 2024, Armin Wolf wrote:
+Jie
+
+On 21/08/2024 16:27, Jie Zhan wrote:
+> cc linux-arm-kernel
 >
->> The BIOS can choose to return no event data in response to a
->> WMI event, so the ACPI object passed to the WMI notify handler
->> can be NULL.
+> On 19/08/2024 11:51, Jie Zhan wrote:
+>> The CPPC performance feedback counters could return 0 when the target 
+>> cpu
+>> is in a deep idle state (e.g. powered off) and those counters are not
+>> powered.  cppc_cpufreq_get_rate() returns 0 in this case, triggering two
+>> problems:
 >>
->> Check for such a situation and ignore the event in such a case.
+>> 1. cpufreq_online() gets a false error and doesn't generate a cpufreq
+>> policy, which happens in cpufreq_add_dev() when a new cpu device is 
+>> added.
+>> 2. 'cpuinfo_cur_freq' shows '<unknown>'
 >>
->> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>> Don't take it as an error and return the frequency corresponding to the
+>> desired perf when the feedback counters are 0.
+>>
+>> Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns 
+>> zero in all error cases.")
+>> Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
 >> ---
->>   drivers/hwmon/hp-wmi-sensors.c | 3 +++
->>   1 file changed, 3 insertions(+)
+>>   drivers/cpufreq/cppc_cpufreq.c | 11 +++++++++--
+>>   1 file changed, 9 insertions(+), 2 deletions(-)
 >>
->> diff --git a/drivers/hwmon/hp-wmi-sensors.c b/drivers/hwmon/hp-wmi-sens=
-ors.c
->> index 6892518d537c..d6bdad26feb1 100644
->> --- a/drivers/hwmon/hp-wmi-sensors.c
->> +++ b/drivers/hwmon/hp-wmi-sensors.c
->> @@ -1628,6 +1628,9 @@ static void hp_wmi_notify(union acpi_object *wobj=
-, void *context)
->>   	 * HPBIOS_BIOSEvent instance.
->>   	 */
->>
->> +	if (!wobj)
->> +		return;
+>> diff --git a/drivers/cpufreq/cppc_cpufreq.c 
+>> b/drivers/cpufreq/cppc_cpufreq.c
+>> index bafa32dd375d..1c5eb12c1a5a 100644
+>> --- a/drivers/cpufreq/cppc_cpufreq.c
+>> +++ b/drivers/cpufreq/cppc_cpufreq.c
+>> @@ -748,18 +748,25 @@ static unsigned int 
+>> cppc_cpufreq_get_rate(unsigned int cpu)
+>>         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
+>>       if (ret)
+>> -        return 0;
+>> +        goto out_err;
+>>         udelay(2); /* 2usec delay between sampling */
+>>         ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
+>>       if (ret)
+>> -        return 0;
+>> +        goto out_err;
+>>         delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
+>>                              &fb_ctrs_t1);
+>>         return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
 >> +
-> I'm left to wonder why is this patch is not placed first? Can't this
-> happen regardless who gets the wobj? And in that case, should this have
-> a Fixes tag?
+>> +out_err:
+>> +    if (ret == -EFAULT)
+>> +        return cppc_perf_to_khz(&cpu_data->perf_caps,
+>> +                    cpu_data->perf_ctrls.desired_perf);
+>> +
+>> +    return 0;
+>>   }
+>>     static int cppc_cpufreq_set_boost(struct cpufreq_policy *policy, 
+>> int state)
 >
-Good point, i will send a v2 series to correct this.
-
-Thanks,
-Armin Wolf
 
 
