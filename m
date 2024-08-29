@@ -1,207 +1,103 @@
-Return-Path: <linux-acpi+bounces-7960-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7961-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8430C96461F
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 15:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFAA196476C
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 16:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFA461C2414F
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 13:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ADF1B24CBD
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 13:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E031AE04C;
-	Thu, 29 Aug 2024 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878C01946C4;
+	Thu, 29 Aug 2024 13:52:54 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBB61AD9E0;
-	Thu, 29 Aug 2024 13:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEC042A96;
+	Thu, 29 Aug 2024 13:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724937305; cv=none; b=uAueBuv73KYKAMWGhyF+SQTs0UHML2+JXi5kwwAhiGawWLs76nUA+5g9tPB3cgVxoH6meHKg/jVNKmfWOg43aVxnAC2J7zyxeKZaKsgxl/fWrrLAqVgHnzLnwrCPxge1V4i8ggmz/Q96ZHN0w+hNsU7ncvxO1//vjh/y1RSbE8s=
+	t=1724939574; cv=none; b=SA55vJPRAetatd60t7/ZcDhkI8JuWyjUu1KfPlUJLZPi0G2NV1ElMik/P4pvv/cahTTKfC5YgriJaWzzYhpPE6ak1RuneQi4MXSG1Jolc6NJYlldZuuIPHLsJR+Vrc4xLNSVAI8fUgw7PZ5oSDIoab5f2JaY53xJBNRaWNMTJoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724937305; c=relaxed/simple;
-	bh=lihYB3H/FMQYtWTitMrBFoX9tv8ZBPb3PyGsDX7yvMU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PR73RHl6MVzDOiv37ePlprufzNxzONmsyZ1gpLVzhMw+4p6f7Doyp0ZleVNShYNYpzddAF1O/nsyRZGc3vXjuiyC/Va2m/VfmeBLWjsKl7Lb3GcIyvz38mTCezJZknv/xeDPfRpj0b4rYsicrDLbRXIFm3W2BK6069QQidfs27I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+	s=arc-20240116; t=1724939574; c=relaxed/simple;
+	bh=GCrCUmkL3lEkFSY2Xmrjgpf2mHTKOAuoT0wdLOC6swg=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=bBa0MVbTrMb//AlMNE18aVsUd8djOhtQ3+ZuANldbTneDV6OVHeNKxNhxYn5Xv66I5yFiP7IOnFzFXL0QXAB5db4Jxs2XFAUHK5YysBqYwP7ldLE48L2inZKWWTk+++cvT9F442fRxCqKZ2bLd9+UCdXOw933kFlmUzItA0YjV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4WvhZs2vJ2z1j7gZ;
-	Thu, 29 Aug 2024 21:14:45 +0800 (CST)
-Received: from dggpemf500003.china.huawei.com (unknown [7.185.36.204])
-	by mail.maildlp.com (Postfix) with ESMTPS id EEE1E140136;
-	Thu, 29 Aug 2024 21:14:57 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- dggpemf500003.china.huawei.com (7.185.36.204) with Microsoft SMTP Server
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4WvjQW4Dzhz1S9FQ;
+	Thu, 29 Aug 2024 21:52:35 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id ED9EA140153;
+	Thu, 29 Aug 2024 21:52:48 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 29 Aug 2024 21:14:57 +0800
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
- Thu, 29 Aug 2024 14:14:55 +0100
-From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
-	<acpica-devel@lists.linux.dev>, "Guohanjun (Hanjun Guo)"
-	<guohanjun@huawei.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
- Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
- Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, Alex Williamson
-	<alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer
-	<mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, Mostafa Saleh
-	<smostafa@google.com>
-Subject: RE: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
-Thread-Topic: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
-Thread-Index: AQHa+JkQkcFFSAeDsUqyXyGP6/LaZLI7ju0AgAFNDID///2PgIAAHqvg///xn4CAAU4tEA==
-Date: Thu, 29 Aug 2024 13:14:54 +0000
-Message-ID: <d2ad792fe9dd44d38396c5646fa956c6@huawei.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <Zs5Fom+JFZimFpeS@Asurada-Nvidia>
- <7debe8f99afa4e33aa1872be0d4a63e1@huawei.com>
- <Zs9a9/Dc0vBxp/33@Asurada-Nvidia>
- <cd36b0e460734df0ae95f5e82bfebaef@huawei.com>
- <Zs9ooZLNtPZ8PwJh@Asurada-Nvidia>
-In-Reply-To: <Zs9ooZLNtPZ8PwJh@Asurada-Nvidia>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1544.11; Thu, 29 Aug 2024 21:52:48 +0800
+Subject: Re: [PATCH] acpi/arm64: Adjust error handling procedure in
+ gtdt_parse_timer_block()
+To: Aleksandr Mishin <amishin@t-argos.ru>, Fu Wei <fu.wei@linaro.org>
+CC: Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla
+	<sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
+	<lenb@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+References: <20240827101239.22020-1-amishin@t-argos.ru>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <66f51691-db2b-5c1b-865f-a3ee708f670a@huawei.com>
+Date: Thu, 29 Aug 2024 21:52:47 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240827101239.22020-1-amishin@t-argos.ru>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
 
+On 2024/8/27 18:12, Aleksandr Mishin wrote:
+> In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
+> will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
+> because do{} block will be executed even if 'i == 0'.
+> 
+> Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
+> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+> ---
+>   drivers/acpi/arm64/gtdt.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+> index c0e77c1c8e09..eb6c2d360387 100644
+> --- a/drivers/acpi/arm64/gtdt.c
+> +++ b/drivers/acpi/arm64/gtdt.c
+> @@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
+>   		if (frame->virt_irq > 0)
+>   			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
+>   		frame->virt_irq = 0;
+> -	} while (i-- >= 0 && gtdt_frame--);
+> +	} while (i-- > 0 && gtdt_frame--);
 
+Good catch,
 
-> -----Original Message-----
-> From: Nicolin Chen <nicolinc@nvidia.com>
-> Sent: Wednesday, August 28, 2024 7:13 PM
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>; acpica-devel@lists.linux.dev;
-> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
-> iommu@lists.linux.dev; Joerg Roedel <joro@8bytes.org>; Kevin Tian
-> <kevin.tian@intel.com>; kvm@vger.kernel.org; Len Brown
-> <lenb@kernel.org>; linux-acpi@vger.kernel.org; linux-arm-
-> kernel@lists.infradead.org; Lorenzo Pieralisi <lpieralisi@kernel.org>; Ra=
-fael J.
-> Wysocki <rafael@kernel.org>; Robert Moore <robert.moore@intel.com>;
-> Robin Murphy <robin.murphy@arm.com>; Sudeep Holla
-> <sudeep.holla@arm.com>; Will Deacon <will@kernel.org>; Alex Williamson
-> <alex.williamson@redhat.com>; Eric Auger <eric.auger@redhat.com>; Jean-
-> Philippe Brucker <jean-philippe@linaro.org>; Moritz Fischer
-> <mdf@kernel.org>; Michael Shavit <mshavit@google.com>;
-> patches@lists.linux.dev; Mostafa Saleh <smostafa@google.com>
-> Subject: Re: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
->=20
-> On Wed, Aug 28, 2024 at 06:06:36PM +0000, Shameerali Kolothum Thodi
-> wrote:
-> > > > > As mentioned above, the VIOMMU series would be required to test
-> the
-> > > > > entire nesting feature, which now has a v2 rebasing on this serie=
-s.
-> > > > > I tested it with a paring QEMU branch. Please refer to:
-> > > > > https://lore.kernel.org/linux-
-> > > > > iommu/cover.1724776335.git.nicolinc@nvidia.com/
-> > > >
-> > > > Thanks for this. I haven't gone through the viommu and its Qemu
-> branch
-> > > > yet.  The way we present nested-smmuv3/iommufd to the Qemu seems
-> to
-> > > > have changed  with the above Qemu branch(multiple nested SMMUs).
-> > > > The old Qemu command line for nested setup doesn't work anymore.
-> > > >
-> > > > Could you please share an example Qemu command line  to verify this
-> > > > series(Sorry, if I missed it in the links/git).
-> > >
-> > > My bad. I updated those two "for_iommufd_" QEMU branches with a
-> > > README commit on top of each for the reference command.
-> >
-> > Thanks. I did give it a go and this is my command line based on above,
->=20
-> > But it fails to boot very early:
-> >
-> > root@ubuntu:/home/shameer/qemu-test# ./qemu_run-simple-iommufd-
-> nicolin-2
-> > qemu-system-aarch64-nicolin-viommu: Illegal numa node 2
-> >
-> > Any idea what am I missing? Do you any special config enabled while
-> building Qemu?
->=20
-> Looks like you are running on a multi-SMMU platform :)
->=20
-> Would you please try syncing your local branch? That should work,
-> as the update also had a small change to the virt code:
->=20
-> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 161a28a311..a782909016 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -1640,7 +1640,7 @@ static PCIBus
-> *create_pcie_expander_bridge(VirtMachineState *vms, uint8_t idx)
->      }
->=20
->      qdev_prop_set_uint8(dev, "bus_nr", bus_nr);
-> -    qdev_prop_set_uint16(dev, "numa_node", idx);
-> +    qdev_prop_set_uint16(dev, "numa_node", 0);
->      qdev_realize_and_unref(dev, BUS(bus), &error_fatal);
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
 
-That makes some progress. But still I am not seeing the assigned
-dev  in Guest.
+It's a fix in the error path, so I think it's OK for next release cycle.
 
--device vfio-pci-nohotplug,host=3D0000:75:00.1,iommufd=3Diommufd0
-
-root@ubuntu:/# lspci -tv#
-
-root@ubuntu:/# lspci -tv
--+-[0000:ca]---00.0-[cb]--
- \-[0000:00]-+-00.0  Red Hat, Inc. QEMU PCIe Host bridge
-             +-01.0  Red Hat, Inc Virtio network device
-             +-02.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-03.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-04.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-05.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-06.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-07.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-08.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             \-09.0  Red Hat, Inc. QEMU PCIe Expander bridge
-
-The new root port is created, but no device attached.
-
-But without iommufd,
--device vfio-pci-nohotplug,host=3D0000:75:00.1
-
-root@ubuntu:/# lspci -tv
--[0000:00]-+-00.0  Red Hat, Inc. QEMU PCIe Host bridge
-           +-01.0  Red Hat, Inc Virtio network device
-           +-02.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-03.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-04.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-05.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-06.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-07.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-08.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           +-09.0  Red Hat, Inc. QEMU PCIe Expander bridge
-           \-0a.0  Huawei Technologies Co., Ltd. Device a251
-
-We can see dev a251.
-
-And yes the setup has multiple SMMUs(8).
-
-Thanks,
-Shameer
-
+Thanks
+Hanjun
 
