@@ -1,114 +1,143 @@
-Return-Path: <linux-acpi+bounces-7950-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7951-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED47963DF9
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 10:04:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3135C96410E
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 12:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29F53287826
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 08:04:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFD751F21E6F
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 10:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672B4189F31;
-	Thu, 29 Aug 2024 08:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7B918E340;
+	Thu, 29 Aug 2024 10:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mcXYZKsa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cvLYtBtI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FIt/zQ5o"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD27A2BAEB;
-	Thu, 29 Aug 2024 08:04:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8514718E050;
+	Thu, 29 Aug 2024 10:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724918676; cv=none; b=SNnzNXg/Cl6+kkp0VN95fAHj1ExvXgG/Fr/dfZ+3WeW6yfQ+E0HYbwHEC+em5WI6JgkC1JeKs+PggmuWltPXuPfcEIcVCnVcwFt2+0f7BtSMfQ4TlhY/gU8BUNzgabxEyXOhyS7KjtX5YYkSCj95Q7YJ5oGsdBeNNpexp2p+cXM=
+	t=1724926506; cv=none; b=t5rAsCpUJ9Y6JKi/rWwvwbzZrRY3CvmbqewpCbeHjR+bDwg3TkiHrYX9uorjb1sq0iduGNyX9skBhvhl3imPZoLzO80Mm0+ZhQ6YdkOleb787FlE+BTIvroUSJvSxqru7U/WObPypgQZ6c8AveAhFpjJ3XqBp6amn5APGwjwhlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724918676; c=relaxed/simple;
-	bh=aI4iTR7tkgxi9E/O+LO3sPJAywLCTCNo4Xh7wlrvrUg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ocLxSn7T2H/VthcZTVraN/WBNf2pBYsHTgUfyGHnBfO5AMO3pZRcjV/PbKnyn+6BAM5tNJW9og5ozgP+lCbO6YdtyFpUXB1lf7k9uRL/fEYdrZkxN9e3RCXqNAYsWPpu5c8HDXqILv0VFJv78zB97aFGoB55fSDSMjXb3PNvCfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mcXYZKsa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cvLYtBtI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724918672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9LsMX+cDLXM0sEN1H8MTU9ShA0idUI61FD1DCYpj8FI=;
-	b=mcXYZKsa7tEJZ8pgx/EiW3ZGvGYudX3dkZb3KEjMACuHI3yGlBjaJiKdA3HugIcL6I3JhP
-	FVKWLVLek5y8KsyTbG2x2WiAnJctcBkWng5QIBsmTyWIz1O7jxlftP77WIRJYzFHW4bnPQ
-	pNGpxTUOTjImw8wTkUR2x61bHTuS/Cg78+uHGXhfYl8NfaDHo536ycpvUtqWJHw7dIl7TI
-	n09K4qJiKXKqFKYSeuv6gAIDUBc4cOKvqiT986P2a5GVgTxOhLZiV1J4A9UGk7Xguhpnzu
-	+ToPWp4Y+r3bYMS9uy+jdQR6UPk0/qIaOZ77VZSdMiPsb4T/giuO3IjvmjM1Uw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724918672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9LsMX+cDLXM0sEN1H8MTU9ShA0idUI61FD1DCYpj8FI=;
-	b=cvLYtBtI9CHsYKxatQGa4EQW8PBcq9c06EgnLJXDqub2wHfDJ9olq/FK7kRdhpbncgPb68
-	6lmUdZVKpN3tiGDA==
-To: Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, Frederic
- Weisbecker <frederic@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Jonathan Corbet <corbet@lwn.net>, Andrew Morton
- <akpm@linux-foundation.org>
-Subject: Re: [PATCH] ACPI: Remove msleep() bloat from acpi_os_sleep()
-In-Reply-To: <87frqoig98.fsf@somnus>
-References: <2803b89021f991662b000f50e45dbaebdcca438a.1724729626.git.len.brown@intel.com>
- <CAJZ5v0jcOUoN6gDDFkufu8xWF-BHXaSKnXqraHsTkq8JanJXuQ@mail.gmail.com>
- <CAJvTdKkucaRVDZm6EVeUxwyrQexyuYd7ECUBSkpP0nC9PwzspA@mail.gmail.com>
- <CAJZ5v0jvYitb7DLyLkqTRv0TT=6yBHDvEvb8tJLzAOVKa3hqnQ@mail.gmail.com>
- <CAJZ5v0gxVqrASiuJq=UX9jyZsG=XvriFn2=7CPmG6-1sKbmPEQ@mail.gmail.com>
- <CAJvTdK=-ETniiwzwLYH14+TeU0kA49gvTnqyRxH7-Hc6tzTBUw@mail.gmail.com>
- <CAJvTdKmpfs_nh4J0R8T=1P9WaAJ-nJ+mKj=rT3tqMpmvpUTisA@mail.gmail.com>
- <87frqoig98.fsf@somnus>
-Date: Thu, 29 Aug 2024 10:04:32 +0200
-Message-ID: <87ikvjah67.fsf@somnus>
+	s=arc-20240116; t=1724926506; c=relaxed/simple;
+	bh=ja3k5hFICUQ46VNR/0UCHIUMXdkpQSTHbdMOS3QfItE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A5W215LmtIfmcsDvA29SL9JWXlYyBazC4xHMUzLZJfngDW/H3hNgecm60uhvv4zOKRQ2/tkgy3ba+9EIr/NXQhE04l1CqTdc7aUSTdh8vjB4DTqJ861yVf7u953m0Qb02j5ClfjtsFwgbf/OPqnRrHbGWALv3vLZWyhItcKV11g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FIt/zQ5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F355C4CEC5;
+	Thu, 29 Aug 2024 10:15:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724926506;
+	bh=ja3k5hFICUQ46VNR/0UCHIUMXdkpQSTHbdMOS3QfItE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=FIt/zQ5okD2OnX/3U8XS7YxcRyv/6TQL2fIHw3oVa+7i9XNpDlvrTH6MJhhynFpvA
+	 8kQj4SB3cztOUNZa9JRRw9gh2PvNEEQVDOB8oDh05o1XOmsEP55g9YUaqG5iy3dBSB
+	 ZoGkskxApKAmbm0Y+27J6zH6yHBa/OskT7ad6O6EMZWc77Ydr4uV6nqGIaTCclDI4X
+	 qikL6ijv4YNUUNOuqxc0uyzD2dIiK5mfuK7Tqu2A1V+abeDFJor45fFHYrZGbKFgAv
+	 twQaALgBV/m8ekSYddGfXGC6igdrgEY75bTlSYZYtGv4pmBbcRjLRAMGRgO+cjskev
+	 VjTgrjgzVojTA==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5dc93fa5639so258799eaf.1;
+        Thu, 29 Aug 2024 03:15:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUIsEvYjSxcoRWdyGL9+3sfvkgcEHKKkIBiC9kAhFBEFp8fZ2qPQGVtCG1dFtZCFJF57xo=@vger.kernel.org, AJvYcCUdjj7oV4gpnLXiKHqoj+xp6tdrPIC606RzGoXKeRZHDDx0PXhyfjuWknoMTHNQMmcEniswQOY6d7fYKA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHuUv7ia/A7TsHDEtr0Aov8VFQaefUJTpNfFdvGPTXYzp84vBK
+	aWW7aUo7/bLxsxQVvz0jvAPsP1deLowhrlF6ZbsgPI4PQAvgsTQGVIItr+5tpXRqK+1Ahhyy0JC
+	m/AZRC7jCSENl0UBs6kpH9K7ssYM=
+X-Google-Smtp-Source: AGHT+IH1iV6L1TGRMqY7jf4E7+LOi1yBY1y43SdO+ovsqtu6sddWwnbpbj08nm5SY9sGMdOM9bStbW37+fCJJzH/H0k=
+X-Received: by 2002:a05:6820:1610:b0:5da:a462:6a30 with SMTP id
+ 006d021491bc7-5df97ebd7bdmr2719698eaf.1.1724926505401; Thu, 29 Aug 2024
+ 03:15:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com> <3-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+In-Reply-To: <3-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 29 Aug 2024 12:14:54 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hZKs8QkjA=JMYwaXpPm8kQM91WnyMNP2Mcyk7s51NfyQ@mail.gmail.com>
+Message-ID: <CAJZ5v0hZKs8QkjA=JMYwaXpPm8kQM91WnyMNP2Mcyk7s51NfyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/8] ACPICA: IORT: Update for revision E.f
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>, 
+	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>, 
+	kvm@vger.kernel.org, Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Robert Moore <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, 
+	Alex Williamson <alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer <mdf@kernel.org>, 
+	Michael Shavit <mshavit@google.com>, Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev, 
+	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>, Mostafa Saleh <smostafa@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Anna-Maria Behnsen <anna-maria@linutronix.de> writes:
-
-[...]
-
-> Lets have a deeper look to msleep() internals: msleep() uses timer list
-> timers. Because of the design of the timer wheel (granularity of buckets
-> increases with the levels) and because of the granularity of jiffies the
-> sleep values will be longer as specified. Let's assume we are executing
-> a msleep(1) on a HZ=250 system:
+On Tue, Aug 27, 2024 at 5:51=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
 >
-> First msecs are mapped on jiffies, so this results in a 4ms timeout
-> value, as there is nothing shorter than 1 jiffie. Then the jiffie value
-> is handed over to timer code and msleep() adds another jiffie to the
-> timeout. The timeout is then 2 jiffies or 8ms. With this timeout a timer
-> list timer is queued. To make sure that timers will not fire early or
-> race with a concurrent incrementation of jiffie, timers are queued
-> always into the next bucket. As the timer will end up in the first level
-> of the timer wheel the granularity of the buckets is 1 jiffies. This
-> means that the timeout would be 3 jiffies in worst case.
+> From: Nicolin Chen <nicolinc@nvidia.com>
 >
-> The additional jiffie in msleep() is the historical prevention that the
-> sleep time is at least the specified time. This is handled by timer
-> wheel core code itself, so this extra jiffie could be removed. I will
-> provide a patch for it.
+> ACPICA commit c4f5c083d24df9ddd71d5782c0988408cf0fc1ab
+>
+> The IORT spec, Issue E.f (April 2024), adds a new CANWBS bit to the Memor=
+y
+> Access Flag field in the Memory Access Properties table, mainly for a PCI
+> Root Complex.
+>
+> This CANWBS defines the coherency of memory accesses to be not marked IOW=
+B
+> cacheable/shareable. Its value further implies the coherency impact from =
+a
+> pair of mismatched memory attributes (e.g. in a nested translation case):
+>   0x0: Use of mismatched memory attributes for accesses made by this
+>        device may lead to a loss of coherency.
+>   0x1: Coherency of accesses made by this device to locations in
+>        Conventional memory are ensured as follows, even if the memory
+>        attributes for the accesses presented by the device or provided by
+>        the SMMU are different from Inner and Outer Write-back cacheable,
+>        Shareable.
+>
+> Link: https://github.com/acpica/acpica/commit/c4f5c083
+> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 
-I missed to use the whole cc list above when sending the patch:
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-  https://lore.kernel.org/r/20240829074133.4547-1-anna-maria@linutronix.de/
-
-Thanks,
-
-	Anna-Maria
-
+> ---
+>  include/acpi/actbl2.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/include/acpi/actbl2.h b/include/acpi/actbl2.h
+> index e27958ef82642f..9a7acf403ed3c8 100644
+> --- a/include/acpi/actbl2.h
+> +++ b/include/acpi/actbl2.h
+> @@ -453,7 +453,7 @@ struct acpi_table_ccel {
+>   * IORT - IO Remapping Table
+>   *
+>   * Conforms to "IO Remapping Table System Software on ARM Platforms",
+> - * Document number: ARM DEN 0049E.e, Sep 2022
+> + * Document number: ARM DEN 0049E.f, Apr 2024
+>   *
+>   ***********************************************************************=
+*******/
+>
+> @@ -524,6 +524,7 @@ struct acpi_iort_memory_access {
+>
+>  #define ACPI_IORT_MF_COHERENCY          (1)
+>  #define ACPI_IORT_MF_ATTRIBUTES         (1<<1)
+> +#define ACPI_IORT_MF_CANWBS             (1<<2)
+>
+>  /*
+>   * IORT node specific subtables
+> --
+> 2.46.0
+>
+>
 
