@@ -1,103 +1,202 @@
-Return-Path: <linux-acpi+bounces-7961-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7962-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFAA196476C
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 16:01:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 567149648B6
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 16:39:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ADF1B24CBD
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 13:52:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EAB9B2581D
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878C01946C4;
-	Thu, 29 Aug 2024 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59D71B0118;
+	Thu, 29 Aug 2024 14:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UD1HV6vp"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEC042A96;
-	Thu, 29 Aug 2024 13:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E6E19049D;
+	Thu, 29 Aug 2024 14:38:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724939574; cv=none; b=SA55vJPRAetatd60t7/ZcDhkI8JuWyjUu1KfPlUJLZPi0G2NV1ElMik/P4pvv/cahTTKfC5YgriJaWzzYhpPE6ak1RuneQi4MXSG1Jolc6NJYlldZuuIPHLsJR+Vrc4xLNSVAI8fUgw7PZ5oSDIoab5f2JaY53xJBNRaWNMTJoE=
+	t=1724942332; cv=none; b=i1Ihz2WXazqzSOnyMGeqytnL9xp+UkT+EImfhy+Ww2TQhiyF5VT2Q/5Rf+KQPeyftz9QJjjzOTiZyA5yB88uwac/lr2RDujYy+PRP3l04SeuY00vhZyBrG1tCDpSW2vUyxOGWct/guOfXve65E90isBJHD8Wi6YF4HchUJR6seY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724939574; c=relaxed/simple;
-	bh=GCrCUmkL3lEkFSY2Xmrjgpf2mHTKOAuoT0wdLOC6swg=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=bBa0MVbTrMb//AlMNE18aVsUd8djOhtQ3+ZuANldbTneDV6OVHeNKxNhxYn5Xv66I5yFiP7IOnFzFXL0QXAB5db4Jxs2XFAUHK5YysBqYwP7ldLE48L2inZKWWTk+++cvT9F442fRxCqKZ2bLd9+UCdXOw933kFlmUzItA0YjV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4WvjQW4Dzhz1S9FQ;
-	Thu, 29 Aug 2024 21:52:35 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id ED9EA140153;
-	Thu, 29 Aug 2024 21:52:48 +0800 (CST)
-Received: from [10.174.178.247] (10.174.178.247) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 29 Aug 2024 21:52:48 +0800
-Subject: Re: [PATCH] acpi/arm64: Adjust error handling procedure in
- gtdt_parse_timer_block()
-To: Aleksandr Mishin <amishin@t-argos.ru>, Fu Wei <fu.wei@linaro.org>
-CC: Lorenzo Pieralisi <lpieralisi@kernel.org>, Sudeep Holla
-	<sudeep.holla@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	<linux-acpi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-References: <20240827101239.22020-1-amishin@t-argos.ru>
-From: Hanjun Guo <guohanjun@huawei.com>
-Message-ID: <66f51691-db2b-5c1b-865f-a3ee708f670a@huawei.com>
-Date: Thu, 29 Aug 2024 21:52:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+	s=arc-20240116; t=1724942332; c=relaxed/simple;
+	bh=FMQS2O5d+DRmHBkg5Fp2Zk5YiN6kMZNZGivHCXdxMUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jEcRkkc+MA3Z/qExFj77H49TQbpTcmcTndk3ON1OlKH+AqKXA4lhey7VVcvwoqJlTk5BvGV1mN9CaIW5G7gSAvt1uinE7MPRCAWAUCRcpTut6YYTk95IG73ytKTfy4n/8A9CTSW3MfB0Xlehwy2aEGcyhLE5kLMHIe57tJtmApU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UD1HV6vp; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1787840E0275;
+	Thu, 29 Aug 2024 14:38:48 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id uUNMbPNF293b; Thu, 29 Aug 2024 14:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1724942322; bh=IO4ma28zS0rS9FhCeUmCpz2/rGp6VmKJbKIMwcc+1F0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UD1HV6vpZJUxduYovLkMvLS0T/08vD4bd6QC/Qc6UZQ5q5PFCjm/pl1tWsXDeJpE4
+	 8k+ad0bOaxZmLf6dKGMLkVc0sNSNzDUJVU0wL8PywLCYnTNBZTB/Z7hfsv5xtBsjJS
+	 4ashoQf0art9MJdepehxRQDON52OM7rvWVHGdvErwrP3RsNo0wuCoiwPJQFHlFJdvW
+	 fE2TSjoIOUJXdCqPDes6RUJqv8mewMNGiq6k1HgiHHsMUbDeutdnbbMjYf9GV+VQz1
+	 wOPhvSokUGktO6yB8np165FQgZa392Tc/8IPkUdBLC8cppUcH0N036LAj7Wk461IZz
+	 kxILcqH7t37FABY89MiNhVOwnsDwGAtM/2laYYdiY4nYoSl069JUZW1V31kKTy9bej
+	 By+ETEUFVzTjTepec+Rq2ewEciHN9UMmfwWTeISISGJNYM5SHS0hRqRwiAAXTF5I2p
+	 JXaFkAI1MSRivKw6A4vkjn5gB8CnPeA437PDO/90LDwEL4fkCrOUsCHEijuPoU66SU
+	 GseDgw55JeWprDUmwEeevhoboxdc+SlKUUfJKfR62mtW6ghAvPYFpKcxqcInHxKpVD
+	 FH7cDzNXIWTVWRl7Zh1D/2SzrH5hhHEQw+WkNa/JvKAB9N/plfS3B/g7fRjXhx6l6a
+	 qKXHhqDNpZFFmF1dmCtO6i8s=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6413E40E0169;
+	Thu, 29 Aug 2024 14:38:19 +0000 (UTC)
+Date: Thu, 29 Aug 2024 16:38:11 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>,
+	Daniel Ferguson <danielf@os.amperecomputing.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tyler Baicar <tbaicar@codeaurora.org>,
+	Will Deacon <will@kernel.org>, Xie XiuQi <xiexiuqi@huawei.com>,
+	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shengwei Luo <luoshengwei@huawei.com>,
+	Jason Tian <jason@os.amperecomputing.com>
+Subject: Re: [PATCH v2 1/5] RAS: Report all ARM processor CPER information to
+ userspace
+Message-ID: <20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
+References: <cover.1720679234.git.mchehab+huawei@kernel.org>
+ <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240827101239.22020-1-amishin@t-argos.ru>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
 
-On 2024/8/27 18:12, Aleksandr Mishin wrote:
-> In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
-> will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
-> because do{} block will be executed even if 'i == 0'.
+On Thu, Jul 11, 2024 at 08:28:52AM +0200, Mauro Carvalho Chehab wrote:
+> In addition to those data, it also exports two fields that are
+> parsed by the GHES driver when firmware reports it, e. g.:
 > 
-> Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
+> - error severity
+> - cpu logical index
+
+s/cpu/CPU/g
+
+check your whole set pls.
+
+> Report all of these information to userspace via trace uAPI, So that
+> userspace can properly record the error and take decisions related
+> to cpu core isolation according to error severity and other info.
 > 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
-> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+> After this patch, all the data from ARM Processor record from table
+
+Avoid having "This patch" or "This commit" in the commit message. It is
+tautologically useless.
+
+Also, do
+
+$ git grep 'This patch' Documentation/process
+
+for more details.
+
+...
+
+> [mchehab: modified patch description, solve merge conflicts and fix coding style]
+> Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
+> Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+> Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
+> Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>
+
+What is this SOB chain trying to tell me?
+
+All those folks handled the patch?
+
+> Tested-by: Shiju Jose <shiju.jose@huawei.com>
+> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-section
 > ---
->   drivers/acpi/arm64/gtdt.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-> index c0e77c1c8e09..eb6c2d360387 100644
-> --- a/drivers/acpi/arm64/gtdt.c
-> +++ b/drivers/acpi/arm64/gtdt.c
-> @@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
->   		if (frame->virt_irq > 0)
->   			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
->   		frame->virt_irq = 0;
-> -	} while (i-- >= 0 && gtdt_frame--);
-> +	} while (i-- > 0 && gtdt_frame--);
+>  drivers/acpi/apei/ghes.c | 11 ++++-----
+>  drivers/ras/ras.c        | 45 +++++++++++++++++++++++++++++++++++--
+>  include/linux/ras.h      | 16 +++++++++++---
+>  include/ras/ras_event.h  | 48 +++++++++++++++++++++++++++++++++++-----
+>  4 files changed, 103 insertions(+), 17 deletions(-)
 
-Good catch,
+...
 
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
+> -void log_arm_hw_error(struct cper_sec_proc_arm *err)
+> +void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
+>  {
+> -	trace_arm_event(err);
+> +	struct cper_arm_err_info *err_info;
+> +	struct cper_arm_ctx_info *ctx_info;
+> +	u8 *ven_err_data;
+> +	u32 ctx_len = 0;
+> +	int n, sz, cpu;
+> +	s32 vsei_len;
+> +	u32 pei_len;
+> +	u8 *pei_err;
+> +	u8 *ctx_err;
+> +
+> +	pei_len = sizeof(struct cper_arm_err_info) * err->err_info_num;
+> +	pei_err = (u8 *)err + sizeof(struct cper_sec_proc_arm);
+> +
+> +	err_info = (struct cper_arm_err_info *)(err + 1);
+> +	ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
+> +	ctx_err = (u8 *)ctx_info;
+> +	for (n = 0; n < err->context_info_num; n++) {
+> +		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
+> +		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
+> +		ctx_len += sz;
+> +	}
+> +
+> +	vsei_len = err->section_length - (sizeof(struct cper_sec_proc_arm) +
+> +					  pei_len + ctx_len);
+> +	if (vsei_len < 0) {
+> +		pr_warn(FW_BUG
+> +			"section length: %d\n", err->section_length);
+> +		pr_warn(FW_BUG
+> +			"section length is too small\n");
+> +		pr_warn(FW_BUG
+> +			"firmware-generated error record is incorrect\n");
 
-It's a fix in the error path, so I think it's OK for next release cycle.
+No need to break those lines.
 
-Thanks
-Hanjun
+> +		vsei_len = 0;
+> +	}
+> +	ven_err_data = (u8 *)ctx_info;
+> +
+> +	cpu = GET_LOGICAL_INDEX(err->mpidr);
+> +	/* when return value is invalid, set cpu index to -1 */
+
+Obvious comment - no need for it.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
