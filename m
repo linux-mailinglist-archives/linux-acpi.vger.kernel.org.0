@@ -1,63 +1,63 @@
-Return-Path: <linux-acpi+bounces-7982-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7981-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F12964DFB
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 20:45:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A81964DFA
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 20:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D873828472A
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 18:45:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE83D1F21281
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 18:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D7B1BA86F;
-	Thu, 29 Aug 2024 18:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAAED1BA276;
+	Thu, 29 Aug 2024 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="adYnnH6c"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="KtXgMtrh"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408451B9B2D;
-	Thu, 29 Aug 2024 18:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566574D59F;
+	Thu, 29 Aug 2024 18:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724957071; cv=none; b=keL29IMFGhcd7X97YpTUIX30BuUwsxIlqR2jPJ+RtWPfTE476yk6/yj6im+02Zk7padOvp6xZX2/DDOPxuzeASMGhsioQJI+mdtymqF5BJ+AnkwXr/xuBQ7z4bwJ0mcAamjXxcdddFkSEMeAkjAyI4LIR95FJ7H0TMgJdYgyEz0=
+	t=1724957070; cv=none; b=HUSlTE+azVzDRZa0bBlxCN4tJLB76q/ygXs6ZmwBTV+H85C2PoikJvMv81QtZZLBju2QveER7Nu/rlE/fxEKDzjuR2YfwdGalm2qFq4FE2dblOEGyYXlsfE35fhVItpArR98bQMp/9RhJy3I8d85zGyz/MZRso/QJYRIaniktPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724957071; c=relaxed/simple;
-	bh=S4CkdgFLwOCb5lMnnxvQ1Y3NpKIZBPF/PKaHfWrYn2M=;
+	s=arc-20240116; t=1724957070; c=relaxed/simple;
+	bh=/IEFUscbJH3gO7K8BNc7FdvmtjZhVMtLYHpb4ToA9gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hBwhLfKUjMdbCriLjlbam/VjBAeeXJUsCPCt7uhMJb/19voUaLIwliN8cjviV9HkdkD2kRswNQ/UPuPT6fw3VU58IuH8cnuGwogr18yCjN+RmwKJ+JTxSQodxGprB8HpOk3xxQBuVEC2siach3xP9/cK3rZdJpEvbQX/plfHVW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=adYnnH6c reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=kp2aLY70bgDoidcvZSYa78DImUGxq1ucz9lfj4aJxECvGIuKorYMF3aE0RE4UeU03MaxDwPHJchPCPwAVX2lcn4S78OMsx1pXvTr1C2WlkIsgoUKyWT7Sb999lOqRetOWxsaqhggWV8klncjEJ/WNJM8MbDlU1wx5R4B4VyDZxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=KtXgMtrh reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
- id ab6ddb748adf9e07; Thu, 29 Aug 2024 20:44:27 +0200
+ id 32525ed3c816d92e; Thu, 29 Aug 2024 20:44:26 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id CA9C26A8C15;
-	Thu, 29 Aug 2024 20:44:26 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id D292F6A8C15;
+	Thu, 29 Aug 2024 20:44:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1724957067;
-	bh=S4CkdgFLwOCb5lMnnxvQ1Y3NpKIZBPF/PKaHfWrYn2M=;
+	s=dkim; t=1724957066;
+	bh=/IEFUscbJH3gO7K8BNc7FdvmtjZhVMtLYHpb4ToA9gg=;
 	h=From:Subject:Date;
-	b=adYnnH6c8c9iK18mehjN9m6J8oIzNHewaK85KAiKjti6XOkadzGnZ3DlCZ/guF3sd
-	 LCdj6of245q2l4GW7Byps9nnrfVwrlbKwt47IeGwP2okbcQskHAbLjs0hp6eO2k6fv
-	 GVLpoHoBIRpiE2kiTwXnl3wqgrSNekOjMxbiRdSKrIwN8gg/jjA7aKjjqW/3B5Q2o1
-	 dbQ8F9LYQOLK1sYW996ZTKl8gdvRFM8D2hJOSyFFoEL64/b4iw1tvfxq4WoFX8oplp
-	 jG55SfI3aDPURUlbxl1+x5fnXrfMz7oQ+KitM0lXFK9Blx+ox611MHsHmXs6M1zj7/
-	 eiusC+9ovxIWw==
+	b=KtXgMtrhrNV5qJsg54sTibPGVHfo+kg52Y8opfqnbqFHzfLVzwWoBdcnMCl8wAwXM
+	 Npo0UMPBBBslr0kHaBHnUFJcddKPoh1lWwsS7G+gz5Wox52bHzAvQ1Bb1apDchkXCH
+	 D6pqD1K7W/iYW+/SV34nJCROz7D9c2AL7XbyJdWahACmBOfcQ6fMMzI4cc92Y3xDKy
+	 dVrgcpR6pgX6ol2k9zZ5BNP3N+7tLRZdNxCgrKxwLjsavQMpy31gNupSZ5l+WdAcAr
+	 1h1bqutOST1VmNKWNb5wcJWd+1l0uzu7usPnHjbRXWdjaYZEzegRYw9NgFsejXtZpa
+	 /jGwU735REyoQ==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
 Subject:
- [PATCH v1 10/20] ACPICA: Fix memory leak if acpi_ps_get_next_namepath() fails
-Date: Thu, 29 Aug 2024 20:35:54 +0200
-Message-ID: <5980113.MhkbZ0Pkbq@rjwysocki.net>
+ [PATCH v1 11/20] ACPICA: Fix memory leak if acpi_ps_get_next_field() fails
+Date: Thu, 29 Aug 2024 20:36:45 +0200
+Message-ID: <8467075.NyiUUSuA9g@rjwysocki.net>
 In-Reply-To: <5819337.DvuYhMxLoT@rjwysocki.net>
 References: <5819337.DvuYhMxLoT@rjwysocki.net>
 Precedence: bulk
@@ -71,52 +71,87 @@ Content-Type: text/plain; charset="UTF-8"
 X-CLIENT-IP: 195.136.19.94
 X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
-X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgedguddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeelueffveduueelfeeihfehleejjeekvdejveetueeuhfetjefggeekudelvdeuueenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrtghomhenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehrjhifsehrjhifhihsohgtkhhirdhnvghtpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheplhhinhhugidqrggtphhisehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhosggvrhhtrdhmohhorhgvsehinhhtvghlrdgtohhmpdhrtghpthhtohepshgrkhgvthdrughumhgsrhgvsehinhhtvghlrdgtohhm
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgedguddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpeeltdeikeekkeevieektefggfetueetfeejveejgeduledvudehieeuvdeiheeiveenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhjfiesrhhjfiihshhotghkihdrnhgvthdpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgtphhtthhopehsrghkvghtrdguuhhmsghrvgesihhnthgvlhdrtghomh
 X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-ACPICA commit 2802af722bbde7bf1a7ac68df68e179e2555d361
+ACPICA commit 1280045754264841b119a5ede96cd005bc09b5a7
 
-If acpi_ps_get_next_namepath() fails, the previously allocated
-union acpi_parse_object needs to be freed before returning the
-status code.
+If acpi_ps_get_next_field() fails, the previously created field list
+needs to be properly disposed before returning the status code.
 
-The issue was first being reported on the Linux ACPI mailing list:
-
-Link: https://lore.kernel.org/linux-acpi/56f94776-484f-48c0-8855-dba8e6a7793b@yandex.ru/T/
-Link: https://github.com/acpica/acpica/commit/2802af72
+Link: https://github.com/acpica/acpica/commit/12800457
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+[ rjw: Rename local variable to avoid compiler confusion ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/acpica/psargs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/acpica/psargs.c | 39 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
 diff --git a/drivers/acpi/acpica/psargs.c b/drivers/acpi/acpica/psargs.c
-index 422c074ed289..7debfd5ce0d8 100644
+index 7debfd5ce0d8..28582adfc0ac 100644
 --- a/drivers/acpi/acpica/psargs.c
 +++ b/drivers/acpi/acpica/psargs.c
-@@ -820,6 +820,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
- 			    acpi_ps_get_next_namepath(walk_state, parser_state,
- 						      arg,
- 						      ACPI_NOT_METHOD_CALL);
-+			if (ACPI_FAILURE(status)) {
-+				acpi_ps_free_op(arg);
-+				return_ACPI_STATUS(status);
-+			}
- 		} else {
- 			/* Single complex argument, nothing returned */
+@@ -25,6 +25,8 @@ acpi_ps_get_next_package_length(struct acpi_parse_state *parser_state);
+ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
+ 						       *parser_state);
  
-@@ -854,6 +858,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
- 			    acpi_ps_get_next_namepath(walk_state, parser_state,
- 						      arg,
- 						      ACPI_POSSIBLE_METHOD_CALL);
-+			if (ACPI_FAILURE(status)) {
-+				acpi_ps_free_op(arg);
-+				return_ACPI_STATUS(status);
-+			}
++static void acpi_ps_free_field_list(union acpi_parse_object *start);
++
+ /*******************************************************************************
+  *
+  * FUNCTION:    acpi_ps_get_next_package_length
+@@ -683,6 +685,39 @@ static union acpi_parse_object *acpi_ps_get_next_field(struct acpi_parse_state
+ 	return_PTR(field);
+ }
  
- 			if (arg->common.aml_opcode == AML_INT_METHODCALL_OP) {
++/*******************************************************************************
++ *
++ * FUNCTION:    acpi_ps_free_field_list
++ *
++ * PARAMETERS:  start               - First Op in field list
++ *
++ * RETURN:      None.
++ *
++ * DESCRIPTION: Free all Op objects inside a field list.
++ *
++ ******************************************************************************/
++
++static void acpi_ps_free_field_list(union acpi_parse_object *start)
++{
++	union acpi_parse_object *cur = start;
++	union acpi_parse_object *next;
++	union acpi_parse_object *arg;
++
++	while (cur) {
++		next = cur->common.next;
++
++		/* AML_INT_CONNECTION_OP can have a single argument */
++
++		arg = acpi_ps_get_arg(cur, 0);
++		if (arg) {
++			acpi_ps_free_op(arg);
++		}
++
++		acpi_ps_free_op(cur);
++		cur = next;
++	}
++}
++
+ /*******************************************************************************
+  *
+  * FUNCTION:    acpi_ps_get_next_arg
+@@ -751,6 +786,10 @@ acpi_ps_get_next_arg(struct acpi_walk_state *walk_state,
+ 			while (parser_state->aml < parser_state->pkg_end) {
+ 				field = acpi_ps_get_next_field(parser_state);
+ 				if (!field) {
++					if (arg) {
++						acpi_ps_free_field_list(arg);
++					}
++
+ 					return_ACPI_STATUS(AE_NO_MEMORY);
+ 				}
  
 -- 
 2.43.0
