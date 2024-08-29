@@ -1,62 +1,62 @@
-Return-Path: <linux-acpi+bounces-7991-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7990-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 975EB964E10
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 20:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7073E964E0E
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 20:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDF63B2315D
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 18:47:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E85C6B237ED
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 18:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5656A1BD51C;
-	Thu, 29 Aug 2024 18:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB1A1BD035;
+	Thu, 29 Aug 2024 18:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="EqkWNcNU"
+	dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="YkvWv6HA"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067341BCA01;
-	Thu, 29 Aug 2024 18:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B4F1BC069;
+	Thu, 29 Aug 2024 18:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724957078; cv=none; b=ZPr7/9obLMDu1r9DJhBVOSITg4bCcrLQtv3u7EhqONTCGGnSs/7cbMUYb6Tbq9I62oQJbjfL/xKaeahycgbVzYN5ESZ3nJQAGQS0fCmL340NjwtVmZrusL0Gb01wJn8cbvy2kc5uwWYIYiHpsNOlT+Ot3AImuGXOyMgDvpaslog=
+	t=1724957077; cv=none; b=JcP+hvZEI0BCa9A2dfysmgProVGErxjhoGVo2B2BXtd1kU33cvbag0cq5M27cmuMKg7m2sGtVfQw8e0Wm4S+ywsVx+Ai0XOZpgiGkT/oz3Avcgiy3pZMxTGRn8fGqhXV4i34dOV1m3SkHC9D9aqqrr/ENxPcTMkiIXsLP41EceM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724957078; c=relaxed/simple;
-	bh=Mq3V6QLhYW+ch+key7wZXsUe+kaLlVaVj42moIwnKvo=;
+	s=arc-20240116; t=1724957077; c=relaxed/simple;
+	bh=BPhU515HA9sbp9RVBZ9Yr0fC2nG+SR8C5WGkuoPJ8zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FL46hogyV3nHygniNkBUP2qtjn0/t/nL5gzJVWySKChQaQGrgfeRnC/2LIy3CC9f2AmARyueuBQHb0DAyMYZkdqvnueSoBfkTqcfRKye/UR0VdHbDSpPrTkKGFHYHIcNS6h07EeR8dGBKzr8YIAvXV3ZZFuo6/g+hTztCoOa89g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=EqkWNcNU; arc=none smtp.client-ip=79.96.170.134
+	 MIME-Version:Content-Type; b=t1q1pdzMxeCwI5VpUBVZthdi6ftyOS2aXTgzQ+6e1mncpOURUOzMsJ79ybrqXq4mE7oe+bx3ZOUjSq+pkHbsn5JmssCt73XpBrBKLMY7lQuUGuW7XJz6sm3V8VdWMUTrYfjyouX6pfn+n9I+HclLEl9I7q3XMusShd4pvbL4goU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=pass (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=YkvWv6HA; arc=none smtp.client-ip=79.96.170.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
 Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
  by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
- id ae884a71b6712b5e; Thu, 29 Aug 2024 20:44:34 +0200
+ id 8a35cfb13acde2a4; Thu, 29 Aug 2024 20:44:33 +0200
 Received: from kreacher.localnet (unknown [195.136.19.94])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by cloudserver094114.home.pl (Postfix) with ESMTPSA id AEC726A8C15;
-	Thu, 29 Aug 2024 20:44:33 +0200 (CEST)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id C1EE46A8C16;
+	Thu, 29 Aug 2024 20:44:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
-	s=dkim; t=1724957074;
-	bh=Mq3V6QLhYW+ch+key7wZXsUe+kaLlVaVj42moIwnKvo=;
+	s=dkim; t=1724957073;
+	bh=BPhU515HA9sbp9RVBZ9Yr0fC2nG+SR8C5WGkuoPJ8zI=;
 	h=From:Subject:Date;
-	b=EqkWNcNUZI98Fic2Xk11c59ew/9v7dnR5Pg4iM/Cg+cFw24mNlXYwjSsIBwNrQMO7
-	 F5LkWngQYGxuj1HzoGNmmKGIzKjoOSAsJO3uqrqF1ml8j9vnEA7TkB02VX9AkaocOe
-	 KtDpiqwCl60lv4chPkLoeb6AsdvEF6xVySIJtx5MBd6VsP2slIhOcDefqoofWasw4X
-	 hL04enFuFKk1cZwzc+SCIjHVvRzeqIxz2ghLHUdJt1G6/Po8VzLvCYBEZQO6QdV2Zf
-	 kyW/ZtktD4Zzx0deha/G/Vf48umlsLXXJieHz5YJEMLR0KiWg3d/v8kkOuoWd5UXth
-	 I+hcXbl+nY8sQ==
+	b=YkvWv6HAu7RNCfD/SVbY6ufIxHO5AARL7yrurky7NEFU71oYXHWa0TDNAxMRDQ8pp
+	 1ESc/zUCDKPuVtD8jHyp4nOzhNpyH5WQGHEsIT15BlfvgPBCc9MZYcfxlh1tNzyRSK
+	 tRf80gX4RVYzYw/UjTVo2sZ9Xat1YPCy7PROXaa3s7Uz7uYzmEE6yj10jDO5VGbQ7X
+	 LNPMoBX6JNTsCbqpQVKjoQm2xewahK1r/kQMVyoHXVA+vwR/at3KHbOtreNmgSqj0W
+	 FIuKKxG4+zPZEfvgLxdmNMPdSOxKUEyEQ1I5oSl5Gl4dnNh9A9HYTp16KyqGCK4CMt
+	 pRl7eGs/g0Rdg==
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Linux ACPI <linux-acpi@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Bob Moore <robert.moore@intel.com>,
  Saket Dumbre <saket.dumbre@intel.com>
-Subject: [PATCH v1 03/20] ACPICA: SPCR: Update the SPCR table to version 4
-Date: Thu, 29 Aug 2024 20:27:40 +0200
-Message-ID: <2203218.irdbgypaU6@rjwysocki.net>
+Subject: [PATCH v1 04/20] ACPICA: Headers: Add RISC-V SBI Subtype to DBG2
+Date: Thu, 29 Aug 2024 20:28:29 +0200
+Message-ID: <2960048.e9J7NaK4W3@rjwysocki.net>
 In-Reply-To: <5819337.DvuYhMxLoT@rjwysocki.net>
 References: <5819337.DvuYhMxLoT@rjwysocki.net>
 Precedence: bulk
@@ -72,71 +72,35 @@ X-CLIENT-HOSTNAME: 195.136.19.94
 X-VADE-SPAMSTATE: clean
 X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgedguddvjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvjefgjeejgfekjeetkedtkeegjeetjedtgfegtddtfeeigfegueeljedukeeitdenucffohhmrghinhepmhhitghrohhsohhfthdrtghomhdpghhithhhuhgsrdgtohhmnecukfhppeduleehrddufeeirdduledrleegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepudelhedrudefiedrudelrdelgedphhgvlhhopehkrhgvrggthhgvrhdrlhhotggrlhhnvghtpdhmrghilhhfrhhomheprhhjfiesrhhjfiihshhotghkihdrnhgvthdpnhgspghrtghpthhtohepgedprhgtphhtthhopehlihhnuhigqdgrtghpihesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnthgvlhdrtghomhdprhgtphhtthhopehsrghkvghtrdguuhhmsghrvgesihhnthgvlhdr
  tghomh
-X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4 Fuz2=4
+X-DCC--Metrics: v370.home.net.pl 1024; Body=4 Fuz1=4
 
 From: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 
-ACPICA commit 1eeff52124a45d5cd887ba5687bbad0116e4d211
+ACPICA commit 6f4c900bcf9ca065129353f17a83773aa58095aa
 
-The Microsoft Serial Port Console Redirection (SPCR) specification
-revision 1.09 comprises additional fields [1]. The newly added fields
-are:
-- RISC-V SBI
-- Precise Baud Rate
-- namespace_string_length
-- namespace_string_offset
-- namespace_string
+Include the RISC-V SBI debugging subtype as documented in DBG2
+dated April 10, 2023 [1].
 
-Additionaly, this code will support up to SPCR revision 1.10, as it
-includes only minor wording changes.
-
-Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/serports/serial-port-console-redirection-table # [1]
-Link: https://github.com/acpica/acpica/commit/1eeff521
+Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table # [1]
+Link: https://github.com/acpica/acpica/commit/6f4c900b
 Signed-off-by: Sia Jee Heng <jeeheng.sia@starfivetech.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- include/acpi/actbl3.h | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/acpi/actbl1.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/acpi/actbl3.h b/include/acpi/actbl3.h
-index 8f775e3a08fd..5cd755143b7d 100644
---- a/include/acpi/actbl3.h
-+++ b/include/acpi/actbl3.h
-@@ -92,10 +92,10 @@ struct acpi_table_slit {
- /*******************************************************************************
-  *
-  * SPCR - Serial Port Console Redirection table
-- *        Version 2
-+ *        Version 4
-  *
-  * Conforms to "Serial Port Console Redirection Table",
-- * Version 1.03, August 10, 2015
-+ * Version 1.10, Jan 5, 2023
-  *
-  ******************************************************************************/
+diff --git a/include/acpi/actbl1.h b/include/acpi/actbl1.h
+index 8cfcd1e1c177..89f0df489dc3 100644
+--- a/include/acpi/actbl1.h
++++ b/include/acpi/actbl1.h
+@@ -755,6 +755,7 @@ struct acpi_dbg2_device {
+ #define ACPI_DBG2_16550_WITH_GAS    0x0012
+ #define ACPI_DBG2_SDM845_7_372MHZ   0x0013
+ #define ACPI_DBG2_INTEL_LPSS        0x0014
++#define ACPI_DBG2_RISCV_SBI_CON     0x0015
  
-@@ -112,7 +112,7 @@ struct acpi_table_spcr {
- 	u8 stop_bits;
- 	u8 flow_control;
- 	u8 terminal_type;
--	u8 reserved1;
-+	u8 language;
- 	u16 pci_device_id;
- 	u16 pci_vendor_id;
- 	u8 pci_bus;
-@@ -120,7 +120,11 @@ struct acpi_table_spcr {
- 	u8 pci_function;
- 	u32 pci_flags;
- 	u8 pci_segment;
--	u32 reserved2;
-+	u32 uart_clk_freq;
-+	u32 precise_baudrate;
-+	u16 name_space_string_length;
-+	u16 name_space_string_offset;
-+	char name_space_string[];
- };
+ #define ACPI_DBG2_1394_STANDARD     0x0000
  
- /* Masks for pci_flags field above */
 -- 
 2.43.0
 
