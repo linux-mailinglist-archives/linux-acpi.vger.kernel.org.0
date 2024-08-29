@@ -1,202 +1,156 @@
-Return-Path: <linux-acpi+bounces-7962-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-7963-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567149648B6
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 16:39:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1A1964918
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 16:52:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EAB9B2581D
-	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 14:38:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7C311F21E73
+	for <lists+linux-acpi@lfdr.de>; Thu, 29 Aug 2024 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59D71B0118;
-	Thu, 29 Aug 2024 14:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="UD1HV6vp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792ED1B143B;
+	Thu, 29 Aug 2024 14:52:31 +0000 (UTC)
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E6E19049D;
-	Thu, 29 Aug 2024 14:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940A11B1428;
+	Thu, 29 Aug 2024 14:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724942332; cv=none; b=i1Ihz2WXazqzSOnyMGeqytnL9xp+UkT+EImfhy+Ww2TQhiyF5VT2Q/5Rf+KQPeyftz9QJjjzOTiZyA5yB88uwac/lr2RDujYy+PRP3l04SeuY00vhZyBrG1tCDpSW2vUyxOGWct/guOfXve65E90isBJHD8Wi6YF4HchUJR6seY=
+	t=1724943151; cv=none; b=I7jYFRMbSlFdXrasg32v1nszNiGsp/l08iLV9oF9PaaqX5HyR2RlSrYtzL1M9EkdwnZ+NHx2d+nHGDdZjS4PjpCAYVBtj+elkGuSJ3WDcXBoZXiLn1rBf7Of62mdhwWvJyitypVjPHlTCnIMGIHMY9dybX6idjyM16FwpFhf/c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724942332; c=relaxed/simple;
-	bh=FMQS2O5d+DRmHBkg5Fp2Zk5YiN6kMZNZGivHCXdxMUk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jEcRkkc+MA3Z/qExFj77H49TQbpTcmcTndk3ON1OlKH+AqKXA4lhey7VVcvwoqJlTk5BvGV1mN9CaIW5G7gSAvt1uinE7MPRCAWAUCRcpTut6YYTk95IG73ytKTfy4n/8A9CTSW3MfB0Xlehwy2aEGcyhLE5kLMHIe57tJtmApU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=UD1HV6vp; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1787840E0275;
-	Thu, 29 Aug 2024 14:38:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id uUNMbPNF293b; Thu, 29 Aug 2024 14:38:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1724942322; bh=IO4ma28zS0rS9FhCeUmCpz2/rGp6VmKJbKIMwcc+1F0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UD1HV6vpZJUxduYovLkMvLS0T/08vD4bd6QC/Qc6UZQ5q5PFCjm/pl1tWsXDeJpE4
-	 8k+ad0bOaxZmLf6dKGMLkVc0sNSNzDUJVU0wL8PywLCYnTNBZTB/Z7hfsv5xtBsjJS
-	 4ashoQf0art9MJdepehxRQDON52OM7rvWVHGdvErwrP3RsNo0wuCoiwPJQFHlFJdvW
-	 fE2TSjoIOUJXdCqPDes6RUJqv8mewMNGiq6k1HgiHHsMUbDeutdnbbMjYf9GV+VQz1
-	 wOPhvSokUGktO6yB8np165FQgZa392Tc/8IPkUdBLC8cppUcH0N036LAj7Wk461IZz
-	 kxILcqH7t37FABY89MiNhVOwnsDwGAtM/2laYYdiY4nYoSl069JUZW1V31kKTy9bej
-	 By+ETEUFVzTjTepec+Rq2ewEciHN9UMmfwWTeISISGJNYM5SHS0hRqRwiAAXTF5I2p
-	 JXaFkAI1MSRivKw6A4vkjn5gB8CnPeA437PDO/90LDwEL4fkCrOUsCHEijuPoU66SU
-	 GseDgw55JeWprDUmwEeevhoboxdc+SlKUUfJKfR62mtW6ghAvPYFpKcxqcInHxKpVD
-	 FH7cDzNXIWTVWRl7Zh1D/2SzrH5hhHEQw+WkNa/JvKAB9N/plfS3B/g7fRjXhx6l6a
-	 qKXHhqDNpZFFmF1dmCtO6i8s=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6413E40E0169;
-	Thu, 29 Aug 2024 14:38:19 +0000 (UTC)
-Date: Thu, 29 Aug 2024 16:38:11 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>,
-	Daniel Ferguson <danielf@os.amperecomputing.com>,
-	Ard Biesheuvel <ardb@kernel.org>, James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Len Brown <lenb@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Tyler Baicar <tbaicar@codeaurora.org>,
-	Will Deacon <will@kernel.org>, Xie XiuQi <xiexiuqi@huawei.com>,
-	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shengwei Luo <luoshengwei@huawei.com>,
-	Jason Tian <jason@os.amperecomputing.com>
-Subject: Re: [PATCH v2 1/5] RAS: Report all ARM processor CPER information to
- userspace
-Message-ID: <20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
-References: <cover.1720679234.git.mchehab+huawei@kernel.org>
- <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
+	s=arc-20240116; t=1724943151; c=relaxed/simple;
+	bh=uS6ZUGkMELokJhjp5dBYR6LbnxF19SksPUR5GdIllFM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cbMAp4AxESOLxLwhbbHstube1b7QUa6XGp1yTN6RvAXY4wqgbd0kj+hS/k5HGfUmH9fAcJqCAvmHDaFPc2EpLyOg7fTZ1ESIxxdEAd9y7DeoIIK+mgkNPuZZuDuLMGxvteB7e3HaL17oHR9H3eCprnUflUDLQbZIekmzASjOt7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Wvkdy6wLJzQr6Y;
+	Thu, 29 Aug 2024 22:47:34 +0800 (CST)
+Received: from dggpemf500003.china.huawei.com (unknown [7.185.36.204])
+	by mail.maildlp.com (Postfix) with ESMTPS id 108351401E0;
+	Thu, 29 Aug 2024 22:52:26 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ dggpemf500003.china.huawei.com (7.185.36.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 29 Aug 2024 22:52:25 +0800
+Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
+ lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
+ Thu, 29 Aug 2024 15:52:23 +0100
+From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
+	<acpica-devel@lists.linux.dev>, "Guohanjun (Hanjun Guo)"
+	<guohanjun@huawei.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
+ Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, Alex Williamson
+	<alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer
+	<mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>, Mostafa Saleh
+	<smostafa@google.com>
+Subject: RE: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
+Thread-Topic: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
+Thread-Index: AQHa+JkQkcFFSAeDsUqyXyGP6/LaZLI7ju0AgAFNDID///2PgIAAHqvg///xn4CAAU4tEIAAHHjg
+Date: Thu, 29 Aug 2024 14:52:23 +0000
+Message-ID: <d1dc23f484784413bb3f6658717de516@huawei.com>
+References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <Zs5Fom+JFZimFpeS@Asurada-Nvidia>
+ <7debe8f99afa4e33aa1872be0d4a63e1@huawei.com>
+ <Zs9a9/Dc0vBxp/33@Asurada-Nvidia>
+ <cd36b0e460734df0ae95f5e82bfebaef@huawei.com>
+ <Zs9ooZLNtPZ8PwJh@Asurada-Nvidia>
+ <d2ad792fe9dd44d38396c5646fa956c6@huawei.com>
+In-Reply-To: <d2ad792fe9dd44d38396c5646fa956c6@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
 
-On Thu, Jul 11, 2024 at 08:28:52AM +0200, Mauro Carvalho Chehab wrote:
-> In addition to those data, it also exports two fields that are
-> parsed by the GHES driver when firmware reports it, e. g.:
-> 
-> - error severity
-> - cpu logical index
 
-s/cpu/CPU/g
 
-check your whole set pls.
+> -----Original Message-----
+> From: Shameerali Kolothum Thodi
+> Sent: Thursday, August 29, 2024 2:15 PM
+> To: 'Nicolin Chen' <nicolinc@nvidia.com>
+> Cc: Jason Gunthorpe <jgg@nvidia.com>; acpica-devel@lists.linux.dev;
+> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>;
+> iommu@lists.linux.dev; Joerg Roedel <joro@8bytes.org>; Kevin Tian
+> <kevin.tian@intel.com>; kvm@vger.kernel.org; Len Brown
+> <lenb@kernel.org>; linux-acpi@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; Lorenzo Pieralisi <lpieralisi@kernel.org>; Ra=
+fael J.
+> Wysocki <rafael@kernel.org>; Robert Moore <robert.moore@intel.com>;
+> Robin Murphy <robin.murphy@arm.com>; Sudeep Holla
+> <sudeep.holla@arm.com>; Will Deacon <will@kernel.org>; Alex Williamson
+> <alex.williamson@redhat.com>; Eric Auger <eric.auger@redhat.com>; Jean-
+> Philippe Brucker <jean-philippe@linaro.org>; Moritz Fischer
+> <mdf@kernel.org>; Michael Shavit <mshavit@google.com>;
+> patches@lists.linux.dev; Mostafa Saleh <smostafa@google.com>
+> Subject: RE: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
+>=20
+> That makes some progress. But still I am not seeing the assigned dev  in
+> Guest.
+>=20
+> -device vfio-pci-nohotplug,host=3D0000:75:00.1,iommufd=3Diommufd0
+>=20
+> root@ubuntu:/# lspci -tv#
+>=20
+> root@ubuntu:/# lspci -tv
+> -+-[0000:ca]---00.0-[cb]--
+>  \-[0000:00]-+-00.0  Red Hat, Inc. QEMU PCIe Host bridge
+>              +-01.0  Red Hat, Inc Virtio network device
+>              +-02.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-03.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-04.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-05.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-06.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-07.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              +-08.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>              \-09.0  Red Hat, Inc. QEMU PCIe Expander bridge
+>=20
+> The new root port is created, but no device attached.
+It looks like Guest finds the config invalid:
 
-> Report all of these information to userspace via trace uAPI, So that
-> userspace can properly record the error and take decisions related
-> to cpu core isolation according to error severity and other info.
-> 
-> After this patch, all the data from ARM Processor record from table
+[    0.283618] PCI host bridge to bus 0000:ca
+[    0.284064] ACPI BIOS Error (bug): \_SB.PCF7.PCEE.PCE5.PCDC.PCD3.PCCA._D=
+SM: Excess arguments - ASL declared 5, ACPI requires 4 (20240322/nsargument=
+s-162)
+[    0.285533] pci_bus 0000:ca: root bus resource [bus ca]
+[    0.286214] pci 0000:ca:00.0: [1b36:000c] type 01 class 0x060400 PCIe Ro=
+ot Port
+[    0.287717] pci 0000:ca:00.0: BAR 0 [mem 0x00000000-0x00000fff]
+[    0.288431] pci 0000:ca:00.0: PCI bridge to [bus 00]
+[    0.290649] pci 0000:ca:00.0: bridge configuration invalid ([bus 00-00])=
+, reconfiguring
+[    0.292476] pci_bus 0000:cb: busn_res: can not insert [bus cb-ca] under =
+[bus ca] (conflicts with (null) [bus ca])
+[    0.293597] pci_bus 0000:cb: busn_res: [bus cb-ca] end is updated to cb
+[    0.294300] pci_bus 0000:cb: busn_res: can not insert [bus cb] under [bu=
+s ca] (conflicts with (null) [bus ca])
 
-Avoid having "This patch" or "This commit" in the commit message. It is
-tautologically useless.
+Let me know if you have any clue.=20
 
-Also, do
+Thanks,
+Shameer
 
-$ git grep 'This patch' Documentation/process
-
-for more details.
-
-...
-
-> [mchehab: modified patch description, solve merge conflicts and fix coding style]
-> Fixes: e9279e83ad1f ("trace, ras: add ARM processor error trace event")
-> Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
-> Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
-> Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>
-
-What is this SOB chain trying to tell me?
-
-All those folks handled the patch?
-
-> Tested-by: Shiju Jose <shiju.jose@huawei.com>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-section
-> ---
->  drivers/acpi/apei/ghes.c | 11 ++++-----
->  drivers/ras/ras.c        | 45 +++++++++++++++++++++++++++++++++++--
->  include/linux/ras.h      | 16 +++++++++++---
->  include/ras/ras_event.h  | 48 +++++++++++++++++++++++++++++++++++-----
->  4 files changed, 103 insertions(+), 17 deletions(-)
-
-...
-
-> -void log_arm_hw_error(struct cper_sec_proc_arm *err)
-> +void log_arm_hw_error(struct cper_sec_proc_arm *err, const u8 sev)
->  {
-> -	trace_arm_event(err);
-> +	struct cper_arm_err_info *err_info;
-> +	struct cper_arm_ctx_info *ctx_info;
-> +	u8 *ven_err_data;
-> +	u32 ctx_len = 0;
-> +	int n, sz, cpu;
-> +	s32 vsei_len;
-> +	u32 pei_len;
-> +	u8 *pei_err;
-> +	u8 *ctx_err;
-> +
-> +	pei_len = sizeof(struct cper_arm_err_info) * err->err_info_num;
-> +	pei_err = (u8 *)err + sizeof(struct cper_sec_proc_arm);
-> +
-> +	err_info = (struct cper_arm_err_info *)(err + 1);
-> +	ctx_info = (struct cper_arm_ctx_info *)(err_info + err->err_info_num);
-> +	ctx_err = (u8 *)ctx_info;
-> +	for (n = 0; n < err->context_info_num; n++) {
-> +		sz = sizeof(struct cper_arm_ctx_info) + ctx_info->size;
-> +		ctx_info = (struct cper_arm_ctx_info *)((long)ctx_info + sz);
-> +		ctx_len += sz;
-> +	}
-> +
-> +	vsei_len = err->section_length - (sizeof(struct cper_sec_proc_arm) +
-> +					  pei_len + ctx_len);
-> +	if (vsei_len < 0) {
-> +		pr_warn(FW_BUG
-> +			"section length: %d\n", err->section_length);
-> +		pr_warn(FW_BUG
-> +			"section length is too small\n");
-> +		pr_warn(FW_BUG
-> +			"firmware-generated error record is incorrect\n");
-
-No need to break those lines.
-
-> +		vsei_len = 0;
-> +	}
-> +	ven_err_data = (u8 *)ctx_info;
-> +
-> +	cpu = GET_LOGICAL_INDEX(err->mpidr);
-> +	/* when return value is invalid, set cpu index to -1 */
-
-Obvious comment - no need for it.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
