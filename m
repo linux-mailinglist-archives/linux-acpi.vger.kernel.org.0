@@ -1,256 +1,132 @@
-Return-Path: <linux-acpi+bounces-8005-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8006-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50427965C52
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 11:07:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728719660C1
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 13:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752FA1C2344C
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 09:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 273071F233C5
+	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 11:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3626317107F;
-	Fri, 30 Aug 2024 09:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AED3D17BB0A;
+	Fri, 30 Aug 2024 11:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxjkoAYY"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E07816EBF7;
-	Fri, 30 Aug 2024 09:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B14E152170
+	for <linux-acpi@vger.kernel.org>; Fri, 30 Aug 2024 11:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725008846; cv=none; b=PuJsz14FSTMzGYGX8YxynnjgixfVBRbed7xsbSSJYfNEIWfCNI/zjwFF0aQfebUyQJJhyPW6nqFk+b/kGrNaXOxS9MpAsnRNSQjH9hP+++KWdLTltHn35+lVjUsPA3+w5Hq+9ubd9YGAJIPEt9kfxytadPOrlZq8fcjDB5q3zAc=
+	t=1725017468; cv=none; b=fU2hLvnijR4HECbkA5OYc40a4o68v4xGT3KSqOn4ZKjgY/diBR/TqbshjlDaoTC9BEAeRbNXaThZT8yHsfDaZoG9AfUXIFDOe8NXZ/QixYgzP1ggVheNcT+8AHr8EwXThIPszouZ7/WXp2BEp2hwDO/mUOiZIj7e4IALZfUQRlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725008846; c=relaxed/simple;
-	bh=iuEsNRJ1f9bQ5sE4VjORXs3N3K9LStzfvHVKVl4XWb8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MDDmf93inyFjvXXndzwBfFCEVTUDMyyhJcmGOC5ihWBBeCCfvoi2U1NrPp0ioipMpXRgfaDyuY59oS+5n39ntz4aSbn7YD/0PeokHVrNXhX2hcACqbXfV5oyz/83tv1jU7IETpYmmSZwFgQP3gSkejXoLLt4kj1f7fagy36qGo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4WwBxH4p6vzQqpk;
-	Fri, 30 Aug 2024 17:02:27 +0800 (CST)
-Received: from dggpemf200003.china.huawei.com (unknown [7.185.36.52])
-	by mail.maildlp.com (Postfix) with ESMTPS id 93FB9140202;
-	Fri, 30 Aug 2024 17:07:19 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- dggpemf200003.china.huawei.com (7.185.36.52) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 30 Aug 2024 17:07:18 +0800
-Received: from lhrpeml500005.china.huawei.com ([7.191.163.240]) by
- lhrpeml500005.china.huawei.com ([7.191.163.240]) with mapi id 15.01.2507.039;
- Fri, 30 Aug 2024 10:07:16 +0100
-From: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "acpica-devel@lists.linux.dev"
-	<acpica-devel@lists.linux.dev>, "Guohanjun (Hanjun Guo)"
-	<guohanjun@huawei.com>, "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-	Joerg Roedel <joro@8bytes.org>, Kevin Tian <kevin.tian@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Len Brown <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Robert
- Moore" <robert.moore@intel.com>, Robin Murphy <robin.murphy@arm.com>, "Sudeep
- Holla" <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>, Alex Williamson
-	<alex.williamson@redhat.com>, Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Moritz Fischer
-	<mdf@kernel.org>, Michael Shavit <mshavit@google.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, Mostafa Saleh
-	<smostafa@google.com>
-Subject: RE: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
-Thread-Topic: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
-Thread-Index: AQHa+JkQkcFFSAeDsUqyXyGP6/LaZLI7ju0AgAFNDID///2PgIAAHqvg///xn4CAAU4tEIAAHHjggAAFZgCAASrxMA==
-Date: Fri, 30 Aug 2024 09:07:16 +0000
-Message-ID: <a008993d270b4cc381abbcc5c44e5bb9@huawei.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <Zs5Fom+JFZimFpeS@Asurada-Nvidia>
- <7debe8f99afa4e33aa1872be0d4a63e1@huawei.com>
- <Zs9a9/Dc0vBxp/33@Asurada-Nvidia>
- <cd36b0e460734df0ae95f5e82bfebaef@huawei.com>
- <Zs9ooZLNtPZ8PwJh@Asurada-Nvidia>
- <d2ad792fe9dd44d38396c5646fa956c6@huawei.com>
- <d1dc23f484784413bb3f6658717de516@huawei.com>
- <ZtCdXjkzVbFMBJjy@Asurada-Nvidia>
-In-Reply-To: <ZtCdXjkzVbFMBJjy@Asurada-Nvidia>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1725017468; c=relaxed/simple;
+	bh=oaoA/hJd3wzTSBowZT+QNt0PUjVFnEnqJxKWIK5k9UU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HhkOqk66M7nXvZnsk8FQaes4sXlTMkmmEhMqnNXN9ElfLjqQKi1eoCUAe/4ule6FifyFvxuat6KkEI7pjvIRvnQ/rCSYqSt+WTkTSoXv+42iLgd/WtHrswH4pCTQ7T7xUFA9hZ5f8EBd+lyMPNeTkfaUDFgm7EPhd21k8SMnUJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxjkoAYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D5DC4CEC7
+	for <linux-acpi@vger.kernel.org>; Fri, 30 Aug 2024 11:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725017468;
+	bh=oaoA/hJd3wzTSBowZT+QNt0PUjVFnEnqJxKWIK5k9UU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KxjkoAYYiHhhBYwxmkkdBZiw0ChubUTx8OTLKm67sWumEseyOxwWfc14duC3ffMCm
+	 EsH06IUz2ASix5Fl1ZoXvh69BLJnKGZj/yXgMKQBT294Fq+8z4hRPF8DTwfFhQz4cy
+	 vVdD1hiWFWjkYEofilm+MLWVrcAXRd7JsdegH9niCbfma817RZia5XcOGo3fkVSeDP
+	 NeH2FbzOTG+w02sTZFMyJrd8bL4pp8lTLLt+YKu958mPk++WCa0UrfulKbESAIaomv
+	 NeScOe0uCfyVa7Exf6bPXkV8DMrM6TNuxSnnzSHO3r6oaZZYbN7/xKXsnVPkU3jFmV
+	 LwxMZgrQG2/vQ==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5df9dec9c0eso1095465eaf.2
+        for <linux-acpi@vger.kernel.org>; Fri, 30 Aug 2024 04:31:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUhA7lFYl77foVTlBggMc5rSiFIckGbPAesGYOh657BxnP4Q8Zj3WAkF/u7BD/eXKMEin/9Ed+jmON+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFvpT0foyCRO9pItI05qtqtFobDnSlZ0cAjxFlBSRsPcPtmUSy
+	pz288wMAlo1tCyt5QaqditVyq2urQ8BrjPWRSZGQmWAYjnDOAgVkbJ/M9HrZz5qQeCkC9Q+tBV/
+	binofWSwafZSV6vXhyAfYed3JJQc=
+X-Google-Smtp-Source: AGHT+IHh8Q6yhUzfR5b1AdChCVseAFNNBFw4IFVoRCrd0lkybEuGHzKx7m8eXyTXjPjY189nAaDn1xrvctzykRWFsRo=
+X-Received: by 2002:a05:6820:545:b0:5c6:8eb6:91b2 with SMTP id
+ 006d021491bc7-5dfacdde2c6mr2025121eaf.1.1725017467434; Fri, 30 Aug 2024
+ 04:31:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240830075403.3540985-1-lihongbo22@huawei.com>
+In-Reply-To: <20240830075403.3540985-1-lihongbo22@huawei.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 30 Aug 2024 13:30:56 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0h1Ya4HHi_R2oCKjUsXfCerG1hY6KHd6r-Rtf=xTX7w2g@mail.gmail.com>
+Message-ID: <CAJZ5v0h1Ya4HHi_R2oCKjUsXfCerG1hY6KHd6r-Rtf=xTX7w2g@mail.gmail.com>
+Subject: Re: [PATCH -next] ACPICA: Use swap() to improve code
+To: Hongbo Li <lihongbo22@huawei.com>
+Cc: robert.moore@intel.com, rafael.j.wysocki@intel.com, lenb@kernel.org, 
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, 
+	Saket Dumbre <saket.dumbre@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Aug 30, 2024 at 9:46=E2=80=AFAM Hongbo Li <lihongbo22@huawei.com> w=
+rote:
+>
+> Use the swap() macro to simplify the code and improve its
+> readability.
+>
+> The target code segment uses the bubble sort, we can use
+> this macro to simplify the code.
+>
+> Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
 
+To make changes in ACPICA, please submit a pull request to the
+upstream ACPICA project on GitHub.
 
-> -----Original Message-----
-> From: Nicolin Chen <nicolinc@nvidia.com>
-> Sent: Thursday, August 29, 2024 5:10 PM
-> To: Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-> Cc: Jason Gunthorpe <jgg@nvidia.com>; acpica-devel@lists.linux.dev;
-> Guohanjun (Hanjun Guo) <guohanjun@huawei.com>; iommu@lists.linux.dev;
-> Joerg Roedel <joro@8bytes.org>; Kevin Tian <kevin.tian@intel.com>;
-> kvm@vger.kernel.org; Len Brown <lenb@kernel.org>; linux-
-> acpi@vger.kernel.org; linux-arm-kernel@lists.infradead.org; Lorenzo Piera=
-lisi
-> <lpieralisi@kernel.org>; Rafael J. Wysocki <rafael@kernel.org>; Robert Mo=
-ore
-> <robert.moore@intel.com>; Robin Murphy <robin.murphy@arm.com>; Sudeep
-> Holla <sudeep.holla@arm.com>; Will Deacon <will@kernel.org>; Alex
-> Williamson <alex.williamson@redhat.com>; Eric Auger
-> <eric.auger@redhat.com>; Jean-Philippe Brucker <jean-philippe@linaro.org>=
-;
-> Moritz Fischer <mdf@kernel.org>; Michael Shavit <mshavit@google.com>;
-> patches@lists.linux.dev; Mostafa Saleh <smostafa@google.com>
-> Subject: Re: [PATCH v2 0/8] Initial support for SMMUv3 nested translation
->=20
-> On Thu, Aug 29, 2024 at 02:52:23PM +0000, Shameerali Kolothum Thodi wrote=
-:
-> > > That makes some progress. But still I am not seeing the assigned dev =
- in
-> > > Guest.
-> > >
-> > > -device vfio-pci-nohotplug,host=3D0000:75:00.1,iommufd=3Diommufd0
-> > >
-> > > root@ubuntu:/# lspci -tv#
-> > >
-> > > root@ubuntu:/# lspci -tv
-> > > -+-[0000:ca]---00.0-[cb]--
-> > >  \-[0000:00]-+-00.0  Red Hat, Inc. QEMU PCIe Host bridge
-> > >              +-01.0  Red Hat, Inc Virtio network device
-> > >              +-02.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-03.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-04.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-05.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-06.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-07.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              +-08.0  Red Hat, Inc. QEMU PCIe Expander bridge
-> > >              \-09.0  Red Hat, Inc. QEMU PCIe Expander bridge
->=20
-> Hmm, the tree looks correct..
->=20
-> > > The new root port is created, but no device attached.
-> > It looks like Guest finds the config invalid:
-> >
-> > [    0.283618] PCI host bridge to bus 0000:ca
-> > [    0.284064] ACPI BIOS Error (bug):
-> \_SB.PCF7.PCEE.PCE5.PCDC.PCD3.PCCA._DSM: Excess arguments - ASL declared
-> 5, ACPI requires 4 (20240322/nsarguments-162)
->=20
-> Looks like the DSM change wasn't clean. Yet, this might not be the
-> root cause, as mine could boot with it.
+Once your upstream ACPICA pull request has been merged, please submit
+a corresponding Linux patch pointing to the original upstream ACPICA
+commit.
 
-Yes. This is not the culprit in this case and was reported earlier as well,
+Thanks!
 
-https://patchew.org/QEMU/20211005085313.493858-1-eric.auger@redhat.com/2021=
-1005085313.493858-2-eric.auger@redhat.com/
-
-> Here is mine (I added a print to that conflict part, for success):
->=20
-> [    0.340733] ACPI BIOS Error (bug): \_SB.PCF7.PCEE.PCE5.PCDC._DSM: Exce=
-ss
-> arguments - ASL declared 5, ACPI requires 4 (20230628/nsarguments-162)
-> [    0.341776] pci 0000:dc:00.0: [1b36:000c] type 01 class 0x060400 PCIe =
-Root
-> Port
-> [    0.344895] pci 0000:dc:00.0: BAR 0 [mem 0x10400000-0x10400fff]
-> [    0.347935] pci 0000:dc:00.0: PCI bridge to [bus dd]
-> [    0.348410] pci 0000:dc:00.0:   bridge window [mem 0x10200000-0x103fff=
-ff]
-> [    0.349483] pci 0000:dc:00.0:   bridge window [mem 0x42000000000-
-> 0x44080ffffff 64bit pref]
-> [    0.351459] pci_bus 0000:dd: busn_res: insert [bus dd] under [bus dc-d=
-d]
->=20
-> In my case:
-> [root bus (00)] <---[pxb (dc)] <--- [root-port (dd)] <--- dev
->=20
-> In your case:
-> [root bus (00)] <---[pxb (ca)] <--- [root-port (cb)] <--- dev
->=20
-> > [    0.285533] pci_bus 0000:ca: root bus resource [bus ca]
-> > [    0.286214] pci 0000:ca:00.0: [1b36:000c] type 01 class 0x060400 PCI=
-e Root
-> Port
-> > [    0.287717] pci 0000:ca:00.0: BAR 0 [mem 0x00000000-0x00000fff]
-> > [    0.288431] pci 0000:ca:00.0: PCI bridge to [bus 00]
->=20
-> This starts to diff. Somehow the link is reversed? It should be:
->  [    0.288431] pci 0000:ca:00.0: PCI bridge to [bus cb]
->=20
-> > [    0.290649] pci 0000:ca:00.0: bridge configuration invalid ([bus 00-=
-00]),
-> reconfiguring
-> > [    0.292476] pci_bus 0000:cb: busn_res: can not insert [bus cb-ca] un=
-der [bus
-> ca] (conflicts with (null) [bus ca])
-> > [    0.293597] pci_bus 0000:cb: busn_res: [bus cb-ca] end is updated to=
- cb
-> > [    0.294300] pci_bus 0000:cb: busn_res: can not insert [bus cb] under=
- [bus ca]
-> (conflicts with (null) [bus ca])
->=20
-> And then everything went south...
->=20
-> Would you please try adding some prints?
-> ----------------------------------------------------------------------
-> @@ -1556,6 +1556,7 @@ static char *create_new_pcie_port(VirtNestedSmmu
-> *nested_smmu, Error **errp)
->      uint32_t bus_nr =3D pci_bus_num(nested_smmu->pci_bus);
->      DeviceState *dev;
->      char *name_port;
-> +    bool ret;
->=20
->      /* Create a root port */
->      dev =3D qdev_new("pcie-root-port");
-> @@ -1571,7 +1572,9 @@ static char *create_new_pcie_port(VirtNestedSmmu
-> *nested_smmu, Error **errp)
->      qdev_prop_set_uint32(dev, "chassis", chassis_nr);
->      qdev_prop_set_uint32(dev, "slot", port_nr);
->      qdev_prop_set_uint64(dev, "io-reserve", 0);
-> -    qdev_realize_and_unref(dev, BUS(nested_smmu->pci_bus), &error_fatal)=
-;
-> +    ret =3D qdev_realize_and_unref(dev, BUS(nested_smmu->pci_bus),
-> &error_fatal);
-> +    fprintf(stderr, "ret=3D%d, pcie-root-port ID: %s, added to pxb_bus n=
-um: %x,
-> chassis: %d\n",
-> +            ret, name_port, pci_bus_num(nested_smmu->pci_bus), chassis_n=
-r);
->      return name_port;
+> ---
+>  drivers/acpi/acpica/nsrepair2.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/acpi/acpica/nsrepair2.c b/drivers/acpi/acpica/nsrepa=
+ir2.c
+> index 1bb7b71f07f1..5d56b2fd9151 100644
+> --- a/drivers/acpi/acpica/nsrepair2.c
+> +++ b/drivers/acpi/acpica/nsrepair2.c
+> @@ -875,7 +875,6 @@ acpi_ns_sort_list(union acpi_operand_object **element=
+s,
+>  {
+>         union acpi_operand_object *obj_desc1;
+>         union acpi_operand_object *obj_desc2;
+> -       union acpi_operand_object *temp_obj;
+>         u32 i;
+>         u32 j;
+>
+> @@ -891,11 +890,8 @@ acpi_ns_sort_list(union acpi_operand_object **elemen=
+ts,
+>                               obj_desc2->integer.value))
+>                             || ((sort_direction =3D=3D ACPI_SORT_DESCENDI=
+NG)
+>                                 && (obj_desc1->integer.value <
+> -                                   obj_desc2->integer.value))) {
+> -                               temp_obj =3D elements[j - 1];
+> -                               elements[j - 1] =3D elements[j];
+> -                               elements[j] =3D temp_obj;
+> -                       }
+> +                                   obj_desc2->integer.value)))
+> +                               swap(elements[j - 1], elements[j]);
+>                 }
+>         }
 >  }
-
-Print shows everything fine:
-create_new_pcie_port: name_port smmu_bus0xca_port0, bus_nr 0xca chassis_nr =
-0xfd, nested_smmu->index 0x2, pci_bus_num 0xca, ret 1
-
-It looks like a problem with old QEMU_EFI.fd(2022 build and before).
-I tried with 2023 QEMU_EFI.fd and with that it looks fine.
-
-root@ubuntu:/# lspci -tv
--+-[0000:ca]---00.0-[cb]----00.0  Huawei Technologies Co., Ltd. Device a251
- \-[0000:00]-+-00.0  Red Hat, Inc. QEMU PCIe Host bridge
-             +-01.0  Red Hat, Inc Virtio network device
-             +-02.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-03.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-04.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-05.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-06.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-07.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             +-08.0  Red Hat, Inc. QEMU PCIe Expander bridge
-             \-09.0  Red Hat, Inc. QEMU PCIe Expander bridge
-
-So for now, I can proceed.
-
-Thanks,
-Shameer
-
-
+> --
+> 2.34.1
+>
+>
 
