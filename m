@@ -1,117 +1,114 @@
-Return-Path: <linux-acpi+bounces-8025-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8026-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61959669E8
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 21:35:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B56966D92
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Aug 2024 02:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9011F22B0C
-	for <lists+linux-acpi@lfdr.de>; Fri, 30 Aug 2024 19:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBEA8284C0F
+	for <lists+linux-acpi@lfdr.de>; Sat, 31 Aug 2024 00:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B041B1BBBCC;
-	Fri, 30 Aug 2024 19:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45F833FE;
+	Sat, 31 Aug 2024 00:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FPP3dL57"
+	dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b="JYfRxNux"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from perseus.uberspace.de (perseus.uberspace.de [95.143.172.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14411B9B5A;
-	Fri, 30 Aug 2024 19:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7213A13AF9
+	for <linux-acpi@vger.kernel.org>; Sat, 31 Aug 2024 00:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.172.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725046536; cv=none; b=Ny/3x9ena9YqX484k4mywfFcJlcdc308yzw+UV7q6Ce+cgmC/5cbiD8RkunG+VF1Y1j1mh0xJQj1aQeHn+scmkfcuEz8hcNEyj9g/woczIFUD8K3RZSiaPQMPzIq7x5wznvpMsDcRq/JU099QLHsnPHtpELNVOpAns5Be837bUg=
+	t=1725064988; cv=none; b=dKuEzDxUR2n7lZEXvhdzAEm1uw8Kv+sukBVzynWV352/pu/oJ6utZG7IQBMK3AODVPwQ0HLcfOJ/sVfkEGPpt5zkDt6g1VjV7ajc8AF6uWLK+/n99WGKUb484H/SM24AZzcqBGBFQZR2hXLg1D/A+SIZCqLTZyxSB/YHVQ2QzS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725046536; c=relaxed/simple;
-	bh=+w56fZU/eoYZPtFEPoXmUXs53h0iyOlCZoPIkGdvgB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=sdfB6efxKhAkhN/rKpwZoAUKI3C6Dfpi8GQ0wW8UH6PrBoSR8bU/z5IZU5eOb9Y83Jw1N2azTx4gCaZZ1K6En0qYA3B5yRTNr0ymjOHLv/wD6tj3ImgUi+KZ5W4EoXXk6P97y540S8K/3LHGlJ2AD56UC+gJHs1lg2geOOL7pMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FPP3dL57; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725046535; x=1756582535;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=+w56fZU/eoYZPtFEPoXmUXs53h0iyOlCZoPIkGdvgB8=;
-  b=FPP3dL57wDXGIALxMkGv985d6747NTJiIcdKjBS1UGZGtUTqv4LiyZB0
-   IKn6n1gPwOEDhCdXl64p2zf6Jb8Im9Fk/brWM2PQdnjmxVLa+R7k8Wk/S
-   QT62ORcMsw/ZtzkOwIGdN9Q9cJ/0U8te+AxdlFHj04bt34BB8qO6NgscM
-   KPfr9eDFZat11n1OwUe5zFZ+fPn3oYH31vhDTypHcHhnDCe6be2jAj9Ue
-   L07rh5IXy5tFltQy8Slt1jSXGQPdzH5yMMdknUog94Cvgm07VKDH1ULl2
-   KnVqVy+gUGma24+oVWxpURALRYSG3/Om/q7mqBhS2Jjzb/LDMXh09pa4A
-   A==;
-X-CSE-ConnectionGUID: brFhk2FTTuqxZx9UhvKArw==
-X-CSE-MsgGUID: cUevVmNtQu6NNw/N4KSzJw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="35109094"
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="35109094"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 12:35:34 -0700
-X-CSE-ConnectionGUID: PETXZLFISgGbXbcmQPKcDA==
-X-CSE-MsgGUID: XedcahG3TE6abaYsBlhxjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="64490190"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 30 Aug 2024 12:35:33 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sk7P8-0001za-2P;
-	Fri, 30 Aug 2024 19:35:30 +0000
-Date: Sat, 31 Aug 2024 03:34:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Len Brown <len.brown@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-pm@vger.kernel.org,
+	s=arc-20240116; t=1725064988; c=relaxed/simple;
+	bh=x2YW7fn7RQrodtpnzt/wf/L3XuvCkcImwXBcjs4OG9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f2JkQL9z0oh43hd7+2aRkko/qd7R7YqDjJLj5rdGw0Oro7c/LAjK1Ui1BoxTQK0ztgdm6Ho7j288iAyfo1Ybgw5srME7ebWWVpV1X5SItdlPxF33NFwla2kDA6JmyAFWSFyMFtQtoHQetm0uM7dbbYbnsPd6xMV3NQSO57VHb2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net; spf=pass smtp.mailfrom=david-bauer.net; dkim=pass (4096-bit key) header.d=david-bauer.net header.i=@david-bauer.net header.b=JYfRxNux; arc=none smtp.client-ip=95.143.172.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=david-bauer.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=david-bauer.net
+Received: (qmail 12723 invoked by uid 988); 31 Aug 2024 00:36:20 -0000
+Authentication-Results: perseus.uberspace.de;
+	auth=pass (plain)
+Received: from unknown (HELO unkown) (::1)
+	by perseus.uberspace.de (Haraka/3.0.1) with ESMTPSA; Sat, 31 Aug 2024 02:36:20 +0200
+From: David Bauer <mail@david-bauer.net>
+To: rafael@kernel.org,
+	lenb@kernel.org,
 	linux-acpi@vger.kernel.org
-Subject: [acpi:acpi 2/2] drivers/acpi/osl.c:609:14: sparse: sparse: symbol
- 'one_ms_timer_hack' was not declared. Should it be static?
-Message-ID: <202408310347.Gl65LSbs-lkp@intel.com>
+Cc: mpearson-lenovo@squebb.ca
+Subject: [PATCH] ACPI: EC: add quirk for Lenovo X13 G4 (AMD)
+Date: Sat, 31 Aug 2024 02:36:10 +0200
+Message-ID: <20240831003610.89970-1-mail@david-bauer.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Bar: -
+X-Rspamd-Report: MID_CONTAINS_FROM(1) BAYES_HAM(-3) MIME_GOOD(-0.1) R_MISSING_CHARSET(0.5)
+X-Rspamd-Score: -1.6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=david-bauer.net; s=uberspace;
+	h=from:to:cc:subject:date;
+	bh=x2YW7fn7RQrodtpnzt/wf/L3XuvCkcImwXBcjs4OG9k=;
+	b=JYfRxNuxizTwY4omJ7rDS3l9SLD/0IgZJ4JSsqX1xqwzBziaFOVnKdyvVgM4NwFtSCOn9ikV56
+	UyJXnI80+1HSq8fmIWa6ysdWAFW0XYJn0hXFr87AohIo4aDLeAGDyAK8+wAoe1BkQwQ0jxblR/ZE
+	Oi5loxodDPFno2TAi7wYtI28U9I1snC5ZcB3TTgMoTN4mmkaddx2wabKcqbNkGgW3jOxMJ4D6CXU
+	xS8q+wiWX8KoWA3RFeESygHWXQtM9770qU7nJYLNkxLow1Nkc1VVGM2jEeSHPbPBtI1fgp/rxCWG
+	u5NJZko5Cjqj7k2YP1IGRLC/3PvECzgh66ayF/9tF4ast9C9FUORPEAom02I/CKNfuVA8FtcP/Px
+	C5bw2Ip4AYUtEPx6FVVl/UiYivr7qj+xE/YUzvbOpi2+C89TrijumEZalZ2vvNE23q97XhGtOoey
+	suq+KPY7D/C1Y0SJ5e8RRARgztPiUKkgPG+0WWW0qL9PnBf9PhQ81QkD2pj4WSG6ve5xS2XV2H7x
+	uz7RMm7PG/+4p7r88rnfpu8jgPZ7FmDHt9yBcMbefD4/XFmgZOrF38YlKNsRNFNlch7fTYR6vCxD
+	r0QBWkKP4W+WC85TZiI4gzhJ+wvGDQYNSzAS2bpum9Pnj5PEYxCLhGnn/iU5cUvvVaWHnR1hdzbz
+	s=
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/lenb/linux.git acpi
-head:   4b12d579d736e75908699afe6e4950f651c4f5f6
-commit: 4b12d579d736e75908699afe6e4950f651c4f5f6 [2/2] acpi_os_sleep debug patch
-config: x86_64-randconfig-123-20240830 (https://download.01.org/0day-ci/archive/20240831/202408310347.Gl65LSbs-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240831/202408310347.Gl65LSbs-lkp@intel.com/reproduce)
+This adds a quirk for the Lenovo X13 Gen 4 AMD platform.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408310347.Gl65LSbs-lkp@intel.com/
+If booted without the kernel-parameter acpi.ec_no_wakeup=1 the system
+will resume from sleep upon change of AC state. Unplugging or plugging
+the power cable thus wakes the system from suspend.
 
-sparse warnings: (new ones prefixed by >>)
-   drivers/acpi/osl.c:378:17: sparse: sparse: cast removes address space '__iomem' of expression
->> drivers/acpi/osl.c:609:14: sparse: sparse: symbol 'one_ms_timer_hack' was not declared. Should it be static?
-   drivers/acpi/osl.c:1666:20: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void *rv @@     got void [noderef] __iomem * @@
-   drivers/acpi/osl.c:1666:20: sparse:     expected void *rv
-   drivers/acpi/osl.c:1666:20: sparse:     got void [noderef] __iomem *
-   drivers/acpi/osl.c:720:1: sparse: sparse: context imbalance in 'acpi_os_read_memory' - wrong count at exit
-   drivers/acpi/osl.c:753:1: sparse: sparse: context imbalance in 'acpi_os_write_memory' - wrong count at exit
+Disabling wakeups from the embedded controller fixes this behavior.
+Resuming by opening the lid stays functional.
 
-vim +/one_ms_timer_hack +609 drivers/acpi/osl.c
+Only apply this fix for the AMD version, as it is unknown if the Intel
+platform is also affected.
 
-   603	
-   604	/*
-   605	 * Running in interpreter thread context, safe to sleep
-   606	 */
-   607	
-   608	#include <linux/moduleparam.h>
- > 609	unsigned int one_ms_timer_hack;
-   610	module_param(one_ms_timer_hack, uint, 0644);
-   611	
+This was observed on a system with the following BIOS / EC software:
+BIOS: 1.28 (R29ET54W)
+EC: 1.31 (R29HT55W)
 
+Signed-off-by: David Bauer <mail@david-bauer.net>
+---
+ drivers/acpi/ec.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 38d2f6e6b12b..f00cdcf06eb8 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2252,6 +2252,13 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "ThinkPad X1 Yoga 3rd"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			/* ThinkPad X13 Gen 4 (AMD) */
++			DMI_MATCH(DMI_PRODUCT_SKU, "LENOVO_MT_21J3_BU_Think_FM_ThinkPad X13 Gen 4"),
++		},
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.45.2
+
 
