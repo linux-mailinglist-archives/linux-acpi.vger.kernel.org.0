@@ -1,53 +1,53 @@
-Return-Path: <linux-acpi+bounces-8033-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8034-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A9D967450
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 05:12:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 401FC967456
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 05:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 400E11C20FC4
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 03:12:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7BC5B20800
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 03:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AEAE3DBBF;
-	Sun,  1 Sep 2024 03:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F104AEF6;
+	Sun,  1 Sep 2024 03:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="uQgqLYgr"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="XugCvM2b"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656102E651;
-	Sun,  1 Sep 2024 03:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A91381BE;
+	Sun,  1 Sep 2024 03:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725160315; cv=none; b=qub65kFPmu6s5okEeSmLj1GqsWqQWkuBWSReAoSOhfbsvW1WprZvge3pOk1kovBM3DOVCrgIWOneUCo71nFyc3X+XLAsU5PbkXLTrct95y77HwTnk1/EVQEGad/7hRz4Z2/7juwhLfuJw5i0wbn4f/8GKIcr8zr+WO8WYi+GAtw=
+	t=1725160316; cv=none; b=KJzLdm/ZFmv9bXbuQDHJASGBt/G1SyeLgeo+F3OsQLDBx9pfYzMqFQDboKxNX0WfDPceM+J4USIDQ4Vglemvd1qynYSz9Rr+i61nmweMUqAcUrn3MAHE87Id6lXj1LRc2wjx5ocfPJm5vTIA+bSnamC8qlWtBFtLZI/8z6RoPqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725160315; c=relaxed/simple;
-	bh=s4TW1WtAdPg+owGssuVS48Y+lQP34Pd+ooOIJCkz478=;
+	s=arc-20240116; t=1725160316; c=relaxed/simple;
+	bh=al9iIx7sg7Fe/w5XRrgpXWBu78w/jKFbm1wkMOmqMJg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pDAiAZhU8KgGzqGtIU6eFR6krXXeJR/0dpHPr3jwRtSLY0QHRSgOgqgS+cqgSLOaSDgY4+OFejHbSf3zpTT3K9bMD6K433nSCYP+9A4Rc9wA3JbkHBBxYy29SwBTEsV+OFWE8n9ZLazfkwt2QaE29TtB5782RJkDJFmbZEDJ/ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=uQgqLYgr; arc=none smtp.client-ip=212.227.15.15
+	 MIME-Version:Content-Type; b=BGN0tL/lJBwBemlgDYLhJv/0oQLHwe2aJi5pcfLbH0/D5kPsIr4oVsgCzY0Hw6sZ3cQVtu4XzlW1FtHSEpMK0m8kUI0GIHTEcXqhDBu45eVu4LYDs5Av0tD6wcpd6830TlUqHWrrQXg69YHKpX+no6fjcs1YZMIuKQqEVBbHfEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=XugCvM2b; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1725160283; x=1725765083; i=w_armin@gmx.de;
-	bh=hg6S4gplBMMEaLxRK4ARyTK8NSLWEHkbdxC8ofXgSL4=;
+	s=s31663417; t=1725160285; x=1725765085; i=w_armin@gmx.de;
+	bh=KaCyQtW/XfmUGIxt14OAfBRRg6d1YDSK1q5z/XEQjLI=;
 	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-Id:In-Reply-To:
 	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
 	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=uQgqLYgrYAfVLfnmB3oikKJLWtDSuv0LAvij2R2DUoYC9vzR5OAgtJJDKPR152xn
-	 7la8ea8+9B6xlIX1qAlunLwhMrFivh3sTTlX+/Plc8XyVa0AmWzpunfaauRPTidBq
-	 jq/HgpXbRgBo8vWGPpqKQfzQNiv9vHu5ty/cDk98RixkXj4lCsPCU+52ywl6xZMEw
-	 PYE+ACgZuyQQBja/PIUCdZohmrU1nFIHVFdKp577tB5dnjRdmFiNbB603jXJ3CZwf
-	 /xUg0CKPevpVkVqgnzw5R6R+BD7jea6MVNvTunvtfpxUjP5PAca/rI8jKRe/yfy7p
-	 N8zPVuQYG6I7B9N5/w==
+	b=XugCvM2bvCSBCmiSgNa3Db1aLLHzC27wVjTcpminv+nKo0jVa9Jmn1/eq7qGQ33W
+	 lbhWkj6cAhkqBsXC4MzLrEWrk7vZDfdNmImExmakq3jE0izcBrsvbHrWKk0Q5TiYa
+	 KuASyYqmzMCCC4NFYcZp1t5BIGa+JVfz5RylWn1EAIiPaF8J1hvfJrjViQAfwlsVg
+	 lE1HmYh2ZDCoohH63UmVj0Iy3yTFLY+nbiSD4oYVxm4RgdU8ee3KGVtPbiMheEQBS
+	 Z42I0HoB/lYEjJxN95j/Zrr70oaXAAFMPH/L4jvYbWXdx4uJAG9J4IdreTQxNQiRm
+	 AQ/OYkvwYVviicYAag==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from mx-amd-b650.users.agdsn.de ([141.30.226.129]) by mail.gmx.net
- (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MhU5R-1s612u0rJb-00cIHE; Sun, 01 Sep 2024 05:11:23 +0200
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1M2wKq-1sntJY49bI-004gnz; Sun, 01 Sep 2024 05:11:25 +0200
 From: Armin Wolf <W_Armin@gmx.de>
 To: james@equiv.tech,
 	jlee@suse.com,
@@ -65,9 +65,9 @@ Cc: hdegoede@redhat.com,
 	linux-hwmon@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/5] platform/x86: wmi: Remove wmi_get_event_data()
-Date: Sun,  1 Sep 2024 05:10:53 +0200
-Message-Id: <20240901031055.3030-4-W_Armin@gmx.de>
+Subject: [PATCH v2 4/5] platform/x86: wmi: Merge get_event_data() with wmi_get_notify_data()
+Date: Sun,  1 Sep 2024 05:10:54 +0200
+Message-Id: <20240901031055.3030-5-W_Armin@gmx.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240901031055.3030-1-W_Armin@gmx.de>
 References: <20240901031055.3030-1-W_Armin@gmx.de>
@@ -79,146 +79,120 @@ List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:UlBrZM6/pwbag7fZm4yy57Y1UPyF+5BH1FMiWU8TLKyAePsF5oA
- PEwXEkolr20/jEJI/FL0Go0PoTPXbKTEG2m1Nbr5s1po3cJ1ImAHOyhPcAmmMKYUS4d7b8x
- uB2M/AnBrrt87NPhaYwyvXzXzb4eKTximvDyGF34d37MxViHpZ8PrxPaCTla86apiDlH5w2
- FCxw8WUBPrRKzmtK/h2dQ==
+X-Provags-ID: V03:K1:sKr4i9MYti8tEQ113XL0z8KTHo/eDpcJW0zPngsUwmilquKVhgw
+ /kGz5h1lXYdxAsC3M09U1GtQvJY+ic6/UGPYt3Iqb04jk58YXW2a4BHQghKLjOmbD2SOsPd
+ EzdE6TXk2bslQQSS1V5Cevq7hEXH4xz+ZWaxSsdeflSXwnWQrgNQhMfMrQ+5PMlJ+thvt4H
+ 1rst4Q1Uo3Q1Pqo+OSSIA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KrPx1r+J56U=;SbcQqkaFSnmx8NkFzWjTvo3l5Jq
- QE3b/dtDPXKyQKDjTzDgMvu/qqMVQVlMFZmxqFzqX6EbXNOm094Eu7fKtQNHpRAyysQrarQm9
- w8v3gomzYRpV4w3rLcojgmQk3F+G6xP8h0J8R1VX4QwmP4fL34AGA7Z/3IA5KiiC5pgjjzVWR
- 9zZ2ttsaOM/yaxq8/0r2MCOykI8i4nvCuTIqAAvQJU2PUekXrx7j/E+190RgiCZYIsWYwf6dx
- sa72dEtbC61jsGLRr/bzEKfZmTQTju4AJ4t7daKQKjE7IiBNC8VaYMjwS9YQEeW7hxy7BhuOT
- bN7IsbpeI93ak0JLZqM8HgKlV3vxn4rHzf2Af0PsMfmxjTrJmV2FSd6P69GEygwjkXAyq7Ble
- pp2bBeoMHD+B9UMBJyDaDcGqOCtvgsxatXnPrygSVWubkcYJwzLPjx5/lC7ZDJ82BAuSiwPoo
- nBuVdFlBjepopQaieiy7AEzvcHRygLfZ/jNsjgVCRdJZoMddFBne8Q4Wzeeo4f5KL+Uxp1jCk
- ClW9eGN6On9x0TuVt9l1yU6JxnKK4dpimL+yxXxq2jwoI5ThnumLc/sg+rM4xJi1qlvfka477
- 70k9uKJNsaX+X9lv6Khsfl4R5R2uHRKwugOTal8jPs5acYOTFrruAU0ISsBGxGUNBFd7lbRc2
- FtZYYmcDWOwY/fcT1OAjgIXA46gHoyDt/hXdIbh8gx/51mje7S/PW9o0UrQzc7+O1h760XNB9
- VqVNOwqB/4EqdWXCx4zXBAxQaO+npS9waUy2S/1XKq3RrslGPSl5I5NrTBZPJ33M2/69WpYLW
- zltYtKF7IsgXuwtITwTcOj1w==
+UI-OutboundReport: notjunk:1;M01:P0:0Rgf4R2Yuz8=;IhwF/acb0aAhdGakE8sbh1BKMlS
+ IzxTGtBWlLdAsgn7FXEHEGcFV5EP6U6RZMlVnO1LVTHscctLv34YcYIRoO4opzvJpV3xEjmFm
+ pJWoSMWfYQB5UHCHoa3itC246/+TVhSyP3YPddZJehiP6LL8YpQnmZD4JZkmvJYvjiqAgPo4w
+ 7/i1vQFRR2QwCJS+gciWPC9/Fgoys7Ylp98RncJOymHkIy7sBcKCOAoJ4WmOjn+ToWYJg1j8A
+ rlrVmLAQG/BT8KZ5j91/K989GG+S0V5xtNzLyaYgj41cYpVlIAe7jWX5ic5aKr4DlbPMMvJBH
+ HFJaOhkux2d5P1wlp/eSnvkr4QGuTgpJCp+HGrsCnJIiYgzoZ6WTXjZvguY7Tii6IGDwsKzRB
+ Xl8I8rMaSBz2JfC9KT30nw14iTUCEo9WFnIe3ddIanagJpbxLs+2TIfs2cmNFszfZFhp8yyQB
+ mY0KAuqEVUUirdFNXsgUR7tAN6q1Tb2MoM3ujOc6nzXHRZMkKllYpMeTce/QBI/Rv3esX6/4d
+ q6IaDM70n6qqJkKOKvvuUSQyw9ArlRAa86JQYMieuXRNb+P9iF3AZJBV5Ok4xfMM8PfIC9295
+ vGxex3R8uct+4etTeTFHvT2RI19z0VoUfNcfGsYqy8xGSbLLsvKgGVSUE3uXJHBt83YFbASp1
+ 7esBrZuPd7FmaBaRsBtnRKie4JXeQgmG722vyjp444T0PpY6fTNhs8rWsIai5kouUQEz/ehKs
+ OCgoAgDH7p3463mY4OCGVvofCaXBVEY3wm3yq4NTHFOgaAN06jQcLWSza9V4gmxFXdj8Ni9Ew
+ 8WBZdUEY9EsOGXjoxvlxTp8g==
 
-Since the WMI driver core now takes care of retrieving the
-WMI event data even for legacy WMI notify handlers, this
-function is no longer used.
-
-Remove it to prevent WMI drivers from messing up the ACPI
-firmware on some machines.
+Since get_event_data() is only called by wmi_get_notify_data(), it
+makes sense to merge both functions.
 
 Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
 =2D--
- drivers/platform/x86/wmi.c | 57 --------------------------------------
- include/linux/acpi.h       |  1 -
- 2 files changed, 58 deletions(-)
+ drivers/platform/x86/wmi.c | 43 +++++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 26 deletions(-)
 
 diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 6ab181dd94ab..c7f0754f74b4 100644
+index c7f0754f74b4..6b27833ba5d9 100644
 =2D-- a/drivers/platform/x86/wmi.c
 +++ b/drivers/platform/x86/wmi.c
-@@ -199,23 +199,6 @@ static int wmidev_match_guid(struct device *dev, cons=
-t void *data)
- 	return 0;
+@@ -166,22 +166,6 @@ static inline acpi_object_type get_param_acpi_type(co=
+nst struct wmi_block *wbloc
+ 		return ACPI_TYPE_BUFFER;
  }
 
--static int wmidev_match_notify_id(struct device *dev, const void *data)
+-static acpi_status get_event_data(const struct wmi_block *wblock, struct =
+acpi_buffer *out)
 -{
--	struct wmi_block *wblock =3D dev_to_wblock(dev);
--	const u32 *notify_id =3D data;
+-	union acpi_object param =3D {
+-		.integer =3D {
+-			.type =3D ACPI_TYPE_INTEGER,
+-			.value =3D wblock->gblock.notify_id,
+-		}
+-	};
+-	struct acpi_object_list input =3D {
+-		.count =3D 1,
+-		.pointer =3D &param,
+-	};
 -
--	/* Legacy GUID-based functions are restricted to only see
--	 * a single WMI device for each GUID.
--	 */
--	if (test_bit(WMI_GUID_DUPLICATED, &wblock->flags))
--		return 0;
--
--	if (wblock->gblock.flags & ACPI_WMI_EVENT && wblock->gblock.notify_id =
-=3D=3D *notify_id)
--		return 1;
--
--	return 0;
+-	return acpi_evaluate_object(wblock->acpi_device->handle, "_WED", &input,=
+ out);
 -}
 -
- static const struct bus_type wmi_bus_type;
-
- static struct wmi_device *wmi_find_device_by_guid(const char *guid_string=
-)
-@@ -235,17 +218,6 @@ static struct wmi_device *wmi_find_device_by_guid(con=
-st char *guid_string)
- 	return dev_to_wdev(dev);
- }
-
--static struct wmi_device *wmi_find_event_by_notify_id(const u32 notify_id=
-)
--{
--	struct device *dev;
--
--	dev =3D bus_find_device(&wmi_bus_type, NULL, &notify_id, wmidev_match_no=
-tify_id);
--	if (!dev)
--		return ERR_PTR(-ENODEV);
--
--	return to_wmi_device(dev);
--}
--
- static void wmi_device_put(struct wmi_device *wdev)
+ static int wmidev_match_guid(struct device *dev, const void *data)
  {
- 	put_device(&wdev->dev);
-@@ -649,35 +621,6 @@ acpi_status wmi_remove_notify_handler(const char *gui=
-d)
- }
- EXPORT_SYMBOL_GPL(wmi_remove_notify_handler);
+ 	struct wmi_block *wblock =3D dev_to_wblock(dev);
+@@ -1129,14 +1113,19 @@ static int parse_wdg(struct device *wmi_bus_dev, s=
+truct platform_device *pdev)
+ static int wmi_get_notify_data(struct wmi_block *wblock, union acpi_objec=
+t **obj)
+ {
+ 	struct acpi_buffer data =3D { ACPI_ALLOCATE_BUFFER, NULL };
++	union acpi_object param =3D {
++		.integer =3D {
++			.type =3D ACPI_TYPE_INTEGER,
++			.value =3D wblock->gblock.notify_id,
++		}
++	};
++	struct acpi_object_list input =3D {
++		.count =3D 1,
++		.pointer =3D &param,
++	};
+ 	acpi_status status;
 
--/**
-- * wmi_get_event_data - Get WMI data associated with an event (deprecated=
-)
-- *
-- * @event: Event to find
-- * @out: Buffer to hold event data
-- *
-- * Get extra data associated with an WMI event, the caller needs to free =
-@out.
-- *
-- * Return: acpi_status signaling success or error.
-- */
--acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out)
--{
--	struct wmi_block *wblock;
--	struct wmi_device *wdev;
--	acpi_status status;
+-	if (test_bit(WMI_NO_EVENT_DATA, &wblock->flags)) {
+-		*obj =3D NULL;
+-		return 0;
+-	}
 -
--	wdev =3D wmi_find_event_by_notify_id(event);
--	if (IS_ERR(wdev))
--		return AE_NOT_FOUND;
--
--	wblock =3D container_of(wdev, struct wmi_block, dev);
--	status =3D get_event_data(wblock, out);
--
--	wmi_device_put(wdev);
--
--	return status;
--}
--EXPORT_SYMBOL_GPL(wmi_get_event_data);
--
- /**
-  * wmi_has_guid - Check if a GUID is available
-  * @guid_string: 36 char string of the form fa50ff2b-f2e8-45de-83fa-65417=
-f2f49ba
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index eed105b1fbfb..3cbe4b57bc73 100644
-=2D-- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -401,7 +401,6 @@ extern acpi_status wmi_set_block(const char *guid, u8 =
-instance,
- extern acpi_status wmi_install_notify_handler(const char *guid,
- 					wmi_notify_handler handler, void *data);
- extern acpi_status wmi_remove_notify_handler(const char *guid);
--extern acpi_status wmi_get_event_data(u32 event, struct acpi_buffer *out)=
-;
- extern bool wmi_has_guid(const char *guid);
- extern char *wmi_get_acpi_device_uid(const char *guid);
+-	status =3D get_event_data(wblock, &data);
++	status =3D acpi_evaluate_object(wblock->acpi_device->handle, "_WED", &in=
+put, &data);
+ 	if (ACPI_FAILURE(status)) {
+ 		dev_warn(&wblock->dev.dev, "Failed to get event data\n");
+ 		return -EIO;
+@@ -1163,7 +1152,7 @@ static void wmi_notify_driver(struct wmi_block *wblo=
+ck, union acpi_object *obj)
+ static int wmi_notify_device(struct device *dev, void *data)
+ {
+ 	struct wmi_block *wblock =3D dev_to_wblock(dev);
+-	union acpi_object *obj;
++	union acpi_object *obj =3D NULL;
+ 	u32 *event =3D data;
+ 	int ret;
 
+@@ -1179,9 +1168,11 @@ static int wmi_notify_device(struct device *dev, vo=
+id *data)
+ 	 * WMI driver core stops evaluating _WED due to missing
+ 	 * WMI event consumers.
+ 	 */
+-	ret =3D wmi_get_notify_data(wblock, &obj);
+-	if (ret < 0)
+-		return -EIO;
++	if (!test_bit(WMI_NO_EVENT_DATA, &wblock->flags)) {
++		ret =3D wmi_get_notify_data(wblock, &obj);
++		if (ret < 0)
++			return -EIO;
++	}
+
+ 	down_read(&wblock->notify_lock);
+ 	/* The WMI driver notify handler conflicts with the legacy WMI handler.
 =2D-
 2.39.2
 
