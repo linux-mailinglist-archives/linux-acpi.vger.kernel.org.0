@@ -1,280 +1,204 @@
-Return-Path: <linux-acpi+bounces-8054-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8055-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AB49674E6
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 06:12:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 717F996757D
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 09:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 888031C20B52
-	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 04:12:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38E51F21C7C
+	for <lists+linux-acpi@lfdr.de>; Sun,  1 Sep 2024 07:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C1A17DFE9;
-	Sun,  1 Sep 2024 04:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F6D14290C;
+	Sun,  1 Sep 2024 07:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ee6LlgHa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kx4SsqIS"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0989616EC1B
-	for <linux-acpi@vger.kernel.org>; Sun,  1 Sep 2024 04:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E237E101;
+	Sun,  1 Sep 2024 07:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725163663; cv=none; b=ntgbPI+hrrF6J+018LHHIWTXCwPwjPOvGPJEXhxvNBm4a5t3quS2zIkwworbgi4o6FHSavSLuNDNkpU2+zn6nmaGfXzw/LC7NDes+cQjihZTfIHuNzQ5Ulo7cZBKUGS2G53Bb4BrVffHZbEl4uimv6vB8HIlnBfR0O2iqpkeKpo=
+	t=1725177583; cv=none; b=RR+pXKxoYWd2UoWUFE4HS//rLdo+bJrb5XuuxKVBciRl+BH5WnE5gPxfRPOlV4xGgY3cdt/54Iexg26VaVKryPfL5NkA+ObCbAtEY0wO3LEqzbwZCL9zhL8snYazgLpafs/XF71ayol0L8sRIrmyDkr3CxMhHrBjdCJZKRwW2Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725163663; c=relaxed/simple;
-	bh=P5j7Fr9LGu/zW4lsyx25BQTDaO9/OJeLxNTA5aeJAcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlcPZdVDt0+lgXLs8G8xP41tMY72uAnFTSKNceknzFt5aQG0oh6HLfZ89Y5QS75UenN30oFTz8Jo5Yh/jx6L+7JJ3FOBhuxuLCvCkfkq8wnniPwz9M1r9bmgcRKgryjOw/X40MyB06UKNpyBuGiavf4WKH0cQ14yFal5iiUqaU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ee6LlgHa; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-277e4327c99so179416fac.0
-        for <linux-acpi@vger.kernel.org>; Sat, 31 Aug 2024 21:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1725163660; x=1725768460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YAnr/CInUuanIGWaUDroB3xFD+9prT3yLYHDcJ6D0Bo=;
-        b=ee6LlgHaGVqQRT8JyDtXEOZvOfyLA0jJVUjmnBFK6A9W2slezUpeL06d7pwIc2Pba8
-         kl9w9ZDiOawTFfPRoyDGiq1ojlWyMV91zkuLYi03gkwlzmCAz7ob55upzZbnF1+fT25q
-         n7/bFUWfyAOqFU/EldPqXJcBhl4CyhHBBnJXA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725163660; x=1725768460;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YAnr/CInUuanIGWaUDroB3xFD+9prT3yLYHDcJ6D0Bo=;
-        b=HM3PBK5uIksYxirYm9wCqyWWCUQZdwnA4s8+ZdpwZwPHIemR3JwHhRjtz0YCP7mYwX
-         66jU5216n6jvcG9A5rlxZu5oVBRaUGhJ1gqOV+yorwqixOlbNXOUvTW0yc8OxVoVFlIe
-         AWRurC2Dt4HF7Ayz3MCbqzk3lnrBotIT9HMWqVV+zBtxnMQLT8zfjw1rMAlpDtrVEQqT
-         /rEtQAVZoWverNG/MrFTjB9BCb0tAj9N1kHpg5V8q9qxoiTVKydmS+yfGfbBxqXVr+6y
-         6j+ms9ho4i1Ix5QdSigW4+FtCB9Gfn7567Psk384Wq3yWAD/pqevh5JN5twUnY9QhLJn
-         Z9KA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOtzbBX4iK5LzcnW9TKr2oBZPXl+b0YCtRh8u6NNUgFwT1B92QGYWMbk5BkG/n9yewOz1JMuwf9hFd@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAqugcqOoBH8lJm7ix5ozdbhiEWVtZ3w9aELaqjnxuZW6C998+
-	b2JkqsnLmLB9C0+2hQlxisZlOP88tzNiutTYLYqpNvDM2yo0Bo7fMlG8NNMvpg==
-X-Google-Smtp-Source: AGHT+IEJat/MH0aH5PxrzEOzEVWfG27VMiaK42He6BskeDGxOOCnFMowYgglO9wA7c39ubb74K4njg==
-X-Received: by 2002:a05:6870:c14c:b0:25e:d62:f297 with SMTP id 586e51a60fabf-277d06c6446mr3278885fac.45.1725163660389;
-        Sat, 31 Aug 2024 21:07:40 -0700 (PDT)
-Received: from localhost (210.73.125.34.bc.googleusercontent.com. [34.125.73.210])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-715e55aa11fsm4854824b3a.85.2024.08.31.21.07.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 31 Aug 2024 21:07:40 -0700 (PDT)
-From: Stephen Boyd <swboyd@chromium.org>
-To: chrome-platform@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	Guenter Roeck <groeck@chromium.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Lee Jones <lee@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	linux-acpi@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH v4 18/18] platform/chrome: cros_ec_typec: Handle lack of HPD information
-Date: Sat, 31 Aug 2024 21:06:56 -0700
-Message-ID: <20240901040658.157425-19-swboyd@chromium.org>
-X-Mailer: git-send-email 2.46.0.469.g59c65b2a67-goog
-In-Reply-To: <20240901040658.157425-1-swboyd@chromium.org>
-References: <20240901040658.157425-1-swboyd@chromium.org>
+	s=arc-20240116; t=1725177583; c=relaxed/simple;
+	bh=wvu12Ehzrk6KRlsZVBTLs0SKfiBW/rXovg7gQdDlHHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QOMLave1NJV5nt2FZ7u7/w35vT1HSNzlDTcWXvP+iCuWCdyb4nTKI9WY7/YNMN/DNnTJkFseSKunJJQPjMs3XE6uFrj7nQSvO/GZGHwIvJE+qyznVtTKXqOVVZF4WqRafK52KAlJEy9J2V1jdHcbV0sb17bollVu+bG06IT52hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kx4SsqIS; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725177580; x=1756713580;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=wvu12Ehzrk6KRlsZVBTLs0SKfiBW/rXovg7gQdDlHHQ=;
+  b=kx4SsqISt+qFlaudkMhuyBWZ1kwVsTM1q6BogY5Hnphv7X1dt/muK5+b
+   Pvtzk9Ezl9bAIoVRmj7ryCLffaFO/r/iq1pkHP4OF11raj3O04Buk+90M
+   FbAp6ZLpXykfr63Zr5TIUdYYkNwPRuKVR4RCXMWCTZiPKZ0d/vc1HhWh0
+   EcknxnTfufwS3X/I9qQsYbdNj4sjzcBH894mGvdH09stwPdux+tMEOsPK
+   16TKE4bbm4DPJ1ALJ74GerhNjCEFTwwrWNipm3AAXcxss3Jn2Kh6soHMx
+   yLZIWcNoNO20iW1sYaqoWE/HDvlhGRGDllR+q4CwYxDoBMnCOOpnhm1KE
+   w==;
+X-CSE-ConnectionGUID: QATY+5YOTlOt/KMz3Uuu3g==
+X-CSE-MsgGUID: U3UATUbeSeGWwjZ0xFcXSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11181"; a="23939676"
+X-IronPort-AV: E=Sophos;i="6.10,193,1719903600"; 
+   d="scan'208";a="23939676"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2024 00:59:39 -0700
+X-CSE-ConnectionGUID: Gq8oKVflShm0/ar2W4jMwg==
+X-CSE-MsgGUID: 4rROlkngSSWdM32NdPJk4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,193,1719903600"; 
+   d="scan'208";a="95010277"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 01 Sep 2024 00:59:38 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1skfUl-0003Ww-33;
+	Sun, 01 Sep 2024 07:59:35 +0000
+Date: Sun, 1 Sep 2024 15:59:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <cleger@rivosinc.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-acpi@vger.kernel.org,
+	devel@acpica.org, linux-pm@vger.kernel.org,
+	"Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: [rafael-pm:bleeding-edge 161/190] drivers/acpi/cppc_acpi.c:1141:3-4:
+ Unneeded semicolon
+Message-ID: <202409011554.KG79Y5xu-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Some EC firmwares on Trogdor/Strongbad boards don't properly indicate
-the state of DP HPD on a type-c port. Instead, the EC only indicates
-that a type-c port has entered or exited DP mode. To make matters worse,
-on these boards the DP signal is muxed between two USB type-c
-connectors, so we can't use the DP entry of a port to figure out which
-type-c port is actually displaying DP.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git bleeding-edge
+head:   d683340e443e46fafe40b050b5dedb64924bf6c8
+commit: d837dbba610b1219f626af9578518ae066ed0571 [161/190] ACPI: CPPC: Fix MASK_VAL() usage
+config: x86_64-randconfig-103-20240901 (https://download.01.org/0day-ci/archive/20240901/202409011554.KG79Y5xu-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
 
-Stash the HPD state in this case whenever the drm_bridge is notified of
-a connector status change and kick off the port worker so that the
-type-c port state can be re-evaluated. If an analog mux is in use, read
-the mux to figure out which type-c port signaled HPD. Once we know which
-port is actually signaling HPD, inject that state into the message
-received from the EC. This simplifies the rest of the logic as it can
-all stay the same with respect to picking the first port to assert HPD,
-etc.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409011554.KG79Y5xu-lkp@intel.com/
 
-Cc: Prashant Malani <pmalani@chromium.org>
-Cc: Benson Leung <bleung@chromium.org>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: <chrome-platform@lists.linux.dev>
-Cc: Pin-yen Lin <treapking@chromium.org>
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
----
- drivers/platform/chrome/cros_ec_typec.c | 74 +++++++++++++++++++++++++
- drivers/platform/chrome/cros_ec_typec.h |  2 +
- 2 files changed, 76 insertions(+)
+cocci warnings: (new ones prefixed by >>)
+>> drivers/acpi/cppc_acpi.c:1141:3-4: Unneeded semicolon
 
-diff --git a/drivers/platform/chrome/cros_ec_typec.c b/drivers/platform/chrome/cros_ec_typec.c
-index 57d1484ce1ef..731b485634af 100644
---- a/drivers/platform/chrome/cros_ec_typec.c
-+++ b/drivers/platform/chrome/cros_ec_typec.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/acpi.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_graph.h>
-@@ -423,6 +424,17 @@ static int cros_typec_init_ports(struct cros_typec_data *typec)
- 	return ret;
- }
- 
-+static void cros_typec_dp_bridge_hpd_notify(void *data, enum drm_connector_status status)
-+{
-+	struct cros_typec_data *typec = data;
-+
-+	/* Proxy the connector status as the HPD state to replay later. */
-+	typec->hpd_asserted = status == connector_status_connected;
-+
-+	/* Refresh port state. */
-+	schedule_work(&typec->port_work);
-+}
-+
- static int cros_typec_init_dp_bridge(struct cros_typec_data *typec)
- {
- 	struct device *dev = typec->dev;
-@@ -432,9 +444,17 @@ static int cros_typec_init_dp_bridge(struct cros_typec_data *typec)
- 	if (!fwnode_property_read_bool(dev_fwnode(dev), "mode-switch"))
- 		return 0;
- 
-+	typec->mux_gpio = devm_gpiod_get_optional(dev, "mux", GPIOD_ASIS);
-+	if (IS_ERR(typec->mux_gpio))
-+		return dev_err_probe(dev, PTR_ERR(typec->mux_gpio), "failed to get mux gpio\n");
-+
- 	dp_dev = devm_drm_dp_typec_bridge_alloc(dev, dev->of_node);
- 	if (IS_ERR(dp_dev))
- 		return PTR_ERR(dp_dev);
-+
-+	if (fwnode_property_read_bool(dev_fwnode(dev), "no-hpd"))
-+		drm_dp_typec_bridge_add_hpd_notify(dp_dev, cros_typec_dp_bridge_hpd_notify, typec);
-+
- 	typec->dp_bridge = dp_dev;
- 
- 	return devm_drm_dp_typec_bridge_add(dev, dp_dev);
-@@ -635,6 +655,59 @@ static int cros_typec_enable_usb4(struct cros_typec_data *typec,
- 	return typec_mux_set(port->mux, &port->state);
- }
- 
-+/*
-+ * Some ECs don't notify AP when HPD goes high or low because their firmware is
-+ * broken. Capture the state of HPD in cros_typec_dp_bridge_hpd_notify() and
-+ * inject the asserted state into the EC's response (deasserted is the
-+ * default).
-+ */
-+static void cros_typec_inject_hpd(struct cros_typec_data *typec,
-+				  struct ec_response_usb_pd_mux_info *resp,
-+				  struct cros_typec_port *port)
-+{
-+	struct gpio_desc *mux_gpio = typec->mux_gpio;
-+	int val;
-+
-+	/* Never registered a drm_bridge. Skip. */
-+	if (!typec->dp_bridge)
-+		return;
-+
-+	/* Don't need to inject HPD level when DP isn't enabled. */
-+	if (!(resp->flags & USB_PD_MUX_DP_ENABLED))
-+		return;
-+
-+	/*
-+	 * The default setting is HPD deasserted. Ignore if nothing to inject.
-+	 */
-+	if (!typec->hpd_asserted)
-+		return;
-+
-+	/*
-+	 * Only read the mux GPIO setting if we need to change the active port.
-+	 * Otherwise, an active port is already set and HPD going high or low
-+	 * doesn't change the muxed port until DP mode is exited.
-+	 */
-+	if (!typec->active_dp_port) {
-+		if (mux_gpio) {
-+			val = gpiod_get_value_cansleep(mux_gpio);
-+			if (val < 0) {
-+				dev_err(typec->dev, "Failed to read mux gpio\n");
-+				return;
-+			}
-+			/* Ignore HPD changes for non-active port. */
-+			if (typec->ports[val] != port)
-+				return;
-+		}
-+	} else if (port != typec->active_dp_port) {
-+		/* Ignore HPD changes for non-active port. */
-+		return;
-+	}
-+
-+	/* Inject HPD from the GPIO state if EC firmware is broken. */
-+	if (typec->hpd_asserted)
-+		resp->flags |= USB_PD_MUX_HPD_LVL;
-+}
-+
- static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
- 				struct ec_response_usb_pd_control_v2 *pd_ctrl)
- {
-@@ -656,6 +729,7 @@ static int cros_typec_configure_mux(struct cros_typec_data *typec, int port_num,
- 			 port_num, ret);
- 		return ret;
- 	}
-+	cros_typec_inject_hpd(typec, &resp, port);
- 
- 	/* No change needs to be made, let's exit early. */
- 	if (port->mux_flags == resp.flags && port->role == pd_ctrl->role)
-diff --git a/drivers/platform/chrome/cros_ec_typec.h b/drivers/platform/chrome/cros_ec_typec.h
-index f3a2b67df07c..4ccd3d014aa6 100644
---- a/drivers/platform/chrome/cros_ec_typec.h
-+++ b/drivers/platform/chrome/cros_ec_typec.h
-@@ -37,6 +37,8 @@ struct cros_typec_data {
- 	struct cros_typec_port *ports[EC_USB_PD_MAX_PORTS];
- 	struct drm_dp_typec_bridge_dev *dp_bridge;
- 	struct cros_typec_port *active_dp_port;
-+	struct gpio_desc *mux_gpio;
-+	bool hpd_asserted;
- 	struct notifier_block nb;
- 	struct work_struct port_work;
- 	bool typec_cmd_supported;
+vim +1141 drivers/acpi/cppc_acpi.c
+
+  1075	
+  1076	static int cpc_write(int cpu, struct cpc_register_resource *reg_res, u64 val)
+  1077	{
+  1078		int ret_val = 0;
+  1079		int size;
+  1080		u64 prev_val;
+  1081		void __iomem *vaddr = NULL;
+  1082		int pcc_ss_id = per_cpu(cpu_pcc_subspace_idx, cpu);
+  1083		struct cpc_reg *reg = &reg_res->cpc_entry.reg;
+  1084		struct cpc_desc *cpc_desc;
+  1085	
+  1086		size = GET_BIT_WIDTH(reg);
+  1087	
+  1088		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_IO) {
+  1089			acpi_status status;
+  1090	
+  1091			status = acpi_os_write_port((acpi_io_address)reg->address,
+  1092						    (u32)val, size);
+  1093			if (ACPI_FAILURE(status)) {
+  1094				pr_debug("Error: Failed to write SystemIO port %llx\n",
+  1095					 reg->address);
+  1096				return -EFAULT;
+  1097			}
+  1098	
+  1099			return 0;
+  1100		} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM && pcc_ss_id >= 0) {
+  1101			/*
+  1102			 * For registers in PCC space, the register size is determined
+  1103			 * by the bit width field; the access size is used to indicate
+  1104			 * the PCC subspace id.
+  1105			 */
+  1106			size = reg->bit_width;
+  1107			vaddr = GET_PCC_VADDR(reg->address, pcc_ss_id);
+  1108		}
+  1109		else if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+  1110			vaddr = reg_res->sys_mem_vaddr;
+  1111		else if (reg->space_id == ACPI_ADR_SPACE_FIXED_HARDWARE)
+  1112			return cpc_write_ffh(cpu, reg, val);
+  1113		else
+  1114			return acpi_os_write_memory((acpi_physical_address)reg->address,
+  1115					val, size);
+  1116	
+  1117		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+  1118			cpc_desc = per_cpu(cpc_desc_ptr, cpu);
+  1119			if (!cpc_desc) {
+  1120				pr_debug("No CPC descriptor for CPU:%d\n", cpu);
+  1121				return -ENODEV;
+  1122			}
+  1123	
+  1124			spin_lock(&cpc_desc->rmw_lock);
+  1125			switch (size) {
+  1126			case 8:
+  1127				prev_val = readb_relaxed(vaddr);
+  1128				break;
+  1129			case 16:
+  1130				prev_val = readw_relaxed(vaddr);
+  1131				break;
+  1132			case 32:
+  1133				prev_val = readl_relaxed(vaddr);
+  1134				break;
+  1135			case 64:
+  1136				prev_val = readq_relaxed(vaddr);
+  1137				break;
+  1138			default:
+  1139				spin_unlock(&cpc_desc->rmw_lock);
+  1140				return -EFAULT;
+> 1141			};
+  1142			val = MASK_VAL_WRITE(reg, prev_val, val);
+  1143			val |= prev_val;
+  1144		}
+  1145	
+  1146		switch (size) {
+  1147		case 8:
+  1148			writeb_relaxed(val, vaddr);
+  1149			break;
+  1150		case 16:
+  1151			writew_relaxed(val, vaddr);
+  1152			break;
+  1153		case 32:
+  1154			writel_relaxed(val, vaddr);
+  1155			break;
+  1156		case 64:
+  1157			writeq_relaxed(val, vaddr);
+  1158			break;
+  1159		default:
+  1160			if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+  1161				pr_debug("Error: Cannot write %u bit width to system memory: 0x%llx\n",
+  1162					size, reg->address);
+  1163			} else if (reg->space_id == ACPI_ADR_SPACE_PLATFORM_COMM) {
+  1164				pr_debug("Error: Cannot write %u bit width to PCC for ss: %d\n",
+  1165					size, pcc_ss_id);
+  1166			}
+  1167			ret_val = -EFAULT;
+  1168			break;
+  1169		}
+  1170	
+  1171		if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY)
+  1172			spin_unlock(&cpc_desc->rmw_lock);
+  1173	
+  1174		return ret_val;
+  1175	}
+  1176	
+
 -- 
-https://chromeos.dev
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
