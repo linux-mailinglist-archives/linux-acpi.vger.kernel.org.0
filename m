@@ -1,73 +1,73 @@
-Return-Path: <linux-acpi+bounces-8076-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8077-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7091D9683E1
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 11:58:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18EA1968445
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 12:13:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDAF71F22CF7
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 09:58:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D0B1F23DC3
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 10:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DB21D3195;
-	Mon,  2 Sep 2024 09:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F908143898;
+	Mon,  2 Sep 2024 10:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bQW16Fqr"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bL441e1s"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EDA1D3198
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Sep 2024 09:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5DB142623
+	for <linux-acpi@vger.kernel.org>; Mon,  2 Sep 2024 10:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725271073; cv=none; b=PIWCIqV/or35GgELr4xfolHlYseJkpigWiK3utgEw8FjLNmLxRnzhy9npBdta1AFBlYykX52XWVzY4TiPZDaeeBiMZEB0f1VdLDnnpvzHw69IRHb8KUb43wOob6nrbXX+6BrfPlDNSfvYiqFy7cpmw3jY1fDd3tTbv/AqnHCMxo=
+	t=1725271884; cv=none; b=ZLlKFk7qXeVGILF1NSykqBa4kUwxl/XeMdT8mKmtkUZvWhhhrRMhLFFAKD28KXWPjo8AQjacATT0NSU0altxwGviZBOJIVlzlSvAyYupSqD51Wa0yyNKPT9+9mlD48Gt91ZSb05O5qtZmDFYOT2qvV1Y6nI5CBnkJAZ6kzguPjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725271073; c=relaxed/simple;
-	bh=AebbeBylEZc6YvUUKEOp3IYHZ5WtMcK0qrIBOuhdE/0=;
+	s=arc-20240116; t=1725271884; c=relaxed/simple;
+	bh=qNGXWzNFmm5xDRCpulne9Ld0dJBH7APDO2VH8uDcPos=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEXNKIyYhLClhxm0SvnmOLrH8WA9DE2wwot8MuCp4E86fTll1m89yEdtx+BxUimB41Tfbz/aeOJBhC/X1OM1pEE2SKVl+veBKN4W0Ym6pu4ZxfFmtn3ERrziZOgZIZWwDpkRSQEm4Q1ig7iW3XzOS1aqWxKJ/0Wi1kmUmxzPgVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bQW16Fqr; arc=none smtp.client-ip=209.85.128.45
+	 Content-Type:Content-Disposition:In-Reply-To; b=ux3bREJ6hwM7k2U0LE/O9ZSeuWfunD/H4r+VXEY1SlRLCMoaHtGoXjalQ6wc6WcH4hHhh5zE5lxVlCcIUsTlwvXQTB1iWRN4lUfNAzzsJhW68bTCaS+ey/AjcMKdInlYMx7I2cVDckF9BiYKjMT6gPy5etmV2vh+AQ0jaDupZKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bL441e1s; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42ba8928f1dso66645e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Sep 2024 02:57:51 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-429d1a9363aso64965e9.1
+        for <linux-acpi@vger.kernel.org>; Mon, 02 Sep 2024 03:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725271070; x=1725875870; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725271881; x=1725876681; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=lZQX/cMZETZqukPtivvikiv242o9q96eLnQhbaJJJkM=;
-        b=bQW16FqryhnUyLrpsgxzMPXSaWoDDZg7m1dvmvTFcfxg07lFPfn80OSCSa9lIbX52a
-         sl2a+FRg1b+0ZXN9JsiTUp0tF3PSG6lGf2Wyu8hVz1yQF+LzDVpk6+FIZfmY0DKRSSP1
-         SH7JZs+Xi3TRyZJF53511ex/EX1+/BOYz4qparBYsUJNec5iX11nHEoWOHPK95+kRUv9
-         geUv7uEozoGlotu3VwLnqYQZTsP3fdEmxe4JZqCl7gA+b9dJiW3qcTaCul05Oo+hcbjX
-         rW55biPwVjavXaTrbIFqtFcv0s8219THiAe9nqosMsJoVVfQeL4nH+Edd+imPlqioAfP
-         F8WQ==
+        bh=uv5FZr6rZ6VqzNNSiX6mzSa07qcjEjBpw1DOUryq6jM=;
+        b=bL441e1sr4Hx5plPaYFEN3McvESnvE6/VFyfYD6OpKKNBLLsOrD5oqxHW/X63lt3w5
+         0g6ATAGpYSVm19Ttlh6if+xE0wf+VHhtkwx01SH9q7FxSZNMSGKzeLJ9po1ArL6NPCva
+         PsQ+98x0dAxsPvr4lriwWUOml2TxqUtItoZ5Q+QO54d5HrcxAI/DCXEX/tJHLBHsznGr
+         ae/SP5Dw+kK/gxBLOnJIo1wC0bvRM9ib7B6tv3q3ak30XAPUY2LDKQdUZoLsUmpJ4yT3
+         Cv2Wrj29qrtv1ucwLwKXGnQb01qEF62lDoIT5u7yemZ3m9CbsjtnRNYudNRCds2L3J64
+         3ZSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725271070; x=1725875870;
+        d=1e100.net; s=20230601; t=1725271881; x=1725876681;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lZQX/cMZETZqukPtivvikiv242o9q96eLnQhbaJJJkM=;
-        b=Ztu9TThMwA+XIGsxZu8SquljuI0GPQnjBGLPx74z491x2myl22h1hCoCXPtzqYHiES
-         EhUJ5K4Myq6yht2d4RS6JrntsM3KdALyWSwtg1w1M5T1diPh5bdXpUqF79sSmzM1cp6T
-         /IjCpm+U3ux9YCnMHaao9lKQboEqhb/Lrb7lR4+r3305/YX/fw1T4Fq7revHo8VE/2Mz
-         fWUAuREungiAAi2y/KyoPFJnTYM0B885OihFra5rGK91WiIg1v6bzNnZWDVVYeXccJRo
-         Pk7BBy0f6J0ebS5f7Unj53Uo/zh/OprcTV4TRezJmISBi7zs9KiTyjSCU33s8JrQQ1os
-         8r8A==
-X-Forwarded-Encrypted: i=1; AJvYcCX6W1+5OIX+JTcCLZqaWQib21/Yd3IepLvK7EGmS+W5g2Mbf0wF9PyMEeAF+L/yV0QEf7f60L4Q25bO@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywwmtvsa6Cx6vS0i9P1a3sbUaY0XHVpXs3sfBa1lPkQrEgdyTMk
-	RmfxOjztIWOXnMlEm3ODWQtxvZm0GsbQXRCbY4uy3MY22m/Lph3nw1uJJ33wNQ==
-X-Google-Smtp-Source: AGHT+IFSZcv0nult7Zja5pAokUpRh3eCHY8+dggfufZa4QfUGMc7wSMOSbQ5AYJaIDsiCUY7g7vMyA==
-X-Received: by 2002:a05:600c:500f:b0:426:5d89:896d with SMTP id 5b1f17b1804b1-42c78767f7amr1965085e9.1.1725271069765;
-        Mon, 02 Sep 2024 02:57:49 -0700 (PDT)
+        bh=uv5FZr6rZ6VqzNNSiX6mzSa07qcjEjBpw1DOUryq6jM=;
+        b=vsD4poC/nTbBBaGWwHTbaK1sC1wn71MVGiGas//TIGMMDlA8CKd2xarrgzaxjvDAWC
+         BjrbCdbceVFULPnve7uRHTCkIgxM/TdFBkjKLG5+wfC/8kuSIPA3UZqiPlNXiwZjq7OQ
+         dLWu8Ue0GYoDpLaSJynJS3abm5cVwkVflSBVvmbpA6GawhTVY5Rmrx/7qaCC/sB2sp+L
+         VrEHBuxyBW6jDaI9xFI2edh1CY5sy4B2LetDz9lBpHftDFYrK8Fo7ttN8taJivcbZIyE
+         M/MduPYKzg+h2cbVEpachfScBLCr9ozfsEJq1/765A/Q+fh+7RJ78VQNTcoI9uXap1VD
+         SqPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQwlUQg3mLs0KH2wdC2v/CYxhPQr2yPK8FEzlvpw3vDXRPpyz48LJDX58zw2gm7IcjzPIBC8ZiW73l@vger.kernel.org
+X-Gm-Message-State: AOJu0YwslVXvSDNAU3PZt2AXrL4xq7/W93zA3VEZRDwD5gyWCMJ5DMr0
+	x7YfzJWYCF2uSwD2VymR2xJ4SOtTQrctuwYrQns+K4oA5d7/jnKjKpvoC2dH5A==
+X-Google-Smtp-Source: AGHT+IEUVqSYP8vAntRCNYY+qDlbdxLNJoRSmxfSPQkZYaqM46by3fcwoSLExd+dVfdZhFC6FNtXRg==
+X-Received: by 2002:a05:600c:c15:b0:42b:8ff7:9cfe with SMTP id 5b1f17b1804b1-42c787683a2mr2004925e9.1.1725271880837;
+        Mon, 02 Sep 2024 03:11:20 -0700 (PDT)
 Received: from google.com (109.36.187.35.bc.googleusercontent.com. [35.187.36.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749ee4d391sm11015220f8f.3.2024.09.02.02.57.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bba3f2875sm111687515e9.41.2024.09.02.03.11.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 02:57:49 -0700 (PDT)
-Date: Mon, 2 Sep 2024 09:57:45 +0000
+        Mon, 02 Sep 2024 03:11:20 -0700 (PDT)
+Date: Mon, 2 Sep 2024 10:11:16 +0000
 From: Mostafa Saleh <smostafa@google.com>
 To: Jason Gunthorpe <jgg@nvidia.com>
 Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
@@ -87,12 +87,13 @@ Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
 	Michael Shavit <mshavit@google.com>,
 	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
 	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v2 8/8] iommu/arm-smmu-v3: Support IOMMU_DOMAIN_NESTED
-Message-ID: <ZtWMGQAdR6sjBmer@google.com>
+Subject: Re: [PATCH v2 6/8] iommu/arm-smmu-v3: Support IOMMU_GET_HW_INFO via
+ struct arm_smmu_hw_info
+Message-ID: <ZtWPRDsQ-VV-6juL@google.com>
 References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <8-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <ZtHuoDWbe54H1nhZ@google.com>
- <20240830170426.GV3773488@nvidia.com>
+ <6-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
+ <ZtHj_X6Gt91TlUZG@google.com>
+ <20240830171602.GX3773488@nvidia.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
@@ -102,115 +103,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240830170426.GV3773488@nvidia.com>
+In-Reply-To: <20240830171602.GX3773488@nvidia.com>
 
-On Fri, Aug 30, 2024 at 02:04:26PM -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 30, 2024 at 04:09:04PM +0000, Mostafa Saleh wrote:
-> > Hi Jason,
-> > 
-> > On Tue, Aug 27, 2024 at 12:51:38PM -0300, Jason Gunthorpe wrote:
-> > > For SMMUv3 a IOMMU_DOMAIN_NESTED is composed of a S2 iommu_domain acting
-> > > as the parent and a user provided STE fragment that defines the CD table
-> > > and related data with addresses translated by the S2 iommu_domain.
-> > > 
-> > > The kernel only permits userspace to control certain allowed bits of the
-> > > STE that are safe for user/guest control.
-> > > 
-> > > IOTLB maintenance is a bit subtle here, the S1 implicitly includes the S2
-> > > translation, but there is no way of knowing which S1 entries refer to a
-> > > range of S2.
-> > > 
-> > > For the IOTLB we follow ARM's guidance and issue a CMDQ_OP_TLBI_NH_ALL to
-> > > flush all ASIDs from the VMID after flushing the S2 on any change to the
-> > > S2.
-> > > 
-> > > Similarly we have to flush the entire ATC if the S2 is changed.
-> > > 
-> > 
-> > I am still reviewing this patch, but just some quick questions.
-> > 
-> > 1) How does userspace do IOTLB maintenance for S1 in that case?
+On Fri, Aug 30, 2024 at 02:16:02PM -0300, Jason Gunthorpe wrote:
+> On Fri, Aug 30, 2024 at 03:23:41PM +0000, Mostafa Saleh wrote:
+> > > +/**
+> > > + * struct iommu_hw_info_arm_smmuv3 - ARM SMMUv3 hardware information
+> > > + *                                   (IOMMU_HW_INFO_TYPE_ARM_SMMUV3)
+> > > + *
+> > > + * @flags: Must be set to 0
+> > > + * @__reserved: Must be 0
+> > > + * @idr: Implemented features for ARM SMMU Non-secure programming interface
+> > > + * @iidr: Information about the implementation and implementer of ARM SMMU,
+> > > + *        and architecture version supported
+> > > + * @aidr: ARM SMMU architecture version
+> > > + *
+> > > + * For the details of @idr, @iidr and @aidr, please refer to the chapters
+> > > + * from 6.3.1 to 6.3.6 in the SMMUv3 Spec.
+> > > + *
+> > > + * User space should read the underlying ARM SMMUv3 hardware information for
+> > > + * the list of supported features.
+> > > + *
+> > > + * Note that these values reflect the raw HW capability, without any insight if
+> > > + * any required kernel driver support is present. Bits may be set indicating the
+> > > + * HW has functionality that is lacking kernel software support, such as BTM. If
+> > > + * a VMM is using this information to construct emulated copies of these
+> > > + * registers it should only forward bits that it knows it can support.
+> > > + *
+> > > + * In future, presence of required kernel support will be indicated in flags.
+> > > + */
+> > > +struct iommu_hw_info_arm_smmuv3 {
+> > > +	__u32 flags;
+> > > +	__u32 __reserved;
+> > > +	__u32 idr[6];
+> > > +	__u32 iidr;
+> > > +	__u32 aidr;
+> > > +};
+> > There is a ton of information here, I think we might need to santitze the
+> > values for what user space needs to know (that's why I was asking about qemu)
+> > also SMMU_IDR4 is implementation define, not sure if we can unconditionally
+> > expose it to userspace.
 > 
-> See
+> What is the harm? Does exposing IDR data to userspace in any way
+> compromise the security or integrity of the system?
 > 
-> https://lore.kernel.org/linux-iommu/cover.1724776335.git.nicolinc@nvidia.com
-> 
-> Patch 17
+> I think no - how could it?
 
-Thanks, I had this series on my radar, I will check it by this week.
+I don’t see a clear harm or exploit with exposing IDRs, but IMHO we
+should deal with userspace with the least privilege principle and
+only expose what user space cares about (with sanitised IDRs or
+through another mechanism)
 
->
-> Really, this series and that series must be together. We have a patch
-> planning issue to sort out here as well, all 27 should go together
-> into the same merge window.
-> 
-> > 2) Is there a reason the UAPI is designed this way?
-> > The way I imagined this, is that userspace will pass the pointer to the CD
-> > (+ format) not the STE (or part of it).
-> 
-> Yes, we need more information from the STE than just that. EATS and
-> STALL for instance. And the cachability below. Who knows what else in
-> the future.
-
-But for example if that was extended later, how can user space know
-which fields are allowed and which are not?
+For example, KVM doesn’t allow reading reading the CPU system
+registers to know if SVE(or other features) is supported but hides
+that by a CAP in KVM_CHECK_EXTENSION
 
 > 
-> We also want to support the V=0, Bypass and Abort STE configurations
-> under the nesting domain (V, CFG required) so that the VIOMMU can
-> remain affiliated with the STE in all cases. This is necessary to
-> allow VIOMMU event reporting to always work.
-> 
-> Looking at the masks:
-> 
-> STRTAB_STE_0_NESTING_ALLOWED = 0xf80fffffffffffff
-> STRTAB_STE_1_NESTING_ALLOWED = 0x380000ff
-> 
-> So we do use alot of the bits. Reformatting from the native HW format
-> into something else doesn't seem better for VMM or kernel..
-> 
-> This is similar to the invalidation design where we also just forward
-> the invalidation command as is in native HW format, and how IDR is
-> done the same.
-> 
-> Overall this sort of direct transparency is how I prefer to see these
-> kinds of iommufd HW specific interfaces designed. From a lot of
-> experience here, arbitary marshall/unmarshall is often an
-> antipattern :)
+> As the comments says, the VMM should not just blindly forward this to
+> a guest!
 
-Is there any documentation for the (proposed) SMMUv3 UAPI for IOMMUFD?
-I can understand reading IDRs from userspace (with some sanitation),
-but adding some more logic to map vSTE to STE needs more care of what
-kind of semantics are provided.
+I don't think the kernel should trust userspace.
 
-Also, I am working on similar interface for pKVM where we “paravirtualize”
-the SMMU access for guests, it’s different semantics, but I hope we can
-align that with IOMMUFD (but it’s nowhere near upstream now)
+> 
+> The VMM needs to make its own IDR to reflect its own vSMMU
+> capabilities. It can refer to the kernel IDR if it needs to.
+> 
+> So, if the kernel is going to limit it, what criteria would you
+> propose the kernel use?
 
-I see you are talking in LPC about IOMMUFD:
-https://lore.kernel.org/linux-iommu/0-v1-01fa10580981+1d-iommu_pt_jgg@nvidia.com/T/#m2dbb08f3bf8506a492bc7dda2de662e42371e683
-
-Do you have any plans to talk about this also?
+I agree that the VMM would create a virtual IDR for guest, but that
+doesn't have to be directly based on the physical one (same as CPU).
 
 Thanks,
 Mostafa
-> 
-> > Making user space messing with shareability and cacheability of S1 CD access
-> > feels odd. (Although CD configure page table access which is similar).
-> 
-> As I understand it, the walk of the CD table will be constrained by
-> the S2FWB, just like all the other accesses by the guest.
-> 
-> So we just take a consistent approach of allowing the guest to provide
-> memattrs in the vSTE, CD, and S1 page table and rely on the HW's S2FWB
-> to police it.
-> 
-> As you say there are lots of memattr type bits under direct guest
-> control, it doesn't necessarily make alot of sense to permit
-> everything in those contexts and then add extra code to do something
-> different here.
-> 
-> Though I agree it looks odd, it is self-consistent.
+
 > 
 > Jason
 
