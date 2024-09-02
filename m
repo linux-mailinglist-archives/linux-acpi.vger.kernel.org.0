@@ -1,400 +1,340 @@
-Return-Path: <linux-acpi+bounces-8064-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8065-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1A4967E07
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 05:01:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED69967E2A
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 05:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A353E2823F7
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 03:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 678001C209DE
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 03:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF451537FF;
-	Mon,  2 Sep 2024 03:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB627EEFD;
+	Mon,  2 Sep 2024 03:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="jFR/gZtH"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="eo/JT4p6"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazolkn19010014.outbound.protection.outlook.com [52.103.11.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869143BB50;
-	Mon,  2 Sep 2024 03:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725246057; cv=none; b=c+T/XNUBSYRzEipEskj6V0tmb2prYxpUon6W+nDze4jB4GfucTi5bbiT64n/djZ3krrEZjimfnbMA+DoFQ437LC1z0bVeZM03wfi7UtrGxgIqLSnziisRrCw3EsLKXEm9OK3zk9Mt58C+niAxeqWjMh23ldGjw5jk9lpK2Cfuhc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725246057; c=relaxed/simple;
-	bh=ktABfr8KDnMVJGQEgvyo642bcCmnk8hd82zKdOnnyLg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GG2gOHcA/BOWRbvGeWgJapZ6hXJzYtYbCYBpiTyPUc4vfTfRCq8Tfok4LO5h1w32iLjlCmYW1JF6LNOIdtlT6MdCdRWwtCa+4Hb4bsGgCB9nE8lGm2S68LuZWcR73xfj21iPd6PM52ZbnraVQj59aLuF8B54MDM9Qu8cLRO1KCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=jFR/gZtH; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1725246052; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=BifK0Clid7OESoXNef0gZrr4lzWKcwPmPBCzPd9yXiE=;
-	b=jFR/gZtHg4MVwOAd+ebQdI4Pxuebg0QaZl4hxMIl+FiLxVZlUrohJWXTJpgSjzB9rvdVGw9Nh0vH8obu59eO4NZr+jWuzXtW7wARRj3VlfHK/Awqk3wWry9T7l62anG6AkAeTwIangkufVVLhe2j+laj7qLSgoSM+PIjQWxBIdk=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WE1odpl_1725246049)
-          by smtp.aliyun-inc.com;
-          Mon, 02 Sep 2024 11:00:50 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: bp@alien8.de,
-	rafael@kernel.org,
-	wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com,
-	mawupeng1@huawei.com,
-	tony.luck@intel.com,
-	linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com,
-	james.morse@arm.com,
-	tongtiangen@huawei.com,
-	gregkh@linuxfoundation.org,
-	will@kernel.org,
-	jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org,
-	x86@kernel.org,
-	xueshuai@linux.alibaba.com,
-	justin.he@arm.com,
-	ardb@kernel.org,
-	ying.huang@intel.com,
-	ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	dave.hansen@linux.intel.com,
-	lenb@kernel.org,
-	hpa@zytor.com,
-	robert.moore@intel.com,
-	lvying6@huawei.com,
-	xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: [PATCH v12 3/3] ACPI: APEI: handle synchronous exceptions in task work
-Date: Mon,  2 Sep 2024 11:00:34 +0800
-Message-ID: <20240902030034.67152-4-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF5042A9F;
+	Mon,  2 Sep 2024 03:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.11.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725248111; cv=fail; b=had29rsZF5FvQzcnTvyvj8fqcPnVRakNYoTGtdL68/CPFwInUP0QgWj/wDJPM2ot1FAu39gKpaL821vawFf5CBfsmCcNYo/H5UMt2+cgb7cyKd9mXvNTvyc0mp1qPxOVlTrmlI7lTM5KwcUZmBnl9W06v/JireyUnvq9Vp+v8zY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725248111; c=relaxed/simple;
+	bh=H6mJwjV+bIzDth3zjam6LT/OK29heK1fiuqepNW9E1I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=jiyJpK4xsGFH0cIcRjAG4GXqajmNrV6ZteB/gG7AAHtYBupK1FWXarBM9YBekOMA2OAOLmh4+nvf0eXiohSoyEfpI/xsOCWYpOcGqvdQOdCbkrIoyiUPFk/cEA2bGQ1X03uekqQEK5Fn5QRI6IJOa2oaPvjd15ty7UEYs6qpVhI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=eo/JT4p6; arc=fail smtp.client-ip=52.103.11.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F9hp0ocrdNbUbjy+kbN7E0VE5oZ+6TDDisjnnQ48LGoexRNxgWACEc6MTBmxWOZaP0ZcgCY77O2jkxdntdB6i8zWqyJomga/p6j5QxqlBy328sLByzTQHqpPec/QHYEtpwzmUiGKLVkkO0/Tf7khcy1ojeonMlqQNiGmTbz3nDJrsMNQBw9GbCRwueaOuobY/fbaZHI4N2UOSQbTSXiU8Ch7ep0LLETfnKwtVWhldEkB2+ToIFDJWKjk2kJCByiZwyjFfo/gWg813J2+KO+mI3lPJSK4FcR8ErW9aR8wOl3+AP1/AAutQGYWu1/1PO9hoOF6vrk5QewFGRN0NH0o0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t2B7UoUeW3+lTA/kjHWRVOqX9FrEcwtbWeyX2Lj0ExQ=;
+ b=cx2q239QkWx8UtEjN7vrsxRa4/w4ZoOewQBxgZ6reXY67VQQKMxAwOHP/6kfabrZZUjw2/G89eyY9o0JzfGqKKC0dAanw95SGvznaXd9JoWAMmxNTuLGAgsEnlmdNYqqR+SldinOQEGz+e2m18URLW8AMosLvaqbl+kZy/aFp+D7Ot44K2zRvYy7Qi3l5lBj/r41Lo2yb9RQDH1NOb1UGw+McAP1ZfPPxsEYcJTUhhqXTa0SBQyWn8vs/aDRkb3t90MiF0IIIqG5yazBAhrt+HDYumbg0Ujjl0sSbKXyoHqu78RcFVMNF8X+kfBdd68xhXUeJUgwTE374dDu6eLUIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t2B7UoUeW3+lTA/kjHWRVOqX9FrEcwtbWeyX2Lj0ExQ=;
+ b=eo/JT4p6TcKHv0d98u9GFj+K/1MDp2tvizD2oqFcoJVOBnTJ0V3f2n3iM0/zTOhkmWK2IqQnLFwJdTXvg3D3UR1ap2E4MdIFSsFqYxWhuiEUGQqJhhZzoc+sf8jsHdMP8rCullJKyWERCxncEA402QzyGZ/mugAk0jdknumHlH4IlboQWGDuVdo31sE7OphdGswcesaAygrAfv003ebhpPd/35l2BWMdMJNaeDChKkBzOqQddAKqZIS48E7HLSALRaW2aAJ/tB1VEn/hHhD5ROV7MZKKksq7FI81Vm2aLHRihaQmW7sfdMnMZzD6L8moS9rmRrzTdNU4L+dbIn6+DQ==
+Received: from BN7PR02MB4148.namprd02.prod.outlook.com (2603:10b6:406:f6::17)
+ by SA1PR02MB8655.namprd02.prod.outlook.com (2603:10b6:806:1fe::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Mon, 2 Sep
+ 2024 03:35:06 +0000
+Received: from BN7PR02MB4148.namprd02.prod.outlook.com
+ ([fe80::1c3a:f677:7a85:4911]) by BN7PR02MB4148.namprd02.prod.outlook.com
+ ([fe80::1c3a:f677:7a85:4911%7]) with mapi id 15.20.7875.019; Mon, 2 Sep 2024
+ 03:35:06 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Yunhong Jiang <yunhong.jiang@linux.intel.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de"
+	<bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+	<krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"kys@microsoft.com" <kys@microsoft.com>, "haiyangz@microsoft.com"
+	<haiyangz@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>, "rafael@kernel.org"
+	<rafael@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: RE: [PATCH v2 3/9] x86/dt: Support the ACPI multiprocessor wakeup for
+ device tree
+Thread-Topic: [PATCH v2 3/9] x86/dt: Support the ACPI multiprocessor wakeup
+ for device tree
+Thread-Index: AQHa9bOt/5S8CVj1dUyLXfYrtF3O7bJC+pkQ
+Date: Mon, 2 Sep 2024 03:35:06 +0000
+Message-ID:
+ <BN7PR02MB4148C25575F1C98531B6164CD4922@BN7PR02MB4148.namprd02.prod.outlook.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-4-yunhong.jiang@linux.intel.com>
+In-Reply-To: <20240823232327.2408869-4-yunhong.jiang@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [KreIzO4QQLyQiI/7pEINlaASrwcR5VjI]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN7PR02MB4148:EE_|SA1PR02MB8655:EE_
+x-ms-office365-filtering-correlation-id: 70c752f7-e99a-40ee-1531-08dccb003ce1
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|15080799006|8060799006|19110799003|461199028|3412199025|440099028|102099032;
+x-microsoft-antispam-message-info:
+ mIeZyrnxXKUX1ByVGcnpMiuyuxpuFrkDLIhOtmrHLb+Td37ZcBEWMn7UCRjuwk3Mt6DmwQiFT/1wqyz8YTsaL7PV8Auwiwva9Y0Mr2A+z3awntbGbe2vYhUsha7SbfO8E22YX7a/FjB+ngSwvf/V7lO/DOmuvrX9MNTN1PhR92HHhtcqCx85r4GJCPM01mg8Vo7Dy9zjLc58ZrvCX89/75gDp0P9BofV2Ugxj/zhB7gWnVmROsSftnASOzLuKvD0DVyttaBO5c74YozWr+sMGRG8IN8NTsKMPem8M3abPDnSFQtc51Kp7S3YPn5eDqTTmyhie3LnwmbVb/FhuyvTZjHFMGW5PrKDARGIIhdBcw9u/asNygosLdryv+eAld67lomswHhr33+pDuoI5hLZB5rhAchIOcQQ6ncIXBCmUb2lbmULUQ+E82k6CvmMgjcGQEJbT/JPOEWHw36jf6Pd4ZEXND8ajzh4ypXnUR/PatDEmwS1wVjFbywHX0aIo5hpST8KfxUJtyh4qQZEJFI6I7lID3EDXteFfpUBjk1HLV1ywwBQqpZvUUkyGc3eGhNsjvojB/Q4esgJkcP+k8JrpACjzrTmJ6P3Eb0GC10DwbtfwLxf0hrNduytStOdKLM7yJsKW3gWxLoatElZDm+zNwiCcMEkT+/c4dD0A9c7eZWZSMvsqly0OIFa7AUcc+6m
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?fJ0L8IUIeKOP1E6QXROgUxqM57qWezxYbGJDAo6Wd/tOSzp30ZOs81oCqSmE?=
+ =?us-ascii?Q?CWd6zLzwtslAavtSbYN3lprcr+dv8Eh0HmQ+6jPm/V8wJ1cgxP9D6TORG4Z6?=
+ =?us-ascii?Q?WcxW6JSWkNMk/LB1zWVhrXcMWMseM6/tTa4Em6IG9KW7onmHVWv3L38Pjd3j?=
+ =?us-ascii?Q?Kb4KeFNl76d4F/syxqdT+/MtC4sAKB0EO2S9lXniorMWUCd60oUtjvkoNRn1?=
+ =?us-ascii?Q?b1N4V3wRcjKpiKLrnfB4zGnN6YEjMoP6mHvpPToVuiMK54Sfnd2huDArQ25m?=
+ =?us-ascii?Q?JEj5jdKPbX2/A8zGHnjasuLa4cK4eHsfejS5uxRLbKNyFqgleUWLaggaQDHN?=
+ =?us-ascii?Q?neJ2S08uOz6Ob5r7PMnknOifOO3uzFhWc1h+FFop4qtQMlf/NuqpI+VJfSrP?=
+ =?us-ascii?Q?hGo+711wa4tBd5xawF7KUz5jYe6eB0RrRqL0g0sqt+bPrym/Z90mVRuJGM0Y?=
+ =?us-ascii?Q?mUvS+owOsDKNKkKjlZxNdFWTd2bfs7w32qHWKVUyNqmsJGJOmnQuaRNpYBVu?=
+ =?us-ascii?Q?mOoPl5E7DFqXHXEioUps1nlRnpjnRWK8bhYceZytygphuI9yHhUYdT0/3gMa?=
+ =?us-ascii?Q?UdxWDdp9HITaUB/SPbBcIG2obRr5lMaQ6sw1NCdG9JyKr01zjHVpqra6TVa5?=
+ =?us-ascii?Q?RVvP36q0xHbery06EO28fRVDPm3m4J0+Sm4gjKNEd5IiPxB009w9q/bCY3tU?=
+ =?us-ascii?Q?YW4gc5YFiUKmW3v/l4lHavggSG5A565So9GNvOyfRM/GHDy+18sOg+sHa1lO?=
+ =?us-ascii?Q?eri8Z22T6m6izRp23MNAYhs4l7NOofUrRnNcdEtilIOFYczqg78Sg+wQaFsV?=
+ =?us-ascii?Q?gAXhoMgxKeIsT+93vzvvVQYHTJI/4kuTLPgumiYlMObleYF0VSZhO41xjCBU?=
+ =?us-ascii?Q?JJ3iEer9Kvg6FUmKPINAkFv2S/mhnJDigqqfKr9seURbZi3B/s9SWdfULFvX?=
+ =?us-ascii?Q?1QbG0rFOvJLRseBeA8HMhqiVAt2uhJ1Gm+Whxw/Z1XHX4woA/bCZxyQ4UZ9o?=
+ =?us-ascii?Q?LbPsZoNgRhBkp0tec3XnjeLxXQgE+hhcJaqxd9W0uVAtyOBnIeFdXihCC/Mx?=
+ =?us-ascii?Q?twqF4BQRZU2NC6FGpfj/TyXEd5vu3X8EqYjjnxdBGbfjCwzOWeyidtKboQPr?=
+ =?us-ascii?Q?A3GJg3IMpyXth1p984HJzuQX4GJNAhbSy1/Qs1Hqu8bx9dFjKX5RHxCQ/SiX?=
+ =?us-ascii?Q?KAjFVmx0CWTuW716OqMkhpAVy+g8K9IcjcbdazWw42wG1OdLceX107tw4MQ?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR02MB4148.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70c752f7-e99a-40ee-1531-08dccb003ce1
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Sep 2024 03:35:06.1325
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR02MB8655
 
-The memory uncorrected error could be signaled by asynchronous interrupt
-(specifically, SPI in arm64 platform), e.g. when an error is detected by
-a background scrubber, or signaled by synchronous exception
-(specifically, data abort excepction in arm64 platform), e.g. when a CPU
-tries to access a poisoned cache line. Currently, both synchronous and
-asynchronous error use memory_failure_queue() to schedule
-memory_failure() exectute in kworker context.
+From: Yunhong Jiang <yunhong.jiang@linux.intel.com> Sent: Friday, August 23=
+, 2024 4:23 PM
+>=20
+> When a TDX guest boots with the device tree instead of ACPI, it can
+> reuse the ACPI multiprocessor wakeup mechanism to wake up application
+> processors(AP), without introducing a new mechanism from scrach.
+>=20
+> In the ACPI spec, two structures are defined to wake up the APs: the
+> multiprocessor wakeup structure and the multiprocessor wakeup mailbox
+> structure. The multiprocessor wakeup structure is passed to OS through a
+> Multiple APIC Description Table(MADT), one field specifying the physical
+> address of the multiprocessor wakeup mailbox structure. The OS sends
+> a message to firmware through the multiprocessor wakeup mailbox
+> structure, to bring up the APs.
+>=20
+> In device tree environment, the multiprocessor wakeup structure is not
+> used, to reduce the dependency on the generic ACPI table. The
+> information defined in this structure is defined in the properties of
+> cpus node in the device tree. The "wakeup-mailbox-addr" property
+> specifies the physical address of the multiprocessor wakeup mailbox
+> structure. The OS will follow the ACPI spec to send the message to the
+> firmware to bring up the APs.
+>=20
+> Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> ---
+>  MAINTAINERS                        |  1 +
+>  arch/x86/Kconfig                   |  2 +-
+>  arch/x86/include/asm/acpi.h        |  1 -
+>  arch/x86/include/asm/madt_wakeup.h | 16 +++++++++++++
+>  arch/x86/kernel/madt_wakeup.c      | 38 ++++++++++++++++++++++++++++++
+>  5 files changed, 56 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/x86/include/asm/madt_wakeup.h
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5555a3bbac5f..900de6501eba 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -288,6 +288,7 @@ T:	git
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+>  F:	Documentation/ABI/testing/configfs-acpi
+>  F:	Documentation/ABI/testing/sysfs-bus-acpi
+>  F:	Documentation/firmware-guide/acpi/
+> +F:	arch/x86/include/asm/madt_wakeup.h
+>  F:	arch/x86/kernel/acpi/
+>  F:	arch/x86/kernel/madt_playdead.S
+>  F:	arch/x86/kernel/madt_wakeup.c
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index d422247b2882..dba46dd30049 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -1123,7 +1123,7 @@ config X86_LOCAL_APIC
+>  config ACPI_MADT_WAKEUP
+>  	def_bool y
+>  	depends on X86_64
+> -	depends on ACPI
+> +	depends on ACPI || OF
+>  	depends on SMP
+>  	depends on X86_LOCAL_APIC
+>=20
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index 21bc53f5ed0c..0e082303ca26 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -83,7 +83,6 @@ union acpi_subtable_headers;
+>  int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+>  			      const unsigned long end);
+>=20
+> -void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
+>=20
+>  /*
+>   * Check if the CPU can handle C2 and deeper
+> diff --git a/arch/x86/include/asm/madt_wakeup.h
+> b/arch/x86/include/asm/madt_wakeup.h
+> new file mode 100644
+> index 000000000000..a8cd50af581a
+> --- /dev/null
+> +++ b/arch/x86/include/asm/madt_wakeup.h
+> @@ -0,0 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __ASM_X86_MADT_WAKEUP_H
+> +#define __ASM_X86_MADT_WAKEUP_H
+> +
+> +void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
+> +
+> +#if defined(CONFIG_OF) && defined(CONFIG_ACPI_MADT_WAKEUP)
+> +u64 dtb_parse_mp_wake(void);
+> +#else
+> +static inline u64 dtb_parse_mp_wake(void)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+> +#endif /* __ASM_X86_MADT_WAKEUP_H */
+> diff --git a/arch/x86/kernel/madt_wakeup.c b/arch/x86/kernel/madt_wakeup.=
+c
+> index d5ef6215583b..7257e7484569 100644
+> --- a/arch/x86/kernel/madt_wakeup.c
+> +++ b/arch/x86/kernel/madt_wakeup.c
+> @@ -14,6 +14,8 @@
+>  #include <asm/nmi.h>
+>  #include <asm/processor.h>
+>  #include <asm/reboot.h>
+> +#include <asm/madt_wakeup.h>
+> +#include <asm/prom.h>
+>=20
+>  /* Physical address of the Multiprocessor Wakeup Structure mailbox */
+>  static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
+> @@ -122,6 +124,7 @@ static int __init init_transition_pgtable(pgd_t *pgd)
+>  	return 0;
+>  }
+>=20
+> +#ifdef CONFIG_ACPI
+>  static int __init acpi_mp_setup_reset(u64 reset_vector)
+>  {
+>  	struct x86_mapping_info info =3D {
+> @@ -168,6 +171,7 @@ static int __init acpi_mp_setup_reset(u64 reset_vecto=
+r)
+>=20
+>  	return 0;
+>  }
+> +#endif
 
-As a result, when a user-space process is accessing a poisoned data, a
-data abort is taken and the memory_failure() is executed in the kworker
-context:
+When acpi_mp_setup_reset() is #ifdef'ed out because of CONFIG_ACPI
+not being set, doesn't this generate compile warnings about
+init_transition_pgtable(), alloc_pgt_page(), free_pgt_page(), etc. being
+unused?
 
-  - will send wrong si_code by SIGBUS signal in early_kill mode, and
-  - can not kill the user-space in some cases resulting a synchronous
-    error infinite loop
+It appears that the only code in madt_wakeup.c that is shared between
+the ACPI and OF cases is acpi_wakeup_cpu()? Is that correct?=20
 
-Issue 1: send wrong si_code in early_kill mode
+>=20
+>  static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+>  {
+> @@ -226,6 +230,7 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long =
+start_ip)
+>  	return 0;
+>  }
+>=20
+> +#ifdef CONFIG_ACPI
+>  static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup =
+*mp_wake)
+>  {
+>  	cpu_hotplug_disable_offlining();
+> @@ -290,3 +295,36 @@ int __init acpi_parse_mp_wake(union acpi_subtable_he=
+aders *header,
+>=20
+>  	return 0;
+>  }
+> +#endif /* CONFIG_ACPI */
+> +
+> +#ifdef CONFIG_OF
+> +u64 __init dtb_parse_mp_wake(void)
+> +{
+> +	struct device_node *node;
+> +	u64 mailaddr =3D 0;
+> +
+> +	node =3D of_find_node_by_path("/cpus");
+> +	if (!node)
+> +		return 0;
+> +
+> +	if (of_property_match_string(node, "enable-method", "acpi-wakeup-mailbo=
+x") < 0) {
+> +		pr_err("No acpi wakeup mailbox enable-method\n");
+> +		goto done;
 
-Since commit a70297d22132 ("ACPI: APEI: set memory failure flags as
-MF_ACTION_REQUIRED on synchronous events")', the flag MF_ACTION_REQUIRED
-could be used to determine whether a synchronous exception occurs on
-ARM64 platform.  When a synchronous exception is detected, the kernel is
-expected to terminate the current process which has accessed poisoned
-page. This is done by sending a SIGBUS signal with an error code
-BUS_MCEERR_AR, indicating an action-required machine check error on
-read.
+Patch 4 of this series unconditionally calls dtb_parse_mp_wake(),
+so it will be called in normal VMs, as a well as SEV-SNP and TDX
+kernels built for VTL 2 (assuming CONFIG_OF is set). Normal VMs
+presumably won't be using DT and won't have the "/cpus" node,
+so this function will silently do nothing, which is fine. But do you
+expect the DT "/cpus" node to be present in an SEV-SNP VTL 2
+environment? If so, this function will either output some spurious
+error messages, or SEV-SNP will use the ACPI wakeup mailbox
+method, which is probably not what you want.
 
-However, when kill_proc() is called to terminate the processes who have
-the poisoned page mapped, it sends the incorrect SIGBUS error code
-BUS_MCEERR_AO because the context in which it operates is not the one
-where the error was triggered.
+Michael
 
-To reproduce this problem:
-
-  # STEP1: enable early kill mode
-  #sysctl -w vm.memory_failure_early_kill=1
-  vm.memory_failure_early_kill = 1
-
-  # STEP2: inject an UCE error and consume it to trigger a synchronous error
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 5 addr 0xffffb0d75000
-  page not present
-  Test passed
-
-The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO
-error and it is not fact.
-
-To fix it, queue memory_failure() as a task_work so that it runs in
-the context of the process that is actually consuming the poisoned data.
-
-After this patch set:
-
-  # STEP1: enable early kill mode
-  #sysctl -w vm.memory_failure_early_kill=1
-  vm.memory_failure_early_kill = 1
-
-  # STEP2: inject an UCE error and consume it to trigger a synchronous error
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 4 addr 0xffffb0d75000
-  page not present
-  Test passed
-
-The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR
-error as we expected.
-
-Issue 2: a synchronous error infinite loop due to memory_failure() failed
-
-If a user-space process, e.g. devmem, a poisoned page which has been set
-HWPosion flag, kill_accessing_process() is called to send SIGBUS to the
-current processs with error info. Because the memory_failure() is
-executed in the kworker contex, it will just do nothing but return
-EFAULT. So, devmem will access the posioned page and trigger an
-excepction again, resulting in a synchronous error infinite loop. Such
-loop may cause platform firmware to exceed some threshold and reboot
-when Linux could have recovered from this error.
-
-To reproduce this problem:
-
-  # STEP 1: inject an UCE error, and kernel will set HWPosion flag for related page
-  #einj_mem_uc single
-  0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
-  injecting ...
-  triggering ...
-  signal 7 code 4 addr 0xffffb0d75000
-  page not present
-  Test passed
-
-  # STEP 2: access the same page and it will trigger a synchronous error infinite loop
-  devmem 0x4092d55b400
-
-To fix it, if memory_failure() failed, perform a force kill to current process.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- drivers/acpi/apei/ghes.c | 78 +++++++++++++++++++++++-----------------
- include/acpi/ghes.h      |  3 --
- include/linux/mm.h       |  1 -
- mm/memory-failure.c      | 13 -------
- 4 files changed, 45 insertions(+), 50 deletions(-)
-
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index b0b20ee533d9..b956e9ed020f 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -467,28 +467,42 @@ static void ghes_clear_estatus(struct ghes *ghes,
- }
- 
- /*
-- * Called as task_work before returning to user-space.
-- * Ensure any queued work has been done before we return to the context that
-- * triggered the notification.
-+ * struct task_work - for synchronous RAS event
-+ *
-+ * @twork:                callback_head for task work
-+ * @pfn:                  page frame number of corrupted page
-+ * @flags:                work control flags
-+ *
-+ * Structure to pass task work to be handled before
-+ * returning to user-space via task_work_add().
-  */
--static void ghes_kick_task_work(struct callback_head *head)
-+struct task_work {
-+	struct callback_head twork;
-+	u64 pfn;
-+	int flags;
-+};
-+
-+static void memory_failure_cb(struct callback_head *twork)
- {
--	struct acpi_hest_generic_status *estatus;
--	struct ghes_estatus_node *estatus_node;
--	u32 node_len;
-+	struct task_work *twcb = container_of(twork, struct task_work, twork);
-+	unsigned long pfn = twcb->pfn;
-+	int ret;
- 
--	estatus_node = container_of(head, struct ghes_estatus_node, task_work);
--	if (IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
--		memory_failure_queue_kick(estatus_node->task_work_cpu);
-+	ret = memory_failure(twcb->pfn, twcb->flags);
-+	gen_pool_free(ghes_estatus_pool, (unsigned long)twcb, sizeof(*twcb));
- 
--	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
--	node_len = GHES_ESTATUS_NODE_LEN(cper_estatus_len(estatus));
--	gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node, node_len);
-+	if (!ret || ret == -EHWPOISON || ret == -EOPNOTSUPP)
-+		return;
-+
-+	pr_err("%#lx: Sending SIGBUS to %s:%d due to hardware memory corruption\n",
-+			pfn, current->comm, task_pid_nr(current));
-+	force_sig(SIGBUS);
- }
- 
- static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- {
- 	unsigned long pfn;
-+	struct task_work *twcb;
- 
- 	if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))
- 		return false;
-@@ -501,6 +515,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- 		return false;
- 	}
- 
-+	if (flags == MF_ACTION_REQUIRED && current->mm) {
-+		twcb = (void *)gen_pool_alloc(ghes_estatus_pool, sizeof(*twcb));
-+		if (!twcb)
-+			return false;
-+
-+		twcb->pfn = pfn;
-+		twcb->flags = flags;
-+		init_task_work(&twcb->twork, memory_failure_cb);
-+		task_work_add(current, &twcb->twork, TWA_RESUME);
-+		return true;
-+	}
-+
- 	memory_failure_queue(pfn, flags);
- 	return true;
- }
-@@ -745,7 +771,7 @@ int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, CXL);
- 
--static bool ghes_do_proc(struct ghes *ghes,
-+static void ghes_do_proc(struct ghes *ghes,
- 			 const struct acpi_hest_generic_status *estatus)
- {
- 	int sev, sec_sev;
-@@ -810,8 +836,6 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			current->comm, task_pid_nr(current));
- 		force_sig(SIGBUS);
- 	}
--
--	return queued;
- }
- 
- static void __ghes_print_estatus(const char *pfx,
-@@ -1113,9 +1137,7 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 	struct ghes_estatus_node *estatus_node;
- 	struct acpi_hest_generic *generic;
- 	struct acpi_hest_generic_status *estatus;
--	bool task_work_pending;
- 	u32 len, node_len;
--	int ret;
- 
- 	llnode = llist_del_all(&ghes_estatus_llist);
- 	/*
-@@ -1130,25 +1152,16 @@ static void ghes_proc_in_irq(struct irq_work *irq_work)
- 		estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 		len = cper_estatus_len(estatus);
- 		node_len = GHES_ESTATUS_NODE_LEN(len);
--		task_work_pending = ghes_do_proc(estatus_node->ghes, estatus);
-+
-+		ghes_do_proc(estatus_node->ghes, estatus);
-+
- 		if (!ghes_estatus_cached(estatus)) {
- 			generic = estatus_node->generic;
- 			if (ghes_print_estatus(NULL, generic, estatus))
- 				ghes_estatus_cache_add(generic, estatus);
- 		}
--
--		if (task_work_pending && current->mm) {
--			estatus_node->task_work.func = ghes_kick_task_work;
--			estatus_node->task_work_cpu = smp_processor_id();
--			ret = task_work_add(current, &estatus_node->task_work,
--					    TWA_RESUME);
--			if (ret)
--				estatus_node->task_work.func = NULL;
--		}
--
--		if (!estatus_node->task_work.func)
--			gen_pool_free(ghes_estatus_pool,
--				      (unsigned long)estatus_node, node_len);
-+		gen_pool_free(ghes_estatus_pool, (unsigned long)estatus_node,
-+			      node_len);
- 
- 		llnode = next;
- 	}
-@@ -1209,7 +1222,6 @@ static int ghes_in_nmi_queue_one_entry(struct ghes *ghes,
- 
- 	estatus_node->ghes = ghes;
- 	estatus_node->generic = ghes->generic;
--	estatus_node->task_work.func = NULL;
- 	estatus = GHES_ESTATUS_FROM_NODE(estatus_node);
- 
- 	if (__ghes_read_estatus(estatus, buf_paddr, fixmap_idx, len)) {
-diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
-index be1dd4c1a917..ebd21b05fe6e 100644
---- a/include/acpi/ghes.h
-+++ b/include/acpi/ghes.h
-@@ -35,9 +35,6 @@ struct ghes_estatus_node {
- 	struct llist_node llnode;
- 	struct acpi_hest_generic *generic;
- 	struct ghes *ghes;
--
--	int task_work_cpu;
--	struct callback_head task_work;
- };
- 
- struct ghes_estatus_cache {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6549d0979b28..f5f1d6a8a07d 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3981,7 +3981,6 @@ enum mf_flags {
- int mf_dax_kill_procs(struct address_space *mapping, pgoff_t index,
- 		      unsigned long count, int mf_flags);
- extern int memory_failure(unsigned long pfn, int flags);
--extern void memory_failure_queue_kick(int cpu);
- extern int unpoison_memory(unsigned long pfn);
- extern atomic_long_t num_poisoned_pages __read_mostly;
- extern int soft_offline_page(unsigned long pfn, int flags);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index df26e2ff5e06..e369aae2da1f 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2486,19 +2486,6 @@ static void memory_failure_work_func(struct work_struct *work)
- 	}
- }
- 
--/*
-- * Process memory_failure work queued on the specified CPU.
-- * Used to avoid return-to-userspace racing with the memory_failure workqueue.
-- */
--void memory_failure_queue_kick(int cpu)
--{
--	struct memory_failure_cpu *mf_cpu;
--
--	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--	cancel_work_sync(&mf_cpu->work);
--	memory_failure_work_func(&mf_cpu->work);
--}
--
- static int __init memory_failure_init(void)
- {
- 	struct memory_failure_cpu *mf_cpu;
--- 
-2.39.3
+> +	}
+> +
+> +	if (of_property_read_u64(node, "wakeup-mailbox-addr", &mailaddr)) {
+> +		pr_err("Invalid wakeup mailbox addr\n");
+> +		goto done;
+> +	}
+> +	acpi_mp_wake_mailbox_paddr =3D mailaddr;
+> +	pr_info("dt wakeup-mailbox: addr 0x%llx\n", mailaddr);
+> +
+> +	/* No support for the MADT reset vector yet */
+> +	cpu_hotplug_disable_offlining();
+> +	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> +
+> +done:
+> +	of_node_put(node);
+> +	return mailaddr;
+> +}
+> +#endif /* CONFIG_OF */
+> --
+> 2.25.1
+>=20
 
 
