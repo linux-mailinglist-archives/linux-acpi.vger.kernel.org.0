@@ -1,171 +1,146 @@
-Return-Path: <linux-acpi+bounces-8073-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8074-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B819682AC
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 11:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6949682A4
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 11:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06080282F91
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 09:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76C828350C
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 09:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DE218733E;
-	Mon,  2 Sep 2024 08:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F88186E54;
+	Mon,  2 Sep 2024 09:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vkRddNPM"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="blR1e5W/"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720F187349
-	for <linux-acpi@vger.kernel.org>; Mon,  2 Sep 2024 08:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221541547D2;
+	Mon,  2 Sep 2024 09:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725267480; cv=none; b=JqkZErhq4wjs+jyJ8C5xGa2mw84jNDdSGVd2+vmjXNl9sY73zHK/cXwyHg6VO9zD4nWMVG0ecC4y5GeH4495+e4ImSUo6CcvCV1hADN020etcwg6mPWWbCkyV96zx5/9JhmrMSF3zmGfoEP6Z8JKi6UNVLqcMwOny87aiBGyUdQ=
+	t=1725267915; cv=none; b=C+SL+XwDig47tpxf/LrvL/t86B2VIHePY7xkOZNtpPbIvCok8Q9o2VVW35LbMBH87TrVcfvRSfXusdJ1y5AXmVVXa32x9x04rbQhsCVh7P1Ok68mQb5FzkirXC5VBVzyGFHW5IJtedYKTrNFAMbECB0ZpwPacbt5+Yh+/b9UXaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725267480; c=relaxed/simple;
-	bh=c0OW0xQ0WrcxXFjOgX053qT4DVNz5MYcUfMesZuHjIU=;
+	s=arc-20240116; t=1725267915; c=relaxed/simple;
+	bh=47IhWIyyF9Z9QKoW1CtiwhIrW3cuU2agjCSA6CnRqqo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iSOKJJOla8LTzH5lUZggOJtBCU6tszMESPWgwHn4Gp1aQIBxZkSky5CUmbDypfSMKs4mW84hFiOCXjxOBCl+NHYsj8hb0qQ0N2hOcxLCl8m+YxQ6u+wFgJx9IjRxhnOteXmak6mm5ckLFPfUQzk/BGi+4dwrhhoi0zuAfembzj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vkRddNPM; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-429d1a9363aso60935e9.1
-        for <linux-acpi@vger.kernel.org>; Mon, 02 Sep 2024 01:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725267476; x=1725872276; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rDJ3c/SnX1xtZaObviOe/fqhAy0qt+DAWX/W/IrfKf8=;
-        b=vkRddNPMA6DbDZi17PzUP08G7rXIpFf/JE5gv/YEmbmHvNjXntwQIGINc6afLrynRe
-         IYUTyLoG1K3oBOBnH8GUvxnL7cgb/mawb+pCV/UhPApSyBTR6VTBF/s9bsHp9TBaFdX+
-         NxFyS/I5ObQMlrKuD7LQy+3Q47dmdKTo8o0fA0qoLLaOCjlHTtQskRpHO9BSQdlbvcVd
-         UwZ2Rt5/1FrZKWZZ2H8O2KG7IwI0TnFpaq5RoXdt3bh69M1NO8WkSctd8/R07DQlNuXF
-         /5eWYTD5PAkN9ZHZy91W9gAn7is0woVyzX7WuVKKHIzxltQ53Lo4L51i56RyEQ5LAxp4
-         opTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725267476; x=1725872276;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rDJ3c/SnX1xtZaObviOe/fqhAy0qt+DAWX/W/IrfKf8=;
-        b=K/zg6SD0QoAhpDbL8SM3rC9+1CH1ZTbCRaQGOs6ywvoPIPWsYz9TRxA6Lj3YJKTOu1
-         MuuK2qtjcw3nZahwZTDqWqWqUVwn5KRSljmu6tC2rK+9NP/q3H0lb19soTBN/t6VJVxK
-         TE3oOnfXQUCEGuBN4M9kGn/j7PEO1aMYdmlkrNrthemkV3v533fuKBbDsIVUTSE7grSv
-         yVQrSkhs22BY0jPYPQJNV8HsZChCnlSUKxIQx8s6Fw83u/u39Q4h7NwMMGQTIGdBx3KC
-         6X/DNSXHUEzjRtqu3LSicMeylg4igDI4gqnDAw4qb/s2CQXV3wpXAwDs+RWngDosITX2
-         SefQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmFx7kEpYi85ml/CyEkWPoSUrT5V/7c73rODwb+d2pleg/m4fh+XMfHU1FXJAaY2CA1q/+jKQFP5fY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyxfqdwy0iemJHGjCYIWxju8w1NlGMcyprGNy+lZry7TY43yJXg
-	uT9eGzw9CTpqgNcK8UcudQWNJ0j0LqzYun4EKroUaD/z3nfQXoHG0DxcckV7tg==
-X-Google-Smtp-Source: AGHT+IEaLVJ/wTV51wop3m+lk/qJDgyUDoC18kpCfu1q8TvT9dKkREX0von9jbn66ji3B2gnWNgrVA==
-X-Received: by 2002:a05:600c:3ac8:b0:428:31c:5a4f with SMTP id 5b1f17b1804b1-42c787685fbmr1905585e9.3.1725267475261;
-        Mon, 02 Sep 2024 01:57:55 -0700 (PDT)
-Received: from google.com (109.36.187.35.bc.googleusercontent.com. [35.187.36.109])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-374c2ffe062sm4918816f8f.29.2024.09.02.01.57.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 01:57:54 -0700 (PDT)
-Date: Mon, 2 Sep 2024 08:57:50 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: acpica-devel@lists.linux.dev, Hanjun Guo <guohanjun@huawei.com>,
-	iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
-	Kevin Tian <kevin.tian@intel.com>, kvm@vger.kernel.org,
-	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=cslQAxdV2ZnSHBs1uMsBbVGpJQFHtqzKQYY9sXvYX9YvuyRI3+FUp54kpxeFth+x144L7JUxJuLP8gC9/E/+WZmYdh98sqZY4X8C3H9tySqcQHdIQ2ijQMo88+sghRESZbs4gTOgJKwenq94Ldb6M1KeMq4+3/xh0h08DtrsXxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=blR1e5W/; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8470B40E0284;
+	Mon,  2 Sep 2024 09:05:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id dZlJ3mWUxFdV; Mon,  2 Sep 2024 09:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1725267904; bh=kK1aL9WxF67VsbaboG2sxhPgSy1iVIzpPlT8ewxiaLs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=blR1e5W/R3RR5OlPxzvnsyzfMysS2Q6MRAbn4q+v/7cPd2ZQnYiOh90hpo4GII39D
+	 neteg7YkJf1N1A7WaE+zimAxXEyDoram2qdLl0F/ZsfBl10y6+04o0yRmzFbItGg+k
+	 eU1pMri/hcjktHN0c7/mR9E6i3Wy/Yx7ttsPGu/XDiTx+77rmyn6aSRBG3acV8aLtZ
+	 mDCZyWnrouyC/jwps3ktxd/p+rjq+864upL8nwEwyaKd5Tyje8stT0VHkbGoFIsAN2
+	 3KYmUzvTvYdTPT77o3B8JJeL83Sd6GKDOLwcNlrB1mtskhOHVR0UQUMyC5YkouYhWG
+	 +vc5xAcNXCWa20Y9ujg8QVDZopnJ2+8mQlmjpWq5ysBMh7uPWWHmMh0judBcXFfkx/
+	 mfJFA4yQoq+7VbzQVq3nCdVzIZRB59B2NXlysA0nuv8+uJGsMDc3tx/I/OQ7nfa5ui
+	 kIQUnGIgeZPqTGi6hUzLuT0pdkulM8gxeGgydst/6fX9OmoJoNKWg32XN0EpVZ6IqS
+	 O1OzUl4iTgbcevdNTx3pxPdFtXnJsmZfQcOT5tkNxW5sp72pu+XY3ZPliiInnpbbWT
+	 7QBB6opnZ6AX5f7I3do7dO5VJTGoW5dPBb7m5Gx09NjyJkw6yHB62xm/XTY08n3K+2
+	 ukPTn0QN4m/f61xORvs6e9QI=
+Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id EE9AC40E0169;
+	Mon,  2 Sep 2024 09:04:39 +0000 (UTC)
+Date: Mon, 2 Sep 2024 11:04:34 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>,
+	Daniel Ferguson <danielf@os.amperecomputing.com>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Len Brown <lenb@kernel.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, Will Deacon <will@kernel.org>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Moritz Fischer <mdf@kernel.org>,
-	Michael Shavit <mshavit@google.com>,
-	Nicolin Chen <nicolinc@nvidia.com>, patches@lists.linux.dev,
-	Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>
-Subject: Re: [PATCH v2 7/8] iommu/arm-smmu-v3: Implement
- IOMMU_HWPT_ALLOC_NEST_PARENT
-Message-ID: <ZtV-DvqIDx5ZFAph@google.com>
-References: <0-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <7-v2-621370057090+91fec-smmuv3_nesting_jgg@nvidia.com>
- <ZtHkxFrojjXplvvn@google.com>
- <20240830171817.GY3773488@nvidia.com>
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Tyler Baicar <tbaicar@codeaurora.org>,
+	Will Deacon <will@kernel.org>, Xie XiuQi <xiexiuqi@huawei.com>,
+	linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shengwei Luo <luoshengwei@huawei.com>,
+	Jason Tian <jason@os.amperecomputing.com>, m.chehab@huawei.com
+Subject: Re: [PATCH v2 1/5] RAS: Report all ARM processor CPER information to
+ userspace
+Message-ID: <20240902090434.GAZtV_ooWloe-TYzO1@fat_crate.local>
+References: <cover.1720679234.git.mchehab+huawei@kernel.org>
+ <3853853f820a666253ca8ed6c7c724dc3d50044a.1720679234.git.mchehab+huawei@kernel.org>
+ <20240829143811.GDZtCH07BFEdbbv9wx@fat_crate.local>
+ <20240902061236.7cfc97fd@foz.lan>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240830171817.GY3773488@nvidia.com>
+In-Reply-To: <20240902061236.7cfc97fd@foz.lan>
 
-On Fri, Aug 30, 2024 at 02:18:17PM -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 30, 2024 at 03:27:00PM +0000, Mostafa Saleh wrote:
-> > Hi Jason,
-> > 
-> > On Tue, Aug 27, 2024 at 12:51:37PM -0300, Jason Gunthorpe wrote:
-> > > For SMMUv3 the parent must be a S2 domain, which can be composed
-> > > into a IOMMU_DOMAIN_NESTED.
-> > > 
-> > > In future the S2 parent will also need a VMID linked to the VIOMMU and
-> > > even to KVM.
-> > > 
-> > > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> > > ---
-> > >  drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 11 ++++++++++-
-> > >  1 file changed, 10 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > > index ec2fcdd4523a26..8db3db6328f8b7 100644
-> > > --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > > +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> > > @@ -3103,7 +3103,8 @@ arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
-> > >  			   const struct iommu_user_data *user_data)
-> > >  {
-> > >  	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> > > -	const u32 PAGING_FLAGS = IOMMU_HWPT_ALLOC_DIRTY_TRACKING;
-> > > +	const u32 PAGING_FLAGS = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
-> > > +				 IOMMU_HWPT_ALLOC_NEST_PARENT;
-> > >  	struct arm_smmu_domain *smmu_domain;
-> > >  	int ret;
-> > >  
-> > > @@ -3116,6 +3117,14 @@ arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
-> > >  	if (!smmu_domain)
-> > >  		return ERR_PTR(-ENOMEM);
-> > >  
-> > > +	if (flags & IOMMU_HWPT_ALLOC_NEST_PARENT) {
-> > > +		if (!(master->smmu->features & ARM_SMMU_FEAT_NESTING)) {
-> > > +			ret = -EOPNOTSUPP;
-> > I think that should be:
-> > 	ret = ERR_PTR(-EOPNOTSUPP);
-> 
-> Read again :)
+On Mon, Sep 02, 2024 at 06:12:36AM +0200, Mauro Carvalho Chehab wrote:
+> Ok. Will address those at the hole series, sending you later today
+> a new version. Except for those, are patches 2-5 ok?
 
-Oops, sorry about the noise.
+Haven't looked at them yet.
 
-Thanks,
-Mostafa
+> Usually, I don't use "this patch". In this specific case, I wanted
+> to bold the new fields that were added to the ARM trace event, making
+> clear that before the changeset, none of such fields exist; they were
+> added on such change. On other words, the keyword here is not patch,
+> but instead "After". Maybe I can replace it with "now", e. g.:
+
+Yes, and you can see what you're doing in the patch itself.
+
+> Anyway, it sounds that the custody chan can better be written as:
 > 
-> static struct iommu_domain *
-> arm_smmu_domain_alloc_user(struct device *dev, u32 flags,
-> 			   struct iommu_domain *parent,
-> 			   const struct iommu_user_data *user_data)
-> {
-> 	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
-> 	const u32 PAGING_FLAGS = IOMMU_HWPT_ALLOC_DIRTY_TRACKING |
-> 				 IOMMU_HWPT_ALLOC_NEST_PARENT;
-> 	struct arm_smmu_domain *smmu_domain;
-> 	int ret;
->      ^^^^^^^^^^^^^^
-> 
-> err_free:
-> 	kfree(smmu_domain);
-> 	return ERR_PTR(ret);
->            ^^^^^^^^^^^^^^^^^^
-> 
-> Jason
+> 	Co-authored-by: Jason Tian <jason@os.amperecomputing.com>
+> 	Co-authored-by: Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+> 	Co-authored-by: Daniel Ferguson <danielf@os.amperecomputing.com>  
+> 	Signed-off-by: Jason Tian <jason@os.amperecomputing.com>
+> 	Signed-off-by: Shengwei Luo <luoshengwei@huawei.com>
+> 	Signed-off-by: Daniel Ferguson <danielf@os.amperecomputing.com>  
+
+The tag's name is Co-developed-by: and yes, I think it makes more sense here.
+
+Note:
+
+"Since Co-developed-by: denotes authorship, every Co-developed-by: must be
+immediately followed by a Signed-off-by: of the associated co-author.
+Standard sign-off procedure applies, i.e. the ordering of Signed-off-by: tags
+should reflect the chronological history of the patch insofar as possible,
+regardless of whether the author is attributed via From: or Co-developed-by:.
+Notably, the last Signed-off-by: must always be that of the developer
+submitting the patch."
+
+It is all documented:
+
+Documentation/process/submitting-patches.rst
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
