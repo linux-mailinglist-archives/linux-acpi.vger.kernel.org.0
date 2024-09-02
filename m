@@ -1,162 +1,139 @@
-Return-Path: <linux-acpi+bounces-8086-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8087-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF672968B0B
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 17:29:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62002968D9F
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 20:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 594E8B227C7
-	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 15:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9558D1C22281
+	for <lists+linux-acpi@lfdr.de>; Mon,  2 Sep 2024 18:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEC71A2632;
-	Mon,  2 Sep 2024 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFF21C62A1;
+	Mon,  2 Sep 2024 18:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="G5J5YmVf"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="dn/8QSmL"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84419F135;
-	Mon,  2 Sep 2024 15:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EE019CC11;
+	Mon,  2 Sep 2024 18:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725290916; cv=none; b=EvzJy8cxAUuNPUYVD6C5H2UgiFhkRnSkvqJY22O6SEsHQjT4H/9fLmZiOerO8UTd69kc08ChwQWZ9RHpTtyjsQZewS3nG9tcTsA4xc5HQ42c1NX2vkaiDkC5/Nt6G/fUeOu12A27qSup13t8Qb/+UA8+i+jpynq89XnQzXiCHKM=
+	t=1725302339; cv=none; b=oOGIs+mkAM+aX6JUlF+aRORcqKa80Ok8xLN2w45sfxnlhd6RTOvVAkyQlJX0VqjOueye6A4ymOXVA2Dj2uwxYwmYAFhP70IvwFlJK8O6u7QJz8+jH546/3IZf73VxO6zht1ZsomAxeKTHZ4pPfqU+IcrApRjSG5HiOkKOm1Zd+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725290916; c=relaxed/simple;
-	bh=Do0rvgKlkHq8ASU6039rFshbKnhl+L6kgjVSUyIV/2s=;
+	s=arc-20240116; t=1725302339; c=relaxed/simple;
+	bh=uk7adA90J4zwNHlHrRTqEAmyf+IwyLytRkqXXWSNIow=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qxqCI4LpJ95AhVZw7b85/RikApuWwshbjhQZwK9076mZYI3IeGOs+MhNDZtiwvPjU4mDK+gaZXs/yUmgJJ0wEFVqRSuccCfP69xxt6W+O00R0t/FjgL0WPSygUblShuAgu0vKFCKswsd/zT4ZSaiU0TqPafxyTzKYVQAtcaYAYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=G5J5YmVf reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 476F440E0284;
-	Mon,  2 Sep 2024 15:28:30 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id mxqVLOupLElX; Mon,  2 Sep 2024 15:28:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1725290899; bh=v1rVrPx0zTAxn60ub0hHERL/EEmSzE33L7q+4cw2pqE=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQcjCBungk5ylp+WLf25UCxNnQZRu9I7GFgVeyPH/BZr+GxfBcYQtpRliBbc5C0/5b48KHcH9j7StUPHOoDqvWjlladrJG03XyCt9X0COWAo0Pnve+I5aBOL3aLLr7CBK2s4Ngy+SPKGIqcReuRmR4WRtWa9JzF4F0l6MPg6Ng8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=dn/8QSmL; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id 7402920B7177; Mon,  2 Sep 2024 11:38:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7402920B7177
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1725302337;
+	bh=PG1sLYF4c+um3BXrI8d4Ov1RYDUMMEXzsGo9Niw5cZI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G5J5YmVf3YT9NhA986KamNtE9zh3OAey7J2/sgPKpUnF6j4cMZdjDE8RDFmX/qC28
-	 Uoe3ZXyRVP7PTGHi7qYS1WGrzgOsKKeUlNZisWaM0mxoDQ5TLgfnIzXVwSxL635kLD
-	 yKgAkh70AvUx4OjB9uMlNb1EZrBIAeD50fFl+VPAg1dub+YgQPjbDcMD2/tSHKOsf9
-	 wKsZqf38OfBH0HLxkO9kWNIpI2OIit78tvvFnBcH/wnxjTi/vu73SD4yA82yY3krtq
-	 kWwKVeIpEyfSEKxb2wGeBfdbD7h91mewH0ljomOsQ4SkySmQW8npn8Nx1xiPoLaM1Z
-	 iXz6lbcrlmsdnnm5A/9YYz0FTomZF79+YQVNd/sWG8vFQIv0gn8cGAgBAFUr3oO0Y5
-	 EaDs+XScP/p7fXBO8LLbwVhKQ8Mbarl10asKZaXEnbyPFKAzDIXIt1eWN7HiMWst8t
-	 n3Nn9JinCnhfO6x7hla9BdawuBhcVmqqZFRP0mIEOPOBvpx38qt+ideRDPtNByeatt
-	 enlSgK5qZ4QVcTc+/yv7wP0XqkKwUlylrw0CpBlCKXp8q6gH7mW8xhmJbfVQizMq8D
-	 Qdn/q7HRE+5woDgpgziR/lt+7qRVivMwtr+jtLnJYgmtM3MH1MrEpzfrA/JYmfNWeb
-	 vMhIzX8tGdSaR36fKHO+RWFg=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4D8D240E0081;
-	Mon,  2 Sep 2024 15:28:01 +0000 (UTC)
-Date: Mon, 2 Sep 2024 17:27:55 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Len Brown <lenb@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Daniel Ferguson <danielf@os.amperecomputing.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>, linux-acpi@vger.kernel.org,
-	linux-edac@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] efi/cper: align ARM CPER type with UEFI 2.9A/2.10
- specs
-Message-ID: <20240902152755.GFZtXZe5FPSfjRa9u3@fat_crate.local>
-References: <cover.1720679234.git.mchehab+huawei@kernel.org>
- <1ca1274f57fac69eda2f193de53077e8254a70fe.1720679234.git.mchehab+huawei@kernel.org>
+	b=dn/8QSmLpHZ3Q2aAG8NFkrFNoQrPo7WXssTerVeVnJ+Hme3L6EArT3cDLANqipUif
+	 iLE8rB6+zLDsn2TwY8+4+IVmYnlxrTrL+ZQyQ2iN4d9ewqrum9oD6gHlnKvDSwduDE
+	 XUWbsvvtR6sVqkr/F+6ewQpyqbLDpE4ZzOmg/k0A=
+Date: Mon, 2 Sep 2024 11:38:57 -0700
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: Yunhong Jiang <yunhong.jiang@linux.intel.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v2 5/9] x86/hyperv: Mark ACPI wakeup mailbox page as
+ private
+Message-ID: <20240902183857.GA11785@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-6-yunhong.jiang@linux.intel.com>
+ <BN7PR02MB4148A328FA019239196CFB15D4922@BN7PR02MB4148.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ca1274f57fac69eda2f193de53077e8254a70fe.1720679234.git.mchehab+huawei@kernel.org>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <BN7PR02MB4148A328FA019239196CFB15D4922@BN7PR02MB4148.namprd02.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Thu, Jul 11, 2024 at 08:28:55AM +0200, Mauro Carvalho Chehab wrote:
-> Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-> was defined simply as:
->=20
-> Type at byte offset 4:
->=20
-> 	- Cache error
-> 	- TLB Error
-> 	- Bus Error
-> 	- Micro-architectural Error
-> 	All other values are reserved
->=20
-> Yet, there was no information about how this would be encoded.
->=20
-> Spec 2.9A errata corrected it by defining:
->=20
-> 	- Bit 1 - Cache Error
-> 	- Bit 2 - TLB Error
-> 	- Bit 3 - Bus Error
-> 	- Bit 4 - Micro-architectural Error
-> 	All other values are reserved
->=20
-> That actually aligns with the values already defined on older
-> versions at N.2.4.1. Generic Processor Error Section.
->=20
-> Spec 2.10 also preserve the same encoding as 2.9A.
->=20
-> Adjust CPER and GHES handling code for both generic and ARM
-> processors to properly handle UEFI 2.9A and 2.10 encoding.
->=20
-> Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Reco=
-rd.html#arm-processor-error-information
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/acpi/apei/ghes.c        | 15 ++++++----
->  drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
->  include/linux/cper.h            | 10 +++----
->  3 files changed, 38 insertions(+), 37 deletions(-)
+On Mon, Sep 02, 2024 at 03:35:18AM +0000, Michael Kelley wrote:
+> From: Yunhong Jiang <yunhong.jiang@linux.intel.com> Sent: Friday, August 23, 2024 4:23 PM
+> > 
+> > Current code maps MMIO devices as shared (decrypted) by default in a
+> > confidential computing VM. However, the wakeup mailbox must be accessed
+> > as private (encrypted) because it's accessed by the OS and the firmware,
+> > both are in the guest's context and encrypted. Set the wakeup mailbox
+> > range as private explicitly.
+> > 
+> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > ---
+> >  arch/x86/hyperv/hv_vtl.c | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> > 
+> > diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+> > index 04775346369c..987a6a1200b0 100644
+> > --- a/arch/x86/hyperv/hv_vtl.c
+> > +++ b/arch/x86/hyperv/hv_vtl.c
+> > @@ -22,10 +22,26 @@ static bool __init hv_vtl_msi_ext_dest_id(void)
+> >  	return true;
+> >  }
+> > 
+> > +static inline bool within_page(u64 addr, u64 start)
+> > +{
+> > +	return addr >= start && addr < (start + PAGE_SIZE);
+> > +}
+> > +
+> > +/*
+> > + * The ACPI wakeup mailbox are accessed by the OS and the BIOS, both are in the
+> > + * guest's context, instead of the hypervisor/VMM context.
+> > + */
+> > +static bool hv_is_private_mmio_tdx(u64 addr)
+> > +{
+> > +	return wakeup_mailbox_addr && within_page(addr, wakeup_mailbox_addr);
+> > +}
+> > +
+> >  void __init hv_vtl_init_platform(void)
+> >  {
+> >  	pr_info("Linux runs in Hyper-V Virtual Trust Level\n");
+> > 
+> > +	if (hv_isolation_type_tdx())
+> > +		x86_platform.hyper.is_private_mmio = hv_is_private_mmio_tdx;
+> 
+> hv_vtl_init_platform() is unconditionally called in
+> ms_hyperv_init_platform(). So in the case of a normal TDX guest
+> running with a paravisor on Hyper-V, the above code will overwrite
+> the is_private_mmio function that was set in hv_vtom_init(). Then
+> the mapping of the emulated IOAPIC and TPM provided by the
+> paravisor won't be correct.
+> 
+> Michael
 
-How was this thing ever tested?!?!
+non-VTL Hyper-V platforms are expected to disable CONFIG_HYPERV_VTL_MODE,
+that means for a normal TDX guest hv_vtl_init_platform will be an empty
+stub. Have I missed anything ?
 
-Geez.
-
-drivers/acpi/apei/ghes.c: In function =E2=80=98ghes_handle_arm_hw_error=E2=
-=80=99:
-drivers/acpi/apei/ghes.c:565:34: error: implicit declaration of function =
-=E2=80=98FIELD_GET=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-  565 |                                  FIELD_GET(CPER_ARM_ERR_TYPE_MASK=
-, err_info->type),
-      |                                  ^~~~~~~~~
-cc1: some warnings being treated as errors
-make[5]: *** [scripts/Makefile.build:244: drivers/acpi/apei/ghes.o] Error=
- 1
-make[4]: *** [scripts/Makefile.build:485: drivers/acpi/apei] Error 2
-make[4]: *** Waiting for unfinished jobs....
-make[3]: *** [scripts/Makefile.build:485: drivers/acpi] Error 2
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [scripts/Makefile.build:485: drivers] Error 2
-make[1]: *** [/mnt/kernel/kernel/2nd/linux/Makefile:1925: .] Error 2
-make: *** [Makefile:224: __sub-make] Error 2
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+- Saurabh
 
