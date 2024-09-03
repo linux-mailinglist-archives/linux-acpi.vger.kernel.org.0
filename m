@@ -1,433 +1,303 @@
-Return-Path: <linux-acpi+bounces-8107-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8108-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFFB96A499
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 18:36:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE8396A6AA
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 20:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C651C209D4
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 16:36:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70F0CB20CAA
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 18:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B025718BC39;
-	Tue,  3 Sep 2024 16:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF5C1917F8;
+	Tue,  3 Sep 2024 18:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YMohtChu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Grc2ORMg"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9EE18BBB5;
-	Tue,  3 Sep 2024 16:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4582B15574F;
+	Tue,  3 Sep 2024 18:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725381390; cv=none; b=FBn4NwzgABVL1JK/WojZ9iKmecEfxUDF5beXzs66k5EaAg6dg2XdKHGktV3n4vU4HXplmt5nfyUSNilN0udNvQHk6ioLOoFsGky910ay/m2dp+gZtRrkK4qPIVK/k/GOPkIIWmEfg9kJcdzHGTt3X85ZehMD2A3d5V3MUZEZpXw=
+	t=1725388527; cv=none; b=Dd5HDkuTzMwt4PTuJpaqAajb7r7yOY1vr5GamlMofgOM25A8wwBSsQtjdXwGknog8p1KfFI+u2lLwiXkE7NNKfb8qQPPUpO05h/dp0p0T5+/COs7AiTc+x9vgCBlG1X3wCkpCk1kzzEK6bLaZPlf29mO3qrqDIMNvLdEJ9Ofcz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725381390; c=relaxed/simple;
-	bh=543N6+Pih3rc6ARRSx5VE6TXlXwfpZlMMtlOc6RbSP4=;
+	s=arc-20240116; t=1725388527; c=relaxed/simple;
+	bh=KI5ezbRLSBf33QZ+IsgEfLM+AcOhRQpChuSdfkscnQ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UxfIJ7ZhGVUZZiJAnu4G++SNZ+iv6s+zEQU06AXt+mZQOb2VoIp0YQMAOMruyhUpHcwAv1OvEqiQPOWwU1+EH/dunq5nYlbwLFn3b4/afBUzQWdtD33R0O6bhtv5gtEmz7SPvaOyk487Jue6qeGBXVW2caXGlj7vZEqoWzRJrw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YMohtChu; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D6A1840E0285;
-	Tue,  3 Sep 2024 16:36:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 6vNpdbQEdZQc; Tue,  3 Sep 2024 16:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1725381371; bh=utMPlXJeOSH8aOyxKwjMpiAJT4ZzqbftcxjJbD0c80k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YMohtChuZaVO2ZjNLp29AnffBfHb9IXnvXbmSYw44RFu5R9IgKWZEKFMxTVSKQztj
-	 bOfuWJnT7HjX9RfRDWUKtz0UZRmU9LEvM3KzMzPwhnYaUNThBiXM50sZXJFUzI2h1o
-	 oYhTJo4Levk3Nk0P4EOzeqwfCNK0wCj7f9jTc4g2Fd3/IXctdPGqxCCu3zVn9ttdpO
-	 VpbKm3xCQBGTYy976eQrGaayY/eBOR6lsxGSApdBVW4WdW7enT9VUVUaXNtMlR7Ptb
-	 BvERUNJXAmAwTdu4fm1uAtgSinjyZGtr/QoQZz4UWN5G7KBnn33U0bmq+Z2fASLxKF
-	 iT9L51BLDXlQwCbTgCDoQB8lc/WtoL6zoND0TtjL/3+A2AuB5oLTP2x6xlNGkVNIdo
-	 oAgUsshxP9SwI5y+JmXbPYw/FAq/0OZyyCzHB9LZRFIKFWndIP6PebV5ETvj0bNYJr
-	 4Q7DC/lISfhSv6SqZPI2CgzoHvvvWcHjDj58ChR4TAJsTIg46RGe+ciylbgNzM6dY8
-	 59fJojBQZFf99F5TpuOrLblrgnYwdT9I3OJDpx2QK+xiCzuhFKJ8fpxkhBvsNoQzG1
-	 Knzbo2fIC/FqMJZrJRDucMOG6tR8L2n/srkp0mpd45j+7kkExFY7m9Pwpg//jcz5TI
-	 NzS/z2M3O73LXKWMMgeU/TM8=
-Received: from zn.tnic (p5de8e8eb.dip0.t-ipconnect.de [93.232.232.235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5329940E0169;
-	Tue,  3 Sep 2024 16:35:25 +0000 (UTC)
-Date: Tue, 3 Sep 2024 18:35:19 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: shiju.jose@huawei.com
-Cc: linux-edac@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, tony.luck@intel.com,
-	rafael@kernel.org, lenb@kernel.org, mchehab@kernel.org,
-	dan.j.williams@intel.com, dave@stgolabs.net,
-	jonathan.cameron@huawei.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, vishal.l.verma@intel.com,
-	ira.weiny@intel.com, david@redhat.com, Vilas.Sridharan@amd.com,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, mike.malvestuto@intel.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, dferguson@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com, jgroves@micron.com,
-	vsalve@micron.com, tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com, linuxarm@huawei.com
-Subject: Re: [PATCH v11 01/14] EDAC: Add support for EDAC device feature's
- control
-Message-ID: <20240903163519.GAZtc6x7o9Cy1MQAsb@fat_crate.local>
-References: <20240816164238.1902-1-shiju.jose@huawei.com>
- <20240816164238.1902-2-shiju.jose@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RS7bV6vndsu7RmXeAOaEmi9PkIpEHb/1esUXpvpIarI0imybq8cf+ZRouPshVxQCJtOAekftRJJL4DNshefP+6EwQAq91UTiHQGzHboScu3g5/EQ17ecS6wLJCt7OrbhWjt2PcdtJTR02PazU3qnaMgI8Jv03C3sYfqhP2W4620=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Grc2ORMg; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725388525; x=1756924525;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KI5ezbRLSBf33QZ+IsgEfLM+AcOhRQpChuSdfkscnQ8=;
+  b=Grc2ORMgkMsMCq1geI0ZmLC7T4z49qp1Igc7B7QPQXEITxOAWk2/SJo6
+   x99Mttzj2vISxAhyWwi4vQemH+bkVLETj00kSqQPVqjjhqZpwKHvLJ/R1
+   S7ucWXsZt9CksaA6VEK9+v1IMxH47afeXaj1QIOUa1pt1krggtUcwjVuO
+   IRL0CSmzwY8Elkd9+xPDNVm4YZ8CwFjKckVU1R5DRQOc5brohuhTt6R9i
+   PUJsRKV5FgzYqFrEwt1FoH1CfBSnxuqFAWQSvh4RNprgjn2PN8WA0TKfL
+   gGo64dlIZD8+MSkhiHGiRpjHkdyEO5LltxHVcmAhuHFVNnmS0R1UEiABO
+   w==;
+X-CSE-ConnectionGUID: j/QM27udTu6gyGSjI1Iyrw==
+X-CSE-MsgGUID: lDhLAB3uQQGOuIujJlCu5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="24172952"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="24172952"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 11:35:24 -0700
+X-CSE-ConnectionGUID: dT3gioxVSNi6aBqsrEamBQ==
+X-CSE-MsgGUID: xC9Kh55TS+qNRWU1cq9EIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="95737163"
+Received: from unknown (HELO localhost) ([10.79.232.150])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 11:35:24 -0700
+Date: Tue, 3 Sep 2024 11:35:23 -0700
+From: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"rafael@kernel.org" <rafael@kernel.org>,
+	"lenb@kernel.org" <lenb@kernel.org>,
+	"kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>
+Subject: Re: [PATCH v2 3/9] x86/dt: Support the ACPI multiprocessor wakeup
+ for device tree
+Message-ID: <20240903183523.GA105@yjiang5-mobl.amr.corp.intel.com>
+References: <20240823232327.2408869-1-yunhong.jiang@linux.intel.com>
+ <20240823232327.2408869-4-yunhong.jiang@linux.intel.com>
+ <BN7PR02MB4148C25575F1C98531B6164CD4922@BN7PR02MB4148.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240816164238.1902-2-shiju.jose@huawei.com>
+In-Reply-To: <BN7PR02MB4148C25575F1C98531B6164CD4922@BN7PR02MB4148.namprd02.prod.outlook.com>
 
-On Fri, Aug 16, 2024 at 05:42:24PM +0100, shiju.jose@huawei.com wrote:
-> From: Shiju Jose <shiju.jose@huawei.com>
+On Mon, Sep 02, 2024 at 03:35:06AM +0000, Michael Kelley wrote:
+> From: Yunhong Jiang <yunhong.jiang@linux.intel.com> Sent: Friday, August 23, 2024 4:23 PM
+> > 
+> > When a TDX guest boots with the device tree instead of ACPI, it can
+> > reuse the ACPI multiprocessor wakeup mechanism to wake up application
+> > processors(AP), without introducing a new mechanism from scrach.
+> > 
+> > In the ACPI spec, two structures are defined to wake up the APs: the
+> > multiprocessor wakeup structure and the multiprocessor wakeup mailbox
+> > structure. The multiprocessor wakeup structure is passed to OS through a
+> > Multiple APIC Description Table(MADT), one field specifying the physical
+> > address of the multiprocessor wakeup mailbox structure. The OS sends
+> > a message to firmware through the multiprocessor wakeup mailbox
+> > structure, to bring up the APs.
+> > 
+> > In device tree environment, the multiprocessor wakeup structure is not
+> > used, to reduce the dependency on the generic ACPI table. The
+> > information defined in this structure is defined in the properties of
+> > cpus node in the device tree. The "wakeup-mailbox-addr" property
+> > specifies the physical address of the multiprocessor wakeup mailbox
+> > structure. The OS will follow the ACPI spec to send the message to the
+> > firmware to bring up the APs.
+> > 
+> > Signed-off-by: Yunhong Jiang <yunhong.jiang@linux.intel.com>
+> > ---
+> >  MAINTAINERS                        |  1 +
+> >  arch/x86/Kconfig                   |  2 +-
+> >  arch/x86/include/asm/acpi.h        |  1 -
+> >  arch/x86/include/asm/madt_wakeup.h | 16 +++++++++++++
+> >  arch/x86/kernel/madt_wakeup.c      | 38 ++++++++++++++++++++++++++++++
+> >  5 files changed, 56 insertions(+), 2 deletions(-)
+> >  create mode 100644 arch/x86/include/asm/madt_wakeup.h
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 5555a3bbac5f..900de6501eba 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -288,6 +288,7 @@ T:	git
+> > git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+> >  F:	Documentation/ABI/testing/configfs-acpi
+> >  F:	Documentation/ABI/testing/sysfs-bus-acpi
+> >  F:	Documentation/firmware-guide/acpi/
+> > +F:	arch/x86/include/asm/madt_wakeup.h
+> >  F:	arch/x86/kernel/acpi/
+> >  F:	arch/x86/kernel/madt_playdead.S
+> >  F:	arch/x86/kernel/madt_wakeup.c
+> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > index d422247b2882..dba46dd30049 100644
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -1123,7 +1123,7 @@ config X86_LOCAL_APIC
+> >  config ACPI_MADT_WAKEUP
+> >  	def_bool y
+> >  	depends on X86_64
+> > -	depends on ACPI
+> > +	depends on ACPI || OF
+> >  	depends on SMP
+> >  	depends on X86_LOCAL_APIC
+> > 
+> > diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> > index 21bc53f5ed0c..0e082303ca26 100644
+> > --- a/arch/x86/include/asm/acpi.h
+> > +++ b/arch/x86/include/asm/acpi.h
+> > @@ -83,7 +83,6 @@ union acpi_subtable_headers;
+> >  int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> >  			      const unsigned long end);
+> > 
+> > -void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
+> > 
+> >  /*
+> >   * Check if the CPU can handle C2 and deeper
+> > diff --git a/arch/x86/include/asm/madt_wakeup.h
+> > b/arch/x86/include/asm/madt_wakeup.h
+> > new file mode 100644
+> > index 000000000000..a8cd50af581a
+> > --- /dev/null
+> > +++ b/arch/x86/include/asm/madt_wakeup.h
+> > @@ -0,0 +1,16 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef __ASM_X86_MADT_WAKEUP_H
+> > +#define __ASM_X86_MADT_WAKEUP_H
+> > +
+> > +void asm_acpi_mp_play_dead(u64 reset_vector, u64 pgd_pa);
+> > +
+> > +#if defined(CONFIG_OF) && defined(CONFIG_ACPI_MADT_WAKEUP)
+> > +u64 dtb_parse_mp_wake(void);
+> > +#else
+> > +static inline u64 dtb_parse_mp_wake(void)
+> > +{
+> > +	return 0;
+> > +}
+> > +#endif
+> > +
+> > +#endif /* __ASM_X86_MADT_WAKEUP_H */
+> > diff --git a/arch/x86/kernel/madt_wakeup.c b/arch/x86/kernel/madt_wakeup.c
+> > index d5ef6215583b..7257e7484569 100644
+> > --- a/arch/x86/kernel/madt_wakeup.c
+> > +++ b/arch/x86/kernel/madt_wakeup.c
+> > @@ -14,6 +14,8 @@
+> >  #include <asm/nmi.h>
+> >  #include <asm/processor.h>
+> >  #include <asm/reboot.h>
+> > +#include <asm/madt_wakeup.h>
+> > +#include <asm/prom.h>
+> > 
+> >  /* Physical address of the Multiprocessor Wakeup Structure mailbox */
+> >  static u64 acpi_mp_wake_mailbox_paddr __ro_after_init;
+> > @@ -122,6 +124,7 @@ static int __init init_transition_pgtable(pgd_t *pgd)
+> >  	return 0;
+> >  }
+> > 
+> > +#ifdef CONFIG_ACPI
+> >  static int __init acpi_mp_setup_reset(u64 reset_vector)
+> >  {
+> >  	struct x86_mapping_info info = {
+> > @@ -168,6 +171,7 @@ static int __init acpi_mp_setup_reset(u64 reset_vector)
+> > 
+> >  	return 0;
+> >  }
+> > +#endif
 > 
-> Add generic EDAC device feature's control supports registering
-
-"features"
-
-Check your whole set.
-
-> RAS features supported in the system. Driver exposes feature's
-> control attributes to the userspace in
-
-s/the //
-
-> /sys/bus/edac/devices/<dev-name>/<ras-feature>/
+> When acpi_mp_setup_reset() is #ifdef'ed out because of CONFIG_ACPI
+> not being set, doesn't this generate compile warnings about
+> init_transition_pgtable(), alloc_pgt_page(), free_pgt_page(), etc. being
+> unused?
 > 
-> Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
-> ---
->  drivers/edac/edac_device.c | 178 +++++++++++++++++++++++++++++++++++++
->  include/linux/edac.h       |  60 +++++++++++++
->  2 files changed, 238 insertions(+)
+> It appears that the only code in madt_wakeup.c that is shared between
+> the ACPI and OF cases is acpi_wakeup_cpu()? Is that correct?
+
+Yes, the acpi_wakeup_cpu() is the only code. Interestingly that I don't see
+compilation warning for the functions you listed like
+alloc_pgt_page()/free_pgt_page() etc when built with CONFIG_ACPI disabled.
+Will check in deep and figure out the reason.
 > 
-> diff --git a/drivers/edac/edac_device.c b/drivers/edac/edac_device.c
-> index 621dc2a5d034..635a41db8b5a 100644
-> --- a/drivers/edac/edac_device.c
-> +++ b/drivers/edac/edac_device.c
-> @@ -570,3 +570,181 @@ void edac_device_handle_ue_count(struct edac_device_ctl_info *edac_dev,
->  		      block ? block->name : "N/A", count, msg);
->  }
->  EXPORT_SYMBOL_GPL(edac_device_handle_ue_count);
-> +
-> +/* EDAC device feature */
-> +static void edac_dev_release(struct device *dev)
-> +{
-> +	struct edac_dev_feat_ctx *ctx =
-> +		container_of(dev, struct edac_dev_feat_ctx, dev);
-
-Ew, no, don't do such silly linebreaks pls.
-
-> +	kfree(ctx->dev.groups);
-> +	kfree(ctx);
-> +}
-> +
-> +const struct device_type edac_dev_type = {
-> +	.name = "edac_dev",
-> +	.release = edac_dev_release,
-> +};
-> +
-> +static void edac_dev_unreg(void *data)
-> +{
-> +	device_unregister(data);
-> +}
-> +
-> +/**
-> + * edac_dev_feature_init - Init a ras feature
-
-s/ras/RAS/g
-
-Check your whole set.
-
-> + * @parent: client device.
-> + * @dev_data: pointer to struct edac_dev_data.
-
-I can see it is a pointer. What it is used for?
-
-> + * @feat: pointer to struct edac_dev_feature.
-> + * @attr_groups: pointer to attribute group's container.
-> + *
-> + * Returns number of scrub feature's attribute groups on success,
-> + * error otherwise.
-> + */
-> +static int edac_dev_feat_init(struct device *parent,
-> +			      struct edac_dev_data *dev_data,
-> +			      const struct edac_dev_feature *ras_feat,
-> +			      const struct attribute_group **attr_groups)
-> +{
-> +	int num;
-> +
-> +	switch (ras_feat->feat) {
-> +	case RAS_FEAT_SCRUB:
-> +		dev_data->scrub_ops = ras_feat->scrub_ops;
-> +		dev_data->private = ras_feat->scrub_ctx;
-> +		return 1;
-> +	case RAS_FEAT_ECS:
-> +		num = ras_feat->ecs_info.num_media_frus;
-> +		dev_data->ecs_ops = ras_feat->ecs_ops;
-> +		dev_data->private = ras_feat->ecs_ctx;
-> +		return num;
-> +	case RAS_FEAT_PPR:
-> +		dev_data->ppr_ops = ras_feat->ppr_ops;
-> +		dev_data->private = ras_feat->ppr_ctx;
-> +		return 1;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +/**
-> + * edac_dev_register - register device for ras features with edac
-
-s/edac/EDAC/g
-
-Check your whole set.
-
-> + * @parent: client device.
-> + * @name: client device's name.
-> + * @private: parent driver's data to store in the context if any.
-> + * @num_features: number of ras features to register.
-> + * @ras_features: list of ras features to register.
-> + *
-> + * Returns 0 on success, error otherwise.
-> + * The new edac_dev_feat_ctx would be freed automatically.
-> + */
-> +int edac_dev_register(struct device *parent, char *name,
-> +		      void *private, int num_features,
-> +		      const struct edac_dev_feature *ras_features)
-> +{
-> +	const struct attribute_group **ras_attr_groups;
-> +	struct edac_dev_data *dev_data;
-> +	struct edac_dev_feat_ctx *ctx;
-> +	int ppr_cnt = 0, ppr_inst = 0;
-> +	int attr_gcnt = 0;
-> +	int ret, feat;
-> +
-> +	if (!parent || !name || !num_features || !ras_features)
-> +		return -EINVAL;
-> +
-> +	/* Double parse so we can make space for attributes */
-
-Who's "we"?
-
-Please use passive voice in your comments: no "we" or "I", etc.
-
-Personal pronouns are ambiguous in text, especially with so many
-parties/companies/etc developing the kernel so let's avoid them please.
-
-> +	for (feat = 0; feat < num_features; feat++) {
-> +		switch (ras_features[feat].feat) {
-> +		case RAS_FEAT_SCRUB:
-
-Does this need "fallthrough;" or somesuch?
-
-> +		case RAS_FEAT_PPR:
-> +			attr_gcnt++;
-> +			ppr_cnt++;
-> +			break;
-> +		case RAS_FEAT_ECS:
-> +			attr_gcnt += ras_features[feat].ecs_info.num_media_frus;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
-> +	if (!ctx)
-> +		return -ENOMEM;
-> +
-> +	ctx->dev.parent = parent;
-> +	ctx->private = private;
-> +
-> +	ras_attr_groups = kcalloc(attr_gcnt + 1, sizeof(*ras_attr_groups), GFP_KERNEL);
-> +	if (!ras_attr_groups) {
-> +		ret = -ENOMEM;
-> +		goto ctx_free;
-> +	}
-> +
-> +	if (ppr_cnt) {
-> +		ctx->ppr = kcalloc(ppr_cnt, sizeof(*(ctx->ppr)), GFP_KERNEL);
-> +		if (!ctx->ppr) {
-> +			ret = -ENOMEM;
-> +			goto groups_free;
-> +		}
-> +	}
-> +
-> +	attr_gcnt = 0;
-> +	for (feat = 0; feat < num_features; feat++, ras_features++) {
-> +		switch (ras_features->feat) {
-> +		case RAS_FEAT_SCRUB:
-> +			if (!ras_features->scrub_ops)
-> +				continue;
-> +			dev_data = &ctx->scrub;
-> +			break;
-> +		case RAS_FEAT_ECS:
-> +			if (!ras_features->ecs_ops)
-> +				continue;
-> +			dev_data = &ctx->ecs;
-> +			break;
-> +		case RAS_FEAT_PPR:
-> +			if (!ras_features->ppr_ops)
-> +				continue;
-> +			dev_data = &ctx->ppr[ppr_inst];
-> +			dev_data->instance = ppr_inst;
-> +			ppr_inst++;
-> +			break;
-> +		default:
-> +			ret = -EINVAL;
-> +			goto data_mem_free;
-> +		}
-> +		ret = edac_dev_feat_init(parent, dev_data, ras_features,
-> +					 &ras_attr_groups[attr_gcnt]);
-> +		if (ret < 0)
-> +			goto data_mem_free;
-> +
-> +		attr_gcnt += ret;
-> +	}
-
-Newline.
-
-> +	ras_attr_groups[attr_gcnt] = NULL;
-> +	ctx->dev.bus = edac_get_sysfs_subsys();
-> +	ctx->dev.type = &edac_dev_type;
-> +	ctx->dev.groups = ras_attr_groups;
-> +	dev_set_drvdata(&ctx->dev, ctx);
-
-Ditto.
-
-> +	ret = dev_set_name(&ctx->dev, name);
-> +	if (ret)
-> +		goto data_mem_free;
-> +
-> +	ret = device_register(&ctx->dev);
-> +	if (ret) {
-> +		put_device(&ctx->dev);
-> +		goto data_mem_free;
-> +		return ret;
-> +	}
-> +
-> +	return devm_add_action_or_reset(parent, edac_dev_unreg, &ctx->dev);
-> +
-> +data_mem_free:
-> +	if (ppr_cnt)
-> +		kfree(ctx->ppr);
-> +groups_free:
-> +	kfree(ras_attr_groups);
-> +ctx_free:
-> +	kfree(ctx);
-> +	return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(edac_dev_register);
-> diff --git a/include/linux/edac.h b/include/linux/edac.h
-> index b4ee8961e623..cc96f55ac714 100644
-> --- a/include/linux/edac.h
-> +++ b/include/linux/edac.h
-> @@ -661,4 +661,64 @@ static inline struct dimm_info *edac_get_dimm(struct mem_ctl_info *mci,
->  
->  	return mci->dimms[index];
->  }
-> +
-> +/* EDAC device features */
-> +
-> +#define EDAC_FEAT_NAME_LEN	128
-> +
-> +enum edac_dev_feat {
-> +	RAS_FEAT_SCRUB,
-> +	RAS_FEAT_ECS,
-> +	RAS_FEAT_PPR,
-
-What are those? Comments ontop explaining pls.
-
-> +	RAS_FEAT_MAX
-> +};
-> +
-> +struct edac_ecs_ex_info {
-> +	u16 num_media_frus;
-> +};
-> +
-> +/*
-> + * EDAC device feature information structure
-> + */
-> +struct edac_dev_data {
-> +	union {
-> +		const struct edac_scrub_ops *scrub_ops;
-> +		const struct edac_ecs_ops *ecs_ops;
-> +		const struct edac_ppr_ops *ppr_ops;
-> +	};
-> +	u8 instance;
-> +	void *private;
-> +};
-> +
-> +struct device;
-> +
-> +struct edac_dev_feat_ctx {
-> +	struct device dev;
-> +	void *private;
-> +	struct edac_dev_data scrub;
-> +	struct edac_dev_data ecs;
-> +	struct edac_dev_data *ppr;
-> +};
-> +
-> +struct edac_dev_feature {
-> +	enum edac_dev_feat feat;
-
-			ft_type;
-
-> +	u8 instance;
-> +	union {
-> +		const struct edac_scrub_ops *scrub_ops;
-> +		const struct edac_ecs_ops *ecs_ops;
-> +		const struct edac_ppr_ops *ppr_ops;
-> +	};
-> +	union {
-> +		void *scrub_ctx;
-> +		void *ecs_ctx;
-> +		void *ppr_ctx;
-> +	};
-
-Or drop the silly union and simply do
-
-	void *ctx;
-
-> +	union {
-> +		struct edac_ecs_ex_info ecs_info;
-> +	};
-
-Union with a single member?!
-
-> +};
-> +
-> +int edac_dev_register(struct device *parent, char *dev_name,
-> +		      void *parent_pvt_data, int num_features,
-> +		      const struct edac_dev_feature *ras_features);
->  #endif /* _LINUX_EDAC_H_ */
-> -- 
-> 2.34.1
+> > 
+> >  static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+> >  {
+> > @@ -226,6 +230,7 @@ static int acpi_wakeup_cpu(u32 apicid, unsigned long start_ip)
+> >  	return 0;
+> >  }
+> > 
+> > +#ifdef CONFIG_ACPI
+> >  static void acpi_mp_disable_offlining(struct acpi_madt_multiproc_wakeup *mp_wake)
+> >  {
+> >  	cpu_hotplug_disable_offlining();
+> > @@ -290,3 +295,36 @@ int __init acpi_parse_mp_wake(union acpi_subtable_headers *header,
+> > 
+> >  	return 0;
+> >  }
+> > +#endif /* CONFIG_ACPI */
+> > +
+> > +#ifdef CONFIG_OF
+> > +u64 __init dtb_parse_mp_wake(void)
+> > +{
+> > +	struct device_node *node;
+> > +	u64 mailaddr = 0;
+> > +
+> > +	node = of_find_node_by_path("/cpus");
+> > +	if (!node)
+> > +		return 0;
+> > +
+> > +	if (of_property_match_string(node, "enable-method", "acpi-wakeup-mailbox") < 0) {
+> > +		pr_err("No acpi wakeup mailbox enable-method\n");
+> > +		goto done;
 > 
+> Patch 4 of this series unconditionally calls dtb_parse_mp_wake(),
+> so it will be called in normal VMs, as a well as SEV-SNP and TDX
+> kernels built for VTL 2 (assuming CONFIG_OF is set). Normal VMs
+> presumably won't be using DT and won't have the "/cpus" node,
+> so this function will silently do nothing, which is fine. But do you
+> expect the DT "/cpus" node to be present in an SEV-SNP VTL 2
+> environment? If so, this function will either output some spurious
+> error messages, or SEV-SNP will use the ACPI wakeup mailbox
+> method, which is probably not what you want.
+> 
+> Michael
 
--- 
-Regards/Gruss,
-    Boris.
+Yes, will fix the spurios error messages. Thank you for pointing out this.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks
+--jyh
+> 
+> > +	}
+> > +
+> > +	if (of_property_read_u64(node, "wakeup-mailbox-addr", &mailaddr)) {
+> > +		pr_err("Invalid wakeup mailbox addr\n");
+> > +		goto done;
+> > +	}
+> > +	acpi_mp_wake_mailbox_paddr = mailaddr;
+> > +	pr_info("dt wakeup-mailbox: addr 0x%llx\n", mailaddr);
+> > +
+> > +	/* No support for the MADT reset vector yet */
+> > +	cpu_hotplug_disable_offlining();
+> > +	apic_update_callback(wakeup_secondary_cpu_64, acpi_wakeup_cpu);
+> > +
+> > +done:
+> > +	of_node_put(node);
+> > +	return mailaddr;
+> > +}
+> > +#endif /* CONFIG_OF */
+> > --
+> > 2.25.1
+> > 
+> 
 
