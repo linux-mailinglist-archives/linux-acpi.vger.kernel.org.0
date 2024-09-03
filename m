@@ -1,109 +1,155 @@
-Return-Path: <linux-acpi+bounces-8121-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8122-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49FD96A88E
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 22:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDF496A9F8
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 23:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0218E1C2319F
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 20:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEB161C24763
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 21:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A923921C17C;
-	Tue,  3 Sep 2024 20:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961FD1EC005;
+	Tue,  3 Sep 2024 21:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtyegceG"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="kOs9ZcSa"
 X-Original-To: linux-acpi@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E02D201279;
-	Tue,  3 Sep 2024 20:37:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE37923D7;
+	Tue,  3 Sep 2024 21:21:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725395840; cv=none; b=JYKZHwjSrCFoGC3F2evyEKheRIevkNrQI21V+z3P/HpjGzjuThAHlW1NByuVa6de6IarhNx6TXfako341i1m5cRUvsKUOqfRrWTmnRceE0mT7b9066IHBC/Xpwxd6XNPrzI39HJynfEhxIAGgpvcAoSZ7K7GPtghsmNjkRRvhaA=
+	t=1725398468; cv=none; b=hAHtWHCmr6V2wB3DhpjahPZm5bi+0uX4NV+UoD1MQ0f9rj25fXKc3CEgYkalPjAbdubcHH/U5ITs7ePqSPfiO3eDwXZgIFMIzYYTVldnlZ9yOjhmonrp7CIA+bTNgLufxaSPn+mpbtYoIF6HFW6wEbWuvwOa3F13hjyBWqVVhhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725395840; c=relaxed/simple;
-	bh=UglMZej8JoFiX1K8RXVbHidL58fkydivL2IaXEJEqss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXNdeY80oioXL9zjisLBQBtt2dJaNxxtryc4XVHUIZLJf/uceOwnk1V/6n80r7slf2neg1YLB5zu6R/qHIg1is4wc6Hg6MwQ4ve76Cr4D00UzRiXC0/g2WB+oGu83ycspvJZ7RZFyvf7+5KEEqu4weA7cUSJoIjasnddBdF7gWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtyegceG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 315C2C4CEC9;
-	Tue,  3 Sep 2024 20:37:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725395840;
-	bh=UglMZej8JoFiX1K8RXVbHidL58fkydivL2IaXEJEqss=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtyegceGDPYZhfAza6oR/FNSqeOU2Y+Zx11LaiHWJ0VkO88usaExSbTwHHc1MwEvF
-	 YUaRAkHODFw+Mr6RL2ECMBYtN8R/908hIk1JOfMY1XsHHF2/PAejT+Nlmexpmk60sD
-	 uUWXD4D+BBej8D9rXG9FSWxmYbXdf7kt7WYV5+jRziJV4lIjfQOnx+1Y8RXX/HRz1B
-	 8r/g0NvA3fdUFQAIVB8SFg2SmiEOiudIZFUN05/seuXhp/sjmF6qrhPjNXHp4X2DP5
-	 suJcdR88Kx416cknNHKTiST2ze/19bWsy9SwxHvPQHBng/e+qh/nP755ngYjwYGIKE
-	 MkU4jVKr1pUjw==
-From: Mario Limonciello <superm1@kernel.org>
-To: Borislav Petkov <bp@alien8.de>,
-	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>
-Cc: x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	linux-acpi@vger.kernel.org (open list:ACPI),
-	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 11/11] amd-pstate: Add missing documentation for `amd_pstate_prefcore_ranking`
-Date: Tue,  3 Sep 2024 15:37:01 -0500
-Message-ID: <20240903203701.2695040-12-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903203701.2695040-1-superm1@kernel.org>
-References: <20240903203701.2695040-1-superm1@kernel.org>
+	s=arc-20240116; t=1725398468; c=relaxed/simple;
+	bh=feI6qY4jjD+0WN4jJzjv7SNR+3ZIObQjmhsMuajAvj8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LhC2s8UOibZyuIJJffdjGBQyoeADNXl/ld1gQP/hbhLRtBo2jI35l5YWDhdss+xIReIHDZHgavXuhR+zL2s6i5c0AzatdOoWpDFE8cm9y5hvLcZ+L7W3ef8yTMc3+zov2ttNP5rSfS6XINcLb2+uu3PspZocrJSUhHMIhXI6qqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=kOs9ZcSa; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1725398453;
+	bh=feI6qY4jjD+0WN4jJzjv7SNR+3ZIObQjmhsMuajAvj8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kOs9ZcSaDNYpgmnvlD6XIgpAL8KL6ijAY468UvfM3UeW0KzK3w0f9rHbksjxB91i8
+	 TUkt3DA1P3oPCrR3axazASEEKv0BXG2p+820FXy9VEVQIHYVIX3ngC/x/Eag9JgHMx
+	 HXpgVkInG4DCOPrxjQAmMJfdAScaKpljZFbLPWt8=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Tue, 03 Sep 2024 23:20:46 +0200
+Subject: [PATCH] ACPI: battery: use driver core managed async probing
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20240903-acpi-battery-async-v1-1-e4deb74fcdba@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAK1912YC/x3MQQ5AMBBA0avIrE0yqgRXEYtRg9mUtCJE3F1j+
+ Rb/PxAlqETosgeCnBp18wlFnoFb2S+COiWDIWOppRLZ7YojH4eEGzne3iHTVJmamtqKhRTuQWa
+ 9/mk/vO8HBWz6lGQAAAA=
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Arjan van de Ven <arjan@linux.intel.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725398452; l=2613;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=feI6qY4jjD+0WN4jJzjv7SNR+3ZIObQjmhsMuajAvj8=;
+ b=c3sl/3WAdcpLcoKFP1M1Oy6uCCwv+aUtx8rmefwzdm789nUr68yOznFQY8mrS702OD5z2YeHT
+ CRdS9PaoToaDURhH56xpcQX+6Co2StdLJIVDDRES7UCK4TH3J7LIByw
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+In commit 0f66af530116 ("ACPI: battery: asynchronous init") the ACPI
+battery driver switched to a custom async driver probing to avoid
+delaying the system boot.
+In the meantime the driver core gained its own async probing logic for
+"slow devices which probing order is not essential for booting the system".
+Switch over to the core logic and drop the custom one.
 
-`amd_pstate_prefcore_ranking` reflects the dynamic rankings of a CPU
-core based on platform conditions.  Explicitly include it in the
-documentation.
-
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- Documentation/admin-guide/pm/amd-pstate.rst | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/acpi/battery.c | 31 +++++++------------------------
+ 1 file changed, 7 insertions(+), 24 deletions(-)
 
-diff --git a/Documentation/admin-guide/pm/amd-pstate.rst b/Documentation/admin-guide/pm/amd-pstate.rst
-index d5c050ea390dc..210a808b74ec2 100644
---- a/Documentation/admin-guide/pm/amd-pstate.rst
-+++ b/Documentation/admin-guide/pm/amd-pstate.rst
-@@ -252,7 +252,8 @@ In some ASICs, the highest CPPC performance is not the one in the ``_CPC``
- table, so we need to expose it to sysfs. If boost is not active, but
- still supported, this maximum frequency will be larger than the one in
- ``cpuinfo``. On systems that support preferred core, the driver will have
--different values for some cores than others.
-+different values for some cores than others and this will reflect the values
-+advertised by the platform at bootup.
- This attribute is read-only.
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index da3a879d638a..de59a1e80557 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -10,7 +10,6 @@
  
- ``amd_pstate_lowest_nonlinear_freq``
-@@ -268,6 +269,12 @@ This attribute is read-only.
- Whether the platform supports the preferred core feature and it has been
- enabled. This attribute is read-only.
+ #define pr_fmt(fmt) "ACPI: battery: " fmt
  
-+``amd_pstate_prefcore_ranking``
+-#include <linux/async.h>
+ #include <linux/delay.h>
+ #include <linux/dmi.h>
+ #include <linux/jiffies.h>
+@@ -50,8 +49,6 @@ MODULE_AUTHOR("Alexey Starikovskiy <astarikovskiy@suse.de>");
+ MODULE_DESCRIPTION("ACPI Battery Driver");
+ MODULE_LICENSE("GPL");
+ 
+-static async_cookie_t async_cookie;
+-static bool battery_driver_registered;
+ static int battery_bix_broken_package;
+ static int battery_notification_delay_ms;
+ static int battery_ac_is_broken;
+@@ -1311,37 +1308,23 @@ static struct acpi_driver acpi_battery_driver = {
+ 		.remove = acpi_battery_remove,
+ 		},
+ 	.drv.pm = &acpi_battery_pm,
++	.drv.probe_type = PROBE_PREFER_ASYNCHRONOUS,
+ };
+ 
+-static void __init acpi_battery_init_async(void *unused, async_cookie_t cookie)
+-{
+-	int result;
+-
+-	if (acpi_quirk_skip_acpi_ac_and_battery())
+-		return;
+-
+-	dmi_check_system(bat_dmi_table);
+-
+-	result = acpi_bus_register_driver(&acpi_battery_driver);
+-	battery_driver_registered = (result == 0);
+-}
+-
+ static int __init acpi_battery_init(void)
+ {
+-	if (acpi_disabled)
++	if (acpi_disabled || acpi_quirk_skip_acpi_ac_and_battery())
+ 		return -ENODEV;
+ 
+-	async_cookie = async_schedule(acpi_battery_init_async, NULL);
+-	return 0;
++	dmi_check_system(bat_dmi_table);
 +
-+The performance ranking of the core. This number doesn't have any unit, but
-+larger numbers are preferred at the time of reading. This can change at
-+runtime based on platform conditions. This attribute is read-only.
-+
- ``energy_performance_available_preferences``
++	return acpi_bus_register_driver(&acpi_battery_driver);
+ }
  
- A list of all the supported EPP preferences that could be used for
+ static void __exit acpi_battery_exit(void)
+ {
+-	async_synchronize_cookie(async_cookie + 1);
+-	if (battery_driver_registered) {
+-		acpi_bus_unregister_driver(&acpi_battery_driver);
+-		battery_hook_exit();
+-	}
++	acpi_bus_unregister_driver(&acpi_battery_driver);
++	battery_hook_exit();
+ }
+ 
+ module_init(acpi_battery_init);
+
+---
+base-commit: 67784a74e258a467225f0e68335df77acd67b7ab
+change-id: 20240903-acpi-battery-async-a0d5260864e4
+
+Best regards,
 -- 
-2.43.0
+Thomas Weißschuh <linux@weissschuh.net>
 
 
