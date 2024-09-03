@@ -1,151 +1,144 @@
-Return-Path: <linux-acpi+bounces-8103-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8104-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05A496A2E4
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 17:35:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2A096A3B5
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 18:09:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9672850D2
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 15:35:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836EF1C24393
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 16:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE39187550;
-	Tue,  3 Sep 2024 15:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D557618BB88;
+	Tue,  3 Sep 2024 16:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYQ0vpG7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ujGJwoBi"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91E812B94;
-	Tue,  3 Sep 2024 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F5418A6CB;
+	Tue,  3 Sep 2024 16:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725377736; cv=none; b=syeMUOL912vhaKs8yqH0nOW8Nu9daVCTcp7Vm0+RJ9sHBdYvjbELSieWJnWW7XUVAgBN7fKBA75OxGzlPAYAoIFZPwryR6Y7ojx3e6zNKC601vUdkIsUI7cRstpLeDN/lu6rc3BqdjMlO2Mct1xtvJb90Ku7H+b8c6Jz6H2A8jQ=
+	t=1725379750; cv=none; b=ckPdAYqLK0x01Lp1v0G6vgM636h0V3BcqyQiUvK30vMjR9aSHzWGbQ33rfyvdzJpn7c1PPoEf+ux1wD3hip/3IaM4Ca7knyio9HZ+JZpOrOCw/JM14fYW+OiQQz21pXiCtDKn+tSifOkpkYA7ATku2p0I1olSXLm1fNHbSwQaDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725377736; c=relaxed/simple;
-	bh=t6e3G7q3f5emkzw8EoVbd6PITMUf/pOi2Q6k8ITflpc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fj7JKTm5J7K1mabqGV48GIYryvM9t+rCfnnHFWpd4LXG7LWoBN9uVLBJs5n4dcd/zqhuGqaW2vYOirbfDIXwfjcFYS//1QbvfZmiHN8g3S8rWUJXqQAuIZvnKArEkmTNQsR2iuACr7e43weOR9SHMAYT4TO0v7UnCvBhbmVcuaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYQ0vpG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE50C4CEC4;
-	Tue,  3 Sep 2024 15:35:29 +0000 (UTC)
+	s=arc-20240116; t=1725379750; c=relaxed/simple;
+	bh=2oYWilPB6GddQnusHJpSufcnEcbn+RzWwm5DmozUZ5Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=iS8S1hP2YBAN9QBbcv+V/BpwP9oyZUMyPBuf4jQpJ31mIUbdMjB/FEnq/wnvYF705KfifDN7IdJQoME1Sdiua3y75HAC9cJszfAxdxc+39iX96+Y6jzqvAwbPrHgUPmeOO7b3ZsbOr8ZwnEYK/a5AlOFCUW6TGbLCbD7xuHiKkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ujGJwoBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95293C4CEC9;
+	Tue,  3 Sep 2024 16:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725377736;
-	bh=t6e3G7q3f5emkzw8EoVbd6PITMUf/pOi2Q6k8ITflpc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RYQ0vpG7jRDFlWoikaPdbcFzrRbCnv2PbH5rQHxFbvKcnOxhBNAK+rOPKKXtezdwQ
-	 I5WqCJChbeZx3fc+P5yoEjoGJMBiNfup4Uqw1l3P9hvrjV7BrAZff5OChcp9LiPs+6
-	 Fpz8EULJGifu7rnmXsGZi1T33dZr85Nx8+Rb/bHiVxVZ/TH07rDFT4szi2Y5CSYS/C
-	 38E75nDJu1TFYB+7jxKYcgB/NwU1XJeUwV/rpTQqjeiwm2iYNTEQG7NK4YDbOaVLbx
-	 DAhQ20gAcW2E2kQI2EDS86aHnGrHLV7lLI/oxosVRXuSuFwcaKvaVG/OrweDLwecOx
-	 ncvVjHAoa76Bw==
-Date: Tue, 3 Sep 2024 16:35:26 +0100
-From: Lee Jones <lee@kernel.org>
-To: Stephen Boyd <swboyd@chromium.org>
-Cc: chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev, devicetree@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Benson Leung <bleung@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
-	David Airlie <airlied@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	dri-devel@lists.freedesktop.org,
-	Guenter Roeck <groeck@chromium.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Prashant Malani <pmalani@chromium.org>,
-	Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-acpi@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: Re: [PATCH v4 15/18] dt-bindings: usb: Add ports to
- google,cros-ec-typec for DP altmode
-Message-ID: <20240903153526.GA6858@google.com>
-References: <20240901040658.157425-1-swboyd@chromium.org>
- <20240901040658.157425-16-swboyd@chromium.org>
+	s=k20201202; t=1725379750;
+	bh=2oYWilPB6GddQnusHJpSufcnEcbn+RzWwm5DmozUZ5Y=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ujGJwoBiOh2tAitzebKvJV818ZPaoPQPGoqDLnRbHBC9DXT4PpN9tWumvGo3t5ihn
+	 OKUzwmYInDHw+s1JSfEN9mGM6hGjklGRUyjOroraCZYLV7HJivjXdljn72TI34x1w9
+	 rn1br2qKhJ2VlnY1nhQfyi+uRzfy5RZf6lm3H85CvDsX4fGefJaPydF4s3r0luCB2k
+	 j5y1XxE2QDmAhogT7Pn1MdOOnOo26OMmxmfyyUkI3LnLq+J50GDjW7bZg3N7o+/L+k
+	 DyNUk59BgN9jsvVVvfX/zQC12RXSHTDW8wznhdE4b21z523+iZwNymeTE0sfeQG0dN
+	 WuvpuhCHlS5rA==
 Precedence: bulk
 X-Mailing-List: linux-acpi@vger.kernel.org
 List-Id: <linux-acpi.vger.kernel.org>
 List-Subscribe: <mailto:linux-acpi+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-acpi+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240901040658.157425-16-swboyd@chromium.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Sep 2024 19:09:06 +0300
+Message-Id: <D3WS2P2DU0CE.SANBOLMHG6TC@kernel.org>
+Cc: <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+ <linux-edac@vger.kernel.org>, <x86@kernel.org>, <justin.he@arm.com>,
+ <ardb@kernel.org>, <ying.huang@intel.com>, <ashish.kalra@amd.com>,
+ <baolin.wang@linux.alibaba.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+ <dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
+ <robert.moore@intel.com>, <lvying6@huawei.com>, <xiexiuqi@huawei.com>,
+ <zhuo.song@linux.alibaba.com>
+Subject: Re: [PATCH v12 1/3] ACPI: APEI: send SIGBUS to current task if
+ synchronous memory error not recovered
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Shuai Xue" <xueshuai@linux.alibaba.com>, <bp@alien8.de>,
+ <rafael@kernel.org>, <wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
+ <mawupeng1@huawei.com>, <tony.luck@intel.com>, <linmiaohe@huawei.com>,
+ <naoya.horiguchi@nec.com>, <james.morse@arm.com>, <tongtiangen@huawei.com>,
+ <gregkh@linuxfoundation.org>, <will@kernel.org>
+X-Mailer: aerc 0.18.2
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20240902030034.67152-2-xueshuai@linux.alibaba.com>
+In-Reply-To: <20240902030034.67152-2-xueshuai@linux.alibaba.com>
 
-On Sat, 31 Aug 2024, Stephen Boyd wrote:
-
-> Add a DT graph binding to google,cros-ec-typec so that it can combine
-> DisplayPort (DP) and USB SuperSpeed (SS) data into a USB type-c endpoint
-> that is connected to the usb-c-connector node's SS endpoint. This also
-> allows us to connect the DP and USB nodes in the graph to the USB type-c
-> connectors, providing the full picture of the USB type-c data flows in
-> the system.
-> 
-> Allow there to be multiple typec nodes underneath the EC node so that
-> one DT graph exists per DP bridge. The EC is actually controlling TCPCs
-> and redrivers that combine the DP and USB signals together so this more
-> accurately reflects the hardware design without introducing yet another
-> DT node underneath the EC for USB type-c.
-> 
-> If the type-c ports are being shared between a single DP controller then
-> the ports need to know about each other and determine a policy to drive
-> DP to one type-c port. If the type-c ports each have their own dedicated
-> DP controller then they're able to operate independently and enter/exit
-> DP altmode independently as well. We can't connect the DP controller's
-> endpoint to one usb-c-connector port@1 endpoint and the USB controller's
-> endpoint to another usb-c-connector port@1 endpoint either because the
-> DP muxing case would have DP connected to two usb-c-connector endpoints
-> which the graph binding doesn't support.
-> 
-> Therefore, one typec node is required per the capabilities of the type-c
-> port(s) being managed. This also lets us indicate which type-c ports the
-> DP controller is wired to. For example, if DP was connected to ports 0
-> and 2, while port 1 was connected to another DP controller we wouldn't
-> be able to implement that without having some other DT property to
-> indicate which output ports are connected to the DP endpoint.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Acked-by: Lee Jones <lee@kernel.org>
-> Cc: Benson Leung <bleung@chromium.org>
-> Cc: Guenter Roeck <groeck@chromium.org>
-> Cc: Prashant Malani <pmalani@chromium.org>
-> Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-> Cc: <devicetree@vger.kernel.org>
-> Cc: <chrome-platform@lists.linux.dev>
-> Cc: Pin-yen Lin <treapking@chromium.org>
-> Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+On Mon Sep 2, 2024 at 6:00 AM EEST, Shuai Xue wrote:
+> Synchronous error was detected as a result of user-space process accessin=
+g
+> a 2-bit uncorrected error. The CPU will take a synchronous error exceptio=
+n
+> such as Synchronous External Abort (SEA) on Arm64. The kernel will queue =
+a
+> memory_failure() work which poisons the related page, unmaps the page, an=
+d
+> then sends a SIGBUS to the process, so that a system wide panic can be
+> avoided.
+>
+> However, no memory_failure() work will be queued unless all bellow
+> preconditions check passed:
+>
+> - `if (!(mem_err->validation_bits & CPER_MEM_VALID_PA))` in ghes_handle_m=
+emory_failure()
+> - `if (flags =3D=3D -1)` in ghes_handle_memory_failure()
+> - `if (!IS_ENABLED(CONFIG_ACPI_APEI_MEMORY_FAILURE))` in ghes_do_memory_f=
+ailure()
+> - `if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) ` in ghe=
+s_do_memory_failure()
+>
+> In such case, the user-space process will trigger SEA again.  This loop
+> can potentially exceed the platform firmware threshold or even trigger a
+> kernel hard lockup, leading to a system reboot.
+>
+> Fix it by performing a force kill if no memory_failure() work is queued
+> for synchronous errors.
+>
+> Suggested-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>
 > ---
->  .../bindings/mfd/google,cros-ec.yaml          |   7 +-
+>  drivers/acpi/apei/ghes.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 623cc0cb4a65..b0b20ee533d9 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -801,6 +801,16 @@ static bool ghes_do_proc(struct ghes *ghes,
+>  		}
+>  	}
+> =20
+> +	/*
+> +	 * If no memory failure work is queued for abnormal synchronous
+> +	 * errors, do a force kill.
+> +	 */
+> +	if (sync && !queued) {
+> +		pr_err("Sending SIGBUS to %s:%d due to hardware memory corruption\n",
+> +			current->comm, task_pid_nr(current));
 
-Acked-by: Lee Jones <lee@kernel.org>
+Hmm... doest this need "hardware" or would "memory corruption" be
+enough?
 
->  .../bindings/usb/google,cros-ec-typec.yaml    | 229 ++++++++++++++++++
->  2 files changed, 233 insertions(+), 3 deletions(-)
+Also, does this need to say that it is sending SIGBUS when the signal
+itself tells that already?
 
--- 
-Lee Jones [李琼斯]
+I.e. could "%s:%d has memory corruption" be enough information?
+
+> +		force_sig(SIGBUS);
+> +	}
+> +
+>  	return queued;
+>  }
+> =20
+
+BR, Jarkko
 
