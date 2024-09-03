@@ -1,46 +1,46 @@
-Return-Path: <linux-acpi+bounces-8111-lists+linux-acpi=lfdr.de@vger.kernel.org>
+Return-Path: <linux-acpi+bounces-8112-lists+linux-acpi=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-acpi@lfdr.de
 Delivered-To: lists+linux-acpi@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDB396A86B
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 22:37:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB8E96A86F
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 22:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F99285CF6
-	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 20:37:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79567B221DA
+	for <lists+linux-acpi@lfdr.de>; Tue,  3 Sep 2024 20:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1201D5883;
-	Tue,  3 Sep 2024 20:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB3D1D58A6;
+	Tue,  3 Sep 2024 20:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGYiVKCy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccdCYhaz"
 X-Original-To: linux-acpi@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2F61D3195;
-	Tue,  3 Sep 2024 20:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5FD1D589E;
+	Tue,  3 Sep 2024 20:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725395828; cv=none; b=Mjoi1VnZlB2jLIkHhXACNfzLKm56h0w3an1ZTjfhWojpVRVkg7C6g7sFz8S85VW7kDKCWQwY1sDU3/sTj00WcP/XGb4GPCzx46UH28h91k9C2jAZnVbmnsTM8Y6Kr+8ECzR6b5QKaUoe5e291YrEmVwgdVrHCXXLNa7u1vkgzGY=
+	t=1725395829; cv=none; b=d3DKuNifDiPC2JQOP9aN//YtcgwYvkgPqMozQYBtmMOT7F9MLJsE0HXh9hVqJcBTAyHf99oI21EE3vaUsrpuh395eLfrLk3Xpv9uPtwYAa16ySHecLMjV33HcEdpxWsXweRiH5lRH4MDBmQGMX6pJRnDzEBAIS3gRSylpO//aOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725395828; c=relaxed/simple;
-	bh=rowiKubLUEKpsIMfOF/UJKXNOL/WqssxE3TBLP8jy5Q=;
+	s=arc-20240116; t=1725395829; c=relaxed/simple;
+	bh=Mi1XSn3QoyV1uL2WVnu3MhCF+ygtF1cHWIq1Uh3dUTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSSohYyoiH1sB3ZlYewilGiXcaPsjr6dKl8Zngk4D+7N7Jg7ASGLhw35/mWdJN7IO8mXQR2FkIvzGpAu/8FBdS00qAuWZuNXepPlIVGkCNrfS2mgmY57OHB6uschhyN8GyUSWx+5TPO4tashkt76a/hKt5JOpZ9CK/42jNgLcto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGYiVKCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9ADC4CEC5;
-	Tue,  3 Sep 2024 20:37:07 +0000 (UTC)
+	 MIME-Version; b=sO2gm9lnQcP2DgnM08S94TwVY2T/WQUikpujpNIQBREaddliisa5Dg1HXPjov9QotJJvJgVbHeyzd53iK67zvtKrAzo6Ku7yEeyI0erNBLLqJK17182Impme2oloBnDOkoP8XpgVsLaT5dNQ2OH+RG7YbeREbS/WSgyF91eYNUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccdCYhaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9426AC4CEC4;
+	Tue,  3 Sep 2024 20:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725395828;
-	bh=rowiKubLUEKpsIMfOF/UJKXNOL/WqssxE3TBLP8jy5Q=;
+	s=k20201202; t=1725395829;
+	bh=Mi1XSn3QoyV1uL2WVnu3MhCF+ygtF1cHWIq1Uh3dUTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGYiVKCyXPsndDIIMExB/0OO9zT3wj0ne50MNGR7E5G1WzYBF2T9LFJG5Y8Jvt52l
-	 TT85/Zcke6YxMQJTL35AyVqXfDjRYwlSGOJdZKqurMFStg6ZuZhzc2NZa9MRJmNz8g
-	 i/4oUsXbcfm5AvqoWMDDFN2RJnbb0DwDjkAn+QHZkqV5oixYlHKP9qZpNJoLK+hegX
-	 aXkKfMrgle67TbtIKI7rqcqswlOxH/q0Ley7/KMuZWSkLjm4Jw2yiS5pv8k/wzT09E
-	 LBPe1jjEkjmXrR4ug76ZSILeYTd/zl8aEnMcnDJt+isad+nHyvUuqJ7GKXacXiRm+X
-	 mAjwMiW5cB6Dg==
+	b=ccdCYhazE0Qws6hOVIwICtk+5zOZoMoL1F1kGV0dg01m0F49IXDQGmAwtt5FE4pRp
+	 VCJdFZZL8ivV7L48TFdKHThEPIR0ZfzF6zN88mZB0m5H8iLWDDmATQSdwAprOPn6IG
+	 McITN4pGXFQikkIqz8Kn6ubSdEKASa0vuFuP/qeRh1BwqAP53Cq8L1c8BdcTaa7lhq
+	 didkmuvLUmY/fUk5oIx/ZlrfYOXLNY+0n6n268CElsrsY2G2YzB+kmtTz5DCxEJ2Th
+	 Zo+3DIYdMbK0DuqQWGN7e9V+BckMLN1q5U2wBbkxBekEkRaxQCYk+N6e+h5wpynXT7
+	 LE/yRiTxmlX6w==
 From: Mario Limonciello <superm1@kernel.org>
 To: Borislav Petkov <bp@alien8.de>,
 	"Gautham R . Shenoy" <gautham.shenoy@amd.com>,
@@ -51,9 +51,9 @@ Cc: x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
 	linux-acpi@vger.kernel.org (open list:ACPI),
 	linux-pm@vger.kernel.org (open list:CPU FREQUENCY SCALING FRAMEWORK),
 	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH v2 01/11] x86/amd: Move amd_get_highest_perf() from amd.c to cppc.c
-Date: Tue,  3 Sep 2024 15:36:51 -0500
-Message-ID: <20240903203701.2695040-2-superm1@kernel.org>
+Subject: [PATCH v2 02/11] ACPI: CPPC: Adjust return code for inline functions in !CONFIG_ACPI_CPPC_LIB
+Date: Tue,  3 Sep 2024 15:36:52 -0500
+Message-ID: <20240903203701.2695040-3-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903203701.2695040-1-superm1@kernel.org>
 References: <20240903203701.2695040-1-superm1@kernel.org>
@@ -67,71 +67,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-To prepare to let amd_get_highest_perf() detect preferred cores
-it will require CPPC functions. Move amd_get_highest_perf() to
-cppc.c to prepare for 'preferred core detection' rework.
+Checkpath emits the following warning:
+```
+WARNING: ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP
+```
 
-No functional changes intended.
+Adjust the code accordingly.
 
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- arch/x86/kernel/acpi/cppc.c | 16 ++++++++++++++++
- arch/x86/kernel/cpu/amd.c   | 16 ----------------
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ include/acpi/cppc_acpi.h | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index ff8f25faca3dd..7ec8f2ce859c8 100644
---- a/arch/x86/kernel/acpi/cppc.c
-+++ b/arch/x86/kernel/acpi/cppc.c
-@@ -116,3 +116,19 @@ void init_freq_invariance_cppc(void)
- 	init_done = true;
- 	mutex_unlock(&freq_invariance_lock);
- }
-+
-+u32 amd_get_highest_perf(void)
-+{
-+	struct cpuinfo_x86 *c = &boot_cpu_data;
-+
-+	if (c->x86 == 0x17 && ((c->x86_model >= 0x30 && c->x86_model < 0x40) ||
-+			       (c->x86_model >= 0x70 && c->x86_model < 0x80)))
-+		return 166;
-+
-+	if (c->x86 == 0x19 && ((c->x86_model >= 0x20 && c->x86_model < 0x30) ||
-+			       (c->x86_model >= 0x40 && c->x86_model < 0x70)))
-+		return 166;
-+
-+	return 255;
-+}
-+EXPORT_SYMBOL_GPL(amd_get_highest_perf);
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 1e0fe5f8ab84e..015971adadfc7 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1190,22 +1190,6 @@ unsigned long amd_get_dr_addr_mask(unsigned int dr)
- }
- EXPORT_SYMBOL_GPL(amd_get_dr_addr_mask);
- 
--u32 amd_get_highest_perf(void)
--{
--	struct cpuinfo_x86 *c = &boot_cpu_data;
--
--	if (c->x86 == 0x17 && ((c->x86_model >= 0x30 && c->x86_model < 0x40) ||
--			       (c->x86_model >= 0x70 && c->x86_model < 0x80)))
--		return 166;
--
--	if (c->x86 == 0x19 && ((c->x86_model >= 0x20 && c->x86_model < 0x30) ||
--			       (c->x86_model >= 0x40 && c->x86_model < 0x70)))
--		return 166;
--
--	return 255;
--}
--EXPORT_SYMBOL_GPL(amd_get_highest_perf);
--
- static void zenbleed_check_cpu(void *unused)
+diff --git a/include/acpi/cppc_acpi.h b/include/acpi/cppc_acpi.h
+index 930b6afba6f4d..409a7190a4a86 100644
+--- a/include/acpi/cppc_acpi.h
++++ b/include/acpi/cppc_acpi.h
+@@ -162,31 +162,31 @@ extern int cppc_set_auto_sel(int cpu, bool enable);
+ #else /* !CONFIG_ACPI_CPPC_LIB */
+ static inline int cppc_get_desired_perf(int cpunum, u64 *desired_perf)
  {
- 	struct cpuinfo_x86 *c = &cpu_data(smp_processor_id());
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_set_enable(int cpu, bool enable)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_perf_caps(int cpu, struct cppc_perf_caps *caps)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline bool cppc_perf_ctrs_in_pcc(void)
+ {
+@@ -210,27 +210,27 @@ static inline bool cpc_ffh_supported(void)
+ }
+ static inline int cpc_read_ffh(int cpunum, struct cpc_reg *reg, u64 *val)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cpc_write_ffh(int cpunum, struct cpc_reg *reg, u64 val)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_set_epp_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls, bool enable)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_epp_perf(int cpunum, u64 *epp_perf)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_set_auto_sel(int cpu, bool enable)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ static inline int cppc_get_auto_sel_caps(int cpunum, struct cppc_perf_caps *perf_caps)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
+ #endif /* !CONFIG_ACPI_CPPC_LIB */
+ 
 -- 
 2.43.0
 
